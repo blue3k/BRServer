@@ -1,0 +1,22 @@
+
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2013 The Braves
+// 
+// Author : MadK
+//
+// Description : Game DB
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+#include "stdafx.h"
+#include "DB/GameTransactionDBQuery.h"
+#include "DBTrace.h"
+#include "Common/MemoryPool.h"
+
+
+
+
+BRDB_DEFINE_QUERY_IMPL(QueryAddGameLog);
+

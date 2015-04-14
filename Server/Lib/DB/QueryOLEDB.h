@@ -1,0 +1,43 @@
+
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2013 The Braves
+// 
+// Author : MadK
+//
+// Description : DB query base
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+#include "Common/Typedefs.h"
+#include "Common/MemoryPool.h"
+#include "DB/dbTrace.h"
+#include "Query.h"
+
+#include "ServerSystem/SvrTypes.h"
+#include "ServerSystem/Transaction.h"
+#include "Common/SvrPolicyID.h"
+#include "Common/Message.h"
+
+#include <atlcore.h>
+#include <atldbcli.h>
+
+
+namespace BR {
+namespace DB {
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//	DB Query string macro
+	//
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Query definitions macros
+	//
+
+} // namespace DB
+} // namespace BR

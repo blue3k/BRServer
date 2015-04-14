@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by abc (abc) -->
+<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+	<ProtocolGroup Name="LoginServer" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Login Server Protocol">
+		<!-- ============================  Server Generic  ============================================ -->
+
+	<Command Name="PlayerJoinedToGameServer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Notify user joind and see it's valid authticket instance">
+		<Cmd>
+			<Params Type="PlayerID" Name="PlayerID"/>
+			<Params Type="AuthTicket" Name="AuthTicket"/>
+		</Cmd>
+		<Res>
+		</Res>
+	</Command>
+
+    <Command Name="KickPlayer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Kick logged in player">
+      <Cmd>
+        <Params Type="PlayerID" Name="KickedPlayerID"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>

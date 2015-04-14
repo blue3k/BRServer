@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{90A3CE16-19A4-4380-BBA1-878B4880F7D2}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>GameServer</RootNamespace>
+    <SccProjectName>
+    </SccProjectName>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccProvider>
+    </SccProvider>
+    <ProjectName>ConspiracyGameServer</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfAtl>Static</UseOfAtl>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfAtl>Static</UseOfAtl>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Build\Win64\BuildRule\CompileCpp.props" />
+    <Import Project="..\..\Build\Win64\BuildRule\BuildService.props" />
+    <Import Project="..\..\Build\Win64\BuildRule\Server.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Build\Win64\BuildRule\CompileCpp.props" />
+    <Import Project="..\..\Build\Win64\BuildRule\BuildService.props" />
+    <Import Project="..\..\Build\Win64\BuildRule\Server.props" />
+    <Import Project="..\..\Build\Win64\BuildRule\Release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)../../bin/$(Platform)$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)../../bin/$(Platform)$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN64;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN64;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="GameInstance\GamePlayerEntity.inl" />
+    <None Include="small.ico" />
+    <None Include="GameServer.ico" />
+    <None Include="GameServerClass.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameInstance\GameEntityManager.h" />
+    <ClInclude Include="GameInstance\GamePlayerEntity.h" />
+    <ClInclude Include="GameSystem\UserFriendSystem.h" />
+    <ClInclude Include="GameSystem\UserGamePlayerInfoSystem.h" />
+    <ClInclude Include="GameSystem\UserNotifySystem.h" />
+    <ClInclude Include="GameSystem\UserSystemComponentIDs.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ServerEntity\EntityServerEntity.h" />
+    <ClInclude Include="ServerEntity\GameServerEntity.h" />
+    <ClInclude Include="ServerEntity\LoginServerEntity.h" />
+    <ClInclude Include="ServerEntity\ServerEntityTrans.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Transaction\GameMasterTrans.h" />
+    <ClInclude Include="Transaction\GamePlayerEntityTrans.h" />
+    <ClInclude Include="Transaction\GamePlayerEntityTransClose.h" />
+    <ClInclude Include="Transaction\GamePlayerEntityTransFriend.h" />
+    <ClInclude Include="Transaction\GamePlayerEntityTransGame.h" />
+    <ClInclude Include="Transaction\GamePlayerEntityTransParty.h" />
+    <ClInclude Include="Transaction\GameServerEntityTrans.h" />
+    <ClInclude Include="Transaction\GameServerTrans.h" />
+    <ClInclude Include="GameServer.h" />
+    <ClInclude Include="GameServerClass.h" />
+    <ClInclude Include="GameSvrConst.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameInstance\GameEntityManager.cpp" />
+    <ClCompile Include="GameInstance\GamePlayerEntity.cpp" />
+    <ClCompile Include="GameSystem\UserFriendSystem.cpp" />
+    <ClCompile Include="GameSystem\UserGamePlayerInfoSystem.cpp" />
+    <ClCompile Include="GameSystem\UserNotifySystem.cpp" />
+    <ClCompile Include="ServerEntity\EntityServerEntity.cpp" />
+    <ClCompile Include="ServerEntity\GameServerEntity.cpp" />
+    <ClCompile Include="ServerEntity\LoginServerEntity.cpp" />
+    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Transaction\GameMasterTrans.cpp" />
+    <ClCompile Include="Transaction\GamePlayerEntityTrans.cpp" />
+    <ClCompile Include="Transaction\GamePlayerEntityTransClose.cpp" />
+    <ClCompile Include="Transaction\GamePlayerEntityTransFriend.cpp" />
+    <ClCompile Include="Transaction\GamePlayerEntityTransGame.cpp" />
+    <ClCompile Include="Transaction\GamePlayerEntityTransParty.cpp" />
+    <ClCompile Include="Transaction\GameServerEntityTrans.cpp" />
+    <ClCompile Include="Transaction\GameServerTrans.cpp" />
+    <ClCompile Include="GameServer.cpp" />
+    <ClCompile Include="GameServerClass.cpp" />
+    <ClCompile Include="GameServer_NetProc.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameServer.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

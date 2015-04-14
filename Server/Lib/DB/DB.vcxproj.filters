@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="DBSource">
+      <UniqueIdentifier>{d71242ad-7b13-4d39-bd35-27d8bdcfad40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OLEDB">
+      <UniqueIdentifier>{0e6584a0-a1e9-4ea5-9a63-826d0d2754ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MYSQL">
+      <UniqueIdentifier>{d2b58375-57c4-456b-bb24-61e2f3476fbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DB">
+      <UniqueIdentifier>{77a4264d-9837-45c6-9569-40d32814cd6f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccountDB.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryMYSQL.h">
+      <Filter>MYSQL</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryOLEDB.h">
+      <Filter>OLEDB</Filter>
+    </ClInclude>
+    <ClInclude Include="DBConst.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DBToString.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DBTrace.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="Query.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryConst.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryManager.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryWorker.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSource.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSourceOLEDB.h">
+      <Filter>OLEDB</Filter>
+    </ClInclude>
+    <ClInclude Include="FactoryOLEDB.h">
+      <Filter>OLEDB</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionOLEDB.h">
+      <Filter>OLEDB</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSourceMYSQL.h">
+      <Filter>MYSQL</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionMYSQL.h">
+      <Filter>MYSQL</Filter>
+    </ClInclude>
+    <ClInclude Include="FactoryMYSQL.h">
+      <Filter>MYSQL</Filter>
+    </ClInclude>
+    <ClInclude Include="DBOLEDB.h">
+      <Filter>OLEDB</Filter>
+    </ClInclude>
+    <ClInclude Include="DBMYSQL.h">
+      <Filter>MYSQL</Filter>
+    </ClInclude>
+    <ClInclude Include="GameConspiracyDB.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginSessionDB.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginSessionQuery.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="AccountQuery.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="GameConspiracyQuery.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="RankingDB.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="RankingDBQuery.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTransactionDB.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTransactionDBQuery.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="ShardCoordinatorDBQuery.h">
+      <Filter>DBSource</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryWorkerManager.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccountDB.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="DBTrace.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryManager.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryWorker.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSource.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="Factory.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSourceOLEDB.cpp">
+      <Filter>OLEDB</Filter>
+    </ClCompile>
+    <ClCompile Include="FactoryOLEDB.cpp">
+      <Filter>OLEDB</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionOLEDB.cpp">
+      <Filter>OLEDB</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSourceMYSQL.cpp">
+      <Filter>MYSQL</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionMYSQL.cpp">
+      <Filter>MYSQL</Filter>
+    </ClCompile>
+    <ClCompile Include="FactoryMYSQL.cpp">
+      <Filter>MYSQL</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryMYSQL.cpp">
+      <Filter>MYSQL</Filter>
+    </ClCompile>
+    <ClCompile Include="GameConspiracyDB.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginSessionDB.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginSessionQuery.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="AccountQuery.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="GameConspiracyQuery.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="RankingDBQuery.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="RankingDB.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTransactionDBQuery.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTransactionDB.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="ShardCoordinatorDBQuery.cpp">
+      <Filter>DBSource</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryWorkerManager.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

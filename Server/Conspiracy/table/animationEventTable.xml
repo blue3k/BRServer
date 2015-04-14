@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<AnimationEventTable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:noNamespaceSchemaLocation="AnimationEventTable.xsd">
+	<AnimationEventItem FileName="char_shared" Setting="Citizen0" AnimationName="char_death" Type="Event" Event="DeathEnd" Time="1.24444449" Raised="false"/>
+	<AnimationEventItem FileName="char_shared" Setting="Citizen1" AnimationName="char_death" Type="Event" Event="DeathEnd" Time="1.24444449" Raised="false"/>
+	<AnimationEventItem FileName="char_shared" Setting="Citizen2" AnimationName="char_death" Type="Event" Event="DeathEnd" Time="1.24444449" Raised="false"/>
+	<AnimationEventItem FileName="char_shared" Setting="Citizen3" AnimationName="char_death" Type="Event" Event="DeathEnd" Time="1.24444449" Raised="false"/>
+	<AnimationEventItem FileName="char_shared" Setting="Citizen4" AnimationName="char_death" Type="Event" Event="DeathEnd" Time="1.24444449" Raised="false"/>
+	<AnimationEventItem FileName="char_shared" Setting="Citizen5" AnimationName="char_death" Type="Event" Event="DeathEnd" Time="1.24444449" Raised="false"/>
+	<AnimationEventItem FileName="char_shared" Setting="Citizen6" AnimationName="char_death" Type="Event" Event="DeathEnd" Time="1.24444449" Raised="false"/>
+	<AnimationEventItem FileName="char_shared" Setting="Citizen7" AnimationName="char_death" Type="Event" Event="DeathEnd" Time="1.24444449" Raised="false"/>
+	<AnimationEventItem FileName="char_shared" Setting="Seer" AnimationName="char_death" Type="Event" Event="DeathEnd" Time="1.24444449" Raised="false"/>
+</AnimationEventTable>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<ClienSetting xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="clientSetting.xsd">
+	<GamePlay>
+		<FreeDebate ShowRole="3" Phase="3" Description1="3" Description2="3"/>
+		<NightVote Phase="3" Description="3"/>
+		<VoteForSuspects Phase="3" Result="3" Description="3"/>
+		<VoteForHanging Phase1="3" Phase2="3" Description1="3" Description2="3" Description3="3"/>
+		<DefenceOfSuspects Phase="3" Description="3"/>
+		<End Phase="3" Result1="3" Result2="3" Result3="2" Description1="3" Description2="3" Description3="3"/>
+	</GamePlay>
+	<Time ShowVote="2" HideVote="5" KillAnimation="2"/>
+</ClienSetting>

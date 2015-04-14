@@ -1,0 +1,512 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include=".\stdafx.cpp" />
+    <ClCompile Include=".\Argument.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Crc32.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Memory.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include=".\MemoryPool.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include=".\PerfCounter.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="BrRandom.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Binary.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Synchronize.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Thread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="BrGameTypes.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="BrXML.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Trace.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include=".\Utility.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include=".\TimeUtil.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include=".\ToStringBase.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="UniqueEntityIDGenerator.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Message.cpp" />
+    <ClCompile Include=".\StrUtil.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryStream.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalUIDGenerator.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalUIDGenerator.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="StackWalker.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="SharedReferenceManager.cpp">
+      <Filter>SharedPointer</Filter>
+    </ClCompile>
+    <ClCompile Include="SharedObject.cpp">
+      <Filter>SharedPointer</Filter>
+    </ClCompile>
+    <ClCompile Include=".\StackPool.cpp">
+      <Filter>Container</Filter>
+    </ClCompile>
+    <ClCompile Include="ToStringGame.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="ToStringSvr.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="ToString.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include=".\GameConst.h" />
+    <ClInclude Include=".\stdafx.h" />
+    <ClInclude Include=".\targetver.h" />
+    <ClInclude Include=".\Typedefs.h" />
+    <ClInclude Include=".\Argument.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include=".\ArrayUtil.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Memory.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include=".\MemLog.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include=".\MemoryPool.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include=".\MathUtil.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PerfCounter.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include=".\NullUtil.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassUtil.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="BrRandom.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="BrAssert.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Binary.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Synchronize.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtilToString.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Thread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="SvrPolicyID.h" />
+    <ClInclude Include="PolicyID.h" />
+    <ClInclude Include="BrGameTypes.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="BrBaseTypes.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="BrXML.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Trace.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Trace_Internal.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Utility.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include=".\TimeUtil.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include=".\ToString.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include=".\ToStringBase.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include=".\StrFormat.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="UniqueEntityIDGenerator.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESEvent.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESLogin.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESNet.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESSvrSys.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESCommon.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="HRESGame.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory_Impl.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\GameSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\MessageRoute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\BrServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\BrServerUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\BrService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\SvrConst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\SvrConstDefault.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\SvrToString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\SvrTrace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\SvrTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ServerSystem\TicketQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\StrUtil.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryBufferUtil.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="BrCommonTypes.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="BrSvrTypes.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ToStringSvr.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="ToStringGame.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryStream.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalUIDGenerator.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalUIDGenerator.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Memento.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="StackWalker.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemSynchronize.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedReferenceManager.h">
+      <Filter>SharedPointer</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedPointer.h">
+      <Filter>SharedPointer</Filter>
+    </ClInclude>
+    <ClInclude Include=".\SharedObj.h">
+      <Filter>SharedPointer</Filter>
+    </ClInclude>
+    <ClInclude Include="SortedMap.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="DualSortedMap.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include=".\SpinBuffer.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="SpinBufferMT.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include=".\SpinSharedBuffer.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include=".\StackPool.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticHashTable.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticLinkedList.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="BrLinkedList.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularQueue.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="HashTable.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="HashTableTrait.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include=".\PageQueue.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderedLinkedList.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Indexing.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="HashTable2.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticDoubleLinkedList.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="SharedObject.h">
+      <Filter>SharedPointer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".\ArrayUtil.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include=".\CRC32Table.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include=".\Memory.inl">
+      <Filter>System</Filter>
+    </None>
+    <None Include=".\MemoryPool.inl">
+      <Filter>System</Filter>
+    </None>
+    <None Include=".\MathUtil.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include=".\PerfCounter.inl">
+      <Filter>System</Filter>
+    </None>
+    <None Include="BrRandom.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include="Binary.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include=".\Synchronize.inl">
+      <Filter>Thread</Filter>
+    </None>
+    <None Include=".\Thread.inl">
+      <Filter>Thread</Filter>
+    </None>
+    <None Include="BrGameTypes.inl">
+      <Filter>Types</Filter>
+    </None>
+    <None Include="BrBaseTypes.inl">
+      <Filter>Types</Filter>
+    </None>
+    <None Include="BrXML.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include=".\Trace.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include=".\Trace_Internal.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include=".\Utility.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include=".\TimeUtil.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include="Message.inl" />
+    <None Include="..\ServerSystem\GameSystem.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\ServerSystem\MessageRoute.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\ServerSystem\BrServer.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\ServerSystem\BrServerUtil.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\ServerSystem\SvrTypes.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="..\ServerSystem\TicketQueue.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include=".\StrUtil.inl">
+      <Filter>String</Filter>
+    </None>
+    <None Include="ObjectPool.inl">
+      <Filter>System</Filter>
+    </None>
+    <None Include="BrCommonTypes.inl">
+      <Filter>Types</Filter>
+    </None>
+    <None Include="BrSvrTypes.inl">
+      <Filter>Types</Filter>
+    </None>
+    <None Include="MemoryStream.inl">
+      <Filter>Utility</Filter>
+    </None>
+    <None Include="SystemSynchronize_win.inl">
+      <Filter>Thread</Filter>
+    </None>
+    <None Include=".\SharedObj.inl">
+      <Filter>SharedPointer</Filter>
+    </None>
+    <None Include=".\SpinBuffer.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include="SpinBufferMT.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include=".\SpinSharedBuffer.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include=".\StackPool.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include="BrLinkedList_MT.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include="BrLinkedList_ST.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include="CircularQueue.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include=".\PageQueue.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include="DualSortedMap.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include="SortedMap.inl">
+      <Filter>Container</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{108bb9b2-5ce9-448b-bdc0-96677917b1f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{dfb127ec-bb67-4d89-bdca-f51012aec1e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{1e1640a9-9fb2-45ce-8ea2-437448385c87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Container">
+      <UniqueIdentifier>{6ce43a9b-0495-40a8-b478-6468c139a175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{a2efbb75-335e-4143-9733-1f536ed7bdd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types">
+      <UniqueIdentifier>{ef4a9277-b09b-42f1-8864-00c0c7e9167e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HResult">
+      <UniqueIdentifier>{cc23cff7-7474-4d05-80e7-305e1734c556}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{ef02815a-3a7c-45c3-9da4-c291051af667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SharedPointer">
+      <UniqueIdentifier>{05847ed5-343f-4572-95c9-cdb9bccf4d10}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="ResultMC\HRESCommon.mc">
+      <Filter>HResult</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ResultMC\HRESEvent.mc">
+      <Filter>HResult</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ResultMC\HRESLogin.mc">
+      <Filter>HResult</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ResultMC\HRESNet.mc">
+      <Filter>HResult</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ResultMC\HRESSvrSys.mc">
+      <Filter>HResult</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ResultMC\HRESGame.mc">
+      <Filter>HResult</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

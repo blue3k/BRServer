@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ServerEntity">
+      <UniqueIdentifier>{7a310059-8d02-4b9e-adfd-033d9d51626e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Transaction">
+      <UniqueIdentifier>{bc5de6da-2125-4f46-b943-6e4628f407b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{701f20b1-c2a0-4cfd-8649-2f42972d066b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="EntityServer.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="EntityServerClass.inl">
+      <Filter>Server</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\EntityTransactionUser.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\EntityTransactionServer.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityServer.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityServerClass.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="EntitySvrConst.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\GameMasterServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\GameServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\EntityServerTrans.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\LoginServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\EntityServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\EntityTransactionUser.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\EntityTransactionServer.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityServer.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityServerClass.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\GameMasterServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\GameServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\EntityServerTrans.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\LoginServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\EntityServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="EntityServer.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

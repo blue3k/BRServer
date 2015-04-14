@@ -1,0 +1,34 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2013 The Braves
+// 
+// Author : KyungKun Ko
+//
+// Description : Net Server implementation 
+//	
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//
+//	Server base class
+//
+
+
+// connection manager
+ConnectionManager& ServerUDP::GetConnectionManager()
+{
+	return m_ConnectionManager;
+}
+
+
+// connection manager
+ConnectionManager& ServerMUDP::GetConnectionManager()
+{
+	return m_ConnectionManager;
+}
+
+
+

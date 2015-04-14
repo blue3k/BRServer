@@ -1,0 +1,9 @@
+; SRWMIPerf.def : Declares the module parameters.
+
+LIBRARY      "BrWMIPerf.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE

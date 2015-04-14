@@ -1,0 +1,1329 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2013 The Braves
+// 
+// Author : KyungKun Ko
+//
+// Description : Connection implementations
+//	
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include "StdAfx.h"
+#include "Common/Thread.h"
+#include "Common/BrAssert.h"
+#include "Common/TimeUtil.h"
+#include "Common/HRESNet.h"
+#include "Net/NetTrace.h"
+#include "Net/ConnectionUDP.h"
+#include "Net/NetDef.h"
+#include "Net/NetServer.h"
+#include "Net/NetMessage.h"
+#include "Net/NetConst.h"
+
+#include "Protocol/ProtocolVer.h"
+
+
+// define if emulate packet loss
+//#ifdef _DEBUG
+//#define UDP_PACKETLOS_EMULATE
+//#endif
+
+
+#ifdef UDP_PACKETLOS_EMULATE
+	#define UDP_PACKETLOS_RATE	5
+	#define UDP_PACKETLOS_BOUND	1
+#endif // #ifdef UDP_PACKETLOS_EMULATE
+
+BR_MEMORYPOOL_IMPLEMENT(Net::ConnectionUDPServerPeer);
+BR_MEMORYPOOL_IMPLEMENT(Net::ConnectionUDPServer);
+BR_MEMORYPOOL_IMPLEMENT(Net::ConnectionUDPClient);
+
+namespace BR {
+namespace Net {
+
+	
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	UDP Network connection class
+	//
+
+	MemoryPool* ConnectionUDPBase::m_pGatheringBufferPool = nullptr;
+
+	// Constructor
+	ConnectionUDPBase::ConnectionUDPBase( UINT reliableWindowSize )
+		:m_RecvReliableWindow(),
+		m_SendReliableWindow( reliableWindowSize ),
+		m_uiMaxGuarantedRetry( Const::UDP_SVR_RETRY_ONETIME_MAX ),
+		m_uiGatheredSize(0),
+		m_pGatheringBuffer(nullptr),
+		m_RecvGuaQueue( reliableWindowSize / 2 )
+	{
+		SetHeartbitTry( Const::UDP_HEARTBIT_START_TIME );
+	}
+
+	ConnectionUDPBase::~ConnectionUDPBase()
+	{
+		m_RecvReliableWindow.ClearWindow();
+		m_SendReliableWindow.ClearWindow();
+		m_SendGuaQueue.ClearQueue();
+
+		m_RecvNetCtrlQueue.ClearQueue();
+
+		//ClearQueues();
+		if( m_pGatheringBuffer != nullptr )
+			m_pGatheringBufferPool->Free(m_pGatheringBuffer,"ConnectionUDPBase::~ConnectionUDPBase");
+		m_pGatheringBuffer = nullptr;
+	}
+
+	// Set message window size connection
+	HRESULT ConnectionUDPBase::SetMessageWindowSize( UINT uiSend, UINT uiRecv )
+	{
+		if( m_RecvReliableWindow.GetMsgCount() || m_SendReliableWindow.GetMsgCount() )
+			return E_FAIL;
+
+		// TODO: Not impl
+#ifdef _DEBUG
+#else
+		//m_SendReliableWindow.SetWndSize( uiSend );
+		//m_RecvReliableWindow.SetWndSize( uiRecv );
+#endif
+
+		return S_OK;
+	}
+
+	// Change remote Address
+	void ConnectionUDPBase::ChangeRemoteAddress( const sockaddr_in6& socAddr )
+	{
+		SockAddr2Addr( socAddr, m_ConnectInfo.Remote );
+
+		m_sockAddrRemote = socAddr;
+	}
+
+	ULONG ConnectionUDPBase::UpdateSendQueue()
+	{
+		HRESULT hr = S_OK;
+
+		if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
+			goto Proc_End;
+
+		hr = ProcSendReliableQueue();
+		if (FAILED(hr))
+		{
+			netTrace(TRC_CONNECTION, "Process Send Guaranted queue failed %0%", ArgHex32(hr));
+		}
+
+
+	Proc_End:
+
+		SendFlush();
+
+		return hr;
+	}
+
+	HRESULT ConnectionUDPBase::ProcGuarrentedMessageWindow(std::function<void(Message::MessageData* pMsgData)> action)
+	{
+		HRESULT hr = S_OK;
+		Message::MessageData *pIMsg = nullptr;
+
+		// slide recv window
+		while (SUCCEEDED(m_RecvReliableWindow.PopMsg(pIMsg)))
+		{
+			Assert(pIMsg);
+			Message::MessageHeader *pQMsgHeader = pIMsg->GetMessageHeader();
+			netTrace(TRC_GUARREANTEDCTRL, "RECVGuaDEQ : CID:%0%:%1%, seq:%2%, msg:%3%, len:%4%",
+				GetCID(), m_RecvReliableWindow.GetBaseSequence(),
+				pQMsgHeader->msgID.IDSeq.Sequence,
+				pQMsgHeader->msgID,
+				pQMsgHeader->Length);
+
+			Connection::PrintDebugMessage("RecvMsg", pIMsg);
+
+			action(pIMsg);
+			//netChk(__super::OnRecv(pIMsg));
+			pIMsg = nullptr;
+		}
+
+	Proc_End:
+
+		Util::SafeRelease(pIMsg);
+
+		return hr;
+	}
+
+	// gathering
+	HRESULT ConnectionUDPBase::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	{
+		HRESULT hr = S_OK;
+
+		MsgNetCtrl *pNetCtrlMsg = NULL;
+
+		netChk( PrepareGatheringBuffer(sizeof(MsgNetCtrlBuffer)) );
+
+		pNetCtrlMsg = (MsgNetCtrl*)(m_pGatheringBuffer+m_uiGatheredSize);
+		pNetCtrlMsg->msgID.ID = uiCtrlCode;
+		pNetCtrlMsg->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrlMsg->rtnMsgID = msgID;
+
+		if( UID != 0 )
+		{
+			MsgNetCtrlConnect *pNetCtrlCon = (MsgNetCtrlConnect*)pNetCtrlMsg;
+			pNetCtrlCon->PeerUID = UID;
+			pNetCtrlCon->Address = GetConnectionInfo().Local;
+			pNetCtrlMsg->Length = sizeof(MsgNetCtrlConnect);
+		}
+		else
+		{
+			pNetCtrlMsg->Length = sizeof(MsgNetCtrl);
+		}
+		m_uiGatheredSize += pNetCtrlMsg->Length;
+
+
+	Proc_End:
+
+		return hr;
+	}
+
+	HRESULT ConnectionUDPBase::SendPending( Message::MessageData* pMsg )
+	{
+		HRESULT hr = S_OK;
+
+		netChkPtr( pMsg );
+
+		if( pMsg->GetMessageSize() > (UINT)Const::INTER_PACKET_SIZE_MAX )
+		{
+			netErr( E_NET_BADPACKET_TOOBIG );
+		}
+
+		if( FAILED(PrepareGatheringBuffer(pMsg->GetMessageSize()) ) )
+		{
+			return Send(pMsg);
+		}
+
+		memcpy( m_pGatheringBuffer+m_uiGatheredSize, pMsg->GetMessageBuff(), pMsg->GetMessageSize() );
+
+		m_uiGatheredSize += pMsg->GetMessageSize();
+
+
+	Proc_End:
+
+		Util::SafeRelease( pMsg );
+
+		return hr;
+	}
+
+	HRESULT ConnectionUDPBase::SendFlush()
+	{
+		HRESULT hr = S_OK;
+
+		if( m_uiGatheredSize && m_pGatheringBuffer )
+		{
+			UINT GatherSize = m_uiGatheredSize;
+			BYTE* pGatherBuff = m_pGatheringBuffer;
+
+			m_uiGatheredSize = 0;
+			m_pGatheringBuffer = nullptr;
+
+			HRESULT hrTem = GetNet()->SendMsg( this, GatherSize, pGatherBuff );
+			if( FAILED(hrTem) )
+			{
+				netTrace( TRC_SENDRAW, "Gathered Send failed : CID:%0%, Len=%1%, hr=%2%", 
+					GetCID(), GatherSize, ArgHex32(hrTem) );
+
+				// ignore io send fail except connection closed
+				if( hrTem == E_NET_CONNECTION_CLOSED )
+					netErr( hrTem );
+			}
+		}
+
+
+	Proc_End:
+
+		m_uiGatheredSize = 0;
+		if( m_pGatheringBuffer != nullptr )
+			m_pGatheringBufferPool->Free(m_pGatheringBuffer,"ConnectionUDPBase::SendFlush()");
+		m_pGatheringBuffer = nullptr;
+
+
+		return hr;
+	}
+
+	// Prepare gathering buffer
+	HRESULT ConnectionUDPBase::PrepareGatheringBuffer( UINT uiRequiredSize )
+	{
+		HRESULT hr = S_OK;
+
+		// You tryed to use this method in a wrong way
+		if( uiRequiredSize > Const::PACKET_GATHER_SIZE_MAX )
+		{
+			return E_FAIL;
+		}
+		//Assert(uiRequiredSize < Const::PACKET_GATHER_SIZE_MAX);
+
+		if( (m_uiGatheredSize + uiRequiredSize) > (UINT)Const::PACKET_GATHER_SIZE_MAX )
+		{
+			netChk( SendFlush() );
+			Assert(m_uiGatheredSize == 0);
+		}
+
+		if( m_pGatheringBuffer == NULL )
+		{
+			void *pPtr = nullptr;
+			if( m_pGatheringBufferPool == nullptr )
+			{
+				netChk(MemoryPoolManager::GetMemoryPoolBySize(Const::PACKET_GATHER_SIZE_MAX, m_pGatheringBufferPool));
+			}
+			netChk( m_pGatheringBufferPool->Alloc(pPtr,"ConnectionUDPBase::PrepareGatheringBuffer") );
+			m_pGatheringBuffer = (BYTE*)pPtr;
+		}
+
+	Proc_End:
+
+		return hr;
+	}
+
+	HRESULT ConnectionUDPBase::ReleaseGatheringBuffer( BYTE *pBuffer )
+	{
+		return m_pGatheringBufferPool->Free( pBuffer, "ConnectionUDPBase::ReleaseGatheringBuffer" );
+	}
+
+	// Called on connection result
+	void ConnectionUDPBase::OnConnectionResult( HRESULT hrConnect )
+	{
+		__super::OnConnectionResult( hrConnect );
+	}
+
+
+	// Initialize connection
+	HRESULT ConnectionUDPBase::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
+	{
+		HRESULT hr = S_OK;
+
+		m_uiGatheredSize = 0;
+
+		m_RecvNetCtrlQueue.ClearQueue();
+		m_RecvGuaQueue.ClearQueue();
+
+		netChk( __super::InitConnection( socket, connectInfo ) );
+
+		netChk( ClearQueues() );
+
+		//Assert(m_RecvReliableWindow.GetSyncMask() == 0);
+		//Assert(m_SendReliableWindow.GetSyncMask() == 0);
+
+	Proc_End:
+
+		return hr;
+	}
+
+	// Close connection
+	HRESULT ConnectionUDPBase::CloseConnection()
+	{
+		HRESULT hr = S_OK;
+
+		if (GetConnectionState() != STATE_DISCONNECTED)
+			Disconnect();
+
+		hr = __super::CloseConnection();
+
+		return hr;
+	}
+
+	// Clear Queue
+	HRESULT ConnectionUDPBase::ClearQueues()
+	{
+		__super::ClearQueues();
+
+		m_RecvReliableWindow.ClearWindow();
+		m_SendReliableWindow.ClearWindow();
+		m_SendGuaQueue.ClearQueue();
+		m_RecvNetCtrlQueue.ClearQueue();
+
+		return S_OK;
+	}
+
+
+	// Disconnect connection
+	HRESULT ConnectionUDPBase::Disconnect()
+	{
+		if (GetConnectionState() != STATE_DISCONNECTING
+			&& GetConnectionState() != STATE_DISCONNECTED)
+		{
+			// Send disconnect signal
+			Message::MessageID msgIDTem;
+
+			msgIDTem.ID = PACKET_NETCTRL_NONE;
+			SendNetCtrl(PACKET_NETCTRL_DISCONNECT, 0, msgIDTem);
+		}
+
+		return __super::Disconnect();
+	}
+
+
+	// Send message to connected entity
+	HRESULT ConnectionUDPBase::Send( Message::MessageData* &pMsg )
+	{
+		HRESULT hr = S_OK;
+
+		if (GetConnectionState() == STATE_DISCONNECTED)
+			return S_FALSE;
+
+		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
+
+		if( (pMsgHeader->msgID.IDs.Type != Message::MSGTYPE_NETCONTROL && GetConnectionState() == STATE_DISCONNECTING) 
+			|| GetConnectionState() == STATE_DISCONNECTED)
+		{
+			// Send fail by connection closed
+			Util::SafeRelease( pMsg );
+			goto Proc_End;
+		}
+
+		if( pMsg->GetMessageSize() > (UINT)Const::INTER_PACKET_SIZE_MAX )
+		{
+			Util::SafeRelease( pMsg );
+			netErr( E_NET_BADPACKET_TOOBIG );
+		}
+
+		PrintDebugMessage( "SendMsg ", pMsg );
+
+		pMsg->UpdateChecksumNEncrypt();
+
+		if( pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL || pMsgHeader->msgID.IDs.Reliability == 0 )
+		{
+			if( !pMsg->GetIsSequenceAssigned() )
+				pMsg->AssignSequence( NewSeqNone() );
+
+			netTrace( TRC_NETCTRL, "SEND : msg:%0%, seq:%1%, len:%2%", 
+							pMsg->GetMessageHeader()->msgID, 
+							pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
+							pMsg->GetMessageHeader()->Length );
+
+			netChk( GetNet()->SendMsg( this, pMsg ) ); // ignore error to process all message
+		}
+		else
+		{
+			if( pMsg->GetIsSequenceAssigned() )
+			{
+				netChk( GetNet()->SendMsg( this, pMsg ) );
+			}
+			else
+			{
+				netTrace( TRC_GUARREANTEDCTRL, "SENDGuaQueued : CID:%0%, msg:%1%, seq:%2%, len:%3%", 
+								GetCID(),
+								pMsg->GetMessageHeader()->msgID, 
+								pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
+								pMsg->GetMessageHeader()->Length );
+
+				AssertRel(pMsg->GetMessageHeader()->msgID.IDSeq.Sequence == 0);
+
+				netChk( m_SendGuaQueue.Enqueue( pMsg ) );
+
+				// poke send
+				if (GetEventHandler() != nullptr && (m_SendGuaQueue.GetEnqueCount() > 0 && m_SendReliableWindow.GetMsgCount() <= 2))
+					GetEventHandler()->OnNetSyncMessage(this, NetCtrlCode_SyncReliable);
+			}
+		}
+		pMsg = NULL;
+
+	Proc_End:
+
+		return hr;
+	}
+
+
+
+
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	UDP connection class
+	//
+
+	// called when incomming message occure
+	HRESULT ConnectionUDP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
+	{
+		HRESULT hr = S_OK;
+		Message::MessageData *pMsg = NULL;
+
+		Message::MessageHeader * pMsgHeader = (Message::MessageHeader*)pBuff;
+
+		netTrace(TRC_RECVRAW, "UDP Recv ip:%0%, msg:%1%, seq:%2%, len:%3%", GetConnectionInfo().Remote, pMsgHeader->msgID, pMsgHeader->msgID.IDSeq.Sequence, uiBuffSize);
+
+		if( uiBuffSize == 0 )
+		{
+			IncZeroRecvCount();
+
+			if( GetZeroRecvCount() > (ULONG)Const::CONNECTION_ZEROPACKET_MAX )
+			{
+				Disconnect();
+			}
+			goto Proc_End;
+		}
+
+
+		while( uiBuffSize )
+		{
+			pMsgHeader = (Message::MessageHeader*)pBuff;
+
+			if( uiBuffSize < pMsgHeader->Length )
+			{
+				//Assert(0); // Will not occure with UDP packet
+				netErr( E_NET_BADPACKET_SIZE );
+			}
+
+
+#ifdef UDP_PACKETLOS_EMULATE
+			if( (Util::Random.Rand() % UDP_PACKETLOS_RATE) < UDP_PACKETLOS_BOUND )
+				goto Proc_End;
+#endif	// UDP_PACKETLOS_EMULATE
+
+			ResetZeroRecvCount();
+
+			if( pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL ) // if net control message then process immidiately
+			{
+				MsgNetCtrlBuffer netCtrl;
+				memcpy( &netCtrl, pMsgHeader, Util::Min( (size_t)pMsgHeader->Length, sizeof(netCtrl) ) );
+				netChk( m_RecvNetCtrlQueue.Enqueue( netCtrl ) );
+			}
+			else
+			{
+				if (GetConnectionState() == BR::Net::IConnection::STATE_CONNECTED)
+				{
+					netMem( pMsg = Message::MessageData::NewMessage( pMsgHeader->msgID.ID, pMsgHeader->Length, pBuff ) );
+
+					hr = OnRecv( pMsg );
+					pMsg = nullptr;
+					netChk( hr );
+				}
+			}
+
+
+			uiBuffSize -= pMsgHeader->Length;
+			pBuff += pMsgHeader->Length;
+
+			Util::SafeRelease( pMsg );
+		}
+
+	Proc_End:
+
+		Util::SafeRelease( pMsg );
+
+		return hr;
+	}
+
+
+	HRESULT ConnectionUDP::OnRecv( Message::MessageData *pMsg )
+	{
+		HRESULT hr = S_OK;
+		HRESULT hrTem = S_OK;
+
+		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
+
+		if (GetConnectionState() != BR::Net::IConnection::STATE_CONNECTED)
+		{
+			goto Proc_End;
+		}
+
+
+		Assert( MemoryPool::CheckMemoryHeader( pMsg ) );
+		UINT length = 0;
+		BYTE* pDataPtr = nullptr;
+		pMsg->GetLengthNDataPtr( length, pDataPtr );
+		Assert(length == 0 || pMsgHeader->Crc32 != 0 );
+
+		netChk( pMsg->ValidateChecksumNDecrypt() );
+
+		if( pMsgHeader->msgID.IDs.Reliability )
+		{
+			Assert( !pMsgHeader->msgID.IDs.Encrypted );
+
+			hr = m_RecvGuaQueue.Enqueue( pMsg );
+			pMsg = NULL;
+			netChk( hr );
+		}
+		else
+		{
+			hr = __super::OnRecv( pMsg );
+			pMsg = NULL;
+			netChk( hr );
+		}
+
+
+	Proc_End:
+
+		Util::SafeRelease( pMsg );
+
+		if( FAILED( hr ) )
+		{
+			CloseConnection();
+		}
+
+		return hr;
+	}
+
+
+	// Process network control message
+	HRESULT ConnectionUDP::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
+	{
+		HRESULT hr = S_OK;
+		HRESULT hrTem = S_OK;
+
+		switch( pNetCtrl->msgID.IDs.MsgCode )
+		{
+		case NetCtrlCode_Ack:
+			if( pNetCtrl->rtnMsgID.IDs.Type == Message::MSGTYPE_NETCONTROL )// connecting process
+			{
+				switch( pNetCtrl->rtnMsgID.IDs.MsgCode )
+				{
+				case NetCtrlCode_Disconnect:
+					if (GetConnectionState() == IConnection::STATE_DISCONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
+					{
+						netTrace( TRC_CONNECTION, "RECV Disconnected CID:%0%", GetCID() );
+						netChk( CloseConnection() );
+					}
+					break;
+				case NetCtrlCode_Connect:
+					if (GetConnectionState() == IConnection::STATE_CONNECTING
+						&& GetConnectionInfo().RemoteClass != NetClass::Unknown )
+					{
+						OnConnectionResult( S_OK );
+					}
+					break;
+				case NetCtrlCode_HeartBit:
+					m_ulNetCtrlTime = Util::Time.GetTimeMs();
+					break;
+				default:
+					m_ulNetCtrlTime = Util::Time.GetTimeMs();
+					break;
+				};
+			}
+			else // general message
+			{
+				// Remove from Guranted queue
+				if( pNetCtrl->rtnMsgID.IDs.Reliability )
+				{
+					hrTem = m_SendReliableWindow.ReleaseMsg(pNetCtrl->msgID.IDSeq.Sequence);
+					netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Recv GuaAck : CID:%0%:%1%, seq:%2%, rtnmsg:%3%, hr=%4%", 
+						GetCID(), m_SendReliableWindow.GetBaseSequence(), pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->rtnMsgID, ArgHex32(hrTem));
+					netChk( hrTem );
+				}
+			}
+			break;
+		case NetCtrlCode_Nack:
+			if( pNetCtrl->rtnMsgID.IDs.Type == Message::MSGTYPE_NETCONTROL )// connecting process
+			{
+				switch( pNetCtrl->rtnMsgID.IDs.MsgCode )
+				{
+				case NetCtrlCode_Disconnect:
+					break;
+				case NetCtrlCode_Connect:
+					if (GetConnectionState() == IConnection::STATE_CONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
+					{
+						// Protocol version mismatch
+						OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
+					}
+					netChk( Disconnect() );
+					break;
+				case NetCtrlCode_HeartBit:
+					break;
+				default:
+					break;
+				};
+			}
+			else // general message
+			{
+			}
+			break;
+		case NetCtrlCode_HeartBit:
+			m_ulNetCtrlTime = Util::Time.GetTimeMs();
+			netChk(SendPending(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+			break;
+		case NetCtrlCode_Connect:
+		{
+			if( pNetCtrl->Length < sizeof(MsgNetCtrlConnect) )
+			{
+				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+				netChk( Disconnect() );
+				netErr( E_UNEXPECTED );
+			}
+			const MsgNetCtrlConnect *pNetCtrlCon = (const MsgNetCtrlConnect*)pNetCtrl;
+			UINT ProtocolVersion = pNetCtrl->rtnMsgID.ID;
+			NetClass RemoteClass = (NetClass)pNetCtrl->msgID.IDSeq.Sequence;
+			switch (GetConnectionState())
+			{
+			case  IConnection::STATE_CONNECTING:
+				if( pNetCtrl->rtnMsgID.ID != BR::PROTOCOL_VERSION )
+				{
+					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+					OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
+					netChk( Disconnect() );
+					break;
+				}
+				else if( GetConnectionInfo().RemoteClass != NetClass::Unknown && RemoteClass != GetConnectionInfo().RemoteClass )
+				{
+					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+					OnConnectionResult( E_NET_INVALID_NETCLASS );
+					netChk( Disconnect() );
+					break;
+				}
+
+				netTrace( TRC_NETCTRL, "UDP Recv Connecting CID(%0%) : C:%1%, Ver:%2%)", GetCID(), RemoteClass, ProtocolVersion );
+				m_ConnectInfo.SetRemoteInfo( RemoteClass, pNetCtrlCon->PeerUID );
+
+			case IConnection::STATE_CONNECTED:
+				// Send connect if remote didn't get protocol version yet
+				//netChk( SendPending( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR::PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
+
+				m_ulNetCtrlTime = Util::Time.GetTimeMs();
+				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+				break;
+			};
+
+			break;
+		}
+		case NetCtrlCode_ConnectPeer:
+		{
+			break;
+		}
+		case NetCtrlCode_Disconnect:
+			SendFlush();
+			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+			SendFlush();
+			netTrace( TRC_CONNECTION, "Disconnect from remote CID:%0%", GetCID() );
+			netChk( CloseConnection() );
+			break;
+		default:
+			//netAssert( 0 );
+			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+			netChk( CloseConnection() );
+			netErr( E_UNEXPECTED );
+			break;
+		};
+
+
+	Proc_End:
+
+		return hr;
+	}
+
+
+	// Process NetCtrl queue
+	HRESULT ConnectionUDP::ProcNetCtrlQueue()
+	{
+		HRESULT hr = S_OK;
+
+		// Process received net ctrl messages
+		MsgNetCtrlBuffer netCtrl;
+		auto loopCount = m_RecvNetCtrlQueue.GetEnqueCount();
+		for (unsigned iCount = 0; iCount < loopCount; iCount++)
+		{
+			if (FAILED(m_RecvNetCtrlQueue.Dequeue(netCtrl)))
+				break;
+
+			if( netCtrl.msgID.ID != 0 )
+			{
+				netChk( ProcNetCtrl( &netCtrl ) );
+
+				if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
+					goto Proc_End;
+			}
+		}
+
+	Proc_End:
+
+		return hr;
+	}
+
+	// Process Recv queue
+	HRESULT ConnectionUDP::ProcRecvReliableQueue()
+	{
+		HRESULT hr = S_OK;
+		Message::MessageData *pIMsg = nullptr;
+		Message::MessageID msgIDTem;
+		Message::MessageHeader *pMsgHeader = nullptr;
+		MsgWindow::MessageElement *pMessageElement = nullptr;
+
+
+		if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
+			goto Proc_End;
+
+
+		// Recv guaranted queue process
+		auto loopCount = m_RecvGuaQueue.GetEnqueCount();
+		for (unsigned iCount = 0; iCount < loopCount; iCount++)
+		{
+			if (FAILED(m_RecvGuaQueue.Dequeue(pIMsg)))
+				break;
+
+			if( pIMsg == nullptr )
+				break;
+
+			pMsgHeader = pIMsg->GetMessageHeader();
+
+			Assert( MemoryPool::CheckMemoryHeader( pIMsg ) );
+			Assert(pMsgHeader->Crc32 != 0);
+
+			if( !pMsgHeader->msgID.IDs.Reliability )
+			{
+				Assert(0);// this wil not be happened
+				continue;
+			}
+
+			Assert( !pMsgHeader->msgID.IDs.Encrypted );
+
+			HRESULT hrTem = m_RecvReliableWindow.AddMsg( pIMsg );
+
+			netTrace( TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:%0%:%1%, msg:%2%, seq:%3%, len:%4%, hr=%5%", 
+							GetCID(), m_RecvReliableWindow.GetBaseSequence(), 
+							pIMsg->GetMessageHeader()->msgID, 
+							pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
+							pIMsg->GetMessageHeader()->Length,
+							ArgHex32(hrTem) );
+
+			if( hrTem == S_NET_PROCESSED_SEQUENCE )
+			{
+				SendPending(PACKET_NETCTRL_ACK, pMsgHeader->msgID.IDSeq.Sequence, pMsgHeader->msgID);
+				Util::SafeRelease( pIMsg );
+				continue;
+			}
+			else if (hrTem == E_NET_INVALID_SEQUENCE || hrTem == E_NET_SEQUENCE_OVERFLOW)
+			{
+				Util::SafeRelease( pIMsg );
+				continue;
+			}
+			else
+			{
+				// Added to msg window just send ACK
+				pIMsg = NULL;
+				SendPending(PACKET_NETCTRL_ACK, pMsgHeader->msgID.IDSeq.Sequence, pMsgHeader->msgID);
+			}
+
+			netChk(ProcGuarrentedMessageWindow([&](Message::MessageData* pMsg){ Connection::OnRecv(pIMsg); }));
+		}
+
+
+Proc_End:
+
+		if( pIMsg ) pIMsg->Release();
+		if( pMessageElement && pMessageElement->pMsg ) pMessageElement->pMsg->Release();
+
+
+		return hr;
+	}
+
+
+	// Process Send queue
+	HRESULT ConnectionUDP::ProcSendReliableQueue()
+	{
+		HRESULT hr = S_OK;
+		Message::MessageData *pIMsg = NULL;
+		Message::MessageHeader *pMsgHeader = NULL;
+		ULONG ulTimeCur = Util::Time.GetTimeMs();
+
+		// Send guaranted message process
+		CounterType NumProc = m_SendReliableWindow.GetAvailableSize();
+		CounterType uiNumPacket = m_SendGuaQueue.GetEnqueCount();
+		NumProc = Util::Min( NumProc, uiNumPacket );
+		for( CounterType uiPacket = 0; uiPacket < NumProc; uiPacket++ )
+		{
+			if( FAILED(m_SendGuaQueue.Dequeue( pIMsg )) )
+				break;
+
+			pMsgHeader = pIMsg->GetMessageHeader();
+			if( pMsgHeader->msgID.IDs.Reliability )
+			{
+				if( SUCCEEDED( m_SendReliableWindow.EnqueueMessage( ulTimeCur, pIMsg ) ) )
+				{
+					pIMsg->AddRef();// Inc Ref for send
+					Assert( pIMsg->GetDataLength() == 0 || pIMsg->GetMessageHeader()->Crc32 != 0 );
+					SendPending( pIMsg );
+					Assert( pIMsg->GetDataLength() == 0 || pIMsg->GetMessageHeader()->Crc32 != 0 );
+					netTrace( TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:%0%, seq:%1%, msg:%2%, len:%3%", 
+									GetCID(), 
+									pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
+									pIMsg->GetMessageHeader()->msgID, 
+									pIMsg->GetMessageHeader()->Length );
+				}
+				pIMsg = nullptr;
+			}
+		}
+
+
+	Proc_End:
+
+		if( pIMsg ) pIMsg->Release();
+
+		return hr;
+	}
+		
+	// Process message window queue
+	HRESULT ConnectionUDP::ProcReliableSendRetry()
+	{
+		HRESULT hr = S_OK;
+		MsgWindow::MessageElement *pMessageElement = nullptr;
+		ULONG ulTimeCur = Util::Time.GetTimeMs();
+
+		// Guaranted retry
+		UINT uiMaxProcess = Util::Min( m_SendReliableWindow.GetMsgCount(), m_uiMaxGuarantedRetry );
+		for( UINT uiIdx = 0, uiMsgProcessed = 0; uiIdx < (UINT)m_SendReliableWindow.GetWindowSize() && uiMsgProcessed < uiMaxProcess; uiIdx++ )
+		{
+			if( SUCCEEDED(m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
+				&& pMessageElement && pMessageElement->pMsg != NULL )
+			{
+				if( (INT)(ulTimeCur-pMessageElement->ulTimeStamp) > Const::SEND_RETRY_TIME )
+				{
+					netTrace( TRC_GUARREANTEDCTRL, "SENDGuaRetry : CID:%0%, seq:%1%, msg:%2%, len:%3%", 
+									GetCID(),
+									pMessageElement->pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
+									pMessageElement->pMsg->GetMessageHeader()->msgID, 
+									pMessageElement->pMsg->GetMessageHeader()->Length );
+					pMessageElement->ulTimeStamp = ulTimeCur;
+					pMessageElement->pMsg->AddRef();
+					SendPending( pMessageElement->pMsg );
+				}
+			}
+			pMessageElement = NULL;
+		}
+
+
+	Proc_End:
+
+		if( pMessageElement && pMessageElement->pMsg ) pMessageElement->pMsg->Release();
+
+		return hr;
+	}
+
+	
+	// Process connection state
+	HRESULT ConnectionUDP::ProcConnectionState()
+	{
+		HRESULT hr = S_OK;
+		Message::MessageID msgIDTem;
+
+		ULONG ulTimeCur = Util::Time.GetTimeMs();
+
+
+		// Update connection status
+		msgIDTem.ID = PACKET_NETCTRL_NONE;
+		switch (GetConnectionState())
+		{
+		case IConnection::STATE_CONNECTING:
+			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > (INT)GetConnectingTimeOut() ) // connection time out
+			{
+				netTrace( TRC_CONNECTION, "UDP Connecting Timeout CID:%0%, (%1%,%2%,%3%)", GetCID(), ulTimeCur, m_ulNetCtrlTime, GetConnectingTimeOut() );
+				netChk( CloseConnection() );
+			}
+			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > Const::CONNECTION_RETRY_TIME ) // retry
+			{
+				m_ulNetCtrlTryTime = ulTimeCur;
+				netTrace( TRC_NETCTRL, "UDP Send Connecting CID(%0%) : C:%1%, V:%2%)", GetCID(), GetConnectionInfo().LocalClass, (UINT32)BR::PROTOCOL_VERSION );
+				netChk( SendPending( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR::PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
+			}
+
+			break;
+		case IConnection::STATE_CONNECTED:
+			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::HEARTBIT_TIMEOUT ) // connection time out
+			{
+				netTrace( TRC_CONNECTION, "UDP Connection Timeout CID:%0%, (%1%,%2%)", GetCID(), ulTimeCur, m_ulNetCtrlTime );
+				netChk( CloseConnection() );
+				goto Proc_End;
+			}
+			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > GetHeartbitTry() ) // heartbit time
+			{
+				m_ulNetCtrlTryTime = ulTimeCur;
+				netChk( SendPending( PACKET_NETCTRL_HEARTBIT, 0, msgIDTem ) );
+			}
+			break;
+		case IConnection::STATE_DISCONNECTING:
+			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::DISCONNECT_TIMEOUT ) // connection time out
+			{
+				netTrace( TRC_CONNECTION, "UDP Disconnecting Timeout CID:%0%, (%1%,%2%)", GetCID(), ulTimeCur, m_ulNetCtrlTime );
+				netChk( CloseConnection() );
+			}
+			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > Const::DISCONNECT_RETRY_TIME ) // retry
+			{
+				m_ulNetCtrlTryTime = ulTimeCur;
+				netChk( SendPending( PACKET_NETCTRL_DISCONNECT, 0, msgIDTem ) );
+			}
+
+			break;
+		default:
+			break;
+		};
+
+	Proc_End:
+
+		return hr;
+	}
+
+
+	// Update net control, process connection heartbit, ... etc
+	HRESULT ConnectionUDP::UpdateNetCtrl()
+	{
+		HRESULT hr = S_OK;
+		Message::MessageID msgIDTem;
+
+		ULONG ulTimeCur = Util::Time.GetTimeMs();
+
+
+		if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
+			goto Proc_End;
+
+		hr = ProcNetCtrlQueue();
+		if( FAILED(hr) )
+		{
+			netTrace( TRC_CONNECTION, "Process NetCtrlQueue failed %0%", ArgHex32(hr) );
+		}
+
+		hr = ProcConnectionState();
+		if( FAILED(hr) )
+		{
+			netTrace( TRC_CONNECTION, "Process Connection state failed %0%", ArgHex32(hr) );
+		}
+
+
+		hr = ProcRecvReliableQueue();
+		if( FAILED(hr) )
+		{
+			netTrace( TRC_CONNECTION, "Process Recv Guaranted queue failed %0%", ArgHex32(hr) );
+		}
+
+		hr = ProcSendReliableQueue();
+		if( FAILED(hr) )
+		{
+			netTrace( TRC_CONNECTION, "Process Send Guaranted queue failed %0%", ArgHex32(hr) );
+		}
+
+		hr = ProcReliableSendRetry();
+		if( FAILED(hr) )
+		{
+			netTrace( TRC_CONNECTION, "Process message window failed %0%", ArgHex32(hr) );
+		}
+
+
+	Proc_End:
+
+		//SendFlush();
+
+		return hr;
+	}
+
+
+
+	
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Server UDP Network connection class
+	//
+
+	// Constructor
+	ConnectionUDPServerPeer::ConnectionUDPServerPeer()
+		: ConnectionUDP()
+	{
+		// limit server net retry maximum
+		SetHeartbitTry( Const::SVR_HEARTBIT_TIME_PEER );
+		SetMaxGuarantedRetry( Const::UDP_CLI_RETRY_ONETIME_MAX );
+	}
+
+	ConnectionUDPServerPeer::~ConnectionUDPServerPeer()
+	{
+		m_RecvReliableWindow.ClearWindow();
+		m_SendReliableWindow.ClearWindow();
+	}
+
+
+	// Initialize packet synchronization
+	HRESULT ConnectionUDPServerPeer::InitSynchronization()
+	{
+		HRESULT hr = S_OK;
+
+		netChk( __super::InitSynchronization() );
+
+		m_RecvReliableWindow.ClearWindow();
+		m_SendReliableWindow.ClearWindow();
+
+	Proc_End:
+
+
+		return hr;
+	}
+	
+	// Process network control message
+	HRESULT ConnectionUDPServerPeer::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
+	{
+		HRESULT hr = S_OK;
+		HRESULT hrTem = S_OK;
+
+
+		svrChk( __super::ProcNetCtrl( pNetCtrl ) );
+
+
+		switch( pNetCtrl->msgID.IDs.MsgCode )
+		{
+		case NetCtrlCode_Connect:
+			switch (GetConnectionState())
+			{
+			case IConnection::STATE_CONNECTED:
+				// This case could be a reconnected case while  this connection didn't realized the disconnect
+				//InitSynchronization();
+				break;
+			};
+		default:
+			break;
+		};
+
+
+	Proc_End:
+
+		return hr;
+	}
+
+
+	// Update net control, process connection heartbit, ... etc
+	HRESULT ConnectionUDPServerPeer::UpdateNetCtrl()
+	{
+		HRESULT hr = S_OK;
+
+		netChk( __super::UpdateNetCtrl() );
+
+
+	Proc_End:
+
+		SendFlush();
+
+		return hr;
+	}
+
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Server UDP Network connection class
+	//
+
+	// Constructor
+	ConnectionUDPServer::ConnectionUDPServer()
+		: ConnectionUDP()
+	{
+		// limit server net retry maximum
+		SetHeartbitTry( Const::SVR_HEARTBIT_TIME_UDP );
+		SetMaxGuarantedRetry( Const::UDP_CLI_RETRY_ONETIME_MAX );
+	}
+
+	ConnectionUDPServer::~ConnectionUDPServer()
+	{
+		ClearQueues();
+	}
+
+
+	// Clear Queue
+	HRESULT ConnectionUDPServer::ClearQueues()
+	{
+		return __super::ClearQueues();
+	}
+
+
+	// Update net control, process connection heartbit, ... etc
+	HRESULT ConnectionUDPServer::UpdateNetCtrl()
+	{
+		HRESULT hr = S_OK;
+
+		netChk( __super::UpdateNetCtrl() );
+
+
+	Proc_End:
+
+		SendFlush();
+
+		return hr;
+	}
+
+	
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	client UDP Network connection class
+	//
+
+	// Constructor
+	ConnectionUDPClient::ConnectionUDPClient( )
+		:ConnectionUDP()
+	{
+		// limit client net retry maximum
+		SetMaxGuarantedRetry( Const::UDP_CLI_RETRY_ONETIME_MAX );
+
+		SetLocalClass( NetClass::Client );
+	}
+
+	ConnectionUDPClient::~ConnectionUDPClient()
+	{
+		ClearQueues();
+	}
+
+	// Clear Queue
+	HRESULT ConnectionUDPClient::ClearQueues()
+	{
+
+		return __super::ClearQueues();
+	}
+
+
+	// called when New connection TCP accepted
+	HRESULT ConnectionUDPClient::OnIOAccept( HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo )
+	{
+		return E_NOTIMPL;
+	}
+
+	// called when reciving TCP message
+	HRESULT ConnectionUDPClient::OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred )
+	{
+		HRESULT hr = S_OK;
+		Connection *pConnection = NULL;
+		Message::MessageData *pIMsg = NULL;
+
+		struct sockaddr_in6 &addr = pIOBuffer->From;
+		WSABUF *pBuf = &pIOBuffer->wsaBuff;
+
+
+		if( pIOBuffer->Operation != OVERLAPPED_BUFFER::OP_UDPREAD )
+		{
+			netErr(E_UNEXPECTED);
+		}
+
+		DecPendingRecvCount();
+
+		if( SUCCEEDED(hrRes) )
+		{
+
+			if( FAILED( hr = OnRecv( dwTransferred, (BYTE*)pIOBuffer->wsaBuff.buf ) ) )
+				netTrace( TRC_RECVRAW, "Read IO failed with CID %0%, hr=%1%", pConnection->GetCID(), ArgHex32(hr) );
+
+			PendingRecv();
+
+			SendFlush();
+		}
+		else
+		{
+			// TODO: need to mark close connection
+			Disconnect();
+		}
+
+
+	Proc_End:
+
+		return hr;
+	}
+	
+	// called when Send completed
+	HRESULT ConnectionUDPClient::OnIOSendCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred )
+	{
+		ReleaseGatheringBuffer(pIOBuffer->pSendBuff);
+		Util::SafeRelease( pIOBuffer->pMsgs );
+		WSASystem::FreeBuffer( pIOBuffer );
+		return S_OK;
+	}
+	
+	// Pending recv New one
+	HRESULT ConnectionUDPClient::PendingRecv()
+	{
+		HRESULT hr = S_OK;
+		int iErr = 0, iErr2 = 0;
+		OVERLAPPED_BUFFER_READ *pOver = NULL;
+
+
+		//netChkPtr( pConnection );
+
+		pOver = GetRecvBuffer();
+		pOver->SetupRecvUDP( GetCID() );
+
+
+		IncPendingRecvCount();
+
+		while( (iErr = WSARecvFrom( GetSocket(), &pOver->wsaBuff, 1, NULL, &pOver->dwFlags, (sockaddr*)&pOver->From, &pOver->iSockLen, pOver, NULL )) == SOCKET_ERROR )
+		{
+			iErr2 = WSAGetLastError();
+			switch( iErr2 )
+			{
+			case WSA_IO_PENDING:
+				goto Proc_End;// success
+				break;
+			case WSAENETUNREACH:
+			case WSAECONNABORTED:
+			case WSAECONNRESET:
+			case WSAENETRESET:
+				// some remove has problem with continue connection
+				netTrace( TRC_NETCTRL, "UDP Remote has connection error err=%0%, %1%", iErr2, pOver->From );
+			default:
+				// Unknown error
+				netTrace( Trace::TRC_ERROR, "UDP Read Pending failed err=%0%", iErr2 );
+				netErr( HRESULT_FROM_WIN32(iErr2) );
+				break;
+			};
+		}
+
+
+
+	Proc_End:
+
+		return hr;
+	}
+
+	
+	// Initialize connection
+	HRESULT ConnectionUDPClient::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
+	{
+		HRESULT hr = __super::InitConnection( socket, connectInfo );
+		SetLocalClass( NetClass::Client );
+		return hr;
+	}
+
+
+	// Reinitialize and set remote address
+	HRESULT ConnectionUDPClient::ReInitialize( const sockaddr_in6& socAddr )
+	{
+		SetConnectionState(STATE_CONNECTING);
+
+		UpdateConnectionTime();// m_tConnectionTime = Util::Time.GetTimeMs();
+
+		ChangeRemoteAddress( socAddr );
+
+		m_ulNetCtrlTryTime = Util::Time.GetTimeMs();
+		m_ulNetCtrlTime = Util::Time.GetTimeMs();
+
+		SetLocalClass( NetClass::Client );
+
+		return S_OK;
+	}
+
+
+	// Update net control, process connection heartbit, ... etc
+	HRESULT ConnectionUDPClient::UpdateNetCtrl()
+	{
+		HRESULT hr = S_OK;
+
+
+		netChk( __super::UpdateNetCtrl() );
+
+
+	Proc_End:
+
+
+		SendFlush();
+
+		return hr;
+	}
+
+
+} // namespace Net
+} // namespace BR
+
+

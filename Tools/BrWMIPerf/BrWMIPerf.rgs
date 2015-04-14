@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		'%APPID%' = s 'SRWMIPerf'
+		'SRWMIPerf.DLL'
+		{
+			val AppID = s '%APPID%'
+		}
+	}
+}

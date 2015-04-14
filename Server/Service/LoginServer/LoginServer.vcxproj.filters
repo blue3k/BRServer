@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{ce34ada2-25f0-4a2d-961d-4ec206665025}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{abcf099f-ebcb-4d12-a813-933c3e0b180c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerEntity">
+      <UniqueIdentifier>{57331574-ae39-4065-aa40-16458d2b1273}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginServerClass.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\LoginPlayerEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\LoginPlayerEntityTrans.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginSvrConst.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\LoginServerTrans.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\ServerEntityTrans.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\LoginServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\GameServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginServerClass.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\LoginPlayerEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\LoginPlayerEntityTrans.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\LoginServerTrans.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\LoginServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\GameServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LoginServer.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="LoginServer.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LoginServerClass.inl">
+      <Filter>Server</Filter>
+    </None>
+    <None Include="Entity\LoginPlayerEntity.inl">
+      <Filter>Entity</Filter>
+    </None>
+  </ItemGroup>
+</Project>

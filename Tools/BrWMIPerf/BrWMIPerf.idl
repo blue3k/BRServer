@@ -1,0 +1,30 @@
+// BrWMIPerf.idl : IDL source for BrWMIPerf
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (BrWMIPerf.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "Wbemprov.idl";
+
+[
+	uuid(ABA3771B-9625-4D94-9E96-595B5A5D58C0),
+	version(1.0),
+	helpstring("BrWMIPerf 1.0 Type Library")
+]
+library BrWMIPerfLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	[
+		uuid(4B663D71-0B5C-4E17-B677-2ED35D2430C2),
+		helpstring("BrPerf Class")
+	]
+	coclass SRPerf
+	{
+		//[default] interface IHiPerfProv;
+		interface IWbemProviderInit;
+		interface IWbemHiPerfProvider;
+	};
+};

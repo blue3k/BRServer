@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
+<StringTbl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="stringTable.xsd">
+	<StringItem StringItemID="1" String="누가 몬스터 일 것 같은지 자유롭게 토론해 주세요."/>
+	<StringItem StringItemID="2" String="밤이 되었습니다. 몬스터가 습격합니다."/>
+	<StringItem StringItemID="3" String="어젯밤 % 님이 몬스터의 습격을 받았습니다. 누가 몬스터로 의심이 되는지 토론해 주세요."/>
+	<StringItem StringItemID="4" String="몬스터로 의심이 되는 사람을 투표해 주세요."/>
+	<StringItem StringItemID="5" String="% 님과 % 님이 용의자로 지목되었습니다. 용의자는 변론을 해주세요."/>
+	<StringItem StringItemID="6" String="처형할 사람을 선택해 주세요."/>
+	<StringItem StringItemID="7" String="% 님이 처형되었습니다."/>
+	<StringItem StringItemID="8" String="몬스터가 승리하였습니다."/>
+	<StringItem StringItemID="9" String="시민이 승리하였습니다."/>
+	<StringItem StringItemID="10" String="주민"/>
+	<StringItem StringItemID="11" String="당신은 주민입니다. "/>
+	<StringItem StringItemID="12" String="당신은 토론을 통해 몬스터로 "/>
+	<StringItem StringItemID="13" String="의심이 가는 사람을 찾아내며, "/>
+	<StringItem StringItemID="14" String="모든 몬스터를 처형해야 "/>
+	<StringItem StringItemID="15" String="게임에서 승리합니다."/>
+	<StringItem StringItemID="16" String="예언자"/>
+	<StringItem StringItemID="17" String="당신은 예언자입니다.    "/>
+	<StringItem StringItemID="18" String="당신은 밤마다 한 플레이어를"/>
+	<StringItem StringItemID="19" String="골라 늑대인지 확인해 볼 수"/>
+	<StringItem StringItemID="20" String="있으며 주민을 도와 모든 몬스터를"/>
+	<StringItem StringItemID="21" String="처형하면 게임에서 승리합니다."/>
+	<StringItem StringItemID="22" String="몬스터"/>
+	<StringItem StringItemID="23" String="당신은 몬스터입니다.    "/>
+	<StringItem StringItemID="24" String="당신은 밤마다 동료와 함께"/>
+	<StringItem StringItemID="25" String="주민들을 습격하며, 주민들의"/>
+	<StringItem StringItemID="26" String="숫자와 같은 숫자가 남게되면"/>
+	<StringItem StringItemID="27" String="게임에서 승리합니다."/>
+	<StringItem StringItemID="28" String="첫째날 낮, 자유토론"/>
+	<StringItem StringItemID="29" String="첫째날 밤, 역할 플레이"/>
+	<StringItem StringItemID="30" String="첫째날 밤, 습격"/>
+	<StringItem StringItemID="31" String="둘째날 아침"/>
+	<StringItem StringItemID="32" String="둘째날 낮, 자유토론"/>
+	<StringItem StringItemID="33" String="둘째날 낮, 용의자 투표"/>
+	<StringItem StringItemID="34" String="둘째날 낮, 용의자 변론"/>
+	<StringItem StringItemID="35" String="둘째날 낮, 최종투표"/>
+	<StringItem StringItemID="36" String="둘째날 낮, 처형"/>
+	<StringItem StringItemID="37" String="둘째날 밤, 역할 플레이"/>
+	<StringItem StringItemID="38" String="둘째날 밤, 습격"/>
+	<StringItem StringItemID="39" String="셋째날 아침"/>
+	<StringItem StringItemID="40" String="셋째날 낮, 자유토론"/>
+	<StringItem StringItemID="41" String="셋째날 낮, 용의자 투표"/>
+	<StringItem StringItemID="42" String="셋째날 낮, 용의자 변론"/>
+	<StringItem StringItemID="43" String="셋째날 낮, 최종투표"/>
+	<StringItem StringItemID="44" String="셋째날 낮, 처형"/>
+	<StringItem StringItemID="45" String="셋째날 밤, 역할 플레이"/>
+	<StringItem StringItemID="46" String="셋째날 밤, 습격"/>
+	<StringItem StringItemID="47" String="넷째날 아침"/>
+	<StringItem StringItemID="48" String="넷째날 낮, 용의자 투표"/>
+	<StringItem StringItemID="49" String="넷째날 낮, 용의자 변론"/>
+	<StringItem StringItemID="50" String="넷째날 낮, 최종투표"/>
+	<StringItem StringItemID="51" String="넷째날 낮, 처형"/>
+	<StringItem StringItemID="52" String="게임결과"/>
+	<StringItem StringItemID="53" String="잡아먹을 주민을 선택하세요."/>
+	<StringItem StringItemID="54" String="몬스터를 찾아보세요."/>
+	<StringItem StringItemID="55" String="몬스터로 의심되는 주민을 선택하세요."/>
+	<StringItem StringItemID="56" String="처형할 주민을 선택하세요."/>
+	<StringItem StringItemID="57" String="투표를 완료했습니다."/>
+	<StringItem StringItemID="58" String="선택을 완료했습니다."/>
+	<StringItem StringItemID="59" String="예언을 완료했습니다."/>
+	<StringItem StringItemID="101" String="별명 변경"/>
+	<StringItem StringItemID="102" String="마법석을  사용하여 별명을 변경하시겠습니까?"/>
+	<StringItem StringItemID="103" String="별명 입력창"/>
+	<StringItem StringItemID="104" String="별명을 입력해 주세요."/>
+	<StringItem StringItemID="105" String="전적 초기화"/>
+	<StringItem StringItemID="106" String="마법석을 사용하여 전적을 초기화 하시겠습니까?"/>
+	<StringItem StringItemID="107" String="전적이 초기화 되었습니다."/>
+	<StringItem StringItemID="108" String="별명이 변경되었습니다."/>
+	<StringItem StringItemID="251" String="안녕하세요"/>
+	<StringItem StringItemID="252" String="잠시만요"/>
+	<StringItem StringItemID="253" String="빨리 시작"/>
+	<StringItem StringItemID="254" String="멋진 한판"/>
+	<StringItem StringItemID="255" String="한판 더"/>
+	<StringItem StringItemID="256" String="빠잉"/>
+	<StringItem StringItemID="302" String="게임이 시작되었습니다."/>
+	<StringItem StringItemID="303" String="누가 몬스터로 의심이 되는지 자유롭게 토론해 주세요."/>
+	<StringItem StringItemID="305" String="밤이 되었습니다. 몬스터가 습격합니다."/>
+	<StringItem StringItemID="307" String="지난 밤, %님이 몬스터에게 습격당했습니다."/>
+	<StringItem StringItemID="309" String="용의자 투표를 진행합니다."/>
+	<StringItem StringItemID="310" String="투표결과 {0}님과 {1}님이 용의자로 지목되었습니다."/>
+	<StringItem StringItemID="312" String="용의자 변론 시간 입니다. {0}님과 {1}님은 변론해주세요"/>
+	<StringItem StringItemID="314" String="최종투표를 진행합니다."/>
+	<StringItem StringItemID="316" String="투표결과 %님이 최종 지목되었습니다."/>
+	<StringItem StringItemID="317" String="처형을 시작합니다."/>
+	<StringItem StringItemID="319" String="{0}일차 낮 : 자유토론"/>
+	<StringItem StringItemID="320" String="{0}일차 낮 : 용의자 투표"/>
+	<StringItem StringItemID="321" String="{0}일차 낮 : 용의자 변론"/>
+	<StringItem StringItemID="322" String="{0}일차 낮 : 최종 투표"/>
+	<StringItem StringItemID="323" String="{0}일차 낮 : 처형"/>
+	<StringItem StringItemID="324" String="{0}일차 밤"/>
+	<StringItem StringItemID="336" String="게임 종료"/>
+	<StringItem StringItemID="337" String="게임이 종료되었습니다."/>
+	<StringItem StringItemID="338" String="게임 결과, 주민이 승리하였습니다."/>
+	<StringItem StringItemID="339" String="게임 결과, 몬스터가 승리하였습니다."/>
+	<StringItem StringItemID="346" String="게임종료"/>
+	<StringItem StringItemID="347" String="게임이 종료되었습니다."/>
+	<StringItem StringItemID="348" String="게임결과, 주민이 승리하였습니다."/>
+	<StringItem StringItemID="349" String="게임결과, 몬스터가 승리하였습니다."/>
+	<StringItem StringItemID="1300" String="%  님이 친구에서 삭제되었습니다."/>
+	<StringItem StringItemID="1301" String="% 님을 찾고 있습니다."/>
+	<StringItem StringItemID="1302" String="%  님에게 친구신청을 하시겠습니까?"/>
+	<StringItem StringItemID="1303" String="찾으신 친구가 없습니다."/>
+	<StringItem StringItemID="1304" String="친구신청 메시지가 도착했습니다."/>
+	<StringItem StringItemID="1305" String="% 님이 FindMon 에서 요청을 보냈습니다."/>
+	<StringItem StringItemID="1306" String="FindMon : % 님이 회원님에게 요청을 보냈습니다."/>
+	<StringItem StringItemID="1307" String="% 님과 친구가 되었습니다."/>
+	<StringItem StringItemID="1308" String="친구슬롯이 이미 모두 채워져 있습니다."/>
+	<StringItem StringItemID="1309" String="% 님이 하트를 충전해주었습니다."/>
+	<StringItem StringItemID="1310" String="하트가 이미 모두 충전되어 있습니다."/>
+	<StringItem StringItemID="1311" String="메시지가 삭제되었습니다."/>
+	<StringItem StringItemID="1312" String="마법석을 구입하시겠습니까?"/>
+	<StringItem StringItemID="1313" String="마법석이 구입되었습니다."/>
+	<StringItem StringItemID="1314" String="하트를 충전하시겠습니까?"/>
+	<StringItem StringItemID="1315" String="하트가 충전되었습니다."/>
+	<StringItem StringItemID="1316" String="하트가 이미 모두 충전되어 있습니다."/>
+	<StringItem StringItemID="1317" String="마법석이 부족합니다. 마법석을 구입하시겠습니까?"/>
+	<StringItem StringItemID="1318" String="골드가 부족합니다."/>
+	<StringItem StringItemID="1319" String="친구슬롯을 확장하시겠습니까?"/>
+	<StringItem StringItemID="1320" String="친구슬롯이 확장되었습니다."/>
+	<StringItem StringItemID="1321" String="친구슬롯이 이미 모두 확장되었습니다."/>
+	<StringItem StringItemID="1322" String="%님의 친구슬롯이 이미 모두 채워져 있습니다."/>
+	<StringItem StringItemID="1323" String="친구찾기"/>
+	<StringItem StringItemID="1324" String="친구의 이메일을 입력해주세요."/>
+	<StringItem StringItemID="1325" String="님에게\n하트를 보내시겠습니까?"/>
+	<StringItem StringItemID="1326" String="{0}승 {1}패"/>
+	<StringItem StringItemID="1327" String="1분전"/>
+	<StringItem StringItemID="1328" String="분전"/>
+	<StringItem StringItemID="1329" String="시간전"/>
+	<StringItem StringItemID="1330" String="일전"/>
+	<StringItem StringItemID="1331" String="돈"/>
+	<StringItem StringItemID="1332" String="마법석이 부족합니다."/>
+	<StringItem StringItemID="1333" String="현재 {0}명"/>
+	<StringItem StringItemID="1334" String="주간 {0}승"/>
+	<StringItem StringItemID="2000" String="안녕하세요! 파인드몬에 오신것을 환영합니다. 나가시면 앙대여~"/>
+	<StringItem StringItemID="3000" String="방만들기"/>
+	<StringItem StringItemID="3001" String="방을 만드시겠습니까?"/>
+	<StringItem StringItemID="3002" String="접속 %"/>
+	<StringItem StringItemID="3003" String="친구 초대"/>
+	<StringItem StringItemID="3004" String="게임 초대"/>
+	<StringItem StringItemID="3005" String="%님을 초대하시겠습니까?"/>
+	<StringItem StringItemID="3006" String="%님이 게임에 초대하셨습니다."/>
+	<StringItem StringItemID="3007" String="%님을 쫒아내시겠습니까?"/>
+	<StringItem StringItemID="3008" String="로그아웃"/>
+	<StringItem StringItemID="3009" String="페이스북 계정을 로그아웃 하시겠습니까?"/>
+	<StringItem StringItemID="3010" String="서버와 연결이 실패하였습니다. 다시 시도하시겠습니까?"/>
+</StringTbl>
