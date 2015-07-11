@@ -45,6 +45,9 @@
     <Filter Include="PerformanceCounter">
       <UniqueIdentifier>{6d66049a-324d-4f6e-b16b-aa031477b900}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Google">
+      <UniqueIdentifier>{004ecab7-6e4e-437b-96a2-5f6be819049f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="EntityTable.inl">
@@ -64,9 +67,6 @@
     </None>
     <None Include="SvrConfig.inl">
       <Filter>ConfigLoad</Filter>
-    </None>
-    <None Include="ExternalTask.inl">
-      <Filter>ExternalTask</Filter>
     </None>
     <None Include="ServerComponent.inl">
       <Filter>Component</Filter>
@@ -113,6 +113,9 @@
     <None Include="PerformanceCounter\PerformanceCounterInstance.inl">
       <Filter>PerformanceCounter</Filter>
     </None>
+    <None Include="ExternalTransactionManager.inl">
+      <Filter>ExternalTask</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -135,9 +138,6 @@
     </ClInclude>
     <ClInclude Include="SvrConfig.h">
       <Filter>ConfigLoad</Filter>
-    </ClInclude>
-    <ClInclude Include="ExternalTask.h">
-      <Filter>ExternalTask</Filter>
     </ClInclude>
     <ClInclude Include="ServerComponent.h">
       <Filter>Component</Filter>
@@ -337,6 +337,24 @@
     <ClInclude Include="ServiceEntity\MonitoringServiceTrans.h">
       <Filter>ServiceEntity</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceEntity\MatchingServiceUtil.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="Google\GoogleOAuth.h">
+      <Filter>Google</Filter>
+    </ClInclude>
+    <ClInclude Include="Google\GoogleAndroidDeveloperAPI.h">
+      <Filter>Google</Filter>
+    </ClInclude>
+    <ClInclude Include="ParallelTransaction.h">
+      <Filter>ExternalTask</Filter>
+    </ClInclude>
+    <ClInclude Include="ExternalTransaction.h">
+      <Filter>ExternalTask</Filter>
+    </ClInclude>
+    <ClInclude Include="ExternalTransactionManager.h">
+      <Filter>ExternalTask</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -362,9 +380,6 @@
     </ClCompile>
     <ClCompile Include="SvrConfig.cpp">
       <Filter>ConfigLoad</Filter>
-    </ClCompile>
-    <ClCompile Include="ExternalTask.cpp">
-      <Filter>ExternalTask</Filter>
     </ClCompile>
     <ClCompile Include="ServerEntity\EntityServerEntity.cpp">
       <Filter>ServerEntity</Filter>
@@ -545,6 +560,24 @@
     </ClCompile>
     <ClCompile Include="ServiceEntity\MonitoringServiceEntity.cpp">
       <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\MatchingServiceUtil.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="Google\GoogleOAuth.cpp">
+      <Filter>Google</Filter>
+    </ClCompile>
+    <ClCompile Include="Google\GoogleAndroidDeveloperAPI.cpp">
+      <Filter>Google</Filter>
+    </ClCompile>
+    <ClCompile Include="ParallelTransaction.cpp">
+      <Filter>ExternalTask</Filter>
+    </ClCompile>
+    <ClCompile Include="ExternalTransaction.cpp">
+      <Filter>ExternalTask</Filter>
+    </ClCompile>
+    <ClCompile Include="ExternalTransactionManager.cpp">
+      <Filter>ExternalTask</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

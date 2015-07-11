@@ -46,13 +46,13 @@ namespace BR
 
 		}; // HRESULT NetPolicyGameInstance::DeleteGameC2SEvt( const RouteContext &InRouteContext )
 		// Cmd: Join Game
-		HRESULT NetPolicyGameInstance::JoinGameCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket )
+		HRESULT NetPolicyGameInstance::JoinGameCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameInstance::JoinGameCmd::BuildIMsg(pMsg, InContext, InRouteContext, InPlayer, InTicket));
+			 protocolChk(Message::GameInstance::JoinGameCmd::BuildIMsg(pMsg, InContext, InRouteContext, InPlayer, InTicket, InRequestedRole));
 
 			 protocolChkPtr(GetConnection());
 
@@ -62,7 +62,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::JoinGameCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket )
+		}; // HRESULT NetPolicyGameInstance::JoinGameCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 		// C2S: Change configue preset
 		HRESULT NetPolicyGameInstance::SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const UINT32 &InPresetID )
 		{
@@ -226,7 +226,7 @@ namespace BR
 
 		}; // HRESULT NetPolicyGameInstance::GamePlayAgainCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
 		// Cmd: Player. revive himself
-		HRESULT NetPolicyGameInstance::GameRevealPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerID &InTargetPlayerID )
+		HRESULT NetPolicyGameInstance::GameRevealPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		{
  			HRESULT hr = S_OK;
 
@@ -242,7 +242,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::GameRevealPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerID &InTargetPlayerID )
+		}; // HRESULT NetPolicyGameInstance::GameRevealPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		// Cmd: Player. revive himself
 		HRESULT NetPolicyGameInstance::GamePlayerReviveCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
 		{
@@ -624,7 +624,7 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyGameInstance::GamePlayAgainS2CEvt( const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
 		// Cmd: Player. revive himself
-		HRESULT NetSvrPolicyGameInstance::GameRevealPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole )
+		HRESULT NetSvrPolicyGameInstance::GameRevealPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
 		{
  			HRESULT hr = S_OK;
 
@@ -640,7 +640,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::GameRevealPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole )
+		}; // HRESULT NetSvrPolicyGameInstance::GameRevealPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
 		// Cmd: Player. revive himself
 		HRESULT NetSvrPolicyGameInstance::GamePlayerReviveRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{

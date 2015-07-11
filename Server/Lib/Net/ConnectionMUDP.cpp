@@ -18,8 +18,9 @@
 #include "Net/ConnectionMUDP.h"
 #include "Net/NetDef.h"
 #include "Net/NetServer.h"
-#include "Net/NetMessage.h"
+#include "Net/NetCtrl.h"
 #include "Net/NetConst.h"
+#include "Net/NetCtrl.h"
 
 #include "Protocol/ProtocolVer.h"
 
@@ -147,7 +148,7 @@ namespace Net {
 
 			ResetZeroRecvCount();
 
-			if( pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL ) // if net control message then process immidiately
+			if (pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL && pMsgHeader->msgID.IDs.Reliability == false) // if net control message then process immidiately
 			{
 				//MsgNetCtrlBuffer netCtrl;
 				//memcpy( &netCtrl, pMsgHeader, Util::Min( (size_t)pMsgHeader->Length, sizeof(netCtrl) ) );
@@ -664,6 +665,15 @@ Proc_End:
 			if( SUCCEEDED(m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
 				&& pMessageElement && pMessageElement->pMsg != nullptr )
 			{
+				UINT totalGatheredSize = GetGatheredBufferSize() + pMessageElement->pMsg->GetMessageSize();
+				if (GetGatheredBufferSize() > 0 && totalGatheredSize > Const::PACKET_GATHER_SIZE_MAX)
+				{
+					// too big to send
+					// stop gathering here, and send
+					pMessageElement = nullptr;
+					break;
+				}
+
 				netTrace( TRC_GUARREANTEDCTRL, "SENDReliableRetry : CID:%0%, seq:%1%, msg:%2%, len:%3%", 
 								GetCID(),
 								pMessageElement->pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,

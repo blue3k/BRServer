@@ -20,7 +20,7 @@
 #include "Net/NetConst.h"
 #include "Net/LoopbackConnection.h"
 #include "Net/NetTrace.h"
-#include "Net/NetMessage.h"
+#include "Net/NetCtrl.h"
 
 #include "Protocol/ProtocolVer.h"
 

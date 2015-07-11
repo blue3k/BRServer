@@ -13,7 +13,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-
+#include "Common/ArrayUtil.h"
 
 namespace BR {
 namespace Util {
@@ -45,6 +45,17 @@ namespace Util {
 
 	// Make crc32 checksum and decrypt
 	UINT32 Crc32NDecrypt( size_t uiBuffSize, BYTE* pBuff );
+
+
+	// Base 64 encode/decode
+	HRESULT Base64Encode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
+	HRESULT Base64Decode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
+
+	HRESULT Base64URLEncode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
+	HRESULT Base64URLDecode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
+
+	// SHA 256 hashing
+	HRESULT SHA256Hash(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer);
 
 
 	// Make power of 2 value from given number, will bigger then input

@@ -189,14 +189,14 @@ namespace Svr
 
 			pNewTran->SetTransID( transID );
 
-			if( pNewTran->IsPrintTrace() )
-			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans NewActive TID:%0%, ParentTID:%1% %2%, Entity:%3%:%4%", 
-					pNewTran->GetTransID(), 
-					pNewTran->GetParentTransID(), 
-					typeid(*(Transaction*)pNewTran).name(), GetEntityUID(), 
-					typeid(*this).name());
-			}
+			//if( pNewTran->IsPrintTrace() )
+			//{
+			//	svrTrace(Svr::TRC_TRANSACTION, "Trans NewActive TID:%0%, ParentTID:%1% %2%, Entity:%3%:%4%", 
+			//		pNewTran->GetTransID(), 
+			//		pNewTran->GetParentTransID(), 
+			//		typeid(*(Transaction*)pNewTran).name(), GetEntityUID(), 
+			//		typeid(*this).name());
+			//}
 
 
 			Transaction* curTrans = (Transaction*)pNewTran;

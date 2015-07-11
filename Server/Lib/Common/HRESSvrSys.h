@@ -380,11 +380,65 @@
 #define S_SVR_QUEUEITEM_CANCEL_PENDED    0x07040022L
 
 //
-// MessageId: S_SVR_INVALID_THREAD
+// MessageId: E_SVR_INVALID_THREAD
 //
 // MessageText:
 //
 // Thread is wrong, running on wrong thread?
 //
-#define S_SVR_INVALID_THREAD             0x07040023L
+#define E_SVR_INVALID_THREAD             0xC7040023L
+
+//
+// MessageId: E_SVR_PURCHASE_CANCELED
+//
+// MessageText:
+//
+// Purchase canceled
+//
+#define E_SVR_PURCHASE_CANCELED          0xC7040024L
+
+//
+// MessageId: E_SVR_INVALID_PURCHASE_INFO
+//
+// MessageText:
+//
+// Invalid receipt info
+//
+#define E_SVR_INVALID_PURCHASE_INFO      0xC7040025L
+
+//
+// MessageId: E_SVR_INVALID_PURCHASE_DUPLICATED
+//
+// MessageText:
+//
+// Invalid duplicated purchase
+//
+#define E_SVR_INVALID_PURCHASE_DUPLICATED 0xC7040026L
+
+//
+// MessageId: E_SVR_INVALID_EXTERNAL_AUTH
+//
+// MessageText:
+//
+// External auth fail
+//
+#define E_SVR_INVALID_EXTERNAL_AUTH      0xC7040027L
+
+//
+// MessageId: E_SVR_EXTERNAL_SERVER_UNAVALIABLE
+//
+// MessageText:
+//
+// External server is not available
+//
+#define E_SVR_EXTERNAL_SERVER_UNAVALIABLE 0xC7040028L
+
+//
+// MessageId: E_SVR_INVALID_PURCHASE_FORMAT
+//
+// MessageText:
+//
+// Invalid receipt result from server
+//
+#define E_SVR_INVALID_PURCHASE_FORMAT    0xC7040029L
 

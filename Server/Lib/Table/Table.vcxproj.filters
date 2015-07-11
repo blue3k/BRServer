@@ -39,6 +39,9 @@
     <ClInclude Include="conspiracy\RewardTbl.h">
       <Filter>conspiracy</Filter>
     </ClInclude>
+    <ClInclude Include="conspiracy\OrganicTbl.h">
+      <Filter>conspiracy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -57,6 +60,9 @@
       <Filter>conspiracy</Filter>
     </ClCompile>
     <ClCompile Include="conspiracy\RewardTbl.cpp">
+      <Filter>conspiracy</Filter>
+    </ClCompile>
+    <ClCompile Include="conspiracy\OrganicTbl.cpp">
       <Filter>conspiracy</Filter>
     </ClCompile>
   </ItemGroup>

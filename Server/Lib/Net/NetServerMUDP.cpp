@@ -23,6 +23,7 @@
 #include "Net/NetServer.h"
 #include "Protocol/ProtocolVer.h"
 #include "Net/NetServerUDP.h"
+#include "Net/NetCtrl.h"
 
 
 
@@ -88,6 +89,71 @@ namespace Net {
 		return hr;
 	}
 
+	HRESULT ServerMUDP::OnNoConnectionPacket(const struct sockaddr_in6& from, const BYTE* pData)
+	{
+		HRESULT hr = S_OK;
+
+		if (pData == nullptr)
+			return E_INVALIDARG;
+
+		MsgMobileNetCtrl *pNetCtrl = (MsgMobileNetCtrl*)pData;
+		if (pNetCtrl->Length != sizeof(MsgMobileNetCtrl) 
+			&& pNetCtrl->Length != sizeof(MsgMobileNetCtrlSync) 
+			&& pNetCtrl->Length != sizeof(Message::MobileMessageHeader))
+		{
+			// send disconnect
+			netTrace(Trace::TRC_WARN, "Invalid incomming packet size. ignoring from:%0% msgID:%1%, len:%2%", from, pNetCtrl->msgID, pNetCtrl->Length);
+			return E_NET_BADPACKET_SIZE;
+		}
+
+		if (!GetIsEnableAccept())
+		{
+			if (pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_CONNECT.GetMsgID()
+				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_SYNCRELIABLE.GetMsgID()
+				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_HEARTBIT.GetMsgID()
+				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_TIMESYNC.GetMsgID())
+			{
+				// send disconnect
+				//netTrace(Trace::TRC_WARN, "Invalid packet size. Try to disconnect from:%0% msg:%1%", from, pNetCtrl->msgID);
+				netChk(SendNetCtrl(from, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
+			}
+			else
+			{
+				netTrace(Trace::TRC_WARN, "Invalid packet size. Try to disconnect from:%0% msg:%1%", from, pNetCtrl->msgID);
+			}
+
+			return S_FALSE;
+		}
+
+
+		// Handle new connection
+		if (pNetCtrl->msgID.GetMsgID() != PACKET_NETCTRL_CONNECT.GetMsgID())
+		{
+			// send disconnect
+			netTrace(TRC_SENDRAW, "Invalid incomming packet. Try to disconnect %0%", from);
+			netChk(SendNetCtrl(from, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
+		}
+		else if (pNetCtrl->rtnMsgID.ID != BR::PROTOCOL_VERSION)
+		{
+			// send disconnect
+			netTrace(TRC_SENDRAW, "Invalid incomming packet version, received:%0%, expected:%1%. Try to disconnect %2%", pNetCtrl->rtnMsgID.ID, (UINT)BR::PROTOCOL_VERSION, from);
+			netChk(SendNetCtrl(from, PACKET_NETCTRL_NACK, 0, pNetCtrl->msgID, 0));
+			//netChk(SendNetCtrl(pIOBuffer->From, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
+		}
+		else if (pNetCtrl->msgID.ID == PACKET_NETCTRL_ACK)
+		{
+			// ignore this packet
+
+		}
+		else
+		{
+			netChk(m_ConnectionManager.PendingNewConnection(from, pNetCtrl));
+		}
+
+	Proc_End:
+
+		return hr;
+	}
 
 	// called when reciving message
 	HRESULT ServerMUDP::OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred )
@@ -96,7 +162,6 @@ namespace Net {
 		SharedPointerT<Connection> pConnection;
 		IConnection::ConnectionInformation connectionInfo;
 		Message::MessageData *pIMsg = nullptr;
-		//bool bReleaseOnFail = false;
 
 
 		if( FAILED( hrRes ) )
@@ -141,33 +206,8 @@ namespace Net {
 
 			if (pConnection == nullptr)
 			{
-				if (GetIsEnableAccept())
-				{
-					MsgMobileNetCtrl *pNetCtrl = (MsgMobileNetCtrl*)pIOBuffer->wsaBuff.buf;
-					if (pHeader->Length == sizeof(MsgMobileNetCtrl)
-						&& pHeader->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID
-						&& pNetCtrl->rtnMsgID.ID == BR::PROTOCOL_VERSION)
-					{
-						netChk(m_ConnectionManager.PendingNewConnection(pIOBuffer->From, pNetCtrl));
-					}
-					else if (pNetCtrl->msgID.ID == PACKET_NETCTRL_ACK)
-					{
-						// ignore this packet
-					}
-					else
-					{
-						// send disconnect
-						netTrace(TRC_SENDRAW, "Invalid incomming address. Try to disconnect %0%", pIOBuffer->From);
-						netChk(SendNetCtrl(pIOBuffer->From, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
-					}
-					goto Proc_End;
-				}
-				else
-				{
-					// Ignore this case
-					// TODO: We need to record of these case because it could be a hacking try.
-					goto Proc_End;
-				}
+				OnNoConnectionPacket(pIOBuffer->From, (const BYTE*)pIOBuffer->wsaBuff.buf);
+				goto Proc_End;
 			}
 
 			netAssert( pHeader->PeerID == 0 || pConnection->GetConnectionInfo().RemoteID == 0 || pConnection->GetConnectionInfo().RemoteID == pHeader->PeerID );

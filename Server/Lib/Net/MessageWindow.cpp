@@ -18,7 +18,7 @@
 #include "Net/ConnectionUDP.h"
 #include "Net/NetDef.h"
 #include "Net/NetServer.h"
-#include "Net/NetMessage.h"
+#include "Net/NetCtrl.h"
 #include "Net/NetConst.h"
 
 

@@ -161,7 +161,7 @@
     <None Include="Entity.inl" />
     <None Include="EntityTable.inl" />
     <None Include="EventTask.inl" />
-    <None Include="ExternalTask.inl" />
+    <None Include="ExternalTransactionManager.inl" />
     <None Include="GameLog\GameLog.inl" />
     <None Include="MasterEntity.inl" />
     <None Include="PerformanceCounter\PerformanceCounter.inl" />
@@ -188,11 +188,15 @@
     <ClInclude Include="EntityTable.h" />
     <ClInclude Include="EntityTimerActions.h" />
     <ClInclude Include="EventTask.h" />
-    <ClInclude Include="ExternalTask.h" />
+    <ClInclude Include="ExternalTransactionManager.h" />
+    <ClInclude Include="ExternalTransaction.h" />
     <ClInclude Include="GameLog\ChattingHistory.h" />
     <ClInclude Include="GameLog\GameLog.h" />
+    <ClInclude Include="Google\GoogleAndroidDeveloperAPI.h" />
+    <ClInclude Include="Google\GoogleOAuth.h" />
     <ClInclude Include="LoopbackConnection.h" />
     <ClInclude Include="MasterEntity.h" />
+    <ClInclude Include="ParallelTransaction.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounter.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounterClient.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounterInstance.h" />
@@ -237,6 +241,7 @@
     <ClInclude Include="ServiceEntity\MatchingQueueServiceTrans.h" />
     <ClInclude Include="ServiceEntity\MatchingServiceEntity.h" />
     <ClInclude Include="ServiceEntity\MatchingServiceTrans.h" />
+    <ClInclude Include="ServiceEntity\MatchingServiceUtil.h" />
     <ClInclude Include="ServiceEntity\MonitoringServiceEntity.h" />
     <ClInclude Include="ServiceEntity\MonitoringServiceTrans.h" />
     <ClInclude Include="ServiceEntity\RankingServiceEntity.h" />
@@ -262,10 +267,14 @@
     <ClCompile Include="EntityTable.cpp" />
     <ClCompile Include="EntityTimerActions.cpp" />
     <ClCompile Include="EventTask.cpp" />
-    <ClCompile Include="ExternalTask.cpp" />
+    <ClCompile Include="ExternalTransactionManager.cpp" />
+    <ClCompile Include="ExternalTransaction.cpp" />
     <ClCompile Include="GameLog\ChattingHistory.cpp" />
+    <ClCompile Include="Google\GoogleAndroidDeveloperAPI.cpp" />
+    <ClCompile Include="Google\GoogleOAuth.cpp" />
     <ClCompile Include="LoopbackConnection.cpp" />
     <ClCompile Include="MasterEntity.cpp" />
+    <ClCompile Include="ParallelTransaction.cpp" />
     <ClCompile Include="PerformanceCounter\PerformanceCounter.cpp" />
     <ClCompile Include="PerformanceCounter\PerformanceCounterClient.cpp" />
     <ClCompile Include="PerformanceCounter\PerformanceCounterInstance.cpp" />
@@ -307,6 +316,7 @@
     <ClCompile Include="ServiceEntity\MatchingQueueServiceTrans.cpp" />
     <ClCompile Include="ServiceEntity\MatchingServiceEntity.cpp" />
     <ClCompile Include="ServiceEntity\MatchingServiceTrans.cpp" />
+    <ClCompile Include="ServiceEntity\MatchingServiceUtil.cpp" />
     <ClCompile Include="ServiceEntity\MonitoringServiceEntity.cpp" />
     <ClCompile Include="ServiceEntity\MonitoringServiceTrans.cpp" />
     <ClCompile Include="ServiceEntity\RankingServiceEntity.cpp" />

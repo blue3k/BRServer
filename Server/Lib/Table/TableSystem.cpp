@@ -18,6 +18,7 @@
 #include "conspiracy\LevelTbl.h"
 #include "conspiracy\ShopTbl.h"
 #include "conspiracy\GameConfigTbl.h"
+#include "conspiracy\OrganicTbl.h"
 
 
 #define TABLE_BASEPATH "../../conspiracy/Table/"
@@ -38,7 +39,9 @@ namespace conspiracy {
 	{
 		HRESULT hr = S_OK;
 
-		defChk(::conspiracy::RewardTbl::LoadTable(TABLE_BASEPATH "rewardTable.xml") );
+		defChk(::conspiracy::OrganicTbl::LoadTable(TABLE_BASEPATH "organicTable.xml"));
+
+		defChk(::conspiracy::RewardTbl::LoadTable(TABLE_BASEPATH "rewardTable.xml"));
 
 		defChk(::conspiracy::LevelTbl::LoadTable(TABLE_BASEPATH "levelTable.xml") );
 

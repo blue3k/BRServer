@@ -22,6 +22,22 @@
       </Res>
     </Command>
 
+    <Command Name="GetComplitionState" Reliable="true" Crypto="No" Trace="DBG1" Desc="player complition statues">
+      <Cmd>
+      </Cmd>
+      <Res>
+        <Params Type="String" Name="ComplitionState" Desc="Complition state string"/>
+      </Res>
+    </Command>
+
+    <Command Name="SetComplitionState" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player complition state">
+      <Cmd>
+        <Params Type="String" Name="ComplitionState" Desc="Complition state to set"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
     <!-- ===================================================  Push notification ================================================== -->
     <Command Name="RegisterGCM" Reliable="true" Crypto="No" Trace="DBG1" Desc="Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time">
       <Cmd>
@@ -233,9 +249,12 @@
     <!-- ===================================================  NickName ================================================== -->
     <Command Name="SetNickName" Reliable="true" Crypto="No" Trace="DBG1" Desc="Change NickName">
       <Cmd>
-		<Params Type="String" Name="NickName" Desc="Nickname to change"/>
+    		<Params Type="String" Name="NickName" Desc="Nickname to change"/>
+        <Params Type="BYTE" Name="IsCostFree" Desc="CostFree"/>
       </Cmd>
       <Res>
+        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
     <!-- ===================================================  Party ================================================== -->
@@ -489,7 +508,7 @@
 			<Params Type="PlayerID" Name="PlayerID" Desc="PlayerID of the player"/>
 			<Params Type="AuthTicket" Name="Ticket" Desc="Login session ID of the player"/>
 			<Params Type="PlayerID" Name="VoteTarget" Desc="Vote Target"/>
-			<Params Type="UINT32" Name="ActionSerial" Desc="Action serial, used for player voting order matching"/>
+			<Params Type="UINT32" Name="ActionSerial" Desc="Action serial, used for player voting order"/>
 		</Cmd>
 		<Res>
 		</Res>
@@ -523,6 +542,8 @@
       <Cmd>
       </Cmd>
       <Res>
+        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
 
@@ -532,13 +553,15 @@
     </S2CEvent>
 
 
-    <Command Name="GameRevealPlayer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player. revive himself">
+    <Command Name="GameRevealPlayer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player. reveal a player">
       <Cmd>
-        <Params Type="PlayerID" Name="TargetPlayerID"/>
+        <Params Type="PlayerID" Name="TargetPlayerID" IsArray="true"/>
       </Cmd>
       <Res>
-        <Params Type="PlayerID" Name="RevealedPlayerID"/>
-        <Params Type="PlayerRole" Name="RevealedRole"/>
+        <Params Type="PlayerID" Name="RevealedPlayerID" IsArray="true"/>
+        <Params Type="PlayerRole" Name="RevealedRole" IsArray="true"/>
+        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
 
@@ -546,6 +569,8 @@
       <Cmd>
       </Cmd>
       <Res>
+        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
 
@@ -553,14 +578,26 @@
       <Params Type="PlayerID" Name="RevivedPlayerID" Desc="Player who is revived"/>
     </S2CEvent>
 
+    <Command Name="GamePlayerResetRank" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player. reset ranking">
+      <Cmd>
+      </Cmd>
+      <Res>
+        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
+      </Res>
+    </Command>
+
     
     <!-- ===================================================  Game matching  ================================================== -->
 
     <Command Name="RequestGameMatch" Reliable="true" Crypto="No" Trace="DBG1" Desc="Request Game match">
       <Cmd>
         <Params Type="BYTE" Name="NumPlayer" Desc="Request game match"/>
+        <Params Type="PlayerRole" Name="RequestRole" Desc="Request special role"/>
       </Cmd>
       <Res>
+        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
 
@@ -576,6 +613,9 @@
       <Params Type="UINT8" Name="Dead" Desc="TRUE if the player is dead"/>
       <Params Type="BYTE" Name="ChatHistoryData" IsArray="true" Desc="Game chatting history"/>
       <Params Type="BYTE" Name="GameLogData" IsArray="true" Desc="Game history log"/>
+      <Params Type="UINT32" Name="Stamina"/>
+      <Params Type="UINT64" Name="TotalGem" Desc="Game gem"/>
+      <Params Type="UINT64" Name="TotalGameMoney" Desc="Game money"/>
     </S2CEvent>
 
     <S2CEvent Name="GameMatchFailed" Reliable="true" Crypto="No" Trace="DBG1" Desc="Game match failed">
@@ -597,10 +637,23 @@
 
     <!-- ===================================================  Shop & Item ================================================== -->
 
+    <Command Name="BuyShopItemPrepare" Reliable="true" Crypto="No" Trace="DBG1" Desc="Buy shop item prepare">
+      <Cmd>
+        <Params Type="UINT32" Name="ShopItemID" Desc="Shop table id"/>
+      </Cmd>
+      <Res>
+        <Params Type="UINT32" Name="ShopItemID" Desc="Shop table id"/>
+        <Params Type="String" Name="PurchaseID" Desc="Purchase ID"/>
+      </Res>
+    </Command>
+
     <Command Name="BuyShopItem" Reliable="true" Crypto="No" Trace="DBG1" Desc="Buy shop item">
       <Cmd>
         <Params Type="UINT32" Name="ShopItemID" Desc="Shop table id"/>
-        <Params Type="String" Name="ParamString" Desc="parameter"/>
+        <Params Type="String" Name="Platform"/>
+        <Params Type="String" Name="PackageName"/>
+        <Params Type="String" Name="PurchaseTransactionID" Desc="IOS transaction ID"/>
+        <Params Type="BYTE" Name="PurchaseToken" IsArray="true"/>
       </Cmd>
       <Res>
         <Params Type="UINT32" Name="ShopItemID" Desc="Shop table id"/>

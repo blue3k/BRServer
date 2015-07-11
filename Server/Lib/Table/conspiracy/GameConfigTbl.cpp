@@ -52,6 +52,7 @@ namespace conspiracy
 			EATT_MaxFriend,
 			EATT_DefaultStamina,
 			EATT_MaxStamina,
+			EATT_MaxAutoRefilStamina,
 			EATT_StaminaRecoveryTime,
 			EATT_StaminaForGame,
 			EATT_FreeDiscussion,
@@ -177,6 +178,11 @@ namespace conspiracy
 		else if(name == "MaxStamina")
 		{
  			this->MaxStamina = atoi( value.c_str() );
+			return true;
+		}
+		else if(name == "MaxAutoRefilStamina")
+		{
+ 			this->MaxAutoRefilStamina = atoi( value.c_str() );
 			return true;
 		}
 		else if(name == "StaminaRecoveryTime")

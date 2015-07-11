@@ -167,6 +167,71 @@ namespace BR
 
 			}; // class LoginByFacebookRes : public MessageBase
 
+			// Cmd: Login request
+			class CreateRandomUserCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				GameID m_GameID;
+				const char* m_CellPhone;
+			public:
+				CreateRandomUserCmd()
+				:m_CellPhone(nullptr)
+					{}
+
+				CreateRandomUserCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+				,m_CellPhone(nullptr)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const GameID& GetGameID() const	{ return m_GameID; };
+				const char* GetCellPhone() const	{ return m_CellPhone; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const char* InCellPhone );
+
+			}; // class CreateRandomUserCmd : public MessageBase
+
+			class CreateRandomUserRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				HRESULT m_Result;
+				NetAddress m_GameServerAddr;
+				AccountID m_AccID;
+				AuthTicket m_Ticket;
+				UINT64 m_LoginEntityUID;
+			public:
+				CreateRandomUserRes()
+					{}
+
+				CreateRandomUserRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const HRESULT& GetResult() const	{ return m_Result; };
+				const NetAddress& GetGameServerAddr() const	{ return m_GameServerAddr; };
+				const AccountID& GetAccID() const	{ return m_AccID; };
+				const AuthTicket& GetTicket() const	{ return m_Ticket; };
+				const UINT64& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+
+			}; // class CreateRandomUserRes : public MessageBase
+
 
 
 

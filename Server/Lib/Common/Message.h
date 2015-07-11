@@ -101,7 +101,8 @@ namespace Message {
 	//
 	enum
 	{
-		MAX_MESSAGE_SIZE = (1 << 11) - 1,
+		MAX_MESSAGE_SIZE = (1 << 14) - 1,
+		MAX_SUBFRAME_SIZE = 1024 - 64,
 
 		MSGTYPE_NONE			= 0,	
 
@@ -152,7 +153,7 @@ namespace Message {
 		// Data length
 		UINT32		Length	: 16;
 
-		// lower 16 bit of crc32
+		// lower 16 bit of crc32 or sub frame sequence
 		UINT32		Crc32		: 16;
 
 		// bit field termination

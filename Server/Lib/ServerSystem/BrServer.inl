@@ -121,7 +121,7 @@ EntityTable& GetEntityTable()
 template<class componentType>
 componentType* GetServerComponent()
 {
-	Assert( BrServer::GetInstance() );
+	if (BrServer::GetInstance() == nullptr) return nullptr;
 	return BrServer::GetInstance()->GetComponent<componentType>();
 }
 

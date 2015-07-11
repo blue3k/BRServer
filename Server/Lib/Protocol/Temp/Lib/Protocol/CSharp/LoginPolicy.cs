@@ -50,6 +50,16 @@ namespace BR.Policy
 
 		} // public bool  LoginByFacebookCmd( BR.GameID InGameID, System.UInt64 InUID, string InFaceBookName, string InEMail, string InFacebookToken )
 
+		// Cmd: Login request
+		public bool  CreateRandomUserCmd( BR.GameID InGameID, string InCellPhone )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Login.CreateRandomUserCmd.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Login.CreateRandomUserCmd.BuildMessageBuffer(binWriter, ref header, InGameID, InCellPhone );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  CreateRandomUserCmd( BR.GameID InGameID, string InCellPhone )
+
 	}; // public class PolicyLogin : BR.Net.Policy
 	public class SvrPolicyLogin : BR.Net.Policy
 	{
@@ -79,6 +89,17 @@ namespace BR.Policy
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
 		} // public bool  LoginByFacebookRes( System.Int32 InResult, ref BR.NetAddress InGameServerAddr, System.UInt64 InAccID, System.UInt64 InTicket, System.UInt64 InLoginEntityUID )
+
+
+		// Cmd: Login request
+		public bool  CreateRandomUserRes( System.Int32 InResult, ref BR.NetAddress InGameServerAddr, System.UInt64 InAccID, System.UInt64 InTicket, System.UInt64 InLoginEntityUID )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Login.CreateRandomUserRes.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Login.CreateRandomUserRes.BuildMessageBuffer(binWriter, ref header, InResult,ref InGameServerAddr, InAccID, InTicket, InLoginEntityUID );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  CreateRandomUserRes( System.Int32 InResult, ref BR.NetAddress InGameServerAddr, System.UInt64 InAccID, System.UInt64 InTicket, System.UInt64 InLoginEntityUID )
 
 
 	}; // public class SvrPolicyLogin : BR.Net.Policy

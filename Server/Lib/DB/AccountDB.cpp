@@ -44,7 +44,7 @@ namespace DB {
 	//	Account DB interface
 	//
 
-	HRESULT AccountDB::FacebookCreateUser( BR::TransactionID Sender, UINT64 facebookUID, const char* EMail )
+	HRESULT AccountDB::FacebookCreateUser(BR::TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone)
 	{
 		HRESULT hr = S_OK;
 		QueryFacebookCreateUserCmd *pQuery = nullptr;
@@ -52,7 +52,8 @@ namespace DB {
 		dbMem( pQuery = new QueryFacebookCreateUserCmd );
 
 		pQuery->FBUserID = facebookUID;
-		StrUtil::StringCpy( pQuery->EMail, EMail );
+		dbChk(StrUtil::StringCpy(pQuery->EMail, EMail));
+		dbChk(StrUtil::StringCpy(pQuery->CellPhone, cellPhone));
 		pQuery->AccountID = 0;
 		pQuery->ShardID = 0;
 		pQuery->Result = 0;
@@ -80,6 +81,7 @@ namespace DB {
 		pQuery->FBUserID = facebookUID;
 		pQuery->AccountID = 0;
 		pQuery->EMail[0] = 0;
+		pQuery->CellPhone[0] = 0;
 		pQuery->GCMKeys[0] = 0;
 		pQuery->ShardID = 0;
 		pQuery->Result = 0;
@@ -105,8 +107,8 @@ namespace DB {
 
 		dbMem( pQuery = new QueryCreateUserCmd );
 
-		StrUtil::StringCpy( pQuery->UserName, UserName );
-		StrUtil::StringCpy( pQuery->Password, Password );
+		dbChk(StrUtil::StringCpy(pQuery->UserName, UserName));
+		dbChk(StrUtil::StringCpy(pQuery->Password, Password));
 		pQuery->Result = 0;
 
 		pQuery->SetTransaction( Sender );
@@ -129,8 +131,8 @@ namespace DB {
 
 		dbMem( pQuery = new QueryLoginCmd );
 
-		StrUtil::StringCpy( pQuery->UserName, UserName );
-		StrUtil::StringCpy( pQuery->Password, Password );
+		dbChk(StrUtil::StringCpy(pQuery->UserName, UserName));
+		dbChk(StrUtil::StringCpy(pQuery->Password, Password));
 		pQuery->AccountID = 0;
 		pQuery->FBUserID = 0;
 		pQuery->ShardID = 0;
@@ -169,6 +171,34 @@ namespace DB {
 		return hr;
 	}
 	
+
+	HRESULT AccountDB::CreateRandomUser(BR::TransactionID Sender, const char* userName, const char* cellPhone)
+	{
+		HRESULT hr = S_OK;
+		QueryCreateRandomUserCmd *pQuery = nullptr;
+
+		dbMem(pQuery = new QueryCreateRandomUserCmd);
+
+		dbChk(StrUtil::StringCpy(pQuery->UserName, userName));
+		dbChk(StrUtil::StringCpy(pQuery->CellPhone, cellPhone));
+		pQuery->AccountID = 0;
+		pQuery->FBUserID = 0;
+		pQuery->ShardID = 0;
+		pQuery->Result = 0;
+
+		pQuery->SetTransaction(Sender);
+
+		dbChk( RequestQuery( pQuery ) );
+		pQuery = nullptr;
+
+	Proc_End:
+
+		if( FAILED(hr) )
+			Util::SafeRelease( pQuery );
+
+		return hr;
+	}
+
 	HRESULT AccountDB::UserList( BR::TransactionID Sender)
 	{
 		HRESULT hr = S_OK;
@@ -200,7 +230,7 @@ namespace DB {
 
 		pQuery->SetTransaction( Sender );
 		pQuery->UserUID = accountID;
-		StrUtil::StringCpy( pQuery->GCMKeys, strGCMKeys );
+		dbChk(StrUtil::StringCpy(pQuery->GCMKeys, strGCMKeys));
 
 		dbChk( RequestQuery( pQuery ) );
 
@@ -215,18 +245,19 @@ namespace DB {
 	}
 
 
-	HRESULT AccountDB::UpdateUserEMail(BR::TransactionID Sender, AccountID accountID, const char* strEMail)
+	HRESULT AccountDB::UpdateUserContactInfo(BR::TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone)
 	{
 		HRESULT hr = S_OK;
-		QueryUpdateUserEMailCmd *pQuery = nullptr;
+		QueryUpdateUserContactInfoCmd *pQuery = nullptr;
 
 		dbChkPtr(strEMail);
 
-		dbMem(pQuery = new QueryUpdateUserEMailCmd);
+		dbMem(pQuery = new QueryUpdateUserContactInfoCmd);
 
 		pQuery->SetTransaction( Sender );
 		pQuery->UserUID = accountID;
-		StrUtil::StringCpy(pQuery->EMail, strEMail);
+		dbChk(StrUtil::StringCpy(pQuery->EMail, strEMail));
+		dbChk(StrUtil::StringCpy(pQuery->CellPhone, strCellPhone));
 
 		dbChk( RequestQuery( pQuery ) );
 

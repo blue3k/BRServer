@@ -108,3 +108,12 @@
 //
 #define E_ALREADY_LOGGEDIN_OTHERPLACE    0xC7050004L
 
+//
+// MessageId: E_INVALID_SIGNATURE
+//
+// MessageText:
+//
+// Invalid user signature
+//
+#define E_INVALID_SIGNATURE              0xC7050005L
+

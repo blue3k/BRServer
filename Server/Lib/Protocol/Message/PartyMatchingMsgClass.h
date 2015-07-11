@@ -66,6 +66,7 @@ namespace BR
 				UINT16 m_RouteHopCount;
 				PlayerID m_DestPlayerID;
 				GameInsUID m_GameInsUID;
+				PlayerRole m_RequestedRole;
 			public:
 				PlayerGameMatchedS2CEvt()
 					{}
@@ -80,12 +81,13 @@ namespace BR
 				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetDestPlayerID() const	{ return m_DestPlayerID; };
 				const GameInsUID& GetGameInsUID() const	{ return m_GameInsUID; };
+				const PlayerRole& GetRequestedRole() const	{ return m_RequestedRole; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 

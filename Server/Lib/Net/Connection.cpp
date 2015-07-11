@@ -19,7 +19,8 @@
 #include "Net/NetTrace.h"
 #include "Net/Connection.h"
 #include "Net/NetServer.h"
-#include "Net/NetMessage.h"
+#include "Net/NetCtrl.h"
+#include "Net/NetCtrl.h"
 #include "Common/TimeUtil.h"
 
 #include "Protocol/ProtocolVer.h"

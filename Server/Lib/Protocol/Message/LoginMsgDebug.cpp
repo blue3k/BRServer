@@ -38,6 +38,9 @@ namespace BR
 				// Cmd: Login request with Facebook UID
 				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginByFacebookCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Login::LoginByFacebookCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginByFacebookRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Login::LoginByFacebookRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				// Cmd: Login request
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::CreateRandomUserCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Login::CreateRandomUserCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::CreateRandomUserRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Login::CreateRandomUserRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 			}; // void RegisterDebugTraceLogin()
 
 

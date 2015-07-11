@@ -73,7 +73,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		MatchingPlayerInformation playerInfo(GetRouteContext().From, GetPlayerID());
+		MatchingPlayerInformation playerInfo(GetRouteContext().From, GetPlayerID(), PlayerRole::None);
 		m_MatchingTicket = 0;
 
 		svrChk( __super::StartTransaction() );

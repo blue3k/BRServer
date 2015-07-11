@@ -109,10 +109,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".\Argument.cpp" />
-    <ClCompile Include=".\Crc32.cpp" />
+    <ClCompile Include="CryptoBase64.cpp" />
+    <ClCompile Include="CryptoCrc32.cpp" />
     <ClCompile Include=".\Memory.cpp" />
     <ClCompile Include=".\MemoryPool.cpp" />
     <ClCompile Include=".\PerfCounter.cpp" />
+    <ClCompile Include="CryptoSHA.cpp" />
     <ClCompile Include="LocalUIDGenerator.cpp" />
     <ClCompile Include="MemoryStream.cpp" />
     <ClCompile Include="BrGameTypes.cpp" />
@@ -166,7 +168,7 @@
     <None Include="DualSortedMap.inl" />
     <None Include="MemoryStream.inl" />
     <None Include="CircularQueue.inl" />
-    <None Include=".\CRC32Table.inl" />
+    <None Include="CryptoCRC32Table.inl" />
     <None Include=".\MathUtil.inl" />
     <None Include=".\Memory.inl" />
     <None Include=".\MemoryPool.inl" />

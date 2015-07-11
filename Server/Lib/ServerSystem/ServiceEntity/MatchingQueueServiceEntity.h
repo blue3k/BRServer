@@ -185,16 +185,10 @@ namespace Svr {
 
 		enum { ComponentID = ServerComponentID_MatchingQueueWatcherService_8x1 };
 
-	private:
-		static HRESULT GetQueueComponentIDMinMax( UINT MaxMemberCount, UINT& minComponentID, UINT& maxComponentID );
-
 	public:
 
 		MatchingQueueWatcherServiceEntity( ClusterID clusterID, UINT componentID );
 		~MatchingQueueWatcherServiceEntity();
-
-		// Get component ID from matching member count
-		static UINT GetQueueComponentID( UINT MaxMemberCount, UINT matchingMemberCount );
 
 	};
 

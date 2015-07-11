@@ -12,6 +12,7 @@
 		<Cmd>
 			<Params Type="PlayerInformation" Name="Player"/>
 			<Params Type="AuthTicket" Name="Ticket"/>
+      <Params Type="PlayerRole" Name="RequestedRole"/>
 		</Cmd>
 		<Res>
 			<Params Type="NetAddress" Name="GameInsSvr"/>
@@ -172,11 +173,11 @@
     <Command Name="GameRevealPlayer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player. revive himself">
       <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
-        <Params Type="PlayerID" Name="TargetPlayerID"/>
+        <Params Type="PlayerID" Name="TargetPlayerID" IsArray="true"/>
       </Cmd>
       <Res>
-        <Params Type="PlayerID" Name="RevealedPlayerID"/>
-        <Params Type="PlayerRole" Name="RevealedRole"/>
+        <Params Type="PlayerID" Name="RevealedPlayerID" IsArray="true"/>
+        <Params Type="PlayerRole" Name="RevealedRole" IsArray="true"/>
       </Res>
     </Command>
 

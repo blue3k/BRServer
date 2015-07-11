@@ -247,6 +247,8 @@ namespace Svr {
 		// Initialize server basic entities
 		virtual HRESULT InitializeEntities();
 
+		virtual HRESULT InitializeComponents() override;
+
 		// Initialize server resource
 		virtual HRESULT InitializeServerResource();
 

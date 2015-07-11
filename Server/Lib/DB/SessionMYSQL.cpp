@@ -206,7 +206,9 @@ namespace DB {
 
 		dbChk( pStatement->Bind( pMyQuery ) );
 
-		dbChk( pStatement->Execute() );
+		hr = pStatement->Execute();
+		if (hr == E_DB_CONNECTION_LOST) goto Proc_End;
+		dbChk(hr);
 
 		dbChk( pStatement->PatchResults( pMyQuery ) );
 
@@ -227,7 +229,7 @@ namespace DB {
 
 			if( hr == E_DB_CONNECTION_LOST )
 			{
-				defTrace( Trace::TRC_ERROR, "DB connection is lost, recovering the connection... " );
+				defTrace( Trace::TRC_WARN, "DB connection is lost, recovering the connection... " );
 				HRESULT hrTem = OpenSession();
 				if( FAILED(hrTem) )
 				{
@@ -397,7 +399,7 @@ namespace DB {
 		int rc = mysql_stmt_execute(m_Stmt);
 		if( rc != 0 )
 		{
-			dbErr(MYSQL_ToHRESULT(mysql_stmt_errno(m_Stmt)) );
+			hr = MYSQL_ToHRESULT(mysql_stmt_errno(m_Stmt));
 		}
 
 	Proc_End:

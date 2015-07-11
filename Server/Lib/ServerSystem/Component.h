@@ -79,7 +79,7 @@ namespace Svr{
 		}
 
 		// Clear components
-		void ClearComponents()
+		virtual void ClearComponents()
 		{
 			for( int iComponent = 0; iComponent < (MaxComponentID+1); iComponent++ )
 			{
@@ -90,7 +90,7 @@ namespace Svr{
 		}
 		
 		// Initialize components
-		HRESULT InitializeComponents()
+		virtual HRESULT InitializeComponents()
 		{
 			HRESULT hr = S_OK;
 			int iComponent = 0;

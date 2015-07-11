@@ -315,6 +315,139 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, ArgHex32(m_Result), m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // VOID LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
+			// Cmd: Login request
+			const MessageID CreateRandomUserCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 2);
+			HRESULT CreateRandomUserCmd::ParseIMsg( MessageData* pIMsg )
+			{
+ 				HRESULT hr = S_OK;
+
+				INT iMsgSize;
+				BYTE* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_GameID, pCur, iMsgSize, sizeof(GameID) ) );
+				UINT16 uiSizeOfCellPhone = 0;
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfCellPhone, pCur, iMsgSize, sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_CellPhone, pCur, iMsgSize, sizeof(char)*uiSizeOfCellPhone ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // HRESULT CreateRandomUserCmd::ParseIMsg( MessageData* pIMsg )
+
+			HRESULT CreateRandomUserCmd::BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const char* InCellPhone )
+			{
+ 				HRESULT hr = S_OK;
+
+				BYTE *pMsgData = nullptr;
+
+				UINT16 __uiInCellPhoneLength = InCellPhone ? (UINT16)(strlen(InCellPhone)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInCellPhoneLength 
+					+ sizeof(GameID));
+
+				MessageData *pNewMsg = NULL;
+
+				protocolMem( pNewMsg = MessageData::NewMessage( Login::CreateRandomUserCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InGameID, sizeof(GameID));
+				Protocol::PackParamCopy( pMsgData, &__uiInCellPhoneLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, InCellPhone ? InCellPhone : "", __uiInCellPhoneLength );
+
+				pMsg = pNewMsg;
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // HRESULT CreateRandomUserCmd::BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const char* InCellPhone )
+
+
+
+			VOID CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			{
+ 				Prefix;
+				protocolTrace(Trace::TRC_DBG1, "%0%:CreateRandomUserCmd:%1%:%2% , GameID:%3%, CellPhone:%4%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_CellPhone); 
+			}; // VOID CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+
+			const MessageID CreateRandomUserRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 2);
+			HRESULT CreateRandomUserRes::ParseIMsg( MessageData* pIMsg )
+			{
+ 				HRESULT hr = S_OK;
+
+				INT iMsgSize;
+				BYTE* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameServerAddr, pCur, iMsgSize, sizeof(NetAddress) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_AccID, pCur, iMsgSize, sizeof(AccountID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LoginEntityUID, pCur, iMsgSize, sizeof(UINT64) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // HRESULT CreateRandomUserRes::ParseIMsg( MessageData* pIMsg )
+
+			HRESULT CreateRandomUserRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+			{
+ 				HRESULT hr = S_OK;
+
+				BYTE *pMsgData = nullptr;
+
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
+					+ sizeof(HRESULT)
+					+ sizeof(NetAddress)
+					+ sizeof(AccountID)
+					+ sizeof(AuthTicket)
+					+ sizeof(UINT64));
+
+				MessageData *pNewMsg = NULL;
+
+				protocolMem( pNewMsg = MessageData::NewMessage( Login::CreateRandomUserRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InGameServerAddr, sizeof(NetAddress));
+				Protocol::PackParamCopy( pMsgData, &InAccID, sizeof(AccountID));
+				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
+				Protocol::PackParamCopy( pMsgData, &InLoginEntityUID, sizeof(UINT64));
+
+				pMsg = pNewMsg;
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // HRESULT CreateRandomUserRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+
+
+
+			VOID CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			{
+ 				Prefix;
+				protocolTrace(Trace::TRC_DBG1, "%0%:CreateRandomUserRes:%1%:%2% , Result:%3%, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, ArgHex32(m_Result), m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
+			}; // VOID CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
+
 
 
 		}; // namespace Login

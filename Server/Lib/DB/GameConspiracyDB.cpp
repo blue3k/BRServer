@@ -164,7 +164,90 @@ namespace DB {
 
 		return hr;
 	}
+	HRESULT GameConspiracyDB::SavePurchaseInfoToDB(
+		TransactionID Sender, UINT shardID, const PlayerID &playerID,
+		SHORT	Level,
+		INT64	Exp,
+		INT64	GameMoney,
+		INT64	Gem,
+		SHORT	Stamina,
+		SHORT	AddedFriendSlot,
+		const Array<BYTE>& purchaseID,
+		const char* purchasePlatform, const char* purchaseToken,
+		INT32	LatestActiveTime,
+		INT64	LatestTickTime
+		)
+	{
+		HRESULT hr = S_OK;
+		QuerySavePurchaseInfoToDBCmd *pQuery = nullptr;
 
+		dbMem(pQuery = new QuerySavePurchaseInfoToDBCmd);
+
+		pQuery->SetPartitioningKey(shardID);
+
+		pQuery->PlayerID = playerID;
+		pQuery->Result = 0;
+
+		pQuery->Level = Level;
+		pQuery->Exp = Exp;
+		pQuery->GameMoney = GameMoney;
+		pQuery->Gem = Gem;
+		pQuery->Stamina = Stamina;
+		pQuery->AddedFriendSlot = AddedFriendSlot;
+
+		if (purchaseID.GetSize() > sizeof(pQuery->PurchaseID))
+			dbErr(E_INVALIDARG);
+		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
+		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.GetSize());
+
+		dbChk(StrUtil::StringCpy(pQuery->PurchasePlatform, purchasePlatform));
+		dbChk(StrUtil::StringCpy(pQuery->PurchaseToken, purchaseToken));
+		pQuery->LatestActiveTime = LatestActiveTime;
+		pQuery->LatestTickTime = LatestTickTime;
+
+
+		pQuery->SetTransaction( Sender );
+
+		dbChk( RequestQuery( pQuery ) );
+		pQuery = nullptr;
+
+	Proc_End:
+
+		if( FAILED(hr) )
+			Util::SafeRelease( pQuery );
+
+		return hr;
+	}
+
+	HRESULT GameConspiracyDB::CheckPurchaseID(TransactionID Sender, UINT shardID, const Array<BYTE>& purchaseID)
+	{
+		HRESULT hr = S_OK;
+		QueryCheckPurchaseIDCmd *pQuery = nullptr;
+
+		dbMem(pQuery = new QueryCheckPurchaseIDCmd);
+
+		pQuery->SetPartitioningKey(shardID);
+
+		pQuery->SetTransaction(Sender);
+
+		if (purchaseID.GetSize() > sizeof(pQuery->PurchaseID))
+			dbErr(E_INVALIDARG);
+		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
+		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.GetSize());
+
+		pQuery->Result = 0;
+
+		dbChk(RequestQuery(pQuery));
+
+		pQuery = nullptr;
+
+	Proc_End:
+
+		if (FAILED(hr))
+			Util::SafeRelease(pQuery);
+
+		return hr;
+	}
 
 	HRESULT GameConspiracyDB::SetNickName(BR::TransactionID Sender, UINT shardID, PlayerID playerID, const char* nickName)
 	{
@@ -760,6 +843,63 @@ namespace DB {
 
 		return hr;
 	}
+
+	HRESULT GameConspiracyDB::SetComplitionState(BR::TransactionID Sender, UINT shardID, PlayerID userID, const char* complitionState)
+	{
+		HRESULT hr = S_OK;
+		QuerySetComplitionStateCmd *pQuery = nullptr;
+
+		dbMem(pQuery = new QuerySetComplitionStateCmd);
+
+		pQuery->SetPartitioningKey(shardID);
+
+		pQuery->SetTransaction(Sender);
+		pQuery->PlayerID = userID;
+		dbChk(StrUtil::StringCpy(pQuery->ComplitionState, complitionState));
+
+
+		pQuery->Result = 0;
+
+		dbChk(RequestQuery(pQuery));
+
+		pQuery = nullptr;
+
+	Proc_End:
+
+		if (FAILED(hr))
+			Util::SafeRelease(pQuery);
+
+		return hr;
+	}
+
+	HRESULT GameConspiracyDB::GetComplitionState(BR::TransactionID Sender, UINT shardID, PlayerID userID)
+	{
+		HRESULT hr = S_OK;
+		QueryGetComplitionStateCmd *pQuery = nullptr;
+
+		dbMem(pQuery = new QueryGetComplitionStateCmd);
+
+		pQuery->SetPartitioningKey(shardID);
+
+		pQuery->SetTransaction(Sender);
+		pQuery->PlayerID = userID;
+		dbChk(StrUtil::StringCpy(pQuery->ComplitionState, ""));
+
+
+		pQuery->Result = 0;
+
+		dbChk(RequestQuery(pQuery));
+
+		pQuery = nullptr;
+
+	Proc_End:
+
+		if (FAILED(hr))
+			Util::SafeRelease(pQuery);
+
+		return hr;
+	}
+
 
 
 } //namespace DB

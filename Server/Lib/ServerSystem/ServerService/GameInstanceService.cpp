@@ -47,19 +47,19 @@ namespace BR
 
 		}; // HRESULT GameInstanceService::DeleteGameC2SEvt( const EntityID &InSenderEntityID )
 		// Cmd: Join Game
-		HRESULT GameInstanceService::JoinGameCmd( const Context &InContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket )
+		HRESULT GameInstanceService::JoinGameCmd( const Context &InContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 		{
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->JoinGameCmd( InContext, InRouteContext, InPlayer, InTicket ) );
+			svrChk(GetPolicyGameInstance()->JoinGameCmd( InContext, InRouteContext, InPlayer, InTicket, InRequestedRole ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::JoinGameCmd( const Context &InContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket )
+		}; // HRESULT GameInstanceService::JoinGameCmd( const Context &InContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 		// C2S: Change configue preset
 		HRESULT GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const UINT32 &InPresetID )
 		{
@@ -185,7 +185,7 @@ namespace BR
 
 		}; // HRESULT GameInstanceService::GamePlayAgainCmd( const Context &InContext, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
 		// Cmd: Player. revive himself
-		HRESULT GameInstanceService::GameRevealPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InTargetPlayerID )
+		HRESULT GameInstanceService::GameRevealPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		{
  			HRESULT hr = S_OK;
 
@@ -197,7 +197,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::GameRevealPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InTargetPlayerID )
+		}; // HRESULT GameInstanceService::GameRevealPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		// Cmd: Player. revive himself
 		HRESULT GameInstanceService::GamePlayerReviveCmd( const Context &InContext, const PlayerID &InPlayerID )
 		{

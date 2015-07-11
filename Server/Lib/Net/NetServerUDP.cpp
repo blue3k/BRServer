@@ -23,6 +23,7 @@
 #include "Net/NetServer.h"
 #include "Protocol/ProtocolVer.h"
 #include "Net/NetServerUDP.h"
+#include "Net/NetCtrl.h"
 
 
 

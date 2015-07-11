@@ -211,12 +211,212 @@ namespace BR.Message
 
 		} // public class JoinGameServerRes : MessageBase
 
+		// Cmd: player complition statues
+		[Preserve (AllMembers = true)]
+		public class GetComplitionStateCmd : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 2);
+
+			public GetComplitionStateCmd()
+				{}
+
+			public GetComplitionStateCmd( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:GetComplitionStateCmd: ",
+												Prefix); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header   );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header   )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 ;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header   )
+
+		} // public class GetComplitionStateCmd : MessageBase
+		[Preserve (AllMembers = true)]
+		public class GetComplitionStateRes : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 2);
+
+			public System.Int32 Result;
+			public string ComplitionState { get; private set; }
+			public GetComplitionStateRes()
+				{}
+
+			public GetComplitionStateRes( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:GetComplitionStateRes: , Result:{1}, ComplitionState:{2}",
+												Prefix, Result.ToString(), ComplitionState); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+				Result = binReader.ReadInt32();
+
+				ComplitionState = binReader.ReadString();
+
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header , Result, ComplitionState );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, string InComplitionState )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 
+					+ 4
+					+ binWriter.StringEncoder.GetByteCount(InComplitionState) + 1 + 2;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+				binWriter.Write( InResult);
+				binWriter.Write( InComplitionState);
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, string InComplitionState )
+
+		} // public class GetComplitionStateRes : MessageBase
+
+		// Cmd: Player complition state
+		[Preserve (AllMembers = true)]
+		public class SetComplitionStateCmd : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 3);
+
+			public string ComplitionState { get; private set; }
+			public SetComplitionStateCmd()
+				{}
+
+			public SetComplitionStateCmd( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:SetComplitionStateCmd: , ComplitionState:{1}",
+												Prefix, ComplitionState); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+				ComplitionState = binReader.ReadString();
+
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header , ComplitionState );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , string InComplitionState )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 
+					+ binWriter.StringEncoder.GetByteCount(InComplitionState) + 1 + 2;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+				binWriter.Write( InComplitionState);
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , string InComplitionState )
+
+		} // public class SetComplitionStateCmd : MessageBase
+		[Preserve (AllMembers = true)]
+		public class SetComplitionStateRes : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 3);
+
+			public System.Int32 Result;
+			public SetComplitionStateRes()
+				{}
+
+			public SetComplitionStateRes( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:SetComplitionStateRes: , Result:{1}",
+												Prefix, Result.ToString()); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+				Result = binReader.ReadInt32();
+
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header , Result );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 
+					+ 4;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+				binWriter.Write( InResult);
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+
+		} // public class SetComplitionStateRes : MessageBase
+
 		// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
 		[Preserve (AllMembers = true)]
 		public class RegisterGCMCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 2);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 4);
 
 			public string GCMRegisteredID { get; private set; }
 			public RegisterGCMCmd()
@@ -265,7 +465,7 @@ namespace BR.Message
 		public class RegisterGCMRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 2);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 4);
 
 			public System.Int32 Result;
 			public RegisterGCMRes()
@@ -316,7 +516,7 @@ namespace BR.Message
 		public class UnregisterGCMCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 3);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 5);
 
 			public string GCMRegisteredID { get; private set; }
 			public UnregisterGCMCmd()
@@ -365,7 +565,7 @@ namespace BR.Message
 		public class UnregisterGCMRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 3);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 5);
 
 			public System.Int32 Result;
 			public UnregisterGCMRes()
@@ -416,7 +616,7 @@ namespace BR.Message
 		public class InviteFriendCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 4);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 6);
 
 			public System.UInt64 FriendID;
 			public InviteFriendCmd()
@@ -465,7 +665,7 @@ namespace BR.Message
 		public class InviteFriendRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 4);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 6);
 
 			public System.Int32 Result;
 			public InviteFriendRes()
@@ -516,7 +716,7 @@ namespace BR.Message
 		public class AcceptFriendRequestCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 5);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 7);
 
 			public System.UInt64 InviterID;
 			public System.UInt64 InviterFacebookUID;
@@ -570,7 +770,7 @@ namespace BR.Message
 		public class AcceptFriendRequestRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 5);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 7);
 
 			public System.Int32 Result;
 			public BR.FriendInformation NewFriend;
@@ -626,7 +826,7 @@ namespace BR.Message
 		public class FriendRequestAcceptedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 6);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 8);
 
 			public BR.FriendInformation Accepter;
 			public FriendRequestAcceptedS2CEvt()
@@ -677,7 +877,7 @@ namespace BR.Message
 		public class RemoveFriendCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 7);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 9);
 
 			public System.UInt64 FriendID;
 			public RemoveFriendCmd()
@@ -726,7 +926,7 @@ namespace BR.Message
 		public class RemoveFriendRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 7);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 9);
 
 			public System.Int32 Result;
 			public System.UInt64 FriendID;
@@ -782,7 +982,7 @@ namespace BR.Message
 		public class FriendRemovedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 8);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 10);
 
 			public System.UInt64 FriendID;
 			public FriendRemovedS2CEvt()
@@ -833,7 +1033,7 @@ namespace BR.Message
 		public class GetFriendListCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 9);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 11);
 
 			public System.UInt16 StartIndex;
 			public System.UInt16 Count;
@@ -887,7 +1087,7 @@ namespace BR.Message
 		public class GetFriendListRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 9);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 11);
 
 			public System.Int32 Result;
 			public System.UInt16 MaxFriendSlot;
@@ -963,7 +1163,7 @@ namespace BR.Message
 		public class GetNotificationListCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 10);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 12);
 
 			public GetNotificationListCmd()
 				{}
@@ -1007,7 +1207,7 @@ namespace BR.Message
 		public class GetNotificationListRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 10);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 12);
 
 			public System.Int32 Result;
 			public GetNotificationListRes()
@@ -1058,7 +1258,7 @@ namespace BR.Message
 		public class DeleteNotificationCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 11);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 13);
 
 			public System.UInt32 NotificationID;
 			public DeleteNotificationCmd()
@@ -1107,7 +1307,7 @@ namespace BR.Message
 		public class DeleteNotificationRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 11);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 13);
 
 			public System.Int32 Result;
 			public System.UInt32 NotificationID;
@@ -1163,7 +1363,7 @@ namespace BR.Message
 		public class SetNotificationReadCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 12);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 14);
 
 			public System.UInt32 NotificationID;
 			public SetNotificationReadCmd()
@@ -1212,7 +1412,7 @@ namespace BR.Message
 		public class SetNotificationReadRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 12);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 14);
 
 			public System.Int32 Result;
 			public System.UInt32 NotificationID;
@@ -1268,7 +1468,7 @@ namespace BR.Message
 		public class AcceptNotificationCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 13);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 15);
 
 			public System.UInt32 NotificationID;
 			public AcceptNotificationCmd()
@@ -1317,7 +1517,7 @@ namespace BR.Message
 		public class AcceptNotificationRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 13);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 15);
 
 			public System.Int32 Result;
 			public System.UInt32 NotificationID;
@@ -1373,7 +1573,7 @@ namespace BR.Message
 		public class NotifyS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 14);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 16);
 
 			public System.UInt32 NotificationID;
 			public System.Int16 MessageID;
@@ -1454,7 +1654,7 @@ namespace BR.Message
 		public class FindPlayerByEMailCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 15);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 17);
 
 			public string PlayerEMail { get; private set; }
 			public FindPlayerByEMailCmd()
@@ -1503,7 +1703,7 @@ namespace BR.Message
 		public class FindPlayerByEMailRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 15);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 17);
 
 			public System.Int32 Result;
 			public BR.PlayerInformation Player;
@@ -1559,7 +1759,7 @@ namespace BR.Message
 		public class RequestPlayerStatusUpdateCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 16);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 18);
 
 			public System.UInt64[] TargetPlayerID;
 			public RequestPlayerStatusUpdateCmd()
@@ -1613,7 +1813,7 @@ namespace BR.Message
 		public class RequestPlayerStatusUpdateRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 16);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 18);
 
 			public System.Int32 Result;
 			public RequestPlayerStatusUpdateRes()
@@ -1664,7 +1864,7 @@ namespace BR.Message
 		public class NotifyPlayerStatusUpdatedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 17);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 19);
 
 			public System.UInt64 PlayerID;
 			public System.UInt32 LatestActiveTime;
@@ -1725,7 +1925,7 @@ namespace BR.Message
 		public class GetRankingListCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 18);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 20);
 
 			public BR.RankingType RankingType;
 			public System.Byte BaseRanking;
@@ -1784,7 +1984,7 @@ namespace BR.Message
 		public class GetRankingListRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 18);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 20);
 
 			public System.Int32 Result;
 			public BR.TotalRankingPlayerInformation[] Ranking;
@@ -1845,7 +2045,7 @@ namespace BR.Message
 		public class GetUserGamePlayerInfoCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 19);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 21);
 
 			public GetUserGamePlayerInfoCmd()
 				{}
@@ -1889,7 +2089,7 @@ namespace BR.Message
 		public class GetUserGamePlayerInfoRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 19);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 21);
 
 			public System.Int32 Result;
 			public System.Int16 Level;
@@ -2040,7 +2240,7 @@ namespace BR.Message
 		public class GetGamePlayerInfoCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 20);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 22);
 
 			public System.UInt64 PlayerID;
 			public GetGamePlayerInfoCmd()
@@ -2089,7 +2289,7 @@ namespace BR.Message
 		public class GetGamePlayerInfoRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 20);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 22);
 
 			public System.Int32 Result;
 			public System.UInt64 PlayerID;
@@ -2225,7 +2425,7 @@ namespace BR.Message
 		public class LevelUpS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 21);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 23);
 
 			public System.UInt64 CurrentTotalExp;
 			public System.UInt32 CurrentLevel;
@@ -2281,9 +2481,10 @@ namespace BR.Message
 		public class SetNickNameCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 22);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 24);
 
 			public string NickName { get; private set; }
+			public System.Byte IsCostFree;
 			public SetNickNameCmd()
 				{}
 
@@ -2294,8 +2495,8 @@ namespace BR.Message
 
 			public override void TraceOut(string Prefix)
 			{
- 				Debug.Print("{{0}}:SetNickNameCmd: , NickName:{1}",
-												Prefix, NickName); 
+ 				Debug.Print("{{0}}:SetNickNameCmd: , NickName:{1}, IsCostFree:{2}",
+												Prefix, NickName, IsCostFree.ToString()); 
 			} // public override void TraceOut(string Prefix)
 
 
@@ -2304,35 +2505,41 @@ namespace BR.Message
  				var binReader = (PacketMemoryReader)binaryReader;
 				NickName = binReader.ReadString();
 
+				IsCostFree = binReader.ReadByte();
+
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
 
 			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 			{
- 				BuildMessageBuffer( binWriter, ref Header , NickName );
+ 				BuildMessageBuffer( binWriter, ref Header , NickName, IsCostFree );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , string InNickName )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , string InNickName, System.Byte InIsCostFree )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
-					+ binWriter.StringEncoder.GetByteCount(InNickName) + 1 + 2;
+					+ binWriter.StringEncoder.GetByteCount(InNickName) + 1 + 2
+					+ 1;
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
 				header.Length = (uint)__uiMessageSize;
 				binWriter.Write( InNickName);
+				binWriter.Write( InIsCostFree);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , string InNickName )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , string InNickName, System.Byte InIsCostFree )
 
 		} // public class SetNickNameCmd : MessageBase
 		[Preserve (AllMembers = true)]
 		public class SetNickNameRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 22);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 24);
 
 			public System.Int32 Result;
+			public System.UInt64 TotalGem;
+			public System.UInt64 TotalGameMoney;
 			public SetNickNameRes()
 				{}
 
@@ -2343,8 +2550,8 @@ namespace BR.Message
 
 			public override void TraceOut(string Prefix)
 			{
- 				Debug.Print("{{0}}:SetNickNameRes: , Result:{1}",
-												Prefix, Result.ToString()); 
+ 				Debug.Print("{{0}}:SetNickNameRes: , Result:{1}, TotalGem:{2}, TotalGameMoney:{3}",
+												Prefix, Result.ToString(), TotalGem.ToString(), TotalGameMoney.ToString()); 
 			} // public override void TraceOut(string Prefix)
 
 
@@ -2353,26 +2560,34 @@ namespace BR.Message
  				var binReader = (PacketMemoryReader)binaryReader;
 				Result = binReader.ReadInt32();
 
+				TotalGem = binReader.ReadUInt64();
+
+				TotalGameMoney = binReader.ReadUInt64();
+
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
 
 			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 			{
- 				BuildMessageBuffer( binWriter, ref Header , Result );
+ 				BuildMessageBuffer( binWriter, ref Header , Result, TotalGem, TotalGameMoney );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
-					+ 4;
+					+ 4
+					+ 8
+					+ 8;
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
 				header.Length = (uint)__uiMessageSize;
 				binWriter.Write( InResult);
+				binWriter.Write( InTotalGem);
+				binWriter.Write( InTotalGameMoney);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 		} // public class SetNickNameRes : MessageBase
 
@@ -2381,7 +2596,7 @@ namespace BR.Message
 		public class CreatePartyCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 23);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 25);
 
 			public CreatePartyCmd()
 				{}
@@ -2425,7 +2640,7 @@ namespace BR.Message
 		public class CreatePartyRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 23);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 25);
 
 			public System.Int32 Result;
 			public System.UInt64 PartyUID;
@@ -2481,7 +2696,7 @@ namespace BR.Message
 		public class JoinPartyCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 24);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 26);
 
 			public System.UInt64 PartyUID;
 			public System.UInt64 InviterID;
@@ -2535,7 +2750,7 @@ namespace BR.Message
 		public class JoinPartyRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 24);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 26);
 
 			public System.Int32 Result;
 			public System.UInt64 PartyUID;
@@ -2604,7 +2819,7 @@ namespace BR.Message
 		public class PartyPlayerJoinedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 25);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 27);
 
 			public System.UInt64 PartyUID;
 			public BR.PlayerInformation JoinedPlayer;
@@ -2660,7 +2875,7 @@ namespace BR.Message
 		public class PartyLeaderChangedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 26);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 28);
 
 			public System.UInt64 PartyUID;
 			public System.UInt64 NewLeaderID;
@@ -2716,7 +2931,7 @@ namespace BR.Message
 		public class LeavePartyCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 27);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 29);
 
 			public System.UInt64 PartyUID;
 			public System.UInt64 PlayerID;
@@ -2770,7 +2985,7 @@ namespace BR.Message
 		public class LeavePartyRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 27);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 29);
 
 			public System.Int32 Result;
 			public LeavePartyRes()
@@ -2821,7 +3036,7 @@ namespace BR.Message
 		public class PartyPlayerLeftS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 28);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 30);
 
 			public System.UInt64 PartyUID;
 			public System.UInt64 LeftPlayerID;
@@ -2877,7 +3092,7 @@ namespace BR.Message
 		public class PartyKickPlayerCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 29);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 31);
 
 			public System.UInt64 PartyUID;
 			public System.UInt64 PlayerID;
@@ -2936,7 +3151,7 @@ namespace BR.Message
 		public class PartyKickPlayerRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 29);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 31);
 
 			public System.Int32 Result;
 			public PartyKickPlayerRes()
@@ -2987,7 +3202,7 @@ namespace BR.Message
 		public class PartyPlayerKickedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 30);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 32);
 
 			public System.UInt64 PartyUID;
 			public System.UInt64 KickedPlayerID;
@@ -3043,7 +3258,7 @@ namespace BR.Message
 		public class PartyInviteCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 31);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 33);
 
 			public System.UInt64 InviteTargetID;
 			public PartyInviteCmd()
@@ -3092,7 +3307,7 @@ namespace BR.Message
 		public class PartyInviteRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 31);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 33);
 
 			public System.Int32 Result;
 			public PartyInviteRes()
@@ -3143,7 +3358,7 @@ namespace BR.Message
 		public class PartyInviteRequestedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 32);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 34);
 
 			public System.UInt64 InviterID;
 			public string InviterName { get; private set; }
@@ -3204,7 +3419,7 @@ namespace BR.Message
 		public class PartyQuickChatMessageCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 33);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 35);
 
 			public System.UInt32 QuickChatID;
 			public PartyQuickChatMessageCmd()
@@ -3253,7 +3468,7 @@ namespace BR.Message
 		public class PartyQuickChatMessageRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 33);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 35);
 
 			public System.Int32 Result;
 			public PartyQuickChatMessageRes()
@@ -3304,7 +3519,7 @@ namespace BR.Message
 		public class PartyQuickChatMessageS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 34);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 36);
 
 			public System.UInt64 SenderID;
 			public System.UInt32 QuickChatID;
@@ -3360,7 +3575,7 @@ namespace BR.Message
 		public class PartyChatMessageCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 35);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 37);
 
 			public string ChatMessage { get; private set; }
 			public PartyChatMessageCmd()
@@ -3409,7 +3624,7 @@ namespace BR.Message
 		public class PartyChatMessageRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 35);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 37);
 
 			public System.Int32 Result;
 			public PartyChatMessageRes()
@@ -3460,7 +3675,7 @@ namespace BR.Message
 		public class PartyChatMessageS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 36);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 38);
 
 			public System.UInt64 SenderID;
 			public string SenderName { get; private set; }
@@ -3521,7 +3736,7 @@ namespace BR.Message
 		public class JoinGameCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 37);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 39);
 
 			public System.UInt64 PlayerID;
 			public System.UInt64 Ticket;
@@ -3580,7 +3795,7 @@ namespace BR.Message
 		public class JoinGameRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 37);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 39);
 
 			public System.Int32 Result;
 			public System.UInt64 InsUID;
@@ -3692,7 +3907,7 @@ namespace BR.Message
 		public class PlayerJoinedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 38);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 40);
 
 			public System.UInt64 GameInsUID;
 			public BR.PlayerInformation JoinedPlayer;
@@ -3768,7 +3983,7 @@ namespace BR.Message
 		public class LeaveGameCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 39);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 41);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 PlayerID;
@@ -3827,7 +4042,7 @@ namespace BR.Message
 		public class LeaveGameRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 39);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 41);
 
 			public System.Int32 Result;
 			public LeaveGameRes()
@@ -3878,7 +4093,7 @@ namespace BR.Message
 		public class PlayerLeftS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 40);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 42);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 LeftPlayerID;
@@ -3934,7 +4149,7 @@ namespace BR.Message
 		public class KickPlayerCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 41);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 43);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 PlayerID;
@@ -3993,7 +4208,7 @@ namespace BR.Message
 		public class KickPlayerRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 41);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 43);
 
 			public System.Int32 Result;
 			public KickPlayerRes()
@@ -4044,7 +4259,7 @@ namespace BR.Message
 		public class PlayerKickedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 42);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 44);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 KickedPlayerID;
@@ -4100,7 +4315,7 @@ namespace BR.Message
 		public class AssignRoleCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 43);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 45);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 PlayerID;
@@ -4159,7 +4374,7 @@ namespace BR.Message
 		public class AssignRoleRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 43);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 45);
 
 			public System.Int32 Result;
 			public AssignRoleRes()
@@ -4210,7 +4425,7 @@ namespace BR.Message
 		public class RoleAssignedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 44);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 46);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 PlayerID;
@@ -4271,7 +4486,7 @@ namespace BR.Message
 		public class ChatMessageCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 45);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 47);
 
 			public string ChatMessage { get; private set; }
 			public BR.PlayerRole Role;
@@ -4325,7 +4540,7 @@ namespace BR.Message
 		public class ChatMessageRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 45);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 47);
 
 			public System.Int32 Result;
 			public ChatMessageRes()
@@ -4376,7 +4591,7 @@ namespace BR.Message
 		public class ChatMessageS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 46);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 48);
 
 			public System.UInt64 SenderID;
 			public BR.PlayerRole Role;
@@ -4442,7 +4657,7 @@ namespace BR.Message
 		public class AdvanceGameCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 47);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 49);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 PlayerID;
@@ -4501,7 +4716,7 @@ namespace BR.Message
 		public class AdvanceGameRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 47);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 49);
 
 			public System.Int32 Result;
 			public AdvanceGameRes()
@@ -4552,7 +4767,7 @@ namespace BR.Message
 		public class GameAdvancedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 48);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 50);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt32 TimeStamp;
@@ -4618,7 +4833,7 @@ namespace BR.Message
 		public class GameEndedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 49);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 51);
 
 			public System.UInt64 GameInsUID;
 			public BR.GameWinner Winner;
@@ -4684,7 +4899,7 @@ namespace BR.Message
 		public class VoteGameAdvanceCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 50);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 52);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 PlayerID;
@@ -4743,7 +4958,7 @@ namespace BR.Message
 		public class VoteGameAdvanceRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 50);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 52);
 
 			public System.Int32 Result;
 			public VoteGameAdvanceRes()
@@ -4794,7 +5009,7 @@ namespace BR.Message
 		public class GameAdvanceVotedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 51);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 53);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 Voter;
@@ -4850,7 +5065,7 @@ namespace BR.Message
 		public class VoteCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 52);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 54);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 PlayerID;
@@ -4919,7 +5134,7 @@ namespace BR.Message
 		public class VoteRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 52);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 54);
 
 			public System.Int32 Result;
 			public VoteRes()
@@ -4970,7 +5185,7 @@ namespace BR.Message
 		public class VotedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 53);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 55);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 Voter;
@@ -5031,7 +5246,7 @@ namespace BR.Message
 		public class VoteEndS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 54);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 56);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64[] Voted;
@@ -5092,7 +5307,7 @@ namespace BR.Message
 		public class PlayerKilledS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 55);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 57);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 KilledPlayer;
@@ -5153,7 +5368,7 @@ namespace BR.Message
 		public class PlayerRevealedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 56);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 58);
 
 			public System.UInt64 GameInsUID;
 			public System.UInt64 RevealedPlayerID;
@@ -5219,7 +5434,7 @@ namespace BR.Message
 		public class GamePlayAgainCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 57);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 59);
 
 			public GamePlayAgainCmd()
 				{}
@@ -5263,9 +5478,11 @@ namespace BR.Message
 		public class GamePlayAgainRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 57);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 59);
 
 			public System.Int32 Result;
+			public System.UInt64 TotalGem;
+			public System.UInt64 TotalGameMoney;
 			public GamePlayAgainRes()
 				{}
 
@@ -5276,8 +5493,8 @@ namespace BR.Message
 
 			public override void TraceOut(string Prefix)
 			{
- 				Debug.Print("{{0}}:GamePlayAgainRes: , Result:{1}",
-												Prefix, Result.ToString()); 
+ 				Debug.Print("{{0}}:GamePlayAgainRes: , Result:{1}, TotalGem:{2}, TotalGameMoney:{3}",
+												Prefix, Result.ToString(), TotalGem.ToString(), TotalGameMoney.ToString()); 
 			} // public override void TraceOut(string Prefix)
 
 
@@ -5286,26 +5503,34 @@ namespace BR.Message
  				var binReader = (PacketMemoryReader)binaryReader;
 				Result = binReader.ReadInt32();
 
+				TotalGem = binReader.ReadUInt64();
+
+				TotalGameMoney = binReader.ReadUInt64();
+
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
 
 			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 			{
- 				BuildMessageBuffer( binWriter, ref Header , Result );
+ 				BuildMessageBuffer( binWriter, ref Header , Result, TotalGem, TotalGameMoney );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
-					+ 4;
+					+ 4
+					+ 8
+					+ 8;
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
 				header.Length = (uint)__uiMessageSize;
 				binWriter.Write( InResult);
+				binWriter.Write( InTotalGem);
+				binWriter.Write( InTotalGameMoney);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 		} // public class GamePlayAgainRes : MessageBase
 
@@ -5314,7 +5539,7 @@ namespace BR.Message
 		public class GamePlayAgainS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 58);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 60);
 
 			public System.UInt64 PartyUID;
 			public System.UInt64 LeadPlayer;
@@ -5365,14 +5590,14 @@ namespace BR.Message
 
 		} // public class GamePlayAgainS2CEvt : MessageBase
 
-		// Cmd: Player. revive himself
+		// Cmd: Player. reveal a player
 		[Preserve (AllMembers = true)]
 		public class GameRevealPlayerCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 59);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 61);
 
-			public System.UInt64 TargetPlayerID;
+			public System.UInt64[] TargetPlayerID;
 			public GameRevealPlayerCmd()
 				{}
 
@@ -5391,7 +5616,12 @@ namespace BR.Message
 			public override void ParseMsg(BinaryMemoryReader binaryReader)
 			{
  				var binReader = (PacketMemoryReader)binaryReader;
-				TargetPlayerID = binReader.ReadUInt64();
+				UInt16 uiSizeOfTargetPlayerID = 0;
+				uiSizeOfTargetPlayerID = binReader.ReadUInt16();
+				TargetPlayerID = new System.UInt64[uiSizeOfTargetPlayerID];
+				for( int iElement = 0; iElement < uiSizeOfTargetPlayerID; iElement++) {
+				TargetPlayerID[iElement] = binReader.ReadUInt64();
+				}
 
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
@@ -5401,29 +5631,31 @@ namespace BR.Message
  				BuildMessageBuffer( binWriter, ref Header , TargetPlayerID );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt64 InTargetPlayerID )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt64[] InTargetPlayerID )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
-					+ 8;
+					+ 8*(InTargetPlayerID.Length) + sizeof(UInt16);
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
 				header.Length = (uint)__uiMessageSize;
 				binWriter.Write( InTargetPlayerID);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt64 InTargetPlayerID )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt64[] InTargetPlayerID )
 
 		} // public class GameRevealPlayerCmd : MessageBase
 		[Preserve (AllMembers = true)]
 		public class GameRevealPlayerRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 59);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 61);
 
 			public System.Int32 Result;
-			public System.UInt64 RevealedPlayerID;
-			public BR.PlayerRole RevealedRole;
+			public System.UInt64[] RevealedPlayerID;
+			public BR.PlayerRole[] RevealedRole;
+			public System.UInt64 TotalGem;
+			public System.UInt64 TotalGameMoney;
 			public GameRevealPlayerRes()
 				{}
 
@@ -5434,8 +5666,8 @@ namespace BR.Message
 
 			public override void TraceOut(string Prefix)
 			{
- 				Debug.Print("{{0}}:GameRevealPlayerRes: , Result:{1}, RevealedPlayerID:{2}, RevealedRole:{3}",
-												Prefix, Result.ToString(), RevealedPlayerID.ToString(), RevealedRole.ToString()); 
+ 				Debug.Print("{{0}}:GameRevealPlayerRes: , Result:{1}, RevealedPlayerID:{2}, RevealedRole:{3}, TotalGem:{4}, TotalGameMoney:{5}",
+												Prefix, Result.ToString(), RevealedPlayerID.ToString(), RevealedRole.ToString(), TotalGem.ToString(), TotalGameMoney.ToString()); 
 			} // public override void TraceOut(string Prefix)
 
 
@@ -5444,25 +5676,41 @@ namespace BR.Message
  				var binReader = (PacketMemoryReader)binaryReader;
 				Result = binReader.ReadInt32();
 
-				RevealedPlayerID = binReader.ReadUInt64();
+				UInt16 uiSizeOfRevealedPlayerID = 0;
+				uiSizeOfRevealedPlayerID = binReader.ReadUInt16();
+				RevealedPlayerID = new System.UInt64[uiSizeOfRevealedPlayerID];
+				for( int iElement = 0; iElement < uiSizeOfRevealedPlayerID; iElement++) {
+				RevealedPlayerID[iElement] = binReader.ReadUInt64();
+				}
 
-				RevealedRole = binReader.ReadPlayerRole();
+				UInt16 uiSizeOfRevealedRole = 0;
+				uiSizeOfRevealedRole = binReader.ReadUInt16();
+				RevealedRole = new BR.PlayerRole[uiSizeOfRevealedRole];
+				for( int iElement = 0; iElement < uiSizeOfRevealedRole; iElement++) {
+				RevealedRole[iElement] = binReader.ReadPlayerRole();
+				}
+
+				TotalGem = binReader.ReadUInt64();
+
+				TotalGameMoney = binReader.ReadUInt64();
 
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
 
 			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 			{
- 				BuildMessageBuffer( binWriter, ref Header , Result, RevealedPlayerID, RevealedRole );
+ 				BuildMessageBuffer( binWriter, ref Header , Result, RevealedPlayerID, RevealedRole, TotalGem, TotalGameMoney );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InRevealedPlayerID, BR.PlayerRole InRevealedRole )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64[] InRevealedPlayerID, BR.PlayerRole[] InRevealedRole, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
 					+ 4
+					+ 8*(InRevealedPlayerID.Length) + sizeof(UInt16)
+					+ 1*(InRevealedRole.Length) + sizeof(UInt16)
 					+ 8
-					+ 1;
+					+ 8;
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
@@ -5470,8 +5718,10 @@ namespace BR.Message
 				binWriter.Write( InResult);
 				binWriter.Write( InRevealedPlayerID);
 				binWriter.Write( InRevealedRole);
+				binWriter.Write( InTotalGem);
+				binWriter.Write( InTotalGameMoney);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InRevealedPlayerID, BR.PlayerRole InRevealedRole )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64[] InRevealedPlayerID, BR.PlayerRole[] InRevealedRole, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 		} // public class GameRevealPlayerRes : MessageBase
 
@@ -5480,7 +5730,7 @@ namespace BR.Message
 		public class GamePlayerReviveCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 60);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 62);
 
 			public GamePlayerReviveCmd()
 				{}
@@ -5524,9 +5774,11 @@ namespace BR.Message
 		public class GamePlayerReviveRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 60);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 62);
 
 			public System.Int32 Result;
+			public System.UInt64 TotalGem;
+			public System.UInt64 TotalGameMoney;
 			public GamePlayerReviveRes()
 				{}
 
@@ -5537,8 +5789,8 @@ namespace BR.Message
 
 			public override void TraceOut(string Prefix)
 			{
- 				Debug.Print("{{0}}:GamePlayerReviveRes: , Result:{1}",
-												Prefix, Result.ToString()); 
+ 				Debug.Print("{{0}}:GamePlayerReviveRes: , Result:{1}, TotalGem:{2}, TotalGameMoney:{3}",
+												Prefix, Result.ToString(), TotalGem.ToString(), TotalGameMoney.ToString()); 
 			} // public override void TraceOut(string Prefix)
 
 
@@ -5547,26 +5799,34 @@ namespace BR.Message
  				var binReader = (PacketMemoryReader)binaryReader;
 				Result = binReader.ReadInt32();
 
+				TotalGem = binReader.ReadUInt64();
+
+				TotalGameMoney = binReader.ReadUInt64();
+
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
 
 			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 			{
- 				BuildMessageBuffer( binWriter, ref Header , Result );
+ 				BuildMessageBuffer( binWriter, ref Header , Result, TotalGem, TotalGameMoney );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
-					+ 4;
+					+ 4
+					+ 8
+					+ 8;
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
 				header.Length = (uint)__uiMessageSize;
 				binWriter.Write( InResult);
+				binWriter.Write( InTotalGem);
+				binWriter.Write( InTotalGameMoney);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 		} // public class GamePlayerReviveRes : MessageBase
 
@@ -5575,7 +5835,7 @@ namespace BR.Message
 		public class GamePlayerRevivedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 61);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 63);
 
 			public System.UInt64 RevivedPlayerID;
 			public GamePlayerRevivedS2CEvt()
@@ -5621,14 +5881,120 @@ namespace BR.Message
 
 		} // public class GamePlayerRevivedS2CEvt : MessageBase
 
+		// Cmd: Player. reset ranking
+		[Preserve (AllMembers = true)]
+		public class GamePlayerResetRankCmd : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 64);
+
+			public GamePlayerResetRankCmd()
+				{}
+
+			public GamePlayerResetRankCmd( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:GamePlayerResetRankCmd: ",
+												Prefix); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header   );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header   )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 ;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header   )
+
+		} // public class GamePlayerResetRankCmd : MessageBase
+		[Preserve (AllMembers = true)]
+		public class GamePlayerResetRankRes : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 64);
+
+			public System.Int32 Result;
+			public System.UInt64 TotalGem;
+			public System.UInt64 TotalGameMoney;
+			public GamePlayerResetRankRes()
+				{}
+
+			public GamePlayerResetRankRes( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:GamePlayerResetRankRes: , Result:{1}, TotalGem:{2}, TotalGameMoney:{3}",
+												Prefix, Result.ToString(), TotalGem.ToString(), TotalGameMoney.ToString()); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+				Result = binReader.ReadInt32();
+
+				TotalGem = binReader.ReadUInt64();
+
+				TotalGameMoney = binReader.ReadUInt64();
+
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header , Result, TotalGem, TotalGameMoney );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 
+					+ 4
+					+ 8
+					+ 8;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+				binWriter.Write( InResult);
+				binWriter.Write( InTotalGem);
+				binWriter.Write( InTotalGameMoney);
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
+
+		} // public class GamePlayerResetRankRes : MessageBase
+
 		// Cmd: Request Game match
 		[Preserve (AllMembers = true)]
 		public class RequestGameMatchCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 62);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 65);
 
 			public System.Byte NumPlayer;
+			public BR.PlayerRole RequestRole;
 			public RequestGameMatchCmd()
 				{}
 
@@ -5639,8 +6005,8 @@ namespace BR.Message
 
 			public override void TraceOut(string Prefix)
 			{
- 				Debug.Print("{{0}}:RequestGameMatchCmd: , NumPlayer:{1}",
-												Prefix, NumPlayer.ToString()); 
+ 				Debug.Print("{{0}}:RequestGameMatchCmd: , NumPlayer:{1}, RequestRole:{2}",
+												Prefix, NumPlayer.ToString(), RequestRole.ToString()); 
 			} // public override void TraceOut(string Prefix)
 
 
@@ -5649,35 +6015,41 @@ namespace BR.Message
  				var binReader = (PacketMemoryReader)binaryReader;
 				NumPlayer = binReader.ReadByte();
 
+				RequestRole = binReader.ReadPlayerRole();
+
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
 
 			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 			{
- 				BuildMessageBuffer( binWriter, ref Header , NumPlayer );
+ 				BuildMessageBuffer( binWriter, ref Header , NumPlayer, RequestRole );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Byte InNumPlayer )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Byte InNumPlayer, BR.PlayerRole InRequestRole )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
+					+ 1
 					+ 1;
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
 				header.Length = (uint)__uiMessageSize;
 				binWriter.Write( InNumPlayer);
+				binWriter.Write( InRequestRole);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Byte InNumPlayer )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Byte InNumPlayer, BR.PlayerRole InRequestRole )
 
 		} // public class RequestGameMatchCmd : MessageBase
 		[Preserve (AllMembers = true)]
 		public class RequestGameMatchRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 62);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 65);
 
 			public System.Int32 Result;
+			public System.UInt64 TotalGem;
+			public System.UInt64 TotalGameMoney;
 			public RequestGameMatchRes()
 				{}
 
@@ -5688,8 +6060,8 @@ namespace BR.Message
 
 			public override void TraceOut(string Prefix)
 			{
- 				Debug.Print("{{0}}:RequestGameMatchRes: , Result:{1}",
-												Prefix, Result.ToString()); 
+ 				Debug.Print("{{0}}:RequestGameMatchRes: , Result:{1}, TotalGem:{2}, TotalGameMoney:{3}",
+												Prefix, Result.ToString(), TotalGem.ToString(), TotalGameMoney.ToString()); 
 			} // public override void TraceOut(string Prefix)
 
 
@@ -5698,26 +6070,34 @@ namespace BR.Message
  				var binReader = (PacketMemoryReader)binaryReader;
 				Result = binReader.ReadInt32();
 
+				TotalGem = binReader.ReadUInt64();
+
+				TotalGameMoney = binReader.ReadUInt64();
+
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
 
 			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 			{
- 				BuildMessageBuffer( binWriter, ref Header , Result );
+ 				BuildMessageBuffer( binWriter, ref Header , Result, TotalGem, TotalGameMoney );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
-					+ 4;
+					+ 4
+					+ 8
+					+ 8;
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
 				header.Length = (uint)__uiMessageSize;
 				binWriter.Write( InResult);
+				binWriter.Write( InTotalGem);
+				binWriter.Write( InTotalGameMoney);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 		} // public class RequestGameMatchRes : MessageBase
 
@@ -5726,7 +6106,7 @@ namespace BR.Message
 		public class GameMatchedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 63);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 66);
 
 			public System.UInt64 InsUID;
 			public System.UInt32 TimeStamp;
@@ -5739,6 +6119,9 @@ namespace BR.Message
 			public System.Byte Dead;
 			public System.Byte[] ChatHistoryData;
 			public System.Byte[] GameLogData;
+			public System.UInt32 Stamina;
+			public System.UInt64 TotalGem;
+			public System.UInt64 TotalGameMoney;
 			public GameMatchedS2CEvt()
 				{}
 
@@ -5749,8 +6132,8 @@ namespace BR.Message
 
 			public override void TraceOut(string Prefix)
 			{
- 				Debug.Print("{{0}}:GameMatchedS2CEvt: , InsUID:{1}, TimeStamp:{2}, GameState:{3}, Day:{4}, MaxPlayer:{5}, PlayerIndex:{6}, PlayerCharacter:{7}, Role:{8}, Dead:{9}, ChatHistoryData:{10}, GameLogData:{11}",
-												Prefix, InsUID.ToString(), TimeStamp.ToString(), GameState.ToString(), Day.ToString(), MaxPlayer.ToString(), PlayerIndex.ToString(), PlayerCharacter.ToString(), Role.ToString(), Dead.ToString(), ChatHistoryData.ToString(), GameLogData.ToString()); 
+ 				Debug.Print("{{0}}:GameMatchedS2CEvt: , InsUID:{1}, TimeStamp:{2}, GameState:{3}, Day:{4}, MaxPlayer:{5}, PlayerIndex:{6}, PlayerCharacter:{7}, Role:{8}, Dead:{9}, ChatHistoryData:{10}, GameLogData:{11}, Stamina:{12}, TotalGem:{13}, TotalGameMoney:{14}",
+												Prefix, InsUID.ToString(), TimeStamp.ToString(), GameState.ToString(), Day.ToString(), MaxPlayer.ToString(), PlayerIndex.ToString(), PlayerCharacter.ToString(), Role.ToString(), Dead.ToString(), ChatHistoryData.ToString(), GameLogData.ToString(), Stamina.ToString(), TotalGem.ToString(), TotalGameMoney.ToString()); 
 			} // public override void TraceOut(string Prefix)
 
 
@@ -5785,15 +6168,21 @@ namespace BR.Message
 				GameLogData = new System.Byte[uiSizeOfGameLogData];
 				binReader.ReadBytes(GameLogData);
 
+				Stamina = binReader.ReadUInt32();
+
+				TotalGem = binReader.ReadUInt64();
+
+				TotalGameMoney = binReader.ReadUInt64();
+
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
 
 			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 			{
- 				BuildMessageBuffer( binWriter, ref Header , InsUID, TimeStamp, GameState, Day, MaxPlayer, PlayerIndex, PlayerCharacter, Role, Dead, ChatHistoryData, GameLogData );
+ 				BuildMessageBuffer( binWriter, ref Header , InsUID, TimeStamp, GameState, Day, MaxPlayer, PlayerIndex, PlayerCharacter, Role, Dead, ChatHistoryData, GameLogData, Stamina, TotalGem, TotalGameMoney );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt64 InInsUID, System.UInt32 InTimeStamp, BR.GameStateID InGameState, System.Byte InDay, System.Byte InMaxPlayer, System.Byte InPlayerIndex, System.Byte InPlayerCharacter, BR.PlayerRole InRole, System.Byte InDead, System.Byte[] InChatHistoryData, System.Byte[] InGameLogData )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt64 InInsUID, System.UInt32 InTimeStamp, BR.GameStateID InGameState, System.Byte InDay, System.Byte InMaxPlayer, System.Byte InPlayerIndex, System.Byte InPlayerCharacter, BR.PlayerRole InRole, System.Byte InDead, System.Byte[] InChatHistoryData, System.Byte[] InGameLogData, System.UInt32 InStamina, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
@@ -5807,7 +6196,10 @@ namespace BR.Message
 					+ 1
 					+ 1
 					+ 1*(InChatHistoryData.Length) + sizeof(UInt16)
-					+ 1*(InGameLogData.Length) + sizeof(UInt16);
+					+ 1*(InGameLogData.Length) + sizeof(UInt16)
+					+ 4
+					+ 8
+					+ 8;
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
@@ -5823,8 +6215,11 @@ namespace BR.Message
 				binWriter.Write( InDead);
 				binWriter.Write( InChatHistoryData);
 				binWriter.Write( InGameLogData);
+				binWriter.Write( InStamina);
+				binWriter.Write( InTotalGem);
+				binWriter.Write( InTotalGameMoney);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt64 InInsUID, System.UInt32 InTimeStamp, BR.GameStateID InGameState, System.Byte InDay, System.Byte InMaxPlayer, System.Byte InPlayerIndex, System.Byte InPlayerCharacter, BR.PlayerRole InRole, System.Byte InDead, System.Byte[] InChatHistoryData, System.Byte[] InGameLogData )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt64 InInsUID, System.UInt32 InTimeStamp, BR.GameStateID InGameState, System.Byte InDay, System.Byte InMaxPlayer, System.Byte InPlayerIndex, System.Byte InPlayerCharacter, BR.PlayerRole InRole, System.Byte InDead, System.Byte[] InChatHistoryData, System.Byte[] InGameLogData, System.UInt32 InStamina, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 		} // public class GameMatchedS2CEvt : MessageBase
 
@@ -5833,7 +6228,7 @@ namespace BR.Message
 		public class GameMatchFailedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 64);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 67);
 
 			public System.Int32 FailedReason;
 			public GameMatchFailedS2CEvt()
@@ -5884,7 +6279,7 @@ namespace BR.Message
 		public class GameMatchingStartedS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 65);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 68);
 
 			public GameMatchingStartedS2CEvt()
 				{}
@@ -5930,7 +6325,7 @@ namespace BR.Message
 		public class CancelGameMatchCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 66);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 69);
 
 			public CancelGameMatchCmd()
 				{}
@@ -5974,7 +6369,7 @@ namespace BR.Message
 		public class CancelGameMatchRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 66);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 69);
 
 			public System.Int32 Result;
 			public CancelGameMatchRes()
@@ -6025,7 +6420,7 @@ namespace BR.Message
 		public class GameMatchingCanceledS2CEvt : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 67);
+			public static MessageID MID = new MessageID(MSGTYPE.S2CEVT, true, true, POLICY.GAME, 70);
 
 			public GameMatchingCanceledS2CEvt()
 				{}
@@ -6066,15 +6461,128 @@ namespace BR.Message
 
 		} // public class GameMatchingCanceledS2CEvt : MessageBase
 
+		// Cmd: Buy shop item prepare
+		[Preserve (AllMembers = true)]
+		public class BuyShopItemPrepareCmd : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 71);
+
+			public System.UInt32 ShopItemID;
+			public BuyShopItemPrepareCmd()
+				{}
+
+			public BuyShopItemPrepareCmd( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:BuyShopItemPrepareCmd: , ShopItemID:{1}",
+												Prefix, ShopItemID.ToString()); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+				ShopItemID = binReader.ReadUInt32();
+
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header , ShopItemID );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt32 InShopItemID )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 
+					+ 4;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+				binWriter.Write( InShopItemID);
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt32 InShopItemID )
+
+		} // public class BuyShopItemPrepareCmd : MessageBase
+		[Preserve (AllMembers = true)]
+		public class BuyShopItemPrepareRes : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 71);
+
+			public System.Int32 Result;
+			public System.UInt32 ShopItemID;
+			public string PurchaseID { get; private set; }
+			public BuyShopItemPrepareRes()
+				{}
+
+			public BuyShopItemPrepareRes( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:BuyShopItemPrepareRes: , Result:{1}, ShopItemID:{2}, PurchaseID:{3}",
+												Prefix, Result.ToString(), ShopItemID.ToString(), PurchaseID); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+				Result = binReader.ReadInt32();
+
+				ShopItemID = binReader.ReadUInt32();
+
+				PurchaseID = binReader.ReadString();
+
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header , Result, ShopItemID, PurchaseID );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt32 InShopItemID, string InPurchaseID )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 
+					+ 4
+					+ 4
+					+ binWriter.StringEncoder.GetByteCount(InPurchaseID) + 1 + 2;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+				binWriter.Write( InResult);
+				binWriter.Write( InShopItemID);
+				binWriter.Write( InPurchaseID);
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, System.UInt32 InShopItemID, string InPurchaseID )
+
+		} // public class BuyShopItemPrepareRes : MessageBase
+
 		// Cmd: Buy shop item
 		[Preserve (AllMembers = true)]
 		public class BuyShopItemCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 68);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 72);
 
 			public System.UInt32 ShopItemID;
-			public string ParamString { get; private set; }
+			public string Platform { get; private set; }
+			public string PackageName { get; private set; }
+			public string PurchaseTransactionID { get; private set; }
+			public System.Byte[] PurchaseToken;
 			public BuyShopItemCmd()
 				{}
 
@@ -6085,8 +6593,8 @@ namespace BR.Message
 
 			public override void TraceOut(string Prefix)
 			{
- 				Debug.Print("{{0}}:BuyShopItemCmd: , ShopItemID:{1}, ParamString:{2}",
-												Prefix, ShopItemID.ToString(), ParamString); 
+ 				Debug.Print("{{0}}:BuyShopItemCmd: , ShopItemID:{1}, Platform:{2}, PackageName:{3}, PurchaseTransactionID:{4}, PurchaseToken:{5}",
+												Prefix, ShopItemID.ToString(), Platform, PackageName, PurchaseTransactionID, PurchaseToken.ToString()); 
 			} // public override void TraceOut(string Prefix)
 
 
@@ -6095,37 +6603,52 @@ namespace BR.Message
  				var binReader = (PacketMemoryReader)binaryReader;
 				ShopItemID = binReader.ReadUInt32();
 
-				ParamString = binReader.ReadString();
+				Platform = binReader.ReadString();
+
+				PackageName = binReader.ReadString();
+
+				PurchaseTransactionID = binReader.ReadString();
+
+				UInt16 uiSizeOfPurchaseToken = 0;
+				uiSizeOfPurchaseToken = binReader.ReadUInt16();
+				PurchaseToken = new System.Byte[uiSizeOfPurchaseToken];
+				binReader.ReadBytes(PurchaseToken);
 
 			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
 
 
 			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 			{
- 				BuildMessageBuffer( binWriter, ref Header , ShopItemID, ParamString );
+ 				BuildMessageBuffer( binWriter, ref Header , ShopItemID, Platform, PackageName, PurchaseTransactionID, PurchaseToken );
 			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
 
-			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt32 InShopItemID, string InParamString )
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt32 InShopItemID, string InPlatform, string InPackageName, string InPurchaseTransactionID, System.Byte[] InPurchaseToken )
 			{
  				var binWriter = (PacketMemoryWriter)binaryWriter;
 				int __uiMessageSize = sizeof(UInt64)*2 
 					+ 4
-					+ binWriter.StringEncoder.GetByteCount(InParamString) + 1 + 2;
+					+ binWriter.StringEncoder.GetByteCount(InPlatform) + 1 + 2
+					+ binWriter.StringEncoder.GetByteCount(InPackageName) + 1 + 2
+					+ binWriter.StringEncoder.GetByteCount(InPurchaseTransactionID) + 1 + 2
+					+ 1*(InPurchaseToken.Length) + sizeof(UInt16);
 
 				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
 
 				header.Length = (uint)__uiMessageSize;
 				binWriter.Write( InShopItemID);
-				binWriter.Write( InParamString);
+				binWriter.Write( InPlatform);
+				binWriter.Write( InPackageName);
+				binWriter.Write( InPurchaseTransactionID);
+				binWriter.Write( InPurchaseToken);
 
-			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt32 InShopItemID, string InParamString )
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.UInt32 InShopItemID, string InPlatform, string InPackageName, string InPurchaseTransactionID, System.Byte[] InPurchaseToken )
 
 		} // public class BuyShopItemCmd : MessageBase
 		[Preserve (AllMembers = true)]
 		public class BuyShopItemRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 68);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 72);
 
 			public System.Int32 Result;
 			public System.UInt32 ShopItemID;
@@ -6181,7 +6704,7 @@ namespace BR.Message
 		public class GiveStaminaCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 69);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 73);
 
 			public System.UInt64 TargetPlayer;
 			public GiveStaminaCmd()
@@ -6230,7 +6753,7 @@ namespace BR.Message
 		public class GiveStaminaRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 69);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 73);
 
 			public System.Int32 Result;
 			public System.UInt64 TargetPlayer;
@@ -6291,7 +6814,7 @@ namespace BR.Message
 		public class SetPresetGameConfigIDCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 70);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 74);
 
 			public System.UInt32 PresetID;
 			public SetPresetGameConfigIDCmd()
@@ -6340,7 +6863,7 @@ namespace BR.Message
 		public class SetPresetGameConfigIDRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 70);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 74);
 
 			public System.Int32 Result;
 			public SetPresetGameConfigIDRes()
@@ -6391,7 +6914,7 @@ namespace BR.Message
 		public class GainGameResourceCmd : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 71);
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.GAME, 75);
 
 			public System.Int32 Resource;
 			public System.Int32 Value;
@@ -6445,7 +6968,7 @@ namespace BR.Message
 		public class GainGameResourceRes : MessageBase
 		{
  
-			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 71);
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.GAME, 75);
 
 			public System.Int32 Result;
 			public GainGameResourceRes()

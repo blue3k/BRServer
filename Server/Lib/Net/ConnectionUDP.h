@@ -13,7 +13,7 @@
 #pragma once
 
 #include "Net/NetDef.h"
-#include "Net/NetMessage.h"
+#include "Net/NetCtrl.h"
 #include "Net/NetSystem.h"
 #include "Common/HRESNet.h"
 #include "Common/PageQueue.h"
@@ -64,6 +64,8 @@ namespace Net {
 		// Net control Sending wait queue
 		PageQueue<MsgNetCtrlBuffer>	m_RecvNetCtrlQueue;
 
+		Message::MessageData*		m_SubFrameMessage;
+
 	protected:
 		
 		// Process network control message
@@ -106,9 +108,14 @@ namespace Net {
 		// Prepare gathering buffer
 		HRESULT PrepareGatheringBuffer( UINT uiRequiredSize );
 		static HRESULT ReleaseGatheringBuffer( BYTE *pBuffer );
+		UINT GetGatheredBufferSize()                                  { return m_uiGatheredSize; }
 
 		// Called on connection result
 		virtual void OnConnectionResult( HRESULT hrConnect );
+
+		// frame sequence
+		HRESULT SendFrameSequenceMessage(Message::MessageData* pMsg);
+		HRESULT OnFrameSequenceMessage(Message::MessageData* pMsg, const std::function<void(Message::MessageData* pMsgData)>& action);
 
 		// Initialize connection
 		virtual HRESULT InitConnection(SOCKET socket, const ConnectionInformation &connectInfo) override;
@@ -134,7 +141,7 @@ namespace Net {
 		virtual ULONG UpdateSendQueue();
 
 
-		virtual HRESULT ProcGuarrentedMessageWindow(std::function<void(Message::MessageData* pMsgData)> action);
+		virtual HRESULT ProcGuarrentedMessageWindow(const std::function<void(Message::MessageData* pMsgData)>& action);
 
 	};
 

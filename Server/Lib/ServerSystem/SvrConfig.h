@@ -39,7 +39,7 @@ namespace Config {
 		USHORT Port;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 	
 
@@ -63,7 +63,7 @@ namespace Config {
 		std::string Password;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 	
 
@@ -84,7 +84,7 @@ namespace Config {
 		UINT PartitioningID;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 
 	
@@ -108,7 +108,7 @@ namespace Config {
 		virtual void AddChild( DOMElement *pChild );
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 
 	//////////////////////////////////////////////////////////////
@@ -134,8 +134,39 @@ namespace Config {
 		ULONG		WorkerCount;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
+
+
+	class ServerComponent : public XML::DOMElement
+	{
+	public:
+		ServerComponent(const char* typeName = "ServerComponent");
+
+	};
+
+	class ServerComponentGoogle : public ServerComponent
+	{
+	public:
+		ServerComponentGoogle();
+		
+		std::string      Account;
+		std::string      P12KeyFile;
+		std::string      AuthScopes;
+
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+	class ServerComponentIOS : public ServerComponent
+	{
+	public:
+		ServerComponentIOS();
+
+		std::string      URL;
+
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
 
 	//////////////////////////////////////////////////////////////
 	// server generic
@@ -161,19 +192,21 @@ namespace Config {
 
 		// Private network socket
 		NetSocket*		NetPrivate;
+
+		std::vector<ServerComponent*> ServerComponents;
 		
 		///////////////////////////////////////////////////////////////////////////
 		//
 		//	Overriding
 		//
 
-		virtual void AddChild( DOMElement *pChild );
+		virtual void AddChild(DOMElement *pChild) override;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 
 		// Called when the load done
-		virtual bool OnLoadDone();
+		virtual bool OnLoadDone() override;
 	};
 
 
@@ -195,10 +228,10 @@ namespace Config {
 		//	Overriding
 		//
 
-		virtual void AddChild( DOMElement *pChild );
+		virtual void AddChild(DOMElement *pChild) override;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 	
 
@@ -218,7 +251,7 @@ namespace Config {
 		std::string Parameters;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 
 
@@ -234,10 +267,10 @@ namespace Config {
 		//	Overriding
 		//
 
-		virtual void AddChild( DOMElement *pChild );
+		virtual void AddChild(DOMElement *pChild) override;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 
 
@@ -275,10 +308,10 @@ namespace Config {
 		//	Overriding
 		//
 
-		virtual void AddChild( DOMElement *pChild );
+		virtual void AddChild(DOMElement *pChild) override;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 
 
@@ -340,10 +373,10 @@ namespace Config {
 		//	Overriding
 		//
 
-		virtual void AddChild( DOMElement *pChild );
+		virtual void AddChild(DOMElement *pChild) override;
 
 		// for parsing
-		virtual bool SetAttributeValue( const std::string& name, const std::string& value );
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 
 	}; // class ConfigData
 

@@ -63,6 +63,42 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetPolicyGame::JoinGameServerCmd( const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		// Cmd: player complition statues
+		HRESULT NetPolicyGame::GetComplitionStateCmd(  )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::GetComplitionStateCmd::BuildIMsg(pMsg));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetPolicyGame::GetComplitionStateCmd(  )
+		// Cmd: Player complition state
+		HRESULT NetPolicyGame::SetComplitionStateCmd( const char* InComplitionState )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::SetComplitionStateCmd::BuildIMsg(pMsg, InComplitionState));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetPolicyGame::SetComplitionStateCmd( const char* InComplitionState )
 		// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
 		HRESULT NetPolicyGame::RegisterGCMCmd( const char* InGCMRegisteredID )
 		{
@@ -334,13 +370,13 @@ namespace BR
 
 		}; // HRESULT NetPolicyGame::GetGamePlayerInfoCmd( const PlayerID &InPlayerID )
 		// Cmd: Change NickName
-		HRESULT NetPolicyGame::SetNickNameCmd( const char* InNickName )
+		HRESULT NetPolicyGame::SetNickNameCmd( const char* InNickName, const BYTE &InIsCostFree )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::SetNickNameCmd::BuildIMsg(pMsg, InNickName));
+			 protocolChk(Message::Game::SetNickNameCmd::BuildIMsg(pMsg, InNickName, InIsCostFree));
 
 			 protocolChkPtr(GetConnection());
 
@@ -350,7 +386,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGame::SetNickNameCmd( const char* InNickName )
+		}; // HRESULT NetPolicyGame::SetNickNameCmd( const char* InNickName, const BYTE &InIsCostFree )
 		// Cmd: Create Party
 		HRESULT NetPolicyGame::CreatePartyCmd(  )
 		{
@@ -639,8 +675,8 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetPolicyGame::GamePlayAgainCmd(  )
-		// Cmd: Player. revive himself
-		HRESULT NetPolicyGame::GameRevealPlayerCmd( const PlayerID &InTargetPlayerID )
+		// Cmd: Player. reveal a player
+		HRESULT NetPolicyGame::GameRevealPlayerCmd( const Array<PlayerID>& InTargetPlayerID )
 		{
  			HRESULT hr = S_OK;
 
@@ -656,7 +692,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGame::GameRevealPlayerCmd( const PlayerID &InTargetPlayerID )
+		}; // HRESULT NetPolicyGame::GameRevealPlayerCmd( const Array<PlayerID>& InTargetPlayerID )
 		// Cmd: Player. revive himself
 		HRESULT NetPolicyGame::GamePlayerReviveCmd(  )
 		{
@@ -675,14 +711,14 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetPolicyGame::GamePlayerReviveCmd(  )
-		// Cmd: Request Game match
-		HRESULT NetPolicyGame::RequestGameMatchCmd( const BYTE &InNumPlayer )
+		// Cmd: Player. reset ranking
+		HRESULT NetPolicyGame::GamePlayerResetRankCmd(  )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::RequestGameMatchCmd::BuildIMsg(pMsg, InNumPlayer));
+			 protocolChk(Message::Game::GamePlayerResetRankCmd::BuildIMsg(pMsg));
 
 			 protocolChkPtr(GetConnection());
 
@@ -692,7 +728,25 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGame::RequestGameMatchCmd( const BYTE &InNumPlayer )
+		}; // HRESULT NetPolicyGame::GamePlayerResetRankCmd(  )
+		// Cmd: Request Game match
+		HRESULT NetPolicyGame::RequestGameMatchCmd( const BYTE &InNumPlayer, const PlayerRole &InRequestRole )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::RequestGameMatchCmd::BuildIMsg(pMsg, InNumPlayer, InRequestRole));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetPolicyGame::RequestGameMatchCmd( const BYTE &InNumPlayer, const PlayerRole &InRequestRole )
 		// Cmd: Cancel Game match
 		HRESULT NetPolicyGame::CancelGameMatchCmd(  )
 		{
@@ -711,14 +765,14 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetPolicyGame::CancelGameMatchCmd(  )
-		// Cmd: Buy shop item
-		HRESULT NetPolicyGame::BuyShopItemCmd( const UINT32 &InShopItemID, const char* InParamString )
+		// Cmd: Buy shop item prepare
+		HRESULT NetPolicyGame::BuyShopItemPrepareCmd( const UINT32 &InShopItemID )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::BuyShopItemCmd::BuildIMsg(pMsg, InShopItemID, InParamString));
+			 protocolChk(Message::Game::BuyShopItemPrepareCmd::BuildIMsg(pMsg, InShopItemID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -728,7 +782,25 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGame::BuyShopItemCmd( const UINT32 &InShopItemID, const char* InParamString )
+		}; // HRESULT NetPolicyGame::BuyShopItemPrepareCmd( const UINT32 &InShopItemID )
+		// Cmd: Buy shop item
+		HRESULT NetPolicyGame::BuyShopItemCmd( const UINT32 &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<BYTE>& InPurchaseToken )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::BuyShopItemCmd::BuildIMsg(pMsg, InShopItemID, InPlatform, InPackageName, InPurchaseTransactionID, InPurchaseToken));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetPolicyGame::BuyShopItemCmd( const UINT32 &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<BYTE>& InPurchaseToken )
 		// Cmd: Give my stamina to other player
 		HRESULT NetPolicyGame::GiveStaminaCmd( const PlayerID &InTargetPlayer )
 		{
@@ -803,6 +875,42 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetSvrPolicyGame::JoinGameServerRes( const HRESULT &InResult, const char* InNickName, const GameInsUID &InGameUID, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const MatchingQueueTicket &InMatchingTicket )
+		// Cmd: player complition statues
+		HRESULT NetSvrPolicyGame::GetComplitionStateRes( const HRESULT &InResult, const char* InComplitionState )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::GetComplitionStateRes::BuildIMsg(pMsg, InResult, InComplitionState));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetSvrPolicyGame::GetComplitionStateRes( const HRESULT &InResult, const char* InComplitionState )
+		// Cmd: Player complition state
+		HRESULT NetSvrPolicyGame::SetComplitionStateRes( const HRESULT &InResult )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::SetComplitionStateRes::BuildIMsg(pMsg, InResult));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetSvrPolicyGame::SetComplitionStateRes( const HRESULT &InResult )
 		// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
 		HRESULT NetSvrPolicyGame::RegisterGCMRes( const HRESULT &InResult )
 		{
@@ -1164,13 +1272,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyGame::LevelUpS2CEvt( const UINT64 &InCurrentTotalExp, const UINT32 &InCurrentLevel )
 		// Cmd: Change NickName
-		HRESULT NetSvrPolicyGame::SetNickNameRes( const HRESULT &InResult )
+		HRESULT NetSvrPolicyGame::SetNickNameRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::SetNickNameRes::BuildIMsg(pMsg, InResult));
+			 protocolChk(Message::Game::SetNickNameRes::BuildIMsg(pMsg, InResult, InTotalGem, InTotalGameMoney));
 
 			 protocolChkPtr(GetConnection());
 
@@ -1180,7 +1288,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGame::SetNickNameRes( const HRESULT &InResult )
+		}; // HRESULT NetSvrPolicyGame::SetNickNameRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		// Cmd: Create Party
 		HRESULT NetSvrPolicyGame::CreatePartyRes( const HRESULT &InResult, const PartyUID &InPartyUID )
 		{
@@ -1794,13 +1902,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyGame::PlayerRevealedS2CEvt( const GameInsUID &InGameInsUID, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason )
 		// Cmd: Play again with the current players
-		HRESULT NetSvrPolicyGame::GamePlayAgainRes( const HRESULT &InResult )
+		HRESULT NetSvrPolicyGame::GamePlayAgainRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::GamePlayAgainRes::BuildIMsg(pMsg, InResult));
+			 protocolChk(Message::Game::GamePlayAgainRes::BuildIMsg(pMsg, InResult, InTotalGem, InTotalGameMoney));
 
 			 protocolChkPtr(GetConnection());
 
@@ -1810,7 +1918,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGame::GamePlayAgainRes( const HRESULT &InResult )
+		}; // HRESULT NetSvrPolicyGame::GamePlayAgainRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 		HRESULT NetSvrPolicyGame::GamePlayAgainS2CEvt( const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
 		{
@@ -1829,14 +1937,14 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetSvrPolicyGame::GamePlayAgainS2CEvt( const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
-		// Cmd: Player. revive himself
-		HRESULT NetSvrPolicyGame::GameRevealPlayerRes( const HRESULT &InResult, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole )
+		// Cmd: Player. reveal a player
+		HRESULT NetSvrPolicyGame::GameRevealPlayerRes( const HRESULT &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::GameRevealPlayerRes::BuildIMsg(pMsg, InResult, InRevealedPlayerID, InRevealedRole));
+			 protocolChk(Message::Game::GameRevealPlayerRes::BuildIMsg(pMsg, InResult, InRevealedPlayerID, InRevealedRole, InTotalGem, InTotalGameMoney));
 
 			 protocolChkPtr(GetConnection());
 
@@ -1846,15 +1954,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGame::GameRevealPlayerRes( const HRESULT &InResult, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole )
+		}; // HRESULT NetSvrPolicyGame::GameRevealPlayerRes( const HRESULT &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		// Cmd: Player. revive himself
-		HRESULT NetSvrPolicyGame::GamePlayerReviveRes( const HRESULT &InResult )
+		HRESULT NetSvrPolicyGame::GamePlayerReviveRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::GamePlayerReviveRes::BuildIMsg(pMsg, InResult));
+			 protocolChk(Message::Game::GamePlayerReviveRes::BuildIMsg(pMsg, InResult, InTotalGem, InTotalGameMoney));
 
 			 protocolChkPtr(GetConnection());
 
@@ -1864,7 +1972,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGame::GamePlayerReviveRes( const HRESULT &InResult )
+		}; // HRESULT NetSvrPolicyGame::GamePlayerReviveRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		// S2C: Player is revived
 		HRESULT NetSvrPolicyGame::GamePlayerRevivedS2CEvt( const PlayerID &InRevivedPlayerID )
 		{
@@ -1883,14 +1991,32 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetSvrPolicyGame::GamePlayerRevivedS2CEvt( const PlayerID &InRevivedPlayerID )
+		// Cmd: Player. reset ranking
+		HRESULT NetSvrPolicyGame::GamePlayerResetRankRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::GamePlayerResetRankRes::BuildIMsg(pMsg, InResult, InTotalGem, InTotalGameMoney));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetSvrPolicyGame::GamePlayerResetRankRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		// Cmd: Request Game match
-		HRESULT NetSvrPolicyGame::RequestGameMatchRes( const HRESULT &InResult )
+		HRESULT NetSvrPolicyGame::RequestGameMatchRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::RequestGameMatchRes::BuildIMsg(pMsg, InResult));
+			 protocolChk(Message::Game::RequestGameMatchRes::BuildIMsg(pMsg, InResult, InTotalGem, InTotalGameMoney));
 
 			 protocolChkPtr(GetConnection());
 
@@ -1900,15 +2026,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGame::RequestGameMatchRes( const HRESULT &InResult )
+		}; // HRESULT NetSvrPolicyGame::RequestGameMatchRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		// S2C: Game matched
-		HRESULT NetSvrPolicyGame::GameMatchedS2CEvt( const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData )
+		HRESULT NetSvrPolicyGame::GameMatchedS2CEvt( const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData, const UINT32 &InStamina, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::GameMatchedS2CEvt::BuildIMsg(pMsg, InInsUID, InTimeStamp, InGameState, InDay, InMaxPlayer, InPlayerIndex, InPlayerCharacter, InRole, InDead, InChatHistoryData, InGameLogData));
+			 protocolChk(Message::Game::GameMatchedS2CEvt::BuildIMsg(pMsg, InInsUID, InTimeStamp, InGameState, InDay, InMaxPlayer, InPlayerIndex, InPlayerCharacter, InRole, InDead, InChatHistoryData, InGameLogData, InStamina, InTotalGem, InTotalGameMoney));
 
 			 protocolChkPtr(GetConnection());
 
@@ -1918,7 +2044,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGame::GameMatchedS2CEvt( const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData )
+		}; // HRESULT NetSvrPolicyGame::GameMatchedS2CEvt( const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData, const UINT32 &InStamina, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 		// S2C: Game match failed
 		HRESULT NetSvrPolicyGame::GameMatchFailedS2CEvt( const HRESULT &InFailedReason )
 		{
@@ -1991,6 +2117,24 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetSvrPolicyGame::GameMatchingCanceledS2CEvt(  )
+		// Cmd: Buy shop item prepare
+		HRESULT NetSvrPolicyGame::BuyShopItemPrepareRes( const HRESULT &InResult, const UINT32 &InShopItemID, const char* InPurchaseID )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::BuyShopItemPrepareRes::BuildIMsg(pMsg, InResult, InShopItemID, InPurchaseID));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetSvrPolicyGame::BuyShopItemPrepareRes( const HRESULT &InResult, const UINT32 &InShopItemID, const char* InPurchaseID )
 		// Cmd: Buy shop item
 		HRESULT NetSvrPolicyGame::BuyShopItemRes( const HRESULT &InResult, const UINT32 &InShopItemID )
 		{

@@ -162,6 +162,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RequestedRole, pCur, iMsgSize, sizeof(PlayerRole) ) );
 
 
 			Proc_End:
@@ -170,7 +171,7 @@ namespace BR
 
 			}; // HRESULT PlayerGameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID )
+			HRESULT PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
 			{
  				HRESULT hr = S_OK;
 
@@ -180,7 +181,8 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(UINT16)
 					+ sizeof(PlayerID)
-					+ sizeof(GameInsUID));
+					+ sizeof(GameInsUID)
+					+ sizeof(PlayerRole));
 
 				MessageData *pNewMsg = NULL;
 
@@ -192,6 +194,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
 				Protocol::PackParamCopy( pMsgData, &InDestPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InGameInsUID, sizeof(GameInsUID));
+				Protocol::PackParamCopy( pMsgData, &InRequestedRole, sizeof(PlayerRole));
 
 				pMsg = pNewMsg;
 
@@ -200,7 +203,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID )
+			}; // HRESULT PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
 
 			HRESULT PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -261,8 +264,8 @@ namespace BR
 			VOID PlayerGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerGameMatchedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, DestPlayerID:%5%, GameInsUID:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_DestPlayerID, m_GameInsUID); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerGameMatchedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, DestPlayerID:%5%, GameInsUID:%6%, RequestedRole:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_DestPlayerID, m_GameInsUID, m_RequestedRole); 
 			}; // VOID PlayerGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 

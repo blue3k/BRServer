@@ -184,8 +184,8 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Protocol Build %(Filename)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Protocol Build %(Filename)</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)
-copy CSharp\*.cs ..\..\..\TestApp\TestCSharp\Net\Message\
-copy CSharp\*.cs ..\..\..\..\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\
+
+copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\
 </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/GameMsgClass.h;</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Protocol Build %(Filename)</Message>
@@ -206,8 +206,8 @@ copy CSharp\*.cs ..\..\..\..\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\M
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Protocol Build %(Filename)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Protocol Build %(Filename)</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)
-copy CSharp\*.cs ..\..\..\TestApp\TestCSharp\Net\Message\
-copy CSharp\*.cs ..\..\..\..\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\</Command>
+
+copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/LoginMsgClass.h;</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Protocol Build %(Filename)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Protocol Build %(Filename)</Message>
@@ -216,8 +216,8 @@ copy CSharp\*.cs ..\..\..\..\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\M
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)
-copy CSharp\*.cs ..\..\..\TestApp\TestCSharp\Net\Message\
-copy CSharp\*.cs ..\..\..\..\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\</Command>
+
+copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/LoginMsgClass.h;</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/LoginMsgClass.h;</Outputs>
       <SubType>Designer</SubType>

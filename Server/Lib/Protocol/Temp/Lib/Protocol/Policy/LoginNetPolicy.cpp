@@ -63,6 +63,24 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetPolicyLogin::LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
+		// Cmd: Login request
+		HRESULT NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::CreateRandomUserCmd::BuildIMsg(pMsg, InGameID, InCellPhone));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
 
 
 		// Cmd: Login request
@@ -101,6 +119,24 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetSvrPolicyLogin::LoginByFacebookRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		// Cmd: Login request
+		HRESULT NetSvrPolicyLogin::CreateRandomUserRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::CreateRandomUserRes::BuildIMsg(pMsg, InResult, InGameServerAddr, InAccID, InTicket, InLoginEntityUID));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetSvrPolicyLogin::CreateRandomUserRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 
 
 	}; // namespace Policy

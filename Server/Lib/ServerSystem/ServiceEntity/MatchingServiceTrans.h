@@ -53,12 +53,14 @@ namespace Svr {
 
 		// target queue member count
 		UINT m_TargetQueueMemberCount;
+		UINT m_TargetQueueComponentID;
 		UINT m_MatchingMemberCount;
+		PlayerRole m_RequestRole;
 
 		//LONG m_RequestedTime;
 
 	public:
-		MatchingTransGrabPlayer(UINT matchingMemberCount, UINT targetQueueMemberCount, UINT minQueueCount, UINT maxQueueCount);
+		MatchingTransGrabPlayer(UINT matchingMemberCount, UINT targetQueueMemberCount, PlayerRole playerRole, UINT minQueueCount, UINT maxQueueCount);
 		virtual ~MatchingTransGrabPlayer() {}
 
 		////////////////////////////////////////////////////////////
@@ -154,83 +156,83 @@ namespace Svr {
 
 
 
-	class MatchingPartyTrans : public Svr::TransactionT<MatchingServiceEntity, MatchingPartyTrans, sizeof(TransactionMessageHandlerType)*7>
-	{
-	private:
+	//class MatchingPartyTrans : public Svr::TransactionT<MatchingServiceEntity, MatchingPartyTrans, sizeof(TransactionMessageHandlerType)*7>
+	//{
+	//private:
 
-		enum {
-			MAX_GRAB_TRY = 15,				// Big number is ok because we are going to use bot
-			MAX_NUM_PLAYER = 20,
+	//	enum {
+	//		MAX_GRAB_TRY = 15,				// Big number is ok because we are going to use bot
+	//		MAX_NUM_PLAYER = 20,
 
-			GRAB_RETRY_TIME = 400,			// Small number will be enable bot match often
-			GRAB_TRY_TIMEOUT = 7 * 1000,	// Bot will be matched after this limit
-		};
+	//		GRAB_RETRY_TIME = 400,			// Small number will be enable bot match often
+	//		GRAB_TRY_TIMEOUT = 7 * 1000,	// Bot will be matched after this limit
+	//	};
 
-		enum class Step {
-			Grabbing,
-			Dequeuing,
-			Canceling,
-			Matched,
-			CreateGame,
-		} m_Step;
+	//	enum class Step {
+	//		Grabbing,
+	//		Dequeuing,
+	//		Canceling,
+	//		Matched,
+	//		CreateGame,
+	//	} m_Step;
 
 
-		ULONG m_MatchingTryTimeOut;
+	//	ULONG m_MatchingTryTimeOut;
 
-		BRCLASS_ATTRIBUTE(UINT,QueryMemberCount);
-		// Target matching member count
-		BRCLASS_ATTRIBUTE(UINT,TargetMemberCount);
-		// Current total member count
-		BRCLASS_ATTRIBUTE(UINT,CurrentMemberCount);
+	//	BRCLASS_ATTRIBUTE(UINT,QueryMemberCount);
+	//	// Target matching member count
+	//	BRCLASS_ATTRIBUTE(UINT,TargetMemberCount);
+	//	// Current total member count
+	//	BRCLASS_ATTRIBUTE(UINT,CurrentMemberCount);
 
-		BRCLASS_ATTRIBUTE(INT,CurrentGrabbing);
-		BRCLASS_ATTRIBUTE(UINT,GrabTryCount);
+	//	BRCLASS_ATTRIBUTE(INT,CurrentGrabbing);
+	//	BRCLASS_ATTRIBUTE(UINT,GrabTryCount);
 
-		BRCLASS_ATTRIBUTE(INT,ProcessingIndex);
+	//	BRCLASS_ATTRIBUTE(INT,ProcessingIndex);
 
-		struct ReservedMember {
-			MatchingQueueTicket			ReservationTicket;
-			EntityUID					RegisterEntityUID;
-			UINT						MemberCount;
-			MatchingPlayerInformation	Players[MAX_NUM_PLAYER];
+	//	struct ReservedMember {
+	//		MatchingQueueTicket			ReservationTicket;
+	//		EntityUID					RegisterEntityUID;
+	//		UINT						MemberCount;
+	//		MatchingPlayerInformation	Players[MAX_NUM_PLAYER];
 
-			ReservedMember()
-				:MemberCount(0)
-			{
-			}
-		};
-		StaticArray<ReservedMember,MAX_NUM_PLAYER> m_ReservedMember;
+	//		ReservedMember()
+	//			:MemberCount(0)
+	//		{
+	//		}
+	//	};
+	//	StaticArray<ReservedMember,MAX_NUM_PLAYER> m_ReservedMember;
 
-	public:
-		MatchingPartyTrans(UINT startMemberCount, UINT targetMemberCount);
-		virtual ~MatchingPartyTrans() {}
+	//public:
+	//	MatchingPartyTrans(UINT startMemberCount, UINT targetMemberCount);
+	//	virtual ~MatchingPartyTrans() {}
 
-		////////////////////////////////////////////////////////////
-		// Event handlers
-		HRESULT OnTimer(TransactionResult* pRes);
+	//	////////////////////////////////////////////////////////////
+	//	// Event handlers
+	//	HRESULT OnTimer(TransactionResult* pRes);
 
-		HRESULT ProcessGrabbing();
-		HRESULT ReserveItem(UINT memberCount);
-		HRESULT OnReserveItem(TransactionResult* pRes);
+	//	HRESULT ProcessGrabbing();
+	//	HRESULT ReserveItem(UINT memberCount);
+	//	HRESULT OnReserveItem(TransactionResult* pRes);
 
-		HRESULT ProcessCanceling();
-		HRESULT CancelReservation( MatchingQueueTicket ticket );
-		HRESULT OnCancelReservation(TransactionResult* pRes);
+	//	HRESULT ProcessCanceling();
+	//	HRESULT CancelReservation( MatchingQueueTicket ticket );
+	//	HRESULT OnCancelReservation(TransactionResult* pRes);
 
-		HRESULT ProcessDequeuing();
-		HRESULT DequeueItem(MatchingQueueTicket ticket);
-		HRESULT OnDequeueItem(TransactionResult* pRes);
+	//	HRESULT ProcessDequeuing();
+	//	HRESULT DequeueItem(MatchingQueueTicket ticket);
+	//	HRESULT OnDequeueItem(TransactionResult* pRes);
 
-		HRESULT CreateGame();
-		HRESULT OnCreateGame(TransactionResult* pRes);
+	//	HRESULT CreateGame();
+	//	HRESULT OnCreateGame(TransactionResult* pRes);
 
-		// Start Transaction
-		virtual HRESULT StartTransaction();
+	//	// Start Transaction
+	//	virtual HRESULT StartTransaction();
 
-		////////////////////////////////////////////////////////////
-		// Helpers
-		UINT GetClusterComponentIDFromMemberCount( UINT count );
-	};
+	//	////////////////////////////////////////////////////////////
+	//	// Helpers
+	//	UINT GetClusterComponentIDFromMemberCount( UINT count );
+	//};
 
 
 

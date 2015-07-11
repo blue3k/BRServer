@@ -48,9 +48,6 @@
     <None Include="NetSystem.inl">
       <Filter>NetSystem</Filter>
     </None>
-    <None Include="NetMessage.inl">
-      <Filter>NetSystem</Filter>
-    </None>
     <None Include="NetDef.inl">
       <Filter>NetSystem</Filter>
     </None>
@@ -67,6 +64,9 @@
       <Filter>Connection</Filter>
     </None>
     <None Include="NetRawUDP.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetCtrl.inl">
       <Filter>NetSystem</Filter>
     </None>
   </ItemGroup>
@@ -107,9 +107,6 @@
     <ClInclude Include="NetPolicy.h">
       <Filter>NetSystem</Filter>
     </ClInclude>
-    <ClInclude Include="NetMessage.h">
-      <Filter>NetSystem</Filter>
-    </ClInclude>
     <ClInclude Include="NetDef.h">
       <Filter>NetSystem</Filter>
     </ClInclude>
@@ -141,6 +138,9 @@
       <Filter>Connection</Filter>
     </ClInclude>
     <ClInclude Include="NetRawUDP.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetCtrl.h">
       <Filter>NetSystem</Filter>
     </ClInclude>
   </ItemGroup>
@@ -199,9 +199,6 @@
     <ClCompile Include="ConnectionMUDP.cpp">
       <Filter>Connection</Filter>
     </ClCompile>
-    <ClCompile Include="NetMessage.cpp">
-      <Filter>NetSystem</Filter>
-    </ClCompile>
     <ClCompile Include="MessageWindow.cpp">
       <Filter>Connection</Filter>
     </ClCompile>
@@ -221,6 +218,9 @@
       <Filter>NetSystem</Filter>
     </ClCompile>
     <ClCompile Include="NetRawUDP.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetCtrl.cpp">
       <Filter>NetSystem</Filter>
     </ClCompile>
   </ItemGroup>

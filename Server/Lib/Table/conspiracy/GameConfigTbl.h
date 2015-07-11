@@ -35,6 +35,7 @@ namespace conspiracy
 			int	MaxFriend;
 			int	DefaultStamina;
 			int	MaxStamina;
+			int	MaxAutoRefilStamina;
 			int	StaminaRecoveryTime;
 			int	StaminaForGame;
 			int	FreeDiscussion;

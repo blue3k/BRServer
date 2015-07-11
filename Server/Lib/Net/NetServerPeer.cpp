@@ -23,6 +23,7 @@
 #include "Net/NetServerPeer.h"
 #include "Net/NetConst.h"
 #include "Protocol/ProtocolVer.h"
+#include "Net/NetCtrl.h"
 
 
 namespace BR {

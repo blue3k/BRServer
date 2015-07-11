@@ -27,9 +27,6 @@ namespace conspiracy
  		m_Map.insert(std::make_pair("Gem", EItemEffect::Enum::Gem));
 		m_Map.insert(std::make_pair("Stamina", EItemEffect::Enum::Stamina));
 		m_Map.insert(std::make_pair("FriendSlot", EItemEffect::Enum::FriendSlot));
-		m_Map.insert(std::make_pair("ResetRankNormal", EItemEffect::Enum::ResetRankNormal));
-		m_Map.insert(std::make_pair("NickName", EItemEffect::Enum::NickName));
-		m_Map.insert(std::make_pair("ReStart", EItemEffect::Enum::ReStart));
 	}
 
 	ShopTbl::EItemEffect::Enum ShopTbl::EItemEffect::operator =(int i)
@@ -123,6 +120,8 @@ namespace conspiracy
 			EATT_RequiredGameMoney,
 			EATT_ItemEffect,
 			EATT_Quantity,
+			EATT_AndroidItemID,
+			EATT_iOSItemID,
 		}; // enum ATT_ID_ShopItem
 
 
@@ -220,6 +219,16 @@ namespace conspiracy
 		else if(name == "Quantity")
 		{
  			this->Quantity = atoi( value.c_str() );
+			return true;
+		}
+		else if(name == "AndroidItemID")
+		{
+ 			this->AndroidItemID = value;
+			return true;
+		}
+		else if(name == "iOSItemID")
+		{
+ 			this->iOSItemID = value;
 			return true;
 		}
 		return __super::SetAttributeValue(name,value);

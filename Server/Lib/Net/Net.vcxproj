@@ -166,7 +166,7 @@
     <None Include="MessageWindow.inl" />
     <None Include="NetClient.inl" />
     <None Include="NetDef.inl" />
-    <None Include="NetMessage.inl" />
+    <None Include="NetCtrl.inl" />
     <None Include="NetRawUDP.inl" />
     <None Include="NetServerPeer.inl" />
     <None Include="NetServerPeerTCP.inl">
@@ -188,8 +188,8 @@
     <ClInclude Include="NetClient.h" />
     <ClInclude Include="NetConnectionTask.h" />
     <ClInclude Include="NetConst.h" />
+    <ClInclude Include="NetCtrl.h" />
     <ClInclude Include="NetDef.h" />
-    <ClInclude Include="NetMessage.h" />
     <ClInclude Include="NetPolicy.h" />
     <ClInclude Include="NetRawUDP.h" />
     <ClInclude Include="NetServerPeer.h" />
@@ -218,7 +218,7 @@
     <ClCompile Include="NetClient.cpp" />
     <ClCompile Include="NetConnectionTask.cpp" />
     <ClCompile Include="NetDef.cpp" />
-    <ClCompile Include="NetMessage.cpp" />
+    <ClCompile Include="NetCtrl.cpp" />
     <ClCompile Include="NetPolicy.cpp" />
     <ClCompile Include="NetRawUDP.cpp" />
     <ClCompile Include="NetServer.cpp" />

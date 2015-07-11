@@ -23,6 +23,9 @@ BRDB_DEFINE_QUERY_IMPL(QueryCreatePlayerInfo);
 BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerInfo);
 BRDB_DEFINE_QUERY_IMPL(QuerySetPlayerInfo);
 
+BRDB_DEFINE_QUERY_IMPL(QuerySavePurchaseInfoToDB);
+BRDB_DEFINE_QUERY_IMPL(QueryCheckPurchaseID);
+
 BRDB_DEFINE_QUERY_IMPL(QueryUpdateGameEnd);
 BRDB_DEFINE_QUERY_IMPL(QueryUpdateJoinGame);
 BRDB_DEFINE_QUERY_IMPL(QueryUpdateTickStatus);
@@ -49,3 +52,7 @@ BRDB_DEFINE_QUERY_IMPL(QueryNotification_GetList);
 BRDB_DEFINE_QUERY_IMPL(QueryNotification_Remove);
 BRDB_DEFINE_QUERY_IMPL(QueryNotification_RemoveByMessageID);
 BRDB_DEFINE_QUERY_IMPL(QueryNotification_SetRead);
+
+BRDB_DEFINE_QUERY_IMPL(QuerySetComplitionState);
+BRDB_DEFINE_QUERY_IMPL(QueryGetComplitionState);
+

@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="conspiracy\GameConfigTbl.h" />
     <ClInclude Include="conspiracy\LevelTbl.h" />
+    <ClInclude Include="conspiracy\OrganicTbl.h" />
     <ClInclude Include="conspiracy\RewardTbl.h" />
     <ClInclude Include="conspiracy\ShopTbl.h" />
     <ClInclude Include="stdafx.h" />
@@ -169,6 +170,7 @@
   <ItemGroup>
     <ClCompile Include="conspiracy\GameConfigTbl.cpp" />
     <ClCompile Include="conspiracy\LevelTbl.cpp" />
+    <ClCompile Include="conspiracy\OrganicTbl.cpp" />
     <ClCompile Include="conspiracy\RewardTbl.cpp" />
     <ClCompile Include="conspiracy\ShopTbl.cpp" />
     <ClCompile Include="stdafx.cpp">

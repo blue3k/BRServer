@@ -36,8 +36,9 @@ namespace DB {
 		MCODE_QueryUserList,
 		MCODE_QueryFacebookCreateUser,
 		MCODE_QueryFacebookLogin,
+		MCODE_QueryCreateRandomUser,
 		MCODE_QueryUpdateGCMKeys,
-		MCODE_QueryUpdateUserEMail,
+		MCODE_QueryUpdateUserContactInfo,
 		MCODE_QueryFindPlayerByEMail,
 		MCODE_QueryGetPlayerShardID,
 	}; // enum MsgCode
@@ -179,6 +180,7 @@ namespace DB {
 	public:
 		INT64 FBUserID;
 		char EMail[Const::MAX_EMAIL];
+		char CellPhone[Const::MAX_CELLPHONE];
 
 		INT64 AccountID;
 		INT32 ShardID;
@@ -186,20 +188,21 @@ namespace DB {
 
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryFacebookCreateUser,5)
+		BRDB_BEGIN_PARAM_MAP(QueryFacebookCreateUser,6)
 			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
 			BRDB_COLUMN_ENTRY(FBUserID)
 			BRDB_COLUMN_ENTRY(EMail)
+			BRDB_COLUMN_ENTRY(CellPhone)
 			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
 			BRDB_COLUMN_ENTRY(AccountID)
 			BRDB_COLUMN_ENTRY(ShardID)
 			BRDB_COLUMN_ENTRY(Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spFacebookCreateUser", BRDB_PARAM_5 )
+		BRDB_QUERYSTRING( "spFacebookCreateUser", BRDB_PARAM_6 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB,QueryFacebookCreateUser);
+	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryFacebookCreateUser);
 
 
 
@@ -215,28 +218,65 @@ namespace DB {
 
 		INT64 AccountID;
 		char EMail[Const::MAX_EMAIL];
+		char CellPhone[Const::MAX_CELLPHONE];
 		char GCMKeys[Const::MAX_GCMKEY];
 		INT32 ShardID;
 		INT32 Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryFacebookLogin,6)
+		BRDB_BEGIN_PARAM_MAP(QueryFacebookLogin,7)
 			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
 			BRDB_COLUMN_ENTRY(FBUserID)
 			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
 			BRDB_COLUMN_ENTRY(AccountID)
 			BRDB_COLUMN_ENTRY(EMail)
+			BRDB_COLUMN_ENTRY(CellPhone)
 			BRDB_COLUMN_ENTRY(GCMKeys)
 			BRDB_COLUMN_ENTRY(ShardID)
 			BRDB_COLUMN_ENTRY(Result)
 		BRDB_END_PARAM_MAP()
 
-		BRDB_QUERYSTRING( "spFacebookLogin", BRDB_PARAM_6 )
+		BRDB_QUERYSTRING( "spFacebookLogin", BRDB_PARAM_7 )
 	};
 
 	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB,QueryFacebookLogin);
 
-	
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//
+	//	QueryCreateRandomUser class
+	//
+
+	class QueryCreateRandomUser : public QueryBase
+	{
+	public:
+		char UserName[Const::MAX_USERNAME];
+		char CellPhone[Const::MAX_CELLPHONE];
+
+		INT64 AccountID;
+		INT64 FBUserID;
+		INT32 ShardID;
+		INT32 Result;
+
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryCreateRandomUser, 6)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
+			BRDB_COLUMN_ENTRY(UserName)
+			BRDB_COLUMN_ENTRY(CellPhone)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
+			BRDB_COLUMN_ENTRY(AccountID)
+			BRDB_COLUMN_ENTRY(FBUserID)
+			BRDB_COLUMN_ENTRY(ShardID)
+			BRDB_COLUMN_ENTRY(Result)
+			BRDB_END_PARAM_MAP()
+
+			BRDB_QUERYSTRING("spCreateRandomUser", BRDB_PARAM_6)
+	};
+
+	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryCreateRandomUser);
+
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//
@@ -269,28 +309,31 @@ namespace DB {
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//
-	//	QueryUpdateUserEMail class
+	//	QueryUpdateUserContactInfo class
 	//
 
-	class QueryUpdateUserEMail : public QueryBase
+	class QueryUpdateUserContactInfo : public QueryBase
 	{
 	public:
 		INT64 UserUID;
 		char EMail[Const::MAX_EMAIL];
+		char CellPhone[Const::MAX_CELLPHONE];
 
 		INT32 Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryUpdateUserEMail, 2)
+		BRDB_BEGIN_PARAM_MAP(QueryUpdateUserContactInfo, 3)
 			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
 			BRDB_COLUMN_ENTRY(UserUID)
 			BRDB_COLUMN_ENTRY(EMail)
+			BRDB_COLUMN_ENTRY(CellPhone)
 			BRDB_END_PARAM_MAP()
 
-			BRDB_QUERYSTRING("spUpdateUserEMail", BRDB_PARAM_2)
+			BRDB_QUERYSTRING("spUpdateUserContactInfo", BRDB_PARAM_3)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryUpdateUserEMail);
+	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryUpdateUserContactInfo);
+
 
 	
 

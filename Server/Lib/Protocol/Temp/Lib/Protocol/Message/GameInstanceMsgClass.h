@@ -62,6 +62,7 @@ namespace BR
 				RouteContext m_RouteContext;
 				PlayerInformation m_Player;
 				AuthTicket m_Ticket;
+				PlayerRole m_RequestedRole;
 			public:
 				JoinGameCmd()
 					{}
@@ -76,12 +77,13 @@ namespace BR
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerInformation& GetPlayer() const	{ return m_Player; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
+				const PlayerRole& GetRequestedRole() const	{ return m_RequestedRole; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 
@@ -1089,7 +1091,7 @@ namespace BR
 				Context m_Context;
 				RouteContext m_RouteContext;
 				PlayerID m_PlayerID;
-				PlayerID m_TargetPlayerID;
+				LinkedArray<PlayerID> m_TargetPlayerID;
 			public:
 				GameRevealPlayerCmd()
 					{}
@@ -1103,13 +1105,13 @@ namespace BR
 				const Context& GetContext() const	{ return m_Context; };
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
-				const PlayerID& GetTargetPlayerID() const	{ return m_TargetPlayerID; };
+				const Array<PlayerID>& GetTargetPlayerID() const	{ return m_TargetPlayerID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerID &InTargetPlayerID );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 
@@ -1123,8 +1125,8 @@ namespace BR
 				Context m_Context;
 				HRESULT m_Result;
 				RouteContext m_RouteContext;
-				PlayerID m_RevealedPlayerID;
-				PlayerRole m_RevealedRole;
+				LinkedArray<PlayerID> m_RevealedPlayerID;
+				LinkedArray<PlayerRole> m_RevealedRole;
 			public:
 				GameRevealPlayerRes()
 					{}
@@ -1138,14 +1140,14 @@ namespace BR
 				const Context& GetContext() const	{ return m_Context; };
 				const HRESULT& GetResult() const	{ return m_Result; };
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const PlayerID& GetRevealedPlayerID() const	{ return m_RevealedPlayerID; };
-				const PlayerRole& GetRevealedRole() const	{ return m_RevealedRole; };
+				const Array<PlayerID>& GetRevealedPlayerID() const	{ return m_RevealedPlayerID; };
+				const Array<PlayerRole>& GetRevealedRole() const	{ return m_RevealedRole; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 

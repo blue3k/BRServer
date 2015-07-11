@@ -229,31 +229,24 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		TransactionResult *pRes = this;
 
-		if( !m_bFlushRes )
+		SetClosed();
+
+		if (!m_bFlushRes)
 			goto Proc_End;
 
 		m_bFlushRes = false;
 
-		if( GetParentTransID() != 0 )
-		{
-			svrChk( GetEntityTable().RouteTransactionResult( pRes ) );
-		}
-
 	Proc_End:
 
-		SetClosed();
 
 		return hr;
 	}
 
 	void SubTransactionWithResult::Release()
 	{
-		Assert(false); // show me when it's called
-
-		// pervent release if transaction is owned by something
-		if (GetReferenceCount() == 0) // if it never owned by any sharedpointer
-			delete this;
+		SharedPointer(this);
 	}
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//

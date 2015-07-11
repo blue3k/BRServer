@@ -52,17 +52,19 @@ namespace DB {
 		//	Account DB interface
 		//
 
-		HRESULT FacebookCreateUser( BR::TransactionID Sender, UINT64 facebookUID, const char* EMail );
+		HRESULT FacebookCreateUser(BR::TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone);
 		HRESULT FacebookLogIn( BR::TransactionID Sender, UINT64 facebookUID );
 
 		HRESULT CreateUser( BR::TransactionID Sender, const char* UserName, const char* Password );
 		HRESULT LogIn( BR::TransactionID Sender, const char* UserName, const char* Password );
 		HRESULT LogOut( BR::TransactionID Sender);
 
+		HRESULT CreateRandomUser(BR::TransactionID Sender, const char* userName, const char* cellPhone);
+
 		HRESULT UserList( BR::TransactionID Sender);
 
 		HRESULT UpdateGCMKeys( BR::TransactionID Sender, AccountID accountID, const char* strGCMKeys );
-		HRESULT UpdateUserEMail(BR::TransactionID Sender, AccountID accountID, const char* strEMail);
+		HRESULT UpdateUserContactInfo(BR::TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone);
 
 		// Find player
 		HRESULT FindPlayerByEMail( BR::TransactionID Sender, const char* email );

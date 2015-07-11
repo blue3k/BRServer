@@ -31,7 +31,10 @@
 
 #include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
 #include "ServerSystem/Transaction.h"
+#include "ServerSystem/SvrConfig.h"
 #include "DB/Factory.h"
+
+#include "ServerSystem/ExternalTransactionManager.h"
 
 
 namespace BR{
@@ -299,11 +302,47 @@ Proc_End:
 			EntityID( EntityFaculty::Service,(UINT)ClusterID::ClusterManager ), 
 			GetComponent<ClusterManagerServiceEntity>() ) );
 
-
 	Proc_End:
 
 		//Util::SafeRelease( pConn );
 		Util::SafeDelete( pLoopbackEntity );
+
+		return hr;
+	}
+
+	HRESULT BrServer::InitializeComponents()
+	{
+		HRESULT hr = S_OK;
+		auto myConfig = GetMyConfig();
+
+		svrChkPtr(myConfig);
+
+		for (auto componentConfig : myConfig->ServerComponents)
+		{
+			char strRelativePath[1024];
+			auto google = dynamic_cast<Config::ServerComponentGoogle* > (componentConfig);
+			if (google != nullptr)
+			{
+				StrUtil::Format(strRelativePath, "..\\..\\Config\\%0%", google->P12KeyFile.c_str());
+				svrChk(AddComponent<ExternalTransactionManager>());
+				svrChk(GetComponent<ExternalTransactionManager>()->InitializeManagerGoogle(
+					strRelativePath,
+					google->Account.c_str(), 
+					google->AuthScopes.c_str()));
+			}
+
+			auto ios = dynamic_cast<Config::ServerComponentIOS* > (componentConfig);
+			if (ios != nullptr)
+			{
+				svrChk(AddComponent<ExternalTransactionManager>());
+				svrChk(GetComponent<ExternalTransactionManager>()->InitializeManagerIOS(ios->URL.c_str()));
+			}
+		}
+
+		svrChk(__super::InitializeComponents());
+
+
+	Proc_End:
 
 		return hr;
 	}
@@ -533,7 +572,6 @@ Proc_End:
 			svrTrace( Trace::TRC_ERROR, "Failed Initialize basic entities, hr=%0%", ArgHex32(hr) );
 			svrErr( hr );
 		}
-
 
 
 	Proc_End:

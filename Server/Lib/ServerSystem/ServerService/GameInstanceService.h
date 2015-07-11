@@ -35,7 +35,7 @@ namespace BR
 			// C2S: Game instance deletion
 			HRESULT DeleteGameC2SEvt( const EntityID &InSenderEntityID );
 			// Cmd: Join Game
-			HRESULT JoinGameCmd( const Context &InContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket );
+			HRESULT JoinGameCmd( const Context &InContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole );
 			// C2S: Change configue preset
 			HRESULT SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const UINT32 &InPresetID );
 			// Cmd: Leave Game
@@ -55,7 +55,7 @@ namespace BR
 			// Cmd: Play again with the current players
 			HRESULT GamePlayAgainCmd( const Context &InContext, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID );
 			// Cmd: Player. revive himself
-			HRESULT GameRevealPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InTargetPlayerID );
+			HRESULT GameRevealPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID );
 			// Cmd: Player. revive himself
 			HRESULT GamePlayerReviveCmd( const Context &InContext, const PlayerID &InPlayerID );
 

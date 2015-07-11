@@ -290,7 +290,7 @@ namespace Svr
 		case Transaction::STATE_WAITSTART:
 			if (pTrans->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans Start TID:%0%:%1%, Entity:%2%:%3%", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID(), typeid(*this).name());
+				svrTrace(Svr::TRC_TRANSACTION, "Trans Start TID:%0%:%1%, Entity:%2%", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID());
 			}
 			if (FAILED(pTrans->StartTransaction()))// make transaction start
 			{

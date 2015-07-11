@@ -374,7 +374,7 @@ namespace Svr {
 		// flush transaction result
 		virtual HRESULT FlushTransaction();
 
-		virtual void Release();
+		virtual void Release() override;
 	};
 	
 	

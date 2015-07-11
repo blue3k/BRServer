@@ -51,6 +51,26 @@ namespace BR.Policy
 
 		} // public bool  JoinGameServerCmd( System.UInt64 InAccID, System.UInt64 InTicket, System.UInt64 InLoginEntityUID )
 
+		// Cmd: player complition statues
+		public bool  GetComplitionStateCmd(  )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Game.GetComplitionStateCmd.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Game.GetComplitionStateCmd.BuildMessageBuffer(binWriter, ref header );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  GetComplitionStateCmd(  )
+
+		// Cmd: Player complition state
+		public bool  SetComplitionStateCmd( string InComplitionState )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Game.SetComplitionStateCmd.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Game.SetComplitionStateCmd.BuildMessageBuffer(binWriter, ref header, InComplitionState );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  SetComplitionStateCmd( string InComplitionState )
+
 		// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
 		public bool  RegisterGCMCmd( string InGCMRegisteredID )
 		{
@@ -202,14 +222,14 @@ namespace BR.Policy
 		} // public bool  GetGamePlayerInfoCmd( System.UInt64 InPlayerID )
 
 		// Cmd: Change NickName
-		public bool  SetNickNameCmd( string InNickName )
+		public bool  SetNickNameCmd( string InNickName, System.Byte InIsCostFree )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.SetNickNameCmd.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
-			BR.Message.Game.SetNickNameCmd.BuildMessageBuffer(binWriter, ref header, InNickName );
+			BR.Message.Game.SetNickNameCmd.BuildMessageBuffer(binWriter, ref header, InNickName, InIsCostFree );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  SetNickNameCmd( string InNickName )
+		} // public bool  SetNickNameCmd( string InNickName, System.Byte InIsCostFree )
 
 		// Cmd: Create Party
 		public bool  CreatePartyCmd(  )
@@ -371,15 +391,15 @@ namespace BR.Policy
 
 		} // public bool  GamePlayAgainCmd(  )
 
-		// Cmd: Player. revive himself
-		public bool  GameRevealPlayerCmd( System.UInt64 InTargetPlayerID )
+		// Cmd: Player. reveal a player
+		public bool  GameRevealPlayerCmd( System.UInt64[] InTargetPlayerID )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.GameRevealPlayerCmd.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
 			BR.Message.Game.GameRevealPlayerCmd.BuildMessageBuffer(binWriter, ref header, InTargetPlayerID );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  GameRevealPlayerCmd( System.UInt64 InTargetPlayerID )
+		} // public bool  GameRevealPlayerCmd( System.UInt64[] InTargetPlayerID )
 
 		// Cmd: Player. revive himself
 		public bool  GamePlayerReviveCmd(  )
@@ -391,15 +411,25 @@ namespace BR.Policy
 
 		} // public bool  GamePlayerReviveCmd(  )
 
+		// Cmd: Player. reset ranking
+		public bool  GamePlayerResetRankCmd(  )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Game.GamePlayerResetRankCmd.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Game.GamePlayerResetRankCmd.BuildMessageBuffer(binWriter, ref header );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  GamePlayerResetRankCmd(  )
+
 		// Cmd: Request Game match
-		public bool  RequestGameMatchCmd( System.Byte InNumPlayer )
+		public bool  RequestGameMatchCmd( System.Byte InNumPlayer, BR.PlayerRole InRequestRole )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.RequestGameMatchCmd.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
-			BR.Message.Game.RequestGameMatchCmd.BuildMessageBuffer(binWriter, ref header, InNumPlayer );
+			BR.Message.Game.RequestGameMatchCmd.BuildMessageBuffer(binWriter, ref header, InNumPlayer, InRequestRole );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  RequestGameMatchCmd( System.Byte InNumPlayer )
+		} // public bool  RequestGameMatchCmd( System.Byte InNumPlayer, BR.PlayerRole InRequestRole )
 
 		// Cmd: Cancel Game match
 		public bool  CancelGameMatchCmd(  )
@@ -411,15 +441,25 @@ namespace BR.Policy
 
 		} // public bool  CancelGameMatchCmd(  )
 
+		// Cmd: Buy shop item prepare
+		public bool  BuyShopItemPrepareCmd( System.UInt32 InShopItemID )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Game.BuyShopItemPrepareCmd.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Game.BuyShopItemPrepareCmd.BuildMessageBuffer(binWriter, ref header, InShopItemID );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  BuyShopItemPrepareCmd( System.UInt32 InShopItemID )
+
 		// Cmd: Buy shop item
-		public bool  BuyShopItemCmd( System.UInt32 InShopItemID, string InParamString )
+		public bool  BuyShopItemCmd( System.UInt32 InShopItemID, string InPlatform, string InPackageName, string InPurchaseTransactionID, System.Byte[] InPurchaseToken )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.BuyShopItemCmd.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
-			BR.Message.Game.BuyShopItemCmd.BuildMessageBuffer(binWriter, ref header, InShopItemID, InParamString );
+			BR.Message.Game.BuyShopItemCmd.BuildMessageBuffer(binWriter, ref header, InShopItemID, InPlatform, InPackageName, InPurchaseTransactionID, InPurchaseToken );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  BuyShopItemCmd( System.UInt32 InShopItemID, string InParamString )
+		} // public bool  BuyShopItemCmd( System.UInt32 InShopItemID, string InPlatform, string InPackageName, string InPurchaseTransactionID, System.Byte[] InPurchaseToken )
 
 		// Cmd: Give my stamina to other player
 		public bool  GiveStaminaCmd( System.UInt64 InTargetPlayer )
@@ -469,6 +509,28 @@ namespace BR.Policy
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
 		} // public bool  JoinGameServerRes( System.Int32 InResult, string InNickName, System.UInt64 InGameUID, System.UInt64 InPartyUID, System.UInt64 InPartyLeaderID, ref BR.MatchingQueueTicket InMatchingTicket )
+
+
+		// Cmd: player complition statues
+		public bool  GetComplitionStateRes( System.Int32 InResult, string InComplitionState )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Game.GetComplitionStateRes.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Game.GetComplitionStateRes.BuildMessageBuffer(binWriter, ref header, InResult, InComplitionState );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  GetComplitionStateRes( System.Int32 InResult, string InComplitionState )
+
+
+		// Cmd: Player complition state
+		public bool  SetComplitionStateRes( System.Int32 InResult )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Game.SetComplitionStateRes.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Game.SetComplitionStateRes.BuildMessageBuffer(binWriter, ref header, InResult );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  SetComplitionStateRes( System.Int32 InResult )
 
 
 		// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
@@ -692,14 +754,14 @@ namespace BR.Policy
 
 
 		// Cmd: Change NickName
-		public bool  SetNickNameRes( System.Int32 InResult )
+		public bool  SetNickNameRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.SetNickNameRes.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
-			BR.Message.Game.SetNickNameRes.BuildMessageBuffer(binWriter, ref header, InResult );
+			BR.Message.Game.SetNickNameRes.BuildMessageBuffer(binWriter, ref header, InResult, InTotalGem, InTotalGameMoney );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  SetNickNameRes( System.Int32 InResult )
+		} // public bool  SetNickNameRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 
 		// Cmd: Create Party
@@ -1077,14 +1139,14 @@ namespace BR.Policy
 
 
 		// Cmd: Play again with the current players
-		public bool  GamePlayAgainRes( System.Int32 InResult )
+		public bool  GamePlayAgainRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.GamePlayAgainRes.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
-			BR.Message.Game.GamePlayAgainRes.BuildMessageBuffer(binWriter, ref header, InResult );
+			BR.Message.Game.GamePlayAgainRes.BuildMessageBuffer(binWriter, ref header, InResult, InTotalGem, InTotalGameMoney );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  GamePlayAgainRes( System.Int32 InResult )
+		} // public bool  GamePlayAgainRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 
 		// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
@@ -1098,26 +1160,26 @@ namespace BR.Policy
 		} // public bool  GamePlayAgainS2CEvt( System.UInt64 InPartyUID, System.UInt64 InLeadPlayer )
 
 
-		// Cmd: Player. revive himself
-		public bool  GameRevealPlayerRes( System.Int32 InResult, System.UInt64 InRevealedPlayerID, BR.PlayerRole InRevealedRole )
+		// Cmd: Player. reveal a player
+		public bool  GameRevealPlayerRes( System.Int32 InResult, System.UInt64[] InRevealedPlayerID, BR.PlayerRole[] InRevealedRole, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.GameRevealPlayerRes.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
-			BR.Message.Game.GameRevealPlayerRes.BuildMessageBuffer(binWriter, ref header, InResult, InRevealedPlayerID, InRevealedRole );
+			BR.Message.Game.GameRevealPlayerRes.BuildMessageBuffer(binWriter, ref header, InResult, InRevealedPlayerID, InRevealedRole, InTotalGem, InTotalGameMoney );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  GameRevealPlayerRes( System.Int32 InResult, System.UInt64 InRevealedPlayerID, BR.PlayerRole InRevealedRole )
+		} // public bool  GameRevealPlayerRes( System.Int32 InResult, System.UInt64[] InRevealedPlayerID, BR.PlayerRole[] InRevealedRole, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 
 		// Cmd: Player. revive himself
-		public bool  GamePlayerReviveRes( System.Int32 InResult )
+		public bool  GamePlayerReviveRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.GamePlayerReviveRes.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
-			BR.Message.Game.GamePlayerReviveRes.BuildMessageBuffer(binWriter, ref header, InResult );
+			BR.Message.Game.GamePlayerReviveRes.BuildMessageBuffer(binWriter, ref header, InResult, InTotalGem, InTotalGameMoney );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  GamePlayerReviveRes( System.Int32 InResult )
+		} // public bool  GamePlayerReviveRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 
 		// S2C: Player is revived
@@ -1131,26 +1193,37 @@ namespace BR.Policy
 		} // public bool  GamePlayerRevivedS2CEvt( System.UInt64 InRevivedPlayerID )
 
 
+		// Cmd: Player. reset ranking
+		public bool  GamePlayerResetRankRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Game.GamePlayerResetRankRes.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Game.GamePlayerResetRankRes.BuildMessageBuffer(binWriter, ref header, InResult, InTotalGem, InTotalGameMoney );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  GamePlayerResetRankRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
+
+
 		// Cmd: Request Game match
-		public bool  RequestGameMatchRes( System.Int32 InResult )
+		public bool  RequestGameMatchRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.RequestGameMatchRes.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
-			BR.Message.Game.RequestGameMatchRes.BuildMessageBuffer(binWriter, ref header, InResult );
+			BR.Message.Game.RequestGameMatchRes.BuildMessageBuffer(binWriter, ref header, InResult, InTotalGem, InTotalGameMoney );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  RequestGameMatchRes( System.Int32 InResult )
+		} // public bool  RequestGameMatchRes( System.Int32 InResult, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 
 		// S2C: Game matched
-		public bool  GameMatchedS2CEvt( System.UInt64 InInsUID, System.UInt32 InTimeStamp, BR.GameStateID InGameState, System.Byte InDay, System.Byte InMaxPlayer, System.Byte InPlayerIndex, System.Byte InPlayerCharacter, BR.PlayerRole InRole, System.Byte InDead, System.Byte[] InChatHistoryData, System.Byte[] InGameLogData )
+		public bool  GameMatchedS2CEvt( System.UInt64 InInsUID, System.UInt32 InTimeStamp, BR.GameStateID InGameState, System.Byte InDay, System.Byte InMaxPlayer, System.Byte InPlayerIndex, System.Byte InPlayerCharacter, BR.PlayerRole InRole, System.Byte InDead, System.Byte[] InChatHistoryData, System.Byte[] InGameLogData, System.UInt32 InStamina, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 		{
  			MessageHeader header = new MessageHeader(BR.Message.Game.GameMatchedS2CEvt.MID);
 			var binWriter = m_Connection.PrepareMessgeBuffer();
-			BR.Message.Game.GameMatchedS2CEvt.BuildMessageBuffer(binWriter, ref header, InInsUID, InTimeStamp, InGameState, InDay, InMaxPlayer, InPlayerIndex, InPlayerCharacter, InRole, InDead, InChatHistoryData, InGameLogData );
+			BR.Message.Game.GameMatchedS2CEvt.BuildMessageBuffer(binWriter, ref header, InInsUID, InTimeStamp, InGameState, InDay, InMaxPlayer, InPlayerIndex, InPlayerCharacter, InRole, InDead, InChatHistoryData, InGameLogData, InStamina, InTotalGem, InTotalGameMoney );
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
-		} // public bool  GameMatchedS2CEvt( System.UInt64 InInsUID, System.UInt32 InTimeStamp, BR.GameStateID InGameState, System.Byte InDay, System.Byte InMaxPlayer, System.Byte InPlayerIndex, System.Byte InPlayerCharacter, BR.PlayerRole InRole, System.Byte InDead, System.Byte[] InChatHistoryData, System.Byte[] InGameLogData )
+		} // public bool  GameMatchedS2CEvt( System.UInt64 InInsUID, System.UInt32 InTimeStamp, BR.GameStateID InGameState, System.Byte InDay, System.Byte InMaxPlayer, System.Byte InPlayerIndex, System.Byte InPlayerCharacter, BR.PlayerRole InRole, System.Byte InDead, System.Byte[] InChatHistoryData, System.Byte[] InGameLogData, System.UInt32 InStamina, System.UInt64 InTotalGem, System.UInt64 InTotalGameMoney )
 
 
 		// S2C: Game match failed
@@ -1195,6 +1268,17 @@ namespace BR.Policy
 			return m_Connection.PendingReliableSend(ref header, binWriter);
 
 		} // public bool  GameMatchingCanceledS2CEvt(  )
+
+
+		// Cmd: Buy shop item prepare
+		public bool  BuyShopItemPrepareRes( System.Int32 InResult, System.UInt32 InShopItemID, string InPurchaseID )
+		{
+ 			MessageHeader header = new MessageHeader(BR.Message.Game.BuyShopItemPrepareRes.MID);
+			var binWriter = m_Connection.PrepareMessgeBuffer();
+			BR.Message.Game.BuyShopItemPrepareRes.BuildMessageBuffer(binWriter, ref header, InResult, InShopItemID, InPurchaseID );
+			return m_Connection.PendingReliableSend(ref header, binWriter);
+
+		} // public bool  BuyShopItemPrepareRes( System.Int32 InResult, System.UInt32 InShopItemID, string InPurchaseID )
 
 
 		// Cmd: Buy shop item

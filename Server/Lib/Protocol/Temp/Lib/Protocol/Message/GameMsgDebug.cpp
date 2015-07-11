@@ -37,6 +37,12 @@ namespace BR
 				// Cmd: Player connected from a login server and moved to game server
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::JoinGameServerCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::JoinGameServerCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::JoinGameServerRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::JoinGameServerRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				// Cmd: player complition statues
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::GetComplitionStateCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GetComplitionStateCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::GetComplitionStateRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GetComplitionStateRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				// Cmd: Player complition state
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::SetComplitionStateCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::SetComplitionStateCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::SetComplitionStateRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::SetComplitionStateRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::RegisterGCMCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::RegisterGCMCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::RegisterGCMRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::RegisterGCMRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
@@ -183,7 +189,7 @@ namespace BR
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::GamePlayAgainRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GamePlayAgainRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::GamePlayAgainS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GamePlayAgainS2CEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
-				// Cmd: Player. revive himself
+				// Cmd: Player. reveal a player
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::GameRevealPlayerCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GameRevealPlayerCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::GameRevealPlayerRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GameRevealPlayerRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				// Cmd: Player. revive himself
@@ -191,6 +197,9 @@ namespace BR
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::GamePlayerReviveRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GamePlayerReviveRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				// S2C: Player is revived
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::GamePlayerRevivedS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GamePlayerRevivedS2CEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				// Cmd: Player. reset ranking
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::GamePlayerResetRankCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GamePlayerResetRankCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::GamePlayerResetRankRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GamePlayerResetRankRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				// Cmd: Request Game match
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::RequestGameMatchCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::RequestGameMatchCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::RequestGameMatchRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::RequestGameMatchRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
@@ -205,6 +214,9 @@ namespace BR
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::CancelGameMatchRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::CancelGameMatchRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				// S2C: game matching canceled
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::GameMatchingCanceledS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::GameMatchingCanceledS2CEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				// Cmd: Buy shop item prepare
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::BuyShopItemPrepareCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::BuyShopItemPrepareCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::BuyShopItemPrepareRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::BuyShopItemPrepareRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				// Cmd: Buy shop item
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::BuyShopItemCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::BuyShopItemCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::BuyShopItemRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::BuyShopItemRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));

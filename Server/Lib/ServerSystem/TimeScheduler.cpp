@@ -164,7 +164,7 @@ namespace Svr {
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			svrErr(S_SVR_INVALID_THREAD);
+			svrErr(E_SVR_INVALID_THREAD);
 		}
 
 		//Assert(m_IsWriteLocked.load(std::memory_order_relaxed) == 0);
@@ -211,7 +211,7 @@ namespace Svr {
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			svrErr(S_SVR_INVALID_THREAD);
+			svrErr(E_SVR_INVALID_THREAD);
 		}
 
 		svrChkPtr(pAction);
@@ -245,7 +245,7 @@ namespace Svr {
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			return S_SVR_INVALID_THREAD;
+			return E_SVR_INVALID_THREAD;
 		}
 		return m_TimerMap.CommitChanges();
 	}
@@ -262,7 +262,7 @@ namespace Svr {
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			svrErr(S_SVR_INVALID_THREAD);
+			svrErr(E_SVR_INVALID_THREAD);
 		}
 
 		if (pAction->TimeData.NextTickTime == pAction->m_InQueueKey.NextTickTime)

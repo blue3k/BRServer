@@ -128,7 +128,7 @@ DataType* Array<DataType>::data()
 
 // push_back
 template< class DataType >
-HRESULT Array<DataType>::push_back( const DataType& NewData )
+inline HRESULT Array<DataType>::push_back( const DataType& NewData )
 {
 	HRESULT hr = S_OK;
 	if( GetSize() ==  GetAllocatedSize() )
@@ -144,6 +144,7 @@ HRESULT Array<DataType>::push_back( const DataType& NewData )
 
 	return hr;
 }
+
 //
 //template< class DataType >
 //HRESULT Array<DataType>::operator +=( const DataType& NewData )
@@ -162,6 +163,28 @@ HRESULT Array<DataType>::push_back( const DataType& NewData )
 //
 //	return hr;
 //}
+
+template< class DataType >
+inline HRESULT Array<DataType>::AddItems(size_t numItems, const DataType* NewData)
+{
+	HRESULT hr = S_OK;
+	auto newSize = numItems + GetSize();
+	if (newSize > GetAllocatedSize())
+	{
+		hr = Reserve(newSize + GetIncreaseSize());
+		if( FAILED(hr) ) return hr;
+	}
+
+	Assert(newSize <=  GetAllocatedSize());
+
+	for (UINT iItem = 0; iItem < numItems; iItem++)
+	{
+		m_pDataPtr[m_Size] = NewData[iItem];
+		m_Size++;
+	}
+
+	return hr;
+}
 
 
 // Remove element
@@ -226,8 +249,6 @@ const DataType& Array<DataType>::GetAt(UINT iElement) const
 template< class DataType >
 HRESULT Array<DataType>::IncreaseSize()
 {
-	DataType *pNewBuffer = nullptr;
-	DataType *pOldBuffer = nullptr;
 	size_t szNewSize = GetAllocatedSize() + GetIncreaseSize();
 	Assert(szNewSize > GetAllocatedSize());
 

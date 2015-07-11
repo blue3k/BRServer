@@ -18,8 +18,9 @@
 #include "Net/ConnectionUDP.h"
 #include "Net/NetDef.h"
 #include "Net/NetServer.h"
-#include "Net/NetMessage.h"
+#include "Net/NetCtrl.h"
 #include "Net/NetConst.h"
+#include "Net/NetCtrl.h"
 
 #include "Protocol/ProtocolVer.h"
 
@@ -53,12 +54,13 @@ namespace Net {
 
 	// Constructor
 	ConnectionUDPBase::ConnectionUDPBase( UINT reliableWindowSize )
-		:m_RecvReliableWindow(),
-		m_SendReliableWindow( reliableWindowSize ),
-		m_uiMaxGuarantedRetry( Const::UDP_SVR_RETRY_ONETIME_MAX ),
-		m_uiGatheredSize(0),
-		m_pGatheringBuffer(nullptr),
-		m_RecvGuaQueue( reliableWindowSize / 2 )
+		: m_RecvReliableWindow()
+		, m_SendReliableWindow(reliableWindowSize)
+		, m_uiMaxGuarantedRetry(Const::UDP_SVR_RETRY_ONETIME_MAX)
+		, m_uiGatheredSize(0)
+		, m_pGatheringBuffer(nullptr)
+		, m_RecvGuaQueue( reliableWindowSize / 2 )
+		, m_SubFrameMessage(nullptr)
 	{
 		SetHeartbitTry( Const::UDP_HEARTBIT_START_TIME );
 	}
@@ -75,6 +77,8 @@ namespace Net {
 		if( m_pGatheringBuffer != nullptr )
 			m_pGatheringBufferPool->Free(m_pGatheringBuffer,"ConnectionUDPBase::~ConnectionUDPBase");
 		m_pGatheringBuffer = nullptr;
+
+		Util::SafeRelease(m_SubFrameMessage);
 	}
 
 	// Set message window size connection
@@ -122,7 +126,7 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionUDPBase::ProcGuarrentedMessageWindow(std::function<void(Message::MessageData* pMsgData)> action)
+	HRESULT ConnectionUDPBase::ProcGuarrentedMessageWindow(const std::function<void(Message::MessageData* pMsgData)>& action)
 	{
 		HRESULT hr = S_OK;
 		Message::MessageData *pIMsg = nullptr;
@@ -140,7 +144,14 @@ namespace Net {
 
 			Connection::PrintDebugMessage("RecvMsg", pIMsg);
 
-			action(pIMsg);
+			if (pIMsg->GetMessageHeader()->msgID.GetMsgID() == PACKET_NETCTRL_SEQUENCE_FRAME.GetMsgID())
+			{
+				OnFrameSequenceMessage(pIMsg, action);
+			}
+			else
+			{
+				action(pIMsg);
+			}
 			//netChk(__super::OnRecv(pIMsg));
 			pIMsg = nullptr;
 		}
@@ -294,6 +305,138 @@ namespace Net {
 		__super::OnConnectionResult( hrConnect );
 	}
 
+	// frame sequence
+	HRESULT ConnectionUDPBase::SendFrameSequenceMessage(Message::MessageData* pMsg)
+	{
+		HRESULT hr = S_OK;
+		Message::MessageData* pNewMessageData = nullptr;
+		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		auto pMsgHeader = pMsg->GetMessageHeader();
+		auto remainSize = pMsgHeader->Length;
+		auto offset = 0;
+
+		netTrace(TRC_NETCTRL, "SEND Spliting : CID:%0%, seq:%1%, msg:%2%, len:%3%",
+			GetCID(),
+			pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
+			pMsg->GetMessageHeader()->msgID,
+			pMsg->GetMessageHeader()->Length);
+
+		for (UINT iSequence = 0; remainSize > 0; iSequence++)
+		{
+			auto frameSize = Util::Min(pMsgHeader->Length, (UINT)Message::MAX_SUBFRAME_SIZE);
+
+			MsgMobileNetCtrlSequenceFrame* pCurrentFrame = nullptr;
+
+			svrChkPtr(pNewMessageData = Message::MessageData::NewMessage(PACKET_NETCTRL_SEQUENCE_FRAME, frameSize + sizeof(MsgMobileNetCtrlSequenceFrame), pMsg->GetMessageBuff() + offset));
+
+			pCurrentFrame = (MsgMobileNetCtrlSequenceFrame*)pNewMessageData->GetMessageBuff();
+			pCurrentFrame->TotalSize = pMsgHeader->Length;
+			pCurrentFrame->SubSequence = iSequence;
+
+			svrChk(m_SendReliableWindow.EnqueueMessage(ulTimeCur, pNewMessageData));
+			pNewMessageData->AddRef();// Inc Ref for send
+			SendPending(pNewMessageData);
+			netTrace(TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:%0%, seq:%1%, msg:%2%, len:%3%",
+				GetCID(),
+				pNewMessageData->GetMessageHeader()->msgID.IDSeq.Sequence,
+				pNewMessageData->GetMessageHeader()->msgID,
+				pNewMessageData->GetMessageHeader()->Length);
+
+			pNewMessageData = nullptr;
+
+			remainSize -= frameSize;
+			offset += frameSize;
+		}
+
+		Util::SafeRelease(pMsg);
+
+	Proc_End:
+
+		Util::SafeRelease(pNewMessageData);
+
+		return hr;
+	}
+
+	HRESULT ConnectionUDPBase::OnFrameSequenceMessage(Message::MessageData* pMsg, const std::function<void(Message::MessageData* pMsgData)>& action)
+	{
+		HRESULT hr = S_OK;
+		Message::MessageData* pFrameMessage = nullptr;
+		if (pMsg == nullptr)
+			return E_POINTER;
+
+		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
+
+		auto* pFrame = (MsgMobileNetCtrlSequenceFrame*)pMsgHeader;
+		UINT subFrameSequence = pFrame->SubSequence;
+		UINT frameSize = pFrame->Length - sizeof(MsgMobileNetCtrlSequenceFrame);
+		UINT totalSize = pFrame->TotalSize;
+		auto* dataPtr = (const BYTE*)(pFrame + 1);
+		UINT offset = subFrameSequence * Message::MAX_SUBFRAME_SIZE;
+
+		Assert(frameSize <= Message::MAX_SUBFRAME_SIZE);
+		if (frameSize > Message::MAX_SUBFRAME_SIZE)
+		{
+			netErr(E_NET_BADPACKET_NOTEXPECTED);
+		}
+
+		if (subFrameSequence == 0) // first frame
+		{
+			//Assert(m_SubFrameMessage == nullptr);
+			Util::SafeRelease(m_SubFrameMessage);
+
+			UINT dummyID = PACKET_NETCTRL_SEQUENCE_FRAME;
+			svrChkPtr(pFrameMessage = Message::MessageData::NewMessage(dummyID, totalSize));
+			memcpy(pFrameMessage->GetMessageHeader(), dataPtr, frameSize);
+			if (pFrameMessage->GetMessageHeader()->Length != totalSize)
+			{
+				Assert(false);
+				netErr(E_NET_BADPACKET_NOTEXPECTED);
+			}
+
+			m_SubFrameMessage = pFrameMessage;
+			pFrameMessage = nullptr;
+		}
+		else
+		{
+			if (m_SubFrameMessage == nullptr)
+			{
+				Assert(m_SubFrameMessage != nullptr);
+				netErr(E_NET_BADPACKET_NOTEXPECTED);
+			}
+
+			BYTE* pDest = m_SubFrameMessage->GetMessageBuff() + offset;
+
+			if (m_SubFrameMessage->GetMessageHeader()->Length != totalSize)
+			{
+				Assert(false);
+				netErr(E_NET_BADPACKET_NOTEXPECTED);
+			}
+
+			if ((offset + frameSize) > totalSize)
+			{
+				Assert(false);
+				netErr(E_NET_BADPACKET_NOTEXPECTED);
+			}
+
+			memcpy(pDest, dataPtr, frameSize);
+		}
+
+		if (m_SubFrameMessage != nullptr && (offset + frameSize) == totalSize)
+		{
+			svrChk(m_SubFrameMessage->ValidateChecksumNDecrypt());
+			action(m_SubFrameMessage);
+			//hr = m_RecvGuaQueue.Enqueue(m_SubFrameMessage);
+			m_SubFrameMessage = nullptr;
+			svrChk(hr);
+		}
+
+	Proc_End:
+
+
+		Util::SafeRelease(pFrameMessage);
+
+		return hr;
+	}
 
 	// Initialize connection
 	HRESULT ConnectionUDPBase::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
@@ -308,6 +451,8 @@ namespace Net {
 		netChk( __super::InitConnection( socket, connectInfo ) );
 
 		netChk( ClearQueues() );
+
+		Util::SafeRelease(m_SubFrameMessage);
 
 		//Assert(m_RecvReliableWindow.GetSyncMask() == 0);
 		//Assert(m_SendReliableWindow.GetSyncMask() == 0);
@@ -327,6 +472,8 @@ namespace Net {
 
 		hr = __super::CloseConnection();
 
+		Util::SafeRelease(m_SubFrameMessage);
+
 		return hr;
 	}
 
@@ -339,6 +486,8 @@ namespace Net {
 		m_SendReliableWindow.ClearWindow();
 		m_SendGuaQueue.ClearQueue();
 		m_RecvNetCtrlQueue.ClearQueue();
+
+		Util::SafeRelease(m_SubFrameMessage);
 
 		return S_OK;
 	}
@@ -389,7 +538,8 @@ namespace Net {
 
 		pMsg->UpdateChecksumNEncrypt();
 
-		if( pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL || pMsgHeader->msgID.IDs.Reliability == 0 )
+		// pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL || 
+		if( pMsgHeader->msgID.IDs.Reliability == false )
 		{
 			if( !pMsg->GetIsSequenceAssigned() )
 				pMsg->AssignSequence( NewSeqNone() );
@@ -480,7 +630,8 @@ namespace Net {
 
 			ResetZeroRecvCount();
 
-			if( pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL ) // if net control message then process immidiately
+			// if net control message then process immidiately except reliable messages
+			if (pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL && pMsgHeader->msgID.IDs.Reliability == false) 
 			{
 				MsgNetCtrlBuffer netCtrl;
 				memcpy( &netCtrl, pMsgHeader, Util::Min( (size_t)pMsgHeader->Length, sizeof(netCtrl) ) );
@@ -538,14 +689,23 @@ namespace Net {
 		{
 			Assert( !pMsgHeader->msgID.IDs.Encrypted );
 
-			hr = m_RecvGuaQueue.Enqueue( pMsg );
-			pMsg = NULL;
-			netChk( hr );
+			// This message need to be merged before adding recv queue
+			if (pMsgHeader->msgID.GetMsgID() == PACKET_NETCTRL_SEQUENCE_FRAME.GetMsgID())
+			{
+				hr = OnFrameSequenceMessage(pMsg, [&](Message::MessageData* pMsgData) { hr = m_RecvGuaQueue.Enqueue(pMsgData); });
+			}
+			else
+			{
+				hr = m_RecvGuaQueue.Enqueue(pMsg);
+			}
+
+			pMsg = nullptr;
+			netChk(hr);
 		}
 		else
 		{
 			hr = __super::OnRecv( pMsg );
-			pMsg = NULL;
+			pMsg = nullptr;
 			netChk( hr );
 		}
 
@@ -818,42 +978,56 @@ Proc_End:
 	HRESULT ConnectionUDP::ProcSendReliableQueue()
 	{
 		HRESULT hr = S_OK;
-		Message::MessageData *pIMsg = NULL;
-		Message::MessageHeader *pMsgHeader = NULL;
+		Message::MessageData *pIMsg = nullptr;
+		Message::MessageHeader *pMsgHeader = nullptr;
 		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		UINT halfWindowSize = m_SendReliableWindow.GetWindowSize() >> 1;
+		Assert(halfWindowSize >= 16);
 
 		// Send guaranted message process
-		CounterType NumProc = m_SendReliableWindow.GetAvailableSize();
-		CounterType uiNumPacket = m_SendGuaQueue.GetEnqueCount();
-		NumProc = Util::Min( NumProc, uiNumPacket );
+		auto availableWindow = m_SendReliableWindow.GetAvailableSize();
+		auto uiNumPacket = m_SendGuaQueue.GetEnqueCount();
+		CounterType availablePush = Util::Min(availableWindow, halfWindowSize);
+		auto NumProc = Util::Min(availablePush, uiNumPacket);
 		for( CounterType uiPacket = 0; uiPacket < NumProc; uiPacket++ )
 		{
 			if( FAILED(m_SendGuaQueue.Dequeue( pIMsg )) )
 				break;
 
-			pMsgHeader = pIMsg->GetMessageHeader();
-			if( pMsgHeader->msgID.IDs.Reliability )
+			if (pMsgHeader->msgID.IDs.Reliability)
 			{
-				if( SUCCEEDED( m_SendReliableWindow.EnqueueMessage( ulTimeCur, pIMsg ) ) )
+				pMsgHeader = pIMsg->GetMessageHeader();
+				if (pMsgHeader->Length > Message::MAX_SUBFRAME_SIZE)
 				{
-					pIMsg->AddRef();// Inc Ref for send
-					Assert( pIMsg->GetDataLength() == 0 || pIMsg->GetMessageHeader()->Crc32 != 0 );
-					SendPending( pIMsg );
-					Assert( pIMsg->GetDataLength() == 0 || pIMsg->GetMessageHeader()->Crc32 != 0 );
-					netTrace( TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:%0%, seq:%1%, msg:%2%, len:%3%", 
-									GetCID(), 
-									pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
-									pIMsg->GetMessageHeader()->msgID, 
-									pIMsg->GetMessageHeader()->Length );
+					svrChk(SendFrameSequenceMessage(pIMsg));
+				}
+				else
+				{
+					if (SUCCEEDED(m_SendReliableWindow.EnqueueMessage(ulTimeCur, pIMsg)))
+					{
+						pIMsg->AddRef();// Inc Ref for send
+						Assert(pIMsg->GetDataLength() == 0 || pIMsg->GetMessageHeader()->Crc32 != 0);
+						SendPending(pIMsg);
+						Assert(pIMsg->GetDataLength() == 0 || pIMsg->GetMessageHeader()->Crc32 != 0);
+						netTrace(TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:%0%, seq:%1%, msg:%2%, len:%3%",
+							GetCID(),
+							pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
+							pIMsg->GetMessageHeader()->msgID,
+							pIMsg->GetMessageHeader()->Length);
+					}
 				}
 				pIMsg = nullptr;
+			}
+			else
+			{
+				Assert(false);
 			}
 		}
 
 
 	Proc_End:
 
-		if( pIMsg ) pIMsg->Release();
+		Util::SafeRelease(pIMsg);
 
 		return hr;
 	}

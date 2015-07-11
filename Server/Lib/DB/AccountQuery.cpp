@@ -19,10 +19,12 @@ BRDB_DEFINE_QUERY_IMPL(QueryLogout);
 BRDB_DEFINE_QUERY_IMPL(QueryFacebookCreateUser);
 BRDB_DEFINE_QUERY_IMPL(QueryFacebookLogin);
 
+BRDB_DEFINE_QUERY_IMPL(QueryCreateRandomUser);
+
 BRDB_DEFINE_QUERY_IMPL(QueryUserList);
 
 BRDB_DEFINE_QUERY_IMPL(QueryUpdateGCMKeys);
-BRDB_DEFINE_QUERY_IMPL(QueryUpdateUserEMail);
+BRDB_DEFINE_QUERY_IMPL(QueryUpdateUserContactInfo);
 
 BRDB_DEFINE_QUERY_IMPL(QueryFindPlayerByEMail);
 BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerShardID);

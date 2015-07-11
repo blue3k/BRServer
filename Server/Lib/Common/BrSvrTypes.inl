@@ -306,19 +306,20 @@ bool MatchingQueueTicket::operator != ( const MatchingQueueTicket& op ) const
 
 
 MatchingPlayerInformation::MatchingPlayerInformation()
-	:PlayerUID(0), PlayerID(0)
+	:PlayerUID(0), PlayerID(0), RequestedRole(PlayerRole::None)
 {
 }
 
 MatchingPlayerInformation::MatchingPlayerInformation( const MatchingPlayerInformation& src )
-	:PlayerUID(src.PlayerUID), PlayerID(src.PlayerID)
+	: PlayerUID(src.PlayerUID), PlayerID(src.PlayerID), RequestedRole(src.RequestedRole)
 {
 }
 
-MatchingPlayerInformation::MatchingPlayerInformation( EntityUID playerUID, AccountID playerID )
+MatchingPlayerInformation::MatchingPlayerInformation(EntityUID playerUID, AccountID playerID, PlayerRole requestedRole)
 {
 	PlayerUID = playerUID;
 	PlayerID = playerID;
+	RequestedRole = requestedRole;
 }
 
 MatchingPlayerInformation::MatchingPlayerInformation( int initValue )
@@ -330,13 +331,14 @@ MatchingPlayerInformation& MatchingPlayerInformation::operator = ( const Matchin
 {
 	PlayerUID = src.PlayerUID;
 	PlayerID = src.PlayerID;
+	RequestedRole = src.RequestedRole;
 
 	return *this;
 }
 
 bool MatchingPlayerInformation::operator == ( const MatchingPlayerInformation& op ) const
 {
-	return PlayerUID == op.PlayerUID && PlayerID == op.PlayerID;
+	return PlayerUID == op.PlayerUID && PlayerID == op.PlayerID && RequestedRole == op.RequestedRole;
 }
 
 

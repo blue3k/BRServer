@@ -29,6 +29,7 @@
 #include "Protocol/Policy/PartyMatchingIPolicy.h"
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Policy/PartyMatchingQueueIPolicy.h"
+#include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 #include "ServerSystem/ServerService/PartyMatchingQueueService.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 
@@ -353,7 +354,7 @@ namespace Svr {
 			Policy::ISvrPolicyPartyMatching *pPolicy = pPlayer->GetServerEntity()->GetPolicy<Policy::ISvrPolicyPartyMatching>();
 			if( pPolicy == nullptr ) return S_OK;
 
-			pPolicy->PlayerGameMatchedS2CEvt( RouteContext(GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), 0, pPlayer->GetPlayerID(), gameUID );
+			pPolicy->PlayerGameMatchedS2CEvt( RouteContext(GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), 0, pPlayer->GetPlayerID(), gameUID, PlayerRole::None );
 
 			return S_OK;
 		});
@@ -392,7 +393,7 @@ namespace Svr {
 			goto Proc_End;
 		}
 
-		auto matchingCompID = Svr::MatchingQueueWatcherServiceEntity::GetQueueComponentID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer());
+		auto matchingCompID = Svr::MatchingUtil::GetQueueComponentID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
 		auto matchingQueueService = Svr::GetServerComponent<Svr::MatchingQueueWatcherServiceEntity>(matchingCompID);
 		if (matchingQueueService == nullptr)
 		{
@@ -405,7 +406,7 @@ namespace Svr {
 		}
 
 		GetMyOwner()->ForeachPlayer( [&]( PartyPlayer* pPlayer )->HRESULT {
-			m_matchingPlayers.push_back(MatchingPlayerInformation(pPlayer->GetPlayerEntityUID(),pPlayer->GetPlayerID()));
+			m_matchingPlayers.push_back(MatchingPlayerInformation(pPlayer->GetPlayerEntityUID(),pPlayer->GetPlayerID(), PlayerRole::None));
 			return S_OK;
 		});
 

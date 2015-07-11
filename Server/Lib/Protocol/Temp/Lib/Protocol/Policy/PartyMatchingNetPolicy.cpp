@@ -48,13 +48,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyPartyMatching::PartyGameMatchedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
 		// S2C: 
-		HRESULT NetSvrPolicyPartyMatching::PlayerGameMatchedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID )
+		HRESULT NetSvrPolicyPartyMatching::PlayerGameMatchedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatching::PlayerGameMatchedS2CEvt::BuildIMsg(pMsg, InRouteContext, InRouteHopCount, InDestPlayerID, InGameInsUID));
+			 protocolChk(Message::PartyMatching::PlayerGameMatchedS2CEvt::BuildIMsg(pMsg, InRouteContext, InRouteHopCount, InDestPlayerID, InGameInsUID, InRequestedRole));
 
 			 protocolChkPtr(GetConnection());
 
@@ -64,7 +64,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatching::PlayerGameMatchedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID )
+		}; // HRESULT NetSvrPolicyPartyMatching::PlayerGameMatchedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
 
 
 	}; // namespace Policy

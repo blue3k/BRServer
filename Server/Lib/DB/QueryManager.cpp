@@ -393,9 +393,13 @@ Proc_End:
 			BR::Svr::BrServer *pMyServer = BR::Svr::BrServer::GetInstance();
 			dbChkPtr( pMyServer );
 
-			if (FAILED(pMyServer->GetEntityTable().RouteTransactionResult(pRes)))
+			const char* queryName = typeid(*pRes).name();
+			auto msgID = pRes->GetMsgID();
+			auto entityID = pRes->GetTransID().EntityID;
+			hr = pMyServer->GetEntityTable().RouteTransactionResult(pRes);
+			if (FAILED(hr))
 			{
-				dbTrace(TRC_INFO, "Failed to route a message msgID:%0%, target entityID:%1%", pRes->GetMsgID(), pRes->GetTransID().EntityID);
+				dbTrace(TRC_INFO, "Failed to route a message msgID:%0%, target entityID:%1%", hr, msgID, entityID);
 				hr = E_INVALID_ENTITY;
 				goto Proc_End;
 			}

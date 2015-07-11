@@ -14,7 +14,6 @@
 
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
-#include "Common/Synchronize.h"
 
 
 
@@ -276,8 +275,9 @@ namespace BR
 		inline DataType* data();
 
 		// push_back
-		inline HRESULT push_back( const DataType& NewData );
-		//inline HRESULT operator +=( const DataType& NewData );
+		HRESULT push_back( const DataType& NewData );
+		//HRESULT operator +=( const DataType& NewData );
+		HRESULT AddItems(size_t numItems, const DataType* NewData);
 
 		// Remove element
 		inline HRESULT RemoveAt( INT iIndex );

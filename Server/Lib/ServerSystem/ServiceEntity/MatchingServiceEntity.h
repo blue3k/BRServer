@@ -69,12 +69,15 @@ namespace Svr {
 		};
 
 
+		// Reserved item type
 		struct ReservedMatchingItem {
 			MatchingQueueTicket			MatchingTicket;
 			UINT						MemberCount;
+			PlayerRole                  RequestedRole;
 
 			ReservedMatchingItem()
-				:MemberCount(0)
+				: MemberCount(0)
+				, RequestedRole(PlayerRole::None)
 			{
 			}
 
@@ -85,15 +88,86 @@ namespace Svr {
 			static const ReservedMatchingItem NullValue;
 		};
 
+		// Reserved matching queue
+		class MatchingQueueInterface
+		{
+		public:
+			MatchingQueueInterface() {}
+			virtual ~MatchingQueueInterface() {}
+
+			virtual void ResetForMatch() {}
+			virtual HRESULT Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) = 0;
+			virtual UINT GetEnqueueCount() = 0;
+		};
+
+		// single query wraper
+		class MatchingQueue_Single : public MatchingQueueInterface
+		{
+		private:
+			PageQueue<ReservedMatchingItem>* m_pQueuePtr;
+
+		public:
+
+			//MatchingQueue_Single();
+			MatchingQueue_Single(PageQueue<ReservedMatchingItem>* pQueuePtr);
+
+			virtual HRESULT Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) override;
+			virtual UINT GetEnqueueCount() override;
+		};
+
+		// Multiple queue with matching count balance
+		class MatchingQueue_Multiple : public MatchingQueueInterface
+		{
+		public:
+
+			struct QueueItem
+			{
+				PageQueue<ReservedMatchingItem>* pQueue;
+				UINT                             MaxAllowPerMatch;
+				PlayerRole                       RequestRole;
+
+
+				QueueItem()
+					: pQueue(nullptr)
+					, MaxAllowPerMatch(0)
+					, RequestRole(PlayerRole::None)
+				{
+				}
+
+
+				bool operator == (const QueueItem& src) const;
+
+				QueueItem& operator = (QueueItem&& src);
+
+				static const QueueItem NullValue;
+			};
+
+
+		private:
+			StaticArray<QueueItem, MAX_QUEUE_COUNT> m_pQueuePtr;
+			UINT m_StartQueueIndex;
+
+		public:
+
+			MatchingQueue_Multiple();
+
+			HRESULT AddQueue(PageQueue<ReservedMatchingItem>* pQueuePtr, UINT maxPerMatch, PlayerRole requestRole);
+
+			virtual void ResetForMatch() override;
+			virtual HRESULT Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) override;
+			virtual UINT GetEnqueueCount() override;
+		};
+
 
 		struct MatchingItem {
 			MatchingQueueTicket			MatchingTicket;
 			EntityUID					RegisterEntityUID;
+			PlayerRole                  RequestedRole;
 			UINT						MemberCount;
 			MatchingPlayerInformation	Players[MAX_NUM_PLAYER];
 
 			MatchingItem()
-				:MemberCount(0)
+				:MemberCount(0), RequestedRole(PlayerRole::None)
 			{
 			}
 
@@ -107,7 +181,8 @@ namespace Svr {
 	private:
 
 		// Matching target member count
-		BRCLASS_ATTRIBUTE_READONLY(UINT,TargetMatchingMemberCount);
+		BRCLASS_ATTRIBUTE_READONLY(UINT, TargetMatchingMemberCount);
+		BRCLASS_ATTRIBUTE_READONLY(UINT, MaxMatchingQueue);
 
 		BRCLASS_ATTRIBUTE_READONLY(bool, IsUseBot);
 
@@ -117,7 +192,7 @@ namespace Svr {
 		UINT m_ReservationStartFrom;
 
 		WeakPointerT<Entity> m_pQueueEntity;
-		StaticArray<PageQueue<ReservedMatchingItem>*, MAX_QUEUE_COUNT> m_MatchingReserevedQueues;
+		StaticArray<MatchingQueueInterface*, MAX_QUEUE_COUNT> m_MatchingReserevedQueues;
 
 		PerformanceCounterRaw<UINT64> m_ItemCounts[MAX_QUEUE_COUNT];
 
@@ -129,6 +204,7 @@ namespace Svr {
 		HRESULT UpdateMatching();
 		HRESULT UpdateBotMatching();
 
+		UINT GetGrabbedPlayerCount(Array<ReservedMatchingItem>& grabbedItems);
 
 	public:
 
@@ -203,7 +279,7 @@ namespace Svr {
 
 		UINT GetMinQueueCount()															{ return m_MinQueueCount; }
 		UINT GetMaxQueueCount()															{ return m_MaxQueueCount; }
-		PageQueue<MatchingServiceEntity::ReservedMatchingItem>& GetReservedItemQueue(UINT iMemberCount)	{ return m_ReservedItemQueue[iMemberCount]; }
+		PageQueue<MatchingServiceEntity::ReservedMatchingItem>& GetReservedItemQueue(UINT iMemberCount, PlayerRole requestRole);
 
 		void TransactionStartedForQueue(UINT iMemberCount)								{ m_ReservedItemQueueTransaction[iMemberCount]++; }
 		void TransactionClosedForQueue(UINT iMemberCount)								{ m_ReservedItemQueueTransaction[iMemberCount]--; if (m_ReservedItemQueueTransaction[iMemberCount] < 0) m_ReservedItemQueueTransaction[iMemberCount] = 0; }
@@ -231,6 +307,7 @@ namespace Svr {
 
 		virtual HRESULT InitializeEntity(EntityID newEntityID) override;
 	};
+
 
 
 }; // namespace Svr

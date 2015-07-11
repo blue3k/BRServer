@@ -36,6 +36,10 @@ namespace BR
 			// C2S: Client heart bit
 			// Cmd: Player connected from a login server and moved to game server
 			virtual HRESULT JoinGameServerRes( const HRESULT &InResult, const char* InNickName, const GameInsUID &InGameUID, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			// Cmd: player complition statues
+			virtual HRESULT GetComplitionStateRes( const HRESULT &InResult, const char* InComplitionState ) = 0;
+			// Cmd: Player complition state
+			virtual HRESULT SetComplitionStateRes( const HRESULT &InResult ) = 0;
 			// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
 			virtual HRESULT RegisterGCMRes( const HRESULT &InResult ) = 0;
 			// Cmd: Unregister Google notification service ID
@@ -77,7 +81,7 @@ namespace BR
 			// S2C: Player level up event
 			virtual HRESULT LevelUpS2CEvt( const UINT64 &InCurrentTotalExp, const UINT32 &InCurrentLevel ) = 0;
 			// Cmd: Change NickName
-			virtual HRESULT SetNickNameRes( const HRESULT &InResult ) = 0;
+			virtual HRESULT SetNickNameRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
 			// Cmd: Create Party
 			virtual HRESULT CreatePartyRes( const HRESULT &InResult, const PartyUID &InPartyUID ) = 0;
 			// Cmd: Join party
@@ -147,19 +151,21 @@ namespace BR
 			// S2C: Player Voted
 			virtual HRESULT PlayerRevealedS2CEvt( const GameInsUID &InGameInsUID, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason ) = 0;
 			// Cmd: Play again with the current players
-			virtual HRESULT GamePlayAgainRes( const HRESULT &InResult ) = 0;
+			virtual HRESULT GamePlayAgainRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 			virtual HRESULT GamePlayAgainS2CEvt( const PartyUID &InPartyUID, const PlayerID &InLeadPlayer ) = 0;
+			// Cmd: Player. reveal a player
+			virtual HRESULT GameRevealPlayerRes( const HRESULT &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
 			// Cmd: Player. revive himself
-			virtual HRESULT GameRevealPlayerRes( const HRESULT &InResult, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole ) = 0;
-			// Cmd: Player. revive himself
-			virtual HRESULT GamePlayerReviveRes( const HRESULT &InResult ) = 0;
+			virtual HRESULT GamePlayerReviveRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
 			// S2C: Player is revived
 			virtual HRESULT GamePlayerRevivedS2CEvt( const PlayerID &InRevivedPlayerID ) = 0;
+			// Cmd: Player. reset ranking
+			virtual HRESULT GamePlayerResetRankRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
 			// Cmd: Request Game match
-			virtual HRESULT RequestGameMatchRes( const HRESULT &InResult ) = 0;
+			virtual HRESULT RequestGameMatchRes( const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
 			// S2C: Game matched
-			virtual HRESULT GameMatchedS2CEvt( const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData ) = 0;
+			virtual HRESULT GameMatchedS2CEvt( const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData, const UINT32 &InStamina, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
 			// S2C: Game match failed
 			virtual HRESULT GameMatchFailedS2CEvt( const HRESULT &InFailedReason ) = 0;
 			// S2C: Game matching started
@@ -168,6 +174,8 @@ namespace BR
 			virtual HRESULT CancelGameMatchRes( const HRESULT &InResult ) = 0;
 			// S2C: game matching canceled
 			virtual HRESULT GameMatchingCanceledS2CEvt(  ) = 0;
+			// Cmd: Buy shop item prepare
+			virtual HRESULT BuyShopItemPrepareRes( const HRESULT &InResult, const UINT32 &InShopItemID, const char* InPurchaseID ) = 0;
 			// Cmd: Buy shop item
 			virtual HRESULT BuyShopItemRes( const HRESULT &InResult, const UINT32 &InShopItemID ) = 0;
 			// Cmd: Give my stamina to other player
@@ -193,6 +201,10 @@ namespace BR
 			virtual HRESULT HeartBitC2SEvt(  ) = 0;
 			// Cmd: Player connected from a login server and moved to game server
 			virtual HRESULT JoinGameServerCmd( const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID ) = 0;
+			// Cmd: player complition statues
+			virtual HRESULT GetComplitionStateCmd(  ) = 0;
+			// Cmd: Player complition state
+			virtual HRESULT SetComplitionStateCmd( const char* InComplitionState ) = 0;
 			// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
 			virtual HRESULT RegisterGCMCmd( const char* InGCMRegisteredID ) = 0;
 			// Cmd: Unregister Google notification service ID
@@ -229,7 +241,7 @@ namespace BR
 			virtual HRESULT GetGamePlayerInfoCmd( const PlayerID &InPlayerID ) = 0;
 			// S2C: Player level up event
 			// Cmd: Change NickName
-			virtual HRESULT SetNickNameCmd( const char* InNickName ) = 0;
+			virtual HRESULT SetNickNameCmd( const char* InNickName, const BYTE &InIsCostFree ) = 0;
 			// Cmd: Create Party
 			virtual HRESULT CreatePartyCmd(  ) = 0;
 			// Cmd: Join party
@@ -282,21 +294,25 @@ namespace BR
 			// Cmd: Play again with the current players
 			virtual HRESULT GamePlayAgainCmd(  ) = 0;
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
-			// Cmd: Player. revive himself
-			virtual HRESULT GameRevealPlayerCmd( const PlayerID &InTargetPlayerID ) = 0;
+			// Cmd: Player. reveal a player
+			virtual HRESULT GameRevealPlayerCmd( const Array<PlayerID>& InTargetPlayerID ) = 0;
 			// Cmd: Player. revive himself
 			virtual HRESULT GamePlayerReviveCmd(  ) = 0;
 			// S2C: Player is revived
+			// Cmd: Player. reset ranking
+			virtual HRESULT GamePlayerResetRankCmd(  ) = 0;
 			// Cmd: Request Game match
-			virtual HRESULT RequestGameMatchCmd( const BYTE &InNumPlayer ) = 0;
+			virtual HRESULT RequestGameMatchCmd( const BYTE &InNumPlayer, const PlayerRole &InRequestRole ) = 0;
 			// S2C: Game matched
 			// S2C: Game match failed
 			// S2C: Game matching started
 			// Cmd: Cancel Game match
 			virtual HRESULT CancelGameMatchCmd(  ) = 0;
 			// S2C: game matching canceled
+			// Cmd: Buy shop item prepare
+			virtual HRESULT BuyShopItemPrepareCmd( const UINT32 &InShopItemID ) = 0;
 			// Cmd: Buy shop item
-			virtual HRESULT BuyShopItemCmd( const UINT32 &InShopItemID, const char* InParamString ) = 0;
+			virtual HRESULT BuyShopItemCmd( const UINT32 &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<BYTE>& InPurchaseToken ) = 0;
 			// Cmd: Give my stamina to other player
 			virtual HRESULT GiveStaminaCmd( const PlayerID &InTargetPlayer ) = 0;
 			// Cmd: For debug, Change configue preset

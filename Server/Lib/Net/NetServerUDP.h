@@ -146,6 +146,7 @@ namespace Net {
 
 		// Register PeerID to map
 
+		HRESULT OnNoConnectionPacket(const struct sockaddr_in6& from, const BYTE* pData);
 
 		// called when network message is received
 		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred );

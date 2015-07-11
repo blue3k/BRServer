@@ -32,7 +32,7 @@ namespace BR
 			// C2S: Game instance deletion
 			HRESULT DeleteGameC2SEvt( const RouteContext &InRouteContext );
 			// Cmd: Join Game
-			HRESULT JoinGameCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket );
+			HRESULT JoinGameCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole );
 			// C2S: Change configue preset
 			HRESULT SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const UINT32 &InPresetID );
 			// Cmd: Leave Game
@@ -52,7 +52,7 @@ namespace BR
 			// Cmd: Play again with the current players
 			HRESULT GamePlayAgainCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID );
 			// Cmd: Player. revive himself
-			HRESULT GameRevealPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerID &InTargetPlayerID );
+			HRESULT GameRevealPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID );
 			// Cmd: Player. revive himself
 			HRESULT GamePlayerReviveCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID );
 
@@ -107,7 +107,7 @@ namespace BR
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 			HRESULT GamePlayAgainS2CEvt( const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer );
 			// Cmd: Player. revive himself
-			HRESULT GameRevealPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole );
+			HRESULT GameRevealPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole );
 			// Cmd: Player. revive himself
 			HRESULT GamePlayerReviveRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext );
 			// S2C: Player is revived

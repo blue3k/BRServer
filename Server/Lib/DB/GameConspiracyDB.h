@@ -71,6 +71,22 @@ namespace DB {
 																				INT64	LatestTickTime
 																				);
 
+
+		HRESULT SavePurchaseInfoToDB(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+																				SHORT	Level,
+																				INT64	Exp,
+																				INT64	GameMoney,
+																				INT64	Gem,
+																				SHORT	Stamina,
+																				SHORT	AddedFriendSlot,
+																				const Array<BYTE>& purchaseID, 
+																				const char* purchasePlatform, const char* purchaseToken,
+																				INT32	LatestActiveTime,
+																				INT64	LatestTickTime
+																				);
+
+		HRESULT CheckPurchaseID(TransactionID Sender, UINT shardID, const Array<BYTE>& purchaseID);
+
 		// Nick name
 		HRESULT SetNickName(BR::TransactionID Sender, UINT shardID, PlayerID playerID, const char* nickName);
 		HRESULT GetNickName(BR::TransactionID Sender, UINT shardID, PlayerID playerID);
@@ -131,6 +147,8 @@ namespace DB {
 		HRESULT Notification_RemoveByMessageID(BR::TransactionID Sender, UINT shardID, PlayerID UserID, INT16 messageID);
 		HRESULT Notification_SetRead(BR::TransactionID Sender, UINT shardID, PlayerID userID, INT32 notificationID);
 
+		HRESULT SetComplitionState(BR::TransactionID Sender, UINT shardID, PlayerID userID, const char* complitionState);
+		HRESULT GetComplitionState(BR::TransactionID Sender, UINT shardID, PlayerID userID);
 	};
 
 } // namespace DB

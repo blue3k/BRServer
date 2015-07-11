@@ -28,15 +28,16 @@ namespace Svr {
 	class ServerServiceBase;
 
 
-	enum ServerComponentID {
+	enum ServerComponentID
+	{
 		ServerComponentID_AccountDB,
 		ServerComponentID_LoginSessionDB,
 		ServerComponentID_GameDB,
 		ServerComponentID_GameTransactionDB,
 		ServerComponentID_RankingDB,
-		ServerComponentID_ServerEntityManager,		// Server
+		ServerComponentID_ServerEntityManager,		               // Server
 		ServerComponentID_EntityManager,
-		ServerComponentID_ExternalTaskManager,
+		ServerComponentID_ParallelTransactionManager,
 
 		ServerComponentID_ClusterManagerService,
 		ServerComponentID_LoginClusterService,
@@ -47,13 +48,14 @@ namespace Svr {
 
 		ServerComponentID_MatchingWatcherService_4,
 		ServerComponentID_MatchingWatcherService_8,
-		ServerComponentID_MatchingWatcherService_10,
-		ServerComponentID_MatchingWatcherService_12,
 
 
 		ServerComponentID_MatchingQueueWatcherService_4x1,
 		ServerComponentID_MatchingQueueWatcherService_4x2,
 		ServerComponentID_MatchingQueueWatcherService_4x3,
+		ServerComponentID_MatchingQueueWatcherService_4x1S,
+		ServerComponentID_MatchingQueueWatcherService_4x1W,
+
 
 		ServerComponentID_MatchingQueueWatcherService_8x1,
 		ServerComponentID_MatchingQueueWatcherService_8x2,
@@ -62,28 +64,8 @@ namespace Svr {
 		ServerComponentID_MatchingQueueWatcherService_8x5,
 		ServerComponentID_MatchingQueueWatcherService_8x6,
 		ServerComponentID_MatchingQueueWatcherService_8x7,
-
-		ServerComponentID_MatchingQueueWatcherService_10x1,
-		ServerComponentID_MatchingQueueWatcherService_10x2,
-		ServerComponentID_MatchingQueueWatcherService_10x3,
-		ServerComponentID_MatchingQueueWatcherService_10x4,
-		ServerComponentID_MatchingQueueWatcherService_10x5,
-		ServerComponentID_MatchingQueueWatcherService_10x6,
-		ServerComponentID_MatchingQueueWatcherService_10x7,
-		ServerComponentID_MatchingQueueWatcherService_10x8,
-		ServerComponentID_MatchingQueueWatcherService_10x9,
-
-		ServerComponentID_MatchingQueueWatcherService_12x1,
-		ServerComponentID_MatchingQueueWatcherService_12x2,
-		ServerComponentID_MatchingQueueWatcherService_12x3,
-		ServerComponentID_MatchingQueueWatcherService_12x4,
-		ServerComponentID_MatchingQueueWatcherService_12x5,
-		ServerComponentID_MatchingQueueWatcherService_12x6,
-		ServerComponentID_MatchingQueueWatcherService_12x7,
-		ServerComponentID_MatchingQueueWatcherService_12x8,
-		ServerComponentID_MatchingQueueWatcherService_12x9,
-		ServerComponentID_MatchingQueueWatcherService_12x10,
-		ServerComponentID_MatchingQueueWatcherService_12x11,
+		ServerComponentID_MatchingQueueWatcherService_8x1S,
+		ServerComponentID_MatchingQueueWatcherService_8x1W,
 
 
 		ServerComponentID_Max

@@ -34,6 +34,8 @@ namespace DB {
 		MCODE_QueryCreatePlayerInfo,
 		MCODE_QueryGetPlayerInfo,
 		MCODE_QuerySetPlayerInfo,
+		MCODE_QuerySavePurchaseInfoToDB,
+		MCODE_QueryCheckPurchaseID,
 		MCODE_QueryGetNickName,
 		MCODE_QuerySetNickName,
 		MCODE_QueryUpdateGameEnd,
@@ -53,6 +55,8 @@ namespace DB {
 		MCODE_QueryNotification_Remove,
 		MCODE_QueryNotification_RemoveByMessageID,
 		MCODE_QueryNotification_SetRead,
+		MCODE_QuerySetComplitionState,
+		MCODE_QueryGetComplitionState,
 
 	}; // enum MsgCode
 
@@ -290,6 +294,76 @@ namespace DB {
 
 	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB,QuerySetPlayerInfo);
 
+
+
+	class QuerySavePurchaseInfoToDB : public QueryBase
+	{
+	public:
+		// Player ID
+		INT64	PlayerID;
+		SHORT	Level;
+		INT64	Exp;
+		INT64	GameMoney;
+		INT64	Gem;
+		SHORT	Stamina;
+		SHORT	AddedFriendSlot;
+		BYTE    PurchaseID[Const::MAX_PURCHASEID];
+		char    PurchasePlatform[Const::MAX_PLATFORM_NAME];
+		char    PurchaseToken[Const::MAX_PURCHASETOKEN];
+		INT32	LatestActiveTime;
+		INT64	LatestTickTime;
+
+		// result
+		INT32	Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QuerySavePurchaseInfoToDB, 13)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
+			BRDB_COLUMN_ENTRY(PlayerID)
+			BRDB_COLUMN_ENTRY(Level)
+			BRDB_COLUMN_ENTRY(Exp)
+			BRDB_COLUMN_ENTRY(GameMoney)
+			BRDB_COLUMN_ENTRY(Gem)
+			BRDB_COLUMN_ENTRY(Stamina)
+			BRDB_COLUMN_ENTRY(AddedFriendSlot)
+			BRDB_COLUMN_ENTRY(PurchaseID)
+			BRDB_COLUMN_ENTRY(PurchasePlatform)
+			BRDB_COLUMN_ENTRY(PurchaseToken)
+			BRDB_COLUMN_ENTRY(LatestActiveTime)
+			BRDB_COLUMN_ENTRY(LatestTickTime)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
+			BRDB_COLUMN_ENTRY(Result)
+		BRDB_END_PARAM_MAP()
+
+
+		BRDB_QUERYSTRING( "spSavePurchaseInfoToDB", BRDB_PARAM_13 )
+	};
+
+	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QuerySavePurchaseInfoToDB);
+
+
+	class QueryCheckPurchaseID : public QueryBase
+	{
+	public:
+		// Player ID
+		BYTE    PurchaseID[Const::MAX_PURCHASEID];
+
+		// result
+		INT32	Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryCheckPurchaseID, 2)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
+			BRDB_COLUMN_ENTRY(PurchaseID)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
+			BRDB_COLUMN_ENTRY(Result)
+			BRDB_END_PARAM_MAP()
+
+
+			BRDB_QUERYSTRING("spCheckPurchaseID", BRDB_PARAM_2)
+	};
+
+	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryCheckPurchaseID);
 
 
 
@@ -915,6 +989,49 @@ namespace DB {
 
 	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryNotification_SetRead);
 
+
+
+	class QuerySetComplitionState : public QueryBase
+	{
+	public:
+		INT64 PlayerID;
+		char ComplitionState[Const::MAX_COMPLITIONSTATE];
+
+		INT32 Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QuerySetComplitionState, 2)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
+			BRDB_COLUMN_ENTRY(PlayerID)
+			BRDB_COLUMN_ENTRY(ComplitionState)
+			BRDB_END_PARAM_MAP()
+
+			BRDB_QUERYSTRING("spSetComplitionState", BRDB_PARAM_2)
+	};
+
+	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QuerySetComplitionState);
+
+
+	class QueryGetComplitionState : public QueryBase
+	{
+	public:
+		INT64 PlayerID;
+		char ComplitionState[Const::MAX_COMPLITIONSTATE];
+
+		INT32 Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryGetComplitionState, 2)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
+			BRDB_COLUMN_ENTRY(PlayerID)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
+			BRDB_COLUMN_ENTRY(ComplitionState)
+			BRDB_END_PARAM_MAP()
+
+			BRDB_QUERYSTRING("spGetComplitionState", BRDB_PARAM_2)
+	};
+
+	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryGetComplitionState);
 
 
 } // namespace DB

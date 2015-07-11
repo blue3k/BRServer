@@ -40,13 +40,19 @@ namespace DB {
 			MAX_DBCONFIGLOAD		= 64,					
 
 			// User Name Max
-			MAX_USERNAME			= 64,
+			MAX_USERNAME			= 128,
+
+			MAX_PLATFORM_NAME = 64,
+			MAX_PURCHASEID = 64,
+			MAX_PURCHASETOKEN = 512,
 
 			// Notification text Max
 			MAX_NOTIFICATION_TEXT	= 512,
 
 			// User email Max
 			MAX_EMAIL				= 128,
+			MAX_CELLPHONE			= 64,
+			MAX_COMPLITIONSTATE     = 16,
 
 			// Password Max
 			MAX_PASSWORD			= 64,

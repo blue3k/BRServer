@@ -130,6 +130,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Player, pCur, iMsgSize, sizeof(PlayerInformation) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RequestedRole, pCur, iMsgSize, sizeof(PlayerRole) ) );
 
 
 			Proc_End:
@@ -138,7 +139,7 @@ namespace BR
 
 			}; // HRESULT JoinGameCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT JoinGameCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket )
+			HRESULT JoinGameCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 			{
  				HRESULT hr = S_OK;
 
@@ -148,7 +149,8 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerInformation)
-					+ sizeof(AuthTicket));
+					+ sizeof(AuthTicket)
+					+ sizeof(PlayerRole));
 
 				MessageData *pNewMsg = NULL;
 
@@ -160,6 +162,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InPlayer, sizeof(PlayerInformation));
 				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
+				Protocol::PackParamCopy( pMsgData, &InRequestedRole, sizeof(PlayerRole));
 
 				pMsg = pNewMsg;
 
@@ -168,7 +171,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT JoinGameCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket )
+			}; // HRESULT JoinGameCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 
 			HRESULT JoinGameCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -201,8 +204,8 @@ namespace BR
 			VOID JoinGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameCmd:%1%:%2% , Context:%3%, RouteContext:%4%, Player:%5%, Ticket:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_Player, m_Ticket); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameCmd:%1%:%2% , Context:%3%, RouteContext:%4%, Player:%5%, Ticket:%6%, RequestedRole:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_Player, m_Ticket, m_RequestedRole); 
 			}; // VOID JoinGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID JoinGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 1);
@@ -2899,7 +2902,10 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TargetPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				UINT16 numberofTargetPlayerID = 0; PlayerID* pTargetPlayerID = nullptr;
+				protocolChk( Protocol::StreamParamCopy( &numberofTargetPlayerID, pCur, iMsgSize, sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pTargetPlayerID, pCur, iMsgSize, sizeof(PlayerID)*numberofTargetPlayerID ) );
+				m_TargetPlayerID.SetLinkedBuffer(numberofTargetPlayerID, numberofTargetPlayerID, pTargetPlayerID);
 
 
 			Proc_End:
@@ -2908,7 +2914,7 @@ namespace BR
 
 			}; // HRESULT GameRevealPlayerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GameRevealPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerID &InTargetPlayerID )
+			HRESULT GameRevealPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 			{
  				HRESULT hr = S_OK;
 
@@ -2918,7 +2924,7 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID)
-					+ sizeof(PlayerID));
+					+ sizeof(PlayerID)*InTargetPlayerID.GetSize() + sizeof(UINT16));
 
 				MessageData *pNewMsg = NULL;
 
@@ -2929,7 +2935,9 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InTargetPlayerID, sizeof(PlayerID));
+				UINT16 numberOfInTargetPlayerID = (UINT16)InTargetPlayerID.GetSize(); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInTargetPlayerID, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, InTargetPlayerID.data(), (INT)(sizeof(PlayerID)*InTargetPlayerID.GetSize())); 
 
 				pMsg = pNewMsg;
 
@@ -2938,7 +2946,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GameRevealPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerID &InTargetPlayerID )
+			}; // HRESULT GameRevealPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 
 			HRESULT GameRevealPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2972,7 +2980,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG1, "%0%:GameRevealPlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, TargetPlayerID:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_TargetPlayerID); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, ArgArray<PlayerID>(m_TargetPlayerID)); 
 			}; // VOID GameRevealPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GameRevealPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 23);
@@ -2991,8 +2999,14 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RevealedPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RevealedRole, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				UINT16 numberofRevealedPlayerID = 0; PlayerID* pRevealedPlayerID = nullptr;
+				protocolChk( Protocol::StreamParamCopy( &numberofRevealedPlayerID, pCur, iMsgSize, sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pRevealedPlayerID, pCur, iMsgSize, sizeof(PlayerID)*numberofRevealedPlayerID ) );
+				m_RevealedPlayerID.SetLinkedBuffer(numberofRevealedPlayerID, numberofRevealedPlayerID, pRevealedPlayerID);
+				UINT16 numberofRevealedRole = 0; PlayerRole* pRevealedRole = nullptr;
+				protocolChk( Protocol::StreamParamCopy( &numberofRevealedRole, pCur, iMsgSize, sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pRevealedRole, pCur, iMsgSize, sizeof(PlayerRole)*numberofRevealedRole ) );
+				m_RevealedRole.SetLinkedBuffer(numberofRevealedRole, numberofRevealedRole, pRevealedRole);
 
 
 			Proc_End:
@@ -3001,7 +3015,7 @@ namespace BR
 
 			}; // HRESULT GameRevealPlayerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GameRevealPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole )
+			HRESULT GameRevealPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
 			{
  				HRESULT hr = S_OK;
 
@@ -3011,8 +3025,8 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext)
-					+ sizeof(PlayerID)
-					+ sizeof(PlayerRole));
+					+ sizeof(PlayerID)*InRevealedPlayerID.GetSize() + sizeof(UINT16)
+					+ sizeof(PlayerRole)*InRevealedRole.GetSize() + sizeof(UINT16));
 
 				MessageData *pNewMsg = NULL;
 
@@ -3023,8 +3037,12 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRevealedPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InRevealedRole, sizeof(PlayerRole));
+				UINT16 numberOfInRevealedPlayerID = (UINT16)InRevealedPlayerID.GetSize(); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedPlayerID, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, InRevealedPlayerID.data(), (INT)(sizeof(PlayerID)*InRevealedPlayerID.GetSize())); 
+				UINT16 numberOfInRevealedRole = (UINT16)InRevealedRole.GetSize(); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedRole, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, InRevealedRole.data(), (INT)(sizeof(PlayerRole)*InRevealedRole.GetSize())); 
 
 				pMsg = pNewMsg;
 
@@ -3033,7 +3051,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GameRevealPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole )
+			}; // HRESULT GameRevealPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
 
 			HRESULT GameRevealPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -3068,7 +3086,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG1, "%0%:GameRevealPlayerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, RevealedPlayerID:%6%, RevealedRole:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_RevealedPlayerID, m_RevealedRole); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, ArgArray<PlayerID>(m_RevealedPlayerID), ArgArray<PlayerRole>(m_RevealedRole)); 
 			}; // VOID GameRevealPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Player. revive himself

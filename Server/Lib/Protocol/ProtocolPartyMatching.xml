@@ -11,6 +11,7 @@
     <S2CEvent Name="PlayerGameMatched" Reliable="true" Crypto="No" Trace="DBG1" Desc="">
       <Params Type="PlayerID" Name="DestPlayerID"/>
       <Params Type="GameInsUID" Name="GameInsUID"/>
+      <Params Type="PlayerRole" Name="RequestedRole"/>
     </S2CEvent>
 
 

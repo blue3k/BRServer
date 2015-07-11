@@ -20,8 +20,9 @@
 #include "Net/Connection.h"
 #include "Net/NetDef.h"
 #include "Net/NetServer.h"
-#include "Net/NetMessage.h"
+#include "Net/NetCtrl.h"
 #include "Net/NetConst.h"
+#include "Net/NetCtrl.h"
 
 #include "Common/SvrPolicyID.h"
 

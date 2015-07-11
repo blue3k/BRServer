@@ -5,9 +5,6 @@
     <ClCompile Include=".\Argument.cpp">
       <Filter>String</Filter>
     </ClCompile>
-    <ClCompile Include=".\Crc32.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
     <ClCompile Include=".\Memory.cpp">
       <Filter>System</Filter>
     </ClCompile>
@@ -86,6 +83,15 @@
     </ClCompile>
     <ClCompile Include="ToString.cpp">
       <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="CryptoCrc32.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="CryptoBase64.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="CryptoSHA.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,9 +347,6 @@
     <None Include=".\ArrayUtil.inl">
       <Filter>Utility</Filter>
     </None>
-    <None Include=".\CRC32Table.inl">
-      <Filter>Utility</Filter>
-    </None>
     <None Include=".\Memory.inl">
       <Filter>System</Filter>
     </None>
@@ -458,6 +461,9 @@
     </None>
     <None Include="SortedMap.inl">
       <Filter>Container</Filter>
+    </None>
+    <None Include="CryptoCRC32Table.inl">
+      <Filter>Utility</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

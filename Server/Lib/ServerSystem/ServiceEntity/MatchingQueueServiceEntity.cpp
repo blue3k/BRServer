@@ -57,16 +57,20 @@ namespace Svr {
 	{
 		switch (clusterID)
 		{
-		case ClusterID::MatchingQueue_Game_4x1: return "MatchingQueue_Game_4x1";
-		case ClusterID::MatchingQueue_Game_4x2: return "MatchingQueue_Game_4x2";
-		case ClusterID::MatchingQueue_Game_4x3: return "MatchingQueue_Game_4x3";
-		case ClusterID::MatchingQueue_Game_8x1: return "MatchingQueue_Game_8x1";
-		case ClusterID::MatchingQueue_Game_8x2: return "MatchingQueue_Game_8x2";
-		case ClusterID::MatchingQueue_Game_8x3: return "MatchingQueue_Game_8x3";
-		case ClusterID::MatchingQueue_Game_8x4: return "MatchingQueue_Game_8x4";
-		case ClusterID::MatchingQueue_Game_8x5: return "MatchingQueue_Game_8x5";
-		case ClusterID::MatchingQueue_Game_8x6: return "MatchingQueue_Game_8x6";
-		case ClusterID::MatchingQueue_Game_8x7: return "MatchingQueue_Game_8x7";
+		case ClusterID::MatchingQueue_Game_4x1:  return "MatchingQueue_Game_4x1";
+		case ClusterID::MatchingQueue_Game_4x2:  return "MatchingQueue_Game_4x2";
+		case ClusterID::MatchingQueue_Game_4x3:  return "MatchingQueue_Game_4x3";
+		case ClusterID::MatchingQueue_Game_4x1S: return "MatchingQueue_Game_4x1S";
+		case ClusterID::MatchingQueue_Game_4x1W: return "MatchingQueue_Game_4x1W";
+		case ClusterID::MatchingQueue_Game_8x1:  return "MatchingQueue_Game_8x1";
+		case ClusterID::MatchingQueue_Game_8x2:  return "MatchingQueue_Game_8x2";
+		case ClusterID::MatchingQueue_Game_8x3:  return "MatchingQueue_Game_8x3";
+		case ClusterID::MatchingQueue_Game_8x4:  return "MatchingQueue_Game_8x4";
+		case ClusterID::MatchingQueue_Game_8x5:  return "MatchingQueue_Game_8x5";
+		case ClusterID::MatchingQueue_Game_8x6:  return "MatchingQueue_Game_8x6";
+		case ClusterID::MatchingQueue_Game_8x7:  return "MatchingQueue_Game_8x7";
+		case ClusterID::MatchingQueue_Game_8x1S: return "MatchingQueue_Game_8x1S";
+		case ClusterID::MatchingQueue_Game_8x1W: return "MatchingQueue_Game_8x1W";
 		}
 
 		return "Unknown";
@@ -299,8 +303,6 @@ namespace Svr {
 		{
 			Assert(erasedValue == pItem);
 		}
-		// queue will delete this item
-		//Util::SafeDelete(pItem);
 
 		m_ItemCounter.fetch_sub(1, std::memory_order_relaxed);
 
@@ -460,10 +462,6 @@ namespace Svr {
 
 		svrChk(m_ItemIDTable.Find(ticket.QueueItemID, pItem));
 
-		//if( itItem->Reserver != reserverUID )
-		//{
-		//	svrErr(E_SVR_INVALID_QUEUEITEM);
-		//}
 
 		pItem->Reserver = 0;
 
@@ -484,10 +482,6 @@ namespace Svr {
 
 		svrChk(m_ItemIDTable.Find(ticket.QueueItemID, pItem));
 
-		//if( itItem->Reserver != reserverUID )
-		//{
-		//	svrErr(E_SVR_INVALID_QUEUEITEM);
-		//}
 
 		// If canceled
 		if( pItem->NumPlayers == 0 )
@@ -538,64 +532,6 @@ namespace Svr {
 	MatchingQueueWatcherServiceEntity::~MatchingQueueWatcherServiceEntity()
 	{
 	}
-
-	HRESULT MatchingQueueWatcherServiceEntity::GetQueueComponentIDMinMax( UINT MaxMemberCount, UINT& minComponentID, UINT& maxComponentID )
-	{
-		switch( MaxMemberCount )
-		{
-		case 4:
-			minComponentID = ServerComponentID_MatchingQueueWatcherService_4x1;
-			maxComponentID = ServerComponentID_MatchingQueueWatcherService_4x3;
-			break;
-		case 8:
-			minComponentID = ServerComponentID_MatchingQueueWatcherService_8x1;
-			maxComponentID = ServerComponentID_MatchingQueueWatcherService_8x7;
-			break;
-		case 10:
-			minComponentID = ServerComponentID_MatchingQueueWatcherService_10x1;
-			maxComponentID = ServerComponentID_MatchingQueueWatcherService_10x9;
-			break;
-		case 12:
-			minComponentID = ServerComponentID_MatchingQueueWatcherService_12x1;
-			maxComponentID = ServerComponentID_MatchingQueueWatcherService_12x11;
-			break;
-		default:
-			minComponentID = maxComponentID = 0;
-			return E_UNEXPECTED;
-		};
-
-		return S_OK;
-	}
-
-	UINT MatchingQueueWatcherServiceEntity::GetQueueComponentID( UINT MaxMemberCount, UINT matchingMemberCount )
-	{
-		UINT minComponentID, maxComponentID;
-
-		if( FAILED(GetQueueComponentIDMinMax(MaxMemberCount,minComponentID,maxComponentID)) )
-		{
-			Assert(false);
-			return (UINT)-1;
-		}
-
-		UINT componentID = minComponentID;
-
-		componentID += matchingMemberCount - 1;
-
-		if( componentID < minComponentID )
-		{
-			Assert(false);
-			componentID = minComponentID;
-		}
-
-		if( componentID > maxComponentID )
-		{
-			Assert(false);
-			componentID = maxComponentID;
-		}
-
-		return componentID;
-	}
-
 
 
 

@@ -300,6 +300,131 @@ namespace BR.Message
 
 		} // public class LoginByFacebookRes : MessageBase
 
+		// Cmd: Login request
+		[Preserve (AllMembers = true)]
+		public class CreateRandomUserCmd : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.CMD, true, true, POLICY.LOGIN, 2);
+
+			public BR.GameID GameID;
+			public string CellPhone { get; private set; }
+			public CreateRandomUserCmd()
+				{}
+
+			public CreateRandomUserCmd( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:CreateRandomUserCmd: , GameID:{1}, CellPhone:{2}",
+												Prefix, GameID.ToString(), CellPhone); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+				GameID = binReader.ReadGameID();
+
+				CellPhone = binReader.ReadString();
+
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header , GameID, CellPhone );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , BR.GameID InGameID, string InCellPhone )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 
+					+ 2
+					+ binWriter.StringEncoder.GetByteCount(InCellPhone) + 1 + 2;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+				binWriter.Write( InGameID);
+				binWriter.Write( InCellPhone);
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , BR.GameID InGameID, string InCellPhone )
+
+		} // public class CreateRandomUserCmd : MessageBase
+		[Preserve (AllMembers = true)]
+		public class CreateRandomUserRes : MessageBase
+		{
+ 
+			public static MessageID MID = new MessageID(MSGTYPE.RES, true, true, POLICY.LOGIN, 2);
+
+			public System.Int32 Result;
+			public BR.NetAddress GameServerAddr;
+			public System.UInt64 AccID;
+			public System.UInt64 Ticket;
+			public System.UInt64 LoginEntityUID;
+			public CreateRandomUserRes()
+				{}
+
+			public CreateRandomUserRes( ref MessageHeader msgHeader )
+				:base(ref msgHeader)
+				{}
+
+
+			public override void TraceOut(string Prefix)
+			{
+ 				Debug.Print("{{0}}:CreateRandomUserRes: , Result:{1}, GameServerAddr:{2}, AccID:{3}, Ticket:{4}, LoginEntityUID:{5}",
+												Prefix, Result.ToString(), GameServerAddr.ToString(), AccID.ToString(), Ticket.ToString(), LoginEntityUID.ToString()); 
+			} // public override void TraceOut(string Prefix)
+
+
+			public override void ParseMsg(BinaryMemoryReader binaryReader)
+			{
+ 				var binReader = (PacketMemoryReader)binaryReader;
+				Result = binReader.ReadInt32();
+
+				GameServerAddr = binReader.ReadNetAddress();
+
+				AccID = binReader.ReadUInt64();
+
+				Ticket = binReader.ReadUInt64();
+
+				LoginEntityUID = binReader.ReadUInt64();
+
+			} // public override void ParseMsg(BinaryMemoryReader binaryReader)
+
+
+			public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+			{
+ 				BuildMessageBuffer( binWriter, ref Header , Result, ref GameServerAddr, AccID, Ticket, LoginEntityUID );
+			} // public override void BuildMessageBuffer(BinaryMemoryWriter binWriter)
+
+			static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, ref BR.NetAddress InGameServerAddr, System.UInt64 InAccID, System.UInt64 InTicket, System.UInt64 InLoginEntityUID )
+			{
+ 				var binWriter = (PacketMemoryWriter)binaryWriter;
+				int __uiMessageSize = sizeof(UInt64)*2 
+					+ 4
+					+ 18
+					+ 8
+					+ 8
+					+ 8;
+
+				BRDebug.Assert((binWriter.Capacity - binWriter.Position) >= __uiMessageSize);
+
+				header.Length = (uint)__uiMessageSize;
+				binWriter.Write( InResult);
+				binWriter.Write(ref InGameServerAddr);
+				binWriter.Write( InAccID);
+				binWriter.Write( InTicket);
+				binWriter.Write( InLoginEntityUID);
+
+			} // static public void  BuildMessageBuffer( BinaryMemoryWriter binaryWriter, ref MessageHeader header , System.Int32 InResult, ref BR.NetAddress InGameServerAddr, System.UInt64 InAccID, System.UInt64 InTicket, System.UInt64 InLoginEntityUID )
+
+		} // public class CreateRandomUserRes : MessageBase
+
 
 
 

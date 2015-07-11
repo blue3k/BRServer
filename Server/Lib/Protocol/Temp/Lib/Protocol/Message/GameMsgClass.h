@@ -117,6 +117,116 @@ namespace BR
 
 			}; // class JoinGameServerRes : public MessageBase
 
+			// Cmd: player complition statues
+			class GetComplitionStateCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+			public:
+				GetComplitionStateCmd()
+					{}
+
+				GetComplitionStateCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg );
+
+			}; // class GetComplitionStateCmd : public MessageBase
+
+			class GetComplitionStateRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				HRESULT m_Result;
+				const char* m_ComplitionState;
+			public:
+				GetComplitionStateRes()
+				:m_ComplitionState(nullptr)
+					{}
+
+				GetComplitionStateRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+				,m_ComplitionState(nullptr)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const HRESULT& GetResult() const	{ return m_Result; };
+				const char* GetComplitionState() const	{ return m_ComplitionState; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const char* InComplitionState );
+
+			}; // class GetComplitionStateRes : public MessageBase
+
+			// Cmd: Player complition state
+			class SetComplitionStateCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				const char* m_ComplitionState;
+			public:
+				SetComplitionStateCmd()
+				:m_ComplitionState(nullptr)
+					{}
+
+				SetComplitionStateCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+				,m_ComplitionState(nullptr)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const char* GetComplitionState() const	{ return m_ComplitionState; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const char* InComplitionState );
+
+			}; // class SetComplitionStateCmd : public MessageBase
+
+			class SetComplitionStateRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				HRESULT m_Result;
+			public:
+				SetComplitionStateRes()
+					{}
+
+				SetComplitionStateRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const HRESULT& GetResult() const	{ return m_Result; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult );
+
+			}; // class SetComplitionStateRes : public MessageBase
+
 			// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
 			class RegisterGCMCmd : public MessageBase
 			{
@@ -1180,6 +1290,7 @@ namespace BR
 				static const MessageID MID;
 			private:
 				const char* m_NickName;
+				BYTE m_IsCostFree;
 			public:
 				SetNickNameCmd()
 				:m_NickName(nullptr)
@@ -1193,12 +1304,13 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const char* GetNickName() const	{ return m_NickName; };
+				const BYTE& GetIsCostFree() const	{ return m_IsCostFree; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const char* InNickName );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const char* InNickName, const BYTE &InIsCostFree );
 
 			}; // class SetNickNameCmd : public MessageBase
 
@@ -1208,6 +1320,8 @@ namespace BR
 				static const MessageID MID;
 			private:
 				HRESULT m_Result;
+				UINT64 m_TotalGem;
+				UINT64 m_TotalGameMoney;
 			public:
 				SetNickNameRes()
 					{}
@@ -1219,12 +1333,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const HRESULT& GetResult() const	{ return m_Result; };
+				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
+				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
 
 			}; // class SetNickNameRes : public MessageBase
 
@@ -2723,6 +2839,8 @@ namespace BR
 				static const MessageID MID;
 			private:
 				HRESULT m_Result;
+				UINT64 m_TotalGem;
+				UINT64 m_TotalGameMoney;
 			public:
 				GamePlayAgainRes()
 					{}
@@ -2734,12 +2852,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const HRESULT& GetResult() const	{ return m_Result; };
+				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
+				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
 
 			}; // class GamePlayAgainRes : public MessageBase
 
@@ -2772,13 +2892,13 @@ namespace BR
 
 			}; // class GamePlayAgainS2CEvt : public MessageBase
 
-			// Cmd: Player. revive himself
+			// Cmd: Player. reveal a player
 			class GameRevealPlayerCmd : public MessageBase
 			{
  			public:
 				static const MessageID MID;
 			private:
-				PlayerID m_TargetPlayerID;
+				LinkedArray<PlayerID> m_TargetPlayerID;
 			public:
 				GameRevealPlayerCmd()
 					{}
@@ -2789,13 +2909,13 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const PlayerID& GetTargetPlayerID() const	{ return m_TargetPlayerID; };
+				const Array<PlayerID>& GetTargetPlayerID() const	{ return m_TargetPlayerID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InTargetPlayerID );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Array<PlayerID>& InTargetPlayerID );
 
 			}; // class GameRevealPlayerCmd : public MessageBase
 
@@ -2805,8 +2925,10 @@ namespace BR
 				static const MessageID MID;
 			private:
 				HRESULT m_Result;
-				PlayerID m_RevealedPlayerID;
-				PlayerRole m_RevealedRole;
+				LinkedArray<PlayerID> m_RevealedPlayerID;
+				LinkedArray<PlayerRole> m_RevealedRole;
+				UINT64 m_TotalGem;
+				UINT64 m_TotalGameMoney;
 			public:
 				GameRevealPlayerRes()
 					{}
@@ -2818,14 +2940,16 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const HRESULT& GetResult() const	{ return m_Result; };
-				const PlayerID& GetRevealedPlayerID() const	{ return m_RevealedPlayerID; };
-				const PlayerRole& GetRevealedRole() const	{ return m_RevealedRole; };
+				const Array<PlayerID>& GetRevealedPlayerID() const	{ return m_RevealedPlayerID; };
+				const Array<PlayerRole>& GetRevealedRole() const	{ return m_RevealedRole; };
+				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
+				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const PlayerID &InRevealedPlayerID, const PlayerRole &InRevealedRole );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
 
 			}; // class GameRevealPlayerRes : public MessageBase
 
@@ -2860,6 +2984,8 @@ namespace BR
 				static const MessageID MID;
 			private:
 				HRESULT m_Result;
+				UINT64 m_TotalGem;
+				UINT64 m_TotalGameMoney;
 			public:
 				GamePlayerReviveRes()
 					{}
@@ -2871,12 +2997,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const HRESULT& GetResult() const	{ return m_Result; };
+				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
+				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
 
 			}; // class GamePlayerReviveRes : public MessageBase
 
@@ -2907,6 +3035,61 @@ namespace BR
 
 			}; // class GamePlayerRevivedS2CEvt : public MessageBase
 
+			// Cmd: Player. reset ranking
+			class GamePlayerResetRankCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+			public:
+				GamePlayerResetRankCmd()
+					{}
+
+				GamePlayerResetRankCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg );
+
+			}; // class GamePlayerResetRankCmd : public MessageBase
+
+			class GamePlayerResetRankRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				HRESULT m_Result;
+				UINT64 m_TotalGem;
+				UINT64 m_TotalGameMoney;
+			public:
+				GamePlayerResetRankRes()
+					{}
+
+				GamePlayerResetRankRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const HRESULT& GetResult() const	{ return m_Result; };
+				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
+				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
+
+			}; // class GamePlayerResetRankRes : public MessageBase
+
 			// Cmd: Request Game match
 			class RequestGameMatchCmd : public MessageBase
 			{
@@ -2914,6 +3097,7 @@ namespace BR
 				static const MessageID MID;
 			private:
 				BYTE m_NumPlayer;
+				PlayerRole m_RequestRole;
 			public:
 				RequestGameMatchCmd()
 					{}
@@ -2925,12 +3109,13 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const BYTE& GetNumPlayer() const	{ return m_NumPlayer; };
+				const PlayerRole& GetRequestRole() const	{ return m_RequestRole; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const BYTE &InNumPlayer );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const BYTE &InNumPlayer, const PlayerRole &InRequestRole );
 
 			}; // class RequestGameMatchCmd : public MessageBase
 
@@ -2940,6 +3125,8 @@ namespace BR
 				static const MessageID MID;
 			private:
 				HRESULT m_Result;
+				UINT64 m_TotalGem;
+				UINT64 m_TotalGameMoney;
 			public:
 				RequestGameMatchRes()
 					{}
@@ -2951,12 +3138,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const HRESULT& GetResult() const	{ return m_Result; };
+				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
+				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
 
 			}; // class RequestGameMatchRes : public MessageBase
 
@@ -2977,6 +3166,9 @@ namespace BR
 				UINT8 m_Dead;
 				LinkedArray<BYTE> m_ChatHistoryData;
 				LinkedArray<BYTE> m_GameLogData;
+				UINT32 m_Stamina;
+				UINT64 m_TotalGem;
+				UINT64 m_TotalGameMoney;
 			public:
 				GameMatchedS2CEvt()
 					{}
@@ -2998,12 +3190,15 @@ namespace BR
 				const UINT8& GetDead() const	{ return m_Dead; };
 				const Array<BYTE>& GetChatHistoryData() const	{ return m_ChatHistoryData; };
 				const Array<BYTE>& GetGameLogData() const	{ return m_GameLogData; };
+				const UINT32& GetStamina() const	{ return m_Stamina; };
+				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
+				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData, const UINT32 &InStamina, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
 
 			}; // class GameMatchedS2CEvt : public MessageBase
 
@@ -3135,6 +3330,65 @@ namespace BR
 
 			}; // class GameMatchingCanceledS2CEvt : public MessageBase
 
+			// Cmd: Buy shop item prepare
+			class BuyShopItemPrepareCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				UINT32 m_ShopItemID;
+			public:
+				BuyShopItemPrepareCmd()
+					{}
+
+				BuyShopItemPrepareCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const UINT32& GetShopItemID() const	{ return m_ShopItemID; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InShopItemID );
+
+			}; // class BuyShopItemPrepareCmd : public MessageBase
+
+			class BuyShopItemPrepareRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				HRESULT m_Result;
+				UINT32 m_ShopItemID;
+				const char* m_PurchaseID;
+			public:
+				BuyShopItemPrepareRes()
+				:m_PurchaseID(nullptr)
+					{}
+
+				BuyShopItemPrepareRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+				,m_PurchaseID(nullptr)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const HRESULT& GetResult() const	{ return m_Result; };
+				const UINT32& GetShopItemID() const	{ return m_ShopItemID; };
+				const char* GetPurchaseID() const	{ return m_PurchaseID; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const UINT32 &InShopItemID, const char* InPurchaseID );
+
+			}; // class BuyShopItemPrepareRes : public MessageBase
+
 			// Cmd: Buy shop item
 			class BuyShopItemCmd : public MessageBase
 			{
@@ -3142,27 +3396,37 @@ namespace BR
 				static const MessageID MID;
 			private:
 				UINT32 m_ShopItemID;
-				const char* m_ParamString;
+				const char* m_Platform;
+				const char* m_PackageName;
+				const char* m_PurchaseTransactionID;
+				LinkedArray<BYTE> m_PurchaseToken;
 			public:
 				BuyShopItemCmd()
-				:m_ParamString(nullptr)
+				:m_Platform(nullptr)
+				,m_PackageName(nullptr)
+				,m_PurchaseTransactionID(nullptr)
 					{}
 
 				BuyShopItemCmd( MessageData* &pMsg )
 					:MessageBase(pMsg)
-				,m_ParamString(nullptr)
+				,m_Platform(nullptr)
+				,m_PackageName(nullptr)
+				,m_PurchaseTransactionID(nullptr)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const UINT32& GetShopItemID() const	{ return m_ShopItemID; };
-				const char* GetParamString() const	{ return m_ParamString; };
+				const char* GetPlatform() const	{ return m_Platform; };
+				const char* GetPackageName() const	{ return m_PackageName; };
+				const char* GetPurchaseTransactionID() const	{ return m_PurchaseTransactionID; };
+				const Array<BYTE>& GetPurchaseToken() const	{ return m_PurchaseToken; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InShopItemID, const char* InParamString );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<BYTE>& InPurchaseToken );
 
 			}; // class BuyShopItemCmd : public MessageBase
 

@@ -13,7 +13,7 @@
 #pragma once
 
 #include "Net/NetDef.h"
-#include "Net/NetMessage.h"
+#include "Net/NetCtrl.h"
 #include "Net/NetConnectionTask.h"
 #include "Net/ConnectionManager.h"
 #include "Net/ConnectionUDP.h"

@@ -304,11 +304,11 @@ namespace Net {
 		{
 			if (msgID.IDs.Type == Message::MSGTYPE_NETCONTROL)
 			{
-				netTrace(TRC_NETCTRL, "RawUDP SendCtrl ip:%0%, msg:%1%, Len:%2%", msgID, uiMsgLen);
+				netTrace(TRC_NETCTRL, "RawUDP SendCtrl dest:%0%, msg:%1%, Len:%2%", dest, msgID, uiMsgLen);
 			}
 			else
 			{
-				netTrace(TRC_SENDRAW, "RawUDP Send ip:%0%, msg:%1%, Len:%2%", msgID, uiMsgLen);
+				netTrace(TRC_SENDRAW, "RawUDP Send dest:%0%, msg:%1%, Len:%2%", dest, msgID, uiMsgLen);
 			}
 		}
 

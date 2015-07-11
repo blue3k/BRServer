@@ -30,9 +30,6 @@ namespace conspiracy
  				Gem,
 				Stamina,
 				FriendSlot,
-				ResetRankNormal,
-				NickName,
-				ReStart,
 				INVALID_ENUM,
 			}; // enum class Enum
 
@@ -74,6 +71,8 @@ namespace conspiracy
 			int	RequiredGameMoney;
 			EItemEffect	ItemEffect;
 			int	Quantity;
+			std::string	AndroidItemID;
+			std::string	iOSItemID;
 
 			ShopItem();
 			bool SetAttributeValue( const std::string& name, const std::string& value ) override;

@@ -261,3 +261,12 @@
 //
 #define E_GAME_MAX_TRY                   0xC7060015L
 
+//
+// MessageId: E_GAME_INVALID_COSTID
+//
+// MessageText:
+//
+// Invalid cost table id
+//
+#define E_GAME_INVALID_COSTID            0xC7060016L
+

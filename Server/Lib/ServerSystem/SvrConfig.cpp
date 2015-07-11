@@ -174,6 +174,61 @@ namespace Config
 		return true;
 	}
 
+	///////////////////////////////////////////////////////////////////////////////
+
+	ServerComponent::ServerComponent(const char* typeName)
+		: XML::DOMElement(typeName)
+	{
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	ServerComponentGoogle::ServerComponentGoogle()
+		: ServerComponent("ServerComponentGoogle")
+	{
+	}
+
+	// for parsing
+	bool ServerComponentGoogle::SetAttributeValue(const std::string& name, const std::string& value)
+	{
+		if (name == "Account") {
+			Account = value;
+		}
+		else if (name == "P12KeyFile") {
+			P12KeyFile = value;
+		}
+		else if (name == "AuthScopes") {
+			AuthScopes = value;
+		}
+		else {
+			return __super::SetAttributeValue(name, value);
+		}
+
+		return true;
+	}
+
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	ServerComponentIOS::ServerComponentIOS()
+		: ServerComponent("ServerComponentIOS")
+	{
+	}
+
+	// for parsing
+	bool ServerComponentIOS::SetAttributeValue(const std::string& name, const std::string& value)
+	{
+		if (name == "URL") {
+			URL = value;
+		}
+		else {
+			return __super::SetAttributeValue(name, value);
+		}
+
+		return true;
+	}
+
+
 
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -246,6 +301,14 @@ namespace Config
 		if( pChild->GetName() == "NetPrivate" )
 		{
 			NetPrivate = dynamic_cast<NetSocket*>(pChild);
+		}
+		else
+		{
+			auto component  =dynamic_cast<ServerComponent*>(pChild);
+			if (component != nullptr)
+			{
+				ServerComponents.push_back(component);
+			}
 		}
 	}
 
@@ -331,40 +394,43 @@ namespace Config
 			stm_ModuleNameMap.insert(std::make_pair("Monitoring", ClusterID::Monitoring));
 			stm_ModuleNameMap.insert(std::make_pair("GamePartyManager", ClusterID::GamePartyManager ) );
 			stm_ModuleNameMap.insert(std::make_pair("Matching_Game_4", ClusterID::Matching_Game_4));
-			stm_ModuleNameMap.insert(std::make_pair("Matching_Game_4", ClusterID::Matching_Game_4));
 			stm_ModuleNameMap.insert(std::make_pair("Matching_Game_8", ClusterID::Matching_Game_8 ) );
-			stm_ModuleNameMap.insert(std::make_pair("Matching_Game_10", ClusterID::Matching_Game_10 ) );
-			stm_ModuleNameMap.insert(std::make_pair("Matching_Game_12", ClusterID::Matching_Game_12 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("Matching_Game_10", ClusterID::Matching_Game_10 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("Matching_Game_12", ClusterID::Matching_Game_12 ) );
 			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_4x1", ClusterID::MatchingQueue_Game_4x1 ) );
 			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_4x2", ClusterID::MatchingQueue_Game_4x2 ) );
 			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_4x3", ClusterID::MatchingQueue_Game_4x3 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x1", ClusterID::MatchingQueue_Game_8x1 ) );
+			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_4x1S", ClusterID::MatchingQueue_Game_4x1S));
+			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_4x1W", ClusterID::MatchingQueue_Game_4x1W));
+			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x1", ClusterID::MatchingQueue_Game_8x1));
 			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x2", ClusterID::MatchingQueue_Game_8x2 ) );
 			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x3", ClusterID::MatchingQueue_Game_8x3 ) );
 			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x4", ClusterID::MatchingQueue_Game_8x4 ) );
 			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x5", ClusterID::MatchingQueue_Game_8x5 ) );
 			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x6", ClusterID::MatchingQueue_Game_8x6 ) );
 			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x7", ClusterID::MatchingQueue_Game_8x7 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x1", ClusterID::MatchingQueue_Game_10x1 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x2", ClusterID::MatchingQueue_Game_10x2 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x3", ClusterID::MatchingQueue_Game_10x3 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x4", ClusterID::MatchingQueue_Game_10x4 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x5", ClusterID::MatchingQueue_Game_10x5 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x6", ClusterID::MatchingQueue_Game_10x6 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x7", ClusterID::MatchingQueue_Game_10x7 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x8", ClusterID::MatchingQueue_Game_10x8 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x9", ClusterID::MatchingQueue_Game_10x9 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x1", ClusterID::MatchingQueue_Game_12x1 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x2", ClusterID::MatchingQueue_Game_12x2 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x3", ClusterID::MatchingQueue_Game_12x3 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x4", ClusterID::MatchingQueue_Game_12x4 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x5", ClusterID::MatchingQueue_Game_12x5 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x6", ClusterID::MatchingQueue_Game_12x6 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x7", ClusterID::MatchingQueue_Game_12x7 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x8", ClusterID::MatchingQueue_Game_12x8 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x9", ClusterID::MatchingQueue_Game_12x9 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x10", ClusterID::MatchingQueue_Game_12x10 ) );
-			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x11", ClusterID::MatchingQueue_Game_12x11 ) );
+			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x1S", ClusterID::MatchingQueue_Game_8x1S));
+			stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_8x1W", ClusterID::MatchingQueue_Game_8x1W));
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x1", ClusterID::MatchingQueue_Game_10x1 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x2", ClusterID::MatchingQueue_Game_10x2 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x3", ClusterID::MatchingQueue_Game_10x3 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x4", ClusterID::MatchingQueue_Game_10x4 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x5", ClusterID::MatchingQueue_Game_10x5 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x6", ClusterID::MatchingQueue_Game_10x6 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x7", ClusterID::MatchingQueue_Game_10x7 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x8", ClusterID::MatchingQueue_Game_10x8 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_10x9", ClusterID::MatchingQueue_Game_10x9 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x1", ClusterID::MatchingQueue_Game_12x1 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x2", ClusterID::MatchingQueue_Game_12x2 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x3", ClusterID::MatchingQueue_Game_12x3 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x4", ClusterID::MatchingQueue_Game_12x4 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x5", ClusterID::MatchingQueue_Game_12x5 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x6", ClusterID::MatchingQueue_Game_12x6 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x7", ClusterID::MatchingQueue_Game_12x7 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x8", ClusterID::MatchingQueue_Game_12x8 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x9", ClusterID::MatchingQueue_Game_12x9 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x10", ClusterID::MatchingQueue_Game_12x10 ) );
+			//stm_ModuleNameMap.insert(std::make_pair("MatchingQueue_Game_12x11", ClusterID::MatchingQueue_Game_12x11 ) );
 
 		}
 	}
@@ -505,6 +571,8 @@ namespace Config
 			RegisterElementCreator( "DBMember", []()-> XML::DOMElement* { return new DBClusterInstance; } );
 			RegisterElementCreator( "MonitoringServer", []()-> XML::DOMElement* { return new GenericServer; } );
 			RegisterElementCreator( "EntityServer", []()-> XML::DOMElement* { return new GenericServer; } );
+			RegisterElementCreator("ComponentGoogle", []()-> XML::DOMElement* { return new ServerComponentGoogle; });
+			RegisterElementCreator("ComponentIOS", []()-> XML::DOMElement* { return new ServerComponentIOS; });
 
 			RegisterElementCreator( "SharedModule", []()-> XML::DOMElement* { return new SharedModuleServer; } );
 			RegisterElementCreator( "Module", []()-> XML::DOMElement* { return new Module; } );
@@ -537,7 +605,9 @@ namespace Config
  				// error log
 				return E_FAIL;
 			}
+
 			xmlCleanupParser();
+
 			return S_OK;
 		}
 

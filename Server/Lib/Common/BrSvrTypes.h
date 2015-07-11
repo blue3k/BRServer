@@ -17,6 +17,7 @@
 #include "Common/NullUtil.h"
 #include "Common/StrUtil.h"
 #include "Common/BrBaseTypes.h"
+#include "Common/BrGameTypes.h"
 
 
 namespace BR {
@@ -48,58 +49,57 @@ namespace BR {
 
 		Matching_Game_4,
 		Matching_Game_8,
-		Matching_Game_10,
-		Matching_Game_12,
+		//Matching_Game_10,
+		//Matching_Game_12,
 
 		MatchingQueue_Game_4x1		= 50,
 		MatchingQueue_Game_4x2,
 		MatchingQueue_Game_4x3,
+		MatchingQueue_Game_4x1S,
+		MatchingQueue_Game_4x1W,
 
-		MatchingQueue_Game_8x1		= 55,
+		MatchingQueue_Game_8x1,
 		MatchingQueue_Game_8x2,
 		MatchingQueue_Game_8x3,
 		MatchingQueue_Game_8x4,
 		MatchingQueue_Game_8x5,
 		MatchingQueue_Game_8x6,
 		MatchingQueue_Game_8x7,
+		MatchingQueue_Game_8x1S,
+		MatchingQueue_Game_8x1W,
 
-		MatchingQueue_Game_10x1		= 65,
-		MatchingQueue_Game_10x2,
-		MatchingQueue_Game_10x3,
-		MatchingQueue_Game_10x4,
-		MatchingQueue_Game_10x5,
-		MatchingQueue_Game_10x6,
-		MatchingQueue_Game_10x7,
-		MatchingQueue_Game_10x8,
-		MatchingQueue_Game_10x9,
+		//MatchingQueue_Game_10x1,
+		//MatchingQueue_Game_10x2,
+		//MatchingQueue_Game_10x3,
+		//MatchingQueue_Game_10x4,
+		//MatchingQueue_Game_10x5,
+		//MatchingQueue_Game_10x6,
+		//MatchingQueue_Game_10x7,
+		//MatchingQueue_Game_10x8,
+		//MatchingQueue_Game_10x9,
 
-		MatchingQueue_Game_12x1		= 75,
-		MatchingQueue_Game_12x2,
-		MatchingQueue_Game_12x3,
-		MatchingQueue_Game_12x4,
-		MatchingQueue_Game_12x5,
-		MatchingQueue_Game_12x6,
-		MatchingQueue_Game_12x7,
-		MatchingQueue_Game_12x8,
-		MatchingQueue_Game_12x9,
-		MatchingQueue_Game_12x10,
-		MatchingQueue_Game_12x11,
+		//MatchingQueue_Game_12x1,
+		//MatchingQueue_Game_12x2,
+		//MatchingQueue_Game_12x3,
+		//MatchingQueue_Game_12x4,
+		//MatchingQueue_Game_12x5,
+		//MatchingQueue_Game_12x6,
+		//MatchingQueue_Game_12x7,
+		//MatchingQueue_Game_12x8,
+		//MatchingQueue_Game_12x9,
+		//MatchingQueue_Game_12x10,
+		//MatchingQueue_Game_12x11,
 
-		Max
+		Max,
+		MatchingQueue_Max = MatchingQueue_Game_8x1W,
 	};
 
 	inline ClusterID operator++(ClusterID clusterID)
 	{
 		switch( clusterID )
 		{
-		case ClusterID::Matching_Game_12:
+		case ClusterID::Matching_Game_8:
 			return ClusterID::MatchingQueue_Game_4x1;
-		case ClusterID::MatchingQueue_Game_4x3:
-			return ClusterID::MatchingQueue_Game_8x1;
-		case ClusterID::MatchingQueue_Game_8x7:
-			return ClusterID::MatchingQueue_Game_10x1;
-		case ClusterID::MatchingQueue_Game_10x9:
-			return ClusterID::MatchingQueue_Game_12x1;
 		default:
 			return static_cast<ClusterID>((INT)clusterID + 1);
 		};
@@ -295,10 +295,11 @@ namespace BR {
 	{
 		EntityUID		PlayerUID;
 		AccountID		PlayerID;
+		PlayerRole      RequestedRole;
 
 		inline MatchingPlayerInformation();
 		inline MatchingPlayerInformation( const MatchingPlayerInformation& src );
-		inline MatchingPlayerInformation( EntityUID playerUID, AccountID playerID );
+		inline MatchingPlayerInformation( EntityUID playerUID, AccountID playerID, PlayerRole requestedRole );
 		inline MatchingPlayerInformation( int initValue );
 
 		inline MatchingPlayerInformation& operator = ( const MatchingPlayerInformation& src );
