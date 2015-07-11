@@ -131,6 +131,16 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">xsd -c -namespace:conspiracy %(FullPath) /out:"..\TableBuilder\TableFormat"</Command>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\Server\Conspiracy\table\organicTable.xsd">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">xsd -c -namespace:conspiracy %(FullPath) /out:"..\TableBuilder\TableFormat"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">xsd -c -namespace:conspiracy %(FullPath) /out:"..\TableBuilder\TableFormat"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">XSD Build</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">XSD Build</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\TableBuilder\TableFormat\%(Filename).cs;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\TableBuilder\TableFormat\%(Filename).cs;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

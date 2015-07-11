@@ -112,6 +112,7 @@ namespace TableBuilder
 
         // Build table list
         static TableInfo[] TableInfoList = { //New Table 
+                                             new TableInfo("OrganicTbl"             , new KeyInfo(KeyType.EKEY_UNIQUE, "ItemEffect") ),
                                              new TableInfo("RewardTbl"              , new KeyInfo(KeyType.EKEY_UNIQUE, "Role") ),
                                              new TableInfo("LevelTbl"               , new KeyInfo(KeyType.EKEY_UNIQUE, "Level") ),
                                              new TableInfo("ShopTbl"                , new KeyInfo(KeyType.EKEY_UNIQUE, "ShopItemID") ),
