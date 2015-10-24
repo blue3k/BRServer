@@ -212,6 +212,10 @@
 
 /* please leave 720-739 free for Scilab */
 
+%define SWIGWARN_PYTHON_INDENT_MISMATCH           740 %enddef
+
+/* please leave 740-759 free for Python */
+
 %define SWIGWARN_RUBY_WRONG_NAME                  801 %enddef
 %define SWIGWARN_RUBY_MULTIPLE_INHERITANCE        802 %enddef
 

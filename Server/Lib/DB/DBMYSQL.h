@@ -181,6 +181,8 @@ namespace DB {
 	// Define query string
 	#define BRDB_QUERYSTRING(strSP,strParam) const char* GetQueryString() { return "CALL " strSP "(" strParam ")"; }
 
+	#define BRDB_RAW_QUERY_STRING(strSP) const char* GetQueryString() { return strSP; }
+
 
 	// define query class
 	#define BRDB_DEFINE_QUERYCLASS(Policy,QueryClass) \
@@ -221,6 +223,15 @@ namespace DB {
 	//	Mapping
 	//
 
+	#define BRDB_BEGIN_EMPTY_PARAM_MAP(classType)								\
+			classType(Message::MessageID msgID):QueryMYSQL(msgID){}					\
+			virtual UINT GetParameterCount()		{ return 0; }			\
+			virtual UINT GetInputParameterCount()	{ return 0; }\
+
+
+	#define BRDB_END_EMPTY_PARAM_MAP()													\
+
+
 	#define BRDB_BEGIN_PARAM_MAP(classType,ParamCount)								\
 			classType(Message::MessageID msgID):QueryMYSQL(msgID){}					\
 			virtual UINT GetParameterCount()		{ return ParamCount; }			\
@@ -260,6 +271,7 @@ namespace DB {
 				m_DBQueryInputParamCount = iParam;									\
 			return m_DBQueryParameters; }
 
+
 	#define BRDB_BEGIN_RESULT_MAP(classType,resultCount)							\
 			virtual UINT GetResultCount()		{ return resultCount; }				\
 			MYSQL_BIND m_DBQueryResults[resultCount];								\
@@ -271,7 +283,8 @@ namespace DB {
 				MYSQL_BIND *pColumn = m_DBQueryResults;								\
 				QueryMYSQL::BindVariableState *pColumnState = m_DBQueryResultStates;\
 
-	#define BRDB_END_RESULT_MAP								Assert(iParam == GetResultCount()); return m_DBQueryResults; }
+
+	#define BRDB_END_RESULT_MAP()								Assert(iParam == GetResultCount()); return m_DBQueryResults; }
 
 
 

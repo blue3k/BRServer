@@ -1,0 +1,13 @@
+﻿Build started 2015-04-20 오후 8:59:46.
+     1>Project "F:\fwork\BRServer\BRServer\Server\Lib\Table\Table.vcxproj" on node 4 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\Common /I.\ /I..\..\Lib /I..\..\..\External /I..\..\..\External\libxml\include /I..\..\..\External\include /I..\..\..\External\jsoncpp\include /I..\..\..\External\curl7.41\include /I"..\..\..\External\MYSQLConnectorC-6.1.6\include" /ZI /nologo /W3 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D _LIB /D HAVE_CONFIG_H /D HAVE_WIN32_THREADS /D CURL_STATICLIB /D NOMINMAX /D _UNICODE /D UNICODE /D _VARIADIC_MAX=10 /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Win32Debug\Table.pch" /Fo"Win32Debug\\" /Fd"Win32Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt /Ym0x30000000 stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\Common /I.\ /I..\..\Lib /I..\..\..\External /I..\..\..\External\libxml\include /I..\..\..\External\include /I..\..\..\External\jsoncpp\include /I..\..\..\External\curl7.41\include /I"..\..\..\External\MYSQLConnectorC-6.1.6\include" /ZI /nologo /W3 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D _LIB /D HAVE_CONFIG_H /D HAVE_WIN32_THREADS /D CURL_STATICLIB /D NOMINMAX /D _UNICODE /D UNICODE /D _VARIADIC_MAX=10 /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Win32Debug\Table.pch" /Fo"Win32Debug\\" /Fd"Win32Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt /Ym0x30000000 conspiracy\GameConfigTbl.cpp conspiracy\LevelTbl.cpp conspiracy\RewardTbl.cpp conspiracy\ShopTbl.cpp TableSystem.cpp
+         TableSystem.cpp
+         ShopTbl.cpp
+     1>Done Building Project "F:\fwork\BRServer\BRServer\Server\Lib\Table\Table.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.93

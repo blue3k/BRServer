@@ -82,6 +82,12 @@ namespace Util {
 		StrUtil::StringCpy( g_wszServiceName, serviceName );
 	}
 
+	void SetServiceNameA(const char* serviceName)
+	{
+		StrUtil::MBCSToWCS(serviceName, g_wszServiceName);
+		StrUtil::StringCpy(g_szServiceName, serviceName);
+	}
+
 
 	// Module Name
 	const WCHAR* GetModuleName()

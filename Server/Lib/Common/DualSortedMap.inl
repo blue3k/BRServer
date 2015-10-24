@@ -88,10 +88,13 @@
 		, m_pNodePool(pNodePool)
 		, m_PendingFreeCount(0)
 		, m_PendingFreeList(nullptr)
+		, m_ReadIndex(0)
 		//, m_PendingFreeListTail(nullptr)
 	{
-		m_ReadCount[0] = 0;
-		m_ReadCount[1] = 0;
+		for (int iVal = 0; iVal < _countof(m_ReadCount); iVal++)
+		{
+			m_ReadCount[iVal] = 0;
+		}
 
 		if (m_pNodePool == nullptr)
 		{

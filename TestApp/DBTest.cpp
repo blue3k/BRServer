@@ -54,39 +54,26 @@ namespace BRTest
 			case BR::DB::MCODE_QueryCreateUser:
 				{
 					QueryCreateUserCmd* pCmd = (QueryCreateUserCmd*)pRes;
-					defTrace( Trace::TRC_DBG1, "QueryCreateUserCmd %0%, %1%, %2%, Res:%3%", pCmd->UserName, pCmd->Password, pCmd->GameNick, pCmd->Result );
+					defTrace( Trace::TRC_DBG1, "QueryCreateUserCmd %0%, %1%, Res:%2%", pCmd->UserName, pCmd->Password, pCmd->Result );
 				}
 				break;
 			case BR::DB::MCODE_QueryLogin:
 				{
 					QueryLoginCmd* pCmd = (QueryLoginCmd*)pRes;
-					defTrace( Trace::TRC_DBG1, "QueryLoginCmd %0%, %1%, %2%, %3%, Res%4%", pCmd->UserName, pCmd->Password, pCmd->AccountID, pCmd->GameNick, pCmd->Result );
+					defTrace( Trace::TRC_DBG1, "QueryLoginCmd %0%, %1%, %2%, Res%3%", pCmd->UserName, pCmd->Password, pCmd->AccountID, pCmd->Result );
 				}
 				break;
 			case BR::DB::MCODE_QueryFacebookCreateUser:
 				{
 					QueryFacebookCreateUserCmd* pCmd = (QueryFacebookCreateUserCmd*)pRes;
-					defTrace( Trace::TRC_DBG1, "QueryFacebookCreateUserCmd %0%, %1%, %2%, Res:%3%", pCmd->FBUserID, pCmd->GameNick, pCmd->EMail, pCmd->Result );
+					defTrace( Trace::TRC_DBG1, "QueryFacebookCreateUserCmd %0%, %1%, Res:%2%", pCmd->FBUserID, pCmd->EMail, pCmd->Result );
 				}
 				break;
 			case BR::DB::MCODE_QueryFacebookLogin:
 				{
 					QueryFacebookLoginCmd* pCmd = (QueryFacebookLoginCmd*)pRes;
 
-					wchar_t strTest[1024];
-					StrUtil::UTF8ToWCS( pCmd->GameNick, strTest );
-
-					defTrace( Trace::TRC_DBG1, "QueryFacebookLoginCmd %0%, %1%, %2%, Res:%3%", pCmd->FBUserID, pCmd->AccountID, pCmd->GameNick, pCmd->Result );
-				}
-				break;
-			case BR::DB::MCODE_QuerySetNickName:
-				{
-					QuerySetNickNameCmd* pCmd = (QuerySetNickNameCmd*)pRes;
-
-					wchar_t strTest[1024];
-					StrUtil::UTF8ToWCS( pCmd->NickName, strTest );
-
-					defTrace( Trace::TRC_DBG1, "QuerySetNickNameCmd %0%, %1%, Res:%2%", pCmd->UserID, pCmd->NickName, pCmd->Result );
+					defTrace( Trace::TRC_DBG1, "QueryFacebookLoginCmd %0%, %1%, Res:%2%", pCmd->FBUserID, pCmd->AccountID, pCmd->Result );
 				}
 				break;
 			};
@@ -164,8 +151,7 @@ TEST_F(DBTest, DBManager)
 	queryList.push_back( [&pTestDB](){
 		const char* userName = pTestDB->GetRandomUserName();
 		pTestDB->CreateUser(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed),
-							userName, userName,
-							pTestDB->GetRandomNickName()
+							userName, userName
 							);
 	} );
 	queryList.push_back( [&pTestDB](){
@@ -282,12 +268,12 @@ TEST_F(DBTest, DBQuerySetNick)
 	StrUtil::WCSToUTF8( strTestString, strTest );
 	StrUtil::WCSToMBCS( strTestString, strTest2 );
 
-	pTestDB->SetNickName(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed), 21124, strTest );
+	//pTestDB->SetN(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed), 21124, strTest );
 
-	while( pTestDB->m_Counter > 0 )
-	{
-		Sleep(100);
-	}
+	//while( pTestDB->m_Counter > 0 )
+	//{
+	//	Sleep(100);
+	//}
 
 	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
 

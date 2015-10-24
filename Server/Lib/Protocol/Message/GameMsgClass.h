@@ -933,6 +933,61 @@ namespace BR
 
 			}; // class FindPlayerByEMailRes : public MessageBase
 
+			// Cmd: Query playerID list
+			class FindPlayerByPlayerIDCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				PlayerID m_PlayerID;
+			public:
+				FindPlayerByPlayerIDCmd()
+					{}
+
+				FindPlayerByPlayerIDCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InPlayerID );
+
+			}; // class FindPlayerByPlayerIDCmd : public MessageBase
+
+			class FindPlayerByPlayerIDRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+			private:
+				HRESULT m_Result;
+				PlayerInformation m_Player;
+			public:
+				FindPlayerByPlayerIDRes()
+					{}
+
+				FindPlayerByPlayerIDRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const HRESULT& GetResult() const	{ return m_Result; };
+				const PlayerInformation& GetPlayer() const	{ return m_Player; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const PlayerInformation &InPlayer );
+
+			}; // class FindPlayerByPlayerIDRes : public MessageBase
+
 			// Cmd: *Request Player Status Update
 			class RequestPlayerStatusUpdateCmd : public MessageBase
 			{
@@ -1112,6 +1167,7 @@ namespace BR
 				INT64 m_GameMoney;
 				INT64 m_Gem;
 				INT16 m_Stamina;
+				UINT32 m_LastUpdateTime;
 				INT32 m_TotalPlayed;
 				INT32 m_WinPlaySC;
 				INT32 m_WinPlaySM;
@@ -1143,6 +1199,7 @@ namespace BR
 				const INT64& GetGameMoney() const	{ return m_GameMoney; };
 				const INT64& GetGem() const	{ return m_Gem; };
 				const INT16& GetStamina() const	{ return m_Stamina; };
+				const UINT32& GetLastUpdateTime() const	{ return m_LastUpdateTime; };
 				const INT32& GetTotalPlayed() const	{ return m_TotalPlayed; };
 				const INT32& GetWinPlaySC() const	{ return m_WinPlaySC; };
 				const INT32& GetWinPlaySM() const	{ return m_WinPlaySM; };
@@ -1163,7 +1220,7 @@ namespace BR
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const UINT32 &InLastUpdateTime, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose );
 
 			}; // class GetUserGamePlayerInfoRes : public MessageBase
 

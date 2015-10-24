@@ -14,18 +14,17 @@
 
 
 namespace BR {
-
-namespace conspiracy {
+namespace GameTable {
 
 	// Initialize tables
 	HRESULT InitializeTable();
 
+	HRESULT LoadTables();
+
 	// Release all tables
 	HRESULT TerminateTable();
 
-}; // namespace conspiracy
-
-
+}; // namespace GameTable
 
 }
 

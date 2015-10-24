@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2014 The Braves Co.
+// CopyRight (c) 2015 The Braves Co.
 // 
 // Author : Generated
 // 
@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 #include "Common/Typedefs.h"
-#include "Common/BrXML.h"
 #include "ShopTbl.h"
 
 
@@ -90,71 +89,18 @@ namespace conspiracy
 		return "INVALID_ENUM";
 	}
 
-
-	class ShopTblLoaderElement : public BR::XML::DOMElement
-	{
- 	public:
-		ShopTblLoaderElement::ShopTblLoaderElement() : BR::XML::DOMElement("ShopTblLoaderElement")
-		{
- 		}
-		void AddChild( DOMElement *pChild ) override
-		{
- 			if( pChild->GetTypeName() == "ShopItem" )
-			{
- 				auto* pShopItem = dynamic_cast<ShopTbl::ShopItem*>(pChild);
-				ShopTbl::m_TableMap.insert(std::make_pair(pShopItem->ShopItemID, pShopItem));
-			}
-		}
-	}; // class ShopTblLoaderElement : public BR::XML::DOMElement
-
-	// ShopTblParser decl/impl
-	class ShopTblParser : public BR::XML::XMLParserHandler
-	{
- 	public:
-		enum ATT_ID_ShopItem
-		{
- 			EATT_ShopItemID,
-			EATT_ItemInfo,
-			EATT_RequiredCash,
-			EATT_RequiredGem,
-			EATT_RequiredGameMoney,
-			EATT_ItemEffect,
-			EATT_Quantity,
-			EATT_AndroidItemID,
-			EATT_iOSItemID,
-		}; // enum ATT_ID_ShopItem
-
-
-	public:
-		ShopTblParser()
-		{
- 			RegisterElementCreator( "ShopItem", []()-> BR::XML::DOMElement* { return new ShopTbl::ShopItem; } );
-			RegisterElementCreator( "ShopTbl", []()-> BR::XML::DOMElement* { return new ShopTblLoaderElement; } );
-		}
-
-		HRESULT LoadTable( const char *strFileName )
-		{
- 			int result = xmlSAXUserParseFile( *this, this, strFileName );
-
-			if (result != 0)
-			{
- 				// error log
-				return E_FAIL;
-			}
-			xmlCleanupParser();
-			return S_OK;
-		}
-	}; // class ShopTblParser : public BR::XML::XMLParserHandler
-
 	ShopTbl ShopTbl::m_Instance;
 	ShopTbl::TableMap ShopTbl::m_TableMap;
 
-	HRESULT ShopTbl::LoadTable( const char *strFileName )
+	HRESULT ShopTbl::LoadTable( const std::list<ShopItem>& rowList )
 	{
- 		ShopTblParser parser;
-		if (FAILED(parser.LoadTable(strFileName)))
-			return E_FAIL;
-
+ 
+		for( auto rowItem : rowList )
+		{
+ 			auto* pShopItem = new ShopTbl::ShopItem;
+			*pShopItem = rowItem;
+			ShopTbl::m_TableMap.insert(std::make_pair(pShopItem->ShopItemID, pShopItem));
+		}
 		return S_OK;
 	}
 
@@ -177,65 +123,6 @@ namespace conspiracy
 		}
 		pRow = itr->second;
 		return S_OK;
-	}
-
-	// sub class ShopItem member implementations
-	ShopTbl::ShopItem::ShopItem() : BR::XML::DOMElement("ShopItem")
-	{
- 	}
-	bool ShopTbl::ShopItem::SetAttributeValue( const std::string& name, const std::string& value )
-	{
- 		if(name == "ShopItemID")
-		{
- 			this->ShopItemID = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "ItemInfo")
-		{
- 			this->ItemInfo = value;
-			return true;
-		}
-		else if(name == "RequiredCash")
-		{
- 			this->RequiredCash = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "RequiredGem")
-		{
- 			this->RequiredGem = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "RequiredGameMoney")
-		{
- 			this->RequiredGameMoney = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "ItemEffect")
-		{
- 			this->ItemEffect = value.c_str();
-			if (this->ItemEffect == "INVALID_ENUM") return false;
-			return true;
-		}
-		else if(name == "Quantity")
-		{
- 			this->Quantity = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "AndroidItemID")
-		{
- 			this->AndroidItemID = value;
-			return true;
-		}
-		else if(name == "iOSItemID")
-		{
- 			this->iOSItemID = value;
-			return true;
-		}
-		return __super::SetAttributeValue(name,value);
-	}
-	void ShopTbl::ShopItem::AddChild( DOMElement *pChild )
-	{
- 		return __super::AddChild(pChild);
 	}
 
 }; // namespace conspiracy

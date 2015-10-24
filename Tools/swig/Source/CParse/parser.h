@@ -162,7 +162,7 @@ extern int yydebug;
     DCNOT = 372,
     TEMPLATE = 373,
     OPERATOR = 374,
-    COPERATOR = 375,
+    CONVERSIONOPERATOR = 375,
     PARSETYPE = 376,
     PARSEPARM = 377,
     PARSEPARMS = 378,
@@ -303,7 +303,7 @@ extern int yydebug;
 #define DCNOT 372
 #define TEMPLATE 373
 #define OPERATOR 374
-#define COPERATOR 375
+#define CONVERSIONOPERATOR 375
 #define PARSETYPE 376
 #define PARSEPARM 377
 #define PARSEPARMS 378
@@ -330,7 +330,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 1299 "parser.y" /* yacc.c:1909  */
+#line 1301 "parser.y" /* yacc.c:1909  */
 
   char  *id;
   List  *bases;

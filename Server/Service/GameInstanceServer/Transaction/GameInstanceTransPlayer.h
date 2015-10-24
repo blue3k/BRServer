@@ -206,8 +206,8 @@ namespace ConspiracyGameInstanceServer {
 	class GameEntityTransGameRevealPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GameRevealPlayerCmd, GameEntityTransGameRevealPlayer>
 	{
 	private:
-		PlayerID m_RevealedPlayerID;
-		PlayerRole m_RevealedPlayerRole;
+		StaticArray<PlayerID, 4> m_RevealedPlayerID;
+		StaticArray<PlayerRole, 4> m_RevealedPlayerRole;
 
 	public:
 		GameEntityTransGameRevealPlayer(Message::MessageData* &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}

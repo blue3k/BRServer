@@ -32,6 +32,8 @@ namespace MatchingUtil
 
 	UINT GetQueueComponentID(UINT matchingMemberCount, UINT partyMemberCount, PlayerRole playerRole);
 
+	UINT GetComponentIDFromClusterID(ClusterID clusterID);
+
 }
 } // namespace Svr 
 } // namespace BR 

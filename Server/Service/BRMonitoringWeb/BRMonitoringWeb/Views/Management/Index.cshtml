@@ -1,0 +1,180 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutManagement.cshtml";
+}
+
+<h2>@ViewBag.Message</h2>
+
+<button id="btnReload">Reload Counter Instance List</button>
+
+
+<div id="accordion" class="multi-accordion">
+    <div>
+        <h4 class="head"><a href="#">One</a></h4>
+        <div>
+            <p>
+
+            </p>
+        </div>
+    </div>
+    <div>
+        <h4 class="head"><a href="#">Second</a></h4>
+        <div><p></p></div>
+    </div>
+    <div>
+        <h4 class="head"><a href="#">Third</a></h4>
+        <div><p></p></div>
+    </div>
+</div>
+
+
+
+<p>Hello from our View Template2!</p>
+
+<div id="loading">
+    <img src="~/images/ajax_loader_blue_350.gif" alt="Updating ..." style="display: none;" />
+</div>
+
+<script type="text/javascript">
+
+    var g_SelectedFunction = {};
+    var g_InstanceList;
+
+    //$(".multi-accordion").accordion({
+    //    collapsible: true,
+    //    heightStyle: "content",
+    //    header: "> div > h3"
+    //});
+
+
+    function RequestCounterInstanceList() {
+
+        $.ajax({
+            url: "GetCounterInstanceList",
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            success: function (result) {
+
+                g_InstanceList = result.instanceList;
+                UpdateCounterInstanceList();
+
+            },
+            error: function (result) {
+                $("#GraphSection").html("error: " + result.responseText);
+            }
+        });
+
+    }
+
+    function RequestCounterValues(instanceUID) {
+
+        $.ajax({
+            url: "GetCounterValues",
+            type: "GET",
+            dataType: "json",
+            data: { instanceUID: instanceUID },
+            cache: false,
+            success: function (result) {
+
+                UpdateCounterList(instanceUID, result.CounterList);
+
+            },
+            error: function (result) {
+                $("#GraphSection").html("error: " + result.responseText);
+            }
+        });
+
+    }
+
+    function UpdateCounterInstanceList()
+    {
+
+        var listRoot = $('.multi-accordion');
+        listRoot.children().remove();
+
+
+        if (g_InstanceList != undefined) {
+
+            for (var i = 0; i < g_InstanceList.length; i++) {
+                var childString = '<div  id="' + g_InstanceList[i].UID + '"><h4 class="head" UID="' + g_InstanceList[i].UID + '"><a href="#">'
+                    + g_InstanceList[i].Name + ' : ' + g_InstanceList[i].UID +' Counter:'+ g_InstanceList[i].NumCounters + '</a></h4>' +
+                    '<div><p>' + 'CounterList</p></div></div>';
+                listRoot.append(childString);
+            }
+            //for (var propt in g_InstanceList) {
+            //    alert(propt + ': ' + obj[propt]);
+            //}
+        }
+
+        $('.multi-accordion .head').click(function () {
+            var contentChild = $(this).next();
+            var beforeVis = contentChild.css('display');
+            contentChild.toggle('slow');
+            //var afterVis = contentChild.css('display');
+            var notVisYet = beforeVis == undefined || beforeVis == 'none';
+            var uid = $(this).attr("UID");
+            if (notVisYet && uid != undefined) {
+                g_SelectedFunction[uid] = true;
+                RequestCounterValues(uid);
+            }
+            else {
+                delete g_SelectedFunction[uid];
+            }
+            return false;
+        }).next().hide();
+
+    }
+
+    function UpdateCounterList(instanceUID, counterList)
+    {
+        var contentRootDiv = $('#'+instanceUID);
+        if (counterList.length == 0)
+        {
+            contentRootDiv.remove();
+            return;
+        }
+
+        var content = contentRootDiv.find('.head').next();
+        var contentString = '<div><ul>';
+        for (i = 0; i < counterList.length; i++)
+        {
+            contentString += '<li>' + counterList[i].Name + ' : ' + counterList[i].Value + '</li>';
+        }
+        contentString += '</ul></div>';
+        content.children().remove();
+        content.append(contentString);
+    }
+
+    function TickUpdate()
+    {
+        for( var selected in g_SelectedFunction)
+        {
+            var instanceUID = selected;
+            if (instanceUID)
+            {
+                RequestCounterValues(instanceUID);
+            }
+        }
+    }
+
+    jQuery(document).ready(function () {
+
+        $('#btnReload').button().click(function () {
+            RequestCounterInstanceList();
+        });
+
+        var loading = $("#loading");
+        $(document).ajaxSend(function () {
+            loading.show();
+        }).ajaxComplete(function () {
+            loading.hide();
+        });
+
+        UpdateCounterInstanceList();
+
+        RequestCounterInstanceList();
+
+        var rootElement = document.documentElement;
+        setInterval(function () { TickUpdate(); }, 1000);
+
+    });</script>

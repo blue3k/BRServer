@@ -289,7 +289,10 @@ namespace Svr {
 	//
 
 
-	typedef ComponentCarrier<ServerComponentID_Max> ServerComponentCarrier;
+	class ServerComponentCarrier : public ComponentCarrier<ServerComponentID_Max>
+	{
+		void OnAddComponent(Component* newComponent) override;
+	};
 
 
 #include "ServerComponent.inl"

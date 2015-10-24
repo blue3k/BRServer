@@ -42,7 +42,7 @@ namespace DB {
 	//	Game DB Interface
 	//
 
-	HRESULT GameConspiracyDB::CreatePlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID)
+	HRESULT GameConspiracyDB::CreatePlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID, INT initialStamina)
 	{
 		HRESULT hr = S_OK;
 		QueryCreatePlayerInfoCmd *pQuery = nullptr;
@@ -52,6 +52,7 @@ namespace DB {
 		pQuery->SetPartitioningKey(shardID);
 
 		pQuery->PlayerID = playerID;
+		pQuery->InitialStamina = initialStamina;
 		pQuery->Result = 0;
 
 		QueryGetPlayerInfoData *pRawSet = pQuery;

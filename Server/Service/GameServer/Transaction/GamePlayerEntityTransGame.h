@@ -339,6 +339,8 @@ namespace GameServer {
 	class PlayerTransRequestGameMatch : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::RequestGameMatchCmd, PlayerTransRequestGameMatch>
 	{
 	private:
+		UINT64 m_TotalGem;
+		UINT64 m_TotalGameMoney;
 
 	public:
 		PlayerTransRequestGameMatch( Message::MessageData* &pIMsg );
@@ -350,7 +352,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(RequestGameMatchRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(RequestGameMatchRes, m_TotalGem, m_TotalGameMoney);
 	};
 	
 	class PlayerTransCancelGameMatch : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::CancelGameMatchCmd, PlayerTransCancelGameMatch>
@@ -402,6 +404,8 @@ namespace GameServer {
 	class PlayerTransPlayAgain : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GamePlayAgainCmd, PlayerTransPlayAgain>
 	{
 	private:
+		UINT64 m_TotalGem;
+		UINT64 m_TotalGameMoney;
 
 	public:
 		PlayerTransPlayAgain(Message::MessageData* &pIMsg);
@@ -416,7 +420,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(GamePlayAgainRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GamePlayAgainRes, m_TotalGem, m_TotalGameMoney);
 	};
 
 
@@ -446,8 +450,10 @@ namespace GameServer {
 	{
 	private:
 
-		PlayerID m_RevealedPlayerID;
-		PlayerRole m_RevealedPlayerRole;
+		StaticArray<PlayerID,4> m_RevealedPlayerID;
+		StaticArray<PlayerRole,4> m_RevealedPlayerRole;
+		UINT64 m_TotalGem;
+		UINT64 m_TotalGameMoney;
 
 	public:
 		PlayerTransGameRevealPlayer(Message::MessageData* &pIMsg);
@@ -459,7 +465,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GameRevealPlayerRes, m_RevealedPlayerID, m_RevealedPlayerRole);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GameRevealPlayerRes, m_RevealedPlayerID, m_RevealedPlayerRole, m_TotalGem, m_TotalGameMoney);
 	};
 
 
@@ -468,6 +474,8 @@ namespace GameServer {
 	class PlayerTransGamePlayerRevive : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GamePlayerReviveCmd, PlayerTransGamePlayerRevive>
 	{
 	private:
+		UINT64 m_TotalGem;
+		UINT64 m_TotalGameMoney;
 
 	public:
 		PlayerTransGamePlayerRevive(Message::MessageData* &pIMsg);
@@ -479,8 +487,9 @@ namespace GameServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(GamePlayerReviveRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GamePlayerReviveRes, m_TotalGem, m_TotalGameMoney);
 	};
+
 
 
 	// Player voted event
@@ -497,6 +506,22 @@ namespace GameServer {
 	};
 
 
+
+	class PlayerTransGamePlayerResetRank : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GamePlayerResetRankCmd, PlayerTransGamePlayerResetRank>
+	{
+	private:
+		UINT64 m_TotalGem;
+		UINT64 m_TotalGameMoney;
+
+	public:
+		PlayerTransGamePlayerResetRank(Message::MessageData* &pIMsg) : MessageTransaction(pIMsg) {}
+		virtual ~PlayerTransGamePlayerResetRank() {}
+
+		// Start Transaction
+		virtual HRESULT StartTransaction();
+
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GamePlayerResetRankRes, m_TotalGem, m_TotalGameMoney);
+	};
 
 
 } // namespace GameServer 

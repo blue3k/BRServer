@@ -195,7 +195,7 @@ namespace Svr {
 			if( memberShip == ClusterMembership::Slave )
 				memberShip = ClusterMembership::Master; // make it as a master
 		}
-		else // If there is a master
+		else if(pServiceEntity->GetMasterUID() != GetSender())// If there is a master
 		{
 			// and it's a master 
 			if( memberShip == ClusterMembership::Master )

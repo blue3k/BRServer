@@ -159,6 +159,7 @@
     <Compile Include="BR\SWIGTYPE_p_unsigned_char.cs" />
     <Compile Include="BR\SWIGTYPE_p_unsigned_int.cs" />
     <Compile Include="BR\SWIGTYPE_p_unsigned___int64.cs" />
+    <Compile Include="BR\SWIGTYPE_p_WCHAR.cs" />
     <Compile Include="BR\TotalRankingPlayerInformation.cs" />
     <Compile Include="BR\TransactionID.cs" />
     <Compile Include="BR\WeakPointer.cs" />

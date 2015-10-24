@@ -28,10 +28,14 @@ PageQueue<DataObject>::PageQueue( int iDataPerPage )
 
 	szPageHdr = ((szPageHdr + szDataAllign - 1) / szDataAllign ) * szDataAllign;
 
+	m_EnqueueTicket = 0;
+	m_DequeueTicket = 0;
+
 	m_EnqueuePage = nullptr;
 	m_EnqueueNextPage = nullptr;
 	m_DequeuePage = nullptr;
 	m_EnqueuePageID = 0;
+	m_DequeuePageID = 0;
 
 	MemoryPoolManager::GetMemoryPoolBySize(GetPageMemorySize(), m_pMemoryPool);
 

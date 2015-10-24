@@ -52,6 +52,8 @@
 BR_MEMORYPOOL_IMPLEMENT(LoginServer::LoginPlayerTransLogin);
 
 BR_MEMORYPOOL_IMPLEMENT(LoginServer::LoginPlayerTransLoginByFacebook);
+BR_MEMORYPOOL_IMPLEMENT(LoginServer::LoginPlayerTransCreateRandomUser);
+
 BR_MEMORYPOOL_IMPLEMENT(LoginServer::LoginPlayerTransCloseInstance);
 
 BR_MEMORYPOOL_IMPLEMENT(LoginServer::LoginPlayerJoinedToGameServerTrans);
@@ -405,7 +407,7 @@ namespace LoginServer {
 		{
 			if (StrUtil::StringCmp(email, pDBRes->EMail) != 0)
 			{
-				svrChk(Svr::GetServerComponent<DB::AccountDB>()->UpdateUserEMail(0, pDBRes->AccountID, email));
+				svrChk(Svr::GetServerComponent<DB::AccountDB>()->UpdateUserContactInfo(0, pDBRes->AccountID, email, ""));
 			}
 
 			svrChk( OnLogin( pDBRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID ) );
@@ -413,7 +415,7 @@ namespace LoginServer {
 		else
 		{
 			// try to create new one
-			svrChk( Svr::GetServerComponent<DB::AccountDB>()->FacebookCreateUser( GetTransID(), GetUID(), email ) );
+			svrChk(Svr::GetServerComponent<DB::AccountDB>()->FacebookCreateUser(GetTransID(), GetUID(), email, ""));
 		}
 
 	Proc_End:
@@ -455,6 +457,81 @@ namespace LoginServer {
 
 		return hr;
 	}
+
+
+
+
+
+
+	LoginPlayerTransCreateRandomUser::LoginPlayerTransCreateRandomUser(Message::MessageData* &pIMsg)
+		:LoginPlayerTransLoginBase(pIMsg)
+	{
+		BR_TRANS_MESSAGE(DB::QueryCreateRandomUserCmd, { return OnCreated(pRes); });
+	}
+
+	HRESULT LoginPlayerTransCreateRandomUser::OnCreated(Svr::TransactionResult* &pRes)
+	{
+		HRESULT hr = S_OK;
+		auto* pDBRes = (DB::QueryCreateRandomUserCmd*)pRes;
+
+		svrChk(pRes->GetHRESULT());
+
+		GetMyOwner()->HeartBit();
+
+		// succeeded to login
+		if (pDBRes->Result == 0)
+		{
+			svrChk(__super::OnLogin(pRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID));
+		}
+		else
+		{
+			CloseTransaction(E_INVALID_SIGNATURE);
+		}
+
+	Proc_End:
+
+		if (FAILED(hr))
+			CloseTransaction(hr);
+
+		return hr;
+	}
+
+
+	// Start Transaction
+	HRESULT LoginPlayerTransCreateRandomUser::StartTransaction()
+	{
+		HRESULT hr = S_OK;
+		char strUserName[DB::Const::MAX_USERNAME];
+
+		svrChk(__super::StartTransaction());
+
+		if (GetMyOwner()->GetAccountID() != 0)
+		{
+			svrErrClose(E_ALREADY_LOGGEDIN);
+		}
+
+		GetMyOwner()->HeartBit();
+
+		if (GetCellPhone() == nullptr || GetCellPhone()[0] == '\0')
+		{
+			svrErrClose(E_INVALID_SIGNATURE);
+		}
+
+		svrChk(StrUtil::Format(strUserName, "Auto%0%", GetCellPhone()));
+
+		svrChk(Svr::GetServerComponent<DB::AccountDB>()->CreateRandomUser(GetTransID(), strUserName, GetCellPhone()));
+
+	Proc_End:
+
+		if (FAILED(hr))
+		{
+			CloseTransaction(hr);
+		}
+
+		return hr;
+	}
+
+
 
 
 	LoginPlayerTransCloseInstance::LoginPlayerTransCloseInstance()

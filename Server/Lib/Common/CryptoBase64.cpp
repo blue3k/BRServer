@@ -77,7 +77,7 @@ namespace Util {
 
 				for (i = 0; (i < 4); i++)
 				{
-					defChk(destBuffer.push_back(encodeChars[char_array_4[i]]));
+					defChk(destBuffer.push_back((BYTE)encodeChars[char_array_4[i]]));
 				}
 				i = 0;
 			}
@@ -103,7 +103,7 @@ namespace Util {
 			{
 				while ((i++ < 3))
 				{
-					defChk(destBuffer.push_back('='));
+					defChk(destBuffer.push_back((BYTE)'='));
 				}
 			}
 		}

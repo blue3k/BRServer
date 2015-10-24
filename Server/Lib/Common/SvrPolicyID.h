@@ -28,6 +28,7 @@ namespace BR
 		POLICY_RANKINGDB					,		// Login Session DB policy
 		POLICY_GAMEDB						,		// game DB policy
 		POLICY_GAMETRANSACTIONDB,					// game DB policy
+		POLICY_TABLEDB,								// Table DB policy
 
 		POLICY_SVR_SYSTEM		,					// entity server policy
 

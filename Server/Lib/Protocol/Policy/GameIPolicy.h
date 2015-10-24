@@ -68,6 +68,8 @@ namespace BR
 			virtual HRESULT NotifyS2CEvt( const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const BYTE &InIsRead, const UINT64 &InTimeStamp ) = 0;
 			// Cmd: Query playerID list
 			virtual HRESULT FindPlayerByEMailRes( const HRESULT &InResult, const PlayerInformation &InPlayer ) = 0;
+			// Cmd: Query playerID list
+			virtual HRESULT FindPlayerByPlayerIDRes( const HRESULT &InResult, const PlayerInformation &InPlayer ) = 0;
 			// Cmd: *Request Player Status Update
 			virtual HRESULT RequestPlayerStatusUpdateRes( const HRESULT &InResult ) = 0;
 			// S2C: *Notify Player Status Updated
@@ -75,7 +77,7 @@ namespace BR
 			// Cmd: Get Ranking lise
 			virtual HRESULT GetRankingListRes( const HRESULT &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
 			// Cmd: Game user game play information
-			virtual HRESULT GetUserGamePlayerInfoRes( const HRESULT &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose ) = 0;
+			virtual HRESULT GetUserGamePlayerInfoRes( const HRESULT &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const UINT32 &InLastUpdateTime, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose ) = 0;
 			// Cmd: Game game play information
 			virtual HRESULT GetGamePlayerInfoRes( const HRESULT &InResult, const PlayerID &InPlayerID, const INT16 &InLevel, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose ) = 0;
 			// S2C: Player level up event
@@ -230,6 +232,8 @@ namespace BR
 			// S2C: Notify new notification
 			// Cmd: Query playerID list
 			virtual HRESULT FindPlayerByEMailCmd( const char* InPlayerEMail ) = 0;
+			// Cmd: Query playerID list
+			virtual HRESULT FindPlayerByPlayerIDCmd( const PlayerID &InPlayerID ) = 0;
 			// Cmd: *Request Player Status Update
 			virtual HRESULT RequestPlayerStatusUpdateCmd( const Array<PlayerID>& InTargetPlayerID ) = 0;
 			// S2C: *Notify Player Status Updated

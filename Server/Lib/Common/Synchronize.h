@@ -46,7 +46,17 @@ namespace BR
 	//	Sync counter class
 	//
 
-	typedef std::atomic<CounterType> SyncCounter;
+	//typedef std::atomic<CounterType> SyncCounter;
+
+	class SyncCounter : public std::atomic<CounterType>
+	{
+	public:
+		SyncCounter()                    { store(0, std::memory_order_relaxed); }
+		SyncCounter(CounterType value)   { store(value, std::memory_order_relaxed); }
+
+		SyncCounter& operator = (CounterType value) { store(value, std::memory_order_seq_cst); return *this; }
+		SyncCounter& operator = (const SyncCounter& value) { store(value.load(std::memory_order_relaxed), std::memory_order_seq_cst); return *this; }
+	};
 
 
 

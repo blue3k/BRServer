@@ -64,7 +64,8 @@ namespace Util {
 	// Service Name
 	const WCHAR* GetServiceName();
 	const char* GetServiceNameA();
-	void SetServiceName(const WCHAR*);
+	void SetServiceName(const WCHAR* serviceName);
+	void SetServiceNameA(const char* serviceName);
 
 	// Module Name
 	const WCHAR* GetModuleName();

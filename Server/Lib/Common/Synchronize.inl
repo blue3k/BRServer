@@ -72,7 +72,8 @@ bool SpinLock::TryLock( int iTryCount )
 // Reset ticket
 void Ticketing::Reset()
 {
-	m_Working = m_Worked = 0;
+	m_Working = 0;
+	m_Worked = 0;
 }
 
 // Ticketing

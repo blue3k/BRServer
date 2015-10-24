@@ -45,7 +45,7 @@
 #include "Net/NetServer.h"
 #include "Net/NetServerUDP.h"
 #include "ServerSystem/EntityManager.h"
-#include "ServerSystem/ExternalTask.h"
+
 
 #include "SharedModuleSvrConst.h"
 #include "SharedModuleServerClass.h"
@@ -143,7 +143,7 @@ namespace SharedModuleServer {
 
 		svrChk( TerminateEntity() );
 
-		svrChk( conspiracy::TerminateTable() );
+		svrChk(GameTable::TerminateTable() );
 
 	Proc_End:
 

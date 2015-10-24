@@ -82,6 +82,9 @@ namespace BR
 				// Cmd: Query playerID list
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::FindPlayerByEMailCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::FindPlayerByEMailCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::FindPlayerByEMailRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::FindPlayerByEMailRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				// Cmd: Query playerID list
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::FindPlayerByPlayerIDCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::FindPlayerByPlayerIDCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapGame.insert(std::make_pair(Game::FindPlayerByPlayerIDRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::FindPlayerByPlayerIDRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				// Cmd: *Request Player Status Update
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::RequestPlayerStatusUpdateCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::RequestPlayerStatusUpdateCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
 				MessageDebugTraceMapGame.insert(std::make_pair(Game::RequestPlayerStatusUpdateRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Game::RequestPlayerStatusUpdateRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));

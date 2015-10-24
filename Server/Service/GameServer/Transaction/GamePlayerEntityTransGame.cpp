@@ -28,7 +28,7 @@
 #include "ServerSystem/ServerService/PartyMatchingQueueService.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
-
+#include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 #include "ServerSystem/ServerService/GamePartyManagerService.h"
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
 
@@ -58,6 +58,8 @@
 #include "DB/AccountQuery.h"
 #include "DB/GameConspiracyDB.h"
 #include "DB/GameConspiracyQuery.h"
+
+#include "Table/Conspiracy/OrganicTbl.h"
 
 
 
@@ -96,6 +98,8 @@ BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGameRevealPlayer);
 
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGamePlayerRevive);
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGamePlayerRevivedS2SEvt);
+
+BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGamePlayerResetRank);
 
 
 namespace BR {
@@ -152,7 +156,7 @@ namespace GameServer {
 		// We don't need to do it here
 		if( joinRes.GetIsNewJoin() && GetMyServer()->GetPresetGameConfig() != nullptr )
 		{
-			svrErr(E_INVALID_STATE);
+			//svrErr(E_INVALID_STATE);
 			GetMyOwner()->UpdateGamePlayer();
 			GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina( -GetMyServer()->GetPresetGameConfig()->StaminaForGame );
 		}
@@ -244,7 +248,7 @@ namespace GameServer {
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.SvrID) );
 
 		svrChk( pPolicy->JoinGameCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),insUID),
-			GetMyOwner()->GetPlayerInformation(), GetMyOwner()->GetAuthTicket() ) );
+			GetMyOwner()->GetPlayerInformation(), GetMyOwner()->GetAuthTicket(), PlayerRole::None ) );
 
 	Proc_End:
 
@@ -993,6 +997,10 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 		Svr::ServerServiceInformation *pService = nullptr;
+		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
+
+		m_TotalGem = 0;
+		m_TotalGameMoney = 0;
 
 		svrChk( __super::StartTransaction() );
 
@@ -1018,10 +1026,23 @@ namespace GameServer {
 		if( currentStamina < StaminaForGame )
 			svrErrClose(E_GAME_LOW_STAMINA);
 
+		if (GetRequestRole() != PlayerRole::None)
+		{
+			svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::RoleChoice, pCostItem));
+			svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
+		}
+
+		m_TotalGem = pPlayerInfoSystem->GetGem();
+		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
+
+
 		if( GetMyOwner()->GetPartyUID().UID == 0 )
 		{
 			// Player isn't in a party, just do it alone
-			svrChk( Svr::GetServerComponent<Svr::MatchingQueueWatcherServiceEntity>(Svr::MatchingQueueWatcherServiceEntity::GetQueueComponentID( GetNumPlayer(), 1 ))->GetService( pService ) );
+			auto componentID = Svr::MatchingUtil::GetQueueComponentID(GetNumPlayer(), 1, GetRequestRole());
+			auto watcherService = Svr::GetServerComponent<Svr::MatchingQueueWatcherServiceEntity>(componentID);
+			svrChkPtr(watcherService);
+			svrChk(watcherService->GetService(pService));
 
 			svrChk( pService->GetService<Svr::PartyMatchingQueueService>()->RegisterPlayerMatchingCmd( GetTransID(), 0, GetMyOwner()->GetPlayerID() ) );
 		}
@@ -1206,6 +1227,8 @@ namespace GameServer {
 	HRESULT PlayerTransPlayAgain::OnPlayAgainRes(Svr::TransactionResult* &pRes)
 	{
 		HRESULT hr = S_OK;
+		conspiracy::OrganicTbl::OrganicItem* pCostItem = nullptr;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::GamePlayAgainRes res;
@@ -1225,14 +1248,19 @@ namespace GameServer {
 		if (res.GetReplayMemberCount() > GameConst::MAX_GAMEPLAYER)
 			svrErr(E_GAME_INAVLID_PLAYER_COUNT);
 
-		// TODO: Reduce resource.
 
-		CloseTransaction(pRes->GetHRESULT());
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
+		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "PlayAgain"));
+
+		m_TotalGem = pPlayerInfoSystem->GetGem();
+		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
+
 
 	Proc_End:
 
-		if (FAILED(hr))
-			CloseTransaction(hr);
+		CloseTransaction(hr);
 
 		return S_OK;
 	}
@@ -1267,12 +1295,6 @@ namespace GameServer {
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
-		//m_RetryCount++;
-		//if (m_RetryCount > 2)
-		//{
-		//	svrErr(E_UNEXPECTED);
-		//}
-
 		if (insUID == 0)
 		{
 			svrErr(E_SVR_INVALID_ENTITYUID);
@@ -1304,8 +1326,19 @@ namespace GameServer {
 	HRESULT PlayerTransPlayAgain::StartTransaction()
 	{
 		HRESULT hr = S_OK;
+		conspiracy::OrganicTbl::OrganicItem* pCostItem = nullptr;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
+
+		m_TotalGem = 0;
+		m_TotalGameMoney = 0;
 
 		svrChk(__super::StartTransaction());
+
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
+		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
+
 
 		//m_RetryCount = 0;
 		if (GetMyOwner()->GetPartyUID() == 0)
@@ -1447,13 +1480,25 @@ namespace GameServer {
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::GameRevealPlayerRes res;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
 		svrChkPtr(pRes);
 		svrChkClose(pRes->GetHRESULT());
 		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
 
-		m_RevealedPlayerID = res.GetRevealedPlayerID();
-		m_RevealedPlayerRole = res.GetRevealedRole();
+		for (UINT iPlayer = 0; iPlayer < res.GetRevealedPlayerID().GetSize(); iPlayer++)
+		{
+			m_RevealedPlayerID.push_back(res.GetRevealedPlayerID()[iPlayer]);
+		}
+		for (UINT iPlayer = 0; iPlayer < res.GetRevealedRole().GetSize(); iPlayer++)
+		{
+			m_RevealedPlayerRole.push_back(res.GetRevealedRole()[iPlayer]);
+		}
+
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+		m_TotalGem = pPlayerInfoSystem->GetGem();
+		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
 
 	Proc_End:
 
@@ -1467,9 +1512,11 @@ namespace GameServer {
 	HRESULT PlayerTransGameRevealPlayer::StartTransaction()
 	{
 		HRESULT hr = S_OK;
+		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
-		m_RevealedPlayerID = 0;
-		m_RevealedPlayerRole = PlayerRole::None;
+		m_TotalGem = 0;
+		m_TotalGameMoney = 0;
 
 		svrChk(__super::StartTransaction());
 
@@ -1478,8 +1525,11 @@ namespace GameServer {
 			svrErrClose(E_INVALID_INSTANCEID);
 		}
 
-		// TODO: Need to process Consoume
-		//GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetGem
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Check, pCostItem));
+		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "RevealPlayer"));
+
 
 		svrChk(GetMyOwner()->UpdateDBSync(GetTransID()));
 
@@ -1551,6 +1601,11 @@ namespace GameServer {
 	HRESULT PlayerTransGamePlayerRevive::StartTransaction()
 	{
 		HRESULT hr = S_OK;
+		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
+
+		m_TotalGem = 0;
+		m_TotalGameMoney = 0;
 
 		svrChk(__super::StartTransaction());
 
@@ -1559,8 +1614,13 @@ namespace GameServer {
 			svrErrClose(E_INVALID_INSTANCEID);
 		}
 
-		// TODO: Need to process Consoume
-		//GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetGem
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Revival, pCostItem));
+		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "Revive"));
+
+		m_TotalGem = pPlayerInfoSystem->GetGem();
+		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
 
 		svrChk(GetMyOwner()->UpdateDBSync(GetTransID()));
 
@@ -1597,6 +1657,43 @@ namespace GameServer {
 		return hr;
 	}
 
+
+	// Start Transaction
+	HRESULT PlayerTransGamePlayerResetRank::StartTransaction()
+	{
+		HRESULT hr = S_OK;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
+		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
+
+		m_TotalGem = 0;
+		m_TotalGameMoney = 0;
+
+		svrChk(__super::StartTransaction());
+
+		if (GetMyOwner()->GetGameInsUID() == 0)
+		{
+			svrErrClose(E_INVALID_INSTANCEID);
+		}
+
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+
+		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ResetRankNormal, pCostItem));
+		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "ResetRank"));
+
+		svrChkClose(pPlayerInfoSystem->ResetRankNormal(pCostItem));
+
+		m_TotalGem = pPlayerInfoSystem->GetGem();
+		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
+
+		svrChk(GetMyOwner()->UpdateDBSync(0));
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
 
 
 };// namespace GameServer 

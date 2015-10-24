@@ -138,14 +138,15 @@ namespace DB {
 	public:
 		// Player ID
 		INT64	PlayerID;
-
+		INT		InitialStamina;
 		// result
 		INT32	Result;
 
 	public:
-		BRDB_BEGIN_PARAM_MAP(QueryCreatePlayerInfo, 2)
+		BRDB_BEGIN_PARAM_MAP(QueryCreatePlayerInfo, 3)
 			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
 			BRDB_COLUMN_ENTRY(PlayerID)
+			BRDB_COLUMN_ENTRY(InitialStamina)
 			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
 			BRDB_COLUMN_ENTRY(Result)
 		BRDB_END_PARAM_MAP()
@@ -179,7 +180,7 @@ namespace DB {
 		BRDB_END_RESULT_MAP()
 
 
-		BRDB_QUERYSTRING( "spCreatePlayerInfo", BRDB_PARAM_2 )
+		BRDB_QUERYSTRING( "spCreatePlayerInfo", BRDB_PARAM_3 )
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_GAMEDB, QueryCreatePlayerInfo, QueryGetPlayerInfoData);

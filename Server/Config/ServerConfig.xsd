@@ -9,6 +9,12 @@
 			<xs:sequence>
 				<xs:element name="DBInstances" type="DBInstance" maxOccurs="unbounded"/>
 				<xs:element name="MonitoringServer" type="GenericServer"/>
+        <xs:element name="TableDB">
+          <xs:complexType >
+            <xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
+            <xs:attribute name="DBName" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
 				<xs:element name="AccountDB" type="DBCluster"/>
 				<xs:element name="LoginSessionDB" type="DBCluster"/>
 				<xs:element name="RankingDB" type="DBCluster"/>
@@ -56,14 +62,28 @@
 			<xs:documentation>Server generic configuration</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="NetPrivate">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ComponentGoogle">
+          <xs:complexType>
+            <xs:attribute name="Account" type="xs:string" use="required"/>
+            <xs:attribute name="P12KeyFile" type="xs:string" use="required"/>
+            <xs:attribute name="AuthScopes" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ComponentIOS">
+          <xs:complexType>
+            <xs:attribute name="URL" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:element name="NetPrivate">
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="NetSocket"/>
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
-		</xs:sequence>
+    </xs:sequence>
 		<xs:attribute name="UID" type="xs:unsignedInt" use="required">
 			<xs:annotation>
 				<xs:documentation>Server UID</xs:documentation>
@@ -197,14 +217,18 @@
 										<xs:pattern value="MatchingQueue_Game_4x1"/>
 										<xs:pattern value="MatchingQueue_Game_4x2"/>
 										<xs:pattern value="MatchingQueue_Game_4x3"/>
-										<xs:pattern value="MatchingQueue_Game_8x1"/>
+                    <xs:pattern value="MatchingQueue_Game_4x1S"/>
+                    <xs:pattern value="MatchingQueue_Game_4x1W"/>
+                    <xs:pattern value="MatchingQueue_Game_8x1"/>
 										<xs:pattern value="MatchingQueue_Game_8x2"/>
 										<xs:pattern value="MatchingQueue_Game_8x3"/>
 										<xs:pattern value="MatchingQueue_Game_8x4"/>
 										<xs:pattern value="MatchingQueue_Game_8x5"/>
 										<xs:pattern value="MatchingQueue_Game_8x6"/>
 										<xs:pattern value="MatchingQueue_Game_8x7"/>
-										<xs:pattern value="MatchingQueue_Game_10x1"/>
+                    <xs:pattern value="MatchingQueue_Game_8x1S"/>
+                    <xs:pattern value="MatchingQueue_Game_8x1W"/>
+                    <xs:pattern value="MatchingQueue_Game_10x1"/>
 										<xs:pattern value="MatchingQueue_Game_10x2"/>
 										<xs:pattern value="MatchingQueue_Game_10x3"/>
 										<xs:pattern value="MatchingQueue_Game_10x4"/>

@@ -65,8 +65,6 @@ namespace DB {
 		// Game server heartbit
 		HRESULT GameServerHeartBit( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID );
 
-		// Find player
-		HRESULT GameServerHeartBit( TransactionID Sender, const PlayerID &playerID );
 
 	};
 

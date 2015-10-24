@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutMonitoring.cshtml";
 }
+
 <h2>@ViewBag.Message</h2>
 
 <button id="btnReload">Reload Counter Instance List</button>
@@ -10,23 +11,23 @@
     <div>
         <h4 class="head"><a href="#">One</a></h4>
                 <div><p>
-    Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.
+    
             </p>
 </div>
     </div>
     <div>
         <h4 class="head"><a href="#">Second</a></h4>
-        <div><p>Phasellus mattis tincidunt nibh.</p></div>
+        <div><p></p></div>
     </div>
     <div>
         <h4 class="head"><a href="#">Third</a></h4>
-        <div><p>Nam dui erat, auctor a, dignissim quis.</p></div>
+        <div><p></p></div>
     </div>
 </div>
 
 
 
-<p>Hello from our View Template2!</p>
+
 
 <div id="loading">
     <img src="~/images/ajax_loader_blue_350.gif" alt="Updating ..." style="display: none;" />
@@ -47,7 +48,7 @@
     function RequestCounterInstanceList() {
 
         $.ajax({
-            url: "GetCounterInstanceList",
+            url: "Monitoring/GetCounterInstanceList",
             type: "GET",
             dataType: "json",
             cache: false,
@@ -67,7 +68,7 @@
     function RequestCounterValues(instanceUID) {
 
         $.ajax({
-            url: "GetCounterValues",
+            url: "Monitoring/GetCounterValues",
             type: "GET",
             dataType: "json",
             data: { instanceUID: instanceUID },

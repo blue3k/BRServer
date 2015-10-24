@@ -83,6 +83,7 @@ namespace Svr {
 
 			bool operator == (const ReservedMatchingItem& src) const { return MatchingTicket == src.MatchingTicket; }
 
+			ReservedMatchingItem& operator = (const ReservedMatchingItem& src);
 			ReservedMatchingItem& operator = (ReservedMatchingItem&& src);
 
 			static const ReservedMatchingItem NullValue;
@@ -173,6 +174,7 @@ namespace Svr {
 
 			bool operator == (const MatchingItem& src) const { return MatchingTicket == src.MatchingTicket; }
 
+			MatchingItem& operator = (const MatchingItem& src);
 			MatchingItem& operator = (MatchingItem&& src);
 
 			static const MatchingItem NullValue;

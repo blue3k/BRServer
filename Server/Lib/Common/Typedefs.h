@@ -37,10 +37,10 @@
 #include <malloc.h>
 #include <crtdbg.h>
 #include <tchar.h>
-#include <atltrace.h>
+//#include <atltrace.h>
 #include <mbstring.h>
-#include <atlcore.h>
-#include <cstringt.h>
+//#include <atlcore.h>
+//#include <cstringt.h>
 // Combine with system default types
 //#include <afxwin.h>
 #include <winsock2.h>

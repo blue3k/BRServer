@@ -87,7 +87,26 @@ namespace Config {
 		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 
-	
+
+
+
+	//////////////////////////////////////////////////////////////
+	// DBSource
+	class DBSource : public XML::DOMElement
+	{
+	public:
+		DBSource();
+
+		// Instance name
+		std::string DBInstanceName;
+
+		// DB Name
+		std::string DBName;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
 
 	//////////////////////////////////////////////////////////////
 	// DB Cluster
@@ -343,6 +362,9 @@ namespace Config {
 		std::unordered_map<std::string,DBInstance*> DBInstances;
 
 		GenericServer*						MonitoringServer;
+
+		// Table DB server
+		DBSource*							TableDB;
 
 		// Accound DB server
 		DBCluster*							AccountDB;

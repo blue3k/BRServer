@@ -1,0 +1,15 @@
+﻿Build started 2015-07-10 오후 8:53:10.
+     1>Project "F:\fwork\BRServer\BRServer\Tools\TableBuilder\XSDBuild\XSDBuild.vcxproj" on node 2 (Build target(s)).
+     1>CustomBuild:
+         XSD Build
+         Microsoft (R) Xml Schemas/DataTypes support utility
+         [Microsoft (R) .NET Framework, Version 4.0.30319.33440]
+         Copyright (C) Microsoft Corporation. All rights reserved.
+         Writing file '..\TableBuilder\TableFormat\gameConfigTable.cs'.
+       Link:
+         XSDBuild.vcxproj -> F:\fwork\BRServer\BRServer\Tools\TableBuilder\Debug\XSDBuild.exe
+     1>Done Building Project "F:\fwork\BRServer\BRServer\Tools\TableBuilder\XSDBuild\XSDBuild.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.30

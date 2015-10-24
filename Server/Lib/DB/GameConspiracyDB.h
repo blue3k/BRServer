@@ -49,7 +49,7 @@ namespace DB {
 		//	Game DB Interface
 		//
 
-		HRESULT CreatePlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID);
+		HRESULT CreatePlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID, INT initialStamina);
 
 		// Query player info
 		HRESULT GetPlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID);

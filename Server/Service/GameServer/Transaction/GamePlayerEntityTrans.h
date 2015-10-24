@@ -115,6 +115,7 @@ namespace GameServer {
 			INT64 GameMoney;
 			INT64 Gem;
 			SHORT Stamina;
+			UINT32 LastUpdateTime;
 			INT32 TotalPlayed;
 			INT32 WinPlaySC;
 			INT32 WinPlaySM;
@@ -146,6 +147,7 @@ namespace GameServer {
 			m_Result.GameMoney,
 			m_Result.Gem,
 			m_Result.Stamina,
+			m_Result.LastUpdateTime,
 			m_Result.TotalPlayed,
 			m_Result.WinPlaySC,
 			m_Result.WinPlaySM,
@@ -218,7 +220,46 @@ namespace GameServer {
 					m_Result.WeeklyLose
 			);
 	};
-	
+
+
+
+	class PlayerTransGetComplitionState : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetComplitionStateCmd, PlayerTransGetComplitionState>
+	{
+	private:
+
+		BRCLASS_ATTRIBUTE_STRING(ComplitionState, GameConst::MAX_COMPLITIONSTATE);
+
+	public:
+		PlayerTransGetComplitionState(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) {}
+		virtual ~PlayerTransGetComplitionState() {}
+
+		HRESULT OnGetComplitionState(Svr::TransactionResult* &pRes);
+
+
+		// Start Transaction
+		virtual HRESULT StartTransaction();
+
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GetComplitionStateRes, m_ComplitionState);
+	};
+
+
+
+	class PlayerTransSetComplitionState : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetComplitionStateCmd, PlayerTransSetComplitionState>
+	{
+	public:
+		PlayerTransSetComplitionState(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) {}
+		virtual ~PlayerTransSetComplitionState() {}
+
+		HRESULT OnSetComplitionState(Svr::TransactionResult* &pRes);
+
+		// Start Transaction
+		virtual HRESULT StartTransaction();
+
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(SetComplitionStateRes);
+	};
+
+
+
 
 	/////////////////////////////////////////////////////////////////////////////
 	//
@@ -383,6 +424,9 @@ namespace GameServer {
 	class PlayerTransSetNickName : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetNickNameCmd, PlayerTransSetNickName>
 	{
 	private:
+		UINT64 m_TotalGem;
+		UINT64 m_TotalGameMoney;
+
 	public:
 		PlayerTransSetNickName( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransSetNickName() {}
@@ -392,7 +436,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE(SetNickNameRes);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(SetNickNameRes, m_TotalGem, m_TotalGameMoney);
 	};
 	
 	
@@ -420,6 +464,25 @@ namespace GameServer {
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(FindPlayerByEMailRes,m_Player);
 	};
 
+
+	class PlayerTransFindPlayerByPlayerID : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::FindPlayerByPlayerIDCmd, PlayerTransFindPlayerByPlayerID>
+	{
+	private:
+		PlayerInformation m_Player;
+		int m_PlayerShardID;
+
+	public:
+		PlayerTransFindPlayerByPlayerID( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		virtual ~PlayerTransFindPlayerByPlayerID() {}
+
+		HRESULT OnFindPlayer( Svr::TransactionResult* &pRes );
+		HRESULT OnGetNickName(Svr::TransactionResult* &pRes);
+
+		// Start Transaction
+		virtual HRESULT StartTransaction();
+
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(FindPlayerByPlayerIDRes,m_Player);
+	};
 
 
 	class PlayerTransRequestPlayerStatusUpdate : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::RequestPlayerStatusUpdateCmd, PlayerTransRequestPlayerStatusUpdate>
@@ -483,7 +546,31 @@ namespace GameServer {
 
 
 
-	class PlayerTransBuyShopItem : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::BuyShopItemCmd, PlayerTransBuyShopItem>
+	class PlayerTransBuyShopItemPrepare : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::BuyShopItemPrepareCmd, PlayerTransBuyShopItemPrepare>
+	{
+	private:
+		const UINT MAX_RETRY = 3;
+
+		StaticArray<BYTE, 1024> m_Signagure;
+		UINT m_RetryCount;
+
+	public:
+		PlayerTransBuyShopItemPrepare(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) { m_Signagure.push_back('\0'); }
+		virtual ~PlayerTransBuyShopItemPrepare() {}
+
+		HRESULT OnPurchaseIDChecked(Svr::TransactionResult* &pRes);
+
+		HRESULT GenerateSigunatureAndCheck();
+
+		// Start Transaction
+		virtual HRESULT StartTransaction();
+
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(BuyShopItemPrepareRes, GetShopItemID(), (const char*)m_Signagure.data());
+	};
+
+
+
+	class PlayerTransBuyShopItem : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::BuyShopItemCmd, PlayerTransBuyShopItem, sizeof(Svr::TransactionMessageHandlerType) * 4>
 	{
 	private:
 		Memento<UserGamePlayerInfoSystem::MEMENTO_SIZE> m_SavedData;
@@ -493,8 +580,9 @@ namespace GameServer {
 		PlayerTransBuyShopItem( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransBuyShopItem() {}
 
-		HRESULT OnSavedToDB( Svr::TransactionResult* &pRes );
-		HRESULT OnNickChanged( Svr::TransactionResult* &pRes );
+		HRESULT OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes);
+		HRESULT OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes);
+		HRESULT OnSavedToDB(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
 		virtual HRESULT StartTransaction();

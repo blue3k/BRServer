@@ -45,7 +45,7 @@ namespace BR
 			SyncCounter	WriteCounter;
 			SyncCounter ReadCounter;
 
-			PageHeader() :pNext(nullptr), PageID(0) { }
+			PageHeader() :pNext(nullptr), PageID(0), WriteCounter(0), ReadCounter(0) { }
 			~PageHeader() { }
 		};
 

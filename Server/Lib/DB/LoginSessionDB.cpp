@@ -218,33 +218,6 @@ namespace DB {
 	}
 
 	
-	// Find player
-	HRESULT LoginSessionDB::GameServerHeartBit( TransactionID Sender, const PlayerID &playerID )
-	{
-		HRESULT hr = S_OK;
-		QueryFindPlayerCmd *pQuery = nullptr;
-
-		dbMem( pQuery = new QueryFindPlayerCmd );
-
-		pQuery->SetPartitioningKey((UINT)playerID);
-
-		pQuery->PlayerID = playerID;
-		pQuery->LoginEntityID = 0;
-		pQuery->GameEntityUID = 0;
-		pQuery->Result = 0;
-
-		pQuery->SetTransaction( Sender );
-
-		dbChk( RequestQuery( pQuery ) );
-		pQuery = nullptr;
-
-	Proc_End:
-
-		if( FAILED(hr) )
-			Util::SafeRelease( pQuery );
-
-		return hr;
-	}
 
 
 } //namespace DB

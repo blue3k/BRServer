@@ -30,6 +30,7 @@
 
 #include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
 
+#include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::MatchingQueueServiceEntity::QueueItem);
 
@@ -46,6 +47,7 @@ namespace Svr {
 	MatchingQueueServiceEntity::MatchingQueueServiceEntity(ClusterID clusterID, ClusterMembership initialMembership)
 		: RingClusterServiceEntity(clusterID, initialMembership )
 		, m_QueuedItemCount(GetCounterNameFromClusterID(clusterID))
+		, IServerComponent(MatchingUtil::GetComponentIDFromClusterID(clusterID))
 	{
 	}
 

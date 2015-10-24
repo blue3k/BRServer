@@ -59,6 +59,8 @@ namespace Svr{
 	{
 		SetInstance( this );
 
+		xmlInitParser();
+
 		// main server class has private thread for task
 		SetTickInterval(0);
 

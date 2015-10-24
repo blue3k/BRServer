@@ -19,7 +19,7 @@
 
 
 ConnectionManager::Operation::Operation()
-	:pConn(0), EnqueuedTime(0)
+	:pConn(0), EnqueuedTime(0), OpCode(OP_NONE)
 {
 }
 

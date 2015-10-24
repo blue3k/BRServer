@@ -77,6 +77,7 @@ namespace Svr {
 
 				static PacketInfo NullValue;
 
+				PacketInfo& operator = (const PacketInfo& src) { From = src.From; pMessage = src.pMessage; return *this; }
 				PacketInfo& operator = (PacketInfo&& src) { From = src.From; pMessage = src.pMessage; src.pMessage = nullptr; return *this; }
 				bool operator == (const PacketInfo& src) const { return pMessage == src.pMessage; }
 

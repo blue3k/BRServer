@@ -276,8 +276,10 @@ namespace BR
 
 		// push_back
 		HRESULT push_back( const DataType& NewData );
-		//HRESULT operator +=( const DataType& NewData );
 		HRESULT AddItems(size_t numItems, const DataType* NewData);
+#if !defined(SWIG)
+		HRESULT push_back( DataType&& NewData );
+#endif
 
 		// Remove element
 		inline HRESULT RemoveAt( INT iIndex );

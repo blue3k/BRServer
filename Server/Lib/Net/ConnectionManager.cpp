@@ -641,6 +641,8 @@ namespace Net {
 		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const UINT_PTR& key, SharedPointerT<Connection> pConn) -> bool
 		{
 			netTrace( TRC_CONNECTION, "TerminateManager ConnectionManager Managed connection Release CID:%0%", pConn->GetCID() );
+			if (pConn->GetConnectionState() != IConnection::STATE_DISCONNECTED)
+				pConn->CloseConnection();
 			FreeConnection( (Connection*)pConn );
 			return true;
 		});

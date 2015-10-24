@@ -184,7 +184,7 @@ namespace TableBuilder
                                 continue;
                             }
 
-                            CPPTableBuilder builder = new CPPTableBuilder(m_BasePath, tableInfo._name, tableInfo._keyInfo,
+                            var builder = new CPPDBTableBuilder(m_BasePath, tableInfo._name, tableInfo._keyInfo,
                                                     tableInfo._baseParserName);
                             builder.Build(m_targetNameSpace);
 

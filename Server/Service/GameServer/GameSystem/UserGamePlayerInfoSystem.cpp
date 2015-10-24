@@ -186,14 +186,6 @@ namespace GameServer {
 		case conspiracy::ShopTbl::EItemEffect::Enum::FriendSlot:
 			svrChk( GainFriendSlot(pShopItem->Quantity) );
 			break;
-		case conspiracy::ShopTbl::EItemEffect::Enum::ResetRankNormal:
-			m_WinPlayNCitizen = 0;
-			m_WinPlayNMonster = 0;
-			m_WinPlayNSeer = 0;
-			m_LosePlayNCitizen = 0;
-			m_LosePlayNMonster = 0;
-			m_LosePlayNSeer = 0;
-			break;
 		default:
 			return E_GAME_INVALID_SHOPITEM;
 			break;
@@ -210,6 +202,47 @@ namespace GameServer {
 
 		return hr;
 	}
+
+
+	// Apply Cost
+	HRESULT UserGamePlayerInfoSystem::CheckCost(conspiracy::OrganicTbl::OrganicItem *pCostItem)
+	{
+		HRESULT hr = S_OK;
+
+		if (pCostItem == nullptr)
+			return E_POINTER;
+
+		if (GetGem() < pCostItem->RequiredGem || GetGameMoney() < pCostItem->RequiredGameMoney)
+			return E_GAME_NOTENOUGH_RESOURCE;
+
+	Proc_End:
+
+		return hr;
+	}
+
+	HRESULT UserGamePlayerInfoSystem::ApplyCost(conspiracy::OrganicTbl::OrganicItem *pCostItem, TransLogCategory logCategory, const char* message)
+	{
+		HRESULT hr = S_OK;
+
+		if (pCostItem == nullptr)
+			return E_POINTER;
+
+		hr = CheckCost(pCostItem);
+		if (FAILED(hr))
+			return hr;
+
+		m_Gem -= pCostItem->RequiredGem;
+		m_GameMoney -= pCostItem->RequiredGameMoney;
+		//m_Cash -= pShopItem->RequiredCash;
+
+		GetOwner().AddGameTransactionLogT(TransLogCategory::Buy, pCostItem->RequiredGem, pCostItem->RequiredGameMoney, 0, "Remain, Gem:%0%, GameMoney:%1%, message:%2%", GetGem(), GetGameMoney(), message != nullptr ? message : "");
+
+
+	Proc_End:
+
+		return hr;
+	}
+
 
 	HRESULT UserGamePlayerInfoSystem::SetLevel( UINT newLevel )
 	{
@@ -315,6 +348,22 @@ namespace GameServer {
 
 		return hr;
 	}
+
+	HRESULT UserGamePlayerInfoSystem::ResetRankNormal(conspiracy::OrganicTbl::OrganicItem *pCostItem)
+	{
+		HRESULT hr = ApplyCost(pCostItem, TransLogCategory::Buy, "ResetRank");
+		if (FAILED(hr))
+			return hr;
+
+		m_WinPlayNCitizen = 0;
+		m_WinPlayNMonster = 0;
+		m_WinPlayNSeer = 0;
+		m_LosePlayNCitizen = 0;
+		m_LosePlayNMonster = 0;
+		m_LosePlayNSeer = 0;
+
+		return hr;
+	}
 	
 
 	// Add stamina, negative will reduce the stamina
@@ -334,7 +383,7 @@ namespace GameServer {
 		return hr;
 	}
 
-	
+
 	// Add Friend slot, negative will reduce the friend slot
 	HRESULT UserGamePlayerInfoSystem::GainFriendSlot( INT numSlot )
 	{
@@ -400,6 +449,7 @@ namespace GameServer {
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
+		m_MaxAutoRefillStamina = GetMyServer()->GetPresetGameConfig()->MaxAutoRefilStamina;
 		m_MaxStamina = GetMyServer()->GetPresetGameConfig()->MaxStamina;
 		m_MaxFriend = GetMyServer()->GetPresetGameConfig()->MaxFriend;
 		m_MaxGameMoney = GetMyServer()->GetPresetGameConfig()->MaxMoney;
@@ -462,6 +512,20 @@ namespace GameServer {
 		return hr;
 	}
 
+
+	HRESULT UserGamePlayerInfoSystem::SavePurchaseInfoToDB(TransactionID transID, const Array<BYTE>& purchaseID, const char* purchasePlatform, const char* purchaseToken)
+	{
+		if (purchasePlatform == nullptr || purchaseToken == nullptr)
+			return E_INVALIDARG;
+
+		return Svr::GetServerComponent<DB::GameConspiracyDB>()->SavePurchaseInfoToDB(transID, GetOwner().GetShardID(), GetOwner().GetPlayerID(),
+			GetLevel(), GetExp(),
+			GetGameMoney(), GetGem(), GetStamina(), GetAddedFriendSlot(),
+			purchaseID,
+			purchasePlatform, purchaseToken, 
+			GetOwner().GetLatestActiveTime(),
+			GetOwner().GetLatestUpdateTime());
+	}
 
 	HRESULT UserGamePlayerInfoSystem::SavePlayerInfoToDB(TransactionID transID)
 	{

@@ -28,6 +28,8 @@
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
+#include "ServerSystem/ExternalTransaction.h"
+#include "ServerSystem/ExternalTransactionManager.h"
 
 #include "Protocol/Message/LoginServerMsgClass.h"
 #include "ServerSystem/ServerService/LoginServerService.h"
@@ -60,7 +62,9 @@
 #include "DB/RankingDB.h"
 #include "DB/RankingDBQuery.h"
 
-
+#include "Table/Conspiracy/GameConfigTbl.h"
+#include "Table/Conspiracy/OrganicTbl.h"
+#include "openssl\sha.h"
 
 
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity);
@@ -68,6 +72,8 @@ BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRegisterPlayerToJoinGameServerOnP
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransJoinGameServer);
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetUserGamePlayerInfo);
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetGamePlayerInfo);
+BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetComplitionState);
+BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransSetComplitionState);
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRegisterGCM);
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransUnregisterGCM);
 
@@ -81,12 +87,14 @@ BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransSetNotificationRead);
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransSetNickName);
 
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransFindPlayerByEMail);
+BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransFindPlayerByPlayerID);
 
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRequestPlayerStatusUpdate);
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRequestPlayerStatusUpdateS2S);
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransNotifyPlayerStatusUpdatedS2S);
 
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetRankingList);
+BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransBuyShopItemPrepare);
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransBuyShopItem);
 
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransSetConfigPreset);
@@ -252,7 +260,7 @@ namespace GameServer {
 
 		GetMyOwner()->SetLatestActiveTime(Util::Time.GetTimeUTCSec32());
 
-		// a bug? let's just correct the value
+		// If first login, the value will be zero
 		if (latestTick == 0)
 		{
 			svrTrace(Trace::TRC_WARN, "Invalid player tick time for PlayerID:%0%. Reset to current time", GetMyOwner()->GetPlayerID());
@@ -339,7 +347,10 @@ namespace GameServer {
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->CreatePlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
+			conspiracy::GameConfigTbl::GameConfigItem *pConfig = GetMyServer()->GetPresetGameConfig();
+			svrChkPtr(pConfig);
+
+			svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->CreatePlayerInfoCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), pConfig->DefaultStamina));
 			goto Proc_End;
 		}
 
@@ -450,6 +461,8 @@ namespace GameServer {
 		m_Result.GameMoney = userGamePlayerInfo->GetGameMoney();
 		m_Result.Gem = userGamePlayerInfo->GetGem();
 		m_Result.Stamina = userGamePlayerInfo->GetStamina();
+		m_Result.LastUpdateTime = (UINT32)GetMyOwner()->GetLatestUpdateTime();
+
 		m_Result.TotalPlayed = userGamePlayerInfo->GetTotalPlayed();
 
 		m_Result.WinPlaySC = userGamePlayerInfo->GetWinPlaySCitizen();
@@ -580,7 +593,117 @@ namespace GameServer {
 
 		return hr;
 	}
-	
+
+
+
+	PlayerTransGetComplitionState::PlayerTransGetComplitionState(Message::MessageData* &pIMsg)
+		: MessageTransaction(pIMsg)
+	{
+		BR_TRANS_MESSAGE(DB::QueryGetComplitionStateCmd, { return OnGetComplitionState(pRes); });
+	}
+
+	HRESULT PlayerTransGetComplitionState::OnGetComplitionState(Svr::TransactionResult* &pRes)
+	{
+		HRESULT hr = S_OK;
+
+		auto* pDBRes = (DB::QueryGetComplitionStateCmd*)pRes;
+
+		svrChk(pRes->GetHRESULT());
+
+		// succeeded to query
+		if (pDBRes->Result < 0)
+		{
+			svrErr(E_GAME_INAVLID_PLAYER);
+		}
+
+		svrChkCloseErr(E_UNEXPECTED, StrUtil::StringCpy(m_ComplitionState, pDBRes->ComplitionState));
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
+
+
+	// Start Transaction
+	HRESULT PlayerTransGetComplitionState::StartTransaction()
+	{
+		HRESULT hr = S_OK;
+
+		memset(&m_ComplitionState, 0, sizeof(m_ComplitionState));
+
+		svrChk(__super::StartTransaction());
+
+		if (GetMyOwner()->GetAccountID() == 0)
+		{
+			svrErrClose(E_INVALID_TICKET);
+		}
+
+		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
+
+
+	Proc_End:
+
+		if (FAILED(hr))
+			CloseTransaction(hr);
+
+		return hr;
+	}
+
+
+
+
+	PlayerTransSetComplitionState::PlayerTransSetComplitionState(Message::MessageData* &pIMsg)
+		: MessageTransaction(pIMsg)
+	{
+		BR_TRANS_MESSAGE(DB::QuerySetComplitionStateCmd, { return OnSetComplitionState(pRes); });
+	}
+
+	HRESULT PlayerTransSetComplitionState::OnSetComplitionState(Svr::TransactionResult* &pRes)
+	{
+		HRESULT hr = S_OK;
+
+		auto* pDBRes = (DB::QuerySetComplitionStateCmd*)pRes;
+
+		svrChk(pRes->GetHRESULT());
+
+		// succeeded to query
+		if (pDBRes->Result < 0)
+		{
+			svrErr(E_GAME_INAVLID_PLAYER);
+		}
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
+
+	// Start Transaction
+	HRESULT PlayerTransSetComplitionState::StartTransaction()
+	{
+		HRESULT hr = S_OK;
+
+		svrChk(__super::StartTransaction());
+
+		if (GetMyOwner()->GetAccountID() == 0)
+		{
+			svrErrClose(E_INVALID_TICKET);
+		}
+
+		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetComplitionState()));
+
+
+	Proc_End:
+
+		if (FAILED(hr))
+			CloseTransaction(hr);
+
+		return hr;
+	}
+
 
 	
 	/////////////////////////////////////////////////////////////////////////////
@@ -949,6 +1072,8 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 		auto pDBRes = (DB::QuerySetNickNameCmd*)pRes;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
+		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
 
 		svrChk(pRes->GetHRESULT());
 
@@ -958,6 +1083,18 @@ namespace GameServer {
 		GetMyOwner()->AddGameTransactionLogT(TransLogCategory::Account, 0, 0, 0, "From %0% to %1%", GetMyOwner()->GetNickName(), GetNickName());
 
 		svrChk( GetMyOwner()->SetNickName( GetNickName() ) );
+
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+		if (GetIsCostFree() == 0)
+		{
+			svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
+			svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "SetNickName"));
+		}
+
+		m_TotalGem = pPlayerInfoSystem->GetGem();
+		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
+
 
 	Proc_End:
 
@@ -970,8 +1107,21 @@ namespace GameServer {
 	HRESULT PlayerTransSetNickName::StartTransaction()
 	{
 		HRESULT hr = S_OK;
+		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
+
+		m_TotalGem = 0;
+		m_TotalGameMoney = 0;
 
 		svrChk( __super::StartTransaction() );
+
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+		if (GetIsCostFree() == 0)
+		{
+			svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
+			svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
+		}
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetNickName(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNickName()));
 
@@ -1064,6 +1214,77 @@ namespace GameServer {
 	}
 	
 
+	PlayerTransFindPlayerByPlayerID::PlayerTransFindPlayerByPlayerID( Message::MessageData* &pIMsg )
+		:MessageTransaction( pIMsg )
+	{
+		BR_TRANS_MESSAGE(DB::QueryFindPlayerByPlayerIDCmd, { return OnFindPlayer(pRes); });
+		BR_TRANS_MESSAGE(DB::QueryGetNickNameCmd, { return OnGetNickName(pRes); });
+	}
+
+	HRESULT PlayerTransFindPlayerByPlayerID::OnFindPlayer(Svr::TransactionResult* &pRes)
+	{
+		HRESULT hr = S_OK;
+		auto pDBRes = (DB::QueryFindPlayerByPlayerIDCmd*)pRes;
+		svrChk(pRes->GetHRESULT());
+
+		if (pDBRes->PlayerID == 0)
+			svrErrClose(E_PLAYER_NOT_FOUND);
+
+		if (pDBRes->Result != 0)
+			svrErrClose(E_PLAYER_NOT_FOUND);
+
+		m_Player.PlayerID = pDBRes->PlayerID;
+		m_Player.FacebookUID = pDBRes->FacebookUID;
+		m_PlayerShardID = pDBRes->ShardID;
+
+		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
+
+	Proc_End:
+
+		if (FAILED(hr))
+			CloseTransaction(hr);
+
+		return S_OK;
+	}
+
+	HRESULT PlayerTransFindPlayerByPlayerID::OnGetNickName(Svr::TransactionResult* &pRes)
+	{
+		HRESULT hr = S_OK;
+		auto *pDBRes = (DB::QueryGetNickNameCmd*)pRes;
+
+		svrChk(pRes->GetHRESULT());
+
+		if (pDBRes->Result < 0)
+			svrErrClose(E_PLAYER_NOT_FOUND);
+
+		StrUtil::StringCpy( m_Player.NickName, pDBRes->NickName );
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return S_OK;
+	}
+
+	// Start Transaction
+	HRESULT PlayerTransFindPlayerByPlayerID::StartTransaction()
+	{
+		HRESULT hr = S_OK;
+
+		svrChk( __super::StartTransaction() );
+
+		svrChk( Svr::GetServerComponent<DB::AccountDB>()->FindPlayerByPlayerID( GetTransID(), GetPlayerID() ) );
+
+	Proc_End:
+
+		if( FAILED(hr) )
+		{
+			CloseTransaction( hr );
+		}
+
+		return hr;
+	}
+	
 	
 	PlayerTransRequestPlayerStatusUpdate::PlayerTransRequestPlayerStatusUpdate( Message::MessageData* &pIMsg )
 		:MessageTransaction( pIMsg )
@@ -1268,21 +1489,184 @@ namespace GameServer {
 
 
 
+	PlayerTransBuyShopItemPrepare::PlayerTransBuyShopItemPrepare(Message::MessageData* &pIMsg)
+		: MessageTransaction(pIMsg)
+	{
+		BR_TRANS_MESSAGE(DB::QueryCheckPurchaseIDCmd, { return OnPurchaseIDChecked(pRes); });
+		m_Signagure.push_back('\0');
+	}
+
+	HRESULT PlayerTransBuyShopItemPrepare::OnPurchaseIDChecked(Svr::TransactionResult* &pRes)
+	{
+		HRESULT hr = S_OK;
+		auto *pDBRes = (DB::QueryCheckPurchaseIDCmd*)pRes;
+
+		svrChk(pRes->GetHRESULT());
+
+		if (pDBRes->Result < 0)
+		{
+			m_RetryCount++;
+			if (m_RetryCount > MAX_RETRY)
+			{
+				svrErrClose(E_FAIL);
+			}
+			else
+			{
+				svrChk(GenerateSigunatureAndCheck());
+			}
+		}
+		else
+		{
+			CloseTransaction(hr);
+		}
+
+
+	Proc_End:
+
+		if (FAILED(hr))
+			CloseTransaction(hr);
+
+		return S_OK;
+	}
+
+	HRESULT PlayerTransBuyShopItemPrepare::GenerateSigunatureAndCheck()
+	{
+		HRESULT hr = S_OK;
+		StaticArray<BYTE, 1024> dataBuffer;
+		StaticArray<BYTE, 128> hash;
+		AuthTicket authTicket = GetMyOwner()->GetAuthTicket();
+		PlayerID playerID = GetMyOwner()->GetPlayerID();
+		auto time = Util::Time.GetTimeUTCSec();
+		auto time2 = Util::Time.GetTimeMs();
+
+		m_Signagure.Clear();
+
+		// Generate sigunature
+		svrChk(dataBuffer.AddItems(sizeof(playerID), (const BYTE*)&playerID));
+		svrChk(dataBuffer.AddItems(sizeof(time), (const BYTE*)&time));
+		svrChk(dataBuffer.AddItems(sizeof(time2), (const BYTE*)&time2));
+
+		svrChk(Util::SHA256Hash(dataBuffer.GetSize(), dataBuffer.data(), hash));
+		svrChk(Util::Base64URLEncode(hash.GetSize(), hash.data(), m_Signagure));
+
+		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->CheckPurchaseID(GetTransID(), GetMyOwner()->GetShardID(), hash));
+
+	Proc_End:
+
+		m_Signagure.push_back('\0');
+
+		return hr;
+	}
+
+	// Start Transaction
+	HRESULT PlayerTransBuyShopItemPrepare::StartTransaction()
+	{
+		HRESULT hr = S_OK;
+
+
+		svrChk(__super::StartTransaction());
+
+		m_RetryCount = 0;
+
+		svrChk(GenerateSigunatureAndCheck());
+
+	Proc_End:
+
+		if (FAILED(hr))
+			CloseTransaction(hr);
+
+		return hr;
+	}
+
+
+
 	PlayerTransBuyShopItem::PlayerTransBuyShopItem( Message::MessageData* &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		SetExclusive(true);
-		BR_TRANS_MESSAGE( DB::QuerySetPlayerInfoCmd, { return OnSavedToDB(pRes); });
-		BR_TRANS_MESSAGE( DB::QuerySetNickNameCmd, { return OnNickChanged(pRes); });
+		BR_TRANS_MESSAGE(Svr::ExternalTransactionGoogleAndroidReceiptCheck, { return OnPurchaseCheckedAndroid(pRes); });
+		BR_TRANS_MESSAGE(Svr::ExternalTransactionIOSRecepitCheck, { return OnPurchaseCheckedIOS(pRes); });
+		BR_TRANS_MESSAGE(DB::QuerySavePurchaseInfoToDBCmd, { return OnSavedToDB(pRes); });
 	}
 
+
+	HRESULT PlayerTransBuyShopItem::OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes)
+	{
+		HRESULT hr = S_OK;
+		auto *pCheckRes = (Svr::ExternalTransactionGoogleAndroidReceiptCheck*)pRes;
+		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
+		StaticArray<BYTE, 512> purchaseID;
+
+		svrChk(pRes->GetHRESULT());
+
+		if (pCheckRes->GetDeveloperPayload().length() == 0)
+			svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+
+		svrChkCloseErr(E_SVR_INVALID_PURCHASE_INFO, Util::Base64URLDecode(pCheckRes->GetDeveloperPayload().length(), (const BYTE*)pCheckRes->GetDeveloperPayload().c_str(), purchaseID));
+
+		if (purchaseID.GetSize() != SHA256_DIGEST_LENGTH)
+			svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+		svrChk(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
+
+		svrChkClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
+
+		svrChk(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), purchaseID, GetPlatform(), GetPurchaseTransactionID()));
+
+	Proc_End:
+
+		if (FAILED(hr))
+		{
+			CloseTransaction(hr);
+		}
+
+		return S_OK;
+	}
+
+	HRESULT PlayerTransBuyShopItem::OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes)
+	{
+		HRESULT hr = S_OK;
+		auto *pCheckRes = (Svr::ExternalTransactionIOSRecepitCheck*)pRes;
+		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
+
+		svrChkClose(pRes->GetHRESULT());
+
+		if (pCheckRes->GetPurchaseTransactionID().GetSize() == 0
+			|| StrUtil::StringCmp((const char*)pCheckRes->GetPurchaseTransactionID().data(), (INT)pCheckRes->GetPurchaseTransactionID().GetSize(), GetPurchaseTransactionID(), -1) != 0)
+			svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+
+
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+		svrChk(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
+
+		svrChkClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
+
+		svrChk(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), pCheckRes->GetPurchaseTransactionID(), GetPlatform(), GetPurchaseTransactionID()));
+
+	Proc_End:
+
+		if (FAILED(hr))
+		{
+			CloseTransaction(hr);
+		}
+
+		return S_OK;
+	}
 
 	HRESULT PlayerTransBuyShopItem::OnSavedToDB( Svr::TransactionResult* &pRes )
 	{
 		HRESULT hr = S_OK;
-		auto *pDBRes = (DB::QuerySetPlayerInfoCmd*)pRes;
+		auto *pDBRes = (DB::QuerySavePurchaseInfoToDBCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
+
+		if (pDBRes->Result < 0)
+		{
+			svrErrClose(E_SVR_INVALID_PURCHASE_DUPLICATED);
+		}
 
 
 	Proc_End:
@@ -1297,64 +1681,63 @@ namespace GameServer {
 
 		return S_OK; 
 	}
-	
-	HRESULT PlayerTransBuyShopItem::OnNickChanged( Svr::TransactionResult* &pRes )
-	{
-		HRESULT hr = S_OK;
-
-		svrChk(pRes->GetHRESULT());
-
-		if (m_pShopItem)
-			GetMyOwner()->AddGameTransactionLog(TransLogCategory::Buy, m_pShopItem->RequiredGem, m_pShopItem->RequiredGameMoney, m_pShopItem->Quantity);
-
-		svrChk( GetMyOwner()->SetNickName( GetParamString() ) );
-
-	Proc_End:
-
-		CloseTransaction(hr);
-
-		return S_OK; 
-	}
 
 	// Start Transaction
 	HRESULT PlayerTransBuyShopItem::StartTransaction()
 	{
 		HRESULT hr = S_OK;
+		Svr::ExternalTransactionManager* pExtMgr = nullptr;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 
 		m_pShopItem = nullptr;
 
 		svrChk( __super::StartTransaction() );
 
-		svrChkPtr( pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>() );
+		if (GetPurchaseTransactionID() == nullptr || GetPurchaseTransactionID()[0] == '\0')
+		{
+			svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+		}
 
 		if( FAILED( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
 		{
 			svrErrClose(E_GAME_INVALID_SHOPITEMID);
 		}
 
-		if( m_pShopItem->ItemEffect == conspiracy::ShopTbl::EItemEffect::Enum::NickName )
-		{
-			if( GetParamString() == nullptr || strlen(GetParamString()) == 0 )
-				svrErrClose(E_INVALID_PLAYER_NICK);
+		svrChkPtr(pExtMgr = Svr::GetServerComponent<Svr::ExternalTransactionManager>());
 
-			svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetNickName(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetParamString()));
-
-			goto Proc_End;
-		}
-		else if( m_pShopItem->ItemEffect == conspiracy::ShopTbl::EItemEffect::Enum::ResetRankNormal )
+		if (strlen(m_pShopItem->AndroidItemID) == 0 || strlen(m_pShopItem->iOSItemID) == 0)
 		{
-			svrChk( pPlayerInfoSystem->SaveWinLoseToMemento(m_SavedData) );
-			svrChkClose( pPlayerInfoSystem->ApplyItem(m_pShopItem) );
+			StaticArray<BYTE,1024> pruchaseID;
+
+			svrChk( Util::Base64URLDecode(strlen(GetPurchaseTransactionID()), (BYTE*)GetPurchaseTransactionID(), pruchaseID) );
+			//svrChk( pruchaseID.AddItems(strlen(GetPurchaseTransactionID()), (BYTE*)GetPurchaseTransactionID()) );
+
+			svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
+			svrChk(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
+
+			svrChkClose(pPlayerInfoSystem->ApplyItem(m_pShopItem));
+
+			svrChk(pPlayerInfoSystem->SavePurchaseInfoToDB(GetTransID(), pruchaseID, GetPlatform(), GetPurchaseTransactionID()));
 		}
 		else
 		{
-			svrChk(pPlayerInfoSystem->SaveStatToMemento(m_SavedData));
+			if (StrUtil::StringCmpLwr("android", -1, GetPlatform(), -1) == 0
+				|| StrUtil::StringCmpLwr("windows", -1, GetPlatform(), -1) == 0)
+			{
+				// The last byte must be null, null terminate
+				svrChk(pExtMgr->AndroidCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->AndroidItemID, GetPurchaseTransactionID()));
+			}
+			else
+			{
+				if (GetPurchaseToken().GetSize() == 0)
+				{
+					svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+				}
 
-			svrChkClose( pPlayerInfoSystem->ApplyItem(m_pShopItem) );
+				svrChk(pExtMgr->IOSCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->iOSItemID, GetPurchaseTransactionID(), GetPurchaseToken()));
+			}
 		}
-
-		svrChk(pPlayerInfoSystem->SavePlayerInfoToDB(GetTransID()));
 
 
 	Proc_End:

@@ -127,7 +127,7 @@ TEST_F(NetTest, MessageMap)
 
 	memset(pMsgData,0,sizeof(pMsgData));
 	EXPECT_HRESULT_SUCCEEDED(BR::Message::Login::LoginCmd::BuildIMsg(pMsgData[0], GameID::Conspiracy, strID, strPassword));
-	EXPECT_HRESULT_SUCCEEDED(BR::Message::Login::LoginRes::BuildIMsg(pMsgData[1], InResult, InGameServerAddr, InAccID, InTicket, InLoginEntityUID, strNickName));
+	EXPECT_HRESULT_SUCCEEDED(BR::Message::Login::LoginRes::BuildIMsg(pMsgData[1], InResult, InGameServerAddr, InAccID, InTicket, InLoginEntityUID));
 	EXPECT_HRESULT_SUCCEEDED( BR::Message::Game::JoinGameCmd::BuildIMsg( pMsgData[2], InAccID, InTicket, 0 ) );
 //	EXPECT_HRESULT_SUCCEEDED( BR::Message::Game::JoinGameRes::BuildIMsg( pMsgData[3], InResult, InInsUID, GameStateID::DefenceOfSuspects, PlayerRole::AngelOfVillagers, 0 ) );
 	BR::CheckCtrMemory();
@@ -153,7 +153,7 @@ TEST_F(NetTest, Simple)
 	EXPECT_HRESULT_SUCCEEDED( m_pIConnection->CreatePolicy( BR::POLICY_GAME ) );
 
 	// Wait until connection done
-	while( m_pIConnection->GetState() == BR::Net::IConnection::STATE_CONNECTING )
+	while( m_pIConnection->GetConnectionState() == BR::Net::IConnection::STATE_CONNECTING )
 	{
 		BR::Net::IConnection::Event curEvent;
 

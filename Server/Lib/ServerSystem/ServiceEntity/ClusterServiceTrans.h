@@ -36,7 +36,7 @@ namespace Svr {
 	{
 	private:
 		enum Step {
-			Step_GetMemberList,
+			//Step_GetMemberList,
 			Step_JoinCluster,
 			Step_RequestDataSync,
 			Step_Done,
@@ -58,8 +58,8 @@ namespace Svr {
 		// Timer handling
 		HRESULT OnTimer(TransactionResult* pRes);
 
-		HRESULT GetClusterMemberList();
-		HRESULT OnGetClusterMemberList(TransactionResult* pRes);
+		//HRESULT GetClusterMemberList();
+		//HRESULT OnGetClusterMemberList(TransactionResult* pRes);
 
 		HRESULT JoinCluster(  );
 		HRESULT OnClusterJoined(TransactionResult* pRes);

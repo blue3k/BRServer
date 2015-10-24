@@ -72,8 +72,6 @@ namespace ConspiracyGameInstanceServer
 		typedef SortedMap<PlayerID,GamePlayer*>
 				GamePlayerUIDMap;
 
-		const int MAX_CHARACTER = 8;
-
 
 	private:
 
@@ -117,6 +115,8 @@ namespace ConspiracyGameInstanceServer
 		// Number of bot
 		BRCLASS_ATTRIBUTE(UINT, NumBot);
 
+		BRCLASS_ATTRIBUTE(UINT, RoleRequestSeer);
+		BRCLASS_ATTRIBUTE(UINT, RoleRequestWerewolf);
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//

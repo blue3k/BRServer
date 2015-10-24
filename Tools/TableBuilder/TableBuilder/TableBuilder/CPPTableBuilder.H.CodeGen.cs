@@ -28,7 +28,7 @@ namespace TableBuilder
             // Declare enum class method
             NewLine(1);
             WriteStatement("private:", -1);
-            OpenSection("class", "EnumMap : public std::tr1::unordered_map<std::string, Enum>");
+            OpenSection("class", "EnumMap : public std::unordered_map<std::string, Enum>");
             WriteStatement("public:", -1);
             WriteStatement("EnumMap();");
             CloseSection();

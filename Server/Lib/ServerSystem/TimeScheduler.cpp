@@ -42,9 +42,7 @@ namespace Svr {
 
 	void TimerAction::SetNextTickTime(UINT32 nextTickTime)
 	{
-		//Assert((nextTickTime - TimeData.NextTickTime) < 5000); // 
-		Assert((LONG)(nextTickTime - Util::Time.GetTimeMs()) < 3*60*1000);
-		//Assert(nextTickTime != -1);
+		Assert((LONG)(nextTickTime - Util::Time.GetTimeMs()) < 60*60*1000);
 		Assert(nextTickTime != 0);
 		
 		TimeData.NextTickTime = nextTickTime;
@@ -61,6 +59,7 @@ namespace Svr {
 		: m_FailSafeTimerTickInterval(500)
 		, m_AssertOnInvalidTickTime(false)
 		, m_WorkingThreadID(0)
+		, m_IsWriteLocked(0)
 	{
 		m_TimerTickActionGetNextTick = [&](const UINT64& keyVal, const SharedPointerT<TimerAction>& pAction) -> bool
 		{

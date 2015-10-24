@@ -40,6 +40,7 @@ namespace DB {
 		MCODE_QueryUpdateGCMKeys,
 		MCODE_QueryUpdateUserContactInfo,
 		MCODE_QueryFindPlayerByEMail,
+		MCODE_QueryFindPlayerByPlayerID,
 		MCODE_QueryGetPlayerShardID,
 	}; // enum MsgCode
 
@@ -362,6 +363,32 @@ namespace DB {
 	};
 
 	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB,QueryFindPlayerByEMail);
+
+
+
+
+	class QueryFindPlayerByPlayerID : public QueryBase
+	{
+	public:
+		INT64 PlayerID;
+		INT64 FacebookUID;
+		INT32 ShardID;
+		INT32 Result;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryFindPlayerByPlayerID,4)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_INPUT)
+			BRDB_COLUMN_ENTRY(PlayerID)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
+			BRDB_COLUMN_ENTRY(ShardID)
+			BRDB_COLUMN_ENTRY(FacebookUID)
+			BRDB_COLUMN_ENTRY(Result)
+		BRDB_END_PARAM_MAP()
+
+		BRDB_QUERYSTRING( "spFindPlayerByPlayerID", BRDB_PARAM_4 )
+	};
+
+	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryFindPlayerByPlayerID);
 
 
 

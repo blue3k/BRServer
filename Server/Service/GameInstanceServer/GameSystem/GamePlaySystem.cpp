@@ -105,7 +105,7 @@ namespace ConspiracyGameInstanceServer {
 		GetOwner().ForeachPlayer( [&](GamePlayer* pPlayer) ->HRESULT {
 			pPlayer->SetRevealedBySeer( false );
 			pPlayer->SetPlayerState( PlayerState::Playing );
-			pPlayer->SetRevealOthersCount(0);
+			pPlayer->SetReviveCount(0);
 			return S_OK;
 		});
 
@@ -116,6 +116,34 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
+	HRESULT GamePlaySystem::PlayerRoleAssigned(GamePlayer* pPlayer)
+	{
+		HRESULT hr = S_OK;
+
+		switch (pPlayer->GetRole())
+		{
+		case PlayerRole::Seer:
+			SetSeer(pPlayer->GetPlayerID());
+			break;
+			//case PlayerRole::Bodyguard:
+			//	SetBodyGuard( pPlayer->GetPlayerID() );
+			//	break;
+		case PlayerRole::Werewolf:
+			if (m_Werewolves.GetSize() > MAX_WEREWOLF)
+			{
+				Assert(!"Too many werewolfs are assigned This mustn't be happened");
+				pPlayer->SetRole(PlayerRole::Villager);
+				break;
+			}
+			m_Werewolves.push_back(pPlayer);
+			break;
+		};
+
+
+	Proc_End:
+
+		return hr;
+	}
 	
 	HRESULT GamePlaySystem::AssignRole()
 	{
@@ -128,7 +156,48 @@ namespace ConspiracyGameInstanceServer {
 
 		memset( ShufflingBuffer, 0, sizeof(ShufflingBuffer) );
 
+		// assign requested player first
+		GetOwner().ForeachPlayer([&](GamePlayer* pPlayer) ->HRESULT {
+
+			pPlayer->SetRole(PlayerRole::None);
+
+			if (pPlayer->GetRequestedRole() == PlayerRole::None)
+			{
+				return S_OK;
+			}
+
+			// Find empty slot
+			int iSlot = 0;
+			for (; iSlot < GameConst::MAX_GAMEPLAYER; iSlot++)
+			{
+				if (pPlayer->GetRequestedRole() == GamePlaySystem::stm_PlayerRoleByCount[iSlot])
+					break;
+			}
+
+			// skip errnous player
+			if (iSlot >= GameConst::MAX_GAMEPLAYER)
+			{
+				svrTrace(Trace::TRC_WARN, "Failed to find requested role, player:%0%, requested:%1%", pPlayer->GetPlayerID(), (UINT)pPlayer->GetRequestedRole());
+				return S_OK;
+			}
+
+			ShufflingBuffer[iSlot] = true;
+			pPlayer->SetRole(pPlayer->GetRequestedRole());
+
+			Assert(pPlayer->GetRole() != PlayerRole::None);
+
+			PlayerRoleAssigned(pPlayer);
+
+			return S_OK;
+		});
+
+
+		// assign remain
 		GetOwner().ForeachPlayer( [&](GamePlayer* pPlayer) ->HRESULT {
+
+			if (pPlayer->GetRole() != PlayerRole::None)
+				return S_OK;
+
 			int iRandom = (int)Util::Random.Rand(0, (int)numPlayer - 1);
 			for( int count = 0; count < GameConst::MAX_GAMEPLAYER; count++, iRandom = (iRandom+1)%numPlayer )
 			{
@@ -141,33 +210,18 @@ namespace ConspiracyGameInstanceServer {
 			}
 			Assert(pPlayer->GetRole()!=PlayerRole::None);
 
-			switch( pPlayer->GetRole() )
-			{
-			case PlayerRole::Seer:
-				SetSeer( pPlayer->GetPlayerID() );
-				break;
-			//case PlayerRole::Bodyguard:
-			//	SetBodyGuard( pPlayer->GetPlayerID() );
-			//	break;
-			case PlayerRole::Werewolf:
-				if( m_Werewolves.GetSize() > MAX_WEREWOLF )
-				{
-					Assert(!"Too many werewolfs are assigned This mustn't be happened");
-					pPlayer->SetRole(PlayerRole::Villager);
-					break;
-				}
-				m_Werewolves.push_back(pPlayer);
-				break;
-			};
+			PlayerRoleAssigned(pPlayer);
 
 			return S_OK;
 		});
+
 
 		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->RoleAssignedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetRole() );
 			return S_OK;
 		});
+
 
 		// notify other's role
 		for( int iwolf = 0; iwolf < m_Werewolves.GetSize(); iwolf++ )

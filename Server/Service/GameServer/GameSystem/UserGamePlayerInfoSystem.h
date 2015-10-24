@@ -22,6 +22,7 @@
 #include "UserSystemComponentIDs.h"
 #include "Table/conspiracy/LevelTbl.h"
 #include "Table/conspiracy/ShopTbl.h"
+#include "Table/conspiracy/OrganicTbl.h"
 
 
 namespace BR {
@@ -72,6 +73,7 @@ namespace GameServer {
 		// -------------- End data from DB
 
 		// Max stat by level
+		BRCLASS_ATTRIBUTE_READONLY(INT, MaxAutoRefillStamina);
 		BRCLASS_ATTRIBUTE_READONLY(INT, MaxStamina);
 		BRCLASS_ATTRIBUTE_READONLY(INT, MaxFriend);
 		BRCLASS_ATTRIBUTE_READONLY(INT64, MaxGameMoney);
@@ -104,11 +106,17 @@ namespace GameServer {
 		// Apply shop item
 		HRESULT ApplyItem( conspiracy::ShopTbl::ShopItem *pShopItem );
 
+		// Apply Cost
+		HRESULT CheckCost(conspiracy::OrganicTbl::OrganicItem *pCostItem);
+		HRESULT ApplyCost(conspiracy::OrganicTbl::OrganicItem *pCostItem, TransLogCategory logCategory, const char* message);
+
 		HRESULT SetLevel( UINT newLevel );
 
 		HRESULT GainExp( UINT64 expGain );
 
 		HRESULT AchivedWin( PlayerRole playedRole, bool isWon );
+
+		HRESULT ResetRankNormal(conspiracy::OrganicTbl::OrganicItem *pCostItem);
 
 		// Add stamina, negative will reduce the stamina
 		HRESULT GainStamina( INT stamina );
@@ -133,7 +141,7 @@ namespace GameServer {
 		HRESULT UpdateStatByLevel();
 		HRESULT UpdateStatByLevel(conspiracy::LevelTbl::LevelItem *pLevelInfo);
 
-
+		HRESULT SavePurchaseInfoToDB(TransactionID transID, const Array<BYTE>& purchaseID, const char* purchasePlatform, const char* purchaseToken);
 		HRESULT SavePlayerInfoToDB(TransactionID transID);
 	};
 

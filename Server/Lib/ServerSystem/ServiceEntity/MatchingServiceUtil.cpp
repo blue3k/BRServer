@@ -146,6 +146,31 @@ namespace MatchingUtil {
 	}
 
 
+	UINT GetComponentIDFromClusterID(ClusterID clusterID)
+	{
+		switch (clusterID)
+		{
+		case ClusterID::MatchingQueue_Game_4x1:		return ServerComponentID_MatchingQueueWatcherService_4x1;
+		case ClusterID::MatchingQueue_Game_4x2:		return ServerComponentID_MatchingQueueWatcherService_4x2;
+		case ClusterID::MatchingQueue_Game_4x3:		return ServerComponentID_MatchingQueueWatcherService_4x3;
+		case ClusterID::MatchingQueue_Game_4x1S:	return ServerComponentID_MatchingQueueWatcherService_4x1S;
+		case ClusterID::MatchingQueue_Game_4x1W:	return ServerComponentID_MatchingQueueWatcherService_4x1W;
+		case ClusterID::MatchingQueue_Game_8x1:		return ServerComponentID_MatchingQueueWatcherService_8x1;
+		case ClusterID::MatchingQueue_Game_8x2:		return ServerComponentID_MatchingQueueWatcherService_8x2;
+		case ClusterID::MatchingQueue_Game_8x3:		return ServerComponentID_MatchingQueueWatcherService_8x3;
+		case ClusterID::MatchingQueue_Game_8x4:		return ServerComponentID_MatchingQueueWatcherService_8x4;
+		case ClusterID::MatchingQueue_Game_8x5:		return ServerComponentID_MatchingQueueWatcherService_8x5;
+		case ClusterID::MatchingQueue_Game_8x6:		return ServerComponentID_MatchingQueueWatcherService_8x6;
+		case ClusterID::MatchingQueue_Game_8x7:		return ServerComponentID_MatchingQueueWatcherService_8x7;
+		case ClusterID::MatchingQueue_Game_8x1S:	return ServerComponentID_MatchingQueueWatcherService_8x1S;
+		case ClusterID::MatchingQueue_Game_8x1W:	return ServerComponentID_MatchingQueueWatcherService_8x1W;
+		default:
+			Assert(false);
+			svrTrace(Trace::TRC_ERROR, "Invalid cluster id for compoent %0%", clusterID);
+			return ServerComponentID_MatchingQueueWatcherService_8x1;
+		}
+	}
+
 
 };// namespace 
 };// namespace Svr 

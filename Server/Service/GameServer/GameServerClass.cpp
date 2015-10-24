@@ -44,7 +44,7 @@
 #include "Net/NetServer.h"
 #include "Net/NetServerUDP.h"
 #include "GameInstance/GameEntityManager.h"
-#include "ServerSystem/ExternalTask.h"
+
 
 #include "GameSvrConst.h"
 #include "GameServerClass.h"
@@ -102,7 +102,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 
 		GameConfigType *pGameConfig = nullptr;
-		svrChk( ::conspiracy::GameConfigTbl::FindItem( 1, pGameConfig ) );
+		svrChk( ::conspiracy::GameConfigTbl::FindItem(configPresetID, pGameConfig ) );
 
 		// set value only if it succeeded
 		m_PresetGameConfigID = configPresetID;
@@ -154,7 +154,7 @@ namespace GameServer {
 
 		svrChk( __super::InitializeServerResource() );
 
-		svrChk( conspiracy::InitializeTable() );
+		svrChk(GameTable::InitializeTable() );
 
 		svrChk( UpdateGameConfig(m_PresetGameConfigID) );
 
@@ -174,7 +174,7 @@ namespace GameServer {
 
 		svrChk( TerminateEntity() );
 
-		svrChk( conspiracy::TerminateTable() );
+		svrChk(GameTable::TerminateTable() );
 
 	Proc_End:
 
@@ -217,8 +217,6 @@ namespace GameServer {
 		svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameService ) );
 		AddComponent(pGameService);
 
-		svrChk( AddComponent<Svr::ExternalTransactionManager>() );
-
 
 		// Account DB
 		svrChk(InitializeDBCluster<DB::AccountDB>(Svr::Config::GetConfig().AccountDB));
@@ -251,7 +249,7 @@ namespace GameServer {
 
 		// Queue items
 		componentID = Svr::ServerComponentID_MatchingQueueWatcherService_4x1;
-		for( ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; matchingQueueClusterID <= ClusterID::MatchingQueue_Game_12x11; matchingQueueClusterID++, componentID++ )
+		for (ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; matchingQueueClusterID <= ClusterID::MatchingQueue_Max; matchingQueueClusterID++, componentID++)
 		{
 			Svr::MatchingQueueServiceEntity *pQueueEntity = nullptr;
 			Svr::MatchingQueueWatcherServiceEntity *pQueueWatcherEntity = nullptr;
@@ -266,7 +264,7 @@ namespace GameServer {
 
 		// Adding matching entities
 		componentID = Svr::ServerComponentID_MatchingWatcherService_4;
-		for( ClusterID matchingQueueClusterID = ClusterID::Matching_Game_4; matchingQueueClusterID <= ClusterID::Matching_Game_12; matchingQueueClusterID++, componentID++ )
+		for( ClusterID matchingQueueClusterID = ClusterID::Matching_Game_4; matchingQueueClusterID <= ClusterID::Matching_Game_8; matchingQueueClusterID++, componentID++ )
 		{
 			Svr::MatchingServiceEntity *pMatcherEntity = nullptr;
 			Svr::MatchingWatcherServiceEntity *pWatcherEntity = nullptr;

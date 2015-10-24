@@ -484,7 +484,6 @@ namespace ConspiracyGameInstanceServer {
 			return hr;
 		}
 
-		//virtual HRESULT OnUpdate()	{ return S_OK; }
 		virtual HRESULT OnLeave() override
 		{
 			HRESULT hr = S_OK;
@@ -576,10 +575,7 @@ namespace ConspiracyGameInstanceServer {
 
 				// Broadcast other player's role to me
 				GetOwner().ForeachPlayer( [&]( GamePlayer* pOtherPlayer )->HRESULT {
-					if( pOtherPlayer->GetPlayerEntityUID() != 0 )
-					{
-						pPolicy->PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pOtherPlayer->GetPlayerID(), pOtherPlayer->GetRole(), PlayerRevealedReason::GameEnd );
-					}
+					pPolicy->PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pOtherPlayer->GetPlayerID(), pOtherPlayer->GetRole(), PlayerRevealedReason::GameEnd );
 					return S_OK;
 				});
 
@@ -648,8 +644,8 @@ namespace ConspiracyGameInstanceServer {
 		GameStateID::VoteForHanging,
 	};
 
-	#define GAMESTATE_INDEX_THIRDDAY_START	12
-	#define GAMESTATE_INDEX_MAX				_countof(GameStateSystem::stm_GameStateFlow)
+	#define GAMESTATE_INDEX_THIRDDAY_START		12
+	#define GAMESTATE_INDEX_MAX					_countof(GameStateSystem::stm_GameStateFlow)
 
 
 	// Constructor 

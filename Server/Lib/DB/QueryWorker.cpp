@@ -11,7 +11,7 @@
 
 
 #include "StdAfx.h"
-#include <atldbcli.h>
+//#include <atldbcli.h>
 #include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
 #include "QueryWorker.h"

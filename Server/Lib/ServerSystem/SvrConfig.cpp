@@ -104,7 +104,31 @@ namespace Config
 
 		return true;
 	}
-	
+
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	DBSource::DBSource()
+		: XML::DOMElement("DBSource")
+	{
+	}
+
+	// for parsing
+	bool DBSource::SetAttributeValue(const std::string& name, const std::string& value)
+	{
+		if (name == "DBInstanceName") {
+			DBInstanceName = value;
+		}
+		else if (name == "DBName") {
+			DBName = value;
+		}
+		else {
+			return __super::SetAttributeValue(name, value);
+		}
+
+		return true;
+	}
+
 
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -509,6 +533,10 @@ namespace Config
 		{
 			MonitoringServer = dynamic_cast<GenericServer*>(pChild);
 		}
+		else if( pChild->GetName() == "TableDB" )
+		{
+			TableDB = dynamic_cast<DBSource*>(pChild);
+		}
 		else if( pChild->GetName() == "AccountDB" )
 		{
 			AccountDB = dynamic_cast<DBCluster*>(pChild);
@@ -565,6 +593,7 @@ namespace Config
 		{
 			RegisterElementCreator( "Servers", [&cfgData]()-> XML::DOMElement* { return &cfgData; } );
 			RegisterElementCreator( "DBInstances", []()-> XML::DOMElement* { return new DBInstance; } );
+			RegisterElementCreator( "TableDB", []()-> XML::DOMElement* { return new DBSource; } );
 			RegisterElementCreator( "AccountDB", []()-> XML::DOMElement* { return new DBCluster; } );
 			RegisterElementCreator( "LoginSessionDB", []()-> XML::DOMElement* { return new DBCluster; } );
 			RegisterElementCreator( "RankingDB", []()-> XML::DOMElement* { return new DBCluster; } );

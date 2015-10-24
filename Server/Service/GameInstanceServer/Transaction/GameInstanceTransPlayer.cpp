@@ -110,14 +110,22 @@ namespace ConspiracyGameInstanceServer {
 		{
 			svrMem(pNewPlayer = new GamePlayer(GetMyOwner(), GetPlayer()));
 			svrChk( pNewPlayer->InitializePlayer( GetMyOwner() ) );
+			pNewPlayer->SetRequestedRole(GetRequestedRole());
 
 			pMyPlayer = pNewPlayer;
 			svrChk( GetMyOwner()->AddPlayerToJoin( pNewPlayer ) );
+
+			svrTrace(Svr::TRC_INFO, "GameUID:%0% Join player %1%, NumPlayer:%2%, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
 
 			m_bIsFirstJoin = true;
 		}
 		else
 		{
+			svrTrace(Svr::TRC_INFO, "GameUID:%0% Rejoin player %1%, NumPlayer:%2%, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
+
+			// Player ID should be bigger than 10, 1~10 is used by bot
+			Assert(GetPlayer().PlayerID < 10);
+
 			// Just update name and ticket
 			pMyPlayer->SetPlayerName(GetPlayer().NickName);
 		}
@@ -421,13 +429,9 @@ namespace ConspiracyGameInstanceServer {
 		GamePlayer* pMyPlayer = nullptr;
 		GamePlayer* pTargetPlayer = nullptr;
 
-		m_RevealedPlayerID = 0;
-		m_RevealedPlayerRole = PlayerRole::None;
-
 		svrChk(__super::StartTransaction());
 
 		svrChk(GetMyPlayer(pMyPlayer));
-		svrChk(GetMyOwner()->FindPlayer(GetTargetPlayerID(), pTargetPlayer));
 
 		if (GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState() != GameStateID::MorningDebate)
 			svrErrClose(E_GAME_INVALID_GAMESTATE);
@@ -435,13 +439,14 @@ namespace ConspiracyGameInstanceServer {
 		if (pMyPlayer->GetPlayerState() != PlayerState::Ghost)
 			svrErrClose(E_GAME_INVALID_PLAYER_STATE);
 
-		if (pMyPlayer->GetRevealOthersCount() > 0)
-			svrErrClose(E_GAME_MAX_TRY);
+		for (UINT iTargetPlayer = 0; iTargetPlayer < GetTargetPlayerID().GetSize(); iTargetPlayer++)
+		{
+			svrChk(GetMyOwner()->FindPlayer(GetTargetPlayerID()[iTargetPlayer], pTargetPlayer));
 
-		pMyPlayer->SetRevealOthersCount(pMyPlayer->GetRevealOthersCount()+1);
+			m_RevealedPlayerID.push_back(pTargetPlayer->GetPlayerID());
+			m_RevealedPlayerRole.push_back(pTargetPlayer->GetRole());
+		}
 
-		m_RevealedPlayerID = pTargetPlayer->GetPlayerID();
-		m_RevealedPlayerRole = pTargetPlayer->GetRole();
 
 	Proc_End:
 
@@ -464,6 +469,9 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk(GetMyPlayer(pMyPlayer));
 
+		if (pMyPlayer->GetReviveCount() > 0)
+			svrErrClose(E_GAME_MAX_TRY);
+
 		if (GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState() != GameStateID::MorningDebate)
 			svrErrClose(E_GAME_INVALID_GAMESTATE);
 
@@ -471,6 +479,8 @@ namespace ConspiracyGameInstanceServer {
 			svrErrClose(E_GAME_INVALID_PLAYER_STATE);
 
 		svrChkClose(GetMyOwner()->GetComponent<GamePlaySystem>()->RevivePlayer(pMyPlayer));
+
+		pMyPlayer->SetReviveCount(pMyPlayer->GetReviveCount() + 1);
 
 	Proc_End:
 

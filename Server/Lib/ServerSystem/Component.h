@@ -204,6 +204,10 @@ namespace Svr{
 			return hr;
 		}
 
+
+		virtual void OnAddComponent( Component* newComponent)
+		{}
+
 		template< class ComponentType >
 		HRESULT AddComponent( ComponentType* &newComponent )
 		{
@@ -218,6 +222,9 @@ namespace Svr{
 			}
 
 			m_Components[newComponent->GetComponentID()] = newComponent;
+
+			OnAddComponent(newComponent);
+
 			newComponent = nullptr;
 
 			return S_OK;

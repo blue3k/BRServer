@@ -101,27 +101,6 @@ namespace GameServer {
 		
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
 
-		
-		// Initialize all cluster entities which is not initialized by ClusterManagerServiceEntity
-
-		//// Queue items
-		//componentID = Svr::ServerComponentID_MatchingQueueWatcherService_4x1;
-		//for( ClusterID matchingQueueClusterID = ClusterID::MatchingQueue_Game_4x1; matchingQueueClusterID <= ClusterID::MatchingQueue_Game_12x11; matchingQueueClusterID++, componentID++ )
-		//{
-		//	svrChk( Svr::GetServerComponent<Svr::MatchingQueueWatcherServiceEntity>(componentID)->StartInitializeTransaction() );
-		//}
-
-
-		//// Adding matching entities
-		//componentID = Svr::ServerComponentID_MatchingWatcherService_4;
-		//for( ClusterID matchingQueueClusterID = ClusterID::Matching_Game_4; matchingQueueClusterID <= ClusterID::Matching_Game_12; matchingQueueClusterID++, componentID++ )
-		//{
-		//	svrChk( Svr::GetServerComponent<Svr::MatchingWatcherServiceEntity>(componentID)->StartInitializeTransaction() );
-		//}
-
-		//svrChk( Svr::GetServerComponent<Svr::GamePartyManagerWatcherServiceEntity>()->StartInitializeTransaction() );
-
-
 
 	Proc_End:
 

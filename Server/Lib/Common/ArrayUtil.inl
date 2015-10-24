@@ -43,7 +43,7 @@ void Array<DataType>::SetBuffPtr( size_t AllocatedSize, DataType *pDataPtr )
 	if (m_ConserveDataOnResize && m_pDataPtr != pDataPtr)
 	{
 		for( size_t iData=0; iData < m_Size; iData++ )
-			pDataPtr[iData] = m_pDataPtr[iData];
+			pDataPtr[iData] = std::forward<DataType>(m_pDataPtr[iData]);
 	}
 	m_pDataPtr = pDataPtr;
 }
@@ -140,6 +140,25 @@ inline HRESULT Array<DataType>::push_back( const DataType& NewData )
 	Assert( GetSize() <  GetAllocatedSize() );
 
 	m_pDataPtr[m_Size] = NewData;
+	m_Size++;
+
+	return hr;
+}
+
+// push_back
+template< class DataType >
+inline HRESULT Array<DataType>::push_back( DataType&& NewData )
+{
+	HRESULT hr = S_OK;
+	if( GetSize() ==  GetAllocatedSize() )
+	{
+		hr = IncreaseSize();
+		if( FAILED(hr) ) return hr;
+	}
+
+	Assert( GetSize() <  GetAllocatedSize() );
+
+	m_pDataPtr[m_Size] = std::forward<DataType>(NewData);
 	m_Size++;
 
 	return hr;

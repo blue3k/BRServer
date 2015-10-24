@@ -3,200 +3,143 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MySql.Data.MySqlClient;
+using System.Text;
 
-
-namespace BRWebUtil
+namespace BR.DB
 {
     
-    public class PlayerInfo
-    {
-        public string Name { get; set; }
-        public UInt64 UID { get; set; }
-        public uint NumCounters { get; set; }
-    }
-
-    public class GameLogInfo
-    {
-        public string Name { get; set; }
-        public UInt64 UID { get; set; }
-        public uint NumCounters { get; set; }
-    }
-
-
     public class DBConnection : IDisposable
     {
-        MySqlConnection m_Connection;
+        MySqlConnection m_SqlConnection;
+        public MySqlConnection SqlConnection { get {return m_SqlConnection;} }
 
         public DBConnection( MySqlConnection conn )
         {
-            m_Connection = conn;
+            m_SqlConnection = conn;
+        }
+
+        public virtual void OnDispose()
+        {
+
         }
 
         public void Dispose()
         {
-            if (m_Connection != null)
-                m_Connection.Dispose();
-            m_Connection = null;
+            OnDispose();
 
+            if (m_SqlConnection != null)
+                m_SqlConnection.Dispose();
+            m_SqlConnection = null;
         }
 
-        PlayerInfo ReadPlayerInfo(MySqlDataReader reader)
-        {
-            var playerInfo = new PlayerInfo();
-            var playerInfoType = playerInfo.GetType();
 
+        public bool DropTable(string tableName)
+        {
+            if (m_SqlConnection == null) return false;
+
+            try
+            {
+                using (var cmd = new MySqlCommand())
+                {
+                    cmd.Connection = m_SqlConnection;
+                    cmd.CommandText = string.Format("Drop Table {0};", tableName);
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch(Exception exp)
+            {
+                System.Diagnostics.Debug.Print(exp.Message);
+            }
+
+            return true;
+        }
+
+        static public string GetDBType(Type type)
+        {
+            switch (type.Name)
+            {
+                case "Boolean": return "bit";
+                case "String": return "varchar(256)";
+                case "int": return "int";
+                case "UInt64": return "bigint";
+                case "Int32": return "int";
+                case "Int64": return "bigint";
+                case "long": return "bigint";
+                default:
+                    System.Diagnostics.Debug.Assert(type.IsEnum);
+                    return "int";
+            }
+
+            //return "int";
+        }
+
+        public bool CreateTable(string tableName, string keyElementName, Type tableType)
+        {
+            if (SqlConnection == null) return false;
+            if (tableType == null) return false;
+
+            DropTable(tableName);
+
+            // create table query
+            StringBuilder queryString = new StringBuilder();
+            queryString.AppendFormat("Create Table {0} (", tableName);
+            string elementPostfix = "";
+
+            var properties = tableType.GetProperties();
+            foreach (var property in properties)
+            {
+                if (!property.CanRead) continue;
+                queryString.AppendFormat("{0} {1} {2} not null", elementPostfix, property.Name, GetDBType(property.PropertyType));
+                elementPostfix = ", ";
+            }
+
+            if (keyElementName != null)
+            {
+                queryString.AppendFormat("{0} PRIMARY KEY (`{1}`)", elementPostfix, keyElementName);
+            }
+
+            queryString.AppendFormat(");", tableName);
+
+            using (var cmd = new MySqlCommand())
+            {
+                cmd.Connection = SqlConnection;
+                cmd.CommandText = queryString.ToString();
+                cmd.Prepare();
+
+                var reader = cmd.ExecuteNonQuery();
+            }
+
+            return true;
+        }
+
+        public void ReadRowProperties(object dataObject, MySqlDataReader reader)
+        {
+            Type instanceType = dataObject.GetType();
             for (int iField = 0; iField < reader.FieldCount; iField++)
             {
                 var fieldName = reader.GetName(iField);
-                var property = playerInfoType.GetProperty(fieldName);
+                //var fieldType = reader.GetFieldType(iField);
+                var property = instanceType.GetProperty(fieldName);
                 if (property == null)
                     continue;
 
-                switch (property.GetType().Name)
-                {
-                    case "string":
-                        property.SetValue(playerInfo, reader.GetFieldValue<string>(iField));
-                        break;
-                    case "Int32":
-                        property.SetValue(playerInfo, reader.GetFieldValue<Int32>(iField));
-                        break;
-                    case "UInt32":
-                        property.SetValue(playerInfo, reader.GetFieldValue<UInt32>(iField));
-                        break;
-                    case "Int64":
-                        property.SetValue(playerInfo, reader.GetFieldValue<Int64>(iField));
-                        break;
-                    case "UInt64":
-                        property.SetValue(playerInfo, reader.GetFieldValue<UInt64>(iField));
-                        break;
-                    case "Single":
-                        property.SetValue(playerInfo, reader.GetFieldValue<float>(iField));
-                        break;
-                    case "DateTime":
-                        property.SetValue(playerInfo, reader.GetFieldValue<DateTime>(iField));
-                        break;
-                    default:
-                        throw new Exception("Unhandled datatype: " + reader.GetFieldType(iField));
-                }
+                var value = reader.GetValue(iField);
+                property.SetValue(dataObject, Convert.ChangeType(value, property.PropertyType));
             }
-
-            return playerInfo;
-        }
-
-        GameLogInfo ReadGameLog(MySqlDataReader reader)
-        {
-            var logInfo = new GameLogInfo();
-            var logInfoType = logInfo.GetType();
-
-            for (int iField = 0; iField < reader.FieldCount; iField++)
-            {
-                var fieldName = reader.GetName(iField);
-                var property = logInfoType.GetProperty(fieldName);
-                if (property == null)
-                    continue;
-
-                switch (property.GetType().Name)
-                {
-                    case "string":
-                        property.SetValue(logInfo, reader.GetFieldValue<string>(iField));
-                        break;
-                    case "Int32":
-                        property.SetValue(logInfo, reader.GetFieldValue<Int32>(iField));
-                        break;
-                    case "UInt32":
-                        property.SetValue(logInfo, reader.GetFieldValue<UInt32>(iField));
-                        break;
-                    case "Int64":
-                        property.SetValue(logInfo, reader.GetFieldValue<Int64>(iField));
-                        break;
-                    case "UInt64":
-                        property.SetValue(logInfo, reader.GetFieldValue<UInt64>(iField));
-                        break;
-                    case "Single":
-                        property.SetValue(logInfo, reader.GetFieldValue<float>(iField));
-                        break;
-                    case "DateTime":
-                        property.SetValue(logInfo, reader.GetFieldValue<DateTime>(iField));
-                        break;
-                    default:
-                        throw new Exception("Unhandled datatype: " + reader.GetFieldType(iField));
-                }
-            }
-
-            return logInfo;
-        }
-
-        public PlayerInfo QueryFindPlayer( UInt64 playerID )
-        {
-            if (m_Connection == null) return null;
-
-            using(var cmd = new MySqlCommand())
-            {
-                cmd.Connection = m_Connection;
-                cmd.CommandText = "select * from tbluser where PlayerID = @inPlayerID";
-                cmd.Prepare();
-
-                cmd.Parameters.AddWithValue("@inPlayerID", playerID);
-                var reader = cmd.ExecuteReader();
-                if (reader.NextResult())
-                {
-                    return ReadPlayerInfo(reader);
-                }
-            }
-
-            return null;
-        }
-
-        public List<PlayerInfo> QueryFindPlayers(string pattern)
-        {
-            if (m_Connection == null) return null;
-
-            var playerInfoList = new List<PlayerInfo>();
-            using (var cmd = new MySqlCommand())
-            {
-                cmd.Connection = m_Connection;
-                cmd.CommandText = "select * from tbluser where PlayerID like @inPattern";
-                cmd.Prepare();
-
-                cmd.Parameters.AddWithValue("@inPattern", pattern);
-                var reader = cmd.ExecuteReader();
-                if (reader.NextResult())
-                {
-                    playerInfoList.Add(ReadPlayerInfo(reader));
-                }
-            }
-
-            return playerInfoList;
-        }
-
-        public List<GameLogInfo> QueryGameLogs(UInt64 playerID, DateTime from, DateTime to)
-        {
-            if (m_Connection == null) return null;
-
-            var logInfoList = new List<GameLogInfo>();
-            using (var cmd = new MySqlCommand())
-            {
-                cmd.Connection = m_Connection;
-                cmd.CommandText = "select * from vgametransaction where PlayerID like @inPattern";
-                cmd.Prepare();
-
-                cmd.Parameters.AddWithValue("@inPlayerID", playerID);
-                var reader = cmd.ExecuteReader();
-                if (reader.NextResult())
-                {
-                    logInfoList.Add( ReadGameLog(reader));
-                }
-            }
-
-            return logInfoList;
         }
 
     }
 
 
-    public class DBConnectionPool
+    public class ConnectionPool
     {
-        public string ConnectionString { get; set; }
+        public string ConnectionString { get; private set; }
+
+        public ConnectionPool(string connectionString)
+        {
+            ConnectionString = connectionString;
+        }
 
         public DBConnection GetConnection()
         {

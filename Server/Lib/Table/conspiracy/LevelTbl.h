@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2014 The Braves Co.
+// CopyRight (c) 2015 The Braves Co.
 // 
 // Author : Generated
 // 
@@ -11,7 +11,6 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/BRXML.h"
 
 
 
@@ -22,18 +21,14 @@ namespace conspiracy
  	public:
 
 		// LevelItem structure defition
-		class LevelItem: public BR::XML::DOMElement
+		struct LevelItem
 		{
- 		public:
-			int	Level;
+ 			int	Level;
 			int	RequiredExpTotal;
 
-			LevelItem();
-			bool SetAttributeValue( const std::string& name, const std::string& value ) override;
-			void AddChild( DOMElement *pChild ) override;
-		}; // class LevelItem: public BR::XML::DOMElement
+		}; // struct LevelItem
 
-		typedef std::tr1::unordered_map<int, LevelItem*> TableMap;
+		typedef std::unordered_map<int, LevelItem*> TableMap;
 		typedef TableMap::iterator TableMapItr;
 		static TableMap m_TableMap;
 		static LevelTbl m_Instance;
@@ -41,7 +36,7 @@ namespace conspiracy
 
 
 		// declare member function
-		static HRESULT LoadTable( const char *strFileName );
+		static HRESULT LoadTable( const std::list<LevelItem>& rowList );
 		static HRESULT ClearTable();
 
 		static HRESULT FindItem( const int& Key, LevelItem*& pRow);

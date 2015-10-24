@@ -47,7 +47,7 @@
 #include "Net/NetServerUDP.h"
 #include "ServerSystem/EntityManager.h"
 #include "GameInstance/GameInstanceEntity.h"
-#include "ServerSystem/ExternalTask.h"
+
 
 #include "ConspiracyGameInstanceSvrConst.h"
 #include "ConspiracyGameInstanceServerClass.h"
@@ -146,7 +146,7 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk( __super::InitializeServerResource() );
 
-		svrChk( conspiracy::InitializeTable() );
+		svrChk(GameTable::InitializeTable() );
 
 		svrChk( InitializeEntity( EntityID(EntityFaculty::Server,0) ) );
 
@@ -164,7 +164,7 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk( TerminateEntity() );
 
-		svrChk( conspiracy::TerminateTable() );
+		svrChk(GameTable::TerminateTable() );
 
 	Proc_End:
 

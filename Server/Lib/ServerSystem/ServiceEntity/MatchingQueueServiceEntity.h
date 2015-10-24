@@ -47,7 +47,7 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class MatchingQueueServiceEntity : public RingClusterServiceEntity
+	class MatchingQueueServiceEntity : public RingClusterServiceEntity, public IServerComponent
 	{
 	public:
 
@@ -182,8 +182,6 @@ namespace Svr {
 	class MatchingQueueWatcherServiceEntity : public RingClusterServiceEntity, public IServerComponent
 	{
 	public:
-
-		enum { ComponentID = ServerComponentID_MatchingQueueWatcherService_8x1 };
 
 	public:
 

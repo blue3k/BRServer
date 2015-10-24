@@ -1147,7 +1147,6 @@ AC_SUBST([am__tar])
 AC_SUBST([am__untar])
 ]) # _AM_PROG_TAR
 
-m4_include([Tools/config/ac_compare_version.m4])
 m4_include([Tools/config/ac_compile_warnings.m4])
 m4_include([Tools/config/ac_define_dir.m4])
 m4_include([Tools/config/ax_boost_base.m4])

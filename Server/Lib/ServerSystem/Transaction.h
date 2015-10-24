@@ -96,6 +96,9 @@ namespace Svr {
 		// Transaction heart bit time, ms
 		ULONG				m_tHeartBitTimeout;
 
+		// Transaction start time
+		ULONG				m_TransactionStartTime;
+
 		// Timer
 		Util::TimeStampTimer m_Timer;
 
@@ -143,6 +146,8 @@ namespace Svr {
 
 		TimerAction* GetTimerAction()					{ return (TimerAction*)m_TimerAction; }
 		void SetTimerAction(TimerAction* src);
+
+		ULONG GetTransactionStartTime()					{ return m_TransactionStartTime;  }
 
 		ULONG GetNextTickTime()							{ return std::min(GetHeartBitTimeout(), GetTimerExpireTime()); }
 

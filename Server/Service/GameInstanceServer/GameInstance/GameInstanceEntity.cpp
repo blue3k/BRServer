@@ -104,7 +104,7 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_OK;
 
 		conspiracy::GameConfigTbl::GameConfigItem *pGameConfig = nullptr;
-		svrChk( conspiracy::GameConfigTbl::FindItem( 1, pGameConfig ) );
+		svrChk( conspiracy::GameConfigTbl::FindItem(configPresetID, pGameConfig ) );
 
 		// set value only if it succeeded
 		m_PresetGameConfigID = configPresetID;
@@ -171,7 +171,7 @@ namespace ConspiracyGameInstanceServer {
 			return hr;
 
 		// Update Players
-		m_GamePlayerByUID.ForeachOrder(0, MAX_CHARACTER, [&CurTime, &playerCount](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
+		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&CurTime, &playerCount](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
 		{
 			if (pPlayer->GetServerEntity() != nullptr)
 				playerCount++;
@@ -238,7 +238,7 @@ namespace ConspiracyGameInstanceServer {
 	// foreach game player
 	HRESULT GameInstanceEntity::ForeachPlayer( std::function<HRESULT(GamePlayer* pPlayer)> func )
 	{
-		m_GamePlayerByUID.ForeachOrder(0, MAX_CHARACTER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
+		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
 		{
 			HRESULT hrRes = func( pPlayer );
 			if( FAILED(hrRes) )
@@ -252,7 +252,7 @@ namespace ConspiracyGameInstanceServer {
 	// foreach game player with Game policy
 	HRESULT GameInstanceEntity::ForeachPlayerGameServer( std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func )
 	{
-		m_GamePlayerByUID.ForeachOrder(0, MAX_CHARACTER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
+		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
 		{
 			if( pGamePlayer == nullptr )
 				return true;
@@ -275,7 +275,7 @@ namespace ConspiracyGameInstanceServer {
 	// foreach game player with Game policy
 	HRESULT GameInstanceEntity::ForeachPlayerSvrGameInstance( std::function<HRESULT(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func )
 	{
-		m_GamePlayerByUID.ForeachOrder(0, MAX_CHARACTER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
+		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
 		{
 			if( pGamePlayer == nullptr )
 				return true;
@@ -322,6 +322,8 @@ namespace ConspiracyGameInstanceServer {
 	// Close Game Instance
 	void GameInstanceEntity::CloseGameInstance()
 	{
+		svrTrace(Trace::TRC_TRACE, "CloseGameInstance:%0%", GetEntityUID());
+
 		LeaveAllPlayerForGameDelete();
 
 		m_AcceptJoin = false;
@@ -370,7 +372,7 @@ namespace ConspiracyGameInstanceServer {
 		memset(m_PlayerCharacter, 0xFF, sizeof(m_PlayerCharacter));
 
 		// randomize player character
-		for (UINT character = 0; character < (UINT)MAX_CHARACTER; character++)
+		for (INT character = 0; character < GameConst::MAX_GAMEPLAYER; character++)
 		{
 			UINT player = (UINT)Util::Random.Rand(m_MaxPlayer);
 			for (UINT iPlayer = 0; iPlayer < m_MaxPlayer; iPlayer++)
@@ -399,6 +401,10 @@ namespace ConspiracyGameInstanceServer {
 			pPlayer->SetIsBot(true);
 			svrChk(AddPlayerToJoin(pPlayer));
 		}
+
+
+		m_RoleRequestSeer = 0;
+		m_RoleRequestWerewolf = 0;
 
 
 	Proc_End:
@@ -439,7 +445,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Register new player to join
-	HRESULT GameInstanceEntity::AddPlayerToJoin( GamePlayer* &pPlayer )
+	HRESULT GameInstanceEntity::AddPlayerToJoin(GamePlayer* &pPlayer)
 	{
 		HRESULT hr = S_OK;
 		GamePlayer* pFound = nullptr;
@@ -451,6 +457,23 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		m_TotalJoinedPlayer++;
+
+		// Check role availability
+		if (pPlayer->GetRequestedRole() != PlayerRole::None)
+		{
+			switch (pPlayer->GetRequestedRole())
+			{
+			case PlayerRole::Seer:
+				if (m_RoleRequestSeer == 0) m_RoleRequestSeer++;
+				else                        svrErr(E_GAME_INVALID_ROLE);
+				break;
+			case PlayerRole::Werewolf:
+				if (m_RoleRequestWerewolf < 2) m_RoleRequestWerewolf++;
+				else                           svrErr(E_GAME_INVALID_ROLE);
+				break;
+			}
+		}
+
 
 		svrChk(m_GamePlayerByUID.Insert(pPlayer->GetPlayerID(), pPlayer));
 
@@ -497,6 +520,8 @@ namespace ConspiracyGameInstanceServer {
 
 	Proc_End:
 
+		svrTrace(Trace::TRC_TRACE, "LeavePlayer, remain:%0%", m_GamePlayerByUID.GetItemCount());
+
 		if (m_GamePlayerByUID.GetItemCount() == 0) // if no player remain
 		{
 			SetGameKillTimer( Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER );
@@ -520,7 +545,7 @@ namespace ConspiracyGameInstanceServer {
 	// Leave all player
 	HRESULT GameInstanceEntity::LeaveAllPlayerForGameDelete()
 	{
-		m_GamePlayerByUID.ForeachOrder(0, MAX_CHARACTER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
+		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
 		{
 			auto pPolicy = pPlayer->GetPolicy<Policy::ISvrPolicyGameInstance>();
 			if (pPolicy != nullptr && pPlayer->GetPlayerEntityUID() != 0)

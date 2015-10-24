@@ -112,8 +112,6 @@ namespace TableBuilder
             // Build type definition.
             foreach (KeyValuePair<string, string> kvp in _nameMap)
             {
-                
-
                 Type typeInfo = GetTypeInfo(kvp.Key);
 
                 if (typeInfo.IsEnum)

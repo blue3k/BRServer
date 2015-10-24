@@ -57,6 +57,7 @@ namespace Svr {
 		, m_bIsDirectProcess(false)
 		, m_TimerAction(nullptr)
 		, m_CurrentHistoryIdx(0)
+		, m_TransactionStartTime(0)
 	{
 		memset(m_History, 0, sizeof(m_History));
 	}
@@ -104,6 +105,8 @@ namespace Svr {
 
 		if( GetState() != Transaction::STATE_WAITSTART )
 			svrErr( E_SVR_TRANSACTION_INVALID_STATE );
+
+		m_TransactionStartTime = Util::Time.GetTimeMs();
 
 		m_state = STATE_STARTED;
 

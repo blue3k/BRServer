@@ -190,6 +190,15 @@ namespace Svr {
 	};
 
 
+	MatchingServiceEntity::ReservedMatchingItem& MatchingServiceEntity::ReservedMatchingItem::operator = (const ReservedMatchingItem& src)
+	{
+		MatchingTicket = src.MatchingTicket;
+		MemberCount = src.MemberCount;
+		RequestedRole = src.RequestedRole;
+
+		return *this;
+	}
+
 	MatchingServiceEntity::ReservedMatchingItem& MatchingServiceEntity::ReservedMatchingItem::operator = (ReservedMatchingItem&& src)
 	{
 		MatchingTicket = src.MatchingTicket;
@@ -203,7 +212,17 @@ namespace Svr {
 		return *this;
 	}
 
+
 	const MatchingServiceEntity::MatchingItem MatchingServiceEntity::MatchingItem::NullValue;
+
+	MatchingServiceEntity::MatchingItem& MatchingServiceEntity::MatchingItem::operator = (const MatchingItem& src)
+	{
+		MatchingTicket = src.MatchingTicket;
+		MemberCount = src.MemberCount;
+		RequestedRole = src.RequestedRole;
+
+		return *this;
+	}
 
 	MatchingServiceEntity::MatchingItem& MatchingServiceEntity::MatchingItem::operator = (MatchingItem&& src)
 	{
@@ -300,7 +319,7 @@ namespace Svr {
 		item.pQueue = pQueuePtr;
 		item.RequestRole = requestRole;
 
-		svrChk(m_pQueuePtr.push_back(item));
+		svrChk(m_pQueuePtr.push_back(std::forward<QueueItem>(item)));
 
 	Proc_End:
 
@@ -827,6 +846,10 @@ namespace Svr {
 
 		hr = __super::TickUpdate(pAction);
 		if (hr == S_FALSE)
+			return hr;
+
+		// don't update query when the server isn't running
+		if (BrServer::GetInstance()->GetServerState() != Svr::ServerState::RUNNING)
 			return hr;
 
 		if (GetPendingTransactionCount() == 0 && GetActiveTransactionCount() < (m_MatchingMemberCount-1))

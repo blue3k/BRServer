@@ -106,6 +106,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TableBuilder\CPPDBTableBuilder.CPP.CodeGen.cs" />
+    <Compile Include="TableBuilder\CPPDBTableBuilder.CPP.FuncImpl.cs" />
+    <Compile Include="TableBuilder\CPPDBTableBuilder.cs" />
+    <Compile Include="TableBuilder\CPPDBTableBuilder.H.CodeGen.cs" />
     <Compile Include="TableBuilder\CPPTableBuilder.CPP.CodeGen.cs" />
     <Compile Include="TableBuilder\CPPTableBuilder.CPP.FuncImpl.cs" />
     <Compile Include="TableBuilder\CPPTableBuilder.cs" />

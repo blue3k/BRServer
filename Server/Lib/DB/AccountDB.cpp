@@ -300,6 +300,33 @@ namespace DB {
 		return hr;
 	}
 
+	HRESULT AccountDB::FindPlayerByPlayerID(BR::TransactionID Sender, AccountID accountID)
+	{
+		HRESULT hr = S_OK;
+		QueryFindPlayerByPlayerIDCmd *pQuery = nullptr;
+
+		dbMem(pQuery = new QueryFindPlayerByPlayerIDCmd);
+
+		pQuery->SetTransaction(Sender);
+
+		pQuery->PlayerID = accountID;
+		pQuery->ShardID = 0;
+		pQuery->FacebookUID = 0;
+
+		pQuery->Result = 0;
+
+		dbChk(RequestQuery(pQuery));
+
+		pQuery = nullptr;
+
+	Proc_End:
+
+		if (FAILED(hr))
+			Util::SafeRelease(pQuery);
+
+		return hr;
+	}
+
 
 	// Player shard id
 	HRESULT AccountDB::GetPlayerShardID(BR::TransactionID Sender, AccountID accountID)

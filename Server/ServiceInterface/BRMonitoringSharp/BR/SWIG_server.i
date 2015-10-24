@@ -27,6 +27,7 @@
 %include "carrays.i"
 %include "stdint.i"
 %include "stl.i"
+%include "cwstring.i"
 %include "windows.i"
 
 
@@ -64,8 +65,8 @@
 
 %define INOUT_VALUE(CTYPE, CSTYPE)
 %typemap(cstype)	CTYPE "CSTYPE"
-%typemap(csin,pre="fixed(CSTYPE* temp$csinput = &$csinput)")    
-					CTYPE "(global::System.IntPtr)temp$csinput"
+%typemap(csin,pre="CSTYPE* temp$csinput = &$csinput;")    
+					CTYPE "*temp$csinput"
 %typemap(csout, excode=SWIGEXCODE) 
 					CTYPE "{ return $imcall; }"
 %typemap(ctype)		CTYPE "CTYPE"
@@ -123,6 +124,8 @@
 
 INOUT_CLASS_REFERENCE(BR::SharedReferenceManager*,SharedReferenceManager)
 INOUT_VALUE(INT64,System.Int64)
+INOUT_VALUE(uintptr_t,System.UInt64)
+INOUT_VALUE(intptr_t,System.Int64)
 INOUT_VALUE(BR::EntityFaculty,System.UInt32)
 
 

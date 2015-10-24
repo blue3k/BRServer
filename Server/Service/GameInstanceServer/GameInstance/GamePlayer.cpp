@@ -59,6 +59,7 @@ namespace ConspiracyGameInstanceServer {
 		, m_RevealedBySeer(false)
 		, m_Character(0)
 		, m_IsBot(false)
+		, m_RequestedRole(PlayerRole::None)
 	{
 	}
 
@@ -81,7 +82,7 @@ namespace ConspiracyGameInstanceServer {
 		SetRole( PlayerRole::None );
 
 		m_RevealedBySeer = false;
-		m_RevealOthersCount = 0;
+		m_ReviveCount = 0;
 
 
 	Proc_End:

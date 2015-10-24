@@ -209,7 +209,9 @@ namespace Svr {
 	public:
 		PerformanceCounterAveragePerSec(const char* counterName)
 			: PerformanceCounterRaw<DataType>(counterName, CountingTypes::AveragePerSec)
+			, m_TickIndex(0)
 		{
+			memset(m_Values, 0, sizeof(m_Values));
 		}
 
 
@@ -275,7 +277,9 @@ namespace Svr {
 		PerformanceCounterTickPerSec(const char* counterName)
 			: PerformanceCounterRaw<DataType>(counterName, CountingTypes::TickPerSec)
 			, m_TickIndex(0)
+			, m_TickCountStartTime(0)
 		{
+			memset(m_Values, 0, sizeof(m_Values));
 		}
 
 

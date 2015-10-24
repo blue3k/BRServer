@@ -97,6 +97,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::JoinGameRes joinRes;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
 		if( FAILED(pRes->GetHRESULT()) )
 		{
@@ -106,28 +107,47 @@ namespace GameServer {
 
 		svrChk( joinRes.ParseIMsg( pMsgRes->GetMessage() ) );
 
+		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
+
 		GetMyOwner()->SetGameInsUID( joinRes.GetRouteContext().From );
 
-		GetMyOwner()->GetISvrGamePolicy()->GameMatchedS2CEvt( GetGameInsUID(), joinRes.GetTimeStamp(), joinRes.GetGameState(), joinRes.GetDay(), joinRes.GetMaxPlayer(), 
-			joinRes.GetPlayerIndex(), joinRes.GetPlayerCharacter(), joinRes.GetRole(), joinRes.GetDead(), 
-			joinRes.GetChatHistoryData(), joinRes.GetGameLogData() );
+
+		// Consume cost
+		if (GetRequestedRole() != PlayerRole::None)
+		{
+			conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
+			auto pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
+			GetMyOwner()->UpdateGamePlayer();
+
+			// Apply regardless of its error
+			if (SUCCEEDED(conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::RoleChoice, pCostItem)))
+			{
+				pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "RoleSelection");
+			}
+		}
 
 		m_WaitingQueires = 0;
 		if( joinRes.GetIsNewJoin() && GetMyServer()->GetPresetGameConfig() != nullptr )
 		{
-			UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
-
 			GetMyOwner()->UpdateGamePlayer();
 			GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina( -GetMyServer()->GetPresetGameConfig()->StaminaForGame );
 
-			svrChkPtr( pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>() );
-			svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateJoinGameCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(),
+			if (SUCCEEDED(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateJoinGameCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(),
 				pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetStamina(),
 				GetMyOwner()->GetIsInGame() != 0 ? 1 : 0,
 				GetMyOwner()->GetLatestActiveTime(),
-				GetMyOwner()->GetLatestUpdateTime() ) );
-			m_WaitingQueires++;
+				GetMyOwner()->GetLatestUpdateTime())))
+			{
+				m_WaitingQueires++;
+			}
 		}
+
+
+		GetMyOwner()->GetISvrGamePolicy()->GameMatchedS2CEvt(GetGameInsUID(), joinRes.GetTimeStamp(), joinRes.GetGameState(), joinRes.GetDay(), joinRes.GetMaxPlayer(),
+			joinRes.GetPlayerIndex(), joinRes.GetPlayerCharacter(), joinRes.GetRole(), joinRes.GetDead(),
+			joinRes.GetChatHistoryData(), joinRes.GetGameLogData(),
+			pPlayerInfoSystem->GetStamina(), pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetGameMoney());
+
 
 		if (GetMyOwner()->GetPartyUID() != 0)
 		{
@@ -223,7 +243,7 @@ namespace GameServer {
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.SvrID) );
 
 		svrChk( pPolicy->JoinGameCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),insUID),
-			GetMyOwner()->GetPlayerInformation(), GetMyOwner()->GetAuthTicket() ) );
+			GetMyOwner()->GetPlayerInformation(), GetMyOwner()->GetAuthTicket(), GetRequestedRole()));
 
 	Proc_End:
 

@@ -2,6 +2,7 @@
 <!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
 <Servers xmlns="http://www.TheBraves.com/ServerConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/ServerConfig ServerConfig.xsd">
   <DBInstances InstanceName="account00" ConnectionString="127.0.0.1,11000" UserID="braves" Password="dydwk12#" />
+  <DBInstances InstanceName="tabledb" ConnectionString="127.0.0.1,11000" UserID="braves" Password="dydwk12#" />
   <DBInstances InstanceName="session00" ConnectionString="127.0.0.1,11000" UserID="braves" Password="dydwk12#" />
   <DBInstances InstanceName="conspiracy00" ConnectionString="127.0.0.1,11000" UserID="braves" Password="dydwk12#" />
   <DBInstances InstanceName="ranking" ConnectionString="127.0.0.1,11000" UserID="braves" Password="dydwk12#" />
@@ -10,6 +11,8 @@
   <MonitoringServer UID="0" Name="BRMonitoring" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
 		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="1999"/>
 	</MonitoringServer>
+
+  <TableDB DBInstanceName="tabledb" DBName="dbconspiracytable" />
 
   <AccountDB ClusterType="Sharding" PartitioningCount="1">
     <DBMember DBInstanceName="account00" DBName="dbaccount" PartitioningID="0" />
@@ -24,37 +27,37 @@
   </RankingDB>
 
   <EntityServer UID="1" Name="BREntityServer1" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2000"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2000"/>
 	</EntityServer>
   <EntityServer UID="2" Name="BREntityServer2" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2001"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2001"/>
 	</EntityServer>
   <EntityServer UID="3" Name="BREntityServer3" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2002"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2002"/>
 	</EntityServer>
 
 
 
   <LoginServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2011"/>
-		<NetPublic IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="1001"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2011"/>
+		<NetPublic IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="1001"/>
 	</LoginServer>
   <LoginServer UID="12" Name="BRLoginServer02" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2012"/>
-		<NetPublic IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="1002"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2012"/>
+		<NetPublic IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="1002"/>
 	</LoginServer>
 
 	<SharedModule UID="50" Name="BRPartyManager01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2050"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2050"/>
 		<Module ModuleID="GamePartyManager" />
 	</SharedModule>
 	<SharedModule UID="51" Name="BRPartyManager02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2051"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2051"/>
 		<Module ModuleID="GamePartyManager" />
 	</SharedModule>
 
 	<SharedModule UID="52" Name="BRMatchingQueue01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2052"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2052"/>
 		<Module ModuleID="MatchingQueue_Game_4x1" />
 		<Module ModuleID="MatchingQueue_Game_4x2" />
 		<Module ModuleID="MatchingQueue_Game_8x1" />
@@ -63,7 +66,7 @@
 		<Module ModuleID="MatchingQueue_Game_8x7" />
 	</SharedModule>
 	<SharedModule UID="53" Name="BRMatchingQueue02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2053"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2053"/>
 		<Module ModuleID="MatchingQueue_Game_4x3" />
 		<Module ModuleID="MatchingQueue_Game_8x3" />
 		<Module ModuleID="MatchingQueue_Game_8x4" />
@@ -71,7 +74,7 @@
 	</SharedModule>
 
 	<SharedModule UID="56" Name="BRMatching01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
-		<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="2056"/>
+		<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="2056"/>
 		<Module ModuleID="Matching_Game_4" Parameters="usebot:true" />
 		<Module ModuleID="Matching_Game_8" Parameters="usebot:true" />
 	</SharedModule>
@@ -86,21 +89,26 @@
 		  <DBMember DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" PartitioningID="0" />
 		</GameTransactionLogDB>
 
-    <Game UID="100" Name="BRConspiracyGameServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
-			<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="10000"/>
-			<NetPublic IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="11000"/>
+		<Game UID="100" Name="BRConspiracyGameServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
+		  <ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
+      <!-- service <ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>-->
+      <ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
+			<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="10000"/>
+			<NetPublic IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="11000"/>
 		</Game>
 
 		<Game UID="101" Name="BRConspiracyGameServer02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
-			<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="10001"/>
-			<NetPublic IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="11001"/>
+		  <ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
+      <ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
+			<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="10001"/>
+			<NetPublic IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="11001"/>
 		</Game>
 
 		<GameInstance UID="200" Name="BRConspiracyGameInstanceServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
-			<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="10100"/>
+			<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="10100"/>
 		</GameInstance>
 		<GameInstance UID="201" Name="BRConspiracyGameInstanceServer02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
-			<NetPrivate IP="2602:306:83ac:a340:d1e2:1cc6:f110:84b0" Port="10101"/>
+			<NetPrivate IP="2602:306:83ac:a940:d1e2:1cc6:f110:84b0" Port="10101"/>
 		</GameInstance>
 		
 	</GameCluster>

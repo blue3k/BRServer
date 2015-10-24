@@ -5,12 +5,15 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using BR.Config;
+using BR.DB;
 using System.Net;
 using System.Net.Sockets;
-using BRWebUtil;
+using System.Runtime.InteropServices;
 
 namespace BRMonitoringWeb
 {
+  
 
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -32,30 +35,47 @@ namespace BRMonitoringWeb
             return localIP;
         }
 
-        int GetSettingInt(string name, int defaultValue = -1)
+        void AddDBCluster(BR.Config.DBCluster dbClusterConfig)
         {
-            int value = defaultValue;
-            if (!int.TryParse(System.Web.Configuration.WebConfigurationManager.AppSettings[name], out value))
-                value = defaultValue;
-            return value;
+            var cluster = DBConnectionManager.AddCluster(dbClusterConfig.ClusterName);
+
+            cluster.AddShard(0, dbClusterConfig.ConnectionString);
         }
 
-        bool GetSettingBool(string name, bool defaultValue = false)
+        void AddDBCluster(BR.Config.DBCluster[] dbClusterConfig)
         {
-            bool value = defaultValue;
-            string valueString = System.Web.Configuration.WebConfigurationManager.AppSettings[name];
-            if (string.IsNullOrEmpty(valueString)) return false;
+            if (dbClusterConfig == null || dbClusterConfig.Length == 0)
+                return;
 
-            bool.TryParse(valueString, out value);
+            var cluster = DBConnectionManager.AddCluster(dbClusterConfig[0].ClusterName);
 
-            return value;
+            int shard = 0;
+            foreach (var shardConfig in dbClusterConfig)
+            {
+                cluster.AddShard(shard, shardConfig.ConnectionString);
+                shard++;
+            }
         }
 
-        string GetSettingString(string name)
-        {
-            return System.Web.Configuration.WebConfigurationManager.AppSettings[name];
-        }
 
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr LoadLibrary(string libname);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        private static extern bool FreeLibrary(IntPtr hModule);
+
+        void DLLLoadTest()
+        {
+            IntPtr Handle = LoadLibrary("BRMonitoring");
+            if (Handle == IntPtr.Zero)
+            {
+                int errorCode = Marshal.GetLastWin32Error();
+                return;
+            }
+
+            if (Handle != IntPtr.Zero)
+                FreeLibrary(Handle);
+        }
 
         protected void Application_Start()
         {
@@ -64,18 +84,43 @@ namespace BRMonitoringWeb
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            BR.BRMonitoring.InitializeNativeSystem();
 
-            string serverAddress = LocalIPAddress();
-            uint port = (uint)GetSettingInt("MonitoringListenPort", 0);
-            BR.PerformanceCounterServer.Initialize(serverAddress, port);
+            try
+            {
+                string serverConfigPath = Server.MapPath("~/config.xml");
 
-            var monitoringDB = GetSettingString("AccountDBConnectionString");
-            DBPool.MonitoringDB.ConnectionString = monitoringDB;
+
+                if (!MonitoringConfig.LoadConfig(serverConfigPath))
+                    return;
+
+
+                string serverAddress = LocalIPAddress();
+
+                DBConnectionManager.InitializeManager();
+
+                AddDBCluster(MonitoringConfig.Instance.AccountDB);
+                AddDBCluster(MonitoringConfig.Instance.GameDB);
+                AddDBCluster(MonitoringConfig.Instance.RankingDB);
+                AddDBCluster(MonitoringConfig.Instance.TableDB);
+
+                DLLLoadTest();
+
+                BR.BRMonitoring.InitializeNativeSystem("BRManigement");
+                BR.PerformanceCounterServer.Initialize(serverAddress, (uint)MonitoringConfig.Instance.Monitoring.MonitoringListenPort);
+            }
+            catch (Exception exp)
+            {
+                System.Diagnostics.Debug.Print(exp.Message);
+                throw exp;
+            }
+
         }
+
 
         protected void Application_End()
         {
+            DBConnectionManager.TerminateManager();
+
             BR.PerformanceCounterServer.Terminate();
 
             BR.BRMonitoring.TerminateNativeSystem();

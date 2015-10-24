@@ -129,7 +129,7 @@ namespace BR
 				if( !symbol )
 				{
 					DWORD64 relativeAddress = (DWORD64)StackTrace[stackDepth] - ((DWORD64)STACKWALKER_MIN_EXE_OFFSET + MIN_EXEOFFSET);
-					sprintf_s( symbolInfo.Name, symbolInfo.MaxNameLen, "0x%P", relativeAddress );
+					sprintf_s( symbolInfo.Name, symbolInfo.MaxNameLen, "0x%p", (void*)relativeAddress );
 				}
 				defTrace( channel, "%0%", symbolInfo.Name );
 			}

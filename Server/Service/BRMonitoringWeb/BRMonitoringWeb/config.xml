@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MonitoringConfig
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.TheBraves.com config.xsd">
+
+  
+  <AccountDB ClusterName="AccountDB" ConnectionString="server=192.168.1.81;Port=21022; database=dbaccount; uid=blue3k; pwd=pious75;"></AccountDB>
+  <GameDB ClusterName="GameDB" ConnectionString="server=192.168.1.81;Port=21022; database=dbconspiracy{0:D2}; uid=blue3k; pwd=pious75;"></GameDB>
+  <RankingDB ClusterName="RankingDB" ConnectionString="server=192.168.1.81;Port=21022; database=dbconspiracyranking; uid=blue3k; pwd=pious75;"></RankingDB>
+  <TableDB ClusterName="TableDB" ConnectionString="server=192.168.1.81;Port=21022; database=dbconspiracytable; uid=blue3k; pwd=pious75;"></TableDB>
+
+  <Monitoring MonitoringListenPort="1999"></Monitoring>
+
+</MonitoringConfig>

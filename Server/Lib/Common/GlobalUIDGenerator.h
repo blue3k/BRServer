@@ -27,6 +27,13 @@ namespace BR {
 
 	class GlobalUIDGenerator
 	{
+	public:
+
+		enum { 
+			LIMIT_TIME_DIFF		= 1 << GlobalUID::BIT_ID,
+			UPDATE_TIME_DIFF	= 1 << (GlobalUID::BIT_ID-2),
+		};
+
 	private:
 		UINT m_ServerID;
 
@@ -35,6 +42,7 @@ namespace BR {
 
 		// circular counter
 		mutable SyncCounter m_CounterForID;
+		mutable SyncCounter m_GeneratorSync;
 
 	public:
 

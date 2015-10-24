@@ -95,7 +95,7 @@ namespace Svr {
 	};
 
 
-	class JoinClusterTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::JoinClusterCmd, JoinClusterTrans>
+	class JoinClusterTrans : public ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd, JoinClusterTrans>
 	{
 	private:
 		StaticArray<ServiceInformation,50> m_MemberList;

@@ -74,9 +74,6 @@ namespace ConspiracyGameInstanceServer {
 		// Game instance that this player
 		BRCLASS_ATTRIBUTE_READONLY(GameInstanceEntity*,GameOwner);
 
-		// Player disconnected Time
-		//BRCLASS_ATTRIBUTE_CONST(Util::TimeStampTimer,TimeToKick);
-		
 		// Player index in game
 		BRCLASS_ATTRIBUTE(UINT,Index);
 		BRCLASS_ATTRIBUTE(UINT,Character);
@@ -93,7 +90,7 @@ namespace ConspiracyGameInstanceServer {
 		BRCLASS_ATTRIBUTE(bool,VotedGameAdvance);
 
 		// Revealed other
-		BRCLASS_ATTRIBUTE(UINT, RevealOthersCount);
+		BRCLASS_ATTRIBUTE(UINT, ReviveCount);
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -103,7 +100,8 @@ namespace ConspiracyGameInstanceServer {
 		//BRCLASS_ATTRIBUTE(AuthTicket,AuthTicket);
 
 		// 
-		BRCLASS_ATTRIBUTE(PlayerRole,Role);
+		BRCLASS_ATTRIBUTE(PlayerRole, RequestedRole);
+		BRCLASS_ATTRIBUTE(PlayerRole, Role);
 		BRCLASS_ATTRIBUTE(UINT,Gender);
 
 		BRCLASS_ATTRIBUTE(UINT,Voted);

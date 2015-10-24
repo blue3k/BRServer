@@ -26,6 +26,7 @@ namespace Svr {
 	PerformanceCounter::PerformanceCounter(const char* counterName, DataTypes dataType, CountingTypes countingType)
 		: m_DataType(dataType)
 		, m_CountingType(countingType)
+		, m_SyncSerial(0)
 	{
 		StrUtil::StringCpy(m_CounterName, counterName);
 	}

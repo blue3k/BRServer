@@ -227,10 +227,15 @@ namespace BR {
 	// Global ID in single machine
 	union GlobalUID
 	{
+		enum {
+			BIT_SERVERID		= 8,
+			BIT_ID				= 24,
+		};
+
 		struct {
 			UINT32		Time;
-			UINT32		ServerID	: 8;
-			UINT32		ID			: 24;
+			UINT32		ServerID	: BIT_SERVERID;
+			UINT32		ID			: BIT_ID;
 		};
 		UINT64			UID;
 

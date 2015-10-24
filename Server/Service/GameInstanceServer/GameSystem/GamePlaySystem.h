@@ -94,6 +94,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT InitializeComponent();
 
 		// Assign roles
+		HRESULT PlayerRoleAssigned(GamePlayer* pPlayer);
 		HRESULT AssignRole();
 
 		// Update Villager and werewolf count

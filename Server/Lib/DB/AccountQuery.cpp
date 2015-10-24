@@ -27,5 +27,7 @@ BRDB_DEFINE_QUERY_IMPL(QueryUpdateGCMKeys);
 BRDB_DEFINE_QUERY_IMPL(QueryUpdateUserContactInfo);
 
 BRDB_DEFINE_QUERY_IMPL(QueryFindPlayerByEMail);
+BRDB_DEFINE_QUERY_IMPL(QueryFindPlayerByPlayerID);
+
 BRDB_DEFINE_QUERY_IMPL(QueryGetPlayerShardID);
 

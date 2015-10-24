@@ -297,6 +297,24 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetPolicyGame::FindPlayerByEMailCmd( const char* InPlayerEMail )
+		// Cmd: Query playerID list
+		HRESULT NetPolicyGame::FindPlayerByPlayerIDCmd( const PlayerID &InPlayerID )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::FindPlayerByPlayerIDCmd::BuildIMsg(pMsg, InPlayerID));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetPolicyGame::FindPlayerByPlayerIDCmd( const PlayerID &InPlayerID )
 		// Cmd: *Request Player Status Update
 		HRESULT NetPolicyGame::RequestPlayerStatusUpdateCmd( const Array<PlayerID>& InTargetPlayerID )
 		{
@@ -1163,6 +1181,24 @@ namespace BR
 			return hr;
 
 		}; // HRESULT NetSvrPolicyGame::FindPlayerByEMailRes( const HRESULT &InResult, const PlayerInformation &InPlayer )
+		// Cmd: Query playerID list
+		HRESULT NetSvrPolicyGame::FindPlayerByPlayerIDRes( const HRESULT &InResult, const PlayerInformation &InPlayer )
+		{
+ 			HRESULT hr = S_OK;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Game::FindPlayerByPlayerIDRes::BuildIMsg(pMsg, InResult, InPlayer));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // HRESULT NetSvrPolicyGame::FindPlayerByPlayerIDRes( const HRESULT &InResult, const PlayerInformation &InPlayer )
 		// Cmd: *Request Player Status Update
 		HRESULT NetSvrPolicyGame::RequestPlayerStatusUpdateRes( const HRESULT &InResult )
 		{
@@ -1218,13 +1254,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyGame::GetRankingListRes( const HRESULT &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 		// Cmd: Game user game play information
-		HRESULT NetSvrPolicyGame::GetUserGamePlayerInfoRes( const HRESULT &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
+		HRESULT NetSvrPolicyGame::GetUserGamePlayerInfoRes( const HRESULT &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const UINT32 &InLastUpdateTime, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Game::GetUserGamePlayerInfoRes::BuildIMsg(pMsg, InResult, InLevel, InExp, InGameMoney, InGem, InStamina, InTotalPlayed, InWinPlaySC, InWinPlaySM, InWinPlaySS, InLosePlaySC, InLosePlaySM, InLosePlaySS, InWinPlayNC, InWinPlayNM, InWinPlayNS, InLosePlayNC, InLosePlayNM, InLosePlayNS, InWeeklyWin, InWeeklyLose));
+			 protocolChk(Message::Game::GetUserGamePlayerInfoRes::BuildIMsg(pMsg, InResult, InLevel, InExp, InGameMoney, InGem, InStamina, InLastUpdateTime, InTotalPlayed, InWinPlaySC, InWinPlaySM, InWinPlaySS, InLosePlaySC, InLosePlaySM, InLosePlaySS, InWinPlayNC, InWinPlayNM, InWinPlayNS, InLosePlayNC, InLosePlayNM, InLosePlayNS, InWeeklyWin, InWeeklyLose));
 
 			 protocolChkPtr(GetConnection());
 
@@ -1234,7 +1270,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGame::GetUserGamePlayerInfoRes( const HRESULT &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
+		}; // HRESULT NetSvrPolicyGame::GetUserGamePlayerInfoRes( const HRESULT &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const UINT32 &InLastUpdateTime, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
 		// Cmd: Game game play information
 		HRESULT NetSvrPolicyGame::GetGamePlayerInfoRes( const HRESULT &InResult, const PlayerID &InPlayerID, const INT16 &InLevel, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
 		{

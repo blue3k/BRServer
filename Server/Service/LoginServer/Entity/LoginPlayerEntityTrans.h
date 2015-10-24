@@ -112,6 +112,28 @@ namespace LoginServer {
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginByFacebookRes,m_GameServerAddr,GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
 
+
+	/////////////////////////////////////////////////////////////////////////////
+	//
+	//	Login
+	//
+
+	class LoginPlayerTransCreateRandomUser : public LoginPlayerTransLoginBase<Message::Login::CreateRandomUserCmd, LoginPlayerTransCreateRandomUser>
+	{
+	private:
+
+	public:
+		LoginPlayerTransCreateRandomUser(Message::MessageData* &pIMsg);
+		virtual ~LoginPlayerTransCreateRandomUser() {}
+
+		HRESULT OnCreated(Svr::TransactionResult* &pRes);
+
+		// Start Transaction
+		virtual HRESULT StartTransaction();
+
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(CreateRandomUserRes, m_GameServerAddr, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
+	};
+
 	
 
 	// Close zone instance

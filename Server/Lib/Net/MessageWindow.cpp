@@ -467,7 +467,9 @@ namespace Net {
 		, m_uiMsgCount(0)
 		, m_pMsgWnd(nullptr)
 	{
-		m_pMsgWnd = new MessageElement[CIRCULAR_QUEUE_SIZE];
+		auto messageElements = new MessageElement[CIRCULAR_QUEUE_SIZE];
+		memset(messageElements, 0, sizeof(MessageElement)*CIRCULAR_QUEUE_SIZE);
+		m_pMsgWnd = messageElements;
 	}
 
 	SendMsgWindowMT::~SendMsgWindowMT()

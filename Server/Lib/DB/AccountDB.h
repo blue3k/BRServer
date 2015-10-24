@@ -68,6 +68,7 @@ namespace DB {
 
 		// Find player
 		HRESULT FindPlayerByEMail( BR::TransactionID Sender, const char* email );
+		HRESULT FindPlayerByPlayerID(BR::TransactionID Sender, AccountID accountID);
 
 		// Player shard id
 		HRESULT GetPlayerShardID(BR::TransactionID Sender, AccountID accountID);

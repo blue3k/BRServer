@@ -162,6 +162,15 @@
       </Res>
     </Command>
 
+    <Command Name="FindPlayerByPlayerID" Reliable="true" Crypto="No" Trace="DBG1" Desc="Query playerID list">
+      <Cmd>
+        <Params Type="PlayerID" Name="PlayerID" Desc="Player ID to find"/>
+      </Cmd>
+      <Res>
+        <Params Type="PlayerInformation" Name="Player" Desc="Player information if found"/>
+      </Res>
+    </Command>
+
     <Command Name="RequestPlayerStatusUpdate" Reliable="true" Crypto="No" Trace="DBG1" Desc="*Request Player Status Update">
       <Cmd>
         <Params Type="PlayerID" Name="TargetPlayerID" IsArray="true" Desc="PlayerIDs to request"/>
@@ -198,6 +207,7 @@
         <Params Type="INT64" Name="GameMoney"/>
         <Params Type="INT64" Name="Gem"/>
         <Params Type="INT16" Name="Stamina"/>
+        <Params Type="UINT32" Name="LastUpdateTime"/>
         <Params Type="INT32" Name="TotalPlayed"/>
         <Params Type="INT32" Name="WinPlaySC"/>
         <Params Type="INT32" Name="WinPlaySM"/>

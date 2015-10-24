@@ -15,7 +15,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BRServerUtil.h"
 #include "ServerSystem/EventTask.h"
-#include "ServerSystem/ExternalTask.h"
+#include "ServerSystem/ExternalTransactionManager.h"
 #include "Net/NetServerUDP.h"
 #include "Common/TimeUtil.h"
 #include "Common/BRBaseTypes.h"
@@ -99,7 +99,6 @@ namespace GameServer {
 		
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec32());
 		m_LatestUpdateTime = 0;
-		//m_LatestUpdateTime = Util::Time.GetTimeUTCSec();
 
 		m_TimeToKill.SetTimer(PlayerAutoLogout * 1000);
 
@@ -168,6 +167,10 @@ namespace GameServer {
 
 	HRESULT GamePlayerEntity::OnNewUserTranscation()
 	{
+		// m_LatestUpdateTime is used as a valid character data signal
+		if (m_LatestUpdateTime == 0)
+			return S_FALSE;
+
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec32());
 
 		if (m_LatestDBSyncTime == 0 || Util::TimeSinceUTC(m_LatestDBSyncTime) > GameConst::PLAYER_UPDATE_STATUS_TIME)
@@ -182,10 +185,11 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
+		if (FAILED(UpdateGamePlayer()))
+			return hr;
+
 		m_LatestDBSyncTime = Util::Time.GetTimeUTCSec32();
 		auto pPlayerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
-
-		svrChk(UpdateGamePlayer());
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateTickStatusCmd(transID, GetShardID(), GetPlayerID(),
 			pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetStamina(), GetIsInGame() ? 1 : 0,
@@ -206,6 +210,9 @@ namespace GameServer {
 		BR_ENTITY_MESSAGE(Message::Game::GetUserGamePlayerInfoCmd)		{ pNewTrans = new PlayerTransGetUserGamePlayerInfo(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::GetGamePlayerInfoCmd)			{ pNewTrans = new PlayerTransGetGamePlayerInfo(pMsgData); return OnNewUserTranscation(); } );
 
+		BR_ENTITY_MESSAGE(Message::Game::GetComplitionStateCmd)			{ pNewTrans = new PlayerTransGetComplitionState(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::SetComplitionStateCmd)			{ pNewTrans = new PlayerTransSetComplitionState(pMsgData); return OnNewUserTranscation(); } );
+
 		BR_ENTITY_MESSAGE(Message::Game::RegisterGCMCmd)				{ pNewTrans = new PlayerTransRegisterGCM(pMsgData); return S_OK; } );
 		BR_ENTITY_MESSAGE(Message::Game::UnregisterGCMCmd)				{ pNewTrans = new PlayerTransUnregisterGCM(pMsgData); return S_OK; } );
 
@@ -222,11 +229,13 @@ namespace GameServer {
 
 		BR_ENTITY_MESSAGE(Message::Game::SetNickNameCmd)				{ pNewTrans = new PlayerTransSetNickName(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByEMailCmd)			{ pNewTrans = new PlayerTransFindPlayerByEMail(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::FindPlayerByPlayerIDCmd)		{ pNewTrans = new PlayerTransFindPlayerByPlayerID(pMsgData); return OnNewUserTranscation(); } );
 
 		BR_ENTITY_MESSAGE(Message::Game::RequestPlayerStatusUpdateCmd)	{ pNewTrans = new PlayerTransRequestPlayerStatusUpdate(pMsgData); return OnNewUserTranscation(); } );
 
 		BR_ENTITY_MESSAGE(Message::Game::GetRankingListCmd)				{ pNewTrans = new PlayerTransGetRankingList(pMsgData); return OnNewUserTranscation(); } );
 
+		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemPrepareCmd)			{ pNewTrans = new PlayerTransBuyShopItemPrepare(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::BuyShopItemCmd)				{ pNewTrans = new PlayerTransBuyShopItem(pMsgData); return OnNewUserTranscation(); } );
 
 		BR_ENTITY_MESSAGE(Message::Game::JoinGameCmd)					{ pNewTrans = new PlayerTransJoinGame(pMsgData); return OnNewUserTranscation(); } );
@@ -240,6 +249,7 @@ namespace GameServer {
 		BR_ENTITY_MESSAGE(Message::Game::GamePlayAgainCmd)				{ pNewTrans = new PlayerTransPlayAgain(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::GameRevealPlayerCmd)			{ pNewTrans = new PlayerTransGameRevealPlayer(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::GamePlayerReviveCmd)			{ pNewTrans = new PlayerTransGamePlayerRevive(pMsgData); return OnNewUserTranscation(); } );
+		BR_ENTITY_MESSAGE(Message::Game::GamePlayerResetRankCmd)		{ pNewTrans = new PlayerTransGamePlayerResetRank(pMsgData); return OnNewUserTranscation(); } );
 
 		BR_ENTITY_MESSAGE(Message::Game::CreatePartyCmd)				{ pNewTrans = new PlayerTransCreateParty(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::JoinPartyCmd)					{ pNewTrans = new PlayerTransJoinParty(pMsgData); return OnNewUserTranscation(); } );
@@ -341,9 +351,10 @@ namespace GameServer {
 
 		svrTrace(Svr::TRC_TRANSACTION, "Check GamePlayer Update Tick PID:%0% last:%1%, curTime:%2%, numTick:%3%, remain:%4%", GetPlayerID(), m_LatestUpdateTime, curUTCSec, numberOfTicks, remainTime);
 
+		auto playerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
 		if( numberOfTicks > 0 )
 		{
-			svrTrace(Svr::TRC_TRANSACTION, "GamePlayer Update PID:%0%, numTick:%1%, Sta:%2%", GetPlayerID(), numberOfTicks, GetComponent<UserGamePlayerInfoSystem>()->GetStamina());
+			svrTrace(Svr::TRC_TRANSACTION, "GamePlayer Update PID:%0%, numTick:%1%, Sta:%2%", GetPlayerID(), numberOfTicks, playerInfoSystem->GetStamina());
 
 			if (numberOfTicks > std::numeric_limits<INT16>::max())
 			{
@@ -351,7 +362,12 @@ namespace GameServer {
 				numberOfTicks = std::numeric_limits<INT16>::max();
 			}
 
-			GetComponent<UserGamePlayerInfoSystem>()->GainStamina( (INT)(numberOfTicks * 1) );
+			if (playerInfoSystem->GetStamina() < playerInfoSystem->GetMaxAutoRefillStamina())
+			{
+				// limit stamina gain to MaxAutoRefillStamina
+				auto maxCanGain = std::min((INT)(numberOfTicks * 1), (playerInfoSystem->GetMaxAutoRefillStamina()- playerInfoSystem->GetStamina()));
+				playerInfoSystem->GainStamina(maxCanGain);
+			}
 
 			curUTCSec -= remainTime; // Subtract the remain from current time so that it can add up the the next tick calculation
 			SetLatestUpdateTime(curUTCSec);

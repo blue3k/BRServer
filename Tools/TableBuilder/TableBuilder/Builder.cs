@@ -692,7 +692,7 @@ namespace TableBuilder
         protected abstract void DeclareMemberFunction();
 
         // Build definition
-        protected abstract void DefineTableParser(Type rootTypeInfo);
+        protected virtual void DefineTableParser(Type rootTypeInfo) { }
         protected abstract void DefineEnumDefinition(string name, Type typeInfo);
         protected abstract void DefineMemberFunction();
     }
