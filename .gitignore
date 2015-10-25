@@ -3,6 +3,17 @@
 *.lo
 *.o
 *.obj
+*.exp
+*.ilk
+*.idb
+
+#Solution temp
+*.suo
+*.sdf
+*.opensdf
+*.user
+*.cache
+
 
 # Precompiled Headers
 *.gch
@@ -27,3 +38,14 @@
 *.out
 *.app
 *.pdb
+
+# Log files
+*.log
+*.tlog
+
+#folders
+Debug/
+Release/
+packages/
+Temp/
+obj/
