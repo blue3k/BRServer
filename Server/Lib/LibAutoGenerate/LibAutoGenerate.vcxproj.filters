@@ -1,20 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="HResult">
+      <UniqueIdentifier>{a3260d35-b9fa-4ffb-9741-1371eb685a64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Protocol">
+      <UniqueIdentifier>{1ba81da0-446d-4b52-a12c-968f94101093}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HResult\HRESCommon.mc">
+      <Filter>HResult</Filter>
+    </None>
+    <None Include="HResult\HRESEvent.mc">
+      <Filter>HResult</Filter>
+    </None>
+    <None Include="HResult\HRESGame.mc">
+      <Filter>HResult</Filter>
+    </None>
+    <None Include="HResult\HRESLogin.mc">
+      <Filter>HResult</Filter>
+    </None>
+    <None Include="HResult\HRESNet.mc">
+      <Filter>HResult</Filter>
+    </None>
+    <None Include="HResult\HRESSvrSys.mc">
+      <Filter>HResult</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Protocol\ProtocolClusterServer.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolEntityServer.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolGame.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolGameInstance.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolGameInstanceManager.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolGameMasterServer.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolGameParty.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolGamePartyManager.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolGameServer.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolLogin.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolLoginServer.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolMonitoring.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolPartyMatching.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolPartyMatchingQueue.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolRanking.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
+    <Xml Include="Protocol\ProtocolServer.xml">
+      <Filter>Protocol</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

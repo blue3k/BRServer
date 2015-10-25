@@ -18,6 +18,14 @@
       <Platform>x86</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HRESCommon.h" />
+    <ClInclude Include="HRESEvent.h" />
+    <ClInclude Include="HRESGame.h" />
+    <ClInclude Include="HRESLogin.h" />
+    <ClInclude Include="HRESNet.h" />
+    <ClInclude Include="HRESSvrSys.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{172a428c-9324-4425-bf56-af819bcfe145}</ProjectGuid>
     <Keyword>Android</Keyword>

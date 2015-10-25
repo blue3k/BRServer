@@ -26,7 +26,6 @@ TARGET_FILES=$(SOURCES_POSTFIXED:Protocol%=$(OUTPUT_PATH)/%)
 
 
 $(OUTPUT_PATH)/%MsgClass.h: Protocol%.xml
-	@echo $<, $@
 	$(PROTO_BUILD) -dir:../../../ $<
  
 

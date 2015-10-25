@@ -828,24 +828,24 @@ namespace GameServer {
 
 		svrChkPtr( pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>() );
 
-		GetMyOwner()->UpdateGamePlayer();
+		//GetMyOwner()->UpdateGamePlayer();
 
-		if( pPlayerInfoSystem->GetStamina() <= 0 )
-			svrErrClose(E_GAME_NOTENOUGH_RESOURCE);
+		//if( pPlayerInfoSystem->GetStamina() <= 0 )
+		//	svrErrClose(E_GAME_NOTENOUGH_RESOURCE);
 
 
 		auto pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(GetTargetPlayer());
 		if( pFriend == nullptr )
 			svrErrClose(E_PLAYER_NOT_FOUND);
 
-		svrChk( pPlayerInfoSystem->GainStamina( -1 ) );
+		//svrChk( pPlayerInfoSystem->GainStamina( -1 ) );
 
-		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Give, -1, 0, GetTargetPlayer());
+		//GetMyOwner()->AddGameTransactionLog(TransLogCategory::Give, -1, 0, GetTargetPlayer());
 
 
-		// Save my status
-		if (SUCCEEDED(GetMyOwner()->UpdateDBSync(GetTransID())))
-			m_WaitingQueries++;
+		//// Save my status
+		//if (SUCCEEDED(GetMyOwner()->UpdateDBSync(GetTransID())))
+		//	m_WaitingQueries++;
 
 
 		//Update give stamina time

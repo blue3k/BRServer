@@ -1,5 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
- <ItemGroup>
- </ItemGroup>
+  <ItemGroup>
+    <Filter Include="HResult">
+      <UniqueIdentifier>{f24fec1d-59bb-4e24-a62f-016975d2a57f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SharedPointer">
+      <UniqueIdentifier>{52d9a3f2-32af-4780-a066-1a7f506da96c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{b59d7e3e-a300-4d22-9200-a50a05864ffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{b34aac5f-8824-47b4-b1e6-a6f740819e15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{943e2262-88b6-4246-9afd-c7c33ca3065a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types">
+      <UniqueIdentifier>{6318ed2e-381b-4bda-9998-3c30408cc859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{fca0fa0c-a753-4b8c-ab10-a1710e419712}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HRESCommon.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESEvent.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESGame.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESLogin.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESNet.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+    <ClInclude Include="HRESSvrSys.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
