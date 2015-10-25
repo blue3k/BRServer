@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by abc (abc) -->
+<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+	<ProtocolGroup Name="Login" GenParameterContext="false" IsMobile="true" GenCSharp="true" Desc="Game">
+    <!-- ===================================================  Login ========================================================= -->
+    <Command Name="Login" Reliable="true" Crypto="No" Trace="DBG1" Desc="Login request">
+      <Cmd>
+        <Params Type="GameID" Name="GameID" Desc="Game ID, Conspiracy will be accepted"/>
+        <Params Type="String" Name="ID" Desc="UserID"/>
+        <Params Type="String" Name="Password" Desc="User Password"/>
+      </Cmd>
+      <Res>
+        <Params Type="NetAddress" Name="GameServerAddr" Desc="Game server address to connect"/>
+        <Params Type="AccountID" Name="AccID" Desc="AccountID for the player"/>
+        <Params Type="AuthTicket" Name="Ticket" Desc="Login session Ticket"/>
+    		<Params Type="UINT64" Name="LoginEntityUID" Desc="Login entity ID. This need to be used when you connect to the game server"/>
+      </Res>
+    </Command>
+    <Command Name="LoginByFacebook" Reliable="true" Crypto="No" Trace="DBG1" Desc="Login request with Facebook UID">
+      <Cmd>
+        <Params Type="GameID" Name="GameID" Desc="Game ID, Conspiracy will be accepted"/>
+        <Params Type="UINT64" Name="UID" Desc="Facebook UID. You can get when you login to facebook"/>
+        <Params Type="String" Name="FaceBookName" Desc="Face book name"/>
+        <Params Type="String" Name="EMail" Desc="email address of the player"/>
+        <Params Type="String" Name="FacebookToken" Desc="Factbook token, reserved"/>
+      </Cmd>
+      <Res>
+        <Params Type="NetAddress" Name="GameServerAddr" Desc="Game server address to connect"/>
+        <Params Type="AccountID" Name="AccID" Desc="AccountID for the player"/>
+        <Params Type="AuthTicket" Name="Ticket" Desc="Login session Ticket"/>
+        <Params Type="UINT64" Name="LoginEntityUID" Desc="Login entity ID. This need to be used when you connect to the game server"/>
+      </Res>
+    </Command>
+
+    <Command Name="CreateRandomUser" Reliable="true" Crypto="No" Trace="DBG1" Desc="Login request">
+      <Cmd>
+        <Params Type="GameID" Name="GameID" Desc="Game ID, Conspiracy will be accepted"/>
+        <Params Type="String" Name="CellPhone" Desc="CellPhone"/>
+      </Cmd>
+      <Res>
+        <Params Type="NetAddress" Name="GameServerAddr" Desc="Game server address to connect"/>
+        <Params Type="AccountID" Name="AccID" Desc="AccountID for the player"/>
+        <Params Type="AuthTicket" Name="Ticket" Desc="Login session Ticket"/>
+        <Params Type="UINT64" Name="LoginEntityUID" Desc="Login entity ID. This need to be used when you connect to the game server"/>
+      </Res>
+    </Command>
+
+
+  </ProtocolGroup>
+</Protocols>
