@@ -106,7 +106,7 @@ elif platform == 'mingw':
     env.Append( CPPDEFINES=[ "WIN32", "NDEBUG", "_MT" ] )
 elif platform.startswith('linux-gcc'):
     env.Tool( 'default' )
-    env.Append( LIBS = ['pthread'], CCFLAGS = "-Wall" )
+    env.Append( LIBS = ['pthread'], CCFLAGS = "-Wall -std=c++14 -pthread" )
     env['SHARED_LIB_ENABLED'] = True
 else:
     print "UNSUPPORTED PLATFORM."
@@ -230,6 +230,6 @@ env.Alias( 'src-dist', srcdist_cmd )
 
 buildProjectInDirectory( 'src/jsontestrunner' )
 buildProjectInDirectory( 'src/lib_json' )
-buildProjectInDirectory( 'src/test_lib_json' )
+#buildProjectInDirectory( 'src/test_lib_json' )
 #print env.Dump()
 
