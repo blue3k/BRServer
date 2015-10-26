@@ -349,3 +349,12 @@
 //
 #define E_TARGET_MAX_FRIEND              0xC702001EL
 
+//
+// MessageId: E_INVALID_STR_DATA
+//
+// MessageText:
+//
+// Invalid string data.
+//
+#define E_INVALID_STR_DATA               0xC702001FL
+

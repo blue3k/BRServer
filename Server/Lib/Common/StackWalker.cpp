@@ -10,20 +10,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 
-#include <psapi.h>
-#include <DbgHelp.h>
-#include <Winnt.h>
-
+#include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 
 #include "Common/StackWalker.h"
 
-
+#if WINDOWS
 #pragma comment(lib,"DbgHelp.lib")
-
+#endif
 
 //#define STACKWALKER_MIN_EXE_OFFSET ((intptr_t)&__ImageBase)
 #define STACKWALKER_MIN_EXE_OFFSET ((intptr_t)0)
@@ -57,14 +54,18 @@ namespace BR
 
 	private:
 
-		HRESULT BuildSymbolPath();
-		HRESULT LoadModuleSymbols();
 		void UpdateSkipDepth();
 
-		__forceinline void GetStackFrame( CONTEXT& context, STACKFRAME64& stackFrame, DWORD& imageType );
+#if WINDOWS
+		HRESULT BuildSymbolPath();
+		HRESULT LoadModuleSymbols();
 
-		void __stdcall CaptureCallStackFast( CallStackTrace& stackTrace, DWORD imageType, CONTEXT &context, STACKFRAME64 &stackFrame, UINT skipDepth, UINT maxDepth );
-		void __stdcall CaptureCallStackReliable( CallStackTrace& stackTrace, DWORD imageType, CONTEXT &context, STACKFRAME64 &stackFrame, UINT skipDepth, UINT maxDepth );
+		FORCEINLINE void GetStackFrame( CONTEXT& context, STACKFRAME64& stackFrame, DWORD& imageType );
+
+		void STDCALL CaptureCallStackFast( CallStackTrace& stackTrace, DWORD imageType, CONTEXT &context, STACKFRAME64 &stackFrame, UINT skipDepth, UINT maxDepth );
+		void STDCALL CaptureCallStackReliable( CallStackTrace& stackTrace, DWORD imageType, CONTEXT &context, STACKFRAME64 &stackFrame, UINT skipDepth, UINT maxDepth );
+#else
+#endif
 
 	public:
 		// Constructor
@@ -72,10 +73,10 @@ namespace BR
 		virtual ~StackWalkerImpl();
 
 		// initialize stace walker
-		bool __stdcall Initialize();
+		bool STDCALL Initialize();
 
 		// get current stack trace
-		void __stdcall CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth );
+		void STDCALL CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth );
 
 		// print stack trace
 		void PrintStackTrace(Trace::TraceChannels channel);
@@ -93,7 +94,8 @@ namespace BR
 		memset( StackTrace, 0, sizeof(StackTrace) );
 	}
 
-	HRESULT CallStackTrace::PrintStackTrace( Trace::TraceChannels channel, HANDLE hProcess )
+#if WINDOWS
+	HRESULT CallStackTrace::PrintStackTrace( Trace::TraceChannels channel, NativeHANDLE hProcess )
 	{
 		BYTE Buffer[1024];
 		memset( Buffer, 0, sizeof(Buffer) );
@@ -139,7 +141,26 @@ namespace BR
 
 		return E_FAIL;
 	}
+#else
+	HRESULT CallStackTrace::PrintStackTrace(Trace::TraceChannels channel, NativeHANDLE hProcess)
+	{
+		char **strings;
+		size_t i;
 
+		strings = backtrace_symbols(StackTrace, StackTraceCount);
+
+		defTrace(channel, "StackTrace:");
+
+		for (UINT stackDepth = 0; stackDepth < StackTraceCount && StackTrace[stackDepth] != 0; stackDepth++)
+		{
+		}
+
+		free(strings);
+
+		return S_OK;
+	}
+
+#endif
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -155,7 +176,7 @@ namespace BR
 	StackWalkerImpl::~StackWalkerImpl()
 	{
 	}
-
+#if WINDOWS
 	HRESULT StackWalkerImpl::BuildSymbolPath()
 	{
 		wchar_t curDir[1024], tempBuffer[1024];
@@ -318,33 +339,8 @@ namespace BR
 		}
 	}
 
-	// initialize stace walker
-	// #pragma optimize("y",off)
-	bool StackWalkerImpl::Initialize()
-	{
-		m_hProcess = GetCurrentProcess();
-
-		if( FAILED(BuildSymbolPath()) )
-			return false;
-
-		if( !SymInitializeW( m_hProcess, (PWSTR)m_SymbolPath, false ) )
-			return false;
-
-		// symbol load option
-		DWORD symbolLoadOptions = SymGetOptions();
-		symbolLoadOptions |= SYMOPT_LOAD_LINES | SYMOPT_FAIL_CRITICAL_ERRORS;
-		symbolLoadOptions = SymSetOptions(symbolLoadOptions);
-
-		if( FAILED(LoadModuleSymbols()) )
-			return false;
-
-		UpdateSkipDepth();
-
-		return true;
-	}
-
 	// This implementation tested on x86 and x64
-	void __stdcall StackWalkerImpl::CaptureCallStackFast( CallStackTrace& stackTrace, DWORD imageType, CONTEXT &context, STACKFRAME64 &stackFrame, UINT skipDepth, UINT maxDepth )
+	void STDCALL StackWalkerImpl::CaptureCallStackFast( CallStackTrace& stackTrace, DWORD imageType, CONTEXT &context, STACKFRAME64 &stackFrame, UINT skipDepth, UINT maxDepth )
 	{
 		ULONG_PTR lowLimit, highLimit;
 		HANDLE hThread = GetCurrentThread();
@@ -415,7 +411,7 @@ namespace BR
 		stackTrace.StackTraceCount = stackIndex;
 	}
 
-	void __stdcall StackWalkerImpl::CaptureCallStackReliable( CallStackTrace& stackTrace, DWORD imageType, CONTEXT &context, STACKFRAME64 &stackFrame, UINT skipDepth, UINT maxDepth )
+	void STDCALL StackWalkerImpl::CaptureCallStackReliable( CallStackTrace& stackTrace, DWORD imageType, CONTEXT &context, STACKFRAME64 &stackFrame, UINT skipDepth, UINT maxDepth )
 	{
 		HANDLE hThread = GetCurrentThread();
 
@@ -445,7 +441,7 @@ namespace BR
 
 	// get current stack trace
 	// #pragma optimize("y",off)
-	void __stdcall StackWalkerImpl::CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth )
+	void STDCALL StackWalkerImpl::CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth )
 	{
 		STACKFRAME64 stackFrame;
 		DWORD imageType = 0;
@@ -458,13 +454,62 @@ namespace BR
 
 #if defined(_M_IX86) || defined(_M_X64)
 		// Use fast version stack trace
-		maxDepth = Util::Min( maxDepth - skipDepth + m_ModuleStackSkipDepth, (UINT)CallStackTrace::MAX_CALLSTACK_DEPTH );
+		maxDepth = std::min( maxDepth - skipDepth + m_ModuleStackSkipDepth, (UINT)CallStackTrace::MAX_CALLSTACK_DEPTH );
 		stackTrace.StackTraceCount = CaptureStackBackTrace( skipDepth + m_ModuleStackSkipDepth, maxDepth, stackTrace.StackTrace, nullptr );
 		//CaptureCallStackFast( stackTrace, imageType, context, stackFrame, skipDepth + m_ModuleStackSkipDepth, maxDepth );
 #else
 		CaptureCallStackReliable( stackTrace, imageType, context, stackFrame, skipDepth + m_ModuleStackSkipDepth, maxDepth );
 #endif
 	}
+
+
+	// initialize stace walker
+	// #pragma optimize("y",off)
+	bool StackWalkerImpl::Initialize()
+	{
+		m_hProcess = GetCurrentProcess();
+
+		if (FAILED(BuildSymbolPath()))
+			return false;
+
+		if (!SymInitializeW(m_hProcess, (PWSTR)m_SymbolPath, false))
+			return false;
+
+		// symbol load option
+		DWORD symbolLoadOptions = SymGetOptions();
+		symbolLoadOptions |= SYMOPT_LOAD_LINES | SYMOPT_FAIL_CRITICAL_ERRORS;
+		symbolLoadOptions = SymSetOptions(symbolLoadOptions);
+
+		if (FAILED(LoadModuleSymbols()))
+			return false;
+
+		UpdateSkipDepth();
+
+		return true;
+	}
+
+#else
+
+
+	// initialize stace walker
+	bool StackWalkerImpl::Initialize()
+	{
+		m_ModuleStackSkipDepth = 2;
+
+		return true;
+	}
+
+	// get current stack trace
+	void StackWalkerImpl::CaptureCallStack(CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth)
+	{
+		size_t size;
+
+		stackTrace.StackTraceCount = backtrace(stackTrace.StackTrace, countof(stackTrace.StackTrace));
+	}
+
+
+#endif
+
 
 	// print stack trace
 	void StackWalkerImpl::PrintStackTrace(Trace::TraceChannels channel)
@@ -487,7 +532,7 @@ namespace BR
 
 
 	// initialize stace walker
-	bool __stdcall StackWalker::Initialize()
+	bool StackWalker::Initialize()
 	{
 		if( stm_pInstance == nullptr )
 		{
@@ -498,7 +543,7 @@ namespace BR
 		return true;
 	}
 
-	void __stdcall StackWalker::Deinitialize()
+	void StackWalker::Deinitialize()
 	{
 		if( stm_pInstance == nullptr )
 			return;
@@ -508,7 +553,7 @@ namespace BR
 	}
 
 	// get current stack trace
-	void __stdcall StackWalker::CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth )
+	void StackWalker::CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth )
 	{
 		if( stm_pInstance == nullptr )
 			return;

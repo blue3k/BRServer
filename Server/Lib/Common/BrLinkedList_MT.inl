@@ -109,7 +109,7 @@ public:
 
 			// Wait insert/delete lock
 			while (m_pPredNode->m_Next.m_Lock != LockType_Free)
-				Sleep(3);
+				ThisThread::SleepFor(DurationMS(3));
 
 			m_pContainer->AddItr(this);
 
@@ -126,7 +126,7 @@ public:
 
 			// Wait insert/delete lock
 			while (m_pPredNode->m_Next.m_Lock != LockType_Free)
-				Sleep(3);
+				ThisThread::SleepFor(DurationMS(3));
 
 			m_pContainer->AddItr(this);
 
@@ -225,7 +225,7 @@ public:
 
 			// Wait insert/delete lock
 			while (m_pPredNode->m_Next.m_Lock != LockType_Free)
-				Sleep(3);
+				ThisThread::SleepFor(DurationMS(3));
 
 			m_pPredNode->m_Next.IncreaseReadCount();
 
@@ -262,7 +262,7 @@ public:
 
 			// Wait insert/delete lock
 			while (m_pPredNode->m_Next.m_Lock != LockType_Free)
-				Sleep(3);
+				std::this_thread::sleep_for(DurationMS((3));
 
 			// Acquires a current node's read lock!
 			m_pPredNode->m_Next.IncreaseReadCount();
@@ -286,7 +286,7 @@ public:
 
 			// Wait insert/delete lock
 			while (m_pPredNode->m_Next.m_Lock != LockType_Free)
-				Sleep(3);
+				ThisThread::SleepFor(DurationMS(3));
 
 			// Acquires a current node's read lock!
 			m_pPredNode->m_Next.IncreaseReadCount();
@@ -324,7 +324,7 @@ private:
 		CounterType myTicket = m_ItrListUpdateTicket.AcquireTicket();
 
 		while (myTicket - m_ItrListUpdateTicket.GetWorkingCompleteCount() > 1)
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 
 		m_ItrList.insert(pItr);
 
@@ -336,7 +336,7 @@ private:
 		CounterType myTicket = m_ItrListUpdateTicket.AcquireTicket();
 
 		while (myTicket - m_ItrListUpdateTicket.GetWorkingCompleteCount() > 1)
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 
 		Assert(m_ItrList.erase(pItr) == 1);
 
@@ -348,7 +348,7 @@ private:
 		CounterType myTicket = m_ItrListUpdateTicket.AcquireTicket();
 
 		while (myTicket - m_ItrListUpdateTicket.GetWorkingCompleteCount() > 1)
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 
 		for (auto itr = m_ItrList.begin(); itr != m_ItrList.end(); ++itr)
 		{
@@ -407,7 +407,7 @@ public:
 		CounterType myTicket = m_UpdateTicket.AcquireTicket();
 
 		while (myTicket - m_UpdateTicket.GetWorkingCompleteCount() > 1)
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 
 		Node* pPredNode = &m_Head;
 
@@ -416,7 +416,7 @@ public:
 		while (true)
 		{
 			while (pPredNode->m_Next.m_ReadCount > 1)
-				Sleep(3);
+				ThisThread::SleepFor(DurationMS(3));
 
 			Node* pCurNode = pPredNode->m_Next.m_pNode;
 
@@ -482,7 +482,7 @@ public:
 
 		while (myTicket - m_UpdateTicket.GetWorkingCompleteCount() > 1)
 		{
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 
 			// 1-1. Release a read lock to avoid deadlock 
 			if (!bReleaseReadLock && Iter.GetPredNode()->m_Next.m_ReadCount > 1)
@@ -501,7 +501,7 @@ public:
 
 		// 3. Wait until a read lock release
 		while (Iter.GetPredNode()->m_Next.m_ReadCount > 1)
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 
 
 		// 4. Add a new node
@@ -575,7 +575,7 @@ Proc_End:
 
 		while (myTicket - m_UpdateTicket.GetWorkingCompleteCount() > 1)
 		{
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 
 			// 1-1. Release a read lock to avoid deadlock 
 			if (!bReleaseReadLock && Iter.GetPredNode()->m_Next.m_ReadCount > 1)
@@ -594,7 +594,7 @@ Proc_End:
 
 		// 3. Wait until a read lock release
 		while (Iter.GetPredNode()->m_Next.m_ReadCount > 1)
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 
 		// 4. Delete a current node
 
@@ -606,7 +606,7 @@ Proc_End:
 		{
 			//Defence race condition
 			if( (iTryCount%4) == 0 )
-				Sleep(0);
+				ThisThread::SleepFor(DurationMS(0));
 
 			iTryCount++;
 

@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/BrRandom.h"
 #include "Common/Trace.h"
 

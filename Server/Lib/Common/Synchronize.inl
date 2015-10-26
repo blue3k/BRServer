@@ -28,7 +28,7 @@ void SpinLock::Lock()
 		iLockTry++;
 		if( iLockTry%5 )
 		{
-			Sleep(0);
+			std::this_thread::sleep_for(DurationMS(0));
 		}
 
 		expected = STATE_FREE;
@@ -56,7 +56,7 @@ bool SpinLock::TryLock( int iTryCount )
 
 		if( iLockTry%5 )
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 
 		expected = STATE_FREE;
@@ -115,9 +115,9 @@ Ticketing::Ticket Ticketing::GetWorkingCompleteCount() const
 //
 
 TicketLock::TicketLock()
-	:m_NonExclusiveCount(0),
-	m_OpMode(LOCK_FREE)
+	: m_OpMode((ULONG)LockMode::LOCK_FREE)
 {
+	m_NonExclusiveCount = 0;
 }
 
 TicketLock::~TicketLock()
@@ -134,21 +134,21 @@ void TicketLock::ExLock()
 	while( (WaitOrder = m_Ticketing.GetMyWaitingOrder(myTicket)) > 1 )
 	{
 		if( WaitOrder > 4 )
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 	}
 
 	// flush non exclusive lock
 	while( m_NonExclusiveCount.load(std::memory_order_relaxed) > 0 )
 	{
-		Sleep(0);
+		ThisThread::SleepFor(DurationMS(0));
 	}
 
-	m_OpMode.store(LOCK_EXCLUSIVE, std::memory_order_release);
+	m_OpMode.store((ULONG)LockMode::LOCK_EXCLUSIVE, std::memory_order_release);
 }
 
 void TicketLock::ExUnlock()
 {
-	m_OpMode.store(LOCK_FREE,std::memory_order_relaxed);
+	m_OpMode.store((ULONG)LockMode::LOCK_FREE,std::memory_order_relaxed);
 	m_Ticketing.ReleaseTicket();
 }
 
@@ -162,12 +162,12 @@ void TicketLock::NonExLock()
 	while( (WaitOrder = m_Ticketing.GetMyWaitingOrder(myTicket)) > 1 )
 	{
 		if( WaitOrder > 4 )
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 	}
 
-	Assert( m_OpMode.load(std::memory_order_relaxed) != LOCK_EXCLUSIVE );
+	Assert( m_OpMode.load(std::memory_order_relaxed) != (ULONG)LockMode::LOCK_EXCLUSIVE );
 
-	m_OpMode.store(LOCK_NONEXCLUSIVE, std::memory_order_release);
+	m_OpMode.store((ULONG)LockMode::LOCK_NONEXCLUSIVE, std::memory_order_release);
 	SignedCounterType count = (SignedCounterType)(m_NonExclusiveCount.fetch_add(1,std::memory_order_relaxed) + 1);
 	AssertRel(count > 0 );
 	m_Ticketing.ReleaseTicket();
@@ -208,8 +208,8 @@ TicketScopeLockT<TicketLockType>::TicketScopeLockT( TicketLock::LockMode lockMod
 :m_LockMode(lockMode),
 m_TicketLock(ticketLock)
 {
-	Assert( m_LockMode == TicketLock::LOCK_EXCLUSIVE || m_LockMode == TicketLock::LOCK_NONEXCLUSIVE );
-	if( m_LockMode == LOCK_EXCLUSIVE )
+	Assert( m_LockMode == TicketLock::LockMode::LOCK_EXCLUSIVE || m_LockMode == TicketLock::LockMode::LOCK_NONEXCLUSIVE );
+	if( m_LockMode == TicketLock::LockMode::LOCK_EXCLUSIVE )
 		m_TicketLock.ExLock();
 	else
 		m_TicketLock.NonExLock();
@@ -218,7 +218,7 @@ m_TicketLock(ticketLock)
 template< class TicketLockType >
 TicketScopeLockT<TicketLockType>::~TicketScopeLockT()
 {
-	if( m_LockMode == LOCK_EXCLUSIVE )
+	if( m_LockMode == TicketLock::LockMode::LOCK_EXCLUSIVE )
 		m_TicketLock.ExUnlock();
 	else
 		m_TicketLock.NonExUnlock();

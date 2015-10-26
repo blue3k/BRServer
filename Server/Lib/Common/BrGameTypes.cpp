@@ -10,9 +10,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/BrGameTypes.h"
-#include "Common\Trace.h"
+#include "Common/Trace.h"
 
 
 
@@ -67,7 +67,7 @@ namespace BR
 
 	
     GameLogVote::GameLogVote(ULONG timeStamp, UINT numVoter)
-		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*Util::Min((UINT)GameConst::MAX_GAMEPLAYER,numVoter-1))
+		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*std::min((UINT)GameConst::MAX_GAMEPLAYER,numVoter-1))
 		,NumberOfVoter(numVoter)
     {
 		Assert(numVoter <= GameConst::MAX_GAMEPLAYER);
@@ -110,7 +110,7 @@ namespace BR
 
 	
     GameLogVoteResult::GameLogVoteResult(ULONG timeStamp, UINT numRankers)
-		: GameLogItem(GameLogType::VoteResult,timeStamp,sizeof(GameLogVoteResult) + sizeof(PlayerID)*Util::Min((UINT)GameConst::MAX_GAMEPLAYER,numRankers-1))
+		: GameLogItem(GameLogType::VoteResult,timeStamp,sizeof(GameLogVoteResult) + sizeof(PlayerID)*std::min((UINT)GameConst::MAX_GAMEPLAYER,numRankers-1))
 		, NumberOfRanker(numRankers)
     {
     }

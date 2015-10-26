@@ -164,7 +164,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, voi
 
 		// Add dummy area
 		pChunk = (MemoryChunkHeader*)(m_AllocationBuffer + m_AllocatePosition); 
-		pChunk->ChunkType = ChunkType::Dummy;
+		pChunk->ChunkType = ChunkTypes::Dummy;
 		pChunk->ChunkSize = (UINT32)remainSize;
 		m_FreeSize -= remainSize;
 
@@ -181,7 +181,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, voi
 
 	AssertRel(m_FreeSize<=BufferSize && m_FreeSize >= 0);
 
-	pChunk->ChunkType = ChunkType::Allocated;
+	pChunk->ChunkType = ChunkTypes::Allocated;
 	pChunk->ChunkSize = (UINT32)allocationSize;
 	pPtr = (void*)((BYTE*)pChunk+HeaderSize);
 	m_AllocatePosition += allocationSize;
@@ -236,22 +236,22 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 			Free( (void*)(freePointer + HeaderSize) );
 		}
 
-		Assert( pChunk->ChunkType != ChunkType::Free );
-		AssertRel(pChunk->ChunkType == ChunkType::Dummy || pChunk->ChunkType == ChunkType::Allocated);
+		Assert( pChunk->ChunkType != ChunkTypes::Free );
+		AssertRel(pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated);
 		Assert(m_FreePosition!=m_AllocatePosition || m_FreeSize == 0);
-		if( pChunk->ChunkType != ChunkType::Dummy && pChunk->ChunkType != ChunkType::Allocated )
+		if( pChunk->ChunkType != ChunkTypes::Dummy && pChunk->ChunkType != ChunkTypes::Allocated )
 		{
 			// Duplicate free? or broken memory
 			return S_FALSE;
 		}
-		pChunk->ChunkType = ChunkType::Free;
+		pChunk->ChunkType = ChunkTypes::Free;
 		if( m_FreePosition != ((intptr_t)pChunk - (intptr_t)m_AllocationBuffer) )
 		{
 			// If this memory isn't exist in the free position, we should leave it for later
 			return S_OK;
 		}
 
-		while( (pChunk->ChunkType == ChunkType::Free || pChunk->ChunkType == ChunkType::Dummy) && m_FreeSize <= BufferSize )
+		while( (pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy) && m_FreeSize <= BufferSize )
 		{
 			AssertRel((m_FreePosition == ((intptr_t)pChunk - (intptr_t)m_AllocationBuffer)) || m_FreeSize == 0);
 			m_FreeSize += pChunk->ChunkSize;
@@ -262,7 +262,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 			if( m_FreeSize < BufferSize ) // Any chunk must be exist
 			{
 				pChunk = (MemoryChunkHeader*)(m_AllocationBuffer + m_FreePosition);
-				if( pChunk->ChunkType != ChunkType::Free && pChunk->ChunkType != ChunkType::Dummy && pChunk->ChunkType != ChunkType::Allocated )
+				if( pChunk->ChunkType != ChunkTypes::Free && pChunk->ChunkType != ChunkTypes::Dummy && pChunk->ChunkType != ChunkTypes::Allocated )
 				{
 					// Broken memory
 					return E_UNEXPECTED;
@@ -273,7 +273,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 				Assert(SUCCEEDED(ValidateAllocatedChunks()));
 #endif
 				Assert(m_FreePosition!=m_AllocatePosition);
-				AssertRel(pChunk->ChunkType == ChunkType::Free || pChunk->ChunkType == ChunkType::Dummy || pChunk->ChunkType == ChunkType::Allocated);
+				AssertRel(pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated);
 			}
 			else
 			{
@@ -302,8 +302,8 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::ValidateAllocatedChunks()
 		intptr_t curPosition = m_FreePosition;
 		do {
 			pChunk = (MemoryChunkHeader*)(m_AllocationBuffer + curPosition);
-			AssertRel(pChunk->ChunkType == ChunkType::Free || pChunk->ChunkType == ChunkType::Dummy || pChunk->ChunkType == ChunkType::Allocated);
-			if( !(pChunk->ChunkType == ChunkType::Free || pChunk->ChunkType == ChunkType::Dummy || pChunk->ChunkType == ChunkType::Allocated) )
+			AssertRel(pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated);
+			if( !(pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated) )
 				return E_UNEXPECTED;
 			curPosition += pChunk->ChunkSize;
 			AssertRel( curPosition <= BufferSize );

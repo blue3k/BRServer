@@ -39,11 +39,11 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Write_Lock()
 	{
 		if(nWaitingOrder - MAX_COUNTER > 10)
 		{
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 		}
 		else
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 
 		// Update Waiting Order value
@@ -58,7 +58,7 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Write_Lock()
 		nLockTry++;
 		if( nLockTry%5 )
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 	}
 	
@@ -89,11 +89,11 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Read_Lock()
 	{
 		if(nWaitingCount - MAX_COUNTER > 10)
 		{
-			Sleep(3);
+			ThisThread::SleepFor(DurationMS(3));
 		}
 		else
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 
 		// Update Waiting Order value
@@ -108,7 +108,7 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Read_Lock()
 		nLockTry++;
 		if( nLockTry%5 )
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 	}
 

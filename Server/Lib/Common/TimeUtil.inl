@@ -12,8 +12,6 @@
 
 
 TimeStampTimer::TimeStampTimer()
-	: m_ulTimeToExpire(UINT_MAX)
-	, m_ulTimeToExpirePrev(UINT_MAX)
 {
 }
 
@@ -22,27 +20,27 @@ TimeStampTimer::~TimeStampTimer()
 }
 
 // Set timer delegate
-void	TimeStampTimer::SetTimerFunc( std::function<void()> funcOnExpired )
+void TimeStampTimer::SetTimerFunc( std::function<void()> funcOnExpired )
 {
 	m_delOnExpired = funcOnExpired;
 }
 
 // clear timer
-void	TimeStampTimer::ClearTimer()
+void TimeStampTimer::ClearTimer()
 {
-	m_ulTimeToExpire = UINT_MAX;
+	m_ulTimeToExpire = InvalidTime;
 }
 
 // check about timer is working
 bool	TimeStampTimer::IsTimerWorking() const
 {
-	return m_ulTimeToExpire != UINT_MAX;
+	return m_ulTimeToExpire != InvalidTime;
 }
 
 // Timer check update
 bool	TimeStampTimer::CheckTimer()
 {
-	bool bExpired = m_ulTimeToExpire != UINT_MAX && (LONG)(m_ulTimeToExpire - Time.GetTimeMs()) < 0;
+	bool bExpired = m_ulTimeToExpire != InvalidTime && ((LONG)(m_ulTimeToExpire - Time.GetTimeMs()).count() < 0);
 
 	if( bExpired )
 	{
@@ -51,7 +49,7 @@ bool	TimeStampTimer::CheckTimer()
 
 		// Clear timer
 		m_ulTimeToExpirePrev = m_ulTimeToExpire;
-		m_ulTimeToExpire = UINT_MAX;
+		m_ulTimeToExpire = InvalidTime;
 	}
 
 	return bExpired;

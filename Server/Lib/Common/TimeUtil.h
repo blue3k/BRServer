@@ -18,33 +18,29 @@
 namespace BR {
 namespace Util {
 
-	enum {
-		// UTC timer reference year, This is DB time reference
-		UTC_REFERENCE_YEAR = 2014,
-	};
-
 	////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Win32 timer class
 	//
 
-	class Time_WIN32
+	class Time_Chrono
 	{
 	public:
 
+
 	private:
-		// cached values
-		ULONGLONG		m_ullPerfTickMS;
-		LARGE_INTEGER	m_ullPerfFreq;
+
+		std::chrono::time_point<ClockType> m_TickStamp;
 
 		// Time stamp
-		std::atomic<LARGE_INTEGER>	m_ullTimeStamp;
-		LARGE_INTEGER	m_ullTimeStampPrevious;
+		std::atomic<UINT64>			m_ullTimeStamp;
+
+		ClockType::duration       m_ullTimeStampPrevious;
 		std::atomic<ULONG>			m_ulTimeStampMs;
 		std::atomic<ULONGLONG>		m_ullTimeStampUTC;
 
 		// Default UTC offset
-		ULONGLONG		m_ullUTCOffset;
+		ULONGLONG					m_ullUTCOffset;
 
 	protected:
 		// Update Time stamp
@@ -53,18 +49,9 @@ namespace Util {
 		friend class TimerThread;
 
 	public:
-		Time_WIN32();
-		~Time_WIN32();
+		Time_Chrono();
+		~Time_Chrono();
 
-
-
-		/////////////////////////////////////////////////////////////////////////////////////////////////////
-		//
-		// Initialize/Terminate
-		//
-
-		HRESULT InitializeTimer();
-		HRESULT TerminateTimer();
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -72,11 +59,11 @@ namespace Util {
 		//
 
 		// Get time stamp in ms
-		ULONG		GetTimeMs();
+		TimeStampMS		GetTimeMs();
 
 		// Get UTC time stamp
-		ULONGLONG	GetTimeUTCSec();
-		ULONG		GetTimeUTCSec32();
+		TimeStampSec	GetTimeUTCSec();
+
 
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,20 +72,16 @@ namespace Util {
 		//
 
 		// Get time tick in ms
-		ULONG		GetRawTimeMs();
-
-		// Get current sec
-		ULONG		GetRawTimeSec();
+		TimeStampMS		GetRawTimeMs();
 
 		// Get current UTC sec
-		ULONGLONG	GetRawUTCSec();
+		TimeStampSec	GetRawUTCSec();
 
 	};
 
 
 	// Global main timer
-	extern Time_WIN32 Time;
-
+	extern Time_Chrono Time;
 
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -109,10 +92,11 @@ namespace Util {
 	class TimeStampTimer
 	{
 	public:
+		const static TimeStampMS	InvalidTime;
 
 	private:
-		ULONG	m_ulTimeToExpire;
-		ULONG	m_ulTimeToExpirePrev;
+		TimeStampMS	m_ulTimeToExpire;
+		TimeStampMS	m_ulTimeToExpirePrev;
 
 		// Timer expire caller
 		std::function<void()> m_delOnExpired;
@@ -126,12 +110,12 @@ namespace Util {
 		inline  void	SetTimerFunc( std::function<void()> funcOnExpired );
 
 		// set timer
-		HRESULT	SetTimer( ULONG TimerDuration );
+		HRESULT	SetTimer(DurationMS TimerDuration );
 
 		// clear timer
 		inline void	ClearTimer();
 
-		ULONG	GetTimerExpireTime()							{ return m_ulTimeToExpire; }
+		TimeStampMS	GetTimerExpireTime()							{ return m_ulTimeToExpire; }
 
 		// check about timer is working
 		inline bool	IsTimerWorking() const;
@@ -146,11 +130,10 @@ namespace Util {
 	//	Utility
 	//
 
-	LONG TimeMin(ULONG timeMs, ULONG timeMs2);
+	DurationMS TimeDurationMin(DurationMS timeMs, DurationMS timeMs2);
 
-	inline LONG TimeSince(ULONG timeMs)					{ return (LONG)(Time.GetTimeMs() - timeMs); }
-	inline LONGLONG TimeSinceUTC(ULONGLONG timeUTC)		{ return (LONGLONG)(Time.GetTimeUTCSec() - timeUTC); }
-	inline LONG TimeSinceUTC(ULONG timeUTC)				{ return (LONG)(Time.GetTimeUTCSec32() - timeUTC); }
+	inline DurationMS TimeSince(TimeStampMS timeMs)					{ return (Time.GetTimeMs() - timeMs); }
+	inline DurationSec TimeSinceUTC(TimeStampSec timeUTC)			{ return (Time.GetTimeUTCSec() - timeUTC); }
 
 #include "TimeUtil.inl"
 

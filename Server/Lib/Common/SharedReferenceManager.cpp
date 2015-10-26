@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Synchronize.h"
 #include "Common/SharedReferenceManager.h"
 #include "Common/SharedObject.h"

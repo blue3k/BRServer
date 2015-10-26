@@ -52,14 +52,12 @@ namespace BR {
 	inline HRESULT ToString( char*& pBuff, INT& iBuffLen, const Type& iData, int Option )
 	{
 		static const char Unknown[]="UnknownType:";
-		HRESULT hr = StrUtil::StringCpyEx( pBuff, iBuffLen, Unknown );
+		HRESULT hr = ::BR::StrUtil::StringCpyEx( pBuff, iBuffLen, Unknown );
 		if( SUCCEEDED(hr) )
-			StrUtil::StringCpyEx( pBuff, iBuffLen, typeid(Type).name() );
+			::BR::StrUtil::StringCpyEx( pBuff, iBuffLen, typeid(Type).name() );
 
 		// If you got this warnning fix type or add type ToString implementation
-#pragma comment( user, "ToString Compiled with unknowntype" )
-
-#pragma warning( 4431 )
+COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() )
 
 		//Assert(!"InvalidType ToString");
 		return SUCCEEDED(hr) ? E_FAIL : hr;

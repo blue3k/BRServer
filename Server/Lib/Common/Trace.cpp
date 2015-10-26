@@ -10,23 +10,22 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
-#include "Common/Trace_internal.h"
-#include <dbghelp.h>
+#include "Common/Trace_Internal.h"
 #include "Common/HRESEvent.h"
 
 
 
+#if WINDOWS
 #define _ERRTRACE_KEY_ L"SoftWare\\TheBraves\\Svr"
-
 
 
 // For crash dump
 #pragma comment(lib, "Dbghelp.lib")
-
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////////
 //

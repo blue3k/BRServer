@@ -122,7 +122,7 @@ HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 			iTry++;
 			// So many try sleep some
 			if( iTry > 5 )
-				Sleep(0);
+				ThisThread::SleepFor(DurationMS(0));
 
 
 			myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;

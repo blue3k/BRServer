@@ -9,25 +9,22 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
-//#pragma intrinsic (_InterlockedIncrement, _InterlockedDecrement, _InterlockedCompareExchange, _WriteBarrier, _ReadBarrier)
-
 //////////////////////////////////////////////////////////////////////////////////
 //
-//	Basic multithread class
+//	thread
 //
 
 
 
-// Get thread
-uintptr_t Thread::GetThread()
+
+ThreadHandle Thread::GetThread()
 {
-	return m_uiThread;
+	return std::thread::native_handle();
 }
 
 ThreadID Thread::GetThreadID()
 {
-	return m_uiThreadID;
+	return std::thread::get_id();
 }
 
 Thread::PRIORITY Thread::GetPriority()
@@ -37,12 +34,8 @@ Thread::PRIORITY Thread::GetPriority()
 
 
 // Get end event handle
-HANDLE Thread::GetKillEvent()
+std::timed_mutex& Thread::GetKillMutex()
 {
-	return m_hKillEvent;
+	return m_KillMutex;
 }
-
-
-
-
 

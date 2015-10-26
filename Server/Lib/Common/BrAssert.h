@@ -15,8 +15,14 @@
 #include "Typedefs.h"
 
 
+#if LINUX
+#define __debugbreak() raise(SIGTRAP)
+#else
+#endif
 
-#ifdef _DEBUG
+
+
+#if defined(_DEBUG) || defined(DEBUG)
 
 // Base Assert
 #define Assert(expr) assert(expr)
@@ -39,7 +45,4 @@
 
 
 #endif
-
-
-
 

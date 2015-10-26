@@ -17,12 +17,12 @@ Vector2::Vector2( const Vector3& src )
 {
 }
 
-Vector2::Vector2( FLOAT fX, FLOAT fY )
+Vector2::Vector2( float fX, float fY )
 :x(fX), y(fY)
 {
 }
 
-Vector2::Vector2( FLOAT init )
+Vector2::Vector2( float init )
 :x(init), y(init)
 {
 }
@@ -32,12 +32,12 @@ Vector2 Vector2::operator - () const
 	return Vector2( -x, -y );
 }
 
-Vector2 Vector2::operator * ( FLOAT fScale ) const
+Vector2 Vector2::operator * ( float fScale ) const
 {
 	return Vector2( x * fScale, y * fScale );
 }
 
-Vector2 Vector2::operator / ( FLOAT fScale ) const
+Vector2 Vector2::operator / ( float fScale ) const
 {
 	return Vector2( x / fScale, y / fScale );
 }
@@ -98,17 +98,17 @@ Vector2& Vector2::operator = ( const Vector3& src )
 }
 
 
-FLOAT Vector2::Normalize()
+float Vector2::Normalize()
 {
-	FLOAT fLen = sqrt( x*x + y*y );
-	if( fLen < std::numeric_limits<FLOAT>::epsilon() )
+	float fLen = sqrt( x*x + y*y );
+	if( fLen < std::numeric_limits<float>::epsilon() )
 	{
 		x = 0;
 		y = 0;
 	}
 	else
 	{
-		FLOAT fInvLen = (FLOAT)(1.0 / fLen);
+		float fInvLen = (float)(1.0 / fLen);
 		x *= fInvLen;
 		y *= fInvLen;
 	}
@@ -123,21 +123,21 @@ Vector2 Vector2::Normal() const
 	return vec;
 }
 
-FLOAT Vector2::Length() const
+float Vector2::Length() const
 {
-	FLOAT fLen = x*x + y*y;
-	if( fLen < std::numeric_limits<FLOAT>::epsilon() )
+	float fLen = x*x + y*y;
+	if( fLen < std::numeric_limits<float>::epsilon() )
 	{
 		return 0;
 	}
 	else
 	{
-		return (FLOAT)sqrt( fLen );
+		return (float)sqrt( fLen );
 	}
 }
 
 
-FLOAT Vector2::Dot( const Vector2& opVec ) const
+float Vector2::Dot( const Vector2& opVec ) const
 {
 	return x * opVec.x + y * opVec.y;
 }
@@ -159,12 +159,12 @@ Vector3::Vector3( const Vector2& src )
 {
 }
 
-Vector3::Vector3( FLOAT fX, FLOAT fY, FLOAT fZ )
+Vector3::Vector3( float fX, float fY, float fZ )
 :x(fX), y(fY), z(fZ)
 {
 }
 
-Vector3::Vector3( FLOAT init )
+Vector3::Vector3( float init )
 :x(init), y(init), z(init)
 {
 }
@@ -174,12 +174,12 @@ Vector3 Vector3::operator - () const
 	return Vector3( -x, -y, -z );
 }
 
-Vector3 Vector3::operator * ( FLOAT fScale ) const
+Vector3 Vector3::operator * ( float fScale ) const
 {
 	return Vector3( x * fScale, y * fScale, z * fScale );
 }
 
-Vector3 Vector3::operator / ( FLOAT fScale ) const
+Vector3 Vector3::operator / ( float fScale ) const
 {
 	return Vector3( x / fScale, y / fScale, z / fScale );
 }
@@ -249,10 +249,10 @@ Vector3& Vector3::operator = ( const Vector2& src )
 }
 
 
-FLOAT Vector3::Normalize()
+float Vector3::Normalize()
 {
-	FLOAT fLen = sqrt( x*x + y*y + z*z );
-	if( fLen < std::numeric_limits<FLOAT>::epsilon() )
+	float fLen = sqrt( x*x + y*y + z*z );
+	if( fLen < std::numeric_limits<float>::epsilon() )
 	{
 		x = 0;
 		y = 0;
@@ -260,7 +260,7 @@ FLOAT Vector3::Normalize()
 	}
 	else
 	{
-		FLOAT fInvLen = (FLOAT)(1.0 / fLen);
+		float fInvLen = (float)(1.0 / fLen);
 		x *= fInvLen;
 		y *= fInvLen;
 		z *= fInvLen;
@@ -276,21 +276,21 @@ Vector3 Vector3::Normal() const
 	return vec;
 }
 
-FLOAT Vector3::Length() const
+float Vector3::Length() const
 {
-	FLOAT fLen = x*x + y*y + z*z;
-	if( fLen < std::numeric_limits<FLOAT>::epsilon() )
+	float fLen = x*x + y*y + z*z;
+	if( fLen < std::numeric_limits<float>::epsilon() )
 	{
 		return 0;
 	}
 	else
 	{
-		return (FLOAT)sqrt( fLen );
+		return (float)sqrt( fLen );
 	}
 }
 
 
-FLOAT Vector3::Dot( const Vector3& opVec ) const
+float Vector3::Dot( const Vector3& opVec ) const
 {
 	return x * opVec.x + y * opVec.y + z * opVec.z;
 }

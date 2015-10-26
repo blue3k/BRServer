@@ -10,7 +10,7 @@
 
 #pragma once 
 
-#include "Common\Typedefs.h"
+#include "Common/Typedefs.h"
 
 namespace BR {
 

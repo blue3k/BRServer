@@ -24,8 +24,9 @@ namespace BR
 	//	Multiple referenced object interface define
 	//
 
-	interface ISharedObj
+	class ISharedObj
 	{
+	public:
 		// Reference count
 		mutable SyncCounter	m_RefCount;
 		mutable void* m_pOwner;
@@ -77,7 +78,7 @@ namespace BR
 		class hash
 		{
 		private:
-			std::tr1::hash<const SharedObjType*> realHash;
+			std::hash<const SharedObjType*> realHash;
 
 		public:
 			size_t operator()(const SharedPtr<SharedObjType>& _Keyval) const

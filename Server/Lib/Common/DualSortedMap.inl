@@ -399,7 +399,7 @@
 		auto oldReadIndex = m_ReadIndex.fetch_add(1, std::memory_order_release) % _countof(m_ReadCount);
 		while (m_ReadCount[oldReadIndex].load(std::memory_order_relaxed) > 0)
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 
 		//Clean up cloned sources

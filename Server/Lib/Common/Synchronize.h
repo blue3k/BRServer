@@ -199,7 +199,7 @@ namespace BR
 	class TicketLock
 	{
 	public:
-		enum LockMode 
+		enum class LockMode : ULONG
 		{ 
 			LOCK_FREE = 0, 
 			LOCK_NONEXCLUSIVE,

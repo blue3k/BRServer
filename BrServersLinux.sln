@@ -10,6 +10,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{19FDC9E4-21E2-451E-9477-66740F9DE096}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common.Linux", "Server\Lib\Common\Common.Linux.vcxproj", "{172A428C-9324-4425-BF56-AF819BCFE145}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF} = {8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibAutoGenerate", "Server\Lib\LibAutoGenerate\LibAutoGenerate.vcxproj", "{C79A22EB-2C00-45B9-B4A8-65B1DA546683}"
 EndProject

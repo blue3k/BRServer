@@ -10,11 +10,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/Trace.h"
 #include "Common/Utility.h"
-#include "openssl\sha.h"
+#include "openssl/sha.h"
 
 
 

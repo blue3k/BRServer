@@ -13,8 +13,6 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include <string>
-#include "Common/Utility.h"
 
 
 namespace BR {
@@ -40,40 +38,40 @@ namespace StrUtil {
 
 
 	// Unicode to MBCS string conversion
-	inline HRESULT WCSToMBCS( const WCHAR* strWCS, char *strMBCS, INT iBuffLen );
+	HRESULT WCSToMBCS( const WCHAR* strWCS, char *strMBCS, INT iBuffLen );
 	template<INT iBuffLen>
-	inline HRESULT WCSToMBCS( const WCHAR* strWCS, char (&strMBCS)[iBuffLen] );
-	inline HRESULT WCSToMBCS( const std::wstring &strWCS, std::string &strMBCS );
+	HRESULT WCSToMBCS( const WCHAR* strWCS, char (&strMBCS)[iBuffLen] );
+	HRESULT WCSToMBCS( const std::wstring &strWCS, std::string &strMBCS );
 
 	// Unicode to UTF8 string conversion
-	inline HRESULT WCSToUTF8( const WCHAR* strWCS, char *strUTF8, INT iBuffLen );
+	HRESULT WCSToUTF8( const WCHAR* strWCS, char *strUTF8, INT iBuffLen );
 	template<INT iBuffLen>
-	inline HRESULT WCSToUTF8( const WCHAR* strWCS, char (&strUTF8)[iBuffLen] );
-	inline HRESULT WCSToUTF8( const std::wstring &strWCS, std::string &strUTF8 );
+	HRESULT WCSToUTF8( const WCHAR* strWCS, char (&strUTF8)[iBuffLen] );
+	HRESULT WCSToUTF8( const std::wstring &strWCS, std::string &strUTF8 );
 
 	// MBCS to Unicode string conversion
-	inline HRESULT MBCSToWCS( const char *strMBCS, WCHAR* strWCS, INT iBuffLen );
+	HRESULT MBCSToWCS( const char *strMBCS, WCHAR* strWCS, INT iBuffLen );
 	template<INT iBuffLen>
-	inline HRESULT MBCSToWCS( const char *strMBCS, WCHAR (&strWCS)[iBuffLen] );
-	inline HRESULT MBCSToWCS( const std::string &strMBCS, std::wstring &strWCS );
+	HRESULT MBCSToWCS( const char *strMBCS, WCHAR (&strWCS)[iBuffLen] );
+	HRESULT MBCSToWCS( const std::string &strMBCS, std::wstring &strWCS );
 
 	// MBCS to UTF8 string conversion
-	inline HRESULT MBCSToUTF8( const char *strMBCS, char* strUTF8, INT iBuffLen );
+	HRESULT MBCSToUTF8( const char *strMBCS, char* strUTF8, INT iBuffLen );
 	template<INT iBuffLen>
-	inline HRESULT MBCSToUTF8( const char *strMBCS, char (&strUTF8)[iBuffLen] );
-	inline HRESULT MBCSToUTF8( const std::string &strMBCS, std::string &strUTF8 );
+	HRESULT MBCSToUTF8( const char *strMBCS, char (&strUTF8)[iBuffLen] );
+	HRESULT MBCSToUTF8( const std::string &strMBCS, std::string &strUTF8 );
 
 	// UTF8 to Unicode string conversion
-	inline HRESULT UTF8ToWCS( const char *strUTF8, WCHAR* strWCS, INT iBuffLen );
+	HRESULT UTF8ToWCS( const char *strUTF8, WCHAR* strWCS, INT iBuffLen );
 	template<INT iBuffLen>
-	inline HRESULT UTF8ToWCS( const char *strUTF8, WCHAR (&strWCS)[iBuffLen] );
-	inline HRESULT UTF8ToWCS( const std::string& strUTF8, std::wstring& strWCS );
+	HRESULT UTF8ToWCS( const char *strUTF8, WCHAR (&strWCS)[iBuffLen] );
+	HRESULT UTF8ToWCS( const std::string& strUTF8, std::wstring& strWCS );
 
 	// UTF8 to MBCS string conversion
-	inline HRESULT UTF8ToMBCS( const char *strUTF8, char* strMBCS, INT iBuffLen );
+	HRESULT UTF8ToMBCS( const char *strUTF8, char* strMBCS, INT iBuffLen );
 	template<INT iBuffLen>
-	inline HRESULT UTF8ToMBCS( const char *strUTF8, char (&strMBCS)[iBuffLen] );
-	inline HRESULT UTF8ToMBCS( const std::string& strUTF8, std::string& strMBCS );
+	HRESULT UTF8ToMBCS( const char *strUTF8, char (&strMBCS)[iBuffLen] );
+	HRESULT UTF8ToMBCS( const std::string& strUTF8, std::string& strMBCS );
 
 
 	// String compare

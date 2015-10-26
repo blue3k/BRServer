@@ -12,50 +12,47 @@
 #pragma once
 
 
-#include "Common/BrAssert.h"
+#include "Typedefs.h"
+#include "TimeUtil.h"
 
 
 namespace BR
 {
-	typedef UINT ThreadID;
+
+	typedef std::thread::id ThreadID;
+	typedef std::thread::native_handle_type			ThreadHandle;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Basic multithread class
 	//
-	class Thread
+	class Thread : public std::thread
 	{
 	public:
-		typedef enum tag_PRIORITY
+		enum class PRIORITY
 		{
-			PRIORITY_TIME_CRITICAL,		// Indicates 3 points above normal priority. 
-			PRIORITY_HIGHEST,			// Indicates 2 points above normal priority. 
-			PRIORITY_ABOVE_NORMAL,		// Indicates 1 point above normal priority. 
-			PRIORITY_NORMAL,			// Indicates normal priority. 
-			PRIORITY_BELOW_NORMAL,		// Indicates 1 point below normal priority. 
-			PRIORITY_LOWEST,			// Indicates 2 points below normal priority. 
-			PRIORITY_IDLE,				// Indicates 4 points below normal priority. 
-		} PRIORITY;
+			TIME_CRITICAL,		// Indicates 3 points above normal priority. 
+			HIGHEST,			// Indicates 2 points above normal priority. 
+			ABOVE_NORMAL,		// Indicates 1 point above normal priority. 
+			NORMAL,			// Indicates normal priority. 
+			BELOW_NORMAL,		// Indicates 1 point below normal priority. 
+			LOWEST,			// Indicates 2 points below normal priority. 
+			IDLE,				// Indicates 4 points below normal priority. 
+		};
 
 
 	private:
-		// Thread handle
-		volatile uintptr_t m_uiThread;
-
-		// Thread ID
-		ThreadID m_uiThreadID;
-
 		// working thread priority
 		PRIORITY m_threadPriority;
 
 		// Event handles for thread control
-		HANDLE	m_hKillEvent;
+		std::timed_mutex	m_KillMutex;
 
 		// Calculate sleep interval
-		ULONG	m_ulPreTime;
+		TimeStampMS	m_ulPreTime;
 
 		// thread function for run
-		static unsigned int __stdcall ThreadFunc( void* arg );
+		static void ThreadFunc(Thread* pThread);
 
 	protected:
 
@@ -65,65 +62,42 @@ namespace BR
 		virtual ~Thread();
 
 		// Get thread
-		inline uintptr_t GetThread();
+		inline ThreadHandle GetThread();
 		inline ThreadID GetThreadID();
 
 		// Get/Set Thread Priority
-		inline virtual void SetPriority( PRIORITY priority );
+		virtual void SetPriority(PRIORITY priority);
 		inline PRIORITY GetPriority();
 
+		//void SetAffinity(PRIORITY priority);
+
 		// Get end event handle
-		inline HANDLE GetKillEvent();
+		inline std::timed_mutex& GetKillMutex();
 
 
 		// Calculate sleep interval
-		ULONG UpdateInterval( ULONG ulSleepInterval );
+		DurationMS UpdateInterval(const DurationMS& ulSleepInterval);
 
 		// Check kill event for give wait time
-		bool CheckKillEvent( DWORD dwWaitTime );
+		bool CheckKillEvent(const DurationMS& dwWaitTime);
 
 
 		// thread Controlling
 		virtual void Start();
-		virtual void Stop( bool bSendKillEvt = false );
-		virtual void Resume();
-		virtual void Pause();
+		virtual void Stop(bool bSendKillEvt = false);
+
 
 		// run process, if return value is false then thread will stop
-		virtual bool OnStart() {  return true;}
 		virtual bool Run() = 0;
-		virtual bool OnEnd() {return true;}
 	};
 
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Functor execution thread
-	//
-
-	class FunctorThread : public Thread
+	class ThisThread
 	{
-	public: 
-
-	private:
-		std::function<void(Thread *pThread)> m_Functor;
-
 	public:
-		FunctorThread(std::function<void(Thread *pThread)> Functor)
-			:m_Functor(Functor)
-		{
-		}
-		virtual bool Run()
-		{
-			m_Functor(this);
-			return true;
-		}
+		static void Yield()									{ std::this_thread::yield(); }
+		static std::thread::id GetThreadID()				{ return std::this_thread::get_id(); }
+		static void SleepFor(DurationMS duration)			{ std::this_thread::sleep_for(duration); }
 	};
-
-
-
-
-
 
 
 #include "Thread.inl"

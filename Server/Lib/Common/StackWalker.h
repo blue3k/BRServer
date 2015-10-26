@@ -32,14 +32,14 @@ namespace BR
 			MIN_EXEOFFSET			= 0x100,
 		};
 
-		UINT StackTraceCount;
+		size_t StackTraceCount;
 		void* StackTrace[MAX_CALLSTACK_DEPTH];
 
 		// constructor
 		CallStackTrace();
 
 		// print stack trace
-		HRESULT PrintStackTrace( Trace::TraceChannels channel, HANDLE hProcess );
+		HRESULT PrintStackTrace( Trace::TraceChannels channel, NativeHANDLE hProcess );
 	};
 
 
@@ -56,11 +56,11 @@ namespace BR
 
 	public:
 		// initialize stace walker
-		static bool __stdcall Initialize();
-		static void __stdcall Deinitialize();
+		static STDCALL bool Initialize();
+		static STDCALL void Deinitialize();
 
 		// get current stack trace
-		static void __stdcall CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth = 0, UINT maxDepth = CallStackTrace::MAX_CALLSTACK_DEPTH );
+		static STDCALL void CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth = 0, UINT maxDepth = CallStackTrace::MAX_CALLSTACK_DEPTH );
 
 		// print stack trace
 		static void PrintStackTrace(Trace::TraceChannels channel);

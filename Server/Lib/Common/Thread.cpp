@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/TimeUtil.h"
 #include "Common/Thread.h"
-#include <process.h>
+
 
 
 
@@ -21,35 +21,15 @@ namespace BR
 {
 
 
-//////////////////////////////////////////////////////////////////////////////////
-//
-//	Basic multithread class
-//
 
+	//////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Basic multithread class
+	//
 
-Thread::Thread()
-:m_uiThread(0),
-m_uiThreadID(0),
-m_threadPriority(PRIORITY_NORMAL),
-m_ulPreTime(0)
-{
-	m_hKillEvent = CreateEvent( NULL, FALSE, FALSE, NULL );
-}
+#if WINDOWS
 
-Thread::~Thread()
-{
-	Stop( true );
-
-	if( m_hKillEvent )
-		CloseHandle( m_hKillEvent );
-}
-
-// Get/Set Thread Priority
-void Thread::SetPriority(PRIORITY priority)
-{
-	m_threadPriority = priority;
-
-	static const UINT toWINPriority[] =
+	static const INT ThreadSchedulingTable[] =
 	{
 		THREAD_PRIORITY_TIME_CRITICAL,		// PRIORITY_TIME_CRITICAL
 		THREAD_PRIORITY_HIGHEST,			// PRIORITY_HIGHEST
@@ -60,164 +40,191 @@ void Thread::SetPriority(PRIORITY priority)
 		THREAD_PRIORITY_IDLE,				// PRIORITY_IDLE
 	};
 
-	if (m_uiThread)
-		::SetThreadPriority((HANDLE)m_uiThread, toWINPriority[priority]);
-}
+#elif LINUX
 
-// thread function for run
-unsigned int __stdcall Thread::ThreadFunc( void* arg )
-{
-	HRESULT hr = S_OK;
-	Thread *pThread = (Thread*)arg;
+	// schedulingPolicies
+	//
+	//	// Normal threads, No Scheduling decision. priority must be 0
+	//	SCHED_OTHER,
+	//	SCHED_IDLE,
+	//	SCHED_BATCH,
 
-	Assert( pThread != nullptr );
-	pThread->m_uiThreadID = GetCurrentThreadId();
+	//	// Priority value from 1 to 99
+	//	// Varies by system, use from sched_get_priority_min(2) to sched_get_priority_max(2)
+	//	SCHED_FIFO,
+	//	SCHED_RR,
+	//
 
-	if( !pThread->OnStart() )
+	static const struct
 	{
-		goto Proc_End;
+		int Policy;
+		int Priority;
+
+	} ThreadSchedulingTable[] =
+	{
+		{ SCHED_FIFO,	sched_get_priority_max(SCHED_FIFO) },																				// PRIORITY_TIME_CRITICAL
+		{ SCHED_RR,	sched_get_priority_min(SCHED_RR) + ((sched_get_priority_max(SCHED_RR) - sched_get_priority_min(SCHED_RR)) >> 1), },	// PRIORITY_HIGHEST
+		{ SCHED_RR,	sched_get_priority_min(SCHED_RR), },																				// PRIORITY_ABOVE_NORMAL 
+		{ SCHED_OTHER,	0, },																									// PRIORITY_NORMAL
+		{ SCHED_BATCH,	0, },																									// PRIORITY_BELOW_NORMAL
+		{ SCHED_BATCH,	0, },																									// PRIORITY_LOWEST
+		{ SCHED_IDLE,	0, },																									// PRIORITY_IDLE
+	};
+
+	static_assert(countof(ThreadSchedulingTable) == ((int)Thread::PRIORITY::IDLE + 1), "Invalid Thread scheduling table count");
+
+
+	class ModuleThread_impl
+	{
+	public:
+		ModuleThread_impl()
+		{
+			rlimit limit;
+			memset(&limit, 0, sizeof limit);
+			if (getrlimit(RLIMIT_RTPRIO, &limit) != 0)
+			{
+				std::cout << "Failed to get rtpio limits:" << errno << std::endl;
+				assert(!"Failed to get rtpio limits:");
+				return;
+			}
+
+			unsigned int rrMax = (unsigned)sched_get_priority_max(SCHED_RR);
+			unsigned int fifoMax = (unsigned)sched_get_priority_max(SCHED_FIFO);
+			if (rrMax > limit.rlim_cur || rrMax > limit.rlim_max)
+			{
+				std::cout << "rtpio RR limit: min:" << (int)sched_get_priority_min(SCHED_RR) << " max:" << (int)sched_get_priority_max(SCHED_RR) << std::endl;
+				assert(!"Invalid rtpio RR limits:");
+			}
+			if (fifoMax > limit.rlim_cur || fifoMax > limit.rlim_max)
+			{
+				std::cout << "rtpio FIFO limit: min:" << (int)sched_get_priority_min(SCHED_FIFO) << " max:" << (int)sched_get_priority_max(SCHED_FIFO) << std::endl;
+				assert(!"Invalid rtpio FIFO limits:");
+			}
+			std::cout << "TestThreadLimits - OK" << std::endl;
+		}
+	};
+	static ModuleThread_impl CheckThreadLimits;
+
+
+
+#endif
+
+	Thread::Thread()
+		: m_threadPriority(PRIORITY::NORMAL)
+	{
 	}
 
-	if( !pThread->Run() )
+	Thread::~Thread()
 	{
-		goto Proc_End;
+		Stop(true);
 	}
 
-	if( !pThread->OnEnd() )
+	// Get/Set Thread Priority
+	void Thread::SetPriority(PRIORITY priority)
 	{
-		goto Proc_End;
+		m_threadPriority = priority;
+		auto threadHandle = GetThread();
+		if (threadHandle == ThreadHandle(0)) return;
+
+#if WINDOWS
+
+		::SetThreadPriority((HANDLE)threadHandle, ThreadSchedulingTable[(int)priority]);
+
+#elif LINUX
+
+		sched_param sch_params;
+		sch_params.sched_priority = ThreadSchedulingTable[(int)priority].Priority;
+		if (pthread_setschedparam(native_handle(), ThreadSchedulingTable[(int)priority].Policy, &sch_params))
+		{
+			std::cerr << "Failed to set Thread scheduling : " << errno << std::endl;
+			assert(false);
+		}
+
+#endif
 	}
 
-	pThread->m_uiThread = 0;
-	pThread->m_uiThreadID = 0;
-
-Proc_End:
-
-
-	return 0;
-}
-
-
-
-
-// Calculate sleep interval from the expected interval
-ULONG Thread::UpdateInterval( ULONG ulExpectedInterval )
-{
-	ULONG ulCurTime = Util::Time.GetTimeMs();
-	if( m_ulPreTime == 0 )
+	// thread function for run
+	void Thread::ThreadFunc(Thread* pThread)
 	{
+		if (pThread == nullptr)
+			return;
+
+		pThread->SetPriority(pThread->GetPriority());
+
+		pThread->Run();
+
+		return;
+	}
+
+
+
+
+	// Calculate sleep interval from the expected interval
+	DurationMS Thread::UpdateInterval(const DurationMS& ulExpectedInterval)
+	{
+		auto ulCurTime = Util::Time.GetTimeMs();
+		if (m_ulPreTime.time_since_epoch().count() == 0)
+		{
+			m_ulPreTime = ulCurTime;
+			return DurationMS(0);
+		}
+
+		DurationMS diffTime = ulCurTime - m_ulPreTime;
+		DurationMS sleepInterval;
+
+		if (diffTime > ulExpectedInterval)
+			sleepInterval = DurationMS(0);
+		else if (diffTime < ulExpectedInterval)
+			sleepInterval = DurationMS((ulExpectedInterval - diffTime).count());
+		else
+			sleepInterval = ulExpectedInterval;
 		m_ulPreTime = ulCurTime;
-		return 0;
+
+		return sleepInterval;
 	}
 
-	ULONG diffTime = ulCurTime - m_ulPreTime;
-	ULONG sleepInterval = ulExpectedInterval;
 
-	if( diffTime > ulExpectedInterval )
-		sleepInterval = 0;
-	else if( diffTime < ulExpectedInterval )
-		sleepInterval = ulExpectedInterval - diffTime;
-
-	m_ulPreTime = ulCurTime;
-
-	return sleepInterval;
-}
-
-
-bool Thread::CheckKillEvent( DWORD dwWaitTime )
-{
-	DWORD dwWaitRes = WaitForSingleObject( GetKillEvent(), dwWaitTime );
-	return dwWaitRes == WAIT_OBJECT_0;
-}
-
-// thread Controlling
-
-void Thread::Start()
-{
-	m_ulPreTime = 0;
-
-	if( m_uiThread == 0 )
+	bool Thread::CheckKillEvent(const DurationMS& waitTime)
 	{
-		ResetEvent( m_hKillEvent );
-
-		m_uiThread = _beginthreadex( NULL, 0, ThreadFunc, this, 0, &m_uiThreadID );
-		_ASSERTE( m_uiThread != 0 );
-		SetThreadPriority( (HANDLE)m_uiThread, GetPriority() );
+		return GetKillMutex().try_lock_for(waitTime);
 	}
-}
 
-void Thread::Stop( bool bSendKillEvt )
-{
-	HRESULT hr = S_OK;
+	// thread Controlling
 
-	if( m_uiThread )
+	void Thread::Start()
 	{
-		if( bSendKillEvt )
+		m_ulPreTime = Util::Time.GetTimeMs();
+
+		if (!GetKillMutex().try_lock())
+		{
+			// Failed to set thread lock
+			//std::cerr << "Failed to set Thread scheduling : " << std::strerror((int)errno) << std::endl;
+			assert(false);
+			return;
+		}
+
+		std::thread localThread(ThreadFunc, this);
+		swap(localThread);
+	}
+
+	void Thread::Stop(bool bSendKillEvt)
+	{
+		// if already finished or not started
+		if (!joinable()) return;
+
+		if (bSendKillEvt)
 		{
 			// Set close event
-			SetEvent( m_hKillEvent );
+			GetKillMutex().unlock();
 		}
 
-		long waitCount = 0;
-		while (m_uiThread != 0 && bSendKillEvt )
-		{
-			DWORD dwRes = WaitForSingleObject((HANDLE)m_uiThread, 10 * 1000);
-
-			if (dwRes == WAIT_TIMEOUT)
-			{
-				Assert(waitCount<3);
-				if (waitCount >= 3)
-				{
-					hr = E_UNEXPECTED;
-					goto Proc_End;
-				}
-
-				continue;
-			}
-
-			if (dwRes == WAIT_FAILED)
-			{
-				hr = HRESULT_FROM_WIN32(GetLastError());
-				goto Proc_End;
-			}
-			else if (dwRes != WAIT_OBJECT_0)
-			{
-				hr = E_UNEXPECTED;
-				goto Proc_End;
-			}
-
-			std::atomic_thread_fence(std::memory_order_release);
-
-			break;
-		}
+		join();
 	}
 
-Proc_End:
 
-	if( !m_uiThread )
-	{
-		CloseHandle( (HANDLE)m_uiThread );
-		m_uiThread = NULL;
-		m_uiThreadID = 0;
-	}
 
-}
 
-void Thread::Resume()
-{
-	if( m_uiThread )
-	{
-		ResumeThread( (HANDLE)m_uiThread );
-	}
-}
 
-void Thread::Pause()
-{
-	if( m_uiThread )
-	{
-		SuspendThread( (HANDLE)m_uiThread );
-	}
-}
 
 
 

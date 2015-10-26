@@ -385,7 +385,7 @@ HRESULT MatchingQueueItem::SetQueueItem( EntityUID registerUID, PlayerID registe
 	
 	RegisterUID = registerUID;
 	RegisterID = registerID;
-	NumPlayers = Util::Min((UINT32)MAX_NUM_PLAYER,numPlayer);
+	NumPlayers = std::min((UINT32)MAX_NUM_PLAYER,numPlayer);
 	memcpy( Players, playerInformations, sizeof(MatchingPlayerInformation)*NumPlayers );
 	return S_OK;
 }

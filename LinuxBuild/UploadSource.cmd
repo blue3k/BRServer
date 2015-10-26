@@ -1,7 +1,6 @@
 
-set PATH=%PATH%;"C:\Program Files (x86)\WinSCP"
-set LOCAL_BASE_PATH=%~dp0..\
-set REMOTE_BASE_PATH=/home/blue3k/work/BRServer
+call %~dp0\EnvSetup.cmd
+
 set FTP_CMD_TMP=buildcmd.dat
 set LOCAL_PATH=%PATH_ROOT%
 
@@ -16,7 +15,7 @@ if /i %1 == .       set REMOTE_PATH=%REMOTE_BASE_PATH%
 
 
 
-set EXCLUDES_FILES=*.cmd;*.user;*.suo;*.sdf;*.opensdf;*.recipe;*.vs;*.obj;*.o;*.pdf;*.pch;*.tlb;*.lib;*.exe;*.dll;*.zip;*.log;*.idb;*.manifest;*.rc;.git/;ipch/;Debug/;Release/;x64Debug/;x64Release/;bin/;*.tlog/
+set EXCLUDES_FILES=*.cmd;*.user;*.suo;*.sdf;*.opensdf;*.recipe;*.vs;*.obj;*.o;*.pdf;*.pch;*.tlb;*.lib;*.exe;*.dll;*.zip;*.log;*.idb;*.manifest;*.rc;.git/;ipch/;Debug/;Release/;x64Debug/;x64Release/;bin/;temp/;*.tlog/
 
 
 
@@ -24,6 +23,8 @@ echo synchronize -transfer=binary -filemask="|%EXCLUDES_FILES%" remote %LOCAL_PA
 
 echo close>> %FTP_CMD_TMP%
 echo exit>> %FTP_CMD_TMP%
+
+@echo Uploaded > Uploaded.txt
 
 winscp.com Linux /script=%FTP_CMD_TMP%
 

@@ -14,7 +14,7 @@
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
 #include "Common/Synchronize.h"
-#include "Common/memory.h"
+#include "Common/Memory.h"
 
 
 

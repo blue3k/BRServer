@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/BrAssert.h"
 #include "Common/StrUtil.h"
 #include "Common/ToStringBase.h"
@@ -196,7 +196,7 @@ namespace BR
 		Option;
 		int Decimal = 0, sign = 0;
 		char strMantisa[64];
-		int digitCount = Util::Min( (int)digit, (int)(_countof(strMantisa)) );
+		int digitCount = std::min( (int)digit, (int)(_countof(strMantisa)) );
 
 		if( digit < 0 )
 			return E_INVALIDARG;
@@ -243,7 +243,7 @@ namespace BR
 			_AppendCharReturn( buf, length, '0' );
 			_AppendCharReturn( buf, length, '.' );
 
-			int ZeroPadding = Util::Min( -Decimal, (int)digit );
+			int ZeroPadding = std::min( -Decimal, (int)digit );
 			for( int iPending = 0; iPending < ZeroPadding && length > 0; iPending++ )
 			{
 				_AppendCharReturn( buf, length, '0' );

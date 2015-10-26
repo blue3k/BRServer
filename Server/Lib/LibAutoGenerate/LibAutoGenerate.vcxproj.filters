@@ -30,6 +30,9 @@
     <None Include="HResult\HRESSvrSys.mc">
       <Filter>HResult</Filter>
     </None>
+    <None Include="HResult\HRESSystem.mc">
+      <Filter>HResult</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Protocol\ProtocolClusterServer.xml">

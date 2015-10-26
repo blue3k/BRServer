@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Synchronize.h"

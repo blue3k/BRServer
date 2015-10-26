@@ -1,15 +1,11 @@
 
 
 OUTPUT_PATH=../../Common
-SOURCES=HRESCommon.mc \
-	HRESEvent.mc \
-	HRESGame.mc \
-	HRESLogin.mc \
-	HRESNet.mc \
-	HRESSvrSys.mc
 
+SOURCES = $(wildcard *.mc)
 
 TARGET_FILES=$(addprefix $(OUTPUT_PATH)/,$(SOURCES:.mc=.h))
+
 
 
 $(OUTPUT_PATH)/%.h: %.mc

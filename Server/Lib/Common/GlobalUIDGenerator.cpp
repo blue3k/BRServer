@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/GlobalUIDGenerator.h"
 #include "Common/TimeUtil.h"
 
@@ -48,7 +48,7 @@ namespace BR {
 						// Maximum GUID for this sec, sleep a little before retry
 						defTrace(Trace::TRC_TRACE, "GlobalUIDGenerator: Maximum GUID for this sec, sleep a little before retry");
 						// Do some other thread's job
-						Sleep(0);
+						ThisThread::SleepFor(DurationMS(0));
 						newTime = Util::Time.GetRawUTCSec();
 					}
 

@@ -73,13 +73,19 @@ namespace BR
 	//	Memory block descriptor
 	//
 
+#if WINDOWS
 	// Check CRT heap memory status
 	inline void CheckCtrMemory()
 	{
 		Assert( _CrtCheckMemory( ) );
 	}
 
-
+#else
+	inline void CheckCtrMemory()
+	{
+		//Assert(_CrtCheckMemory());
+	}
+#endif
 
 
 
@@ -222,9 +228,9 @@ namespace BR
 	template< size_t BufferSize, size_t alignment >
 	class CircularBufferAllocator : public MemoryAllocator
 	{
-	private:
+	public:
 
-		enum class ChunkType : UINT32
+		enum class ChunkTypes : UINT32
 		{
 			Free			= 0xc7c7c7c7,
 			Dummy,
@@ -235,7 +241,7 @@ namespace BR
 #pragma pack(4)
 		struct MemoryChunkHeader
 		{
-			ChunkType	ChunkType;
+			ChunkTypes	ChunkType;
 			UINT32		ChunkSize;
 		};
 #pragma pack(pop)

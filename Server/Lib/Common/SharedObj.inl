@@ -10,7 +10,6 @@
 
 
 
-#pragma intrinsic (_InterlockedIncrement, _InterlockedDecrement)
 
 
 inline ISharedObj::ISharedObj()

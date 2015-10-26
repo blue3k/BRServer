@@ -11,7 +11,7 @@
 
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/Argument.h"
 #include "Common/ToString.h"

@@ -19,12 +19,149 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Argument.h" />
+    <ClInclude Include="ArrayUtil.h" />
+    <ClInclude Include="Binary.h" />
+    <ClInclude Include="BrAssert.h" />
+    <ClInclude Include="BrBaseTypes.h" />
+    <ClInclude Include="BrCommonTypes.h" />
+    <ClInclude Include="BrGameTypes.h" />
+    <ClInclude Include="BrLinkedList.h" />
+    <ClInclude Include="BrRandom.h" />
+    <ClInclude Include="BrSvrTypes.h" />
+    <ClInclude Include="BrXML.h" />
+    <ClInclude Include="CircularQueue.h" />
+    <ClInclude Include="ClassUtil.h" />
+    <ClInclude Include="DualSortedMap.h" />
+    <ClInclude Include="GameConst.h" />
+    <ClInclude Include="GlobalUIDGenerator.h" />
+    <ClInclude Include="HashTable.h" />
+    <ClInclude Include="HashTable2.h" />
+    <ClInclude Include="HashTableTrait.h" />
     <ClInclude Include="HRESCommon.h" />
     <ClInclude Include="HRESEvent.h" />
     <ClInclude Include="HRESGame.h" />
     <ClInclude Include="HRESLogin.h" />
     <ClInclude Include="HRESNet.h" />
     <ClInclude Include="HRESSvrSys.h" />
+    <ClInclude Include="Indexing.h" />
+    <ClInclude Include="LocalUIDGenerator.h" />
+    <ClInclude Include="MathUtil.h" />
+    <ClInclude Include="MathUtilToString.h" />
+    <ClInclude Include="Memento.h" />
+    <ClInclude Include="MemLog.h" />
+    <ClInclude Include="Memory.h" />
+    <ClInclude Include="MemoryBufferUtil.h" />
+    <ClInclude Include="MemoryPool.h" />
+    <ClInclude Include="MemoryStream.h" />
+    <ClInclude Include="Memory_Impl.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="NullUtil.h" />
+    <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="PerfCounter.h" />
+    <ClInclude Include="PolicyID.h" />
+    <ClInclude Include="SharedObj.h" />
+    <ClInclude Include="SharedObject.h" />
+    <ClInclude Include="SharedPointer.h" />
+    <ClInclude Include="SharedReferenceManager.h" />
+    <ClInclude Include="SortedMap.h" />
+    <ClInclude Include="SpinBuffer.h" />
+    <ClInclude Include="SpinBufferMT.h" />
+    <ClInclude Include="SpinSharedBuffer.h" />
+    <ClInclude Include="StackPool.h" />
+    <ClInclude Include="StackWalker.h" />
+    <ClInclude Include="StaticDoubleLinkedList.h" />
+    <ClInclude Include="StaticHashTable.h" />
+    <ClInclude Include="StaticLinkedList.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StrFormat.h" />
+    <ClInclude Include="StrUtil.h" />
+    <ClInclude Include="SvrPolicyID.h" />
+    <ClInclude Include="Synchronize.h" />
+    <ClInclude Include="SystemSynchronize.h" />
+    <ClInclude Include="Thread.h" />
+    <ClInclude Include="TimeUtil.h" />
+    <ClInclude Include="ToString.h" />
+    <ClInclude Include="ToStringBase.h" />
+    <ClInclude Include="ToStringGame.h" />
+    <ClInclude Include="ToStringSvr.h" />
+    <ClInclude Include="Trace.h" />
+    <ClInclude Include="Trace_Internal.h" />
+    <ClInclude Include="Typedefs.h" />
+    <ClInclude Include="UniqueEntityIDGenerator.h" />
+    <ClInclude Include="Utility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ArrayUtil.inl" />
+    <None Include="Binary.inl" />
+    <None Include="BrBaseTypes.inl" />
+    <None Include="BrCommonTypes.inl" />
+    <None Include="BrGameTypes.inl" />
+    <None Include="BrLinkedList_MT.inl" />
+    <None Include="BrLinkedList_ST.inl" />
+    <None Include="BrRandom.inl" />
+    <None Include="BrSvrTypes.inl" />
+    <None Include="BrXML.inl" />
+    <None Include="CircularQueue.inl" />
+    <None Include="CryptoCRC32Table.inl" />
+    <None Include="DualSortedMap.inl" />
+    <None Include="MathUtil.inl" />
+    <None Include="Memory.inl" />
+    <None Include="MemoryPool.inl" />
+    <None Include="MemoryStream.inl" />
+    <None Include="Message.inl" />
+    <None Include="ObjectPool.inl" />
+    <None Include="PerfCounter.inl" />
+    <None Include="SharedObj.inl" />
+    <None Include="SortedMap.inl" />
+    <None Include="SpinBuffer.inl" />
+    <None Include="SpinBufferMT.inl" />
+    <None Include="SpinSharedBuffer.inl" />
+    <None Include="StackPool.inl" />
+    <None Include="StrUtil.inl" />
+    <None Include="Synchronize.inl" />
+    <None Include="SystemSynchronize_linux.inl" />
+    <None Include="SystemSynchronize_win.inl" />
+    <None Include="Thread.inl" />
+    <None Include="TimeUtil.inl" />
+    <None Include="Trace.inl" />
+    <None Include="Trace_Internal.inl" />
+    <None Include="Utility.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Argument.cpp" />
+    <ClCompile Include="Binary.cpp" />
+    <ClCompile Include="BrGameTypes.cpp" />
+    <ClCompile Include="BrRandom.cpp" />
+    <ClCompile Include="BrXML.cpp" />
+    <ClCompile Include="CryptoBase64.cpp" />
+    <ClCompile Include="CryptoCrc32.cpp" />
+    <ClCompile Include="CryptoSHA.cpp" />
+    <ClCompile Include="GlobalUIDGenerator.cpp" />
+    <ClCompile Include="LocalUIDGenerator.cpp" />
+    <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="MemoryPool.cpp" />
+    <ClCompile Include="MemoryStream.cpp" />
+    <ClCompile Include="Message.cpp" />
+    <ClCompile Include="ObjectPool.cpp" />
+    <ClCompile Include="PerfCounter.cpp" />
+    <ClCompile Include="SharedObject.cpp" />
+    <ClCompile Include="SharedReferenceManager.cpp" />
+    <ClCompile Include="SRLinkedList.cpp" />
+    <ClCompile Include="StackPool.cpp" />
+    <ClCompile Include="StackWalker.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="StrUtil.cpp" />
+    <ClCompile Include="Synchronize.cpp" />
+    <ClCompile Include="Thread.cpp" />
+    <ClCompile Include="TimeUtil.cpp" />
+    <ClCompile Include="ToString.cpp" />
+    <ClCompile Include="ToStringBase.cpp" />
+    <ClCompile Include="ToStringGame.cpp" />
+    <ClCompile Include="ToStringSvr.cpp" />
+    <ClCompile Include="Trace.cpp" />
+    <ClCompile Include="UniqueEntityIDGenerator.cpp" />
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{172a428c-9324-4425-bf56-af819bcfe145}</ProjectGuid>
@@ -60,8 +197,32 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
   </ItemDefinitionGroup>

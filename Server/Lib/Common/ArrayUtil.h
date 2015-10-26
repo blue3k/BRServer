@@ -14,7 +14,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
-
+#include "Common/Trace.h"
 
 
 namespace BR
@@ -78,7 +78,7 @@ namespace BR
 			Array<DataType> *m_pContainer;
 
 			// Index 
-			UINT m_iIdx;
+			mutable UINT m_iIdx;
 
 		public:
 

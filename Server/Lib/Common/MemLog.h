@@ -1,11 +1,9 @@
 #pragma once
 
-#include <windows.h>
-#include <objbase.h>
-
+#include "Common/Typedefs.h"
 
 #ifndef MEMLOG_FUNC
-#define MEMLOG_FUNC __declspec(dllimport)
+#define MEMLOG_FUNC DLL_IMPORT
 #endif
 
 namespace MemLog
@@ -17,8 +15,9 @@ namespace MemLog
 		LOG_ALL = LOG_DebugOut | LOG_Console,
 	};
 
-	interface IMemLogger
+	class IMemLogger
 	{
+	public:
 		// Release interface
 		virtual void Release() = 0;
 
@@ -53,6 +52,6 @@ namespace MemLog
 };
 
 
-MEMLOG_FUNC HRESULT APIENTRY QueryMemLogger( MemLog::IMemLogger* &pLogger );
-typedef HRESULT (APIENTRY *T_QueryMemLogger)( MemLog::IMemLogger* &pLogger );
+MEMLOG_FUNC HRESULT SYSTEMAPI QueryMemLogger( MemLog::IMemLogger* &pLogger );
+typedef HRESULT (SYSTEMAPI *T_QueryMemLogger)( MemLog::IMemLogger* &pLogger );
 

@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Trace.h"
 #include "Common/BrAssert.h"
 #include "Common/StackPool.h"
@@ -59,7 +59,7 @@ namespace BR
 		// Defence Too many thread entering race
 		while( m_Ticket.GetMyWaitingOrder( myTicket ) > 4 )
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 
 
@@ -67,7 +67,7 @@ namespace BR
 		{
 			// Defence Race condition
 			if( (iTryCount%4) == 0 )
-				Sleep(0);
+				ThisThread::SleepFor(DurationMS(0));
 
 			iTryCount++;
 
@@ -126,7 +126,7 @@ namespace BR
 		// Defence Too many thread entering race
 		while( m_Ticket.GetMyWaitingOrder( myTicket ) > 4 )
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 
 
@@ -134,7 +134,7 @@ namespace BR
 		{
 			// Defence Race condition
 			if( (iTryCount%4) == 0 )
-				Sleep(0);
+				ThisThread::SleepFor(DurationMS(0));
 
 			iTryCount++;
 

@@ -182,67 +182,14 @@ HRESULT StringCpy( WCHAR (&szDest)[iBuffLen], const WCHAR *szSrc )
 
 
 
-// Unicode to MBCS string conversion
-HRESULT WCSToMBCS( const WCHAR* strWCS, char *strMBCS, INT iBuffLen )
-{
-	if( strWCS == NULL || strMBCS == NULL )
-		return E_INVALIDARG;
-
-	INT iConvLen = WideCharToMultiByte(	CP_OEMCP, 0, 
-								strWCS, (int)wcslen(strWCS),
-								strMBCS, (int)iBuffLen, 
-								NULL, NULL );
-	if( iBuffLen >= 1 )
-	{
-		iBuffLen = Util::Min( iConvLen+1, iBuffLen ) - 1;
-		strMBCS[iBuffLen] = '\0';
-	}
-
-	return S_OK;
-}
-
 template<INT iBuffLen>
 HRESULT WCSToMBCS( const WCHAR* strWCS, char (&strMBCS)[iBuffLen] )
 {
 	return WCSToMBCS( strWCS, strMBCS, iBuffLen );
 }
 
-HRESULT WCSToMBCS( const std::wstring &strWCS, std::string &strMBCS )
-{
-	if( strWCS.c_str() == NULL )
-	{
-		strMBCS = "";
-		return S_OK;
-	}
-
-	int iTexLen  = ::WideCharToMultiByte( CP_OEMCP,0, strWCS.c_str(),(int)strWCS.length(), 0,0,0,0);
-	strMBCS.resize( iTexLen );
-	WCSToMBCS( strWCS.c_str(), (char*)strMBCS.data(), (INT)strMBCS.size()+1 );
-
-	return S_OK;
-}
 
 
-
-
-// Unicode to UTF8 string conversion
-HRESULT WCSToUTF8( const WCHAR* strWCS, char *strUTF8, INT iBuffLen )
-{
-	if( strWCS == NULL || strUTF8 == NULL )
-		return E_INVALIDARG;
-
-	INT iConvLen = WideCharToMultiByte(	CP_UTF8, 0, 
-								strWCS, (int)wcslen(strWCS),
-								strUTF8, (int)iBuffLen, 
-								NULL, NULL );
-	if( iBuffLen >= 1 )
-	{
-		iBuffLen = Util::Min( iConvLen+1, iBuffLen ) - 1;
-		strUTF8[iBuffLen] = '\0';
-	}
-
-	return S_OK;
-}
 
 template<INT iBuffLen>
 HRESULT WCSToUTF8( const WCHAR* strWCS, char (&strUTF8)[iBuffLen] )
@@ -250,84 +197,11 @@ HRESULT WCSToUTF8( const WCHAR* strWCS, char (&strUTF8)[iBuffLen] )
 	return WCSToUTF8( strWCS, strUTF8, iBuffLen );
 }
 
-HRESULT WCSToUTF8( const std::wstring &strWCS, std::string &strUTF8 )
-{
-	if( strWCS.c_str() == NULL )
-	{
-		strUTF8 = "";
-		return S_OK;
-	}
-
-	INT iTexLen  = ::WideCharToMultiByte( CP_UTF8,0, strWCS.c_str(),(int)strWCS.length(), 0,0,0,0);
-	strUTF8.resize( iTexLen );
-	WCSToUTF8( strWCS.c_str(), (char*)strUTF8.data(), (INT)strUTF8.size()+1 );
-
-	return S_OK;
-}
-
-
-// MBCS to Unicode string conversion
-HRESULT MBCSToWCS( const char *strMBCS, WCHAR* strWCS, INT iBuffLen )
-{
-	if( strWCS == NULL || strMBCS == NULL )
-		return E_INVALIDARG;
-
-	INT iConvLen = MultiByteToWideChar(	CP_ACP, 0, 
-								strMBCS,	(int)strlen(strMBCS), 
-								strWCS, (int)iBuffLen );
-	if( iBuffLen >= 1 )
-	{
-		iBuffLen = Util::Min( iConvLen+1, iBuffLen ) - 1;
-		strWCS[iBuffLen] = L'\0';
-	}
-	//return iConvLen;
-	return S_OK;
-}
 
 template<int iBuffLen>
 HRESULT MBCSToWCS( const char *strMBCS, WCHAR (&strWCS)[iBuffLen] )
 {
 	return MBCSToWCS( strMBCS, strWCS, iBuffLen );
-}
-
-HRESULT MBCSToWCS( const std::string &strMBCS, std::wstring &strWCS )
-{
-	if( strMBCS.c_str() == NULL )
-	{
-		strWCS = L"";
-		return S_OK;
-	}
-
-	//int iTexLen  = (int)_mbslen((const unsigned char*)strMBCS.c_str();
-	INT iTexLen  = ::MultiByteToWideChar(CP_ACP, 0, 
-								strMBCS.c_str(), -1, 
-								0, 0);
-
-	if( iTexLen >= 1 )
-		strWCS.resize( iTexLen - 1 ); // Eleminate NULL count
-	else 
-		strWCS.resize(0);
-
-	return MBCSToWCS( strMBCS.c_str(), (WCHAR*)strWCS.data(), (INT)strWCS.size()+1 );
-}
-
-
-// MBCS to Unicode string conversion
-HRESULT MBCSToUTF8( const char *strMBCS, char* strUTF8, INT iBuffLen )
-{
-	HRESULT hr = S_OK;
-
-	// temporary implementation
-	std::wstring strWCS;
-	hr = MBCSToWCS( strMBCS, strWCS );
-	if( FAILED( hr )) return hr;
-
-	hr = WCSToUTF8( strWCS.c_str(), strUTF8, iBuffLen );
-	if( FAILED( hr )) return hr;
-
-Proc_End:
-
-	return hr;
 }
 
 template<INT iBuffLen>
@@ -336,105 +210,16 @@ HRESULT MBCSToUTF8( const char *strMBCS, char (&strUTF8)[iBuffLen] )
 	return MBCSToUTF8( strMBCS, strUTF8, iBuffLen );
 }
 
-HRESULT MBCSToUTF8( const std::string &strMBCS, std::string &strUTF8 )
-{
-	HRESULT hr = S_OK;
-
-	// temporary implementation
-	std::wstring strWCS;
-	hr = MBCSToWCS( strMBCS, strWCS );
-	if( FAILED( hr )) return hr;
-
-	hr = WCSToUTF8( strWCS, strUTF8 );
-
-Proc_End:
-
-	return hr;
-}
-
-
-// UTF8 to Unicode string conversion
-HRESULT UTF8ToWCS( const char *strUTF8, WCHAR* strWCS, INT iBuffLen )
-{
-	if( strWCS == NULL || strUTF8 == NULL )
-		return E_INVALIDARG;
-
-	INT iConvLen = MultiByteToWideChar(	CP_UTF8, 0, 
-								strUTF8,	(int)strlen(strUTF8)+1, 
-								strWCS, (int)iBuffLen );
-	if( iBuffLen >= 1 )
-	{
-		iBuffLen = Util::Min( iConvLen+1, iBuffLen ) - 1;
-		strWCS[iBuffLen] = '\0';
-	}
-	//return iConvLen;
-	return S_OK;
-}
-
 template<INT iBuffLen>
 HRESULT UTF8ToWCS( const char *strUTF8, WCHAR (&strWCS)[iBuffLen] )
 {
 	return UTF8ToWCS( strUTF8, strWCS, iBuffLen );
 }
 
-HRESULT UTF8ToWCS( const std::string& strUTF8, std::wstring& strWCS )
-{
-	if( strUTF8.c_str() == NULL )
-	{
-		strWCS = L"";
-		return S_OK;
-	}
-
-	//int iTexLen = (int)strUTF8.length();
-	INT iTexLen  = ::MultiByteToWideChar(CP_UTF8, 0, 
-								strUTF8.c_str(), -1, 
-								0, 0);
-	if( iTexLen >= 1 )
-		strWCS.resize( iTexLen - 1 ); // Eleminate NULL count
-	else 
-		strWCS.resize(0);
-
-	return UTF8ToWCS( strUTF8.c_str(), (WCHAR*)strWCS.data(), (int)strWCS.size()+1 );
-}
-
-
-// UTF8 to MBCS string conversion
-HRESULT UTF8ToMBCS( const char *strUTF8, char* strMBCS, INT iBuffLen )
-{
-	HRESULT hr = S_OK;
-
-	// temporary implementation
-	std::wstring strWCS;
-	hr = UTF8ToWCS( strUTF8, strWCS );
-	if( FAILED( hr )) return hr;
-
-	hr = WCSToMBCS( strWCS.c_str(), strMBCS, iBuffLen );
-
-Proc_End:
-
-	return hr;
-}
-
 template<INT iBuffLen>
 HRESULT UTF8ToMBCS( const char *strUTF8, char (&strMBCS)[iBuffLen] )
 {
 	return UTF8ToMBCS( strUTF8, strMBCS, iBuffLen );
-}
-
-HRESULT UTF8ToMBCS( const std::string& strUTF8, std::string& strMBCS )
-{
-	HRESULT hr = S_OK;
-
-	// temporary implementation
-	std::wstring strWCS;
-	hr = UTF8ToWCS( strUTF8, strWCS );
-	if( FAILED( hr )) return hr;
-
-	hr = WCSToMBCS( strWCS, strMBCS );
-
-Proc_End:
-
-	return hr;
 }
 
 template<INT iBuffLen>
@@ -480,7 +265,7 @@ int StringCmp( const char* szSrc, INT iSrcBuffLen, const char* szDest, INT iDest
 	if( iSrcBuffLen <= 0 )	iSrcBuffLen = (int)strlen( szSrc );
 	if( iDestBuffLen <= 0 )	iDestBuffLen = (int)strlen( szDest );
 
-	INT MaxTry = Util::Min(iSrcBuffLen, iDestBuffLen);
+	INT MaxTry = std::min(iSrcBuffLen, iDestBuffLen);
 
 	return StringCmp( szSrc, szDest, MaxTry );
 }
@@ -534,7 +319,7 @@ int StringCmp( const WCHAR* szSrc, INT iSrcBuffLen, const WCHAR* szDest, INT iDe
 	if( iSrcBuffLen <= 0 )	iSrcBuffLen = (int)wcslen( szSrc );
 	if( iDestBuffLen <= 0 )	iDestBuffLen = (int)wcslen( szDest );
 
-	INT iCompLen = Util::Min(iSrcBuffLen, iDestBuffLen);
+	INT iCompLen = std::min(iSrcBuffLen, iDestBuffLen);
 
 	for( INT iComp = 0; iComp < iCompLen && szSrc[0] != L'\0' && szDest[0] != L'\0'; iComp++ )
 	{
@@ -798,39 +583,31 @@ HRESULT StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	}
 
 	return StringLwr( szDest, iBuffLen );
-
-Proc_End:
-
-	return hr;
 }
 
-HRESULT StringLwr( WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc )
+HRESULT StringLwr(WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc)
 {
 	HRESULT hr = S_OK;
 
-	if( szSrc == NULL )
+	if (szSrc == NULL)
 		return E_INVALIDARG;
 
 
-	INT iSrcBuffLen = (INT)wcslen( szSrc ) + 1;
+	INT iSrcBuffLen = (INT)wcslen(szSrc) + 1;
 
-	if( iBuffLen >= iSrcBuffLen )
+	if (iBuffLen >= iSrcBuffLen)
 	{
-		hr = StringCpy( szDest, iBuffLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		hr = StringCpy(szDest, iBuffLen, szSrc);
+		if (FAILED(hr)) return hr;
 	}
 	else
 	{
-		hr =StringDup( szDest, szSrc );
-		if( FAILED(hr) ) return hr;
+		hr = StringDup(szDest, szSrc);
+		if (FAILED(hr)) return hr;
 		iBuffLen = iSrcBuffLen;
 	}
 
-	return StringLwr( szDest, iBuffLen );
-
-Proc_End:
-
-	return hr;
+	return StringLwr(szDest, iBuffLen);
 }
 
 // String convert to lower case with truncate, if source string longer then testination buffer
@@ -846,7 +623,7 @@ HRESULT StringLwr( char (&szDest)[iBuffLen], const char *szSrc )
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
-	INT iConvLen = Util::Min(iBuffLen,iSrcBuffLen);
+	INT iConvLen = std::min(iBuffLen,iSrcBuffLen);
 
 	if( iBuffLen >= iSrcBuffLen )
 	{
@@ -855,10 +632,6 @@ HRESULT StringLwr( char (&szDest)[iBuffLen], const char *szSrc )
 	}
 
 	return StringLwr( szDest, iConvLen );
-
-Proc_End:
-
-	return hr;
 }
 
 template<INT iBuffLen>
@@ -866,24 +639,20 @@ HRESULT StringLwr( WCHAR (&wszDest)[iBuffLen], const WCHAR *wszSrc )
 {
 	HRESULT hr = S_OK;
 
-	if( szSrc == NULL )
+	if(wszSrc == NULL )
 		return E_INVALIDARG;
 
 
-	INT iSrcBuffLen = (INT)wcslen( szSrc ) + 1;
-	INT iConvLen = Util::Min(iBuffLen,iSrcBuffLen);
+	INT iSrcBuffLen = (INT)wcslen(wszSrc) + 1;
+	INT iConvLen = std::min(iBuffLen,iSrcBuffLen);
 
 	if( iBuffLen >= iSrcBuffLen )
 	{
-		hr = StringCpy( szDest, iConvLen, szSrc );
+		hr = StringCpy(wszDest, iConvLen, wszSrc);
 		if( FAILED(hr) ) return hr;
 	}
 
-	return StringLwr( szDest, iConvLen );
-
-Proc_End:
-
-	return hr;
+	return StringLwr(wszDest, iConvLen );
 }
 
 
@@ -968,10 +737,6 @@ HRESULT StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	}
 
 	return StringUpr( szDest, iBuffLen );
-
-Proc_End:
-
-	return hr;
 }
 
 HRESULT StringUpr( WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc )
@@ -997,10 +762,6 @@ HRESULT StringUpr( WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc )
 	}
 
 	return StringUpr( szDest, iBuffLen );
-
-Proc_End:
-
-	return hr;
 }
 
 // String convert to lower case with truncate, if source string longer then testination buffer
@@ -1016,7 +777,7 @@ HRESULT StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
-	INT iConvLen = Util::Min(iBuffLen,iSrcBuffLen);
+	INT iConvLen = std::min(iBuffLen,iSrcBuffLen);
 
 	if( iBuffLen >= iSrcBuffLen )
 	{
@@ -1025,10 +786,6 @@ HRESULT StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 	}
 
 	return StringUpr( szDest, iConvLen );
-
-Proc_End:
-
-	return hr;
 }
 
 template<INT iBuffLen>
@@ -1036,24 +793,20 @@ HRESULT StringUpr( WCHAR (&wszDest)[iBuffLen], const WCHAR *wszSrc )
 {
 	HRESULT hr = S_OK;
 
-	if( szSrc == NULL )
+	if(wszSrc == NULL )
 		return E_INVALIDARG;
 
 
-	INT iSrcBuffLen = (INT)wcslen( szSrc ) + 1;
-	INT iConvLen = Util::Min(iBuffLen,iSrcBuffLen);
+	INT iSrcBuffLen = (INT)wcslen(wszSrc) + 1;
+	INT iConvLen = std::min(iBuffLen,iSrcBuffLen);
 
 	if( iBuffLen >= iSrcBuffLen )
 	{
-		hr = StringCpy( szDest, iConvLen, szSrc );
+		hr = StringCpy(wszDest, iConvLen, wszSrc);
 		if( FAILED(hr) ) return hr;
 	}
 
-	return StringUpr( szDest, iConvLen );
-
-Proc_End:
-
-	return hr;
+	return StringUpr(wszDest, iConvLen );
 }
 
 
@@ -1070,61 +823,6 @@ void SafeDelete( WCHAR* &szStr )
 }
 
 
-
-
-//
-//// 
-//template< class PType1, class PType2, class PType3, class PType4, class PType5, class PType6, class PType7, class PType8, class PType9, class PType10  >
-//HRESULT Format( char* szBuffer, int& iBuffLen, const char* strFormat,
-//				PType1 p1 = NullType(), PType2 p2 = NullType(), PType3 p3 = NullType(), PType4 p4 = NullType(), PType5 p5 = NullType(), PType6 p6 = NullType(), PType7 p7 = NullType(), PType8 p8 = NullType(), PType9 p9 = NullType(), PType10 p10 = NullType() )
-//{
-//	BR::Argument* Args[10];
-//	int iNumArg = 0;
-//	memset( Args, 0, sizeof(Args) );
-//
-//	__PUSH_STRUTIL_ARG__(1);
-//	__PUSH_STRUTIL_ARG__(2);
-//	__PUSH_STRUTIL_ARG__(3);
-//	__PUSH_STRUTIL_ARG__(4);
-//	__PUSH_STRUTIL_ARG__(5);
-//	__PUSH_STRUTIL_ARG__(6);
-//	__PUSH_STRUTIL_ARG__(7);
-//	__PUSH_STRUTIL_ARG__(8);
-//	__PUSH_STRUTIL_ARG__(9);
-//	__PUSH_STRUTIL_ARG__(10);
-//
-//	return Format_Internal( szBuffer, iBuffLen, iNumArg, Args );
-//}
-//
-//template< 
-//	class PType1, class PType2, class PType3, class PType4, class PType5, class PType6, class PType7, class PType8, class PType9, class PType10, 
-//	int iBuffLen >
-//HRESULT Format( char (&szBuffer)[iBuffLen], const char* strFormat,
-//				PType1 p1 = NullType(), PType2 p2 = NullType(), PType3 p3 = NullType(), PType4 p4 = NullType(), PType5 p5 = NullType(), PType6 p6 = NullType(), PType7 p7 = NullType(), PType8 p8 = NullType(), PType9 p9 = NullType(), PType10 p10 = NullType() )
-//{
-//	int BuffReamin = iBuffLen ;
-//	return Format( szBuffer, BuffReamin, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 );
-//}
-//
-
-/*
-template<int iBuffLen>
-void Format( char (&szBuffer)[iBuffLen], const char* szFormating, ... )
-{
-	va_list vaArgs;
-	va_start( vaArgs, szFormating );
-	FormatMessageA(FORMAT_MESSAGE_FROM_STRING, szFormating, 0, 0, szBuffer, iBuffLen, (va_list *) &vaArgs);
-	va_end( vaArgs );
-}
-
-template<int iBuffLen>
-void Format( WCHAR (&wszBuffer)[iBuffLen], const wchar_t* wszFormating, ... )
-{
-	va_list vaArgs;
-	va_start( vaArgs, wszFormating );
-	FormatMessageW(FORMAT_MESSAGE_FROM_STRING, wszFormating, 0, 0, wszBuffer, iBuffLen, (va_list *) &vaArgs);
-	va_end( vaArgs );
-}*/
 
 
 

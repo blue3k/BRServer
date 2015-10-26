@@ -25,19 +25,19 @@ namespace BR
 
 	struct Vector2
 	{
-		FLOAT x;
-		FLOAT y;
+		float x;
+		float y;
 
 		inline Vector2();
 		inline Vector2( const Vector2& src );
 		inline Vector2( const Vector3& src );
-		inline Vector2( FLOAT fX, FLOAT fY );
-		inline Vector2( FLOAT init );
+		inline Vector2( float fX, float fY );
+		inline Vector2( float init );
 
 		inline Vector2 operator - () const;
 
-		inline Vector2 operator * ( FLOAT fScale ) const;
-		inline Vector2 operator / ( FLOAT fScale ) const;
+		inline Vector2 operator * ( float fScale ) const;
+		inline Vector2 operator / ( float fScale ) const;
 
 		inline Vector2 operator + ( const Vector2& src ) const;
 		inline Vector2 operator - ( const Vector2& src ) const;
@@ -51,12 +51,12 @@ namespace BR
 		inline bool operator == ( const Vector2& comp );
 		inline bool operator != ( const Vector2& comp );
 
-		inline FLOAT Normalize();
+		inline float Normalize();
 		inline Vector2 Normal() const;
 
-		inline FLOAT Length() const;
+		inline float Length() const;
 
-		inline FLOAT Dot( const Vector2& opVec ) const;
+		inline float Dot( const Vector2& opVec ) const;
 	};
 
 
@@ -68,20 +68,20 @@ namespace BR
 
 	struct Vector3
 	{
-		FLOAT x;
-		FLOAT y;
-		FLOAT z;
+		float x;
+		float y;
+		float z;
 
 		inline Vector3();
 		inline Vector3( const Vector3& src );
 		inline Vector3( const Vector2& src );
-		inline Vector3( FLOAT fX, FLOAT fY, FLOAT fZ );
-		inline Vector3( FLOAT init );
+		inline Vector3( float fX, float fY, float fZ );
+		inline Vector3( float init );
 
 		inline Vector3 operator - () const;
 
-		inline Vector3 operator * ( FLOAT fScale ) const;
-		inline Vector3 operator / ( FLOAT fScale ) const;
+		inline Vector3 operator * ( float fScale ) const;
+		inline Vector3 operator / ( float fScale ) const;
 
 		inline Vector3 operator + ( const Vector3& src ) const;
 		inline Vector3 operator - ( const Vector3& src ) const;
@@ -95,12 +95,12 @@ namespace BR
 		inline bool operator == ( const Vector3& comp );
 		inline bool operator != ( const Vector3& comp );
 
-		inline FLOAT Normalize();
+		inline float Normalize();
 		inline Vector3 Normal() const;
 
-		inline FLOAT Length() const;
+		inline float Length() const;
 
-		inline FLOAT Dot( const Vector3& opVec ) const;
+		inline float Dot( const Vector3& opVec ) const;
 		inline Vector3 Cross( const Vector3& opVec ) const;
 	};
 

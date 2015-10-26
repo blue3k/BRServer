@@ -10,13 +10,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/Utility.h"
 
 
 // Precalculated table for crc32
-#include "Common/CryptoCrc32Table.inl"
+#include "Common/CryptoCRC32Table.inl"
 
 
 namespace BR {

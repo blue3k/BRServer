@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/BrAssert.h"
 #include "Common/StrUtil.h"
-#include "Common/TostringGame.h"
+#include "Common/ToStringGame.h"
 #include "Common/Argument.h"
 
 
