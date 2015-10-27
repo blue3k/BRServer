@@ -64,6 +64,7 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	}
 
 
+
 	///////////////////////////////////////////////////////////////////////////////////
 	//
 	// Default type implementations

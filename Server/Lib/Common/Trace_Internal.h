@@ -91,8 +91,8 @@ namespace Trace {
 		ULONGLONG	m_tLineHeader;
 
 		// Pre updated registry time
-		ULONG		m_tRegCheck;
-		ULONG		m_tLineHdrCheck;
+		TimeStampMS		m_tRegCheck;
+		TimeStampMS		m_tLineHdrCheck;
 
 		// Line header buffer
 		char		m_szLineHeader[512];
@@ -132,7 +132,7 @@ namespace Trace {
 		virtual bool Run();
 
 		// Check file system and update
-		HRESULT CheckAndUpdate( ULONG tCurTime );
+		HRESULT CheckAndUpdate( TimeStampMS tCurTime );
 
 		void ValidateLogFile();
 

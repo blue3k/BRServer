@@ -523,13 +523,13 @@ namespace Perf {
 		if( m_pCounters == NULL || m_bIsReadMode )
 			return;
 
-		m_pCounters->tHeartBitTime = (UINT32)Util::Time.GetTimeUTCSec();
+		m_pCounters->tHeartBitTime = Util::Time.GetTimeUTCSec();
 	}
 
 	// Check Heart Bit
 	bool CounterInstanceMap::CheckHeartBit()
 	{
-		m_bIsAlive = IsOpened() && ((Util::Time.GetTimeUTCSec() - m_pCounters->tHeartBitTime) < MAX_INSTANCE_LIFE_TIME);
+		m_bIsAlive = IsOpened() && ((Util::Time.GetTimeUTCSec() - m_pCounters->tHeartBitTime) < DurationMS(MAX_INSTANCE_LIFE_TIME));
 
 		return m_bIsAlive;
 	}

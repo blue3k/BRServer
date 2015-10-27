@@ -14,7 +14,7 @@
       <OmitFramePointers>false</OmitFramePointers>
     </ClCompile>
     <Link>
-      <AddModuleNamesToAssembly>..\..\bin\lib\MySQL\Lib</AddModuleNamesToAssembly>
+      <AddModuleNamesToAssembly>..\..\bin\lib\MySQL\Lib;..\..\bin\lib</AddModuleNamesToAssembly>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

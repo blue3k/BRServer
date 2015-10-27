@@ -51,7 +51,7 @@ namespace Perf {
 
 		struct CounterMap
 		{
-			UINT32 tHeartBitTime;
+			TimeStampSec tHeartBitTime;
 			UINT32 NumCounter;
 			WCHAR  szClass[MAX_COUNTER_NAME];
 			WCHAR  szName[MAX_INSTANCE_NAME];

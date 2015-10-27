@@ -203,13 +203,11 @@ namespace Trace {
 
 
 	TraceOutModule::TraceOutModule()
-		:m_uiOutputMask(TRCOUT_NONE),
-		m_uiDbgOutputMask(TRCOUT_NONE),
-		m_uiLineHeaderLen(0),
-		m_hEventLog(nullptr),
-		m_hConsole(INVALID_HANDLE_VALUE),
-		m_tRegCheck(0)/*,
-		trace_bfr(nullptr)*/
+		: m_uiOutputMask(TRCOUT_NONE)
+		, m_uiDbgOutputMask(TRCOUT_NONE)
+		, m_uiLineHeaderLen(0)
+		, m_hEventLog(nullptr)
+		, m_hConsole(INVALID_HANDLE_VALUE)
 	{
 		for( int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++ )
 		{
@@ -247,22 +245,16 @@ namespace Trace {
 	// Override stop to handle kill method
 	void TraceOutModule::Stop( bool bSendKillEvt )
 	{
-		if( GetThreadID() )
-		{
-			SetEvent( GetKillEvent() );
+		// Make take stop signal
+		TraceBufferType::BLOCK *pSpinBlock = m_TraceSpinBuffer.Write_Lock();
 
-			// Make take stop signal
-			TraceBufferType::BLOCK *pSpinBlock = m_TraceSpinBuffer.Write_Lock();
+		pSpinBlock->Data.TraceBuff[0] = 0;
+		pSpinBlock->Data.InputMask = 0;
+		pSpinBlock->Data.KillSignal = true;
 
-			pSpinBlock->Data.TraceBuff[0] = 0;
-			pSpinBlock->Data.InputMask = 0;
-			pSpinBlock->Data.KillSignal = true;
+		m_TraceSpinBuffer.Write_Unlock( pSpinBlock );
 
-			m_TraceSpinBuffer.Write_Unlock( pSpinBlock );
-		}
-
-
-		__super::Stop( bSendKillEvt );
+		__super::Stop(bSendKillEvt);
 	}
 
 	// Open Log file
@@ -328,14 +320,15 @@ namespace Trace {
 	bool TraceOutModule::Run()
 	{
 		INT iProcMax = 1;
-		int WaitDelay = 0;
+		DurationMS WaitDelay = DurationMS(5);
 		
 		while( 1 )
 		{
-			DWORD dwWaitRes = WaitForSingleObject( GetKillEvent(), WaitDelay ); // no wait just check
-			if( dwWaitRes == WAIT_OBJECT_0 ) // Kill Event signaled
+			auto loopInterval = UpdateInterval(WaitDelay);
+			if (CheckKillEvent(loopInterval))
 			{
-				iProcMax = INT_MAX;
+				// Kill Event signaled
+				break;
 			}
 
 			if( m_TraceSpinBuffer.GetReadableCount() > 0 )
@@ -344,7 +337,7 @@ namespace Trace {
 
 				if( !pBlock->Data.KillSignal )
 				{
-					ULONG ulCurTime = Util::Time.GetTimeMs();
+					auto ulCurTime = Util::Time.GetTimeMs();
 
 					CheckAndUpdate( ulCurTime );
 
@@ -352,21 +345,12 @@ namespace Trace {
 				}
 
 				m_TraceSpinBuffer.Read_Unlock( pBlock );
-
-				WaitDelay = 0;
 			}
 			else
 			{
-				ULONG ulCurTime = Util::Time.GetTimeMs();
+				auto ulCurTime = Util::Time.GetTimeMs();
 
 				CheckAndUpdate( ulCurTime );
-
-				WaitDelay = 1;
-			}
-
-			if( dwWaitRes == WAIT_OBJECT_0 ) // Kill Event signaled
-			{
-				break;
 			}
 		}
 
@@ -379,13 +363,13 @@ namespace Trace {
 	}
 
 	// Check file system and update
-	HRESULT TraceOutModule::CheckAndUpdate( ULONG tCurTime )
+	HRESULT TraceOutModule::CheckAndUpdate(TimeStampMS tCurTime )
 	{
 		// Update curtime
 		time(&m_tCurTime);
 		localtime_s(&m_tCurTimeTM, &m_tCurTime);
 
-		if( (m_tLineHdrCheck - tCurTime) > Trace::UPDATE_LINEHEADER_TIME )
+		if( (m_tLineHdrCheck - tCurTime) > DurationMS(Trace::UPDATE_LINEHEADER_TIME) )
 		{
 			m_tLineHdrCheck = tCurTime;
 			UpdateLineHeader();
@@ -393,7 +377,7 @@ namespace Trace {
 			UpdateConsoleHandle();
 		}
 
-		if( (m_tRegCheck - tCurTime) > Trace::UPDATE_REGISTERY_TIME )// check every 3sec
+		if( (m_tRegCheck - tCurTime) > DurationMS(Trace::UPDATE_REGISTERY_TIME) )// check every 3sec
 		{
 			// Update output mask
 			if( TraceModule::stm_hRegKey )
@@ -626,14 +610,13 @@ namespace Trace {
 	// Trace print data to Spin Buffer
 	void TraceOutModule::TracePush( UINT trcInputMask, const char *strTrace, const char* traceName )
 	{
-
-		// if no thread mode then print directly
-		if( GetThreadID() == 0 )
+		// if not thread mode then print directly
+		if( !joinable() )
 		{
 			char strTraceBuff[4096];
 
-			char *pOutBuff = strTraceBuff;//pSpinEle->spin_bfr.sInputData;
-			INT iBuffLen = sizeof(strTraceBuff);//sizeof(pSpinEle->spin_bfr.sInputData);
+			char *pOutBuff = strTraceBuff;
+			INT iBuffLen = sizeof(strTraceBuff);
 
 			StrUtil::StringCpyEx( pOutBuff, iBuffLen, traceName );
 			StrUtil::StringCpyEx( pOutBuff, iBuffLen, ": " );

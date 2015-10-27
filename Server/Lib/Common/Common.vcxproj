@@ -107,6 +107,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".\Argument.cpp" />
+    <ClCompile Include="CrashDump.linux.cpp" />
+    <ClCompile Include="CrashDump.win32.cpp" />
     <ClCompile Include="CryptoBase64.cpp" />
     <ClCompile Include="CryptoCrc32.cpp" />
     <ClCompile Include=".\Memory.cpp" />

@@ -23,14 +23,8 @@ private:
 
 private:
 #pragma pack(push)
-#ifdef _WIN64
-#pragma pack(8)
-	struct __declspec(align(16)) 
-#else
-#pragma pack(4)
-	struct __declspec(align(8)) 
-#endif
-	NodeRef
+#pragma pack(BR_ALIGN)
+	struct BR_DECLARE_ALIGN NodeRef
 	{
 	private:
 		NodeRef(const NodeRef& rhs);
@@ -49,22 +43,11 @@ private:
 		CounterType IncreaseReadCount()
 		{
 			return m_ReadCount.fetch_add(1, std::memory_order_relaxed) + 1;
-//#ifdef _WIN64
-//
-//			return _InterlockedIncrement64((__int64*)&m_ReadCount);
-//#else
-//			return _InterlockedIncrement((volatile LONG*)&m_ReadCount);
-//#endif
 		}
 
 		CounterType DecreaseReadCount()
 		{
 			return m_ReadCount.fetch_sub(1, std::memory_order_relaxed) - 1;
-//#ifdef _WIN64
-//			return _InterlockedDecrement64((__int64*)&m_ReadCount);
-//#else
-//			return _InterlockedDecrement((volatile LONG*)&m_ReadCount);
-//#endif
 		}	
 
 		Node*					m_pNode;
@@ -87,7 +70,7 @@ private:
 
 		DataType					m_Value;
 
-		NodeRef						m_Next;
+		std::atomic<NodeRef>		m_Next;
 
 	};
 
@@ -108,7 +91,7 @@ public:
 			Assert(m_pPredNode != &(m_pContainer->m_Tail));
 
 			// Wait insert/delete lock
-			while (m_pPredNode->m_Next.m_Lock != LockType_Free)
+			while (m_pPredNode->m_Next.load(std::memory_order_relaxed).m_Lock != LockType_Free)
 				ThisThread::SleepFor(DurationMS(3));
 
 			m_pContainer->AddItr(this);
@@ -440,7 +423,8 @@ public:
 				// New prednode's nexxt
 				newNodeRef.m_pNode		= pCurNode->m_Next.m_pNode;
 				newNodeRef.m_ReadCount	= 1;	
-			} 
+			}
+			while 
 #ifdef _WIN64
 			while(_InterlockedCompareExchange128( (__int64*)&(pPredNode->m_Next), (__int64)newNodeRef.m_ReadCount, (__int64)newNodeRef.m_pNode, (__int64*)&oldNodeRef) == 0);
 #else

@@ -269,7 +269,7 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 // disable unreferenced label warnning (Proc_End)
 #pragma warning( disable : 4102 )
 
-#define DO_PRAGMA(x) __pragma(x)
+#define DO_PRAGMA(x) __pragma(#x)
 #define COMPILETIME_TODO(x) DO_PRAGMA(comment ("TODO - " #x))
 #define COMPILETIME_MESSAGE(x) DO_PRAGMA(comment ("Message - " #x))
 #define COMPILETIME_WARNING(x) DO_PRAGMA(comment ("Warning - " #x))

@@ -15,6 +15,7 @@
 #include "Common/Trace.h"
 #include "Common/Message.h"
 #include "Common/Memory.h"
+#include "Common/MemLog.h"
 #include "Common/MemoryPool.h"
 #include "Common/HRESNet.h"
 
@@ -47,7 +48,7 @@ namespace Message {
 
 	MessageData::~MessageData()
 	{
-	#ifdef _DEBUG
+	#ifdef DEBUG
 		if( BR::GetMemLogger() )
 			BR::GetMemLogger()->RemoveFromLog(((BYTE*)this)+1);
 	#endif

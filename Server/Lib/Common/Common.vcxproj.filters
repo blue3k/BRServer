@@ -93,6 +93,12 @@
     <ClCompile Include="CryptoSHA.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="CrashDump.linux.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="CrashDump.win32.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\GameConst.h" />

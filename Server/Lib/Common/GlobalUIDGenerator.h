@@ -38,7 +38,7 @@ namespace BR {
 		UINT m_ServerID;
 
 		// Cached Time
-		mutable UINT32 m_time;
+		mutable TimeStampSec m_time;
 
 		// circular counter
 		mutable SyncCounter m_CounterForID;

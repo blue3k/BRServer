@@ -26,7 +26,7 @@ namespace Util {
 	class Time_Chrono
 	{
 	public:
-
+		const int UTC_REFERENCE_YEAR = 2014;
 
 	private:
 

@@ -20,7 +20,7 @@
 
 
 
-#ifdef _WIN64
+#ifdef X64
 #define BR_ALIGN				16
 #define BR_ALIGN_SHIFT			3
 #define BR_ALIGN_DOUBLE			16
@@ -32,8 +32,14 @@
 #define BR_ALIGN_DOUBLE_SHIFT	3
 #endif
 
+#if __GNUC__
+__attribute__((aligned(16)))
+#define BR_DECLARE_ALIGN		__attribute__((aligned(BR_ALIGN)))
+#define BR_DECLARE_ALIGN_DOUBLE __attribute__((aligned(BR_ALIGN_DOUBLE)))
+#else
 #define BR_DECLARE_ALIGN		__declspec(align(BR_ALIGN))
 #define BR_DECLARE_ALIGN_DOUBLE __declspec(align(BR_ALIGN_DOUBLE))
+#endif
 
 #define BR_ALLIGNUP(x,allign)	( (((uintptr_t)(x) + allign-1) & (~(allign-1))) )
 

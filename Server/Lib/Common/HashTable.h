@@ -39,23 +39,14 @@ namespace Hash {
 		{
 		public:
 
-			if( Trait::UniqueKey )
-			{
-				typedef void UniqueKey;
-			}
+			//typedef void UniqueKey;
 
 			typedef typename ItemType ItemType;
 			typedef typename Indexer Indexer;
 			typedef typename Indexer::Type KeyType;
 
-			if( ThreadTrait::ThreadSafe )
-			{
-				typedef TicketLock	TicketLockType;
-			}
-			else( ThreadTrait::ThreadSafe )
-			{
-				typedef FakeTicketLock	TicketLockType;
-			}
+			typedef typename ThreadTrait::TicketLockType	TicketLockType;
+
 
 			// Hash bucket
 			class Bucket

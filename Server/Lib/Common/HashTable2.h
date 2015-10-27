@@ -43,11 +43,6 @@ namespace Hash {
 			//typedef Hash::hash<KeyType> HasherType;
 			typedef ItemType ValueType;
 
-			if( Trait::UniqueKey )
-			{
-				typedef void UniqueKey;
-			}
-
 			if( ThreadTrait::ThreadSafe )
 			{
 				class WriteOnlyLock

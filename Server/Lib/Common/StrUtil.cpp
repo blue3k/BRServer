@@ -65,8 +65,10 @@ namespace StrUtil {
 				if( curChar == '\0' )
 					return E_INVALIDARG;
 
-				if( iArg < iNumArg )
-					Args[iArg].MakeString( szBuffer, iBuffLen );
+				if (iArg < iNumArg)
+				{
+					Args[iArg].MakeString(szBuffer, iBuffLen);
+				}
 				else
 				{
 					StrUtil::StringCpyEx( szBuffer, iBuffLen, "(Null)" );
@@ -140,7 +142,7 @@ namespace StrUtil {
 
 
 		// remain buffer size will be in destSize
-		HRESULT Convert(const char* destCode, BYTE* dest, size_t destSize, const char* srcCode, const BYTE* src, size_t srcSize, size_t& convertedSize)
+		HRESULT Convert(const char* destCode, char* dest, size_t destSize, const char* srcCode, const char* src, size_t srcSize, size_t& convertedSize)
 		{
 			HRESULT hr = S_OK;
 
@@ -153,7 +155,7 @@ namespace StrUtil {
 				goto Proc_End;
 			}
 
-			convertedSize = iconv(context, &dest, &destSize, &src, &srcSize);
+			convertedSize = iconv(context, &src, &srcSize, &dest, &destSize);
 			if (convertedSize == (size_t)-1)
 			{
 				switch (errno)
@@ -201,7 +203,7 @@ namespace StrUtil {
 		if (strWCS == nullptr || strMBCS == nullptr)
 			return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("", (BYTE*)strMBCS, iBuffLen, "UTF?32", (const BYTE*)strWCS, wcslen(strWCS), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("", (char*)strMBCS, iBuffLen, "UTF?32", (const char*)strWCS, wcslen(strWCS), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		if (iBuffLen >= 1)
@@ -224,7 +226,7 @@ namespace StrUtil {
 			return S_OK;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("", (BYTE*)stringBuffer, countof(stringBuffer), "UTF?32", (const BYTE*)strWCS.c_str(), strWCS.length(), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("", (char*)stringBuffer, countof(stringBuffer), "UTF?32", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
@@ -243,7 +245,7 @@ namespace StrUtil {
 		if (strWCS == nullptr || strUTF8 == nullptr)
 			return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?8", (BYTE*)strUTF8, iBuffLen, "UTF?32", (const BYTE*)strWCS, wcslen(strWCS), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?8", (char*)strUTF8, iBuffLen, "UTF?32", (const char*)strWCS, wcslen(strWCS), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		if (iBuffLen >= 1)
@@ -266,7 +268,7 @@ namespace StrUtil {
 			return S_OK;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?8", (BYTE*)stringBuffer, countof(stringBuffer), "UTF?32", (const BYTE*)strWCS.c_str(), strWCS.length(), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?8", (char*)stringBuffer, countof(stringBuffer), "UTF?32", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
@@ -285,7 +287,7 @@ namespace StrUtil {
 		if (strWCS == nullptr || strMBCS == nullptr)
 			return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (BYTE*)strWCS, iBuffLen, "", (const BYTE*)strMBCS, strlen(strMBCS), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)strWCS, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		if (iBuffLen >= 1)
@@ -308,7 +310,7 @@ namespace StrUtil {
 			return S_OK;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (BYTE*)stringBuffer, countof(stringBuffer), "", (const BYTE*)strMBCS.c_str(), strMBCS.length(), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
@@ -328,7 +330,7 @@ namespace StrUtil {
 		if (strWCS == nullptr || strUTF8 == nullptr)
 			return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (BYTE*)strWCS, iBuffLen, "UTF-8", (const BYTE*)strUTF8, strlen(strUTF8), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)strWCS, iBuffLen, "UTF-8", (const char*)strUTF8, strlen(strUTF8), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		if (iBuffLen >= 1)
@@ -351,7 +353,7 @@ namespace StrUtil {
 			return S_OK;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (BYTE*)stringBuffer, countof(stringBuffer), "UTF-8", (const BYTE*)strUTF8.c_str(), strUTF8.length(), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)stringBuffer, countof(stringBuffer), "UTF-8", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
@@ -371,7 +373,7 @@ namespace StrUtil {
 		if (strUTF8 == nullptr || strMBCS == nullptr)
 			return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?8", (BYTE*)strUTF8, iBuffLen, "", (const BYTE*)strMBCS, strlen(strMBCS), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?8", (char*)strUTF8, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		if (iBuffLen >= 1)
@@ -394,7 +396,7 @@ namespace StrUtil {
 			return S_OK;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (BYTE*)stringBuffer, countof(stringBuffer), "", (const BYTE*)strMBCS.c_str(), strMBCS.length(), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
@@ -414,7 +416,7 @@ namespace StrUtil {
 		if (strUTF8 == nullptr || strMBCS == nullptr)
 			return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?8", (BYTE*)strMBCS, iBuffLen, "", (const BYTE*)strUTF8, strlen(strUTF8), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?8", (char*)strMBCS, iBuffLen, "", (const char*)strUTF8, strlen(strUTF8), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		if (iBuffLen >= 1)
@@ -437,7 +439,7 @@ namespace StrUtil {
 			return S_OK;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (BYTE*)stringBuffer, countof(stringBuffer), "", (const BYTE*)strUTF8.c_str(), strUTF8.length(), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;

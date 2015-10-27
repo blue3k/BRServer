@@ -16,29 +16,13 @@
 #include "Common/BrAssert.h"
 #include "Common/Memory.h"
 #include "Common/Utility.h"
+#include "Common/Thread.h"
 
 
 
 namespace BR
 {
 
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Synchronization trait
-	//
-
-	// Synchronization trait, not thread safe
-	struct ThreadSyncTraitNone
-	{
-		const bool ThreadSafe = false;
-	};
-
-	// Synchronization trait, thread safe
-	struct ThreadSyncTraitMT
-	{
-		const bool ThreadSafe = true;
-	};
 
 
 
@@ -284,6 +268,28 @@ namespace BR
 
 	extern template class TicketScopeLockT<TicketLock>;
 	extern template class TicketScopeLockT<FakeTicketLock>;
+
+
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Synchronization trait
+	//
+
+	// Synchronization trait, not thread safe
+	struct ThreadSyncTraitNone
+	{
+		const bool ThreadSafe = false;
+		typedef FakeTicketLock	TicketLockType;
+	};
+
+	// Synchronization trait, thread safe
+	struct ThreadSyncTraitMT
+	{
+		const bool ThreadSafe = true;
+		typedef TicketLock	TicketLockType;
+	};
 
 
 

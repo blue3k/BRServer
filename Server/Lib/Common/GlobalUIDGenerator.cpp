@@ -42,7 +42,7 @@ namespace BR {
 				if (indexDiff == UPDATE_TIME_DIFF)
 				{
 					// update index sync
-					UINT32 newTime = Util::Time.GetRawUTCSec();
+					TimeStampSec newTime = Util::Time.GetRawUTCSec();
 					while (newTime == m_time) // we have to stall until we are on the same time stamp
 					{
 						// Maximum GUID for this sec, sleep a little before retry
@@ -71,7 +71,7 @@ namespace BR {
 
 
 		uid.ServerID = m_ServerID;
-		uid.Time = m_time;
+		uid.Time = m_time.time_since_epoch().count();
 
 		defTrace(Trace::TRC_TRACE, "GlobalUIDGenerator: New GUID %0%", (float)uid.UID);
 

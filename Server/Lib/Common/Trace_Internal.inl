@@ -30,11 +30,6 @@ void TraceOutModule::SetInstance( TraceOutModule *pInstance )
 
 TraceOutModule* TraceOutModule::GetInstance()
 {
-	//if( stm_pInstance == NULL )
-	//{
-	//	stm_pInstance = new TraceOutModule;
-	//}
-
 	return stm_pInstance;
 }
 
