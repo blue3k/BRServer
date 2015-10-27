@@ -62,7 +62,6 @@
     <ClInclude Include="MemoryBufferUtil.h" />
     <ClInclude Include="Memory_Impl.h" />
     <ClInclude Include="Message.h" />
-    <ClInclude Include=".\NullUtil.h" />
     <ClInclude Include=".\PageQueue.h" />
     <ClInclude Include="BrRandom.h" />
     <ClInclude Include="SharedObject.h" />
@@ -92,7 +91,6 @@
     <ClInclude Include="StaticHashTable.h" />
     <ClInclude Include="SvrPolicyID.h" />
     <ClInclude Include=".\Synchronize.h" />
-    <ClInclude Include=".\targetver.h" />
     <ClInclude Include=".\Thread.h" />
     <ClInclude Include=".\TimeUtil.h" />
     <ClInclude Include=".\ToString.h" />
@@ -179,112 +177,6 @@
     <None Include=".\PerfCounter.inl" />
     <None Include="BrGameTypes.inl" />
     <None Include="BrRandom.inl" />
-    <CustomBuild Include="ResultMC\HRESCommon.mc">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mc   %(Identity) -u  -r rc -b -n
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build system code %(Filename).h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).h</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESEvent.mc">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build system code %(Filename).h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).h</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESLogin.mc">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build system code %(Filename).h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).h</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESNet.mc">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build system code %(Filename).h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).h</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESSvrSys.mc">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <FileType>Document</FileType>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build system code %(Filename).h</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build system code %(Filename).h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).h</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESGame.mc">
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">mc   %(Identity) -u  -r rc -b -n</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build system code %(Filename).h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename).h</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build system code %(Filename).h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename).h</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build system code %(Filename).h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build system code %(Filename).h</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).h</Outputs>
-    </CustomBuild>
     <None Include="SortedMap.inl" />
     <None Include="SystemSynchronize_win.inl" />
     <None Include="ObjectPool.inl" />

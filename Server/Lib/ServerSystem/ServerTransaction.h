@@ -79,14 +79,14 @@ namespace Svr {
 			{
 				if (GetMessage()->GetMessageHeader()->msgID.IDs.Type == BR::Message::MSGTYPE_COMMAND)
 				{
-					__if_exists(MessageClass::GetContext)
+					if(MessageClass::HasContext)
 					{
-							SetParentTransID(GetContext());
-					};
-					__if_exists(MessageClass::GetRouteContext)
+						SetParentTransID(GetContext());
+					}
+					else if(MessageClass::HasRouteContext)
 					{
 						SetMessageRouteContext(GetRouteContext());
-					};
+					}
 				}
 			}
 			return hr;
@@ -110,7 +110,7 @@ namespace Svr {
 			}
 			else
 			{
-				__if_exists(MessageClass::GetRouteContext)
+				if(MessageClass::HasRouteContext)
 				{
 					SharedPointerT<Entity> pEntity;
 					if (FAILED(GetEntityTable().Find(GetRouteContext().To.EntityID, pEntity)))
@@ -122,7 +122,7 @@ namespace Svr {
 					svrAssert(dynamic_cast<OwnerEntityType*>((Entity*)pEntity));
 					svrChk(__super::InitializeTransaction((Entity*)pEntity));
 				}
-				__if_not_exists(MessageClass::GetRouteContext)
+				else
 				{
 					svrErr(E_NOTIMPL);
 				}
@@ -254,7 +254,7 @@ namespace Svr {
 			case Message::MessageUsage_ClusterStatusWrite:
 				// broadcast all the time
 				svrChk( BroadcastToChildren() );
-				__if_exists( MessageClass::GetRouteHopCount )
+				if( MessageClass::HasRouteHopCount )
 				{
 					// Hop count 1 is the maximum number with replica clustring model
 					if( GetRouteHopCount() >= 1 )
@@ -285,7 +285,7 @@ namespace Svr {
 				{
 					svrChk( BroadcastToChildren() );
 				}
-				__if_exists( MessageClass::GetRouteHopCount )
+				if( MessageClass::HasRouteHopCount )
 				{
 					// Hop count 1 is the maximum number with replica clustring model
 					if( GetRouteHopCount() >= 1 )
@@ -319,7 +319,7 @@ namespace Svr {
 				&& BrServer::GetInstance()->GetNetClass() != NetClass::Entity )
 				return hr;
 
-			__if_exists( MessageClass::GetRouteHopCount )
+			if( MessageClass::HasRouteHopCount )
 			{
 				// Hop count 1 is the maximum number with replica clustring model
 				if( GetRouteHopCount() >= 1 )
@@ -327,7 +327,7 @@ namespace Svr {
 			}
 
 			// Watcher's write request will not be broadcasted
-			//__if_exists( MessageClass::GetSender )
+			//if( MessageClass::HasSender )
 			//{
 			//	ServerServiceInformation *pSender = nullptr;
 			//	if( SUCCEEDED(pMyOwner->FindService( GetSender(), pSender )) )
@@ -344,7 +344,7 @@ namespace Svr {
 				if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
 					return;
 
-				//__if_exists( MessageClass::GetSender )
+				//if( MessageClass::HasSender )
 				//{
 				//	// Only master will recei
 				//	if( pSender != nullptr && pSender->GetClusterMembership() >= ClusterMembership::StatusWatcher

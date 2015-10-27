@@ -531,14 +531,14 @@ namespace Svr {
 			{
 				if (GetMessage()->GetMessageHeader()->msgID.IDs.Type == BR::Message::MSGTYPE_COMMAND)
 				{
-					__if_exists(MessageClass::GetContext)
+					if(MessageClass::HasContext)
 					{
 						SetParentTransID(GetContext());
-					};
-					__if_exists(MessageClass::GetRouteContext)
+					}
+					else if(MessageClass::HasRouteContext)
 					{
 						SetMessageRouteContext(GetRouteContext());
-					};
+					}
 				}
 			}
 			return hr;

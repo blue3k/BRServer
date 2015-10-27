@@ -436,11 +436,11 @@ TEST_F(HTTPTest, CURL)
 
 	};
 
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	while( workCounter != 0 )
 	{
-		Sleep(1000);
+		ThisThread::SleepFor(DurationMS(1000));
 	}
 
 	StopAllThread();
@@ -511,11 +511,11 @@ TEST_F(HTTPTest, JSON)
 
 	};
 
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	while( workCounter != 0 )
 	{
-		Sleep(1000);
+		ThisThread::SleepFor(DurationMS(1000));
 	}
 
 	StopAllThread();
@@ -601,11 +601,11 @@ TEST_F(HTTPTest, GCMQuery)
 		m_Threads.push_back(pTask);
  	};
 
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	while( workCounter != 0 )
 	{
-		Sleep(1000);
+		ThisThread::SleepFor(DurationMS(1000));
 	}
 
 	StopAllThread();
@@ -641,11 +641,11 @@ TEST_F(HTTPTest, HTTPModule)
 		m_Threads.push_back(pTask);
  	};
 
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	while( workCounter != 0 )
 	{
-		Sleep(1000);
+		ThisThread::SleepFor(DurationMS(1000));
 	}
 
 	StopAllThread();
@@ -706,12 +706,12 @@ TEST_F(HTTPTest, IOSReceipt)
 		m_Threads.push_back(pTask);
 	};
 */
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	workCounter = 1;
 	while (workCounter != 0)
 	{
-		Sleep(1000);
+		ThisThread::SleepFor(DurationMS(1000));
 	}
 
 	StopAllThread();

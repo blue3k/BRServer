@@ -16,7 +16,6 @@
 #include "Common/Synchronize.h"
 #include "Common/SystemSynchronize.h"
 #include "Common/Trace.h"
-#include "Common/NullUtil.h"
 
 
 
@@ -67,7 +66,7 @@ namespace BR
 
 				for( CounterType iEle = 0; iEle < InItemCount; iEle++ )
 				{
-					Util::Nullable<DataObject>::SetNull(Element[iEle]);
+					Element[iEle] = nullptr;
 				}
 			}
 

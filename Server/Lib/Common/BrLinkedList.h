@@ -29,13 +29,11 @@ namespace BR
 	class LinkedList
 	{
 		// MT Safe
-		__if_exists( SyncTrait::ThreadSafe )
+		if( SyncTrait::ThreadSafe )
 		{
 			#include "BRLinkedList_MT.inl"
 		}
-
-		// MT not safe
-		__if_not_exists( SyncTrait::ThreadSafe )
+		else // MT not safe
 		{
 			#include "BRLinkedList_ST.inl"
 		}

@@ -4,14 +4,14 @@
 set PWD=%~dp0
 set OPENSSLDIR=%PWD%\TargetRelease
 
-
-call perl Configure VC-WIN64A --openssldir=%OPENSSLDIR% --prefix=%PWD%\TargetRelease
+rem check "sub read_options" in mk1mf.pl
+call perl Configure VC-WIN64A no-sock --openssldir=%OPENSSLDIR% --prefix=%PWD%\TargetRelease
 call ms\do_win64a
 nmake -f ms\nt.mak
 nmake -f ms\nt.mak install
 
 
-call perl Configure debug-VC-WIN64A --openssldir=%OPENSSLDIR% --prefix=%PWD%\TargetDebug
+call perl Configure debug-VC-WIN64A no-sock--openssldir=%OPENSSLDIR% --prefix=%PWD%\TargetDebug
 call ms\do_win64a
 nmake -f ms\nt.mak
 nmake -f ms\nt.mak install

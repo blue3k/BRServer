@@ -201,7 +201,7 @@ TEST_F(HashTableTest, HashTable2_UniqueMT)
 
 				if( SUCCEEDED(TestMap.Find( value, pFound )) )
 				{
-					Sleep(10);
+					ThisThread::SleepFor(DurationMS(10));
 					AssertRel(value == pFound->Value);
 					EXPECT_EQ(value, pFound->Value);
 				}
@@ -290,7 +290,7 @@ TEST_F(HashTableTest, HashTable2_UniqueMT)
 	}
 
 
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	StopAllThread();
 
@@ -332,7 +332,7 @@ TEST_F(HashTableTest, HashTable2_UniqueWriteMT)
 
 				if (SUCCEEDED(TestMap.Find(value, pFound)))
 				{
-					Sleep(10);
+					ThisThread::SleepFor(DurationMS(10));
 					AssertRel(value == pFound->Value);
 					EXPECT_EQ(value, pFound->Value);
 				}
@@ -424,8 +424,7 @@ TEST_F(HashTableTest, HashTable2_UniqueWriteMT)
 	}
 
 
-
-	Sleep(runningTime);
+	ThisThread::SleepFor(DurationMS(runningTime));
 
 	StopAllThread();
 
@@ -556,7 +555,7 @@ TEST_F(HashTableTest, HashTable2_PerfRead)
 	}
 
 
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	StopAllThread();
 
@@ -684,7 +683,7 @@ TEST_F(HashTableTest, HashTable2_PerfReadWriteMT)
 
 
 
-	Sleep(runningTime);
+	ThisThread::SleepFor(DurationMS(runningTime));
 
 	StopAllThread();
 

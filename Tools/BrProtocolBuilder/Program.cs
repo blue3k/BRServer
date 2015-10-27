@@ -30,7 +30,6 @@ namespace ProtocolBuilder
         static ProtocolData m_protocolData;
 
         static string strTargetPath = "../../Test";
-        //static string strCSharpTargetPath = "../../Test/CSharp";
         static string strTempPath = "Temp/";
 
 

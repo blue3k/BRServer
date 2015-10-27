@@ -42,7 +42,7 @@ namespace Hash {
 		{
 		public:
 
-			__if_exists( Trait::UniqueKey )
+			if( Trait::UniqueKey )
 			{
 				typedef void UniqueKey;
 			}
@@ -57,7 +57,7 @@ namespace Hash {
 			class Bucket
 			{
 			public:
-				__if_exists( ThreadTrait::ThreadSafe )
+				if( ThreadTrait::ThreadSafe )
 				{
 				// thread lock for bucket access
 				TicketLock	m_Lock;
@@ -67,7 +67,7 @@ namespace Hash {
 
 				void ReadLock()
 				{
-					__if_exists( ThreadTrait::ThreadSafe )
+					if( ThreadTrait::ThreadSafe )
 					{
 					m_Lock.NonExLock();
 					}
@@ -75,7 +75,7 @@ namespace Hash {
 
 				void ReadUnlock()
 				{
-					__if_exists( ThreadTrait::ThreadSafe )
+					if( ThreadTrait::ThreadSafe )
 					{
 					m_Lock.NonExUnlock();
 					}
@@ -99,7 +99,7 @@ namespace Hash {
 					:m_Items(src.m_Items)
 				{
 					// No one use this bucket, while this operation
-					__if_exists( ThreadTrait::ThreadSafe )
+					if( ThreadTrait::ThreadSafe )
 					{
 					Assert( !src.m_Lock.IsLocked() );
 					}
@@ -108,7 +108,7 @@ namespace Hash {
 				Bucket( Bucket&& src )
 					:m_Items(src.m_Items)
 				{
-					__if_exists( ThreadTrait::ThreadSafe )
+					if( ThreadTrait::ThreadSafe )
 					{
 					// No one use this bucket, while this operation
 					Assert( !src.m_Lock.IsLocked() );
@@ -123,7 +123,7 @@ namespace Hash {
 				Bucket& operator = ( const Bucket& src )
 				{
 					// No one use this bucket, while this operation
-					__if_exists( ThreadTrait::ThreadSafe )
+					if( ThreadTrait::ThreadSafe )
 					{
 					Assert( !src.m_Lock.IsLocked() );
 					Assert( !m_Lock.IsLocked() );
@@ -135,7 +135,7 @@ namespace Hash {
 
 				Bucket& operator = ( Bucket&& src )
 				{
-					__if_exists( ThreadTrait::ThreadSafe )
+					if( ThreadTrait::ThreadSafe )
 					{
 					// No one use this bucket, while this operation
 					Assert( !src.m_Lock.IsLocked() );
@@ -498,7 +498,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Bucket.size();
 
 				Bucket& bucket = m_Bucket[iBucket];
-				__if_exists( ThreadTrait::ThreadSafe ) {
+				if( ThreadTrait::ThreadSafe ) {
 				TicketScopeLock scopeLock( TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock );
 				}
 
@@ -510,7 +510,7 @@ namespace Hash {
 				if( FAILED(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
 					return E_FAIL;
 
-				__if_exists(Trait::UniqueKey)
+				if(Trait::UniqueKey)
 				{
 					if( pPrevNode->pNext && pPrevNode->pNext->Key == inKey )
 					{
@@ -536,7 +536,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Bucket.size();
 
 				Bucket& bucket = m_Bucket[iBucket];
-				__if_exists( ThreadTrait::ThreadSafe ){
+				if( ThreadTrait::ThreadSafe ){
 				TicketScopeLock scopeLock( TicketLock::LOCK_NONEXCLUSIVE, bucket.m_Lock );
 				}
 
@@ -561,7 +561,7 @@ namespace Hash {
 
 				iterData = end();
 
-				//__if_exists( ThreadTrait::ThreadSafe ) {
+				//if( ThreadTrait::ThreadSafe ) {
 				//TicketScopeLock scopeLock( TicketLock::LOCK_NONEXCLUSIVE, bucket.m_Lock );
 				//}
 				// Set operation will lock the bucket
@@ -593,7 +593,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Bucket.size();
 
 				Bucket& bucket = m_Bucket[iBucket];
-				__if_exists( ThreadTrait::ThreadSafe ) {
+				if( ThreadTrait::ThreadSafe ) {
 				TicketScopeLock scopeLock( TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock );
 				}
 				//_ReadBarrier();
@@ -636,7 +636,7 @@ namespace Hash {
 				Key = Indexer()(data);
 				iterData = end();
 
-				__if_exists( ThreadTrait::ThreadSafe ) {
+				if( ThreadTrait::ThreadSafe ) {
 				TicketScopeLock scopeLock( TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock );
 				}
 				//_ReadBarrier();

@@ -176,7 +176,7 @@ TEST_F(DBTest, DBManager)
 
 	while( pTestDB->m_Counter > 0 )
 	{
-		Sleep(100);
+		ThisThread::SleepFor(DurationMS(100));
 	}
 
 	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
@@ -207,7 +207,7 @@ TEST_F(DBTest, DBQueryLogin)
 
 	while( pTestDB->m_Counter > 0 )
 	{
-		Sleep(100);
+		ThisThread::SleepFor(DurationMS(100));
 	}
 
 	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
@@ -236,7 +236,7 @@ TEST_F(DBTest, DBQueryLoginByFB)
 
 	while( pTestDB->m_Counter > 0 )
 	{
-		Sleep(100);
+		ThisThread::SleepFor(DurationMS(100));
 	}
 
 	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
@@ -272,7 +272,7 @@ TEST_F(DBTest, DBQuerySetNick)
 
 	//while( pTestDB->m_Counter > 0 )
 	//{
-	//	Sleep(100);
+	//	ThisThread::SleepFor(DurationMS(100));
 	//}
 
 	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
@@ -309,7 +309,7 @@ TEST_F(DBTest, DBQuerySetNick)
 //
 //	while( pTestDB->m_Counter > 0 )
 //	{
-//		Sleep(100);
+//		ThisThread::SleepFor(DurationMS(100));
 //	}
 //
 //	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();

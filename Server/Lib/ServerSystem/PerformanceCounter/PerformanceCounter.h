@@ -239,7 +239,7 @@ namespace Svr {
 				while (m_Values[indexCalculate].Working.load(std::memory_order_relaxed) > 0)
 				{
 					// This should be rarely happened.
-					Sleep(0);
+					ThisThread::SleepFor(DurationMS(0));
 				}
 				auto total = m_Values[indexCalculate].TotalRawValue.load(std::memory_order_relaxed);
 				auto totalCount = m_Values[indexCalculate].TotalCount.load(std::memory_order_relaxed);

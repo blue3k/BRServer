@@ -265,7 +265,7 @@ TEST_F(HashTableTest, StaticHashTable_UniqueMT)
 
 				if( SUCCEEDED(TestMap.find( value, itFound )) )
 				{
-					Sleep(10);
+					ThisThread::SleepFor(DurationMS(10));
 					EXPECT_EQ(value,itFound->Value);
 					Assert(value == itFound->Value);
 				}
@@ -305,7 +305,7 @@ TEST_F(HashTableTest, StaticHashTable_UniqueMT)
 		m_Threads.push_back(pTask);
 	};
 	
-	Sleep(2000);
+	ThisThread::SleepFor(DurationMS(2000)); 
 
 	for( INT64 ID = 0; ID < WRITE_THREAD_COUNT; ID++ )
 	{
@@ -329,7 +329,7 @@ TEST_F(HashTableTest, StaticHashTable_UniqueMT)
 				}
 
 				if( numberOfItems < 10 )
-					Sleep(500);
+					ThisThread::SleepFor(DurationMS(500));
 			}
 
 			workCounterWrite.fetch_sub(1,std::memory_order_relaxed);
@@ -340,7 +340,7 @@ TEST_F(HashTableTest, StaticHashTable_UniqueMT)
 	};
 	
 
-	while((workCounterWrite) > 0 ) Sleep(1000);
+	while((workCounterWrite) > 0 ) ThisThread::SleepFor(DurationMS(1000));
 
 	StopAllThread();
 

@@ -217,7 +217,7 @@ TEST_F(HashTableTest, HashTable_UniqueMT)
 
 				if( SUCCEEDED(TestMap.find( value, itFound )) )
 				{
-					Sleep(10);
+					ThisThread::SleepFor(DurationMS(10));
 					EXPECT_EQ(value,itFound->Value);
 					Assert(value == itFound->Value);
 				}
@@ -257,7 +257,7 @@ TEST_F(HashTableTest, HashTable_UniqueMT)
 		m_Threads.push_back(pTask);
 	};
 	
-	Sleep(2000);
+	ThisThread::SleepFor(DurationMS(2000));
 
 	for( INT64 ID = 0; ID < WRITE_THREAD_COUNT; ID++ )
 	{
@@ -281,7 +281,7 @@ TEST_F(HashTableTest, HashTable_UniqueMT)
 				}
 
 				if (numberOfItems < 10 && workCounterWrite.load(std::memory_order_relaxed) > WRITE_THREAD_COUNT)
-					Sleep(10);
+					ThisThread::SleepFor(DurationMS(10));
 			}
 
 			workCounterWrite.fetch_sub(1,std::memory_order_relaxed);
@@ -292,9 +292,9 @@ TEST_F(HashTableTest, HashTable_UniqueMT)
 	};
 	
 
-	while((workCounterWrite) > 0 ) Sleep(1000);
+	while((workCounterWrite) > 0 ) ThisThread::SleepFor(DurationMS(1000));
 
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	StopAllThread();
 

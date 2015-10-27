@@ -43,12 +43,12 @@ namespace Hash {
 			//typedef Hash::hash<KeyType> HasherType;
 			typedef ItemType ValueType;
 
-			__if_exists( Trait::UniqueKey )
+			if( Trait::UniqueKey )
 			{
 				typedef void UniqueKey;
 			}
 
-			__if_exists( ThreadTrait::ThreadSafe )
+			if( ThreadTrait::ThreadSafe )
 			{
 				class WriteOnlyLock
 				{
@@ -77,7 +77,7 @@ namespace Hash {
 				typedef WriteOnlyLock	TicketLockType;
 				typedef DualSortedMap<KeyType, ItemType> BucketContainer;
 			}
-			__if_not_exists( ThreadTrait::ThreadSafe )
+			else
 			{
 				typedef FakeTicketLock	TicketLockType;
 				typedef SortedMap<KeyType, ItemType> BucketContainer;
@@ -254,17 +254,17 @@ namespace Hash {
 				Bucket& bucket = m_Buckets[iBucket];
 				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock );
 
-				__if_exists(Trait::UniqueKey)
+				if(Trait::UniqueKey)
 				{
 					ItemType dataFound;
-					__if_exists(ThreadTrait::ThreadSafe)
+					if(ThreadTrait::ThreadSafe)
 					{
 						if (SUCCEEDED(bucket.m_Items->FindInWriteTree(key, dataFound)))
 						{
 							return E_FAIL;
 						}
 					}
-					__if_not_exists(ThreadTrait::ThreadSafe)
+					else
 					{
 						if (SUCCEEDED(bucket.m_Items->Find(key, dataFound)))
 						{
@@ -273,7 +273,7 @@ namespace Hash {
 					}
 				}
 				bucket.m_Items->Insert(key, data);
-				__if_exists(ThreadTrait::ThreadSafe)
+				if(ThreadTrait::ThreadSafe)
 				{
 					bucket.m_Items->CommitChanges();
 				}
@@ -295,14 +295,7 @@ namespace Hash {
 				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LOCK_NONEXCLUSIVE, bucket.m_Lock );
 
 				HRESULT hr = bucket.m_Items->Find(keyVal, data);
-				//__if_exists(ItemType::m_pObject)
-				//{
-				//	if (SUCCEEDED(hr))
-				//	{
-				//		AssertRel(data != ItemType(0));
-				//		//AssertRel(data->Value == keyVal);
-				//	}
-				//}
+
 				return hr;
 			}
 
@@ -320,7 +313,7 @@ namespace Hash {
 
 				if (SUCCEEDED(bucket.m_Items->Remove(key, erasedValue)))
 				{
-					__if_exists(ThreadTrait::ThreadSafe)
+					if(ThreadTrait::ThreadSafe)
 					{
 						bucket.m_Items->CommitChanges();
 					}

@@ -101,14 +101,15 @@ namespace BR {
 
 		virtual void MakeString( char*& pBuff, INT& iBuffLen ) const
 		{
-			__if_exists(Type::MakeString)
-			{
-				m_Data.MakeString(pBuff, iBuffLen);
-			}
-			__if_not_exists(Type::MakeString)
-			{
+			// override argument class for that type
+			//if(Type::HasMakeString)
+			//{
+			//	m_Data.MakeString(pBuff, iBuffLen);
+			//}
+			//else
+			//{
 				ToString(pBuff, iBuffLen, m_Data, 0);
-			}
+			//}
 		}
 	};
 

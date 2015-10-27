@@ -173,7 +173,7 @@ TEST_F(NetTest, Simple)
 			};
 		}
 
-		Sleep(100);
+		ThisThread::SleepFor(DurationMS(100));
 	}
 
 
@@ -276,7 +276,7 @@ TEST_F(NetTest, Simple)
 			}
 		}
 
-		Sleep(100);
+		ThisThread::SleepFor(DurationMS(100));
 	}
 
 EndTest:
@@ -519,7 +519,7 @@ TEST_F(NetTest, RecvMessageWindowMT)
 		threads.push_back(newThread);
 	}
 
-	Sleep(runningTime);
+	ThisThread::SleepFor(DurationMS(runningTime));
 
 	std::for_each(threads.begin(), threads.end(), [](Thread* pThread)
 	{
@@ -608,7 +608,7 @@ TEST_F(NetTest, RecvMessageWindowMT2)
 		threads.push_back(newThread);
 	}
 
-	Sleep(runningTime);
+	ThisThread::SleepFor(DurationMS(runningTime));
 
 	std::for_each(threads.begin(), threads.end(), [](Thread* pThread)
 	{

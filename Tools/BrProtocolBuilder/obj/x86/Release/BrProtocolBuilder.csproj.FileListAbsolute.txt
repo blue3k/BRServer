@@ -1,6 +1,0 @@
-F:\fwork\BRServer\BRServer\Server\bin\tools\ProtocolBuilder.exe.config
-F:\fwork\BRServer\BRServer\Server\bin\tools\ProtocolBuilder.exe
-F:\fwork\BRServer\BRServer\Server\bin\tools\ProtocolBuilder.pdb
-F:\fwork\BRServer\BRServer\Tools\BrProtocolBuilder\obj\x86\Release\BrProtocolBuilder.csprojResolveAssemblyReference.cache
-F:\fwork\BRServer\BRServer\Tools\BrProtocolBuilder\obj\x86\Release\ProtocolBuilder.exe
-F:\fwork\BRServer\BRServer\Tools\BrProtocolBuilder\obj\x86\Release\ProtocolBuilder.pdb

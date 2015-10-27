@@ -166,7 +166,7 @@ void PageQueue<DataObject>::EnqueuePageMove(Page* pMyEnqueuePage, CounterType my
 		nLockTry++;
 		if (nLockTry % MaximumRetryInARow)
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 	}
 
@@ -200,8 +200,8 @@ HRESULT PageQueue<DataObject>::Enqueue( DataObject&& item )
 {
 	HRESULT hr = S_OK;
 
-	Assert(!Util::Nullable<DataObject>::IsNull(item));
-	if (Util::Nullable<DataObject>::IsNull(item))
+	Assert(item != nullptr);
+	if (item == nullptr)
 		return E_FAIL;
 
 	// total ticket number
@@ -220,7 +220,7 @@ HRESULT PageQueue<DataObject>::Enqueue( DataObject&& item )
 	{
 		iTry++;
 		if (iTry % MaximumRetryInARow)
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 
 		// can write if next page ready
 		if (diffPageID == 1) // If next page can be mine
@@ -238,7 +238,7 @@ HRESULT PageQueue<DataObject>::Enqueue( DataObject&& item )
 		else
 		{
 			// I'm far away to be able to enqueue an item
-			//Sleep(0);
+			//ThisThread::SleepFor(DurationMS(0));
 		}
 
 		// try again
@@ -299,20 +299,20 @@ HRESULT PageQueue<DataObject>::Dequeue( DataObject& item )
 	// Read the data & clear that read position 
 	int LockTry = 0;
 	Page* pMyPage = m_DequeuePage.load(std::memory_order_relaxed);
-	while (Util::Nullable<DataObject>::IsNull(pMyPage->Element[myCellID]))
+	while (pMyPage->Element[myCellID] == nullptr)
 	{
 		LockTry++;
 		if (LockTry % MaximumRetryInARow)
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 	}
 
-	Assert(!Util::Nullable<DataObject>::IsNull(pMyPage->Element[myCellID]));
+	Assert(pMyPage->Element[myCellID] != nullptr);
 
 	item = std::forward<DataObject>(pMyPage->Element[myCellID]);
 
-	Util::Nullable<DataObject>::SetNull(pMyPage->Element[myCellID]);
+	pMyPage->Element[myCellID] = nullptr;
 
 	// When the queue is used with shared pointer these order is very important
 	std::atomic_thread_fence(std::memory_order_release);
@@ -340,19 +340,19 @@ HRESULT PageQueue<DataObject>::DequeueMT( DataObject& item, unsigned int uiCheck
 	// Page ID circulation can be occure so change to subtraction
 	while (myPageID != m_DequeuePageID.load(std::memory_order_relaxed))
 	{
-		Sleep(3);
+		ThisThread::SleepFor(DurationMS(3));
 	}
 
 	Page* pMyDequeuePage = m_DequeuePage.load(std::memory_order_relaxed);
 
 	// Read the data & clear that read position 
 	int LockTry = 0;
-	while( Util::Nullable<DataObject>::IsNull(pMyDequeuePage->Element[myCellID]) )
+	while( pMyDequeuePage->Element[myCellID] == nullptr )
 	{
 		LockTry++;
 		if( LockTry%5 )
 		{
-			Sleep(uiCheckInterval);
+			ThisThread::SleepFor(DurationMS(uiCheckInterval));
 		}
 		//_ReadBarrier();
 		std::atomic_thread_fence(std::memory_order_consume);
@@ -362,7 +362,7 @@ HRESULT PageQueue<DataObject>::DequeueMT( DataObject& item, unsigned int uiCheck
 
 	std::atomic_thread_fence(std::memory_order_release);
 
-	Util::Nullable<DataObject>::SetNull(pMyDequeuePage->Element[myCellID]);
+	pMyDequeuePage->Element[myCellID] = nullptr;
 
 	// increment item read count
 	CounterType ReadCount = pMyDequeuePage->Header.ReadCounter.fetch_add(1,std::memory_order_relaxed) + 1;
@@ -413,12 +413,12 @@ HRESULT PageQueue<DataObject>::GetFront( DataObject& item )
 	// Read the data & clear that read position 
 	int LockTry = 0;
 	Page* pMyPage = m_DequeuePage.load(std::memory_order_relaxed);
-	while (Util::Nullable<DataObject>::IsNull(pMyPage->Element[myCellID]))
+	while (pMyPage->Element[myCellID] == nullptr)
 	{
 		LockTry++;
 		if (LockTry % 10)
 		{
-			Sleep(0);
+			ThisThread::SleepFor(DurationMS(0));
 		}
 	}
 

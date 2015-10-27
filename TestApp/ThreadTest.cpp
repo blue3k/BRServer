@@ -147,7 +147,7 @@ namespace BR
 					auto randVal = Util::Random.Rand(RandMax);
 					if (randVal > ((RandMax * 2) / 3))
 					{
-						Sleep(0);
+						ThisThread::SleepFor(DurationMS(0));
 					}
 					else
 					{
@@ -292,7 +292,7 @@ namespace BR
 			{
 				while (m_Workers[workID]->GetQueuenWorkCount() > 100)
 				{
-					Sleep(10);
+					ThisThread::SleepFor(DurationMS(10));
 				}
 			}
 
@@ -350,7 +350,7 @@ TEST_F(ThreadTest, EntityTaskManager)
 
 	while ((TaskWorkerThread::WorkedItems + TaskWorkerThread::SkippedWorkedItems) < TEST_LENGTH)
 	{
-		Sleep(1000);
+		ThisThread::SleepFor(DurationMS(1000));
 		entityManager->Update();
 	}
 

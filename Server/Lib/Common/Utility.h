@@ -9,11 +9,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "Common/Typedefs.h"
+#include "Common/ArrayUtil.h"
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/ArrayUtil.h"
 
 namespace BR {
 namespace Util {

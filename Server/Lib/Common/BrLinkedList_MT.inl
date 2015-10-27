@@ -430,7 +430,7 @@ public:
 			{
 				//Defence race condition
 				if( (iTryCount%4) == 0 )
-					Sleep(0);
+					ThisThread::SleepFor(DurationMS(0));
 
 				iTryCount++;
 
@@ -519,7 +519,7 @@ public:
 		{
 			//Defence race condition
 			if( (iTryCount%4) == 0 )
-				Sleep(0);
+				ThisThread::SleepFor(DurationMS(0));
 
 			iTryCount++;
 

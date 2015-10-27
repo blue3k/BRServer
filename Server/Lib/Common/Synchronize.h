@@ -31,12 +31,13 @@ namespace BR
 	// Synchronization trait, not thread safe
 	struct ThreadSyncTraitNone
 	{
+		const bool ThreadSafe = false;
 	};
 
 	// Synchronization trait, thread safe
 	struct ThreadSyncTraitMT
 	{
-		bool ThreadSafe;
+		const bool ThreadSafe = true;
 	};
 
 

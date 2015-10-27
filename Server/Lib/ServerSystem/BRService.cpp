@@ -174,13 +174,13 @@ namespace Svr {
 				// try to stop the service
 				if ( ControlService( schService, SERVICE_CONTROL_STOP, &g_SvcStatus ) )
 				{
-					Sleep( 500 );
+					ThisThread::SleepFor(DurationMS(500));
 
 					while( QueryServiceStatus( schService, &g_SvcStatus ) )
 					{
 						if ( g_SvcStatus.dwCurrentState == SERVICE_STOP_PENDING )
 						{
-							Sleep( 500 );
+							ThisThread::SleepFor(DurationMS(500));
 						}
 						else
 							break;
@@ -260,13 +260,13 @@ namespace Svr {
 			// try to stop the service
 			if ( ControlService( schService, SERVICE_CONTROL_STOP, &g_SvcStatus ) )
 			{
-				Sleep( 500 );
+				ThisThread::SleepFor(DurationMS(500));
 
 				while( QueryServiceStatus( schService, &g_SvcStatus ) )
 				{
 					if ( g_SvcStatus.dwCurrentState == SERVICE_STOP_PENDING )
 					{
-						Sleep( 500 );
+						ThisThread::SleepFor(DurationMS(500));
 					}
 					else
 						break;

@@ -14,9 +14,8 @@
 #pragma once
 
 
-#include "Typedefs.h"
-#include "BrAssert.h"
-#include "Common/MemLog.h"
+#include "Common/Typedefs.h"
+#include "Common/BrAssert.h"
 
 
 
@@ -39,6 +38,12 @@
 #define BR_ALLIGNUP(x,allign)	( (((uintptr_t)(x) + allign-1) & (~(allign-1))) )
 
 
+namespace MemLog
+{
+	enum Logging;
+	class IMemLogger;
+}
+
 namespace BR
 {
 
@@ -48,7 +53,7 @@ namespace BR
 	//
 
 	// Initialize memory logger
-	bool InitializeMemLogger( MemLog::Logging log = MemLog::LOG_ALL, int logMask = 0 );
+	bool InitializeMemLogger( MemLog::Logging log, int logMask = 0 );
 
 	// get memory logger
 	MemLog::IMemLogger* GetMemLogger();
@@ -77,7 +82,7 @@ namespace BR
 	// Check CRT heap memory status
 	inline void CheckCtrMemory()
 	{
-		Assert( _CrtCheckMemory( ) );
+		//Assert( _CrtCheckMemory( ) );
 	}
 
 #else

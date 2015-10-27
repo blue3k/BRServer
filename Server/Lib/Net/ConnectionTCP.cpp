@@ -813,12 +813,12 @@ namespace Net {
 
 		if(SUCCEEDED(__super::WaitConnect()))
 		{
-			Sleep(50);
+			ThisThread::SleepFor(DurationMS(50));
 
 			// Wait till conected state come
 			while (GetConnectionState() == IConnection::STATE_CONNECTING)
 			{
-				Sleep(50);
+				ThisThread::SleepFor(DurationMS(50));
 				UpdateNetCtrl();
 				if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 				{

@@ -25,11 +25,12 @@ namespace Hash {
 
 		struct UniqueKeyTrait
 		{
-			bool UniqueKey;
+			const bool UniqueKey = true;
 		};
 
 		struct NonUniqueKeyTrait
 		{
+			const bool UniqueKey = false;
 		};
 
 		// Hash map data mappter

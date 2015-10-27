@@ -49,11 +49,11 @@ namespace Svr {
 
 		HRESULT GetMyPlayer( PartyPlayer* &pPlayer )
 		{
-			__if_exists( MessageClass::GetPlayerID )
+			if( MessageClass::HasGetPlayerID )
 			{
 				return GetMyOwner()->FindPlayer( GetPlayerID(), pPlayer );
 			}
-			__if_not_exists( MessageClass::GetPlayerID )
+			else
 			{
 				pPlayer = nullptr;
 				return E_FAIL;

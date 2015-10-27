@@ -97,8 +97,6 @@
   <ItemGroup>
     <ClInclude Include=".\GameConst.h" />
     <ClInclude Include=".\stdafx.h" />
-    <ClInclude Include=".\targetver.h" />
-    <ClInclude Include=".\Typedefs.h" />
     <ClInclude Include=".\Argument.h">
       <Filter>String</Filter>
     </ClInclude>
@@ -119,9 +117,6 @@
     </ClInclude>
     <ClInclude Include="PerfCounter.h">
       <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include=".\NullUtil.h">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="ClassUtil.h">
       <Filter>Utility</Filter>
@@ -237,9 +232,6 @@
     <ClInclude Include="..\ServerSystem\targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\ServerSystem\TicketQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\StrUtil.h">
       <Filter>String</Filter>
     </ClInclude>
@@ -342,6 +334,12 @@
     <ClInclude Include="SharedObject.h">
       <Filter>SharedPointer</Filter>
     </ClInclude>
+    <ClInclude Include="..\ServerSystem\TicketQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include=".\Typedefs.h">
+      <Filter>Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".\ArrayUtil.inl">
@@ -408,9 +406,6 @@
     <None Include="..\ServerSystem\SvrTypes.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="..\ServerSystem\TicketQueue.inl">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include=".\StrUtil.inl">
       <Filter>String</Filter>
     </None>
@@ -465,6 +460,9 @@
     <None Include="CryptoCRC32Table.inl">
       <Filter>Utility</Filter>
     </None>
+    <None Include="..\ServerSystem\TicketQueue.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Thread">
@@ -494,25 +492,5 @@
     <Filter Include="SharedPointer">
       <UniqueIdentifier>{05847ed5-343f-4572-95c9-cdb9bccf4d10}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ResultMC\HRESCommon.mc">
-      <Filter>HResult</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESEvent.mc">
-      <Filter>HResult</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESLogin.mc">
-      <Filter>HResult</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESNet.mc">
-      <Filter>HResult</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESSvrSys.mc">
-      <Filter>HResult</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ResultMC\HRESGame.mc">
-      <Filter>HResult</Filter>
-    </CustomBuild>
   </ItemGroup>
 </Project>

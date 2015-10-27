@@ -58,10 +58,11 @@
 #include <SDKDDKVer.h>
 #include <crtdbg.h>
 #include <SDKDDKVer.h>
+//#include <Winnt.h>
+#include <windows.h>
 
 #include <psapi.h>
 #include <DbgHelp.h>
-#include <Winnt.h>
 
 #include <crtdbg.h>
 #include <tchar.h>
@@ -263,13 +264,12 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 
 #define FORCEINLINE __forceinline
 #define STDCALL __stdcall
-#define STDCALL stdcall
 #define FASTCALL __fastcall
 
 // disable unreferenced label warnning (Proc_End)
 #pragma warning( disable : 4102 )
 
-#define DO_PRAGMA(x) _Pragma (#x)
+#define DO_PRAGMA(x) __pragma(x)
 #define COMPILETIME_TODO(x) DO_PRAGMA(comment ("TODO - " #x))
 #define COMPILETIME_MESSAGE(x) DO_PRAGMA(comment ("Message - " #x))
 #define COMPILETIME_WARNING(x) DO_PRAGMA(comment ("Warning - " #x))

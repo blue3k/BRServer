@@ -12,8 +12,8 @@
 #pragma once
 
 
-#include "Typedefs.h"
-#include "TimeUtil.h"
+#include "Common/Typedefs.h"
+#include "Common/TimeUtil.h"
 
 
 namespace BR
@@ -94,7 +94,7 @@ namespace BR
 	class ThisThread
 	{
 	public:
-		static void Yield()									{ std::this_thread::yield(); }
+		//static void Yield()									{ std::this_thread::yield(); }
 		static std::thread::id GetThreadID()				{ return std::this_thread::get_id(); }
 		static void SleepFor(DurationMS duration)			{ std::this_thread::sleep_for(duration); }
 	};

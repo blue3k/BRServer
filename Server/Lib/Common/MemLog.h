@@ -1,3 +1,14 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2015 The Braves
+// 
+// Author : KyungKun Ko
+//
+// Description : Memory allocation tracking
+//	
+//
+////////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
 #include "Common/Typedefs.h"
@@ -52,6 +63,6 @@ namespace MemLog
 };
 
 
-MEMLOG_FUNC HRESULT SYSTEMAPI QueryMemLogger( MemLog::IMemLogger* &pLogger );
+DLL_IMPORT HRESULT SYSTEMAPI QueryMemLogger( MemLog::IMemLogger* &pLogger );
 typedef HRESULT (SYSTEMAPI *T_QueryMemLogger)( MemLog::IMemLogger* &pLogger );
 

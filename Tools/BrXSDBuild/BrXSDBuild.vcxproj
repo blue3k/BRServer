@@ -14,7 +14,7 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\Server\Lib\Protocol\ProtocolDef.xsd">
+    <CustomBuild Include="..\..\Server\Lib\LibAutoGenerate\Protocol\ProtocolDef.xsd">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">xsd -c -namespace:ProtocolXml %(Identity) /out:..\BrProtocolBuilder</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../ProtocolBuilder/%(Filename).cs</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">XSD Build - ProtocolDef</Message>

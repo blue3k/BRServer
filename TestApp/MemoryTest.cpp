@@ -157,7 +157,7 @@ TEST_F(MemoryTest, PagePool)
 					if(lPusherCount == 0)
 						break;
 
-					Sleep(10);
+					ThisThread::SleepFor(DurationMS(10));
 				}
 			}
 		});
@@ -167,11 +167,11 @@ TEST_F(MemoryTest, PagePool)
 	};
 
 
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	while( lPusherCount != 0 )
 	{
-		Sleep(1000);
+		ThisThread::SleepFor(DurationMS(1000));
 	}
 
 	StopAllThread();
@@ -266,7 +266,7 @@ TEST_F(MemoryTest, MemoryPool)
 					if(lPusherCount == 0)
 						break;
 
-					Sleep(100);
+					ThisThread::SleepFor(DurationMS(100));
 				}
 			}
 		});
@@ -276,11 +276,11 @@ TEST_F(MemoryTest, MemoryPool)
 	};
 
 
-	Sleep(1000);
+	ThisThread::SleepFor(DurationMS(1000));
 
 	while( lPusherCount != 0 )
 	{
-		Sleep(1000);
+		ThisThread::SleepFor(DurationMS(1000));
 	}
 
 	StopAllThread();

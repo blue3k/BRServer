@@ -10,7 +10,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\Server\Lib\Protocol\ProtocolDef.xsd">
+    <CustomBuild Include="..\..\Server\Lib\LibAutoGenerate\Protocol\ProtocolDef.xsd">
       <Filter>XSD</Filter>
     </CustomBuild>
   </ItemGroup>

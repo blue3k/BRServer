@@ -231,6 +231,16 @@ namespace ProtocolBuilder
             return strRes;
         }
 
+        static string[] GenerateParameterTypeInfoList = new string[]
+        {
+            "PlayerID",
+            "Context",
+            "RouteContext",
+            "RouteHopCount",
+            "Sender",
+            "RouteContext",
+        };
+
         // build parser class
         void BuildParserClass(ProtocolXml.MessageBase msg, MsgType msgType, string typeName, Parameter[] parameters)
         {
@@ -241,11 +251,26 @@ namespace ProtocolBuilder
 
             MatchIndent(); OutStream.WriteLine(string.Format("static const MessageID MID;"));
 
-            //if (Group.GenParameterRouteContext)
-            //{
-            //    MatchIndent(); OutStream.WriteLine(string.Format("struct HasRouteContext {{ int Dummy; }};"));
-            //}
+            // Generate parameter Indicators for Template implementations
+            MatchIndent(); OutStream.WriteLine(string.Format("// Parameter type informations for template"));
+            var parameterNameMap = new Dictionary<string, Parameter>();
+            if (parameters != null)
+            {
+                foreach (Parameter param in parameters)
+                {
+                    parameterNameMap.Add(param.Name, param);
+                }
+            }
+            OpenSection("enum", "ParameterTypeInfo");
+            MatchIndent(); OutStream.WriteLine(string.Format("enum ParameterTypeInfo"));
+            foreach (var parameterName in GenerateParameterTypeInfoList)
+            {
+                MatchIndent(); OutStream.WriteLine("Has{0} = {1},", parameterName, parameterNameMap.ContainsKey(parameterName) ? 1 : 0);
+            }
+            CloseSection();
 
+
+            // Generate parameter variables
             MatchIndent(-1); OutStream.WriteLine("private:");
             // member section
             if (parameters != null)
@@ -263,10 +288,6 @@ namespace ProtocolBuilder
                             {
                                 MatchIndent(); OutStream.WriteLine(
                                     string.Format("LinkedArray<{0}> m_{1};", param.Type.ToString(), param.Name));
-                                //MatchIndent(); OutStream.WriteLine(
-                                //    string.Format("{0} m_{1};", ArrayLenType, ArrayLenName(param.Name)));
-                                //MatchIndent(); OutStream.WriteLine(
-                                //    string.Format("{0} *m_{1};", param.Type.ToString(), param.Name));
                             }
                             else
                             {
@@ -297,7 +318,7 @@ namespace ProtocolBuilder
             MatchIndent(1); OutStream.WriteLine("MessageUsage GetMessageUsage() {{ return MessageUsage_{0}; }}",msg.Usage.ToString());
             NewLine();
 
-            // Get functions
+            // Generate Get functions
             if (parameters != null)
             {
                 foreach (Parameter param in parameters)
@@ -873,10 +894,22 @@ namespace ProtocolBuilder
             CloseOutFile();
         }
 
+        // Source timestamp file for make file
+        void BuildTimeStamp()
+        {
+            // write parser class cpp
+            OpenOutFile(Group.Name+".h");
+
+            OutStream.WriteLine("Build:"+ DateTime.Now);
+
+            CloseOutFile();
+        }
+
         public override void Build()
         {
             BuildH();
             BuildCPP();
+            BuildTimeStamp();
         }
 
     }

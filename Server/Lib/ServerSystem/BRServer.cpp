@@ -151,7 +151,7 @@ namespace Svr{
 						break;
 					}
 
-					Sleep(0);
+					ThisThread::SleepFor(DurationMS(0));
 				}
 				Assert(pConn == nullptr);
 

@@ -39,7 +39,7 @@ namespace Hash {
 		{
 		public:
 
-			__if_exists( Trait::UniqueKey )
+			if( Trait::UniqueKey )
 			{
 				typedef void UniqueKey;
 			}
@@ -48,13 +48,13 @@ namespace Hash {
 			typedef typename Indexer Indexer;
 			typedef typename Indexer::Type KeyType;
 
-			__if_exists( ThreadTrait::ThreadSafe )
+			if( ThreadTrait::ThreadSafe )
 			{
-			typedef TicketLock	TicketLockType;
+				typedef TicketLock	TicketLockType;
 			}
-			__if_not_exists( ThreadTrait::ThreadSafe )
+			else( ThreadTrait::ThreadSafe )
 			{
-			typedef FakeTicketLock	TicketLockType;
+				typedef FakeTicketLock	TicketLockType;
 			}
 
 			// Hash bucket
@@ -504,7 +504,7 @@ namespace Hash {
 				MapData.Key = inKey;
 				MapData.Data = data;
 
-				__if_exists(Trait::UniqueKey)
+				if(Trait::UniqueKey)
 				{
 					BucketContainer::iterator iter = bucket.m_Items.begin();
 					for( ; iter != bucket.m_Items.end(); ++iter )
@@ -518,7 +518,7 @@ namespace Hash {
 
 					bucket.m_Items.push_back( MapData );
 				}
-				__if_not_exists(Trait::UniqueKey)
+				else
 				{
 					BucketContainer::iterator iter = bucket.m_Items.begin();
 					bool bIsInserted = false;

@@ -214,11 +214,6 @@
 			*insertedOrder = CalculateOrder(travelHistory, pInserted);
 		}
 
-		//__if_exists(ValueType::m_pObject)
-		//{
-		//	AssertRel(pInserted->Value != ValueType(0));
-		//}
-
 		FixupBalance(travelHistory);
 
 		m_IsModified = true;
@@ -456,43 +451,12 @@
 			return E_FAIL;
 		}
 
-		//__if_exists(ValueType::m_pObject)
-		//{
-		//	if (pFound->Value == ValueType(0))
-		//	{
-		//		//printf("History %d, key %d, found 0x%p\n", (UINT)travelHistory.GetHistorySize(), (UINT)key, pFound);
-		//		//for (int history = 0; history < travelHistory.GetHistorySize(); history++)
-		//		//{
-		//		//	printf("	0x%p => \n", travelHistory.GetHistory(history));
-		//		//}
-
-		//		AssertRel(0);
-		//	}
-		//}
-
 		value = pFound->Value;
 
 		if (pOrder != nullptr)
 		{
 			*pOrder = CalculateOrder(travelHistory, pFound);
 		}
-
-		//__if_exists(ValueType::m_pObject)
-		//{
-		//	if (pFound->Value == ValueType(0))
-		//	{
-		//		//printf("History %d, key %d, found 0x%p\n", (UINT)travelHistory.GetHistorySize(), (UINT)key, pFound);
-		//		//for (int history = 0; history < travelHistory.GetHistorySize(); history++)
-		//		//{
-		//		//	printf("	0x%p => \n", travelHistory.GetHistory(history));
-		//		//}
-
-		//		AssertRel(0);
-		//	}
-		//	//AssertRel(pFound->Value != ValueType(0));
-		//	AssertRel(value != ValueType(0));
-		//	//AssertRel(value->Value == key);
-		//}
 
 		return S_OK;
 	}
