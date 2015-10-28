@@ -28,6 +28,12 @@ namespace BR {
 	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const PlayerRevealedReason& Data, int Option);
 	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const RankingType& Data, int Option);
 
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PlayerRole>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
 
 
 	extern template class Arg < PlayerRole>;

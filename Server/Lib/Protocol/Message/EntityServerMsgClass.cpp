@@ -155,8 +155,8 @@ namespace BR
 			VOID RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG2, "%0%:RegisterEntityRes:%1%:%2% , Context:%3%, Result:%4%, EntUID:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_EntUID); 
+				protocolTrace(Trace::TRC_DBG2, "%0%:RegisterEntityRes:%1%:%2% , Context:%3%, Result:{4}, EntUID:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_EntUID); 
 			}; // VOID RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Find Entity
@@ -276,8 +276,8 @@ namespace BR
 			VOID UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG2, "%0%:UnregisterEntityRes:%1%:%2% , Context:%3%, Result:%4%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result)); 
+				protocolTrace(Trace::TRC_DBG2, "%0%:UnregisterEntityRes:%1%:%2% , Context:%3%, Result:{4}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result); 
 			}; // VOID UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Find Entity
@@ -400,8 +400,8 @@ namespace BR
 			VOID FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG2, "%0%:FindEntityRes:%1%:%2% , Context:%3%, Result:%4%, EntUID:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_EntUID); 
+				protocolTrace(Trace::TRC_DBG2, "%0%:FindEntityRes:%1%:%2% , Context:%3%, Result:{4}, EntUID:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_EntUID); 
 			}; // VOID FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 

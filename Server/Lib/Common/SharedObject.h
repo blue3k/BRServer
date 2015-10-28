@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 
 //#define REFERENCE_DEBUG_TRACKING
 

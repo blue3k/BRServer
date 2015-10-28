@@ -112,12 +112,12 @@ namespace Svr {
 
 	bool PerformanceCounterServer::Run()
 	{
-		SetPriority(PRIORITY_ABOVE_NORMAL);
+		SetPriority(Thread::PRIORITY::ABOVE_NORMAL);
 
 		while (1)
 		{
 			// 50ms will be the precision of our timer
-			ULONG loopInterval = UpdateInterval(1000);
+			auto loopInterval = UpdateInterval(DurationMS(1000));
 
 			if (CheckKillEvent(loopInterval))
 			{
@@ -127,11 +127,11 @@ namespace Svr {
 
 			UpdateNewFreeInstance();
 
-			UINT64 item;
+			void* item;
 			while (SUCCEEDED(m_TimedOutQueue.Dequeue(item)))
 			{
 				SharedPointerT<PerformanceCounterInstance> removed;
-				m_InstanceMap.Remove(item, removed);
+				m_InstanceMap.Remove((UINT64)item, removed);
 			}
 			
 			m_InstanceMap.CommitChanges();
@@ -212,9 +212,9 @@ namespace Svr {
 		instanceMap.ForeachOrder(0, (UINT)instanceMap.GetItemCount(), [&instanceMap,&instanceList](const UINT64& key, const SharedPointerT<PerformanceCounterInstance>& value)
 		{
 			auto timeSince = Util::TimeSince(value->GetUpdatedTime());
-			if (timeSince < 0 || timeSince > TIMER_TIMOUT)
+			if (timeSince < DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
 			{
-				stm_pInstance->m_TimedOutQueue.Enqueue(key);
+				stm_pInstance->m_TimedOutQueue.Enqueue((void*)key);
 				return true;
 			}
 
@@ -269,9 +269,9 @@ namespace Svr {
 		if (SUCCEEDED(instanceMap.Find(instanceUID.UID, pInstance)))
 		{
 			auto timeSince = Util::TimeSince(pInstance->GetUpdatedTime());
-			if (timeSince < 0 || timeSince > TIMER_TIMOUT)
+			if (timeSince < DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
 			{
-				stm_pInstance->m_TimedOutQueue.Enqueue(instanceUID.UID);
+				stm_pInstance->m_TimedOutQueue.Enqueue((void*)instanceUID.UID);
 				pInstance = SharedPointerT<PerformanceCounterInstance>();
 				hr = E_FAIL;
 				goto Proc_End;

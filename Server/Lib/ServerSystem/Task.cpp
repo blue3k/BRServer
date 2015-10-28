@@ -61,17 +61,17 @@ namespace Svr {
 	}
 
 
-	ULONG TickTask::GetTickInterval() const
+	DurationMS TickTask::GetTickInterval() const
 	{
 		return m_TickInterval;
 	}
 
-	ULONG TickTask::GetScheduledTickTime() const
+	TimeStampMS TickTask::GetScheduledTickTime() const
 	{
 		return m_TimerAction->GetScheduledTime();
 	}
 
-	void TickTask::SetNextScheduledTickTime(ULONG tickNext)
+	void TickTask::SetNextScheduledTickTime(TimeStampMS tickNext)
 	{
 		auto currentSchedule = m_TimerAction->GetScheduledTime();
 		auto newTime = Util::TimeMin(currentSchedule, tickNext);
@@ -90,7 +90,7 @@ namespace Svr {
 
 		m_TimerAction->TimeData.ObjectID = GetTaskID();
 
-		if (GetTickInterval() > 0)
+		if (GetTickInterval() > DurationMS(0))
 		{
 			m_TimerAction->SetNextTickTime(Util::Time.GetTimeMs() + GetTickInterval());
 		}
@@ -135,7 +135,7 @@ namespace Svr {
 		if (pTickTask == nullptr)
 			return false;
 
-		auto nextDiff = (LONG)(TimeData.NextTickTime - Util::Time.GetTimeMs());
+		auto nextDiff = (LONG)(TimeData.NextTickTime - Util::Time.GetTimeMs()).count();
 		if (nextDiff <= 0)
 		{
 			// Do default rescheduling

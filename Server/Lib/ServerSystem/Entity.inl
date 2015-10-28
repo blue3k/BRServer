@@ -50,12 +50,12 @@ EntityID Entity::GetEntityID() const
 }
 
 // Set/Get Entity Create TIme
-ULONG Entity::GetEntityCreateTime()
+TimeStampMS Entity::GetEntityCreateTime()
 {
 	return m_ulCreateTime;
 }
 
-void Entity::SetEntityCreateTime(ULONG ulCreateTime)
+void Entity::SetEntityCreateTime(TimeStampMS ulCreateTime)
 {
 	m_ulCreateTime = ulCreateTime;
 }

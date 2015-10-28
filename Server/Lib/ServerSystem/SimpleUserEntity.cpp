@@ -39,7 +39,7 @@ namespace Svr
 		:SimpleEntity(Const::Default::ENTITY_SIMPLE_TRANS_QUEUE, Const::Default::ENTITY_SIMPLE_TRANSRES_QUEUE),
 		m_pConnection(nullptr)
 	{
-		SetTickInterval(Svr::Const::SIMPLEUSER_TICKTASK_INTERVAL);
+		SetTickInterval(DurationMS(Svr::Const::SIMPLEUSER_TICKTASK_INTERVAL));
 	}
 
 	SimpleUserEntity::~SimpleUserEntity()
@@ -153,7 +153,7 @@ namespace Svr
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
 		Svr::Transaction *pNewTrans = nullptr;
-		ThreadID currentThreadID = GetTaskWorker() != nullptr ? GetTaskWorker()->GetThreadID() : GetCurrentThreadId();
+		ThreadID currentThreadID = GetTaskWorker() != nullptr ? GetTaskWorker()->GetThreadID() : ThisThread::GetThreadID();
 
 		svrChkPtr(pIMsg);
 		pMsgHdr = pIMsg->GetMessageHeader();

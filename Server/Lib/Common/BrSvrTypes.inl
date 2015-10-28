@@ -122,7 +122,7 @@ tag_RouteContext tag_RouteContext::GetSwaped() const
 
 
 ServiceInformation::ServiceInformation()
-	:UID(0),Membership(ClusterMembership::StatusWatcher),Status(ServiceStatus::Offline),ServerClass(NetClass::Unknown), ServerAddress(0), ServerUpTime(0), Workload(0)
+	:UID(0),Membership(ClusterMembership::StatusWatcher),Status(ServiceStatus::Offline),ServerClass(NetClass::Unknown), ServerAddress(0), ServerUpTime(TimeStampSec::max()), Workload(0)
 {
 }
 
@@ -131,7 +131,7 @@ ServiceInformation::ServiceInformation( const ServiceInformation& src )
 {
 }
 
-ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, BR::NetClass netClass, const NetAddress& address, ULONGLONG serverUpTime, UINT32 workload )
+ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, BR::NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, UINT32 workload )
 {
 	UID = entityUID;
 	Membership = membership;
@@ -150,7 +150,7 @@ ServiceInformation::ServiceInformation( int initValue )
 	ServerClass = NetClass::Unknown;
 	Status = ServiceStatus::Offline;
 	ServerAddress = NetAddress(0);
-	ServerUpTime = 0;
+	ServerUpTime = TimeStampSec::min();
 	Workload = 0;
 }
 
@@ -354,7 +354,7 @@ MatchingQueueItem::MatchingQueueItem()
 }
 
 MatchingQueueItem::MatchingQueueItem( const MatchingQueueItem& src )
-	:NumPlayers(Util::Max((UINT32)MAX_NUM_PLAYER,src.NumPlayers))
+	:NumPlayers(std::max((UINT32)MAX_NUM_PLAYER,src.NumPlayers))
 	,RegisterUID(src.RegisterUID)
 	,RegisterID(src.RegisterID)
 {
@@ -362,7 +362,7 @@ MatchingQueueItem::MatchingQueueItem( const MatchingQueueItem& src )
 }
 
 MatchingQueueItem::MatchingQueueItem( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* playerInformations )
-	:NumPlayers(Util::Max((UINT32)MAX_NUM_PLAYER,numPlayer))
+	:NumPlayers(std::max((UINT32)MAX_NUM_PLAYER,numPlayer))
 	,RegisterUID(registerUID)
 	,RegisterID(registerID)
 {

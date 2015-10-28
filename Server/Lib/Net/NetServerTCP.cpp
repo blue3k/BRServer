@@ -191,7 +191,7 @@ namespace Net {
 				GetConnectionManager().PendingReleaseConnection(pConn);
 			}
 
-			netTrace( Trace::TRC_ERROR, "Tcp Accept failed  hr = %0%", ArgHex32(hr) );
+			netTrace( Trace::TRC_ERROR, "Tcp Accept failed  hr = {0:X8}", hr );
 		}
 		else
 		{
@@ -385,7 +385,7 @@ namespace Net {
 
 		if( !CreateIoCompletionPort((HANDLE)socket, IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)(IOCPSystem::IOCallBack*)this, 0) )
 		{
-			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed TCP, hr = %0%", ArgHex32(GetLastHRESULT()) );
+			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed TCP, hr = {0:X8}", GetLastHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
@@ -418,7 +418,7 @@ namespace Net {
 		if( socket != INVALID_SOCKET )
 			closesocket( socket );
 
-		netTrace( TRC_NET, "HostOpen %0%, hr=%1%", GetLocalAddress(), ArgHex32(hr) );
+		netTrace( TRC_NET, "HostOpen %0%, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}
@@ -442,7 +442,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace( TRC_NET, "HostClose %0%, hr=%1%", GetLocalAddress(), ArgHex32(hr) );
+		netTrace( TRC_NET, "HostClose %0%, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}
@@ -534,7 +534,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:%3%, ip:%0%, err:%1%, hr:%2%", pTCPCon->GetConnectionInfo().Remote, iWSAErr, ArgHex32(hr), pTCPCon->GetCID());
+				netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:%3%, ip:%0%, err:%1%, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, iWSAErr, hr, pTCPCon->GetCID());
 			}
 			else
 				return S_OK;
@@ -610,7 +610,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( Trace::TRC_ERROR, "TCP Send Failed, ip:%0%, err:%1%, hr:%2%", pTCPCon->GetConnectionInfo().Remote, iWSAErr, ArgHex32(hr) );
+				netTrace( Trace::TRC_ERROR, "TCP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, iWSAErr, hr );
 			}
 			else
 				return S_OK;

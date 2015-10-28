@@ -69,7 +69,8 @@
     <ClInclude Include="SharedReferenceManager.h" />
     <ClInclude Include="SortedMap.h" />
     <ClInclude Include="StaticDoubleLinkedList.h" />
-    <ClInclude Include="SystemSynchronize.h" />
+    <ClInclude Include="SynchronizationTrait.h" />
+    <ClInclude Include="SystemSynchronization.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="OrderedLinkedList.h" />
     <ClInclude Include="SpinBufferMT.h" />
@@ -90,7 +91,7 @@
     <ClInclude Include="StaticLinkedList.h" />
     <ClInclude Include="StaticHashTable.h" />
     <ClInclude Include="SvrPolicyID.h" />
-    <ClInclude Include=".\Synchronize.h" />
+    <ClInclude Include="Synchronization.h" />
     <ClInclude Include=".\Thread.h" />
     <ClInclude Include=".\TimeUtil.h" />
     <ClInclude Include=".\ToString.h" />
@@ -128,7 +129,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include=".\StrUtil.cpp" />
-    <ClCompile Include=".\Synchronize.cpp" />
+    <ClCompile Include="Synchronization.cpp" />
     <ClCompile Include=".\Thread.cpp" />
     <ClCompile Include=".\TimeUtil.cpp" />
     <ClCompile Include=".\ToStringBase.cpp" />
@@ -193,7 +194,7 @@
     <None Include=".\StackPool.inl" />
     <None Include=".\ArrayUtil.inl" />
     <None Include=".\StrUtil.inl" />
-    <None Include=".\Synchronize.inl" />
+    <None Include="Synchronization.inl" />
     <None Include=".\Thread.inl" />
     <None Include=".\TimeUtil.inl" />
     <None Include=".\Trace.inl" />

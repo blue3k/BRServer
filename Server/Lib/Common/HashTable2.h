@@ -14,8 +14,8 @@
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
 #include "Common/Indexing.h"
-#include "Common/Synchronize.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/SynchronizationTrait.h"
+#include "Common/SystemSynchronization.h"
 #include "Common/ArrayUtil.h"
 #include "Common/HashTableTrait.h"
 #include "Common/SortedMap.h"
@@ -34,7 +34,7 @@ namespace Hash {
 		template<	typename KeyType,
 					typename ItemType, 
 					typename Trait = UniqueKeyTrait, 
-					typename ThreadTrait = ThreadSyncTraitMT,
+					typename ThreadTrait = ThreadSyncTraitReadWriteT<KeyType,ItemType>,
 					typename HasherType = Hash::hash<KeyType> >
 		class HashTable2
 		{
@@ -43,40 +43,9 @@ namespace Hash {
 			//typedef Hash::hash<KeyType> HasherType;
 			typedef ItemType ValueType;
 
-			if( ThreadTrait::ThreadSafe )
-			{
-				class WriteOnlyLock
-				{
-				public:
-				private:
-					CriticalSection m_WriteCriticalSection;
+			typedef typename ThreadTrait::TicketLockType	TicketLockType;
+			typedef typename ThreadTrait::BucketContainer BucketContainer;
 
-				public:
-					WriteOnlyLock(){}
-					~WriteOnlyLock(){}
-
-					// Exclusive lock/unlock
-					inline void ExLock() { m_WriteCriticalSection.Lock(); }
-					inline void ExUnlock() { m_WriteCriticalSection.UnLock(); }
-
-					// Non-Exclusive lock/unlock
-					inline void NonExLock() {}
-					inline void NonExUnlock() {}
-
-					// Query status
-					inline CounterType GetTicketCount() const { return 0; }
-					inline CounterType GetNonExclusiveCount() const { return 0; }
-					inline bool	IsLocked() const { return false; }
-				};
-
-				typedef WriteOnlyLock	TicketLockType;
-				typedef DualSortedMap<KeyType, ItemType> BucketContainer;
-			}
-			else
-			{
-				typedef FakeTicketLock	TicketLockType;
-				typedef SortedMap<KeyType, ItemType> BucketContainer;
-			}
 
 			// Hash bucket
 			class Bucket
@@ -247,7 +216,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Buckets.size();
 
 				Bucket& bucket = m_Buckets[iBucket];
-				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock );
+				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock );
 
 				if(Trait::UniqueKey)
 				{
@@ -287,7 +256,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Buckets.size();
 
 				Bucket& bucket = m_Buckets[iBucket];
-				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LOCK_NONEXCLUSIVE, bucket.m_Lock );
+				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_NONEXCLUSIVE, bucket.m_Lock );
 
 				HRESULT hr = bucket.m_Items->Find(keyVal, data);
 
@@ -304,7 +273,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Buckets.size();
 
 				Bucket& bucket = m_Buckets[iBucket];
-				TicketScopeLockT<TicketLockType> scopeLock(TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock);
+				TicketScopeLockT<TicketLockType> scopeLock(TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock);
 
 				if (SUCCEEDED(bucket.m_Items->Remove(key, erasedValue)))
 				{

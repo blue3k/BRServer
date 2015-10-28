@@ -209,12 +209,12 @@ namespace BR {
 		ServiceStatus		Status;
 		NetClass			ServerClass;
 		NetAddress			ServerAddress;
-		ULONGLONG			ServerUpTime;
+		TimeStampSec		ServerUpTime;
 		UINT32				Workload;
 
 		inline ServiceInformation();
 		inline ServiceInformation( const ServiceInformation& src );
-		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, BR::NetClass netClass, const NetAddress& address, ULONGLONG serverUpTime, UINT32 workload );
+		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, BR::NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, UINT32 workload );
 		inline ServiceInformation( int initValue );
 
 		inline ServiceInformation& operator = ( const ServiceInformation& src );

@@ -208,8 +208,8 @@ namespace BR
 			VOID PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerJoinedToGameServerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerJoinedToGameServerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Kick logged in player
@@ -388,8 +388,8 @@ namespace BR
 			VOID KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 

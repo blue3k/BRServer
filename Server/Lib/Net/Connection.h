@@ -59,7 +59,7 @@ namespace Net {
 		{
 			ULONG	PingStartMS;				// Ping start time to calculate roundtrip time
 
-			ULONG	ThroughputStartMS;			// Throughput check Start time
+			TimeStampMS	ThroughputStartMS;			// Throughput check Start time
 			ULONG	ThroughputBytes;			// Packet data size sum
 
 		} StatisticCalc;
@@ -106,8 +106,8 @@ namespace Net {
 	protected:
 
 		// NetCtrl control time
-		ULONG m_ulNetCtrlTime;
-		ULONG m_ulNetCtrlTryTime;
+		TimeStampMS m_ulNetCtrlTime;
+		TimeStampMS m_ulNetCtrlTryTime;
 
 		// Set socket handle
 		inline void SetSocket( SOCKET socket );

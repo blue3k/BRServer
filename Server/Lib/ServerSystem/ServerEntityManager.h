@@ -19,7 +19,7 @@
 #include "Common/OrderedLinkedList.h"
 #include "Common/HashTable2.h"
 #include "Common/Indexing.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/SystemSynchronization.h"
 #include "Net/NetDef.h"
 #include "Net/NetServerPeer.h"
 #include "Net/NetServerPeerTCP.h"

@@ -31,7 +31,11 @@ namespace BR {
 	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::FriendInformation& Data, int Option);
 	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::TotalRankingPlayerInformation& Data, int Option);
 	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::NotificationType& Data, int Option);
-
+	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PlayerID>& Data, int Option);
+	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<TotalRankingPlayerInformation>& Data, int Option);
+	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<FriendInformation>& Data, int Option);
+	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampMS& Data, int Option);
+	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationMS& Data, int Option);
 
 
 }; // namespace StrUtil

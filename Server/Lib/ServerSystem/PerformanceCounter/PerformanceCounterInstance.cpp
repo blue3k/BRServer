@@ -46,7 +46,7 @@ namespace Svr {
 		hr;
 	}
 
-	void PerformanceCounterInstance::SetUpdatedTime(ULONG updatedTime)
+	void PerformanceCounterInstance::SetUpdatedTime(TimeStampMS updatedTime)
 	{
 		m_LatestUpdated = updatedTime;
 	}

@@ -42,6 +42,13 @@ IConnection::tag_Event& IConnection::tag_Event::operator =(const IConnection::ta
 	return *this;
 }
 
+IConnection::tag_Event& IConnection::tag_Event::operator =(void* src)
+{
+	assert(src == nullptr);
+	memset(this, 0, sizeof(Event));
+	return *this;
+}
+
 bool IConnection::tag_Event::operator == (const IConnection::tag_Event& src) const
 {
 	if( src.EventType != EventType )
@@ -51,6 +58,18 @@ bool IConnection::tag_Event::operator == (const IConnection::tag_Event& src) con
 		return true;
 
 	return Value.hr == src.Value.hr;
+}
+
+bool IConnection::tag_Event::operator == (void* src) const
+{
+	assert(src == nullptr);
+	return EventType == EVT_NONE;
+}
+
+bool IConnection::tag_Event::operator != (void* src) const
+{
+	assert(src == nullptr);
+	return EventType != EVT_NONE;
 }
 
 
@@ -148,7 +167,7 @@ inline void IConnection::SetUData(uintptr_t UData)
 }
 
 // Get connection time
-inline ULONG IConnection::GetConnectionTime()
+inline TimeStampMS IConnection::GetConnectionTime()
 {
 	return m_tConnectionTime;
 }
@@ -194,9 +213,28 @@ INet::Event& INet::Event::operator =( const INet::Event& src )
 	return *this;
 }
 
+INet::Event& INet::Event::operator = (void* src)
+{
+	EventType = INet::Event::EVT_NONE;
+	EventConnection = nullptr;
+	return *this;
+}
+
 bool INet::Event::operator == ( const INet::Event& src ) const
 {
 	return EventType == src.EventType && EventConnection == src.EventConnection;
+}
+
+bool INet::Event::operator == (void* ptr) const
+{
+	assert(ptr == nullptr);
+	return EventType == INet::Event::EVT_NONE;
+}
+
+bool INet::Event::operator != (void* ptr) const
+{
+	assert(ptr == nullptr);
+	return EventType != INet::Event::EVT_NONE;
 }
 
 

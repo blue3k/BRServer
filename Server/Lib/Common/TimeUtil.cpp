@@ -158,12 +158,18 @@ namespace Util {
 	// Utility
 	//
 
-	DurationMS TimeDurationMin(DurationMS timeMs, DurationMS timeMs2)
+
+	DurationMS TimeMin(DurationMS timeMs, DurationMS timeMs2)
 	{
-		if (timeMs.count() <= 0) return timeMs2;
-		if (timeMs2.count() <= 0) return timeMs;
+		if ((INT)timeMs.count() <= 0) return timeMs2;
+		if ((INT)timeMs2.count() <= 0) return timeMs;
 
 		return (timeMs - timeMs2).count() >= 0 ? timeMs2 : timeMs;
+	}
+
+	TimeStampMS TimeMin(TimeStampMS timeMs, TimeStampMS timeMs2)
+	{
+		return timeMs > timeMs2 ? timeMs2 : timeMs;
 	}
 
 

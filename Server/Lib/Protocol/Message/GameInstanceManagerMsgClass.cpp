@@ -269,8 +269,8 @@ namespace BR
 			VOID CreateGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:CreateGameRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:CreateGameRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID CreateGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Game instance notify of deletion

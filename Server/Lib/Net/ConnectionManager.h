@@ -14,7 +14,7 @@
 #include "Common/Typedefs.h"
 #include "Common/HashTable2.h"
 #include "Common/Thread.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/UniqueEntityIDGenerator.h"
 #include "Net/NetDef.h"
 #include "Net/Connection.h"
@@ -59,20 +59,15 @@ namespace Net {
 
 		//////////////////////////////////////////////////////////////////
 		// Hash definition
-		typedef Hash::HashTable2< Sockaddress, WeakPointerT<Connection>, Hash::UniqueKeyTrait, ThreadSyncTraitMT, Hash::hash < sockaddr_in6 >
-									//, Indexing::MemData<AddrConMapItem,ULONGLONG,&AddrConMapItem::Addr64>
+		typedef Hash::HashTable2< Sockaddress, WeakPointerT<Connection>, Hash::UniqueKeyTrait, ThreadSyncTraitReadWriteT<Sockaddress, WeakPointerT<Connection>>, Hash::hash < sockaddr_in6 >
 									> AddrMap;
 
 
 		typedef Hash::HashTable2<	UINT_PTR, SharedPointerT<Connection>
-									//Indexing::ConstMemFunc<IConnection,UINT_PTR,&Net::IConnection::GetCID>
 									> CIDMap;
-
-		//typedef CIDMap::iterator CIDIterator;
 
 
 		typedef Hash::HashTable2<	UINT64, WeakPointerT<Connection>
-									//Indexing::ConstMemFunc<IConnection,UINT64,&Net::IConnection::GetPeerID>
 									> PeerIDMap;
 
 		// Connection set
@@ -83,9 +78,6 @@ namespace Net {
 		// Queue operations
 		struct Operation
 		{
-			static const Operation NullValue;
-
-
 			// Operation code
 			enum OperationCode : UINT32
 			{
@@ -113,7 +105,7 @@ namespace Net {
 			MsgMobileNetCtrl	MobileNetCtrl;
 			MsgNetCtrlConnect	NetCtrlConnect;
 
-			ULONG EnqueuedTime;
+			TimeStampMS EnqueuedTime;
 
 			// Constructor
 			inline Operation();
@@ -131,10 +123,13 @@ namespace Net {
 			// Copy operator
 			Operation& operator = ( const Operation& src );
 			Operation& operator = (Operation&& src);
+			Operation& operator = (void* src);
 
 			// These operation is used for empty value os just compare with OpCode
 			inline bool operator != ( const Operation& src ) const;
 			inline bool operator == ( const Operation& src ) const;
+			inline bool operator == (void* src) const;
+			inline bool operator != (void* src) const;
 		};
 
 	private:

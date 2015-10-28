@@ -13,7 +13,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 
 
 

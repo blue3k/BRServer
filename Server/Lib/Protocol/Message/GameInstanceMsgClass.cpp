@@ -340,8 +340,8 @@ namespace BR
 			VOID JoinGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, GameInsSvr:%6%, TimeStamp:%7%, GameState:%8%, Day:%9%, MaxPlayer:%10%, PlayerIndex:%11%, PlayerCharacter:%12%, Role:%13%, Dead:%14%, IsNewJoin:%15%, ChatHistoryData:%16%, GameLogData:%17%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_GameInsSvr, m_TimeStamp, m_GameState, m_Day, m_MaxPlayer, m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_IsNewJoin, ArgArray<BYTE>(m_ChatHistoryData), ArgArray<BYTE>(m_GameLogData)); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, GameInsSvr:%6%, TimeStamp:%7%, GameState:%8%, Day:%9%, MaxPlayer:%10%, PlayerIndex:%11%, PlayerCharacter:%12%, Role:%13%, Dead:%14%, IsNewJoin:%15%, ChatHistoryData:%16%, GameLogData:%17%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_GameInsSvr, m_TimeStamp, m_GameState, m_Day, m_MaxPlayer, m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_IsNewJoin, m_ChatHistoryData, m_GameLogData); 
 			}; // VOID JoinGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player Joined
@@ -704,8 +704,8 @@ namespace BR
 			VOID LeaveGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:LeaveGameRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:LeaveGameRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID LeaveGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player left
@@ -973,8 +973,8 @@ namespace BR
 			VOID KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player kicked
@@ -1239,8 +1239,8 @@ namespace BR
 			VOID AssignRoleRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:AssignRoleRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:AssignRoleRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID AssignRoleRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Assign role
@@ -1600,8 +1600,8 @@ namespace BR
 			VOID AdvanceGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:AdvanceGameRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:AdvanceGameRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID AdvanceGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: The game state is advanced
@@ -1970,8 +1970,8 @@ namespace BR
 			VOID VoteGameAdvanceRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteGameAdvanceRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:VoteGameAdvanceRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID VoteGameAdvanceRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: *GameAdvance is Voted
@@ -2242,8 +2242,8 @@ namespace BR
 			VOID VoteRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:VoteRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID VoteRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player Voted
@@ -2423,7 +2423,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG1, "%0%:VoteEndS2CEvt:%1%:%2% , RouteContext:%3%, Voted:%4%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, ArgArray<PlayerID>(m_Voted)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Voted); 
 			}; // VOID VoteEndS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player Voted
@@ -2789,8 +2789,8 @@ namespace BR
 			VOID GamePlayAgainRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayAgainRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, ReplayMemberCount:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_ReplayMemberCount); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayAgainRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, ReplayMemberCount:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_ReplayMemberCount); 
 			}; // VOID GamePlayAgainRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
@@ -2980,7 +2980,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG1, "%0%:GameRevealPlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, TargetPlayerID:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, ArgArray<PlayerID>(m_TargetPlayerID)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_TargetPlayerID); 
 			}; // VOID GameRevealPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GameRevealPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 23);
@@ -3085,8 +3085,8 @@ namespace BR
 			VOID GameRevealPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameRevealPlayerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, RevealedPlayerID:%6%, RevealedRole:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, ArgArray<PlayerID>(m_RevealedPlayerID), ArgArray<PlayerRole>(m_RevealedRole)); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:GameRevealPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, RevealedPlayerID:%6%, RevealedRole:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_RevealedPlayerID, m_RevealedRole); 
 			}; // VOID GameRevealPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Player. revive himself
@@ -3265,8 +3265,8 @@ namespace BR
 			VOID GamePlayerReviveRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerReviveRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerReviveRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID GamePlayerReviveRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player is revived

@@ -504,7 +504,7 @@ namespace BR
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const float& Data, int Option)
 	{
 		int degit = Option >> 16;
-		_FToA(Data, pBuff, iBuffLen, degit, (char)(Option & 0xFFFF));
+		_FToA(Data, pBuff, iBuffLen, degit, 0);
 		return S_OK;
 	}
 	
@@ -540,6 +540,7 @@ namespace BR
 	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT32>& Data, int Option);
 	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT64>& Data, int Option);
 	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT64>& Data, int Option);
+
 
 
 };	// namespace BR

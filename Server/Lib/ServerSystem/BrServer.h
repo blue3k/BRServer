@@ -108,7 +108,7 @@ namespace Svr {
 		EntityTable					m_EntityTable;
 
 		// Server execution time stamp
-		ULONGLONG					m_ServerUpUTCTIme;
+		TimeStampSec					m_ServerUpUTCTIme;
 
 		// Loopback ServerEntity
 		ServerEntity*				m_pLoopbackServerEntity;
@@ -190,7 +190,7 @@ namespace Svr {
 		//inline UINT GetClusterID();
 		
 		// Get Server start up time, UTC
-		inline ULONGLONG GetServerUpTime();
+		inline TimeStampSec GetServerUpTime();
 
 		// Get main server instance
 		static inline BrServer* GetInstance();

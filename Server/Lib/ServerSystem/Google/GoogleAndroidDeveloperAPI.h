@@ -13,7 +13,7 @@
 
 #include "Common/Typedefs.h"
 #include "openssl/crypto.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/SystemSynchronization.h"
 #include "Common/ArrayUtil.h"
 
 

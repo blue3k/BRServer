@@ -122,7 +122,7 @@ namespace DB {
 
 		dbChk(RequestQuery(pQuery));
 
-		m_GetShardListLockTimer.SetTimer(Const::DB_MANAGER_UPDATE_SHARDLIST_LIMIT);
+		m_GetShardListLockTimer.SetTimer(DurationMS(Const::DB_MANAGER_UPDATE_SHARDLIST_LIMIT));
 
 	Proc_End:
 
@@ -210,7 +210,7 @@ Proc_End:
 			if (FAILED(m_PendingQueries.Dequeue(pQuery)))
 				continue;
 
-			if (Util::TimeSince(pQuery->GetRequestedTime()) > DB::MAX_QUERY_TIMEOUT)
+			if (Util::TimeSince(pQuery->GetRequestedTime()) > DurationMS(DB::MAX_QUERY_TIMEOUT))
 			{
 				pQuery->SetResult(E_SVR_TIMEOUT);
 				RouteResult(pQuery);

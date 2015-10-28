@@ -276,8 +276,8 @@ namespace BR
 			VOID GetClusterMemberListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG2, "%0%:GetClusterMemberListRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, MemberList:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, ArgArray<ServiceInformation>(m_MemberList)); 
+				protocolTrace(Trace::TRC_DBG2, "%0%:GetClusterMemberListRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MemberList:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MemberList); 
 			}; // VOID GetClusterMemberListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
@@ -542,8 +542,8 @@ namespace BR
 			VOID JoinClusterRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG2, "%0%:JoinClusterRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, MemberList:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, ArgArray<ServiceInformation>(m_MemberList)); 
+				protocolTrace(Trace::TRC_DBG2, "%0%:JoinClusterRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MemberList:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MemberList); 
 			}; // VOID JoinClusterRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Do not let it broadcasted while it's manual broadcast packet
@@ -805,7 +805,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG2, "%0%:SyncClusterServiceC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, ClusterID:%5%, ClusterType:%6%, MemberList:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_ClusterID, m_ClusterType, ArgArray<ServiceInformation>(m_MemberList)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_ClusterID, m_ClusterType, m_MemberList); 
 			}; // VOID SyncClusterServiceC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Join to the cluster
@@ -1045,8 +1045,8 @@ namespace BR
 			VOID RequestDataSyncRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG2, "%0%:RequestDataSyncRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG2, "%0%:RequestDataSyncRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID RequestDataSyncRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Master instance of the cluster is assigned
@@ -1786,8 +1786,8 @@ namespace BR
 			VOID GetLowestWorkloadClusterMemberRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG2, "%0%:GetLowestWorkloadClusterMemberRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, Member:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_Member); 
+				protocolTrace(Trace::TRC_DBG2, "%0%:GetLowestWorkloadClusterMemberRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, Member:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_Member); 
 			}; // VOID GetLowestWorkloadClusterMemberRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Called when a player entity is created

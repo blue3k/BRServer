@@ -231,7 +231,7 @@ namespace Net {
 				netChk( CloseConnection() );
 				break;
 			default:
-				netTrace(TRC_TCPRECVRAW, "Recv Msg Failed, SvrTCP, CID %0%, hr=%1%", GetCID(), ArgHex32(hrRes));
+				netTrace(TRC_TCPRECVRAW, "Recv Msg Failed, SvrTCP, CID {0}, hr={1:X8}", GetCID(), hrRes);
 				PendingRecv();
 				break;
 			};
@@ -246,7 +246,7 @@ namespace Net {
 
 		DecPendingRecvCount();
 
-		netTrace(TRC_TCPRECVRAW, "TCP Recv CID:%0%, pending:%1%, hr:%2%", GetCID(), GetPendingRecvCount(), ArgHex32(hr));
+		netTrace(TRC_TCPRECVRAW, "TCP Recv CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 
 		return hr;
 	}
@@ -330,7 +330,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace(TRC_TCPRECVRAW, "Pending Recv CID:%0%, pending:%1%, hr:%2%", GetCID(), GetPendingRecvCount(), ArgHex32(hr));
+		netTrace(TRC_TCPRECVRAW, "Pending Recv CID:%0%, pending:%1%, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 
 		return hr;
 	}
@@ -383,7 +383,7 @@ namespace Net {
 
 		if (!CreateIoCompletionPort((HANDLE)GetSocket(), IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)(IOCPSystem::IOCallBack*)this, 0))
 		{
-			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed Peer TCP, hr = %0%", ArgHex32(GetLastHRESULT()));
+			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed Peer TCP, hr = {0:X8}", GetLastHRESULT());
 			netErr(E_UNEXPECTED);
 		}
 
@@ -735,7 +735,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
 
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		if( GetPendingRecvCount() == 0 
 			&& GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -748,12 +748,12 @@ namespace Net {
 		switch (GetConnectionState())
 		{
 		case IConnection::STATE_CONNECTING:
-			if ((INT)(ulTimeCur - m_ulNetCtrlTime) > (INT)GetConnectingTimeOut()) // connection time out
+			if ((ulTimeCur - m_ulNetCtrlTime) > DurationMS((INT)GetConnectingTimeOut())) // connection time out
 			{
 				netTrace( TRC_CONNECTION, "Connecting Timeout CID:%0%", GetCID() );
 				netChk( CloseConnection() );
 			}
-			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > Const::CONNECTION_RETRY_TIME ) // retry
+			else if( (ulTimeCur-m_ulNetCtrlTryTime) > DurationMS(Const::CONNECTION_RETRY_TIME) ) // retry
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netChk(SendNetCtrl(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR::PROTOCOL_VERSION), GetConnectionInfo().LocalID));
@@ -762,7 +762,7 @@ namespace Net {
 			goto Proc_End;
 			break;
 		case IConnection::STATE_DISCONNECTING:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::SVR_DISCONNECT_TIMEOUT ) // connection time out
+			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::SVR_DISCONNECT_TIMEOUT) ) // connection time out
 			{
 				netTrace( TRC_CONNECTION, "Disconnecting Timeout CID:%0%", GetCID() );
 				netChk( CloseConnection() );
@@ -772,7 +772,7 @@ namespace Net {
 			goto Proc_End;
 			break;
 		case IConnection::STATE_CONNECTED:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::HEARTBIT_TIMEOUT ) // connection time out
+			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::HEARTBIT_TIMEOUT) ) // connection time out
 			{
 				netTrace( TRC_CONNECTION, "Connection Timeout CID:%1%", GetCID() );
 
@@ -780,7 +780,7 @@ namespace Net {
 				m_ulNetCtrlTime = ulTimeCur;
 				goto Proc_End;
 			}
-			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > GetHeartbitTry() ) // heartbit time
+			else if( (ulTimeCur-m_ulNetCtrlTryTime) > DurationMS(GetHeartbitTry()) ) // heartbit time
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netChk( SendNetCtrl( PACKET_NETCTRL_HEARTBIT, 0, msgIDTem ) );
@@ -857,7 +857,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
 
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		if( GetPendingRecvCount() == 0 
 			&& GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -870,7 +870,7 @@ namespace Net {
 		switch (GetConnectionState())
 		{
 		case IConnection::STATE_CONNECTING:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > (INT)GetConnectingTimeOut() ) // connection time out
+			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(GetConnectingTimeOut()) ) // connection time out
 			{
 				netTrace( TRC_CONNECTION, "Connecting Timeout CID:%0%", GetCID() );
 				netChk( CloseConnection() );
@@ -879,7 +879,7 @@ namespace Net {
 			goto Proc_End;
 			break;
 		case IConnection::STATE_DISCONNECTING:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::DISCONNECT_TIMEOUT ) // connection time out
+			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::DISCONNECT_TIMEOUT) ) // connection time out
 			{
 				netTrace( TRC_CONNECTION, "Disconnecting Timeout CID:%0%", GetCID() );
 				netChk( CloseConnection() );
@@ -889,7 +889,7 @@ namespace Net {
 			goto Proc_End;
 			break;
 		case IConnection::STATE_CONNECTED:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::HEARTBIT_TIMEOUT ) // connection time out
+			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::HEARTBIT_TIMEOUT) ) // connection time out
 			{
 				netTrace( TRC_CONNECTION, "Connection Timeout CID:%0%", GetCID() );
 

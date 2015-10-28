@@ -19,9 +19,6 @@
     <Filter Include="Policy">
       <UniqueIdentifier>{8145031f-ec69-4b2c-9826-b338237b858b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="XML">
-      <UniqueIdentifier>{edcf72a6-56eb-4ddd-bc78-603233e87763}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GenericMessage">
       <UniqueIdentifier>{1b312f37-7519-4981-942d-a2fb3b6c728a}</UniqueIdentifier>
     </Filter>
@@ -52,9 +49,6 @@
     </ClInclude>
     <ClInclude Include="ProtocolMessageCPPInc.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GenericMsgClass.h">
-      <Filter>GenericMessage</Filter>
     </ClInclude>
     <ClInclude Include="Policy\GameMasterServerNetPolicy.h">
       <Filter>Policy</Filter>
@@ -248,6 +242,9 @@
     <ClInclude Include="Policy\MonitoringIPolicy.h">
       <Filter>Policy</Filter>
     </ClInclude>
+    <ClInclude Include="GenericMsgClass.h">
+      <Filter>GenericMessage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -255,9 +252,6 @@
     </ClCompile>
     <ClCompile Include="ProtocolTrace.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GenericMsgClass.cpp">
-      <Filter>GenericMessage</Filter>
     </ClCompile>
     <ClCompile Include="Policy\GameMasterServerNetPolicy.cpp">
       <Filter>Policy</Filter>
@@ -403,55 +397,8 @@
     <ClCompile Include="Policy\MonitoringNetPolicy.cpp">
       <Filter>Policy</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ProtocolEntityServer.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGame.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGameMasterServer.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGameServer.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolServer.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolClusterServer.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolPartyMatching.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolPartyMatchingQueue.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGameInstance.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGameInstanceManager.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGameParty.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGamePartyManager.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolLogin.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolLoginServer.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolRanking.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolMonitoring.xml">
-      <Filter>XML</Filter>
-    </CustomBuild>
+    <ClCompile Include="GenericMsgClass.cpp">
+      <Filter>GenericMessage</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

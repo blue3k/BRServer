@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/HRESCommon.h"
 
 #include "Common/MemoryPool.h"
@@ -265,7 +265,7 @@ namespace BR
 				new(&pMemItem->StackTrace) CallStackTrace;
 				StackWalker::CaptureCallStack(pMemItem->StackTrace);
 				pMemItem->TypeName = typeName;
-				pMemItem->LatestThreadID = GetCurrentThreadId();
+				pMemItem->LatestThreadID = ThisThread::GetThreadID();
 				memset( pMemItem->DataPtr(), 0xCD, GetAllocSize() );
 #endif
 				m_FreeList.Push( pMemItem );
@@ -326,7 +326,7 @@ namespace BR
 			new(&pMemItem->StackTrace) CallStackTrace;
 			StackWalker::CaptureCallStack(pMemItem->StackTrace);
 			pMemItem->TypeName = typeName;
-			pMemItem->LatestThreadID = GetCurrentThreadId();
+			pMemItem->LatestThreadID = ThisThread::GetThreadID();
 #endif
 		}
 
@@ -359,7 +359,7 @@ namespace BR
 			new(&pMemItem->StackTrace) CallStackTrace;
 			StackWalker::CaptureCallStack(pMemItem->StackTrace);
 			pMemItem->TypeName = typeName;
-			pMemItem->LatestThreadID = GetCurrentThreadId();
+			pMemItem->LatestThreadID = ThisThread::GetThreadID();
 			pMemItem->StackTrace.PrintStackTrace(Trace::TRC_ERROR, GetCurrentProcess());
 			Assert(false);
 #endif
@@ -382,7 +382,7 @@ namespace BR
 				new(&pMemItem->StackTrace) CallStackTrace;
 				StackWalker::CaptureCallStack(pMemItem->StackTrace);
 				pMemItem->TypeName = typeName;
-				pMemItem->LatestThreadID = GetCurrentThreadId();
+				pMemItem->LatestThreadID = ThisThread::GetThreadID();
 				memset( pPtr, 0xCD, GetAllocSize() );
 #endif
 			}
@@ -479,7 +479,7 @@ namespace BR
 		// Add Memory pool
 		MemoryPool* AddMemoryPool( size_t allocationSize )
 		{
-			TicketScopeLock lock( TicketLock::LOCK_EXCLUSIVE, m_LockForAdd );
+			TicketScopeLock lock( TicketLock::LockMode::LOCK_EXCLUSIVE, m_LockForAdd );
 
 			// if it's already exist, exit
 			MemoryPool* pFound = nullptr;

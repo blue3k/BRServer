@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include <gtest/gtest.h>
-#include "Common/SystemSynchronize.h"
+#include "Common/SystemSynchronization.h"
 #include "Common/Thread.h"
 #include "Common/SortedMap.h"
 #include "Common/TimeUtil.h"

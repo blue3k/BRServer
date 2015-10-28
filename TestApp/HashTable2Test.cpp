@@ -182,7 +182,7 @@ TEST_F(HashTableTest, HashTable2_UniqueMT)
 	SyncCounter numberOfItems;
 	
 	typedef BR::Hash::HashTable2<	INT64, SharedPointerT<TestMapNodeShared>,
-										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitMT
+										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitReadWrite
 										> TestTableType;
 
 	Concurrency::concurrent_unordered_map<INT64, SharedPointerT<TestMapNodeShared>> m_TestMap;
@@ -311,7 +311,7 @@ TEST_F(HashTableTest, HashTable2_UniqueWriteMT)
 	SyncCounter workCounterRead, workCounterWrite, numberOfItems;
 
 	typedef BR::Hash::HashTable2<	INT64, SharedPointerT<TestMapNodeShared>,
-		BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitMT
+		BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitReadWrite
 	> TestTableType;
 
 
@@ -444,7 +444,7 @@ TEST_F(HashTableTest, HashTable2_PerfRead)
 	SyncCounter readCount(0), writeCount(0);
 
 	typedef BR::Hash::HashTable2<	INT64, SharedPointerT<TestMapNodeShared>,
-		BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitMT
+		BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitReadWrite
 	> TestTableType;
 
 	Concurrency::concurrent_unordered_map<INT64, SharedPointerT<TestMapNodeShared>> m_TestMap;
@@ -579,7 +579,7 @@ TEST_F(HashTableTest, HashTable2_PerfReadWriteMT)
 	SyncCounter readCount(0), writeCount(0);
 
 	typedef BR::Hash::HashTable2<	INT64, SharedPointerT<TestMapNodeShared>,
-		BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitMT
+		BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitReadWrite
 	> TestTableType;
 
 

@@ -154,7 +154,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPartyMatchingCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, Players:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, ArgArray<MatchingPlayerInformation>(m_Players)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_Players); 
 			}; // VOID RegisterPartyMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterPartyMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 0);
@@ -275,8 +275,8 @@ namespace BR
 			VOID RegisterPartyMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPartyMatchingRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, MatchingTicket:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_MatchingTicket); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPartyMatchingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MatchingTicket:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MatchingTicket); 
 			}; // VOID RegisterPartyMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Register match alone
@@ -520,8 +520,8 @@ namespace BR
 			VOID RegisterPlayerMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerMatchingRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, MatchingTicket:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_MatchingTicket); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerMatchingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MatchingTicket:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MatchingTicket); 
 			}; // VOID RegisterPlayerMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: update registration information
@@ -764,8 +764,8 @@ namespace BR
 			VOID UpdateMatchingEntityUIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:UpdateMatchingEntityUIDRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:UpdateMatchingEntityUIDRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID UpdateMatchingEntityUIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: calcel registration
@@ -1005,8 +1005,8 @@ namespace BR
 			VOID UnregisterMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:UnregisterMatchingRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:UnregisterMatchingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID UnregisterMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: For some reason, matching is canceled
@@ -1729,8 +1729,8 @@ namespace BR
 			VOID ReserveItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, NumberOfPlayersInTheItem:%6%, MatchingTicket:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_NumberOfPlayersInTheItem, m_MatchingTicket); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, NumberOfPlayersInTheItem:%6%, MatchingTicket:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_NumberOfPlayersInTheItem, m_MatchingTicket); 
 			}; // VOID ReserveItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Reserve a item
@@ -1990,8 +1990,8 @@ namespace BR
 			VOID ReserveItemsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemsRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, NumberOfPlayersInTheItem:%6%, MatchingTicket:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, ArgArray<UINT32>(m_NumberOfPlayersInTheItem), ArgArray<MatchingQueueTicket>(m_MatchingTicket)); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemsRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, NumberOfPlayersInTheItem:%6%, MatchingTicket:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_NumberOfPlayersInTheItem, m_MatchingTicket); 
 			}; // VOID ReserveItemsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Cancel reservation
@@ -2231,8 +2231,8 @@ namespace BR
 			VOID CancelReservationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID CancelReservationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Cancel reservation
@@ -2360,7 +2360,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationsCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, TicketToCancel:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, ArgArray<MatchingQueueTicket>(m_TicketToCancel)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_TicketToCancel); 
 			}; // VOID CancelReservationsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID CancelReservationsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 11);
@@ -2477,8 +2477,8 @@ namespace BR
 			VOID CancelReservationsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationsRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationsRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID CancelReservationsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Dequeue a reserved item
@@ -2740,8 +2740,8 @@ namespace BR
 			VOID DequeueItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:DequeueItemRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, MatchingTicket:%6%, RegisterUID:%7%, RegisterID:%8%, Players:%9%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_MatchingTicket, m_RegisterUID, m_RegisterID, ArgArray<MatchingPlayerInformation>(m_Players)); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:DequeueItemRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MatchingTicket:%6%, RegisterUID:%7%, RegisterID:%8%, Players:%9%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MatchingTicket, m_RegisterUID, m_RegisterID, m_Players); 
 			}; // VOID DequeueItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Item error you should delete it

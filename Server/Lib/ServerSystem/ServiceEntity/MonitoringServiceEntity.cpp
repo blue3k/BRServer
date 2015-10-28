@@ -41,7 +41,7 @@ namespace Svr {
 	MonitoringServiceEntity::MonitoringServiceEntity()
 		: ServiceEntity()
 	{
-		SetTickInterval(10000);
+		SetTickInterval(DurationMS(10000));
 	}
 
 	MonitoringServiceEntity::~MonitoringServiceEntity()

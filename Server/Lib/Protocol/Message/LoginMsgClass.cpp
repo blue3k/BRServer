@@ -163,8 +163,8 @@ namespace BR
 			VOID LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:LoginRes:%1%:%2% , Result:%3%, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, ArgHex32(m_Result), m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:LoginRes:%1%:%2% , Result:{3}, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // VOID LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Login request with Facebook UID
@@ -311,8 +311,8 @@ namespace BR
 			VOID LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:LoginByFacebookRes:%1%:%2% , Result:%3%, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, ArgHex32(m_Result), m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:LoginByFacebookRes:%1%:%2% , Result:{3}, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // VOID LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Login request
@@ -444,8 +444,8 @@ namespace BR
 			VOID CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:CreateRandomUserRes:%1%:%2% , Result:%3%, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, ArgHex32(m_Result), m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:CreateRandomUserRes:%1%:%2% , Result:{3}, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // VOID CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 

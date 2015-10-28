@@ -14,7 +14,7 @@
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
 #include "Common/Indexing.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/ArrayUtil.h"
 #include "Common/HashTableTrait.h"
 #include "Common/OrderedLinkedList.h"
@@ -35,18 +35,14 @@ namespace Hash {
 					typename Indexer, 
 					typename MapItemConverter, 
 					typename Trait = UniqueKeyTrait, 
-					typename ThreadTrait = ThreadSyncTraitMT,
+					typename ThreadTrait = ThreadSyncTraitReadWrite,
 					size_t	DefaultBucketSize = 128,
 					typename Hasher = Hash::hash<typename Indexer::Type> >
 		class StaticHashTable
 		{
 		public:
 
-			if( Trait::UniqueKey )
-			{
-				typedef void UniqueKey;
-			}
-
+			typedef typename ThreadTrait::TicketLockType		TicketLockType;
 			typedef typename ItemType							ItemType;
 			typedef typename Indexer							Indexer;
 			typedef typename MapItemConverter					MapItemConverter;
@@ -57,28 +53,19 @@ namespace Hash {
 			class Bucket
 			{
 			public:
-				if( ThreadTrait::ThreadSafe )
-				{
 				// thread lock for bucket access
-				TicketLock	m_Lock;
-				}
+				TicketLockType	m_Lock;
 
 			public:
 
 				void ReadLock()
 				{
-					if( ThreadTrait::ThreadSafe )
-					{
 					m_Lock.NonExLock();
-					}
 				}
 
 				void ReadUnlock()
 				{
-					if( ThreadTrait::ThreadSafe )
-					{
 					m_Lock.NonExUnlock();
-					}
 				}
 
 				friend StaticHashTable;
@@ -498,9 +485,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Bucket.size();
 
 				Bucket& bucket = m_Bucket[iBucket];
-				if( ThreadTrait::ThreadSafe ) {
-				TicketScopeLock scopeLock( TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock );
-				}
+				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock );
 
 				//_ReadBarrier();
 				std::atomic_thread_fence(std::memory_order_consume);
@@ -536,9 +521,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Bucket.size();
 
 				Bucket& bucket = m_Bucket[iBucket];
-				if( ThreadTrait::ThreadSafe ){
-				TicketScopeLock scopeLock( TicketLock::LOCK_NONEXCLUSIVE, bucket.m_Lock );
-				}
+				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_NONEXCLUSIVE, bucket.m_Lock );
 
 				typename BucketContainer::Node *pPrevNode = nullptr;
 				if( FAILED(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
@@ -561,9 +544,6 @@ namespace Hash {
 
 				iterData = end();
 
-				//if( ThreadTrait::ThreadSafe ) {
-				//TicketScopeLock scopeLock( TicketLock::LOCK_NONEXCLUSIVE, bucket.m_Lock );
-				//}
 				// Set operation will lock the bucket
 				iterData.Set( this, m_Bucket.begin() + iBucket );
 
@@ -593,9 +573,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Bucket.size();
 
 				Bucket& bucket = m_Bucket[iBucket];
-				if( ThreadTrait::ThreadSafe ) {
-				TicketScopeLock scopeLock( TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock );
-				}
+				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock );
 				//_ReadBarrier();
 				std::atomic_thread_fence(std::memory_order_consume);
 				
@@ -636,9 +614,8 @@ namespace Hash {
 				Key = Indexer()(data);
 				iterData = end();
 
-				if( ThreadTrait::ThreadSafe ) {
-				TicketScopeLock scopeLock( TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock );
-				}
+				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock );
+
 				//_ReadBarrier();
 				std::atomic_thread_fence(std::memory_order_consume);
 

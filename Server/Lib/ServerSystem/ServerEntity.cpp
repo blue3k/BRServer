@@ -47,7 +47,7 @@ namespace Svr {
 		, m_bIsInitialConnect(true)
 		//, m_pConnRemotePrev(nullptr),
 		, m_ServerID(0)
-		, m_ServerUpTime(0)
+		, m_ServerUpTime(TimeStampSec::min())
 		, m_LocalConnectionRetryWait(Svr::Const::REMOTE_CONNECTION_RETRY)
 	{
 	}
@@ -105,7 +105,7 @@ namespace Svr {
 
 	HRESULT ServerEntity::SetLocalConnection(BR::Net::IConnection *pConn)
 	{
-		m_LocalConnectionRetryTime = 0;
+		m_LocalConnectionRetryTime = TimeStampMS::min();
 		//Assert(m_pConnRemotePrev.load(std::memory_order_relaxed) != pConn);
 		Assert(m_pConnRemote != pConn);
 		return SetConnection(m_pConnLocal, pConn);
@@ -130,7 +130,7 @@ namespace Svr {
 
 		// Initial connect
 		m_bIsInitialConnect = true;
-		m_LocalConnectionRetryTime = 0;
+		m_LocalConnectionRetryTime = TimeStampMS::min();
 
 	Proc_End:
 
@@ -225,7 +225,7 @@ namespace Svr {
 			{
 				if (this == pNewTrans->GetOwnerEntity())
 				{
-					auto threadID = GetTaskWorker() ? GetTaskWorker()->GetThreadID() : GetCurrentThreadId();
+					auto threadID = GetTaskWorker() ? GetTaskWorker()->GetThreadID() : ThisThread::GetThreadID();
 					PendingTransaction(threadID, pNewTrans);
 				}
 
@@ -310,7 +310,7 @@ namespace Svr {
 				// This is a replication of a remote server. ServerID in EntityUID wil have remote server id then local serverID
 				svrChk(pPolicy->ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerUID(), 0),
 					serviceInformation, 
-					BrServer::GetInstance()->GetServerUpTime(), 
+					BrServer::GetInstance()->GetServerUpTime().time_since_epoch().count(),
 					publicAddr, netPrivate->GetLocalAddress()));
 			}
 
@@ -369,9 +369,9 @@ namespace Svr {
 		else
 		{
 			// Clear server up time if the connection is closed
-			if (GetServerUpTime() != 0)
+			if (GetServerUpTime() != TimeStampSec::min())
 			{
-				SetServerUpTime(0);
+				SetServerUpTime(TimeStampSec::min());
 			}
 		}
 
@@ -397,11 +397,11 @@ namespace Svr {
 		{
 			if (pConn->GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 			{
-				if (m_LocalConnectionRetryTime != 0)
+				if (m_LocalConnectionRetryTime != TimeStampMS::min())
 				{
 					if ((Util::Time.GetTimeMs() - m_LocalConnectionRetryTime) > m_LocalConnectionRetryWait)
 					{
-						m_LocalConnectionRetryWait = std::min(m_LocalConnectionRetryWait + Svr::Const::REMOTE_CONNECTION_RETRY, (ULONG)Svr::Const::REMOTE_CONNECTION_RETRY_MAX);
+						m_LocalConnectionRetryWait = Util::TimeMin(m_LocalConnectionRetryWait + DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY), DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY_MAX));
 
 						m_LocalConnectionRetryTime = Util::Time.GetTimeMs();
 						auto connectionInfo = pConn->GetConnectionInfo();
@@ -423,9 +423,9 @@ namespace Svr {
 			else
 			{
 				if(pConn->GetConnectionState() == Net::IConnection::STATE_CONNECTED)
-					m_LocalConnectionRetryWait = Svr::Const::REMOTE_CONNECTION_RETRY;
+					m_LocalConnectionRetryWait = DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY);
 
-				m_LocalConnectionRetryTime = 0;
+				m_LocalConnectionRetryTime = TimeStampMS::min();
 
 				svrChk(UpdateConnection(pConn));
 			}

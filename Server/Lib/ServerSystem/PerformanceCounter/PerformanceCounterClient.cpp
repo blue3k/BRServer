@@ -25,7 +25,6 @@
 namespace BR {
 namespace Svr {
 
-	PerformanceCounterClient::FreeInfo PerformanceCounterClient::FreeInfo::NullValue;
 
 	PerformanceCounterClient *PerformanceCounterClient::stm_pInstance = nullptr;
 
@@ -235,12 +234,12 @@ namespace Svr {
 
 	bool PerformanceCounterClient::Run()
 	{
-		SetPriority(PRIORITY_ABOVE_NORMAL);
+		SetPriority(Thread::PRIORITY::ABOVE_NORMAL);
 
 		while (1)
 		{
 			// 50ms will be the precision of our timer
-			ULONG loopInterval = UpdateInterval(1000);
+			auto loopInterval = UpdateInterval(DurationMS(1000));
 
 			if (CheckKillEvent(loopInterval))
 			{

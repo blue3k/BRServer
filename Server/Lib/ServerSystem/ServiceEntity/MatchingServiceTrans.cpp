@@ -103,14 +103,14 @@ namespace Svr {
 		else
 		{
 			// Nothing for now
-			SetTimer(TICK_TIME);
+			SetTimer(DurationMS(TICK_TIME));
 		}
 
 	Proc_End:
 
 		if (FAILED(hr))
 		{
-			SetTimer(GRAB_RETRY_TIME);
+			SetTimer(DurationMS(GRAB_RETRY_TIME));
 		}
 		
 
@@ -227,7 +227,7 @@ namespace Svr {
 
 		if (FAILED(hr))
 		{
-			SetTimer(GRAB_RETRY_TIME);
+			SetTimer(DurationMS(GRAB_RETRY_TIME));
 		}
 		else
 		{
@@ -373,7 +373,7 @@ namespace Svr {
 	Proc_End:
 
 		if (FAILED(hr))
-			SetTimer(1000);
+			SetTimer(DurationMS(1000));
 
 		return hr;
 	}

@@ -61,7 +61,7 @@ namespace Svr {
 			EntityUID		Reserver;
 
 			// Reserved time
-			ULONG			ReservedTime;
+			TimeStampMS			ReservedTime;
 
 			// Cancel is pending?
 			bool			PendingCancel;
@@ -70,7 +70,7 @@ namespace Svr {
 			QueueItem()
 				: QueueItemID(0)
 				, Reserver(0)
-				, ReservedTime(0)
+				, ReservedTime(TimeStampMS::min())
 				, PendingCancel(false)
 			{
 			}

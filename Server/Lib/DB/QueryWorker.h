@@ -14,7 +14,7 @@
 
 
 #include "Common/Thread.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/SystemSynchronization.h"
 
 namespace BR {
 namespace DB {

@@ -12,10 +12,10 @@
 
 
 #include "Common/Typedefs.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/StackPool.h"
 #include "Common/StackWalker.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/SystemSynchronization.h"
 
 #define ENABLE_MEMORY_TRACE
 
@@ -140,7 +140,7 @@ namespace BR
 #ifdef ENABLE_MEMORY_TRACE
 			CallStackTrace StackTrace;
 			const char* TypeName;
-			CounterType LatestThreadID;
+			ThreadID LatestThreadID;
 #endif
 
 			void* DataPtr()

@@ -115,7 +115,7 @@ namespace Net {
 		hr = ProcSendReliableQueue();
 		if (FAILED(hr))
 		{
-			netTrace(TRC_CONNECTION, "Process Send Guaranted queue failed %0%", ArgHex32(hr));
+			netTrace(TRC_CONNECTION, "Process Send Guaranted queue failed {0:X8}", hr);
 		}
 
 
@@ -239,8 +239,8 @@ namespace Net {
 			HRESULT hrTem = GetNet()->SendMsg( this, GatherSize, pGatherBuff );
 			if( FAILED(hrTem) )
 			{
-				netTrace( TRC_SENDRAW, "Gathered Send failed : CID:%0%, Len=%1%, hr=%2%", 
-					GetCID(), GatherSize, ArgHex32(hrTem) );
+				netTrace( TRC_SENDRAW, "Gathered Send failed : CID:%0%, Len=%1%, hr={2:X8}", 
+					GetCID(), GatherSize, hrTem );
 
 				// ignore io send fail except connection closed
 				if( hrTem == E_NET_CONNECTION_CLOSED )
@@ -310,7 +310,7 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		Message::MessageData* pNewMessageData = nullptr;
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 		auto pMsgHeader = pMsg->GetMessageHeader();
 		auto remainSize = pMsgHeader->Length;
 		auto offset = 0;
@@ -764,8 +764,8 @@ namespace Net {
 				if( pNetCtrl->rtnMsgID.IDs.Reliability )
 				{
 					hrTem = m_SendReliableWindow.ReleaseMsg(pNetCtrl->msgID.IDSeq.Sequence);
-					netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Recv GuaAck : CID:%0%:%1%, seq:%2%, rtnmsg:%3%, hr=%4%", 
-						GetCID(), m_SendReliableWindow.GetBaseSequence(), pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->rtnMsgID, ArgHex32(hrTem));
+					netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Recv GuaAck : CID:%0%:%1%, seq:%2%, rtnmsg:%3%, hr={4:X8}", 
+						GetCID(), m_SendReliableWindow.GetBaseSequence(), pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->rtnMsgID, hrTem);
 					netChk( hrTem );
 				}
 			}
@@ -935,12 +935,12 @@ namespace Net {
 
 			HRESULT hrTem = m_RecvReliableWindow.AddMsg( pIMsg );
 
-			netTrace( TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:%0%:%1%, msg:%2%, seq:%3%, len:%4%, hr=%5%", 
+			netTrace( TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:%0%:%1%, msg:%2%, seq:%3%, len:%4%, hr={5:X8}", 
 							GetCID(), m_RecvReliableWindow.GetBaseSequence(), 
 							pIMsg->GetMessageHeader()->msgID, 
 							pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
 							pIMsg->GetMessageHeader()->Length,
-							ArgHex32(hrTem) );
+							hrTem );
 
 			if( hrTem == S_NET_PROCESSED_SEQUENCE )
 			{
@@ -980,7 +980,7 @@ Proc_End:
 		HRESULT hr = S_OK;
 		Message::MessageData *pIMsg = nullptr;
 		Message::MessageHeader *pMsgHeader = nullptr;
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 		UINT halfWindowSize = m_SendReliableWindow.GetWindowSize() >> 1;
 		Assert(halfWindowSize >= 16);
 
@@ -1037,7 +1037,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 		MsgWindow::MessageElement *pMessageElement = nullptr;
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		// Guaranted retry
 		UINT uiMaxProcess = Util::Min( m_SendReliableWindow.GetMsgCount(), m_uiMaxGuarantedRetry );
@@ -1046,7 +1046,7 @@ Proc_End:
 			if( SUCCEEDED(m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
 				&& pMessageElement && pMessageElement->pMsg != NULL )
 			{
-				if( (INT)(ulTimeCur-pMessageElement->ulTimeStamp) > Const::SEND_RETRY_TIME )
+				if( (ulTimeCur-pMessageElement->ulTimeStamp) > DurationMS(Const::SEND_RETRY_TIME) )
 				{
 					netTrace( TRC_GUARREANTEDCTRL, "SENDGuaRetry : CID:%0%, seq:%1%, msg:%2%, len:%3%", 
 									GetCID(),
@@ -1076,7 +1076,7 @@ Proc_End:
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
 
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 
 		// Update connection status
@@ -1084,12 +1084,12 @@ Proc_End:
 		switch (GetConnectionState())
 		{
 		case IConnection::STATE_CONNECTING:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > (INT)GetConnectingTimeOut() ) // connection time out
+			if( (INT)(ulTimeCur-m_ulNetCtrlTime).count() > (INT)GetConnectingTimeOut() ) // connection time out
 			{
 				netTrace( TRC_CONNECTION, "UDP Connecting Timeout CID:%0%, (%1%,%2%,%3%)", GetCID(), ulTimeCur, m_ulNetCtrlTime, GetConnectingTimeOut() );
 				netChk( CloseConnection() );
 			}
-			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > Const::CONNECTION_RETRY_TIME ) // retry
+			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > Const::CONNECTION_RETRY_TIME ) // retry
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netTrace( TRC_NETCTRL, "UDP Send Connecting CID(%0%) : C:%1%, V:%2%)", GetCID(), GetConnectionInfo().LocalClass, (UINT32)BR::PROTOCOL_VERSION );
@@ -1098,25 +1098,25 @@ Proc_End:
 
 			break;
 		case IConnection::STATE_CONNECTED:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::HEARTBIT_TIMEOUT ) // connection time out
+			if( (INT)(ulTimeCur-m_ulNetCtrlTime).count() > Const::HEARTBIT_TIMEOUT ) // connection time out
 			{
 				netTrace( TRC_CONNECTION, "UDP Connection Timeout CID:%0%, (%1%,%2%)", GetCID(), ulTimeCur, m_ulNetCtrlTime );
 				netChk( CloseConnection() );
 				goto Proc_End;
 			}
-			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > GetHeartbitTry() ) // heartbit time
+			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > GetHeartbitTry() ) // heartbit time
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netChk( SendPending( PACKET_NETCTRL_HEARTBIT, 0, msgIDTem ) );
 			}
 			break;
 		case IConnection::STATE_DISCONNECTING:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::DISCONNECT_TIMEOUT ) // connection time out
+			if( (INT)(ulTimeCur-m_ulNetCtrlTime).count() > Const::DISCONNECT_TIMEOUT ) // connection time out
 			{
 				netTrace( TRC_CONNECTION, "UDP Disconnecting Timeout CID:%0%, (%1%,%2%)", GetCID(), ulTimeCur, m_ulNetCtrlTime );
 				netChk( CloseConnection() );
 			}
-			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > Const::DISCONNECT_RETRY_TIME ) // retry
+			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > Const::DISCONNECT_RETRY_TIME ) // retry
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netChk( SendPending( PACKET_NETCTRL_DISCONNECT, 0, msgIDTem ) );
@@ -1139,7 +1139,7 @@ Proc_End:
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
 
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 
 		if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
@@ -1148,32 +1148,32 @@ Proc_End:
 		hr = ProcNetCtrlQueue();
 		if( FAILED(hr) )
 		{
-			netTrace( TRC_CONNECTION, "Process NetCtrlQueue failed %0%", ArgHex32(hr) );
+			netTrace( TRC_CONNECTION, "Process NetCtrlQueue failed {0:X8}", hr );
 		}
 
 		hr = ProcConnectionState();
 		if( FAILED(hr) )
 		{
-			netTrace( TRC_CONNECTION, "Process Connection state failed %0%", ArgHex32(hr) );
+			netTrace( TRC_CONNECTION, "Process Connection state failed {0:X8}", hr );
 		}
 
 
 		hr = ProcRecvReliableQueue();
 		if( FAILED(hr) )
 		{
-			netTrace( TRC_CONNECTION, "Process Recv Guaranted queue failed %0%", ArgHex32(hr) );
+			netTrace( TRC_CONNECTION, "Process Recv Guaranted queue failed {0:X8}", hr );
 		}
 
 		hr = ProcSendReliableQueue();
 		if( FAILED(hr) )
 		{
-			netTrace( TRC_CONNECTION, "Process Send Guaranted queue failed %0%", ArgHex32(hr) );
+			netTrace( TRC_CONNECTION, "Process Send Guaranted queue failed {0:X8}", hr );
 		}
 
 		hr = ProcReliableSendRetry();
 		if( FAILED(hr) )
 		{
-			netTrace( TRC_CONNECTION, "Process message window failed %0%", ArgHex32(hr) );
+			netTrace( TRC_CONNECTION, "Process message window failed {0:X8}", hr );
 		}
 
 
@@ -1379,7 +1379,7 @@ Proc_End:
 		{
 
 			if( FAILED( hr = OnRecv( dwTransferred, (BYTE*)pIOBuffer->wsaBuff.buf ) ) )
-				netTrace( TRC_RECVRAW, "Read IO failed with CID %0%, hr=%1%", pConnection->GetCID(), ArgHex32(hr) );
+				netTrace( TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", pConnection->GetCID(), hr );
 
 			PendingRecv();
 

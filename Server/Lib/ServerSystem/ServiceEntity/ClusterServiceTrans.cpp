@@ -56,8 +56,8 @@ namespace Svr {
 	{
 		if( FAILED(hrRes) )
 		{
-			svrTrace( Svr::TRC_CLUSTER, "Cluster initialization Failed Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%, Step:%4%, hr:%5%. Retrying ...", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (int)m_Step, ArgHex32(hrRes) );
-			SetTimer(10*1000);
+			svrTrace( Svr::TRC_CLUSTER, "Cluster initialization Failed Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%, Step:%4%, hr:{5:X8}. Retrying ...", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (int)m_Step, hrRes );
+			SetTimer(DurationMS(10*1000));
 		}
 	}
 
@@ -281,7 +281,7 @@ namespace Svr {
 		if (pClusterManager == GetOwnerEntity()) // If I'm the clustermanager entity of this server
 		{
 			// wait at least 2 secs for connections if 
-			if (Util::TimeSince(GetTransactionStartTime()) > 4000)
+			if (Util::TimeSince(GetTransactionStartTime()) > DurationMS(4000))
 			{
 				if (clusterManagerMasterUID == 0)
 				{
@@ -301,7 +301,7 @@ namespace Svr {
 		if(pMasterServerEntity == nullptr || clusterManagerMasterUID == 0)
 		{
 			svrTrace(Svr::TRC_CLUSTER, "Waiting Entity Server ready:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
-			SetTimer(1000);
+			SetTimer(DurationMS(1000));
 			goto Proc_End;
 		}
 
@@ -432,7 +432,7 @@ namespace Svr {
 				pServiceInfo->ServerAddress.strAddr, pServiceInfo->ServerAddress.usPort,
 				pServerEntity ) );
 
-			if( pServerEntity->GetServerUpTime() == 0 || pServerEntity->GetServerUpTime() < pServiceInfo->ServerUpTime )
+			if( pServerEntity->GetServerUpTime() == TimeStampSec::min() || pServerEntity->GetServerUpTime() < pServiceInfo->ServerUpTime )
 				pServerEntity->SetServerUpTime( pServiceInfo->ServerUpTime );
 
 			svrChk( GetMyOwner()->NewServerService( pServiceInfo->UID, pServerEntity, pServiceInfo->Membership, pServiceInfo->Status, pService ) );

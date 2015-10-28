@@ -45,8 +45,8 @@ namespace Svr {
 
 	private:
 		// Connection to remote
-		ULONG								m_LocalConnectionRetryTime;
-		ULONG								m_LocalConnectionRetryWait;
+		TimeStampMS								m_LocalConnectionRetryTime;
+		DurationMS								m_LocalConnectionRetryWait;
 		SharedPointerT<Net::IConnection>	m_pConnRemote;
 		SharedPointerT<Net::IConnection>	m_pConnLocal;
 		CriticalSection						m_ConnectionLock;
@@ -67,7 +67,7 @@ namespace Svr {
 		NetAddress				m_NetPrivate;
 
 		// Server up time in UTC
-		BRCLASS_ATTRIBUTE(ULONGLONG,ServerUpTime);
+		BRCLASS_ATTRIBUTE(TimeStampSec,ServerUpTime);
 		
 	protected:
 

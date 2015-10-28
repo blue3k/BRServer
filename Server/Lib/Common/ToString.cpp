@@ -186,6 +186,36 @@ namespace BR
 	}
 
 
+	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PlayerID>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<TotalRankingPlayerInformation>& Data, int Option)
+	{
+		return S_OK;// TODO: ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<FriendInformation>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampMS& Data, int Option)
+	{
+		return S_OK;// ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationMS& Data, int Option)
+	{
+		return S_OK;// ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
 
 };	// namespace BR
 

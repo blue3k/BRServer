@@ -202,8 +202,8 @@ namespace BR
 			VOID GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:GenericFailureRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:GenericFailureRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Server Started or Connected
@@ -222,7 +222,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterManagerServiceInformation, pCur, iMsgSize, sizeof(ServiceInformation) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_StartUpTime, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_StartUpTime, pCur, iMsgSize, sizeof(UINT32) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PublicAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PrivateAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
 
@@ -233,7 +233,7 @@ namespace BR
 
 			}; // HRESULT ServerConnectedC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT64 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+			HRESULT ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
 			{
  				HRESULT hr = S_OK;
 
@@ -242,7 +242,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(ServiceInformation)
-					+ sizeof(UINT64)
+					+ sizeof(UINT32)
 					+ sizeof(NetAddress)
 					+ sizeof(NetAddress));
 
@@ -254,7 +254,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InClusterManagerServiceInformation, sizeof(ServiceInformation));
-				Protocol::PackParamCopy( pMsgData, &InStartUpTime, sizeof(UINT64));
+				Protocol::PackParamCopy( pMsgData, &InStartUpTime, sizeof(UINT32));
 				Protocol::PackParamCopy( pMsgData, &InPublicAddress, sizeof(NetAddress));
 				Protocol::PackParamCopy( pMsgData, &InPrivateAddress, sizeof(NetAddress));
 
@@ -265,7 +265,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT64 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+			}; // HRESULT ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
 
 			HRESULT ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{

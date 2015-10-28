@@ -15,11 +15,9 @@
 #include "Net/Netdef.h"
 #include "Common/BrAssert.h"
 #include "Common/StaticHashTable.h"
-//#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTypes.h"
-//#include "ServerSystem/Entity.h"
 #include "ServerSystem/SvrConfig.h"
-//#include "ServerSystem/BrServer.h"
+#include "Common/SynchronizationTrait.h"
 
 
 namespace BR {

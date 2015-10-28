@@ -48,7 +48,7 @@ namespace BR
 
 		}; // HRESULT ServerService::GenericFailureCmd( const Context &InContext )
 		// C2S: Server Started or Connected
-		HRESULT ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT64 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+		HRESULT ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
 		{
  			HRESULT hr = S_OK;
 
@@ -59,7 +59,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT64 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+		}; // HRESULT ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
 
 
 	}; // namespace Svr

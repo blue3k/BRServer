@@ -42,7 +42,7 @@ namespace Google {
 
 	OAuth::OAuth()
 		: m_privateKey(nullptr)
-		, m_AuthenticatedTime(0)
+		, m_AuthenticatedTime(TimeStampMS::min())
 		, m_ActiveAuthString(nullptr)
 		, m_AuthStringIndex(0)
 	{
@@ -313,7 +313,7 @@ namespace Google {
 
 		if (FAILED(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to Authorize google API hr:%0%, account:%1%, %2%", ArgHex32<UINT32>(hr), m_Account, m_ResultBuffer.GetSize() > 0 ? (char*)m_ResultBuffer.data() : "null");
+			svrTrace(Trace::TRC_ERROR, "Failed to Authorize google API hr:{0:X8}, account:%1%, %2%", hr, m_Account, m_ResultBuffer.GetSize() > 0 ? (char*)m_ResultBuffer.data() : "null");
 		}
 		else
 		{
@@ -329,13 +329,13 @@ namespace Google {
 		HRESULT hr = S_OK;
 
 		if (!forceUpdate
-			&& Util::TimeSince(m_AuthenticatedTime) < AUTHTICKET_TIMEOUT)
+			&& Util::TimeSince(m_AuthenticatedTime) < DurationMS(AUTHTICKET_TIMEOUT))
 			return hr;
 
 		MutexScopeLock localLock(m_AuthenticationLock);
 
 		if (!forceUpdate
-			&& Util::TimeSince(m_AuthenticatedTime) < AUTHTICKET_TIMEOUT)
+			&& Util::TimeSince(m_AuthenticatedTime) < DurationMS(AUTHTICKET_TIMEOUT))
 			return hr;
 
 		svrChk(Authenticate());

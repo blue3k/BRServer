@@ -163,7 +163,7 @@ namespace Net {
 		if (socket != INVALID_SOCKET)
 			closesocket(socket);
 
-		netTrace(TRC_NET, "RawUDP: Opened %0%, hr=%1%", m_LocalAddress, ArgHex32(hr));
+		netTrace(TRC_NET, "RawUDP: Opened %0%, hr={1:X8}", m_LocalAddress, hr);
 
 		return hr;
 	}
@@ -185,7 +185,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace(TRC_NET, "RawUDP Close %0%, hr=%1%", m_LocalAddress, ArgHex32(hr));
+		netTrace(TRC_NET, "RawUDP Close %0%, hr={1}", m_LocalAddress, hr);
 
 		return hr;
 	}
@@ -215,7 +215,7 @@ namespace Net {
 				//break;
 			default:
 				// Unknown error
-				netTrace(TRC_RECVRAW, "UDP Read Pending failed err=%0%, hr=%1%", iErr2, ArgHex32(HRESULT_FROM_WIN32(iErr2)));
+				netTrace(TRC_RECVRAW, "UDP Read Pending failed err=%0%, hr={1}", iErr2, HRESULT_FROM_WIN32(iErr2));
 				//netErr( HRESULT_FROM_WIN32(iErr2) );
 				break;
 			};
@@ -292,11 +292,11 @@ namespace Net {
 
 			if (hr != E_NET_IO_SEND_FAIL)
 			{
-				netTrace(Trace::TRC_ERROR, "RawUDP Send Failed, err:%1%, hr:%2%", iWSAErr, ArgHex32(hr));
+				netTrace(Trace::TRC_ERROR, "RawUDP Send Failed, err:%1%, hr:{2:X8}", iWSAErr, hr);
 			}
 			else
 			{
-				netTrace(Net::TRC_SENDRAW, "RawUDP Send Failed, err:%1%, hr:%2%", iWSAErr, ArgHex32(hr));
+				netTrace(Net::TRC_SENDRAW, "RawUDP Send Failed, err:%1%, hr:{2:X8}", iWSAErr, hr);
 				return S_OK;
 			}
 		}
@@ -379,7 +379,7 @@ namespace Net {
 				hr = hrRes;
 				break;
 			default:
-				netTrace(Trace::TRC_ERROR, "UDP Recv Msg Failed, RawUDP, IP:%0%, hr=%1%", pIOBuffer->From, ArgHex32(hrRes));
+				netTrace(Trace::TRC_ERROR, "UDP Recv Msg Failed, RawUDP, IP:%0%, hr={1:X8}", pIOBuffer->From, hrRes);
 				break;
 			};
 		}

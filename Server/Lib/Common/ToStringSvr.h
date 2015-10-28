@@ -41,6 +41,49 @@ namespace BR {
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<PerformanceCounterInstanceInfo>& Data, int Option);
 
 
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<MatchingQueueTicket>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<EntityUID>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PerformanceCounterInfo>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PerformanceCounterInstanceInfo>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<ServiceStatus>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<ServiceInformation>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<MatchingPlayerInformation>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+
 	extern template class Arg < ClusterID>;
 	extern template class Arg < RouteContext>;
 	extern template class Arg < ClusterType>;

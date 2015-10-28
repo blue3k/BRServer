@@ -14,7 +14,7 @@
 #include "Common/Typedefs.h"
 #include "Common/HRESCommon.h"
 #include "Common/Thread.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/SortedMap.h"
 #include "Common/DualSortedMap.h"
 #include "Common/PageQueue.h"
@@ -59,7 +59,7 @@ namespace Svr {
 		SysUInt		m_GroupID;
 
 		// Base loop delay
-		ULONG					m_ulLoopInterval;
+		DurationMS					m_ulLoopInterval;
 
 		PageQueue<EventTask>		m_EventTask;
 
@@ -97,8 +97,8 @@ namespace Svr {
 		inline SysUInt GetGroupWorkLoad();
 
 		// Set base loop delay
-		inline void SetBaseLoopInterval( DWORD dwLoopInterval );
-		inline DWORD GetBaseLoopInterval();
+		inline void SetBaseLoopInterval(DurationMS dwLoopInterval );
+		inline DurationMS GetBaseLoopInterval();
 
 		TimeScheduler& GetTimeScheduler()											{ return m_TimeScheduler; }
 

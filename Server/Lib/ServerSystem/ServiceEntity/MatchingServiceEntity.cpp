@@ -41,8 +41,6 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	const MatchingServiceEntity::ReservedMatchingItem MatchingServiceEntity::ReservedMatchingItem::NullValue;
-
 	static const UINT g_MatchingPattern4[] = 
 	{
 		// 1  2  3
@@ -447,7 +445,7 @@ namespace Svr {
 		}
 
 
-		SetTickInterval(1);
+		SetTickInterval(DurationMS(1));
 	}
 
 	MatchingServiceEntity::~MatchingServiceEntity()
@@ -465,7 +463,7 @@ namespace Svr {
 		svrChk( __super::InitializeEntity(newEntityID) );
 
 		m_ReservationStartFrom = 1;
-		m_WaitingBotMatchingStart = 0;
+		m_WaitingBotMatchingStart = TimeStampMS::min();
 
 
 		auto newQueueEntity = new MatchingServiceQueueEntity(m_TargetMatchingMemberCount, MIN_ITEM_RESERVATION, MAX_ITEM_RESERVATION);
@@ -653,7 +651,7 @@ namespace Svr {
 		grabbedPlayerCount = GetGrabbedPlayerCount(grabbedItems);
 
 
-		m_WaitingBotMatchingStart = 0;
+		m_WaitingBotMatchingStart = TimeStampMS::min();
 
 		++m_MatchedCount;
 		pTrans = new MatchingTransProcessMatchedItems(targetMatchingMemberCount, grabbedItems);
@@ -674,13 +672,13 @@ namespace Svr {
 		StaticArray<ReservedMatchingItem, MAX_PREPARED_PLAYER> grabbedItems;
 		UINT grabbedPlayerCount = 0;
 
-		if (m_WaitingBotMatchingStart == 0)
+		if (m_WaitingBotMatchingStart == TimeStampMS::min())
 		{
 			m_WaitingBotMatchingStart = Util::Time.GetTimeMs();
 			return hr;
 		}
 
-		if (Util::TimeSince(m_WaitingBotMatchingStart) < TIME_BOTMATCHING_WAIT)
+		if (Util::TimeSince(m_WaitingBotMatchingStart) < DurationMS(TIME_BOTMATCHING_WAIT))
 			return hr;
 
 		// grab one
@@ -710,7 +708,7 @@ namespace Svr {
 		}
 
 
-		m_WaitingBotMatchingStart = 0;
+		m_WaitingBotMatchingStart = TimeStampMS::min();
 
 		if (grabbedPlayerCount > 0)
 		{

@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/SharedReferenceManager.h"
 #include "Common/SharedObject.h"
 #include "Common/SharedPointer.h"

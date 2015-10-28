@@ -22,7 +22,7 @@ namespace BR
 {
 
 	
-	GameLogItem::GameLogItem(GameLogType logType, ULONG timeStamp, size_t logItemSize)
+	GameLogItem::GameLogItem(GameLogType logType, TimeStampSec timeStamp, size_t logItemSize)
 		: LogType(logType), TimeStamp(timeStamp), LogItemSize((UINT32)logItemSize)
 	{
 	}
@@ -31,7 +31,7 @@ namespace BR
 
 
 	
-    GameLogChatMessage::GameLogChatMessage(ULONG timeStamp, UINT messageBufferSize)
+    GameLogChatMessage::GameLogChatMessage(TimeStampSec timeStamp, UINT messageBufferSize)
         : GameLogItem(GameLogType::ChatMessage, timeStamp, sizeof(GameLogChatMessage)+messageBufferSize)
 		,MessageBufferSize(messageBufferSize)
     {
@@ -55,7 +55,7 @@ namespace BR
     }
 
 	
-    GameLogGameStateChange::GameLogGameStateChange(ULONG timeStamp)
+    GameLogGameStateChange::GameLogGameStateChange(TimeStampSec timeStamp)
         :GameLogItem(GameLogType::GameStateChange,timeStamp,sizeof(GameLogGameStateChange))
     {
     }
@@ -66,7 +66,7 @@ namespace BR
     }
 
 	
-    GameLogVote::GameLogVote(ULONG timeStamp, UINT numVoter)
+    GameLogVote::GameLogVote(TimeStampSec timeStamp, UINT numVoter)
 		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*std::min((UINT)GameConst::MAX_GAMEPLAYER,numVoter-1))
 		,NumberOfVoter(numVoter)
     {
@@ -109,7 +109,7 @@ namespace BR
 
 
 	
-    GameLogVoteResult::GameLogVoteResult(ULONG timeStamp, UINT numRankers)
+    GameLogVoteResult::GameLogVoteResult(TimeStampSec timeStamp, UINT numRankers)
 		: GameLogItem(GameLogType::VoteResult,timeStamp,sizeof(GameLogVoteResult) + sizeof(PlayerID)*std::min((UINT)GameConst::MAX_GAMEPLAYER,numRankers-1))
 		, NumberOfRanker(numRankers)
     {
@@ -125,7 +125,7 @@ namespace BR
     }
 
 	
-    GameLogPlayerKilled::GameLogPlayerKilled(ULONG timeStamp)
+    GameLogPlayerKilled::GameLogPlayerKilled(TimeStampSec timeStamp)
 		: GameLogItem(GameLogType::PlayerKilled,timeStamp,sizeof(GameLogPlayerKilled))
     {
     }
@@ -139,7 +139,7 @@ namespace BR
 
 
 	
-    GameLogGameEnd::GameLogGameEnd(ULONG timeStamp)
+    GameLogGameEnd::GameLogGameEnd(TimeStampSec timeStamp)
 		: GameLogItem(GameLogType::GameEnd,timeStamp,sizeof(GameLogGameEnd))
     {
     }

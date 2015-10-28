@@ -160,118 +160,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="ProtocolEntityServer.xml">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Protocol Build %(Filename)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/EntityServerMsgClass.h;</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </AdditionalInputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/EntityServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/EntityServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/EntityServerMsgClass.h;</Outputs>
-    </CustomBuild>
     <None Include="ProtocolHelper.inl" />
-    <CustomBuild Include="ProtocolGame.xml">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Protocol Build %(Filename)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)
-
-copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/GameMsgClass.h;</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Protocol Build %(Filename)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/GameMsgClass.h;</Outputs>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)
-copy CSharp\*.cs ..\..\..\TestApp\TestCSharp\Net\Message\
-copy CSharp\*.cs ..\..\..\..\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/GameMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/GameMsgClass.h;</Outputs>
-      <SubType>Designer</SubType>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolLogin.xml">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Protocol Build %(Filename)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)
-
-copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/LoginMsgClass.h;</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Protocol Build %(Filename)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/LoginMsgClass.h;</Outputs>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)
-
-copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Message\</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/LoginMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/LoginMsgClass.h;</Outputs>
-      <SubType>Designer</SubType>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolLoginServer.xml">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Protocol Build %(Filename)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/LoginServerMsgClass.h;</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/LoginServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/LoginServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/LoginServerMsgClass.h;</Outputs>
-      <SubType>Designer</SubType>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGameServer.xml">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Protocol Build %(Filename)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/GameServerMsgClass.h;</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Protocol Build %(Filename)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/GameServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/GameServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/GameServerMsgClass.h;</Outputs>
-      <SubType>Designer</SubType>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGameMasterServer.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Protocol Build %(Filename)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/GameMasterServerMsgClass.h;</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <SubType>Designer</SubType>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/GameMasterServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/GameMasterServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/GameMasterServerMsgClass.h;</Outputs>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GenericMsgClass.h" />
     <ClInclude Include="Message\ClusterServerMsgClass.h" />
     <ClInclude Include="Message\ClusterServerMsgDebug.h" />
     <ClInclude Include="Message\EntityServerMsgClass.h" />
@@ -290,7 +182,6 @@ copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Mess
     <ClInclude Include="Message\GamePartyMsgDebug.h" />
     <ClInclude Include="Message\GameServerMsgClass.h" />
     <ClInclude Include="Message\GameServerMsgDebug.h" />
-    <ClInclude Include="Message\GenericMsgClass.h" />
     <ClInclude Include="Message\LoginMsgClass.h" />
     <ClInclude Include="Message\LoginMsgDebug.h" />
     <ClInclude Include="Message\LoginServerMsgClass.h" />
@@ -346,6 +237,7 @@ copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Mess
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GenericMsgClass.cpp" />
     <ClCompile Include="Message\ClusterServerMsgClass.cpp" />
     <ClCompile Include="Message\ClusterServerMsgDebug.cpp" />
     <ClCompile Include="Message\EntityServerMsgClass.cpp" />
@@ -364,7 +256,6 @@ copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Mess
     <ClCompile Include="Message\GamePartyMsgDebug.cpp" />
     <ClCompile Include="Message\GameServerMsgClass.cpp" />
     <ClCompile Include="Message\GameServerMsgDebug.cpp" />
-    <ClCompile Include="Message\GenericMsgClass.cpp" />
     <ClCompile Include="Message\LoginMsgClass.cpp" />
     <ClCompile Include="Message\LoginMsgDebug.cpp" />
     <ClCompile Include="Message\LoginServerMsgClass.cpp" />
@@ -402,159 +293,6 @@ copy CSharp\*.cs C:\kwork\Conspiracy\trunk\Client\Conspiracy\Conspiracy\Net\Mess
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ProtocolGameParty.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build %(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build %(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/GamePartyMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/GamePartyMsgClass.h;</Outputs>
-      <SubType>Designer</SubType>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/GamePartyMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/GamePartyMsgClass.h;</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build %(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build %(Identity)</Message>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ProtocolServer.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Protocol Build %(Filename)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Protocol Build %(Filename)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/ServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/ServerMsgClass.h;</Outputs>
-      <SubType>Designer</SubType>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ProtocolClusterServer.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build %(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/ClusterServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/ClusterServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/ClusterServerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/ClusterServerMsgClass.h;</Outputs>
-      <SubType>Designer</SubType>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ProtocolPartyMatching.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build %(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/PartyMatchingMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/PartyMatchingMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/PartyMatchingMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/PartyMatchingMsgClass.h;</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolPartyMatchingQueue.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build %(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/PartyMatchingQueueMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/PartyMatchingQueueMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/PartyMatchingQueueMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/PartyMatchingQueueMsgClass.h;</Outputs>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ProtocolGameInstance.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build %(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/GameInstanceMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/GameInstanceMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/GameInstanceMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/GameInstanceMsgClass.h;</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="ProtocolGameInstanceManager.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build %(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/GameInstanceManagerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/GameInstanceManagerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/GameInstanceManagerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/GameInstanceManagerMsgClass.h;</Outputs>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ProtocolGamePartyManager.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build %(Identity)</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build %(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/GamePartyManagerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/GamePartyManagerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/GamePartyManagerMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/GamePartyManagerMsgClass.h;</Outputs>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ProtocolRanking.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build %(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build %(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build %(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build %(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/RankingMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/RankingMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/RankingMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/RankingMsgClass.h;</Outputs>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="ProtocolMonitoring.xml">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\bin\tools\ProtocolBuilder -dir:$(ProjectDir)..\..\ %(Identity)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build %(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Build %(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Build %(Identity)</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Build %(Identity)</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Message/MonitoringMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Message/MonitoringMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Message/MonitoringMsgClass.h;</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Message/MonitoringMsgClass.h;</Outputs>
-    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

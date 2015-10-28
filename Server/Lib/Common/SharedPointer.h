@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/SharedObject.h"
 
 namespace BR
@@ -263,6 +263,13 @@ namespace BR
 		SharedPointerT<ClassType>& operator = (SharedPointerT<ClassType>&& src)
 		{
 			__super::operator = (std::forward<SharedPointer>(src));
+			return *this;
+		}
+
+		SharedPointerT<ClassType>& operator = (void* src)
+		{
+			assert(src == nullptr);
+			__super::operator = (SharedPointer());
 			return *this;
 		}
 #endif

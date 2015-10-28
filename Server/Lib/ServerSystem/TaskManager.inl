@@ -37,12 +37,12 @@ SysUInt TaskWorker::GetGroupWorkLoad()
 }
 
 // Set base loop delay
-void TaskWorker::SetBaseLoopInterval( DWORD dwLoopInterval )
+void TaskWorker::SetBaseLoopInterval(DurationMS dwLoopInterval )
 {
 	m_ulLoopInterval = dwLoopInterval;
 }
 
-DWORD TaskWorker::GetBaseLoopInterval()
+DurationMS TaskWorker::GetBaseLoopInterval()
 {
 	return m_ulLoopInterval;
 }

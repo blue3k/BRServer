@@ -15,7 +15,7 @@
 #include "Net/Netdef.h"
 #include "Protocol/ProtocolTrace.h"
 #include "Protocol/ProtocolHelper.h"
-#include "Protocol/Message/GenericMsgClass.h"
+#include "Protocol/GenericMsgClass.h"
 
 
 

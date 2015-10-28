@@ -53,7 +53,7 @@ namespace Svr {
 		{
 		public:
 			// Hash table mapping Item
-			typedef OrderedLinkedList<UINT64>::Node TableItemType;
+			typedef OrderedLinkedList<ULONGLONG>::Node TableItemType;
 			TableItemType m_TableNode;
 
 			// For a Ordered list

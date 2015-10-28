@@ -154,8 +154,8 @@ namespace BR
 			VOID GetInstanceListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetInstanceListRes:%1%:%2% , Context:%3%, Result:%4%, CounterInstances:%5%, TotalInstanceCount:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), ArgArray<PerformanceCounterInstanceInfo>(m_CounterInstances), m_TotalInstanceCount); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:GetInstanceListRes:%1%:%2% , Context:%3%, Result:{4}, CounterInstances:%5%, TotalInstanceCount:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_CounterInstances, m_TotalInstanceCount); 
 			}; // VOID GetInstanceListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Remove a player to ranking
@@ -286,8 +286,8 @@ namespace BR
 			VOID RequestCounterValuesRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:RequestCounterValuesRes:%1%:%2% , Context:%3%, Result:%4%, InstanceUID:%5%, CounterValues:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_InstanceUID, ArgArray<UINT64>(m_CounterValues)); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:RequestCounterValuesRes:%1%:%2% , Context:%3%, Result:{4}, InstanceUID:%5%, CounterValues:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_InstanceUID, m_CounterValues); 
 			}; // VOID RequestCounterValuesRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Counter instance is created
@@ -359,7 +359,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG2, "%0%:PerformanceCounterNewC2SEvt:%1%:%2% , InstanceName:%3%, InstanceUID:%4%, NewCounters:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InstanceName, m_InstanceUID, ArgArray<PerformanceCounterInfo>(m_NewCounters)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InstanceName, m_InstanceUID, m_NewCounters); 
 			}; // VOID PerformanceCounterNewC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Counter instance is deleted
@@ -422,7 +422,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG2, "%0%:PerformanceCounterFreeC2SEvt:%1%:%2% , FreeInstances:%3%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, ArgArray<EntityUID>(m_FreeInstances)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_FreeInstances); 
 			}; // VOID PerformanceCounterFreeC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Counter update broadcast
@@ -488,7 +488,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG2, "%0%:PerformanceCounterUpdateC2SEvt:%1%:%2% , InstanceUID:%3%, CounterValues:%4%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InstanceUID, ArgArray<UINT64>(m_CounterValues)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InstanceUID, m_CounterValues); 
 			}; // VOID PerformanceCounterUpdateC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Request from server

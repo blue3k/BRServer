@@ -162,8 +162,8 @@ namespace Svr {
 		{
 			if (pCurTran->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans Proc failed hr=%0%, TID:%1%:%2%, Entity:%3%",
-					ArgHex32(hrTem),
+				svrTrace(Svr::TRC_TRANSACTION, "Trans Proc failed hr={0:X8}, TID:%1%:%2%, Entity:%3%",
+					hrTem,
 					pCurTran->GetTransID(), typeid(*pCurTran).name(),
 					GetEntityUID());
 			}

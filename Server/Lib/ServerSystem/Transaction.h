@@ -68,7 +68,7 @@ namespace Svr {
 
 		struct TransactionHistory
 		{
-			ULONG				TimeStamp;
+			TimeStampMS				TimeStamp;
 
 			// Transaction msg ID
 			Message::MessageID	MsgID;
@@ -94,10 +94,10 @@ namespace Svr {
 		TransactionID		m_transID;
 
 		// Transaction heart bit time, ms
-		ULONG				m_tHeartBitTimeout;
+		TimeStampMS			m_tHeartBitTimeout;
 
 		// Transaction start time
-		ULONG				m_TransactionStartTime;
+		TimeStampMS			m_TransactionStartTime;
 
 		// Timer
 		Util::TimeStampTimer m_Timer;
@@ -144,12 +144,12 @@ namespace Svr {
 		const RouteContext& GetMessageRouteContext()					{ return m_MessageRouteContext; }
 		void SetMessageRouteContext(const RouteContext& src)			{ m_MessageRouteContext = src; }
 
-		TimerAction* GetTimerAction()					{ return (TimerAction*)m_TimerAction; }
+		TimerAction* GetTimerAction()									{ return (TimerAction*)m_TimerAction; }
 		void SetTimerAction(TimerAction* src);
 
-		ULONG GetTransactionStartTime()					{ return m_TransactionStartTime;  }
+		TimeStampMS GetTransactionStartTime()							{ return m_TransactionStartTime;  }
 
-		ULONG GetNextTickTime()							{ return std::min(GetHeartBitTimeout(), GetTimerExpireTime()); }
+		TimeStampMS GetNextTickTime()									{ return std::min(GetHeartBitTimeout(), GetTimerExpireTime()); }
 
 		// Get Exclusive option
 		FORCEINLINE bool	IsExclusive() const;
@@ -186,17 +186,17 @@ namespace Svr {
 		//FORCEINLINE ULONG GetHeartBitTime();
 
 		// Update heart bit time, with timestamp
-		FORCEINLINE ULONG UpdateHeartBitTime();
+		FORCEINLINE TimeStampMS UpdateHeartBitTime();
 
 		// Check timeout with timestamp
 		FORCEINLINE HRESULT CheckHeartBitTimeout();
-		FORCEINLINE ULONG GetHeartBitTimeout();
+		FORCEINLINE TimeStampMS GetHeartBitTimeout();
 
 		// Timer
-		FORCEINLINE void SetTimer( ULONG ms );
+		FORCEINLINE void SetTimer( DurationMS ms );
 		FORCEINLINE void ClearTimer();
 		FORCEINLINE bool CheckTimer();
-		ULONG GetTimerExpireTime();
+		TimeStampMS GetTimerExpireTime();
 		FORCEINLINE bool IsTimerWorking();
 
 		// Get expected result ID

@@ -13,7 +13,7 @@
 
 
 #include "Common/BrAssert.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 
 namespace BR
 {

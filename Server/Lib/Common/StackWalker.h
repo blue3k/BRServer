@@ -13,7 +13,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/Trace.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/StackPool.h"
 
 

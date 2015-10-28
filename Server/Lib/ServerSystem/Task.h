@@ -51,7 +51,7 @@ namespace Svr
 		UINT		m_RetryCount;
 
 		// Task tick interval(maximum)
-		ULONG		m_TickInterval;
+		DurationMS		m_TickInterval;
 
 		SharedPointerT<TickTaskTimerAction>			m_TimerAction;
 
@@ -81,11 +81,11 @@ namespace Svr
 		// Get task Load
 		inline SysUInt GetTaskLoad() const;
 
-		ULONG GetTickInterval() const;
-		inline void SetTickInterval(ULONG tickInterval)							{ m_TickInterval = tickInterval; }
+		DurationMS GetTickInterval() const;
+		inline void SetTickInterval(DurationMS tickInterval)							{ m_TickInterval = tickInterval; }
 
-		ULONG GetScheduledTickTime() const;
-		void SetNextScheduledTickTime(ULONG tickNext);
+		TimeStampMS GetScheduledTickTime() const;
+		void SetNextScheduledTickTime(TimeStampMS tickNext);
 
 
 		// retry count

@@ -28,6 +28,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -58,6 +71,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -91,10 +117,24 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 0,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				Context GetContext() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				ServiceInformation m_ClusterManagerServiceInformation;
-				UINT64 m_StartUpTime;
+				UINT32 m_StartUpTime;
 				NetAddress m_PublicAddress;
 				NetAddress m_PrivateAddress;
 			public:
@@ -109,7 +149,7 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const ServiceInformation& GetClusterManagerServiceInformation() const	{ return m_ClusterManagerServiceInformation; };
-				const UINT64& GetStartUpTime() const	{ return m_StartUpTime; };
+				const UINT32& GetStartUpTime() const	{ return m_StartUpTime; };
 				const NetAddress& GetPublicAddress() const	{ return m_PublicAddress; };
 				const NetAddress& GetPrivateAddress() const	{ return m_PrivateAddress; };
 
@@ -117,7 +157,7 @@ namespace BR
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT64 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 

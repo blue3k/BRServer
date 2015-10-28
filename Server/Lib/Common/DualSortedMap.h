@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/ArrayUtil.h"
 #include "Common/ObjectPool.h"
 #include "Common/StackWalker.h"

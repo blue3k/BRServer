@@ -13,7 +13,7 @@
 
 #include "Common/Typedefs.h"
 #include "openssl/crypto.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/SystemSynchronization.h"
 
 
 
@@ -48,7 +48,7 @@ namespace Google {
 			std::string m_AccessToken;
 
 			CriticalSection m_AuthenticationLock;
-			ULONG m_AuthenticatedTime;
+			TimeStampMS m_AuthenticatedTime;
 
 		private:
 

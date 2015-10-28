@@ -65,7 +65,7 @@ namespace Svr {
 			BRCLASS_ATTRIBUTE_READONLY(EntityUID,EntityUID);
 
 			// Server Up time, Used for checking latest updated server entity
-			BRCLASS_ATTRIBUTE_READONLY(ULONGLONG,ServerUpTime);
+			BRCLASS_ATTRIBUTE_READONLY(TimeStampMS,ServerUpTime);
 
 			// Linked server entity
 			BRCLASS_ATTRIBUTE_READONLY(ServerEntity*,ServerEntity);

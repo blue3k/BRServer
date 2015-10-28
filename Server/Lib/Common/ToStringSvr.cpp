@@ -122,7 +122,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":T")))
 			return E_FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.ServerUpTime, Option)))
+		if (FAILED(ToString(pBuff, iBuffLen, Data.ServerUpTime.time_since_epoch().count(), Option)))
 			return E_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":W")))

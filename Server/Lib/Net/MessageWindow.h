@@ -17,7 +17,7 @@
 #include "Net/NetSystem.h"
 #include "Common/HRESNet.h"
 #include "Common/PageQueue.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/SystemSynchronization.h"
 #include "Net/Connection.h"
 
 
@@ -45,7 +45,7 @@ namespace Net {
 		typedef struct tagMessageElement
 		{
 			MessageElementState state;
-			ULONG ulTimeStamp;
+			TimeStampMS ulTimeStamp;
 			Message::MessageData *pMsg;
 		} MessageElement;
 
@@ -180,7 +180,7 @@ namespace Net {
 		UINT GetAvailableSize();
 		
 		// Add a message at the end
-		HRESULT EnqueueMessage( ULONG ulTimeStampMS, Message::MessageData* pIMsg );
+		HRESULT EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg );
 
 		// Release message sequence and slide window if can
 		HRESULT ReleaseMsg( UINT16 uiSequence );
@@ -201,11 +201,16 @@ namespace Net {
 		};
 
 		// Message element
-		typedef struct tagMessageElement
+		struct MessageElement
 		{
-			std::atomic<ULONG> ulTimeStamp;
+			std::atomic<TimeStampMS> ulTimeStamp;
 			std::atomic<Message::MessageData*> pMsg;
-		} MessageElement;
+
+			MessageElement()
+				: ulTimeStamp(TimeStampMS(DurationMS(0)))
+				, pMsg(nullptr)
+			{}
+		};
 
 
 	private:
@@ -243,7 +248,7 @@ namespace Net {
 		INT GetAvailableSize();
 
 		// Add a message at the end
-		HRESULT EnqueueMessage(ULONG ulTimeStampMS, Message::MessageData* pIMsg);
+		HRESULT EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg);
 
 		// Release message sequence and slide window if can
 		HRESULT ReleaseMsg(UINT16 uiSequence);

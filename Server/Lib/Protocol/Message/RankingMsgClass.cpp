@@ -127,7 +127,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG1, "%0%:AddPlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, RankingScore:%6%, PlayerInfo:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_RankingScore, ArgArray<BYTE>(m_PlayerInfo)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_RankingScore, m_PlayerInfo); 
 			}; // VOID AddPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 0);
@@ -219,8 +219,8 @@ namespace BR
 			VOID AddPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:AddPlayerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, Ranking:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_Ranking); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:AddPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, Ranking:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_Ranking); 
 			}; // VOID AddPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Remove a player to ranking
@@ -399,8 +399,8 @@ namespace BR
 			VOID RemovePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:RemovePlayerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:RemovePlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID RemovePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Remove a player to ranking
@@ -582,8 +582,8 @@ namespace BR
 			VOID GetPlayerRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetPlayerRankingRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, Ranking:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_Ranking); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:GetPlayerRankingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, Ranking:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_Ranking); 
 			}; // VOID GetPlayerRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Update a player to ranking
@@ -684,7 +684,7 @@ namespace BR
 			{
  				Prefix;
 				protocolTrace(Trace::TRC_DBG1, "%0%:UpdatePlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, RankingScore:%6%, PlayerInfo:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_RankingScore, ArgArray<BYTE>(m_PlayerInfo)); 
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_RankingScore, m_PlayerInfo); 
 			}; // VOID UpdatePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID UpdatePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 3);
@@ -776,8 +776,8 @@ namespace BR
 			VOID UpdatePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:UpdatePlayerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, Ranking:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_Ranking); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:UpdatePlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, Ranking:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_Ranking); 
 			}; // VOID UpdatePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Remove a player to ranking
@@ -962,8 +962,8 @@ namespace BR
 			VOID GetRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetRankingRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, PlayerRanking:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_PlayerRanking); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:GetRankingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, PlayerRanking:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_PlayerRanking); 
 			}; // VOID GetRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 

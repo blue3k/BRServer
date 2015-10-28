@@ -269,7 +269,7 @@ namespace Net {
 	}
 
 	// Add a message at the end
-	HRESULT SendMsgWindow::EnqueueMessage( ULONG ulTimeStampMS, Message::MessageData* pIMsg )
+	HRESULT SendMsgWindow::EnqueueMessage( TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg )
 	{
 		HRESULT hr = S_OK;
 		INT iIdx = 0;
@@ -340,7 +340,7 @@ namespace Net {
 			{
 				if( m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.IDSeq.Sequence != uiSequence )
 				{
-					netTrace( TRC_GUARREANTEDCTRL, "Validation error : Message has Invalid Sequence %0%, %1% Required, msg:%2%", m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.IDSeq.Sequence, uiSequence, BR::Arg<UINT32>(m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.ID,-1,16) );
+					netTrace( TRC_GUARREANTEDCTRL, "Validation error : Message has Invalid Sequence %0%, %1% Required, msg:{2:X8}", m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.IDSeq.Sequence, uiSequence, m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.ID );
 				}
 
 				Util::SafeRelease( m_pMsgWnd[iPosIdx].pMsg );
@@ -496,7 +496,7 @@ namespace Net {
 	}
 
 	// Add a message at the end
-	HRESULT SendMsgWindowMT::EnqueueMessage(ULONG ulTimeStampMS, Message::MessageData* pIMsg)
+	HRESULT SendMsgWindowMT::EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg)
 	{
 		HRESULT hr = S_OK;
 		INT iIdx = 0;
@@ -640,7 +640,7 @@ namespace Net {
 	void SendMsgWindowMT::ReleaseMessage(UINT uiSequence)
 	{
 		UINT iPosIdx = uiSequence % CIRCULAR_QUEUE_SIZE;
-		m_pMsgWnd[iPosIdx].ulTimeStamp.store(0, std::memory_order_relaxed);
+		m_pMsgWnd[iPosIdx].ulTimeStamp.store(TimeStampMS(DurationMS(0)), std::memory_order_relaxed);
 		auto pIMsg = m_pMsgWnd[iPosIdx].pMsg.exchange(nullptr, std::memory_order_release);
 		if (pIMsg != nullptr)
 		{

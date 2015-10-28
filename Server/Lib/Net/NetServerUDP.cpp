@@ -186,7 +186,7 @@ namespace Net {
 		if( socket != INVALID_SOCKET )
 			closesocket( socket );
 
-		netTrace( TRC_NET, "HostOpen %0%, hr=%1%", GetLocalAddress(), ArgHex32(hr) );
+		netTrace( TRC_NET, "HostOpen %0%, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}
@@ -208,7 +208,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace( TRC_NET, "HostClose %0%, hr=%1%", GetLocalAddress(), ArgHex32(hr) );
+		netTrace( TRC_NET, "HostClose %0%, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}
@@ -282,11 +282,11 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:%2%", pUDPCon->GetConnectionInfo(), iWSAErr, ArgHex32(hr) );
+				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pUDPCon->GetConnectionInfo(), iWSAErr, hr );
 			}
 			else
 			{
-				netTrace(Net::TRC_SENDRAW, "UDP Send Failed, ip:%0%, err:%1%, hr:%2%", pUDPCon->GetConnectionInfo(), iWSAErr, ArgHex32(hr));
+				netTrace(Net::TRC_SENDRAW, "UDP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pUDPCon->GetConnectionInfo(), iWSAErr, hr);
 				return S_OK;
 			}
 		}
@@ -386,7 +386,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:%2%", dstAddress, iWSAErr, ArgHex32(hr) );
+				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", dstAddress, iWSAErr, hr );
 			}
 			else
 				return S_OK;
@@ -478,7 +478,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( TRC_NETCTRL, "UDP Send Failed, ip:%0%, err:%1%, hr:%2%", pUDPCon->GetConnectionInfo(), iWSAErr, ArgHex32(hr) );
+				netTrace( TRC_NETCTRL, "UDP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pUDPCon->GetConnectionInfo(), iWSAErr, hr );
 			}
 			else
 				return S_OK;
@@ -518,7 +518,7 @@ namespace Net {
 				//break;
 			default:
 				// Unknown error
-				netTrace( TRC_RECVRAW, "UDP Read Pending failed err=%0%, hr=%1%", iErr2, ArgHex32(HRESULT_FROM_WIN32(iErr2)) );
+				netTrace( TRC_RECVRAW, "UDP Read Pending failed err=%0%, hr={1:X8}", iErr2, HRESULT_FROM_WIN32(iErr2) );
 				//netErr( HRESULT_FROM_WIN32(iErr2) );
 				break;
 			};
@@ -571,7 +571,7 @@ namespace Net {
 				hr = hrRes;
 				break;
 			default:
-				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrUDP, IP:%0%, hr=%1%", pIOBuffer->From, ArgHex32(hrRes) );
+				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrUDP, IP:%0%, hr={1:X8}", pIOBuffer->From, hrRes );
 				break;
 			};
 		}

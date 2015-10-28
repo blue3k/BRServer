@@ -14,7 +14,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/Thread.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Net/NetDef.h"
 #include "Net/NetSvrDef.h"
 #include "Net/ConnectionUDP.h"

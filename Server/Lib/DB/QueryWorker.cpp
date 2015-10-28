@@ -94,13 +94,20 @@ namespace DB {
 	bool QueryWorker::Run()
 	{
 		HRESULT	hr = S_OK;
+		DurationMS expectedTickInterval(5);
 
 		while(1)
 		{
 			Query *pQuery = nullptr;
 
-			if (CheckKillEvent(0))
+			// 50ms will be the precision of our timer
+			auto loopInterval = UpdateInterval(expectedTickInterval);
+
+			if (CheckKillEvent(loopInterval))
+			{
+				// Kill Event signaled
 				break;
+			}
 
 			if (FAILED(m_pWorkerManager->TryGetQuery(pQuery)))
 				continue;

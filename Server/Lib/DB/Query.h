@@ -43,13 +43,12 @@ namespace DB {
 			, m_PartitioningKey(0)
 			, m_pQueryManager(nullptr)
 			, m_pSession(nullptr)
-			, m_RequestedTime(0)
 		{
 		}
 
 		virtual ~Query() {}
 
-		FORCEINLINE ULONG GetRequestedTime()					{ return m_RequestedTime; }
+		FORCEINLINE TimeStampMS GetRequestedTime()				{ return m_RequestedTime; }
 		FORCEINLINE void UpdateRequestedTime()					{ m_RequestedTime = Util::Time.GetTimeMs(); }
 
 		FORCEINLINE QueryManager* GetQueryManager()				{ return m_pQueryManager; }
@@ -68,11 +67,11 @@ namespace DB {
 	private:
 
 		QueryManager *m_pQueryManager;
-		Session* m_pSession;
+		Session*	m_pSession;
 		// DB shard partitioning key
-		UINT	m_PartitioningKey;
+		UINT		m_PartitioningKey;
 
-		ULONG	m_RequestedTime;
+		TimeStampMS	m_RequestedTime;
 	};
 
 	

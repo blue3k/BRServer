@@ -183,8 +183,8 @@ TEST_F(NetTest, Simple)
 
 	// Processing Connection update
 	BR::Message::MessageData *pIMsg = nullptr;
-	DWORD dwTimeStart = Util::Time.GetTimeMs();
-	DWORD dwTime = Util::Time.GetTimeMs();
+	TimeStampMS dwTimeStart = Util::Time.GetTimeMs();
+	TimeStampMS dwTime = Util::Time.GetTimeMs();
 	while( 1 )
 	{
 		dwTime = Util::Time.GetTimeMs();
@@ -198,16 +198,16 @@ TEST_F(NetTest, Simple)
 				switch( curEvent.EventType )
 				{
 				case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
-					defTrace( Trace::TRC_TRACE, "EVT_CONNECTION_RESULT %0%", BR::ArgHex32(curEvent.Value.hr) );
+					defTrace( Trace::TRC_TRACE, "EVT_CONNECTION_RESULT {0:X8}", curEvent.Value.hr );
 					break;
 				case BR::Net::IConnection::Event::EVT_DISCONNECTED:
-					defTrace( Trace::TRC_TRACE, "EVT_DISCONNECTED %0%", curEvent.Value.hr  );
+					defTrace( Trace::TRC_TRACE, "EVT_DISCONNECTED {0:X8}", curEvent.Value.hr  );
 					EXPECT_HRESULT_SUCCEEDED( m_pNetClient->ReleaseConnection( m_pIConnection ) );
 					m_pIConnection = nullptr;
 					goto EndTest;
 					break;
 				case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
-					defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE %0%", curEvent.Value.hr  );
+					defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE {0:X8}", curEvent.Value.hr  );
 					break;
 				};
 			}
@@ -216,63 +216,7 @@ TEST_F(NetTest, Simple)
 			if( SUCCEEDED(m_pIConnection->GetRecvMessage( pIMsg ) ) )
 			{
 				defTrace( Trace::TRC_TRACE, "Message %0%", pIMsg->GetMessageHeader()->msgID.ID  );
-				//switch( pIMsg->GetMessageHeader()->msgID.ID )
-				//{
-				//case BR::Message::MsgID::Login::MID_LoginRes:
-				//{
-				//	BR::Message::Login::MsgLoginRes res(pIMsg);
 
-				//	EXPECT_HRESULT_SUCCEEDED( res.ParseMsg() );
-
-				//	defTrace( Trace::TRC_TRACE, "Received Login Result %0%, Acc:%1%, Ticket:%2%", BR::ArgHex32(res.GetResult()), res.GetAccID(), res.GetTicket() );
-
-
-				//	if( SUCCEEDED(res.GetResult()) )
-				//	{
-				//		m_AccountID = res.GetAccID();
-				//		m_AuthTicket = res.GetTicket();
-				//		EXPECT_HRESULT_SUCCEEDED( m_pIConnection->GetPolicy<BR::Policy::IPolicyLogin>()->GetWorldStatusListCmd( ) );
-				//	}
-				//	break;
-				//}
-				//case BR::Message::MsgID::Login::MID_GetWorldStatusListRes:
-				//{
-				//	BR::Message::Login::MsgGetWorldStatusListRes res(pIMsg);
-				//	EXPECT_HRESULT_SUCCEEDED( res.ParseMsg() );
-
-				//	defTrace( Trace::TRC_TRACE, "GetWorldStatusListRes %0%", BR::ArgHex32(res.GetResult()) );
-
-			
-				//	for( int iSvr = 0; iSvr < res.GetuiSizeOfWorldServerID(); iSvr++ )
-				//	{
-				//		defTrace( Trace::TRC_TRACE, "	Server %0%", res.GetWorldServerID()[iSvr] );
-				//	}
-
-				//	if( SUCCEEDED(res.GetResult()) && res.GetuiSizeOfWorldServerID() > 0 )
-				//	{
-				//		EXPECT_HRESULT_SUCCEEDED( m_pIConnection->GetPolicy<BR::Policy::IPolicyLogin>()->GetWorldInfoCmd( res.GetWorldServerID()[0] ) );
-				//	}
-				//	break;
-				//}
-				//case BR::Message::MsgID::Login::MID_GetWorldInfoRes:
-				//{
-				//	BR::Message::Login::MsgGetWorldInfoRes res(pIMsg);
-
-				//	EXPECT_HRESULT_SUCCEEDED(res.ParseMsg());
-
-				//	defTrace( Trace::TRC_TRACE, "GetWorldInfoRes %0%", BR::ArgHex32(res.GetResult()) );
-
-				//	defTrace( Trace::TRC_TRACE, "Svr Addr %0%", res.GetAddr() );
-
-				//	if( SUCCEEDED(res.GetResult()) )
-				//	{
-				//		EXPECT_HRESULT_SUCCEEDED( m_pNetClient->Connect( res.GetAddr().strAddr, res.GetAddr().usPort, m_pIConnectionWorld ) );
-				//		EXPECT_HRESULT_SUCCEEDED( m_pIConnectionWorld->CreatePolicy( BR::POLICY_WORLD ) );
-				//		EXPECT_HRESULT_SUCCEEDED( m_pIConnectionWorld->CreatePolicy( BR::POLICY_COMMUNITY ) );
-				//	}
-				//	break;
-				//}
-				//}
 			}
 		}
 

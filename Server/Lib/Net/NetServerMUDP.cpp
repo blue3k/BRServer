@@ -71,11 +71,11 @@ namespace Net {
 		HRESULT hrTem = SendMsg( nullptr, dstAddress, pMsg );
 		if( FAILED(hrTem) )
 		{
-			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed in direct: DstAddr:%0%, msg:%1%, seq:%2%, hr=%3%", 
+			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed in direct: DstAddr:%0%, msg:{1:X8}, seq:%2%, hr={3:X8}", 
 							dstAddress, 
-							BR::Arg<UINT32>(msgID.ID,-1,16), 
+							msgID.ID, 
 							uiSequence, 
-							BR::Arg<UINT32>(hrTem,-1,16) );
+							hrTem );
 
 			// ignore io send fail except connection closed
 			if( hrTem == E_NET_CONNECTION_CLOSED )
@@ -178,7 +178,7 @@ namespace Net {
 				hr = hrRes;
 				break;
 			default:
-				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrMUDP, IP:%0%, hr=%1%", pIOBuffer->From, ArgHex32(hrRes) );
+				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrMUDP, IP:%0%, hr={1:X8}", pIOBuffer->From, hrRes );
 				break;
 			};
 		}

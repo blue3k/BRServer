@@ -24,8 +24,28 @@ inline EventTask::EventTask()
 {
 }
 
+inline EventTask& EventTask::operator = (void* src)
+{
+	assert(src == nullptr);
+	EventType = EventTypes::NONE;
+	TaskPtr = WeakPointerT<TickTask>();
+	return *this;
+}
 
 inline bool EventTask::operator == (const EventTask& src) const
 {
 	return src.EventType == EventType && src.TaskPtr == TaskPtr;
 }
+
+inline bool EventTask::operator == (void* src) const
+{
+	return EventType == EventTypes::NONE;
+}
+
+inline bool EventTask::operator != (void* src) const
+{
+	return EventType != EventTypes::NONE;
+}
+
+
+

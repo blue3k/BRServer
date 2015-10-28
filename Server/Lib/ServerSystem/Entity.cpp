@@ -43,7 +43,7 @@ namespace Svr
 
 	Entity::Entity( UINT uiTransQueueSize, UINT TransResQueueSize )
 		: m_State(EntityState::FREE)
-		, m_ulCreateTime(0)
+		, m_ulCreateTime(TimeStampMS::min())
 		, m_lTransIdx(0)
 		, m_transactionQueue(uiTransQueueSize)
 		, m_EntityUID(0)
@@ -57,7 +57,7 @@ namespace Svr
 		Util::SafeDelete(m_pHandlerTable);
 	}
 
-	ULONG Entity::SetBestScehdulingTime(Transaction* pTrans)
+	TimeStampMS Entity::SetBestScehdulingTime(Transaction* pTrans)
 	{
 		auto nextTick = Util::Time.GetTimeMs() + GetTickInterval();
 		if (pTrans)
@@ -66,11 +66,11 @@ namespace Svr
 			nextTick = Util::TimeMin(nextTick, pTrans->GetHeartBitTimeout());
 		}
 
-		Assert(nextTick != 0 && nextTick != -1);
+		Assert(nextTick != TimeStampMS::min() && nextTick != TimeStampMS::max());
 
 		nextTick = Util::TimeMin(nextTick, GetScheduledTickTime());
 
-		Assert(nextTick != 0 && nextTick != -1);
+		Assert(nextTick != TimeStampMS::min() && nextTick != TimeStampMS::max());
 		SetNextScheduledTickTime(nextTick);
 
 		return nextTick;
@@ -259,10 +259,10 @@ namespace Svr
 			&& pTimerAction != nullptr
 			&& pWorker->GetThreadID() == thisThreadID) // Only if both are on the same worker thread
 		{
-			if (pTimerAction->GetScheduledTime() == -1 || Util::TimeSince(pTimerAction->GetScheduledTime()) < 0) // next time this entity will tick
+			if (pTimerAction->GetScheduledTime() == TimeStampMS::max() || Util::TimeSince(pTimerAction->GetScheduledTime()) < DurationMS(0)) // next time this entity will tick
 			{
 				SetNextScheduledTickTime(Util::Time.GetTimeMs());
-				if (pTimerAction->GetScheduledTime() != -1) // Don't push when it isn't shceduled yet
+				if (pTimerAction->GetScheduledTime() != TimeStampMS::max()) // Don't push when it isn't shceduled yet
 					pWorker->GetTimeScheduler().Reschedul(thisThreadID, pTimerAction);
 			}
 		}

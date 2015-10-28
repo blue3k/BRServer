@@ -48,7 +48,7 @@ namespace Svr {
 		, m_MessageRouteContext(0)
 		, m_pOwner(nullptr)
 		, m_transID(0,0)
-		, m_tHeartBitTimeout(5*60*1000)
+		, m_tHeartBitTimeout(DurationMS(5*60*1000))
 		, m_uiExpectedResultID(0)
 		, m_state(STATE_WAITSTART)
 		, m_bIsExclusive(false)
@@ -57,7 +57,7 @@ namespace Svr {
 		, m_bIsDirectProcess(false)
 		, m_TimerAction(nullptr)
 		, m_CurrentHistoryIdx(0)
-		, m_TransactionStartTime(0)
+		, m_TransactionStartTime(DurationMS(0))
 	{
 		memset(m_History, 0, sizeof(m_History));
 	}

@@ -20,9 +20,6 @@
     <ClCompile Include="Binary.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include=".\Synchronize.cpp">
-      <Filter>Thread</Filter>
-    </ClCompile>
     <ClCompile Include=".\Thread.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
@@ -99,6 +96,9 @@
     <ClCompile Include="CrashDump.win32.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="Synchronization.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\GameConst.h" />
@@ -135,9 +135,6 @@
     </ClInclude>
     <ClInclude Include="Binary.h">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include=".\Synchronize.h">
-      <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="MathUtilToString.h">
       <Filter>Utility</Filter>
@@ -274,9 +271,6 @@
     <ClInclude Include="StackWalker.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="SystemSynchronize.h">
-      <Filter>Thread</Filter>
-    </ClInclude>
     <ClInclude Include="SharedReferenceManager.h">
       <Filter>SharedPointer</Filter>
     </ClInclude>
@@ -346,6 +340,15 @@
     <ClInclude Include=".\Typedefs.h">
       <Filter>Types</Filter>
     </ClInclude>
+    <ClInclude Include="SystemSynchronization.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="SynchronizationTrait.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Synchronization.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".\ArrayUtil.inl">
@@ -368,9 +371,6 @@
     </None>
     <None Include="Binary.inl">
       <Filter>Utility</Filter>
-    </None>
-    <None Include=".\Synchronize.inl">
-      <Filter>Thread</Filter>
     </None>
     <None Include=".\Thread.inl">
       <Filter>Thread</Filter>
@@ -468,6 +468,9 @@
     </None>
     <None Include="..\ServerSystem\TicketQueue.inl">
       <Filter>Header Files</Filter>
+    </None>
+    <None Include="Synchronization.inl">
+      <Filter>Thread</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

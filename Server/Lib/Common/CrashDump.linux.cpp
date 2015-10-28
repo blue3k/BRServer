@@ -11,6 +11,9 @@
 
 
 #include "stdafx.h"
+
+#if LINUX
+
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
@@ -19,7 +22,6 @@
 
 
 
-#if LINUX
 
 namespace BR {
 namespace Trace {
@@ -65,7 +67,7 @@ namespace Trace {
 		if (hFile)
 		{
 			MINIDUMP_EXCEPTION_INFORMATION eInfo;
-			eInfo.ThreadId = GetCurrentThreadId();
+			eInfo.ThreadId = ThisThread::GetThreadID();
 			eInfo.ExceptionPointers = ipExPtrs;
 			eInfo.ClientPointers = FALSE;
 
@@ -91,13 +93,13 @@ namespace Trace {
 		MINIDUMP_TYPE dumpType = MiniDumpWithFullMemory;
 
 
-	#ifdef _DEBUG
+	#ifdef DEBUG
 		uiRetCode = EXCEPTION_CONTINUE_SEARCH;
 	#endif
 
 
 
-	#ifdef _DEBUG
+	#ifdef DEBUG
 		const char* strMode = "Debug";
 	#else
 		const char* strMode = "Release";
@@ -106,7 +108,7 @@ namespace Trace {
 		WriteCrashDump(ipExPtrs, MiniDumpNormal, strMode);
 		if (dumpType != MiniDumpNormal)
 		{
-#ifdef _DEBUG
+#ifdef DEBUG
 			strMode = "DebugFull";
 #else
 			strMode = "ReleaseFull";
@@ -150,5 +152,9 @@ namespace Trace {
 };	// namespace Trace
 } // namespace BR
 
+#else
+
+int CrashDump_Linux_Dummy = 0;
 
 #endif // Linux
+

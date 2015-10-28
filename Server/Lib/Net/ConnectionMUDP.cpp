@@ -83,11 +83,11 @@ namespace Net {
 		HRESULT hrTem = GetNet()->SendMsg( this, pMsg );
 		if( FAILED(hrTem) )
 		{
-			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:%0%, msg:%1%, seq:%2%, hr=%3%", 
+			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:%0%, msg:{1:X8}, seq:%2%, hr={3:X8}", 
 							GetCID(), 
-							BR::Arg<UINT32>(msgID.ID,-1,16), 
+							msgID.ID, 
 							uiSequence, 
-							BR::Arg<UINT32>(hrTem,-1,16) );
+							hrTem );
 
 			// ignore io send fail except connection closed
 			if( hrTem == E_NET_CONNECTION_CLOSED )
@@ -309,8 +309,8 @@ namespace Net {
 		pNetCtrlMsg->Crc32 = Util::Crc32( sizeof(MsgMobileNetCtrlSync) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) );
 		if( pNetCtrlMsg->Crc32 == 0 ) pNetCtrlMsg->Crc32 = ~pNetCtrlMsg->Crc32;
 
-		netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Send RecvReliableMask : CID:%0% BaseSeq:%1%, seq:%2%, mask:%3%",
-			GetCID(), m_RecvReliableWindow.GetBaseSequence(), uiSequence, ArgHex32(uiSyncMask));
+		netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Send RecvReliableMask : CID:{0} BaseSeq:{1}, seq:{2}, mask:{3:X8}",
+			GetCID(), m_RecvReliableWindow.GetBaseSequence(), uiSequence, uiSyncMask);
 
 		m_uiGatheredSize += pNetCtrlMsg->Length;
 
@@ -391,7 +391,7 @@ namespace Net {
 			netChk( SendNetCtrl( PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID ) );
 			break;
 		case NetCtrlCode_TimeSync:
-			netChk(SendNetCtrl(PACKET_NETCTRL_TIMESYNC, 0, pNetCtrl->msgID, Util::Time.GetRawUTCSec()));
+			netChk(SendNetCtrl(PACKET_NETCTRL_TIMESYNC, 0, pNetCtrl->msgID, Util::Time.GetRawUTCSec().time_since_epoch().count()));
 			break;
 		case NetCtrlCode_SyncReliable:
 		{
@@ -402,8 +402,8 @@ namespace Net {
 				netErr(E_NET_BADPACKET_SIZE);
 
 			hrTem = m_SendReliableWindow.ReleaseMsg(pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask);
-			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Recv SendReliableMask : CID:%0%:%1%, seq:%2%, mask:%3%, hr=%4%", 
-				GetCID(), m_SendReliableWindow.GetBaseSequence(), pSyncCtrl->msgID.IDSeq.Sequence, ArgHex32(pSyncCtrl->MessageMask), ArgHex32(hrTem));
+			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Recv SendReliableMask : CID:{0}:{1}, seq:{2}, mask:{3:X8}, hr={4:X8}", 
+				GetCID(), m_SendReliableWindow.GetBaseSequence(), pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask, hrTem);
 
 			if (hrTem == E_UNEXPECTED)
 				CloseConnection();
@@ -514,12 +514,12 @@ namespace Net {
 
 		HRESULT hrTem = m_RecvReliableWindow.AddMsg(pIMsg);
 
-		netTrace(TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:%0% BaseSeq:%1%, msg:%2%, seq:%3%, len:%4%, hr=%5%",
+		netTrace(TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:%0% BaseSeq:%1%, msg:%2%, seq:%3%, len:%4%, hr={5:X8}",
 			GetCID(), m_RecvReliableWindow.GetBaseSequence(),
 			msgID,
 			seq,
 			len,
-			ArgHex32(hrTem));
+			hrTem);
 
 		if (hrTem == S_NET_PROCESSED_SEQUENCE)
 		{
@@ -609,7 +609,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 		Message::MessageData *pIMsg = NULL;
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		// Send guaranted message process
 		CounterType NumProc = m_SendReliableWindow.GetAvailableSize();
@@ -656,7 +656,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 		MsgWindow::MessageElement *pMessageElement = nullptr;
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		// Guaranted retry
 		UINT uiMaxProcess = Util::Min( m_SendReliableWindow.GetMsgCount(), m_uiMaxGuarantedRetry );
@@ -722,7 +722,7 @@ Proc_End:
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
 
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
@@ -730,13 +730,13 @@ Proc_End:
 		hr = ProcNetCtrlQueue();
 		if( FAILED(hr) )
 		{
-			netTrace( TRC_CONNECTION, "Process NetCtrlQueue failed %0%", ArgHex32(hr) );
+			netTrace( TRC_CONNECTION, "Process NetCtrlQueue failed {0:X8}", hr );
 		}
 
 		hr = ProcConnectionState();
 		if( FAILED(hr) )
 		{
-			netTrace( TRC_CONNECTION, "Process Connection state failed %0%", ArgHex32(hr) );
+			netTrace( TRC_CONNECTION, "Process Connection state failed {0:X8}", hr );
 		}
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
@@ -749,7 +749,7 @@ Proc_End:
 			hr = ProcSendReliableQueue();
 			if (FAILED(hr))
 			{
-				netTrace(TRC_CONNECTION, "Process Recv Guaranted queue failed %0%", ArgHex32(hr));
+				netTrace(TRC_CONNECTION, "Process Recv Guaranted queue failed {0:X8}", hr);
 			}
 
 
@@ -758,7 +758,7 @@ Proc_End:
 				hr = ProcReliableSendRetry();
 				if (FAILED(hr))
 				{
-					netTrace(TRC_CONNECTION, "Process message window failed %0%", ArgHex32(hr));
+					netTrace(TRC_CONNECTION, "Process message window failed {0:X8}", hr);
 				}
 
 				m_bSendSyncThisTick = false;
@@ -772,7 +772,7 @@ Proc_End:
 		hr = ProcRecvReliableQueue();
 		if( FAILED(hr) )
 		{
-			netTrace( TRC_CONNECTION, "Process Recv Guaranted queue failed %0%", ArgHex32(hr) );
+			netTrace( TRC_CONNECTION, "Process Recv Guaranted queue failed {0:X8}", hr );
 		}
 
 
@@ -796,7 +796,7 @@ Proc_End:
 		hr = ProcSendReliableQueue();
 		if (FAILED(hr))
 		{
-			netTrace(TRC_CONNECTION, "Process Send Guaranted queue failed %0%", ArgHex32(hr));
+			netTrace(TRC_CONNECTION, "Process Send Guaranted queue failed {0:X8}", hr);
 		}
 
 
@@ -805,7 +805,7 @@ Proc_End:
 			hr = ProcReliableSendRetry();
 			if (FAILED(hr))
 			{
-				netTrace(TRC_CONNECTION, "Process message window failed %0%", ArgHex32(hr));
+				netTrace(TRC_CONNECTION, "Process message window failed {0:X8}", hr);
 			}
 
 			m_bSendSyncThisTick = false;

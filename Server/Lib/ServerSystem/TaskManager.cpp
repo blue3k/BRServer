@@ -120,13 +120,13 @@ namespace Svr {
 
 				pTask->OnAddedToTaskManager(this);
 				pTask->TickUpdate();
-				if (pTask->GetTimerAction() && pTask->GetTimerAction()->GetNexTickTime() != -1)
+				if (pTask->GetTimerAction() && pTask->GetTimerAction()->GetNexTickTime() != TimeStampMS::max())
 				{
 					GetTimeScheduler().AddTimerAction(GetThreadID(), pTask->GetTimerAction());
 				}
 				else
 				{
-					Assert(pTask->GetTickInterval() == 0);
+					Assert(pTask->GetTickInterval() == DurationMS(0));
 				}
 
 			}
@@ -259,11 +259,11 @@ namespace Svr {
 	// run function
 	bool TaskWorker::Run()
 	{
-		m_TimeScheduler.UpdateWorkingThreadID(GetCurrentThreadId());
+		m_TimeScheduler.UpdateWorkingThreadID(std::this_thread::get_id());
 
 		while( 1 )
 		{
-			ULONG loopInterval = UpdateInterval( GetBaseLoopInterval() );
+			DurationMS loopInterval = UpdateInterval( GetBaseLoopInterval() );
 			
 			if (CheckKillEvent(loopInterval))
 			{
@@ -357,7 +357,7 @@ namespace Svr {
 
 		m_TaskGroups.Foreach([](TaskWorker *pTaskWorker)
 		{
-			if (pTaskWorker->GetThreadID() != 0)
+			if (pTaskWorker->GetThreadID() != ThreadID())
 				pTaskWorker->Stop(true);
 			delete pTaskWorker;
 			return S_OK;

@@ -108,28 +108,28 @@ Transaction::State Transaction::GetState()
 //}
 
 // Update heart bit time, ms
-ULONG Transaction::UpdateHeartBitTime()
+TimeStampMS Transaction::UpdateHeartBitTime()
 {
-	m_tHeartBitTimeout = Util::Time.GetTimeMs() + Const::TRANSACTION_TIMEOUT;
+	m_tHeartBitTimeout = Util::Time.GetTimeMs() + DurationMS(Const::TRANSACTION_TIMEOUT);
 	return m_tHeartBitTimeout;
 }
 
 // Check timeout, ms
 HRESULT Transaction::CheckHeartBitTimeout()
 {
-	if ((LONG)(GetHeartBitTimeout() - Util::Time.GetTimeMs()) < 0)
+	if ((LONG)(GetHeartBitTimeout() - Util::Time.GetTimeMs()).count() < 0)
 		return E_SVR_TRANSACTION_TIMEOUT;
 
 	return S_OK;
 }
 
-ULONG Transaction::GetHeartBitTimeout()
+TimeStampMS Transaction::GetHeartBitTimeout()
 {
 	return m_tHeartBitTimeout;
 }
 
 // Timer
-void Transaction::SetTimer( ULONG ms )
+void Transaction::SetTimer( DurationMS ms )
 {
 	m_Timer.SetTimer( ms );
 }
@@ -144,7 +144,7 @@ bool Transaction::CheckTimer()
 	return m_Timer.CheckTimer();
 }
 
-inline ULONG Transaction::GetTimerExpireTime()
+inline TimeStampMS Transaction::GetTimerExpireTime()
 {
 	return m_Timer.GetTimerExpireTime();
 }

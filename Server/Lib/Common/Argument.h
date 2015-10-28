@@ -39,7 +39,7 @@ namespace BR {
 
 		virtual ArgBase* Clone(INT iBuffLen, BYTE* pBuff) const = 0;
 
-		virtual void MakeString(char*& pBuff, INT& iBuffLen) const = 0;
+		virtual void MakeString(char*& pBuff, INT& iBuffLen, char option, float digits) const = 0;
 	};
 
 	// Argument wrapper
@@ -64,7 +64,7 @@ namespace BR {
 		std::string MakeString() const;
 
 		// print to input buff and return 
-		void MakeString(char*& pBuff, INT& iBuffLen) const;
+		void MakeString(char*& pBuff, INT& iBuffLen, char option, float digits) const;
 	};
 
 
@@ -99,17 +99,9 @@ namespace BR {
 			return new(pBuff) Arg<Type>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen ) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			// override argument class for that type
-			//if(Type::HasMakeString)
-			//{
-			//	m_Data.MakeString(pBuff, iBuffLen);
-			//}
-			//else
-			//{
-				ToString(pBuff, iBuffLen, m_Data, 0);
-			//}
+			ToString(pBuff, iBuffLen, m_Data, 0);
 		}
 	};
 
@@ -119,21 +111,15 @@ namespace BR {
 	{
 	private:
 		UINT32 m_Data;
-		int m_MaxDigit;
-		int m_Radix;
 
 	public:
 		Arg( UINT32 src, int MaxDigit = -1, int Radix = 10 )
-			:m_Data(src),
-			m_MaxDigit(MaxDigit),
-			m_Radix(Radix)
+			: m_Data(src)
 		{
 		}
 
 		Arg(const Arg& src)
 			: m_Data(src.m_Data)
-			, m_MaxDigit(src.m_MaxDigit)
-			, m_Radix(src.m_Radix)
 		{
 		}
 
@@ -143,9 +129,11 @@ namespace BR {
 			return new(pBuff) Arg<UINT32>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen ) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			ToStringHex( pBuff, iBuffLen, m_Data, m_MaxDigit, m_Radix );
+			int radix = 10;
+			if (option == 'x' || option == 'X') radix = 16;
+			ToStringHex( pBuff, iBuffLen, m_Data, digits, radix);
 		}
 	};
  
@@ -155,21 +143,15 @@ namespace BR {
 	{
 	private:
 		UINT64 m_Data;
-		int m_MaxDigit;
-		int m_Radix;
 
 	public:
 		Arg( UINT64 src, int MaxDigit = -1, int Radix = 10 )
-			:m_Data(src),
-			m_MaxDigit(MaxDigit),
-			m_Radix(Radix)
+			:m_Data(src)
 		{
 		}
 
 		Arg(const Arg& src)
 			: m_Data(src.m_Data)
-			, m_MaxDigit(src.m_MaxDigit)
-			, m_Radix(src.m_Radix)
 		{
 		}
 
@@ -179,9 +161,11 @@ namespace BR {
 			return new(pBuff) Arg<UINT64>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen ) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			ToStringHex( pBuff, iBuffLen, m_Data, m_MaxDigit, m_Radix );
+			int radix = 10;
+			if (option == 'x' || option == 'X') radix = 16;
+			ToStringHex(pBuff, iBuffLen, m_Data, digits, radix);
 		}
 	};
  
@@ -213,9 +197,10 @@ namespace BR {
 			return new(pBuff) Arg<float>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen ) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			ToString( pBuff, iBuffLen, (float)m_Data, m_digitAfterDecimalPoint<<16 );
+			option;
+			ToString( pBuff, iBuffLen, (float)m_Data, (int)digits );
 		}
 	};
  
@@ -225,18 +210,15 @@ namespace BR {
 	{
 	private:
 		double m_Data;
-		unsigned m_digitAfterDecimalPoint;
 
 	public:
-		Arg( double src, unsigned digitAfterDecimalPoint = 5 )
-			:m_Data(src),
-			m_digitAfterDecimalPoint(digitAfterDecimalPoint)
+		Arg( double src )
+			:m_Data(src)
 		{
 		}
 
 		Arg(const Arg& src)
 			: m_Data(src.m_Data)
-			, m_digitAfterDecimalPoint(src.m_digitAfterDecimalPoint)
 		{
 		}
 
@@ -246,9 +228,10 @@ namespace BR {
 			return new(pBuff) Arg<double>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen ) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			ToString<double>(pBuff, iBuffLen, m_Data, (int)(m_digitAfterDecimalPoint << 16));
+			option; digits;
+			ToString<double>(pBuff, iBuffLen, m_Data, 0);
 		}
 	};
  
@@ -277,8 +260,9 @@ namespace BR {
 			return new(pBuff) Arg<void*>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen ) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
+			option; digits;
 			ToString(pBuff, iBuffLen, (void*)m_Data, 0);
 		}
 	};
@@ -308,8 +292,9 @@ namespace BR {
 			return new(pBuff) ArgArray<Type>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen ) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
+			option; digits;
 			ToStringArray(pBuff, iBuffLen, m_Array, 0);
 		}
 	};
@@ -320,16 +305,6 @@ namespace BR {
 	//
 	//	Argument format specification
 	//
-
-	template< class InputType > 
-	inline Arg<void*> ArgPtr( InputType Data )			{ return Arg<void*>((void*)Data); }
-
-	template< class InputType > 
-	inline Arg<UINT32> ArgHex32( InputType Data )		{ return Arg<UINT32>((UINT32)Data,-1,16); }
-
-	template< class InputType > 
-	inline Arg<UINT64> ArgHex64( InputType Data )		{ return Arg<UINT64>((UINT64)Data,-1,16); }
-
 
 
 	extern template class Arg < INT8>;

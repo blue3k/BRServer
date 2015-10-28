@@ -66,7 +66,7 @@ namespace Svr{
 		EntityUID		m_EntityUID;
 
 		// Entity Create Time
-		ULONG			m_ulCreateTime;
+		TimeStampMS			m_ulCreateTime;
 
 		// Latestly processed transaction index
 		mutable std::atomic<ULONG>	m_lTransIdx;
@@ -84,7 +84,7 @@ namespace Svr{
 		// Get transaction queue
 		inline BR::PageQueue<Transaction*>& GetTransactionQueue();
 
-		ULONG SetBestScehdulingTime(Transaction* pTrans);
+		TimeStampMS SetBestScehdulingTime(Transaction* pTrans);
 
 		virtual void ReleaseTransaction(Transaction* pTrans);
 
@@ -112,8 +112,8 @@ namespace Svr{
 		inline EntityID GetEntityID() const;
 
 		// Set/Get Entity Create TIme
-		inline ULONG GetEntityCreateTime();
-		inline void SetEntityCreateTime(ULONG ulCreateTime);
+		inline TimeStampMS GetEntityCreateTime();
+		inline void SetEntityCreateTime(TimeStampMS ulCreateTime);
 
 		// Get Entity transaction queue count
 		virtual CounterType GetPendingTransactionCount() const;

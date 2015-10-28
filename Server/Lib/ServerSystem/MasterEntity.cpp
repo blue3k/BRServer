@@ -47,9 +47,9 @@ namespace Svr
 		, m_uiMaxActiveTransaction(1024)
 		, m_pExclusiveTransaction(nullptr)
 	{
-		SetTickInterval(100);
+		SetTickInterval(DurationMS(100));
 		m_activeTransactionScheduler.SetAssertOnInvalidTickTime(true);
-		m_activeTransactionScheduler.SetFailSafeTimerTickInterval(5000);
+		m_activeTransactionScheduler.SetFailSafeTimerTickInterval(DurationMS(5000));
 	}
 
 	MasterEntity::~MasterEntity()
@@ -69,7 +69,7 @@ namespace Svr
 
 	void MasterEntity::ReleaseTransaction(Transaction* pTrans)
 	{
-		ThreadID currentThreadID = GetTaskWorker() == nullptr ? GetCurrentThreadId() : GetTaskWorker()->GetThreadID();
+		ThreadID currentThreadID = GetTaskWorker() == nullptr ? ThisThread::GetThreadID() : GetTaskWorker()->GetThreadID();
 		SharedPointerT<Transaction> pDeleted;
 
 		if (pTrans == nullptr)
@@ -77,7 +77,7 @@ namespace Svr
 
 
 
-		if (pTrans->GetTimerAction() && pTrans->GetTimerAction()->GetScheduledTime() != -1)
+		if (pTrans->GetTimerAction() && pTrans->GetTimerAction()->GetScheduledTime() != TimeStampMS::max())
 			m_activeTransactionScheduler.RemoveTimerAction(currentThreadID, pTrans->GetTimerAction());
 
 		// All master entity's transaction will be managed by shared pointer
@@ -151,8 +151,9 @@ namespace Svr
 	{
 		HRESULT hr = S_OK;
 		Transaction* pNewTran = nullptr;
-		ThreadID currentThreadID = GetTaskWorker() == nullptr ? GetCurrentThreadId() : GetTaskWorker()->GetThreadID();
-		Assert(currentThreadID == GetCurrentThreadId());
+		ThreadID currentThreadID = GetTaskWorker() == nullptr ? ThisThread::GetThreadID() : GetTaskWorker()->GetThreadID();
+		Assert(currentThreadID == ThisThread::GetThreadID());
+		TimeStampMS nextTick = TimeStampMS::max();
 
 		if( GetEntityState() == EntityState::FREE )
 		{
@@ -228,7 +229,7 @@ namespace Svr
 
 		ValidateTransactionCount();
 
-		auto nextTick = Util::Time.GetTimeMs() + GetTickInterval();
+		nextTick = Util::Time.GetTimeMs() + GetTickInterval();
 
 		// process transaction status
 		m_activeTransactionScheduler.UpdateTick(currentThreadID);
@@ -284,8 +285,8 @@ namespace Svr
 	{
 		HRESULT hr = S_OK;
 		HRESULT hrTem = S_OK;
-		ThreadID currentThreadID = GetTaskWorker() == nullptr ? GetCurrentThreadId() : GetTaskWorker()->GetThreadID();
-		Assert(currentThreadID == GetCurrentThreadId());
+		ThreadID currentThreadID = GetTaskWorker() == nullptr ? ThisThread::GetThreadID() : GetTaskWorker()->GetThreadID();
+		Assert(currentThreadID == ThisThread::GetThreadID());
 
 		svrChkPtr(pCurTran);
 		svrChkPtr(pTransRes);
@@ -303,8 +304,8 @@ namespace Svr
 		{
 			if( pCurTran->IsPrintTrace() )
 			{
-				svrTrace( Svr::TRC_TRANSACTION, "Trans failed hr=%0%, TID:%1%:%2%, Entity:%3%", 
-					ArgHex32(hrTem),
+				svrTrace( Svr::TRC_TRANSACTION, "Trans failed hr={0:X8}, TID:%1%:%2%, Entity:%3%", 
+					hrTem,
 					pCurTran->GetTransID(), 
 					typeid(*pCurTran).name(),
 					GetEntityUID() );

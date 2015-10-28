@@ -324,7 +324,7 @@ HRESULT PageQueue<DataObject>::Dequeue( DataObject& item )
 }
 
 template <class DataObject>
-HRESULT PageQueue<DataObject>::DequeueMT( DataObject& item, unsigned int uiCheckInterval )
+HRESULT PageQueue<DataObject>::DequeueMT( DataObject& item, DurationMS uiCheckInterval )
 {
 	HRESULT hr = S_OK;
 
@@ -352,7 +352,7 @@ HRESULT PageQueue<DataObject>::DequeueMT( DataObject& item, unsigned int uiCheck
 		LockTry++;
 		if( LockTry%5 )
 		{
-			ThisThread::SleepFor(DurationMS(uiCheckInterval));
+			ThisThread::SleepFor(uiCheckInterval);
 		}
 		//_ReadBarrier();
 		std::atomic_thread_fence(std::memory_order_consume);

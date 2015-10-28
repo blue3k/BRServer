@@ -13,8 +13,8 @@
 
 #include "Common/BrAssert.h"
 #include "Common/MemoryPool.h"
-#include "Common/Synchronize.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/Synchronization.h"
+#include "Common/SystemSynchronization.h"
 #include "Common/Trace.h"
 
 
@@ -124,7 +124,7 @@ namespace BR
 		inline HRESULT Dequeue( DataObject& item );
 
 		// item deque with MT
-		inline HRESULT DequeueMT( DataObject& item, unsigned int uiCheckInterval = 100 );
+		inline HRESULT DequeueMT( DataObject& item, DurationMS uiCheckInterval = DurationMS(100) );
 
 
 		// Just get first dequeue item if exist, not dequeue

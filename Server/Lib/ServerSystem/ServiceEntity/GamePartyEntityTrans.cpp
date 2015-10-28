@@ -260,7 +260,7 @@ namespace Svr {
 
 		svrChk( GetMyOwner()->FindPlayer( GetPlayerID(), pPlayer ) );
 
-		svrChk( GetMyOwner()->GetChatHistory().AddChattingLog( Util::Time.GetTimeUTCSec32(), pPlayer->GetPlayerID(), 0, ChatType::Normal, GetChatMessage() ) );
+		svrChk( GetMyOwner()->GetChatHistory().AddChattingLog( Util::Time.GetTimeUTCSec(), pPlayer->GetPlayerID(), 0, ChatType::Normal, GetChatMessage() ) );
 
 		GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::ISvrPolicyGameParty *pPolicy )->HRESULT {
 				pPolicy->ChatMessageS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetPlayerID(), pPlayer->GetPlayerName(), GetChatMessage() );

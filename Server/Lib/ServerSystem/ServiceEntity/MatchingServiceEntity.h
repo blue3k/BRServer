@@ -82,11 +82,13 @@ namespace Svr {
 			}
 
 			bool operator == (const ReservedMatchingItem& src) const { return MatchingTicket == src.MatchingTicket; }
+			bool operator == (void* src) const { assert(src == nullptr);  return MatchingTicket == 0; }
+			bool operator != (void* src) const { assert(src == nullptr);  return MatchingTicket != 0; }
 
 			ReservedMatchingItem& operator = (const ReservedMatchingItem& src);
 			ReservedMatchingItem& operator = (ReservedMatchingItem&& src);
+			ReservedMatchingItem& operator = (void* src) { assert(src == nullptr); MatchingTicket = 0;  MemberCount = 0;  return *this; }
 
-			static const ReservedMatchingItem NullValue;
 		};
 
 		// Reserved matching queue
@@ -188,7 +190,7 @@ namespace Svr {
 
 		BRCLASS_ATTRIBUTE_READONLY(bool, IsUseBot);
 
-		ULONG m_WaitingBotMatchingStart;
+		TimeStampMS m_WaitingBotMatchingStart;
 
 		// Reservation state
 		UINT m_ReservationStartFrom;

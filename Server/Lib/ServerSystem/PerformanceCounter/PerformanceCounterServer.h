@@ -79,14 +79,18 @@ namespace Svr {
 
 				PacketInfo& operator = (const PacketInfo& src) { From = src.From; pMessage = src.pMessage; return *this; }
 				PacketInfo& operator = (PacketInfo&& src) { From = src.From; pMessage = src.pMessage; src.pMessage = nullptr; return *this; }
+				PacketInfo& operator = (void* src) { pMessage = nullptr; return *this; }
+
 				bool operator == (const PacketInfo& src) const { return pMessage == src.pMessage; }
+				bool operator == (void* src) const { return pMessage == nullptr; }
+				bool operator != (void* src) const { return pMessage != nullptr; }
 
 			};
 
 			PageQueue<PacketInfo> m_NewDeleteQueue;
 
 			PageQueue<PacketInfo> m_UpdateQueue;
-			PageQueue<UINT64> m_TimedOutQueue;
+			PageQueue<void*> m_TimedOutQueue;
 
 			DualSortedMap<UINT64, SharedPointerT<PerformanceCounterInstance>> m_InstanceMap;
 

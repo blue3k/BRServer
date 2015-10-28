@@ -23,7 +23,7 @@ namespace BR {
 		//	Thread safe hash map
 		//
 
-		template< typename ThreadTrait = ThreadSyncTraitMT >
+		template< typename ThreadTrait = ThreadSyncTraitReadWrite >
 		class StaticLinkedList
 		{
 		public:

@@ -20,14 +20,12 @@
 namespace BR {
 namespace Net {
 
-	static tag_MsgNetCtrlBuffer GetNullMsgNetCtrlBuffer()
+	tag_MsgNetCtrlBuffer GetNullMsgNetCtrlBuffer()
 	{
 		tag_MsgNetCtrlBuffer buffer;
 		memset(&buffer,0,sizeof(buffer));
 		return buffer;
 	}
-
-	tag_MsgNetCtrlBuffer tag_MsgNetCtrlBuffer::NullValue = GetNullMsgNetCtrlBuffer();
 
 } // namespace Net
 } // namespace BR

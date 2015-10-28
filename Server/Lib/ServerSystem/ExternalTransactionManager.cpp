@@ -39,7 +39,7 @@ namespace Svr
 	ExternalTransactionManager::ExternalTransactionManager()
 		:ParallelTransactionManager()
 	{
-		SetTickInterval(Svr::Const::PARALLEL_TRANSACTION_MANAGER_TICKTASK_INTERVAL);
+		SetTickInterval(DurationMS(Svr::Const::PARALLEL_TRANSACTION_MANAGER_TICKTASK_INTERVAL));
 	}
 
 	ExternalTransactionManager::~ExternalTransactionManager()

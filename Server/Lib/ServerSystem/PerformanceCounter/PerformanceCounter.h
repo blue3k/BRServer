@@ -198,7 +198,7 @@ namespace Svr {
 	{
 	private:
 		std::atomic<ULONG> m_TickIndex;
-		ULONG m_TickCountStartTime;
+		TimeStampMS m_TickCountStartTime;
 		struct
 		{
 			std::atomic<ULONG> Working;
@@ -230,7 +230,7 @@ namespace Svr {
 		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) override
 		{
 			auto timeSince = Util::TimeSince(m_TickCountStartTime);
-			if (m_TickCountStartTime == 0 || timeSince > 1000)
+			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))
 			{
 				auto curTime = Util::Time.GetTimeMs();
 				auto nextTickIndex = (m_TickIndex.load(std::memory_order_relaxed) + 1) % _countof(m_Values);
@@ -245,7 +245,7 @@ namespace Svr {
 				auto totalCount = m_Values[indexCalculate].TotalCount.load(std::memory_order_relaxed);
 				auto newValue = (total * 1000) / totalCount;
 
-				SetRawValue(newValue / timeSince);
+				SetRawValue(newValue / timeSince.count());
 
 
 				// clear used values
@@ -270,14 +270,14 @@ namespace Svr {
 	{
 	private:
 		std::atomic<ULONG> m_TickIndex;
-		ULONG m_TickCountStartTime;
+		TimeStampMS m_TickCountStartTime;
 		std::atomic<DataType> m_Values[2];
 
 	public:
 		PerformanceCounterTickPerSec(const char* counterName)
 			: PerformanceCounterRaw<DataType>(counterName, CountingTypes::TickPerSec)
 			, m_TickIndex(0)
-			, m_TickCountStartTime(0)
+			, m_TickCountStartTime(TimeStampMS::min())
 		{
 			memset(m_Values, 0, sizeof(m_Values));
 		}
@@ -286,7 +286,7 @@ namespace Svr {
 		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) override
 		{
 			auto timeSince = Util::TimeSince(m_TickCountStartTime);
-			if (m_TickCountStartTime == 0 || timeSince > 1000)
+			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))
 			{
 				auto nextTickIndex = (m_TickIndex.load(std::memory_order_relaxed) + 1) % _countof(m_Values);
 				m_Values[nextTickIndex].store(0, std::memory_order_release);
@@ -294,7 +294,7 @@ namespace Svr {
 				auto prevTickIndex = m_TickIndex.fetch_add(1, std::memory_order_release) % _countof(m_Values);
 				auto ticks = m_Values[nextTickIndex].load(std::memory_order_relaxed);
 
-				SetRawValue((ticks * 1000) / timeSince);
+				SetRawValue((ticks * 1000) / timeSince.count());
 
 				m_TickCountStartTime = Util::Time.GetTimeMs();
 			}

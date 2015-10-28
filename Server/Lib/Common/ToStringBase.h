@@ -109,18 +109,18 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	//
 
 	// specialized version
-	inline HRESULT ToStringHex( char*& pBuff, INT& iBuffLen, UINT32 iData, int MaxDigit, int Radix )
+	inline HRESULT ToStringHex( char*& pBuff, INT& iBuffLen, UINT32 iData, float MaxDigit, int Radix )
 	{
-		_IToA( (UINT32)iData, pBuff, iBuffLen, Radix, MaxDigit );
+		_IToA( (UINT32)iData, pBuff, iBuffLen, Radix, (int)floor(MaxDigit) );
 
 		return S_OK;
 	}
 
-	inline HRESULT ToStringHex( char*& pBuff, INT& iBuffLen, UINT64 iData, int MaxDigit, int Radix )
+	inline HRESULT ToStringHex( char*& pBuff, INT& iBuffLen, UINT64 iData, float MaxDigit, int Radix )
 	{
-		_IToA((UINT32)(iData>>32), pBuff, iBuffLen, Radix, MaxDigit);
+		_IToA((UINT32)(iData>>32), pBuff, iBuffLen, Radix, (int)floor(MaxDigit));
 		StrUtil::StringCpyEx(pBuff, iBuffLen, ":");
-		_IToA((UINT32)iData, pBuff, iBuffLen, Radix, MaxDigit);
+		_IToA((UINT32)iData, pBuff, iBuffLen, Radix, (int)floor(MaxDigit));
 
 		return S_OK;
 	}
@@ -193,6 +193,18 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT32>& Data, int Option);
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT64>& Data, int Option);
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT64>& Data, int Option);
+
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<BYTE>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
+
+	template<>
+	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<UINT32>& Data, int Option)
+	{
+		return ToStringArray(pBuff, iBuffLen, Data, Option);
+	}
 
 }; // namespace BR
 

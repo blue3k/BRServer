@@ -38,7 +38,50 @@ namespace StrUtil {
 
 		return -1;
 	}
-	
+
+	static inline void SkipSpace(const char*& szFormating)
+	{
+		for (char curChar = *szFormating; curChar && (curChar == ' ' && curChar != '	'); curChar = *szFormating++);
+	}
+
+	static inline double ReadNumber(char& curChar, const char*& szFormating)
+	{
+		double fNumber = 0;
+		for (curChar = *szFormating++; curChar && (curChar != '%' && curChar != '}' && curChar != ':'); curChar = *szFormating++)
+		{
+			if (curChar == '.')
+				break;
+
+			if (curChar == '\0')
+				return fNumber;
+
+			if (curChar < '0' || curChar > '9')
+				continue;
+
+			register int iArgTem = ChToInt(curChar);
+			if (iArgTem >= 0)
+				fNumber = fNumber * 10 + iArgTem;
+		}
+
+		if (curChar != '.') return fNumber;
+
+		double fExponent = 0.1;
+		for (curChar = *szFormating++; curChar && (curChar != '%' && curChar != '}' && curChar != ':'); curChar = *szFormating++)
+		{
+			if (curChar < '0' || curChar > '9')
+				continue;
+
+			if (curChar == '\0')
+				return fNumber;
+
+			register int iArgTem = ChToInt(curChar);
+			if (iArgTem >= 0)
+				fNumber += (double)iArgTem * fExponent;
+		}
+
+		return fNumber;
+	}
+
 	// Internal format routine
 	HRESULT Format_Internal( char*& szBuffer, INT& iBuffLen, const char* szFormating, int iNumArg, BR::Argument* Args )
 	{
@@ -49,17 +92,34 @@ namespace StrUtil {
 
 		for( curChar = *szFormating++; curChar && iBuffLen > 0; curChar = *szFormating++ )
 		{
-			if( curChar == (char)'%' )
+			if( curChar == '%' || curChar == '{')
 			{
 				int iArg = 0;
-				for( curChar = *szFormating++; curChar && curChar != '%'; curChar = *szFormating++ )
-				{
-					if( curChar < '0' || curChar > '9' ) 
-						continue;
 
-					register int iArgTem = ChToInt( curChar );
-					if( iArgTem >= 0 )
-						iArg = iArg*10 + iArgTem;
+				SkipSpace(szFormating);
+
+				// read argument index
+				iArg = (int)(ReadNumber(curChar, szFormating) + 0.1);
+
+				// read option
+				char option = '\0';
+				double digits = 9999.9999;
+				if (curChar == ':')
+				{
+					if (curChar == '\0')
+						return E_INVALIDARG;
+
+					SkipSpace(szFormating);
+
+					if (curChar == '\0')
+						return E_INVALIDARG;
+
+					curChar = *szFormating++;
+
+					if (curChar == '\0')
+						return E_INVALIDARG;
+
+					digits = ReadNumber(curChar, szFormating);
 				}
 
 				if( curChar == '\0' )
@@ -67,7 +127,7 @@ namespace StrUtil {
 
 				if (iArg < iNumArg)
 				{
-					Args[iArg].MakeString(szBuffer, iBuffLen);
+					Args[iArg].MakeString(szBuffer, iBuffLen, option, (float)digits);
 				}
 				else
 				{

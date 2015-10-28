@@ -16,7 +16,7 @@
 #include "Common/SharedPointer.h"
 #include "Common/DualSortedMap.h"
 #include "Common/TimeUtil.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/SystemSynchronization.h"
 #include "ServerSystem/TimeSchedulerAction.h"
 
 
@@ -33,7 +33,7 @@ namespace Svr {
 
 	private:
 		// Minimum timer tick time when the action doesn't assigned a valid tick time
-		ULONG m_FailSafeTimerTickInterval;
+		DurationMS m_FailSafeTimerTickInterval;
 
 		// Assert on invalid tick time
 		bool m_AssertOnInvalidTickTime;
@@ -47,15 +47,15 @@ namespace Svr {
 
 		std::function<bool(const UINT64&, const SharedPointerT<TimerAction>&)> m_TimerTickActionUpdate;
 
-		ULONG m_GetNextTickResult;
+		TimeStampMS m_GetNextTickResult;
 		std::function<bool(const UINT64&, const SharedPointerT<TimerAction>&)> m_TimerTickActionGetNextTick;
 
 	public:
 
 		TimeScheduler();
 
-		void SetFailSafeTimerTickInterval(ULONG timerTick)				{ m_FailSafeTimerTickInterval = timerTick; }
-		void SetAssertOnInvalidTickTime(bool assertOn)					{ m_AssertOnInvalidTickTime = assertOn; }
+		void SetFailSafeTimerTickInterval(DurationMS timerTick)				{ m_FailSafeTimerTickInterval = timerTick; }
+		void SetAssertOnInvalidTickTime(bool assertOn)						{ m_AssertOnInvalidTickTime = assertOn; }
 
 		void UpdateWorkingThreadID(ThreadID threadID);
 
@@ -65,7 +65,7 @@ namespace Svr {
 
 		HRESULT Reschedul(ThreadID threadID, TimerAction* pAction);
 
-		ULONG GetNextTimeTick();
+		TimeStampMS GetNextTimeTick();
 
 		CounterType GetScheduledItemCount()								{ return m_TimerMap.GetItemCount(); }
 		CounterType GetChangedItemCount()								{ return m_TimerMap.GetWriteItemCount(); }

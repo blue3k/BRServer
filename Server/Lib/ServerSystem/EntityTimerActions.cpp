@@ -43,7 +43,7 @@ namespace Svr {
 	void TimerActionTransaction::SetNextTickTime(SharedPointerT<Transaction>& pTrans)
 	{
 		auto nextTick = std::min(pTrans->GetTimerExpireTime(), pTrans->GetHeartBitTimeout());
-		Assert(nextTick != -1);
+		Assert(nextTick != TimeStampMS::max());
 		__super::SetNextTickTime(nextTick);
 	}
 
@@ -55,7 +55,7 @@ namespace Svr {
 
 		ClearTime();
 
-		Assert(GetInQueueKey().NextTickTime == -1); // Tick updater should updated this
+		Assert(GetInQueueKey().NextTickTime == TimeStampMS::max()); // Tick updater should updated this
 
 		if (pTransPtr == nullptr)
 		{

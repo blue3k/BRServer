@@ -32,7 +32,7 @@ namespace BR
 			// Cmd: 
 			HRESULT GenericFailureCmd( const Context &InContext, const RouteContext &InRouteContext );
 			// C2S: Server Started or Connected
-			HRESULT ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT64 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress );
+			HRESULT ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress );
 
 		}; // class NetPolicyServer : public IPolicyServer
 

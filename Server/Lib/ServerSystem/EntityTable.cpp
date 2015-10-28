@@ -69,7 +69,7 @@ namespace Svr {
 
 			svrChk(Find(entityID.ID, pEntity));
 
-			svrChk(pEntity->PendingTransaction(GetCurrentThreadId(), pTrans));
+			svrChk(pEntity->PendingTransaction(ThisThread::GetThreadID(), pTrans));
 
 		Proc_End:
 

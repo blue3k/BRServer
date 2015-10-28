@@ -17,7 +17,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Message.h"
 #include "Common/Trace.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/Memory.h"
 #include "Common/Argument.h"
 #include "Common/ToString.h"

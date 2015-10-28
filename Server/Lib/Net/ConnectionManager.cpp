@@ -102,9 +102,6 @@ namespace Net {
 	//	ConnectionManager
 	//
 
-	const ConnectionManager::Operation ConnectionManager::Operation::NullValue;
-
-
 
 	ConnectionManager::ConnectionManager( UINT uiBucketSize )
 		: m_AddrMap(uiBucketSize)
@@ -129,7 +126,7 @@ namespace Net {
 
 		while( 1 )
 		{
-			ULONG loopInterval = UpdateInterval( Const::CONMGR_THREAD_INTERVAL );
+			auto loopInterval = UpdateInterval(DurationMS(Const::CONMGR_THREAD_INTERVAL) );
 
 			if( CheckKillEvent(loopInterval) ) 
 			{
@@ -283,7 +280,7 @@ namespace Net {
 
 					if ((pConn->GetPendingRecvCount() + pConn->GetPendingSendCount()) > 0)
 					{
-						if (Util::TimeSince(oper.EnqueuedTime) < 30 * 1000)
+						if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(30 * 1000))
 						{
 							// leave this release for a while
 							m_PendingOperations.Enqueue(std::forward<Operation>(oper));

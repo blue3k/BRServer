@@ -157,7 +157,7 @@ namespace Svr {
 		pTrans = pInitTransaction;
 		pInitTransaction = nullptr;
 
-		svrChk(PendingTransaction(GetCurrentThreadId(), pTrans));
+		svrChk(PendingTransaction(ThisThread::GetThreadID(), pTrans));
 		//svrChk( GetTransactionQueue().Enqueue( pInitTransaction ) );
 
 		pTrans = nullptr;
@@ -530,7 +530,7 @@ namespace Svr {
 
 			if( !m_MasterCheckTimer.IsTimerWorking() )
 			{
-				m_MasterCheckTimer.SetTimer( MASTER_CHECK_TIME );
+				m_MasterCheckTimer.SetTimer( DurationMS(MASTER_CHECK_TIME) );
 				goto Proc_End;
 			}
 
@@ -542,7 +542,7 @@ namespace Svr {
 			// start voting if not started
 			//StartVoting();
 
-			ULONGLONG earliestUpTime = MAXULONGLONG;
+			TimeStampSec earliestUpTime = TimeStampSec::max();
 			ServiceTableItem *pCandidate = nullptr;
 
 			auto itIDMap = m_ServiceEntityUIDMap.begin();
@@ -638,7 +638,7 @@ namespace Svr {
 
 		// When the return value is S_FALSE, it means this service is already in the list
 		// Remove it if the key value isn't same
-		if( hrRes == S_FALSE && pTblItem->m_ListNode.Key != pServerEntity->GetServerUpTime() )
+		if( hrRes == S_FALSE && pTblItem->m_ListNode.Key != pServerEntity->GetServerUpTime().time_since_epoch().count() )
 		{
 			// I hope this not happened here
 			Assert(pTblItem->GetServerEntity() == pServerEntity);
@@ -649,7 +649,7 @@ namespace Svr {
 
 		if( SUCCEEDED(hrRes) )
 		{
-			svrChk( m_ServiceList.FindPrevNode( pServerEntity->GetServerUpTime(), pPrevNode ) );
+			svrChk( m_ServiceList.FindPrevNode( pServerEntity->GetServerUpTime().time_since_epoch().count(), pPrevNode ) );
 
 			// we don't have to update it again
 			if( hrRes != S_FALSE )
@@ -659,7 +659,7 @@ namespace Svr {
 				// If the table already exist in the list, and it just updated hrRes would have S_FALSE
 				Assert(pPrevNode->pNext != &pTblItem->m_ListNode);
 
-				svrChk( m_ServiceList.Insert( pPrevNode, pServerEntity->GetServerUpTime(), &pTblItem->m_ListNode ) );
+				svrChk( m_ServiceList.Insert( pPrevNode, pServerEntity->GetServerUpTime().time_since_epoch().count(), &pTblItem->m_ListNode ) );
 			}
 		}
 		svrChk(hr);
@@ -852,7 +852,7 @@ namespace Svr {
 
 		svrChk( __super::InitializeEntity(newEntityID) );
 
-		m_WorkloadCheckTimer.SetTimer( Const::WORKLOAD_UPDATE_TIME );
+		m_WorkloadCheckTimer.SetTimer( DurationMS(Const::WORKLOAD_UPDATE_TIME) );
 
 	Proc_End:
 
@@ -877,12 +877,12 @@ namespace Svr {
 			if( pService->GetClusterMembership() <= ClusterMembership::Slave )
 			{
 				Assert(pTblItem->m_ListNode.pNext == nullptr);
-				svrChk( m_ServiceList.FindPrevNode( pServerEntity->GetServerUpTime(), pPrevNode ) );
+				svrChk( m_ServiceList.FindPrevNode( pServerEntity->GetServerUpTime().time_since_epoch().count(), pPrevNode ) );
 
 				Assert(pPrevNode != &pTblItem->m_ListNode );
 				Assert(pPrevNode->pNext != &pTblItem->m_ListNode );
 
-				svrChk( m_ServiceList.Insert( pPrevNode, pServerEntity->GetServerUpTime(), &pTblItem->m_ListNode ) );
+				svrChk( m_ServiceList.Insert( pPrevNode, pServerEntity->GetServerUpTime().time_since_epoch().count(), &pTblItem->m_ListNode ) );
 			}
 		}
 		svrChk(hr);
@@ -957,7 +957,7 @@ namespace Svr {
 
 		if( m_WorkloadCheckTimer.CheckTimer() )
 		{
-			m_WorkloadCheckTimer.SetTimer( Const::WORKLOAD_UPDATE_TIME );
+			m_WorkloadCheckTimer.SetTimer( DurationMS(Const::WORKLOAD_UPDATE_TIME) );
 
 			SetWorkload( (UINT)m_LocalWorkload.load(std::memory_order_relaxed) );
 		}

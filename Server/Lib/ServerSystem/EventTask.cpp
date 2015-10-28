@@ -25,7 +25,6 @@ namespace Svr {
 	//	EventTask class -  interface for task operation
 	//
 
-	EventTask EventTask::NullValue;
 
 	EventTask::EventTask(EventTask&& src)
 		: TaskPtr(src.TaskPtr)

@@ -198,7 +198,7 @@ TEST_F(HashTableTest, HashTable_UniqueMT)
 
 	typedef BR::Hash::HashTable<	TestMapNode*, 
 										BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
-										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitMT
+										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitReadWrite
 										> TestTableType;
 
 	TestTableType TestMap;

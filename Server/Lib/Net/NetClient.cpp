@@ -393,7 +393,7 @@ namespace Net {
 
 		if( !CreateIoCompletionPort((HANDLE)socket, IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)(IOCPSystem::IOCallBack*)pConn, 0) )
 		{
-			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed TCP, hr = %0%", ArgHex32(GetLastHRESULT()) );
+			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed TCP, hr = {0:X8}", GetLastHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
@@ -490,7 +490,7 @@ namespace Net {
 
 		if (FAILED(hr))
 		{
-			netTrace(Trace::TRC_ERROR, "ReleaseConnection Failed hr=%0%", ArgHex32(hr));
+			netTrace(Trace::TRC_ERROR, "ReleaseConnection Failed hr={0:X8}", hr);
 		}
 
 		return hr;
@@ -566,7 +566,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( TRC_TCPSENDRAW, "TCP Send Failed, ip:%0%, err:%1%, hr:%2%", pTCPCon->GetConnectionInfo().Remote, iWSAErr, ArgHex32(hr) );
+				netTrace( TRC_TCPSENDRAW, "TCP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, iWSAErr, hr );
 			}
 			else
 				return S_OK;
@@ -655,7 +655,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( TRC_TCPSENDRAW, "TCP Send Failed, ip:%0%, err:%1%, hr:%2%", pTCPCon->GetConnectionInfo().Remote, iWSAErr, ArgHex32(hr) );
+				netTrace( TRC_TCPSENDRAW, "TCP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, iWSAErr, hr );
 			}
 			else
 				return S_OK;
@@ -824,7 +824,7 @@ namespace Net {
 
 		if( !CreateIoCompletionPort((HANDLE)pConn->GetSocket(), IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)(IOCPSystem::IOCallBack*)pConn, 0) )
 		{
-			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed TCP, hr = %0%", ArgHex32(GetLastHRESULT()) );
+			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed TCP, hr = {0:X8}", GetLastHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
@@ -963,7 +963,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:%2%", pUDPCon->GetConnectionInfo().Remote, iWSAErr, ArgHex32(hr) );
+				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, iWSAErr, hr );
 			}
 			else
 				return S_OK;
@@ -1053,7 +1053,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:%2%", pUDPCon->GetConnectionInfo().Remote, iWSAErr, ArgHex32(hr) );
+				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, iWSAErr, hr );
 			}
 			else
 				return S_OK;

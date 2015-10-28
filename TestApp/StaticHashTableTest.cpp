@@ -246,7 +246,7 @@ TEST_F(HashTableTest, StaticHashTable_UniqueMT)
 	typedef BR::Hash::StaticHashTable<	TestMapNode, 
 										BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
 										BR::Indexing::MapItemConverter<TestMapNode,TestMapNode::HashNodeType,&TestMapNode::m_MapNode>,
-										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitMT
+										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitReadWrite
 										> TestTableType;
 
 	TestTableType TestMap;

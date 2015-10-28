@@ -31,8 +31,6 @@ namespace Svr
 
 	struct EventTask
 	{
-		static EventTask NullValue;
-
 		enum class EventTypes : UINT32
 		{
 			NONE,
@@ -69,7 +67,11 @@ namespace Svr
 		EventTask& operator = (const EventTask& src);
 		EventTask& operator = (EventTask&& src);
 
+		EventTask& operator = (void* src);
+
 		bool operator == (const EventTask& src) const;
+		bool operator == (void* src) const;
+		bool operator != (void* src) const;
 	};
 
 

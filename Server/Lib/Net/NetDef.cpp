@@ -24,7 +24,6 @@ namespace Net {
 	//	Connection Interface
 	//
 
-	IConnection::tag_Event IConnection::tag_Event::NullValue;
 
 	template class SharedPointerT <IConnection>;
 
@@ -39,7 +38,7 @@ namespace Net {
 		: m_CID(0)
 		, m_UData(0)
 		, m_ConnectionState(STATE_DISCONNECTED)
-		, m_tConnectionTime(0)
+		, m_tConnectionTime(DurationMS(0))
 		, m_pINet(nullptr)
 		, m_pEventHandler(nullptr)
 	{

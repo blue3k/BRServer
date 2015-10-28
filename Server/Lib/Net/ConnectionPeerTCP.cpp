@@ -84,7 +84,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
 
-		ULONG ulTimeCur = Util::Time.GetTimeMs();
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		if( GetPendingRecvCount() == 0 
 			&& GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -97,13 +97,13 @@ namespace Net {
 		switch (GetConnectionState())
 		{
 		case IConnection::STATE_CONNECTING:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > (INT)GetConnectingTimeOut() ) // connection time out
+			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(GetConnectingTimeOut()) ) // connection time out
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netTrace(TRC_CONNECTION, "Connecting Timeout CID:%0%", GetCID());
 				netChk( CloseConnection() );
 			}
-			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > Const::CONNECTION_RETRY_TIME ) // retry
+			else if( (ulTimeCur-m_ulNetCtrlTryTime) > DurationMS(Const::CONNECTION_RETRY_TIME) ) // retry
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				Assert(GetConnectionInfo().LocalClass != NetClass::Unknown);
@@ -114,7 +114,7 @@ namespace Net {
 			goto Proc_End;
 			break;
 		case IConnection::STATE_DISCONNECTING:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::DISCONNECT_TIMEOUT ) // connection time out
+			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::DISCONNECT_TIMEOUT) ) // connection time out
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netTrace(TRC_CONNECTION, "Disconnecting Timeout CID:%0%", GetCID());
@@ -124,7 +124,7 @@ namespace Net {
 			goto Proc_End;
 			break;
 		case IConnection::STATE_CONNECTED:
-			if( (INT)(ulTimeCur-m_ulNetCtrlTime) > Const::HEARTBIT_TIMEOUT ) // connection time out
+			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::HEARTBIT_TIMEOUT) ) // connection time out
 			{
 				m_ulNetCtrlTime = ulTimeCur;
 				netTrace(TRC_CONNECTION, "Connection Timeout CID:%1%", GetCID());
@@ -132,7 +132,7 @@ namespace Net {
 				netChk( CloseConnection() );
 				goto Proc_End;
 			}
-			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime) > GetHeartbitTry() ) // heartbit time
+			else if( (ulTimeCur-m_ulNetCtrlTryTime) > DurationMS(GetHeartbitTry()) ) // heartbit time
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netChk(SendNetCtrl(PACKET_NETCTRL_HEARTBIT, 0, msgIDTem));

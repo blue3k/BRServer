@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/HRESCommon.h"
 
 #include "Common/ObjectPool.h"

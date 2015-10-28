@@ -113,7 +113,7 @@ namespace Net {
 				GetConnectionManager().PendingReleaseConnection((Connection*)pConn);
 			}
 
-			netTrace( Trace::TRC_ERROR, "Tcp Accept failed  hr = %0%", ArgHex32(hr) );
+			netTrace( Trace::TRC_ERROR, "Tcp Accept failed  hr = {0:X8}", hr );
 		}
 		else
 		{

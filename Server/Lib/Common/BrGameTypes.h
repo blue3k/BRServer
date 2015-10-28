@@ -146,11 +146,11 @@ namespace BR
 
 	// Game log item base item
 	struct GameLogItem {
-		GameLogType	LogType;		// Log type
-		UINT16		LogItemSize;	// Actual log item size
-		UINT32		TimeStamp;		// time32_t
+		GameLogType		LogType;		// Log type
+		UINT16			LogItemSize;	// Actual log item size
+		TimeStampSec	TimeStamp;		// time32_t
 
-		GameLogItem(GameLogType logType, ULONG timeStamp, size_t logItemSize);
+		GameLogItem(GameLogType logType, TimeStampSec timeStamp, size_t logItemSize);
 	};
 
     struct GameLogChatMessage : GameLogItem
@@ -162,7 +162,7 @@ namespace BR
 		UINT16 MessageBufferSize;
         char MessageText[1];
 
-        GameLogChatMessage(ULONG timeStamp, UINT messageBufferSize);
+        GameLogChatMessage(TimeStampSec timeStamp, UINT messageBufferSize);
         
         HRESULT SetChatMessage( PlayerID player, BYTE playerStatus, ChatType type, const char* message);
     };
@@ -172,7 +172,7 @@ namespace BR
     {
         GameStateID GameState;
 
-        GameLogGameStateChange(ULONG timeStamp);
+        GameLogGameStateChange(TimeStampSec timeStamp);
 
         void SetState( GameStateID gameState );
     };
@@ -189,7 +189,7 @@ namespace BR
         };
         VoteInfo VoteStatus[1];
 
-        GameLogVote(ULONG timeStamp, UINT numVoter);
+        GameLogVote(TimeStampSec timeStamp, UINT numVoter);
 
         HRESULT InitializeVote(GameVoteType type, int voterCount);
 
@@ -201,7 +201,7 @@ namespace BR
 		UINT32 NumberOfRanker;
         PlayerID VotedRankers[1];
 
-        GameLogVoteResult(ULONG timeStamp, UINT numRankers);
+        GameLogVoteResult(TimeStampSec timeStamp, UINT numRankers);
 
         void SetVotedRankers(UINT numRankers, const PlayerID* ranker);
     };
@@ -211,7 +211,7 @@ namespace BR
         PlayerID KilledPlayerID;
 		PlayerKilledReason killedReason;
 
-        GameLogPlayerKilled(ULONG timeStamp);
+        GameLogPlayerKilled(TimeStampSec timeStamp);
 
         void SetPlayerKilled(PlayerKilledReason reason, PlayerID killedPlayerID);
     };
@@ -220,7 +220,7 @@ namespace BR
     {
         GameWinner Winner;
 
-        GameLogGameEnd(ULONG timeStamp);
+        GameLogGameEnd(TimeStampSec timeStamp);
 
         void SetWinner( GameWinner winner );
     }; 

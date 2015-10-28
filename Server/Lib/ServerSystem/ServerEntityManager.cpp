@@ -146,7 +146,7 @@ namespace Svr
 			}
 		}
 
-		svrChk( m_EntityManagerServerUpTimeMap.FindPrevNode( pServerEntity->GetServerUpTime(), pPrevNode ) );
+		svrChk( m_EntityManagerServerUpTimeMap.FindPrevNode( pServerEntity->GetServerUpTime().time_since_epoch().count(), pPrevNode ) );
 
 		pPrevListNode = (ServerUpTimeListNodeItem*)pPrevNode;
 		if( pPrevNode->Key != 0 && pPrevListNode->pServerEntity == pServerEntity )
@@ -158,7 +158,7 @@ namespace Svr
 		pNewListNode->pServerEntity = pServerEntity;
 
 		//pNewListNode
-		svrChk( m_EntityManagerServerUpTimeMap.Insert( pPrevNode, pServerEntity->GetServerUpTime(), pNewListNode ) );
+		svrChk( m_EntityManagerServerUpTimeMap.Insert( pPrevNode, pServerEntity->GetServerUpTime().time_since_epoch().count(), pNewListNode ) );
 
 		pNewListNode = nullptr;
 	

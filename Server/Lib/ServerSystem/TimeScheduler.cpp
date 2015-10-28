@@ -40,10 +40,10 @@ namespace Svr {
 	{
 	}
 
-	void TimerAction::SetNextTickTime(UINT32 nextTickTime)
+	void TimerAction::SetNextTickTime(TimeStampMS nextTickTime)
 	{
-		Assert((LONG)(nextTickTime - Util::Time.GetTimeMs()) < 60*60*1000);
-		Assert(nextTickTime != 0);
+		Assert((nextTickTime - Util::Time.GetTimeMs()) < DurationMS(60*60*1000));
+		Assert(nextTickTime != TimeStampMS(DurationMS(0)));
 		
 		TimeData.NextTickTime = nextTickTime;
 	}
@@ -58,7 +58,7 @@ namespace Svr {
 	TimeScheduler::TimeScheduler()
 		: m_FailSafeTimerTickInterval(500)
 		, m_AssertOnInvalidTickTime(false)
-		, m_WorkingThreadID(0)
+		//, m_WorkingThreadID(0)
 		, m_IsWriteLocked(0)
 	{
 		m_TimerTickActionGetNextTick = [&](const UINT64& keyVal, const SharedPointerT<TimerAction>& pAction) -> bool
@@ -69,12 +69,12 @@ namespace Svr {
 
 		m_TimerTickActionUpdate = [&](const UINT64& keyVal, const SharedPointerT<TimerAction>& pAction) -> bool
 		{
-			ULONG currentTime = Util::Time.GetTimeMs();
+			TimeStampMS currentTime = Util::Time.GetTimeMs();
 			TimerAction::TimeKey key;
 			key.TimerKey = keyVal;
 
-			auto diff = (LONG)(key.NextTickTime - currentTime);
-			if (diff > 0)
+			auto diff = (key.NextTickTime - currentTime);
+			if ((INT)diff.count() > 0)
 				return false;
 
 			SharedPointerT<TimerAction> removed;
@@ -87,13 +87,13 @@ namespace Svr {
 			Assert(removed == pAction);
 
 			auto savedTime = key;
-			pAction->m_InQueueKey.NextTickTime = -1;
-			Assert((LONG)(pAction->TimeData.NextTickTime - Util::Time.GetTimeMs()) < 5000);
+			pAction->m_InQueueKey.NextTickTime = TimeStampMS::max();
+			Assert((pAction->TimeData.NextTickTime - Util::Time.GetTimeMs()) < DurationMS(5000));
 
 			bool bIsNeedToKeep = pAction->UpdateTick();
 
 			// if it doesn't need to be scheduled anymore
-			auto nextDiff = (LONG)(pAction->TimeData.NextTickTime - Util::Time.GetTimeMs());
+			auto nextDiff = (INT)(pAction->TimeData.NextTickTime - Util::Time.GetTimeMs()).count();
 			if (nextDiff < 0)
 			{
 				if (key.NextTickTime == pAction->TimeData.NextTickTime)
@@ -105,7 +105,7 @@ namespace Svr {
 						pAction->TimeData.NextTickTime = Util::Time.GetTimeMs() + m_FailSafeTimerTickInterval;
 					}
 				}
-				else if (pAction->TimeData.NextTickTime == -1 || !bIsNeedToKeep)
+				else if (pAction->TimeData.NextTickTime == TimeStampMS::max() || !bIsNeedToKeep)
 				{
 					if (!bIsNeedToKeep)
 					{
@@ -134,7 +134,7 @@ namespace Svr {
 			{
 				//MutexScopeLock localLock(m_WriteLock);
 				Assert(pAction->TimeData.TimerKey != 0);
-				Assert(pAction->TimeData.NextTickTime != -1);
+				Assert(pAction->TimeData.NextTickTime != TimeStampMS::max());
 				pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
 				if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
 				{
@@ -151,7 +151,7 @@ namespace Svr {
 
 	void TimeScheduler::UpdateWorkingThreadID(ThreadID threadID)
 	{
-		Assert(threadID != 0);
+		//Assert(threadID != 0);
 		m_WorkingThreadID = threadID;
 	}
 
@@ -169,8 +169,8 @@ namespace Svr {
 		//Assert(m_IsWriteLocked.load(std::memory_order_relaxed) == 0);
 
 		svrChkPtr(pAction);
-		svrAssert(pAction->m_InQueueKey.NextTickTime == -1);
-		svrAssert(pAction->TimeData.NextTickTime != -1);
+		svrAssert(pAction->m_InQueueKey.NextTickTime == TimeStampMS::max());
+		svrAssert(pAction->TimeData.NextTickTime != TimeStampMS::max());
 		svrAssert(pAction->TimeData.TimerKey != 0);
 
 
@@ -204,7 +204,7 @@ namespace Svr {
 		if (pAction == nullptr)
 			return hr;
 
-		if (pAction->m_InQueueKey.NextTickTime == -1) // if not schedule
+		if (pAction->m_InQueueKey.NextTickTime == TimeStampMS::max()) // if not schedule
 			return hr;
 
 		Assert(m_WorkingThreadID == threadID);
@@ -217,11 +217,11 @@ namespace Svr {
 
 		if (FAILED(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
 		{
-			Assert(pAction->m_InQueueKey.NextTickTime == -1);
+			Assert(pAction->m_InQueueKey.NextTickTime == TimeStampMS::max());
 		}
 
 		Assert(removed == pAction);
-		pAction->m_InQueueKey.NextTickTime = -1;
+		pAction->m_InQueueKey.NextTickTime = TimeStampMS::max();
 
 //#ifdef DEBUG
 //		m_TimerMap.ForeachOrderWrite(0, (UINT)m_TimerMap.GetWriteItemCount(), [&](const UINT64& keyVal, SharedPointerT<TimerAction> pInAction) -> bool
@@ -267,7 +267,7 @@ namespace Svr {
 		if (pAction->TimeData.NextTickTime == pAction->m_InQueueKey.NextTickTime)
 			return hr;
 
-		if (pAction->m_InQueueKey.NextTickTime != -1)
+		if (pAction->m_InQueueKey.NextTickTime != TimeStampMS::max())
 		{
 			SharedPointerT<TimerAction> removed;
 			if (FAILED(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
@@ -275,12 +275,12 @@ namespace Svr {
 				Assert(false);
 			}
 			Assert(removed == pAction);
-			pAction->m_InQueueKey.NextTickTime = -1;
+			pAction->m_InQueueKey.NextTickTime = TimeStampMS::max();
 		}
 
-		Assert(!m_AssertOnInvalidTickTime || ((LONG)(pAction->TimeData.NextTickTime - Util::Time.GetTimeMs()) < (2*60*1000)));
-		Assert(pAction->TimeData.NextTickTime != -1);
-		if (pAction->TimeData.NextTickTime != -1)
+		Assert(!m_AssertOnInvalidTickTime || ((pAction->TimeData.NextTickTime - Util::Time.GetTimeMs()) < DurationMS(2*60*1000)));
+		Assert(pAction->TimeData.NextTickTime != TimeStampMS::max());
+		if (pAction->TimeData.NextTickTime != TimeStampMS::max())
 		{
 			pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
 			if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
@@ -296,9 +296,9 @@ namespace Svr {
 		return hr;
 	}
 
-	ULONG TimeScheduler::GetNextTimeTick()
+	TimeStampMS TimeScheduler::GetNextTimeTick()
 	{
-		m_GetNextTickResult = -1;
+		m_GetNextTickResult = TimeStampMS::max();
 		m_TimerMap.ForeachReverseOrder(0, 1, m_TimerTickActionGetNextTick);
 
 		return m_GetNextTickResult;
@@ -310,7 +310,7 @@ namespace Svr {
 		//MutexScopeLock localLock(m_WriteLock);
 		//m_TimerMap.ForeachOrderWrite(0, (UINT)m_TimerMap.GetWriteItemCount(), [&](const UINT64& keyVal, SharedPointerT<TimerAction> pAction) -> bool
 		//{
-		//	Assert(pAction->m_InQueueKey.NextTickTime != -1);
+		//	Assert(pAction->m_InQueueKey.NextTickTime != TimeStampMS::max());
 		//	AssertRel(keyVal == pAction->m_InQueueKey.TimerKey);
 		//	return true;
 		//});

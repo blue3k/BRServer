@@ -61,9 +61,6 @@ namespace Net {
 
 		struct tag_Event
 		{
-			// Empty value definition
-			static tag_Event NullValue;
-
 			// Type of connection event
 			enum EventTypes
 			{
@@ -87,7 +84,10 @@ namespace Net {
 			tag_Event(EventTypes eventType, HRESULT hrRes) :EventType(eventType) { Value.hr = hrRes; }
 			tag_Event(EventTypes eventType, ConnectionState InState) :EventType(eventType) { Value.state = InState; }
 			inline tag_Event& operator =(const tag_Event& src);
+			inline tag_Event& operator =(void* src);
 			inline bool operator == (const tag_Event& src) const;
+			inline bool operator == (void* src) const;
+			inline bool operator != (void* src) const;
 		};
 		typedef tag_Event Event;
 
@@ -164,7 +164,7 @@ namespace Net {
 		IPolicyBase* m_pPolicy[POLICY_NETMAX];
 
 		// Connection time
-		ULONG	m_tConnectionTime;
+		TimeStampMS	m_tConnectionTime;
 
 		// Network interface
 		INet	*m_pINet;
@@ -233,7 +233,7 @@ namespace Net {
 		void SetUData(uintptr_t UData);
 
 		// Get connection time
-		ULONG GetConnectionTime();
+		TimeStampMS GetConnectionTime();
 
 		// Get Net Instance
 		INet* GetNet();
@@ -331,7 +331,10 @@ namespace Net {
 			inline Event();
 			inline Event( EventTypes eventType, IConnection *pCon = NULL );
 			inline Event& operator =( const Event& src );
+			inline Event& operator =(void* src);
 			inline bool operator == ( const Event& src ) const;
+			inline bool operator == (void* src) const;
+			inline bool operator != (void* src) const;
 		};
 
 

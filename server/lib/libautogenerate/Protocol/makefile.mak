@@ -21,13 +21,18 @@ SOURCES=ProtocolClusterServer.xml \
 	ProtocolServer.xml
 
 
-SOURCES_POSTFIXED=$(SOURCES:.xml=MsgClass.h)
-TARGET_FILES=$(SOURCES_POSTFIXED:Protocol%=$(OUTPUT_PATH)/%)
+SOURCES_POSTFIXED=$(SOURCES:.xml=.h)
+TARGET_FILES=$(SOURCES_POSTFIXED:%=$(OUTPUT_PATH)/%)
 
 
-$(OUTPUT_PATH)/%MsgClass.h: Protocol%.xml
+$(OUTPUT_PATH)/%.h: %.xml
 	$(PROTO_BUILD) -dir:../../../ $<
  
 
-all: $(SOURCES) $(TARGET_FILES) 
+build: $(SOURCES) $(TARGET_FILES) 
 	@echo Done
+
+
+clean:
+	rm $(OUTPUT_PATH)/*.h
+	rm -R Temp/*

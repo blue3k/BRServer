@@ -244,15 +244,15 @@ namespace Trace {
 	#define TrcErrJmp(trcMod, errval, __var) \
 	do {\
 		__var = errval;\
-		TRACE_OUT(trcMod, Trace::TRC_IERROR, "%0%(%1%): 0x%2%",     \
-			__FILE__, __LINE__, Arg<UINT32>(hr,8,16) ); \
+		TRACE_OUT(trcMod, Trace::TRC_IERROR, "{0}({1}): 0x{2:X8}",     \
+			__FILE__, __LINE__, hr ); \
 		goto Proc_End;\
 	} while(0);
 
 	#define TrcErrReturn(trcMod, errval) \
 	do {\
-		TRACE_OUT(trcMod, Trace::TRC_IERROR, "%0%(%1%): 0x%2%",     \
-			__FILE__, __LINE__, Arg<UINT32>(errval,8,16) ); \
+		TRACE_OUT(trcMod, Trace::TRC_IERROR, "{0}({1}): 0x{2:X8}",     \
+			__FILE__, __LINE__, errval ); \
 		return errval;\
 	} while(0);
 
@@ -262,14 +262,14 @@ namespace Trace {
 		hr = checkState;\
 		if( FAILED(hr) )\
 		{\
-			defTrace( Trace::TRC_IERROR, "%0%(%1%): 0x%2%", __FILE__, __LINE__, Arg<UINT32>(hr,8,16) ); \
+			defTrace( Trace::TRC_IERROR, "{0}({1}): 0x{2:X8}", __FILE__, __LINE__, hr ); \
 			goto Proc_End;\
 		}\
 	}while(0)\
 
 #define trcErr(errVal) \
 	do{\
-		defTrace( Trace::TRC_IERROR, "%0%(%1%): 0x%2%", __FILE__, __LINE__, Arg<UINT32>(hr,8,16) ); \
+		defTrace( Trace::TRC_IERROR, "{0}({1}): 0x{2:X8}", __FILE__, __LINE__, hr ); \
 		hr = errVal;\
 		goto Proc_End;\
 	}while(0)\
@@ -279,7 +279,7 @@ namespace Trace {
 	do {\
 		if( (checkPointer) == NULL )\
 		{\
-			defTrace( Trace::TRC_IERROR, "%0%(%1%): Null Exception",     \
+			defTrace( Trace::TRC_IERROR, "{0}({1}): Null Exception",     \
 				__FILE__, __LINE__ ); \
 			hr = E_OUTOFMEMORY;\
 			goto Proc_End;\
@@ -291,7 +291,7 @@ namespace Trace {
 	do{\
 		if( (checkPointer) == NULL )\
 		{\
-			defTrace( Trace::TRC_IERROR, "%0%(%1%): Invalid Pointer", __FILE__, __LINE__ ); \
+			defTrace( Trace::TRC_IERROR, "{0}({1}): Invalid Pointer", __FILE__, __LINE__ ); \
 			hr = E_POINTER;\
 			goto Proc_End;\
 		}\
@@ -303,7 +303,7 @@ namespace Trace {
 #define trcAssert(condi) \
 				do{ \
 					if( !(condi) ) {\
-					defTrace( Trace::TRC_ASSERT, "%0%(%1%): Assert occure : %2%", __FILE__, __LINE__, #condi );  Trace::Flush();\
+					defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Trace::Flush();\
 						Assert(condi);\
 						trcErr(E_UNEXPECTED);\
 					}\
@@ -314,7 +314,7 @@ namespace Trace {
 #define trcAssertExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "%0%(%1%): Assert occure : %2% : %3%", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
+						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
 						Assert(condi);\
 						trcErr(E_UNEXPECTED);\
 					}\
@@ -325,7 +325,7 @@ namespace Trace {
 #define TrcAssertReturn(condi) \
 				do{ \
 					if( !(condi) ) {\
-					defTrace( Trace::TRC_ASSERT, "%0%(%1%): Assert occure : %2%", __FILE__, __LINE__, #condi );  Trace::Flush();\
+					defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Trace::Flush();\
 						Assert(condi);\
 						return E_UNEXPECTED;\
 					}\
@@ -336,7 +336,7 @@ namespace Trace {
 #define TrcAssertReturnExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "%0%(%1%): Assert occure : %2% : %3%", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
+						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
 						Assert(condi);\
 						return E_UNEXPECTED;\
 					}\
@@ -399,7 +399,7 @@ namespace Trace {
 #define trcAssert(condi) \
 				{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "%0%(%1%): Assert occure : %2%", __FILE__, __LINE__, #condi ); Trace::Flush();\
+						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi ); Trace::Flush();\
 						trcErr(E_UNEXPECTED);\
 					}\
 				} \
@@ -409,7 +409,7 @@ namespace Trace {
 #define trcAssertExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "%0%(%1%): Assert occure : %2% : %3%", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
+						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
 						trcErr(E_UNEXPECTED);\
 					}\
 				} while(0); \
@@ -418,7 +418,7 @@ namespace Trace {
 #define TrcAssertReturn(condi) \
 				{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "%0%(%1%): Assert occure : %2%", __FILE__, __LINE__, #condi ); Trace::Flush();\
+						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi ); Trace::Flush();\
 						return E_UNEXPECTED;\
 					}\
 				} \
@@ -428,7 +428,7 @@ namespace Trace {
 #define TrcAssertReturnExp(condi,expr) \
 				do{ \
 					if( !(condi) ) {\
-						defTrace( Trace::TRC_ASSERT, "%0%(%1%): Assert occure : %2% : %3%", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
+						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
 						return E_UNEXPECTED;\
 					}\
 				} while(0); \

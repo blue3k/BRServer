@@ -15,7 +15,7 @@
 #include "Common/Trace.h"
 #include "Common/StaticLinkedList.h"
 #include "Common/Memory.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 
 namespace BR {
 

@@ -86,4 +86,6 @@ namespace DB {
 } // namespace DB
 } // namespace BR
 
+#else
+void DataSourceOLEDB_Dummy() {}
 #endif // BRDB_USE_OLEDB

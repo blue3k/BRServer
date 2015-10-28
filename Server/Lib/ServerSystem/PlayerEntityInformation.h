@@ -43,7 +43,7 @@ namespace Svr {
 		// Player's UID
 		BRCLASS_ATTRIBUTE_READONLY(PlayerInformation,PlayerInfo);
 
-		BRCLASS_ATTRIBUTE_READONLY(ULONGLONG,LatestServerUpTime);
+		BRCLASS_ATTRIBUTE_READONLY(TimeStampSec,LatestServerUpTime);
 
 		BRCLASS_ATTRIBUTE_READONLY(ServerEntity*,ServerEntity);
 

@@ -408,7 +408,7 @@ namespace Net {
 					// chain call to end all IOCP worker
 					if( !PostQueuedCompletionStatus( m_hIOCP, 0, 0, NULL ) )
 					{
-						netTrace( Trace::TRC_ERROR, "PostQueuedCompletionStatus failed hr=%0%", BR::Arg<UINT32>(GetLastHRESULT(),-1,16) );
+						netTrace( Trace::TRC_ERROR, "PostQueuedCompletionStatus failed hr={0:X8}", GetLastHRESULT() );
 					}
 					break;
 				}
@@ -431,7 +431,7 @@ namespace Net {
 					case ERROR_NETNAME_DELETED:
 						if( pOverlapped->Operation != OVERLAPPED_BUFFER::OP_UDPREAD // UDP can't distingush which connection network err
 							&& pOverlapped->Operation != OVERLAPPED_BUFFER::OP_PEERUDPREAD )
-							netTrace( TRC_CONNECTION, "Closing Connection by iErr=%0%, hr=%1%", iLastError, BR::Arg<UINT32>(hr,-1,16) );
+							netTrace( TRC_CONNECTION, "Closing Connection by iErr=%0%, hr={1:X8}", iLastError, hr );
 						hr = E_NET_CONNECTION_CLOSED;
 						break;
 					case ERROR_OPERATION_ABORTED:
@@ -439,7 +439,7 @@ namespace Net {
 						hr = E_NET_IO_ABORTED;
 						break;
 					default:
-						netTrace( Trace::TRC_IERROR, "IOCP Operation failed iErr=%0%, hr=%1%", iLastError, BR::Arg<UINT32>(hr,-1,16) );
+						netTrace( Trace::TRC_IERROR, "IOCP Operation failed iErr=%0%, hr={1:X8}", iLastError, hr );
 						break;
 					};
 				}

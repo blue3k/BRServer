@@ -28,6 +28,18 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -64,6 +76,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -101,6 +126,17 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 1,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -137,6 +173,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -174,6 +223,18 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -212,6 +273,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -247,6 +321,18 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -283,6 +369,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -318,6 +417,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 0,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				Context GetContext() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				UINT16 m_RouteHopCount;
@@ -355,6 +467,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 0,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				Context GetContext() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				UINT16 m_RouteHopCount;
@@ -392,6 +517,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 0,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				Context GetContext() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				UINT16 m_RouteHopCount;
@@ -427,6 +565,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 0,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				Context GetContext() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				UINT16 m_RouteHopCount;
@@ -462,6 +613,18 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -496,6 +659,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -535,6 +711,18 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -571,6 +759,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -610,6 +811,18 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -646,6 +859,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -681,6 +907,18 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -717,6 +955,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -752,6 +1003,18 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				RouteContext m_RouteContext;
@@ -788,6 +1051,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				Context m_Context;
 				HRESULT m_Result;
@@ -831,6 +1107,19 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasContext = 0,
+					HasRouteContext = 1,
+					HasRouteHopCount = 1,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				Context GetContext() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				UINT16 m_RouteHopCount;

@@ -25,12 +25,16 @@ namespace Hash {
 
 		struct UniqueKeyTrait
 		{
-			const bool UniqueKey = true;
+			enum Consts {
+				UniqueKey = 1
+			};
 		};
 
 		struct NonUniqueKeyTrait
 		{
-			const bool UniqueKey = false;
+			enum Consts {
+				UniqueKey = 0
+			};
 		};
 
 		// Hash map data mappter

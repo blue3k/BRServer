@@ -16,7 +16,7 @@
 #include "Common/SharedPointer.h"
 #include "Common/DualSortedMap.h"
 #include "Common/TimeUtil.h"
-#include "Common/SystemSynchronize.h"
+#include "Common/SystemSynchronization.h"
 
 
 
@@ -32,10 +32,12 @@ namespace Svr {
 		union TimeKey {
 			struct {
 				UINT32 ObjectID;
-				UINT32 NextTickTime;
+				TimeStampMS NextTickTime;
 			};
 
 			UINT64 TimerKey;
+
+			TimeKey() {}
 		};
 #pragma pack(pop)
 
@@ -55,13 +57,13 @@ namespace Svr {
 		TimerAction();
 		virtual ~TimerAction();
 
-		bool IsScheduled()								{ return m_InQueueKey.NextTickTime != UINT_MAX; }
-		void ClearTime()								{ TimeData.NextTickTime = UINT_MAX; }
+		bool IsScheduled()									{ return m_InQueueKey.NextTickTime != TimeStampMS::max(); }
+		void ClearTime()									{ TimeData.NextTickTime = TimeStampMS::max(); }
 
-		ULONG GetNexTickTime()							{ return TimeData.NextTickTime; }
-		void SetNextTickTime(UINT32 nextTickTime);
+		TimeStampMS GetNexTickTime()						{ return TimeData.NextTickTime; }
+		void SetNextTickTime(TimeStampMS nextTickTime);
 
-		ULONG GetScheduledTime()						{ Assert(m_InQueueKey.NextTickTime != 0);  return m_InQueueKey.NextTickTime; }
+		TimeStampMS GetScheduledTime()						{ Assert(m_InQueueKey.NextTickTime != TimeStampMS::min());  return m_InQueueKey.NextTickTime; }
 
 		virtual bool UpdateTick() { return false; }
 

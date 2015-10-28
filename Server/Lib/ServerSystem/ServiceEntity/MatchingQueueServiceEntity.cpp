@@ -90,7 +90,7 @@ namespace Svr {
 			pInstance->AddCounter(&m_QueuedItemCount);
 		}
 
-		m_WorkloadUpdateTimer.SetTimer( Const::WORKLOAD_UPDATE_TIME );
+		m_WorkloadUpdateTimer.SetTimer(DurationMS(Const::WORKLOAD_UPDATE_TIME));
 
 	Proc_End:
 
@@ -132,7 +132,7 @@ namespace Svr {
 		// Update workload
 		if( m_WorkloadUpdateTimer.CheckTimer() )
 		{
-			m_WorkloadUpdateTimer.SetTimer( Const::WORKLOAD_UPDATE_TIME );
+			m_WorkloadUpdateTimer.SetTimer(DurationMS(Const::WORKLOAD_UPDATE_TIME));
 			SetWorkload( (UINT)m_ItemCounter );
 		}
 
@@ -173,18 +173,18 @@ namespace Svr {
 			}
 
 			// Canceled
-			if( pItem->ReservedTime == 0 )
+			if( pItem->ReservedTime == TimeStampMS::min() )
 			{
 				m_SecondaryQueue.Enqueue( pItem );
 				continue;
 			}
 
-			if( (Util::Time.GetTimeMs() - pItem->ReservedTime) > Const::MATCHING_QUEUE_RESERVATION_TIMEOUT )
+			if( (Util::Time.GetTimeMs() - pItem->ReservedTime) > DurationMS(Const::MATCHING_QUEUE_RESERVATION_TIMEOUT))
 			{
 				// return back to secondary queue so that it can be selected again
 				svrTrace( Trace::TRC_ERROR, "Timeout for a reserved matching queue item, Reserver:%0%, %1%", pItem->Reserver, pItem->ReservedTime );
 				pItem->Reserver = 0;
-				pItem->ReservedTime = 0;
+				pItem->ReservedTime = TimeStampMS::min();
 				m_SecondaryQueue.Enqueue( pItem );
 			}
 			else
@@ -214,7 +214,7 @@ namespace Svr {
 		while( SUCCEEDED(m_MainQueue.GetFront(pItem)) )
 		{
 			// If delete is required by canceling
-			if ((pItem->NumPlayers == 0 || pItem->PendingCancel) && pItem->ReservedTime == 0)
+			if ((pItem->NumPlayers == 0 || pItem->PendingCancel) && pItem->ReservedTime == TimeStampMS::min())
 			{
 				m_MainQueue.Dequeue(pItem);
 				CancelItem(pItem);
@@ -230,7 +230,7 @@ namespace Svr {
 		while( SUCCEEDED(m_SecondaryQueue.GetFront(pItem)) )
 		{
 			// If delete is required by canceling
-			if ((pItem->NumPlayers == 0 || pItem->PendingCancel) && pItem->ReservedTime == 0)
+			if ((pItem->NumPlayers == 0 || pItem->PendingCancel) && pItem->ReservedTime == TimeStampMS::min())
 			{
 				m_SecondaryQueue.Dequeue(pItem);
 				CancelItem(pItem);
@@ -279,7 +279,7 @@ namespace Svr {
 		if (pItem == nullptr)
 			return E_INVALIDARG;
 
-		if ((pItem->NumPlayers != 0 && !pItem->PendingCancel) || pItem->ReservedTime != 0)
+		if ((pItem->NumPlayers != 0 && !pItem->PendingCancel) || pItem->ReservedTime != TimeStampMS::min())
 			return E_INVALID_STATE;
 
 		// If delete is required by canceling
@@ -438,7 +438,7 @@ namespace Svr {
 			}
 
 			Assert(pItem->Reserver.UID==0);
-			Assert(pItem->ReservedTime==0);
+			Assert(pItem->ReservedTime== TimeStampMS::min());
 
 			pItem->Reserver = reserverUID;
 			pItem->ReservedTime = Util::Time.GetTimeMs();
@@ -469,7 +469,7 @@ namespace Svr {
 
 		std::atomic_thread_fence(std::memory_order_seq_cst);
 
-		pItem->ReservedTime = 0;
+		pItem->ReservedTime = TimeStampMS::min();
 
 	Proc_End:
 
@@ -494,7 +494,7 @@ namespace Svr {
 		item = *pItem;
 
 		// This item will be deleted in TickUpdate
-		pItem->ReservedTime = 0;
+		pItem->ReservedTime = TimeStampMS::min();
 		pItem->Reserver = 0;
 		pItem->QueueItemID = 0;
 		pItem->NumPlayers = 0;

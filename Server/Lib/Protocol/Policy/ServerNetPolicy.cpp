@@ -46,7 +46,7 @@ namespace BR
 
 		}; // HRESULT NetPolicyServer::GenericFailureCmd( const Context &InContext, const RouteContext &InRouteContext )
 		// C2S: Server Started or Connected
-		HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT64 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+		HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
 		{
  			HRESULT hr = S_OK;
 
@@ -62,7 +62,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT64 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+		}; // HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
 
 
 		// Cmd: 

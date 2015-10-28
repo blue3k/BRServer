@@ -102,7 +102,7 @@ namespace Net {
 				hr = hrRes;
 				break;
 			default:
-				//netTrace( TRC_RECV, "UDP Recv Msg Failed, SvrUDP, IP:%0%, hr=%1%", addr, ArgHex32(hrRes) );
+				//netTrace( TRC_RECV, "UDP Recv Msg Failed, SvrUDP, IP:%0%, hr={1:X8}", addr, hrRes );
 				break;
 			};
 		}
@@ -359,7 +359,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:%2%", pUDPCon->GetConnectionInfo().Remote, iWSAErr, ArgHex32(hr) );
+				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, iWSAErr, hr );
 			}
 			else
 				return S_OK;
@@ -489,7 +489,7 @@ namespace Net {
 		if( !CreateIoCompletionPort((HANDLE)socket, IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)(IOCPSystem::IOCallBack*)this, 0) )
 		{
 			hr = GetLastHRESULT();
-			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed Udp, hr=%0%", ArgHex32(hr) );
+			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed Udp, hr={0:X8}", hr );
 			netErr( hr );
 		}
 
@@ -520,7 +520,7 @@ namespace Net {
 		if( FAILED(hr) )
 			HostClose();
 
-		netTrace( TRC_NET, "HostOpen %0%, hr=%1%", GetLocalAddress(), ArgHex32(hr) );
+		netTrace( TRC_NET, "HostOpen %0%, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}
@@ -550,7 +550,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace( TRC_NET, "HostClose %0%, hr=%1%", GetLocalAddress(), ArgHex32(hr) );
+		netTrace( TRC_NET, "HostClose %0%, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}

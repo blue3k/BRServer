@@ -130,7 +130,11 @@ namespace Util {
 	//	Utility
 	//
 
-	DurationMS TimeDurationMin(DurationMS timeMs, DurationMS timeMs2);
+
+
+	DurationMS TimeMin(DurationMS timeMs, DurationMS timeMs2);
+	TimeStampMS TimeMin(TimeStampMS timeMs, TimeStampMS timeMs2);
+
 
 	inline DurationMS TimeSince(TimeStampMS timeMs)					{ return (Time.GetTimeMs() - timeMs); }
 	inline DurationSec TimeSinceUTC(TimeStampSec timeUTC)			{ return (Time.GetTimeUTCSec() - timeUTC); }

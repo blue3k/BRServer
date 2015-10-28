@@ -12,5 +12,9 @@ $(OUTPUT_PATH)/%.h: %.mc
 	mc $< -u -r ../obj -b -n -h $(OUTPUT_PATH)
 
 
-all: $(TARGET_FILES)
+build: $(TARGET_FILES)
 	@echo Done
+
+	
+clean:
+	rm $(OUTPUT_PATH)/HRES*.h

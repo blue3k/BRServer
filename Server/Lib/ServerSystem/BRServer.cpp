@@ -13,12 +13,11 @@
 #include "Serversystem/BrServer.h"
 #include "Serversystem/SvrTrace.h"
 #include "Common/StrUtil.h"
+#include "Common/MemLog.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
 #include "Common/BrXML.h"
 #include "DB/QueryManager.h"
-#include <iostream>
-#include <fstream>
 #include "Net/NetServer.h"
 #include "Net/NetServerPeerTCP.h"
 #include "ServerSystem/ServerEntity.h"
@@ -54,7 +53,7 @@ namespace Svr{
 		m_pNetPrivate(nullptr),
 		m_pMyConfig(nullptr),
 		m_NetClass(netClass ),
-		m_ServerUpUTCTIme(0),
+		m_ServerUpUTCTIme(TimeStampSec::min()),
 		m_pLoopbackServerEntity(nullptr)
 	{
 		SetInstance( this );
@@ -62,7 +61,7 @@ namespace Svr{
 		xmlInitParser();
 
 		// main server class has private thread for task
-		SetTickInterval(0);
+		SetTickInterval(DurationMS(0));
 
 		// initialize exception Handler
 		Trace::InitExceptionHandler();
@@ -188,7 +187,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 
-		if (GetThreadID() != 0 && GetThreadID() != GetCurrentThreadId())
+		if (joinable() && GetThreadID() != ThisThread::GetThreadID())
 			Stop(true);
 
 		svrChk(__super::TerminateEntity());
@@ -353,7 +352,7 @@ Proc_End:
 	// Initialize server resource
 	HRESULT BrServer::InitializeServerResource()
 	{
-		srand( (UINT)Util::Time.GetRawTimeMs() );
+		srand( (UINT)Util::Time.GetRawTimeMs().time_since_epoch().count() );
 		Util::Random.Srand( nullptr );
 		return S_OK;
 	}
@@ -382,7 +381,7 @@ Proc_End:
 		hr = InitializeMemoryPool();
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to Initialize Memory Pool, hr=%0%", ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed to Initialize Memory Pool, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
@@ -391,14 +390,14 @@ Proc_End:
 		hr = ApplyConfiguration();
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Apply configuration, hr=%0%", ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed Apply configuration, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
 		hr = InitializeMonitoring();
 		if (FAILED(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed Apply configuration, hr=%0%", ArgHex32(hr));
+			svrTrace(Trace::TRC_ERROR, "Failed Apply configuration, hr={0:X8}", hr);
 			svrErr(hr);
 		}
 
@@ -407,7 +406,7 @@ Proc_End:
 		hr = InitializeServerResource();
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Initialize resource, hr=%0%", ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed Initialize resource, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
@@ -416,7 +415,7 @@ Proc_End:
 		hr = InitializeNetPrivate();
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Initialize Private Network, hr=%0%", ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed Initialize Private Network, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
@@ -431,7 +430,7 @@ Proc_End:
 		if( FAILED( hr ) )
 		{
 			SetServerState( ServerState::STOPED );
-			svrTrace( Trace::TRC_TRACE, "Start failed hr:%0%", ArgHex32(hr) );
+			svrTrace( Trace::TRC_TRACE, "Start failed hr:{0:X8}", hr );
 		}
 		else
 		{
@@ -445,7 +444,7 @@ Proc_End:
 	bool BrServer::Run()
 	{
 		HRESULT hr = S_OK;
-		const LONG lMinCheckTime = 10; // 10ms
+		const DurationMS lMinCheckTime = DurationMS(10); // 10ms
 
 
 		m_bIsKillSignaled = false;
@@ -462,7 +461,7 @@ Proc_End:
 		// Main loop
 		while (1)
 		{
-			ULONG loopInterval = UpdateInterval( lMinCheckTime );
+			auto loopInterval = UpdateInterval( lMinCheckTime );
 			if( !m_bIsKillSignaled )
 			{
 				if (CheckKillEvent(loopInterval))
@@ -476,8 +475,7 @@ Proc_End:
 			}
 			else // Waiting all connection closed and user entity close completed
 			{
-				// TODO: Need to do safe close
-				SleepEx( loopInterval, FALSE );
+				ThisThread::SleepFor(loopInterval);
 
 				// just end for now
 				break;
@@ -508,13 +506,13 @@ Proc_End:
 		hr = CloseNetPrivate();
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Close Private Network, hr=%0%", ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed Close Private Network, hr={0:X8}", hr );
 		}
 
 		hr = CloseServerResource();
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Close Private Network, hr=%0%", ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed Close Private Network, hr={0:X8}", hr );
 		}
 
 		m_EntityTable.Clear();
@@ -527,7 +525,7 @@ Proc_End:
 		hr = TerminateMemoryPool();
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to terminate memory pool, hr=%0%", ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed to terminate memory pool, hr={0:X8}", hr );
 		}
 
 
@@ -571,7 +569,7 @@ Proc_End:
 		hr = InitializeEntities();
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed Initialize basic entities, hr=%0%", ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed Initialize basic entities, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
@@ -648,13 +646,13 @@ Proc_End:
 		// Process private network event
 		if( FAILED(ProcessPrivateNetworkEvent()) )
 		{
-			svrTrace( Svr::TRC_DBGFAIL, "ProcessPrivateNetworkEvent : %0%", ArgHex32(hr) );
+			svrTrace( Svr::TRC_DBGFAIL, "ProcessPrivateNetworkEvent : {0:X8}", hr );
 		}
 
 
 		if( FAILED(ProcessPublicNetworkEvent()) )
 		{
-			svrTrace( Svr::TRC_DBGFAIL, "ProcessPublicNetworkEvent : %0%", ArgHex32(hr) );
+			svrTrace( Svr::TRC_DBGFAIL, "ProcessPublicNetworkEvent : {0:X8}", hr );
 		}
 
 		for (auto itMgr : m_DBManagers)
@@ -683,8 +681,6 @@ Proc_End:
 		{
 			SetServerState( ServerState::STARTING );
 			Start();
-
-			Util::Time.InitializeTimer();
 		}
 
 		return S_OK;
@@ -696,8 +692,6 @@ Proc_End:
 		if( GetServerState() != ServerState::STOPED )
 		{
 			Stop( true );
-
-			Util::Time.TerminateTimer();
 		}
 
 		return S_OK;

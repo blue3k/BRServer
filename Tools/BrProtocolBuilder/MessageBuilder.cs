@@ -151,14 +151,14 @@ namespace ProtocolBuilder
                             if (param.IsArray)
                             {
                                 strTrace += string.Format(", {0}:%{1}%", param.Name, ParamCount++);
-                                strTraceMember += string.Format(", ArgArray<{0}>(m_{1})", param.Type, param.Name);
+                                strTraceMember += string.Format(", m_{0}", param.Name);
                             }
                             else
                             {
                                 if (param.Type == ParameterType.HRESULT)
                                 {
-                                    strTrace += string.Format(", {0}:%{1}%", param.Name, ParamCount++);
-                                    strTraceMember += string.Format(", ArgHex32(m_{0})", param.Name);
+                                    strTrace += string.Format(", {0}:{{{1}}}", param.Name, ParamCount++);
+                                    strTraceMember += string.Format(", m_{0}", param.Name);
                                 }
                                 else
                                 {
@@ -231,14 +231,13 @@ namespace ProtocolBuilder
             return strRes;
         }
 
-        static string[] GenerateParameterTypeInfoList = new string[]
+        static Parameter[] GenerateParameterTypeInfoList = new Parameter[]
         {
-            "PlayerID",
-            "Context",
-            "RouteContext",
-            "RouteHopCount",
-            "Sender",
-            "RouteContext",
+            new Parameter() { Name = "PlayerID", Type = ParameterType.PlayerID },
+            new Parameter() { Name = "Context", Type = ParameterType.Context },
+            new Parameter() { Name = "RouteContext", Type = ParameterType.RouteContext },
+            new Parameter() { Name = "RouteHopCount", Type = ParameterType.UINT32 },
+            new Parameter() { Name = "Sender", Type = ParameterType.PlayerID },
         };
 
         // build parser class
@@ -261,13 +260,21 @@ namespace ProtocolBuilder
                     parameterNameMap.Add(param.Name, param);
                 }
             }
+
             OpenSection("enum", "ParameterTypeInfo");
-            MatchIndent(); OutStream.WriteLine(string.Format("enum ParameterTypeInfo"));
             foreach (var parameterName in GenerateParameterTypeInfoList)
             {
-                MatchIndent(); OutStream.WriteLine("Has{0} = {1},", parameterName, parameterNameMap.ContainsKey(parameterName) ? 1 : 0);
+                MatchIndent(); OutStream.WriteLine("Has{0} = {1},", parameterName.Name, parameterNameMap.ContainsKey(parameterName.Name) ? 1 : 0);
             }
             CloseSection();
+
+            // Add fake access functions
+            MatchIndent(-1); OutStream.WriteLine("public:");
+            foreach (var parameterName in GenerateParameterTypeInfoList)
+            {
+                if (parameterNameMap.ContainsKey(parameterName.Name)) continue;
+                MatchIndent(); OutStream.WriteLine("{1} Get{0}() {{ return 0; }}", parameterName.Name, parameterName.Type.ToString());
+            }
 
 
             // Generate parameter variables
@@ -898,7 +905,7 @@ namespace ProtocolBuilder
         void BuildTimeStamp()
         {
             // write parser class cpp
-            OpenOutFile(Group.Name+".h");
+            OpenOutFile("Protocol"+Group.Name+".h");
 
             OutStream.WriteLine("Build:"+ DateTime.Now);
 

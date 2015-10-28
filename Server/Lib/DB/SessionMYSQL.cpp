@@ -220,11 +220,11 @@ namespace DB {
 		{
 			if( pMyQuery )
 			{
-				defTrace( Trace::TRC_ERROR, "Query failed hr:0x%0% : %1% : %2%", BR::ArgHex32(hr), typeid(*pMyQuery).name(), pMyQuery->GetQueryString() );
+				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8} : %1% : %2%", hr, typeid(*pMyQuery).name(), pMyQuery->GetQueryString() );
 			}
 			else
 			{
-				defTrace( Trace::TRC_ERROR, "Query failed hr:0x%0%", BR::ArgHex32(hr) );
+				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8}", hr );
 			}
 
 			if( hr == E_DB_CONNECTION_LOST )
@@ -233,7 +233,7 @@ namespace DB {
 				HRESULT hrTem = OpenSession();
 				if( FAILED(hrTem) )
 				{
-					defTrace( Trace::TRC_ERROR, "DB connection recovery is failed ... %0%", ArgHex32(hrTem) );
+					defTrace( Trace::TRC_ERROR, "DB connection recovery is failed ... {0:X8}", hrTem );
 				}
 			}
 		}

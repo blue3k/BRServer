@@ -141,5 +141,6 @@ namespace DB {
 } // namespace BR
 
 
-
+#else
+void SessionOLEDB_Dummy() {}
 #endif // BRDB_USE_OLEDB

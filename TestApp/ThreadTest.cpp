@@ -89,7 +89,7 @@ namespace BR
 		static SyncCounter SkippedWorkedItems;
 
 		TaskWorkerThread()
-			: m_TaskWorkerInterval(1)
+			: m_TaskWorkerInterval(DurationMS(1))
 		{
 		}
 
@@ -118,7 +118,7 @@ namespace BR
 
 			while (true)
 			{
-				ULONG loopInterval = UpdateInterval(m_TaskWorkerInterval);
+				auto loopInterval = UpdateInterval(m_TaskWorkerInterval);
 
 				if (CheckKillEvent(loopInterval))
 				{
@@ -159,7 +159,7 @@ namespace BR
 
 						if (((PrintCount.fetch_add(1, std::memory_order_relaxed) + 1) % 10000) == 0)
 						{
-							printf_s("Processing %d: %d", GetThreadID(), randVal2);
+							printf("Processing %d", randVal2);
 						}
 					}
 					workObj->pItem->Item = workObj->GetReferenceCount();
@@ -174,7 +174,7 @@ namespace BR
 	private:
 
 		// Task worker mnimum interval
-		ULONG m_TaskWorkerInterval;
+		DurationMS m_TaskWorkerInterval;
 
 		// Task queue
 		PageQueue<WeakPointerT<WorkingEntity>> m_WorkItemQueue;

@@ -39,7 +39,7 @@ namespace BR {
 			EntityUID m_InstanceEntityUID;
 
 			
-			ULONG m_LatestUpdated;
+			TimeStampMS m_LatestUpdated;
 
 
 			ULONG m_SyncSerial;
@@ -50,7 +50,7 @@ namespace BR {
 			class PerformanceCounterClient* m_pManager;
 
 
-			void SetUpdatedTime(ULONG updatedTime);
+			void SetUpdatedTime(TimeStampMS updatedTime);
 
 			void AssignManager(PerformanceCounterClient* pManager);
 			virtual void Dispose() override;
@@ -64,7 +64,7 @@ namespace BR {
 			PerformanceCounterInstance(const char *strInstanceName, EntityUID instanceEntityUID);
 #endif
 
-			ULONG GetUpdatedTime()										{ return m_LatestUpdated; }
+			TimeStampMS GetUpdatedTime()								{ return m_LatestUpdated; }
 			const char* GetInstanceName()								{ return m_pInstanceName; }
 			EntityUID GetInstanceEntityUID()							{ return m_InstanceEntityUID; }
 			//CounterListNode& GetListNode()							{ return m_ListNode; }

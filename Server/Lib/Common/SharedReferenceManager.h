@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/PageQueue.h"
 #include "Common/MemoryPool.h"
 

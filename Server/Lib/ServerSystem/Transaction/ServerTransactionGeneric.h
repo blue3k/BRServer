@@ -88,7 +88,7 @@ namespace Svr {
 
 			GetMyOwner()->SetPrivateNetAddress(GetPrivateAddress());
 
-			GetMyOwner()->SetServerUpTime( GetStartUpTime() );
+			GetMyOwner()->SetServerUpTime(TimeStampSec(DurationSec(GetStartUpTime())) );
 
 		Proc_End:
 

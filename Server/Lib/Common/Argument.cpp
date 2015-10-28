@@ -38,12 +38,12 @@ namespace BR
 		m_pArgBase = src.Clone(sizeof(m_DataBuffer), m_DataBuffer);
 	}
 
-	void Argument::MakeString(char*& pBuff, INT& iBuffLen) const
+	void Argument::MakeString(char*& pBuff, INT& iBuffLen, char option, float digits) const
 	{
 		if (m_pArgBase)
 		{
 			m_pArgBase->ArgumentUsed();
-			m_pArgBase->MakeString(pBuff, iBuffLen);
+			m_pArgBase->MakeString(pBuff, iBuffLen, option, digits);
 		}
 
 	}
@@ -53,7 +53,7 @@ namespace BR
 		char strBuff[1024] = "";
 		INT Len = 1024;
 		char *pBuff = strBuff;
-		MakeString(pBuff, Len);
+		MakeString(pBuff, Len, 0, 9999.9999f);
 		return strBuff;
 	}
 

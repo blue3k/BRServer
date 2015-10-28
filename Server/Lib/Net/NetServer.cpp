@@ -132,7 +132,7 @@ namespace Net {
 
 		if( FAILED(hr) )
 		{
-			netTrace( Trace::TRC_ERROR, "ReleaseConnection Failed hr=%0%", ArgHex32(hr) );
+			netTrace( Trace::TRC_ERROR, "ReleaseConnection Failed hr={0:X8}", hr );
 		}
 
 		return hr;
@@ -155,7 +155,7 @@ namespace Net {
 
 		if (FAILED(hr))
 		{
-			netTrace(Trace::TRC_ERROR, "ReleaseConnection Failed hr=%0%", ArgHex32(hr));
+			netTrace(Trace::TRC_ERROR, "ReleaseConnection Failed hr={0:X8}", hr);
 		}
 
 		return hr;

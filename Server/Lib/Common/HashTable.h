@@ -14,7 +14,7 @@
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
 #include "Common/Indexing.h"
-#include "Common/Synchronize.h"
+#include "Common/Synchronization.h"
 #include "Common/ArrayUtil.h"
 #include "Common/HashTableTrait.h"
 
@@ -31,7 +31,7 @@ namespace Hash {
 		template<	typename ItemType, 
 					typename Indexer, 
 					typename Trait = UniqueKeyTrait, 
-					typename ThreadTrait = ThreadSyncTraitMT,
+					typename ThreadTrait = ThreadSyncTraitReadWrite,
 					typename Hasher = Hash::hash<Indexer::Type>,
 					typename MapItemType = MapItem<typename Indexer::Type, typename ItemType>,
 					typename BucketContainer = std::vector<MapItemType> >
@@ -487,7 +487,7 @@ namespace Hash {
 				size_t iBucket = hashVal%m_Bucket.size();
 
 				Bucket& bucket = m_Bucket[iBucket];
-				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LOCK_EXCLUSIVE, bucket.m_Lock );
+				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock );
 				//_ReadBarrier();
 				std::atomic_thread_fence(std::memory_order_consume);
 

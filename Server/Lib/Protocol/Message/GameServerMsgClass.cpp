@@ -217,8 +217,8 @@ namespace BR
 			VOID RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerToJoinGameServerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, PublicAddress:%6%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_PublicAddress); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerToJoinGameServerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, PublicAddress:%6%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_PublicAddress); 
 			}; // VOID RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Kick
@@ -403,8 +403,8 @@ namespace BR
 			VOID RegisterPlayerToJoinGameServerOnPlayerEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerToJoinGameServerOnPlayerEntityRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerToJoinGameServerOnPlayerEntityRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID RegisterPlayerToJoinGameServerOnPlayerEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Chatting message

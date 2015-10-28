@@ -235,8 +235,8 @@ namespace Net {
 	Connection::Connection()
 		: m_socket(INVALID_SOCKET)
 		, m_usSeqNone(0)
-		, m_ulNetCtrlTime(0)
-		, m_ulNetCtrlTryTime(0)
+		, m_ulNetCtrlTime(DurationMS(0))
+		, m_ulNetCtrlTryTime(DurationMS(0))
 		, m_ulHeartbitTry(1000)
 		, m_ulConnectingTimeOut(15*1000)
 		, m_ulZeroLengthRecvCount(0)
@@ -313,11 +313,11 @@ namespace Net {
 		HRESULT hrTem = GetNet()->SendMsg( this, pMsg );
 		if( FAILED(hrTem) )
 		{
-			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:%0%, msg:%1%, seq:%2%, hr=%3%", 
+			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:%0%, msg:{1:X8}, seq:%2%, hr={3:X8}", 
 							GetCID(), 
-							BR::Arg<UINT32>(msgID.ID,-1,16), 
+							msgID.ID, 
 							uiSequence, 
-							BR::Arg<UINT32>(hrTem,-1,16) );
+							hrTem );
 
 			// ignore io send fail except connection closed
 			if( hrTem == E_NET_CONNECTION_CLOSED )
@@ -346,7 +346,7 @@ namespace Net {
 
 		if( FAILED(hrConnect) )
 		{
-			netTrace(TRC_CONNECTION, "Connection failed CID:%0%, Dst=%1%:%2%, hr=%3%", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort, BR::Arg<UINT32>(hrConnect, -1, 16));
+			netTrace(TRC_CONNECTION, "Connection failed CID:%0%, Dst=%1%:%2%, hr={3:X8}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort, hrConnect);
 			if (GetConnectionState() != IConnection::STATE_DISCONNECTED)
 			{
 				CloseConnection();
@@ -354,7 +354,7 @@ namespace Net {
 		}
 		else
 		{
-			netTrace( TRC_CONNECTION, "Connected CID:%0%, Dst=%1%:%2%", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort, BR::Arg<UINT32>(hrConnect,-1,16) );
+			netTrace( TRC_CONNECTION, "Connected CID:%0%, Dst=%1%:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
 			if (GetConnectionState() == IConnection::STATE_CONNECTING)
 			{
 				SetConnectionState(IConnection::STATE_CONNECTED);
@@ -422,7 +422,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace(TRC_CONNECTION, "InitConnection CID:%0%, Addr:%1%:%2% hr:%3%", GetCID(), connectInfo.Remote.strAddr, connectInfo.Remote.usPort, ArgHex32(hr));
+		netTrace(TRC_CONNECTION, "InitConnection CID:{0}, Addr:{1}:{2} hr:{3:X8}", GetCID(), connectInfo.Remote.strAddr, connectInfo.Remote.usPort, hr);
 
 		return hr;
 	}

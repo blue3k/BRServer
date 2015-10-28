@@ -219,8 +219,8 @@ namespace BR
 			VOID JoinPartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinPartyRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%, PartyLeaderID:%6%, ChatHistoryData:%7%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext, m_PartyLeaderID, ArgArray<BYTE>(m_ChatHistoryData)); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:JoinPartyRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, PartyLeaderID:%6%, ChatHistoryData:%7%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_PartyLeaderID, m_ChatHistoryData); 
 			}; // VOID JoinPartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player Joined
@@ -571,8 +571,8 @@ namespace BR
 			VOID LeavePartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:LeavePartyRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:LeavePartyRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID LeavePartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player left
@@ -840,8 +840,8 @@ namespace BR
 			VOID KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player kicked
@@ -1477,8 +1477,8 @@ namespace BR
 			VOID StartGameMatchRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:StartGameMatchRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:StartGameMatchRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID StartGameMatchRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Enqueued at a game matching
@@ -1743,8 +1743,8 @@ namespace BR
 			VOID CancelGameMatchRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				Prefix;
-				protocolTrace(Trace::TRC_DBG1, "%0%:CancelGameMatchRes:%1%:%2% , Context:%3%, Result:%4%, RouteContext:%5%",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, ArgHex32(m_Result), m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "%0%:CancelGameMatchRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // VOID CancelGameMatchRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Canceled at a game matching

@@ -28,6 +28,20 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 1,
+					HasContext = 0,
+					HasRouteContext = 0,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				Context GetContext() { return 0; }
+				RouteContext GetRouteContext() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				AccountID m_PlayerID;
 				const char* m_PlayerName;
@@ -59,6 +73,20 @@ namespace BR
 			{
  			public:
 				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 1,
+					HasContext = 0,
+					HasRouteContext = 0,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				Context GetContext() { return 0; }
+				RouteContext GetRouteContext() { return 0; }
+				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
 			private:
 				AccountID m_PlayerID;
 			public:

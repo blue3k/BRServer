@@ -46,7 +46,7 @@ namespace Svr {
 		:MasterEntity(64,64)
 		,m_LeaderID(0)
 	{
-		SetTickInterval(Const::PARTY_TICKTASK_INTERVAL);
+		SetTickInterval(DurationMS(Const::PARTY_TICKTASK_INTERVAL));
 	}
 
 	GamePartyEntity::~GamePartyEntity()
