@@ -129,7 +129,7 @@ namespace Trace {
 		virtual void Stop( bool bSendKillEvt );
 
 		// Thread inherit
-		virtual bool Run();
+		virtual void Run() override;
 
 		// Check file system and update
 		HRESULT CheckAndUpdate( TimeStampMS tCurTime );

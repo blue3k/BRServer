@@ -211,7 +211,6 @@ namespace Svr {
 	}
 
 
-	const MatchingServiceEntity::MatchingItem MatchingServiceEntity::MatchingItem::NullValue;
 
 	MatchingServiceEntity::MatchingItem& MatchingServiceEntity::MatchingItem::operator = (const MatchingItem& src)
 	{

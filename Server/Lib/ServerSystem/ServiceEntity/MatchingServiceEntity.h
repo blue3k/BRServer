@@ -75,19 +75,33 @@ namespace Svr {
 			UINT						MemberCount;
 			PlayerRole                  RequestedRole;
 
+			ReservedMatchingItem(void* ptr)
+				: MemberCount(0)
+				, RequestedRole(PlayerRole::None)
+			{
+				assert(ptr == nullptr);
+			}
+
 			ReservedMatchingItem()
 				: MemberCount(0)
 				, RequestedRole(PlayerRole::None)
 			{
 			}
 
+			ReservedMatchingItem(const ReservedMatchingItem& src)
+				: MemberCount(0)
+				, RequestedRole(PlayerRole::None)
+			{
+				MatchingTicket = src.MatchingTicket;
+				MemberCount = src.MemberCount;
+				RequestedRole = src.RequestedRole;
+			}
+
 			bool operator == (const ReservedMatchingItem& src) const { return MatchingTicket == src.MatchingTicket; }
-			bool operator == (void* src) const { assert(src == nullptr);  return MatchingTicket == 0; }
-			bool operator != (void* src) const { assert(src == nullptr);  return MatchingTicket != 0; }
+			bool operator != (const ReservedMatchingItem& src) const { return MatchingTicket != src.MatchingTicket; }
 
 			ReservedMatchingItem& operator = (const ReservedMatchingItem& src);
 			ReservedMatchingItem& operator = (ReservedMatchingItem&& src);
-			ReservedMatchingItem& operator = (void* src) { assert(src == nullptr); MatchingTicket = 0;  MemberCount = 0;  return *this; }
 
 		};
 
@@ -169,17 +183,16 @@ namespace Svr {
 			UINT						MemberCount;
 			MatchingPlayerInformation	Players[MAX_NUM_PLAYER];
 
-			MatchingItem()
+			MatchingItem(void* ptr = nullptr)
 				:MemberCount(0), RequestedRole(PlayerRole::None)
 			{
+				assert(ptr == nullptr);
 			}
 
 			bool operator == (const MatchingItem& src) const { return MatchingTicket == src.MatchingTicket; }
 
 			MatchingItem& operator = (const MatchingItem& src);
 			MatchingItem& operator = (MatchingItem&& src);
-
-			static const MatchingItem NullValue;
 		};
 
 	private:

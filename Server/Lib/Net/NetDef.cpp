@@ -91,7 +91,6 @@ namespace Net {
 	//	Network Interface
 	//
 
-	INet::Event INet::Event::NullValue;
 
 
 	INet::INet()

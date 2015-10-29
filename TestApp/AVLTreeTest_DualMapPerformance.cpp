@@ -31,7 +31,7 @@ using namespace ::BR;
 TEST_F(AVLTreeTest, DualSortedMapPerfTestSimple)
 {
 	BR::DualSortedMap<UINT,UINT> sortedMap;
-	ULONG start, end;
+	TimeStampMS start, end;
 
 	start = BR::Util::Time.GetRawTimeMs();
 	for (unsigned iTest = 0; iTest < numberOfTest; iTest++)
@@ -40,7 +40,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestSimple)
 	}
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Insert %d items, %dms\n", numberOfTest, end - start);
+	printf("Insert %d items, %dms\n", numberOfTest, (end - start).count());
 
 	start = BR::Util::Time.GetRawTimeMs();
 	for (unsigned iTest = 0; iTest < numberOfTest; iTest++)
@@ -51,7 +51,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestSimple)
 	}
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Remove  %d items, %dms\n", numberOfTest, end - start);
+	printf("Remove  %d items, %dms\n", numberOfTest, (end - start).count());
 
 
 	start = BR::Util::Time.GetRawTimeMs();
@@ -61,7 +61,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestSimple)
 		AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	}
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Insert with commit %d items, %dms\n", numberOfTest, end - start);
+	printf("Insert with commit %d items, %dms\n", numberOfTest, (end - start).count());
 
 	start = BR::Util::Time.GetRawTimeMs();
 	for (unsigned iTest = 0; iTest < numberOfTest; iTest++)
@@ -72,14 +72,14 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestSimple)
 		AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	}
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Remove with commit  %d items, %dms\n", numberOfTest, end - start);
+	printf("Remove with commit  %d items, %dms\n", numberOfTest, (end - start).count());
 }
 
 
 TEST_F(AVLTreeTest, DualSortedMapPerfTestRead)
 {
 	BR::DualSortedMap<UINT,UINT> sortedMap;
-	ULONG start, end;
+	TimeStampMS start, end;
 
 	for (unsigned iTest = 0; iTest < numberOfTest; iTest++)
 	{
@@ -95,7 +95,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestRead)
 		AssertRel(value == TestValues[iTest]);
 	}
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Find %d items, %dms\n", numberOfTest, end - start);
+	printf("Find %d items, %dms\n", numberOfTest, (end - start).count());
 
 
 	start = BR::Util::Time.GetRawTimeMs();
@@ -115,13 +115,13 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestRead)
 		});
 	}
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Query 100 items in a row in %d items %d times, %dms\n", numberOfTest, numberOfTest, end - start);
+	printf("Query 100 items in a row in %d items %d times, %dms\n", numberOfTest, numberOfTest, (end - start).count());
 }
 
 TEST_F(AVLTreeTest, DualSortedMapPerfTest1000)
 {
 	BR::DualSortedMap<UINT,UINT> sortedMap;
-	ULONG start, end;
+	TimeStampMS start, end;
 
 	int iTest = 0;
 	for (; iTest < std::max(0, (int)numberOfTest - 1000); iTest++)
@@ -137,7 +137,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTest1000)
 	}
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Insert last 1000 items, %dms\n", end - start);
+	printf("Insert last 1000 items, %dms\n", (end - start).count());
 
 	start = BR::Util::Time.GetRawTimeMs();
 	for (iTest = 0; iTest < std::min(1000, (int)numberOfTest); iTest++)
@@ -148,7 +148,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTest1000)
 	}
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Remove first 1000 items, %dms\n", end - start);
+	printf("Remove first 1000 items, %dms\n", (end - start).count());
 
 	start = BR::Util::Time.GetRawTimeMs();
 	for (; iTest < (int)numberOfTest; iTest++)
@@ -159,6 +159,6 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTest1000)
 	}
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Remove remain items, %dms\n", end - start);
+	printf("Remove remain items, %dms\n", (end - start).count());
 }
 

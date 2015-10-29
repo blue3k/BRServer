@@ -37,15 +37,12 @@ inline bool EventTask::operator == (const EventTask& src) const
 	return src.EventType == EventType && src.TaskPtr == TaskPtr;
 }
 
-inline bool EventTask::operator == (void* src) const
+
+inline bool EventTask::operator != (const EventTask& src) const
 {
-	return EventType == EventTypes::NONE;
+	return src.EventType != EventType || src.TaskPtr != TaskPtr;
 }
 
-inline bool EventTask::operator != (void* src) const
-{
-	return EventType != EventTypes::NONE;
-}
 
 
 

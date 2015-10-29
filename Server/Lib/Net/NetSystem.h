@@ -238,7 +238,7 @@ namespace Net {
 
 			inline void SetIOCPHandle( HANDLE hIOCP );
 
-			virtual bool Run();
+			virtual void Run() override;
 		};
 
 		

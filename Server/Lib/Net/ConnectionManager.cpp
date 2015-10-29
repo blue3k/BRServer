@@ -120,7 +120,7 @@ namespace Net {
 
 
 	// thread implementation
-	bool ConnectionManager::Run()
+	void ConnectionManager::Run()
 	{
 		//Util::Time.UpdateTimer();
 
@@ -138,8 +138,6 @@ namespace Net {
 
 			UpdateManagedConnections();
 		}
-
-		return true;
 	}
 
 

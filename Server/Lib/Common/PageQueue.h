@@ -16,7 +16,7 @@
 #include "Common/Synchronization.h"
 #include "Common/SystemSynchronization.h"
 #include "Common/Trace.h"
-
+#include "Common/TypeUtility.h"
 
 
 namespace BR
@@ -28,7 +28,7 @@ namespace BR
 	//	Page Queue Class (n-by-one)
 	//
 
-	template <class DataObject> 
+	template <class DataType> 
 	class PageQueue
 	{
 	private:
@@ -55,18 +55,19 @@ namespace BR
 			PageHeader Header;
 
 			// Data Array start
-			DataObject Element[1];
+			DataType Element[1];
 
 			Page( CounterType InItemCount )
 			{
 				for( CounterType iEle = 1; iEle < InItemCount; iEle++ )
 				{
-					new (&Element[iEle]) DataObject;
+					new (&Element[iEle]) DataType;
 				}
 
+				auto defaultValue = DefaultValue<DataType>();
 				for( CounterType iEle = 0; iEle < InItemCount; iEle++ )
 				{
-					Element[iEle] = nullptr;
+					Element[iEle] = defaultValue;
 				}
 			}
 
@@ -74,21 +75,21 @@ namespace BR
 			{
 				for (CounterType iEle = 1; iEle < ItemCpacity; iEle++)
 				{
-					Element[iEle].DataObject::~DataObject();
+					Element[iEle].DataType::~DataType();
 				}
 			}
 		};
 
-		size_t GetPageMemorySize() { return sizeof(Page)+m_NumberOfItemsPerPage*sizeof(DataObject); }
+		size_t GetPageMemorySize() { return sizeof(Page)+m_NumberOfItemsPerPage*sizeof(DataType); }
 
 
 	private:
 
 		// page haeader pointer
-		std::atomic<Page*> m_EnqueuePage;
-		std::atomic<Page*> m_EnqueueNextPage;
+		std::atomic<Page*>       m_EnqueuePage;
+		std::atomic<Page*>       m_EnqueueNextPage;
 		std::atomic<CounterType> m_EnqueuePageID;
-		std::atomic<Page*> m_DequeuePage;
+		std::atomic<Page*>       m_DequeuePage;
 		std::atomic<CounterType> m_DequeuePageID;
 
 		// item_count per page
@@ -117,19 +118,19 @@ namespace BR
 		MemoryPool* GetMemoryPool()												{ return m_pMemoryPool; }
 
 		// item enque
-		inline HRESULT Enqueue( const DataObject& item);
-		inline HRESULT Enqueue(DataObject&& item);
+		inline HRESULT Enqueue( const DataType& item);
+		inline HRESULT Enqueue(DataType&& item);
 
 		// item deque
-		inline HRESULT Dequeue( DataObject& item );
+		inline HRESULT Dequeue( DataType& item );
 
 		// item deque with MT
-		inline HRESULT DequeueMT( DataObject& item, DurationMS uiCheckInterval = DurationMS(100) );
+		inline HRESULT DequeueMT( DataType& item, DurationMS uiCheckInterval = DurationMS(100) );
 
 
 		// Just get first dequeue item if exist, not dequeue
 		// This will not safe if use DequeueMT
-		inline HRESULT GetFront( DataObject& item );
+		inline HRESULT GetFront( DataType& item );
 
 		// Item count in queue
 		inline CounterType GetEnqueCount() const;

@@ -88,15 +88,35 @@ namespace BR
 
 
 		// run process, if return value is false then thread will stop
-		virtual bool Run() = 0;
+		virtual void Run() = 0;
 	};
 
+
+	// This thread helper
 	class ThisThread
 	{
 	public:
 		//static void Yield()									{ std::this_thread::yield(); }
 		static std::thread::id GetThreadID()				{ return std::this_thread::get_id(); }
 		static void SleepFor(DurationMS duration)			{ std::this_thread::sleep_for(duration); }
+	};
+
+
+	class FunctorThread : public Thread
+	{
+	private:
+		std::function<void(Thread* pThread)> m_Func;
+
+	public:
+
+		FunctorThread(std::function<void(Thread* pThread)> func)
+			: m_Func(func)
+		{}
+
+		virtual void Run() override
+		{
+			m_Func(this);
+		}
 	};
 
 

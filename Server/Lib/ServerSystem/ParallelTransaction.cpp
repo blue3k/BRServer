@@ -45,7 +45,7 @@ namespace Svr
 	{
 	}
 
-	bool ParallelTransactionManager::TaskWorker::Run()
+	void ParallelTransactionManager::TaskWorker::Run()
 	{
 		const DurationMS desiredLoopInterval = DurationMS(500);
 		
@@ -93,8 +93,6 @@ namespace Svr
 			}
 
 		}
-
-		return true;
 	}
 
 

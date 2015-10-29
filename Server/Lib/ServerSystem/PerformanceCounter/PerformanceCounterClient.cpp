@@ -232,7 +232,7 @@ namespace Svr {
 		});
 	}
 
-	bool PerformanceCounterClient::Run()
+	void PerformanceCounterClient::Run()
 	{
 		SetPriority(Thread::PRIORITY::ABOVE_NORMAL);
 
@@ -250,8 +250,6 @@ namespace Svr {
 			UpdateFreeInstance();
 			UpdateValues();
 		}
-
-		return true;
 	}
 
 	HRESULT PerformanceCounterClient::Initialize(const NetAddress& serverAddress)

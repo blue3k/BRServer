@@ -108,7 +108,7 @@ namespace Net {
 			TimeStampMS EnqueuedTime;
 
 			// Constructor
-			inline Operation();
+			inline Operation(void* ptr = nullptr);
 			inline Operation( Operation&& src );
 			inline Operation(const sockaddr_in6& sockAddr, MsgNetCtrlConnect *pNetCtrl);
 			inline Operation(OperationCode code, const sockaddr_in6& sockAddr, MsgMobileNetCtrl *pNetCtrl);
@@ -123,13 +123,10 @@ namespace Net {
 			// Copy operator
 			Operation& operator = ( const Operation& src );
 			Operation& operator = (Operation&& src);
-			Operation& operator = (void* src);
 
 			// These operation is used for empty value os just compare with OpCode
 			inline bool operator != ( const Operation& src ) const;
 			inline bool operator == ( const Operation& src ) const;
-			inline bool operator == (void* src) const;
-			inline bool operator != (void* src) const;
 		};
 
 	private:
@@ -182,7 +179,7 @@ namespace Net {
 		//
 
 		// thread implementation
-		virtual bool Run();
+		virtual void Run() override;
 
 		// Update managed connections
 		virtual void UpdateManagedConnections();

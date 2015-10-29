@@ -629,7 +629,7 @@ enum loglevel {
 };
 
 
-#if defined(_WIN32) && !defined(_WIN64)
+#ifdef _WIN32
 /****************************************************************************
 ** Replacements for localtime_r and gmtime_r
 ****************************************************************************/
@@ -671,7 +671,7 @@ C_MODE_END
 
 static inline void set_timespec_nsec(struct timespec *abstime, ulonglong nsec)
 {
-#if !defined(_WIN32) || defined(_WIN64)
+#ifndef _WIN32
   ulonglong now= my_getsystime() + (nsec / 100);
   abstime->tv_sec=   now / 10000000ULL;
   abstime->tv_nsec= (now % 10000000ULL) * 100 + (nsec % 100);
@@ -697,7 +697,7 @@ static inline void set_timespec(struct timespec *abstime, ulonglong sec)
 */
 static inline int cmp_timespec(struct timespec *ts1, struct timespec *ts2)
 {
-#if !defined(_WIN32) || defined(_WIN64)
+#ifndef _WIN32
   if (ts1->tv_sec > ts2->tv_sec ||
       (ts1->tv_sec == ts2->tv_sec && ts1->tv_nsec > ts2->tv_nsec))
     return 1;
@@ -715,7 +715,7 @@ static inline int cmp_timespec(struct timespec *ts1, struct timespec *ts2)
 
 static inline ulonglong diff_timespec(struct timespec *ts1, struct timespec *ts2)
 {
-#if !defined(_WIN32) || defined(_WIN64)
+#ifndef _WIN32
   return (ts1->tv_sec - ts2->tv_sec) * 1000000000ULL +
     ts1->tv_nsec - ts2->tv_nsec;
 #else

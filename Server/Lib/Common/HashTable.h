@@ -15,6 +15,7 @@
 #include "Common/BrAssert.h"
 #include "Common/Indexing.h"
 #include "Common/Synchronization.h"
+#include "Common/SynchronizationTrait.h"
 #include "Common/ArrayUtil.h"
 #include "Common/HashTableTrait.h"
 
@@ -31,7 +32,7 @@ namespace Hash {
 		template<	typename ItemType, 
 					typename Indexer, 
 					typename Trait = UniqueKeyTrait, 
-					typename ThreadTrait = ThreadSyncTraitReadWrite,
+					typename ThreadTrait = ThreadSyncTraitReadWriteT<Indexer::Type,ItemType>,
 					typename Hasher = Hash::hash<Indexer::Type>,
 					typename MapItemType = MapItem<typename Indexer::Type, typename ItemType>,
 					typename BucketContainer = std::vector<MapItemType> >

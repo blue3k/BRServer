@@ -82,8 +82,7 @@ namespace BR {
 				FreeInfo& operator = (void* src) { assert(src == nullptr);  UID = 0; pInstance = nullptr; return *this; }
 
 				bool operator == (const FreeInfo& src) const { return pInstance == src.pInstance; }
-				bool operator == (void* src) const { assert(src == nullptr); return pInstance == nullptr; }
-				bool operator != (void* src) const { assert(src == nullptr); return pInstance != nullptr; }
+				bool operator != (const FreeInfo& src) const { return pInstance != src.pInstance; }
 			};
 
 			typedef DualSortedMap<UINT64, WeakPointerT<PerformanceCounterInstance>> CounterInstanceMap;
@@ -114,7 +113,7 @@ namespace BR {
 
 			HRESULT HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_in6& remoteAddr, Message::MessageData* &pMsg);
 
-			virtual bool Run() override;
+			virtual void Run() override;
 
 		public:
 

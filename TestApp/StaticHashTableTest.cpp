@@ -9,6 +9,7 @@
 #include "HashTableTest.h"
 #include "Common/OrderedLinkedList.h"
 #include "Common/StaticHashTable.h"
+#include "Common/SynchronizationTrait.h"
 
 
 using ::testing::EmptyTestEventListener;
@@ -246,7 +247,7 @@ TEST_F(HashTableTest, StaticHashTable_UniqueMT)
 	typedef BR::Hash::StaticHashTable<	TestMapNode, 
 										BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
 										BR::Indexing::MapItemConverter<TestMapNode,TestMapNode::HashNodeType,&TestMapNode::m_MapNode>,
-										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitReadWrite
+										BR::Hash::UniqueKeyTrait
 										> TestTableType;
 
 	TestTableType TestMap;
@@ -258,7 +259,7 @@ TEST_F(HashTableTest, StaticHashTable_UniqueMT)
 		{
 			workCounterRead.fetch_add(1,std::memory_order_relaxed);
 
-			while (!pThread->CheckKillEvent(5))
+			while (!pThread->CheckKillEvent(DurationMS(5)))
 			{
 				int value = rand() % MAX_NUMBER;
 				TestTableType::iterator itFound;

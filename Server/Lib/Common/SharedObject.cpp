@@ -107,8 +107,5 @@ namespace BR
 	//
 
 
-	SharedPointer SharedPointer::NullValue;
-	WeakPointer WeakPointer::NullValue;
-
 }
 

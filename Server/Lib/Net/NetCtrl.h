@@ -100,13 +100,14 @@ namespace Net {
 	{
 		UINT64	Dummy;
 
-		inline tag_MsgNetCtrlBuffer& operator = (const tag_MsgNetCtrlBuffer& src);
-		inline tag_MsgNetCtrlBuffer& operator = (void* src);
+		tag_MsgNetCtrlBuffer() { msgID.ID = 0; }
+		tag_MsgNetCtrlBuffer(void* ptr) { assert(ptr == nullptr); msgID.ID = 0; }
+		tag_MsgNetCtrlBuffer(const tag_MsgNetCtrlBuffer& src);
 
-		inline bool operator == (const tag_MsgNetCtrlBuffer& src) const;
-		inline bool operator != (const tag_MsgNetCtrlBuffer& src) const;
-		inline bool operator == (void* src) const;
-		inline bool operator != (void* src) const;
+		tag_MsgNetCtrlBuffer& operator = (const tag_MsgNetCtrlBuffer& src);
+
+		bool operator == (const tag_MsgNetCtrlBuffer& src) const;
+		bool operator != (const tag_MsgNetCtrlBuffer& src) const;
 	} MsgNetCtrlBuffer;
 
 

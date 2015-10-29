@@ -70,8 +70,7 @@ namespace Svr
 		EventTask& operator = (void* src);
 
 		bool operator == (const EventTask& src) const;
-		bool operator == (void* src) const;
-		bool operator != (void* src) const;
+		bool operator != (const EventTask& src) const;
 	};
 
 

@@ -36,40 +36,29 @@ void IConnection::ConnectionInformation::SetRemoteInfo( NetClass Class, UINT64 U
 
 
 
-IConnection::tag_Event& IConnection::tag_Event::operator =(const IConnection::tag_Event& src)
+inline IConnection::tag_Event& IConnection::tag_Event::operator =(const IConnection::tag_Event& src)
 {
 	memcpy( this, &src, sizeof(Event) );
 	return *this;
 }
 
-IConnection::tag_Event& IConnection::tag_Event::operator =(void* src)
-{
-	assert(src == nullptr);
-	memset(this, 0, sizeof(Event));
-	return *this;
-}
-
-bool IConnection::tag_Event::operator == (const IConnection::tag_Event& src) const
+inline bool IConnection::tag_Event::operator == (const IConnection::tag_Event& src) const
 {
 	if( src.EventType != EventType )
 		return false;
 
 	if( EventType == EVT_NONE ) 
+	{
+		assert(false); // who access this?
 		return true;
+	}
 
 	return Value.hr == src.Value.hr;
 }
 
-bool IConnection::tag_Event::operator == (void* src) const
+inline bool IConnection::tag_Event::operator != (const IConnection::tag_Event& src) const
 {
-	assert(src == nullptr);
-	return EventType == EVT_NONE;
-}
-
-bool IConnection::tag_Event::operator != (void* src) const
-{
-	assert(src == nullptr);
-	return EventType != EVT_NONE;
+	return src.EventType != EventType || Value.hr != src.Value.hr;
 }
 
 
@@ -194,10 +183,11 @@ inline void IConnection::SetEventHandler(IConnectionEventHandler* pEventHandler)
 //	Net object
 //
 
-INet::Event::Event()
+INet::Event::Event(void* ptr)
 	:EventType(INet::Event::EVT_NONE),
 	EventConnection(NULL)
 {
+	assert(ptr == nullptr);
 }
 
 INet::Event::Event( INet::Event::EventTypes eventType, BR::Net::IConnection *pCon )
@@ -213,29 +203,18 @@ INet::Event& INet::Event::operator =( const INet::Event& src )
 	return *this;
 }
 
-INet::Event& INet::Event::operator = (void* src)
-{
-	EventType = INet::Event::EVT_NONE;
-	EventConnection = nullptr;
-	return *this;
-}
+
 
 bool INet::Event::operator == ( const INet::Event& src ) const
 {
 	return EventType == src.EventType && EventConnection == src.EventConnection;
 }
 
-bool INet::Event::operator == (void* ptr) const
+bool INet::Event::operator != (const INet::Event& src) const
 {
-	assert(ptr == nullptr);
-	return EventType == INet::Event::EVT_NONE;
+	return EventType != src.EventType || EventConnection != src.EventConnection;
 }
 
-bool INet::Event::operator != (void* ptr) const
-{
-	assert(ptr == nullptr);
-	return EventType != INet::Event::EVT_NONE;
-}
 
 
 

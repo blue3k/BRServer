@@ -315,7 +315,7 @@ namespace Trace {
 
 
 	// Thread inherit
-	bool TraceOutModule::Run()
+	void TraceOutModule::Run()
 	{
 		INT iProcMax = 1;
 		DurationMS WaitDelay = DurationMS(5);
@@ -352,7 +352,6 @@ namespace Trace {
 			}
 		}
 
-		return true;
 	}
 
 	void TraceOutModule::UpdateConsoleHandle()

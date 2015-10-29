@@ -198,7 +198,7 @@ TEST_F(HashTableTest, HashTable_UniqueMT)
 
 	typedef BR::Hash::HashTable<	TestMapNode*, 
 										BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
-										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitReadWrite
+										BR::Hash::UniqueKeyTrait
 										> TestTableType;
 
 	TestTableType TestMap;
@@ -210,7 +210,7 @@ TEST_F(HashTableTest, HashTable_UniqueMT)
 		{
 			workCounterRead.fetch_add(1,std::memory_order_relaxed);
 
-			while (!pThread->CheckKillEvent(5))
+			while (!pThread->CheckKillEvent(DurationMS(5)))
 			{
 				int value = rand() % MAX_NUMBER;
 				TestTableType::iterator itFound;

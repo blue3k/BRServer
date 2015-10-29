@@ -76,7 +76,7 @@ namespace Svr{
 		public:
 			TaskWorker(PageQueue<ParallelTransaction*> &querieQueue);
 
-			virtual bool Run();
+			virtual void Run() override;
 		};
 
 	private:

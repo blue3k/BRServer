@@ -142,6 +142,9 @@ TEST_F(NetTest, MessageMap)
 TEST_F(NetTest, Simple)
 {
 	HRESULT hr = S_OK;
+	BR::Message::MessageData *pIMsg = nullptr;
+	TimeStampMS dwTimeStart = Util::Time.GetTimeMs();
+	TimeStampMS dwTime = Util::Time.GetTimeMs();
 
 	m_pNetClient = dynamic_cast<BR::Net::IClient*>(m_pNet);
 	defChkPtr(m_pNetClient);
@@ -182,9 +185,9 @@ TEST_F(NetTest, Simple)
 
 
 	// Processing Connection update
-	BR::Message::MessageData *pIMsg = nullptr;
-	TimeStampMS dwTimeStart = Util::Time.GetTimeMs();
-	TimeStampMS dwTime = Util::Time.GetTimeMs();
+	pIMsg = nullptr;
+	dwTimeStart = Util::Time.GetTimeMs();
+	dwTime = Util::Time.GetTimeMs();
 	while( 1 )
 	{
 		dwTime = Util::Time.GetTimeMs();
@@ -412,7 +415,7 @@ TEST_F(NetTest, RecvMessageWindowMT)
 			BR::Message::MessageData* pMsg = nullptr;
 			HRESULT hr;
 
-			while (!pThread->CheckKillEvent(0))
+			while (!pThread->CheckKillEvent(DurationMS(0)))
 			{
 				pMsg = NewMessage(sequence);
 				hr = recvMessage.AddMsg(pMsg);
@@ -440,7 +443,7 @@ TEST_F(NetTest, RecvMessageWindowMT)
 			HRESULT hr;
 			BR::Message::MessageData *pResult = nullptr;
 			UINT16 sequence = releaseSequence.fetch_add(1, std::memory_order_relaxed);
-			while (!pThread->CheckKillEvent(0))
+			while (!pThread->CheckKillEvent(DurationMS(0)))
 			{
 				pResult = nullptr;
 				hr = recvMessage.PopMsg(pResult);
@@ -493,7 +496,7 @@ TEST_F(NetTest, RecvMessageWindowMT2)
 			BR::Message::MessageData* pMsg = nullptr;
 			HRESULT hr;
 
-			while (!pThread->CheckKillEvent(0))
+			while (!pThread->CheckKillEvent(DurationMS(0)))
 			{
 				UINT16 testSequence = sequence;
 				if (rand() % 2)
@@ -525,7 +528,7 @@ TEST_F(NetTest, RecvMessageWindowMT2)
 			HRESULT hr;
 			BR::Message::MessageData *pResult = nullptr;
 			UINT16 sequence = releaseSequence.fetch_add(1, std::memory_order_relaxed);
-			while (!pThread->CheckKillEvent(0))
+			while (!pThread->CheckKillEvent(DurationMS(0)))
 			{
 				pResult = nullptr;
 				hr = recvMessage.PopMsg(pResult);
