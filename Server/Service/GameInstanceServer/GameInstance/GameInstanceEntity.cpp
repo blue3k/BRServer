@@ -67,7 +67,7 @@ namespace ConspiracyGameInstanceServer {
 		, m_NumBot(0)
 	{
 		memset(m_PlayerByIndex,0, sizeof(m_PlayerByIndex));
-		SetTickInterval(ConspiracyGameInstanceServer::Const::GAMEINSTANCE_TICK_TIME);
+		SetTickInterval(DurationMS(ConspiracyGameInstanceServer::Const::GAMEINSTANCE_TICK_TIME));
 	}
 
 	GameInstanceEntity::~GameInstanceEntity()
@@ -159,7 +159,7 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameInstanceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
 		HRESULT hr = S_OK;
-		ULONG CurTime = Util::Time.GetTimeMs();
+		auto CurTime = Util::Time.GetTimeMs();
 		StaticArray<PlayerID,64> LeaverList;
 		//GamePlayerUIDMap::iterator itPlayer;
 		GamePlayer *pGamePlayer = nullptr;
@@ -215,7 +215,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Update Game status
-	HRESULT GameInstanceEntity::UpdateGameStatus( ULONG ulCurTime )
+	HRESULT GameInstanceEntity::UpdateGameStatus( TimeStampMS ulCurTime )
 	{
 		HRESULT hr = S_OK;
 
@@ -305,7 +305,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// set game instance kill timer
-	HRESULT GameInstanceEntity::SetGameKillTimer( ULONG ulWaitTime )
+	HRESULT GameInstanceEntity::SetGameKillTimer(DurationMS ulWaitTime )
 	{
 		// Server Notice ?
 
@@ -367,7 +367,7 @@ namespace ConspiracyGameInstanceServer {
 		m_MaxPlayer = maxPlayer;
 
 		// set kill timer
-		SetGameKillTimer(Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER);
+		SetGameKillTimer(DurationMS(Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER));
 
 		memset(m_PlayerCharacter, 0xFF, sizeof(m_PlayerCharacter));
 
@@ -524,7 +524,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if (m_GamePlayerByUID.GetItemCount() == 0) // if no player remain
 		{
-			SetGameKillTimer( Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER );
+			SetGameKillTimer(DurationMS(Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER));
 		}
 
 

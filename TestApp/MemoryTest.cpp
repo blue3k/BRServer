@@ -573,7 +573,7 @@ TEST_F(MemoryTest, StdPerformance)
 		allocator.Free(pPtr);
 	}
 	auto end = BR::Util::Time.GetRawTimeMs();
-	printf("My Heap: %d\n", end - start);
+	printf("My Heap: %d\n", (end - start).count());
 
 	start = BR::Util::Time.GetRawTimeMs();
 	for (UINT iTest = 0; iTest < TEST_COUNT; iTest++)
@@ -583,10 +583,12 @@ TEST_F(MemoryTest, StdPerformance)
 		free(pPtr);
 	}
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("STD Heap: %d\n", end - start);
+	printf("STD Heap: %d\n", (end - start).count());
 
 
-	std::atomic<LONG> workingThreads;
+	std::vector<BR::FunctorThread*> workingThreadList;
+	workingThreadList.reserve(TEST_THREAD_COUNT);
+	std::atomic<LONG> workingThreads(0);
 	start = BR::Util::Time.GetRawTimeMs();
 	for (UINT iTest = 0; iTest < TEST_THREAD_COUNT; iTest++)
 	{
@@ -601,13 +603,19 @@ TEST_F(MemoryTest, StdPerformance)
 			workingThreads.fetch_sub(1, std::memory_order_relaxed);
 		});
 		thread->Start();
+		workingThreadList.push_back(thread);
 		workingThreads.fetch_add(1, std::memory_order_relaxed);
 	}
 
 	while (workingThreads.load() > 0);
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Thread My Heap: %d\n", end - start);
+	printf("Thread My Heap: %d\n", (end - start).count());
+	for (auto itThread : workingThreadList)
+	{
+		itThread->Stop();
+	}
 
+	workingThreadList.clear();
 	start = BR::Util::Time.GetRawTimeMs();
 	for (UINT iTest = 0; iTest < TEST_THREAD_COUNT; iTest++)
 	{
@@ -619,16 +627,21 @@ TEST_F(MemoryTest, StdPerformance)
 				pPtr = malloc(123);
 				free(pPtr);
 			}
-			workingThreads.fetch_sub(1, std::memory_order_relaxed);
+			workingThreads.fetch_sub(1, std::memory_order_release);
 		});
 		thread->Start();
-		workingThreads.fetch_add(1, std::memory_order_relaxed);
+		workingThreadList.push_back(thread);
+		workingThreads.fetch_add(1, std::memory_order_release);
 	}
 
 	while (workingThreads.load() > 0);
 	end = BR::Util::Time.GetRawTimeMs();
-	printf("Thread STD Heap: %d\n", end - start);
-
+	printf("Thread STD Heap: %d\n", (end - start).count());
+	for (auto itThread : workingThreadList)
+	{
+		itThread->Stop();
+	}
+	workingThreadList.clear();
 }
 
 TEST_F(MemoryTest, PagedQueueAllocation)

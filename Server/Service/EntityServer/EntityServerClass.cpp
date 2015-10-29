@@ -179,7 +179,7 @@ namespace EntityServer {
 			Svr::Transaction * pProcess = nullptr;
 			svrMem( pProcess = new EntityServerStartProcess );
 			svrChk( pProcess->InitializeTransaction(this) );
-			svrChk( PendingTransaction(GetCurrentThreadId(), pProcess) );
+			svrChk( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
 		}
 
 	Proc_End:

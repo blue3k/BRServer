@@ -1,13 +1,35 @@
-﻿Build started 2015-04-20 오후 8:59:46.
-     1>Project "F:\fwork\BRServer\BRServer\Server\Lib\Table\Table.vcxproj" on node 4 (Build target(s)).
+﻿Build started 10/29/2015 12:40:25 AM.
+     1>Project "C:\work\BRServerGit\Server\Lib\Table\Table.vcxproj" on node 4 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\Common /I.\ /I..\..\Lib /I..\..\..\External /I..\..\..\External\libxml\include /I..\..\..\External\include /I..\..\..\External\jsoncpp\include /I..\..\..\External\curl7.41\include /I"..\..\..\External\MYSQLConnectorC-6.1.6\include" /ZI /nologo /W3 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D _LIB /D HAVE_CONFIG_H /D HAVE_WIN32_THREADS /D CURL_STATICLIB /D NOMINMAX /D _UNICODE /D UNICODE /D _VARIADIC_MAX=10 /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Win32Debug\Table.pch" /Fo"Win32Debug\\" /Fd"Win32Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt /Ym0x30000000 stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\Common /I.\ /I..\..\Lib /I..\..\..\External /I..\..\..\External\libxml\include /I..\..\..\External\include /I..\..\..\External\jsoncpp\include /I..\..\..\External\curl7.41\include /I"..\..\..\External\mysql-connector-c-6.1.6-winx64\include" /ZI /nologo /W3 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D _LIB /D HAVE_CONFIG_H /D HAVE_WIN32_THREADS /D CURL_STATICLIB /D NOMINMAX /D _UNICODE /D UNICODE /D _VARIADIC_MAX=10 /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Yc"stdafx.h" /Fp"Win32Debug\Table.pch" /Fo"Win32Debug\\" /Fd"Win32Debug\Table.pdb" /Gd /TP /analyze- /errorReport:prompt /Ym0x30000000 stdafx.cpp
          stdafx.cpp
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\Common /I.\ /I..\..\Lib /I..\..\..\External /I..\..\..\External\libxml\include /I..\..\..\External\include /I..\..\..\External\jsoncpp\include /I..\..\..\External\curl7.41\include /I"..\..\..\External\MYSQLConnectorC-6.1.6\include" /ZI /nologo /W3 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D _LIB /D HAVE_CONFIG_H /D HAVE_WIN32_THREADS /D CURL_STATICLIB /D NOMINMAX /D _UNICODE /D UNICODE /D _VARIADIC_MAX=10 /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Win32Debug\Table.pch" /Fo"Win32Debug\\" /Fd"Win32Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt /Ym0x30000000 conspiracy\GameConfigTbl.cpp conspiracy\LevelTbl.cpp conspiracy\RewardTbl.cpp conspiracy\ShopTbl.cpp TableSystem.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I..\Common /I.\ /I..\..\Lib /I..\..\..\External /I..\..\..\External\libxml\include /I..\..\..\External\include /I..\..\..\External\jsoncpp\include /I..\..\..\External\curl7.41\include /I"..\..\..\External\mysql-connector-c-6.1.6-winx64\include" /ZI /nologo /W3 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D _LIB /D HAVE_CONFIG_H /D HAVE_WIN32_THREADS /D CURL_STATICLIB /D NOMINMAX /D _UNICODE /D UNICODE /D _VARIADIC_MAX=10 /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Yu"stdafx.h" /Fp"Win32Debug\Table.pch" /Fo"Win32Debug\\" /Fd"Win32Debug\Table.pdb" /Gd /TP /analyze- /errorReport:prompt /Ym0x30000000 conspiracy\GameConfigTbl.cpp conspiracy\LevelTbl.cpp conspiracy\OrganicTbl.cpp conspiracy\RewardTbl.cpp conspiracy\ShopTbl.cpp TableQueries.cpp TableSystem.cpp
          TableSystem.cpp
+     1>c:\work\brservergit\server\lib\common\stackpool.h(29): warning C4359: 'BR::StackPool': Alignment specifier is less than actual alignment (16), and will be ignored.
+     1>c:\work\brservergit\server\lib\common\memorypool.h(123): warning C4359: 'BR::MemoryPool': Alignment specifier is less than actual alignment (16), and will be ignored.
+     1>c:\work\brservergit\server\lib\common\objectpool.h(162): warning C4359: 'BR::ObjectPoolMT': Alignment specifier is less than actual alignment (16), and will be ignored.
+         TableQueries.cpp
+     1>c:\work\brservergit\server\lib\common\stackpool.h(29): warning C4359: 'BR::StackPool': Alignment specifier is less than actual alignment (16), and will be ignored.
+     1>c:\work\brservergit\server\lib\common\memorypool.h(123): warning C4359: 'BR::MemoryPool': Alignment specifier is less than actual alignment (16), and will be ignored.
+     1>c:\work\brservergit\server\lib\common\objectpool.h(162): warning C4359: 'BR::ObjectPoolMT': Alignment specifier is less than actual alignment (16), and will be ignored.
          ShopTbl.cpp
-     1>Done Building Project "F:\fwork\BRServer\BRServer\Server\Lib\Table\Table.vcxproj" (Build target(s)) -- FAILED.
+         RewardTbl.cpp
+         OrganicTbl.cpp
+         LevelTbl.cpp
+         GameConfigTbl.cpp
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\Lib.exe /OUT:"C:\work\BRServerGit\Server\Lib\Table\../../bin/lib/Win32Debug\Table.lib" /NOLOGO Win32Debug\GameConfigTbl.obj
+         Win32Debug\LevelTbl.obj
+         Win32Debug\OrganicTbl.obj
+         Win32Debug\RewardTbl.obj
+         Win32Debug\ShopTbl.obj
+         Win32Debug\stdafx.obj
+         Win32Debug\TableQueries.obj
+         Win32Debug\TableSystem.obj
+         Table.vcxproj -> C:\work\BRServerGit\Server\Lib\Table\../../bin/lib/Win32Debug\Table.lib
+     1>Done Building Project "C:\work\BRServerGit\Server\Lib\Table\Table.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:01.93
+Time Elapsed 00:00:09.41

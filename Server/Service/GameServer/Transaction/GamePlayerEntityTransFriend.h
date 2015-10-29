@@ -48,7 +48,7 @@ namespace GameServer {
 	class PlayerTransInviteFriend : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::InviteFriendCmd, PlayerTransInviteFriend>
 	{
 	private:
-		ULONGLONG m_TimeStamp;
+		TimeStampSec m_TimeStamp;
 
 	public:
 		PlayerTransInviteFriend( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
@@ -169,7 +169,7 @@ namespace GameServer {
 	{
 	private:
 		//Memento<UserGamePlayerInfoSystem::MEMENTO_SIZE> m_SavedData;
-		ULONGLONG m_TimeStamp;
+		TimeStampSec m_TimeStamp;
 		INT m_WaitingQueries;
 
 	public:
@@ -183,7 +183,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GiveStaminaRes, GetTargetPlayer(), m_TimeStamp);
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GiveStaminaRes, GetTargetPlayer(), m_TimeStamp.time_since_epoch().count());
 	};
 	//
 	//class PlayerTransGiveStaminaS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::GiveStaminaC2SEvt, PlayerTransGiveStaminaS2S>

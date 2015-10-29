@@ -139,7 +139,7 @@ namespace GameServer {
 
 		svrChk(pPlayerEntity->SetConnection(pConnection));
 
-		GetMyOwner()->SetLatestActiveTime(Util::Time.GetTimeUTCSec32());
+		GetMyOwner()->SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, 2, 0, 0, "Entity Initialize");
 
@@ -258,7 +258,7 @@ namespace GameServer {
 
 		auto latestTick = playerData.LatestTickTime;
 
-		GetMyOwner()->SetLatestActiveTime(Util::Time.GetTimeUTCSec32());
+		GetMyOwner()->SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 
 		// If first login, the value will be zero
 		if (latestTick == 0)
@@ -270,7 +270,7 @@ namespace GameServer {
 		{
 			svrTrace(Svr::TRC_TRANSACTION, "Latest tick time PlayerID:%0%. %1%", GetMyOwner()->GetPlayerID(), (UINT64)playerData.LatestTickTime);
 
-			GetMyOwner()->SetLatestUpdateTime(playerData.LatestTickTime);
+			GetMyOwner()->SetLatestUpdateTime(TimeStampSec(DurationSec(playerData.LatestTickTime)));
 		}
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, 1, 0, 0, "Login");
@@ -322,7 +322,7 @@ namespace GameServer {
 		if (pDBRes->Result == 0)
 		{
 			playerInfoSystem->SetupDefaultStat();
-			playerInfoData.LatestTickTime = Util::Time.GetTimeUTCSec();
+			playerInfoData.LatestTickTime = Util::Time.GetTimeUTCSec().time_since_epoch().count();
 
 			svrTrace(Svr::TRC_TRANSACTION, "Player data created PlayerID:%0%", GetMyOwner()->GetPlayerID());
 		}
@@ -461,7 +461,7 @@ namespace GameServer {
 		m_Result.GameMoney = userGamePlayerInfo->GetGameMoney();
 		m_Result.Gem = userGamePlayerInfo->GetGem();
 		m_Result.Stamina = userGamePlayerInfo->GetStamina();
-		m_Result.LastUpdateTime = (UINT32)GetMyOwner()->GetLatestUpdateTime();
+		m_Result.LastUpdateTime = GetMyOwner()->GetLatestUpdateTime().time_since_epoch().count();
 
 		m_Result.TotalPlayed = userGamePlayerInfo->GetTotalPlayed();
 
@@ -1406,7 +1406,7 @@ namespace GameServer {
 
 		bool bInGame = GetMyOwner()->GetGameInsUID() != 0 || GetMyOwner()->GetPartyUID() != 0;
 
-		svrChk( pTargetPolicy->NotifyPlayerStatusUpdatedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), GetDestPlayerID(), GetMyOwner()->GetLatestActiveTime(), bInGame ? 1 : 0 ) );
+		svrChk( pTargetPolicy->NotifyPlayerStatusUpdatedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), GetDestPlayerID(), GetMyOwner()->GetLatestActiveTime().time_since_epoch().count(), bInGame ? 1 : 0 ) );
 
 	Proc_End:
 

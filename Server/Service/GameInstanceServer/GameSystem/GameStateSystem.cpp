@@ -68,7 +68,7 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GamePlayState::OnEnter()
 	{
 		m_StateStartTime = Util::Time.GetTimeMs();
-		m_StateStartTimeUTC = Util::Time.GetTimeUTCSec32();
+		m_StateStartTimeUTC = Util::Time.GetTimeUTCSec();
 
 		UINT day = GetOwner().GetComponent<GameStateSystem>()->GetCurrentDay();
 		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT
@@ -76,7 +76,7 @@ namespace ConspiracyGameInstanceServer {
 			pPlayer->SetVotedGameAdvance(false);
 
 			if( pPlayer->GetPlayerEntityUID() != 0 )
-				pPolicy->GameAdvancedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_StateStartTimeUTC, GetGameState(), day );
+				pPolicy->GameAdvancedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_StateStartTimeUTC.time_since_epoch().count(), GetGameState(), day );
 
 			return S_OK;
 		});
@@ -111,7 +111,7 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual HRESULT OnEnter()
 		{
-			m_TimeToNext.SetTimer( 3*60*1000 );
+			m_TimeToNext.SetTimer( DurationMS(3*60*1000) );
 			return __super::OnEnter();
 		}
 		virtual HRESULT OnUpdate()
@@ -144,7 +144,7 @@ namespace ConspiracyGameInstanceServer {
 			GetGamePlaySystem().SetHuntedPlayer(0);
 
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
-			m_TimeToNext.SetTimer( (UINT)(GetOwner().GetPresetGameConfig()->FreeDiscussion*1000) );
+			m_TimeToNext.SetTimer( DurationMS(GetOwner().GetPresetGameConfig()->FreeDiscussion*1000) );
 
 		Proc_End:
 
@@ -194,7 +194,7 @@ namespace ConspiracyGameInstanceServer {
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ m_vote.ForceAllVoted(); } );
-			m_TimeToNext.SetTimer((UINT)(stateTime * 1000));
+			m_TimeToNext.SetTimer(DurationMS(stateTime * 1000));
 
 
 			// Reveal to medium 
@@ -217,7 +217,7 @@ namespace ConspiracyGameInstanceServer {
 			if( GetOwner().GetComponent<GamePlaySystem>()->GetSeer() != 0 ) numVotePlayer++;
 			if( GetOwner().GetComponent<GamePlaySystem>()->GetBodyGuard() != 0 ) numVotePlayer++;
 
-			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVote( Util::Time.GetTimeUTCSec32(), GameVoteType::Hunting, numVotePlayer ) );
+			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVote( Util::Time.GetTimeUTCSec(), GameVoteType::Hunting, numVotePlayer ) );
 
 		Proc_End:
 
@@ -260,11 +260,11 @@ namespace ConspiracyGameInstanceServer {
 							pPolicy->PlayerKilledS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_vote.GetPlayerToKill(), PlayerKilledReason::BlockedByBodyguard );
 						return S_OK;
 					});
-					svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGamePlayerKilled( Util::Time.GetTimeUTCSec32(), PlayerKilledReason::BlockedByBodyguard, m_vote.GetPlayerToKill() ) );
+					svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGamePlayerKilled( Util::Time.GetTimeUTCSec(), PlayerKilledReason::BlockedByBodyguard, m_vote.GetPlayerToKill() ) );
 				}
 				else
 				{
-					svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGamePlayerKilled( Util::Time.GetTimeUTCSec32(), PlayerKilledReason::ByWerewolf, m_vote.GetPlayerToKill() ) );
+					svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGamePlayerKilled( Util::Time.GetTimeUTCSec(), PlayerKilledReason::ByWerewolf, m_vote.GetPlayerToKill() ) );
 					svrChk( GetGamePlaySystem().KillPlayer( m_vote.GetPlayerToKill(), PlayerKilledReason::ByWerewolf ) );
 					GetGamePlaySystem().SetHuntedPlayer(m_vote.GetPlayerToKill());
 				}
@@ -317,7 +317,7 @@ namespace ConspiracyGameInstanceServer {
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
-			m_TimeToNext.SetTimer( (UINT)(GetOwner().GetPresetGameConfig()->MorningDiscussion*1000) );
+			m_TimeToNext.SetTimer( DurationMS(GetOwner().GetPresetGameConfig()->MorningDiscussion*1000) );
 
 		Proc_End:
 
@@ -354,13 +354,13 @@ namespace ConspiracyGameInstanceServer {
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ m_vote.ForceAllVoted(); } );
-			m_TimeToNext.SetTimer( (UINT)(GetOwner().GetPresetGameConfig()->FirstVote*1000) );
+			m_TimeToNext.SetTimer( DurationMS(GetOwner().GetPresetGameConfig()->FirstVote*1000) );
 
 
 			svrChk( m_vote.IniciateVote() );
 
 			UINT totalAlives = GetOwner().GetComponent<GamePlaySystem>()->GetNumWereWolf() + GetOwner().GetComponent<GamePlaySystem>()->GetNumVillager();
-			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVote( Util::Time.GetTimeUTCSec32(), GameVoteType::Suspect, totalAlives ) );
+			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVote( Util::Time.GetTimeUTCSec(), GameVoteType::Suspect, totalAlives ) );
 
 
 		Proc_End:
@@ -393,7 +393,7 @@ namespace ConspiracyGameInstanceServer {
 				return S_OK;
 			});
 
-			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVoteResult( Util::Time.GetTimeUTCSec32(), 2, rankers.data() ) );
+			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVoteResult( Util::Time.GetTimeUTCSec(), 2, rankers.data() ) );
 
 		Proc_End:
 
@@ -427,7 +427,7 @@ namespace ConspiracyGameInstanceServer {
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
-			m_TimeToNext.SetTimer( (UINT)(GetOwner().GetPresetGameConfig()->DefenceTime*1000) );
+			m_TimeToNext.SetTimer(DurationMS(GetOwner().GetPresetGameConfig()->DefenceTime*1000) );
 
 		Proc_End:
 
@@ -469,7 +469,7 @@ namespace ConspiracyGameInstanceServer {
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ m_vote.ForceAllVoted(); } );
-			m_TimeToNext.SetTimer( (UINT)(GetOwner().GetPresetGameConfig()->SecondVote*1000) );
+			m_TimeToNext.SetTimer(DurationMS(GetOwner().GetPresetGameConfig()->SecondVote*1000) );
 
 
 			svrChk( m_vote.IniciateVote() );
@@ -477,7 +477,7 @@ namespace ConspiracyGameInstanceServer {
 			UINT totalAlives = GetOwner().GetComponent<GamePlaySystem>()->GetNumWereWolf() + GetOwner().GetComponent<GamePlaySystem>()->GetNumVillager();
 			UINT totalSuspect = GetOwner().GetComponent<GamePlaySystem>()->GetNumberOfSuspects();
 			Assert( totalAlives > totalSuspect );
-			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVote( Util::Time.GetTimeUTCSec32(), GameVoteType::Hanging, totalAlives - totalSuspect ) );
+			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVote( Util::Time.GetTimeUTCSec(), GameVoteType::Hanging, totalAlives - totalSuspect ) );
 
 		Proc_End:
 
@@ -492,7 +492,7 @@ namespace ConspiracyGameInstanceServer {
 			if( m_vote.GetPlayerToHang() == 0 )
 				return E_INVALID_PLAYERID;
 
-			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGamePlayerKilled( Util::Time.GetTimeUTCSec32(), PlayerKilledReason::ByHanging, m_vote.GetPlayerToHang() ) );
+			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGamePlayerKilled( Util::Time.GetTimeUTCSec(), PlayerKilledReason::ByHanging, m_vote.GetPlayerToHang() ) );
 
 			svrChk( GetGamePlaySystem().KillPlayer( m_vote.GetPlayerToHang(), PlayerKilledReason::ByHanging ) );
 
@@ -738,14 +738,14 @@ namespace ConspiracyGameInstanceServer {
 				m_CurrentGameState = stm_GameStateFlow[m_CurrentGameStateIndex];
 			}while( !m_GamePlayStates[(UINT)m_CurrentGameState]->CanBeEntered() );
 
-			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameStateChange(Util::Time.GetTimeUTCSec32(), m_CurrentGameState) );
+			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameStateChange(Util::Time.GetTimeUTCSec(), m_CurrentGameState) );
 		}
 		else
 		{
 			//SetGameEnd(winner);
 			m_CurrentGameState = GameStateID::End;
 
-			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameEnd(Util::Time.GetTimeUTCSec32(), winner ) );
+			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameEnd(Util::Time.GetTimeUTCSec(), winner ) );
 		}
 
 		hr = m_GamePlayStates[(UINT)m_CurrentGameState]->OnEnter();
@@ -849,7 +849,7 @@ namespace ConspiracyGameInstanceServer {
 
 		}
 
-		svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameEnd(Util::Time.GetTimeUTCSec32(), winner ) );
+		svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameEnd(Util::Time.GetTimeUTCSec(), winner ) );
 
 	Proc_End:
 
@@ -874,7 +874,7 @@ namespace ConspiracyGameInstanceServer {
 		m_CurrentGameStateIndex = 1;
 		m_CurrentGameState = GameStateID::FreeDebate;
 
-		svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameStateChange(Util::Time.GetTimeUTCSec32(), m_CurrentGameState) );
+		svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameStateChange(Util::Time.GetTimeUTCSec(), m_CurrentGameState) );
 
 		hr = m_GamePlayStates[(UINT)m_CurrentGameState]->OnEnter();
 		if(FAILED(hr)) svrErr(hr);

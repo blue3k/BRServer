@@ -67,8 +67,8 @@ namespace DB {
 																				INT32	LosePlaySC, INT32 LosePlaySM, INT32 LosePlaySS,
 																				INT32	WinPlayNC, INT32 WinPlayNM, INT32 WinPlayNS,
 																				INT32	LosePlayNC, INT32 LosePlayNM, INT32 LosePlayNS,
-																				INT32	LatestActiveTime,
-																				INT64	LatestTickTime
+			TimeStampSec	LatestActiveTime,
+			TimeStampSec	LatestTickTime
 																				);
 
 
@@ -81,8 +81,8 @@ namespace DB {
 																				SHORT	AddedFriendSlot,
 																				const Array<BYTE>& purchaseID, 
 																				const char* purchasePlatform, const char* purchaseToken,
-																				INT32	LatestActiveTime,
-																				INT64	LatestTickTime
+			TimeStampSec	LatestActiveTime,
+			TimeStampSec	LatestTickTime
 																				);
 
 		HRESULT CheckPurchaseID(TransactionID Sender, UINT shardID, const Array<BYTE>& purchaseID);
@@ -101,7 +101,7 @@ namespace DB {
 																				INT32	LosePlaySC, INT32 LosePlaySM, INT32 LosePlaySS,
 																				INT32	WinPlayNC, INT32 WinPlayNM, INT32 WinPlayNS,
 																				INT32	LosePlayNC, INT32 LosePlayNM, INT32 LosePlayNS,
-																				INT32	LatestActiveTime
+																				TimeStampSec	LatestActiveTime
 																				);
 		
 		// Save player info
@@ -109,8 +109,8 @@ namespace DB {
 																				INT64	Gem,
 																				SHORT	Stamina,
 																				SHORT	PlayerState,
-																				INT32	LatestActiveTime,
-																				INT64	LatestTickTime
+																				TimeStampSec	LatestActiveTime,
+																				TimeStampSec	LatestTickTime
 																				);
 
 		// Save player info
@@ -118,8 +118,8 @@ namespace DB {
 																				INT64	Gem,
 																				SHORT	Stamina,
 																				SHORT	PlayerState,
-																				INT32	LatestActiveTime,
-																				INT64	LatestTickTime
+																				TimeStampSec	LatestActiveTime,
+																				TimeStampSec	LatestTickTime
 																				);
 
 		// Save player info
@@ -137,11 +137,11 @@ namespace DB {
 		HRESULT AddFriend(BR::TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, UINT friendShardID, FacebookUID FriendFacebookUID);
 		HRESULT RemoveFriend(BR::TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID);
 		HRESULT GetFriendList(BR::TransactionID Sender, UINT shardID, PlayerID accountID);
-		HRESULT UpdateFriendStaminaTime(BR::TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, UINT64 timeStamp);
+		HRESULT UpdateFriendStaminaTime(BR::TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, TimeStampSec timeStamp);
 
 
 		// Notifications
-		HRESULT Notification_Add(BR::TransactionID Sender, UINT shardID, PlayerID ToUserID, BOOL isCollapsable, NotificationType messageID, INT64 messageParam0, INT64 messageParam1, const char* messageText, INT64 timeStamp);
+		HRESULT Notification_Add(BR::TransactionID Sender, UINT shardID, PlayerID ToUserID, BOOL isCollapsable, NotificationType messageID, INT64 messageParam0, INT64 messageParam1, const char* messageText, TimeStampSec timeStamp);
 		HRESULT Notification_GetList(BR::TransactionID Sender, UINT shardID, PlayerID UserID);
 		HRESULT Notification_Remove(BR::TransactionID Sender, UINT shardID, PlayerID userID, INT32 notificationID);
 		HRESULT Notification_RemoveByMessageID(BR::TransactionID Sender, UINT shardID, PlayerID UserID, INT16 messageID);

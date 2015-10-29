@@ -237,7 +237,7 @@ namespace GameServer {
 			Svr::Transaction * pProcess = nullptr;
 			svrMem( pProcess = new GameServerStartProcess );
 			svrChk( pProcess->InitializeTransaction(this) );
-			svrChk( PendingTransaction(GetCurrentThreadId(),pProcess) );
+			svrChk( PendingTransaction(ThisThread::GetThreadID(),pProcess) );
 		}
 
 

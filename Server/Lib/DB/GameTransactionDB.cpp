@@ -44,7 +44,7 @@ namespace DB {
 	//
 
 	// Add game log
-	HRESULT GameTransactionDB::AddGameLog(UINT shardID, const PlayerID &playerID, ULONG gameTime, TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage)
+	HRESULT GameTransactionDB::AddGameLog(UINT shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage)
 	{
 		HRESULT hr = S_OK;
 		QueryAddGameLogCmd *pQuery = nullptr;
@@ -54,7 +54,7 @@ namespace DB {
 		pQuery->SetPartitioningKey(shardID);
 
 		pQuery->PlayerID = playerID;
-		pQuery->GameTime = gameTime;
+		pQuery->GameTime = gameTime.time_since_epoch().count();
 		pQuery->LogCategory[0] = (char)LogCategory; pQuery->LogCategory[1] = 0;
 		pQuery->Consume = consume;
 		pQuery->Gain = gain;

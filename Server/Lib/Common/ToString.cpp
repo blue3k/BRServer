@@ -207,13 +207,25 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampMS& Data, int Option)
 	{
-		return S_OK;// ToStringArray(pBuff, iBuffLen, Data, Option);
+		return ToString(pBuff, iBuffLen, Data.time_since_epoch().count(), Option);
 	}
 
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationMS& Data, int Option)
 	{
-		return S_OK;// ToStringArray(pBuff, iBuffLen, Data, Option);
+		return ToString(pBuff, iBuffLen, Data.count(), Option);
+	}
+
+	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampSec& Data, int Option)
+	{
+		return ToString(pBuff, iBuffLen, Data.time_since_epoch().count(), Option);
+	}
+
+	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationSec& Data, int Option)
+	{
+		return ToString(pBuff, iBuffLen, Data.count(), Option);
 	}
 
 

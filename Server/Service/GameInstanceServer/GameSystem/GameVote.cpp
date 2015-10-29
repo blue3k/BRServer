@@ -108,14 +108,14 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Update vote state
-	void GameVote::UpdateVote(ULONG ulTimeInState)
+	void GameVote::UpdateVote(DurationMS ulTimeInState)
 	{
 		switch( m_VoteState )
 		{
 		case VoteState::None:
 			break;
 		case VoteState::Voting:
-			if( ulTimeInState > GameConst::AI_VOTE_TIMEOUT )
+			if( ulTimeInState > DurationMS(GameConst::AI_VOTE_TIMEOUT) )
 			{
 				ForceAIVoted();
 				m_VoteState = VoteState::InHurry;

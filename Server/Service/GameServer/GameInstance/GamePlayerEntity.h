@@ -91,13 +91,13 @@ namespace GameServer {
 		BRCLASS_ATTRIBUTE_STRING(GCMKeys,GameConst::MAX_GCMKEYS);
 		
 		// Latest update time in UTC time
-		BRCLASS_ATTRIBUTE(ULONGLONG,LatestUpdateTime);
+		BRCLASS_ATTRIBUTE(TimeStampSec,LatestUpdateTime);
 
 		// Latest active time in UTC time
-		BRCLASS_ATTRIBUTE_READONLY(ULONG,LatestActiveTime);
-		void SetLatestActiveTime(ULONG latestActiveTime);
+		BRCLASS_ATTRIBUTE_READONLY(TimeStampSec,LatestActiveTime);
+		void SetLatestActiveTime(TimeStampSec latestActiveTime);
 
-		BRCLASS_ATTRIBUTE(ULONG,LatestDBSyncTime);
+		BRCLASS_ATTRIBUTE(TimeStampSec,LatestDBSyncTime);
 
 
 

@@ -36,6 +36,8 @@ namespace BR {
 	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<FriendInformation>& Data, int Option);
 	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampMS& Data, int Option);
 	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationMS& Data, int Option);
+	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampSec& Data, int Option);
+	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationSec& Data, int Option);
 
 
 }; // namespace StrUtil

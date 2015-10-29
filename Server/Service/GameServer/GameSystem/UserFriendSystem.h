@@ -69,7 +69,7 @@ namespace GameServer {
 
 		MemoryBuffer<ServerFriendInformation, sizeof(ServerFriendInformation)*MAX_FRIENDS>	m_Friends;
 
-		BRCLASS_ATTRIBUTE(ULONG, LatestStatusSync);
+		BRCLASS_ATTRIBUTE(TimeStampMS, LatestStatusSync);
 
 	public:
 
@@ -94,7 +94,7 @@ namespace GameServer {
 		// Clear friend list
 		void ClearFriendList();
 
-		ULONG GetLatestStatusSync()												{ return m_LatestStatusSync; }
+		TimeStampMS GetLatestStatusSync()												{ return m_LatestStatusSync; }
 
 		// Check whether he is a friend or not
 		bool IsFriend( PlayerID friendID );

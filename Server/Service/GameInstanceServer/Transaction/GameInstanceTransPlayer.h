@@ -53,7 +53,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 		NetAddress m_Addr;
-		UINT32 m_TimeStamp;
+		TimeStampSec m_TimeStamp;
 		GameInsUID m_GameInsUID;
 		GameStateID m_GameState;
 		UINT8 m_Day;
@@ -73,7 +73,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS( JoinGameRes, RouteContext( m_GameInsUID, GetRouteContext().From ), m_Addr, m_TimeStamp, m_GameState, m_Day, 
+		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS( JoinGameRes, RouteContext( m_GameInsUID, GetRouteContext().From ), m_Addr, m_TimeStamp.time_since_epoch().count(), m_GameState, m_Day,
 			GetMyOwner()->GetMaxPlayer(),
 			m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_bIsFirstJoin, 
 			m_ChatHistoryBuffer.ToArray(),

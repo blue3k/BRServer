@@ -123,7 +123,7 @@ namespace GameServer {
 			pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>();
 			svrChkPtr(pTargetPolicy);
 			pTargetPolicy->NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
-				GetFriendID(), pMsgRes->NotificationID, NotificationType::FriendRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp );
+				GetFriendID(), pMsgRes->NotificationID, NotificationType::FriendRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp.time_since_epoch().count() );
 		}
 
 	Proc_End:
@@ -642,7 +642,7 @@ namespace GameServer {
 
 		if( FAILED(hr) )
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to get friend level PlayerID:%0%, hr=%1%", pDBRes ? pDBRes->PlayerID : 0, ArgHex32(hr));
+			svrTrace(Trace::TRC_ERROR, "Failed to get friend level PlayerID:%0%, hr={1:X8}", pDBRes ? pDBRes->PlayerID : 0, hr);
 		}
 
 		m_WaitingCount--;
@@ -746,7 +746,7 @@ namespace GameServer {
 		// if failed to write to DB, roleback the changes
 		if(FAILED(hr))
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to save give stamina result PlayerID:%0%, Dest:%1%, hr:%2%", GetMyOwner()->GetPlayerID(), GetTargetPlayer(), ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed to save give stamina result PlayerID:%0%, Dest:%1%, hr:{2:X8}", GetMyOwner()->GetPlayerID(), GetTargetPlayer(), hr );
 			CloseTransaction(hr);
 		}
 
@@ -796,7 +796,7 @@ namespace GameServer {
 			pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>();
 			svrChkPtr(pTargetPolicy);
 			pTargetPolicy->NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
-				GetTargetPlayer(), pMsgRes->NotificationID, NotificationType::GiftStamina, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp );
+				GetTargetPlayer(), pMsgRes->NotificationID, NotificationType::GiftStamina, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetNickName(), m_TimeStamp.time_since_epoch().count());
 		}
 
 	Proc_End:
@@ -850,7 +850,7 @@ namespace GameServer {
 
 		//Update give stamina time
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateFriendStaminaTime(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetTargetPlayer(), m_TimeStamp));
-		pFriend->LastStaminaSent = m_TimeStamp;
+		pFriend->LastStaminaSent = m_TimeStamp.time_since_epoch().count();
 		m_WaitingQueries++;
 
 

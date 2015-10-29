@@ -66,9 +66,9 @@ namespace GameServer {
 		, m_Allocator(STDAllocator::GetInstance())
 		, m_PlayerState(PlayerState_None)
 		, m_GameInsUID(0)
-		, m_LatestUpdateTime(0)
-		, m_LatestDBSyncTime(0)
-		, m_LatestActiveTime(0)
+		, m_LatestUpdateTime(TimeStampSec(DurationSec(0)))
+		, m_LatestDBSyncTime(TimeStampSec(DurationSec(0)))
+		, m_LatestActiveTime(TimeStampSec(DurationSec(0)))
 	{
 		memset( m_UserName, 0, sizeof(m_UserName) );
 		memset( m_GCMKeys, 0, sizeof(m_GCMKeys) );
@@ -97,10 +97,10 @@ namespace GameServer {
 		m_UserName[0] = '\0';
 		m_GCMKeys[0] = '\0';
 		
-		SetLatestActiveTime(Util::Time.GetTimeUTCSec32());
-		m_LatestUpdateTime = 0;
+		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
+		m_LatestUpdateTime = TimeStampSec(DurationSec(0));
 
-		m_TimeToKill.SetTimer(PlayerAutoLogout * 1000);
+		m_TimeToKill.SetTimer(DurationMS(PlayerAutoLogout * 1000));
 
 		svrChk( AddComponent<UserFriendSystem>(this) );
 		svrChk( AddComponent<UserGamePlayerInfoSystem>(this) );
@@ -153,13 +153,13 @@ namespace GameServer {
 	//	Entity process
 	//
 
-	void GamePlayerEntity::SetLatestActiveTime(ULONG latestActiveTime)
+	void GamePlayerEntity::SetLatestActiveTime(TimeStampSec latestActiveTime)
 	{
 		auto pGameConfig = GetMyServer()->GetPresetGameConfig();
 		if (pGameConfig != nullptr)
 		{
 			auto PlayerAutoLogout = pGameConfig->PlayerAutoLogout;
-			m_TimeToKill.SetTimer(PlayerAutoLogout * 1000);
+			m_TimeToKill.SetTimer(DurationMS(PlayerAutoLogout * 1000));
 		}
 
 		m_LatestActiveTime = latestActiveTime;
@@ -168,12 +168,12 @@ namespace GameServer {
 	HRESULT GamePlayerEntity::OnNewUserTranscation()
 	{
 		// m_LatestUpdateTime is used as a valid character data signal
-		if (m_LatestUpdateTime == 0)
+		if (m_LatestUpdateTime == TimeStampSec::min())
 			return S_FALSE;
 
-		SetLatestActiveTime(Util::Time.GetTimeUTCSec32());
+		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 
-		if (m_LatestDBSyncTime == 0 || Util::TimeSinceUTC(m_LatestDBSyncTime) > GameConst::PLAYER_UPDATE_STATUS_TIME)
+		if (m_LatestDBSyncTime == TimeStampSec::min() || Util::TimeSinceUTC(m_LatestDBSyncTime) > DurationSec(GameConst::PLAYER_UPDATE_STATUS_TIME))
 		{
 			UpdateDBSync(0);
 		}
@@ -188,7 +188,7 @@ namespace GameServer {
 		if (FAILED(UpdateGamePlayer()))
 			return hr;
 
-		m_LatestDBSyncTime = Util::Time.GetTimeUTCSec32();
+		m_LatestDBSyncTime = Util::Time.GetTimeUTCSec();
 		auto pPlayerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateTickStatusCmd(transID, GetShardID(), GetPlayerID(),
@@ -335,31 +335,32 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChkPtr(GetMyServer()->GetPresetGameConfig());
-
 		// m_LatestUpdateTime will be initialized when character data is loaded
-		if (m_LatestUpdateTime == 0)
+		if (m_LatestUpdateTime == TimeStampSec::min())
 		{
 			return E_FAIL;
 		}
 
-		ULONGLONG tickTime = GetMyServer()->GetPresetGameConfig()->StaminaRecoveryTime;
-		ULONGLONG curUTCSec = Util::Time.GetTimeUTCSec();
-		ULONGLONG timeDiff = curUTCSec - m_LatestUpdateTime;
-		ULONGLONG numberOfTicks = timeDiff / tickTime;
-		ULONGLONG remainTime = timeDiff % tickTime;
+		auto playerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
+
+		auto tickTime = GetMyServer()->GetPresetGameConfig()->StaminaRecoveryTime;
+		TimeStampSec curUTCSec = Util::Time.GetTimeUTCSec();
+		DurationSec timeDiff = curUTCSec - m_LatestUpdateTime;
+		auto numberOfTicks = timeDiff.count() / tickTime;
+		DurationSec remainTime = timeDiff % tickTime;
+
+		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
 		svrTrace(Svr::TRC_TRANSACTION, "Check GamePlayer Update Tick PID:%0% last:%1%, curTime:%2%, numTick:%3%, remain:%4%", GetPlayerID(), m_LatestUpdateTime, curUTCSec, numberOfTicks, remainTime);
 
-		auto playerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
 		if( numberOfTicks > 0 )
 		{
 			svrTrace(Svr::TRC_TRANSACTION, "GamePlayer Update PID:%0%, numTick:%1%, Sta:%2%", GetPlayerID(), numberOfTicks, playerInfoSystem->GetStamina());
 
-			if (numberOfTicks > std::numeric_limits<INT16>::max())
+			if (numberOfTicks > std::numeric_limits<UINT16>::max())
 			{
 				svrTrace( Trace::TRC_ERROR, "Invalid tick count, applying maximum int16" );
-				numberOfTicks = std::numeric_limits<INT16>::max();
+				numberOfTicks = std::numeric_limits<UINT16>::max();
 			}
 
 			if (playerInfoSystem->GetStamina() < playerInfoSystem->GetMaxAutoRefillStamina())
@@ -415,7 +416,7 @@ namespace GameServer {
 		m_PlayerInformation.Level = GetComponent<UserGamePlayerInfoSystem>()->GetLevel();
 		m_PlayerInformation.WeeklyWin = GetComponent<UserGamePlayerInfoSystem>()->GetWeeklyWin();
 		m_PlayerInformation.WeeklyLose = GetComponent<UserGamePlayerInfoSystem>()->GetWeeklyLose();
-		m_PlayerInformation.LastActiveTime = GetLatestActiveTime();
+		m_PlayerInformation.LastActiveTime = GetLatestActiveTime().time_since_epoch().count();
 		m_PlayerInformation.IsPlayingGame = GetIsInGame();
 
 		return m_PlayerInformation;
@@ -423,7 +424,7 @@ namespace GameServer {
 
 	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage)
 	{
-		Svr::GetServerComponent<DB::GameTransactionDB>()->AddGameLog(GetShardID(), GetPlayerID(), Util::Time.GetTimeUTCSec32(), LogCategory, consume, gain, totalValue, logMessage);
+		Svr::GetServerComponent<DB::GameTransactionDB>()->AddGameLog(GetShardID(), GetPlayerID(), Util::Time.GetTimeUTCSec(), LogCategory, consume, gain, totalValue, logMessage);
 	}
 
 	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue)

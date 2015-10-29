@@ -113,8 +113,8 @@ namespace DB {
 																			INT32	LosePlaySC, INT32 LosePlaySM, INT32 LosePlaySS,
 																			INT32	WinPlayNC, INT32 WinPlayNM, INT32 WinPlayNS,
 																			INT32	LosePlayNC, INT32 LosePlayNM, INT32 LosePlayNS,
-																			INT32	LatestActiveTime,
-																			INT64	LatestTickTime
+		TimeStampSec	LatestActiveTime,
+		TimeStampSec	LatestTickTime
 																			)
 	{
 		HRESULT hr = S_OK;
@@ -149,8 +149,8 @@ namespace DB {
 		pDataSet->LosePlayNC = LosePlayNC;
 		pDataSet->LosePlayNM = LosePlayNM;
 		pDataSet->LosePlayNS = LosePlayNS;
-		pDataSet->LatestActiveTime = LatestActiveTime;
-		pDataSet->LatestTickTime = LatestTickTime;
+		pDataSet->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
+		pDataSet->LatestTickTime = LatestTickTime.time_since_epoch().count();
 
 
 		pQuery->SetTransaction( Sender );
@@ -175,8 +175,8 @@ namespace DB {
 		SHORT	AddedFriendSlot,
 		const Array<BYTE>& purchaseID,
 		const char* purchasePlatform, const char* purchaseToken,
-		INT32	LatestActiveTime,
-		INT64	LatestTickTime
+		TimeStampSec	LatestActiveTime,
+		TimeStampSec	LatestTickTime
 		)
 	{
 		HRESULT hr = S_OK;
@@ -203,8 +203,8 @@ namespace DB {
 
 		dbChk(StrUtil::StringCpy(pQuery->PurchasePlatform, purchasePlatform));
 		dbChk(StrUtil::StringCpy(pQuery->PurchaseToken, purchaseToken));
-		pQuery->LatestActiveTime = LatestActiveTime;
-		pQuery->LatestTickTime = LatestTickTime;
+		pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
+		pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
 
 
 		pQuery->SetTransaction( Sender );
@@ -315,7 +315,7 @@ namespace DB {
 																			INT32	LosePlaySC, INT32 LosePlaySM, INT32 LosePlaySS,
 																			INT32	WinPlayNC, INT32 WinPlayNM, INT32 WinPlayNS,
 																			INT32	LosePlayNC, INT32 LosePlayNM, INT32 LosePlayNS,
-																			INT32	LatestActiveTime
+																			TimeStampSec	LatestActiveTime
 																			)
 	{
 		HRESULT hr = S_OK;
@@ -344,7 +344,7 @@ namespace DB {
 		pQuery->LosePlayNC = LosePlayNC;
 		pQuery->LosePlayNM = LosePlayNM;
 		pQuery->LosePlayNS = LosePlayNS;
-		pQuery->LatestActiveTime = LatestActiveTime;
+		pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
 
 		pQuery->SetTransaction( Sender );
 
@@ -365,8 +365,8 @@ namespace DB {
 																			INT64	Gem,
 																			SHORT	Stamina,
 																			SHORT	PlayerState,
-																			INT32	LatestActiveTime,
-																			INT64	LatestTickTime
+																			TimeStampSec	LatestActiveTime,
+																			TimeStampSec	LatestTickTime
 																			)
 	{
 		HRESULT hr = S_OK;
@@ -382,8 +382,8 @@ namespace DB {
 		pQuery->Gem = Gem;
 		pQuery->Stamina = Stamina;
 		pQuery->PlayerState = PlayerState;
-		pQuery->LatestActiveTime = LatestActiveTime;
-		pQuery->LatestTickTime = LatestTickTime;
+		pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
+		pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
 
 
 		pQuery->SetTransaction( Sender );
@@ -405,8 +405,8 @@ namespace DB {
 																			INT64	Gem,
 																			SHORT	Stamina,
 																			SHORT	PlayerState,
-																			INT32	LatestActiveTime,
-																			INT64	LatestTickTime
+																			TimeStampSec	LatestActiveTime,
+																			TimeStampSec	LatestTickTime
 																			)
 	{
 		HRESULT hr = S_OK;
@@ -422,8 +422,8 @@ namespace DB {
 		pQuery->Gem = Gem;
 		pQuery->Stamina = Stamina;
 		pQuery->PlayerState = PlayerState;
-		pQuery->LatestActiveTime = LatestActiveTime;
-		pQuery->LatestTickTime = LatestTickTime;
+		pQuery->LatestActiveTime = LatestActiveTime.time_since_epoch().count();
+		pQuery->LatestTickTime = LatestTickTime.time_since_epoch().count();
 
 		pQuery->SetTransaction( Sender );
 
@@ -672,7 +672,7 @@ namespace DB {
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::UpdateFriendStaminaTime(BR::TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, UINT64 timeStamp)
+	HRESULT GameConspiracyDB::UpdateFriendStaminaTime(BR::TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, TimeStampSec timeStamp)
 	{
 		HRESULT hr = S_OK;
 		QueryUpdateFriendStaminaTimeCmd *pQuery = nullptr;
@@ -684,7 +684,7 @@ namespace DB {
 		pQuery->SetTransaction(Sender);
 		pQuery->UserID = accountID;
 		pQuery->FriendUID = FriendUID;
-		pQuery->TimeStamp = timeStamp;
+		pQuery->TimeStamp = timeStamp.time_since_epoch().count();
 		pQuery->Result = 0;
 
 		dbChk(RequestQuery(pQuery));
@@ -701,7 +701,7 @@ namespace DB {
 
 
 	// Notifications
-	HRESULT GameConspiracyDB::Notification_Add(BR::TransactionID Sender, UINT shardID, PlayerID ToUserID, BOOL isCollapsable, NotificationType messageID, INT64 messageParam0, INT64 messageParam1, const char* messageText, INT64 timeStamp)
+	HRESULT GameConspiracyDB::Notification_Add(BR::TransactionID Sender, UINT shardID, PlayerID ToUserID, BOOL isCollapsable, NotificationType messageID, INT64 messageParam0, INT64 messageParam1, const char* messageText, TimeStampSec timeStamp)
 	{
 		HRESULT hr = S_OK;
 		QueryNotification_AddCmd *pQuery = nullptr;
@@ -717,7 +717,7 @@ namespace DB {
 		pQuery->MessageParam0 = messageParam0;
 		pQuery->MessageParam1 = messageParam1;
 		dbChk(StrUtil::StringCpy(pQuery->MessageText, messageText));
-		pQuery->TimeStamp = timeStamp;
+		pQuery->TimeStamp = timeStamp.time_since_epoch().count();
 
 		pQuery->Result = 0;
 

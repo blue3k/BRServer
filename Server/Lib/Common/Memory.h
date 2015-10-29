@@ -26,8 +26,8 @@
 #define BR_ALIGN_DOUBLE			16
 #define BR_ALIGN_DOUBLE_SHIFT	4
 #else
-#define BR_ALIGN				8
-#define BR_ALIGN_SHIFT			3
+#define BR_ALIGN				16
+#define BR_ALIGN_SHIFT			4
 #define BR_ALIGN_DOUBLE			16
 #define BR_ALIGN_DOUBLE_SHIFT	4
 #endif

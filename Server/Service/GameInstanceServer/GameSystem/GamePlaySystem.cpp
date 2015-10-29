@@ -476,7 +476,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to kill a player PlayerID:%0%, reason:%1%, HRESULT:%2%", pPlayerToKill->GetPlayerID(), (int)reason, ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed to kill a player PlayerID:%0%, reason:%1%, HRESULT:{2:X8}", pPlayerToKill->GetPlayerID(), (int)reason, hr );
 		}
 		else
 		{
@@ -544,7 +544,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if (FAILED(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to revive a player PlayerID:%0%, HRESULT:%1%", pPlayerToRevive->GetPlayerID(), ArgHex32(hr));
+			svrTrace(Trace::TRC_ERROR, "Failed to revive a player PlayerID:%0%, HRESULT:{1:X8}", pPlayerToRevive->GetPlayerID(), hr);
 		}
 		else
 		{

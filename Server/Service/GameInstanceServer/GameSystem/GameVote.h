@@ -71,7 +71,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual void ForceAllVoted() = 0;
 
 		// Update vote state
-		virtual void UpdateVote(ULONG ulTimeInState);
+		virtual void UpdateVote(DurationMS ulTimeInState);
 
 	protected:
 		//////////////////////////////////////

@@ -193,7 +193,7 @@ namespace SharedModuleServer {
 			Svr::Transaction * pProcess = nullptr;
 			svrMem( pProcess = new SharedModuleServerStartProcess );
 			svrChk( pProcess->InitializeTransaction(this) );
-			svrChk( PendingTransaction(GetCurrentThreadId(), pProcess) );
+			svrChk( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
 		}
 
 

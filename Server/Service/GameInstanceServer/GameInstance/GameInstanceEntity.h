@@ -210,7 +210,7 @@ namespace ConspiracyGameInstanceServer
 
 
 		// Update Game status
-		HRESULT UpdateGameStatus( ULONG ulCurTime );
+		HRESULT UpdateGameStatus(TimeStampMS ulCurTime );
 
 
 
@@ -221,7 +221,7 @@ namespace ConspiracyGameInstanceServer
 
 
 		// set game instance kill timer
-		HRESULT SetGameKillTimer( ULONG ulWaitTime );
+		HRESULT SetGameKillTimer( DurationMS ulWaitTime );
 
 
 

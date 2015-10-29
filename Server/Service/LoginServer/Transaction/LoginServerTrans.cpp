@@ -67,14 +67,14 @@ namespace LoginServer {
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
 			}
-			SetTimer(500);
+			SetTimer(DurationMS(500));
 			break;
 		case StartingStep::WaitInitializeComponents:
 			if( GetMyServer()->GetNumberServicesToWait() == 0 )
 			{
 				m_Step = StartingStep::Done;
 			}
-			SetTimer(500);
+			SetTimer(DurationMS(500));
 			break;
 		case StartingStep::Done:
 			CloseTransaction(hr);
@@ -129,7 +129,7 @@ namespace LoginServer {
 		svrChk( __super::StartTransaction() );
 
 		m_Step = StartingStep::WaitEntityServer;
-		SetTimer( 500 );
+		SetTimer( DurationMS(500) );
 
 	Proc_End:
 

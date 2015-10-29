@@ -93,7 +93,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Update Game Player 
-	HRESULT GamePlayer::UpdateGamePlayer( ULONG ulCurTime )
+	HRESULT GamePlayer::UpdateGamePlayer( TimeStampMS ulCurTime )
 	{
 		HRESULT hr = S_OK;
 

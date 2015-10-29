@@ -45,20 +45,20 @@ namespace ConspiracyGameInstanceServer {
 		GameInstanceEntity* m_Owner;
 
 		// State start time
-		ULONG m_StateStartTime;
-		ULONG m_StateStartTimeUTC;
+		TimeStampMS m_StateStartTime;
+		TimeStampSec m_StateStartTimeUTC;
 
 	
 
 	public:
 		GamePlayState(GameInstanceEntity* Owner, GameStateID gameState)
-			:m_Owner(Owner),m_GameState(gameState), m_StateStartTime(0)
+			:m_Owner(Owner),m_GameState(gameState), m_StateStartTime(TimeStampMS(DurationMS(0)))
 		{}
 		virtual ~GamePlayState() {}
 
 		// Get time in this state in ms
-		FORCEINLINE ULONG GetTimeInState()							{ return Util::Time.GetTimeMs() - m_StateStartTime; }
-		FORCEINLINE ULONG GetStateTimeUTC()							{ return m_StateStartTimeUTC; }
+		FORCEINLINE DurationMS GetTimeInState()						{ return Util::Time.GetTimeMs() - m_StateStartTime; }
+		FORCEINLINE TimeStampSec GetStateTimeUTC()					{ return m_StateStartTimeUTC; }
 
 		GamePlaySystem& GetGamePlaySystem();
 		GameStateSystem& GetGameStateSystem();

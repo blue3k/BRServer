@@ -126,7 +126,7 @@ namespace ConspiracyGameInstanceServer {
 		//
 
 		// Update Game Player 
-		HRESULT UpdateGamePlayer( ULONG CurTime );
+		HRESULT UpdateGamePlayer(TimeStampMS CurTime );
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//

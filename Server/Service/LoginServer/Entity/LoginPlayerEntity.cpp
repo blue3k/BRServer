@@ -64,7 +64,7 @@ namespace LoginServer {
 		, m_ShardID(0)
 		, m_IsTicketOwner(false)
 	{
-		SetTickInterval(1000);
+		SetTickInterval(DurationMS(1000));
 	}
 
 	LoginPlayerEntity::~LoginPlayerEntity()
@@ -81,7 +81,7 @@ namespace LoginServer {
 		m_IsTicketOwner = false;
 		memset(m_GCMKeys, 0, sizeof(m_GCMKeys) );
 
-		m_TimeToKill.SetTimer(Const::TIME_WAIT_PLAYER_JOIN);
+		m_TimeToKill.SetTimer(DurationMS(Const::TIME_WAIT_PLAYER_JOIN));
 
 	Proc_End:
 
@@ -116,7 +116,7 @@ namespace LoginServer {
 
 	void LoginPlayerEntity::HeartBit()
 	{
-		m_TimeToKill.SetTimer(Const::TIME_WAIT_PLAYER_JOIN);
+		m_TimeToKill.SetTimer(DurationMS(Const::TIME_WAIT_PLAYER_JOIN));
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ namespace LoginServer {
 	HRESULT LoginPlayerEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
 		HRESULT hr = S_OK;
-		ULONG curTime = Util::Time.GetTimeMs();
+		auto curTime = Util::Time.GetTimeMs();
 
 		svrChk( __super::TickUpdate(pAction) );
 
@@ -166,7 +166,7 @@ namespace LoginServer {
 
 
 	// Update Game Player 
-	HRESULT LoginPlayerEntity::UpdateLoginPlayer( ULONG ulCurTime )
+	HRESULT LoginPlayerEntity::UpdateLoginPlayer( TimeStampMS ulCurTime )
 	{
 		HRESULT hr = S_OK;
 

@@ -63,7 +63,7 @@ namespace GameServer {
 	HRESULT UserFriendSystem::InitializeComponent()
 	{
 //		m_MaxFriend = 0;
-		m_LatestStatusSync = 0;
+		m_LatestStatusSync = TimeStampSec(DurationSec(0));
 		return S_OK;
 	}
 

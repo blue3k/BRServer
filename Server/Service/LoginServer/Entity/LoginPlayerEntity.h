@@ -133,7 +133,7 @@ namespace LoginServer {
 		//
 
 		// Update Game Player 
-		HRESULT UpdateLoginPlayer( ULONG CurTime );
+		HRESULT UpdateLoginPlayer(TimeStampMS CurTime );
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////

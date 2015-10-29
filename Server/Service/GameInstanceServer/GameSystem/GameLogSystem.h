@@ -63,16 +63,16 @@ namespace ConspiracyGameInstanceServer {
 		void ClearGameLog();
 
 		// Add log items
-		HRESULT AddGameStateChange( ULONG timeStamp, GameStateID gameState );
+		HRESULT AddGameStateChange(TimeStampSec timeStamp, GameStateID gameState );
 
-		HRESULT AddGameVote( ULONG timeStamp, GameVoteType type, UINT voterCount );
+		HRESULT AddGameVote( TimeStampSec timeStamp, GameVoteType type, UINT voterCount );
 		HRESULT UpdateGameVote( PlayerID voter, PlayerID voted );
 
-		HRESULT AddGameVoteResult( ULONG timeStamp, UINT numRankers, const PlayerID* ranker );
+		HRESULT AddGameVoteResult(TimeStampSec timeStamp, UINT numRankers, const PlayerID* ranker );
 
-		HRESULT AddGamePlayerKilled( ULONG timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID );
+		HRESULT AddGamePlayerKilled(TimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID );
 
-		HRESULT AddGameEnd( ULONG timeStamp, GameWinner winner );
+		HRESULT AddGameEnd(TimeStampSec timeStamp, GameWinner winner );
 
 	};
 
