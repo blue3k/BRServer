@@ -28,7 +28,6 @@ namespace Svr {
 
 	PerformanceCounterServer *PerformanceCounterServer::stm_pInstance = nullptr;
 
-	PerformanceCounterServer::PacketInfo PerformanceCounterServer::PacketInfo::NullValue;
 
 	PerformanceCounterServer::MessageHandler::MessageHandler(PerformanceCounterServer *CounterServer)
 		: m_CounterServer(*CounterServer)
@@ -110,7 +109,7 @@ namespace Svr {
 		}
 	}
 
-	bool PerformanceCounterServer::Run()
+	void PerformanceCounterServer::Run()
 	{
 		SetPriority(Thread::PRIORITY::ABOVE_NORMAL);
 
@@ -138,8 +137,6 @@ namespace Svr {
 
 			UpdateValues();
 		}
-
-		return true;
 	}
 
 	HRESULT PerformanceCounterServer::Initialize(const char* serverAddress, UINT port)

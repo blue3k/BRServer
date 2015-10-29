@@ -36,6 +36,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{F73B8E79-7E16-4CF2-93B1-510030C43E58}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Server\Lib\Common\Common.vcxproj", "{588D141B-A7E7-4210-B5F8-DBCC53D387C3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C79A22EB-2C00-45B9-B4A8-65B1DA546683} = {C79A22EB-2C00-45B9-B4A8-65B1DA546683}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Table", "Server\Lib\Table\Table.vcxproj", "{FE22DD74-B69A-4D34-9C20-ED51D14CD077}"
 EndProject

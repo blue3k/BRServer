@@ -9,8 +9,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-template <class DataObject>
-PageQueue<DataObject>::PageQueue( int iDataPerPage )
+template <class DataType>
+PageQueue<DataType>::PageQueue( int iDataPerPage )
 	: m_NumberOfItemsPerPage(0)
 	, m_PageIndex(0)
 	, m_pMemoryPool(nullptr)
@@ -23,7 +23,7 @@ PageQueue<DataObject>::PageQueue( int iDataPerPage )
 
 
 	// calculate allignment
-	size_t szDataAllign = __alignof(DataObject);
+	size_t szDataAllign = __alignof(DataType);
 	size_t szPageHdr = sizeof(PageHeader);
 
 	szPageHdr = ((szPageHdr + szDataAllign - 1) / szDataAllign ) * szDataAllign;
@@ -42,8 +42,8 @@ PageQueue<DataObject>::PageQueue( int iDataPerPage )
 	// fix up to maximum available power of two size
 	if (m_pMemoryPool != nullptr)
 	{
-		auto elementAreaSize = m_pMemoryPool->GetAllocSize() - sizeof(Page)- sizeof(DataObject);
-		auto maximumNumberOfElementPerPage = elementAreaSize / sizeof(DataObject);
+		auto elementAreaSize = m_pMemoryPool->GetAllocSize() - sizeof(Page)- sizeof(DataType);
+		auto maximumNumberOfElementPerPage = elementAreaSize / sizeof(DataType);
 		auto nearPower = Util::NearPowerOf2((UINT32)maximumNumberOfElementPerPage);
 		if (nearPower > maximumNumberOfElementPerPage) nearPower >>= 1;
 		m_NumberOfItemsPerPage = nearPower;
@@ -64,8 +64,8 @@ PageQueue<DataObject>::PageQueue( int iDataPerPage )
 }
 
 
-template <class DataObject>
-PageQueue<DataObject>::~PageQueue(void)
+template <class DataType>
+PageQueue<DataType>::~PageQueue(void)
 {
 	Page* pCurPage = (Page*)m_DequeuePage;
 
@@ -79,8 +79,8 @@ PageQueue<DataObject>::~PageQueue(void)
 
 }
 
-template <class DataObject>
-typename PageQueue<DataObject>::Page* PageQueue<DataObject>::AllocatePage()
+template <class DataType>
+typename PageQueue<DataType>::Page* PageQueue<DataType>::AllocatePage()
 {
 	void *pNewPageBuff = NULL;
 
@@ -95,8 +95,8 @@ typename PageQueue<DataObject>::Page* PageQueue<DataObject>::AllocatePage()
 	return pNewPage;
 }
 
-template <class DataObject>
-void PageQueue<DataObject>::FreePage(Page* pPage)
+template <class DataType>
+void PageQueue<DataType>::FreePage(Page* pPage)
 {
 	if (pPage == nullptr) return;
 	
@@ -108,8 +108,8 @@ void PageQueue<DataObject>::FreePage(Page* pPage)
 		delete (BYTE*)pPage;
 }
 
-template <class DataObject>
-HRESULT PageQueue<DataObject>::DequeuePageMove()
+template <class DataType>
+HRESULT PageQueue<DataType>::DequeuePageMove()
 {
 	// We use Page ID to sync check of HeadPage then pointer
 	Page* curDequeue = m_DequeuePage.load(std::memory_order_relaxed);
@@ -130,8 +130,8 @@ HRESULT PageQueue<DataObject>::DequeuePageMove()
 	return S_OK;
 }
 
-template <class DataObject>
-HRESULT PageQueue<DataObject>::DequeuePageMoveMT()
+template <class DataType>
+HRESULT PageQueue<DataType>::DequeuePageMoveMT()
 {
 	// We use Page ID to sync check of HeadPage then pointer
 	Page* curDequeue = m_DequeuePage.load(std::memory_order_relaxed);
@@ -155,8 +155,8 @@ HRESULT PageQueue<DataObject>::DequeuePageMoveMT()
 	return S_OK;
 }
 
-template <class DataObject>
-void PageQueue<DataObject>::EnqueuePageMove(Page* pMyEnqueuePage, CounterType myPageID)
+template <class DataType>
+void PageQueue<DataType>::EnqueuePageMove(Page* pMyEnqueuePage, CounterType myPageID)
 {
 	int nLockTry = 0;
 
@@ -189,19 +189,20 @@ void PageQueue<DataObject>::EnqueuePageMove(Page* pMyEnqueuePage, CounterType my
 	m_EnqueuePageID.store(newHead->Header.PageID, std::memory_order_release);
 }
 
-template <class DataObject>
-HRESULT PageQueue<DataObject>::Enqueue(const DataObject& item)
+template <class DataType>
+HRESULT PageQueue<DataType>::Enqueue(const DataType& item)
 {
-	return Enqueue(std::forward<DataObject>(const_cast<DataObject&>(item)));
+	return Enqueue(std::forward<DataType>(const_cast<DataType&>(item)));
 }
 
-template <class DataObject>
-HRESULT PageQueue<DataObject>::Enqueue( DataObject&& item )
+template <class DataType>
+HRESULT PageQueue<DataType>::Enqueue( DataType&& item )
 {
 	HRESULT hr = S_OK;
+	auto defaultValue = DefaultValue<DataType>();
 
-	Assert(item != nullptr);
-	if (item == nullptr)
+	Assert(item != defaultValue);
+	if (item == defaultValue)
 		return E_FAIL;
 
 	// total ticket number
@@ -250,7 +251,7 @@ HRESULT PageQueue<DataObject>::Enqueue( DataObject&& item )
 	Assert(pMyEnqueuePage->Header.PageID == myPageID);
 
 	// this page is appropriate to write....write to this page
-	pMyEnqueuePage->Element[myCellID] = std::forward<DataObject>(item);
+	pMyEnqueuePage->Element[myCellID] = std::forward<DataType>(item);
 
 	CounterType WriteCount = pMyEnqueuePage->Header.WriteCounter.fetch_add(1, std::memory_order_relaxed) + 1;
 
@@ -267,9 +268,10 @@ Proc_End:
 	return S_OK;
 }
 
-template <class DataObject>
-HRESULT PageQueue<DataObject>::Dequeue( DataObject& item )
+template <class DataType>
+HRESULT PageQueue<DataType>::Dequeue( DataType& item )
 {
+	auto defaultValue = DefaultValue<DataType>();
 	// empty state / readcount is bigger than written count
 	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return E_FAIL;
 
@@ -299,7 +301,7 @@ HRESULT PageQueue<DataObject>::Dequeue( DataObject& item )
 	// Read the data & clear that read position 
 	int LockTry = 0;
 	Page* pMyPage = m_DequeuePage.load(std::memory_order_relaxed);
-	while (pMyPage->Element[myCellID] == nullptr)
+	while (pMyPage->Element[myCellID] == defaultValue)
 	{
 		LockTry++;
 		if (LockTry % MaximumRetryInARow)
@@ -308,11 +310,11 @@ HRESULT PageQueue<DataObject>::Dequeue( DataObject& item )
 		}
 	}
 
-	Assert(pMyPage->Element[myCellID] != nullptr);
+	Assert(pMyPage->Element[myCellID] != defaultValue);
 
-	item = std::forward<DataObject>(pMyPage->Element[myCellID]);
+	item = std::forward<DataType>(pMyPage->Element[myCellID]);
 
-	pMyPage->Element[myCellID] = nullptr;
+	pMyPage->Element[myCellID] = defaultValue;
 
 	// When the queue is used with shared pointer these order is very important
 	std::atomic_thread_fence(std::memory_order_release);
@@ -323,10 +325,11 @@ HRESULT PageQueue<DataObject>::Dequeue( DataObject& item )
 	return S_OK;
 }
 
-template <class DataObject>
-HRESULT PageQueue<DataObject>::DequeueMT( DataObject& item, DurationMS uiCheckInterval )
+template <class DataType>
+HRESULT PageQueue<DataType>::DequeueMT( DataType& item, DurationMS uiCheckInterval )
 {
 	HRESULT hr = S_OK;
+	auto defaultValue = DefaultValue<DataType>();
 
 	// total ticket number
 	CounterType myDequeueTicket = m_DequeueTicket.fetch_add(1,std::memory_order_relaxed);
@@ -347,7 +350,7 @@ HRESULT PageQueue<DataObject>::DequeueMT( DataObject& item, DurationMS uiCheckIn
 
 	// Read the data & clear that read position 
 	int LockTry = 0;
-	while( pMyDequeuePage->Element[myCellID] == nullptr )
+	while( pMyDequeuePage->Element[myCellID] == defaultValue)
 	{
 		LockTry++;
 		if( LockTry%5 )
@@ -362,7 +365,7 @@ HRESULT PageQueue<DataObject>::DequeueMT( DataObject& item, DurationMS uiCheckIn
 
 	std::atomic_thread_fence(std::memory_order_release);
 
-	pMyDequeuePage->Element[myCellID] = nullptr;
+	pMyDequeuePage->Element[myCellID] = defaultValue;
 
 	// increment item read count
 	CounterType ReadCount = pMyDequeuePage->Header.ReadCounter.fetch_add(1,std::memory_order_relaxed) + 1;
@@ -381,9 +384,10 @@ HRESULT PageQueue<DataObject>::DequeueMT( DataObject& item, DurationMS uiCheckIn
 
 // Just get first item
 // This will not safe if use DequeueMT
-template <class DataObject>
-HRESULT PageQueue<DataObject>::GetFront( DataObject& item )
+template <class DataType>
+HRESULT PageQueue<DataType>::GetFront( DataType& item )
 {
+	auto defaultValue = DefaultValue<DataType>();
 	// empty state / readcount is bigger than written count
 	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return E_FAIL;
 
@@ -413,7 +417,7 @@ HRESULT PageQueue<DataObject>::GetFront( DataObject& item )
 	// Read the data & clear that read position 
 	int LockTry = 0;
 	Page* pMyPage = m_DequeuePage.load(std::memory_order_relaxed);
-	while (pMyPage->Element[myCellID] == nullptr)
+	while (pMyPage->Element[myCellID] == defaultValue)
 	{
 		LockTry++;
 		if (LockTry % 10)
@@ -427,16 +431,16 @@ HRESULT PageQueue<DataObject>::GetFront( DataObject& item )
 	return S_OK;
 }
 
-template <class DataObject>
-inline CounterType PageQueue<DataObject>::GetEnqueCount() const
+template <class DataType>
+inline CounterType PageQueue<DataType>::GetEnqueCount() const
 {
 	return m_EnqueueTicket.load(std::memory_order_relaxed) - m_DequeueTicket.load(std::memory_order_relaxed);
 }
 
 // Clear queue and remove all enqueued items
 // This operation is not thread safe
-template <class DataObject>
-void PageQueue<DataObject>::ClearQueue()
+template <class DataType>
+void PageQueue<DataType>::ClearQueue()
 {
 	m_PageIndex = 1;
 

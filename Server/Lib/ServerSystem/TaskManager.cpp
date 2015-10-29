@@ -257,7 +257,7 @@ namespace Svr {
 	}
 
 	// run function
-	bool TaskWorker::Run()
+	void TaskWorker::Run()
 	{
 		m_TimeScheduler.UpdateWorkingThreadID(std::this_thread::get_id());
 
@@ -284,8 +284,6 @@ namespace Svr {
 			//UpdateTickTask();
 
 		} // while
-
-		return true;
 	}
 
 

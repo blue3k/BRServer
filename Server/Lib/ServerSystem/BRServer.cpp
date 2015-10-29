@@ -441,11 +441,13 @@ Proc_End:
 	}
 
 
-	bool BrServer::Run()
+	void BrServer::Run()
 	{
 		HRESULT hr = S_OK;
 		const DurationMS lMinCheckTime = DurationMS(10); // 10ms
 
+
+		if (!OnStart()) return;
 
 		m_bIsKillSignaled = false;
 		m_bStartTransaction = false;
@@ -493,7 +495,8 @@ Proc_End:
 		// Server stoping
 		SetServerState( ServerState::STOPING );
 
-		return true;
+		OnEnd();
+
 	}
 
 

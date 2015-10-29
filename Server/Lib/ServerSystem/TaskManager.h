@@ -112,7 +112,7 @@ namespace Svr {
 		HRESULT PendingRemoveTask( TickTask* pTask );
 
 		// run function
-		virtual bool Run();
+		virtual void Run() override;
 	};
 
 

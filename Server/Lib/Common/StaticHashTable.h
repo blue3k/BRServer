@@ -15,6 +15,7 @@
 #include "Common/BrAssert.h"
 #include "Common/Indexing.h"
 #include "Common/Synchronization.h"
+#include "Common/SynchronizationTrait.h"
 #include "Common/ArrayUtil.h"
 #include "Common/HashTableTrait.h"
 #include "Common/OrderedLinkedList.h"
@@ -35,7 +36,7 @@ namespace Hash {
 					typename Indexer, 
 					typename MapItemConverter, 
 					typename Trait = UniqueKeyTrait, 
-					typename ThreadTrait = ThreadSyncTraitReadWrite,
+					typename ThreadTrait = ThreadSyncTraitReadWriteT<Indexer::Type, ItemType*>,
 					size_t	DefaultBucketSize = 128,
 					typename Hasher = Hash::hash<typename Indexer::Type> >
 		class StaticHashTable

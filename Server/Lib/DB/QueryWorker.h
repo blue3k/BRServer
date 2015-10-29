@@ -59,7 +59,7 @@ namespace DB {
 
 	private:
 		// Override run in Thread
-		virtual bool Run(); 
+		virtual void Run() override;
 
 
 		// Send Query

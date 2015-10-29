@@ -91,7 +91,7 @@ namespace DB {
 	}
 
 	
-	bool QueryWorker::Run()
+	void QueryWorker::Run()
 	{
 		HRESULT	hr = S_OK;
 		DurationMS expectedTickInterval(5);
@@ -120,8 +120,6 @@ namespace DB {
 
 
 		dbTrace(TRC_INFO, "Closing DB Worker");
-
-		return true;
 	}
 
 

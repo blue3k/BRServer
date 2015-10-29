@@ -25,7 +25,6 @@ namespace BR
 	class SharedPointer
 	{
 	public:
-		static SharedPointer NullValue;
 
 	protected:
 		mutable SharedObject *m_pObject;
@@ -312,7 +311,6 @@ namespace BR
 	class WeakPointer
 	{
 	public:
-		static WeakPointer NullValue;
 
 	protected:
 
@@ -329,6 +327,8 @@ namespace BR
 
 		void FromSharedObject(SharedObject *pObject)
 		{
+			ReleaseReference();
+
 			m_pObject = pObject;
 
 			if (m_pObject != nullptr)
@@ -471,6 +471,16 @@ namespace BR
 
 			return *this;
 		}
+
+
+		//WeakPointer& operator = (void* src)
+		//{
+		//	// Assigning non pointer directly isn't thread safe
+		//	assert(src != nullptr);
+		//	ReleaseReference();
+
+		//	return *this;
+		//}
 #endif
 	};
 

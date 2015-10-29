@@ -99,6 +99,9 @@
     <ClCompile Include="Synchronization.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
+    <ClCompile Include="TypeUtility.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\GameConst.h" />
@@ -348,6 +351,9 @@
     </ClInclude>
     <ClInclude Include="Synchronization.h">
       <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeUtility.h">
+      <Filter>Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -152,9 +152,9 @@ namespace Svr {
 		//	Thread override
 		//
 
-		virtual bool OnStart();
-		virtual bool Run();
-		virtual bool OnEnd();
+		bool OnStart();
+		virtual void Run() override;
+		bool OnEnd();
 
 
 		///////////////////////////////////////////////////////////////////////////

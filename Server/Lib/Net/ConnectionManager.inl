@@ -18,9 +18,10 @@
 
 
 
-ConnectionManager::Operation::Operation()
+ConnectionManager::Operation::Operation(void* ptr)
 	:pConn(0), EnqueuedTime(DurationMS(0)), OpCode(OP_NONE)
 {
+	assert(ptr == nullptr);
 }
 
 ConnectionManager::Operation::Operation( Operation&& src )
@@ -86,14 +87,6 @@ void ConnectionManager::Operation::Clear()
 	pConn = SharedPointerT<Connection>();
 }
 
-inline ConnectionManager::Operation& ConnectionManager::Operation::operator = (void* src)
-{
-	assert(src == nullptr);
-	OpCode.store(OperationCode::OP_NONE, std::memory_order_relaxed);
-	pConn = SharedPointerT<Connection>();
-	return *this;
-}
-
 // These operation is used for empty value os just compare with OpCode
 bool ConnectionManager::Operation::operator != ( const Operation& src ) const
 {
@@ -105,17 +98,7 @@ bool ConnectionManager::Operation::operator == ( const Operation& src ) const
 	return OpCode.load(std::memory_order_relaxed) == src.OpCode.load(std::memory_order_relaxed);
 }
 
-inline bool ConnectionManager::Operation::operator == (void* src) const
-{
-	assert(src == nullptr);
-	return OpCode.load(std::memory_order_relaxed) == OperationCode::OP_NONE;
-}
 
-inline bool ConnectionManager::Operation::operator != (void* src) const
-{
-	assert(src == nullptr);
-	return OpCode.load(std::memory_order_relaxed) != OperationCode::OP_NONE;
-}
 
 
 

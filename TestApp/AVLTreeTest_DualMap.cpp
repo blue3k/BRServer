@@ -353,9 +353,9 @@ TEST_F(AVLTreeTest, DualSortedMapRandomForeach)
 	const unsigned offset = 611;
 #endif
 
-	ULONG start = BR::Util::Time.GetRawTimeMs();
-	ULONG end = BR::Util::Time.GetRawTimeMs();
-	ULONG runningTime = 2 * 60 * 1000;
+	TimeStampMS start = BR::Util::Time.GetRawTimeMs();
+	TimeStampMS end = BR::Util::Time.GetRawTimeMs();
+	DurationMS runningTime = DurationMS(2 * 60 * 1000);
 	int *Status = new int[numberOfTest];
 	memset(Status, 0, sizeof(int)*numberOfTest);
 	for (unsigned iTest = 0; (end - start) < runningTime; iTest++)
@@ -440,7 +440,7 @@ TEST_F(AVLTreeTest, DualSortedMapThread)
 			{
 				while (true)
 				{
-					ULONG loopInterval = pThread->UpdateInterval(10);
+					auto loopInterval = pThread->UpdateInterval(DurationMS(10));
 
 					if (pThread->CheckKillEvent(loopInterval))
 					{
@@ -466,12 +466,12 @@ TEST_F(AVLTreeTest, DualSortedMapThread)
 		threads.push_back(thread);
 	}
 
-	ULONG start = BR::Util::Time.GetRawTimeMs();
-	ULONG end = BR::Util::Time.GetRawTimeMs();
+	auto start = BR::Util::Time.GetRawTimeMs();
+	auto end = BR::Util::Time.GetRawTimeMs();
 #ifdef DEBUG
-	ULONG runningTime = 10 * 60 * 1000;
+	auto runningTime = DurationMS(10 * 60 * 1000);
 #else
-	ULONG runningTime = 30 * 60 * 1000;
+	auto runningTime = DurationMS(30 * 60 * 1000);
 #endif
 	for (unsigned iTest = numberOfTest; (end - start) < runningTime; iTest++)
 	{

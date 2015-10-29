@@ -79,15 +79,13 @@ namespace Net {
 				ConnectionState state;
 			} Value;
 
-			tag_Event()	{}
+			tag_Event(void* ptr = nullptr)									{ assert(ptr == nullptr); }
 			//tag_Event(const tag_Event& src) : EventType(src.EventType){ Value = src.Value; }
 			tag_Event(EventTypes eventType, HRESULT hrRes) :EventType(eventType) { Value.hr = hrRes; }
 			tag_Event(EventTypes eventType, ConnectionState InState) :EventType(eventType) { Value.state = InState; }
-			inline tag_Event& operator =(const tag_Event& src);
-			inline tag_Event& operator =(void* src);
-			inline bool operator == (const tag_Event& src) const;
-			inline bool operator == (void* src) const;
-			inline bool operator != (void* src) const;
+			tag_Event& operator =(const tag_Event& src);
+			bool operator == (const tag_Event& src) const;
+			bool operator != (const tag_Event& src) const;
 		};
 		typedef tag_Event Event;
 
@@ -308,9 +306,6 @@ namespace Net {
 
 		struct Event
 		{
-			// Empty value definition
-			static Event NullValue;
-
 
 			// Type of connection event
 			enum EventTypes
@@ -328,13 +323,12 @@ namespace Net {
 			IConnection		*EventConnection;
 
 
-			inline Event();
+			inline Event(void* ptr = nullptr);
 			inline Event( EventTypes eventType, IConnection *pCon = NULL );
 			inline Event& operator =( const Event& src );
-			inline Event& operator =(void* src);
-			inline bool operator == ( const Event& src ) const;
-			inline bool operator == (void* src) const;
-			inline bool operator != (void* src) const;
+
+			inline bool operator == (const Event& src) const;
+			inline bool operator != (const Event& src) const;
 		};
 
 

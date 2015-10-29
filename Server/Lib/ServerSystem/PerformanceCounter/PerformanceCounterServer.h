@@ -67,24 +67,26 @@ namespace Svr {
 				sockaddr_in6 From;
 				Message::MessageData* pMessage;
 
-				PacketInfo()
+				PacketInfo(void* ptr = nullptr)
 					: pMessage(nullptr)
-				{}
+				{
+					assert(ptr == nullptr);
+				}
 
 				PacketInfo(const sockaddr_in6& from, Message::MessageData* pMsg)
 					: pMessage(pMsg), From(from)
 				{}
 
-				static PacketInfo NullValue;
+				PacketInfo(const PacketInfo& src)
+					: pMessage(src.pMessage)
+					, From(src.From)
+				{}
 
 				PacketInfo& operator = (const PacketInfo& src) { From = src.From; pMessage = src.pMessage; return *this; }
 				PacketInfo& operator = (PacketInfo&& src) { From = src.From; pMessage = src.pMessage; src.pMessage = nullptr; return *this; }
-				PacketInfo& operator = (void* src) { pMessage = nullptr; return *this; }
 
 				bool operator == (const PacketInfo& src) const { return pMessage == src.pMessage; }
-				bool operator == (void* src) const { return pMessage == nullptr; }
-				bool operator != (void* src) const { return pMessage != nullptr; }
-
+				bool operator != (const PacketInfo& src) const { return pMessage != src.pMessage; }
 			};
 
 			PageQueue<PacketInfo> m_NewDeleteQueue;
@@ -104,7 +106,7 @@ namespace Svr {
 			void UpdateNewFreeInstance();
 			void UpdateValues();
 
-			virtual bool Run() override;
+			virtual void Run() override;
 
 		public:
 

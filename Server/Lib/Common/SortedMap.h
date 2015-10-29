@@ -186,6 +186,7 @@ namespace BR
 
 		// Find a key value
 		HRESULT Find(KeyType key, ValueType& value, INT64 *pOrder = nullptr);
+		HRESULT FindInWriteTree(KeyType key, ValueType& value)				{ return Find(key, value); }
 
 		// get number of values
 		SynchronizeCounterType GetItemCount()								{ return m_ItemCount; }
@@ -193,6 +194,9 @@ namespace BR
 		// enumerate the values
 		HRESULT ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
 		HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+
+		// for interface match
+		HRESULT CommitChanges() { return S_OK;  }
 
 
 	private:

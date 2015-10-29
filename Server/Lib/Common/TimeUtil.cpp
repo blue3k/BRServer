@@ -33,7 +33,7 @@ namespace Util {
 			Start();
 		}
 
-		virtual bool Run()
+		virtual void Run() override
 		{
 			DurationMS expectedTickInterval(10);
 			SetPriority(PRIORITY::TIME_CRITICAL);
@@ -51,8 +51,6 @@ namespace Util {
 
 				Time.UpdateTimer();
 			}
-
-			return true;
 		}
 	};
 

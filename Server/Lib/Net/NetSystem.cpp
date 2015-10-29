@@ -376,7 +376,7 @@ namespace Net {
 		//
 
 
-		bool IOCPWorker::Run()
+		void IOCPWorker::Run()
 		{
 			HRESULT hr = S_OK;
 			BOOL bResult;
@@ -487,7 +487,6 @@ namespace Net {
 
 			} // while(1)
 
-			return true;
 		}
 
 

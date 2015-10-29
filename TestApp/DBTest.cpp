@@ -143,7 +143,7 @@ TEST_F(DBTest, DBManager)
 				"brave", "dydwk12#" );
 
 
-	srand( Util::Time.GetRawTimeMs() );
+	srand(Util::Time.GetRawTimeMs().time_since_epoch().count() );
 
 	std::vector<std::function<void()>> queryList;
 

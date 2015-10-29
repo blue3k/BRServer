@@ -44,7 +44,7 @@ namespace Hash {
 			typedef ItemType ValueType;
 
 			typedef typename ThreadTrait::TicketLockType	TicketLockType;
-			typedef typename ThreadTrait::BucketContainer BucketContainer;
+			typedef typename ThreadTrait::BucketContainer	BucketContainer;
 
 
 			// Hash bucket

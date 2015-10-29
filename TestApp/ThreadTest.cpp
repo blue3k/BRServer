@@ -112,7 +112,7 @@ namespace BR
 
 		SyncCounter PrintCount;
 
-		virtual bool Run() override
+		virtual void Run() override
 		{
 			PrintCount = 0;
 
@@ -167,8 +167,6 @@ namespace BR
 					WorkedItems.fetch_add(1, std::memory_order_relaxed);
 				}
 			}
-
-			return true;
 		}
 
 	private:
@@ -628,7 +626,7 @@ TEST_F(ThreadTest, PagedQueue_PerformanceCompare_PageQueue)
 	threads.clear();
 
 	auto end = BR::Util::Time.GetRawTimeMs();
-	printf("PageQueue Execution Time:      %15d\n", end - start);
+	printf("PageQueue Execution Time:      %15d\n", (end - start).count());
 
 	delete testArray;
 }
@@ -689,7 +687,7 @@ TEST_F(ThreadTest, PagedQueue_PerformanceCompare_Concurrent)
 	threads.clear();
 
 	auto end = BR::Util::Time.GetRawTimeMs();
-	printf("concurrent_queue Execution Time: %15d\n", end - start);
+	printf("concurrent_queue Execution Time: %15d\n", (end - start).count());
 
 	delete testArray;
 }
