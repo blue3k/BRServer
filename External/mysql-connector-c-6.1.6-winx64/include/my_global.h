@@ -629,58 +629,15 @@ enum loglevel {
 };
 
 
-#ifdef _WIN32
-/****************************************************************************
-** Replacements for localtime_r and gmtime_r
-****************************************************************************/
-
-static inline struct tm *localtime_r(const time_t *timep, struct tm *tmp)
-{
-  localtime_s(tmp, timep);
-  return tmp;
-}
-
-static inline struct tm *gmtime_r(const time_t *clock, struct tm *res)
-{
-  gmtime_s(res, clock);
-  return res;
-}
-
-
-/*
-  Declare a union to make sure FILETIME is properly aligned
-  so it can be used directly as a 64 bit value. The value
-  stored is in 100ns units.
-*/
-union ft64 {
-  FILETIME ft;
-  __int64 i64;
- };
-
-struct timespec {
-  union ft64 tv;
-  /* The max timeout value in millisecond for native_cond_timedwait */
-  long max_timeout_msec;
-};
-
-#endif /* _WIN32 */
-
 C_MODE_START
 extern ulonglong my_getsystime(void);
 C_MODE_END
 
 static inline void set_timespec_nsec(struct timespec *abstime, ulonglong nsec)
 {
-#ifndef _WIN32
   ulonglong now= my_getsystime() + (nsec / 100);
   abstime->tv_sec=   now / 10000000ULL;
   abstime->tv_nsec= (now % 10000000ULL) * 100 + (nsec % 100);
-#else
-  union ft64 tv;
-  GetSystemTimeAsFileTime(&tv.ft);
-  abstime->tv.i64= tv.i64 + (__int64)(nsec / 100);
-  abstime->max_timeout_msec= (long)(nsec / 1000000);
-#endif
 }
 
 static inline void set_timespec(struct timespec *abstime, ulonglong sec)
@@ -697,30 +654,19 @@ static inline void set_timespec(struct timespec *abstime, ulonglong sec)
 */
 static inline int cmp_timespec(struct timespec *ts1, struct timespec *ts2)
 {
-#ifndef _WIN32
   if (ts1->tv_sec > ts2->tv_sec ||
       (ts1->tv_sec == ts2->tv_sec && ts1->tv_nsec > ts2->tv_nsec))
     return 1;
   if (ts1->tv_sec < ts2->tv_sec ||
       (ts1->tv_sec == ts2->tv_sec && ts1->tv_nsec < ts2->tv_nsec))
     return -1;
-#else
-  if (ts1->tv.i64 > ts2->tv.i64)
-    return 1;
-  if (ts1->tv.i64 < ts2->tv.i64)
-    return -1;
-#endif
   return 0;
 }
 
 static inline ulonglong diff_timespec(struct timespec *ts1, struct timespec *ts2)
 {
-#ifndef _WIN32
   return (ts1->tv_sec - ts2->tv_sec) * 1000000000ULL +
     ts1->tv_nsec - ts2->tv_nsec;
-#else
-  return (ts1->tv.i64 - ts2->tv.i64) * 100;
-#endif
 }
 
 /* File permissions */

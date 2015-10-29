@@ -47,14 +47,19 @@ goto quit
 echo continue
 )
 
+rem copy headers
 xcopy External\zlib-1.2.8\*.h External\Include\zlib\* /S /R /Y
 
 
 xcopy External\curl7.41\ms\Debug\* Server\bin\lib\x64Debug\* /y
 xcopy External\curl7.41\ms\RelWithDebInfo\* Server\bin\lib\x64Release\* /y
 
+xcopy External\libiconv-1.14\include\iconv.h External\Include\ /S /R /Y
+xcopy External\libiconv-1.14\libcharset\include\libcharset.h External\Include\ /S /R /Y
+xcopy External\libiconv-1.14\libcharset\include\localcharset.h External\Include\ /S /R /Y
 
 
+rem copy libraries
 xcopy External\mysql-connector-c-6.1.6-winx64\lib\vs12\mysqlclient.lib Server\bin\lib\x64Debug\ /y
 xcopy External\mysql-connector-c-6.1.6-winx64\lib\vs12\mysqlclient.lib Server\bin\lib\x64Release\ /y
 xcopy External\mysql-connector-c-6.1.6-winx64\lib\libmysql.* Server\bin\lib\x64Debug\ /y

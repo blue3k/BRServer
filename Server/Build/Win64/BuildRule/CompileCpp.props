@@ -15,7 +15,7 @@
     </ClCompile>
     <Link>
       <AddModuleNamesToAssembly>..\..\bin\lib</AddModuleNamesToAssembly>
-      <AdditionalDependencies>libcharset.lib;libiconv.lib;libmysql.lib;libxml.lib;libeay32.lib;libcurl.lib;lib_json.lib;External.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libiconv.lib;libmysql.lib;libxml.lib;libeay32.lib;libcurl.lib;lib_json.lib;External.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

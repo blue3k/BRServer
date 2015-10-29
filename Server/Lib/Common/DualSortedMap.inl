@@ -783,7 +783,7 @@
 		}
 
 
-		// interate
+		// iterate
 		do
 		{
 			if (!functor(pCurNode->Key, pCurNode->Value))
@@ -798,7 +798,7 @@
 			{
 				pCurNode = FindBiggestNodeRead(travelHistory, left);
 			}
-			else // this is a leap node pop up
+			else // this is a leaf node pop up
 			{
 				travelHistory.RemoveLastHistory();
 				MapNode* parent = nullptr;

@@ -139,10 +139,11 @@ TEST_F(AVLTreeTest, SortedMapOrderSequential)
 			return true;
 		});
 
+		innerTest = numberOfTest - iTest;
 		sortedMap.ForeachReverseOrder(iTest, numberOfTest, [&](const UINT& key, const UINT& value) -> bool
 		{
 			innerTest--;
-			AssertRel(TestValues[iTest + innerTest] == value);
+			AssertRel(TestValues[innerTest] == value);
 			return true;
 		});
 	}
@@ -158,10 +159,11 @@ TEST_F(AVLTreeTest, SortedMapOrderSequential)
 			return true;
 		});
 
+		innerTest = numberOfTest;
 		sortedMap.ForeachReverseOrder(0, numberOfTest - iTest, [&](const UINT& key, const UINT& value)
 		{
+			innerTest--;
 			AssertRel(TestValues[innerTest] == value);
-			innerTest++;
 			return true;
 		});
 	}
