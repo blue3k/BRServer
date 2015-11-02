@@ -86,7 +86,7 @@ namespace Svr {
 
 		if( entityID.FacultyID == (UINT)EntityFaculty::Service )
 		{
-			ClusteredServiceEntity* pClusterService = DEBUG_DYNAMIC_CAST(ClusteredServiceEntity*,pEntity);
+			ClusteredServiceEntity* pClusterService = dynamic_cast<ClusteredServiceEntity*>(pEntity);
 			if( pClusterService != nullptr )
 				pClusterService->RegisterServiceMessageHandler( GetLoopbackServerEntity() );
 		}

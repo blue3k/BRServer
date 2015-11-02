@@ -315,7 +315,11 @@ namespace Svr {
 			WCHAR *strUser = nullptr; WCHAR *strPWD = nullptr;
 			WCHAR *strServiceName = nullptr;
 
+#if WINDOWS
 			SetCurrentDirectoryW( Util::GetModulePath() );
+#else
+			chdir(Util::GetModulePathA());
+#endif
 
 			strCfgPath.append(L"..\\..\\Config\\ServerConfig.xml");
 

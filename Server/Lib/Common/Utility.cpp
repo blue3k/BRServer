@@ -47,8 +47,8 @@ namespace Util {
 			_wsplitpath_s( g_wszModulePath, drive, dir, g_wszModuleName, ext );
 			_snwprintf_s( g_wszModulePath, MAX_PATH, L"%s%s", drive, dir );
 
-			StrUtil::WCSToMBCS( g_wszModulePath, g_szModulePath );
-			StrUtil::WCSToMBCS( g_wszModuleName, g_szModuleName );
+			StrUtil::WCSToUTF8( g_wszModulePath, g_szModulePath );
+			StrUtil::WCSToUTF8( g_wszModuleName, g_szModuleName );
 		}
 
 		// If the service name isn't specified, use module name for it
@@ -78,13 +78,13 @@ namespace Util {
 	}
 	void SetServiceName(const WCHAR* serviceName)
 	{
-		StrUtil::WCSToMBCS( serviceName, g_szServiceName );
+		StrUtil::WCSToUTF8( serviceName, g_szServiceName );
 		StrUtil::StringCpy( g_wszServiceName, serviceName );
 	}
 
-	void SetServiceNameA(const char* serviceName)
+	void SetServiceName(const char* serviceName)
 	{
-		StrUtil::MBCSToWCS(serviceName, g_wszServiceName);
+		StrUtil::UTF8ToWCS(serviceName, g_wszServiceName);
 		StrUtil::StringCpy(g_szServiceName, serviceName);
 	}
 
@@ -128,11 +128,11 @@ namespace Util {
 		DWORD cNumRead, fdwSaveOldMode = 0; 
 		INPUT_RECORD irInBuf; 
 
-		if( hConsole == INVALID_HANDLE_VALUE )
+		if( hConsole == INVALID_NATIVE_HANDLE_VALUE )
 		{
 			// Get the standard input handle. 
 			hConsole = GetStdHandle(STD_INPUT_HANDLE); 
-			if (hConsole == INVALID_HANDLE_VALUE) 
+			if (hConsole == INVALID_NATIVE_HANDLE_VALUE) 
 				trcErr( E_FAIL );
 		}
 
@@ -184,7 +184,7 @@ namespace Util {
 
 	Proc_End:
 
-		if( hConsole != INVALID_HANDLE_VALUE && fdwSaveOldMode != 0 )
+		if( hConsole != INVALID_NATIVE_HANDLE_VALUE && fdwSaveOldMode != 0 )
 			SetConsoleMode(hConsole, fdwSaveOldMode);
 
 		return hr; 

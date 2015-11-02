@@ -122,7 +122,7 @@ namespace Svr {
 			if( pService == nullptr || pService->GetServerEntity() == nullptr )
 				return nullptr;
 
-			return DEBUG_DYNAMIC_CAST(ServerServiceType*,pService);
+			return dynamic_cast<ServerServiceType*>(pService);
 		}
 
 	};

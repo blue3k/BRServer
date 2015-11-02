@@ -13,10 +13,9 @@
 #include "stdafx.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
-#include <Mmsystem.h>
+#include "Common/Thread.h"
 
 
-#pragma comment(lib, "Winmm.lib")
 
 
 namespace BR {
@@ -157,7 +156,7 @@ namespace Util {
 	//
 
 
-	DurationMS TimeMin(DurationMS timeMs, DurationMS timeMs2)
+	DurationMS TimeMinNonZero(DurationMS timeMs, DurationMS timeMs2)
 	{
 		if ((INT)timeMs.count() <= 0) return timeMs2;
 		if ((INT)timeMs2.count() <= 0) return timeMs;
@@ -165,8 +164,11 @@ namespace Util {
 		return (timeMs - timeMs2).count() >= 0 ? timeMs2 : timeMs;
 	}
 
-	TimeStampMS TimeMin(TimeStampMS timeMs, TimeStampMS timeMs2)
+	TimeStampMS TimeMinNonZero(TimeStampMS timeMs, TimeStampMS timeMs2)
 	{
+		if (timeMs == TimeStampMS::min()) return timeMs2;
+		if (timeMs2 == TimeStampMS::min()) return timeMs;
+
 		return timeMs > timeMs2 ? timeMs2 : timeMs;
 	}
 

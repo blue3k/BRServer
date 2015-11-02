@@ -12,9 +12,8 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/Thread.h"
-#include "Common/SharedObj.h"
 #include "Common/StrUtil.h"
+#include "Common/TimeUtil.h"
 #include "Common/StrFormat.h"
 
 
@@ -116,6 +115,8 @@ namespace Trace {
 	public:
 		enum { MAX_TRACEMODULE = 30 };
 
+		static const char* CONFIG_FILENAME;
+
 	private:
 		// Trace mode Mask 
 		UINT			m_uiTraceMask;
@@ -123,15 +124,20 @@ namespace Trace {
 		// Name of trace module
 		char*			m_szName;
 		char*			m_szNameTag;
-		//UINT			m_uiNameLen;
+
+		static TimeStampMS     m_MaskUpdated;
+		static std::unordered_map<std::string, UINT32> stm_Masks;
 		
 	private:
 
 		// Module state registry key
-		static HKEY		stm_hRegKey;
+		//static HKEY		stm_hRegKey;
+		//static 
 
 		// Trace modules
 		static TraceModule* stm_ModuleList[MAX_TRACEMODULE];
+
+		static bool LoadTraceConfig();
 
 		// Update trace
 		void UpdateTrace();
@@ -467,17 +473,6 @@ namespace Trace {
 				} while(0)\
 
 
-
-
-inline HRESULT GetLastHRESULT()
-{
-	return HRESULT_FROM_WIN32( GetLastError() );
-}
-
-inline HRESULT GetLastWSAHRESULT()
-{
-	return HRESULT_FROM_WIN32( WSAGetLastError() );
-}
 
 
 

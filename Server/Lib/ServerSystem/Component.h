@@ -246,7 +246,7 @@ namespace Svr{
 				return nullptr;
 
 			if( m_Components[ID] != nullptr )
-				return DEBUG_DYNAMIC_CAST(ComponentType*,m_Components[ID]);
+				return dynamic_cast<ComponentType*>(m_Components[ID]);
 			else
 				return nullptr;
 		}

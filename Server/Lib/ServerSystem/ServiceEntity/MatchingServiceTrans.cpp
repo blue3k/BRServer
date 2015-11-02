@@ -121,9 +121,9 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		ServerServiceInformation *pService = nullptr;
-		MatchingQueueWatcherServiceEntity *pServiceEntity = nullptr;
+		RingClusterServiceEntity *pServiceEntity = nullptr;
 
-		svrChkPtr(pServiceEntity = GetServerComponent<MatchingQueueWatcherServiceEntity>(m_TargetQueueComponentID));
+		svrChkPtr(pServiceEntity = GetServerComponent<RingClusterServiceEntity>(m_TargetQueueComponentID));
 
 		if (FAILED(pServiceEntity->GetService(pService)))
 		{

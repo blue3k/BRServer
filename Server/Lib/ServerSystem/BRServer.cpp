@@ -423,6 +423,7 @@ Proc_End:
 
 		BR::InitializeMemLogger( MemLog::LOG_ALL, 0 );
 
+		svrChk(InitializeNetPublic());
 
 	Proc_End:
 
@@ -446,14 +447,11 @@ Proc_End:
 		HRESULT hr = S_OK;
 		const DurationMS lMinCheckTime = DurationMS(10); // 10ms
 
-
-		if (!OnStart()) return;
-
 		m_bIsKillSignaled = false;
 		m_bStartTransaction = false;
 
+		if (!OnStart()) return;
 
-		svrChk( InitializeNetPublic() );
 
 		// We need to set this value manually
 		//SetServerState( ServerState::RUNNING );

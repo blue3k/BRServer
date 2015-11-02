@@ -132,8 +132,8 @@ namespace Util {
 
 
 
-	DurationMS TimeMin(DurationMS timeMs, DurationMS timeMs2);
-	TimeStampMS TimeMin(TimeStampMS timeMs, TimeStampMS timeMs2);
+	DurationMS TimeMinNonZero(DurationMS timeMs, DurationMS timeMs2);
+	TimeStampMS TimeMinNonZero(TimeStampMS timeMs, TimeStampMS timeMs2);
 
 
 	inline DurationMS TimeSince(TimeStampMS timeMs)					{ return (Time.GetTimeMs() - timeMs); }

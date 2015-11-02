@@ -62,13 +62,13 @@ namespace Svr
 		auto nextTick = Util::Time.GetTimeMs() + GetTickInterval();
 		if (pTrans)
 		{
-			nextTick = Util::TimeMin(nextTick, pTrans->GetTimerExpireTime());
-			nextTick = Util::TimeMin(nextTick, pTrans->GetHeartBitTimeout());
+			nextTick = Util::TimeMinNonZero(nextTick, pTrans->GetTimerExpireTime());
+			nextTick = Util::TimeMinNonZero(nextTick, pTrans->GetHeartBitTimeout());
 		}
 
 		Assert(nextTick != TimeStampMS::min() && nextTick != TimeStampMS::max());
 
-		nextTick = Util::TimeMin(nextTick, GetScheduledTickTime());
+		nextTick = Util::TimeMinNonZero(nextTick, GetScheduledTickTime());
 
 		Assert(nextTick != TimeStampMS::min() && nextTick != TimeStampMS::max());
 		SetNextScheduledTickTime(nextTick);

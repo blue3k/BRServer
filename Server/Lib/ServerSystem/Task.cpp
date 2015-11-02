@@ -74,7 +74,7 @@ namespace Svr {
 	void TickTask::SetNextScheduledTickTime(TimeStampMS tickNext)
 	{
 		auto currentSchedule = m_TimerAction->GetScheduledTime();
-		auto newTime = Util::TimeMin(currentSchedule, tickNext);
+		auto newTime = Util::TimeMinNonZero(currentSchedule, tickNext);
 		m_TimerAction->SetNextTickTime(newTime);
 	}
 

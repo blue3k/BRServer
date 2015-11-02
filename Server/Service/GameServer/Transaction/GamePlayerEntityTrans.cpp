@@ -119,7 +119,7 @@ namespace GameServer {
 		Net::IConnection::ConnectionInformation connectionInfo;
 
 		svrChk(__super::StartTransaction());
-
+		svrChkPtr(GetMyServer()->GetNetPublic());
 
 		pPlayerEntity->ReleaseConnection();
 
@@ -1001,7 +1001,7 @@ namespace GameServer {
 				hrRes = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina(1);
 				if (FAILED(hrRes))
 				{
-					svrTrace(Trace::TRC_WARN, "Stamina gain is failed, PlayerID:%0%, hr:%1%", GetMyOwner()->GetPlayerID(), Arg<UINT32>(hrRes));
+					svrTrace(Trace::TRC_WARN, "Stamina gain is failed, PlayerID:{0}, hr:{1:X8}", GetMyOwner()->GetPlayerID(), hrRes);
 				}
 				break;
 			}

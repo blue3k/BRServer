@@ -64,7 +64,7 @@ namespace Trace {
 		// Static for shared use
 
 		// Trace output mode Mask 
-		HANDLE		m_hLogFile[TRCOUT_NUMFILE];
+		NativeHandle		m_hLogFile[TRCOUT_NUMFILE];
 
 		// Latest log file creation time
 		UINT		m_tLogFileHour[TRCOUT_NUMFILE];
@@ -78,11 +78,13 @@ namespace Trace {
 		// Trace output mode Mask 
 		UINT		m_uiDbgOutputMask;
 
+#if WINDOWS
 		// System event log handle
 		HANDLE		m_hEventLog;
 
 		// System console handle
 		HANDLE		m_hConsole;
+#endif
 
 		// Latest checked time
 		ULONGLONG	m_tTraceCheck;

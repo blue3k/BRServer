@@ -111,16 +111,16 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	// specialized version
 	inline HRESULT ToStringHex( char*& pBuff, INT& iBuffLen, UINT32 iData, float MaxDigit, int Radix )
 	{
-		_IToA( (UINT32)iData, pBuff, iBuffLen, Radix, (int)floor(MaxDigit) );
+		_IToA( (UINT32)iData, pBuff, iBuffLen, Radix, (int)MaxDigit );
 
 		return S_OK;
 	}
 
 	inline HRESULT ToStringHex( char*& pBuff, INT& iBuffLen, UINT64 iData, float MaxDigit, int Radix )
 	{
-		_IToA((UINT32)(iData>>32), pBuff, iBuffLen, Radix, (int)floor(MaxDigit));
+		_IToA((UINT32)(iData>>32), pBuff, iBuffLen, Radix, (int)MaxDigit);
 		StrUtil::StringCpyEx(pBuff, iBuffLen, ":");
-		_IToA((UINT32)iData, pBuff, iBuffLen, Radix, (int)floor(MaxDigit));
+		_IToA((UINT32)iData, pBuff, iBuffLen, Radix, (int)MaxDigit);
 
 		return S_OK;
 	}

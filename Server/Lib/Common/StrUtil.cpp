@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // 
 // CopyRight (c) 2013 The Braves
 // 
@@ -47,7 +47,7 @@ namespace StrUtil {
 	static inline double ReadNumber(char& curChar, const char*& szFormating)
 	{
 		double fNumber = 0;
-		for (curChar = *szFormating++; curChar && (curChar != '%' && curChar != '}' && curChar != ':'); curChar = *szFormating++)
+		for (curChar = *szFormating++; curChar && (curChar != '%' && curChar != '}' && curChar != '{' && curChar != ':'); curChar = *szFormating++)
 		{
 			if (curChar == '.')
 				break;
@@ -100,10 +100,16 @@ namespace StrUtil {
 
 				// read argument index
 				iArg = (int)(ReadNumber(curChar, szFormating) + 0.1);
+				if (curChar == '{')
+				{
+					*szBuffer++ = curChar;
+					iBuffLen--;
+					continue;
+				}
 
 				// read option
 				char option = '\0';
-				double digits = 9999.9999;
+				double digits = -1;
 				if (curChar == ':')
 				{
 					if (curChar == '\0')
@@ -119,6 +125,8 @@ namespace StrUtil {
 					if (curChar == '\0')
 						return E_INVALIDARG;
 
+					option = curChar;
+
 					digits = ReadNumber(curChar, szFormating);
 				}
 
@@ -132,6 +140,20 @@ namespace StrUtil {
 				else
 				{
 					StrUtil::StringCpyEx( szBuffer, iBuffLen, "(Null)" );
+				}
+			}
+			else if (curChar == '}')
+			{
+				// Skip the first closing bracket
+				curChar = *szFormating++;
+				if (curChar == '}')
+				{
+					*szBuffer++ = curChar;
+					iBuffLen--;
+				}
+				else
+				{
+					// ignore other case
 				}
 			}
 			else
@@ -215,6 +237,7 @@ namespace StrUtil {
 				goto Proc_End;
 			}
 
+			auto orgDestSize = destSize;
 			convertedSize = iconv(context, &src, &srcSize, &dest, &destSize);
 			if (convertedSize == (size_t)-1)
 			{
@@ -236,6 +259,10 @@ namespace StrUtil {
 
 				convertedSize = 0;
 			}
+			else
+			{
+				convertedSize = orgDestSize - destSize;
+			}
 
 		Proc_End:
 
@@ -255,47 +282,47 @@ namespace StrUtil {
 	//	String convert
 	//
 
-	// Unicode to MBCS string conversion
-	HRESULT WCSToMBCS(const WCHAR* strWCS, char *strMBCS, INT iBuffLen)
-	{
-		size_t convertedSize;
+	//// Unicode to MBCS string conversion
+	//HRESULT WCSToMBCS(const WCHAR* strWCS, char *strMBCS, INT iBuffLen)
+	//{
+	//	size_t convertedSize;
 
-		if (strWCS == nullptr || strMBCS == nullptr)
-			return E_INVALIDARG;
+	//	if (strWCS == nullptr || strMBCS == nullptr)
+	//		return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("", (char*)strMBCS, iBuffLen, "UTF?32", (const char*)strWCS, wcslen(strWCS), convertedSize);
-		if (FAILED(hr)) return hr;
+	//	HRESULT hr = ModuleIconv.Convert("", (char*)strMBCS, iBuffLen, "UTF-16", (const char*)strWCS, wcslen(strWCS)*sizeof(wchar_t), convertedSize);
+	//	if (FAILED(hr)) return hr;
 
-		if (iBuffLen >= 1)
-		{
-			iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
-			strMBCS[iBuffLen] = '\0';
-		}
+	//	if (iBuffLen >= 1)
+	//	{
+	//		iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
+	//		strMBCS[iBuffLen] = '\0';
+	//	}
 
-		return S_OK;
-	}
+	//	return S_OK;
+	//}
 
-	HRESULT WCSToMBCS(const std::wstring &strWCS, std::string &strMBCS)
-	{
-		size_t convertedSize;
-		char stringBuffer[4*1024];
+	//HRESULT WCSToMBCS(const std::wstring &strWCS, std::string &strMBCS)
+	//{
+	//	size_t convertedSize;
+	//	char stringBuffer[4*1024];
 
-		if (strWCS.c_str() == nullptr)
-		{
-			strMBCS = "";
-			return S_OK;
-		}
+	//	if (strWCS.c_str() == nullptr)
+	//	{
+	//		strMBCS = "";
+	//		return S_OK;
+	//	}
 
-		HRESULT hr = ModuleIconv.Convert("", (char*)stringBuffer, countof(stringBuffer), "UTF?32", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
-		if (FAILED(hr)) return hr;
+	//	HRESULT hr = ModuleIconv.Convert("", (char*)stringBuffer, countof(stringBuffer), "UTF-16", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
+	//	if (FAILED(hr)) return hr;
 
-		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
-		stringBuffer[lastPos] = '\0';
+	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
+	//	stringBuffer[lastPos] = '\0';
 
-		strMBCS = stringBuffer;
+	//	strMBCS = stringBuffer;
 
-		return S_OK;
-	}
+	//	return S_OK;
+	//}
 
 	// Unicode to UTF8 string conversion
 	HRESULT WCSToUTF8(const WCHAR* strWCS, char *strUTF8, INT iBuffLen)
@@ -305,7 +332,7 @@ namespace StrUtil {
 		if (strWCS == nullptr || strUTF8 == nullptr)
 			return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?8", (char*)strUTF8, iBuffLen, "UTF?32", (const char*)strWCS, wcslen(strWCS), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)strUTF8, iBuffLen, "UTF-16LE", (const char*)strWCS, wcslen(strWCS)*sizeof(wchar_t), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		if (iBuffLen >= 1)
@@ -328,7 +355,7 @@ namespace StrUtil {
 			return S_OK;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?8", (char*)stringBuffer, countof(stringBuffer), "UTF?32", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)stringBuffer, countof(stringBuffer), "UTF-16LE", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
@@ -339,47 +366,47 @@ namespace StrUtil {
 		return S_OK;
 	}
 
-	// MBCS to Unicode string conversion
-	HRESULT MBCSToWCS(const char *strMBCS, WCHAR* strWCS, INT iBuffLen)
-	{
-		size_t convertedSize;
+	//// MBCS to Unicode string conversion
+	//HRESULT MBCSToWCS(const char *strMBCS, WCHAR* strWCS, INT iBuffLen)
+	//{
+	//	size_t convertedSize;
 
-		if (strWCS == nullptr || strMBCS == nullptr)
-			return E_INVALIDARG;
+	//	if (strWCS == nullptr || strMBCS == nullptr)
+	//		return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)strWCS, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
-		if (FAILED(hr)) return hr;
+	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)strWCS, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
+	//	if (FAILED(hr)) return hr;
 
-		if (iBuffLen >= 1)
-		{
-			iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
-			strWCS[iBuffLen] = '\0';
-		}
+	//	if (iBuffLen >= 1)
+	//	{
+	//		iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
+	//		strWCS[iBuffLen] = '\0';
+	//	}
 
-		return S_OK;
-	}
+	//	return S_OK;
+	//}
 
-	HRESULT MBCSToWCS(const std::string &strMBCS, std::wstring &strWCS)
-	{
-		size_t convertedSize;
-		wchar_t stringBuffer[4 * 1024];
+	//HRESULT MBCSToWCS(const std::string &strMBCS, std::wstring &strWCS)
+	//{
+	//	size_t convertedSize;
+	//	wchar_t stringBuffer[4 * 1024];
 
-		if (strWCS.c_str() == nullptr)
-		{
-			strWCS = L"";
-			return S_OK;
-		}
+	//	if (strWCS.c_str() == nullptr)
+	//	{
+	//		strWCS = L"";
+	//		return S_OK;
+	//	}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
-		if (FAILED(hr)) return hr;
+	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
+	//	if (FAILED(hr)) return hr;
 
-		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
-		stringBuffer[lastPos] = '\0';
+	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
+	//	stringBuffer[lastPos] = '\0';
 
-		strWCS = stringBuffer;
+	//	strWCS = stringBuffer;
 
-		return S_OK;
-	}
+	//	return S_OK;
+	//}
 
 
 	// UTF8 to Unicode string conversion
@@ -390,7 +417,7 @@ namespace StrUtil {
 		if (strWCS == nullptr || strUTF8 == nullptr)
 			return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)strWCS, iBuffLen, "UTF-8", (const char*)strUTF8, strlen(strUTF8), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF-16LE", (char*)strWCS, iBuffLen, "UTF-8", (const char*)strUTF8, strlen(strUTF8)+1, convertedSize);
 		if (FAILED(hr)) return hr;
 
 		if (iBuffLen >= 1)
@@ -413,7 +440,7 @@ namespace StrUtil {
 			return S_OK;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)stringBuffer, countof(stringBuffer), "UTF-8", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
+		HRESULT hr = ModuleIconv.Convert("UTF-16LE", (char*)stringBuffer, countof(stringBuffer), "UTF-8", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
 		if (FAILED(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
@@ -425,90 +452,90 @@ namespace StrUtil {
 	}
 
 
-	// MBCS to Unicode string conversion
-	HRESULT MBCSToUTF8(const char *strMBCS, char* strUTF8, INT iBuffLen)
-	{
-		size_t convertedSize;
+	//// MBCS to Unicode string conversion
+	//HRESULT MBCSToUTF8(const char *strMBCS, char* strUTF8, INT iBuffLen)
+	//{
+	//	size_t convertedSize;
 
-		if (strUTF8 == nullptr || strMBCS == nullptr)
-			return E_INVALIDARG;
+	//	if (strUTF8 == nullptr || strMBCS == nullptr)
+	//		return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?8", (char*)strUTF8, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
-		if (FAILED(hr)) return hr;
+	//	HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)strUTF8, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
+	//	if (FAILED(hr)) return hr;
 
-		if (iBuffLen >= 1)
-		{
-			iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
-			strUTF8[iBuffLen] = '\0';
-		}
+	//	if (iBuffLen >= 1)
+	//	{
+	//		iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
+	//		strUTF8[iBuffLen] = '\0';
+	//	}
 
-		return S_OK;
-	}
+	//	return S_OK;
+	//}
 
-	HRESULT MBCSToUTF8(const std::string &strMBCS, std::string &strUTF8)
-	{
-		size_t convertedSize;
-		char stringBuffer[4 * 1024];
+	//HRESULT MBCSToUTF8(const std::string &strMBCS, std::string &strUTF8)
+	//{
+	//	size_t convertedSize;
+	//	char stringBuffer[4 * 1024];
 
-		if (strUTF8.c_str() == nullptr)
-		{
-			strUTF8 = "";
-			return S_OK;
-		}
+	//	if (strUTF8.c_str() == nullptr)
+	//	{
+	//		strUTF8 = "";
+	//		return S_OK;
+	//	}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
-		if (FAILED(hr)) return hr;
+	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
+	//	if (FAILED(hr)) return hr;
 
-		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
-		stringBuffer[lastPos] = '\0';
+	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
+	//	stringBuffer[lastPos] = '\0';
 
-		strUTF8 = stringBuffer;
+	//	strUTF8 = stringBuffer;
 
-		return S_OK;
-	}
+	//	return S_OK;
+	//}
 
 
-	// UTF8 to MBCS string conversion
-	HRESULT UTF8ToMBCS(const char *strUTF8, char* strMBCS, INT iBuffLen)
-	{
-		size_t convertedSize;
+	//// UTF8 to MBCS string conversion
+	//HRESULT UTF8ToMBCS(const char *strUTF8, char* strMBCS, INT iBuffLen)
+	//{
+	//	size_t convertedSize;
 
-		if (strUTF8 == nullptr || strMBCS == nullptr)
-			return E_INVALIDARG;
+	//	if (strUTF8 == nullptr || strMBCS == nullptr)
+	//		return E_INVALIDARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF?8", (char*)strMBCS, iBuffLen, "", (const char*)strUTF8, strlen(strUTF8), convertedSize);
-		if (FAILED(hr)) return hr;
+	//	HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)strMBCS, iBuffLen, "", (const char*)strUTF8, strlen(strUTF8), convertedSize);
+	//	if (FAILED(hr)) return hr;
 
-		if (iBuffLen >= 1)
-		{
-			iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
-			strMBCS[iBuffLen] = '\0';
-		}
+	//	if (iBuffLen >= 1)
+	//	{
+	//		iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
+	//		strMBCS[iBuffLen] = '\0';
+	//	}
 
-		return S_OK;
-	}
+	//	return S_OK;
+	//}
 
-	HRESULT UTF8ToMBCS(const std::string& strUTF8, std::string& strMBCS)
-	{
-		size_t convertedSize;
-		char stringBuffer[4 * 1024];
+	//HRESULT UTF8ToMBCS(const std::string& strUTF8, std::string& strMBCS)
+	//{
+	//	size_t convertedSize;
+	//	char stringBuffer[4 * 1024];
 
-		if (strMBCS.c_str() == nullptr)
-		{
-			strMBCS = "";
-			return S_OK;
-		}
+	//	if (strMBCS.c_str() == nullptr)
+	//	{
+	//		strMBCS = "";
+	//		return S_OK;
+	//	}
 
-		HRESULT hr = ModuleIconv.Convert("UTF?32", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
-		if (FAILED(hr)) return hr;
+	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
+	//	if (FAILED(hr)) return hr;
 
-		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
-		stringBuffer[lastPos] = '\0';
+	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
+	//	stringBuffer[lastPos] = '\0';
 
-		strMBCS = stringBuffer;
+	//	strMBCS = stringBuffer;
 
-		return S_OK;
-	}
+	//	return S_OK;
+	//}
 
 
 };	// namespace Svr

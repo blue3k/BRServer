@@ -713,8 +713,15 @@ namespace Svr {
 
 		if( m_pCurrentQueryService == nullptr )
 		{
-			m_pCurrentQueryService = converter(&*m_ServiceList.begin());
+			auto itBegin = m_ServiceList.begin();
+			if (itBegin.IsValid())
+				m_pCurrentQueryService = converter(&*m_ServiceList.begin());
+			else
+				m_pCurrentQueryService = nullptr;
 		}
+
+		// no service for now
+		if (m_pCurrentQueryService == nullptr) goto Proc_End;
 
 		pTblItem = m_pCurrentQueryService ? (ServiceTableItem*)m_pCurrentQueryService : nullptr;
 

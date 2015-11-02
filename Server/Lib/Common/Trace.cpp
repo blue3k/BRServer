@@ -16,6 +16,8 @@
 #include "Common/Trace.h"
 #include "Common/Trace_Internal.h"
 #include "Common/HRESEvent.h"
+#include "Common/Thread.h"
+#include "Common/SharedObj.h"
 
 
 
@@ -47,15 +49,20 @@ namespace Trace {
 
 
 
+
 	////////////////////////////////////////////////////////////////////////////////
 	//
 	// Trace Log Module
 	//
 
+	const char* TraceModule::CONFIG_FILENAME = "traceConfig.cfg";
+
 	TraceModule* TraceModule::stm_ModuleList[MAX_TRACEMODULE] = {0,};
+	std::unordered_map<std::string, UINT32> TraceModule::stm_Masks;
 
 	// Module state registry key
-	HKEY TraceModule::stm_hRegKey = nullptr;
+	//HKEY TraceModule::stm_hRegKey = nullptr;
+	TimeStampMS TraceModule::m_MaskUpdated;
 
 	TraceModule::TraceModule( const char *szName, const char *szNameTag )
 		:m_uiTraceMask(TRC_DEFAULT),
@@ -64,24 +71,23 @@ namespace Trace {
 		char strErrString[MAX_PATH] = "";
 		StrUtil::StringDup( m_szName, szName );
 		StrUtil::StringDup( m_szNameTag, szNameTag );
-		//m_uiNameLen = strlen(m_szName);
 
-		// if registry key is not opened then open it
-		if( stm_hRegKey == nullptr )
-		{
-			LONG lRes = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
-							_ERRTRACE_KEY_, 0,
-							KEY_READ,
-							&stm_hRegKey );
-			if( lRes != ERROR_SUCCESS )
-			{
-				stm_hRegKey = nullptr;
-				
-				FormatMessageA( FORMAT_MESSAGE_FROM_SYSTEM, nullptr, lRes, 
-					0, strErrString, MAX_PATH, nullptr );
-				printf( "%s", strErrString );
-			}
-		}
+		//// if registry key is not opened then open it
+		//if( stm_hRegKey == nullptr )
+		//{
+		//	LONG lRes = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
+		//					_ERRTRACE_KEY_, 0,
+		//					KEY_READ,
+		//					&stm_hRegKey );
+		//	if( lRes != ERROR_SUCCESS )
+		//	{
+		//		stm_hRegKey = nullptr;
+		//		
+		//		FormatMessageA( FORMAT_MESSAGE_FROM_SYSTEM, nullptr, lRes, 
+		//			0, strErrString, MAX_PATH, nullptr );
+		//		printf( "%s", strErrString );
+		//	}
+		//}
 
 		// Register modulelist if not in list yet
 		for( int iMod = 0; iMod < MAX_TRACEMODULE; iMod++ )
@@ -100,11 +106,80 @@ namespace Trace {
 		StrUtil::SafeDelete( m_szNameTag );
 
 
-		if( stm_hRegKey )
+		//if( stm_hRegKey )
+		//{
+		//	RegCloseKey( stm_hRegKey );
+		//	stm_hRegKey = nullptr;
+		//}
+	}
+
+	static char* SkipSpace(char* curChar)
+	{
+		while ((*curChar) == ' ')
 		{
-			RegCloseKey( stm_hRegKey );
-			stm_hRegKey = nullptr;
+			curChar++;
 		}
+		return curChar;
+	}
+
+	static char* FindDelimiter(char* curChar)
+	{
+		char curCharValue = *curChar;
+		while (curCharValue != ' ' && curCharValue != '=')
+		{
+			curChar++;
+			curCharValue = *curChar;
+		}
+		return curChar;
+	}
+
+	bool TraceModule::LoadTraceConfig()
+	{
+		if (Util::TimeSince(m_MaskUpdated) < DurationMS(60 * 1000)) return true;
+		m_MaskUpdated = Util::Time.GetTimeMs();
+
+		std::string strCfgPath = Util::GetModulePathA();
+		strCfgPath.append("..\\..\\Config\\traceConfig.cfg");
+
+		FILE *file = fopen(strCfgPath.c_str(), "r");
+		if (file == nullptr)
+		{
+			return false;
+		}
+
+		char stringBuffer[4096];
+		while (fgets(stringBuffer, sizeof(stringBuffer), file) != nullptr)
+		{
+			char *curChar = stringBuffer;
+			auto nameStart = SkipSpace(curChar);
+			
+			auto endChar = FindDelimiter(nameStart);
+			if (endChar == nullptr)
+				continue; // invalid line
+			char endCharValue = *endChar;
+			*endChar = '\0';
+
+			if (endCharValue == '\0')
+				continue; // invalud line
+
+			if (endCharValue != '=')
+			{
+				endChar = SkipSpace(endChar);
+				if (*endChar != '=')
+					continue; // invalud line
+			}
+
+			auto numberStart = SkipSpace(endChar+1);
+			if (numberStart == '\0')
+				continue; // invalud line
+
+			auto maskValue = strtol(numberStart, nullptr, 16);
+			strlwr(nameStart);
+			stm_Masks[nameStart] = maskValue;
+		}
+
+		fclose(file);
+		return true;
 	}
 
 	// check and update trace module
@@ -112,10 +187,11 @@ namespace Trace {
 	{
 		HRESULT hr = S_OK;
 
-
 		// Update output mask
-		if( stm_hRegKey )
+		//if( stm_hRegKey )
+		if(Util::TimeSince(m_MaskUpdated) > DurationMS(60*1000))
 		{
+			LoadTraceConfig();
 			// Update trace modules
 			for( int iMod = 0; iMod < MAX_TRACEMODULE; iMod++ )
 			{
@@ -126,33 +202,19 @@ namespace Trace {
 			}
 		}
 
-
-	//Proc_End:
-
 		return hr;
 	}
 
 	// Update trace
 	void TraceModule::UpdateTrace()
 	{
-		if( stm_hRegKey )
+		auto itFound = stm_Masks.find(GetName());
+		if (itFound == stm_Masks.end())
 		{
-			DWORD dwType = REG_NONE;
-			DWORD dwSize;
-			DWORD dwValue = (DWORD)-1;
-			LONG  err = ERROR_FILE_NOT_FOUND;
-
-			dwSize = sizeof( dwValue );
-			err = RegQueryValueExA( stm_hRegKey, GetName(), nullptr, &dwType,
-								(PBYTE)&dwValue, &dwSize );
-
-			if (ERROR_FILE_NOT_FOUND == err)
-				err = RegQueryValueExA(stm_hRegKey, "default", nullptr, &dwType, 
-									(PBYTE)&dwValue, &dwSize);
-
-			if (ERROR_SUCCESS == err && REG_DWORD == dwType)
-				m_uiTraceMask = dwValue;
+			itFound = stm_Masks.find("default");
+			if (itFound == stm_Masks.end()) return;
 		}
+		m_uiTraceMask = itFound->second;
 	}
 
 	TraceModule** TraceModule::GetModules()
@@ -205,12 +267,12 @@ namespace Trace {
 		, m_uiDbgOutputMask(TRCOUT_NONE)
 		, m_uiLineHeaderLen(0)
 		, m_hEventLog(nullptr)
-		, m_hConsole(INVALID_HANDLE_VALUE)
+		, m_hConsole(INVALID_NATIVE_HANDLE_VALUE)
 	{
 		for( int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++ )
 		{
 			m_tLogFileHour[iFile] = -1;
-			m_hLogFile[iFile] = INVALID_HANDLE_VALUE;
+			m_hLogFile[iFile] = INVALID_NATIVE_HANDLE_VALUE;
 		}
 
 
@@ -226,7 +288,7 @@ namespace Trace {
 
 		for( int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++ )
 		{
-			if( m_hLogFile[iFile] != INVALID_HANDLE_VALUE )
+			if( m_hLogFile[iFile] != INVALID_NATIVE_HANDLE_VALUE )
 				CloseHandle( m_hLogFile[iFile] );
 		}
 
@@ -261,7 +323,6 @@ namespace Trace {
 		// close previous opened file
 		if( m_hLogFile[iFile] )
 			CloseHandle( m_hLogFile[iFile] );
-		HANDLE hLogFile = INVALID_HANDLE_VALUE;
 
 		// Open file
 		m_hLogFile[iFile] = CreateFile(
@@ -274,7 +335,7 @@ namespace Trace {
 			| FILE_FLAG_SEQUENTIAL_SCAN,
 			nullptr);
 
-		if( m_hLogFile[iFile] != INVALID_HANDLE_VALUE )
+		if( m_hLogFile[iFile] != INVALID_NATIVE_HANDLE_VALUE )
 		{
 			DWORD dwWritten = 0;
 
@@ -292,15 +353,15 @@ namespace Trace {
 
 			// Write open header
 			char szLogBuff[1024];
-			_snprintf_s(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
+			snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
 			DWORD dwStrLen = (DWORD)strlen(szLogBuff);
 			WriteFile( m_hLogFile[iFile], szLogBuff, dwStrLen, &dwWritten, nullptr );
 
-			_snprintf_s(szLogBuff, MAX_PATH, "Start Log: %04d-%02d-%02d-%02d:%02d \r\n", curtm.tm_year + 1900, curtm.tm_mon + 1, curtm.tm_mday, curtm.tm_hour, curtm.tm_min );
+			snprintf(szLogBuff, MAX_PATH, "Start Log: %04d-%02d-%02d-%02d:%02d \r\n", curtm.tm_year + 1900, curtm.tm_mon + 1, curtm.tm_mday, curtm.tm_hour, curtm.tm_min );
 			dwStrLen = (DWORD)strlen(szLogBuff);
 			WriteFile( m_hLogFile[iFile], szLogBuff, dwStrLen, &dwWritten, nullptr );
 
-			_snprintf_s(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
+			snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
 			dwStrLen = (DWORD)strlen(szLogBuff);
 			WriteFile( m_hLogFile[iFile], szLogBuff, dwStrLen, &dwWritten, nullptr );
 		}
@@ -377,29 +438,15 @@ namespace Trace {
 		if( (m_tRegCheck - tCurTime) > DurationMS(Trace::UPDATE_REGISTERY_TIME) )// check every 3sec
 		{
 			// Update output mask
-			if( TraceModule::stm_hRegKey )
-			{
-				DWORD dwType = REG_NONE;
-				DWORD dwSize;
-				DWORD dwValue = (DWORD)-1;
-				LONG  err = ERROR_FILE_NOT_FOUND;
+			TraceModule::CheckAndUpdate();
 
-				dwSize = sizeof( dwValue );
-				err = RegQueryValueEx( TraceModule::stm_hRegKey, L"Ctrl", nullptr, &dwType,
-									(PBYTE)&dwValue, &dwSize );
+			auto itMask = TraceModule::stm_Masks.find("ctrl");
+			if(itMask != TraceModule::stm_Masks.end())
+				m_uiOutputMask = itMask->second;
 
-				if (ERROR_SUCCESS == err && REG_DWORD == dwType)
-					m_uiOutputMask = dwValue;
-
-				dwSize = sizeof( dwValue );
-				err = RegQueryValueEx( TraceModule::stm_hRegKey, L"DbgCtrl", nullptr, &dwType,
-									(PBYTE)&dwValue, &dwSize );
-
-				if (ERROR_SUCCESS == err && REG_DWORD == dwType)
-					m_uiDbgOutputMask = dwValue;
-
-				TraceModule::CheckAndUpdate();
-			}
+			itMask = TraceModule::stm_Masks.find("dbgctrl");
+			if (itMask != TraceModule::stm_Masks.end())
+				m_uiDbgOutputMask = itMask->second;
 
 			m_tRegCheck = tCurTime;
 		}
@@ -425,18 +472,18 @@ namespace Trace {
 					if (iFile == TRCOUT_FILE_LOG)
 					{
 						// build name
-						_snwprintf_s(strFileName, MAX_PATH, L"%s..\\log\\%s[%d_%04d_%02d_%02d]log.txt", Util::GetModulePath(), Util::GetServiceName(), m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour);
+						swprintf(strFileName, MAX_PATH, L"%s..\\log\\%s[%d_%04d_%02d_%02d]log.txt", Util::GetModulePath(), Util::GetServiceName(), m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour);
 					}
 					else
 					{
 						// build name
-						_snwprintf_s(strFileName, MAX_PATH, L"%s..\\log\\%s[%d_%04d_%02d_%02d]logdbg.txt", Util::GetModulePath(), Util::GetServiceName(), m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour);
+						swprintf(strFileName, MAX_PATH, L"%s..\\log\\%s[%d_%04d_%02d_%02d]logdbg.txt", Util::GetModulePath(), Util::GetServiceName(), m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour);
 					}
 
 					// close previous opened file
 					if (m_hLogFile[iFile])
 						CloseHandle(m_hLogFile[iFile]);
-					m_hLogFile[iFile] = INVALID_HANDLE_VALUE;
+					m_hLogFile[iFile] = INVALID_NATIVE_HANDLE_VALUE;
 
 					OpenLogFile(iFile, m_tCurTimeTM, strFileName);
 				}
@@ -444,7 +491,7 @@ namespace Trace {
 				{
 					if (m_hLogFile[iFile])
 						CloseHandle(m_hLogFile[iFile]);
-					m_hLogFile[iFile] = INVALID_HANDLE_VALUE;
+					m_hLogFile[iFile] = INVALID_NATIVE_HANDLE_VALUE;
 
 					//return GetLastHRESULT();
 				}
@@ -459,7 +506,7 @@ namespace Trace {
 		{
 			m_tLineHeader = m_tCurTime;
 
-			m_uiLineHeaderLen = _snprintf_s(m_szLineHeader, sizeof(m_szLineHeader), "%4d-%02d-%02d/%02d:%02d:%02d:", m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour, m_tCurTimeTM.tm_min, m_tCurTimeTM.tm_sec);
+			m_uiLineHeaderLen = snprintf(m_szLineHeader, sizeof(m_szLineHeader), "%4d-%02d-%02d/%02d:%02d:%02d:", m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour, m_tCurTimeTM.tm_min, m_tCurTimeTM.tm_sec);
 			StrUtil::UTF8ToWCS( m_szLineHeader, m_wszLineHeader );
 		}
 	}
@@ -502,7 +549,7 @@ namespace Trace {
 		DWORD dwWriten = 0;
 
 		// Get the standard input handle.
-		if (m_hConsole != INVALID_HANDLE_VALUE)
+		if (m_hConsole != INVALID_NATIVE_HANDLE_VALUE)
 		{
 			if( strString1 )
 				WriteConsoleW( m_hConsole, strString1, (DWORD)wcslen(strString1), &dwWriten, nullptr );
@@ -526,7 +573,7 @@ namespace Trace {
 
 		static WCHAR wszOutput[2048] = L"";
 		if( (uiOutputMask&(TRCOUT_DEBUG|TRCOUT_EVENT))
-			|| ((uiOutputMask&TRCOUT_CONSOLE) && m_hConsole != INVALID_HANDLE_VALUE) )
+			|| ((uiOutputMask&TRCOUT_CONSOLE) && m_hConsole != INVALID_NATIVE_HANDLE_VALUE) )
 		{
 			StrUtil::UTF8ToWCS( szOutput, wszOutput );
 		}
@@ -559,7 +606,7 @@ namespace Trace {
 		ValidateLogFile();
 
 		if( (m_uiOutputMask&_g_uiFileMask[TRCOUT_FILE_LOG])
-			&& m_hLogFile[TRCOUT_FILE_LOG] != INVALID_HANDLE_VALUE )
+			&& m_hLogFile[TRCOUT_FILE_LOG] != INVALID_NATIVE_HANDLE_VALUE )
 		{
 			DWORD dwWritten = 0;
 			WriteFile( m_hLogFile[TRCOUT_FILE_LOG], m_szLineHeader, dwszLineHeader, &dwWritten, nullptr );
@@ -567,7 +614,7 @@ namespace Trace {
 		}
 		
 		if( (m_uiDbgOutputMask&_g_uiFileMask[TRCOUT_FILE_DBGLOG])
-			&& m_hLogFile[TRCOUT_FILE_DBGLOG] != INVALID_HANDLE_VALUE )
+			&& m_hLogFile[TRCOUT_FILE_DBGLOG] != INVALID_NATIVE_HANDLE_VALUE )
 		{
 			DWORD dwWritten = 0;
 			WriteFile( m_hLogFile[TRCOUT_FILE_DBGLOG], m_szLineHeader, dwszLineHeader, &dwWritten, nullptr );
@@ -781,7 +828,7 @@ namespace Trace {
 	{
 		HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 		if( hOutput == 0 
-			|| hOutput == INVALID_HANDLE_VALUE )
+			|| hOutput == INVALID_NATIVE_HANDLE_VALUE )
 		{
 			AllocConsole();
 			if( TraceOutModule::GetInstance() )

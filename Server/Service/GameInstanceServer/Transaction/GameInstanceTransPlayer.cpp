@@ -18,6 +18,7 @@
 #include "Common/MemoryPool.h"
 #include "Common/BRBaseTypes.h"
 #include "Common/BrRandom.h"
+#include "Common/GameConst.h"
 
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BRServerUtil.h"
@@ -439,7 +440,8 @@ namespace ConspiracyGameInstanceServer {
 		if (pMyPlayer->GetPlayerState() != PlayerState::Ghost)
 			svrErrClose(E_GAME_INVALID_PLAYER_STATE);
 
-		for (UINT iTargetPlayer = 0; iTargetPlayer < GetTargetPlayerID().GetSize(); iTargetPlayer++)
+		auto numReveal = std::min((size_t)GameConst::MAX_PLAYER_REVEAL, GetTargetPlayerID().GetSize());
+		for (UINT iTargetPlayer = 0; iTargetPlayer < numReveal; iTargetPlayer++)
 		{
 			svrChk(GetMyOwner()->FindPlayer(GetTargetPlayerID()[iTargetPlayer], pTargetPlayer));
 

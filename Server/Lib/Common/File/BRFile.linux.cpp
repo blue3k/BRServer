@@ -1,0 +1,47 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2015 The Braves
+// 
+// Author : MadK
+//
+// Description : File
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "Common/File/BRFile.h"
+
+#if LINUX
+
+namespace BR {
+namespace IO {
+
+
+
+	/////////////////////////////////////////////////////////////////////////////
+	//
+	//	File
+	//
+
+	File::File()
+	{
+	}
+
+	HRESULT File::Open(const char* filePath, OpenMode openMode, SharingMode sharingMode)
+	{
+
+	}
+
+	void File::Close()
+	{
+
+	}
+
+
+
+
+
+}
+}
+
+#endif

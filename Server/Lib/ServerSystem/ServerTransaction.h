@@ -101,7 +101,7 @@ namespace Svr {
 
 			svrChk(ParseMessage());
 
-			svrChkPtr( m_ServerEntity = DEBUG_DYNAMIC_CAST(Svr::ServerEntity*,pOwner) );
+			svrChkPtr( m_ServerEntity = dynamic_cast<Svr::ServerEntity*>(pOwner) );
 
 			if( m_WorkOnServerEntity )
 			{
@@ -142,7 +142,7 @@ namespace Svr {
 		ServerEntityType *GetServerEntity()
 		{
 			ServerEntityType *pSvrEnt = nullptr;
-			pSvrEnt = DEBUG_DYNAMIC_CAST(ServerEntityType*, m_ServerEntity);
+			pSvrEnt = dynamic_cast<ServerEntityType*>(m_ServerEntity);
 			Assert(pSvrEnt);
 			return pSvrEnt;
 		}
@@ -161,7 +161,7 @@ namespace Svr {
 		FORCEINLINE OwnerEntityType* GetMyOwner()
 		{
 			Assert( GetOwnerEntity() );
-			return DEBUG_DYNAMIC_CAST(OwnerEntityType*,GetOwnerEntity());
+			return dynamic_cast<OwnerEntityType*>(GetOwnerEntity());
 		}
 
 	};
@@ -377,7 +377,7 @@ namespace Svr {
 
 			svrAssert( pMyOwner->GetClusterType() != ClusterType::Ring );
 
-			pMyOwner = DEBUG_DYNAMIC_CAST(RingClusterServiceEntity *,GetMyOwner());
+			pMyOwner = dynamic_cast<RingClusterServiceEntity *>(GetMyOwner());
 			svrChkPtr(pMyOwner);
 			pMyOwner->GetNextRing( pMyOwner->GetMyServiceInfo(), pNextService );
 

@@ -149,7 +149,7 @@ namespace Svr {
 
 		TimeStampMS GetTransactionStartTime()							{ return m_TransactionStartTime;  }
 
-		TimeStampMS GetNextTickTime()									{ return std::min(GetHeartBitTimeout(), GetTimerExpireTime()); }
+		TimeStampMS GetNextTickTime()									{ return Util::TimeMinNonZero(GetHeartBitTimeout(), GetTimerExpireTime()); }
 
 		// Get Exclusive option
 		FORCEINLINE bool	IsExclusive() const;

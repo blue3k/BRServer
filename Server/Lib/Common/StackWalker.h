@@ -39,7 +39,7 @@ namespace BR
 		CallStackTrace();
 
 		// print stack trace
-		HRESULT PrintStackTrace( Trace::TraceChannels channel, NativeHANDLE hProcess );
+		HRESULT PrintStackTrace( Trace::TraceChannels channel, NativeHandle hProcess );
 	};
 
 

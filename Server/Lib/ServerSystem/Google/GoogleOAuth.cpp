@@ -115,13 +115,13 @@ namespace Google {
 
 		const char header[] = "{\"alg\":\"RS256\",\"typ\":\"JWT\"}";
 		const char bodyFormat[] =
-			"{"
-			"\"iss\":\"%0%\","
-			"\"scope\":\"%1%\"," // https://www.googleapis.com/auth/androidpublisher
+			"{{"
+			"\"iss\":\"{0}\","
+			"\"scope\":\"{1}\"," // https://www.googleapis.com/auth/androidpublisher
 			"\"aud\":\"https://www.googleapis.com/oauth2/v3/token\","
-			"\"exp\":%2%,"
-			"\"iat\":%2%"
-			"}";
+			"\"exp\":{2},"
+			"\"iat\":{2}"
+			"}}";
 		char body[1024];
 
 		if (m_privateKey == nullptr
@@ -208,7 +208,7 @@ namespace Google {
 		struct curl_slist *headers = nullptr; // init to NULL is important 
 
 		m_ResultBuffer.Clear();
-		svrChk(StrUtil::Format(strPostFields, "%0%%1%", "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=", (const char*)requestString.data()));
+		svrChk(StrUtil::Format(strPostFields, "{0}{1}", "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=", (const char*)requestString.data()));
 
 		svrMem(curl = curl_easy_init());
 
@@ -304,7 +304,7 @@ namespace Google {
 		}
 
 		m_AuthStringIndex++;
-		svrChk(StrUtil::Format(m_AuthString[m_AuthStringIndex % 2], "Authorization: Bearer %0%", accessToken.c_str()));
+		svrChk(StrUtil::Format(m_AuthString[m_AuthStringIndex % 2], "Authorization: Bearer {0}", accessToken.c_str()));
 		m_ActiveAuthString = m_AuthString[m_AuthStringIndex % 2];
 
 		m_AuthenticatedTime = Util::Time.GetTimeMs();
@@ -313,7 +313,7 @@ namespace Google {
 
 		if (FAILED(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to Authorize google API hr:{0:X8}, account:%1%, %2%", hr, m_Account, m_ResultBuffer.GetSize() > 0 ? (char*)m_ResultBuffer.data() : "null");
+			svrTrace(Trace::TRC_ERROR, "Failed to Authorize google API hr:{0:X8}, account:{1}, {2}", hr, m_Account, m_ResultBuffer.GetSize() > 0 ? (char*)m_ResultBuffer.data() : "null");
 		}
 		else
 		{

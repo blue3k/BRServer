@@ -181,12 +181,12 @@ HRESULT StringCpy( WCHAR (&szDest)[iBuffLen], const WCHAR *szSrc )
 }
 
 
-
-template<INT iBuffLen>
-HRESULT WCSToMBCS( const WCHAR* strWCS, char (&strMBCS)[iBuffLen] )
-{
-	return WCSToMBCS( strWCS, strMBCS, iBuffLen );
-}
+//
+//template<INT iBuffLen>
+//HRESULT WCSToMBCS( const WCHAR* strWCS, char (&strMBCS)[iBuffLen] )
+//{
+//	return WCSToMBCS( strWCS, strMBCS, iBuffLen );
+//}
 
 
 
@@ -196,31 +196,31 @@ HRESULT WCSToUTF8( const WCHAR* strWCS, char (&strUTF8)[iBuffLen] )
 {
 	return WCSToUTF8( strWCS, strUTF8, iBuffLen );
 }
-
-
-template<int iBuffLen>
-HRESULT MBCSToWCS( const char *strMBCS, WCHAR (&strWCS)[iBuffLen] )
-{
-	return MBCSToWCS( strMBCS, strWCS, iBuffLen );
-}
-
-template<INT iBuffLen>
-HRESULT MBCSToUTF8( const char *strMBCS, char (&strUTF8)[iBuffLen] )
-{
-	return MBCSToUTF8( strMBCS, strUTF8, iBuffLen );
-}
+//
+//
+//template<int iBuffLen>
+//HRESULT MBCSToWCS( const char *strMBCS, WCHAR (&strWCS)[iBuffLen] )
+//{
+//	return MBCSToWCS( strMBCS, strWCS, iBuffLen );
+//}
+//
+//template<INT iBuffLen>
+//HRESULT MBCSToUTF8( const char *strMBCS, char (&strUTF8)[iBuffLen] )
+//{
+//	return MBCSToUTF8( strMBCS, strUTF8, iBuffLen );
+//}
 
 template<INT iBuffLen>
 HRESULT UTF8ToWCS( const char *strUTF8, WCHAR (&strWCS)[iBuffLen] )
 {
 	return UTF8ToWCS( strUTF8, strWCS, iBuffLen );
 }
-
-template<INT iBuffLen>
-HRESULT UTF8ToMBCS( const char *strUTF8, char (&strMBCS)[iBuffLen] )
-{
-	return UTF8ToMBCS( strUTF8, strMBCS, iBuffLen );
-}
+//
+//template<INT iBuffLen>
+//HRESULT UTF8ToMBCS( const char *strUTF8, char (&strMBCS)[iBuffLen] )
+//{
+//	return UTF8ToMBCS( strUTF8, strMBCS, iBuffLen );
+//}
 
 template<INT iBuffLen>
 HRESULT UTF8ToUTF8Bin( BYTE (&UTF8BinBuff)[iBuffLen], const char* strSrc )

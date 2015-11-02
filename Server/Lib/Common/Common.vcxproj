@@ -34,6 +34,7 @@
     <ClInclude Include="..\ServerSystem\TicketQueue.h" />
     <ClInclude Include=".\Argument.h" />
     <ClInclude Include="DualSortedMap.h" />
+    <ClInclude Include="File\BRFile.h" />
     <ClInclude Include="HashTable2.h" />
     <ClInclude Include="LocalUIDGenerator.h" />
     <ClInclude Include="Memento.h" />
@@ -117,6 +118,8 @@
     <ClCompile Include=".\MemoryPool.cpp" />
     <ClCompile Include=".\PerfCounter.cpp" />
     <ClCompile Include="CryptoSHA.cpp" />
+    <ClCompile Include="File\BRFile.linux.cpp" />
+    <ClCompile Include="File\BRFile.win32.cpp" />
     <ClCompile Include="LocalUIDGenerator.cpp" />
     <ClCompile Include="MemoryStream.cpp" />
     <ClCompile Include="BrGameTypes.cpp" />

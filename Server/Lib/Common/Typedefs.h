@@ -84,12 +84,27 @@
 
 #define timegm _mkgmtime
 
+#define INVALID_NATIVE_HANDLE_VALUE INVALID_HANDLE_VALUE
+
+
+inline HRESULT GetLastHRESULT()
+{
+	return HRESULT_FROM_WIN32(GetLastError());
+}
+
+inline HRESULT GetLastWSAHRESULT()
+{
+	return HRESULT_FROM_WIN32(WSAGetLastError());
+}
+
+
 #else
 
 #include <pthread.h>
 #include <sys/resource.h>
 #include <sys/time.h>
 #include <execinfo.h>
+#include <unistd.h>
 
 typedef unsigned char UINT8;
 typedef char INT8;
@@ -123,6 +138,8 @@ typedef SBYTE				*PSBYTE;
 typedef int  HRESULT;
 
 typedef void* HANDLE;
+#define INVALID_NATIVE_HANDLE_VALUE 0
+
 
 #include "Common/HRESSystem.h"
 
@@ -130,6 +147,18 @@ typedef void* HANDLE;
 
 #define FAILED(hr)      ((hr) < 0)
 #define SUCCEEDED(hr)   ((hr) >= 0)
+
+
+inline HRESULT GetLastHRESULT()
+{
+	return errno != 0 return E_UNEXPECTED;
+}
+
+inline HRESULT GetLastWSAHRESULT()
+{
+	return errno != 0 return E_UNEXPECTED;
+}
+
 
 #endif
 
@@ -180,7 +209,8 @@ typedef void* HANDLE;
 typedef INT8				SBYTE;
 typedef SBYTE				*PSBYTE;
 
-typedef HANDLE				NativeHANDLE;
+typedef HANDLE				NativeHandle;
+
 
 
 
@@ -267,6 +297,7 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 
 // disable unreferenced label warnning (Proc_End)
 #pragma warning( disable : 4102 )
+#pragma warning( disable : 4996 )
 
 #define DO_PRAGMA(x) __pragma(#x)
 #define COMPILETIME_TODO(x) DO_PRAGMA(comment ("TODO - " #x))
@@ -276,13 +307,11 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 #define DLL_IMPORT __declspec(dllimport)
 #define SYSTEMAPI APIENTRY
 
+
+
+
 #endif
 
 
-#ifdef DEBUG
-#define DEBUG_DYNAMIC_CAST(TargetType,src) (dynamic_cast<TargetType>(src))
-#else
-#define DEBUG_DYNAMIC_CAST(TargetType,src) ((TargetType)(src))
-#endif
 
 

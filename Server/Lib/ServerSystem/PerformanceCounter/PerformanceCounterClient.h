@@ -70,12 +70,13 @@ namespace BR {
 				PerformanceCounterInstance* pInstance;
 				EntityUID UID;
 
-				FreeInfo() : pInstance(nullptr)
+				FreeInfo() : pInstance(nullptr), UID(0)
 				{}
 
-				FreeInfo(PerformanceCounterInstance* pInst) : pInstance(pInst)
+				FreeInfo(PerformanceCounterInstance* pInst) : pInstance(pInst), UID(0)
 				{
-					UID = pInst->GetInstanceEntityUID();
+					if(pInstance != nullptr)
+						UID = pInst->GetInstanceEntityUID();
 				}
 
 				FreeInfo& operator = (const FreeInfo& src) { UID = src.UID; pInstance = src.pInstance; return *this; }

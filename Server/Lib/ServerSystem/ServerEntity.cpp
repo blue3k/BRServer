@@ -401,7 +401,7 @@ namespace Svr {
 				{
 					if ((Util::Time.GetTimeMs() - m_LocalConnectionRetryTime) > m_LocalConnectionRetryWait)
 					{
-						m_LocalConnectionRetryWait = Util::TimeMin(m_LocalConnectionRetryWait + DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY), DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY_MAX));
+						m_LocalConnectionRetryWait = Util::TimeMinNonZero(m_LocalConnectionRetryWait + DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY), DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY_MAX));
 
 						m_LocalConnectionRetryTime = Util::Time.GetTimeMs();
 						auto connectionInfo = pConn->GetConnectionInfo();

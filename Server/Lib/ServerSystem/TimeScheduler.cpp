@@ -42,8 +42,12 @@ namespace Svr {
 
 	void TimerAction::SetNextTickTime(TimeStampMS nextTickTime)
 	{
-		Assert((nextTickTime - Util::Time.GetTimeMs()) < DurationMS(60*60*1000));
-		Assert(nextTickTime != TimeStampMS(DurationMS(0)));
+		auto curTime = Util::Time.GetTimeMs();
+		Assert(nextTickTime != TimeStampMS::min());
+		if (nextTickTime < curTime || nextTickTime == TimeStampMS::min()) // correct the time
+			nextTickTime = curTime;
+		auto diffTime = nextTickTime - curTime;
+		Assert((LONG)diffTime.count() < 60*60*1000);
 		
 		TimeData.NextTickTime = nextTickTime;
 	}
@@ -88,7 +92,8 @@ namespace Svr {
 
 			auto savedTime = key;
 			pAction->m_InQueueKey.NextTickTime = TimeStampMS::max();
-			Assert((pAction->TimeData.NextTickTime - Util::Time.GetTimeMs()) < DurationMS(5000));
+			auto diffTime = pAction->TimeData.NextTickTime - Util::Time.GetTimeMs();
+			Assert((LONG)diffTime.count() < 5000);
 
 			bool bIsNeedToKeep = pAction->UpdateTick();
 

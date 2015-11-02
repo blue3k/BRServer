@@ -394,7 +394,7 @@ namespace Svr {
 		}
 
 		auto matchingCompID = Svr::MatchingUtil::GetQueueComponentID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
-		auto matchingQueueService = Svr::GetServerComponent<Svr::MatchingQueueWatcherServiceEntity>(matchingCompID);
+		auto matchingQueueService = Svr::GetServerComponent<Svr::RingClusterServiceEntity>(matchingCompID);
 		if (matchingQueueService == nullptr)
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to get matching queue service MaxGamePlayer:%0%, NumberOfPlayer:%1%, matchingCompID:%2%", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), matchingCompID);

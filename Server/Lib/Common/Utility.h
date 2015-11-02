@@ -65,7 +65,7 @@ namespace Util {
 	const WCHAR* GetServiceName();
 	const char* GetServiceNameA();
 	void SetServiceName(const WCHAR* serviceName);
-	void SetServiceNameA(const char* serviceName);
+	void SetServiceName(const char* serviceName);
 
 	// Module Name
 	const WCHAR* GetModuleName();
@@ -107,7 +107,7 @@ namespace Util {
 	ValType Abs( ValType value );
 
 	// Peek key from console
-	HRESULT PeekKey( int &inputKey, HANDLE hConsole = INVALID_HANDLE_VALUE );
+	HRESULT PeekKey( int &inputKey, NativeHandle hConsole = INVALID_NATIVE_HANDLE_VALUE);
 
 	
 #include "Utility.inl"

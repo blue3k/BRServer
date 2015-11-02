@@ -95,7 +95,7 @@ namespace BR
 	}
 
 #if WINDOWS
-	HRESULT CallStackTrace::PrintStackTrace( Trace::TraceChannels channel, NativeHANDLE hProcess )
+	HRESULT CallStackTrace::PrintStackTrace( Trace::TraceChannels channel, NativeHandle hProcess )
 	{
 		BYTE Buffer[1024];
 		memset( Buffer, 0, sizeof(Buffer) );
@@ -142,7 +142,7 @@ namespace BR
 		return E_FAIL;
 	}
 #else
-	HRESULT CallStackTrace::PrintStackTrace(Trace::TraceChannels channel, NativeHANDLE hProcess)
+	HRESULT CallStackTrace::PrintStackTrace(Trace::TraceChannels channel, NativeHandle hProcess)
 	{
 		char **strings;
 		size_t i;

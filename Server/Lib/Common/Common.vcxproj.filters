@@ -102,6 +102,12 @@
     <ClCompile Include="TypeUtility.cpp">
       <Filter>Types</Filter>
     </ClCompile>
+    <ClCompile Include="File\BRFile.linux.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="File\BRFile.win32.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\GameConst.h" />
@@ -355,6 +361,9 @@
     <ClInclude Include="TypeUtility.h">
       <Filter>Types</Filter>
     </ClInclude>
+    <ClInclude Include="File\BRFile.h">
+      <Filter>File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".\ArrayUtil.inl">
@@ -506,6 +515,9 @@
     </Filter>
     <Filter Include="SharedPointer">
       <UniqueIdentifier>{05847ed5-343f-4572-95c9-cdb9bccf4d10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{fde754a3-7e5a-4414-a715-3efe3e6d4a97}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

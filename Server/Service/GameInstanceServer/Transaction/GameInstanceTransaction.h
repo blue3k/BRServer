@@ -82,7 +82,7 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk(ParseMessage());
 
-			svrChkPtr( m_ServerEntity = DEBUG_DYNAMIC_CAST(Svr::ServerEntity*,pOwner) );
+			svrChkPtr( m_ServerEntity = dynamic_cast<Svr::ServerEntity*>(pOwner) );
 
 			if( GetMyServer()->GetServerUID() != GetRouteContext().To.SvrID )
 			{
@@ -114,7 +114,7 @@ namespace ConspiracyGameInstanceServer {
 		ServerEntityType *GetServerEntity()
 		{
 			ServerEntityType *pSvrEnt = nullptr;
-			pSvrEnt = DEBUG_DYNAMIC_CAST(ServerEntityType*, m_ServerEntity);
+			pSvrEnt = dynamic_cast<ServerEntityType*>(m_ServerEntity);
 			Assert(pSvrEnt);
 			return pSvrEnt;
 		}

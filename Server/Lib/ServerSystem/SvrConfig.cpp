@@ -688,7 +688,7 @@ namespace Config
 		char strCfgPath[1024];
 		ServerConfigParser parser ( __ConfigData );
 
-		StrUtil::WCSToMBCS( strConfigFileName, strCfgPath );
+		StrUtil::WCSToUTF8( strConfigFileName, strCfgPath );
 
 		int result = xmlSAXUserParseFile( parser, &parser, strCfgPath );
 
