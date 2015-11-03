@@ -55,6 +55,7 @@ namespace IO {
 
 	public:
 		File();
+		~File();
 
 		bool IsOpened();
 

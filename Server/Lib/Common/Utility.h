@@ -107,7 +107,7 @@ namespace Util {
 	ValType Abs( ValType value );
 
 	// Peek key from console
-	HRESULT PeekKey( int &inputKey, NativeHandle hConsole = INVALID_NATIVE_HANDLE_VALUE);
+	//HRESULT PeekKey( int &inputKey, NativeHandle hConsole = INVALID_NATIVE_HANDLE_VALUE);
 
 	
 #include "Utility.inl"

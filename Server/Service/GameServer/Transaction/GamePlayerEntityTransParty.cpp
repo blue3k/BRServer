@@ -435,6 +435,16 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID() != 0 )
 			svrErr(E_GAME_ALREADY_IN_PARTY);
 
+		// Need stamina to join a party
+		auto config = GetMyServer()->GetPresetGameConfig();
+		if (config != nullptr)
+		{
+			//svrErr(E_INVALID_STATE);
+			GetMyOwner()->UpdateGamePlayer();
+			if (GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetStamina() < config->StaminaForGame)
+				svrErrClose(E_GAME_NOTENOUGH_RESOURCE);
+		}
+
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetPartyUID().SvrID, pServerEntity ) );
 
 		svrChkPtr( pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>() );

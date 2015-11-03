@@ -106,7 +106,6 @@
     <ClInclude Include="UniqueEntityIDGenerator.h" />
     <ClInclude Include=".\Utility.h" />
     <ClInclude Include="BrXML.h" />
-    <ClInclude Include="PerfCounter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".\Argument.cpp" />
@@ -116,7 +115,6 @@
     <ClCompile Include="CryptoCrc32.cpp" />
     <ClCompile Include=".\Memory.cpp" />
     <ClCompile Include=".\MemoryPool.cpp" />
-    <ClCompile Include=".\PerfCounter.cpp" />
     <ClCompile Include="CryptoSHA.cpp" />
     <ClCompile Include="File\BRFile.linux.cpp" />
     <ClCompile Include="File\BRFile.win32.cpp" />
@@ -182,7 +180,6 @@
     <None Include="BrSvrTypes.inl" />
     <None Include="Message.inl" />
     <None Include=".\PageQueue.inl" />
-    <None Include=".\PerfCounter.inl" />
     <None Include="BrGameTypes.inl" />
     <None Include="BrRandom.inl" />
     <None Include="SortedMap.inl" />

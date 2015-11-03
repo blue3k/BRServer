@@ -27,21 +27,44 @@ namespace Util {
 	//
 	//	Module Name helper
 	//
-	static WCHAR g_wszModulePath[MAX_PATH] = {0};
-	static CHAR g_szModulePath[MAX_PATH] = {0};
-	static WCHAR g_wszModuleName[MAX_PATH] = {0};
-	static CHAR g_szModuleName[MAX_PATH] = {0};
-	static WCHAR g_wszServiceName[MAX_PATH] = {0};
-	static CHAR g_szServiceName[MAX_PATH] = {0};
+	static wchar_t g_wszModulePath[MAX_PATH] = {0};
+	static char g_szModulePath[MAX_PATH] = {0};
+	static wchar_t g_wszModuleName[MAX_PATH] = {0};
+	static char g_szModuleName[MAX_PATH] = {0};
+	static wchar_t g_wszServiceName[MAX_PATH] = {0};
+	static char g_szServiceName[MAX_PATH] = {0};
+
+#if LINUX
+	size_t get_executable_path(char* buffer, size_t len)
+	{
+		char* path_end;
+		/* Read the target of /proc/self/exe. */
+		if (readlink("/proc/self/exe", buffer, len) <= 0)
+			return -1;
+		/* Find the last occurrence of a forward slash, the path separator. */
+		path_end = strrchr(buffer, '/');
+		if (path_end == NULL)
+			return -1;
+		/* Advance to the character past the last slash. */
+		++path_end;
+		/* Obtain the directory containing the program by truncating the
+		path after the last slash. */
+		*path_end = '\0';
+		/* The length of the path is the number of characters up through the
+		last slash. */
+		return (size_t)(path_end - buffer);
+	}
+#endif
 
 	static void _InitModuleName()
 	{
 		if( g_wszModulePath[0] == NULL || g_wszModuleName[0] == NULL )
 		{
+#if WINDOWS
 			// initialize module name
-			WCHAR drive[_MAX_DRIVE] = {0};
-			WCHAR dir[_MAX_DIR] = {0};
-			WCHAR ext[_MAX_EXT] = L"";
+			wchar_t drive[_MAX_DRIVE] = {0};
+			wchar_t dir[_MAX_DIR] = {0};
+			wchar_t ext[_MAX_EXT] = L"";
 
 			GetModuleFileNameW(GetModuleHandle(NULL), g_wszModulePath, MAX_PATH);
 			_wsplitpath_s( g_wszModulePath, drive, dir, g_wszModuleName, ext );
@@ -49,6 +72,15 @@ namespace Util {
 
 			StrUtil::WCSToUTF8( g_wszModulePath, g_szModulePath );
 			StrUtil::WCSToUTF8( g_wszModuleName, g_szModuleName );
+#else
+			get_executable_path(g_szModulePath, countof(g_szModulePath));
+			char* bastNameLoc = basename(g_szModulePath);
+			strcpy(g_szModuleName, bastNameLoc);
+			*(bastNameLoc - 1) = '\0';
+
+			StrUtil::UTF8ToWCS(g_szModulePath, g_wszModulePath);
+			StrUtil::UTF8ToWCS(g_szModuleName, g_wszModuleName);
+#endif
 		}
 
 		// If the service name isn't specified, use module name for it
@@ -66,7 +98,7 @@ namespace Util {
 	//
 
 
-	const WCHAR* GetServiceName()
+	const wchar_t* GetServiceName()
 	{
 		_InitModuleName();
 		return g_wszServiceName;
@@ -76,7 +108,7 @@ namespace Util {
 		_InitModuleName();
 		return g_szServiceName;
 	}
-	void SetServiceName(const WCHAR* serviceName)
+	void SetServiceName(const wchar_t* serviceName)
 	{
 		StrUtil::WCSToUTF8( serviceName, g_szServiceName );
 		StrUtil::StringCpy( g_wszServiceName, serviceName );
@@ -90,7 +122,7 @@ namespace Util {
 
 
 	// Module Name
-	const WCHAR* GetModuleName()
+	const wchar_t* GetModuleName()
 	{
 		_InitModuleName();
 		return g_wszModuleName;
@@ -102,7 +134,7 @@ namespace Util {
 	}
 
 	// Module Path
-	const WCHAR* GetModulePath()
+	const wchar_t* GetModulePath()
 	{
 		_InitModuleName();
 		return g_wszModulePath;
@@ -121,74 +153,74 @@ namespace Util {
 	//
 
 
-	// Peek key from console
-	HRESULT PeekKey( int &inputKey, HANDLE hConsole )
-	{
-		HRESULT hr = S_OK;
-		DWORD cNumRead, fdwSaveOldMode = 0; 
-		INPUT_RECORD irInBuf; 
+	//// Peek key from console
+	//HRESULT PeekKey( int &inputKey, HANDLE hConsole )
+	//{
+	//	HRESULT hr = S_OK;
+	//	DWORD cNumRead, fdwSaveOldMode = 0; 
+	//	INPUT_RECORD irInBuf; 
 
-		if( hConsole == INVALID_NATIVE_HANDLE_VALUE )
-		{
-			// Get the standard input handle. 
-			hConsole = GetStdHandle(STD_INPUT_HANDLE); 
-			if (hConsole == INVALID_NATIVE_HANDLE_VALUE) 
-				trcErr( E_FAIL );
-		}
+	//	if( hConsole == INVALID_NATIVE_HANDLE_VALUE )
+	//	{
+	//		// Get the standard input handle. 
+	//		hConsole = GetStdHandle(STD_INPUT_HANDLE); 
+	//		if (hConsole == INVALID_NATIVE_HANDLE_VALUE) 
+	//			trcErr( E_FAIL );
+	//	}
 
-		// Save the current input mode, to be restored on exit. 
-		if (!GetConsoleMode(hConsole, &fdwSaveOldMode))
-		{
-			//trcErr( E_FAIL );
-			goto Proc_End;
-		}
+	//	// Save the current input mode, to be restored on exit. 
+	//	if (!GetConsoleMode(hConsole, &fdwSaveOldMode))
+	//	{
+	//		//trcErr( E_FAIL );
+	//		goto Proc_End;
+	//	}
 
-		// Enable the window and mouse input events. 
-		if (! SetConsoleMode(hConsole, 0) ) 
-			trcErr( E_FAIL );
+	//	// Enable the window and mouse input events. 
+	//	if (! SetConsoleMode(hConsole, 0) ) 
+	//		trcErr( E_FAIL );
 
-		// Wait for the events. 
-		if (! ReadConsoleInput( 
-				hConsole,      // input buffer handle 
-				&irInBuf,     // buffer to read into 
-				1,         // size of read buffer 
-				&cNumRead) ) // number of records read 
-			trcErr( E_FAIL );
+	//	// Wait for the events. 
+	//	if (! ReadConsoleInput( 
+	//			hConsole,      // input buffer handle 
+	//			&irInBuf,     // buffer to read into 
+	//			1,         // size of read buffer 
+	//			&cNumRead) ) // number of records read 
+	//		trcErr( E_FAIL );
 
-		// Dispatch the events to the appropriate handler. 
-		switch(irInBuf.EventType) 
-		{ 
-			case KEY_EVENT: // keyboard input 
-				if( irInBuf.Event.KeyEvent.bKeyDown )
-				{
-					inputKey = irInBuf.Event.KeyEvent.uChar.AsciiChar;
-					goto Proc_End;
-				}
-				break; 
+	//	// Dispatch the events to the appropriate handler. 
+	//	switch(irInBuf.EventType) 
+	//	{ 
+	//		case KEY_EVENT: // keyboard input 
+	//			if( irInBuf.Event.KeyEvent.bKeyDown )
+	//			{
+	//				inputKey = irInBuf.Event.KeyEvent.uChar.AsciiChar;
+	//				goto Proc_End;
+	//			}
+	//			break; 
 
-			case MOUSE_EVENT: // mouse input 
-				break; 
+	//		case MOUSE_EVENT: // mouse input 
+	//			break; 
 
-			case WINDOW_BUFFER_SIZE_EVENT: // scrn buf. resizing 
-				break; 
+	//		case WINDOW_BUFFER_SIZE_EVENT: // scrn buf. resizing 
+	//			break; 
 
-			case FOCUS_EVENT:  // disregard focus events 
+	//		case FOCUS_EVENT:  // disregard focus events 
 
-			case MENU_EVENT:   // disregard menu events 
-				break; 
+	//		case MENU_EVENT:   // disregard menu events 
+	//			break; 
 
-			default: 
-				trcErr( E_FAIL );
-				break; 
-		};
+	//		default: 
+	//			trcErr( E_FAIL );
+	//			break; 
+	//	};
 
-	Proc_End:
+	//Proc_End:
 
-		if( hConsole != INVALID_NATIVE_HANDLE_VALUE && fdwSaveOldMode != 0 )
-			SetConsoleMode(hConsole, fdwSaveOldMode);
+	//	if( hConsole != INVALID_NATIVE_HANDLE_VALUE && fdwSaveOldMode != 0 )
+	//		SetConsoleMode(hConsole, fdwSaveOldMode);
 
-		return hr; 
-	}
+	//	return hr; 
+	//}
 
 	// Calculate near power of w
 	UINT NearPowerOf2( UINT32 uiNumber )

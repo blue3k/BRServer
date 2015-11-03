@@ -182,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BrServer.h" />
+    <ClInclude Include="BrService.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Transaction\ServerTransactionGeneric.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BRService.linux.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="EntityTable.cpp" />
@@ -325,7 +327,7 @@
     <ClCompile Include="SimpleEntity.cpp" />
     <ClCompile Include="SimpleUserEntity.cpp" />
     <ClCompile Include="BRServer.cpp" />
-    <ClCompile Include="BRService.cpp" />
+    <ClCompile Include="BRService.win64.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

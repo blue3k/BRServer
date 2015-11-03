@@ -355,6 +355,9 @@
     <ClInclude Include="ExternalTransactionManager.h">
       <Filter>ExternalTask</Filter>
     </ClInclude>
+    <ClInclude Include="BrService.h">
+      <Filter>Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -397,9 +400,6 @@
       <Filter>ServerService</Filter>
     </ClCompile>
     <ClCompile Include="BRServer.cpp">
-      <Filter>Server</Filter>
-    </ClCompile>
-    <ClCompile Include="BRService.cpp">
       <Filter>Server</Filter>
     </ClCompile>
     <ClCompile Include="SvrConst.cpp">
@@ -578,6 +578,12 @@
     </ClCompile>
     <ClCompile Include="ExternalTransactionManager.cpp">
       <Filter>ExternalTask</Filter>
+    </ClCompile>
+    <ClCompile Include="BRService.win64.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="BRService.linux.cpp">
+      <Filter>Server</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

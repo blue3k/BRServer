@@ -266,19 +266,20 @@ namespace Trace {
 		: m_uiOutputMask(TRCOUT_NONE)
 		, m_uiDbgOutputMask(TRCOUT_NONE)
 		, m_uiLineHeaderLen(0)
+#if WINDOWS
 		, m_hEventLog(nullptr)
 		, m_hConsole(INVALID_NATIVE_HANDLE_VALUE)
+#endif
 	{
 		for( int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++ )
 		{
 			m_tLogFileHour[iFile] = -1;
-			m_hLogFile[iFile] = INVALID_NATIVE_HANDLE_VALUE;
 		}
 
-
+#if WINDOWS
 		// create event log handle
 		m_hEventLog = RegisterEventSourceW( nullptr, Util::GetServiceName() );
-
+#endif
 		UpdateLineHeader();
 	}
 
@@ -288,18 +289,14 @@ namespace Trace {
 
 		for( int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++ )
 		{
-			if( m_hLogFile[iFile] != INVALID_NATIVE_HANDLE_VALUE )
-				CloseHandle( m_hLogFile[iFile] );
+			m_LogFile[iFile].Close();
 		}
 
+#if WINDOWS
 		if( m_hEventLog )
 			DeregisterEventSource(m_hEventLog);
 		m_hEventLog = nullptr;
-
-
-		//if( trace_bfr )
-		//	delete trace_bfr;
-		//trace_bfr = nullptr;
+#endif
 	}
 
 	// Override stop to handle kill method
@@ -318,57 +315,43 @@ namespace Trace {
 	}
 
 	// Open Log file
-	HRESULT TraceOutModule::OpenLogFile( int iFile, const struct tm &curtm, wchar_t *strFileName )
+	HRESULT TraceOutModule::OpenLogFile( int iFile, const struct tm &curtm, const char *strFileName )
 	{
 		// close previous opened file
-		if( m_hLogFile[iFile] )
-			CloseHandle( m_hLogFile[iFile] );
+		m_LogFile[iFile].Close();
 
 		// Open file
-		m_hLogFile[iFile] = CreateFile(
-			strFileName,
-			GENERIC_WRITE,
-			FILE_SHARE_READ,
-			nullptr,
-			OPEN_ALWAYS,
-			FILE_ATTRIBUTE_NORMAL 
-			| FILE_FLAG_SEQUENTIAL_SCAN,
-			nullptr);
+		HRESULT hr = m_LogFile[iFile].Open(strFileName, IO::File::OpenMode::Append, IO::File::SharingMode::ReadShared);
+		if (FAILED(hr))
+			return hr;
 
-		if( m_hLogFile[iFile] != INVALID_NATIVE_HANDLE_VALUE )
+		m_LogFile[iFile].Seek(IO::File::SeekMode::End);
+
+		m_tLogFileHour[iFile] = curtm.tm_hour;
+
+		size_t szWritten;
+
+		// if created file then write BOM
+		if (m_LogFile[iFile].GetFileSize() == 0)
 		{
-			DWORD dwWritten = 0;
-
-			SetFilePointer(m_hLogFile[iFile], 0, 0, FILE_END);
-			m_tLogFileHour[iFile] = curtm.tm_hour;
-
-			// if created file then write BOM
-			LARGE_INTEGER szSize;
-			GetFileSizeEx( m_hLogFile[iFile], &szSize );
-			if( szSize.QuadPart == 0 )
-			{
-				static const BYTE bytBOM[3] = { 0xEF, 0xBB, 0xBF };
-				WriteFile( m_hLogFile[iFile], bytBOM, 3, &dwWritten, nullptr );
-			}
-
-			// Write open header
-			char szLogBuff[1024];
-			snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
-			DWORD dwStrLen = (DWORD)strlen(szLogBuff);
-			WriteFile( m_hLogFile[iFile], szLogBuff, dwStrLen, &dwWritten, nullptr );
-
-			snprintf(szLogBuff, MAX_PATH, "Start Log: %04d-%02d-%02d-%02d:%02d \r\n", curtm.tm_year + 1900, curtm.tm_mon + 1, curtm.tm_mday, curtm.tm_hour, curtm.tm_min );
-			dwStrLen = (DWORD)strlen(szLogBuff);
-			WriteFile( m_hLogFile[iFile], szLogBuff, dwStrLen, &dwWritten, nullptr );
-
-			snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
-			dwStrLen = (DWORD)strlen(szLogBuff);
-			WriteFile( m_hLogFile[iFile], szLogBuff, dwStrLen, &dwWritten, nullptr );
+			// UTF8 BOM
+			static const BYTE bytBOM[3] = { 0xEF, 0xBB, 0xBF };
+			m_LogFile[iFile].Write(bytBOM, 3, szWritten);
 		}
-		else
-		{
-			return E_FAIL;
-		}
+
+		// Write open header
+		char szLogBuff[1024];
+		snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
+		DWORD dwStrLen = (DWORD)strlen(szLogBuff);
+		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
+
+		snprintf(szLogBuff, MAX_PATH, "Start Log: %04d-%02d-%02d-%02d:%02d \r\n", curtm.tm_year + 1900, curtm.tm_mon + 1, curtm.tm_mday, curtm.tm_hour, curtm.tm_min );
+		dwStrLen = (DWORD)strlen(szLogBuff);
+		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
+
+		snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
+		dwStrLen = (DWORD)strlen(szLogBuff);
+		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
 
 		return S_OK;
 	}
@@ -396,7 +379,7 @@ namespace Trace {
 
 				if( !pBlock->Data.KillSignal )
 				{
-					auto ulCurTime = Util::Time.GetTimeMs();
+					auto ulCurTime = Util::Time.GetTimeUTCSec();
 
 					CheckAndUpdate( ulCurTime );
 
@@ -407,7 +390,7 @@ namespace Trace {
 			}
 			else
 			{
-				auto ulCurTime = Util::Time.GetTimeMs();
+				auto ulCurTime = Util::Time.GetTimeUTCSec();
 
 				CheckAndUpdate( ulCurTime );
 			}
@@ -417,15 +400,18 @@ namespace Trace {
 
 	void TraceOutModule::UpdateConsoleHandle()
 	{
+#if WINDOWS
 		m_hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+#endif
 	}
 
 	// Check file system and update
-	HRESULT TraceOutModule::CheckAndUpdate(TimeStampMS tCurTime )
+	HRESULT TraceOutModule::CheckAndUpdate(TimeStampSec tCurTime )
 	{
 		// Update curtime
-		time(&m_tCurTime);
-		localtime_s(&m_tCurTimeTM, &m_tCurTime);
+		m_tCurTime = Util::Time.GetRawUTCSec();
+		time_t time = m_tCurTime.time_since_epoch().count() + Util::Time.GetUTCSecOffset().count();
+		m_tCurTimeTM = *gmtime(&time);
 
 		if( (m_tLineHdrCheck - tCurTime) > DurationMS(Trace::UPDATE_LINEHEADER_TIME) )
 		{
@@ -460,7 +446,7 @@ namespace Trace {
 		UINT uiOutputMask = m_uiOutputMask | m_uiDbgOutputMask;
 		if (uiOutputMask & TRCOUT_FILE_ALL)
 		{
-			WCHAR strFileName[MAX_PATH];
+			char strFileName[MAX_PATH];
 			for (int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++)
 			{
 				if (uiOutputMask&_g_uiFileMask[iFile])
@@ -469,31 +455,20 @@ namespace Trace {
 					if (m_tLogFileHour[iFile] == m_tCurTimeTM.tm_hour)
 						continue;
 
+					// build name
+					const char* strFormat = nullptr;
 					if (iFile == TRCOUT_FILE_LOG)
-					{
-						// build name
-						swprintf(strFileName, MAX_PATH, L"%s..\\log\\%s[%d_%04d_%02d_%02d]log.txt", Util::GetModulePath(), Util::GetServiceName(), m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour);
-					}
+						strFormat = "%s..\\log\\%s[%d_%04d_%02d_%02d]log.txt";
 					else
-					{
-						// build name
-						swprintf(strFileName, MAX_PATH, L"%s..\\log\\%s[%d_%04d_%02d_%02d]logdbg.txt", Util::GetModulePath(), Util::GetServiceName(), m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour);
-					}
+						strFormat = "%s..\\log\\%s[%d_%04d_%02d_%02d]logdbg.txt";
 
-					// close previous opened file
-					if (m_hLogFile[iFile])
-						CloseHandle(m_hLogFile[iFile]);
-					m_hLogFile[iFile] = INVALID_NATIVE_HANDLE_VALUE;
+					snprintf(strFileName, MAX_PATH, strFormat, Util::GetModulePathA(), Util::GetServiceNameA(), m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour);
 
 					OpenLogFile(iFile, m_tCurTimeTM, strFileName);
 				}
 				else
 				{
-					if (m_hLogFile[iFile])
-						CloseHandle(m_hLogFile[iFile]);
-					m_hLogFile[iFile] = INVALID_NATIVE_HANDLE_VALUE;
-
-					//return GetLastHRESULT();
+					m_LogFile[iFile].Close();
 				}
 			}
 		}
@@ -512,9 +487,10 @@ namespace Trace {
 	}
 
 
-	void TraceOutModule::EventLog( DWORD dwEventId, const WCHAR *string1, const WCHAR *string2 )
+	void TraceOutModule::EventLog(DWORD dwEventId, const WCHAR *string1, const WCHAR *string2)
 	{
-		if ( m_hEventLog == nullptr )
+#if WINDOWS
+		if (m_hEventLog == nullptr)
 			return;
 
 		LPCWSTR Inserts[] =
@@ -523,7 +499,7 @@ namespace Trace {
 			string2
 		};
 
-		static const WORD severity_map[4] = 
+		static const WORD severity_map[4] =
 		{
 			EVENTLOG_SUCCESS,
 			EVENTLOG_INFORMATION_TYPE,
@@ -541,13 +517,14 @@ namespace Trace {
 			0,
 			Inserts,
 			nullptr);
+#endif
 	}
 
 	// Console output
 	void TraceOutModule::ConsoleOut( const WCHAR *strString1, const WCHAR *strString2 )
 	{
 		DWORD dwWriten = 0;
-
+#if WINDOWS
 		// Get the standard input handle.
 		if (m_hConsole != INVALID_NATIVE_HANDLE_VALUE)
 		{
@@ -557,6 +534,15 @@ namespace Trace {
 			if( strString2 )
 				WriteConsoleW( m_hConsole, strString2, (DWORD)wcslen(strString2), &dwWriten, nullptr );
 		}
+#else
+
+		if (strString1 != nullptr)
+			wprintf(strString1);
+
+		if (strString2 != nullptr)
+			wprintf(strString2);
+
+#endif
 	//Proc_End:
 		return;
 	}
@@ -573,15 +559,17 @@ namespace Trace {
 
 		static WCHAR wszOutput[2048] = L"";
 		if( (uiOutputMask&(TRCOUT_DEBUG|TRCOUT_EVENT))
-			|| ((uiOutputMask&TRCOUT_CONSOLE) && m_hConsole != INVALID_NATIVE_HANDLE_VALUE) )
+			|| ((uiOutputMask&TRCOUT_CONSOLE)) )
 		{
 			StrUtil::UTF8ToWCS( szOutput, wszOutput );
 		}
 
 		if( uiOutputMask&TRCOUT_DEBUG )
 		{
+#if WINDOWS
 			OutputDebugStringW( m_wszLineHeader );
 			OutputDebugStringW( wszOutput );
+#endif
 		}
 
 		if( uiOutputMask&TRCOUT_CONSOLE )
@@ -605,20 +593,20 @@ namespace Trace {
 		// Validate log file
 		ValidateLogFile();
 
+		size_t szWritten;
 		if( (m_uiOutputMask&_g_uiFileMask[TRCOUT_FILE_LOG])
-			&& m_hLogFile[TRCOUT_FILE_LOG] != INVALID_NATIVE_HANDLE_VALUE )
+			&& m_LogFile[TRCOUT_FILE_LOG].IsOpened() )
 		{
-			DWORD dwWritten = 0;
-			WriteFile( m_hLogFile[TRCOUT_FILE_LOG], m_szLineHeader, dwszLineHeader, &dwWritten, nullptr );
-			WriteFile( m_hLogFile[TRCOUT_FILE_LOG], szOutput, dwszOutput, &dwWritten, nullptr );
+			m_LogFile[TRCOUT_FILE_LOG].Write((const BYTE*)m_szLineHeader, dwszLineHeader, szWritten );
+			m_LogFile[TRCOUT_FILE_LOG].Write((const BYTE*)szOutput, dwszOutput, szWritten );
 		}
 		
 		if( (m_uiDbgOutputMask&_g_uiFileMask[TRCOUT_FILE_DBGLOG])
-			&& m_hLogFile[TRCOUT_FILE_DBGLOG] != INVALID_NATIVE_HANDLE_VALUE )
+			&& m_LogFile[TRCOUT_FILE_DBGLOG].IsOpened())
 		{
 			DWORD dwWritten = 0;
-			WriteFile( m_hLogFile[TRCOUT_FILE_DBGLOG], m_szLineHeader, dwszLineHeader, &dwWritten, nullptr );
-			WriteFile( m_hLogFile[TRCOUT_FILE_DBGLOG], szOutput, dwszOutput, &dwWritten, nullptr );
+			m_LogFile[TRCOUT_FILE_DBGLOG].Write((const BYTE*)m_szLineHeader, dwszLineHeader, szWritten );
+			m_LogFile[TRCOUT_FILE_DBGLOG].Write((const BYTE*)szOutput, dwszOutput, szWritten );
 		}
 
 		// Remain output mask
@@ -640,9 +628,6 @@ namespace Trace {
 		case TRC_ASSERT:
 			StrUtil::StringCpyEx( szDest, iBuffLen, "ASSERT: " );
 			break;
-		//case TRC_TRACE:
-		//	StrUtil::StringCpyEx( szDest, iBuffLen, "ERROR: " );
-		//	break;
 		case TRC_IERROR:
 			StrUtil::StringCpyEx( szDest, iBuffLen, "ERROR: " );
 			break;
@@ -786,7 +771,7 @@ namespace Trace {
 	void Initialize()
 	{
 		TraceOutModule::NewInstance();
-		TraceOutModule::GetInstance()->CheckAndUpdate( Util::Time.GetRawTimeMs() );
+		TraceOutModule::GetInstance()->CheckAndUpdate( Util::Time.GetRawUTCSec() );
 		TraceOutModule::GetInstance()->Start();
 	}
 
@@ -826,6 +811,7 @@ namespace Trace {
 	// Allocate console if not exist
 	void AllocScreenConsole()
 	{
+#if WINDOWS
 		HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 		if( hOutput == 0 
 			|| hOutput == INVALID_NATIVE_HANDLE_VALUE )
@@ -836,6 +822,7 @@ namespace Trace {
 
 			SetConsoleTitle(Util::GetServiceName());
 		}
+#endif
 	}
 
 

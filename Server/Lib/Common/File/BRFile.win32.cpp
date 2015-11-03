@@ -34,6 +34,11 @@ namespace IO {
 	{
 	}
 
+	File::~File()
+	{
+		Close();
+	}
+
 	bool File::IsOpened()
 	{
 		return m_FileHandle != INVALID_NATIVE_HANDLE_VALUE;

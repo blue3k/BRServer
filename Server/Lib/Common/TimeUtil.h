@@ -77,6 +77,8 @@ namespace Util {
 		// Get current UTC sec
 		TimeStampSec	GetRawUTCSec();
 
+		DurationSec		GetUTCSecOffset() { return DurationSec(m_ullUTCOffset); }
+
 	};
 
 

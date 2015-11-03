@@ -11,9 +11,6 @@
     <ClCompile Include=".\MemoryPool.cpp">
       <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include=".\PerfCounter.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
     <ClCompile Include="BrRandom.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
@@ -129,9 +126,6 @@
     </ClInclude>
     <ClInclude Include=".\MathUtil.h">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="PerfCounter.h">
-      <Filter>System</Filter>
     </ClInclude>
     <ClInclude Include="ClassUtil.h">
       <Filter>Utility</Filter>
@@ -377,9 +371,6 @@
     </None>
     <None Include=".\MathUtil.inl">
       <Filter>Utility</Filter>
-    </None>
-    <None Include=".\PerfCounter.inl">
-      <Filter>System</Filter>
     </None>
     <None Include="BrRandom.inl">
       <Filter>Utility</Filter>

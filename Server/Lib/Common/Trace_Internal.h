@@ -18,6 +18,7 @@
 #include "Common/StrUtil.h"
 #include "Common/StrFormat.h"
 #include "Common/SpinBufferMT.h"
+#include "Common/File/BRFile.h"
 
 
 #ifndef SHIPPING
@@ -64,12 +65,12 @@ namespace Trace {
 		// Static for shared use
 
 		// Trace output mode Mask 
-		NativeHandle		m_hLogFile[TRCOUT_NUMFILE];
+		IO::File	m_LogFile[TRCOUT_NUMFILE];
 
 		// Latest log file creation time
 		UINT		m_tLogFileHour[TRCOUT_NUMFILE];
 
-		time_t      m_tCurTime;
+		TimeStampSec     m_tCurTime;
 		struct tm	m_tCurTimeTM;
 
 		// Trace output mode Mask 
@@ -87,14 +88,14 @@ namespace Trace {
 #endif
 
 		// Latest checked time
-		ULONGLONG	m_tTraceCheck;
+		TimeStampSec	m_tTraceCheck;
 
 		// Line header timestamp
-		ULONGLONG	m_tLineHeader;
+		TimeStampSec	m_tLineHeader;
 
 		// Pre updated registry time
-		TimeStampMS		m_tRegCheck;
-		TimeStampMS		m_tLineHdrCheck;
+		TimeStampSec	m_tRegCheck;
+		TimeStampSec	m_tLineHdrCheck;
 
 		// Line header buffer
 		char		m_szLineHeader[512];
@@ -114,7 +115,7 @@ namespace Trace {
 
 
 		// Open Log file
-		HRESULT OpenLogFile( int iFile, const struct tm &curtm, wchar_t *strFileName );
+		HRESULT OpenLogFile( int iFile, const struct tm &curtm, const char *strFileName );
 
 
 		// Append Trace mask prefix
@@ -134,7 +135,7 @@ namespace Trace {
 		virtual void Run() override;
 
 		// Check file system and update
-		HRESULT CheckAndUpdate( TimeStampMS tCurTime );
+		HRESULT CheckAndUpdate( TimeStampSec tCurTime );
 
 		void ValidateLogFile();
 

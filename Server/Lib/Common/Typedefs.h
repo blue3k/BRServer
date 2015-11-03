@@ -103,8 +103,12 @@ inline HRESULT GetLastWSAHRESULT()
 #include <pthread.h>
 #include <sys/resource.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <execinfo.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <libgen.h>
 
 typedef unsigned char UINT8;
 typedef char INT8;
@@ -138,7 +142,7 @@ typedef SBYTE				*PSBYTE;
 typedef int  HRESULT;
 
 typedef void* HANDLE;
-#define INVALID_NATIVE_HANDLE_VALUE 0
+#define INVALID_NATIVE_HANDLE_VALUE (-1)
 
 
 #include "Common/HRESSystem.h"
