@@ -96,15 +96,15 @@ namespace Svr {
 
 
 		// Install Service
-		HRESULT ServiceInstall( const WCHAR *strCfgPath, const WCHAR *strUser, const WCHAR *strPWD )
+		HRESULT ServiceInstall( const wchar_t *strCfgPath, const wchar_t *strUser, const wchar_t *strPWD )
 		{
 			HRESULT hr = S_OK;
-			const WCHAR* strServiceName = Util::GetServiceName();
+			const wchar_t* strServiceName = Util::GetServiceName();
 
 			SC_HANDLE schSCManager = NULL;
 			SC_HANDLE schService = NULL;
 
-			WCHAR strPath[MAX_PATH];
+			wchar_t strPath[MAX_PATH];
 
 
 			if( !GetModuleFileNameW( NULL, strPath, MAX_PATH ) )
@@ -307,20 +307,16 @@ namespace Svr {
 		}
 
 		// Run service main function
-		HRESULT ServiceRun( int argc, WCHAR* argv[], BrServer *pSvrInstance )
+		HRESULT ServiceRun( int argc, wchar_t* argv[], BrServer *pSvrInstance )
 		{
 			HRESULT hr = S_OK;
 			bool bIsDebugRun = false;
 			std::wstring strCfgPath = Util::GetModulePath();
 			bool bIsInstall = false;
-			WCHAR *strUser = nullptr; WCHAR *strPWD = nullptr;
-			WCHAR *strServiceName = nullptr;
+			wchar_t *strUser = nullptr; wchar_t *strPWD = nullptr;
+			wchar_t *strServiceName = nullptr;
 
-#if WINDOWS
 			SetCurrentDirectoryW( Util::GetModulePath() );
-#else
-			chdir(Util::GetModulePathA());
-#endif
 
 			strCfgPath.append(L"..\\..\\Config\\ServerConfig.xml");
 
@@ -331,7 +327,7 @@ namespace Svr {
 
 			for( int iArg = 0; iArg < argc; iArg++ )
 			{
-				WCHAR* pCurParam = argv[iArg];
+				wchar_t* pCurParam = argv[iArg];
 
 				switch( pCurParam[0] )
 				{
@@ -398,7 +394,7 @@ namespace Svr {
 
 
 
-			svrTrace( Trace::TRC_TRACE, "<%0%> Start with Mode %1% ", Util::GetServiceName(), bIsDebugRun ? "Debug" : "Service" );
+			svrTrace( Trace::TRC_TRACE, "<{0}> Start with Mode {1} ", Util::GetServiceName(), bIsDebugRun ? "Debug" : "Service" );
 
 
 			// if not service mode
@@ -416,17 +412,12 @@ namespace Svr {
 						break;
 					};
 
-					int iCh = 0;
-					Util::PeekKey( iCh );
-					if( iCh == 'q' || iCh == 'Q' )
-						bRun = false;
-
 					if( g_pSvrInstance->GetServerState() == ServerState::STOPED )
 					{
 						bRun = false;
 					}
 
-					SleepEx( 1000, FALSE );
+					ThisThread::SleepFor(DurationMS(1000));
 				}
 
 				switch( g_pSvrInstance->GetServerState() )
@@ -444,7 +435,7 @@ namespace Svr {
 			{
 				SERVICE_TABLE_ENTRY DispatchTable[] = 
 				{ 
-					{ (WCHAR*)Util::GetServiceName(), (LPSERVICE_MAIN_FUNCTION)ServiceMain }, 
+					{ (wchar_t*)Util::GetServiceName(), (LPSERVICE_MAIN_FUNCTION)ServiceMain }, 
 					{ NULL, NULL } 
 				};
 

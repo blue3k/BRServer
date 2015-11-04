@@ -18,6 +18,7 @@
 #include "Common/TimeUtil.h"
 
 #if LINUX
+#include <signal.h>
 
 namespace BR {
 namespace Svr {
@@ -32,11 +33,56 @@ namespace Svr {
 	{
 
 		// Service Main handler
-		void ServiceMain( DWORD dwArgc, LPWSTR *lpszArgv );
+		static bool m_StopSignaled = false;
+		static void signal_handler(sig)
+			int sig;
+		{
+			switch (sig) {
+			case SIGHUP:
+				break;
+			case SIGTERM:
+				m_StopSignaled = true;
+				//exit(0);
+				break;
+			}
+		}
+
+		static void daemonize()
+		{
+			int lfp;
+			char str[10];
+			if (getppid() == 1) return; /* already a daemon */
+			int folkRes = fork();
+			if (folkRes < 0) exit(1); /* fork error */
+			if (folkRes > 0) exit(0); /* parent exits */
+							  /* child (daemon) continues */
+			setsid(); /* obtain a new process group */
+			for (int iDescriptor = getdtablesize(); iDescriptor >= 0; --iDescriptor) close(iDescriptor); /* close all descriptors */
+			i = open("/dev/null", O_RDWR); dup(i); dup(i); /* handle standart I/O */
+			umask(027); /* set newly created file permissions */
+			//chdir(RUNNING_DIR); /* change running directory */
+			lfp = open(LOCK_FILE, O_RDWR | O_CREAT, 0640);
+			if (lfp<0) exit(1); /* can not open */
+			if (lockf(lfp, F_TLOCK, 0)<0) exit(0); /* can not lock */
+												   /* first instance continues */
+			sprintf(str, "%d\n", getpid());
+			write(lfp, str, strlen(str)); /* record pid to lockfile */
+
+			m_StopSignaled = false;
+
+			signal(SIGCHLD, SIG_IGN); /* ignore child */
+			signal(SIGTSTP, SIG_IGN); /* ignore tty signals */
+			signal(SIGTTOU, SIG_IGN);
+			signal(SIGTTIN, SIG_IGN);
+			signal(SIGHUP, signal_handler); /* catch hangup signal */
+			signal(SIGTERM, signal_handler); /* catch kill signal */
+		}
+
+
 
 
 		// Install Service
-		HRESULT ServiceInstall( const WCHAR *strCfgPath, const WCHAR *strUser, const WCHAR *strPWD )
+		HRESULT ServiceInstall( const wchar_t *strCfgPath, const wchar_t *strUser, const wchar_t *strPWD )
 		{
 			HRESULT hr = S_OK;
 			return hr;
@@ -50,20 +96,16 @@ namespace Svr {
 		}
 
 		// Run service main function
-		HRESULT ServiceRun( int argc, WCHAR* argv[], BrServer *pSvrInstance )
+		HRESULT ServiceRun( int argc, wchar_t* argv[], BrServer *pSvrInstance )
 		{
 			HRESULT hr = S_OK;
 			bool bIsDebugRun = false;
 			std::wstring strCfgPath = Util::GetModulePath();
 			bool bIsInstall = false;
-			WCHAR *strUser = nullptr; WCHAR *strPWD = nullptr;
-			WCHAR *strServiceName = nullptr;
+			wchar_t *strUser = nullptr; wchar_t *strPWD = nullptr;
+			wchar_t *strServiceName = nullptr;
 
-#if WINDOWS
-			SetCurrentDirectoryW( Util::GetModulePath() );
-#else
 			chdir(Util::GetModulePathA());
-#endif
 
 			strCfgPath.append(L"..\\..\\Config\\ServerConfig.xml");
 
@@ -74,7 +116,7 @@ namespace Svr {
 
 			for( int iArg = 0; iArg < argc; iArg++ )
 			{
-				WCHAR* pCurParam = argv[iArg];
+				wchar_t* pCurParam = argv[iArg];
 
 				switch( pCurParam[0] )
 				{
@@ -126,7 +168,7 @@ namespace Svr {
 
 			if( bIsInstall )
 			{
-				svrChk( Service::ServiceInstall( strCfgPath.c_str(), strUser, strPWD ) );
+				// Nothing to do
 				goto Proc_End;
 			}
 
@@ -140,12 +182,12 @@ namespace Svr {
 			svrChk( Svr::Config::LoadConfig( strCfgPath.c_str() ) );
 
 
+			svrTrace( Trace::TRC_TRACE, "<{0}> Start with Mode {1} ", Util::GetServiceName(), bIsDebugRun ? "Debug" : "Service" );
 
-			svrTrace( Trace::TRC_TRACE, "<%0%> Start with Mode %1% ", Util::GetServiceName(), bIsDebugRun ? "Debug" : "Service" );
-
+			daemonize();
 
 			// if not service mode
-			if( bIsDebugRun )
+			//if( bIsDebugRun )
 			{
 				svrChk( g_pSvrInstance->StartServer() );
 
@@ -159,17 +201,12 @@ namespace Svr {
 						break;
 					};
 
-					int iCh = 0;
-					Util::PeekKey( iCh );
-					if( iCh == 'q' || iCh == 'Q' )
-						bRun = false;
-
-					if( g_pSvrInstance->GetServerState() == ServerState::STOPED )
+					if(m_StopSignaled || g_pSvrInstance->GetServerState() == ServerState::STOPED)
 					{
 						bRun = false;
 					}
 
-					SleepEx( 1000, FALSE );
+					ThisThread::SleepFor(DurationMS(1000));
 				}
 
 				switch( g_pSvrInstance->GetServerState() )
@@ -182,24 +219,6 @@ namespace Svr {
 				default:
 					break;
 				};
-			}
-			else
-			{
-				SERVICE_TABLE_ENTRY DispatchTable[] = 
-				{ 
-					{ (WCHAR*)Util::GetServiceName(), (LPSERVICE_MAIN_FUNCTION)ServiceMain }, 
-					{ NULL, NULL } 
-				};
-
-				// This call returns when the service has stopped. 
-				// The process should simply terminate when the call returns.
-
-				if (!StartServiceCtrlDispatcher( DispatchTable )) 
-				{
-					int iError = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "StartServiceCtrlDispatcher failed err:%0%", iError );
-					return HRESULT_FROM_WIN32( iError );
-				}
 			}
 
 
@@ -214,189 +233,20 @@ namespace Svr {
 			return hr;
 		}
 
-		//
-		// Purpose: 
-		//   Entry point for the service
-		//
-		// Parameters:
-		//   dwArgc - Number of arguments in the lpszArgv array
-		//   lpszArgv - Array of strings. The first string is the name of
-		//     the service and subsequent strings are passed by the process
-		//     that called the StartService function to start the service.
-		// 
-		// Return value:
-		//   None.
-		//
-		void WINAPI ServiceMain( DWORD dwArgc, LPWSTR *lpszArgv )
-		{
-			HRESULT hr = S_OK;
-
-			// Create events for service control
-			for( int iEvt = 0; iEvt < NUM_SVCCTRLEVT; iEvt++ )
-			{
-				g_hCtrlEvents[iEvt] = CreateEvent(
-									 NULL,    // default security attributes
-									 TRUE,    // manual reset event
-									 FALSE,   // not signaled
-									 NULL);   // no name
-
-				if ( g_hCtrlEvents[iEvt] == NULL)
-				{
-					int iError = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "CreateEvent failed err:%0%", iError );
-					trcErr( HRESULT_FROM_WIN32( iError ) );
-				}
-			}
-
-
-
-			// Register the handler function for the service.
-			g_SvcStatusHandle = RegisterServiceCtrlHandler( 
-				Util::GetServiceName(), 
-				ServiceCtrlHandler);
-
-			if( !g_SvcStatusHandle )
-			{ 
-				int iError = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "RegisterServiceCtrlHandler failed err:%0%", iError );
-				return;
-			} 
-
-			// These SERVICE_STATUS members remain as set here.
-			g_SvcStatus.dwServiceType = SERVICE_WIN32_OWN_PROCESS; 
-			g_SvcStatus.dwServiceSpecificExitCode = 0;    
-
-
-			// Report initial status to the SCM.
-			ReportServiceStatus( SERVICE_START_PENDING, NO_ERROR, 10*60*1000 );
-
-
-
-			// Run Server and initialization state check
-			if( g_pSvrInstance == NULL )
-			{
-				svrTrace( Trace::TRC_ERROR, "Invalid ServerInstance" );
-				ReportServiceStatus( SERVICE_STOPPED, E_SVR_SERVICE_FAILED, 0 );
-				trcErr( E_UNEXPECTED );
-			}
-
-
-			svrChk( g_pSvrInstance->StartServer() );
-			// Report running status when initialization is complete.
-			ReportServiceStatus( SERVICE_RUNNING, NO_ERROR, 0 );
-
-
-			// Check whether to stop the service.
-			while( 1 )
-			{
-				DWORD dwWaitRes = WaitForMultipleObjects( NUM_SVCCTRLEVT, g_hCtrlEvents, FALSE, 3000 );
-
-				switch( dwWaitRes )
-				{
-				case WAIT_OBJECT_0+SVCCTRL_STOP:
-					if( g_pSvrInstance->GetServerState() == ServerState::RUNNING )
-					{
-						trcChk( g_pSvrInstance->StopServer() );
-
-						if( g_pSvrInstance->GetServerState() == ServerState::STOPED )
-						{
-							ReportServiceStatus( SERVICE_STOPPED, NO_ERROR, 0 );
-						}
-						else
-						{
-							trcErr( E_UNEXPECTED );
-						}
-					}
-					else
-					{
-						ReportServiceStatus( SERVICE_STOPPED, NO_ERROR, 0 );
-					}
-					goto Proc_End;
-					break;
-				case WAIT_OBJECT_0+SVCCTRL_PAUSE:
-					//break;
-				case WAIT_OBJECT_0+SVCCTRL_RESUME:
-					//break;
-				case WAIT_TIMEOUT:
-					// check server thread status and running state
-					if( g_pSvrInstance->GetServerState() == ServerState::STOPED )
-					{
-						ReportServiceStatus( SERVICE_STOPPED, NO_ERROR, 0 );
-						goto Proc_End;
-					}
-					break;
-				default:
-					trcErr( E_UNEXPECTED );
-					break;
-				}
-			}
-
-
-		Proc_End:
-
-
-
-			if( FAILED(hr) )
-			{
-				ReportServiceStatus( SERVICE_STOPPED, E_SVR_SERVICE_FAILED, 0 );
-			}
-		}
-
-
-		//
-		// Purpose: 
-		//   Called by SCM whenever a control code is sent to the service
-		//   using the ControlService function.
-		//
-		// Parameters:
-		//   dwCtrl - control code
-		// 
-		// Return value:
-		//   None
-		//
-		void WINAPI ServiceCtrlHandler( DWORD dwCtrl )
-		{
-			// Handle the requested control code. 
-			switch(dwCtrl) 
-			{  
-			case SERVICE_CONTROL_STOP:
-				if( g_pSvrInstance->GetServerState() != ServerState::STOPED )
-				{
-					ReportServiceStatus(SERVICE_STOP_PENDING, NO_ERROR, 0);
-					SetEvent(g_hCtrlEvents[SVCCTRL_STOP]);
-				}
-				break;
-			case SERVICE_CONTROL_PAUSE:
-				//if( g_pSvrInstance->GetState() == Server::STATE_RUNNING )
-				//{
-				//	ReportServiceStatus(SERVICE_PAUSE_PENDING, NO_ERROR, 0);
-				//	SetEvent(g_hCtrlEvents[SVCCTRL_PAUSE]);
-				//}
-				//break;
-			case SERVICE_CONTROL_CONTINUE:
-				//if( g_pSvrInstance->GetState() == Server::ServerState::STOPED )
-				//{
-				//	ReportServiceStatus(SERVICE_CONTINUE_PENDING, NO_ERROR, 0);
-				//	SetEvent(g_hCtrlEvents[SVCCTRL_RESUME]);
-				//}
-				//break;
-			case SERVICE_CONTROL_SHUTDOWN:
-				if( g_pSvrInstance->GetServerState() != ServerState::STOPED )
-				{
-					ReportServiceStatus(SERVICE_STOP_PENDING, NO_ERROR, 0);
-					SetEvent(g_hCtrlEvents[SVCCTRL_STOP]);
-				}
-				break;
-			case SERVICE_CONTROL_INTERROGATE:
-				// Fall through to send current status.
-				//break; 
-			default:
-				break;
-			};
-
-			ReportServiceStatus(g_SvcStatus.dwCurrentState, NO_ERROR, 0);
-		}
 	};
+	/*
+	UNIX Daemon Server Programming Sample Program
+	Levent Karakas <levent at mektup dot at> May 2001
+
+	To compile:	cc -o exampled examped.c
+	To run:		./exampled
+	To test daemon:	ps -ef|grep exampled (or ps -aux on BSD systems)
+	To test log:	tail -f /tmp/exampled.log
+	To test signal:	kill -HUP `cat /tmp/exampled.lock`
+	To terminate:	kill `cat /tmp/exampled.lock`
+	*/
+
+
 
 
 }; // namespace BR {

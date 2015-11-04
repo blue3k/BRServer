@@ -34,20 +34,9 @@ namespace Trace {
 		SYSTEMTIME kSysTime;
 		GetLocalTime(&kSysTime);
 
-		//if (GetModuleFileNameA(nullptr, strModulePath, MAX_PATH) != 0)
-		//{
-		//	_splitpath_s(strModulePath, nullptr, 0, nullptr, 0, strModuleName, sizeof(strModuleName), NULL, 0);
-		//}
 		sprintf_s(DumpFilePath, "..\\log\\[%04d_%02d_%02d]%2d_%02d_%02d_%s_[%s]%s",
 			kSysTime.wYear, kSysTime.wMonth, kSysTime.wDay,
 			kSysTime.wHour, kSysTime.wMinute, kSysTime.wSecond, strMode, Util::GetServiceNameA(), szDumpFileExt);
-		//else
-		//{
-		//	sprintf_s(DumpFilePath, "..\\log\\[%04d_%02d_%02d]%2d_%02d_%02d_%s_[%s]%s",
-		//		kSysTime.wYear, kSysTime.wMonth, kSysTime.wDay,
-		//		kSysTime.wHour, kSysTime.wMinute, kSysTime.wSecond, strMode, strModuleName, szDumpFileExt);
-		//}
-
 
 		HANDLE hFile = CreateFileA(
 			DumpFilePath,

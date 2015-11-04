@@ -75,8 +75,10 @@ namespace Util {
 #else
 			get_executable_path(g_szModulePath, countof(g_szModulePath));
 			char* bastNameLoc = basename(g_szModulePath);
-			strcpy(g_szModuleName, bastNameLoc);
 			*(bastNameLoc - 1) = '\0';
+			char* ext = strtok(bastNameLoc, ".");
+			if (ext != nullptr) { *ext = '\0'; }
+			strcpy(g_szModuleName, bastNameLoc);
 
 			StrUtil::UTF8ToWCS(g_szModulePath, g_wszModulePath);
 			StrUtil::UTF8ToWCS(g_szModuleName, g_wszModuleName);
@@ -152,75 +154,6 @@ namespace Util {
 	//	Generic utility functions
 	//
 
-
-	//// Peek key from console
-	//HRESULT PeekKey( int &inputKey, HANDLE hConsole )
-	//{
-	//	HRESULT hr = S_OK;
-	//	DWORD cNumRead, fdwSaveOldMode = 0; 
-	//	INPUT_RECORD irInBuf; 
-
-	//	if( hConsole == INVALID_NATIVE_HANDLE_VALUE )
-	//	{
-	//		// Get the standard input handle. 
-	//		hConsole = GetStdHandle(STD_INPUT_HANDLE); 
-	//		if (hConsole == INVALID_NATIVE_HANDLE_VALUE) 
-	//			trcErr( E_FAIL );
-	//	}
-
-	//	// Save the current input mode, to be restored on exit. 
-	//	if (!GetConsoleMode(hConsole, &fdwSaveOldMode))
-	//	{
-	//		//trcErr( E_FAIL );
-	//		goto Proc_End;
-	//	}
-
-	//	// Enable the window and mouse input events. 
-	//	if (! SetConsoleMode(hConsole, 0) ) 
-	//		trcErr( E_FAIL );
-
-	//	// Wait for the events. 
-	//	if (! ReadConsoleInput( 
-	//			hConsole,      // input buffer handle 
-	//			&irInBuf,     // buffer to read into 
-	//			1,         // size of read buffer 
-	//			&cNumRead) ) // number of records read 
-	//		trcErr( E_FAIL );
-
-	//	// Dispatch the events to the appropriate handler. 
-	//	switch(irInBuf.EventType) 
-	//	{ 
-	//		case KEY_EVENT: // keyboard input 
-	//			if( irInBuf.Event.KeyEvent.bKeyDown )
-	//			{
-	//				inputKey = irInBuf.Event.KeyEvent.uChar.AsciiChar;
-	//				goto Proc_End;
-	//			}
-	//			break; 
-
-	//		case MOUSE_EVENT: // mouse input 
-	//			break; 
-
-	//		case WINDOW_BUFFER_SIZE_EVENT: // scrn buf. resizing 
-	//			break; 
-
-	//		case FOCUS_EVENT:  // disregard focus events 
-
-	//		case MENU_EVENT:   // disregard menu events 
-	//			break; 
-
-	//		default: 
-	//			trcErr( E_FAIL );
-	//			break; 
-	//	};
-
-	//Proc_End:
-
-	//	if( hConsole != INVALID_NATIVE_HANDLE_VALUE && fdwSaveOldMode != 0 )
-	//		SetConsoleMode(hConsole, fdwSaveOldMode);
-
-	//	return hr; 
-	//}
 
 	// Calculate near power of w
 	UINT NearPowerOf2( UINT32 uiNumber )
