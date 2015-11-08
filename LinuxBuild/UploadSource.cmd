@@ -15,7 +15,7 @@ if /i %1 == .       set REMOTE_PATH=%REMOTE_BASE_PATH%
 
 
 
-set EXCLUDES_FILES=*.cmd;*.user;*.suo;*.sdf;*.opensdf;*.recipe;*.vs;*.obj;*.o;*.pdf;*.pch;*.tlb;*.lib;*.exe;*.dll;*.zip;*.log;*.idb;*.manifest;*.rc;.git/;ipch/;Debug/;Release/;x64Debug/;x64Release/;bin/;temp/;*.tlog/
+set EXCLUDES_FILES=*.cmd;*.user;*.suo;*.sdf;*.opensdf;*.recipe;*.vs;*.obj;*.o;*.pdf;*.pch;*.tlb;*.lib;*.exe;*.dll;*.zip;*.log;*.idb;*.manifest;*.rc;.git/;ipch/;Debug/;Release/;DEBUG/;RELEASE/;x64Debug/;x64Release/;bin/;temp/;*.tlog/
 
 
 
