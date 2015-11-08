@@ -24,7 +24,8 @@ namespace BR.ToolLib
             foreach (var environmentName in m_EnvironmentSettingNames)
             {
                 var settingName = Environment.GetEnvironmentVariable(environmentName);
-                m_Settings.Add(environmentName, settingName);
+                var environmentNameLwr = environmentName.ToLower();
+                m_Settings.Add(environmentNameLwr, settingName);
             }
 
             string[] args = Environment.GetCommandLineArgs();
@@ -62,6 +63,7 @@ namespace BR.ToolLib
                     argument = argument.Substring(0, splitIndex);
                 }
 
+                argument = argument.ToLower();
                 if (isRemove)
                 {
                     m_Settings.Remove(argument);
@@ -77,6 +79,7 @@ namespace BR.ToolLib
 
         public static string GetSettingString(string key, string defaultValue = "")
         {
+            key = key.ToLower();
             string stringValue = defaultValue;
             m_Settings.TryGetValue(key, out stringValue);
             return stringValue;
@@ -84,6 +87,7 @@ namespace BR.ToolLib
 
         public static T GetSetting<T>(string key, T defaultValue = default(T))
         {
+            key = key.ToLower();
             string stringValue = "";
             if(m_Settings.TryGetValue(key, out stringValue))
             {

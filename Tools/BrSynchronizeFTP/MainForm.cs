@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using BR.ToolLib;
 
 
 namespace BR.FTPSync
@@ -20,12 +21,25 @@ namespace BR.FTPSync
         System.Windows.Forms.Timer m_Timer = new System.Windows.Forms.Timer();
         string m_LocalPath = "C:\\work\\BRServerGit";
         string m_RemotePath = "/home/blue3k/work/BRServer";
+        string m_RemoteAddress = "ftp://192.168.1.81:10122";
+        string m_RemoteID = "blue3k";
+        string m_RemotePW = "zpdlrns12#";
 
         public MainForm()
         {
             InitializeComponent();
+            InitializeSetting();
             InitializeSynchronizer();
             //textBoxLog.MaxLength = 10000;
+        }
+
+        void InitializeSetting()
+        {
+            m_LocalPath = ToolEnvironment.GetSetting<string>("localpath", m_LocalPath);
+            m_RemotePath = ToolEnvironment.GetSetting<string>("remotepath", m_RemotePath);
+            m_RemoteAddress = ToolEnvironment.GetSetting<string>("remoteAddress", m_RemoteAddress);
+            m_RemoteID = ToolEnvironment.GetSetting<string>("ID", m_RemoteID);
+            m_RemotePW = ToolEnvironment.GetSetting<string>("PW", m_RemotePW);
         }
 
         void InitializeSynchronizer()
@@ -120,7 +134,7 @@ namespace BR.FTPSync
         void TickThread()
         {
             m_FTPSynchronizer.Log = Log;
-            m_FTPSynchronizer.Initialize(m_LocalPath, m_RemotePath, "ftp://192.168.1.81:10122", "blue3k", "zpdlrns12#");
+            m_FTPSynchronizer.Initialize(m_LocalPath, m_RemotePath, m_RemoteAddress, m_RemoteID, m_RemotePW);
 
             while (true)
             {

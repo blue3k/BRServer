@@ -19,7 +19,7 @@ namespace BR.ToolLib
             string[] paths = path.Split(new char[] { Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar });
             string merged = string.IsNullOrEmpty(paths[0]) ? Path.DirectorySeparatorChar.ToString() : "";
             int iPath = 0;
-            for(; iPath < (paths.Length-1); iPath++)// foreach (var pathEle in paths)
+            for(; iPath < (paths.Length-1); iPath++)
             {
                 var pathEle = paths[iPath];
                 merged += pathEle + Path.DirectorySeparatorChar;

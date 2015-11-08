@@ -1,0 +1,5 @@
+
+
+call UploadSource.cmd . 
+
+pause

@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UploadSourceToBuild", "Tools\UploadSourceToBuild\UploadSourceToBuild.vcxproj", "{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{C335DCE3-617B-4A2A-BC79-26D25EE6C8DE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{19FDC9E4-21E2-451E-9477-66740F9DE096}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common.Linux", "Server\Lib\Common\Common.Linux.vcxproj", "{172A428C-9324-4425-BF56-AF819BCFE145}"
 	ProjectSection(ProjectDependencies) = postProject
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF} = {8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}
+		{C79A22EB-2C00-45B9-B4A8-65B1DA546683} = {C79A22EB-2C00-45B9-B4A8-65B1DA546683}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibAutoGenerate", "Server\Lib\LibAutoGenerate\LibAutoGenerate.vcxproj", "{C79A22EB-2C00-45B9-B4A8-65B1DA546683}"
@@ -26,16 +24,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Debug|ARM.ActiveCfg = Debug|ARM
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Debug|ARM.Build.0 = Debug|ARM
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Debug|x64.ActiveCfg = Debug|x86
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Debug|x86.ActiveCfg = Debug|x86
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Debug|x86.Build.0 = Debug|x86
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Release|ARM.ActiveCfg = Release|ARM
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Release|ARM.Build.0 = Release|ARM
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Release|x64.ActiveCfg = Release|x86
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Release|x86.ActiveCfg = Release|x86
-		{8FDD0707-3E70-4B24-BF85-EE0D8314A8CF}.Release|x86.Build.0 = Release|x86
 		{172A428C-9324-4425-BF56-AF819BCFE145}.Debug|ARM.ActiveCfg = Debug|ARM
 		{172A428C-9324-4425-BF56-AF819BCFE145}.Debug|ARM.Build.0 = Debug|ARM
 		{172A428C-9324-4425-BF56-AF819BCFE145}.Debug|x64.ActiveCfg = Debug|x86

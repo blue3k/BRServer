@@ -89,6 +89,10 @@
       <Project>{e963b766-56bf-4966-8917-88c1ee69d61a}</Project>
       <Name>System.Net.FtpClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\toolLib\toolLib.csproj">
+      <Project>{20a96d9b-67cb-413a-a6ca-6d77df4f8dfd}</Project>
+      <Name>toolLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

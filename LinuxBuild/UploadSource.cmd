@@ -24,7 +24,6 @@ echo synchronize -transfer=binary -filemask="|%EXCLUDES_FILES%" remote %LOCAL_PA
 echo close>> %FTP_CMD_TMP%
 echo exit>> %FTP_CMD_TMP%
 
-@echo Uploaded > Uploaded.txt
 
 winscp.com Linux /script=%FTP_CMD_TMP%
 

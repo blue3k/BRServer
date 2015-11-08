@@ -8,7 +8,7 @@ CURRENT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 ###################################################
 
 BASE_PATH?=$(CURRENT_DIR)
-BUILD_LIBS = toolLib PathConvert
+BUILD_LIBS = toolLib PathConvert ValidatePath
 SHARP_FLAGS = 
 
 ifeq ($(BUILD_CONFIGURATION), 'DEBUG')

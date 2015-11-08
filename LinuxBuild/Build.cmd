@@ -1,7 +1,7 @@
 
 
 
-call %~dp0\UploadSource.cmd . 
+rem call %~dp0\UploadSource.cmd . 
 
 call %~dp0\EnvSetup.cmd
 
@@ -27,7 +27,7 @@ if /i %PROJECT_BASE_PATH% == .       set REMOTE_PATH=%REMOTE_BASE_PATH%/%PROJECT
 
 
 
-plink.exe blue3k@LocalLinux "cd %REMOTE_PATH%;export ROOT_PATH=%REMOTE_BASE_PATH%;export PROJECT_NAME=%PROJECT_NAME%;export BUILD_MODE=%BUILD_MODE%; make -f makefile.mak %MAKE_BUILD_TARGET%" 
+plink.exe blue3k@LinuxBuild "cd %REMOTE_PATH%;export ROOT_PATH=%REMOTE_BASE_PATH%;export PROJECT_NAME=%PROJECT_NAME%;export BUILD_MODE=%BUILD_MODE%; make -f makefile.mak %MAKE_BUILD_TARGET%" 
 
 goto quit
 
