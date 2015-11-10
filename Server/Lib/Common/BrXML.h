@@ -35,7 +35,7 @@ namespace XML {
 	{
 	public:
 		// Children list
-		typedef std::tr1::unordered_map<std::string,DOMElement*> ChildrenList;
+		typedef std::unordered_map<std::string,DOMElement*> ChildrenList;
 
 	public:
 		// Constructor/Destructors

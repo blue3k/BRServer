@@ -125,7 +125,7 @@ namespace BR {
 
 		ArgBase* Clone(INT iBuffLen, BYTE* pBuff) const override
 		{
-			AssertRel(iBuffLen >= sizeof(decltype(this)));
+			AssertRel(iBuffLen >= (INT)sizeof(decltype(this)));
 			return new(pBuff) Arg<UINT32>(*this);
 		}
 
@@ -157,7 +157,7 @@ namespace BR {
 
 		ArgBase* Clone(INT iBuffLen, BYTE* pBuff) const override
 		{
-			AssertRel(iBuffLen >= sizeof(Arg<UINT64>));
+			AssertRel(iBuffLen >= (INT)sizeof(Arg<UINT64>));
 			return new(pBuff) Arg<UINT64>(*this);
 		}
 
@@ -193,13 +193,13 @@ namespace BR {
 
 		ArgBase* Clone(INT iBuffLen, BYTE* pBuff) const override
 		{
-			AssertRel(iBuffLen >= sizeof(Arg<float>));
+			AssertRel(iBuffLen >= (INT)sizeof(Arg<float>));
 			return new(pBuff) Arg<float>(*this);
 		}
 
 		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			option;
+			unused(option);
 			ToString( pBuff, iBuffLen, (float)m_Data, (int)digits );
 		}
 	};
@@ -224,13 +224,14 @@ namespace BR {
 
 		ArgBase* Clone(INT iBuffLen, BYTE* pBuff) const override
 		{
-			AssertRel(iBuffLen >= sizeof(Arg<double>));
+			AssertRel(iBuffLen >= (INT)sizeof(Arg<double>));
 			return new(pBuff) Arg<double>(*this);
+
 		}
 
 		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			option; digits;
+			unused(option); unused(digits);
 			ToString<double>(pBuff, iBuffLen, m_Data, 0);
 		}
 	};
@@ -256,13 +257,13 @@ namespace BR {
 
 		ArgBase* Clone(INT iBuffLen, BYTE* pBuff) const override
 		{
-			AssertRel(iBuffLen >= sizeof(Arg<void*>));
+			AssertRel(iBuffLen >= (INT)sizeof(Arg<void*>));
 			return new(pBuff) Arg<void*>(*this);
 		}
 
 		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			option; digits;
+			unused(option); unused(digits);
 			ToString(pBuff, iBuffLen, (void*)m_Data, 0);
 		}
 	};
@@ -288,13 +289,13 @@ namespace BR {
 
 		ArgBase* Clone(INT iBuffLen, BYTE* pBuff) const override
 		{
-			AssertRel(iBuffLen >= sizeof(ArgArray<Type>));
+			AssertRel(iBuffLen >= (INT)sizeof(ArgArray<Type>));
 			return new(pBuff) ArgArray<Type>(*this);
 		}
 
 		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			option; digits;
+			unused(option); unused(digits);
 			ToStringArray(pBuff, iBuffLen, m_Array, 0);
 		}
 	};

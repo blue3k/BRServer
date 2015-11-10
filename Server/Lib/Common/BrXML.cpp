@@ -117,7 +117,7 @@ namespace XML {
 		char strBuff[1024];
 		va_list args;
 		va_start(args, msg);
-		vsprintf_s( strBuff, msg, args );
+		vsnprintf( strBuff, sizeof(strBuff), msg, args );
 		va_end(args);
 
 		defTrace( Trace::TRC_ERROR, "XML Parse Error : %0%", strBuff );
@@ -136,7 +136,7 @@ namespace XML {
 		char strBuff[1024];
 		va_list args;
 		va_start(args, msg);
-		vsprintf_s( strBuff, msg, args );
+		vsnprintf( strBuff, sizeof(strBuff), msg, args );
 		va_end(args);
 
 		defTrace( Trace::TRC_ERROR, "XML Parse Warning : %0%", strBuff );

@@ -142,14 +142,14 @@ namespace BR
 		HRESULT Alloc(ObjectType* &pPtr)
 		{
 			ObjectPoolObject *pObj = nullptr;
-			HRESULT hr = __super::Alloc(pObj);
+			HRESULT hr = ObjectPool::Alloc(pObj);
 			pPtr = (ObjectType*)(pObj);
 			return hr;
 		}
 
 		HRESULT Free(ObjectType* pPtr)
 		{
-			return __super::Free(pPtr);
+			return ObjectPool::Free(pPtr);
 		}
 	};
 
@@ -247,14 +247,14 @@ namespace BR
 		HRESULT Alloc( ObjectType* &pPtr )
 		{
 			ObjectPoolObject *pObj = nullptr;
-			HRESULT hr = __super::Alloc( pObj );
+			HRESULT hr = ObjectPoolMT::Alloc( pObj );
 			pPtr = (ObjectType*)(pObj);
 			return hr;
 		}
 
 		HRESULT Free( ObjectType* pPtr )
 		{
-			return __super::Free( pPtr );
+			return ObjectPoolMT::Free( pPtr );
 		}
 	};
 

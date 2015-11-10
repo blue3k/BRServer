@@ -311,7 +311,7 @@ namespace Trace {
 
 		m_TraceSpinBuffer.Write_Unlock( pSpinBlock );
 
-		__super::Stop(bSendKillEvt);
+		Thread::Stop(bSendKillEvt);
 	}
 
 	// Open Log file

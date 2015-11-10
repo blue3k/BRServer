@@ -109,6 +109,7 @@ inline HRESULT GetLastWSAHRESULT()
 #include <unistd.h>
 #include <fcntl.h>
 #include <libgen.h>
+#include <errno.h>
 
 typedef unsigned char UINT8;
 typedef char INT8;
@@ -155,13 +156,14 @@ typedef void* HANDLE;
 
 inline HRESULT GetLastHRESULT()
 {
-	return errno != 0 return E_UNEXPECTED;
+	return errno != 0 ? E_UNEXPECTED : S_OK;
 }
 
 inline HRESULT GetLastWSAHRESULT()
 {
-	return errno != 0 return E_UNEXPECTED;
+	return errno != 0 ? E_UNEXPECTED : S_OK;
 }
+
 
 
 #endif
@@ -269,6 +271,8 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 {
 	return N;
 }
+
+#define unused(x) 
 
 
 ////////////////////////////////////////////////////////////////////////////////

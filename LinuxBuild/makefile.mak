@@ -11,6 +11,9 @@ BIN_PATH?=$(current_dir)bin
 LIB_PATH?=$(current_dir)lib
 LINK_TYPE?=EXE
 BUILD_MODE?=DEBUG
+TOOL_BIN_PATH?=$(BIN_PATH)
+
+VALIDDATEPATH=mono $(TOOL_BIN_PATH)/ValidatePath.exe
 
 SOURCES := $(shell find . -type f -regex '.*\.\(c\|cpp\)') 
 
@@ -64,6 +67,7 @@ endif
 # Common ruls
 
 $(TARGET_OBJ_PATH)/%.o: %.cpp
+	$(VALIDATEPATH) $(TARGET_OBJ_PATH)	
 	$(CC) $(CPPFLAGS) $< -o $@
 
 

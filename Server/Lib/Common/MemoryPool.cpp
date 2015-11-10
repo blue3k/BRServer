@@ -138,7 +138,7 @@ namespace BR
 
 	size_t PagePool::GetPageSize() const
 	{
-		return __super::GetPageSize() - sizeof(PagePool::PageItem);
+		return PageAllocator::GetPageSize() - sizeof(PagePool::PageItem);
 	}
 
 	// Alloc/Free page method
@@ -150,7 +150,7 @@ namespace BR
 		pItem = (PageItem*)m_FreePages.Pop();
 		if( pItem == nullptr )
 		{
-			HRESULT hr = __super::Alloc( pRes );
+			HRESULT hr = PageAllocator::Alloc( pRes );
 			if( FAILED(hr) ) return hr;
 
 			pItem = (PageItem*)pRes;
@@ -182,7 +182,7 @@ namespace BR
 
 	HRESULT PagePool::OrgFree( void* pPtr )
 	{
-		return __super::Free( pPtr );
+		return PageAllocator::Free( pPtr );
 	}
 
 

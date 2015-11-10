@@ -11,6 +11,12 @@ namespace BR.ToolLib
     {
         public static string NormalizePath(string path)
         {
+            if( path.StartsWith("~/") )
+            {
+                var homePath = Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                path = string.Format("{0}{1}", homePath, path.Substring(1)); 
+            }
+
             return path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
         }
 
@@ -22,13 +28,28 @@ namespace BR.ToolLib
             for(; iPath < (paths.Length-1); iPath++)
             {
                 var pathEle = paths[iPath];
+                if (iPath == 0 && pathEle == "~") // replace home
+                {
+                    var homePath = Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                    pathEle = homePath;
+                }
+
+                if (pathEle == ".") // skip self indicator
+                    continue;
+
                 merged += pathEle + Path.DirectorySeparatorChar;
+
+				if(pathEle.IndexOf(".") >= 0)
+					break;
 
                 if (!string.IsNullOrEmpty(pathEle)
                     && pathEle.IndexOfAny(new char[] { '*', '?' }) < 0)
                 {
                     if (!Directory.Exists(merged))
+                    {
+                        Console.WriteLine("CreatePath {0}, {1}", pathEle, merged);
                         Directory.CreateDirectory(merged);
+                    }
                 }
             }
 

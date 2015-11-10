@@ -303,7 +303,7 @@ template< class DataType, size_t DefaultBufferSize >
 StaticArray<DataType,DefaultBufferSize>::StaticArray()
 	:m_pAllocatedBuffer(nullptr)
 {
-	__super::SetBuffPtr( DefaultBufferSize, m_pDefautlBuffer );
+	Array<DataType>::SetBuffPtr( DefaultBufferSize, m_pDefautlBuffer );
 }
 
 
@@ -321,7 +321,7 @@ HRESULT StaticArray<DataType, DefaultBufferSize>::Reserve(size_t szNewSize)
 	DataType *pNewBuffer = nullptr;
 	DataType *pOldBuffer = nullptr;
 
-	if( szNewSize <= GetAllocatedSize() )
+	if( szNewSize <= Array<DataType>::GetAllocatedSize() )
 		return S_FALSE;
 
 	pNewBuffer = new DataType[szNewSize];
@@ -352,7 +352,7 @@ template< class DataType >
 DynamicArray<DataType>::DynamicArray(size_t increaseSize)
 :m_pAllocatedBuffer(nullptr)
 {
-	SetIncreaseSize(increaseSize);
+	Array<DataType>::SetIncreaseSize(increaseSize);
 }
 
 
@@ -370,7 +370,7 @@ HRESULT DynamicArray<DataType>::Reserve(size_t szNewSize)
 	DataType *pNewBuffer = nullptr;
 	DataType *pOldBuffer = nullptr;
 
-	if (szNewSize <= GetAllocatedSize())
+	if (szNewSize <= Array<DataType>::GetAllocatedSize())
 		return S_FALSE;
 
 	pNewBuffer = new DataType[szNewSize];
@@ -410,22 +410,22 @@ LinkedArray<DataType>::~LinkedArray()
 template< class DataType >
 void LinkedArray<DataType>::SetLinkedBuffer(UINT maxDataCount, UINT dataCount, DataType* pDataPtr)
 {
-	__super::SetBuffPtr(maxDataCount, pDataPtr);
-	SetSize(dataCount);
+	Array<DataType>::SetBuffPtr(maxDataCount, pDataPtr);
+	Array<DataType>::SetSize(dataCount);
 }
 
 template< class DataType >
 void LinkedArray<DataType>::SetLinkedBuffer(const Array<DataType>& srcLink)
 {
-	__super::SetBuffPtr(srcLink.GetAllocatedSize(), const_cast<BYTE*>(srcLink.data()));
-	SetSize(srcLink.GetSize());
-	memcpy(data(), srcLink.data(), sizeof(DataType) * srcLink.GetSize());
+	Array<DataType>::SetBuffPtr(srcLink.GetAllocatedSize(), const_cast<BYTE*>(srcLink.data()));
+	Array<DataType>::SetSize(srcLink.GetSize());
+	memcpy(Array<DataType>::data(), srcLink.data(), sizeof(DataType) * srcLink.GetSize());
 }
 
 template< class DataType >
 HRESULT LinkedArray<DataType>::Reserve(size_t szReserv)
 {
-	if (szReserv <= GetAllocatedSize())
+	if (szReserv <= Array<DataType>::GetAllocatedSize())
 		return S_OK;
 
 	return E_FAIL;

@@ -190,12 +190,12 @@ namespace BR
 			if( data == nullptr || dataSize == 0 )
 				return E_INVALIDARG;
 
-			HRESULT hr = __super::Append( dataSize, data );
+			HRESULT hr = MemoryBuffer::Append( dataSize, data );
 			if( FAILED(hr) ) return hr;
 
 			if( GetPtr()[GetUsedSize()-1] != '\0' )
 			{
-				hr = __super::Append( 1, "" );
+				hr = MemoryBuffer::Append( 1, "" );
 				if( FAILED(hr) ) return hr;
 			}
 

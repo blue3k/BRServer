@@ -55,11 +55,11 @@ namespace BR {
 		HRESULT hr = ::BR::StrUtil::StringCpyEx( pBuff, iBuffLen, Unknown );
 		if( SUCCEEDED(hr) )
 			::BR::StrUtil::StringCpyEx( pBuff, iBuffLen, typeid(Type).name() );
-
+#if WINDOWS
 		// If you got this warnning fix type or add type ToString implementation
 COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() )
-
-		//Assert(!"InvalidType ToString");
+#endif
+		Assert(!"InvalidType ToString");
 		return SUCCEEDED(hr) ? E_FAIL : hr;
 	}
 
@@ -150,7 +150,7 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 		if( pData == nullptr )
 			return E_FAIL;
 
-		if( FAILED(_IToA( szArray, pBuff, iBuffLen, 10, -1 )) )
+		if( FAILED(_IToA( (UINT32)szArray, pBuff, iBuffLen, 10, -1 )) )
 			return E_FAIL;
 
 		for( size_t uiIdx = 0; uiIdx < szArray; uiIdx++ )
@@ -171,7 +171,7 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	{
 		auto szArray = pData.GetSize();
 
-		if (FAILED(_IToA(szArray, pBuff, iBuffLen, 10, -1)))
+		if (FAILED(_IToA((UINT32)szArray, pBuff, iBuffLen, 10, -1)))
 			return E_FAIL;
 
 		for (size_t uiIdx = 0; uiIdx < szArray; uiIdx++)

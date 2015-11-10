@@ -22,7 +22,7 @@ if "%4"=="" goto error
 set REMOTE_PATH=%REMOTE_BASE_PATH%/%PROJECT_BASE_PATH%/%PROJECT_NAME%
 if /i %PROJECT_BASE_PATH% == .       set REMOTE_PATH=%REMOTE_BASE_PATH%/%PROJECT_NAME%
 
-
+@echo REMOTE_PATH: %REMOTE_PATH%
 @echo build remotely
 
 

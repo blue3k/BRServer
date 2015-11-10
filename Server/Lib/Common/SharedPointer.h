@@ -200,22 +200,22 @@ namespace BR
 #endif
 		bool operator == (const SharedPointer& src) const
 		{
-			return __super::operator == (src);
+			return SharedPointer::operator == (src);
 		}
 
 		bool operator != (const SharedPointer& src) const
 		{
-			return __super::operator != (src);
+			return SharedPointer::operator != (src);
 		}
 
 		bool operator == (SharedObject* pRef) const
 		{
-			return __super::operator == (pRef);
+			return SharedPointer::operator == (pRef);
 		}
 
 		bool operator != (SharedObject* pRef) const
 		{
-			return __super::operator != (pRef);
+			return SharedPointer::operator != (pRef);
 		}
 
 #ifndef SWIG
@@ -231,7 +231,7 @@ namespace BR
 				}
 			}
 
-			__super::operator = (src);
+			SharedPointer::operator = (src);
 
 			return *this;
 		}
@@ -248,27 +248,27 @@ namespace BR
 				}
 			}
 
-			__super::operator = (std::forward<SharedPointer>(src));
+			SharedPointer::operator = (std::forward<SharedPointer>(src));
 
 			return *this;
 		}
 
 		SharedPointerT<ClassType>& operator = (const SharedPointerT<ClassType>& src)
 		{
-			__super::operator = (src);
+			SharedPointer::operator = (src);
 			return *this;
 		}
 
 		SharedPointerT<ClassType>& operator = (SharedPointerT<ClassType>&& src)
 		{
-			__super::operator = (std::forward<SharedPointer>(src));
+			SharedPointer::operator = (std::forward<SharedPointer>(src));
 			return *this;
 		}
 
 		SharedPointerT<ClassType>& operator = (void* src)
 		{
 			assert(src == nullptr);
-			__super::operator = (SharedPointer());
+			SharedPointer::operator = (SharedPointer());
 			return *this;
 		}
 #endif
@@ -297,7 +297,7 @@ namespace BR
 			if (!TypeCheck(pObject))
 				return;
 
-			__super::SetPointer(pObject);
+			SharedPointer::SetPointer(pObject);
 		}
 	};
 
@@ -528,44 +528,44 @@ namespace BR
 
 		bool operator == (const SharedPointer& src) const
 		{
-			return __super::operator == (src);
+			return WeakPointer::operator == (src);
 		}
 
 		bool operator != (const SharedPointer& src) const
 		{
-			return __super::operator != (src);
+			return WeakPointer::operator != (src);
 		}
 
 		bool operator == (const WeakPointer& src) const
 		{
-			return __super::operator == (src);
+			return WeakPointer::operator == (src);
 		}
 
 		bool operator != (const WeakPointer& src) const
 		{
-			return __super::operator != (src);
+			return WeakPointer::operator != (src);
 		}
 
 		bool operator == (SharedObject* pRef) const
 		{
-			return __super::operator == (pRef);
+			return WeakPointer::operator == (pRef);
 		}
 
 		bool operator != (SharedObject* pRef) const
 		{
-			return __super::operator != (pRef);
+			return WeakPointer::operator != (pRef);
 		}
 
 		WeakPointerT<ClassType>& operator = (const SharedPointerT<ClassType>& src)
 		{
-			__super::operator = (src);
+			WeakPointer::operator = (src);
 
 			return *this;
 		}
 
 		WeakPointerT<ClassType>& operator = (const SharedPointer& src)
 		{
-			__super::operator = (src);
+			WeakPointer::operator = (src);
 
 			if (m_pObject != nullptr)
 			{
@@ -577,7 +577,7 @@ namespace BR
 
 		WeakPointerT<ClassType>& operator = (const WeakPointer& src)
 		{
-			__super::operator = (src);
+			WeakPointer::operator = (src);
 
 			if (m_pObject != nullptr)
 			{
@@ -589,7 +589,7 @@ namespace BR
 
 		WeakPointerT<ClassType>& operator = (WeakPointer&& src)
 		{
-			__super::operator = (src);
+			WeakPointer::operator = (src);
 
 			if (m_pObject != nullptr)
 			{
@@ -601,14 +601,14 @@ namespace BR
 
 		WeakPointerT<ClassType>& operator = (const WeakPointerT<ClassType>& src)
 		{
-			__super::operator = (src);
+			WeakPointer::operator = (src);
 
 			return *this;
 		}
 
 		WeakPointerT<ClassType>& operator = (WeakPointerT<ClassType>&& src)
 		{
-			__super::operator = (std::forward<WeakPointerT<ClassType>>(src));
+			WeakPointer::operator = (std::forward<WeakPointerT<ClassType>>(src));
 
 			return *this;
 		}

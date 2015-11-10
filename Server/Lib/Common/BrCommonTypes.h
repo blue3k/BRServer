@@ -96,11 +96,11 @@ namespace BR {
 		}
 		ServerFriendInformation& operator = (const ServerFriendInformation& src)
 		{
-			__super::operator = (src);
+			FriendInformation::operator = (src);
 			ShardID = src.ShardID;
 			return *this;
 		}
-		bool operator == (const ServerFriendInformation& src) const { return __super::operator ==(src); }
+		bool operator == (const ServerFriendInformation& src) const { return FriendInformation::operator ==(src); }
 	};
 
 
