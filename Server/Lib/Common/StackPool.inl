@@ -22,11 +22,11 @@ StackPool::Header::Header()
 
 
 // Foreach functor
-// NOTE: This mehtod not thread safe
+// NOTE: This mehtod isn't thread safe
 template< class Functor >
 void StackPool::for_each( Functor func )
 {
-	Item *pItem = (Item*)m_head.pHead;
+	Item *pItem = m_head.load(std::memory_order_relaxed);
 	while( pItem )
 	{
 		Item* pNext = pItem->pNext;

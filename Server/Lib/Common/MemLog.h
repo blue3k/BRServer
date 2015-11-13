@@ -20,7 +20,7 @@
 namespace MemLog
 {
 	// Logging place
-	enum Logging {
+	enum class Logging : UINT8 {
 		LOG_DebugOut = 1,
 		LOG_Console = 2,
 		LOG_ALL = LOG_DebugOut | LOG_Console,

@@ -9,16 +9,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-
-
 #pragma once
 
 
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
 
-
-
+namespace MemLog
+{
+	enum class Logging : UINT8;
+	class IMemLogger;
+};
 
 #ifdef X64
 #define BR_ALIGN				16
@@ -33,7 +34,6 @@
 #endif
 
 #if __GNUC__
-__attribute__((aligned(16)))
 #define BR_DECLARE_ALIGN		__attribute__((aligned(BR_ALIGN)))
 #define BR_DECLARE_ALIGN_DOUBLE __attribute__((aligned(BR_ALIGN_DOUBLE)))
 #else
@@ -44,14 +44,7 @@ __attribute__((aligned(16)))
 #define BR_ALLIGNUP(x,allign)	( (((uintptr_t)(x) + allign-1) & (~(allign-1))) )
 
 
-namespace MemLog
-{
-	enum Logging;
-	class IMemLogger;
-}
-
-namespace BR
-{
+namespace BR {
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -157,7 +150,7 @@ namespace BR
 		static STDAllocator Instance;
 	public:
 
-		static FORCEINLINE STDAllocator& GetInstance();
+		static STDAllocator& GetInstance();
 
 		// Allocate 
 		virtual HRESULT Alloc( size_t uiSize, void* &pPtr );
@@ -182,7 +175,7 @@ namespace BR
 		static ProcessorAllocator Instance;
 	public:
 
-		static FORCEINLINE ProcessorAllocator& GetInstance();
+		static ProcessorAllocator& GetInstance();
 
 		// Allocate 
 		virtual HRESULT Alloc( size_t uiSize, void* &pPtr );
@@ -301,7 +294,7 @@ namespace BR
 
 
 
-}; // namespace BR
+} // namespace BR
 
 
 

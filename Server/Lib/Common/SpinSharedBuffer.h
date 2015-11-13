@@ -38,11 +38,13 @@ namespace BR
 				STATE_USE,	// Read Buffer State
 			} BufferState;
 
+
 			// Buffer State
-			union {
-				volatile LONG State; 
-				BufferState eState; // for easy to see state
-			};
+			std::atomic<BufferState> State;
+			//union {
+			//	volatile LONG State; 
+			//	BufferState eState; // for easy to see state
+			//};
 
 			// Data storage
 			ItemType Data;
@@ -52,7 +54,7 @@ namespace BR
 			Buffer::Buffer()
 			{
 				// initializing Buffer state as Free
-				eState = STATE_FREE; 
+				State = STATE_FREE; 
 			}
 		};
 

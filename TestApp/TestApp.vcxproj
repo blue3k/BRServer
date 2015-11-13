@@ -171,6 +171,7 @@
     <None Include="..\debugAll.reg" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConcurrentContainerTest.h" />
     <ClInclude Include="DBTest.h" />
     <ClInclude Include="HashTableTest.h" />
     <ClInclude Include="HTTPTest.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="AVLTreeTest_DualMapPerformance.cpp" />
     <ClCompile Include="AVLTreeTest_Performance.cpp" />
     <ClCompile Include="AVLTreeTest_SortedMap.cpp" />
+    <ClCompile Include="ConcurrentContainerTest.cpp" />
     <ClCompile Include="DBTest.cpp" />
     <ClCompile Include="HashTable2Test.cpp" />
     <ClCompile Include="HashTableTest.cpp" />

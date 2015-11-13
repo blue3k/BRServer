@@ -12,13 +12,20 @@
 
 #pragma once
 
-#include "Typedefs.h"
+#include "Common/Typedefs.h"
 
 
 #if LINUX
 #define __debugbreak() raise(SIGTRAP)
 #else
 #endif
+
+#define ForceAssert(condi) \
+				do{ \
+					if( !(condi) ) {\
+						__debugbreak(); \
+					}else{}\
+				}while(0); \
 
 
 
@@ -35,13 +42,8 @@
 
 #define Assert(condi)
 
-// Assert even release mode
-#define AssertRel(condi) \
-				do{ \
-					if( !(condi) ) {\
-						__debugbreak(); \
-					}else{}\
-				}while(0); \
+// Assert in release mode
+#define AssertRel(condi) ForceAssert(condi);
 
 
 #endif

@@ -53,7 +53,7 @@ namespace BR
 	private:
 
 		// Header
-		Header m_head;
+		std::atomic<Item*> m_head;
 #pragma pack(pop)
 
 		// Size

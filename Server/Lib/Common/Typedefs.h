@@ -110,6 +110,7 @@ inline HRESULT GetLastWSAHRESULT()
 #include <fcntl.h>
 #include <libgen.h>
 #include <errno.h>
+#include <signal.h>
 
 typedef unsigned char UINT8;
 typedef char INT8;
@@ -218,10 +219,6 @@ typedef SBYTE				*PSBYTE;
 typedef HANDLE				NativeHandle;
 
 
-
-
-
-
 // Thread synchronize counter type
 #if defined(X64)
 
@@ -272,7 +269,13 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 	return N;
 }
 
+
+
+
+
+
 #define unused(x) 
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -319,6 +322,8 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 
 
 #endif
+
+
 
 
 

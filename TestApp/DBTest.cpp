@@ -266,7 +266,7 @@ TEST_F(DBTest, DBQuerySetNick)
 	char strTest[1024], strTest2[1024];
 
 	StrUtil::WCSToUTF8( strTestString, strTest );
-	StrUtil::WCSToMBCS( strTestString, strTest2 );
+	//StrUtil::WCSToMBCS( strTestString, strTest2 );
 
 	//pTestDB->SetN(pTestDB->m_Counter.fetch_add(1,std::memory_order_relaxed), 21124, strTest );
 

@@ -14,7 +14,7 @@
 //	Spin Buffer Class
 //
 
-#define ITEM typename SpinBufferMT<T, SIZE_BUFFER>::BLOCK
+#define ITEM typename SpinBufferMT<T,SIZE_BUFFER>::BLOCK
 
 
 template <typename T, int SIZE_BUFFER>
@@ -53,25 +53,30 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Write_Lock()
 	int nWritePos = (myTicket-1) % SIZE_BUFFER;
 
 	int nLockTry = 0;
-	while( (_InterlockedCompareExchange64((LONG64*)&m_SpinBuffer[nWritePos].eBlockMode, ITEM::STATE_WRITE_LOCK, ITEM::STATE_FREE) != (ITEM::STATE_FREE)) )
+	ITEM_STATE expectedFreeState = ITEM_STATE::STATE_FREE;
+	while(!m_SpinBuffer[nWritePos].BlockMode.compare_exchange_weak(expectedFreeState, ITEM_STATE::STATE_WRITE_LOCK, std::memory_order_release, std::memory_order_relaxed))
+	//while( (_InterlockedCompareExchange64((INT64*)&m_SpinBuffer[nWritePos].eBlockMode, ITEM_STATE::STATE_WRITE_LOCK, ITEM_STATE::STATE_FREE) != (ITEM_STATE::STATE_FREE)) )
 	{
 		nLockTry++;
 		if( nLockTry%5 )
 		{
 			ThisThread::SleepFor(DurationMS(0));
 		}
+		expectedFreeState = ITEM_STATE::STATE_FREE;
 	}
 	
+	Assert(m_SpinBuffer[nWritePos].BlockMode.load(std::memory_order_relaxed) == ITEM_STATE::STATE_WRITE_LOCK);
+
 	// return buffer block
 	return &m_SpinBuffer[nWritePos];
 }
 
 template <typename T, int SIZE_BUFFER>
-void SpinBufferMT<T, SIZE_BUFFER>::Write_Unlock(ITEM* pItem)
+void SpinBufferMT<T,SIZE_BUFFER>::Write_Unlock(ITEM* pItem)
 {
-	AssertRel(pItem->eBlockMode == ITEM::STATE_WRITE_LOCK);
+	Assert(pItem->BlockMode.load(std::memory_order_relaxed) == ITEM_STATE::STATE_WRITE_LOCK);
 
-	pItem->eBlockMode = ITEM::STATE_WRITE_UNLOCK;
+	pItem->BlockMode.store(ITEM_STATE::STATE_WRITE_UNLOCK, std::memory_order_release);
 
 	// increase now servig thread count
 	m_writeTicket.ReleaseTicket();
@@ -102,14 +107,16 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Read_Lock()
 
 	int nReadPos = (myTicket-1) % SIZE_BUFFER;
 	int nLockTry = 0;
-
-	while( (_InterlockedCompareExchange64((LONG64*)&m_SpinBuffer[nReadPos].eBlockMode, ITEM::STATE_READ_LOCK, ITEM::STATE_WRITE_UNLOCK)) != ITEM::STATE_WRITE_UNLOCK)
+	auto expected = ITEM_STATE::STATE_READ_LOCK;
+	while(!m_SpinBuffer[nReadPos].BlockMode.compare_exchange_weak(expected, ITEM_STATE::STATE_WRITE_UNLOCK, std::memory_order_release, std::memory_order_relaxed))
+	//while( (_InterlockedCompareExchange64((INT64*)&m_SpinBuffer[nReadPos].eBlockMode, ITEM_STATE::STATE_READ_LOCK, ITEM_STATE::STATE_WRITE_UNLOCK)) != ITEM_STATE::STATE_WRITE_UNLOCK)
 	{
 		nLockTry++;
 		if( nLockTry%5 )
 		{
 			ThisThread::SleepFor(DurationMS(0));
 		}
+		expected = ITEM_STATE::STATE_READ_LOCK;
 	}
 
 	return &m_SpinBuffer[nReadPos];
@@ -118,9 +125,9 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Read_Lock()
 template <typename T, int SIZE_BUFFER>
 void SpinBufferMT<T, SIZE_BUFFER>::Read_Unlock(ITEM* pItem)
 {
-	AssertRel(pItem->eBlockMode == ITEM::STATE_READ_LOCK);
+	AssertRel(pItem->BlockMode.load(std::memory_order_relaxed) == ITEM_STATE::STATE_READ_LOCK);
 
-	pItem->eBlockMode = ITEM::STATE_FREE;
+	pItem->BlockMode.store(ITEM_STATE::STATE_FREE, std::memory_order_release);
 
 	m_readTicket.ReleaseTicket();
 }

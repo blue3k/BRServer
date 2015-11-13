@@ -72,10 +72,10 @@ HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pB
 	CounterType accessPos = myTicket % m_BufferCount;
 
 	INT iTry = 0;
-
+	auto expected = Buffer::STATE_USE;
 	do {
 		// If i didn't get it's access right then reticketing new one
-		while( m_SpinBuffer[accessPos].State != Buffer::STATE_FREE )
+		while( m_SpinBuffer[accessPos].State.load(std::memory_order_relaxed) != Buffer::STATE_FREE )
 		{
 			// Try limit
 			iTry++;
@@ -89,7 +89,10 @@ HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pB
 			myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
 			accessPos = myTicket % m_BufferCount;
 		}
-	} while( _InterlockedCompareExchange( &m_SpinBuffer[accessPos].State, Buffer::STATE_USE, Buffer::STATE_FREE ) != Buffer::STATE_FREE );
+
+		expected = Buffer::STATE_USE;
+	//} while( _InterlockedCompareExchange( &m_SpinBuffer[accessPos].State, Buffer::STATE_USE, Buffer::STATE_FREE ) != Buffer::STATE_FREE );
+	} while (!m_SpinBuffer[accessPos].State.compare_exchange_weak(expected, Buffer::STATE_FREE, std::memory_order_release, std::memory_order_relaxed));
 
 	pBuffer = &m_SpinBuffer[accessPos].Data;
 
@@ -117,7 +120,7 @@ HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 
 	do {
 		// If i didn't get it's access right then reticketing new one
-		while( m_SpinBuffer[accessPos].State != Buffer::STATE_FREE )
+		while( m_SpinBuffer[accessPos].State.load(std::memory_order_relaxed) != Buffer::STATE_FREE )
 		{
 			iTry++;
 			// So many try sleep some
@@ -128,7 +131,8 @@ HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 			myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
 			accessPos = myTicket % m_BufferCount;
 		}
-	} while( _InterlockedCompareExchange( &m_SpinBuffer[accessPos].State, Buffer::STATE_USE, Buffer::STATE_FREE ) != Buffer::STATE_FREE );
+	//} while( _InterlockedCompareExchange( &m_SpinBuffer[accessPos].State, Buffer::STATE_USE, Buffer::STATE_FREE ) != Buffer::STATE_FREE );
+	} while (!m_SpinBuffer[accessPos].State.compare_exchange_weak(Buffer::STATE_USE, Buffer::STATE_FREE, std::memory_order_release, std::memory_order_relaxed));
 
 	// Increase used buffer count
 	m_UsedBufferCount.Increment();
@@ -150,7 +154,7 @@ HRESULT SpinSharedBuffer<ItemType>::FreeBuffer( ItemType* pBuffer )
 	if( pBufferPtr < m_SpinBuffer || pBufferPtr > (m_SpinBuffer + m_BufferCount) )
 		return E_INVALIDARG;
 
-	pBufferPtr->State = Buffer::STATE_FREE;
+	pBufferPtr->State.store(Buffer::STATE_FREE, std::memory_order_relaxed);
 
 	m_UsedBufferCount.fetch_sub(1, std::memory_order_relaxed);
 

@@ -36,7 +36,7 @@ namespace BR
 				BUFFERSTATE_WRITE,	// Write Buffer State
 				BUFFERSTATE_READ,	// Read Buffer State
 				BUFFERSTATE_FREE,	// Free Buffer State
-			}MODE;
+			} MODE;
 
 			MODE eBufferMode; // WRITE, READ, FREE
 

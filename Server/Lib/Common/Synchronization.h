@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // 
 // CopyRight (c) 2013 MadK
 // 
@@ -13,7 +13,6 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/BrAssert.h"
 #include "Common/Memory.h"
 #include "Common/Utility.h"
 #include "Common/Thread.h"
@@ -161,6 +160,8 @@ namespace BR
 
 		// getting my waiting order
 		inline Ticket GetMyWaitingOrder(Ticket) const;
+
+		void WaitMyOrder(Ticket ticket) const;
 
 		// getting total waiting thread count
 		Ticket GetTotalWaitingCount() const;

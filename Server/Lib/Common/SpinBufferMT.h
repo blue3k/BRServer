@@ -35,23 +35,22 @@ namespace BR
 			MAX_COUNTER	= SIZE_BUFFER - 1,
 		};
 
+		enum ITEM_STATE
+		{
+			STATE_FREE,			// Free State, READ_LOCK->FREE
+			STATE_WRITE_LOCK,	// locked state to write
+			STATE_WRITE_UNLOCK,	// writing complete state
+			STATE_READ_LOCK,	// locked state to read
+		};
+
 	public:
 		// Block of Buffer
 		struct BLOCK
 		{
 			// Buffer block State 
-			typedef enum 
-			{
-				STATE_WRITE_LOCK,	// locked state to write
-				STATE_WRITE_UNLOCK,	// writing complete state
-				STATE_READ_LOCK,	// locked state to read
-				STATE_FREE,			// Free State, READ_LOCK->FREE
-			}STATE;
+			typedef ITEM_STATE ITEM_STATE;
 
-			volatile union {
-				LONG64 BlockMode; 
-				STATE eBlockMode;
-			};
+			std::atomic<ITEM_STATE> BlockMode;
 
 			T Data;
 

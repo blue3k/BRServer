@@ -94,6 +94,14 @@ Ticketing::Ticket Ticketing::GetMyWaitingOrder(Ticket myTicket) const
 	return (Ticket)Diff;
 }
 
+inline void Ticketing::WaitMyOrder(Ticket myTicket) const
+{
+	while (GetMyWaitingOrder(myTicket) > 0)
+	{
+		ThisThread::SleepFor(DurationMS(0));
+	}
+}
+
 Ticketing::Ticket Ticketing::GetNowWorkingCount() const
 {
 	return m_Working.load(std::memory_order_relaxed);

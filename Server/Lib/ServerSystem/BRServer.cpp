@@ -421,7 +421,7 @@ Proc_End:
 
 		svrChk( InitializeComponents() );
 
-		BR::InitializeMemLogger( MemLog::LOG_ALL, 0 );
+		BR::InitializeMemLogger( MemLog::Logging::LOG_ALL, 0 );
 
 		svrChk(InitializeNetPublic());
 

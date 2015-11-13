@@ -11,13 +11,13 @@
 
 
 
-STDAllocator& STDAllocator::GetInstance()
+inline STDAllocator& STDAllocator::GetInstance()
 {
 	return Instance;
 }
 
 
-ProcessorAllocator& ProcessorAllocator::GetInstance()
+inline ProcessorAllocator& ProcessorAllocator::GetInstance()
 {
 	return Instance;
 }
@@ -136,10 +136,9 @@ CircularBufferAllocator<BufferSize,alignment>::~CircularBufferAllocator()
 template< size_t BufferSize, size_t alignment >
 HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, void* &pPtr )
 {
+	assert(uiSize < BufferSize);
+
 	MemoryChunkHeader *pChunk = nullptr;
-
-	Assert( uiSize < BufferSize );
-
 	intptr_t allocationSize = (intptr_t)BR_ALLIGNUP( HeaderSize+uiSize, alignment );
 
 	if( m_FreeSize < allocationSize )
@@ -170,7 +169,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, voi
 
 		pChunk = (MemoryChunkHeader*)(m_AllocationBuffer);
 		m_AllocatePosition = 0;
-		AssertRel( m_AllocatePosition < m_FreePosition );
+		AssertRel( this->m_AllocatePosition < this->m_FreePosition );
 
 	#ifdef DEBUG
 		Assert(SUCCEEDED(ValidateAllocatedChunks()));
@@ -179,7 +178,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, voi
 
 	m_FreeSize -= allocationSize;
 
-	AssertRel(m_FreeSize<=BufferSize && m_FreeSize >= 0);
+	AssertRel(this->m_FreeSize<=BufferSize && this->m_FreeSize >= 0);
 
 	pChunk->ChunkType = ChunkTypes::Allocated;
 	pChunk->ChunkSize = (UINT32)allocationSize;
@@ -219,7 +218,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Realloc( size_t uiSize, v
 template< size_t BufferSize, size_t alignment >
 HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 {
-	Assert(pPtr != nullptr);
+	assert(pPtr != nullptr);
 	if( pPtr == nullptr ) // null free
 		return S_FALSE;
 
@@ -228,7 +227,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 	if( bIsInStaticBuffer )
 	{
 		MemoryChunkHeader *pChunk = (MemoryChunkHeader*)((BYTE*)pPtr - HeaderSize);
-		Assert(m_FreePosition!=m_AllocatePosition || m_FreeSize == 0);
+		assert(m_FreePosition!=m_AllocatePosition || m_FreeSize == 0);
 
 		intptr_t freePointer = (intptr_t)m_AllocationBuffer + m_FreePosition;
 		if( freePointer > (intptr_t)pChunk )
@@ -236,9 +235,9 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 			Free( (void*)(freePointer + HeaderSize) );
 		}
 
-		Assert( pChunk->ChunkType != ChunkTypes::Free );
+		assert( pChunk->ChunkType != ChunkTypes::Free );
 		AssertRel(pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated);
-		Assert(m_FreePosition!=m_AllocatePosition || m_FreeSize == 0);
+		assert(m_FreePosition!=m_AllocatePosition || m_FreeSize == 0);
 		if( pChunk->ChunkType != ChunkTypes::Dummy && pChunk->ChunkType != ChunkTypes::Allocated )
 		{
 			// Duplicate free? or broken memory

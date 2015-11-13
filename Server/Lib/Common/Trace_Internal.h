@@ -104,7 +104,6 @@ namespace Trace {
 
 		//// SpinBuffer for TraceOut
 		TraceBufferType m_TraceSpinBuffer;
-		//CRITICAL_SECTION m_OutputLock;
 
 		// Static instance for singleton
 		static BR::SharedPtr<TraceOutModule> stm_pInstance;
