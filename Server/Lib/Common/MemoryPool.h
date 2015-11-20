@@ -15,6 +15,7 @@
 #include "Common/Synchronization.h"
 #include "Common/StackPool.h"
 #include "Common/StackWalker.h"
+#include "Common/Synchronization.h"
 #include "Common/SystemSynchronization.h"
 
 #define ENABLE_MEMORY_TRACE
@@ -35,7 +36,7 @@ namespace BR
 		size_t	m_szPageSize;
 
 		// Allocated Page Count
-		BR::SyncCounter	m_PageCount;
+		SyncCounter	m_PageCount;
 
 	public:
 		// Constructor
@@ -76,7 +77,7 @@ namespace BR
 		static const intptr_t MAGIC_PAGEPOOL = (intptr_t)0x0847ab240847ab24L;
 
 
-		struct PageItem : public BR::StackPool::Item
+		struct PageItem : public StackPool::Item
 		{
 			intptr_t Magic;
 		};
@@ -88,7 +89,7 @@ namespace BR
 	private:
 
 		// Free page Pool
-		BR::StackPool	m_FreePages;
+		StackPool	m_FreePages;
 
 
 		HRESULT OrgFree( void* pPtr );
@@ -120,7 +121,7 @@ namespace BR
 	//
 
 
-	BR_DECLARE_ALIGN class MemoryPool
+	class MemoryPool
 	{
 	public:
 		enum {
@@ -163,15 +164,15 @@ namespace BR
 		size_t m_AllocCountPerPage;
 
 		// Allocated item count
-		BR::SyncCounter	m_AllocatedCount;
+		SyncCounter	m_AllocatedCount;
 
 		// Page allocate
 		PageAllocator m_Allocator;
 
 		// Free item stack
-		BR::StackPool	m_FreeList;
+		StackPool	m_FreeList;
 
-		CriticalSection m_CriticalSection;
+		BR::CriticalSection m_CriticalSection;
 		MemItem m_AllocatedHead;
 		bool m_printAlocList;
 
@@ -306,7 +307,7 @@ namespace BR
 			Assert(sizeof(ObjectType)==size);
 			if( stm_MemoryPool == nullptr )
 			{
-				HRESULT hr = MemoryPoolManager::GetMemoryPool( sizeof(ObjectType), stm_MemoryPool );
+				HRESULT hr = MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
 				Assert(SUCCEEDED(hr)&&stm_MemoryPool);
 			}
 			void *pPtr = NULL;

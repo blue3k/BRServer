@@ -63,12 +63,12 @@ namespace BR
 #endif
 
 
-	// It's not actually ticket lock but...
+	// It's not actually ticket lock but it works very well
 	class WriteOnlyTicketLock
 	{
 	public:
 	private:
-		CriticalSection m_WriteCriticalSection;
+		BR::CriticalSection m_WriteCriticalSection;
 
 	public:
 		WriteOnlyTicketLock() {}

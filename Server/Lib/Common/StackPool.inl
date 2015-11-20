@@ -12,13 +12,13 @@
 
 
 
-
-StackPool::Header::Header()
-	:pHead(nullptr),
-	TSeqID(0)
-{
-	AssertRel( ((intptr_t)this & (BR_ALIGN_DOUBLE-1)) == 0 );
-}
+//
+//StackPool::Header::Header()
+//	:pHead(nullptr),
+//	TSeqID(0)
+//{
+//	AssertRel( ((intptr_t)this & (BR_ALIGN_DOUBLE-1)) == 0 );
+//}
 
 
 // Foreach functor

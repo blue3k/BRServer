@@ -78,7 +78,7 @@
     <ClInclude Include="StrUtil.h" />
     <ClInclude Include="SvrPolicyID.h" />
     <ClInclude Include="Synchronize.h" />
-    <ClInclude Include="SystemSynchronize.h" />
+    <ClInclude Include="SystemSynchronization.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="TimeUtil.h" />
     <ClInclude Include="ToString.h" />

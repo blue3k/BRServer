@@ -17,6 +17,15 @@
 #include "Common/StackPool.h"
 
 
+
+#if WINDOWS
+#define STACKWALKER_CALL STDCALL
+#else
+#define STACKWALKER_CALL
+#endif
+
+
+
 namespace BR
 {
 
@@ -56,11 +65,12 @@ namespace BR
 
 	public:
 		// initialize stace walker
-		static bool STDCALL Initialize();
-		static void STDCALL Deinitialize();
+		static bool STACKWALKER_CALL Initialize();
+		static void STACKWALKER_CALL Deinitialize();
+
 
 		// get current stack trace
-		static void STDCALL CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth = 0, UINT maxDepth = CallStackTrace::MAX_CALLSTACK_DEPTH );
+		static void STACKWALKER_CALL CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth = 0, UINT maxDepth = CallStackTrace::MAX_CALLSTACK_DEPTH );
 
 		// print stack trace
 		static void PrintStackTrace(Trace::TraceChannels channel);

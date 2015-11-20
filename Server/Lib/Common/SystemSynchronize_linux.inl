@@ -18,16 +18,19 @@ namespace BR
 
 	class CriticalSection : public MutexBase
 	{
+	private:
+		pthread_mutex_t m_CriticalSection;
+
 	public:
 		CriticalSection()
 		{
 			pthread_mutexattr_t mAttr;
 			pthread_mutexattr_settype(&mAttr, PTHREAD_MUTEX_RECURSIVE_NP);
-			pthread_mutex_init(&m, &mAttr);
+			pthread_mutex_init(&m_CriticalSection, &mAttr);
 		}
 		~CriticalSection()
 		{
-			pthread_mutexattr_destroy(&m_CriticalSection);
+			pthread_mutex_destroy(&m_CriticalSection);
 		}
 
 		virtual void Lock()
@@ -40,25 +43,26 @@ namespace BR
 			pthread_mutex_unlock(&m_CriticalSection);
 		}
 
-	private:
-		pthread_mutex_t m_CriticalSection;
 	};
 
 
 
 	class Mutex : public MutexBase
 	{
+	private:
+		pthread_mutex_t m_CriticalSection;
+
 	public:
 		Mutex()
 		{
 			pthread_mutexattr_t mAttr;
 			pthread_mutexattr_settype(&mAttr, PTHREAD_MUTEX_RECURSIVE);
-			pthread_mutex_init(&m, &mAttr);
+			pthread_mutex_init(&m_CriticalSection, &mAttr);
 		}
 
 		~Mutex()
 		{
-			pthread_mutexattr_destroy(&m_CriticalSection);
+			pthread_mutex_destroy(&m_CriticalSection);
 		}
 
 		virtual void Lock() override
@@ -71,10 +75,8 @@ namespace BR
 			pthread_mutex_unlock(&m_CriticalSection);
 		}
 
-	private:
-
-		pthread_mutex_t m_CriticalSection;
 	};
+
 
 
 
@@ -90,8 +92,8 @@ namespace BR
 
 		~Event()
 		{
-			if (m_hEvent)
-				sem_destroy(&m_hEvent);
+			sem_close(&m_hEvent);
+			sem_destroy(&m_hEvent);
 		}
 
 		void Reset()
@@ -108,11 +110,15 @@ namespace BR
 
 		void Set()
 		{
-			if (sem_getvalue(&m_hEvent) == 1)
+			int value = 0;
+			int error = sem_getvalue(&m_hEvent, &value);
+			Assert(error == 0);
+			if (value == 1)
 				return;
 
 			sem_post(&m_hEvent);
 		}
+
 
 		bool WaitEvent(UINT uiWaitTimeMs)
 		{

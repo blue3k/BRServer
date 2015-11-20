@@ -292,6 +292,7 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 #define FORCEINLINE __attribute__((always_inline))
 #define STDCALL __attribute__((stdcall))
 #define FASTCALL __attribute__((fastcall))
+#define TEMPLATE_EXTERN
 
 // disable unreferenced label warnning (Proc_End)
 #define DO_PRAGMA(x) _Pragma (#x)
@@ -307,6 +308,7 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 #define FORCEINLINE __forceinline
 #define STDCALL __stdcall
 #define FASTCALL __fastcall
+#define TEMPLATE_EXTERN extern
 
 // disable unreferenced label warnning (Proc_End)
 #pragma warning( disable : 4102 )

@@ -19,10 +19,17 @@ namespace BR {
 	template <class DataType>
 	DataType DefaultValue() { return nullptr; }
 
-	extern template INT64 DefaultValue<INT64>();
-	extern template UINT64 DefaultValue<UINT64>();
-	extern template INT32 DefaultValue<INT32>();
-	extern template UINT32 DefaultValue<UINT32>();
+	template<>
+	INT64 DefaultValue<INT64>() { return 0; }
+
+	template<>
+	UINT64 DefaultValue<UINT64>() { return 0; }
+
+	template<>
+	INT32 DefaultValue<INT32>() { return 0; }
+
+	template<>
+	UINT32 DefaultValue<UINT32>() { return 0; }
 
 } // namespace BR
 

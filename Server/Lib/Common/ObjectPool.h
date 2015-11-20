@@ -80,7 +80,7 @@ namespace BR
 		size_t m_AllocCountPerPage;
 
 		// Allocated item count
-		BR::SyncCounter	m_AllocatedCount;
+		SyncCounter	m_AllocatedCount;
 
 		// Page allocate
 		PageAllocator m_Allocator;
@@ -159,7 +159,7 @@ namespace BR
 	//	Object Pool(Multithread)
 	//
 
-	BR_DECLARE_ALIGN class ObjectPoolMT
+	class ObjectPoolMT
 	{
 	public:
 		enum {
@@ -192,13 +192,13 @@ namespace BR
 		size_t m_AllocCountPerPage;
 
 		// Allocated item count
-		BR::SyncCounter	m_AllocatedCount;
+		SyncCounter	m_AllocatedCount;
 
 		// Page allocate
 		PageAllocator m_Allocator;
 
 		// Free item stack
-		BR::StackPool	m_FreeList;
+		StackPool	m_FreeList;
 
 	private:
 

@@ -26,7 +26,7 @@ namespace BR
 	//	Stack base object pool with Multithread access
 	//
 
-	BR_DECLARE_ALIGN class StackPool
+	class StackPool
 	{
 	public:
 
@@ -40,21 +40,11 @@ namespace BR
 
 		// Header
 
-#pragma pack(push)
-#pragma pack(BR_ALIGN_DOUBLE)
-		BR_DECLARE_ALIGN_DOUBLE struct Header
-		{
-			volatile Item* pHead;
-			volatile CounterType TSeqID;
-
-			inline Header();
-		};
 
 	private:
 
 		// Header
 		std::atomic<Item*> m_head;
-#pragma pack(pop)
 
 		// Size
 		SyncCounter m_lSize;
