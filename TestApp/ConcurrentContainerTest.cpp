@@ -66,14 +66,15 @@ TEST_F(ConcurrentContainerTest, SpinBufferMT_Simple)
 }
 
 
-TEST_F(ConcurrentContainerTest, SpinBufferMT)
+TEST_F(ConcurrentContainerTest, SpinBufferMT_IN)
 {
-	const UINT64 TEST_LENGTH = TestScale * 9999999;
+	const UINT64 TEST_LENGTH = TestScale * 999999;
 	const int NUM_THREAD = 10;
 
 	struct TestDataType
 	{
-		int ThreadID;
+		ThreadID ThreadID;
+		int WorkerID;
 		int Value;
 	};
 
@@ -91,7 +92,8 @@ TEST_F(ConcurrentContainerTest, SpinBufferMT)
 			for (int iTest = 0; iTest < TEST_LENGTH; iTest++)
 			{
 				TestDataType data;
-				data.ThreadID = worker;
+				data.ThreadID = pThread->GetThreadID();
+				data.WorkerID = worker;
 				data.Value = iTest;
 				auto lockedBlock = spinBuffer.Write_Lock();
 				lockedBlock->Data = data;
@@ -110,16 +112,17 @@ TEST_F(ConcurrentContainerTest, SpinBufferMT)
 
 	for (UINT worker = 0; worker < 1; worker++)
 	{
-		auto pWorker = new FunctorThread([&readWorkerCounter, &spinBuffer, &PreviousData, worker, TEST_LENGTH](Thread* pThread)
+		auto pWorker = new FunctorThread([&readWorkerCounter, &spinBuffer, &PreviousData, worker, NUM_THREAD, TEST_LENGTH](Thread* pThread)
 		{
 			readWorkerCounter.fetch_add(1, std::memory_order_relaxed);
-			for (int iTest = 0; iTest < TEST_LENGTH; iTest++)
+			for (int iTest = 0; iTest < TEST_LENGTH*NUM_THREAD; iTest++)
 			{
 				auto lockedBlock = spinBuffer.Read_Lock();
-				auto previousValue = PreviousData[lockedBlock->Data.ThreadID];
-				EXPECT_EQ((previousValue+1), lockedBlock->Data.Value);
-				AssertRel(lockedBlock->Data.Value == (previousValue + 1));
-				PreviousData[lockedBlock->Data.ThreadID] = lockedBlock->Data.Value;
+				auto workerID = lockedBlock->Data.WorkerID;
+				auto previousValue = PreviousData[workerID];
+				EXPECT_EQ(previousValue, lockedBlock->Data.Value);
+				AssertRel(lockedBlock->Data.Value == previousValue);
+				PreviousData[workerID]++;
 				spinBuffer.Read_Unlock(lockedBlock);
 
 			}
@@ -132,7 +135,88 @@ TEST_F(ConcurrentContainerTest, SpinBufferMT)
 	}
 
 	// wait writer threads
-	while (writeWorkerCounter.load(std::memory_order_relaxed) > 0)
+	while (writeWorkerCounter.load(std::memory_order_relaxed) > 0
+		|| readWorkerCounter.load(std::memory_order_relaxed) > 0)
+	{
+		ThisThread::SleepFor(DurationMS(1000));
+	}
+
+	for (int item = 0; item < NUM_THREAD; item++)
+	{
+		EXPECT_EQ(TEST_LENGTH, PreviousData[item]);
+		AssertRel(TEST_LENGTH == PreviousData[item]);
+	}
+}
+
+
+TEST_F(ConcurrentContainerTest, SpinBufferMT_INOUT)
+{
+	const UINT64 TEST_LENGTH = TestScale * 999999;
+	const INT64 NUM_THREAD = 10;
+	const INT64 NUM_READ_THREAD = 5;
+
+	struct TestDataType
+	{
+		ThreadID ThreadID;
+		int WorkerID;
+		int Value;
+	};
+
+	BR::SpinBufferMT<TestDataType, NUM_THREAD * 2> spinBuffer;
+	SyncCounter writeWorkerCounter(0);
+	SyncCounter readWorkerCounter(0);
+	std::atomic<int> PreviousData[NUM_THREAD];
+	for (int iData = 0; iData < NUM_THREAD; iData++)
+		PreviousData[iData] = 0;
+
+	for (UINT worker = 0; worker < NUM_THREAD; worker++)
+	{
+		auto pWorker = new FunctorThread([&writeWorkerCounter, &spinBuffer, worker, TEST_LENGTH](Thread* pThread)
+		{
+			writeWorkerCounter.fetch_add(1, std::memory_order_relaxed);
+			for (int iTest = 0; iTest < TEST_LENGTH; iTest++)
+			{
+				TestDataType data;
+				data.ThreadID = pThread->GetThreadID();
+				data.WorkerID = worker;
+				data.Value = iTest;
+				auto lockedBlock = spinBuffer.Write_Lock();
+				lockedBlock->Data = data;
+				spinBuffer.Write_Unlock(lockedBlock);
+			}
+
+			writeWorkerCounter.fetch_sub(1, std::memory_order_relaxed);
+		});
+
+		pWorker->Start();
+		m_Threads.push_back(pWorker);
+	}
+
+
+	for (UINT worker = 0; worker < NUM_READ_THREAD; worker++)
+	{
+		auto pWorker = new FunctorThread([&readWorkerCounter, &spinBuffer, &PreviousData, worker, NUM_THREAD, NUM_READ_THREAD, TEST_LENGTH](Thread* pThread)
+		{
+			readWorkerCounter.fetch_add(1, std::memory_order_relaxed);
+			for (int iTest = 0; iTest < ((TEST_LENGTH*NUM_THREAD) / NUM_READ_THREAD); iTest++)
+			{
+				auto lockedBlock = spinBuffer.Read_Lock();
+				auto workerID = lockedBlock->Data.WorkerID;
+				PreviousData[workerID]++;
+				spinBuffer.Read_Unlock(lockedBlock);
+
+			}
+
+			readWorkerCounter.fetch_sub(1, std::memory_order_relaxed);
+		});
+
+		pWorker->Start();
+		m_Threads.push_back(pWorker);
+	}
+
+	// wait writer threads
+	while (writeWorkerCounter.load(std::memory_order_relaxed) > 0
+		|| readWorkerCounter.load(std::memory_order_relaxed) > 0)
 	{
 		ThisThread::SleepFor(DurationMS(1000));
 	}

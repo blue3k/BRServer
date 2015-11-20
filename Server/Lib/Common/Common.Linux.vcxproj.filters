@@ -241,6 +241,9 @@
     <ClInclude Include="ArrayUtil.h">
       <Filter>Container</Filter>
     </ClInclude>
+    <ClInclude Include="TypeUtility.h">
+      <Filter>Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedObj.inl">
@@ -446,6 +449,9 @@
     </ClCompile>
     <ClCompile Include="StackPool.cpp">
       <Filter>Container</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeUtility.cpp">
+      <Filter>Types</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

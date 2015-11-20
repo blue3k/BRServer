@@ -48,16 +48,14 @@ namespace BR
 		struct BLOCK
 		{
 			// Buffer block State 
-			typedef ITEM_STATE ITEM_STATE;
-
 			std::atomic<ITEM_STATE> BlockMode;
 
 			T Data;
 
-			BLOCK::BLOCK()
+			BLOCK()
 			{
 				// initializing Buffer_state as Free
-				BlockMode = STATE_FREE;
+				BlockMode = ITEM_STATE::STATE_FREE;
 				memset(&Data, 0, sizeof(T));
 			}
 		};

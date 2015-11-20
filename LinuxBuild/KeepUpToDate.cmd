@@ -15,7 +15,7 @@ if "%1"=="" or "%1" == "." REMOTE_PATH=%REMOTE_BASE_PATH%/
 
 
 
-set EXCLUDES_FILES=*.cmd;*.user;*.suo;*.sdf;*.opensdf;*.recipe;*.vs;*.obj;*.o;*.pdf;*.pch;*.tlb;*.lib;*.exe;*.dll;*.zip;*.log;*.idb;*.manifest;*.rc;.git/;ipch/;Debug/;Release/;DEBUG/;RELEASE/;x64Debug/;x64Release/;bin/;obj/;temp/;*.tlog/
+set EXCLUDES_FILES=*.cmd;*.user;*.suo;*.sdf;*.opensdf;*.recipe;*.vs;*.obj;*.o;*.pdf;*.pch;*.pdb;*.tlb;*.lib;*.exe;*.dll;*.zip;*.log;*.idb;*.manifest;*.rc;.git/;ipch/;Debug/;Release/;DEBUG/;RELEASE/;x64Debug/;x64Release/;bin/;obj/;temp/;*.tlog/
 
 
 echo synchronize remote %LOCAL_PATH% %REMOTE_PATH% -delete -transfer=binary -filemask="|%EXCLUDES_FILES%" > %FTP_CMD_TMP%

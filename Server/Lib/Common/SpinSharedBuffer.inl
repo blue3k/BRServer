@@ -90,9 +90,9 @@ HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pB
 			accessPos = myTicket % m_BufferCount;
 		}
 
-		expected = Buffer::STATE_USE;
+		expected = Buffer::STATE_FREE;
 	//} while( _InterlockedCompareExchange( &m_SpinBuffer[accessPos].State, Buffer::STATE_USE, Buffer::STATE_FREE ) != Buffer::STATE_FREE );
-	} while (!m_SpinBuffer[accessPos].State.compare_exchange_weak(expected, Buffer::STATE_FREE, std::memory_order_release, std::memory_order_relaxed));
+	} while (!m_SpinBuffer[accessPos].State.compare_exchange_weak(expected, Buffer::STATE_USE, std::memory_order_release, std::memory_order_relaxed));
 
 	pBuffer = &m_SpinBuffer[accessPos].Data;
 
@@ -107,17 +107,17 @@ HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pB
 template <class ItemType>
 HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 {
-		if( m_SpinBuffer == nullptr )
+	if( m_SpinBuffer == nullptr )
 		return E_INVALIDARG;
 
 	// get access ticket
-		CounterType myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
+	CounterType myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
 
 	// Calculate access position
 	CounterType accessPos = myTicket % m_BufferCount;
 
 	INT iTry = 0;
-
+	auto expected = Buffer::STATE_FREE;
 	do {
 		// If i didn't get it's access right then reticketing new one
 		while( m_SpinBuffer[accessPos].State.load(std::memory_order_relaxed) != Buffer::STATE_FREE )
@@ -132,7 +132,8 @@ HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 			accessPos = myTicket % m_BufferCount;
 		}
 	//} while( _InterlockedCompareExchange( &m_SpinBuffer[accessPos].State, Buffer::STATE_USE, Buffer::STATE_FREE ) != Buffer::STATE_FREE );
-	} while (!m_SpinBuffer[accessPos].State.compare_exchange_weak(Buffer::STATE_USE, Buffer::STATE_FREE, std::memory_order_release, std::memory_order_relaxed));
+		expected = Buffer::STATE_FREE;
+	} while (!m_SpinBuffer[accessPos].State.compare_exchange_weak(expected, Buffer::STATE_USE, std::memory_order_release, std::memory_order_relaxed));
 
 	// Increase used buffer count
 	m_UsedBufferCount.Increment();

@@ -33,6 +33,13 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Write_Lock()
 	// lock ticketing
 	CounterType myTicket = m_writeTicket.AcquireTicket();
 	
+
+	// Do not cross over the single cycle boundary
+	while (((SignedCounterType)(myTicket - m_readTicket.GetWorkingCompleteCount())) >= SIZE_BUFFER)
+	{
+		ThisThread::SleepFor(DurationMS(0));
+	}
+
 	// total waiting thread count
 	CounterType nWaitingOrder = m_writeTicket.GetMyWaitingOrder(myTicket);
 	while(nWaitingOrder > MAX_COUNTER)
@@ -55,7 +62,6 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Write_Lock()
 	int nLockTry = 0;
 	ITEM_STATE expectedFreeState = ITEM_STATE::STATE_FREE;
 	while(!m_SpinBuffer[nWritePos].BlockMode.compare_exchange_weak(expectedFreeState, ITEM_STATE::STATE_WRITE_LOCK, std::memory_order_release, std::memory_order_relaxed))
-	//while( (_InterlockedCompareExchange64((INT64*)&m_SpinBuffer[nWritePos].eBlockMode, ITEM_STATE::STATE_WRITE_LOCK, ITEM_STATE::STATE_FREE) != (ITEM_STATE::STATE_FREE)) )
 	{
 		nLockTry++;
 		if( nLockTry%5 )
@@ -90,9 +96,9 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Read_Lock()
 
 	// total waiting thread count
 	CounterType nWaitingCount = m_readTicket.GetMyWaitingOrder(myTicket);
-	while(nWaitingCount > MAX_COUNTER )
+	while(nWaitingCount > (SIZE_BUFFER>>1))
 	{
-		if(nWaitingCount - MAX_COUNTER > 10)
+		if((nWaitingCount - MAX_COUNTER) > 10)
 		{
 			ThisThread::SleepFor(DurationMS(3));
 		}
@@ -107,16 +113,15 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Read_Lock()
 
 	int nReadPos = (myTicket-1) % SIZE_BUFFER;
 	int nLockTry = 0;
-	auto expected = ITEM_STATE::STATE_READ_LOCK;
-	while(!m_SpinBuffer[nReadPos].BlockMode.compare_exchange_weak(expected, ITEM_STATE::STATE_WRITE_UNLOCK, std::memory_order_release, std::memory_order_relaxed))
-	//while( (_InterlockedCompareExchange64((INT64*)&m_SpinBuffer[nReadPos].eBlockMode, ITEM_STATE::STATE_READ_LOCK, ITEM_STATE::STATE_WRITE_UNLOCK)) != ITEM_STATE::STATE_WRITE_UNLOCK)
+	auto expected = ITEM_STATE::STATE_WRITE_UNLOCK;
+	while(!m_SpinBuffer[nReadPos].BlockMode.compare_exchange_weak(expected, ITEM_STATE::STATE_READ_LOCK, std::memory_order_release, std::memory_order_relaxed))
 	{
 		nLockTry++;
 		if( nLockTry%5 )
 		{
 			ThisThread::SleepFor(DurationMS(0));
 		}
-		expected = ITEM_STATE::STATE_READ_LOCK;
+		expected = ITEM_STATE::STATE_WRITE_UNLOCK;
 	}
 
 	return &m_SpinBuffer[nReadPos];

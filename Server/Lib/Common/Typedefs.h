@@ -134,6 +134,8 @@ typedef wchar_t WCHAR;
 typedef unsigned int UINT;
 typedef int INT;
 
+typedef unsigned int DWORD;
+typedef unsigned short WORD;
 typedef UINT8 BYTE;
 typedef char SBYTE;
 

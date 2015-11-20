@@ -263,7 +263,7 @@ TEST_F(DBTest, DBQuerySetNick)
 				"brave", "dydwk12#" );
 
 
-	char strTest[1024], strTest2[1024];
+	char strTest[1024];// , strTest2[1024];
 
 	StrUtil::WCSToUTF8( strTestString, strTest );
 	//StrUtil::WCSToMBCS( strTestString, strTest2 );

@@ -22,7 +22,6 @@ void SpinLock::Lock()
 {
 	int iLockTry = 0;
 	long expected = STATE_FREE;
-	//while(_InterlockedCompareExchange(&m_LockValue, STATE_LOCKED, STATE_FREE) != STATE_FREE) 
 	while (!m_LockValue.compare_exchange_weak(expected, STATE_LOCKED, std::memory_order_acquire, std::memory_order_relaxed))
 	{ 
 		iLockTry++;
