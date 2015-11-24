@@ -18,6 +18,7 @@
     <ClCompile Include="AVLTreeTest_SortedMap.cpp" />
     <ClCompile Include="HashTable2Test.cpp" />
     <ClCompile Include="ConcurrentContainerTest.cpp" />
+    <ClCompile Include="SystemSynchronizeTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MemoryTest.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="ThreadTest.h" />
     <ClInclude Include="AVLTreeTest.h" />
     <ClInclude Include="ConcurrentContainerTest.h" />
+    <ClInclude Include="SystemSynchronizeTest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\debugAll.reg">
