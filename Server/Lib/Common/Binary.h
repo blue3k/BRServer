@@ -45,7 +45,7 @@ namespace BR
 		Binary( const Binary& src );
 
 		// Conversion to BLOB
-		inline operator BLOB();
+		//inline operator BLOB();
 
 		// Copy operator, do not use
 		Binary& operator = ( const Binary& src );

@@ -120,9 +120,9 @@ namespace BR {
 	union TransactionID
 	{
 		struct {
-			EntityID	EntityID;
+			EntityID	EntID;
 			UINT32		TransID;
-		};
+		} Components;
 		UINT64 ID;
 
 		inline TransactionID();
@@ -131,6 +131,9 @@ namespace BR {
 		inline TransactionID( BR::Context context );
 
 		inline bool IsValid() const;
+
+		EntityID GetEntityID() const { return Components.EntID; }
+		UINT32 GetTransactionIndex() const { return Components.TransID; }
 
 		inline TransactionID& operator = ( const TransactionID& transID );
 
@@ -154,13 +157,16 @@ namespace BR {
 		struct {
 			EntityUID	From;
 			EntityUID	To;
-		};
+		} Components;
 		UINT64 ContextValue[2];
 
 		inline tag_RouteContext();
 		inline tag_RouteContext( const tag_RouteContext& routeContext );
 		inline tag_RouteContext( EntityUID InFromID, EntityUID InToID );
 		inline tag_RouteContext( int initValue );
+
+		EntityUID GetFrom() const { return Components.From; }
+		EntityUID GetTo() const { return Components.To; }
 
 		inline tag_RouteContext& operator = ( const tag_RouteContext& src );
 
@@ -233,7 +239,7 @@ namespace BR {
 
 		struct {
 			UINT32		Time;
-			UINT32		ServerID	: BIT_SERVERID;
+			UINT32		SvrID		: BIT_SERVERID;
 			UINT32		ID			: BIT_ID;
 		};
 		UINT64			UID;

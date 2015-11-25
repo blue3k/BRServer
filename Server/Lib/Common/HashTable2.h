@@ -194,7 +194,7 @@ namespace Hash {
 			void SetBucketCount( size_t iBucketCount )
 			{
 				m_Buckets.resize( iBucketCount );
-				for (int iBucket = 0; iBucket < m_Buckets.size(); iBucket++)
+				for (UINT iBucket = 0; iBucket < m_Buckets.size(); iBucket++)
 				{
 					m_Buckets[iBucket].SetObjectPool(m_ObjectPool);
 				}

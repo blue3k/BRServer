@@ -73,10 +73,10 @@ namespace BR {
 			MAX_NETNAME = 70,
 		};
 		char strAddr[MAX_NETNAME];
-		USHORT usPort;
+		UINT16 usPort;
 
 		inline NetAddress();
-		inline NetAddress( const char* strAdr, USHORT port = 0 );
+		inline NetAddress( const char* strAdr, UINT16 port = 0 );
 		inline NetAddress( int );
 
 		inline bool operator == ( const NetAddress& op ) const;
@@ -122,7 +122,7 @@ namespace BR {
 			UINT32			EntityLID	: 24;	// Local entity ID
 			UINT32			FacultyID	: 8;	// Local faculty ID
 			UINT32						:0;		// Local entity ID
-		};
+		} Components;
 		UINT32 ID;
 
 
@@ -134,6 +134,8 @@ namespace BR {
 #endif
 		inline EntityID( UINT32 uiID );
 
+		UINT32 GetEntityLID() const { return Components.EntityLID; }
+		UINT32 GetFacultyID() const { return Components.FacultyID; }
 
 		inline EntityID& operator = ( const EntityID& entityID );
 
@@ -152,15 +154,18 @@ namespace BR {
 	union EntityUID
 	{
 		struct {
-			EntityID	EntityID;		// Local entity ID
+			EntityID	EntID;		// Local entity ID
 			ServerID	SvrID;		// Server ID
-		};
+		} Components;
 		UINT64 UID;
 
 		inline EntityUID();
 		inline EntityUID( const EntityUID& entityUID );
 		inline EntityUID( ServerID serverID, UINT32 entityID );
 		inline EntityUID( const Context& context );
+
+		EntityID GetEntityID() const { return Components.EntID; }
+		ServerID GetServerID() const { return Components.SvrID; }
 
 		inline EntityUID& operator = ( const EntityUID& entityUID );
 

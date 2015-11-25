@@ -308,7 +308,7 @@ namespace Svr {
 
 		if( membership == ClusterMembership::StatusWatcher )
 		{
-			if( FAILED(m_WatcherUIDMap.insert( pNewService )) )
+			if( FAILED(m_WatcherUIDMap.insert((ULONGLONG)pNewService->GetEntityUID(), pNewService)) )
 			{
 				svrChk(m_WatcherUIDMap.find((UINT64)entityUID, itFound));
 
@@ -320,7 +320,7 @@ namespace Svr {
 		}
 		else
 		{
-			if( FAILED(m_ServiceEntityUIDMap.insert( pNewService )) )
+			if( FAILED(m_ServiceEntityUIDMap.insert((ULONGLONG)pNewService->GetEntityUID(), pNewService)) )
 			{
 				svrChk(m_ServiceEntityUIDMap.find((UINT64)entityUID, itFound));
 

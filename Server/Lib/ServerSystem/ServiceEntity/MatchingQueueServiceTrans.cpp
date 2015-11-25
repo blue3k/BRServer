@@ -58,7 +58,7 @@ namespace Svr {
 
 		svrChk( __super::StartTransaction() );
 
-		svrChk(GetMyOwner()->Enqueue(GetRouteContext().From, 0, (UINT)GetPlayers().GetSize(), GetPlayers().data(), m_MatchingTicket));
+		svrChk(GetMyOwner()->Enqueue(GetRouteContext().GetFrom(), 0, (UINT)GetPlayers().GetSize(), GetPlayers().data(), m_MatchingTicket));
 
 	Proc_End:
 
@@ -73,12 +73,12 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		MatchingPlayerInformation playerInfo(GetRouteContext().From, GetPlayerID(), PlayerRole::None);
+		MatchingPlayerInformation playerInfo(GetRouteContext().GetFrom(), GetPlayerID(), PlayerRole::None);
 		m_MatchingTicket = 0;
 
 		svrChk( __super::StartTransaction() );
 
-		svrChk( GetMyOwner()->Enqueue( GetRouteContext().From, GetPlayerID(), 1, &playerInfo, m_MatchingTicket ) );
+		svrChk( GetMyOwner()->Enqueue( GetRouteContext().GetFrom(), GetPlayerID(), 1, &playerInfo, m_MatchingTicket ) );
 
 	Proc_End:
 
@@ -95,7 +95,7 @@ namespace Svr {
 
 		svrChk( __super::StartTransaction() );
 
-		svrChk( GetMyOwner()->UpdateTicket( GetMatchingTicket(), GetPreviousUID(), GetRouteContext().From ) );
+		svrChk( GetMyOwner()->UpdateTicket( GetMatchingTicket(), GetPreviousUID(), GetRouteContext().GetFrom()) );
 
 	Proc_End:
 
@@ -129,7 +129,7 @@ namespace Svr {
 
 		svrChk( __super::StartTransaction() );
 
-		hr = GetMyOwner()->ReserveItem( GetRouteContext().From, m_NumPlayersInTheTicket, m_MatchingTicket );
+		hr = GetMyOwner()->ReserveItem( GetRouteContext().GetFrom(), m_NumPlayersInTheTicket, m_MatchingTicket );
 
 	Proc_End:
 
@@ -151,7 +151,7 @@ namespace Svr {
 			UINT numPlayersInTheTicket;
 			MatchingQueueTicket matchingTicket;
 
-			hr = GetMyOwner()->ReserveItem(GetRouteContext().From, numPlayersInTheTicket, matchingTicket);
+			hr = GetMyOwner()->ReserveItem(GetRouteContext().GetFrom(), numPlayersInTheTicket, matchingTicket);
 			if (FAILED(hr))
 				break;
 
@@ -199,7 +199,7 @@ namespace Svr {
 		svrChk(GetMyOwner()->DequeueItem(GetMatchingTicket(), m_matchingQueueItem));
 
 
-		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity( m_matchingQueueItem.RegisterUID.SvrID, pServerEntity ));
+		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity( m_matchingQueueItem.RegisterUID.GetServerID(), pServerEntity ));
 
 		if( m_matchingQueueItem.NumPlayers == 0 )
 			svrErrClose(E_SVR_INVALID_QUEUEITEM);
@@ -242,7 +242,7 @@ namespace Svr {
 		svrChk(GetMyOwner()->DeleteItem(GetMatchingTicket(), matchingQueueItem));
 
 
-		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(matchingQueueItem.RegisterUID.SvrID, pServerEntity));
+		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(matchingQueueItem.RegisterUID.GetServerID(), pServerEntity));
 
 		if (matchingQueueItem.NumPlayers == 0)
 			svrErrClose(E_SVR_INVALID_QUEUEITEM);

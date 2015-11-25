@@ -111,7 +111,7 @@ namespace Google {
 		StaticArray<BYTE, 128> digest;
 		int sslResult = TRUE;
 		BYTE sign_buffer[512];
-		UINT sign_len = _countof(sign_buffer);
+		UINT sign_len = (UINT)countof(sign_buffer);
 
 		const char header[] = "{\"alg\":\"RS256\",\"typ\":\"JWT\"}";
 		const char bodyFormat[] =
@@ -142,7 +142,7 @@ namespace Google {
 		//////////////////////////////////////////////////////////////////////
 		// Combine hashed strings
 
-		svrChk(Util::Base64URLEncode(_countof(header) - 1, (const BYTE*)header, requestString));
+		svrChk(Util::Base64URLEncode(countof(header) - 1, (const BYTE*)header, requestString));
 		svrChk(requestString.push_back('.'));
 		svrChk(Util::Base64URLEncode((INT)strlen(body), (const BYTE*)body, requestString));
 

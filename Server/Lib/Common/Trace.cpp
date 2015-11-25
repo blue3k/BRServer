@@ -11,6 +11,7 @@
 
 
 #include "stdafx.h"
+#include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
@@ -18,7 +19,6 @@
 #include "Common/HRESEvent.h"
 #include "Common/Thread.h"
 #include "Common/SharedObj.h"
-
 
 
 #if WINDOWS
@@ -68,7 +68,7 @@ namespace Trace {
 		:m_uiTraceMask(TRC_DEFAULT),
 		m_szName(nullptr),m_szNameTag(nullptr)
 	{
-		char strErrString[MAX_PATH] = "";
+		//char strErrString[MAX_PATH] = "";
 		StrUtil::StringDup( m_szName, szName );
 		StrUtil::StringDup( m_szNameTag, szNameTag );
 
@@ -174,7 +174,8 @@ namespace Trace {
 				continue; // invalud line
 
 			auto maskValue = strtol(numberStart, nullptr, 16);
-			strlwr(nameStart);
+			StrUtil::StringLwr(nameStart, sizeof(stringBuffer));
+			//strlwr(nameStart);
 			stm_Masks[nameStart] = maskValue;
 		}
 
@@ -361,7 +362,6 @@ namespace Trace {
 	// Thread inherit
 	void TraceOutModule::Run()
 	{
-		INT iProcMax = 1;
 		DurationMS WaitDelay = DurationMS(5);
 		
 		while( 1 )
@@ -452,7 +452,7 @@ namespace Trace {
 				if (uiOutputMask&_g_uiFileMask[iFile])
 				{
 					// if already file created then skip
-					if (m_tLogFileHour[iFile] == m_tCurTimeTM.tm_hour)
+					if (m_tLogFileHour[iFile] == (UINT)m_tCurTimeTM.tm_hour)
 						continue;
 
 					// build name
@@ -523,8 +523,8 @@ namespace Trace {
 	// Console output
 	void TraceOutModule::ConsoleOut( const WCHAR *strString1, const WCHAR *strString2 )
 	{
-		DWORD dwWriten = 0;
 #if WINDOWS
+		DWORD dwWriten = 0;
 		// Get the standard input handle.
 		if (m_hConsole != INVALID_NATIVE_HANDLE_VALUE)
 		{
@@ -604,7 +604,6 @@ namespace Trace {
 		if( (m_uiDbgOutputMask&_g_uiFileMask[TRCOUT_FILE_DBGLOG])
 			&& m_LogFile[TRCOUT_FILE_DBGLOG].IsOpened())
 		{
-			DWORD dwWritten = 0;
 			m_LogFile[TRCOUT_FILE_DBGLOG].Write((const BYTE*)m_szLineHeader, dwszLineHeader, szWritten );
 			m_LogFile[TRCOUT_FILE_DBGLOG].Write((const BYTE*)szOutput, dwszOutput, szWritten );
 		}

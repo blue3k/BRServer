@@ -200,7 +200,7 @@ namespace Svr
 			}
 			else
 			{
-				Assert(pNewTrans->GetTransID().EntityID == GetEntityID());
+				Assert(pNewTrans->GetTransID().GetEntityID() == GetEntityID());
 				svrChk(PendingTransaction(currentThreadID, pNewTrans));
 			}
 		}

@@ -227,7 +227,8 @@ namespace StrUtil {
 		HRESULT Convert(const char* destCode, char* dest, size_t destSize, const char* srcCode, const char* src, size_t srcSize, size_t& convertedSize)
 		{
 			HRESULT hr = S_OK;
-
+			auto orgDestSize = destSize;
+			char* srcNonConst = const_cast<char*>(src);
 			convertedSize = 0;
 
 			iconv_t context = iconv_open(destCode, srcCode);
@@ -237,8 +238,11 @@ namespace StrUtil {
 				goto Proc_End;
 			}
 
-			auto orgDestSize = destSize;
-			convertedSize = iconv(context, &src, &srcSize, &dest, &destSize);
+#if LINUX
+			convertedSize = iconv(context, &srcNonConst, &srcSize, &dest, &destSize); // linux version uses char** for src
+#else
+			convertedSize = iconv(context, &src, &srcSize, &dest, &destSize); // linux version uses char** for src
+#endif
 			if (convertedSize == (size_t)-1)
 			{
 				switch (errno)

@@ -33,6 +33,7 @@
     <ClInclude Include="CircularQueue.h" />
     <ClInclude Include="ClassUtil.h" />
     <ClInclude Include="DualSortedMap.h" />
+    <ClInclude Include="File\BRFile.h" />
     <ClInclude Include="GameConst.h" />
     <ClInclude Include="GlobalUIDGenerator.h" />
     <ClInclude Include="HashTable.h" />
@@ -58,6 +59,7 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="NullUtil.h" />
     <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="PageQueue.h" />
     <ClInclude Include="PerfCounter.h" />
     <ClInclude Include="PolicyID.h" />
     <ClInclude Include="SharedObj.h" />
@@ -77,7 +79,8 @@
     <ClInclude Include="StrFormat.h" />
     <ClInclude Include="StrUtil.h" />
     <ClInclude Include="SvrPolicyID.h" />
-    <ClInclude Include="Synchronize.h" />
+    <ClInclude Include="Synchronization.h" />
+    <ClInclude Include="SynchronizationTrait.h" />
     <ClInclude Include="SystemSynchronization.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="TimeUtil.h" />
@@ -112,6 +115,7 @@
     <None Include="MemoryStream.inl" />
     <None Include="Message.inl" />
     <None Include="ObjectPool.inl" />
+    <None Include="PageQueue.inl" />
     <None Include="PerfCounter.inl" />
     <None Include="SharedObj.inl" />
     <None Include="SortedMap.inl" />
@@ -120,7 +124,7 @@
     <None Include="SpinSharedBuffer.inl" />
     <None Include="StackPool.inl" />
     <None Include="StrUtil.inl" />
-    <None Include="Synchronize.inl" />
+    <None Include="Synchronization.inl" />
     <None Include="SystemSynchronize_linux.inl" />
     <None Include="SystemSynchronize_win.inl" />
     <None Include="Thread.inl" />
@@ -138,6 +142,8 @@
     <ClCompile Include="CryptoBase64.cpp" />
     <ClCompile Include="CryptoCrc32.cpp" />
     <ClCompile Include="CryptoSHA.cpp" />
+    <ClCompile Include="File\BRFile.linux.cpp" />
+    <ClCompile Include="File\BRFile.win32.cpp" />
     <ClCompile Include="GlobalUIDGenerator.cpp" />
     <ClCompile Include="LocalUIDGenerator.cpp" />
     <ClCompile Include="Memory.cpp" />
@@ -153,7 +159,7 @@
     <ClCompile Include="StackWalker.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="StrUtil.cpp" />
-    <ClCompile Include="Synchronize.cpp" />
+    <ClCompile Include="Synchronization.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="TimeUtil.cpp" />
     <ClCompile Include="ToString.cpp" />

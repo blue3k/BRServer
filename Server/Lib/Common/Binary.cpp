@@ -23,14 +23,14 @@ namespace BR
 
 	Binary::Binary( const Binary& src )
 	{
-		src;
+		unused(src);
 		AssertRel( !"Do not use this operation!, Use BinaryHeader::CopyBinary" );
 	}
 
 	// Copy operator
 	Binary& Binary::operator = ( const Binary& src )
 	{
-		src;
+		unused(src);
 		AssertRel( !"Do not use this operation!, Use BinaryHeader::CopyBinary" );
 		return *this;
 	}
@@ -40,7 +40,7 @@ namespace BR
 	HRESULT Binary::CopyBinary( Binary& dst, const Binary& src )
 	{
 		if( dst.MaxSize < src.Size )
-			return E_ABORT;
+			return E_INVALIDARG;
 
 		if( dst.Magic != src.Magic )
 			return E_INVALIDARG;

@@ -231,7 +231,7 @@ namespace Svr {
 
 				if (pNewTrans != nullptr && BrServer::GetInstance())
 				{
-					svrChk(BrServer::GetInstance()->GetEntityTable().RouteTransaction(pNewTrans->GetTransID().EntityID, pNewTrans));
+					svrChk(BrServer::GetInstance()->GetEntityTable().RouteTransaction(pNewTrans->GetTransID().GetEntityID(), pNewTrans));
 				}
 			}
 		}

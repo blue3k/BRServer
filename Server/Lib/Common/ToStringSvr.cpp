@@ -32,18 +32,18 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::RouteContext& Data, int Option)
 	{
-		Option;
+		unused(Option);
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return E_FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.From, Option)))
+		if (FAILED(ToString(pBuff, iBuffLen, Data.Components.From, Option)))
 			return E_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return E_FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.To, Option)))
+		if (FAILED(ToString(pBuff, iBuffLen, Data.Components.To, Option)))
 			return E_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
@@ -77,7 +77,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LocalUID& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		if (FAILED(_IToA((UINT32)Data.Time, pBuff, iBuffLen, 10, -1)))
 			return E_FAIL;
 
@@ -93,7 +93,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::ServiceInformation& Data, int Option)
 	{
-		Option;
+		unused(Option);
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return E_FAIL;
@@ -141,7 +141,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const MatchingQueueTicket& Data, int Option)
 	{
-		Option;
+		unused(Option);
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return E_FAIL;
@@ -166,7 +166,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const MatchingPlayerInformation& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return E_FAIL;
 
@@ -190,7 +190,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInfo& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return E_FAIL;
 
@@ -214,7 +214,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInstanceInfo& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return E_FAIL;
 
@@ -239,7 +239,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const ServerFriendInformation& Data, int Option)
 	{
-		Option;
+		unused(Option);
 
 		if (FAILED(ToString(pBuff, iBuffLen, reinterpret_cast<const FriendInformation&>(Data), Option)))
 			return E_FAIL;

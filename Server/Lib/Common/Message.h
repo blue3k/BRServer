@@ -270,8 +270,8 @@ namespace Message {
 		virtual HRESULT ParseMsg();
 		virtual HRESULT ParseIMsg( MessageData* pIMsg ) = 0;
 
-		virtual HRESULT OverrideRouteContextDestination( EntityUID to ) { to; AssertRel(false); return S_OK; }
-		virtual HRESULT OverrideRouteInfomation( EntityUID to, UINT hopCount ) { to; hopCount; AssertRel(false); return S_OK; }
+		virtual HRESULT OverrideRouteContextDestination( EntityUID to ) { unused(to); AssertRel(false); return S_OK; }
+		virtual HRESULT OverrideRouteInfomation( EntityUID to, UINT hopCount ) { unused(to, hopCount); AssertRel(false); return S_OK; }
 	};
 
 

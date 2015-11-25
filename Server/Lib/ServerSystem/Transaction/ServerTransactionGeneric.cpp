@@ -74,7 +74,7 @@ namespace Svr {
 				continue;
 
 			// This server doesn't registered
-			svrChk( pServerEntityManager->GetOrRegisterServer<EntityServerEntity>( pCurrentService->UID.SvrID, NetClass::Entity, pCurrentService->ServerAddress.strAddr, pCurrentService->ServerAddress.usPort, pNewServerEntity ) );
+			svrChk( pServerEntityManager->GetOrRegisterServer<EntityServerEntity>( pCurrentService->UID.GetServerID(), NetClass::Entity, pCurrentService->ServerAddress.strAddr, pCurrentService->ServerAddress.usPort, pNewServerEntity ) );
 			pServerEntity = pNewServerEntity;
 
 			svrChk( pClusterManagerEntity->NewServerService( pCurrentService->UID, pServerEntity, pCurrentService->Membership, pCurrentService->Status, pService ) );

@@ -284,7 +284,7 @@ namespace Svr {
 
 		// If delete is required by canceling
 		ServerEntity* pServerEntity = nullptr;
-		svrChk((GetServerComponent<ServerEntityManager>()->GetServerEntity(pItem->RegisterUID.SvrID, pServerEntity)));
+		svrChk((GetServerComponent<ServerEntityManager>()->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
 		auto pPolicyMatchingQueueSvr = pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>();
 		svrChkPtr(pPolicyMatchingQueueSvr);
 

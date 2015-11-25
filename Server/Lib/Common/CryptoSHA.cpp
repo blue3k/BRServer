@@ -25,8 +25,6 @@ namespace Util {
 	// SHA 256 hashing
 	HRESULT SHA256Hash(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer)
 	{
-		HRESULT hr = S_OK;
-
 		destBuffer.SetSize(SHA256_DIGEST_LENGTH);
 
 		SHA256_CTX sha256;
@@ -39,9 +37,7 @@ namespace Util {
 		if (SHA256_Final(destBuffer.data(), &sha256) == FALSE)
 			return E_FAIL;
 
-	Proc_End:
-
-		return hr;
+		return S_OK;
 	}
 
 

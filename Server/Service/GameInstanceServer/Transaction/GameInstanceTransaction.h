@@ -84,15 +84,15 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChkPtr( m_ServerEntity = dynamic_cast<Svr::ServerEntity*>(pOwner) );
 
-			if( GetMyServer()->GetServerUID() != GetRouteContext().To.SvrID )
+			if( GetMyServer()->GetServerUID() != GetRouteContext().GetTo().GetServerID())
 			{
 				svrErr( E_SVR_INVALID_SERVERID );
 			}
 
-			hr = GetMyServer()->GetEntityTable().Find(GetRouteContext().To.EntityID, pEntity);
+			hr = GetMyServer()->GetEntityTable().Find(GetRouteContext().GetTo().GetEntityID(), pEntity);
 			if (FAILED(hr))
 			{
-				svrTrace(Trace::TRC_WARN, "Can't find transaction target instance:%0%", GetRouteContext().To);
+				svrTrace(Trace::TRC_WARN, "Can't find transaction target instance:%0%", GetRouteContext().GetTo());
 				goto Proc_End;
 			}
 

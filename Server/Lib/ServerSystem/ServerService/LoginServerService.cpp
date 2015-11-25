@@ -39,7 +39,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyLoginServer()->PlayerJoinedToGameServerCmd( InContext, InRouteContext, InPlayerID, InAuthTicket ) );
 
 		Proc_End:
@@ -53,7 +53,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyLoginServer()->KickPlayerCmd( InContext, InRouteContext, InKickedPlayerID ) );
 
 		Proc_End:

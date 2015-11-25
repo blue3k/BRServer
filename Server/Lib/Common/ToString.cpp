@@ -25,13 +25,13 @@ namespace BR
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const EntityID& Data, int Option)
 	{
 		Option;
-		if (FAILED(ToStringEnum(pBuff, iBuffLen, (EntityFaculty)Data.FacultyID)))
+		if (FAILED(ToStringEnum(pBuff, iBuffLen, (EntityFaculty)Data.Components.FacultyID)))
 			return E_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return E_FAIL;
 
-		if (FAILED(_IToA((UINT32)Data.EntityLID, pBuff, iBuffLen, 10, -1)))
+		if (FAILED(_IToA((UINT32)Data.Components.EntityLID, pBuff, iBuffLen, 10, -1)))
 			return E_FAIL;
 
 		return S_OK;
@@ -43,13 +43,13 @@ namespace BR
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const EntityUID& Data, int Option)
 	{
 		Option;
-		if (FAILED(_IToA((UINT32)Data.SvrID, pBuff, iBuffLen, 10, -1)))
+		if (FAILED(_IToA((UINT32)Data.Components.SvrID, pBuff, iBuffLen, 10, -1)))
 			return E_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return E_FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.EntityID, Option)))
+		if (FAILED(ToString(pBuff, iBuffLen, Data.Components.EntID, Option)))
 			return E_FAIL;
 
 		return S_OK;
@@ -122,7 +122,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return E_FAIL;
 
-		if (FAILED(_IToA((UINT64)Data.FacebookUID, pBuff, iBuffLen, 10, -1)))
+		if (FAILED(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
 			return E_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
@@ -146,7 +146,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return E_FAIL;
 
-		if (FAILED(_IToA((UINT64)Data.FacebookUID, pBuff, iBuffLen, 10, -1)))
+		if (FAILED(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
 			return E_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
@@ -169,7 +169,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return E_FAIL;
 
-		if (FAILED(_IToA((UINT64)Data.FacebookUID, pBuff, iBuffLen, 10, -1)))
+		if (FAILED(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
 			return E_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))

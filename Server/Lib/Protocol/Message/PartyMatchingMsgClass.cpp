@@ -97,7 +97,7 @@ namespace BR
 
 				Assert( iMsgSize >= sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.To = to;
+				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 
 
@@ -123,7 +123,7 @@ namespace BR
 
 				Assert( iMsgSize >= sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.To = to;
+				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				Assert( iMsgSize >= sizeof(UINT16) );
@@ -221,7 +221,7 @@ namespace BR
 
 				Assert( iMsgSize >= sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.To = to;
+				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 
 
@@ -247,7 +247,7 @@ namespace BR
 
 				Assert( iMsgSize >= sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
-				routeContext.To = to;
+				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				Assert( iMsgSize >= sizeof(UINT16) );

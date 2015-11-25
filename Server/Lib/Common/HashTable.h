@@ -29,12 +29,11 @@ namespace Hash {
 		//	Thread safe hash map
 		//
 
-		template<	typename ItemType, 
-					typename Indexer, 
+		template<	typename KeyType, typename ItemType, 
 					typename Trait = UniqueKeyTrait, 
-					typename ThreadTrait = ThreadSyncTraitReadWriteT<Indexer::Type,ItemType>,
-					typename Hasher = Hash::hash<Indexer::Type>,
-					typename MapItemType = MapItem<typename Indexer::Type, typename ItemType>,
+					typename ThreadTrait = ThreadSyncTraitReadWriteT<KeyType,ItemType>,
+					typename Hasher = Hash::hash<KeyType>,
+					typename MapItemType = MapItem<KeyType, ItemType>,
 					typename BucketContainer = std::vector<MapItemType> >
 		class HashTable
 		{
@@ -42,9 +41,8 @@ namespace Hash {
 
 			//typedef void UniqueKey;
 
-			typedef typename ItemType ItemType;
-			typedef typename Indexer Indexer;
-			typedef typename Indexer::Type KeyType;
+			typedef ItemType MyItemType;
+			typedef KeyType MyKeyType;
 
 			typedef typename ThreadTrait::TicketLockType	TicketLockType;
 
@@ -141,7 +139,7 @@ namespace Hash {
 					BucketContainer::iterator iter = m_Items.begin();
 					for( ; iter != m_Items.end(); ++iter )
 					{
-						Indexer::Type curIdx = iter->Key;
+						KeyType curIdx = iter->Key;
 						size_t hashVal = Hasher()( curIdx );
 						size_t iBucket = hashVal%szNumBucket;
 						AssertRel( iBucket == iMyBucket );
@@ -315,6 +313,11 @@ namespace Hash {
 					return m_iterBucket->m_Items[m_iIdx].Data;
 				}
 
+				KeyType GetKey() const
+				{
+					return m_iterBucket->m_Items[m_iIdx].Key;
+				}
+
 				bool operator !=( const iterator& op ) const
 				{
 					return ( (m_pContainer != op.m_pContainer) || (m_iterBucket != op.m_iterBucket) || (m_iIdx != op.m_iIdx) );
@@ -451,7 +454,7 @@ namespace Hash {
 
 			iterator begin()
 			{
-				BucketListType::iterator iterBucket = m_Bucket.begin();
+				auto iterBucket = m_Bucket.begin();
 				iterator iter = end();
 				for( ; iterBucket != m_Bucket.end(); ++iterBucket )
 				{
@@ -481,9 +484,8 @@ namespace Hash {
 			//	Insert/erase/clear
 			//
 
-			HRESULT insert( const ItemType &data )
+			HRESULT insert( const KeyType& inKey, const ItemType &data )
 			{
-				Indexer::Type inKey = Indexer()(data);
 				size_t hashVal = Hasher()( inKey );
 				size_t iBucket = hashVal%m_Bucket.size();
 
@@ -498,11 +500,11 @@ namespace Hash {
 
 				if(Trait::UniqueKey)
 				{
-					BucketContainer::iterator iter = bucket.m_Items.begin();
+					auto iter = bucket.m_Items.begin();
 					for( ; iter != bucket.m_Items.end(); ++iter )
 					{
-						Indexer::Type curIdx = iter->Key;
-						if( equal_to<Indexer::Type>()(inKey, curIdx) )
+						KeyType curIdx = iter->Key;
+						if( equal_to<KeyType>()(inKey, curIdx) )
 						{
 							return E_FAIL;
 						}
@@ -512,12 +514,12 @@ namespace Hash {
 				}
 				else
 				{
-					BucketContainer::iterator iter = bucket.m_Items.begin();
+					auto iter = bucket.m_Items.begin();
 					bool bIsInserted = false;
 					for( ; iter != bucket.m_Items.end(); ++iter )
 					{
-						Indexer::Type curKey = iter->Key;
-						if( equal_to<Indexer::Type>()(inKey, curKey) )
+						KeyType curKey = iter->Key;
+						if( equal_to<KeyType>()(inKey, curKey) )
 						{
 							bucket.m_Items.insert( iter, MapData );
 							bIsInserted = true;
@@ -541,18 +543,18 @@ namespace Hash {
 				return S_OK;
 			}
 
-			HRESULT find( const typename Indexer::Type& keyVal, ItemType &data )
+			HRESULT find( const KeyType& keyVal, ItemType &data )
 			{
 				size_t hashVal = Hasher()( keyVal );
 				size_t iBucket = hashVal%m_Bucket.size();
 
 				Bucket& bucket = m_Bucket[iBucket];
-				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LOCK_NONEXCLUSIVE, bucket.m_Lock );
+				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_NONEXCLUSIVE, bucket.m_Lock );
 
-				BucketContainer::iterator iter = bucket.m_Items.begin();
+				auto iter = bucket.m_Items.begin();
 				for( ; iter != bucket.m_Items.end(); ++iter )
 				{
-					if( equal_to<Indexer::Type>()( keyVal, iter->Key ) )
+					if( equal_to<KeyType>()( keyVal, iter->Key ) )
 					{
 						data = iter->Data;
 						return S_OK;
@@ -562,7 +564,7 @@ namespace Hash {
 				return E_FAIL;
 			}
 
-			HRESULT find( const typename Indexer::Type& keyVal, iterator &iterData )
+			HRESULT find( const KeyType& keyVal, iterator &iterData )
 			{
 				size_t hashVal = Hasher()( keyVal );
 				size_t iBucket = hashVal%m_Bucket.size();
@@ -572,10 +574,10 @@ namespace Hash {
 				iterData = end();
 				bucket.ReadLock();
 
-				BucketContainer::iterator iter = bucket.m_Items.begin();
+				auto iter = bucket.m_Items.begin();
 				for( INT iIdx = 0; iter != bucket.m_Items.end(); ++iter, ++iIdx )
 				{
-					if( equal_to<Indexer::Type>()( keyVal, iter->Key/*Indexer()(iter->Data)*/ ) )
+					if( equal_to<KeyType>()( keyVal, iter->Key ) )
 					{
 						iterData.Set( this, m_Bucket.begin() + iBucket, iIdx, false );
 						return S_OK;
@@ -587,12 +589,11 @@ namespace Hash {
 			}
 
 			// Erase a data from hash map
-			HRESULT erase(const ItemType &data)
+			HRESULT erase(const KeyType& inKey, const ItemType &data)
 			{
 				if( m_Bucket.size() == 0 )
 					return S_FALSE;
 
-				Indexer::Type inKey = Indexer()(data);
 				size_t hashVal = Hasher()( inKey );
 				size_t iBucket = hashVal%m_Bucket.size();
 
@@ -602,11 +603,11 @@ namespace Hash {
 				//_ReadBarrier();
 				std::atomic_thread_fence(std::memory_order_consume);
 
-				BucketContainer::iterator iter = bucket.m_Items.begin();
+				auto iter = bucket.m_Items.begin();
 				for( ; iter != bucket.m_Items.end(); ++iter )
 				{
-					Indexer::Type curIdx = iter->Key;
-					if( equal_to<Indexer::Type>()(inKey, curIdx) )
+					KeyType curIdx = iter->Key;
+					if( equal_to<KeyType>()(inKey, curIdx) )
 					{
 						bucket.m_Items.erase( iter );
 						m_lItemCount.fetch_sub(1,std::memory_order_relaxed);
@@ -628,7 +629,7 @@ namespace Hash {
 				if (m_Bucket.size() == 0)
 					return S_FALSE;
 
-				Indexer::Type inKey = key;// Indexer()(data);
+				KeyType inKey = key;
 				size_t hashVal = Hasher()(inKey);
 				size_t iBucket = hashVal%m_Bucket.size();
 
@@ -638,11 +639,11 @@ namespace Hash {
 				//_ReadBarrier();
 				std::atomic_thread_fence(std::memory_order_consume);
 
-				BucketContainer::iterator iter = bucket.m_Items.begin();
+				auto iter = bucket.m_Items.begin();
 				for (; iter != bucket.m_Items.end(); ++iter)
 				{
-					Indexer::Type curIdx = iter->Key;
-					if (equal_to<Indexer::Type>()(inKey, curIdx))
+					KeyType curIdx = iter->Key;
+					if (equal_to<KeyType>()(inKey, curIdx))
 					{
 						bucket.m_Items.erase(iter);
 						m_lItemCount.fetch_sub(1, std::memory_order_relaxed);
@@ -661,7 +662,7 @@ namespace Hash {
 
 			HRESULT erase( iterator &iterData )
 			{
-				Indexer::Type Key;
+				KeyType Key;
 				if( iterData.m_pContainer != this )
 					return E_FAIL;
 
@@ -675,10 +676,10 @@ namespace Hash {
 				INT iIdx = iterData.m_iIdx;
 
 				// NOTE : if bucket size changed then this operation will not safe
-				BucketListType::iterator iterBucket = iterData.m_iterBucket;
+				auto iterBucket = iterData.m_iterBucket;
 
 
-				Key = Indexer()(data);
+				Key = iterData.GetKey();
 #ifdef _DEBUG
 				size_t iBucket = &(*iterData.m_iterBucket) - &m_Bucket[0];
 				size_t hashVal1 = Hasher()( Key );
@@ -700,9 +701,9 @@ namespace Hash {
 					iterBucket->WriteUnlock();
 					return E_FAIL;
 				}
-				BucketContainer::iterator iterBucketData = iterBucket->m_Items.begin() + iIdx;
+				auto iterBucketData = iterBucket->m_Items.begin() + iIdx;
 #ifdef _DEBUG
-				Indexer::Type idx = iterBucketData->Key;//Indexer()(*iterBucketData);
+				KeyType idx = iterBucketData->Key;//Indexer()(*iterBucketData);
 				size_t hashVal2 = Hasher()( idx );
 				size_t iBucketTem2 = hashVal2%m_Bucket.size();
 				Assert(iBucket == iBucketTem2);
@@ -727,7 +728,7 @@ namespace Hash {
 			{
 				m_lItemCount = 0;
 
-				BucketListType::iterator iterBucket = m_Bucket.begin();
+				auto iterBucket = m_Bucket.begin();
 				for( ; iterBucket != m_Bucket.end(); ++iterBucket )
 				{
 					iterBucket->m_Items.clear();
@@ -739,7 +740,7 @@ namespace Hash {
 			bool Validate()
 			{
 #ifdef _DEBUG
-				BucketListType::iterator iterBucket = m_Bucket.begin();
+				auto iterBucket = m_Bucket.begin();
 				for( INT iBucket = 0; iterBucket != m_Bucket.end(); ++iterBucket, ++iBucket )
 				{
 					if( !iterBucket->Validate( iBucket, m_Bucket.size() ) )

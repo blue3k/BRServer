@@ -21,18 +21,18 @@
 
 namespace BR {
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterID& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::RouteContext& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterType& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterMembership& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const ServiceStatus& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LocalUID& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const ServiceInformation& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const MatchingQueueTicket& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const MatchingPlayerInformation& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInfo& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInstanceInfo& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const ServerFriendInformation& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterID& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::RouteContext& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterType& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterMembership& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ServiceStatus& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LocalUID& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ServiceInformation& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const MatchingQueueTicket& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const MatchingPlayerInformation& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInfo& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInstanceInfo& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ServerFriendInformation& Data, int Option);
 
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<ServiceStatus>& Data, int Option);
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<MatchingQueueTicket>& Data, int Option);

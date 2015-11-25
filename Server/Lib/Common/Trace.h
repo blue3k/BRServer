@@ -495,7 +495,7 @@ DEFINE_TRACE_MODULE(def)
 
 #define defAssert(e)			trcAssert(e)
 #define defAssertExp(e,expr)	trcAssertExp(e,expr)
-#define defTrace(lModeMask,szfmt, ...)				TRACE_OUT(def,lModeMask,szfmt,__VA_ARGS__)
+#define defTrace(lModeMask, ...)				TRACE_OUT(def,lModeMask,__VA_ARGS__)
 
 #define defChkSilent(e)		trcChkSilent(e)
 #define defErrSilent(e)		trcErrSilent(e)

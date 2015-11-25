@@ -32,10 +32,10 @@ namespace BR
 
 	// Constructor for singleton
 	ObjectPool::ObjectPool(size_t objectSize)
-		:m_AllocSize(BR_ALLIGNUP(objectSize, BR_ALIGN_DOUBLE) + MEMITEM_SIZE),
-		m_Allocator(DecidePageSize(BR_ALLIGNUP(objectSize, BR_ALIGN_DOUBLE)))
+		: m_AllocSize(BR_ALLIGNUP(objectSize, BR_ALIGN_DOUBLE) + MEMITEM_SIZE)
 		, m_CallDestructor(false)
 		, m_FreeList(nullptr)
+		, m_Allocator(DecidePageSize(BR_ALLIGNUP(objectSize, BR_ALIGN_DOUBLE)))
 		//, m_PendingFreeCount(0)
 		//, m_PendingFreeList(nullptr)
 		//, m_PendingFreeListTail(nullptr)
@@ -233,7 +233,7 @@ namespace BR
 	HRESULT ObjectPoolMT::Alloc( ObjectPoolObject* &pPtr )
 	{
 		MemItem *pMemItem = nullptr;
-		BR::StackPool::Item *pItem = m_FreeList.Pop();
+		StackPool::Item *pItem = m_FreeList.Pop();
 		if( pItem == nullptr )
 		{
 			// Allocate page if no free item

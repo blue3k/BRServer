@@ -177,7 +177,7 @@ namespace Svr {
 
 		svrChkPtr( pPlayer );
 
-		svrChk( m_PartyPlayerByUID.insert( pPlayer ));
+		svrChk( m_PartyPlayerByUID.insert(pPlayer->GetPlayerID(), pPlayer ));
 		
 		if( !bIsSilent )
 		{
@@ -218,7 +218,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		Net::Connection *pCon = nullptr;
 
-		m_PartyPlayerByUID.erase( pPlayer );
+		m_PartyPlayerByUID.erase(pPlayer->GetPlayerID() );
 
 		if( !bIsSilent )
 		{

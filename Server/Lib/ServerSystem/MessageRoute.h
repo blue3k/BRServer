@@ -105,8 +105,8 @@ namespace Svr {
 	{
 	public:
 		typedef MessageHandler_TableItem<MessageHandlerType> TableItem;
-		typedef Hash::StaticHashTable<	TableItem, 
-										Indexing::ConstMemFunc<TableItem,UINT,&TableItem::GetMessageCode>,
+		typedef Hash::StaticHashTable<	UINT, TableItem,
+										//Indexing::ConstMemFunc<TableItem,UINT,&TableItem::GetMessageCode>,
 										Indexing::MapItemConverter<TableItem,typename TableItem::TableItemType,&TableItem::TableNode>,
 										Hash::NonUniqueKeyTrait, ThreadSyncTraitNone
 										> HandlerTableType;
@@ -154,7 +154,7 @@ namespace Svr {
 			if( pNewItem == nullptr )
 				return E_OUTOFMEMORY;
 
-			return m_HandlerTable.insert( pNewItem );
+			return m_HandlerTable.insert(typename MessageClassType::MID, pNewItem );
 		}
 
 		// Get message handler

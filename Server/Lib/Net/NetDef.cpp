@@ -48,7 +48,7 @@ namespace Net {
 
 	IConnection::~IConnection()
 	{
-		for (int iPolicy = 0; iPolicy < _countof(m_pPolicy); iPolicy++)
+		for (int iPolicy = 0; iPolicy < countof(m_pPolicy); iPolicy++)
 		{
 			if (m_pPolicy[iPolicy] != nullptr)
 			{

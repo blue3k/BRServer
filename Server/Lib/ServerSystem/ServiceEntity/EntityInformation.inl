@@ -30,7 +30,7 @@ void EntityInformation::SetEntityUID( EntityUID entityUID )
 
 ServerID EntityInformation::GetServerID() const
 {
-	return m_UID.SvrID;
+	return m_UID.GetServerID();
 }
 
 

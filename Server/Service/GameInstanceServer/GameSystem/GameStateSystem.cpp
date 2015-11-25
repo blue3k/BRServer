@@ -645,7 +645,7 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 	#define GAMESTATE_INDEX_THIRDDAY_START		12
-	#define GAMESTATE_INDEX_MAX					_countof(GameStateSystem::stm_GameStateFlow)
+	#define GAMESTATE_INDEX_MAX					((INT)countof(GameStateSystem::stm_GameStateFlow))
 
 
 	// Constructor 

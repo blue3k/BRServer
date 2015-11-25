@@ -39,7 +39,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyPartyMatchingQueue()->RegisterPartyMatchingCmd( InContext, InRouteContext, InRouteHopCount, InPlayers ) );
 
 		Proc_End:
@@ -53,7 +53,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyPartyMatchingQueue()->RegisterPlayerMatchingCmd( InContext, InRouteContext, InRouteHopCount, InPlayerID ) );
 
 		Proc_End:
@@ -67,7 +67,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyPartyMatchingQueue()->UpdateMatchingEntityUIDCmd( InContext, InRouteContext, InRouteHopCount, InMatchingTicket, InPreviousUID ) );
 
 		Proc_End:
@@ -81,7 +81,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyPartyMatchingQueue()->UnregisterMatchingCmd( InContext, InRouteContext, InRouteHopCount, InMatchingTicket ) );
 
 		Proc_End:
@@ -95,7 +95,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyPartyMatchingQueue()->ReserveItemCmd( InContext, InRouteContext, InRouteHopCount ) );
 
 		Proc_End:
@@ -109,7 +109,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyPartyMatchingQueue()->ReserveItemsCmd( InContext, InRouteContext, InRouteHopCount, InNumberOfItemsToReserve ) );
 
 		Proc_End:
@@ -123,7 +123,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyPartyMatchingQueue()->CancelReservationCmd( InContext, InRouteContext, InRouteHopCount, InTicketToCancel ) );
 
 		Proc_End:
@@ -137,7 +137,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyPartyMatchingQueue()->CancelReservationsCmd( InContext, InRouteContext, InRouteHopCount, InTicketToCancel ) );
 
 		Proc_End:
@@ -151,7 +151,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyPartyMatchingQueue()->DequeueItemCmd( InContext, InRouteContext, InRouteHopCount, InMatchingTicket ) );
 
 		Proc_End:

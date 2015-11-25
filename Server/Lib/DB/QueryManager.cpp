@@ -395,7 +395,7 @@ Proc_End:
 
 			const char* queryName = typeid(*pRes).name();
 			auto msgID = pRes->GetMsgID();
-			auto entityID = pRes->GetTransID().EntityID;
+			auto entityID = pRes->GetTransID().GetEntityID();
 			hr = pMyServer->GetEntityTable().RouteTransactionResult(pRes);
 			if (FAILED(hr))
 			{

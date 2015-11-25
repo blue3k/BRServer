@@ -197,7 +197,7 @@ namespace Svr
 		pTransRes = pMsgRes;
 
 		//svrChk( BrServer::GetInstance()->GetEntityTable().RouteTransactionResult( pTransRes ) );
-		svrChk(pMySvr->GetEntityTable().Find(pTransRes->GetTransID().EntityID, pEntity));
+		svrChk(pMySvr->GetEntityTable().Find(pTransRes->GetTransID().GetEntityID(), pEntity));
 
 		if (pEntity->GetTaskGroupID() == GetTaskGroupID() && pEntity->GetTaskManager() == GetTaskManager()) // If assigned on the same thread
 		{

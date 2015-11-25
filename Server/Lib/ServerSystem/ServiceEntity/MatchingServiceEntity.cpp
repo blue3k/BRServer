@@ -550,11 +550,11 @@ namespace Svr {
 		switch (targetMatchingMemberCount)
 		{
 		case 4:
-			numTableEntries = _countof(g_MatchingPattern4) / targetMatchingMemberCount;
+			numTableEntries = (UINT)countof(g_MatchingPattern4) / targetMatchingMemberCount;
 			pTable = g_MatchingPattern4;
 			break;
 		case 8:
-			numTableEntries = _countof(g_MatchingPattern8) / targetMatchingMemberCount;
+			numTableEntries = (UINT)countof(g_MatchingPattern8) / targetMatchingMemberCount;
 			pTable = g_MatchingPattern8;
 			break;
 		default:

@@ -14,10 +14,12 @@
 #include "stdafx.h"
 #include "Common/Trace.h"
 #include "Common/Message.h"
-#include "Common/Memory.h"
 #include "Common/MemLog.h"
+#include "Common/Memory.h"
 #include "Common/MemoryPool.h"
 #include "Common/HRESNet.h"
+
+
 
 namespace BR {
 namespace Message {
@@ -49,8 +51,8 @@ namespace Message {
 	MessageData::~MessageData()
 	{
 	#ifdef DEBUG
-		if( BR::GetMemLogger() )
-			BR::GetMemLogger()->RemoveFromLog(((BYTE*)this)+1);
+		if( GetMemLogger() )
+			GetMemLogger()->RemoveFromLog(((BYTE*)this)+1);
 	#endif
 	}
 
@@ -107,8 +109,8 @@ namespace Message {
 		pMsg->GetMessageHeader()->Length = uiMsgBufSize;
 
 #ifdef _DEBUG
-		if( BR::GetMemLogger() )
-			BR::GetMemLogger()->AddToLog( 2, ((BYTE*)pMsg)+1, uiMsgID );
+		if( GetMemLogger() )
+			GetMemLogger()->AddToLog( 2, ((BYTE*)pMsg)+1, uiMsgID );
 #endif
 		// Increase one for message
 		pMsg->AddRef();

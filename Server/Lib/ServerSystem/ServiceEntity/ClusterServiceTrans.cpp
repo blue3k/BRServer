@@ -276,7 +276,7 @@ namespace Svr {
 		// 1. Find entity manager servery
 		pClusterManager = GetServerComponent<ClusterManagerServiceEntity>();
 		clusterManagerMasterUID = pClusterManager->GetMasterUID();
-		GetServerComponent<ServerEntityManager>()->GetServerEntity(clusterManagerMasterUID.SvrID, pMasterServerEntity);
+		GetServerComponent<ServerEntityManager>()->GetServerEntity(clusterManagerMasterUID.GetServerID(), pMasterServerEntity);
 
 		if (pClusterManager == GetOwnerEntity()) // If I'm the clustermanager entity of this server
 		{
@@ -379,7 +379,7 @@ namespace Svr {
 
 			// 4. Request full data if replica
 			m_Step = Step_RequestDataSync;
-			svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity( m_currentMaster.UID.SvrID, pServerEntity ) );
+			svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity( m_currentMaster.UID.GetServerID(), pServerEntity ) );
 
 			svrChk( pServerEntity->GetPolicy<Policy::IPolicyClusterServer>()->RequestDataSyncCmd( GetTransID(), RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), 0, 
 				GetMyOwner()->GetClusterID() ) );
@@ -428,7 +428,7 @@ namespace Svr {
 			if( !bAddStatusWatcher && pServiceInfo->Membership == ClusterMembership::StatusWatcher )
 				continue;
 
-			svrChk(pServerEntityManager->GetOrRegisterServer(pServiceInfo->UID.SvrID, pServiceInfo->ServerClass,
+			svrChk(pServerEntityManager->GetOrRegisterServer(pServiceInfo->UID.GetServerID(), pServiceInfo->ServerClass,
 				pServiceInfo->ServerAddress.strAddr, pServiceInfo->ServerAddress.usPort,
 				pServerEntity ) );
 
@@ -501,7 +501,7 @@ namespace Svr {
 
 		svrChk( __super::StartTransaction() );
 
-		svrChk( GetMyOwner()->SyncDataToTarget( GetRouteContext().From ) );
+		svrChk( GetMyOwner()->SyncDataToTarget( GetRouteContext().GetFrom()) );
 
 	Proc_End:
 

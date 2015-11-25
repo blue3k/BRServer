@@ -119,7 +119,7 @@ namespace GameServer {
 
 		if( SUCCEEDED( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
 		{
-			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.SvrID, pServerEntity ) );
+			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 			pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>();
 			svrChkPtr(pTargetPolicy);
 			pTargetPolicy->NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 
@@ -238,7 +238,7 @@ namespace GameServer {
 		if( pDBRes->Result >= 0 && GetInviterID() == pDBRes->FriendUID )
 		{
 			m_NewFriend.PlayerID = pDBRes->FriendUID;
-			m_NewFriend.FacebookUID = pDBRes->FriendFacebookUID;
+			m_NewFriend.FBUID = pDBRes->FriendFacebookUID;
 		}
 
 		if (m_WaitingResultCount == 1) // the last add result
@@ -352,7 +352,7 @@ namespace GameServer {
 			goto Proc_End;
 		}
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.SvrID, pServerEntity ) );
+		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
 		svrChkPtr( pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>() );
 
@@ -469,7 +469,7 @@ namespace GameServer {
 		// Find player and notify to remove
 		if( SUCCEEDED(Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
 		{
-			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.SvrID, pServerEntity ) );
+			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
 			pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>();
 
@@ -792,7 +792,7 @@ namespace GameServer {
 
 		if( SUCCEEDED( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetTargetPlayer(), playerUID )) )
 		{
-			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.SvrID, pServerEntity ) );
+			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 			pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>();
 			svrChkPtr(pTargetPolicy);
 			pTargetPolicy->NotifyC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), 

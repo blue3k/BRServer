@@ -76,7 +76,7 @@ namespace Net {
 	{
 		if (sin6_family > src.sin6_family) return true;
 
-		for (int iAddr = 0; iAddr < _countof(sin6_addr.u.Word); iAddr++)
+		for (int iAddr = 0; iAddr < countof(sin6_addr.u.Word); iAddr++)
 			if (sin6_addr.u.Word[iAddr] > src.sin6_addr.u.Word[iAddr]) return true;
 
 		if (sin6_port > src.sin6_port) return true;
@@ -88,7 +88,7 @@ namespace Net {
 	{
 		if (sin6_family != src.sin6_family) return false;
 
-		for (int iAddr = 0; iAddr < _countof(sin6_addr.u.Word); iAddr++)
+		for (int iAddr = 0; iAddr < countof(sin6_addr.u.Word); iAddr++)
 			if (sin6_addr.u.Word[iAddr] != src.sin6_addr.u.Word[iAddr]) return false;
 
 		if (sin6_port != src.sin6_port) return false;

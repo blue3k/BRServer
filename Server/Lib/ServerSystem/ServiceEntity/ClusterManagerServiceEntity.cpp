@@ -56,7 +56,7 @@ namespace Svr {
 
 		svrChk( __super::InitializeEntity(newEntityID) );
 
-		svrChk( m_ClusterIDMap.insert( this ) );
+		svrChk( m_ClusterIDMap.insert( GetClusterID(), this ) );
 
 		svrChk( __super::StartInitializeTransaction() );
 
@@ -110,7 +110,7 @@ namespace Svr {
 
 		svrChkPtr( pServiceEntity );
 
-		svrChk( m_ClusterIDMap.insert( pServiceEntity ) );
+		svrChk( m_ClusterIDMap.insert(pServiceEntity->GetClusterID(), pServiceEntity ) );
 
 		pServiceEntity = nullptr;
 

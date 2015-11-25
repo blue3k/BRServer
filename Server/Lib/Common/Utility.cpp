@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include <stdlib.h> 
-#include <conio.h>
+
 
 
 
@@ -175,7 +175,7 @@ namespace Util {
 		bool bIsOver = false;
 
 		// Bineary search
-		for( int iOper = 0; iOper < _countof(OperationTable); iOper++ )
+		for( int iOper = 0; iOper < countof(OperationTable); iOper++ )
 		{
 			if( uiNumber & OperationTable[iOper].Mask )
 			{

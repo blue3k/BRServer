@@ -150,13 +150,13 @@ namespace ConspiracyGameInstanceServer {
 
 	PlayerID GameVoteSuspect::GetVoteRanker( int index )
 	{
-		AssertRel(index>=0 && index<_countof(m_VoteRankers));
+		AssertRel(index>=0 && index<countof(m_VoteRankers));
 		return m_VoteRankers[index];
 	}
 
 	void GameVoteSuspect::SetVoteRanker( PlayerID playerID, UINT rate )
 	{
-		for( int index = 0; index < _countof(m_VoteRankers); index++ )
+		for( int index = 0; index < countof(m_VoteRankers); index++ )
 		{
 			if( m_VoteRates[index] <= rate )
 			{

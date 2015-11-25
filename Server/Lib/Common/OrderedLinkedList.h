@@ -35,8 +35,11 @@ namespace BR {
 				KeyType	Key;
 				UINT64	Padding;
 			};
+
+			Node() {}
 		};
 		static_assert(sizeof(KeyType) <= sizeof(UINT64), " Maximum 64bit Key value");
+
 
 		// iterator class
 		class iterator

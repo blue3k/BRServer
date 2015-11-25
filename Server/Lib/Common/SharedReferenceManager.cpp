@@ -68,7 +68,7 @@ namespace BR
 	void SharedReferenceManager::UpdateReferenceManager()
 	{
 		auto numItems = m_FreeQueue.GetEnqueCount();
-		for (auto item = 0; item < numItems; item++)
+		for (decltype(numItems) item = 0; item < numItems; item++)
 		{
 			SharedObject* pObj = nullptr;
 			if (!m_FreeQueue.Dequeue(pObj))

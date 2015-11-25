@@ -133,7 +133,7 @@ namespace ConspiracyGameInstanceServer {
 
 		m_PlayerIndex = pMyPlayer->GetIndex();
 
-		svrChk( pMyPlayer->SetServerEntity( GetServerEntity<Svr::ServerEntity>(), GetRouteContext().From ) );
+		svrChk( pMyPlayer->SetServerEntity( GetServerEntity<Svr::ServerEntity>(), GetRouteContext().GetFrom()) );
 
 		m_Role = pMyPlayer->GetRole();
 		m_Dead = pMyPlayer->GetPlayerState() != PlayerState::Playing;

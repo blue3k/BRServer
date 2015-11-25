@@ -111,6 +111,8 @@ namespace BR
 
 	namespace ProcessorHeap
 	{
+#if WINDOWS
+
 		// Heap handle for allocation
 		static HANDLE m_hHeap = nullptr;
 
@@ -216,6 +218,27 @@ namespace BR
 
 			return S_OK;
 		}
+
+#else
+
+
+	HRESULT Alloc(size_t uiSize, void* &pPtr)
+	{
+		return StdHeap::Alloc(uiSize, pPtr);
+	}
+
+	HRESULT Realloc(size_t uiSize, void* &pPtr)
+	{
+		return StdHeap::Realloc(uiSize, pPtr);
+	}
+
+	HRESULT Free(void* pPtr)
+	{
+		return StdHeap::Free(pPtr);
+	}
+
+#endif
+
 	};
 
 
@@ -255,11 +278,13 @@ namespace BR
 		HRESULT Realloc( size_t uiSize, void* &pPtr )
 		{
 			HRESULT hr = S_OK;
+			BR::MemBlockHdr* pNewMemBlock = nullptr;
+			BR::MemBlockHdr* pMemBlock = nullptr;
 
 			if( pPtr == nullptr )
 				trcErr( E_INVALIDARG );
 
-			BR::MemBlockHdr* pMemBlock = (BR::MemBlockHdr*)pPtr - 1;
+			pMemBlock = (BR::MemBlockHdr*)pPtr - 1;
 
 			if( pMemBlock->uiMagic != BR::MemBlockHdr::MEM_MAGIC )
 			{
@@ -270,7 +295,7 @@ namespace BR
 				TrcAssertRel( 0 ); // Broken memory
 			}
 
-			BR::MemBlockHdr* pNewMemBlock = (BR::MemBlockHdr*)realloc( pMemBlock, uiSize + sizeof(BR::MemBlockHdr) );
+			pNewMemBlock = (BR::MemBlockHdr*)realloc( pMemBlock, uiSize + sizeof(BR::MemBlockHdr) );
 			if( pNewMemBlock == nullptr )
 				trcErr( E_OUTOFMEMORY );// Out of memory or borken heap
 
@@ -294,6 +319,7 @@ namespace BR
 		HRESULT Free( void* pPtr )
 		{
 			HRESULT hr = S_OK;
+			BR::MemBlockHdr* pMemBlock = nullptr;
 
 			if( pPtr == nullptr )
 			{
@@ -301,7 +327,7 @@ namespace BR
 				//trcErr( E_INVALIDARG );
 			}
 
-			BR::MemBlockHdr* pMemBlock = (BR::MemBlockHdr*)pPtr - 1;
+			pMemBlock = (BR::MemBlockHdr*)pPtr - 1;
 
 			if( pMemBlock->uiMagic != BR::MemBlockHdr::MEM_MAGIC )
 			{

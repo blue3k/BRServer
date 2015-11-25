@@ -104,7 +104,7 @@ namespace Svr {
 
 		if( playerID == 0 || entityUID == 0 ) svrErr(E_INVALID_PLAYERID);
 		svrChkPtr( pGameServerEntity );
-		if( entityUID.SvrID != pGameServerEntity->GetServerID() )
+		if( entityUID.GetServerID() != pGameServerEntity->GetServerID() )
 		{
 			svrErr(E_SVR_INVALID_SERVERID);
 		}
@@ -118,7 +118,7 @@ namespace Svr {
 
 		svrMem( pNewPlayerInfo = new PlayerTableItem( playerID, entityUID, pGameServerEntity ) );
 
-		svrChk( m_PlayerIDMap.insert( pNewPlayerInfo ) );
+		svrChk( m_PlayerIDMap.insert(pNewPlayerInfo->GetPlayerID(), pNewPlayerInfo ) );
 
 		pNewPlayerInfo = nullptr;
 
@@ -177,7 +177,7 @@ namespace Svr {
 			svrErr(E_INVALID_ENTITY);
 
 		// replicate delete from my server
-		if( pPlayerInfo && pPlayerInfo->GetEntityUID().SvrID == GetMyServerID() )
+		if( pPlayerInfo && pPlayerInfo->GetEntityUID().GetServerID() == GetMyServerID() )
 		{
 			m_NumberOfPlayerOnThisServer.fetch_sub(1, std::memory_order_relaxed);
 

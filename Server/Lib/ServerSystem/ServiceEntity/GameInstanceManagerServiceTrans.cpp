@@ -61,7 +61,7 @@ namespace Svr {
 
 		svrChk(__super::StartTransaction());
 
-		svrChk(GetMyOwner()->FreeGameInstance(GetRouteContext().From));
+		svrChk(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
 
 	Proc_End:
 

@@ -69,7 +69,7 @@ namespace GameServer {
 	{
 		__super::OnEntityAdded(pEntity);
 
-		switch (pEntity->GetEntityID().FacultyID)
+		switch (pEntity->GetEntityID().GetFacultyID())
 		{
 		case (UINT)EntityFaculty::User:
 			++m_NumberOfPlayers;
@@ -81,7 +81,7 @@ namespace GameServer {
 	{
 		__super::OnEntityRemoved(pEntity);
 
-		switch (pEntity->GetEntityID().FacultyID)
+		switch (pEntity->GetEntityID().GetFacultyID())
 		{
 		case (UINT)EntityFaculty::User:
 			--m_NumberOfPlayers;

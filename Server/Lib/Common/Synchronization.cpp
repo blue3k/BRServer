@@ -15,8 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Thread.h"
 #include "Common/Synchronization.h"
-#include <dbghelp.h>
-#include <process.h>
+
 
 
 namespace BR

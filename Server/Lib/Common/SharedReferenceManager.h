@@ -43,7 +43,9 @@ namespace BR
 
 
 	public:
+#ifdef REFERENCE_DEBUG_TRACKING
 		Concurrency::concurrent_unordered_map<UINT, SharedObject*> m_PendingFreeObjects;
+#endif
 
 	public:
 

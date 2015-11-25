@@ -25,6 +25,11 @@
 
 namespace BR
 {
+#if WINDOWS
+	#define CurrentProcessID GetCurrentProcess()
+#else
+#define CurrentProcessID 0
+#endif
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -89,15 +94,19 @@ namespace BR
 	// Suggest Page size
 	size_t PageAllocator::SuggestElementCountPerPage( size_t HeaderSize, size_t ElementSize )
 	{
+#if WINDOWS
 		// pit page size to system page size
 		SYSTEM_INFO sysInfo;
 		memset( &sysInfo, 0, sizeof(sysInfo) );
 		GetSystemInfo( &sysInfo );
 
-		size_t ActivePageSize = sysInfo.dwPageSize - HeaderSize - sizeof(BR::MemBlockHdr);
+		size_t ActivePageSize = sysInfo.dwPageSize - HeaderSize - sizeof(MemBlockHdr);
 
-		size_t SuggestedElementCount = ActivePageSize/ElementSize;
-		SuggestedElementCount = (size_t)Util::NearPowerOf2( (UINT)SuggestedElementCount );
+#else
+		size_t ActivePageSize = 4096 - HeaderSize - sizeof(MemBlockHdr);
+#endif
+		size_t SuggestedElementCount = ActivePageSize / ElementSize;
+		SuggestedElementCount = (size_t)Util::NearPowerOf2((UINT)SuggestedElementCount);
 
 		return SuggestedElementCount;
 	}
@@ -129,7 +138,7 @@ namespace BR
 	void PagePool::Clear()
 	{
 		PagePool *pAllocator = this;
-		m_FreePages.for_each( [&] ( BR::StackPool::Item *pItem )
+		m_FreePages.for_each( [&] ( StackPool::Item *pItem )
 		{
 			pAllocator->OrgFree( pItem );
 		});
@@ -238,7 +247,7 @@ namespace BR
 	HRESULT MemoryPool::Alloc( void* &pPtr, const char* typeName )
 	{
 		MemItem *pMemItem = nullptr;
-		BR::StackPool::Item *pItem = m_FreeList.Pop();
+		StackPool::Item *pItem = m_FreeList.Pop();
 		if( pItem == nullptr )
 		{
 			// Allocate page if no free item
@@ -289,7 +298,7 @@ namespace BR
 				|| pMemItem->MemMagic != POOL_MEMMAGIC )
 			{
 #ifdef ENABLE_MEMORY_TRACE
-				pMemItem->StackTrace.PrintStackTrace(Trace::TRC_ERROR, GetCurrentProcess());
+				pMemItem->StackTrace.PrintStackTrace(Trace::TRC_ERROR, CurrentProcessID);
 #endif
 				Assert(false);
 				// Drop this memory and try another alloc
@@ -355,12 +364,12 @@ namespace BR
 		{
 			// Drop memory that causes the problem
 #ifdef ENABLE_MEMORY_TRACE
-			pMemItem->StackTrace.PrintStackTrace(Trace::TRC_ERROR, GetCurrentProcess());
+			pMemItem->StackTrace.PrintStackTrace(Trace::TRC_ERROR, CurrentProcessID);
 			new(&pMemItem->StackTrace) CallStackTrace;
 			StackWalker::CaptureCallStack(pMemItem->StackTrace);
 			pMemItem->TypeName = typeName;
 			pMemItem->LatestThreadID = ThisThread::GetThreadID();
-			pMemItem->StackTrace.PrintStackTrace(Trace::TRC_ERROR, GetCurrentProcess());
+			pMemItem->StackTrace.PrintStackTrace(Trace::TRC_ERROR, CurrentProcessID);
 			Assert(false);
 #endif
 		}
@@ -428,7 +437,7 @@ namespace BR
 		while (pCur != nullptr)
 		{
 			auto pMemCur = (MemItem*)pCur;
-			pMemCur->StackTrace.PrintStackTrace(Trace::TRC_WARN, GetCurrentProcess());
+			pMemCur->StackTrace.PrintStackTrace(Trace::TRC_WARN, CurrentProcessID);
 			pCur = pCur->pNext;
 		}
 #endif
@@ -452,7 +461,7 @@ namespace BR
 		};
 
 		// Memory pool table type
-		typedef BR::Hash::HashTable2< size_t, MemoryPool* > MemoryPoolMap;
+		typedef Hash::HashTable2< size_t, MemoryPool* > MemoryPoolMap;
 
 		// memory pool by size
 		MemoryPoolMap	m_MemoryPoolbySize;

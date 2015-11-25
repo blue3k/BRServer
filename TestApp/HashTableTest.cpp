@@ -45,8 +45,8 @@ TEST_F(HashTableTest, HashTable_NonUnique)
 	};
 
 
-	typedef BR::Hash::HashTable<	TestMapNode*, 
-									BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
+	typedef BR::Hash::HashTable<	int, TestMapNode*, 
+									//BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
 									BR::Hash::NonUniqueKeyTrait, BR::ThreadSyncTraitNone
 									> TestTableType;
 
@@ -71,7 +71,7 @@ TEST_F(HashTableTest, HashTable_NonUnique)
 			int Count = checkSet[value];
 			checkSet[value] = Count+1;
 		}
-		HRESULT hrRes = TestMap.insert(pNewNode);
+		HRESULT hrRes = TestMap.insert(pNewNode->Value,pNewNode);
 		EXPECT_HRESULT_SUCCEEDED(hrRes);
 		AssertRel(SUCCEEDED(hrRes));
 	}
@@ -126,8 +126,8 @@ TEST_F(HashTableTest, HashTable_Unique)
 	};
 
 
-	typedef BR::Hash::HashTable<	TestMapNode*, 
-										BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
+	typedef BR::Hash::HashTable<	int, TestMapNode*, 
+										//BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
 										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitNone
 										> TestTableType;
 
@@ -146,7 +146,7 @@ TEST_F(HashTableTest, HashTable_Unique)
 			memset( pNewNode, 0, sizeof(TestMapNode) );
 			pNewNode->Value = value;
 			checkSet.insert( value );
-			EXPECT_HRESULT_SUCCEEDED( TestMap.insert( pNewNode ) );
+			EXPECT_HRESULT_SUCCEEDED( TestMap.insert(pNewNode->Value, pNewNode ) );
 		}
 	}
 
@@ -196,8 +196,8 @@ TEST_F(HashTableTest, HashTable_UniqueMT)
 	};
 
 
-	typedef BR::Hash::HashTable<	TestMapNode*, 
-										BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
+	typedef BR::Hash::HashTable<	int, TestMapNode*, 
+										//BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
 										BR::Hash::UniqueKeyTrait
 										> TestTableType;
 
@@ -243,7 +243,7 @@ TEST_F(HashTableTest, HashTable_UniqueMT)
 				TestMapNode *pNewNode = new TestMapNode;
 				memset( pNewNode, 0, sizeof(TestMapNode) );
 				pNewNode->Value = value;
-				if( SUCCEEDED(TestMap.insert( pNewNode )) )
+				if( SUCCEEDED(TestMap.insert(pNewNode->Value, pNewNode )) )
 				{
 					numberOfItems.fetch_add(1,std::memory_order_relaxed);
 				}

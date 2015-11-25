@@ -20,16 +20,16 @@ namespace BR {
 	DataType DefaultValue() { return nullptr; }
 
 	template<>
-	INT64 DefaultValue<INT64>() { return 0; }
+	INT64 DefaultValue<INT64>();
 
 	template<>
-	UINT64 DefaultValue<UINT64>() { return 0; }
+	UINT64 DefaultValue<UINT64>();
 
 	template<>
-	INT32 DefaultValue<INT32>() { return 0; }
+	INT32 DefaultValue<INT32>();
 
 	template<>
-	UINT32 DefaultValue<UINT32>() { return 0; }
+	UINT32 DefaultValue<UINT32>();
 
 } // namespace BR
 

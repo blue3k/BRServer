@@ -580,7 +580,7 @@ namespace ProtocolBuilder
                     {
                         MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= sizeof(RouteContext) );");
                         MatchIndent(); OutStream.WriteLine("memcpy( &routeContext, pCur, sizeof(RouteContext) );");
-                        MatchIndent(); OutStream.WriteLine("routeContext.To = to;");
+                        MatchIndent(); OutStream.WriteLine("routeContext.Components.To = to;");
                         MatchIndent(); OutStream.WriteLine("memcpy( pCur, &routeContext, sizeof(RouteContext) );");
                         break;
                     }
@@ -650,7 +650,7 @@ namespace ProtocolBuilder
                             {
                                 MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= sizeof(RouteContext) );");
                                 MatchIndent(); OutStream.WriteLine("memcpy( &routeContext, pCur, sizeof(RouteContext) );");
-                                MatchIndent(); OutStream.WriteLine("routeContext.To = to;");
+                                MatchIndent(); OutStream.WriteLine("routeContext.Components.To = to;");
                                 MatchIndent(); OutStream.WriteLine("memcpy( pCur, &routeContext, sizeof(RouteContext) );");
                             }
                             else if (param.Name == ParamRouteHopCount.Name)

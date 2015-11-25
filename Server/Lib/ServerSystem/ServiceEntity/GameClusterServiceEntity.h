@@ -91,8 +91,8 @@ namespace Svr {
 
 
 		typedef PlayerTableItem::TableItemType TableItemType;
-		typedef Hash::StaticHashTable<	PlayerTableItem, 
-										Indexing::ConstMemFunc<PlayerTableItem,PlayerID,&PlayerTableItem::GetPlayerID,UINT64>,
+		typedef Hash::StaticHashTable<	PlayerID, PlayerTableItem,
+										//Indexing::ConstMemFunc<PlayerTableItem,PlayerID,&PlayerTableItem::GetPlayerID,UINT64>,
 										Indexing::MapItemConverter<PlayerTableItem,TableItemType,&PlayerTableItem::m_TableNode>,
 										Hash::UniqueKeyTrait, ThreadSyncTraitNone
 										> PlayerIDMap;

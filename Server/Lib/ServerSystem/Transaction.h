@@ -620,13 +620,13 @@ namespace Svr {
 
 			svrChk(ParseMessage());
 
-			if( GetRouteContext().To.SvrID != GetMyServerID() )
+			if( GetRouteContext().GetTo().GetServerID() != GetMyServerID() )
 			{
 				svrTrace( Trace::TRC_ERROR, "Invalid ServerID %0% MsgID:%0%", typeid(*this).name(), MessageClass::GetMessage()->GetMessageHeader()->msgID );
 				svrErr(E_SVR_INVALID_SERVERID);
 			}
 
-			svrChk(GetEntityTable().Find(GetRouteContext().To.EntityID, pFound));
+			svrChk(GetEntityTable().Find(GetRouteContext().GetTo().GetEntityID(), pFound));
 
 			svrChkPtr(pOwnerEntity = static_cast<OwnerEntityType*>((Entity*)pFound));
 
@@ -672,7 +672,7 @@ namespace Svr {
 
 			svrChk(ParseMessage());
 
-			if (FAILED(GetEntityTable().Find(GetRouteContext().To.EntityID, entity)))
+			if (FAILED(GetEntityTable().Find(GetRouteContext().GetTo().GetEntityID(), entity)))
 			{
 				// Can't find target player entity, maybe logged out?
 				hr = E_SVR_INVALID_ENTITYUID;

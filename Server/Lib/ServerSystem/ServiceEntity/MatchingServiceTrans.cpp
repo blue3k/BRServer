@@ -166,7 +166,7 @@ namespace Svr {
 
 		svrTrace(Svr::TRC_MATCHING, "Request Delete item Matching:%0%, MatchingQueueID:%1%, MTicket:%2%", m_MatchingMemberCount, m_TargetQueueComponentID, ticket);
 
-		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.SvrID, pServerEntity));
+		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
 		// 2. Get service entity list in the cluster
 		svrChk(pServerEntity->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->MatchingItemErrorC2SEvt(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), 0, ticket));
@@ -297,7 +297,7 @@ namespace Svr {
 
 		svrTrace(Svr::TRC_MATCHING, "Dequeue item Matching:%0%, MTicket:%1%", GetTargetMatchingMemberCount(), ticket);
 
-		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.SvrID, pServerEntity));
+		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
 		// 2. Get service entity list in the cluster
 		svrChk(pServerEntity->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->DequeueItemCmd(GetTransID(), RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), 0, ticket));
@@ -391,7 +391,7 @@ namespace Svr {
 
 		svrChk(msgRes.ParseIMsg(((MessageResult*)pRes)->GetMessage()));
 
-		gameUID = msgRes.GetRouteContext().From;
+		gameUID = msgRes.GetRouteContext().GetFrom();
 
 
 		// Send Game information to players
@@ -405,10 +405,10 @@ namespace Svr {
 			{
 				if (reservedMember.Players[member].PlayerUID == reservedMember.RegisterEntityUID) notifiedToRegister = true;
 
-				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.Players[member].PlayerUID.SvrID, pServerEntity)))
+				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.Players[member].PlayerUID.GetServerID(), pServerEntity)))
 				{
 					// skip this player
-					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity(%0%) while broadcasting for a player(%1%)", reservedMember.Players[member].PlayerUID.SvrID, reservedMember.Players[member].PlayerID);
+					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity(%0%) while broadcasting for a player(%1%)", reservedMember.Players[member].PlayerUID.GetServerID(), reservedMember.Players[member].PlayerID);
 					continue;
 				}
 
@@ -421,10 +421,10 @@ namespace Svr {
 			// this should be a party, or canceled item
 			if (!notifiedToRegister)
 			{
-				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.RegisterEntityUID.SvrID, pServerEntity)))
+				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.RegisterEntityUID.GetServerID(), pServerEntity)))
 				{
 					// skip this player
-					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity(%0%) while broadcasting", reservedMember.RegisterEntityUID.SvrID);
+					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity(%0%) while broadcasting", reservedMember.RegisterEntityUID.GetServerID());
 					continue;
 				}
 
@@ -441,7 +441,7 @@ namespace Svr {
 		if (notifiedPlayerCount == 0)
 		{
 			ServerEntity *pServerEntity = nullptr;
-			if (SUCCEEDED(GetServerComponent<ServerEntityManager>()->GetServerEntity(gameUID.SvrID, pServerEntity)))
+			if (SUCCEEDED(GetServerComponent<ServerEntityManager>()->GetServerEntity(gameUID.GetServerID(), pServerEntity)))
 			{
 				auto pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameInstance>();
 				if (pPolicy != nullptr)

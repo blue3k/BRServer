@@ -82,14 +82,14 @@ namespace BR
 		// Allocated item count
 		SyncCounter	m_AllocatedCount;
 
-		// Page allocate
-		PageAllocator m_Allocator;
+		// 
+		bool m_CallDestructor;
 
 		// Free item stack
 		ObjectItem*	m_FreeList;
 
-		// 
-		bool m_CallDestructor;
+		// Page allocate
+		PageAllocator m_Allocator;
 
 	private:
 

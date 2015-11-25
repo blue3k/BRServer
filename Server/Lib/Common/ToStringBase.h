@@ -70,35 +70,35 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	// Default type implementations
 	//
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT8& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT8& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT8& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT8& Data, int Option);
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT16& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT16& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT16& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT16& Data, int Option);
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT32& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT32& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT32& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT32& Data, int Option);
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT64& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT64& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT64& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT64& Data, int Option);
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LONG& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const ULONG& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LONG& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ULONG& Data, int Option);
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const char& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPCSTR& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPSTR& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const wchar_t& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPCWSTR& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPWSTR& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const char& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPCSTR& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPSTR& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const wchar_t& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPCWSTR& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPWSTR& Data, int Option);
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const std::string& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const std::wstring& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const std::string& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const std::wstring& Data, int Option);
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const float& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const double& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const float& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const double& Data, int Option);
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const PVOID& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const PVOID& Data, int Option);
 
 
 

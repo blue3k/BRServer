@@ -22,22 +22,22 @@
 namespace BR {
 
 
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const EntityID& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const EntityUID& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const Message::MessageID& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const NetAddress& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::GameID& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::PlayerInformation& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::FriendInformation& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::TotalRankingPlayerInformation& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::NotificationType& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PlayerID>& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<TotalRankingPlayerInformation>& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<FriendInformation>& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampMS& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationMS& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampSec& Data, int Option);
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationSec& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const EntityID& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const EntityUID& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const Message::MessageID& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const NetAddress& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::GameID& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::PlayerInformation& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::FriendInformation& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::TotalRankingPlayerInformation& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::NotificationType& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PlayerID>& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<TotalRankingPlayerInformation>& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<FriendInformation>& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampMS& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationMS& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const TimeStampSec& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const DurationSec& Data, int Option);
 
 
 }; // namespace StrUtil

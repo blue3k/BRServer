@@ -340,7 +340,8 @@ namespace BR
 
 	#define BR_MEMORYPOOL_IMPLEMENT(className) \
 		namespace BR {\
-			MemoryPool* className::stm_MemoryPool = NULL;\
+			template<>\
+			MemoryPool* MemoryPoolObject<className>::stm_MemoryPool = nullptr;\
 		};\
 
 

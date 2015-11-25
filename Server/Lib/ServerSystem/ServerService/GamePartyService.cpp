@@ -39,7 +39,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyGameParty()->JoinPartyCmd( InContext, InRouteContext, InInviterID, InInvitedPlayer ) );
 
 		Proc_End:
@@ -53,7 +53,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyGameParty()->LeavePartyCmd( InContext, InRouteContext, InPlayerID ) );
 
 		Proc_End:
@@ -67,7 +67,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyGameParty()->KickPlayerCmd( InContext, InRouteContext, InPlayerID, InPlayerToKick ) );
 
 		Proc_End:
@@ -107,7 +107,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyGameParty()->StartGameMatchCmd( InContext, InRouteContext, InPlayerID, InMaxGamePlayers ) );
 
 		Proc_End:
@@ -121,7 +121,7 @@ namespace BR
  			HRESULT hr = S_OK;
 
 			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.EntityID), GetServiceEntityUID() );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyGameParty()->CancelGameMatchCmd( InContext, InRouteContext, InPlayerID ) );
 
 		Proc_End:

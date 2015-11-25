@@ -50,7 +50,7 @@ ifeq "$(LINK_TYPE)" "EXE"
 	TARGET_BUILD_COMMAND=$(CC) $(LDFLAGS) $(OBJECTS) -o $(TARGET_FILE) 
 else ifeq "$(LINK_TYPE)" "LIB"
 	TARGET_FILE=$(TARGET_LIB_PATH)/$(PROJECT_NAME).a
-	TARGET_BUILD_COMMAND=$(AR) a $(TARGET_FILE) $(OBJECTS)
+	TARGET_BUILD_COMMAND=$(AR) cr $(TARGET_FILE) $(OBJECTS)
 else ifeq "$(LINK_TYPE)" "DLL"
 	TARGET_FILE=$(TARGET_BIN_PATH)/$(PROJECT_NAME).so
 	TARGET_BUILD_COMMAND=$(CC) -shared $(LDFLAGS) $(OBJECTS) -o $(TARGET_FILE)  
@@ -61,7 +61,7 @@ INCLUDES+= $(ROOT_PATH)/Server/Lib /usr/include
 DEFINES+= $(BUILD_MODE) $(LOGNAME)
 
 CC=g++
-CFLAGS=-c -g -std=c++14 -pthread -static-libgcc -Wall -Wno-unused-variable $(addprefix -I,$(INCLUDES)) $(addprefix -D,$(DEFINES))
+CFLAGS=-c -g -std=c++14 -pthread -static-libgcc -Wall $(addprefix -I,$(INCLUDES)) $(addprefix -D,$(DEFINES))
 CPPFLAGS:=$(CFLAGS)
 LDFLAGS=-g -std=c++14 -pthread -static-libgcc $(addprefix -l,$(LIBS))
 

@@ -217,7 +217,7 @@ namespace Svr {
 
 		PerformanceCounterRaw<DataType>& operator = (const DataType& value)
 		{
-			auto index = m_TickIndex.load(std::memory_order_relaxed) % _countof(m_Values);
+			auto index = m_TickIndex.load(std::memory_order_relaxed) % countof(m_Values);
 			m_Values[index].Working.fetch_add(1, std::memory_order_acquire);
 
 			m_Values[index].TotalCount.fetch_add(1, std::memory_order_release);
@@ -233,7 +233,7 @@ namespace Svr {
 			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))
 			{
 				auto curTime = Util::Time.GetTimeMs();
-				auto nextTickIndex = (m_TickIndex.load(std::memory_order_relaxed) + 1) % _countof(m_Values);
+				auto nextTickIndex = (m_TickIndex.load(std::memory_order_relaxed) + 1) % countof(m_Values);
 
 				auto indexCalculate = nextTickIndex;
 				while (m_Values[indexCalculate].Working.load(std::memory_order_relaxed) > 0)
@@ -254,7 +254,7 @@ namespace Svr {
 				m_Values[indexCalculate].Working.store(0, std::memory_order_release);
 
 				// move to next
-				auto prevTickIndex = m_TickIndex.fetch_add(1, std::memory_order_release) % _countof(m_Values);
+				auto prevTickIndex = m_TickIndex.fetch_add(1, std::memory_order_release) % countof(m_Values);
 				m_TickCountStartTime = curTime;
 			}
 
@@ -288,10 +288,10 @@ namespace Svr {
 			auto timeSince = Util::TimeSince(m_TickCountStartTime);
 			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))
 			{
-				auto nextTickIndex = (m_TickIndex.load(std::memory_order_relaxed) + 1) % _countof(m_Values);
+				auto nextTickIndex = (m_TickIndex.load(std::memory_order_relaxed) + 1) % countof(m_Values);
 				m_Values[nextTickIndex].store(0, std::memory_order_release);
 
-				auto prevTickIndex = m_TickIndex.fetch_add(1, std::memory_order_release) % _countof(m_Values);
+				auto prevTickIndex = m_TickIndex.fetch_add(1, std::memory_order_release) % countof(m_Values);
 				auto ticks = m_Values[nextTickIndex].load(std::memory_order_relaxed);
 
 				SetRawValue((ticks * 1000) / timeSince.count());
@@ -305,7 +305,7 @@ namespace Svr {
 
 		PerformanceCounterRaw<DataType>& operator += (const DataType& value)
 		{
-			auto tickIndex = m_TickIndex.load(std::memory_order_relaxed) % _countof(m_Values);
+			auto tickIndex = m_TickIndex.load(std::memory_order_relaxed) % countof(m_Values);
 			m_Values[tickIndex].fetch_add(value, std::memory_order_release);
 
 			IncSyncSerial();
@@ -315,7 +315,7 @@ namespace Svr {
 
 		DataType operator ++ ()
 		{
-			auto tickIndex = m_TickIndex.load(std::memory_order_relaxed) % _countof(m_Values);
+			auto tickIndex = m_TickIndex.load(std::memory_order_relaxed) % countof(m_Values);
 			auto prevVal = m_Values[tickIndex].fetch_add(1, std::memory_order_release);
 
 			IncSyncSerial();

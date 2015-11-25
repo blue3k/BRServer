@@ -287,7 +287,7 @@ namespace GameServer {
 			PartyUID partyUID = GetMyOwner()->GetPartyUID();
 			Policy::IPolicyGameParty* pPolicy = nullptr;
 
-			svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameParty>(partyUID.SvrID));
+			svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameParty>(partyUID.GetServerID()));
 			svrChk(pPolicy->JoinPartyCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), partyUID), 0, GetMyOwner()->GetPlayerInformation()));
 		}
 		else
@@ -424,7 +424,7 @@ namespace GameServer {
 		}
 
 		// TODO: We need to distinguish whether character data is updated or not
-		svrChkPtr( pLoginPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyLoginServer>( loginEntityUID.SvrID ) );
+		svrChkPtr( pLoginPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyLoginServer>( loginEntityUID.GetServerID()) );
 		svrChk( pLoginPolicy->PlayerJoinedToGameServerCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),loginEntityUID),
 			GetAccID(), GetTicket() ) );
 
@@ -1159,7 +1159,7 @@ namespace GameServer {
 			svrErrClose(E_PLAYER_NOT_FOUND);
 
 		m_Player.PlayerID = pDBRes->UserID;
-		m_Player.FacebookUID = pDBRes->FacebookUID;
+		m_Player.FBUID = pDBRes->FacebookUID;
 		m_PlayerShardID = pDBRes->ShardID;
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
@@ -1234,7 +1234,7 @@ namespace GameServer {
 			svrErrClose(E_PLAYER_NOT_FOUND);
 
 		m_Player.PlayerID = pDBRes->PlayerID;
-		m_Player.FacebookUID = pDBRes->FacebookUID;
+		m_Player.FBUID = pDBRes->FacebookUID;
 		m_PlayerShardID = pDBRes->ShardID;
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetNickName(GetTransID(), m_PlayerShardID, m_Player.PlayerID));
@@ -1399,9 +1399,9 @@ namespace GameServer {
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
 			svrErr(E_GAME_INAVLID_PLAYER);
 
-		playerUID = GetRouteContext().From;
+		playerUID = GetRouteContext().GetFrom();
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.SvrID, pServerEntity ) );
+		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 		svrChkPtr(pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>());
 
 		bool bInGame = GetMyOwner()->GetGameInsUID() != 0 || GetMyOwner()->GetPartyUID() != 0;
@@ -1775,7 +1775,7 @@ namespace GameServer {
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID != 0 )
 		{
-			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.SvrID) );
+			svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
 
 			svrChk( pPolicy->SetConfigPresetC2SEvt( RouteContext(GetOwnerEntityUID(),insUID), GetPresetID() ) );
 		}

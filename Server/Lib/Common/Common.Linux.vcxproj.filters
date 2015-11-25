@@ -28,6 +28,9 @@
     <Filter Include="Container">
       <UniqueIdentifier>{4579f32e-06e6-4f76-866d-1f0495224b3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{4c4f91ea-229f-4063-b05c-729c890c1c0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HRESCommon.h">
@@ -104,9 +107,6 @@
     </ClInclude>
     <ClInclude Include="StackWalker.h">
       <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="Synchronize.h">
-      <Filter>Thread</Filter>
     </ClInclude>
     <ClInclude Include="Thread.h">
       <Filter>Thread</Filter>
@@ -244,6 +244,18 @@
     <ClInclude Include="SystemSynchronization.h">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="File\BRFile.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="PageQueue.h">
+      <Filter>Container</Filter>
+    </ClInclude>
+    <ClInclude Include="Synchronization.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="SynchronizationTrait.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedObj.inl">
@@ -263,9 +275,6 @@
     </None>
     <None Include="PerfCounter.inl">
       <Filter>System</Filter>
-    </None>
-    <None Include="Synchronize.inl">
-      <Filter>Thread</Filter>
     </None>
     <None Include="SystemSynchronize_linux.inl">
       <Filter>Thread</Filter>
@@ -351,6 +360,12 @@
     <None Include="ArrayUtil.inl">
       <Filter>Container</Filter>
     </None>
+    <None Include="PageQueue.inl">
+      <Filter>Container</Filter>
+    </None>
+    <None Include="Synchronization.inl">
+      <Filter>Thread</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SharedObject.cpp">
@@ -391,9 +406,6 @@
     </ClCompile>
     <ClCompile Include="StackWalker.cpp">
       <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="Synchronize.cpp">
-      <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="Thread.cpp">
       <Filter>Thread</Filter>
@@ -452,6 +464,15 @@
     </ClCompile>
     <ClCompile Include="TypeUtility.cpp">
       <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="File\BRFile.linux.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="File\BRFile.win32.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="Synchronization.cpp">
+      <Filter>Thread</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

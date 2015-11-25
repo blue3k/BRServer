@@ -327,7 +327,8 @@ HRESULT StaticArray<DataType, DefaultBufferSize>::Reserve(size_t szNewSize)
 	pNewBuffer = new DataType[szNewSize];
 	if( pNewBuffer == nullptr )
 		return E_OUTOFMEMORY;
-	SetBuffPtr( szNewSize, pNewBuffer );
+
+	Array<DataType>::SetBuffPtr( szNewSize, pNewBuffer );
 
 	pOldBuffer = m_pAllocatedBuffer;
 	m_pAllocatedBuffer = pNewBuffer;

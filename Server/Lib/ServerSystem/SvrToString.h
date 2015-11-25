@@ -23,13 +23,13 @@ namespace BR {
 	template<>
 	inline HRESULT ToString( char*& pBuff, INT& iBuffLen, const TransactionID& Data, int Option )
 	{
-		if( FAILED( ToString( pBuff, iBuffLen, Data.EntityID, Option ) ) )
+		if( FAILED( ToString( pBuff, iBuffLen, Data.GetEntityID(), Option ) ) )
 			return E_FAIL;
 
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
 			return E_FAIL;
 
-		if( FAILED( _IToA( (UINT32)Data.TransID, pBuff, iBuffLen, 10, -1 ) ) )
+		if( FAILED( _IToA( (UINT32)Data.GetTransactionIndex(), pBuff, iBuffLen, 10, -1 ) ) )
 			return E_FAIL;
 
 		return S_OK;

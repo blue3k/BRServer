@@ -77,9 +77,9 @@ namespace BR
 				DigitBuffer[iFilled] = (char) (digval + '0');       // a digit
 
 			iFilled++;
-		} while (val > 0 && length > 0 && iFilled < _countof(DigitBuffer));
+		} while (val > 0 && length > 0 && iFilled < (INT)countof(DigitBuffer));
 
-		if( iFilled >= _countof(DigitBuffer) ) // temp buffer is full
+		if( iFilled >= (INT)countof(DigitBuffer) ) // temp buffer is full
 			return StrUtil::StringCpyEx( buf, length, "(Err:TooBigNumber)" );
 
 		// digit limit
@@ -193,10 +193,11 @@ namespace BR
 
 	HRESULT _FToA( double val,char* &buf, INT& length, unsigned digit, char Option )
 	{
-		Option;
+		unused(Option);
+#if WINDOWS
 		int Decimal = 0, sign = 0;
 		char strMantisa[64];
-		int digitCount = std::min( (int)digit, (int)(_countof(strMantisa)) );
+		int digitCount = std::min( (int)digit, (int)(countof(strMantisa)) );
 
 		if( digit < 0 )
 			return E_INVALIDARG;
@@ -207,10 +208,8 @@ namespace BR
 		if( buf == NULL )
 			return E_POINTER;
 
-
-		if( _fcvt_s( strMantisa, _countof(strMantisa), val, digitCount, &Decimal, &sign ) != 0 )
+		if( _fcvt_s( strMantisa, countof(strMantisa), val, digitCount, &Decimal, &sign ) != 0 )
 			return E_FAIL;
-
 
 		// discard end zeros
 		if( Decimal >= 0 )
@@ -272,12 +271,18 @@ namespace BR
 		}
 
 
+#else
+		auto resultLen = snprintf(buf, length, "%f", val);
+		Assert(resultLen > length);
+		buf += resultLen;
+		length -= resultLen;
+#endif
+
 		// Null terminate
 		if( length > 0 )
 			*buf = '\0';
 		else
 			*(buf-1) = '\0';
-
 
 		return S_OK;
 	}
@@ -404,6 +409,7 @@ namespace BR
 		return S_OK;
 	}
 
+#if WINDOWS
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const char& Data, int Option)
 	{
@@ -418,22 +424,23 @@ namespace BR
 		else
 			(pBuff - 1)[0] = '\0';
 
-		Option;
+		unused(Option);
 
 		return S_OK;
 	}
+#endif
 
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPCSTR& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, Data);
 	}
 
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPSTR& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, Data);
 	}
 
@@ -441,7 +448,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const wchar_t& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		if (iBuffLen <= 0)
 			return E_OUTOFMEMORY;
 
@@ -459,7 +466,7 @@ namespace BR
 	{
 		char DestBuff[1024];
 
-		Option;
+		unused(Option);
 
 		if (Data == NULL)
 			return E_POINTER;
@@ -475,7 +482,7 @@ namespace BR
 	{
 		char DestBuff[1024];
 
-		Option;
+		unused(Option);
 
 		if (Data == NULL)
 			return E_POINTER;
@@ -521,12 +528,12 @@ namespace BR
 	template<void*>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const PVOID& Data, int Option)
 	{
-		Option;
-		intptr_t value = (intptr_t)Data;
+		unused(Option);
+		auto value = (UINT64)Data;
 
 		StrUtil::StringCpyEx(pBuff, iBuffLen, "0x");
 
-		_IToA(value, pBuff, iBuffLen, 16, sizeof(intptr_t) * 2);
+		_IToA(value, pBuff, iBuffLen, 16, sizeof(value) * 2);
 
 		return S_OK;
 	}

@@ -296,7 +296,7 @@ HRESULT PageQueue<DataType>::Dequeue( DataType& item )
 	CounterType myCellID = (myDequeueTicket) % m_NumberOfItemsPerPage;
 
 	// my pertinent PageID...starting from 0
-	CounterType myPageID = (myDequeueTicket) / m_NumberOfItemsPerPage;
+	//CounterType myPageID = (myDequeueTicket) / m_NumberOfItemsPerPage;
 
 	// Read the data & clear that read position 
 	int LockTry = 0;

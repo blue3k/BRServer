@@ -133,22 +133,26 @@ TEST_F(SystemSynchronizationTest, Event)
 	SyncCounter workerCounter(0);
 	std::atomic<int> testData(0);
 	std::atomic<int> testIndex(0);
-	BR::Event dataEvent;
+	BR::Event dataEvent, workDoneEvent;
 
 	dataEvent.Reset();
+	workDoneEvent.Reset();
 
 	for (UINT worker = 0; worker < NUM_THREAD; worker++)
 	{
-		auto pWorker = new FunctorThread([&dataEvent, &testData, &testIndex, &workerCounter, worker, TEST_LENGTH](Thread* pThread)
+		auto pWorker = new FunctorThread([&dataEvent, &workDoneEvent, &testData, &testIndex, &workerCounter, worker, TEST_LENGTH](Thread* pThread)
 		{
 			workerCounter.fetch_add(1, std::memory_order_relaxed);
 			for (int iTest = 0; iTest < TEST_LENGTH; iTest++)
 			{
-				dataEvent.WaitEvent(10000);
+				while (!dataEvent.WaitEvent(-1));
+
 				auto read = testData.load(std::memory_order_acquire);
 				testData.store(read + 1, std::memory_order_release);
-				auto indexData = testIndex.fetch_add(1, std::memory_order_relaxed);
+				auto indexData = testIndex.load(std::memory_order_relaxed);
 				AssertRel(indexData == read);
+
+				workDoneEvent.Set();
 			}
 
 			workerCounter.fetch_sub(1, std::memory_order_relaxed);
@@ -159,6 +163,18 @@ TEST_F(SystemSynchronizationTest, Event)
 	}
 
 	ThisThread::SleepFor(DurationMS(10));
+
+
+	for (INT64 iTest = 0; iTest < (TEST_LENGTH*NUM_THREAD); iTest++)
+	{
+		dataEvent.Set();
+		while (!workDoneEvent.WaitEvent(-1));
+
+		auto read = testData.load(std::memory_order_acquire);
+		auto indexData = testIndex.fetch_add(1, std::memory_order_relaxed) + 1;
+		AssertRel(indexData == read);
+	}
+
 
 	// wait writer threads
 	while (workerCounter.load(std::memory_order_relaxed) > 0)

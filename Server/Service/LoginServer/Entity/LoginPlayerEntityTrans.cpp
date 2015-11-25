@@ -147,7 +147,7 @@ namespace LoginServer {
 			}
 			else
 			{
-				pGameServerPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameServer>(m_GameEntityUID.SvrID);
+				pGameServerPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameServer>(m_GameEntityUID.GetServerID());
 				if (pGameServerPolicy == nullptr
 					|| FAILED(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), m_GameEntityUID),
 												GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetShardID())))
@@ -216,7 +216,7 @@ namespace LoginServer {
 		GetMyOwner()->HeartBit();
 
 		m_GameServerAddr = res.GetPublicAddress();
-		m_GameEntityUID = res.GetRouteContext().From;
+		m_GameEntityUID = res.GetRouteContext().GetFrom();
 
 		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), GetOwnerEntityUID(), m_GameEntityUID));
 
@@ -748,12 +748,12 @@ namespace LoginServer {
 
 		if (GetMyOwner()->GetIsTicketOwner())
 		{
-			svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(GetTransID(), GetPlayerID(), GetAuthTicket(), GetOwnerEntityUID(), GetRouteContext().From));
+			svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(GetTransID(), GetPlayerID(), GetAuthTicket(), GetOwnerEntityUID(), GetRouteContext().GetFrom()));
 		}
 		else
 		{
 			// just check the ticket
-			svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ValidateGameServerSession(GetTransID(), GetPlayerID(), GetAuthTicket(), GetRouteContext().From));
+			svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ValidateGameServerSession(GetTransID(), GetPlayerID(), GetAuthTicket(), GetRouteContext().GetFrom()));
 		}
 
 	Proc_End:

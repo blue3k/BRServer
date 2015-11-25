@@ -32,23 +32,22 @@ namespace Hash {
 		//			However, it's a bit labor intensive when you use it.
 		//
 
-		template<	typename ItemType, 
-					typename Indexer, 
+		template<	typename KeyType, typename ItemType,
 					typename MapItemConverter, 
 					typename Trait = UniqueKeyTrait, 
-					typename ThreadTrait = ThreadSyncTraitReadWriteT<Indexer::Type, ItemType*>,
+					typename ThreadTrait = ThreadSyncTraitReadWriteT<KeyType, ItemType*>,
 					size_t	DefaultBucketSize = 128,
-					typename Hasher = Hash::hash<typename Indexer::Type> >
+					typename Hasher = Hash::hash<typename KeyType> >
 		class StaticHashTable
 		{
 		public:
 
 			typedef typename ThreadTrait::TicketLockType		TicketLockType;
 			typedef typename ItemType							ItemType;
-			typedef typename Indexer							Indexer;
+			typedef typename KeyType							KeyType;
 			typedef typename MapItemConverter					MapItemConverter;
 			typedef typename MapItemConverter::Type				MapItemType;
-			typedef OrderedLinkedList<typename Indexer::Type>	BucketContainer;
+			typedef OrderedLinkedList<KeyType>					BucketContainer;
 
 			// Hash bucket
 			class Bucket
@@ -117,22 +116,25 @@ namespace Hash {
 					Assert( !m_Lock.IsLocked() );
 					}
 
-					m_Items = src.m_Items;
+					AssertRel(false);
+					//m_Items = src.m_Items;
 					return *this;
 				}
 
-				Bucket& operator = ( Bucket&& src )
-				{
-					if( ThreadTrait::ThreadSafe )
-					{
-					// No one use this bucket, while this operation
-					Assert( !src.m_Lock.IsLocked() );
-					Assert( !m_Lock.IsLocked() );
-					}
+				//Bucket& operator = ( Bucket&& src )
+				//{
+				//	if( ThreadTrait::ThreadSafe )
+				//	{
+				//	// No one use this bucket, while this operation
+				//	Assert( !src.m_Lock.IsLocked() );
+				//	Assert( !m_Lock.IsLocked() );
+				//	}
 
-					m_Items = src.m_Items;
-					return *this;
-				}
+
+				//	AssertRel(false);
+				//	//m_Items = src.m_Items;
+				//	return *this;
+				//}
 
 				// validate bucket id
 				bool Validate( size_t iMyBucket, size_t szNumBucket )
@@ -144,7 +146,7 @@ namespace Hash {
 					BucketContainer::iterator iter = m_Items.begin();
 					for( ; iter != m_Items.end(); ++iter )
 					{
-						Indexer::Type curIdx = iter->Key;
+						KeyType curIdx = iter->Key;
 						size_t hashVal = Hasher()( curIdx );
 						size_t iBucket = hashVal%szNumBucket;
 						AssertRel( iBucket == iMyBucket );
@@ -333,6 +335,11 @@ namespace Hash {
 					return ( (m_pContainer == op.m_pContainer) && (m_iterBucket == op.m_iterBucket) && (m_itInBucket == op.m_itInBucket) );
 				}
 
+				KeyType GetKey()
+				{
+					return m_itInBucket->Key;
+				}
+
 				// Check validity
 				bool IsValid()
 				{
@@ -478,9 +485,8 @@ namespace Hash {
 			//	Insert/erase/clear
 			//
 
-			HRESULT insert( const ItemType* data )
+			HRESULT insert( const KeyType& inKey, const ItemType* data )
 			{
-				Indexer::Type inKey = Indexer()(data);
 				MapItemConverter::Type *inItem = MapItemConverter()(data);
 				size_t hashVal = Hasher()( inKey );
 				size_t iBucket = hashVal%m_Bucket.size();
@@ -516,7 +522,7 @@ namespace Hash {
 				return S_OK;
 			}
 
-			HRESULT find( const typename Indexer::Type& keyVal, ItemType *data )
+			HRESULT find( const KeyType& keyVal, ItemType *data )
 			{
 				size_t hashVal = Hasher()( keyVal );
 				size_t iBucket = hashVal%m_Bucket.size();
@@ -536,7 +542,7 @@ namespace Hash {
 				return E_FAIL;
 			}
 
-			HRESULT find( const typename Indexer::Type& keyVal, iterator &iterData )
+			HRESULT find( const KeyType& keyVal, iterator &iterData )
 			{
 				size_t hashVal = Hasher()( keyVal );
 				size_t iBucket = hashVal%m_Bucket.size();
@@ -567,9 +573,8 @@ namespace Hash {
 			}
 
 			// Erase a data from hash map
-			HRESULT erase( const ItemType *data )
+			HRESULT erase( const KeyType& inKey )
 			{
-				Indexer::Type inKey = Indexer()(data);
 				size_t hashVal = Hasher()( inKey );
 				size_t iBucket = hashVal%m_Bucket.size();
 
@@ -597,7 +602,7 @@ namespace Hash {
 
 			HRESULT erase( iterator &iterData )
 			{
-				Indexer::Type Key;
+				KeyType Key;
 				if( iterData.m_pContainer != this )
 					return E_FAIL;
 
@@ -612,7 +617,7 @@ namespace Hash {
 				// NOTE : if bucket size changed then this operation will not safe
 				Bucket& bucket = *iterData.m_iterBucket;
 
-				Key = Indexer()(data);
+				Key = iterData.GetKey();
 				iterData = end();
 
 				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock );

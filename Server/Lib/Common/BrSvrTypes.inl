@@ -17,19 +17,21 @@
 
 
 TransactionID::TransactionID()
-	:EntityID(-1),	TransID(0)
+	: ID(0)
 {
+	Components.EntID = -1;
+	Components.TransID = 0;
 }
 
 TransactionID::TransactionID( const TransactionID& transID )
-	:EntityID(transID.EntityID),	TransID(transID.TransID)
+	: ID(transID.ID)
 {
 }
 
 TransactionID::TransactionID( BR::EntityID entityID, UINT32 transID )
-	:EntityID(entityID),
-	TransID(transID)
 {
+	Components.EntID = entityID;
+	Components.TransID = transID;
 }
 
 TransactionID::TransactionID( BR::Context context )
@@ -45,8 +47,7 @@ bool TransactionID::IsValid() const
 
 TransactionID& TransactionID::operator = ( const TransactionID& transID )
 {
-	EntityID = transID.EntityID;
-	TransID = transID.TransID;
+	ID = transID.ID;
 
 	return *this;
 }
@@ -81,9 +82,9 @@ tag_RouteContext::tag_RouteContext( const tag_RouteContext& routeContext )
 }
 
 tag_RouteContext::tag_RouteContext( EntityUID InFromID, EntityUID InToID )
-	:From(InFromID)
-	,To(InToID)
 {
+	Components.From = InFromID;
+	Components.To = InToID;
 }
 
 tag_RouteContext::tag_RouteContext( int initValue )
@@ -108,7 +109,7 @@ bool tag_RouteContext::operator == ( const tag_RouteContext& routeContext ) cons
 // Get swaped context( From <==> To )
 tag_RouteContext tag_RouteContext::GetSwaped() const
 {
-	return tag_RouteContext( To, From );
+	return tag_RouteContext(Components.To, Components.From);
 }
 
 
@@ -185,7 +186,7 @@ GlobalUID::GlobalUID( const GlobalUID& src )
 }
 
 GlobalUID::GlobalUID( UINT serverID, UINT32 time, UINT32 id )
-	:ServerID(serverID), Time(time), ID(id)
+	: Time(time), SvrID(serverID), ID(id)
 {
 	Assert( serverID < 256 );
 }
@@ -346,33 +347,33 @@ bool MatchingPlayerInformation::operator == ( const MatchingPlayerInformation& o
 
 
 MatchingQueueItem::MatchingQueueItem()
-	:NumPlayers(0)
-	,RegisterUID(0)
-	,RegisterID(0)
+	: RegisterUID(0)
+	, RegisterID(0)
+	, NumPlayers(0)
 {
 	memset( Players, 0, sizeof(Players) );
 }
 
 MatchingQueueItem::MatchingQueueItem( const MatchingQueueItem& src )
-	:NumPlayers(std::max((UINT32)MAX_NUM_PLAYER,src.NumPlayers))
-	,RegisterUID(src.RegisterUID)
-	,RegisterID(src.RegisterID)
+	: RegisterUID(src.RegisterUID)
+	, RegisterID(src.RegisterID)
+	, NumPlayers(std::max((UINT32)MAX_NUM_PLAYER, src.NumPlayers))
 {
 	memcpy( Players, src.Players, sizeof(MatchingPlayerInformation)*NumPlayers );
 }
 
 MatchingQueueItem::MatchingQueueItem( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* playerInformations )
-	:NumPlayers(std::max((UINT32)MAX_NUM_PLAYER,numPlayer))
-	,RegisterUID(registerUID)
-	,RegisterID(registerID)
+	: RegisterUID(registerUID)
+	, RegisterID(registerID)
+	, NumPlayers(std::max((UINT32)MAX_NUM_PLAYER, numPlayer))
 {
 	memcpy( Players, playerInformations, sizeof(MatchingPlayerInformation)*NumPlayers );
 }
 
 MatchingQueueItem::MatchingQueueItem( int initValue )
-	:NumPlayers(0)
-	,RegisterUID(0)
-	,RegisterID(0)
+	: RegisterUID(0)
+	, RegisterID(0)
+	, NumPlayers(0)
 {
 	memset( Players, 0, sizeof(Players) );
 }
@@ -409,7 +410,7 @@ bool MatchingQueueItem::operator == ( const MatchingQueueItem& op ) const
 
 inline bool PerformanceCounterInfo::operator == (const PerformanceCounterInfo& op) const
 {
-	return StrUtil::StringCmpLwr(CounterName, _countof(CounterName), op.CounterName, _countof(CounterName)) == 0;
+	return StrUtil::StringCmpLwr(CounterName, (INT)countof(CounterName), op.CounterName, (INT)countof(CounterName)) == 0;
 }
 
 inline bool PerformanceCounterInstanceInfo::operator == (const PerformanceCounterInstanceInfo& op) const

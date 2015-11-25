@@ -111,6 +111,9 @@ inline HRESULT GetLastWSAHRESULT()
 #include <libgen.h>
 #include <errno.h>
 #include <signal.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+
 
 typedef unsigned char UINT8;
 typedef char INT8;
@@ -134,6 +137,8 @@ typedef wchar_t WCHAR;
 typedef unsigned int UINT;
 typedef int INT;
 
+typedef unsigned short USHORT;
+typedef short SHORT;
 typedef unsigned int DWORD;
 typedef unsigned short WORD;
 typedef UINT8 BYTE;
@@ -146,10 +151,15 @@ typedef SBYTE				*PSBYTE;
 typedef int  HRESULT;
 
 typedef void* HANDLE;
-#define INVALID_NATIVE_HANDLE_VALUE (-1)
+typedef HANDLE HMODULE;
+
+#define INVALID_NATIVE_HANDLE_VALUE NativeHandle(-1)
 
 
 #include "Common/HRESSystem.h"
+
+#define TRUE (1)
+#define FALSE (0)
 
 #define S_OK 0
 
@@ -168,6 +178,7 @@ inline HRESULT GetLastWSAHRESULT()
 }
 
 
+#define MAX_PATH 512
 
 #endif
 
@@ -183,12 +194,10 @@ inline HRESULT GetLastWSAHRESULT()
 #include <stdarg.h>
 #include <errno.h>
 #include <malloc.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <float.h>
 #include <iostream>
 #include <string>
-
+#include <string.h>
 
 #include <limits>
 #include <limits.h>
@@ -243,6 +252,7 @@ typedef int		SysInt;
 typedef unsigned int		SysUInt;
 
 
+
 #endif
 
 
@@ -276,7 +286,7 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 
 
 
-#define unused(x) 
+#define unused(...) 
 
 
 
@@ -290,7 +300,8 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 #if __GNUC__
 
 #define FORCEINLINE __attribute__((always_inline))
-#define STDCALL __attribute__((stdcall))
+//#define STDCALL __attribute__((stdcall))
+#define STDCALL 
 #define FASTCALL __attribute__((fastcall))
 #define TEMPLATE_EXTERN
 

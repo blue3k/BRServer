@@ -60,7 +60,7 @@ namespace BR {
 				{
 					// too far away
 					// we need to check difference again
-					SleepEx(4, false);
+					ThisThread::SleepFor(DurationMS(4));
 				}
 			} while (indexDiff > UPDATE_TIME_DIFF);
 
@@ -70,7 +70,7 @@ namespace BR {
 		} while (uid.ID == 0);
 
 
-		uid.ServerID = m_ServerID;
+		uid.SvrID = m_ServerID;
 		uid.Time = m_time.time_since_epoch().count();
 
 		defTrace(Trace::TRC_TRACE, "GlobalUIDGenerator: New GUID %0%", (float)uid.UID);

@@ -44,7 +44,7 @@ namespace BR {
 		};
 
 		AccountID		PlayerID;
-		FacebookUID		FacebookUID;
+		FacebookUID		FBUID;
 		char			NickName[MAX_NAME];
 		UINT64			LastActiveTime;
 		UINT32			Level;
@@ -114,7 +114,7 @@ namespace BR {
 		UINT32			RankingID;
 		UINT32			Ranking;
 		AccountID		PlayerID;
-		FacebookUID		FacebookUID;
+		FacebookUID		FBUID;
 		char			NickName[MAX_NAME];
 		UINT32			Level;
 		UINT32			Win;

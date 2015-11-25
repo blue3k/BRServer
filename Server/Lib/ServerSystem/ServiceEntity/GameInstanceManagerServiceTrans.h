@@ -43,7 +43,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyGameInstanceManager* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyGameInstanceManager>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(CreateGameRes, RouteContext(m_GameInsUID,GetRouteContext().From));
+		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(CreateGameRes, RouteContext(m_GameInsUID,GetRouteContext().GetFrom()));
 	};
 
 

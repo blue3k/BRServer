@@ -87,7 +87,7 @@ namespace BR
 		Event(bool isInitialySet = false, bool autoReset = true)
 			:m_AutoReset(autoReset)
 		{
-			sem_init(&m_hEvent, 0, isInitialySet ? 1 : 0);
+			sem_init(&m_hEvent, 1, isInitialySet ? 1 : 0);
 		}
 
 		~Event()

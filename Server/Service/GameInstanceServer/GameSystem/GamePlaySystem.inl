@@ -13,14 +13,14 @@
 // Get suspect list
 PlayerID GamePlaySystem::GetSuspect( int index )
 {
-	AssertRel(index>=0 && index<_countof(m_Suspects));
+	AssertRel(index>=0 && index<countof(m_Suspects));
 	return m_Suspects[index];
 }
 
 UINT GamePlaySystem::GetNumberOfSuspects()
 {
 	UINT numSuspect = 0;
-	for( int iSuspect = 0; iSuspect < _countof(m_Suspects); iSuspect++ )
+	for( int iSuspect = 0; iSuspect < countof(m_Suspects); iSuspect++ )
 	{
 		if( m_Suspects[iSuspect] != 0 ) 
 			numSuspect++;

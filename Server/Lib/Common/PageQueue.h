@@ -35,10 +35,12 @@ namespace BR
 
 		enum { MaximumRetryInARow = 10 };
 
+		struct Page;
+
 		// Page Header
 		struct PageHeader
 		{
-			struct Page* pNext;
+			Page* pNext;
 			CounterType PageID;		// starting from 0
 
 			SyncCounter	WriteCounter;

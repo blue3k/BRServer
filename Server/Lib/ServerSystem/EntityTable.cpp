@@ -40,18 +40,18 @@ namespace Svr {
 
 		HRESULT EntityTable::ReserveEntityID( EntityID uiEntityID )
 		{
-			if (uiEntityID.FacultyID == (UINT)EntityFaculty::Service)
-				return EntityID((EntityFaculty)uiEntityID.FacultyID, m_UIDGenerator.ReserveID(uiEntityID.EntityLID));
+			if (uiEntityID.GetFacultyID() == (UINT)EntityFaculty::Service)
+				return EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGenerator.ReserveID(uiEntityID.GetEntityLID()));
 			else
-				return EntityID((EntityFaculty)uiEntityID.FacultyID, m_UIDGeneratorForService.ReserveID(uiEntityID.EntityLID));
+				return EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGeneratorForService.ReserveID(uiEntityID.GetEntityLID()));
 		}
 
 		bool EntityTable::FreeEntityID( EntityID uiEntityID )
 		{
-			if (uiEntityID.FacultyID == (UINT)EntityFaculty::Service)
-				return m_UIDGenerator.FreeID( uiEntityID.EntityLID );
+			if (uiEntityID.GetFacultyID() == (UINT)EntityFaculty::Service)
+				return m_UIDGenerator.FreeID( uiEntityID.GetEntityLID());
 			else
-				return m_UIDGeneratorForService.FreeID( uiEntityID.EntityLID );
+				return m_UIDGeneratorForService.FreeID( uiEntityID.GetEntityLID());
 		}
 
 
@@ -87,7 +87,7 @@ namespace Svr {
 
 			svrChkPtr( pRes );
 
-			svrChk(Find(pRes->GetTransID().EntityID, pEntity));
+			svrChk(Find(pRes->GetTransID().GetEntityID(), pEntity));
 
 			svrChk(pEntity->PendingTransactionResult(pRes));
 

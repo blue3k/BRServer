@@ -59,10 +59,10 @@ namespace Svr {
 
 			//GetMyOwner()->SetClusterID( GetClusterID() );
 			GetMyOwner()->SetReceivedServerStatus(true);
-			GetMyOwner()->SetEntityUID( EntityUID( GetRouteContext().From.SvrID, GetMyOwner()->GetEntityID() ) );
+			GetMyOwner()->SetEntityUID( EntityUID( GetRouteContext().GetFrom().GetServerID(), GetMyOwner()->GetEntityID() ) );
 
 			// check about already registered server
-			if( SUCCEEDED(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetRouteContext().From.SvrID, pServerEntity )) )
+			if( SUCCEEDED(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetRouteContext().GetFrom().GetServerID(), pServerEntity )) )
 			{
 				if( pServerEntity != GetMyOwner() )
 				{
@@ -74,7 +74,7 @@ namespace Svr {
 					if( pMyConn )
 						MyAddr = pMyConn->GetConnectionInfo().Remote;
 
-					svrTrace( Trace::TRC_ASSERT, "Error, Duplicated ServerID:%0% : Already from : %1%:%2%, New %3%:%4%", GetRouteContext().From.SvrID, pAlreadyConn->GetCID(), AlreadyAddr, pMyConn->GetCID(), MyAddr );
+					svrTrace( Trace::TRC_ASSERT, "Error, Duplicated ServerID:%0% : Already from : %1%:%2%, New %3%:%4%", GetRouteContext().GetFrom().GetServerID(), pAlreadyConn->GetCID(), AlreadyAddr, pMyConn->GetCID(), MyAddr );
 				}
 				else
 				{

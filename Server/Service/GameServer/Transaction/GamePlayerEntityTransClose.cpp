@@ -188,7 +188,7 @@ namespace GameServer {
 
 		if( pOwner->GetMatchingTicket() != 0 )
 		{
-			Policy::IPolicyPartyMatchingQueue *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyPartyMatchingQueue>(pOwner->GetMatchingTicket().QueueUID.SvrID);
+			Policy::IPolicyPartyMatchingQueue *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyPartyMatchingQueue>(pOwner->GetMatchingTicket().QueueUID.GetServerID());
 			if (pPolicy != nullptr)
 			{
 				if(SUCCEEDED(pPolicy->UnregisterMatchingCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), pOwner->GetMatchingTicket().QueueUID), 0, pOwner->GetMatchingTicket())))
@@ -198,7 +198,7 @@ namespace GameServer {
 
 		if (pOwner->GetPartyUID() != 0)
 		{
-			Policy::IPolicyGameParty *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameParty>(pOwner->GetPartyUID().SvrID);
+			Policy::IPolicyGameParty *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameParty>(pOwner->GetPartyUID().GetServerID());
 			if (pPolicy != nullptr)
 			{
 				if (SUCCEEDED(pPolicy->LeavePartyCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), pOwner->GetPartyUID()), pOwner->GetPlayerID())))
@@ -208,7 +208,7 @@ namespace GameServer {
 
 		if (pOwner->GetGameInsUID() != 0)
 		{
-			Policy::IPolicyGameInstance *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(pOwner->GetGameInsUID().SvrID);
+			Policy::IPolicyGameInstance *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(pOwner->GetGameInsUID().GetServerID());
 			if (pPolicy != nullptr)
 			{
 				if (SUCCEEDED(pPolicy->LeaveGameCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), pOwner->GetGameInsUID()), pOwner->GetPlayerID())))

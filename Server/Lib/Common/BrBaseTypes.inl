@@ -22,7 +22,7 @@ NetAddress::NetAddress()
 	usPort = 0;
 }
 
-NetAddress::NetAddress( const char* strAdr, USHORT port )
+NetAddress::NetAddress( const char* strAdr, UINT16 port )
 {
 	AssertRel(strAdr);
 	StrUtil::StringCpy( strAddr, strAdr );
@@ -31,7 +31,7 @@ NetAddress::NetAddress( const char* strAdr, USHORT port )
 
 NetAddress::NetAddress( int iVal )
 {
-	iVal;
+	unused(iVal);
 	memset( strAddr, 0, sizeof(strAddr) );
 	usPort = 0;
 }
@@ -61,12 +61,12 @@ EntityUID::EntityUID( const EntityUID& entityUID )
 }
 
 EntityUID::EntityUID( ServerID serverID, UINT32 entityID )
-	:SvrID(serverID), 
-	EntityID(entityID)
 {
+	Components.SvrID = serverID;
+	Components.EntID = entityID;
 }
 
-EntityUID::EntityUID( const BR::Context& context )
+EntityUID::EntityUID( const Context& context )
 	:UID(context)
 {
 }
@@ -90,9 +90,9 @@ bool EntityUID::operator != ( const EntityUID& src ) const
 	return UID != src.UID;
 }
 
-EntityUID::operator BR::Context() const
+EntityUID::operator Context() const
 {
-	return (BR::Context)UID;
+	return (Context)UID;
 }
 
 
@@ -110,7 +110,7 @@ EntityID::EntityID()
 }
 
 EntityID::EntityID( const EntityUID& entityUID )
-	:ID(entityUID.EntityID.ID)
+	:ID(entityUID.Components.EntID.ID)
 {
 }
 
@@ -121,9 +121,9 @@ EntityID::EntityID( const EntityID& entityID )
 
 #if !defined(SWIG)
 EntityID::EntityID( EntityFaculty facultyID, UINT32 entityLID )
-	:FacultyID((UINT)facultyID), 
-	EntityLID(entityLID)
 {
+	Components.FacultyID = (UINT)facultyID;
+	Components.EntityLID = entityLID;
 }
 #endif
 

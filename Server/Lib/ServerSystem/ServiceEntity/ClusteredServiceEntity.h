@@ -75,8 +75,7 @@ namespace Svr {
 
 
 		typedef ServiceTableItem::TableItemType TableItemType;
-		typedef Hash::StaticHashTable<	ServiceTableItem, 
-										Indexing::ConstMemFunc<EntityInformation,EntityUID,&EntityInformation::GetEntityUID,UINT64>,
+		typedef Hash::StaticHashTable<	ULONGLONG, ServiceTableItem,
 										Indexing::MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_TableNode>,
 										Hash::UniqueKeyTrait, ThreadSyncTraitNone
 										> ServiceEntityUIDMap;

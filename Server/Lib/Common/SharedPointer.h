@@ -493,17 +493,17 @@ namespace BR
 		{
 		}
 
-		WeakPointerT(const SharedPointerT<typename ClassType>& src)
+		WeakPointerT(const SharedPointerT<ClassType>& src)
 			:WeakPointer((ClassType*)(const ClassType*)src)
 		{
 		}
 
-		WeakPointerT(const WeakPointerT<typename ClassType>& src)
+		WeakPointerT(const WeakPointerT<ClassType>& src)
 			:WeakPointer(src)
 		{
 		}
 
-		WeakPointerT(WeakPointerT<typename ClassType>&& src)
+		WeakPointerT(WeakPointerT<ClassType>&& src)
 			:WeakPointer(src)
 		{
 		}

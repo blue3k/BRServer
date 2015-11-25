@@ -25,7 +25,7 @@ PlayerInformation::PlayerInformation(const PlayerInformation& src)
 PlayerInformation& PlayerInformation::operator = ( const PlayerInformation& src )
 {
 	this->PlayerID = src.PlayerID;
-	this->FacebookUID = src.FacebookUID;
+	this->FBUID = src.FBUID;
 	Level = src.Level;
 	IsPlayingGame = src.IsPlayingGame;
 	LastActiveTime = src.LastActiveTime;
@@ -46,7 +46,7 @@ HRESULT PlayerInformation::InitPlayerInformation(AccountID playerID, BR::Faceboo
 		return E_INVALIDARG;
 
 	this->PlayerID = playerID;
-	this->FacebookUID = fbUID;
+	this->FBUID = fbUID;
 	Level = level;
 	IsPlayingGame = isPlayingGame;
 	LastActiveTime = lastActiveTime;
@@ -59,7 +59,7 @@ bool PlayerInformation::operator == ( const PlayerInformation& src ) const
 {
 	if( PlayerID == src.PlayerID )
 	{
-		Assert( FacebookUID == src.FacebookUID );
+		Assert( FBUID == src.FBUID );
 		return true;
 	}
 	return false;
@@ -91,7 +91,7 @@ RankingPlayerInformation::RankingPlayerInformation(AccountID playerID, BR::Faceb
 RankingPlayerInformation& RankingPlayerInformation::operator = ( const RankingPlayerInformation& src )
 {
 	*(PlayerInformation*)this = src;
-	//InitPlayerInformation(src.PlayerID, src.FacebookUID, src.NickName, src.Level, src.IsPlayingGame, src.LastActiveTime);
+	//InitPlayerInformation(src.PlayerID, src.FBUID, src.NickName, src.Level, src.IsPlayingGame, src.LastActiveTime);
 	WeeklyWin = src.WeeklyWin;
 	WeeklyLose = src.WeeklyLose;
 	return *this;
@@ -101,7 +101,7 @@ bool RankingPlayerInformation::operator == ( const RankingPlayerInformation& src
 {
 	if( PlayerID == src.PlayerID )
 	{
-		Assert( FacebookUID == src.FacebookUID );
+		Assert( FBUID == src.FBUID );
 		return true;
 	}
 	return false;
@@ -129,7 +129,7 @@ FriendInformation::FriendInformation(AccountID playerID, BR::FacebookUID fbUID, 
 
 FriendInformation& FriendInformation::operator = ( const FriendInformation& src )
 {
-	//InitPlayerInformation(src.PlayerID, src.FacebookUID, src.NickName, src.Level, src.weeklyWin, src.weeklyLose, src.IsPlayingGame, src.LastActiveTime);
+	//InitPlayerInformation(src.PlayerID, src.FBUID, src.NickName, src.Level, src.weeklyWin, src.weeklyLose, src.IsPlayingGame, src.LastActiveTime);
 	*(RankingPlayerInformation*)this = src;
 	LastStaminaSent = src.LastStaminaSent;
 	return *this;
@@ -139,7 +139,7 @@ bool FriendInformation::operator == ( const FriendInformation& src ) const
 {
 	if( PlayerID == src.PlayerID )
 	{
-		Assert( FacebookUID == src.FacebookUID );
+		Assert( FBUID == src.FBUID );
 		return true;
 	}
 	return false;
@@ -164,7 +164,7 @@ TotalRankingPlayerInformation& TotalRankingPlayerInformation::operator = ( const
 	RankingID = src.RankingID;
 	Ranking = src.Ranking;
 	this->PlayerID = src.PlayerID;
-	this->FacebookUID = src.FacebookUID;
+	this->FBUID = src.FBUID;
 	Level = src.Level;
 	Win = src.Win;
 	Lose = src.Lose;
@@ -182,7 +182,7 @@ TotalRankingPlayerInformation::TotalRankingPlayerInformation(UINT32 rankingID, U
 	RankingID = rankingID;
 	Ranking = ranking;
 	this->PlayerID = playerID;
-	this->FacebookUID = fbUID;
+	this->FBUID = fbUID;
 	Level = level;
 	Win = win;
 	Lose = lose;
@@ -194,7 +194,7 @@ bool TotalRankingPlayerInformation::operator == ( const TotalRankingPlayerInform
 {
 	if( PlayerID == src.PlayerID )
 	{
-		Assert( FacebookUID == src.FacebookUID );
+		Assert( FBUID == src.FBUID );
 		return true;
 	}
 	return false;

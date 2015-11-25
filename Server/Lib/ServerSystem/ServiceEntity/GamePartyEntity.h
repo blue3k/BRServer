@@ -75,8 +75,8 @@ namespace Svr {
 	{
 	public:
 
-		typedef Hash::StaticHashTable<	PartyPlayer, 
-										Indexing::ConstMemFunc<PlayerEntityInformation,PlayerID,&PlayerEntityInformation::GetPlayerID>,
+		typedef Hash::StaticHashTable<	PlayerID, PartyPlayer,
+										//Indexing::ConstMemFunc<PlayerEntityInformation,PlayerID,&PlayerEntityInformation::GetPlayerID>,
 										Indexing::MapItemConverter<PartyPlayer,typename PartyPlayer::TableItemType,&PartyPlayer::TableNode>,
 										Hash::NonUniqueKeyTrait, ThreadSyncTraitNone
 										> 

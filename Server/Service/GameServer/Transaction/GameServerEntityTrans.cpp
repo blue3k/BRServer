@@ -84,8 +84,8 @@ namespace GameServer {
 			svrErr(E_INVALID_PLAYERID);
 		}
 
-		if( SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->FindEntity( GetRouteContext().To, pEntity ))
-			&& pEntity->GetEntityID().FacultyID == (UINT)EntityFaculty::User )
+		if( SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->FindEntity( GetRouteContext().GetTo(), pEntity ))
+			&& pEntity->GetEntityID().GetFacultyID() == (UINT)EntityFaculty::User )
 		{
 			svrChkPtr( pPlayerEntity = BR_DYNAMIC_CAST(GamePlayerEntity*,(Svr::Entity*)pEntity) );
 

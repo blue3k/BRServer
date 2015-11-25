@@ -81,7 +81,7 @@ namespace Svr
 			m_activeTransactionScheduler.RemoveTimerAction(currentThreadID, pTrans->GetTimerAction());
 
 		// All master entity's transaction will be managed by shared pointer
-		if (SUCCEEDED(m_activeTrans.Remove(pTrans->GetTransID().TransID, pDeleted)))
+		if (SUCCEEDED(m_activeTrans.Remove(pTrans->GetTransID().GetTransactionIndex(), pDeleted)))
 		{
 			Assert(pDeleted == pTrans);
 		}
@@ -130,7 +130,7 @@ namespace Svr
 		}
 
 		SharedPointerT<Transaction> activeTrans;
-		if (SUCCEEDED(m_activeTrans.Find(transID.TransID, activeTrans)))
+		if (SUCCEEDED(m_activeTrans.Find(transID.GetTransactionIndex(), activeTrans)))
 		{
 			pTransaction = (Transaction*)activeTrans;
 			return S_OK;
@@ -184,8 +184,8 @@ namespace Svr
 
 			SharedPointerT<Transaction> pPrevTrans = nullptr;
 			do {
-				transID.TransID = GenTransIndex();
-			} while (SUCCEEDED(m_activeTrans.Find(transID.TransID, pPrevTrans)));
+				transID.Components.TransID = GenTransIndex();
+			} while (SUCCEEDED(m_activeTrans.Find(transID.GetTransactionIndex(), pPrevTrans)));
 
 
 			pNewTran->SetTransID( transID );
@@ -216,7 +216,7 @@ namespace Svr
 			}
 			else
 			{
-				svrChk(m_activeTrans.Insert(pTransPtr->GetTransID().TransID, pTransPtr));
+				svrChk(m_activeTrans.Insert(pTransPtr->GetTransID().GetTransactionIndex(), pTransPtr));
 			}
 
 			auto timerAction = new TimerActionTransaction(pTransPtr);

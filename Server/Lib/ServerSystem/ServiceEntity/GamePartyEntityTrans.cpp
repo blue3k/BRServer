@@ -156,7 +156,7 @@ namespace Svr {
 			Policy::ISvrPolicyGameParty *pPolicy = nullptr;
 
 			svrChk( GetMyOwner()->FindPlayer( GetInvitedPlayer().PlayerID, pPlayer ) );
-			svrChk( pPlayer->SetServerEntity( GetServerEntity<Svr::ServerEntity>(), GetRouteContext().From ) );
+			svrChk( pPlayer->SetServerEntity( GetServerEntity<Svr::ServerEntity>(), GetRouteContext().GetFrom()) );
 
 			pPolicy = pPlayer->GetPolicy<Policy::ISvrPolicyGameParty>();
 
@@ -179,7 +179,7 @@ namespace Svr {
 				svrErrClose(E_SVR_ALREADY_INQUEUE);
 
 			svrMem( pPlayer = new PartyPlayer( GetInvitedPlayer() ) );
-			svrChk( pPlayer->SetServerEntity( GetServerEntity<ServerEntity>(), GetRouteContext().From ) );
+			svrChk( pPlayer->SetServerEntity( GetServerEntity<ServerEntity>(), GetRouteContext().GetFrom()) );
 			svrChk( GetMyOwner()->JoinPlayer( pPlayer, false ) );
 		}
 
@@ -343,7 +343,7 @@ namespace Svr {
 
 		svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
 
-		gameUID = msgRes.GetRouteContext().From;
+		gameUID = msgRes.GetRouteContext().GetFrom();
 
 		// early close for packet order
 		CloseTransaction(hr);
@@ -483,7 +483,7 @@ namespace Svr {
 		}
 
 
-		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetMatchingTicket().QueueUID.SvrID, pServer ) );
+		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetMatchingTicket().QueueUID.GetServerID(), pServer ) );
 
 		svrChk( pServer->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->UnregisterMatchingCmd( GetTransID(), RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingTicket().QueueUID), 0, 
 			GetMyOwner()->GetMatchingTicket() ) );

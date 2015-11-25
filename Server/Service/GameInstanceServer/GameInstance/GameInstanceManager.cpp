@@ -87,7 +87,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		if (SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(gameUID.EntityID)))
+		if (SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(gameUID.GetEntityID())))
 		{
 			--m_NumberOfInstance;
 			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);

@@ -102,10 +102,10 @@ namespace Svr {
 
 		if( FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
-			if( GetSender().SvrID == GetMyServerID() )
+			if( GetSender().GetServerID() == GetMyServerID() )
 			{
 				SharedPointerT<Entity> pEntity;
-				svrChk( GetServerComponent<EntityManager>()->FindEntity( GetSender().EntityID, pEntity ) );
+				svrChk( GetServerComponent<EntityManager>()->FindEntity( GetSender().GetEntityID(), pEntity ) );
 				svrChkPtr( pServiceEntity = BR_DYNAMIC_CAST(ClusteredServiceEntity*,(Entity*)pEntity) );
 			}
 			else
@@ -128,7 +128,7 @@ namespace Svr {
 				memberShip = ClusterMembership::Slave; // make it a slave
 		}
 
-		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().SvrID, GetSenderNetClass(), GetSenderAddress().strAddr, GetSenderAddress().usPort, pSenderEntity ) );
+		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().GetServerID(), GetSenderNetClass(), GetSenderAddress().strAddr, GetSenderAddress().usPort, pSenderEntity ) );
 
 		svrChk( pServiceEntity->NewServerService( GetSender(), pSenderEntity, memberShip, ServiceStatus::Online, pRequestedService ) );
 
@@ -176,10 +176,10 @@ namespace Svr {
 		svrAssert( GetMyOwner() == GetServerComponent<ClusterManagerServiceEntity>() );
 		if( FAILED(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
-			if( GetSender().SvrID == GetMyServerID() )
+			if( GetSender().GetServerID() == GetMyServerID() )
 			{
 				SharedPointerT<Entity> pEntity;
-				svrChk( GetServerComponent<EntityManager>()->FindEntity( GetSender().EntityID, pEntity ) );
+				svrChk( GetServerComponent<EntityManager>()->FindEntity( GetSender().GetEntityID(), pEntity ) );
 				svrChkPtr(pServiceEntity = BR_DYNAMIC_CAST(ClusteredServiceEntity*, (Entity*)pEntity));
 			}
 			else
@@ -202,7 +202,7 @@ namespace Svr {
 				memberShip = ClusterMembership::Slave; // make it as a slave
 		}
 
-		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().SvrID, GetSenderNetClass(), GetSenderAddress().strAddr, GetSenderAddress().usPort, pSenderEntity ) );
+		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().GetServerID(), GetSenderNetClass(), GetSenderAddress().strAddr, GetSenderAddress().usPort, pSenderEntity ) );
 
 		svrChk( pServiceEntity->NewServerService( GetSender(), pSenderEntity, memberShip, ServiceStatus::Online, pRequestedService ) );
 
@@ -229,7 +229,7 @@ namespace Svr {
 		// This message comes form different cluster so replication between cluster managers must be done my manually
 		GetMyOwner()->ForEachNonWatcher( [&]( Svr::ServerServiceInformation *pServiceInfo )
 		{
-			pServiceInfo->GetService<ClusterServerService>()->NewServerServiceJoinedC2SEvt( GetOwnerEntityUID().EntityID, 0, GetSender(), GetSenderNetClass(), GetSenderAddress(), GetClusterID(), GetClusterType(), memberShip );
+			pServiceInfo->GetService<ClusterServerService>()->NewServerServiceJoinedC2SEvt( GetOwnerEntityUID().GetEntityID(), 0, GetSender(), GetSenderNetClass(), GetSenderAddress(), GetClusterID(), GetClusterType(), memberShip );
 		});
 
 
@@ -384,7 +384,7 @@ namespace Svr {
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 
 		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
-		Assert(GetJoinedServiceUID().SvrID < 1000);
+		Assert(GetJoinedServiceUID().GetServerID() < 1000);
 
 		svrChk( __super::StartTransaction() );
 
@@ -402,7 +402,7 @@ namespace Svr {
 			}
 		}
 		
-		svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().SvrID, GetJoinedServiceNetClass(), GetJoinedServiceAddress().strAddr, GetJoinedServiceAddress().usPort, pSenderEntity));
+		svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress().strAddr, GetJoinedServiceAddress().usPort, pSenderEntity));
 
 		svrChk( pServiceEntity->NewServerService( GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService ) );
 
@@ -430,7 +430,7 @@ namespace Svr {
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 
 		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
-		Assert(GetJoinedServiceUID().SvrID < 1000);
+		Assert(GetJoinedServiceUID().GetServerID() < 1000);
 
 		svrChk(__super::StartTransaction());
 
@@ -450,7 +450,7 @@ namespace Svr {
 				}
 			}
 
-			svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().SvrID, GetJoinedServiceNetClass(), GetJoinedServiceAddress().strAddr, GetJoinedServiceAddress().usPort, pSenderEntity));
+			svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress().strAddr, GetJoinedServiceAddress().usPort, pSenderEntity));
 
 			svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
 		}
@@ -495,7 +495,7 @@ namespace Svr {
 			if( !bAddStatusWatcher && serviceInfo.Membership == ClusterMembership::StatusWatcher )
 				continue;
 
-			svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( serviceInfo.UID.SvrID, serviceInfo.ServerClass, serviceInfo.ServerAddress.strAddr, serviceInfo.ServerAddress.usPort, pServerEntity ) );
+			svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( serviceInfo.UID.GetServerID(), serviceInfo.ServerClass, serviceInfo.ServerAddress.strAddr, serviceInfo.ServerAddress.usPort, pServerEntity ) );
 
 			pNewService = nullptr;
 			svrChk( pServiceEntity->NewServerService( serviceInfo.UID, pServerEntity, serviceInfo.Membership, serviceInfo.Status, pNewService ) );

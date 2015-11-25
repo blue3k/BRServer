@@ -89,8 +89,8 @@ TEST_F(HashTableTest, StaticHashTable_NonUnique)
 	};
 
 
-	typedef BR::Hash::StaticHashTable<	TestMapNode, 
-										BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
+	typedef BR::Hash::StaticHashTable<	int, TestMapNode, 
+										//BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
 										BR::Indexing::MapItemConverter<TestMapNode,TestMapNode::HashNodeType,&TestMapNode::m_MapNode>,
 										BR::Hash::NonUniqueKeyTrait, BR::ThreadSyncTraitNone
 										> TestTableType;
@@ -116,7 +116,7 @@ TEST_F(HashTableTest, StaticHashTable_NonUnique)
 			int Count = checkSet[value];
 			checkSet[value] = Count+1;
 		}
-		EXPECT_HRESULT_SUCCEEDED( TestMap.insert( pNewNode ) );
+		EXPECT_HRESULT_SUCCEEDED( TestMap.insert(pNewNode->Value, pNewNode ) );
 	}
 
 	
@@ -171,8 +171,8 @@ TEST_F(HashTableTest, StaticHashTable_Unique)
 	};
 
 
-	typedef BR::Hash::StaticHashTable<	TestMapNode, 
-										BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
+	typedef BR::Hash::StaticHashTable<	int, TestMapNode, 
+										//BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
 										BR::Indexing::MapItemConverter<TestMapNode,TestMapNode::HashNodeType,&TestMapNode::m_MapNode>,
 										BR::Hash::UniqueKeyTrait, BR::ThreadSyncTraitNone
 										> TestTableType;
@@ -192,7 +192,7 @@ TEST_F(HashTableTest, StaticHashTable_Unique)
 			memset( pNewNode, 0, sizeof(TestMapNode) );
 			pNewNode->Value = value;
 			checkSet.insert( value );
-			EXPECT_HRESULT_SUCCEEDED( TestMap.insert( pNewNode ) );
+			EXPECT_HRESULT_SUCCEEDED( TestMap.insert(pNewNode->Value,pNewNode ) );
 		}
 	}
 
@@ -244,8 +244,8 @@ TEST_F(HashTableTest, StaticHashTable_UniqueMT)
 	};
 
 
-	typedef BR::Hash::StaticHashTable<	TestMapNode, 
-										BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
+	typedef BR::Hash::StaticHashTable<	int, TestMapNode, 
+										//BR::Indexing::MemData<TestMapNode,int,&TestMapNode::Value>,
 										BR::Indexing::MapItemConverter<TestMapNode,TestMapNode::HashNodeType,&TestMapNode::m_MapNode>,
 										BR::Hash::UniqueKeyTrait
 										> TestTableType;
@@ -292,7 +292,7 @@ TEST_F(HashTableTest, StaticHashTable_UniqueMT)
 				TestMapNode *pNewNode = new TestMapNode;
 				memset( pNewNode, 0, sizeof(TestMapNode) );
 				pNewNode->Value = value;
-				if( SUCCEEDED(TestMap.insert( pNewNode )) )
+				if( SUCCEEDED(TestMap.insert(pNewNode->Value,pNewNode )) )
 				{
 					numberOfItems.fetch_add(1,std::memory_order_relaxed);
 				}

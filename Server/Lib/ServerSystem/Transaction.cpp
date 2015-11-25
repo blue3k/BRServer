@@ -93,7 +93,7 @@ namespace Svr {
 
 	HRESULT Transaction::InitializeTransaction( Entity* pOwner )
 	{
-		SetTransID( TransactionID( pOwner->GetEntityID(), GetTransID().TransID ) );
+		SetTransID( TransactionID( pOwner->GetEntityID(), GetTransID().GetTransactionIndex() ) );
 		SetOwnerEntity(pOwner);
 		return S_OK;
 	}
@@ -119,7 +119,7 @@ namespace Svr {
 
 	void Transaction::RecordTransactionHistory(TransactionResult* pRes)
 	{
-		auto historyIndex = m_CurrentHistoryIdx++ % _countof(m_History);
+		auto historyIndex = m_CurrentHistoryIdx++ % countof(m_History);
 		m_History[historyIndex].TimeStamp = Util::Time.GetTimeMs();
 		m_History[historyIndex].MsgID = pRes->GetMsgID();
 		m_History[historyIndex].hrRes = pRes->GetHRESULT();

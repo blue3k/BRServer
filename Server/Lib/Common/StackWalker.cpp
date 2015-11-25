@@ -119,11 +119,11 @@ namespace BR
 			{
 				if( symbol )
 				{
-					defTrace( channel, "%0%:%1%", symbolInfo.Name, lineInfo.LineNumber );
+					defTrace( channel, "{0}:{1}", symbolInfo.Name, lineInfo.LineNumber );
 				}
 				else
 				{
-					defTrace( channel, "%0%:%1%", lineInfo.FileName, lineInfo.LineNumber );
+					defTrace( channel, "{0}:{1}", lineInfo.FileName, lineInfo.LineNumber );
 				}
 			}
 			else
@@ -133,7 +133,7 @@ namespace BR
 					DWORD64 relativeAddress = (DWORD64)StackTrace[stackDepth] - ((DWORD64)STACKWALKER_MIN_EXE_OFFSET + MIN_EXEOFFSET);
 					sprintf_s( symbolInfo.Name, symbolInfo.MaxNameLen, "0x%p", (void*)relativeAddress );
 				}
-				defTrace( channel, "%0%", symbolInfo.Name );
+				defTrace( channel, "{0}", symbolInfo.Name );
 			}
 		}
 
@@ -145,14 +145,14 @@ namespace BR
 	HRESULT CallStackTrace::PrintStackTrace(Trace::TraceChannels channel, NativeHandle hProcess)
 	{
 		char **strings;
-		size_t i;
 
 		strings = backtrace_symbols(StackTrace, StackTraceCount);
 
-		defTrace(channel, "StackTrace:");
+		defTrace(channel, "StackTrace:" );
 
-		for (UINT stackDepth = 0; stackDepth < StackTraceCount && StackTrace[stackDepth] != 0; stackDepth++)
+		for (UINT stackDepth = 0; stackDepth < StackTraceCount && strings != nullptr && strings[stackDepth] != 0; stackDepth++)
 		{
+			defTrace(channel, "{0}", strings[stackDepth]);
 		}
 
 		free(strings);
@@ -168,8 +168,8 @@ namespace BR
 	//
 
 	StackWalkerImpl::StackWalkerImpl()
-		:m_hProcess(NULL)
-		,m_ModuleStackSkipDepth(0)
+		: m_ModuleStackSkipDepth(0)
+		, m_hProcess(nullptr)
 	{
 	}
 
@@ -183,9 +183,9 @@ namespace BR
 
 		memset( m_SymbolPath, 0, sizeof(m_SymbolPath) );
 
-		if( GetCurrentDirectoryW( _countof(curDir), curDir ) > 0 )
+		if( GetCurrentDirectoryW( (DWORD)countof(curDir), curDir ) > 0 )
 		{
-			curDir[_countof(curDir)-1] = L'\0';
+			curDir[countof(curDir)-1] = L'\0';
 			wcscat_s(m_SymbolPath, curDir);
 			wcscat_s(m_SymbolPath, L";");
 		}
@@ -195,9 +195,9 @@ namespace BR
 		}
 
 		// Adding module directories
-		if( GetModuleFileNameW(NULL, tempBuffer, _countof(tempBuffer)) > 0 )
+		if( GetModuleFileNameW(NULL, tempBuffer, (DWORD)countof(tempBuffer)) > 0 )
 		{
-			tempBuffer[_countof(tempBuffer)-1] = L'\0';
+			tempBuffer[countof(tempBuffer)-1] = L'\0';
 			if( wcsncmp( curDir, tempBuffer, wcslen(curDir) ) != 0 )
 			{
 				wchar_t *found = tempBuffer + wcslen(tempBuffer) - 1;
@@ -230,14 +230,14 @@ namespace BR
 			return E_FAIL;
 		}
 
-		for( UINT iModule = 0; iModule < _countof(hModules) && hModules[iModule] != 0; iModule++ )
+		for( UINT iModule = 0; iModule < countof(hModules) && hModules[iModule] != 0; iModule++ )
 		{
 			MODULEINFO moduleInfo;
 			memset( &moduleInfo, 0, sizeof(moduleInfo) );
 			if( !GetModuleInformation( m_hProcess, hModules[iModule], &moduleInfo, sizeof(moduleInfo) ) )
 				continue;
 
-			if( GetModuleFileNameExW( m_hProcess, hModules[iModule], imageFileName, _countof(imageFileName) ) == 0 )
+			if( GetModuleFileNameExW( m_hProcess, hModules[iModule], imageFileName, (DWORD)countof(imageFileName) ) == 0 )
 			{
 				//result = GetLatestHRESULT();
 				continue;
@@ -502,8 +502,6 @@ namespace BR
 	// get current stack trace
 	void StackWalkerImpl::CaptureCallStack(CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth)
 	{
-		size_t size;
-
 		stackTrace.StackTraceCount = backtrace(stackTrace.StackTrace, countof(stackTrace.StackTrace));
 	}
 

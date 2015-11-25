@@ -95,7 +95,7 @@ namespace BR {
 
 		ArgBase* Clone(INT iBuffLen, BYTE* pBuff) const override
 		{
-			AssertRel(iBuffLen >= sizeof(Arg<Type>));
+			AssertRel(iBuffLen >= (INT)sizeof(Arg<Type>));
 			return new(pBuff) Arg<Type>(*this);
 		}
 

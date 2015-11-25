@@ -78,20 +78,22 @@
 
 	template<class KeyType, class ValueType>
 	DualSortedMap<KeyType, ValueType>::DualSortedMap(ObjectPoolT<MapNode> *pNodePool)
-		: m_ItemCount(0)
-		, m_ReadItemCount(0)
-		, m_ReadRoot(nullptr)
+		: m_ReadRoot(nullptr)
+		, m_ReadIndex(0)
+		, m_CurReadRoot(nullptr)
+		, m_PrevReadRoot(nullptr)
 		, m_WriteRoot(nullptr)
-		, m_UpdateSerial(1)
-		, m_IsModified(false)
 		, m_DeleteNodePool(false)
 		, m_pNodePool(pNodePool)
 		, m_PendingFreeCount(0)
 		, m_PendingFreeList(nullptr)
-		, m_ReadIndex(0)
+		, m_UpdateSerial(1)
+		, m_IsModified(false)
+		, m_ItemCount(0)
+		, m_ReadItemCount(0)
 		//, m_PendingFreeListTail(nullptr)
 	{
-		for (int iVal = 0; iVal < _countof(m_ReadCount); iVal++)
+		for (UINT iVal = 0; iVal < countof(m_ReadCount); iVal++)
 		{
 			m_ReadCount[iVal] = 0;
 		}
@@ -360,9 +362,9 @@
 		}
 
 #ifdef DEBUG
-		auto oldReadCount0 = m_ReadCount[0].load(std::memory_order_relaxed);
-		auto oldReadCount1 = m_ReadCount[1].load(std::memory_order_relaxed);
-		auto oldReadCount2 = m_ReadCount[2].load(std::memory_order_relaxed);
+		//auto oldReadCount0 = m_ReadCount[0].load(std::memory_order_relaxed);
+		//auto oldReadCount1 = m_ReadCount[1].load(std::memory_order_relaxed);
+		//auto oldReadCount2 = m_ReadCount[2].load(std::memory_order_relaxed);
 #endif
 
 		// flip root
@@ -391,7 +393,7 @@
 		std::atomic_thread_fence(std::memory_order_seq_cst);
 
 		// after flip the root we need to wait all previous working indexies
-		auto oldReadIndex = m_ReadIndex.fetch_add(1, std::memory_order_release) % _countof(m_ReadCount);
+		auto oldReadIndex = m_ReadIndex.fetch_add(1, std::memory_order_release) % countof(m_ReadCount);
 		while (m_ReadCount[oldReadIndex].load(std::memory_order_relaxed) > 0)
 		{
 			ThisThread::SleepFor(DurationMS(0));
@@ -423,7 +425,7 @@
 	template<class KeyType, class ValueType>
 	HRESULT DualSortedMap<KeyType, ValueType>::Find(KeyType key, ValueType& value, INT64 *pOrder)
 	{
-		auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % _countof(m_ReadCount);
+		auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % countof(m_ReadCount);
 		ScopeCounter localCounter(m_ReadCount[readIdx]);
 
 		m_CurReadRoot = m_ReadRoot.load(std::memory_order_acquire);
@@ -465,7 +467,7 @@
 	template<class KeyType, class ValueType>
 	HRESULT DualSortedMap<KeyType, ValueType>::ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
 	{
-		auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % _countof(m_ReadCount);
+		auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % countof(m_ReadCount);
 		ScopeCounter localCounter(m_ReadCount[readIdx]);
 
 		m_CurReadRoot = m_ReadRoot.load(std::memory_order_acquire);
@@ -480,7 +482,7 @@
 	template<class KeyType, class ValueType>
 	HRESULT DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
 	{
-		auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % _countof(m_ReadCount);
+		auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % countof(m_ReadCount);
 		ScopeCounter localCounter(m_ReadCount[readIdx]);
 
 		m_CurReadRoot = m_ReadRoot.load(std::memory_order_acquire);

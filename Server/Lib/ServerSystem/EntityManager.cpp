@@ -84,7 +84,7 @@ namespace Svr {
 
 		svrChk( pEntity->InitializeEntity( entityID ) );
 
-		if( entityID.FacultyID == (UINT)EntityFaculty::Service )
+		if( entityID.GetFacultyID() == (UINT)EntityFaculty::Service )
 		{
 			ClusteredServiceEntity* pClusterService = dynamic_cast<ClusteredServiceEntity*>(pEntity);
 			if( pClusterService != nullptr )
@@ -104,7 +104,7 @@ namespace Svr {
 
 	void EntityManager::OnEntityAdded(Entity* pEntity)
 	{
-		switch (pEntity->GetEntityID().EntityLID)
+		switch (pEntity->GetEntityID().GetEntityLID())
 		{
 		case (UINT)EntityFaculty::Service:
 			++m_NumberOfServices;
@@ -182,7 +182,7 @@ namespace Svr {
 
 	void EntityManager::OnEntityRemoved(Entity* pEntity)
 	{
-		switch (pEntity->GetEntityID().EntityLID)
+		switch (pEntity->GetEntityID().GetEntityLID())
 		{
 		case (UINT)EntityFaculty::Service:
 			--m_NumberOfServices;
