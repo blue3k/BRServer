@@ -13,15 +13,16 @@
 
 #include "Common/StrUtil.h"
 #include "Common/ArrayUtil.h"
-#include "Net/Netdef.h"
+#include "Net/NetDef.h"
+#include "DB/QueryManager.h"
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTypes.h"
+#include "ServerSystem/MasterEntity.h"
 #include "ServerSystem/TaskManager.h"
 #include "ServerSystem/MasterEntity.h"
 #include "ServerSystem/EntityTable.h"
 #include "ServerSystem/SvrConfig.h"
-#include "ServerSystem/ServerComponent.h"
-
+#include "ServerSystem/ServerComponentCarrier.h"
 
 
 namespace BR {
@@ -29,8 +30,6 @@ namespace Svr {
 namespace Config { 
 
 	class ConfigData;
-
-	typedef ::std::auto_ptr< ConfigData > ServerConfigurationsPtr;
 }}}
 
 
@@ -71,7 +70,7 @@ namespace Svr {
 	//
 	//	Server definition
 	//
-	class BrServer : public BR::Thread, public MasterEntity, public Svr::ServerComponentCarrier
+	class BrServer : public Thread, public MasterEntity, public ServerComponentCarrier
 	{
 	public:
 
@@ -204,7 +203,7 @@ namespace Svr {
 
 
 		// Get net private
-		inline BR::Net::ServerPeerTCP* GetNetPrivate()								{ return m_pNetPrivate; }
+		inline Net::ServerPeerTCP* GetNetPrivate()								{ return m_pNetPrivate; }
 
 		// Get entity table
 		inline EntityTable& GetEntityTable();
@@ -263,7 +262,7 @@ namespace Svr {
 		virtual HRESULT CloseNetPrivate();
 
 		// create remote entity by class
-		virtual HRESULT CreateServerEntity( BR::NetClass netClass, ServerEntity* &pServerEntity ) = 0;
+		virtual HRESULT CreateServerEntity( NetClass netClass, ServerEntity* &pServerEntity ) = 0;
 
 		// Initialize private Network
 		virtual HRESULT InitializeNetPublic();
@@ -291,14 +290,9 @@ namespace Svr {
 	//	Static interfaces
 	//
 
-	// Get entity table
-	inline EntityTable& GetEntityTable();
-
 	// Get Loopback ServerEntity
 	inline ServerEntity* GetLoopbackServerEntity();
 	
-	// Get server ID
-	inline ServerID GetMyServerID();
 
 	template< class ComponentType >
 	ComponentType* GetServerComponent();

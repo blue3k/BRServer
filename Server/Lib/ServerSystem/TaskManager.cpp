@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/svrTrace.h"
+#include "ServerSystem/SvrTrace.h"
 #include "Common/Thread.h"
 #include "Common/TimeUtil.h"
 #include "ServerSystem/TaskManager.h"

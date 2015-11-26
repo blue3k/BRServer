@@ -11,25 +11,25 @@
 
 
 // Get target memory buffer size
-UINT OutputMemoryStream::GetBufferSize()
+inline UINT OutputMemoryStream::GetBufferSize()
 {
 	return m_BufferSize;
 }
 
 // Get writen size
-UINT OutputMemoryStream::GetSize()
+inline UINT OutputMemoryStream::GetSize()
 {
 	return m_WritingPosition;
 }
 
 // Get remain size
-UINT OutputMemoryStream::GetRemainSize()
+inline UINT OutputMemoryStream::GetRemainSize()
 {
 	return m_BufferSize - m_WritingPosition;
 }
 
 // Get memory buffer pointer
-const BYTE* OutputMemoryStream::GetData()
+inline const BYTE* OutputMemoryStream::GetData()
 {
 	return m_Buffer;
 }

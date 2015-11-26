@@ -59,7 +59,7 @@ namespace ProtocolBuilder
             OutStream.WriteLine("#include \"Common/Typedefs.h\"");
             OutStream.WriteLine("#include \"Common/PolicyID.h\"");
 
-            OutStream.WriteLine("#include \"Net/Netdef.h\"");
+            OutStream.WriteLine("#include \"Net/NetDef.h\"");
             OutStream.WriteLine("#include \"Net/NetPolicy.h\"");
             OutStream.WriteLine(string.Format("#include \"Protocol/Policy/{0}\"", IBasePolicyHeaderName));
             NewLine(3);
@@ -86,7 +86,7 @@ namespace ProtocolBuilder
             OutStream.WriteLine(string.Format("#include \"{0}\"", PreCompiledHeader));
             OutStream.WriteLine("#include \"Common/Typedefs.h\"");
             OutStream.WriteLine("#include \"Common/PolicyID.h\"");
-            OutStream.WriteLine("#include \"Net/Netdef.h\"");
+            OutStream.WriteLine("#include \"Net/NetDef.h\"");
             OutStream.WriteLine("#include \"Common/Message.h\"");
             OutStream.WriteLine("#include \"Common/BrSvrTypes.h\"");
             OutStream.WriteLine("#include \"Common/BrGameTypes.h\"");

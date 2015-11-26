@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="TableQueries.h" />
+    <ClInclude Include="TableSystem.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="conspiracy\LevelTbl.h">
+      <Filter>conspiracy</Filter>
+    </ClInclude>
+    <ClInclude Include="conspiracy\OrganicTbl.h">
+      <Filter>conspiracy</Filter>
+    </ClInclude>
+    <ClInclude Include="conspiracy\RewardTbl.h">
+      <Filter>conspiracy</Filter>
+    </ClInclude>
+    <ClInclude Include="conspiracy\ShopTbl.h">
+      <Filter>conspiracy</Filter>
+    </ClInclude>
+    <ClInclude Include="conspiracy\GameConfigTbl.h">
+      <Filter>conspiracy</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TableSystem.cpp" />
+    <ClCompile Include="TableQueries.cpp" />
+    <ClCompile Include="conspiracy\LevelTbl.cpp">
+      <Filter>conspiracy</Filter>
+    </ClCompile>
+    <ClCompile Include="conspiracy\OrganicTbl.cpp">
+      <Filter>conspiracy</Filter>
+    </ClCompile>
+    <ClCompile Include="conspiracy\RewardTbl.cpp">
+      <Filter>conspiracy</Filter>
+    </ClCompile>
+    <ClCompile Include="conspiracy\ShopTbl.cpp">
+      <Filter>conspiracy</Filter>
+    </ClCompile>
+    <ClCompile Include="conspiracy\GameConfigTbl.cpp">
+      <Filter>conspiracy</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="conspiracy">
+      <UniqueIdentifier>{67da55e7-dd66-431e-933a-0e68c681f502}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

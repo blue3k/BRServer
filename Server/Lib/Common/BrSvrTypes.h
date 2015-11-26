@@ -127,8 +127,8 @@ namespace BR {
 
 		inline TransactionID();
 		inline TransactionID( const TransactionID& transID );
-		inline TransactionID( BR::EntityID entityID, UINT32 transID );
-		inline TransactionID( BR::Context context );
+		inline TransactionID( EntityID entityID, UINT32 transID );
+		inline TransactionID( Context context );
 
 		inline bool IsValid() const;
 
@@ -140,7 +140,7 @@ namespace BR {
 		inline bool operator == ( const TransactionID& src ) const;
 
 #if !defined(SWIG)
-		inline operator BR::Context() const;
+		inline operator Context() const;
 #endif
 	};
 
@@ -220,7 +220,7 @@ namespace BR {
 
 		inline ServiceInformation();
 		inline ServiceInformation( const ServiceInformation& src );
-		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, BR::NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, UINT32 workload );
+		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, UINT32 workload );
 		inline ServiceInformation( int initValue );
 
 		inline ServiceInformation& operator = ( const ServiceInformation& src );

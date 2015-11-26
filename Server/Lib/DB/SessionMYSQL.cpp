@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Factory.h"
 
@@ -117,13 +117,14 @@ namespace DB {
 	{
 		HRESULT hr = S_OK;
 		StatementPoolMap::iterator itFound;
+		StackPool* pPool = nullptr;
+		intptr_t key;
 
 		dbChkPtr(pStatement);
 		dbChkPtr(pStatement->GetQueryString());
 
-		intptr_t key = (intptr_t)pStatement->GetQueryString();
+		key = (intptr_t)pStatement->GetQueryString();
 
-		StackPool* pPool = nullptr;
 
 		itFound = m_StatementPoolMap.find(key);
 		if( itFound == m_StatementPoolMap.end() )
@@ -257,7 +258,7 @@ namespace DB {
 
 		CloseSession();
 
-		__super::OpenSession();
+		Session::OpenSession();
 
 		dbMem( m_mySQL = mysql_init(NULL) );
 
@@ -291,7 +292,7 @@ namespace DB {
 	// Close session
 	HRESULT SessionMYSQL::CloseSession()
 	{
-		__super::CloseSession();
+		Session::CloseSession();
 
 		m_StatementPool.ClearStatementPools();
 
@@ -314,11 +315,11 @@ namespace DB {
 
 
 	StatementMYSQL::StatementMYSQL( const char* queryString )
-		:m_QueryString(queryString)
-		,m_StateInitSync(0)
-		,m_Stmt(nullptr)
-		,m_Context(nullptr)
-		,m_pParameter(nullptr)
+		: m_QueryString(queryString)
+		, m_Context(nullptr)
+		, m_Stmt(nullptr)
+		, m_StateInitSync(0)
+		, m_pParameter(nullptr)
 	{
 		AssertRel(m_QueryString!=nullptr);
 	}
@@ -334,12 +335,13 @@ namespace DB {
 	HRESULT StatementMYSQL::PrepareState( MYSQL *pContext, CounterType syncInit )
 	{
 		HRESULT hr = S_OK;
+		int rc;
 
 		m_Context = pContext;
 		m_StateInitSync = syncInit;
 
 		dbChkPtr( m_Stmt = mysql_stmt_init(m_Context) );
-		int rc = mysql_stmt_prepare(m_Stmt, m_QueryString, (uint) strlen(m_QueryString));
+		rc = mysql_stmt_prepare(m_Stmt, m_QueryString, (uint) strlen(m_QueryString));
 		if ( rc )
 		{
 			dbErr(MYSQL_ToHRESULT(mysql_stmt_errno(m_Stmt)) );
@@ -362,12 +364,13 @@ namespace DB {
 	HRESULT StatementMYSQL::Bind( QueryMYSQL *pMyQuery )
 	{
 		HRESULT hr = S_OK;
+		int paramCount;
 
 		m_pParameter = nullptr;
 
 		dbChkPtr( m_Stmt );
 
-		int paramCount = mysql_stmt_param_count(m_Stmt);
+		paramCount = mysql_stmt_param_count(m_Stmt);
 
 		Assert( paramCount == pMyQuery->GetParameterCount() );
 
@@ -393,10 +396,11 @@ namespace DB {
 	HRESULT StatementMYSQL::Execute()
 	{
 		HRESULT hr = S_OK;
+		int rc;
 
 		dbChkPtr( m_Stmt );
 
-		int rc = mysql_stmt_execute(m_Stmt);
+		rc = mysql_stmt_execute(m_Stmt);
 		if( rc != 0 )
 		{
 			hr = MYSQL_ToHRESULT(mysql_stmt_errno(m_Stmt));
@@ -416,7 +420,7 @@ namespace DB {
 	HRESULT StatementMYSQL::PatchResults( QueryMYSQL *pMyQuery )
 	{
 		HRESULT hr = S_OK;
-		MYSQL_BIND *pResults = nullptr;
+		//MYSQL_BIND *pResults = nullptr;
 		int resultStatus = 0, rc;
 
 		dbChkPtr( m_Stmt );
@@ -428,7 +432,7 @@ namespace DB {
 
 			if (num_fields > 0)
 			{
-				const int ResultMax = 32;
+				//const int ResultMax = 32;
 				MYSQL_BIND *pResults = nullptr;
 				bool bOutParamBind = (m_Context->server_status & SERVER_PS_OUT_PARAMS) != 0;
 				if( bOutParamBind )

@@ -96,7 +96,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -109,12 +109,12 @@ namespace BR
 			}; // HRESULT GenericFailureCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID GenericFailureCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GenericFailureCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:GenericFailureCmd:%1%:%2% , Context:%3%, RouteContext:%4%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext); 
-			}; // VOID GenericFailureCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GenericFailureCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GenericFailureRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_SERVER, 0);
 			HRESULT GenericFailureRes::ParseIMsg( MessageData* pIMsg )
@@ -186,7 +186,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -199,12 +199,12 @@ namespace BR
 			}; // HRESULT GenericFailureRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:GenericFailureRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
-			}; // VOID GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Server Started or Connected
 			const MessageID ServerConnectedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_SERVER, 1);
@@ -281,7 +281,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -294,12 +294,12 @@ namespace BR
 			}; // HRESULT ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID ServerConnectedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void ServerConnectedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:ServerConnectedC2SEvt:%1%:%2% , RouteContext:%3%, ClusterManagerServiceInformation:%4%, StartUpTime:%5%, PublicAddress:%6%, PrivateAddress:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_ClusterManagerServiceInformation, m_StartUpTime, m_PublicAddress, m_PrivateAddress); 
-			}; // VOID ServerConnectedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void ServerConnectedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

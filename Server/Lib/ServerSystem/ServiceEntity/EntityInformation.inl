@@ -49,7 +49,7 @@ void EntityInformation::SetName( const char* strName )
 
 
 
-Net::IConnection* ServerServiceInformation::GetConnection() const
+inline Net::IConnection* ServerServiceInformation::GetConnection() const
 {
 	if( m_ServerEntity == nullptr ) return nullptr;
 
@@ -57,7 +57,7 @@ Net::IConnection* ServerServiceInformation::GetConnection() const
 }
 
 // check whether this service is available or not
-bool ServerServiceInformation::IsServiceAvailable() const
+inline bool ServerServiceInformation::IsServiceAvailable() const
 {
 	Assert(m_ServerEntity);
 	return m_ServerEntity->GetConnection() && m_ServerEntity->GetConnection()->GetConnectionState() == Net::IConnection::STATE_CONNECTED;
@@ -85,18 +85,5 @@ AuthTicket UserEntityInformation::GetAuthTicket() const
 void UserEntityInformation::SetAuthTicket( AuthTicket ticket )
 {
 	m_AuthTicket = ticket;
-}
-
-
-
-///////////////////////////////////////////////////////////////////
-//
-//	Service base
-//
-
-// This is not a good place to place this implementatin but it's the only way to make it work
-EntityUID ServerServiceBase::GetServiceEntityUID()
-{
-	return m_ServerServiceInformation->GetEntityUID();
 }
 

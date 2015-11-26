@@ -37,6 +37,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 uiSizeOfPlayerName = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -44,7 +45,6 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(AccountID) ) );
-				UINT16 uiSizeOfPlayerName = 0;
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPlayerName, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_PlayerName, pCur, iMsgSize, sizeof(char)*uiSizeOfPlayerName ) );
 
@@ -86,12 +86,12 @@ namespace BR
 
 
 
-			VOID PlayerEnteredC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PlayerEnteredC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerEnteredC2SEvt:%1%:%2% , PlayerID:%3%, PlayerName:%4%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PlayerID, m_PlayerName); 
-			}; // VOID PlayerEnteredC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PlayerEnteredC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Player leaved
 			const MessageID PlayerLeavedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEMASTERSERVER, 1);
@@ -144,12 +144,12 @@ namespace BR
 
 
 
-			VOID PlayerLeavedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PlayerLeavedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerLeavedC2SEvt:%1%:%2% , PlayerID:%3%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PlayerID); 
-			}; // VOID PlayerLeavedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PlayerLeavedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

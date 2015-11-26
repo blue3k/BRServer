@@ -102,7 +102,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -129,12 +129,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -145,12 +145,12 @@ namespace BR
 
 			}; // HRESULT GetClusterMemberListCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID GetClusterMemberListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GetClusterMemberListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:GetClusterMemberListCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, ClusterID:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_ClusterID); 
-			}; // VOID GetClusterMemberListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GetClusterMemberListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetClusterMemberListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 0);
 			HRESULT GetClusterMemberListRes::ParseIMsg( MessageData* pIMsg )
@@ -159,6 +159,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 numberofMemberList = 0; ServiceInformation* pMemberList = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -168,7 +169,6 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				UINT16 numberofMemberList = 0; ServiceInformation* pMemberList = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofMemberList, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pMemberList, pCur, iMsgSize, sizeof(ServiceInformation)*numberofMemberList ) );
 				m_MemberList.SetLinkedBuffer(numberofMemberList, numberofMemberList, pMemberList);
@@ -194,6 +194,7 @@ namespace BR
 
 				MessageData *pNewMsg = NULL;
 
+				UINT16 numberOfInMemberList = (UINT16)InMemberList.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::GetClusterMemberListRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -201,7 +202,6 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				UINT16 numberOfInMemberList = (UINT16)InMemberList.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInMemberList, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.GetSize())); 
 
@@ -230,7 +230,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -258,7 +258,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -273,12 +273,12 @@ namespace BR
 
 			}; // HRESULT GetClusterMemberListRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID GetClusterMemberListRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GetClusterMemberListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:GetClusterMemberListRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MemberList:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MemberList); 
-			}; // VOID GetClusterMemberListRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GetClusterMemberListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
 			const MessageID JoinClusterCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 1);
@@ -368,7 +368,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -395,12 +395,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -411,12 +411,12 @@ namespace BR
 
 			}; // HRESULT JoinClusterCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID JoinClusterCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void JoinClusterCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:JoinClusterCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, Sender:%6%, SenderNetClass:%7%, SenderAddress:%8%, ClusterID:%9%, ClusterType:%10%, ClusterMembership:%11%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_Sender, m_SenderNetClass, m_SenderAddress, m_ClusterID, m_ClusterType, m_ClusterMembership); 
-			}; // VOID JoinClusterCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void JoinClusterCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID JoinClusterRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 1);
 			HRESULT JoinClusterRes::ParseIMsg( MessageData* pIMsg )
@@ -425,6 +425,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 numberofMemberList = 0; ServiceInformation* pMemberList = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -434,7 +435,6 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				UINT16 numberofMemberList = 0; ServiceInformation* pMemberList = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofMemberList, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pMemberList, pCur, iMsgSize, sizeof(ServiceInformation)*numberofMemberList ) );
 				m_MemberList.SetLinkedBuffer(numberofMemberList, numberofMemberList, pMemberList);
@@ -460,6 +460,7 @@ namespace BR
 
 				MessageData *pNewMsg = NULL;
 
+				UINT16 numberOfInMemberList = (UINT16)InMemberList.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::JoinClusterRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -467,7 +468,6 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				UINT16 numberOfInMemberList = (UINT16)InMemberList.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInMemberList, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.GetSize())); 
 
@@ -496,7 +496,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -524,7 +524,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -539,12 +539,12 @@ namespace BR
 
 			}; // HRESULT JoinClusterRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID JoinClusterRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void JoinClusterRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:JoinClusterRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MemberList:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MemberList); 
-			}; // VOID JoinClusterRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void JoinClusterRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Do not let it broadcasted while it's manual broadcast packet
 			const MessageID NewServerServiceJoinedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 2);
@@ -630,7 +630,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -656,12 +656,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -672,12 +672,12 @@ namespace BR
 
 			}; // HRESULT NewServerServiceJoinedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID NewServerServiceJoinedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void NewServerServiceJoinedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:NewServerServiceJoinedC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, JoinedServiceUID:%5%, JoinedServiceNetClass:%6%, JoinedServiceAddress:%7%, ClusterID:%8%, ClusterType:%9%, JoinedServiceMembership:%10%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_JoinedServiceUID, m_JoinedServiceNetClass, m_JoinedServiceAddress, m_ClusterID, m_ClusterType, m_JoinedServiceMembership); 
-			}; // VOID NewServerServiceJoinedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void NewServerServiceJoinedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Sync cluster service informations
 			const MessageID SyncClusterServiceC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 3);
@@ -687,6 +687,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 numberofMemberList = 0; ServiceInformation* pMemberList = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -697,7 +698,6 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, sizeof(ClusterID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterType, pCur, iMsgSize, sizeof(ClusterType) ) );
-				UINT16 numberofMemberList = 0; ServiceInformation* pMemberList = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofMemberList, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pMemberList, pCur, iMsgSize, sizeof(ServiceInformation)*numberofMemberList ) );
 				m_MemberList.SetLinkedBuffer(numberofMemberList, numberofMemberList, pMemberList);
@@ -724,6 +724,7 @@ namespace BR
 
 				MessageData *pNewMsg = NULL;
 
+				UINT16 numberOfInMemberList = (UINT16)InMemberList.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::SyncClusterServiceC2SEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -732,7 +733,6 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 				Protocol::PackParamCopy( pMsgData, &InClusterType, sizeof(ClusterType));
-				UINT16 numberOfInMemberList = (UINT16)InMemberList.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInMemberList, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.GetSize())); 
 
@@ -759,7 +759,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -785,12 +785,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -801,12 +801,12 @@ namespace BR
 
 			}; // HRESULT SyncClusterServiceC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID SyncClusterServiceC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void SyncClusterServiceC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:SyncClusterServiceC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, ClusterID:%5%, ClusterType:%6%, MemberList:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_ClusterID, m_ClusterType, m_MemberList); 
-			}; // VOID SyncClusterServiceC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void SyncClusterServiceC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Join to the cluster
 			const MessageID RequestDataSyncCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 4);
@@ -881,7 +881,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -908,12 +908,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -924,12 +924,12 @@ namespace BR
 
 			}; // HRESULT RequestDataSyncCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID RequestDataSyncCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RequestDataSyncCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:RequestDataSyncCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, ClusterID:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_ClusterID); 
-			}; // VOID RequestDataSyncCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RequestDataSyncCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RequestDataSyncRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 4);
 			HRESULT RequestDataSyncRes::ParseIMsg( MessageData* pIMsg )
@@ -1001,7 +1001,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1029,7 +1029,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1042,12 +1042,12 @@ namespace BR
 
 			}; // HRESULT RequestDataSyncRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID RequestDataSyncRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RequestDataSyncRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:RequestDataSyncRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
-			}; // VOID RequestDataSyncRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RequestDataSyncRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Master instance of the cluster is assigned
 			const MessageID ClusterMasterAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 5);
@@ -1124,7 +1124,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1150,12 +1150,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1166,12 +1166,12 @@ namespace BR
 
 			}; // HRESULT ClusterMasterAssignedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID ClusterMasterAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void ClusterMasterAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:ClusterMasterAssignedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, Sender:%5%, ClusterID:%6%, MasterUID:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_Sender, m_ClusterID, m_MasterUID); 
-			}; // VOID ClusterMasterAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void ClusterMasterAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Master vote
 			const MessageID ClusterMasterVoteC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 6);
@@ -1248,7 +1248,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1274,12 +1274,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1290,12 +1290,12 @@ namespace BR
 
 			}; // HRESULT ClusterMasterVoteC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID ClusterMasterVoteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void ClusterMasterVoteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:ClusterMasterVoteC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, ClusterID:%5%, VoteToUID:%6%, VotedUpTime:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_ClusterID, m_VoteToUID, m_VotedUpTime); 
-			}; // VOID ClusterMasterVoteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void ClusterMasterVoteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Update cluster service status
 			const MessageID ClusterUpdateStatusC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 7);
@@ -1372,7 +1372,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1398,12 +1398,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1414,12 +1414,12 @@ namespace BR
 
 			}; // HRESULT ClusterUpdateStatusC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID ClusterUpdateStatusC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void ClusterUpdateStatusC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:ClusterUpdateStatusC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, Sender:%5%, ClusterID:%6%, MemberStatus:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_Sender, m_ClusterID, m_MemberStatus); 
-			}; // VOID ClusterUpdateStatusC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void ClusterUpdateStatusC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Update cluster service workload
 			const MessageID ClusterUpdateWorkloadC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 8);
@@ -1496,7 +1496,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1522,12 +1522,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1538,12 +1538,12 @@ namespace BR
 
 			}; // HRESULT ClusterUpdateWorkloadC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID ClusterUpdateWorkloadC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void ClusterUpdateWorkloadC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:ClusterUpdateWorkloadC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, Sender:%5%, ClusterID:%6%, Workload:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_Sender, m_ClusterID, m_Workload); 
-			}; // VOID ClusterUpdateWorkloadC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void ClusterUpdateWorkloadC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Get lowest workloaded cluster member
 			const MessageID GetLowestWorkloadClusterMemberCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 9);
@@ -1618,7 +1618,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1645,12 +1645,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1661,12 +1661,12 @@ namespace BR
 
 			}; // HRESULT GetLowestWorkloadClusterMemberCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID GetLowestWorkloadClusterMemberCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GetLowestWorkloadClusterMemberCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:GetLowestWorkloadClusterMemberCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, ClusterID:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_ClusterID); 
-			}; // VOID GetLowestWorkloadClusterMemberCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GetLowestWorkloadClusterMemberCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetLowestWorkloadClusterMemberRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 9);
 			HRESULT GetLowestWorkloadClusterMemberRes::ParseIMsg( MessageData* pIMsg )
@@ -1741,7 +1741,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1769,7 +1769,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1783,12 +1783,12 @@ namespace BR
 
 			}; // HRESULT GetLowestWorkloadClusterMemberRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID GetLowestWorkloadClusterMemberRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GetLowestWorkloadClusterMemberRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:GetLowestWorkloadClusterMemberRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, Member:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_Member); 
-			}; // VOID GetLowestWorkloadClusterMemberRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GetLowestWorkloadClusterMemberRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Called when a player entity is created
 			const MessageID GamePlayerEntityCreatedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 10);
@@ -1862,7 +1862,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1888,12 +1888,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1904,12 +1904,12 @@ namespace BR
 
 			}; // HRESULT GamePlayerEntityCreatedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID GamePlayerEntityCreatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GamePlayerEntityCreatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerEntityCreatedC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, PlayerID:%5%, PlayerUID:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_PlayerID, m_PlayerUID); 
-			}; // VOID GamePlayerEntityCreatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GamePlayerEntityCreatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Called when a player entity is deleted
 			const MessageID GamePlayerEntityDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 11);
@@ -1983,7 +1983,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2009,12 +2009,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -2025,12 +2025,12 @@ namespace BR
 
 			}; // HRESULT GamePlayerEntityDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID GamePlayerEntityDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GamePlayerEntityDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerEntityDeletedC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, PlayerID:%5%, PlayerUID:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_PlayerID, m_PlayerUID); 
-			}; // VOID GamePlayerEntityDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GamePlayerEntityDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

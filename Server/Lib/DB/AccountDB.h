@@ -52,26 +52,26 @@ namespace DB {
 		//	Account DB interface
 		//
 
-		HRESULT FacebookCreateUser(BR::TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone);
-		HRESULT FacebookLogIn( BR::TransactionID Sender, UINT64 facebookUID );
+		HRESULT FacebookCreateUser(TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone);
+		HRESULT FacebookLogIn( TransactionID Sender, UINT64 facebookUID );
 
-		HRESULT CreateUser( BR::TransactionID Sender, const char* UserName, const char* Password );
-		HRESULT LogIn( BR::TransactionID Sender, const char* UserName, const char* Password );
-		HRESULT LogOut( BR::TransactionID Sender);
+		HRESULT CreateUser( TransactionID Sender, const char* UserName, const char* Password );
+		HRESULT LogIn( TransactionID Sender, const char* UserName, const char* Password );
+		HRESULT LogOut( TransactionID Sender);
 
-		HRESULT CreateRandomUser(BR::TransactionID Sender, const char* userName, const char* cellPhone);
+		HRESULT CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone);
 
-		HRESULT UserList( BR::TransactionID Sender);
+		HRESULT UserList( TransactionID Sender);
 
-		HRESULT UpdateGCMKeys( BR::TransactionID Sender, AccountID accountID, const char* strGCMKeys );
-		HRESULT UpdateUserContactInfo(BR::TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone);
+		HRESULT UpdateGCMKeys( TransactionID Sender, AccountID accountID, const char* strGCMKeys );
+		HRESULT UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone);
 
 		// Find player
-		HRESULT FindPlayerByEMail( BR::TransactionID Sender, const char* email );
-		HRESULT FindPlayerByPlayerID(BR::TransactionID Sender, AccountID accountID);
+		HRESULT FindPlayerByEMail( TransactionID Sender, const char* email );
+		HRESULT FindPlayerByPlayerID(TransactionID Sender, AccountID accountID);
 
 		// Player shard id
-		HRESULT GetPlayerShardID(BR::TransactionID Sender, AccountID accountID);
+		HRESULT GetPlayerShardID(TransactionID Sender, AccountID accountID);
 	};
 
 

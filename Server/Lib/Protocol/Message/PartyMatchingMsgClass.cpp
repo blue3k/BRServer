@@ -95,7 +95,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -121,12 +121,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -137,12 +137,12 @@ namespace BR
 
 			}; // HRESULT PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID PartyGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PartyGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PartyGameMatchedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount); 
-			}; // VOID PartyGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PartyGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: 
 			const MessageID PlayerGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHING, 1);
@@ -219,7 +219,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -245,12 +245,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -261,12 +261,12 @@ namespace BR
 
 			}; // HRESULT PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID PlayerGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PlayerGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerGameMatchedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, DestPlayerID:%5%, GameInsUID:%6%, RequestedRole:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_DestPlayerID, m_GameInsUID, m_RequestedRole); 
-			}; // VOID PlayerGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PlayerGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

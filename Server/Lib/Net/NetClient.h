@@ -112,7 +112,7 @@ namespace Net {
 		virtual HRESULT TakeOverConnection(IConnection* pIConnection) override;
 
 		// Get connection from connection ID
-		virtual HRESULT GetConnection( UINT_PTR uiCID, SharedPointerT<Connection> &pIConnection );
+		virtual HRESULT GetConnection( uintptr_t uiCID, SharedPointerT<Connection> &pIConnection );
 
 		// Send message to connection with network device
 		virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
@@ -157,7 +157,7 @@ namespace Net {
 		virtual HRESULT ReleaseConnection( IConnection* pIConnection );
 		
 		// Get connection from connection ID
-		virtual HRESULT GetConnection(UINT_PTR uiCID, SharedPointerT<Connection> &pIConnection);
+		virtual HRESULT GetConnection(uintptr_t uiCID, SharedPointerT<Connection> &pIConnection);
 
 		// Send message to connection with network device
 		virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );

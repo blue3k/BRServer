@@ -63,7 +63,7 @@ inline bool IConnection::tag_Event::operator != (const IConnection::tag_Event& s
 
 
 // setup Net
-HRESULT IConnection::SetupNet( INet *pNetInstance, UINT_PTR uiCID )
+HRESULT IConnection::SetupNet( INet *pNetInstance, uintptr_t uiCID )
 {
 	m_CID = uiCID;
 	m_pINet = pNetInstance;
@@ -119,7 +119,7 @@ inline void IConnection::SetLocalClass(NetClass uiLocalClass)
 template< typename IPolicyType >
 IPolicyType* IConnection::GetPolicy()
 {
-	if( ((UINT32)IPolicyType::ID_POLICY) >= BR::POLICY_NETMAX )
+	if( ((UINT32)IPolicyType::ID_POLICY) >= POLICY_NETMAX )
 		return nullptr;
 
 	if( m_pPolicy[IPolicyType::ID_POLICY] == nullptr )
@@ -138,7 +138,7 @@ IPolicyType* IConnection::GetPolicy()
 template< typename IPolicyType >
 IPolicyType* IConnection::GetPolicyByID( UINT policyID )
 {
-	if( ((UINT32)policyID) >= BR::POLICY_NETMAX || m_pPolicy[policyID] == NULL )
+	if( ((UINT32)policyID) >= POLICY_NETMAX || m_pPolicy[policyID] == NULL )
 		return NULL;
 
 	return (IPolicyType*)m_pPolicy[policyID];
@@ -190,7 +190,7 @@ INet::Event::Event(void* ptr)
 	assert(ptr == nullptr);
 }
 
-INet::Event::Event( INet::Event::EventTypes eventType, BR::Net::IConnection *pCon )
+INet::Event::Event( INet::Event::EventTypes eventType, IConnection *pCon )
 	:EventType(eventType),
 	EventConnection(pCon)
 {

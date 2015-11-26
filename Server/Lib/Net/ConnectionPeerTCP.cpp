@@ -11,7 +11,7 @@
 
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
@@ -108,7 +108,7 @@ namespace Net {
 				m_ulNetCtrlTryTime = ulTimeCur;
 				Assert(GetConnectionInfo().LocalClass != NetClass::Unknown);
 				m_uiSendNetCtrlCount++;
-				netChk( SendNetCtrl( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR::PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
+				netChk( SendNetCtrl( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR_PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
 			}
 
 			goto Proc_End;

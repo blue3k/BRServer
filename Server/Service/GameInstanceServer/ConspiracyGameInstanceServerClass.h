@@ -54,7 +54,7 @@ namespace ConspiracyGameInstanceServer
 
 	private:
 		// Game cluster config
-		const Svr::Config::GameCluster*	m_pGameClusterCfg;
+		const Svr::Config::GameClusterInfo*	m_pGameClusterCfg;
 
 	protected:
 

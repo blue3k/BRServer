@@ -66,7 +66,7 @@ namespace ProtocolBuilder
             }
             OutStream.WriteLine("#include \"Common/BrGameTypes.h\"");
             OutStream.WriteLine("#include \"Common/PolicyID.h\"");
-            OutStream.WriteLine("#include \"Net/Netdef.h\"");
+            OutStream.WriteLine("#include \"Net/NetDef.h\"");
             OutStream.WriteLine("#include \"Net/NetPolicy.h\"");
             if( Group.IsServer )
                 OutStream.WriteLine("#include \"Common/SvrPolicyID.h\"");
@@ -96,7 +96,7 @@ namespace ProtocolBuilder
             OutStream.WriteLine(string.Format("#include \"{0}\"", PreCompiledHeader));
             OutStream.WriteLine("#include \"Common/Typedefs.h\"");
             OutStream.WriteLine("#include \"Common/PolicyID.h\"");
-            OutStream.WriteLine("#include \"Net/Netdef.h\"");
+            OutStream.WriteLine("#include \"Net/NetDef.h\"");
             OutStream.WriteLine("#include \"Common/Message.h\"");
             OutStream.WriteLine(string.Format("#include \"Protocol/Policy/{0}\"", OutputHeaderName()));
             NewLine(3);

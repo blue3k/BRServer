@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/MemoryStream.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"

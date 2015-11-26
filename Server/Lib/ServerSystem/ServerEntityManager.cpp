@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
@@ -21,6 +21,7 @@
 #include "ServerSystem/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/BrServer.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/SvrConst.h"
 #include "Net/NetServerPeer.h"
@@ -173,7 +174,7 @@ namespace Svr
 	HRESULT ServerEntityManager::AddServerEntity(NetClass netClass, ServerEntity* pServerEntity)
 	{
 		HRESULT hr = S_OK;
-
+		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
 		svrChkPtr( pServerEntity );
 
 		if (netClass < NetClass::Unknown
@@ -182,12 +183,12 @@ namespace Svr
 			return E_INVALIDARG;
 		}
 
-		svrChk( pServerEntity->InitializeEntity( GetEntityTable().GenEntityID(EntityFaculty::Server) ) );
+		svrChk( pServerEntity->InitializeEntity(entityTable.GenEntityID(EntityFaculty::Server) ) );
 
 		// Add to task list
 		svrChk( AddTickTask( pServerEntity ) );
 
-		svrChk(GetEntityTable().Insert(pServerEntity->GetEntityID(), pServerEntity));
+		svrChk(entityTable.Insert(pServerEntity->GetEntityID(), pServerEntity));
 
 		svrChk(m_ServerIDMap.Insert(pServerEntity->GetServerID(), pServerEntity));
 

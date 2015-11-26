@@ -198,7 +198,7 @@ HRESULT PageQueue<DataType>::Enqueue(const DataType& item)
 template <class DataType>
 HRESULT PageQueue<DataType>::Enqueue( DataType&& item )
 {
-	HRESULT hr = S_OK;
+	//HRESULT hr = S_OK;
 	auto defaultValue = DefaultValue<DataType>();
 
 	Assert(item != defaultValue);
@@ -263,7 +263,7 @@ HRESULT PageQueue<DataType>::Enqueue( DataType&& item )
 		EnqueuePageMove(pMyEnqueuePage, myPageID);
 	}
 
-Proc_End:
+//Proc_End:
 
 	return S_OK;
 }
@@ -412,7 +412,7 @@ HRESULT PageQueue<DataType>::GetFront( DataType& item )
 	CounterType myCellID = (myDequeueTicket) % m_NumberOfItemsPerPage;
 
 	// my pertinent PageID...starting from 0
-	CounterType myPageID = (myDequeueTicket) / m_NumberOfItemsPerPage;
+	//CounterType myPageID = (myDequeueTicket) / m_NumberOfItemsPerPage;
 
 	// Read the data & clear that read position 
 	int LockTry = 0;

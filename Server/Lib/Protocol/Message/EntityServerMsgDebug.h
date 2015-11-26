@@ -12,7 +12,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/PolicyID.h"
-#include "Net/Netdef.h"
+#include "Net/NetDef.h"
 #include "Protocol/ProtocolMessageCPPInc.h"
 #include "Protocol/Message/EntityServerMsgClass.h"
 

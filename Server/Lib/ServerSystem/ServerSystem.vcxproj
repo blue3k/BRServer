@@ -158,12 +158,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="BrServer.inl" />
+    <None Include="BrServerUtil.inl" />
     <None Include="Entity.inl" />
     <None Include="EntityTable.inl" />
     <None Include="EventTask.inl" />
     <None Include="ExternalTransactionManager.inl" />
     <None Include="GameLog\GameLog.inl" />
     <None Include="MasterEntity.inl" />
+    <None Include="MessageRoute.inl">
+      <FileType>Document</FileType>
+    </None>
     <None Include="PerformanceCounter\PerformanceCounter.inl" />
     <None Include="PerformanceCounter\PerformanceCounterInstance.inl" />
     <None Include="PlayerEntityInformation.inl" />
@@ -182,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BrServer.h" />
+    <ClInclude Include="BrServerUtil.h" />
     <ClInclude Include="BrService.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
@@ -197,12 +202,16 @@
     <ClInclude Include="Google\GoogleOAuth.h" />
     <ClInclude Include="LoopbackConnection.h" />
     <ClInclude Include="MasterEntity.h" />
+    <ClInclude Include="MessageHandlerTable.h" />
+    <ClInclude Include="MessageRoute.h" />
     <ClInclude Include="ParallelTransaction.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounter.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounterClient.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounterInstance.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounterServer.h" />
     <ClInclude Include="PlayerEntityInformation.h" />
+    <ClInclude Include="ServerComponentCarrier.h" />
+    <ClInclude Include="ServerComponentIDs.h" />
     <ClInclude Include="ServerEntity.h" />
     <ClInclude Include="ServerEntityManager.h" />
     <ClInclude Include="ServerComponent.h" />
@@ -263,6 +272,7 @@
     <ClInclude Include="Transaction\ServerTransactionGeneric.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BrServerUtil.cpp" />
     <ClCompile Include="BRService.linux.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />

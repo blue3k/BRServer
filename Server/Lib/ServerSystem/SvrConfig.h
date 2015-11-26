@@ -11,8 +11,8 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/BRBaseTypes.h"
-#include "Common/BRSvrTypes.h"
+#include "Common/BrBaseTypes.h"
+#include "Common/BrSvrTypes.h"
 #include "Common/BrXML.h"
 
 
@@ -297,7 +297,7 @@ namespace Config {
 
 	//////////////////////////////////////////////////////////////
 	// Server cluster
-	class GameCluster : public XML::DOMElement
+	class GameClusterInfo : public XML::DOMElement
 	{
 	public:
 		// Generic server
@@ -385,7 +385,7 @@ namespace Config {
 		std::vector<SharedModuleServer*>	SharedModuleServers;
 
 		// game cluster Server
-		GameCluster*						GameCluster;
+		GameClusterInfo*					GameCluster;
 
 		// Map servers by ID
 		std::unordered_map<ServerID,GenericServer*> ServerByID;

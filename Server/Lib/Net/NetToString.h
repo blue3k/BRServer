@@ -24,7 +24,7 @@ namespace BR {
 	
 	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionInformation& Data, int Option);
 		
-	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::NetClass& Data, int Option);
+	extern template HRESULT ToString(char*& pBuff, INT& iBuffLen, const NetClass& Data, int Option);
 	
 
 } // namespace BR

@@ -33,7 +33,7 @@ namespace Svr {
 	TimerActionTransaction::TimerActionTransaction(SharedPointerT<Transaction>& pTrans)
 		: m_pTrans(pTrans)
 	{
-		TimeData.ObjectID = pTrans->GetTransID().GetTransactionIndex();
+		TimeData.Components.ObjectID = pTrans->GetTransID().GetTransactionIndex();
 	}
 
 	TimerActionTransaction::~TimerActionTransaction()
@@ -55,7 +55,7 @@ namespace Svr {
 
 		ClearTime();
 
-		Assert(GetInQueueKey().NextTickTime == TimeStampMS::max()); // Tick updater should updated this
+		Assert(GetInQueueKey().Components.NextTickTime == TimeStampMS::max()); // Tick updater should updated this
 
 		if (pTransPtr == nullptr)
 		{

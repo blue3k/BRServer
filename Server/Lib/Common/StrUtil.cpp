@@ -83,7 +83,7 @@ namespace StrUtil {
 	}
 
 	// Internal format routine
-	HRESULT Format_Internal( char*& szBuffer, INT& iBuffLen, const char* szFormating, int iNumArg, BR::Argument* Args )
+	HRESULT Format_Internal( char*& szBuffer, INT& iBuffLen, const char* szFormating, int iNumArg, Argument* Args )
 	{
 		if( szBuffer == nullptr || iBuffLen == 0 )
 			return E_POINTER;

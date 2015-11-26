@@ -290,7 +290,6 @@ namespace Message {
 		this->~MessageData();
 
 		MemoryPool *pMemPool = nullptr;
-		void *pPtr = nullptr;
 		if( FAILED(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
 			return;
 

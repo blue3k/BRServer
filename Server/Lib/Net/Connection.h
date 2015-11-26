@@ -14,7 +14,7 @@
 
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
-#include "Net/NetSystem.h"
+#include "Net/NetUtil.h"
 #include "Common/HRESNet.h"
 #include "Common/PageQueue.h"
 
@@ -30,7 +30,7 @@ namespace Net {
 	//	Packet message queue class
 	//
 
-	class MsgQueue : public BR::PageQueue<Message::MessageData*>
+	class MsgQueue : public PageQueue<Message::MessageData*>
 	{
 	public:
 		MsgQueue( UINT uiNumElePerPage = 512 );
@@ -205,12 +205,13 @@ namespace Net {
 		static void PrintDebugMessage( const char* strPrefix, Message::MessageData *pMsg );
 	};
 
-	extern template class SharedPointerT <Connection>;
-	extern template class WeakPointerT < Connection > ;
-
 	#include "Connection.inl"
 
 }  // namespace Net
+
+	extern template class SharedPointerT <Net::Connection>;
+	extern template class WeakPointerT < Net::Connection >;
+
 }; // namespace BR
 
 

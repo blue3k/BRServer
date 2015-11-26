@@ -33,7 +33,7 @@ namespace Svr {
 			struct {
 				UINT32 ObjectID;
 				TimeStampMS NextTickTime;
-			};
+			} Components;
 
 			UINT64 TimerKey;
 
@@ -57,21 +57,22 @@ namespace Svr {
 		TimerAction();
 		virtual ~TimerAction();
 
-		bool IsScheduled()									{ return m_InQueueKey.NextTickTime != TimeStampMS::max(); }
-		void ClearTime()									{ TimeData.NextTickTime = TimeStampMS::max(); }
+		bool IsScheduled()									{ return m_InQueueKey.Components.NextTickTime != TimeStampMS::max(); }
+		void ClearTime()									{ TimeData.Components.NextTickTime = TimeStampMS::max(); }
 
-		TimeStampMS GetNexTickTime()						{ return TimeData.NextTickTime; }
+		TimeStampMS GetNexTickTime()						{ return TimeData.Components.NextTickTime; }
 		void SetNextTickTime(TimeStampMS nextTickTime);
 
-		TimeStampMS GetScheduledTime()						{ Assert(m_InQueueKey.NextTickTime != TimeStampMS::min());  return m_InQueueKey.NextTickTime; }
+		TimeStampMS GetScheduledTime()						{ Assert(m_InQueueKey.Components.NextTickTime != TimeStampMS::min());  return m_InQueueKey.Components.NextTickTime; }
 
 		virtual bool UpdateTick() { return false; }
 
 		virtual const char* GetDebugString() = 0;
 	};
 
-	extern template class SharedPointerT < TimerAction > ;
-
 }; // namespace Svr
+
+	extern template class SharedPointerT < Svr::TimerAction >;
+
 }; // namespace BR
 

@@ -133,7 +133,7 @@ namespace Net {
 
 			pTask->SetConnection( pConMgr, pConnection );
 
-			pConnection->SetUData( (UINT_PTR)pTask );
+			pConnection->SetUData( (uintptr_t)pTask );
 
 			netChk( g_ConnectionTaskManager->AddTickTask( pTask ) );
 
@@ -222,7 +222,7 @@ namespace Net {
 		}
 
 		// clear connection queue
-		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const UINT_PTR& key, SharedPointerT<Connection> pConn)->bool
+		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn)->bool
 		{
 			pConn->CloseConnection();
 			pTask = (ConnectionTask*)pConn->GetUData();
@@ -497,7 +497,7 @@ namespace Net {
 	}
 
 	// Get connection from connection ID
-	HRESULT ClientTCP::GetConnection(UINT_PTR uiCID, SharedPointerT<Connection> &pIConnection)
+	HRESULT ClientTCP::GetConnection(uintptr_t uiCID, SharedPointerT<Connection> &pIConnection)
 	{
 		return m_ConnectionManager.GetConnectionByCID(uiCID, pIConnection);
 	}
@@ -889,7 +889,7 @@ namespace Net {
 
 
 	// Get connection from connection ID
-	HRESULT ClientUDP::GetConnection( UINT_PTR uiCID, SharedPointerT<Connection> &pIConnection )
+	HRESULT ClientUDP::GetConnection( uintptr_t uiCID, SharedPointerT<Connection> &pIConnection )
 	{
 		return m_ConnectionManager.GetConnectionByCID(uiCID, pIConnection);
 	}

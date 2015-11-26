@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="LoopbackConnection.cpp" />
+    <ClCompile Include="MessageWindow.cpp" />
+    <ClCompile Include="NetClient.cpp" />
+    <ClCompile Include="NetConnectionTask.cpp" />
+    <ClCompile Include="NetCtrl.cpp" />
+    <ClCompile Include="NetDef.cpp" />
+    <ClCompile Include="NetPolicy.cpp" />
+    <ClCompile Include="NetRawUDP.cpp" />
+    <ClCompile Include="NetSvrDef.cpp" />
+    <ClCompile Include="NetSystem.cpp" />
+    <ClCompile Include="NetToString.cpp" />
+    <ClCompile Include="NetTrace.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="NetUtil.cpp" />
+    <ClCompile Include="Connection.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection_PrintMessage.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectionManager.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectionMUDP.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectionPeerTCP.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectionTCP.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectionUDP.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="NetServer.cpp">
+      <Filter>NetSever</Filter>
+    </ClCompile>
+    <ClCompile Include="NetServerMUDP.cpp">
+      <Filter>NetSever</Filter>
+    </ClCompile>
+    <ClCompile Include="NetServerPeer.cpp">
+      <Filter>NetSever</Filter>
+    </ClCompile>
+    <ClCompile Include="NetServerPeerTCP.cpp">
+      <Filter>NetSever</Filter>
+    </ClCompile>
+    <ClCompile Include="NetServerTCP.cpp">
+      <Filter>NetSever</Filter>
+    </ClCompile>
+    <ClCompile Include="NetServerUDP.cpp">
+      <Filter>NetSever</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LoopbackConnection.h" />
+    <ClInclude Include="MessageWindow.h" />
+    <ClInclude Include="NetClient.h" />
+    <ClInclude Include="NetConnectionTask.h" />
+    <ClInclude Include="NetConst.h" />
+    <ClInclude Include="NetCtrl.h" />
+    <ClInclude Include="NetDef.h" />
+    <ClInclude Include="NetPolicy.h" />
+    <ClInclude Include="NetRawUDP.h" />
+    <ClInclude Include="NetSvrDef.h" />
+    <ClInclude Include="NetSystem.h" />
+    <ClInclude Include="NetToString.h" />
+    <ClInclude Include="NetTrace.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="NetCtrlIDs.h" />
+    <ClInclude Include="NetUtil.h" />
+    <ClInclude Include="Connection.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionManager.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionMUDP.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionTCP.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectionUDP.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="NetServer.h">
+      <Filter>NetSever</Filter>
+    </ClInclude>
+    <ClInclude Include="NetServerPeer.h">
+      <Filter>NetSever</Filter>
+    </ClInclude>
+    <ClInclude Include="NetServerPeerTCP.h">
+      <Filter>NetSever</Filter>
+    </ClInclude>
+    <ClInclude Include="NetServerUDP.h">
+      <Filter>NetSever</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MessageWindow.inl" />
+    <None Include="NetClient.inl" />
+    <None Include="NetCtrl.inl" />
+    <None Include="NetDef.inl" />
+    <None Include="NetRawUDP.inl" />
+    <None Include="NetSvrDef.inl" />
+    <None Include="NetSystem.inl" />
+    <None Include="Connection.inl">
+      <Filter>Connection</Filter>
+    </None>
+    <None Include="ConnectionManager.inl">
+      <Filter>Connection</Filter>
+    </None>
+    <None Include="ConnectionTCP.inl">
+      <Filter>Connection</Filter>
+    </None>
+    <None Include="ConnectionUDP.inl">
+      <Filter>Connection</Filter>
+    </None>
+    <None Include="NetServer.inl">
+      <Filter>NetSever</Filter>
+    </None>
+    <None Include="NetServerPeer.inl">
+      <Filter>NetSever</Filter>
+    </None>
+    <None Include="NetServerPeerTCP.inl">
+      <Filter>NetSever</Filter>
+    </None>
+    <None Include="NetServerUDP.inl">
+      <Filter>NetSever</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Connection">
+      <UniqueIdentifier>{ac87eb11-8a08-47da-bcc6-48aec98b1292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NetSever">
+      <UniqueIdentifier>{a2f0c110-9c46-44fa-84ad-183891a93385}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

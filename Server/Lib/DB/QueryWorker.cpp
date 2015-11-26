@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 //#include <atldbcli.h>
 #include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
@@ -93,7 +93,7 @@ namespace DB {
 	
 	void QueryWorker::Run()
 	{
-		HRESULT	hr = S_OK;
+		//HRESULT	hr = S_OK;
 		DurationMS expectedTickInterval(5);
 
 		while(1)

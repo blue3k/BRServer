@@ -71,13 +71,13 @@ namespace Net {
 		virtual ~MsgWindow();
 
 		// get window size
-		FORCEINLINE INT GetWindowSize();
+		INT GetWindowSize();
 
 		// get message count in window
-		FORCEINLINE UINT GetMsgCount();
+		UINT GetMsgCount();
 
 		// get message base sequence
-		FORCEINLINE UINT GetBaseSequence();
+		UINT GetBaseSequence();
 
 		// Get message info in window, index based on window base
 		HRESULT GetAt( UINT uiIdx, MsgWindow::MessageElement* &pTimeMsg );
@@ -159,7 +159,7 @@ namespace Net {
 		UINT m_uiHeadSequence;
 
 		// Until this can do thread safe release
-		CriticalSection m_Lock;
+		BR::CriticalSection m_Lock;
 
 	private:
 		// Release message sequence and slide window if can
@@ -171,7 +171,7 @@ namespace Net {
 		SendMsgWindow( INT iWndSize );
 		~SendMsgWindow();
 
-		CriticalSection& GetLock()				{ return m_Lock; }
+		BR::CriticalSection& GetLock()				{ return m_Lock; }
 
 		// Clear window element
 		virtual void ClearWindow();

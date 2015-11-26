@@ -11,8 +11,9 @@
 
 
 #include "stdafx.h"
-#include "Common/TypeDefs.h"
+#include "Common/Typedefs.h"
 #include "EntityInformation.h"
+#include "ServerSystem/ServerService/ServerService.h"
 
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::UserEntityInformation);
@@ -20,6 +21,10 @@ BR_MEMORYPOOL_IMPLEMENT(Svr::UserEntityInformation);
 
 namespace BR {
 namespace Svr {
+
+	static_assert(sizeof(ServerService) <= sizeof(ServerServiceInformation::m_bufferForServiceBase), "Not enough buffer size for serverservice instance");
+
+
 
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -75,6 +80,10 @@ namespace Svr {
 			GetWorkload() );
 	}
 
+	void ServerServiceInformation::ValidateServiceInstance(UINT serviceID)
+	{
+		AssertRel(m_ServiceBase->GetPolicyID() == serviceID);
+	}
 
 
 	//////////////////////////////////////////////////////////////////////////

@@ -54,7 +54,7 @@ namespace ProtocolBuilder
             OutStream.WriteLine("");
             OutStream.WriteLine("#include \"Common/Typedefs.h\"");
             OutStream.WriteLine("#include \"Common/PolicyID.h\"");
-            OutStream.WriteLine("#include \"Net/Netdef.h\"");
+            OutStream.WriteLine("#include \"Net/NetDef.h\"");
             OutStream.WriteLine("#include \"Protocol/ProtocolMessageCPPInc.h\"");
             OutStream.WriteLine(string.Format("#include \"Protocol/Message/{0}MsgClass.h\"", Group.Name));
             NewLine(3);
@@ -82,7 +82,7 @@ namespace ProtocolBuilder
             OutStream.WriteLine(string.Format("#include \"{0}\"", PreCompiledHeader));
             OutStream.WriteLine("#include \"Common/Typedefs.h\"");
             OutStream.WriteLine("#include \"Common/PolicyID.h\"");
-            OutStream.WriteLine("#include \"Net/Netdef.h\"");
+            OutStream.WriteLine("#include \"Net/NetDef.h\"");
             OutStream.WriteLine("#include \"Protocol/ProtocolTrace.h\"");
             OutStream.WriteLine(string.Format("#include \"Protocol/Message/{0}\"", OutputHeaderName()));
             OutStream.WriteLine(string.Format("#include \"Protocol/Message/{0}MsgClass.h\"", Group.Name));

@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
 #include "DB/AccountDB.h"
@@ -44,7 +44,7 @@ namespace DB {
 	//	Account DB interface
 	//
 
-	HRESULT AccountDB::FacebookCreateUser(BR::TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone)
+	HRESULT AccountDB::FacebookCreateUser(TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone)
 	{
 		HRESULT hr = S_OK;
 		QueryFacebookCreateUserCmd *pQuery = nullptr;
@@ -71,7 +71,7 @@ namespace DB {
 		return hr;
 	}
 
-	HRESULT AccountDB::FacebookLogIn( BR::TransactionID Sender, UINT64 facebookUID )
+	HRESULT AccountDB::FacebookLogIn( TransactionID Sender, UINT64 facebookUID )
 	{
 		HRESULT hr = S_OK;
 		QueryFacebookLoginCmd *pQuery = nullptr;
@@ -100,7 +100,7 @@ namespace DB {
 	}
 
 	
-	HRESULT AccountDB::CreateUser( BR::TransactionID Sender, const char* UserName, const char* Password)
+	HRESULT AccountDB::CreateUser( TransactionID Sender, const char* UserName, const char* Password)
 	{
 		HRESULT hr = S_OK;
 		QueryCreateUserCmd *pQuery = nullptr;
@@ -124,7 +124,7 @@ namespace DB {
 		return hr;
 	}
 
-	HRESULT AccountDB::LogIn( BR::TransactionID Sender, const char* UserName, const char* Password)
+	HRESULT AccountDB::LogIn( TransactionID Sender, const char* UserName, const char* Password)
 	{
 		HRESULT hr = S_OK;
 		QueryLoginCmd *pQuery = nullptr;
@@ -151,7 +151,7 @@ namespace DB {
 		return hr;
 	}
 
-	HRESULT AccountDB::LogOut( BR::TransactionID Sender)
+	HRESULT AccountDB::LogOut( TransactionID Sender)
 	{
 		HRESULT hr = S_OK;
 		QueryLogoutCmd *pQuery = nullptr;
@@ -172,7 +172,7 @@ namespace DB {
 	}
 	
 
-	HRESULT AccountDB::CreateRandomUser(BR::TransactionID Sender, const char* userName, const char* cellPhone)
+	HRESULT AccountDB::CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone)
 	{
 		HRESULT hr = S_OK;
 		QueryCreateRandomUserCmd *pQuery = nullptr;
@@ -199,7 +199,7 @@ namespace DB {
 		return hr;
 	}
 
-	HRESULT AccountDB::UserList( BR::TransactionID Sender)
+	HRESULT AccountDB::UserList( TransactionID Sender)
 	{
 		HRESULT hr = S_OK;
 		QueryUserListCmd *pQuery = nullptr;
@@ -219,7 +219,7 @@ namespace DB {
 		return hr;
 	}
 
-	HRESULT AccountDB::UpdateGCMKeys( BR::TransactionID Sender, AccountID accountID, const char* strGCMKeys )
+	HRESULT AccountDB::UpdateGCMKeys( TransactionID Sender, AccountID accountID, const char* strGCMKeys )
 	{
 		HRESULT hr = S_OK;
 		QueryUpdateGCMKeysCmd *pQuery = nullptr;
@@ -245,7 +245,7 @@ namespace DB {
 	}
 
 
-	HRESULT AccountDB::UpdateUserContactInfo(BR::TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone)
+	HRESULT AccountDB::UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone)
 	{
 		HRESULT hr = S_OK;
 		QueryUpdateUserContactInfoCmd *pQuery = nullptr;
@@ -272,7 +272,7 @@ namespace DB {
 	}
 
 	// Find player
-	HRESULT AccountDB::FindPlayerByEMail( BR::TransactionID Sender, const char* email )
+	HRESULT AccountDB::FindPlayerByEMail( TransactionID Sender, const char* email )
 	{
 		HRESULT hr = S_OK;
 		QueryFindPlayerByEMailCmd *pQuery = nullptr;
@@ -300,7 +300,7 @@ namespace DB {
 		return hr;
 	}
 
-	HRESULT AccountDB::FindPlayerByPlayerID(BR::TransactionID Sender, AccountID accountID)
+	HRESULT AccountDB::FindPlayerByPlayerID(TransactionID Sender, AccountID accountID)
 	{
 		HRESULT hr = S_OK;
 		QueryFindPlayerByPlayerIDCmd *pQuery = nullptr;
@@ -329,7 +329,7 @@ namespace DB {
 
 
 	// Player shard id
-	HRESULT AccountDB::GetPlayerShardID(BR::TransactionID Sender, AccountID accountID)
+	HRESULT AccountDB::GetPlayerShardID(TransactionID Sender, AccountID accountID)
 	{
 		HRESULT hr = S_OK;
 		QueryGetPlayerShardIDCmd *pQuery = nullptr;

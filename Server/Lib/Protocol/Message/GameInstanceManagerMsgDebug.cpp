@@ -12,7 +12,7 @@
 #include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/PolicyID.h"
-#include "Net/Netdef.h"
+#include "Net/NetDef.h"
 #include "Protocol/ProtocolTrace.h"
 #include "Protocol/Message/GameInstanceManagerMsgDebug.h"
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"

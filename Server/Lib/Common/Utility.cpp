@@ -58,7 +58,7 @@ namespace Util {
 
 	static void _InitModuleName()
 	{
-		if( g_wszModulePath[0] == NULL || g_wszModuleName[0] == NULL )
+		if( g_wszModulePath[0] == L'\0' || g_wszModuleName[0] == L'\0')
 		{
 #if WINDOWS
 			// initialize module name
@@ -86,7 +86,7 @@ namespace Util {
 		}
 
 		// If the service name isn't specified, use module name for it
-		if( g_wszServiceName[0] == NULL || g_szServiceName[0] == NULL )
+		if( g_wszServiceName[0] == L'\0' || g_szServiceName[0] == '\0')
 		{
 			StrUtil::StringCpy( g_wszServiceName, g_wszModuleName );
 			StrUtil::StringCpy( g_szServiceName, g_szModuleName );
@@ -175,7 +175,7 @@ namespace Util {
 		bool bIsOver = false;
 
 		// Bineary search
-		for( int iOper = 0; iOper < countof(OperationTable); iOper++ )
+		for( UINT iOper = 0; iOper < countof(OperationTable); iOper++ )
 		{
 			if( uiNumber & OperationTable[iOper].Mask )
 			{

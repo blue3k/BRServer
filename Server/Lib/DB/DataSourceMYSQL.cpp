@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Factory.h"
 
@@ -35,12 +35,13 @@ namespace DB {
 	HRESULT	DataSourceMYSQL::InitializeDBSource( const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
 	{
 		HRESULT hr = S_OK;
-		const char *next_token = nullptr;
-		const char *strPos = nullptr;
+		//const char *next_token = nullptr;
+		//const char *strPos = nullptr;
+		size_t idx;
 
-		dbChk( __super::InitializeDBSource( strConnectionString, strDBName, strUserID, strPassword ) );
+		dbChk(DataSource::InitializeDBSource( strConnectionString, strDBName, strUserID, strPassword ) );
 
-		size_t idx = strConnectionString.find( ',', 0 );
+		idx = strConnectionString.find( ',', 0 );
 		m_ServerIP = strConnectionString.substr( 0, idx );
 
 		if( strConnectionString.size() <= (idx+1) )
@@ -65,7 +66,7 @@ namespace DB {
 	{
 		HRESULT hr = S_OK;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -73,7 +74,7 @@ namespace DB {
 	// close DB source
 	HRESULT	DataSourceMYSQL::CloseDBSource()
 	{
-		return __super::CloseDBSource();
+		return DataSource::CloseDBSource();
 	}
 	
 

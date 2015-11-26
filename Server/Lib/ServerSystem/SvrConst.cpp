@@ -8,7 +8,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrConstDefault.h"
 

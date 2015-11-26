@@ -102,7 +102,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -115,12 +115,12 @@ namespace BR
 			}; // HRESULT PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerJoinedToGameServerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, AuthTicket:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_AuthTicket); 
-			}; // VOID PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID PlayerJoinedToGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 0);
 			HRESULT PlayerJoinedToGameServerRes::ParseIMsg( MessageData* pIMsg )
@@ -192,7 +192,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -205,12 +205,12 @@ namespace BR
 			}; // HRESULT PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerJoinedToGameServerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
-			}; // VOID PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Kick logged in player
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 1);
@@ -282,7 +282,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -295,12 +295,12 @@ namespace BR
 			}; // HRESULT KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, KickedPlayerID:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_KickedPlayerID); 
-			}; // VOID KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 1);
 			HRESULT KickPlayerRes::ParseIMsg( MessageData* pIMsg )
@@ -372,7 +372,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -385,12 +385,12 @@ namespace BR
 			}; // HRESULT KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
-			}; // VOID KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

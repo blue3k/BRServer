@@ -22,6 +22,9 @@
 
 
 namespace BR {
+
+	template class SharedPointerT<Svr::TickTask>;
+
 namespace Svr {
 	
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +32,6 @@ namespace Svr {
 	//	TickTask class -  interface for task operation
 	//
 
-	template class SharedPointerT<TickTask>;
 
 	// Constructor
 	TickTask::TickTask()
@@ -57,7 +59,7 @@ namespace Svr {
 	{
 		Assert(uiTaskID != 0);
 		m_TaskID = uiTaskID;
-		m_TimerAction->TimeData.ObjectID = m_TaskID;
+		m_TimerAction->TimeData.Components.ObjectID = m_TaskID;
 	}
 
 
@@ -88,7 +90,7 @@ namespace Svr {
 
 		m_pTaskWorker = pWorker;
 
-		m_TimerAction->TimeData.ObjectID = GetTaskID();
+		m_TimerAction->TimeData.Components.ObjectID = GetTaskID();
 
 		if (GetTickInterval() > DurationMS(0))
 		{
@@ -135,7 +137,7 @@ namespace Svr {
 		if (pTickTask == nullptr)
 			return false;
 
-		auto nextDiff = (LONG)(TimeData.NextTickTime - Util::Time.GetTimeMs()).count();
+		auto nextDiff = (LONG)(TimeData.Components.NextTickTime - Util::Time.GetTimeMs()).count();
 		if (nextDiff <= 0)
 		{
 			// Do default rescheduling

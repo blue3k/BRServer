@@ -15,10 +15,11 @@
 
 #include "Common/Typedefs.h"
 #include "Common/Thread.h"
+#include "Common/ClassUtil.h"
+#include "Common/SystemSynchronization.h"
 #include "Net/NetDef.h"
 #include "Net/Connection.h"
 #include "ServerSystem/MasterEntity.h"
-#include "Common/ClassUtil.h"
 #include "ServerSystem/SvrConst.h"
 
 
@@ -40,7 +41,7 @@ namespace Svr {
 	class ServerEntity : public MasterEntity, public Net::IConnectionEventHandler
 	{
 	public:
-		typedef BR::NetClass ServerEntityClass;
+		typedef NetClass ServerEntityClass;
 		
 
 	private:
@@ -49,7 +50,7 @@ namespace Svr {
 		DurationMS								m_LocalConnectionRetryWait;
 		SharedPointerT<Net::IConnection>	m_pConnRemote;
 		SharedPointerT<Net::IConnection>	m_pConnLocal;
-		CriticalSection						m_ConnectionLock;
+		BR::CriticalSection						m_ConnectionLock;
 
 		Net::MsgQueue			m_RecvMessageQueue;
 
@@ -73,8 +74,8 @@ namespace Svr {
 
 		virtual MemoryAllocator& GetAllocator()			{ return STDAllocator::GetInstance(); }
 
-		HRESULT SetConnection(SharedPointerT<Net::IConnection> &destConn, BR::Net::IConnection * pConn);
-		HRESULT UpdateConnection(BR::Net::IConnection* pConn);
+		HRESULT SetConnection(SharedPointerT<Net::IConnection> &destConn, Net::IConnection * pConn);
+		HRESULT UpdateConnection(Net::IConnection* pConn);
 
 
 	public:
@@ -86,13 +87,13 @@ namespace Svr {
 
 
 		// set connection
-		HRESULT SetRemoteConnection(BR::Net::IConnection * pConn);
-		HRESULT SetLocalConnection(BR::Net::IConnection * pConn);
+		HRESULT SetRemoteConnection(Net::IConnection * pConn);
+		HRESULT SetLocalConnection(Net::IConnection * pConn);
 
 		// Get Connection
-		FORCEINLINE BR::Net::IConnection* GetRemoteConnection()							{ return (Net::IConnection*)m_pConnRemote; }
-		FORCEINLINE BR::Net::IConnection* GetLocalConnection()							{ return (Net::IConnection*)m_pConnLocal; }
-		FORCEINLINE BR::Net::IConnection* GetConnection();
+		FORCEINLINE Net::IConnection* GetRemoteConnection()							{ return (Net::IConnection*)m_pConnRemote; }
+		FORCEINLINE Net::IConnection* GetLocalConnection()							{ return (Net::IConnection*)m_pConnLocal; }
+		Net::IConnection* GetConnection();
 		void GetConnectionShared(SharedPointerT<Net::Connection>& outConn);
 
 		template< class PolicyType >
@@ -102,15 +103,15 @@ namespace Svr {
 		inline ServerEntityClass GetRemoteClass() const;
 
 		// Get public net address
-		FORCEINLINE const NetAddress& GetPublicNetAddress() const;
-		FORCEINLINE void SetPublicNetAddress( const NetAddress& netAddr );
+		const NetAddress& GetPublicNetAddress() const;
+		void SetPublicNetAddress( const NetAddress& netAddr );
 
-		FORCEINLINE const NetAddress& GetPrivateNetAddress() const;
-		FORCEINLINE void SetPrivateNetAddress(const NetAddress& netAddr);
+		const NetAddress& GetPrivateNetAddress() const;
+		void SetPrivateNetAddress(const NetAddress& netAddr);
 
 		// Get ServerID
-		FORCEINLINE ServerID GetServerID() const;
-		FORCEINLINE void SetServerID( ServerID svrID );
+		ServerID GetServerID() const;
+		void SetServerID( ServerID svrID );
 
 		// Get Owner Server
 		ServerEntity*				GetOwnerServer();
@@ -128,7 +129,7 @@ namespace Svr {
 		virtual HRESULT ProcessMessage( Net::IConnection *pCon, Message::MessageData* &pMsg );
 
 		// Process Connection event
-		virtual HRESULT ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent );
+		virtual HRESULT ProcessConnectionEvent( const Net::IConnection::Event& conEvent );
 
 		// Run entity
 		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;

@@ -59,6 +59,7 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include="NullUtil.h" />
     <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="OrderedLinkedList.h" />
     <ClInclude Include="PageQueue.h" />
     <ClInclude Include="PerfCounter.h" />
     <ClInclude Include="PolicyID.h" />

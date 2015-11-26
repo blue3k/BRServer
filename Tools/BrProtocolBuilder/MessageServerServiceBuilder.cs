@@ -70,7 +70,7 @@ namespace ProtocolBuilder
             OutStream.WriteLine("#include \"Common/PolicyID.h\"");
             OutStream.WriteLine("#include \"ServerSystem/ServerServiceBase.h\"");
 
-            OutStream.WriteLine("#include \"Net/Netdef.h\"");
+            OutStream.WriteLine("#include \"Net/NetDef.h\"");
             OutStream.WriteLine("#include \"Net/NetPolicy.h\"");
             OutStream.WriteLine(string.Format("#include \"Protocol/Policy/{0}\"", IBasePolicyHeaderName));
             NewLine(3);
@@ -97,9 +97,10 @@ namespace ProtocolBuilder
             OutStream.WriteLine(string.Format("#include \"{0}\"", PreCompiledHeader));
             OutStream.WriteLine("#include \"Common/Typedefs.h\"");
             OutStream.WriteLine("#include \"Common/PolicyID.h\"");
-            OutStream.WriteLine("#include \"Common/BRBaseTypes.h\"");
+            OutStream.WriteLine("#include \"Common/BrBaseTypes.h\"");
             OutStream.WriteLine("#include \"ServerSystem/ServerEntity.h\"");
             OutStream.WriteLine("#include \"ServerSystem/BrServer.h\"");
+            OutStream.WriteLine("#include \"ServerSystem/BrServerUtil.h\"");
             OutStream.WriteLine("#include \"ServerSystem/ServiceEntity/EntityInformation.h\"");
             OutStream.WriteLine(string.Format("#include \"ServerSystem/ServerService/{0}\"", OutputHeaderName));
             OutStream.WriteLine("#include \"ServerSystem/SvrTrace.h\"");

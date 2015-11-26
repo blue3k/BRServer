@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Factory.h"
 
@@ -23,8 +23,10 @@
 #include "DataSourceMYSQL.h"
 #include "SessionMYSQL.h"
 
-
+#if WINDOWS
 #pragma comment(lib, "libmysql.lib")
+#else
+#endif
 
 namespace BR {
 namespace DB {
@@ -71,7 +73,7 @@ namespace DB {
 	// initialize DB source
 	HRESULT	FactoryMYSQL::CreateDataSource( DataSource* &pDBSource )
 	{
-		if( pDBSource = new DataSourceMYSQL )
+		if( (pDBSource = new DataSourceMYSQL) != nullptr )
 			return S_OK;
 
 		return E_OUTOFMEMORY;
@@ -80,7 +82,7 @@ namespace DB {
 	// close DB source
 	HRESULT	FactoryMYSQL::CreateSession( DataSource* pDBSource, Session* &pSession )
 	{
-		if( pSession = new SessionMYSQL((DataSourceMYSQL*)pDBSource) )
+		if( (pSession = new SessionMYSQL((DataSourceMYSQL*)pDBSource)) != nullptr)
 			return S_OK;
 
 		return E_OUTOFMEMORY;

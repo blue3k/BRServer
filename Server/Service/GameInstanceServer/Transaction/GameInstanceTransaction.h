@@ -89,7 +89,7 @@ namespace ConspiracyGameInstanceServer {
 				svrErr( E_SVR_INVALID_SERVERID );
 			}
 
-			hr = GetMyServer()->GetEntityTable().Find(GetRouteContext().GetTo().GetEntityID(), pEntity);
+			hr = FindEntity(GetRouteContext().GetTo().GetEntityID(), pEntity);
 			if (FAILED(hr))
 			{
 				svrTrace(Trace::TRC_WARN, "Can't find transaction target instance:%0%", GetRouteContext().GetTo());

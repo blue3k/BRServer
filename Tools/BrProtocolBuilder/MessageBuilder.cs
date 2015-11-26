@@ -128,13 +128,13 @@ namespace ProtocolBuilder
         void BuildMessageTrace(string Name, string typeName, string traceChannel, Parameter[] parameters)
         {
             string strClassName = MsgClassName(Name, typeName);
-            OpenSection("VOID", strClassName + "::TraceOut(const char* Prefix, MessageData* pMsg)");
+            OpenSection("void", strClassName + "::TraceOut(const char* Prefix, MessageData* pMsg)");
 
             string strTrace = string.Format("Trace::TRC_{0}, \"%0%:{1}{2}:%1%:%2% ", traceChannel, Name, typeName);
             string strTraceMember = "Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32";
             int ParamCount = 3;
 
-            MatchIndent(); OutStream.WriteLine("Prefix;");
+            MatchIndent(); OutStream.WriteLine("unused(Prefix);");
 
             if (parameters != null)
             {
@@ -438,6 +438,27 @@ namespace ProtocolBuilder
         {
             MatchIndent(); OutStream.WriteLine("INT iMsgSize;");
             MatchIndent(); OutStream.WriteLine("BYTE* pCur;");
+
+            if(parameters != null)
+            {
+                // define variable first
+                foreach (Parameter param in parameters)
+                {
+                    switch (param.Type)
+                    {
+                        case ParameterType.String:
+                            MatchIndent(); OutStream.WriteLine("{0} {1} = 0;", ArrayLenType, ArrayLenName(param.Name));
+                            break;
+                        default:
+                            if (param.IsArray)
+                            {
+                                MatchIndent(); OutStream.WriteLine("{0} numberof{1} = 0; {2}* p{1} = nullptr;", ArrayLenType, param.Name, param.Type.ToString());
+                            }
+                            break;
+                    }
+                }
+            }
+
             NewLine();
             MatchIndent(); OutStream.WriteLine("protocolChkPtr(pIMsg);");
             NewLine();
@@ -467,19 +488,17 @@ namespace ProtocolBuilder
                     switch (param.Type)
                     {
                         case ParameterType.String:
-                            MatchIndent(); OutStream.WriteLine("{0} {1} = 0;", ArrayLenType, ArrayLenName(param.Name));
+                            //MatchIndent(); OutStream.WriteLine("{0} {1} = 0;", ArrayLenType, ArrayLenName(param.Name));
                             MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamCopy( &{1}, pCur, iMsgSize, sizeof({0}) ) );", ArrayLenType, ArrayLenName(param.Name));
                             MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamLnk( m_{0}, pCur, iMsgSize, sizeof(char)*{1} ) );", param.Name, ArrayLenName(param.Name));
                             break;
                         default:
                             if (param.IsArray)
                             {
-                                MatchIndent(); OutStream.WriteLine("{0} numberof{1} = 0; {2}* p{1} = nullptr;", ArrayLenType, param.Name, param.Type.ToString());
+                                //MatchIndent(); OutStream.WriteLine("{0} numberof{1} = 0; {2}* p{1} = nullptr;", ArrayLenType, param.Name, param.Type.ToString());
                                 MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamCopy( &numberof{1}, pCur, iMsgSize, sizeof({0}) ) );", ArrayLenType, param.Name);
                                 MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamLnk( p{0}, pCur, iMsgSize, sizeof({1})*numberof{0} ) );", param.Name, param.Type.ToString());
                                 MatchIndent(); OutStream.WriteLine("m_{0}.SetLinkedBuffer(numberof{0}, numberof{0}, p{0});", param.Name);
-                                //MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamCopy( &m_{1}, pCur, iMsgSize, sizeof({0}) ) );", ArrayLenType, ArrayLenName(param.Name));
-                                //MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamLnk( m_{0}, pCur, iMsgSize, sizeof({1})*m_{2} ) );", param.Name, param.Type.ToString(), ArrayLenName(param.Name));
                             }
                             else
                             {
@@ -578,7 +597,7 @@ namespace ProtocolBuilder
                     // All other process is same
                     if (param.Type == ParameterType.RouteContext)
                     {
-                        MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= sizeof(RouteContext) );");
+                        MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= (INT)sizeof(RouteContext) );");
                         MatchIndent(); OutStream.WriteLine("memcpy( &routeContext, pCur, sizeof(RouteContext) );");
                         MatchIndent(); OutStream.WriteLine("routeContext.Components.To = to;");
                         MatchIndent(); OutStream.WriteLine("memcpy( pCur, &routeContext, sizeof(RouteContext) );");
@@ -648,14 +667,14 @@ namespace ProtocolBuilder
                         default:
                             if (param.Type == ParameterType.RouteContext && param.Name == ParamRouteContext.Name)
                             {
-                                MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= sizeof(RouteContext) );");
+                                MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= (INT)sizeof(RouteContext) );");
                                 MatchIndent(); OutStream.WriteLine("memcpy( &routeContext, pCur, sizeof(RouteContext) );");
                                 MatchIndent(); OutStream.WriteLine("routeContext.Components.To = to;");
                                 MatchIndent(); OutStream.WriteLine("memcpy( pCur, &routeContext, sizeof(RouteContext) );");
                             }
                             else if (param.Name == ParamRouteHopCount.Name)
                             {
-                                MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= sizeof({0}) );", ParamRouteHopCount.Type);
+                                MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= (INT)sizeof({0}) );", ParamRouteHopCount.Type);
                                 MatchIndent(); OutStream.WriteLine("*({0}*)pCur = hopCount;", ParamRouteHopCount.Type);
                             }
 
@@ -744,6 +763,23 @@ namespace ProtocolBuilder
                 OutStream.WriteLine(");");
         }
 
+        void BuildParamCpyPreamble(Parameter[] parameters)
+        {
+            if (parameters == null)
+                return;
+
+            foreach (Parameter param in parameters)
+            {
+                if (IsStrType(param)) // string type
+                {
+                }
+                else if (param.IsArray) // array
+                {
+                    MatchIndent(); OutStream.WriteLine(string.Format("{1} numberOf{0} = ({1}){0}.GetSize(); ", InParamName(param.Name), ArrayLenType));
+                }
+            }
+        }
+
         void BuildParamCpy(Parameter[] parameters)
         {
             if (parameters == null)
@@ -760,11 +796,9 @@ namespace ProtocolBuilder
                 }
                 else if (param.IsArray) // array
                 {
-                    MatchIndent(); OutStream.WriteLine(string.Format("{1} numberOf{0} = ({1}){0}.GetSize(); ", InParamName(param.Name), ArrayLenType));
+                    //MatchIndent(); OutStream.WriteLine(string.Format("{1} numberOf{0} = ({1}){0}.GetSize(); ", InParamName(param.Name), ArrayLenType));
                     MatchIndent(); OutStream.WriteLine(string.Format("Protocol::PackParamCopy( pMsgData, &numberOf{0}, sizeof({1})); ", InParamName(param.Name), ArrayLenType));
                     MatchIndent(); OutStream.WriteLine(string.Format("Protocol::PackParamCopy( pMsgData, {0}.data(), (INT)(sizeof({1})*{0}.GetSize())); ", InParamName(param.Name), param.Type.ToString()));
-                    //MatchIndent(); OutStream.Write(string.Format("Protocol::PackParamCopy( pMsgData, &{0}, sizeof({0})); ", ArrayLenName(param.Name))); NewLine();
-                    //MatchIndent(); OutStream.Write(string.Format("Protocol::PackParamCopy( pMsgData, {0}, sizeof({1})*{2}); ", InParamName(param.Name), param.Type.ToString(), ArrayLenName(param.Name))); NewLine();
                 }
                 else // generic type
                 {
@@ -772,7 +806,6 @@ namespace ProtocolBuilder
                 }
             }
         }
-
 
         // Build parser class implementation
         void BuildBuilderImpl(string Name, string typeName, Parameter[] parameters)
@@ -790,6 +823,9 @@ namespace ProtocolBuilder
 
             MatchIndent(); OutStream.WriteLine("MessageData *pNewMsg = NULL;");
             NewLine();
+
+
+            BuildParamCpyPreamble(parameters);
 
             MatchIndent(); OutStream.WriteLine(
                 string.Format("protocolMem( pNewMsg = MessageData::NewMessage( {0}::{1}{2}::MID, __uiMessageSize ) );", Group.Name, Name, typeName));

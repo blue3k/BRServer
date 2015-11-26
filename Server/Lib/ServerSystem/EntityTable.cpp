@@ -11,7 +11,7 @@
 
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
@@ -80,7 +80,7 @@ namespace Svr {
 		}
 
 		// Route Transaction result
-		HRESULT EntityTable::RouteTransactionResult( BR::Svr::TransactionResult* &pRes )
+		HRESULT EntityTable::RouteTransactionResult( TransactionResult* &pRes )
 		{
 			HRESULT hr = S_OK;
 			SharedPointerT<Entity> pEntity;

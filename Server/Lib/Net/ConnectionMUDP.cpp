@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
@@ -423,7 +423,7 @@ namespace Net {
 			switch( GetConnectionState() )
 			{
 			case  IConnection::STATE_CONNECTING:
-				if( ProtocolVersion != BR::PROTOCOL_VERSION )
+				if( ProtocolVersion != BR_PROTOCOL_VERSION)
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );

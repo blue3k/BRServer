@@ -15,10 +15,10 @@
 
 #include "Common/Typedefs.h"
 #include "Common/Thread.h"
+#include "Common/SystemSynchronization.h"
 #include "Net/NetDef.h"
 #include "Net/Connection.h"
 #include "ServerSystem/SimpleEntity.h"
-
 
 
 namespace BR {
@@ -40,7 +40,7 @@ namespace Svr {
 	private:
 		// Connection to remote
 		SharedPointerT<Net::Connection>	m_pConnection;
-		CriticalSection m_ConnectionLock;
+		BR::CriticalSection m_ConnectionLock;
 
 				// Account ID
 		AccountID		m_AccountID;

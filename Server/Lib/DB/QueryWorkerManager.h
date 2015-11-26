@@ -17,6 +17,7 @@
 #include "Common/TimeUtil.h"
 #include "Common/PageQueue.h"
 #include "Common/StaticHashTable.h"
+#include "Common/SystemSynchronization.h"
 #include "DBConst.h"
 #include "DB/DataSource.h"
 
@@ -43,8 +44,8 @@ namespace DB {
 
 		static std::atomic<LONG>	stm_InitializationCount;
 
-		CriticalSection		m_QueryQueueLock;
-		Semaphore			m_QueryCounter;
+		BR::CriticalSection		m_QueryQueueLock;
+		BR::Semaphore			m_QueryCounter;
 
 		// DB Query Worker class
 		WorkerList			m_QueryWorker;

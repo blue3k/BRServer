@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/HRESNet.h"
@@ -79,8 +79,9 @@ namespace Svr
 
 				if (pTransaction->GetParentTransID() != 0)
 				{
+					auto& entityTable = BrServer::GetInstance()->GetEntityTable();
 					TransactionResult* pRes = pTransaction;
-					if (SUCCEEDED(GetEntityTable().RouteTransactionResult(pRes)))
+					if (SUCCEEDED(entityTable.RouteTransactionResult(pRes)))
 					{
 						pTransaction = nullptr;
 					}

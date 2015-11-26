@@ -17,6 +17,8 @@
 #include "Common/Message.h"
 #include "Common/SharedObject.h"
 #include "Common/SharedPointer.h"
+#include "Net/NetCtrlIDs.h"
+
 
 namespace BR {
 namespace Net {
@@ -27,7 +29,6 @@ namespace Net {
 	//	Connection Interface
 	//
 
-	enum NetCtrlIDs;
 	class INet;
 	class IConnection;
 	class IConnectionEventHandler;
@@ -187,7 +188,7 @@ namespace Net {
 		virtual ~IConnection();
 
 		// setup Net
-		inline HRESULT SetupNet( INet *pNetInstance, UINT_PTR uiCID );
+		inline HRESULT SetupNet( INet *pNetInstance, uintptr_t uiCID );
 
 
 
@@ -277,17 +278,13 @@ namespace Net {
 
 	void RegisterConnectionDebugMessage();
 
-#ifndef SWIG
-	extern template class SharedPointerT <IConnection>;
-#endif
-
 
 	class IConnectionEventHandler
 	{
 	public:
 		virtual void OnConnectionEvent(IConnection* pConn, const IConnection::Event& evt) = 0;
 		virtual HRESULT OnRecvMessage(IConnection* pConn, Message::MessageData* pMsg) = 0;
-		virtual HRESULT OnNetSyncMessage(IConnection* pConn, Net::NetCtrlIDs netCtrlID) = 0;
+		virtual HRESULT OnNetSyncMessage(IConnection* pConn, NetCtrlIDs netCtrlID) = 0;
 	};
 
 
@@ -401,7 +398,7 @@ namespace Net {
 	{
 	public:
 		// Get connection from connection ID
-		virtual HRESULT GetConnection( UINT_PTR uiCID, IConnection* &pConnection ) = 0;
+		virtual HRESULT GetConnection( uintptr_t uiCID, IConnection* &pConnection ) = 0;
 
 		// Connect to server
 		virtual HRESULT Connect( const char *strServerIP, USHORT usServerPort, IConnection* &pINewConnection ) = 0;
@@ -412,6 +409,14 @@ namespace Net {
 #include "NetDef.inl"
 
 } // namespace Net
+
+
+
+#ifndef SWIG
+extern template class SharedPointerT <Net::IConnection>;
+#endif
+
+
 } // namespace BR
 
 

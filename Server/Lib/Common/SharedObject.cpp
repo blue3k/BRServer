@@ -38,7 +38,7 @@ namespace BR
 
 	CounterType SharedObject::ReleaseReference() const
 	{
-		auto refManager = m_ReferenceManagerObject;
+		//auto refManager = m_ReferenceManagerObject;
 		auto org = m_ReferenceCount.fetch_sub(1, std::memory_order_release);
 		auto decValue = org - 1;
 		if (decValue <= 0)

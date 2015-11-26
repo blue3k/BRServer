@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM">
+      <Configuration>Release</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GenericMsgClass.cpp" />
+    <ClCompile Include="Message\ClusterServerMsgClass.cpp" />
+    <ClCompile Include="Message\ClusterServerMsgDebug.cpp" />
+    <ClCompile Include="Message\EntityServerMsgClass.cpp" />
+    <ClCompile Include="Message\EntityServerMsgDebug.cpp" />
+    <ClCompile Include="Message\GameInstanceManagerMsgClass.cpp" />
+    <ClCompile Include="Message\GameInstanceManagerMsgDebug.cpp" />
+    <ClCompile Include="Message\GameInstanceMsgClass.cpp" />
+    <ClCompile Include="Message\GameInstanceMsgDebug.cpp" />
+    <ClCompile Include="Message\GameMasterServerMsgClass.cpp" />
+    <ClCompile Include="Message\GameMasterServerMsgDebug.cpp" />
+    <ClCompile Include="Message\GameMsgClass.cpp" />
+    <ClCompile Include="Message\GameMsgDebug.cpp" />
+    <ClCompile Include="Message\GamePartyManagerMsgClass.cpp" />
+    <ClCompile Include="Message\GamePartyManagerMsgDebug.cpp" />
+    <ClCompile Include="Message\GamePartyMsgClass.cpp" />
+    <ClCompile Include="Message\GamePartyMsgDebug.cpp" />
+    <ClCompile Include="Message\GameServerMsgClass.cpp" />
+    <ClCompile Include="Message\GameServerMsgDebug.cpp" />
+    <ClCompile Include="Message\LoginMsgClass.cpp" />
+    <ClCompile Include="Message\LoginMsgDebug.cpp" />
+    <ClCompile Include="Message\LoginServerMsgClass.cpp" />
+    <ClCompile Include="Message\LoginServerMsgDebug.cpp" />
+    <ClCompile Include="Message\MonitoringMsgClass.cpp" />
+    <ClCompile Include="Message\MonitoringMsgDebug.cpp" />
+    <ClCompile Include="Message\PartyMatchingMsgClass.cpp" />
+    <ClCompile Include="Message\PartyMatchingMsgDebug.cpp" />
+    <ClCompile Include="Message\PartyMatchingQueueMsgClass.cpp" />
+    <ClCompile Include="Message\PartyMatchingQueueMsgDebug.cpp" />
+    <ClCompile Include="Message\RankingMsgClass.cpp" />
+    <ClCompile Include="Message\RankingMsgDebug.cpp" />
+    <ClCompile Include="Message\ServerMsgClass.cpp" />
+    <ClCompile Include="Message\ServerMsgDebug.cpp" />
+    <ClCompile Include="Policy\ClusterServerNetPolicy.cpp" />
+    <ClCompile Include="Policy\EntityServerNetPolicy.cpp" />
+    <ClCompile Include="Policy\GameInstanceManagerNetPolicy.cpp" />
+    <ClCompile Include="Policy\GameInstanceNetPolicy.cpp" />
+    <ClCompile Include="Policy\GameMasterServerNetPolicy.cpp" />
+    <ClCompile Include="Policy\GameNetPolicy.cpp" />
+    <ClCompile Include="Policy\GamePartyManagerNetPolicy.cpp" />
+    <ClCompile Include="Policy\GamePartyNetPolicy.cpp" />
+    <ClCompile Include="Policy\GameServerNetPolicy.cpp" />
+    <ClCompile Include="Policy\LoginNetPolicy.cpp" />
+    <ClCompile Include="Policy\LoginServerNetPolicy.cpp" />
+    <ClCompile Include="Policy\MonitoringNetPolicy.cpp" />
+    <ClCompile Include="Policy\PartyMatchingNetPolicy.cpp" />
+    <ClCompile Include="Policy\PartyMatchingQueueNetPolicy.cpp" />
+    <ClCompile Include="Policy\RankingNetPolicy.cpp" />
+    <ClCompile Include="Policy\ServerNetPolicy.cpp" />
+    <ClCompile Include="ProtocolTrace.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GenericMsgClass.h" />
+    <ClInclude Include="Message\ClusterServerMsgClass.h" />
+    <ClInclude Include="Message\ClusterServerMsgDebug.h" />
+    <ClInclude Include="Message\EntityServerMsgClass.h" />
+    <ClInclude Include="Message\EntityServerMsgDebug.h" />
+    <ClInclude Include="Message\GameInstanceManagerMsgClass.h" />
+    <ClInclude Include="Message\GameInstanceManagerMsgDebug.h" />
+    <ClInclude Include="Message\GameInstanceMsgClass.h" />
+    <ClInclude Include="Message\GameInstanceMsgDebug.h" />
+    <ClInclude Include="Message\GameMasterServerMsgClass.h" />
+    <ClInclude Include="Message\GameMasterServerMsgDebug.h" />
+    <ClInclude Include="Message\GameMsgClass.h" />
+    <ClInclude Include="Message\GameMsgDebug.h" />
+    <ClInclude Include="Message\GamePartyManagerMsgClass.h" />
+    <ClInclude Include="Message\GamePartyManagerMsgDebug.h" />
+    <ClInclude Include="Message\GamePartyMsgClass.h" />
+    <ClInclude Include="Message\GamePartyMsgDebug.h" />
+    <ClInclude Include="Message\GameServerMsgClass.h" />
+    <ClInclude Include="Message\GameServerMsgDebug.h" />
+    <ClInclude Include="Message\LoginMsgClass.h" />
+    <ClInclude Include="Message\LoginMsgDebug.h" />
+    <ClInclude Include="Message\LoginServerMsgClass.h" />
+    <ClInclude Include="Message\LoginServerMsgDebug.h" />
+    <ClInclude Include="Message\MonitoringMsgClass.h" />
+    <ClInclude Include="Message\MonitoringMsgDebug.h" />
+    <ClInclude Include="Message\PartyMatchingMsgClass.h" />
+    <ClInclude Include="Message\PartyMatchingMsgDebug.h" />
+    <ClInclude Include="Message\PartyMatchingQueueMsgClass.h" />
+    <ClInclude Include="Message\PartyMatchingQueueMsgDebug.h" />
+    <ClInclude Include="Message\ProtocolClusterServer.h" />
+    <ClInclude Include="Message\ProtocolEntityServer.h" />
+    <ClInclude Include="Message\ProtocolGame.h" />
+    <ClInclude Include="Message\ProtocolGameInstance.h" />
+    <ClInclude Include="Message\ProtocolGameInstanceManager.h" />
+    <ClInclude Include="Message\ProtocolGameMasterServer.h" />
+    <ClInclude Include="Message\ProtocolGameParty.h" />
+    <ClInclude Include="Message\ProtocolGamePartyManager.h" />
+    <ClInclude Include="Message\ProtocolGameServer.h" />
+    <ClInclude Include="Message\ProtocolLogin.h" />
+    <ClInclude Include="Message\ProtocolLoginServer.h" />
+    <ClInclude Include="Message\ProtocolMonitoring.h" />
+    <ClInclude Include="Message\ProtocolPartyMatching.h" />
+    <ClInclude Include="Message\ProtocolPartyMatchingQueue.h" />
+    <ClInclude Include="Message\ProtocolRanking.h" />
+    <ClInclude Include="Message\ProtocolServer.h" />
+    <ClInclude Include="Message\RankingMsgClass.h" />
+    <ClInclude Include="Message\RankingMsgDebug.h" />
+    <ClInclude Include="Message\ServerMsgClass.h" />
+    <ClInclude Include="Message\ServerMsgDebug.h" />
+    <ClInclude Include="Policy\ClusterServerIPolicy.h" />
+    <ClInclude Include="Policy\ClusterServerNetPolicy.h" />
+    <ClInclude Include="Policy\EntityServerIPolicy.h" />
+    <ClInclude Include="Policy\EntityServerNetPolicy.h" />
+    <ClInclude Include="Policy\GameInstanceIPolicy.h" />
+    <ClInclude Include="Policy\GameInstanceManagerIPolicy.h" />
+    <ClInclude Include="Policy\GameInstanceManagerNetPolicy.h" />
+    <ClInclude Include="Policy\GameInstanceNetPolicy.h" />
+    <ClInclude Include="Policy\GameIPolicy.h" />
+    <ClInclude Include="Policy\GameMasterServerIPolicy.h" />
+    <ClInclude Include="Policy\GameMasterServerNetPolicy.h" />
+    <ClInclude Include="Policy\GameMatchServerIPolicy.h" />
+    <ClInclude Include="Policy\GameNetPolicy.h" />
+    <ClInclude Include="Policy\GamePartyIPolicy.h" />
+    <ClInclude Include="Policy\GamePartyManagerIPolicy.h" />
+    <ClInclude Include="Policy\GamePartyManagerNetPolicy.h" />
+    <ClInclude Include="Policy\GamePartyNetPolicy.h" />
+    <ClInclude Include="Policy\GameServerIPolicy.h" />
+    <ClInclude Include="Policy\GameServerNetPolicy.h" />
+    <ClInclude Include="Policy\LoginIPolicy.h" />
+    <ClInclude Include="Policy\LoginNetPolicy.h" />
+    <ClInclude Include="Policy\LoginServerIPolicy.h" />
+    <ClInclude Include="Policy\LoginServerNetPolicy.h" />
+    <ClInclude Include="Policy\MonitoringIPolicy.h" />
+    <ClInclude Include="Policy\MonitoringNetPolicy.h" />
+    <ClInclude Include="Policy\PartyMatchingIPolicy.h" />
+    <ClInclude Include="Policy\PartyMatchingNetPolicy.h" />
+    <ClInclude Include="Policy\PartyMatchingQueueIPolicy.h" />
+    <ClInclude Include="Policy\PartyMatchingQueueNetPolicy.h" />
+    <ClInclude Include="Policy\RankingIPolicy.h" />
+    <ClInclude Include="Policy\RankingNetPolicy.h" />
+    <ClInclude Include="Policy\ServerIPolicy.h" />
+    <ClInclude Include="Policy\ServerNetPolicy.h" />
+    <ClInclude Include="ProtocolHelper.h" />
+    <ClInclude Include="ProtocolMessageCPPInc.h" />
+    <ClInclude Include="ProtocolToString.h" />
+    <ClInclude Include="ProtocolTrace.h" />
+    <ClInclude Include="ProtocolVer.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ProtocolHelper.inl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7516b2be-3786-46eb-b860-47fbf2506eab}</ProjectGuid>
+    <Keyword>Android</Keyword>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <ApplicationType>Android</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>Clang_3_6</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Protocol DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Protocol DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Protocol DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Protocol DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Protocol DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Protocol DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+</Project>

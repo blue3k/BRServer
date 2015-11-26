@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
@@ -30,9 +30,11 @@
 
 
 namespace BR {
+
+	template class SharedPointerT<Svr::MasterEntity>;
+
 namespace Svr
 {
-	template class SharedPointerT<MasterEntity>;
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////

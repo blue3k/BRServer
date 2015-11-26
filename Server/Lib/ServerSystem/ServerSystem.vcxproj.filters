@@ -116,6 +116,12 @@
     <None Include="ExternalTransactionManager.inl">
       <Filter>ExternalTask</Filter>
     </None>
+    <None Include="MessageRoute.inl">
+      <Filter>Transaction</Filter>
+    </None>
+    <None Include="BrServerUtil.inl">
+      <Filter>Server</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -358,6 +364,21 @@
     <ClInclude Include="BrService.h">
       <Filter>Server</Filter>
     </ClInclude>
+    <ClInclude Include="MessageRoute.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageHandlerTable.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerComponentCarrier.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerComponentIDs.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BrServerUtil.h">
+      <Filter>Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -583,6 +604,9 @@
       <Filter>Server</Filter>
     </ClCompile>
     <ClCompile Include="BRService.linux.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="BrServerUtil.cpp">
       <Filter>Server</Filter>
     </ClCompile>
   </ItemGroup>

@@ -113,7 +113,7 @@ namespace Svr {
 				if(MessageClass::HasRouteContext)
 				{
 					SharedPointerT<Entity> pEntity;
-					if (FAILED(GetEntityTable().Find(GetRouteContext().GetTo().GetEntityID(), pEntity)))
+					if (FAILED(FindEntity(GetRouteContext().GetTo().GetEntityID(), pEntity)))
 					{
 						svrTrace(Trace::TRC_ERROR, "Target entity:%0% for transaction:%1% is not found", GetRouteContext().GetTo(), typeid(*this).name());
 						hr = E_SVR_INVALID_ENTITYUID;

@@ -147,7 +147,7 @@ namespace Net {
 		m_ManagedConnections.CommitChanges();
 
 		// Update Managed connections
-		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const UINT_PTR& key, SharedPointerT<Connection> pConn)->bool
+		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn)->bool
 		{
 			//SharedPointerT<Connection> pConn = *itCur;
 			if( FAILED(pConn->UpdateNetCtrl()) )
@@ -633,7 +633,7 @@ namespace Net {
 
 		// clear connection queue
 		
-		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const UINT_PTR& key, SharedPointerT<Connection> pConn) -> bool
+		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn) -> bool
 		{
 			netTrace( TRC_CONNECTION, "TerminateManager ConnectionManager Managed connection Release CID:%0%", pConn->GetCID() );
 			if (pConn->GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -685,7 +685,7 @@ namespace Net {
 		}
 
 		// clear connection queue
-		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const UINT_PTR& key, SharedPointerT<Connection> pConn)-> bool
+		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn)-> bool
 		{
 			pConn->Disconnect();
 			return true;
@@ -804,7 +804,7 @@ namespace Net {
 
 
 	// Find and return connection
-	HRESULT ConnectionManager::GetConnectionByCID(UINT_PTR uiCID, SharedPointerT<Connection> &pConn)
+	HRESULT ConnectionManager::GetConnectionByCID(uintptr_t uiCID, SharedPointerT<Connection> &pConn)
 	{
 		return m_CIDMap.Find(uiCID, pConn);
 	}

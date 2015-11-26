@@ -166,6 +166,10 @@ typedef HANDLE HMODULE;
 #define FAILED(hr)      ((hr) < 0)
 #define SUCCEEDED(hr)   ((hr) >= 0)
 
+#define IN
+#define OUT
+
+#define SOCKET int
 
 inline HRESULT GetLastHRESULT()
 {
@@ -212,11 +216,13 @@ inline HRESULT GetLastWSAHRESULT()
 #include <unordered_set>
 
 #include <vector>
+#include <list>
 #include <queue>
 #include <assert.h>
 #include <atomic>
 
 #include <functional>
+#include <my_global.h>
 
 
 // See MSDN common datatypes section for base type definitions

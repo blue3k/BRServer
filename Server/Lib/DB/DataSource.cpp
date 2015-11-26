@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
 #include "DB/QueryWorker.h"
@@ -50,7 +50,7 @@ namespace DB {
 
 		m_Opened = false;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

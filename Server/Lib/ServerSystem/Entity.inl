@@ -73,7 +73,7 @@ ULONG Entity::GenTransIndex()
 
 
 // Get transaction queue
-BR::PageQueue<Transaction*>& Entity::GetTransactionQueue()
+PageQueue<Transaction*>& Entity::GetTransactionQueue()
 {
 	return m_transactionQueue;
 }

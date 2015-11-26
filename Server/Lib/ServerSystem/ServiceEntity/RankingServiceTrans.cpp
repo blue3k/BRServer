@@ -14,7 +14,7 @@
 #include "Common/HRESGame.h"
 #include "Common/HRESLogin.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Common/GameConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
@@ -22,7 +22,7 @@
 #include "Protocol/Policy/RankingIPolicy.h"
 
 
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/ServerEntityManager.h"

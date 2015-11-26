@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // 
 // CopyRight (c) 2013 The Braves
 // 
@@ -30,8 +30,8 @@ namespace Util {
 			private:\
 				AttrType m_##AttrName;\
 			public:\
-				FORCEINLINE const AttrType& Get##AttrName##() const				{ return m_##AttrName; }\
-				FORCEINLINE void Set##AttrName##( const AttrType& newValue )		{ m_##AttrName = newValue; }
+				FORCEINLINE const AttrType& Get##AttrName() const				{ return m_##AttrName; }\
+				FORCEINLINE void Set##AttrName( const AttrType& newValue )		{ m_##AttrName = newValue; }
 
 
 	// Define pointer Attribute
@@ -39,8 +39,8 @@ namespace Util {
 			private:\
 				AttrType* m_##AttrName;\
 			public:\
-				FORCEINLINE AttrType* Get##AttrName##() const					{ return m_##AttrName; }\
-				FORCEINLINE void Set##AttrName##( AttrType* newValue )			{ m_##AttrName = newValue; }
+				FORCEINLINE AttrType* Get##AttrName() const					{ return m_##AttrName; }\
+				FORCEINLINE void Set##AttrName( AttrType* newValue )			{ m_##AttrName = newValue; }
 
 
 	// Define Attribute with r-value operation
@@ -48,9 +48,9 @@ namespace Util {
 			private:\
 				AttrType m_##AttrName;\
 			public:\
-				FORCEINLINE const AttrType& Get##AttrName##() const				{ return m_##AttrName; }\
-				FORCEINLINE void Set##AttrName##( const AttrType& newValue )		{ m_##AttrName = newValue; }\
-				FORCEINLINE void Set##AttrName##( AttrType&& newValue )			{ m_##AttrName = newValue; }
+				FORCEINLINE const AttrType& Get##AttrName() const				{ return m_##AttrName; }\
+				FORCEINLINE void Set##AttrName( const AttrType& newValue )		{ m_##AttrName = newValue; }\
+				FORCEINLINE void Set##AttrName( AttrType&& newValue )			{ m_##AttrName = newValue; }
 
 
 	// Define Attribute without set method
@@ -58,7 +58,7 @@ namespace Util {
 			private:\
 				AttrType m_##AttrName;\
 			public:\
-				FORCEINLINE AttrType Get##AttrName##() const						{ return m_##AttrName; }
+				FORCEINLINE AttrType Get##AttrName () const						{ return m_##AttrName; }
 
 
 	// Define Attribute without set method
@@ -66,7 +66,7 @@ namespace Util {
 			private:\
 				AttrType m_##AttrName;\
 			public:\
-				FORCEINLINE const AttrType& Get##AttrName##() const				{ return m_##AttrName; }
+				FORCEINLINE const AttrType& Get##AttrName () const				{ return m_##AttrName; }
 
 
 	// Define Attribute without set method, use with ptr type
@@ -74,16 +74,16 @@ namespace Util {
 			private:\
 				AttrType m_##AttrName;\
 			public:\
-				inline AttrType Get##AttrName##()							{ return m_##AttrName; }
+				inline AttrType Get##AttrName()							{ return m_##AttrName; }
 
 
 	// Define Attribute without set method
 	#define BRCLASS_ATTRIBUTE_STRING(AttrName,StringLen)		\
 			private:\
-				char m_##AttrName##[StringLen];\
+				char m_##AttrName[StringLen];\
 			public:\
-				FORCEINLINE const char* Get##AttrName##() const					{ return m_##AttrName; }\
-				FORCEINLINE HRESULT Set##AttrName##( const char* newValue )		{ return StrUtil::StringCpy( m_##AttrName, newValue ); }
+				FORCEINLINE const char* Get##AttrName() const					{ return m_##AttrName; }\
+				FORCEINLINE HRESULT Set##AttrName( const char* newValue )		{ return StrUtil::StringCpy( m_##AttrName, newValue ); }
 
 	
 	///////////////////////////////////////////////////////////////////////

@@ -35,12 +35,12 @@ PlayerInformation& PlayerInformation::operator = ( const PlayerInformation& src 
 	return *this;
 }
 
-PlayerInformation::PlayerInformation(AccountID playerID, BR::FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime)
+PlayerInformation::PlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime)
 {
 	InitPlayerInformation(playerID, fbUID, nickName, level, isPlayingGame, lastActiveTime);
 }
 
-HRESULT PlayerInformation::InitPlayerInformation(AccountID playerID, BR::FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime)
+HRESULT PlayerInformation::InitPlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime)
 {
 	if( nickName == nullptr ) 
 		return E_INVALIDARG;
@@ -81,7 +81,7 @@ RankingPlayerInformation::RankingPlayerInformation(const RankingPlayerInformatio
 	WeeklyLose = src.WeeklyLose;
 }
 
-RankingPlayerInformation::RankingPlayerInformation(AccountID playerID, BR::FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime)
+RankingPlayerInformation::RankingPlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime)
 	:PlayerInformation(playerID, fbUID, nickName, level, isPlayingGame, lastActiveTime)
 {
 	WeeklyWin = weeklyWin;
@@ -121,7 +121,7 @@ FriendInformation::FriendInformation(const FriendInformation& src)
 	LastStaminaSent = src.LastStaminaSent;
 }
  
-FriendInformation::FriendInformation(AccountID playerID, BR::FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime, UINT64 lastStaminaSent)
+FriendInformation::FriendInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime, UINT64 lastStaminaSent)
 	:RankingPlayerInformation(playerID, fbUID, nickName, level, weeklyWin, weeklyLose, isPlayingGame, lastActiveTime)
 {
 	LastStaminaSent = lastStaminaSent;
@@ -174,7 +174,7 @@ TotalRankingPlayerInformation& TotalRankingPlayerInformation::operator = ( const
 	return *this;
 }
 
-TotalRankingPlayerInformation::TotalRankingPlayerInformation(UINT32 rankingID, UINT32 ranking, AccountID playerID, BR::FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose)
+TotalRankingPlayerInformation::TotalRankingPlayerInformation(UINT32 rankingID, UINT32 ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose)
 {
 	//if( nickName == nullptr ) 
 	//	return E_INVALIDARG;

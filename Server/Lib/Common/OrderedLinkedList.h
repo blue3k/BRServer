@@ -93,7 +93,7 @@ namespace BR {
 			const Node* operator-> () const
 			{
 				AssertRel(m_pCur != nullptr && m_pCur->pNext != nullptr);
-				return ,_pCur->pNext;
+				return m_pCur->pNext;
 			}
 
 			bool operator !=( const iterator& op ) const

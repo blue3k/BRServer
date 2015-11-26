@@ -41,7 +41,7 @@ namespace Net {
 		sockaddr_in6 m_LocalSockAddr;
 
 		// Event queue
-		BR::PageQueue<INet::Event>	m_NetEventQueue;
+		PageQueue<INet::Event>	m_NetEventQueue;
 
 		// Server ID
 		BRCLASS_ATTRIBUTE_READONLY(ServerID,ServerID);

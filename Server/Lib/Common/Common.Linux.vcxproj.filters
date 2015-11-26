@@ -256,6 +256,9 @@
     <ClInclude Include="SynchronizationTrait.h">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="OrderedLinkedList.h">
+      <Filter>Container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedObj.inl">

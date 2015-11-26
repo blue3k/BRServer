@@ -53,7 +53,7 @@ DEFINE_TRACE_MODULE(svr)
 #define svrAssert(e)				trcAssert(e)
 #define svrAssertExp(e,expr)		trcAssertExp(e,expr)
 
-#define svrTrace(lModeMask,szfmt, ...)				TRACE_OUT(svr,lModeMask,szfmt,__VA_ARGS__)
+#define svrTrace(lModeMask, ...)				TRACE_OUT(svr,lModeMask,__VA_ARGS__)
 
 #define svrErrSilent(e)		trcErrSilent(e)
 

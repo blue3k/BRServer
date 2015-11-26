@@ -12,7 +12,7 @@
 #include "stdafx.h"
 #include "Common/PolicyID.h"
 #include "Protocol/ProtocolMessageCPPInc.h"
-#include "Net/Netdef.h"
+#include "Net/NetDef.h"
 #include "Protocol/ProtocolTrace.h"
 #include "Protocol/ProtocolHelper.h"
 #include "Protocol/GenericMsgClass.h"
@@ -50,7 +50,7 @@ namespace Message {
 
 		}; // HRESULT MsgFailResultS2CEvt::ParseIMsg( BR::Net::MessageData* pIMsg )
 
-		VOID FailResultS2CEvt::OutputMessage(const char* Prefix)
+		void FailResultS2CEvt::OutputMessage(const char* Prefix)
 		{
  			Prefix;
 			protocolTrace(Trace::TRC_DBG1, "{0}:FailResultS2CEvt: , Context:{1}, hrRes:{2:X8}",

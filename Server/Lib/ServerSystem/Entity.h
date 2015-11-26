@@ -82,7 +82,7 @@ namespace Svr{
 		MessageHandlerTable<MessageHandlerType>*	m_pHandlerTable;
 
 		// Get transaction queue
-		inline BR::PageQueue<Transaction*>& GetTransactionQueue();
+		inline PageQueue<Transaction*>& GetTransactionQueue();
 
 		TimeStampMS SetBestScehdulingTime(Transaction* pTrans);
 
@@ -95,7 +95,7 @@ namespace Svr{
 		virtual ~Entity();
 
 		// Get Entity State
-		inline Entity::EntityState GetEntityState();
+		inline EntityState GetEntityState();
 
 		// Set Entity State
 		inline void SetEntityState( EntityState state );
@@ -189,10 +189,12 @@ namespace Svr{
 #include "Entity.inl"
 
 
-	extern template class SharedPointerT<Entity>;
-	extern template class WeakPointerT<Entity>;
 
 }; // namespace Svr
+
+extern template class SharedPointerT<Svr::Entity>;
+extern template class WeakPointerT<Svr::Entity>;
+
 }; // namespace BR
 
 

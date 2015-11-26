@@ -37,9 +37,9 @@ namespace BR {
 
 
 	template<>
-	inline HRESULT ToString( char*& pBuff, INT& iBuffLen, const BR::EntityState& Data, int Option )
+	inline HRESULT ToString( char*& pBuff, INT& iBuffLen, const EntityState& Data, int Option )
 	{
-		return BR::ToStringEnum( pBuff, iBuffLen, Data );
+		return ToStringEnum( pBuff, iBuffLen, Data );
 	}
 
 }; // namespace BR

@@ -60,7 +60,7 @@ namespace Net {
 
 
 	// Get connection from connection ID
-	HRESULT Server::GetConnection(UINT_PTR uiCID, SharedPointerT<Connection> &pConn)
+	HRESULT Server::GetConnection(uintptr_t uiCID, SharedPointerT<Connection> &pConn)
 	{
 		return GetConnectionManager().GetConnectionByCID( uiCID, pConn );
 	}

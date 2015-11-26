@@ -26,7 +26,7 @@ namespace StrUtil {
 
 	// Format string with argument list
 	// Modified buffer pointer and remain buffer size returned to original parameter
-	HRESULT Format_Internal( char*& szBuffer, INT& BuffLen, const char* szFormating, int iNumArg, BR::Argument* Args );
+	HRESULT Format_Internal( char*& szBuffer, INT& BuffLen, const char* szFormating, int iNumArg, Argument* Args );
 
 
 	// 
@@ -39,7 +39,7 @@ namespace StrUtil {
 	template< class ...ArgTypes >
 	inline HRESULT Format(char* szBuffer, INT& BuffLen, const char* strFormat, ArgTypes... args)
 	{
-		BR::Argument arguments[sizeof...(args)] = { BR::Arg<ArgTypes>(args)... };
+		Argument arguments[sizeof...(args)] = { Arg<ArgTypes>(args)... };
 		return Format_Internal(szBuffer, BuffLen, strFormat, sizeof...(args), arguments);
 	}
 
@@ -55,7 +55,7 @@ namespace StrUtil {
 	template< int BuffLen, class ...ArgTypes >
 	HRESULT Format(char(&szBuffer)[BuffLen], const char* strFormat, ArgTypes... args)
 	{
-		BR::Argument arguments[sizeof...(args)] = { BR::Arg<ArgTypes>(args)... };
+		Argument arguments[sizeof...(args)] = { Arg<ArgTypes>(args)... };
 
 		char* pTempBuff = szBuffer;
 		INT BuffReamin = BuffLen;

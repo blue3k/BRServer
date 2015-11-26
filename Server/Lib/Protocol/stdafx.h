@@ -6,13 +6,7 @@
 #pragma once
 
 
-//#include <Common/Typedefs.h>
-
-#include "targetver.h"
-
-
-
-#include "../Common/Typedefs.h"
+#include "Common/Typedefs.h"
 #include "Common/Utility.h"
 #include "Common/StrUtil.h"
 #include "Common/Message.h"
@@ -24,9 +18,6 @@
 #include "Common/ToStringBase.h"
 
 #include "Protocol/ProtocolHelper.h"
-
-#include <stdio.h>
-#include <tchar.h>
 
 
 

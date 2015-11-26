@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
@@ -24,17 +24,19 @@
 #include "ServerSystem/EventTask.h"
 #include "ServerSystem/EntityTimerActions.h"
 #include "ServerSystem/BRServer.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "Common/Message.h"
 
 
 
 
 namespace BR {
-namespace Svr
-{
-	template class SharedPointerT<Entity>;
-	template class WeakPointerT<Entity>;
 
+	template class SharedPointerT<Svr::Entity>;
+	template class WeakPointerT<Svr::Entity>;
+
+	namespace Svr
+{
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//

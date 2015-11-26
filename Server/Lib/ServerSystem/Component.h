@@ -17,6 +17,7 @@
 #include "Common/ClassUtil.h"
 #include "Common/Memory.h"
 #include "Common/Trace.h"
+#include "Common/HRESCommon.h"
 
 namespace BR {
 namespace Svr{

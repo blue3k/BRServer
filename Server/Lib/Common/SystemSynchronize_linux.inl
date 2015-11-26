@@ -148,5 +148,47 @@ namespace BR
 		bool	m_AutoReset;
 	};
 
+
+
+	class Semaphore
+	{
+	public:
+
+		Semaphore(LONG lInitialCount = 0, LONG lMaxCount = LONG_MAX)
+		{
+			sem_init(&m_hSemaphore, lMaxCount, lInitialCount);
+		}
+
+		~Semaphore()
+		{
+			sem_close(&m_hSemaphore);
+			sem_destroy(&m_hSemaphore);
+		}
+
+		void Release(LONG lResleaseCount = 1)
+		{
+			sem_post(&m_hSemaphore);
+		}
+
+		bool Acquire(UINT uiWaitTimeMs)
+		{
+			timespec waitTime;
+			memset(&waitTime, 0, sizeof(waitTime));
+
+			if (clock_gettime(CLOCK_REALTIME, &waitTime) == -1)
+				return false;
+
+			waitTime.tv_nsec += uiWaitTimeMs * 1000000;
+			sem_timedwait(&m_hSemaphore, &waitTime);
+			return true;
+		}
+
+	private:
+		sem_t	m_hSemaphore;
+	};
+
+
+
+
 }
 

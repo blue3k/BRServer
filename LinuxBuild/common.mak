@@ -57,7 +57,7 @@ else ifeq "$(LINK_TYPE)" "DLL"
 endif
 
 
-INCLUDES+= $(ROOT_PATH)/Server/Lib /usr/include
+INCLUDES+= $(ROOT_PATH)/Server/Lib /usr/include /usr/include/mysql
 DEFINES+= $(BUILD_MODE) $(LOGNAME)
 
 CC=g++

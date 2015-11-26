@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
@@ -813,7 +813,7 @@ namespace Net {
 			switch (GetConnectionState())
 			{
 			case  IConnection::STATE_CONNECTING:
-				if( pNetCtrl->rtnMsgID.ID != BR::PROTOCOL_VERSION )
+				if( pNetCtrl->rtnMsgID.ID != BR_PROTOCOL_VERSION )
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
@@ -833,7 +833,7 @@ namespace Net {
 
 			case IConnection::STATE_CONNECTED:
 				// Send connect if remote didn't get protocol version yet
-				//netChk( SendPending( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR::PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
+				//netChk( SendPending( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR_PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
 
 				m_ulNetCtrlTime = Util::Time.GetTimeMs();
 				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
@@ -1092,8 +1092,8 @@ Proc_End:
 			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > Const::CONNECTION_RETRY_TIME ) // retry
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
-				netTrace( TRC_NETCTRL, "UDP Send Connecting CID(%0%) : C:%1%, V:%2%)", GetCID(), GetConnectionInfo().LocalClass, (UINT32)BR::PROTOCOL_VERSION );
-				netChk( SendPending( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR::PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
+				netTrace( TRC_NETCTRL, "UDP Send Connecting CID(%0%) : C:%1%, V:%2%)", GetCID(), GetConnectionInfo().LocalClass, (UINT32)BR_PROTOCOL_VERSION );
+				netChk( SendPending( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR_PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
 			}
 
 			break;

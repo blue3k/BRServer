@@ -12,25 +12,15 @@
 #pragma once
 
 
-#include "Common/StrUtil.h"
-#include "Net/Netdef.h"
-#include "Net/NetServer.h"
-//#include "ServerSystem/PlugIn.h"
-#include "ServerSystem/Transaction.h"
-#include "ServerSystem/SvrTypes.h"
-#include "ServerSystem/TaskManager.h"
-#include "ServerSystem/Entity.h"
-#include "ServerSystem/EntityTable.h"
-#include "ServerSystem/SvrConfig.h"
-#include "ServerSystem/BrServer.h"
-
-
+#include "Common/Typedefs.h"
+#include "Common/BrBaseTypes.h"
+#include "Common/SharedPointer.h"
 
 
 namespace BR {
-namespace SvrUtil
+namespace Svr
 {
-	class SimpleUserEntity;
+	class Entity;
 
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -39,14 +29,19 @@ namespace SvrUtil
 	//
 
 
+	// Get entity table
+	//EntityTable& GetEntityTable();
+	HRESULT FindEntity(EntityID entityID, SharedPointerT<Entity>& entity);
+
 	// Get Server UID
-	inline UINT GetServerUID();
+	UINT GetServerUID();
 
-	// Make Route Context
-	inline RouteContext Route( UINT SvrTo = 0 );
+	// Get server ID
+	ServerID GetMyServerID();
 
 
-#include "BRServerUtil.inl"
+
+#include "BrServerUtil.inl"
 
 
 }; // namespace SvrUtil

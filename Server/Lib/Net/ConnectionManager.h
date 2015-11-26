@@ -63,7 +63,7 @@ namespace Net {
 									> AddrMap;
 
 
-		typedef Hash::HashTable2<	UINT_PTR, SharedPointerT<Connection>
+		typedef Hash::HashTable2<	uintptr_t, SharedPointerT<Connection>
 									> CIDMap;
 
 
@@ -71,7 +71,7 @@ namespace Net {
 									> PeerIDMap;
 
 		// Connection set
-		typedef DualSortedMap<UINT_PTR,SharedPointerT<Connection>>	ConnectionSet;
+		typedef DualSortedMap<uintptr_t,SharedPointerT<Connection>>	ConnectionSet;
 
 
 		//////////////////////////////////////////////////////////////////
@@ -155,7 +155,7 @@ namespace Net {
 		bool		m_bNoNewConnection;
 
 		// Add/Pending/Release operation queue
-		BR::PageQueue<Operation>	m_PendingOperations;
+		PageQueue<Operation>	m_PendingOperations;
 
 		// Managed for Add/Remove connections
 		ConnectionSet				m_ManagedConnections;
@@ -265,7 +265,7 @@ namespace Net {
 
 		// Find and return connection
 		HRESULT GetConnectionByAddr(const sockaddr_in6& sockAddr, SharedPointerT<Connection> &pFound);
-		HRESULT GetConnectionByCID( UINT_PTR uiCID, SharedPointerT<Connection> &pConn );
+		HRESULT GetConnectionByCID( uintptr_t uiCID, SharedPointerT<Connection> &pConn );
 		HRESULT GetConnectionByPeerID(UINT64 peerID, SharedPointerT<Connection> &pConn);
 	};
 

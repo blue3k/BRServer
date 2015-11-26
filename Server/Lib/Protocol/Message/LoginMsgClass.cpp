@@ -36,6 +36,8 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 uiSizeOfID = 0;
+				UINT16 uiSizeOfPassword = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -43,10 +45,8 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_GameID, pCur, iMsgSize, sizeof(GameID) ) );
-				UINT16 uiSizeOfID = 0;
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfID, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_ID, pCur, iMsgSize, sizeof(char)*uiSizeOfID ) );
-				UINT16 uiSizeOfPassword = 0;
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPassword, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_Password, pCur, iMsgSize, sizeof(char)*uiSizeOfPassword ) );
 
@@ -91,12 +91,12 @@ namespace BR
 
 
 
-			VOID LoginCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void LoginCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:LoginCmd:%1%:%2% , GameID:%3%, ID:%4%, Password:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_ID, m_Password); 
-			}; // VOID LoginCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void LoginCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID LoginRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 0);
 			HRESULT LoginRes::ParseIMsg( MessageData* pIMsg )
@@ -160,12 +160,12 @@ namespace BR
 
 
 
-			VOID LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:LoginRes:%1%:%2% , Result:{3}, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
-			}; // VOID LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Login request with Facebook UID
 			const MessageID LoginByFacebookCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 1);
@@ -175,6 +175,9 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 uiSizeOfFaceBookName = 0;
+				UINT16 uiSizeOfEMail = 0;
+				UINT16 uiSizeOfFacebookToken = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -183,13 +186,10 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_GameID, pCur, iMsgSize, sizeof(GameID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_UID, pCur, iMsgSize, sizeof(UINT64) ) );
-				UINT16 uiSizeOfFaceBookName = 0;
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFaceBookName, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_FaceBookName, pCur, iMsgSize, sizeof(char)*uiSizeOfFaceBookName ) );
-				UINT16 uiSizeOfEMail = 0;
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfEMail, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_EMail, pCur, iMsgSize, sizeof(char)*uiSizeOfEMail ) );
-				UINT16 uiSizeOfFacebookToken = 0;
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFacebookToken, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_FacebookToken, pCur, iMsgSize, sizeof(char)*uiSizeOfFacebookToken ) );
 
@@ -239,12 +239,12 @@ namespace BR
 
 
 
-			VOID LoginByFacebookCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void LoginByFacebookCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:LoginByFacebookCmd:%1%:%2% , GameID:%3%, UID:%4%, FaceBookName:%5%, EMail:%6%, FacebookToken:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_UID, m_FaceBookName, m_EMail, m_FacebookToken); 
-			}; // VOID LoginByFacebookCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void LoginByFacebookCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID LoginByFacebookRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 1);
 			HRESULT LoginByFacebookRes::ParseIMsg( MessageData* pIMsg )
@@ -308,12 +308,12 @@ namespace BR
 
 
 
-			VOID LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:LoginByFacebookRes:%1%:%2% , Result:{3}, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
-			}; // VOID LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Login request
 			const MessageID CreateRandomUserCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 2);
@@ -323,6 +323,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 uiSizeOfCellPhone = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -330,7 +331,6 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_GameID, pCur, iMsgSize, sizeof(GameID) ) );
-				UINT16 uiSizeOfCellPhone = 0;
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfCellPhone, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_CellPhone, pCur, iMsgSize, sizeof(char)*uiSizeOfCellPhone ) );
 
@@ -372,12 +372,12 @@ namespace BR
 
 
 
-			VOID CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:CreateRandomUserCmd:%1%:%2% , GameID:%3%, CellPhone:%4%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_CellPhone); 
-			}; // VOID CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID CreateRandomUserRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 2);
 			HRESULT CreateRandomUserRes::ParseIMsg( MessageData* pIMsg )
@@ -441,12 +441,12 @@ namespace BR
 
 
 
-			VOID CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:CreateRandomUserRes:%1%:%2% , Result:{3}, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
-			}; // VOID CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

@@ -14,7 +14,7 @@
 #include "Common/BrSvrTypes.h"
 #include "Common/BrGameTypes.h"
 #include "Common/PolicyID.h"
-#include "Net/Netdef.h"
+#include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
 #include "Common/SvrPolicyID.h"
 

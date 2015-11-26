@@ -59,7 +59,7 @@ void BrServer::SetMyConfig( const Config::GenericServer* pMyConfig )
 
 
 // Get net class
-BR::NetClass BrServer::GetNetClass()
+NetClass BrServer::GetNetClass()
 {
 	return m_NetClass;
 }
@@ -110,13 +110,6 @@ EntityTable& BrServer::GetEntityTable()
 //	Static interfaces
 //
 
-// Get entity table
-EntityTable& GetEntityTable()
-{
-	Assert( BrServer::GetInstance() );
-	return BrServer::GetInstance()->GetEntityTable();
-}
-
 // Get Remote Entity Manager
 template<class componentType>
 componentType* GetServerComponent()
@@ -140,12 +133,6 @@ ServerEntity* GetLoopbackServerEntity()
 	return BrServer::GetInstance()->GetLoopbackServerEntity();
 }
 
-// Get server ID
-ServerID GetMyServerID()
-{
-	Assert( BrServer::GetInstance() );
-	return BrServer::GetInstance()->GetServerUID();
-}
 
 
 template<class DBManagerType>
@@ -156,7 +143,8 @@ HRESULT BrServer::InitializeDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 	DB::QueryManager* pDBManager = nullptr;
 	DBManagerType *pDB = nullptr;
 
-	svrChkPtr(pDBClusterCfg);
+	if (pDBClusterCfg == nullptr)
+		return E_UNEXPECTED;
 
 	auto& DBinstances = Svr::Config::GetConfig().DBInstances;
 	auto& DBMembers = pDBClusterCfg->DBMembers;

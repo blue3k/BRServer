@@ -205,9 +205,6 @@
     <ClInclude Include="..\ServerSystem\GameSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\ServerSystem\MessageRoute.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\ServerSystem\BrServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -404,9 +401,6 @@
     </None>
     <None Include="Message.inl" />
     <None Include="..\ServerSystem\GameSystem.inl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="..\ServerSystem\MessageRoute.inl">
       <Filter>Header Files</Filter>
     </None>
     <None Include="..\ServerSystem\BrServer.inl">

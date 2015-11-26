@@ -13,7 +13,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/MemoryPool.h"
-#include "DB/dbTrace.h"
+#include "DB/DBTrace.h"
 #include "DB/Query.h"
 #include "Common/ClassUtil.h"
 
@@ -50,12 +50,12 @@ namespace DB {
 		virtual ~QueryMYSQL();
 
 		// total parameter count
-		virtual UINT GetParameterCount()		{ return 0; }
+		virtual INT GetParameterCount()		{ return 0; }
 		// input only parameter count
-		virtual UINT GetInputParameterCount()	{ return 0; }
+		virtual INT GetInputParameterCount()	{ return 0; }
 
 		// result colomn count
-		virtual UINT GetResultCount()			{ return 0; }
+		virtual INT GetResultCount()			{ return 0; }
 
 		virtual MYSQL_BIND* BuildParameter()	{ return nullptr; }
 

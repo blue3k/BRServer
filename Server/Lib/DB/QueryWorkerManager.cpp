@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/TimeUtil.h"
 #include "Common/StrUtil.h"
@@ -66,7 +66,7 @@ namespace DB {
 		}
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -112,7 +112,7 @@ namespace DB {
 			return E_FAIL;
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

@@ -37,6 +37,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 uiSizeOfEntName = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -45,7 +46,6 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_LocalEntID, pCur, iMsgSize, sizeof(EntityID) ) );
-				UINT16 uiSizeOfEntName = 0;
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfEntName, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_EntName, pCur, iMsgSize, sizeof(char)*uiSizeOfEntName ) );
 
@@ -89,12 +89,12 @@ namespace BR
 
 
 
-			VOID RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:RegisterEntityCmd:%1%:%2% , Context:%3%, LocalEntID:%4%, EntName:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_LocalEntID, m_EntName); 
-			}; // VOID RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_ENTITYSERVER, 0);
 			HRESULT RegisterEntityRes::ParseIMsg( MessageData* pIMsg )
@@ -152,12 +152,12 @@ namespace BR
 
 
 
-			VOID RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:RegisterEntityRes:%1%:%2% , Context:%3%, Result:{4}, EntUID:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_EntUID); 
-			}; // VOID RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Find Entity
 			const MessageID UnregisterEntityCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_ENTITYSERVER, 1);
@@ -213,12 +213,12 @@ namespace BR
 
 
 
-			VOID UnregisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UnregisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:UnregisterEntityCmd:%1%:%2% , Context:%3%, EntUID:%4%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_EntUID); 
-			}; // VOID UnregisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void UnregisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID UnregisterEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_ENTITYSERVER, 1);
 			HRESULT UnregisterEntityRes::ParseIMsg( MessageData* pIMsg )
@@ -273,12 +273,12 @@ namespace BR
 
 
 
-			VOID UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:UnregisterEntityRes:%1%:%2% , Context:%3%, Result:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result); 
-			}; // VOID UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Find Entity
 			const MessageID FindEntityCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_ENTITYSERVER, 2);
@@ -334,12 +334,12 @@ namespace BR
 
 
 
-			VOID FindEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void FindEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:FindEntityCmd:%1%:%2% , Context:%3%, LocalEntID:%4%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_LocalEntID); 
-			}; // VOID FindEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void FindEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID FindEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_ENTITYSERVER, 2);
 			HRESULT FindEntityRes::ParseIMsg( MessageData* pIMsg )
@@ -397,12 +397,12 @@ namespace BR
 
 
 
-			VOID FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG2, "%0%:FindEntityRes:%1%:%2% , Context:%3%, Result:{4}, EntUID:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_EntUID); 
-			}; // VOID FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

@@ -51,8 +51,8 @@ namespace Svr {
 	HRESULT EntityManager::AddEntity( EntityFaculty faculty, Svr::Entity* pEntity )
 	{
 		HRESULT hr = S_OK;
-
-		svrChk( pEntity->InitializeEntity( GetEntityTable().GenEntityID(faculty) ) );
+		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+		svrChk( pEntity->InitializeEntity(entityTable.GenEntityID(faculty) ) );
 
 		if( faculty == EntityFaculty::Service )
 		{
@@ -66,7 +66,7 @@ namespace Svr {
 
 		svrChk( AddTickTask( pEntity ) );
 
-		svrChk(GetEntityTable().Insert(pEntity->GetEntityID(), pEntity));
+		svrChk(entityTable.Insert(pEntity->GetEntityID(), pEntity));
 
 		OnEntityAdded(pEntity);
 
@@ -79,8 +79,9 @@ namespace Svr {
 	HRESULT EntityManager::AddEntity( EntityID entityID, Svr::Entity* pEntity )
 	{
 		HRESULT hr = S_OK;
+		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
 
-		svrChk( GetEntityTable().ReserveEntityID( entityID ) );
+		svrChk(entityTable.ReserveEntityID( entityID ) );
 
 		svrChk( pEntity->InitializeEntity( entityID ) );
 
@@ -93,7 +94,7 @@ namespace Svr {
 
 		svrChk( AddTickTask( pEntity ) );
 
-		svrChk(GetEntityTable().Insert(pEntity->GetEntityID(), pEntity));
+		svrChk(entityTable.Insert(pEntity->GetEntityID(), pEntity));
 
 		OnEntityAdded(pEntity);
 
@@ -115,16 +116,18 @@ namespace Svr {
 
 	HRESULT EntityManager::FindEntity(EntityID entityID, SharedPointerT<Entity> &pEntity)
 	{
-		return GetEntityTable().Find( entityID, pEntity );
+		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+		return entityTable.Find( entityID, pEntity );
 	}
 
 	// add entity to table
 	HRESULT EntityManager::RemoveEntity(EntityID entityID)
 	{
 		HRESULT hr = S_OK;
+		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
 
 		SharedPointerT<Entity> pEntity;
-		hr = GetEntityTable().Erase(entityID, pEntity);
+		hr = entityTable.Erase(entityID, pEntity);
 		if (FAILED(hr))
 		{
 			hr = S_FALSE;

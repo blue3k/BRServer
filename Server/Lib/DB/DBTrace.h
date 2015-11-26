@@ -43,7 +43,7 @@ DEFINE_TRACE_MODULE(db)
 
 #define dbAssert(e)			trcAssert(e)
 #define dbAssertExp(e,expr)	trcAssertExp(e,expr)
-#define dbTrace(lModeMask,szfmt, ...)				TRACE_OUT(db,lModeMask,szfmt,__VA_ARGS__)
+#define dbTrace(lModeMask, ...)				TRACE_OUT(db,lModeMask,__VA_ARGS__)
 
 #define dbErrSilent(e)		trcErrSilent(e)
 

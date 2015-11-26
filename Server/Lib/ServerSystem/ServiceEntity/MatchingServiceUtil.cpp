@@ -14,7 +14,7 @@
 #include "Common/HRESGame.h"
 #include "Common/HRESLogin.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRSvrTypes.h"
+#include "Common/BrSvrTypes.h"
 
 #include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 #include "ServerSystem/ServerComponent.h"

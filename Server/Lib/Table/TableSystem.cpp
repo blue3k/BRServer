@@ -18,11 +18,11 @@
 #include "DB/DataSource.h"
 #include "DB/Factory.h"
 #include "DB/Session.h"
-#include "conspiracy\RewardTbl.h"
-#include "conspiracy\LevelTbl.h"
-#include "conspiracy\ShopTbl.h"
-#include "conspiracy\GameConfigTbl.h"
-#include "conspiracy\OrganicTbl.h"
+#include "conspiracy/RewardTbl.h"
+#include "conspiracy/LevelTbl.h"
+#include "conspiracy/ShopTbl.h"
+#include "conspiracy/GameConfigTbl.h"
+#include "conspiracy/OrganicTbl.h"
 #include "ServerSystem/SvrConfig.h"
 #include "TableQueries.h"
 
@@ -77,7 +77,7 @@ namespace GameTable {
 				delete m_pDataSource;
 			}
 
-		Proc_End:
+		//Proc_End:
 
 			return hr;
 		}
@@ -126,9 +126,12 @@ namespace GameTable {
 		{
 			defErr(E_DB_INVALID_CONFIG);
 		}
-		auto tableDBInstance = found->second;
-		
-		defChk(TableSystem::stm_Instance.Initialize(tableDBInstance->ConnectionString, tableDB->DBName, tableDBInstance->UserID, tableDBInstance->Password));
+
+		{
+			auto tableDBInstance = found->second;
+
+			defChk(TableSystem::stm_Instance.Initialize(tableDBInstance->ConnectionString, tableDB->DBName, tableDBInstance->UserID, tableDBInstance->Password));
+		}
 
 		defChk(LoadTables());
 
@@ -150,23 +153,23 @@ namespace GameTable {
 		HRESULT hr = S_OK;
 
 		defChk(::conspiracy::OrganicTbl::ClearTable());
-		hr = TableSystem::stm_Instance.QueryTable<BR::DB::QueryOrganicTblCmd, conspiracy::OrganicTbl>();
+		hr = TableSystem::stm_Instance.QueryTable<DB::QueryOrganicTblCmd, conspiracy::OrganicTbl>();
 		defChk(hr);
 
 		defChk(::conspiracy::RewardTbl::ClearTable());
-		hr = TableSystem::stm_Instance.QueryTable<BR::DB::QueryRewardTblCmd, conspiracy::RewardTbl>();
+		hr = TableSystem::stm_Instance.QueryTable<DB::QueryRewardTblCmd, conspiracy::RewardTbl>();
 		defChk(hr);
 
 		defChk(::conspiracy::LevelTbl::ClearTable());
-		hr = TableSystem::stm_Instance.QueryTable<BR::DB::QueryLevelTblCmd, conspiracy::LevelTbl>();
+		hr = TableSystem::stm_Instance.QueryTable<DB::QueryLevelTblCmd, conspiracy::LevelTbl>();
 		defChk(hr);
 
 		defChk(::conspiracy::ShopTbl::ClearTable());
-		hr = TableSystem::stm_Instance.QueryTable<BR::DB::QueryShopTblCmd, conspiracy::ShopTbl>();
+		hr = TableSystem::stm_Instance.QueryTable<DB::QueryShopTblCmd, conspiracy::ShopTbl>();
 		defChk(hr);
 
 		defChk(::conspiracy::GameConfigTbl::ClearTable());
-		hr = TableSystem::stm_Instance.QueryTable<BR::DB::QueryGameConfigTblCmd, conspiracy::GameConfigTbl>();
+		hr = TableSystem::stm_Instance.QueryTable<DB::QueryGameConfigTblCmd, conspiracy::GameConfigTbl>();
 		defChk(hr);
 
 	Proc_End:

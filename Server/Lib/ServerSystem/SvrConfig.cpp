@@ -13,7 +13,7 @@
 #include "Common/Typedefs.h"
 #include "Common/BrXML.h"
 #include "ServerSystem/SvrConfig.h"
-#include "ServerSystem/svrTrace.h"
+#include "ServerSystem/SvrTrace.h"
 
 
 
@@ -256,7 +256,7 @@ namespace Config
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	void GameCluster::AddChild( DOMElement *pChild )
+	void GameClusterInfo::AddChild( DOMElement *pChild )
 	{
 		__super::AddChild( pChild );
 
@@ -291,7 +291,7 @@ namespace Config
 	}
 
 	// for parsing
-	bool GameCluster::SetAttributeValue( const std::string& attName, const std::string& value )
+	bool GameClusterInfo::SetAttributeValue( const std::string& attName, const std::string& value )
 	{
 		if( attName == "ClusterID" ) {
 			ClusterID = (UINT)atoi( value.c_str() );
@@ -561,7 +561,7 @@ namespace Config
 		}
 		else if( pChild->GetName() == "GameCluster" )
 		{
-			GameCluster = dynamic_cast<Config::GameCluster*>(pChild);
+			GameCluster = dynamic_cast<GameClusterInfo*>(pChild);
 		}
 		else if( pChild->GetName() == "SharedModule" )
 		{
@@ -608,7 +608,7 @@ namespace Config
 
 			RegisterElementCreator( "LoginServer", []()-> XML::DOMElement* { return new PublicServer; } );
 
-			RegisterElementCreator( "GameCluster", []()-> XML::DOMElement* { return new GameCluster; } );
+			RegisterElementCreator( "GameCluster", []()-> XML::DOMElement* { return new GameClusterInfo; } );
 			RegisterElementCreator( "GameDB", []()-> XML::DOMElement* { return new DBCluster; } );
 			RegisterElementCreator( "GameTransactionLogDB", []()-> XML::DOMElement* { return new DBCluster; } );
 			RegisterElementCreator( "Game", []()-> XML::DOMElement* { return new PublicServer; } );

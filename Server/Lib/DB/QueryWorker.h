@@ -29,7 +29,7 @@ namespace DB {
 	class Session;
 	class DataSource;
 
-	class QueryWorker : public BR::Thread
+	class QueryWorker : public Thread
 	{
 	public:
 

@@ -202,6 +202,7 @@
     <ClInclude Include="NetSvrDef.h" />
     <ClInclude Include="NetToString.h" />
     <ClInclude Include="NetTrace.h" />
+    <ClInclude Include="NetUtil.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -233,6 +234,7 @@
     <ClCompile Include="NetSystem.cpp" />
     <ClCompile Include="NetToString.cpp" />
     <ClCompile Include="NetTrace.cpp" />
+    <ClCompile Include="NetUtil.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

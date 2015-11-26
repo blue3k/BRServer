@@ -37,6 +37,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 numberofPlayerInfo = 0; BYTE* pPlayerInfo = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -47,7 +48,6 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RankingScore, pCur, iMsgSize, sizeof(UINT64) ) );
-				UINT16 numberofPlayerInfo = 0; BYTE* pPlayerInfo = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofPlayerInfo, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pPlayerInfo, pCur, iMsgSize, sizeof(BYTE)*numberofPlayerInfo ) );
 				m_PlayerInfo.SetLinkedBuffer(numberofPlayerInfo, numberofPlayerInfo, pPlayerInfo);
@@ -74,6 +74,7 @@ namespace BR
 
 				MessageData *pNewMsg = NULL;
 
+				UINT16 numberOfInPlayerInfo = (UINT16)InPlayerInfo.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::AddPlayerCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -82,7 +83,6 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InRankingScore, sizeof(UINT64));
-				UINT16 numberOfInPlayerInfo = (UINT16)InPlayerInfo.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInPlayerInfo, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InPlayerInfo.data(), (INT)(sizeof(BYTE)*InPlayerInfo.GetSize())); 
 
@@ -110,7 +110,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -123,12 +123,12 @@ namespace BR
 			}; // HRESULT AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID AddPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void AddPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:AddPlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, RankingScore:%6%, PlayerInfo:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_RankingScore, m_PlayerInfo); 
-			}; // VOID AddPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void AddPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 0);
 			HRESULT AddPlayerRes::ParseIMsg( MessageData* pIMsg )
@@ -203,7 +203,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -216,12 +216,12 @@ namespace BR
 			}; // HRESULT AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID AddPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void AddPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:AddPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, Ranking:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_Ranking); 
-			}; // VOID AddPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void AddPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Remove a player to ranking
 			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 1);
@@ -293,7 +293,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -306,12 +306,12 @@ namespace BR
 			}; // HRESULT RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID RemovePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RemovePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:RemovePlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID); 
-			}; // VOID RemovePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RemovePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 1);
 			HRESULT RemovePlayerRes::ParseIMsg( MessageData* pIMsg )
@@ -383,7 +383,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -396,12 +396,12 @@ namespace BR
 			}; // HRESULT RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID RemovePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RemovePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:RemovePlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
-			}; // VOID RemovePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RemovePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Remove a player to ranking
 			const MessageID GetPlayerRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 2);
@@ -473,7 +473,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -486,12 +486,12 @@ namespace BR
 			}; // HRESULT GetPlayerRankingCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID GetPlayerRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GetPlayerRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:GetPlayerRankingCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID); 
-			}; // VOID GetPlayerRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GetPlayerRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetPlayerRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 2);
 			HRESULT GetPlayerRankingRes::ParseIMsg( MessageData* pIMsg )
@@ -566,7 +566,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -579,12 +579,12 @@ namespace BR
 			}; // HRESULT GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID GetPlayerRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GetPlayerRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:GetPlayerRankingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, Ranking:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_Ranking); 
-			}; // VOID GetPlayerRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GetPlayerRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Update a player to ranking
 			const MessageID UpdatePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 3);
@@ -594,6 +594,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 numberofPlayerInfo = 0; BYTE* pPlayerInfo = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -604,7 +605,6 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RankingScore, pCur, iMsgSize, sizeof(UINT64) ) );
-				UINT16 numberofPlayerInfo = 0; BYTE* pPlayerInfo = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofPlayerInfo, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pPlayerInfo, pCur, iMsgSize, sizeof(BYTE)*numberofPlayerInfo ) );
 				m_PlayerInfo.SetLinkedBuffer(numberofPlayerInfo, numberofPlayerInfo, pPlayerInfo);
@@ -631,6 +631,7 @@ namespace BR
 
 				MessageData *pNewMsg = NULL;
 
+				UINT16 numberOfInPlayerInfo = (UINT16)InPlayerInfo.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::UpdatePlayerCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -639,7 +640,6 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InRankingScore, sizeof(UINT64));
-				UINT16 numberOfInPlayerInfo = (UINT16)InPlayerInfo.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInPlayerInfo, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InPlayerInfo.data(), (INT)(sizeof(BYTE)*InPlayerInfo.GetSize())); 
 
@@ -667,7 +667,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -680,12 +680,12 @@ namespace BR
 			}; // HRESULT UpdatePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID UpdatePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UpdatePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:UpdatePlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, RankingScore:%6%, PlayerInfo:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_RankingScore, m_PlayerInfo); 
-			}; // VOID UpdatePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void UpdatePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID UpdatePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 3);
 			HRESULT UpdatePlayerRes::ParseIMsg( MessageData* pIMsg )
@@ -760,7 +760,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -773,12 +773,12 @@ namespace BR
 			}; // HRESULT UpdatePlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID UpdatePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UpdatePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:UpdatePlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, Ranking:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_Ranking); 
-			}; // VOID UpdatePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void UpdatePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Remove a player to ranking
 			const MessageID GetRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 4);
@@ -853,7 +853,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -866,12 +866,12 @@ namespace BR
 			}; // HRESULT GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID GetRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GetRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:GetRankingCmd:%1%:%2% , Context:%3%, RouteContext:%4%, From:%5%, Count:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_From, m_Count); 
-			}; // VOID GetRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GetRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 4);
 			HRESULT GetRankingRes::ParseIMsg( MessageData* pIMsg )
@@ -946,7 +946,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -959,12 +959,12 @@ namespace BR
 			}; // HRESULT GetRankingRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			VOID GetRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void GetRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:GetRankingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, PlayerRanking:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_PlayerRanking); 
-			}; // VOID GetRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void GetRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

@@ -14,9 +14,9 @@
 
 #include "Common/Typedefs.h"
 #include "Common/MemoryPool.h"
-#include "DB/dbTrace.h"
+#include "Common/Message.h"
+#include "DB/DBTrace.h"
 
-#include <my_global.h>
 #include <mysql.h>
 #include <mysqld_error.h>
 
@@ -58,27 +58,29 @@ namespace DB {
 	{
 		return MYSQL_TYPE_BLOB;
 	}
-	inline enum_field_types _GetMYSQLDBType(CHAR[]) throw ()
+	inline enum_field_types _GetMYSQLDBType(char[]) throw ()
 	{
 		return MYSQL_TYPE_STRING;
 	}
 
-	MYSQL_TYPE_FUNCTION(const CHAR*		 , MYSQL_TYPE_VARCHAR)
-	MYSQL_TYPE_FUNCTION(__int64			 , MYSQL_TYPE_LONGLONG)
+	MYSQL_TYPE_FUNCTION(const char*		 , MYSQL_TYPE_VARCHAR)
+	MYSQL_TYPE_FUNCTION(INT64			 , MYSQL_TYPE_LONGLONG)
+//	MYSQL_TYPE_FUNCTION(UINT64			 , MYSQL_TYPE_ULONGLONG)
 	MYSQL_TYPE_FUNCTION(signed char      , MYSQL_TYPE_TINY)
 	MYSQL_TYPE_FUNCTION(SHORT            , MYSQL_TYPE_SHORT)
 	MYSQL_TYPE_FUNCTION(int              , MYSQL_TYPE_LONG)
 	MYSQL_TYPE_FUNCTION(LONG             , MYSQL_TYPE_LONG)
-	MYSQL_TYPE_FUNCTION(LARGE_INTEGER    , MYSQL_TYPE_LONGLONG) 
+//	MYSQL_TYPE_FUNCTION(LONGLONG		 , MYSQL_TYPE_LONGLONG) 
 	MYSQL_TYPE_FUNCTION(BYTE             , MYSQL_TYPE_TINY)
 	MYSQL_TYPE_FUNCTION(unsigned short   , MYSQL_TYPE_SHORT)
 	MYSQL_TYPE_FUNCTION(unsigned int     , MYSQL_TYPE_LONG)
 	MYSQL_TYPE_FUNCTION(unsigned long    , MYSQL_TYPE_LONG)
-	MYSQL_TYPE_FUNCTION(ULARGE_INTEGER   , MYSQL_TYPE_LONGLONG)
+//	MYSQL_TYPE_FUNCTION(ULONGLONG		 , MYSQL_TYPE_LONGLONG)
 	MYSQL_TYPE_FUNCTION(float            , MYSQL_TYPE_FLOAT)
 	MYSQL_TYPE_FUNCTION(double           , MYSQL_TYPE_DOUBLE)
-	MYSQL_TYPE_FUNCTION(ULONGLONG        , MYSQL_TYPE_LONGLONG)
+//	MYSQL_TYPE_FUNCTION(ULONGLONG        , MYSQL_TYPE_LONGLONG)
 	MYSQL_TYPE_FUNCTION(char			 , FIELD_TYPE_CHAR)
+	MYSQL_TYPE_FUNCTION(bool			 , FIELD_TYPE_BIT)
 
 
 	// Check weather this two type can be convertable or not
@@ -88,12 +90,15 @@ namespace DB {
 		{
 		case MYSQL_TYPE_VAR_STRING:
 		case MYSQL_TYPE_STRING:
-			if( type2 == MYSQL_TYPE_VAR_STRING || type2 == MYSQL_TYPE_STRING )
+			if (type2 == MYSQL_TYPE_VAR_STRING || type2 == MYSQL_TYPE_STRING)
 				return true;
+			else
+				return false;
+			break;
+		default:
+			return type1 == type2;
 			break;
 		};
-
-		return type1 == type2;
 	}
 
 	
@@ -108,8 +113,10 @@ namespace DB {
 		case MYSQL_TYPE_BLOB:
 			return true;
 			break;
+		default:
+			return false;
+			break;
 		};
-		return false;
 	}
 	
 	// 
@@ -186,7 +193,7 @@ namespace DB {
 
 	// define query class
 	#define BRDB_DEFINE_QUERYCLASS(Policy,QueryClass) \
-		class QueryClass##Cmd : public QueryClass, public BR::MemoryPoolObject<##QueryClass##Cmd>	\
+		class QueryClass##Cmd : public QueryClass, public MemoryPoolObject<QueryClass##Cmd>	\
 		{																			\
 		public :																	\
 			enum { MESSAGE_POLICY = Policy };										\
@@ -197,7 +204,7 @@ namespace DB {
 
 	// define rowset query class
 	#define BRDB_DEFINE_ROWSETQUERYCLASS(Policy,QueryClass,QueryClassRowset) \
-		class QueryClass##Cmd : public QueryClass, public BR::MemoryPoolObject<QueryClass##Cmd>	\
+		class QueryClass##Cmd : public QueryClass, public MemoryPoolObject<QueryClass##Cmd>	\
 		{																			\
 		public :																	\
 			enum { MESSAGE_POLICY = Policy };										\
@@ -213,8 +220,8 @@ namespace DB {
 
 	// execute
 	#define BRDB_DEFINE_QUERY_IMPL(QueryClass)										\
-				const BR::Message::MessageID BR::DB::##QueryClass##Cmd::MID = BR::Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, false, BR::DB::##QueryClass##Cmd::MESSAGE_POLICY, MCODE_##QueryClass## ); \
-				BR_MEMORYPOOL_IMPLEMENT(BR::DB::##QueryClass##Cmd);					\
+				const BR::Message::MessageID BR::DB::QueryClass##Cmd::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, false, DB::QueryClass##Cmd::MESSAGE_POLICY, MCODE_##QueryClass ); \
+				BR_MEMORYPOOL_IMPLEMENT(DB::QueryClass##Cmd);					\
 
 
 
@@ -225,8 +232,8 @@ namespace DB {
 
 	#define BRDB_BEGIN_EMPTY_PARAM_MAP(classType)								\
 			classType(Message::MessageID msgID):QueryMYSQL(msgID){}					\
-			virtual UINT GetParameterCount()		{ return 0; }			\
-			virtual UINT GetInputParameterCount()	{ return 0; }\
+			virtual INT GetParameterCount() override		{ return 0; }			\
+			virtual INT GetInputParameterCount() override	{ return 0; }\
 
 
 	#define BRDB_END_EMPTY_PARAM_MAP()													\
@@ -234,14 +241,14 @@ namespace DB {
 
 	#define BRDB_BEGIN_PARAM_MAP(classType,ParamCount)								\
 			classType(Message::MessageID msgID):QueryMYSQL(msgID){}					\
-			virtual UINT GetParameterCount()		{ return ParamCount; }			\
-			UINT m_DBQueryInputParamCount;											\
-			virtual UINT GetInputParameterCount()	{ return m_DBQueryInputParamCount; }\
+			virtual INT GetParameterCount()		{ return ParamCount; }			\
+			INT m_DBQueryInputParamCount;											\
+			virtual INT GetInputParameterCount()	{ return m_DBQueryInputParamCount; }\
 			MYSQL_BIND m_DBQueryParameters[ParamCount];								\
 			BindVariableState m_DBQueryParameterStates[ParamCount];					\
 			virtual MYSQL_BIND* BuildParameter() {									\
 				BRDB_PARAMIO ioType = BRDB_PARAMIO_INPUT;							\
-				UINT iParam = 0;													\
+				INT iParam = 0;													\
 				m_DBQueryInputParamCount = 0;										\
 				memset( m_DBQueryParameters, 0, sizeof(m_DBQueryParameters) );		\
 				memset( m_DBQueryParameterStates, 0, sizeof(m_DBQueryParameterStates) );	\
@@ -273,11 +280,11 @@ namespace DB {
 
 
 	#define BRDB_BEGIN_RESULT_MAP(classType,resultCount)							\
-			virtual UINT GetResultCount()		{ return resultCount; }				\
+			virtual INT GetResultCount() override		{ return resultCount; }				\
 			MYSQL_BIND m_DBQueryResults[resultCount];								\
 			BindVariableState m_DBQueryResultStates[resultCount];					\
 			virtual MYSQL_BIND* BuildResult() {										\
-				UINT iParam = 0;													\
+				INT iParam = 0;													\
 				memset( m_DBQueryResults, 0, sizeof(m_DBQueryResults) );			\
 				memset( m_DBQueryResultStates, 0, sizeof(m_DBQueryResultStates) );	\
 				MYSQL_BIND *pColumn = m_DBQueryResults;								\

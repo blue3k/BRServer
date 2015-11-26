@@ -45,16 +45,16 @@ namespace BR {
 		void SetStreamBuffer(UINT bufferSize, BYTE* buffer);
 
 		// Get target memory buffer size
-		FORCEINLINE UINT GetBufferSize();
+		UINT GetBufferSize();
 
 		// Get writen size
-		FORCEINLINE UINT GetSize();
+		UINT GetSize();
 
 		// Get remain size
-		FORCEINLINE UINT GetRemainSize();
+		UINT GetRemainSize();
 
 		// Get memory buffer pointer
-		FORCEINLINE const BYTE* GetData();
+		const BYTE* GetData();
 
 		// Write data to stream
 		HRESULT Write( UINT sizeToWrite, const BYTE* pData );

@@ -61,7 +61,7 @@ namespace BR {
 		case MYSQL_TYPE_GEOMETRY: name = "MYSQL_TYPE_GEOMETRY";break;
 		};
 
-		Option;
+		unused(Option);
 		if( name )
 		{
 			if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, name ) ) )

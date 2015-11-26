@@ -133,16 +133,16 @@ namespace BR
 			bool IsCloned;
 
 			MapNode()
-				: Balance(0)
+				: Key(0)
+				, Value(0)
+				, Balance(0)
 				, DepthOfChildren(0)
 				, NumberOfChildren(0)
-				, Key(0)
-				, Value(0)
-				, IsCloned(false)
+				, UpdateSerial(0)
 				, Left(nullptr)
 				, Right(nullptr)
 				, NextPendingFree(nullptr)
-				, UpdateSerial(0)
+				, IsCloned(false)
 			{
 			}
 

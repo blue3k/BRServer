@@ -18,19 +18,19 @@
 
 
 // get window size
-INT MsgWindow::GetWindowSize()
+inline INT MsgWindow::GetWindowSize()
 {
 	return m_uiWndSize;
 }
 
 // get message count in window
-UINT MsgWindow::GetMsgCount()
+inline UINT MsgWindow::GetMsgCount()
 {
 	return m_uiMsgCount;
 }
 
 // get message base sequence
-UINT MsgWindow::GetBaseSequence()
+inline UINT MsgWindow::GetBaseSequence()
 {
 	return m_uiBaseSequence;
 }

@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
@@ -28,13 +28,14 @@ BR_MEMORYPOOL_IMPLEMENT(Svr::TimerResult);
 
 
 namespace BR {
-namespace Svr {
 
-	template class PageQueue<Transaction*>;
-	template class PageQueue<TransactionResult*>;
+	template class PageQueue<Svr::Transaction*>;
+	template class PageQueue<Svr::TransactionResult*>;
 
-	template class SharedPointerT < Transaction >;
-	template class WeakPointerT < Transaction >;
+	template class SharedPointerT < Svr::Transaction >;
+	template class WeakPointerT < Svr::Transaction >;
+
+	namespace Svr {
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -165,6 +166,17 @@ namespace Svr {
 	HRESULT Transaction::FlushTransaction()
 	{
 		return S_OK;
+	}
+
+	///////////////////////////////////////////////////////////
+	// Helper functions
+
+	Net::IConnection* Transaction::GetServerEntityConnection(ServerEntity* pServerEntity)
+	{
+		if (pServerEntity == nullptr)
+			return nullptr;
+
+		return pServerEntity->GetConnection();
 	}
 
 

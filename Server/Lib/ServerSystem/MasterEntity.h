@@ -19,7 +19,7 @@
 
 
 namespace BR {
-namespace Svr{
+namespace Svr {
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,9 +85,11 @@ namespace Svr{
 #include "MasterEntity.inl"
 
 
-	extern template class SharedPointerT<MasterEntity>;
 
 }; // namespace Svr
+
+	extern template class SharedPointerT<Svr::MasterEntity>;
+
 }; // namespace BR
 
 

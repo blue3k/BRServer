@@ -36,14 +36,14 @@ void OVERLAPPED_BUFFER_WRITE::InitMsg( Message::MessageData *pMsg )
 	pMsgs = pMsg;
 	pSendBuff = nullptr;
 	wsaBuff.len = pMsg->GetMessageSize();
-	wsaBuff.buf = (CHAR*)pMsg->GetMessageBuff();
+	wsaBuff.buf = (char*)pMsg->GetMessageBuff();
 }
 
 void OVERLAPPED_BUFFER_WRITE::InitBuff( UINT uiBuffSize, BYTE* pBuff )
 {
 	pMsgs = nullptr;
 	wsaBuff.len = uiBuffSize;
-	wsaBuff.buf = (CHAR*)pBuff;
+	wsaBuff.buf = (char*)pBuff;
 	pSendBuff = pBuff;
 }
 
@@ -113,7 +113,7 @@ void tag_OVERLAPPED_BUFFER_READ::InitForIO()
 	iSockLen = sizeof(sockaddr_in6);
 }
 
-void tag_OVERLAPPED_BUFFER_READ::InitRecv( UINT_PTR iCID )
+void tag_OVERLAPPED_BUFFER_READ::InitRecv( uintptr_t iCID )
 {
 	InitForIO();
 	wsaBuff.len = sizeof(buffer);
@@ -125,25 +125,25 @@ void tag_OVERLAPPED_BUFFER_READ::InitRecv( UINT_PTR iCID )
 }
 
 // Setup recving mode
-void tag_OVERLAPPED_BUFFER_READ::SetupRecvUDP( UINT_PTR iCID )
+void tag_OVERLAPPED_BUFFER_READ::SetupRecvUDP( uintptr_t iCID )
 {
 	InitRecv( iCID );
 	Operation = OP_UDPREAD;
 }
 
-void tag_OVERLAPPED_BUFFER_READ::SetupRecvPeer( UINT_PTR iCID )
+void tag_OVERLAPPED_BUFFER_READ::SetupRecvPeer( uintptr_t iCID )
 {
 	InitRecv( iCID );
 	Operation = OP_PEERUDPREAD;
 }
 
-void tag_OVERLAPPED_BUFFER_READ::SetupRecvTCP( UINT_PTR iCID )
+void tag_OVERLAPPED_BUFFER_READ::SetupRecvTCP( uintptr_t iCID )
 {
 	InitRecv( iCID );
 	Operation = OP_TCPREAD;
 }
 
-void tag_OVERLAPPED_BUFFER_READ::SetupRecvTCPPending( UINT_PTR iCID )
+void tag_OVERLAPPED_BUFFER_READ::SetupRecvTCPPending( uintptr_t iCID )
 {
 	InitRecv( iCID );
 	Operation = OP_TCPREADPENDING;

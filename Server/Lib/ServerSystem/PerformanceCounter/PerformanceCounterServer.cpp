@@ -9,7 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/TimeUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Net/NetRawUDP.h"

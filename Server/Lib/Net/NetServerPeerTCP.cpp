@@ -53,7 +53,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		ConnectionTCP *pConnection = nullptr;
 		SharedPointerT<Connection> pConn;
-		UINT_PTR cid = 0;
+		uintptr_t cid = 0;
 //		ConnectionManager::AddrIterator itCon;
 		bool bNeedPending = false;
 
@@ -169,7 +169,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		BR::Net::IConnection::ConnectionInformation connectionInfo;
 		ConnectionTCP *pConn = nullptr;
-		UINT_PTR CID = 0;
+		uintptr_t CID = 0;
 		SOCKET socket = INVALID_SOCKET;
 		sockaddr_in6 remoteAddr, localsockAddr;
 		u_long iMode = true;// non block
@@ -240,7 +240,7 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		ConnectionTCP *pConn = nullptr;
-		UINT_PTR CID = 0;
+		uintptr_t CID = 0;
 
 		netMem( pConn = dynamic_cast<ConnectionPeerTCP*>(GetConnectionManager().NewConnection()) );
 

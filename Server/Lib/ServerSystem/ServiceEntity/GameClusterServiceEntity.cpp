@@ -11,7 +11,7 @@
 
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
@@ -23,6 +23,7 @@
 #include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
 #include "ServerSystem/ServerService/ClusterServerService.h"
 #include "ServerSystem/SvrTrace.h"
+#include "ServerSystem/BrServerUtil.h"
 
 #include "Protocol/Message/LoginServerMsgClass.h"
 #include "ServerSystem/ServiceEntity/GameClusterServiceTrans.h"

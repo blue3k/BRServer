@@ -115,7 +115,7 @@ namespace Net {
 		{
 			// check control packet
 			MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pBuf[0].buf;
-			if (pNetCtrl->Length == sizeof(MsgNetCtrlConnect) && pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID && pNetCtrl->rtnMsgID.ID == BR::PROTOCOL_VERSION)
+			if (pNetCtrl->Length == sizeof(MsgNetCtrlConnect) && pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID && pNetCtrl->rtnMsgID.ID == BR_PROTOCOL_VERSION)
 			{
 				if( GetIsEnableAccept() )
 				{
@@ -139,7 +139,7 @@ namespace Net {
 					MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pBuf[0].buf;
 					if( pNetCtrl->Length == sizeof(MsgNetCtrlConnect) 
 						&& pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID
-						&& pNetCtrl->rtnMsgID.ID == BR::PROTOCOL_VERSION )
+						&& pNetCtrl->rtnMsgID.ID == BR_PROTOCOL_VERSION )
 					{
 						// Peer network only allow registered connection
 						netChk( m_ConnectionManager.PendingInitConnection((Connection*)pConnection) );
@@ -563,7 +563,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		BR::Net::IConnection::ConnectionInformation connectionInfo;
 		ConnectionUDPServerPeer *pConn = nullptr;
-		UINT_PTR CID = 0;
+		uintptr_t CID = 0;
 
 
 		netMem( pConn = dynamic_cast<ConnectionUDPServerPeer*>(m_ConnectionManager.NewConnection()) );
@@ -585,7 +585,7 @@ namespace Net {
 		netChk( pConn->InitConnection( GetSocket(), connectionInfo ) );
 		netTrace(TRC_CONNECTION, "Initialize connection CID:%0%, Addr:%1%:%2%", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
-		//pConn->SetUData( (UINT_PTR)pCfgData );
+		//pConn->SetUData( (uintptr_t)pCfgData );
 
 		// Server entity will update this connection, thus just adding address map is enough
 		netChk( m_ConnectionManager.PendingConnection( pConn ) );

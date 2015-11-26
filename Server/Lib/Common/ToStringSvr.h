@@ -22,7 +22,7 @@
 namespace BR {
 
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterID& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::RouteContext& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const RouteContext& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterType& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterMembership& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ServiceStatus& Data, int Option);

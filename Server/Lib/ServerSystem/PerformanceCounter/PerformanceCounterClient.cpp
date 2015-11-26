@@ -9,11 +9,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 
 #include "Net/NetRawUDP.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BrServer.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/EntityManager.h"
 #include "Protocol/Message/MonitoringMsgClass.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
@@ -301,6 +301,8 @@ namespace Svr {
 
 	PerformanceCounterInstance* PerformanceCounterClient::GetDefaultCounterInstance()
 	{
+		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+
 		if (stm_pInstance == nullptr)
 		{
 			Assert(false);
@@ -309,7 +311,7 @@ namespace Svr {
 
 		if (stm_pInstance->m_DefaultCounter == nullptr)
 		{
-			auto entityUID = EntityUID(GetMyServerID(), GetEntityTable().GenEntityID(EntityFaculty::Service));
+			auto entityUID = EntityUID(GetMyServerID(), entityTable.GenEntityID(EntityFaculty::Service));
 			stm_pInstance->m_DefaultCounter = SharedPointerT<PerformanceCounterInstance>(new PerformanceCounterInstance(Util::GetServiceNameA(), entityUID));
 			stm_pInstance->m_DefaultCounter->RegisterToClient();
 		}

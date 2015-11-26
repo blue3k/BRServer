@@ -37,15 +37,15 @@ namespace Hash {
 					typename Trait = UniqueKeyTrait, 
 					typename ThreadTrait = ThreadSyncTraitReadWriteT<KeyType, ItemType*>,
 					size_t	DefaultBucketSize = 128,
-					typename Hasher = Hash::hash<typename KeyType> >
+					typename Hasher = Hash::hash<KeyType> >
 		class StaticHashTable
 		{
 		public:
 
 			typedef typename ThreadTrait::TicketLockType		TicketLockType;
-			typedef typename ItemType							ItemType;
-			typedef typename KeyType							KeyType;
-			typedef typename MapItemConverter					MapItemConverter;
+			//typedef typename ItemType							ItemType;
+			//typedef typename KeyType							KeyType;
+			//typedef typename MapItemConverter					MapItemConverter;
 			typedef typename MapItemConverter::Type				MapItemType;
 			typedef OrderedLinkedList<KeyType>					BucketContainer;
 
@@ -182,12 +182,12 @@ namespace Hash {
 
 				// constructor
 				iterator( StaticHashTable *pContainer, typename BucketListType::iterator iterBucket, typename BucketContainer::iterator itInBucket, bool bIsBucketIter = false )
-					:m_bIsIterInBucket(bIsBucketIter),
-					m_pContainer(pContainer),
-					m_iterBucket(iterBucket),
-					m_itInBucket(itInBucket)
+					: m_bIsIterInBucket(bIsBucketIter)
+					, m_iterBucket(iterBucket)
+					, m_pContainer(pContainer)
+					, m_itInBucket(itInBucket)
+					, m_pCache(nullptr)
 				{
-					m_pCache = NULL;
 					if( m_pContainer && m_iterBucket != m_pContainer->bucket_end() && m_itInBucket.IsValid() )
 						m_iterBucket->ReadLock();
 				}
@@ -257,14 +257,14 @@ namespace Hash {
 			public:
 				iterator()
 					:m_bIsIterInBucket(false),
-					m_pContainer(NULL)
+					m_pContainer(nullptr)
 				{
 				}
 
 				iterator( const iterator& src )
 					:m_bIsIterInBucket(false),
-					m_pContainer(src.m_pContainer),
 					m_iterBucket(src.m_iterBucket),
+					m_pContainer(src.m_pContainer),
 					m_itInBucket(src.m_itInBucket)
 				{
 					if( m_pContainer && m_iterBucket != m_pContainer->bucket_end() )
@@ -487,7 +487,7 @@ namespace Hash {
 
 			HRESULT insert( const KeyType& inKey, const ItemType* data )
 			{
-				MapItemConverter::Type *inItem = MapItemConverter()(data);
+				auto *inItem = MapItemConverter()(data);
 				size_t hashVal = Hasher()( inKey );
 				size_t iBucket = hashVal%m_Bucket.size();
 
@@ -522,9 +522,9 @@ namespace Hash {
 				return S_OK;
 			}
 
-			HRESULT find( const KeyType& keyVal, ItemType *data )
+			HRESULT find( const KeyType& inKey, ItemType *data )
 			{
-				size_t hashVal = Hasher()( keyVal );
+				size_t hashVal = Hasher()(inKey);
 				size_t iBucket = hashVal%m_Bucket.size();
 
 				Bucket& bucket = m_Bucket[iBucket];
@@ -646,7 +646,7 @@ namespace Hash {
 			{
 				m_lItemCount = 0;
 
-				BucketListType::iterator iterBucket = m_Bucket.begin();
+				auto iterBucket = m_Bucket.begin();
 				for( ; iterBucket != m_Bucket.end(); ++iterBucket )
 				{
 					iterBucket->m_Items.clear();
@@ -658,7 +658,7 @@ namespace Hash {
 			bool Validate()
 			{
 #ifdef _DEBUG
-				BucketListType::iterator iterBucket = m_Bucket.begin();
+				auto iterBucket = m_Bucket.begin();
 				for( INT iBucket = 0; iterBucket != m_Bucket.end(); ++iterBucket, ++iBucket )
 				{
 					if( !iterBucket->Validate( iBucket, m_Bucket.size() ) )

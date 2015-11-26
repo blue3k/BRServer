@@ -14,7 +14,7 @@
 #include "Common/Typedefs.h"
 #include "ServerSystem/Transaction.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Common/GameConst.h"
 
 

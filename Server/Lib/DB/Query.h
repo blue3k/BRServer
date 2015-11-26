@@ -13,7 +13,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/MemoryPool.h"
-#include "DB/dbTrace.h"
+#include "DB/DBTrace.h"
 #include "DB/Factory.h"
 
 #include "ServerSystem/SvrTypes.h"
@@ -40,9 +40,9 @@ namespace DB {
 	public:
 		Query(Message::MessageID MsgID)
 			: Svr::TransactionResult(MsgID)
-			, m_PartitioningKey(0)
 			, m_pQueryManager(nullptr)
 			, m_pSession(nullptr)
+			, m_PartitioningKey(0)
 		{
 		}
 

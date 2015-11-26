@@ -24,7 +24,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const EntityID& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		if (FAILED(ToStringEnum(pBuff, iBuffLen, (EntityFaculty)Data.Components.FacultyID)))
 			return E_FAIL;
 
@@ -42,7 +42,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const EntityUID& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		if (FAILED(_IToA((UINT32)Data.Components.SvrID, pBuff, iBuffLen, 10, -1)))
 			return E_FAIL;
 
@@ -60,7 +60,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const Message::MessageID& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		if (FAILED(ToStringEnum(pBuff, iBuffLen, (BR::PolicyID)Data.IDs.Policy)))
 			return E_FAIL;
 
@@ -82,7 +82,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const NetAddress& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		if (FAILED(ToString(pBuff, iBuffLen, (LPCSTR)Data.strAddr, 0)))
 			return E_FAIL;
 
@@ -97,9 +97,9 @@ namespace BR
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::GameID& Data, int Option)
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const GameID& Data, int Option)
 	{
-		Option;
+		unused(Option);
 
 		if (FAILED(_IToA((UINT32)Data, pBuff, iBuffLen, 10, -1)))
 			return E_FAIL;
@@ -109,9 +109,9 @@ namespace BR
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::PlayerInformation& Data, int Option)
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const PlayerInformation& Data, int Option)
 	{
-		Option;
+		unused(Option);
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return E_FAIL;
@@ -133,9 +133,9 @@ namespace BR
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::FriendInformation& Data, int Option)
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const FriendInformation& Data, int Option)
 	{
-		Option;
+		unused(Option);
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return E_FAIL;
@@ -156,9 +156,9 @@ namespace BR
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::TotalRankingPlayerInformation& Data, int Option)
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const TotalRankingPlayerInformation& Data, int Option)
 	{
-		Option;
+		unused(Option);
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return E_FAIL;

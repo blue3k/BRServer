@@ -28,13 +28,13 @@ TransactionID::TransactionID( const TransactionID& transID )
 {
 }
 
-TransactionID::TransactionID( BR::EntityID entityID, UINT32 transID )
+TransactionID::TransactionID( EntityID entityID, UINT32 transID )
 {
 	Components.EntID = entityID;
 	Components.TransID = transID;
 }
 
-TransactionID::TransactionID( BR::Context context )
+TransactionID::TransactionID( Context context )
 	:ID(context)
 {
 }
@@ -57,9 +57,9 @@ bool TransactionID::operator == ( const TransactionID& src ) const
 	return ID == src.ID;
 }
 
-TransactionID::operator BR::Context() const
+TransactionID::operator Context() const
 {
-	return (BR::Context)ID;
+	return (Context)ID;
 }
 
 
@@ -132,7 +132,7 @@ ServiceInformation::ServiceInformation( const ServiceInformation& src )
 {
 }
 
-ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, BR::NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, UINT32 workload )
+ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, UINT32 workload )
 {
 	UID = entityUID;
 	Membership = membership;

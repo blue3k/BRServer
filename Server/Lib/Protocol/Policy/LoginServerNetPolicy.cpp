@@ -12,7 +12,7 @@
 #include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/PolicyID.h"
-#include "Net/Netdef.h"
+#include "Net/NetDef.h"
 #include "Common/Message.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrGameTypes.h"

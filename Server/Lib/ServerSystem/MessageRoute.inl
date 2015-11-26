@@ -11,7 +11,7 @@
 
 
 #include "stdafx.h"
-#include "Common/TypeDefs.h"
+#include "Common/Typedefs.h"
 #include "Common/HRESCommon.h"
 #include "ServerSystem/MessageRoute.h"
 

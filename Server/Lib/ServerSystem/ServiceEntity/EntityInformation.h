@@ -12,19 +12,19 @@
 
 #pragma once
 
-#include "Common/TypeDefs.h"
+#include "Common/Typedefs.h"
 #include "Common/MemoryPool.h"
 #include "Common/ClassUtil.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/ServerEntity.h"
-#include "ServerSystem/ServerService/ServerService.h"
+//#include "ServerSystem/ServerService/ServerService.h"
 
 
 namespace BR {
 namespace Svr {
 
 	class ServerServiceBase;
-
+	class ServerService;
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -96,7 +96,7 @@ namespace Svr {
 
 		// Service base cache
 		BRCLASS_ATTRIBUTE_READONLY_PTR(ServerServiceBase*,ServiceBase);
-		BYTE	m_bufferForServiceBase[sizeof(ServerService)];
+		BYTE	m_bufferForServiceBase[1024];
 
 
 	public:
@@ -104,7 +104,7 @@ namespace Svr {
 		~ServerServiceInformation();
 
 		// Get connection
-		FORCEINLINE Net::IConnection* GetConnection() const;
+		Net::IConnection* GetConnection() const;
 
 		// Get service information
 		void GetServiceInformation( ServiceInformation & serviceInformation );
@@ -122,101 +122,19 @@ namespace Svr {
 			if( m_ServiceBase == nullptr )
 			{
 				m_ServiceBase = reinterpret_cast<ServerServiceBase*>(new(m_bufferForServiceBase) ServiceType(this));
-				static_assert(sizeof(m_bufferForServiceBase) == sizeof(ServiceType), "Invalid buffer size for service base");
 			}
 
-			AssertRel( m_ServiceBase->GetPolicyID() == ServiceType::ID_SERVICEPOLICY );
+			ValidateServiceInstance(ServiceType::ID_SERVICEPOLICY);
 
 			return (ServiceType*)m_ServiceBase;
 		}
 
+		void ValidateServiceInstance(UINT serviceID);
+
 		// check whether this service is available or not
-		FORCEINLINE bool IsServiceAvailable() const;
+		bool IsServiceAvailable() const;
 	};
 
-
-	////////////////////////////////////////////////////////////////////////////
-	////
-	////	Entity Generic Information class
-	////
-
-	//class ServerInformation : public EntityInformation, public MemoryPoolObject<ServerInformation>
-	//{
-	//public:
-
-
-	//	// server service list
-	//	typedef std::vector<ServerServiceInformation*> ServerServiceList;
-
-	//private:
-
-	//	// Cluster ID
-	//	BRCLASS_ATTRIBUTE_READONLY(ClusterID,ClusterID);
-
-	//	// Service list for this server
-	//	ServerServiceList	m_ServerServices;
-
-	//public:
-	//	ServerInformation();
-	//	~ServerInformation();
-
-	//	// Add service
-	//	HRESULT AddService( ServerServiceInformation* pService );
-	//};
-	//
-
-	////////////////////////////////////////////////////////////////////////////
-	////
-	////	Entity Generic Information class
-	////
-
-	//class ServerClusterInformation : public MemoryPoolObject<ServerClusterInformation>
-	//{
-	//public:
-	//	// server service list
-	//	typedef std::vector<ServerInformation*> ServerList;
-
-	//private:
-	//	// Cluster ID
-	//	BRCLASS_ATTRIBUTE_READONLY(ClusterID,ClusterID);
-
-	//	// Service list for this server
-	//	ServerList	m_Servers;
-
-	//public:
-	//	ServerClusterInformation();
-	//	~ServerClusterInformation();
-
-	//	// Add server
-	//	HRESULT AddServer( ServerInformation* pServer );
-	//};
-
-
-	////////////////////////////////////////////////////////////////////////////
-	////
-	////	Entity Generic Information class
-	////
-
-	//class ServerServiceClusterInformation : public MemoryPoolObject<ServerServiceClusterInformation>
-	//{
-	//public:
-	//	// server service list
-	//	typedef std::vector<ServerServiceInformation*> ServiceList;
-
-	//private:
-	//	// Cluster ID
-	//	BRCLASS_ATTRIBUTE_READONLY(ClusterID,ClusterID);
-
-	//	// Service list for this server
-	//	ServiceList	m_Services;
-
-	//public:
-	//	ServerServiceClusterInformation();
-	//	~ServerServiceClusterInformation();
-
-	//	// Add service
-	//	HRESULT AddService( ServerServiceInformation* pService );
-	//};
 
 
 

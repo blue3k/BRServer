@@ -14,89 +14,89 @@
 
 
 // set Exclusive option
-void Transaction::SetExclusive( bool bIsExclusive )
+inline void Transaction::SetExclusive( bool bIsExclusive )
 {
 	m_bIsExclusive = bIsExclusive;
 }
 
 
 // Get Exclusive option
-bool Transaction::IsExclusive() const
+inline bool Transaction::IsExclusive() const
 {
 	return m_bIsExclusive;
 }
 
 
 // set DeleteByEntity option
-void Transaction::SetDeleteByEntity( bool bIsDeleteByEntity )
+inline void Transaction::SetDeleteByEntity( bool bIsDeleteByEntity )
 {
 	m_bIsDeleteByEntity = bIsDeleteByEntity;
 }
 
 // Get Delete by entity
-bool Transaction::IsDeleteByEntity() const
+inline bool Transaction::IsDeleteByEntity() const
 {
 	return m_bIsDeleteByEntity;
 }
 
 
 // Set PrintTrace
-void Transaction::SetPrintTrace( bool bisTrace )
+inline void Transaction::SetPrintTrace( bool bisTrace )
 {
 	m_bIsPrintTrace = bisTrace;
 }
 
 // Set Direct Process
-void Transaction::SetDirectProcess( bool bisDirectProcess )
+inline void Transaction::SetDirectProcess( bool bisDirectProcess )
 {
 	m_bIsDirectProcess = bisDirectProcess;
 }
 
 		
 // Get Print Trace
-bool Transaction::IsPrintTrace() const
+inline bool Transaction::IsPrintTrace() const
 {
 	return m_bIsPrintTrace;
 }
 
 // Get Direct process 
-bool Transaction::IsDirectProcess() const
+inline bool Transaction::IsDirectProcess() const
 {
 	return m_bIsDirectProcess;
 }
 
 // Get parent Transaction ID
-const TransactionID& Transaction::GetParentTransID() const
+inline const TransactionID& Transaction::GetParentTransID() const
 {
 	return m_parentTransID;
 }
 
-void Transaction::SetParentTransID(const TransactionID& transID)
+inline void Transaction::SetParentTransID(const TransactionID& transID)
 {
 	m_parentTransID = transID;
 }
 
 
 // Get Owner Entity
-Entity* Transaction::GetOwnerEntity()
+inline Entity* Transaction::GetOwnerEntity()
 {
 	return m_pOwner;
 }
 
 // Set transaction ID
-void Transaction::SetTransID( const TransactionID& transID )
+inline void Transaction::SetTransID( const TransactionID& transID )
 {
 	m_transID = transID;
 }
 
 // Get transaction ID
-const TransactionID& Transaction::GetTransID() const
+inline const TransactionID& Transaction::GetTransID() const
 {
 	return m_transID;
 }
 
 // Get transaction state
-Transaction::State Transaction::GetState()
+inline Transaction::State Transaction::GetState()
 {
 	return m_state;
 }
@@ -108,14 +108,14 @@ Transaction::State Transaction::GetState()
 //}
 
 // Update heart bit time, ms
-TimeStampMS Transaction::UpdateHeartBitTime()
+inline TimeStampMS Transaction::UpdateHeartBitTime()
 {
 	m_tHeartBitTimeout = Util::Time.GetTimeMs() + DurationMS(Const::TRANSACTION_TIMEOUT);
 	return m_tHeartBitTimeout;
 }
 
 // Check timeout, ms
-HRESULT Transaction::CheckHeartBitTimeout()
+inline HRESULT Transaction::CheckHeartBitTimeout()
 {
 	if ((LONG)(GetHeartBitTimeout() - Util::Time.GetTimeMs()).count() < 0)
 		return E_SVR_TRANSACTION_TIMEOUT;
@@ -123,23 +123,23 @@ HRESULT Transaction::CheckHeartBitTimeout()
 	return S_OK;
 }
 
-TimeStampMS Transaction::GetHeartBitTimeout()
+inline TimeStampMS Transaction::GetHeartBitTimeout()
 {
 	return m_tHeartBitTimeout;
 }
 
 // Timer
-void Transaction::SetTimer( DurationMS ms )
+inline void Transaction::SetTimer( DurationMS ms )
 {
 	m_Timer.SetTimer( ms );
 }
 
-void Transaction::ClearTimer()
+inline void Transaction::ClearTimer()
 {
 	m_Timer.ClearTimer();
 }
 
-bool Transaction::CheckTimer()
+inline bool Transaction::CheckTimer()
 {
 	return m_Timer.CheckTimer();
 }
@@ -149,7 +149,7 @@ inline TimeStampMS Transaction::GetTimerExpireTime()
 	return m_Timer.GetTimerExpireTime();
 }
 
-bool Transaction::IsTimerWorking()
+inline bool Transaction::IsTimerWorking()
 {
 	return m_Timer.IsTimerWorking();
 }

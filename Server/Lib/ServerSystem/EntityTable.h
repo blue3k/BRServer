@@ -69,7 +69,7 @@ namespace Svr {
 		HRESULT RouteTransaction( EntityID entityID, Transaction* &pTrans );
 
 		// Route Transaction result
-		HRESULT RouteTransactionResult( BR::Svr::TransactionResult* &pRes );
+		HRESULT RouteTransactionResult( TransactionResult* &pRes );
 	};
 
 

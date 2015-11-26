@@ -26,11 +26,11 @@ namespace BR {
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const EntityUID& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const Message::MessageID& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const NetAddress& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::GameID& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::PlayerInformation& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::FriendInformation& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::TotalRankingPlayerInformation& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::NotificationType& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const GameID& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const PlayerInformation& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const FriendInformation& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const TotalRankingPlayerInformation& Data, int Option);
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const NotificationType& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PlayerID>& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<TotalRankingPlayerInformation>& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<FriendInformation>& Data, int Option);

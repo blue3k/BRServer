@@ -145,7 +145,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		ConnectionTCP *pConnection = nullptr;
 		Connection *pConn = nullptr;
-		UINT_PTR cid = 0;
+		uintptr_t cid = 0;
 
 		remoteSockAddr;
 		

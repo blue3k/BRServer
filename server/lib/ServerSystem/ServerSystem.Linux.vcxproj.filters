@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="BRServer.cpp" />
+    <ClCompile Include="BRService.linux.cpp" />
+    <ClCompile Include="BRService.win64.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="EntityTable.cpp" />
+    <ClCompile Include="EntityTimerActions.cpp" />
+    <ClCompile Include="EventTask.cpp" />
+    <ClCompile Include="ExternalTransaction.cpp" />
+    <ClCompile Include="ExternalTransactionManager.cpp" />
+    <ClCompile Include="LoopbackConnection.cpp" />
+    <ClCompile Include="MasterEntity.cpp" />
+    <ClCompile Include="ParallelTransaction.cpp" />
+    <ClCompile Include="PlayerEntityInformation.cpp" />
+    <ClCompile Include="ServerComponent.cpp" />
+    <ClCompile Include="ServerEntity.cpp" />
+    <ClCompile Include="ServerEntityManager.cpp" />
+    <ClCompile Include="SimpleEntity.cpp" />
+    <ClCompile Include="SimpleUserEntity.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="SvrConfig.cpp" />
+    <ClCompile Include="SvrConst.cpp" />
+    <ClCompile Include="SvrTrace.cpp" />
+    <ClCompile Include="SvrTypes.cpp" />
+    <ClCompile Include="Task.cpp" />
+    <ClCompile Include="TaskManager.cpp" />
+    <ClCompile Include="TimeScheduler.cpp" />
+    <ClCompile Include="Transaction.cpp" />
+    <ClCompile Include="GameLog\ChattingHistory.cpp">
+      <Filter>GameLog</Filter>
+    </ClCompile>
+    <ClCompile Include="Google\GoogleAndroidDeveloperAPI.cpp">
+      <Filter>Google</Filter>
+    </ClCompile>
+    <ClCompile Include="Google\GoogleOAuth.cpp">
+      <Filter>Google</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceCounter\PerformanceCounterServer.cpp">
+      <Filter>PerformanceCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceCounter\PerformanceCounter.cpp">
+      <Filter>PerformanceCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceCounter\PerformanceCounterClient.cpp">
+      <Filter>PerformanceCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="PerformanceCounter\PerformanceCounterInstance.cpp">
+      <Filter>PerformanceCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\GameServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\EntityServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\GameMasterServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\GameInstanceManagerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\GameInstanceService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\GameMasterServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\GamePartyManagerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\GamePartyService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\GameServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\LoginServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\MonitoringService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\PartyMatchingQueueService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\PartyMatchingService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\RankingService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\ServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\ClusterServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerService\EntityServerService.cpp">
+      <Filter>ServerService</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\ClusterManagerServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\ClusterManagerServiceTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\ClusterServiceTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\EntityInformation.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\GameClusterServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\GameClusterServiceTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\GameInstanceManagerServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\GameInstanceManagerServiceTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\GamePartyEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\GamePartyEntityTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\GamePartyManagerServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\GamePartyManagerServiceTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\LoginClusterServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\MatchingQueueServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\MatchingQueueServiceTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\MatchingServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\MatchingServiceTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\MatchingServiceUtil.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\MonitoringServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\MonitoringServiceTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\RankingServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\RankingServiceTrans.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\ServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\ClusteredServiceEntity.cpp">
+      <Filter>ServiceEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\ServerTransactionGeneric.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="BrServerUtil.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BrServer.h" />
+    <ClInclude Include="BrServerUtil.h" />
+    <ClInclude Include="BrService.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="EntityTable.h" />
+    <ClInclude Include="EntityTimerActions.h" />
+    <ClInclude Include="EventTask.h" />
+    <ClInclude Include="ExternalTransaction.h" />
+    <ClInclude Include="ExternalTransactionManager.h" />
+    <ClInclude Include="GameSystem.h" />
+    <ClInclude Include="LoopbackConnection.h" />
+    <ClInclude Include="MasterEntity.h" />
+    <ClInclude Include="MessageRoute.h" />
+    <ClInclude Include="ParallelTransaction.h" />
+    <ClInclude Include="PlayerEntityInformation.h" />
+    <ClInclude Include="ServerComponent.h" />
+    <ClInclude Include="ServerEntity.h" />
+    <ClInclude Include="ServerEntityManager.h" />
+    <ClInclude Include="ServerServiceBase.h" />
+    <ClInclude Include="ServerTransaction.h" />
+    <ClInclude Include="SimpleEntity.h" />
+    <ClInclude Include="SimpleUserEntity.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SvrConfig.h" />
+    <ClInclude Include="SvrConst.h" />
+    <ClInclude Include="SvrConstDefault.h" />
+    <ClInclude Include="SvrToString.h" />
+    <ClInclude Include="SvrTrace.h" />
+    <ClInclude Include="SvrTypes.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Task.h" />
+    <ClInclude Include="TaskManager.h" />
+    <ClInclude Include="TicketQueue.h" />
+    <ClInclude Include="TimeScheduler.h" />
+    <ClInclude Include="TimeSchedulerAction.h" />
+    <ClInclude Include="Transaction.h" />
+    <ClInclude Include="TransactionSteper.h" />
+    <ClInclude Include="TransactionUtil.h" />
+    <ClInclude Include="GameLog\ChattingHistory.h">
+      <Filter>GameLog</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLog\GameLog.h">
+      <Filter>GameLog</Filter>
+    </ClInclude>
+    <ClInclude Include="Google\GoogleAndroidDeveloperAPI.h">
+      <Filter>Google</Filter>
+    </ClInclude>
+    <ClInclude Include="Google\GoogleOAuth.h">
+      <Filter>Google</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceCounter\PerformanceCounterServer.h">
+      <Filter>PerformanceCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceCounter\PerformanceCounter.h">
+      <Filter>PerformanceCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceCounter\PerformanceCounterClient.h">
+      <Filter>PerformanceCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="PerformanceCounter\PerformanceCounterInstance.h">
+      <Filter>PerformanceCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\GameMasterServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\GameServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\EntityServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\GameInstanceManagerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\GameInstanceService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\GameMasterServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\GamePartyManagerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\GamePartyService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\GameServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\LoginServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\MonitoringService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\PartyMatchingQueueService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\PartyMatchingService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\RankingService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\ServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\ClusterServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerService\EntityServerService.h">
+      <Filter>ServerService</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\ClusterManagerServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\ClusterManagerServiceTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\ClusterServiceTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\EntityInformation.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\GameClusterServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\GameClusterServiceTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\GameInstanceManagerServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\GameInstanceManagerServiceTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\GamePartyEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\GamePartyEntityTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\GamePartyManagerServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\GamePartyManagerServiceTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\GamePartyTransaction.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\LoginClusterServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\MatchingQueueServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\MatchingQueueServiceTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\MatchingServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\MatchingServiceTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\MatchingServiceUtil.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\MonitoringServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\MonitoringServiceTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\RankingServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\RankingServiceTrans.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\ServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\ClusteredServiceEntity.h">
+      <Filter>ServiceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\ServerTransactionGeneric.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageHandlerTable.h" />
+    <ClInclude Include="ServerComponentCarrier.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BrServer.inl" />
+    <None Include="BrServerUtil.inl" />
+    <None Include="Entity.inl" />
+    <None Include="EntityTable.inl" />
+    <None Include="EventTask.inl" />
+    <None Include="ExternalTransactionManager.inl" />
+    <None Include="GameSystem.inl" />
+    <None Include="MasterEntity.inl" />
+    <None Include="MessageRoute.inl" />
+    <None Include="PlayerEntityInformation.inl" />
+    <None Include="ServerComponent.inl" />
+    <None Include="ServerEntity.inl" />
+    <None Include="ServerTransaction.inl" />
+    <None Include="SimpleEntity.inl" />
+    <None Include="SimpleUserEntity.inl" />
+    <None Include="SvrConfig.inl" />
+    <None Include="SvrTypes.inl" />
+    <None Include="Task.inl" />
+    <None Include="TaskManager.inl" />
+    <None Include="TicketQueue.inl" />
+    <None Include="Transaction.inl" />
+    <None Include="GameLog\GameLog.inl">
+      <Filter>GameLog</Filter>
+    </None>
+    <None Include="PerformanceCounter\PerformanceCounterInstance.inl">
+      <Filter>PerformanceCounter</Filter>
+    </None>
+    <None Include="PerformanceCounter\PerformanceCounter.inl">
+      <Filter>PerformanceCounter</Filter>
+    </None>
+    <None Include="ServiceEntity\EntityInformation.inl">
+      <Filter>ServiceEntity</Filter>
+    </None>
+    <None Include="ServiceEntity\GamePartyEntity.inl">
+      <Filter>ServiceEntity</Filter>
+    </None>
+    <None Include="ServiceEntity\ClusteredServiceEntity.inl">
+      <Filter>ServiceEntity</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GameLog">
+      <UniqueIdentifier>{4d82f66d-6ef9-47a7-bad3-48652303b590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Google">
+      <UniqueIdentifier>{4e748d5d-bb19-46a4-a80e-9e72a888ce6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PerformanceCounter">
+      <UniqueIdentifier>{2ccb4d2d-8da0-48b9-a51d-332645956b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerEntity">
+      <UniqueIdentifier>{76203fa5-6f07-413d-b6d1-fa6e670a4044}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerService">
+      <UniqueIdentifier>{056e27bd-0f2a-42dc-98a4-9ad788a36457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServiceEntity">
+      <UniqueIdentifier>{7b63ea95-1af5-4241-8f3e-14d1a2ff9ca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Transaction">
+      <UniqueIdentifier>{da9cd0d3-d74c-40bd-8375-d3a33e78bbd2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -143,6 +143,9 @@
     <ClInclude Include="NetCtrl.h">
       <Filter>NetSystem</Filter>
     </ClInclude>
+    <ClInclude Include="NetUtil.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -221,6 +224,9 @@
       <Filter>NetSystem</Filter>
     </ClCompile>
     <ClCompile Include="NetCtrl.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetUtil.cpp">
       <Filter>NetSystem</Filter>
     </ClCompile>
   </ItemGroup>

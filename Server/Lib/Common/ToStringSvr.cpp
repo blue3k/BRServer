@@ -30,7 +30,7 @@ namespace BR
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const BR::RouteContext& Data, int Option)
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const RouteContext& Data, int Option)
 	{
 		unused(Option);
 

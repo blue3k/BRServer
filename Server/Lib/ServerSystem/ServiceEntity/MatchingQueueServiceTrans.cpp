@@ -14,12 +14,12 @@
 #include "Common/HRESGame.h"
 #include "Common/HRESLogin.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRSvrTypes.h"
+#include "Common/BrSvrTypes.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Policy/PartyMatchingQueueIPolicy.h"
 
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/ServerEntityManager.h"

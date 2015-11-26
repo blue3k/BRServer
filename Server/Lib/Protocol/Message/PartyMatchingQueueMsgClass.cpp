@@ -37,6 +37,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 numberofPlayers = 0; MatchingPlayerInformation* pPlayers = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -46,7 +47,6 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(UINT16) ) );
-				UINT16 numberofPlayers = 0; MatchingPlayerInformation* pPlayers = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofPlayers, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pPlayers, pCur, iMsgSize, sizeof(MatchingPlayerInformation)*numberofPlayers ) );
 				m_Players.SetLinkedBuffer(numberofPlayers, numberofPlayers, pPlayers);
@@ -72,6 +72,7 @@ namespace BR
 
 				MessageData *pNewMsg = NULL;
 
+				UINT16 numberOfInPlayers = (UINT16)InPlayers.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::RegisterPartyMatchingCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -79,7 +80,6 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
-				UINT16 numberOfInPlayers = (UINT16)InPlayers.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInPlayers, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InPlayers.data(), (INT)(sizeof(MatchingPlayerInformation)*InPlayers.GetSize())); 
 
@@ -107,7 +107,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -134,12 +134,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -150,12 +150,12 @@ namespace BR
 
 			}; // HRESULT RegisterPartyMatchingCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID RegisterPartyMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RegisterPartyMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPartyMatchingCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, Players:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_Players); 
-			}; // VOID RegisterPartyMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RegisterPartyMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterPartyMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 0);
 			HRESULT RegisterPartyMatchingRes::ParseIMsg( MessageData* pIMsg )
@@ -230,7 +230,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -258,7 +258,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -272,12 +272,12 @@ namespace BR
 
 			}; // HRESULT RegisterPartyMatchingRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID RegisterPartyMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RegisterPartyMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPartyMatchingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MatchingTicket:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MatchingTicket); 
-			}; // VOID RegisterPartyMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RegisterPartyMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Register match alone
 			const MessageID RegisterPlayerMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 1);
@@ -352,7 +352,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -379,12 +379,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -395,12 +395,12 @@ namespace BR
 
 			}; // HRESULT RegisterPlayerMatchingCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID RegisterPlayerMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RegisterPlayerMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerMatchingCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, PlayerID:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_PlayerID); 
-			}; // VOID RegisterPlayerMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RegisterPlayerMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterPlayerMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 1);
 			HRESULT RegisterPlayerMatchingRes::ParseIMsg( MessageData* pIMsg )
@@ -475,7 +475,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -503,7 +503,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -517,12 +517,12 @@ namespace BR
 
 			}; // HRESULT RegisterPlayerMatchingRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID RegisterPlayerMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void RegisterPlayerMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerMatchingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MatchingTicket:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MatchingTicket); 
-			}; // VOID RegisterPlayerMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void RegisterPlayerMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: update registration information
 			const MessageID UpdateMatchingEntityUIDCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 2);
@@ -600,7 +600,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -627,12 +627,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -643,12 +643,12 @@ namespace BR
 
 			}; // HRESULT UpdateMatchingEntityUIDCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID UpdateMatchingEntityUIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UpdateMatchingEntityUIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:UpdateMatchingEntityUIDCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, MatchingTicket:%6%, PreviousUID:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_MatchingTicket, m_PreviousUID); 
-			}; // VOID UpdateMatchingEntityUIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void UpdateMatchingEntityUIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID UpdateMatchingEntityUIDRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 2);
 			HRESULT UpdateMatchingEntityUIDRes::ParseIMsg( MessageData* pIMsg )
@@ -720,7 +720,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -748,7 +748,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -761,12 +761,12 @@ namespace BR
 
 			}; // HRESULT UpdateMatchingEntityUIDRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID UpdateMatchingEntityUIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UpdateMatchingEntityUIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:UpdateMatchingEntityUIDRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
-			}; // VOID UpdateMatchingEntityUIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void UpdateMatchingEntityUIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: calcel registration
 			const MessageID UnregisterMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 3);
@@ -841,7 +841,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -868,12 +868,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -884,12 +884,12 @@ namespace BR
 
 			}; // HRESULT UnregisterMatchingCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID UnregisterMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UnregisterMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:UnregisterMatchingCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, MatchingTicket:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
-			}; // VOID UnregisterMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void UnregisterMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID UnregisterMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 3);
 			HRESULT UnregisterMatchingRes::ParseIMsg( MessageData* pIMsg )
@@ -961,7 +961,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -989,7 +989,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1002,12 +1002,12 @@ namespace BR
 
 			}; // HRESULT UnregisterMatchingRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID UnregisterMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UnregisterMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:UnregisterMatchingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
-			}; // VOID UnregisterMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void UnregisterMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: For some reason, matching is canceled
 			const MessageID PartyMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 4);
@@ -1081,7 +1081,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1107,12 +1107,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1123,12 +1123,12 @@ namespace BR
 
 			}; // HRESULT PartyMatchingCanceledS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID PartyMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PartyMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PartyMatchingCanceledS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, DestPartyUID:%5%, MatchingTicket:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_DestPartyUID, m_MatchingTicket); 
-			}; // VOID PartyMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PartyMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: For some reason, matching is canceled
 			const MessageID PlayerMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 5);
@@ -1202,7 +1202,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1228,12 +1228,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1244,12 +1244,12 @@ namespace BR
 
 			}; // HRESULT PlayerMatchingCanceledS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID PlayerMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PlayerMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerMatchingCanceledS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, DestPlayerID:%5%, MatchingTicket:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_DestPlayerID, m_MatchingTicket); 
-			}; // VOID PlayerMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PlayerMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Enqueued item is dequeued
 			const MessageID PartyMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 6);
@@ -1320,7 +1320,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1346,12 +1346,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1362,12 +1362,12 @@ namespace BR
 
 			}; // HRESULT PartyMatchingItemDequeuedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID PartyMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PartyMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PartyMatchingItemDequeuedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, MatchingTicket:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
-			}; // VOID PartyMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PartyMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Enqueued item is dequeued
 			const MessageID PlayerMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 7);
@@ -1438,7 +1438,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1464,12 +1464,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1480,12 +1480,12 @@ namespace BR
 
 			}; // HRESULT PlayerMatchingItemDequeuedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID PlayerMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void PlayerMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerMatchingItemDequeuedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, MatchingTicket:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
-			}; // VOID PlayerMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void PlayerMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Reserve a item
 			const MessageID ReserveItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 8);
@@ -1557,7 +1557,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1584,12 +1584,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1600,12 +1600,12 @@ namespace BR
 
 			}; // HRESULT ReserveItemCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID ReserveItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void ReserveItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount); 
-			}; // VOID ReserveItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void ReserveItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID ReserveItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 8);
 			HRESULT ReserveItemRes::ParseIMsg( MessageData* pIMsg )
@@ -1683,7 +1683,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1711,7 +1711,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1726,12 +1726,12 @@ namespace BR
 
 			}; // HRESULT ReserveItemRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID ReserveItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void ReserveItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, NumberOfPlayersInTheItem:%6%, MatchingTicket:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_NumberOfPlayersInTheItem, m_MatchingTicket); 
-			}; // VOID ReserveItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void ReserveItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Reserve a item
 			const MessageID ReserveItemsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 9);
@@ -1806,7 +1806,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1833,12 +1833,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -1849,12 +1849,12 @@ namespace BR
 
 			}; // HRESULT ReserveItemsCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID ReserveItemsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void ReserveItemsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemsCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, NumberOfItemsToReserve:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_NumberOfItemsToReserve); 
-			}; // VOID ReserveItemsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void ReserveItemsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID ReserveItemsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 9);
 			HRESULT ReserveItemsRes::ParseIMsg( MessageData* pIMsg )
@@ -1863,6 +1863,8 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 numberofNumberOfPlayersInTheItem = 0; UINT32* pNumberOfPlayersInTheItem = nullptr;
+				UINT16 numberofMatchingTicket = 0; MatchingQueueTicket* pMatchingTicket = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -1872,11 +1874,9 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				UINT16 numberofNumberOfPlayersInTheItem = 0; UINT32* pNumberOfPlayersInTheItem = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofNumberOfPlayersInTheItem, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pNumberOfPlayersInTheItem, pCur, iMsgSize, sizeof(UINT32)*numberofNumberOfPlayersInTheItem ) );
 				m_NumberOfPlayersInTheItem.SetLinkedBuffer(numberofNumberOfPlayersInTheItem, numberofNumberOfPlayersInTheItem, pNumberOfPlayersInTheItem);
-				UINT16 numberofMatchingTicket = 0; MatchingQueueTicket* pMatchingTicket = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofMatchingTicket, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pMatchingTicket, pCur, iMsgSize, sizeof(MatchingQueueTicket)*numberofMatchingTicket ) );
 				m_MatchingTicket.SetLinkedBuffer(numberofMatchingTicket, numberofMatchingTicket, pMatchingTicket);
@@ -1903,6 +1903,8 @@ namespace BR
 
 				MessageData *pNewMsg = NULL;
 
+				UINT16 numberOfInNumberOfPlayersInTheItem = (UINT16)InNumberOfPlayersInTheItem.GetSize(); 
+				UINT16 numberOfInMatchingTicket = (UINT16)InMatchingTicket.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::ReserveItemsRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -1910,10 +1912,8 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				UINT16 numberOfInNumberOfPlayersInTheItem = (UINT16)InNumberOfPlayersInTheItem.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInNumberOfPlayersInTheItem, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InNumberOfPlayersInTheItem.data(), (INT)(sizeof(UINT32)*InNumberOfPlayersInTheItem.GetSize())); 
-				UINT16 numberOfInMatchingTicket = (UINT16)InMatchingTicket.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInMatchingTicket, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InMatchingTicket.data(), (INT)(sizeof(MatchingQueueTicket)*InMatchingTicket.GetSize())); 
 
@@ -1942,7 +1942,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1970,7 +1970,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -1987,12 +1987,12 @@ namespace BR
 
 			}; // HRESULT ReserveItemsRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID ReserveItemsRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void ReserveItemsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemsRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, NumberOfPlayersInTheItem:%6%, MatchingTicket:%7%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_NumberOfPlayersInTheItem, m_MatchingTicket); 
-			}; // VOID ReserveItemsRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void ReserveItemsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Cancel reservation
 			const MessageID CancelReservationCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 10);
@@ -2067,7 +2067,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2094,12 +2094,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -2110,12 +2110,12 @@ namespace BR
 
 			}; // HRESULT CancelReservationCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID CancelReservationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void CancelReservationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, TicketToCancel:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_TicketToCancel); 
-			}; // VOID CancelReservationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void CancelReservationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID CancelReservationRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 10);
 			HRESULT CancelReservationRes::ParseIMsg( MessageData* pIMsg )
@@ -2187,7 +2187,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2215,7 +2215,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2228,12 +2228,12 @@ namespace BR
 
 			}; // HRESULT CancelReservationRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID CancelReservationRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void CancelReservationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
-			}; // VOID CancelReservationRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void CancelReservationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Cancel reservation
 			const MessageID CancelReservationsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 11);
@@ -2243,6 +2243,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 numberofTicketToCancel = 0; MatchingQueueTicket* pTicketToCancel = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -2252,7 +2253,6 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(UINT16) ) );
-				UINT16 numberofTicketToCancel = 0; MatchingQueueTicket* pTicketToCancel = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofTicketToCancel, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pTicketToCancel, pCur, iMsgSize, sizeof(MatchingQueueTicket)*numberofTicketToCancel ) );
 				m_TicketToCancel.SetLinkedBuffer(numberofTicketToCancel, numberofTicketToCancel, pTicketToCancel);
@@ -2278,6 +2278,7 @@ namespace BR
 
 				MessageData *pNewMsg = NULL;
 
+				UINT16 numberOfInTicketToCancel = (UINT16)InTicketToCancel.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::CancelReservationsCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -2285,7 +2286,6 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
-				UINT16 numberOfInTicketToCancel = (UINT16)InTicketToCancel.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInTicketToCancel, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InTicketToCancel.data(), (INT)(sizeof(MatchingQueueTicket)*InTicketToCancel.GetSize())); 
 
@@ -2313,7 +2313,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2340,12 +2340,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -2356,12 +2356,12 @@ namespace BR
 
 			}; // HRESULT CancelReservationsCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID CancelReservationsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void CancelReservationsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationsCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, TicketToCancel:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_TicketToCancel); 
-			}; // VOID CancelReservationsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void CancelReservationsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID CancelReservationsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 11);
 			HRESULT CancelReservationsRes::ParseIMsg( MessageData* pIMsg )
@@ -2433,7 +2433,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2461,7 +2461,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2474,12 +2474,12 @@ namespace BR
 
 			}; // HRESULT CancelReservationsRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID CancelReservationsRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void CancelReservationsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationsRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
-			}; // VOID CancelReservationsRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void CancelReservationsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Dequeue a reserved item
 			const MessageID DequeueItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 12);
@@ -2554,7 +2554,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2581,12 +2581,12 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -2597,12 +2597,12 @@ namespace BR
 
 			}; // HRESULT DequeueItemCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID DequeueItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void DequeueItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:DequeueItemCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, MatchingTicket:%6%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
-			}; // VOID DequeueItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void DequeueItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID DequeueItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 12);
 			HRESULT DequeueItemRes::ParseIMsg( MessageData* pIMsg )
@@ -2611,6 +2611,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
+				UINT16 numberofPlayers = 0; MatchingPlayerInformation* pPlayers = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -2623,7 +2624,6 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_MatchingTicket, pCur, iMsgSize, sizeof(MatchingQueueTicket) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RegisterUID, pCur, iMsgSize, sizeof(EntityUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RegisterID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				UINT16 numberofPlayers = 0; MatchingPlayerInformation* pPlayers = nullptr;
 				protocolChk( Protocol::StreamParamCopy( &numberofPlayers, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pPlayers, pCur, iMsgSize, sizeof(MatchingPlayerInformation)*numberofPlayers ) );
 				m_Players.SetLinkedBuffer(numberofPlayers, numberofPlayers, pPlayers);
@@ -2652,6 +2652,7 @@ namespace BR
 
 				MessageData *pNewMsg = NULL;
 
+				UINT16 numberOfInPlayers = (UINT16)InPlayers.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::DequeueItemRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -2662,7 +2663,6 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InMatchingTicket, sizeof(MatchingQueueTicket));
 				Protocol::PackParamCopy( pMsgData, &InRegisterUID, sizeof(EntityUID));
 				Protocol::PackParamCopy( pMsgData, &InRegisterID, sizeof(PlayerID));
-				UINT16 numberOfInPlayers = (UINT16)InPlayers.GetSize(); 
 				Protocol::PackParamCopy( pMsgData, &numberOfInPlayers, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InPlayers.data(), (INT)(sizeof(MatchingPlayerInformation)*InPlayers.GetSize())); 
 
@@ -2691,7 +2691,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2719,7 +2719,7 @@ namespace BR
 
 				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2737,12 +2737,12 @@ namespace BR
 
 			}; // HRESULT DequeueItemRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID DequeueItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void DequeueItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:DequeueItemRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MatchingTicket:%6%, RegisterUID:%7%, RegisterID:%8%, Players:%9%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MatchingTicket, m_RegisterUID, m_RegisterID, m_Players); 
-			}; // VOID DequeueItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void DequeueItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Item error you should delete it
 			const MessageID MatchingItemErrorC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 13);
@@ -2813,7 +2813,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
@@ -2839,12 +2839,12 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				Assert( iMsgSize >= sizeof(RouteContext) );
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= sizeof(UINT16) );
+				Assert( iMsgSize >= (INT)sizeof(UINT16) );
 				*(UINT16*)pCur = hopCount;
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 
@@ -2855,12 +2855,12 @@ namespace BR
 
 			}; // HRESULT MatchingItemErrorC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
-			VOID MatchingItemErrorC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			void MatchingItemErrorC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
- 				Prefix;
+ 				unused(Prefix);
 				protocolTrace(Trace::TRC_DBG1, "%0%:MatchingItemErrorC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, MatchingTicket:%5%",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
-			}; // VOID MatchingItemErrorC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void MatchingItemErrorC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

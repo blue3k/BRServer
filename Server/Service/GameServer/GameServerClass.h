@@ -51,7 +51,7 @@ namespace GameServer
 		Net::ServerMUDP*			m_pNetPublic;
 
 		// Game cluster config
-		const Svr::Config::GameCluster*	m_pGameClusterCfg;
+		const Svr::Config::GameClusterInfo*	m_pGameClusterCfg;
 
 		// game config preset
 		UINT					m_PresetGameConfigID;

@@ -133,8 +133,10 @@ namespace Svr
 #include "Task.inl"
 
 
-	extern template class SharedPointerT<TickTask>;
 
 }; // namespace Svr
+
+	extern template class SharedPointerT<Svr::TickTask>;
+
 }; // namespace BR
 

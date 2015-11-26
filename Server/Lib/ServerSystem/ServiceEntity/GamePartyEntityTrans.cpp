@@ -16,10 +16,10 @@
 #include "Common/HRESSvrSys.h"
 #include "Common/HRESLogin.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRSvrTypes.h"
+#include "Common/BrSvrTypes.h"
 #include "Common/GameConst.h"
 
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerIPolicy.h"

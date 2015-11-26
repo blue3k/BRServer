@@ -69,7 +69,7 @@ namespace BR {
 
 		
 	template<>
-	HRESULT ToString( char*& pBuff, INT& iBuffLen, const BR::NetClass& Data, int Option )
+	HRESULT ToString( char*& pBuff, INT& iBuffLen, const NetClass& Data, int Option )
 	{
 		Option;
 		return ToStringEnum( pBuff, iBuffLen, Data );

@@ -13,7 +13,7 @@
 #include "Common/Typedefs.h"
 #include "Common/PolicyID.h"
 #include "ServerSystem/ServerServiceBase.h"
-#include "Net/Netdef.h"
+#include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
 #include "Protocol/Policy/GameServerIPolicy.h"
 

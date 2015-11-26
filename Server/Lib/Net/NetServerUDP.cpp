@@ -584,7 +584,7 @@ namespace Net {
 				&& FAILED(GetConnectionManager().GetConnectionByAddr(pIOBuffer->From, pConnection)))
 			{
 				MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pIOBuffer->wsaBuff.buf;
-				if (pNetCtrl->Length == sizeof(MsgNetCtrlConnect) && pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID && pNetCtrl->rtnMsgID.ID == BR::PROTOCOL_VERSION)
+				if (pNetCtrl->Length == sizeof(MsgNetCtrlConnect) && pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID && pNetCtrl->rtnMsgID.ID == BR_PROTOCOL_VERSION)
 				{
 					netChk( GetConnectionManager().PendingNewConnection(pIOBuffer->From, pNetCtrl) );
 				}

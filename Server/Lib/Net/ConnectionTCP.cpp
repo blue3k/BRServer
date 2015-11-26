@@ -11,7 +11,7 @@
 
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
@@ -160,7 +160,7 @@ namespace Net {
 				NetClass RemoteClass = (NetClass)pNetCtrl->msgID.IDSeq.Sequence;
 				m_ConnectInfo.Remote = pNetCtrlCon->Address;
 
-				if (pNetCtrl->rtnMsgID.ID != BR::PROTOCOL_VERSION)
+				if (pNetCtrl->rtnMsgID.ID != BR_PROTOCOL_VERSION)
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					if (GetConnectionState() != STATE_CONNECTED)
@@ -756,7 +756,7 @@ namespace Net {
 			else if( (ulTimeCur-m_ulNetCtrlTryTime) > DurationMS(Const::CONNECTION_RETRY_TIME) ) // retry
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
-				netChk(SendNetCtrl(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR::PROTOCOL_VERSION), GetConnectionInfo().LocalID));
+				netChk(SendNetCtrl(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOL_VERSION), GetConnectionInfo().LocalID));
 			}
 
 			goto Proc_End;

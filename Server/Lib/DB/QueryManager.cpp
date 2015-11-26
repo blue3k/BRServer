@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/TimeUtil.h"
 #include "Common/StrUtil.h"
@@ -201,7 +201,7 @@ Proc_End:
 			return S_OK;
 
 		auto maxTry = m_PendingQueries.GetEnqueCount();
-		for (auto iQuery = 0; iQuery < maxTry; iQuery++)
+		for (decltype(maxTry) iQuery = 0; iQuery < maxTry; iQuery++)
 		{
 			Session * pSession = nullptr;
 			DataSource *pDBSource = nullptr;
@@ -386,11 +386,11 @@ Proc_End:
 	HRESULT	QueryManager::RouteResult(Query* &pQuery)
 	{
 		HRESULT hr = S_OK;
-		BR::Svr::TransactionResult *pRes = pQuery;
+		Svr::TransactionResult *pRes = pQuery;
 
 		if( pRes->GetTransID() != 0 )
 		{
-			BR::Svr::BrServer *pMyServer = BR::Svr::BrServer::GetInstance();
+			Svr::BrServer *pMyServer = Svr::BrServer::GetInstance();
 			dbChkPtr( pMyServer );
 
 			const char* queryName = typeid(*pRes).name();
@@ -399,7 +399,7 @@ Proc_End:
 			hr = pMyServer->GetEntityTable().RouteTransactionResult(pRes);
 			if (FAILED(hr))
 			{
-				dbTrace(TRC_INFO, "Failed to route a message msgID:%0%, target entityID:%1%", hr, msgID, entityID);
+				dbTrace(TRC_INFO, "Failed to route a message msgID:{0}, target entityID:{1}, query:{2}", hr, msgID, entityID, queryName);
 				hr = E_INVALID_ENTITY;
 				goto Proc_End;
 			}

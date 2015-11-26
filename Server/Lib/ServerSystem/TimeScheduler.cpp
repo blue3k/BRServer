@@ -14,12 +14,15 @@
 #include "stdafx.h"
 #include "Common/Thread.h"
 #include "Common/StrUtil.h"
-#include "ServerSystem/svrTrace.h"
+#include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/TimeScheduler.h"
 
 
 
 namespace BR {
+
+	template class SharedPointerT < Svr::TimerAction >;
+
 namespace Svr {
 	
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +30,6 @@ namespace Svr {
 	//	
 	//
 
-	template class SharedPointerT < TimerAction >;
 
 	TimerAction::TimerAction()
 		//: m_InQueueKey(0)
@@ -49,7 +51,7 @@ namespace Svr {
 		auto diffTime = nextTickTime - curTime;
 		Assert((LONG)diffTime.count() < 60*60*1000);
 		
-		TimeData.NextTickTime = nextTickTime;
+		TimeData.Components.NextTickTime = nextTickTime;
 	}
 
 
@@ -77,7 +79,7 @@ namespace Svr {
 			TimerAction::TimeKey key;
 			key.TimerKey = keyVal;
 
-			auto diff = (key.NextTickTime - currentTime);
+			auto diff = (key.Components.NextTickTime - currentTime);
 			if ((INT)diff.count() > 0)
 				return false;
 
@@ -91,26 +93,26 @@ namespace Svr {
 			Assert(removed == pAction);
 
 			auto savedTime = key;
-			pAction->m_InQueueKey.NextTickTime = TimeStampMS::max();
-			auto diffTime = pAction->TimeData.NextTickTime - Util::Time.GetTimeMs();
+			pAction->m_InQueueKey.Components.NextTickTime = TimeStampMS::max();
+			auto diffTime = pAction->TimeData.Components.NextTickTime - Util::Time.GetTimeMs();
 			Assert((LONG)diffTime.count() < 5000);
 
 			bool bIsNeedToKeep = pAction->UpdateTick();
 
 			// if it doesn't need to be scheduled anymore
-			auto nextDiff = (INT)(pAction->TimeData.NextTickTime - Util::Time.GetTimeMs()).count();
+			auto nextDiff = (INT)(pAction->TimeData.Components.NextTickTime - Util::Time.GetTimeMs()).count();
 			if (nextDiff < 0)
 			{
-				if (key.NextTickTime == pAction->TimeData.NextTickTime)
+				if (key.Components.NextTickTime == pAction->TimeData.Components.NextTickTime)
 				{
 					if (bIsNeedToKeep)
 					{
 						Assert(!m_AssertOnInvalidTickTime || bIsNeedToKeep);
-						svrTrace(Trace::TRC_ERROR, "Same Timer value:%1% of %0% correct to fail safe timer value:%2%", pAction->GetDebugString(), pAction->TimeData.NextTickTime, m_FailSafeTimerTickInterval);
-						pAction->TimeData.NextTickTime = Util::Time.GetTimeMs() + m_FailSafeTimerTickInterval;
+						svrTrace(Trace::TRC_ERROR, "Same Timer value:%1% of %0% correct to fail safe timer value:%2%", pAction->GetDebugString(), pAction->TimeData.Components.NextTickTime, m_FailSafeTimerTickInterval);
+						pAction->TimeData.Components.NextTickTime = Util::Time.GetTimeMs() + m_FailSafeTimerTickInterval;
 					}
 				}
-				else if (pAction->TimeData.NextTickTime == TimeStampMS::max() || !bIsNeedToKeep)
+				else if (pAction->TimeData.Components.NextTickTime == TimeStampMS::max() || !bIsNeedToKeep)
 				{
 					if (!bIsNeedToKeep)
 					{
@@ -139,7 +141,7 @@ namespace Svr {
 			{
 				//MutexScopeLock localLock(m_WriteLock);
 				Assert(pAction->TimeData.TimerKey != 0);
-				Assert(pAction->TimeData.NextTickTime != TimeStampMS::max());
+				Assert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
 				pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
 				if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
 				{
@@ -174,8 +176,8 @@ namespace Svr {
 		//Assert(m_IsWriteLocked.load(std::memory_order_relaxed) == 0);
 
 		svrChkPtr(pAction);
-		svrAssert(pAction->m_InQueueKey.NextTickTime == TimeStampMS::max());
-		svrAssert(pAction->TimeData.NextTickTime != TimeStampMS::max());
+		svrAssert(pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max());
+		svrAssert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
 		svrAssert(pAction->TimeData.TimerKey != 0);
 
 
@@ -209,7 +211,7 @@ namespace Svr {
 		if (pAction == nullptr)
 			return hr;
 
-		if (pAction->m_InQueueKey.NextTickTime == TimeStampMS::max()) // if not schedule
+		if (pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max()) // if not schedule
 			return hr;
 
 		Assert(m_WorkingThreadID == threadID);
@@ -222,11 +224,11 @@ namespace Svr {
 
 		if (FAILED(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
 		{
-			Assert(pAction->m_InQueueKey.NextTickTime == TimeStampMS::max());
+			Assert(pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max());
 		}
 
 		Assert(removed == pAction);
-		pAction->m_InQueueKey.NextTickTime = TimeStampMS::max();
+		pAction->m_InQueueKey.Components.NextTickTime = TimeStampMS::max();
 
 //#ifdef DEBUG
 //		m_TimerMap.ForeachOrderWrite(0, (UINT)m_TimerMap.GetWriteItemCount(), [&](const UINT64& keyVal, SharedPointerT<TimerAction> pInAction) -> bool
@@ -269,10 +271,10 @@ namespace Svr {
 			svrErr(E_SVR_INVALID_THREAD);
 		}
 
-		if (pAction->TimeData.NextTickTime == pAction->m_InQueueKey.NextTickTime)
+		if (pAction->TimeData.Components.NextTickTime == pAction->m_InQueueKey.Components.NextTickTime)
 			return hr;
 
-		if (pAction->m_InQueueKey.NextTickTime != TimeStampMS::max())
+		if (pAction->m_InQueueKey.Components.NextTickTime != TimeStampMS::max())
 		{
 			SharedPointerT<TimerAction> removed;
 			if (FAILED(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
@@ -280,12 +282,12 @@ namespace Svr {
 				Assert(false);
 			}
 			Assert(removed == pAction);
-			pAction->m_InQueueKey.NextTickTime = TimeStampMS::max();
+			pAction->m_InQueueKey.Components.NextTickTime = TimeStampMS::max();
 		}
 
-		Assert(!m_AssertOnInvalidTickTime || ((pAction->TimeData.NextTickTime - Util::Time.GetTimeMs()) < DurationMS(2*60*1000)));
-		Assert(pAction->TimeData.NextTickTime != TimeStampMS::max());
-		if (pAction->TimeData.NextTickTime != TimeStampMS::max())
+		Assert(!m_AssertOnInvalidTickTime || ((pAction->TimeData.Components.NextTickTime - Util::Time.GetTimeMs()) < DurationMS(2*60*1000)));
+		Assert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
+		if (pAction->TimeData.Components.NextTickTime != TimeStampMS::max())
 		{
 			pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
 			if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))

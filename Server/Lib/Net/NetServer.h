@@ -59,7 +59,7 @@ namespace Net {
 		virtual CounterType GetActiveConnectionCount() = 0;
 
 		// Get connection from connection ID
-		virtual HRESULT GetConnection( UINT_PTR uiCID, SharedPointerT<Connection> &pConn );
+		virtual HRESULT GetConnection( uintptr_t uiCID, SharedPointerT<Connection> &pConn );
 
 
 

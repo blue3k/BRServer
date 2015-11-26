@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
@@ -57,7 +57,7 @@ namespace Svr {
 	}
 
 	// set connection
-	HRESULT ServerEntity::SetConnection(SharedPointerT<Net::IConnection> &destConn, BR::Net::IConnection * pConn)
+	HRESULT ServerEntity::SetConnection(SharedPointerT<Net::IConnection> &destConn, Net::IConnection * pConn)
 	{
 		HRESULT hr = S_OK;
 		MutexScopeLock localLock(m_ConnectionLock);
@@ -80,7 +80,7 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT ServerEntity::SetRemoteConnection( BR::Net::IConnection *pConn )
+	HRESULT ServerEntity::SetRemoteConnection( Net::IConnection *pConn )
 	{
 		MutexScopeLock localLock(m_ConnectionLock);
 
@@ -103,7 +103,7 @@ namespace Svr {
 		return SetConnection(m_pConnRemote, pConn);
 	}
 
-	HRESULT ServerEntity::SetLocalConnection(BR::Net::IConnection *pConn)
+	HRESULT ServerEntity::SetLocalConnection(Net::IConnection *pConn)
 	{
 		m_LocalConnectionRetryTime = TimeStampMS::min();
 		//Assert(m_pConnRemotePrev.load(std::memory_order_relaxed) != pConn);
@@ -243,7 +243,7 @@ namespace Svr {
 			if (FAILED(hr))
 			{
 				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed %0% Entity:%1%, MsgID:%2%", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
-				if (pMsgHdr->msgID.IDs.Type == BR::Message::MSGTYPE_COMMAND)
+				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
 					pCon->GetPolicy<Policy::ISvrPolicyServer>()->GenericFailureRes(pNewTrans->GetParentTransID(), hr, pNewTrans->GetMessageRouteContext().GetSwaped());
 				}
@@ -266,13 +266,13 @@ namespace Svr {
 
 
 	// Process Connection event
-	HRESULT ServerEntity::ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent )
+	HRESULT ServerEntity::ProcessConnectionEvent( const Net::IConnection::Event& conEvent )
 	{
 		HRESULT hr = S_OK;
 
 		switch( conEvent.EventType )
 		{
-		case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
+		case Net::IConnection::Event::EVT_CONNECTION_RESULT:
 			if( SUCCEEDED(conEvent.Value.hr) )
 			{
 				NetAddress publicAddr;
@@ -317,10 +317,10 @@ namespace Svr {
 			if( SUCCEEDED(conEvent.Value.hr) )
 				m_bIsInitialConnect = false;
 			break;
-		case BR::Net::IConnection::Event::EVT_DISCONNECTED:
+		case Net::IConnection::Event::EVT_DISCONNECTED:
 			m_ReceivedServerStatus = false;
 			break;
-		case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
+		case Net::IConnection::Event::EVT_STATE_CHANGE:
 
 			break;
 		};
@@ -330,11 +330,11 @@ namespace Svr {
 		return S_OK;
 	}
 
-	HRESULT ServerEntity::UpdateConnection(BR::Net::IConnection* pConn)
+	HRESULT ServerEntity::UpdateConnection(Net::IConnection* pConn)
 	{
 		HRESULT hr = S_OK;
 		Message::MessageData *pMsg = nullptr;
-		BR::Net::IConnection::Event conEvent;
+		Net::IConnection::Event conEvent;
 
 		if (pConn == nullptr)
 			return hr;
@@ -352,7 +352,7 @@ namespace Svr {
 			ProcessConnectionEvent(conEvent);
 		}
 
-		if (pConn->GetConnectionState() != BR::Net::IConnection::STATE_DISCONNECTED)
+		if (pConn->GetConnectionState() != Net::IConnection::STATE_DISCONNECTED)
 		{
 			// Process message
 			loopCount = pConn->GetRecvMessageCount();

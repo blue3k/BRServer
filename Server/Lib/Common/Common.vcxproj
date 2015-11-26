@@ -23,7 +23,6 @@
     <ClInclude Include="..\ServerSystem\BrServerUtil.h" />
     <ClInclude Include="..\ServerSystem\BrService.h" />
     <ClInclude Include="..\ServerSystem\GameSystem.h" />
-    <ClInclude Include="..\ServerSystem\MessageRoute.h" />
     <ClInclude Include="..\ServerSystem\stdafx.h" />
     <ClInclude Include="..\ServerSystem\SvrConst.h" />
     <ClInclude Include="..\ServerSystem\SvrConstDefault.h" />
@@ -158,9 +157,6 @@
       <FileType>Document</FileType>
     </None>
     <None Include="..\ServerSystem\GameSystem.inl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="..\ServerSystem\MessageRoute.inl">
       <FileType>Document</FileType>
     </None>
     <None Include="..\ServerSystem\SvrTypes.inl">

@@ -27,7 +27,7 @@ bool ServerEntity::IsInitialConnection()
 }
 
 // Get Connection
-Net::IConnection* ServerEntity::GetConnection()
+inline Net::IConnection* ServerEntity::GetConnection()
 {
 	Net::IConnection* pConn = (Net::IConnection*)m_pConnLocal;
 	auto result = (pConn == nullptr || pConn->GetConnectionState() == Net::IConnection::STATE_DISCONNECTED) ? (Net::IConnection*)m_pConnRemote : pConn;
@@ -69,34 +69,34 @@ ServerEntity::ServerEntityClass ServerEntity::GetRemoteClass() const
 }
 
 // Get public net address
-const NetAddress& ServerEntity::GetPublicNetAddress() const
+inline const NetAddress& ServerEntity::GetPublicNetAddress() const
 {
 	return m_NetPublic;
 }
 
-void ServerEntity::SetPublicNetAddress( const NetAddress& netAddr )
+inline void ServerEntity::SetPublicNetAddress( const NetAddress& netAddr )
 {
 	m_NetPublic = netAddr;
 }
 
-const NetAddress& ServerEntity::GetPrivateNetAddress() const
+inline const NetAddress& ServerEntity::GetPrivateNetAddress() const
 {
 	return m_NetPrivate;
 }
 
-void ServerEntity::SetPrivateNetAddress(const NetAddress& netAddr)
+inline void ServerEntity::SetPrivateNetAddress(const NetAddress& netAddr)
 {
 	m_NetPrivate = netAddr;
 }
 
 
 // Get ServerID
-ServerID ServerEntity::GetServerID() const
+inline ServerID ServerEntity::GetServerID() const
 {
 	return m_ServerID;
 }
 
-void ServerEntity::SetServerID( ServerID svrID )
+inline void ServerEntity::SetServerID( ServerID svrID )
 {
 	m_ServerID = svrID;
 }

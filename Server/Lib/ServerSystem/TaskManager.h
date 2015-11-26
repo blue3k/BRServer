@@ -38,7 +38,7 @@ namespace Svr {
 	//	TickTask exection Group class -  interface for task operation
 	//
 
-	class TaskWorker : public BR::Thread
+	class TaskWorker : public Thread
 	{
 	public:
 		// task list type
@@ -137,7 +137,7 @@ namespace Svr {
 	private:
 
 		// GroupID gen
-		static BR::SyncCounter	stm_GroupIDGen;
+		static SyncCounter	stm_GroupIDGen;
 
 	protected:
 

@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
@@ -94,7 +94,7 @@ namespace Svr
 		SetAccountID( 0 );
 		SetAuthTicket( 0 );
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(SimpleEntity::InitializeEntity( newEntityID ) );
 
 	Proc_End:
 
@@ -117,7 +117,7 @@ namespace Svr
 		if (m_pConnection != nullptr)
 			m_pConnection->SetConnectionEventHandler(nullptr);
 
-		svrChk( __super::TerminateEntity() );
+		svrChk(SimpleEntity::TerminateEntity() );
 
 	Proc_End:
 
@@ -138,11 +138,13 @@ namespace Svr
 			break;
 		case Net::IConnection::Event::EVT_STATE_CHANGE:
 			break;
+		default:
+			break;
 		};
 
-	Proc_End:
+	//Proc_End:
 
-		return S_OK;
+		return hr;
 	}
 
 
@@ -226,7 +228,7 @@ namespace Svr
 	{
 		HRESULT hr = S_OK;
 		Message::MessageData *pIMsg = nullptr;
-		BR::Net::IConnection::Event conEvent;
+		Net::IConnection::Event conEvent;
 
 
 		if( GetEntityState() == EntityState::FREE )
@@ -245,7 +247,7 @@ namespace Svr
 		{
 			// Process Connection event
 			auto loopCount = pConn->GetConnectionEventCount();
-			for (int iProc = 0; iProc < loopCount; iProc++)
+			for (decltype(loopCount) iProc = 0; iProc < loopCount; iProc++)
 			{
 				if (FAILED(pConn->DequeueConnectionEvent(conEvent)))
 					break;
@@ -254,11 +256,11 @@ namespace Svr
 			}
 
 
-			if (pConn->GetConnectionState() != BR::Net::IConnection::STATE_DISCONNECTED)
+			if (pConn->GetConnectionState() != Net::IConnection::STATE_DISCONNECTED)
 			{
 				// Process message
 				loopCount = pConn->GetRecvMessageCount();
-				for( int iProc = 0; iProc < loopCount; iProc++ )
+				for( decltype(loopCount) iProc = 0; iProc < loopCount; iProc++ )
 				{
 					if (FAILED(pConn->GetRecvMessage(pIMsg)))
 						break;
@@ -270,7 +272,7 @@ namespace Svr
 			}
 		}
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk(SimpleEntity::TickUpdate(pAction) );
 
 
 	Proc_End:
@@ -354,7 +356,8 @@ namespace Svr
 				else
 				{
 					svrTrace(Trace::TRC_WARN, "Transaction result for TID:%0% is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
-					Util::SafeRelease(const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent));
+					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
+					Util::SafeRelease(pRes);
 					//svrErr(E_FAIL);
 				}
 			}
@@ -367,7 +370,7 @@ namespace Svr
 			return E_UNEXPECTED;
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

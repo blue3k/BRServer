@@ -9,7 +9,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/Utility.h"
@@ -22,7 +22,8 @@
 #include "Net/NetCtrl.h"
 #include "Net/NetCtrl.h"
 #include "Common/TimeUtil.h"
-
+#include "Net/NetUtil.h"
+#include "Net/NetSystem.h"
 #include "Protocol/ProtocolVer.h"
 
 #include "Protocol/Policy/ServerNetPolicy.h"
@@ -57,12 +58,12 @@
 
 
 namespace BR {
+
+	template class SharedPointerT <Net::Connection>;
+	template class WeakPointerT < Net::Connection >;
+
 namespace Net {
 
-
-	template class SharedPointerT <Connection>;
-	template class WeakPointerT < Connection >;
-	
 	// Create policy if not exist
 	HRESULT IConnection::CreatePolicy( UINT uiPolicy )
 	{

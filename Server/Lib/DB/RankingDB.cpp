@@ -9,11 +9,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
 #include "DB/RankingDB.h"
-
 #include "DB/RankingDBQuery.h"
 
 
@@ -44,15 +43,16 @@ namespace DB {
 	//	Ranking DB interface
 	//
 
-	HRESULT RankingDB::GetRankingListCmd( BR::TransactionID Sender, UINT32 minRanking, UINT32 rankingCount )
+	HRESULT RankingDB::GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount )
 	{
 		HRESULT hr = S_OK;
 		QueryGetTotalRankingCmd *pQuery = nullptr;
+		QueryGetTotalRankingSet *pSet = nullptr;
 
 		dbMem( pQuery = new QueryGetTotalRankingCmd );
 
 
-		QueryGetTotalRankingSet *pSet = pQuery;
+		pSet = pQuery;
 		memset( pSet, 0, sizeof(QueryGetTotalRankingSet) );
 
 		pQuery->MinRanking = minRanking;

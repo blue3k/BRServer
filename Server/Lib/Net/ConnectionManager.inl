@@ -19,7 +19,7 @@
 
 
 ConnectionManager::Operation::Operation(void* ptr)
-	:pConn(0), EnqueuedTime(DurationMS(0)), OpCode(OP_NONE)
+	:OpCode(OP_NONE), pConn(0), EnqueuedTime(DurationMS(0))
 {
 	assert(ptr == nullptr);
 }
@@ -36,7 +36,7 @@ ConnectionManager::Operation::Operation( Operation&& src )
 }
 
 ConnectionManager::Operation::Operation( const sockaddr_in6& sockAddr, MsgNetCtrlConnect *pNetCtrl )
-	:OpCode(OP_PENDING_ADDR)
+	: OpCode(OP_PENDING_ADDR)
 	, pConn(nullptr)
 	, addrOrg(sockAddr)
 	, NetCtrlConnect(*pNetCtrl)
@@ -55,9 +55,9 @@ ConnectionManager::Operation::Operation( OperationCode code, const sockaddr_in6&
 
 ConnectionManager::Operation::Operation(OperationCode code, const sockaddr_in6& sockAddrOrg, const sockaddr_in6& sockAddrNew, Connection *pCo)
 	: OpCode(code)
+	, pConn(pCo)
 	, addrOrg(sockAddrOrg)
 	, addrNew(sockAddrNew)
-	, pConn(pCo)
 	, EnqueuedTime(Util::Time.GetTimeMs())
 {
 }
@@ -194,7 +194,7 @@ Connection* ConnectionManagerT<ConnectionType>::NewConnection()
 	if( pNewCon && pNewCon->GetNet() == nullptr )
 	{
 		Assert( GetNetOwner() );
-		pNewCon->SetupNet( GetNetOwner(), (UINT_PTR)NewCID() );
+		pNewCon->SetupNet( GetNetOwner(), (uintptr_t)NewCID() );
 	}
 
 	return pNewCon;

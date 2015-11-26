@@ -133,10 +133,10 @@ namespace Net {
 			netTrace(TRC_SENDRAW, "Invalid incomming packet. Try to disconnect %0%", from);
 			netChk(SendNetCtrl(from, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 		}
-		else if (pNetCtrl->rtnMsgID.ID != BR::PROTOCOL_VERSION)
+		else if (pNetCtrl->rtnMsgID.ID != BR_PROTOCOL_VERSION)
 		{
 			// send disconnect
-			netTrace(TRC_SENDRAW, "Invalid incomming packet version, received:%0%, expected:%1%. Try to disconnect %2%", pNetCtrl->rtnMsgID.ID, (UINT)BR::PROTOCOL_VERSION, from);
+			netTrace(TRC_SENDRAW, "Invalid incomming packet version, received:%0%, expected:%1%. Try to disconnect %2%", pNetCtrl->rtnMsgID.ID, (UINT)BR_PROTOCOL_VERSION, from);
 			netChk(SendNetCtrl(from, PACKET_NETCTRL_NACK, 0, pNetCtrl->msgID, 0));
 			//netChk(SendNetCtrl(pIOBuffer->From, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 		}

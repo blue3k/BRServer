@@ -15,6 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
+#include "ServerSystem/ServiceEntity/EntityInformation.h"
 
 
 namespace BR {
@@ -44,7 +45,10 @@ namespace Svr {
 			Assert(m_ServerServiceInformation);
 		}
 
-		FORCEINLINE EntityUID GetServiceEntityUID();
+		EntityUID GetServiceEntityUID()
+		{
+			return m_ServerServiceInformation->GetEntityUID();
+		}
 
 		// Get Policy
 		template< class PolicyType >
@@ -55,10 +59,6 @@ namespace Svr {
 
 	};
 
-
-
-
-//#include "ServerComponent.inl"
 
 
 }; // namespace Svr

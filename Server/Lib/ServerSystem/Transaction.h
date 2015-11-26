@@ -20,19 +20,18 @@
 #include "Common/SharedObject.h"
 #include "Common/SharedPointer.h"
 #include "Common/PageQueue.h"
-
+#include "Common/TimeUtil.h"
 
 #include "Net/NetDef.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/SvrTypes.h"
-#include "ServerSystem/MessageRoute.h"
-#include "Common/TimeUtil.h"
+#include "ServerSystem/MessageHandlerTable.h"
 #include "Protocol/Message/ServerMsgClass.h"
 #include "ServerSystem/TimeSchedulerAction.h"
 #include "Net/Connection.h"
-
+#include "ServerSystem/BrServerUtil.h"
 
 namespace BR {
 namespace Svr {
@@ -122,16 +121,16 @@ namespace Svr {
 	protected:
 
 		// set Exclusive option
-		inline void	SetExclusive( bool bIsExclusive );
+		void	SetExclusive( bool bIsExclusive );
 
 		// set DeleteByEntity option
-		inline void SetDeleteByEntity( bool bIsDeleteByEntity );
+		void SetDeleteByEntity( bool bIsDeleteByEntity );
 
 		// Set PrintTrace
-		inline void SetPrintTrace( bool bisTrace );
+		void SetPrintTrace( bool bisTrace );
 
 		// Set Direct Process
-		inline void SetDirectProcess( bool bisDirectProcess );
+		void SetDirectProcess( bool bisDirectProcess );
 
 		virtual ~Transaction();
 
@@ -152,52 +151,52 @@ namespace Svr {
 		TimeStampMS GetNextTickTime()									{ return Util::TimeMinNonZero(GetHeartBitTimeout(), GetTimerExpireTime()); }
 
 		// Get Exclusive option
-		FORCEINLINE bool	IsExclusive() const;
+		bool	IsExclusive() const;
 
 		// Get Delete by entity
-		FORCEINLINE bool	IsDeleteByEntity() const;
+		bool	IsDeleteByEntity() const;
 		
 		// Get Print Trace
-		FORCEINLINE bool	IsPrintTrace() const;
+		bool	IsPrintTrace() const;
 		
 		// Get Direct process 
-		FORCEINLINE bool	IsDirectProcess() const;
+		bool	IsDirectProcess() const;
 
 		// Get parent Transaction ID
-		FORCEINLINE const TransactionID& GetParentTransID() const;
-		FORCEINLINE void SetParentTransID(const TransactionID& transID);
+		const TransactionID& GetParentTransID() const;
+		void SetParentTransID(const TransactionID& transID);
 
 		// Set Owner Entity
 		void SetOwnerEntity( Entity* pOwner );
 
 		// Get Owner Entity
-		FORCEINLINE Entity* GetOwnerEntity();
+		Entity* GetOwnerEntity();
 
 		// Set transaction ID
-		FORCEINLINE void SetTransID( const TransactionID& transID );
+		void SetTransID( const TransactionID& transID );
 
 		// Get transaction ID
-		FORCEINLINE const TransactionID& GetTransID() const;
+		const TransactionID& GetTransID() const;
 
 		// Get transaction state
-		FORCEINLINE Transaction::State GetState();
+		Transaction::State GetState();
 
 		// Get heart bit time, ms
 		//FORCEINLINE ULONG GetHeartBitTime();
 
 		// Update heart bit time, with timestamp
-		FORCEINLINE TimeStampMS UpdateHeartBitTime();
+		TimeStampMS UpdateHeartBitTime();
 
 		// Check timeout with timestamp
-		FORCEINLINE HRESULT CheckHeartBitTimeout();
-		FORCEINLINE TimeStampMS GetHeartBitTimeout();
+		HRESULT CheckHeartBitTimeout();
+		TimeStampMS GetHeartBitTimeout();
 
 		// Timer
-		FORCEINLINE void SetTimer( DurationMS ms );
-		FORCEINLINE void ClearTimer();
-		FORCEINLINE bool CheckTimer();
+		void SetTimer( DurationMS ms );
+		void ClearTimer();
+		bool CheckTimer();
 		TimeStampMS GetTimerExpireTime();
-		FORCEINLINE bool IsTimerWorking();
+		bool IsTimerWorking();
 
 		// Get expected result ID
 		inline UINT GetExpectedResultID();
@@ -225,10 +224,13 @@ namespace Svr {
 
 		// flush transaction result
 		virtual HRESULT FlushTransaction();
+
+		///////////////////////////////////////////////////////////
+		// Helper functions
+
+		Net::IConnection* GetServerEntityConnection(ServerEntity* pServerEntity);
 	};
 
-	extern template class SharedPointerT < Transaction > ;
-	extern template class WeakPointerT < Transaction >;
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -453,7 +455,7 @@ namespace Svr {
 		{
 			HRESULT hr = S_OK;
 
-			svrChk(m_Handlers.HandleMessage(pRes));
+			svrChk(m_Handlers.HandleMessage(pRes->GetMsgID(), pRes));
 
 		Proc_End:
 
@@ -519,25 +521,25 @@ namespace Svr {
 
 	public:
 		MessageTransaction( Message::MessageData* &pIMsg )
-			:TransactionT( TransactionID() ),
-			MessageClass( pIMsg )
+			: TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>( TransactionID() )
+			, MessageClass( pIMsg )
 		{
 		}
 
 		HRESULT ParseMessage()
 		{
-			HRESULT hr = ParseMsg();
+			HRESULT hr = MessageClass::ParseMsg();
 			if (SUCCEEDED(hr))
 			{
-				if (GetMessage()->GetMessageHeader()->msgID.IDs.Type == BR::Message::MSGTYPE_COMMAND)
+				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
 					if(MessageClass::HasContext)
 					{
-						SetParentTransID(GetContext());
+						TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::SetParentTransID(MessageClass::GetContext());
 					}
 					else if(MessageClass::HasRouteContext)
 					{
-						SetMessageRouteContext(GetRouteContext());
+						TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::SetMessageRouteContext(MessageClass::GetRouteContext());
 					}
 				}
 			}
@@ -557,7 +559,9 @@ namespace Svr {
 			pOwnerEntity = dynamic_cast<OwnerType*>(pOwner);
 
 
-			svrChk( __super::InitializeTransaction( pOwner ) );
+			hr = TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::InitializeTransaction(pOwner);
+			svrChk(hr);
+
 		Proc_End:
 			return hr;
 		}
@@ -568,10 +572,10 @@ namespace Svr {
 		
 		virtual PolicyClass* GetPolicy()
 		{
-			if (GetOwnerEntity() == nullptr)
+			if (TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetOwnerEntity() == nullptr)
 				return nullptr;
 
-			GetMyOwner()->GetConnectionShared(m_pConn);
+			TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetMyOwner()->GetConnectionShared(m_pConn);
 
 			if (m_pConn != nullptr)
 			{
@@ -583,10 +587,10 @@ namespace Svr {
 		template< class PolicyType >
 		PolicyType* GetPolicy()
 		{
-			if (GetOwnerEntity() == nullptr)
+			if (TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetOwnerEntity() == nullptr)
 				return nullptr;
 
-			GetMyOwner()->GetConnectionShared(m_pConn);
+			TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::GetMyOwner()->GetConnectionShared(m_pConn);
 
 			if (m_pConn != nullptr)
 			{
@@ -603,7 +607,7 @@ namespace Svr {
 	{
 	protected:
 		UserTransactionS2SEvt( Message::MessageData* &pIMsg )
-			:MessageTransaction(pIMsg )
+			:MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>(pIMsg )
 		{
 		}
 
@@ -618,15 +622,16 @@ namespace Svr {
 			// We ignore input owner
 			pOwner = nullptr;
 
-			svrChk(ParseMessage());
+			hr = MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>::ParseMessage();
+			svrChk(hr);
 
-			if( GetRouteContext().GetTo().GetServerID() != GetMyServerID() )
+			if(MessageClass::GetRouteContext().GetTo().GetServerID() != ::BR::Svr::GetMyServerID() )
 			{
 				svrTrace( Trace::TRC_ERROR, "Invalid ServerID %0% MsgID:%0%", typeid(*this).name(), MessageClass::GetMessage()->GetMessageHeader()->msgID );
 				svrErr(E_SVR_INVALID_SERVERID);
 			}
 
-			svrChk(GetEntityTable().Find(GetRouteContext().GetTo().GetEntityID(), pFound));
+			svrChk(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pFound));
 
 			svrChkPtr(pOwnerEntity = static_cast<OwnerEntityType*>((Entity*)pFound));
 
@@ -636,7 +641,8 @@ namespace Svr {
 			//}
 
 
-			svrChk( Transaction::InitializeTransaction( pOwnerEntity ) );
+			hr = MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>::InitializeTransaction(pOwnerEntity);
+			svrChk(hr);
 
 		Proc_End:
 
@@ -655,8 +661,8 @@ namespace Svr {
 		ServerEntity* m_ServerEntity;
 	protected:
 		UserTransactionS2SCmd( Message::MessageData* &pIMsg )
-			:MessageTransaction(pIMsg )
-			,m_ServerEntity(nullptr)
+			: MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>(pIMsg )
+			, m_ServerEntity(nullptr)
 		{
 		}
 
@@ -670,9 +676,10 @@ namespace Svr {
 
 			OwnerEntityType *pOwnerEntity = nullptr;
 
-			svrChk(ParseMessage());
+			hr = MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>::ParseMessage();
+			svrChk(hr);
 
-			if (FAILED(GetEntityTable().Find(GetRouteContext().GetTo().GetEntityID(), entity)))
+			if (FAILED(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))
 			{
 				// Can't find target player entity, maybe logged out?
 				hr = E_SVR_INVALID_ENTITYUID;
@@ -693,14 +700,10 @@ namespace Svr {
 
 		virtual PolicyType* GetPolicy() override
 		{
-			if (m_ServerEntity == nullptr)
-				return nullptr;
-
-			// We need to make a copy of the shared pointer
-			auto pConn = m_ServerEntity->GetConnection();
+			auto pConn = Transaction::GetServerEntityConnection(m_ServerEntity);
 			if (pConn != nullptr)
 			{
-				return pConn->GetPolicy<PolicyType>();
+				return pConn->template GetPolicy<PolicyType>();
 			}
 			return nullptr;
 		}
@@ -708,14 +711,18 @@ namespace Svr {
 	};
 
 
-	extern template class PageQueue<Transaction*>;
-	extern template class PageQueue<TransactionResult*>;
 
 
 
 #include "Transaction.inl"
 
 }; // namespace Svr
+
+extern template class PageQueue<Svr::Transaction*>;
+extern template class PageQueue<Svr::TransactionResult*>;
+extern template class SharedPointerT < Svr::Transaction >;
+extern template class WeakPointerT < Svr::Transaction >;
+
 }; // namespace BR
 
 

@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
 #include "DB/DBTrace.h"
@@ -24,8 +24,8 @@ namespace DB {
 
 
 	Session::Session( DataSource* pDataSource )
-		:m_pDataSource(pDataSource)
-		,m_bIsOpened(false)
+		: m_bIsOpened(false)
+		, m_pDataSource(pDataSource)
 	{
 		pNext = nullptr;
 	}
@@ -38,7 +38,7 @@ namespace DB {
 
 		m_bIsOpened = true;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -50,7 +50,7 @@ namespace DB {
 
 		m_bIsOpened = false;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
