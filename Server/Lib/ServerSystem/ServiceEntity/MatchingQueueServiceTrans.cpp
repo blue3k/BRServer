@@ -56,7 +56,7 @@ namespace Svr {
 
 		m_MatchingTicket = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk(GetMyOwner()->Enqueue(GetRouteContext().GetFrom(), 0, (UINT)GetPlayers().GetSize(), GetPlayers().data(), m_MatchingTicket));
 
@@ -76,7 +76,7 @@ namespace Svr {
 		MatchingPlayerInformation playerInfo(GetRouteContext().GetFrom(), GetPlayerID(), PlayerRole::None);
 		m_MatchingTicket = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->Enqueue( GetRouteContext().GetFrom(), GetPlayerID(), 1, &playerInfo, m_MatchingTicket ) );
 
@@ -93,7 +93,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->UpdateTicket( GetMatchingTicket(), GetPreviousUID(), GetRouteContext().GetFrom()) );
 
@@ -110,7 +110,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->CancelTicket( GetMatchingTicket() ) );
 
@@ -127,7 +127,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		hr = GetMyOwner()->ReserveItem( GetRouteContext().GetFrom(), m_NumPlayersInTheTicket, m_MatchingTicket );
 
@@ -144,7 +144,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		for (UINT iItem = 0; iItem < GetNumberOfItemsToReserve(); iItem++)
 		{
@@ -175,7 +175,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->CancelReservation( GetTicketToCancel() ) );
 
@@ -194,7 +194,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerEntity *pServerEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk(GetMyOwner()->DequeueItem(GetMatchingTicket(), m_matchingQueueItem));
 
@@ -237,7 +237,7 @@ namespace Svr {
 		ServerEntity *pServerEntity = nullptr;
 		MatchingQueueItem matchingQueueItem;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		svrChk(GetMyOwner()->DeleteItem(GetMatchingTicket(), matchingQueueItem));
 

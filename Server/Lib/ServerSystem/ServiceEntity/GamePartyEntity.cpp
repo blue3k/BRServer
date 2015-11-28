@@ -59,7 +59,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(MasterEntity::InitializeEntity( newEntityID ) );
 
 		m_ChatHistory.InitializeLog();
 
@@ -89,7 +89,7 @@ namespace Svr {
 		});
 		m_PartyPlayerByUID.clear();
 
-		svrChk( __super::TerminateEntity() );
+		svrChk(MasterEntity::TerminateEntity() );
 
 	Proc_End:	
 

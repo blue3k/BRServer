@@ -31,7 +31,7 @@ namespace Svr {
 	//	GameUser Entity manager
 	//
 
-	class EntityManager : public Svr::TaskManager, public Svr::IServerComponent
+	class EntityManager : public TaskManager, public IServerComponent
 	{
 	public:
 

@@ -156,7 +156,7 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ServerMUDP::OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred )
+	HRESULT ServerMUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred )
 	{
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
@@ -250,7 +250,7 @@ namespace Net {
 		//}
 
 		if( hrRes != E_NET_IO_ABORTED )
-			PendingRecv( (OVERLAPPED_BUFFER_READ*)pIOBuffer );
+			PendingRecv( (IOBUFFER_READ*)pIOBuffer );
 
 		return hr;
 	}

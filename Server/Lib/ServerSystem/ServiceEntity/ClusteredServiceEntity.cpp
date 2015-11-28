@@ -126,7 +126,7 @@ namespace Svr {
 
 		m_Initialized = false;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(ServiceEntity::InitializeEntity( newEntityID ) );
 
 		m_ServiceStatus = ServiceStatus::Online;
 
@@ -192,7 +192,7 @@ namespace Svr {
 		m_WatcherUIDMap.clear();
 
 
-		svrChk( __super::ClearEntity() );
+		svrChk(ServiceEntity::ClearEntity() );
 
 	Proc_End:
 
@@ -576,7 +576,7 @@ namespace Svr {
 	// Register message handler for this component
 	HRESULT ReplicaClusterServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
-		__super::RegisterServiceMessageHandler( pServerEntity );
+		ClusteredServiceEntity::RegisterServiceMessageHandler( pServerEntity );
 
 		return S_OK;
 	}
@@ -585,7 +585,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk(ClusteredServiceEntity::TickUpdate(pAction) );
 
 		if( GetServerComponent<ClusterManagerServiceEntity>()->GetClusterMembership() == ClusterMembership::Master )
 		{
@@ -631,7 +631,7 @@ namespace Svr {
 		// This need to be thread safe
 		MutexScopeLock scopelock(m_ListLock);
 
-		HRESULT hrRes = __super::NewServerService(entityUID, pServerEntity, membership, status, pService);
+		HRESULT hrRes = ClusteredServiceEntity::NewServerService(entityUID, pServerEntity, membership, status, pService);
 
 		svrChkPtr(pService);
 		pTblItem = (ServiceTableItem*)pService;
@@ -857,7 +857,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity(newEntityID) );
+		svrChk(ClusteredServiceEntity::InitializeEntity(newEntityID) );
 
 		m_WorkloadCheckTimer.SetTimer( DurationMS(Const::WORKLOAD_UPDATE_TIME) );
 
@@ -874,7 +874,7 @@ namespace Svr {
 		ServiceTableItem *pTblItem = nullptr;
 		OrderedServiceList::Node *pPrevNode = nullptr;
 
-		hr = __super::NewServerService(entityUID, pServerEntity, membership, status, pService);
+		hr = ClusteredServiceEntity::NewServerService(entityUID, pServerEntity, membership, status, pService);
 
 		pTblItem = (ServiceTableItem*)pService;
 
@@ -960,7 +960,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk(ClusteredServiceEntity::TickUpdate(pAction) );
 
 		if( m_WorkloadCheckTimer.CheckTimer() )
 		{

@@ -6,6 +6,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
+#include "Common/TypeUtility.h"
 #include "Common/Utility.h"
 #include "Common/StrUtil.h"
 #include "Common/Message.h"

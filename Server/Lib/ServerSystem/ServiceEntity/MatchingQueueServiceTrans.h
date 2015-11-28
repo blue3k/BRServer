@@ -32,6 +32,9 @@ namespace Svr {
 	
 	class RegisterPartyMatchingTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPartyMatchingCmd, RegisterPartyMatchingTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPartyMatchingCmd, RegisterPartyMatchingTrans, 1> super;
+
 	private:
 		MatchingQueueTicket m_MatchingTicket;
 
@@ -50,6 +53,9 @@ namespace Svr {
 	
 	class RegisterPlayerMatchingTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPlayerMatchingCmd, RegisterPlayerMatchingTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::RegisterPlayerMatchingCmd, RegisterPlayerMatchingTrans, 1> super;
+
 	private:
 		MatchingQueueTicket m_MatchingTicket;
 
@@ -68,6 +74,9 @@ namespace Svr {
 	
 	class UpdateMatchingEntityUIDTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd, UpdateMatchingEntityUIDTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd, UpdateMatchingEntityUIDTrans, 1> super;
+
 	private:
 
 	public:
@@ -85,6 +94,9 @@ namespace Svr {
 
 	class UnregisterMatchingTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UnregisterMatchingCmd, UnregisterMatchingTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::UnregisterMatchingCmd, UnregisterMatchingTrans, 1> super;
+
 	private:
 		MatchingQueueTicket m_MatchingTicket;
 
@@ -105,6 +117,9 @@ namespace Svr {
 	
 	class ReserveItemTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemCmd, ReserveItemTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemCmd, ReserveItemTrans, 1> super;
+
 	private:
 		UINT m_NumPlayersInTheTicket;
 		MatchingQueueTicket m_MatchingTicket;
@@ -125,6 +140,9 @@ namespace Svr {
 
 	class MatchingQueueReserveItemsTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemsCmd, MatchingQueueReserveItemsTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::ReserveItemsCmd, MatchingQueueReserveItemsTrans, 1> super;
+
 	private:
 		StaticArray<UINT,40> m_NumPlayersInTheTicket;
 		StaticArray<MatchingQueueTicket,40> m_MatchingTicket;
@@ -145,6 +163,9 @@ namespace Svr {
 	
 	class CancelReservationTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::CancelReservationCmd, CancelReservationTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::CancelReservationCmd, CancelReservationTrans, 1> super;
+
 	private:
 
 	public:
@@ -162,6 +183,9 @@ namespace Svr {
 	
 	class DequeueItemTrans : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::DequeueItemCmd, DequeueItemTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::DequeueItemCmd, DequeueItemTrans, 1> super;
+
 	private:
 		MatchingQueueItem m_matchingQueueItem;
 
@@ -181,6 +205,9 @@ namespace Svr {
 
 	class MatchingQueueTransMatchingItemError : public ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::MatchingItemErrorC2SEvt, MatchingQueueTransMatchingItemError, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< MatchingQueueServiceEntity, Message::PartyMatchingQueue::MatchingItemErrorC2SEvt, MatchingQueueTransMatchingItemError, 1> super;
+
 	private:
 
 	public:

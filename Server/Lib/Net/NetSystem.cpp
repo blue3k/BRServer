@@ -12,6 +12,7 @@
 
 #include "stdafx.h"
 #include "Net/NetSystem.h"
+#include "Net/NetSystem_impl.h"
 #include "Common/HRESNet.h"
 #include "Net/NetTrace.h"
 #include "Common/TimeUtil.h"
@@ -21,413 +22,178 @@
 
 
 
-BR_MEMORYPOOL_IMPLEMENT(Net::OVERLAPPED_BUFFER_WRITE);
-
-
 namespace BR {
 namespace Net {
 
 
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Overlapped I/O structures
-	//
+#if LINUX
 
-
-	// Clear Buffer
-	void tag_OVERLAPPED_BUFFER::ClearBuffer()
+	HRESULT GetLastWSAHRESULT()
 	{
-		if( hEvent != WSA_INVALID_EVENT )
-			WSACloseEvent( hEvent );
-		hEvent = WSA_INVALID_EVENT;
-	}
-
-
-
-	tag_OVERLAPPED_BUFFER_BASE::tag_OVERLAPPED_BUFFER_BASE()
-	{
-	}
-	
-
-
-
-	OVERLAPPED_BUFFER_WRITE::OVERLAPPED_BUFFER_WRITE()
-	{
-		memset( this, 0, sizeof(OVERLAPPED_BUFFER_WRITE) );
-		hEvent = WSA_INVALID_EVENT;
-	}
-
-	OVERLAPPED_BUFFER_WRITE::~OVERLAPPED_BUFFER_WRITE()
-	{
-		ClearBuffer();
-
-		Util::SafeRelease( pMsgs );
-	}
-
-
-	tag_OVERLAPPED_BUFFER_READ::tag_OVERLAPPED_BUFFER_READ()
-	{
-		memset( this, 0, sizeof(tag_OVERLAPPED_BUFFER_READ) );
-		hEvent = WSA_INVALID_EVENT;
-
-		iSockLen = sizeof(sockaddr_in6);
-	}
-
-	tag_OVERLAPPED_BUFFER_READ::~tag_OVERLAPPED_BUFFER_READ()
-	{
-		ClearBuffer();
-	}
-
-	tag_OVERLAPPED_BUFFER_ACCEPT::tag_OVERLAPPED_BUFFER_ACCEPT()
-		//:pConnection(nullptr)
-	{
-		memset( this, 0, sizeof(tag_OVERLAPPED_BUFFER_ACCEPT) );
-		hEvent = WSA_INVALID_EVENT;
-	}
-
-
-	tag_OVERLAPPED_BUFFER_ACCEPT::~tag_OVERLAPPED_BUFFER_ACCEPT()
-	{
-		ClearBuffer();
-	}
-
-
-
-
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Windows socket control
-	//
-	namespace WSASystem
-	{
-		// winsock system open count
-		static std::atomic<LONG> g_lWSOpenCount = 0;
-
-		// Buffer sharing for network
-		//static BR::SpinSharedBuffer<OVERLAPPED_BUFFER_WRITE> *g_pOverlappedBuffer = nullptr;
-
-
-
-
-		// Open network system
-		HRESULT OpenSystem( UINT uiOverBufferCount )
+		int ierr = errno;
+		switch (ierr)
 		{
-			if( g_lWSOpenCount == 0 )
-			{
-				WSADATA wsaData;
-				int iErr = WSAStartup(MAKEWORD(2,2), &wsaData);
-				if( iErr != 0 )
-				{
-					netTrace( Trace::TRC_ERROR, "Can't Initialize Winsock DLL err=%0%", iErr );
-					return iErr;
-				}
+		case 0: return S_OK;
+		case EINTR: return E_NET_INTR;
+		case EBADF: return E_NET_BADF;
+		case EACCES: return E_NET_ACCES;
+		case EFAULT: return E_NET_FAULT;
+		case EINVAL: return E_NET_INVAL;
+		case EMFILE: return E_NET_MFILE;
+		case EWOULDBLOCK: return E_NET_WOULDBLOCK;
+		case EINPROGRESS: return E_NET_INPROGRESS;
+		case EALREADY: return E_NET_ALREADY;
+		case ENOTSOCK: return E_NET_FAULT;
+		case EDESTADDRREQ: return E_NET_DESTADDRREQ;
+		case ENETDOWN: return E_NET_NETDOWN;
+		case ENETUNREACH: return E_NET_NETUNREACH;
+		case ENETRESET: return E_NET_NETRESET;
+		case ECONNABORTED: return E_NET_CONNABORTED;
+		case ECONNRESET: return E_NET_CONNRESET;
+		case ENOBUFS: return E_NET_NOBUFS;
+		case EISCONN: return E_NET_ISCONN;
+		case ENOTCONN: return E_NET_NOTCONN;
+		case ESHUTDOWN: return E_NET_SHUTDOWN;
+		case ETOOMANYREFS: return E_NET_TOOMANYREFS;
+		case ETIMEDOUT: return E_NET_TIMEDOUT;
+		case ECONNREFUSED: return E_NET_CONNECTION_REFUSSED;
+		case ELOOP: return E_NET_LOOP;
+		case ENAMETOOLONG: return E_NET_NAMETOOLONG;
 
-				BR::Net::OVERLAPPED_BUFFER_WRITE::MemoryPoolCache( uiOverBufferCount );
-			}
 
-			g_lWSOpenCount.fetch_add(1, std::memory_order_relaxed);
+		case EHOSTDOWN: return E_NET_HOSTDOWN;
+		case EHOSTUNREACH: return E_NET_HOSTUNREACH;
+		case ENOTEMPTY: return E_NET_NOTEMPTY;
+			//case EPROCLIM: return E_NET_PROCLIM;
+			//case SYSNOTREADY: return E_NET_SYSNOTREADY;
+			//case VERNOTSUPPORTED: return E_NET_VERNOTSUPPORTED;
+			//case NOTINITIALISED: return E_NET_NOTINITIALISED;
+			//case EDISCON: return E_NET_DISCON;
+			//case SYSCALLFAILURE: return E_NET_SYSCALLFAILURE;
+			//case HOST_NOT_FOUND: return E_NET_HOST_NOT_FOUND;
 
-			return S_OK;
+			//case TRY_AGAIN: return E_NET_TRY_AGAIN;
+			//case _SECURE_HOST_NOT_FOUND: return E_NET_SECURE_HOST_NOT_FOUND;
+		default:
+			defTrace(Trace::TRC_WARN, "Unknown Winsock error {0}", ierr);
+			return GetLastHRESULT();
 		}
+	}
 
-		// Close network system
-		void CloseSystem()
+
+#else
+
+	HRESULT GetLastWSAHRESULT()
+	{
+		int ierr = WSAGetLastError();
+		switch (ierr)
 		{
-			int iErr = 0;
-			LONG lCount = g_lWSOpenCount;
-			if( g_lWSOpenCount > 0 )
-			{
-				lCount = g_lWSOpenCount.fetch_sub(1, std::memory_order_relaxed) - 1;
-			}
+		case 0: return S_OK;
+		case WSAEINTR: return E_NET_INTR;
+		case WSAEBADF: return E_NET_BADF;
+		case WSAEACCES: return E_NET_ACCES;
+		case WSAEFAULT: return E_NET_FAULT;
+		case WSAEINVAL: return E_NET_INVAL;
+		case WSAEMFILE: return E_NET_MFILE;
+		case WSAEWOULDBLOCK: return E_NET_WOULDBLOCK;
+		case WSAEINPROGRESS: return E_NET_INPROGRESS;
+		case WSAEALREADY: return E_NET_ALREADY;
+		case WSAENOTSOCK: return E_NET_FAULT;
+		case WSAEDESTADDRREQ: return E_NET_DESTADDRREQ;
+		case WSAENETDOWN: return E_NET_NETDOWN;
+		case WSAENETUNREACH: return E_NET_NETUNREACH;
+		case WSAENETRESET: return E_NET_NETRESET;
+		case WSAECONNABORTED: return E_NET_CONNABORTED;
+		case WSAECONNRESET: return E_NET_CONNRESET;
+		case WSAENOBUFS: return E_NET_NOBUFS;
+		case WSAEISCONN: return E_NET_ISCONN;
+		case WSAENOTCONN: return E_NET_NOTCONN;
+		case WSAESHUTDOWN: return E_NET_SHUTDOWN;
+		case WSAETOOMANYREFS: return E_NET_TOOMANYREFS;
+		case WSAETIMEDOUT: return E_NET_TIMEDOUT;
+		case WSAECONNREFUSED: return E_NET_CONNECTION_REFUSSED;
+		case WSAELOOP: return E_NET_LOOP;
+		case WSAENAMETOOLONG: return E_NET_NAMETOOLONG;
 
-			if( lCount <= 0 )
-			{
-				int iErr = WSACleanup();
-			}
+
+		case WSAEHOSTDOWN: return E_NET_HOSTDOWN;
+		case WSAEHOSTUNREACH: return E_NET_HOSTUNREACH;
+		case WSAENOTEMPTY: return E_NET_NOTEMPTY;
+		case WSAEPROCLIM: return E_NET_PROCLIM;
+		case WSASYSNOTREADY: return E_NET_SYSNOTREADY;
+		case WSAVERNOTSUPPORTED: return E_NET_VERNOTSUPPORTED;
+		case WSANOTINITIALISED: return E_NET_NOTINITIALISED;
+		case WSAEDISCON: return E_NET_DISCON;
+		case WSASYSCALLFAILURE: return E_NET_SYSCALLFAILURE;
+		case WSAHOST_NOT_FOUND: return E_NET_HOST_NOT_FOUND;
+
+		case WSATRY_AGAIN: return E_NET_TRY_AGAIN;
+		case WSA_SECURE_HOST_NOT_FOUND: return E_NET_SECURE_HOST_NOT_FOUND;
+		default:
+			defTrace(Trace::TRC_WARN, "Unknown Winsock error {0}", ierr);
+			return GetLastHRESULT();
 		}
+	}
+
+#endif
 
 
 
-		HRESULT AllocBuffer( OVERLAPPED_BUFFER_WRITE* &pIOBuffer )
+
+
+	namespace NetSystem
+	{
+		static UINT g_GatheringSize = 1024;
+		static MemoryPool* g_pGatheringBufferPool = nullptr;
+
+
+		HRESULT AllocBuffer(IOBUFFER_WRITE* &pIOBuffer)
 		{
-			pIOBuffer = new OVERLAPPED_BUFFER_WRITE;
+			pIOBuffer = new IOBUFFER_WRITE;
 
 			return pIOBuffer == nullptr ? E_FAIL : S_OK;
 		}
 
-		HRESULT FreeBuffer( OVERLAPPED_BUFFER_WRITE *pIOBuffer )
+		HRESULT FreeBuffer(IOBUFFER_WRITE *pIOBuffer)
 		{
-			Util::SafeDelete( pIOBuffer );
+			Util::SafeDelete(pIOBuffer);
 
 			return S_OK;
 		}
 
-	}; // namespace WSASystem
-
-
-
-
-
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	IOCP System
-	//
-
-	namespace IOCPSystem
-	{
-
-
-		////////////////////////////////////////////////////////////////////////////////
-		//
-		//	IOCP thread worker
-		//
-
-
-		void IOCPWorker::Run()
+		HRESULT SetGatheringBufferSize(UINT bufferSize)
 		{
-			HRESULT hr = S_OK;
-			BOOL bResult;
-			DWORD dwTransferred = 0;
-			OVERLAPPED_BUFFER *pOverlapped = NULL;
-			OVERLAPPED *pOverlappedSys = NULL;
-			ULONG_PTR ulKey = NULL;
-			int iErr = 0;
-			int iLastError;
+			g_GatheringSize = bufferSize;
+			MemoryPoolManager::GetMemoryPoolBySize(g_GatheringSize, g_pGatheringBufferPool);
+			if (g_pGatheringBufferPool == nullptr)
+				return E_FAIL;
 
-			while( 1 )
-			{
-				dwTransferred = 0;
-				pOverlapped = NULL;
-				pOverlappedSys = NULL;
-				ulKey = NULL;
-				iErr = 0;
-				iLastError = 0;
-				hr = S_OK;
-
-
-				// Getting IOCP status
-				bResult = GetQueuedCompletionStatus( m_hIOCP, &dwTransferred, (PULONG_PTR)&ulKey, &pOverlappedSys, INFINITE );
-				pOverlapped = (OVERLAPPED_BUFFER*)pOverlappedSys;
-
-				// If End of IOCP signaled
-				if( pOverlappedSys == nullptr || pOverlapped == nullptr )
-				{
-					// chain call to end all IOCP worker
-					if( !PostQueuedCompletionStatus( m_hIOCP, 0, 0, NULL ) )
-					{
-						netTrace( Trace::TRC_ERROR, "PostQueuedCompletionStatus failed hr={0:X8}", GetLastHRESULT() );
-					}
-					break;
-				}
-
-
-				// Error mapping
-				if( !bResult )
-				{
-					iLastError = GetLastError();
-					hr = HRESULT_FROM_WIN32(iLastError);
-
-					switch( iLastError )
-					{
-					case WSAECONNRESET:
-					case WSAENOTSOCK:
-					case ERROR_CONNECTION_ABORTED:
-					case ERROR_HOST_UNREACHABLE:
-					case ERROR_PROTOCOL_UNREACHABLE:
-					case ERROR_PORT_UNREACHABLE:
-					case ERROR_NETNAME_DELETED:
-						if( pOverlapped->Operation != OVERLAPPED_BUFFER::OP_UDPREAD // UDP can't distingush which connection network err
-							&& pOverlapped->Operation != OVERLAPPED_BUFFER::OP_PEERUDPREAD )
-							netTrace( TRC_CONNECTION, "Closing Connection by iErr=%0%, hr={1:X8}", iLastError, hr );
-						hr = E_NET_CONNECTION_CLOSED;
-						break;
-					case ERROR_OPERATION_ABORTED:
-						netTrace( Trace::TRC_TRACE, "IOCP Operation aborted" );
-						hr = E_NET_IO_ABORTED;
-						break;
-					default:
-						netTrace( Trace::TRC_IERROR, "IOCP Operation failed iErr=%0%, hr={1:X8}", iLastError, hr );
-						break;
-					};
-				}
-
-
-				// Operation
-				switch( pOverlapped->Operation )
-				{
-				case OVERLAPPED_BUFFER::OP_TCPACCEPT:
-					{
-						OVERLAPPED_BUFFER_ACCEPT *pAcceptOver = (OVERLAPPED_BUFFER_ACCEPT*)pOverlapped;
-						IOCallBack *pCallback = (IOCallBack*)ulKey;
-						hr = pCallback->OnIOAccept( hr, pAcceptOver );
-					}
-					break;
-				case OVERLAPPED_BUFFER::OP_TCPWRITE:
-				case OVERLAPPED_BUFFER::OP_UDPWRITE:
-				case OVERLAPPED_BUFFER::OP_PEERUDPWRITE:
-					{
-						OVERLAPPED_BUFFER_WRITE *pIOBuffer = (OVERLAPPED_BUFFER_WRITE*)pOverlapped;
-						IOCallBack *pCallback = (IOCallBack*)ulKey;
-						hr = pCallback->OnIOSendCompleted( hr, pIOBuffer, dwTransferred );
-					}
-					break;
-				case OVERLAPPED_BUFFER::OP_TCPREAD:
-				case OVERLAPPED_BUFFER::OP_UDPREAD:
-				case OVERLAPPED_BUFFER::OP_PEERUDPREAD:
-					if( ulKey ) // TCP operation
-					{
-						OVERLAPPED_BUFFER_READ *pIOBuffer = (OVERLAPPED_BUFFER_READ*)pOverlapped;
-						IOCallBack *pCallback = (IOCallBack*)ulKey;
-						hr = pCallback->OnIORecvCompleted( hr, pIOBuffer, dwTransferred );
-						pOverlapped = NULL;
-					}
-					else
-					{
-						AssertRel(!"Invalid Key at IOCP");
-					}
-					break;
-				default:
-					netTrace( Trace::TRC_ERROR, "IOCP Invalid Overlapped Operation" );
-					break;
-				};
-
-
-			} // while(1)
-
+			return S_OK;
 		}
 
-
-
-
-
-
-
-
-		//////////////////////////////////////////////////////////////////
-		//
-		//	network IOCP System
-		//
-
-		IOCPSystem IOCPSystem::stm_Instance;
-		
-
-
-		IOCPSystem::IOCPSystem()
-			:m_hIOCP(INVALID_HANDLE_VALUE)
+		HRESULT AllocGatheringBuffer(BYTE* &pBuffer, UINT& bufferSize)
 		{
+			if (g_pGatheringBufferPool == nullptr)
+				return E_UNEXPECTED;
+
+			void* pPtr = nullptr;
+			bufferSize = g_GatheringSize;
+			if(FAILED(g_pGatheringBufferPool->Alloc(pPtr, "AllocGatheringBuffer")))
+				return E_OUTOFMEMORY;
+
+			pBuffer = (BYTE*)pPtr;
+
+			return S_OK;
 		}
 
-		IOCPSystem::~IOCPSystem()
+		HRESULT FreeGatheringBuffer(BYTE *pBuffer)
 		{
+			if (g_pGatheringBufferPool == nullptr)
+				return E_FAIL;
+
+			return g_pGatheringBufferPool->Free(pBuffer, "AllocGatheringBuffer");
 		}
-
-		// Initialize IOCP
-		HRESULT IOCPSystem::InitIOCP( UINT uiNumIOCPThread )
-		{
-			HRESULT hr = S_OK;
-
-
-			m_RefCount.fetch_add(1, std::memory_order_relaxed);
-
-			if( m_hIOCP != INVALID_HANDLE_VALUE )
-			{
-				return S_OK;// already initialized
-			}
-
-
-			SYSTEM_INFO sysInfo;
-			memset( &sysInfo, 0, sizeof(sysInfo) );
-			GetSystemInfo( &sysInfo );
-
-			// Correct if Incorrect thread count specified
-			if( uiNumIOCPThread < 1 ) uiNumIOCPThread = 1;
-			if( uiNumIOCPThread > (sysInfo.dwNumberOfProcessors*2) ) uiNumIOCPThread = sysInfo.dwNumberOfProcessors*2;
-
-
-			// Create IOCP port
-			m_hIOCP = CreateIoCompletionPort( INVALID_HANDLE_VALUE, NULL, 0, 0 );
-			if( m_hIOCP == INVALID_HANDLE_VALUE )
-				netErr( GetLastHRESULT() );
-
-
-			m_pWorkers.resize( uiNumIOCPThread );
-			for( UINT iThread = 0; iThread < uiNumIOCPThread; iThread++ )
-			{
-				m_pWorkers[iThread] = new IOCPWorker;
-				m_pWorkers[iThread]->SetIOCPHandle( m_hIOCP );
-				m_pWorkers[iThread]->Start();
-			}
-
-			netTrace( TRC_INFO, "IOCP system started" );
-
-		Proc_End:
-
-			if( FAILED(hr) )
-			{
-				CloseIOCP();
-			}
-			return hr;
-		}
-
-		// Close IOCP
-		HRESULT IOCPSystem::CloseIOCP()
-		{
-			HRESULT hr = S_OK;
-
-			CounterType lCount = m_RefCount.fetch_sub(1, std::memory_order_relaxed) - 1;
-
-			if( lCount > 0 )
-				return S_OK;
-
-			if( m_hIOCP != INVALID_HANDLE_VALUE )
-			{
-				// Send IOCP close signal
-				if( !PostQueuedCompletionStatus( m_hIOCP, 0, 0, NULL ) )
-					netErr( GetLastHRESULT() );
-			}
-
-
-			if( m_pWorkers.size() )
-			{
-				std::for_each( m_pWorkers.begin(), m_pWorkers.end(), []( IOCPWorker* pThread )
-				{
-					pThread->Stop( true );
-					delete pThread;
-				});
-
-
-				m_pWorkers.clear();
-				m_pWorkers.shrink_to_fit();
-			}
-
-		Proc_End:
-
-			if( m_hIOCP != INVALID_HANDLE_VALUE )
-			{
-				// Send IOCP close signal
-				CloseHandle( m_hIOCP );
-				m_hIOCP = INVALID_HANDLE_VALUE;
-			}
-
-			netTrace( TRC_INFO, "IOCP system closed" );
-
-			return hr;
-		}
-
-
-
-		// Get IOCP system instance
-		IOCPSystem& GetSystem()
-		{
-			return IOCPSystem::GetInstance();
-		}
-		
-
-
-
-
-	}; // namespace IOCPSystem
-
+	}
 
 
 } // namespace Net

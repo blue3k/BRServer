@@ -120,7 +120,7 @@ namespace Svr
 		m_activeTrans.ClearMap();
 		m_pExclusiveTransaction = SharedPointerT<Transaction>();
 
-		return __super::ClearEntity();
+		return Entity::ClearEntity();
 	}
 
 	HRESULT MasterEntity::FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction)
@@ -348,7 +348,7 @@ namespace Svr
 	void MasterEntity::OnAddedToTaskManager(TaskWorker *pWorker)
 	{
 		UpdateWorkingThreadID(pWorker->GetThreadID());
-		__super::OnAddedToTaskManager(pWorker);
+		Entity::OnAddedToTaskManager(pWorker);
 	}
 
 	HRESULT MasterEntity::OnEventTask(const Svr::EventTask& eventTask)

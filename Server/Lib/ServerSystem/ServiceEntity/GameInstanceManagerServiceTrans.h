@@ -31,6 +31,9 @@ namespace Svr {
 
 	class GameInstanceTransCreateGame : public ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::CreateGameCmd, GameInstanceTransCreateGame, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::CreateGameCmd, GameInstanceTransCreateGame, 1> super;
+
 	private:
 		GameInsUID	m_GameInsUID;
 
@@ -49,6 +52,9 @@ namespace Svr {
 
 	class GameInstanceTransGameDeleted : public ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::GameDeletedC2SEvt, GameInstanceTransGameDeleted, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< GameInstanceManagerServiceEntity, Message::GameInstanceManager::GameDeletedC2SEvt, GameInstanceTransGameDeleted, 1> super;
+
 	private:
 		GameInsUID	m_GameInsUID;
 

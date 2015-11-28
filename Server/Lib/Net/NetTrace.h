@@ -55,7 +55,7 @@ DEFINE_TRACE_MODULE(net)
 #define netAssert(e)			trcAssert(e)
 #define netAssertExp(e,expr)	trcAssertExp(e,expr)
 //#define netTrace(x)				netTraceOut x
-#define netTrace(lModeMask,szfmt, ...)				TRACE_OUT(net,lModeMask,szfmt,__VA_ARGS__)
+#define netTrace(lModeMask, ...)				TRACE_OUT(net,lModeMask,__VA_ARGS__)
 
 #define netErrSilent(e)		trcErrSilent(e)
 

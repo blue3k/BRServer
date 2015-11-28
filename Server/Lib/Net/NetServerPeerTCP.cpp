@@ -82,11 +82,7 @@ namespace Net {
 			bNeedPending = true;
 		}
 
-		if (!CreateIoCompletionPort((HANDLE)acceptedSocket, IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)(IOCPSystem::IOCallBack*)pConnection, 0))
-		{
-			netTrace(TRC_CONNECTION, "Failed bind IOCP to TCP socket err:%0%", WSAGetLastError());
-			netErr(E_FAIL);
-		}
+		netChk(NetSystem::RegisterSocket(acceptedSocket, pConnection));
 
 		pConnOut = pConnection;
 		cid = pConnection->GetCID();
@@ -138,11 +134,7 @@ namespace Net {
 		return GetSocket() != INVALID_SOCKET;
 	}
 	
-	// Get connection from connection ID
-	HRESULT ServerPeerTCP::GetConnection(UINT uiCID, SharedPointerT<Connection> &pConnection)
-	{
-		return __super::GetConnection(uiCID, pConnection);
-	}
+
 
 
 	// Open host and start listen
@@ -194,7 +186,7 @@ namespace Net {
 		socket = WSASocket(localsockAddr.sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 		if (socket == INVALID_SOCKET)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to Open a Socket %0%", WSAGetLastError());
+			netTrace(Trace::TRC_ERROR, "Failed to Open a Socket {0:X8}", GetLastWSAHRESULT());
 			netErr(E_UNEXPECTED);
 		}
 
@@ -203,7 +195,7 @@ namespace Net {
 		iMode = true;
 		if (ioctlsocket(socket, FIONBIO, &iMode) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to %d,  err = %0%", iMode, WSAGetLastError());
+			netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err = {1:X8}", iMode, GetLastWSAHRESULT());
 			netErr(E_UNEXPECTED);
 		}
 
@@ -212,7 +204,7 @@ namespace Net {
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = %0%, err = %1%", iOptValue, WSAGetLastError());
+				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
 				netErr(E_UNEXPECTED);
 			}
 		}

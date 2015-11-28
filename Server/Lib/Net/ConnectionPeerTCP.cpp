@@ -75,7 +75,7 @@ namespace Net {
 			Assert(m_ConnectInfo.RemoteID != 0);
 		}
 
-		return __super::OnConnectionResult(hrConnect);
+		return ConnectionTCP::OnConnectionResult(hrConnect);
 	}
 
 	// Update net control, process connection heartbit, ... etc

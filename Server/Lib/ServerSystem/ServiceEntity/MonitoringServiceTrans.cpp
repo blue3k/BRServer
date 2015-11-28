@@ -51,7 +51,7 @@ namespace Svr {
 		StaticArray<SharedPointerT<PerformanceCounterInstance>, 1024> instanceList;
 		m_TotalCounterInstance = 0;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		m_TotalCounterInstance = PerformanceCounterServer::GetInstanceCount();
 
@@ -84,7 +84,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		UINT bufferSize = (UINT)m_CounterValues.GetAllocatedSize();
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		//svrChk(PerformanceCounterServer::GetCounter(GetInstanceUID(), bufferSize, m_CounterValues.data()));
 		Assert(false);

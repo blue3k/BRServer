@@ -30,7 +30,7 @@ namespace Net {
 	//	TCP Network connection class
 	//
 
-	class ConnectionTCP : public Connection, public IOCPSystem::IOCallBack
+	class ConnectionTCP : public Connection, public INetIOCallBack
 	{
 	public:
 
@@ -45,7 +45,7 @@ namespace Net {
 		std::vector<BYTE>	m_bufRecvTem;
 
 		// Recv overlapped buffer. recv 
-		OVERLAPPED_BUFFER_READ m_RecvBuffer;
+		IOBUFFER_READ m_RecvBuffer;
 
 	protected:
 		// Special net control packet count on the same connection state. ex)Connect packet
@@ -57,7 +57,7 @@ namespace Net {
 		virtual ~ConnectionTCP();
 
 
-		inline OVERLAPPED_BUFFER_READ* GetRecvBuffer();
+		inline IOBUFFER_READ* GetRecvBuffer();
 
 		// Process network control message
 		HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl );
@@ -65,13 +65,13 @@ namespace Net {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// callback
 		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept( HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo );
+		virtual HRESULT OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo );
 
 		// called when reciving TCP message
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred );
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred );
 
 		// called when Send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred );
+		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred );
 
 
 		// Pending recv New one

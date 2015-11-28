@@ -51,7 +51,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity(newEntityID) );
+		svrChk(ReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
 
 		m_CurrentProcessingNumberofMember = 0;
 
@@ -69,7 +69,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::ClearEntity() );
+		svrChk(ReplicaClusterServiceEntity::ClearEntity() );
 
 	Proc_End:
 
@@ -80,7 +80,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk(ReplicaClusterServiceEntity::TickUpdate(pAction) );
 
 		// check below only if we are working
 		if( GetEntityState() != EntityState::WORKING )

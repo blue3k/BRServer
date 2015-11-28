@@ -73,7 +73,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		NetAddress localAddr;
 
-		netChk( WSASystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT ) );
+		netChk( NetSystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
 
 		m_NetClass = netCls;
 
@@ -81,9 +81,6 @@ namespace Net {
 		localAddr.usPort = usLocalPort;
 
 		SetLocalAddress( localAddr );
-
-		netChk( IOCPSystem::GetSystem().InitIOCP( Const::SVR_NUM_RECV_THREAD ) );
-
 
 	Proc_End:
 
@@ -98,9 +95,7 @@ namespace Net {
 
 		GetConnectionManager().TerminateManager();
 
-		netChk( IOCPSystem::GetSystem().CloseIOCP() );
-
-		WSASystem::CloseSystem();
+		NetSystem::CloseSystem();
 
 		if( GetSocket() != INVALID_SOCKET )
 		{

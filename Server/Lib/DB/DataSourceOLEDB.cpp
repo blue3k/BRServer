@@ -38,7 +38,7 @@ namespace DB {
 	{
 		HRESULT hr = S_OK;
 
-		dbChk( __super::InitializeDBSource( strConnectionString, strDBName, strUserID, strPassword ) );
+		dbChk(DataSource::InitializeDBSource( strConnectionString, strDBName, strUserID, strPassword ) );
 
 		m_PropSet = CDBPropSet(DBPROPSET_DBINIT);
 		m_PropSet.AddProperty(DBPROP_INIT_DATASOURCE, A2BSTR(m_strConnectionString.c_str()));
@@ -76,7 +76,7 @@ namespace DB {
 	// close DB source
 	HRESULT	DataSourceOLEDB::CloseDBSource()
 	{
-		__super::CloseDBSource();
+		DataSource::CloseDBSource();
 		m_DataSource.Close();
 
 		return S_OK;

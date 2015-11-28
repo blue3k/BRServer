@@ -44,7 +44,7 @@ namespace Svr {
 	{
 		auto nextTick = Util::TimeMinNonZero(pTrans->GetTimerExpireTime(), pTrans->GetHeartBitTimeout());
 		Assert(nextTick != TimeStampMS::max());
-		__super::SetNextTickTime(nextTick);
+		TimerAction::SetNextTickTime(nextTick);
 	}
 
 	bool TimerActionTransaction::UpdateTick()

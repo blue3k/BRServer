@@ -176,6 +176,8 @@
     <None Include="NetSvrDef.inl" />
     <None Include="NetSystem.inl" />
     <None Include="NetServer.inl" />
+    <None Include="NetSystem_EPOLL.inl" />
+    <None Include="NetSystem_WinIOCP.inl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Connection.h" />
@@ -200,6 +202,9 @@
     <ClInclude Include="NetSystem.h" />
     <ClInclude Include="NetServer.h" />
     <ClInclude Include="NetSvrDef.h" />
+    <ClInclude Include="NetSystem_EPOLL.h" />
+    <ClInclude Include="NetSystem_impl.h" />
+    <ClInclude Include="NetSystem_WinIOCP.h" />
     <ClInclude Include="NetToString.h" />
     <ClInclude Include="NetTrace.h" />
     <ClInclude Include="NetUtil.h" />
@@ -232,6 +237,8 @@
     <ClCompile Include="NetServerUDP.cpp" />
     <ClCompile Include="NetSvrDef.cpp" />
     <ClCompile Include="NetSystem.cpp" />
+    <ClCompile Include="NetSystem_EPOLL.cpp" />
+    <ClCompile Include="NetSystem_WinIOCP.cpp" />
     <ClCompile Include="NetToString.cpp" />
     <ClCompile Include="NetTrace.cpp" />
     <ClCompile Include="NetUtil.cpp" />

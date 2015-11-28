@@ -1,16 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="LoopbackConnection.cpp" />
-    <ClCompile Include="MessageWindow.cpp" />
-    <ClCompile Include="NetClient.cpp" />
-    <ClCompile Include="NetConnectionTask.cpp" />
-    <ClCompile Include="NetCtrl.cpp" />
-    <ClCompile Include="NetDef.cpp" />
-    <ClCompile Include="NetPolicy.cpp" />
-    <ClCompile Include="NetRawUDP.cpp" />
-    <ClCompile Include="NetSvrDef.cpp" />
-    <ClCompile Include="NetSystem.cpp" />
     <ClCompile Include="NetToString.cpp" />
     <ClCompile Include="NetTrace.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -54,24 +44,48 @@
     <ClCompile Include="NetServerUDP.cpp">
       <Filter>NetSever</Filter>
     </ClCompile>
+    <ClCompile Include="NetConnectionTask.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="LoopbackConnection.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageWindow.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetClient.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetCtrl.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetDef.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetPolicy.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetRawUDP.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetSvrDef.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetSystem.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetSystem_EPOLL.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetSystem_WinIOCP.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LoopbackConnection.h" />
-    <ClInclude Include="MessageWindow.h" />
-    <ClInclude Include="NetClient.h" />
-    <ClInclude Include="NetConnectionTask.h" />
-    <ClInclude Include="NetConst.h" />
-    <ClInclude Include="NetCtrl.h" />
-    <ClInclude Include="NetDef.h" />
-    <ClInclude Include="NetPolicy.h" />
-    <ClInclude Include="NetRawUDP.h" />
-    <ClInclude Include="NetSvrDef.h" />
-    <ClInclude Include="NetSystem.h" />
     <ClInclude Include="NetToString.h" />
     <ClInclude Include="NetTrace.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="NetCtrlIDs.h" />
     <ClInclude Include="NetUtil.h" />
     <ClInclude Include="Connection.h">
       <Filter>Connection</Filter>
@@ -100,15 +114,53 @@
     <ClInclude Include="NetServerUDP.h">
       <Filter>NetSever</Filter>
     </ClInclude>
+    <ClInclude Include="NetConnectionTask.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="LoopbackConnection.h">
+      <Filter>Connection</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageWindow.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetClient.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetConst.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetCtrl.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetCtrlIDs.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetDef.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetPolicy.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetRawUDP.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSvrDef.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem_EPOLL.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem_WinIOCP.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem_impl.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="MessageWindow.inl" />
-    <None Include="NetClient.inl" />
-    <None Include="NetCtrl.inl" />
-    <None Include="NetDef.inl" />
-    <None Include="NetRawUDP.inl" />
-    <None Include="NetSvrDef.inl" />
-    <None Include="NetSystem.inl" />
     <None Include="Connection.inl">
       <Filter>Connection</Filter>
     </None>
@@ -133,6 +185,33 @@
     <None Include="NetServerUDP.inl">
       <Filter>NetSever</Filter>
     </None>
+    <None Include="MessageWindow.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetClient.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetCtrl.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetDef.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetRawUDP.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetSvrDef.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetSystem.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetSystem_EPOLL.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetSystem_WinIOCP.inl">
+      <Filter>NetSystem</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Connection">
@@ -140,6 +219,9 @@
     </Filter>
     <Filter Include="NetSever">
       <UniqueIdentifier>{a2f0c110-9c46-44fa-84ad-183891a93385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NetSystem">
+      <UniqueIdentifier>{4991d86b-5078-44c8-b8ee-20da774da677}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

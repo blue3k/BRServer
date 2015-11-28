@@ -77,7 +77,7 @@ namespace Svr {
 		GamePartyEntity* pOwner = (GamePartyEntity*)GetOwnerEntity();
 		ServerServiceInformation *pService = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk(Transaction::StartTransaction() );
 
 
 		svrChk(GetServerComponent<GamePartyManagerServiceEntity>()->GetService(pService));
@@ -95,49 +95,6 @@ namespace Svr {
 
 
 	
-	/////////////////////////////////////////////////////////////////////////////
-	//
-	//	GCM register/unregister transaction
-	//
-
-
-	//// Start Transaction
-	//HRESULT PartyTransCreateParty::StartTransaction()
-	//{
-	//	HRESULT hr = S_OK;
-	//	EntityManager *pEntityManager = nullptr;
-	//	GamePartyEntity *pParty = nullptr;
-	//	PartyPlayer *pPlayer = nullptr;
-
-	//	m_PartyUID = 0;
-
-	//	svrChk( __super::StartTransaction() );
-
-	//	svrChkPtr( pEntityManager = Svr::GetServerComponent<EntityManager>() );
-
-	//	svrChk( pEntityManager->CreateGameParty( pParty ) );
-
-	//	svrMem( pPlayer = new PartyPlayer( GetCreatorID(), nullptr ) );
-	//	svrChk( pPlayer->SetGameServerEntity( GetMyOwner(), GetRouteContext().From ) );
-	//	svrChk( pParty->JoinPlayer( pPlayer ) );
-
-
-	//	m_PartyUID = pParty->GetPartyUID();
-	//	pParty = nullptr;
-
-	//Proc_End:
-
-	//	if( pParty )
-	//		pParty->PendingCloseTransaction();
-
-	//	Util::SafeDelete( pPlayer );
-
-	//	CloseTransaction( hr );
-
-	//	return hr;
-	//}
-	//
-	
 
 	// Start Transaction
 	HRESULT PartyTransJoinParty::StartTransaction()
@@ -147,7 +104,7 @@ namespace Svr {
 
 		m_LeaderID = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 
 		if( GetInviterID() == 0 )
@@ -202,7 +159,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		PartyPlayer *pPlayer = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// Any party operation is prohebited during matching
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
@@ -226,7 +183,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		PartyPlayer *pPlayer = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// Any party operation is prohebited during matching
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
@@ -256,7 +213,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		PartyPlayer *pPlayer = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->FindPlayer( GetPlayerID(), pPlayer ) );
 
@@ -281,7 +238,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		PartyPlayer *pPlayer = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->FindPlayer( GetPlayerID(), pPlayer ) );
 
@@ -370,7 +327,7 @@ namespace Svr {
 		Svr::ServerServiceInformation *pService = nullptr;
 		StaticArray<MatchingPlayerInformation,GameConst::MAX_GAMEPLAYER> m_matchingPlayers;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
 			svrErrClose(E_SVR_ALREADY_INQUEUE);
@@ -475,7 +432,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerEntity *pServer = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() == 0 )
 		{
@@ -503,7 +460,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerEntity *pServer = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
 		{
@@ -531,7 +488,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerEntity *pServer = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() == 0 )
 		{
@@ -558,7 +515,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerEntity *pServer = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		GetMyOwner()->SetMatchingTicket( 0 );
 		

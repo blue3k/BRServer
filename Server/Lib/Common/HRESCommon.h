@@ -358,3 +358,300 @@
 //
 #define E_INVALID_STR_DATA               0xC702001FL
 
+//
+// MessageId: E_NOT_AUTORIZED
+//
+// MessageText:
+//
+// Not authorized
+//
+#define E_NOT_AUTORIZED                  0xC7020020L
+
+//
+// MessageId: E_NO_PERMITION
+//
+// MessageText:
+//
+// No permition
+//
+#define E_NO_PERMITION                   0xC7020021L
+
+//
+// MessageId: E_NO_FILE_OR_DIR
+//
+// MessageText:
+//
+// No file or directory
+//
+#define E_NO_FILE_OR_DIR                 0xC7020022L
+
+//
+// MessageId: E_NO_SUCH_PROCESS
+//
+// MessageText:
+//
+// No such process
+//
+#define E_NO_SUCH_PROCESS                0xC7020023L
+
+//
+// MessageId: E_INTERRUPTED_SYSCALL
+//
+// MessageText:
+//
+// Interrupted system call
+//
+#define E_INTERRUPTED_SYSCALL            0xC7020024L
+
+//
+// MessageId: E_IO_ERROR
+//
+// MessageText:
+//
+// I/O error
+//
+#define E_IO_ERROR                       0xC7020025L
+
+//
+// MessageId: E_NOT_DEVICE
+//
+// MessageText:
+//
+// No such device or address
+//
+#define E_NOT_DEVICE                     0xC7020026L
+
+//
+// MessageId: E_TOO_MANY_ARGLIST
+//
+// MessageText:
+//
+// Arg list too long
+//
+#define E_TOO_MANY_ARGLIST               0xC7020027L
+
+//
+// MessageId: E_INVALID_EXEC_FROMAT
+//
+// MessageText:
+//
+// Exec format error
+//
+#define E_INVALID_EXEC_FROMAT            0xC7020028L
+
+//
+// MessageId: E_INVALID_FILE_HANDLE
+//
+// MessageText:
+//
+// Bad file number
+//
+#define E_INVALID_FILE_HANDLE            0xC7020029L
+
+//
+// MessageId: E_NO_CHILD_PROCESS
+//
+// MessageText:
+//
+// No child process
+//
+#define E_NO_CHILD_PROCESS               0xC702002AL
+
+//
+// MessageId: E_TRY_AGAIN
+//
+// MessageText:
+//
+// Try again
+//
+#define E_TRY_AGAIN                      0xC702002BL
+
+//
+// MessageId: E_INVALID_POINTER
+//
+// MessageText:
+//
+// Bad address
+//
+#define E_INVALID_POINTER                0xC702002CL
+
+//
+// MessageId: E_NOT_BLOCK
+//
+// MessageText:
+//
+// Block device required
+//
+#define E_NOT_BLOCK                      0xC702002DL
+
+//
+// MessageId: E_BUSY
+//
+// MessageText:
+//
+// Busy
+//
+#define E_BUSY                           0xC702002EL
+
+//
+// MessageId: E_FILE_EXISTS
+//
+// MessageText:
+//
+// File exists
+//
+#define E_FILE_EXISTS                    0xC702002FL
+
+//
+// MessageId: E_CROSS_LINK
+//
+// MessageText:
+//
+// Cross-device link
+//
+#define E_CROSS_LINK                     0xC7020030L
+
+//
+// MessageId: E_INVALID_DEVICE
+//
+// MessageText:
+//
+// No such device
+//
+#define E_INVALID_DEVICE                 0xC7020031L
+
+//
+// MessageId: E_INVALID_DIRECTORY
+//
+// MessageText:
+//
+// Not a directory
+//
+#define E_INVALID_DIRECTORY              0xC7020032L
+
+//
+// MessageId: E_DIRECTORY
+//
+// MessageText:
+//
+// Is a directory
+//
+#define E_DIRECTORY                      0xC7020033L
+
+//
+// MessageId: E_INVALID_ARG
+//
+// MessageText:
+//
+// Invalid argument
+//
+#define E_INVALID_ARG                    0xC7020034L
+
+//
+// MessageId: E_NOT_ENOUGH_FILE_TABLE
+//
+// MessageText:
+//
+// File table overflow
+//
+#define E_NOT_ENOUGH_FILE_TABLE          0xC7020035L
+
+//
+// MessageId: E_TOO_MANY_OPENED_FILE
+//
+// MessageText:
+//
+// Too many open files
+//
+#define E_TOO_MANY_OPENED_FILE           0xC7020036L
+
+//
+// MessageId: E_INVALID_TYPEWRITER
+//
+// MessageText:
+//
+// Not a typewriter
+//
+#define E_INVALID_TYPEWRITER             0xC7020037L
+
+//
+// MessageId: E_BUSY_FILE
+//
+// MessageText:
+//
+// Text file busy
+//
+#define E_BUSY_FILE                      0xC7020038L
+
+//
+// MessageId: E_TOO_BIG_FILE
+//
+// MessageText:
+//
+// File too large
+//
+#define E_TOO_BIG_FILE                   0xC7020039L
+
+//
+// MessageId: E_NOT_ENOUGH_SPACE
+//
+// MessageText:
+//
+// No space left on device
+//
+#define E_NOT_ENOUGH_SPACE               0xC702003AL
+
+//
+// MessageId: E_INVALID_SEEK
+//
+// MessageText:
+//
+// Illegal seek
+//
+#define E_INVALID_SEEK                   0xC702003BL
+
+//
+// MessageId: E_READ_ONLY
+//
+// MessageText:
+//
+// Read-only file system
+//
+#define E_READ_ONLY                      0xC702003CL
+
+//
+// MessageId: E_TOO_MANY_LINK
+//
+// MessageText:
+//
+// Too many links
+//
+#define E_TOO_MANY_LINK                  0xC702003DL
+
+//
+// MessageId: E_INVALID_PIPE
+//
+// MessageText:
+//
+// Broken pipe
+//
+#define E_INVALID_PIPE                   0xC702003EL
+
+//
+// MessageId: E_INVALID_MATH_DOMAIN
+//
+// MessageText:
+//
+// Math argument out of domain of func
+//
+#define E_INVALID_MATH_DOMAIN            0xC702003FL
+
+//
+// MessageId: E_INVALID_NUMERIC
+//
+// MessageText:
+//
+// Math result not representable
+//
+#define E_INVALID_NUMERIC                0xC7020040L
+

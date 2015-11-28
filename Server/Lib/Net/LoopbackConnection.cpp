@@ -85,7 +85,7 @@ namespace Net {
 		if (GetConnectionState() != STATE_DISCONNECTED)
 			netChk( CloseConnection() );
 
-		netChk(__super::InitConnection(Addr, netClass));
+		netChk(IConnection::InitConnection(Addr, netClass));
 
 		SetConnectionState(STATE_CONNECTED);
 		//m_RecvQueue.ClearQueue();

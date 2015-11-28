@@ -54,7 +54,7 @@ namespace Net {
 		return GetConnectionManager().PendingCloseAllConnection();
 	}
 
-	HRESULT ServerUDPBase::OnIOAccept( HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo )
+	HRESULT ServerUDPBase::OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo )
 	{
 		Assert(!"Invalid operation");
 		return E_NOTIMPL;
@@ -62,11 +62,11 @@ namespace Net {
 	
 	
 	// called when send completed
-	HRESULT ServerUDPBase::OnIOSendCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred )
+	HRESULT ServerUDPBase::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred )
 	{
-		ConnectionUDPBase::ReleaseGatheringBuffer(pIOBuffer->pSendBuff);
+		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
 		Util::SafeRelease( pIOBuffer->pMsgs );
-		WSASystem::FreeBuffer( pIOBuffer );
+		NetSystem::FreeBuffer( pIOBuffer );
 		return S_OK;
 	}
 
@@ -90,28 +90,28 @@ namespace Net {
 			return S_OK;
 
 
-		netChk( __super::HostOpen( netCls, strLocalIP, usLocalPort ) );
+		netChk(Server::HostOpen( netCls, strLocalIP, usLocalPort ) );
 
-		netTrace(Trace::TRC_TRACE, "Open Server UDP Host %0%:%1%", strLocalIP, usLocalPort );
+		netTrace(Trace::TRC_TRACE, "Open Server UDP Host {0}:{1}", strLocalIP, usLocalPort );
 
 		socket = WSASocket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 		if( socket == INVALID_SOCKET )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket %0%", WSAGetLastError());
+			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
 			netErr( E_UNEXPECTED );
 		}
 
 		iOptValue = Const::SVR_RECV_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = %0%, err = %1%", iOptValue, WSAGetLastError() );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
 		iOptValue = Const::SVR_SEND_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = %0%, err = %1%", iOptValue, WSAGetLastError() );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
@@ -119,26 +119,26 @@ namespace Net {
 		iOptLen = sizeof(iOptValue);
 		if( getsockopt( socket, SOL_SOCKET, SO_MAX_MSG_SIZE, (char *)&iOptValue, &iOptLen ) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to get socket option SO_MAX_MSG_SIZE = %0%, err = %1%", iOptValue, WSAGetLastError() );
+			netTrace(Trace::TRC_ERROR, "Failed to get socket option SO_MAX_MSG_SIZE = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 		if( iOptValue < Const::PACKET_SIZE_MAX )
 		{
-			netTrace(Trace::TRC_WARN, "Socket max packet size too small, Change to socket maximum SocketMax=%0%, SvrMax=%1%, err = %2%", iOptValue, (UINT)Const::PACKET_SIZE_MAX, WSAGetLastError() );
+			netTrace(Trace::TRC_WARN, "Socket max packet size too small, Change to socket maximum SocketMax={0}, SvrMax={1}, err = {2:X8}", iOptValue, (UINT)Const::PACKET_SIZE_MAX, GetLastWSAHRESULT() );
 			//Const::PACKET_SIZE_MAX = iOptValue;
 		}
 
 		bOptValue = TRUE;
 		if( setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&bOptValue, sizeof(bOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_REUSEADDR = %0%, err = %1%", bOptValue, WSAGetLastError() );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_REUSEADDR = {0}, err = {1:X8}", bOptValue, GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
 		iOptValue = FALSE;
 		if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = %0%, err = %1%", iOptValue, WSAGetLastError());
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
 			netErr(E_UNEXPECTED);
 		}
 
@@ -148,16 +148,11 @@ namespace Net {
 		bindAddr.sin6_addr = in6addr_any;
 		if (bind(socket, (SOCKADDR*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err=%0%", WSAGetLastError() );
+			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
-		if( !CreateIoCompletionPort((HANDLE)socket, IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)(IOCPSystem::IOCallBack*)this, 0) )
-		{
-			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed Udp, hr = %0%", GetLastHRESULT() );
-			netErr( E_UNEXPECTED );
-		}
-
+		netChk(NetSystem::RegisterSocket(socket, this));
 
 		SetSocket( socket );
 		socket = INVALID_SOCKET;
@@ -168,7 +163,7 @@ namespace Net {
 
 		// Ready recv
 		if( m_pRecvBuffers ) delete[] m_pRecvBuffers;
-		netMem( m_pRecvBuffers = new OVERLAPPED_BUFFER_READ[Const::SVR_NUM_RECV_THREAD] );
+		netMem( m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD] );
 
 		for( INT uiRecv = 0; uiRecv < Const::SVR_NUM_RECV_THREAD; uiRecv++ )
 		{
@@ -186,7 +181,7 @@ namespace Net {
 		if( socket != INVALID_SOCKET )
 			closesocket( socket );
 
-		netTrace( TRC_NET, "HostOpen %0%, hr={1:X8}", GetLocalAddress(), hr );
+		netTrace( TRC_NET, "HostOpen {0}, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}
@@ -196,7 +191,7 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 
-		netChk( __super::HostClose() );
+		netChk(Server::HostClose() );
 
 		if( GetSocket() != INVALID_SOCKET )
 		{
@@ -208,7 +203,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace( TRC_NET, "HostClose %0%, hr={1:X8}", GetLocalAddress(), hr );
+		netTrace( TRC_NET, "HostClose {0}, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}
@@ -223,7 +218,7 @@ namespace Net {
 		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
 		ConnectionUDPBase *pUDPCon = (ConnectionUDPBase*)pConnection;
-		OVERLAPPED_BUFFER_WRITE *pOverlapped = nullptr;
+		IOBUFFER_WRITE *pOverlapped = nullptr;
 
 		UINT length = 0;
 		BYTE* pDataPtr = nullptr;
@@ -231,7 +226,7 @@ namespace Net {
 		Assert(length == 0 || pMsg->GetMessageHeader()->Crc32 != 0 || pMsg->GetMessageHeader()->msgID.IDs.Policy == POLICY_NONE);
 
 
-		netChk( Net::WSASystem::AllocBuffer(pOverlapped) );
+		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
 
 		pOverlapped->SetupSendUDP( pMsg );
 
@@ -273,7 +268,7 @@ namespace Net {
 			if( pOverlapped )
 			{
 				Util::SafeRelease( pOverlapped->pMsgs );
-				Net::WSASystem::FreeBuffer(pOverlapped);
+				Net::NetSystem::FreeBuffer(pOverlapped);
 			}
 			else
 			{
@@ -339,8 +334,8 @@ namespace Net {
 		}
 
 
-		OVERLAPPED_BUFFER_WRITE *pOverlapped = NULL;
-		netChk( WSASystem::AllocBuffer(pOverlapped) );
+		IOBUFFER_WRITE *pOverlapped = NULL;
+		netChk( NetSystem::AllocBuffer(pOverlapped) );
 
 		pOverlapped->SetupSendUDP( pMsg );
 		pMsg = nullptr;
@@ -381,7 +376,7 @@ namespace Net {
 			if( pOverlapped )
 			{
 				Util::SafeRelease( pOverlapped->pMsgs );
-				WSASystem::FreeBuffer(pOverlapped);
+				NetSystem::FreeBuffer(pOverlapped);
 			}
 
 			if( hr != E_NET_IO_SEND_FAIL )
@@ -422,8 +417,8 @@ namespace Net {
 			goto Proc_End;
 		}
 
-		OVERLAPPED_BUFFER_WRITE *pOverlapped = nullptr;
-		netChk( BR::Net::WSASystem::AllocBuffer(pOverlapped) );
+		IOBUFFER_WRITE *pOverlapped = nullptr;
+		netChk( BR::Net::NetSystem::AllocBuffer(pOverlapped) );
 
 		pOverlapped->SetupSendUDP( uiBuffSize, pBuff );
 		pBuff = nullptr;
@@ -463,7 +458,7 @@ namespace Net {
 
 		if( pBuff )
 		{
-			ConnectionUDPBase::ReleaseGatheringBuffer(pBuff);
+			NetSystem::FreeGatheringBuffer(pBuff);
 		}
 
 		if( FAILED(hr) )
@@ -471,9 +466,9 @@ namespace Net {
 			if( pOverlapped )
 			{
 				if( pOverlapped->pSendBuff )
-					ConnectionUDPBase::ReleaseGatheringBuffer(pOverlapped->pSendBuff);
+					NetSystem::FreeGatheringBuffer(pOverlapped->pSendBuff);
 				pOverlapped->pSendBuff = nullptr;
-				BR::Net::WSASystem::FreeBuffer(pOverlapped);
+				BR::Net::NetSystem::FreeBuffer(pOverlapped);
 			}
 
 			if( hr != E_NET_IO_SEND_FAIL )
@@ -493,7 +488,7 @@ namespace Net {
 
 
 	// Pending recv New one
-	HRESULT ServerUDPBase::PendingRecv( OVERLAPPED_BUFFER_READ *pOver )
+	HRESULT ServerUDPBase::PendingRecv( IOBUFFER_READ *pOver )
 	{
 		HRESULT hr = S_OK;
 		INT iErr = 0, iErr2 = 0;
@@ -550,7 +545,7 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ServerUDP::OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred )
+	HRESULT ServerUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred )
 	{
 		HRESULT hr = S_OK;
 
@@ -623,7 +618,7 @@ namespace Net {
 		}
 
 		if( hrRes != E_NET_IO_ABORTED )
-			PendingRecv( (OVERLAPPED_BUFFER_READ*)pIOBuffer );
+			PendingRecv( (IOBUFFER_READ*)pIOBuffer );
 
 		return hr;
 	}

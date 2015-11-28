@@ -30,8 +30,11 @@ namespace Svr {
 
 	
 
-	class MatchingTransGrabPlayer : public Svr::TransactionT<MatchingServiceQueueEntity, MatchingTransGrabPlayer, sizeof(TransactionMessageHandlerType) * 2>
+	class MatchingTransGrabPlayer : public TransactionT<MatchingServiceQueueEntity, MatchingTransGrabPlayer, sizeof(TransactionMessageHandlerType) * 2>
 	{
+	public:
+		typedef TransactionT<MatchingServiceQueueEntity, MatchingTransGrabPlayer, sizeof(TransactionMessageHandlerType) * 2> super;
+
 	private:
 
 		enum {
@@ -110,8 +113,11 @@ namespace Svr {
 
 
 
-	class MatchingTransProcessMatchedItems : public Svr::TransactionT<MasterEntity, MatchingTransProcessMatchedItems, sizeof(TransactionMessageHandlerType) * 7>
+	class MatchingTransProcessMatchedItems : public TransactionT<MasterEntity, MatchingTransProcessMatchedItems, sizeof(TransactionMessageHandlerType) * 7>
 	{
+	public:
+		typedef TransactionT<MasterEntity, MatchingTransProcessMatchedItems, sizeof(TransactionMessageHandlerType) * 7> super;
+
 	private:
 
 		enum {
@@ -153,86 +159,6 @@ namespace Svr {
 
 	};
 
-
-
-
-	//class MatchingPartyTrans : public Svr::TransactionT<MatchingServiceEntity, MatchingPartyTrans, sizeof(TransactionMessageHandlerType)*7>
-	//{
-	//private:
-
-	//	enum {
-	//		MAX_GRAB_TRY = 15,				// Big number is ok because we are going to use bot
-	//		MAX_NUM_PLAYER = 20,
-
-	//		GRAB_RETRY_TIME = 400,			// Small number will be enable bot match often
-	//		GRAB_TRY_TIMEOUT = 7 * 1000,	// Bot will be matched after this limit
-	//	};
-
-	//	enum class Step {
-	//		Grabbing,
-	//		Dequeuing,
-	//		Canceling,
-	//		Matched,
-	//		CreateGame,
-	//	} m_Step;
-
-
-	//	ULONG m_MatchingTryTimeOut;
-
-	//	BRCLASS_ATTRIBUTE(UINT,QueryMemberCount);
-	//	// Target matching member count
-	//	BRCLASS_ATTRIBUTE(UINT,TargetMemberCount);
-	//	// Current total member count
-	//	BRCLASS_ATTRIBUTE(UINT,CurrentMemberCount);
-
-	//	BRCLASS_ATTRIBUTE(INT,CurrentGrabbing);
-	//	BRCLASS_ATTRIBUTE(UINT,GrabTryCount);
-
-	//	BRCLASS_ATTRIBUTE(INT,ProcessingIndex);
-
-	//	struct ReservedMember {
-	//		MatchingQueueTicket			ReservationTicket;
-	//		EntityUID					RegisterEntityUID;
-	//		UINT						MemberCount;
-	//		MatchingPlayerInformation	Players[MAX_NUM_PLAYER];
-
-	//		ReservedMember()
-	//			:MemberCount(0)
-	//		{
-	//		}
-	//	};
-	//	StaticArray<ReservedMember,MAX_NUM_PLAYER> m_ReservedMember;
-
-	//public:
-	//	MatchingPartyTrans(UINT startMemberCount, UINT targetMemberCount);
-	//	virtual ~MatchingPartyTrans() {}
-
-	//	////////////////////////////////////////////////////////////
-	//	// Event handlers
-	//	HRESULT OnTimer(TransactionResult* pRes);
-
-	//	HRESULT ProcessGrabbing();
-	//	HRESULT ReserveItem(UINT memberCount);
-	//	HRESULT OnReserveItem(TransactionResult* pRes);
-
-	//	HRESULT ProcessCanceling();
-	//	HRESULT CancelReservation( MatchingQueueTicket ticket );
-	//	HRESULT OnCancelReservation(TransactionResult* pRes);
-
-	//	HRESULT ProcessDequeuing();
-	//	HRESULT DequeueItem(MatchingQueueTicket ticket);
-	//	HRESULT OnDequeueItem(TransactionResult* pRes);
-
-	//	HRESULT CreateGame();
-	//	HRESULT OnCreateGame(TransactionResult* pRes);
-
-	//	// Start Transaction
-	//	virtual HRESULT StartTransaction();
-
-	//	////////////////////////////////////////////////////////////
-	//	// Helpers
-	//	UINT GetClusterComponentIDFromMemberCount( UINT count );
-	//};
 
 
 

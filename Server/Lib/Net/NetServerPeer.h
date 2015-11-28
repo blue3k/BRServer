@@ -40,7 +40,7 @@ namespace Net {
 	//	Peer Server network class
 	//
 
-	class ServerPeer : public ServerNet, public IOCPSystem::IOCallBack
+	class ServerPeer : public ServerNet, public INetIOCallBack
 	{
 	public:
 		typedef ConnectionManagerT<ConnectionUDPServerPeer> ConnectionManagerType;
@@ -53,7 +53,7 @@ namespace Net {
 		LONG			m_CIDGen;
 
 		// Buffer for recv
-		OVERLAPPED_BUFFER_READ*	m_pRecvBuffers;
+		IOBUFFER_READ*	m_pRecvBuffers;
 
 		SyncCounter				m_PendingRecvCnt;
 
@@ -77,13 +77,13 @@ namespace Net {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		//  Net callback
 		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept( HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo );
+		virtual HRESULT OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo );
 
 		// called when reciving TCP message
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred );
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred );
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred );
+		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred );
 
 
 		// Release instance
@@ -106,7 +106,7 @@ namespace Net {
 		virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
 
 		// Pending recv New one
-		HRESULT PendingRecv( OVERLAPPED_BUFFER_READ *pOver );
+		HRESULT PendingRecv( IOBUFFER_READ *pOver );
 
 
 		// Open host and start listen

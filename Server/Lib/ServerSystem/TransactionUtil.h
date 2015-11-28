@@ -36,7 +36,7 @@ namespace BR {
 			svrChk( pPolicy->##MessageName##( hrRes ) );\
 				}\
 				Proc_End:\
-		__super::OnCloseTransaction(hrRes);\
+		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
@@ -53,7 +53,7 @@ namespace BR {
 			svrChk( pPolicy->##MessageName##( hrRes, ##__VA_ARGS__ ) );\
 				}\
 				Proc_End:\
-		__super::OnCloseTransaction(hrRes);\
+		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
@@ -68,7 +68,7 @@ namespace BR {
 			svrChk( pPolicy->##MessageName##( GetContext(), hrRes ) );\
 				}\
 				Proc_End:\
-		__super::OnCloseTransaction(hrRes);\
+		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
@@ -83,7 +83,7 @@ namespace BR {
 			svrChk( pPolicy->##MessageName##( GetContext(), hrRes, ##__VA_ARGS__ ) );\
 				}\
 				Proc_End:\
-		__super::OnCloseTransaction(hrRes);\
+		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
@@ -98,7 +98,7 @@ namespace BR {
 			svrChk( pPolicy->##MessageName##() );\
 				}\
 				Proc_End:\
-		__super::OnCloseTransaction(hrRes);\
+		super::OnCloseTransaction(hrRes);\
 		return hr;\
 		}\
 
@@ -113,7 +113,7 @@ namespace BR {
 			svrChk( pPolicy->##MessageName##( __VA_ARGS__ ) );\
 		}\
 	Proc_End:\
-		__super::OnCloseTransaction(hrRes);\
+		super::OnCloseTransaction(hrRes);\
 		return hr;\
 	}\
 	

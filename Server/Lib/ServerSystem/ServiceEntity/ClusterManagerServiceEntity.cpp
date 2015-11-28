@@ -54,11 +54,11 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity(newEntityID) );
+		svrChk(ReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
 
 		svrChk( m_ClusterIDMap.insert( GetClusterID(), this ) );
 
-		svrChk( __super::StartInitializeTransaction() );
+		svrChk(ReplicaClusterServiceEntity::StartInitializeTransaction() );
 
 	Proc_End:
 
@@ -204,7 +204,7 @@ namespace Svr {
 	HRESULT ClusterManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
 		// Do not use parent service mapping
-		//__super::RegisterServiceMessageHandler( pServerEntity );
+		//ReplicaClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity );
 
 		// only entity has some special operations
 		if( BrServer::GetInstance()->GetNetClass() == NetClass::Entity )
@@ -235,7 +235,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServiceEntityUIDMap::iterator itService;
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk(ReplicaClusterServiceEntity::TickUpdate(pAction) );
 
 		if( GetClusterMembership() <= ClusterMembership::Slave )
 			UpdateOnMasterManager();

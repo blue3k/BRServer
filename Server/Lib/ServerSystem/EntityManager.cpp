@@ -200,7 +200,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk(__super::InitializeManager(uiNumGroup));
+		svrChk(TaskManager::InitializeManager(uiNumGroup));
 
 		//m_PerformanceCounterInstance = SharedPointerT < PerformanceCounterInstance >(new PerformanceCounterInstance("EntityManager", entityUID));
 		auto counterInstance = PerformanceCounterClient::GetDefaultCounterInstance();
@@ -229,7 +229,7 @@ namespace Svr {
 		//	m_PerformanceCounterInstance = SharedPointerT < PerformanceCounterInstance >();
 		//}
 
-		svrChk(__super::TerminateManager());
+		svrChk(TaskManager::TerminateManager());
 
 	Proc_End:
 

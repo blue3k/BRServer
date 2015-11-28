@@ -57,7 +57,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
 	Proc_End:
 

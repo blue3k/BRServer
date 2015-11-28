@@ -83,7 +83,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 
-		svrChk( __super::InitializeEntity(newEntityID) );
+		svrChk(RingClusterServiceEntity::InitializeEntity(newEntityID) );
 
 		if (pInstance != nullptr)
 		{
@@ -114,7 +114,7 @@ namespace Svr {
 		m_SecondaryQueue.ClearQueue();
 		m_ReservedQueue.ClearQueue();
 
-		svrChk( __super::ClearEntity() );
+		svrChk(RingClusterServiceEntity::ClearEntity() );
 
 	Proc_End:
 
@@ -127,7 +127,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServiceEntityUIDMap::iterator itService;
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk(RingClusterServiceEntity::TickUpdate(pAction) );
 
 		// Update workload
 		if( m_WorkloadUpdateTimer.CheckTimer() )
@@ -251,7 +251,7 @@ namespace Svr {
 	// Register message handler for this component
 	HRESULT MatchingQueueServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
-		__super::RegisterServiceMessageHandler( pServerEntity );
+		RingClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity );
 
 		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPartyMatchingCmd)				{ svrMemReturn(pNewTrans = new RegisterPartyMatchingTrans(pMsgData)); return S_OK; } );
 		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPlayerMatchingCmd)			{ svrMemReturn(pNewTrans = new RegisterPlayerMatchingTrans(pMsgData)); return S_OK; } );

@@ -42,6 +42,8 @@
     <ClCompile Include="NetServerUDP.cpp" />
     <ClCompile Include="NetSvrDef.cpp" />
     <ClCompile Include="NetSystem.cpp" />
+    <ClCompile Include="NetSystem_EPOLL.cpp" />
+    <ClCompile Include="NetSystem_WinIOCP.cpp" />
     <ClCompile Include="NetToString.cpp" />
     <ClCompile Include="NetTrace.cpp" />
     <ClCompile Include="NetUtil.cpp" />
@@ -69,6 +71,9 @@
     <ClInclude Include="NetServerUDP.h" />
     <ClInclude Include="NetSvrDef.h" />
     <ClInclude Include="NetSystem.h" />
+    <ClInclude Include="NetSystem_EPOLL.h" />
+    <ClInclude Include="NetSystem_impl.h" />
+    <ClInclude Include="NetSystem_WinIOCP.h" />
     <ClInclude Include="NetToString.h" />
     <ClInclude Include="NetTrace.h" />
     <ClInclude Include="NetUtil.h" />
@@ -91,6 +96,8 @@
     <None Include="NetServerUDP.inl" />
     <None Include="NetSvrDef.inl" />
     <None Include="NetSystem.inl" />
+    <None Include="NetSystem_EPOLL.inl" />
+    <None Include="NetSystem_WinIOCP.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{cc3a450c-41b7-472b-9774-fb0e4b56df8b}</ProjectGuid>

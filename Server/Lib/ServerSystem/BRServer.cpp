@@ -190,7 +190,7 @@ Proc_End:
 		if (joinable() && GetThreadID() != ThisThread::GetThreadID())
 			Stop(true);
 
-		svrChk(__super::TerminateEntity());
+		svrChk(MasterEntity::TerminateEntity());
 
 	Proc_End:
 
@@ -340,7 +340,7 @@ Proc_End:
 			}
 		}
 
-		svrChk(__super::InitializeComponents());
+		svrChk(ServerComponentCarrier::InitializeComponents());
 
 
 	Proc_End:
@@ -662,7 +662,7 @@ Proc_End:
 		}
 
 
-		__super::TickUpdate(pAction);
+		MasterEntity::TickUpdate(pAction);
 
 
 	Proc_End:

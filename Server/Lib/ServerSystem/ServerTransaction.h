@@ -44,8 +44,11 @@ namespace Svr {
 
 	// This transaction will work on server entity by default. Call SetWorkOnServerEntity to change it
 	template< class OwnerEntityType, class MessageClass, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(Svr::TransactionMessageHandlerType)*2 >
-	class ServerEntityMessageTransaction : public Svr::TransactionT<OwnerEntityType,MemoryPoolClass,MessageHandlerBufferSize>, public MessageClass
+	class ServerEntityMessageTransaction : public TransactionT<OwnerEntityType,MemoryPoolClass,MessageHandlerBufferSize>, public MessageClass
 	{
+	public:
+		typedef TransactionT<OwnerEntityType, MemoryPoolClass, MessageHandlerBufferSize> superTrans;
+
 	protected:
 		// Route entity
 		Svr::ServerEntity	*m_ServerEntity;
@@ -106,7 +109,7 @@ namespace Svr {
 			if( m_WorkOnServerEntity )
 			{
 				svrAssert( dynamic_cast<OwnerEntityType*>(pOwner) );
-				svrChk( __super::InitializeTransaction( pOwner ) );
+				svrChk(superTrans::InitializeTransaction( pOwner ) );
 			}
 			else
 			{
@@ -120,7 +123,7 @@ namespace Svr {
 						goto Proc_End;
 					}
 					svrAssert(dynamic_cast<OwnerEntityType*>((Entity*)pEntity));
-					svrChk(__super::InitializeTransaction((Entity*)pEntity));
+					svrChk(superTrans::InitializeTransaction((Entity*)pEntity));
 				}
 				else
 				{

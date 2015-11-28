@@ -50,7 +50,6 @@ namespace Net {
 	//	UDP Network connection class
 	//
 
-	MemoryPool* ConnectionUDPBase::m_pGatheringBufferPool = nullptr;
 
 	// Constructor
 	ConnectionUDPBase::ConnectionUDPBase( UINT reliableWindowSize )
@@ -73,9 +72,8 @@ namespace Net {
 
 		m_RecvNetCtrlQueue.ClearQueue();
 
-		//ClearQueues();
-		if( m_pGatheringBuffer != nullptr )
-			m_pGatheringBufferPool->Free(m_pGatheringBuffer,"ConnectionUDPBase::~ConnectionUDPBase");
+		if(m_pGatheringBuffer != nullptr)
+			NetSystem::FreeGatheringBuffer(m_pGatheringBuffer);
 		m_pGatheringBuffer = nullptr;
 
 		Util::SafeRelease(m_SubFrameMessage);
@@ -152,7 +150,7 @@ namespace Net {
 			{
 				action(pIMsg);
 			}
-			//netChk(__super::OnRecv(pIMsg));
+			//netChk(Connection::OnRecv(pIMsg));
 			pIMsg = nullptr;
 		}
 
@@ -253,7 +251,7 @@ namespace Net {
 
 		m_uiGatheredSize = 0;
 		if( m_pGatheringBuffer != nullptr )
-			m_pGatheringBufferPool->Free(m_pGatheringBuffer,"ConnectionUDPBase::SendFlush()");
+			NetSystem::FreeGatheringBuffer(m_pGatheringBuffer);
 		m_pGatheringBuffer = nullptr;
 
 
@@ -270,7 +268,6 @@ namespace Net {
 		{
 			return E_FAIL;
 		}
-		//Assert(uiRequiredSize < Const::PACKET_GATHER_SIZE_MAX);
 
 		if( (m_uiGatheredSize + uiRequiredSize) > (UINT)Const::PACKET_GATHER_SIZE_MAX )
 		{
@@ -278,15 +275,11 @@ namespace Net {
 			Assert(m_uiGatheredSize == 0);
 		}
 
-		if( m_pGatheringBuffer == NULL )
+		if( m_pGatheringBuffer == nullptr )
 		{
-			void *pPtr = nullptr;
-			if( m_pGatheringBufferPool == nullptr )
-			{
-				netChk(MemoryPoolManager::GetMemoryPoolBySize(Const::PACKET_GATHER_SIZE_MAX, m_pGatheringBufferPool));
-			}
-			netChk( m_pGatheringBufferPool->Alloc(pPtr,"ConnectionUDPBase::PrepareGatheringBuffer") );
-			m_pGatheringBuffer = (BYTE*)pPtr;
+			UINT bufferSize = 0;
+			netChk(NetSystem::AllocGatheringBuffer(m_pGatheringBuffer, bufferSize));
+			Assert(Const::PACKET_GATHER_SIZE_MAX == bufferSize);
 		}
 
 	Proc_End:
@@ -294,16 +287,6 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionUDPBase::ReleaseGatheringBuffer( BYTE *pBuffer )
-	{
-		return m_pGatheringBufferPool->Free( pBuffer, "ConnectionUDPBase::ReleaseGatheringBuffer" );
-	}
-
-	// Called on connection result
-	void ConnectionUDPBase::OnConnectionResult( HRESULT hrConnect )
-	{
-		__super::OnConnectionResult( hrConnect );
-	}
 
 	// frame sequence
 	HRESULT ConnectionUDPBase::SendFrameSequenceMessage(Message::MessageData* pMsg)
@@ -425,7 +408,6 @@ namespace Net {
 		{
 			svrChk(m_SubFrameMessage->ValidateChecksumNDecrypt());
 			action(m_SubFrameMessage);
-			//hr = m_RecvGuaQueue.Enqueue(m_SubFrameMessage);
 			m_SubFrameMessage = nullptr;
 			svrChk(hr);
 		}
@@ -448,14 +430,11 @@ namespace Net {
 		m_RecvNetCtrlQueue.ClearQueue();
 		m_RecvGuaQueue.ClearQueue();
 
-		netChk( __super::InitConnection( socket, connectInfo ) );
+		netChk(Connection::InitConnection( socket, connectInfo ) );
 
 		netChk( ClearQueues() );
 
 		Util::SafeRelease(m_SubFrameMessage);
-
-		//Assert(m_RecvReliableWindow.GetSyncMask() == 0);
-		//Assert(m_SendReliableWindow.GetSyncMask() == 0);
 
 	Proc_End:
 
@@ -470,7 +449,7 @@ namespace Net {
 		if (GetConnectionState() != STATE_DISCONNECTED)
 			Disconnect();
 
-		hr = __super::CloseConnection();
+		hr = Connection::CloseConnection();
 
 		Util::SafeRelease(m_SubFrameMessage);
 
@@ -480,7 +459,7 @@ namespace Net {
 	// Clear Queue
 	HRESULT ConnectionUDPBase::ClearQueues()
 	{
-		__super::ClearQueues();
+		Connection::ClearQueues();
 
 		m_RecvReliableWindow.ClearWindow();
 		m_SendReliableWindow.ClearWindow();
@@ -506,7 +485,7 @@ namespace Net {
 			SendNetCtrl(PACKET_NETCTRL_DISCONNECT, 0, msgIDTem);
 		}
 
-		return __super::Disconnect();
+		return Connection::Disconnect();
 	}
 
 
@@ -538,7 +517,6 @@ namespace Net {
 
 		pMsg->UpdateChecksumNEncrypt();
 
-		// pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL || 
 		if( pMsgHeader->msgID.IDs.Reliability == false )
 		{
 			if( !pMsg->GetIsSequenceAssigned() )
@@ -704,7 +682,7 @@ namespace Net {
 		}
 		else
 		{
-			hr = __super::OnRecv( pMsg );
+			hr = ConnectionUDPBase::OnRecv( pMsg );
 			pMsg = nullptr;
 			netChk( hr );
 		}
@@ -832,9 +810,6 @@ namespace Net {
 				m_ConnectInfo.SetRemoteInfo( RemoteClass, pNetCtrlCon->PeerUID );
 
 			case IConnection::STATE_CONNECTED:
-				// Send connect if remote didn't get protocol version yet
-				//netChk( SendPending( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR_PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
-
 				m_ulNetCtrlTime = Util::Time.GetTimeMs();
 				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 				break;
@@ -1215,7 +1190,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 
-		netChk( __super::InitSynchronization() );
+		netChk(ConnectionUDP::InitSynchronization() );
 
 		m_RecvReliableWindow.ClearWindow();
 		m_SendReliableWindow.ClearWindow();
@@ -1233,7 +1208,7 @@ Proc_End:
 		HRESULT hrTem = S_OK;
 
 
-		svrChk( __super::ProcNetCtrl( pNetCtrl ) );
+		svrChk(ConnectionUDP::ProcNetCtrl( pNetCtrl ) );
 
 
 		switch( pNetCtrl->msgID.IDs.MsgCode )
@@ -1262,7 +1237,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 
-		netChk( __super::UpdateNetCtrl() );
+		netChk(ConnectionUDP::UpdateNetCtrl() );
 
 
 	Proc_End:
@@ -1296,19 +1271,12 @@ Proc_End:
 	}
 
 
-	// Clear Queue
-	HRESULT ConnectionUDPServer::ClearQueues()
-	{
-		return __super::ClearQueues();
-	}
-
-
 	// Update net control, process connection heartbit, ... etc
 	HRESULT ConnectionUDPServer::UpdateNetCtrl()
 	{
 		HRESULT hr = S_OK;
 
-		netChk( __super::UpdateNetCtrl() );
+		netChk(ConnectionUDP::UpdateNetCtrl() );
 
 
 	Proc_End:
@@ -1343,32 +1311,21 @@ Proc_End:
 		ClearQueues();
 	}
 
-	// Clear Queue
-	HRESULT ConnectionUDPClient::ClearQueues()
-	{
-
-		return __super::ClearQueues();
-	}
-
 
 	// called when New connection TCP accepted
-	HRESULT ConnectionUDPClient::OnIOAccept( HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo )
+	HRESULT ConnectionUDPClient::OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo )
 	{
 		return E_NOTIMPL;
 	}
 
 	// called when reciving TCP message
-	HRESULT ConnectionUDPClient::OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred )
+	HRESULT ConnectionUDPClient::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred )
 	{
 		HRESULT hr = S_OK;
 		Connection *pConnection = NULL;
 		Message::MessageData *pIMsg = NULL;
 
-		struct sockaddr_in6 &addr = pIOBuffer->From;
-		WSABUF *pBuf = &pIOBuffer->wsaBuff;
-
-
-		if( pIOBuffer->Operation != OVERLAPPED_BUFFER::OP_UDPREAD )
+		if( pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD )
 		{
 			netErr(E_UNEXPECTED);
 		}
@@ -1398,11 +1355,11 @@ Proc_End:
 	}
 	
 	// called when Send completed
-	HRESULT ConnectionUDPClient::OnIOSendCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred )
+	HRESULT ConnectionUDPClient::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred )
 	{
-		ReleaseGatheringBuffer(pIOBuffer->pSendBuff);
+		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
 		Util::SafeRelease( pIOBuffer->pMsgs );
-		WSASystem::FreeBuffer( pIOBuffer );
+		NetSystem::FreeBuffer( pIOBuffer );
 		return S_OK;
 	}
 	
@@ -1411,14 +1368,10 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 		int iErr = 0, iErr2 = 0;
-		OVERLAPPED_BUFFER_READ *pOver = NULL;
-
-
-		//netChkPtr( pConnection );
+		IOBUFFER_READ *pOver = NULL;
 
 		pOver = GetRecvBuffer();
 		pOver->SetupRecvUDP( GetCID() );
-
 
 		IncPendingRecvCount();
 
@@ -1455,7 +1408,7 @@ Proc_End:
 	// Initialize connection
 	HRESULT ConnectionUDPClient::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
 	{
-		HRESULT hr = __super::InitConnection( socket, connectInfo );
+		HRESULT hr = ConnectionUDP::InitConnection( socket, connectInfo );
 		SetLocalClass( NetClass::Client );
 		return hr;
 	}
@@ -1485,7 +1438,7 @@ Proc_End:
 		HRESULT hr = S_OK;
 
 
-		netChk( __super::UpdateNetCtrl() );
+		//netChk(IConnection::UpdateNetCtrl() );
 
 
 	Proc_End:

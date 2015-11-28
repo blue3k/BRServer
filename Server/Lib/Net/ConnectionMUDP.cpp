@@ -103,7 +103,7 @@ namespace Net {
 
 	HRESULT ConnectionMUDPServer::InitConnection(SOCKET socket, const ConnectionInformation &connectInfo)
 	{
-		return __super::InitConnection(socket, connectInfo);
+		return ConnectionUDPBase::InitConnection(socket, connectInfo);
 	}
 
 	// called when incomming message occure
@@ -226,7 +226,7 @@ namespace Net {
 		}
 		else
 		{
-			hr = __super::OnRecv(pMsg);
+			hr = ConnectionUDPBase::OnRecv(pMsg);
 			pMsg = nullptr;
 			netChk( hr );
 		}
@@ -252,7 +252,7 @@ namespace Net {
 		if (pMsg == nullptr)
 			return E_INVALIDARG;
 
-		hr = __super::Send(pMsg);
+		hr = ConnectionUDPBase::Send(pMsg);
 
 		//UpdateSendQueue();
 

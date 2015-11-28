@@ -32,7 +32,7 @@ void ConnectionUDPBase::SetMaxGuarantedRetry( UINT uiMaxGuarantedRetry )
 //	Client UDP Connection class
 //
 
-OVERLAPPED_BUFFER_READ* ConnectionUDPClient::GetRecvBuffer()
+IOBUFFER_READ* ConnectionUDPClient::GetRecvBuffer()
 {
 	return &m_RecvBuffer;
 }

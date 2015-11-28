@@ -56,7 +56,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		EntityUID entityUID;
 
-		svrChk(__super::InitializeEntity(newEntityID));
+		svrChk(LoadbalanceClusterServiceEntity::InitializeEntity(newEntityID));
 
 		//entityUID = EntityUID(GetMyServerID(), GetEntityTable().GenEntityID(EntityFaculty::Service));
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
@@ -74,7 +74,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::RegisterServiceMessageHandler( pServerEntity ) );
+		svrChk(LoadbalanceClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
 		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)				{ svrMemReturn(pNewTrans = new GameInstanceTransCreateGame(pMsgData)); return S_OK; } );
 		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)			{ svrMemReturn(pNewTrans = new GameInstanceTransGameDeleted(pMsgData)); return S_OK; } );

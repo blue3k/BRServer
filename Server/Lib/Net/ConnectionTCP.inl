@@ -19,7 +19,7 @@
 //	TCP Connection class
 //
 
-OVERLAPPED_BUFFER_READ* ConnectionTCP::GetRecvBuffer()
+IOBUFFER_READ* ConnectionTCP::GetRecvBuffer()
 {
 	return &m_RecvBuffer;
 }

@@ -67,7 +67,7 @@ namespace Svr {
 			pInstance->AddCounter(&m_PartyCount);
 		}
 
-		svrChk(__super::InitializeEntity(newEntityID));
+		svrChk(LoadbalanceClusterServiceEntity::InitializeEntity(newEntityID));
 
 	Proc_End:
 
@@ -78,7 +78,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::RegisterServiceMessageHandler( pServerEntity ) );
+		svrChk(LoadbalanceClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
 		// Game party manager transactions
 		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::CreatePartyCmd)						{ svrMemReturn(pNewTrans = new PartyManagerTransCreateParty(pMsgData)); return S_OK; } );

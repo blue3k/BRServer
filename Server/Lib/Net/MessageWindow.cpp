@@ -258,7 +258,7 @@ namespace Net {
 	{
 		MutexScopeLock localLock(GetLock());
 
-		__super::ClearWindow();
+		MsgWindow::ClearWindow();
 		m_uiHeadSequence = m_uiBaseSequence;
 	}
 

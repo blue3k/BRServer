@@ -31,6 +31,9 @@ namespace Svr {
 
 	class PartyManagerTransCreateParty : public ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::CreatePartyCmd, PartyManagerTransCreateParty, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::CreatePartyCmd, PartyManagerTransCreateParty, 1> super;
+
 	private:
 		PartyUID	m_PartyUID;
 
@@ -51,6 +54,9 @@ namespace Svr {
 
 	class PartyManagerTransPartyDeleted : public ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::PartyDeletedC2SEvt, PartyManagerTransPartyDeleted, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< GamePartyManagerServiceEntity, Message::GamePartyManager::PartyDeletedC2SEvt, PartyManagerTransPartyDeleted, 1> super;
+
 	private:
 
 	public:

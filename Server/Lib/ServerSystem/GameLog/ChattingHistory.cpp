@@ -27,13 +27,13 @@ namespace Svr {
 	// Initialize 
 	HRESULT ChattingHistory::InitializeLog()
 	{
-		return __super::InitializeLog();
+		return GameLog<GameConst::MAX_CHATLOG_BUFFER, GameConst::MAX_CHATLOG>::InitializeLog();
 	}
 
 	// Terminate
 	void ChattingHistory::TerminateLog()
 	{
-		__super::TerminateLog();
+		GameLog<GameConst::MAX_CHATLOG_BUFFER, GameConst::MAX_CHATLOG>::TerminateLog();
 	}
 
 	// Add chatting log

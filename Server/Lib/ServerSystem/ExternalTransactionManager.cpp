@@ -164,7 +164,7 @@ namespace Svr
 	{
 		HRESULT hr = S_OK;
 
-		hr = __super::TickUpdate(pAction);
+		hr = ParallelTransactionManager::TickUpdate(pAction);
 		if (hr == S_FALSE || FAILED(hr))
 			return hr;
 

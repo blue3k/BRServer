@@ -65,7 +65,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// Only false when match is succeeded
 		//GetMyOwner()->SetLastRankingFailed(true);

@@ -54,7 +54,7 @@ namespace Svr {
 		ReleaseTransaction((Transaction*)m_pCurTran);
 		m_pCurTran = SharedPointerT<Transaction>();
 
-		return __super::ClearEntity();
+		return Entity::ClearEntity();
 	}
 
 	HRESULT SimpleEntity::FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction)

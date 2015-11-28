@@ -86,7 +86,7 @@ namespace Svr
 			m_Curl = nullptr;
 		}
 
-		return __super::CloseTransaction(hrRes);
+		return ParallelTransaction::CloseTransaction(hrRes);
 	}
 
 
@@ -149,7 +149,7 @@ namespace Svr
 			svrErr(E_UNEXPECTED);
 		}
 
-		svrChk( __super::InitializeTransaction( pOwner ) );
+		svrChk(HTTPExternalTransaction::InitializeTransaction( pOwner ) );
 
 	Proc_End:
 
@@ -162,7 +162,7 @@ namespace Svr
 		HRESULT hr = S_OK;
 		char *resultString = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk(HTTPExternalTransaction::StartTransaction() );
 
 		if( m_Headers == nullptr )
 		{
@@ -241,7 +241,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 
-		svrChk(__super::InitializeTransaction(pOwner));
+		svrChk(ParallelTransaction::InitializeTransaction(pOwner));
 
 	Proc_End:
 
@@ -253,7 +253,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK, hrTem = S_OK;
 
-		svrChk(__super::StartTransaction());
+		svrChk(ParallelTransaction::StartTransaction());
 
 		hrTem = m_DevAPI.CheckReceipt(m_strPackageName, m_strProductID, m_strPurchaseToken);
 		if (hrTem == E_SVR_INVALID_EXTERNAL_AUTH)
@@ -333,7 +333,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 
-		svrChk(__super::InitializeTransaction(pOwner));
+		svrChk(HTTPExternalTransaction::InitializeTransaction(pOwner));
 
 		if (m_CurlResult != 0)
 		{
@@ -388,7 +388,7 @@ Proc_End:
 		Json::Value root;
 		Json::Reader reader;
 
-		svrChk(__super::StartTransaction());
+		svrChk(HTTPExternalTransaction::StartTransaction());
 
 		svrChkPtr(m_strURL);
 

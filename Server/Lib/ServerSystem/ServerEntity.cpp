@@ -124,7 +124,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(MasterEntity::InitializeEntity( newEntityID ) );
 
 		m_RecvMessageQueue.ClearQueue();
 
@@ -153,7 +153,7 @@ namespace Svr {
 		auto remoteCon = m_pConnRemote;
 		if (remoteCon != nullptr) remoteCon->SetConnectionEventHandler(nullptr);
 
-		svrChk( __super::TerminateEntity() );
+		svrChk(MasterEntity::TerminateEntity() );
 
 	Proc_End:
 
@@ -390,7 +390,7 @@ namespace Svr {
 		if( GetEntityState() == EntityState::FREE )
 			return S_OK;
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk(MasterEntity::TickUpdate(pAction) );
 
 		auto pConn = (Net::IConnection*)m_pConnLocal;
 		if (pConn != nullptr)

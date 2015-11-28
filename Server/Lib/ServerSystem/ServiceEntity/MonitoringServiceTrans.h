@@ -32,6 +32,9 @@ namespace Svr {
 
 	class MonitoringTransGetInstanceList : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd, MonitoringTransGetInstanceList, 1>
 	{
+	public:
+		typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::GetInstanceListCmd, MonitoringTransGetInstanceList, 1> super;
+
 	private:
 		StaticArray<PerformanceCounterInstanceInfo, 1024> m_InstanceList;
 		UINT32 m_TotalCounterInstance;
@@ -52,6 +55,9 @@ namespace Svr {
 
 	class MonitoringTransRequestCounterValues : public ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd, MonitoringTransRequestCounterValues, 1>
 	{
+	public:
+		typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd, MonitoringTransRequestCounterValues, 1> super;
+
 	private:
 		StaticArray<UINT64, 1024> m_CounterValues;
 

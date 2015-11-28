@@ -47,7 +47,7 @@ namespace Net {
 
 		// gathering
 		virtual HRESULT SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
-		virtual HRESULT SendPending( Message::MessageData* pMsg ) { return __super::SendPending(pMsg); }
+		virtual HRESULT SendPending( Message::MessageData* pMsg ) { return ConnectionUDPBase::SendPending(pMsg); }
 		virtual HRESULT SendSync( UINT uiSequence, UINT64 uiSyncMask );
 
 		virtual HRESULT SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );

@@ -92,14 +92,14 @@ namespace Net {
 	//	TCP Server class
 	//
 
-	class ServerTCP : public Server, public IOCPSystem::IOCallBack
+	class ServerTCP : public Server, public INetIOCallBack
 	{
 	public:
 
 	private:
 
 		// Pending accept buffer
-		SpinSharedBuffer<OVERLAPPED_BUFFER_ACCEPT> *m_pAcceptBuffer;
+		SpinSharedBuffer<IOBUFFER_ACCEPT> *m_pAcceptBuffer;
 
 	protected:
 
@@ -113,13 +113,13 @@ namespace Net {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// callback
 		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept( HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo ) override;
+		virtual HRESULT OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo ) override;
 
 		// called when network message is received
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred ) override;
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred ) override;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred ) override;
+		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred ) override;
 
 		// Pending Accept New one
 		HRESULT PendingAccept();

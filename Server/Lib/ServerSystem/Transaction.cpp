@@ -231,7 +231,7 @@ namespace BR {
 
 	Proc_End:
 
-		__super::CloseTransaction(hrRes);
+		SubTransaction::CloseTransaction(hrRes);
 
 		return hr;
 	}

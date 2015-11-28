@@ -258,7 +258,7 @@ namespace Svr {
 				m_TickCountStartTime = curTime;
 			}
 
-			return __super::CopyTo(bufferSize, pBuffer);
+			return PerformanceCounterRaw<DataType>::CopyTo(bufferSize, pBuffer);
 		}
 
 	};
@@ -299,7 +299,7 @@ namespace Svr {
 				m_TickCountStartTime = Util::Time.GetTimeMs();
 			}
 
-			return __super::CopyTo(bufferSize, pBuffer);
+			return PerformanceCounterRaw<DataType>::CopyTo(bufferSize, pBuffer);
 		}
 
 

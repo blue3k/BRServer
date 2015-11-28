@@ -38,7 +38,7 @@ namespace Net {
 		:ServerNet( InServerID, localClass ),
 		m_pRecvBuffers(nullptr),
 		m_CIDGen(0),
-		m_ConnectionManager(BR::Net::Const::SVR_PRIVATE_CONNECTION_BUCKET_SIZE)
+		m_ConnectionManager(Net::Const::SVR_PRIVATE_CONNECTION_BUCKET_SIZE)
 	{
 		m_ConnectionManager.SetNetOwner( this );
 	}
@@ -66,13 +66,13 @@ namespace Net {
 	}
 
 
-	HRESULT ServerPeer::OnIOAccept( HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo )
+	HRESULT ServerPeer::OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo )
 	{
 		return E_NOTIMPL;
 	}
 
 	// called when reciving message
-	HRESULT ServerPeer::OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred )
+	HRESULT ServerPeer::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred )
 	{
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
@@ -175,19 +175,11 @@ namespace Net {
 
 
 	// called when send completed
-	HRESULT ServerPeer::OnIOSendCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred )
+	HRESULT ServerPeer::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred )
 	{
-		ConnectionUDPBase::ReleaseGatheringBuffer( pIOBuffer->pSendBuff );
-
-		if( pIOBuffer->pMsgs != nullptr )
-		{
-			UINT uiMsgLen; BYTE* pDataPtr;
-			pIOBuffer->pMsgs->GetLengthNDataPtr(uiMsgLen, pDataPtr);
-			Assert(uiMsgLen == 0 || pIOBuffer->pMsgs->GetMessageHeader()->Crc32 != 0);
-		}
-
+		NetSystem::FreeGatheringBuffer( pIOBuffer->pSendBuff );
 		Util::SafeRelease( pIOBuffer->pMsgs );
-		WSASystem::FreeBuffer( pIOBuffer );
+		NetSystem::FreeBuffer( pIOBuffer );
 		return S_OK;
 	}
 
@@ -212,8 +204,6 @@ namespace Net {
 
 
 
-
-
 	// Send message to connection with network device
 	HRESULT ServerPeer::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
 	{
@@ -227,8 +217,8 @@ namespace Net {
 
 		ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
 
-		OVERLAPPED_BUFFER_WRITE *pOverlapped = nullptr;
-		netChk( BR::Net::WSASystem::AllocBuffer(pOverlapped) );
+		IOBUFFER_WRITE *pOverlapped = nullptr;
+		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
 
 		pOverlapped->SetupSendPeer( pMsg );
 
@@ -267,7 +257,7 @@ namespace Net {
 			if( pOverlapped )
 			{
 				Util::SafeRelease( pOverlapped->pMsgs );
-				BR::Net::WSASystem::FreeBuffer(pOverlapped);
+				BR::Net::NetSystem::FreeBuffer(pOverlapped);
 			}
 			else
 			{
@@ -310,8 +300,8 @@ namespace Net {
 
 		ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
 
-		OVERLAPPED_BUFFER_WRITE *pOverlapped = nullptr;
-		netChk( BR::Net::WSASystem::AllocBuffer(pOverlapped) );
+		IOBUFFER_WRITE *pOverlapped = nullptr;
+		netChk( BR::Net::NetSystem::AllocBuffer(pOverlapped) );
 
 		pOverlapped->SetupSendPeer( uiBuffSize, pBuff );
 
@@ -354,7 +344,7 @@ namespace Net {
 			if( pOverlapped )
 			{
 				pOverlapped->pSendBuff = nullptr;
-				BR::Net::WSASystem::FreeBuffer(pOverlapped);
+				BR::Net::NetSystem::FreeBuffer(pOverlapped);
 			}
 
 			if( hr != E_NET_IO_SEND_FAIL )
@@ -373,7 +363,7 @@ namespace Net {
 	}
 
 	// Pending recv New one
-	HRESULT ServerPeer::PendingRecv( OVERLAPPED_BUFFER_READ *pOver )
+	HRESULT ServerPeer::PendingRecv( IOBUFFER_READ *pOver )
 	{
 		HRESULT hr = S_OK;
 		int iErr = 0;//, iSockLen = sizeof(sockaddr_in6);
@@ -434,9 +424,7 @@ namespace Net {
 
 		netTrace(Trace::TRC_TRACE, "Opening Server Peer, %0%:%1%", strLocalIP, usLocalPort);
 
-		netChk( WSASystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT ) );
-
-		netChk( IOCPSystem::GetSystem().InitIOCP( Const::SVR_NUM_RECV_THREAD ) );
+		netChk( NetSystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
 
 		if( GetSocket() != INVALID_SOCKET )
 			return S_OK;
@@ -446,33 +434,33 @@ namespace Net {
 		localAddr.usPort = usLocalPort;
 		SetLocalAddress( localAddr );
 
-		netTrace(Trace::TRC_TRACE, "Open Server Peer Host %0%:%1%", strLocalIP, usLocalPort );
+		netTrace(Trace::TRC_TRACE, "Open Server Peer Host {0}:{1}", strLocalIP, usLocalPort );
 
 		socket = WSASocket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 		if( socket == INVALID_SOCKET )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket %0%", WSAGetLastError());
+			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
 			netErr( E_UNEXPECTED );
 		}
 
 		iOptValue = Const::CLI_RECV_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = %0%, err = %1%", iOptValue, WSAGetLastError() );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = %0%, err = %1%", iOptValue, WSAGetLastError() );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
 		iOptValue = FALSE;
 		if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = %0%, err = %1%", iOptValue, WSAGetLastError());
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
 			netErr(E_UNEXPECTED);
 		}
 
@@ -482,17 +470,11 @@ namespace Net {
 		bindAddr.sin6_addr = in6addr_any;
 		if (bind(socket, (SOCKADDR*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err=%0%", WSAGetLastError() );
+			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
-		if( !CreateIoCompletionPort((HANDLE)socket, IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)(IOCPSystem::IOCallBack*)this, 0) )
-		{
-			hr = GetLastHRESULT();
-			netTrace(Trace::TRC_ERROR, "CreateIoCompletionPort Failed Udp, hr={0:X8}", hr );
-			netErr( hr );
-		}
-
+		netChk(NetSystem::RegisterSocket(socket, this));
 
 		SetSocket( socket );
 
@@ -503,8 +485,8 @@ namespace Net {
 
 		// Pending recv
 		Util::SafeDeleteArray( m_pRecvBuffers );
-		netMem( m_pRecvBuffers = new OVERLAPPED_BUFFER_READ[Const::SVR_NUM_RECV_THREAD] );
-		memset( m_pRecvBuffers, 0, sizeof(OVERLAPPED_BUFFER_READ)*Const::SVR_NUM_RECV_THREAD );
+		netMem( m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD] );
+		memset( m_pRecvBuffers, 0, sizeof(IOBUFFER_READ)*Const::SVR_NUM_RECV_THREAD );
 
 		m_PendingRecvCnt = 0;
 
@@ -539,10 +521,7 @@ namespace Net {
 			closesocket( GetSocket() );
 			SetSocket( INVALID_SOCKET );
 
-
-			netChk( IOCPSystem::GetSystem().CloseIOCP() );
-
-			WSASystem::CloseSystem();
+			NetSystem::CloseSystem();
 		}
 
 		EnqueueNetEvent( INet::Event( INet::Event::EVT_NET_CLOSED ) ); 

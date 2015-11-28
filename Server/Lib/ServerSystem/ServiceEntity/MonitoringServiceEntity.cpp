@@ -53,7 +53,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		Svr::Config::NetSocket *netAddress = nullptr;
 
-		svrChk( __super::InitializeEntity(newEntityID) );
+		svrChk(ServiceEntity::InitializeEntity(newEntityID) );
 
 		svrChkPtr(Svr::Config::GetConfig().MonitoringServer);
 		svrChkPtr(Svr::Config::GetConfig().MonitoringServer->NetPrivate);
@@ -72,7 +72,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::ClearEntity() );
+		svrChk(ServiceEntity::ClearEntity() );
 
 		svrChk(PerformanceCounterServer::Terminate());
 
@@ -85,7 +85,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		__super::RegisterServiceMessageHandler(pServerEntity);
+		ServiceEntity::RegisterServiceMessageHandler(pServerEntity);
 
 		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)				{ svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return S_OK; } );
 		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return S_OK; } );
@@ -101,7 +101,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk(ServiceEntity::TickUpdate(pAction) );
 
 		// check below only if we are working
 		if( GetEntityState() != EntityState::WORKING )

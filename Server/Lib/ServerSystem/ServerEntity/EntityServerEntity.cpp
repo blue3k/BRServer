@@ -64,7 +64,7 @@ namespace Svr
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
 		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)		{ pNewTrans = new EntityServerStartedTrans( pMsgData ); return S_OK; } );
 
@@ -100,7 +100,7 @@ namespace Svr
 
 	Proc_End:
 		
-		return __super::ProcessConnectionEvent( conEvent );
+		return ServerEntity::ProcessConnectionEvent( conEvent );
 	}
 
 

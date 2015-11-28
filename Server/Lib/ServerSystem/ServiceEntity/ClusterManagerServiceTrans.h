@@ -79,6 +79,10 @@ namespace Svr {
 	
 	class ClusterGetMemberListTrans : public ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::GetClusterMemberListCmd, ClusterGetMemberListTrans>
 	{
+	public:
+
+		typedef ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::GetClusterMemberListCmd, ClusterGetMemberListTrans> super;
+
 	private:
 		StaticArray<ServiceInformation,50> m_MemberList;
 
@@ -97,6 +101,9 @@ namespace Svr {
 
 	class JoinClusterTrans : public ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd, JoinClusterTrans>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd, JoinClusterTrans> super;
+
 	private:
 		StaticArray<ServiceInformation,50> m_MemberList;
 
@@ -115,6 +122,9 @@ namespace Svr {
 
 	class JoinClusterTransForEntityServer : public ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd, JoinClusterTransForEntityServer>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::JoinClusterCmd, JoinClusterTransForEntityServer> super;
+
 	private:
 		StaticArray<ServiceInformation,50> m_MemberList;
 
@@ -134,6 +144,9 @@ namespace Svr {
 
 	class ClusterUpdateStatusTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateStatusC2SEvt, ClusterUpdateStatusTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateStatusC2SEvt, ClusterUpdateStatusTrans, 1> super;
+
 	private:
 
 	public:
@@ -148,6 +161,9 @@ namespace Svr {
 
 	class ClusterUpdateWorkloadTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateWorkloadC2SEvt, ClusterUpdateWorkloadTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateWorkloadC2SEvt, ClusterUpdateWorkloadTrans, 1> super;
+
 	private:
 
 	public:
@@ -161,6 +177,9 @@ namespace Svr {
 
 	class GetLowestWorkloadClusterMemberTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::GetLowestWorkloadClusterMemberCmd, GetLowestWorkloadClusterMemberTrans>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::GetLowestWorkloadClusterMemberCmd, GetLowestWorkloadClusterMemberTrans> super;
+
 	private:
 		ServiceInformation m_LowestMemberInfo;
 
@@ -184,6 +203,9 @@ namespace Svr {
 
 	class ClusterNewServerServiceJoinedC2SEvtEntityTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtEntityTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtEntityTrans, 1> super;
+
 	private:
 
 	public:
@@ -197,6 +219,9 @@ namespace Svr {
 
 	class ClusterNewServerServiceJoinedC2SEvtTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtTrans, 1> super;
+
 	private:
 
 	public:

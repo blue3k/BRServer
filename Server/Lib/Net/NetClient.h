@@ -55,7 +55,7 @@ namespace Net {
 	private:
 
 		// Event queue
-		BR::PageQueue<INet::Event>	m_NetEventQueue;
+		PageQueue<INet::Event>	m_NetEventQueue;
 
 
 	protected:

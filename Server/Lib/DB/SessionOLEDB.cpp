@@ -118,7 +118,7 @@ namespace DB {
 	// Open session
 	HRESULT SessionOLEDB::OpenSession()
 	{
-		__super::OpenSession();
+		Session::OpenSession();
 
 		dbChkPtr(GetDataSource());
 		DataSourceOLEDB &mySource = *(DataSourceOLEDB*)GetDataSource();
@@ -129,7 +129,7 @@ namespace DB {
 	// Close session
 	HRESULT SessionOLEDB::CloseSession()
 	{
-		__super::CloseSession();
+		Session::CloseSession();
 
 		m_Session.Close();
 		return S_OK;

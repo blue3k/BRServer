@@ -459,7 +459,7 @@ namespace Svr {
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 		auto matchingQueueCount = MatchingUtil::GetQueueCount(m_TargetMatchingMemberCount) + 1;
 
-		svrChk( __super::InitializeEntity(newEntityID) );
+		svrChk(ShardedClusterServiceEntity::InitializeEntity(newEntityID) );
 
 		m_ReservationStartFrom = 1;
 		m_WaitingBotMatchingStart = TimeStampMS::min();
@@ -527,7 +527,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::ClearEntity() );
+		svrChk(ShardedClusterServiceEntity::ClearEntity() );
 
 		// we should close queue entity
 		if (m_pQueueEntity != nullptr)
@@ -736,7 +736,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		hr = __super::TickUpdate(pAction);
+		hr = ShardedClusterServiceEntity::TickUpdate(pAction);
 		if (hr == S_FALSE)
 			return hr;
 		svrChk(hr);
@@ -829,7 +829,7 @@ namespace Svr {
 
 		memset(m_ReservedItemQueueTransaction, 0, sizeof m_ReservedItemQueueTransaction);
 
-		svrChk(__super::InitializeEntity(newEntityID));
+		svrChk(MasterEntity::InitializeEntity(newEntityID));
 
 	Proc_End:
 
@@ -841,7 +841,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		hr = __super::TickUpdate(pAction);
+		hr = MasterEntity::TickUpdate(pAction);
 		if (hr == S_FALSE)
 			return hr;
 

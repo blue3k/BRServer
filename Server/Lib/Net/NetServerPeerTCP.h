@@ -81,7 +81,7 @@ namespace Net {
 		virtual bool IsReady() override;
 
 		// Get connection from connection ID
-		HRESULT GetConnection(UINT uiCID, SharedPointerT<Connection> &pConnection);
+		//HRESULT GetConnection(UINT uiCID, SharedPointerT<Connection> &pConnection);
 
 
 		//// Send message to connection with network device
@@ -94,7 +94,7 @@ namespace Net {
 		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
 
 		// Pending recv New one
-		//HRESULT PendingRecv( OVERLAPPED_BUFFER_READ *pOver );
+		//HRESULT PendingRecv( IOBUFFER_READ *pOver );
 
 
 		// Open host and start listen

@@ -41,7 +41,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerEntity *pServerEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity( GetPlayerUID().GetServerID(), pServerEntity ) );
 
@@ -62,7 +62,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->DeletePlayer( GetPlayerID(), GetPlayerUID() ) );
 

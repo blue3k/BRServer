@@ -42,7 +42,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->CreateGameParty( GetCreator(), GetRouteContext().GetFrom(), GetServerEntity<ServerEntity>(), m_PartyUID ) );
 
@@ -60,7 +60,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		svrChk(GetMyOwner()->FreeGameParty(GetRouteContext().GetFrom()));
 

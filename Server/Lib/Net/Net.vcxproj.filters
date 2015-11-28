@@ -69,6 +69,12 @@
     <None Include="NetCtrl.inl">
       <Filter>NetSystem</Filter>
     </None>
+    <None Include="NetSystem_EPOLL.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetSystem_WinIOCP.inl">
+      <Filter>NetSystem</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -144,6 +150,15 @@
       <Filter>NetSystem</Filter>
     </ClInclude>
     <ClInclude Include="NetUtil.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem_WinIOCP.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem_EPOLL.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem_impl.h">
       <Filter>NetSystem</Filter>
     </ClInclude>
   </ItemGroup>
@@ -227,6 +242,12 @@
       <Filter>NetSystem</Filter>
     </ClCompile>
     <ClCompile Include="NetUtil.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetSystem_WinIOCP.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetSystem_EPOLL.cpp">
       <Filter>NetSystem</Filter>
     </ClCompile>
   </ItemGroup>

@@ -30,8 +30,11 @@ namespace Svr {
 
 	
 	
-	class RankingPartyTrans : public Svr::TransactionT<RankingServiceEntity, RankingPartyTrans, sizeof(TransactionMessageHandlerType)*7>
+	class RankingPartyTrans : public TransactionT<RankingServiceEntity, RankingPartyTrans, sizeof(TransactionMessageHandlerType)*7>
 	{
+	public:
+		typedef TransactionT<RankingServiceEntity, RankingPartyTrans, sizeof(TransactionMessageHandlerType) * 7> super;
+
 	private:
 
 		enum {

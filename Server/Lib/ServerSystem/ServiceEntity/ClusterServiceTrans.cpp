@@ -453,7 +453,7 @@ namespace Svr {
 
 		m_hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		BrServer::GetInstance()->GetNumberServicesToWait().fetch_add(1, std::memory_order_relaxed);
 
@@ -480,7 +480,7 @@ namespace Svr {
 
 		BrServer::GetInstance()->GetNumberServicesToWait().fetch_sub(1, std::memory_order_relaxed);
 
-		__super::OnCloseTransaction( hrRes );
+		super::OnCloseTransaction( hrRes );
 
 		if( SUCCEEDED(hrRes) )
 			GetMyOwner()->SetServiceStatus( ServiceStatus::Ready );
@@ -499,7 +499,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->SyncDataToTarget( GetRouteContext().GetFrom()) );
 
@@ -515,7 +515,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->SetMaster( GetMasterUID() ) );
 
@@ -537,7 +537,7 @@ namespace Svr {
 		UINT uiMaxVotedCount = 0;
 		EntityUID maxEntity(0);
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// Only master or slave can process vote result
 		if( GetMyOwner()->GetClusterMembership() < ClusterMembership::Slave )

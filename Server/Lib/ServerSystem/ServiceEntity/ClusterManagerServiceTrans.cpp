@@ -60,7 +60,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ClusteredServiceEntity *pClusterService = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk(super::StartTransaction() );
 
 		// Get cluster watcher for this server
 		if( SUCCEEDED(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pClusterService )) )
@@ -96,7 +96,7 @@ namespace Svr {
 		ClusterMembership memberShip = GetClusterMembership();
 		ServerEntity *pSenderEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk(super::StartTransaction() );
 
 		Trace::Flush();
 
@@ -171,7 +171,7 @@ namespace Svr {
 		ClusterMembership memberShip = GetClusterMembership();
 		ServerEntity *pSenderEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrAssert( GetMyOwner() == GetServerComponent<ClusterManagerServiceEntity>() );
 		if( FAILED(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
@@ -248,7 +248,7 @@ namespace Svr {
 		ServerServiceInformation *pService = nullptr;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( SUCCEEDED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
@@ -290,7 +290,7 @@ namespace Svr {
 		ClusteredServiceEntity* pServiceEntity = nullptr;
 		ServerServiceInformation *pUpdatedService = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetClusterID() == GetClusterID() )
 		{
@@ -349,7 +349,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerServiceInformation *pLowestService = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		GetMyOwner()->ForEachNonWatcher( [&](ServerServiceInformation* pService)
 		{
@@ -386,7 +386,7 @@ namespace Svr {
 		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
 		Assert(GetJoinedServiceUID().GetServerID() < 1000);
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// This transaction is used for two cases. so it's better to query cluster service again
 		if( GetMyOwner()->GetClusterID() == GetClusterID() )
@@ -432,7 +432,7 @@ namespace Svr {
 		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
 		Assert(GetJoinedServiceUID().GetServerID() < 1000);
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		if (GetClusterID() != ClusterID::ClusterManager || GetJoinedServiceNetClass() == NetClass::Entity)
 		{

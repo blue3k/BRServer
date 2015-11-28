@@ -42,7 +42,7 @@ namespace Config
 			Port = (UINT)atoi( value.c_str() );
 		}
 		else {
-			return __super::SetAttributeValue( name, value );
+			return XML::DOMElement::SetAttributeValue( name, value );
 		}
 		return true;
 	}
@@ -72,7 +72,7 @@ namespace Config
 			Password = value;
 		}
 		else {
-			return __super::SetAttributeValue( name, value );
+			return XML::DOMElement::SetAttributeValue( name, value );
 		}
 
 		return true;
@@ -99,7 +99,7 @@ namespace Config
 			PartitioningID = (UINT)atoi( value.c_str() );;
 		}
 		else {
-			return __super::SetAttributeValue( name, value );
+			return XML::DOMElement::SetAttributeValue( name, value );
 		}
 
 		return true;
@@ -123,7 +123,7 @@ namespace Config
 			DBName = value;
 		}
 		else {
-			return __super::SetAttributeValue(name, value);
+			return XML::DOMElement::SetAttributeValue(name, value);
 		}
 
 		return true;
@@ -143,7 +143,7 @@ namespace Config
 
 		DBMembers.push_back( (DBClusterInstance*)pChild );
 
-		__super::AddChild( pChild );
+		XML::DOMElement::AddChild( pChild );
 	}
 
 	// for parsing
@@ -159,7 +159,7 @@ namespace Config
 			PartitioningCount = atoi( value.c_str() );
 		}
 		else {
-			return __super::SetAttributeValue( name, value );
+			return XML::DOMElement::SetAttributeValue( name, value );
 		}
 
 		return true;
@@ -192,7 +192,7 @@ namespace Config
 			WorkerCount = (ULONG)atoi( value.c_str() );
 		}
 		else {
-			return __super::SetAttributeValue( name, value );
+			return XML::DOMElement::SetAttributeValue( name, value );
 		}
 
 		return true;
@@ -225,7 +225,7 @@ namespace Config
 			AuthScopes = value;
 		}
 		else {
-			return __super::SetAttributeValue(name, value);
+			return ServerComponent::SetAttributeValue(name, value);
 		}
 
 		return true;
@@ -246,7 +246,7 @@ namespace Config
 			URL = value;
 		}
 		else {
-			return __super::SetAttributeValue(name, value);
+			return ServerComponent::SetAttributeValue(name, value);
 		}
 
 		return true;
@@ -258,7 +258,7 @@ namespace Config
 
 	void GameClusterInfo::AddChild( DOMElement *pChild )
 	{
-		__super::AddChild( pChild );
+		XML::DOMElement::AddChild( pChild );
 
 		Assert( pChild );
 
@@ -300,7 +300,7 @@ namespace Config
 			ClusterName = value;
 		}
 		else {
-			return __super::SetAttributeValue( attName, value );
+			return XML::DOMElement::SetAttributeValue( attName, value );
 		}
 		return true;
 	}
@@ -318,7 +318,7 @@ namespace Config
 
 	void GenericServer::AddChild( DOMElement *pChild )
 	{
-		__super::AddChild( pChild );
+		XML::DOMElement::AddChild( pChild );
 
 		Assert( pChild );
 
@@ -356,7 +356,7 @@ namespace Config
 		}
 		else
 		{
-			return __super::SetAttributeValue( attName, value );
+			return XML::DOMElement::SetAttributeValue( attName, value );
 		}
 		return true;
 	}
@@ -382,7 +382,7 @@ namespace Config
 
 	void PublicServer::AddChild( DOMElement *pChild )
 	{
-		__super::AddChild( pChild );
+		GenericServer::AddChild( pChild );
 
 		Assert( pChild );
 
@@ -401,7 +401,7 @@ namespace Config
 		}
 		else
 		{
-			return __super::SetAttributeValue( name, value );
+			return GenericServer::SetAttributeValue( name, value );
 		}
 		return true;
 	}
@@ -474,7 +474,7 @@ namespace Config
 		}
 		else
 		{
-			return __super::SetAttributeValue( name, value );
+			return XML::DOMElement::SetAttributeValue( name, value );
 		}
 		return true;
 	}
@@ -487,7 +487,7 @@ namespace Config
 
 	void SharedModuleServer::AddChild( DOMElement *pChild )
 	{
-		__super::AddChild( pChild );
+		GenericServer::AddChild( pChild );
 
 		Assert( pChild );
 
@@ -507,7 +507,7 @@ namespace Config
 		//}
 		//else
 		{
-			return __super::SetAttributeValue( name, value );
+			return GenericServer::SetAttributeValue( name, value );
 		}
 		return true;
 	}
@@ -520,7 +520,7 @@ namespace Config
 
 	void ConfigData::AddChild( DOMElement *pChild )
 	{
-		__super::AddChild( pChild );
+		XML::DOMElement::AddChild( pChild );
 
 		Assert( pChild );
 
@@ -577,7 +577,7 @@ namespace Config
 	// for parsing
 	bool ConfigData::SetAttributeValue( const std::string& name, const std::string& value )
 	{
-		return __super::SetAttributeValue( name, value );
+		return XML::DOMElement::SetAttributeValue( name, value );
 	}
 
 

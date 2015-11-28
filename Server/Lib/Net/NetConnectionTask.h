@@ -31,7 +31,7 @@ namespace Net {
 	//	Connection TickTask
 	//
 
-	class ConnectionTask : public BR::Svr::TickTask, public MemoryPoolObject<ConnectionTask>
+	class ConnectionTask : public Svr::TickTask, public MemoryPoolObject<ConnectionTask>
 	{
 	private:
 		// Connection to manage
@@ -66,7 +66,7 @@ namespace Net {
 	//	Connection TickTask manager
 	//
 
-	class ConnectionTaskManager : public BR::Svr::TaskManager
+	class ConnectionTaskManager : public Svr::TaskManager
 	{
 	public :
 

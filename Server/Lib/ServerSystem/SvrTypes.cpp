@@ -72,7 +72,7 @@ namespace BR {
 	//}
 
 
-
+	void Dummp_SvrTypes() {}
 	
 
 

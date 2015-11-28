@@ -69,7 +69,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::RegisterServiceMessageHandler( pServerEntity ) );
+		svrChk(FreeReplicaClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
 		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return S_OK; } );
 		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return S_OK; } );
@@ -84,7 +84,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk(FreeReplicaClusterServiceEntity::TickUpdate(pAction) );
 
 		if( (SignedCounterType)m_NumberOfPlayerOnThisServer > 0 )
 		{

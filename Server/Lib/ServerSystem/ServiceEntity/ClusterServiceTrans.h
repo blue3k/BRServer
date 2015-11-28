@@ -32,8 +32,11 @@ namespace Svr {
 
 
 
-	class ClusterInitializationTrans : public Svr::TransactionT<ClusteredServiceEntity, ClusterInitializationTrans, sizeof(TransactionMessageHandlerType)*5>
+	class ClusterInitializationTrans : public TransactionT<ClusteredServiceEntity, ClusterInitializationTrans, sizeof(TransactionMessageHandlerType)*5>
 	{
+	public:
+		typedef TransactionT<ClusteredServiceEntity, ClusterInitializationTrans, sizeof(TransactionMessageHandlerType) * 5> super;
+
 	private:
 		enum Step {
 			//Step_GetMemberList,
@@ -85,6 +88,9 @@ namespace Svr {
 
 	class RequestDataSyncTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::RequestDataSyncCmd, RequestDataSyncTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::RequestDataSyncCmd, RequestDataSyncTrans, 1> super;
+
 	private:
 
 	public:
@@ -107,6 +113,9 @@ namespace Svr {
 
 	class ClusterMasterAssignedTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterAssignedS2CEvt, ClusterMasterAssignedTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterAssignedS2CEvt, ClusterMasterAssignedTrans, 1> super;
+
 	private:
 
 	public:
@@ -121,6 +130,9 @@ namespace Svr {
 
 	class ClusterMasterVoteTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterVoteC2SEvt, ClusterMasterVoteTrans, 1>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterMasterVoteC2SEvt, ClusterMasterVoteTrans, 1> super;
+
 	private:
 
 	public:

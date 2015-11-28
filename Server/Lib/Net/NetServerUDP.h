@@ -36,12 +36,12 @@ namespace Net {
 	//	UDP Server class
 	//
 
-	class ServerUDPBase : public Server, public IOCPSystem::IOCallBack
+	class ServerUDPBase : public Server, public INetIOCallBack
 	{
 	public:
 
 		// recv buffer
-		OVERLAPPED_BUFFER_READ *m_pRecvBuffers;
+		IOBUFFER_READ *m_pRecvBuffers;
 
 	public:
 		ServerUDPBase(ServerID InServerID, NetClass localClass);
@@ -58,13 +58,13 @@ namespace Net {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// callback
 		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept( HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo );
+		virtual HRESULT OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo );
 
 		// called when network message is received
-		//virtual HRESULT OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred ) = 0;
+		//virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred ) = 0;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred );
+		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred );
 
 
 		// Open host and start listen
@@ -85,7 +85,7 @@ namespace Net {
 		virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
 
 		// Pending recv New one
-		HRESULT PendingRecv( OVERLAPPED_BUFFER_READ *pOverlaped );
+		HRESULT PendingRecv( IOBUFFER_READ *pOverlaped );
 
 	};
 	
@@ -115,7 +115,7 @@ namespace Net {
 
 
 		// called when network message is received
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred );
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred );
 	};
 
 
@@ -149,7 +149,7 @@ namespace Net {
 		HRESULT OnNoConnectionPacket(const struct sockaddr_in6& from, const BYTE* pData);
 
 		// called when network message is received
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred );
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred );
 	};
 
 

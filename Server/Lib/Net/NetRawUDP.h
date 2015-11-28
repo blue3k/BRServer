@@ -28,7 +28,7 @@ namespace Net {
 	//	Client base class
 	//
 
-	class RawUDP : public IOCPSystem::IOCallBack
+	class RawUDP : public INetIOCallBack
 	{
 	public :
 
@@ -44,7 +44,7 @@ namespace Net {
 		sockaddr_in6 m_LocalSockAddress;
 		SOCKET m_Socket;
 
-		OVERLAPPED_BUFFER_READ *m_pRecvBuffers;
+		IOBUFFER_READ *m_pRecvBuffers;
 
 		MessageHandler *m_pMessageHandler;
 
@@ -60,7 +60,7 @@ namespace Net {
 
 		SOCKET GetSocket()								{ return m_Socket; }
 
-		HRESULT PendingRecv(OVERLAPPED_BUFFER_READ *pOver);
+		HRESULT PendingRecv(IOBUFFER_READ *pOver);
 		HRESULT SendMsg(const sockaddr_in6& dest, Message::MessageData *pMsg);
 
 		// called when incomming message occure
@@ -68,13 +68,13 @@ namespace Net {
 		//HRESULT OnRecv(Message::MessageData *pMsg);
 
 		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept(HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo) override;
+		virtual HRESULT OnIOAccept(HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo) override;
 
 		// called when reciving messag is completed
-		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred) override;
+		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred) override;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred) override;
+		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred) override;
 	};
 
 

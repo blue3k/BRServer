@@ -421,3 +421,336 @@
 //
 #define E_NET_SEQUENCE_OVERFLOW          0xC7030026L
 
+//
+// MessageId: E_NET_INTR
+//
+// MessageText:
+//
+// A blocking operation was interrupted by a call to WSACancelBlockingCall.
+//
+#define E_NET_INTR                       0xC7020001L
+
+//
+// MessageId: E_NET_BADF
+//
+// MessageText:
+//
+// The file handle supplied is not valid.
+//
+#define E_NET_BADF                       0xC7020002L
+
+//
+// MessageId: E_NET_ACCES
+//
+// MessageText:
+//
+// An attempt was made to access a socket in a way forbidden by its access permissions
+//
+#define E_NET_ACCES                      0xC7020003L
+
+//
+// MessageId: E_NET_FAULT
+//
+// MessageText:
+//
+// The system detected an invalid pointer address in attempting to use a pointer argument in a call.
+//
+#define E_NET_FAULT                      0xC7020004L
+
+//
+// MessageId: E_NET_INVAL
+//
+// MessageText:
+//
+// An invalid argument was supplied.
+//
+#define E_NET_INVAL                      0xC7020005L
+
+//
+// MessageId: E_NET_MFILE
+//
+// MessageText:
+//
+// Too many open sockets.
+//
+#define E_NET_MFILE                      0xC7020006L
+
+//
+// MessageId: E_NET_WOULDBLOCK
+//
+// MessageText:
+//
+// A non-blocking socket operation could not be completed immediately.
+//
+#define E_NET_WOULDBLOCK                 0xC7020007L
+
+//
+// MessageId: E_NET_INPROGRESS
+//
+// MessageText:
+//
+// A blocking operation is currently executing.
+//
+#define E_NET_INPROGRESS                 0xC7020008L
+
+//
+// MessageId: E_NET_ALREADY
+//
+// MessageText:
+//
+// An operation was attempted on a non-blocking socket that already had an operation in progress.
+//
+#define E_NET_ALREADY                    0xC7020009L
+
+//
+// MessageId: E_NET_NOTSOCK
+//
+// MessageText:
+//
+// An operation was attempted on something that is not a socket.
+//
+#define E_NET_NOTSOCK                    0xC702000AL
+
+//
+// MessageId: E_NET_DESTADDRREQ
+//
+// MessageText:
+//
+// A required address was omitted from an operation on a socket.
+//
+#define E_NET_DESTADDRREQ                0xC702000BL
+
+//
+// MessageId: E_NET_NETDOWN
+//
+// MessageText:
+//
+// A socket operation encountered a dead network.
+//
+#define E_NET_NETDOWN                    0xC702000CL
+
+//
+// MessageId: E_NET_NETUNREACH
+//
+// MessageText:
+//
+// A socket operation was attempted to an unreachable network.
+//
+#define E_NET_NETUNREACH                 0xC702000DL
+
+//
+// MessageId: E_NET_NETRESET
+//
+// MessageText:
+//
+// The connection has been broken due to keep-alive activity detecting a failure while the operation was in progress.
+//
+#define E_NET_NETRESET                   0xC702000EL
+
+//
+// MessageId: E_NET_CONNABORTED
+//
+// MessageText:
+//
+// An established connection was aborted by the software in your host machine.
+//
+#define E_NET_CONNABORTED                0xC702000FL
+
+//
+// MessageId: E_NET_CONNRESET
+//
+// MessageText:
+//
+// An existing connection was forcibly closed by the remote host.
+//
+#define E_NET_CONNRESET                  0xC7020010L
+
+//
+// MessageId: E_NET_NOBUFS
+//
+// MessageText:
+//
+// An operation on a socket could not be performed because the system lacked sufficient buffer space or because a queue was full.
+//
+#define E_NET_NOBUFS                     0xC7020011L
+
+//
+// MessageId: E_NET_ISCONN
+//
+// MessageText:
+//
+// A connect request was made on an already connected socket.
+//
+#define E_NET_ISCONN                     0xC7020012L
+
+//
+// MessageId: E_NET_NOTCONN
+//
+// MessageText:
+//
+// A request to send or receive data was disallowed because the socket is not connected and (when sending on a datagram socket using a sendto call) no address was supplied.
+//
+#define E_NET_NOTCONN                    0xC7020013L
+
+//
+// MessageId: E_NET_SHUTDOWN
+//
+// MessageText:
+//
+// A request to send or receive data was disallowed because the socket had already been shut down in that direction with a previous shutdown call.
+//
+#define E_NET_SHUTDOWN                   0xC7020014L
+
+//
+// MessageId: E_NET_TOOMANYREFS
+//
+// MessageText:
+//
+// Too many references to some kernel object.
+//
+#define E_NET_TOOMANYREFS                0xC7020015L
+
+//
+// MessageId: E_NET_TIMEDOUT
+//
+// MessageText:
+//
+// A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+//
+#define E_NET_TIMEDOUT                   0xC7020016L
+
+//
+// MessageId: E_NET_CONNECTION_REFUSSED
+//
+// MessageText:
+//
+// No connection could be made because the target machine actively refused it.
+//
+#define E_NET_CONNECTION_REFUSSED        0xC7020017L
+
+//
+// MessageId: E_NET_LOOP
+//
+// MessageText:
+//
+// Cannot translate name.
+//
+#define E_NET_LOOP                       0xC7020018L
+
+//
+// MessageId: E_NET_NAMETOOLONG
+//
+// MessageText:
+//
+// Name component or name was too long.
+//
+#define E_NET_NAMETOOLONG                0xC7020019L
+
+//
+// MessageId: E_NET_HOSTDOWN
+//
+// MessageText:
+//
+// A socket operation failed because the destination host was down.
+//
+#define E_NET_HOSTDOWN                   0xC702001AL
+
+//
+// MessageId: E_NET_HOSTUNREACH
+//
+// MessageText:
+//
+// A socket operation was attempted to an unreachable host.
+//
+#define E_NET_HOSTUNREACH                0xC702001BL
+
+//
+// MessageId: E_NET_NOTEMPTY
+//
+// MessageText:
+//
+// Cannot remove a directory that is not empty.
+//
+#define E_NET_NOTEMPTY                   0xC702001CL
+
+//
+// MessageId: E_NET_PROCLIM
+//
+// MessageText:
+//
+// A Windows Sockets implementation may have a limit on the number of applications that may use it simultaneously.
+//
+#define E_NET_PROCLIM                    0xC702001DL
+
+//
+// MessageId: E_NET_SYSNOTREADY
+//
+// MessageText:
+//
+// WSAStartup cannot function at this time because the underlying system it uses to provide network services is currently unavailable.
+//
+#define E_NET_SYSNOTREADY                0xC702001EL
+
+//
+// MessageId: E_NET_VERNOTSUPPORTED
+//
+// MessageText:
+//
+// The Windows Sockets version requested is not supported.
+//
+#define E_NET_VERNOTSUPPORTED            0xC702001FL
+
+//
+// MessageId: E_NET_NOTINITIALISED
+//
+// MessageText:
+//
+// Either the application has not called WSAStartup, or WSAStartup failed.
+//
+#define E_NET_NOTINITIALISED             0xC7020020L
+
+//
+// MessageId: E_NET_DISCON
+//
+// MessageText:
+//
+// Returned by WSARecv or WSARecvFrom to indicate the remote party has initiated a graceful shutdown sequence.
+//
+#define E_NET_DISCON                     0xC7020021L
+
+//
+// MessageId: E_NET_SYSCALLFAILURE
+//
+// MessageText:
+//
+// A system call has failed.
+//
+#define E_NET_SYSCALLFAILURE             0xC7020022L
+
+//
+// MessageId: E_NET_HOST_NOT_FOUND
+//
+// MessageText:
+//
+// A system call has failed.
+//
+#define E_NET_HOST_NOT_FOUND             0xC7020023L
+
+//
+// MessageId: E_NET_TRY_AGAIN
+//
+// MessageText:
+//
+// Try again
+//
+#define E_NET_TRY_AGAIN                  0xC7020024L
+
+//
+// MessageId: E_NET_SECURE_HOST_NOT_FOUND
+//
+// MessageText:
+//
+// No such host is known securely.
+//
+#define E_NET_SECURE_HOST_NOT_FOUND      0xC7020025L
+

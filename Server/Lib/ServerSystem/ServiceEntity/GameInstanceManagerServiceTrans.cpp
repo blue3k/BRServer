@@ -42,7 +42,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->CreateGameInstance( m_GameInsUID, GetNumberOfBotPlayer(), GetMaxPlayer() ) );
 
@@ -59,7 +59,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		svrChk(GetMyOwner()->FreeGameInstance(GetRouteContext().GetFrom()));
 

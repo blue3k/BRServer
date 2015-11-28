@@ -31,6 +31,9 @@ namespace Svr {
 
 	class GameServerTransGamePlayerEntityCreatedS2CEvt : public ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityCreatedC2SEvt, GameServerTransGamePlayerEntityCreatedS2CEvt>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityCreatedC2SEvt, GameServerTransGamePlayerEntityCreatedS2CEvt> super;
+
 	private:
 
 	public:
@@ -43,6 +46,9 @@ namespace Svr {
 
 	class GameServerTransGamePlayerEntityDeletedS2CEvt : public ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityDeletedC2SEvt, GameServerTransGamePlayerEntityDeletedS2CEvt>
 	{
+	public:
+		typedef ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityDeletedC2SEvt, GameServerTransGamePlayerEntityDeletedS2CEvt> super;
+
 	private:
 
 	public:

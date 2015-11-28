@@ -36,8 +36,11 @@ namespace Svr {
 
 	// Server started
 	template< class ServerEntityType, class PolicyType, class MessageType, class TransactionType, size_t MessageHandlerBufferSize = sizeof(TransactionMessageHandlerType)*2 >
-	class ServerStartedTrans : public Svr::MessageTransaction< ServerEntityType, PolicyType, MessageType, TransactionType, MessageHandlerBufferSize>
+	class ServerStartedTrans : public MessageTransaction< ServerEntityType, PolicyType, MessageType, TransactionType, MessageHandlerBufferSize>
 	{
+	public:
+		typedef MessageTransaction< ServerEntityType, PolicyType, MessageType, TransactionType, MessageHandlerBufferSize> super;
+
 	private:
 
 	public:
@@ -55,7 +58,7 @@ namespace Svr {
 			HRESULT hr = S_OK;
 			Svr::ServerEntity *pServerEntity = nullptr;
 
-			svrChk( __super::StartTransaction() );
+			svrChk( super::StartTransaction() );
 
 			//GetMyOwner()->SetClusterID( GetClusterID() );
 			GetMyOwner()->SetReceivedServerStatus(true);
@@ -111,8 +114,11 @@ namespace Svr {
 
 
 	// Entity Server started
-	class EntityServerStartedTrans : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyServer, Message::Server::ServerConnectedC2SEvt, EntityServerStartedTrans>
+	class EntityServerStartedTrans : public ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyServer, Message::Server::ServerConnectedC2SEvt, EntityServerStartedTrans>
 	{
+	public:
+		typedef ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyServer, Message::Server::ServerConnectedC2SEvt, EntityServerStartedTrans> super;
+
 	private:
 
 	public:

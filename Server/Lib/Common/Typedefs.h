@@ -92,10 +92,7 @@ inline HRESULT GetLastHRESULT()
 	return HRESULT_FROM_WIN32(GetLastError());
 }
 
-inline HRESULT GetLastWSAHRESULT()
-{
-	return HRESULT_FROM_WIN32(WSAGetLastError());
-}
+
 
 
 #else
@@ -170,21 +167,15 @@ typedef HANDLE HMODULE;
 #define OUT
 
 #define SOCKET int
+//#define INVALID_SOCKET (-1)
 
-inline HRESULT GetLastHRESULT()
-{
-	return errno != 0 ? E_UNEXPECTED : S_OK;
-}
-
-inline HRESULT GetLastWSAHRESULT()
-{
-	return errno != 0 ? E_UNEXPECTED : S_OK;
-}
+HRESULT GetLastHRESULT();
 
 
 #define MAX_PATH 512
 
 #endif
+
 
 
 #include <thread>

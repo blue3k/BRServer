@@ -54,8 +54,6 @@ namespace Net {
 		// packet gathering buffer
 		UINT				m_uiGatheredSize;
 		BYTE*				m_pGatheringBuffer;
-		// Memory pool for gathering buffer
-		static MemoryPool*	m_pGatheringBufferPool;
 
 
 		// Recv guaranted Message Queue, to enable MT enqueue
@@ -107,11 +105,8 @@ namespace Net {
 
 		// Prepare gathering buffer
 		HRESULT PrepareGatheringBuffer( UINT uiRequiredSize );
-		static HRESULT ReleaseGatheringBuffer( BYTE *pBuffer );
-		UINT GetGatheredBufferSize()                                  { return m_uiGatheredSize; }
+		UINT GetGatheredBufferSize() { return m_uiGatheredSize; }
 
-		// Called on connection result
-		virtual void OnConnectionResult( HRESULT hrConnect );
 
 		// frame sequence
 		HRESULT SendFrameSequenceMessage(Message::MessageData* pMsg);
@@ -235,9 +230,6 @@ namespace Net {
 		ConnectionUDPServer();
 		virtual ~ConnectionUDPServer();
 
-		// Clear Queue
-		virtual HRESULT ClearQueues() override;
-
 		// Update net control, process connection heartbit, ... etc
 		virtual HRESULT UpdateNetCtrl() override;
 	};
@@ -250,13 +242,13 @@ namespace Net {
 	//	client UDP Network connection class
 	//
 
-	class ConnectionUDPClient : public ConnectionUDP, public IOCPSystem::IOCallBack, public MemoryPoolObject<ConnectionUDPClient>
+	class ConnectionUDPClient : public ConnectionUDP, public INetIOCallBack, public MemoryPoolObject<ConnectionUDPClient>
 	{
 	public:
 
 	private:
 		// recv io buffer
-		OVERLAPPED_BUFFER_READ m_RecvBuffer;
+		IOBUFFER_READ m_RecvBuffer;
 
 
 	public:
@@ -264,25 +256,22 @@ namespace Net {
 		ConnectionUDPClient();
 		~ConnectionUDPClient();
 
-		// Clear Queue
-		virtual HRESULT ClearQueues();
-
 
 		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept( HRESULT hrRes, OVERLAPPED_BUFFER_ACCEPT *pAcceptInfo ) override;
+		virtual HRESULT OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo ) override;
 
 		// called when reciving TCP message
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_READ *pIOBuffer, DWORD dwTransferred ) override;
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred ) override;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, OVERLAPPED_BUFFER_WRITE *pIOBuffer, DWORD dwTransferred ) override;
+		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred ) override;
 
 		// Pending recv New one
 		HRESULT PendingRecv();
 
 
 		// Get recv buffer pointer
-		inline OVERLAPPED_BUFFER_READ* GetRecvBuffer();
+		inline IOBUFFER_READ* GetRecvBuffer();
 
 		
 		// Initialize connection

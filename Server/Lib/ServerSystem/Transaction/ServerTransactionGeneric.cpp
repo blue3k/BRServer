@@ -93,7 +93,7 @@ namespace Svr {
 		const BR::ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
 		Svr::ClusterManagerServiceEntity *pClusterManagerEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 
 		svrChkPtr( pClusterManagerEntity = GetServerComponent<Svr::ClusterManagerServiceEntity>() );
