@@ -508,13 +508,19 @@ namespace BR
 
 
 	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const bool& Data, int Option)
+	{
+		return ToString(pBuff, iBuffLen, Data ? "true" : "false", Option);
+	}
+
+	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const float& Data, int Option)
 	{
 		int degit = Option >> 16;
 		_FToA(Data, pBuff, iBuffLen, degit, 0);
 		return S_OK;
 	}
-	
+
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const double& Data, int Option)
 	{

@@ -94,7 +94,7 @@ namespace Svr{
 		virtual HRESULT InitializeComponents()
 		{
 			HRESULT hr = S_OK;
-			int iComponent = 0;
+			size_t iComponent = 0;
 			for( ; iComponent < (MaxComponentID+1); iComponent++ )
 			{
 				if( m_Components[iComponent] != nullptr )
@@ -119,7 +119,7 @@ namespace Svr{
 		HRESULT TerminateComponents()
 		{
 			HRESULT hr = S_OK;
-			int iComponent = 0;
+			size_t iComponent = 0;
 			for (; iComponent < (MaxComponentID + 1); iComponent++)
 			{
 				if (m_Components[iComponent] != nullptr)
@@ -243,7 +243,7 @@ namespace Svr{
 		template< class ComponentType >
 		ComponentType* GetComponent(int ID)
 		{
-			if( ID >= (MaxComponentID+1) || ID < 0 )
+			if( (size_t)ID >= (MaxComponentID+1) || ID < 0 )
 				return nullptr;
 
 			if( m_Components[ID] != nullptr )
@@ -257,7 +257,7 @@ namespace Svr{
 		template< class ComponentType >
 		ComponentType* GetComponent()
 		{
-			int ID = ComponentType::ComponentID;
+			UINT ID = ComponentType::ComponentID;
 			if( ID >= (MaxComponentID+1) || ID < 0 )
 				return nullptr;
 
@@ -271,7 +271,7 @@ namespace Svr{
 		template< class ComponentType >
 		const ComponentType* GetComponent() const
 		{
-			int ID = ComponentType::ComponentID;
+			UINT ID = ComponentType::ComponentID;
 			if( ID >= (MaxComponentID+1) || ID < 0 )
 				return nullptr;
 

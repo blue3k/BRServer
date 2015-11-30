@@ -27,7 +27,7 @@ namespace Net {
 	//
 	//	Policy base Interface
 	//
-	class INetPolicy : public BR::IPolicyBase
+	class INetPolicy : public IPolicyBase
 	{
 	private:
 		IConnection		*m_pConnection;
@@ -35,11 +35,11 @@ namespace Net {
 		friend class IConnection;
 
 	public:
-		INetPolicy(UINT uiPolicyID, BR::Net::IConnection *pConn);
+		INetPolicy(UINT uiPolicyID, Net::IConnection *pConn);
 		virtual ~INetPolicy();
 
 		// Get Policy ID
-		BR::Net::IConnection* GetConnection() const	{ return m_pConnection; }
+		Net::IConnection* GetConnection() const	{ return m_pConnection; }
 
 		// Processing function will defined at child interface
 	};

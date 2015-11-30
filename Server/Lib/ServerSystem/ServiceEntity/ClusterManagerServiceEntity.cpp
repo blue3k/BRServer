@@ -15,12 +15,13 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
+#include "Common/BrSvrTypes.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServicebase.h"
+#include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/SvrTrace.h"
@@ -41,8 +42,8 @@ namespace Svr {
 	//
 
 	ClusterManagerServiceEntity::ClusterManagerServiceEntity(ClusterMembership initialMembership)
-		:IServerComponent(ComponentID)
-		,ReplicaClusterServiceEntity(ClusterID::ClusterManager, initialMembership )
+		: ReplicaClusterServiceEntity(ClusterID::ClusterManager, initialMembership )
+		, IServerComponent(ComponentID)
 	{
 	}
 	
@@ -56,7 +57,7 @@ namespace Svr {
 
 		svrChk(ReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
 
-		svrChk( m_ClusterIDMap.insert( GetClusterID(), this ) );
+		svrChk( m_ClusterIDMap.insert( (UINT)GetClusterID(), this ) );
 
 		svrChk(ReplicaClusterServiceEntity::StartInitializeTransaction() );
 
@@ -70,8 +71,6 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		ClusterIDMap::iterator itCur;
-		ServerServiceInformation *pTargetServiceInfo = nullptr;
-		ClusterServerService *pTargetService = nullptr;
 
 		for( itCur = m_ClusterIDMap.begin(); itCur.IsValid(); ++itCur )
 		{
@@ -94,11 +93,11 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ClusterIDMap::iterator iterMap;
 
-		hr = m_ClusterIDMap.find( clusterID, iterMap );
+		hr = m_ClusterIDMap.find((UINT)clusterID, iterMap );
 		if( SUCCEEDED(hr) )
 			pServiceEntity = *iterMap;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -110,7 +109,7 @@ namespace Svr {
 
 		svrChkPtr( pServiceEntity );
 
-		svrChk( m_ClusterIDMap.insert(pServiceEntity->GetClusterID(), pServiceEntity ) );
+		svrChk( m_ClusterIDMap.insert((UINT)pServiceEntity->GetClusterID(), pServiceEntity ) );
 
 		pServiceEntity = nullptr;
 

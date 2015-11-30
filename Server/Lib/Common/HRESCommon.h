@@ -655,3 +655,12 @@
 //
 #define E_INVALID_NUMERIC                0xC7020040L
 
+//
+// MessageId: E_INVALID_PASSWORD
+//
+// MessageText:
+//
+// Invalid password
+//
+#define E_INVALID_PASSWORD               0xC7020041L
+

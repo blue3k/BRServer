@@ -131,7 +131,7 @@ namespace Svr
 		m_IOSURL = strURL;
 		//svrChk(m_GoogleAuth.Initialize(strP12KeyFile, strAccount, scopes));
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -140,11 +140,12 @@ namespace Svr
 	HRESULT ExternalTransactionManager::InitializeComponent()
 	{
 		HRESULT hr = S_OK;
+		CURLcode res;
 
 		svrChk(ParallelTransactionManager::InitializeComponent());
 
 		// Initialize HTTP interface
-		CURLcode res = curl_global_init_mem(CURL_GLOBAL_ALL, CURL_malloc, CURL_free, CURL_realloc, CURL_strdup, CURL_calloc);
+		res = curl_global_init_mem(CURL_GLOBAL_ALL, CURL_malloc, CURL_free, CURL_realloc, CURL_strdup, CURL_calloc);
 		if (res != 0) svrErr(E_UNEXPECTED);
 
 		svrChk(m_GoogleAuth.Authenticate());
@@ -171,7 +172,7 @@ namespace Svr
 		//svrChk(m_GoogleAuth.UpdateAuthentication(false));
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

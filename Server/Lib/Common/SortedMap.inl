@@ -76,8 +76,8 @@
 
 	template<class KeyType, class ValueType>
 	SortedMap<KeyType, ValueType>::SortedMap(ObjectPoolT<MapNode> *pNodePool)
-		: m_ItemCount(0)
-		, m_Root(nullptr)
+		: m_Root(nullptr)
+		, m_ItemCount(0)
 		, m_DeleteNodePool(false)
 		, m_pNodePool(pNodePool)
 	{
@@ -227,7 +227,7 @@
 
 
 		ReferenceAccessPoint *pParentPointer = nullptr;
-		MapNode* pParentOfReplaced = nullptr;
+		//MapNode* pParentOfReplaced = nullptr;
 		MapNode* child = nullptr;
 
 		auto left = pFound->Left;

@@ -18,7 +18,7 @@
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServicebase.h"
+#include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
@@ -43,15 +43,16 @@ namespace Svr {
 
 
 	ClusteredServiceEntity::ClusteredServiceEntity( ClusterType clusterType, ClusterID clusterID, ClusterMembership initialMembership, ServerEntity* pServerEntity )
-		:m_MasterUID(0)
-		,m_ClusterType(clusterType )
-		,m_ClusterID(clusterID)
-		,m_ClusterMembership(initialMembership)
-		,m_MyServiceInfo(nullptr)
-		,m_ServiceStatus(ServiceStatus::Offline)
-		,m_IsInVoting(false)
-		,m_Workload(0)
-		,m_ServerEntity(pServerEntity)
+		: m_MasterUID(0)
+		, m_ClusterID(clusterID)
+		, m_ClusterType(clusterType )
+		, m_ClusterMembership(initialMembership)
+		, m_ServiceStatus(ServiceStatus::Offline)
+		, m_Workload(0)
+		, m_MyServiceInfo(nullptr)
+		, m_ServerEntity(pServerEntity)
+		, m_IsInVoting(false)
+		, m_Initialized(false)
 	{
 	}
 

@@ -57,6 +57,9 @@ namespace GameServer {
 	class PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity : public Svr::UserTransactionS2SCmd< GamePlayerEntity, Policy::ISvrPolicyGameServer, Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd, PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity>
 	{
 	public:
+		typedef Svr::UserTransactionS2SCmd< GamePlayerEntity, Policy::ISvrPolicyGameServer, Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd, PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity> super;
+
+	public:
 		PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity(Message::MessageData* &pIMsg) : UserTransactionS2SCmd(pIMsg) {}
 		virtual ~PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity() {}
 
@@ -69,6 +72,9 @@ namespace GameServer {
 
 	class PlayerTransJoinGameServer : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::JoinGameServerCmd, PlayerTransJoinGameServer, sizeof(Svr::TransactionMessageHandlerType)*6>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::JoinGameServerCmd, PlayerTransJoinGameServer, sizeof(Svr::TransactionMessageHandlerType) * 6> super;
+
 	private:
 		
 		enum class Step
@@ -108,6 +114,9 @@ namespace GameServer {
 	
 	class PlayerTransGetUserGamePlayerInfo : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetUserGamePlayerInfoCmd, PlayerTransGetUserGamePlayerInfo>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetUserGamePlayerInfoCmd, PlayerTransGetUserGamePlayerInfo> super;
+
 	private:
 		struct {
 			SHORT Level;
@@ -170,6 +179,9 @@ namespace GameServer {
 	
 	class PlayerTransGetGamePlayerInfo : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetGamePlayerInfoCmd, PlayerTransGetGamePlayerInfo>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetGamePlayerInfoCmd, PlayerTransGetGamePlayerInfo> super;
+
 	private:
 		struct {
 			SHORT Level;
@@ -225,6 +237,9 @@ namespace GameServer {
 
 	class PlayerTransGetComplitionState : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetComplitionStateCmd, PlayerTransGetComplitionState>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetComplitionStateCmd, PlayerTransGetComplitionState> super;
+
 	private:
 
 		BRCLASS_ATTRIBUTE_STRING(ComplitionState, GameConst::MAX_COMPLITIONSTATE);
@@ -247,6 +262,9 @@ namespace GameServer {
 	class PlayerTransSetComplitionState : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetComplitionStateCmd, PlayerTransSetComplitionState>
 	{
 	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetComplitionStateCmd, PlayerTransSetComplitionState> super;
+
+	public:
 		PlayerTransSetComplitionState(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) {}
 		virtual ~PlayerTransSetComplitionState() {}
 
@@ -268,6 +286,9 @@ namespace GameServer {
 
 	class PlayerTransSetConfigPreset : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetPresetGameConfigIDCmd, PlayerTransSetConfigPreset>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetPresetGameConfigIDCmd, PlayerTransSetConfigPreset> super;
+
 	private:
 	public:
 		PlayerTransSetConfigPreset( Message::MessageData* &pIMsg )  :MessageTransaction( pIMsg ) {}
@@ -281,6 +302,9 @@ namespace GameServer {
 	
 	class PlayerTransGainGameResource : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GainGameResourceCmd, PlayerTransGainGameResource>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GainGameResourceCmd, PlayerTransGainGameResource> super;
+
 	private:
 	public:
 		PlayerTransGainGameResource( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
@@ -302,6 +326,9 @@ namespace GameServer {
 
 	class PlayerTransRegisterGCM : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::RegisterGCMCmd, PlayerTransRegisterGCM>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::RegisterGCMCmd, PlayerTransRegisterGCM> super;
+
 	private:
 	public:
 		PlayerTransRegisterGCM( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
@@ -318,6 +345,9 @@ namespace GameServer {
 
 	class PlayerTransUnregisterGCM : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::UnregisterGCMCmd, PlayerTransUnregisterGCM>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::UnregisterGCMCmd, PlayerTransUnregisterGCM> super;
+
 	private:
 	public:
 		PlayerTransUnregisterGCM( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
@@ -341,6 +371,9 @@ namespace GameServer {
 	
 	class PlayerTransGetNotificationList : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetNotificationListCmd, PlayerTransGetNotificationList>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetNotificationListCmd, PlayerTransGetNotificationList> super;
+
 	private:
 	public:
 		PlayerTransGetNotificationList( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
@@ -356,6 +389,9 @@ namespace GameServer {
 	
 	class PlayerTransDeleteNotification : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::DeleteNotificationCmd, PlayerTransDeleteNotification>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::DeleteNotificationCmd, PlayerTransDeleteNotification> super;
+
 	private:
 	public:
 		PlayerTransDeleteNotification( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
@@ -372,6 +408,9 @@ namespace GameServer {
 
 	class PlayerTransSetNotificationRead : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetNotificationReadCmd, PlayerTransSetNotificationRead>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetNotificationReadCmd, PlayerTransSetNotificationRead> super;
+
 	private:
 	public:
 		PlayerTransSetNotificationRead( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
@@ -389,6 +428,9 @@ namespace GameServer {
 
 	class PlayerTransAcceptNotification : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::AcceptNotificationCmd, PlayerTransAcceptNotification>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::AcceptNotificationCmd, PlayerTransAcceptNotification> super;
+
 	private:
 	public:
 		PlayerTransAcceptNotification(Message::MessageData* &pIMsg);//  :MessageTransaction( pIMsg ) {}
@@ -405,6 +447,9 @@ namespace GameServer {
 
 	class PlayerTransNotifyS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::NotifyC2SEvt, PlayerTransNotifyS2S>
 	{
+	public:
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::NotifyC2SEvt, PlayerTransNotifyS2S> super;
+
 	public:
 		PlayerTransNotifyS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransNotifyS2S() {}
@@ -423,6 +468,9 @@ namespace GameServer {
 
 	class PlayerTransSetNickName : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetNickNameCmd, PlayerTransSetNickName>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetNickNameCmd, PlayerTransSetNickName> super;
+
 	private:
 		UINT64 m_TotalGem;
 		UINT64 m_TotalGameMoney;
@@ -447,6 +495,9 @@ namespace GameServer {
 
 	class PlayerTransFindPlayerByEMail : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::FindPlayerByEMailCmd, PlayerTransFindPlayerByEMail>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::FindPlayerByEMailCmd, PlayerTransFindPlayerByEMail> super;
+
 	private:
 		PlayerInformation m_Player;
 		int m_PlayerShardID;
@@ -467,6 +518,9 @@ namespace GameServer {
 
 	class PlayerTransFindPlayerByPlayerID : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::FindPlayerByPlayerIDCmd, PlayerTransFindPlayerByPlayerID>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::FindPlayerByPlayerIDCmd, PlayerTransFindPlayerByPlayerID> super;
+
 	private:
 		PlayerInformation m_Player;
 		int m_PlayerShardID;
@@ -487,6 +541,9 @@ namespace GameServer {
 
 	class PlayerTransRequestPlayerStatusUpdate : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::RequestPlayerStatusUpdateCmd, PlayerTransRequestPlayerStatusUpdate>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::RequestPlayerStatusUpdateCmd, PlayerTransRequestPlayerStatusUpdate> super;
+
 	private:
 
 		UINT m_PlayerStatusQueryCount;
@@ -507,6 +564,9 @@ namespace GameServer {
 	class PlayerTransRequestPlayerStatusUpdateS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::RequestPlayerStatusUpdateC2SEvt, PlayerTransRequestPlayerStatusUpdateS2S>
 	{
 	public:
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::RequestPlayerStatusUpdateC2SEvt, PlayerTransRequestPlayerStatusUpdateS2S> super;
+
+	public:
 		PlayerTransRequestPlayerStatusUpdateS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransRequestPlayerStatusUpdateS2S() {}
 
@@ -516,6 +576,9 @@ namespace GameServer {
 	
 	class PlayerTransNotifyPlayerStatusUpdatedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt, PlayerTransNotifyPlayerStatusUpdatedS2S>
 	{
+	public:
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt, PlayerTransNotifyPlayerStatusUpdatedS2S> super;
+
 	public:
 		PlayerTransNotifyPlayerStatusUpdatedS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransNotifyPlayerStatusUpdatedS2S() {}
@@ -528,6 +591,9 @@ namespace GameServer {
 
 	class PlayerTransGetRankingList : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetRankingListCmd, PlayerTransGetRankingList>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetRankingListCmd, PlayerTransGetRankingList> super;
+
 	private:
 
 		StaticArray<TotalRankingPlayerInformation, 100> m_RankingList;
@@ -548,6 +614,9 @@ namespace GameServer {
 
 	class PlayerTransBuyShopItemPrepare : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::BuyShopItemPrepareCmd, PlayerTransBuyShopItemPrepare>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::BuyShopItemPrepareCmd, PlayerTransBuyShopItemPrepare> super;
+
 	private:
 		const UINT MAX_RETRY = 3;
 
@@ -572,6 +641,9 @@ namespace GameServer {
 
 	class PlayerTransBuyShopItem : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::BuyShopItemCmd, PlayerTransBuyShopItem, sizeof(Svr::TransactionMessageHandlerType) * 4>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::BuyShopItemCmd, PlayerTransBuyShopItem, sizeof(Svr::TransactionMessageHandlerType) * 4> super;
+
 	private:
 		Memento<UserGamePlayerInfoSystem::MEMENTO_SIZE> m_SavedData;
 		conspiracy::ShopTbl::ShopItem *m_pShopItem;

@@ -116,7 +116,7 @@ namespace LoginServer {
 		svrChkPtr( pMySvr );
 		SetMyConfig( pMySvr );
 
-		svrChk(__super::ApplyConfiguration() );
+		svrChk(Svr::BrServer::ApplyConfiguration() );
 
 
 		m_AuthTicketGenerator.SetServerID(pMySvr->UID);
@@ -132,7 +132,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeServerResource() );
+		svrChk(Svr::BrServer::InitializeServerResource() );
 
 		//svrChk( conspiracy::InitializeTable() );
 
@@ -148,7 +148,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::CloseServerResource() );
+		svrChk(Svr::BrServer::CloseServerResource() );
 
 		svrChk( TerminateEntity() );
 
@@ -167,7 +167,7 @@ namespace LoginServer {
 		Svr::LoginClusterServiceEntity *pLoginService = nullptr;
 		Svr::ClusteredServiceEntity *pClusteredEntity = nullptr;
 
-		svrChk( __super::InitializeNetPrivate() );
+		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
@@ -220,7 +220,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 
-		hr = __super::CloseNetPrivate();
+		hr = Svr::BrServer::CloseNetPrivate();
 
 
 		// Server Entity Manager will clear this

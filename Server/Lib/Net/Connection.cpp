@@ -69,123 +69,123 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 
-		if( uiPolicy >= BR::POLICY_NETMAX )
+		if( uiPolicy >= POLICY_NETMAX )
 			netErr( E_INVALIDARG );
 
 		if( m_pPolicy[uiPolicy] == NULL )// try create
 		{ 
 			switch( uiPolicy )
 			{
-			case BR::POLICY_LOGIN:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyLogin( this ) );
+			case POLICY_LOGIN:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyLogin( this ) );
 				break;
-			case BR::POLICY_SVR_LOGIN:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyLogin( this ) );
-				break;
-
-			case BR::POLICY_GAME:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyGame( this ) );
-				break;
-			case BR::POLICY_SVR_GAME:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyGame( this ) );
+			case POLICY_SVR_LOGIN:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyLogin( this ) );
 				break;
 
-			case BR::POLICY_SERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyServer( this ) );
+			case POLICY_GAME:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGame( this ) );
 				break;
-			case BR::POLICY_SVR_SERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyServer( this ) );
-				break;
-
-			case BR::POLICY_LOGINSERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyLoginServer( this ) );
-				break;
-			case BR::POLICY_SVR_LOGINSERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyLoginServer( this ) );
+			case POLICY_SVR_GAME:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGame( this ) );
 				break;
 
-			case BR::POLICY_GAMESERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyGameServer( this ) );
+			case POLICY_SERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyServer( this ) );
 				break;
-			case BR::POLICY_SVR_GAMESERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyGameServer( this ) );
+			case POLICY_SVR_SERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyServer( this ) );
+				break;
+
+			case POLICY_LOGINSERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyLoginServer( this ) );
+				break;
+			case POLICY_SVR_LOGINSERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyLoginServer( this ) );
+				break;
+
+			case POLICY_GAMESERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameServer( this ) );
+				break;
+			case POLICY_SVR_GAMESERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameServer( this ) );
 				break;
 				
-			case BR::POLICY_GAMEMASTERSERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyGameMasterServer( this ) );
+			case POLICY_GAMEMASTERSERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameMasterServer( this ) );
 				break;
-			case BR::POLICY_SVR_GAMEMASTERSERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyGameMasterServer( this ) );
-				break;
-
-			case BR::POLICY_ENTITYSERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyEntityServer( this ) );
-				break;
-			case BR::POLICY_SVR_ENTITYSERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyEntityServer( this ) );
+			case POLICY_SVR_GAMEMASTERSERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameMasterServer( this ) );
 				break;
 
-			case BR::POLICY_GAMEPARTY:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyGameParty( this ) );
+			case POLICY_ENTITYSERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyEntityServer( this ) );
 				break;
-			case BR::POLICY_SVR_GAMEPARTY:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyGameParty( this ) );
-				break;
-
-			case BR::POLICY_CLUSTERSERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyClusterServer( this ) );
-				break;
-			case BR::POLICY_SVR_CLUSTERSERVER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyClusterServer( this ) );
+			case POLICY_SVR_ENTITYSERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyEntityServer( this ) );
 				break;
 
-			case BR::POLICY_PARTYMATCHING:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyPartyMatching( this ) );
+			case POLICY_GAMEPARTY:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameParty( this ) );
 				break;
-			case BR::POLICY_SVR_PARTYMATCHING:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyPartyMatching( this ) );
-				break;
-
-			case BR::POLICY_PARTYMATCHINGQUEUE:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyPartyMatchingQueue( this ) );
-				break;
-			case BR::POLICY_SVR_PARTYMATCHINGQUEUE:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyPartyMatchingQueue( this ) );
+			case POLICY_SVR_GAMEPARTY:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameParty( this ) );
 				break;
 
-			case BR::POLICY_GAMEINSTANCE:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyGameInstance( this ) );
+			case POLICY_CLUSTERSERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyClusterServer( this ) );
 				break;
-			case BR::POLICY_SVR_GAMEINSTANCE:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyGameInstance( this ) );
-				break;
-
-			case BR::POLICY_GAMEINSTANCEMANAGER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyGameInstanceManager( this ) );
-				break;
-			case BR::POLICY_SVR_GAMEINSTANCEMANAGER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyGameInstanceManager( this ) );
+			case POLICY_SVR_CLUSTERSERVER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyClusterServer( this ) );
 				break;
 
-			case BR::POLICY_GAMEPARTYMANAGER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyGamePartyManager( this ) );
+			case POLICY_PARTYMATCHING:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyPartyMatching( this ) );
 				break;
-			case BR::POLICY_SVR_GAMEPARTYMANAGER:
-				netMem( m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyGamePartyManager( this ) );
-				break;
-
-			case BR::POLICY_RANKING:
-				netMem(m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyRanking(this));
-				break;
-			case BR::POLICY_SVR_RANKING:
-				netMem(m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyRanking(this));
+			case POLICY_SVR_PARTYMATCHING:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyPartyMatching( this ) );
 				break;
 
-			case BR::POLICY_MONITORING:
-				netMem(m_pPolicy[uiPolicy] = new BR::Policy::NetPolicyMonitoring(this));
+			case POLICY_PARTYMATCHINGQUEUE:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyPartyMatchingQueue( this ) );
 				break;
-			case BR::POLICY_SVR_MONITORING:
-				netMem(m_pPolicy[uiPolicy] = new BR::Policy::NetSvrPolicyMonitoring(this));
+			case POLICY_SVR_PARTYMATCHINGQUEUE:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyPartyMatchingQueue( this ) );
+				break;
+
+			case POLICY_GAMEINSTANCE:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameInstance( this ) );
+				break;
+			case POLICY_SVR_GAMEINSTANCE:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameInstance( this ) );
+				break;
+
+			case POLICY_GAMEINSTANCEMANAGER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameInstanceManager( this ) );
+				break;
+			case POLICY_SVR_GAMEINSTANCEMANAGER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameInstanceManager( this ) );
+				break;
+
+			case POLICY_GAMEPARTYMANAGER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGamePartyManager( this ) );
+				break;
+			case POLICY_SVR_GAMEPARTYMANAGER:
+				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGamePartyManager( this ) );
+				break;
+
+			case POLICY_RANKING:
+				netMem(m_pPolicy[uiPolicy] = new Policy::NetPolicyRanking(this));
+				break;
+			case POLICY_SVR_RANKING:
+				netMem(m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyRanking(this));
+				break;
+
+			case POLICY_MONITORING:
+				netMem(m_pPolicy[uiPolicy] = new Policy::NetPolicyMonitoring(this));
+				break;
+			case POLICY_SVR_MONITORING:
+				netMem(m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyMonitoring(this));
 				break;
 
 			default:
@@ -206,7 +206,7 @@ namespace Net {
 	//
 
 	MsgQueue::MsgQueue( UINT uiNumElePerPage )
-		:BR::PageQueue<Message::MessageData*>( uiNumElePerPage )
+		:PageQueue<Message::MessageData*>( uiNumElePerPage )
 	{
 	}
 
@@ -219,7 +219,7 @@ namespace Net {
 	void MsgQueue::ClearQueue()
 	{
 		Message::MessageData* data = NULL;
-		HRESULT hr = S_OK;
+
 		while( Dequeue( data ) == S_OK )
 		{
 			if( data ) data->Release();
@@ -234,15 +234,15 @@ namespace Net {
 
 
 	Connection::Connection()
-		: m_socket(INVALID_SOCKET)
-		, m_usSeqNone(0)
-		, m_ulNetCtrlTime(DurationMS(0))
-		, m_ulNetCtrlTryTime(DurationMS(0))
+		: m_PendingSend(0)
+		, m_socket(INVALID_SOCKET)
 		, m_ulHeartbitTry(1000)
-		, m_ulConnectingTimeOut(15*1000)
+		, m_ulConnectingTimeOut(15 * 1000)
+		, m_usSeqNone(0)
 		, m_ulZeroLengthRecvCount(0)
 		, m_lPendingRecvCount(0)
-		, m_PendingSend(0)
+		, m_ulNetCtrlTime(DurationMS(0))
+		, m_ulNetCtrlTryTime(DurationMS(0))
 	{
 		memset( &m_Statistic, 0, sizeof(m_Statistic) );
 	}
@@ -251,25 +251,18 @@ namespace Net {
 	{
 		// Not need with abstract class
 		m_RecvQueue.ClearQueue();
-
-//#ifdef BR_SERVER
-//		for( INT iPolicy = 0; iPolicy < BR::POLICY_NETMAX; iPolicy++ )
-//#else
-//		for( INT iPolicy = 0; iPolicy < BR::POLICY_CLIENTNETMAX; iPolicy++ )
-//#endif
-//		{
-//			Util::SafeDelete(m_pPolicy[iPolicy]);
-//		}
 	}
 	
+	// Close connections socket handle
+	void Connection::CloseSocket()
+	{
+		if (m_socket != INVALID_SOCKET)
+		{
+			NetSystem::CloseSocket(m_socket);
+			SetSocket(INVALID_SOCKET);
+		}
+	}
 
-	//// from iSharedObj
-	//void Connection::DeleteThis() const
-	//{
-	//	Assert(GetRefCount() <= 0);
-	//	//AssertRel(!"Do not use this" );
-	//	delete this;
-	//}
 
 
 	HRESULT Connection::ClearQueues()
@@ -287,6 +280,7 @@ namespace Net {
 	HRESULT Connection::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
 		HRESULT hr = S_OK;
+		HRESULT hrTem;
 
 		MsgNetCtrl *pAckMsg = NULL;
 		Message::MessageData *pMsg = NULL;
@@ -311,10 +305,10 @@ namespace Net {
 
 		pMsg->UpdateChecksum();
 
-		HRESULT hrTem = GetNet()->SendMsg( this, pMsg );
+		hrTem = GetNet()->SendMsg( this, pMsg );
 		if( FAILED(hrTem) )
 		{
-			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:%0%, msg:{1:X8}, seq:%2%, hr={3:X8}", 
+			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							GetCID(), 
 							msgID.ID, 
 							uiSequence, 
@@ -347,7 +341,7 @@ namespace Net {
 
 		if( FAILED(hrConnect) )
 		{
-			netTrace(TRC_CONNECTION, "Connection failed CID:%0%, Dst=%1%:%2%, hr={3:X8}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort, hrConnect);
+			netTrace(TRC_CONNECTION, "Connection failed CID:{0}, Dst={1}:{2}, hr={3:X8}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort, hrConnect);
 			if (GetConnectionState() != IConnection::STATE_DISCONNECTED)
 			{
 				CloseConnection();
@@ -355,7 +349,9 @@ namespace Net {
 		}
 		else
 		{
-			netTrace( TRC_CONNECTION, "Connected CID:%0%, Dst=%1%:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
+			INet::Event netEvent(INet::Event::EVT_NEW_CONNECTION, this);
+
+			netTrace( TRC_CONNECTION, "Connected CID:{0}, Dst={1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
 			if (GetConnectionState() == IConnection::STATE_CONNECTING)
 			{
 				SetConnectionState(IConnection::STATE_CONNECTED);
@@ -363,7 +359,7 @@ namespace Net {
 
 				EnqueueConnectionEvent(IConnection::Event(IConnection::Event::EVT_STATE_CHANGE, GetConnectionState()));
 
-				GetNet()->EnqueueNetEvent( INet::Event( INet::Event::EVT_NEW_CONNECTION, this ) );
+				GetNet()->EnqueueNetEvent(netEvent);
 			}
 		}
 	}
@@ -440,10 +436,10 @@ namespace Net {
 
 			EnqueueConnectionEvent(IConnection::Event(IConnection::Event::EVT_STATE_CHANGE, GetConnectionState()));
 
-			netTrace( TRC_CONNECTION, "Entering Disconnect CID:%0%", GetCID() );
+			netTrace( TRC_CONNECTION, "Entering Disconnect CID:{0}", GetCID() );
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -464,7 +460,7 @@ namespace Net {
 		UpdateConnectionTime();
 		//m_tConnectionTime = 0;
 
-		netTrace( TRC_CONNECTION, "Connection Closed CID:%0%, Addr:%1%:%2%", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
+		netTrace( TRC_CONNECTION, "Connection Closed CID:{0}, Addr:{1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
 
 		EnqueueConnectionEvent(IConnection::Event(IConnection::Event::EVT_DISCONNECTED, GetConnectionState()));
 
@@ -505,7 +501,7 @@ namespace Net {
 		}
 		else if (FAILED(GetEventHandler()->OnRecvMessage(this, pMsg)))
 		{
-			netTrace(TRC_GUARREANTEDCTRL, "Failed to route a message to recv msg:%0%", msgID);
+			netTrace(TRC_GUARREANTEDCTRL, "Failed to route a message to recv msg:{0}", msgID);
 			if (pMsg != nullptr)
 			{
 				netChk(GetRecvQueue().Enqueue(pMsg));
@@ -560,12 +556,14 @@ namespace Net {
 			goto Proc_End;
 		}
 
-		Message::MessageHeader* pMsgHeader = pIMsg->GetMessageHeader();
-		UINT uiPolicy = pMsgHeader->msgID.IDs.Policy;
-		if( uiPolicy == 0 
-			|| uiPolicy >= BR::POLICY_NETMAX ) // invalid policy
 		{
-			netErr( E_NET_BADPACKET_NOTEXPECTED );
+			Message::MessageHeader* pMsgHeader = pIMsg->GetMessageHeader();
+			UINT uiPolicy = pMsgHeader->msgID.IDs.Policy;
+			if (uiPolicy == 0
+				|| uiPolicy >= POLICY_NETMAX) // invalid policy
+			{
+				netErr(E_NET_BADPACKET_NOTEXPECTED);
+			}
 		}
 
 	Proc_End:

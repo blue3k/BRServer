@@ -15,7 +15,7 @@
 #include "Common/ClassUtil.h"
 #include "Common/BrBaseTypes.h"
 #include "Common/DualSortedMap.h"
-#include "Common/Pagequeue.h"
+#include "Common/PageQueue.h"
 #include "Net/NetRawUDP.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
 

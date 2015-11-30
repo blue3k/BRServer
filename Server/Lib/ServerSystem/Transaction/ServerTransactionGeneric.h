@@ -38,13 +38,11 @@ namespace Svr {
 	template< class ServerEntityType, class PolicyType, class MessageType, class TransactionType, size_t MessageHandlerBufferSize = sizeof(TransactionMessageHandlerType)*2 >
 	class ServerStartedTrans : public MessageTransaction< ServerEntityType, PolicyType, MessageType, TransactionType, MessageHandlerBufferSize>
 	{
-	public:
+	private:
 		typedef MessageTransaction< ServerEntityType, PolicyType, MessageType, TransactionType, MessageHandlerBufferSize> super;
 
-	private:
-
 	public:
-		ServerStartedTrans( Message::MessageData* &pIMsg ) :MessageTransaction( pIMsg )
+		ServerStartedTrans( Message::MessageData* &pIMsg ) : super( pIMsg )
 		{
 		}
 
@@ -61,53 +59,53 @@ namespace Svr {
 			svrChk( super::StartTransaction() );
 
 			//GetMyOwner()->SetClusterID( GetClusterID() );
-			GetMyOwner()->SetReceivedServerStatus(true);
-			GetMyOwner()->SetEntityUID( EntityUID( GetRouteContext().GetFrom().GetServerID(), GetMyOwner()->GetEntityID() ) );
+			super::GetMyOwner()->SetReceivedServerStatus(true);
+			super::GetMyOwner()->SetEntityUID( EntityUID(super::GetRouteContext().GetFrom().GetServerID(), super::GetMyOwner()->GetEntityID() ) );
 
 			// check about already registered server
-			if( SUCCEEDED(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetRouteContext().GetFrom().GetServerID(), pServerEntity )) )
+			if( SUCCEEDED(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(super::GetRouteContext().GetFrom().GetServerID(), pServerEntity )) )
 			{
-				if( pServerEntity != GetMyOwner() )
+				if( pServerEntity != super::GetMyOwner() )
 				{
 					Net::IConnection *pAlreadyConn = pServerEntity->GetConnection();
-					Net::IConnection *pMyConn = GetMyOwner()->GetConnection();
+					Net::IConnection *pMyConn = super::GetMyOwner()->GetConnection();
 					NetAddress AlreadyAddr(0), MyAddr(0);
 					if( pAlreadyConn )
 						AlreadyAddr = pAlreadyConn->GetConnectionInfo().Remote;
 					if( pMyConn )
 						MyAddr = pMyConn->GetConnectionInfo().Remote;
 
-					svrTrace( Trace::TRC_ASSERT, "Error, Duplicated ServerID:%0% : Already from : %1%:%2%, New %3%:%4%", GetRouteContext().GetFrom().GetServerID(), pAlreadyConn->GetCID(), AlreadyAddr, pMyConn->GetCID(), MyAddr );
+					svrTrace( Trace::TRC_ASSERT, "Error, Duplicated ServerID:{0} : Already from : {1}:{2}, New {3}:{4}", super::GetRouteContext().GetFrom().GetServerID(), pAlreadyConn->GetCID(), AlreadyAddr, pMyConn->GetCID(), MyAddr );
 				}
 				else
 				{
-					GetMyOwner()->SetPublicNetAddress( GetPublicAddress() );
+					super::GetMyOwner()->SetPublicNetAddress(super::GetPublicAddress() );
 				}
 			}
 			else
 			{
-				GetMyOwner()->SetPublicNetAddress( GetPublicAddress() );
+				super::GetMyOwner()->SetPublicNetAddress(super::GetPublicAddress() );
 			}
 
-			GetMyOwner()->SetPrivateNetAddress(GetPrivateAddress());
+			super::GetMyOwner()->SetPrivateNetAddress(super::GetPrivateAddress());
 
-			GetMyOwner()->SetServerUpTime(TimeStampSec(DurationSec(GetStartUpTime())) );
+			super::GetMyOwner()->SetServerUpTime(TimeStampSec(DurationSec(super::GetStartUpTime())) );
 
 		Proc_End:
 
-			CloseTransaction(hr);
+			super::CloseTransaction(hr);
 
 			return hr;
 		}
 	};
 
 
-	class GenericServerStartedTrans : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyServer, Message::Server::ServerConnectedC2SEvt, GenericServerStartedTrans>
+	class GenericServerStartedTrans : public ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyServer, Message::Server::ServerConnectedC2SEvt, GenericServerStartedTrans>
 	{
 	private:
 
 	public:
-		GenericServerStartedTrans( Message::MessageData* &pIMsg ) :ServerStartedTrans(pIMsg) {}
+		GenericServerStartedTrans( Message::MessageData* &pIMsg ) : ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyServer, Message::Server::ServerConnectedC2SEvt, GenericServerStartedTrans>(pIMsg) {}
 		virtual ~GenericServerStartedTrans() {}
 	};
 

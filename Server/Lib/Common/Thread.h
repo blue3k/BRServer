@@ -123,5 +123,5 @@ namespace BR
 #include "Thread.inl"
 
 
-}; // namespace BR
+} // namespace BR
 

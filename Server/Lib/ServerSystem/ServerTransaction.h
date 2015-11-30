@@ -58,7 +58,7 @@ namespace Svr {
 
 	public:
 		ServerEntityMessageTransaction( Message::MessageData* &pIMsg )
-			:TransactionT( TransactionID() )
+			:superTrans( TransactionID() )
 			,MessageClass( pIMsg )
 			,m_ServerEntity(nullptr)
 			,m_WorkOnServerEntity(true)
@@ -77,18 +77,18 @@ namespace Svr {
 
 		HRESULT ParseMessage()
 		{
-			HRESULT hr = ParseMsg();
+			HRESULT hr = MessageClass::ParseMsg();
 			if (SUCCEEDED(hr))
 			{
-				if (GetMessage()->GetMessageHeader()->msgID.IDs.Type == BR::Message::MSGTYPE_COMMAND)
+				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
 					if(MessageClass::HasContext)
 					{
-						SetParentTransID(GetContext());
+						superTrans::SetParentTransID(MessageClass::GetContext());
 					}
 					else if(MessageClass::HasRouteContext)
 					{
-						SetMessageRouteContext(GetRouteContext());
+						superTrans::SetMessageRouteContext(MessageClass::GetRouteContext());
 					}
 				}
 			}
@@ -116,9 +116,9 @@ namespace Svr {
 				if(MessageClass::HasRouteContext)
 				{
 					SharedPointerT<Entity> pEntity;
-					if (FAILED(FindEntity(GetRouteContext().GetTo().GetEntityID(), pEntity)))
+					if (FAILED(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity)))
 					{
-						svrTrace(Trace::TRC_ERROR, "Target entity:%0% for transaction:%1% is not found", GetRouteContext().GetTo(), typeid(*this).name());
+						svrTrace(Trace::TRC_ERROR, "Target entity:{0} for transaction:{1} is not found", MessageClass::GetRouteContext().GetTo(), typeid(*this).name());
 						hr = E_SVR_INVALID_ENTITYUID;
 						goto Proc_End;
 					}
@@ -163,8 +163,8 @@ namespace Svr {
 
 		FORCEINLINE OwnerEntityType* GetMyOwner()
 		{
-			Assert( GetOwnerEntity() );
-			return dynamic_cast<OwnerEntityType*>(GetOwnerEntity());
+			Assert(superTrans::GetOwnerEntity() );
+			return dynamic_cast<OwnerEntityType*>(superTrans::GetOwnerEntity());
 		}
 
 	};
@@ -178,27 +178,30 @@ namespace Svr {
 	template< class OwnerEntityType, class MessageClass, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(Svr::TransactionMessageHandlerType)*2 >
 	class ClusterEntityMessageTransaction : public ServerEntityMessageTransaction<OwnerEntityType,MessageClass,MemoryPoolClass,MessageHandlerBufferSize>
 	{
-	protected:
+	private:
+		typedef ServerEntityMessageTransaction<OwnerEntityType, MessageClass, MemoryPoolClass, MessageHandlerBufferSize> super;
 
 	public:
 		ClusterEntityMessageTransaction( Message::MessageData* &pIMsg )
-			:ServerEntityMessageTransaction( pIMsg )
+			:super( pIMsg )
 		{
-			m_WorkOnServerEntity = false;
+			super::m_WorkOnServerEntity = false;
 		}
 
 		// 
 		bool IsThisDataMessageTransaction()
 		{
-			return GetMessageUsage() == MessageUsage_ClusterDataWrite || GetMessageUsage() == MessageUsage_ClusterDataRead;
+			return super::GetMessageUsage() == Message::MessageUsage_ClusterDataWrite || super::GetMessageUsage() == Message::MessageUsage_ClusterDataRead;
 		}
 
 		// Toss a message to a target
 		HRESULT TossMessageToTarget( ServerServiceInformation* pService )
 		{
 			HRESULT hr = S_OK;
+			Net::IConnection *pConn = nullptr;
 			ClusteredServiceEntity *pMyOwner = nullptr;
-			pMyOwner = GetMyOwner();
+			Message::MessageData *pClonedMessage = nullptr;
+			pMyOwner = super::GetMyOwner();
 
 
 			svrChkPtr(pService);
@@ -206,22 +209,22 @@ namespace Svr {
 			if( pService->GetEntityUID() == pMyOwner->GetEntityUID() )
 				goto Proc_End;
 
-			Net::IConnection *pConn = pService->GetServerEntity()->GetConnection();
+			pConn = pService->GetServerEntity()->GetConnection();
 			if( pConn == nullptr )
 			{
-				svrTrace( Trace::TRC_ERROR, "Failed routing a message(%0%) for %1%", GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
+				svrTrace( Trace::TRC_ERROR, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
 				svrErr(E_SVR_CLUSTER_NOTREADY);
 			}
 
 			if (pConn->GetConnectionState() != Net::IConnection::STATE_CONNECTED)
 				goto Proc_End;
 
-			MessageClass::OverrideRouteInformation( pService->GetEntityUID(), GetRouteHopCount() + 1 );
+			MessageClass::OverrideRouteInformation( pService->GetEntityUID(), super::GetRouteHopCount() + 1 );
 
-			Message::MessageData *pClonedMessage = GetMessage()->Clone();
+			pClonedMessage = super::GetMessage()->Clone();
 			if( pClonedMessage == nullptr )
 			{
-				svrTrace( Trace::TRC_ERROR, "Failed routing a message(%0%) for %1%, Out of memory", GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
+				svrTrace( Trace::TRC_ERROR, "Failed routing a message({0}) for {1}, Out of memory", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
 				goto Proc_End;
 			}
 
@@ -242,17 +245,17 @@ namespace Svr {
 
 			ClusteredServiceEntity *pMyOwner = nullptr;
 
-			svrChkPtr(GetOwnerEntity());
+			svrChkPtr(super::GetOwnerEntity());
 
-			pMyOwner = GetMyOwner();
+			pMyOwner = super::GetMyOwner();
 
-			if( IsClosed() ) return hr;
+			if(super::IsClosed() ) return hr;
 
-			switch( GetMessageUsage() )
+			switch(super::GetMessageUsage() )
 			{
 			case Message::MessageUsage_ClusterStatusRead:
 				// No broadcast in any case
-				OnCloseTransaction(hrRes);
+				super::OnCloseTransaction(hrRes);
 				break;
 			case Message::MessageUsage_ClusterStatusWrite:
 				// broadcast all the time
@@ -260,12 +263,12 @@ namespace Svr {
 				if( MessageClass::HasRouteHopCount )
 				{
 					// Hop count 1 is the maximum number with replica clustring model
-					if( GetRouteHopCount() >= 1 )
+					if(super::GetRouteHopCount() >= 1 )
 						break;
 
-					Assert( GetRouteHopCount() == 0 );
+					Assert(super::GetRouteHopCount() == 0 );
 				}
-				OnCloseTransaction(hrRes);
+				super::OnCloseTransaction(hrRes);
 				break;
 			case Message::MessageUsage_ClusterDataRead:
 				// If data read failed on this we need to send it to Next ring
@@ -273,12 +276,12 @@ namespace Svr {
 				{
 					hr = TossToNextRing();
 					if( FAILED(hr) ) 
-						OnCloseTransaction(hrRes);
+						super::OnCloseTransaction(hrRes);
 					svrChk( hr );
 				}
 				else
 				{
-					OnCloseTransaction(hrRes);
+					super::OnCloseTransaction(hrRes);
 				}
 				break;
 			case Message::MessageUsage_ClusterDataWrite:
@@ -291,19 +294,19 @@ namespace Svr {
 				if( MessageClass::HasRouteHopCount )
 				{
 					// Hop count 1 is the maximum number with replica clustring model
-					if( GetRouteHopCount() >= 1 )
+					if(super::GetRouteHopCount() >= 1 )
 						break;
 				}
-				OnCloseTransaction(hrRes);
+				super::OnCloseTransaction(hrRes);
 				break;
 			default:
-				OnCloseTransaction(hrRes);
+				super::OnCloseTransaction(hrRes);
 				break;
 			}
 
 		Proc_End:
 
-			SetClosed();
+			super::SetClosed();
 
 			return hr;
 		}
@@ -315,7 +318,7 @@ namespace Svr {
 			HRESULT hr = S_OK;
 
 			ClusteredServiceEntity *pMyOwner = nullptr;
-			pMyOwner = GetMyOwner();
+			pMyOwner = super::GetMyOwner();
 
 			// Only the master and an entity server can broadcast in replica model
 			if( pMyOwner->GetClusterType() == ClusterType::Replication && pMyOwner->GetClusterMembership() != ClusterMembership::Master
@@ -325,7 +328,7 @@ namespace Svr {
 			if( MessageClass::HasRouteHopCount )
 			{
 				// Hop count 1 is the maximum number with replica clustring model
-				if( GetRouteHopCount() >= 1 )
+				if(super::GetRouteHopCount() >= 1 )
 					return hr;
 			}
 
@@ -357,7 +360,7 @@ namespace Svr {
 
 				// Only status write will be broadcasted to the watchers
 				if( pService->GetClusterMembership() == ClusterMembership::StatusWatcher
-					&& ( GetMessageUsage() != Message::MessageUsage_ClusterStatusWrite ) )
+					&& (super::GetMessageUsage() != Message::MessageUsage_ClusterStatusWrite ) )
 				{
 					return;
 				}
@@ -365,7 +368,7 @@ namespace Svr {
 				TossMessageToTarget( pService );
 			});
 
-		Proc_End:
+		//Proc_End:
 
 			return hr;
 		}
@@ -380,7 +383,7 @@ namespace Svr {
 
 			svrAssert( pMyOwner->GetClusterType() != ClusterType::Ring );
 
-			pMyOwner = dynamic_cast<RingClusterServiceEntity *>(GetMyOwner());
+			pMyOwner = dynamic_cast<RingClusterServiceEntity *>(super::GetMyOwner());
 			svrChkPtr(pMyOwner);
 			pMyOwner->GetNextRing( pMyOwner->GetMyServiceInfo(), pNextService );
 

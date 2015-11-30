@@ -51,7 +51,7 @@ namespace BR
 
 
 			// constructor
-			Buffer::Buffer()
+			Buffer()
 			{
 				// initializing Buffer state as Free
 				State = STATE_FREE; 

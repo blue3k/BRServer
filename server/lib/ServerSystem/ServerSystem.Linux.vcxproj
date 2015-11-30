@@ -33,7 +33,7 @@
     <ClCompile Include="GameLog\ChattingHistory.cpp" />
     <ClCompile Include="Google\GoogleAndroidDeveloperAPI.cpp" />
     <ClCompile Include="Google\GoogleOAuth.cpp" />
-    <ClCompile Include="LoopbackConnection.cpp" />
+    <ClCompile Include="SvrLoopbackConnection.cpp" />
     <ClCompile Include="MasterEntity.cpp" />
     <ClCompile Include="ParallelTransaction.cpp" />
     <ClCompile Include="PerformanceCounter\PerformanceCounter.cpp" />
@@ -115,7 +115,7 @@
     <ClInclude Include="GameSystem.h" />
     <ClInclude Include="Google\GoogleAndroidDeveloperAPI.h" />
     <ClInclude Include="Google\GoogleOAuth.h" />
-    <ClInclude Include="LoopbackConnection.h" />
+    <ClInclude Include="SvrLoopbackConnection.h" />
     <ClInclude Include="MasterEntity.h" />
     <ClInclude Include="MessageHandlerTable.h" />
     <ClInclude Include="MessageRoute.h" />

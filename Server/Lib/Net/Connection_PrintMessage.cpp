@@ -50,22 +50,22 @@ namespace Net {
 
 	void RegisterConnectionDebugMessage()
 	{
-		BR::Message::Debug::RegisterDebugTraceLogin( );
-		BR::Message::Debug::RegisterDebugTraceLoginServer( );
-		BR::Message::Debug::RegisterDebugTraceGame( );
-		BR::Message::Debug::RegisterDebugTraceServer( );
-		BR::Message::Debug::RegisterDebugTraceGameServer( );
-		BR::Message::Debug::RegisterDebugTraceGameParty( );
-		BR::Message::Debug::RegisterDebugTraceGamePartyManager();
-		BR::Message::Debug::RegisterDebugTraceGameMasterServer( );
-		BR::Message::Debug::RegisterDebugTraceEntityServer( );
-		BR::Message::Debug::RegisterDebugTraceClusterServer( );
-		BR::Message::Debug::RegisterDebugTracePartyMatching( );
-		BR::Message::Debug::RegisterDebugTracePartyMatchingQueue( );
-		BR::Message::Debug::RegisterDebugTraceGameInstance();
-		BR::Message::Debug::RegisterDebugTraceGameInstanceManager();
-		BR::Message::Debug::RegisterDebugTraceRanking();
-		BR::Message::Debug::RegisterDebugTraceMonitoring();
+		Message::Debug::RegisterDebugTraceLogin( );
+		Message::Debug::RegisterDebugTraceLoginServer( );
+		Message::Debug::RegisterDebugTraceGame( );
+		Message::Debug::RegisterDebugTraceServer( );
+		Message::Debug::RegisterDebugTraceGameServer( );
+		Message::Debug::RegisterDebugTraceGameParty( );
+		Message::Debug::RegisterDebugTraceGamePartyManager();
+		Message::Debug::RegisterDebugTraceGameMasterServer( );
+		Message::Debug::RegisterDebugTraceEntityServer( );
+		Message::Debug::RegisterDebugTraceClusterServer( );
+		Message::Debug::RegisterDebugTracePartyMatching( );
+		Message::Debug::RegisterDebugTracePartyMatchingQueue( );
+		Message::Debug::RegisterDebugTraceGameInstance();
+		Message::Debug::RegisterDebugTraceGameInstanceManager();
+		Message::Debug::RegisterDebugTraceRanking();
+		Message::Debug::RegisterDebugTraceMonitoring();
 	}
 
 	void Connection::PrintDebugMessage( const char* strPrefix, Message::MessageData *pMsg )
@@ -79,69 +79,69 @@ namespace Net {
 
 		switch( pMsg->GetMessageHeader()->msgID.IDs.Policy )
 		{
-		case BR::POLICY_LOGIN:
-		case BR::POLICY_SVR_LOGIN:
-			BR::Message::Debug::DebugOutLogin( strPrefix, pMsg );
+		case POLICY_LOGIN:
+		case POLICY_SVR_LOGIN:
+			Message::Debug::DebugOutLogin( strPrefix, pMsg );
 			break;
-		case BR::POLICY_LOGINSERVER:
-		case BR::POLICY_SVR_LOGINSERVER:
-			BR::Message::Debug::DebugOutLoginServer( strPrefix, pMsg );
+		case POLICY_LOGINSERVER:
+		case POLICY_SVR_LOGINSERVER:
+			Message::Debug::DebugOutLoginServer( strPrefix, pMsg );
 			break;
-		case BR::POLICY_GAME:
-		case BR::POLICY_SVR_GAME:
-			BR::Message::Debug::DebugOutGame( strPrefix, pMsg );
+		case POLICY_GAME:
+		case POLICY_SVR_GAME:
+			Message::Debug::DebugOutGame( strPrefix, pMsg );
 			break;
-		case BR::POLICY_SERVER:
-		case BR::POLICY_SVR_SERVER:
-			BR::Message::Debug::DebugOutServer( strPrefix, pMsg );
+		case POLICY_SERVER:
+		case POLICY_SVR_SERVER:
+			Message::Debug::DebugOutServer( strPrefix, pMsg );
 			break;
-		case BR::POLICY_GAMESERVER:
-		case BR::POLICY_SVR_GAMESERVER:
-			BR::Message::Debug::DebugOutGameServer( strPrefix, pMsg );
+		case POLICY_GAMESERVER:
+		case POLICY_SVR_GAMESERVER:
+			Message::Debug::DebugOutGameServer( strPrefix, pMsg );
 			break;
-		case BR::POLICY_GAMEPARTY:
-		case BR::POLICY_SVR_GAMEPARTY:
-			BR::Message::Debug::DebugOutGameParty( strPrefix, pMsg );
+		case POLICY_GAMEPARTY:
+		case POLICY_SVR_GAMEPARTY:
+			Message::Debug::DebugOutGameParty( strPrefix, pMsg );
 			break;
-		case BR::POLICY_GAMEMASTERSERVER:
-		case BR::POLICY_SVR_GAMEMASTERSERVER:
-			BR::Message::Debug::DebugOutGameMasterServer( strPrefix, pMsg );
+		case POLICY_GAMEMASTERSERVER:
+		case POLICY_SVR_GAMEMASTERSERVER:
+			Message::Debug::DebugOutGameMasterServer( strPrefix, pMsg );
 			break;
-		case BR::POLICY_ENTITYSERVER:
-		case BR::POLICY_SVR_ENTITYSERVER:
-			BR::Message::Debug::DebugOutEntityServer( strPrefix, pMsg );
+		case POLICY_ENTITYSERVER:
+		case POLICY_SVR_ENTITYSERVER:
+			Message::Debug::DebugOutEntityServer( strPrefix, pMsg );
 			break;
-		case BR::POLICY_CLUSTERSERVER:
-		case BR::POLICY_SVR_CLUSTERSERVER:
-			BR::Message::Debug::DebugOutClusterServer( strPrefix, pMsg );
+		case POLICY_CLUSTERSERVER:
+		case POLICY_SVR_CLUSTERSERVER:
+			Message::Debug::DebugOutClusterServer( strPrefix, pMsg );
 			break;
-		case BR::POLICY_PARTYMATCHING:
-		case BR::POLICY_SVR_PARTYMATCHING:
-			BR::Message::Debug::DebugOutPartyMatching( strPrefix, pMsg );
+		case POLICY_PARTYMATCHING:
+		case POLICY_SVR_PARTYMATCHING:
+			Message::Debug::DebugOutPartyMatching( strPrefix, pMsg );
 			break;
-		case BR::POLICY_PARTYMATCHINGQUEUE:
-		case BR::POLICY_SVR_PARTYMATCHINGQUEUE:
-			BR::Message::Debug::DebugOutPartyMatchingQueue( strPrefix, pMsg );
+		case POLICY_PARTYMATCHINGQUEUE:
+		case POLICY_SVR_PARTYMATCHINGQUEUE:
+			Message::Debug::DebugOutPartyMatchingQueue( strPrefix, pMsg );
 			break;
-		case BR::POLICY_GAMEINSTANCE:
-		case BR::POLICY_SVR_GAMEINSTANCE:
-			BR::Message::Debug::DebugOutGameInstance( strPrefix, pMsg );
+		case POLICY_GAMEINSTANCE:
+		case POLICY_SVR_GAMEINSTANCE:
+			Message::Debug::DebugOutGameInstance( strPrefix, pMsg );
 			break;
-		case BR::POLICY_GAMEINSTANCEMANAGER:
-		case BR::POLICY_SVR_GAMEINSTANCEMANAGER:
-			BR::Message::Debug::DebugOutGameInstanceManager( strPrefix, pMsg );
+		case POLICY_GAMEINSTANCEMANAGER:
+		case POLICY_SVR_GAMEINSTANCEMANAGER:
+			Message::Debug::DebugOutGameInstanceManager( strPrefix, pMsg );
 			break;
-		case BR::POLICY_GAMEPARTYMANAGER:
-		case BR::POLICY_SVR_GAMEPARTYMANAGER:
-			BR::Message::Debug::DebugOutGamePartyManager(strPrefix, pMsg);
+		case POLICY_GAMEPARTYMANAGER:
+		case POLICY_SVR_GAMEPARTYMANAGER:
+			Message::Debug::DebugOutGamePartyManager(strPrefix, pMsg);
 			break;
-		case BR::POLICY_RANKING:
-		case BR::POLICY_SVR_RANKING:
-			BR::Message::Debug::DebugOutRanking(strPrefix, pMsg);
+		case POLICY_RANKING:
+		case POLICY_SVR_RANKING:
+			Message::Debug::DebugOutRanking(strPrefix, pMsg);
 			break;
-		case BR::POLICY_MONITORING:
-		case BR::POLICY_SVR_MONITORING:
-			BR::Message::Debug::DebugOutMonitoring(strPrefix, pMsg);
+		case POLICY_MONITORING:
+		case POLICY_SVR_MONITORING:
+			Message::Debug::DebugOutMonitoring(strPrefix, pMsg);
 			break;
 		default:
 			netTrace( TRC_NETCTRL, "Invalid MsgID for Debug %0%", pMsg->GetMessageHeader()->msgID );

@@ -33,10 +33,13 @@ namespace Svr {
 
 	// Constructor/Destructor
 	TaskWorker::TaskWorker( TaskManager* pTaskManager, int iQueuePageSize )
-		:m_pTaskManager(pTaskManager),
-		m_PendingAddTask(iQueuePageSize),
-		m_PendingRemoveTask(iQueuePageSize),
-		m_ulLoopInterval(20)
+		: m_pTaskManager(pTaskManager)
+		, m_GroupWorkLoad(0)
+		, m_GroupWorkLoadDiff(0)
+		, m_GroupID(0)
+		, m_ulLoopInterval(20)
+		, m_PendingAddTask(iQueuePageSize)
+		, m_PendingRemoveTask(iQueuePageSize)
 	{
 	}
 
@@ -237,6 +240,8 @@ namespace Svr {
 			case EventTask::EventTypes::POKE_TICK_EVENT:
 				tickTask->TickUpdate();
 				continue;
+			default:
+				break;
 			};
 
 			if (FAILED(tickTask->OnEventTask(pEvtTask)))
@@ -297,7 +302,7 @@ namespace Svr {
 
 
 
-	BR::SyncCounter	TaskManager::stm_GroupIDGen;
+	SyncCounter	TaskManager::stm_GroupIDGen;
 
 
 	// Constructor/Destructor
@@ -317,7 +322,7 @@ namespace Svr {
 
 		// decrease case not allowed
 		if( m_TaskGroups.size() >= WorkGroupCount )
-			return E_ABORT;
+			return E_INVALID_ARG;
 
 		for (size_t iGroup = m_TaskGroups.size(); iGroup < WorkGroupCount; iGroup++)
 		{
@@ -417,10 +422,11 @@ namespace Svr {
 	HRESULT TaskManager::RemoveTickTask( TickTask *pTask )
 	{
 		HRESULT hr = S_OK;
+		SysUInt groupID;
 
 		svrChkPtr(pTask);
 
-		auto groupID = pTask->GetTaskGroupID();
+		groupID = pTask->GetTaskGroupID();
 		if (groupID <= 0 || groupID > m_TaskGroups.GetSize())
 			return E_UNEXPECTED;
 

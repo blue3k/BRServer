@@ -82,8 +82,12 @@ namespace BR {
 
 #include "PerformanceCounterInstance.inl"
 
-	}; // namespace BR
-}; // namespace Svr
+	}; // namespace Svr
+
+	extern template class SharedPointerT < Svr::PerformanceCounterInstance >;
+	extern template class WeakPointerT < Svr::PerformanceCounterInstance >;
+
+}; // namespace BR
 
 
 

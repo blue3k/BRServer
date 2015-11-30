@@ -44,8 +44,8 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		SOCKET socket = INVALID_SOCKET;
-		INT iOptValue, iOptLen;
-		BOOL bOptValue = 0;
+		INT iOptValue;
+		int bOptValue = 0;
 		sockaddr_in6 bindAddr;
 		NetAddress myAddress;
 
@@ -72,7 +72,8 @@ namespace Net {
 
 		netTrace(Trace::TRC_TRACE, "RawUDP: Opening UDP Net {0}:{1}", m_LocalAddress.strAddr, m_LocalAddress.usPort);
 
-		socket = WSASocket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+		//socket = WSASocket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+		socket = NetSystem::Socket(SockFamily::IPV6, SockType::DataGram);
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Failed to Open RawUDP Socket {0:X8}", GetLastWSAHRESULT());
@@ -94,7 +95,8 @@ namespace Net {
 		}
 
 		iOptValue = 0;
-		iOptLen = sizeof(iOptValue);
+#if WINDOWS
+		INT iOptLen = sizeof(iOptValue);
 		if (getsockopt(socket, SOL_SOCKET, SO_MAX_MSG_SIZE, (char *)&iOptValue, &iOptLen) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Failed to get socket option SO_MAX_MSG_SIZE = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
@@ -105,6 +107,7 @@ namespace Net {
 			netTrace(Trace::TRC_WARN, "RawUDP: Socket max packet size too small, Change to socket maximum SocketMax={0}, SvrMax={1}, err = {2:X8}", iOptValue, (UINT)Const::PACKET_SIZE_MAX, GetLastWSAHRESULT());
 			//Const::PACKET_SIZE_MAX = iOptValue;
 		}
+#endif
 
 		bOptValue = TRUE;
 		if (setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&bOptValue, sizeof(bOptValue)) == SOCKET_ERROR)
@@ -124,7 +127,7 @@ namespace Net {
 		bindAddr = m_LocalSockAddress;
 		bindAddr.sin6_family = AF_INET6;
 		bindAddr.sin6_addr = in6addr_any;
-		if (bind(socket, (SOCKADDR*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
+		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT());
 			netErr(E_UNEXPECTED);
@@ -132,7 +135,7 @@ namespace Net {
 		m_LocalSockAddress = bindAddr;
 
 
-		netChk(NetSystem::RegisterSocket(socket, this));
+		netChk(NetSystem::RegisterSocket(socket, this, false));
 
 		m_Socket = socket;
 		socket = INVALID_SOCKET;
@@ -154,9 +157,9 @@ namespace Net {
 			TerminateNet();
 
 		if (socket != INVALID_SOCKET)
-			closesocket(socket);
+			NetSystem::CloseSocket(socket);
 
-		netTrace(TRC_NET, "RawUDP: Opened %0%, hr={1:X8}", m_LocalAddress, hr);
+		netTrace(TRC_NET, "RawUDP: Opened {0}, hr={1:X8}", m_LocalAddress, hr);
 
 		return hr;
 	}
@@ -167,50 +170,78 @@ namespace Net {
 
 		if (GetSocket() != INVALID_SOCKET)
 		{
-			closesocket(GetSocket());
+			NetSystem::CloseSocket(GetSocket());
 			m_Socket = INVALID_SOCKET;
 		}
 
 		NetSystem::CloseSystem();
 
 
-	Proc_End:
+	//Proc_End:
 
-		netTrace(TRC_NET, "RawUDP Close %0%, hr={1}", m_LocalAddress, hr);
+		netTrace(TRC_NET, "RawUDP Close {0}, hr={1}", m_LocalAddress, hr);
 
 		return hr;
 	}
 
 	HRESULT RawUDP::PendingRecv(IOBUFFER_READ *pOver)
 	{
-		HRESULT hr = S_OK;
-		INT iErr = 0, iErr2 = 0;
+		HRESULT hr = S_OK, hrErr = S_OK;
+
+		if (!NetSystem::IsProactorSystem())
+			return S_OK;
 
 
 		pOver->SetupRecvUDP(0);
 
-		while ((iErr = WSARecvFrom(GetSocket(), &pOver->wsaBuff, 1, NULL, &pOver->dwFlags, (sockaddr*)&pOver->From, &pOver->iSockLen, pOver, nullptr)) == SOCKET_ERROR)
+		while (1)
 		{
-			iErr2 = WSAGetLastError();
-			switch (iErr2)
+			hrErr = NetSystem::RecvFrom(GetSocket(), pOver);
+			switch (hrErr)
 			{
-			case WSA_IO_PENDING:
+			case S_OK:
+			case E_NET_IO_PENDING:
+			case E_NET_TRY_AGAIN:
+			case E_NET_WOULDBLOCK:
 				goto Proc_End;// success
 				break;
-			case WSAENETUNREACH:
-			case WSAECONNABORTED:
-			case WSAECONNRESET:
-			case WSAENETRESET:
+			case E_NET_NETUNREACH:
+			case E_NET_CONNABORTED:
+			case E_NET_CONNRESET:
+			case E_NET_NETRESET:
 				// some remove has problem with continue connection
-				netTrace(TRC_NETCTRL, "UDP Remote has connection error err=%0%, %1%", iErr2, pOver->From);
+				netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pOver->From);
 				//break;
 			default:
 				// Unknown error
-				netTrace(TRC_RECVRAW, "UDP Read Pending failed err=%0%, hr={1}", iErr2, HRESULT_FROM_WIN32(iErr2));
+				netTrace(TRC_RECVRAW, "UDP Read Pending failed err={0:X8}", hrErr);
 				//netErr( HRESULT_FROM_WIN32(iErr2) );
 				break;
 			};
 		}
+
+		//while ((iErr = WSARecvFrom(GetSocket(), &pOver->wsaBuff, 1, NULL, &pOver->dwFlags, (sockaddr*)&pOver->From, &pOver->iSockLen, pOver, nullptr)) == SOCKET_ERROR)
+		//{
+		//	iErr2 = WSAGetLastError();
+		//	switch (iErr2)
+		//	{
+		//	case WSA_IO_PENDING:
+		//		goto Proc_End;// success
+		//		break;
+		//	case WSAENETUNREACH:
+		//	case WSAECONNABORTED:
+		//	case WSAECONNRESET:
+		//	case WSAENETRESET:
+		//		// some remove has problem with continue connection
+		//		netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0}, {1}", iErr2, pOver->From);
+		//		//break;
+		//	default:
+		//		// Unknown error
+		//		netTrace(TRC_RECVRAW, "UDP Read Pending failed err={0}, hr={1}", iErr2, HRESULT_FROM_WIN32(iErr2));
+		//		//netErr( HRESULT_FROM_WIN32(iErr2) );
+		//		break;
+		//	};
+		//}
 
 	Proc_End:
 
@@ -220,52 +251,74 @@ namespace Net {
 	// Send message to connection with network device
 	HRESULT RawUDP::SendMsg(const sockaddr_in6& dest, Message::MessageData *pMsg)
 	{
-		HRESULT hr = S_OK;
-		int iWSAErr = 0;
+		HRESULT hr = S_OK, hrErr = S_OK;
 
 		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
-		IOBUFFER_WRITE *pOverlapped = nullptr;
 
-		UINT length = 0;
-		BYTE* pDataPtr = nullptr;
-		pMsg->GetLengthNDataPtr(length, pDataPtr);
+		//UINT length = 0;
+		//BYTE* pDataPtr = nullptr;
+		//pMsg->GetLengthNDataPtr(length, pDataPtr);
 		//Assert(length == 0 || pMsg->GetMessageHeader()->Crc32 != 0 || pMsg->GetMessageHeader()->msgID.IDs.Policy == POLICY_NONE);
 
-
+		IOBUFFER_WRITE *pOverlapped = nullptr;
 		netChk(Net::NetSystem::AllocBuffer(pOverlapped));
-
 		pOverlapped->SetupSendUDP(pMsg);
 
-		if (WSASendTo(m_Socket, &pOverlapped->wsaBuff, 1, nullptr, 0,
-			(sockaddr*)&dest, sizeof(sockaddr_in6),
-			pOverlapped, nullptr) == SOCKET_ERROR)
+
+		hrErr = NetSystem::SendTo(m_Socket, dest, pOverlapped);
+		switch (hrErr)
 		{
-			iWSAErr = WSAGetLastError();
-			if (iWSAErr != WSA_IO_PENDING)
-			{
-				switch (iWSAErr)
-				{
-				case WSAECONNABORTED:
-				case WSAECONNRESET:
-				case WSAENETRESET:
-				case WSAENOTCONN:
-				case WSAENOTSOCK:
-				case WSAESHUTDOWN:
-					// Send fail by connection close
-					// Need to disconnect
-					netErrSilent(E_NET_CONNECTION_CLOSED);
-					break;
-				default:
-					netErr(E_NET_IO_SEND_FAIL);
-					break;
-				};
-			}
-		}
-		else
-		{
-			// Send done will be handled by IOCP
-		}
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			break;
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+		case E_NET_NOTCONN:
+		case E_NET_NOTSOCK:
+		case E_NET_SHUTDOWN:
+			// Send fail by connection close
+			// Need to disconnect
+			netErrSilent(E_NET_CONNECTION_CLOSED);
+			goto Proc_End;
+			break;
+		default:
+			netErr(E_NET_IO_SEND_FAIL);
+			break;
+		};
+
+		//if (WSASendTo(m_Socket, &pOverlapped->wsaBuff, 1, nullptr, 0,
+		//	(sockaddr*)&dest, sizeof(sockaddr_in6),
+		//	pOverlapped, nullptr) == SOCKET_ERROR)
+		//{
+		//	iWSAErr = WSAGetLastError();
+		//	if (iWSAErr != WSA_IO_PENDING)
+		//	{
+		//		switch (iWSAErr)
+		//		{
+		//		case WSAECONNABORTED:
+		//		case WSAECONNRESET:
+		//		case WSAENETRESET:
+		//		case WSAENOTCONN:
+		//		case WSAENOTSOCK:
+		//		case WSAESHUTDOWN:
+		//			// Send fail by connection close
+		//			// Need to disconnect
+		//			netErrSilent(E_NET_CONNECTION_CLOSED);
+		//			break;
+		//		default:
+		//			netErr(E_NET_IO_SEND_FAIL);
+		//			break;
+		//		};
+		//	}
+		//}
+		//else
+		//{
+		//	// Send done will be handled by IOCP
+		//}
 
 	Proc_End:
 
@@ -283,11 +336,11 @@ namespace Net {
 
 			if (hr != E_NET_IO_SEND_FAIL)
 			{
-				netTrace(Trace::TRC_ERROR, "RawUDP Send Failed, err:%1%, hr:{2:X8}", iWSAErr, hr);
+				netTrace(Trace::TRC_ERROR, "RawUDP Send Failed, err:{1:X8}, hr:{2:X8}", hrErr, hr);
 			}
 			else
 			{
-				netTrace(Net::TRC_SENDRAW, "RawUDP Send Failed, err:%1%, hr:{2:X8}", iWSAErr, hr);
+				netTrace(Net::TRC_SENDRAW, "RawUDP Send Failed, err:{1:X8}, hr:{2:X8}", hrErr, hr);
 				return S_OK;
 			}
 		}
@@ -295,11 +348,11 @@ namespace Net {
 		{
 			if (msgID.IDs.Type == Message::MSGTYPE_NETCONTROL)
 			{
-				netTrace(TRC_NETCTRL, "RawUDP SendCtrl dest:%0%, msg:%1%, Len:%2%", dest, msgID, uiMsgLen);
+				netTrace(TRC_NETCTRL, "RawUDP SendCtrl dest:{0}, msg:{1}, Len:{2}", dest, msgID, uiMsgLen);
 			}
 			else
 			{
-				netTrace(TRC_SENDRAW, "RawUDP Send dest:%0%, msg:%1%, Len:%2%", dest, msgID, uiMsgLen);
+				netTrace(TRC_SENDRAW, "RawUDP Send dest:{0}, msg:{1}, Len:{2}", dest, msgID, uiMsgLen);
 			}
 		}
 
@@ -314,7 +367,7 @@ namespace Net {
 		Message::MessageData *pMsg = nullptr;
 		Message::MobileMessageHeader * pMsgHeader = (Message::MobileMessageHeader*)pBuff;
 
-		//netTrace(TRC_RECVRAW, "UDP Recv ip:%0%, msg:%1%, seq:%2%, len:%3%", GetConnectionInfo().Remote, pMsgHeader->msgID, pMsgHeader->msgID.IDSeq.Sequence, uiBuffSize);
+		//netTrace(TRC_RECVRAW, "UDP Recv ip:{0}, msg:{1}, seq:{2}, len:%3%", GetConnectionInfo().Remote, pMsgHeader->msgID, pMsgHeader->msgID.IDSeq.Sequence, uiBuffSize);
 
 		if (uiBuffSize == 0)
 			goto Proc_End;
@@ -324,7 +377,7 @@ namespace Net {
 			pMsgHeader = (Message::MobileMessageHeader*)pBuff;
 			if (uiBuffSize < sizeof(Message::MobileMessageHeader) || uiBuffSize < pMsgHeader->Length)
 			{
-				netTrace(Trace::TRC_ERROR, "Unexpected packet buffer size:%0%, size in header:%1%", uiBuffSize, pMsgHeader->Length);
+				netTrace(Trace::TRC_ERROR, "Unexpected packet buffer size:{0}, size in header:{1}", uiBuffSize, pMsgHeader->Length);
 				netErr(E_NET_BADPACKET_SIZE);
 			}
 
@@ -349,17 +402,45 @@ namespace Net {
 		return hr;
 	}
 
-	// called when New connection TCP accepted
-	HRESULT RawUDP::OnIOAccept(HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo)
+	HRESULT RawUDP::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		return E_NOTIMPL;
+		HRESULT hr = S_OK, hrErr = S_OK;
+
+		netChkPtr(pIOBuffer);
+		//pIOBuffer = m_pRecvBuffers;
+		pIOBuffer->SetupRecvUDP(0);
+
+		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
+		switch (hrErr)
+		{
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			goto Proc_End;// success
+			break;
+		case E_NET_NETUNREACH:
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+			// some remove has problem with connection
+			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->From);
+		default:
+			// Unknown error
+			netTrace(Trace::TRC_ERROR, "UDP Read Pending failed err={0:X8}", hrErr);
+			netErr(hrErr);
+			break;
+		}
+
+	Proc_End:
+
+		return hr;
 	}
 
 	// called when reciving messag is completed
-	HRESULT RawUDP::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred)
+	HRESULT RawUDP::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer)
 	{
 		HRESULT hr = S_OK;
-		bool bReleaseOnFail = false;
 
 		if (FAILED(hrRes))
 		{
@@ -370,16 +451,16 @@ namespace Net {
 				hr = hrRes;
 				break;
 			default:
-				netTrace(Trace::TRC_ERROR, "UDP Recv Msg Failed, RawUDP, IP:%0%, hr={1:X8}", pIOBuffer->From, hrRes);
+				netTrace(Trace::TRC_ERROR, "UDP Recv Msg Failed, RawUDP, IP:{0}, hr={1:X8}", pIOBuffer->From, hrRes);
 				break;
 			};
 		}
 		else
 		{
-			if (dwTransferred < sizeof(Message::MessageHeader))// invalid packet size
+			if (pIOBuffer->TransferredSize < sizeof(Message::MessageHeader))// invalid packet size
 				goto Proc_End;
 
-			OnRecv(pIOBuffer->From, dwTransferred, (BYTE*)pIOBuffer->buffer);
+			OnRecv(pIOBuffer->From, pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer);
 		}
 
 	Proc_End:
@@ -392,7 +473,7 @@ namespace Net {
 	}
 
 	// called when send completed
-	HRESULT RawUDP::OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred)
+	HRESULT RawUDP::OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer)
 	{
 		Util::SafeDeleteArray(pIOBuffer->pSendBuff);
 		Util::SafeRelease(pIOBuffer->pMsgs);

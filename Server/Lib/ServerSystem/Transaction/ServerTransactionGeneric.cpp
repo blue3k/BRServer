@@ -52,7 +52,6 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		Message::ClusterServer::GetClusterMemberListRes msgRes;
 		Svr::ServerEntity *pServerEntity = nullptr;
-		const ServiceInformation *currentMaster = nullptr, *currentSlave = nullptr, *myInformation = nullptr;
 		ServerEntityManager *pServerEntityManager = BrServer::GetInstance()->GetComponent<Svr::ServerEntityManager>();
 		ClusterManagerServiceEntity *pClusterManagerEntity = BrServer::GetInstance()->GetComponent<Svr::ClusterManagerServiceEntity>();
 

@@ -746,11 +746,65 @@
 #define E_NET_TRY_AGAIN                  0xC7020024L
 
 //
+// MessageId: E_NET_IO_PENDING
+//
+// MessageText:
+//
+// IOPending
+//
+#define E_NET_IO_PENDING                 0xC7020025L
+
+//
 // MessageId: E_NET_SECURE_HOST_NOT_FOUND
 //
 // MessageText:
 //
 // No such host is known securely.
 //
-#define E_NET_SECURE_HOST_NOT_FOUND      0xC7020025L
+#define E_NET_SECURE_HOST_NOT_FOUND      0xC7020026L
+
+//
+// MessageId: E_NET_PROTO
+//
+// MessageText:
+//
+// Protocol error
+//
+#define E_NET_PROTO                      0xC7020027L
+
+//
+// MessageId: E_NET_PROTOTYPE
+//
+// MessageText:
+//
+// Protocol wrong type for socket
+//
+#define E_NET_PROTOTYPE                  0xC7020028L
+
+//
+// MessageId: E_NET_NOPROTOOPT
+//
+// MessageText:
+//
+// Protocol not available
+//
+#define E_NET_NOPROTOOPT                 0xC7020029L
+
+//
+// MessageId: E_NET_NONET
+//
+// MessageText:
+//
+// Machine is not on the network
+//
+#define E_NET_NONET                      0xC702002AL
+
+//
+// MessageId: E_NET_OPNOTSUPP
+//
+// MessageText:
+//
+// Operation not supported on socket
+//
+#define E_NET_OPNOTSUPP                  0xC702002BL
 

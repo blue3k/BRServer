@@ -10,6 +10,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#if WINDOWS
+
 #include <conio.h>
 #include "Common/HRESEvent.h"
 #include "Common/HRESSvrSys.h"
@@ -17,7 +19,6 @@
 #include "Serversystem/BRService.h"
 #include "Common/TimeUtil.h"
 
-#if WINDOWS
 
 namespace BR {
 namespace Svr {
@@ -42,7 +43,7 @@ namespace Svr {
 		HANDLE                  g_hCtrlEvents[NUM_SVCCTRLEVT] = {NULL,};
 
 		// Server instance to run
-		BrServer *g_pSvrInstance = NULL;
+		BrServer *g_pSvrInstance = nullptr;
 
 		// state change wait time
 		const UINT g_uiStateWaitTime = 10; // 10 min

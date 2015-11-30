@@ -121,6 +121,8 @@ namespace Google {
 		Json::Value root;
 		Json::Reader reader;
 		const char* authChar = m_OAuth->GetAuthString();
+		bool parsingSuccessful;
+		char *ct = nullptr;
 
 		m_ResultBuffer.Clear();
 
@@ -155,7 +157,6 @@ namespace Google {
 			svrErr(E_UNEXPECTED);
 		Assert(res == 0);
 
-		char *ct = nullptr;
 		res = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
 		if (res != CURLE_OK)
 			svrErr(E_UNEXPECTED);
@@ -179,7 +180,7 @@ namespace Google {
 		//	"		\"message\" : \"Invalid Credentials\"\n"
 		//	"} \n }\n";
 		//bool parsingSuccessful = reader.parse((char*)testString, root);
-		bool parsingSuccessful = reader.parse((char*)m_ResultBuffer.data(), root);
+		parsingSuccessful = reader.parse((char*)m_ResultBuffer.data(), root);
 		if (!parsingSuccessful)
 		{
 			// report to the user the failure and their locations in the document.
@@ -190,7 +191,7 @@ namespace Google {
 
 		{
 			int purchaseState;
-			int consumptionState;
+			//int consumptionState;
 
 			auto value = root.get("purchaseState", "");
 			if (value.isNull() || value.isInt() == false)
@@ -208,7 +209,7 @@ namespace Google {
 				goto Proc_End;
 			}
 
-			consumptionState = value.asInt();
+			//consumptionState = value.asInt();
 
 			value = root.get("developerPayload", "");
 			if (value.isNull() || value.isString() == false)

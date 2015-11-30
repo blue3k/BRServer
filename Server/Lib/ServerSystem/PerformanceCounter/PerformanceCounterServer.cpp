@@ -24,7 +24,7 @@
 namespace BR {
 namespace Svr {
 
-#define	BR_MESSAGE_HANDLER(MessageType,MessageHandlerName) m_HandlerTable.Register<Message::Monitoring::##MessageType>(&PerformanceCounterServer::HandleMessage##MessageHandlerName);
+#define	BR_MESSAGE_HANDLER(MessageType,MessageHandlerName) m_HandlerTable.Register<Message::Monitoring::MessageType>(&PerformanceCounterServer::HandleMessage##MessageHandlerName);
 
 	PerformanceCounterServer *PerformanceCounterServer::stm_pInstance = nullptr;
 
@@ -199,7 +199,7 @@ namespace Svr {
 
 	UINT PerformanceCounterServer::GetInstanceList(UINT startIndex, Array<SharedPointerT<PerformanceCounterInstance>>& instanceList)
 	{
-		HRESULT hr = S_OK;
+		//HRESULT hr = S_OK;
 		UINT numInstances = 0;
 		if (stm_pInstance == nullptr)
 			return numInstances;
@@ -220,7 +220,7 @@ namespace Svr {
 			return true;
 		});
 
-	Proc_End:
+	//Proc_End:
 
 		return (UINT)instanceList.GetSize();
 	}
@@ -261,7 +261,6 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		auto& instanceMap = stm_pInstance->m_InstanceMap;
-		UINT numCounters = 0;
 
 		if (SUCCEEDED(instanceMap.Find(instanceUID.UID, pInstance)))
 		{
@@ -339,30 +338,32 @@ namespace Svr {
 
 		pInstance->SetUpdatedTime(Util::Time.GetTimeMs());
 
-		auto& counters = messageClass.GetNewCounters();
-		for (UINT iCounter = 0; iCounter < counters.GetSize(); iCounter++)
 		{
-			auto dataType = (PerformanceCounter::DataTypes)counters[iCounter].DateType;
-			switch (dataType)
+			auto& counters = messageClass.GetNewCounters();
+			for (UINT iCounter = 0; iCounter < counters.GetSize(); iCounter++)
 			{
-			case PerformanceCounter::DataTypes::Int32:
-				pInstance->AddCounter(new PerformanceCounterRaw<INT32>(counters[iCounter].CounterName));
-				break;
-			case PerformanceCounter::DataTypes::UInt32:
-				pInstance->AddCounter(new PerformanceCounterRaw<UINT32>(counters[iCounter].CounterName));
-				break;
-			case PerformanceCounter::DataTypes::Int64:
-				pInstance->AddCounter(new PerformanceCounterRaw<INT64>(counters[iCounter].CounterName));
-				break;
-			case PerformanceCounter::DataTypes::UInt64:
-				pInstance->AddCounter(new PerformanceCounterRaw<UINT64>(counters[iCounter].CounterName));
-				break;
-			default:
-				svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:%0%, Invalid counter type:%1%", pInstance->GetInstanceEntityUID(), counters[iCounter].DateType);
-				break;
+				auto dataType = (PerformanceCounter::DataTypes)counters[iCounter].DateType;
+				switch (dataType)
+				{
+				case PerformanceCounter::DataTypes::Int32:
+					pInstance->AddCounter(new PerformanceCounterRaw<INT32>(counters[iCounter].CounterName));
+					break;
+				case PerformanceCounter::DataTypes::UInt32:
+					pInstance->AddCounter(new PerformanceCounterRaw<UINT32>(counters[iCounter].CounterName));
+					break;
+				case PerformanceCounter::DataTypes::Int64:
+					pInstance->AddCounter(new PerformanceCounterRaw<INT64>(counters[iCounter].CounterName));
+					break;
+				case PerformanceCounter::DataTypes::UInt64:
+					pInstance->AddCounter(new PerformanceCounterRaw<UINT64>(counters[iCounter].CounterName));
+					break;
+				default:
+					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:%0%, Invalid counter type:%1%", pInstance->GetInstanceEntityUID(), counters[iCounter].DateType);
+					break;
+				}
 			}
-		}
 
+		}
 
 	Proc_End:
 
@@ -376,13 +377,15 @@ namespace Svr {
 
 		svrChk(messageClass.ParseMsg());
 
-		auto& instances = messageClass.GetFreeInstances();
-		for (UINT iInstance = 0; iInstance < instances.GetSize(); iInstance++)
 		{
-			SharedPointerT<PerformanceCounterInstance> pInstance;
-			if (FAILED(m_InstanceMap.Remove(instances[iInstance].UID, pInstance)))
+			auto& instances = messageClass.GetFreeInstances();
+			for (UINT iInstance = 0; iInstance < instances.GetSize(); iInstance++)
 			{
-				svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:%0%, Failed to remove", instances[iInstance]);
+				SharedPointerT<PerformanceCounterInstance> pInstance;
+				if (FAILED(m_InstanceMap.Remove(instances[iInstance].UID, pInstance)))
+				{
+					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:%0%, Failed to remove", instances[iInstance]);
+				}
 			}
 		}
 
@@ -420,12 +423,14 @@ namespace Svr {
 
 		pInstance->SetUpdatedTime(Util::Time.GetTimeMs());
 
-		auto& counters = pInstance->GetCounters();
-		auto& conterValues = messageClass.GetCounterValues();
-		for (UINT iCounter = 0; iCounter < conterValues.GetSize(); iCounter++)
 		{
-			// NOTE: assume that is LSB
-			counters[iCounter]->CopyFrom(sizeof conterValues[iCounter], (BYTE*)&conterValues[iCounter]);
+			auto& counters = pInstance->GetCounters();
+			auto& conterValues = messageClass.GetCounterValues();
+			for (UINT iCounter = 0; iCounter < conterValues.GetSize(); iCounter++)
+			{
+				// NOTE: assume that is LSB
+				counters[iCounter]->CopyFrom(sizeof conterValues[iCounter], (BYTE*)&conterValues[iCounter]);
+			}
 		}
 
 	Proc_End:

@@ -95,6 +95,8 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const std::string& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const std::wstring& Data, int Option);
 
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const bool& Data, int Option);
+
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const float& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const double& Data, int Option);
 

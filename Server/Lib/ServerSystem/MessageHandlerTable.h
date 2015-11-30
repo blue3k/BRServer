@@ -41,6 +41,10 @@ namespace Svr {
 	template< class MessageHandlerType >
 	struct MessageHandler_TableItem
 	{
+	private:
+		// MessageID for key
+		UINT				MessageCode;
+
 	public:
 		// Hash table mapping Item
 		typedef OrderedLinkedList<UINT>::Node TableItemType;
@@ -59,10 +63,6 @@ namespace Svr {
 		{
 			memset(&TableNode, 0, sizeof(TableNode));
 		}
-
-	private:
-		// MessageID for key
-		UINT				MessageCode;
 	};
 
 

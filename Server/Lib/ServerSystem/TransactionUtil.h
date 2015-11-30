@@ -33,7 +33,7 @@ namespace BR {
 			return S_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->##MessageName##( hrRes ) );\
+			svrChk( pPolicy->MessageName( hrRes ) );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -50,7 +50,7 @@ namespace BR {
 			return S_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->##MessageName##( hrRes, ##__VA_ARGS__ ) );\
+			svrChk( pPolicy->MessageName( hrRes, ##__VA_ARGS__ ) );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -65,7 +65,7 @@ namespace BR {
 		HRESULT hr = S_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->##MessageName##( GetContext(), hrRes ) );\
+			svrChk( pPolicy->MessageName( GetContext(), hrRes ) );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -80,7 +80,7 @@ namespace BR {
 		HRESULT hr = S_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->##MessageName##( GetContext(), hrRes, ##__VA_ARGS__ ) );\
+			svrChk( pPolicy->MessageName( GetContext(), hrRes, ##__VA_ARGS__ ) );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -95,7 +95,7 @@ namespace BR {
 		HRESULT hr = S_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->##MessageName##() );\
+			svrChk( pPolicy->MessageName() );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -110,7 +110,7 @@ namespace BR {
 		HRESULT hr = S_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->##MessageName##( __VA_ARGS__ ) );\
+			svrChk( pPolicy->MessageName( __VA_ARGS__ ) );\
 		}\
 	Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -152,7 +152,7 @@ namespace BR {
 
 // Generic message proc handler
 #define BR_TRANSPROC_CASE_MSGRES( Policy, MsgName ) \
-		case Policy::MID_##MsgName##:\
+		case Policy::MID_##MsgName:\
 		{\
 
 

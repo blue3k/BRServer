@@ -50,16 +50,17 @@ namespace BR {
 		, m_pOwner(nullptr)
 		, m_transID(0,0)
 		, m_tHeartBitTimeout(DurationMS(5*60*1000))
+		, m_TransactionStartTime(DurationMS(0))
 		, m_uiExpectedResultID(0)
 		, m_state(STATE_WAITSTART)
-		, m_bIsExclusive(false)
-		, m_bIsDeleteByEntity(true)
-		, m_bIsPrintTrace(true)
-		, m_bIsDirectProcess(false)
 		, m_TimerAction(nullptr)
 		, m_CurrentHistoryIdx(0)
-		, m_TransactionStartTime(DurationMS(0))
 	{
+		m_Flags.IsExclusive = false;
+		m_Flags.IsDeleteByEntity = true;
+		m_Flags.IsPrintTrace = true;
+		m_Flags.IsDirectProcess = false;
+
 		memset(m_History, 0, sizeof(m_History));
 	}
 
@@ -155,7 +156,7 @@ namespace BR {
 
 		OnCloseTransaction(hrRes);
 
-	Proc_End:
+	//Proc_End:
 
 		SetClosed();
 
@@ -242,7 +243,7 @@ namespace BR {
 	HRESULT SubTransactionWithResult::FlushTransaction()
 	{
 		HRESULT hr = S_OK;
-		TransactionResult *pRes = this;
+		//TransactionResult *pRes = this;
 
 		SetClosed();
 

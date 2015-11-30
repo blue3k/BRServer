@@ -76,7 +76,8 @@ namespace Svr {
 	HRESULT SimpleEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
 		HRESULT hr = S_OK;
-
+		CounterType loopCount;
+		Transaction* pCurTrans = nullptr;
 
 		if (GetEntityState() == EntityState::FREE)
 			return hr;
@@ -88,21 +89,21 @@ namespace Svr {
 		}
 
 		// Tick current transaction
-		auto pCurTrans = (Transaction*)m_pCurTran;
+		pCurTrans = (Transaction*)m_pCurTran;
 		if (pCurTrans != nullptr)
 		{
 			svrChk(ProcessTransaction(pCurTrans));
 		}
 
 		// If no active transaction, pop one and try it
-		auto loopCount = GetTransactionQueue().GetEnqueCount();
-		for (auto iTrans = 0; pCurTrans == nullptr && iTrans < loopCount; iTrans++)
+		loopCount = GetTransactionQueue().GetEnqueCount();
+		for (decltype(loopCount) iTrans = 0; pCurTrans == nullptr && iTrans < loopCount; iTrans++)
 		{
 			if (FAILED(GetTransactionQueue().Dequeue(pCurTrans)))
 				break;
 
 			m_pCurTran = SharedPointerT<Transaction>(pCurTrans);
-			//svrTrace(Svr::TRC_TRANSACTION, "Trans NewActive TID:%0%, ParentTID:%1% %2%, Entity:%3%:%4%", pCurTrans->GetTransID(), pCurTrans->GetParentTransID(), typeid(*pCurTrans).name(), GetEntityUID(), typeid(*this).name());
+			//svrTrace(Svr::TRC_TRANSACTION, "Trans NewActive TID:{0}, ParentTID:{1} {2}, Entity:{3}:%4%", pCurTrans->GetTransID(), pCurTrans->GetParentTransID(), typeid(*pCurTrans).name(), GetEntityUID(), typeid(*this).name());
 
 			svrChk(ProcessTransaction(pCurTrans));
 		}
@@ -140,7 +141,7 @@ namespace Svr {
 		{
 			if (pCurTran->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans result, TID:%0%, Entity:%1%, Msg:%2%",
+				svrTrace(Svr::TRC_TRANSACTION, "Trans result, TID:{0}, Entity:{1}, Msg:{2}",
 					pCurTran->GetTransID(), GetEntityUID(),
 					pTranRes->GetMsgID());
 			}
@@ -153,7 +154,7 @@ namespace Svr {
 		{
 			if (pCurTran->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans Missing result drop, TID:%0%",
+				svrTrace(Svr::TRC_TRANSACTION, "Trans Missing result drop, TID:{0}",
 					pCurTran->GetTransID());
 			}
 		}
@@ -162,7 +163,7 @@ namespace Svr {
 		{
 			if (pCurTran->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans Proc failed hr={0:X8}, TID:%1%:%2%, Entity:%3%",
+				svrTrace(Svr::TRC_TRANSACTION, "Trans Proc failed hr={0:X8}, TID:{1}:{2}, Entity:{3}",
 					hrTem,
 					pCurTran->GetTransID(), typeid(*pCurTran).name(),
 					GetEntityUID());

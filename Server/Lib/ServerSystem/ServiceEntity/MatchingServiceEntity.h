@@ -184,7 +184,8 @@ namespace Svr {
 			MatchingPlayerInformation	Players[MAX_NUM_PLAYER];
 
 			MatchingItem(void* ptr = nullptr)
-				:MemberCount(0), RequestedRole(PlayerRole::None)
+				: RequestedRole(PlayerRole::None)
+				, MemberCount(0)
 			{
 				assert(ptr == nullptr);
 			}
@@ -279,12 +280,12 @@ namespace Svr {
 
 		INT m_ReservedItemQueueTransaction[MAX_QUEUE_COUNT];
 
+		// target queue member count
+		UINT m_MatchingMemberCount;
+
 		// Target enqueue member count
 		UINT m_MinQueueCount;
 		UINT m_MaxQueueCount;
-
-		// target queue member count
-		UINT m_MatchingMemberCount;
 
 
 

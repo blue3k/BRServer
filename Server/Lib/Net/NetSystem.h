@@ -52,116 +52,22 @@ namespace Net {
 		OP_PEERUDPWRITE,
 	};
 
+	enum class SockFamily
+	{
+		IPV4 = AF_INET,
+		IPV6 = AF_INET6
+	};
+
+	enum class SockType
+	{
+		Stream = SOCK_STREAM,       // TCP
+		DataGram  = SOCK_DGRAM,     // UDP
+	};
+
 
 	// Get lastest socket error 
 	HRESULT GetLastWSAHRESULT();
 
-
-	//struct IOBUFFER : public WSAOVERLAPPED
-	//{
-	//	IOBUFFER_OPERATION Operation;
-
-	//	// Clear Buffer
-	//	void ClearBuffer();
-
-	//};
-
-
-	//// UDP/TCP read/write overlapped base
-	//struct IOBUFFER_RWBASE : public IOBUFFER
-	//{
-	//	// IOCP buffer 
-	//	WSABUF	wsaBuff;
-
-	//	// Operated buffer size
-	//	DWORD dwOperateSize;
-
-
-	//	// Constructor
-	//	IOBUFFER_RWBASE();
-	//};
-
-
-	//// UDP/TCP write overlapped
-	//struct IOBUFFER_WRITE : public IOBUFFER_RWBASE, public MemoryPoolObject<IOBUFFER_WRITE>
-	//{
-	//	// Message pointer to send
-	//	Message::MessageData *pMsgs;
-
-	//	// Message buffer pointer to send
-	//	BYTE *pSendBuff;
-
-	//	// Constructor
-	//	IOBUFFER_WRITE();
-	//	~IOBUFFER_WRITE();
-
-	//	// Initialize for IO
-	//	inline void InitForIO();
-	//	inline void InitMsg(Message::MessageData *pMsg);
-	//	inline void InitBuff(UINT uiBuffSize, BYTE* pBuff);
-
-	//	// Setup sending mode
-	//	inline void SetupSendUDP(Message::MessageData *pMsg);
-	//	inline void SetupSendUDP(UINT uiBuffSize, BYTE* pBuff);
-	//	inline void SetupSendPeer(Message::MessageData *pMsg);
-	//	inline void SetupSendPeer(UINT uiBuffSize, BYTE* pBuff);
-	//	inline void SetupSendTCP(Message::MessageData *pMsg);
-	//	inline void SetupSendTCP(UINT uiBuffSize, BYTE* pBuff);
-
-	//};
-
-
-	//// UDP/TCP read overlapped
-	//struct IOBUFFER_READ : public IOBUFFER_RWBASE
-	//{
-	//	// Read flag
-	//	DWORD dwFlags;
-
-	//	// UDP Read from
-	//	struct sockaddr_in6 From;
-
-	//	// UDP Recv socket length
-	//	INT iSockLen;
-
-	//	// Recv connection ID for error check
-	//	uintptr_t CID;
-
-	//	// Recv buffer
-	//	char buffer[Const::INTER_PACKET_SIZE_MAX];
-
-	//	bool bIsPending;
-
-	//	// constructor
-	//	IOBUFFER_READ();
-	//	~IOBUFFER_READ();
-
-	//	// Initialize for IO
-	//	inline void InitForIO();
-	//	inline void InitRecv(uintptr_t iCID);
-
-	//	// Setup recving mode
-	//	inline void SetupRecvUDP(uintptr_t iCID);
-	//	inline void SetupRecvPeer(uintptr_t iCID);
-	//	inline void SetupRecvTCP(uintptr_t iCID);
-	//	inline void SetupRecvTCPPending(uintptr_t iCID);
-
-	//} ;
-
-
-	//// TCP accept overlapped
-	//struct IOBUFFER_ACCEPT : public IOBUFFER
-	//{
-	//	SOCKET sockAccept;
-	//	BYTE pAcceptInfo[(sizeof(sockaddr_in6) + 16) * 2];
-
-	//	// Constructor
-	//	IOBUFFER_ACCEPT();
-	//	~IOBUFFER_ACCEPT();
-
-	//	// Setup accept
-	//	inline void SetupAccept(SOCKET sock);
-
-	//};
 
 
 
@@ -173,14 +79,20 @@ namespace Net {
 	class INetIOCallBack
 	{
 	public:
-		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept(HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo) = 0;
 
+		INetIOCallBack() {}
+		virtual ~INetIOCallBack() {}
+
+		virtual HRESULT Accept(IOBUFFER_ACCEPT* &pAcceptInfo) { return E_NOTIMPL; };
+		// called when New connection TCP accepted
+		virtual HRESULT OnIOAccept(HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo) { return E_NOTIMPL; };
+
+		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) = 0;
 		// called when reciving messag is completed
-		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred) = 0;
+		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer) = 0;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred) = 0;
+		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer) = 0;
 	};
 
 
@@ -191,6 +103,15 @@ namespace Net {
 	//
 	namespace NetSystem
 	{
+		inline bool IsProactorSystem()
+		{
+#if WINDOWS  // IOCP
+			return true;
+#else        // EPOLL/KQUEUE
+			return false;
+#endif
+		}
+
 		// Open network system
 		HRESULT OpenSystem( UINT uiOverBufferCount, UINT numRecvThread, UINT gatheringBufferSize );
 
@@ -203,7 +124,23 @@ namespace Net {
 		HRESULT AllocGatheringBuffer( BYTE* &pBuffer, UINT& bufferSize );
 		HRESULT FreeGatheringBuffer( BYTE *pBuffer );
 
-		HRESULT RegisterSocket(SOCKET sock, INetIOCallBack* cbInstance);
+
+		///////////////////////////////////////////////////////////////////////////////
+		// Socket handling 
+
+		HRESULT RegisterSocket(SOCKET sock, INetIOCallBack* cbInstance, bool isListenSocket);
+
+		SOCKET Socket(SockFamily domain, SockType type);
+		void CloseSocket(SOCKET sock);
+
+		HRESULT Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept);
+		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_in6& remoteAddr);
+
+		HRESULT Recv(SOCKET sock, IOBUFFER_READ* pBuffer);
+		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer);
+
+		HRESULT Send(SOCKET sock, IOBUFFER_WRITE* pBuffer);
+		HRESULT SendTo(SOCKET sock, const sockaddr_in6& dstAddress, IOBUFFER_WRITE* pBuffer);
 	};
 
 

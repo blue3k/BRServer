@@ -10,8 +10,8 @@
 
 
 #include "stdafx.h"
-#include "Serversystem/BrServer.h"
-#include "Serversystem/SvrTrace.h"
+#include "ServerSystem/BrServer.h"
+#include "ServerSystem/SvrTrace.h"
 #include "Common/StrUtil.h"
 #include "Common/MemLog.h"
 #include "Common/TimeUtil.h"
@@ -24,7 +24,7 @@
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/LoopbackConnection.h"
+#include "ServerSystem/SvrLoopbackConnection.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 
@@ -49,12 +49,18 @@ namespace Svr{
 	//	Server definition
 	//
 	BrServer::BrServer( BR::NetClass netClass )
-		:m_State(ServerState::STOPED),
-		m_pNetPrivate(nullptr),
-		m_pMyConfig(nullptr),
-		m_NetClass(netClass ),
-		m_ServerUpUTCTIme(TimeStampSec::min()),
-		m_pLoopbackServerEntity(nullptr)
+		: m_State(ServerState::STOPED)
+		, m_uiUID(0)
+		, m_pNetPrivate(nullptr)
+		, m_NetClass(netClass )
+		, m_pMyConfig(nullptr)
+		, m_ServerUpUTCTIme(TimeStampSec::min())
+		, m_pLoopbackServerEntity(nullptr)
+		, m_NumberServicesToWait(0)
+		, m_bIsStartProcessDone(false)
+		, m_bIsNetPublicEnabled(false)
+		, m_bIsKillSignaled(false)
+		, m_bStartTransaction(false)
 	{
 		SetInstance( this );
 
@@ -157,6 +163,8 @@ namespace Svr{
 				break;
 			case Net::INet::Event::EVT_CONNECTION_DISCONNECTED:
 				break;
+			default:
+				break;
 			};
 		}
 
@@ -178,7 +186,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -209,7 +217,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -219,7 +227,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -231,7 +239,7 @@ Proc_End:
 
 		SetServerUID( GetMyConfig()->UID );
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -324,7 +332,7 @@ Proc_End:
 			auto google = dynamic_cast<Config::ServerComponentGoogle* > (componentConfig);
 			if (google != nullptr)
 			{
-				StrUtil::Format(strRelativePath, "..\\..\\Config\\%0%", google->P12KeyFile.c_str());
+				StrUtil::Format(strRelativePath, "..\\..\\Config\\{0}", google->P12KeyFile.c_str());
 				svrChk(AddComponent<ExternalTransactionManager>());
 				svrChk(GetComponent<ExternalTransactionManager>()->InitializeManagerGoogle(
 					strRelativePath,
@@ -444,7 +452,7 @@ Proc_End:
 
 	void BrServer::Run()
 	{
-		HRESULT hr = S_OK;
+		//HRESULT hr = S_OK;
 		const DurationMS lMinCheckTime = DurationMS(10); // 10ms
 
 		m_bIsKillSignaled = false;
@@ -488,7 +496,7 @@ Proc_End:
 		}
 
 
-	Proc_End:
+	//Proc_End:
 
 		// Server stoping
 		SetServerState( ServerState::STOPING );
@@ -537,7 +545,7 @@ Proc_End:
 
 		SetServerState( ServerState::STOPED );
 
-		svrTrace( Trace::TRC_TRACE, "Server closed hr:%0%", hr );
+		svrTrace( Trace::TRC_TRACE, "Server closed hr:{0:X8}", hr );
 
 		return true;
 	}
@@ -549,14 +557,13 @@ Proc_End:
 	HRESULT BrServer::InitializeNetPrivate()
 	{
 		HRESULT hr = S_OK;
-		BR::Net::IConnection *pINewConnection = NULL;
 
 
 		svrChk( CloseNetPrivate() );
 
 		if( GetMyConfig() == nullptr )
 		{
-			svrTrace( Trace::TRC_ERROR, "No configuration is specified for this server %0%", typeid(*this).name() );
+			svrTrace( Trace::TRC_ERROR, "No configuration is specified for this server {0}", typeid(*this).name() );
 			svrErr( E_UNEXPECTED );
 		}
 
@@ -611,7 +618,7 @@ Proc_End:
 			m_pNetPrivate = nullptr;
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -665,7 +672,7 @@ Proc_End:
 		MasterEntity::TickUpdate(pAction);
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -678,7 +685,7 @@ Proc_End:
 	// Get Service name
 	HRESULT BrServer::StartServer()
 	{
-		if( GetServerState() == ServerState::STOPED && GetThread() == NULL )
+		if( GetServerState() == ServerState::STOPED && !joinable() )
 		{
 			SetServerState( ServerState::STARTING );
 			Start();

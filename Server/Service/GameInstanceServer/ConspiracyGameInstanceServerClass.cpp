@@ -130,7 +130,7 @@ namespace ConspiracyGameInstanceServer {
 
 		SetMyConfig( pMySvr );
 
-		svrChk(__super::ApplyConfiguration() );
+		svrChk(Svr::BrServer::ApplyConfiguration() );
 
 
 	Proc_End:
@@ -144,7 +144,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeServerResource() );
+		svrChk(Svr::BrServer::InitializeServerResource() );
 
 		svrChk(GameTable::InitializeTable() );
 
@@ -160,7 +160,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::CloseServerResource() );
+		svrChk(Svr::BrServer::CloseServerResource() );
 
 		svrChk( TerminateEntity() );
 
@@ -180,7 +180,7 @@ namespace ConspiracyGameInstanceServer {
 		Svr::GameClusterServiceEntity *pGameService = nullptr;
 		UINT componentID = 0;
 
-		svrChk( __super::InitializeNetPrivate() );
+		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
@@ -231,7 +231,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		hr = __super::CloseNetPrivate();
+		hr = Svr::BrServer::CloseNetPrivate();
 
 
 		// Server Entity Manager will clear this

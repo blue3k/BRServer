@@ -87,9 +87,6 @@ namespace Svr {
 		// Cluster ID
 		//UINT			m_uiClusterID;
 
-		// Startup sequence done
-		bool			m_bIsStartProcessDone;
-
 
 		// Network address
 		NetAddress					m_AddrPrivate;
@@ -117,6 +114,9 @@ namespace Svr {
 
 		// DB manager list
 		StaticArray<DB::QueryManager*, 10>	m_DBManagers;
+
+		// Startup sequence done
+		bool			m_bIsStartProcessDone;
 
 		// Server status
 		bool m_bIsNetPublicEnabled;

@@ -82,7 +82,7 @@ namespace Net {
 			bNeedPending = true;
 		}
 
-		netChk(NetSystem::RegisterSocket(acceptedSocket, pConnection));
+		netChk(NetSystem::RegisterSocket(acceptedSocket, pConnection, false));
 
 		pConnOut = pConnection;
 		cid = pConnection->GetCID();
@@ -141,8 +141,6 @@ namespace Net {
 	HRESULT ServerPeerTCP::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
 		HRESULT hr = S_OK;
-		SOCKET socket = INVALID_SOCKET;
-		NetAddress localAddr;
 
 		netChk( ServerTCP::HostOpen( netCls, strLocalIP, usLocalPort ) );
 
@@ -159,12 +157,10 @@ namespace Net {
 	HRESULT ServerPeerTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort)
 	{
 		HRESULT hr = S_OK;
-		BR::Net::IConnection::ConnectionInformation connectionInfo;
+		Net::IConnection::ConnectionInformation connectionInfo;
 		ConnectionTCP *pConn = nullptr;
-		uintptr_t CID = 0;
 		SOCKET socket = INVALID_SOCKET;
 		sockaddr_in6 remoteAddr, localsockAddr;
-		u_long iMode = true;// non block
 		INT32 iOptValue;
 
 		netChkPtr(pIConn);
@@ -183,7 +179,8 @@ namespace Net {
 		// Get the local host information
 		SetSockAddr(localsockAddr, GetLocalAddress().strAddr, 0);// to make port generation
 
-		socket = WSASocket(localsockAddr.sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+		//socket = WSASocket(localsockAddr.sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+		socket = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open a Socket {0:X8}", GetLastWSAHRESULT());
@@ -192,12 +189,17 @@ namespace Net {
 
 		netChk(SetupSocketOption(socket));
 
-		iMode = true;
-		if (ioctlsocket(socket, FIONBIO, &iMode) == SOCKET_ERROR)
+#if WINDOWS
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err = {1:X8}", iMode, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			u_long iMode = true;// non block
+			iMode = true;
+			if (ioctlsocket(socket, FIONBIO, &iMode) == SOCKET_ERROR)
+			{
+				netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err = {1:X8}", iMode, GetLastWSAHRESULT());
+				netErr(E_UNEXPECTED);
+			}
 		}
+#endif
 
 		if (localsockAddr.sin6_family == AF_INET6)
 		{
@@ -221,7 +223,7 @@ namespace Net {
 	Proc_End:
 
 		if (socket != INVALID_SOCKET)
-			closesocket(socket);
+			NetSystem::CloseSocket(socket);
 
 		return hr;
 	}

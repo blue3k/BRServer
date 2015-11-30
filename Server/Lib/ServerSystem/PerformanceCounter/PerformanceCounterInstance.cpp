@@ -20,30 +20,26 @@
 
 
 namespace BR {
+
+	template class SharedPointerT < Svr::PerformanceCounterInstance >;
+	template class WeakPointerT < Svr::PerformanceCounterInstance >;
+
 namespace Svr {
 
-	template SharedPointerT < PerformanceCounterInstance >;
-	template WeakPointerT < PerformanceCounterInstance >;
 
 
 
 	PerformanceCounterInstance::PerformanceCounterInstance(const char *strInstanceName, EntityUID instanceEntityUID)
 		: m_InstanceEntityUID(instanceEntityUID)
-		, m_pManager(nullptr)
 		, m_SyncSerial(0)
+		, m_pManager(nullptr)
 	{
-		HRESULT hr = S_OK;
-
 		AssertRel(strInstanceName);
 		AssertRel(m_InstanceEntityUID != 0);
 
 		StrUtil::StringCpy(m_pInstanceName, strInstanceName);
 
 		m_LatestUpdated = Util::Time.GetTimeMs();
-
-	Proc_End:
-
-		hr;
 	}
 
 	void PerformanceCounterInstance::SetUpdatedTime(TimeStampMS updatedTime)

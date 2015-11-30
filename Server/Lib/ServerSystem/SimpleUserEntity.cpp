@@ -284,7 +284,7 @@ namespace Svr
 		return hr;
 	}
 
-	
+
 	// Set Account ID, this will update Account ID table
 	HRESULT SimpleUserEntity::SetAccountID( AccountID accID )
 	{
@@ -308,7 +308,7 @@ namespace Svr
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(pConn), pMsg));
 	}
 
-	HRESULT SimpleUserEntity::OnNetSyncMessage(Net::IConnection* pConn, Net::NetCtrlIDs netCtrlID)
+	HRESULT SimpleUserEntity::OnNetSyncMessage(Net::IConnection* pConn)
 	{
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(pConn)));
 	}

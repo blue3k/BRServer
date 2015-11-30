@@ -19,7 +19,7 @@
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServicebase.h"
+#include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServiceEntity/GamePartyEntity.h"
@@ -145,16 +145,16 @@ namespace Svr {
 
 		if (FAILED(Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(partyUID.GetEntityID())))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to delete party info %0%", partyUID);
+			svrTrace(Trace::TRC_ERROR, "Failed to delete party info {0}", partyUID);
 		}
 		else
 		{
 			--m_PartyCount;
-			svrTrace(Trace::TRC_TRACE, "Party deleted %0%", partyUID);
+			svrTrace(Trace::TRC_TRACE, "Party deleted {0}", partyUID);
 			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

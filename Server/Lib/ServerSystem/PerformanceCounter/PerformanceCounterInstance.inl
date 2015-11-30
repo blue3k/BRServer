@@ -8,5 +8,3 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-extern template SharedPointerT < PerformanceCounterInstance >;
-extern template WeakPointerT < PerformanceCounterInstance >;

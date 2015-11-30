@@ -76,10 +76,6 @@ namespace Svr {
 			HRESULT				hrRes;
 		};
 
-		// store last two results
-		UINT m_CurrentHistoryIdx;
-		TransactionHistory m_History[2];
-
 	private:
 		// Parent transaction ID
 		TransactionID		m_parentTransID;
@@ -108,20 +104,25 @@ namespace Svr {
 		State	m_state;
 
 		// Flags
-		struct {
-			UINT	m_bIsExclusive			: 1;
-			UINT	m_bIsDeleteByEntity		: 1;
-			UINT	m_bIsPrintTrace			: 1;
-			UINT	m_bIsDirectProcess		: 1;
-		};
+		struct FLAGS {
+			UINT	IsExclusive			: 1;
+			UINT	IsDeleteByEntity	: 1;
+			UINT	IsPrintTrace		: 1;
+			UINT	IsDirectProcess		: 1;
+		} m_Flags;
 
 
 		SharedPointerT<TimerAction>		m_TimerAction;
 
+		// store last two results
+		UINT m_CurrentHistoryIdx;
+		TransactionHistory m_History[2];
+
+
 	protected:
 
 		// set Exclusive option
-		void	SetExclusive( bool bIsExclusive );
+		void SetExclusive( bool bIsExclusive );
 
 		// set DeleteByEntity option
 		void SetDeleteByEntity( bool bIsDeleteByEntity );
@@ -433,11 +434,7 @@ namespace Svr {
 		{
 			HRESULT hr = S_OK;
 
-			Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-
 			CloseTransaction(pRes->GetHRESULT());
-
-		Proc_End:
 
 			return hr;
 		}
@@ -550,13 +547,13 @@ namespace Svr {
 		virtual HRESULT InitializeTransaction( Entity *pOwner )
 		{
 			HRESULT hr = S_OK;
-			OwnerType *pOwnerEntity = nullptr;
+			//OwnerType *pOwnerEntity = nullptr;
 
 			svrChkPtr( pOwner );
 
 			svrChk(ParseMessage());
 
-			pOwnerEntity = dynamic_cast<OwnerType*>(pOwner);
+			//pOwnerEntity = dynamic_cast<OwnerType*>(pOwner);
 
 
 			hr = TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::InitializeTransaction(pOwner);

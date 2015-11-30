@@ -82,22 +82,13 @@
 #define E_INVALID_USERNAME               0xC7050001L
 
 //
-// MessageId: E_INVALID_PASSWORD
-//
-// MessageText:
-//
-// Invalid Password
-//
-#define E_INVALID_PASSWORD               0xC7050002L
-
-//
 // MessageId: E_ALREADY_LOGGEDIN
 //
 // MessageText:
 //
 // Already logged in
 //
-#define E_ALREADY_LOGGEDIN               0xC7050003L
+#define E_ALREADY_LOGGEDIN               0xC7050002L
 
 //
 // MessageId: E_ALREADY_LOGGEDIN_OTHERPLACE
@@ -106,7 +97,7 @@
 //
 // Already logged in at another place, and failed to kick
 //
-#define E_ALREADY_LOGGEDIN_OTHERPLACE    0xC7050004L
+#define E_ALREADY_LOGGEDIN_OTHERPLACE    0xC7050003L
 
 //
 // MessageId: E_INVALID_SIGNATURE
@@ -115,5 +106,5 @@
 //
 // Invalid user signature
 //
-#define E_INVALID_SIGNATURE              0xC7050005L
+#define E_INVALID_SIGNATURE              0xC7050004L
 

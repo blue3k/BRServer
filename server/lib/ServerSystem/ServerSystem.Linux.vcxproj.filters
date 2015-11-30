@@ -11,7 +11,6 @@
     <ClCompile Include="EventTask.cpp" />
     <ClCompile Include="ExternalTransaction.cpp" />
     <ClCompile Include="ExternalTransactionManager.cpp" />
-    <ClCompile Include="LoopbackConnection.cpp" />
     <ClCompile Include="MasterEntity.cpp" />
     <ClCompile Include="ParallelTransaction.cpp" />
     <ClCompile Include="PlayerEntityInformation.cpp" />
@@ -177,6 +176,7 @@
       <Filter>Transaction</Filter>
     </ClCompile>
     <ClCompile Include="BrServerUtil.cpp" />
+    <ClCompile Include="SvrLoopbackConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BrServer.h" />
@@ -191,7 +191,6 @@
     <ClInclude Include="ExternalTransaction.h" />
     <ClInclude Include="ExternalTransactionManager.h" />
     <ClInclude Include="GameSystem.h" />
-    <ClInclude Include="LoopbackConnection.h" />
     <ClInclude Include="MasterEntity.h" />
     <ClInclude Include="MessageRoute.h" />
     <ClInclude Include="ParallelTransaction.h" />
@@ -374,6 +373,7 @@
     </ClInclude>
     <ClInclude Include="MessageHandlerTable.h" />
     <ClInclude Include="ServerComponentCarrier.h" />
+    <ClInclude Include="SvrLoopbackConnection.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BrServer.inl" />

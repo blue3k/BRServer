@@ -64,8 +64,8 @@ namespace Svr {
 
 			struct PacketInfo
 			{
-				sockaddr_in6 From;
 				Message::MessageData* pMessage;
+				sockaddr_in6 From;
 
 				PacketInfo(void* ptr = nullptr)
 					: pMessage(nullptr)

@@ -19,7 +19,7 @@
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServicebase.h"
+#include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/ServiceEntity/GameInstanceManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/GameInstanceManagerServiceTrans.h"
@@ -55,11 +55,12 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		EntityUID entityUID;
+		PerformanceCounterInstance* pInstance = nullptr;
 
 		svrChk(LoadbalanceClusterServiceEntity::InitializeEntity(newEntityID));
 
 		//entityUID = EntityUID(GetMyServerID(), GetEntityTable().GenEntityID(EntityFaculty::Service));
-		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
+		pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 		if (pInstance != nullptr)
 		{
 			pInstance->AddCounter(&m_NumberOfInstance);

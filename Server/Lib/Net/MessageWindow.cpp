@@ -68,8 +68,6 @@ namespace Net {
 	// Clear window element
 	void MsgWindow::ClearWindow()
 	{
-		Message::MessageData* data = NULL;
-		HRESULT hr = S_OK;
 		if( m_pMsgWnd )
 		{
 			for( INT iMsg = 0; iMsg < GetWindowSize(); iMsg++ )
@@ -148,7 +146,7 @@ namespace Net {
 		m_uiMsgCount.fetch_add(1,std::memory_order_relaxed);
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -180,7 +178,7 @@ namespace Net {
 		auto messageMask = ((UINT64)1) << iPosIdx;
 		m_uiSyncMask.fetch_and(~messageMask, std::memory_order_relaxed);
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 
@@ -220,8 +218,6 @@ namespace Net {
 	// Clear window element
 	void RecvMsgWindow::ClearWindow()
 	{
-		Message::MessageData* data = NULL;
-		HRESULT hr = S_OK;
 		if (m_pMsgWnd)
 		{
 			for (INT iMsg = 0; iMsg < CIRCULAR_QUEUE_SIZE; iMsg++)
@@ -313,7 +309,7 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		INT iIdx;
-
+		UINT iPosIdx;
 
 		if( m_pMsgWnd == NULL )
 			return S_OK;// nothing to release
@@ -331,7 +327,7 @@ namespace Net {
 			return S_NET_PROCESSED_SEQUENCE;
 		}
 
-		UINT iPosIdx = (m_uiWndBaseIndex + iIdx)%GetWindowSize();
+		iPosIdx = (m_uiWndBaseIndex + iIdx)%GetWindowSize();
 
 		// Makr it as a can-be-freed
 		if( m_pMsgWnd[ iPosIdx ].state != MSGSTATE_FREE )
@@ -375,7 +371,7 @@ namespace Net {
 		if( m_pMsgWnd == nullptr )
 			return S_OK;// nothing to release
 
-		UINT uiSequence = uiSequenceBase, uiCurBit = 0, uiSyncMaskCur = 1;
+		UINT uiCurBit = 0, uiSyncMaskCur = 1;
 
 		iIdx = Message::SequenceDifference(uiSequenceBase, m_uiBaseSequence);
 
@@ -561,11 +557,12 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		INT iIdx;
+		UINT sequence;
 
 		if (m_pMsgWnd == nullptr)
 			return S_OK;// nothing to release
 
-		UINT uiSequence = uiSequenceBase, uiCurBit = 0, uiSyncMaskCur = 1;
+		UINT uiCurBit = 0, uiSyncMaskCur = 1;
 
 		iIdx = Message::SequenceDifference(uiSequenceBase, m_uiBaseSequence.load(std::memory_order_acquire));
 
@@ -604,7 +601,7 @@ namespace Net {
 
 
 		// Slide window
-		auto sequence = m_uiBaseSequence.load(std::memory_order_acquire);
+		sequence = m_uiBaseSequence.load(std::memory_order_acquire);
 		while (sequence < m_uiHeadSequence.load(std::memory_order_acquire))
 		{
 			UINT iPosIdx = sequence % CIRCULAR_QUEUE_SIZE;

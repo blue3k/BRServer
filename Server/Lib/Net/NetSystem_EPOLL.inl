@@ -30,16 +30,17 @@ void IOBUFFER_WRITE::InitMsg(Message::MessageData *pMsg)
 {
 	pMsgs = pMsg;
 	pSendBuff = nullptr;
-	wsaBuff.len = pMsg->GetMessageSize();
-	wsaBuff.buf = (char*)pMsg->GetMessageBuff();
+
+	pMsg->GetLengthNDataPtr(RawSendSize, pRawSendBuffer);
 }
 
 void IOBUFFER_WRITE::InitBuff(UINT uiBuffSize, BYTE* pBuff)
 {
 	pMsgs = nullptr;
-	wsaBuff.len = uiBuffSize;
-	wsaBuff.buf = (char*)pBuff;
 	pSendBuff = pBuff;
+
+	RawSendSize = uiBuffSize;
+	pRawSendBuffer = pBuff;
 }
 
 void IOBUFFER_WRITE::SetupSendUDP(Message::MessageData *pMsg)
@@ -101,18 +102,13 @@ void IOBUFFER_WRITE::SetupSendTCP(UINT uiBuffSize, BYTE* pBuff)
 // Initialize for IO
 void IOBUFFER_READ::InitForIO()
 {
-	HANDLE hEventTemp = hEvent;
-	memset(this, 0, sizeof(IOBUFFER_WRITE));
-	hEvent = hEventTemp;
-
-	iSockLen = sizeof(sockaddr_in6);
+	memset(this, 0, sizeof(IOBUFFER_READ));
+	iSockLen = sizeof(From);
 }
 
 void IOBUFFER_READ::InitRecv(uintptr_t iCID)
 {
 	InitForIO();
-	wsaBuff.len = sizeof(buffer);
-	wsaBuff.buf = buffer;
 #ifdef DEBUG
 	memset(buffer, 0xCE, sizeof(buffer));
 #endif
@@ -159,41 +155,6 @@ void IOBUFFER_ACCEPT::SetupAccept(SOCKET sock)
 	sockAccept = sock;
 }
 
-
-
-////////////////////////////////////////////////////////////////////////////////
-//
-//	Network IOCP thread worker
-//
-
-
-IOCPSystem::IOCPWorker::IOCPWorker()
-{
-}
-
-IOCPSystem::IOCPWorker::~IOCPWorker()
-{
-}
-
-
-void IOCPSystem::IOCPWorker::SetIOCPHandle(HANDLE hIOCP)
-{
-	m_hIOCP = hIOCP;
-}
-
-
-
-
-IOCPSystem::IOCPSystem& IOCPSystem::IOCPSystem::GetInstance()
-{
-	return stm_Instance;
-}
-
-// Query IOCP handle
-HANDLE IOCPSystem::IOCPSystem::GetIOCP()
-{
-	return m_hIOCP;
-}
 
 
 

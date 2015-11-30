@@ -37,7 +37,7 @@ namespace Net {
 	private:
 
 		// Event queue
-		BR::PageQueue<IConnection::Event>	m_EventQueue;
+		PageQueue<IConnection::Event>	m_EventQueue;
 
 		// Add network event to queue
 		HRESULT EnqueueConnectionEvent( const IConnection::Event& evt );

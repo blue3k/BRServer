@@ -243,8 +243,6 @@
 		value = std::forward<ValueType>(pFound->Value);
 
 
-		ReferenceAccessPoint *pParentPointer = nullptr;
-		MapNode* pParentOfReplaced = nullptr;
 		MapNode* child = nullptr;
 
 		auto left = pFound->Left.load();

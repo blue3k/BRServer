@@ -91,10 +91,10 @@ namespace Svr
 			}
 			break;
 		case BR::Net::IConnection::Event::EVT_DISCONNECTED:
-
 			break;
 		case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
-
+			break;
+		default:
 			break;
 		};
 

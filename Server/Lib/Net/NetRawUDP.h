@@ -53,7 +53,7 @@ namespace Net {
 	public:
 
 		RawUDP();
-		~RawUDP();
+		virtual ~RawUDP();
 
 		HRESULT InitializeNet(const NetAddress& localAddress, MessageHandler *pHandler);
 		HRESULT TerminateNet();
@@ -65,16 +65,13 @@ namespace Net {
 
 		// called when incomming message occure
 		HRESULT OnRecv(const sockaddr_in6& remoteAddr, UINT uiBuffSize, const BYTE* pBuff);
-		//HRESULT OnRecv(Message::MessageData *pMsg);
-
-		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept(HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo) override;
 
 		// called when reciving messag is completed
-		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred) override;
+		HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
+		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer) override;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred) override;
+		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer) override;
 	};
 
 

@@ -23,7 +23,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/EventTask.h"
 #include "ServerSystem/EntityTimerActions.h"
-#include "ServerSystem/BRServer.h"
+#include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"
 #include "Common/Message.h"
 
@@ -45,10 +45,10 @@ namespace BR {
 
 	Entity::Entity( UINT uiTransQueueSize, UINT TransResQueueSize )
 		: m_State(EntityState::FREE)
+		, m_EntityUID(0)
 		, m_ulCreateTime(TimeStampMS::min())
 		, m_lTransIdx(0)
 		, m_transactionQueue(uiTransQueueSize)
-		, m_EntityUID(0)
 		, m_pHandlerTable(nullptr)
 	{
 	}
@@ -91,7 +91,7 @@ namespace BR {
 		if( GetEntityState() != EntityState::FREE )
 		{
 			Assert( 0 );
-			svrErr( E_ABORT );
+			svrErr( E_UNEXPECTED );
 		}
 
 		// create message handler table
@@ -124,7 +124,7 @@ namespace BR {
 		if (m_transactionQueue.GetEnqueCount() > 0)
 		{
 			if (m_transactionQueue.GetEnqueCount() > 1)
-				svrTrace(Svr::TRC_TRANSACTION, "Trans Not closed Ent:%0%, %1% Trans remain", typeid(*this).name(), m_transactionQueue.GetEnqueCount());
+				svrTrace(Svr::TRC_TRANSACTION, "Trans Not closed Ent:{0}, {1} Trans remain", typeid(*this).name(), m_transactionQueue.GetEnqueCount());
 
 			while (m_transactionQueue.GetEnqueCount() > 0)
 			{
@@ -205,7 +205,7 @@ namespace BR {
 		{
 			if (FAILED(pEntity->FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:%0% is failed to route. msgid:%1%", pTransRes->GetTransID(), pMsgRes->GetMsgID());
+				svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pMsgRes->GetMsgID());
 				goto Proc_End;// svrErr(E_FAIL);
 			}
 			svrChk(pEntity->ProcessTransactionResult(pTransaction, pTransRes));
@@ -254,24 +254,26 @@ namespace BR {
 
 		pTrans = nullptr;
 
-		// poke tick
-		auto pTimerAction = GetTimerAction();
-		auto pWorker = GetTaskWorker();
-		if (pWorker != nullptr 
-			&& pTimerAction != nullptr
-			&& pWorker->GetThreadID() == thisThreadID) // Only if both are on the same worker thread
 		{
-			if (pTimerAction->GetScheduledTime() == TimeStampMS::max() || Util::TimeSince(pTimerAction->GetScheduledTime()) < DurationMS(0)) // next time this entity will tick
+			// poke tick
+			auto pTimerAction = GetTimerAction();
+			auto pWorker = GetTaskWorker();
+			if (pWorker != nullptr
+				&& pTimerAction != nullptr
+				&& pWorker->GetThreadID() == thisThreadID) // Only if both are on the same worker thread
 			{
-				SetNextScheduledTickTime(Util::Time.GetTimeMs());
-				if (pTimerAction->GetScheduledTime() != TimeStampMS::max()) // Don't push when it isn't shceduled yet
-					pWorker->GetTimeScheduler().Reschedul(thisThreadID, pTimerAction);
+				if (pTimerAction->GetScheduledTime() == TimeStampMS::max() || Util::TimeSince(pTimerAction->GetScheduledTime()) < DurationMS(0)) // next time this entity will tick
+				{
+					SetNextScheduledTickTime(Util::Time.GetTimeMs());
+					if (pTimerAction->GetScheduledTime() != TimeStampMS::max()) // Don't push when it isn't shceduled yet
+						pWorker->GetTimeScheduler().Reschedul(thisThreadID, pTimerAction);
+				}
 			}
-		}
-		else
-		{
-			// We can't reschedule here, just poke it
-			GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this));
+			else
+			{
+				// We can't reschedule here, just poke it
+				GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this));
+			}
 		}
 
 	Proc_End:
@@ -292,7 +294,7 @@ namespace BR {
 		case Transaction::STATE_WAITSTART:
 			if (pTrans->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans Start TID:%0%:%1%, Entity:%2%", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID());
+				svrTrace(Svr::TRC_TRANSACTION, "Trans Start TID:{0}:{1}, Entity:{2}", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID());
 			}
 			if (FAILED(pTrans->StartTransaction()))// make transaction start
 			{
@@ -319,7 +321,7 @@ namespace BR {
 			{
 				if (pTrans->IsPrintTrace())
 				{
-					svrTrace(Svr::TRC_TRANSACTION, "Trans Timeout TID:%0%:%1%, Entity:%2%",
+					svrTrace(Svr::TRC_TRANSACTION, "Trans Timeout TID:{0}:{1}, Entity:{2}",
 						pTrans->GetTransID(),
 						typeid(*pTrans).name(),
 						GetEntityUID());
@@ -327,6 +329,8 @@ namespace BR {
 				if (!pTrans->IsClosed())
 					pTrans->CloseTransaction(E_SVR_TIMEOUT);
 			}
+			break;
+		default:
 			break;
 		};
 
@@ -339,7 +343,7 @@ namespace BR {
 			{
 				if (pTrans->IsPrintTrace())
 				{
-					svrTrace(Svr::TRC_TRANSACTION, "Trans closed TID:%0%:%1%, Entity:%2%",
+					svrTrace(Svr::TRC_TRANSACTION, "Trans closed TID:{0}:{1}, Entity:{2}",
 						pTrans->GetTransID(), typeid(*pTrans).name(),
 						GetEntityUID());
 				}

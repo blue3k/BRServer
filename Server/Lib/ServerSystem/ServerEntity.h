@@ -45,12 +45,6 @@ namespace Svr {
 		
 
 	private:
-		// Connection to remote
-		TimeStampMS								m_LocalConnectionRetryTime;
-		DurationMS								m_LocalConnectionRetryWait;
-		SharedPointerT<Net::IConnection>	m_pConnRemote;
-		SharedPointerT<Net::IConnection>	m_pConnLocal;
-		BR::CriticalSection						m_ConnectionLock;
 
 		Net::MsgQueue			m_RecvMessageQueue;
 
@@ -70,6 +64,13 @@ namespace Svr {
 		// Server up time in UTC
 		BRCLASS_ATTRIBUTE(TimeStampSec,ServerUpTime);
 		
+		// Connection to remote
+		SharedPointerT<Net::IConnection>	m_pConnRemote;
+		SharedPointerT<Net::IConnection>	m_pConnLocal;
+		TimeStampMS							m_LocalConnectionRetryTime;
+		DurationMS							m_LocalConnectionRetryWait;
+		CriticalSection						m_ConnectionLock;
+
 	protected:
 
 		virtual MemoryAllocator& GetAllocator()			{ return STDAllocator::GetInstance(); }
@@ -138,7 +139,7 @@ namespace Svr {
 		// Overriding IConnectionEventHandler
 		virtual void OnConnectionEvent(Net::IConnection* pConn, const Net::IConnection::Event& evt) override;
 		virtual HRESULT OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg) override;
-		virtual HRESULT OnNetSyncMessage(Net::IConnection* pConn, Net::NetCtrlIDs netCtrlID) override;
+		virtual HRESULT OnNetSyncMessage(Net::IConnection* pConn) override;
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Event task handling

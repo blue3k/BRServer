@@ -579,7 +579,7 @@ namespace Trace {
 
 		if( uiOutputMask&TRCOUT_EVENT )
 		{
-			if( trcOutMask&(TRC_ERROR | TRC_IERROR) )
+			if( trcOutMask&(TRC_ERROR) )
 				EventLog( BR_EVENT_ERROR, m_wszLineHeader, wszOutput );
 			else if( trcOutMask&(TRC_WARN) )
 				EventLog( BR_EVENT_WARNING, m_wszLineHeader, wszOutput );
@@ -626,9 +626,6 @@ namespace Trace {
 			break;
 		case TRC_ASSERT:
 			StrUtil::StringCpyEx( szDest, iBuffLen, "ASSERT: " );
-			break;
-		case TRC_IERROR:
-			StrUtil::StringCpyEx( szDest, iBuffLen, "ERROR: " );
 			break;
 		default:
 			return;

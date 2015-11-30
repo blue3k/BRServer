@@ -40,6 +40,9 @@ namespace Svr {
 	HRESULT ChattingHistory::AddChattingLog( TimeStampSec timeStamp, PlayerID player, BYTE playerStatus, ChatType type, const char* message )
 	{
 		HRESULT hr = S_OK;
+		BYTE* itemBuffer = nullptr;
+		GameLogChatMessage *chatLog = nullptr;
+
 		if( message == nullptr )
 			return E_INVALIDARG;
 
@@ -49,9 +52,9 @@ namespace Svr {
 			messageBufferSize = GameConst::MAX_CHATMESSAGE_SIZE;
 		}
 
-		BYTE* itemBuffer = NewLogItemBuffer<GameLogChatMessage>( sizeof(GameLogChatMessage) + messageBufferSize );
+		itemBuffer = NewLogItemBuffer<GameLogChatMessage>( sizeof(GameLogChatMessage) + messageBufferSize );
 		svrMem( itemBuffer );
-		GameLogChatMessage *chatLog = new(itemBuffer) GameLogChatMessage(timeStamp,(UINT)messageBufferSize);
+		chatLog = new(itemBuffer) GameLogChatMessage(timeStamp,(UINT)messageBufferSize);
 		svrMem( chatLog );
 
 		svrChk( chatLog->SetChatMessage( player, playerStatus, type, message ) );

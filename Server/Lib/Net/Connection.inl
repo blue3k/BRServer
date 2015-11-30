@@ -46,17 +46,6 @@ SOCKET Connection::GetSocket() const
 }
 
 
-// Close connections socket handle
-void Connection::CloseSocket()
-{
-	if( m_socket != INVALID_SOCKET )
-	{
-		closesocket( m_socket );
-		SetSocket( INVALID_SOCKET );
-	}
-}
-
-
 // Get remote address
 const sockaddr_in6& Connection::GetRemoteSockAddr() const
 {
@@ -127,6 +116,8 @@ void Connection::IncPendingRecvCount()
 
 void Connection::DecPendingRecvCount()
 {
+	if (!NetSystem::IsProactorSystem()) return;
+
 	m_lPendingRecvCount.fetch_sub(1, std::memory_order_relaxed);
 }
 

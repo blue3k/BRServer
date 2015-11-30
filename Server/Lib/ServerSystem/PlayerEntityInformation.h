@@ -17,7 +17,7 @@
 
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/Entity.h"
-#include "ServerSystem/BRServer.h"
+#include "ServerSystem/BrServer.h"
 #include "ServerSystem/GameSystem.h"
 #include "ServerSystem/Component.h"
 

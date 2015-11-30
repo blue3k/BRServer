@@ -42,12 +42,12 @@ namespace Svr {
 
 	ServerEntity::ServerEntity( UINT uiTransQueueSize, UINT TransResQueueSize )
 		: MasterEntity( uiTransQueueSize, TransResQueueSize)
+		, m_ServerID(0)
+		, m_bIsInitialConnect(true)
+		, m_ReceivedServerStatus(false)
+		, m_ServerUpTime(TimeStampSec::min())
 		, m_pConnRemote(nullptr)
 		, m_pConnLocal(nullptr)
-		, m_bIsInitialConnect(true)
-		//, m_pConnRemotePrev(nullptr),
-		, m_ServerID(0)
-		, m_ServerUpTime(TimeStampSec::min())
 		, m_LocalConnectionRetryWait(Svr::Const::REMOTE_CONNECTION_RETRY)
 	{
 	}
@@ -321,7 +321,8 @@ namespace Svr {
 			m_ReceivedServerStatus = false;
 			break;
 		case Net::IConnection::Event::EVT_STATE_CHANGE:
-
+			break;
+		default:
 			break;
 		};
 
@@ -344,7 +345,7 @@ namespace Svr {
 
 		// Process Connection event
 		auto loopCount = pConn->GetConnectionEventCount();
-		for (int iProc = 0; iProc < loopCount; iProc++)
+		for (decltype(loopCount) iProc = 0; iProc < loopCount; iProc++)
 		{
 			if (FAILED(pConn->DequeueConnectionEvent(conEvent)))
 				break;
@@ -356,7 +357,7 @@ namespace Svr {
 		{
 			// Process message
 			loopCount = pConn->GetRecvMessageCount();
-			for (int iProc = 0; iProc < loopCount; iProc++)
+			for (decltype(loopCount) iProc = 0; iProc < loopCount; iProc++)
 			{
 				if (FAILED(pConn->GetRecvMessage(pMsg)))
 					break;
@@ -375,7 +376,7 @@ namespace Svr {
 			}
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		if (pMsg)
 			Util::SafeDelete(pMsg);
@@ -386,13 +387,15 @@ namespace Svr {
 	HRESULT ServerEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
 		HRESULT hr = S_OK;
+		Net::IConnection* pConn = nullptr;
+		Net::IConnection* pConnRemote = nullptr;
 
 		if( GetEntityState() == EntityState::FREE )
 			return S_OK;
 
 		svrChk(MasterEntity::TickUpdate(pAction) );
 
-		auto pConn = (Net::IConnection*)m_pConnLocal;
+		pConn = (Net::IConnection*)m_pConnLocal;
 		if (pConn != nullptr)
 		{
 			if (pConn->GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
@@ -431,7 +434,7 @@ namespace Svr {
 			}
 		}
 
-		auto pConnRemote = (Net::IConnection*)m_pConnRemote;
+		pConnRemote = (Net::IConnection*)m_pConnRemote;
 		//auto prevConn = m_pConnRemotePrev.load(std::memory_order_relaxed);
 		Assert(pConn == nullptr || pConn != pConnRemote);
 		//Assert(prevConn == nullptr || prevConn != pConnRemote);
@@ -466,7 +469,7 @@ namespace Svr {
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(pConn), pMsg));
 	}
 
-	HRESULT ServerEntity::OnNetSyncMessage(Net::IConnection* pConn, Net::NetCtrlIDs netCtrlID)
+	HRESULT ServerEntity::OnNetSyncMessage(Net::IConnection* pConn)
 	{
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(pConn)));
 	}
@@ -504,7 +507,8 @@ namespace Svr {
 				}
 				else
 				{
-					Util::SafeRelease(const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent));
+					auto pNonConst = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
+					Util::SafeRelease(pNonConst);
 				}
 			}
 			else

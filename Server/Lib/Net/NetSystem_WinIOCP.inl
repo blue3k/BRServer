@@ -107,10 +107,10 @@ void IOBUFFER_WRITE::SetupSendTCP( UINT uiBuffSize, BYTE* pBuff )
 void IOBUFFER_READ::InitForIO()
 {
 	HANDLE hEventTemp = hEvent;
-	memset( this, 0, sizeof(IOBUFFER_WRITE) );
+	memset( this, 0, sizeof(IOBUFFER_READ) );
 	hEvent = hEventTemp;
 
-	iSockLen = sizeof(sockaddr_in6);
+	iSockLen = sizeof(From);
 }
 
 void IOBUFFER_READ::InitRecv( uintptr_t iCID )

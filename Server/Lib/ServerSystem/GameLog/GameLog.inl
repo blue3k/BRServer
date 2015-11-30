@@ -81,7 +81,7 @@ HRESULT GameLog<MaxBufferSize,MaxLog>::GetGameLogBinary( OutputMemoryStream& str
 	});
 
 
-Proc_End:
+//Proc_End:
 
 
 	return hr;

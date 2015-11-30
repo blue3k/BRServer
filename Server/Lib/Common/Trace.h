@@ -42,7 +42,6 @@ namespace Trace {
 		TRC_WARN		= 0x00000002,
 		TRC_ASSERT		= 0x00000004,
 		TRC_TRACE		= 0x00000008,
-		TRC_IERROR		= 0x00000010,
 		
 		// Moudule additional traces
 		TRC_USER1		= 0x00000020,
@@ -253,14 +252,14 @@ namespace Trace {
 	#define TrcErrJmp(trcMod, errval, __var) \
 	do {\
 		__var = errval;\
-		TRACE_OUT(trcMod, Trace::TRC_IERROR, "{0}({1}): 0x{2:X8}",     \
+		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}",     \
 			__FILE__, __LINE__, hr ); \
 		goto Proc_End;\
 	} while(0);
 
 	#define TrcErrReturn(trcMod, errval) \
 	do {\
-		TRACE_OUT(trcMod, Trace::TRC_IERROR, "{0}({1}): 0x{2:X8}",     \
+		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}",     \
 			__FILE__, __LINE__, errval ); \
 		return errval;\
 	} while(0);
@@ -271,14 +270,14 @@ namespace Trace {
 		hr = checkState;\
 		if( FAILED(hr) )\
 		{\
-			defTrace( Trace::TRC_IERROR, "{0}({1}): 0x{2:X8}", __FILE__, __LINE__, hr ); \
+			defTrace( Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}", __FILE__, __LINE__, hr ); \
 			goto Proc_End;\
 		}\
 	}while(0)\
 
 #define trcErr(errVal) \
 	do{\
-		defTrace( Trace::TRC_IERROR, "{0}({1}): 0x{2:X8}", __FILE__, __LINE__, hr ); \
+		defTrace( Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}", __FILE__, __LINE__, hr ); \
 		hr = errVal;\
 		goto Proc_End;\
 	}while(0)\
@@ -288,7 +287,7 @@ namespace Trace {
 	do {\
 		if( (checkPointer) == NULL )\
 		{\
-			defTrace( Trace::TRC_IERROR, "{0}({1}): Null Exception",     \
+			defTrace( Trace::TRC_ERROR, "{0}({1}): Null Exception",     \
 				__FILE__, __LINE__ ); \
 			hr = E_OUTOFMEMORY;\
 			goto Proc_End;\
@@ -300,7 +299,7 @@ namespace Trace {
 	do{\
 		if( (checkPointer) == NULL )\
 		{\
-			defTrace( Trace::TRC_IERROR, "{0}({1}): Invalid Pointer", __FILE__, __LINE__ ); \
+			defTrace( Trace::TRC_ERROR, "{0}({1}): Invalid Pointer", __FILE__, __LINE__ ); \
 			hr = E_POINTER;\
 			goto Proc_End;\
 		}\

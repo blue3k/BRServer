@@ -112,14 +112,17 @@ namespace Net {
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// callback
+
+		virtual HRESULT Accept(IOBUFFER_ACCEPT* &pAcceptInfo) override;
 		// called when New connection TCP accepted
 		virtual HRESULT OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo ) override;
 
 		// called when network message is received
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred ) override;
+		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) override;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred ) override;
+		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 		// Pending Accept New one
 		HRESULT PendingAccept();

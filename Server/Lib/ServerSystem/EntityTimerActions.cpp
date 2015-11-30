@@ -19,7 +19,7 @@
 #include "ServerSystem/Transaction.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(BR::Svr::TimerActionTransaction);
+BR_MEMORYPOOL_IMPLEMENT(Svr::TimerActionTransaction);
 
 
 namespace BR {

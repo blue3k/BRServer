@@ -20,7 +20,7 @@ namespace BR {
 	template<>
 	HRESULT ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionState& Data, int Option )
 	{
-		Option;
+		unused(Option);
 		return ToStringEnum( pBuff, iBuffLen, Data );
 	}
 
@@ -28,7 +28,7 @@ namespace BR {
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const sockaddr_in6& Data, int Option)
 	{
-		Option;
+		unused(Option);
 		char ipstr[INET6_ADDRSTRLEN] = "";
 		inet_ntop(Data.sin6_family, (void*)&Data.sin6_addr, ipstr, sizeof ipstr);
 
@@ -50,7 +50,7 @@ namespace BR {
 	template<>
 	HRESULT ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionInformation& Data, int Option )
 	{
-		Option;
+		unused(Option);
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "Local:" ) ) )
 			return E_FAIL;
 
@@ -71,7 +71,7 @@ namespace BR {
 	template<>
 	HRESULT ToString( char*& pBuff, INT& iBuffLen, const NetClass& Data, int Option )
 	{
-		Option;
+		unused(Option);
 		return ToStringEnum( pBuff, iBuffLen, Data );
 	}
 

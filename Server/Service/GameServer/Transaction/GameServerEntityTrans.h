@@ -27,6 +27,9 @@ namespace GameServer {
 
 	class GameServerTransRegisterPlayerToJoinGameServer : public Svr::ServerEntityMessageTransaction< Svr::ServerEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer, sizeof(Svr::TransactionMessageHandlerType)*2>
 	{
+	public:
+		typedef Svr::ServerEntityMessageTransaction< Svr::ServerEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer, sizeof(Svr::TransactionMessageHandlerType) * 2> super;
+
 	private:
 		NetAddress m_PublicAddress;
 		EntityUID m_PlayerUID;

@@ -206,7 +206,7 @@ void ConnectionManagerT<ConnectionType>::FreeConnection( Connection* pConn )
 	if (pConn == nullptr)
 		return;
 
-	ConnectionType* pConnT = dynamic_cast<ConnectionType*>( pConn );
+	//ConnectionType* pConnT = dynamic_cast<ConnectionType*>( pConn );
 
 	RemoveMap( pConn );
 

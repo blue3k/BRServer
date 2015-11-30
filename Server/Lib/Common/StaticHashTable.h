@@ -612,7 +612,7 @@ namespace Hash {
 				if( !iterData.m_itInBucket.IsValid() )
 					return E_INVALIDARG;
 
-				ItemType* data = *iterData;
+				//ItemType* data = *iterData;
 
 				// NOTE : if bucket size changed then this operation will not safe
 				Bucket& bucket = *iterData.m_iterBucket;

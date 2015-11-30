@@ -46,8 +46,8 @@ namespace Net {
 		// IOCP buffer 
 		WSABUF	wsaBuff;
 
-		// Operated buffer size
-		DWORD dwOperateSize;
+		// Transferred buffer size
+		DWORD TransferredSize;
 
 
 		// Constructor
@@ -91,6 +91,7 @@ namespace Net {
 	{
 		// Read flag
 		DWORD dwFlags;
+		DWORD dwNumberOfByte;
 
 		// UDP Read from
 		struct sockaddr_in6 From;
@@ -129,6 +130,7 @@ namespace Net {
 		//Connection	*pConnection;
 		SOCKET sockAccept;
 		BYTE pAcceptInfo[(sizeof(sockaddr_in6)+16)*2];
+		DWORD dwByteReceived;
 
 		// Constructor
 		IOBUFFER_ACCEPT();

@@ -293,7 +293,6 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		Message::GameInstanceManager::CreateGameRes msgRes;
-		const ServiceInformation *currentMaster = nullptr, *currentSlave = nullptr;
 		GameInsUID gameUID;
 
 		svrChk(pRes->GetHRESULT());
@@ -350,24 +349,26 @@ namespace Svr {
 			goto Proc_End;
 		}
 
-		auto matchingCompID = Svr::MatchingUtil::GetQueueComponentID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
-		auto matchingQueueService = Svr::GetServerComponent<Svr::RingClusterServiceEntity>(matchingCompID);
-		if (matchingQueueService == nullptr)
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to get matching queue service MaxGamePlayer:%0%, NumberOfPlayer:%1%, matchingCompID:%2%", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), matchingCompID);
-			svrErr(E_SVR_INVALID_CLUSTERID);
-		}
-		else
-		{
-			svrChk(matchingQueueService->GetService(pService));
-		}
+			auto matchingCompID = Svr::MatchingUtil::GetQueueComponentID(GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), PlayerRole::None);
+			auto matchingQueueService = Svr::GetServerComponent<Svr::RingClusterServiceEntity>(matchingCompID);
+			if (matchingQueueService == nullptr)
+			{
+				svrTrace(Trace::TRC_ERROR, "Failed to get matching queue service MaxGamePlayer:%0%, NumberOfPlayer:%1%, matchingCompID:%2%", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), matchingCompID);
+				svrErr(E_SVR_INVALID_CLUSTERID);
+			}
+			else
+			{
+				svrChk(matchingQueueService->GetService(pService));
+			}
 
-		GetMyOwner()->ForeachPlayer( [&]( PartyPlayer* pPlayer )->HRESULT {
-			m_matchingPlayers.push_back(MatchingPlayerInformation(pPlayer->GetPlayerEntityUID(),pPlayer->GetPlayerID(), PlayerRole::None));
-			return S_OK;
-		});
+			GetMyOwner()->ForeachPlayer([&](PartyPlayer* pPlayer)->HRESULT {
+				m_matchingPlayers.push_back(MatchingPlayerInformation(pPlayer->GetPlayerEntityUID(), pPlayer->GetPlayerID(), PlayerRole::None));
+				return S_OK;
+			});
 
-		svrChk( pService->GetService<Svr::PartyMatchingQueueService>()->RegisterPartyMatchingCmd( GetTransID(), 0, m_matchingPlayers ) );
+			svrChk(pService->GetService<Svr::PartyMatchingQueueService>()->RegisterPartyMatchingCmd(GetTransID(), 0, m_matchingPlayers));
+		}
 
 		
 	Proc_End:
@@ -458,7 +459,6 @@ namespace Svr {
 	HRESULT PartyTransPartyMatchingCanceled::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		ServerEntity *pServer = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -486,7 +486,6 @@ namespace Svr {
 	HRESULT PartyTransMatchingItemDequeued::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		ServerEntity *pServer = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -513,7 +512,6 @@ namespace Svr {
 	HRESULT PartyTransPartyGameMatchedS2CEvt::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		ServerEntity *pServer = nullptr;
 
 		svrChk( super::StartTransaction() );
 

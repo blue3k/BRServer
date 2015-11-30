@@ -47,16 +47,16 @@ namespace Net {
 	HRESULT ServerTCP::SetupSocketOption(SOCKET socket)
 	{
 		HRESULT hr = S_OK;
-		int iOptValue = 0;
+		socklen_t iOptValue = 0;
 
-		iOptValue = BR::Net::Const::SVR_RECV_BUFFER_SIZE;
+		iOptValue = Net::Const::SVR_RECV_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
 			netErr(E_UNEXPECTED);
 		}
 
-		iOptValue = BR::Net::Const::SVR_SEND_BUFFER_SIZE;
+		iOptValue = Net::Const::SVR_SEND_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
@@ -68,16 +68,73 @@ namespace Net {
 		return hr;
 	}
 
+	HRESULT ServerTCP::Accept(IOBUFFER_ACCEPT* &pAcceptInfo)
+	{
+		HRESULT hr = S_OK, hrErr = S_OK;
+		SOCKET sockAccept = INVALID_SOCKET;
+
+		pAcceptInfo = nullptr;
+
+		netTrace(TRC_CONNECTION, "Pending Accept : {0}", GetConnectionManager().GetNumActiveConnection());
+
+		if (FAILED(m_pAcceptBuffer->TryAllocBuffer(Const::TCP_ACCEPT_TRYALLOC_MAX, pAcceptInfo)))
+		{
+			// all accept operation pending done
+			return E_OUTOFMEMORY;
+		}
+
+		memset(pAcceptInfo, 0, sizeof(IOBUFFER_ACCEPT));
+
+		//sockAccept = WSASocket(GetSocketAddr().sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+		sockAccept = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
+		if (sockAccept == INVALID_SOCKET)
+		{
+			netTrace(Trace::TRC_ERROR, "Failed to Open Accept Socket {0:X8}", GetLastWSAHRESULT());
+			netErr(E_UNEXPECTED);
+		}
+
+		pAcceptInfo->SetupAccept(sockAccept);
+
+		netChk(SetupSocketOption(pAcceptInfo->sockAccept));
+
+		hrErr = NetSystem::Accept(GetSocket(), pAcceptInfo);
+		switch (hrErr)
+		{
+		case S_OK:
+		case E_NET_WOULDBLOCK:
+		case E_NET_IO_PENDING:
+			// successed
+			break;
+		case E_NET_TRY_AGAIN:
+			netTrace(TRC_NET, "TCP accept busy, try again {0} queued", m_pAcceptBuffer->GetUsedBufferCount());
+			goto Proc_End;
+			break;
+		default:
+			hr = hrErr;
+			m_pAcceptBuffer->FreeBuffer(pAcceptInfo);
+			break;
+		}
+
+	Proc_End:
+
+		if (FAILED(hr))
+		{
+			if (pAcceptInfo && m_pAcceptBuffer)
+				m_pAcceptBuffer->FreeBuffer(pAcceptInfo);
+		}
+
+		return hr;
+	}
+
 	// On New connection accepted
 	HRESULT ServerTCP::OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pOverAccept )
 	{
 		HRESULT hr = S_OK;
-		int iLenLocalAddr = 0, iLenRemoteAddr = 0;
-		sockaddr_in6 *pLocalAddr = nullptr, *pRemoteAddr = nullptr;
+		sockaddr_in6 remoteAddr;
 		SOCKET sockSvr = GetSocket();
 		SOCKET sockAccept = pOverAccept->sockAccept;
-		BR::Net::IConnection::ConnectionInformation connectionInfo;
-		UINT cid = 0;
+		Net::IConnection::ConnectionInformation connectionInfo;
+
 
 		netChkPtr( pOverAccept );
 
@@ -89,31 +146,17 @@ namespace Net {
 			goto Proc_End;
 		}
 
-
 		if( SUCCEEDED( hrRes ) )
 		{
-			GetAcceptExSockaddrs( (void*)pOverAccept->pAcceptInfo,
-								  0,
-								  sizeof(sockaddr_in6)+16,
-								  sizeof(sockaddr_in6)+16, 
-								  (SOCKADDR**)&pLocalAddr, 
-								  &iLenLocalAddr, 
-								  (SOCKADDR**)&pRemoteAddr, 
-								  &iLenRemoteAddr );
-
+			netChk(NetSystem::HandleAcceptedSocket(sockSvr, pOverAccept, remoteAddr));
 
 			connectionInfo.Local = GetLocalAddress();
 			connectionInfo.LocalClass = GetLocalClass();
 			connectionInfo.LocalID = GetServerID();
-			SockAddr2Addr( *pRemoteAddr, connectionInfo.Remote );
+			SockAddr2Addr(remoteAddr, connectionInfo.Remote );
 
-			if( setsockopt(sockAccept, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (char *)&sockSvr, sizeof(SOCKET)) == SOCKET_ERROR )
-			{
-				netTrace( TRC_CONNECTION, "Failed set socket option SO_UPDATE_ACCEPT_CONTEXT err:{0:X8}", GetLastWSAHRESULT() );
-				netErr( E_FAIL );
-			}
 			IConnection *pConnOut = nullptr;
-			svrChk(OnNewSocket(sockAccept, *pRemoteAddr, connectionInfo, pConnOut));
+			svrChk(OnNewSocket(sockAccept, remoteAddr, connectionInfo, pConnOut));
 
 			sockAccept = INVALID_SOCKET;
 		}
@@ -131,7 +174,7 @@ namespace Net {
 
 		if( sockAccept != INVALID_SOCKET )
 		{
-			closesocket( sockAccept );
+			NetSystem::CloseSocket( sockAccept );
 		}
 
 		PendingAccept();
@@ -147,13 +190,13 @@ namespace Net {
 		Connection *pConn = nullptr;
 		uintptr_t cid = 0;
 
-		remoteSockAddr;
+		unused(remoteSockAddr);
 		
 		// Create New connection for accept
 		pConnection = (ConnectionTCP*)GetConnectionManager().NewConnection();
 		if( pConnection == nullptr )// Maybe maxconnection ?
 		{
-			netTrace( Trace::TRC_ERROR, "Failed to allocated new connection now active:%0%", GetConnectionManager().GetNumActiveConnection() );
+			netTrace( Trace::TRC_ERROR, "Failed to allocated new connection now active:{0}", GetConnectionManager().GetNumActiveConnection() );
 			netErr( E_FAIL );
 		}
 
@@ -161,23 +204,18 @@ namespace Net {
 		pConnOut = pConnection;
 		cid = pConnection->GetCID();
 
-		netChk(NetSystem::RegisterSocket(acceptedSocket, pConnection));
+		netChk(NetSystem::RegisterSocket(acceptedSocket, pConnection, false));
 
 		pConnection->SetConnectingTimeOut( Const::CONNECTION_TIMEOUT );
 
 		// Initialize connection
 		netChk( pConnection->InitConnection( acceptedSocket, connectionInfo ) );
-		netTrace(TRC_CONNECTION, "Connection Accepted CID:%0%, Addr:%1%:%2%", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+		netTrace(TRC_CONNECTION, "Connection Accepted CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
-		//netChk( GetConnectionManager().PendingWaitConnection( pConnection ) );
 		pConn = nullptr;
-
-		// When connection process is done it will be added
-		//EnqueueNetEvent( INet::Event( INet::Event::EVT_NEW_CONNECTION ) ); 
 
 			
 	Proc_End:
-
 
 		if( FAILED(hr) )
 		{
@@ -191,21 +229,26 @@ namespace Net {
 		else
 		{
 			if( pConn )
-				netTrace( TRC_NET, "Net Con Accept Svr:%0%, CID:%1%, From %2%", GetLocalAddress().usPort, cid, connectionInfo.Remote );
+				netTrace( TRC_NET, "Net Con Accept Svr:{0}, CID:{1}, From {2}", GetLocalAddress().usPort, cid, connectionInfo.Remote );
 		}
 
 		return hr;
 
 	}
 
+	HRESULT ServerTCP::Recv(IOBUFFER_READ* pIOBuffer)
+	{
+		return E_NOTIMPL;
+	}
+
 	// called when reciving message
-	HRESULT ServerTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred )
+	HRESULT ServerTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
 	{
 		return E_NOTIMPL;
 	}
 
 	// called when send completed
-	HRESULT ServerTCP::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred )
+	HRESULT ServerTCP::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer )
 	{
 		Util::SafeDeleteArray( pIOBuffer->pSendBuff );
 		Util::SafeRelease( pIOBuffer->pMsgs );
@@ -218,80 +261,26 @@ namespace Net {
 	HRESULT ServerTCP::PendingAccept()
 	{
 		HRESULT hr = S_OK;
-		IOBUFFER_ACCEPT *pOverlapped = nullptr;
-		DWORD dwNumBytes = 0;
-		int iOptValue = 0;
-		SOCKET sockAccept = 0;
 
 		// skip if not accept mode
-		if( !GetIsEnableAccept() )
+		if(!NetSystem::IsProactorSystem() || !GetIsEnableAccept())
 			goto Proc_End;
 
 		// if server not initialized
 		if( GetSocket() == INVALID_SOCKET )
 			goto Proc_End;
 
+		// used buffer count == pended accept count
 		while( m_pAcceptBuffer->GetUsedBufferCount() < m_pAcceptBuffer->GetBufferCount() )
 		{
-			if( sockAccept == INVALID_SOCKET )
-			{
-				netTrace(Trace::TRC_ERROR, "Failed to Open Accept Socket {0:X8}", GetLastWSAHRESULT());
-				netErr( E_UNEXPECTED );
-			}
+			IOBUFFER_ACCEPT* pAcceptInfo = nullptr;
 
-			netTrace( TRC_CONNECTION, "Pending Accept : %0%", GetConnectionManager().GetNumActiveConnection() );
-
-			if( FAILED(m_pAcceptBuffer->TryAllocBuffer( Const::TCP_ACCEPT_TRYALLOC_MAX, pOverlapped )) )
-			{
-				// all accept operation pending done
-				break;
-			}
-
-			memset( pOverlapped, 0, sizeof(IOBUFFER_ACCEPT) );
-
-			sockAccept = WSASocket(GetSocketAddr().sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
-
-			pOverlapped->SetupAccept( sockAccept );
-
-			netChk( SetupSocketOption(pOverlapped->sockAccept) );
-
-			if( !AcceptEx( GetSocket(), pOverlapped->sockAccept, 
-					pOverlapped->pAcceptInfo, 0, 
-					sizeof(sockaddr_in6)+16, sizeof(sockaddr_in6)+16, 
-					&dwNumBytes, pOverlapped ) )
-			{
-				int iErr = WSAGetLastError();
-				switch( iErr )
-				{
-				case WSAENOTSOCK:// server closing or not initialized
-					netTrace( Trace::TRC_ERROR, "TCP Abnormal accept, Not socked %0%", iErr );
-					netErr( HRESULT_FROM_WIN32(iErr) );
-					break;
-				case ERROR_IO_PENDING:
-					netTrace( TRC_NET, "TCP accept pending %0% queued", m_pAcceptBuffer->GetUsedBufferCount() );
-					break;
-				default:
-					netTrace( Trace::TRC_ERROR, "TCP Abnormal accept, err:%0%", iErr );
-					netErr( HRESULT_FROM_WIN32(iErr) );
-					break;
-				};
-			}
-			else
-			{
-				netTrace( Trace::TRC_ERROR, "TCP Abnormal accept" );
-				netErr( E_UNEXPECTED );
-			}
-
+			netChk(Accept(pAcceptInfo));
 
 		}// while
 
 	Proc_End:
 
-		if( FAILED(hr) )
-		{
-			if( pOverlapped && m_pAcceptBuffer )
-				m_pAcceptBuffer->FreeBuffer( pOverlapped );
-		}
 
 		return hr;
 	}
@@ -312,8 +301,10 @@ namespace Net {
 		HRESULT hr = S_OK;
 		SOCKET socket = INVALID_SOCKET;
 		INT32 iOptValue;
-		BOOL bOptValue;
+		int bOptValue;
 		sockaddr_in6 bindAddr;
+		int iMaxAccept;
+		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
 
 		if( GetSocket() != INVALID_SOCKET )// already initialized?
 			return S_OK;
@@ -324,7 +315,8 @@ namespace Net {
 
 		netTrace(Trace::TRC_TRACE, "Open Server TCP Host {0}:{1}", strLocalIP, usLocalPort );
 
-		socket = WSASocket(GetSocketAddr().sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+		//socket = WSASocket(GetSocketAddr().sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+		socket = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
 		if( socket == INVALID_SOCKET )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
@@ -366,7 +358,7 @@ namespace Net {
 			bindAddr.sin6_family = AF_INET6;
 			bindAddr.sin6_addr = in6addr_any;
 		}
-		if (bind(socket, (SOCKADDR*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
+		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, TCP {0:X8}", GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
@@ -378,15 +370,15 @@ namespace Net {
 			netErr( E_UNEXPECTED );
 		}
 
-		netChk(NetSystem::RegisterSocket(socket, this));
+		netChk(NetSystem::RegisterSocket(socket, this, true));
 
 		// allocate accept buffer
 		Util::SafeDelete( m_pAcceptBuffer );
 
 
-		int iMaxAccept = Const::TCP_ACCEPT_PENDING_MAX;
+		iMaxAccept = Const::TCP_ACCEPT_PENDING_MAX;
 		iMaxAccept = Util::Max( iMaxAccept, 1 );
-		netMem( m_pAcceptBuffer = new BR::SpinSharedBuffer<IOBUFFER_ACCEPT>( iMaxAccept ) );
+		netMem( m_pAcceptBuffer = new SpinSharedBuffer<IOBUFFER_ACCEPT>( iMaxAccept ) );
 
 
 		SetSocket( socket );
@@ -398,7 +390,7 @@ namespace Net {
 
 
 
-		EnqueueNetEvent( INet::Event( INet::Event::EVT_NET_INITIALIZED ) ); 
+		EnqueueNetEvent( netEvent ); 
 
 
 		netChk( PendingAccept() );
@@ -406,9 +398,9 @@ namespace Net {
 	Proc_End:
 
 		if( socket != INVALID_SOCKET )
-			closesocket( socket );
+			NetSystem::CloseSocket( socket );
 
-		netTrace( TRC_NET, "HostOpen %0%, hr={1:X8}", GetLocalAddress(), hr );
+		netTrace( TRC_NET, "HostOpen {0}, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}
@@ -417,22 +409,23 @@ namespace Net {
 	HRESULT ServerTCP::HostClose()
 	{
 		HRESULT hr = S_OK;
+		INet::Event netEvent(INet::Event::EVT_NET_CLOSED);
 
 		netChk(Server::HostClose() );
 
 		if( GetSocket() != INVALID_SOCKET )
 		{
-			closesocket( GetSocket() );
+			NetSystem::CloseSocket( GetSocket() );
 			SetSocket( INVALID_SOCKET );
 		}
 
 		netTrace( Trace::TRC_ERROR, "TCP Server closed completely" );
 
-		EnqueueNetEvent( INet::Event( INet::Event::EVT_NET_CLOSED ) ); 
+		EnqueueNetEvent(netEvent);
 
 	Proc_End:
 
-		netTrace( TRC_NET, "HostClose %0%, hr={1:X8}", GetLocalAddress(), hr );
+		netTrace( TRC_NET, "HostClose {0}, hr={1:X8}", GetLocalAddress(), hr );
 
 		return hr;
 	}
@@ -457,56 +450,79 @@ namespace Net {
 	// Send message to connection with network device
 	HRESULT ServerTCP::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_OK;
-		//DWORD dwSend = 0;
-		int iWSAErr = 0;
+		HRESULT hr = S_OK, hrErr = S_OK;
 
 		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
 
 		ConnectionTCP *pTCPCon = (ConnectionTCP*)pConnection;
 
-		IOBUFFER_WRITE *pOverlapped = nullptr;
-		netChk( BR::Net::NetSystem::AllocBuffer(pOverlapped) );
-
 		Assert(pMsg->GetRefCount() > 0);
+
+		IOBUFFER_WRITE *pOverlapped = nullptr;
+		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
 		pOverlapped->SetupSendTCP( pMsg );
 
 
-		iWSAErr = WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0, pOverlapped, nullptr );
-		if( iWSAErr == SOCKET_ERROR )
+		hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
+		switch (hrErr)
 		{
-			iWSAErr = WSAGetLastError();
-			if( iWSAErr != WSA_IO_PENDING )
-			{
-				switch( iWSAErr )
-				{
-				case WSAENOTCONN:
-					// Send fail by connection close
-					// Need to disconnect
-					pTCPCon->Disconnect();
-					netErrSilent(E_NET_NOT_CONNECTED);
-					break;
-				case WSAECONNABORTED:
-				case WSAECONNRESET:
-				case WSAENETRESET:
-				case WSAENOTSOCK:
-				case WSAESHUTDOWN:
-					// Send fail by connection close
-					// Need to disconnect
-					pTCPCon->Disconnect();
-					netErrSilent( E_NET_CONNECTION_CLOSED );
-					break;
-				default:
-					netErr( E_NET_IO_SEND_FAIL );
-					break;
-				};
-			}
-		}
-		else
-		{
-			// IOCP process will free this
-		}
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			break;
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+		case E_NET_NOTCONN:
+		case E_NET_NOTSOCK:
+		case E_NET_SHUTDOWN:
+			// Send fail by connection close
+			// Need to disconnect
+			pTCPCon->Disconnect();
+			hr = E_NET_CONNECTION_CLOSED;
+			goto Proc_End;
+			break;
+		default:
+			netErr(E_NET_IO_SEND_FAIL);
+			break;
+		};
+
+		//iWSAErr = WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0, pOverlapped, nullptr );
+		//if( iWSAErr == SOCKET_ERROR )
+		//{
+		//	iWSAErr = WSAGetLastError();
+		//	if( iWSAErr != WSA_IO_PENDING )
+		//	{
+		//		switch( iWSAErr )
+		//		{
+		//		case WSAENOTCONN:
+		//			// Send fail by connection close
+		//			// Need to disconnect
+		//			pTCPCon->Disconnect();
+		//			netErrSilent(E_NET_NOT_CONNECTED);
+		//			break;
+		//		case WSAECONNABORTED:
+		//		case WSAECONNRESET:
+		//		case WSAENETRESET:
+		//		case WSAENOTSOCK:
+		//		case WSAESHUTDOWN:
+		//			// Send fail by connection close
+		//			// Need to disconnect
+		//			pTCPCon->Disconnect();
+		//			netErrSilent( E_NET_CONNECTION_CLOSED );
+		//			break;
+		//		default:
+		//			netErr( E_NET_IO_SEND_FAIL );
+		//			break;
+		//		};
+		//	}
+		//}
+		//else
+		//{
+		//	// IOCP process will free this
+		//}
 
 	Proc_End:
 
@@ -515,7 +531,7 @@ namespace Net {
 			if( pOverlapped )
 			{
 				Util::SafeRelease( pOverlapped->pMsgs );
-				BR::Net::NetSystem::FreeBuffer(pOverlapped);
+				Net::NetSystem::FreeBuffer(pOverlapped);
 			}
 			else
 			{
@@ -524,7 +540,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:%3%, ip:%0%, err:%1%, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, iWSAErr, hr, pTCPCon->GetCID());
+				netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr, pTCPCon->GetCID());
 			}
 			else
 				return S_OK;
@@ -533,11 +549,11 @@ namespace Net {
 		{
 			if( msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
 			{
-				netTrace(TRC_TCPNETCTRL, "TCP Ctrl CID:%3%, ip:%0%, msg:%1%, Len:%2%", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
+				netTrace(TRC_TCPNETCTRL, "TCP Ctrl CID:{3}, ip:{0}, msg:{1}, Len:{2}", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
 			}
 			else
 			{
-				netTrace(TRC_TCPSENDRAW, "TCP Send CID:%3%, ip:%0%, msg:%1%, Len:%2%", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
+				netTrace(TRC_TCPSENDRAW, "TCP Send CID:{3}, ip:{0}, msg:{1}, Len:{2}", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
 			}
 		}
 
@@ -547,47 +563,69 @@ namespace Net {
 
 	HRESULT ServerTCP::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
 	{
-		HRESULT hr = S_OK;
-		//DWORD dwSend = 0;
-		int iWSAErr = 0;
+		HRESULT hr = S_OK, hrErr = S_OK;
 
 		ConnectionTCP *pTCPCon = (ConnectionTCP*)pConnection;
 
 		IOBUFFER_WRITE *pOverlapped = nullptr;
-		netChk( BR::Net::NetSystem::AllocBuffer(pOverlapped) );
-
+		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
 
 		pOverlapped->SetupSendTCP( uiBuffSize, pBuff );
 
-		iWSAErr = WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0, pOverlapped, nullptr );
-		if( iWSAErr == SOCKET_ERROR )
+		hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
+		switch (hrErr)
 		{
-			iWSAErr = WSAGetLastError();
-			if( iWSAErr != WSA_IO_PENDING )
-			{
-				switch( iWSAErr )
-				{
-				case WSAECONNABORTED:
-				case WSAECONNRESET:
-				case WSAENETRESET:
-				case WSAENOTCONN:
-				case WSAENOTSOCK:
-				case WSAESHUTDOWN:
-					// Send fail by connection close
-					// Need to disconnect
-					pTCPCon->Disconnect();
-					netErrSilent( E_NET_CONNECTION_CLOSED );
-					break;
-				default:
-					netErr( E_NET_IO_SEND_FAIL );
-					break;
-				};
-			}
-		}
-		else
-		{
-			// IOCP process will free this
-		}
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			break;
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+		case E_NET_NOTCONN:
+		case E_NET_NOTSOCK:
+		case E_NET_SHUTDOWN:
+			// Send fail by connection close
+			// Need to disconnect
+			pTCPCon->Disconnect();
+			hr = E_NET_CONNECTION_CLOSED;
+			goto Proc_End;
+			break;
+		default:
+			netErr(E_NET_IO_SEND_FAIL);
+			break;
+		};
+
+		//iWSAErr = WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0, pOverlapped, nullptr );
+		//if( iWSAErr == SOCKET_ERROR )
+		//{
+		//	iWSAErr = WSAGetLastError();
+		//	if( iWSAErr != WSA_IO_PENDING )
+		//	{
+		//		switch( iWSAErr )
+		//		{
+		//		case WSAECONNABORTED:
+		//		case WSAECONNRESET:
+		//		case WSAENETRESET:
+		//		case WSAENOTCONN:
+		//		case WSAENOTSOCK:
+		//		case WSAESHUTDOWN:
+		//			// Send fail by connection close
+		//			// Need to disconnect
+		//			pTCPCon->Disconnect();
+		//			netErrSilent( E_NET_CONNECTION_CLOSED );
+		//			break;
+		//		default:
+		//			netErr( E_NET_IO_SEND_FAIL );
+		//			break;
+		//		};
+		//	}
+		//}
+		//else
+		//{
+		//	// IOCP process will free this
+		//}
 
 	Proc_End:
 
@@ -595,19 +633,19 @@ namespace Net {
 		{
 			if( pOverlapped )
 			{
-				BR::Net::NetSystem::FreeBuffer(pOverlapped);
+				Net::NetSystem::FreeBuffer(pOverlapped);
 			}
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( Trace::TRC_ERROR, "TCP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, iWSAErr, hr );
+				netTrace( Trace::TRC_ERROR, "TCP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr );
 			}
 			else
 				return S_OK;
 		}
 		else
 		{
-			netTrace(TRC_TCPSENDRAW, "TCP Send ip:%0%, Len:%1%", pTCPCon->GetConnectionInfo().Remote, uiBuffSize);
+			netTrace(TRC_TCPSENDRAW, "TCP Send ip:{0}, Len:{1}", pTCPCon->GetConnectionInfo().Remote, uiBuffSize);
 		}
 
 

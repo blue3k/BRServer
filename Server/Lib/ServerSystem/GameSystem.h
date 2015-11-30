@@ -68,9 +68,9 @@ namespace Svr {
 		std::unordered_set<UINT>& GetModifiedList();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() { ClearModifiedInfo(); return __super::InitializeComponent(); }
+		virtual HRESULT InitializeComponent() { ClearModifiedInfo(); return Component::InitializeComponent(); }
 		// Terminate server component
-		virtual void TerminateComponent() { __super::TerminateComponent(); }
+		virtual void TerminateComponent() { Component::TerminateComponent(); }
 
 		// Update system
 		virtual HRESULT UpdateSystem() { return S_OK; }

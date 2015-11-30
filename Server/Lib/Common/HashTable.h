@@ -177,10 +177,10 @@ namespace Hash {
 
 				// constructor
 				iterator( HashTable *pContainer, typename BucketListType::iterator iterBucket, INT iIdx, bool bIsBucketIter = false )
-					:m_bIsIterInBucket(bIsBucketIter),
-					m_pContainer(pContainer),
-					m_iterBucket(iterBucket),
-					m_iIdx(iIdx)
+					: m_bIsIterInBucket(bIsBucketIter)
+					, m_iterBucket(iterBucket)
+					, m_pContainer(pContainer)
+					, m_iIdx(iIdx)
 				{
 					m_pCache = nullptr;
 					if( m_pContainer && m_iterBucket != m_pContainer->bucket_end() && m_iIdx > END_IDX )

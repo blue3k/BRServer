@@ -54,20 +54,20 @@ namespace Svr {
 
 
 
-	template PerformanceCounterRaw < INT32 >;
-	template PerformanceCounterRaw < UINT32 >;
-	template PerformanceCounterRaw < INT64 >;
-	template PerformanceCounterRaw < UINT64 >;
+	template class PerformanceCounterRaw < INT32 >;
+	template class PerformanceCounterRaw < UINT32 >;
+	template class PerformanceCounterRaw < INT64 >;
+	template class PerformanceCounterRaw < UINT64 >;
 
-	template PerformanceCounterAveragePerSec < INT32 >;
-	template PerformanceCounterAveragePerSec < UINT32 >;
-	template PerformanceCounterAveragePerSec < INT64 >;
-	template PerformanceCounterAveragePerSec < UINT64 >;
+	template class PerformanceCounterAveragePerSec < INT32 >;
+	template class PerformanceCounterAveragePerSec < UINT32 >;
+	template class PerformanceCounterAveragePerSec < INT64 >;
+	template class PerformanceCounterAveragePerSec < UINT64 >;
 
-	template PerformanceCounterTickPerSec < INT32 >;
-	template PerformanceCounterTickPerSec < UINT32 >;
-	template PerformanceCounterTickPerSec < INT64 >;
-	template PerformanceCounterTickPerSec < UINT64 >;
+	template class PerformanceCounterTickPerSec < INT32 >;
+	template class PerformanceCounterTickPerSec < UINT32 >;
+	template class PerformanceCounterTickPerSec < INT64 >;
+	template class PerformanceCounterTickPerSec < UINT64 >;
 
 
 };	// Svr

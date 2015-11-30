@@ -210,7 +210,7 @@ namespace BR {
 		StaticAllocator(MemoryAllocator& overflowHeap);
 		~StaticAllocator();
 
-		FORCEINLINE bool GetIsInStaticBuffer( void* pPtr );
+		bool GetIsInStaticBuffer( void* pPtr );
 
 		// Allocate 
 		virtual HRESULT Alloc( size_t uiSize, void* &pPtr );

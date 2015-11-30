@@ -11,8 +11,10 @@
 
 template <class ItemType>
 SpinSharedBuffer<ItemType>::SpinSharedBuffer( UINT BufferCount )
-	:m_SpinBuffer(nullptr),
-	m_BufferCount(0)
+	: m_BufferCount(0)
+	, m_SpinBuffer(nullptr)
+	, m_AccessPosition(0)
+	, m_UsedBufferCount(0)
 {
 	if( BufferCount > 0 )
 		SetBufferCount( BufferCount );
@@ -136,7 +138,7 @@ HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 	} while (!m_SpinBuffer[accessPos].State.compare_exchange_weak(expected, Buffer::STATE_USE, std::memory_order_release, std::memory_order_relaxed));
 
 	// Increase used buffer count
-	m_UsedBufferCount.Increment();
+	m_UsedBufferCount.fetch_add(1, std::memory_order_release);
 
 	// Writing success!
 	return S_OK; 

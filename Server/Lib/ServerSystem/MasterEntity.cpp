@@ -23,7 +23,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/EventTask.h"
 #include "ServerSystem/EntityTimerActions.h"
-#include "ServerSystem/BRServer.h"
+#include "ServerSystem/BrServer.h"
 #include "Common/Message.h"
 
 
@@ -165,7 +165,7 @@ namespace Svr
 
 		if( GetEntityState() == EntityState::CLOSING )
 		{
-			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : %0% , name : %1%, State : %2%", GetEntityID(), typeid(*this).name(), GetEntityState() );
+			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
 			svrChk( TerminateEntity() );
 			hr = S_FALSE;
 			goto Proc_End;
@@ -194,7 +194,7 @@ namespace Svr
 
 			//if( pNewTran->IsPrintTrace() )
 			//{
-			//	svrTrace(Svr::TRC_TRANSACTION, "Trans NewActive TID:%0%, ParentTID:%1% %2%, Entity:%3%:%4%", 
+			//	svrTrace(Svr::TRC_TRANSACTION, "Trans NewActive TID:{0}, ParentTID:{1} {2}, Entity:{3}:{4}", 
 			//		pNewTran->GetTransID(), 
 			//		pNewTran->GetParentTransID(), 
 			//		typeid(*(Transaction*)pNewTran).name(), GetEntityUID(), 
@@ -269,7 +269,7 @@ namespace Svr
 
 		if( GetEntityState() == EntityState::CLOSING )
 		{
-			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : %0% , name : %1%, State : %2%", GetEntityID(), typeid(*this).name(), GetEntityState() );
+			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
 			svrChk( TerminateEntity() );
 			hr = S_FALSE;
 			goto Proc_End;
@@ -294,7 +294,7 @@ namespace Svr
 		svrChkPtr(pTransRes);
 		if( pCurTran->IsPrintTrace() )
 		{
-			svrTrace( Svr::TRC_TRANSACTION, "Trans Proc TID:%0%:%1%, Entity:%2%", pCurTran->GetTransID(), typeid(*pCurTran).name(), GetEntityUID() );
+			svrTrace( Svr::TRC_TRANSACTION, "Trans Proc TID:{0}:{1}, Entity:{2}", pCurTran->GetTransID(), typeid(*pCurTran).name(), GetEntityUID() );
 		}
 
 		pCurTran->UpdateHeartBitTime();
@@ -306,7 +306,7 @@ namespace Svr
 		{
 			if( pCurTran->IsPrintTrace() )
 			{
-				svrTrace( Svr::TRC_TRANSACTION, "Trans failed hr={0:X8}, TID:%1%:%2%, Entity:%3%", 
+				svrTrace( Svr::TRC_TRANSACTION, "Trans failed hr={0:X8}, TID:{1}:{2}, Entity:{3}", 
 					hrTem,
 					pCurTran->GetTransID(), 
 					typeid(*pCurTran).name(),
@@ -355,7 +355,6 @@ namespace Svr
 	{
 		HRESULT hr = S_OK;
 		Transaction *pCurTran = nullptr;
-		Message::MessageData* pMsg = nullptr;
 
 		switch (eventTask.EventType)
 		{
@@ -372,8 +371,9 @@ namespace Svr
 				}
 				else
 				{
-					svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:%0% is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
-					Util::SafeRelease(const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent));
+					svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
+					auto pNonConstTransRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
+					Util::SafeRelease(pNonConstTransRes);
 					svrErr(E_FAIL);
 				}
 			}

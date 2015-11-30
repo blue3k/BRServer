@@ -20,7 +20,7 @@
 
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServicebase.h"
+#include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceTrans.h"
@@ -46,8 +46,9 @@ namespace Svr {
 
 	MatchingQueueServiceEntity::MatchingQueueServiceEntity(ClusterID clusterID, ClusterMembership initialMembership)
 		: RingClusterServiceEntity(clusterID, initialMembership )
-		, m_QueuedItemCount(GetCounterNameFromClusterID(clusterID))
 		, IServerComponent(MatchingUtil::GetComponentIDFromClusterID(clusterID))
+		, m_ItemCounter(0)
+		, m_QueuedItemCount(GetCounterNameFromClusterID(clusterID))
 	{
 	}
 
@@ -73,6 +74,8 @@ namespace Svr {
 		case ClusterID::MatchingQueue_Game_8x7:  return "MatchingQueue_Game_8x7";
 		case ClusterID::MatchingQueue_Game_8x1S: return "MatchingQueue_Game_8x1S";
 		case ClusterID::MatchingQueue_Game_8x1W: return "MatchingQueue_Game_8x1W";
+		default:
+			break;
 		}
 
 		return "Unknown";
@@ -197,7 +200,7 @@ namespace Svr {
 		}
 
 	
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -242,7 +245,7 @@ namespace Svr {
 		}
 
 		
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -275,6 +278,8 @@ namespace Svr {
 	HRESULT MatchingQueueServiceEntity::CancelItem(QueueItem *pItem)
 	{
 		HRESULT hr = S_OK;
+		ServerEntity* pServerEntity = nullptr;
+		Policy::ISvrPolicyPartyMatchingQueue* pPolicyMatchingQueueSvr = nullptr;
 
 		if (pItem == nullptr)
 			return E_INVALIDARG;
@@ -283,9 +288,8 @@ namespace Svr {
 			return E_INVALID_STATE;
 
 		// If delete is required by canceling
-		ServerEntity* pServerEntity = nullptr;
 		svrChk((GetServerComponent<ServerEntityManager>()->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
-		auto pPolicyMatchingQueueSvr = pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>();
+		pPolicyMatchingQueueSvr = pServerEntity->GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>();
 		svrChkPtr(pPolicyMatchingQueueSvr);
 
 		if (pItem->NumPlayers > 1)
@@ -356,6 +360,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		QueueItem *pItem = nullptr;
+		MatchingPlayerInformation *pPlayers = nullptr;
 
 		svrChk(m_ItemIDTable.Find(ticket.QueueItemID, pItem));
 
@@ -365,7 +370,7 @@ namespace Svr {
 			pItem->RegisterUID = UIDTo;
 		}
 
-		MatchingPlayerInformation *pPlayers = pItem->Players;
+		pPlayers = pItem->Players;
 		for (UINT player = 0; player < pItem->NumPlayers; player++, pPlayers++)
 		{
 			if( pPlayers->PlayerUID == UIDFrom )

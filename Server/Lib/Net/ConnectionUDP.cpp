@@ -107,7 +107,7 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 
-		if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
+		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
 
 		hr = ProcSendReliableQueue();
@@ -134,7 +134,7 @@ namespace Net {
 		{
 			Assert(pIMsg);
 			Message::MessageHeader *pQMsgHeader = pIMsg->GetMessageHeader();
-			netTrace(TRC_GUARREANTEDCTRL, "RECVGuaDEQ : CID:%0%:%1%, seq:%2%, msg:%3%, len:%4%",
+			netTrace(TRC_GUARREANTEDCTRL, "RECVGuaDEQ : CID:{0}:{1}, seq:{2}, msg:{3}, len:%4%",
 				GetCID(), m_RecvReliableWindow.GetBaseSequence(),
 				pQMsgHeader->msgID.IDSeq.Sequence,
 				pQMsgHeader->msgID,
@@ -154,7 +154,7 @@ namespace Net {
 			pIMsg = nullptr;
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		Util::SafeRelease(pIMsg);
 
@@ -237,7 +237,7 @@ namespace Net {
 			HRESULT hrTem = GetNet()->SendMsg( this, GatherSize, pGatherBuff );
 			if( FAILED(hrTem) )
 			{
-				netTrace( TRC_SENDRAW, "Gathered Send failed : CID:%0%, Len=%1%, hr={2:X8}", 
+				netTrace( TRC_SENDRAW, "Gathered Send failed : CID:{0}, Len={1}, hr={2:X8}", 
 					GetCID(), GatherSize, hrTem );
 
 				// ignore io send fail except connection closed
@@ -298,7 +298,7 @@ namespace Net {
 		auto remainSize = pMsgHeader->Length;
 		auto offset = 0;
 
-		netTrace(TRC_NETCTRL, "SEND Spliting : CID:%0%, seq:%1%, msg:%2%, len:%3%",
+		netTrace(TRC_NETCTRL, "SEND Spliting : CID:{0}, seq:{1}, msg:{2}, len:{3}",
 			GetCID(),
 			pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
 			pMsg->GetMessageHeader()->msgID,
@@ -319,7 +319,7 @@ namespace Net {
 			svrChk(m_SendReliableWindow.EnqueueMessage(ulTimeCur, pNewMessageData));
 			pNewMessageData->AddRef();// Inc Ref for send
 			SendPending(pNewMessageData);
-			netTrace(TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:%0%, seq:%1%, msg:%2%, len:%3%",
+			netTrace(TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:{0}, seq:{1}, msg:{2}, len:{3}",
 				GetCID(),
 				pNewMessageData->GetMessageHeader()->msgID.IDSeq.Sequence,
 				pNewMessageData->GetMessageHeader()->msgID,
@@ -522,7 +522,7 @@ namespace Net {
 			if( !pMsg->GetIsSequenceAssigned() )
 				pMsg->AssignSequence( NewSeqNone() );
 
-			netTrace( TRC_NETCTRL, "SEND : msg:%0%, seq:%1%, len:%2%", 
+			netTrace( TRC_NETCTRL, "SEND : msg:{0}, seq:{1}, len:{2}", 
 							pMsg->GetMessageHeader()->msgID, 
 							pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
 							pMsg->GetMessageHeader()->Length );
@@ -537,7 +537,7 @@ namespace Net {
 			}
 			else
 			{
-				netTrace( TRC_GUARREANTEDCTRL, "SENDGuaQueued : CID:%0%, msg:%1%, seq:%2%, len:%3%", 
+				netTrace( TRC_GUARREANTEDCTRL, "SENDGuaQueued : CID:{0}, msg:{1}, seq:{2}, len:{3}", 
 								GetCID(),
 								pMsg->GetMessageHeader()->msgID, 
 								pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
@@ -549,7 +549,7 @@ namespace Net {
 
 				// poke send
 				if (GetEventHandler() != nullptr && (m_SendGuaQueue.GetEnqueCount() > 0 && m_SendReliableWindow.GetMsgCount() <= 2))
-					GetEventHandler()->OnNetSyncMessage(this, NetCtrlCode_SyncReliable);
+					GetEventHandler()->OnNetSyncMessage(this);
 			}
 		}
 		pMsg = NULL;
@@ -576,7 +576,7 @@ namespace Net {
 
 		Message::MessageHeader * pMsgHeader = (Message::MessageHeader*)pBuff;
 
-		netTrace(TRC_RECVRAW, "UDP Recv ip:%0%, msg:%1%, seq:%2%, len:%3%", GetConnectionInfo().Remote, pMsgHeader->msgID, pMsgHeader->msgID.IDSeq.Sequence, uiBuffSize);
+		netTrace(TRC_RECVRAW, "UDP Recv ip:{0}, msg:{1}, seq:{2}, len:{3}", GetConnectionInfo().Remote, pMsgHeader->msgID, pMsgHeader->msgID.IDSeq.Sequence, uiBuffSize);
 
 		if( uiBuffSize == 0 )
 		{
@@ -617,7 +617,7 @@ namespace Net {
 			}
 			else
 			{
-				if (GetConnectionState() == BR::Net::IConnection::STATE_CONNECTED)
+				if (GetConnectionState() == Net::IConnection::STATE_CONNECTED)
 				{
 					netMem( pMsg = Message::MessageData::NewMessage( pMsgHeader->msgID.ID, pMsgHeader->Length, pBuff ) );
 
@@ -645,19 +645,18 @@ namespace Net {
 	HRESULT ConnectionUDP::OnRecv( Message::MessageData *pMsg )
 	{
 		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
+		UINT length = 0;
+		BYTE* pDataPtr = nullptr;
 
 		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
 
-		if (GetConnectionState() != BR::Net::IConnection::STATE_CONNECTED)
+		if (GetConnectionState() != Net::IConnection::STATE_CONNECTED)
 		{
 			goto Proc_End;
 		}
 
 
 		Assert( MemoryPool::CheckMemoryHeader( pMsg ) );
-		UINT length = 0;
-		BYTE* pDataPtr = nullptr;
 		pMsg->GetLengthNDataPtr( length, pDataPtr );
 		Assert(length == 0 || pMsgHeader->Crc32 != 0 );
 
@@ -717,7 +716,7 @@ namespace Net {
 				case NetCtrlCode_Disconnect:
 					if (GetConnectionState() == IConnection::STATE_DISCONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
 					{
-						netTrace( TRC_CONNECTION, "RECV Disconnected CID:%0%", GetCID() );
+						netTrace( TRC_CONNECTION, "RECV Disconnected CID:{0}", GetCID() );
 						netChk( CloseConnection() );
 					}
 					break;
@@ -742,7 +741,7 @@ namespace Net {
 				if( pNetCtrl->rtnMsgID.IDs.Reliability )
 				{
 					hrTem = m_SendReliableWindow.ReleaseMsg(pNetCtrl->msgID.IDSeq.Sequence);
-					netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Recv GuaAck : CID:%0%:%1%, seq:%2%, rtnmsg:%3%, hr={4:X8}", 
+					netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Recv GuaAck : CID:{0}:{1}, seq:{2}, rtnmsg:{3}, hr={4:X8}", 
 						GetCID(), m_SendReliableWindow.GetBaseSequence(), pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->rtnMsgID, hrTem);
 					netChk( hrTem );
 				}
@@ -781,7 +780,7 @@ namespace Net {
 		{
 			if( pNetCtrl->Length < sizeof(MsgNetCtrlConnect) )
 			{
-				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 				netChk( Disconnect() );
 				netErr( E_UNEXPECTED );
 			}
@@ -806,12 +805,14 @@ namespace Net {
 					break;
 				}
 
-				netTrace( TRC_NETCTRL, "UDP Recv Connecting CID(%0%) : C:%1%, Ver:%2%)", GetCID(), RemoteClass, ProtocolVersion );
+				netTrace( TRC_NETCTRL, "UDP Recv Connecting CID({0}) : C:{1}, Ver:{2})", GetCID(), RemoteClass, ProtocolVersion );
 				m_ConnectInfo.SetRemoteInfo( RemoteClass, pNetCtrlCon->PeerUID );
 
 			case IConnection::STATE_CONNECTED:
 				m_ulNetCtrlTime = Util::Time.GetTimeMs();
 				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+				break;
+			default:
 				break;
 			};
 
@@ -826,12 +827,12 @@ namespace Net {
 			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 			SendFlush();
-			netTrace( TRC_CONNECTION, "Disconnect from remote CID:%0%", GetCID() );
+			netTrace( TRC_CONNECTION, "Disconnect from remote CID:{0}", GetCID() );
 			netChk( CloseConnection() );
 			break;
 		default:
 			//netAssert( 0 );
-			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 			netChk( CloseConnection() );
 			netErr( E_UNEXPECTED );
 			break;
@@ -861,7 +862,7 @@ namespace Net {
 			{
 				netChk( ProcNetCtrl( &netCtrl ) );
 
-				if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
+				if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 					goto Proc_End;
 			}
 		}
@@ -881,8 +882,8 @@ namespace Net {
 		MsgWindow::MessageElement *pMessageElement = nullptr;
 
 
-		if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
-			goto Proc_End;
+		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
+			return S_OK;
 
 
 		// Recv guaranted queue process
@@ -910,7 +911,7 @@ namespace Net {
 
 			HRESULT hrTem = m_RecvReliableWindow.AddMsg( pIMsg );
 
-			netTrace( TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:%0%:%1%, msg:%2%, seq:%3%, len:%4%, hr={5:X8}", 
+			netTrace( TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:{0}:{1}, msg:{2}, seq:{3}, len:%4%, hr={5:X8}", 
 							GetCID(), m_RecvReliableWindow.GetBaseSequence(), 
 							pIMsg->GetMessageHeader()->msgID, 
 							pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
@@ -984,7 +985,7 @@ Proc_End:
 						Assert(pIMsg->GetDataLength() == 0 || pIMsg->GetMessageHeader()->Crc32 != 0);
 						SendPending(pIMsg);
 						Assert(pIMsg->GetDataLength() == 0 || pIMsg->GetMessageHeader()->Crc32 != 0);
-						netTrace(TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:%0%, seq:%1%, msg:%2%, len:%3%",
+						netTrace(TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:{0}, seq:{1}, msg:{2}, len:{3}",
 							GetCID(),
 							pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
 							pIMsg->GetMessageHeader()->msgID,
@@ -1023,7 +1024,7 @@ Proc_End:
 			{
 				if( (ulTimeCur-pMessageElement->ulTimeStamp) > DurationMS(Const::SEND_RETRY_TIME) )
 				{
-					netTrace( TRC_GUARREANTEDCTRL, "SENDGuaRetry : CID:%0%, seq:%1%, msg:%2%, len:%3%", 
+					netTrace( TRC_GUARREANTEDCTRL, "SENDGuaRetry : CID:{0}, seq:{1}, msg:{2}, len:{3}", 
 									GetCID(),
 									pMessageElement->pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
 									pMessageElement->pMsg->GetMessageHeader()->msgID, 
@@ -1037,7 +1038,7 @@ Proc_End:
 		}
 
 
-	Proc_End:
+	//Proc_End:
 
 		if( pMessageElement && pMessageElement->pMsg ) pMessageElement->pMsg->Release();
 
@@ -1061,13 +1062,13 @@ Proc_End:
 		case IConnection::STATE_CONNECTING:
 			if( (INT)(ulTimeCur-m_ulNetCtrlTime).count() > (INT)GetConnectingTimeOut() ) // connection time out
 			{
-				netTrace( TRC_CONNECTION, "UDP Connecting Timeout CID:%0%, (%1%,%2%,%3%)", GetCID(), ulTimeCur, m_ulNetCtrlTime, GetConnectingTimeOut() );
+				netTrace( TRC_CONNECTION, "UDP Connecting Timeout CID:{0}, ({1},{2},{3})", GetCID(), ulTimeCur, m_ulNetCtrlTime, GetConnectingTimeOut() );
 				netChk( CloseConnection() );
 			}
 			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > Const::CONNECTION_RETRY_TIME ) // retry
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
-				netTrace( TRC_NETCTRL, "UDP Send Connecting CID(%0%) : C:%1%, V:%2%)", GetCID(), GetConnectionInfo().LocalClass, (UINT32)BR_PROTOCOL_VERSION );
+				netTrace( TRC_NETCTRL, "UDP Send Connecting CID({0}) : C:{1}, V:{2})", GetCID(), GetConnectionInfo().LocalClass, (UINT32)BR_PROTOCOL_VERSION );
 				netChk( SendPending( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR_PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
 			}
 
@@ -1075,11 +1076,11 @@ Proc_End:
 		case IConnection::STATE_CONNECTED:
 			if( (INT)(ulTimeCur-m_ulNetCtrlTime).count() > Const::HEARTBIT_TIMEOUT ) // connection time out
 			{
-				netTrace( TRC_CONNECTION, "UDP Connection Timeout CID:%0%, (%1%,%2%)", GetCID(), ulTimeCur, m_ulNetCtrlTime );
+				netTrace( TRC_CONNECTION, "UDP Connection Timeout CID:{0}, ({1},{2})", GetCID(), ulTimeCur, m_ulNetCtrlTime );
 				netChk( CloseConnection() );
 				goto Proc_End;
 			}
-			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > GetHeartbitTry() ) // heartbit time
+			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > (LONG)GetHeartbitTry() ) // heartbit time
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netChk( SendPending( PACKET_NETCTRL_HEARTBIT, 0, msgIDTem ) );
@@ -1088,7 +1089,7 @@ Proc_End:
 		case IConnection::STATE_DISCONNECTING:
 			if( (INT)(ulTimeCur-m_ulNetCtrlTime).count() > Const::DISCONNECT_TIMEOUT ) // connection time out
 			{
-				netTrace( TRC_CONNECTION, "UDP Disconnecting Timeout CID:%0%, (%1%,%2%)", GetCID(), ulTimeCur, m_ulNetCtrlTime );
+				netTrace( TRC_CONNECTION, "UDP Disconnecting Timeout CID:{0}, ({1},{2})", GetCID(), ulTimeCur, m_ulNetCtrlTime );
 				netChk( CloseConnection() );
 			}
 			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > Const::DISCONNECT_RETRY_TIME ) // retry
@@ -1114,10 +1115,7 @@ Proc_End:
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
 
-		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
-
-
-		if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
+		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
 
 		hr = ProcNetCtrlQueue();
@@ -1205,7 +1203,6 @@ Proc_End:
 	HRESULT ConnectionUDPServerPeer::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
 	{
 		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
 
 
 		svrChk(ConnectionUDP::ProcNetCtrl( pNetCtrl ) );
@@ -1219,6 +1216,8 @@ Proc_End:
 			case IConnection::STATE_CONNECTED:
 				// This case could be a reconnected case while  this connection didn't realized the disconnect
 				//InitSynchronization();
+				break;
+			default:
 				break;
 			};
 		default:
@@ -1313,17 +1312,45 @@ Proc_End:
 
 
 	// called when New connection TCP accepted
-	HRESULT ConnectionUDPClient::OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo )
+	HRESULT ConnectionUDPClient::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		return E_NOTIMPL;
+		HRESULT hr = S_OK, hrErr = S_OK;
+
+		netChkPtr(pIOBuffer);
+		//pIOBuffer = GetRecvBuffer();
+		pIOBuffer->SetupRecvUDP(GetCID());
+
+		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
+		switch (hrErr)
+		{
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			goto Proc_End;// success
+			break;
+		case E_NET_NETUNREACH:
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+			// some remove has problem with connection
+			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->From);
+		default:
+			// Unknown error
+			netTrace(Trace::TRC_ERROR, "UDP Read Pending failed err={0:X8}", hrErr);
+			netErr(hrErr);
+			break;
+		}
+
+	Proc_End:
+
+		return hr;
 	}
 
 	// called when reciving TCP message
-	HRESULT ConnectionUDPClient::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred )
+	HRESULT ConnectionUDPClient::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
 	{
 		HRESULT hr = S_OK;
-		Connection *pConnection = NULL;
-		Message::MessageData *pIMsg = NULL;
 
 		if( pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD )
 		{
@@ -1335,8 +1362,8 @@ Proc_End:
 		if( SUCCEEDED(hrRes) )
 		{
 
-			if( FAILED( hr = OnRecv( dwTransferred, (BYTE*)pIOBuffer->wsaBuff.buf ) ) )
-				netTrace( TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", pConnection->GetCID(), hr );
+			if( FAILED( hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer ) ) )
+				netTrace( TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", GetCID(), hr );
 
 			PendingRecv();
 
@@ -1355,7 +1382,7 @@ Proc_End:
 	}
 	
 	// called when Send completed
-	HRESULT ConnectionUDPClient::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred )
+	HRESULT ConnectionUDPClient::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer )
 	{
 		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
 		Util::SafeRelease( pIOBuffer->pMsgs );
@@ -1366,37 +1393,49 @@ Proc_End:
 	// Pending recv New one
 	HRESULT ConnectionUDPClient::PendingRecv()
 	{
-		HRESULT hr = S_OK;
-		int iErr = 0, iErr2 = 0;
-		IOBUFFER_READ *pOver = NULL;
-
-		pOver = GetRecvBuffer();
-		pOver->SetupRecvUDP( GetCID() );
+		if (!NetSystem::IsProactorSystem())
+			return S_OK;
 
 		IncPendingRecvCount();
 
-		while( (iErr = WSARecvFrom( GetSocket(), &pOver->wsaBuff, 1, NULL, &pOver->dwFlags, (sockaddr*)&pOver->From, &pOver->iSockLen, pOver, NULL )) == SOCKET_ERROR )
+		HRESULT hr = S_OK, hrErr = S_OK;
+
+		while(1)
 		{
-			iErr2 = WSAGetLastError();
-			switch( iErr2 )
+			IOBUFFER_READ *pOver = GetRecvBuffer();
+			hrErr = Recv(pOver);
+			switch (hrErr)
 			{
-			case WSA_IO_PENDING:
+			case S_OK:
+			case E_NET_IO_PENDING:
+			case E_NET_TRY_AGAIN:
+			case E_NET_WOULDBLOCK:
 				goto Proc_End;// success
 				break;
-			case WSAENETUNREACH:
-			case WSAECONNABORTED:
-			case WSAECONNRESET:
-			case WSAENETRESET:
-				// some remove has problem with continue connection
-				netTrace( TRC_NETCTRL, "UDP Remote has connection error err=%0%, %1%", iErr2, pOver->From );
 			default:
-				// Unknown error
-				netTrace( Trace::TRC_ERROR, "UDP Read Pending failed err=%0%", iErr2 );
-				netErr( HRESULT_FROM_WIN32(iErr2) );
-				break;
-			};
+				Disconnect();
+				goto Proc_End;
+			}
 		}
 
+		//while( (iErr = WSARecvFrom( GetSocket(), &pOver->wsaBuff, 1, NULL, &pOver->dwFlags, (sockaddr*)&pOver->From, &pOver->iSockLen, pOver, NULL )) == SOCKET_ERROR )
+		//{
+		//	iErr2 = WSAGetLastError();
+		//	switch( iErr2 )
+		//	{
+		//	case WSAENETUNREACH:
+		//	case WSAECONNABORTED:
+		//	case WSAECONNRESET:
+		//	case WSAENETRESET:
+		//		// some remove has problem with continue connection
+		//		netTrace( TRC_NETCTRL, "UDP Remote has connection error err={0}, {1}", iErr2, pOver->From );
+		//	default:
+		//		// Unknown error
+		//		netTrace( Trace::TRC_ERROR, "UDP Read Pending failed err={0}", iErr2 );
+		//		netErr( HRESULT_FROM_WIN32(iErr2) );
+		//		break;
+		//	};
+		//}
 
 
 	Proc_End:
@@ -1441,7 +1480,7 @@ Proc_End:
 		//netChk(IConnection::UpdateNetCtrl() );
 
 
-	Proc_End:
+	//Proc_End:
 
 
 		SendFlush();

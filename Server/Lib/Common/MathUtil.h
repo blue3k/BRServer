@@ -13,7 +13,6 @@
 
 #include "Common/Typedefs.h"
 
-
 namespace BR
 {	
 	struct Vector3;

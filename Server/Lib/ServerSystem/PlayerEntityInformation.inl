@@ -41,7 +41,7 @@ PolicyType* PlayerEntityInformation::GetPolicy()
 	if( !CheckServerStatus() )
 		return nullptr;
 
-	return m_ServerEntity->GetPolicy<typename PolicyType>();
+	return m_ServerEntity->GetPolicy<PolicyType>();
 }
 
 

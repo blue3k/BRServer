@@ -138,6 +138,8 @@ namespace Net {
 				netChk(SendNetCtrl(PACKET_NETCTRL_HEARTBIT, 0, msgIDTem));
 			}
 			break;
+		default:
+			break;
 		};
 
 

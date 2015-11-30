@@ -75,10 +75,15 @@ namespace Net {
 	bool ConnectionManager::Sockaddress::operator > (const Sockaddress& src)
 	{
 		if (sin6_family > src.sin6_family) return true;
-
+#if WINDOWS
 		for (int iAddr = 0; iAddr < countof(sin6_addr.u.Word); iAddr++)
 			if (sin6_addr.u.Word[iAddr] > src.sin6_addr.u.Word[iAddr]) return true;
-
+#elif LINUX
+		auto& rawAddress = sin6_addr.s6_addr32;
+		auto& rawAddressSrc = src.sin6_addr.s6_addr32;
+		for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
+			if (rawAddress[iAddr] > rawAddressSrc[iAddr]) return true;
+#endif
 		if (sin6_port > src.sin6_port) return true;
 
 		return false;
@@ -88,8 +93,15 @@ namespace Net {
 	{
 		if (sin6_family != src.sin6_family) return false;
 
+#if WINDOWS
 		for (int iAddr = 0; iAddr < countof(sin6_addr.u.Word); iAddr++)
 			if (sin6_addr.u.Word[iAddr] != src.sin6_addr.u.Word[iAddr]) return false;
+#else
+		auto& rawAddress = sin6_addr.s6_addr32;
+		auto& rawAddressSrc = src.sin6_addr.s6_addr32;
+		for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
+			if (rawAddress[iAddr] != rawAddressSrc[iAddr]) return false;
+#endif
 
 		if (sin6_port != src.sin6_port) return false;
 
@@ -105,10 +117,10 @@ namespace Net {
 
 	ConnectionManager::ConnectionManager( UINT uiBucketSize )
 		: m_AddrMap(uiBucketSize)
-		, m_bNoNewConnection(true)
 		, m_UseAddressMap(true)
 		, m_UsePeerIDMap(true)
 		, m_pINetOwner(nullptr)
+		, m_bNoNewConnection(true)
 	{
 	}
 
@@ -194,7 +206,7 @@ namespace Net {
 		Operation oper;
 
 		auto loopCount = m_PendingOperations.GetEnqueCount();
-		for (int iLoop = 0; iLoop < loopCount && SUCCEEDED(m_PendingOperations.Dequeue(oper)); iLoop++)
+		for (decltype(loopCount) iLoop = 0; iLoop < loopCount && SUCCEEDED(m_PendingOperations.Dequeue(oper)); iLoop++)
 		{
 			SharedPointerT<Connection>& pConn = oper.pConn;
 
@@ -518,7 +530,6 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		HRESULT hrTem = S_OK;
-		Connection *pConnAddrMap = nullptr;
 		SharedPointerT<Connection> pConnPtr;
 		WeakPointerT<Connection> pPtr;
 
@@ -587,7 +598,7 @@ namespace Net {
 
 		Start();
 
-	Proc_End:
+	//Proc_End:
 		return hr;
 	}
 
@@ -645,7 +656,7 @@ namespace Net {
 		m_ManagedConnections.ClearMap();
 
 
-	Proc_End:
+	//Proc_End:
 
 
 		return hr;
@@ -655,7 +666,7 @@ namespace Net {
 	// Disconnect all connection
 	HRESULT ConnectionManager::DisconnectAllConnection()
 	{
-		HRESULT hr  = S_OK;
+		//HRESULT hr  = S_OK;
 		Operation oper;
 
 		// Clear pending operation queue

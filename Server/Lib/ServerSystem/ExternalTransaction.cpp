@@ -23,11 +23,17 @@
 #include "ServerSystem/ExternalTransactionManager.h"
 #include "ServerSystem/BrServer.h"
 
+#if WINDOWS
 #include "zlib/zlib.h"
+#else
+#include "zlib.h"
+#endif
+
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::GCMHttpExternalTransaction);
 BR_MEMORYPOOL_IMPLEMENT(Svr::ExternalTransactionGoogleAndroidReceiptCheck);
 BR_MEMORYPOOL_IMPLEMENT(Svr::ExternalTransactionIOSRecepitCheck);
+
 
 namespace BR {
 namespace Svr
@@ -209,7 +215,7 @@ Proc_End:
 	//
 	//
 
-	const Message::MessageID ExternalTransactionGoogleAndroidReceiptCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, BR::POLICY_NONE, ExternalTransactionMesageCode_AndroidCheckReceipt);
+	const Message::MessageID ExternalTransactionGoogleAndroidReceiptCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, POLICY_NONE, ExternalTransactionMesageCode_AndroidCheckReceipt);
 
 	// Constructor
 	ExternalTransactionGoogleAndroidReceiptCheck::ExternalTransactionGoogleAndroidReceiptCheck(TransactionID parentTransID, Google::OAuth* pOAuth)
@@ -282,7 +288,7 @@ Proc_End:
 
 
 
-	const Message::MessageID ExternalTransactionIOSRecepitCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, BR::POLICY_NONE, ExternalTransactionMesageCode_IOSCheckReceipt);
+	const Message::MessageID ExternalTransactionIOSRecepitCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, POLICY_NONE, ExternalTransactionMesageCode_IOSCheckReceipt);
 
 	// Constructor
 	ExternalTransactionIOSRecepitCheck::ExternalTransactionIOSRecepitCheck(TransactionID parentTransID, const char* strURL)
@@ -387,6 +393,7 @@ Proc_End:
 		curl_slist *headers = nullptr;
 		Json::Value root;
 		Json::Reader reader;
+		bool parsingSuccessful;
 
 		svrChk(HTTPExternalTransaction::StartTransaction());
 
@@ -430,7 +437,7 @@ Proc_End:
 		svrChk(ExternalTransactionManager::ToHRESULT(m_CurlResult));
 
 
-		bool parsingSuccessful = reader.parse((char*)m_HTTPResult.GetPtr(), root);
+		parsingSuccessful = reader.parse((char*)m_HTTPResult.GetPtr(), root);
 		if (!parsingSuccessful)
 		{
 			svrErr(E_UNEXPECTED);

@@ -119,25 +119,25 @@ namespace Svr {
 
 		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) override
 		{
-			Assert(bufferSize >= sizeof DataType);
-			if (bufferSize < sizeof DataType)
+			Assert(bufferSize >= sizeof(DataType));
+			if (bufferSize < sizeof(DataType))
 				return E_FAIL;
 
 			DataType temp = m_RawValue.load(std::memory_order_relaxed);
 
-			memcpy(pBuffer, &temp, sizeof DataType);
+			memcpy(pBuffer, &temp, sizeof(DataType));
 
 			return S_OK;
 		}
 
 		virtual HRESULT CopyFrom(UINT bufferSize, BYTE* pBuffer) override
 		{
-			Assert(bufferSize >= sizeof DataType);
-			if (bufferSize < sizeof DataType)
+			Assert(bufferSize >= sizeof(DataType));
+			if (bufferSize < sizeof(DataType))
 				return E_FAIL;
 
 			DataType temp;
-			memcpy(&temp, pBuffer, sizeof DataType);
+			memcpy(&temp, pBuffer, sizeof(DataType));
 
 			m_RawValue.store(temp, std::memory_order_relaxed);
 
@@ -208,7 +208,7 @@ namespace Svr {
 
 	public:
 		PerformanceCounterAveragePerSec(const char* counterName)
-			: PerformanceCounterRaw<DataType>(counterName, CountingTypes::AveragePerSec)
+			: PerformanceCounterRaw<DataType>(counterName, PerformanceCounter::CountingTypes::AveragePerSec)
 			, m_TickIndex(0)
 		{
 			memset(m_Values, 0, sizeof(m_Values));
@@ -245,7 +245,7 @@ namespace Svr {
 				auto totalCount = m_Values[indexCalculate].TotalCount.load(std::memory_order_relaxed);
 				auto newValue = (total * 1000) / totalCount;
 
-				SetRawValue(newValue / timeSince.count());
+				PerformanceCounterRaw<DataType>::SetRawValue(newValue / timeSince.count());
 
 
 				// clear used values
@@ -254,7 +254,7 @@ namespace Svr {
 				m_Values[indexCalculate].Working.store(0, std::memory_order_release);
 
 				// move to next
-				auto prevTickIndex = m_TickIndex.fetch_add(1, std::memory_order_release) % countof(m_Values);
+				m_TickIndex.fetch_add(1, std::memory_order_release);
 				m_TickCountStartTime = curTime;
 			}
 
@@ -275,7 +275,7 @@ namespace Svr {
 
 	public:
 		PerformanceCounterTickPerSec(const char* counterName)
-			: PerformanceCounterRaw<DataType>(counterName, CountingTypes::TickPerSec)
+			: PerformanceCounterRaw<DataType>(counterName, PerformanceCounter::CountingTypes::TickPerSec)
 			, m_TickIndex(0)
 			, m_TickCountStartTime(TimeStampMS::min())
 		{
@@ -291,10 +291,10 @@ namespace Svr {
 				auto nextTickIndex = (m_TickIndex.load(std::memory_order_relaxed) + 1) % countof(m_Values);
 				m_Values[nextTickIndex].store(0, std::memory_order_release);
 
-				auto prevTickIndex = m_TickIndex.fetch_add(1, std::memory_order_release) % countof(m_Values);
+				m_TickIndex.fetch_add(1, std::memory_order_release);
 				auto ticks = m_Values[nextTickIndex].load(std::memory_order_relaxed);
 
-				SetRawValue((ticks * 1000) / timeSince.count());
+				PerformanceCounterRaw<DataType>::SetRawValue((ticks * 1000) / timeSince.count());
 
 				m_TickCountStartTime = Util::Time.GetTimeMs();
 			}
@@ -308,7 +308,7 @@ namespace Svr {
 			auto tickIndex = m_TickIndex.load(std::memory_order_relaxed) % countof(m_Values);
 			m_Values[tickIndex].fetch_add(value, std::memory_order_release);
 
-			IncSyncSerial();
+			PerformanceCounterRaw<DataType>::IncSyncSerial();
 
 			return *this;
 		}
@@ -318,7 +318,7 @@ namespace Svr {
 			auto tickIndex = m_TickIndex.load(std::memory_order_relaxed) % countof(m_Values);
 			auto prevVal = m_Values[tickIndex].fetch_add(1, std::memory_order_release);
 
-			IncSyncSerial();
+			PerformanceCounterRaw<DataType>::IncSyncSerial();
 
 			return prevVal + 1;
 		}

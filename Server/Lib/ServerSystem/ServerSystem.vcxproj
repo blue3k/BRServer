@@ -200,7 +200,6 @@
     <ClInclude Include="GameLog\GameLog.h" />
     <ClInclude Include="Google\GoogleAndroidDeveloperAPI.h" />
     <ClInclude Include="Google\GoogleOAuth.h" />
-    <ClInclude Include="LoopbackConnection.h" />
     <ClInclude Include="MasterEntity.h" />
     <ClInclude Include="MessageHandlerTable.h" />
     <ClInclude Include="MessageRoute.h" />
@@ -262,6 +261,7 @@
     <ClInclude Include="SvrConfig.h" />
     <ClInclude Include="SvrConst.h" />
     <ClInclude Include="SvrConstDefault.h" />
+    <ClInclude Include="SvrLoopbackConnection.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="TimeScheduler.h" />
@@ -284,7 +284,6 @@
     <ClCompile Include="GameLog\ChattingHistory.cpp" />
     <ClCompile Include="Google\GoogleAndroidDeveloperAPI.cpp" />
     <ClCompile Include="Google\GoogleOAuth.cpp" />
-    <ClCompile Include="LoopbackConnection.cpp" />
     <ClCompile Include="MasterEntity.cpp" />
     <ClCompile Include="ParallelTransaction.cpp" />
     <ClCompile Include="PerformanceCounter\PerformanceCounter.cpp" />
@@ -346,6 +345,7 @@
     </ClCompile>
     <ClCompile Include="SvrConfig.cpp" />
     <ClCompile Include="SvrConst.cpp" />
+    <ClCompile Include="SvrLoopbackConnection.cpp" />
     <ClCompile Include="SvrTrace.cpp" />
     <ClCompile Include="SvrTypes.cpp" />
     <ClCompile Include="Task.cpp" />

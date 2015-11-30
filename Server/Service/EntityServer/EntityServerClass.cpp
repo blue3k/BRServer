@@ -91,7 +91,7 @@ namespace EntityServer {
 		svrChkPtr( pMySvr );
 		SetMyConfig( pMySvr );
 
-		svrChk(__super::ApplyConfiguration() );
+		svrChk(Svr::BrServer::ApplyConfiguration() );
 
 	Proc_End:
 
@@ -104,7 +104,7 @@ namespace EntityServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeServerResource() );
+		svrChk(Svr::BrServer::InitializeServerResource() );
 
 		svrChk( InitializeEntity( EntityID(EntityFaculty::Server,0)) );
 
@@ -118,7 +118,7 @@ namespace EntityServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::CloseServerResource() );
+		svrChk(Svr::BrServer::CloseServerResource() );
 
 		svrChk( TerminateEntity() );
 

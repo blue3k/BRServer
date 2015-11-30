@@ -37,6 +37,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransDeleteGame : public Svr::ServerEntityMessageTransaction< GameInstanceEntity, Message::GameInstance::DeleteGameC2SEvt, GameEntityTransDeleteGame, 1>
 	{
+	public:
+		typedef Svr::ServerEntityMessageTransaction< GameInstanceEntity, Message::GameInstance::DeleteGameC2SEvt, GameEntityTransDeleteGame, 1> super;
+
 	private:
 
 	public:
@@ -50,6 +53,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransJoinGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::JoinGameCmd, GameEntityTransJoinGame>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::JoinGameCmd, GameEntityTransJoinGame> super;
+
 	private:
 
 		NetAddress m_Addr;
@@ -83,6 +89,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransLeaveGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::LeaveGameCmd, GameEntityTransLeaveGame>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::LeaveGameCmd, GameEntityTransLeaveGame> super;
+
 	private:
 
 	public:
@@ -97,6 +106,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransKickPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::KickPlayerCmd, GameEntityTransKickPlayer>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::KickPlayerCmd, GameEntityTransKickPlayer> super;
+
 	private:
 
 	public:
@@ -113,6 +125,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransAssignRole : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::AssignRoleCmd, GameEntityTransAssignRole>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::AssignRoleCmd, GameEntityTransAssignRole> super;
+
 	private:
 
 	public:
@@ -128,6 +143,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransChatMessage : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::ChatMessageC2SEvt, GameEntityTransChatMessage>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::ChatMessageC2SEvt, GameEntityTransChatMessage> super;
+
 	private:
 
 	public:
@@ -142,6 +160,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransVoteGameAdvance : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::VoteGameAdvanceCmd, GameEntityTransVoteGameAdvance>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::VoteGameAdvanceCmd, GameEntityTransVoteGameAdvance> super;
+
 	private:
 
 	public:
@@ -158,6 +179,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransVote : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::VoteCmd, GameEntityTransVote>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::VoteCmd, GameEntityTransVote> super;
+
 	private:
 
 	public:
@@ -172,6 +196,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransAdvanceGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::AdvanceGameCmd, GameEntityTransAdvanceGame>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::AdvanceGameCmd, GameEntityTransAdvanceGame> super;
+
 	private:
 
 	public:
@@ -188,6 +215,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransGamePlayAgain : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GamePlayAgainCmd, GameEntityTransGamePlayAgain>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GamePlayAgainCmd, GameEntityTransGamePlayAgain> super;
+
 	private:
 		UINT m_MemberCount;
 
@@ -205,6 +235,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransGameRevealPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GameRevealPlayerCmd, GameEntityTransGameRevealPlayer>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GameRevealPlayerCmd, GameEntityTransGameRevealPlayer> super;
+
 	private:
 		StaticArray<PlayerID, 4> m_RevealedPlayerID;
 		StaticArray<PlayerRole, 4> m_RevealedPlayerRole;
@@ -223,6 +256,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class GameEntityTransGamePlayerRevive : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GamePlayerReviveCmd, GameEntityTransGamePlayerRevive>
 	{
+	public:
+		typedef RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::GamePlayerReviveCmd, GameEntityTransGamePlayerRevive> super;
+
 	private:
 
 	public:

@@ -20,7 +20,7 @@
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServicebase.h"
+#include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
@@ -413,23 +413,14 @@ namespace Svr {
 		char *curParameter = strParameterBuffer;
 		StrUtil::StringCpy(strParameterBuffer, parameters);
 		StrUtil::StringLwr(strParameterBuffer);
-		size_t parameterBufferLength = sizeof(strParameterBuffer);
-		while (curParameter != nullptr)
+		while (curParameter != nullptr && curParameter[0] != '\0')
 		{
-			char* pTemp = nullptr;
-			auto tokParam = strtok_s(curParameter, ",", &pTemp);
+			auto tokParam = strtok(curParameter, ",");
 			if (tokParam == nullptr) break; // end of pattern
 
 			size_t parameterLength = 0;
-			if (pTemp != nullptr)
-			{
-				*pTemp = '\0';
-				parameterLength = pTemp - curParameter;
-			}
-			else
-			{
-				parameterLength = strlen(curParameter);
-			}
+			*tokParam = '\0';
+			parameterLength = strlen(curParameter);
 
 			const char* parameterName = "usebot";
 			auto parameterNameLen = strlen(parameterName);
@@ -440,7 +431,7 @@ namespace Svr {
 				m_IsUseBot = StrUtil::StringCmp(curParameter + parameterNameLen + 1, (int)(parameterLength - parameterNameLen - 1), "true", (int)strlen("true")) == 0;
 			}
 
-			curParameter = pTemp;
+			curParameter = tokParam+1;
 		}
 
 
@@ -458,6 +449,7 @@ namespace Svr {
 		auto entityManager = GetServerComponent<EntityManager>();
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 		auto matchingQueueCount = MatchingUtil::GetQueueCount(m_TargetMatchingMemberCount) + 1;
+		MatchingServiceQueueEntity* newQueueEntity = nullptr;
 
 		svrChk(ShardedClusterServiceEntity::InitializeEntity(newEntityID) );
 
@@ -465,7 +457,7 @@ namespace Svr {
 		m_WaitingBotMatchingStart = TimeStampMS::min();
 
 
-		auto newQueueEntity = new MatchingServiceQueueEntity(m_TargetMatchingMemberCount, MIN_ITEM_RESERVATION, MAX_ITEM_RESERVATION);
+		newQueueEntity = new MatchingServiceQueueEntity(m_TargetMatchingMemberCount, MIN_ITEM_RESERVATION, MAX_ITEM_RESERVATION);
 		svrChkPtr(newQueueEntity);
 
 		// TODO: Map queues
@@ -574,13 +566,14 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		Transaction *pTrans = nullptr;
 		UINT targetMatchingMemberCount = m_TargetMatchingMemberCount;
-		UINT maxMatchingQueue = m_MaxMatchingQueue;
-		UINT grabbedPlayerCount = 0;
 		UINT numPatterns = 0;
 		const UINT* pMatchingPatternTable = nullptr;
 		StaticArray<ReservedMatchingItem, MAX_PREPARED_PLAYER> grabbedItems;
 		UINT itemCountPerQueue[MAX_QUEUE_COUNT];
 		UINT numItemsInQueues = 0;
+		const UINT* pCurMatchingPattern = nullptr;
+		const UINT* pMatchingPattern = nullptr;
+
 
 		memset(itemCountPerQueue, 0, sizeof(itemCountPerQueue));
 
@@ -593,8 +586,7 @@ namespace Svr {
 
 
 		// cache queue item count
-		UINT iQueue = 1;
-		for (; iQueue < targetMatchingMemberCount; iQueue++)
+		for (UINT iQueue = 1; iQueue < targetMatchingMemberCount; iQueue++)
 		{
 			itemCountPerQueue[iQueue] = (UINT)m_MatchingReserevedQueues[iQueue]->GetEnqueueCount();
 			numItemsInQueues += itemCountPerQueue[iQueue];
@@ -602,11 +594,10 @@ namespace Svr {
 
 
 		// Pick matching pattern
-		const UINT* pCurMatchingPattern = pMatchingPatternTable;
-		const UINT* pMatchingPattern = nullptr;
+		pCurMatchingPattern = pMatchingPatternTable;
 		for (UINT iPattern = 0; iPattern < numPatterns; iPattern++, pCurMatchingPattern += targetMatchingMemberCount)
 		{
-			pCurMatchingPattern[0];
+			//pCurMatchingPattern[0];
 
 			bool bPatternMat = true;
 			for (UINT iQueue = 1; iQueue < targetMatchingMemberCount; iQueue++)
@@ -647,7 +638,7 @@ namespace Svr {
 			}
 		}
 
-		grabbedPlayerCount = GetGrabbedPlayerCount(grabbedItems);
+		GetGrabbedPlayerCount(grabbedItems);
 
 
 		m_WaitingBotMatchingStart = TimeStampMS::min();

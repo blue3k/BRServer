@@ -14,7 +14,7 @@
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Common/TimeUtil.h"
-#include "Common/BRBasetypes.h"
+#include "Common/BrBaseTypes.h"
 
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/EntityManager.h"
@@ -141,6 +141,8 @@ namespace Svr {
 		case EntityState::WORKING:
 			pEntity->SetEntityState(EntityState::FREE);
 			break;
+		default:
+			break;
 		};
 
 		svrChk(RemoveTickTask((Entity*)pEntity));
@@ -199,11 +201,12 @@ namespace Svr {
 	HRESULT EntityManager::InitializeManager(UINT uiNumGroup)
 	{
 		HRESULT hr = S_OK;
+		PerformanceCounterInstance* counterInstance = nullptr;
 
 		svrChk(TaskManager::InitializeManager(uiNumGroup));
 
 		//m_PerformanceCounterInstance = SharedPointerT < PerformanceCounterInstance >(new PerformanceCounterInstance("EntityManager", entityUID));
-		auto counterInstance = PerformanceCounterClient::GetDefaultCounterInstance();
+		counterInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 		if (counterInstance != nullptr)
 		{
 			counterInstance->AddCounter(&m_NumberOfServices);

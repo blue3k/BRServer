@@ -54,7 +54,7 @@ namespace Net {
 	// Make Ack packet and enqueue to SendNetCtrlqueue
 	HRESULT ServerMUDP::SendNetCtrl( const sockaddr_in6& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_OK, hrTem = S_OK;
 		MsgMobileNetCtrl *pNetCtrl = NULL;
 		Message::MessageData *pMsg = NULL;
 
@@ -68,10 +68,10 @@ namespace Net {
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = true;
 		pMsg->UpdateChecksum();
 
-		HRESULT hrTem = SendMsg( nullptr, dstAddress, pMsg );
+		hrTem = SendMsg( nullptr, dstAddress, pMsg );
 		if( FAILED(hrTem) )
 		{
-			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed in direct: DstAddr:%0%, msg:{1:X8}, seq:%2%, hr={3:X8}", 
+			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed in direct: DstAddr:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							dstAddress, 
 							msgID.ID, 
 							uiSequence, 
@@ -102,7 +102,7 @@ namespace Net {
 			&& pNetCtrl->Length != sizeof(Message::MobileMessageHeader))
 		{
 			// send disconnect
-			netTrace(Trace::TRC_WARN, "Invalid incomming packet size. ignoring from:%0% msgID:%1%, len:%2%", from, pNetCtrl->msgID, pNetCtrl->Length);
+			netTrace(Trace::TRC_WARN, "Invalid incomming packet size. ignoring from:{0} msgID:{1}, len:{2}", from, pNetCtrl->msgID, pNetCtrl->Length);
 			return E_NET_BADPACKET_SIZE;
 		}
 
@@ -114,12 +114,12 @@ namespace Net {
 				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_TIMESYNC.GetMsgID())
 			{
 				// send disconnect
-				//netTrace(Trace::TRC_WARN, "Invalid packet size. Try to disconnect from:%0% msg:%1%", from, pNetCtrl->msgID);
+				//netTrace(Trace::TRC_WARN, "Invalid packet size. Try to disconnect from:{0} msg:{1}", from, pNetCtrl->msgID);
 				netChk(SendNetCtrl(from, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 			}
 			else
 			{
-				netTrace(Trace::TRC_WARN, "Invalid packet size. Try to disconnect from:%0% msg:%1%", from, pNetCtrl->msgID);
+				netTrace(Trace::TRC_WARN, "Invalid packet size. Try to disconnect from:{0} msg:{1}", from, pNetCtrl->msgID);
 			}
 
 			return S_FALSE;
@@ -130,13 +130,13 @@ namespace Net {
 		if (pNetCtrl->msgID.GetMsgID() != PACKET_NETCTRL_CONNECT.GetMsgID())
 		{
 			// send disconnect
-			netTrace(TRC_SENDRAW, "Invalid incomming packet. Try to disconnect %0%", from);
+			netTrace(TRC_SENDRAW, "Invalid incomming packet. Try to disconnect {0}", from);
 			netChk(SendNetCtrl(from, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 		}
 		else if (pNetCtrl->rtnMsgID.ID != BR_PROTOCOL_VERSION)
 		{
 			// send disconnect
-			netTrace(TRC_SENDRAW, "Invalid incomming packet version, received:%0%, expected:%1%. Try to disconnect %2%", pNetCtrl->rtnMsgID.ID, (UINT)BR_PROTOCOL_VERSION, from);
+			netTrace(TRC_SENDRAW, "Invalid incomming packet version, received:{0}, expected:{1}. Try to disconnect {2}", pNetCtrl->rtnMsgID.ID, (UINT)BR_PROTOCOL_VERSION, from);
 			netChk(SendNetCtrl(from, PACKET_NETCTRL_NACK, 0, pNetCtrl->msgID, 0));
 			//netChk(SendNetCtrl(pIOBuffer->From, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 		}
@@ -156,13 +156,11 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ServerMUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred )
+	HRESULT ServerMUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
 	{
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
 		IConnection::ConnectionInformation connectionInfo;
-		Message::MessageData *pIMsg = nullptr;
-
 
 		if( FAILED( hrRes ) )
 		{
@@ -173,24 +171,24 @@ namespace Net {
 				//if( SUCCEEDED( m_ConnectionManager.GetConnectionByAddr( pIOBuffer->From, iterCon ) ) )
 				//{
 					// This error is no more the reason to disconnect a user, just report it
-					netTrace( TRC_RECV, "UDP bad connection state IP:%0%", pIOBuffer->From );
+					netTrace( TRC_RECV, "UDP bad connection state IP:{0}", pIOBuffer->From );
 				//}
 				hr = hrRes;
 				break;
 			default:
-				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrMUDP, IP:%0%, hr={1:X8}", pIOBuffer->From, hrRes );
+				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrMUDP, IP:{0}, hr={1:X8}", pIOBuffer->From, hrRes );
 				break;
 			};
 		}
 		else
 		{
-			if( dwTransferred < sizeof(Message::MobileMessageHeader) )// invalid packet size
+			if(pIOBuffer->TransferredSize < sizeof(Message::MobileMessageHeader) )// invalid packet size
 				goto Proc_End;
 
-			Message::MobileMessageHeader *pHeader = (Message::MobileMessageHeader*)pIOBuffer->wsaBuff.buf;
+			Message::MobileMessageHeader *pHeader = (Message::MobileMessageHeader*)pIOBuffer->buffer;
 			if( !pHeader->msgID.IDs.Mobile )
 			{
-				netTrace( Trace::TRC_WARN, "HackWarn : Not allowered connection try from %0%", pIOBuffer->From );
+				netTrace( Trace::TRC_WARN, "HackWarn : Not allowered connection try from {0}", pIOBuffer->From );
 				goto Proc_End;
 			}
 
@@ -206,21 +204,21 @@ namespace Net {
 
 			if (pConnection == nullptr)
 			{
-				OnNoConnectionPacket(pIOBuffer->From, (const BYTE*)pIOBuffer->wsaBuff.buf);
+				OnNoConnectionPacket(pIOBuffer->From, (const BYTE*)pIOBuffer->buffer);
 				goto Proc_End;
 			}
 
 			netAssert( pHeader->PeerID == 0 || pConnection->GetConnectionInfo().RemoteID == 0 || pConnection->GetConnectionInfo().RemoteID == pHeader->PeerID );
 			if( pConnection->GetConnectionInfo().RemoteID == 0 && pHeader->PeerID != 0 )
 			{
-				netTrace( TRC_CONNECTION, "Mapping CID: %0%, PeerID %1%", pConnection->GetCID(), pHeader->PeerID );
+				netTrace( TRC_CONNECTION, "Mapping CID: {0}, PeerID {1}", pConnection->GetCID(), pHeader->PeerID );
 				netChk( m_ConnectionManager.PendingRemapPeerID((Connection*)pConnection, pHeader->PeerID) );
 			}
 
 			// Update sock address table if need, This is important because all the returning ticket will be use it
 			if( pConnection->GetRemoteSockAddr() != pIOBuffer->From )
 			{
-				netTrace(TRC_CONNECTION, "Remapping Address CID: %0%, Address from:%1%, to:%2%", pConnection->GetCID(), pConnection->GetRemoteSockAddr(), pIOBuffer->From);
+				netTrace(TRC_CONNECTION, "Remapping Address CID: {0}, Address from:{1}, to:{2}", pConnection->GetCID(), pConnection->GetRemoteSockAddr(), pIOBuffer->From);
 				if (GetIsEnableAccept())
 				{
 					// address map update. We can skip this when we don't allow unregistered connection because we are going to update the remote address in place
@@ -231,7 +229,7 @@ namespace Net {
 				((ConnectionUDPBase*)(Connection*)pConnection)->ChangeRemoteAddress(pIOBuffer->From);
 			}
 
-			netChk( pConnection->OnRecv( dwTransferred, (BYTE*)pIOBuffer->wsaBuff.buf ) );
+			netChk( pConnection->OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer) );
 			// Keep these connection can be readable until Onrecv is done
 			//iterCon = nullptr;
 			//iterPIDCon = nullptr;

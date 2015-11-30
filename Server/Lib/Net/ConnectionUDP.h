@@ -12,11 +12,11 @@
 
 #pragma once
 
+#include "Common/PageQueue.h"
+#include "Common/HRESNet.h"
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetSystem.h"
-#include "Common/HRESNet.h"
-#include "Common/PageQueue.h"
 #include "Net/Connection.h"
 #include "Net/MessageWindow.h"
 
@@ -41,9 +41,6 @@ namespace Net {
 	protected:
 		// Recive Sorted messages
 		RecvMsgWindow		m_RecvReliableWindow;
-
-		// Sending wait queue
-		MsgQueue			m_SendGuaQueue;
 
 		// Send Guaranted Messages
 		SendMsgWindow		m_SendReliableWindow;
@@ -257,14 +254,12 @@ namespace Net {
 		~ConnectionUDPClient();
 
 
-		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo ) override;
-
 		// called when reciving TCP message
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred ) override;
+		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) override;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred ) override;
+		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 		// Pending recv New one
 		HRESULT PendingRecv();

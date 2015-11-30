@@ -27,219 +27,218 @@
 
 
 namespace BR {
-namespace Net {
+	namespace Net {
 
 
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Client network io process
-	//
+		////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Client network io process
+		//
 
-	namespace CliSystem
-	{
-		//////////////////////////////////////////////////////////////////////
-		// client connection ID gen
-		SyncCounter g_lCIDGen = 1;
-
-		// system opened count
-		SyncCounter g_lSysOpenCount;
-		
-		// system opened count
-		ConnectionTaskManager *g_ConnectionTaskManager = nullptr;
-
-
-
-		CounterType GenNewCID()
+		namespace CliSystem
 		{
-			CounterType lCID = g_lCIDGen.fetch_add(1, std::memory_order_relaxed) + 1;
-			if( lCID == 0 )
-				lCID = g_lCIDGen.fetch_add(1, std::memory_order_relaxed) + 1;
-			return lCID;
-		}
+			//////////////////////////////////////////////////////////////////////
+			// client connection ID gen
+			SyncCounter g_lCIDGen(1);
+
+			// system opened count
+			SyncCounter g_lSysOpenCount(0);
+
+			// system opened count
+			ConnectionTaskManager *g_ConnectionTaskManager = nullptr;
 
 
-		// Open network system
-		HRESULT OpenSystem( UINT uiOverBufferCount )
-		{
-			HRESULT hr = S_OK;
 
-
-			netChk( NetSystem::OpenSystem( uiOverBufferCount, Const::CLI_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
-
-
-			if (g_lSysOpenCount.fetch_add(1, std::memory_order_relaxed) == 0)
+			CounterType GenNewCID()
 			{
-				netTrace( TRC_NET, "Opening client net system" );
-
-				g_ConnectionTaskManager = new ConnectionTaskManager;
-
-				netChk( g_ConnectionTaskManager->InitializeManager( Const::CLI_CONNECTION_TASK_THREAD ) );
+				CounterType lCID = g_lCIDGen.fetch_add(1, std::memory_order_relaxed) + 1;
+				if (lCID == 0)
+					lCID = g_lCIDGen.fetch_add(1, std::memory_order_relaxed) + 1;
+				return lCID;
 			}
 
 
-		Proc_End:
-
-			return hr;
-		}
-
-
-		// Close network system
-		void CloseSystem()
-		{
-			HRESULT hr = S_OK;
-			int iErr = 0;
-			CounterType lCount = 0;
-
-			if( g_lSysOpenCount > 0 )
+			// Open network system
+			HRESULT OpenSystem(UINT uiOverBufferCount)
 			{
-				lCount = g_lSysOpenCount.fetch_sub(1, std::memory_order_relaxed) - 1;
-			}
-
-			if( lCount <= 0 )
-			{
-				netTrace( TRC_NET, "Closing client net system" );
-
-				if( g_ConnectionTaskManager )
-					netChk( g_ConnectionTaskManager->TerminateManager() );
-
-				Util::SafeDelete( g_ConnectionTaskManager );
-
-				g_lSysOpenCount = 0;
-			}
-
-			NetSystem::CloseSystem();
-
-		Proc_End:
-			;
-		}
+				HRESULT hr = S_OK;
 
 
-		// Add connection update task
-		HRESULT AddConnectionTask( ConnectionManager *pConMgr, Connection * pConnection )
-		{
-			HRESULT hr = S_OK;
-			ConnectionTask *pTask = nullptr;
-
-			if( g_ConnectionTaskManager == nullptr )
-				return E_NET_NOTINITIALIZED;
-
-			netChkPtr( pConMgr );
-			netChkPtr( pConnection );
-
-			netChk( g_ConnectionTaskManager->CreateTask( pTask ) );
-
-			pTask->SetConnection( pConMgr, pConnection );
-
-			pConnection->SetUData( (uintptr_t)pTask );
-
-			netChk( g_ConnectionTaskManager->AddTickTask( pTask ) );
-
-	Proc_End:
-
-			return hr;
-		}
-
-		// Remove Connection update task
-		HRESULT RemoveConnectionTask( Connection * pConnection )
-		{
-			HRESULT hr = S_OK;
-			ConnectionTask *pTask = nullptr;
-
-			if( g_ConnectionTaskManager == nullptr )
-				return E_NET_NOTINITIALIZED;
-
-			pTask = (ConnectionTask*)pConnection->GetUData();
-
-			if( pTask )
-				netChk( g_ConnectionTaskManager->RemoveTickTask( pTask ) );
-			pTask = nullptr;
-
-	Proc_End:
-
-			Util::SafeDelete( pTask );
-
-			return hr;
-		}
+				netChk(NetSystem::OpenSystem(uiOverBufferCount, Const::CLI_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX));
 
 
-
-	}; // namespace ClientIO
-
-
-	
-
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Client base class
-	//
-	
-	// Release all connection and terminate manager
-	template< class ConnectionType >
-	HRESULT ClientConnectionManagerT<ConnectionType>::TerminateManager()
-	{
-		HRESULT hr = S_OK;
-		Operation oper;
-		ConnectionTask *pTask = nullptr;
-
-		m_bNoNewConnection = true;
-
-		Stop(true);
-
-
-		// Clear pending operation queue
-		while( m_PendingOperations.Dequeue( oper ) == S_OK )
-		{
-			switch( oper.OpCode )
-			{
-			case Operation::OP_WAITING_CONNECTION:
-			case Operation::OP_PENDING_CONNECTION:
-			case Operation::OP_PENDING_INITCONNECTION:
-			case Operation::OP_RELEASE_CONNECTION:
-				if( oper.pConn != nullptr )
+				if (g_lSysOpenCount.fetch_add(1, std::memory_order_relaxed) == 0)
 				{
-					SharedPointerT<Connection>& pConn = oper.pConn;
-					//oper.pConn.GetSharedPointer(pConn);
-					if (pConn == nullptr)
-						break;
+					netTrace(TRC_NET, "Opening client net system");
 
-					pConn->CloseConnection();
-					pTask = (ConnectionTask*)pConn->GetUData();
-					if (pTask)
-					{
-						pTask->SetConnection(nullptr, nullptr);
-						CliSystem::RemoveConnectionTask((Connection*)pConn);
-					}
-					FreeConnection((Connection*)pConn);
+					g_ConnectionTaskManager = new ConnectionTaskManager;
+
+					netChk(g_ConnectionTaskManager->InitializeManager(Const::CLI_CONNECTION_TASK_THREAD));
 				}
-				break;
-			case Operation::OP_PENDING_ADDR:
-			default:
-				break;
-			};
-		}
 
-		// clear connection queue
-		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn)->bool
-		{
-			pConn->CloseConnection();
-			pTask = (ConnectionTask*)pConn->GetUData();
-			if( pTask )
-			{
-				pTask->SetConnection( nullptr, nullptr );
-				CliSystem::RemoveConnectionTask((Connection*)pConn);
+
+			Proc_End:
+
+				return hr;
 			}
-			FreeConnection((Connection*)pConn);
-			return true;
-		});
-
-		m_ManagedConnections.ClearMap();
 
 
-	Proc_End:
+			// Close network system
+			void CloseSystem()
+			{
+				HRESULT hr = S_OK;
+				CounterType lCount = 0;
+
+				if (g_lSysOpenCount > 0)
+				{
+					lCount = g_lSysOpenCount.fetch_sub(1, std::memory_order_relaxed) - 1;
+				}
+
+				if (lCount <= 0)
+				{
+					netTrace(TRC_NET, "Closing client net system");
+
+					if (g_ConnectionTaskManager)
+						netChk(g_ConnectionTaskManager->TerminateManager());
+
+					Util::SafeDelete(g_ConnectionTaskManager);
+
+					g_lSysOpenCount = 0;
+				}
+
+				NetSystem::CloseSystem();
+
+			Proc_End:
+				;
+			}
 
 
-		return hr;
-	}
+			// Add connection update task
+			HRESULT AddConnectionTask(ConnectionManager *pConMgr, Connection * pConnection)
+			{
+				HRESULT hr = S_OK;
+				ConnectionTask *pTask = nullptr;
+
+				if (g_ConnectionTaskManager == nullptr)
+					return E_NET_NOTINITIALIZED;
+
+				netChkPtr(pConMgr);
+				netChkPtr(pConnection);
+
+				netChk(g_ConnectionTaskManager->CreateTask(pTask));
+
+				pTask->SetConnection(pConMgr, pConnection);
+
+				pConnection->SetUData((uintptr_t)pTask);
+
+				netChk(g_ConnectionTaskManager->AddTickTask(pTask));
+
+			Proc_End:
+
+				return hr;
+			}
+
+			// Remove Connection update task
+			HRESULT RemoveConnectionTask(Connection * pConnection)
+			{
+				HRESULT hr = S_OK;
+				ConnectionTask *pTask = nullptr;
+
+				if (g_ConnectionTaskManager == nullptr)
+					return E_NET_NOTINITIALIZED;
+
+				pTask = (ConnectionTask*)pConnection->GetUData();
+
+				if (pTask)
+					netChk(g_ConnectionTaskManager->RemoveTickTask(pTask));
+				pTask = nullptr;
+
+			Proc_End:
+
+				Util::SafeDelete(pTask);
+
+				return hr;
+			}
+
+
+
+		}; // namespace ClientIO
+
+
+
+
+		////////////////////////////////////////////////////////////////////////////////
+		//
+		//	Client base class
+		//
+
+		// Release all connection and terminate manager
+		template< class ConnectionType >
+		HRESULT ClientConnectionManagerT<ConnectionType>::TerminateManager()
+		{
+			HRESULT hr = S_OK;
+			ConnectionManager::Operation oper;
+			ConnectionTask *pTask = nullptr;
+
+			ConnectionManager::m_bNoNewConnection = true;
+
+			Thread::Stop(true);
+
+
+			// Clear pending operation queue
+			while (ConnectionManager::m_PendingOperations.Dequeue(oper) == S_OK)
+			{
+				switch (oper.OpCode)
+				{
+				case ConnectionManager::Operation::OP_WAITING_CONNECTION:
+				case ConnectionManager::Operation::OP_PENDING_CONNECTION:
+				case ConnectionManager::Operation::OP_PENDING_INITCONNECTION:
+				case ConnectionManager::Operation::OP_RELEASE_CONNECTION:
+					if (oper.pConn != nullptr)
+					{
+						SharedPointerT<Connection>& pConn = oper.pConn;
+						//oper.pConn.GetSharedPointer(pConn);
+						if (pConn == nullptr)
+							break;
+
+						pConn->CloseConnection();
+						pTask = (ConnectionTask*)pConn->GetUData();
+						if (pTask)
+						{
+							pTask->SetConnection(nullptr, nullptr);
+							CliSystem::RemoveConnectionTask((Connection*)pConn);
+						}
+						ConnectionManagerT<ConnectionType>::FreeConnection((Connection*)pConn);
+					}
+					break;
+				case ConnectionManager::Operation::OP_PENDING_ADDR:
+				default:
+					break;
+				};
+			}
+
+			// clear connection queue
+			ConnectionManager::m_ManagedConnections.ForeachOrder(0, (UINT)ConnectionManager::m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn)->bool
+			{
+				pConn->CloseConnection();
+				pTask = (ConnectionTask*)pConn->GetUData();
+				if (pTask)
+				{
+					pTask->SetConnection(nullptr, nullptr);
+					CliSystem::RemoveConnectionTask((Connection*)pConn);
+				}
+				ConnectionManager::FreeConnection((Connection*)pConn);
+				return true;
+			});
+
+			ConnectionManager::m_ManagedConnections.ClearMap();
+
+
+		//Proc_End:
+
+
+			return hr;
+		}
 
 
 
@@ -249,7 +248,7 @@ namespace Net {
 	//
 
 
-	Client::Client( UINT uiConMapBucketSize )
+	Client::Client(UINT uiConMapBucketSize)
 		:m_NetEventQueue(32)
 	{
 		//CliSystem::OpenSystem( SvrConst::Net::CLI_OVERBUFFER_COUNT );
@@ -261,7 +260,7 @@ namespace Net {
 	}
 
 	// Called when connection result 
-	void Client::OnConnectionResult( Connection *pConnection, HRESULT hrConnect )
+	void Client::OnConnectionResult(Connection *pConnection, HRESULT hrConnect)
 	{
 	}
 
@@ -273,9 +272,9 @@ namespace Net {
 
 
 	// Query Network event
-	HRESULT Client::DequeueNetEvent( Event& evt )
+	HRESULT Client::DequeueNetEvent(Event& evt)
 	{
-		return m_NetEventQueue.Dequeue( evt );
+		return m_NetEventQueue.Dequeue(evt);
 	}
 
 
@@ -289,9 +288,9 @@ namespace Net {
 	ClientTCP::ClientTCP()
 		:Client(Const::CLI_CONMAP_BUCKET_SIZE)
 	{
-		CliSystem::OpenSystem( Const::CLI_OVERBUFFER_COUNT );
+		CliSystem::OpenSystem(Const::CLI_OVERBUFFER_COUNT);
 
-		m_ConnectionManager.SetNetOwner( this );
+		m_ConnectionManager.SetNetOwner(this);
 		//ClientIO::g_ClientNetThread.AddRef();
 	}
 
@@ -302,7 +301,7 @@ namespace Net {
 		//ClientIO::g_ClientNetThread.Release();
 		CliSystem::CloseSystem();
 	}
-	
+
 	// check about initialize
 	bool ClientTCP::IsReady()
 	{
@@ -311,18 +310,14 @@ namespace Net {
 
 
 	// Connect to server
-	HRESULT ClientTCP::Connect( const char *strServerIP, USHORT usServerPort, IConnection* &pNewConnection )
+	HRESULT ClientTCP::Connect(const char *strServerIP, USHORT usServerPort, IConnection* &pNewConnection)
 	{
 		HRESULT hr = S_OK;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
 		sockaddr_in6 sockAddr, sockAddrDest;
-		u_long iMode = true;// non block
 		ConnectionTCPClient *pConn = nullptr;
 		Net::IConnection::ConnectionInformation connectionInfo;
-		//hostent* localHost;
-		//char* localIP;
-		IOBUFFER_READ *pIOBuffer= NULL;
 		sockaddr_in6 bindAddr;
 		NetAddress localAddress;
 
@@ -336,26 +331,27 @@ namespace Net {
 
 		//Addr2SockAddr(localAddress, sockAddr);// to make port generation
 
-		socket = WSASocket(sockAddr.sin6_family, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
-		if( socket == INVALID_SOCKET )
+		//socket = WSASocket(sockAddr.sin6_family, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
+		socket = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
+		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
-			netErr( E_UNEXPECTED );
+			netErr(E_UNEXPECTED);
 		}
 
 
 		iOptValue = Const::CLI_RECV_BUFFER_SIZE;
-		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
+		if (setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT());
+			netErr(E_UNEXPECTED);
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
-		if( setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
+		if (setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT());
+			netErr(E_UNEXPECTED);
 		}
 
 		if (sockAddr.sin6_family == AF_INET6)
@@ -368,17 +364,21 @@ namespace Net {
 			}
 		}
 
-		iMode = true;
-		if( ioctlsocket(socket, FIONBIO, &iMode) == SOCKET_ERROR )
+#if WINDOWS
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err={0:X8}", iMode, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			u_long iMode = true;// non block
+			iMode = true;
+			if (ioctlsocket(socket, FIONBIO, &iMode) == SOCKET_ERROR)
+			{
+				netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err={0:X8}", iMode, GetLastWSAHRESULT());
+				netErr(E_UNEXPECTED);
+			}
 		}
-
+#endif
 
 		bindAddr = sockAddr;
 		//bindAddr.sin6_addr = in6addr_any;
-		if (bind(socket, (SOCKADDR*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
+		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, TCP {0:X8}", GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
@@ -388,13 +388,13 @@ namespace Net {
 		netMem( pConn = dynamic_cast<ConnectionTCPClient*>(GetConnectionManager().NewConnection()) );
 		//pConn->SetupNet( this, CliSystem::GenNewCID() );
 
-		netChk(NetSystem::RegisterSocket(socket, pConn));
+		netChk(NetSystem::RegisterSocket(socket, pConn, false));
 
 
 		SetSockAddr( sockAddrDest, strServerIP, usServerPort );
 
 
-		if( connect(socket, (SOCKADDR*)&sockAddrDest, sizeof(SOCKADDR_IN)) != SOCKET_ERROR
+		if( connect(socket, (sockaddr*)&sockAddrDest, sizeof(sockAddrDest)) != SOCKET_ERROR
 			|| GetLastWSAHRESULT() != E_NET_WOULDBLOCK )
 		{
 			netTrace(Trace::TRC_ERROR, "connect failed, TCP {0:X8}", GetLastWSAHRESULT() );
@@ -436,7 +436,7 @@ namespace Net {
 		//	pConn->Release();
 
 		if( socket != INVALID_SOCKET )
-			closesocket( socket );
+			NetSystem::CloseSocket( socket );
 
 
 		return hr;
@@ -453,7 +453,7 @@ namespace Net {
 			netErr( E_UNEXPECTED );
 		}
 
-		if (pIConnection->GetConnectionState() != BR::Net::IConnection::STATE_DISCONNECTED)
+		if (pIConnection->GetConnectionState() != Net::IConnection::STATE_DISCONNECTED)
 		{
 			netChk( pIConnection->CloseConnection() );
 		}
@@ -473,7 +473,7 @@ namespace Net {
 	HRESULT ClientTCP::TakeOverConnection(IConnection* pIConnection)
 	{
 		HRESULT hr = S_OK;
-		Connection* pConn = (Connection*)pIConnection;
+		//Connection* pConn = (Connection*)pIConnection;
 
 		netChkPtr(pIConnection);
 		netErr(E_NOTIMPL);
@@ -498,9 +498,7 @@ namespace Net {
 	// Send message to connection with network device
 	HRESULT ClientTCP::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_OK;
-		//DWORD dwSend = 0;
-		int iWSAErr = 0;
+		HRESULT hr = S_OK, hrErr = S_OK;
 
 		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
@@ -509,39 +507,63 @@ namespace Net {
 
 		IOBUFFER_WRITE *pOverlapped = NULL;
 		netChk( NetSystem::AllocBuffer(pOverlapped) );
-
 		pOverlapped->SetupSendTCP( pMsg );
 
-		iWSAErr = WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0, pOverlapped, NULL );
-		if( iWSAErr == SOCKET_ERROR )
+		hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
+		switch (hrErr)
 		{
-			iWSAErr = WSAGetLastError();
-			if( iWSAErr != WSA_IO_PENDING )
-			{
-				switch( iWSAErr )
-				{
-				case WSAECONNABORTED:
-				case WSAECONNRESET:
-				case WSAENETRESET:
-				case WSAENOTCONN:
-				case WSAENOTSOCK:
-				case WSAESHUTDOWN:
-					// Send fail by connection close
-					// Need to disconnect
-					pTCPCon->Disconnect();
-					hr = E_NET_CONNECTION_CLOSED;
-					goto Proc_End;
-					break;
-				default:
-					netErr( E_NET_IO_SEND_FAIL );
-					break;
-				};
-			}
-		}
-		else
-		{
-			// IOCP process will free this
-		}
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			break;
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+		case E_NET_NOTCONN:
+		case E_NET_NOTSOCK:
+		case E_NET_SHUTDOWN:
+			// Send fail by connection close
+			// Need to disconnect
+			pTCPCon->Disconnect();
+			hr = E_NET_CONNECTION_CLOSED;
+			goto Proc_End;
+			break;
+		default:
+			netErr(E_NET_IO_SEND_FAIL);
+			break;
+		};
+
+		//iWSAErr = WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0, pOverlapped, NULL );
+		//if( iWSAErr == SOCKET_ERROR )
+		//{
+		//	iWSAErr = WSAGetLastError();
+		//	if( iWSAErr != WSA_IO_PENDING )
+		//	{
+		//		switch( iWSAErr )
+		//		{
+		//		case WSAECONNABORTED:
+		//		case WSAECONNRESET:
+		//		case WSAENETRESET:
+		//		case WSAENOTCONN:
+		//		case WSAENOTSOCK:
+		//		case WSAESHUTDOWN:
+		//			// Send fail by connection close
+		//			// Need to disconnect
+		//			pTCPCon->Disconnect();
+		//			hr = E_NET_CONNECTION_CLOSED;
+		//			goto Proc_End;
+		//			break;
+		//		default:
+		//			netErr( E_NET_IO_SEND_FAIL );
+		//			break;
+		//		};
+		//	}
+		//}
+		//else
+		//{
+		//	// IOCP process will free this
+		//}
 
 	Proc_End:
 
@@ -559,7 +581,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( TRC_TCPSENDRAW, "TCP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, iWSAErr, hr );
+				netTrace( TRC_TCPSENDRAW, "TCP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr );
 			}
 			else
 				return S_OK;
@@ -568,11 +590,11 @@ namespace Net {
 		{
 			if( msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
 			{
-				netTrace(TRC_TCPNETCTRL, "TCP Ctrl CID %3%, ip:%0%, msg:%1%, Len:%2%", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
+				netTrace(TRC_TCPNETCTRL, "TCP Ctrl CID {3}, ip:{0}, msg:{1}, Len:{2}", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
 			}
 			else
 			{
-				netTrace(TRC_TCPSENDRAW, "TCP Send CID %3%, ip:%0%, msg:%1%, Len:%2%", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
+				netTrace(TRC_TCPSENDRAW, "TCP Send CID {3}, ip:{0}, msg:{1}, Len:{2}", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
 			}
 		}
 
@@ -590,46 +612,66 @@ namespace Net {
 	// Send message to connection with network device
 	HRESULT ClientTCP::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
 	{
-		HRESULT hr = S_OK;
-		int iWSAErr = 0;
+		HRESULT hr = S_OK, hrErr = S_OK;
 
 		ConnectionTCP *pTCPCon = (ConnectionTCP*)pConnection;
 
 
 		IOBUFFER_WRITE *pOverlapped = NULL;
 		netChk( NetSystem::AllocBuffer(pOverlapped) );
-
-
 		pOverlapped->SetupSendTCP( uiBuffSize, pBuff );
 
-
-		if( WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
-			pOverlapped, NULL ) == SOCKET_ERROR )
+		hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
+		switch (hrErr)
 		{
-			iWSAErr = WSAGetLastError();
-			if( iWSAErr != WSA_IO_PENDING )
-			{
-				switch( iWSAErr )
-				{
-				case WSAECONNABORTED:
-				case WSAECONNRESET:
-				case WSAENETRESET:
-				case WSAENOTCONN:
-				case WSAENOTSOCK:
-				case WSAESHUTDOWN:
-					// Send fail by connection close
-					// Need to disconnect
-					pTCPCon->Disconnect();
-					netErrSilent( E_NET_CONNECTION_CLOSED );
-					break;
-				default:
-					netErr( E_NET_IO_SEND_FAIL );
-					break;
-				};
-//				netErr( E_NET_IO_SEND_FAIL );
-			}
-		}
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			break;
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+		case E_NET_NOTCONN:
+		case E_NET_NOTSOCK:
+		case E_NET_SHUTDOWN:
+			// Send fail by connection close
+			// Need to disconnect
+			pTCPCon->Disconnect();
+			hr = E_NET_CONNECTION_CLOSED;
+			goto Proc_End;
+			break;
+		default:
+			netErr(E_NET_IO_SEND_FAIL);
+			break;
+		};
 
+//		if( WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
+//			pOverlapped, NULL ) == SOCKET_ERROR )
+//		{
+//			iWSAErr = WSAGetLastError();
+//			if( iWSAErr != WSA_IO_PENDING )
+//			{
+//				switch( iWSAErr )
+//				{
+//				case WSAECONNABORTED:
+//				case WSAECONNRESET:
+//				case WSAENETRESET:
+//				case WSAENOTCONN:
+//				case WSAENOTSOCK:
+//				case WSAESHUTDOWN:
+//					// Send fail by connection close
+//					// Need to disconnect
+//					pTCPCon->Disconnect();
+//					netErrSilent( E_NET_CONNECTION_CLOSED );
+//					break;
+//				default:
+//					netErr( E_NET_IO_SEND_FAIL );
+//					break;
+//				};
+//			}
+//		}
+//
 
 		pOverlapped = nullptr;
 
@@ -648,14 +690,14 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( TRC_TCPSENDRAW, "TCP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, iWSAErr, hr );
+				netTrace( TRC_TCPSENDRAW, "TCP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr );
 			}
 			else
 				return S_OK;
 		}
 		else
 		{
-			netTrace( TRC_TCPSENDRAW, "TCP Send ip:%0%, size:%1%", pTCPCon->GetConnectionInfo().Remote, uiBuffSize );
+			netTrace( TRC_TCPSENDRAW, "TCP Send ip:{0}, size:{1}", pTCPCon->GetConnectionInfo().Remote, uiBuffSize );
 		}
 
 
@@ -683,9 +725,11 @@ namespace Net {
 			break;
 		case IConnection::STATE_DISCONNECTING:
 			break;
+		default:
+			break;
 		};
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -733,13 +777,10 @@ namespace Net {
 		int iOptValue;
 		sockaddr_in6 sockAddr;
 		sockaddr_in6 sockAddrDest;
-		u_long iMode = true;// non block
-		ConnectionUDPClient *pConn = NULL;
+		ConnectionUDPClient *pConn = nullptr;
 		//hostent* localHost;
 		//char* localIP;
 		IConnection::ConnectionInformation connectionInfo;
-		IConnection *pTemConn = NULL;
-		IOBUFFER_READ *pIOBuffer= NULL;
 		sockaddr_in6 bindAddr;
 
 		NetAddress localAddress;
@@ -755,7 +796,8 @@ namespace Net {
 		//SetSockAddr(sockAddr, localIP, 0);
 
 
-		socket = WSASocket(sockAddr.sin6_family, SOCK_DGRAM, IPPROTO_UDP, NULL, 0, WSA_FLAG_OVERLAPPED);
+		//socket = WSASocket(sockAddr.sin6_family, SOCK_DGRAM, IPPROTO_UDP, NULL, 0, WSA_FLAG_OVERLAPPED);
+		socket = NetSystem::Socket(SockFamily::IPV6, SockType::DataGram);
 		if( socket == INVALID_SOCKET )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
@@ -791,7 +833,7 @@ namespace Net {
 
 		bindAddr = sockAddr;
 		//bindAddr.sin6_addr = in6addr_any;
-		if (bind(socket, (SOCKADDR*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
+		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
@@ -810,12 +852,10 @@ namespace Net {
 		netMem( pConn = (ConnectionUDPClient*)m_ConnectionManager.NewConnection() );
 		//pConn->SetupNet( this, CliSystem::GenNewCID() );
 		netChk( pConn->InitConnection( socket, connectionInfo ) );
-		netTrace(TRC_CONNECTION, "Initialize connection CID:%0%, Addr:%1%:%2%", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 		socket = INVALID_SOCKET;
 
-		netChk(NetSystem::RegisterSocket(pConn->GetSocket(), pConn));
-
-		pTemConn = pConn;
+		netChk(NetSystem::RegisterSocket(pConn->GetSocket(), pConn, false));
 
 		netChk( pConn->PendingRecv() );
 
@@ -836,7 +876,7 @@ namespace Net {
 		}
 
 		if( socket != INVALID_SOCKET )
-			closesocket( socket );
+			NetSystem::CloseSocket( socket );
 
 		return hr;
 	}
@@ -891,9 +931,7 @@ namespace Net {
 	// Send message to connection with network device to dst addr
 	HRESULT ClientUDP::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddress, Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_OK;
-		//DWORD dwSend = 0;
-		int iWSAErr = 0;
+		HRESULT hr = S_OK, hrErr = S_OK;
 
 		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
@@ -906,32 +944,57 @@ namespace Net {
 		pOverlapped->SetupSendUDP( pMsg );
 
 
-		if( WSASendTo( pUDPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
-			(sockaddr*)&dstAddress, sizeof(sockaddr_in6), 
-			pOverlapped, NULL ) == SOCKET_ERROR )
+		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), dstAddress, pOverlapped);
+		switch (hrErr)
 		{
-			iWSAErr = WSAGetLastError();
-			if( iWSAErr != WSA_IO_PENDING )
-			{
-				switch( iWSAErr )
-				{
-				case WSAECONNABORTED:
-				case WSAECONNRESET:
-				case WSAENETRESET:
-				case WSAENOTCONN:
-				case WSAENOTSOCK:
-				case WSAESHUTDOWN:
-					// Send fail by connection close
-					// Need to disconnect
-					pUDPCon->Disconnect();
-					netErrSilent( E_NET_CONNECTION_CLOSED );
-					break;
-				default:
-					netErr( E_NET_IO_SEND_FAIL );
-					break;
-				};
-			}
-		}
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			break;
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+		case E_NET_NOTCONN:
+		case E_NET_NOTSOCK:
+		case E_NET_SHUTDOWN:
+			// Send fail by connection close
+			// Need to disconnect
+			pUDPCon->Disconnect();
+			hr = E_NET_CONNECTION_CLOSED;
+			goto Proc_End;
+			break;
+		default:
+			netErr(E_NET_IO_SEND_FAIL);
+			break;
+		};
+
+		//if( WSASendTo( pUDPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
+		//	(sockaddr*)&dstAddress, sizeof(sockaddr_in6), 
+		//	pOverlapped, NULL ) == SOCKET_ERROR )
+		//{
+		//	iWSAErr = WSAGetLastError();
+		//	if( iWSAErr != WSA_IO_PENDING )
+		//	{
+		//		switch( iWSAErr )
+		//		{
+		//		case WSAECONNABORTED:
+		//		case WSAECONNRESET:
+		//		case WSAENETRESET:
+		//		case WSAENOTCONN:
+		//		case WSAENOTSOCK:
+		//		case WSAESHUTDOWN:
+		//			// Send fail by connection close
+		//			// Need to disconnect
+		//			pUDPCon->Disconnect();
+		//			netErrSilent( E_NET_CONNECTION_CLOSED );
+		//			break;
+		//		default:
+		//			netErr( E_NET_IO_SEND_FAIL );
+		//			break;
+		//		};
+		//	}
+		//}
 
 	Proc_End:
 
@@ -949,7 +1012,7 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, iWSAErr, hr );
+				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, hrErr, hr );
 			}
 			else
 				return S_OK;
@@ -958,11 +1021,11 @@ namespace Net {
 		{
 			if( msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
 			{
-				netTrace( TRC_NETCTRL, "UDP Ctrl ip:%0%, msg:%1%, Len:%2%", pUDPCon->GetConnectionInfo().Remote, msgID, uiMsgLen );
+				netTrace( TRC_NETCTRL, "UDP Ctrl ip:{0}, msg:{1}, Len:{2}", pUDPCon->GetConnectionInfo().Remote, msgID, uiMsgLen );
 			}
 			else
 			{
-				netTrace( TRC_SENDRAW, "UDP Send ip:%0%, msg:%1%, Len:%2%", pUDPCon->GetConnectionInfo().Remote, msgID, uiMsgLen );
+				netTrace( TRC_SENDRAW, "UDP Send ip:{0}, msg:{1}, Len:{2}", pUDPCon->GetConnectionInfo().Remote, msgID, uiMsgLen );
 			}
 		}
 
@@ -973,11 +1036,7 @@ namespace Net {
 	// Send array of message buffer to connection with network device
 	HRESULT ClientUDP::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
 	{
-		HRESULT hr = S_OK;
-		//DWORD dwSend = 0;
-		int iWSAErr = 0;
-
-
+		HRESULT hr = S_OK, hrErr = S_OK;
 		ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
 
 		//return S_OK;
@@ -986,40 +1045,64 @@ namespace Net {
 		netChk( NetSystem::AllocBuffer(pOverlapped) );
 
 		pOverlapped->SetupSendUDP( uiBuffSize, pBuff );
-		//pOverlapped->pConnection = pUDPCon;
 
-		if( WSASendTo( pUDPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
-			(sockaddr*)&pUDPCon->GetRemoteSockAddr(), sizeof(sockaddr_in6), 
-			pOverlapped, NULL ) == SOCKET_ERROR )
+		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), pOverlapped);
+		switch (hrErr)
 		{
-			iWSAErr = WSAGetLastError();
-			if( iWSAErr != WSA_IO_PENDING )
-			{
-				switch( iWSAErr )
-				{
-				case WSAECONNABORTED:
-				case WSAECONNRESET:
-				case WSAENETRESET:
-				case WSAENOTCONN:
-				case WSAENOTSOCK:
-				case WSAESHUTDOWN:
-					// Send fail by connection close
-					// Need to disconnect
-					pUDPCon->Disconnect();
-					netErrSilent( E_NET_CONNECTION_CLOSED );
-					break;
-				default:
-					netErr( E_NET_IO_SEND_FAIL );
-					break;
-				};
-			}
-		}
-		else
-		{
-			//// Send done just free all
-			//Net::System::g_pOverlappedBuffer->FreeBuffer( pOverlapped );
-			//pMsg->Release();
-		}
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			break;
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+		case E_NET_NOTCONN:
+		case E_NET_NOTSOCK:
+		case E_NET_SHUTDOWN:
+			// Send fail by connection close
+			// Need to disconnect
+			pUDPCon->Disconnect();
+			hr = E_NET_CONNECTION_CLOSED;
+			goto Proc_End;
+			break;
+		default:
+			netErr(E_NET_IO_SEND_FAIL);
+			break;
+		};
+
+		//if( WSASendTo( pUDPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
+		//	(sockaddr*)&pUDPCon->GetRemoteSockAddr(), sizeof(sockaddr_in6), 
+		//	pOverlapped, NULL ) == SOCKET_ERROR )
+		//{
+		//	iWSAErr = WSAGetLastError();
+		//	if( iWSAErr != WSA_IO_PENDING )
+		//	{
+		//		switch( iWSAErr )
+		//		{
+		//		case WSAECONNABORTED:
+		//		case WSAECONNRESET:
+		//		case WSAENETRESET:
+		//		case WSAENOTCONN:
+		//		case WSAENOTSOCK:
+		//		case WSAESHUTDOWN:
+		//			// Send fail by connection close
+		//			// Need to disconnect
+		//			pUDPCon->Disconnect();
+		//			netErrSilent( E_NET_CONNECTION_CLOSED );
+		//			break;
+		//		default:
+		//			netErr( E_NET_IO_SEND_FAIL );
+		//			break;
+		//		};
+		//	}
+		//}
+		//else
+		//{
+		//	//// Send done just free all
+		//	//Net::System::g_pOverlappedBuffer->FreeBuffer( pOverlapped );
+		//	//pMsg->Release();
+		//}
 
 	Proc_End:
 
@@ -1039,14 +1122,14 @@ namespace Net {
 
 			if( hr != E_NET_IO_SEND_FAIL )
 			{
-				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:%0%, err:%1%, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, iWSAErr, hr );
+				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, hrErr, hr );
 			}
 			else
 				return S_OK;
 		}
 		else
 		{
-			netTrace( TRC_SENDRAW, "UDP Send ip:%0%, Len:%1%", pUDPCon->GetConnectionInfo().Remote, uiBuffSize );
+			netTrace( TRC_SENDRAW, "UDP Send ip:{0}, Len:{1}", pUDPCon->GetConnectionInfo().Remote, uiBuffSize );
 		}
 
 		return hr;

@@ -62,16 +62,17 @@ namespace Net {
 		// Process network control message
 		HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl );
 
+
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// callback
-		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo );
+
+		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
 
 		// called when reciving TCP message
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer, DWORD dwTransferred );
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) override;
 
 		// called when Send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer, DWORD dwTransferred );
+		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 
 		// Pending recv New one
@@ -127,7 +128,7 @@ namespace Net {
 		HRESULT WaitConnect();
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl();
+		virtual HRESULT UpdateNetCtrl() override;
 
 	};
 
@@ -149,7 +150,7 @@ namespace Net {
 		~ConnectionTCPServer();
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl();
+		virtual HRESULT UpdateNetCtrl() override;
 
 	};
 
@@ -174,7 +175,7 @@ namespace Net {
 		virtual void OnConnectionResult(HRESULT hrConnect) override;
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl();
+		virtual HRESULT UpdateNetCtrl() override;
 
 	};
 

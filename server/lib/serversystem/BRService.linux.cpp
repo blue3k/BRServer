@@ -10,11 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include <conio.h>
 #include "Common/HRESEvent.h"
 #include "Common/HRESSvrSys.h"
-#include "Serversystem/SvrTrace.h"
-#include "Serversystem/BRService.h"
+#include "SvrTrace.h"
+#include "BrService.h"
 #include "Common/TimeUtil.h"
 
 #if LINUX
@@ -31,11 +30,11 @@ namespace Svr {
 
 	namespace Service
 	{
+		BrServer *g_pSvrInstance = nullptr;
 
 		// Service Main handler
 		static bool m_StopSignaled = false;
-		static void signal_handler(sig)
-			int sig;
+		static void signal_handler(int sig)
 		{
 			switch (sig) {
 			case SIGHUP:
@@ -49,6 +48,7 @@ namespace Svr {
 
 		static void daemonize()
 		{
+			char lockFileName[1024];
 			int lfp;
 			char str[10];
 			if (getppid() == 1) return; /* already a daemon */
@@ -58,10 +58,11 @@ namespace Svr {
 							  /* child (daemon) continues */
 			setsid(); /* obtain a new process group */
 			for (int iDescriptor = getdtablesize(); iDescriptor >= 0; --iDescriptor) close(iDescriptor); /* close all descriptors */
-			i = open("/dev/null", O_RDWR); dup(i); dup(i); /* handle standart I/O */
+			int i = open("/dev/null", O_RDWR); dup(i); dup(i); /* handle standart I/O */
 			umask(027); /* set newly created file permissions */
 			//chdir(RUNNING_DIR); /* change running directory */
-			lfp = open(LOCK_FILE, O_RDWR | O_CREAT, 0640);
+			snprintf(lockFileName, sizeof(lockFileName), "%s.Lock", Util::GetModuleNameA());
+			lfp = open(lockFileName, O_RDWR | O_CREAT, 0640);
 			if (lfp<0) exit(1); /* can not open */
 			if (lockf(lfp, F_TLOCK, 0)<0) exit(0); /* can not lock */
 												   /* first instance continues */

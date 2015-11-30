@@ -184,18 +184,19 @@ namespace BR
 	class StringBuffer : public MemoryBuffer<char, StaticBufferSize>
 	{
 	public:
+		typedef MemoryBuffer<char, StaticBufferSize> super;
 
 		virtual HRESULT Append( size_t dataSize, const char* data )
 		{
 			if( data == nullptr || dataSize == 0 )
 				return E_INVALIDARG;
 
-			HRESULT hr = MemoryBuffer::Append( dataSize, data );
+			HRESULT hr = super::Append( dataSize, data );
 			if( FAILED(hr) ) return hr;
 
-			if( GetPtr()[GetUsedSize()-1] != '\0' )
+			if(super::GetPtr()[super::GetUsedSize()-1] != '\0' )
 			{
-				hr = MemoryBuffer::Append( 1, "" );
+				hr = super::Append( 1, "" );
 				if( FAILED(hr) ) return hr;
 			}
 

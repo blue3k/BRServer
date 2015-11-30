@@ -22,7 +22,7 @@ namespace Net {
 	//	Connection Interface
 	//
 
-	INetPolicy::INetPolicy(UINT uiPolicyID, BR::Net::IConnection *pConn)
+	INetPolicy::INetPolicy(UINT uiPolicyID, Net::IConnection *pConn)
 		: IPolicyBase(uiPolicyID)
 		, m_pConnection(pConn)
 	{

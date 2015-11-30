@@ -18,11 +18,23 @@
 #include "Common/SharedObject.h"
 #include "Common/SharedPointer.h"
 #include "Net/NetCtrlIDs.h"
+#if !WINDOWS
+#include <arpa/inet.h>
+#include <netdb.h>
+#endif
 
 
 namespace BR {
 namespace Net {
 	
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Connection Interface
+	//
+#if !WINDOWS
+	#define SOCKET_ERROR (-1)
+#endif
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -284,7 +296,7 @@ namespace Net {
 	public:
 		virtual void OnConnectionEvent(IConnection* pConn, const IConnection::Event& evt) = 0;
 		virtual HRESULT OnRecvMessage(IConnection* pConn, Message::MessageData* pMsg) = 0;
-		virtual HRESULT OnNetSyncMessage(IConnection* pConn, NetCtrlIDs netCtrlID) = 0;
+		virtual HRESULT OnNetSyncMessage(IConnection* pConn) = 0;
 	};
 
 

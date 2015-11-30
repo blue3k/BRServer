@@ -65,10 +65,10 @@ namespace Net {
 	// Make Ack packet and enqueue to SendNetCtrlqueue
 	HRESULT ConnectionMUDPServer::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_OK, hrTem = S_OK;
 
-		MsgMobileNetCtrl *pNetCtrl = NULL;
-		Message::MessageData *pMsg = NULL;
+		MsgMobileNetCtrl *pNetCtrl = nullptr;
+		Message::MessageData *pMsg = nullptr;
 
 		netMem( pMsg = Message::MessageData::NewMessage( uiCtrlCode, sizeof(MsgMobileNetCtrl) ) );
 
@@ -80,10 +80,10 @@ namespace Net {
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = true;
 		pMsg->UpdateChecksum();
 
-		HRESULT hrTem = GetNet()->SendMsg( this, pMsg );
+		hrTem = GetNet()->SendMsg( this, pMsg );
 		if( FAILED(hrTem) )
 		{
-			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:%0%, msg:{1:X8}, seq:%2%, hr={3:X8}", 
+			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							GetCID(), 
 							msgID.ID, 
 							uiSequence, 
@@ -113,7 +113,7 @@ namespace Net {
 		Message::MessageData *pMsg = NULL;
 		Message::MobileMessageHeader * pMsgHeader = (Message::MobileMessageHeader*)pBuff;
 
-		netTrace(TRC_RECVRAW, "UDP Recv ip:%0%, msg:%1%, seq:%2%, len:%3%", GetConnectionInfo().Remote, pMsgHeader->msgID, pMsgHeader->msgID.IDSeq.Sequence, uiBuffSize);
+		netTrace(TRC_RECVRAW, "UDP Recv ip:{0}, msg:{1}, seq:{2}, len:{3}", GetConnectionInfo().Remote, pMsgHeader->msgID, pMsgHeader->msgID.IDSeq.Sequence, uiBuffSize);
 
 		if( uiBuffSize == 0 )
 		{
@@ -137,7 +137,7 @@ namespace Net {
 			pMsgHeader = (Message::MobileMessageHeader*)pBuff;
 			if( uiBuffSize < sizeof(Message::MobileMessageHeader) || uiBuffSize < pMsgHeader->Length )
 			{
-				netTrace( Trace::TRC_ERROR, "Unexpected packet buffer size:%0%, size in header:%1%", uiBuffSize, pMsgHeader->Length );
+				netTrace( Trace::TRC_ERROR, "Unexpected packet buffer size:{0}, size in header:{1}", uiBuffSize, pMsgHeader->Length );
 				netErr( E_NET_BADPACKET_SIZE );
 			}
 
@@ -196,8 +196,6 @@ namespace Net {
 	HRESULT ConnectionMUDPServer::OnRecv( Message::MessageData *pMsg )
 	{
 		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
-
 		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
 
 		if (GetConnectionState() != IConnection::STATE_CONNECTED)
@@ -211,7 +209,7 @@ namespace Net {
 		{
 			Assert( !pMsgHeader->msgID.IDs.Encrypted );
 
-			netTrace(TRC_GUARREANTEDCTRL, "RECVGua    : CID:%0% msg:%1%, seq:%2%, len:%3%",
+			netTrace(TRC_GUARREANTEDCTRL, "RECVGua    : CID:{0} msg:{1}, seq:{2}, len:{3}",
 				GetCID(), 
 				pMsg->GetMessageHeader()->msgID,
 				pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
@@ -256,7 +254,7 @@ namespace Net {
 
 		//UpdateSendQueue();
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -329,7 +327,7 @@ namespace Net {
 
 		if( pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl) )
 		{
-			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 			netChk( Disconnect() );
 			netErr(E_NET_BADPACKET_NOTEXPECTED);
 		}
@@ -344,7 +342,7 @@ namespace Net {
 				case NetCtrlCode_Disconnect:
 					if (GetConnectionState() == IConnection::STATE_DISCONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
 					{
-						netTrace( TRC_CONNECTION, "RECV Disconnected CID:%0%", GetCID() );
+						netTrace( TRC_CONNECTION, "RECV Disconnected CID:{0}", GetCID() );
 						netChk( CloseConnection() );
 					}
 					break;
@@ -356,7 +354,7 @@ namespace Net {
 					}
 					break;
 				default:
-					netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+					netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 					netChk( Disconnect() );
 					netErr(E_NET_BADPACKET_NOTEXPECTED);
 					break;
@@ -364,7 +362,7 @@ namespace Net {
 			}
 			else // general message
 			{
-				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 				netChk( Disconnect() );
 				netErr(E_NET_BADPACKET_NOTEXPECTED);
 			}
@@ -411,7 +409,7 @@ namespace Net {
 			netChk( hrTem );
 
 			if (GetEventHandler() != nullptr && (m_SendGuaQueue.GetEnqueCount() > 0 || m_SendReliableWindow.GetMsgCount() > 0))
-				GetEventHandler()->OnNetSyncMessage(this, NetCtrlCode_SyncReliable);
+				GetEventHandler()->OnNetSyncMessage(this);
 			else
 				m_bSendSyncThisTick = true; // for regular ping. maybe I can get rid of this later
 			break;
@@ -440,7 +438,7 @@ namespace Net {
 
 				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, (UINT)GetConnectionInfo().LocalClass, pNetCtrl->msgID, GetConnectionInfo().LocalID));
 
-				netTrace( TRC_NETCTRL, "UDP Recv Connecting CID(%0%) : C:%1%, Ver:%2%)", GetCID(), RemoteClass, ProtocolVersion );
+				netTrace( TRC_NETCTRL, "UDP Recv Connecting CID({0}) : C:{1}, Ver:{2})", GetCID(), RemoteClass, ProtocolVersion );
 				m_ConnectInfo.SetRemoteInfo( RemoteClass, pNetCtrl->PeerID );
 
 				// Set connection is succeeded and connected
@@ -448,6 +446,8 @@ namespace Net {
 				break;
 			case IConnection::STATE_CONNECTED:
 				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, (UINT)GetConnectionInfo().LocalClass, pNetCtrl->msgID, GetConnectionInfo().LocalID));
+				break;
+			default:
 				break;
 			};
 
@@ -457,11 +457,11 @@ namespace Net {
 			SendFlush();
 			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 			SendFlush();
-			netTrace( TRC_CONNECTION, "Disconnect from remote CID:%0%", GetCID() );
+			netTrace( TRC_CONNECTION, "Disconnect from remote CID:{0}", GetCID() );
 			netChk( CloseConnection() );
 			break;
 		default:
-			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 			netChk( CloseConnection() );
 			netErr( E_UNEXPECTED );
 			break;
@@ -484,12 +484,12 @@ namespace Net {
 		// Process received net ctrl messages
 		MsgNetCtrlBuffer netCtrl;
 		auto loopCount = m_RecvNetCtrlQueue.GetEnqueCount();
-		for (int iLoop = 0; iLoop < loopCount; iLoop++)
+		for (decltype(loopCount) iLoop = 0; iLoop < loopCount; iLoop++)
 		{
 			if (FAILED(m_RecvNetCtrlQueue.Dequeue(netCtrl)))
 				break;
 
-			if( netCtrl.msgID.ID != NULL )
+			if( netCtrl.msgID.ID != 0 )
 			{
 				netChk( ProcNetCtrl( (MsgMobileNetCtrl*)&netCtrl ) );
 
@@ -514,7 +514,7 @@ namespace Net {
 
 		HRESULT hrTem = m_RecvReliableWindow.AddMsg(pIMsg);
 
-		netTrace(TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:%0% BaseSeq:%1%, msg:%2%, seq:%3%, len:%4%, hr={5:X8}",
+		netTrace(TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:{0} BaseSeq:{1}, msg:{2}, seq:{3}, len:%4%, hr={5:X8}",
 			GetCID(), m_RecvReliableWindow.GetBaseSequence(),
 			msgID,
 			seq,
@@ -544,7 +544,7 @@ namespace Net {
 			}
 			else
 			{
-				netTrace(TRC_GUARREANTEDCTRL, "RECVGuaAdded : No Event Handler for CID:%0% BaseSeq:%1%",
+				netTrace(TRC_GUARREANTEDCTRL, "RECVGuaAdded : No Event Handler for CID:{0} BaseSeq:{1}",
 					GetCID(), m_RecvReliableWindow.GetBaseSequence());
 			}
 		}
@@ -560,20 +560,20 @@ namespace Net {
 	HRESULT ConnectionMUDPServer::ProcRecvReliableQueue()
 	{
 		HRESULT hr = S_OK;
-		Message::MessageData *pIMsg = NULL;
+		Message::MessageData *pIMsg = nullptr;
 
-		if( GetConnectionState() == IConnection::STATE_DISCONNECTED )
-			goto Proc_End;
+		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
+			return S_OK;
 
 		// Recv guaranted queue process
-		pIMsg = NULL;
+		pIMsg = nullptr;
 		auto loopCount = m_RecvGuaQueue.GetEnqueCount();
-		for (int iLoop = 0; iLoop < loopCount; iLoop++)
+		for (decltype(loopCount) iLoop = 0; iLoop < loopCount; iLoop++)
 		{
 			if (FAILED(m_RecvGuaQueue.Dequeue(pIMsg)))
 				break;
 
-			if (pIMsg == NULL)
+			if (pIMsg == nullptr)
 				break;
 
 			Message::MessageHeader *pMsgHeader = pIMsg->GetMessageHeader();
@@ -596,7 +596,7 @@ namespace Net {
 			netChk(ProcGuarrentedMessageWindow([&](Message::MessageData* pRecvGuaMsg){ Connection::OnRecv(pRecvGuaMsg); }));
 		}
 
-Proc_End:
+	Proc_End:
 
 		//Util::SafeRelease( pIMsg );
 		//if( pMessageElement && pMessageElement->pMsg ) pMessageElement->pMsg->Release();
@@ -631,7 +631,7 @@ Proc_End:
 				netErr(hr);
 			}
 
-			netTrace( TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:%0%, seq:%1%, msg:%2%, len:%3%", 
+			netTrace( TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:{0}, seq:{1}, msg:{2}, len:{3}", 
 						GetCID(), 
 						pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
 						pIMsg->GetMessageHeader()->msgID, 
@@ -674,7 +674,7 @@ Proc_End:
 					break;
 				}
 
-				netTrace( TRC_GUARREANTEDCTRL, "SENDReliableRetry : CID:%0%, seq:%1%, msg:%2%, len:%3%", 
+				netTrace( TRC_GUARREANTEDCTRL, "SENDReliableRetry : CID:{0}, seq:{1}, msg:{2}, len:{3}", 
 								GetCID(),
 								pMessageElement->pMsg->GetMessageHeader()->msgID.IDSeq.Sequence,
 								pMessageElement->pMsg->GetMessageHeader()->msgID, 
@@ -687,7 +687,7 @@ Proc_End:
 		}
 
 
-	Proc_End:
+	//Proc_End:
 
 		//if( pMessageElement && pMessageElement->pMsg ) pMessageElement->pMsg->Release();
 
@@ -721,8 +721,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
-
-		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
+		//TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
@@ -789,7 +788,7 @@ Proc_End:
 
 		MutexScopeLock localLock(m_SendReliableWindow.GetLock());
 
-		if (GetConnectionState() == BR::Net::IConnection::STATE_DISCONNECTED)
+		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
 
 

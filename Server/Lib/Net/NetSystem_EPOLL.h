@@ -53,8 +53,8 @@ namespace Net {
 	// UDP/TCP read/write overlapped base
 	struct IOBUFFER_RWBASE : public IOBUFFER
 	{
-		// Operated buffer size
-		DWORD dwOperateSize;
+		// transferred buffer size
+		DWORD TransferredSize;
 
 
 		// Constructor
@@ -65,6 +65,10 @@ namespace Net {
 	// UDP/TCP write overlapped
 	struct IOBUFFER_WRITE : public IOBUFFER_RWBASE, public MemoryPoolObject<IOBUFFER_WRITE>
 	{
+		// Sending raw buffer
+		UINT RawSendSize;
+		BYTE* pRawSendBuffer;
+
 		// Message pointer to send
 		Message::MessageData *pMsgs;
 
@@ -94,14 +98,11 @@ namespace Net {
 	// UDP/TCP read overlapped
 	struct IOBUFFER_READ : public IOBUFFER_RWBASE
 	{
-		// Read flag
-		DWORD dwFlags;
-
 		// UDP Read from
 		struct sockaddr_in6 From;
 
 		// UDP Recv socket length
-		INT iSockLen;
+		socklen_t iSockLen;
 
 		// Recv connection ID for error check
 		uintptr_t CID;
@@ -131,7 +132,8 @@ namespace Net {
 	struct IOBUFFER_ACCEPT : public IOBUFFER
 	{
 		SOCKET sockAccept;
-		BYTE pAcceptInfo[(sizeof(sockaddr_in6) + 16) * 2];
+
+		sockaddr_in6 sockAddr;
 
 		// Constructor
 		IOBUFFER_ACCEPT();
@@ -154,6 +156,7 @@ namespace Net {
 
 		enum {
 			MAX_EPOLL_EVENTS = 100,
+			MAX_EPOLL_WAIT = 500,
 		};
 
 	private:
@@ -162,11 +165,15 @@ namespace Net {
 
 	public:
 		// Constructor/destructor
-		EPOLLWorker();
+		EPOLLWorker(int hEpoll);
 
 		~EPOLLWorker();
 
 		virtual void Run() override;
+
+
+		HRESULT HandleAccept(SOCKET sock, INetIOCallBack* pCallBack);
+		HRESULT HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack);
 	};
 
 

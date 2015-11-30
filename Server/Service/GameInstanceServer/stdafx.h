@@ -35,7 +35,7 @@
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 #include "ServerSystem/ServerEntity/GameMasterServerEntity.h"
 #include "ServerSystem/ServerEntity/GameServerEntity.h"
-#include "ServerSystem/LoopbackConnection.h"
+#include "ServerSystem/SvrLoopbackConnection.h"
 #include "ServerSystem/SimpleUserEntity.h"
 #include "ServerSystem/ServerTransaction.h"
 #include "ServerSystem/ServerEntity.h"

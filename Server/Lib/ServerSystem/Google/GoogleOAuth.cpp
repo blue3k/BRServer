@@ -15,6 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Utility.h"
 #include "Common/TimeUtil.h"
+#include "Common/HRESCommon.h"
 #include "ServerSystem/SvrTrace.h"
 
 #include "curl/curl.h"
@@ -42,9 +43,9 @@ namespace Google {
 
 	OAuth::OAuth()
 		: m_privateKey(nullptr)
-		, m_AuthenticatedTime(TimeStampMS::min())
-		, m_ActiveAuthString(nullptr)
 		, m_AuthStringIndex(0)
+		, m_ActiveAuthString(nullptr)
+		, m_AuthenticatedTime(TimeStampMS::min())
 	{
 		m_ActiveAuthString = m_AuthString[m_AuthStringIndex];
 		memset(m_AuthString, 0, sizeof m_AuthString);
@@ -69,14 +70,14 @@ namespace Google {
 		// ssl signing
 		// Load key file
 		FILE *fp = nullptr;
-		fopen_s(&fp, strPKeyFile, "rb");
+		fp = fopen(strPKeyFile, "rb");
 		PKCS12 * p12 = d2i_PKCS12_fp(fp, nullptr);
 		X509 *cert = nullptr;
 		STACK_OF(X509) *ca = nullptr;
 
 		auto sslResult = PKCS12_verify_mac(p12, GoogleDefaultPassword, (int)strlen(GoogleDefaultPassword));
 		if (sslResult == FALSE) // invalid password
-			svrErr(ERROR_INVALID_PASSWORD);
+			svrErr(E_INVALID_PASSWORD);
 
 		sslResult = PKCS12_parse(p12, GoogleDefaultPassword, &m_privateKey, &cert, &ca);
 		if (sslResult == FALSE)
@@ -206,6 +207,7 @@ namespace Google {
 		char strPostFields[2048];
 		CURLcode res;
 		struct curl_slist *headers = nullptr; // init to NULL is important 
+		char *ct = nullptr;
 
 		m_ResultBuffer.Clear();
 		svrChk(StrUtil::Format(strPostFields, "{0}{1}", "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=", (const char*)requestString.data()));
@@ -250,7 +252,6 @@ namespace Google {
 			svrErr(E_UNEXPECTED);
 		Assert(res == 0);
 
-		char *ct = nullptr;
 		res = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
 		if (res != CURLE_OK)
 			svrErr(E_UNEXPECTED);
@@ -271,6 +272,7 @@ namespace Google {
 	{
 		HRESULT hr = S_OK;
 		std::string accessToken;
+		bool parsingSuccessful;
 
 		StaticArray<BYTE, 2048> requestString;
 		Json::Value root;
@@ -284,7 +286,7 @@ namespace Google {
 
 		svrChk(m_ResultBuffer.push_back('\0'));
 
-		bool parsingSuccessful = reader.parse((char*)m_ResultBuffer.data(), root);
+		parsingSuccessful = reader.parse((char*)m_ResultBuffer.data(), root);
 		if (!parsingSuccessful)
 		{
 			// report to the user the failure and their locations in the document.

@@ -47,6 +47,9 @@ namespace GameServer {
 
 	class PlayerTransInviteFriend : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::InviteFriendCmd, PlayerTransInviteFriend>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::InviteFriendCmd, PlayerTransInviteFriend> super;
+
 	private:
 		TimeStampSec m_TimeStamp;
 
@@ -67,6 +70,9 @@ namespace GameServer {
 
 	class PlayerTransFriendAccept : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::AcceptFriendRequestCmd, PlayerTransFriendAccept, sizeof(Svr::TransactionMessageHandlerType)*6 >
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::AcceptFriendRequestCmd, PlayerTransFriendAccept, sizeof(Svr::TransactionMessageHandlerType) * 6 > super;
+
 	private:
 		int m_WaitingResultCount;
 
@@ -94,6 +100,9 @@ namespace GameServer {
 	class PlayerTransFriendAcceptedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::FriendAcceptedC2SEvt, PlayerTransFriendAcceptedS2S>
 	{
 	public:
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::FriendAcceptedC2SEvt, PlayerTransFriendAcceptedS2S> super;
+
+	public:
 		PlayerTransFriendAcceptedS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransFriendAcceptedS2S() {}
 
@@ -105,6 +114,9 @@ namespace GameServer {
 
 	class PlayerTransRemoveFriend : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::RemoveFriendCmd, PlayerTransRemoveFriend>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::RemoveFriendCmd, PlayerTransRemoveFriend> super;
+
 	private:
 		int m_WaitingResultCount;
 
@@ -125,6 +137,9 @@ namespace GameServer {
 	class PlayerTransFriendRemovedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::FriendRemovedC2SEvt, PlayerTransFriendRemovedS2S>
 	{
 	public:
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::FriendRemovedC2SEvt, PlayerTransFriendRemovedS2S> super;
+
+	public:
 		PlayerTransFriendRemovedS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransFriendRemovedS2S() {}
 
@@ -135,6 +150,9 @@ namespace GameServer {
 
 	class PlayerTransGetFriendList : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetFriendListCmd, PlayerTransGetFriendList>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GetFriendListCmd, PlayerTransGetFriendList> super;
+
 	private:
 		StaticArray<FriendInformation, 20> m_Friends;
 		UINT16 m_MaxFriendSlot;
@@ -167,6 +185,9 @@ namespace GameServer {
 	
 	class PlayerTransGiveStamina : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GiveStaminaCmd, PlayerTransGiveStamina>
 	{
+	public:
+		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GiveStaminaCmd, PlayerTransGiveStamina> super;
+
 	private:
 		//Memento<UserGamePlayerInfoSystem::MEMENTO_SIZE> m_SavedData;
 		TimeStampSec m_TimeStamp;
@@ -185,19 +206,7 @@ namespace GameServer {
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GiveStaminaRes, GetTargetPlayer(), m_TimeStamp.time_since_epoch().count());
 	};
-	//
-	//class PlayerTransGiveStaminaS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::GiveStaminaC2SEvt, PlayerTransGiveStaminaS2S>
-	//{
-	//public:
-	//	PlayerTransGiveStaminaS2S( Message::MessageData* &pIMsg );//:UserTransactionS2SEvt(pIMsg) {}
-	//	virtual ~PlayerTransGiveStaminaS2S() {}
 
-	//	HRESULT OnSavedToDB( Svr::TransactionResult* &pRes );
-
-	//	// Start Transaction
-	//	virtual HRESULT StartTransaction();
-	//};
-	//
 
 } // namespace GameServer 
 } // namespace BR 

@@ -15,6 +15,7 @@
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetUtil.h"
+#include "Net/NetSystem.h"
 #include "Common/HRESNet.h"
 #include "Common/PageQueue.h"
 
@@ -99,11 +100,12 @@ namespace Net {
 		// Recv pending count
 		std::atomic<LONG> m_lPendingRecvCount;
 
-		// Pending Job count
-		//SyncCounter m_PendingJobCount;
 
 
 	protected:
+
+		// Sending wait queue
+		MsgQueue			m_SendGuaQueue;
 
 		// NetCtrl control time
 		TimeStampMS m_ulNetCtrlTime;
@@ -121,16 +123,11 @@ namespace Net {
 		Connection();
 		virtual ~Connection();
 
-		//FORCEINLINE SyncCounter& GetPendingJobCounter();
-
-		// from iSharedObj
-		//virtual void DeleteThis() const;
-
 		// Get socket handle
 		inline SOCKET GetSocket() const;
 
 		// Close connections socket handle
-		inline void CloseSocket();
+		void CloseSocket();
 
 		// Get remote address
 		inline const sockaddr_in6& GetRemoteSockAddr() const;

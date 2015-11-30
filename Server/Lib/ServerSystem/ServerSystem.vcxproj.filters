@@ -139,9 +139,6 @@
     <ClInclude Include="SimpleUserEntity.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="LoopbackConnection.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="SvrConfig.h">
       <Filter>ConfigLoad</Filter>
     </ClInclude>
@@ -379,6 +376,9 @@
     <ClInclude Include="BrServerUtil.h">
       <Filter>Server</Filter>
     </ClInclude>
+    <ClInclude Include="SvrLoopbackConnection.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -397,9 +397,6 @@
       <Filter>Task</Filter>
     </ClCompile>
     <ClCompile Include="SimpleUserEntity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="LoopbackConnection.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
     <ClCompile Include="SvrConfig.cpp">
@@ -608,6 +605,9 @@
     </ClCompile>
     <ClCompile Include="BrServerUtil.cpp">
       <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="SvrLoopbackConnection.cpp">
+      <Filter>ServerEntity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

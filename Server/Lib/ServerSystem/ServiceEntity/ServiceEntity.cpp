@@ -18,7 +18,7 @@
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
-#include "ServerSystem/ServerServicebase.h"
+#include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServiceEntity/ServiceEntity.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/SvrTrace.h"

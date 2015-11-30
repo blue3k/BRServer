@@ -16,53 +16,53 @@
 // set Exclusive option
 inline void Transaction::SetExclusive( bool bIsExclusive )
 {
-	m_bIsExclusive = bIsExclusive;
+	m_Flags.IsExclusive = bIsExclusive;
 }
 
 
 // Get Exclusive option
 inline bool Transaction::IsExclusive() const
 {
-	return m_bIsExclusive;
+	return m_Flags.IsExclusive;
 }
 
 
 // set DeleteByEntity option
 inline void Transaction::SetDeleteByEntity( bool bIsDeleteByEntity )
 {
-	m_bIsDeleteByEntity = bIsDeleteByEntity;
+	m_Flags.IsDeleteByEntity = bIsDeleteByEntity;
 }
 
 // Get Delete by entity
 inline bool Transaction::IsDeleteByEntity() const
 {
-	return m_bIsDeleteByEntity;
+	return m_Flags.IsDeleteByEntity;
 }
 
 
 // Set PrintTrace
 inline void Transaction::SetPrintTrace( bool bisTrace )
 {
-	m_bIsPrintTrace = bisTrace;
+	m_Flags.IsPrintTrace = bisTrace;
 }
 
 // Set Direct Process
 inline void Transaction::SetDirectProcess( bool bisDirectProcess )
 {
-	m_bIsDirectProcess = bisDirectProcess;
+	m_Flags.IsDirectProcess = bisDirectProcess;
 }
 
 		
 // Get Print Trace
 inline bool Transaction::IsPrintTrace() const
 {
-	return m_bIsPrintTrace;
+	return m_Flags.IsPrintTrace;
 }
 
 // Get Direct process 
 inline bool Transaction::IsDirectProcess() const
 {
-	return m_bIsDirectProcess;
+	return m_Flags.IsDirectProcess;
 }
 
 // Get parent Transaction ID

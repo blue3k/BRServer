@@ -74,7 +74,8 @@ namespace LoginServer {
 
 	class LoginPlayerTransLogin : public LoginPlayerTransLoginBase<Message::Login::LoginCmd, LoginPlayerTransLogin>
 	{
-	private:
+	public:
+		typedef LoginPlayerTransLoginBase<Message::Login::LoginCmd, LoginPlayerTransLogin> super;
 
 	public:
 		LoginPlayerTransLogin( Message::MessageData* &pIMsg );
@@ -96,7 +97,8 @@ namespace LoginServer {
 
 	class LoginPlayerTransLoginByFacebook : public LoginPlayerTransLoginBase<Message::Login::LoginByFacebookCmd, LoginPlayerTransLoginByFacebook>
 	{
-	private:
+	public:
+		typedef LoginPlayerTransLoginBase<Message::Login::LoginByFacebookCmd, LoginPlayerTransLoginByFacebook> super;
 
 	public:
 		LoginPlayerTransLoginByFacebook( Message::MessageData* &pIMsg );
@@ -120,7 +122,8 @@ namespace LoginServer {
 
 	class LoginPlayerTransCreateRandomUser : public LoginPlayerTransLoginBase<Message::Login::CreateRandomUserCmd, LoginPlayerTransCreateRandomUser>
 	{
-	private:
+	public:
+		typedef LoginPlayerTransLoginBase<Message::Login::CreateRandomUserCmd, LoginPlayerTransCreateRandomUser> super;
 
 	public:
 		LoginPlayerTransCreateRandomUser(Message::MessageData* &pIMsg);
@@ -139,7 +142,8 @@ namespace LoginServer {
 	// Close zone instance
 	class LoginPlayerTransCloseInstance : public Svr::TransactionT<LoginPlayerEntity, LoginPlayerTransCloseInstance,sizeof(Svr::TransactionMessageHandlerType)*2>
 	{
-	private:
+	public:
+		typedef Svr::TransactionT<LoginPlayerEntity, LoginPlayerTransCloseInstance, sizeof(Svr::TransactionMessageHandlerType) * 2> super;
 
 	public:
 		LoginPlayerTransCloseInstance();
@@ -162,7 +166,8 @@ namespace LoginServer {
 
 	class LoginPlayerKickPlayerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::ISvrPolicyLoginServer, Message::LoginServer::KickPlayerCmd, LoginPlayerKickPlayerTrans, sizeof(Svr::TransactionMessageHandlerType)*1>
 	{
-	private:
+	public:
+		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::ISvrPolicyLoginServer, Message::LoginServer::KickPlayerCmd, LoginPlayerKickPlayerTrans, sizeof(Svr::TransactionMessageHandlerType) * 1> super;
 
 	public:
 
@@ -180,6 +185,9 @@ namespace LoginServer {
 
 	class LoginPlayerJoinedToGameServerTrans : public Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::ISvrPolicyLoginServer, Message::LoginServer::PlayerJoinedToGameServerCmd, LoginPlayerJoinedToGameServerTrans, sizeof(Svr::TransactionMessageHandlerType)*1>
 	{
+	public:
+		typedef Svr::UserTransactionS2SCmd< LoginPlayerEntity, Policy::ISvrPolicyLoginServer, Message::LoginServer::PlayerJoinedToGameServerCmd, LoginPlayerJoinedToGameServerTrans, sizeof(Svr::TransactionMessageHandlerType) * 1> super;
+
 	private:
 		GameInsUID m_GameUID;
 		PartyUID m_PartyUID;

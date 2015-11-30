@@ -50,8 +50,8 @@ namespace BR {
 				, m_pCur(const_cast<Node*>(pSrc))
 			{}
 			iterator( const iterator& itSrc )
-				: m_pCur(itSrc.m_pCur)
-				, m_pHeader(itSrc.m_pHeader)
+				: m_pHeader(itSrc.m_pHeader)
+				, m_pCur(itSrc.m_pCur)
 			{}
 
 			iterator& operator++()

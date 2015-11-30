@@ -477,6 +477,7 @@ namespace Svr {
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 		ServerEntity *pServerEntity = nullptr;
 		ServerServiceInformation* pNewService = nullptr;
+		bool bAddStatusWatcher;
 
 		// This should not be failed
 		if( FAILED(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
@@ -486,7 +487,7 @@ namespace Svr {
 			goto Proc_End;
 		}
 
-		bool bAddStatusWatcher = pServiceEntity->GetClusterMembership() != ClusterMembership::StatusWatcher;
+		bAddStatusWatcher = pServiceEntity->GetClusterMembership() != ClusterMembership::StatusWatcher;
 
 		for( UINT iMember = 0; iMember < GetMemberList().GetSize(); iMember++ )
 		{

@@ -39,28 +39,28 @@ namespace Svr {
 	//	Route message
 	//
 
-	// Route Message utility func
-	template< class MsgClass >
-	HRESULT RouteMessage( Message::MessageData* &pMsg )
-	{
-		HRESULT hr = S_OK;
-		ServerEntity* pServerEntity = nullptr;
-		MsgClass msg;
+	//// Route Message utility func
+	//template< class MsgClass >
+	//HRESULT RouteMessage( Message::MessageData* &pMsg )
+	//{
+	//	HRESULT hr = S_OK;
+	//	ServerEntity* pServerEntity = nullptr;
+	//	MsgClass msg;
 
-		svrChk( msg.ParseIMsg(pMsg) );
+	//	svrChk( msg.ParseIMsg(pMsg) );
 
-		svrChkErr( E_SVR_ROUTEMSG_FAILED, BrServer::GetInstance()->GetServerEntityManager()->GetServerEntity( msg.GetRouteContext().To, pServerEntity ) );
+	//	svrChkErr( E_SVR_ROUTEMSG_FAILED, BrServer::GetInstance()->GetServerEntityManager()->GetServerEntity( msg.GetRouteContext().To, pServerEntity ) );
 
-		svrChkPtr( pServerEntity->GetConnection() );
-		svrChk( pServerEntity->GetConnection()->Send( pMsg ) );
+	//	svrChkPtr( pServerEntity->GetConnection() );
+	//	svrChk( pServerEntity->GetConnection()->Send( pMsg ) );
 
-	Proc_End:
+	//Proc_End:
 
-		Util::SafeRelease( pMsg );
+	//	Util::SafeRelease( pMsg );
 
-		return hr;
-	}
-	
+	//	return hr;
+	//}
+	//
 	
 
 

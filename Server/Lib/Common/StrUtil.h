@@ -199,7 +199,7 @@ namespace StrUtil {
 #include "StrUtil.inl"
 
 
-}; // namespace StrUtil
+} // namespace StrUtil
 } // namespace BR
 
 

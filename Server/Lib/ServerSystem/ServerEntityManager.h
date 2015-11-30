@@ -45,7 +45,7 @@ namespace Svr
 	public:
 		enum { ComponentID = ServerComponentID_ServerEntityManager };
 
-		typedef BR::Hash::HashTable2<ServerID, ServerEntity* > ServerIDMap;
+		typedef Hash::HashTable2<ServerID, ServerEntity* > ServerIDMap;
 
 		typedef OrderedLinkedList<ULONGLONG> ServerUpTimeList;
 
@@ -65,7 +65,7 @@ namespace Svr
 		// Server ID map
 		ServerIDMap				m_ServerIDMap;
 
-		CriticalSection			m_ServerTableLock;
+		BR::CriticalSection			m_ServerTableLock;
 
 	private:
 		HRESULT AddServerEntity(NetClass netClass, ServerEntity* pServerEntity);

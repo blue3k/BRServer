@@ -99,11 +99,11 @@ namespace Net {
 
 		if( GetSocket() != INVALID_SOCKET )
 		{
-			closesocket( GetSocket() );
+			NetSystem::CloseSocket( GetSocket() );
 			SetSocket( INVALID_SOCKET );
 		}
 
-	Proc_End:
+	//Proc_End:
 
 
 
@@ -120,7 +120,7 @@ namespace Net {
 
 		netChkPtr( pIConnection );
 
-		netTrace(TRC_CONNECTION, "ReleaseConnection LPort:%0%, CID:%1%, Connection Count : %2%", GetLocalAddress().usPort, pIConnection->GetCID(), GetConnectionManager().GetNumActiveConnection());
+		netTrace(TRC_CONNECTION, "ReleaseConnection LPort:{0}, CID:{1}, Connection Count : {2}", GetLocalAddress().usPort, pIConnection->GetCID(), GetConnectionManager().GetNumActiveConnection());
 		netChk( GetConnectionManager().PendingReleaseConnection( pConn ) );
 
 	Proc_End:
@@ -160,8 +160,9 @@ namespace Net {
 	HRESULT Server::OnConnectionStateChange( IConnection *pIConnection )
 	{
 		HRESULT hr = S_OK;
+		INet::Event netDisEvent(INet::Event::EVT_CONNECTION_DISCONNECTED);
 
-		netTrace(TRC_CONNECTION, "Net Con state Port:%0%, CID:%1%, state:%2%", GetLocalAddress().usPort, pIConnection->GetCID(), pIConnection->GetConnectionState());
+		netTrace(TRC_CONNECTION, "Net Con state Port:{0}, CID:{1}, state:{2}", GetLocalAddress().usPort, pIConnection->GetCID(), pIConnection->GetConnectionState());
 
 		switch (pIConnection->GetConnectionState())
 		{
@@ -170,9 +171,11 @@ namespace Net {
 		case IConnection::STATE_CONNECTED:
 			break;
 		case IConnection::STATE_DISCONNECTED:
-			EnqueueNetEvent( INet::Event( INet::Event::EVT_CONNECTION_DISCONNECTED ) );
+			EnqueueNetEvent( netDisEvent );
 			break;
 		case IConnection::STATE_DISCONNECTING:
+			break;
+		default:
 			break;
 		};
 

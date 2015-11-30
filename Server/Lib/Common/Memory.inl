@@ -57,7 +57,7 @@ HRESULT StaticAllocator<BufferSize>::Alloc( size_t uiSize, void* &pPtr )
 }
 
 template< size_t BufferSize >
-bool StaticAllocator<BufferSize>::GetIsInStaticBuffer( void* pPtr )
+inline bool StaticAllocator<BufferSize>::GetIsInStaticBuffer( void* pPtr )
 {
 	intptr_t ptr = (intptr_t)pPtr;
 	intptr_t staticBuffer = (intptr_t)m_AllocationBuffer;
@@ -144,7 +144,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, voi
 	if( m_FreeSize < allocationSize )
 		return m_OverflowHeap.Alloc(uiSize,pPtr);
 
-	if( (m_AllocatePosition + allocationSize) < BufferSize )
+	if( (m_AllocatePosition + allocationSize) < (decltype(m_AllocatePosition))BufferSize )
 	{
 		pChunk = (MemoryChunkHeader*)(m_AllocationBuffer + m_AllocatePosition);
 
@@ -178,7 +178,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, voi
 
 	m_FreeSize -= allocationSize;
 
-	AssertRel(this->m_FreeSize<=BufferSize && this->m_FreeSize >= 0);
+	AssertRel(this->m_FreeSize<=(decltype(m_FreeSize))BufferSize && this->m_FreeSize >= 0);
 
 	pChunk->ChunkType = ChunkTypes::Allocated;
 	pChunk->ChunkSize = (UINT32)allocationSize;
@@ -250,12 +250,12 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 			return S_OK;
 		}
 
-		while( (pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy) && m_FreeSize <= BufferSize )
+		while( (pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy) && m_FreeSize <= (decltype(m_FreeSize))BufferSize )
 		{
 			AssertRel((m_FreePosition == ((intptr_t)pChunk - (intptr_t)m_AllocationBuffer)) || m_FreeSize == 0);
 			m_FreeSize += pChunk->ChunkSize;
 			m_FreePosition += pChunk->ChunkSize;
-			AssertRel(m_FreePosition <= BufferSize);
+			AssertRel(m_FreePosition <= (decltype(m_FreePosition))BufferSize);
 			if( m_FreePosition == BufferSize ) m_FreePosition = 0;
 
 			if( m_FreeSize < BufferSize ) // Any chunk must be exist
@@ -280,7 +280,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 			}
 		}
 
-		AssertRel(m_FreeSize<=BufferSize);
+		AssertRel(m_FreeSize<=(decltype(m_FreeSize))BufferSize);
 	}
 	else
 	{

@@ -185,5 +185,8 @@ namespace IO {
 
 }
 }
+#else
+
+void Dummy_BRFile_Linux() {}
 
 #endif

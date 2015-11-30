@@ -54,12 +54,12 @@ namespace Svr {
 	//
 
 	MatchingTransGrabPlayer::MatchingTransGrabPlayer(UINT matchingMemberCount, UINT targetQueueMemberCount, PlayerRole playerRole, UINT minQueueCount, UINT maxQueueCount)
-		: TransactionT(TransactionID())
-		, m_TargetQueueMemberCount(targetQueueMemberCount)
-		, m_RequestRole(playerRole)
+		: super(TransactionID())
 		, m_MinQueueCount(minQueueCount)
 		, m_MaxQueueCount(maxQueueCount)
+		, m_TargetQueueMemberCount(targetQueueMemberCount)
 		, m_MatchingMemberCount(matchingMemberCount)
+		, m_RequestRole(playerRole)
 	{
 		Assert(m_TargetQueueMemberCount);
 		Assert(m_MinQueueCount);
@@ -193,31 +193,33 @@ namespace Svr {
 
 		svrChk(msgRes.ParseIMsg(((MessageResult*)pRes)->GetMessage()));
 
-
-		auto numItems = std::min(msgRes.GetNumberOfPlayersInTheItem().GetSize(), msgRes.GetMatchingTicket().GetSize());
-		auto& pNumPlayersInItems = msgRes.GetNumberOfPlayersInTheItem();
-		auto& pMatchingTickets = msgRes.GetMatchingTicket();
-
-		svrTrace(Svr::TRC_MATCHING, "%2% items are cached, Matching:%0%, MatchingQueueCompo:%1%, Count:%2%", m_MatchingMemberCount, m_TargetQueueComponentID, numItems);
-
-		for (UINT iItem = 0; iItem < numItems; iItem++)
 		{
-			ReservedMatchingItem newItem;
+			auto numItems = std::min(msgRes.GetNumberOfPlayersInTheItem().GetSize(), msgRes.GetMatchingTicket().GetSize());
+			auto& pNumPlayersInItems = msgRes.GetNumberOfPlayersInTheItem();
+			auto& pMatchingTickets = msgRes.GetMatchingTicket();
 
-			newItem.MemberCount = pNumPlayersInItems[iItem];
-			newItem.MatchingTicket = pMatchingTickets[iItem];
+			svrTrace(Svr::TRC_MATCHING, "%2% items are cached, Matching:%0%, MatchingQueueCompo:%1%, Count:%2%", m_MatchingMemberCount, m_TargetQueueComponentID, numItems);
 
-			if (newItem.MemberCount == 0)
+			for (UINT iItem = 0; iItem < numItems; iItem++)
 			{
-				// Request delete for invalid items
-				RequestDeleteItem(newItem.MatchingTicket);
+				ReservedMatchingItem newItem;
+
+				newItem.MemberCount = pNumPlayersInItems[iItem];
+				newItem.MatchingTicket = pMatchingTickets[iItem];
+
+				if (newItem.MemberCount == 0)
+				{
+					// Request delete for invalid items
+					RequestDeleteItem(newItem.MatchingTicket);
+				}
+				else
+				{
+					// This will gurantee that the items will be queued by actual member count
+					auto& reservedQueue = GetMyOwner()->GetReservedItemQueue(newItem.MemberCount, m_RequestRole);
+					svrChk(reservedQueue.Enqueue(newItem));
+				}
 			}
-			else
-			{
-				// This will gurantee that the items will be queued by actual member count
-				auto& reservedQueue = GetMyOwner()->GetReservedItemQueue(newItem.MemberCount, m_RequestRole);
-				svrChk(reservedQueue.Enqueue(newItem));
-			}
+
 		}
 
 
@@ -276,7 +278,7 @@ namespace Svr {
 
 		SetPrintTrace(false);
 
-		for (int iItem = 0; iItem < matchedItems.GetSize(); iItem++)
+		for (UINT iItem = 0; iItem < matchedItems.GetSize(); iItem++)
 		{
 			MatchingItem item;
 			item.MatchingTicket = matchedItems[iItem].MatchingTicket;
@@ -313,7 +315,6 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		Message::PartyMatchingQueue::DequeueItemRes msgRes;
-		const ServiceInformation *currentMaster = nullptr, *currentSlave = nullptr;
 
 		m_PendingDequeueItem--;
 
@@ -324,7 +325,7 @@ namespace Svr {
 
 			AssertRel(msgRes.GetPlayers().GetSize() <= MAX_NUM_PLAYER);
 
-			for (int iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
+			for (UINT iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
 			{
 				if (m_MatchedItems[iItem].MatchingTicket != msgRes.GetMatchingTicket())
 					continue;
@@ -382,7 +383,6 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		Message::GameInstanceManager::CreateGameRes msgRes;
-		const ServiceInformation *currentMaster = nullptr, *currentSlave = nullptr;
 		GameInsUID gameUID;
 		UINT notifiedPlayerCount = 0;
 
@@ -395,7 +395,7 @@ namespace Svr {
 
 
 		// Send Game information to players
-		for (int iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
+		for (size_t iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
 		{
 			auto& reservedMember = m_MatchedItems[iItem];
 
@@ -465,7 +465,7 @@ namespace Svr {
 
 		svrChk(super::StartTransaction());
 
-		for (int iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
+		for (size_t iItem = 0; iItem < m_MatchedItems.GetSize(); iItem++)
 		{
 			DequeueItem(m_MatchedItems[iItem].MatchingTicket);
 		}

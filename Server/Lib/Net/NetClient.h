@@ -34,7 +34,7 @@ namespace Net {
 	private:
 
 	public:
-		ClientConnectionManagerT() : ConnectionManagerT(5) {}
+		ClientConnectionManagerT() : ConnectionManagerT<ConnectionType>(5) {}
 
 		// Release all connection and terminate manager
 		virtual HRESULT TerminateManager();

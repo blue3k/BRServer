@@ -109,7 +109,7 @@ namespace SharedModuleServer {
 
 		SetMyConfig( pMySvr );
 
-		svrChk(__super::ApplyConfiguration() );
+		svrChk(Svr::BrServer::ApplyConfiguration() );
 
 
 	Proc_End:
@@ -139,7 +139,7 @@ namespace SharedModuleServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::CloseServerResource() );
+		svrChk(Svr::BrServer::CloseServerResource() );
 
 		svrChk( TerminateEntity() );
 

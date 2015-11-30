@@ -31,6 +31,63 @@ namespace BR {
 namespace Net {
 
 
+	HRESULT GetLastWSAHRESULT()
+	{
+		int ierr = WSAGetLastError();
+		switch (ierr)
+		{
+		case 0: return S_OK;
+		case WSAEINTR: return E_NET_INTR;
+		case WSAEBADF: return E_NET_BADF;
+		case WSAEACCES: return E_NET_ACCES;
+		case WSAEFAULT: return E_NET_FAULT;
+		case WSAEINVAL: return E_NET_INVAL;
+		case WSAEMFILE: return E_NET_MFILE;
+		case WSAEWOULDBLOCK: return E_NET_WOULDBLOCK;
+		case WSAEINPROGRESS: return E_NET_INPROGRESS;
+		case WSAEALREADY: return E_NET_ALREADY;
+		case WSAENOTSOCK: return E_NET_FAULT;
+		case WSAEDESTADDRREQ: return E_NET_DESTADDRREQ;
+		case WSAENETDOWN: return E_NET_NETDOWN;
+		case WSAENETUNREACH: return E_NET_NETUNREACH;
+		case WSAENETRESET: return E_NET_NETRESET;
+		case WSAECONNABORTED: return E_NET_CONNABORTED;
+		case WSAECONNRESET: return E_NET_CONNRESET;
+		case WSAENOBUFS: return E_NET_NOBUFS;
+		case WSAEISCONN: return E_NET_ISCONN;
+		case WSAENOTCONN: return E_NET_NOTCONN;
+		case WSAESHUTDOWN: return E_NET_SHUTDOWN;
+		case WSAETOOMANYREFS: return E_NET_TOOMANYREFS;
+		case WSAETIMEDOUT: return E_NET_TIMEDOUT;
+		case WSAECONNREFUSED: return E_NET_CONNECTION_REFUSSED;
+		case WSAELOOP: return E_NET_LOOP;
+		case WSAENAMETOOLONG: return E_NET_NAMETOOLONG;
+
+
+		case WSAEHOSTDOWN: return E_NET_HOSTDOWN;
+		case WSAEHOSTUNREACH: return E_NET_HOSTUNREACH;
+		case WSAENOTEMPTY: return E_NET_NOTEMPTY;
+		case WSAEPROCLIM: return E_NET_PROCLIM;
+		case WSASYSNOTREADY: return E_NET_SYSNOTREADY;
+		case WSAVERNOTSUPPORTED: return E_NET_VERNOTSUPPORTED;
+		case WSANOTINITIALISED: return E_NET_NOTINITIALISED;
+		case WSAEDISCON: return E_NET_DISCON;
+		case WSASYSCALLFAILURE: return E_NET_SYSCALLFAILURE;
+		case WSAHOST_NOT_FOUND: return E_NET_HOST_NOT_FOUND;
+
+		case WSATRY_AGAIN: return E_NET_TRY_AGAIN;
+		case WSA_SECURE_HOST_NOT_FOUND: return E_NET_SECURE_HOST_NOT_FOUND;
+		case WSA_IO_PENDING: return E_NET_IO_PENDING;
+		case WSAEPROTOTYPE: return E_NET_PROTOTYPE;
+		case WSAENOPROTOOPT: return E_NET_NOPROTOOPT;
+		case WSAEOPNOTSUPP: return E_NET_OPNOTSUPP;
+		default:
+			defTrace(Trace::TRC_WARN, "Unknown Winsock error {0}", ierr);
+			return GetLastHRESULT();
+		}
+	}
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Overlapped I/O structures
@@ -178,11 +235,10 @@ namespace Net {
 						hr = E_NET_IO_ABORTED;
 						break;
 					default:
-						netTrace( Trace::TRC_IERROR, "IOCP Operation failed iErr=%0%, hr={1:X8}", iLastError, hr );
+						netTrace( Trace::TRC_ERROR, "IOCP Operation failed iErr=%0%, hr={1:X8}", iLastError, hr );
 						break;
 					};
 				}
-
 
 				// Operation
 				switch( pOverlapped->Operation )
@@ -200,7 +256,7 @@ namespace Net {
 					{
 						IOBUFFER_WRITE *pIOBuffer = (IOBUFFER_WRITE*)pOverlapped;
 						INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
-						hr = pCallback->OnIOSendCompleted( hr, pIOBuffer, dwTransferred );
+						hr = pCallback->OnIOSendCompleted( hr, pIOBuffer );
 					}
 					break;
 				case IOBUFFER_OPERATION::OP_TCPREAD:
@@ -210,7 +266,8 @@ namespace Net {
 					{
 						IOBUFFER_READ *pIOBuffer = (IOBUFFER_READ*)pOverlapped;
 						INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
-						hr = pCallback->OnIORecvCompleted( hr, pIOBuffer, dwTransferred );
+						pIOBuffer->TransferredSize = dwTransferred;
+						hr = pCallback->OnIORecvCompleted( hr, pIOBuffer );
 						pOverlapped = NULL;
 					}
 					else
@@ -426,9 +483,15 @@ namespace Net {
 
 
 
-		HRESULT RegisterSocket(SOCKET sock, INetIOCallBack* cbInstance)
+		///////////////////////////////////////////////////////////////////////////////
+		// Socket handling 
+
+
+		HRESULT RegisterSocket(SOCKET sock, INetIOCallBack* cbInstance, bool isListenSocket)
 		{
 			HRESULT hr = S_OK;
+
+			unused(isListenSocket);
 
 			if (!CreateIoCompletionPort((HANDLE)sock, IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)cbInstance, 0))
 			{
@@ -439,6 +502,140 @@ namespace Net {
 		Proc_End:
 
 			return hr;
+		}
+
+		SOCKET Socket(SockFamily domain, SockType type)
+		{
+			if ((int)type == SOCK_STREAM)
+			{
+				return WSASocket((int)domain, (int)type, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+			}
+			else
+			{
+				return WSASocket((int)domain, (int)type, IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+			}
+		}
+
+		void CloseSocket(SOCKET sock)
+		{
+			//shutdown(sock, SHUT_RDWR);
+			closesocket(sock);
+		}
+
+
+		HRESULT Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept)
+		{
+			HRESULT hr = S_OK;
+
+			netChkPtr(pAccept);
+
+			if (!AcceptEx(sockListen, pAccept->sockAccept,
+				pAccept->pAcceptInfo, 0,
+				sizeof(sockaddr_in6) + 16, sizeof(sockaddr_in6) + 16,
+				&pAccept->dwByteReceived, pAccept))
+			{
+				HRESULT iErr = GetLastWSAHRESULT();
+				switch (iErr)
+				{
+				case E_NET_NOTSOCK:// server closing or not initialized
+					netTrace(Trace::TRC_ERROR, "TCP Abnormal accept, Not socked {0:X8}", iErr);
+					netErr(iErr);
+					break;
+				case E_NET_IO_PENDING:
+					//netTrace(TRC_NET, "TCP accept pending {0} queued", m_pAcceptBuffer->GetUsedBufferCount());
+					break;
+				default:
+					netTrace(Trace::TRC_ERROR, "TCP Abnormal accept, err:{0:X8}", iErr);
+					netErr(iErr);
+					break;
+				};
+			}
+			else
+			{
+				netTrace(Trace::TRC_ERROR, "TCP Abnormal accept err={0:X8}", GetLastWSAHRESULT());
+				netErr(E_UNEXPECTED);
+			}
+
+
+		Proc_End:
+
+			return hr;
+		}
+
+		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_in6& remoteAddr)
+		{
+			int iLenLocalAddr = 0, iLenRemoteAddr = 0;
+			sockaddr_in6 *pLocalAddr = nullptr, *pRemoteAddr = nullptr;
+
+			if (setsockopt(pAccept->sockAccept, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (char *)&sockListen, sizeof(SOCKET)) == SOCKET_ERROR)
+			{
+				netTrace(TRC_CONNECTION, "Failed set socket option SO_UPDATE_ACCEPT_CONTEXT err:{0:X8}", GetLastWSAHRESULT());
+				return E_FAIL;
+			}
+
+
+			GetAcceptExSockaddrs( (void*)pAccept->pAcceptInfo,
+								  0,
+								  sizeof(sockaddr_in6)+16,
+								  sizeof(sockaddr_in6)+16, 
+								  (SOCKADDR**)&pLocalAddr, 
+								  &iLenLocalAddr, 
+								  (SOCKADDR**)&pRemoteAddr, 
+								  &iLenRemoteAddr );
+
+			remoteAddr = *pRemoteAddr;
+
+			return S_OK;
+		}
+
+
+		HRESULT Recv(SOCKET sock, IOBUFFER_READ* pBuffer)
+		{
+			INT iErr = 0;
+			iErr = WSARecv(sock, &pBuffer->wsaBuff, 1, &pBuffer->dwNumberOfByte, &pBuffer->dwFlags, pBuffer, NULL);
+			if (iErr == SOCKET_ERROR)
+			{
+				return GetLastWSAHRESULT();
+			}
+
+			return S_OK;
+		}
+
+		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer)
+		{
+			INT iErr = 0;
+			iErr = WSARecvFrom(sock, &pBuffer->wsaBuff, 1, NULL, &pBuffer->dwFlags, (sockaddr*)&pBuffer->From, &pBuffer->iSockLen, pBuffer, NULL);
+			if (iErr == SOCKET_ERROR)
+			{
+				return GetLastWSAHRESULT();
+			}
+
+			return S_OK;
+		}
+
+		HRESULT Send(SOCKET sock, IOBUFFER_WRITE* pBuffer)
+		{
+			INT iErr = WSASend(sock, &pBuffer->wsaBuff, 1, nullptr, 0, pBuffer, NULL);
+			if (iErr == SOCKET_ERROR)
+			{
+				return GetLastWSAHRESULT();
+			}
+
+			return S_OK;
+		}
+
+		HRESULT SendTo(SOCKET sock, const sockaddr_in6& dstAddress, IOBUFFER_WRITE* pBuffer)
+		{
+			INT iErr = WSASendTo(sock, &pBuffer->wsaBuff, 1, nullptr, 0, 
+				(sockaddr*)&dstAddress, sizeof(sockaddr_in6),
+				pBuffer, NULL);
+
+			if (iErr == SOCKET_ERROR)
+			{
+				return GetLastWSAHRESULT();
+			}
+
+			return S_OK;
 		}
 
 	}; // namespace NetSystem

@@ -82,6 +82,9 @@ namespace Svr {
 
 	private:
 
+		// Master instance entity UID
+		BRCLASS_ATTRIBUTE(EntityUID, MasterUID);
+
 		// Cluster ID
 		BRCLASS_ATTRIBUTE_READONLY(ClusterID,ClusterID);
 
@@ -97,9 +100,6 @@ namespace Svr {
 
 		// Cluster member instance for itself
 		BRCLASS_ATTRIBUTE_READONLY_PTR(ServiceTableItem*,MyServiceInfo);
-
-		// Master instance entity UID
-		BRCLASS_ATTRIBUTE(EntityUID,MasterUID);
 
 		// Service UID map
 		ServiceEntityUIDMap				m_ServiceEntityUIDMap;

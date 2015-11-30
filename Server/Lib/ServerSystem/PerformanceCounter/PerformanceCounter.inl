@@ -10,17 +10,17 @@
 
 
 
-extern template PerformanceCounterRaw < INT32 >;
-extern template PerformanceCounterRaw < UINT32 >;
-extern template PerformanceCounterRaw < INT64 >;
-extern template PerformanceCounterRaw < UINT64 >;
+extern template class PerformanceCounterRaw < INT32 >;
+extern template class PerformanceCounterRaw < UINT32 >;
+extern template class PerformanceCounterRaw < INT64 >;
+extern template class PerformanceCounterRaw < UINT64 >;
 
-extern template PerformanceCounterAveragePerSec < INT32 >;
-extern template PerformanceCounterAveragePerSec < UINT32 >;
-extern template PerformanceCounterAveragePerSec < INT64 >;
-extern template PerformanceCounterAveragePerSec < UINT64 >;
+extern template class PerformanceCounterAveragePerSec < INT32 >;
+extern template class PerformanceCounterAveragePerSec < UINT32 >;
+extern template class PerformanceCounterAveragePerSec < INT64 >;
+extern template class PerformanceCounterAveragePerSec < UINT64 >;
 
-extern template PerformanceCounterTickPerSec < INT32 >;
-extern template PerformanceCounterTickPerSec < UINT32 >;
-extern template PerformanceCounterTickPerSec < INT64 >;
-extern template PerformanceCounterTickPerSec < UINT64 >;
+extern template class PerformanceCounterTickPerSec < INT32 >;
+extern template class PerformanceCounterTickPerSec < UINT32 >;
+extern template class PerformanceCounterTickPerSec < INT64 >;
+extern template class PerformanceCounterTickPerSec < UINT64 >;
