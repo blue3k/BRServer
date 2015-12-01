@@ -60,6 +60,8 @@ namespace Net {
 		, m_lGuarantedAck(0)
 		, m_uiRecvTemUsed(0)
 		, m_uiSendNetCtrlCount(0)
+		, m_isClientSide(false)
+		, m_isActuallyConnected(true)
 	{
 		SetSocket( INVALID_SOCKET );
 		m_bufRecvTem.resize( Const::PACKET_SIZE_MAX*2 );
@@ -148,7 +150,7 @@ namespace Net {
 
 			if( pNetCtrl->Length < sizeof(MsgNetCtrlConnect) )
 			{
-				netTrace( Trace::TRC_WARN, "HackWarn : Invalid Connect packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+				netTrace( Trace::TRC_WARN, "HackWarn : Invalid Connect packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 				netChk( CloseConnection() );
 				netErr( E_UNEXPECTED );
 			}
@@ -193,7 +195,7 @@ namespace Net {
 			netChk( CloseConnection() );
 			break;
 		default:
-			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:%0%, Addr %1%", GetCID(), GetConnectionInfo().Remote );
+			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 			netChk( CloseConnection() );
 			netErr( E_UNEXPECTED );
 			break;
@@ -323,6 +325,14 @@ namespace Net {
 		if (!NetSystem::IsProactorSystem())
 			return S_OK;
 
+		// On client side, we need to check writable status by calling connect again
+		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == IConnection::ConnectionState::STATE_CONNECTING)
+		{
+			m_isActuallyConnected = Connect() == S_OK;
+			if (!m_isActuallyConnected)
+				return S_OK;
+		}
+
 		pOver = GetRecvBuffer();
 		netChk(Recv(pOver));
 
@@ -331,7 +341,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace(TRC_TCPRECVRAW, "Pending Recv CID:%0%, pending:%1%, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
+		netTrace(TRC_TCPRECVRAW, "Pending Recv CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 
 		return hr;
 	}
@@ -368,6 +378,9 @@ namespace Net {
 		m_uiSendNetCtrlCount = 0;
 		m_uiRecvTemUsed = 0;
 
+		m_isClientSide = false;
+		m_isActuallyConnected = true;
+
 		Assert(connectInfo.LocalClass != NetClass::Unknown);
 
 		// ignore incomming socket value
@@ -383,18 +396,27 @@ namespace Net {
 
 		AssertRel(GetConnectionState() == STATE_CONNECTING || GetConnectionState() == STATE_DISCONNECTED);
 
-		netChk(NetSystem::RegisterSocket(GetSocket(), this, false));
-
 		connResult = connect(GetSocket(), (sockaddr*)&GetRemoteSockAddr(), sizeof(GetRemoteSockAddr()));
 		if (connResult == SOCKET_ERROR)
 		{
 			auto lastError = GetLastWSAHRESULT();
-			if (lastError != E_NET_WOULDBLOCK)
+			switch (lastError)
 			{
-				//netTrace(Trace::TRC_WARN, "Connection try is failed, RemoteID:%0%", GetConnectionInfo().RemoteID);
+			case E_NET_WOULDBLOCK:  // First call need to wait
+			case E_NET_ALREADY:		// called again, still need to wait
+				hr = S_FALSE;
+				break;
+			case E_NET_ISCONN:		// Connection estabalished
+				hr = S_OK;
+				break;
+			default:
+				netTrace(Trace::TRC_WARN, "Connection try is failed, RemoteID:{0}, hr:{1:X8}", GetConnectionInfo().RemoteID, lastError);
 				hr = lastError;
 			}
 		}
+
+		m_isClientSide = true;
+		m_isActuallyConnected = false; // only client side need to check this condition
 
 	Proc_End:
 
@@ -632,7 +654,7 @@ namespace Net {
 
 		if( pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
 		{
-			netTrace( TRC_TCPNETCTRL, "TCP Ctrl Recv ip:%0%, msg:%1%, Len:%2%", 
+			netTrace( TRC_TCPNETCTRL, "TCP Ctrl Recv ip:{0}, msg:{1}, Len:%2%", 
 				GetConnectionInfo().Remote, 
 				pMsgHeader->msgID, pMsgHeader->Length );
 
@@ -750,7 +772,7 @@ namespace Net {
 		case IConnection::STATE_CONNECTING:
 			if ((ulTimeCur - m_ulNetCtrlTime) > DurationMS((INT)GetConnectingTimeOut())) // connection time out
 			{
-				netTrace( TRC_CONNECTION, "Connecting Timeout CID:%0%", GetCID() );
+				netTrace( TRC_CONNECTION, "Connecting Timeout CID:{0}", GetCID() );
 				netChk( CloseConnection() );
 			}
 			else if( (ulTimeCur-m_ulNetCtrlTryTime) > DurationMS(Const::CONNECTION_RETRY_TIME) ) // retry
@@ -764,7 +786,7 @@ namespace Net {
 		case IConnection::STATE_DISCONNECTING:
 			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::SVR_DISCONNECT_TIMEOUT) ) // connection time out
 			{
-				netTrace( TRC_CONNECTION, "Disconnecting Timeout CID:%0%", GetCID() );
+				netTrace( TRC_CONNECTION, "Disconnecting Timeout CID:{0}", GetCID() );
 				netChk( CloseConnection() );
 			}
 
@@ -774,7 +796,7 @@ namespace Net {
 		case IConnection::STATE_CONNECTED:
 			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::HEARTBIT_TIMEOUT) ) // connection time out
 			{
-				netTrace( TRC_CONNECTION, "Connection Timeout CID:%1%", GetCID() );
+				netTrace( TRC_CONNECTION, "Connection Timeout CID:{1}", GetCID() );
 
 				netChk( CloseConnection() );
 				m_ulNetCtrlTime = ulTimeCur;
@@ -875,7 +897,7 @@ namespace Net {
 		case IConnection::STATE_CONNECTING:
 			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(GetConnectingTimeOut()) ) // connection time out
 			{
-				netTrace( TRC_CONNECTION, "Connecting Timeout CID:%0%", GetCID() );
+				netTrace( TRC_CONNECTION, "Connecting Timeout CID:{0}", GetCID() );
 				netChk( CloseConnection() );
 			}
 
@@ -884,7 +906,7 @@ namespace Net {
 		case IConnection::STATE_DISCONNECTING:
 			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::DISCONNECT_TIMEOUT) ) // connection time out
 			{
-				netTrace( TRC_CONNECTION, "Disconnecting Timeout CID:%0%", GetCID() );
+				netTrace( TRC_CONNECTION, "Disconnecting Timeout CID:{0}", GetCID() );
 				netChk( CloseConnection() );
 			}
 
@@ -894,7 +916,7 @@ namespace Net {
 		case IConnection::STATE_CONNECTED:
 			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::HEARTBIT_TIMEOUT) ) // connection time out
 			{
-				netTrace( TRC_CONNECTION, "Connection Timeout CID:%0%", GetCID() );
+				netTrace( TRC_CONNECTION, "Connection Timeout CID:{0}", GetCID() );
 
 				netChk( CloseConnection() );
 				m_ulNetCtrlTime = ulTimeCur;

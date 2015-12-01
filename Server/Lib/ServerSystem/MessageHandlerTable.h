@@ -43,7 +43,9 @@ namespace Svr {
 	{
 	private:
 		// MessageID for key
-		UINT				MessageCode;
+		UINT				m_MessageCode;
+		const char*			m_FileName;
+		UINT				m_FileLine;
 
 	public:
 		// Hash table mapping Item
@@ -51,15 +53,20 @@ namespace Svr {
 		TableItemType TableNode;
 
 		// MessageID for key
-		UINT GetMessageCode() const { return MessageCode; }
+		UINT GetMessageCode() const { return m_MessageCode; }
+
+		const char* GetFileName() const { return m_FileName; }
+		UINT GetFileLine() const { return m_FileLine; }
 
 		// Message Handler
 		MessageHandlerType	Handler;
 
 		// Constructor with constructor
-		MessageHandler_TableItem(Message::MessageID MsgID, MessageHandlerType Handler)
-			:MessageCode(MsgID.IDSeq.MsgID),
-			Handler(Handler)
+		MessageHandler_TableItem(Message::MessageID MsgID, MessageHandlerType Handler, const char* fileName, UINT lineNumber)
+			: m_MessageCode(MsgID.IDSeq.MsgID)
+			, m_FileName(fileName)
+			, m_FileLine(lineNumber)
+			, Handler(Handler)
 		{
 			memset(&TableNode, 0, sizeof(TableNode));
 		}
@@ -106,14 +113,18 @@ namespace Svr {
 
 		// Register a new message handler
 		template< class MessageClassType >
-		HRESULT Register( MessageHandlerType newHandler )
+		HRESULT Register(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
 		{
+			auto key = MessageClassType::MID.IDSeq.MsgID;
 			// prevent duplicated insert
 			typename HandlerTableType::iterator itHandler;
-			HRESULT hr = m_HandlerTable.find( MessageClassType::MID, itHandler );
+			HRESULT hr = m_HandlerTable.find(key, itHandler );
 			if( SUCCEEDED(hr) )
 			{
-				Assert(false);
+				// Same category can be called multiple times. let's just ignore silently
+				//auto pConflictedHandler = *itHandler;
+				//svrTrace(Trace::TRC_ERROR, "Duplicated handler msgID:{0}, org:{1}:{2}", MessageClassType::MID, pConflictedHandler->GetFileName(), pConflictedHandler->GetFileLine())
+				//Assert(false);
 				return hr;
 			}
 
@@ -121,11 +132,11 @@ namespace Svr {
 			if( FAILED(m_Allocator.Alloc( sizeof(TableItem), pPtr )) )
 				return E_OUTOFMEMORY;
 
-			TableItem *pNewItem = new(pPtr) TableItem( MessageClassType::MID, newHandler );
+			TableItem *pNewItem = new(pPtr) TableItem( MessageClassType::MID, newHandler, fileName, lineNumber);
 			if( pNewItem == nullptr )
 				return E_OUTOFMEMORY;
 
-			return m_HandlerTable.insert(MessageClassType::MID, pNewItem );
+			return m_HandlerTable.insert(key, pNewItem );
 		}
 
 		// Get message handler
@@ -192,10 +203,10 @@ namespace Svr {
 	};
 
 
-	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( [&]( Net::IConnection* pConn, Message::MessageData* &pMsgData, ::BR::Svr::Transaction* &pNewTrans)->HRESULT 
+	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::IConnection* pConn, Message::MessageData* &pMsgData, ::BR::Svr::Transaction* &pNewTrans)->HRESULT 
 
 	#define BR_TRANS_MESSAGE(MessageType,MessageHandlerImpl) \
-		RegisterMessageHandler<MessageType>( [&](::BR::Svr::TransactionResult* pRes)->HRESULT MessageHandlerImpl );
+		RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&](::BR::Svr::TransactionResult* pRes)->HRESULT MessageHandlerImpl );
 
 
 	typedef std::function<HRESULT(Net::IConnection *, Message::MessageData* &, Transaction* &)>	EntityMessageHandlerItem;

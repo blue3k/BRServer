@@ -15,14 +15,29 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibAutoGenerate", "Server\Lib\LibAutoGenerate\LibAutoGenerate.vcxproj", "{C79A22EB-2C00-45B9-B4A8-65B1DA546683}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DB.Linux", "Server\Lib\DB\DB.Linux.vcxproj", "{999E950B-FA92-463F-823E-B15ACF2A4905}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C79A22EB-2C00-45B9-B4A8-65B1DA546683} = {C79A22EB-2C00-45B9-B4A8-65B1DA546683}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Net.Linux", "Server\Lib\Net\Net.Linux.vcxproj", "{CC3A450C-41B7-472B-9774-FB0E4B56DF8B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C79A22EB-2C00-45B9-B4A8-65B1DA546683} = {C79A22EB-2C00-45B9-B4A8-65B1DA546683}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Protocol.Linux", "Server\Lib\Protocol\Protocol.Linux.vcxproj", "{7516B2BE-3786-46EB-B860-47FBF2506EAB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C79A22EB-2C00-45B9-B4A8-65B1DA546683} = {C79A22EB-2C00-45B9-B4A8-65B1DA546683}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerSystem.Linux", "Server\Lib\ServerSystem\ServerSystem.Linux.vcxproj", "{D3F725AA-844C-4909-9FCE-B19E71DA19F4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C79A22EB-2C00-45B9-B4A8-65B1DA546683} = {C79A22EB-2C00-45B9-B4A8-65B1DA546683}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Table.Linux", "Server\Lib\Table\Table.Linux.vcxproj", "{78B82778-5CB2-4034-A81D-8E6B6424B479}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C79A22EB-2C00-45B9-B4A8-65B1DA546683} = {C79A22EB-2C00-45B9-B4A8-65B1DA546683}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -24,7 +24,7 @@
 namespace BR {
 namespace Svr {
 
-#define	BR_MESSAGE_HANDLER(MessageType,MessageHandlerName) m_HandlerTable.Register<Message::Monitoring::MessageType>(&PerformanceCounterServer::HandleMessage##MessageHandlerName);
+#define	BR_MESSAGE_HANDLER(MessageType,MessageHandlerName) m_HandlerTable.Register<Message::Monitoring::MessageType>(__FILE__,__LINE__,&PerformanceCounterServer::HandleMessage##MessageHandlerName);
 
 	PerformanceCounterServer *PerformanceCounterServer::stm_pInstance = nullptr;
 

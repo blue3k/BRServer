@@ -75,7 +75,7 @@ namespace Net {
 
 		pAcceptInfo = nullptr;
 
-		netTrace(TRC_CONNECTION, "Pending Accept : {0}", GetConnectionManager().GetNumActiveConnection());
+		netTrace(TRC_CONNECTION, "Accept : {0}", GetConnectionManager().GetNumActiveConnection());
 
 		if (FAILED(m_pAcceptBuffer->TryAllocBuffer(Const::TCP_ACCEPT_TRYALLOC_MAX, pAcceptInfo)))
 		{

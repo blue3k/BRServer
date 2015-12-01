@@ -132,10 +132,6 @@ namespace Svr{
 		virtual HRESULT TerminateEntity();
 
 
-
-		//virtual ULONG GetNextTickTimeout() override;
-
-
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	Message handling
@@ -149,10 +145,10 @@ namespace Svr{
 
 		// Register message handler helper
 		template< class MessageClassType >
-		HRESULT RegisterMessageHandler( MessageHandlerType newHandler )
+		HRESULT RegisterMessageHandler(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
 		{
 			AssertRel(m_pHandlerTable);
-			return m_pHandlerTable->Register<MessageClassType>( newHandler );
+			return m_pHandlerTable->Register<MessageClassType>(fileName, lineNumber, newHandler );
 		}
 
 		Svr::MessageHandlerTable<MessageHandlerType>* GetMessageHandlerTable() { return m_pHandlerTable; }

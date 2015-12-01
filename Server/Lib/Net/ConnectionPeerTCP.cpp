@@ -83,10 +83,17 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
-
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
-		if( GetPendingRecvCount() == 0 
+		// On client side, we need to check readable/writable status by calling connect again
+		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == IConnection::ConnectionState::STATE_CONNECTING)
+		{
+			m_isActuallyConnected = Connect() == S_OK;
+		}
+
+
+		if(m_isActuallyConnected
+			&& GetPendingRecvCount() == 0
 			&& GetConnectionState() != IConnection::STATE_DISCONNECTED)
 		{
 			PendingRecv();
@@ -108,7 +115,10 @@ namespace Net {
 				m_ulNetCtrlTryTime = ulTimeCur;
 				Assert(GetConnectionInfo().LocalClass != NetClass::Unknown);
 				m_uiSendNetCtrlCount++;
-				netChk( SendNetCtrl( PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID( BR_PROTOCOL_VERSION ), GetConnectionInfo().LocalID ) );
+				if (m_isActuallyConnected)
+				{
+					netChk(SendNetCtrl(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOL_VERSION), GetConnectionInfo().LocalID));
+				}
 			}
 
 			goto Proc_End;
@@ -135,7 +145,10 @@ namespace Net {
 			else if( (ulTimeCur-m_ulNetCtrlTryTime) > DurationMS(GetHeartbitTry()) ) // heartbit time
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
-				netChk(SendNetCtrl(PACKET_NETCTRL_HEARTBIT, 0, msgIDTem));
+				if (m_isActuallyConnected)
+				{
+					netChk(SendNetCtrl(PACKET_NETCTRL_HEARTBIT, 0, msgIDTem));
+				}
 			}
 			break;
 		default:

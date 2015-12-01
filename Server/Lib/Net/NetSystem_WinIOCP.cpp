@@ -495,7 +495,8 @@ namespace Net {
 
 			if (!CreateIoCompletionPort((HANDLE)sock, IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)cbInstance, 0))
 			{
-				netTrace(Trace::TRC_ERROR, "Registering socket to IOCP is Failed, hr = {0:X8}", GetLastHRESULT());
+				hr = GetLastHRESULT();
+				netTrace(Trace::TRC_ERROR, "Registering socket to IOCP is Failed, hr = {0:X8}", hr);
 				netErr(E_UNEXPECTED);
 			}
 

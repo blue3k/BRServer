@@ -76,8 +76,10 @@ namespace Net {
 	{
 		if (sin6_family > src.sin6_family) return true;
 #if WINDOWS
-		for (int iAddr = 0; iAddr < countof(sin6_addr.u.Word); iAddr++)
-			if (sin6_addr.u.Word[iAddr] > src.sin6_addr.u.Word[iAddr]) return true;
+		auto& rawAddress = sin6_addr.s6_addr;
+		auto& rawAddressSrc = src.sin6_addr.s6_addr;
+		for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
+			if (rawAddress[iAddr] > rawAddressSrc[iAddr]) return true;
 #elif LINUX
 		auto& rawAddress = sin6_addr.s6_addr32;
 		auto& rawAddressSrc = src.sin6_addr.s6_addr32;
@@ -94,8 +96,10 @@ namespace Net {
 		if (sin6_family != src.sin6_family) return false;
 
 #if WINDOWS
-		for (int iAddr = 0; iAddr < countof(sin6_addr.u.Word); iAddr++)
-			if (sin6_addr.u.Word[iAddr] != src.sin6_addr.u.Word[iAddr]) return false;
+		auto& rawAddress = sin6_addr.s6_addr;
+		auto& rawAddressSrc = src.sin6_addr.s6_addr;
+		for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
+			if (rawAddress[iAddr] != rawAddressSrc[iAddr]) return false;
 #else
 		auto& rawAddress = sin6_addr.s6_addr32;
 		auto& rawAddressSrc = src.sin6_addr.s6_addr32;
@@ -224,7 +228,7 @@ namespace Net {
 				}
 
 				svrChk( m_ManagedConnections.Insert(pConn->GetCID(), pConn) );
-				netTrace(Trace::TRC_WARN, "Connection management started CID:%0%", pConn->GetCID());
+				netTrace(TRC_CONNECTION, "Connection management started CID:%0%", pConn->GetCID());
 
 				if (FAILED(AddMap((Connection*)pConn)))
 				{

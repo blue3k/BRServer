@@ -190,7 +190,7 @@ namespace Svr {
 				hr = GetLoopbackServerEntity()->GetMessageHandlerTable()->GetHandler(pMsg->GetMessageHeader()->msgID,handler);
 				if(FAILED(hr))
 				{
-					svrTrace( Trace::TRC_ERROR, "No message handler %0%:%1%, MsgID:%2%", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID );
+					svrTrace( Trace::TRC_ERROR, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID );
 					svrErr(E_SVR_NO_MESSAGE_HANDLER);
 				}
 
@@ -199,7 +199,7 @@ namespace Svr {
 			break;
 		}
 		default:
-			svrTrace( Trace::TRC_ERROR, "Not Processed Remote message Entity:%0%:%1%, MsgID:%2%", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID );
+			svrTrace( Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID );
 			svrErr( E_SVR_NOTEXPECTED_MESSAGE );
 			break;
 		};
@@ -242,7 +242,7 @@ namespace Svr {
 		{
 			if (FAILED(hr))
 			{
-				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed %0% Entity:%1%, MsgID:%2%", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
+				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
 					pCon->GetPolicy<Policy::ISvrPolicyServer>()->GenericFailureRes(pNewTrans->GetParentTransID(), hr, pNewTrans->GetMessageRouteContext().GetSwaped());
@@ -252,7 +252,7 @@ namespace Svr {
 			if (!pNewTrans->IsClosed() && pNewTrans->GetOwnerEntity() != nullptr)
 			{
 				//Assert(false);
-				svrTrace(Trace::TRC_ERROR, "Transaction isn't closed Transaction:%0%, MsgID:%1%", typeid(*pNewTrans).name(), pMsgHdr->msgID);
+				svrTrace(Trace::TRC_ERROR, "Transaction isn't closed Transaction:{0}, MsgID:{1}", typeid(*pNewTrans).name(), pMsgHdr->msgID);
 				pNewTrans->CloseTransaction(hr);
 			}
 
@@ -294,7 +294,7 @@ namespace Svr {
 					memset( &publicAddr, 0, sizeof(NetAddress) );
 				}
 
-				svrTrace( Svr::TRC_DBGSVR, "Sending Server Connected to Entity Server from:%0%", BrServer::GetInstance()->GetMyConfig()->Name.c_str() );
+				svrTrace( Svr::TRC_DBGSVR, "Sending Server Connected to Entity Server from:{0}", BrServer::GetInstance()->GetMyConfig()->Name.c_str() );
 
 				Policy::IPolicyServer *pPolicy = GetConnection()->GetPolicy<Policy::IPolicyServer>();
 				svrChkPtr(pPolicy);

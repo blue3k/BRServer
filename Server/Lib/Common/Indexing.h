@@ -26,82 +26,6 @@ namespace BR
 		//	Indexing Functor
 		//
 
-		//// Indexing Constant member function Functor
-		//template<typename ClassType,typename FuncRtnType,typename FuncRtnType (ClassType::*pfMemFunc)()const,typename IndexType = FuncRtnType>
-		//class ConstMemFunc
-		//{
-		//public:
-		//	typedef ClassType ClassType;
-		//	typedef IndexType Type;
-
-		//	IndexType operator ()(const ClassType& clsObj) const
-		//	{
-		//		return (Type)(clsObj.*pfMemFunc)();
-		//	}
-
-		//	IndexType operator ()(const ClassType* clsObj) const
-		//	{
-		//		return (Type)(clsObj->*(pfMemFunc))();
-		//	}
-		//};
-		
-		//// Indexing Constant member function Functor
-		//template<typename ClassType,typename FuncRtnType,typename const FuncRtnType& (ClassType::*pfMemFunc)()const,typename IndexType = FuncRtnType>
-		//class ConstMemRefFunc
-		//{
-		//public:
-		//	typedef ClassType ClassType;
-		//	typedef IndexType Type;
-
-		//	IndexType operator ()(const ClassType& clsObj) const
-		//	{
-		//		return (Type)(clsObj.*pfMemFunc)();
-		//	}
-
-		//	IndexType operator ()(const ClassType* clsObj) const
-		//	{
-		//		return (Type)(clsObj->*(pfMemFunc))();
-		//	}
-		//};
-
-		//// Indexing member function
-		//template<typename ClassType,typename FuncRtnType,typename FuncRtnType (ClassType::*pfMemFunc)(),typename IndexType = FuncRtnType>
-		//class MemFunc
-		//{
-		//public:
-		//	typedef ClassType ClassType;
-		//	typedef IndexType Type;
-
-		//	IndexType operator ()(ClassType& clsObj) const
-		//	{
-		//		return (Type)(clsObj.*pfMemFunc)();
-		//	}
-
-		//	IndexType operator ()(ClassType* clsObj) const
-		//	{
-		//		return (Type)(clsObj->*(pfMemFunc))();
-		//	}
-		//};
-
-		//// Indexing member data
-		//template<typename ClassType,typename MemDataType,MemDataType ClassType::*pfMemData,typename IndexType = MemDataType>
-		//class MemData
-		//{
-		//public:
-		//	typedef ClassType ClassType;
-		//	typedef IndexType Type;
-
-		//	IndexType operator ()(const ClassType& clsObj) const
-		//	{
-		//		return (Type)(clsObj.*pfMemData);
-		//	}
-
-		//	IndexType operator ()(const ClassType* clsObj) const
-		//	{
-		//		return (Type)(clsObj->*(pfMemData));
-		//	}
-		//};
-		
 		// Indexing member data
 		template<typename ClassType,typename MemDataType,MemDataType ClassType::*pfMemData>
 		class MapItemConverter
@@ -145,30 +69,6 @@ namespace BR
 			}
 		};
 
-		//// Indexing Composit 2 index with hashing
-		//template<typename ClassType,typename Index1, typename Index2>
-		//class CompositHash
-		//{
-		//public:
-		//	typedef size_t Type;
-
-		//	typedef std::tr1::hash<typename Index1::Type> Hasher1;
-		//	typedef std::tr1::hash<typename Index2::Type> Hasher2;
-
-		//	size_t operator ()(const ClassType& clsObj) const
-		//	{
-		//		size_t carry = Hasher1()(Index1()(clsObj)) + 0x9e3779b9;
-		//		carry^=Hasher2()(Index2()(clsObj))+0x9e3779b9+(carry<<6)+(carry>>2);
-		//		return carry;
-		//	}
-
-		//	size_t operator ()(const ClassType* clsObj) const
-		//	{
-		//		size_t carry = Hasher1()(Index1()(clsObj)) + 0x9e3779b9;
-		//		carry^=Hasher2()(Index2()(clsObj))+0x9e3779b9+(carry<<6)+(carry>>2);
-		//		return carry;
-		//	}
-		//};
 
 		// Combine two 32bit value to 64bit value
 		template<typename ClassType,typename Index1, typename Index2>
@@ -237,29 +137,13 @@ namespace BR
 			size_t operator()(const KeyType& _Keyval) const
 			{
 				size_t carry = StdHash()(_Keyval.sin6_port) + MAGIC;
-#if WINDOWS
-#ifdef DEBUG
+
+				auto& rawAddress = _Keyval.sin6_addr.s6_addr;
 				auto check = carry;
-				for (int iAddr = 0; iAddr < countof(_Keyval.sin6_addr.u.Word); iAddr++)
+				for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
 				{
-					check ^= StdHash()((ULONG)(_Keyval.sin6_addr.u.Word[iAddr])) + MAGIC;
+					check ^= StdHash()((ULONG)(rawAddress[iAddr])) + MAGIC;
 				}
-#endif
-				ULONG* pAddr = (ULONG*)&_Keyval.sin6_addr;
-				for (UINT iAddr = 0; iAddr < sizeof(_Keyval.sin6_addr) / sizeof(ULONG); iAddr++)
-				{
-					carry ^= StdHash()(pAddr[iAddr]) + MAGIC;
-				}
-#ifdef DEBUG
-				Assert(check == carry);
-#endif
-#else
-				ULONG* pAddr = (ULONG*)&_Keyval.sin6_addr;
-				for (UINT iAddr = 0; iAddr < sizeof(_Keyval.sin6_addr) / sizeof(ULONG); iAddr++)
-				{
-					carry ^= StdHash()(pAddr[iAddr]) + MAGIC;
-				}
-#endif
 
 				return carry;
 			}

@@ -442,9 +442,9 @@ namespace Svr {
 
 		// Register message handler
 		template< class MessageClassType >
-		FORCEINLINE HRESULT RegisterMessageHandler( MessageHandlerType newHandler )
+		FORCEINLINE HRESULT RegisterMessageHandler(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
 		{
-			return m_Handlers.Register<MessageClassType>( newHandler );
+			return m_Handlers.Register<MessageClassType>(fileName, lineNumber, newHandler);
 		}
 
 		// Caller handler 

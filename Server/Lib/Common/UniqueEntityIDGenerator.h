@@ -36,6 +36,11 @@ namespace BR {
 		struct Item : public StackPool::Item, public MemoryPoolObject<Item>
 		{
 			UINT UID;
+
+			Item()
+			{
+				memset(this, 0, sizeof(Item));
+			}
 		};
 
 	public:

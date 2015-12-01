@@ -385,7 +385,9 @@ namespace BR
 				if (pMemItem->pNext != nullptr)
 					((MemItem*)pMemItem->pNext)->pPrev = pMemItem->pPrev;
 				pMemItem->pPrev->pNext = pMemItem->pNext;
+
 				pMemItem->pPrev = nullptr;
+				pMemItem->pNext = nullptr;
 
 #ifdef ENABLE_MEMORY_TRACE
 				new(&pMemItem->StackTrace) CallStackTrace;

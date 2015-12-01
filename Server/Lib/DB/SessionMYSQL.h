@@ -47,7 +47,10 @@ namespace DB {
 		class PoolItem : public StackPool::Item
 		{
 		public:
-			PoolItem(){}
+			PoolItem()
+			{
+				memset(this, 0, sizeof(PoolItem));
+			}
 			virtual ~PoolItem(){}
 		};
 

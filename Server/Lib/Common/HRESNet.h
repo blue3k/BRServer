@@ -428,7 +428,7 @@
 //
 // A blocking operation was interrupted by a call to WSACancelBlockingCall.
 //
-#define E_NET_INTR                       0xC7020001L
+#define E_NET_INTR                       0xC7030027L
 
 //
 // MessageId: E_NET_BADF
@@ -437,7 +437,7 @@
 //
 // The file handle supplied is not valid.
 //
-#define E_NET_BADF                       0xC7020002L
+#define E_NET_BADF                       0xC7030028L
 
 //
 // MessageId: E_NET_ACCES
@@ -446,7 +446,7 @@
 //
 // An attempt was made to access a socket in a way forbidden by its access permissions
 //
-#define E_NET_ACCES                      0xC7020003L
+#define E_NET_ACCES                      0xC7030029L
 
 //
 // MessageId: E_NET_FAULT
@@ -455,7 +455,7 @@
 //
 // The system detected an invalid pointer address in attempting to use a pointer argument in a call.
 //
-#define E_NET_FAULT                      0xC7020004L
+#define E_NET_FAULT                      0xC703002AL
 
 //
 // MessageId: E_NET_INVAL
@@ -464,7 +464,7 @@
 //
 // An invalid argument was supplied.
 //
-#define E_NET_INVAL                      0xC7020005L
+#define E_NET_INVAL                      0xC703002BL
 
 //
 // MessageId: E_NET_MFILE
@@ -473,7 +473,7 @@
 //
 // Too many open sockets.
 //
-#define E_NET_MFILE                      0xC7020006L
+#define E_NET_MFILE                      0xC703002CL
 
 //
 // MessageId: E_NET_WOULDBLOCK
@@ -482,7 +482,7 @@
 //
 // A non-blocking socket operation could not be completed immediately.
 //
-#define E_NET_WOULDBLOCK                 0xC7020007L
+#define E_NET_WOULDBLOCK                 0xC703002DL
 
 //
 // MessageId: E_NET_INPROGRESS
@@ -491,7 +491,7 @@
 //
 // A blocking operation is currently executing.
 //
-#define E_NET_INPROGRESS                 0xC7020008L
+#define E_NET_INPROGRESS                 0xC703002EL
 
 //
 // MessageId: E_NET_ALREADY
@@ -500,7 +500,7 @@
 //
 // An operation was attempted on a non-blocking socket that already had an operation in progress.
 //
-#define E_NET_ALREADY                    0xC7020009L
+#define E_NET_ALREADY                    0xC703002FL
 
 //
 // MessageId: E_NET_NOTSOCK
@@ -509,7 +509,7 @@
 //
 // An operation was attempted on something that is not a socket.
 //
-#define E_NET_NOTSOCK                    0xC702000AL
+#define E_NET_NOTSOCK                    0xC7030030L
 
 //
 // MessageId: E_NET_DESTADDRREQ
@@ -518,7 +518,7 @@
 //
 // A required address was omitted from an operation on a socket.
 //
-#define E_NET_DESTADDRREQ                0xC702000BL
+#define E_NET_DESTADDRREQ                0xC7030031L
 
 //
 // MessageId: E_NET_NETDOWN
@@ -527,7 +527,7 @@
 //
 // A socket operation encountered a dead network.
 //
-#define E_NET_NETDOWN                    0xC702000CL
+#define E_NET_NETDOWN                    0xC7030032L
 
 //
 // MessageId: E_NET_NETUNREACH
@@ -536,7 +536,7 @@
 //
 // A socket operation was attempted to an unreachable network.
 //
-#define E_NET_NETUNREACH                 0xC702000DL
+#define E_NET_NETUNREACH                 0xC7030033L
 
 //
 // MessageId: E_NET_NETRESET
@@ -545,7 +545,7 @@
 //
 // The connection has been broken due to keep-alive activity detecting a failure while the operation was in progress.
 //
-#define E_NET_NETRESET                   0xC702000EL
+#define E_NET_NETRESET                   0xC7030034L
 
 //
 // MessageId: E_NET_CONNABORTED
@@ -554,7 +554,7 @@
 //
 // An established connection was aborted by the software in your host machine.
 //
-#define E_NET_CONNABORTED                0xC702000FL
+#define E_NET_CONNABORTED                0xC7030035L
 
 //
 // MessageId: E_NET_CONNRESET
@@ -563,7 +563,7 @@
 //
 // An existing connection was forcibly closed by the remote host.
 //
-#define E_NET_CONNRESET                  0xC7020010L
+#define E_NET_CONNRESET                  0xC7030036L
 
 //
 // MessageId: E_NET_NOBUFS
@@ -572,7 +572,7 @@
 //
 // An operation on a socket could not be performed because the system lacked sufficient buffer space or because a queue was full.
 //
-#define E_NET_NOBUFS                     0xC7020011L
+#define E_NET_NOBUFS                     0xC7030037L
 
 //
 // MessageId: E_NET_ISCONN
@@ -581,7 +581,7 @@
 //
 // A connect request was made on an already connected socket.
 //
-#define E_NET_ISCONN                     0xC7020012L
+#define E_NET_ISCONN                     0xC7030038L
 
 //
 // MessageId: E_NET_NOTCONN
@@ -590,7 +590,7 @@
 //
 // A request to send or receive data was disallowed because the socket is not connected and (when sending on a datagram socket using a sendto call) no address was supplied.
 //
-#define E_NET_NOTCONN                    0xC7020013L
+#define E_NET_NOTCONN                    0xC7030039L
 
 //
 // MessageId: E_NET_SHUTDOWN
@@ -599,7 +599,7 @@
 //
 // A request to send or receive data was disallowed because the socket had already been shut down in that direction with a previous shutdown call.
 //
-#define E_NET_SHUTDOWN                   0xC7020014L
+#define E_NET_SHUTDOWN                   0xC703003AL
 
 //
 // MessageId: E_NET_TOOMANYREFS
@@ -608,7 +608,7 @@
 //
 // Too many references to some kernel object.
 //
-#define E_NET_TOOMANYREFS                0xC7020015L
+#define E_NET_TOOMANYREFS                0xC703003BL
 
 //
 // MessageId: E_NET_TIMEDOUT
@@ -617,7 +617,7 @@
 //
 // A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
 //
-#define E_NET_TIMEDOUT                   0xC7020016L
+#define E_NET_TIMEDOUT                   0xC703003CL
 
 //
 // MessageId: E_NET_CONNECTION_REFUSSED
@@ -626,7 +626,7 @@
 //
 // No connection could be made because the target machine actively refused it.
 //
-#define E_NET_CONNECTION_REFUSSED        0xC7020017L
+#define E_NET_CONNECTION_REFUSSED        0xC703003DL
 
 //
 // MessageId: E_NET_LOOP
@@ -635,7 +635,7 @@
 //
 // Cannot translate name.
 //
-#define E_NET_LOOP                       0xC7020018L
+#define E_NET_LOOP                       0xC703003EL
 
 //
 // MessageId: E_NET_NAMETOOLONG
@@ -644,7 +644,7 @@
 //
 // Name component or name was too long.
 //
-#define E_NET_NAMETOOLONG                0xC7020019L
+#define E_NET_NAMETOOLONG                0xC703003FL
 
 //
 // MessageId: E_NET_HOSTDOWN
@@ -653,7 +653,7 @@
 //
 // A socket operation failed because the destination host was down.
 //
-#define E_NET_HOSTDOWN                   0xC702001AL
+#define E_NET_HOSTDOWN                   0xC7030040L
 
 //
 // MessageId: E_NET_HOSTUNREACH
@@ -662,7 +662,7 @@
 //
 // A socket operation was attempted to an unreachable host.
 //
-#define E_NET_HOSTUNREACH                0xC702001BL
+#define E_NET_HOSTUNREACH                0xC7030041L
 
 //
 // MessageId: E_NET_NOTEMPTY
@@ -671,7 +671,7 @@
 //
 // Cannot remove a directory that is not empty.
 //
-#define E_NET_NOTEMPTY                   0xC702001CL
+#define E_NET_NOTEMPTY                   0xC7030042L
 
 //
 // MessageId: E_NET_PROCLIM
@@ -680,7 +680,7 @@
 //
 // A Windows Sockets implementation may have a limit on the number of applications that may use it simultaneously.
 //
-#define E_NET_PROCLIM                    0xC702001DL
+#define E_NET_PROCLIM                    0xC7030043L
 
 //
 // MessageId: E_NET_SYSNOTREADY
@@ -689,7 +689,7 @@
 //
 // WSAStartup cannot function at this time because the underlying system it uses to provide network services is currently unavailable.
 //
-#define E_NET_SYSNOTREADY                0xC702001EL
+#define E_NET_SYSNOTREADY                0xC7030044L
 
 //
 // MessageId: E_NET_VERNOTSUPPORTED
@@ -698,7 +698,7 @@
 //
 // The Windows Sockets version requested is not supported.
 //
-#define E_NET_VERNOTSUPPORTED            0xC702001FL
+#define E_NET_VERNOTSUPPORTED            0xC7030045L
 
 //
 // MessageId: E_NET_NOTINITIALISED
@@ -707,7 +707,7 @@
 //
 // Either the application has not called WSAStartup, or WSAStartup failed.
 //
-#define E_NET_NOTINITIALISED             0xC7020020L
+#define E_NET_NOTINITIALISED             0xC7030046L
 
 //
 // MessageId: E_NET_DISCON
@@ -716,7 +716,7 @@
 //
 // Returned by WSARecv or WSARecvFrom to indicate the remote party has initiated a graceful shutdown sequence.
 //
-#define E_NET_DISCON                     0xC7020021L
+#define E_NET_DISCON                     0xC7030047L
 
 //
 // MessageId: E_NET_SYSCALLFAILURE
@@ -725,7 +725,7 @@
 //
 // A system call has failed.
 //
-#define E_NET_SYSCALLFAILURE             0xC7020022L
+#define E_NET_SYSCALLFAILURE             0xC7030048L
 
 //
 // MessageId: E_NET_HOST_NOT_FOUND
@@ -734,7 +734,7 @@
 //
 // A system call has failed.
 //
-#define E_NET_HOST_NOT_FOUND             0xC7020023L
+#define E_NET_HOST_NOT_FOUND             0xC7030049L
 
 //
 // MessageId: E_NET_TRY_AGAIN
@@ -743,7 +743,7 @@
 //
 // Try again
 //
-#define E_NET_TRY_AGAIN                  0xC7020024L
+#define E_NET_TRY_AGAIN                  0xC703004AL
 
 //
 // MessageId: E_NET_IO_PENDING
@@ -752,7 +752,7 @@
 //
 // IOPending
 //
-#define E_NET_IO_PENDING                 0xC7020025L
+#define E_NET_IO_PENDING                 0xC703004BL
 
 //
 // MessageId: E_NET_SECURE_HOST_NOT_FOUND
@@ -761,7 +761,7 @@
 //
 // No such host is known securely.
 //
-#define E_NET_SECURE_HOST_NOT_FOUND      0xC7020026L
+#define E_NET_SECURE_HOST_NOT_FOUND      0xC703004CL
 
 //
 // MessageId: E_NET_PROTO
@@ -770,7 +770,7 @@
 //
 // Protocol error
 //
-#define E_NET_PROTO                      0xC7020027L
+#define E_NET_PROTO                      0xC703004DL
 
 //
 // MessageId: E_NET_PROTOTYPE
@@ -779,7 +779,7 @@
 //
 // Protocol wrong type for socket
 //
-#define E_NET_PROTOTYPE                  0xC7020028L
+#define E_NET_PROTOTYPE                  0xC703004EL
 
 //
 // MessageId: E_NET_NOPROTOOPT
@@ -788,7 +788,7 @@
 //
 // Protocol not available
 //
-#define E_NET_NOPROTOOPT                 0xC7020029L
+#define E_NET_NOPROTOOPT                 0xC703004FL
 
 //
 // MessageId: E_NET_NONET
@@ -797,7 +797,7 @@
 //
 // Machine is not on the network
 //
-#define E_NET_NONET                      0xC702002AL
+#define E_NET_NONET                      0xC7030050L
 
 //
 // MessageId: E_NET_OPNOTSUPP
@@ -806,5 +806,5 @@
 //
 // Operation not supported on socket
 //
-#define E_NET_OPNOTSUPP                  0xC702002BL
+#define E_NET_OPNOTSUPP                  0xC7030051L
 

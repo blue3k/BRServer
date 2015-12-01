@@ -80,6 +80,11 @@ namespace BR
 		struct PageItem : public StackPool::Item
 		{
 			intptr_t Magic;
+
+			PageItem()
+			{
+				memset(this, 0, sizeof(PageItem));
+			}
 		};
 
 		enum {
@@ -147,6 +152,11 @@ namespace BR
 			void* DataPtr()
 			{
 				return ((BYTE*)this+MEMITEM_SIZE);
+			}
+
+			MemItem()
+			{
+				memset(this, 0, sizeof(MemItem));
 			}
 		};
 

@@ -37,7 +37,6 @@ namespace Net {
 		addr.strAddr[0] = '\0';
 		inet_ntop(sockAddr.sin6_family, (void*)&sockAddr.sin6_addr, addr.strAddr, sizeof addr.strAddr);
 
-		//StrUtil::StringCpy(addr.strAddr, ipstr);
 		addr.usPort = ntohs(sockAddr.sin6_port);
 	}
 

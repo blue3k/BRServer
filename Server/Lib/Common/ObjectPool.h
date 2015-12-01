@@ -176,6 +176,11 @@ namespace BR
 			intptr_t MemMagic;
 			SyncCounter Using;
 			ObjectPoolObject *pObject;
+
+			MemItem()
+			{
+				memset(this, 0, sizeof(MemItem));
+			}
 		};
 
 		enum {

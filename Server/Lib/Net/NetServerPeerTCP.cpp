@@ -216,6 +216,8 @@ namespace Net {
 		netChk(pConn->InitConnection(socket, connectionInfo));
 		socket = INVALID_SOCKET;
 
+		netChk(NetSystem::RegisterSocket(pConn->GetSocket(), this, false));
+
 		if(SUCCEEDED(pConn->Connect()))
 			pConn->WaitConnect();
 

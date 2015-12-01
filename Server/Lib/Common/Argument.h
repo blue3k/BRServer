@@ -101,7 +101,7 @@ namespace BR {
 
 		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
 		{
-			ToString(pBuff, iBuffLen, m_Data, 0);
+			ToString(pBuff, iBuffLen, m_Data, option);
 		}
 	};
 

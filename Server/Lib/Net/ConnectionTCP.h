@@ -51,6 +51,9 @@ namespace Net {
 		// Special net control packet count on the same connection state. ex)Connect packet
 		UINT m_uiSendNetCtrlCount;
 
+		bool m_isClientSide;
+		bool m_isActuallyConnected;
+
 	public:
 		// Constructor
 		ConnectionTCP();

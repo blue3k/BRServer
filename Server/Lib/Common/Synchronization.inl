@@ -69,24 +69,24 @@ bool SpinLock::TryLock( int iTryCount )
 
 
 // Reset ticket
-void Ticketing::Reset()
+inline void Ticketing::Reset()
 {
 	m_Working = 0;
 	m_Worked = 0;
 }
 
 // Ticketing
-Ticketing::Ticket Ticketing::AcquireTicket()
+inline Ticketing::Ticket Ticketing::AcquireTicket()
 {
 	return m_Working.fetch_add(1, std::memory_order_acquire) + 1;
 }
 
-Ticketing::Ticket Ticketing::ReleaseTicket()
+inline Ticketing::Ticket Ticketing::ReleaseTicket()
 {
 	return m_Worked.fetch_add(1, std::memory_order_release) + 1;
 }
 
-Ticketing::Ticket Ticketing::GetMyWaitingOrder(Ticket myTicket) const
+inline Ticketing::Ticket Ticketing::GetMyWaitingOrder(Ticket myTicket) const
 {
 	SignedCounterType Diff = (SignedCounterType)(myTicket - m_Worked.load(std::memory_order_relaxed));
 	if( Diff < 0 ) Diff = 0;
@@ -95,18 +95,18 @@ Ticketing::Ticket Ticketing::GetMyWaitingOrder(Ticket myTicket) const
 
 inline void Ticketing::WaitMyOrder(Ticket myTicket) const
 {
-	while (GetMyWaitingOrder(myTicket) > 0)
+	while (GetMyWaitingOrder(myTicket) > 1)
 	{
 		ThisThread::SleepFor(DurationMS(0));
 	}
 }
 
-Ticketing::Ticket Ticketing::GetNowWorkingCount() const
+inline Ticketing::Ticket Ticketing::GetNowWorkingCount() const
 {
 	return m_Working.load(std::memory_order_relaxed);
 }
 
-Ticketing::Ticket Ticketing::GetWorkingCompleteCount() const
+inline Ticketing::Ticket Ticketing::GetWorkingCompleteCount() const
 {
 	return m_Worked.load(std::memory_order_relaxed);
 }

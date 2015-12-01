@@ -157,7 +157,7 @@ namespace BR
 	HRESULT _IToA( INT32 val,char* &buf, INT& length, unsigned radix, int iDigit )
 	{
 		bool bIsNeg = false;
-		if( val < 0 )
+		if(val < 0 && radix == 10) // use sign only for base 10 description
 		{
 			val = -val;
 			bIsNeg = true;
@@ -390,9 +390,14 @@ namespace BR
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
+		{
 			Radix = 16;
-
-		_IToA((INT32)iData, pBuff, iBuffLen, Radix, -1);
+			_IToA((UINT32)iData, pBuff, iBuffLen, Radix, -1);
+		}
+		else
+		{
+			_IToA((INT32)iData, pBuff, iBuffLen, Radix, -1);
+		}
 
 		return S_OK;
 	}

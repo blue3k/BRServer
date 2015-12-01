@@ -29,13 +29,5 @@ if /i %PROJECT_BASE_PATH% == .       set REMOTE_PATH=%REMOTE_BASE_PATH%/%PROJECT
 
 plink.exe blue3k@LinuxBuild "cd %REMOTE_PATH%;export ROOT_PATH=%REMOTE_BASE_PATH%;export PROJECT_NAME=%PROJECT_NAME%;export BUILD_MODE=%BUILD_MODE%; make -f makefile.mak %MAKE_BUILD_TARGET%" 
 
-goto quit
-
-
-error:
-
-@echo Failed %PROJECT_NAME%
-
-quit:
 
 @echo Done %PROJECT_NAME%

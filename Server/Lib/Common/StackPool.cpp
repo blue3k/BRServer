@@ -20,9 +20,10 @@
 namespace BR
 {
 	StackPool::StackPool()
-		:m_lSize(0)
+		: m_head(nullptr)
+		, m_lSize(0)
 	{
-		AssertRel( ((intptr_t)this & (BR_ALIGN_DOUBLE-1)) == 0 );
+		//AssertRel( ((intptr_t)this & (BR_ALIGN_DOUBLE-1)) == 0 );
 		//m_head.pHead = (volatile Item*)nullptr;
 		//m_head.TSeqID = 0;
 	}
@@ -30,7 +31,7 @@ namespace BR
 
 	StackPool::~StackPool()
 	{
-		AssertRel( ((intptr_t)this & (BR_ALIGN_DOUBLE-1)) == 0 );
+		//AssertRel( ((intptr_t)this & (BR_ALIGN_DOUBLE-1)) == 0 );
 		Clear();
 	}
 
@@ -51,7 +52,10 @@ namespace BR
 
 		auto currentHeader = m_head.load(std::memory_order_acquire);
 		if (currentHeader == nullptr)
+		{
+			m_Ticket.ReleaseTicket();
 			return nullptr;
+		}
 		m_head.store(currentHeader->pNext, std::memory_order_relaxed);
 
 		currentHeader->pNext = nullptr;

@@ -33,8 +33,8 @@ namespace BR
 	class SyncCounter : public std::atomic<CounterType>
 	{
 	public:
-		SyncCounter()                    { store(0, std::memory_order_relaxed); }
-		SyncCounter(CounterType value)   { store(value, std::memory_order_relaxed); }
+		SyncCounter()                    { store(0, std::memory_order_release); }
+		SyncCounter(CounterType value)   { store(value, std::memory_order_release); }
 
 		SyncCounter& operator = (CounterType value) { store(value, std::memory_order_seq_cst); return *this; }
 		SyncCounter& operator = (const SyncCounter& value) { store(value.load(std::memory_order_relaxed), std::memory_order_seq_cst); return *this; }
@@ -149,17 +149,17 @@ namespace BR
 		
 
 		// Reset ticket
-		inline void Reset();
+		void Reset();
 
 
 		// getting a ticket
-		inline Ticket AcquireTicket();
+		Ticket AcquireTicket();
 
 		// using done the ticket
-		inline Ticket ReleaseTicket();
+		Ticket ReleaseTicket();
 
 		// getting my waiting order
-		inline Ticket GetMyWaitingOrder(Ticket) const;
+		Ticket GetMyWaitingOrder(Ticket) const;
 
 		void WaitMyOrder(Ticket ticket) const;
 
@@ -167,10 +167,10 @@ namespace BR
 		Ticket GetTotalWaitingCount() const;
 
 		// getting working thread count...until now;
-		inline Ticket GetNowWorkingCount() const;
+		Ticket GetNowWorkingCount() const;
 
 		// getting worked thread count...until now;
-		inline Ticket GetWorkingCompleteCount() const;
+		Ticket GetWorkingCompleteCount() const;
 	};
 
 
