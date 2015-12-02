@@ -418,7 +418,7 @@ namespace Net {
 		m_isClientSide = true;
 		m_isActuallyConnected = false; // only client side need to check this condition
 
-	Proc_End:
+	//Proc_End:
 
 		if (FAILED(hr))
 		{

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="EntityServer.cpp" />
+    <ClCompile Include="EntityServerClass.cpp" />
+    <ClCompile Include="ServerEntity\GameServerEntity.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\LoginServerEntity.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\EntityServerEntity.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\GameMasterServerEntity.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\EntityTransactionUser.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\EntityServerTrans.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\EntityTransactionServer.cpp">
+      <Filter>EntityInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EntityServer.h" />
+    <ClInclude Include="EntityServerClass.h" />
+    <ClInclude Include="EntitySvrConst.h" />
+    <ClInclude Include="ServerEntity\GameMasterServerEntity.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\GameServerEntity.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\LoginServerEntity.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\EntityServerEntity.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\EntityTransactionServer.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\EntityTransactionUser.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\EntityServerTrans.h">
+      <Filter>EntityInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EntityServerClass.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="EntityInstance">
+      <UniqueIdentifier>{5bb7dc93-54cc-465f-8812-22976eb6eeec}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

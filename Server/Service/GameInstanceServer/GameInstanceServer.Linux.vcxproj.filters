@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="ConspiracyGameInstanceServerClass.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="ConspiracyGameInstanceServer.cpp" />
+    <ClCompile Include="ConspiracyGameInstanceServer_NetProc.cpp" />
+    <ClCompile Include="GameInstance\GameInstanceEntity_MsgProc.cpp">
+      <Filter>GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance\GameInstanceManager.cpp">
+      <Filter>GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance\GamePlayer.cpp">
+      <Filter>GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance\GameInstanceEntity.cpp">
+      <Filter>GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystem\GameLogSystem.cpp">
+      <Filter>GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystem\GamePlaySystem.cpp">
+      <Filter>GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystem\GameStateSystem.cpp">
+      <Filter>GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystem\GameVote.cpp">
+      <Filter>GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSystem\ChattingLogSystem.cpp">
+      <Filter>GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\GameServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\ConspiracyGameInstanceServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\EntityServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\GameInstanceTransPlayer.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction\GameInstanceServerTrans.cpp">
+      <Filter>Transaction</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConspiracyGameInstanceServerClass.h" />
+    <ClInclude Include="ConspiracyGameInstanceSvrConst.h" />
+    <ClInclude Include="GameServer.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="GameInstance\GameInstanceManager.h">
+      <Filter>GameInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInstance\GamePlayer.h">
+      <Filter>GameInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInstance\GameInstanceEntity.h">
+      <Filter>GameInstance</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystem\GameLogSystem.h">
+      <Filter>GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystem\GamePlaySystem.h">
+      <Filter>GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystem\GameStateSystem.h">
+      <Filter>GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystem\GameSystemComponentIDs.h">
+      <Filter>GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystem\GameVote.h">
+      <Filter>GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystem\ChattingLogSystem.h">
+      <Filter>GameSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\EntityServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\GameServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\ServerEntityTrans.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerEntity\ConspiracyGameInstanceServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\GameInstanceServerTrans.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\GameInstanceTransaction.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction\GameInstanceTransPlayer.h">
+      <Filter>Transaction</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ConspiracyGameInstanceServerClass.inl" />
+    <None Include="GameInstance\GamePlayer.inl">
+      <Filter>GameInstance</Filter>
+    </None>
+    <None Include="GameInstance\GameInstanceEntity.inl">
+      <Filter>GameInstance</Filter>
+    </None>
+    <None Include="GameSystem\GamePlaySystem.inl">
+      <Filter>GameSystem</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GameInstance">
+      <UniqueIdentifier>{17651571-a09c-40ae-ae50-dafd0f1148ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameSystem">
+      <UniqueIdentifier>{9b618f20-fd23-4b32-910a-80773b968f8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerEntity">
+      <UniqueIdentifier>{c21a959f-23a2-4330-9d55-407f7cd2f4a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Transaction">
+      <UniqueIdentifier>{38b67054-1c7a-489c-9404-433b2c77b7cb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
