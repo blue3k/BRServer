@@ -18,6 +18,33 @@
       <Platform>x86</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Entity\LoginPlayerEntity.h" />
+    <ClInclude Include="Entity\LoginPlayerEntityTrans.h" />
+    <ClInclude Include="LoginServer.h" />
+    <ClInclude Include="LoginServerClass.h" />
+    <ClInclude Include="LoginSvrConst.h" />
+    <ClInclude Include="ServerEntity\GameServerEntity.h" />
+    <ClInclude Include="ServerEntity\LoginServerEntity.h" />
+    <ClInclude Include="ServerEntity\ServerEntityTrans.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Transaction\LoginServerTrans.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Entity\LoginPlayerEntity.inl" />
+    <None Include="LoginServerClass.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Entity\LoginPlayerEntity.cpp" />
+    <ClCompile Include="Entity\LoginPlayerEntityTrans.cpp" />
+    <ClCompile Include="LoginServer.cpp" />
+    <ClCompile Include="LoginServerClass.cpp" />
+    <ClCompile Include="ServerEntity\GameServerEntity.cpp" />
+    <ClCompile Include="ServerEntity\LoginServerEntity.cpp" />
+    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Transaction\LoginServerTrans.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{88e4c558-54b5-431c-9e84-36602d046a04}</ProjectGuid>
     <Keyword>Android</Keyword>
@@ -52,8 +79,32 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/service LoginServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/service LoginServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/service LoginServer DEBUG clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/service LoginServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/service LoginServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/service LoginServer DEBUG clean</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/service LoginServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/service LoginServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/service LoginServer DEBUG clean</NMakeCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/service LoginServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/service LoginServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/service LoginServer DEBUG clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
   </ItemDefinitionGroup>
