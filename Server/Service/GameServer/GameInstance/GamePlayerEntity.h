@@ -183,7 +183,7 @@ namespace GameServer {
 		FORCEINLINE FacebookUID GetFacebookUID()						{ return m_PlayerInformation.FBUID; }
 		FORCEINLINE void SetFacebookUID( FacebookUID newUID )			{ m_PlayerInformation.FBUID = newUID; }
 
-		virtual HRESULT SetAccountID( AccountID accID )					{ m_PlayerInformation.PlayerID = accID; return __super::SetAccountID(accID); }
+		virtual HRESULT SetAccountID( AccountID accID )					{ m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
 
 		template< class ...ArgTypes >
 		void AddGameTransactionLogT(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* strFormat, ArgTypes... args)

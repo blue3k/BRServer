@@ -118,7 +118,7 @@ namespace EntityServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		m_Step = StartingStep::WaitEntityServer;
 		SetTimer(DurationMS(500) );

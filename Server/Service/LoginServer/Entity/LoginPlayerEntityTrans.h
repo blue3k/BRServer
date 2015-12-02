@@ -40,6 +40,9 @@ namespace LoginServer {
 	template<class MessageClass, class TransactionClass>
 	class LoginPlayerTransLoginBase : public Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, MessageClass, TransactionClass, sizeof(Svr::TransactionMessageHandlerType)*6 >
 	{
+	private:
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, MessageClass, TransactionClass, sizeof(Svr::TransactionMessageHandlerType) * 6 > super;
+
 	protected:
 
 		NetAddress m_GameServerAddr;

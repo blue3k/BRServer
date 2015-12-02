@@ -27,6 +27,7 @@ namespace SharedModuleServer {
 	class SharedModuleServerStartProcess : public Svr::TransactionT<SharedModuleServer,SharedModuleServerStartProcess>
 	{
 	private:
+		typedef Svr::TransactionT<SharedModuleServer, SharedModuleServerStartProcess> super;
 
 		enum class StartingStep 
 		{

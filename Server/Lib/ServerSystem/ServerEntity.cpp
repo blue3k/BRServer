@@ -75,6 +75,10 @@ namespace Svr {
 		if (m_ServerID == 0 && pConn->GetConnectionInfo().RemoteID != 0)
 			m_ServerID = (ServerID)pConn->GetConnectionInfo().RemoteID;
 
+		if(pConn->GetNet() != nullptr)
+			pConn->GetNet()->TakeOverConnection((Net::Connection*)pConn);
+
+
 	Proc_End:
 
 		return hr;

@@ -77,7 +77,7 @@ namespace GameServer {
 
 		m_PlayerUID = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetPlayerID() == 0 )
 		{

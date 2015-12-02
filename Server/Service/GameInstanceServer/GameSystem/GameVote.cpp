@@ -177,7 +177,7 @@ namespace ConspiracyGameInstanceServer {
 		memset( m_VoteRankers, 0, sizeof(m_VoteRankers) );
 		memset( m_VoteRates, 0, sizeof(m_VoteRates) );
 
-		return __super::IniciateVote();
+		return GameVote::IniciateVote();
 	}
 
 	HRESULT GameVoteSuspect::Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget )
@@ -190,7 +190,7 @@ namespace ConspiracyGameInstanceServer {
 		if( !pVoteTarget->IsInGame() || pVoteTarget->GetPlayerState() == PlayerState::Ghost )
 			return E_GAME_INVALID_VOTE_TARGET;
 
-		svrChk( __super::Vote(pVoter,pVoteTarget) );
+		svrChk(GameVote::Vote(pVoter,pVoteTarget) );
 
 		// Update vote ranker
 		SetVoteRanker( pVoteTarget->GetPlayerID(), pVoteTarget->GetVoted() );
@@ -326,7 +326,7 @@ namespace ConspiracyGameInstanceServer {
 		m_PlayerToHang = 0;
 		m_TopRate = 0;
 
-		return __super::IniciateVote();
+		return GameVote::IniciateVote();
 	}
 
 	HRESULT GameVoteHanging::Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget )
@@ -345,7 +345,7 @@ namespace ConspiracyGameInstanceServer {
 		if( !pVoteTarget->IsInGame() || pVoteTarget->GetPlayerState() == PlayerState::Ghost )
 			return E_GAME_INVALID_VOTE_TARGET;
 
-		svrChk( __super::Vote(pVoter,pVoteTarget) );
+		svrChk(GameVote::Vote(pVoter,pVoteTarget) );
 
 		// Update vote ranker
 		if( m_TopRate < pVoteTarget->GetVoted() )
@@ -474,7 +474,7 @@ namespace ConspiracyGameInstanceServer {
 		m_PlayerToKill = 0;
 		m_TopRate = 0;
 
-		return __super::IniciateVote();
+		return GameVote::IniciateVote();
 	}
 
 	HRESULT GameVoteNight::Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget )
@@ -540,7 +540,7 @@ namespace ConspiracyGameInstanceServer {
 		if( pVoteTarget->GetRole() == PlayerRole::Werewolf )
 			return E_GAME_INVALID_VOTE_TARGET;
 
-		svrChk( __super::Vote(pVoter,pVoteTarget) );
+		svrChk(GameVote::Vote(pVoter,pVoteTarget) );
 
 		// broadcast vote result
 		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->HRESULT {

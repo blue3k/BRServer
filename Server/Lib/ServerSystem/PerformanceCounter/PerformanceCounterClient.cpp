@@ -140,8 +140,6 @@ namespace Svr {
 			if (freeInfo.pInstance == nullptr)
 				continue;
 
-			//auto& listNode = freeInfo.pInstance->GetListNode();
-			//if (SUCCEEDED(counterList.Remove(&listNode)))
 			WeakPointerT<PerformanceCounterInstance> removed;
 			if (SUCCEEDED(m_CounterInstanceMap.Remove(freeInfo.UID.UID, removed)))
 			{

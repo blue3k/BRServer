@@ -30,6 +30,9 @@ namespace ConspiracyGameInstanceServer {
 
 	class ConspiracyGameInstanceServerEntity : public Svr::ServerEntity
 	{
+	private:
+		typedef Svr::ServerEntity super;
+
 	public:
 		ConspiracyGameInstanceServerEntity();
 		virtual ~ConspiracyGameInstanceServerEntity();

@@ -76,7 +76,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk( super::InitializeEntity( newEntityID ) );
 
 		m_IsTicketOwner = false;
 		memset(m_GCMKeys, 0, sizeof(m_GCMKeys) );
@@ -102,7 +102,7 @@ namespace LoginServer {
 			ReleaseConnection();
 		}
 
-		svrChk( __super::SetConnection(pCon) );
+		svrChk( super::SetConnection(pCon) );
 
 		svrChk( GetConnection()->CreatePolicy( Policy::ISvrPolicyGame::ID_POLICY ) );
 
@@ -142,7 +142,7 @@ namespace LoginServer {
 
 		ReleaseConnection();
 
-		svrChk( __super::ClearEntity() );
+		svrChk( super::ClearEntity() );
 
 	Proc_End:
 
@@ -155,7 +155,7 @@ namespace LoginServer {
 		HRESULT hr = S_OK;
 		auto curTime = Util::Time.GetTimeMs();
 
-		svrChk( __super::TickUpdate(pAction) );
+		svrChk( super::TickUpdate(pAction) );
 
 		svrChk( UpdateLoginPlayer(curTime) );
 

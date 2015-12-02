@@ -61,7 +61,7 @@ namespace ConspiracyGameInstanceServer {
 
 		m_CurrentVoteLogItem = nullptr;
 
-		svrChk( __super::InitializeComponent() );
+		svrChk(superGameSystem::InitializeComponent() );
 
 	Proc_End:
 
@@ -74,7 +74,7 @@ namespace ConspiracyGameInstanceServer {
 
 		m_CurrentVoteLogItem = nullptr;
 
-		__super::TerminateComponent();
+		superGameSystem::TerminateComponent();
 	}
 
 	void GameLogSystem::ClearGameLog()

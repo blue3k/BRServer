@@ -94,8 +94,8 @@ namespace ConspiracyGameInstanceServer {
 		virtual bool CanAdvanceToNext() override				{ return false; }
 		virtual bool CanBeEntered() override					{ return false; }
 
-		HRESULT virtual OnEnter() { return __super::OnEnter(); }
-		HRESULT virtual OnLeave() { return __super::OnLeave(); }
+		HRESULT virtual OnEnter() { return GamePlayState::OnEnter(); }
+		HRESULT virtual OnLeave() { return GamePlayState::OnLeave(); }
 	};
 
 	
@@ -112,17 +112,17 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnEnter()
 		{
 			m_TimeToNext.SetTimer( DurationMS(3*60*1000) );
-			return __super::OnEnter();
+			return GamePlayState::OnEnter();
 		}
 		virtual HRESULT OnUpdate()
 		{
 			m_TimeToNext.CheckTimer();
-			return __super::OnUpdate();
+			return GamePlayState::OnUpdate();
 		}
 		virtual HRESULT OnLeave()
 		{
 			m_TimeToNext.ClearTimer();
-			return __super::OnLeave();
+			return GamePlayState::OnLeave();
 		}
 	};
 
@@ -139,7 +139,7 @@ namespace ConspiracyGameInstanceServer {
 		{
 			HRESULT hr = S_OK;
 
-			svrChk( __super::OnEnter() );
+			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
 			GetGamePlaySystem().SetHuntedPlayer(0);
 
@@ -180,7 +180,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnUpdate() override
 		{
 			m_vote.UpdateVote(GetTimeInState());
-			return __super::OnUpdate();
+			return GamePlayState_TimeLimit::OnUpdate();
 		}
 
 		virtual HRESULT OnEnter() override
@@ -190,7 +190,7 @@ namespace ConspiracyGameInstanceServer {
 				GetOwner().GetPresetGameConfig()->RolePlayTime : 
 				GetOwner().GetPresetGameConfig()->RolePlayAndKillingTime;
 
-			svrChk( __super::OnEnter() );
+			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ m_vote.ForceAllVoted(); } );
@@ -271,7 +271,7 @@ namespace ConspiracyGameInstanceServer {
 			}
 
 
-			svrChk( __super::OnLeave() );
+			svrChk(GamePlayState_TimeLimit::OnLeave() );
 
 		Proc_End:
 
@@ -313,7 +313,7 @@ namespace ConspiracyGameInstanceServer {
 
 			GetOwner().GetComponent<GameStateSystem>()->NextDay();
 
-			svrChk( __super::OnEnter() );
+			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
@@ -350,7 +350,7 @@ namespace ConspiracyGameInstanceServer {
 		{
 			HRESULT hr = S_OK;
 
-			svrChk( __super::OnEnter() );
+			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ m_vote.ForceAllVoted(); } );
@@ -403,7 +403,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnUpdate() override
 		{
 			m_vote.UpdateVote(GetTimeInState());
-			return __super::OnUpdate();
+			return GamePlayState_TimeLimit::OnUpdate();
 		}
 
 	};
@@ -423,7 +423,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnEnter() override
 		{
 			HRESULT hr = S_OK;
-			svrChk( __super::OnEnter() );
+			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
@@ -436,7 +436,7 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual HRESULT OnLeave() override
 		{
-			return __super::OnLeave();
+			return GamePlayState_TimeLimit::OnLeave();
 		}
 	};
 
@@ -465,7 +465,7 @@ namespace ConspiracyGameInstanceServer {
 		{
 			HRESULT hr = S_OK;
 
-			svrChk( __super::OnEnter() );
+			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ m_vote.ForceAllVoted(); } );
@@ -504,7 +504,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnUpdate() override
 		{
 			m_vote.UpdateVote(GetTimeInState());
-			return __super::OnUpdate();
+			return GamePlayState_TimeLimit::OnUpdate();
 		}
 
 	};
@@ -529,7 +529,7 @@ namespace ConspiracyGameInstanceServer {
 			GameWinner winner = GetGamePlaySystem().GetGameWinner();
 			conspiracy::RewardTbl::RewardItem *pItem = nullptr;
 
-			svrChk( __super::OnEnter() );
+			svrChk(GamePlayState::OnEnter() );
 
 			// Broad cast game end
 			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
@@ -693,7 +693,7 @@ namespace ConspiracyGameInstanceServer {
 			m_GamePlayStates[(UINT)m_CurrentGameState]->OnEnter();
 		}
 
-		return __super::InitializeComponent();
+		return super::InitializeComponent();
 	}
 
 	// Update system

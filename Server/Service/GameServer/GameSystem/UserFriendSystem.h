@@ -57,11 +57,11 @@ namespace GameServer {
 		//	}
 		//	FriendInfo& operator = (const FriendInfo& src)
 		//	{
-		//		__super::operator = (src);
+		//		super::operator = (src);
 		//		ShardID = src.ShardID;
 		//		return *this;
 		//	}
-		//	bool operator == (const FriendInfo& src) const { return __super::operator ==(src); }
+		//	bool operator == (const FriendInfo& src) const { return super::operator ==(src); }
 		//};
 
 

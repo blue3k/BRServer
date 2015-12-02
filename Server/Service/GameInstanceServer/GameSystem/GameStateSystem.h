@@ -96,6 +96,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 	private:
+		typedef Svr::GameSystem<GameInstanceEntity, GameStateSystem> super;
+
 		// game state flow table
 		static const GameStateID stm_GameStateFlow[];
 

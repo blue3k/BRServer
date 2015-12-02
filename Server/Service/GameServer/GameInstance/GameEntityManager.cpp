@@ -67,7 +67,7 @@ namespace GameServer {
 
 	void GameEntityManager::OnEntityAdded(Svr::Entity* pEntity)
 	{
-		__super::OnEntityAdded(pEntity);
+		Svr::EntityManager::OnEntityAdded(pEntity);
 
 		switch (pEntity->GetEntityID().GetFacultyID())
 		{
@@ -79,7 +79,7 @@ namespace GameServer {
 
 	void GameEntityManager::OnEntityRemoved(Svr::Entity* pEntity)
 	{
-		__super::OnEntityRemoved(pEntity);
+		Svr::EntityManager::OnEntityRemoved(pEntity);
 
 		switch (pEntity->GetEntityID().GetFacultyID())
 		{
@@ -109,7 +109,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeManager( uiNumGroup ) );
+		svrChk(Svr::EntityManager::InitializeManager( uiNumGroup ) );
 
 	Proc_End:
 
@@ -122,7 +122,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::TerminateManager() );
+		svrChk(Svr::EntityManager::TerminateManager() );
 
 	Proc_End:
 

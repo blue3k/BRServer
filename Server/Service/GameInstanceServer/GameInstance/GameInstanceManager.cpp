@@ -103,7 +103,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::RegisterServiceMessageHandler( pServerEntity ) );
+		svrChk( super::RegisterServiceMessageHandler( pServerEntity ) );
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////

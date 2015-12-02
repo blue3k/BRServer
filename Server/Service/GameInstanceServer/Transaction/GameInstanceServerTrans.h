@@ -27,6 +27,7 @@ namespace ConspiracyGameInstanceServer {
 	class GameInstanceServerStartProcess : public Svr::TransactionT<GameInstanceServer,GameInstanceServerStartProcess>
 	{
 	private:
+		typedef Svr::TransactionT<GameInstanceServer, GameInstanceServerStartProcess> super;
 
 		enum class StartingStep 
 		{

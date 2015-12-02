@@ -57,7 +57,7 @@ namespace EntityServer {
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 		Svr::ServerServiceInformation *pServiceInfo = nullptr;
 
-		__super::ProcessConnectionEvent( conEvent );
+		Svr::EntityServerEntity::ProcessConnectionEvent( conEvent );
 
 		switch( conEvent.EventType )
 		{

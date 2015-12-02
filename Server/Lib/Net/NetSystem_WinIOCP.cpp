@@ -177,18 +177,18 @@ namespace Net {
 			HRESULT hr = S_OK;
 			BOOL bResult;
 			DWORD dwTransferred = 0;
-			IOBUFFER *pOverlapped = NULL;
-			OVERLAPPED *pOverlappedSys = NULL;
-			ULONG_PTR ulKey = NULL;
+			IOBUFFER *pOverlapped = nullptr;
+			OVERLAPPED *pOverlappedSys = nullptr;
+			ULONG_PTR ulKey = 0;
 			int iErr = 0;
 			int iLastError;
 
 			while( 1 )
 			{
 				dwTransferred = 0;
-				pOverlapped = NULL;
-				pOverlappedSys = NULL;
-				ulKey = NULL;
+				pOverlapped = nullptr;
+				pOverlappedSys = nullptr;
+				ulKey = 0;
 				iErr = 0;
 				iLastError = 0;
 				hr = S_OK;
@@ -227,7 +227,7 @@ namespace Net {
 					case ERROR_NETNAME_DELETED:
 						if( pOverlapped->Operation != IOBUFFER_OPERATION::OP_UDPREAD // UDP can't distingush which connection network err
 							&& pOverlapped->Operation != IOBUFFER_OPERATION::OP_PEERUDPREAD )
-							netTrace( TRC_CONNECTION, "Closing Connection by iErr=%0%, hr={1:X8}", iLastError, hr );
+							netTrace( TRC_CONNECTION, "Closing Connection by iErr={0}, hr={1:X8}", iLastError, hr );
 						hr = E_NET_CONNECTION_CLOSED;
 						break;
 					case ERROR_OPERATION_ABORTED:
@@ -235,7 +235,7 @@ namespace Net {
 						hr = E_NET_IO_ABORTED;
 						break;
 					default:
-						netTrace( Trace::TRC_ERROR, "IOCP Operation failed iErr=%0%, hr={1:X8}", iLastError, hr );
+						netTrace( Trace::TRC_ERROR, "IOCP Operation failed iErr={0}, hr={1:X8}", iLastError, hr );
 						break;
 					};
 				}
@@ -268,7 +268,7 @@ namespace Net {
 						INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
 						pIOBuffer->TransferredSize = dwTransferred;
 						hr = pCallback->OnIORecvCompleted( hr, pIOBuffer );
-						pOverlapped = NULL;
+						pOverlapped = nullptr;
 					}
 					else
 					{
@@ -445,7 +445,7 @@ namespace Net {
 				int iErr = WSAStartup(MAKEWORD(2, 2), &wsaData);
 				if (iErr != 0)
 				{
-					netTrace(Trace::TRC_ERROR, "Can't Initialize Winsock DLL err=%0%", iErr);
+					netTrace(Trace::TRC_ERROR, "Can't Initialize Winsock DLL err={0}", iErr);
 					return iErr;
 				}
 

@@ -177,7 +177,7 @@ namespace Net {
 			{
 				auto pendingRecv = pConn->GetPendingRecvCount();
 				auto pendingSend = pConn->GetPendingSendCount();
-				//AssertRel(pending == 0);
+
 				if ((pendingRecv + pendingSend) == 0)
 				{
 					SharedPointerT<Connection> pOrg;
@@ -191,7 +191,6 @@ namespace Net {
 				break;
 			case IConnection::STATE_CONNECTED:
 				// removing from here must be explicit now
-				//itCur = m_ManagedConnections.erase( itCur );
 				break;
 			default:
 				//itCur++;

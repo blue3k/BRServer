@@ -137,7 +137,7 @@ namespace EntityServer {
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 
 
-		svrChk( __super::InitializeNetPrivate() );
+		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
 		
 		// Register entity servers
@@ -192,7 +192,7 @@ namespace EntityServer {
 	{
 		HRESULT hr = S_OK;
 
-		hr = __super::CloseNetPrivate();
+		hr = Svr::BrServer::CloseNetPrivate();
 
 
 		return hr;

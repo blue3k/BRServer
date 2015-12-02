@@ -211,7 +211,7 @@ namespace GameServer {
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance* pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
 			svrErr(E_SVR_ALREADY_INQUEUE);
@@ -263,7 +263,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -323,7 +323,7 @@ namespace GameServer {
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 			svrErr(E_INVALID_TICKET);
@@ -352,7 +352,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -399,7 +399,7 @@ namespace GameServer {
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 		//	svrErr(E_INVALID_TICKET);
@@ -430,7 +430,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -482,7 +482,7 @@ namespace GameServer {
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 		//	svrErr(E_INVALID_TICKET);
@@ -513,7 +513,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -539,7 +539,7 @@ namespace GameServer {
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 		//	svrErr(E_INVALID_TICKET);
@@ -569,7 +569,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->GetISvrGamePolicy()->ChatMessageS2CEvt( GetSenderID(), GetRole(), GetSenderName(), GetChatMessage() ) );
 
@@ -613,7 +613,7 @@ namespace GameServer {
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 			svrErr(E_INVALID_TICKET);
@@ -642,7 +642,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -689,7 +689,7 @@ namespace GameServer {
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 			svrErr(E_INVALID_TICKET);
@@ -719,7 +719,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -740,7 +740,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -788,7 +788,7 @@ namespace GameServer {
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 			svrErr(E_INVALID_TICKET);
@@ -819,7 +819,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -865,7 +865,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -908,7 +908,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -929,7 +929,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -1002,7 +1002,7 @@ namespace GameServer {
 		m_TotalGem = 0;
 		m_TotalGameMoney = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 		//	svrErr(E_INVALID_TICKET);
@@ -1130,7 +1130,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() == 0 )
 		{
@@ -1174,7 +1174,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != GetMatchingTicket() )
 		{
@@ -1198,7 +1198,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetMatchingTicket() != GetMatchingTicket() )
 		{
@@ -1332,7 +1332,7 @@ namespace GameServer {
 		m_TotalGem = 0;
 		m_TotalGameMoney = 0;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
@@ -1402,7 +1402,7 @@ namespace GameServer {
 		m_PartyUID = 0;
 		m_LeadPlayer = 0;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		if (GetTargetPlayer() != GetMyOwner()->GetPlayerID())
 			svrErr(E_INVALID_PLAYERID);
@@ -1518,7 +1518,7 @@ namespace GameServer {
 		m_TotalGem = 0;
 		m_TotalGameMoney = 0;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetGameInsUID() == 0)
 		{
@@ -1607,7 +1607,7 @@ namespace GameServer {
 		m_TotalGem = 0;
 		m_TotalGameMoney = 0;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetGameInsUID() == 0)
 		{
@@ -1642,7 +1642,7 @@ namespace GameServer {
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_INVALID_INSTANCEID);
@@ -1668,7 +1668,7 @@ namespace GameServer {
 		m_TotalGem = 0;
 		m_TotalGameMoney = 0;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetGameInsUID() == 0)
 		{

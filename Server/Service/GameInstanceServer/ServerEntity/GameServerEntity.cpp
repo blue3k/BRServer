@@ -89,7 +89,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Proc_End:
 
-		return __super::ProcessConnectionEvent( conEvent );
+		return super::ProcessConnectionEvent( conEvent );
 	}
 
 	// register message handlers
@@ -97,7 +97,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::RegisterMessageHandlers() );
+		svrChk( super::RegisterMessageHandlers() );
 
 		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)					{ svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans( pMsgData )); return S_OK; } );
 

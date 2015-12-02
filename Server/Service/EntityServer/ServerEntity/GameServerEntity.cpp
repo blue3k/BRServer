@@ -53,7 +53,7 @@ namespace EntityServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(Svr::GameServerEntity::InitializeEntity( newEntityID ) );
 
 		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)			{ pNewTrans = new TransGameServerStarted( pMsgData ); return S_OK; } );
 		//BR_ENTITY_MESSAGE( Message::EntityServer::RegisterUserEntityCmd)	{ pNewTrans = new TransRegisterUserEntity( pMsgData );return S_OK; } );

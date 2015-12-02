@@ -112,7 +112,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		m_Step = StartingStep::WaitEntityServer;
 		SetTimer(DurationMS(500) );
@@ -136,7 +136,7 @@ namespace GameServer {
 			svrTrace(Trace::TRC_ERROR, "Server Initialization is failed, restart may required");
 		}
 
-		return __super::OnCloseTransaction(hrRes);
+		return super::OnCloseTransaction(hrRes);
 	}
 
 

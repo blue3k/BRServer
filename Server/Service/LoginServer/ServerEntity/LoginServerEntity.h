@@ -32,6 +32,7 @@ namespace LoginServer
 	class LoginServerEntity : public Svr::ServerEntity
 	{
 	private:
+		typedef Svr::ServerEntity super;
 
 	protected:
 

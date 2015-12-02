@@ -32,6 +32,7 @@ namespace LoginServer
 	class GameServerEntity : public Svr::ServerEntity
 	{
 	private:
+		typedef Svr::ServerEntity super;
 
 		StaticAllocator< sizeof(Svr::EntityMessageHandlerItem)*30 > m_Allocator;
 

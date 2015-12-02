@@ -42,6 +42,8 @@ namespace GameServer {
 	class PlayerTransCloseInstance : public Svr::TransactionT<GamePlayerEntity, PlayerTransCloseInstance,sizeof(Svr::TransactionMessageHandlerType)*6>
 	{
 	private:
+		typedef Svr::TransactionT<GamePlayerEntity, PlayerTransCloseInstance, sizeof(Svr::TransactionMessageHandlerType) * 6> super;
+
 		INT m_WaitingTransactions;
 
 	public:

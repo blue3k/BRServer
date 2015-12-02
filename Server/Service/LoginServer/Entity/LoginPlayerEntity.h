@@ -54,6 +54,7 @@ namespace LoginServer {
 	public:
 
 	private:
+		typedef Svr::SimpleUserEntity super;
 
 		BRCLASS_ATTRIBUTE(FacebookUID,FacebookUID);
 		BRCLASS_ATTRIBUTE(AuthTicket,AuthTicket);
@@ -141,7 +142,7 @@ namespace LoginServer {
 		//	
 		//
 
-		//virtual HRESULT SetAccountID( AccountID accID )				{ m_PlayerInformation.PlayerID = accID; return __super::SetAccountID(accID); }
+		//virtual HRESULT SetAccountID( AccountID accID )				{ m_PlayerInformation.PlayerID = accID; return super::SetAccountID(accID); }
 
 	};
 

@@ -109,7 +109,7 @@ namespace ConspiracyGameInstanceServer {
 			return S_OK;
 		});
 
-		svrChk( __super::InitializeComponent() );
+		svrChk( super::InitializeComponent() );
 
 	Proc_End:
 

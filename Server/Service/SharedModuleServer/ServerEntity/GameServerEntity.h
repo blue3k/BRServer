@@ -30,6 +30,9 @@ namespace SharedModuleServer {
 
 	class GameServerEntity : public Svr::GameServerEntity
 	{
+	private:
+		typedef Svr::GameServerEntity super;
+
 	public:
 		GameServerEntity();
 		virtual ~GameServerEntity();

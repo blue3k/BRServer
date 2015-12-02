@@ -27,6 +27,7 @@ namespace EntityServer {
 	class EntityServerStartProcess : public Svr::TransactionT<EntityServer,EntityServerStartProcess>
 	{
 	private:
+		typedef Svr::TransactionT<EntityServer, EntityServerStartProcess> super;
 		
 		enum class StartingStep 
 		{

@@ -35,6 +35,7 @@ namespace EntityServer {
 	class TransServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted>
 	{
 	private:
+		typedef Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted> super;
 
 	public:
 		TransServerStarted( Message::MessageData* &pIMsg ) : ServerStartedTrans(pIMsg) {}

@@ -70,7 +70,7 @@ namespace GameServer {
 	// Player leader changed
 	class PlayerTransPartyQueuedGameMatchingS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::QueuedGameMatchingS2CEvt, PlayerTransPartyQueuedGameMatchingS2CEvt>
 	{
-	public:
+	private:
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::QueuedGameMatchingS2CEvt, PlayerTransPartyQueuedGameMatchingS2CEvt> super;
 
 	public:
@@ -85,7 +85,7 @@ namespace GameServer {
 	// Dequeued
 	class PlayerTransPartyMatchingItemDequeuedS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::MatchingItemDequeuedS2CEvt, PlayerTransPartyMatchingItemDequeuedS2CEvt>
 	{
-	public:
+	private:
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::MatchingItemDequeuedS2CEvt, PlayerTransPartyMatchingItemDequeuedS2CEvt> super;
 
 	public:
@@ -100,7 +100,7 @@ namespace GameServer {
 	// Player leader changed
 	class PlayerTransPartyCanceledGameMatchingS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::CanceledGameMatchingS2CEvt, PlayerTransPartyCanceledGameMatchingS2CEvt>
 	{
-	public:
+	private:
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::CanceledGameMatchingS2CEvt, PlayerTransPartyCanceledGameMatchingS2CEvt> super;
 
 	public:
@@ -116,7 +116,7 @@ namespace GameServer {
 	
 	class PlayerTransCreateParty : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::CreatePartyCmd, PlayerTransCreateParty>
 	{
-	public:
+	private:
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::CreatePartyCmd, PlayerTransCreateParty> super;
 
 	private:
@@ -138,7 +138,7 @@ namespace GameServer {
 	
 	class PlayerTransJoinParty : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::JoinPartyCmd, PlayerTransJoinParty>
 	{
-	public:
+	private:
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::JoinPartyCmd, PlayerTransJoinParty> super;
 
 	private:
@@ -161,7 +161,7 @@ namespace GameServer {
 	// Party player joined
 	class PlayerTransPartyPlayerJoinedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::PlayerJoinedS2CEvt, PlayerTransPartyPlayerJoinedS2SEvt>
 	{
-	public:
+	private:
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::PlayerJoinedS2CEvt, PlayerTransPartyPlayerJoinedS2SEvt> super;
 
 	public:
@@ -176,6 +176,9 @@ namespace GameServer {
 	// Player leader changed
 	class PlayerTransPartyLeaderChangedS2SEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::PartyLeaderChangedS2CEvt, PlayerTransPartyLeaderChangedS2SEvt>
 	{
+	private:
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameParty::PartyLeaderChangedS2CEvt, PlayerTransPartyLeaderChangedS2SEvt> super;
+
 	public:
 		PlayerTransPartyLeaderChangedS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransPartyLeaderChangedS2SEvt() {}
@@ -188,7 +191,7 @@ namespace GameServer {
 	
 	class PlayerTransLeaveParty : public Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::LeavePartyCmd, PlayerTransLeaveParty>
 	{
-	public:
+	private:
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::LeavePartyCmd, PlayerTransLeaveParty> super;
 
 	public:

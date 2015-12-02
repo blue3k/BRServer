@@ -179,7 +179,7 @@ namespace GameServer {
 
 		m_WaitingTransactions = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		GetMyOwner()->ReleaseConnection();
 

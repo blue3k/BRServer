@@ -27,6 +27,7 @@ namespace GameServer {
 	class GameServerStartProcess : public Svr::TransactionT<GameServer,GameServerStartProcess>
 	{
 	private:
+		typedef Svr::TransactionT<GameServer, GameServerStartProcess> super;
 
 		enum class StartingStep 
 		{

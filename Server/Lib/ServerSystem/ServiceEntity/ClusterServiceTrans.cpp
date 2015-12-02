@@ -56,7 +56,7 @@ namespace Svr {
 	{
 		if( FAILED(hrRes) )
 		{
-			svrTrace( Svr::TRC_CLUSTER, "Cluster initialization Failed Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%, Step:%4%, hr:{5:X8}. Retrying ...", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (int)m_Step, hrRes );
+			svrTrace( Svr::TRC_CLUSTER, "Cluster initialization Failed Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}, Step:{4}, hr:{5:X8}. Retrying ...", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (int)m_Step, hrRes );
 			SetTimer(DurationMS(10*1000));
 		}
 	}
@@ -66,7 +66,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 
-		svrTrace(Svr::TRC_CLUSTER, "Cluster OnTImer Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%, Step:%4%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (UINT)m_Step);
+		svrTrace(Svr::TRC_CLUSTER, "Cluster OnTimer Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}, Step:{4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (UINT)m_Step);
 
 		switch( m_Step )
 		{
@@ -104,14 +104,14 @@ namespace Svr {
 	//	clusterManagerMasterUID = GetServerComponent<ClusterManagerServiceEntity>()->GetMasterUID();
 	//	if( SUCCEEDED(GetServerComponent<ServerEntityManager>()->GetServerEntity( clusterManagerMasterUID.SvrID, pServerEntity )) )
 	//	{
-	//		svrTrace( Svr::TRC_CLUSTER, "Cluster memberlist query Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+	//		svrTrace( Svr::TRC_CLUSTER, "Cluster memberlist query Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 	//		// 2. Get service entity list in the cluster
 	//		svrChk( pServerEntity->GetPolicy<Policy::IPolicyClusterServer>()->GetClusterMemberListCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), 0, GetMyOwner()->GetClusterID() ) );
 	//	}
 	//	else
 	//	{
-	//		svrTrace( Svr::TRC_CLUSTER, "Waiting Entity Server ready:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+	//		svrTrace( Svr::TRC_CLUSTER, "Waiting Entity Server ready:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 	//		SetTimer(1000);
 	//	}
 
@@ -132,7 +132,7 @@ namespace Svr {
 
 	//	svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
 
-	//	svrTrace( Svr::TRC_CLUSTER, "Cluster memberlist(%4%) Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), msgRes.GetMemberList().GetSize() );
+	//	svrTrace( Svr::TRC_CLUSTER, "Cluster memberlist({4}) Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), msgRes.GetMemberList().GetSize() );
 
 	//	// 3. Open a cluster if this is the master, and there is no service, otherwise join as a non-master
 	//	for( UINT iMember = 0; iMember < msgRes.GetMemberList().GetSize(); iMember++ )
@@ -170,7 +170,7 @@ namespace Svr {
 	//		// I'm the master and already in the list
 	//		if( currentMaster->UID == GetMyOwner()->GetEntityUID() )
 	//		{
-	//			svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3% : %4%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
+	//			svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:{0}, ClusterID:{1},Type:{2},Membership:{3} : {4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
 	//				"I'm the master and already in the list" );
 
 	//			CloseTransaction( hr );
@@ -178,7 +178,7 @@ namespace Svr {
 	//		else
 	//		{
 	//			// We have the master. join as a slave or watcher
-	//			svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3% : %4%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
+	//			svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:{0}, ClusterID:{1},Type:{2},Membership:{3} : {4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
 	//				"We have the master. join as a slave or watcher" );
 	//			if( GetMyOwner()->GetClusterMembership() == ClusterMembership::Master )
 	//			{
@@ -211,14 +211,14 @@ namespace Svr {
 	//	{
 	//		// We don't have any master yet, but this slave will be going to be the master. we need to wait
 	//		// We are going to check this again after 1sec
-	//		svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3% : %4%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
+	//		svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:{0}, ClusterID:{1},Type:{2},Membership:{3} : {4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
 	//			"We don't have any master yet, but this slave will be going to be the master. we need to wait" );
 	//		SetTimer( 2000 );
 	//	}
 	//	else// if( GetMyOwner()->GetClusterMembership() == ClusterMembership::Master )
 	//	{
 	//		// I'm going to be the first master
-	//		svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3% : %4%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
+	//		svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:{0}, ClusterID:{1},Type:{2},Membership:{3} : {4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
 	//			"I'm the first one in this cluster" );
 	//		//m_currentMaster.UID = GetMyOwner()->GetEntityUID();
 
@@ -244,7 +244,7 @@ namespace Svr {
 	//	//else
 	//	//{
 	//	//	// No one in the list, and I'm not the master so wait until other master comes
-	//	//	svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3% : %4%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
+	//	//	svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:{0}, ClusterID:{1},Type:{2},Membership:{3} : {4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
 	//	//		"No one in the list, and I'm not the master so wait until other master comes" );
 	//	//	SetTimer( 2000 );
 	//	//}
@@ -259,7 +259,7 @@ namespace Svr {
 	HRESULT ClusterInitializationTrans::JoinCluster(  )
 	{
 		HRESULT hr = S_OK;
-		ClusterServerService *pService = nullptr;
+		//ClusterServerService *pService = nullptr;
 		ServerEntity *pMasterServerEntity = nullptr;
 		EntityUID clusterManagerMasterUID;
 		ClusterManagerServiceEntity *pClusterManager = nullptr;
@@ -268,7 +268,7 @@ namespace Svr {
 		// send join cluster
 		m_Step = Step_JoinCluster;
 
-		svrTrace(Svr::TRC_CLUSTER, "Cluster Join Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
+		svrTrace(Svr::TRC_CLUSTER, "Cluster Join Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
 
 		auto netPrivate = BrServer::GetInstance()->GetNetPrivate();
 		Assert(netPrivate->GetNetClass() != NetClass::Unknown);
@@ -285,14 +285,14 @@ namespace Svr {
 			{
 				if (clusterManagerMasterUID == 0)
 				{
-					svrTrace(Trace::TRC_WARN, "Waiting Master entity too long ready:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
+					svrTrace(Trace::TRC_WARN, "Waiting Master entity too long ready:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
 				}
 				//GetServerComponent<ServerEntityManager>()->GetEntityManagerServerEntity(pMasterServerEntity);
 			}
 
 			if (pMasterServerEntity == GetOwnerEntity() && membership >= ClusterMembership::Slave)
 			{
-				svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3% : %4%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
+				svrTrace( Svr::TRC_CLUSTER, "Cluster GetMemberList Entity:{0}, ClusterID:{1},Type:{2},Membership:{3} : {4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(),
 					"I'm the first one in this cluster" );
 				membership = ClusterMembership::Master;
 			}
@@ -300,12 +300,12 @@ namespace Svr {
 
 		if(pMasterServerEntity == nullptr || clusterManagerMasterUID == 0)
 		{
-			svrTrace(Svr::TRC_CLUSTER, "Waiting Entity Server ready:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
+			svrTrace(Svr::TRC_CLUSTER, "Waiting Entity Server ready:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership());
 			SetTimer(DurationMS(1000));
 			goto Proc_End;
 		}
 
-		svrTrace( Svr::TRC_CLUSTER, "Cluster memberlist query Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+		svrTrace( Svr::TRC_CLUSTER, "Cluster memberlist query Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		// 2. Get service entity list in the cluster
 		svrChk(pMasterServerEntity->GetPolicy<Policy::IPolicyClusterServer>()->JoinClusterCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), 0, 
@@ -339,7 +339,7 @@ namespace Svr {
 
 		svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
 
-		svrTrace( Svr::TRC_CLUSTER, "Cluster Joined Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+		svrTrace( Svr::TRC_CLUSTER, "Cluster Joined Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		// Fill my cluster status
 		svrChk( AddOtherServicesToMe((UINT)msgRes.GetMemberList().GetSize(), msgRes.GetMemberList().data()) );
@@ -375,7 +375,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrTrace( Svr::TRC_CLUSTER, "Cluster RequestData Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+			svrTrace( Svr::TRC_CLUSTER, "Cluster RequestData Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 			// 4. Request full data if replica
 			m_Step = Step_RequestDataSync;
@@ -400,7 +400,7 @@ namespace Svr {
 		svrChk(pRes->GetHRESULT());
 
 		//svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
-		svrTrace( Svr::TRC_CLUSTER, "Cluster RequestDataSync Done Entity:%0%, ClusterID:%1%,Type:%2%,Membership:%3%", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+		svrTrace( Svr::TRC_CLUSTER, "Cluster RequestDataSync Done Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		CloseTransaction( hr );
 
@@ -457,7 +457,7 @@ namespace Svr {
 
 		BrServer::GetInstance()->GetNumberServicesToWait().fetch_add(1, std::memory_order_relaxed);
 
-		svrTrace( Svr::TRC_CLUSTER, "Cluster Initialization Entity:%0%:%1%, ClusterID:%2%,Type:%3%,Membership:%4%", GetOwnerEntityUID(), typeid(*GetMyOwner()).name(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
+		svrTrace( Svr::TRC_CLUSTER, "Cluster Initialization Entity:{0}:{1}, ClusterID:{2},Type:{3},Membership:{4}", GetOwnerEntityUID(), typeid(*GetMyOwner()).name(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		svrChk(JoinCluster());
 		//svrChk( GetClusterMemberList() );

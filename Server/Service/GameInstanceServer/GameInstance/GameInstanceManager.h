@@ -35,6 +35,7 @@ namespace ConspiracyGameInstanceServer {
 	public:
 
 	private:
+		typedef Svr::GameInstanceManagerServiceEntity super;
 
 	public:
 		// Constructor/Destructor

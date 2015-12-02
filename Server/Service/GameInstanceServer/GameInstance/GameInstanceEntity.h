@@ -74,6 +74,7 @@ namespace ConspiracyGameInstanceServer
 
 
 	private:
+		typedef Svr::MasterEntity super;
 
 		// Player by PlayerID
 		GamePlayerUIDMap		m_GamePlayerByUID;

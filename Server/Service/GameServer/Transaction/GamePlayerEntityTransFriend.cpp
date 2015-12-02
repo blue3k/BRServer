@@ -140,7 +140,7 @@ namespace GameServer {
 
 		m_TimeStamp = Util::Time.GetTimeUTCSec();
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if (!GetMyOwner()->GetComponent<UserFriendSystem>()->CanAddFriend())
 			svrErrClose(E_MAX_FRIEND);
@@ -372,7 +372,7 @@ namespace GameServer {
 		m_WaitingResultCount = 0;
 		memset( &m_NewFriend, 0, sizeof(m_NewFriend) );
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if (!GetMyOwner()->GetComponent<UserFriendSystem>()->CanAddFriend())
 			svrErrClose(E_MAX_FRIEND);
@@ -398,7 +398,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		Policy::ISvrPolicyGame *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
 		{
@@ -460,7 +460,7 @@ namespace GameServer {
 
 		m_WaitingResultCount = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		pFriendInfo = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(GetFriendID());
 		if (pFriendInfo == nullptr)
@@ -498,7 +498,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
 		{
@@ -661,7 +661,7 @@ namespace GameServer {
 		m_MaxFriendSlot = 0;
 		m_TotalNumberOfFriends = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		m_WaitingCount = 0;
 
@@ -716,7 +716,7 @@ namespace GameServer {
 			return S_OK;
 		});
 
-		return __super::CloseTransaction(hr);
+		return super::CloseTransaction(hr);
 	}
 
 
@@ -824,7 +824,7 @@ namespace GameServer {
 		m_WaitingQueries = 0;
 		m_TimeStamp = Util::Time.GetTimeUTCSec();
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChkPtr( pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>() );
 
@@ -906,7 +906,7 @@ namespace GameServer {
 	//	HRESULT hr = S_OK;
 	//	UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 
-	//	svrChk( __super::StartTransaction() );
+	//	svrChk( super::StartTransaction() );
 
 	//	if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
 	//		svrErrClose(E_INVALID_PLAYERID);

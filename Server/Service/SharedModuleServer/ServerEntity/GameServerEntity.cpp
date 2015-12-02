@@ -61,7 +61,7 @@ namespace SharedModuleServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk( super::InitializeEntity( newEntityID ) );
 
 	Proc_End:
 
@@ -75,19 +75,19 @@ namespace SharedModuleServer {
 
 		switch( conEvent.EventType )
 		{
-		case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
+		case Net::IConnection::Event::EVT_CONNECTION_RESULT:
 			break;
-		case BR::Net::IConnection::Event::EVT_DISCONNECTED:
+		case Net::IConnection::Event::EVT_DISCONNECTED:
 
 			break;
-		case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
+		case Net::IConnection::Event::EVT_STATE_CHANGE:
 
 			break;
 		};
 
 	Proc_End:
 
-		return __super::ProcessConnectionEvent( conEvent );
+		return super::ProcessConnectionEvent( conEvent );
 	}
 
 	// register message handlers
@@ -95,7 +95,7 @@ namespace SharedModuleServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::RegisterMessageHandlers() );
+		svrChk( super::RegisterMessageHandlers() );
 
 		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)					{ svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans( pMsgData )); return S_OK; } );
 

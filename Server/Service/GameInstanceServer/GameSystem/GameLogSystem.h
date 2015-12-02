@@ -45,6 +45,7 @@ namespace ConspiracyGameInstanceServer {
 		};
 
 	private:
+		typedef Svr::GameSystem<GameInstanceEntity, GameLogSystem> superGameSystem;
 		
 		// Current voting item
 		GameLogVote *m_CurrentVoteLogItem;

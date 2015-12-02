@@ -53,7 +53,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(Svr::EntityServerEntity::InitializeEntity( newEntityID ) );
 
 
 	Proc_End:

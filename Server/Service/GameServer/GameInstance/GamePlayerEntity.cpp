@@ -85,7 +85,7 @@ namespace GameServer {
 		auto pGameConfig = GetMyServer()->GetPresetGameConfig();
 		auto PlayerAutoLogout = pGameConfig->PlayerAutoLogout;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(Svr::SimpleUserEntity::InitializeEntity( newEntityID ) );
 
 		m_GameInsUID = 0;
 		m_PartyUID = 0;
@@ -128,7 +128,7 @@ namespace GameServer {
 			ReleaseConnection();
 		}
 
-		svrChk(__super::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
+		svrChk(Svr::SimpleUserEntity::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)));
 
 		if (GetConnection() != nullptr)
 		{
@@ -145,7 +145,7 @@ namespace GameServer {
 	{
 		m_ISvrGamePolicy = nullptr;
 
-		__super::ReleaseConnection();
+		Svr::SimpleUserEntity::ReleaseConnection();
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -275,7 +275,7 @@ namespace GameServer {
 
 		ReleaseConnection();
 
-		svrChk( __super::ClearEntity() );
+		svrChk(Svr::SimpleUserEntity::ClearEntity() );
 
 	Proc_End:
 
@@ -288,7 +288,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		Svr::Transaction *trans = nullptr;
 
-		hr = __super::TickUpdate(pAction);
+		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
 		if (hr == S_FALSE)
 			return hr;
 

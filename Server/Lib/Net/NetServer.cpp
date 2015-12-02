@@ -141,10 +141,7 @@ namespace Net {
 
 		netChkPtr(pIConnection);
 
-		if (GetIsEnableAccept())
-		{
-			netChk(GetConnectionManager().PendingManagedConnectionTakenOver(pConn));
-		}
+		netChk(GetConnectionManager().PendingManagedConnectionTakenOver(pConn));
 
 	Proc_End:
 

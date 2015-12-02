@@ -37,6 +37,9 @@ namespace ConspiracyGameInstanceServer {
 	template< class OwnerType, class PolicyClass, class MessageClass, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(Svr::TransactionMessageHandlerType)*2 >
 	class RoutedGamePlayerMessageTransaction : public Svr::TransactionT<OwnerType,MemoryPoolClass,MessageHandlerBufferSize>, public MessageClass
 	{
+	private:
+		typedef Svr::TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize> super;
+
 	protected:
 		// Player Player ID
 		PlayerID	m_PlayerID;
@@ -59,14 +62,14 @@ namespace ConspiracyGameInstanceServer {
 			{
 				if (GetMessage()->GetMessageHeader()->msgID.IDs.Type == BR::Message::MSGTYPE_COMMAND)
 				{
-					__if_exists(MessageClass::GetContext)
+					if(MessageClass::HasContext)
 					{
-						SetParentTransID(GetContext());
-					};
-					__if_exists(MessageClass::GetRouteContext)
+						SetParentTransID(MessageClass::GetContext());
+					}
+					if(MessageClass::HasRouteContext)
 					{
-						SetMessageRouteContext(GetRouteContext());
-					};
+						SetMessageRouteContext(MessageClass::GetRouteContext());
+					}
 				}
 			}
 			return hr;
@@ -84,7 +87,7 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChkPtr( m_ServerEntity = dynamic_cast<Svr::ServerEntity*>(pOwner) );
 
-			if( GetMyServer()->GetServerUID() != GetRouteContext().GetTo().GetServerID())
+			if(GetMyServer()->GetServerUID() != MessageClass::GetRouteContext().GetTo().GetServerID())
 			{
 				svrErr( E_SVR_INVALID_SERVERID );
 			}
@@ -92,11 +95,11 @@ namespace ConspiracyGameInstanceServer {
 			hr = FindEntity(GetRouteContext().GetTo().GetEntityID(), pEntity);
 			if (FAILED(hr))
 			{
-				svrTrace(Trace::TRC_WARN, "Can't find transaction target instance:%0%", GetRouteContext().GetTo());
+				svrTrace(Trace::TRC_WARN, "Can't find transaction target instance:{0}", MessageClass::GetRouteContext().GetTo());
 				goto Proc_End;
 			}
 
-			svrChk(__super::InitializeTransaction((Svr::Entity*)pEntity));
+			svrChk(super::InitializeTransaction((Svr::Entity*)pEntity));
 
 
 		Proc_End:
@@ -119,7 +122,7 @@ namespace ConspiracyGameInstanceServer {
 			return pSvrEnt;
 		}
 
-		FORCEINLINE PolicyClass* GetPolicy()
+		PolicyClass* GetPolicy()
 		{
 			return GetPolicy<PolicyClass>();
 		}
@@ -133,7 +136,6 @@ namespace ConspiracyGameInstanceServer {
 			if (pConn != nullptr)
 				return pConn->GetPolicy<PolicyType>();
 			return nullptr;
-			//return m_ServerEntity->GetConnection()->GetPolicy<PolicyType>();
 		}
 
 		FORCEINLINE GameInstanceEntity* GetMyOwner()
@@ -144,11 +146,11 @@ namespace ConspiracyGameInstanceServer {
 
 		HRESULT GetMyPlayer( GamePlayer* &pPlayer )
 		{
-			__if_exists( MessageClass::GetPlayerID )
+			if( MessageClass::HasPlayerID )
 			{
-				return GetMyOwner()->FindPlayer( GetPlayerID(), pPlayer );
+				return GetMyOwner()->FindPlayer(MessageClass::GetPlayerID(), pPlayer );
 			}
-			__if_not_exists( MessageClass::GetPlayerID )
+			else
 			{
 				pPlayer = nullptr;
 				return E_FAIL;

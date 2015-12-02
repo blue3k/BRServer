@@ -265,7 +265,7 @@ namespace LoginServer {
 		//m_RegisterTryCount = 0;
 		m_GameEntityUID = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		GetMyOwner()->HeartBit();
 
@@ -304,7 +304,7 @@ namespace LoginServer {
 		// succeeded to login
 		if( pDBRes->Result == 0 )
 		{
-			svrChk( __super::OnLogin( pRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID ) );
+			svrChk( super::OnLogin( pRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID ) );
 		}
 		else
 		{
@@ -333,7 +333,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAccountID() != 0 )
 		{
@@ -432,7 +432,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetUID() == 0 )
 		{
@@ -481,7 +481,7 @@ namespace LoginServer {
 		// succeeded to login
 		if (pDBRes->Result == 0)
 		{
-			svrChk(__super::OnLogin(pRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID));
+			svrChk(super::OnLogin(pRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID));
 		}
 		else
 		{
@@ -503,7 +503,7 @@ namespace LoginServer {
 		HRESULT hr = S_OK;
 		char strUserName[DB::Const::MAX_USERNAME];
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetAccountID() != 0)
 		{
@@ -560,7 +560,7 @@ namespace LoginServer {
 		HRESULT hr = S_OK;
 		LoginPlayerEntity* pOwner = (LoginPlayerEntity*)GetOwnerEntity();
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if (GetMyOwner()->GetAuthTicket() != 0 && GetMyOwner()->GetIsTicketOwner() )
 		{
@@ -638,7 +638,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// TODO: need this?
 		svrChk(E_NOTIMPL);
@@ -734,7 +734,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAccountID() == 0 || GetMyOwner()->GetAccountID() != GetPlayerID() )
 		{

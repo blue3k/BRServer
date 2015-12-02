@@ -48,10 +48,10 @@ namespace EntityServer {
 	{
 		HRESULT hr = S_OK;
 		Svr::ServerEntity *pServerEntity = nullptr;
-		const BR::ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
+		const ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
 		Svr::ServerServiceInformation *pService = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 
 		// We are going to add them manually, this is special case for cluster manager service
@@ -85,7 +85,7 @@ namespace EntityServer {
 	//	HRESULT hr = S_OK;
 	//	Svr::ServerEntity *pServerEntity = nullptr;
 
-	//	svrChk( __super::StartTransaction() );
+	//	svrChk( super::StartTransaction() );
 
 
 	//	// We are going to add them manually, this is special case for cluster manager service

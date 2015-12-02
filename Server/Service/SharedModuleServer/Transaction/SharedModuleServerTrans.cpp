@@ -111,7 +111,7 @@ namespace SharedModuleServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk(super::StartTransaction() );
 
 		m_Step = StartingStep::WaitEntityServer;
 		SetTimer(DurationMS(500) );
@@ -130,7 +130,7 @@ namespace SharedModuleServer {
 			//GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 		}
 
-		return __super::OnCloseTransaction(hrRes);
+		return super::OnCloseTransaction(hrRes);
 	}
 
 

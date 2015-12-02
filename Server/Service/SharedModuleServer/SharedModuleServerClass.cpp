@@ -123,7 +123,7 @@ namespace SharedModuleServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeServerResource() );
+		svrChk(Svr::BrServer::InitializeServerResource() );
 
 		//svrChk( conspiracy::InitializeTable() );
 
@@ -160,7 +160,7 @@ namespace SharedModuleServer {
 		UINT componentID = 0;
 		Svr::Config::SharedModuleServer *pServerConfig = nullptr;
 
-		svrChk( __super::InitializeNetPrivate() );
+		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
@@ -209,7 +209,7 @@ namespace SharedModuleServer {
 	{
 		HRESULT hr = S_OK;
 
-		hr = __super::CloseNetPrivate();
+		hr = Svr::BrServer::CloseNetPrivate();
 
 
 		// Server Entity Manager will clear this

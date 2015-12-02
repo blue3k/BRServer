@@ -64,7 +64,7 @@ namespace EntityServer {
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //
-//		svrChk( __super::StartTransaction() );
+//		svrChk( super::StartTransaction() );
 //
 //		svrChkPtr( pInfoTbl = GetEntityInfoTable() );
 //
@@ -117,7 +117,7 @@ namespace EntityServer {
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //
-//		svrChk( __super::StartTransaction() );
+//		svrChk( super::StartTransaction() );
 //
 //		svrChkPtr( pInfoTbl = GetEntityInfoTable() );
 //
@@ -170,7 +170,7 @@ namespace EntityServer {
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //
-//		svrChk( __super::StartTransaction() );
+//		svrChk( super::StartTransaction() );
 //
 //		svrChkPtr( pInfoTbl = GetEntityInfoTable() );
 //
@@ -224,7 +224,7 @@ namespace EntityServer {
 //		EntityInformation *pEntInfo = nullptr;
 //		EntityInfoTable::AccountIDMap::iterator iterAcc;
 //
-//		svrChk( __super::StartTransaction() );
+//		svrChk( super::StartTransaction() );
 //
 //		svrChkPtr( pInfoTbl = GetEntityInfoTable() );
 //

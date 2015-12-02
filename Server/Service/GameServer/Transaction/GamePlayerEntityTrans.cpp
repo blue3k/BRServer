@@ -118,7 +118,7 @@ namespace GameServer {
 		Net::Connection *pConnection = nullptr;
 		Net::IConnection::ConnectionInformation connectionInfo;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 		svrChkPtr(GetMyServer()->GetNetPublic());
 
 		pPlayerEntity->ReleaseConnection();
@@ -410,7 +410,7 @@ namespace GameServer {
 		m_PlayerNick[0] = 0;
 		m_MatchingTicket = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetAccID() == 0 || GetMyOwner()->GetAccountID() == 0
 			|| GetMyOwner()->GetAccountID() != GetAccID() )
@@ -446,7 +446,7 @@ namespace GameServer {
 
 		memset(&m_Result, 0, sizeof(m_Result));
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAccountID() == 0 )
 		{
@@ -576,7 +576,7 @@ namespace GameServer {
 
 		memset(&m_Result, 0, sizeof(m_Result));
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAccountID() == 0 )
 		{
@@ -633,7 +633,7 @@ namespace GameServer {
 
 		memset(&m_ComplitionState, 0, sizeof(m_ComplitionState));
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetAccountID() == 0)
 		{
@@ -686,7 +686,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetAccountID() == 0)
 		{
@@ -736,7 +736,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->SetGCMKeys( GetGCMRegisteredID() ) );
 
@@ -778,7 +778,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->SetGCMKeys( "" ) );
 
@@ -838,7 +838,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_GetList(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID()));
 
@@ -879,7 +879,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
 
@@ -958,7 +958,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetComponent<UserNotifySystem>()->GetNotification(GetNotificationID()) == nullptr )
 			svrErrClose(E_INVALID_NOTIFICATIONID);
@@ -1020,7 +1020,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_Remove(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
 
@@ -1039,7 +1039,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		Policy::ISvrPolicyGame *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
 			svrErr(E_GAME_INAVLID_PLAYER);
@@ -1113,7 +1113,7 @@ namespace GameServer {
 		m_TotalGem = 0;
 		m_TotalGameMoney = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
@@ -1197,7 +1197,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		char email[GameConst::MAX_EMAIL];
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( StrUtil::StringLwr( email, GetPlayerEMail() ) );
 
@@ -1271,7 +1271,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( Svr::GetServerComponent<DB::AccountDB>()->FindPlayerByPlayerID( GetTransID(), GetPlayerID() ) );
 
@@ -1346,7 +1346,7 @@ namespace GameServer {
 
 		m_PlayerStatusQueryCount = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 		
 		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
 
@@ -1394,7 +1394,7 @@ namespace GameServer {
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
 
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
 			svrErr(E_GAME_INAVLID_PLAYER);
@@ -1421,7 +1421,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		Policy::ISvrPolicyGame *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
 		svrChk( pPolicy->NotifyPlayerStatusUpdatedS2CEvt( GetDestPlayerID(), GetLatestActiveTime(), GetIsInGame() ) );
@@ -1469,7 +1469,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if (GetBaseRanking() <= 0 || GetBaseRanking() > GameConst::MAX_RANKING_QUERY_COUNT)
 			svrErrClose(E_INVALID_RANKING_RANGE);
@@ -1564,7 +1564,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		m_RetryCount = 0;
 
@@ -1691,7 +1691,7 @@ namespace GameServer {
 
 		m_pShopItem = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if (GetPurchaseTransactionID() == nullptr || GetPurchaseTransactionID()[0] == '\0')
 		{
@@ -1766,7 +1766,7 @@ namespace GameServer {
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyServer()->UpdateGameConfig(GetPresetID()) );
 
@@ -1816,7 +1816,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetResource() < 0 || GetResource() >= (int)DebugGameResource::Max )
 			svrErrClose(E_INVALIDARG);

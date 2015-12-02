@@ -58,7 +58,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk( super::InitializeEntity( newEntityID ) );
 
 		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)							{ svrMemReturn(pNewTrans = new TransGameServerStarted( pMsgData )); return S_OK; } );
 		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd)				{ svrMemReturn(pNewTrans = new LoginPlayerJoinedToGameServerTrans(pMsgData)); return S_OK; } );

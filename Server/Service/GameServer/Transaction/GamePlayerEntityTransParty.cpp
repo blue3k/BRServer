@@ -225,7 +225,7 @@ namespace GameServer {
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance* pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetDestPlayerID() != GetMyOwner()->GetPlayerID() )
 			svrErr(E_INVALID_PLAYERID);
@@ -260,7 +260,7 @@ namespace GameServer {
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
 			svrErr(E_SVR_ALREADY_INQUEUE);
@@ -283,7 +283,7 @@ namespace GameServer {
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != GetMatchingTicket() )
 			svrErr(E_SVR_INVALID_QUEUEITEM);
@@ -304,7 +304,7 @@ namespace GameServer {
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMatchingQueueTicket() != GetMyOwner()->GetMatchingTicket() )
 			svrErr(E_SVR_INVALID_QUEUEITEM);
@@ -354,7 +354,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		Svr::ServerServiceInformation *pService = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// Can't do any party operations while you are in matching queue
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
@@ -423,7 +423,7 @@ namespace GameServer {
 
 		m_LeaderID = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != 0 )
 			svrErr(E_GAME_ALREADY_IN_GAME);
@@ -466,7 +466,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPartyUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_GAME_INVALID_PARTYID);
@@ -486,7 +486,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPartyUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_GAME_INVALID_PARTYID);
@@ -543,7 +543,7 @@ namespace GameServer {
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// Can't do any party operations while you are in matching queue
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
@@ -573,7 +573,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPartyUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_GAME_INVALID_PARTYID);
@@ -622,7 +622,7 @@ namespace GameServer {
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// Can't do any party operations while you are in matching queue
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
@@ -652,7 +652,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPartyUID() != GetRouteContext().GetFrom())
 			svrErrClose(E_GAME_INVALID_PARTYID);
@@ -716,7 +716,7 @@ namespace GameServer {
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// Can't do any party operations while you are in matching queue
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
@@ -759,7 +759,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPartyUID() != 0 )
 			svrErrClose(E_GAME_INVALID_PARTYID);
@@ -782,7 +782,7 @@ namespace GameServer {
 		Svr::ServerEntity *pServerEntity = nullptr;
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 		//	svrErr(E_INVALID_TICKET);
@@ -813,7 +813,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetPolicy()->PartyChatMessageS2CEvt( GetSenderID(), GetSenderName(), GetChatMessage() ) );
 
@@ -834,7 +834,7 @@ namespace GameServer {
 		Svr::ServerEntity *pServerEntity = nullptr;
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
 		//	svrErr(E_INVALID_TICKET);
@@ -864,7 +864,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetPolicy()->PartyQuickChatMessageS2CEvt( GetSenderID(), GetQuickChatID() ) );
 

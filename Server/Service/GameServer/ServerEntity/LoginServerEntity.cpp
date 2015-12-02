@@ -54,7 +54,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(Svr::ServerEntity::InitializeEntity( newEntityID ) );
 
 		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)							{ svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans( pMsgData )); return S_OK; } );
 

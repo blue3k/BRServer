@@ -73,7 +73,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk(Svr::GameServerEntity::InitializeEntity( newEntityID ) );
 
 	Proc_End:
 
@@ -87,7 +87,7 @@ namespace GameServer {
 
 		switch( conEvent.EventType )
 		{
-		case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
+		case Net::IConnection::Event::EVT_CONNECTION_RESULT:
 			if( SUCCEEDED(conEvent.Value.hr) && IsInitialConnection()
 				&& GetPolicy<Policy::IPolicyGameServer>() )
 			{
@@ -96,17 +96,17 @@ namespace GameServer {
 				//svrChk( GetPolicy()->ServerStartedC2SEvt( Svr::BrServer::GetInstance()->GetServerUID(), Svr::BrServer::GetInstance()->GetGameID() ) );
 			}
 			break;
-		case BR::Net::IConnection::Event::EVT_DISCONNECTED:
+		case Net::IConnection::Event::EVT_DISCONNECTED:
 
 			break;
-		case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
+		case Net::IConnection::Event::EVT_STATE_CHANGE:
 
 			break;
 		};
 
 	Proc_End:
 
-		return __super::ProcessConnectionEvent( conEvent );
+		return Svr::GameServerEntity::ProcessConnectionEvent( conEvent );
 	}
 
 	// register message handlers
@@ -114,7 +114,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::RegisterMessageHandlers() );
+		svrChk(Svr::GameServerEntity::RegisterMessageHandlers() );
 
 		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)					{ svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans( pMsgData )); return S_OK; } );
 

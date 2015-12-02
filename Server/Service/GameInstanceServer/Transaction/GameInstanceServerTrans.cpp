@@ -116,7 +116,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		m_Step = StartingStep::WaitEntityServer;
 		SetTimer(DurationMS(500) );
@@ -136,7 +136,7 @@ namespace ConspiracyGameInstanceServer {
 			GetMyServer()->SetServerState(Svr::ServerState::RUNNING);
 		}
 
-		return __super::OnCloseTransaction(hrRes);
+		return super::OnCloseTransaction(hrRes);
 	}
 
 

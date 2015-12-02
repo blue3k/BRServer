@@ -70,7 +70,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 		
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		GetMyOwner()->CloseGameInstance();
 
@@ -96,7 +96,7 @@ namespace ConspiracyGameInstanceServer {
 		Policy::ISvrPolicyGameInstance *pMyPolicy = nullptr;
 		auto pGameStateSystem = GetMyOwner()->GetComponent<GameStateSystem>();
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		m_Day = 0;
 		m_GameInsUID = GameInsUID( GetMyOwner()->GetEntityUID() );
@@ -199,7 +199,7 @@ namespace ConspiracyGameInstanceServer {
 		GameInsUID gameInsUID;
 		PlayerID enteredPlayerID = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyOwner()->LeavePlayer( GetPlayerID() ) );
 
@@ -220,7 +220,7 @@ namespace ConspiracyGameInstanceServer {
 		GameInsUID gameInsUID;
 		PlayerID enteredPlayerID = 0;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		if( GetPlayerToKick() == (PlayerID)(-1) )
 		{
@@ -255,7 +255,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		// NOTE: for now, restart the game
 		svrChk( GetMyOwner()->InitializeSystem() );
@@ -281,7 +281,7 @@ namespace ConspiracyGameInstanceServer {
 		GamePlayer *pMyPlayer = nullptr;
 		const char* message = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyPlayer( pMyPlayer ) );
 
@@ -335,7 +335,7 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_OK;
 		GamePlayer *pMyPlayer = nullptr;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyPlayer( pMyPlayer ) );
 
@@ -359,7 +359,7 @@ namespace ConspiracyGameInstanceServer {
 		if( GetVoteTarget() == 0 )
 			svrErrClose(E_INVALID_PLAYERID);
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyPlayer( pMyPlayer ) );
 		svrChkClose( GetMyOwner()->FindPlayer( GetVoteTarget(), pVoteTarget ) );
@@ -378,7 +378,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::StartTransaction() );
+		svrChk( super::StartTransaction() );
 
 		svrChkClose( GetMyOwner()->GetComponent<GameStateSystem>()->AdvanceState() );
 
@@ -397,7 +397,7 @@ namespace ConspiracyGameInstanceServer {
 
 		m_MemberCount = 0;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->HRESULT
 		{
@@ -430,7 +430,7 @@ namespace ConspiracyGameInstanceServer {
 		GamePlayer* pMyPlayer = nullptr;
 		GamePlayer* pTargetPlayer = nullptr;
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		svrChk(GetMyPlayer(pMyPlayer));
 
@@ -467,7 +467,7 @@ namespace ConspiracyGameInstanceServer {
 		GamePlayer* pMyPlayer = nullptr;
 		EntityUID ownerUID = GetOwnerEntityUID();
 
-		svrChk(__super::StartTransaction());
+		svrChk(super::StartTransaction());
 
 		svrChk(GetMyPlayer(pMyPlayer));
 

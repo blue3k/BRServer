@@ -120,7 +120,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk( super::InitializeEntity( newEntityID ) );
 
 		svrChk( InitializeSystem() );
 
@@ -141,7 +141,7 @@ namespace ConspiracyGameInstanceServer {
 
 		CloseGameInstance();
 
-		 __super::TerminateEntity();
+		 super::TerminateEntity();
 
 		ClearComponents();
 
@@ -166,7 +166,7 @@ namespace ConspiracyGameInstanceServer {
 		PlayerID pltID;
 		INT playerCount = 0;
 
-		hr = __super::TickUpdate(pAction);
+		hr = super::TickUpdate(pAction);
 		if (FAILED(hr) || hr == S_FALSE)
 			return hr;
 

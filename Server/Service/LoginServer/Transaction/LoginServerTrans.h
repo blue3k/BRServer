@@ -25,6 +25,7 @@ namespace LoginServer {
 	class LoginServerStartProcess : public Svr::TransactionT<LoginServer,LoginServerStartProcess>
 	{
 	private:
+		typedef Svr::TransactionT<LoginServer, LoginServerStartProcess> super;
 		
 		enum class StartingStep 
 		{

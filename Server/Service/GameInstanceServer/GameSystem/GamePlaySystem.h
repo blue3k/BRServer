@@ -50,6 +50,7 @@ namespace ConspiracyGameInstanceServer {
 		static const PlayerRole stm_PlayerRoleByCount[GameConst::MAX_GAMEPLAYER];
 
 	private:
+		typedef Svr::GameSystem<GameInstanceEntity, GamePlaySystem> super;
 
 		// Count cache
 		BRCLASS_ATTRIBUTE_READONLY(UINT,NumWereWolf);

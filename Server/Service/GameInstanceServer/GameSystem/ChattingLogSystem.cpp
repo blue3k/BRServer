@@ -58,7 +58,7 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk( InitializeLog() );
 
-		svrChk( __super::InitializeComponent() );
+		svrChk( GameSystem::InitializeComponent() );
 
 	Proc_End:
 
@@ -69,7 +69,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		TerminateLog();
 
-		__super::TerminateComponent();
+		GameSystem::TerminateComponent();
 	}
 
 	

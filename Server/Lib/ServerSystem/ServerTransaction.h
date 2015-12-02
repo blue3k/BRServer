@@ -255,7 +255,7 @@ namespace Svr {
 			{
 			case Message::MessageUsage_ClusterStatusRead:
 				// No broadcast in any case
-				super::OnCloseTransaction(hrRes);
+				this->OnCloseTransaction(hrRes);
 				break;
 			case Message::MessageUsage_ClusterStatusWrite:
 				// broadcast all the time
@@ -268,7 +268,7 @@ namespace Svr {
 
 					Assert(super::GetRouteHopCount() == 0 );
 				}
-				super::OnCloseTransaction(hrRes);
+				this->OnCloseTransaction(hrRes);
 				break;
 			case Message::MessageUsage_ClusterDataRead:
 				// If data read failed on this we need to send it to Next ring
@@ -276,12 +276,12 @@ namespace Svr {
 				{
 					hr = TossToNextRing();
 					if( FAILED(hr) ) 
-						super::OnCloseTransaction(hrRes);
+						this->OnCloseTransaction(hrRes);
 					svrChk( hr );
 				}
 				else
 				{
-					super::OnCloseTransaction(hrRes);
+					this->OnCloseTransaction(hrRes);
 				}
 				break;
 			case Message::MessageUsage_ClusterDataWrite:
@@ -297,10 +297,10 @@ namespace Svr {
 					if(super::GetRouteHopCount() >= 1 )
 						break;
 				}
-				super::OnCloseTransaction(hrRes);
+				this->OnCloseTransaction(hrRes);
 				break;
 			default:
-				super::OnCloseTransaction(hrRes);
+				this->OnCloseTransaction(hrRes);
 				break;
 			}
 
