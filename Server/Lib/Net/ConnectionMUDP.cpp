@@ -665,6 +665,9 @@ namespace Net {
 			if( SUCCEEDED(m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
 				&& pMessageElement && pMessageElement->pMsg != nullptr )
 			{
+				if (Util::TimeSince(pMessageElement->ulTimeStamp) <= DurationMS(Const::MUDP_SEND_RETRY_TIME))
+					break;
+
 				UINT totalGatheredSize = GetGatheredBufferSize() + pMessageElement->pMsg->GetMessageSize();
 				if (GetGatheredBufferSize() > 0 && totalGatheredSize > Const::PACKET_GATHER_SIZE_MAX)
 				{

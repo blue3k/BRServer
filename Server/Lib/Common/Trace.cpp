@@ -42,8 +42,8 @@ namespace BR {
 namespace Trace {
 
 	enum {
-			UPDATE_LINEHEADER_TIME = 100,
-			UPDATE_REGISTERY_TIME = 3000,
+			UPDATE_LINEHEADER_TIME = 1,
+			UPDATE_REGISTERY_TIME = 5,
 			UPDATE_LOG_BUFFER = 5,
 	};
 
@@ -72,23 +72,6 @@ namespace Trace {
 		StrUtil::StringDup( m_szName, szName );
 		StrUtil::StringDup( m_szNameTag, szNameTag );
 
-		//// if registry key is not opened then open it
-		//if( stm_hRegKey == nullptr )
-		//{
-		//	LONG lRes = RegOpenKeyExW( HKEY_LOCAL_MACHINE,
-		//					_ERRTRACE_KEY_, 0,
-		//					KEY_READ,
-		//					&stm_hRegKey );
-		//	if( lRes != ERROR_SUCCESS )
-		//	{
-		//		stm_hRegKey = nullptr;
-		//		
-		//		FormatMessageA( FORMAT_MESSAGE_FROM_SYSTEM, nullptr, lRes, 
-		//			0, strErrString, MAX_PATH, nullptr );
-		//		printf( "%s", strErrString );
-		//	}
-		//}
-
 		// Register modulelist if not in list yet
 		for( int iMod = 0; iMod < MAX_TRACEMODULE; iMod++ )
 		{
@@ -104,13 +87,6 @@ namespace Trace {
 	{
 		StrUtil::SafeDelete( m_szName );
 		StrUtil::SafeDelete( m_szNameTag );
-
-
-		//if( stm_hRegKey )
-		//{
-		//	RegCloseKey( stm_hRegKey );
-		//	stm_hRegKey = nullptr;
-		//}
 	}
 
 	static char* SkipSpace(char* curChar)
@@ -189,7 +165,6 @@ namespace Trace {
 		HRESULT hr = S_OK;
 
 		// Update output mask
-		//if( stm_hRegKey )
 		if(Util::TimeSince(m_MaskUpdated) > DurationMS(60*1000))
 		{
 			LoadTraceConfig();
@@ -413,7 +388,7 @@ namespace Trace {
 		time_t time = m_tCurTime.time_since_epoch().count() + Util::Time.GetUTCSecOffset().count();
 		m_tCurTimeTM = *gmtime(&time);
 
-		if( (m_tLineHdrCheck - tCurTime) > DurationMS(Trace::UPDATE_LINEHEADER_TIME) )
+		if( (m_tLineHdrCheck - tCurTime) > DurationSec(Trace::UPDATE_LINEHEADER_TIME) )
 		{
 			m_tLineHdrCheck = tCurTime;
 			UpdateLineHeader();
@@ -421,7 +396,7 @@ namespace Trace {
 			UpdateConsoleHandle();
 		}
 
-		if( (m_tRegCheck - tCurTime) > DurationMS(Trace::UPDATE_REGISTERY_TIME) )// check every 3sec
+		if( (m_tRegCheck - tCurTime) > DurationSec(Trace::UPDATE_REGISTERY_TIME) )// check every 3sec
 		{
 			// Update output mask
 			TraceModule::CheckAndUpdate();

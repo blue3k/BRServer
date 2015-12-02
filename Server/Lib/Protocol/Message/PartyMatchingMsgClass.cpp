@@ -140,7 +140,7 @@ namespace BR
 			void PartyGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyGameMatchedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyGameMatchedS2CEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount); 
 			}; // void PartyGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -264,7 +264,7 @@ namespace BR
 			void PlayerGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerGameMatchedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, DestPlayerID:%5%, GameInsUID:%6%, RequestedRole:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerGameMatchedS2CEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, DestPlayerID:{5}, GameInsUID:{6}, RequestedRole:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_DestPlayerID, m_GameInsUID, m_RequestedRole); 
 			}; // void PlayerGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 

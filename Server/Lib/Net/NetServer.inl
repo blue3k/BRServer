@@ -31,7 +31,7 @@
 // Get pending accept count
 CounterType ServerTCP::GetPendingAccept()
 {
-	return m_pAcceptBuffer ? m_pAcceptBuffer->GetUsedBufferCount() : 0;
+	return m_PendingAccept.load(std::memory_order_relaxed);
 }
 
 

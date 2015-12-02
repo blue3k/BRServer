@@ -191,6 +191,9 @@ namespace LoginServer {
 
 	Proc_End:
 
+		if(trans != nullptr)
+			ReleaseTransaction(trans);
+
 		return hr;
 	}
 

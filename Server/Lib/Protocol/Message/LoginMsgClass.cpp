@@ -94,7 +94,7 @@ namespace BR
 			void LoginCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LoginCmd:%1%:%2% , GameID:%3%, ID:%4%, Password:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LoginCmd:{1}:{2} , GameID:{3}, ID:{4}, Password:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_ID, m_Password); 
 			}; // void LoginCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -163,7 +163,7 @@ namespace BR
 			void LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LoginRes:%1%:%2% , Result:{3}, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LoginRes:{1}:{2} , Result:{3:X8}, GameServerAddr:{4}, AccID:{5}, Ticket:{6}, LoginEntityUID:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // void LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -242,7 +242,7 @@ namespace BR
 			void LoginByFacebookCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LoginByFacebookCmd:%1%:%2% , GameID:%3%, UID:%4%, FaceBookName:%5%, EMail:%6%, FacebookToken:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LoginByFacebookCmd:{1}:{2} , GameID:{3}, UID:{4}, FaceBookName:{5}, EMail:{6}, FacebookToken:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_UID, m_FaceBookName, m_EMail, m_FacebookToken); 
 			}; // void LoginByFacebookCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -311,7 +311,7 @@ namespace BR
 			void LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LoginByFacebookRes:%1%:%2% , Result:{3}, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LoginByFacebookRes:{1}:{2} , Result:{3:X8}, GameServerAddr:{4}, AccID:{5}, Ticket:{6}, LoginEntityUID:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // void LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -375,7 +375,7 @@ namespace BR
 			void CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CreateRandomUserCmd:%1%:%2% , GameID:%3%, CellPhone:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CreateRandomUserCmd:{1}:{2} , GameID:{3}, CellPhone:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_CellPhone); 
 			}; // void CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -444,7 +444,7 @@ namespace BR
 			void CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CreateRandomUserRes:%1%:%2% , Result:{3}, GameServerAddr:%4%, AccID:%5%, Ticket:%6%, LoginEntityUID:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CreateRandomUserRes:{1}:{2} , Result:{3:X8}, GameServerAddr:{4}, AccID:{5}, Ticket:{6}, LoginEntityUID:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // void CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 

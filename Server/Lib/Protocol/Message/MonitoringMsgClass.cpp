@@ -83,7 +83,7 @@ namespace BR
 			void GetInstanceListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetInstanceListCmd:%1%:%2% , Context:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetInstanceListCmd:{1}:{2} , Context:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context); 
 			}; // void GetInstanceListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -154,7 +154,7 @@ namespace BR
 			void GetInstanceListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetInstanceListRes:%1%:%2% , Context:%3%, Result:{4}, CounterInstances:%5%, TotalInstanceCount:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetInstanceListRes:{1}:{2} , Context:{3}, Result:{4:X8}, CounterInstances:{5}, TotalInstanceCount:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_CounterInstances, m_TotalInstanceCount); 
 			}; // void GetInstanceListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -215,7 +215,7 @@ namespace BR
 			void RequestCounterValuesCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RequestCounterValuesCmd:%1%:%2% , Context:%3%, InstanceUID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RequestCounterValuesCmd:{1}:{2} , Context:{3}, InstanceUID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_InstanceUID); 
 			}; // void RequestCounterValuesCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -286,7 +286,7 @@ namespace BR
 			void RequestCounterValuesRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RequestCounterValuesRes:%1%:%2% , Context:%3%, Result:{4}, InstanceUID:%5%, CounterValues:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RequestCounterValuesRes:{1}:{2} , Context:{3}, Result:{4:X8}, InstanceUID:{5}, CounterValues:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_InstanceUID, m_CounterValues); 
 			}; // void RequestCounterValuesRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -358,7 +358,7 @@ namespace BR
 			void PerformanceCounterNewC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:PerformanceCounterNewC2SEvt:%1%:%2% , InstanceName:%3%, InstanceUID:%4%, NewCounters:%5%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:PerformanceCounterNewC2SEvt:{1}:{2} , InstanceName:{3}, InstanceUID:{4}, NewCounters:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InstanceName, m_InstanceUID, m_NewCounters); 
 			}; // void PerformanceCounterNewC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -421,7 +421,7 @@ namespace BR
 			void PerformanceCounterFreeC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:PerformanceCounterFreeC2SEvt:%1%:%2% , FreeInstances:%3%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:PerformanceCounterFreeC2SEvt:{1}:{2} , FreeInstances:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_FreeInstances); 
 			}; // void PerformanceCounterFreeC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -487,7 +487,7 @@ namespace BR
 			void PerformanceCounterUpdateC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:PerformanceCounterUpdateC2SEvt:%1%:%2% , InstanceUID:%3%, CounterValues:%4%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:PerformanceCounterUpdateC2SEvt:{1}:{2} , InstanceUID:{3}, CounterValues:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InstanceUID, m_CounterValues); 
 			}; // void PerformanceCounterUpdateC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -545,7 +545,7 @@ namespace BR
 			void PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:PerformanceCounterUpdateCounterInfoS2CEvt:%1%:%2% , InstanceUID:%3%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:PerformanceCounterUpdateCounterInfoS2CEvt:{1}:{2} , InstanceUID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InstanceUID); 
 			}; // void PerformanceCounterUpdateCounterInfoS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 

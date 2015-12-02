@@ -87,7 +87,7 @@ namespace Net {
 
 
 	// UDP/TCP read overlapped
-	struct IOBUFFER_READ : public IOBUFFER_RWBASE
+	struct IOBUFFER_READ : public IOBUFFER_RWBASE, public MemoryPoolObject<IOBUFFER_READ>
 	{
 		// Read flag
 		DWORD dwFlags;
@@ -125,7 +125,7 @@ namespace Net {
 
 
 	// TCP accept overlapped
-	struct IOBUFFER_ACCEPT : public IOBUFFER
+	struct IOBUFFER_ACCEPT : public IOBUFFER, public MemoryPoolObject<IOBUFFER_ACCEPT>
 	{
 		//Connection	*pConnection;
 		SOCKET sockAccept;
@@ -187,14 +187,14 @@ namespace Net {
 			HANDLE m_hIOCP;
 
 			// IOCP system open reference count
-			BR::SyncCounter m_RefCount;
+			SyncCounter m_RefCount;
 
 			// IOCP worker thread list
 			std::vector<IOCPWorker*> m_pWorkers;
 
 			// global statistic
-			BR::SyncCounter m_NumReadWait;
-			BR::SyncCounter m_NumWriteWait;
+			SyncCounter m_NumReadWait;
+			SyncCounter m_NumWriteWait;
 
 			// Singletone instance
 			static IOCPSystem stm_Instance;

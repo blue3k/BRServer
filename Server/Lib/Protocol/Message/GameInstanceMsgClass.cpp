@@ -108,7 +108,7 @@ namespace BR
 			void DeleteGameC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:DeleteGameC2SEvt:%1%:%2% , RouteContext:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:DeleteGameC2SEvt:{1}:{2} , RouteContext:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext); 
 			}; // void DeleteGameC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -204,7 +204,7 @@ namespace BR
 			void JoinGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameCmd:%1%:%2% , Context:%3%, RouteContext:%4%, Player:%5%, Ticket:%6%, RequestedRole:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:JoinGameCmd:{1}:{2} , Context:{3}, RouteContext:{4}, Player:{5}, Ticket:{6}, RequestedRole:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_Player, m_Ticket, m_RequestedRole); 
 			}; // void JoinGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -340,7 +340,7 @@ namespace BR
 			void JoinGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, GameInsSvr:%6%, TimeStamp:%7%, GameState:%8%, Day:%9%, MaxPlayer:%10%, PlayerIndex:%11%, PlayerCharacter:%12%, Role:%13%, Dead:%14%, IsNewJoin:%15%, ChatHistoryData:%16%, GameLogData:%17%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:JoinGameRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, GameInsSvr:{6}, TimeStamp:{7}, GameState:{8}, Day:{9}, MaxPlayer:{10}, PlayerIndex:{11}, PlayerCharacter:{12}, Role:{13}, Dead:{14}, IsNewJoin:{15}, ChatHistoryData:{16}, GameLogData:{17}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_GameInsSvr, m_TimeStamp, m_GameState, m_Day, m_MaxPlayer, m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_IsNewJoin, m_ChatHistoryData, m_GameLogData); 
 			}; // void JoinGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -438,7 +438,7 @@ namespace BR
 			void PlayerJoinedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerJoinedS2CEvt:%1%:%2% , RouteContext:%3%, JoinedPlayer:%4%, JoinedPlayerRole:%5%, JoinedPlayerDead:%6%, JoinedPlayerIndex:%7%, JoinedPlayerCharacter:%8%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerJoinedS2CEvt:{1}:{2} , RouteContext:{3}, JoinedPlayer:{4}, JoinedPlayerRole:{5}, JoinedPlayerDead:{6}, JoinedPlayerIndex:{7}, JoinedPlayerCharacter:{8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_JoinedPlayer, m_JoinedPlayerRole, m_JoinedPlayerDead, m_JoinedPlayerIndex, m_JoinedPlayerCharacter); 
 			}; // void PlayerJoinedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -524,7 +524,7 @@ namespace BR
 			void SetConfigPresetC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:SetConfigPresetC2SEvt:%1%:%2% , RouteContext:%3%, PresetID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetConfigPresetC2SEvt:{1}:{2} , RouteContext:{3}, PresetID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_PresetID); 
 			}; // void SetConfigPresetC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -614,7 +614,7 @@ namespace BR
 			void LeaveGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LeaveGameCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LeaveGameCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID); 
 			}; // void LeaveGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -704,7 +704,7 @@ namespace BR
 			void LeaveGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LeaveGameRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LeaveGameRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void LeaveGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -790,7 +790,7 @@ namespace BR
 			void PlayerLeftS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerLeftS2CEvt:%1%:%2% , RouteContext:%3%, LeftPlayerID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerLeftS2CEvt:{1}:{2} , RouteContext:{3}, LeftPlayerID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_LeftPlayerID); 
 			}; // void PlayerLeftS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -883,7 +883,7 @@ namespace BR
 			void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, PlayerToKick:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}, PlayerToKick:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_PlayerToKick); 
 			}; // void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -973,7 +973,7 @@ namespace BR
 			void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1059,7 +1059,7 @@ namespace BR
 			void PlayerKickedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerKickedS2CEvt:%1%:%2% , RouteContext:%3%, KickedPlayerID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerKickedS2CEvt:{1}:{2} , RouteContext:{3}, KickedPlayerID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_KickedPlayerID); 
 			}; // void PlayerKickedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1149,7 +1149,7 @@ namespace BR
 			void AssignRoleCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AssignRoleCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AssignRoleCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID); 
 			}; // void AssignRoleCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1239,7 +1239,7 @@ namespace BR
 			void AssignRoleRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AssignRoleRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AssignRoleRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void AssignRoleRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1325,7 +1325,7 @@ namespace BR
 			void RoleAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RoleAssignedS2CEvt:%1%:%2% , RouteContext:%3%, Role:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RoleAssignedS2CEvt:{1}:{2} , RouteContext:{3}, Role:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Role); 
 			}; // void RoleAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1420,7 +1420,7 @@ namespace BR
 			void ChatMessageC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:ChatMessageC2SEvt:%1%:%2% , RouteContext:%3%, PlayerID:%4%, Role:%5%, ChatMessage:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ChatMessageC2SEvt:{1}:{2} , RouteContext:{3}, PlayerID:{4}, Role:{5}, ChatMessage:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_PlayerID, m_Role, m_ChatMessage); 
 			}; // void ChatMessageC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1510,7 +1510,7 @@ namespace BR
 			void AdvanceGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AdvanceGameCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AdvanceGameCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID); 
 			}; // void AdvanceGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1600,7 +1600,7 @@ namespace BR
 			void AdvanceGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AdvanceGameRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AdvanceGameRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void AdvanceGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1692,7 +1692,7 @@ namespace BR
 			void GameAdvancedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameAdvancedS2CEvt:%1%:%2% , RouteContext:%3%, TimeStamp:%4%, GameState:%5%, Day:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameAdvancedS2CEvt:{1}:{2} , RouteContext:{3}, TimeStamp:{4}, GameState:{5}, Day:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TimeStamp, m_GameState, m_Day); 
 			}; // void GameAdvancedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1790,7 +1790,7 @@ namespace BR
 			void GameEndedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameEndedS2CEvt:%1%:%2% , RouteContext:%3%, Winner:%4%, GainedExp:%5%, GainedGameMoney:%6%, PlayedRole:%7%, IsWon:%8%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameEndedS2CEvt:{1}:{2} , RouteContext:{3}, Winner:{4}, GainedExp:{5}, GainedGameMoney:{6}, PlayedRole:{7}, IsWon:{8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Winner, m_GainedExp, m_GainedGameMoney, m_PlayedRole, m_IsWon); 
 			}; // void GameEndedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1880,7 +1880,7 @@ namespace BR
 			void VoteGameAdvanceCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteGameAdvanceCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteGameAdvanceCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID); 
 			}; // void VoteGameAdvanceCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1970,7 +1970,7 @@ namespace BR
 			void VoteGameAdvanceRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteGameAdvanceRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteGameAdvanceRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void VoteGameAdvanceRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2056,7 +2056,7 @@ namespace BR
 			void GameAdvanceVotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameAdvanceVotedS2CEvt:%1%:%2% , RouteContext:%3%, Voter:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameAdvanceVotedS2CEvt:{1}:{2} , RouteContext:{3}, Voter:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Voter); 
 			}; // void GameAdvanceVotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2152,7 +2152,7 @@ namespace BR
 			void VoteCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, VoteTarget:%6%, ActionSerial:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}, VoteTarget:{6}, ActionSerial:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_VoteTarget, m_ActionSerial); 
 			}; // void VoteCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2242,7 +2242,7 @@ namespace BR
 			void VoteRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void VoteRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2331,7 +2331,7 @@ namespace BR
 			void VotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VotedS2CEvt:%1%:%2% , RouteContext:%3%, Voter:%4%, VotedTarget:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VotedS2CEvt:{1}:{2} , RouteContext:{3}, Voter:{4}, VotedTarget:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Voter, m_VotedTarget); 
 			}; // void VotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2422,7 +2422,7 @@ namespace BR
 			void VoteEndS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteEndS2CEvt:%1%:%2% , RouteContext:%3%, Voted:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteEndS2CEvt:{1}:{2} , RouteContext:{3}, Voted:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Voted); 
 			}; // void VoteEndS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2514,7 +2514,7 @@ namespace BR
 			void PlayerRevealedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerRevealedS2CEvt:%1%:%2% , RouteContext:%3%, RevealedPlayerID:%4%, Role:%5%, Reason:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerRevealedS2CEvt:{1}:{2} , RouteContext:{3}, RevealedPlayerID:{4}, Role:{5}, Reason:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RevealedPlayerID, m_Role, m_Reason); 
 			}; // void PlayerRevealedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2603,7 +2603,7 @@ namespace BR
 			void PlayerKilledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerKilledS2CEvt:%1%:%2% , RouteContext:%3%, KilledPlayer:%4%, Reason:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerKilledS2CEvt:{1}:{2} , RouteContext:{3}, KilledPlayer:{4}, Reason:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_KilledPlayer, m_Reason); 
 			}; // void PlayerKilledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2696,7 +2696,7 @@ namespace BR
 			void GamePlayAgainCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayAgainCmd:%1%:%2% , Context:%3%, RouteContext:%4%, LeadPlayer:%5%, PartyUID:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayAgainCmd:{1}:{2} , Context:{3}, RouteContext:{4}, LeadPlayer:{5}, PartyUID:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_LeadPlayer, m_PartyUID); 
 			}; // void GamePlayAgainCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2789,7 +2789,7 @@ namespace BR
 			void GamePlayAgainRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayAgainRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, ReplayMemberCount:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayAgainRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, ReplayMemberCount:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_ReplayMemberCount); 
 			}; // void GamePlayAgainRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2881,7 +2881,7 @@ namespace BR
 			void GamePlayAgainS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayAgainS2CEvt:%1%:%2% , RouteContext:%3%, TargetPlayer:%4%, PartyUID:%5%, LeadPlayer:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayAgainS2CEvt:{1}:{2} , RouteContext:{3}, TargetPlayer:{4}, PartyUID:{5}, LeadPlayer:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TargetPlayer, m_PartyUID, m_LeadPlayer); 
 			}; // void GamePlayAgainS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2979,7 +2979,7 @@ namespace BR
 			void GameRevealPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameRevealPlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, TargetPlayerID:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameRevealPlayerCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}, TargetPlayerID:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_TargetPlayerID); 
 			}; // void GameRevealPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3085,7 +3085,7 @@ namespace BR
 			void GameRevealPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameRevealPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, RevealedPlayerID:%6%, RevealedRole:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameRevealPlayerRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, RevealedPlayerID:{6}, RevealedRole:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_RevealedPlayerID, m_RevealedRole); 
 			}; // void GameRevealPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3175,7 +3175,7 @@ namespace BR
 			void GamePlayerReviveCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerReviveCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerReviveCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID); 
 			}; // void GamePlayerReviveCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3265,7 +3265,7 @@ namespace BR
 			void GamePlayerReviveRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerReviveRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerReviveRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void GamePlayerReviveRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3351,7 +3351,7 @@ namespace BR
 			void GamePlayerRevivedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerRevivedS2CEvt:%1%:%2% , RouteContext:%3%, RevivedPlayerID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerRevivedS2CEvt:{1}:{2} , RouteContext:{3}, RevivedPlayerID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RevivedPlayerID); 
 			}; // void GamePlayerRevivedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 

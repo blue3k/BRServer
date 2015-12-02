@@ -583,7 +583,6 @@ namespace LoginServer {
 	HRESULT LoginPlayerTransCloseInstance::OnCloseTransaction( HRESULT hrRes )
 	{
 		// This must be called prior to clear authTicket otherwise the connection must be released already
-		//Assert( GetMyOwner()->GetConnection() == nullptr );
 		GetMyOwner()->ReleaseConnection();
 
 		Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity( GetMyOwner() );

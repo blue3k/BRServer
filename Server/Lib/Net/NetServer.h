@@ -98,8 +98,7 @@ namespace Net {
 
 	private:
 
-		// Pending accept buffer
-		SpinSharedBuffer<IOBUFFER_ACCEPT> *m_pAcceptBuffer;
+		SyncCounter m_PendingAccept;
 
 	protected:
 

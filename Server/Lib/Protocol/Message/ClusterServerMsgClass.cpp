@@ -148,7 +148,7 @@ namespace BR
 			void GetClusterMemberListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:GetClusterMemberListCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, ClusterID:%6%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:GetClusterMemberListCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, ClusterID:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_ClusterID); 
 			}; // void GetClusterMemberListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -276,7 +276,7 @@ namespace BR
 			void GetClusterMemberListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:GetClusterMemberListRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MemberList:%6%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:GetClusterMemberListRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, MemberList:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MemberList); 
 			}; // void GetClusterMemberListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -414,7 +414,7 @@ namespace BR
 			void JoinClusterCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:JoinClusterCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, Sender:%6%, SenderNetClass:%7%, SenderAddress:%8%, ClusterID:%9%, ClusterType:%10%, ClusterMembership:%11%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:JoinClusterCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, Sender:{6}, SenderNetClass:{7}, SenderAddress:{8}, ClusterID:{9}, ClusterType:{10}, ClusterMembership:{11}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_Sender, m_SenderNetClass, m_SenderAddress, m_ClusterID, m_ClusterType, m_ClusterMembership); 
 			}; // void JoinClusterCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -542,7 +542,7 @@ namespace BR
 			void JoinClusterRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:JoinClusterRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MemberList:%6%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:JoinClusterRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, MemberList:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MemberList); 
 			}; // void JoinClusterRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -675,7 +675,7 @@ namespace BR
 			void NewServerServiceJoinedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:NewServerServiceJoinedC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, JoinedServiceUID:%5%, JoinedServiceNetClass:%6%, JoinedServiceAddress:%7%, ClusterID:%8%, ClusterType:%9%, JoinedServiceMembership:%10%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:NewServerServiceJoinedC2SEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, JoinedServiceUID:{5}, JoinedServiceNetClass:{6}, JoinedServiceAddress:{7}, ClusterID:{8}, ClusterType:{9}, JoinedServiceMembership:{10}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_JoinedServiceUID, m_JoinedServiceNetClass, m_JoinedServiceAddress, m_ClusterID, m_ClusterType, m_JoinedServiceMembership); 
 			}; // void NewServerServiceJoinedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -804,7 +804,7 @@ namespace BR
 			void SyncClusterServiceC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:SyncClusterServiceC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, ClusterID:%5%, ClusterType:%6%, MemberList:%7%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:SyncClusterServiceC2SEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, ClusterID:{5}, ClusterType:{6}, MemberList:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_ClusterID, m_ClusterType, m_MemberList); 
 			}; // void SyncClusterServiceC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -927,7 +927,7 @@ namespace BR
 			void RequestDataSyncCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:RequestDataSyncCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, ClusterID:%6%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:RequestDataSyncCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, ClusterID:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_ClusterID); 
 			}; // void RequestDataSyncCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1045,7 +1045,7 @@ namespace BR
 			void RequestDataSyncRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:RequestDataSyncRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:RequestDataSyncRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void RequestDataSyncRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1169,7 +1169,7 @@ namespace BR
 			void ClusterMasterAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:ClusterMasterAssignedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, Sender:%5%, ClusterID:%6%, MasterUID:%7%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:ClusterMasterAssignedS2CEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, Sender:{5}, ClusterID:{6}, MasterUID:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_Sender, m_ClusterID, m_MasterUID); 
 			}; // void ClusterMasterAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1293,7 +1293,7 @@ namespace BR
 			void ClusterMasterVoteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:ClusterMasterVoteC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, ClusterID:%5%, VoteToUID:%6%, VotedUpTime:%7%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:ClusterMasterVoteC2SEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, ClusterID:{5}, VoteToUID:{6}, VotedUpTime:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_ClusterID, m_VoteToUID, m_VotedUpTime); 
 			}; // void ClusterMasterVoteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1417,7 +1417,7 @@ namespace BR
 			void ClusterUpdateStatusC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:ClusterUpdateStatusC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, Sender:%5%, ClusterID:%6%, MemberStatus:%7%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:ClusterUpdateStatusC2SEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, Sender:{5}, ClusterID:{6}, MemberStatus:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_Sender, m_ClusterID, m_MemberStatus); 
 			}; // void ClusterUpdateStatusC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1541,7 +1541,7 @@ namespace BR
 			void ClusterUpdateWorkloadC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:ClusterUpdateWorkloadC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, Sender:%5%, ClusterID:%6%, Workload:%7%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:ClusterUpdateWorkloadC2SEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, Sender:{5}, ClusterID:{6}, Workload:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_Sender, m_ClusterID, m_Workload); 
 			}; // void ClusterUpdateWorkloadC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1664,7 +1664,7 @@ namespace BR
 			void GetLowestWorkloadClusterMemberCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:GetLowestWorkloadClusterMemberCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, ClusterID:%6%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:GetLowestWorkloadClusterMemberCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, ClusterID:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_ClusterID); 
 			}; // void GetLowestWorkloadClusterMemberCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1786,7 +1786,7 @@ namespace BR
 			void GetLowestWorkloadClusterMemberRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:GetLowestWorkloadClusterMemberRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, Member:%6%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:GetLowestWorkloadClusterMemberRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, Member:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_Member); 
 			}; // void GetLowestWorkloadClusterMemberRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1907,7 +1907,7 @@ namespace BR
 			void GamePlayerEntityCreatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerEntityCreatedC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, PlayerID:%5%, PlayerUID:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerEntityCreatedC2SEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, PlayerID:{5}, PlayerUID:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_PlayerID, m_PlayerUID); 
 			}; // void GamePlayerEntityCreatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2028,7 +2028,7 @@ namespace BR
 			void GamePlayerEntityDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerEntityDeletedC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, PlayerID:%5%, PlayerUID:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerEntityDeletedC2SEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, PlayerID:{5}, PlayerUID:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_PlayerID, m_PlayerUID); 
 			}; // void GamePlayerEntityDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 

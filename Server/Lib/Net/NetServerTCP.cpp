@@ -34,14 +34,13 @@ namespace Net {
 	//
 
 	ServerTCP::ServerTCP(ServerID InServerID, NetClass localClass)
-		:Server(InServerID, localClass),
-		m_pAcceptBuffer(nullptr)
+		: Server(InServerID, localClass)
+		, m_PendingAccept(0)
 	{
 	}
 
 	ServerTCP::~ServerTCP()
 	{
-		Util::SafeDelete( m_pAcceptBuffer );
 	}
 	
 	HRESULT ServerTCP::SetupSocketOption(SOCKET socket)
@@ -73,15 +72,10 @@ namespace Net {
 		HRESULT hr = S_OK, hrErr = S_OK;
 		SOCKET sockAccept = INVALID_SOCKET;
 
-		pAcceptInfo = nullptr;
+		pAcceptInfo = new IOBUFFER_ACCEPT;
+		netMem(pAcceptInfo);
 
-		netTrace(TRC_CONNECTION, "Accept : {0}", GetConnectionManager().GetNumActiveConnection());
-
-		if (FAILED(m_pAcceptBuffer->TryAllocBuffer(Const::TCP_ACCEPT_TRYALLOC_MAX, pAcceptInfo)))
-		{
-			// all accept operation pending done
-			return E_OUTOFMEMORY;
-		}
+		netTrace(TRC_CONNECTION, "Accept : {0}, {1}", m_PendingAccept.load(std::memory_order_relaxed), GetConnectionManager().GetNumActiveConnection());
 
 		memset(pAcceptInfo, 0, sizeof(IOBUFFER_ACCEPT));
 
@@ -106,12 +100,9 @@ namespace Net {
 			// successed
 			break;
 		case E_NET_TRY_AGAIN:
-			netTrace(TRC_NET, "TCP accept busy, try again {0} queued", m_pAcceptBuffer->GetUsedBufferCount());
-			goto Proc_End;
-			break;
+			netTrace(TRC_NET, "TCP accept busy, try again {0} queued", m_PendingAccept.load(std::memory_order_relaxed));
 		default:
 			hr = hrErr;
-			m_pAcceptBuffer->FreeBuffer(pAcceptInfo);
 			break;
 		}
 
@@ -119,8 +110,11 @@ namespace Net {
 
 		if (FAILED(hr))
 		{
-			if (pAcceptInfo && m_pAcceptBuffer)
-				m_pAcceptBuffer->FreeBuffer(pAcceptInfo);
+			Util::SafeDelete(pAcceptInfo);
+		}
+		else
+		{
+			m_PendingAccept.fetch_add(1, std::memory_order_relaxed);
 		}
 
 		return hr;
@@ -135,8 +129,9 @@ namespace Net {
 		SOCKET sockAccept = pOverAccept->sockAccept;
 		Net::IConnection::ConnectionInformation connectionInfo;
 
-
 		netChkPtr( pOverAccept );
+
+		m_PendingAccept.fetch_sub(1, std::memory_order_relaxed);
 
 		memset( &connectionInfo, 0, sizeof(connectionInfo) );
 
@@ -168,9 +163,7 @@ namespace Net {
 
 	Proc_End:
 
-
-		if( m_pAcceptBuffer && pOverAccept )
-			m_pAcceptBuffer->FreeBuffer( pOverAccept );
+		Util::SafeDelete(pOverAccept);
 
 		if( sockAccept != INVALID_SOCKET )
 		{
@@ -261,6 +254,7 @@ namespace Net {
 	HRESULT ServerTCP::PendingAccept()
 	{
 		HRESULT hr = S_OK;
+		UINT iMaxAccept = Util::Max((UINT)Const::TCP_ACCEPT_PENDING_MAX, (UINT)1);
 
 		// skip if not accept mode
 		if(!NetSystem::IsProactorSystem() || !GetIsEnableAccept())
@@ -271,7 +265,7 @@ namespace Net {
 			goto Proc_End;
 
 		// used buffer count == pended accept count
-		while( m_pAcceptBuffer->GetUsedBufferCount() < m_pAcceptBuffer->GetBufferCount() )
+		while(m_PendingAccept.load(std::memory_order_acquire) < iMaxAccept)
 		{
 			IOBUFFER_ACCEPT* pAcceptInfo = nullptr;
 
@@ -303,7 +297,6 @@ namespace Net {
 		INT32 iOptValue;
 		int bOptValue;
 		sockaddr_in6 bindAddr;
-		int iMaxAccept;
 		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
 
 		if( GetSocket() != INVALID_SOCKET )// already initialized?
@@ -371,14 +364,6 @@ namespace Net {
 		}
 
 		netChk(NetSystem::RegisterSocket(socket, this, true));
-
-		// allocate accept buffer
-		Util::SafeDelete( m_pAcceptBuffer );
-
-
-		iMaxAccept = Const::TCP_ACCEPT_PENDING_MAX;
-		iMaxAccept = Util::Max( iMaxAccept, 1 );
-		netMem( m_pAcceptBuffer = new SpinSharedBuffer<IOBUFFER_ACCEPT>( iMaxAccept ) );
 
 
 		SetSocket( socket );

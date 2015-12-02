@@ -138,8 +138,8 @@ namespace Util {
 	TimeStampMS TimeMinNonZero(TimeStampMS timeMs, TimeStampMS timeMs2);
 
 
-	inline DurationMS TimeSince(TimeStampMS timeMs)					{ return (Time.GetTimeMs() - timeMs); }
-	inline DurationSec TimeSinceUTC(TimeStampSec timeUTC)			{ return (Time.GetTimeUTCSec() - timeUTC); }
+	inline DurationMS TimeSince(TimeStampMS timeMs)					{ auto timeCur = Time.GetTimeMs(); return (timeCur > timeMs) ? (timeCur - timeMs) : DurationMS(0); }
+	inline DurationSec TimeSinceUTC(TimeStampSec timeUTC)			{ auto timeCur = Time.GetTimeUTCSec(); return (timeCur > timeUTC) ? (timeCur - timeUTC) : DurationSec(0); }
 
 #include "TimeUtil.inl"
 

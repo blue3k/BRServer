@@ -153,7 +153,7 @@ namespace BR
 			void RegisterPartyMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPartyMatchingCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, Players:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPartyMatchingCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, Players:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_Players); 
 			}; // void RegisterPartyMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -275,7 +275,7 @@ namespace BR
 			void RegisterPartyMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPartyMatchingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MatchingTicket:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPartyMatchingRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, MatchingTicket:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MatchingTicket); 
 			}; // void RegisterPartyMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -398,7 +398,7 @@ namespace BR
 			void RegisterPlayerMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerMatchingCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, PlayerID:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerMatchingCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, PlayerID:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_PlayerID); 
 			}; // void RegisterPlayerMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -520,7 +520,7 @@ namespace BR
 			void RegisterPlayerMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerMatchingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MatchingTicket:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerMatchingRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, MatchingTicket:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MatchingTicket); 
 			}; // void RegisterPlayerMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -646,7 +646,7 @@ namespace BR
 			void UpdateMatchingEntityUIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:UpdateMatchingEntityUIDCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, MatchingTicket:%6%, PreviousUID:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:UpdateMatchingEntityUIDCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, MatchingTicket:{6}, PreviousUID:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_MatchingTicket, m_PreviousUID); 
 			}; // void UpdateMatchingEntityUIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -764,7 +764,7 @@ namespace BR
 			void UpdateMatchingEntityUIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:UpdateMatchingEntityUIDRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:UpdateMatchingEntityUIDRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void UpdateMatchingEntityUIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -887,7 +887,7 @@ namespace BR
 			void UnregisterMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:UnregisterMatchingCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, MatchingTicket:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:UnregisterMatchingCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, MatchingTicket:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
 			}; // void UnregisterMatchingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1005,7 +1005,7 @@ namespace BR
 			void UnregisterMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:UnregisterMatchingRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:UnregisterMatchingRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void UnregisterMatchingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1126,7 +1126,7 @@ namespace BR
 			void PartyMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyMatchingCanceledS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, DestPartyUID:%5%, MatchingTicket:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyMatchingCanceledS2CEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, DestPartyUID:{5}, MatchingTicket:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_DestPartyUID, m_MatchingTicket); 
 			}; // void PartyMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1247,7 +1247,7 @@ namespace BR
 			void PlayerMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerMatchingCanceledS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, DestPlayerID:%5%, MatchingTicket:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerMatchingCanceledS2CEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, DestPlayerID:{5}, MatchingTicket:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_DestPlayerID, m_MatchingTicket); 
 			}; // void PlayerMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1365,7 +1365,7 @@ namespace BR
 			void PartyMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyMatchingItemDequeuedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, MatchingTicket:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyMatchingItemDequeuedS2CEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, MatchingTicket:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
 			}; // void PartyMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1483,7 +1483,7 @@ namespace BR
 			void PlayerMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerMatchingItemDequeuedS2CEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, MatchingTicket:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerMatchingItemDequeuedS2CEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, MatchingTicket:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
 			}; // void PlayerMatchingItemDequeuedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1603,7 +1603,7 @@ namespace BR
 			void ReserveItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ReserveItemCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount); 
 			}; // void ReserveItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1729,7 +1729,7 @@ namespace BR
 			void ReserveItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, NumberOfPlayersInTheItem:%6%, MatchingTicket:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ReserveItemRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, NumberOfPlayersInTheItem:{6}, MatchingTicket:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_NumberOfPlayersInTheItem, m_MatchingTicket); 
 			}; // void ReserveItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1852,7 +1852,7 @@ namespace BR
 			void ReserveItemsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemsCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, NumberOfItemsToReserve:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ReserveItemsCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, NumberOfItemsToReserve:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_NumberOfItemsToReserve); 
 			}; // void ReserveItemsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1990,7 +1990,7 @@ namespace BR
 			void ReserveItemsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:ReserveItemsRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, NumberOfPlayersInTheItem:%6%, MatchingTicket:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ReserveItemsRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, NumberOfPlayersInTheItem:{6}, MatchingTicket:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_NumberOfPlayersInTheItem, m_MatchingTicket); 
 			}; // void ReserveItemsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2113,7 +2113,7 @@ namespace BR
 			void CancelReservationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, TicketToCancel:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CancelReservationCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, TicketToCancel:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_TicketToCancel); 
 			}; // void CancelReservationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2231,7 +2231,7 @@ namespace BR
 			void CancelReservationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CancelReservationRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void CancelReservationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2359,7 +2359,7 @@ namespace BR
 			void CancelReservationsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationsCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, TicketToCancel:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CancelReservationsCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, TicketToCancel:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_TicketToCancel); 
 			}; // void CancelReservationsCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2477,7 +2477,7 @@ namespace BR
 			void CancelReservationsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CancelReservationsRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CancelReservationsRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void CancelReservationsRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2600,7 +2600,7 @@ namespace BR
 			void DequeueItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:DequeueItemCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, MatchingTicket:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:DequeueItemCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, MatchingTicket:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
 			}; // void DequeueItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2740,7 +2740,7 @@ namespace BR
 			void DequeueItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:DequeueItemRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, MatchingTicket:%6%, RegisterUID:%7%, RegisterID:%8%, Players:%9%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:DequeueItemRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, MatchingTicket:{6}, RegisterUID:{7}, RegisterID:{8}, Players:{9}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_MatchingTicket, m_RegisterUID, m_RegisterID, m_Players); 
 			}; // void DequeueItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2858,7 +2858,7 @@ namespace BR
 			void MatchingItemErrorC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:MatchingItemErrorC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%, MatchingTicket:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:MatchingItemErrorC2SEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}, MatchingTicket:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount, m_MatchingTicket); 
 			}; // void MatchingItemErrorC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 

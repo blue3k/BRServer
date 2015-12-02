@@ -143,7 +143,6 @@ namespace Svr {
 			WeakPointerT<PerformanceCounterInstance> removed;
 			if (SUCCEEDED(m_CounterInstanceMap.Remove(freeInfo.UID.UID, removed)))
 			{
-				//listNode.CounterPointer = WeakPointer();
 				freeList.push_back(freeInfo.UID);
 
 				if (freeList.GetSize() >= freeList.GetAllocatedSize() && m_RawUDP != nullptr)
@@ -223,7 +222,7 @@ namespace Svr {
 			}
 			else
 			{
-				m_RawUDP->SendMsg(m_RemoteSockAddress, pMsg);
+				//m_RawUDP->SendMsg(m_RemoteSockAddress, pMsg);
 			}
 
 			return true;

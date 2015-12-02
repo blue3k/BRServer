@@ -331,13 +331,13 @@ namespace Google {
 		HRESULT hr = S_OK;
 
 		if (!forceUpdate
-			&& Util::TimeSince(m_AuthenticatedTime) < DurationMS(AUTHTICKET_TIMEOUT))
+			&& Util::TimeSince(m_AuthenticatedTime) <= DurationMS(AUTHTICKET_TIMEOUT))
 			return hr;
 
 		MutexScopeLock localLock(m_AuthenticationLock);
 
 		if (!forceUpdate
-			&& Util::TimeSince(m_AuthenticatedTime) < DurationMS(AUTHTICKET_TIMEOUT))
+			&& Util::TimeSince(m_AuthenticatedTime) <= DurationMS(AUTHTICKET_TIMEOUT))
 			return hr;
 
 		svrChk(Authenticate());

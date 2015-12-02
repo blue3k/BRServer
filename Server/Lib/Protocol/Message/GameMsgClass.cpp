@@ -79,7 +79,7 @@ namespace BR
 			void HeartBitC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:HeartBitC2SEvt:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:HeartBitC2SEvt:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void HeartBitC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -143,7 +143,7 @@ namespace BR
 			void JoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameServerCmd:%1%:%2% , AccID:%3%, Ticket:%4%, LoginEntityUID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:JoinGameServerCmd:{1}:{2} , AccID:{3}, Ticket:{4}, LoginEntityUID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // void JoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -218,7 +218,7 @@ namespace BR
 			void JoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameServerRes:%1%:%2% , Result:{3}, NickName:%4%, GameUID:%5%, PartyUID:%6%, PartyLeaderID:%7%, MatchingTicket:%8%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:JoinGameServerRes:{1}:{2} , Result:{3:X8}, NickName:{4}, GameUID:{5}, PartyUID:{6}, PartyLeaderID:{7}, MatchingTicket:{8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_NickName, m_GameUID, m_PartyUID, m_PartyLeaderID, m_MatchingTicket); 
 			}; // void JoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -273,7 +273,7 @@ namespace BR
 			void GetComplitionStateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetComplitionStateCmd:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetComplitionStateCmd:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void GetComplitionStateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -336,7 +336,7 @@ namespace BR
 			void GetComplitionStateRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetComplitionStateRes:%1%:%2% , Result:{3}, ComplitionState:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetComplitionStateRes:{1}:{2} , Result:{3:X8}, ComplitionState:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_ComplitionState); 
 			}; // void GetComplitionStateRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -397,7 +397,7 @@ namespace BR
 			void SetComplitionStateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:SetComplitionStateCmd:%1%:%2% , ComplitionState:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetComplitionStateCmd:{1}:{2} , ComplitionState:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_ComplitionState); 
 			}; // void SetComplitionStateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -454,7 +454,7 @@ namespace BR
 			void SetComplitionStateRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:SetComplitionStateRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetComplitionStateRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void SetComplitionStateRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -515,7 +515,7 @@ namespace BR
 			void RegisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterGCMCmd:%1%:%2% , GCMRegisteredID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterGCMCmd:{1}:{2} , GCMRegisteredID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GCMRegisteredID); 
 			}; // void RegisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -572,7 +572,7 @@ namespace BR
 			void RegisterGCMRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterGCMRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterGCMRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void RegisterGCMRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -633,7 +633,7 @@ namespace BR
 			void UnregisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:UnregisterGCMCmd:%1%:%2% , GCMRegisteredID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:UnregisterGCMCmd:{1}:{2} , GCMRegisteredID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GCMRegisteredID); 
 			}; // void UnregisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -690,7 +690,7 @@ namespace BR
 			void UnregisterGCMRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:UnregisterGCMRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:UnregisterGCMRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void UnregisterGCMRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -748,7 +748,7 @@ namespace BR
 			void InviteFriendCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:InviteFriendCmd:%1%:%2% , FriendID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:InviteFriendCmd:{1}:{2} , FriendID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_FriendID); 
 			}; // void InviteFriendCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -805,7 +805,7 @@ namespace BR
 			void InviteFriendRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:InviteFriendRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:InviteFriendRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void InviteFriendRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -866,7 +866,7 @@ namespace BR
 			void AcceptFriendRequestCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AcceptFriendRequestCmd:%1%:%2% , InviterID:%3%, InviterFacebookUID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AcceptFriendRequestCmd:{1}:{2} , InviterID:{3}, InviterFacebookUID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InviterID, m_InviterFacebookUID); 
 			}; // void AcceptFriendRequestCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -926,7 +926,7 @@ namespace BR
 			void AcceptFriendRequestRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AcceptFriendRequestRes:%1%:%2% , Result:{3}, NewFriend:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AcceptFriendRequestRes:{1}:{2} , Result:{3:X8}, NewFriend:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_NewFriend); 
 			}; // void AcceptFriendRequestRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -984,7 +984,7 @@ namespace BR
 			void FriendRequestAcceptedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:FriendRequestAcceptedS2CEvt:%1%:%2% , Accepter:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:FriendRequestAcceptedS2CEvt:{1}:{2} , Accepter:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Accepter); 
 			}; // void FriendRequestAcceptedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1042,7 +1042,7 @@ namespace BR
 			void RemoveFriendCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RemoveFriendCmd:%1%:%2% , FriendID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RemoveFriendCmd:{1}:{2} , FriendID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_FriendID); 
 			}; // void RemoveFriendCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1102,7 +1102,7 @@ namespace BR
 			void RemoveFriendRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RemoveFriendRes:%1%:%2% , Result:{3}, FriendID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RemoveFriendRes:{1}:{2} , Result:{3:X8}, FriendID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_FriendID); 
 			}; // void RemoveFriendRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1160,7 +1160,7 @@ namespace BR
 			void FriendRemovedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:FriendRemovedS2CEvt:%1%:%2% , FriendID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:FriendRemovedS2CEvt:{1}:{2} , FriendID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_FriendID); 
 			}; // void FriendRemovedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1221,7 +1221,7 @@ namespace BR
 			void GetFriendListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetFriendListCmd:%1%:%2% , StartIndex:%3%, Count:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetFriendListCmd:{1}:{2} , StartIndex:{3}, Count:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_StartIndex, m_Count); 
 			}; // void GetFriendListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1295,7 +1295,7 @@ namespace BR
 			void GetFriendListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetFriendListRes:%1%:%2% , Result:{3}, MaxFriendSlot:%4%, TotalNumberOfFriends:%5%, StartIndex:%6%, FriendList:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetFriendListRes:{1}:{2} , Result:{3:X8}, MaxFriendSlot:{4}, TotalNumberOfFriends:{5}, StartIndex:{6}, FriendList:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_MaxFriendSlot, m_TotalNumberOfFriends, m_StartIndex, m_FriendList); 
 			}; // void GetFriendListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1350,7 +1350,7 @@ namespace BR
 			void GetNotificationListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetNotificationListCmd:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetNotificationListCmd:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void GetNotificationListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1407,7 +1407,7 @@ namespace BR
 			void GetNotificationListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetNotificationListRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetNotificationListRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void GetNotificationListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1465,7 +1465,7 @@ namespace BR
 			void DeleteNotificationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:DeleteNotificationCmd:%1%:%2% , NotificationID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:DeleteNotificationCmd:{1}:{2} , NotificationID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_NotificationID); 
 			}; // void DeleteNotificationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1525,7 +1525,7 @@ namespace BR
 			void DeleteNotificationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:DeleteNotificationRes:%1%:%2% , Result:{3}, NotificationID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:DeleteNotificationRes:{1}:{2} , Result:{3:X8}, NotificationID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_NotificationID); 
 			}; // void DeleteNotificationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1583,7 +1583,7 @@ namespace BR
 			void SetNotificationReadCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:SetNotificationReadCmd:%1%:%2% , NotificationID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetNotificationReadCmd:{1}:{2} , NotificationID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_NotificationID); 
 			}; // void SetNotificationReadCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1643,7 +1643,7 @@ namespace BR
 			void SetNotificationReadRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:SetNotificationReadRes:%1%:%2% , Result:{3}, NotificationID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetNotificationReadRes:{1}:{2} , Result:{3:X8}, NotificationID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_NotificationID); 
 			}; // void SetNotificationReadRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1701,7 +1701,7 @@ namespace BR
 			void AcceptNotificationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AcceptNotificationCmd:%1%:%2% , NotificationID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AcceptNotificationCmd:{1}:{2} , NotificationID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_NotificationID); 
 			}; // void AcceptNotificationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1761,7 +1761,7 @@ namespace BR
 			void AcceptNotificationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AcceptNotificationRes:%1%:%2% , Result:{3}, NotificationID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AcceptNotificationRes:{1}:{2} , Result:{3:X8}, NotificationID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_NotificationID); 
 			}; // void AcceptNotificationRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1840,7 +1840,7 @@ namespace BR
 			void NotifyS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:NotifyS2CEvt:%1%:%2% , NotificationID:%3%, MessageID:%4%, MessageParam0:%5%, MessageParam1:%6%, MessageText:%7%, IsRead:%8%, TimeStamp:%9%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:NotifyS2CEvt:{1}:{2} , NotificationID:{3}, MessageID:{4}, MessageParam0:{5}, MessageParam1:{6}, MessageText:{7}, IsRead:{8}, TimeStamp:{9}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_NotificationID, m_MessageID, m_MessageParam0, m_MessageParam1, m_MessageText, m_IsRead, m_TimeStamp); 
 			}; // void NotifyS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1901,7 +1901,7 @@ namespace BR
 			void FindPlayerByEMailCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:FindPlayerByEMailCmd:%1%:%2% , PlayerEMail:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:FindPlayerByEMailCmd:{1}:{2} , PlayerEMail:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PlayerEMail); 
 			}; // void FindPlayerByEMailCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1961,7 +1961,7 @@ namespace BR
 			void FindPlayerByEMailRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:FindPlayerByEMailRes:%1%:%2% , Result:{3}, Player:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:FindPlayerByEMailRes:{1}:{2} , Result:{3:X8}, Player:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_Player); 
 			}; // void FindPlayerByEMailRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2019,7 +2019,7 @@ namespace BR
 			void FindPlayerByPlayerIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:FindPlayerByPlayerIDCmd:%1%:%2% , PlayerID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:FindPlayerByPlayerIDCmd:{1}:{2} , PlayerID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PlayerID); 
 			}; // void FindPlayerByPlayerIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2079,7 +2079,7 @@ namespace BR
 			void FindPlayerByPlayerIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:FindPlayerByPlayerIDRes:%1%:%2% , Result:{3}, Player:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:FindPlayerByPlayerIDRes:{1}:{2} , Result:{3:X8}, Player:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_Player); 
 			}; // void FindPlayerByPlayerIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2142,7 +2142,7 @@ namespace BR
 			void RequestPlayerStatusUpdateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RequestPlayerStatusUpdateCmd:%1%:%2% , TargetPlayerID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RequestPlayerStatusUpdateCmd:{1}:{2} , TargetPlayerID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TargetPlayerID); 
 			}; // void RequestPlayerStatusUpdateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2199,7 +2199,7 @@ namespace BR
 			void RequestPlayerStatusUpdateRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RequestPlayerStatusUpdateRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RequestPlayerStatusUpdateRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void RequestPlayerStatusUpdateRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2263,7 +2263,7 @@ namespace BR
 			void NotifyPlayerStatusUpdatedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:NotifyPlayerStatusUpdatedS2CEvt:%1%:%2% , PlayerID:%3%, LatestActiveTime:%4%, IsInGame:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:NotifyPlayerStatusUpdatedS2CEvt:{1}:{2} , PlayerID:{3}, LatestActiveTime:{4}, IsInGame:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PlayerID, m_LatestActiveTime, m_IsInGame); 
 			}; // void NotifyPlayerStatusUpdatedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2327,7 +2327,7 @@ namespace BR
 			void GetRankingListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetRankingListCmd:%1%:%2% , RankingType:%3%, BaseRanking:%4%, Count:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetRankingListCmd:{1}:{2} , RankingType:{3}, BaseRanking:{4}, Count:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RankingType, m_BaseRanking, m_Count); 
 			}; // void GetRankingListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2392,7 +2392,7 @@ namespace BR
 			void GetRankingListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetRankingListRes:%1%:%2% , Result:{3}, Ranking:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetRankingListRes:{1}:{2} , Result:{3:X8}, Ranking:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_Ranking); 
 			}; // void GetRankingListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2447,7 +2447,7 @@ namespace BR
 			void GetUserGamePlayerInfoCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetUserGamePlayerInfoCmd:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetUserGamePlayerInfoCmd:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void GetUserGamePlayerInfoCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2567,7 +2567,7 @@ namespace BR
 			void GetUserGamePlayerInfoRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetUserGamePlayerInfoRes:%1%:%2% , Result:{3}, Level:%4%, Exp:%5%, GameMoney:%6%, Gem:%7%, Stamina:%8%, LastUpdateTime:%9%, TotalPlayed:%10%, WinPlaySC:%11%, WinPlaySM:%12%, WinPlaySS:%13%, LosePlaySC:%14%, LosePlaySM:%15%, LosePlaySS:%16%, WinPlayNC:%17%, WinPlayNM:%18%, WinPlayNS:%19%, LosePlayNC:%20%, LosePlayNM:%21%, LosePlayNS:%22%, WeeklyWin:%23%, WeeklyLose:%24%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetUserGamePlayerInfoRes:{1}:{2} , Result:{3:X8}, Level:{4}, Exp:{5}, GameMoney:{6}, Gem:{7}, Stamina:{8}, LastUpdateTime:{9}, TotalPlayed:{10}, WinPlaySC:{11}, WinPlaySM:{12}, WinPlaySS:{13}, LosePlaySC:{14}, LosePlaySM:{15}, LosePlaySS:{16}, WinPlayNC:{17}, WinPlayNM:{18}, WinPlayNS:{19}, LosePlayNC:{20}, LosePlayNM:{21}, LosePlayNS:{22}, WeeklyWin:{23}, WeeklyLose:{24}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_Level, m_Exp, m_GameMoney, m_Gem, m_Stamina, m_LastUpdateTime, m_TotalPlayed, m_WinPlaySC, m_WinPlaySM, m_WinPlaySS, m_LosePlaySC, m_LosePlaySM, m_LosePlaySS, m_WinPlayNC, m_WinPlayNM, m_WinPlayNS, m_LosePlayNC, m_LosePlayNM, m_LosePlayNS, m_WeeklyWin, m_WeeklyLose); 
 			}; // void GetUserGamePlayerInfoRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2625,7 +2625,7 @@ namespace BR
 			void GetGamePlayerInfoCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetGamePlayerInfoCmd:%1%:%2% , PlayerID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetGamePlayerInfoCmd:{1}:{2} , PlayerID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PlayerID); 
 			}; // void GetGamePlayerInfoCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2733,7 +2733,7 @@ namespace BR
 			void GetGamePlayerInfoRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GetGamePlayerInfoRes:%1%:%2% , Result:{3}, PlayerID:%4%, Level:%5%, TotalPlayed:%6%, WinPlaySC:%7%, WinPlaySM:%8%, WinPlaySS:%9%, LosePlaySC:%10%, LosePlaySM:%11%, LosePlaySS:%12%, WinPlayNC:%13%, WinPlayNM:%14%, WinPlayNS:%15%, LosePlayNC:%16%, LosePlayNM:%17%, LosePlayNS:%18%, WeeklyWin:%19%, WeeklyLose:%20%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetGamePlayerInfoRes:{1}:{2} , Result:{3:X8}, PlayerID:{4}, Level:{5}, TotalPlayed:{6}, WinPlaySC:{7}, WinPlaySM:{8}, WinPlaySS:{9}, LosePlaySC:{10}, LosePlaySM:{11}, LosePlaySS:{12}, WinPlayNC:{13}, WinPlayNM:{14}, WinPlayNS:{15}, LosePlayNC:{16}, LosePlayNM:{17}, LosePlayNS:{18}, WeeklyWin:{19}, WeeklyLose:{20}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_PlayerID, m_Level, m_TotalPlayed, m_WinPlaySC, m_WinPlaySM, m_WinPlaySS, m_LosePlaySC, m_LosePlaySM, m_LosePlaySS, m_WinPlayNC, m_WinPlayNM, m_WinPlayNS, m_LosePlayNC, m_LosePlayNM, m_LosePlayNS, m_WeeklyWin, m_WeeklyLose); 
 			}; // void GetGamePlayerInfoRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2794,7 +2794,7 @@ namespace BR
 			void LevelUpS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LevelUpS2CEvt:%1%:%2% , CurrentTotalExp:%3%, CurrentLevel:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LevelUpS2CEvt:{1}:{2} , CurrentTotalExp:{3}, CurrentLevel:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_CurrentTotalExp, m_CurrentLevel); 
 			}; // void LevelUpS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2858,7 +2858,7 @@ namespace BR
 			void SetNickNameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:SetNickNameCmd:%1%:%2% , NickName:%3%, IsCostFree:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetNickNameCmd:{1}:{2} , NickName:{3}, IsCostFree:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_NickName, m_IsCostFree); 
 			}; // void SetNickNameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2921,7 +2921,7 @@ namespace BR
 			void SetNickNameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:SetNickNameRes:%1%:%2% , Result:{3}, TotalGem:%4%, TotalGameMoney:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetNickNameRes:{1}:{2} , Result:{3:X8}, TotalGem:{4}, TotalGameMoney:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_TotalGem, m_TotalGameMoney); 
 			}; // void SetNickNameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2976,7 +2976,7 @@ namespace BR
 			void CreatePartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CreatePartyCmd:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CreatePartyCmd:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void CreatePartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3036,7 +3036,7 @@ namespace BR
 			void CreatePartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CreatePartyRes:%1%:%2% , Result:{3}, PartyUID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CreatePartyRes:{1}:{2} , Result:{3:X8}, PartyUID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_PartyUID); 
 			}; // void CreatePartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3097,7 +3097,7 @@ namespace BR
 			void JoinPartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinPartyCmd:%1%:%2% , PartyUID:%3%, InviterID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:JoinPartyCmd:{1}:{2} , PartyUID:{3}, InviterID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PartyUID, m_InviterID); 
 			}; // void JoinPartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3168,7 +3168,7 @@ namespace BR
 			void JoinPartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinPartyRes:%1%:%2% , Result:{3}, PartyUID:%4%, PartyLeaderID:%5%, ChatHistoryData:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:JoinPartyRes:{1}:{2} , Result:{3:X8}, PartyUID:{4}, PartyLeaderID:{5}, ChatHistoryData:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_PartyUID, m_PartyLeaderID, m_ChatHistoryData); 
 			}; // void JoinPartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3229,7 +3229,7 @@ namespace BR
 			void PartyPlayerJoinedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyPlayerJoinedS2CEvt:%1%:%2% , PartyUID:%3%, JoinedPlayer:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyPlayerJoinedS2CEvt:{1}:{2} , PartyUID:{3}, JoinedPlayer:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PartyUID, m_JoinedPlayer); 
 			}; // void PartyPlayerJoinedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3290,7 +3290,7 @@ namespace BR
 			void PartyLeaderChangedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyLeaderChangedS2CEvt:%1%:%2% , PartyUID:%3%, NewLeaderID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyLeaderChangedS2CEvt:{1}:{2} , PartyUID:{3}, NewLeaderID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PartyUID, m_NewLeaderID); 
 			}; // void PartyLeaderChangedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3351,7 +3351,7 @@ namespace BR
 			void LeavePartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LeavePartyCmd:%1%:%2% , PartyUID:%3%, PlayerID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LeavePartyCmd:{1}:{2} , PartyUID:{3}, PlayerID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PartyUID, m_PlayerID); 
 			}; // void LeavePartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3408,7 +3408,7 @@ namespace BR
 			void LeavePartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LeavePartyRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LeavePartyRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void LeavePartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3469,7 +3469,7 @@ namespace BR
 			void PartyPlayerLeftS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyPlayerLeftS2CEvt:%1%:%2% , PartyUID:%3%, LeftPlayerID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyPlayerLeftS2CEvt:{1}:{2} , PartyUID:{3}, LeftPlayerID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PartyUID, m_LeftPlayerID); 
 			}; // void PartyPlayerLeftS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3533,7 +3533,7 @@ namespace BR
 			void PartyKickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyKickPlayerCmd:%1%:%2% , PartyUID:%3%, PlayerID:%4%, PlayerToKick:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyKickPlayerCmd:{1}:{2} , PartyUID:{3}, PlayerID:{4}, PlayerToKick:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PartyUID, m_PlayerID, m_PlayerToKick); 
 			}; // void PartyKickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3590,7 +3590,7 @@ namespace BR
 			void PartyKickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyKickPlayerRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyKickPlayerRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void PartyKickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3651,7 +3651,7 @@ namespace BR
 			void PartyPlayerKickedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyPlayerKickedS2CEvt:%1%:%2% , PartyUID:%3%, KickedPlayerID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyPlayerKickedS2CEvt:{1}:{2} , PartyUID:{3}, KickedPlayerID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PartyUID, m_KickedPlayerID); 
 			}; // void PartyPlayerKickedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3709,7 +3709,7 @@ namespace BR
 			void PartyInviteCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyInviteCmd:%1%:%2% , InviteTargetID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyInviteCmd:{1}:{2} , InviteTargetID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InviteTargetID); 
 			}; // void PartyInviteCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3766,7 +3766,7 @@ namespace BR
 			void PartyInviteRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyInviteRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyInviteRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void PartyInviteRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3833,7 +3833,7 @@ namespace BR
 			void PartyInviteRequestedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyInviteRequestedS2CEvt:%1%:%2% , InviterID:%3%, InviterName:%4%, PartyToJoinUID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyInviteRequestedS2CEvt:{1}:{2} , InviterID:{3}, InviterName:{4}, PartyToJoinUID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InviterID, m_InviterName, m_PartyToJoinUID); 
 			}; // void PartyInviteRequestedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3891,7 +3891,7 @@ namespace BR
 			void PartyQuickChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyQuickChatMessageCmd:%1%:%2% , QuickChatID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyQuickChatMessageCmd:{1}:{2} , QuickChatID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_QuickChatID); 
 			}; // void PartyQuickChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3948,7 +3948,7 @@ namespace BR
 			void PartyQuickChatMessageRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyQuickChatMessageRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyQuickChatMessageRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void PartyQuickChatMessageRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4009,7 +4009,7 @@ namespace BR
 			void PartyQuickChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyQuickChatMessageS2CEvt:%1%:%2% , SenderID:%3%, QuickChatID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyQuickChatMessageS2CEvt:{1}:{2} , SenderID:{3}, QuickChatID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_SenderID, m_QuickChatID); 
 			}; // void PartyQuickChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4070,7 +4070,7 @@ namespace BR
 			void PartyChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyChatMessageCmd:%1%:%2% , ChatMessage:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyChatMessageCmd:{1}:{2} , ChatMessage:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_ChatMessage); 
 			}; // void PartyChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4127,7 +4127,7 @@ namespace BR
 			void PartyChatMessageRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyChatMessageRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyChatMessageRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void PartyChatMessageRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4197,7 +4197,7 @@ namespace BR
 			void PartyChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PartyChatMessageS2CEvt:%1%:%2% , SenderID:%3%, SenderName:%4%, ChatMessage:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyChatMessageS2CEvt:{1}:{2} , SenderID:{3}, SenderName:{4}, ChatMessage:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_SenderID, m_SenderName, m_ChatMessage); 
 			}; // void PartyChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4261,7 +4261,7 @@ namespace BR
 			void JoinGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameCmd:%1%:%2% , PlayerID:%3%, Ticket:%4%, InsUID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:JoinGameCmd:{1}:{2} , PlayerID:{3}, Ticket:{4}, InsUID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PlayerID, m_Ticket, m_InsUID); 
 			}; // void JoinGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4361,7 +4361,7 @@ namespace BR
 			void JoinGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:JoinGameRes:%1%:%2% , Result:{3}, InsUID:%4%, TimeStamp:%5%, GameState:%6%, Day:%7%, MaxPlayer:%8%, PlayerIndex:%9%, PlayerCharacter:%10%, Role:%11%, Dead:%12%, ChatHistoryData:%13%, GameLogData:%14%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:JoinGameRes:{1}:{2} , Result:{3:X8}, InsUID:{4}, TimeStamp:{5}, GameState:{6}, Day:{7}, MaxPlayer:{8}, PlayerIndex:{9}, PlayerCharacter:{10}, Role:{11}, Dead:{12}, ChatHistoryData:{13}, GameLogData:{14}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_InsUID, m_TimeStamp, m_GameState, m_Day, m_MaxPlayer, m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_ChatHistoryData, m_GameLogData); 
 			}; // void JoinGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4434,7 +4434,7 @@ namespace BR
 			void PlayerJoinedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerJoinedS2CEvt:%1%:%2% , GameInsUID:%3%, JoinedPlayer:%4%, JoinedPlayerRole:%5%, JoinedPlayerDead:%6%, JoinedPlayerIndex:%7%, JoinedPlayerCharacter:%8%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerJoinedS2CEvt:{1}:{2} , GameInsUID:{3}, JoinedPlayer:{4}, JoinedPlayerRole:{5}, JoinedPlayerDead:{6}, JoinedPlayerIndex:{7}, JoinedPlayerCharacter:{8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_JoinedPlayer, m_JoinedPlayerRole, m_JoinedPlayerDead, m_JoinedPlayerIndex, m_JoinedPlayerCharacter); 
 			}; // void PlayerJoinedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4498,7 +4498,7 @@ namespace BR
 			void LeaveGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LeaveGameCmd:%1%:%2% , GameInsUID:%3%, PlayerID:%4%, Ticket:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LeaveGameCmd:{1}:{2} , GameInsUID:{3}, PlayerID:{4}, Ticket:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_PlayerID, m_Ticket); 
 			}; // void LeaveGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4555,7 +4555,7 @@ namespace BR
 			void LeaveGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:LeaveGameRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LeaveGameRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void LeaveGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4616,7 +4616,7 @@ namespace BR
 			void PlayerLeftS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerLeftS2CEvt:%1%:%2% , GameInsUID:%3%, LeftPlayerID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerLeftS2CEvt:{1}:{2} , GameInsUID:{3}, LeftPlayerID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_LeftPlayerID); 
 			}; // void PlayerLeftS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4680,7 +4680,7 @@ namespace BR
 			void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerCmd:%1%:%2% , GameInsUID:%3%, PlayerID:%4%, PlayerToKick:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerCmd:{1}:{2} , GameInsUID:{3}, PlayerID:{4}, PlayerToKick:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_PlayerID, m_PlayerToKick); 
 			}; // void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4737,7 +4737,7 @@ namespace BR
 			void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4798,7 +4798,7 @@ namespace BR
 			void PlayerKickedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerKickedS2CEvt:%1%:%2% , GameInsUID:%3%, KickedPlayerID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerKickedS2CEvt:{1}:{2} , GameInsUID:{3}, KickedPlayerID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_KickedPlayerID); 
 			}; // void PlayerKickedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4862,7 +4862,7 @@ namespace BR
 			void AssignRoleCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AssignRoleCmd:%1%:%2% , GameInsUID:%3%, PlayerID:%4%, Ticket:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AssignRoleCmd:{1}:{2} , GameInsUID:{3}, PlayerID:{4}, Ticket:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_PlayerID, m_Ticket); 
 			}; // void AssignRoleCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4919,7 +4919,7 @@ namespace BR
 			void AssignRoleRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AssignRoleRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AssignRoleRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void AssignRoleRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4983,7 +4983,7 @@ namespace BR
 			void RoleAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RoleAssignedS2CEvt:%1%:%2% , GameInsUID:%3%, PlayerID:%4%, Role:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RoleAssignedS2CEvt:{1}:{2} , GameInsUID:{3}, PlayerID:{4}, Role:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_PlayerID, m_Role); 
 			}; // void RoleAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5047,7 +5047,7 @@ namespace BR
 			void ChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:ChatMessageCmd:%1%:%2% , ChatMessage:%3%, Role:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ChatMessageCmd:{1}:{2} , ChatMessage:{3}, Role:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_ChatMessage, m_Role); 
 			}; // void ChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5104,7 +5104,7 @@ namespace BR
 			void ChatMessageRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:ChatMessageRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ChatMessageRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void ChatMessageRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5177,7 +5177,7 @@ namespace BR
 			void ChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:ChatMessageS2CEvt:%1%:%2% , SenderID:%3%, Role:%4%, SenderName:%5%, ChatMessage:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ChatMessageS2CEvt:{1}:{2} , SenderID:{3}, Role:{4}, SenderName:{5}, ChatMessage:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_SenderID, m_Role, m_SenderName, m_ChatMessage); 
 			}; // void ChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5241,7 +5241,7 @@ namespace BR
 			void AdvanceGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AdvanceGameCmd:%1%:%2% , GameInsUID:%3%, PlayerID:%4%, Ticket:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AdvanceGameCmd:{1}:{2} , GameInsUID:{3}, PlayerID:{4}, Ticket:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_PlayerID, m_Ticket); 
 			}; // void AdvanceGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5298,7 +5298,7 @@ namespace BR
 			void AdvanceGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:AdvanceGameRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:AdvanceGameRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void AdvanceGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5365,7 +5365,7 @@ namespace BR
 			void GameAdvancedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameAdvancedS2CEvt:%1%:%2% , GameInsUID:%3%, TimeStamp:%4%, GameState:%5%, Day:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameAdvancedS2CEvt:{1}:{2} , GameInsUID:{3}, TimeStamp:{4}, GameState:{5}, Day:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_TimeStamp, m_GameState, m_Day); 
 			}; // void GameAdvancedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5432,7 +5432,7 @@ namespace BR
 			void GameEndedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameEndedS2CEvt:%1%:%2% , GameInsUID:%3%, Winner:%4%, GainedExp:%5%, GainedGameMoney:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameEndedS2CEvt:{1}:{2} , GameInsUID:{3}, Winner:{4}, GainedExp:{5}, GainedGameMoney:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_Winner, m_GainedExp, m_GainedGameMoney); 
 			}; // void GameEndedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5496,7 +5496,7 @@ namespace BR
 			void VoteGameAdvanceCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteGameAdvanceCmd:%1%:%2% , GameInsUID:%3%, PlayerID:%4%, Ticket:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteGameAdvanceCmd:{1}:{2} , GameInsUID:{3}, PlayerID:{4}, Ticket:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_PlayerID, m_Ticket); 
 			}; // void VoteGameAdvanceCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5553,7 +5553,7 @@ namespace BR
 			void VoteGameAdvanceRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteGameAdvanceRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteGameAdvanceRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void VoteGameAdvanceRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5614,7 +5614,7 @@ namespace BR
 			void GameAdvanceVotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameAdvanceVotedS2CEvt:%1%:%2% , GameInsUID:%3%, Voter:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameAdvanceVotedS2CEvt:{1}:{2} , GameInsUID:{3}, Voter:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_Voter); 
 			}; // void GameAdvanceVotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5684,7 +5684,7 @@ namespace BR
 			void VoteCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteCmd:%1%:%2% , GameInsUID:%3%, PlayerID:%4%, Ticket:%5%, VoteTarget:%6%, ActionSerial:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteCmd:{1}:{2} , GameInsUID:{3}, PlayerID:{4}, Ticket:{5}, VoteTarget:{6}, ActionSerial:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_PlayerID, m_Ticket, m_VoteTarget, m_ActionSerial); 
 			}; // void VoteCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5741,7 +5741,7 @@ namespace BR
 			void VoteRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void VoteRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5805,7 +5805,7 @@ namespace BR
 			void VotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VotedS2CEvt:%1%:%2% , GameInsUID:%3%, Voter:%4%, VotedTarget:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VotedS2CEvt:{1}:{2} , GameInsUID:{3}, Voter:{4}, VotedTarget:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_Voter, m_VotedTarget); 
 			}; // void VotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5871,7 +5871,7 @@ namespace BR
 			void VoteEndS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:VoteEndS2CEvt:%1%:%2% , GameInsUID:%3%, Voted:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:VoteEndS2CEvt:{1}:{2} , GameInsUID:{3}, Voted:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_Voted); 
 			}; // void VoteEndS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5935,7 +5935,7 @@ namespace BR
 			void PlayerKilledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerKilledS2CEvt:%1%:%2% , GameInsUID:%3%, KilledPlayer:%4%, Reason:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerKilledS2CEvt:{1}:{2} , GameInsUID:{3}, KilledPlayer:{4}, Reason:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_KilledPlayer, m_Reason); 
 			}; // void PlayerKilledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6002,7 +6002,7 @@ namespace BR
 			void PlayerRevealedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerRevealedS2CEvt:%1%:%2% , GameInsUID:%3%, RevealedPlayerID:%4%, Role:%5%, Reason:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerRevealedS2CEvt:{1}:{2} , GameInsUID:{3}, RevealedPlayerID:{4}, Role:{5}, Reason:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameInsUID, m_RevealedPlayerID, m_Role, m_Reason); 
 			}; // void PlayerRevealedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6057,7 +6057,7 @@ namespace BR
 			void GamePlayAgainCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayAgainCmd:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayAgainCmd:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void GamePlayAgainCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6120,7 +6120,7 @@ namespace BR
 			void GamePlayAgainRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayAgainRes:%1%:%2% , Result:{3}, TotalGem:%4%, TotalGameMoney:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayAgainRes:{1}:{2} , Result:{3:X8}, TotalGem:{4}, TotalGameMoney:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_TotalGem, m_TotalGameMoney); 
 			}; // void GamePlayAgainRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6181,7 +6181,7 @@ namespace BR
 			void GamePlayAgainS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayAgainS2CEvt:%1%:%2% , PartyUID:%3%, LeadPlayer:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayAgainS2CEvt:{1}:{2} , PartyUID:{3}, LeadPlayer:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PartyUID, m_LeadPlayer); 
 			}; // void GamePlayAgainS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6244,7 +6244,7 @@ namespace BR
 			void GameRevealPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameRevealPlayerCmd:%1%:%2% , TargetPlayerID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameRevealPlayerCmd:{1}:{2} , TargetPlayerID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TargetPlayerID); 
 			}; // void GameRevealPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6323,7 +6323,7 @@ namespace BR
 			void GameRevealPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameRevealPlayerRes:%1%:%2% , Result:{3}, RevealedPlayerID:%4%, RevealedRole:%5%, TotalGem:%6%, TotalGameMoney:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameRevealPlayerRes:{1}:{2} , Result:{3:X8}, RevealedPlayerID:{4}, RevealedRole:{5}, TotalGem:{6}, TotalGameMoney:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_RevealedPlayerID, m_RevealedRole, m_TotalGem, m_TotalGameMoney); 
 			}; // void GameRevealPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6378,7 +6378,7 @@ namespace BR
 			void GamePlayerReviveCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerReviveCmd:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerReviveCmd:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void GamePlayerReviveCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6441,7 +6441,7 @@ namespace BR
 			void GamePlayerReviveRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerReviveRes:%1%:%2% , Result:{3}, TotalGem:%4%, TotalGameMoney:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerReviveRes:{1}:{2} , Result:{3:X8}, TotalGem:{4}, TotalGameMoney:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_TotalGem, m_TotalGameMoney); 
 			}; // void GamePlayerReviveRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6499,7 +6499,7 @@ namespace BR
 			void GamePlayerRevivedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerRevivedS2CEvt:%1%:%2% , RevivedPlayerID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerRevivedS2CEvt:{1}:{2} , RevivedPlayerID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RevivedPlayerID); 
 			}; // void GamePlayerRevivedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6554,7 +6554,7 @@ namespace BR
 			void GamePlayerResetRankCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerResetRankCmd:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerResetRankCmd:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void GamePlayerResetRankCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6617,7 +6617,7 @@ namespace BR
 			void GamePlayerResetRankRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GamePlayerResetRankRes:%1%:%2% , Result:{3}, TotalGem:%4%, TotalGameMoney:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GamePlayerResetRankRes:{1}:{2} , Result:{3:X8}, TotalGem:{4}, TotalGameMoney:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_TotalGem, m_TotalGameMoney); 
 			}; // void GamePlayerResetRankRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6678,7 +6678,7 @@ namespace BR
 			void RequestGameMatchCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RequestGameMatchCmd:%1%:%2% , NumPlayer:%3%, RequestRole:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RequestGameMatchCmd:{1}:{2} , NumPlayer:{3}, RequestRole:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_NumPlayer, m_RequestRole); 
 			}; // void RequestGameMatchCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6741,7 +6741,7 @@ namespace BR
 			void RequestGameMatchRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RequestGameMatchRes:%1%:%2% , Result:{3}, TotalGem:%4%, TotalGameMoney:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RequestGameMatchRes:{1}:{2} , Result:{3:X8}, TotalGem:{4}, TotalGameMoney:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_TotalGem, m_TotalGameMoney); 
 			}; // void RequestGameMatchRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6848,7 +6848,7 @@ namespace BR
 			void GameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameMatchedS2CEvt:%1%:%2% , InsUID:%3%, TimeStamp:%4%, GameState:%5%, Day:%6%, MaxPlayer:%7%, PlayerIndex:%8%, PlayerCharacter:%9%, Role:%10%, Dead:%11%, ChatHistoryData:%12%, GameLogData:%13%, Stamina:%14%, TotalGem:%15%, TotalGameMoney:%16%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameMatchedS2CEvt:{1}:{2} , InsUID:{3}, TimeStamp:{4}, GameState:{5}, Day:{6}, MaxPlayer:{7}, PlayerIndex:{8}, PlayerCharacter:{9}, Role:{10}, Dead:{11}, ChatHistoryData:{12}, GameLogData:{13}, Stamina:{14}, TotalGem:{15}, TotalGameMoney:{16}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InsUID, m_TimeStamp, m_GameState, m_Day, m_MaxPlayer, m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_ChatHistoryData, m_GameLogData, m_Stamina, m_TotalGem, m_TotalGameMoney); 
 			}; // void GameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6906,7 +6906,7 @@ namespace BR
 			void GameMatchFailedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameMatchFailedS2CEvt:%1%:%2% , FailedReason:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameMatchFailedS2CEvt:{1}:{2} , FailedReason:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_FailedReason); 
 			}; // void GameMatchFailedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -6961,7 +6961,7 @@ namespace BR
 			void GameMatchingStartedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameMatchingStartedS2CEvt:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameMatchingStartedS2CEvt:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void GameMatchingStartedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7016,7 +7016,7 @@ namespace BR
 			void CancelGameMatchCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CancelGameMatchCmd:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CancelGameMatchCmd:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void CancelGameMatchCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7073,7 +7073,7 @@ namespace BR
 			void CancelGameMatchRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CancelGameMatchRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CancelGameMatchRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void CancelGameMatchRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7128,7 +7128,7 @@ namespace BR
 			void GameMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameMatchingCanceledS2CEvt:%1%:%2% ",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameMatchingCanceledS2CEvt:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void GameMatchingCanceledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7186,7 +7186,7 @@ namespace BR
 			void BuyShopItemPrepareCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:BuyShopItemPrepareCmd:%1%:%2% , ShopItemID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:BuyShopItemPrepareCmd:{1}:{2} , ShopItemID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_ShopItemID); 
 			}; // void BuyShopItemPrepareCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7252,7 +7252,7 @@ namespace BR
 			void BuyShopItemPrepareRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:BuyShopItemPrepareRes:%1%:%2% , Result:{3}, ShopItemID:%4%, PurchaseID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:BuyShopItemPrepareRes:{1}:{2} , Result:{3:X8}, ShopItemID:{4}, PurchaseID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_ShopItemID, m_PurchaseID); 
 			}; // void BuyShopItemPrepareRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7336,7 +7336,7 @@ namespace BR
 			void BuyShopItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:BuyShopItemCmd:%1%:%2% , ShopItemID:%3%, Platform:%4%, PackageName:%5%, PurchaseTransactionID:%6%, PurchaseToken:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:BuyShopItemCmd:{1}:{2} , ShopItemID:{3}, Platform:{4}, PackageName:{5}, PurchaseTransactionID:{6}, PurchaseToken:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_ShopItemID, m_Platform, m_PackageName, m_PurchaseTransactionID, m_PurchaseToken); 
 			}; // void BuyShopItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7396,7 +7396,7 @@ namespace BR
 			void BuyShopItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:BuyShopItemRes:%1%:%2% , Result:{3}, ShopItemID:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:BuyShopItemRes:{1}:{2} , Result:{3:X8}, ShopItemID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_ShopItemID); 
 			}; // void BuyShopItemRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7454,7 +7454,7 @@ namespace BR
 			void GiveStaminaCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GiveStaminaCmd:%1%:%2% , TargetPlayer:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GiveStaminaCmd:{1}:{2} , TargetPlayer:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TargetPlayer); 
 			}; // void GiveStaminaCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7517,7 +7517,7 @@ namespace BR
 			void GiveStaminaRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GiveStaminaRes:%1%:%2% , Result:{3}, TargetPlayer:%4%, TimeStamp:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GiveStaminaRes:{1}:{2} , Result:{3:X8}, TargetPlayer:{4}, TimeStamp:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_TargetPlayer, m_TimeStamp); 
 			}; // void GiveStaminaRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7575,7 +7575,7 @@ namespace BR
 			void SetPresetGameConfigIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:SetPresetGameConfigIDCmd:%1%:%2% , PresetID:%3%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetPresetGameConfigIDCmd:{1}:{2} , PresetID:{3}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PresetID); 
 			}; // void SetPresetGameConfigIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7632,7 +7632,7 @@ namespace BR
 			void SetPresetGameConfigIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:SetPresetGameConfigIDRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetPresetGameConfigIDRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void SetPresetGameConfigIDRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7693,7 +7693,7 @@ namespace BR
 			void GainGameResourceCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GainGameResourceCmd:%1%:%2% , Resource:%3%, Value:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GainGameResourceCmd:{1}:{2} , Resource:{3}, Value:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Resource, m_Value); 
 			}; // void GainGameResourceCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7750,7 +7750,7 @@ namespace BR
 			void GainGameResourceRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GainGameResourceRes:%1%:%2% , Result:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GainGameResourceRes:{1}:{2} , Result:{3:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
 			}; // void GainGameResourceRes::TraceOut(const char* Prefix, MessageData* pMsg)
 

@@ -92,7 +92,7 @@ namespace BR
 			void RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:RegisterEntityCmd:%1%:%2% , Context:%3%, LocalEntID:%4%, EntName:%5%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:RegisterEntityCmd:{1}:{2} , Context:{3}, LocalEntID:{4}, EntName:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_LocalEntID, m_EntName); 
 			}; // void RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -155,7 +155,7 @@ namespace BR
 			void RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:RegisterEntityRes:%1%:%2% , Context:%3%, Result:{4}, EntUID:%5%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:RegisterEntityRes:{1}:{2} , Context:{3}, Result:{4:X8}, EntUID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_EntUID); 
 			}; // void RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -216,7 +216,7 @@ namespace BR
 			void UnregisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:UnregisterEntityCmd:%1%:%2% , Context:%3%, EntUID:%4%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:UnregisterEntityCmd:{1}:{2} , Context:{3}, EntUID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_EntUID); 
 			}; // void UnregisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -276,7 +276,7 @@ namespace BR
 			void UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:UnregisterEntityRes:%1%:%2% , Context:%3%, Result:{4}",
+				protocolTrace(Trace::TRC_DBG2, "{0}:UnregisterEntityRes:{1}:{2} , Context:{3}, Result:{4:X8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result); 
 			}; // void UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -337,7 +337,7 @@ namespace BR
 			void FindEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:FindEntityCmd:%1%:%2% , Context:%3%, LocalEntID:%4%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:FindEntityCmd:{1}:{2} , Context:{3}, LocalEntID:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_LocalEntID); 
 			}; // void FindEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -400,7 +400,7 @@ namespace BR
 			void FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:FindEntityRes:%1%:%2% , Context:%3%, Result:{4}, EntUID:%5%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:FindEntityRes:{1}:{2} , Context:{3}, Result:{4:X8}, EntUID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_EntUID); 
 			}; // void FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 

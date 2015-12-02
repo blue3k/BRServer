@@ -262,7 +262,7 @@ namespace BR {
 				&& pTimerAction != nullptr
 				&& pWorker->GetThreadID() == thisThreadID) // Only if both are on the same worker thread
 			{
-				if (pTimerAction->GetScheduledTime() == TimeStampMS::max() || Util::TimeSince(pTimerAction->GetScheduledTime()) < DurationMS(0)) // next time this entity will tick
+				if (pTimerAction->GetScheduledTime() == TimeStampMS::max() || Util::TimeSince(pTimerAction->GetScheduledTime()) <= DurationMS(0)) // next time this entity will tick
 				{
 					SetNextScheduledTickTime(Util::Time.GetTimeMs());
 					if (pTimerAction->GetScheduledTime() != TimeStampMS::max()) // Don't push when it isn't shceduled yet

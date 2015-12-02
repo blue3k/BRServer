@@ -209,7 +209,7 @@ namespace Svr {
 		instanceMap.ForeachOrder(0, (UINT)instanceMap.GetItemCount(), [&instanceMap,&instanceList](const UINT64& key, const SharedPointerT<PerformanceCounterInstance>& value)
 		{
 			auto timeSince = Util::TimeSince(value->GetUpdatedTime());
-			if (timeSince < DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
+			if (timeSince <= DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
 			{
 				stm_pInstance->m_TimedOutQueue.Enqueue((void*)key);
 				return true;
@@ -265,7 +265,7 @@ namespace Svr {
 		if (SUCCEEDED(instanceMap.Find(instanceUID.UID, pInstance)))
 		{
 			auto timeSince = Util::TimeSince(pInstance->GetUpdatedTime());
-			if (timeSince < DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
+			if (timeSince <= DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
 			{
 				stm_pInstance->m_TimedOutQueue.Enqueue((void*)instanceUID.UID);
 				pInstance = SharedPointerT<PerformanceCounterInstance>();

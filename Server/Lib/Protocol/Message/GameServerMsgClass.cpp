@@ -124,7 +124,7 @@ namespace BR
 			void RegisterPlayerToJoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerToJoinGameServerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, Ticket:%6%, FBUserID:%7%, ShardID:%8%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}, Ticket:{6}, FBUserID:{7}, ShardID:{8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_Ticket, m_FBUserID, m_ShardID); 
 			}; // void RegisterPlayerToJoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -217,7 +217,7 @@ namespace BR
 			void RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerToJoinGameServerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%, PublicAddress:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, PublicAddress:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_PublicAddress); 
 			}; // void RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -313,7 +313,7 @@ namespace BR
 			void RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerToJoinGameServerOnPlayerEntityCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, Ticket:%6%, FBUserID:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerOnPlayerEntityCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}, Ticket:{6}, FBUserID:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_Ticket, m_FBUserID); 
 			}; // void RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -403,7 +403,7 @@ namespace BR
 			void RegisterPlayerToJoinGameServerOnPlayerEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RegisterPlayerToJoinGameServerOnPlayerEntityRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerOnPlayerEntityRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void RegisterPlayerToJoinGameServerOnPlayerEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -504,7 +504,7 @@ namespace BR
 			void ChatMessageC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:ChatMessageC2SEvt:%1%:%2% , RouteContext:%3%, SenderID:%4%, Role:%5%, SenderName:%6%, ChatMessage:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ChatMessageC2SEvt:{1}:{2} , RouteContext:{3}, SenderID:{4}, Role:{5}, SenderName:{6}, ChatMessage:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_SenderID, m_Role, m_SenderName, m_ChatMessage); 
 			}; // void ChatMessageC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -611,7 +611,7 @@ namespace BR
 			void NotifyC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:NotifyC2SEvt:%1%:%2% , RouteContext:%3%, DestPlayerID:%4%, NotificationID:%5%, MessageID:%6%, MessageParam0:%7%, MessageParam1:%8%, MessageText:%9%, TimeStamp:%10%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:NotifyC2SEvt:{1}:{2} , RouteContext:{3}, DestPlayerID:{4}, NotificationID:{5}, MessageID:{6}, MessageParam0:{7}, MessageParam1:{8}, MessageText:{9}, TimeStamp:{10}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_DestPlayerID, m_NotificationID, m_MessageID, m_MessageParam0, m_MessageParam1, m_MessageText, m_TimeStamp); 
 			}; // void NotifyC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -700,7 +700,7 @@ namespace BR
 			void FriendAcceptedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:FriendAcceptedC2SEvt:%1%:%2% , RouteContext:%3%, DestPlayerID:%4%, Accepter:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:FriendAcceptedC2SEvt:{1}:{2} , RouteContext:{3}, DestPlayerID:{4}, Accepter:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_DestPlayerID, m_Accepter); 
 			}; // void FriendAcceptedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -789,7 +789,7 @@ namespace BR
 			void FriendRemovedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:FriendRemovedC2SEvt:%1%:%2% , RouteContext:%3%, DestPlayerID:%4%, RemoverID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:FriendRemovedC2SEvt:{1}:{2} , RouteContext:{3}, DestPlayerID:{4}, RemoverID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_DestPlayerID, m_RemoverID); 
 			}; // void FriendRemovedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -878,7 +878,7 @@ namespace BR
 			void RequestPlayerStatusUpdateC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:RequestPlayerStatusUpdateC2SEvt:%1%:%2% , RouteContext:%3%, DestPlayerID:%4%, RequesterID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RequestPlayerStatusUpdateC2SEvt:{1}:{2} , RouteContext:{3}, DestPlayerID:{4}, RequesterID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_DestPlayerID, m_RequesterID); 
 			}; // void RequestPlayerStatusUpdateC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -970,7 +970,7 @@ namespace BR
 			void NotifyPlayerStatusUpdatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:NotifyPlayerStatusUpdatedC2SEvt:%1%:%2% , RouteContext:%3%, DestPlayerID:%4%, LatestActiveTime:%5%, IsInGame:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:NotifyPlayerStatusUpdatedC2SEvt:{1}:{2} , RouteContext:{3}, DestPlayerID:{4}, LatestActiveTime:{5}, IsInGame:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_DestPlayerID, m_LatestActiveTime, m_IsInGame); 
 			}; // void NotifyPlayerStatusUpdatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1068,7 +1068,7 @@ namespace BR
 			void NotifyPartyInviteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:NotifyPartyInviteC2SEvt:%1%:%2% , RouteContext:%3%, DestPlayerID:%4%, InviterID:%5%, InviterName:%6%, PartyUID:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:NotifyPartyInviteC2SEvt:{1}:{2} , RouteContext:{3}, DestPlayerID:{4}, InviterID:{5}, InviterName:{6}, PartyUID:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_DestPlayerID, m_InviterID, m_InviterName, m_PartyUID); 
 			}; // void NotifyPartyInviteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 

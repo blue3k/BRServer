@@ -118,7 +118,7 @@ namespace BR
 			void PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerJoinedToGameServerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, PlayerID:%5%, AuthTicket:%6%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerJoinedToGameServerCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}, AuthTicket:{6}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_AuthTicket); 
 			}; // void PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -208,7 +208,7 @@ namespace BR
 			void PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:PlayerJoinedToGameServerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerJoinedToGameServerRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -298,7 +298,7 @@ namespace BR
 			void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerCmd:%1%:%2% , Context:%3%, RouteContext:%4%, KickedPlayerID:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerCmd:{1}:{2} , Context:{3}, RouteContext:{4}, KickedPlayerID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_KickedPlayerID); 
 			}; // void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -388,7 +388,7 @@ namespace BR
 			void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:KickPlayerRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 

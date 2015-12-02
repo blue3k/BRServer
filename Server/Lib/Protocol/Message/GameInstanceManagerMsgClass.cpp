@@ -151,7 +151,7 @@ namespace BR
 			void CreateGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CreateGameCmd:%1%:%2% , Context:%3%, RouteContext:%4%, RouteHopCount:%5%, NumberOfBotPlayer:%6%, MaxPlayer:%7%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CreateGameCmd:{1}:{2} , Context:{3}, RouteContext:{4}, RouteHopCount:{5}, NumberOfBotPlayer:{6}, MaxPlayer:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_RouteHopCount, m_NumberOfBotPlayer, m_MaxPlayer); 
 			}; // void CreateGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -269,7 +269,7 @@ namespace BR
 			void CreateGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:CreateGameRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CreateGameRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void CreateGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -384,7 +384,7 @@ namespace BR
 			void GameDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GameDeletedC2SEvt:%1%:%2% , RouteContext:%3%, RouteHopCount:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GameDeletedC2SEvt:{1}:{2} , RouteContext:{3}, RouteHopCount:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_RouteHopCount); 
 			}; // void GameDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 

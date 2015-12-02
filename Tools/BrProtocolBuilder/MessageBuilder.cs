@@ -130,7 +130,7 @@ namespace ProtocolBuilder
             string strClassName = MsgClassName(Name, typeName);
             OpenSection("void", strClassName + "::TraceOut(const char* Prefix, MessageData* pMsg)");
 
-            string strTrace = string.Format("Trace::TRC_{0}, \"%0%:{1}{2}:%1%:%2% ", traceChannel, Name, typeName);
+            string strTrace = string.Format("Trace::TRC_{0}, \"{{0}}:{1}{2}:{{1}}:{{2}} ", traceChannel, Name, typeName);
             string strTraceMember = "Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32";
             int ParamCount = 3;
 
@@ -144,25 +144,25 @@ namespace ProtocolBuilder
                     {
                         case ParameterType.String:
                             {
-                                strTrace += string.Format(", {0}:%{1}%", param.Name, ParamCount++);
+                                strTrace += string.Format(", {0}:{{{1}}}", param.Name, ParamCount++);
                                 strTraceMember += string.Format(", m_{0}", param.Name);
                             } break;
                         default:
                             if (param.IsArray)
                             {
-                                strTrace += string.Format(", {0}:%{1}%", param.Name, ParamCount++);
+                                strTrace += string.Format(", {0}:{{{1}}}", param.Name, ParamCount++);
                                 strTraceMember += string.Format(", m_{0}", param.Name);
                             }
                             else
                             {
                                 if (param.Type == ParameterType.HRESULT)
                                 {
-                                    strTrace += string.Format(", {0}:{{{1}}}", param.Name, ParamCount++);
+                                    strTrace += string.Format(", {0}:{{{1}:X8}}", param.Name, ParamCount++);
                                     strTraceMember += string.Format(", m_{0}", param.Name);
                                 }
                                 else
                                 {
-                                    strTrace += string.Format(", {0}:%{1}%", param.Name, ParamCount++);
+                                    strTrace += string.Format(", {0}:{{{1}}}", param.Name, ParamCount++);
                                     strTraceMember += string.Format(", m_{0}", param.Name);
                                 }
                             }

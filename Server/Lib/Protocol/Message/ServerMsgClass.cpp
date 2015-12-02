@@ -112,7 +112,7 @@ namespace BR
 			void GenericFailureCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GenericFailureCmd:%1%:%2% , Context:%3%, RouteContext:%4%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GenericFailureCmd:{1}:{2} , Context:{3}, RouteContext:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext); 
 			}; // void GenericFailureCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -202,7 +202,7 @@ namespace BR
 			void GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "%0%:GenericFailureRes:%1%:%2% , Context:%3%, Result:{4}, RouteContext:%5%",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GenericFailureRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
 			}; // void GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -297,7 +297,7 @@ namespace BR
 			void ServerConnectedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "%0%:ServerConnectedC2SEvt:%1%:%2% , RouteContext:%3%, ClusterManagerServiceInformation:%4%, StartUpTime:%5%, PublicAddress:%6%, PrivateAddress:%7%",
+				protocolTrace(Trace::TRC_DBG2, "{0}:ServerConnectedC2SEvt:{1}:{2} , RouteContext:{3}, ClusterManagerServiceInformation:{4}, StartUpTime:{5}, PublicAddress:{6}, PrivateAddress:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_ClusterManagerServiceInformation, m_StartUpTime, m_PublicAddress, m_PrivateAddress); 
 			}; // void ServerConnectedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
