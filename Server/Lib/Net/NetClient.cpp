@@ -331,7 +331,6 @@ namespace BR {
 
 		//Addr2SockAddr(localAddress, sockAddr);// to make port generation
 
-		//socket = WSASocket(sockAddr.sin6_family, SOCK_STREAM, IPPROTO_TCP, NULL, 0, WSA_FLAG_OVERLAPPED);
 		socket = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
 		if (socket == INVALID_SOCKET)
 		{
@@ -386,7 +385,6 @@ namespace BR {
 
 
 		netMem( pConn = dynamic_cast<ConnectionTCPClient*>(GetConnectionManager().NewConnection()) );
-		//pConn->SetupNet( this, CliSystem::GenNewCID() );
 
 		netChk(NetSystem::RegisterSocket(socket, pConn, false));
 
@@ -624,9 +622,11 @@ namespace BR {
 		hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
 		switch (hrErr)
 		{
+		case E_NET_TRY_AGAIN:
+			hr = hrErr;
+			break;
 		case S_OK:
 		case E_NET_IO_PENDING:
-		case E_NET_TRY_AGAIN:
 		case E_NET_WOULDBLOCK:
 			break;
 		case E_NET_CONNABORTED:
@@ -646,32 +646,6 @@ namespace BR {
 			break;
 		};
 
-//		if( WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
-//			pOverlapped, NULL ) == SOCKET_ERROR )
-//		{
-//			iWSAErr = WSAGetLastError();
-//			if( iWSAErr != WSA_IO_PENDING )
-//			{
-//				switch( iWSAErr )
-//				{
-//				case WSAECONNABORTED:
-//				case WSAECONNRESET:
-//				case WSAENETRESET:
-//				case WSAENOTCONN:
-//				case WSAENOTSOCK:
-//				case WSAESHUTDOWN:
-//					// Send fail by connection close
-//					// Need to disconnect
-//					pTCPCon->Disconnect();
-//					netErrSilent( E_NET_CONNECTION_CLOSED );
-//					break;
-//				default:
-//					netErr( E_NET_IO_SEND_FAIL );
-//					break;
-//				};
-//			}
-//		}
-//
 
 		pOverlapped = nullptr;
 
@@ -709,17 +683,12 @@ namespace BR {
 	HRESULT ClientTCP::OnConnectionStateChange( IConnection *pConnection )
 	{
 		HRESULT hr = S_OK;
-		ConnectionTCP *pTCPCon = (ConnectionTCP*)pConnection;
-
 
 		switch (pConnection->GetConnectionState())
 		{
 		case IConnection::STATE_CONNECTING:
 			break;
 		case IConnection::STATE_CONNECTED:
-			if( pTCPCon->GetRecvBuffer()->Operation == IOBUFFER_OPERATION::OP_NONE )
-				pTCPCon->GetRecvBuffer()->Operation = IOBUFFER_OPERATION::OP_TCPREADPENDING;
-			//netChk( PendingRecv( (ConnectionTCP*)pConnection ) );
 			break;
 		case IConnection::STATE_DISCONNECTED:
 			break;
@@ -935,16 +904,13 @@ namespace BR {
 
 		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
-
 		ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
-
 		IOBUFFER_WRITE *pOverlapped = NULL;
+
+
 		netChk( NetSystem::AllocBuffer(pOverlapped) );
-
-		pOverlapped->SetupSendUDP( pMsg );
-
-
-		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), dstAddress, pOverlapped);
+		pOverlapped->SetupSendUDP( dstAddress, pMsg );
+		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 		switch (hrErr)
 		{
 		case S_OK:
@@ -968,33 +934,6 @@ namespace BR {
 			netErr(E_NET_IO_SEND_FAIL);
 			break;
 		};
-
-		//if( WSASendTo( pUDPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
-		//	(sockaddr*)&dstAddress, sizeof(sockaddr_in6), 
-		//	pOverlapped, NULL ) == SOCKET_ERROR )
-		//{
-		//	iWSAErr = WSAGetLastError();
-		//	if( iWSAErr != WSA_IO_PENDING )
-		//	{
-		//		switch( iWSAErr )
-		//		{
-		//		case WSAECONNABORTED:
-		//		case WSAECONNRESET:
-		//		case WSAENETRESET:
-		//		case WSAENOTCONN:
-		//		case WSAENOTSOCK:
-		//		case WSAESHUTDOWN:
-		//			// Send fail by connection close
-		//			// Need to disconnect
-		//			pUDPCon->Disconnect();
-		//			netErrSilent( E_NET_CONNECTION_CLOSED );
-		//			break;
-		//		default:
-		//			netErr( E_NET_IO_SEND_FAIL );
-		//			break;
-		//		};
-		//	}
-		//}
 
 	Proc_End:
 
@@ -1044,9 +983,9 @@ namespace BR {
 		IOBUFFER_WRITE *pOverlapped = NULL;
 		netChk( NetSystem::AllocBuffer(pOverlapped) );
 
-		pOverlapped->SetupSendUDP( uiBuffSize, pBuff );
+		pOverlapped->SetupSendUDP(pUDPCon->GetRemoteSockAddr(), uiBuffSize, pBuff );
 
-		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), pOverlapped);
+		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 		switch (hrErr)
 		{
 		case S_OK:
@@ -1070,39 +1009,6 @@ namespace BR {
 			netErr(E_NET_IO_SEND_FAIL);
 			break;
 		};
-
-		//if( WSASendTo( pUDPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
-		//	(sockaddr*)&pUDPCon->GetRemoteSockAddr(), sizeof(sockaddr_in6), 
-		//	pOverlapped, NULL ) == SOCKET_ERROR )
-		//{
-		//	iWSAErr = WSAGetLastError();
-		//	if( iWSAErr != WSA_IO_PENDING )
-		//	{
-		//		switch( iWSAErr )
-		//		{
-		//		case WSAECONNABORTED:
-		//		case WSAECONNRESET:
-		//		case WSAENETRESET:
-		//		case WSAENOTCONN:
-		//		case WSAENOTSOCK:
-		//		case WSAESHUTDOWN:
-		//			// Send fail by connection close
-		//			// Need to disconnect
-		//			pUDPCon->Disconnect();
-		//			netErrSilent( E_NET_CONNECTION_CLOSED );
-		//			break;
-		//		default:
-		//			netErr( E_NET_IO_SEND_FAIL );
-		//			break;
-		//		};
-		//	}
-		//}
-		//else
-		//{
-		//	//// Send done just free all
-		//	//Net::System::g_pOverlappedBuffer->FreeBuffer( pOverlapped );
-		//	//pMsg->Release();
-		//}
 
 	Proc_End:
 

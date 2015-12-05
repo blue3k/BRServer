@@ -250,5 +250,8 @@
     <ClCompile Include="NetSystem_EPOLL.cpp">
       <Filter>NetSystem</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectionUDPBase.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

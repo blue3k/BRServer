@@ -67,6 +67,8 @@ namespace Net {
 		m_bufRecvTem.resize( Const::PACKET_SIZE_MAX*2 );
 
 		SetHeartbitTry(Const::TCP_HEARTBIT_START_TIME);
+
+		SetWriteQueue(new WriteBufferQueue);
 	}
 
 	ConnectionTCP::~ConnectionTCP()
@@ -74,6 +76,8 @@ namespace Net {
 		//Assert( SUCCEEDED( CloseConnection() ) );
 		if( GetSocket() != INVALID_SOCKET )
 			NetSystem::CloseSocket( GetSocket() );
+
+		if (GetWriteQueue()) delete GetWriteQueue();
 	}
 
 
@@ -217,12 +221,9 @@ namespace Net {
 			return E_NET_CONNECTION_CLOSED;
 
 		netChkPtr(pIOBuffer);
-		//pIOBuffer = GetRecvBuffer();
 		pIOBuffer->SetupRecvTCP(GetCID());
 
 		hrErr = NetSystem::Recv(GetSocket(), pIOBuffer);
-		//iErr = WSARecv(GetSocket(), &pOver->wsaBuff, 1, &pOver->dwNumberOfByte, &pOver->dwFlags, pOver, NULL);
-		//if( iErr == SOCKET_ERROR )
 		if (FAILED(hrErr))
 		{
 			switch (hrErr)
@@ -244,9 +245,11 @@ namespace Net {
 				netErr(E_NET_IO_RECV_FAIL);
 				break;
 			case E_NET_IO_PENDING:
-			case E_NET_TRY_AGAIN:
 			case E_NET_WOULDBLOCK:
 				// Recv is pended
+				break;
+			case E_NET_TRY_AGAIN:
+				// try again
 				break;
 			};
 		}
@@ -681,14 +684,86 @@ namespace Net {
 		return hr;
 	}
 
+	// Send message to connection with network device
+	HRESULT ConnectionTCP::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
+	{
+		HRESULT hr = S_OK, hrErr = S_OK;
+
+		netChkPtr(pSendBuffer);
+
+		hrErr = NetSystem::Send(GetSocket(), pSendBuffer);
+		switch (hrErr)
+		{
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_WOULDBLOCK:
+			break;
+		case E_NET_TRY_AGAIN:
+			hr = hrErr;
+			break;
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+		case E_NET_NOTCONN:
+		case E_NET_NOTSOCK:
+		case E_NET_SHUTDOWN:
+			// Send fail by connection close
+			// Need to disconnect
+			Disconnect();
+			hr = E_NET_CONNECTION_CLOSED;
+			goto Proc_End;
+			break;
+		default:
+			netErr(E_NET_IO_SEND_FAIL);
+			break;
+		};
+
+	Proc_End:
+
+		if (FAILED(hr))
+		{
+			//if (pSendBuffer)
+			//{
+			//	Util::SafeRelease(pSendBuffer->pMsgs);
+			//	Net::NetSystem::FreeBuffer(pSendBuffer);
+			//}
+
+			if (hr != E_NET_IO_SEND_FAIL)
+			{
+				netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo().Remote, hrErr, hr, GetCID());
+			}
+			else
+				return S_OK;
+		}
+		else
+		{
+			//netTrace(TRC_TCPSENDRAW, "TCP Send Raw CID:{1}, ip:{0}", GetConnectionInfo().Remote, GetCID());
+		}
+
+
+		return hr;
+	}
+
+
 	// Send message to connected entity
 	HRESULT ConnectionTCP::Send( Message::MessageData* &pMsg )
 	{
 		HRESULT hr = S_OK;
+		IOBUFFER_WRITE *pSendBuffer = nullptr;
+		Message::MessageID msgID;
 
 		if (GetConnectionState() == STATE_DISCONNECTED)
+			return E_NET_NOT_CONNECTED;
+
+		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
+		msgID = pMsgHeader->msgID;
+
+		if ((pMsgHeader->msgID.IDs.Type != Message::MSGTYPE_NETCONTROL && GetConnectionState() == STATE_DISCONNECTING)
+			|| GetConnectionState() == STATE_DISCONNECTED)
 		{
-			netErr(E_NET_NOT_CONNECTED);
+			// Send fail by connection closed
+			Util::SafeRelease(pMsg);
+			goto Proc_End;
 		}
 
 		if( pMsg->GetMessageSize() > (UINT)Const::INTER_PACKET_SIZE_MAX )
@@ -699,24 +774,50 @@ namespace Net {
 
 		PrintDebugMessage( "SendMsg ", pMsg );
 
-		if( pMsg->GetMessageHeader()->msgID.IDs.Reliability )
-		{
-			m_lGuarantedSent.fetch_add(1, std::memory_order_relaxed);
-		}
-		else
+		if( !pMsg->GetMessageHeader()->msgID.IDs.Reliability
+			&& (m_lGuarantedSent - m_lGuarantedAck) > Const::TCP_GUARANT_PENDING_MAX )
 		{
 			// Drop if there is too many reliable packets are pending
-			if( (m_lGuarantedSent - m_lGuarantedAck) > Const::TCP_GUARANT_PENDING_MAX )
-				netErr( E_NET_SEND_FAIL );
+			netErr( E_NET_SEND_FAIL );
 		}
+
+		m_lGuarantedSent.fetch_add(1, std::memory_order_relaxed);
 
 		pMsg->UpdateChecksumNEncrypt();
 
 		m_PendingSend.fetch_add(1, std::memory_order_acquire);
 
-		netChk( GetNet()->SendMsg( this, pMsg ) );
+		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
+		pSendBuffer->SetupSendTCP(pMsg);
+
+		if (NetSystem::IsProactorSystem())
+		{
+			netChk(SendBuffer(pSendBuffer));
+		}
+		else
+		{
+			netChk(EnqueueBuffer(pSendBuffer));
+		}
+
+		pMsg = nullptr;
 
 	Proc_End:
+
+		if(FAILED(hr))
+		{
+			Util::SafeRelease(pMsg);
+		}
+		else
+		{
+			if (msgID.IDs.Type == Message::MSGTYPE_NETCONTROL)
+			{
+				netTrace(TRC_TCPNETCTRL, "TCP Ctrl CID:{2}, ip:{0}, msg:{1}", GetConnectionInfo().Remote, msgID, GetCID());
+			}
+			else
+			{
+				netTrace(TRC_TCPSENDRAW, "TCP Send CID:{2}, ip:{0}, msg:{1}", GetConnectionInfo().Remote, msgID, GetCID());
+			}
+		}
 
 		return hr;
 	}

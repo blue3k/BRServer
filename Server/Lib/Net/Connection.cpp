@@ -200,32 +200,6 @@ namespace Net {
 	}
 
 
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Packet message queue class
-	//
-
-	MsgQueue::MsgQueue( UINT uiNumElePerPage )
-		:PageQueue<Message::MessageData*>( uiNumElePerPage )
-	{
-	}
-
-	MsgQueue::~MsgQueue()
-	{
-		ClearQueue();
-	}
-
-	// Clear queue element
-	void MsgQueue::ClearQueue()
-	{
-		Message::MessageData* data = NULL;
-
-		while( Dequeue( data ) == S_OK )
-		{
-			if( data ) data->Release();
-		}
-	}
-
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -251,6 +225,7 @@ namespace Net {
 	{
 		// Not need with abstract class
 		m_RecvQueue.ClearQueue();
+		m_SendGuaQueue.ClearQueue();
 	}
 	
 	// Close connections socket handle
@@ -268,7 +243,7 @@ namespace Net {
 	HRESULT Connection::ClearQueues()
 	{
 		m_RecvQueue.ClearQueue();
-		//m_EventQueue.ClearQueue();
+		m_SendGuaQueue.ClearQueue();
 
 		// When the queue is cleared these synchronization variables need to be cleared
 		m_usSeqNone = 0;

@@ -18,6 +18,7 @@
 #include "Serversystem/SvrTrace.h"
 #include "Serversystem/BRService.h"
 #include "Common/TimeUtil.h"
+#include "Net/NetUtil.h"
 
 
 namespace BR {

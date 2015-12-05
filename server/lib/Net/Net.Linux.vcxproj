@@ -25,6 +25,7 @@
     <ClCompile Include="ConnectionPeerTCP.cpp" />
     <ClCompile Include="ConnectionTCP.cpp" />
     <ClCompile Include="ConnectionUDP.cpp" />
+    <ClCompile Include="ConnectionUDPBase.cpp" />
     <ClCompile Include="Connection_PrintMessage.cpp" />
     <ClCompile Include="LoopbackConnection.cpp" />
     <ClCompile Include="MessageWindow.cpp" />

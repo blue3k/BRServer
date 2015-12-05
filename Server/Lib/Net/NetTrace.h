@@ -29,6 +29,7 @@ namespace Net {
 		TRC_TCPSENDRAW = Trace::TRC_DBG8,
 		TRC_TCPRECVRAW = Trace::TRC_DBG9,
 		TRC_TCPNETCTRL = Trace::TRC_DBG10,
+		TRC_RAW			= Trace::TRC_DBG11,
 
 		TRC_CONNECTION	=	Trace::TRC_USER1,
 		TRC_NET			=	Trace::TRC_USER2,

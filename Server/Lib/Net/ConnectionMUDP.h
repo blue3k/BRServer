@@ -83,10 +83,6 @@ namespace Net {
 		virtual HRESULT OnRecv( Message::MessageData *pMsg ) override;
 
 
-		// Process Send queue
-		virtual HRESULT Send(Message::MessageData* &pMsg) override;
-
-
 		// Update net control, process connection heartbit, ... etc
 		virtual HRESULT UpdateNetCtrl() override;
 

@@ -53,9 +53,14 @@ const sockaddr_in6& Connection::GetRemoteSockAddr() const
 }
 
 // Get Recv queue
-MsgQueue& Connection::GetRecvQueue()
+inline MsgQueue& Connection::GetRecvQueue()
 {
 	return m_RecvQueue;
+}
+
+inline MsgQueue& Connection::GetSendGuaQueue()
+{
+	return m_SendGuaQueue;
 }
 
 USHORT Connection::NewSeqNone()

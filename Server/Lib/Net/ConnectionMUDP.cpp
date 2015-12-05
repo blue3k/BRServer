@@ -242,22 +242,6 @@ namespace Net {
 		return hr;
 	}
 	
-	// Process Send queue
-	HRESULT ConnectionMUDPServer::Send(Message::MessageData* &pMsg)
-	{
-		HRESULT hr = S_OK;
-
-		if (pMsg == nullptr)
-			return E_INVALIDARG;
-
-		hr = ConnectionUDPBase::Send(pMsg);
-
-		//UpdateSendQueue();
-
-	//Proc_End:
-
-		return hr;
-	}
 
 	// gathering
 	HRESULT ConnectionMUDPServer::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )

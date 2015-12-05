@@ -23,7 +23,6 @@
 #include "Net/NetUtil.h"
 
 
-
 namespace BR {
 namespace Net {
 
@@ -43,13 +42,10 @@ namespace Net {
 	{
 		OP_NONE = 0,
 		OP_TCPREAD,
-		OP_TCPREADPENDING,
 		OP_TCPWRITE,
 		OP_TCPACCEPT,
 		OP_UDPREAD,
 		OP_UDPWRITE,
-		OP_PEERUDPREAD,
-		OP_PEERUDPWRITE,
 	};
 
 	enum class SockFamily
@@ -73,15 +69,30 @@ namespace Net {
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
-	// NetIO callback interface
+	// NetIO  interface
 	//
 
 	class INetIOCallBack
 	{
+	private:
+
+		WriteBufferQueue* m_pWriteQueues;
+
 	public:
 
-		INetIOCallBack() {}
+		INetIOCallBack() : m_pWriteQueues(nullptr) {}
 		virtual ~INetIOCallBack() {}
+
+
+		// Write queue
+		WriteBufferQueue* GetWriteQueue() { return m_pWriteQueues; }
+		void SetWriteQueue(WriteBufferQueue* writeQueue) { Assert(writeQueue != nullptr && m_pWriteQueues == nullptr); m_pWriteQueues = writeQueue; }
+
+
+		// Send message to connection with network device
+		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) = 0;
+		virtual HRESULT EnqueueBuffer(IOBUFFER_WRITE *pSendBuffer);
+
 
 		virtual HRESULT Accept(IOBUFFER_ACCEPT* &pAcceptInfo) { return E_NOTIMPL; };
 		// called when New connection TCP accepted
@@ -92,11 +103,14 @@ namespace Net {
 		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer) = 0;
 
 		// called when send completed
+		virtual HRESULT ProcessSendQueue();
 		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer) = 0;
 	};
 
 
-	
+
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Network system
@@ -140,7 +154,7 @@ namespace Net {
 		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer);
 
 		HRESULT Send(SOCKET sock, IOBUFFER_WRITE* pBuffer);
-		HRESULT SendTo(SOCKET sock, const sockaddr_in6& dstAddress, IOBUFFER_WRITE* pBuffer);
+		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer);
 	};
 
 

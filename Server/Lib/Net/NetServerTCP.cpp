@@ -37,10 +37,13 @@ namespace Net {
 		: Server(InServerID, localClass)
 		, m_PendingAccept(0)
 	{
+		// ServerTCP listen only for accept
+		//SetWriteQueue(new WriteBufferQueue);
 	}
 
 	ServerTCP::~ServerTCP()
 	{
+		//if (GetWriteQueue()) delete GetWriteQueue();
 	}
 	
 	HRESULT ServerTCP::SetupSocketOption(SOCKET socket)
@@ -193,6 +196,8 @@ namespace Net {
 			netErr( E_FAIL );
 		}
 
+		Assert(pConnection->GetWriteQueue() != nullptr);
+
 		pConn = pConnection;
 		pConnOut = pConnection;
 		cid = pConnection->GetCID();
@@ -236,6 +241,11 @@ namespace Net {
 
 	// called when reciving message
 	HRESULT ServerTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
+	{
+		return E_NOTIMPL;
+	}
+
+	HRESULT ServerTCP::SendBuffer(IOBUFFER_WRITE *pIOBuffer)
 	{
 		return E_NOTIMPL;
 	}
@@ -474,41 +484,6 @@ namespace Net {
 			break;
 		};
 
-		//iWSAErr = WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0, pOverlapped, nullptr );
-		//if( iWSAErr == SOCKET_ERROR )
-		//{
-		//	iWSAErr = WSAGetLastError();
-		//	if( iWSAErr != WSA_IO_PENDING )
-		//	{
-		//		switch( iWSAErr )
-		//		{
-		//		case WSAENOTCONN:
-		//			// Send fail by connection close
-		//			// Need to disconnect
-		//			pTCPCon->Disconnect();
-		//			netErrSilent(E_NET_NOT_CONNECTED);
-		//			break;
-		//		case WSAECONNABORTED:
-		//		case WSAECONNRESET:
-		//		case WSAENETRESET:
-		//		case WSAENOTSOCK:
-		//		case WSAESHUTDOWN:
-		//			// Send fail by connection close
-		//			// Need to disconnect
-		//			pTCPCon->Disconnect();
-		//			netErrSilent( E_NET_CONNECTION_CLOSED );
-		//			break;
-		//		default:
-		//			netErr( E_NET_IO_SEND_FAIL );
-		//			break;
-		//		};
-		//	}
-		//}
-		//else
-		//{
-		//	// IOCP process will free this
-		//}
-
 	Proc_End:
 
 		if( FAILED(hr) )
@@ -581,36 +556,6 @@ namespace Net {
 			netErr(E_NET_IO_SEND_FAIL);
 			break;
 		};
-
-		//iWSAErr = WSASend( pTCPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0, pOverlapped, nullptr );
-		//if( iWSAErr == SOCKET_ERROR )
-		//{
-		//	iWSAErr = WSAGetLastError();
-		//	if( iWSAErr != WSA_IO_PENDING )
-		//	{
-		//		switch( iWSAErr )
-		//		{
-		//		case WSAECONNABORTED:
-		//		case WSAECONNRESET:
-		//		case WSAENETRESET:
-		//		case WSAENOTCONN:
-		//		case WSAENOTSOCK:
-		//		case WSAESHUTDOWN:
-		//			// Send fail by connection close
-		//			// Need to disconnect
-		//			pTCPCon->Disconnect();
-		//			netErrSilent( E_NET_CONNECTION_CLOSED );
-		//			break;
-		//		default:
-		//			netErr( E_NET_IO_SEND_FAIL );
-		//			break;
-		//		};
-		//	}
-		//}
-		//else
-		//{
-		//	// IOCP process will free this
-		//}
 
 	Proc_End:
 

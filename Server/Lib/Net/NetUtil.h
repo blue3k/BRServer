@@ -20,12 +20,15 @@
 #include "Common/MemoryPool.h"
 #include "Common/Thread.h"
 #include "Common/BrBaseTypes.h"
+#include "Common/PageQueue.h"
+
 
 
 
 namespace BR {
 namespace Net {
 
+	struct IOBUFFER_WRITE;
 
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -45,6 +48,42 @@ namespace Net {
 	bool operator != ( const NetAddress &op1, const NetAddress &op2 );
 
 
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Packet message queue class
+	//
+
+	class MsgQueue : public PageQueue<Message::MessageData*>
+	{
+	public:
+		MsgQueue(UINT uiNumElePerPage = 512);
+		virtual ~MsgQueue();
+
+		// Clear queue element
+		virtual void ClearQueue();
+	};
+
+
+	// Write buffer queue
+	class WriteBufferQueue : public PageQueue<IOBUFFER_WRITE*>
+	{
+	public:
+		WriteBufferQueue(UINT uiNumElePerPage = 512);
+		virtual ~WriteBufferQueue();
+
+		// Clear queue element
+		void ClearQueue();
+	};
+
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	
+	//
+
+	void RegisterConnectionDebugMessage();
 
 
 } // namespace Net

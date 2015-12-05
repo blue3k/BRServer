@@ -26,21 +26,6 @@ namespace Net {
 
 
 
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Packet message queue class
-	//
-
-	class MsgQueue : public PageQueue<Message::MessageData*>
-	{
-	public:
-		MsgQueue( UINT uiNumElePerPage = 512 );
-		virtual ~MsgQueue();
-
-		// Clear queue element
-		virtual void ClearQueue();
-	};
-
 
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -107,6 +92,7 @@ namespace Net {
 		// Sending wait queue
 		MsgQueue			m_SendGuaQueue;
 
+
 		// NetCtrl control time
 		TimeStampMS m_ulNetCtrlTime;
 		TimeStampMS m_ulNetCtrlTryTime;
@@ -133,7 +119,9 @@ namespace Net {
 		inline const sockaddr_in6& GetRemoteSockAddr() const;
 
 		// Get Recv queue
-		inline MsgQueue& GetRecvQueue();
+		MsgQueue& GetRecvQueue();
+
+		MsgQueue& GetSendGuaQueue();
 
 		// Get zero recv count
 		inline ULONG GetZeroRecvCount();

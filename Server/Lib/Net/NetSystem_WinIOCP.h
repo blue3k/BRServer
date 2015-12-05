@@ -49,6 +49,12 @@ namespace Net {
 		// Transferred buffer size
 		DWORD TransferredSize;
 
+		union {
+			// UDP Read from
+			struct sockaddr_in6 From;
+			struct sockaddr_in6 To;
+		} NetAddr;
+
 
 		// Constructor
 		IOBUFFER_RWBASE();
@@ -76,10 +82,8 @@ namespace Net {
 		inline void InitBuff( UINT uiBuffSize, BYTE* pBuff );
 
 		// Setup sending mode
-		inline void SetupSendUDP( Message::MessageData *pMsg );
-		inline void SetupSendUDP( UINT uiBuffSize, BYTE* pBuff );
-		inline void SetupSendPeer( Message::MessageData *pMsg );
-		inline void SetupSendPeer( UINT uiBuffSize, BYTE* pBuff );
+		inline void SetupSendUDP(const sockaddr_in6& to, Message::MessageData *pMsg );
+		inline void SetupSendUDP(const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff );
 		inline void SetupSendTCP( Message::MessageData *pMsg );
 		inline void SetupSendTCP( UINT uiBuffSize, BYTE* pBuff );
 
@@ -92,9 +96,6 @@ namespace Net {
 		// Read flag
 		DWORD dwFlags;
 		DWORD dwNumberOfByte;
-
-		// UDP Read from
-		struct sockaddr_in6 From;
 
 		// UDP Recv socket length
 		INT iSockLen;
@@ -117,10 +118,7 @@ namespace Net {
 
 		// Setup recving mode
 		inline void SetupRecvUDP( uintptr_t iCID );
-		inline void SetupRecvPeer( uintptr_t iCID );
 		inline void SetupRecvTCP( uintptr_t iCID );
-		inline void SetupRecvTCPPending( uintptr_t iCID );
-
 	};
 
 

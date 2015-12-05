@@ -62,7 +62,6 @@ namespace Svr {
 		if (m_pServerEntity->GetTaskWorker() != nullptr && m_pServerEntity->GetTaskWorker()->GetThreadID() != ThisThread::GetThreadID())
 		{
 			svrChk(m_pServerEntity->OnRecvMessage(this, pMsg));
-			//svrChk(m_pServerEntity->ProcessMessage(this, pMsg));
 		}
 		else
 		{

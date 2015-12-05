@@ -227,9 +227,6 @@ namespace Net {
 					case ERROR_PROTOCOL_UNREACHABLE:
 					case ERROR_PORT_UNREACHABLE:
 					case ERROR_NETNAME_DELETED:
-						if( pOverlapped->Operation != IOBUFFER_OPERATION::OP_UDPREAD // UDP can't distingush which connection network err
-							&& pOverlapped->Operation != IOBUFFER_OPERATION::OP_PEERUDPREAD )
-							netTrace( TRC_CONNECTION, "Closing Connection by iErr={0}, hr={1:X8}", iLastError, hr );
 						hr = E_NET_CONNECTION_CLOSED;
 						break;
 					case ERROR_OPERATION_ABORTED:
@@ -254,7 +251,6 @@ namespace Net {
 					break;
 				case IOBUFFER_OPERATION::OP_TCPWRITE:
 				case IOBUFFER_OPERATION::OP_UDPWRITE:
-				case IOBUFFER_OPERATION::OP_PEERUDPWRITE:
 					{
 						IOBUFFER_WRITE *pIOBuffer = (IOBUFFER_WRITE*)pOverlapped;
 						INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
@@ -263,7 +259,6 @@ namespace Net {
 					break;
 				case IOBUFFER_OPERATION::OP_TCPREAD:
 				case IOBUFFER_OPERATION::OP_UDPREAD:
-				case IOBUFFER_OPERATION::OP_PEERUDPREAD:
 					if( ulKey ) // TCP operation
 					{
 						IOBUFFER_READ *pIOBuffer = (IOBUFFER_READ*)pOverlapped;
@@ -607,7 +602,7 @@ namespace Net {
 		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer)
 		{
 			INT iErr = 0;
-			iErr = WSARecvFrom(sock, &pBuffer->wsaBuff, 1, NULL, &pBuffer->dwFlags, (sockaddr*)&pBuffer->From, &pBuffer->iSockLen, pBuffer, NULL);
+			iErr = WSARecvFrom(sock, &pBuffer->wsaBuff, 1, NULL, &pBuffer->dwFlags, (sockaddr*)&pBuffer->NetAddr.From, &pBuffer->iSockLen, pBuffer, NULL);
 			if (iErr == SOCKET_ERROR)
 			{
 				return GetLastWSAHRESULT();
@@ -627,8 +622,9 @@ namespace Net {
 			return S_OK;
 		}
 
-		HRESULT SendTo(SOCKET sock, const sockaddr_in6& dstAddress, IOBUFFER_WRITE* pBuffer)
+		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer)
 		{
+			const sockaddr_in6& dstAddress = pBuffer->NetAddr.To;
 			INT iErr = WSASendTo(sock, &pBuffer->wsaBuff, 1, nullptr, 0, 
 				(sockaddr*)&dstAddress, sizeof(sockaddr_in6),
 				pBuffer, NULL);

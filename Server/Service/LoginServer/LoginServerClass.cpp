@@ -57,22 +57,6 @@ namespace BR {
 namespace LoginServer {
 
 	
-	//// Get Entity Server
-	//Svr::EntityServerEntity* GetEntityServer()
-	//{
-	//	Svr::EntityServerEntity *pEntityServer = nullptr;
-	//	Svr::ServerEntity *pServerEntity = nullptr;
-	//	Svr::ServerEntityManager *pRemoteMgr = Svr::GetServerComponent<Svr::ServerEntityManager>();
-
-	//	if( pRemoteMgr == nullptr ) return nullptr;
-
-	//	if( SUCCEEDED(pRemoteMgr->GetServerEntity( NetClass::Entity, pServerEntity ) ) )
-	//	{
-	//		pEntityServer = BR_DYNAMIC_CAST(Svr::EntityServerEntity*, pServerEntity);
-	//	}
-
-	//	return pEntityServer;
-	//}
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -241,7 +225,7 @@ namespace LoginServer {
 		pMyConfog = BR_DYNAMIC_CAST(Svr::Config::PublicServer*,const_cast<Svr::Config::GenericServer*>(GetMyConfig()));
 		svrChkPtr( pMyConfog );
 
-		svrMem(m_pNetPublic = new BR::Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
+		svrMem(m_pNetPublic = new Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
 
 		svrChk( m_pNetPublic->HostOpen( GetNetClass(), pMyConfog->NetPublic->IP.c_str(), pMyConfog->NetPublic->Port ) );
 
@@ -273,17 +257,17 @@ namespace LoginServer {
 
 
 	// create remote entity by class
-	HRESULT LoginServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
+	HRESULT LoginServer::CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
 		switch( netClass )
 		{
-		case BR::NetClass::Game:
+		case NetClass::Game:
 			pServerEntity = new GameServerEntity();
 			break;
-		case BR::NetClass::Login:
+		case NetClass::Login:
 			pServerEntity = new LoginServerEntity();
 			break;
-		case BR::NetClass::Entity:
+		case NetClass::Entity:
 			pServerEntity = new Svr::EntityServerEntity();
 			break;
 		default:
@@ -349,6 +333,8 @@ namespace LoginServer {
 
 				break;
 			case Net::INet::Event::EVT_CONNECTION_DISCONNECTED:
+				break;
+			default:
 				break;
 			};
 		}

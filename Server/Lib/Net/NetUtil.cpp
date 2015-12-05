@@ -18,6 +18,7 @@
 #include "Common/MemoryPool.h"
 #include "Net/NetTrace.h"
 #include "Net/NetUtil.h"
+#include "Net/NetSystem.h"
 
 
 
@@ -218,7 +219,91 @@ namespace Net {
 
 
 
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Packet message queue class
+	//
 
+	MsgQueue::MsgQueue(UINT uiNumElePerPage)
+		:PageQueue<Message::MessageData*>(uiNumElePerPage)
+	{
+	}
+
+	MsgQueue::~MsgQueue()
+	{
+		ClearQueue();
+	}
+
+	// Clear queue element
+	void MsgQueue::ClearQueue()
+	{
+		Message::MessageData* data = NULL;
+
+		while (Dequeue(data) == S_OK)
+		{
+			if (data) data->Release();
+		}
+	}
+
+
+
+
+	WriteBufferQueue::WriteBufferQueue(UINT uiNumElePerPage)
+		:PageQueue<IOBUFFER_WRITE*>(uiNumElePerPage)
+	{
+	}
+
+	WriteBufferQueue::~WriteBufferQueue()
+	{
+		ClearQueue();
+	}
+
+	// Clear queue element
+	void WriteBufferQueue::ClearQueue()
+	{
+		IOBUFFER_WRITE* data = NULL;
+
+		while (Dequeue(data) == S_OK)
+		{
+			Util::SafeDelete(data);
+		}
+	}
+
+
+
+
+	//WriteBufferQueueManager::WriteBufferQueueManager(UINT numQueue, UINT uiNumElePerPage)
+	//	: m_AssignIndex(0)
+	//{
+	//	m_WriteBufferQueues.SetSize(numQueue);
+	//	for (UINT iQueue = 0; iQueue < m_WriteBufferQueues.GetSize(); iQueue++)
+	//	{
+	//		m_WriteBufferQueues[iQueue] = new WriteBufferQueue(uiNumElePerPage);
+	//	}
+	//}
+
+	//WriteBufferQueueManager::~WriteBufferQueueManager()
+	//{
+	//	Clear();
+	//}
+
+	//// Clear queue element
+	//void WriteBufferQueueManager::Clear()
+	//{
+	//	m_AssignIndex = 0;
+	//	for (UINT iQueue = 0; iQueue < m_WriteBufferQueues.GetSize(); iQueue++)
+	//	{
+	//		m_WriteBufferQueues[iQueue]->ClearQueue();
+	//		delete m_WriteBufferQueues[iQueue];
+	//	}
+
+	//	m_WriteBufferQueues.Clear();
+	//}
+
+	//HRESULT WriteBufferQueueManager::ChooseQueue(WriteBufferQueue* &pQueue)
+	//{
+	//	auto newIndex = m_AssignIndex.fetch_add(1, std::memory_order_relaxed) % m_WriteBufferQueues.GetSize();
+	//}
 
 } // namespace Net
 } // namespace BR

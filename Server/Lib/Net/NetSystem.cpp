@@ -27,6 +27,62 @@ namespace Net {
 
 
 
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	// NetIO interface
+	//
+
+
+	HRESULT INetIOCallBack::ProcessSendQueue()
+	{
+		HRESULT hr = S_OK;
+		IOBUFFER_WRITE* pSendBuffer = nullptr;
+
+		auto writeQueue = m_pWriteQueues;
+		netChkPtr(writeQueue);
+
+		while (1)
+		{
+			hr = writeQueue->GetFront(pSendBuffer);
+			if (FAILED(hr))
+				break;
+
+			hr = SendBuffer(pSendBuffer);
+			switch (hr)
+			{
+			case S_OK:
+			case E_NET_IO_PENDING:
+			case E_NET_WOULDBLOCK:
+				writeQueue->Dequeue(pSendBuffer);
+				break;
+			case E_NET_TRY_AGAIN:
+			default:
+				goto Proc_End;
+				break;
+			}
+		}
+
+	Proc_End:
+
+		return hr;
+	}
+
+
+
+	HRESULT INetIOCallBack::EnqueueBuffer(IOBUFFER_WRITE *pSendBuffer)
+	{
+		HRESULT hr = S_OK;
+
+		auto writeQueue = m_pWriteQueues;
+		netChkPtr(writeQueue);
+
+		netChk(writeQueue->Enqueue(pSendBuffer));
+
+	Proc_End:
+
+		return hr;
+
+	}
 
 
 	namespace NetSystem

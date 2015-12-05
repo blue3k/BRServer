@@ -56,10 +56,14 @@ namespace Net {
 		// Recv guaranted Message Queue, to enable MT enqueue
 		MsgQueue			 m_RecvGuaQueue;
 
-		// Net control Sending wait queue
+		// Net control recv queue
 		PageQueue<MsgNetCtrlBuffer>	m_RecvNetCtrlQueue;
 
+		// subframe message
 		Message::MessageData*		m_SubFrameMessage;
+
+		// UDP send queue
+		WriteBufferQueue*			m_pWriteQueuesUDP;
 
 	protected:
 		
@@ -81,10 +85,21 @@ namespace Net {
 		// Process connection state
 		virtual HRESULT ProcConnectionState() = 0;
 
+
+		WriteBufferQueue* GetWriteQueueUDP() { return m_pWriteQueuesUDP; }
+
+
+		// Send packet buffer to connection with network device
+		virtual HRESULT SendBufferUDP(IOBUFFER_WRITE *pSendBuffer);
+		virtual HRESULT EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer);
+
 	public:
 		// Constructor
 		ConnectionUDPBase( UINT reliableWindowSize );
 		virtual ~ConnectionUDPBase();
+
+		void SetWriteQueueUDP(WriteBufferQueue* writeQueue) { Assert(writeQueue != nullptr); m_pWriteQueuesUDP = writeQueue; }
+
 
 		// Set maximum guaranted retry count
 		inline void SetMaxGuarantedRetry( UINT uiMaxGuarantedRetry );
@@ -165,6 +180,7 @@ namespace Net {
 
 		// Process connection state
 		virtual HRESULT ProcConnectionState();
+
 
 	public:
 		
@@ -247,6 +263,14 @@ namespace Net {
 		// recv io buffer
 		IOBUFFER_READ m_RecvBuffer;
 
+
+	protected:
+		// Send packet buffer to connection with network device
+		//virtual HRESULT SendBufferUDP(IOBUFFER_WRITE *pSendBuffer) override;
+		virtual HRESULT EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer) override;
+
+		// Send message to connection with network device
+		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
 
 	public:
 		// Constructor

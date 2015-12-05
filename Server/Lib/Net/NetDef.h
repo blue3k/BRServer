@@ -72,7 +72,7 @@ namespace Net {
 		//	Event definitions
 		//
 
-		struct tag_Event
+		struct Event
 		{
 			// Type of connection event
 			enum EventTypes
@@ -92,15 +92,14 @@ namespace Net {
 				ConnectionState state;
 			} Value;
 
-			tag_Event(void* ptr = nullptr)									{ assert(ptr == nullptr); }
-			//tag_Event(const tag_Event& src) : EventType(src.EventType){ Value = src.Value; }
-			tag_Event(EventTypes eventType, HRESULT hrRes) :EventType(eventType) { Value.hr = hrRes; }
-			tag_Event(EventTypes eventType, ConnectionState InState) :EventType(eventType) { Value.state = InState; }
-			tag_Event& operator =(const tag_Event& src);
-			bool operator == (const tag_Event& src) const;
-			bool operator != (const tag_Event& src) const;
+			Event(void* ptr = nullptr)									{ assert(ptr == nullptr); }
+			Event(EventTypes eventType, HRESULT hrRes) :EventType(eventType) { Value.hr = hrRes; }
+			Event(EventTypes eventType, ConnectionState InState) :EventType(eventType) { Value.state = InState; }
+			Event& operator =(const Event& src);
+			bool operator == (const Event& src) const;
+			bool operator != (const Event& src) const;
 		};
-		typedef tag_Event Event;
+
 
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -108,7 +107,7 @@ namespace Net {
 		//	Connection information
 		//
 
-		typedef struct tag_ConnectionInfo
+		struct ConnectionInformation
 		{
 			// Local address
 			NetAddress		Local;
@@ -126,11 +125,11 @@ namespace Net {
 
 
 			// set local info
-			inline void SetLocalInfo( NetClass Class, const NetAddress& Addr, UINT64 UID );
+			void SetLocalInfo( NetClass Class, const NetAddress& Addr, UINT64 UID );
 
 			// set remote info
-			inline void SetRemoteInfo( NetClass Class, UINT64 UID );
-		} ConnectionInformation;
+			void SetRemoteInfo( NetClass Class, UINT64 UID );
+		};
 
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -288,7 +287,6 @@ namespace Net {
 
 	};
 
-	void RegisterConnectionDebugMessage();
 
 
 	class IConnectionEventHandler
@@ -383,6 +381,7 @@ namespace Net {
 
 		// take over connection management
 		virtual HRESULT TakeOverConnection(IConnection* pIConnection) = 0;
+
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Used by connection

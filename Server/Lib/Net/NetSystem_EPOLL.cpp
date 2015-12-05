@@ -170,12 +170,32 @@ namespace Net {
 	EPOLLWorker::EPOLLWorker(int hEpoll)
 		: m_hEpoll(hEpoll)
 	{
-
+		if (m_hEpoll == 0)
+		{
+			m_hEpoll = epoll_create(1);
+		}
 	}
 
 	EPOLLWorker::~EPOLLWorker()
 	{
 
+	}
+
+	HRESULT EPOLLWorker::RegisterSocket(SOCKET sfd, INetIOCallBack* cbInstance, bool isListenSocket)
+	{
+		epoll_event epollEvent;
+
+		memset(&epollEvent, 0, sizeof(epollEvent));
+		epollEvent.events = EPOLLIN | EPOLLOUT | EPOLLPRI | EPOLLET;// EPOLLERR | EPOLLHUP;
+		epollEvent.data.u32 = isListenSocket ? 1 : 0;
+		epollEvent.data.fd = sfd;
+		epollEvent.data.ptr = cbInstance;
+		if (epoll_ctl(m_hEpoll, EPOLL_CTL_ADD, sfd, &epollEvent) == -1) {
+			netTrace(Trace::TRC_ERROR, "epoll_ctl: listen_sock");
+			return E_FAIL;
+		}
+
+		return S_OK;
 	}
 
 	HRESULT EPOLLWorker::HandleAccept(SOCKET sock, INetIOCallBack* pCallBack)
@@ -187,39 +207,71 @@ namespace Net {
 		hr = pCallBack->Accept(pAcceptInfo);
 
 		netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
+		pAcceptInfo = nullptr;
 
 	Proc_End:
+
+		Util::SafeDelete(pAcceptInfo);
+
 
 		return hr;
 	}
 
 	HRESULT EPOLLWorker::HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_OK, hrErr = S_OK;
+		IOBUFFER_READ* pReadBuffer = nullptr;
 
 		if (!(events & (EPOLLIN | EPOLLOUT)))
 		{
-			netTrace(Trace::TRC_ERROR, "Error event {0}, {1}", events, sock);
-			//pCallBack->
+			netTrace(Trace::TRC_ERROR, "Error sock:{0}, event:{1}", sock, events);
 			return E_UNEXPECTED;
 		}
 
 		if (events & EPOLLIN)
 		{
-			IOBUFFER_READ* pBuffer = nullptr;
-			// Read
-			hr = pCallBack->Recv(pBuffer);
-			// toss data to working thread
-			netChk(pCallBack->OnIORecvCompleted(hr, pBuffer));
+			while (hrErr != E_NET_TRY_AGAIN)
+			{
+				// Read
+				pReadBuffer = nullptr;
+				hrErr = pCallBack->Recv(pReadBuffer);
+				hr = hrErr;
+				switch (hrErr)
+				{
+				case S_OK:
+				case E_NET_TRY_AGAIN:
+					break;
+				case E_NET_IO_PENDING:
+				case E_NET_WOULDBLOCK:
+					Assert(false);
+					break;
+				default:
+					netTrace(Trace::TRC_ERROR, "Epoll RW fail events:{0:X8} hr:{1:X8}", events, hrErr);
+					// toss data to working thread
+					netChk(pCallBack->OnIORecvCompleted(hrErr, pReadBuffer));
+					hr = hrErr;
+					break;
+				}
+
+				// OnIORecvCompleted wouldn't delete anything
+				Util::SafeDelete(pReadBuffer);
+			}
 		}
 
 		if (events & EPOLLOUT)
 		{
 			// This call will just poke working thread
-			netChk(pCallBack->OnIOSendCompleted(hr, nullptr));
+			netChk(pCallBack->ProcessSendQueue());
 		}
 
 	Proc_End:
+
+		if (FAILED(hr))
+		{
+			netTrace(Trace::TRC_ERROR, "Epoll RW fail events:{0:X8} hr:{1:X8}", events, hr);
+		}
+
+		Util::SafeDelete(pReadBuffer);
 
 		return hr;
 	}
@@ -287,6 +339,62 @@ namespace Net {
 
 	}
 
+
+
+
+	// Constructor/destructor
+	EPOLLSendWorker::EPOLLSendWorker()
+	{
+	}
+
+	EPOLLSendWorker::~EPOLLSendWorker()
+	{
+		m_WriteQueue.ClearQueue();
+	}
+
+	void EPOLLSendWorker::Run()
+	{
+		HRESULT hr = S_OK;
+		IOBUFFER_WRITE* pSendBuffer = nullptr;
+
+		while (1)
+		{
+			hr = S_OK;
+
+			do {
+				if (pSendBuffer == nullptr) m_WriteQueue.Dequeue(pSendBuffer);
+
+				if (pSendBuffer == nullptr) break;
+
+				switch (pSendBuffer->Operation)
+				{
+				case IOBUFFER_OPERATION::OP_TCPWRITE:
+					//NetSystem::Send();
+					break;
+				case IOBUFFER_OPERATION::OP_UDPWRITE:
+					break;
+				default:
+					Assert(false);
+					break;
+				}
+
+				pSendBuffer = nullptr;
+			} while (1);
+			
+
+			// Check exit event
+			if (CheckKillEvent(DurationMS(0)))
+				break;
+
+		} // while(1)
+
+
+		Util::SafeDelete(pSendBuffer);
+	}
+
+
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//
 	//	EPOLL network system
@@ -300,37 +408,52 @@ namespace Net {
 
 		static EPOLLSystem stm_Instance;
 
-		int m_hEpollListen;
-		int m_hEpoll;
-
 		EPOLLWorker* m_ListenWorker;
-		// workers for RW
-		DynamicArray<EPOLLWorker*> m_Workers;
+		// workers for TCP
+		std::atomic<int> m_iTCPAssignIndex;
+		DynamicArray<EPOLLWorker*> m_WorkerTCP;
+
+		// workers for UDP
+		EPOLLWorker* m_UDPSendWorker;
+		DynamicArray<EPOLLWorker*> m_WorkerUDP;
 
 	public:
 
 		EPOLLSystem()
-			: m_hEpollListen(0)
-			, m_hEpoll(0)
-			, m_ListenWorker(nullptr)
+			: m_ListenWorker(nullptr)
+			, m_iTCPAssignIndex(0)
 		{
 		}
 
 		HRESULT Initialize(UINT netThreadCount)
 		{
-			if (m_hEpoll != 0)
+			if (m_ListenWorker != nullptr)
 				return S_OK;
 
-			m_hEpoll = epoll_create1(0);
-			m_hEpollListen = epoll_create1(0);
 
-			m_ListenWorker = new EPOLLWorker(m_hEpollListen);
+			m_ListenWorker = new EPOLLWorker;
 			m_ListenWorker->Start();
 
+			m_iTCPAssignIndex = 0;
+
+			// 
 			for (UINT iThread = 0; iThread < netThreadCount; iThread++)
 			{
-				auto pNewWorker = new EPOLLWorker(m_hEpoll);
-				m_Workers.push_back(pNewWorker);
+				auto pNewWorker = new EPOLLWorker;
+				m_WorkerTCP.push_back(pNewWorker);
+
+				pNewWorker->Start();
+			}
+
+			m_UDPSendWorker = new EPOLLWorker;
+			m_UDPSendWorker->Start();
+
+			// 
+			int hEPollUDP = epoll_create(1);
+			for (UINT iThread = 0; iThread < netThreadCount; iThread++)
+			{
+				auto pNewWorker = new EPOLLWorker(hEPollUDP);
+				m_WorkerUDP.push_back(pNewWorker);
 
 				pNewWorker->Start();
 			}
@@ -347,60 +470,30 @@ namespace Net {
 			}
 			m_ListenWorker = nullptr;
 
-
-			for (UINT iThread = 0; iThread < m_Workers.GetSize(); iThread++)
+			// 
+			for (UINT iThread = 0; iThread < m_WorkerTCP.GetSize(); iThread++)
 			{
-				m_Workers[iThread]->Stop(true);
-				delete m_Workers[iThread];
+				m_WorkerTCP[iThread]->Stop(true);
+				delete m_WorkerTCP[iThread];
 			}
-			m_Workers.Clear();
+			m_WorkerTCP.Clear();
+
+			// 
+			int hEpoll = 0;
+			for (UINT iThread = 0; iThread < m_WorkerUDP.GetSize(); iThread++)
+			{
+				auto pThread = m_WorkerUDP[iThread];
+				hEpoll = pThread->GetEpollHandle();
+				pThread->Stop(true);
+				delete pThread;
+			}
+			m_WorkerUDP.Clear();
+
+			if (hEpoll != 0)
+			{
+				close(hEpoll);
+			}
 		}
-
-		//int create_and_bind(char *port)
-		//{
-		//	struct addrinfo hints;
-		//	struct addrinfo *result, *rp;
-		//	int s, sfd;
-
-		//	memset(&hints, 0, sizeof(struct addrinfo));
-		//	hints.ai_family = AF_UNSPEC;     /* Return IPv4 and IPv6 choices */
-		//	hints.ai_socktype = SOCK_STREAM; /* We want a TCP socket */
-		//	hints.ai_flags = AI_PASSIVE;     /* All interfaces */
-
-		//	s = getaddrinfo(NULL, port, &hints, &result);
-		//	if (s != 0)
-		//	{
-		//		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
-		//		return -1;
-		//	}
-
-		//	for (rp = result; rp != NULL; rp = rp->ai_next)
-		//	{
-		//		sfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
-		//		if (sfd == -1)
-		//			continue;
-
-		//		s = bind(sfd, rp->ai_addr, rp->ai_addrlen);
-		//		if (s == 0)
-		//		{
-		//			/* We managed to bind successfully! */
-		//			break;
-		//		}
-
-		//		close(sfd);
-		//	}
-
-		//	if (rp == NULL)
-		//	{
-		//		fprintf(stderr, "Could not bind\n");
-		//		return -1;
-		//	}
-
-		//	freeaddrinfo(result);
-
-		//	return sfd;
-		//}
-
 
 		HRESULT MakeSocketNonBlocking(SOCKET sfd)
 		{
@@ -426,19 +519,30 @@ namespace Net {
 
 
 		// Register the socket to EPOLL
-		HRESULT RegisterToEPOLL(SOCKET sfd, INetIOCallBack* cbInstance, bool isListenSocket)
+		HRESULT RegisterToEPOLL(SOCKET sock, SockType sockType, INetIOCallBack* cbInstance, bool isListenSocket)
 		{
-			epoll_event epollEvent;
-			auto hEpoll = isListenSocket ? m_hEpollListen : m_hEpoll;
+			if (sockType == SockType::Stream) // TCP
+			{
+				if (m_ListenWorker == nullptr)
+					return E_NET_NOTINITIALISED;
 
-			memset(&epollEvent, 0, sizeof(epollEvent));
-			epollEvent.events = EPOLLIN | EPOLLOUT | EPOLLPRI | EPOLLET;// EPOLLERR | EPOLLHUP;
-			epollEvent.data.u32 = isListenSocket ? 1 : 0;
-			epollEvent.data.fd = sfd;
-			epollEvent.data.ptr = cbInstance;
-			if (epoll_ctl(hEpoll, EPOLL_CTL_ADD, sfd, &epollEvent) == -1) {
-				netTrace(Trace::TRC_ERROR, "epoll_ctl: listen_sock");
-				return E_FAIL;
+				if (isListenSocket)
+				{
+					return m_ListenWorker->RegisterSocket(sock, cbInstance, isListenSocket);
+				}
+				else
+				{
+					auto assignIndex = m_iTCPAssignIndex.fetch_add(1,std::memory_order_relaxed) % m_WorkerTCP.GetSize();
+					m_WorkerTCP[assignIndex]->RegisterSocket(sock, cbInstance, isListenSocket);
+				}
+			}
+			else
+			{
+				if(m_WorkerUDP.GetSize() < 1)
+					return E_NET_NOTINITIALISED;
+
+				// UDP workers are sharing epoll, add any of them will work same.
+				return m_WorkerUDP[0]->RegisterSocket(sock, cbInstance, isListenSocket);
 			}
 
 			return S_OK;
@@ -509,13 +613,15 @@ namespace Net {
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
 
-
-		HRESULT RegisterSocket(SOCKET sock, INetIOCallBack* cbInstance, bool isListenSocket)
+		HRESULT RegisterSocket(SOCKET sock, SockType sockType, INetIOCallBack* cbInstance, bool isListenSocket)
 		{
 			HRESULT hr = S_OK;
 
+			netChkPtr(cbInstance);
+			AssertRel(cbInstance->GetWriteQueue() != nullptr);
+
 			netChk(EPOLLSystem::GetSystem().MakeSocketNonBlocking(sock));
-			netChk(EPOLLSystem::GetSystem().RegisterToEPOLL(sock, cbInstance, isListenSocket));
+			netChk(EPOLLSystem::GetSystem().RegisterToEPOLL(sock, sockType, cbInstance, isListenSocket));
 
 		Proc_End:
 
@@ -563,6 +669,8 @@ namespace Net {
 				{
 				case E_NET_WOULDBLOCK:
 				case E_NET_IO_PENDING:
+					goto Proc_End;
+
 				case E_NET_TRY_AGAIN:
 					// Nothing to accept for now
 					hr = err;
@@ -595,8 +703,6 @@ namespace Net {
 		{
 			socklen_t len;
 			struct sockaddr_storage addr;
-			//char ipstr[INET6_ADDRSTRLEN];
-			//int port;
 
 			unused(sockListen);
 
@@ -609,16 +715,11 @@ namespace Net {
 				// this shouldn't happened
 				AssertRel(false);
 				memset(&remoteAddr, 0, sizeof remoteAddr);
-				//struct sockaddr_in *s = (struct sockaddr_in *)&addr;
-				//port = ntohs(s->sin_port);
-				//inet_ntop(AF_INET, &s->sin_addr, ipstr, sizeof ipstr);
 			}
 			else
 			{ // AF_INET6
 				struct sockaddr_in6 *s = (struct sockaddr_in6 *)&addr;
 				remoteAddr = *s;
-				//port = ntohs(s->sin6_port);
-				//inet_ntop(AF_INET6, &s->sin6_addr, ipstr, sizeof ipstr);
 			}
 
 			return S_OK;
@@ -644,10 +745,10 @@ namespace Net {
 
 		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer)
 		{
-			Assert(pBuffer->iSockLen == sizeof(pBuffer->From));
+			Assert(pBuffer->iSockLen == sizeof(pBuffer->NetAddr.From));
 
 			ssize_t recvSize = recvfrom(sock, &pBuffer->buffer, sizeof(pBuffer->buffer), MSG_DONTWAIT,
-				(sockaddr*)&pBuffer->From, &pBuffer->iSockLen);
+				(sockaddr*)&pBuffer->NetAddr.From, &pBuffer->iSockLen);
 			if (recvSize < 0)
 			{
 				return GetLastWSAHRESULT();
@@ -676,8 +777,9 @@ namespace Net {
 			return S_OK;
 		}
 
-		HRESULT SendTo(SOCKET sock, const sockaddr_in6& dstAddress, IOBUFFER_WRITE* pBuffer)
+		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer)
 		{
+			const sockaddr_in6& dstAddress = pBuffer->NetAddr.To;
 			ssize_t sendSize = sendto(sock, &pBuffer->RawSendSize, pBuffer->RawSendSize, MSG_DONTWAIT | MSG_NOSIGNAL,
 				(sockaddr*)&dstAddress, sizeof(sockaddr_in6));
 

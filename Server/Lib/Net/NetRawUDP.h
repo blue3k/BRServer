@@ -61,6 +61,7 @@ namespace Net {
 		SOCKET GetSocket()								{ return m_Socket; }
 
 		HRESULT PendingRecv(IOBUFFER_READ *pOver);
+		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
 		HRESULT SendMsg(const sockaddr_in6& dest, Message::MessageData *pMsg);
 
 		// called when incomming message occure

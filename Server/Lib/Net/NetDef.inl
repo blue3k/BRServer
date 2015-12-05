@@ -19,7 +19,7 @@
 
 
 // set local info
-void IConnection::ConnectionInformation::SetLocalInfo( NetClass Class, const NetAddress& Addr, UINT64 UID )
+inline void IConnection::ConnectionInformation::SetLocalInfo( NetClass Class, const NetAddress& Addr, UINT64 UID )
 {
 	Local = Addr;
 	LocalClass = Class;
@@ -27,7 +27,7 @@ void IConnection::ConnectionInformation::SetLocalInfo( NetClass Class, const Net
 }
 
 // set remote info
-void IConnection::ConnectionInformation::SetRemoteInfo( NetClass Class, UINT64 UID )
+inline void IConnection::ConnectionInformation::SetRemoteInfo( NetClass Class, UINT64 UID )
 {
 	//Remote = Addr;
 	RemoteClass = Class;
@@ -36,13 +36,13 @@ void IConnection::ConnectionInformation::SetRemoteInfo( NetClass Class, UINT64 U
 
 
 
-inline IConnection::tag_Event& IConnection::tag_Event::operator =(const IConnection::tag_Event& src)
+inline IConnection::Event& IConnection::Event::operator =(const IConnection::Event& src)
 {
 	memcpy( this, &src, sizeof(Event) );
 	return *this;
 }
 
-inline bool IConnection::tag_Event::operator == (const IConnection::tag_Event& src) const
+inline bool IConnection::Event::operator == (const IConnection::Event& src) const
 {
 	if( src.EventType != EventType )
 		return false;
@@ -56,7 +56,7 @@ inline bool IConnection::tag_Event::operator == (const IConnection::tag_Event& s
 	return Value.hr == src.Value.hr;
 }
 
-inline bool IConnection::tag_Event::operator != (const IConnection::tag_Event& src) const
+inline bool IConnection::Event::operator != (const IConnection::Event& src) const
 {
 	return src.EventType != EventType || Value.hr != src.Value.hr;
 }

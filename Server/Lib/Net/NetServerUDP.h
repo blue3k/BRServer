@@ -64,7 +64,8 @@ namespace Net {
 		//virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) = 0;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer );
+		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
+		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 
 		// Open host and start listen

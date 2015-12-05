@@ -56,6 +56,12 @@ namespace Net {
 		// transferred buffer size
 		DWORD TransferredSize;
 
+		union {
+			// UDP Read from
+			struct sockaddr_in6 From;
+			struct sockaddr_in6 To;
+		} NetAddr;
+
 
 		// Constructor
 		IOBUFFER_RWBASE();
@@ -85,10 +91,8 @@ namespace Net {
 		inline void InitBuff(UINT uiBuffSize, BYTE* pBuff);
 
 		// Setup sending mode
-		inline void SetupSendUDP(Message::MessageData *pMsg);
-		inline void SetupSendUDP(UINT uiBuffSize, BYTE* pBuff);
-		inline void SetupSendPeer(Message::MessageData *pMsg);
-		inline void SetupSendPeer(UINT uiBuffSize, BYTE* pBuff);
+		inline void SetupSendUDP(const sockaddr_in6& to, Message::MessageData *pMsg);
+		inline void SetupSendUDP(const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff);
 		inline void SetupSendTCP(Message::MessageData *pMsg);
 		inline void SetupSendTCP(UINT uiBuffSize, BYTE* pBuff);
 
@@ -96,11 +100,8 @@ namespace Net {
 
 
 	// UDP/TCP read overlapped
-	struct IOBUFFER_READ : public IOBUFFER_RWBASE
+	struct IOBUFFER_READ : public IOBUFFER_RWBASE, public MemoryPoolObject<IOBUFFER_READ>
 	{
-		// UDP Read from
-		struct sockaddr_in6 From;
-
 		// UDP Recv socket length
 		socklen_t iSockLen;
 
@@ -122,14 +123,12 @@ namespace Net {
 
 		// Setup recving mode
 		inline void SetupRecvUDP(uintptr_t iCID);
-		inline void SetupRecvPeer(uintptr_t iCID);
 		inline void SetupRecvTCP(uintptr_t iCID);
-		inline void SetupRecvTCPPending(uintptr_t iCID);
 	};
 
 
 	// TCP accept overlapped
-	struct IOBUFFER_ACCEPT : public IOBUFFER
+	struct IOBUFFER_ACCEPT : public IOBUFFER, public MemoryPoolObject<IOBUFFER_ACCEPT>
 	{
 		SOCKET sockAccept;
 
@@ -150,6 +149,8 @@ namespace Net {
 	//
 	//	EPOLL thread worker
 	//
+
+
 	class EPOLLWorker : public Thread
 	{
 	public:
@@ -165,15 +166,43 @@ namespace Net {
 
 	public:
 		// Constructor/destructor
-		EPOLLWorker(int hEpoll);
+		EPOLLWorker(int hEpoll = 0);
 
 		~EPOLLWorker();
+
+		int GetEpollHandle() {
+			return m_hEpoll;
+		}
+
+		HRESULT RegisterSocket(SOCKET sfd, INetIOCallBack* cbInstance, bool isListenSocket);
 
 		virtual void Run() override;
 
 
 		HRESULT HandleAccept(SOCKET sock, INetIOCallBack* pCallBack);
 		HRESULT HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack);
+	};
+
+
+
+	class EPOLLSendWorker : public Thread
+	{
+	public:
+
+	private:
+		// Epoll handle
+		
+		WriteBufferQueue m_WriteQueue;
+
+	public:
+		// Constructor/destructor
+		EPOLLSendWorker();
+
+		~EPOLLSendWorker();
+
+		WriteBufferQueue& GetWriteQueue() { return m_WriteQueue; }
+
+		virtual void Run() override;
 	};
 
 

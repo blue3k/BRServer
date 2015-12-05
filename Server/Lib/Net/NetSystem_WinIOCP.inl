@@ -35,6 +35,7 @@ void IOBUFFER_WRITE::InitMsg( Message::MessageData *pMsg )
 {
 	pMsgs = pMsg;
 	pSendBuff = nullptr;
+	TransferredSize = pMsg->GetMessageSize();
 	wsaBuff.len = pMsg->GetMessageSize();
 	wsaBuff.buf = (char*)pMsg->GetMessageBuff();
 }
@@ -42,45 +43,32 @@ void IOBUFFER_WRITE::InitMsg( Message::MessageData *pMsg )
 void IOBUFFER_WRITE::InitBuff( UINT uiBuffSize, BYTE* pBuff )
 {
 	pMsgs = nullptr;
+	TransferredSize = uiBuffSize;
 	wsaBuff.len = uiBuffSize;
 	wsaBuff.buf = (char*)pBuff;
 	pSendBuff = pBuff;
 }
 
-void IOBUFFER_WRITE::SetupSendUDP( Message::MessageData *pMsg )
+void IOBUFFER_WRITE::SetupSendUDP(const sockaddr_in6& to, Message::MessageData *pMsg )
 {
 	InitForIO();
 
 	InitMsg( pMsg );
 
+	NetAddr.To = to;
+
 	Operation = IOBUFFER_OPERATION::OP_UDPWRITE;
 }
 
-void IOBUFFER_WRITE::SetupSendUDP( UINT uiBuffSize, BYTE* pBuff )
+void IOBUFFER_WRITE::SetupSendUDP(const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff )
 {
 	InitForIO();
 
 	InitBuff( uiBuffSize, pBuff );
 
+	NetAddr.To = to;
+
 	Operation = IOBUFFER_OPERATION::OP_UDPWRITE;
-}
-
-void IOBUFFER_WRITE::SetupSendPeer( Message::MessageData *pMsg )
-{
-	InitForIO();
-
-	InitMsg( pMsg );
-
-	Operation = IOBUFFER_OPERATION::OP_PEERUDPWRITE;
-}
-
-void IOBUFFER_WRITE::SetupSendPeer( UINT uiBuffSize, BYTE* pBuff )
-{
-	InitForIO();
-
-	InitBuff( uiBuffSize, pBuff );
-
-	Operation = IOBUFFER_OPERATION::OP_PEERUDPWRITE;
 }
 
 void IOBUFFER_WRITE::SetupSendTCP( Message::MessageData *pMsg )
@@ -110,7 +98,7 @@ void IOBUFFER_READ::InitForIO()
 	memset( this, 0, sizeof(IOBUFFER_READ) );
 	hEvent = hEventTemp;
 
-	iSockLen = sizeof(From);
+	iSockLen = sizeof(NetAddr.From);
 }
 
 void IOBUFFER_READ::InitRecv( uintptr_t iCID )
@@ -131,22 +119,10 @@ void IOBUFFER_READ::SetupRecvUDP( uintptr_t iCID )
 	Operation = IOBUFFER_OPERATION::OP_UDPREAD;
 }
 
-void IOBUFFER_READ::SetupRecvPeer( uintptr_t iCID )
-{
-	InitRecv( iCID );
-	Operation = IOBUFFER_OPERATION::OP_PEERUDPREAD;
-}
-
 void IOBUFFER_READ::SetupRecvTCP( uintptr_t iCID )
 {
 	InitRecv( iCID );
 	Operation = IOBUFFER_OPERATION::OP_TCPREAD;
-}
-
-void IOBUFFER_READ::SetupRecvTCPPending( uintptr_t iCID )
-{
-	InitRecv( iCID );
-	Operation = IOBUFFER_OPERATION::OP_TCPREADPENDING;
 }
 
 

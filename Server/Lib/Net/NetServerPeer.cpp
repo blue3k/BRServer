@@ -42,6 +42,7 @@ namespace Net {
 		, m_PendingRecvCnt(0)
 	{
 		m_ConnectionManager.SetNetOwner( this );
+		SetWriteQueue(new WriteBufferQueue);
 	}
 
 	ServerPeer::~ServerPeer()
@@ -49,6 +50,7 @@ namespace Net {
 		HostClose();
 
 		Util::SafeDeleteArray( m_pRecvBuffers );
+		if (GetWriteQueue()) delete GetWriteQueue();
 	}
 
 
@@ -67,17 +69,12 @@ namespace Net {
 	}
 
 
-	HRESULT ServerPeer::OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo )
-	{
-		return E_NOTIMPL;
-	}
-
 	// called when reciving message
 	HRESULT ServerPeer::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
 	{
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
-		struct sockaddr_in6 &addr = pIOBuffer->From;
+		struct sockaddr_in6 &addr = pIOBuffer->NetAddr.From;
 
 		Assert( pIOBuffer->bIsPending == true );
 		pIOBuffer->bIsPending = false;
@@ -116,7 +113,7 @@ namespace Net {
 				if( GetIsEnableAccept() )
 				{
 					// Peer network only allow registered connection
-					netChk( m_ConnectionManager.PendingNewConnection(pIOBuffer->From, pNetCtrl) );
+					netChk( m_ConnectionManager.PendingNewConnection(pIOBuffer->NetAddr.From, pNetCtrl) );
 				}
 			}
 			else
@@ -207,18 +204,15 @@ namespace Net {
 
 		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
+		ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
+		IOBUFFER_WRITE *pOverlapped = nullptr;
 
 		Assert(uiMsgLen == 0 || pMsg->GetMessageHeader()->Crc32 != 0);
 
-		ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
 
-		IOBUFFER_WRITE *pOverlapped = nullptr;
 		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
-
-		pOverlapped->SetupSendPeer( pMsg );
-
-
-		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), pOverlapped);
+		pOverlapped->SetupSendUDP(pUDPCon->GetRemoteSockAddr(), pMsg );
+		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 		switch (hrErr)
 		{
 		case S_OK:
@@ -242,34 +236,6 @@ namespace Net {
 			netErr(E_NET_IO_SEND_FAIL);
 			break;
 		};
-
-		//if( WSASendTo( pUDPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
-		//	(sockaddr*)&pUDPCon->GetRemoteSockAddr(), sizeof(sockaddr_in6), 
-		//	pOverlapped, nullptr ) == SOCKET_ERROR )
-		//{
-		//	iWSAErr = WSAGetLastError();
-		//	if( iWSAErr != WSA_IO_PENDING )
-		//	{
-		//		switch( iWSAErr )
-		//		{
-		//		case WSAECONNABORTED:
-		//		case WSAECONNRESET:
-		//		case WSAENETRESET:
-		//		case WSAENOTCONN:
-		//		case WSAENOTSOCK:
-		//		case WSAESHUTDOWN:
-		//			// Send fail by connection close
-		//			// Need to disconnect
-		//			pUDPCon->Disconnect();
-		//			netErrSilent( E_NET_CONNECTION_CLOSED );
-		//			break;
-		//		default:
-		//			netErr( E_NET_IO_SEND_FAIL );
-		//			break;
-		//		};
-		//	}
-		//}
-
 
 	Proc_End:
 
@@ -322,10 +288,10 @@ namespace Net {
 		IOBUFFER_WRITE *pOverlapped = nullptr;
 		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
 
-		pOverlapped->SetupSendPeer( uiBuffSize, pBuff );
+		pOverlapped->SetupSendUDP(pUDPCon->GetRemoteSockAddr(), uiBuffSize, pBuff );
 
 
-		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), pOverlapped);
+		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 		switch (hrErr)
 		{
 		case S_OK:
@@ -416,7 +382,7 @@ namespace Net {
 		if (!NetSystem::IsProactorSystem())
 			return S_OK;
 
-		pOver->SetupRecvPeer(0);
+		pOver->SetupRecvUDP(0);
 
 		Assert(pOver->bIsPending == false);
 		pOver->bIsPending = true;
@@ -440,7 +406,7 @@ namespace Net {
 			case E_NET_CONNRESET:
 			case E_NET_NETRESET:
 				// some remove has problem with continue connection
-				netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pOver->From);
+				netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pOver->NetAddr.From);
 				//break;
 			default:
 				// Unknown error
@@ -624,7 +590,6 @@ namespace Net {
 
 		netMem( pConn = dynamic_cast<ConnectionUDPServerPeer*>(m_ConnectionManager.NewConnection()) );
 
-
 		memset( &connectionInfo, 0, sizeof(connectionInfo) );
 
 		connectionInfo.SetLocalInfo( GetNetClass(), GetLocalAddress(), GetServerID() );
@@ -641,7 +606,7 @@ namespace Net {
 		netChk( pConn->InitConnection( GetSocket(), connectionInfo ) );
 		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
-		//pConn->SetUData( (uintptr_t)pCfgData );
+		pConn->SetWriteQueueUDP(GetWriteQueue());
 
 		// Server entity will update this connection, thus just adding address map is enough
 		netChk( m_ConnectionManager.PendingConnection( pConn ) );

@@ -171,12 +171,12 @@ namespace Net {
 				//if( SUCCEEDED( m_ConnectionManager.GetConnectionByAddr( pIOBuffer->From, iterCon ) ) )
 				//{
 					// This error is no more the reason to disconnect a user, just report it
-					netTrace( TRC_RECV, "UDP bad connection state IP:{0}", pIOBuffer->From );
+					netTrace( TRC_RECV, "UDP bad connection state IP:{0}", pIOBuffer->NetAddr.From );
 				//}
 				hr = hrRes;
 				break;
 			default:
-				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrMUDP, IP:{0}, hr={1:X8}", pIOBuffer->From, hrRes );
+				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrMUDP, IP:{0}, hr={1:X8}", pIOBuffer->NetAddr.From, hrRes );
 				break;
 			};
 		}
@@ -188,7 +188,7 @@ namespace Net {
 			Message::MobileMessageHeader *pHeader = (Message::MobileMessageHeader*)pIOBuffer->buffer;
 			if( !pHeader->msgID.IDs.Mobile )
 			{
-				netTrace( Trace::TRC_WARN, "HackWarn : Not allowered connection try from {0}", pIOBuffer->From );
+				netTrace( Trace::TRC_WARN, "HackWarn : Not allowered connection try from {0}", pIOBuffer->NetAddr.From );
 				goto Proc_End;
 			}
 
@@ -199,12 +199,12 @@ namespace Net {
 
 			if (pConnection == nullptr)
 			{
-				GetConnectionManager().GetConnectionByAddr(pIOBuffer->From, pConnection);
+				GetConnectionManager().GetConnectionByAddr(pIOBuffer->NetAddr.From, pConnection);
 			}
 
 			if (pConnection == nullptr)
 			{
-				OnNoConnectionPacket(pIOBuffer->From, (const BYTE*)pIOBuffer->buffer);
+				OnNoConnectionPacket(pIOBuffer->NetAddr.From, (const BYTE*)pIOBuffer->buffer);
 				goto Proc_End;
 			}
 
@@ -216,17 +216,17 @@ namespace Net {
 			}
 
 			// Update sock address table if need, This is important because all the returning ticket will be use it
-			if( pConnection->GetRemoteSockAddr() != pIOBuffer->From )
+			if( pConnection->GetRemoteSockAddr() != pIOBuffer->NetAddr.From )
 			{
-				netTrace(TRC_CONNECTION, "Remapping Address CID: {0}, Address from:{1}, to:{2}", pConnection->GetCID(), pConnection->GetRemoteSockAddr(), pIOBuffer->From);
+				netTrace(TRC_CONNECTION, "Remapping Address CID: {0}, Address from:{1}, to:{2}", pConnection->GetCID(), pConnection->GetRemoteSockAddr(), pIOBuffer->NetAddr.From);
 				if (GetIsEnableAccept())
 				{
 					// address map update. We can skip this when we don't allow unregistered connection because we are going to update the remote address in place
 					// FYI, I think this update only required when login + game server, otherwise This will only need for connection manager for releasing connections
-					netChk(m_ConnectionManager.PendingAddressRemap((Connection*)pConnection, pConnection->GetRemoteSockAddr(), pIOBuffer->From));
+					netChk(m_ConnectionManager.PendingAddressRemap((Connection*)pConnection, pConnection->GetRemoteSockAddr(), pIOBuffer->NetAddr.From));
 				}
 				// in-place address change
-				((ConnectionUDPBase*)(Connection*)pConnection)->ChangeRemoteAddress(pIOBuffer->From);
+				((ConnectionUDPBase*)(Connection*)pConnection)->ChangeRemoteAddress(pIOBuffer->NetAddr.From);
 			}
 
 			netChk( pConnection->OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer) );

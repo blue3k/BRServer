@@ -20,6 +20,7 @@
 #include "Net/Connection.h"
 #include "Net/NetServer.h"
 #include "Net/NetCtrl.h"
+#include "Net/NetUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/SvrPolicyID.h"
 

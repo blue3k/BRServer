@@ -80,6 +80,9 @@
     <ClCompile Include="NetSystem_WinIOCP.cpp">
       <Filter>NetSystem</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectionUDPBase.cpp">
+      <Filter>Connection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetToString.h" />

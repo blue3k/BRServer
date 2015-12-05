@@ -47,12 +47,19 @@ namespace Net {
 		// Recv overlapped buffer. recv 
 		IOBUFFER_READ m_RecvBuffer;
 
+		WriteBufferQueue m_WriteBuffer;
+
 	protected:
 		// Special net control packet count on the same connection state. ex)Connect packet
 		UINT m_uiSendNetCtrlCount;
 
+		// 
 		bool m_isClientSide;
 		bool m_isActuallyConnected;
+
+	protected:
+
+		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
 
 	public:
 		// Constructor

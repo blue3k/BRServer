@@ -15,6 +15,8 @@
 #include "SvrTrace.h"
 #include "BrService.h"
 #include "Common/TimeUtil.h"
+#include "Net/NetUtil.h"
+
 
 #if LINUX
 #include <signal.h>
@@ -103,7 +105,7 @@ namespace Svr {
 			bool bIsDebugRun = false;
 			std::wstring strCfgPath = Util::GetModulePath();
 			bool bIsInstall = false;
-			wchar_t *strUser = nullptr; wchar_t *strPWD = nullptr;
+			//wchar_t *strUser = nullptr; wchar_t *strPWD = nullptr;
 			wchar_t *strServiceName = nullptr;
 
 			chdir(Util::GetModulePathA());
@@ -132,16 +134,16 @@ namespace Svr {
 						pCurParam += 2;
 						strServiceName = pCurParam;
 					}
-					else if( pCurParam[0] == 'u' || pCurParam[0] == 'U'  )
-					{
-						pCurParam += 2;
-						strUser = pCurParam;
-					}
-					else if( pCurParam[0] == 'p' || pCurParam[0] == 'P' )
-					{
-						pCurParam += 2;
-						strPWD = pCurParam;
-					}
+					//else if( pCurParam[0] == 'u' || pCurParam[0] == 'U'  )
+					//{
+					//	pCurParam += 2;
+					//	strUser = pCurParam;
+					//}
+					//else if( pCurParam[0] == 'p' || pCurParam[0] == 'P' )
+					//{
+					//	pCurParam += 2;
+					//	strPWD = pCurParam;
+					//}
 					else if( StrUtil::StringCmpLwr( pCurParam, (INT)wcslen(pCurParam), L"uninstall", (INT)wcslen(L"uninstall") ) == 0 )
 					{
 						svrChk( Service::ServiceUninstall() );
@@ -199,6 +201,8 @@ namespace Svr {
 					{
 					case ServerState::STOPED:
 						bRun = false;
+						break;
+					default:
 						break;
 					};
 

@@ -168,7 +168,7 @@ namespace Net {
 			//SharedPointerT<Connection> pConn = *itCur;
 			if( FAILED(pConn->UpdateNetCtrl()) )
 			{
-				netTrace( TRC_CONNECTION, "Managed Connection Update failed CID:%0%", pConn->GetCID() );
+				netTrace( TRC_CONNECTION, "Managed Connection Update failed CID:{0}", pConn->GetCID() );
 			}
 
 			switch (pConn->GetConnectionState())
@@ -184,7 +184,7 @@ namespace Net {
 					m_ManagedConnections.Remove(key, pOrg);
 					Assert(pConn == pOrg);
 					//itCur = m_ManagedConnections.erase(itCur);
-					netTrace(TRC_CONNECTION, "Managed Connection Disconnected Free CID:%0%", pConn->GetCID());
+					netTrace(TRC_CONNECTION, "Managed Connection Disconnected Free CID:{0}", pConn->GetCID());
 					FreeConnection((Connection*)pConn);
 				}
 			}
@@ -227,11 +227,11 @@ namespace Net {
 				}
 
 				svrChk( m_ManagedConnections.Insert(pConn->GetCID(), pConn) );
-				netTrace(TRC_CONNECTION, "Connection management started CID:%0%", pConn->GetCID());
+				netTrace(TRC_CONNECTION, "Connection management started CID:{0}", pConn->GetCID());
 
 				if (FAILED(AddMap((Connection*)pConn)))
 				{
-					netTrace(Trace::TRC_WARN, "Managed Connection AddMap failed CID:%0%", pConn->GetCID());
+					netTrace(Trace::TRC_WARN, "Managed Connection AddMap failed CID:{0}", pConn->GetCID());
 				}
 				break;
 			case Operation::OP_PENDING_CONNECTION:
@@ -243,7 +243,7 @@ namespace Net {
 
 				if( FAILED(AddMap( (Connection*)pConn )) )
 				{
-					netTrace(Trace::TRC_WARN, "Managed Connection AddMap failed CID:%0%", pConn->GetCID());
+					netTrace(Trace::TRC_WARN, "Managed Connection AddMap failed CID:{0}", pConn->GetCID());
 				}
 				break;
 			case Operation::OP_PENDING_INITCONNECTION:
@@ -256,7 +256,7 @@ namespace Net {
 				if (pConn->GetConnectionState() == IConnection::STATE_DISCONNECTED)
 				{
 					pConn->InitConnection(pConn->GetSocket(), pConn->GetConnectionInfo());
-					netTrace(TRC_CONNECTION, "Initialize connection CID:%0%, Addr:%1%:%2%", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+					netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 				}
 
 				break;
@@ -273,11 +273,11 @@ namespace Net {
 				SharedPointerT<Connection> pPtr;
 				if (SUCCEEDED(m_ManagedConnections.Remove(pConn->GetCID(), pPtr)))
 				{
-					netTrace(TRC_CONNECTION, "Connection management is handed over CID:%0%", pConn->GetCID());
+					netTrace(TRC_CONNECTION, "Connection management is handed over CID:{0}", pConn->GetCID());
 				}
 				else
 				{
-					netTrace(Trace::TRC_WARN, "Connection management is failed to be handed over CID:%0%", pConn->GetCID());
+					netTrace(Trace::TRC_WARN, "Connection management is failed to be handed over CID:{0}", pConn->GetCID());
 				}
 
 				oper.Clear();
@@ -302,7 +302,7 @@ namespace Net {
 						}
 						else
 						{
-							netTrace(Trace::TRC_WARN, "Pending count didn't changed, force clean up the connection CID:%0%, %1%", pConn->GetCID(), typeid(*(Connection*)pConn).name());
+							netTrace(Trace::TRC_WARN, "Pending count didn't changed, force clean up the connection CID:{0}, {1}", pConn->GetCID(), typeid(*(Connection*)pConn).name());
 						}
 					}
 
@@ -313,7 +313,7 @@ namespace Net {
 						Assert(pPtr == pConn);
 					}
 
-					netTrace(TRC_CONNECTION, "ConnectionManager Operation Release CID:%0%", cid);
+					netTrace(TRC_CONNECTION, "ConnectionManager Operation Release CID:{0}", cid);
 
 					FreeConnection((Connection*)pConn);
 
@@ -344,13 +344,13 @@ namespace Net {
 						connectionInfo.SetRemoteInfo(NetClass::Unknown, 0);
 
 						netChk( pConn->InitConnection( pIServer->GetSocket(), connectionInfo ) );
-						netTrace(TRC_CONNECTION, "Initialize connection CID:%0%, Addr:%1%:%2%", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+						netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 
 						if( FAILED(AddMap( (Connection*)pConn )) )
 						{
-							netTrace( TRC_CONNECTION, "Managed Connection AddMap failed CID:%0%", pConn->GetCID() );
+							netTrace( TRC_CONNECTION, "Managed Connection AddMap failed CID:{0}", pConn->GetCID() );
 						}
 
 						//pConn = nullptr;
@@ -394,13 +394,13 @@ namespace Net {
 						Assert(oper.MobileNetCtrl.PeerID == 0);
 
 						netChk( pConn->InitConnection( pIServer->GetSocket(), connectionInfo ) );
-						netTrace(TRC_CONNECTION, "Initialize connection CID:%0%, Addr:%1%:%2%", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+						netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 
 						if (FAILED(AddMap((Connection*)pConn)))
 						{
-							netTrace( TRC_CONNECTION, "Managed Connection AddMap failed CID:%0%", pConn->GetCID() );
+							netTrace( TRC_CONNECTION, "Managed Connection AddMap failed CID:{0}", pConn->GetCID() );
 						}
 
 						netChk( pConn->OnRecv( sizeof(oper.MobileNetCtrl), (const BYTE*)&oper.MobileNetCtrl ) );
@@ -426,18 +426,18 @@ namespace Net {
 					SharedPointerT<Connection> pConnOrg;
 					if( FAILED(m_CIDMap.Find( pConn->GetCID(), pConnOrg )) )
 					{
-						netTrace( TRC_CONNECTION, "Address remapping is failed: invalid CID:%0%", pConn->GetCID() );
+						netTrace( TRC_CONNECTION, "Address remapping is failed: invalid CID:{0}", pConn->GetCID() );
 						break;
 					}
 					//itCon = nullptr;
 
 					if (FAILED(AddressRemap((Connection*)pConn, oper.addrOrg, oper.addrNew)))
 					{
-						netTrace(Trace::TRC_ERROR, "Address remapping is failed CID:%0%, from:%1%, to:%2%", pConn->GetCID(), oper.addrOrg, oper.addrNew);
+						netTrace(Trace::TRC_ERROR, "Address remapping is failed CID:{0}, from:{1}, to:{2}", pConn->GetCID(), oper.addrOrg, oper.addrNew);
 					}
 					else
 					{
-						netTrace( TRC_CONNECTION, "Address is mapped from %0% to %1%", oper.addrOrg, oper.addrNew );
+						netTrace( TRC_CONNECTION, "Address is mapped from {0} to {1}", oper.addrOrg, oper.addrNew );
 					}
 				}
 				break;
@@ -447,11 +447,11 @@ namespace Net {
 
 					if( FAILED(RemapPeerID( (Connection*)pConn, oper.MobileNetCtrl.PeerID )) )
 					{
-						netTrace( TRC_CONNECTION, "Address remapping is failed CID:%0%", pConn->GetCID() );
+						netTrace( TRC_CONNECTION, "Address remapping is failed CID:{0}", pConn->GetCID() );
 					}
 				break;
 			default:
-				netTrace( Trace::TRC_WARN, "Unknown Operation %0%", (INT32)oper.OpCode );
+				netTrace( Trace::TRC_WARN, "Unknown Operation {0}", (INT32)oper.OpCode );
 				break;
 			};
 		}
@@ -519,7 +519,7 @@ namespace Net {
 
 		if (FAILED(m_AddrMap.Erase(addressOrg, pPtr)))
 		{
-			netTrace( Trace::TRC_WARN, "Old address is not found ignoring:%0%", pConn->GetConnectionInfo().Remote );
+			netTrace( Trace::TRC_WARN, "Old address is not found ignoring:{0}", pConn->GetConnectionInfo().Remote );
 		}
 
 		netChk(m_AddrMap.Insert(addressOrg, WeakPointerT<Connection>(pConn)));
@@ -634,7 +634,7 @@ namespace Net {
 			case Operation::OP_RELEASE_CONNECTION:
 				if( pConn != nullptr )
 				{
-					netTrace(TRC_CONNECTION, "TerminateManager ConnectionManager Operation Release CID:%0%", pConn->GetCID());
+					netTrace(TRC_CONNECTION, "TerminateManager ConnectionManager Operation Release CID:{0}", pConn->GetCID());
 					oper.Clear();
 					FreeConnection( (Connection*)pConn );
 				}
@@ -649,7 +649,7 @@ namespace Net {
 		
 		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn) -> bool
 		{
-			netTrace( TRC_CONNECTION, "TerminateManager ConnectionManager Managed connection Release CID:%0%", pConn->GetCID() );
+			netTrace( TRC_CONNECTION, "TerminateManager ConnectionManager Managed connection Release CID:{0}", pConn->GetCID() );
 			if (pConn->GetConnectionState() != IConnection::STATE_DISCONNECTED)
 				pConn->CloseConnection();
 			FreeConnection( (Connection*)pConn );
@@ -778,26 +778,6 @@ namespace Net {
 
 		return hr;
 	}
-
-	//HRESULT ConnectionManager::PendingDisconnectNReleaseConnection( Connection* pConnection )
-	//{
-	//	HRESULT hr = S_OK;
-
-	//	// force to close
-	//	if (pConnection->GetState() != IConnection::STATE_DISCONNECTED)
-	//	{
-	//		pConnection->Disconnect();
-	//		pConnection->CloseConnection();
-	//	}
-
-	//	hr = m_PendingOperations.Enqueue(Operation(Operation::OP_RELEASE_CONNECTION, pConnection));
-
-	//	Assert(SUCCEEDED(hr));
-	//	if( SUCCEEDED(hr) )
-	//		pConnection = nullptr;
-
-	//	return hr;
-	//}
 
 	// Close and release connection
 	HRESULT ConnectionManager::PendingCloseAllConnection()

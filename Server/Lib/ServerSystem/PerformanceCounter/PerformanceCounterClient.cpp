@@ -222,7 +222,7 @@ namespace Svr {
 			}
 			else
 			{
-				//m_RawUDP->SendMsg(m_RemoteSockAddress, pMsg);
+				m_RawUDP->SendMsg(m_RemoteSockAddress, pMsg);
 			}
 
 			return true;

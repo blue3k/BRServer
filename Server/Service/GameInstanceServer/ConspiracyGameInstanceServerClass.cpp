@@ -17,7 +17,6 @@
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/ServerEntityManager.h"
-//#include "ServerSystem/ServiceEntity/EntityManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/LoginClusterServiceEntity.h"
 #include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
@@ -42,9 +41,7 @@
 #include "Protocol/Policy/GameInstanceIPolicy.h"
 #include "Protocol/Policy/GameMasterServerIPolicy.h"
 
-#include "Net/NetServerPeer.h"
 #include "Net/NetServer.h"
-#include "Net/NetServerUDP.h"
 #include "ServerSystem/EntityManager.h"
 #include "GameInstance/GameInstanceEntity.h"
 
