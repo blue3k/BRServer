@@ -410,7 +410,7 @@ namespace Config {
 	//
 
 	// Load Config file
-	HRESULT LoadConfig( const WCHAR* strConfigFileName );
+	HRESULT LoadConfig( const char* strConfigFileName );
 
 	// Clear Config data
 	HRESULT ClearConfig();

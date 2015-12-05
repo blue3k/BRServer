@@ -3,18 +3,22 @@
 
 #include "stdafx.h"
 #include "EntityServer.h"
-#include "Shellapi.h"
-#include "ServerSystem/BRService.h"
+#include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
 #include "EntityServerClass.h"
-
 #include "Common/MemoryPool.h"
+
+#if WINDOWS
+#include "Shellapi.h"
+#endif
+
 
 using namespace BR;
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
+#if WINDOWS
+int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
+                     LPSTR    lpCmdLine,
                      int       nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
@@ -27,6 +31,18 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	#endif
 		_ASSERTE(SUCCEEDED(hRes));
 
+	std::string cmdLine = lpCmdLine;
+	std::istringstream iss(cmdLine);
+	std::vector<std::string> cmdArgs{ 
+		std::istream_iterator<std::string>{iss},
+		std::istream_iterator<std::string>{} };
+
+#elif LINUX
+int main(int numArg, const char* argc[])
+{
+	std::vector<std::string> cmdArgs;
+	for (int iArg = 0; iArg < numArg; iArg++) cmdArgs.push_back(argc[iArg]);
+#endif
 
 
 	HRESULT hr = S_OK;
@@ -36,12 +52,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	pServerInstance = SharedPointerT<BR::EntityServer::EntityServer>(new BR::EntityServer::EntityServer);
 
-	int nArgs;
-	LPWSTR *pCmdArgs = CommandLineToArgvW( lpCmdLine, &nArgs );
 
-	svrChk(BR::Svr::Service::ServiceRun(nArgs, pCmdArgs, (BR::EntityServer::EntityServer*)pServerInstance));
+	svrChk(BR::Svr::Service::ServiceRun(cmdArgs, (BR::EntityServer::EntityServer*)pServerInstance));
 
-	LocalFree(pCmdArgs);
 
 Proc_End:
 
@@ -53,6 +66,7 @@ Proc_End:
 	}
 
 	BR::MemoryPoolManager::Terminate();
+
 
 	return (int)0;
 }

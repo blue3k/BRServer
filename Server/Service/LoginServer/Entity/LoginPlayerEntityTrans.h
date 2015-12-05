@@ -16,7 +16,7 @@
 #include "Common/MemoryPool.h"
 #include "Common/Memento.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 
 #include "Protocol/Message/LoginMsgClass.h"
 #include "Protocol/Policy/LoginIPolicy.h"

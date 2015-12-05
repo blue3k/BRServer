@@ -909,7 +909,7 @@ namespace BR {
 
 
 		netChk( NetSystem::AllocBuffer(pOverlapped) );
-		pOverlapped->SetupSendUDP( dstAddress, pMsg );
+		pOverlapped->SetupSendUDP(pUDPCon->GetSocket(), dstAddress, pMsg );
 		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 		switch (hrErr)
 		{
@@ -983,7 +983,7 @@ namespace BR {
 		IOBUFFER_WRITE *pOverlapped = NULL;
 		netChk( NetSystem::AllocBuffer(pOverlapped) );
 
-		pOverlapped->SetupSendUDP(pUDPCon->GetRemoteSockAddr(), uiBuffSize, pBuff );
+		pOverlapped->SetupSendUDP(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), uiBuffSize, pBuff );
 
 		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 		switch (hrErr)

@@ -80,30 +80,30 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/service EntityServer DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/service EntityServer DEBUG clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/service EntityServer DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/service EntityServer DEBUG clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/service EntityServer DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/service EntityServer DEBUG clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/service EntityServer DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/service EntityServer DEBUG clean</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
     <NMakeIncludeSearchPath>../../Lib;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
   </PropertyGroup>

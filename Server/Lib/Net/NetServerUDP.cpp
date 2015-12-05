@@ -327,7 +327,7 @@ namespace Net {
 
 
 		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
-		pOverlapped->SetupSendUDP(pUDPCon->GetRemoteSockAddr(), pMsg );
+		pOverlapped->SetupSendUDP(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), pMsg );
 
 		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 		switch (hrErr)
@@ -430,7 +430,7 @@ namespace Net {
 
 		netChk( NetSystem::AllocBuffer(pOverlapped) );
 
-		pOverlapped->SetupSendUDP(dstAddr, pMsg );
+		pOverlapped->SetupSendUDP(socketToSend, dstAddr, pMsg );
 		pMsg = nullptr;
 
 
@@ -536,7 +536,7 @@ namespace Net {
 
 		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
 
-		pOverlapped->SetupSendUDP(pUDPCon->GetRemoteSockAddr(), uiBuffSize, pBuff );
+		pOverlapped->SetupSendUDP(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), uiBuffSize, pBuff );
 		pBuff = nullptr;
 
 

@@ -16,7 +16,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "LoginServerClass.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Net/NetServerUDP.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"

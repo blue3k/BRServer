@@ -287,7 +287,7 @@ namespace Net {
 
 
 		netChk(Net::NetSystem::AllocBuffer(pOverlapped));
-		pOverlapped->SetupSendUDP(dest, pMsg);
+		pOverlapped->SetupSendUDP(m_Socket, dest, pMsg);
 		hrErr = NetSystem::SendTo(m_Socket, pOverlapped);
 		switch (hrErr)
 		{

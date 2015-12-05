@@ -14,7 +14,7 @@
 #include "Common/Typedefs.h"
 #include "ServerSystem/ServerTransaction.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
 #include "GameServerClass.h"

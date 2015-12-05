@@ -16,7 +16,7 @@
 #include "Common/MemoryPool.h"
 #include "Common/Memento.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Common/GameConst.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"

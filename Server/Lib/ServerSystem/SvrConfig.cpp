@@ -683,14 +683,11 @@ namespace Config
 
 
 	// Load Config file
-	HRESULT LoadConfig( const WCHAR* strConfigFileName )
+	HRESULT LoadConfig( const char* strConfigFileName )
 	{
-		char strCfgPath[1024];
 		ServerConfigParser parser ( __ConfigData );
 
-		StrUtil::WCSToUTF8( strConfigFileName, strCfgPath );
-
-		int result = xmlSAXUserParseFile( parser, &parser, strCfgPath );
+		int result = xmlSAXUserParseFile( parser, &parser, strConfigFileName);
 
 		if (result != 0)
 		{

@@ -98,29 +98,29 @@ namespace Svr {
 
 
 		// Install Service
-		HRESULT ServiceInstall( const wchar_t *strCfgPath, const wchar_t *strUser, const wchar_t *strPWD )
+		HRESULT ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
 		{
 			HRESULT hr = S_OK;
-			const wchar_t* strServiceName = Util::GetServiceName();
+			const char* strServiceName = Util::GetServiceNameA();
 
 			SC_HANDLE schSCManager = NULL;
 			SC_HANDLE schService = NULL;
 
-			wchar_t strPath[MAX_PATH];
+			char strPath[MAX_PATH];
 
 
-			if( !GetModuleFileNameW( NULL, strPath, MAX_PATH ) )
+			if( !GetModuleFileNameA( NULL, strPath, MAX_PATH ) )
 			{
 				int iErr = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "GetModuleFileName failed err:%0%", iErr );
+				svrTrace( Trace::TRC_ERROR, "GetModuleFileName failed err:{0}", iErr );
 				trcErr( HRESULT_FROM_WIN32(iErr) );
 			}
 
-			wcscat_s( strPath, L" " );
-			wcscat_s( strPath, strCfgPath );
+			strcat( strPath, " " );
+			strcat( strPath, strCfgPath );
 
-			wcscat_s(strPath, L" -n:");
-			wcscat_s(strPath, strServiceName);
+			strcat(strPath, " -n:");
+			strcat(strPath, strServiceName);
 
 
 
@@ -132,26 +132,26 @@ namespace Svr {
 			if( schSCManager == nullptr) 
 			{
 				int iErr = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "OpenSCManager failed err:%0%", iErr );
+				svrTrace( Trace::TRC_ERROR, "OpenSCManager failed err:{0}", iErr );
 				trcErr( HRESULT_FROM_WIN32(iErr) );
 			}
 
 			// check service existance
-			schService = OpenServiceW(schSCManager, strServiceName, SERVICE_ALL_ACCESS);
+			schService = OpenServiceA(schSCManager, strServiceName, SERVICE_ALL_ACCESS);
 			if( schService == NULL) 
 			{
 				int iErr = GetLastError();
 				if( iErr != ERROR_SERVICE_DOES_NOT_EXIST )
 				{
 					// Service not accessable
-					svrTrace( Trace::TRC_ERROR, "OpenService failed err:%0%", iErr );
+					svrTrace( Trace::TRC_ERROR, "OpenService failed err:{0}", iErr );
 					trcErr( HRESULT_FROM_WIN32(iErr) );
 				}
 
 				// Service not exist so create new one
 
 				// Create the service
-				schService = CreateServiceW( 
+				schService = CreateServiceA( 
 					schSCManager,				// SCM database 
 					strServiceName,				// name of service 
 					strServiceName,				// service name to display 
@@ -168,7 +168,7 @@ namespace Svr {
 				if( schService == NULL )
 				{
 					int iErr = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "CreateService failed err:%0%", iErr );
+					svrTrace( Trace::TRC_ERROR, "CreateService failed err:{0}", iErr );
 					trcErr( HRESULT_FROM_WIN32(iErr) );
 				}
 			}
@@ -197,7 +197,7 @@ namespace Svr {
 				}
 
 				// 
-				if( !ChangeServiceConfigW( 
+				if( !ChangeServiceConfigA( 
 						schService, 
 						SERVICE_WIN32_OWN_PROCESS,	// service type 
 						SERVICE_DEMAND_START,		// start type 
@@ -211,7 +211,7 @@ namespace Svr {
 						strServiceName))
 				{
 					int iErr = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "ChangeServiceConfig failed err:%0%", iErr );
+					svrTrace( Trace::TRC_ERROR, "ChangeServiceConfig failed err:{0}", iErr );
 					trcErr( HRESULT_FROM_WIN32(iErr) );
 				}
 			}
@@ -247,7 +247,7 @@ namespace Svr {
 			if( schSCManager == NULL) 
 			{
 				int iErr = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "OpenSCManager failed err:%0%", iErr );
+				svrTrace( Trace::TRC_ERROR, "OpenSCManager failed err:{0}", iErr );
 				trcErr( HRESULT_FROM_WIN32(iErr) );
 			}
 
@@ -256,7 +256,7 @@ namespace Svr {
 			if( schSCManager == NULL) 
 			{
 				int iErr = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "OpenService failed err:%0%", iErr );
+				svrTrace( Trace::TRC_ERROR, "OpenService failed err:{0}", iErr );
 				trcErr( HRESULT_FROM_WIN32(iErr) );
 			}
 
@@ -289,7 +289,7 @@ namespace Svr {
 				int iErr = GetLastError();
 				if( iErr != ERROR_SERVICE_MARKED_FOR_DELETE )
 				{
-					svrTrace( Trace::TRC_ERROR, "DeleteService failed err:%0%", iErr );
+					svrTrace( Trace::TRC_ERROR, "DeleteService failed err:{0}", iErr );
 					trcErr( HRESULT_FROM_WIN32(iErr) );
 				}
 			}
@@ -309,33 +309,33 @@ namespace Svr {
 		}
 
 		// Run service main function
-		HRESULT ServiceRun( int argc, wchar_t* argv[], BrServer *pSvrInstance )
+		HRESULT ServiceRun(std::vector<std::string>& cmdArgs, BrServer *pSvrInstance )
 		{
 			HRESULT hr = S_OK;
 			bool bIsDebugRun = false;
-			std::wstring strCfgPath = Util::GetModulePath();
+			std::string strCfgPath = Util::GetModulePathA();
 			bool bIsInstall = false;
-			wchar_t *strUser = nullptr; wchar_t *strPWD = nullptr;
-			wchar_t *strServiceName = nullptr;
+			const char *strUser = nullptr; const char *strPWD = nullptr;
+			const char *strServiceName = nullptr;
 
 			SetCurrentDirectoryW( Util::GetModulePath() );
 
-			strCfgPath.append(L"..\\..\\Config\\ServerConfig.xml");
+			strCfgPath.append("..\\..\\Config\\ServerConfig.xml");
 
 
 			g_pSvrInstance = pSvrInstance;
 			Assert( BrServer::GetInstance() == pSvrInstance );
 
 
-			for( int iArg = 0; iArg < argc; iArg++ )
+			for( auto itArg : cmdArgs)
 			{
-				wchar_t* pCurParam = argv[iArg];
+				const char* pCurParam = itArg.c_str();
 
 				switch( pCurParam[0] )
 				{
-				case L'-':
+				case '-':
 					pCurParam++;
-					if( StrUtil::StringCmpLwr( pCurParam, (INT)wcslen(pCurParam), L"install", (INT)wcslen(L"install") ) == 0 )
+					if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "install", (INT)strlen("install") ) == 0 )
 					{
 						bIsInstall = true;
 					}
@@ -354,12 +354,12 @@ namespace Svr {
 						pCurParam += 2;
 						strPWD = pCurParam;
 					}
-					else if( StrUtil::StringCmpLwr( pCurParam, (INT)wcslen(pCurParam), L"uninstall", (INT)wcslen(L"uninstall") ) == 0 )
+					else if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "uninstall", (INT)strlen("uninstall") ) == 0 )
 					{
 						svrChk( Service::ServiceUninstall() );
 						goto Proc_End;
 					}
-					else if( StrUtil::StringCmpLwr( pCurParam, (INT)wcslen(pCurParam), L"debug", (INT)wcslen(L"debug") ) == 0 )
+					else if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "debug", (INT)strlen("debug") ) == 0 )
 					{
 						bIsDebugRun = true;
 					}
@@ -447,7 +447,7 @@ namespace Svr {
 				if (!StartServiceCtrlDispatcher( DispatchTable )) 
 				{
 					int iError = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "StartServiceCtrlDispatcher failed err:%0%", iError );
+					svrTrace( Trace::TRC_ERROR, "StartServiceCtrlDispatcher failed err:{0}", iError );
 					return HRESULT_FROM_WIN32( iError );
 				}
 			}
@@ -455,7 +455,7 @@ namespace Svr {
 
 		Proc_End:
 
-			svrTrace( Trace::TRC_TRACE, "<%0%> Closed", Util::GetServiceName() );
+			svrTrace( Trace::TRC_TRACE, "<{0}> Closed", Util::GetServiceName() );
 
 			g_pSvrInstance = nullptr;
 
@@ -493,7 +493,7 @@ namespace Svr {
 				if ( g_hCtrlEvents[iEvt] == NULL)
 				{
 					int iError = GetLastError();
-					svrTrace( Trace::TRC_ERROR, "CreateEvent failed err:%0%", iError );
+					svrTrace( Trace::TRC_ERROR, "CreateEvent failed err:{0}", iError );
 					trcErr( HRESULT_FROM_WIN32( iError ) );
 				}
 			}
@@ -508,7 +508,7 @@ namespace Svr {
 			if( !g_SvcStatusHandle )
 			{ 
 				int iError = GetLastError();
-				svrTrace( Trace::TRC_ERROR, "RegisterServiceCtrlHandler failed err:%0%", iError );
+				svrTrace( Trace::TRC_ERROR, "RegisterServiceCtrlHandler failed err:{0}", iError );
 				return;
 			} 
 

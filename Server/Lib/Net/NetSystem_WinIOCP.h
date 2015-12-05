@@ -77,13 +77,13 @@ namespace Net {
 		~IOBUFFER_WRITE();
 
 		// Initialize for IO
-		inline void InitForIO();
+		inline void InitForIO(SOCKET sockWrite);
 		inline void InitMsg( Message::MessageData *pMsg );
 		inline void InitBuff( UINT uiBuffSize, BYTE* pBuff );
 
 		// Setup sending mode
-		inline void SetupSendUDP(const sockaddr_in6& to, Message::MessageData *pMsg );
-		inline void SetupSendUDP(const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff );
+		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_in6& to, Message::MessageData *pMsg );
+		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff );
 		inline void SetupSendTCP( Message::MessageData *pMsg );
 		inline void SetupSendTCP( UINT uiBuffSize, BYTE* pBuff );
 

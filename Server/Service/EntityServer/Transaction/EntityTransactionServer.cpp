@@ -36,7 +36,6 @@
 
 
 BR_MEMORYPOOL_IMPLEMENT(EntityServer::TransServerStarted);
-//BR_MEMORYPOOL_IMPLEMENT(EntityServer::TransEntityServerStarted);
 BR_MEMORYPOOL_IMPLEMENT(EntityServer::TransGameServerStarted);
 
 namespace BR {
@@ -47,7 +46,6 @@ namespace EntityServer {
 	HRESULT TransServerStarted::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		Svr::ServerEntity *pServerEntity = nullptr;
 		const ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
 		Svr::ServerServiceInformation *pService = nullptr;
 

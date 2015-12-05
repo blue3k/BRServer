@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 #include "EntityServer.h"
-#include "Shellapi.h"
 #include "Net/NetServerUDP.h"
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
@@ -20,7 +19,7 @@
 #include "ServerSystem/MessageRoute.h"
 #include "EntityServerClass.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
 
@@ -57,7 +56,7 @@ namespace EntityServer {
 	HRESULT EntityServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
 		HRESULT hr = S_OK;
-		Svr::ServerEntity *pServer = nullptr;
+		//Svr::ServerEntity *pServer = nullptr;
 		
 		switch( m_Step )
 		{
@@ -108,7 +107,7 @@ namespace EntityServer {
 		//svrChk( Svr::GetServerComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>() ) );
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

@@ -71,6 +71,8 @@ namespace Net {
 	// UDP/TCP write overlapped
 	struct IOBUFFER_WRITE : public IOBUFFER_RWBASE, public MemoryPoolObject<IOBUFFER_WRITE>
 	{
+		SOCKET SockWrite;
+
 		// Sending raw buffer
 		UINT RawSendSize;
 		BYTE* pRawSendBuffer;
@@ -86,13 +88,13 @@ namespace Net {
 		~IOBUFFER_WRITE();
 
 		// Initialize for IO
-		inline void InitForIO();
+		inline void InitForIO(SOCKET sockWrite);
 		inline void InitMsg(Message::MessageData *pMsg);
 		inline void InitBuff(UINT uiBuffSize, BYTE* pBuff);
 
 		// Setup sending mode
-		inline void SetupSendUDP(const sockaddr_in6& to, Message::MessageData *pMsg);
-		inline void SetupSendUDP(const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff);
+		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_in6& to, Message::MessageData *pMsg);
+		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff);
 		inline void SetupSendTCP(Message::MessageData *pMsg);
 		inline void SetupSendTCP(UINT uiBuffSize, BYTE* pBuff);
 
@@ -163,10 +165,11 @@ namespace Net {
 	private:
 		// Epoll handle
 		int m_hEpoll;
+		bool m_HandleSend;
 
 	public:
 		// Constructor/destructor
-		EPOLLWorker(int hEpoll = 0);
+		EPOLLWorker(bool bHandleSend, int hEpoll = 0);
 
 		~EPOLLWorker();
 

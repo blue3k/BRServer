@@ -33,13 +33,13 @@ namespace Svr
 	namespace Service
 	{
 		// Install Service
-		HRESULT ServiceInstall( const wchar_t *strCfgPath );
+		HRESULT ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD);
 
 		// Uninstall service
 		HRESULT ServiceUninstall();
 
 		// Run service main function
-		HRESULT ServiceRun( int argc, wchar_t* argv[], BR::Svr::BrServer *pSvrInstance );
+		HRESULT ServiceRun(std::vector<std::string>& cmdArgs, BR::Svr::BrServer *pSvrInstance );
 	};
 
 

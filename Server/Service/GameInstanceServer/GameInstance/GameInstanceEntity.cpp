@@ -14,7 +14,7 @@
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Common/TimeUtil.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Common/HRESCommon.h"
 #include "Common/HRESGame.h"
 #include "Common/Message.h"

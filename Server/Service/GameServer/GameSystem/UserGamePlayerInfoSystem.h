@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/TypeDefs.h"
+#include "Common/Typedefs.h"
 #include "Common/BrGameTypes.h"
 #include "Common/MemoryPool.h"
 #include "Common/Memento.h"

@@ -21,9 +21,10 @@
 
 
 // Initialize for IO
-void IOBUFFER_WRITE::InitForIO()
+void IOBUFFER_WRITE::InitForIO(SOCKET sockWrite)
 {
 	memset(this, 0, sizeof(IOBUFFER_WRITE));
+	SockWrite = sockWrite;
 }
 
 void IOBUFFER_WRITE::InitMsg(Message::MessageData *pMsg)
@@ -43,9 +44,9 @@ void IOBUFFER_WRITE::InitBuff(UINT uiBuffSize, BYTE* pBuff)
 	pRawSendBuffer = pBuff;
 }
 
-void IOBUFFER_WRITE::SetupSendUDP(const sockaddr_in6& to, Message::MessageData *pMsg)
+void IOBUFFER_WRITE::SetupSendUDP(SOCKET sockWrite, const sockaddr_in6& to, Message::MessageData *pMsg)
 {
-	InitForIO();
+	InitForIO(sockWrite);
 
 	InitMsg(pMsg);
 
@@ -54,9 +55,9 @@ void IOBUFFER_WRITE::SetupSendUDP(const sockaddr_in6& to, Message::MessageData *
 	Operation = IOBUFFER_OPERATION::OP_UDPWRITE;
 }
 
-void IOBUFFER_WRITE::SetupSendUDP(const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff)
+void IOBUFFER_WRITE::SetupSendUDP(SOCKET sockWrite, const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff)
 {
-	InitForIO();
+	InitForIO(sockWrite);
 
 	InitBuff(uiBuffSize, pBuff);
 
@@ -67,7 +68,7 @@ void IOBUFFER_WRITE::SetupSendUDP(const sockaddr_in6& to, UINT uiBuffSize, BYTE*
 
 void IOBUFFER_WRITE::SetupSendTCP(Message::MessageData *pMsg)
 {
-	InitForIO();
+	InitForIO(0);
 
 	InitMsg(pMsg);
 
@@ -76,7 +77,7 @@ void IOBUFFER_WRITE::SetupSendTCP(Message::MessageData *pMsg)
 
 void IOBUFFER_WRITE::SetupSendTCP(UINT uiBuffSize, BYTE* pBuff)
 {
-	InitForIO();
+	InitForIO(0);
 
 	InitBuff(uiBuffSize, pBuff);
 

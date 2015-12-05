@@ -167,8 +167,9 @@ namespace Net {
 	//	EPOLL thread worker
 	//
 
-	EPOLLWorker::EPOLLWorker(int hEpoll)
+	EPOLLWorker::EPOLLWorker(bool bHandleSend, int hEpoll)
 		: m_hEpoll(hEpoll)
+		, m_HandleSend(bHandleSend)
 	{
 		if (m_hEpoll == 0)
 		{
@@ -258,7 +259,7 @@ namespace Net {
 			}
 		}
 
-		if (events & EPOLLOUT)
+		if (m_HandleSend && (events & EPOLLOUT))
 		{
 			// This call will just poke working thread
 			netChk(pCallBack->ProcessSendQueue());
@@ -362,6 +363,11 @@ namespace Net {
 			hr = S_OK;
 
 			do {
+
+				// Check exit event
+				if (CheckKillEvent(DurationMS(0)))
+					break;
+
 				if (pSendBuffer == nullptr) m_WriteQueue.Dequeue(pSendBuffer);
 
 				if (pSendBuffer == nullptr) break;
@@ -369,22 +375,33 @@ namespace Net {
 				switch (pSendBuffer->Operation)
 				{
 				case IOBUFFER_OPERATION::OP_TCPWRITE:
-					//NetSystem::Send();
+					Assert(false); // TCP packets will be sent by RW workers
 					break;
 				case IOBUFFER_OPERATION::OP_UDPWRITE:
+					hr = NetSystem::SendTo(pSendBuffer->SockWrite, pSendBuffer);
+					switch (hr)
+					{
+					case E_NET_TRY_AGAIN:
+						continue; // try again
+						break;
+					case S_OK:
+						break;
+					default:
+						netTrace(TRC_RAW, "UDP send failed {0:X8}", hr);
+						// send fail
+						break;
+					}
 					break;
 				default:
-					Assert(false);
+					Assert(false);// This thread isn't designed to work on other stuffs
 					break;
 				}
 
+
+				Util::SafeDelete(pSendBuffer);
 				pSendBuffer = nullptr;
 			} while (1);
 			
-
-			// Check exit event
-			if (CheckKillEvent(DurationMS(0)))
-				break;
 
 		} // while(1)
 
@@ -414,7 +431,7 @@ namespace Net {
 		DynamicArray<EPOLLWorker*> m_WorkerTCP;
 
 		// workers for UDP
-		EPOLLWorker* m_UDPSendWorker;
+		EPOLLSendWorker* m_UDPSendWorker;
 		DynamicArray<EPOLLWorker*> m_WorkerUDP;
 
 	public:
@@ -431,7 +448,7 @@ namespace Net {
 				return S_OK;
 
 
-			m_ListenWorker = new EPOLLWorker;
+			m_ListenWorker = new EPOLLWorker(false);
 			m_ListenWorker->Start();
 
 			m_iTCPAssignIndex = 0;
@@ -439,20 +456,20 @@ namespace Net {
 			// 
 			for (UINT iThread = 0; iThread < netThreadCount; iThread++)
 			{
-				auto pNewWorker = new EPOLLWorker;
+				auto pNewWorker = new EPOLLWorker(true);
 				m_WorkerTCP.push_back(pNewWorker);
 
 				pNewWorker->Start();
 			}
 
-			m_UDPSendWorker = new EPOLLWorker;
+			m_UDPSendWorker = new EPOLLSendWorker;
 			m_UDPSendWorker->Start();
 
 			// 
 			int hEPollUDP = epoll_create(1);
 			for (UINT iThread = 0; iThread < netThreadCount; iThread++)
 			{
-				auto pNewWorker = new EPOLLWorker(hEPollUDP);
+				auto pNewWorker = new EPOLLWorker(false, hEPollUDP);
 				m_WorkerUDP.push_back(pNewWorker);
 
 				pNewWorker->Start();
@@ -477,6 +494,14 @@ namespace Net {
 				delete m_WorkerTCP[iThread];
 			}
 			m_WorkerTCP.Clear();
+
+
+			if (m_UDPSendWorker)
+			{
+				m_UDPSendWorker->Stop(true);
+				delete m_UDPSendWorker;
+			}
+			m_UDPSendWorker = nullptr;
 
 			// 
 			int hEpoll = 0;

@@ -5,17 +5,36 @@
 
 #pragma once
 
-#include "targetver.h"
+#include "Common/Typedefs.h"
+#include "Common/HRESSvrSys.h"
+#include "Common/Utility.h"
+#include "Common/StrUtil.h"
+#include "Common/Message.h"
+#include "Common/Trace.h"
+#include "Common/Synchronization.h"
+#include "Common/Memory.h"
+#include "Common/Argument.h"
+#include "Common/ToString.h"
+#include "Common/ToStringBase.h"
 
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
-// Windows Header Files:
-#include <windows.h>
+#include "Net/NetDef.h"
+#include "Net/Connection.h"
+#include "Net/NetServer.h"
+#include "Net/NetServerPeer.h"
 
-// C RunTime Header Files
-#include <stdlib.h>
-#include <malloc.h>
-#include <memory.h>
-#include <tchar.h>
-
-
-// TODO: reference additional headers your program requires here
+#include "ServerSystem/Transaction.h"
+#include "ServerSystem/Entity.h"
+#include "ServerSystem/MessageRoute.h"
+#include "ServerSystem/GameSystem.h"
+#include "ServerSystem/BrServer.h"
+#include "ServerSystem/BrServerUtil.h"
+#include "ServerSystem/SvrToString.h"
+#include "ServerSystem/ServerEntity/EntityServerEntity.h"
+#include "ServerSystem/ServerEntity/GameMasterServerEntity.h"
+#include "ServerSystem/ServerEntity/GameServerEntity.h"
+#include "ServerSystem/SvrLoopbackConnection.h"
+#include "ServerSystem/SimpleUserEntity.h"
+#include "ServerSystem/ServerTransaction.h"
+#include "ServerSystem/ServerEntity.h"
+#include "ServerSystem/TransactionSteper.h"
+#include "ServerSystem/TransactionUtil.h"

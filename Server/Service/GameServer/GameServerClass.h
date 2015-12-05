@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/TypeDefs.h"
+#include "Common/Typedefs.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/Transaction.h"

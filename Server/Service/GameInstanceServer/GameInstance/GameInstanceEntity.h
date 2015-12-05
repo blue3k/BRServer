@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/TypeDefs.h"
+#include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/Entity.h"

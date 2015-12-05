@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "LoginServer.h"
 #include "Shellapi.h"
-#include "ServerSystem/BRService.h"
+#include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
 #include "LoginServerClass.h"
 
@@ -14,21 +14,34 @@
 using namespace BR;
 
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+#if WINDOWS
+int APIENTRY WinMain(HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPSTR    lpCmdLine,
+	int       nCmdShow)
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
-	#if _WIN32_WINNT >= 0x0400 & defined(_ATL_FREE_THREADED)
-		HRESULT hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
-	#else
-		HRESULT hRes = CoInitialize(NULL);
-	#endif
-		_ASSERTE(SUCCEEDED(hRes));
+#if _WIN32_WINNT >= 0x0400 & defined(_ATL_FREE_THREADED)
+	HRESULT hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+#else
+	HRESULT hRes = CoInitialize(NULL);
+#endif
+	_ASSERTE(SUCCEEDED(hRes));
 
+	std::string cmdLine = lpCmdLine;
+	std::istringstream iss(cmdLine);
+	std::vector<std::string> cmdArgs{
+		std::istream_iterator<std::string>{iss},
+		std::istream_iterator<std::string>{} };
+
+#elif LINUX
+int main(int numArg, const char* argc[])
+{
+	std::vector<std::string> cmdArgs;
+	for (int iArg = 0; iArg < numArg; iArg++) cmdArgs.push_back(argc[iArg]);
+#endif
 
 	HRESULT hr = S_OK;
 	SharedPointerT<BR::LoginServer::LoginServer> pServerInstance;
@@ -37,12 +50,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 
 	pServerInstance = SharedPointerT<BR::LoginServer::LoginServer>(new BR::LoginServer::LoginServer);
 
-	int nArgs;
-	LPWSTR *pCmdArgs = CommandLineToArgvW( lpCmdLine, &nArgs );
+	svrChk(BR::Svr::Service::ServiceRun(cmdArgs, (BR::LoginServer::LoginServer*)pServerInstance));
 
-	svrChk(BR::Svr::Service::ServiceRun(nArgs, pCmdArgs, (BR::LoginServer::LoginServer*)pServerInstance));
-
-	LocalFree(pCmdArgs);
 
 Proc_End:
 

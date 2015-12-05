@@ -85,7 +85,7 @@ namespace Svr {
 
 
 		// Install Service
-		HRESULT ServiceInstall( const wchar_t *strCfgPath, const wchar_t *strUser, const wchar_t *strPWD )
+		HRESULT ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
 		{
 			HRESULT hr = S_OK;
 			return hr;
@@ -99,33 +99,33 @@ namespace Svr {
 		}
 
 		// Run service main function
-		HRESULT ServiceRun( int argc, wchar_t* argv[], BrServer *pSvrInstance )
+		HRESULT ServiceRun(std::vector<std::string>& cmdArgs, BrServer *pSvrInstance )
 		{
 			HRESULT hr = S_OK;
 			bool bIsDebugRun = false;
-			std::wstring strCfgPath = Util::GetModulePath();
+			std::string strCfgPath = Util::GetModulePathA();
 			bool bIsInstall = false;
 			//wchar_t *strUser = nullptr; wchar_t *strPWD = nullptr;
-			wchar_t *strServiceName = nullptr;
+			const char *strServiceName = nullptr;
 
 			chdir(Util::GetModulePathA());
 
-			strCfgPath.append(L"..\\..\\Config\\ServerConfig.xml");
+			strCfgPath.append("..\\..\\Config\\ServerConfig.xml");
 
 
 			g_pSvrInstance = pSvrInstance;
 			Assert( BrServer::GetInstance() == pSvrInstance );
 
 
-			for( int iArg = 0; iArg < argc; iArg++ )
+			for (auto itArg : cmdArgs)
 			{
-				wchar_t* pCurParam = argv[iArg];
+				const char* pCurParam = itArg.c_str();
 
 				switch( pCurParam[0] )
 				{
 				case L'-':
 					pCurParam++;
-					if( StrUtil::StringCmpLwr( pCurParam, (INT)wcslen(pCurParam), L"install", (INT)wcslen(L"install") ) == 0 )
+					if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "install", (INT)strlen("install") ) == 0 )
 					{
 						bIsInstall = true;
 					}
@@ -134,22 +134,12 @@ namespace Svr {
 						pCurParam += 2;
 						strServiceName = pCurParam;
 					}
-					//else if( pCurParam[0] == 'u' || pCurParam[0] == 'U'  )
-					//{
-					//	pCurParam += 2;
-					//	strUser = pCurParam;
-					//}
-					//else if( pCurParam[0] == 'p' || pCurParam[0] == 'P' )
-					//{
-					//	pCurParam += 2;
-					//	strPWD = pCurParam;
-					//}
-					else if( StrUtil::StringCmpLwr( pCurParam, (INT)wcslen(pCurParam), L"uninstall", (INT)wcslen(L"uninstall") ) == 0 )
+					else if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "uninstall", (INT)strlen("uninstall") ) == 0 )
 					{
 						svrChk( Service::ServiceUninstall() );
 						goto Proc_End;
 					}
-					else if( StrUtil::StringCmpLwr( pCurParam, (INT)wcslen(pCurParam), L"debug", (INT)wcslen(L"debug") ) == 0 )
+					else if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "debug", (INT)strlen("debug") ) == 0 )
 					{
 						bIsDebugRun = true;
 					}

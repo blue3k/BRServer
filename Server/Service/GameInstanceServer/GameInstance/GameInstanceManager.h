@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/TypeDefs.h"
+#include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
 
 #include "ServerSystem/ServiceEntity/GameInstanceManagerServiceEntity.h"

@@ -12,11 +12,11 @@
 #include "stdafx.h"
 #include "GameServer.h"
 #include "Shellapi.h"
-#include "ServerSystem/BRService.h"
+#include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
 #include "GameServerClass.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
 

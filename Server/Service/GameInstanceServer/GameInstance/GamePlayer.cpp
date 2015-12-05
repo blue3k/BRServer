@@ -16,7 +16,7 @@
 #include "ServerSystem/BRServerUtil.h"
 #include "Net/NetServerUDP.h"
 #include "Common/TimeUtil.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Common/HRESCommon.h"
 #include "Common/HRESGame.h"
 

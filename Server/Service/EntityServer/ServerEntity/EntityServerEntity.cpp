@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
@@ -61,7 +61,7 @@ namespace EntityServer {
 
 		switch( conEvent.EventType )
 		{
-		case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
+		case Net::IConnection::Event::EVT_CONNECTION_RESULT:
 			pClusterManager = Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>();
 			
 			// Add all expected cluster service objects
@@ -79,6 +79,8 @@ namespace EntityServer {
 				}
 			}
 
+			break;
+		default:
 			break;
 		};
 

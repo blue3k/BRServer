@@ -42,6 +42,22 @@ export TARGET_LIB_PATH
 OBJECTS=$(addprefix $(TARGET_OBJ_PATH)/,$(SOURCES:.cpp=.o))
 DEPENDANCIES=$(addprefix $(TARGET_OBJ_PATH)/,$(SOURCES:.cpp=.d))
 
+
+INCLUDES+= $(ROOT_PATH)/Server/Lib /usr/include /usr/include/mysql
+DEFINES+= $(BUILD_MODE) $(LOGNAME)
+
+CC=g++
+CFLAGS=-c -g -std=c++14 -pthread -static-libgcc -Wall $(addprefix -I,$(INCLUDES)) $(addprefix -D,$(DEFINES))
+CPPFLAGS:=$(CFLAGS)
+LDFLAGS=-g -std=c++14 -pthread -static-libgcc -L$(TARGET_LIB_PATH)/ $(addprefix -l,$(LIBS))
+
+ifeq "$(BUILD_MODE)" "DEBUG"
+	CFLAGS+=-O0
+	CPPFLAGS+=-O0
+else
+endif
+
+
 TARGET_FILE=$(TARGET_BIN_PATH)/$(PROJECT_NAME)
 TARGET_BUILD_COMMAND=
 
@@ -54,21 +70,6 @@ else ifeq "$(LINK_TYPE)" "LIB"
 else ifeq "$(LINK_TYPE)" "DLL"
 	TARGET_FILE=$(TARGET_BIN_PATH)/$(PROJECT_NAME).so
 	TARGET_BUILD_COMMAND=$(CC) -shared $(LDFLAGS) $(OBJECTS) -o $(TARGET_FILE)  
-endif
-
-
-INCLUDES+= $(ROOT_PATH)/Server/Lib /usr/include /usr/include/mysql
-DEFINES+= $(BUILD_MODE) $(LOGNAME)
-
-CC=g++
-CFLAGS=-c -g -std=c++14 -pthread -static-libgcc -Wall $(addprefix -I,$(INCLUDES)) $(addprefix -D,$(DEFINES))
-CPPFLAGS:=$(CFLAGS)
-LDFLAGS=-g -std=c++14 -pthread -static-libgcc $(addprefix -l,$(LIBS))
-
-ifeq "$(BUILD_MODE)" "DEBUG"
-	CFLAGS+=-O0
-	CPPFLAGS+=-O0
-else
 endif
 
 

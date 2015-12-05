@@ -606,7 +606,7 @@ namespace Net {
 				uiMsgLen);
 
 			netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
-			pSendBuffer->SetupSendUDP(GetRemoteSockAddr(), pMsg);
+			pSendBuffer->SetupSendUDP(GetSocket(), GetRemoteSockAddr(), pMsg);
 
 			if (NetSystem::IsProactorSystem())
 			{
@@ -623,7 +623,7 @@ namespace Net {
 			if( pMsg->GetIsSequenceAssigned() )
 			{
 				netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
-				pSendBuffer->SetupSendUDP(GetRemoteSockAddr(), pMsg);
+				pSendBuffer->SetupSendUDP(GetSocket(), GetRemoteSockAddr(), pMsg);
 
 				if (NetSystem::IsProactorSystem())
 				{

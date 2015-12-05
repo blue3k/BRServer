@@ -16,7 +16,7 @@
 #include "Common/HRESCommon.h"
 #include "Common/HRESGame.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Common/BrRandom.h"
 #include "Common/GameConst.h"
 

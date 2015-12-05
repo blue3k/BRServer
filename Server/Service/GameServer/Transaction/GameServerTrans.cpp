@@ -20,7 +20,7 @@
 #include "ServerSystem/MessageRoute.h"
 #include "GameServerClass.h"
 #include "Common/MemoryPool.h"
-#include "Common/BRBaseTypes.h"
+#include "Common/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
 
