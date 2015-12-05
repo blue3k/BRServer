@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // 
 // CopyRight (c) 2013 Madk
 // 
@@ -20,10 +20,10 @@
 namespace BR {
 namespace Svr {
 
-	template<> PerformanceCounter::DataTypes PerformanceCounterRaw<INT32>::GetDataType() { return DataTypes::Int32; }
-	template<> PerformanceCounter::DataTypes PerformanceCounterRaw<UINT32>::GetDataType() { return DataTypes::UInt32; }
-	template<> PerformanceCounter::DataTypes PerformanceCounterRaw<INT64>::GetDataType() { return DataTypes::Int64; }
-	template<> PerformanceCounter::DataTypes PerformanceCounterRaw<UINT64>::GetDataType() { return DataTypes::UInt64; }
+	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<INT32>::GetDataType() { return DataTypes::Int32; }
+	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<UINT32>::GetDataType() { return DataTypes::UInt32; }
+	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<INT64>::GetDataType() { return DataTypes::Int64; }
+	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<UINT64>::GetDataType() { return DataTypes::UInt64; }
 
 
 

@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "Common/TimeUtil.h"
-#include "Common/BRBasetypes.h"
+#include "Common/BrBaseTypes.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
@@ -91,7 +91,7 @@ namespace GameServer {
 
 	void GameEntityManager::RegisterCounter()
 	{
-		HRESULT hr = S_OK;
+		//HRESULT hr = S_OK;
 
 		auto pCounterInstance = Svr::PerformanceCounterClient::GetDefaultCounterInstance();
 		if (pCounterInstance != nullptr)
@@ -99,7 +99,7 @@ namespace GameServer {
 			pCounterInstance->AddCounter(&m_NumberOfPlayers);
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return;
 	}

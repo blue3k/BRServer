@@ -85,11 +85,11 @@ namespace ConspiracyGameInstanceServer {
 		void SetSuspect( PlayerID suspect1, PlayerID suspect2 );
 
 		// Get suspect list
-		FORCEINLINE PlayerID GetSuspect( int index );
-		FORCEINLINE UINT GetNumberOfSuspects();
-		FORCEINLINE bool IsSuspect( PlayerID playerID );
+		PlayerID GetSuspect( int index );
+		UINT GetNumberOfSuspects();
+		bool IsSuspect( PlayerID playerID );
 
-		FORCEINLINE const Array<GamePlayer*>& GetWerewolves();
+		const Array<GamePlayer*>& GetWerewolves();
 
 		// Initialize server component
 		virtual HRESULT InitializeComponent();

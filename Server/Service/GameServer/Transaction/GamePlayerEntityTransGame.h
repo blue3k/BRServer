@@ -440,7 +440,7 @@ namespace GameServer {
 	class PlayerTransPlayerMatchingCanceledS2CEvt : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt, PlayerTransPlayerMatchingCanceledS2CEvt>
 	{
 	public:
-		typedef public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt, PlayerTransPlayerMatchingCanceledS2CEvt> super;
+		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt, PlayerTransPlayerMatchingCanceledS2CEvt> super;
 
 	public:
 		PlayerTransPlayerMatchingCanceledS2CEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}

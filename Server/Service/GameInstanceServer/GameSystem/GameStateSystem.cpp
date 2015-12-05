@@ -20,7 +20,7 @@
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ConspiracyGameInstanceSvrConst.h"
 
 #include "Protocol/Policy/GameInstanceIPolicy.h"
@@ -35,7 +35,7 @@
 #include "GameInstance/GameInstanceEntity.h"
 
 
-#include "Table/Conspiracy/RewardTbl.h"
+#include "Table/conspiracy/RewardTbl.h"
 
 
 BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameStateSystem);
@@ -186,6 +186,8 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnEnter() override
 		{
 			HRESULT hr = S_OK;
+			UINT numVotePlayer;
+
 			auto stateTime = GetGameStateSystem().GetCurrentDay() == 1 ? 
 				GetOwner().GetPresetGameConfig()->RolePlayTime : 
 				GetOwner().GetPresetGameConfig()->RolePlayAndKillingTime;
@@ -213,7 +215,7 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk( m_vote.IniciateVote() );
 
-			UINT numVotePlayer = GetOwner().GetComponent<GamePlaySystem>()->GetNumWereWolf();
+			numVotePlayer = GetOwner().GetComponent<GamePlaySystem>()->GetNumWereWolf();
 			if( GetOwner().GetComponent<GamePlaySystem>()->GetSeer() != 0 ) numVotePlayer++;
 			if( GetOwner().GetComponent<GamePlaySystem>()->GetBodyGuard() != 0 ) numVotePlayer++;
 
@@ -349,6 +351,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnEnter() override
 		{
 			HRESULT hr = S_OK;
+			UINT totalAlives;
 
 			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
@@ -359,7 +362,7 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk( m_vote.IniciateVote() );
 
-			UINT totalAlives = GetOwner().GetComponent<GamePlaySystem>()->GetNumWereWolf() + GetOwner().GetComponent<GamePlaySystem>()->GetNumVillager();
+			totalAlives = GetOwner().GetComponent<GamePlaySystem>()->GetNumWereWolf() + GetOwner().GetComponent<GamePlaySystem>()->GetNumVillager();
 			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVote( Util::Time.GetTimeUTCSec(), GameVoteType::Suspect, totalAlives ) );
 
 
@@ -464,6 +467,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnEnter() override
 		{
 			HRESULT hr = S_OK;
+			UINT totalAlives, totalSuspect;
 
 			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
@@ -474,8 +478,8 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk( m_vote.IniciateVote() );
 
-			UINT totalAlives = GetOwner().GetComponent<GamePlaySystem>()->GetNumWereWolf() + GetOwner().GetComponent<GamePlaySystem>()->GetNumVillager();
-			UINT totalSuspect = GetOwner().GetComponent<GamePlaySystem>()->GetNumberOfSuspects();
+			totalAlives = GetOwner().GetComponent<GamePlaySystem>()->GetNumWereWolf() + GetOwner().GetComponent<GamePlaySystem>()->GetNumVillager();
+			totalSuspect = GetOwner().GetComponent<GamePlaySystem>()->GetNumberOfSuspects();
 			Assert( totalAlives > totalSuspect );
 			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVote( Util::Time.GetTimeUTCSec(), GameVoteType::Hanging, totalAlives - totalSuspect ) );
 
@@ -670,7 +674,7 @@ namespace ConspiracyGameInstanceServer {
 
 	GameStateSystem::~GameStateSystem()
 	{
-		for( int iState = 0; iState < (UINT)GameStateID::Max; iState++ )
+		for( int iState = 0; iState < (INT)GameStateID::Max; iState++ )
 		{
 			Util::SafeDelete( m_GamePlayStates[iState] );
 		}
@@ -730,8 +734,8 @@ namespace ConspiracyGameInstanceServer {
 
 			do {
 				m_CurrentGameStateIndex++;
-				int Max = GAMESTATE_INDEX_MAX;
-				int ThirdDay = GAMESTATE_INDEX_THIRDDAY_START;
+				//int Max = GAMESTATE_INDEX_MAX;
+				//int ThirdDay = GAMESTATE_INDEX_THIRDDAY_START;
 				if( m_CurrentGameStateIndex >= GAMESTATE_INDEX_MAX )
 					m_CurrentGameStateIndex = GAMESTATE_INDEX_THIRDDAY_START;
 
@@ -791,7 +795,7 @@ namespace ConspiracyGameInstanceServer {
 			AdvanceState();
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

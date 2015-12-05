@@ -48,7 +48,7 @@ namespace ConspiracyGameInstanceServer {
 
 	public:
 		RoutedGamePlayerMessageTransaction( Message::MessageData* &pIMsg )
-			:TransactionT( TransactionID() )
+			:super( TransactionID() )
 			,MessageClass( pIMsg )
 			,m_PlayerID(0)
 			,m_ServerEntity(nullptr)
@@ -57,18 +57,18 @@ namespace ConspiracyGameInstanceServer {
 
 		HRESULT ParseMessage()
 		{
-			HRESULT hr = ParseMsg();
+			HRESULT hr = MessageClass::ParseMsg();
 			if (SUCCEEDED(hr))
 			{
-				if (GetMessage()->GetMessageHeader()->msgID.IDs.Type == BR::Message::MSGTYPE_COMMAND)
+				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
 					if(MessageClass::HasContext)
 					{
-						SetParentTransID(MessageClass::GetContext());
+						super::SetParentTransID(MessageClass::GetContext());
 					}
 					if(MessageClass::HasRouteContext)
 					{
-						SetMessageRouteContext(MessageClass::GetRouteContext());
+						super::SetMessageRouteContext(MessageClass::GetRouteContext());
 					}
 				}
 			}
@@ -92,7 +92,7 @@ namespace ConspiracyGameInstanceServer {
 				svrErr( E_SVR_INVALID_SERVERID );
 			}
 
-			hr = FindEntity(GetRouteContext().GetTo().GetEntityID(), pEntity);
+			hr = FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity);
 			if (FAILED(hr))
 			{
 				svrTrace(Trace::TRC_WARN, "Can't find transaction target instance:{0}", MessageClass::GetRouteContext().GetTo());
@@ -140,8 +140,8 @@ namespace ConspiracyGameInstanceServer {
 
 		FORCEINLINE GameInstanceEntity* GetMyOwner()
 		{
-			Assert( GetOwnerEntity() );
-			return (GameInstanceEntity*)GetOwnerEntity();
+			Assert( super::GetOwnerEntity() );
+			return (GameInstanceEntity*)super::GetOwnerEntity();
 		}
 
 		HRESULT GetMyPlayer( GamePlayer* &pPlayer )

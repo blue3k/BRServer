@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 #include "GameServer.h"
-#include "Shellapi.h"
 #include "Net/NetServerUDP.h"
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"

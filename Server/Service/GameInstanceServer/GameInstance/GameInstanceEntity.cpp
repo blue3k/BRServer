@@ -18,7 +18,7 @@
 #include "Common/HRESCommon.h"
 #include "Common/HRESGame.h"
 #include "Common/Message.h"
-#include "Common/BRRandom.h"
+#include "Common/BrRandom.h"
 
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/EntityManager.h"
@@ -61,10 +61,10 @@ namespace ConspiracyGameInstanceServer {
 
 	GameInstanceEntity::GameInstanceEntity()
 		: MasterEntity(64,64)
-		, m_Allocator(STDAllocator::GetInstance())
-		, m_PresetGameConfig(nullptr)
 		, m_PresetGameConfigID(1) // 1 is default
+		, m_PresetGameConfig(nullptr)
 		, m_NumBot(0)
+		, m_Allocator(STDAllocator::GetInstance())
 	{
 		memset(m_PlayerByIndex,0, sizeof(m_PlayerByIndex));
 		SetTickInterval(DurationMS(ConspiracyGameInstanceServer::Const::GAMEINSTANCE_TICK_TIME));
@@ -149,7 +149,7 @@ namespace ConspiracyGameInstanceServer {
 
 		Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(GetMyOwner());
 
-	Proc_End:
+	//Proc_End:
 
 
 		return hr;
@@ -201,7 +201,7 @@ namespace ConspiracyGameInstanceServer {
 		if (GetEntityState() == EntityState::FREE)
 			return S_FALSE;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -449,6 +449,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 		GamePlayer* pFound = nullptr;
+		UINT playerIndex;
 
 		svrChkPtr( pPlayer );
 		if (SUCCEEDED(m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound)))
@@ -471,6 +472,8 @@ namespace ConspiracyGameInstanceServer {
 				if (m_RoleRequestWerewolf < 2) m_RoleRequestWerewolf++;
 				else                           svrErr(E_GAME_INVALID_ROLE);
 				break;
+			default:
+				break;
 			}
 		}
 
@@ -478,7 +481,7 @@ namespace ConspiracyGameInstanceServer {
 		svrChk(m_GamePlayerByUID.Insert(pPlayer->GetPlayerID(), pPlayer));
 
 		// search empty player index from start
-		UINT playerIndex = (UINT)Util::Random.Rand() % m_MaxPlayer;
+		playerIndex = (UINT)Util::Random.Rand() % m_MaxPlayer;
 		for( UINT search = 0; search < m_MaxPlayer; search++ )
 		{
 			if( m_PlayerByIndex[playerIndex] == nullptr )
@@ -511,14 +514,13 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameInstanceEntity::LeavePlayer( GamePlayer* &pPlayer )
 	{
 		HRESULT hr = S_OK;
-		Net::Connection *pCon = nullptr;
 
 		pPlayer->SetServerEntity(nullptr,0);
 
 		// We will leave him as an inactive player so the clean-up and any notify aren't needed
 
 
-	Proc_End:
+	//Proc_End:
 
 		svrTrace(Trace::TRC_TRACE, "LeavePlayer, remain:%0%", m_GamePlayerByUID.GetItemCount());
 
@@ -573,7 +575,7 @@ namespace ConspiracyGameInstanceServer {
 			return E_PLAYER_NOT_FOUND;
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

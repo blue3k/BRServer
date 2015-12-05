@@ -21,7 +21,7 @@
 #include "Common/GameConst.h"
 
 #include "ServerSystem/BrServer.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerIPolicy.h"
@@ -195,9 +195,6 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameEntityTransLeaveGame::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		GamePlayer *pMyPlayer = nullptr;
-		GameInsUID gameInsUID;
-		PlayerID enteredPlayerID = 0;
 
 		svrChk( super::StartTransaction() );
 
@@ -216,9 +213,6 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameEntityTransKickPlayer::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		GamePlayer *pMyPlayer = nullptr;
-		GameInsUID gameInsUID;
-		PlayerID enteredPlayerID = 0;
 
 		svrChk( super::StartTransaction() );
 
@@ -280,6 +274,9 @@ namespace ConspiracyGameInstanceServer {
 
 		GamePlayer *pMyPlayer = nullptr;
 		const char* message = nullptr;
+		ChatType charType;
+		GameStateID gameState;
+		bool bIsGhost;
 
 		svrChk( super::StartTransaction() );
 
@@ -288,8 +285,8 @@ namespace ConspiracyGameInstanceServer {
 		if( GetRole() != PlayerRole::None && GetRole() != PlayerRole::Werewolf  )
 			svrErr(E_GAME_INVALID_ROLE);
 
-		GameStateID gameState = GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState();
-		bool bIsGhost = gameState != GameStateID::None && gameState != GameStateID::End && pMyPlayer->GetPlayerState() == PlayerState::Ghost;
+		gameState = GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState();
+		bIsGhost = gameState != GameStateID::None && gameState != GameStateID::End && pMyPlayer->GetPlayerState() == PlayerState::Ghost;
 
 		// prevent chatting during night
 		switch( gameState )
@@ -300,9 +297,11 @@ namespace ConspiracyGameInstanceServer {
 			if( !bIsGhost && GetRole() != PlayerRole::Werewolf )
 				svrErrClose(E_GAME_INVALID_GAMESTATE);
 			break;
+		default:
+			break;
 		};
 
-		ChatType charType = GetRole() != PlayerRole::None ? ChatType::Role : ChatType::Normal;
+		charType = GetRole() != PlayerRole::None ? ChatType::Role : ChatType::Normal;
 		svrChk( GetMyOwner()->GetComponent<ChattingLogSystem>()->AddChattingLog( Util::Time.GetTimeUTCSec(), pMyPlayer->GetPlayerID(), pMyPlayer->GetPlayerState() == PlayerState::Ghost, charType, GetChatMessage() ) );
 
 		GetMyOwner()->ForeachPlayerGameServer( [&]( GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy )->HRESULT {
@@ -429,6 +428,7 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_OK;
 		GamePlayer* pMyPlayer = nullptr;
 		GamePlayer* pTargetPlayer = nullptr;
+		size_t numReveal;
 
 		svrChk(super::StartTransaction());
 
@@ -440,7 +440,7 @@ namespace ConspiracyGameInstanceServer {
 		if (pMyPlayer->GetPlayerState() != PlayerState::Ghost)
 			svrErrClose(E_GAME_INVALID_PLAYER_STATE);
 
-		auto numReveal = std::min((size_t)GameConst::MAX_PLAYER_REVEAL, GetTargetPlayerID().GetSize());
+		numReveal = std::min((size_t)GameConst::MAX_PLAYER_REVEAL, GetTargetPlayerID().GetSize());
 		for (UINT iTargetPlayer = 0; iTargetPlayer < numReveal; iTargetPlayer++)
 		{
 			svrChk(GetMyOwner()->FindPlayer(GetTargetPlayerID()[iTargetPlayer], pTargetPlayer));
@@ -465,7 +465,6 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 		GamePlayer* pMyPlayer = nullptr;
-		EntityUID ownerUID = GetOwnerEntityUID();
 
 		svrChk(super::StartTransaction());
 

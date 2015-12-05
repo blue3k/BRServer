@@ -40,9 +40,9 @@ namespace ConspiracyGameInstanceServer {
 	public:
 
 	private:
-		BRCLASS_ATTRIBUTE_READONLY(GameStateID,GameState);
-
 		GameInstanceEntity* m_Owner;
+
+		BRCLASS_ATTRIBUTE_READONLY(GameStateID,GameState);
 
 		// State start time
 		TimeStampMS m_StateStartTime;
@@ -57,12 +57,12 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GamePlayState() {}
 
 		// Get time in this state in ms
-		FORCEINLINE DurationMS GetTimeInState()						{ return Util::Time.GetTimeMs() - m_StateStartTime; }
-		FORCEINLINE TimeStampSec GetStateTimeUTC()					{ return m_StateStartTimeUTC; }
+		DurationMS GetTimeInState()						{ return Util::Time.GetTimeMs() - m_StateStartTime; }
+		TimeStampSec GetStateTimeUTC()					{ return m_StateStartTimeUTC; }
 
 		GamePlaySystem& GetGamePlaySystem();
 		GameStateSystem& GetGameStateSystem();
-		FORCEINLINE GameInstanceEntity& GetOwner()					{ return *m_Owner; }
+		GameInstanceEntity& GetOwner()					{ return *m_Owner; }
 
 		virtual HRESULT Vote(GamePlayer* pVoter, GamePlayer* pVoteTarget )		{ return E_GAME_INVALID_VOTE_STATE; }
 
@@ -113,7 +113,7 @@ namespace ConspiracyGameInstanceServer {
 		// Game state
 		BRCLASS_ATTRIBUTE_READONLY(GameStateID,CurrentGameState);
 		BRCLASS_ATTRIBUTE_READONLY(UINT,CurrentGameStateIndex);
-		GamePlayState* m_GamePlayStates[GameStateID::Max];
+		GamePlayState* m_GamePlayStates[(int)GameStateID::Max];
 
 		BRCLASS_ATTRIBUTE_READONLY(UINT,CurrentDay);
 
@@ -129,11 +129,11 @@ namespace ConspiracyGameInstanceServer {
 		~GameStateSystem();
 
 		// Get current game play state
-		FORCEINLINE GamePlayState* GetCurrentGamePlayState();
-		FORCEINLINE GameStateID GetCurrentGameState();
+		GamePlayState* GetCurrentGamePlayState();
+		GameStateID GetCurrentGameState();
 
 		// increase day
-		FORCEINLINE void NextDay();
+		void NextDay();
 
 		// Initialzie system
 		HRESULT InitializeComponent();
@@ -165,17 +165,17 @@ namespace ConspiracyGameInstanceServer {
 
 
 	
-	GamePlayState* GameStateSystem::GetCurrentGamePlayState()
+	inline GamePlayState* GameStateSystem::GetCurrentGamePlayState()
 	{
 		return m_GamePlayStates[(UINT)m_CurrentGameState];
 	}
 
-	GameStateID GameStateSystem::GetCurrentGameState()
+	inline GameStateID GameStateSystem::GetCurrentGameState()
 	{
 		return m_CurrentGameState;
 	}
 
-	void GameStateSystem::NextDay()
+	inline void GameStateSystem::NextDay()
 	{
 		m_CurrentDay++;
 	}

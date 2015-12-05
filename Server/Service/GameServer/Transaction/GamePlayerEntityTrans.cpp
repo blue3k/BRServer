@@ -23,7 +23,7 @@
 #include "Net/NetServerUDP.h"
 
 #include "GameServerClass.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
@@ -62,9 +62,9 @@
 #include "DB/RankingDB.h"
 #include "DB/RankingDBQuery.h"
 
-#include "Table/Conspiracy/GameConfigTbl.h"
-#include "Table/Conspiracy/OrganicTbl.h"
-#include "openssl\sha.h"
+#include "Table/conspiracy/GameConfigTbl.h"
+#include "Table/conspiracy/OrganicTbl.h"
+#include "openssl/sha.h"
 
 
 BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity);
@@ -315,19 +315,21 @@ namespace GameServer {
 		}
 
 		svrAssert( pDBRes->m_RowsetResult.size() >= 1 );
-		auto& playerInfoData = *pDBRes->m_RowsetResult.begin();
-		auto playerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
-
-		// New player data. Reset stat to default
-		if (pDBRes->Result == 0)
 		{
-			playerInfoSystem->SetupDefaultStat();
-			playerInfoData.LatestTickTime = Util::Time.GetTimeUTCSec().time_since_epoch().count();
+			auto& playerInfoData = *pDBRes->m_RowsetResult.begin();
+			auto playerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
 
-			svrTrace(Svr::TRC_TRANSACTION, "Player data created PlayerID:%0%", GetMyOwner()->GetPlayerID());
+			// New player data. Reset stat to default
+			if (pDBRes->Result == 0)
+			{
+				playerInfoSystem->SetupDefaultStat();
+				playerInfoData.LatestTickTime = Util::Time.GetTimeUTCSec().time_since_epoch().count();
+
+				svrTrace(Svr::TRC_TRANSACTION, "Player data created PlayerID:%0%", GetMyOwner()->GetPlayerID());
+			}
+
+			svrChk(SetPlayerGameData(playerInfoData));
 		}
-
-		svrChk(SetPlayerGameData(playerInfoData));
 
 	Proc_End:
 
@@ -355,9 +357,10 @@ namespace GameServer {
 		}
 
 		svrAssert(pDBRes->m_RowsetResult.size() >= 1);
-		auto& playerInfoData = *pDBRes->m_RowsetResult.begin();
-
-		svrChk(SetPlayerGameData(playerInfoData));
+		{
+			auto& playerInfoData = *pDBRes->m_RowsetResult.begin();
+			svrChk(SetPlayerGameData(playerInfoData));
+		}
 
 	Proc_End:
 
@@ -399,9 +402,9 @@ namespace GameServer {
 	HRESULT PlayerTransJoinGameServer::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		Svr::ClusteredServiceEntity *pLoginServiceEntity = nullptr;
-		Svr::ServerServiceInformation *pLoginService = nullptr;
-		Svr::ServerEntity *pLoginEntity = nullptr;
+		//Svr::ClusteredServiceEntity *pLoginServiceEntity = nullptr;
+		//Svr::ServerServiceInformation *pLoginService = nullptr;
+		//Svr::ServerEntity *pLoginEntity = nullptr;
 		EntityUID loginEntityUID(GetLoginEntityUID());
 		Policy::IPolicyLoginServer *pLoginPolicy = nullptr;
 
@@ -446,6 +449,8 @@ namespace GameServer {
 
 		memset(&m_Result, 0, sizeof(m_Result));
 
+		auto userGamePlayerInfo = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
+
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAccountID() == 0 )
@@ -453,7 +458,6 @@ namespace GameServer {
 			svrErrClose(E_INVALID_TICKET);
 		}
 
-		auto userGamePlayerInfo = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
 
 		//m_Grade = userGamePlayerInfo->GetGrade();
 		m_Result.Level = userGamePlayerInfo->GetLevel();
@@ -537,27 +541,29 @@ namespace GameServer {
 		}
 
 		svrAssert( pDBRes->m_RowsetResult.size() >= 1 );
-		auto& playerInfoData = *pDBRes->m_RowsetResult.begin();
+		{
+			auto& playerInfoData = *pDBRes->m_RowsetResult.begin();
 
-		m_Result.Level = playerInfoData.Level;
-		m_Result.TotalPlayed = playerInfoData.TotalPlayed;
+			m_Result.Level = playerInfoData.Level;
+			m_Result.TotalPlayed = playerInfoData.TotalPlayed;
 
-		m_Result.WinPlaySC = playerInfoData.WinPlaySC;
-		m_Result.WinPlaySM = playerInfoData.WinPlaySM;
-		m_Result.WinPlaySM = playerInfoData.WinPlaySM;
-		m_Result.LosePlaySC = playerInfoData.LosePlaySC;
-		m_Result.LosePlaySM = playerInfoData.LosePlaySM;
-		m_Result.LosePlaySM = playerInfoData.LosePlaySM;
+			m_Result.WinPlaySC = playerInfoData.WinPlaySC;
+			m_Result.WinPlaySM = playerInfoData.WinPlaySM;
+			m_Result.WinPlaySM = playerInfoData.WinPlaySM;
+			m_Result.LosePlaySC = playerInfoData.LosePlaySC;
+			m_Result.LosePlaySM = playerInfoData.LosePlaySM;
+			m_Result.LosePlaySM = playerInfoData.LosePlaySM;
 
-		m_Result.WinPlayNC = playerInfoData.WinPlayNC;
-		m_Result.WinPlayNM = playerInfoData.WinPlayNM;
-		m_Result.WinPlayNM = playerInfoData.WinPlayNM;
-		m_Result.LosePlayNC = playerInfoData.LosePlayNC;
-		m_Result.LosePlayNM = playerInfoData.LosePlayNM;
-		m_Result.LosePlayNM = playerInfoData.LosePlayNM;
+			m_Result.WinPlayNC = playerInfoData.WinPlayNC;
+			m_Result.WinPlayNM = playerInfoData.WinPlayNM;
+			m_Result.WinPlayNM = playerInfoData.WinPlayNM;
+			m_Result.LosePlayNC = playerInfoData.LosePlayNC;
+			m_Result.LosePlayNM = playerInfoData.LosePlayNM;
+			m_Result.LosePlayNM = playerInfoData.LosePlayNM;
 
-		m_Result.WeeklyWin = playerInfoData.WeeklyPlayWin;
-		m_Result.WeeklyLose = playerInfoData.WeeklyPlayLose;
+			m_Result.WeeklyWin = playerInfoData.WeeklyPlayWin;
+			m_Result.WeeklyLose = playerInfoData.WeeklyPlayLose;
+		}
 
 
 	Proc_End:
@@ -812,12 +818,12 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		DB::QueryNotification_GetListCmd::RowsetList::iterator itNotification;
 		UserNotifySystem* pNotifySystem = GetMyOwner()->GetComponent<UserNotifySystem>();
+		DB::QueryNotification_GetListCmd *pDBRes = (DB::QueryNotification_GetListCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
 
 		pNotifySystem->ClearNotificationList();
 
-		DB::QueryNotification_GetListCmd *pDBRes = (DB::QueryNotification_GetListCmd*)pRes;
 		itNotification = pDBRes->m_RowsetResult.begin();
 		for( ; itNotification != pDBRes->m_RowsetResult.end(); ++itNotification )
 		{
@@ -860,10 +866,9 @@ namespace GameServer {
 	HRESULT PlayerTransDeleteNotification::OnDeletedNotification( Svr::TransactionResult* &pRes )
 	{
 		HRESULT hr = S_OK;
+		//DB::QueryNotification_RemoveCmd *pDBRes = (DB::QueryNotification_RemoveCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
-
-		DB::QueryNotification_RemoveCmd *pDBRes = (DB::QueryNotification_RemoveCmd*)pRes;
 
 		svrChk( GetMyOwner()->GetComponent<UserNotifySystem>()->RemoveNotification(GetNotificationID()) );
 
@@ -903,10 +908,10 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 		UserNotifySystem::Notification *pNotify = nullptr;
+		//DB::QueryNotification_SetReadCmd *pDBRes = (DB::QueryNotification_SetReadCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
 
-		DB::QueryNotification_SetReadCmd *pDBRes = (DB::QueryNotification_SetReadCmd*)pRes;
 
 		svrChkPtr( pNotify = GetMyOwner()->GetComponent<UserNotifySystem>()->GetNotification(GetNotificationID()) );
 		pNotify->IsRead = TRUE;
@@ -915,13 +920,10 @@ namespace GameServer {
 		{
 		case NotificationType::GiftStamina:
 			GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina(1);
-			//svrChk( Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateTickStatusCmd( GetTransID(), GetMyOwner()->GetPlayerID(), 
-			//	GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetGem(),
-			//	GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetStamina(),
-			//	GetMyOwner()->GetLatestActiveTime(),
-			//	GetMyOwner()->GetLatestUpdateTime() ) );
 			svrChk(GetMyOwner()->UpdateDBSync(GetTransID()));
 			goto Proc_End;
+			break;
+		default:
 			break;
 		}
 
@@ -938,11 +940,11 @@ namespace GameServer {
 	HRESULT PlayerTransSetNotificationRead::OnUpdateStatus( Svr::TransactionResult* &pRes )
 	{
 		HRESULT hr = S_OK;
-		UserNotifySystem::Notification *pNotify = nullptr;
+		//UserNotifySystem::Notification *pNotify = nullptr;
+		//DB::QueryUpdateTickStatusCmd *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
 
-		DB::QueryUpdateTickStatusCmd *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 
 
 	Proc_End:
@@ -983,12 +985,11 @@ namespace GameServer {
 	HRESULT PlayerTransAcceptNotification::OnDeletedNotification(Svr::TransactionResult* &pRes)
 	{
 		HRESULT hr = S_OK;
+		//DB::QueryNotification_RemoveCmd *pDBRes = (DB::QueryNotification_RemoveCmd*)pRes;
+		auto notification = GetMyOwner()->GetComponent<UserNotifySystem>()->GetNotification(GetNotificationID());
 
 		svrChk(pRes->GetHRESULT());
 
-		DB::QueryNotification_RemoveCmd *pDBRes = (DB::QueryNotification_RemoveCmd*)pRes;
-
-		auto notification = GetMyOwner()->GetComponent<UserNotifySystem>()->GetNotification(GetNotificationID());
 		if (notification!= nullptr)
 		{
 			HRESULT hrRes = S_OK;
@@ -1003,6 +1004,8 @@ namespace GameServer {
 				{
 					svrTrace(Trace::TRC_WARN, "Stamina gain is failed, PlayerID:{0}, hr:{1:X8}", GetMyOwner()->GetPlayerID(), hrRes);
 				}
+				break;
+			default:
 				break;
 			}
 		}
@@ -1153,6 +1156,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 		DB::QueryFindPlayerByEMailCmd *pDBRes = (DB::QueryFindPlayerByEMailCmd*)pRes;
+
 		svrChk(pRes->GetHRESULT());
 
 		if( pDBRes->UserID == 0 )
@@ -1296,7 +1300,7 @@ namespace GameServer {
 	HRESULT PlayerTransRequestPlayerStatusUpdate::OnPlayerShardIDRes(Svr::TransactionResult* &pRes)
 	{
 		HRESULT hr = S_OK;
-		Policy::ISvrPolicyGame *pPolicy = nullptr;
+		//Policy::ISvrPolicyGame *pPolicy = nullptr;
 		auto *pDBRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
 
 		m_PlayerStatusQueryCount--;
@@ -1339,10 +1343,12 @@ namespace GameServer {
 	HRESULT PlayerTransRequestPlayerStatusUpdate::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		//Policy::IPolicyGameServer* pTargetPolicy = nullptr;
 		Policy::ISvrPolicyGame *pPolicy = nullptr;
+		auto& targetPlayerID = GetTargetPlayerID();
+		UINT uiRequestMax = Util::Min((UINT)targetPlayerID.GetSize(), (UINT)20);
 
 		m_PlayerStatusQueryCount = 0;
 
@@ -1351,8 +1357,6 @@ namespace GameServer {
 		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
 
 
-		auto& targetPlayerID = GetTargetPlayerID();
-		UINT uiRequestMax = Util::Min((UINT)targetPlayerID.GetSize(), (UINT)20);
 		for( UINT iPlayer = 0; iPlayer < uiRequestMax; iPlayer++ )
 		{
 			if( SUCCEEDED( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( targetPlayerID[iPlayer], playerUID )) )
@@ -1392,6 +1396,7 @@ namespace GameServer {
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		bool bInGame;
 
 
 		svrChk( super::StartTransaction() );
@@ -1404,7 +1409,7 @@ namespace GameServer {
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 		svrChkPtr(pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>());
 
-		bool bInGame = GetMyOwner()->GetGameInsUID() != 0 || GetMyOwner()->GetPartyUID() != 0;
+		bInGame = GetMyOwner()->GetGameInsUID() != 0 || GetMyOwner()->GetPartyUID() != 0;
 
 		svrChk( pTargetPolicy->NotifyPlayerStatusUpdatedC2SEvt( RouteContext(GetOwnerEntityUID(),playerUID), GetDestPlayerID(), GetMyOwner()->GetLatestActiveTime().time_since_epoch().count(), bInGame ? 1 : 0 ) );
 
@@ -1534,7 +1539,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		StaticArray<BYTE, 1024> dataBuffer;
 		StaticArray<BYTE, 128> hash;
-		AuthTicket authTicket = GetMyOwner()->GetAuthTicket();
+		//AuthTicket authTicket = GetMyOwner()->GetAuthTicket();
 		PlayerID playerID = GetMyOwner()->GetPlayerID();
 		auto time = Util::Time.GetTimeUTCSec();
 		auto time2 = Util::Time.GetTimeMs();
@@ -1815,6 +1820,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
+		DebugGameResource res = (DebugGameResource)GetResource();
 
 		svrChk( super::StartTransaction() );
 
@@ -1823,7 +1829,6 @@ namespace GameServer {
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::DbgGain, GetValue(), 0, GetResource());
 
-		DebugGameResource res = (DebugGameResource)GetResource();
 		switch( res )
 		{
 		case DebugGameResource::Gem:

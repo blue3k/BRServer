@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 #include "GameServer.h"
-#include "Shellapi.h"
 #include "Net/NetServerUDP.h"
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
@@ -61,7 +60,6 @@ namespace GameServer {
 	HRESULT GameServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
 		HRESULT hr = S_OK;
-		Svr::ServerEntity *pServer = nullptr;
 
 		switch( m_Step )
 		{
@@ -97,10 +95,8 @@ namespace GameServer {
 	HRESULT GameServerStartProcess::InitializeServices()
 	{
 		HRESULT hr = S_OK;
-		UINT componentID = 0;
 		
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
-
 
 	Proc_End:
 

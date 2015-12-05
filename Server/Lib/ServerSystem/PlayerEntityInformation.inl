@@ -10,7 +10,7 @@
 
 
 // Check server status
-bool PlayerEntityInformation::CheckServerStatus()
+inline bool PlayerEntityInformation::CheckServerStatus()
 {
 	if( m_ServerEntity == nullptr )
 		return false;
@@ -28,7 +28,7 @@ bool PlayerEntityInformation::CheckServerStatus()
 
 
 // Get route context
-RouteContext PlayerEntityInformation::GetRouteContext( EntityUID uidFrom )
+inline RouteContext PlayerEntityInformation::GetRouteContext( EntityUID uidFrom )
 {
 	return RouteContext( uidFrom, m_PlayerEntityUID );
 }
@@ -36,7 +36,7 @@ RouteContext PlayerEntityInformation::GetRouteContext( EntityUID uidFrom )
 
 // Query policy from game server entity
 template< class PolicyType >
-PolicyType* PlayerEntityInformation::GetPolicy()
+inline PolicyType* PlayerEntityInformation::GetPolicy()
 {
 	if( !CheckServerStatus() )
 		return nullptr;

@@ -21,7 +21,7 @@
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "GameSvrConst.h"
 
 #include "Protocol/Policy/GameInstanceIPolicy.h"

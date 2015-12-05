@@ -82,7 +82,7 @@ namespace Svr{
 		// Clear components
 		virtual void ClearComponents()
 		{
-			for( int iComponent = 0; iComponent < (MaxComponentID+1); iComponent++ )
+			for(size_t iComponent = 0; iComponent < (MaxComponentID+1); iComponent++ )
 			{
 				if( m_Components[iComponent] != nullptr )
 					m_Components[iComponent]->TerminateComponent();
@@ -110,7 +110,7 @@ namespace Svr{
 
 			if( FAILED(hr) )
 			{
-				defTrace( Trace::TRC_ERROR, "Component %0% failed to initialize", iComponent );
+				defTrace( Trace::TRC_ERROR, "Component {0} failed to initialize", iComponent );
 			}
 
 			return hr;
@@ -128,12 +128,12 @@ namespace Svr{
 				}
 			}
 
-		Proc_End:
+		//Proc_End:
 
-			if (FAILED(hr))
-			{
-				defTrace(Trace::TRC_ERROR, "Component %0% failed to terminate", iComponent);
-			}
+			//if (FAILED(hr))
+			//{
+			//	defTrace(Trace::TRC_ERROR, "Component {0} failed to terminate", iComponent);
+			//}
 
 			return hr;
 		}

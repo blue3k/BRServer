@@ -17,7 +17,7 @@
 
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/Entity.h"
-#include "ServerSystem/BRServer.h"
+#include "ServerSystem/BrServer.h"
 #include "ServerSystem/GameSystem.h"
 #include "ServerSystem/Component.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
@@ -28,7 +28,7 @@
 #include "GameSystem/GameSystemComponentIDs.h"
 #include "GamePlayer.h"
 
-#include "table/conspiracy\GameConfigTbl.h"
+#include "Table/conspiracy/GameConfigTbl.h"
 
 
 namespace BR{ 

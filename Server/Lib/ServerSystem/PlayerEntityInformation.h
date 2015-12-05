@@ -58,24 +58,24 @@ namespace Svr {
 		virtual ~PlayerEntityInformation();
 
 
-		FORCEINLINE PlayerID GetPlayerID() const							{ return m_PlayerInfo.PlayerID; }
-		FORCEINLINE const char* GetPlayerName() const						{ return m_PlayerInfo.NickName; }
-		FORCEINLINE HRESULT SetPlayerName( const char* newName)				{ return StrUtil::StringCpy( m_PlayerInfo.NickName, newName ); }
-		FORCEINLINE const PlayerInformation& GetPlayerInformation() const	{ return m_PlayerInfo; }
-		//FORCEINLINE FriendInformation GetFriendInformation() const			{ return FriendInformation(m_PlayerInfo.PlayerID, m_PlayerInfo.FacebookUID, m_PlayerInfo.NickName, m_PlayerInfo.Level, 0, 0, m_PlayerInfo.IsPlayingGame, m_PlayerInfo.LastActiveTime, 0); }
+		PlayerID GetPlayerID() const							{ return m_PlayerInfo.PlayerID; }
+		const char* GetPlayerName() const						{ return m_PlayerInfo.NickName; }
+		HRESULT SetPlayerName( const char* newName)				{ return StrUtil::StringCpy( m_PlayerInfo.NickName, newName ); }
+		const PlayerInformation& GetPlayerInformation() const	{ return m_PlayerInfo; }
+		//FriendInformation GetFriendInformation() const			{ return FriendInformation(m_PlayerInfo.PlayerID, m_PlayerInfo.FacebookUID, m_PlayerInfo.NickName, m_PlayerInfo.Level, 0, 0, m_PlayerInfo.IsPlayingGame, m_PlayerInfo.LastActiveTime, 0); }
 
 		// Check server status
-		FORCEINLINE bool CheckServerStatus();
+		bool CheckServerStatus();
 
 		// Set game server entity
 		HRESULT SetServerEntity( ServerEntity* pGameServerEntity, EntityUID playerUID );
 
 		// Get route context
-		FORCEINLINE RouteContext GetRouteContext( EntityUID uidFrom );
+		RouteContext GetRouteContext( EntityUID uidFrom );
 
 		// Query policy from game server entity
 		template< class PolicyType >
-		FORCEINLINE PolicyType* GetPolicy();
+		PolicyType* GetPolicy();
 
 	};
 

@@ -15,7 +15,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/EntityManager.h"
 #include "Common/TimeUtil.h"
-#include "Common/BRBasetypes.h"
+#include "Common/BrBaseTypes.h"
 
 
 #include "ConspiracyGameInstanceSvrConst.h"
@@ -93,7 +93,7 @@ namespace ConspiracyGameInstanceServer {
 			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

@@ -88,11 +88,13 @@ namespace GameServer {
 				break;
 			case Net::INet::Event::EVT_CONNECTION_DISCONNECTED:
 				break;
+			default:
+				break;
 			};
 		}
 
 
-Proc_End:
+//Proc_End:
 
 		//if( pConn && m_pNetPublic )
 		//	m_pNetPublic->GetConnectionManager().PendingDisconnectNReleaseConnection( pConn );

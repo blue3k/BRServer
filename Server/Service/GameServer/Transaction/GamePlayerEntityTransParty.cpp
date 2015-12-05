@@ -20,7 +20,7 @@
 #include "Common/BrBaseTypes.h"
 
 #include "GameServerClass.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/ServerEntityManager.h"
@@ -204,7 +204,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 
 		svrChk( pRes->GetHRESULT() );
-		DB::QueryUpdateJoinGameCmd *pMsgRes = (DB::QueryUpdateJoinGameCmd*)pRes;
+		//DB::QueryUpdateJoinGameCmd *pMsgRes = (DB::QueryUpdateJoinGameCmd*)pRes;
 
 
 	Proc_End:
@@ -215,7 +215,7 @@ namespace GameServer {
 			CloseTransaction(hr);
 		}
 
-		return S_OK;
+		return hr;
 	}
 
 	// Start Transaction
@@ -257,8 +257,8 @@ namespace GameServer {
 	HRESULT PlayerTransPartyQueuedGameMatchingS2CEvt::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		Policy::IPolicyGameParty *pPolicy = nullptr;
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Policy::IPolicyGameParty *pPolicy = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -280,8 +280,8 @@ namespace GameServer {
 	HRESULT PlayerTransPartyMatchingItemDequeuedS2CEvt::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		Policy::IPolicyGameParty *pPolicy = nullptr;
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Policy::IPolicyGameParty *pPolicy = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -301,8 +301,8 @@ namespace GameServer {
 	HRESULT PlayerTransPartyCanceledGameMatchingS2CEvt::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		Policy::IPolicyGameParty *pPolicy = nullptr;
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Policy::IPolicyGameParty *pPolicy = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );
 
@@ -420,6 +420,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
+		auto config = GetMyServer()->GetPresetGameConfig();
 
 		m_LeaderID = 0;
 
@@ -436,7 +437,6 @@ namespace GameServer {
 			svrErr(E_GAME_ALREADY_IN_PARTY);
 
 		// Need stamina to join a party
-		auto config = GetMyServer()->GetPresetGameConfig();
 		if (config != nullptr)
 		{
 			//svrErr(E_INVALID_STATE);
@@ -602,8 +602,8 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::GameParty::KickPlayerRes res;
+		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		//Message::GameParty::KickPlayerRes res;
 
 		svrChkClose(pRes->GetHRESULT());
 		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );

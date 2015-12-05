@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/EventTask.h"
 #include "Net/NetServerUDP.h"
 #include "Common/TimeUtil.h"

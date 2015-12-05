@@ -11,16 +11,16 @@
 
 
 // Get suspect list
-PlayerID GamePlaySystem::GetSuspect( int index )
+inline PlayerID GamePlaySystem::GetSuspect( int index )
 {
-	AssertRel(index>=0 && index<countof(m_Suspects));
+	AssertRel(index>=0 && index<(int)countof(m_Suspects));
 	return m_Suspects[index];
 }
 
-UINT GamePlaySystem::GetNumberOfSuspects()
+inline UINT GamePlaySystem::GetNumberOfSuspects()
 {
 	UINT numSuspect = 0;
-	for( int iSuspect = 0; iSuspect < countof(m_Suspects); iSuspect++ )
+	for( UINT iSuspect = 0; iSuspect < countof(m_Suspects); iSuspect++ )
 	{
 		if( m_Suspects[iSuspect] != 0 ) 
 			numSuspect++;
@@ -28,13 +28,13 @@ UINT GamePlaySystem::GetNumberOfSuspects()
 	return numSuspect;
 }
 
-bool GamePlaySystem::IsSuspect( PlayerID playerID )
+inline bool GamePlaySystem::IsSuspect( PlayerID playerID )
 {
 	return m_Suspects[0] == playerID || m_Suspects[1] == playerID;
 }
 
 
-const Array<GamePlayer*>& GamePlaySystem::GetWerewolves()
+inline const Array<GamePlayer*>& GamePlaySystem::GetWerewolves()
 {
 	return m_Werewolves;
 }

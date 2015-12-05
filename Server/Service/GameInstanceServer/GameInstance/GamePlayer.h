@@ -114,7 +114,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GamePlayer();
 
 		// check weather the player is in game or not
-		FORCEINLINE bool IsInGame();
+		bool IsInGame();
 
 		// Initialize player
 		HRESULT InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);

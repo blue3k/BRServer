@@ -139,7 +139,7 @@ template<class DBManagerType>
 HRESULT BrServer::InitializeDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 {
 	HRESULT hr = S_OK;
-	Svr::ServerEntity *pEntity = nullptr;
+	//Svr::ServerEntity *pEntity = nullptr;
 	DB::QueryManager* pDBManager = nullptr;
 	DBManagerType *pDB = nullptr;
 

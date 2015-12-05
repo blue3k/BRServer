@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "LoginServer.h"
-#include "Shellapi.h"
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
 #include "LoginServerClass.h"

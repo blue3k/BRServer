@@ -97,7 +97,7 @@ namespace Svr
 
 		hr = m_ServerIDMap.Find(svrID, pServerEntity);
 
-	Proc_End:
+	//Proc_End:
 
 		Assert(FAILED(hr) || pServerEntity != nullptr);
 		return hr;
@@ -121,7 +121,7 @@ namespace Svr
 			}
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return pServerEntity != nullptr ? hr : E_FAIL;
 	}

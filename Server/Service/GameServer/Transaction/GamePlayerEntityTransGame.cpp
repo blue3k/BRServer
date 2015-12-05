@@ -21,7 +21,7 @@
 #include "Common/ToStringGame.h"
 
 #include "GameServerClass.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntityManager.h"
 
@@ -59,7 +59,7 @@
 #include "DB/GameConspiracyDB.h"
 #include "DB/GameConspiracyQuery.h"
 
-#include "Table/Conspiracy/OrganicTbl.h"
+#include "Table/conspiracy/OrganicTbl.h"
 
 
 
@@ -592,9 +592,8 @@ namespace GameServer {
 	HRESULT PlayerTransVoteGameAdvance::OnVoteRes( Svr::TransactionResult* &pRes )
 	{
 		HRESULT hr = S_OK;
-
-		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::GameInstance::VoteGameAdvanceRes res;
+		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		//Message::GameInstance::VoteGameAdvanceRes res;
 
 		svrChkClose(pRes->GetHRESULT());
 		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
@@ -668,8 +667,8 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::GameInstance::VoteRes res;
+		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		//Message::GameInstance::VoteRes res;
 
 		svrChkClose(pRes->GetHRESULT());
 		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
@@ -767,7 +766,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::GameInstance::AdvanceGameRes res;
 
 		svrChkPtr(pRes);
@@ -998,6 +997,8 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 		Svr::ServerServiceInformation *pService = nullptr;
 		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
+		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
+		INT currentStamina = 0, StaminaForGame = 0;
 
 		m_TotalGem = 0;
 		m_TotalGameMoney = 0;
@@ -1018,11 +1019,11 @@ namespace GameServer {
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 		// Update player state
-		auto pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
+		pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
 		GetMyOwner()->UpdateGamePlayer();
 
-		auto currentStamina = pPlayerInfoSystem->GetStamina();
-		auto StaminaForGame = GetMyServer()->GetPresetGameConfig()->StaminaForGame;
+		currentStamina = pPlayerInfoSystem->GetStamina();
+		StaminaForGame = GetMyServer()->GetPresetGameConfig()->StaminaForGame;
 		if( currentStamina < StaminaForGame )
 			svrErrClose(E_GAME_LOW_STAMINA);
 
@@ -1381,9 +1382,11 @@ namespace GameServer {
 		m_LeadPlayer = GetLeadPlayer();
 		m_PartyUID = GetPartyUID();
 
-		auto pPolicy = GetPolicy();
-		if (pPolicy != nullptr)
-			pPolicy->GamePlayAgainS2CEvt(GetPartyUID(), GetLeadPlayer());
+		{
+			auto pPolicy = GetPolicy();
+			if (pPolicy != nullptr)
+				pPolicy->GamePlayAgainS2CEvt(GetPartyUID(), GetLeadPlayer());
+		}
 
 	Proc_End:
 
@@ -1453,7 +1456,7 @@ namespace GameServer {
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
-		auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
+		//auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 
 		svrChkPtr(pRes);
 		svrChkClose(pRes->GetHRESULT());
@@ -1556,7 +1559,7 @@ namespace GameServer {
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
-		auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
+		//auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 
 		svrChkPtr(pRes);
 		svrChkClose(pRes->GetHRESULT());
@@ -1639,8 +1642,8 @@ namespace GameServer {
 	HRESULT PlayerTransGamePlayerRevivedS2SEvt::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		Policy::IPolicyGameParty *pPolicy = nullptr;
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Policy::IPolicyGameParty *pPolicy = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrChk(super::StartTransaction());
 

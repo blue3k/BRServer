@@ -35,14 +35,14 @@ namespace Svr {
 
 	// Constructor
 	TickTask::TickTask()
-		: m_pTaskManager(nullptr)
-		, m_TaskLoad(1)
+		: m_TaskLoad(1)
 		, m_TaskGroupIdx(0)
+		, m_pTaskManager(nullptr)
+		, m_pTaskWorker(nullptr)
+		, m_TaskID(0)
 		, m_RetryCount(0)
 		, m_TickInterval(Svr::Const::DEFAULT_TICKTASK_INTERVAL) // default task tick interval is 1sec
 		, m_TimerAction(nullptr)
-		, m_pTaskWorker(nullptr)
-		, m_TaskID(0)
 	{
 		m_TimerAction = SharedPointerT<TickTaskTimerAction>(new TickTaskTimerAction(this));
 	}

@@ -23,7 +23,7 @@
 #include "Common/TimeUtil.h"
 
 #include "LoginServerClass.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/EntityManager.h"
@@ -72,16 +72,16 @@ namespace LoginServer {
 
 	template<class MessageClass, class TransactionClass>
 	LoginPlayerTransLoginBase<MessageClass,TransactionClass>::LoginPlayerTransLoginBase( Message::MessageData* &pIMsg )
-		:MessageTransaction( pIMsg )
+		: super( pIMsg )
 	{
-		SetExclusive(true);
+		super::SetExclusive(true);
 		//BR_TRANS_MESSAGE( DB::QueryLoginCmd, { return OnLogin(pRes); });
-		BR_TRANS_MESSAGE( DB::QueryRegisterAuthTicketCmd, { return OnSessionRegistered(pRes); });
+		super::template BR_TRANS_MESSAGE( DB::QueryRegisterAuthTicketCmd, { return OnSessionRegistered(pRes); });
 		//BR_TRANS_MESSAGE( DB::QueryDeleteLoginSessionCmd, { return OnSessionDeleted(pRes); });
 		//BR_TRANS_MESSAGE( DB::QueryReplaceLoginSessionCmd, { return OnSessionReplaced(pRes); });
 		//BR_TRANS_MESSAGE( Message::LoginServer::KickPlayerRes, { return OnKickedPlyaer(pRes); });
-		BR_TRANS_MESSAGE( Message::GameServer::RegisterPlayerToJoinGameServerRes, { return OnRegisterPlayerToJoinGameServer(pRes); });
-		BR_TRANS_MESSAGE(DB::QueryConnectedToGameServerCmd, { return OnConnectToGameServerRes(pRes); });
+		super::template BR_TRANS_MESSAGE( Message::GameServer::RegisterPlayerToJoinGameServerRes, { return OnRegisterPlayerToJoinGameServer(pRes); });
+		super::template BR_TRANS_MESSAGE(DB::QueryConnectedToGameServerCmd, { return OnConnectToGameServerRes(pRes); });
 	}
 
 	template<class MessageClass, class TransactionClass>
@@ -92,23 +92,22 @@ namespace LoginServer {
 
 		svrChkClose(hrRes);
 
-		GetMyOwner()->HeartBit();
+		super::GetMyOwner()->HeartBit();
 
-		GetMyOwner()->SetIsTicketOwner(false);
+		super::GetMyOwner()->SetIsTicketOwner(false);
 
 		// succeeded to login
-		GetMyOwner()->SetAccountID(accountID);
-		GetMyOwner()->SetFacebookUID(FBUserID);
-		GetMyOwner()->SetShardID(shardID);
+		super::GetMyOwner()->SetAccountID(accountID);
+		super::GetMyOwner()->SetFacebookUID(FBUserID);
+		super::GetMyOwner()->SetShardID(shardID);
 
 		// Generate new authenticate ID
 		newTicket = GetMyServer()->GetAuthTicketGenerator().NewUID();
-		svrTrace(Svr::TRC_ENTITY, "New Player Ticket Ticket:%0%", newTicket);
-		GetMyOwner()->SetAuthTicket(newTicket);
-		//m_RegisterTryCount++;
+		svrTrace(Svr::TRC_ENTITY, "New Player Ticket Ticket:{0}", newTicket);
+		super::GetMyOwner()->SetAuthTicket(newTicket);
 
 		// register new ticket
-		svrChk( Svr::GetServerComponent<DB::LoginSessionDB>()->RegisterAuthTicket( GetTransID(), GetMyOwner()->GetPlayerID(), newTicket, GetMyOwner()->GetEntityUID() ) );
+		svrChk( Svr::GetServerComponent<DB::LoginSessionDB>()->RegisterAuthTicket(super::GetTransID(), super::GetMyOwner()->GetPlayerID(), newTicket, super::GetMyOwner()->GetEntityUID() ) );
 
 	Proc_End:
 
@@ -128,10 +127,10 @@ namespace LoginServer {
 
 		svrChk(pRes->GetHRESULT());
 
-		GetMyOwner()->SetIsTicketOwner(pDBRes->Result != 0);
+		super::GetMyOwner()->SetIsTicketOwner(pDBRes->Result != 0);
 		m_GameEntityUID = pDBRes->GameEntityUID;
 
-		GetMyOwner()->HeartBit();
+		super::GetMyOwner()->HeartBit();
 
 		// if someone already logged in
 		if (pDBRes->Result != 0)
@@ -149,8 +148,8 @@ namespace LoginServer {
 			{
 				pGameServerPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameServer>(m_GameEntityUID.GetServerID());
 				if (pGameServerPolicy == nullptr
-					|| FAILED(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), m_GameEntityUID),
-												GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetShardID())))
+					|| FAILED(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(GetTransID(), RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID),
+						super::GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID())))
 				{
 					svrChk(RegisterNewPlayerToJoinGameServer());
 				}
@@ -176,12 +175,12 @@ namespace LoginServer {
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( (ClusterID)((UINT)ClusterID::Game + (UINT)GetGameID()), pServiceEntity ) );
 		svrChk( pServiceEntity->FindRandomService( pService ) );
 
-		GetMyOwner()->HeartBit();
+		super::GetMyOwner()->HeartBit();
 
-		svrTrace(Svr::TRC_ENTITY, "Creating new Entity for UID:%0%, on svr:%1%", GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
+		svrTrace(Svr::TRC_ENTITY, "Creating new Entity for UID:{0}, on svr:{1}", super::GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
 
 		svrChk( pService->GetService<Svr::GameServerService>()->RegisterPlayerToJoinGameServerCmd( GetTransID(),
-			GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetShardID()));
+			super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID()));
 	Proc_End:
 
 		return hr; 
@@ -197,14 +196,15 @@ namespace LoginServer {
 
 		if( pRes->GetHRESULT() == E_INVALID_PLAYERID )
 		{
-			if (GetMyOwner()->GetPlayerID() == 0)
+			if (super::GetMyOwner()->GetPlayerID() == 0)
 			{
 				hr = pRes->GetHRESULT();
 			}
 			else
 			{
 				// Garbage login session information will lead process to here. Ignore it and create new one
-				svrTrace(Svr::TRC_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:%0% ticket:%1%", GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket());
+				svrTrace(Svr::TRC_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}", 
+					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket());
 				svrChk( RegisterNewPlayerToJoinGameServer() );
 			}
 			goto Proc_End;
@@ -213,12 +213,12 @@ namespace LoginServer {
 		svrChk(pRes->GetHRESULT());
 		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
 
-		GetMyOwner()->HeartBit();
+		super::GetMyOwner()->HeartBit();
 
 		m_GameServerAddr = res.GetPublicAddress();
 		m_GameEntityUID = res.GetRouteContext().GetFrom();
 
-		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), GetOwnerEntityUID(), m_GameEntityUID));
+		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(GetTransID(), super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetOwnerEntityUID(), m_GameEntityUID));
 
 
 	Proc_End:
@@ -237,12 +237,12 @@ namespace LoginServer {
 
 		svrChk(pRes->GetHRESULT());
 
-		GetMyOwner()->HeartBit();
+		super::GetMyOwner()->HeartBit();
 
 		// succeeded to create
 		if (pDBRes->Result == 0)
 		{
-			GetMyOwner()->SetIsTicketOwner(false);
+			super::GetMyOwner()->SetIsTicketOwner(false);
 		}
 		else
 		{
@@ -267,9 +267,9 @@ namespace LoginServer {
 
 		svrChk( super::StartTransaction() );
 
-		GetMyOwner()->HeartBit();
+		super::GetMyOwner()->HeartBit();
 
-		if( GetMyOwner()->GetAccountID() != 0 )
+		if(super::GetMyOwner()->GetAccountID() != 0 )
 		{
 			svrErrClose(E_ALREADY_LOGGEDIN);
 		}
@@ -517,7 +517,7 @@ namespace LoginServer {
 			svrErrClose(E_INVALID_SIGNATURE);
 		}
 
-		svrChk(StrUtil::Format(strUserName, "Auto%0%", GetCellPhone()));
+		svrChk(StrUtil::Format(strUserName, "Auto{0}", GetCellPhone()));
 
 		svrChk(Svr::GetServerComponent<DB::AccountDB>()->CreateRandomUser(GetTransID(), strUserName, GetCellPhone()));
 
@@ -564,7 +564,7 @@ namespace LoginServer {
 
 		if (GetMyOwner()->GetAuthTicket() != 0 && GetMyOwner()->GetIsTicketOwner() )
 		{
-			svrTrace(Svr::TRC_ENTITY, "Login entity closed without gameserver joining. Delete login session for UID:%0%, ticket:%1%", GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket());
+			svrTrace(Svr::TRC_ENTITY, "Login entity closed without gameserver joining. Delete login session for UID:{0}, ticket:{1}", GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket());
 			svrChk( Svr::GetServerComponent<DB::LoginSessionDB>()->DeleteLoginSession( GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket() ) );
 		}
 		else

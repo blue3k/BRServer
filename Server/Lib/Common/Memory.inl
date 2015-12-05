@@ -118,10 +118,10 @@ HRESULT StaticAllocator<BufferSize>::Free( void* pPtr )
 
 template< size_t BufferSize, size_t alignment >
 CircularBufferAllocator<BufferSize,alignment>::CircularBufferAllocator(MemoryAllocator& overflowHeap)
-	:m_OverflowHeap(overflowHeap)
-	,m_AllocatePosition(0)
-	,m_FreePosition(0)
-	,m_FreeSize(BufferSize)
+	: m_OverflowHeap(overflowHeap)
+	, m_FreeSize(BufferSize)
+	, m_AllocatePosition(0)
+	, m_FreePosition(0)
 {
 	// Because of the chunk header uses 32bit integer, the limit will be maximum of int32. Actually it's UINT32, but it's not a big deal
 	static_assert(BufferSize < INT_MAX,"CircularBufferAllocator: too big buffer size");

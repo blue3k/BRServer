@@ -8,9 +8,6 @@
 #include "EntityServerClass.h"
 #include "Common/MemoryPool.h"
 
-#if WINDOWS
-#include "Shellapi.h"
-#endif
 
 
 using namespace BR;

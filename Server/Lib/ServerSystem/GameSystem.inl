@@ -19,8 +19,8 @@
 // Constructor
 template< class OwnerEntity, class SystemClass >
 GameSystem<OwnerEntity,SystemClass>::GameSystem( OwnerEntity* pOwner )
-	:m_OwnerEntity(*pOwner)
-	,Component(SystemClass::ComponentID)
+	: Component(SystemClass::ComponentID)
+	, m_OwnerEntity(*pOwner)
 {
 }
 

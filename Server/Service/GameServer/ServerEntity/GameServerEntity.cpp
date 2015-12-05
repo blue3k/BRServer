@@ -102,6 +102,8 @@ namespace GameServer {
 		case Net::IConnection::Event::EVT_STATE_CHANGE:
 
 			break;
+		default:
+			break;
 		};
 
 	Proc_End:

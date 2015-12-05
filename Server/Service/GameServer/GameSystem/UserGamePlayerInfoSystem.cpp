@@ -20,7 +20,7 @@
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "GameSvrConst.h"
 
 #include "Protocol/Policy/GameInstanceIPolicy.h"
@@ -177,13 +177,13 @@ namespace GameServer {
 
 		switch( (int)pShopItem->ItemEffect )
 		{
-		case conspiracy::ShopTbl::EItemEffect::Enum::Gem:
+		case (int)conspiracy::ShopTbl::EItemEffect::Enum::Gem:
 			svrChk( GainGem(pShopItem->Quantity) );
 			break;
-		case conspiracy::ShopTbl::EItemEffect::Enum::Stamina:
+		case (int)conspiracy::ShopTbl::EItemEffect::Enum::Stamina:
 			svrChk( GainStamina(pShopItem->Quantity) );
 			break;
-		case conspiracy::ShopTbl::EItemEffect::Enum::FriendSlot:
+		case (int)conspiracy::ShopTbl::EItemEffect::Enum::FriendSlot:
 			svrChk( GainFriendSlot(pShopItem->Quantity) );
 			break;
 		default:
@@ -215,7 +215,7 @@ namespace GameServer {
 		if (GetGem() < pCostItem->RequiredGem || GetGameMoney() < pCostItem->RequiredGameMoney)
 			return E_GAME_NOTENOUGH_RESOURCE;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -238,7 +238,7 @@ namespace GameServer {
 		GetOwner().AddGameTransactionLogT(TransLogCategory::Buy, pCostItem->RequiredGem, pCostItem->RequiredGameMoney, 0, "Remain, Gem:%0%, GameMoney:%1%, message:%2%", GetGem(), GetGameMoney(), message != nullptr ? message : "");
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -388,11 +388,11 @@ namespace GameServer {
 	HRESULT UserGamePlayerInfoSystem::GainFriendSlot( INT numSlot )
 	{
 		HRESULT hr = S_OK;
+		auto maxFriend = m_MaxFriend >= m_DefaultFriendSlot ? m_MaxFriend - m_DefaultFriendSlot : 0;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
 		Assert(m_MaxFriend > 10);
-		auto maxFriend = m_MaxFriend >= m_DefaultFriendSlot ? m_MaxFriend - m_DefaultFriendSlot : 0;
 
 		m_AddedFriendSlot = std::min(m_AddedFriendSlot + numSlot, maxFriend);
 		m_AddedFriendSlot = std::max(m_AddedFriendSlot, (SHORT)0);

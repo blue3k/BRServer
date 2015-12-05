@@ -26,10 +26,10 @@ namespace Net {
 	//
 
 	ServerNet::ServerNet( ServerID InServerID, NetClass localClass )
-		: m_NetEventQueue(5*1024)
-		, m_socket(INVALID_SOCKET)
-		, m_ServerID(InServerID)
+		: m_socket(INVALID_SOCKET)
 		, m_LocalClass(localClass)
+		, m_NetEventQueue(5 * 1024)
+		, m_ServerID(InServerID)
 		, m_IsEnableAccept(false)
 	{
 		memset( &m_LocalAddr, 0, sizeof(m_LocalAddr) );

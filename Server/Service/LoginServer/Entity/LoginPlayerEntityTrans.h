@@ -63,8 +63,13 @@ namespace LoginServer {
 
 		HRESULT RegisterNewPlayerToJoinGameServer();
 
+
+
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual HRESULT StartTransaction() override;
+
+		// dummies for template chainning
+		virtual HRESULT CloseTransaction(HRESULT hrRes) override { return super::CloseTransaction(hrRes); }
 
 		//BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginRes,m_GameServerAddr,GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID(), GetMyOwner()->GetGameNick());
 	};

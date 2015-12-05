@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "Net/NetServerUDP.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrBaseTypes.h"
@@ -53,13 +53,14 @@ namespace ConspiracyGameInstanceServer {
 	GamePlayer::GamePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player)
 		: PlayerEntityInformation(player)
 		, m_GameOwner(pGameOwner)
-		, m_PlayerState(PlayerState::None)
-		, m_Vote(0)
-		, m_Voted(0)
-		, m_RevealedBySeer(false)
+		, m_Index(0)
 		, m_Character(0)
+		, m_PlayerState(PlayerState::None)
 		, m_IsBot(false)
+		, m_RevealedBySeer(false)
 		, m_RequestedRole(PlayerRole::None)
+		, m_Voted(0)
+		, m_Vote(0)
 	{
 	}
 
@@ -114,6 +115,8 @@ namespace ConspiracyGameInstanceServer {
 			case GameStateID::VoteForSuspects:
 			case GameStateID::VoteForHanging:
 				//gameStateSystem->Vote()
+				break;
+			default:
 				break;
 			}
 		}

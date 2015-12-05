@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/EventTask.h"
 #include "ServerSystem/ExternalTransactionManager.h"
 #include "Net/NetServerUDP.h"
@@ -63,12 +63,12 @@ namespace GameServer {
 
 	GamePlayerEntity::GamePlayerEntity()
 		: m_ISvrGamePolicy(nullptr)
-		, m_Allocator(STDAllocator::GetInstance())
 		, m_PlayerState(PlayerState_None)
 		, m_GameInsUID(0)
 		, m_LatestUpdateTime(TimeStampSec(DurationSec(0)))
-		, m_LatestDBSyncTime(TimeStampSec(DurationSec(0)))
 		, m_LatestActiveTime(TimeStampSec(DurationSec(0)))
+		, m_LatestDBSyncTime(TimeStampSec(DurationSec(0)))
+		, m_Allocator(STDAllocator::GetInstance())
 	{
 		memset( m_UserName, 0, sizeof(m_UserName) );
 		memset( m_GCMKeys, 0, sizeof(m_GCMKeys) );

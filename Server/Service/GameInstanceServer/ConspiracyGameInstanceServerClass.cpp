@@ -173,9 +173,6 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameInstanceServer::InitializeNetPrivate()
 	{
 		HRESULT hr = S_OK;
-		Svr::LoginClusterServiceEntity *pLoginService = nullptr;
-		Svr::GameClusterServiceEntity *pGameService = nullptr;
-		UINT componentID = 0;
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 

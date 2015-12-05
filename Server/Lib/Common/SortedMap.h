@@ -53,11 +53,11 @@ namespace BR
 			ReferenceAccessPoint Right;
 
 			MapNode()
-				: Balance(0)
+				: Key(0)
+				, Value(0)
+				, Balance(0)
 				, DepthOfChildren(0)
 				, NumberOfChildren(0)
-				, Key(0)
-				, Value(0)
 				, Left(nullptr)
 				, Right(nullptr)
 			{

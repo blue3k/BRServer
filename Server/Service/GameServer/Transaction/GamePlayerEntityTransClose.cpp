@@ -20,7 +20,7 @@
 #include "Common/BrBaseTypes.h"
 
 #include "GameServerClass.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntityManager.h"
 
@@ -112,8 +112,8 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::PartyMatchingQueue::UnregisterMatchingRes res;
+		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		//Message::PartyMatchingQueue::UnregisterMatchingRes res;
 
 		m_WaitingTransactions--;
 
@@ -133,8 +133,8 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::GameInstance::LeaveGameRes res;
+		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		//Message::GameInstance::LeaveGameRes res;
 
 		m_WaitingTransactions--;
 
@@ -154,8 +154,8 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 
-		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
-		Message::GameParty::LeavePartyRes res;
+		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		//Message::GameParty::LeavePartyRes res;
 
 		m_WaitingTransactions--;
 

@@ -20,7 +20,7 @@
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ConspiracyGameInstanceSvrConst.h"
 
 
@@ -87,13 +87,14 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameLogSystem::AddGameStateChange(TimeStampSec timeStamp, GameStateID gameState )
 	{
 		HRESULT hr = S_OK;
+		GameLogGameStateChange *pLogItem;
 
 		if( gameState < GameStateID::None || gameState >= GameStateID::Max )
 			return E_INVALIDARG;
 
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogGameStateChange>();
 		svrMem( itemBuffer );
-		GameLogGameStateChange *pLogItem = new(itemBuffer) GameLogGameStateChange(timeStamp);
+		pLogItem = new(itemBuffer) GameLogGameStateChange(timeStamp);
 		svrMem( pLogItem );
 
 		pLogItem->SetState(gameState);
@@ -108,6 +109,7 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameLogSystem::AddGameVote( TimeStampSec timeStamp, GameVoteType type, UINT voterCount )
 	{
 		HRESULT hr = S_OK;
+		GameLogVote *logItem;
 
 		if( type < GameVoteType(0) || type >= GameVoteType::Max )
 			return E_INVALIDARG;
@@ -120,8 +122,9 @@ namespace ConspiracyGameInstanceServer {
 
 		size_t allocationSize = sizeof(GameLogVote) + (voterCount-1)*sizeof(GameLogVote::VoteInfo);
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogVote>( allocationSize );
-		svrMem( itemBuffer );
-		GameLogVote *logItem = new(itemBuffer) GameLogVote(timeStamp, voterCount);
+		svrMem(itemBuffer);
+		logItem = new(itemBuffer) GameLogVote(timeStamp, voterCount);
+
 		svrMem( logItem );
 		Assert( logItem->LogItemSize == allocationSize );
 
@@ -152,6 +155,7 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameLogSystem::AddGameVoteResult(TimeStampSec timeStamp, UINT numRankers, const PlayerID* ranker )
 	{
 		HRESULT hr = S_OK;
+		GameLogVoteResult *logItem;
 
 		if( numRankers > 2 )
 			return E_INVALIDARG;
@@ -168,7 +172,7 @@ namespace ConspiracyGameInstanceServer {
 		size_t allocationSize = sizeof(GameLogVoteResult) + (numRankers-1)*sizeof(PlayerID);
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogVoteResult>( allocationSize );
 		svrMem( itemBuffer );
-		GameLogVoteResult *logItem = new(itemBuffer) GameLogVoteResult(timeStamp,numRankers);
+		logItem = new(itemBuffer) GameLogVoteResult(timeStamp,numRankers);
 		svrMem( logItem );
 
 		Assert( logItem->LogItemSize == allocationSize );
@@ -185,10 +189,11 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameLogSystem::AddGamePlayerKilled(TimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID )
 	{
 		HRESULT hr = S_OK;
+		GameLogPlayerKilled *logItem;
 
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogPlayerKilled>();
 		svrMem( itemBuffer );
-		GameLogPlayerKilled *logItem = new(itemBuffer) GameLogPlayerKilled(timeStamp);
+		logItem = new(itemBuffer) GameLogPlayerKilled(timeStamp);
 		svrMem( logItem );
 
 		logItem->SetPlayerKilled(reason, killedPlayerID);
@@ -203,13 +208,14 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameLogSystem::AddGameEnd(TimeStampSec timeStamp, GameWinner winner )
 	{
 		HRESULT hr = S_OK;
+		GameLogGameEnd *logItem;
 
 		if( winner < GameWinner(0) || winner >= GameWinner::Max )
 			return E_INVALIDARG;
 
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogGameEnd>();
 		svrMem( itemBuffer );
-		GameLogGameEnd *logItem = new(itemBuffer) GameLogGameEnd(timeStamp);
+		logItem = new(itemBuffer) GameLogGameEnd(timeStamp);
 		svrMem( logItem );
 
 		logItem->SetWinner(winner);

@@ -20,7 +20,7 @@
 #include "Common/BrBaseTypes.h"
 
 #include "GameServerClass.h"
-#include "ServerSystem/BRServerUtil.h"
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
@@ -81,12 +81,13 @@ namespace GameServer {
 	HRESULT PlayerTransInviteFriend::OnGetPlayerShardID(Svr::TransactionResult* &pRes)
 	{
 		HRESULT hr = S_OK;
-		Svr::ServerEntity *pServerEntity = nullptr;
+		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
-		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		//Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		DB::QueryGetPlayerShardIDCmd* pMsgRes;
 
 		svrChkClose( pRes->GetHRESULT() );
-		auto *pMsgRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
+		pMsgRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
 
 		if(pMsgRes->Result == 0)
 		{
@@ -113,9 +114,10 @@ namespace GameServer {
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		DB::QueryNotification_AddCmd *pMsgRes;
 
 		svrChkClose( pRes->GetHRESULT() );
-		DB::QueryNotification_AddCmd *pMsgRes = (DB::QueryNotification_AddCmd*)pRes;
+		pMsgRes = (DB::QueryNotification_AddCmd*)pRes;
 
 		if( SUCCEEDED( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
 		{
@@ -172,10 +174,11 @@ namespace GameServer {
 	HRESULT PlayerTransFriendAccept::OnGetPlayerShardID(Svr::TransactionResult* &pRes)
 	{
 		HRESULT hr = S_OK;
+		DB::QueryGetPlayerShardIDCmd* pDBRes;
 
 		svrChk(pRes->GetHRESULT());
 
-		auto *pDBRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
+		pDBRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
 		if (pDBRes->Result < 0)
 			svrErr(E_INVALID_PLAYERID);
 
@@ -194,16 +197,17 @@ namespace GameServer {
 	HRESULT PlayerTransFriendAccept::OnFriendSlotStatus(Svr::TransactionResult* &pRes)
 	{
 		HRESULT hr = S_OK;
+		auto *pDBRes = (DB::QueryGetFriendSlotStatusCmd*)pRes;
+		INT maxFriend;
 
 		svrChk(pRes->GetHRESULT());
 
-		auto *pDBRes = (DB::QueryGetFriendSlotStatusCmd*)pRes;
 		if (pDBRes->Result < 0)
 			svrErr(E_INVALID_PLAYERID);
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
-		auto maxFriend = pDBRes->AddedFriendSlot + GetMyServer()->GetPresetGameConfig()->DefaultFriend;
+		maxFriend = pDBRes->AddedFriendSlot + GetMyServer()->GetPresetGameConfig()->DefaultFriend;
 
 		if (pDBRes->NumFriends >= maxFriend)
 			svrErrClose(E_TARGET_MAX_FRIEND);
@@ -230,12 +234,12 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 		UserFriendSystem *pFriendSystem = nullptr;
+		auto *pDBRes = (DB::QueryAddFriendCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
 
 
-		auto *pDBRes = (DB::QueryAddFriendCmd*)pRes;
-		if( pDBRes->Result >= 0 && GetInviterID() == pDBRes->FriendUID )
+		if( pDBRes->Result >= 0 && ((decltype(pDBRes->FriendUID))GetInviterID()) == pDBRes->FriendUID )
 		{
 			m_NewFriend.PlayerID = pDBRes->FriendUID;
 			m_NewFriend.FBUID = pDBRes->FriendFacebookUID;
@@ -285,10 +289,10 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 		ServerFriendInformation *pFriend = nullptr;
+		auto *pDBRes = (DB::QueryGetFriendQuickInfoWithNickCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
 
-		auto *pDBRes = (DB::QueryGetFriendQuickInfoWithNickCmd*)pRes;
 		if (pDBRes->Result < 0 )
 			svrErr(E_INVALID_PLAYERID);
 
@@ -433,10 +437,10 @@ namespace GameServer {
 	HRESULT PlayerTransRemoveFriend::OnRemoved( Svr::TransactionResult* &pRes )
 	{
 		HRESULT hr = S_OK;
+		DB::QueryRemoveFriendCmd *pDBRes = (DB::QueryRemoveFriendCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
 
-		DB::QueryRemoveFriendCmd *pDBRes = (DB::QueryRemoveFriendCmd*)pRes;
 
 		svrChk( GetMyOwner()->GetComponent<UserFriendSystem>()->RemoveFriend( pDBRes->FriendUID ) );
 
@@ -506,9 +510,8 @@ namespace GameServer {
 		}
 
 		svrChk( GetMyOwner()->GetComponent<UserFriendSystem>()->RemoveFriend( GetRemoverID() ) );
-		auto pPolicy = GetPolicy();
-		svrChkPtr(pPolicy);
-		svrChk(pPolicy->FriendRemovedS2CEvt(GetRemoverID()));
+		svrChkPtr(GetPolicy());
+		svrChk(GetPolicy()->FriendRemovedS2CEvt(GetRemoverID()));
 
 	Proc_End:
 
@@ -532,6 +535,7 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 		UserFriendSystem *pFriendSystem = nullptr;
+		DB::QueryGetFriendListCmd *pDBRes = (DB::QueryGetFriendListCmd*)pRes;
 
 		m_WaitingCount = 0;
 
@@ -541,7 +545,6 @@ namespace GameServer {
 
 		pFriendSystem->ClearFriendList();
 
-		DB::QueryGetFriendListCmd *pDBRes = (DB::QueryGetFriendListCmd*)pRes;
 		m_Friends.Reserve( pDBRes->m_RowsetResult.size() );
 		std::for_each( pDBRes->m_RowsetResult.begin(), pDBRes->m_RowsetResult.end(), [&]( DB::QueryGetFriendListSet &set )
 		{
@@ -550,12 +553,12 @@ namespace GameServer {
 			HRESULT hRes = pFriendSystem->AddFriend(info);
 			if (hRes == E_MAX_FRIEND)
 			{
-				svrTrace(Trace::TRC_WARN, "Failed to add friend. Max friends, PlayerID:%0% to friend system", set.FriendUID);
+				svrTrace(Trace::TRC_WARN, "Failed to add friend. Max friends, PlayerID:{0} to friend system", set.FriendUID);
 				return;
 			}
 			else if (FAILED(hr))
 			{
-				svrTrace(Trace::TRC_ERROR, "Failed to add friend PlayerID:%0% to friend system", set.FriendUID);
+				svrTrace(Trace::TRC_ERROR, "Failed to add friend PlayerID:{0} to friend system", set.FriendUID);
 				return;
 			}
 
@@ -602,7 +605,7 @@ namespace GameServer {
 
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to get friend level PlayerID:%0%, hr=%1%", pDBRes ? pDBRes->UserID : 0, ArgHex32(hr) );
+			svrTrace( Trace::TRC_ERROR, "Failed to get friend level PlayerID:{0}, hr={1}", pDBRes ? pDBRes->UserID : 0, ArgHex32(hr) );
 		}
 
 		m_WaitingCount--;
@@ -642,7 +645,7 @@ namespace GameServer {
 
 		if( FAILED(hr) )
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to get friend level PlayerID:%0%, hr={1:X8}", pDBRes ? pDBRes->PlayerID : 0, hr);
+			svrTrace(Trace::TRC_ERROR, "Failed to get friend level PlayerID:{0}, hr={1:X8}", pDBRes ? pDBRes->PlayerID : 0, hr);
 		}
 
 		m_WaitingCount--;
@@ -657,7 +660,7 @@ namespace GameServer {
 	HRESULT PlayerTransGetFriendList::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-
+		UserFriendSystem* friendSystem = nullptr;
 		m_MaxFriendSlot = 0;
 		m_TotalNumberOfFriends = 0;
 
@@ -665,7 +668,7 @@ namespace GameServer {
 
 		m_WaitingCount = 0;
 
-		auto friendSystem = GetMyOwner()->GetComponent<UserFriendSystem>();
+		friendSystem = GetMyOwner()->GetComponent<UserFriendSystem>();
 		m_TotalNumberOfFriends = friendSystem->GetNumberOfFriends();
 		if (m_TotalNumberOfFriends == 0)
 		{
@@ -735,10 +738,10 @@ namespace GameServer {
 	HRESULT PlayerTransGiveStamina::OnSavedToDB( Svr::TransactionResult* &pRes )
 	{
 		HRESULT hr = S_OK;
-		DB::QueryUpdateTickStatusCmd *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
+		//DB::QueryUpdateTickStatusCmd *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 
 
-	Proc_End:
+	//Proc_End:
 
 
 		m_WaitingQueries--;
@@ -746,7 +749,7 @@ namespace GameServer {
 		// if failed to write to DB, roleback the changes
 		if(FAILED(hr))
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to save give stamina result PlayerID:%0%, Dest:%1%, hr:{2:X8}", GetMyOwner()->GetPlayerID(), GetTargetPlayer(), hr );
+			svrTrace( Trace::TRC_ERROR, "Failed to save give stamina result PlayerID:{0}, Dest:{1}, hr:{2:X8}", GetMyOwner()->GetPlayerID(), GetTargetPlayer(), hr );
 			CloseTransaction(hr);
 		}
 
@@ -759,7 +762,7 @@ namespace GameServer {
 	HRESULT PlayerTransGiveStamina::OnUpdateTime( Svr::TransactionResult* &pRes )
 	{
 		HRESULT hr = S_OK;
-		DB::QueryUpdateFriendStaminaTimeCmd *pDBRes = (DB::QueryUpdateFriendStaminaTimeCmd*)pRes;
+		//DB::QueryUpdateFriendStaminaTimeCmd *pDBRes = (DB::QueryUpdateFriendStaminaTimeCmd*)pRes;
 		svrChk(pRes->GetHRESULT());
 
 
@@ -768,7 +771,7 @@ namespace GameServer {
 		// if failed to write to DB, roleback the changes
 		if(FAILED(hr))
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to save give-stamina timestamp PlayerID:%0%, Dest:%1%", GetMyOwner()->GetPlayerID(), GetTargetPlayer() );
+			svrTrace( Trace::TRC_ERROR, "Failed to save give-stamina timestamp PlayerID:{0}, Dest:{1}", GetMyOwner()->GetPlayerID(), GetTargetPlayer() );
 		}
 
 		m_WaitingQueries--;
@@ -786,9 +789,9 @@ namespace GameServer {
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
+		DB::QueryNotification_AddCmd *pMsgRes = (DB::QueryNotification_AddCmd*)pRes;
 
 		svrChkClose( pRes->GetHRESULT() );
-		DB::QueryNotification_AddCmd *pMsgRes = (DB::QueryNotification_AddCmd*)pRes;
 
 		if( SUCCEEDED( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetTargetPlayer(), playerUID )) )
 		{
@@ -817,9 +820,8 @@ namespace GameServer {
 	{
 		HRESULT hr = S_OK;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
-		Svr::ServerEntity *pServerEntity = nullptr;
+		ServerFriendInformation* pFriend = nullptr;
 		EntityUID playerUID;
-		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
 
 		m_WaitingQueries = 0;
 		m_TimeStamp = Util::Time.GetTimeUTCSec();
@@ -834,7 +836,7 @@ namespace GameServer {
 		//	svrErrClose(E_GAME_NOTENOUGH_RESOURCE);
 
 
-		auto pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(GetTargetPlayer());
+		pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(GetTargetPlayer());
 		if( pFriend == nullptr )
 			svrErrClose(E_PLAYER_NOT_FOUND);
 
@@ -891,7 +893,7 @@ namespace GameServer {
 
 	//	if( FAILED(hr) )
 	//	{
-	//		svrTrace( Trace::TRC_ERROR, "Failed to save received stamina result PlayerID:%0%, Sender:%1%", GetDestPlayerID(), GetSenderID() );
+	//		svrTrace( Trace::TRC_ERROR, "Failed to save received stamina result PlayerID:{0}, Sender:{1}", GetDestPlayerID(), GetSenderID() );
 	//	}
 
 	//	CloseTransaction(hr);

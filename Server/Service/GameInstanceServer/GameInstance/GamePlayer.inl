@@ -8,7 +8,7 @@
 //	
 ////////////////////////////////////////////////////////////////////////////////
 
-bool GamePlayer::IsInGame()
+inline bool GamePlayer::IsInGame()
 {
 	return GetPlayerState() == PlayerState::Playing && GetRole() != PlayerRole::None;
 }

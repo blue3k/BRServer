@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // 
 // CopyRight (c) 2013 Madk
 // 
@@ -83,6 +83,14 @@ namespace Svr {
 
 
 
+	// Data type convertion templates
+	template<class DataType> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType() { return PerformanceCounter::DataTypes::Int32; }
+	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<INT32>() { return PerformanceCounter::DataTypes::Int32; }
+	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<UINT32>() { return PerformanceCounter::DataTypes::UInt32; }
+	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<INT64>() { return PerformanceCounter::DataTypes::Int64; }
+	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<UINT64>() { return PerformanceCounter::DataTypes::UInt64; }
+
+
 	template<class DataType>
 	class PerformanceCounterRaw : public PerformanceCounter
 	{
@@ -91,31 +99,32 @@ namespace Svr {
 
 	protected:
 		PerformanceCounterRaw(const char* counterName, CountingTypes countingType)
-			: PerformanceCounter(counterName, GetDataType(), countingType)
+			: PerformanceCounter(counterName, PerformanceCounterRaw_GetDataType<DataType>(), countingType)
 			, m_RawValue(DataType(0))
 		{
 		}
 
 		PerformanceCounterRaw(CountingTypes countingType)
-			: PerformanceCounter(GetDataType(), countingType)
+			: PerformanceCounter(PerformanceCounterRaw_GetDataType<DataType>(), countingType)
 			, m_RawValue(DataType(0))
 		{
 		}
 
-		inline DataTypes GetDataType();
 
 	public:
 		PerformanceCounterRaw(const char* counterName)
-			: PerformanceCounter(counterName, GetDataType(), CountingTypes::Raw)
+			: PerformanceCounter(counterName, PerformanceCounterRaw_GetDataType<DataType>(), CountingTypes::Raw)
 			, m_RawValue(DataType(0))
 		{
 		}
 
 		PerformanceCounterRaw()
-			: PerformanceCounter(GetDataType(), CountingTypes::Raw)
+			: PerformanceCounter(PerformanceCounterRaw_GetDataType<DataType>(), CountingTypes::Raw)
 			, m_RawValue(DataType(0))
 		{
 		}
+
+
 
 		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) override
 		{
@@ -185,11 +194,6 @@ namespace Svr {
 			return prevVal -1;
 		}
 	};
-
-	template<> PerformanceCounter::DataTypes PerformanceCounterRaw<INT32>::GetDataType();
-	template<> PerformanceCounter::DataTypes PerformanceCounterRaw<UINT32>::GetDataType();
-	template<> PerformanceCounter::DataTypes PerformanceCounterRaw<INT64>::GetDataType();
-	template<> PerformanceCounter::DataTypes PerformanceCounterRaw<UINT64>::GetDataType();
 
 
 

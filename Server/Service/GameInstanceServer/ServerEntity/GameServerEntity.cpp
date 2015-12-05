@@ -63,7 +63,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 
-		svrChk( __super::InitializeEntity( newEntityID ) );
+		svrChk( super::InitializeEntity( newEntityID ) );
 
 	Proc_End:
 
@@ -73,7 +73,7 @@ namespace ConspiracyGameInstanceServer {
 	// Process Connection event
 	HRESULT GameServerEntity::ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent )
 	{
-		HRESULT hr = S_OK;
+		//HRESULT hr = S_OK;
 
 		switch( conEvent.EventType )
 		{
@@ -85,9 +85,11 @@ namespace ConspiracyGameInstanceServer {
 		case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
 
 			break;
+		default:
+			break;
 		};
 
-	Proc_End:
+	//Proc_End:
 
 		return super::ProcessConnectionEvent( conEvent );
 	}
