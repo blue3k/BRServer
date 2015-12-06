@@ -70,7 +70,7 @@ else ifeq "$(LINK_TYPE)" "LIB"
 	TARGET_BUILD_COMMAND=$(AR) cr $(TARGET_FILE) $(OBJECTS)
 else ifeq "$(LINK_TYPE)" "DLL"
 	TARGET_FILE=$(TARGET_BIN_PATH)/$(PROJECT_NAME).so
-	TARGET_BUILD_COMMAND=$(CC) -shared $(LDFLAGS) $(OBJECTS) -o $(TARGET_FILE)  
+	TARGET_BUILD_COMMAND=$(CC) -shared $(LDFLAGS) $(OBJECTS) $(addprefix $(TARGET_LIB_PATH)/,$(LIBS))  -lxml2 -lcurl -lssl -lcrypto -ljsoncpp -lmysqlclient -o $(TARGET_FILE)  
 endif
 
 

@@ -190,8 +190,9 @@ namespace Net {
 
 		SetLocalClass( NetClass::Client );
 
-		// We use write queue in INetIOCallBack, however, assign same queue, just in case
-		SetWriteQueue(new WriteBufferQueue);
+
+		// We will share the write queue for UDP
+		//SetWriteQueue(new WriteBufferQueue);
 	}
 
 	ConnectionUDPClient::~ConnectionUDPClient()

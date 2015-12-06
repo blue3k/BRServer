@@ -144,7 +144,7 @@ namespace DB {
 		pDBSource = m_ShardingBucket[partitioningID];
 		dbAssert(pDBSource == nullptr || !pDBSource->GetOpened());
 
-		dbTrace(Trace::TRC_TRACE, "Adding DBSource %0%, %1%, %2%", strInstanceName, strConnectionString, strDBName);
+		dbTrace(Trace::TRC_TRACE, "Adding DBSource {0}, {1}, {2}", strInstanceName, strConnectionString, strDBName);
 
 		if (pDBSource == nullptr)
 		{
@@ -175,9 +175,6 @@ namespace DB {
 
 		pDataSource = nullptr;
 		
-		// reserved bucket count will work as a sharding limit
-		//UINT partition = partitioningKey;
-
 		// modulate by partitioning size
 		UINT partition = partitioningKey % m_ShardingBucket.GetSize();
 
@@ -240,7 +237,7 @@ Proc_End:
 			{
 				// It's not expected
 				pQuery->SetResult(E_UNEXPECTED);
-				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed %0%, TransID:%1%", typeid(pQuery).name(), pQuery->GetTransID());
+				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 				RouteResult(pQuery);
 				continue;
 			}
@@ -251,7 +248,7 @@ Proc_End:
 				{
 					pQuery->SetResult(E_UNEXPECTED);
 					pSession->ReleaseSession();
-					dbTrace(Trace::TRC_ERROR, "Failed to open DB session %0%, TransID:%1%", typeid(*pQuery).name(), pQuery->GetTransID());
+					dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
 					RouteResult(pQuery);
 					continue;
 				}
@@ -263,7 +260,7 @@ Proc_End:
 			{
 				// It's not expected
 				pQuery->SetResult(E_UNEXPECTED);
-				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed %0%, TransID:%1%", typeid(*pQuery).name(), pQuery->GetTransID());
+				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
 			}
 			else
 			{
@@ -305,7 +302,7 @@ Proc_End:
 						if (pDBSource->GetDefaultDB() != rowRes.DBName
 							|| pDBSource->GetConnectionString() != rowRes.ConnectionString)
 						{
-							dbTrace(Trace::TRC_TRACE, "Initializating DBSource %0%, Shard:%1 %2%, %3%", typeid(*this).name(), rowRes.ShardID,  rowRes.ConnectionString, rowRes.DBName);
+							dbTrace(Trace::TRC_TRACE, "Initializating DBSource {0}, Shard:{1} {2}, {3}", typeid(*this).name(), rowRes.ShardID,  rowRes.ConnectionString, rowRes.DBName);
 							dbChk(pDBSource->InitializeDBSource(rowRes.ConnectionString, rowRes.DBName, rowRes.UserID, rowRes.Password));
 						}
 					}
@@ -358,7 +355,7 @@ Proc_End:
 		{
 			// It's not expected
 			pQuery->SetResult(E_UNEXPECTED);
-			dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed %0%, TransID:%1%", typeid(pQuery).name(), pQuery->GetTransID());
+			dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 			dbErr(E_UNEXPECTED);
 		}
 
@@ -368,7 +365,7 @@ Proc_End:
 			{
 				pQuery->SetResult(E_UNEXPECTED);
 				pSession->ReleaseSession();
-				dbTrace(Trace::TRC_ERROR, "Failed to open DB session %0%, TransID:%1%", typeid(pQuery).name(), pQuery->GetTransID());
+				dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 				dbErr(E_UNEXPECTED);
 			}
 		}

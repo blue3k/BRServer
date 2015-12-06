@@ -32,7 +32,8 @@ namespace Net {
 		, m_pRecvBuffers(nullptr)
 		, m_pMessageHandler(nullptr)
 	{
-		SetWriteQueue(new WriteBufferQueue);
+		// we will share the write queue for UDP
+		//SetWriteQueue(new WriteBufferQueue);
 	}
 
 	RawUDP::~RawUDP()

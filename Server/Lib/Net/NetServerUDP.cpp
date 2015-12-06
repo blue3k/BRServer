@@ -40,7 +40,8 @@ namespace Net {
 		:Server(InServerID, localClass),
 		m_pRecvBuffers(nullptr)
 	{
-		SetWriteQueue(new WriteBufferQueue);
+		// We will share the write queue in net system for UDP
+		//SetWriteQueue(new WriteBufferQueue);
 	}
 
 	ServerUDPBase::~ServerUDPBase()

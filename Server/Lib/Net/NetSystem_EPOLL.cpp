@@ -565,6 +565,12 @@ namespace Net {
 				if(m_WorkerUDP.GetSize() < 1)
 					return E_NET_NOTINITIALISED;
 
+				if (cbInstance->GetWriteQueue() == nullptr)
+				{
+					Assert(sockType == SockType::DataGram);
+					cbInstance->SetWriteQueue( &m_UDPSendWorker->GetWriteQueue() );
+				}
+
 				// UDP workers are sharing epoll, add any of them will work same.
 				return m_WorkerUDP[0]->RegisterSocket(sock, cbInstance, isListenSocket);
 			}
@@ -642,7 +648,6 @@ namespace Net {
 			HRESULT hr = S_OK;
 
 			netChkPtr(cbInstance);
-			AssertRel(cbInstance->GetWriteQueue() != nullptr);
 
 			netChk(EPOLLSystem::GetSystem().MakeSocketNonBlocking(sock));
 			netChk(EPOLLSystem::GetSystem().RegisterToEPOLL(sock, sockType, cbInstance, isListenSocket));

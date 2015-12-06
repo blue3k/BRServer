@@ -42,7 +42,9 @@ namespace Net {
 		, m_PendingRecvCnt(0)
 	{
 		m_ConnectionManager.SetNetOwner( this );
-		SetWriteQueue(new WriteBufferQueue);
+
+		if (!NetSystem::IsProactorSystem())
+			SetWriteQueue(new WriteBufferQueue);
 	}
 
 	ServerPeer::~ServerPeer()

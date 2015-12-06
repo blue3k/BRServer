@@ -173,23 +173,6 @@ namespace StrUtil {
 	}
 
 
-/*
-	void Format( char* szBuffer, int iBuffLen, const char* szFormating, ... )
-	{
-		va_list vaArgs;
-		va_start( vaArgs, szFormating );
-		FormatMessageA(FORMAT_MESSAGE_FROM_STRING, szFormating, 0, 0, szBuffer, iBuffLen, (va_list *) &vaArgs);
-		va_end( vaArgs );
-	}
-
-	void Format( wchar_t* wszBuffer, int iBuffLen, const wchar_t* wszFormating, ... )
-	{
-		va_list vaArgs;
-		va_start( vaArgs, wszFormating );
-		FormatMessageW(FORMAT_MESSAGE_FROM_STRING, wszFormating, 0, 0, wszBuffer, iBuffLen, (va_list *) &vaArgs);
-		va_end( vaArgs );
-	}
-*/
 
 	
 	/////////////////////////////////////////////////////////////////////////////
