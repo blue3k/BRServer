@@ -215,7 +215,7 @@ namespace ProtocolBuilder
             MatchIndent(); OutStream.WriteLine("{0}::{0}( ServerServiceInformation* pService)", ServiceClassName);
             MatchIndent(1); OutStream.WriteLine(": ServerServiceBase(pService, Policy::{0}::ID_POLICY)", IBasePolicyName);
             MatchIndent(); OutStream.WriteLine("{");
-            MatchIndent(1); OutStream.WriteLine("static_assert(Policy::{0}::ID_POLICY == ID_SERVICEPOLICY,\"Invalid Policy ID for a Servicebase \");",IBasePolicyName);
+            MatchIndent(1); OutStream.WriteLine("static_assert((UINT)Policy::{0}::ID_POLICY == (UINT)ID_SERVICEPOLICY,\"Invalid Policy ID for a Servicebase \");", IBasePolicyName);
             MatchIndent(1); OutStream.WriteLine("Assert({0});",GetPolicyFunctionName);
             MatchIndent(); OutStream.WriteLine("}");
 

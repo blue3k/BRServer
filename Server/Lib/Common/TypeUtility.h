@@ -16,6 +16,10 @@
 
 namespace BR {
 
+
+	HRESULT GetLastHRESULT();
+
+
 	template <class DataType>
 	DataType DefaultValue() { return nullptr; }
 

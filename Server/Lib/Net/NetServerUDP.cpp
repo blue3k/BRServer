@@ -255,7 +255,7 @@ namespace Net {
 			netErr( E_UNEXPECTED );
 		}
 
-		netChk(NetSystem::RegisterSocket(socket, this, false));
+		netChk(NetSystem::RegisterSocket(socket, SockType::DataGram, this, false));
 
 		SetSocket( socket );
 		socket = INVALID_SOCKET;

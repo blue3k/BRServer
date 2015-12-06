@@ -29,7 +29,7 @@ namespace BR
  		MonitoringService::MonitoringService( ServerServiceInformation* pService)
 			: ServerServiceBase(pService, Policy::IPolicyMonitoring::ID_POLICY)
 		{
-			static_assert(Policy::IPolicyMonitoring::ID_POLICY == ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
+			static_assert((UINT)Policy::IPolicyMonitoring::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
 			Assert(GetPolicyMonitoring());
 		}
 

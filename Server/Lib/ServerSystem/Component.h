@@ -234,7 +234,7 @@ namespace Svr{
 		// Get component with its ID
 		Component* GetComponent( int ID )
 		{
-			if( ID >= (MaxComponentID+1) || ID < 0 )
+			if( (size_t)ID >= (MaxComponentID+1) || ID < 0 )
 				return nullptr;
 
 			return m_Components[ID];
@@ -243,7 +243,7 @@ namespace Svr{
 		template< class ComponentType >
 		ComponentType* GetComponent(int ID)
 		{
-			if( (size_t)ID >= (MaxComponentID+1) || ID < 0 )
+			if((size_t)ID >= (MaxComponentID+1) || ID < 0 )
 				return nullptr;
 
 			if( m_Components[ID] != nullptr )
@@ -284,7 +284,7 @@ namespace Svr{
 		// iterate all component
 		void ForeachComponent( std::function<void(Component*)> functor )
 		{
-			for( int iComponent = 0; iComponent < (MaxComponentID+1); iComponent++ )
+			for(size_t iComponent = 0; iComponent < (MaxComponentID+1); iComponent++ )
 			{
 				if( m_Components[iComponent] != nullptr )
 					functor(m_Components[iComponent]);

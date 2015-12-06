@@ -29,7 +29,7 @@ namespace BR
  		PartyMatchingQueueService::PartyMatchingQueueService( ServerServiceInformation* pService)
 			: ServerServiceBase(pService, Policy::IPolicyPartyMatchingQueue::ID_POLICY)
 		{
-			static_assert(Policy::IPolicyPartyMatchingQueue::ID_POLICY == ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
+			static_assert((UINT)Policy::IPolicyPartyMatchingQueue::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
 			Assert(GetPolicyPartyMatchingQueue());
 		}
 

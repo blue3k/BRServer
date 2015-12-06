@@ -5,7 +5,9 @@
 
 INCLUDES?=.
 DEFINES?=
-LIBS=Common.a DB.a Net.a Protocol.a ServerSystem.a Table.a
+
+# Linking order affects symbol search result. funny....
+LIBS=ServerSystem.a Net.a Protocol.a Table.a DB.a Common.a
 
 
 export LIBS

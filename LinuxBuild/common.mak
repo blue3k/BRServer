@@ -49,7 +49,8 @@ DEFINES+= $(BUILD_MODE) $(LOGNAME)
 CC=g++
 CFLAGS=-c -g -std=c++14 -pthread -static-libgcc -Wall $(addprefix -I,$(INCLUDES)) $(addprefix -D,$(DEFINES))
 CPPFLAGS:=$(CFLAGS)
-LDFLAGS=-g -std=c++14 -pthread -static-libgcc -L$(TARGET_LIB_PATH)/ $(addprefix -l,$(LIBS))
+#LDFLAGS=-g -std=c++14 -pthread -static-libgcc -L$(TARGET_LIB_PATH)/ $(addprefix -l,$(LIBS))
+LDFLAGS=-g -std=c++14 -pthread -static-libgcc
 
 ifeq "$(BUILD_MODE)" "DEBUG"
 	CFLAGS+=-O0
@@ -63,7 +64,7 @@ TARGET_BUILD_COMMAND=
 
 ifeq "$(LINK_TYPE)" "EXE"
 	TARGET_FILE=$(TARGET_BIN_PATH)/$(PROJECT_NAME)
-	TARGET_BUILD_COMMAND=$(CC) $(LDFLAGS) $(OBJECTS) -o $(TARGET_FILE) 
+	TARGET_BUILD_COMMAND=$(CC) $(LDFLAGS) $(OBJECTS) $(addprefix $(TARGET_LIB_PATH)/,$(LIBS))  -lxml2 -lcurl -lssl -lcrypto -ljsoncpp -lmysqlclient -o $(TARGET_FILE) 
 else ifeq "$(LINK_TYPE)" "LIB"
 	TARGET_FILE=$(TARGET_LIB_PATH)/$(PROJECT_NAME).a
 	TARGET_BUILD_COMMAND=$(AR) cr $(TARGET_FILE) $(OBJECTS)

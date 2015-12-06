@@ -197,13 +197,8 @@ namespace Trace {
 		Exception_SnapShot,
 	};
 
-	extern ExceptionMode g_expMode;
-
 	// initialize exception Handler
 	void InitExceptionHandler();
-
-	// Dump snap shot
-	void DumpSnapShot();
 
 	
 }; // namespace Trace

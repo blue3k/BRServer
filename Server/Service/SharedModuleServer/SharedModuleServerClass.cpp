@@ -155,9 +155,9 @@ namespace SharedModuleServer {
 	HRESULT SharedModuleServer::InitializeNetPrivate()
 	{
 		HRESULT hr = S_OK;
-		Svr::LoginClusterServiceEntity *pLoginService = nullptr;
-		Svr::GameClusterServiceEntity *pGameService = nullptr;
-		UINT componentID = 0;
+		//Svr::LoginClusterServiceEntity *pLoginService = nullptr;
+		//Svr::GameClusterServiceEntity *pGameService = nullptr;
+		//UINT componentID = 0;
 		Svr::Config::SharedModuleServer *pServerConfig = nullptr;
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );

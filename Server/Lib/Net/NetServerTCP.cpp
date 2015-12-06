@@ -202,7 +202,7 @@ namespace Net {
 		pConnOut = pConnection;
 		cid = pConnection->GetCID();
 
-		netChk(NetSystem::RegisterSocket(acceptedSocket, pConnection, false));
+		netChk(NetSystem::RegisterSocket(acceptedSocket, SockType::Stream, pConnection, false));
 
 		pConnection->SetConnectingTimeOut( Const::CONNECTION_TIMEOUT );
 
@@ -373,7 +373,7 @@ namespace Net {
 			netErr( E_UNEXPECTED );
 		}
 
-		netChk(NetSystem::RegisterSocket(socket, this, true));
+		netChk(NetSystem::RegisterSocket(socket, SockType::Stream, this, true));
 
 
 		SetSocket( socket );

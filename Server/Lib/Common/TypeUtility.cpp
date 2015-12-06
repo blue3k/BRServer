@@ -26,7 +26,15 @@ namespace BR {
 	//	Type utility
 	//
 
-#if LINUX
+
+#if WINDOWS
+
+	HRESULT GetLastHRESULT()
+	{
+		return HRESULT_FROM_WIN32(GetLastError());
+	}
+
+#elif LINUX
 
 	HRESULT GetLastHRESULT()
 	{

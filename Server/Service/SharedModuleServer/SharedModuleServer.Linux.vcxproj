@@ -24,6 +24,7 @@
     <ClCompile Include="ServerEntity\ServerEntityTrans.cpp" />
     <ClCompile Include="SharedModuleServer.cpp" />
     <ClCompile Include="SharedModuleServerClass.cpp" />
+    <ClCompile Include="SharedModuleServer_ModuleMapping.cpp" />
     <ClCompile Include="SharedModuleServer_NetProc.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Transaction\SharedModuleServerTrans.cpp" />

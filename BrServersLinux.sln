@@ -22,11 +22,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Table.Linux", "Server\Lib\Table\Table.Linux.vcxproj", "{78B82778-5CB2-4034-A81D-8E6B6424B479}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EntityServer.Linux", "Server\Service\EntityServer\EntityServer.Linux.vcxproj", "{0B879587-0020-4203-8E75-650E357BAAC3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{78B82778-5CB2-4034-A81D-8E6B6424B479} = {78B82778-5CB2-4034-A81D-8E6B6424B479}
-		{D3F725AA-844C-4909-9FCE-B19E71DA19F4} = {D3F725AA-844C-4909-9FCE-B19E71DA19F4}
-		{7516B2BE-3786-46EB-B860-47FBF2506EAB} = {7516B2BE-3786-46EB-B860-47FBF2506EAB}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameInstanceServer.Linux", "Server\Service\GameInstanceServer\GameInstanceServer.Linux.vcxproj", "{4F403CAC-201F-4437-9FAE-169E99927FFA}"
 	ProjectSection(ProjectDependencies) = postProject

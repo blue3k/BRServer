@@ -29,7 +29,7 @@ namespace BR
  		RankingService::RankingService( ServerServiceInformation* pService)
 			: ServerServiceBase(pService, Policy::IPolicyRanking::ID_POLICY)
 		{
-			static_assert(Policy::IPolicyRanking::ID_POLICY == ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
+			static_assert((UINT)Policy::IPolicyRanking::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
 			Assert(GetPolicyRanking());
 		}
 

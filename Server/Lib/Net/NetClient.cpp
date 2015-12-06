@@ -386,7 +386,7 @@ namespace BR {
 
 		netMem( pConn = dynamic_cast<ConnectionTCPClient*>(GetConnectionManager().NewConnection()) );
 
-		netChk(NetSystem::RegisterSocket(socket, pConn, false));
+		netChk(NetSystem::RegisterSocket(socket, SockType::Stream, pConn, false));
 
 
 		SetSockAddr( sockAddrDest, strServerIP, usServerPort );
@@ -824,7 +824,7 @@ namespace BR {
 		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 		socket = INVALID_SOCKET;
 
-		netChk(NetSystem::RegisterSocket(pConn->GetSocket(), pConn, false));
+		netChk(NetSystem::RegisterSocket(pConn->GetSocket(), SockType::DataGram, pConn, false));
 
 		netChk( pConn->PendingRecv() );
 

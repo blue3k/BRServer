@@ -87,10 +87,6 @@
 #define INVALID_NATIVE_HANDLE_VALUE INVALID_HANDLE_VALUE
 
 
-inline HRESULT GetLastHRESULT()
-{
-	return HRESULT_FROM_WIN32(GetLastError());
-}
 
 
 
@@ -168,8 +164,6 @@ typedef HANDLE HMODULE;
 
 #define SOCKET int
 //#define INVALID_SOCKET (-1)
-
-HRESULT GetLastHRESULT();
 
 
 #define MAX_PATH 512

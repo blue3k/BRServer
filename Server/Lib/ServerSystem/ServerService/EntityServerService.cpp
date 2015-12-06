@@ -29,7 +29,7 @@ namespace BR
  		EntityServerService::EntityServerService( ServerServiceInformation* pService)
 			: ServerServiceBase(pService, Policy::IPolicyEntityServer::ID_POLICY)
 		{
-			static_assert(Policy::IPolicyEntityServer::ID_POLICY == ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
+			static_assert((UINT)Policy::IPolicyEntityServer::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
 			Assert(GetPolicyEntityServer());
 		}
 

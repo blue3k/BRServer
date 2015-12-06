@@ -29,7 +29,7 @@ namespace BR
  		GamePartyService::GamePartyService( ServerServiceInformation* pService)
 			: ServerServiceBase(pService, Policy::IPolicyGameParty::ID_POLICY)
 		{
-			static_assert(Policy::IPolicyGameParty::ID_POLICY == ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
+			static_assert((UINT)Policy::IPolicyGameParty::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
 			Assert(GetPolicyGameParty());
 		}
 

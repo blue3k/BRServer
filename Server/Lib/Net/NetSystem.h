@@ -142,7 +142,7 @@ namespace Net {
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
 
-		HRESULT RegisterSocket(SOCKET sock, INetIOCallBack* cbInstance, bool isListenSocket);
+		HRESULT RegisterSocket(SOCKET sock, SockType sockType, INetIOCallBack* cbInstance, bool isListenSocket);
 
 		SOCKET Socket(SockFamily domain, SockType type);
 		void CloseSocket(SOCKET sock);

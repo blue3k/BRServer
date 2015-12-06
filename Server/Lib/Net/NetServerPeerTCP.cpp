@@ -82,7 +82,7 @@ namespace Net {
 			bNeedPending = true;
 		}
 
-		netChk(NetSystem::RegisterSocket(acceptedSocket, pConnection, false));
+		netChk(NetSystem::RegisterSocket(acceptedSocket, SockType::Stream, pConnection, false));
 
 		pConnOut = pConnection;
 		cid = pConnection->GetCID();
@@ -216,7 +216,7 @@ namespace Net {
 		netChk(pConn->InitConnection(socket, connectionInfo));
 		socket = INVALID_SOCKET;
 
-		netChk(NetSystem::RegisterSocket(pConn->GetSocket(), pConn, false));
+		netChk(NetSystem::RegisterSocket(pConn->GetSocket(), SockType::Stream, pConn, false));
 
 		if(SUCCEEDED(pConn->Connect()))
 			pConn->WaitConnect();

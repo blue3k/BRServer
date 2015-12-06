@@ -48,7 +48,7 @@ namespace Svr{
 	//
 	//	Server definition
 	//
-	BrServer::BrServer( BR::NetClass netClass )
+	BrServer::BrServer( NetClass netClass )
 		: m_State(ServerState::STOPED)
 		, m_uiUID(0)
 		, m_pNetPrivate(nullptr)
@@ -133,7 +133,7 @@ namespace Svr{
 				if( curEvent.EventConnection == nullptr )
 					break;
 
-				pConn = dynamic_cast<BR::Net::Connection*>(curEvent.EventConnection);
+				pConn = dynamic_cast<Net::Connection*>(curEvent.EventConnection);
 
 				for (int iTry = 0; iTry < 4; iTry++)
 				{
@@ -429,7 +429,7 @@ Proc_End:
 
 		svrChk( InitializeComponents() );
 
-		BR::InitializeMemLogger( MemLog::Logging::LOG_ALL, 0 );
+		InitializeMemLogger( MemLog::Logging::LOG_ALL, 0 );
 
 		svrChk(InitializeNetPublic());
 
@@ -538,9 +538,9 @@ Proc_End:
 		}
 
 
-		if( BR::GetMemLogger() )
+		if( GetMemLogger() )
 		{
-			BR::GetMemLogger()->Terminate();
+			GetMemLogger()->Terminate();
 		}
 
 		SetServerState( ServerState::STOPED );
@@ -569,7 +569,7 @@ Proc_End:
 
 
 		// Create private network and open it
-		svrMem( m_pNetPrivate = new BR::Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()) );
+		svrMem( m_pNetPrivate = new Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()) );
 		svrChkPtr(GetMyConfig()->NetPrivate);
 		svrChk( m_pNetPrivate->HostOpen( GetNetClass(), GetMyConfig()->NetPrivate->IP.c_str(), GetMyConfig()->NetPrivate->Port ) );
 

@@ -135,7 +135,7 @@ namespace Net {
 		m_LocalSockAddress = bindAddr;
 
 
-		netChk(NetSystem::RegisterSocket(socket, this, false));
+		netChk(NetSystem::RegisterSocket(socket, SockType::DataGram, this, false));
 
 		m_Socket = socket;
 		socket = INVALID_SOCKET;

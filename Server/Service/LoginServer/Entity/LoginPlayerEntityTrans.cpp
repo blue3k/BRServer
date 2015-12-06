@@ -148,8 +148,8 @@ namespace LoginServer {
 			{
 				pGameServerPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameServer>(m_GameEntityUID.GetServerID());
 				if (pGameServerPolicy == nullptr
-					|| FAILED(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(GetTransID(), RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID),
-						super::GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID())))
+					|| FAILED(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(super::GetTransID(), RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID),
+						super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID())))
 				{
 					svrChk(RegisterNewPlayerToJoinGameServer());
 				}
@@ -172,14 +172,14 @@ namespace LoginServer {
 		Svr::ServerServiceInformation *pService = nullptr;
 
 		// Find new game server for this player
-		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( (ClusterID)((UINT)ClusterID::Game + (UINT)GetGameID()), pServiceEntity ) );
+		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( (ClusterID)((UINT)ClusterID::Game + (UINT)super::GetGameID()), pServiceEntity ) );
 		svrChk( pServiceEntity->FindRandomService( pService ) );
 
 		super::GetMyOwner()->HeartBit();
 
 		svrTrace(Svr::TRC_ENTITY, "Creating new Entity for UID:{0}, on svr:{1}", super::GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
 
-		svrChk( pService->GetService<Svr::GameServerService>()->RegisterPlayerToJoinGameServerCmd( GetTransID(),
+		svrChk( pService->GetService<Svr::GameServerService>()->RegisterPlayerToJoinGameServerCmd(super::GetTransID(),
 			super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID()));
 	Proc_End:
 
@@ -218,7 +218,7 @@ namespace LoginServer {
 		m_GameServerAddr = res.GetPublicAddress();
 		m_GameEntityUID = res.GetRouteContext().GetFrom();
 
-		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(GetTransID(), super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetOwnerEntityUID(), m_GameEntityUID));
+		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(super::GetTransID(), super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetOwnerEntityUID(), m_GameEntityUID));
 
 
 	Proc_End:

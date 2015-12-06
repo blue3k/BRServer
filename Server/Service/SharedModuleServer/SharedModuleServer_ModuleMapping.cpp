@@ -64,33 +64,36 @@
 namespace BR {
 namespace SharedModuleServer {
 
-	static Svr::ServerComponentID ComponentIDFromClusterID( ClusterID clusterID )
-	{
-		switch(clusterID)
-		{
-		case ClusterID::Matching_Game_4:				return Svr::ServerComponentID_MatchingWatcherService_4;
-		case ClusterID::Matching_Game_8:				return Svr::ServerComponentID_MatchingWatcherService_8;
-		//case ClusterID::Matching_Game_10:				return Svr::ServerComponentID_MatchingWatcherService_10;
-		//case ClusterID::Matching_Game_12:				return Svr::ServerComponentID_MatchingWatcherService_12;
+	//static Svr::ServerComponentID ComponentIDFromClusterID( ClusterID clusterID )
+	//{
+	//	switch(clusterID)
+	//	{
+	//	case ClusterID::Matching_Game_4:				return Svr::ServerComponentID_MatchingWatcherService_4;
+	//	case ClusterID::Matching_Game_8:				return Svr::ServerComponentID_MatchingWatcherService_8;
+	//	//case ClusterID::Matching_Game_10:				return Svr::ServerComponentID_MatchingWatcherService_10;
+	//	//case ClusterID::Matching_Game_12:				return Svr::ServerComponentID_MatchingWatcherService_12;
 
-		case ClusterID::MatchingQueue_Game_4x1:			return Svr::ServerComponentID_MatchingQueueWatcherService_4x1;
-		case ClusterID::MatchingQueue_Game_4x2:			return Svr::ServerComponentID_MatchingQueueWatcherService_4x2;
-		case ClusterID::MatchingQueue_Game_4x3:			return Svr::ServerComponentID_MatchingQueueWatcherService_4x3;
-		case ClusterID::MatchingQueue_Game_4x1S:		return Svr::ServerComponentID_MatchingQueueWatcherService_4x1S;
-		case ClusterID::MatchingQueue_Game_4x1W:		return Svr::ServerComponentID_MatchingQueueWatcherService_4x1W;
+	//	case ClusterID::MatchingQueue_Game_4x1:			return Svr::ServerComponentID_MatchingQueueWatcherService_4x1;
+	//	case ClusterID::MatchingQueue_Game_4x2:			return Svr::ServerComponentID_MatchingQueueWatcherService_4x2;
+	//	case ClusterID::MatchingQueue_Game_4x3:			return Svr::ServerComponentID_MatchingQueueWatcherService_4x3;
+	//	case ClusterID::MatchingQueue_Game_4x1S:		return Svr::ServerComponentID_MatchingQueueWatcherService_4x1S;
+	//	case ClusterID::MatchingQueue_Game_4x1W:		return Svr::ServerComponentID_MatchingQueueWatcherService_4x1W;
 
-		case ClusterID::MatchingQueue_Game_8x1:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x1;
-		case ClusterID::MatchingQueue_Game_8x2:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x2;
-		case ClusterID::MatchingQueue_Game_8x3:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x3;
-		case ClusterID::MatchingQueue_Game_8x4:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x4;
-		case ClusterID::MatchingQueue_Game_8x5:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x5;
-		case ClusterID::MatchingQueue_Game_8x6:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x6;
-		case ClusterID::MatchingQueue_Game_8x7:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x7;
-		case ClusterID::MatchingQueue_Game_8x1S:		return Svr::ServerComponentID_MatchingQueueWatcherService_8x1S;
-		case ClusterID::MatchingQueue_Game_8x1W:		return Svr::ServerComponentID_MatchingQueueWatcherService_8x1W;
-
-		}
-	}
+	//	case ClusterID::MatchingQueue_Game_8x1:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x1;
+	//	case ClusterID::MatchingQueue_Game_8x2:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x2;
+	//	case ClusterID::MatchingQueue_Game_8x3:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x3;
+	//	case ClusterID::MatchingQueue_Game_8x4:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x4;
+	//	case ClusterID::MatchingQueue_Game_8x5:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x5;
+	//	case ClusterID::MatchingQueue_Game_8x6:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x6;
+	//	case ClusterID::MatchingQueue_Game_8x7:			return Svr::ServerComponentID_MatchingQueueWatcherService_8x7;
+	//	case ClusterID::MatchingQueue_Game_8x1S:		return Svr::ServerComponentID_MatchingQueueWatcherService_8x1S;
+	//	case ClusterID::MatchingQueue_Game_8x1W:		return Svr::ServerComponentID_MatchingQueueWatcherService_8x1W;
+	//	default:
+	//		Assert(false);
+	//		svrTrace(Trace::TRC_ERROR, "Invalid cluster ID {0}", clusterID);
+	//		return Svr::ServerComponentID::ServerComponentID_MatchingWatcherService_4;
+	//	}
+	//}
 
 	template< class ServiceEntityType >
 	HRESULT SharedModuleServer::AddServiceEntityComponent( ServiceEntityType* pServiceEntity )
@@ -136,9 +139,6 @@ namespace SharedModuleServer {
 	HRESULT SharedModuleServer::RegisterClusteredService(ClusterID clusterID, const char* params)
 	{
 		HRESULT hr = S_OK;
-		Svr::ServerComponentID componentIDStart = (Svr::ServerComponentID)0;
-		Svr::ServerComponentID componentIDEnd = (Svr::ServerComponentID)0;
-		ClusterID queueClusterID = ClusterID::Max;
 
 		switch( clusterID )
 		{
@@ -212,6 +212,10 @@ namespace SharedModuleServer {
 		//case ClusterID::MatchingQueue_Game_12x10:
 		//case ClusterID::MatchingQueue_Game_12x11:
 			svrChk( AddServiceEntityComponent( new Svr::MatchingQueueServiceEntity( clusterID, ClusterMembership::Slave ) ) );
+			break;
+		default:
+			Assert(false);
+			svrTrace(Trace::TRC_ERROR, "Invalid cluster ID {0}", clusterID);
 			break;
 		}
 

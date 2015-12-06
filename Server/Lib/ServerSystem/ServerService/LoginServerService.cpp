@@ -29,7 +29,7 @@ namespace BR
  		LoginServerService::LoginServerService( ServerServiceInformation* pService)
 			: ServerServiceBase(pService, Policy::IPolicyLoginServer::ID_POLICY)
 		{
-			static_assert(Policy::IPolicyLoginServer::ID_POLICY == ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
+			static_assert((UINT)Policy::IPolicyLoginServer::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
 			Assert(GetPolicyLoginServer());
 		}
 

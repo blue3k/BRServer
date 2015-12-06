@@ -71,21 +71,21 @@ namespace SharedModuleServer {
 	// Process Connection event
 	HRESULT GameServerEntity::ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent )
 	{
-		HRESULT hr = S_OK;
+		//HRESULT hr = S_OK;
 
 		switch( conEvent.EventType )
 		{
 		case Net::IConnection::Event::EVT_CONNECTION_RESULT:
 			break;
 		case Net::IConnection::Event::EVT_DISCONNECTED:
-
 			break;
 		case Net::IConnection::Event::EVT_STATE_CHANGE:
-
+			break;
+		default:
 			break;
 		};
 
-	Proc_End:
+	//Proc_End:
 
 		return super::ProcessConnectionEvent( conEvent );
 	}

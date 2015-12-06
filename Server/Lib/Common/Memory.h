@@ -270,10 +270,10 @@ namespace BR {
 		CircularBufferAllocator(MemoryAllocator& overflowHeap);
 		~CircularBufferAllocator();
 
-		FORCEINLINE bool GetIsInStaticBuffer( void* pPtr );
+		bool GetIsInStaticBuffer( void* pPtr );
 
 		// Get free memory size in static buffer
-		FORCEINLINE size_t GetFreeMemorySize();
+		size_t GetFreeMemorySize();
 
 		// Validate allocated chunks for debug
 		HRESULT ValidateAllocatedChunks();

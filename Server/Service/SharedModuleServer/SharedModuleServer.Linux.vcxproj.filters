@@ -17,6 +17,7 @@
     <ClCompile Include="Transaction\SharedModuleServerTrans.cpp">
       <Filter>EntityInstances</Filter>
     </ClCompile>
+    <ClCompile Include="SharedModuleServer_ModuleMapping.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SharedModuleServerClass.h" />

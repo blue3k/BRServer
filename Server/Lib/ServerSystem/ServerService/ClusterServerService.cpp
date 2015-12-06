@@ -29,7 +29,7 @@ namespace BR
  		ClusterServerService::ClusterServerService( ServerServiceInformation* pService)
 			: ServerServiceBase(pService, Policy::IPolicyClusterServer::ID_POLICY)
 		{
-			static_assert(Policy::IPolicyClusterServer::ID_POLICY == ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
+			static_assert((UINT)Policy::IPolicyClusterServer::ID_POLICY == (UINT)ID_SERVICEPOLICY,"Invalid Policy ID for a Servicebase ");
 			Assert(GetPolicyClusterServer());
 		}
 

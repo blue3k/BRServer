@@ -192,7 +192,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, voi
 }
 
 template< size_t BufferSize, size_t alignment >
-bool CircularBufferAllocator<BufferSize,alignment>::GetIsInStaticBuffer( void* pPtr )
+inline bool CircularBufferAllocator<BufferSize,alignment>::GetIsInStaticBuffer( void* pPtr )
 {
 	intptr_t ptr = (intptr_t)pPtr;
 	intptr_t staticBuffer = (intptr_t)m_AllocationBuffer;
@@ -201,7 +201,7 @@ bool CircularBufferAllocator<BufferSize,alignment>::GetIsInStaticBuffer( void* p
 
 // Get free memory size in static buffer
 template< size_t BufferSize, size_t alignment >
-size_t CircularBufferAllocator<BufferSize,alignment>::GetFreeMemorySize()
+inline size_t CircularBufferAllocator<BufferSize,alignment>::GetFreeMemorySize()
 {
 	return m_FreeSize;
 }
@@ -256,9 +256,9 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 			m_FreeSize += pChunk->ChunkSize;
 			m_FreePosition += pChunk->ChunkSize;
 			AssertRel(m_FreePosition <= (decltype(m_FreePosition))BufferSize);
-			if( m_FreePosition == BufferSize ) m_FreePosition = 0;
+			if((decltype(BufferSize))m_FreePosition == BufferSize ) m_FreePosition = 0;
 
-			if( m_FreeSize < BufferSize ) // Any chunk must be exist
+			if( (decltype(BufferSize))m_FreeSize < BufferSize ) // Any chunk must be exist
 			{
 				pChunk = (MemoryChunkHeader*)(m_AllocationBuffer + m_FreePosition);
 				if( pChunk->ChunkType != ChunkTypes::Free && pChunk->ChunkType != ChunkTypes::Dummy && pChunk->ChunkType != ChunkTypes::Allocated )
@@ -296,7 +296,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::ValidateAllocatedChunks()
 {
 	MemoryChunkHeader* pChunk = nullptr;
 
-	if(m_FreeSize < BufferSize)
+	if((decltype(BufferSize))m_FreeSize < BufferSize)
 	{
 		intptr_t curPosition = m_FreePosition;
 		do {
@@ -305,7 +305,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::ValidateAllocatedChunks()
 			if( !(pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated) )
 				return E_UNEXPECTED;
 			curPosition += pChunk->ChunkSize;
-			AssertRel( curPosition <= BufferSize );
+			AssertRel( curPosition <= (decltype(curPosition))BufferSize );
 			if( curPosition == BufferSize ) 
 				curPosition = 0;
 			AssertRel( GetIsInStaticBuffer(m_AllocationBuffer + curPosition) );
