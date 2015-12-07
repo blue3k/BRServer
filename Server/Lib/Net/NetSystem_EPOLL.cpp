@@ -293,11 +293,12 @@ namespace Net {
 				hr = GetLastHRESULT();
 				switch (hr)
 				{
+				case E_INTERRUPTED_SYSCALL:
+					break;
 				case E_INVALID_FILE_HANDLE:
 				case E_NET_BADF:
 				case E_INVALID_POINTER:
 				case E_NET_FAULT:
-				case E_INTERRUPTED_SYSCALL:
 				case E_NET_INTR:
 				case E_INVALID_ARG:
 				case E_NET_INVAL:

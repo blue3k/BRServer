@@ -110,7 +110,7 @@ namespace Svr {
 
 			chdir(Util::GetModulePathA());
 
-			strCfgPath.append("..\\..\\Config\\ServerConfig.xml");
+			strCfgPath.append("../../Config/ServerConfig.xml");
 
 
 			g_pSvrInstance = pSvrInstance;
@@ -177,7 +177,10 @@ namespace Svr {
 
 			svrTrace( Trace::TRC_TRACE, "<{0}> Start with Mode {1} ", Util::GetServiceName(), bIsDebugRun ? "Debug" : "Service" );
 
-			daemonize();
+			if (!bIsDebugRun)
+			{
+				daemonize();
+			}
 
 			// if not service mode
 			//if( bIsDebugRun )

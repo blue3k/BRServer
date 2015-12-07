@@ -10,6 +10,7 @@
 
 #include "stdafx.h"
 #include "Common/Typedefs.h"
+#include "Common/TypeUtility.h"
 #include "Common/File/BRFile.h"
 
 #if LINUX
@@ -91,7 +92,7 @@ namespace IO {
 			accessMode = O_RDWR | O_CREAT | O_TRUNC;
 			break;
 		case OpenMode::Append:
-			accessMode = O_RDWR | O_APPEND;
+			accessMode = O_RDWR | O_CREAT | O_APPEND;
 			break;
 		default:
 			return E_UNEXPECTED;
@@ -102,7 +103,9 @@ namespace IO {
 			accessMode );
 
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_FAIL;
+		{
+			return GetLastHRESULT();
+		}
 
 		flock fl;
 		fl.l_whence = SEEK_SET; /* SEEK_SET, SEEK_CUR, SEEK_END */

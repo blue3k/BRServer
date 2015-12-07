@@ -74,10 +74,19 @@ namespace Util {
 			StrUtil::WCSToUTF8( g_wszModuleName, g_szModuleName );
 #else
 			get_executable_path(g_szModulePath, countof(g_szModulePath));
-			char* bastNameLoc = basename(g_szModulePath);
+
+			char exe[1024];
+			int ret;
+
+			ret = readlink("/proc/self/exe", exe, sizeof(exe) - 1);
+			if (ret == -1) {
+				fprintf(stderr, "ERRORRRRR\n");
+				exit(1);
+			}
+			exe[ret] = 0;
+
+			char* bastNameLoc = basename(exe);
 			*(bastNameLoc - 1) = '\0';
-			char* ext = strtok(bastNameLoc, ".");
-			if (ext != nullptr) { *ext = '\0'; }
 			strcpy(g_szModuleName, bastNameLoc);
 
 			StrUtil::UTF8ToWCS(g_szModulePath, g_wszModulePath);

@@ -332,7 +332,7 @@ Proc_End:
 			auto google = dynamic_cast<Config::ServerComponentGoogle* > (componentConfig);
 			if (google != nullptr)
 			{
-				StrUtil::Format(strRelativePath, "..\\..\\Config\\{0}", google->P12KeyFile.c_str());
+				StrUtil::Format(strRelativePath, "../../Config/{0}", google->P12KeyFile.c_str());
 				svrChk(AddComponent<ExternalTransactionManager>());
 				svrChk(GetComponent<ExternalTransactionManager>()->InitializeManagerGoogle(
 					strRelativePath,

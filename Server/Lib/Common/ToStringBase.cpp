@@ -163,7 +163,8 @@ namespace BR
 			bIsNeg = true;
 		}
 
-		return _MyIToA( val, buf, length, radix, bIsNeg, iDigit );
+		static_assert(sizeof(INT32) == 4, "");
+		return _MyIToA( (UINT32)val, buf, length, radix, bIsNeg, iDigit );
 	}
 
 	HRESULT _IToA( UINT32 val,char* &buf, INT& length, unsigned radix, int iDigit )

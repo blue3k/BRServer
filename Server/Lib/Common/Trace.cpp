@@ -115,7 +115,7 @@ namespace Trace {
 		m_MaskUpdated = Util::Time.GetTimeMs();
 
 		std::string strCfgPath = Util::GetModulePathA();
-		strCfgPath.append("..\\..\\Config\\traceConfig.cfg");
+		strCfgPath.append("../../Config/traceConfig.cfg");
 
 		FILE *file = fopen(strCfgPath.c_str(), "r");
 		if (file == nullptr)
@@ -299,7 +299,9 @@ namespace Trace {
 		// Open file
 		HRESULT hr = m_LogFile[iFile].Open(strFileName, IO::File::OpenMode::Append, IO::File::SharingMode::ReadShared);
 		if (FAILED(hr))
+		{
 			return hr;
+		}
 
 		m_LogFile[iFile].Seek(IO::File::SeekMode::End);
 
@@ -433,9 +435,9 @@ namespace Trace {
 					// build name
 					const char* strFormat = nullptr;
 					if (iFile == TRCOUT_FILE_LOG)
-						strFormat = "%s..\\log\\%s[%d_%04d_%02d_%02d]log.txt";
+						strFormat = "%s../log/%s[%d_%04d_%02d_%02d]log.txt";
 					else
-						strFormat = "%s..\\log\\%s[%d_%04d_%02d_%02d]logdbg.txt";
+						strFormat = "%s../log/%s[%d_%04d_%02d_%02d]logdbg.txt";
 
 					snprintf(strFileName, MAX_PATH, strFormat, Util::GetModulePathA(), Util::GetServiceNameA(), m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour);
 

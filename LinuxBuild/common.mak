@@ -10,7 +10,7 @@ LIBS?=
 
 # in-case not specified - for test
 OBJ_PATH=$(ROOT_PATH)/Server/bin/obj
-BIN_PATH=$(ROOT_PATH)/Server/bin/bin
+BIN_PATH=$(ROOT_PATH)/Server/bin
 LIB_PATH=$(ROOT_PATH)/Server/bin/lib
 TOOL_BIN_PATH=$(ROOT_PATH)/Tools/bin
 LINK_TYPE?=EXE
@@ -32,7 +32,7 @@ SOURCES ?= $(GREP_SOURCES:./%=%)
 
 
 TARGET_OBJ_PATH=$(OBJ_PATH)/$(BUILD_MODE)/$(PROJECT_NAME)
-TARGET_BIN_PATH=$(BIN_PATH)/$(BUILD_MODE)/$(PROJECT_NAME)
+TARGET_BIN_PATH=$(BIN_PATH)/$(BUILD_MODE)
 TARGET_LIB_PATH=$(LIB_PATH)/$(BUILD_MODE)
 
 export TARGET_OBJ_PATH
@@ -49,8 +49,8 @@ DEFINES+= $(BUILD_MODE) $(LOGNAME)
 CC=g++
 CFLAGS=-c -g -std=c++14 -pthread -static-libgcc -Wall $(addprefix -I,$(INCLUDES)) $(addprefix -D,$(DEFINES))
 CPPFLAGS:=$(CFLAGS)
-#LDFLAGS=-g -std=c++14 -pthread -static-libgcc -L$(TARGET_LIB_PATH)/ $(addprefix -l,$(LIBS))
-LDFLAGS=-g -std=c++14 -pthread -static-libgcc
+LDFLAGS=-g -std=c++14 -pthread -static-libgcc 
+#LDFLAGS=-g -std=c++14 -pthread -static-libgcc
 
 ifeq "$(BUILD_MODE)" "DEBUG"
 	CFLAGS+=-O0
@@ -64,12 +64,12 @@ TARGET_BUILD_COMMAND=
 
 ifeq "$(LINK_TYPE)" "EXE"
 	TARGET_FILE=$(TARGET_BIN_PATH)/$(PROJECT_NAME)
-	TARGET_BUILD_COMMAND=$(CC) $(LDFLAGS) $(OBJECTS) $(addprefix $(TARGET_LIB_PATH)/,$(LIBS))  -lxml2 -lcurl -lssl -lcrypto -ljsoncpp -lmysqlclient -o $(TARGET_FILE) 
+	TARGET_BUILD_COMMAND=$(CC) $(LDFLAGS) $(OBJECTS)  $(addprefix $(TARGET_LIB_PATH)/,$(LIBS)) -lxml2 -lcurl -lssl -lcrypto -ljsoncpp -lmysqlclient -o $(TARGET_FILE) 
 else ifeq "$(LINK_TYPE)" "LIB"
-	TARGET_FILE=$(TARGET_LIB_PATH)/$(PROJECT_NAME).a
+	TARGET_FILE=$(TARGET_LIB_PATH)/lib$(PROJECT_NAME).a
 	TARGET_BUILD_COMMAND=$(AR) cr $(TARGET_FILE) $(OBJECTS)
 else ifeq "$(LINK_TYPE)" "DLL"
-	TARGET_FILE=$(TARGET_BIN_PATH)/$(PROJECT_NAME).so
+	TARGET_FILE=$(TARGET_BIN_PATH)/lib$(PROJECT_NAME).so
 	TARGET_BUILD_COMMAND=$(CC) -shared $(LDFLAGS) $(OBJECTS) $(addprefix $(TARGET_LIB_PATH)/,$(LIBS))  -lxml2 -lcurl -lssl -lcrypto -ljsoncpp -lmysqlclient -o $(TARGET_FILE)  
 endif
 
