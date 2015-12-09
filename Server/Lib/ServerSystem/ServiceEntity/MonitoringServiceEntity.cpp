@@ -83,7 +83,7 @@ namespace Svr {
 
 	HRESULT MonitoringServiceEntity::RegisterServiceMessageHandler(ServerEntity *pServerEntity)
 	{
-		HRESULT hr = S_OK;
+		//HRESULT hr = S_OK;
 
 		ServiceEntity::RegisterServiceMessageHandler(pServerEntity);
 
@@ -91,10 +91,6 @@ namespace Svr {
 		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return S_OK; } );
 
 		return S_OK;
-
-	Proc_End:
-
-		return hr;
 	}
 
 	HRESULT MonitoringServiceEntity::TickUpdate(Svr::TimerAction *pAction)

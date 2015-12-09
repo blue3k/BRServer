@@ -202,13 +202,14 @@ namespace Net {
 		pConnOut = pConnection;
 		cid = pConnection->GetCID();
 
-		netChk(NetSystem::RegisterSocket(acceptedSocket, SockType::Stream, pConnection, false));
-
 		pConnection->SetConnectingTimeOut( Const::CONNECTION_TIMEOUT );
 
 		// Initialize connection
 		netChk( pConnection->InitConnection( acceptedSocket, connectionInfo ) );
 		netTrace(TRC_CONNECTION, "Connection Accepted CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+
+
+		netChk(NetSystem::RegisterSocket(SockType::Stream, pConnection));
 
 		pConn = nullptr;
 
@@ -373,12 +374,11 @@ namespace Net {
 			netErr( E_UNEXPECTED );
 		}
 
-		netChk(NetSystem::RegisterSocket(socket, SockType::Stream, this, true));
-
-
 		SetSocket( socket );
 		socket = INVALID_SOCKET;
 
+		GetIOFlagsEditable().IsListenSocket = 1;
+		netChk(NetSystem::RegisterSocket(SockType::Stream, this));
 
 		// Prepare connection
 		netChk( GetConnectionManager().InitManager( Const::SVR_PUBLIC_CONNECTION_POOLCACHE ) );

@@ -166,10 +166,42 @@ namespace Util {
 
 	TimeStampMS TimeMinNonZero(TimeStampMS timeMs, TimeStampMS timeMs2)
 	{
-		if (timeMs == TimeStampMS::min()) return timeMs2;
-		if (timeMs2 == TimeStampMS::min()) return timeMs;
+		TimeStampMS minT = TimeStampMS::min();
+		//TimeStampMS maxT = TimeStampMS::max();
+
+		if (timeMs == minT) return timeMs2;
+		if (timeMs2 == minT) return timeMs;
 
 		return timeMs > timeMs2 ? timeMs2 : timeMs;
+	}
+
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Time stamp timer
+	//
+
+
+	// Timer check update
+	bool	TimeStampTimer::CheckTimer()
+	{
+		if (m_ulTimeToExpire == InvalidTime)
+			return false;
+
+		auto diff = m_ulTimeToExpire - Time.GetTimeMs();
+		bool bExpired = ((INT)diff.count() < 0);
+
+		if (bExpired)
+		{
+			if (m_delOnExpired)
+				m_delOnExpired();
+
+			// Clear timer
+			m_ulTimeToExpirePrev = m_ulTimeToExpire;
+			m_ulTimeToExpire = InvalidTime;
+		}
+
+		return bExpired;
 	}
 
 

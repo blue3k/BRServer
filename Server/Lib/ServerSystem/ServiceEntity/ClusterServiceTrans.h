@@ -51,7 +51,7 @@ namespace Svr {
 
 	public:
 		ClusterInitializationTrans();
-		virtual ~ClusterInitializationTrans() {}
+		virtual ~ClusterInitializationTrans();
 
 		//virtual void Dispose() override;
 

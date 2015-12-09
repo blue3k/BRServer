@@ -278,6 +278,8 @@ namespace Net {
 		~ConnectionUDPClient();
 
 
+		virtual SOCKET GetIOSocket() override { return GetSocket(); }
+
 		// called when reciving TCP message
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
 		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) override;

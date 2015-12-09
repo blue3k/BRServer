@@ -201,6 +201,16 @@ namespace Svr {
 	}
 
 
+	HRESULT ClusteredServiceEntity::TickUpdate(TimerAction *pAction)
+	{
+		return ServiceEntity::TickUpdate(pAction);
+	}
+
+	HRESULT ClusteredServiceEntity::ProcessTransaction(Transaction* &pTrans)
+	{
+		return ServiceEntity::ProcessTransaction(pTrans);
+	}
+
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -359,7 +369,7 @@ namespace Svr {
 		}
 		pService = *itFound;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -367,7 +377,7 @@ namespace Svr {
 	// Find random service, maybe lowest workload service
 	HRESULT ClusteredServiceEntity::FindRandomService( ServerServiceInformation* &pService )
 	{
-		HRESULT hr = S_OK;
+		//HRESULT hr = S_OK;
 		ServiceTableItem *pBestService = nullptr;
 
 		auto itIDMap = m_ServiceEntityUIDMap.begin();
@@ -384,7 +394,7 @@ namespace Svr {
 
 		pService = pBestService;
 
-	Proc_End:
+	//Proc_End:
 
 		return pBestService != nullptr ? S_OK : E_FAIL;
 	}
@@ -411,7 +421,7 @@ namespace Svr {
 		}
 		itWatcher = nullptr;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -428,7 +438,7 @@ namespace Svr {
 		}
 		itIDMap = nullptr;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -495,7 +505,7 @@ namespace Svr {
 		//	pService->GetConnection()->GetPolicy<Policy::ISvrPolicyClusterServer>()->ClusterMasterAssignedS2CEvt( RouteContext( GetEntityUID(), pService->GetEntityUID() ),1, GetClusterID(), entityUID );
 		//});
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -527,7 +537,7 @@ namespace Svr {
 		if (FAILED(m_ServiceEntityUIDMap.find((UINT64)GetMasterUID(), itService))
 			|| !itService->IsServiceAvailable() )
 		{
-			ServiceTableItem *pMaster = itService.IsValid() ? *itService : nullptr;
+			//ServiceTableItem *pMaster = itService.IsValid() ? *itService : nullptr;
 
 			if( !m_MasterCheckTimer.IsTimerWorking() )
 			{
@@ -700,7 +710,7 @@ namespace Svr {
 
 		} while( pNextService != nullptr && !pNextService->IsServiceAvailable() );
 
-	Proc_End:
+	//Proc_End:
 
 		return pNextService ? hr : E_FAIL;
 	}
@@ -951,7 +961,7 @@ namespace Svr {
 
 		pService = pTblItem;
 
-	Proc_End:
+	//Proc_End:
 
 		return pService ? hr : E_FAIL;
 	}

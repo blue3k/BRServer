@@ -386,18 +386,8 @@ namespace BR {
 
 		netMem( pConn = dynamic_cast<ConnectionTCPClient*>(GetConnectionManager().NewConnection()) );
 
-		netChk(NetSystem::RegisterSocket(socket, SockType::Stream, pConn, false));
-
 
 		SetSockAddr( sockAddrDest, strServerIP, usServerPort );
-
-
-		if( connect(socket, (sockaddr*)&sockAddrDest, sizeof(sockAddrDest)) != SOCKET_ERROR
-			|| GetLastWSAHRESULT() != E_NET_WOULDBLOCK )
-		{
-			netTrace(Trace::TRC_ERROR, "connect failed, TCP {0:X8}", GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
-		}
 
 		memset( &connectionInfo, 0, sizeof(connectionInfo) );
 		SockAddr2Addr( sockAddr, connectionInfo.Local );
@@ -408,6 +398,16 @@ namespace BR {
 		netChk( pConn->InitConnection( socket, connectionInfo ) );
 		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 		socket = INVALID_SOCKET;
+
+
+		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn));
+
+		if (connect(pConn->GetIOSocket(), (sockaddr*)&sockAddrDest, sizeof(sockAddrDest)) != SOCKET_ERROR
+			|| GetLastWSAHRESULT() != E_NET_WOULDBLOCK)
+		{
+			netTrace(Trace::TRC_ERROR, "connect failed, TCP {0:X8}", GetLastWSAHRESULT());
+			netErr(E_UNEXPECTED);
+		}
 
 		netChk( GetConnectionManager().PendingWaitConnection( pConn ) );
 
@@ -824,7 +824,7 @@ namespace BR {
 		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 		socket = INVALID_SOCKET;
 
-		netChk(NetSystem::RegisterSocket(pConn->GetSocket(), SockType::DataGram, pConn, false));
+		netChk(NetSystem::RegisterSocket(SockType::DataGram, pConn));
 
 		netChk( pConn->PendingRecv() );
 

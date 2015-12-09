@@ -37,8 +37,8 @@ namespace Svr {
 	//
 
 	LoginClusterServiceEntity::LoginClusterServiceEntity(ClusterMembership initialMembership)
-		:IServerComponent(ComponentID)
-		,ReplicaClusterServiceEntity(ClusterID::LoginServers, initialMembership )
+		: ReplicaClusterServiceEntity(ClusterID::LoginServers, initialMembership )
+		, IServerComponent(ComponentID)
 	{
 	}
 	

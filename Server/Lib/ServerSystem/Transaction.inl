@@ -117,7 +117,7 @@ inline TimeStampMS Transaction::UpdateHeartBitTime()
 // Check timeout, ms
 inline HRESULT Transaction::CheckHeartBitTimeout()
 {
-	if ((LONG)(GetHeartBitTimeout() - Util::Time.GetTimeMs()).count() < 0)
+	if ((INT)(GetHeartBitTimeout() - Util::Time.GetTimeMs()).count() < 0)
 		return E_SVR_TRANSACTION_TIMEOUT;
 
 	return S_OK;
@@ -132,6 +132,7 @@ inline TimeStampMS Transaction::GetHeartBitTimeout()
 inline void Transaction::SetTimer( DurationMS ms )
 {
 	m_Timer.SetTimer( ms );
+	Assert(m_Timer.IsTimerWorking());
 }
 
 inline void Transaction::ClearTimer()

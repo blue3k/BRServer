@@ -52,11 +52,13 @@ namespace Svr {
 	//
 
 	ServerServiceInformation::ServerServiceInformation( ClusterID clusterID, ServerEntity* pServerEntity, ClusterMembership membership )
-		:m_ClusterID(clusterID), m_ServerEntity(pServerEntity), m_ClusterMembership(membership)
-		,m_ServiceStatus(ServiceStatus::Offline)
-		,m_VotedCount(0)
-		,m_Workload(0)
-		,m_ServiceBase(nullptr)
+		: m_ClusterID(clusterID)
+		, m_ServerEntity(pServerEntity)
+		, m_ClusterMembership(membership)
+		, m_ServiceStatus(ServiceStatus::Offline)
+		, m_Workload(0)
+		, m_VotedCount(0)
+		, m_ServiceBase(nullptr)
 	{
 	}
 

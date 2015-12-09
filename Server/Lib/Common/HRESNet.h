@@ -808,3 +808,30 @@
 //
 #define E_NET_OPNOTSUPP                  0xC7030051L
 
+//
+// MessageId: E_NET_BADFLAGS
+//
+// MessageText:
+//
+// An invalid value was provided for the ai_flags member of the pHints parameter.
+//
+#define E_NET_BADFLAGS                   0xC7030052L
+
+//
+// MessageId: E_NET_FAMILY
+//
+// MessageText:
+//
+// Bad network family
+//
+#define E_NET_FAMILY                     0xC7030053L
+
+//
+// MessageId: E_NET_INVALID_SERVICE
+//
+// MessageText:
+//
+// The pServiceName parameter is not supported for the specified ai_socktype member of the pHints parameter.
+//
+#define E_NET_INVALID_SERVICE            0xC7030054L
+

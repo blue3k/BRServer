@@ -137,7 +137,7 @@ namespace Svr {
 		if (pTickTask == nullptr)
 			return false;
 
-		auto nextDiff = (LONG)(TimeData.Components.NextTickTime - Util::Time.GetTimeMs()).count();
+		auto nextDiff = (INT)(TimeData.Components.NextTickTime - Util::Time.GetTimeMs()).count();
 		if (nextDiff <= 0)
 		{
 			// Do default rescheduling

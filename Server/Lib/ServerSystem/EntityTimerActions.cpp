@@ -43,7 +43,7 @@ namespace Svr {
 	void TimerActionTransaction::SetNextTickTime(SharedPointerT<Transaction>& pTrans)
 	{
 		auto nextTick = Util::TimeMinNonZero(pTrans->GetTimerExpireTime(), pTrans->GetHeartBitTimeout());
-		Assert(nextTick != TimeStampMS::max());
+		Assert(nextTick != TimeStampMS::max() && nextTick != TimeStampMS::min());
 		TimerAction::SetNextTickTime(nextTick);
 	}
 

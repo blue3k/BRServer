@@ -1196,7 +1196,7 @@ Proc_End:
 				netChk( CloseConnection() );
 				goto Proc_End;
 			}
-			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > (LONG)GetHeartbitTry() ) // heartbit time
+			else if( (INT)(ulTimeCur-m_ulNetCtrlTryTime).count() > (INT)GetHeartbitTry() ) // heartbit time
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netChk( SendPending( PACKET_NETCTRL_HEARTBIT, 0, msgIDTem ) );

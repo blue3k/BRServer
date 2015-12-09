@@ -66,7 +66,7 @@ namespace Net {
 			pConnection = (ConnectionTCP*)(Connection*)pConn;
 			pConnection->CloseConnection();
 			pConn = SharedPointerT<Connection>();
-			netTrace(TRC_INFO, "Swap incomming connection socket with old server connection CID:%0%", pConnection->GetCID());
+			netTrace(TRC_INFO, "Swap incomming connection socket with old server connection CID:{0}", pConnection->GetCID());
 		}
 		else
 		{
@@ -74,7 +74,7 @@ namespace Net {
 			pConnection = (ConnectionTCP*)GetConnectionManager().NewConnection();
 			if (pConnection == nullptr)// Maybe maxconnection ?
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to allocate a new connection now active:%0%", GetConnectionManager().GetNumActiveConnection());
+				netTrace(Trace::TRC_ERROR, "Failed to allocate a new connection now active:{0}", GetConnectionManager().GetNumActiveConnection());
 				netErr(E_FAIL);
 			}
 
@@ -82,14 +82,14 @@ namespace Net {
 			bNeedPending = true;
 		}
 
-		netChk(NetSystem::RegisterSocket(acceptedSocket, SockType::Stream, pConnection, false));
-
 		pConnOut = pConnection;
 		cid = pConnection->GetCID();
 
 		// Initialize connection
 		netChk( pConnection->InitConnection( acceptedSocket, connectionInfo ) );
-		netTrace(TRC_CONNECTION, "Initialize connection CID:%0%, Addr:%1%:%2%", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote.strAddr, pConnection->GetConnectionInfo().Remote.usPort);
+		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote.strAddr, pConnection->GetConnectionInfo().Remote.usPort);
+
+		netChk(NetSystem::RegisterSocket(SockType::Stream, pConnection));
 
 		if (bNeedPending)
 		{
@@ -114,7 +114,7 @@ namespace Net {
 		else
 		{
 			if( pConn != nullptr )
-				netTrace( TRC_NET, "Net Con Accept Svr:%0%, CID:%1%, From %2%", GetLocalAddress().usPort, cid, connectionInfo.Remote );
+				netTrace( TRC_NET, "Net Con Accept Svr:{0}, CID:{1}, From {2}", GetLocalAddress().usPort, cid, connectionInfo.Remote );
 		}
 
 		return hr;
@@ -216,7 +216,7 @@ namespace Net {
 		netChk(pConn->InitConnection(socket, connectionInfo));
 		socket = INVALID_SOCKET;
 
-		netChk(NetSystem::RegisterSocket(pConn->GetSocket(), SockType::Stream, pConn, false));
+		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn));
 
 		if(SUCCEEDED(pConn->Connect()))
 			pConn->WaitConnect();
@@ -244,7 +244,7 @@ namespace Net {
 
 		if(FAILED(Connect(pConn, serverID, netClass, strDstIP, usDstPort)))
 		{
-			netTrace(Trace::TRC_WARN, "Opening connection is failed, ServerID %0%", serverID);
+			netTrace(Trace::TRC_WARN, "Opening connection is failed, ServerID {0}", serverID);
 		}
 
 		pConnection = pConn;
@@ -254,7 +254,7 @@ namespace Net {
 
 		if( SUCCEEDED(hr) )
 		{
-			netTrace(TRC_NET, "ServerPeer Allowing Server:%3%:%4%, %0%:%1%, CID:%2%", strDstIP, usDstPort, CID, netClass, serverID);
+			netTrace(TRC_NET, "ServerPeer Allowing Server:%3%:%4%, {0}:{1}, CID:{2}", strDstIP, usDstPort, CID, netClass, serverID);
 		}
 
 		return hr;

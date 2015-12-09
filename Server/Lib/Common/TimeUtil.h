@@ -123,7 +123,7 @@ namespace Util {
 		inline bool	IsTimerWorking() const;
 
 		// Timer check update
-		inline bool	CheckTimer();
+		bool	CheckTimer();
 	};
 
 

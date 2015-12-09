@@ -244,17 +244,17 @@ namespace Hash {
 
 			public:
 				iterator()
-					:m_bIsIterInBucket(false),
-					m_pContainer(NULL),
-					m_iIdx(END_IDX)
+					: m_bIsIterInBucket(false)
+					, m_pContainer(nullptr)
+					, m_iIdx(END_IDX)
 				{
 				}
 
 				iterator( const iterator& src )
-					:m_bIsIterInBucket(false),
-					m_pContainer(src.m_pContainer),
-					m_iterBucket(src.m_iterBucket),
-					m_iIdx(src.m_iIdx)
+					: m_bIsIterInBucket(false)
+					, m_iterBucket(src.m_iterBucket)
+					, m_pContainer(src.m_pContainer)
+					, m_iIdx(src.m_iIdx)
 				{
 					if( m_pContainer && m_iterBucket != m_pContainer->bucket_end() )
 					{

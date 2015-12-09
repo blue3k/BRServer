@@ -46,9 +46,11 @@ namespace Svr {
 		std::atomic<int> m_IsWriteLocked;
 
 		std::function<bool(const UINT64&, const SharedPointerT<TimerAction>&)> m_TimerTickActionUpdate;
+		bool TimerTickActionUpdate(const UINT64& keyVal, const SharedPointerT<TimerAction>& pAction);
 
 		TimeStampMS m_GetNextTickResult;
 		std::function<bool(const UINT64&, const SharedPointerT<TimerAction>&)> m_TimerTickActionGetNextTick;
+		bool TimerTickActionGetNextTick(const UINT64& keyVal, const SharedPointerT<TimerAction>& pAction);
 
 	public:
 

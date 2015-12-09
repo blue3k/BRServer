@@ -61,10 +61,10 @@ namespace Svr {
 			setsid(); /* obtain a new process group */
 			for (int iDescriptor = getdtablesize(); iDescriptor >= 0; --iDescriptor) close(iDescriptor); /* close all descriptors */
 			int i = open("/dev/null", O_RDWR); dup(i); dup(i); /* handle standart I/O */
-			umask(027); /* set newly created file permissions */
+			//umask(027); /* set newly created file permissions */
 			//chdir(RUNNING_DIR); /* change running directory */
 			snprintf(lockFileName, sizeof(lockFileName), "%s.Lock", Util::GetModuleNameA());
-			lfp = open(lockFileName, O_RDWR | O_CREAT, 0640);
+			lfp = open(lockFileName, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP);// 0640);
 			if (lfp<0) exit(1); /* can not open */
 			if (lockf(lfp, F_TLOCK, 0)<0) exit(0); /* can not lock */
 												   /* first instance continues */
@@ -110,7 +110,7 @@ namespace Svr {
 
 			chdir(Util::GetModulePathA());
 
-			strCfgPath.append("../../Config/ServerConfig.xml");
+			strCfgPath.append("../../Config/ServerConfig_linux.xml");
 
 
 			g_pSvrInstance = pSvrInstance;

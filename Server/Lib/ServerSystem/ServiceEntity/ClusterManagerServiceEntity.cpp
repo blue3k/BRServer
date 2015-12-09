@@ -59,7 +59,7 @@ namespace Svr {
 
 		svrChk( m_ClusterIDMap.insert( (UINT)GetClusterID(), this ) );
 
-		svrChk(ReplicaClusterServiceEntity::StartInitializeTransaction() );
+		svrChk(StartInitializeTransaction() );
 
 	Proc_End:
 

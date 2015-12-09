@@ -45,7 +45,10 @@ namespace Net {
 		{
 			hr = writeQueue->GetFront(pSendBuffer);
 			if (FAILED(hr))
+			{
+				hr = S_OK;
 				break;
+			}
 
 			hr = SendBuffer(pSendBuffer);
 			switch (hr)

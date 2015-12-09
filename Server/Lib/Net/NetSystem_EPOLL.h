@@ -177,7 +177,7 @@ namespace Net {
 			return m_hEpoll;
 		}
 
-		HRESULT RegisterSocket(SOCKET sfd, INetIOCallBack* cbInstance, bool isListenSocket);
+		HRESULT RegisterSocket(INetIOCallBack* cbInstance);
 
 		virtual void Run() override;
 

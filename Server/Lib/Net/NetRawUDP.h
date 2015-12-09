@@ -64,6 +64,8 @@ namespace Net {
 		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
 		HRESULT SendMsg(const sockaddr_in6& dest, Message::MessageData *pMsg);
 
+		virtual SOCKET GetIOSocket() override { return GetSocket(); }
+
 		// called when incomming message occure
 		HRESULT OnRecv(const sockaddr_in6& remoteAddr, UINT uiBuffSize, const BYTE* pBuff);
 

@@ -81,26 +81,45 @@ namespace IO {
 	{
 		Close();
 
-		DWORD accessMode = 0;
+		UINT uiOpenMode = 0;
+		UINT uiSharingMode = 0;
 
 		switch (openMode)
 		{
 		case OpenMode::Read:
-			accessMode = O_RDONLY;
+			uiOpenMode = O_RDONLY;
 			break;
 		case OpenMode::CreateNew:
-			accessMode = O_RDWR | O_CREAT | O_TRUNC;
+			uiOpenMode = O_RDWR | O_CREAT | O_TRUNC;
 			break;
 		case OpenMode::Append:
-			accessMode = O_RDWR | O_CREAT | O_APPEND;
+			uiOpenMode = O_RDWR | O_CREAT | O_APPEND;
 			break;
 		default:
 			return E_UNEXPECTED;
 		}
 
+		switch (sharingMode)
+		{
+		case SharingMode::Shared:
+		default:
+			uiSharingMode = S_IRWXU | S_IRWXG | S_IRWXO;
+			break;
+		case SharingMode::ReadShared:
+			uiSharingMode = S_IRWXU | S_IRGRP | S_IROTH;
+			break;
+		case SharingMode::WriteShared:
+			uiSharingMode = S_IRWXU | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
+			break;
+		case SharingMode::Exclusive:
+			uiSharingMode = S_IRWXU;
+			break;
+		}
+
+
 		m_FileHandle = (NativeHandle)(intptr_t)open(
 			filePath,
-			accessMode );
+			uiOpenMode, uiSharingMode);
 
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
 		{

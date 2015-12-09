@@ -59,8 +59,7 @@ namespace Net {
 
 		if (localAddress.strAddr[0] == '\0')
 		{
-			if (!Net::GetLocalAddressIPv6(myAddress))
-				return E_UNEXPECTED;
+			netChk(Net::GetLocalAddressIPv6(myAddress));
 		}
 		else
 		{
@@ -135,20 +134,23 @@ namespace Net {
 		}
 		m_LocalSockAddress = bindAddr;
 
-
-		netChk(NetSystem::RegisterSocket(socket, SockType::DataGram, this, false));
-
 		m_Socket = socket;
 		socket = INVALID_SOCKET;
 
 
-		// Ready recv
-		if (m_pRecvBuffers) delete[] m_pRecvBuffers;
-		netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD]);
+		netChk(NetSystem::RegisterSocket(SockType::DataGram, this));
 
-		for (INT uiRecv = 0; uiRecv < Const::SVR_NUM_RECV_THREAD; uiRecv++)
+
+		// Ready recv
+		if (NetSystem::IsProactorSystem())
 		{
-			netChk(PendingRecv(&m_pRecvBuffers[uiRecv]));
+			if (m_pRecvBuffers) delete[] m_pRecvBuffers;
+			netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD]);
+
+			for (INT uiRecv = 0; uiRecv < Const::SVR_NUM_RECV_THREAD; uiRecv++)
+			{
+				netChk(PendingRecv(&m_pRecvBuffers[uiRecv]));
+			}
 		}
 
 
@@ -230,7 +232,6 @@ namespace Net {
 	HRESULT RawUDP::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
 		HRESULT hr = S_OK, hrErr = S_OK;
-		//UINT bufferLen = pSendBuffer->TransferredSize;
 
 		hrErr = NetSystem::SendTo(GetSocket(), pSendBuffer);
 		switch (hrErr)
@@ -343,11 +344,11 @@ namespace Net {
 		{
 			if (msgID.IDs.Type == Message::MSGTYPE_NETCONTROL)
 			{
-				//netTrace(TRC_RAW, "RawUDP SendCtrl dest:{0}, msg:{1}, Len:{2}", dest, msgID, uiMsgLen);
+				netTrace(TRC_RAW, "RawUDP SendCtrl dest:{0}, msg:{1}, Len:{2}", dest, msgID, uiMsgLen);
 			}
 			else
 			{
-				//netTrace(TRC_RAW, "RawUDP Send dest:{0}, msg:{1}, Len:{2}", dest, msgID, uiMsgLen);
+				netTrace(TRC_RAW, "RawUDP Send dest:{0}, msg:{1}, Len:{2}", dest, msgID, uiMsgLen);
 			}
 		}
 
@@ -402,7 +403,7 @@ namespace Net {
 		HRESULT hr = S_OK, hrErr = S_OK;
 
 		netChkPtr(pIOBuffer);
-		//pIOBuffer = m_pRecvBuffers;
+
 		pIOBuffer->SetupRecvUDP(0);
 
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);

@@ -77,6 +77,8 @@ namespace Net {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		//  Net callback
 
+		virtual SOCKET GetIOSocket() override { return GetSocket(); }
+
 		// called when reciving TCP message
 		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) override;
 

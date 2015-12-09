@@ -181,16 +181,14 @@ namespace Net {
 
 	}
 
-	HRESULT EPOLLWorker::RegisterSocket(SOCKET sfd, INetIOCallBack* cbInstance, bool isListenSocket)
+	HRESULT EPOLLWorker::RegisterSocket(INetIOCallBack* cbInstance)
 	{
 		epoll_event epollEvent;
 
 		memset(&epollEvent, 0, sizeof(epollEvent));
 		epollEvent.events = EPOLLIN | EPOLLOUT | EPOLLPRI | EPOLLET;// EPOLLERR | EPOLLHUP;
-		epollEvent.data.u32 = isListenSocket ? 1 : 0;
-		epollEvent.data.fd = sfd;
 		epollEvent.data.ptr = cbInstance;
-		if (epoll_ctl(m_hEpoll, EPOLL_CTL_ADD, sfd, &epollEvent) == -1) {
+		if (epoll_ctl(m_hEpoll, EPOLL_CTL_ADD, cbInstance->GetIOSocket(), &epollEvent) == -1) {
 			netTrace(Trace::TRC_ERROR, "epoll_ctl: listen_sock");
 			return E_FAIL;
 		}
@@ -205,6 +203,18 @@ namespace Net {
 
 		// Accept will happened in network thread
 		hr = pCallBack->Accept(pAcceptInfo);
+		switch (hr)
+		{
+		case S_OK:
+			break;
+		case E_NOTIMPL:
+			Assert(false); // Fix it!
+			break;
+		case E_NET_TRY_AGAIN:
+		default:
+			goto Proc_End;
+			break;
+		}
 
 		netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
 		pAcceptInfo = nullptr;
@@ -261,7 +271,11 @@ namespace Net {
 		if (m_HandleSend && (events & EPOLLOUT))
 		{
 			// This call will just poke working thread
-			netChk(pCallBack->ProcessSendQueue());
+			hr = pCallBack->ProcessSendQueue();
+			if (FAILED(hr))
+			{
+				netErr(hr);
+			}
 		}
 
 	Proc_End:
@@ -317,9 +331,9 @@ namespace Net {
 				}
 
 				auto& curEvent = events[iEvent];
-				bool isListenSocket = curEvent.data.u32 != 0;
 				auto pCallback = (INetIOCallBack*)curEvent.data.ptr;
-				SOCKET sock = curEvent.data.fd;
+				bool isListenSocket = pCallback->GetIOFlags().IsListenSocket != 0;
+				SOCKET sock = pCallback->GetIOSocket();
 
 				if (isListenSocket)
 				{
@@ -544,21 +558,21 @@ namespace Net {
 
 
 		// Register the socket to EPOLL
-		HRESULT RegisterToEPOLL(SOCKET sock, SockType sockType, INetIOCallBack* cbInstance, bool isListenSocket)
+		HRESULT RegisterToEPOLL(SockType sockType, INetIOCallBack* cbInstance)
 		{
 			if (sockType == SockType::Stream) // TCP
 			{
 				if (m_ListenWorker == nullptr)
 					return E_NET_NOTINITIALISED;
 
-				if (isListenSocket)
+				if (cbInstance->GetIOFlags().IsListenSocket != 0)
 				{
-					return m_ListenWorker->RegisterSocket(sock, cbInstance, isListenSocket);
+					return m_ListenWorker->RegisterSocket(cbInstance);
 				}
 				else
 				{
 					auto assignIndex = m_iTCPAssignIndex.fetch_add(1,std::memory_order_relaxed) % m_WorkerTCP.GetSize();
-					m_WorkerTCP[assignIndex]->RegisterSocket(sock, cbInstance, isListenSocket);
+					m_WorkerTCP[assignIndex]->RegisterSocket(cbInstance);
 				}
 			}
 			else
@@ -573,7 +587,7 @@ namespace Net {
 				}
 
 				// UDP workers are sharing epoll, add any of them will work same.
-				return m_WorkerUDP[0]->RegisterSocket(sock, cbInstance, isListenSocket);
+				return m_WorkerUDP[0]->RegisterSocket(cbInstance);
 			}
 
 			return S_OK;
@@ -644,14 +658,15 @@ namespace Net {
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
 
-		HRESULT RegisterSocket(SOCKET sock, SockType sockType, INetIOCallBack* cbInstance, bool isListenSocket)
+		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance)
 		{
 			HRESULT hr = S_OK;
 
 			netChkPtr(cbInstance);
+			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
 
-			netChk(EPOLLSystem::GetSystem().MakeSocketNonBlocking(sock));
-			netChk(EPOLLSystem::GetSystem().RegisterToEPOLL(sock, sockType, cbInstance, isListenSocket));
+			netChk(EPOLLSystem::GetSystem().MakeSocketNonBlocking(cbInstance->GetIOSocket()));
+			netChk(EPOLLSystem::GetSystem().RegisterToEPOLL(sockType, cbInstance));
 
 		Proc_End:
 

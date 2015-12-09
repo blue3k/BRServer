@@ -134,7 +134,7 @@ namespace BR {
 
 		svrChkPtr( pRes );
 
-		svrTrace( Trace::TRC_ERROR, "Trans Proc Invalid call, %0% TID:%1%, Msg:%2%", 
+		svrTrace( Trace::TRC_ERROR, "Trans Proc Invalid call, {0} TID:{1}, Msg:{2}", 
 								typeid(*this).name(),
 								GetTransID(),
 								pRes->GetMsgID() );

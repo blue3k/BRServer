@@ -20,7 +20,10 @@
 #include "Net/NetUtil.h"
 #include "Net/NetSystem.h"
 
-
+#if !WINDOWS
+#include <net/if.h>
+#include <ifaddrs.h>
+#endif
 
 
 namespace BR {
@@ -71,54 +74,8 @@ namespace Net {
 	}
 
 
-	bool GetLocalAddress(NetAddress &addr)
-	{
-		char tempBuffer[128];
-		//Convert IPV6 to IPV4
-		struct addrinfo hints, *res;
-		bool bIsFound = false, bIsFound6 = false;
-
-		// Convert remote address
-		memset(&hints, 0, sizeof hints);
-		hints.ai_family = AF_UNSPEC;  // use IPv4 or IPv6
-		hints.ai_socktype = SOCK_STREAM;
-		hints.ai_flags = AI_PASSIVE;
-		auto error = getaddrinfo("", nullptr, &hints, &res);
-		if (error != 0)
-			return false;
-
-		for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
-		{
-			switch (curAddr->ai_family)
-			{
-			case AF_INET:
-			{
-				sockaddr_in* psockAddr4 = ((sockaddr_in*)curAddr->ai_addr);
-				bIsFound = inet_ntop(AF_INET, &psockAddr4->sin_addr, tempBuffer, sizeof tempBuffer) != nullptr;
-			}
-			break;
-			case AF_INET6:
-			{
-				sockaddr_in6* psockAddr6 = ((sockaddr_in6*)curAddr->ai_addr);
-				bIsFound6 = inet_ntop(AF_INET, &psockAddr6->sin6_addr, tempBuffer, sizeof tempBuffer) != nullptr;
-			}
-			break;
-			}
-
-			if (bIsFound6) break;
-		}
-		freeaddrinfo(res);
-
-		if (bIsFound || bIsFound6)
-		{
-			StrUtil::StringCpy(addr.strAddr, tempBuffer);
-			return true;
-		}
-
-		return false;
-	}
-
-	bool GetLocalAddressIPv4(NetAddress &addr)
+#if WINDOWS
+	HRESULT GetLocalAddressIPv4(NetAddress &addr)
 	{
 		char tempBuffer[128];
 		//Convert IPV6 to IPV4
@@ -131,8 +88,19 @@ namespace Net {
 		hints.ai_socktype = SOCK_STREAM;
 		hints.ai_flags = AI_PASSIVE;
 		auto error = getaddrinfo("", nullptr, &hints, &res);
-		if (error != 0)
-			return false;
+		switch (error)
+		{
+		case 0:				break;
+		case EAI_AGAIN:		return E_NET_TRY_AGAIN;
+		case EAI_BADFLAGS:	return E_NET_BADFLAGS;
+		case EAI_FAIL:		return E_FAIL;
+		case EAI_FAMILY:	return E_NET_FAMILY;
+		case EAI_MEMORY:	return E_OUTOFMEMORY;
+		case EAI_NONAME:	return E_NET_HOST_NOT_FOUND;
+		case EAI_SERVICE:	return E_NET_INVALID_SERVICE;
+		case EAI_SOCKTYPE:	return E_NET_NOTSOCK;
+		default:			return E_UNEXPECTED;
+		}
 
 		for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
 		{
@@ -150,12 +118,12 @@ namespace Net {
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
-		return bIsFound;
+		return bIsFound ? S_OK : E_FAIL;
 	}
 
-	bool GetLocalAddressIPv6(NetAddress &addr)
+	HRESULT GetLocalAddressIPv6(NetAddress &addr)
 	{
-		char tempBuffer[128];
+		char tempBuffer[256];
 		//Convert IPV6
 		struct addrinfo hints, *res;
 		bool bIsFound = false;
@@ -166,15 +134,26 @@ namespace Net {
 		hints.ai_socktype = SOCK_DGRAM;
 		hints.ai_flags = AI_PASSIVE;
 		auto error = getaddrinfo("", nullptr, &hints, &res);
-		if (error != 0)
-			return false;
+		switch (error)
+		{
+		case 0:				break;
+		case EAI_AGAIN:		return E_NET_TRY_AGAIN;
+		case EAI_BADFLAGS:	return E_NET_BADFLAGS;
+		case EAI_FAIL:		return E_FAIL;
+		case EAI_FAMILY:	return E_NET_FAMILY;
+		case EAI_MEMORY:	return E_OUTOFMEMORY;
+		case EAI_NONAME:	return E_NET_HOST_NOT_FOUND;
+		case EAI_SERVICE:	return E_NET_INVALID_SERVICE;
+		case EAI_SOCKTYPE:	return E_NET_NOTSOCK;
+		default:			return E_UNEXPECTED;
+		}
 
 		for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
 		{
 			if (curAddr->ai_family == AF_INET6)
 			{
 				sockaddr_in6* psockAddr6 = ((sockaddr_in6*)curAddr->ai_addr);
-				if (inet_ntop(AF_INET6, &psockAddr6->sin6_addr, tempBuffer, sizeof tempBuffer) != nullptr)
+				if (inet_ntop(AF_INET6, &psockAddr6->sin6_addr, tempBuffer, sizeof(tempBuffer)) != nullptr)
 				{
 					bIsFound = true;
 					break;
@@ -188,9 +167,138 @@ namespace Net {
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
-		return bIsFound;
+		return bIsFound ? S_OK : E_FAIL;
 	}
 
+#else
+
+
+	//HRESULT GetLocalAddress(SockFamily family, NetAddress &addr)
+	//{
+	//	char tempBuffer[NI_MAXHOST];
+	//	//Convert IPV6
+	//	struct addrinfo hints, *res;
+	//	bool bIsFound = false;
+
+	//	// Convert remote address
+	//	memset(&hints, 0, sizeof hints);
+	//	hints.ai_family = (int)family;  // use IPv6
+	//	hints.ai_socktype = SOCK_DGRAM;
+	//	hints.ai_flags = AI_PASSIVE;
+	//	auto error = getaddrinfo(nullptr, "1111", &hints, &res);
+	//	switch (error)
+	//	{
+	//	case 0:				break;
+	//	case EAI_AGAIN:		return E_NET_TRY_AGAIN;
+	//	case EAI_BADFLAGS:	return E_NET_BADFLAGS;
+	//	case EAI_FAIL:		return E_FAIL;
+	//	case EAI_FAMILY:	return E_NET_FAMILY;
+	//	case EAI_MEMORY:	return E_OUTOFMEMORY;
+	//	case EAI_NONAME:	return E_NET_HOST_NOT_FOUND;
+	//	case EAI_SERVICE:	return E_NET_INVALID_SERVICE;
+	//	case EAI_SOCKTYPE:	return E_NET_NOTSOCK;
+	//	default:			return E_UNEXPECTED;
+	//	}
+
+	//	for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
+	//	{
+	//		switch (curAddr->ai_family)
+	//		{
+	//		case AF_INET:
+	//		{
+	//			struct sockaddr_in *psockAddr = (struct sockaddr_in *)curAddr->ai_addr;
+	//			bIsFound = inet_ntop(AF_INET, &psockAddr->sin_addr, tempBuffer, sizeof tempBuffer) != nullptr;
+	//			break;
+	//		}
+
+	//		case AF_INET6:
+	//		{
+	//			struct sockaddr_in6 *psockAddr = (struct sockaddr_in6 *)curAddr->ai_addr;
+	//			inet_ntop(AF_INET6, &psockAddr->sin6_addr, tempBuffer, sizeof tempBuffer) != nullptr;
+	//			break;
+	//		}
+	//		}
+	//	}
+	//	freeaddrinfo(res);
+
+	//	if (bIsFound)
+	//	{
+	//		StrUtil::StringCpy(addr.strAddr, tempBuffer);
+	//	}
+
+	//	return bIsFound ? S_OK : E_FAIL;
+	//}
+
+	HRESULT GetLocalAddress(SockFamily family, NetAddress &addr)
+	{
+		struct ifaddrs *ifaddr = nullptr;
+		char tempBuffer[NI_MAXHOST];
+		bool bIsFound = false;
+
+		if (getifaddrs(&ifaddr) == -1)
+		{
+			return GetLastWSAHRESULT();
+		}
+
+		/* Walk through linked list, maintaining head pointer so we
+		can free list later */
+
+		for (struct ifaddrs *curAddr = ifaddr; curAddr != nullptr && !bIsFound; curAddr = curAddr->ifa_next)
+		{
+			if (curAddr->ifa_addr == nullptr)
+				continue;
+
+			if (!(curAddr->ifa_flags & IFF_UP))
+				continue;
+
+			if ((curAddr->ifa_flags & IFF_LOOPBACK))
+				continue;
+
+			if (curAddr->ifa_addr->sa_family != (int)family)
+				continue;
+
+			switch (curAddr->ifa_addr->sa_family)
+			{
+			case AF_INET:
+			{
+				struct sockaddr_in *psockAddr = (struct sockaddr_in *)curAddr->ifa_addr;
+				bIsFound = inet_ntop(AF_INET, &psockAddr->sin_addr, tempBuffer, sizeof tempBuffer) != nullptr;
+				break;
+			}
+
+			case AF_INET6:
+			{
+				struct sockaddr_in6 *psockAddr = (struct sockaddr_in6 *)curAddr->ifa_addr;
+				bIsFound = inet_ntop(AF_INET6, &psockAddr->sin6_addr, tempBuffer, sizeof tempBuffer) != nullptr;
+				break;
+			}
+
+			default:
+				continue;
+			}
+		}
+
+		freeifaddrs(ifaddr);
+
+		if (bIsFound)
+		{
+			StrUtil::StringCpy(addr.strAddr, tempBuffer);
+		}
+
+		return bIsFound ? S_OK : E_FAIL;
+	}
+
+	HRESULT GetLocalAddressIPv4(NetAddress &addr)
+	{
+		return GetLocalAddress(SockFamily::IPV4, addr);
+	}
+
+	HRESULT GetLocalAddressIPv6(NetAddress &addr)
+	{
+		return GetLocalAddress(SockFamily::IPV6, addr);
+	}
+
+#endif
 
 
 	bool operator == (const sockaddr_in6 &op1, const sockaddr_in6 &op2)

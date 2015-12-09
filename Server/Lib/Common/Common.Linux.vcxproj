@@ -45,6 +45,7 @@
     <ClInclude Include="HRESLogin.h" />
     <ClInclude Include="HRESNet.h" />
     <ClInclude Include="HRESSvrSys.h" />
+    <ClInclude Include="HRESSystem.h" />
     <ClInclude Include="Indexing.h" />
     <ClInclude Include="LocalUIDGenerator.h" />
     <ClInclude Include="MathUtil.h" />

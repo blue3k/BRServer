@@ -256,22 +256,25 @@ namespace Net {
 			netErr( E_UNEXPECTED );
 		}
 
-		netChk(NetSystem::RegisterSocket(socket, SockType::DataGram, this, false));
-
 		SetSocket( socket );
 		socket = INVALID_SOCKET;
+
+		netChk(NetSystem::RegisterSocket(SockType::DataGram, this));
 
 		// Prepare connection
 		netChk( GetConnectionManager().InitManager( Const::SVR_PUBLIC_CONNECTION_POOLCACHE ) );
 
 
 		// Ready recv
-		if( m_pRecvBuffers ) delete[] m_pRecvBuffers;
-		netMem( m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD] );
-
-		for( INT uiRecv = 0; uiRecv < Const::SVR_NUM_RECV_THREAD; uiRecv++ )
+		if (NetSystem::IsProactorSystem())
 		{
-			netChk( PendingRecv( &m_pRecvBuffers[uiRecv] ) );
+			if (m_pRecvBuffers) delete[] m_pRecvBuffers;
+			netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD]);
+
+			for (INT uiRecv = 0; uiRecv < Const::SVR_NUM_RECV_THREAD; uiRecv++)
+			{
+				netChk(PendingRecv(&m_pRecvBuffers[uiRecv]));
+			}
 		}
 
 		EnqueueNetEvent( netEvent ); 

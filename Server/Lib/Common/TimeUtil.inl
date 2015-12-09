@@ -36,21 +36,3 @@ bool	TimeStampTimer::IsTimerWorking() const
 {
 	return m_ulTimeToExpire != InvalidTime;
 }
-
-// Timer check update
-bool	TimeStampTimer::CheckTimer()
-{
-	bool bExpired = m_ulTimeToExpire != InvalidTime && ((LONG)(m_ulTimeToExpire - Time.GetTimeMs()).count() < 0);
-
-	if( bExpired )
-	{
-		if( m_delOnExpired )
-			m_delOnExpired();
-
-		// Clear timer
-		m_ulTimeToExpirePrev = m_ulTimeToExpire;
-		m_ulTimeToExpire = InvalidTime;
-	}
-
-	return bExpired;
-}

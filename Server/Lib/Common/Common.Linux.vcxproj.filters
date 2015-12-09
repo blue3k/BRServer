@@ -259,6 +259,9 @@
     <ClInclude Include="OrderedLinkedList.h">
       <Filter>Container</Filter>
     </ClInclude>
+    <ClInclude Include="HRESSystem.h">
+      <Filter>HResult</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SharedObj.inl">

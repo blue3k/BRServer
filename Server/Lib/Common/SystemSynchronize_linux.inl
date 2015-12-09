@@ -21,9 +21,36 @@ private:
 public:
 	CriticalSection()
 	{
+		HRESULT hr;
 		pthread_mutexattr_t mAttr;
+		pthread_mutexattr_init(&mAttr);
 		pthread_mutexattr_settype(&mAttr, PTHREAD_MUTEX_RECURSIVE_NP);
-		pthread_mutex_init(&m_CriticalSection, &mAttr);
+		int result = pthread_mutex_init(&m_CriticalSection, &mAttr);
+		if (result != 0)
+		{
+			const char* errorString = strerror(result);
+			printf("%s", errorString);
+			hr = E_FAIL;
+			switch(result)
+			{
+				case EBUSY:		hr = E_UNEXPECTED;		break;
+				case EINVAL:	hr = E_INVALIDARG;		break;
+				case EAGAIN:	hr = E_UNEXPECTED;		break;
+				case ENOMEM:	hr = E_OUTOFMEMORY;		break;
+				case EPERM:		hr = E_FAIL;			break;
+				default:
+					hr = E_UNEXPECTED;
+					break;
+			}
+
+			unused(hr);
+		}
+
+		if (SUCCEEDED(hr))
+		{
+			Lock();
+			UnLock();
+		}
 	}
 	~CriticalSection()
 	{
@@ -37,6 +64,7 @@ public:
 
 	virtual void UnLock()
 	{
+		Assert(((m_CriticalSection).__data).__count > 0);
 		pthread_mutex_unlock(&m_CriticalSection);
 	}
 
@@ -53,6 +81,7 @@ public:
 	Mutex()
 	{
 		pthread_mutexattr_t mAttr;
+		pthread_mutexattr_init(&mAttr);
 		pthread_mutexattr_settype(&mAttr, PTHREAD_MUTEX_RECURSIVE);
 		pthread_mutex_init(&m_CriticalSection, &mAttr);
 	}

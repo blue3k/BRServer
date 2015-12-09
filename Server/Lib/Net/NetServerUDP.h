@@ -59,6 +59,8 @@ namespace Net {
 		// callback
 		// called when New connection TCP accepted
 
+		virtual SOCKET GetIOSocket() override { return GetSocket(); }
+
 		// called when network message is received
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
 		//virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) = 0;

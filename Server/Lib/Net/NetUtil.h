@@ -38,8 +38,8 @@ namespace Net {
 	void SockAddr2Addr( const sockaddr_in6 &sockAddr, NetAddress &addr );
 	void Addr2SockAddr( const NetAddress &addr, sockaddr_in6 &sockAddr );
 	void SetSockAddr( sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort );
-	bool GetLocalAddressIPv4(NetAddress &addr);
-	bool GetLocalAddressIPv6(NetAddress &addr);
+	HRESULT GetLocalAddressIPv4(NetAddress &addr);
+	HRESULT GetLocalAddressIPv6(NetAddress &addr);
 
 	bool operator == ( const sockaddr_in6 &op1, const sockaddr_in6 &op2 );
 	bool operator != ( const sockaddr_in6 &op1, const sockaddr_in6 &op2 );

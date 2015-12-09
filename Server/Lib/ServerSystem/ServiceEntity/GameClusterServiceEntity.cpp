@@ -42,8 +42,8 @@ namespace Svr {
 	//
 
 	GameClusterServiceEntity::GameClusterServiceEntity(GameID gameID, ClusterMembership initialMembership)
-		:IServerComponent(ComponentID)
-		,FreeReplicaClusterServiceEntity(GetGameClusterID(gameID), initialMembership )
+		: FreeReplicaClusterServiceEntity(GetGameClusterID(gameID), initialMembership)
+		, IServerComponent(ComponentID)
 	{
 	}
 

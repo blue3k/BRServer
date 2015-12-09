@@ -128,7 +128,7 @@ namespace Svr
 
 		svrChkPtr( strIP );
 
-		svrTrace( Svr::TRC_ENTITY, "Registering Server %0% SvrID:%1%, %2%:%3%", typeid(ServerEntityType).name(), serverID, strIP, usPort );
+		svrTrace( Svr::TRC_ENTITY, "Registering Server {0} SvrID:{1}, {2}:{3}", typeid(ServerEntityType).name(), serverID, strIP, usPort );
 
 		svrMem( pNewServerEntity = new ServerEntityType );
 

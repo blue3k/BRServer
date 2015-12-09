@@ -216,7 +216,6 @@ namespace Svr {
 	HRESULT GamePartyEntity::LeavePlayer( PartyPlayer* &pPlayer, bool bIsSilent )
 	{
 		HRESULT hr = S_OK;
-		Net::Connection *pCon = nullptr;
 
 		m_PartyPlayerByUID.erase(pPlayer->GetPlayerID() );
 
@@ -266,7 +265,7 @@ namespace Svr {
 		}
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -306,7 +305,7 @@ namespace Svr {
 
 		pPartyPlayer = *itPlayer;
 
-	Proc_End:
+	//Proc_End:
 
 
 		return hr;

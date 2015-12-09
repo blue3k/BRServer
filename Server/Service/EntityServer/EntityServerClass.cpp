@@ -139,7 +139,7 @@ namespace EntityServer {
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
-		
+	
 		// Register entity servers
 		for( auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity )
 		{

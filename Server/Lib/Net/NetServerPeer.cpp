@@ -519,24 +519,27 @@ namespace Net {
 			netErr( E_UNEXPECTED );
 		}
 
-		netChk(NetSystem::RegisterSocket(socket, SockType::DataGram, this, false));
-
 		SetSocket( socket );
+
+		netChk(NetSystem::RegisterSocket(SockType::DataGram, this));
 
 		m_NetClass = netCls;
 
 		netChk( m_ConnectionManager.InitManager( Const::SVR_PRIVATE_CONNECTION_POOLCACHE ) );
 
 
-		// Pending recv
-		Util::SafeDeleteArray( m_pRecvBuffers );
-		netMem( m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD] );
-		memset( m_pRecvBuffers, 0, sizeof(IOBUFFER_READ)*Const::SVR_NUM_RECV_THREAD );
+		if (NetSystem::IsProactorSystem())
+		{
+			// Pending recv
+			Util::SafeDeleteArray(m_pRecvBuffers);
+			netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD]);
+			memset(m_pRecvBuffers, 0, sizeof(IOBUFFER_READ)*Const::SVR_NUM_RECV_THREAD);
 
-		m_PendingRecvCnt = 0;
+			m_PendingRecvCnt = 0;
 
-		for( INT iRecv = 0; iRecv < Const::SVR_NUM_RECV_THREAD; iRecv++ )
-			netChk( PendingRecv( &m_pRecvBuffers[iRecv] ) );
+			for (INT iRecv = 0; iRecv < Const::SVR_NUM_RECV_THREAD; iRecv++)
+				netChk(PendingRecv(&m_pRecvBuffers[iRecv]));
+		}
 
 
 		EnqueueNetEvent(netEvent);

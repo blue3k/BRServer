@@ -74,7 +74,20 @@ namespace Net {
 
 	class INetIOCallBack
 	{
+	public:
+
+		struct CBFlags
+		{
+			UINT32 IsListenSocket : 1;
+
+			CBFlags()
+				: IsListenSocket(0)
+			{}
+		};
+
 	private:
+
+		CBFlags m_CBFlags;
 
 		WriteBufferQueue* m_pWriteQueues;
 
@@ -83,6 +96,9 @@ namespace Net {
 		INetIOCallBack() : m_pWriteQueues(nullptr) {}
 		virtual ~INetIOCallBack() {}
 
+		const CBFlags& GetIOFlags() const { return m_CBFlags; }
+		CBFlags& GetIOFlagsEditable() { return m_CBFlags; }
+		virtual SOCKET GetIOSocket() = 0;
 
 		// Write queue
 		WriteBufferQueue* GetWriteQueue() { return m_pWriteQueues; }
@@ -142,7 +158,7 @@ namespace Net {
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
 
-		HRESULT RegisterSocket(SOCKET sock, SockType sockType, INetIOCallBack* cbInstance, bool isListenSocket);
+		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance);
 
 		SOCKET Socket(SockFamily domain, SockType type);
 		void CloseSocket(SOCKET sock);
