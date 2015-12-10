@@ -405,6 +405,7 @@ namespace Net {
 			auto lastError = GetLastWSAHRESULT();
 			switch (lastError)
 			{
+			case E_NET_INPROGRESS:
 			case E_NET_WOULDBLOCK:  // First call need to wait
 			case E_NET_ALREADY:		// called again, still need to wait
 				hr = S_FALSE;
