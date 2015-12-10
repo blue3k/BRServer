@@ -2,8 +2,9 @@
 #--------------------------------------------------------------------
 # Build rules
 
-LINK_TYPE=EXE
-export LINK_TYPE
+export LINK_TYPE=EXE
+export PROJECT_NAME=SharedModuleServer
+
 
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))

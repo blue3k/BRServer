@@ -2,8 +2,8 @@
 #--------------------------------------------------------------------
 # Build rules
 
-LINK_TYPE=LIB
-export LINK_TYPE
+export LINK_TYPE=LIB
+export PROJECT_NAME=DB
 
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))

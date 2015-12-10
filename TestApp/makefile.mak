@@ -2,8 +2,9 @@
 #--------------------------------------------------------------------
 # Build rules
 
-export LINK_TYPE=LIB
-export PROJECT_NAME=Net
+export LINK_TYPE=EXE
+export PROJECT_NAME=TestApp
+
 
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -12,7 +13,7 @@ current_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 export mkfile_path
 export current_dir
 
-include $(ROOT_PATH)/LinuxBuild/commonLib.mak
+include $(ROOT_PATH)/LinuxBuild/commonService.mak
 include $(ROOT_PATH)/LinuxBuild/common.mak
 
 include $(DEPENDANCIES)
