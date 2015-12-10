@@ -26,7 +26,7 @@ export BUILD_MODE=$1
 
 cd Server
 
-make -f makefile.mak $2
+make -j -f makefile.mak $2
 
 
 popd > /dev/null

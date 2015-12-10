@@ -10,13 +10,13 @@ export BUILD_MODE?=DEBUG
 
 build : 
 	for buildSub in $(BUILD_SUB_PATHS); do \
-		$(MAKE) -C $$buildSub -f makefile.mak build; \
+		$(MAKE) -C $$buildSub -j -f makefile.mak build; \
 	done
 
 
 clean : 
 	for buildSub in $(BUILD_SUB_PATHS); do \
-		$(MAKE) -C $$buildSub -f makefile.mak clean; \
+		$(MAKE) -C $$buildSub -j -f makefile.mak clean; \
 	done
 
 

@@ -284,37 +284,21 @@ namespace Net {
 		HRESULT hr = S_OK, hrErr = S_OK;
 
 		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
-		//UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
 		IOBUFFER_WRITE *pOverlapped = nullptr;
 
 
 		netChk(Net::NetSystem::AllocBuffer(pOverlapped));
 		pOverlapped->SetupSendUDP(m_Socket, dest, pMsg);
-		hrErr = NetSystem::SendTo(m_Socket, pOverlapped);
-		switch (hrErr)
+		pMsg = nullptr;
+
+		if (NetSystem::IsProactorSystem())
 		{
-		case E_NET_TRY_AGAIN:
-			hr = hrErr;
-			break;
-		case S_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_WOULDBLOCK:
-			break;
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
-		case E_NET_NOTCONN:
-		case E_NET_NOTSOCK:
-		case E_NET_SHUTDOWN:
-			// Send fail by connection close
-			// Need to disconnect
-			netErrSilent(E_NET_CONNECTION_CLOSED);
-			goto Proc_End;
-			break;
-		default:
-			netErr(E_NET_IO_SEND_FAIL);
-			break;
-		};
+			netChk(EnqueueBuffer(pOverlapped));
+		}
+		else
+		{
+			netChk(SendBuffer(pOverlapped));
+		}
 
 	Proc_End:
 

@@ -25,11 +25,11 @@ export ROOT_PATH=`pwd`
 export BUILD_MODE=$1
 
 cd $(ROOT_PATH)/Server/Lib
-make -f makefile.mak $2
+make -j -f makefile.mak $2
 
 
 cd $(ROOT_PATH)/TestApp
-make -f makefile.mak $2
+make -j -f makefile.mak $2
 
 
 popd > /dev/null

@@ -10,13 +10,13 @@ export BUILD_MODE?=DEBUG
 
 build : 
 	for buildTool in $(BUILD_LIBS); do \
-		$(MAKE) -C $$buildTool -f makefile.mak build; \
+		$(MAKE) -C $$buildTool -j -f makefile.mak build; \
 	done
 
 
 clean : 
 	for buildTool in $(BUILD_LIBS); do \
-		$(MAKE) -C $$buildTool -f makefile.mak clean; \
+		$(MAKE) -C $$buildTool -j -f makefile.mak clean; \
 	done
 
 
