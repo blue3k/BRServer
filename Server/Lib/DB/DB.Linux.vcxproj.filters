@@ -1,17 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <None Include="Assets\linux_nmake.xaml">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="Assets\LinuxDebugger.xaml">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="Assets\LocalDebugger.xaml">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="Readme\images\debugproperties.png">
+      <Filter>Readme\images</Filter>
+    </None>
+    <None Include="Readme\images\remotebuild.png">
+      <Filter>Readme\images</Filter>
+    </None>
+    <None Include="Readme\images\remotebuildcmdline.png">
+      <Filter>Readme\images</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Readme\readme.html">
+      <Filter>Readme</Filter>
+    </Text>
+    <Text Include="Readme\readme.txt">
+      <Filter>Readme</Filter>
+    </Text>
+    <Text Include="Readme\stylesheet.css">
+      <Filter>Readme</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{08a26e93-524c-4982-a01c-c8d4f223d6be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Readme">
+      <UniqueIdentifier>{35c51339-ba9d-43c8-bd71-5f3199e89878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Readme\images">
+      <UniqueIdentifier>{fba64bae-4073-4f46-af33-d3b048352479}</UniqueIdentifier>
+    </Filter>
     <Filter Include="DB">
-      <UniqueIdentifier>{a28e8c94-0fb4-4cc9-ac2f-8619e348b842}</UniqueIdentifier>
+      <UniqueIdentifier>{52c8ed3b-b790-4abb-8083-fe0235a4f790}</UniqueIdentifier>
     </Filter>
     <Filter Include="DBSource">
-      <UniqueIdentifier>{438bdf73-7608-4900-8ddf-de171ea7f13d}</UniqueIdentifier>
+      <UniqueIdentifier>{8bda796d-ff98-4971-876a-8b1641535322}</UniqueIdentifier>
     </Filter>
     <Filter Include="MYSQL">
-      <UniqueIdentifier>{05ea999d-f376-4dce-8d77-a07e91127fcf}</UniqueIdentifier>
+      <UniqueIdentifier>{b707c9b5-688d-41a9-8ede-68fb7e386eef}</UniqueIdentifier>
     </Filter>
     <Filter Include="OLEDB">
-      <UniqueIdentifier>{c89f6282-30a1-4f7c-8eee-2883154cf4bf}</UniqueIdentifier>
+      <UniqueIdentifier>{30861cf1-cf5f-444b-9898-5ded04caf7aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -69,28 +109,28 @@
     <ClCompile Include="RankingDBQuery.cpp">
       <Filter>DBSource</Filter>
     </ClCompile>
-    <ClCompile Include="SessionMYSQL.cpp">
-      <Filter>MYSQL</Filter>
-    </ClCompile>
-    <ClCompile Include="SessionOLEDB.cpp">
-      <Filter>OLEDB</Filter>
-    </ClCompile>
     <ClCompile Include="ShardCoordinatorDBQuery.cpp">
       <Filter>DBSource</Filter>
     </ClCompile>
-    <ClCompile Include="QueryMYSQL.cpp">
+    <ClCompile Include="DataSourceMYSQL.cpp">
       <Filter>MYSQL</Filter>
     </ClCompile>
     <ClCompile Include="FactoryMYSQL.cpp">
       <Filter>MYSQL</Filter>
     </ClCompile>
-    <ClCompile Include="DataSourceMYSQL.cpp">
+    <ClCompile Include="QueryMYSQL.cpp">
       <Filter>MYSQL</Filter>
+    </ClCompile>
+    <ClCompile Include="SessionMYSQL.cpp">
+      <Filter>MYSQL</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSourceOLEDB.cpp">
+      <Filter>OLEDB</Filter>
     </ClCompile>
     <ClCompile Include="FactoryOLEDB.cpp">
       <Filter>OLEDB</Filter>
     </ClCompile>
-    <ClCompile Include="DataSourceOLEDB.cpp">
+    <ClCompile Include="SessionOLEDB.cpp">
       <Filter>OLEDB</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,26 +204,29 @@
     <ClInclude Include="RankingDBQuery.h">
       <Filter>DBSource</Filter>
     </ClInclude>
-    <ClInclude Include="SessionMYSQL.h">
-      <Filter>MYSQL</Filter>
-    </ClInclude>
-    <ClInclude Include="SessionOLEDB.h">
-      <Filter>OLEDB</Filter>
-    </ClInclude>
     <ClInclude Include="ShardCoordinatorDBQuery.h">
       <Filter>DBSource</Filter>
     </ClInclude>
-    <ClInclude Include="QueryMYSQL.h">
-      <Filter>MYSQL</Filter>
-    </ClInclude>
-    <ClInclude Include="FactoryMYSQL.h">
+    <ClInclude Include="DataSourceMYSQL.h">
       <Filter>MYSQL</Filter>
     </ClInclude>
     <ClInclude Include="DBMYSQL.h">
       <Filter>MYSQL</Filter>
     </ClInclude>
-    <ClInclude Include="DataSourceMYSQL.h">
+    <ClInclude Include="FactoryMYSQL.h">
       <Filter>MYSQL</Filter>
+    </ClInclude>
+    <ClInclude Include="QueryMYSQL.h">
+      <Filter>MYSQL</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionMYSQL.h">
+      <Filter>MYSQL</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSourceOLEDB.h">
+      <Filter>OLEDB</Filter>
+    </ClInclude>
+    <ClInclude Include="DBOLEDB.h">
+      <Filter>OLEDB</Filter>
     </ClInclude>
     <ClInclude Include="FactoryOLEDB.h">
       <Filter>OLEDB</Filter>
@@ -191,10 +234,7 @@
     <ClInclude Include="QueryOLEDB.h">
       <Filter>OLEDB</Filter>
     </ClInclude>
-    <ClInclude Include="DataSourceOLEDB.h">
-      <Filter>OLEDB</Filter>
-    </ClInclude>
-    <ClInclude Include="DBOLEDB.h">
+    <ClInclude Include="SessionOLEDB.h">
       <Filter>OLEDB</Filter>
     </ClInclude>
   </ItemGroup>

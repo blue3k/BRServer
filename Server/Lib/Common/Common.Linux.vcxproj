@@ -1,22 +1,191 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|ARM">
+    <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
-      <Platform>ARM</Platform>
+      <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x86">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
-      <Platform>x86</Platform>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|ARM">
+    <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
-      <Platform>ARM</Platform>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x86">
-      <Configuration>Release</Configuration>
-      <Platform>x86</Platform>
-    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ApplicationType>LinuxDebugger</ApplicationType>
+    <SecureShellExecutable>ssh</SecureShellExecutable>
+    <RemoteDebuggerExecutable>gdb</RemoteDebuggerExecutable>
+    <LocalDebuggerExecutable>gdb</LocalDebuggerExecutable>
+    <ProjectGuid>{E6C55204-7B0F-4118-947B-5B3EC194DBA2}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemGroup>
+    <None Include="Binary.inl" />
+    <None Include="BrBaseTypes.inl" />
+    <None Include="BrCommonTypes.inl" />
+    <None Include="BrGameTypes.inl" />
+    <None Include="BrRandom.inl" />
+    <None Include="BrSvrTypes.inl" />
+    <None Include="BrXML.inl" />
+    <None Include="CircularQueue.inl" />
+    <None Include="CryptoCRC32Table.inl" />
+    <None Include="MathUtil.inl" />
+    <None Include="Memory.inl" />
+    <None Include="MemoryPool.inl" />
+    <None Include="MemoryStream.inl" />
+    <None Include="Message.inl" />
+    <None Include="ObjectPool.inl" />
+    <None Include="PerfCounter.inl" />
+    <None Include="SharedObj.inl" />
+    <None Include="SortedMap.inl" />
+    <None Include="SpinBuffer.inl" />
+    <None Include="SpinBufferMT.inl" />
+    <None Include="SpinSharedBuffer.inl" />
+    <None Include="StackPool.inl" />
+    <None Include="StrUtil.inl" />
+    <None Include="Synchronization.inl" />
+    <None Include="SystemSynchronize_linux.inl" />
+    <None Include="SystemSynchronize_win.inl" />
+    <None Include="Thread.inl" />
+    <None Include="TimeUtil.inl" />
+    <None Include="Trace.inl" />
+    <None Include="Trace_Internal.inl" />
+    <None Include="Utility.inl" />
+    <Text Include="Readme\readme.txt" />
+    <Text Include="Readme\readme.html" />
+    <Text Include="Readme\stylesheet.css" />
+    <None Include="ArrayUtil.inl" />
+    <None Include="BrLinkedList_MT.inl" />
+    <None Include="BrLinkedList_ST.inl" />
+    <None Include="DualSortedMap.inl" />
+    <None Include="PageQueue.inl" />
+    <None Include="Readme\images\debugproperties.png" />
+    <None Include="Readme\images\remotebuild.png" />
+    <None Include="Readme\images\remotebuildcmdline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\LinuxDebugger.xaml" />
+    <None Include="Assets\LocalDebugger.xaml" />
+    <None Include="Assets\linux_nmake.xaml" />
+  </ItemGroup>
+  <!--Import Project="$(MSBuildThisFileDirectory)\Microsoft.cpp.Linux.targets" /-->
+  <!-- To Enable linux debugger -->
+  <PropertyGroup>
+    <UseDefaultDebuggersPropertyPageSchemas>false</UseDefaultDebuggersPropertyPageSchemas>
+    <UseDefaultPropertyPageSchemas>false</UseDefaultPropertyPageSchemas>
+    <_ApplicableDebuggers>Desktop</_ApplicableDebuggers>
+    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <ItemGroup>
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\ProjectItemsSchema.xml" />
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\directories.xml" />
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\debugger_general.xml" />
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\Assets\LinuxDebugger.xaml" />
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\Assets\LocalDebugger.xaml" />
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\Assets\linux_nmake.xaml" />
+    <!-- project only rules -->
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\general_makefile.xml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    <!-- Property sheet only rules -->
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\general_makefile_ps.xml;$(VCTargetsPath)$(LangID)\usermacros.xml">
+      <Context>PropertySheet</Context>
+    </PropertyPageSchema>
+    <!-- File only rules -->
+    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\general_file.xml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+  <ItemGroup>
+    <DesktopDebuggerPages Include="$(MSBuildThisFileDirectory)\Assets\LinuxDebugger.xaml" />
+    <DesktopDebuggerPages Include="$(MSBuildThisFileDirectory)\Assets\LocalDebugger.xaml" />
+    <DesktopDebuggerPages Include="$(MSBuildThisFileDirectory)\Assets\linux_nmake.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectCapability Include="Linux" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Argument.cpp" />
+    <ClCompile Include="Binary.cpp" />
+    <ClCompile Include="BrGameTypes.cpp" />
+    <ClCompile Include="BrRandom.cpp" />
+    <ClCompile Include="BrXML.cpp" />
+    <ClCompile Include="CryptoBase64.cpp" />
+    <ClCompile Include="CryptoCrc32.cpp" />
+    <ClCompile Include="CryptoSHA.cpp" />
+    <ClCompile Include="File\BRFile.linux.cpp" />
+    <ClCompile Include="File\BRFile.win32.cpp" />
+    <ClCompile Include="GlobalUIDGenerator.cpp" />
+    <ClCompile Include="LocalUIDGenerator.cpp" />
+    <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="MemoryPool.cpp" />
+    <ClCompile Include="MemoryStream.cpp" />
+    <ClCompile Include="Message.cpp" />
+    <ClCompile Include="ObjectPool.cpp" />
+    <ClCompile Include="PerfCounter.cpp" />
+    <ClCompile Include="SharedObject.cpp" />
+    <ClCompile Include="SharedReferenceManager.cpp" />
+    <ClCompile Include="SRLinkedList.cpp" />
+    <ClCompile Include="StackPool.cpp" />
+    <ClCompile Include="StackWalker.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="StrUtil.cpp" />
+    <ClCompile Include="Synchronization.cpp" />
+    <ClCompile Include="Thread.cpp" />
+    <ClCompile Include="TimeUtil.cpp" />
+    <ClCompile Include="ToString.cpp" />
+    <ClCompile Include="ToStringBase.cpp" />
+    <ClCompile Include="ToStringGame.cpp" />
+    <ClCompile Include="ToStringSvr.cpp" />
+    <ClCompile Include="Trace.cpp" />
+    <ClCompile Include="TypeUtility.cpp" />
+    <ClCompile Include="UniqueEntityIDGenerator.cpp" />
+    <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Argument.h" />
@@ -97,155 +266,44 @@
     <ClInclude Include="UniqueEntityIDGenerator.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ArrayUtil.inl" />
-    <None Include="Binary.inl" />
-    <None Include="BrBaseTypes.inl" />
-    <None Include="BrCommonTypes.inl" />
-    <None Include="BrGameTypes.inl" />
-    <None Include="BrLinkedList_MT.inl" />
-    <None Include="BrLinkedList_ST.inl" />
-    <None Include="BrRandom.inl" />
-    <None Include="BrSvrTypes.inl" />
-    <None Include="BrXML.inl" />
-    <None Include="CircularQueue.inl" />
-    <None Include="CryptoCRC32Table.inl" />
-    <None Include="DualSortedMap.inl" />
-    <None Include="MathUtil.inl" />
-    <None Include="Memory.inl" />
-    <None Include="MemoryPool.inl" />
-    <None Include="MemoryStream.inl" />
-    <None Include="Message.inl" />
-    <None Include="ObjectPool.inl" />
-    <None Include="PageQueue.inl" />
-    <None Include="PerfCounter.inl" />
-    <None Include="SharedObj.inl" />
-    <None Include="SortedMap.inl" />
-    <None Include="SpinBuffer.inl" />
-    <None Include="SpinBufferMT.inl" />
-    <None Include="SpinSharedBuffer.inl" />
-    <None Include="StackPool.inl" />
-    <None Include="StrUtil.inl" />
-    <None Include="Synchronization.inl" />
-    <None Include="SystemSynchronize_linux.inl" />
-    <None Include="SystemSynchronize_win.inl" />
-    <None Include="Thread.inl" />
-    <None Include="TimeUtil.inl" />
-    <None Include="Trace.inl" />
-    <None Include="Trace_Internal.inl" />
-    <None Include="Utility.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Argument.cpp" />
-    <ClCompile Include="Binary.cpp" />
-    <ClCompile Include="BrGameTypes.cpp" />
-    <ClCompile Include="BrRandom.cpp" />
-    <ClCompile Include="BrXML.cpp" />
-    <ClCompile Include="CryptoBase64.cpp" />
-    <ClCompile Include="CryptoCrc32.cpp" />
-    <ClCompile Include="CryptoSHA.cpp" />
-    <ClCompile Include="File\BRFile.linux.cpp" />
-    <ClCompile Include="File\BRFile.win32.cpp" />
-    <ClCompile Include="GlobalUIDGenerator.cpp" />
-    <ClCompile Include="LocalUIDGenerator.cpp" />
-    <ClCompile Include="Memory.cpp" />
-    <ClCompile Include="MemoryPool.cpp" />
-    <ClCompile Include="MemoryStream.cpp" />
-    <ClCompile Include="Message.cpp" />
-    <ClCompile Include="ObjectPool.cpp" />
-    <ClCompile Include="PerfCounter.cpp" />
-    <ClCompile Include="SharedObject.cpp" />
-    <ClCompile Include="SharedReferenceManager.cpp" />
-    <ClCompile Include="SRLinkedList.cpp" />
-    <ClCompile Include="StackPool.cpp" />
-    <ClCompile Include="StackWalker.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="StrUtil.cpp" />
-    <ClCompile Include="Synchronization.cpp" />
-    <ClCompile Include="Thread.cpp" />
-    <ClCompile Include="TimeUtil.cpp" />
-    <ClCompile Include="ToString.cpp" />
-    <ClCompile Include="ToStringBase.cpp" />
-    <ClCompile Include="ToStringGame.cpp" />
-    <ClCompile Include="ToStringSvr.cpp" />
-    <ClCompile Include="Trace.cpp" />
-    <ClCompile Include="TypeUtility.cpp" />
-    <ClCompile Include="UniqueEntityIDGenerator.cpp" />
-    <ClCompile Include="Utility.cpp" />
-  </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <ProjectGuid>{172a428c-9324-4425-bf56-af819bcfe145}</ProjectGuid>
-    <Keyword>Android</Keyword>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <ApplicationType>Android</ApplicationType>
-    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
-    <ConfigurationType>Makefile</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>Clang_3_6</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
-    <ConfigurationType>Makefile</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>Clang_3_6</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
-    <ConfigurationType>Makefile</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Clang_3_6</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
-    <ConfigurationType>Makefile</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Clang_3_6</PlatformToolset>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings" />
-  <ImportGroup Label="Shared" />
-  <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
-    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
-    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
-    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
-    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
-    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
-    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
-    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;$(NMakeIncludeSearchPath);$(VS_NDKRoot)\platforms\$(AndroidAPILevel)\arch-$(Platform)\usr\include;$(VS_NDKRoot)\sources\android\ndk_helper;$(VS_NDKRoot)\sources\android\cpufeatures;$(VS_NDKRoot)\sources\android\native_app_glue;$(StlIncludeDirectories)</NMakeIncludeSearchPath>
-    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-  </ItemDefinitionGroup>
+  <!-- To Enable linux debugger End -->
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
+    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
+    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
+    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG build</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Common DEBUG rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Common DEBUG clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>

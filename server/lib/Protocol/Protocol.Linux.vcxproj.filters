@@ -1,416 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Message">
-      <UniqueIdentifier>{40a3d5be-aa33-4224-8cd6-fb88a490399b}</UniqueIdentifier>
+    <None Include="Assets\linux_nmake.xaml">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="Assets\LinuxDebugger.xaml">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="Assets\LocalDebugger.xaml">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="Readme\images\debugproperties.png">
+      <Filter>Readme\images</Filter>
+    </None>
+    <None Include="Readme\images\remotebuild.png">
+      <Filter>Readme\images</Filter>
+    </None>
+    <None Include="Readme\images\remotebuildcmdline.png">
+      <Filter>Readme\images</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Readme\readme.html">
+      <Filter>Readme</Filter>
+    </Text>
+    <Text Include="Readme\readme.txt">
+      <Filter>Readme</Filter>
+    </Text>
+    <Text Include="Readme\stylesheet.css">
+      <Filter>Readme</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{08a26e93-524c-4982-a01c-c8d4f223d6be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Policy">
-      <UniqueIdentifier>{5f47c56c-4071-4957-802a-686cea48dfd1}</UniqueIdentifier>
+    <Filter Include="Readme">
+      <UniqueIdentifier>{35c51339-ba9d-43c8-bd71-5f3199e89878}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Message\EntityServerMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\EntityServerMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameInstanceManagerMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameInstanceManagerMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameInstanceMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameInstanceMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameMasterServerMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameMasterServerMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GamePartyManagerMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GamePartyManagerMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GamePartyMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GamePartyMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameServerMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\GameServerMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\LoginMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\LoginMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\LoginServerMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\LoginServerMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\MonitoringMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\MonitoringMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\PartyMatchingMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\PartyMatchingMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\PartyMatchingQueueMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\PartyMatchingQueueMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\RankingMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\RankingMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\ServerMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\ServerMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\ClusterServerMsgClass.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Message\ClusterServerMsgDebug.cpp">
-      <Filter>Message</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\GameInstanceNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\GameMasterServerNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\GameNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\GamePartyManagerNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\GamePartyNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\GameServerNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\LoginNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\LoginServerNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\MonitoringNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\PartyMatchingNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\PartyMatchingQueueNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\RankingNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\ServerNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\ClusterServerNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\EntityServerNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="Policy\GameInstanceManagerNetPolicy.cpp">
-      <Filter>Policy</Filter>
-    </ClCompile>
-    <ClCompile Include="ProtocolTrace.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="GenericMsgClass.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Message\EntityServerMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\EntityServerMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameInstanceManagerMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameInstanceManagerMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameInstanceMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameInstanceMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameMasterServerMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameMasterServerMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GamePartyManagerMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GamePartyManagerMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GamePartyMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GamePartyMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameServerMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\GameServerMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\LoginMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\LoginMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\LoginServerMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\LoginServerMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\MonitoringMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\MonitoringMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\PartyMatchingMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\PartyMatchingMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\PartyMatchingQueueMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\PartyMatchingQueueMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolClusterServer.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolEntityServer.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolGame.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolGameInstance.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolGameInstanceManager.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolGameMasterServer.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolGameParty.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolGamePartyManager.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolGameServer.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolLogin.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolLoginServer.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolMonitoring.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolPartyMatching.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolPartyMatchingQueue.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolRanking.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ProtocolServer.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\RankingMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\RankingMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ServerMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ServerMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ClusterServerMsgClass.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Message\ClusterServerMsgDebug.h">
-      <Filter>Message</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameInstanceManagerNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameInstanceNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameMasterServerIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameMasterServerNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameMatchServerIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GamePartyIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GamePartyManagerIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GamePartyManagerNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GamePartyNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameServerIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameServerNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\LoginIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\LoginNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\LoginServerIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\LoginServerNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\MonitoringIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\MonitoringNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\PartyMatchingIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\PartyMatchingNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\PartyMatchingQueueIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\PartyMatchingQueueNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\RankingIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\RankingNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\ServerIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\ServerNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\ClusterServerIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\ClusterServerNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\EntityServerIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\EntityServerNetPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameInstanceIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="Policy\GameInstanceManagerIPolicy.h">
-      <Filter>Policy</Filter>
-    </ClInclude>
-    <ClInclude Include="ProtocolMessageCPPInc.h" />
-    <ClInclude Include="ProtocolToString.h" />
-    <ClInclude Include="ProtocolTrace.h" />
-    <ClInclude Include="ProtocolVer.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="ProtocolHelper.h" />
-    <ClInclude Include="GenericMsgClass.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ProtocolHelper.inl" />
+    <Filter Include="Readme\images">
+      <UniqueIdentifier>{fba64bae-4073-4f46-af33-d3b048352479}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

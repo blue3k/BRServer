@@ -41,49 +41,40 @@
     <Filter Include="Readme\images">
       <UniqueIdentifier>{fba64bae-4073-4f46-af33-d3b048352479}</UniqueIdentifier>
     </Filter>
-    <Filter Include="conspiracy">
-      <UniqueIdentifier>{3c931c68-4523-4a25-88ae-2b3c57aaed27}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="conspiracy\GameConfigTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="conspiracy\LevelTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="conspiracy\OrganicTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="conspiracy\RewardTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="conspiracy\ShopTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="TableQueries.cpp" />
-    <ClCompile Include="TableSystem.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="conspiracy\GameConfigTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
-    <ClInclude Include="conspiracy\LevelTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
-    <ClInclude Include="conspiracy\OrganicTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
-    <ClInclude Include="conspiracy\RewardTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
-    <ClInclude Include="conspiracy\ShopTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
+    <ClInclude Include="AVLTreeTest.h" />
+    <ClInclude Include="ConcurrentContainerTest.h" />
+    <ClInclude Include="DBTest.h" />
+    <ClInclude Include="HashTableTest.h" />
+    <ClInclude Include="HTTPTest.h" />
+    <ClInclude Include="MemoryTest.h" />
+    <ClInclude Include="NetTest.h" />
+    <ClInclude Include="ServerSystemTest.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TableQueries.h" />
-    <ClInclude Include="TableSystem.h" />
+    <ClInclude Include="SystemSynchronizeTest.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestBase.h" />
+    <ClInclude Include="ThreadTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AVLTreeTest_DualMap.cpp" />
+    <ClCompile Include="AVLTreeTest_DualMapPerformance.cpp" />
+    <ClCompile Include="AVLTreeTest_Performance.cpp" />
+    <ClCompile Include="AVLTreeTest_SortedMap.cpp" />
+    <ClCompile Include="ConcurrentContainerTest.cpp" />
+    <ClCompile Include="DBTest.cpp" />
+    <ClCompile Include="HashTable2Test.cpp" />
+    <ClCompile Include="HashTableTest.cpp" />
+    <ClCompile Include="HTTPTest.cpp" />
+    <ClCompile Include="MemoryTest.cpp" />
+    <ClCompile Include="NetTest.cpp" />
+    <ClCompile Include="ServerSystemTest.cpp" />
+    <ClCompile Include="StaticHashTableTest.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="SystemSynchronizeTest.cpp" />
+    <ClCompile Include="TestApp.cpp" />
+    <ClCompile Include="TestBase.cpp" />
+    <ClCompile Include="ThreadTest.cpp" />
   </ItemGroup>
 </Project>
