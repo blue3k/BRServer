@@ -26,6 +26,17 @@ using ::testing::TestInfo;
 using ::testing::TestPartResult;
 using ::testing::UnitTest;
 
+
+
+#if LINUX
+
+#define EXPECT_HRESULT_SUCCEEDED(expr) EXPECT_GE((expr),0)
+
+#define EXPECT_HRESULT_FAILED(expr) EXPECT_LT((expr),0)
+
+#endif
+
+
 namespace BRTest
 {
 

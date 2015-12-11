@@ -2,9 +2,13 @@
 //
 
 #include "stdafx.h"
+
+
+#if WINDOWS
+
 #include <gtest/gtest.h>
 #include "Common/StrUtil.h"
-#include "Common/BRRandom.h"
+#include "Common/BrRandom.h"
 #include "Common/StrFormat.h"
 #include "Common/SpinBufferMT.h"
 #include "Common/TimeUtil.h"
@@ -230,8 +234,10 @@ TEST_F(ConcurrentContainerTest, SpinBufferMT_INOUT)
 
 
 
-
-
-
-
 }  // namespace BRTest
+
+
+#else
+void ConcurrentContaqinerTest_Dummy()
+{}
+#endif

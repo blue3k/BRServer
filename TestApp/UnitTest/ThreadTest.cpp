@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include <gtest/gtest.h>
 #include "Common/StrUtil.h"
-#include "Common/BRRandom.h"
+#include "Common/BrRandom.h"
 #include "Common/StrFormat.h"
 #include "Common/PageQueue.h"
 #include "Common/TimeUtil.h"
@@ -80,6 +80,10 @@ namespace BR
 			pItem = nullptr;
 		}
 	};
+
+	template <>
+	WeakPointerT<WorkingEntity> DefaultValue<WeakPointerT<WorkingEntity>>() { return WeakPointerT<WorkingEntity>(); }
+
 
 
 	class TaskWorkerThread : public Thread
@@ -178,8 +182,8 @@ namespace BR
 		PageQueue<WeakPointerT<WorkingEntity>> m_WorkItemQueue;
 	};
 
-	SyncCounter TaskWorkerThread::WorkedItems = 0;
-	SyncCounter TaskWorkerThread::SkippedWorkedItems = 0;
+	SyncCounter TaskWorkerThread::WorkedItems(0);
+	SyncCounter TaskWorkerThread::SkippedWorkedItems(0);
 
 
 	class EntityTaskManager
@@ -421,7 +425,7 @@ TEST_F(ThreadTest, PagedQueueThreadEnqueue)
 		testArray[item-1] = 1;
 	}
 
-	for (int item = 0; item < TEST_LENGTH; item++)
+	for (UINT item = 0; item < TEST_LENGTH; item++)
 	{
 		EXPECT_EQ(1, testArray[item]);
 		AssertRel(testArray[item] == 1);
@@ -484,7 +488,7 @@ TEST_F(ThreadTest, PagedQueueThreadEnqueueDequeue)
 	m_Threads.clear();
 
 
-	for (int item = 0; item < TEST_LENGTH; item++)
+	for (UINT item = 0; item < TEST_LENGTH; item++)
 	{
 		EXPECT_EQ(1, testArray[item]);
 		AssertRel(testArray[item] == 1);
@@ -522,7 +526,7 @@ TEST_F(ThreadTest, PagedQueueThreadEnqueueThreadDequeue)
 		m_Threads.push_back(pWorker);
 	}
 
-	SyncCounter readCount = 0;
+	SyncCounter readCount(0);
 	for (UINT worker = 0; worker < NUM_THREAD; worker++)
 	{
 		auto pWorker = new FunctorThread([&](Thread* pThread)
@@ -560,7 +564,7 @@ TEST_F(ThreadTest, PagedQueueThreadEnqueueThreadDequeue)
 	m_Threads.clear();
 
 
-	for (int item = 0; item < TEST_LENGTH; item++)
+	for (UINT item = 0; item < TEST_LENGTH; item++)
 	{
 		EXPECT_EQ(1, testArray[item]);
 		AssertRel(testArray[item] == 1);
@@ -631,6 +635,7 @@ TEST_F(ThreadTest, PagedQueue_PerformanceCompare_PageQueue)
 	delete testArray;
 }
 
+#if WINDOWS
 TEST_F(ThreadTest, PagedQueue_PerformanceCompare_Concurrent)
 {
 	const UINT64 TEST_LENGTH = TestScale * 999999;
@@ -691,7 +696,7 @@ TEST_F(ThreadTest, PagedQueue_PerformanceCompare_Concurrent)
 
 	delete testArray;
 }
-
+#endif
 
 
 

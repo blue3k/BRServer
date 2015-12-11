@@ -24,11 +24,13 @@ cd ..
 export ROOT_PATH=`pwd`
 export BUILD_MODE=$1
 
-cd $(ROOT_PATH)/Server/Lib
+
+cd $ROOT_PATH/Server/Lib
 make -j -f makefile.mak $2
 
 
-cd $(ROOT_PATH)/TestApp
+
+cd $ROOT_PATH/TestApp
 make -j -f makefile.mak $2
 
 

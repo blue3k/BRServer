@@ -13,7 +13,7 @@ current_dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 export mkfile_path
 export current_dir
 
-include $(ROOT_PATH)/LinuxBuild/commonService.mak
+include $(ROOT_PATH)/LinuxBuild/commonExe.mak
 include $(ROOT_PATH)/LinuxBuild/common.mak
 
 include $(DEPENDANCIES)

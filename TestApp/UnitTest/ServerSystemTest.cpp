@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // 
 // CopyRight (c) 2013 The Braves
 // 
@@ -36,9 +36,9 @@ namespace BRTest
 
 TEST_F(ServerSystemTest, Config)
 {
-	const int MAX_NUMBER	= 100;
-	const int MAX_TEST		= 10000;
-	std::wstring strCfgPath = L"..\\Server\\Config\\ServerConfig.xml";
+	//const int MAX_NUMBER	= 100;
+	//const int MAX_TEST		= 10000;
+	std::string strCfgPath = "..\\Server\\Config\\ServerConfig.xml";
 
 	EXPECT_HRESULT_SUCCEEDED( Svr::Config::LoadConfig( strCfgPath.c_str() ) );
 }

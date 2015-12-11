@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include <gtest/gtest.h>
 #include "Common/StrUtil.h"
-#include "Common/BRRandom.h"
+#include "Common/BrRandom.h"
 #include "Common/StrFormat.h"
 #include "Common/PageQueue.h"
 #include "Common/TimeUtil.h"

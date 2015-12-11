@@ -43,13 +43,13 @@ namespace BRTest
 		// Remember that SetUp() is run immediately before a test starts.
 		virtual void SetUp()
 		{
-			__super::SetUp();
+			MyTestBase::SetUp();
 		}
 
 		// TearDown() is invoked immediately after a test finishes.  Here we
 		virtual void TearDown()
 		{
-			__super::TearDown();
+			MyTestBase::TearDown();
 
 			StopAllThread();
 

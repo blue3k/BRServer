@@ -86,14 +86,15 @@ namespace Hash {
 
 				// Constructor
 				Bucket()
-					: m_Items(nullptr)
 				{
+					m_Items = nullptr;
 				}
 
 				// Copy Constructor 
 				Bucket( const Bucket& src )
-					: m_Items(nullptr)
 				{
+					m_Items = nullptr;
+					unused(src);
 					// No one use this bucket, while this operation
 					//Assert( !src.m_Lock.IsLocked() );
 					Assert(false);

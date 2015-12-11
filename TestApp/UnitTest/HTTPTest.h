@@ -12,7 +12,6 @@
 
 #include "stdafx.h"
 #include <gtest/gtest.h>
-#include <ppl.h>
 #include "Common/Thread.h"
 #include "Common/MemoryPool.h"
 #include "Common/HashTable.h"
@@ -50,13 +49,13 @@ namespace BRTest
 		{
 			BR::Trace::Initialize();
 			BR::MemoryPoolManager::Initialize();
-			__super::SetUp();
+			MyTestBase::SetUp();
 		}
 
 		// TearDown() is invoked immediately after a test finishes.  Here we
 		virtual void TearDown()
 		{
-			__super::TearDown();
+			MyTestBase::TearDown();
 
 			StopAllThread();
 			BR::Trace::Uninitialize();

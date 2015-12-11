@@ -7,9 +7,6 @@
 #include "Common/Thread.h"
 #include "Common/SortedMap.h"
 #include "Common/TimeUtil.h"
-#include "windows.h"
-#include "stdio.h"
-#include "tchar.h"
 #include <unordered_map>
 
 #include "AVLTreeTest.h"
@@ -47,7 +44,7 @@ extern void TestSortedMap_PerfTest(unsigned numberOfTest, const int *TestValues)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 	end = BR::Util::Time.GetRawTimeMs();
 	printf("Remove  %d items, %dms\n", numberOfTest, (end - start).count());
@@ -71,7 +68,7 @@ extern void TestSortedMap_PerfTest(unsigned numberOfTest, const int *TestValues)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 	end = BR::Util::Time.GetRawTimeMs();
 	printf("Remove first 1000 items, %dms\n", (end - start).count());
@@ -81,7 +78,7 @@ extern void TestSortedMap_PerfTest(unsigned numberOfTest, const int *TestValues)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 	end = BR::Util::Time.GetRawTimeMs();
 	printf("Remove remain items, %dms\n", (end - start).count());

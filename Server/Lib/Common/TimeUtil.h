@@ -35,7 +35,7 @@ namespace Util {
 		// Time stamp
 		std::atomic<UINT64>			m_ullTimeStamp;
 
-		ClockType::duration       m_ullTimeStampPrevious;
+		ClockType::duration			m_ullTimeStampPrevious;
 		std::atomic<ULONG>			m_ulTimeStampMs;
 		std::atomic<ULONGLONG>		m_ullTimeStampUTC;
 

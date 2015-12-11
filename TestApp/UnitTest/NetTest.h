@@ -62,7 +62,7 @@ namespace BRTest
 			m_AccountID = 0;
 			m_AuthTicket = 0;
 
-			__super::SetUp();
+			MyTestBase::SetUp();
 		}
 
 		// TearDown() is invoked immediately after a test finishes.  Here we
@@ -82,7 +82,7 @@ namespace BRTest
 
 			Util::SafeRelease( m_pNetClient );
 
-			__super::TearDown();
+			MyTestBase::TearDown();
 
 		}
 	};

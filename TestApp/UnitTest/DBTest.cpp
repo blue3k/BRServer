@@ -1,4 +1,4 @@
-// TestApp.cpp : Defines the entry point for the console application.
+Ôªø// TestApp.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -125,8 +125,8 @@ namespace BRTest
 
 TEST_F(DBTest, DBManager)
 {
-	const int MAX_NUMBER	= 100;
-	const int MAX_TEST		= 1000;
+	//const int MAX_NUMBER	= 100;
+	//const int MAX_TEST		= 1000;
 
 	TestDBServer *pTestDB = new TestDBServer;
 	HRESULT hr = S_OK;
@@ -246,7 +246,7 @@ TEST_F(DBTest, DBQueryLoginByFB)
 
 TEST_F(DBTest, DBQuerySetNick)
 {
-	const wchar_t strTestString[] = L"§©1§©1";
+	const wchar_t strTestString[] = L"Í≥†Í≤ΩÍ±¥ÏùåÌù†";
 
 	TestDBServer *pTestDB = new TestDBServer;
 	HRESULT hr = S_OK;
@@ -283,7 +283,7 @@ TEST_F(DBTest, DBQuerySetNick)
 //
 //TEST_F(DBTest, DBQueryGetPlayerInfo)
 //{
-//	const wchar_t strTestString[] = L"§©1§©1";
+//	const wchar_t strTestString[] = L"¬§¬©1¬§¬©1";
 //
 //	TestDBServer *pTestDB = new TestDBServer;
 //	HRESULT hr = S_OK;

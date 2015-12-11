@@ -7,11 +7,6 @@
 #include "Common/Thread.h"
 #include "Common/DualSortedMap.h"
 #include "Common/TimeUtil.h"
-#include "windows.h"
-#include "stdio.h"
-#include "tchar.h"
-#include <unordered_map>
-
 #include "AVLTreeTest.h"
 
 
@@ -47,7 +42,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	end = BR::Util::Time.GetRawTimeMs();
@@ -68,7 +63,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 		AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	}
 	end = BR::Util::Time.GetRawTimeMs();
@@ -92,7 +87,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestRead)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Find(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 	end = BR::Util::Time.GetRawTimeMs();
 	printf("Find %d items, %dms\n", numberOfTest, (end - start).count());
@@ -101,7 +96,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTestRead)
 	start = BR::Util::Time.GetRawTimeMs();
 	for (unsigned iTest = 0; iTest < numberOfTest; iTest++)
 	{
-		UINT value = -1;
+		//UINT value = -1;
 		long latestValue = -1;
 
 		sortedMap.ForeachOrder(0, 100, [&](const UINT& key, const UINT& value)
@@ -144,7 +139,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTest1000)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	end = BR::Util::Time.GetRawTimeMs();
@@ -155,7 +150,7 @@ TEST_F(AVLTreeTest, DualSortedMapPerfTest1000)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 	end = BR::Util::Time.GetRawTimeMs();

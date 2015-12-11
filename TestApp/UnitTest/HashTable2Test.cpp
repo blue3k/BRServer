@@ -173,7 +173,7 @@ namespace BRTest
 
 	}
 
-
+#if WINDOWS
 	TEST_F(HashTableTest, HashTable2_UniqueMT)
 	{
 		const int READ_THREAD_COUNT = 10;
@@ -243,7 +243,7 @@ namespace BRTest
 		for (; (end - start) < runningTime;)
 		{
 			INT64 value = (rand() % MAX_NUMBER) + 1;
-			INT64 operation = rand() % MAX_NUMBER;
+			//INT64 operation = rand() % MAX_NUMBER;
 
 			SharedPointerT<TestMapNodeShared> pFound = nullptr;
 
@@ -300,7 +300,7 @@ namespace BRTest
 		AssertRel(TestMap.GetItemCount() == 0);
 		EXPECT_EQ(0, TestMap.GetItemCount());
 	}
-
+#endif
 
 	TEST_F(HashTableTest, HashTable2_UniqueWriteMT)
 	{
@@ -435,7 +435,7 @@ namespace BRTest
 		EXPECT_EQ(0, TestMap.GetItemCount());
 	}
 
-
+#if WINDOWS
 	TEST_F(HashTableTest, HashTable2_PerfRead)
 	{
 		const int READ_THREAD_COUNT = 10;
@@ -449,7 +449,7 @@ namespace BRTest
 
 		Concurrency::concurrent_unordered_map<INT64, SharedPointerT<TestMapNodeShared>> m_TestMap;
 		TestTableType TestMap(1024);
-		TestMapNodeShared* pNode = nullptr;
+		//TestMapNodeShared* pNode = nullptr;
 
 
 		for (INT64 ID = 0; ID < READ_THREAD_COUNT; ID++)
@@ -506,7 +506,7 @@ namespace BRTest
 		for (; (end - start) < runningTime;)
 		{
 			INT64 value = rand() % MAX_NUMBER;
-			INT64 operation = rand() % MAX_NUMBER;
+			//INT64 operation = rand() % MAX_NUMBER;
 
 			SharedPointerT<TestMapNodeShared> pFound = nullptr;
 
@@ -567,7 +567,7 @@ namespace BRTest
 
 		printf("Read: %llu, Write: %llu\n", readCount.load(std::memory_order_acquire), writeCount.load(std::memory_order_acquire));
 	}
-
+#endif
 
 	TEST_F(HashTableTest, HashTable2_PerfReadWriteMT)
 	{
@@ -584,7 +584,7 @@ namespace BRTest
 
 
 		TestTableType TestMap(3);
-		TestMapNodeShared* pNode = nullptr;
+		//TestMapNodeShared* pNode = nullptr;
 
 
 		for (INT64 ID = 0; ID < READ_THREAD_COUNT; ID++)
@@ -645,7 +645,7 @@ namespace BRTest
 				while (!pThread->CheckKillEvent(DurationMS(0)))
 				{
 					INT64 value = rand() % MAX_NUMBER;
-					INT64 operation = rand() % MAX_NUMBER;
+					//INT64 operation = rand() % MAX_NUMBER;
 
 					SharedPointerT<TestMapNodeShared> pFound = nullptr;
 

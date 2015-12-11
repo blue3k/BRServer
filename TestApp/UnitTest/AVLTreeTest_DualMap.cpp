@@ -7,10 +7,6 @@
 #include "Common/Thread.h"
 #include "Common/DualSortedMap.h"
 #include "Common/TimeUtil.h"
-#include "windows.h"
-#include "stdio.h"
-#include "tchar.h"
-#include <unordered_map>
 #include "AVLTreeTest.h"
 
 
@@ -481,7 +477,7 @@ TEST_F(AVLTreeTest, DualSortedMapThread)
 		{
 			Status[testIndex] = 1;
 			AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[testIndex], value)));
-			AssertRel(value == TestValues[testIndex]);
+			AssertRel((INT)value == TestValues[testIndex]);
 		}
 		else
 		{

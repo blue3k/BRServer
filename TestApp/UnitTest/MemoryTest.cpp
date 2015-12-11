@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include <gtest/gtest.h>
 #include "Common/StrUtil.h"
-#include "Common/BRRandom.h"
+#include "Common/BrRandom.h"
 #include "Common/StrFormat.h"
 #include "Common/PageQueue.h"
 #include "Common/CircularQueue.h"
@@ -83,23 +83,24 @@ namespace BRTest
 TEST_F(MemoryTest, PagePool)
 {
 	const INT64 TEST_LENGTH	=		99999;
-	const int PUSH_LIMIT	=		1000;
+	//const int PUSH_LIMIT	=		1000;
 	const int ALLOC_THREAD_COUNT	=	20;
 	const int FREE_THREAD_COUNT		=	1;
 
 	BR::PageQueue<void*> Allocated( 128 );
 	BR::PagePool Pool( 10 );
 	BR::PageAllocator PageAloc( 10 );
-	SyncCounter lPusherCount = 0;
+	SyncCounter lPusherCount(0);
 
 	void *pPtr = NULL;
 	EXPECT_HRESULT_SUCCEEDED( PageAloc.Alloc( pPtr ) );
-	int iPageSize1 = (int)PageAloc.GetPageSize();
+	//int iPageSize1 = (int)PageAloc.GetPageSize();
 	memset( pPtr, 0, PageAloc.GetPageSize() );
 	EXPECT_HRESULT_SUCCEEDED( PageAloc.Free( pPtr ) );
 
 	EXPECT_HRESULT_SUCCEEDED( Pool.Alloc( pPtr ) );
 	int iPageSize = (int)Pool.GetPageSize();
+	EXPECT_GT(iPageSize, 10);
 	memset( pPtr, 0, Pool.GetPageSize() );
 	EXPECT_HRESULT_SUCCEEDED( Pool.Free( pPtr ) );
 	Pool.Clear();
@@ -119,10 +120,10 @@ TEST_F(MemoryTest, PagePool)
 				if( SUCCEEDED(hr) )
 				{
 					iPageSize = (int)Pool.GetPageSize();
-
+					EXPECT_GT(iPageSize, 10);
 					memset( pPtr, 0, iPageSize );
 
-					_WriteBarrier();
+					//_WriteBarrier();
 
 					Allocated.Enqueue( pPtr );
 				}
@@ -191,12 +192,12 @@ TEST_F(MemoryTest, PagePool)
 TEST_F(MemoryTest, MemoryPool)
 {
 	const INT64 TEST_LENGTH	=		99999;
-	const int PUSH_LIMIT	=		100;
+	//const int PUSH_LIMIT	=		100;
 	const int ALLOC_THREAD_COUNT	=	20;
 	const int FREE_THREAD_COUNT		=	1;
 
 	BR::PageQueue<MemoryTestObject*> Allocated( 128 );
-	SyncCounter lPusherCount = 0;
+	SyncCounter lPusherCount(0);
 
 	MemoryTestObject::MemoryPoolCache(100);
 	MemoryTestObject2::MemoryPoolCache(100);
@@ -218,7 +219,7 @@ TEST_F(MemoryTest, MemoryPool)
 				pNewItem->WorkerID = ID;
 				pNewItem->Checksum = (ID<<32) + i;
 
-				_WriteBarrier();
+				//_WriteBarrier();
 
 				Allocated.Enqueue( pNewItem );
 
@@ -313,7 +314,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 		{
 			bool mustSuccess = false;
 			int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
-			if( allocator.GetFreeMemorySize() > (allocSize*2) ) mustSuccess = true;
+			if( allocator.GetFreeMemorySize() > (UINT)(allocSize*2) ) mustSuccess = true;
 
 			HRESULT hr = allocator.Alloc( allocSize, pPtr );
 			if( mustSuccess )
@@ -353,7 +354,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 		{
 			bool mustSuccess = false;
 			int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
-			if( allocator.GetFreeMemorySize() > (allocSize*2) ) mustSuccess = true;
+			if( allocator.GetFreeMemorySize() > (UINT)(allocSize*2) ) mustSuccess = true;
 
 			HRESULT hr = allocator.Alloc( allocSize, pPtr );
 			if( mustSuccess )
@@ -393,7 +394,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 		{
 			bool mustSuccess = false;
 			int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
-			if( allocator.GetFreeMemorySize() > (allocSize*2) ) mustSuccess = true;
+			if( allocator.GetFreeMemorySize() > (UINT)(allocSize*2) ) mustSuccess = true;
 
 			HRESULT hr = allocator.Alloc( allocSize, pPtr );
 			if( mustSuccess )
@@ -424,8 +425,8 @@ TEST_F(MemoryTest, CircularQueue)
 {
 	const INT TEST_LENGTH		=		99999999;
 	const INT BUFFER_SIZE		=		512;
-	const INT ALLOCATE_SIZE_MIN	=		4;
-	const INT ALLOCATE_SIZE_MAX	=		20;
+	//const INT ALLOCATE_SIZE_MIN	=		4;
+	//const INT ALLOCATE_SIZE_MAX	=		20;
 
 	BR::CircularQueue<int,BUFFER_SIZE> queue;
 	BR::PageQueue<int> testQueue;
@@ -446,7 +447,7 @@ TEST_F(MemoryTest, CircularQueue)
 		else
 		{
 			bool mustSuccess = false;
-			int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
+			//int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
 			if( queue.GetSize() < BUFFER_SIZE ) mustSuccess = true;
 
 			HRESULT hr = queue.Enqueue( std::move(test) );
@@ -487,7 +488,7 @@ TEST_F(MemoryTest, CircularQueue)
 		else
 		{
 			bool mustSuccess = false;
-			int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
+			//int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
 			if( queue.GetSize() < BUFFER_SIZE ) mustSuccess = true;
 
 			HRESULT hr = queue.Enqueue( std::move(test) );
@@ -528,7 +529,7 @@ TEST_F(MemoryTest, CircularQueue)
 		else
 		{
 			bool mustSuccess = false;
-			int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
+			//int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
 			if( queue.GetSize() < BUFFER_SIZE ) mustSuccess = true;
 
 			HRESULT hr = queue.Enqueue( std::move(test) );
@@ -646,10 +647,10 @@ TEST_F(MemoryTest, StdPerformance)
 
 TEST_F(MemoryTest, PagedQueueAllocation)
 {
-	const INT TEST_LENGTH = 999;
-	const INT BUFFER_SIZE = 512;
-	const INT ALLOCATE_SIZE_MIN = 4;
-	const INT ALLOCATE_SIZE_MAX = 20;
+	//const INT TEST_LENGTH = 999;
+	//const INT BUFFER_SIZE = 512;
+	//const INT ALLOCATE_SIZE_MIN = 4;
+	//const INT ALLOCATE_SIZE_MAX = 20;
 
 	auto testQueue = new BR::PageQueue<int>(4);
 	auto memoryPool = testQueue->GetMemoryPool();

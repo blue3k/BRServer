@@ -122,7 +122,7 @@
     <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Protocol DEBUG rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Protocol DEBUG clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>../;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\c++;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\spp</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Lib Protocol DEBUG build</NMakeBuildCommandLine>
@@ -131,7 +131,7 @@
     <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Protocol DEBUG rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Protocol DEBUG clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>../;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\c++;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\spp</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
@@ -140,7 +140,7 @@
     <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Protocol DEBUG rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Protocol DEBUG clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>../;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\c++;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\spp</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
@@ -149,7 +149,7 @@
     <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Lib Protocol DEBUG rebuild</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Lib Protocol DEBUG clean</NMakeCleanCommandLine>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>../;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\c++;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\spp</NMakeIncludeSearchPath>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

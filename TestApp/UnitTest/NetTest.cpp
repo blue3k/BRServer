@@ -72,7 +72,7 @@ TEST_F(NetTest, MessageMap)
 {
 	const char* strID = "MyID";
 	const char* strPassword = "Pas1234";
-	const char* strNickName = "NickName";
+	//const char* strNickName = "NickName";
 	const HRESULT InResult = S_FALSE;
 	const BR::AccountID InAccID = 123456;
 	const BR::AuthTicket InTicket = 654321;
@@ -85,14 +85,15 @@ TEST_F(NetTest, MessageMap)
 	BR::StaticAllocator<10> allocator(BR::STDAllocator::GetInstance());
 	TestMessageTable messageHandlers(allocator);
 	BR::CheckCtrMemory();
-	messageHandlers.Register<BR::Message::Login::LoginCmd>([&](BR::Message::MessageData *pMsgData)->HRESULT {
+	messageHandlers.Register<BR::Message::Login::LoginCmd>(__FILE__, __LINE__,
+		[&](BR::Message::MessageData *pMsgData)->HRESULT {
 		BR::Message::Login::LoginCmd *pMsg = nullptr;
 			EXPECT_HRESULT_SUCCEEDED(HandleMessage<BR::Message::Login::LoginCmd>(pMsgData, pMsg));
 			if( pMsg ) 
 				delete pMsg;
 			return S_OK;
 	});
-	messageHandlers.Register<BR::Message::Login::LoginRes>(
+	messageHandlers.Register<BR::Message::Login::LoginRes>(__FILE__, __LINE__,
 		[&](BR::Message::MessageData *pMsgData)->HRESULT	{
 		BR::Message::Login::LoginRes *pMsg = nullptr;
 		EXPECT_HRESULT_SUCCEEDED(HandleMessage<BR::Message::Login::LoginRes>(pMsgData, pMsg));
@@ -102,7 +103,7 @@ TEST_F(NetTest, MessageMap)
 			BR::CheckCtrMemory();
 			return S_OK;
 	});
-	messageHandlers.Register<BR::Message::Game::JoinGameCmd>( 
+	messageHandlers.Register<BR::Message::Game::JoinGameCmd>(__FILE__, __LINE__,
 		[&](BR::Message::MessageData *pMsgData)->HRESULT	{
 			BR::Message::Game::JoinGameCmd *pMsg = nullptr;
 			EXPECT_HRESULT_SUCCEEDED( HandleMessage<BR::Message::Game::JoinGameCmd>( pMsgData, pMsg ) );
@@ -110,7 +111,7 @@ TEST_F(NetTest, MessageMap)
 				delete pMsg;
 			return S_OK;
 	});
-	messageHandlers.Register<BR::Message::Game::JoinGameRes>( 
+	messageHandlers.Register<BR::Message::Game::JoinGameRes>( __FILE__, __LINE__,
 		[&](BR::Message::MessageData *pMsgData)->HRESULT	{
 			BR::Message::Game::JoinGameRes *pMsg = nullptr;
 			EXPECT_HRESULT_SUCCEEDED( HandleMessage<BR::Message::Game::JoinGameRes>( pMsgData, pMsg ) );
@@ -173,6 +174,8 @@ TEST_F(NetTest, Simple)
 			case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
 				defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE %0%", curEvent.Value.hr  );
 				break;
+			default:
+				break;
 			};
 		}
 
@@ -212,6 +215,8 @@ TEST_F(NetTest, Simple)
 				case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
 					defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE {0:X8}", curEvent.Value.hr  );
 					break;
+				default:
+					break;
 				};
 			}
 
@@ -234,7 +239,7 @@ EndTest:
 
 Proc_End:
 
-	;
+	EXPECT_HRESULT_SUCCEEDED(hr);
 }
 
 
@@ -403,8 +408,8 @@ TEST_F(NetTest, RecvMessageWindowMT)
 	const UINT runningTime = TestScale * 1 * 60 * 1000;
 
 	Net::RecvMsgWindow recvMessage;
-	std::atomic<UINT16> uiSequence = 0;
-	std::atomic<UINT16> releaseSequence = 0;
+	std::atomic<UINT16> uiSequence(0);
+	std::atomic<UINT16> releaseSequence(0);
 	std::vector<Thread*> threads;
 
 	for (int iThread = 0; iThread < NUM_SEND_THREAD; iThread++)
@@ -484,8 +489,8 @@ TEST_F(NetTest, RecvMessageWindowMT2)
 	const UINT runningTime = TestScale * 1 * 60 * 1000;
 
 	Net::RecvMsgWindow recvMessage;
-	std::atomic<UINT16> uiSequence = 0;
-	std::atomic<UINT16> releaseSequence = 0;
+	std::atomic<UINT16> uiSequence(0);
+	std::atomic<UINT16> releaseSequence(0);
 	std::vector<Thread*> threads;
 
 	for (int iThread = 0; iThread < NUM_SEND_THREAD; iThread++)

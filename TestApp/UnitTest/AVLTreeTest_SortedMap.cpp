@@ -7,11 +7,6 @@
 #include "Common/Thread.h"
 #include "Common/SortedMap.h"
 #include "Common/TimeUtil.h"
-#include "windows.h"
-#include "stdio.h"
-#include "tchar.h"
-#include <unordered_map>
-
 #include "AVLTreeTest.h"
 
 using ::testing::EmptyTestEventListener;
@@ -46,7 +41,7 @@ TEST_F(AVLTreeTest, SortedMapSimple)
 		AssertRel(order == 0);
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 
 	AssertRel(sortedMap.GetItemCount() == 0);
@@ -61,7 +56,7 @@ TEST_F(AVLTreeTest, SortedMapSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 
 	AssertRel(sortedMap.GetItemCount() == 0);
@@ -75,7 +70,7 @@ TEST_F(AVLTreeTest, SortedMapSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 
 	AssertRel(sortedMap.GetItemCount() == 0);
@@ -89,7 +84,7 @@ TEST_F(AVLTreeTest, SortedMapSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 
 	AssertRel(sortedMap.GetItemCount() == 0);
@@ -103,7 +98,7 @@ TEST_F(AVLTreeTest, SortedMapSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 
 	AssertRel(sortedMap.GetItemCount() == 0);
@@ -134,7 +129,7 @@ TEST_F(AVLTreeTest, SortedMapOrderSequential)
 
 		sortedMap.ForeachOrder(iTest, numberOfTest, [&](const UINT& key, const UINT& value) -> bool
 		{
-			AssertRel(TestValues[iTest + innerTest] == value);
+			AssertRel(TestValues[iTest + innerTest] == (INT)value);
 			innerTest++;
 			return true;
 		});
@@ -143,7 +138,7 @@ TEST_F(AVLTreeTest, SortedMapOrderSequential)
 		sortedMap.ForeachReverseOrder(iTest, numberOfTest, [&](const UINT& key, const UINT& value) -> bool
 		{
 			innerTest--;
-			AssertRel(TestValues[innerTest] == value);
+			AssertRel(TestValues[innerTest] == (INT)value);
 			return true;
 		});
 	}
@@ -154,7 +149,7 @@ TEST_F(AVLTreeTest, SortedMapOrderSequential)
 
 		sortedMap.ForeachOrder(0, numberOfTest - iTest, [&](const UINT& key, const UINT& value)
 		{
-			AssertRel(TestValues[innerTest] == value);
+			AssertRel(TestValues[innerTest] == (INT)value);
 			innerTest++;
 			return true;
 		});
@@ -163,7 +158,7 @@ TEST_F(AVLTreeTest, SortedMapOrderSequential)
 		sortedMap.ForeachReverseOrder(0, numberOfTest - iTest, [&](const UINT& key, const UINT& value)
 		{
 			innerTest--;
-			AssertRel(TestValues[innerTest] == value);
+			AssertRel(TestValues[innerTest] == (INT)value);
 			return true;
 		});
 	}
@@ -172,7 +167,7 @@ TEST_F(AVLTreeTest, SortedMapOrderSequential)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 
 	AssertRel(sortedMap.GetItemCount() == 0);
@@ -189,7 +184,7 @@ TEST_F(AVLTreeTest, SortedMapOrderSequential)
 
 		sortedMap.ForeachOrder(iTest, numberOfTest, [&](const UINT& key, const UINT& value)
 		{
-			AssertRel(TestValues[iTest + innerTest] == value);
+			AssertRel(TestValues[iTest + innerTest] == (INT)value);
 			innerTest++;
 			return true;
 		});
@@ -199,7 +194,7 @@ TEST_F(AVLTreeTest, SortedMapOrderSequential)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 
 	AssertRel(sortedMap.GetItemCount() == 0);
@@ -272,7 +267,7 @@ TEST_F(AVLTreeTest, SortedMapOrderRandom)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 
 	AssertRel(sortedMap.GetItemCount() == 0);
@@ -302,7 +297,7 @@ TEST_F(AVLTreeTest, SortedMapOrderRandom)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((INT)value == TestValues[iTest]);
 	}
 
 	AssertRel(sortedMap.GetItemCount() == 0);
