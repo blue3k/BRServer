@@ -26,6 +26,8 @@ export BUILD_MODE=$1
 
 cd Server
 
+#rm -rf bin/$BUILD_MODE/*
+
 make -j -f makefile.mak $2
 
 

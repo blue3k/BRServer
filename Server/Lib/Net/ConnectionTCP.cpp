@@ -241,7 +241,7 @@ namespace Net {
 				netErrSilent(E_NET_CONNECTION_CLOSED);
 				break;
 			default:
-				netTrace(Trace::TRC_ERROR, "TCP Read IOCP Pending failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
+				netTrace(Trace::TRC_ERROR, "TCP Recv failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
 				netErr(E_NET_IO_RECV_FAIL);
 				break;
 			case E_NET_IO_PENDING:
@@ -271,7 +271,7 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 
-		if( pIOBuffer->CID != GetCID() )
+		if(pIOBuffer != nullptr && pIOBuffer->CID != GetCID() )
 			netErr( E_INVALIDARG );
 
 		if( FAILED( hrRes ) )
@@ -290,11 +290,14 @@ namespace Net {
 		}
 		else
 		{
+			netChkPtr(pIOBuffer);
 			netChk( OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer) );
 			PendingRecv();
 		}
 
 	Proc_End:
+
+		Util::SafeDelete(pIOBuffer);
 
 		DecPendingRecvCount();
 
@@ -414,7 +417,7 @@ namespace Net {
 				hr = S_OK;
 				break;
 			default:
-				netTrace(Trace::TRC_WARN, "Connection try is failed, RemoteID:{0}, hr:{1:X8}", GetConnectionInfo().RemoteID, lastError);
+				netTrace(Trace::TRC_WARN, "Connection try is failed, RemoteAddr:{0}, RemoteID:{1}, hr:{2:X8}", GetConnectionInfo().Remote, GetConnectionInfo().RemoteID, lastError);
 				hr = lastError;
 			}
 		}

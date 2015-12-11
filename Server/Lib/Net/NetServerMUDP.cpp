@@ -161,26 +161,27 @@ namespace Net {
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
 		IConnection::ConnectionInformation connectionInfo;
+		sockaddr_in6 from;
+		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
+		else memset(&from, 0, sizeof(from));
 
 		if( FAILED( hrRes ) )
 		{
+
 			switch( hrRes )
 			{
 			case E_NET_CONNECTION_CLOSED:
 			case E_NET_IO_ABORTED:
-				//if( SUCCEEDED( m_ConnectionManager.GetConnectionByAddr( pIOBuffer->From, iterCon ) ) )
-				//{
-					// This error is no more the reason to disconnect a user, just report it
-					netTrace( TRC_RECV, "UDP bad connection state IP:{0}", pIOBuffer->NetAddr.From );
-				//}
+				// This error is no more the reason to disconnect a user, just report it
+				netTrace( TRC_RECV, "UDP bad RECV IP:{0}", from);
 				hr = hrRes;
 				break;
 			default:
-				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrMUDP, IP:{0}, hr={1:X8}", pIOBuffer->NetAddr.From, hrRes );
+				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrMUDP, IP:{0}, hr={1:X8}", from, hrRes );
 				break;
 			};
 		}
-		else
+		else if(pIOBuffer != nullptr)
 		{
 			if(pIOBuffer->TransferredSize < sizeof(Message::MobileMessageHeader) )// invalid packet size
 				goto Proc_End;
@@ -188,7 +189,7 @@ namespace Net {
 			Message::MobileMessageHeader *pHeader = (Message::MobileMessageHeader*)pIOBuffer->buffer;
 			if( !pHeader->msgID.IDs.Mobile )
 			{
-				netTrace( Trace::TRC_WARN, "HackWarn : Not allowered connection try from {0}", pIOBuffer->NetAddr.From );
+				netTrace( Trace::TRC_WARN, "HackWarn : Not allowered connection try from {0}", from);
 				goto Proc_End;
 			}
 
@@ -199,7 +200,7 @@ namespace Net {
 
 			if (pConnection == nullptr)
 			{
-				GetConnectionManager().GetConnectionByAddr(pIOBuffer->NetAddr.From, pConnection);
+				GetConnectionManager().GetConnectionByAddr(from, pConnection);
 			}
 
 			if (pConnection == nullptr)
@@ -247,7 +248,7 @@ namespace Net {
 		//	}
 		//}
 
-		if( hrRes != E_NET_IO_ABORTED )
+		if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
 			PendingRecv( (IOBUFFER_READ*)pIOBuffer );
 
 		return hr;

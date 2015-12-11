@@ -122,7 +122,7 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 		DB::QueryRegisterAuthTicketCmd* pDBRes = (DB::QueryRegisterAuthTicketCmd*)pRes;
-		Svr::ServerServiceInformation *pServiceInfo = nullptr;
+		//Svr::ServerServiceInformation *pServiceInfo = nullptr;
 		Policy::IPolicyGameServer *pGameServerPolicy = nullptr;
 
 		svrChk(pRes->GetHRESULT());
@@ -544,7 +544,7 @@ namespace LoginServer {
 	HRESULT LoginPlayerTransCloseInstance::OnDeleteLoginSessionRes( Svr::TransactionResult* &pRes )
 	{
 		HRESULT hr = S_OK;
-		DB::QueryDeleteLoginSessionCmd* pDBRes = (DB::QueryDeleteLoginSessionCmd*)pRes;
+		//DB::QueryDeleteLoginSessionCmd* pDBRes = (DB::QueryDeleteLoginSessionCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
 
@@ -558,7 +558,7 @@ namespace LoginServer {
 	HRESULT LoginPlayerTransCloseInstance::StartTransaction()
 	{
 		HRESULT hr = S_OK;
-		LoginPlayerEntity* pOwner = (LoginPlayerEntity*)GetOwnerEntity();
+		//LoginPlayerEntity* pOwner = (LoginPlayerEntity*)GetOwnerEntity();
 
 		svrChk( super::StartTransaction() );
 

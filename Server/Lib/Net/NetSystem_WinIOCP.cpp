@@ -265,6 +265,7 @@ namespace Net {
 						INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
 						pIOBuffer->TransferredSize = dwTransferred;
 						hr = pCallback->OnIORecvCompleted( hr, pIOBuffer );
+						pIOBuffer = nullptr;
 						pOverlapped = nullptr;
 					}
 					else

@@ -244,7 +244,7 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 
-		if( pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD )
+		if(pIOBuffer != nullptr && pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD)
 		{
 			netErr(E_UNEXPECTED);
 		}
@@ -253,6 +253,7 @@ namespace Net {
 
 		if( SUCCEEDED(hrRes) )
 		{
+			netChkPtr(pIOBuffer);
 
 			if( FAILED( hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer ) ) )
 				netTrace( TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", GetCID(), hr );
@@ -269,6 +270,8 @@ namespace Net {
 
 
 	Proc_End:
+
+		Util::SafeDelete(pIOBuffer);
 
 		return hr;
 	}

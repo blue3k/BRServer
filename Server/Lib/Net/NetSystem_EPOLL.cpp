@@ -240,15 +240,14 @@ namespace Net {
 
 		if (events & EPOLLIN)
 		{
-			while (hrErr != E_NET_TRY_AGAIN)
+			while (SUCCEEDED(hrErr))
 			{
 				// Read
-				pReadBuffer = nullptr;
+				pReadBuffer = new IOBUFFER_READ;
 				hrErr = pCallBack->Recv(pReadBuffer);
 				hr = hrErr;
 				switch (hrErr)
 				{
-				case S_OK:
 				case E_NET_TRY_AGAIN:
 					break;
 				case E_NET_IO_PENDING:
@@ -256,9 +255,12 @@ namespace Net {
 					Assert(false);
 					break;
 				default:
-					netTrace(Trace::TRC_ERROR, "Epoll RW fail events:{0:X8} hr:{1:X8}", events, hrErr);
+					netTrace(Trace::TRC_ERROR, "Epoll Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
+					// fallthru
+				case S_OK:
 					// toss data to working thread
 					netChk(pCallBack->OnIORecvCompleted(hrErr, pReadBuffer));
+					pReadBuffer = nullptr;
 					hr = hrErr;
 					break;
 				}

@@ -76,11 +76,12 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
-		struct sockaddr_in6 &addr = pIOBuffer->NetAddr.From;
 
-		Assert( pIOBuffer->bIsPending == true );
-		pIOBuffer->bIsPending = false;
-		m_PendingRecvCnt.fetch_sub(1, std::memory_order_relaxed);
+		sockaddr_in6 from;
+		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
+		else memset(&from, 0, sizeof(from));
+
+
 
 		if( FAILED( hrRes ) )
 		{
@@ -88,7 +89,7 @@ namespace Net {
 			{
 			case E_NET_CONNECTION_CLOSED:
 			case E_NET_IO_ABORTED:
-				if (SUCCEEDED(m_ConnectionManager.GetConnectionByAddr(addr, pConnection)))
+				if (SUCCEEDED(m_ConnectionManager.GetConnectionByAddr(from, pConnection)))
 				{
 					// Release connection table
 					if (pConnection->GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -102,11 +103,16 @@ namespace Net {
 			};
 		}
 
-		if(pIOBuffer->TransferredSize == 0 )
+
+		if(pIOBuffer == nullptr || pIOBuffer->TransferredSize == 0)
 			goto Proc_End;
 
+		Assert(pIOBuffer->bIsPending == true);
+		pIOBuffer->bIsPending = false;
+		m_PendingRecvCnt.fetch_sub(1, std::memory_order_relaxed);
 
-		if (FAILED(m_ConnectionManager.GetConnectionByAddr(addr, pConnection))) // not mapped yet. We need to make a new connection
+
+		if (FAILED(m_ConnectionManager.GetConnectionByAddr(from, pConnection))) // not mapped yet. We need to make a new connection
 		{
 			// check control packet
 			MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pIOBuffer->buffer;
@@ -115,12 +121,12 @@ namespace Net {
 				if( GetIsEnableAccept() )
 				{
 					// Peer network only allow registered connection
-					netChk( m_ConnectionManager.PendingNewConnection(pIOBuffer->NetAddr.From, pNetCtrl) );
+					netChk( m_ConnectionManager.PendingNewConnection(from, pNetCtrl) );
 				}
 			}
 			else
 			{
-				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet From {0}", addr );
+				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet From {0}", from);
 				netErr( E_UNEXPECTED );
 			}
 
@@ -141,7 +147,7 @@ namespace Net {
 					}
 					else
 					{
-						netTrace( Trace::TRC_WARN, "Unexpected packet From {0}", addr );
+						netTrace( Trace::TRC_WARN, "Unexpected packet From {0}", from);
 						netErr( E_UNEXPECTED );
 					}
 				}
@@ -162,7 +168,7 @@ namespace Net {
 			PendingRecv( pIOBuffer );
 		else
 		{
-			netTrace( Trace::TRC_ERROR, "NoPending {0}", addr );
+			netTrace( Trace::TRC_ERROR, "NoPending {0}", from);
 		}
 
 		return hr;

@@ -421,6 +421,9 @@ namespace Net {
 	HRESULT RawUDP::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer)
 	{
 		HRESULT hr = S_OK;
+		sockaddr_in6 from;
+		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
+		else memset(&from, 0, sizeof(from));
 
 		if (FAILED(hrRes))
 		{
@@ -431,11 +434,11 @@ namespace Net {
 				hr = hrRes;
 				break;
 			default:
-				netTrace(Trace::TRC_ERROR, "UDP Recv Msg Failed, RawUDP, IP:{0}, hr={1:X8}", pIOBuffer->NetAddr.From, hrRes);
+				netTrace(Trace::TRC_ERROR, "UDP Recv Msg Failed, RawUDP, IP:{0}, hr={1:X8}", from, hrRes);
 				break;
 			};
 		}
-		else
+		else if(pIOBuffer != nullptr)
 		{
 			if (pIOBuffer->TransferredSize < sizeof(Message::MessageHeader))// invalid packet size
 				goto Proc_End;
@@ -446,8 +449,8 @@ namespace Net {
 	Proc_End:
 
 
-		if (hrRes != E_NET_IO_ABORTED)
-			PendingRecv((IOBUFFER_READ*)pIOBuffer);
+		if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
+			PendingRecv(pIOBuffer);
 
 		return hr;
 	}
