@@ -135,8 +135,8 @@ namespace BRTest
 			"\"iat\":1328550785"
 		"}";
 		const char testResult2[] = "eyJpc3MiOiI3NjEzMjY3OTgwNjktcjVtbGpsbG4xcmQ0bHJiaGc3NWVmZ2lncDM2bTc4ajVAZGV2ZWxvcGVyLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJzY29wZSI6Imh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL2F1dGgvcHJlZGljdGlvbiIsImF1ZCI6Imh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92My90b2tlbiIsImV4cCI6MTMyODU1NDM4NSwiaWF0IjoxMzI4NTUwNzg1fQ";
-		const char testString3[] = "{\"alg\":\"RS256\",\"typ\":\"JWT\"}";
-		const char testResult3[] = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9";
+		//const char testString3[] = "{\"alg\":\"RS256\",\"typ\":\"JWT\"}";
+		//const char testResult3[] = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9";
 		DynamicArray<BYTE> result;
 
 		HRESULT hr = BR::Util::Base64URLEncode(countof(testString) - 1, (const BYTE*)testString, result);

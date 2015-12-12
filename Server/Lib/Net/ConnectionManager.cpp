@@ -226,7 +226,7 @@ namespace Net {
 					break;
 				}
 
-				svrChk( m_ManagedConnections.Insert(pConn->GetCID(), pConn) );
+				netChk( m_ManagedConnections.Insert(pConn->GetCID(), pConn) );
 				netTrace(TRC_CONNECTION, "Connection management started CID:{0}", pConn->GetCID());
 
 				if (FAILED(AddMap((Connection*)pConn)))

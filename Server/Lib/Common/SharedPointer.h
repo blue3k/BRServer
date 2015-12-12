@@ -197,6 +197,16 @@ namespace BR
 		{
 			return (ClassType*)m_pObject;
 		}
+
+		ClassType* operator *()
+		{
+			return (ClassType*)m_pObject;
+		}
+
+		ClassType* operator *() const
+		{
+			return (ClassType*)m_pObject;
+		}
 #endif
 		bool operator == (const SharedPointer& src) const
 		{

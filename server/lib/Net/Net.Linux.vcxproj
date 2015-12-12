@@ -23,7 +23,7 @@
     <SecureShellExecutable>ssh</SecureShellExecutable>
     <RemoteDebuggerExecutable>gdb</RemoteDebuggerExecutable>
     <LocalDebuggerExecutable>gdb</LocalDebuggerExecutable>
-    <ProjectGuid>{A0C793BF-9FB4-4817-A0D5-1034B0D6CD32}</ProjectGuid>
+    <ProjectGuid>{CC3A450C-41B7-472B-9774-FB0E4B56DF8B}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

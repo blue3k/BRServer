@@ -60,11 +60,6 @@ namespace Net {
 		}
 	}
 
-	void IConnection::SetConnectionState(ConnectionState newState)
-	{
-		m_ConnectionState = newState;
-	}
-
 	void IConnection::UpdateConnectionTime()
 	{
 		m_tConnectionTime = Util::Time.GetTimeMs();

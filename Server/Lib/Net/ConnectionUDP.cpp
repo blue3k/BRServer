@@ -91,7 +91,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 
 
-		svrChk(ConnectionUDP::ProcNetCtrl( pNetCtrl ) );
+		netChk(ConnectionUDP::ProcNetCtrl( pNetCtrl ) );
 
 
 		switch( pNetCtrl->msgID.IDs.MsgCode )

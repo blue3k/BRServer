@@ -2,7 +2,7 @@
 #--------------------------------------------------------------------
 # Build rules
 
-BUILD_SUB_PATHS= UnitTest
+BUILD_SUB_PATHS= UnitTest NetTestServer NetTestClient
 
 export ROOT_PATH?=/home/blue3k/work/BRServer
 export BUILD_MODE?=DEBUG

@@ -133,7 +133,7 @@ namespace GameServer {
 		connectionInfo.SetRemoteInfo(NetClass::Client, GetTicket());
 
 		svrChk(pConnection->InitConnection(GetMyServer()->GetNetPublic()->GetSocket(), connectionInfo));
-		svrTrace(Trace::TRC_USER1, "Initialize connection CID:%0%, Addr:%1%:%2%", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote.strAddr, pConnection->GetConnectionInfo().Remote.usPort);
+		svrTrace(Trace::TRC_USER1, "Initialize connection CID:{0}, Addr:{1}:{2}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote.strAddr, pConnection->GetConnectionInfo().Remote.usPort);
 
 		svrChk(GetMyServer()->GetNetPublic()->GetConnectionManager().PendingConnection(pConnection));
 
@@ -252,7 +252,7 @@ namespace GameServer {
 		playerInfoSystem->UpdateStatByLevel();
 
 
-		svrTrace(Svr::TRC_TRANSACTION, "SetPlayerGameData PlayerID:%0%. Grade:%1%, lvl:%2%, Exp:%3%, GameMoney:%4%, Gem:%5%, Sta:%6%, updateTick:%7%", GetMyOwner()->GetPlayerID(), 
+		svrTrace(Svr::TRC_TRANSACTION, "SetPlayerGameData PlayerID:{0}. Grade:{1}, lvl:{2}, Exp:%3%, GameMoney:%4%, Gem:%5%, Sta:%6%, updateTick:%7%", GetMyOwner()->GetPlayerID(), 
 			playerData.Grade, playerData.Level, playerData.Exp, playerData.GameMoney, playerData.Gem, playerData.Stamina,
 			(UINT64)playerData.LatestTickTime);
 
@@ -263,12 +263,12 @@ namespace GameServer {
 		// If first login, the value will be zero
 		if (latestTick == 0)
 		{
-			svrTrace(Trace::TRC_WARN, "Invalid player tick time for PlayerID:%0%. Reset to current time", GetMyOwner()->GetPlayerID());
+			svrTrace(Trace::TRC_WARN, "Invalid player tick time for PlayerID:{0}. Reset to current time", GetMyOwner()->GetPlayerID());
 			GetMyOwner()->SetLatestUpdateTime(Util::Time.GetTimeUTCSec());
 		}
 		else
 		{
-			svrTrace(Svr::TRC_TRANSACTION, "Latest tick time PlayerID:%0%. %1%", GetMyOwner()->GetPlayerID(), (UINT64)playerData.LatestTickTime);
+			svrTrace(Svr::TRC_TRANSACTION, "Latest tick time PlayerID:{0}. {1}", GetMyOwner()->GetPlayerID(), (UINT64)playerData.LatestTickTime);
 
 			GetMyOwner()->SetLatestUpdateTime(TimeStampSec(DurationSec(playerData.LatestTickTime)));
 		}
@@ -325,7 +325,7 @@ namespace GameServer {
 				playerInfoSystem->SetupDefaultStat();
 				playerInfoData.LatestTickTime = Util::Time.GetTimeUTCSec().time_since_epoch().count();
 
-				svrTrace(Svr::TRC_TRANSACTION, "Player data created PlayerID:%0%", GetMyOwner()->GetPlayerID());
+				svrTrace(Svr::TRC_TRANSACTION, "Player data created PlayerID:{0}", GetMyOwner()->GetPlayerID());
 			}
 
 			svrChk(SetPlayerGameData(playerInfoData));
@@ -1083,7 +1083,7 @@ namespace GameServer {
 		if (pDBRes->Result < 0)
 			svrErrClose(E_INVALID_PLAYERID);
 
-		GetMyOwner()->AddGameTransactionLogT(TransLogCategory::Account, 0, 0, 0, "From %0% to %1%", GetMyOwner()->GetNickName(), GetNickName());
+		GetMyOwner()->AddGameTransactionLogT(TransLogCategory::Account, 0, 0, 0, "From {0} to {1}", GetMyOwner()->GetNickName(), GetNickName());
 
 		svrChk( GetMyOwner()->SetNickName( GetNickName() ) );
 

@@ -307,13 +307,13 @@ namespace Net {
 
 			MsgMobileNetCtrlSequenceFrame* pCurrentFrame = nullptr;
 
-			svrChkPtr(pNewMessageData = Message::MessageData::NewMessage(PACKET_NETCTRL_SEQUENCE_FRAME, frameSize + sizeof(MsgMobileNetCtrlSequenceFrame), pMsg->GetMessageBuff() + offset));
+			netChkPtr(pNewMessageData = Message::MessageData::NewMessage(PACKET_NETCTRL_SEQUENCE_FRAME, frameSize + sizeof(MsgMobileNetCtrlSequenceFrame), pMsg->GetMessageBuff() + offset));
 
 			pCurrentFrame = (MsgMobileNetCtrlSequenceFrame*)pNewMessageData->GetMessageBuff();
 			pCurrentFrame->TotalSize = pMsgHeader->Length;
 			pCurrentFrame->SubSequence = iSequence;
 
-			svrChk(m_SendReliableWindow.EnqueueMessage(ulTimeCur, pNewMessageData));
+			netChk(m_SendReliableWindow.EnqueueMessage(ulTimeCur, pNewMessageData));
 			pNewMessageData->AddRef();// Inc Ref for send
 			SendPending(pNewMessageData);
 			netTrace(TRC_GUARREANTEDCTRL, "SENDENQReliable : CID:{0}, seq:{1}, msg:{2}, len:{3}",
@@ -365,7 +365,7 @@ namespace Net {
 			Util::SafeRelease(m_SubFrameMessage);
 
 			UINT dummyID = PACKET_NETCTRL_SEQUENCE_FRAME;
-			svrChkPtr(pFrameMessage = Message::MessageData::NewMessage(dummyID, totalSize));
+			netChkPtr(pFrameMessage = Message::MessageData::NewMessage(dummyID, totalSize));
 			memcpy(pFrameMessage->GetMessageHeader(), dataPtr, frameSize);
 			if (pFrameMessage->GetMessageHeader()->Length != totalSize)
 			{
@@ -403,10 +403,10 @@ namespace Net {
 
 		if (m_SubFrameMessage != nullptr && (offset + frameSize) == totalSize)
 		{
-			svrChk(m_SubFrameMessage->ValidateChecksumNDecrypt());
+			netChk(m_SubFrameMessage->ValidateChecksumNDecrypt());
 			action(m_SubFrameMessage);
 			m_SubFrameMessage = nullptr;
-			svrChk(hr);
+			netChk(hr);
 		}
 
 	Proc_End:
@@ -1091,7 +1091,7 @@ Proc_End:
 				pMsgHeader = pIMsg->GetMessageHeader();
 				if (pMsgHeader->Length > Message::MAX_SUBFRAME_SIZE)
 				{
-					svrChk(SendFrameSequenceMessage(pIMsg));
+					netChk(SendFrameSequenceMessage(pIMsg));
 				}
 				else
 				{

@@ -67,7 +67,7 @@ namespace Svr {
 	public:
 		PerformanceCounter(const char* counterName, DataTypes dataType, CountingTypes countingType);
 		PerformanceCounter(DataTypes dataType, CountingTypes countingType);
-		~PerformanceCounter();
+		virtual ~PerformanceCounter();
 
 		void SetCounterName(const char* strName);
 		const char* GetCounterName()						{ return m_CounterName; }
@@ -178,6 +178,13 @@ namespace Svr {
 			m_RawValue.fetch_sub(value, std::memory_order_release);
 			IncSyncSerial();
 			return *this;
+		}
+
+		DataType Inc ()
+		{
+			auto prevVal = m_RawValue.fetch_add(1, std::memory_order_release);
+			IncSyncSerial();
+			return prevVal + 1;
 		}
 
 		DataType operator ++ ()

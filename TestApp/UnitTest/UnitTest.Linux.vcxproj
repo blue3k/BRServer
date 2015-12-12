@@ -53,19 +53,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\build\TestApp.props" />
+    <Import Project="..\build\TestApp.Linux.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\build\TestApp.props" />
+    <Import Project="..\build\TestApp.Linux.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\build\TestApp.props" />
+    <Import Project="..\build\TestApp.Linux.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\build\TestApp.props" />
+    <Import Project="..\build\TestApp.Linux.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
@@ -165,7 +165,7 @@
     <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\c++;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\spp</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeBuildCommandLine>
@@ -173,19 +173,19 @@
     <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\c++;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\spp</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\c++;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\spp</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
     <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\c++;C:\cygwin64\lib\gcc\i686-w64-mingw32\4.9.2\include\spp</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>../;</NMakeIncludeSearchPath>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

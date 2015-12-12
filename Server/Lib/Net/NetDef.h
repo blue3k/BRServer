@@ -54,7 +54,7 @@ namespace Net {
 		//
 
 		// Connection state
-		typedef enum tag_ConnectionState {
+		enum ConnectionState {
 			STATE_NONE,				// None just created
 			STATE_WAITING,			// Waiting accept
 			STATE_UDP_WAITING,		// UDP incomming Waiting
@@ -64,7 +64,7 @@ namespace Net {
 			STATE_DISCONNECTING,	// Disconnecting
 			STATE_DISCONNECTED,		// Disconnected
 			STATE_SLEEP,			// For Mobile connection
-		} ConnectionState;
+		};
 
 
 		////////////////////////////////////////////////////////////////////////////////

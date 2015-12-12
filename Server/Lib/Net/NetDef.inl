@@ -18,6 +18,11 @@
 //
 
 
+inline void IConnection::SetConnectionState(ConnectionState newState)
+{
+	m_ConnectionState = newState;
+}
+
 // set local info
 inline void IConnection::ConnectionInformation::SetLocalInfo( NetClass Class, const NetAddress& Addr, UINT64 UID )
 {

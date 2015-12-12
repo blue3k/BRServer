@@ -316,7 +316,7 @@ namespace BRTest
 
 
 		TestTableType TestMap(1);
-		TestMapNodeShared* pNode = nullptr;
+		//TestMapNodeShared* pNode = nullptr;
 
 
 		for (INT64 ID = 0; ID < READ_THREAD_COUNT; ID++)
@@ -365,8 +365,8 @@ namespace BRTest
 		}
 
 
-		auto start = BR::Util::Time.GetRawTimeMs();
-		auto end = BR::Util::Time.GetRawTimeMs();
+		//auto start = BR::Util::Time.GetRawTimeMs();
+		//auto end = BR::Util::Time.GetRawTimeMs();
 #ifdef DEBUG
 		auto runningTime = DurationMS(5 * 1000);
 #else
@@ -384,7 +384,7 @@ namespace BRTest
 				while (!pThread->CheckKillEvent(DurationMS(0)))
 				{
 					INT64 value = (rand() % MAX_NUMBER) + 1;
-					INT64 operation = rand() % MAX_NUMBER;
+					//INT64 operation = rand() % MAX_NUMBER;
 
 					SharedPointerT<TestMapNodeShared> pFound = nullptr;
 
@@ -629,8 +629,8 @@ namespace BRTest
 		}
 
 
-		auto start = BR::Util::Time.GetRawTimeMs();
-		auto end = BR::Util::Time.GetRawTimeMs();
+		//auto start = BR::Util::Time.GetRawTimeMs();
+		//auto end = BR::Util::Time.GetRawTimeMs();
 #ifdef DEBUG
 		auto runningTime = DurationMS(1 * 60 * 1000);
 #else

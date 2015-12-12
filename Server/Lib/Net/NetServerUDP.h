@@ -63,7 +63,6 @@ namespace Net {
 
 		// called when network message is received
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
-		//virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) = 0;
 
 		// called when send completed
 		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
