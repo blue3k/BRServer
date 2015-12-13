@@ -23,11 +23,12 @@
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/EntityManager.h"
+#include "ServerSystem/EntityTable.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/SvrLoopbackConnection.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
-
+#include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
 #include "ServerSystem/Transaction.h"
 #include "ServerSystem/SvrConfig.h"
@@ -254,7 +255,8 @@ Proc_End:
 		netInfo = Svr::Config::GetConfig().MonitoringServer->NetPrivate;
 		svrChkPtr(netInfo);
 
-		svrChk(PerformanceCounterClient::Initialize(NetAddress(netInfo->IP.c_str(), netInfo->Port)));
+		Assert(GetServerUID() != 0);
+		svrChk(PerformanceCounterClient::Initialize(GetServerUID(), NetAddress(netInfo->IP.c_str(), netInfo->Port)));
 
 	Proc_End:
 
@@ -524,7 +526,7 @@ Proc_End:
 			svrTrace( Trace::TRC_ERROR, "Failed Close Private Network, hr={0:X8}", hr );
 		}
 
-		m_EntityTable.Clear();
+		GetEntityTable().Clear();
 
 		// clear components
 		ClearComponents();

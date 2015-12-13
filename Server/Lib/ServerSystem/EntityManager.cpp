@@ -17,6 +17,8 @@
 #include "Common/BrBaseTypes.h"
 
 #include "ServerSystem/BrServer.h"
+#include "ServerSystem/BrServerUtil.h"
+#include "ServerSystem/EntityTable.h"
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
@@ -51,7 +53,7 @@ namespace Svr {
 	HRESULT EntityManager::AddEntity( EntityFaculty faculty, Svr::Entity* pEntity )
 	{
 		HRESULT hr = S_OK;
-		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+		auto& entityTable = GetEntityTable();
 		svrChk( pEntity->InitializeEntity(entityTable.GenEntityID(faculty) ) );
 
 		if( faculty == EntityFaculty::Service )
@@ -79,7 +81,7 @@ namespace Svr {
 	HRESULT EntityManager::AddEntity( EntityID entityID, Svr::Entity* pEntity )
 	{
 		HRESULT hr = S_OK;
-		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+		auto& entityTable = GetEntityTable();
 
 		svrChk(entityTable.ReserveEntityID( entityID ) );
 
@@ -116,7 +118,7 @@ namespace Svr {
 
 	HRESULT EntityManager::FindEntity(EntityID entityID, SharedPointerT<Entity> &pEntity)
 	{
-		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+		auto& entityTable = GetEntityTable();
 		return entityTable.Find( entityID, pEntity );
 	}
 
@@ -124,7 +126,7 @@ namespace Svr {
 	HRESULT EntityManager::RemoveEntity(EntityID entityID)
 	{
 		HRESULT hr = S_OK;
-		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+		auto& entityTable = GetEntityTable();
 
 		SharedPointerT<Entity> pEntity;
 		hr = entityTable.Erase(entityID, pEntity);

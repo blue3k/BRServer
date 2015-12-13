@@ -44,23 +44,32 @@ protected:
 TEST_F(PerformanceClientTest, Connect)
 {
 	HRESULT hr = S_OK;
-	NetAddress localAddr;
+	NetAddress serverAddr;
 	bool bWaitingTest = true;
 	DynamicArray<Svr::PerformanceCounterRaw < UINT64 >*> counterList;
+	Svr::PerformanceCounterInstance* pInstance = nullptr;
 
-	EXPECT_HRESULT_SUCCEEDED(Net::GetLocalAddressIPv6(localAddr));
+	EXPECT_HRESULT_SUCCEEDED(Net::GetLocalAddressIPv6(serverAddr));
+	serverAddr.usPort = 52000;
 
-	hr = Svr::PerformanceCounterClient::Initialize(localAddr);
+
+	hr = Svr::PerformanceCounterClient::Initialize(5, serverAddr);
 	EXPECT_HRESULT_SUCCEEDED(hr);
 	defChk(hr);
 
 
 
+	pInstance = Svr::PerformanceCounterClient::GetDefaultCounterInstance();
 	for (int iCounter = 0; iCounter < 3; iCounter++)
 	{
 		char counterName[128];
 		StrUtil::Format(counterName, "Counter_{0}", iCounter);
-		counterList.push_back(new Svr::PerformanceCounterRaw < UINT64 >(counterName));
+		auto pNewCounter = new Svr::PerformanceCounterRaw < UINT64 >(counterName);
+		counterList.push_back(pNewCounter);
+		if (pInstance != nullptr)
+		{
+			pInstance->AddCounter(pNewCounter);
+		}
 	}
 
 

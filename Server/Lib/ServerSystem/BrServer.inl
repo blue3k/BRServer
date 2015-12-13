@@ -97,12 +97,6 @@ BrServer* BrServer::GetInstance()
 
 
 
-// Get entity table
-EntityTable& BrServer::GetEntityTable()
-{
-	return m_EntityTable;
-}
-
 
 
 ///////////////////////////////////////////////////////////////////////////////

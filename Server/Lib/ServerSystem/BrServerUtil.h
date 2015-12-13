@@ -21,7 +21,7 @@ namespace BR {
 namespace Svr
 {
 	class Entity;
-
+	class EntityTable;
 	
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -30,7 +30,7 @@ namespace Svr
 
 
 	// Get entity table
-	//EntityTable& GetEntityTable();
+	EntityTable& GetEntityTable();
 	HRESULT FindEntity(EntityID entityID, SharedPointerT<Entity>& entity);
 
 	// Get Server UID

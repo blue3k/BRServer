@@ -25,6 +25,8 @@
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/EventTask.h"
+#include "ServerSystem/EntityTable.h"
+#include "ServerSystem/BrServerUtil.h"
 
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
@@ -235,7 +237,7 @@ namespace Svr {
 
 				if (pNewTrans != nullptr && BrServer::GetInstance())
 				{
-					svrChk(BrServer::GetInstance()->GetEntityTable().RouteTransaction(pNewTrans->GetTransID().GetEntityID(), pNewTrans));
+					svrChk(GetEntityTable().RouteTransaction(pNewTrans->GetTransID().GetEntityID(), pNewTrans));
 				}
 			}
 		}

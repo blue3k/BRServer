@@ -54,10 +54,11 @@ namespace Net {
 			switch (hr)
 			{
 			case S_OK:
-			case E_NET_IO_PENDING:
-			case E_NET_WOULDBLOCK:
 				writeQueue->Dequeue(pSendBuffer);
 				break;
+			case E_NET_IO_PENDING:
+				break;
+			case E_NET_WOULDBLOCK:  // WOULDBLOCK in linux can be try again
 			case E_NET_TRY_AGAIN:
 			default:
 				goto Proc_End;

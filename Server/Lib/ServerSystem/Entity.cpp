@@ -25,6 +25,7 @@
 #include "ServerSystem/EntityTimerActions.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"
+#include "ServerSystem/EntityTable.h"
 #include "Common/Message.h"
 
 
@@ -142,7 +143,7 @@ namespace BR {
 		if (BrServer::GetInstance())
 		{
 			SharedPointerT<Entity> erased;
-			BrServer::GetInstance()->GetEntityTable().Erase(GetEntityID(), erased);
+			GetEntityTable().Erase(GetEntityID(), erased);
 		}
 
 		return S_OK;
@@ -198,8 +199,8 @@ namespace BR {
 
 		pTransRes = pMsgRes;
 
-		//svrChk( BrServer::GetInstance()->GetEntityTable().RouteTransactionResult( pTransRes ) );
-		svrChk(pMySvr->GetEntityTable().Find(pTransRes->GetTransID().GetEntityID(), pEntity));
+		//svrChk( RouteTransactionResult( pTransRes ) );
+		svrChk(GetEntityTable().Find(pTransRes->GetTransID().GetEntityID(), pEntity));
 
 		if (pEntity->GetTaskGroupID() == GetTaskGroupID() && pEntity->GetTaskManager() == GetTaskManager()) // If assigned on the same thread
 		{

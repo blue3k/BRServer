@@ -14,6 +14,7 @@
 #include "Net/NetRawUDP.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BrServerUtil.h"
+#include "ServerSystem/EntityTable.h"
 #include "ServerSystem/EntityManager.h"
 #include "Protocol/Message/MonitoringMsgClass.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
@@ -51,6 +52,7 @@ namespace Svr {
 	PerformanceCounterClient::PerformanceCounterClient()
 		: m_RawUDP(nullptr)
 		, m_MessageHandler(this)
+		, m_ServerID(0)
 	{
 
 	}
@@ -249,7 +251,7 @@ namespace Svr {
 		}
 	}
 
-	HRESULT PerformanceCounterClient::Initialize(const NetAddress& serverAddress)
+	HRESULT PerformanceCounterClient::Initialize(UINT serverID, const NetAddress& serverAddress)
 	{
 		HRESULT hr = S_OK;
 		NetAddress localAddress;
@@ -261,6 +263,7 @@ namespace Svr {
 		Net::Addr2SockAddr(serverAddress, stm_pInstance->m_RemoteSockAddress);
 		stm_pInstance->m_RemoteAddress = serverAddress;
 
+		stm_pInstance->m_ServerID = serverID;
 
 		svrChk(pRawUDP->InitializeNet(localAddress, &stm_pInstance->m_MessageHandler));
 
@@ -298,7 +301,7 @@ namespace Svr {
 
 	PerformanceCounterInstance* PerformanceCounterClient::GetDefaultCounterInstance()
 	{
-		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+		auto& entityTable = GetEntityTable();
 
 		if (stm_pInstance == nullptr)
 		{
@@ -308,7 +311,7 @@ namespace Svr {
 
 		if (stm_pInstance->m_DefaultCounter == nullptr)
 		{
-			auto entityUID = EntityUID(GetMyServerID(), entityTable.GenEntityID(EntityFaculty::Service));
+			auto entityUID = EntityUID(stm_pInstance->m_ServerID, entityTable.GenEntityID(EntityFaculty::Service));
 			stm_pInstance->m_DefaultCounter = SharedPointerT<PerformanceCounterInstance>(new PerformanceCounterInstance(Util::GetServiceNameA(), entityUID));
 			stm_pInstance->m_DefaultCounter->RegisterToClient();
 		}

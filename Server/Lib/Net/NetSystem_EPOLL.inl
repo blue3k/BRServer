@@ -32,7 +32,8 @@ void IOBUFFER_WRITE::InitMsg(Message::MessageData *pMsg)
 	pMsgs = pMsg;
 	pSendBuff = nullptr;
 
-	pMsg->GetLengthNDataPtr(RawSendSize, pRawSendBuffer);
+	RawSendSize = pMsg->GetMessageSize();
+	pRawSendBuffer = pMsg->GetMessageBuff();
 }
 
 void IOBUFFER_WRITE::InitBuff(UINT uiBuffSize, BYTE* pBuff)

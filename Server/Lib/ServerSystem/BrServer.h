@@ -20,7 +20,6 @@
 #include "ServerSystem/MasterEntity.h"
 #include "ServerSystem/TaskManager.h"
 #include "ServerSystem/MasterEntity.h"
-#include "ServerSystem/EntityTable.h"
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/ServerComponentCarrier.h"
 
@@ -99,9 +98,6 @@ namespace Svr {
 
 		// Server config
 		const Config::GenericServer	*m_pMyConfig;
-
-		// Entity Table
-		EntityTable					m_EntityTable;
 
 		// Server execution time stamp
 		TimeStampSec					m_ServerUpUTCTIme;
@@ -204,9 +200,6 @@ namespace Svr {
 
 		// Get net private
 		inline Net::ServerPeerTCP* GetNetPrivate()								{ return m_pNetPrivate; }
-
-		// Get entity table
-		inline EntityTable& GetEntityTable();
 
 		template<class DBManagerType>
 		HRESULT InitializeDBCluster(Svr::Config::DBCluster *pDBClusterCfg);

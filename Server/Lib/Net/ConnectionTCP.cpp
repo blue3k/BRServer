@@ -247,9 +247,11 @@ namespace Net {
 			case E_NET_IO_PENDING:
 			case E_NET_WOULDBLOCK:
 				// Recv is pended
+				hr = hrErr;
 				break;
 			case E_NET_TRY_AGAIN:
 				// try again
+				hr = hrErr;
 				break;
 			};
 		}

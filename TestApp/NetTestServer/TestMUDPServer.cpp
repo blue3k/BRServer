@@ -42,7 +42,6 @@ protected:
 	MUDPServerTest()
 		: m_pServer(nullptr)
 	{
-
 	}
 
 	NetClass GetNetClass() { return NetClass::Game; }
@@ -70,6 +69,7 @@ TEST_F(MUDPServerTest, Connect)
 
 
 	EXPECT_HRESULT_SUCCEEDED(Net::GetLocalAddressIPv6(localAddr));
+	//localAddr.usPort = 52000;
 
 	hr = m_pServer->HostOpen(GetNetClass(), localAddr.strAddr, localAddr.usPort);
 	EXPECT_HRESULT_SUCCEEDED(hr);
@@ -96,6 +96,8 @@ TEST_F(MUDPServerTest, Connect)
 
 	while (bWaitingTest)
 	{
+		ThisThread::SleepFor(DurationMS(500));
+
 		size_t iDisconnected = 0;
 		for (auto itConnection : m_ConnectionList)
 		{

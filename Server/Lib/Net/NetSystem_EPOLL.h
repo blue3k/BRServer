@@ -73,14 +73,14 @@ namespace Net {
 	{
 		SOCKET SockWrite;
 
-		// Sending raw buffer
+		// Sending raw buffer, always has send buffer data pointer and size
 		UINT RawSendSize;
 		BYTE* pRawSendBuffer;
 
-		// Message pointer to send
+		// Message pointer to send, when send message data
 		Message::MessageData *pMsgs;
 
-		// Message buffer pointer to send
+		// Message buffer pointer to send, when send buffer data
 		BYTE *pSendBuff;
 
 		// Constructor

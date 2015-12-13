@@ -22,6 +22,7 @@
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"
+#include "ServerSystem/EntityTable.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/SvrConst.h"
 #include "Net/NetServerPeer.h"
@@ -174,7 +175,7 @@ namespace Svr
 	HRESULT ServerEntityManager::AddServerEntity(NetClass netClass, ServerEntity* pServerEntity)
 	{
 		HRESULT hr = S_OK;
-		auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+		auto& entityTable = GetEntityTable();
 		svrChkPtr( pServerEntity );
 
 		if (netClass < NetClass::Unknown

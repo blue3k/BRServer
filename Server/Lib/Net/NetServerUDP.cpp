@@ -73,6 +73,7 @@ namespace Net {
 		case E_NET_IO_PENDING:
 		case E_NET_TRY_AGAIN:
 		case E_NET_WOULDBLOCK:
+			hr = hrErr;
 			goto Proc_End;// success
 			break;
 		case E_NET_NETUNREACH:

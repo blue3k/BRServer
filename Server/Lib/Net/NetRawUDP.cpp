@@ -206,6 +206,7 @@ namespace Net {
 			case E_NET_IO_PENDING:
 			case E_NET_TRY_AGAIN:
 			case E_NET_WOULDBLOCK:
+				hr = hrErr;
 				goto Proc_End;// success
 				break;
 			case E_NET_NETUNREACH:
@@ -293,11 +294,11 @@ namespace Net {
 
 		if (NetSystem::IsProactorSystem())
 		{
-			netChk(EnqueueBuffer(pOverlapped));
+			netChk(SendBuffer(pOverlapped));
 		}
 		else
 		{
-			netChk(SendBuffer(pOverlapped));
+			netChk(EnqueueBuffer(pOverlapped));
 		}
 
 	Proc_End:
@@ -397,7 +398,8 @@ namespace Net {
 		case E_NET_IO_PENDING:
 		case E_NET_TRY_AGAIN:
 		case E_NET_WOULDBLOCK:
-			goto Proc_End;// success
+			hr = hrErr;
+			goto Proc_End;// success, but nothing to read
 			break;
 		case E_NET_NETUNREACH:
 		case E_NET_CONNABORTED:

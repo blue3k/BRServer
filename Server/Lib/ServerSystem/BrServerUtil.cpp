@@ -23,18 +23,19 @@ namespace BR {
 namespace Svr {
 
 
+	// Entity Table
+	EntityTable					g_EntityTable;
+
 
 	// Get entity table
 	EntityTable& GetEntityTable()
 	{
-		Assert(BrServer::GetInstance());
-		return BrServer::GetInstance()->GetEntityTable();
+		return g_EntityTable;
 	}
 
 	HRESULT FindEntity(EntityID entityID, SharedPointerT<Entity>& entity)
 	{
-		Assert(BrServer::GetInstance());
-		return BrServer::GetInstance()->GetEntityTable().Find(entityID, entity);
+		return g_EntityTable.Find(entityID, entity);
 	}
 
 	UINT GetServerUID()

@@ -210,10 +210,11 @@ namespace Message {
 
 		inline MessageHeader*	GetMessageHeader();
 		inline MobileMessageHeader*	GetMobileMessageHeader();
-		inline BYTE*	GetMessageBuff();
-		inline UINT		GetMessageSize() const;
-		inline BYTE*	GetMessageData();
+		inline BYTE*	GetMessageBuff();       // data include header
+		inline UINT		GetMessageSize() const; // total length
+		inline BYTE*	GetMessageData();       // data except header
 
+		// Data except header
 		void GetLengthNDataPtr( UINT& length, BYTE* &pDataPtr);
 		UINT GetDataLength();
 

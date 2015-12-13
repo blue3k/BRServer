@@ -23,6 +23,7 @@
 #include "DB/QueryWorkerManager.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/EntityTable.h"
+#include "ServerSystem/BrServerUtil.h"
 
 namespace BR {
 namespace DB {
@@ -393,7 +394,7 @@ Proc_End:
 			const char* queryName = typeid(*pRes).name();
 			auto msgID = pRes->GetMsgID();
 			auto entityID = pRes->GetTransID().GetEntityID();
-			hr = pMyServer->GetEntityTable().RouteTransactionResult(pRes);
+			hr = Svr::GetEntityTable().RouteTransactionResult(pRes);
 			if (FAILED(hr))
 			{
 				dbTrace(TRC_INFO, "Failed to route a message msgID:{0}, target entityID:{1}, query:{2}", hr, msgID, entityID, queryName);

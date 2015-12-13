@@ -50,6 +50,8 @@ TEST_F(PerformanceServerTest, Connect)
 
 	EXPECT_HRESULT_SUCCEEDED(Net::GetLocalAddressIPv6(localAddr));
 
+	localAddr.usPort = 52000;
+
 	hr = Svr::PerformanceCounterServer::Initialize(localAddr);
 	EXPECT_HRESULT_SUCCEEDED(hr);
 	defChk(hr);

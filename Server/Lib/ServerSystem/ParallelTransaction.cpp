@@ -22,6 +22,8 @@
 #include "ServerSystem/ParallelTransaction.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/EntityManager.h"
+#include "ServerSystem/EntityTable.h"
+#include "ServerSystem/BrServerUtil.h"
 
 
 namespace BR {
@@ -79,7 +81,7 @@ namespace Svr
 
 				if (pTransaction->GetParentTransID() != 0)
 				{
-					auto& entityTable = BrServer::GetInstance()->GetEntityTable();
+					auto& entityTable = GetEntityTable();
 					TransactionResult* pRes = pTransaction;
 					if (SUCCEEDED(entityTable.RouteTransactionResult(pRes)))
 					{

@@ -249,9 +249,11 @@ namespace Net {
 				switch (hrErr)
 				{
 				case E_NET_TRY_AGAIN:
+				case E_NET_WOULDBLOCK:
+					// These are expected return code
+					hr = S_OK;
 					break;
 				case E_NET_IO_PENDING:
-				case E_NET_WOULDBLOCK:
 					Assert(false);
 					break;
 				default:
@@ -775,7 +777,7 @@ namespace Net {
 
 		HRESULT Recv(SOCKET sock, IOBUFFER_READ* pBuffer)
 		{
-			ssize_t recvSize = recv(sock, &pBuffer->buffer, sizeof(pBuffer->buffer), MSG_DONTWAIT);
+			ssize_t recvSize = recv(sock, pBuffer->buffer, sizeof(pBuffer->buffer), MSG_DONTWAIT);
 			if (recvSize < 0)
 			{
 				return GetLastWSAHRESULT();
@@ -794,7 +796,7 @@ namespace Net {
 		{
 			Assert(pBuffer->iSockLen == sizeof(pBuffer->NetAddr.From));
 
-			ssize_t recvSize = recvfrom(sock, &pBuffer->buffer, sizeof(pBuffer->buffer), MSG_DONTWAIT,
+			ssize_t recvSize = recvfrom(sock, pBuffer->buffer, sizeof(pBuffer->buffer), MSG_DONTWAIT,
 				(sockaddr*)&pBuffer->NetAddr.From, &pBuffer->iSockLen);
 			if (recvSize < 0)
 			{
@@ -813,7 +815,7 @@ namespace Net {
 
 		HRESULT Send(SOCKET sock, IOBUFFER_WRITE* pBuffer)
 		{
-			ssize_t sendSize = send(sock, &pBuffer->RawSendSize, pBuffer->RawSendSize, MSG_DONTWAIT | MSG_NOSIGNAL);
+			ssize_t sendSize = send(sock, pBuffer->pRawSendBuffer, pBuffer->RawSendSize, MSG_DONTWAIT | MSG_NOSIGNAL);
 			if (sendSize < 0)
 			{
 				return GetLastWSAHRESULT();
@@ -827,7 +829,7 @@ namespace Net {
 		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer)
 		{
 			const sockaddr_in6& dstAddress = pBuffer->NetAddr.To;
-			ssize_t sendSize = sendto(sock, &pBuffer->RawSendSize, pBuffer->RawSendSize, MSG_DONTWAIT | MSG_NOSIGNAL,
+			ssize_t sendSize = sendto(sock, pBuffer->pRawSendBuffer, pBuffer->RawSendSize, MSG_DONTWAIT | MSG_NOSIGNAL,
 				(sockaddr*)&dstAddress, sizeof(sockaddr_in6));
 
 			if (sendSize < 0)

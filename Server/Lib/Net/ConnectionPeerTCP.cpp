@@ -107,7 +107,7 @@ namespace Net {
 			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(GetConnectingTimeOut()) ) // connection time out
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
-				netTrace(TRC_CONNECTION, "Connecting Timeout CID:%0%", GetCID());
+				netTrace(TRC_CONNECTION, "Connecting Timeout CID:{0}", GetCID());
 				netChk( CloseConnection() );
 			}
 			else if( (ulTimeCur-m_ulNetCtrlTryTime) > DurationMS(Const::CONNECTION_RETRY_TIME) ) // retry
@@ -127,7 +127,7 @@ namespace Net {
 			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::DISCONNECT_TIMEOUT) ) // connection time out
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
-				netTrace(TRC_CONNECTION, "Disconnecting Timeout CID:%0%", GetCID());
+				netTrace(TRC_CONNECTION, "Disconnecting Timeout CID:{0}", GetCID());
 				netChk( CloseConnection() );
 			}
 
@@ -137,7 +137,7 @@ namespace Net {
 			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(Const::HEARTBIT_TIMEOUT) ) // connection time out
 			{
 				m_ulNetCtrlTime = ulTimeCur;
-				netTrace(TRC_CONNECTION, "Connection Timeout CID:%1%", GetCID());
+				netTrace(TRC_CONNECTION, "Connection Timeout CID:{0}", GetCID());
 
 				netChk( CloseConnection() );
 				goto Proc_End;

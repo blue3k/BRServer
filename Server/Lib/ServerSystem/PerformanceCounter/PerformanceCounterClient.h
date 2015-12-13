@@ -63,7 +63,7 @@ namespace BR {
 
 			MessageHandler m_MessageHandler;
 
-
+			UINT m_ServerID;
 
 			struct FreeInfo
 			{
@@ -118,7 +118,7 @@ namespace BR {
 
 		public:
 
-			static HRESULT Initialize(const NetAddress& serverAddress);
+			static HRESULT Initialize(UINT serverID, const NetAddress& serverAddress);
 			static HRESULT Terminate();
 
 			static PerformanceCounterInstance* GetDefaultCounterInstance();
