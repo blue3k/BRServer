@@ -67,7 +67,7 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(EntityID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( EntityServer::RegisterEntityCmd::MID, __uiMessageSize ) );
 
@@ -131,7 +131,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( EntityServer::RegisterEntityRes::MID, __uiMessageSize ) );
 
@@ -193,7 +193,7 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( EntityServer::UnregisterEntityCmd::MID, __uiMessageSize ) );
 
@@ -253,7 +253,7 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( EntityServer::UnregisterEntityRes::MID, __uiMessageSize ) );
 
@@ -314,7 +314,7 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(EntityID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( EntityServer::FindEntityCmd::MID, __uiMessageSize ) );
 
@@ -376,7 +376,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( EntityServer::FindEntityRes::MID, __uiMessageSize ) );
 

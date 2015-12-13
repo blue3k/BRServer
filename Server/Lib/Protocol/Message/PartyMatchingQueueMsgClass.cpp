@@ -70,7 +70,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(MatchingPlayerInformation)*InPlayers.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInPlayers = (UINT16)InPlayers.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::RegisterPartyMatchingCmd::MID, __uiMessageSize ) );
@@ -194,7 +194,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::RegisterPartyMatchingRes::MID, __uiMessageSize ) );
 
@@ -317,7 +317,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::RegisterPlayerMatchingCmd::MID, __uiMessageSize ) );
 
@@ -439,7 +439,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::RegisterPlayerMatchingRes::MID, __uiMessageSize ) );
 
@@ -564,7 +564,7 @@ namespace BR
 					+ sizeof(MatchingQueueTicket)
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::UpdateMatchingEntityUIDCmd::MID, __uiMessageSize ) );
 
@@ -685,7 +685,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::UpdateMatchingEntityUIDRes::MID, __uiMessageSize ) );
 
@@ -806,7 +806,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::UnregisterMatchingCmd::MID, __uiMessageSize ) );
 
@@ -926,7 +926,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::UnregisterMatchingRes::MID, __uiMessageSize ) );
 
@@ -1047,7 +1047,7 @@ namespace BR
 					+ sizeof(PartyUID)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::PartyMatchingCanceledS2CEvt::MID, __uiMessageSize ) );
 
@@ -1168,7 +1168,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::PlayerMatchingCanceledS2CEvt::MID, __uiMessageSize ) );
 
@@ -1287,7 +1287,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt::MID, __uiMessageSize ) );
 
@@ -1405,7 +1405,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt::MID, __uiMessageSize ) );
 
@@ -1523,7 +1523,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::ReserveItemCmd::MID, __uiMessageSize ) );
 
@@ -1646,7 +1646,7 @@ namespace BR
 					+ sizeof(UINT32)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::ReserveItemRes::MID, __uiMessageSize ) );
 
@@ -1771,7 +1771,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::ReserveItemsCmd::MID, __uiMessageSize ) );
 
@@ -1901,7 +1901,7 @@ namespace BR
 					+ sizeof(UINT32)*InNumberOfPlayersInTheItem.GetSize() + sizeof(UINT16)
 					+ sizeof(MatchingQueueTicket)*InMatchingTicket.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInNumberOfPlayersInTheItem = (UINT16)InNumberOfPlayersInTheItem.GetSize(); 
 				UINT16 numberOfInMatchingTicket = (UINT16)InMatchingTicket.GetSize(); 
@@ -2032,7 +2032,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::CancelReservationCmd::MID, __uiMessageSize ) );
 
@@ -2152,7 +2152,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::CancelReservationRes::MID, __uiMessageSize ) );
 
@@ -2276,7 +2276,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(MatchingQueueTicket)*InTicketToCancel.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInTicketToCancel = (UINT16)InTicketToCancel.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::CancelReservationsCmd::MID, __uiMessageSize ) );
@@ -2398,7 +2398,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::CancelReservationsRes::MID, __uiMessageSize ) );
 
@@ -2519,7 +2519,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::DequeueItemCmd::MID, __uiMessageSize ) );
 
@@ -2650,7 +2650,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(MatchingPlayerInformation)*InPlayers.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInPlayers = (UINT16)InPlayers.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::DequeueItemRes::MID, __uiMessageSize ) );
@@ -2780,7 +2780,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatchingQueue::MatchingItemErrorC2SEvt::MID, __uiMessageSize ) );
 

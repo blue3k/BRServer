@@ -77,14 +77,14 @@ namespace Net {
 
 
 
-		// Send message to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
+		//// Send message to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
 
-		// Send message to connection with network device to dst addr
-		virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
+		//// Send message to connection with network device to dst addr
+		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
 
-		// Send array of message buffer to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
+		//// Send array of message buffer to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
 
 		// Pending recv New one
 		HRESULT PendingRecv( IOBUFFER_READ *pOverlaped );
@@ -117,7 +117,7 @@ namespace Net {
 
 
 		// called when network message is received
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer );
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer );
 	};
 
 
@@ -141,6 +141,7 @@ namespace Net {
 		ServerMUDP(ServerID InServerID, NetClass localClass);
 		virtual ~ServerMUDP();
 
+		HRESULT SendRaw(const sockaddr_in6& dstAddress, Message::MessageData* &pMsg);
 		HRESULT SendNetCtrl( const sockaddr_in6& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID );
 		
 		// Maximum connection
@@ -151,7 +152,7 @@ namespace Net {
 		HRESULT OnNoConnectionPacket(const struct sockaddr_in6& from, const BYTE* pData);
 
 		// called when network message is received
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer );
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer );
 	};
 
 

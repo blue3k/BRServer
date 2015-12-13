@@ -256,6 +256,7 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		HRESULT hrTem;
+		IOBUFFER_WRITE* pSendBuffer = nullptr;
 
 		MsgNetCtrl *pAckMsg = NULL;
 		Message::MessageData *pMsg = NULL;
@@ -280,7 +281,10 @@ namespace Net {
 
 		pMsg->UpdateChecksum();
 
-		hrTem = GetNet()->SendMsg( this, pMsg );
+
+
+		hrTem = SendRaw(pMsg);
+		//hrTem = GetNet()->SendMsg( this, pMsg );
 		if( FAILED(hrTem) )
 		{
 			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 

@@ -72,7 +72,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(BYTE)*InPlayerInfo.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInPlayerInfo = (UINT16)InPlayerInfo.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::AddPlayerCmd::MID, __uiMessageSize ) );
@@ -167,7 +167,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::AddPlayerRes::MID, __uiMessageSize ) );
 
@@ -259,7 +259,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::RemovePlayerCmd::MID, __uiMessageSize ) );
 
@@ -348,7 +348,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::RemovePlayerRes::MID, __uiMessageSize ) );
 
@@ -439,7 +439,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::GetPlayerRankingCmd::MID, __uiMessageSize ) );
 
@@ -530,7 +530,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::GetPlayerRankingRes::MID, __uiMessageSize ) );
 
@@ -629,7 +629,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(BYTE)*InPlayerInfo.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInPlayerInfo = (UINT16)InPlayerInfo.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::UpdatePlayerCmd::MID, __uiMessageSize ) );
@@ -724,7 +724,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::UpdatePlayerRes::MID, __uiMessageSize ) );
 
@@ -818,7 +818,7 @@ namespace BR
 					+ sizeof(UINT32)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::GetRankingCmd::MID, __uiMessageSize ) );
 
@@ -910,7 +910,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Ranking::GetRankingRes::MID, __uiMessageSize ) );
 

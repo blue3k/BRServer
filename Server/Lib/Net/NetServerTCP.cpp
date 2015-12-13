@@ -241,8 +241,9 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ServerTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
+	HRESULT ServerTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
+		Assert(false);
 		return E_NOTIMPL;
 	}
 
@@ -442,152 +443,152 @@ namespace Net {
 	}
 
 
-	// Send message to connection with network device
-	HRESULT ServerTCP::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
-	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+	//// Send message to connection with network device
+	//HRESULT ServerTCP::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
+	//{
+	//	HRESULT hr = S_OK, hrErr = S_OK;
 
-		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
-		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
+	//	Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
+	//	UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
 
-		ConnectionTCP *pTCPCon = (ConnectionTCP*)pConnection;
+	//	ConnectionTCP *pTCPCon = (ConnectionTCP*)pConnection;
 
-		Assert(pMsg->GetRefCount() > 0);
+	//	Assert(pMsg->GetRefCount() > 0);
 
-		IOBUFFER_WRITE *pOverlapped = nullptr;
-		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
-		pOverlapped->SetupSendTCP( pMsg );
-
-
-		hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
-		switch (hrErr)
-		{
-		case S_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_TRY_AGAIN:
-		case E_NET_WOULDBLOCK:
-			break;
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
-		case E_NET_NOTCONN:
-		case E_NET_NOTSOCK:
-		case E_NET_SHUTDOWN:
-			// Send fail by connection close
-			// Need to disconnect
-			pTCPCon->Disconnect();
-			hr = E_NET_CONNECTION_CLOSED;
-			goto Proc_End;
-			break;
-		default:
-			netErr(E_NET_IO_SEND_FAIL);
-			break;
-		};
-
-	Proc_End:
-
-		if( FAILED(hr) )
-		{
-			if( pOverlapped )
-			{
-				Util::SafeRelease( pOverlapped->pMsgs );
-				Net::NetSystem::FreeBuffer(pOverlapped);
-			}
-			else
-			{
-				Util::SafeRelease( pMsg );
-			}
-
-			if( hr != E_NET_IO_SEND_FAIL )
-			{
-				netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr, pTCPCon->GetCID());
-			}
-			else
-				return S_OK;
-		}
-		else
-		{
-			if( msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
-			{
-				netTrace(TRC_TCPNETCTRL, "TCP Ctrl CID:{3}, ip:{0}, msg:{1}, Len:{2}", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
-			}
-			else
-			{
-				netTrace(TRC_TCPSENDRAW, "TCP Send CID:{3}, ip:{0}, msg:{1}, Len:{2}", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
-			}
-		}
+	//	IOBUFFER_WRITE *pOverlapped = nullptr;
+	//	netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
+	//	pOverlapped->SetupSendTCP( pMsg );
 
 
-		return hr;
-	}
+	//	hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
+	//	switch (hrErr)
+	//	{
+	//	case S_OK:
+	//	case E_NET_IO_PENDING:
+	//	case E_NET_TRY_AGAIN:
+	//	case E_NET_WOULDBLOCK:
+	//		break;
+	//	case E_NET_CONNABORTED:
+	//	case E_NET_CONNRESET:
+	//	case E_NET_NETRESET:
+	//	case E_NET_NOTCONN:
+	//	case E_NET_NOTSOCK:
+	//	case E_NET_SHUTDOWN:
+	//		// Send fail by connection close
+	//		// Need to disconnect
+	//		pTCPCon->Disconnect();
+	//		hr = E_NET_CONNECTION_CLOSED;
+	//		goto Proc_End;
+	//		break;
+	//	default:
+	//		netErr(E_NET_IO_SEND_FAIL);
+	//		break;
+	//	};
 
-	HRESULT ServerTCP::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
-	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+	//Proc_End:
 
-		ConnectionTCP *pTCPCon = (ConnectionTCP*)pConnection;
+	//	if( FAILED(hr) )
+	//	{
+	//		if( pOverlapped )
+	//		{
+	//			Util::SafeRelease( pOverlapped->pMsgs );
+	//			Net::NetSystem::FreeBuffer(pOverlapped);
+	//		}
+	//		else
+	//		{
+	//			Util::SafeRelease( pMsg );
+	//		}
 
-		IOBUFFER_WRITE *pOverlapped = nullptr;
-		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
-
-		pOverlapped->SetupSendTCP( uiBuffSize, pBuff );
-
-		hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
-		switch (hrErr)
-		{
-		case S_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_TRY_AGAIN:
-		case E_NET_WOULDBLOCK:
-			break;
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
-		case E_NET_NOTCONN:
-		case E_NET_NOTSOCK:
-		case E_NET_SHUTDOWN:
-			// Send fail by connection close
-			// Need to disconnect
-			pTCPCon->Disconnect();
-			hr = E_NET_CONNECTION_CLOSED;
-			goto Proc_End;
-			break;
-		default:
-			netErr(E_NET_IO_SEND_FAIL);
-			break;
-		};
-
-	Proc_End:
-
-		if( FAILED(hr) )
-		{
-			if( pOverlapped )
-			{
-				Net::NetSystem::FreeBuffer(pOverlapped);
-			}
-
-			if( hr != E_NET_IO_SEND_FAIL )
-			{
-				netTrace( Trace::TRC_ERROR, "TCP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr );
-			}
-			else
-				return S_OK;
-		}
-		else
-		{
-			netTrace(TRC_TCPSENDRAW, "TCP Send ip:{0}, Len:{1}", pTCPCon->GetConnectionInfo().Remote, uiBuffSize);
-		}
+	//		if( hr != E_NET_IO_SEND_FAIL )
+	//		{
+	//			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr, pTCPCon->GetCID());
+	//		}
+	//		else
+	//			return S_OK;
+	//	}
+	//	else
+	//	{
+	//		if( msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
+	//		{
+	//			netTrace(TRC_TCPNETCTRL, "TCP Ctrl CID:{3}, ip:{0}, msg:{1}, Len:{2}", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
+	//		}
+	//		else
+	//		{
+	//			netTrace(TRC_TCPSENDRAW, "TCP Send CID:{3}, ip:{0}, msg:{1}, Len:{2}", pTCPCon->GetConnectionInfo().Remote, msgID, uiMsgLen, pTCPCon->GetCID());
+	//		}
+	//	}
 
 
-		return hr;
-	}
+	//	return hr;
+	//}
+
+	//HRESULT ServerTCP::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
+	//{
+	//	HRESULT hr = S_OK, hrErr = S_OK;
+
+	//	ConnectionTCP *pTCPCon = (ConnectionTCP*)pConnection;
+
+	//	IOBUFFER_WRITE *pOverlapped = nullptr;
+	//	netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
+
+	//	pOverlapped->SetupSendTCP( uiBuffSize, pBuff );
+
+	//	hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
+	//	switch (hrErr)
+	//	{
+	//	case S_OK:
+	//	case E_NET_IO_PENDING:
+	//	case E_NET_TRY_AGAIN:
+	//	case E_NET_WOULDBLOCK:
+	//		break;
+	//	case E_NET_CONNABORTED:
+	//	case E_NET_CONNRESET:
+	//	case E_NET_NETRESET:
+	//	case E_NET_NOTCONN:
+	//	case E_NET_NOTSOCK:
+	//	case E_NET_SHUTDOWN:
+	//		// Send fail by connection close
+	//		// Need to disconnect
+	//		pTCPCon->Disconnect();
+	//		hr = E_NET_CONNECTION_CLOSED;
+	//		goto Proc_End;
+	//		break;
+	//	default:
+	//		netErr(E_NET_IO_SEND_FAIL);
+	//		break;
+	//	};
+
+	//Proc_End:
+
+	//	if( FAILED(hr) )
+	//	{
+	//		if( pOverlapped )
+	//		{
+	//			Net::NetSystem::FreeBuffer(pOverlapped);
+	//		}
+
+	//		if( hr != E_NET_IO_SEND_FAIL )
+	//		{
+	//			netTrace( Trace::TRC_ERROR, "TCP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr );
+	//		}
+	//		else
+	//			return S_OK;
+	//	}
+	//	else
+	//	{
+	//		netTrace(TRC_TCPSENDRAW, "TCP Send ip:{0}, Len:{1}", pTCPCon->GetConnectionInfo().Remote, uiBuffSize);
+	//	}
 
 
-	// Send message to connection with network device to dst addr
-	HRESULT ServerTCP::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg )
-	{
-		return E_NOTIMPL;
-	}
+	//	return hr;
+	//}
+
+
+	//// Send message to connection with network device to dst addr
+	//HRESULT ServerTCP::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg )
+	//{
+	//	return E_NOTIMPL;
+	//}
 
 
 

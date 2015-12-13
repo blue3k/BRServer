@@ -58,7 +58,7 @@ TEST_F(SystemSynchronizationTest, Mutex)
 		auto pWorker = new FunctorThread([&dataLock, &testData, &testIndex, &workerCounter, worker, TEST_LENGTH](Thread* pThread)
 		{
 			workerCounter.fetch_add(1, std::memory_order_relaxed);
-			for (int iTest = 0; iTest < TEST_LENGTH; iTest++)
+			for (UINT64 iTest = 0; iTest < TEST_LENGTH; iTest++)
 			{
 				BR::MutexScopeLock scopeLock(dataLock);
 				auto read = testData.load(std::memory_order_acquire);
@@ -100,7 +100,7 @@ TEST_F(SystemSynchronizationTest, CriticalSection)
 		auto pWorker = new FunctorThread([&dataLock, &testData, &testIndex, &workerCounter, worker, TEST_LENGTH](Thread* pThread)
 		{
 			workerCounter.fetch_add(1, std::memory_order_relaxed);
-			for (int iTest = 0; iTest < TEST_LENGTH; iTest++)
+			for (UINT64 iTest = 0; iTest < TEST_LENGTH; iTest++)
 			{
 				BR::MutexScopeLock scopeLock(dataLock);
 				auto read = testData.load(std::memory_order_acquire);
@@ -143,7 +143,7 @@ TEST_F(SystemSynchronizationTest, Event)
 		auto pWorker = new FunctorThread([&dataEvent, &workDoneEvent, &testData, &testIndex, &workerCounter, worker, TEST_LENGTH](Thread* pThread)
 		{
 			workerCounter.fetch_add(1, std::memory_order_relaxed);
-			for (int iTest = 0; iTest < TEST_LENGTH; iTest++)
+			for (UINT64 iTest = 0; iTest < TEST_LENGTH; iTest++)
 			{
 				while (!dataEvent.WaitEvent(-1));
 

@@ -63,7 +63,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatching::PartyGameMatchedS2CEvt::MID, __uiMessageSize ) );
 
@@ -184,7 +184,7 @@ namespace BR
 					+ sizeof(GameInsUID)
 					+ sizeof(PlayerRole));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( PartyMatching::PlayerGameMatchedS2CEvt::MID, __uiMessageSize ) );
 

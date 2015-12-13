@@ -63,7 +63,7 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Server::GenericFailureCmd::MID, __uiMessageSize ) );
 
@@ -151,7 +151,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Server::GenericFailureRes::MID, __uiMessageSize ) );
 
@@ -246,7 +246,7 @@ namespace BR
 					+ sizeof(NetAddress)
 					+ sizeof(NetAddress));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Server::ServerConnectedC2SEvt::MID, __uiMessageSize ) );
 

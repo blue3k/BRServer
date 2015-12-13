@@ -269,7 +269,7 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ConnectionTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
+	HRESULT ConnectionTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
 		HRESULT hr = S_OK;
 
@@ -390,6 +390,13 @@ namespace Net {
 		m_isActuallyConnected = true;
 
 		Assert(connectInfo.LocalClass != NetClass::Unknown);
+
+		int flag = 1;
+		int result = setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, (char*)&flag, sizeof(int));
+		if (result < 0)
+		{
+			return GetLastWSAHRESULT();
+		}
 
 		// ignore incomming socket value
 		return Connection::InitConnection( socket, connectInfo );
@@ -751,6 +758,37 @@ namespace Net {
 	}
 
 
+	HRESULT ConnectionTCP::SendRaw(Message::MessageData* &pMsg)
+	{
+		HRESULT hr = S_OK;
+		IOBUFFER_WRITE *pSendBuffer = nullptr;
+
+		netChkPtr(pMsg);
+
+		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
+		pSendBuffer->SetupSendTCP(pMsg);
+
+		if (NetSystem::IsProactorSystem())
+		{
+			netChk(SendBuffer(pSendBuffer));
+		}
+		else
+		{
+			netChk(EnqueueBuffer(pSendBuffer));
+		}
+		pMsg = nullptr;
+		pSendBuffer = nullptr;
+
+	Proc_End:
+
+		if (pSendBuffer != nullptr)
+		{
+			NetSystem::FreeBuffer(pSendBuffer);
+		}
+
+		return hr;
+	}
+
 	// Send message to connected entity
 	HRESULT ConnectionTCP::Send( Message::MessageData* &pMsg )
 	{
@@ -793,17 +831,7 @@ namespace Net {
 
 		m_PendingSend.fetch_add(1, std::memory_order_acquire);
 
-		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
-		pSendBuffer->SetupSendTCP(pMsg);
-
-		if (NetSystem::IsProactorSystem())
-		{
-			netChk(SendBuffer(pSendBuffer));
-		}
-		else
-		{
-			netChk(EnqueueBuffer(pSendBuffer));
-		}
+		netChk(SendRaw(pMsg));
 
 		pMsg = nullptr;
 

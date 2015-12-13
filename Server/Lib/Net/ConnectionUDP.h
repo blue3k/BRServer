@@ -93,6 +93,8 @@ namespace Net {
 		virtual HRESULT SendBufferUDP(IOBUFFER_WRITE *pSendBuffer);
 		virtual HRESULT EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer);
 
+		virtual HRESULT SendRaw(Message::MessageData* &pMsg) override;
+
 	public:
 		// Constructor
 		ConnectionUDPBase( UINT reliableWindowSize );
@@ -282,7 +284,7 @@ namespace Net {
 
 		// called when reciving TCP message
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) override;
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
 		// called when send completed
 		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;

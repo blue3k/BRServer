@@ -67,7 +67,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(PlayerInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GamePartyManager::CreatePartyCmd::MID, __uiMessageSize ) );
 
@@ -187,7 +187,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GamePartyManager::CreatePartyRes::MID, __uiMessageSize ) );
 
@@ -304,7 +304,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GamePartyManager::PartyDeletedC2SEvt::MID, __uiMessageSize ) );
 

@@ -9,6 +9,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "Common/TypeUtility.h"
 #include "Common/File/BRFile.h"
 
 #if WINDOWS

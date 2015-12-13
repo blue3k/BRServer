@@ -52,7 +52,7 @@ namespace Message {
 
 		void FailResultS2CEvt::OutputMessage(const char* Prefix)
 		{
- 			Prefix;
+ 			unused(Prefix);
 			protocolTrace(Trace::TRC_DBG1, "{0}:FailResultS2CEvt: , Context:{1}, hrRes:{2:X8}",
 											Prefix, m_Context, m_hrRes); 
 		}; // VOID MsgFailResultS2CEvt::OutputMessage(const char* Prefix)

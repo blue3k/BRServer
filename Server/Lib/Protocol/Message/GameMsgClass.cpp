@@ -34,13 +34,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -54,15 +50,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::HeartBitC2SEvt::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -119,7 +111,7 @@ namespace BR
 					+ sizeof(AuthTicket)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::JoinGameServerCmd::MID, __uiMessageSize ) );
 
@@ -190,7 +182,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::JoinGameServerRes::MID, __uiMessageSize ) );
 
@@ -228,13 +220,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -248,15 +236,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetComplitionStateCmd::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -312,7 +296,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInComplitionStateLength 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetComplitionStateRes::MID, __uiMessageSize ) );
 
@@ -374,7 +358,7 @@ namespace BR
 				UINT16 __uiInComplitionStateLength = InComplitionState ? (UINT16)(strlen(InComplitionState)+1) : 1;
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInComplitionStateLength );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::SetComplitionStateCmd::MID, __uiMessageSize ) );
 
@@ -432,7 +416,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::SetComplitionStateRes::MID, __uiMessageSize ) );
 
@@ -492,7 +476,7 @@ namespace BR
 				UINT16 __uiInGCMRegisteredIDLength = InGCMRegisteredID ? (UINT16)(strlen(InGCMRegisteredID)+1) : 1;
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInGCMRegisteredIDLength );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::RegisterGCMCmd::MID, __uiMessageSize ) );
 
@@ -550,7 +534,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::RegisterGCMRes::MID, __uiMessageSize ) );
 
@@ -610,7 +594,7 @@ namespace BR
 				UINT16 __uiInGCMRegisteredIDLength = InGCMRegisteredID ? (UINT16)(strlen(InGCMRegisteredID)+1) : 1;
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInGCMRegisteredIDLength );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::UnregisterGCMCmd::MID, __uiMessageSize ) );
 
@@ -668,7 +652,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::UnregisterGCMRes::MID, __uiMessageSize ) );
 
@@ -726,7 +710,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::InviteFriendCmd::MID, __uiMessageSize ) );
 
@@ -783,7 +767,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::InviteFriendRes::MID, __uiMessageSize ) );
 
@@ -843,7 +827,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(FacebookUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::AcceptFriendRequestCmd::MID, __uiMessageSize ) );
 
@@ -903,7 +887,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(FriendInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::AcceptFriendRequestRes::MID, __uiMessageSize ) );
 
@@ -962,7 +946,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(FriendInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::FriendRequestAcceptedS2CEvt::MID, __uiMessageSize ) );
 
@@ -1020,7 +1004,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::RemoveFriendCmd::MID, __uiMessageSize ) );
 
@@ -1079,7 +1063,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::RemoveFriendRes::MID, __uiMessageSize ) );
 
@@ -1138,7 +1122,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::FriendRemovedS2CEvt::MID, __uiMessageSize ) );
 
@@ -1198,7 +1182,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetFriendListCmd::MID, __uiMessageSize ) );
 
@@ -1267,7 +1251,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(FriendInformation)*InFriendList.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInFriendList = (UINT16)InFriendList.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetFriendListRes::MID, __uiMessageSize ) );
@@ -1305,13 +1289,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -1325,15 +1305,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetNotificationListCmd::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -1385,7 +1361,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetNotificationListRes::MID, __uiMessageSize ) );
 
@@ -1443,7 +1419,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::DeleteNotificationCmd::MID, __uiMessageSize ) );
 
@@ -1502,7 +1478,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::DeleteNotificationRes::MID, __uiMessageSize ) );
 
@@ -1561,7 +1537,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::SetNotificationReadCmd::MID, __uiMessageSize ) );
 
@@ -1620,7 +1596,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::SetNotificationReadRes::MID, __uiMessageSize ) );
 
@@ -1679,7 +1655,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::AcceptNotificationCmd::MID, __uiMessageSize ) );
 
@@ -1738,7 +1714,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::AcceptNotificationRes::MID, __uiMessageSize ) );
 
@@ -1811,7 +1787,7 @@ namespace BR
 					+ sizeof(BYTE)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::NotifyS2CEvt::MID, __uiMessageSize ) );
 
@@ -1878,7 +1854,7 @@ namespace BR
 				UINT16 __uiInPlayerEMailLength = InPlayerEMail ? (UINT16)(strlen(InPlayerEMail)+1) : 1;
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInPlayerEMailLength );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::FindPlayerByEMailCmd::MID, __uiMessageSize ) );
 
@@ -1938,7 +1914,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(PlayerInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::FindPlayerByEMailRes::MID, __uiMessageSize ) );
 
@@ -1997,7 +1973,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::FindPlayerByPlayerIDCmd::MID, __uiMessageSize ) );
 
@@ -2056,7 +2032,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(PlayerInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::FindPlayerByPlayerIDRes::MID, __uiMessageSize ) );
 
@@ -2118,7 +2094,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID)*InTargetPlayerID.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInTargetPlayerID = (UINT16)InTargetPlayerID.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::RequestPlayerStatusUpdateCmd::MID, __uiMessageSize ) );
@@ -2177,7 +2153,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::RequestPlayerStatusUpdateRes::MID, __uiMessageSize ) );
 
@@ -2239,7 +2215,7 @@ namespace BR
 					+ sizeof(UINT32)
 					+ sizeof(BYTE));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::NotifyPlayerStatusUpdatedS2CEvt::MID, __uiMessageSize ) );
 
@@ -2303,7 +2279,7 @@ namespace BR
 					+ sizeof(BYTE)
 					+ sizeof(BYTE));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetRankingListCmd::MID, __uiMessageSize ) );
 
@@ -2367,7 +2343,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInRanking = (UINT16)InRanking.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetRankingListRes::MID, __uiMessageSize ) );
@@ -2402,13 +2378,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -2422,15 +2394,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetUserGamePlayerInfoCmd::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -2524,7 +2492,7 @@ namespace BR
 					+ sizeof(INT32)
 					+ sizeof(INT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetUserGamePlayerInfoRes::MID, __uiMessageSize ) );
 
@@ -2603,7 +2571,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetGamePlayerInfoCmd::MID, __uiMessageSize ) );
 
@@ -2694,7 +2662,7 @@ namespace BR
 					+ sizeof(INT32)
 					+ sizeof(INT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GetGamePlayerInfoRes::MID, __uiMessageSize ) );
 
@@ -2771,7 +2739,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::LevelUpS2CEvt::MID, __uiMessageSize ) );
 
@@ -2834,7 +2802,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInNickNameLength 
 					+ sizeof(BYTE));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::SetNickNameCmd::MID, __uiMessageSize ) );
 
@@ -2897,7 +2865,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::SetNickNameRes::MID, __uiMessageSize ) );
 
@@ -2931,13 +2899,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -2951,15 +2915,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::CreatePartyCmd::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -3013,7 +2973,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(PartyUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::CreatePartyRes::MID, __uiMessageSize ) );
 
@@ -3074,7 +3034,7 @@ namespace BR
 					+ sizeof(PartyUID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::JoinPartyCmd::MID, __uiMessageSize ) );
 
@@ -3141,7 +3101,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(BYTE)*InChatHistoryData.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInChatHistoryData = (UINT16)InChatHistoryData.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::JoinPartyRes::MID, __uiMessageSize ) );
@@ -3206,7 +3166,7 @@ namespace BR
 					+ sizeof(PartyUID)
 					+ sizeof(PlayerInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyPlayerJoinedS2CEvt::MID, __uiMessageSize ) );
 
@@ -3267,7 +3227,7 @@ namespace BR
 					+ sizeof(PartyUID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyLeaderChangedS2CEvt::MID, __uiMessageSize ) );
 
@@ -3328,7 +3288,7 @@ namespace BR
 					+ sizeof(PartyUID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::LeavePartyCmd::MID, __uiMessageSize ) );
 
@@ -3386,7 +3346,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::LeavePartyRes::MID, __uiMessageSize ) );
 
@@ -3446,7 +3406,7 @@ namespace BR
 					+ sizeof(PartyUID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyPlayerLeftS2CEvt::MID, __uiMessageSize ) );
 
@@ -3509,7 +3469,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyKickPlayerCmd::MID, __uiMessageSize ) );
 
@@ -3568,7 +3528,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyKickPlayerRes::MID, __uiMessageSize ) );
 
@@ -3628,7 +3588,7 @@ namespace BR
 					+ sizeof(PartyUID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyPlayerKickedS2CEvt::MID, __uiMessageSize ) );
 
@@ -3687,7 +3647,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyInviteCmd::MID, __uiMessageSize ) );
 
@@ -3744,7 +3704,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyInviteRes::MID, __uiMessageSize ) );
 
@@ -3808,7 +3768,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(PartyUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyInviteRequestedS2CEvt::MID, __uiMessageSize ) );
 
@@ -3869,7 +3829,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyQuickChatMessageCmd::MID, __uiMessageSize ) );
 
@@ -3926,7 +3886,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyQuickChatMessageRes::MID, __uiMessageSize ) );
 
@@ -3986,7 +3946,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyQuickChatMessageS2CEvt::MID, __uiMessageSize ) );
 
@@ -4047,7 +4007,7 @@ namespace BR
 				UINT16 __uiInChatMessageLength = InChatMessage ? (UINT16)(strlen(InChatMessage)+1) : 1;
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInChatMessageLength );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyChatMessageCmd::MID, __uiMessageSize ) );
 
@@ -4105,7 +4065,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyChatMessageRes::MID, __uiMessageSize ) );
 
@@ -4171,7 +4131,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInSenderNameLength + sizeof(UINT16) + __uiInChatMessageLength 
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PartyChatMessageS2CEvt::MID, __uiMessageSize ) );
 
@@ -4237,7 +4197,7 @@ namespace BR
 					+ sizeof(AuthTicket)
 					+ sizeof(GameInsUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::JoinGameCmd::MID, __uiMessageSize ) );
 
@@ -4324,7 +4284,7 @@ namespace BR
 					+ sizeof(BYTE)*InChatHistoryData.GetSize() + sizeof(UINT16)
 					+ sizeof(BYTE)*InGameLogData.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInChatHistoryData = (UINT16)InChatHistoryData.GetSize(); 
 				UINT16 numberOfInGameLogData = (UINT16)InGameLogData.GetSize(); 
@@ -4407,7 +4367,7 @@ namespace BR
 					+ sizeof(UINT8)
 					+ sizeof(UINT8));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PlayerJoinedS2CEvt::MID, __uiMessageSize ) );
 
@@ -4474,7 +4434,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::LeaveGameCmd::MID, __uiMessageSize ) );
 
@@ -4533,7 +4493,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::LeaveGameRes::MID, __uiMessageSize ) );
 
@@ -4593,7 +4553,7 @@ namespace BR
 					+ sizeof(GameInsUID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PlayerLeftS2CEvt::MID, __uiMessageSize ) );
 
@@ -4656,7 +4616,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::KickPlayerCmd::MID, __uiMessageSize ) );
 
@@ -4715,7 +4675,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::KickPlayerRes::MID, __uiMessageSize ) );
 
@@ -4775,7 +4735,7 @@ namespace BR
 					+ sizeof(GameInsUID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PlayerKickedS2CEvt::MID, __uiMessageSize ) );
 
@@ -4838,7 +4798,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::AssignRoleCmd::MID, __uiMessageSize ) );
 
@@ -4897,7 +4857,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::AssignRoleRes::MID, __uiMessageSize ) );
 
@@ -4959,7 +4919,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(PlayerRole));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::RoleAssignedS2CEvt::MID, __uiMessageSize ) );
 
@@ -5023,7 +4983,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInChatMessageLength 
 					+ sizeof(PlayerRole));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::ChatMessageCmd::MID, __uiMessageSize ) );
 
@@ -5082,7 +5042,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::ChatMessageRes::MID, __uiMessageSize ) );
 
@@ -5150,7 +5110,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(PlayerRole));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::ChatMessageS2CEvt::MID, __uiMessageSize ) );
 
@@ -5217,7 +5177,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::AdvanceGameCmd::MID, __uiMessageSize ) );
 
@@ -5276,7 +5236,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::AdvanceGameRes::MID, __uiMessageSize ) );
 
@@ -5340,7 +5300,7 @@ namespace BR
 					+ sizeof(GameStateID)
 					+ sizeof(UINT8));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GameAdvancedS2CEvt::MID, __uiMessageSize ) );
 
@@ -5407,7 +5367,7 @@ namespace BR
 					+ sizeof(UINT32)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GameEndedS2CEvt::MID, __uiMessageSize ) );
 
@@ -5472,7 +5432,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::VoteGameAdvanceCmd::MID, __uiMessageSize ) );
 
@@ -5531,7 +5491,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::VoteGameAdvanceRes::MID, __uiMessageSize ) );
 
@@ -5591,7 +5551,7 @@ namespace BR
 					+ sizeof(GameInsUID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GameAdvanceVotedS2CEvt::MID, __uiMessageSize ) );
 
@@ -5658,7 +5618,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::VoteCmd::MID, __uiMessageSize ) );
 
@@ -5719,7 +5679,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::VoteRes::MID, __uiMessageSize ) );
 
@@ -5781,7 +5741,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::VotedS2CEvt::MID, __uiMessageSize ) );
 
@@ -5846,7 +5806,7 @@ namespace BR
 					+ sizeof(GameInsUID)
 					+ sizeof(PlayerID)*InVoted.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInVoted = (UINT16)InVoted.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::VoteEndS2CEvt::MID, __uiMessageSize ) );
@@ -5911,7 +5871,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(PlayerKilledReason));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PlayerKilledS2CEvt::MID, __uiMessageSize ) );
 
@@ -5977,7 +5937,7 @@ namespace BR
 					+ sizeof(PlayerRole)
 					+ sizeof(PlayerRevealedReason));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::PlayerRevealedS2CEvt::MID, __uiMessageSize ) );
 
@@ -6012,13 +5972,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -6032,15 +5988,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GamePlayAgainCmd::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -6096,7 +6048,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GamePlayAgainRes::MID, __uiMessageSize ) );
 
@@ -6158,7 +6110,7 @@ namespace BR
 					+ sizeof(PartyUID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GamePlayAgainS2CEvt::MID, __uiMessageSize ) );
 
@@ -6220,7 +6172,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID)*InTargetPlayerID.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInTargetPlayerID = (UINT16)InTargetPlayerID.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GameRevealPlayerCmd::MID, __uiMessageSize ) );
@@ -6293,7 +6245,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInRevealedPlayerID = (UINT16)InRevealedPlayerID.GetSize(); 
 				UINT16 numberOfInRevealedRole = (UINT16)InRevealedRole.GetSize(); 
@@ -6333,13 +6285,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -6353,15 +6301,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GamePlayerReviveCmd::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -6417,7 +6361,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GamePlayerReviveRes::MID, __uiMessageSize ) );
 
@@ -6477,7 +6421,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GamePlayerRevivedS2CEvt::MID, __uiMessageSize ) );
 
@@ -6509,13 +6453,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -6529,15 +6469,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GamePlayerResetRankCmd::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -6593,7 +6529,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GamePlayerResetRankRes::MID, __uiMessageSize ) );
 
@@ -6655,7 +6591,7 @@ namespace BR
 					+ sizeof(BYTE)
 					+ sizeof(PlayerRole));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::RequestGameMatchCmd::MID, __uiMessageSize ) );
 
@@ -6717,7 +6653,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::RequestGameMatchRes::MID, __uiMessageSize ) );
 
@@ -6809,7 +6745,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInChatHistoryData = (UINT16)InChatHistoryData.GetSize(); 
 				UINT16 numberOfInGameLogData = (UINT16)InGameLogData.GetSize(); 
@@ -6884,7 +6820,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GameMatchFailedS2CEvt::MID, __uiMessageSize ) );
 
@@ -6916,13 +6852,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -6936,15 +6868,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GameMatchingStartedS2CEvt::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -6971,13 +6899,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -6991,15 +6915,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::CancelGameMatchCmd::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -7051,7 +6971,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::CancelGameMatchRes::MID, __uiMessageSize ) );
 
@@ -7083,13 +7003,9 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				INT iMsgSize;
-				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
-				pCur = pIMsg->GetMessageData();
 
 
 
@@ -7103,15 +7019,11 @@ namespace BR
 			{
  				HRESULT hr = S_OK;
 
-				BYTE *pMsgData = nullptr;
-
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GameMatchingCanceledS2CEvt::MID, __uiMessageSize ) );
-
-				pMsgData = pNewMsg->GetMessageData();
 
 
 				pMsg = pNewMsg;
@@ -7164,7 +7076,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::BuyShopItemPrepareCmd::MID, __uiMessageSize ) );
 
@@ -7227,7 +7139,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::BuyShopItemPrepareRes::MID, __uiMessageSize ) );
 
@@ -7305,7 +7217,7 @@ namespace BR
 					+ sizeof(UINT32)
 					+ sizeof(BYTE)*InPurchaseToken.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInPurchaseToken = (UINT16)InPurchaseToken.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::BuyShopItemCmd::MID, __uiMessageSize ) );
@@ -7373,7 +7285,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::BuyShopItemRes::MID, __uiMessageSize ) );
 
@@ -7432,7 +7344,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GiveStaminaCmd::MID, __uiMessageSize ) );
 
@@ -7493,7 +7405,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GiveStaminaRes::MID, __uiMessageSize ) );
 
@@ -7553,7 +7465,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::SetPresetGameConfigIDCmd::MID, __uiMessageSize ) );
 
@@ -7610,7 +7522,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::SetPresetGameConfigIDRes::MID, __uiMessageSize ) );
 
@@ -7670,7 +7582,7 @@ namespace BR
 					+ sizeof(INT32)
 					+ sizeof(INT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GainGameResourceCmd::MID, __uiMessageSize ) );
 
@@ -7728,7 +7640,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Game::GainGameResourceRes::MID, __uiMessageSize ) );
 

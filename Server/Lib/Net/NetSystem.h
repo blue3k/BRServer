@@ -116,7 +116,7 @@ namespace Net {
 
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) = 0;
 		// called when reciving messag is completed
-		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer) = 0;
+		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer) = 0;
 
 		// called when send completed
 		virtual HRESULT ProcessSendQueue();

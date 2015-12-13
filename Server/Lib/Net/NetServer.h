@@ -120,7 +120,7 @@ namespace Net {
 
 		// called when network message is received
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) override;
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
 		// called when send completed
 		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
@@ -151,14 +151,14 @@ namespace Net {
 		virtual HRESULT ReleaseConnection( IConnection* pIConnection ) override;
 
 
-		// Send message to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg ) override;
+		//// Send message to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg ) override;
 
-		// Send message to connection with network device to dst addr
-		virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg ) override;
+		//// Send message to connection with network device to dst addr
+		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg ) override;
 
-		// Send array of message buffer to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff ) override;
+		//// Send array of message buffer to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff ) override;
 	};
 
 

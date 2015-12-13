@@ -420,7 +420,7 @@ namespace Net {
 	}
 
 	// called when reciving messag is completed
-	HRESULT RawUDP::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ *pIOBuffer)
+	HRESULT RawUDP::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer)
 	{
 		HRESULT hr = S_OK;
 		sockaddr_in6 from;
@@ -450,9 +450,15 @@ namespace Net {
 
 	Proc_End:
 
-
-		if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
-			PendingRecv(pIOBuffer);
+		if (NetSystem::IsProactorSystem())
+		{
+			if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
+				PendingRecv(pIOBuffer);
+		}
+		else
+		{
+			Util::SafeDelete(pIOBuffer);
+		}
 
 		return hr;
 	}

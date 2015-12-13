@@ -69,7 +69,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameInstanceManager::CreateGameCmd::MID, __uiMessageSize ) );
 
@@ -190,7 +190,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameInstanceManager::CreateGameRes::MID, __uiMessageSize ) );
 
@@ -307,7 +307,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameInstanceManager::GameDeletedC2SEvt::MID, __uiMessageSize ) );
 

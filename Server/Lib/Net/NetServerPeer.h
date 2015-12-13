@@ -80,7 +80,7 @@ namespace Net {
 		virtual SOCKET GetIOSocket() override { return GetSocket(); }
 
 		// called when reciving TCP message
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) override;
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
 		// called when send completed
 		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
@@ -96,14 +96,14 @@ namespace Net {
 		virtual HRESULT GetConnection(UINT uiCID, SharedPointerT<Connection> &pConnection);
 
 
-		// Send message to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
+		//// Send message to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
 
-		// Send message to connection with network device to dst addr
-		virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
+		//// Send message to connection with network device to dst addr
+		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
 
-		// Send array of message buffer to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
+		//// Send array of message buffer to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
 
 		// Pending recv New one
 		HRESULT PendingRecv( IOBUFFER_READ *pOver );

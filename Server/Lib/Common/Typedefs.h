@@ -106,7 +106,7 @@
 #include <signal.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-
+#include <netinet/tcp.h>
 
 typedef unsigned char UINT8;
 typedef char INT8;

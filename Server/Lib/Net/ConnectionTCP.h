@@ -61,6 +61,8 @@ namespace Net {
 
 		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
 
+		virtual HRESULT SendRaw(Message::MessageData* &pMsg) override;
+
 	public:
 		// Constructor
 		ConnectionTCP();
@@ -81,7 +83,7 @@ namespace Net {
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
 
 		// called when reciving TCP message
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer ) override;
+		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
 		// called when Send completed
 		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;

@@ -799,14 +799,6 @@ namespace Trace {
 	}
 
 
-	void InitExceptionHandler()
-	{
-#if WINDOWS
-		::SetUnhandledExceptionFilter(&CrashHandler);
-#endif
-	}
-
-
 
 
 };	// namespace Trace

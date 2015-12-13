@@ -222,6 +222,7 @@ namespace Net {
 	HRESULT ConnectionUDPBase::SendFlush()
 	{
 		HRESULT hr = S_OK;
+		IOBUFFER_WRITE *pSendBuffer = nullptr;
 
 		if( m_uiGatheredSize && m_pGatheringBuffer )
 		{
@@ -231,16 +232,29 @@ namespace Net {
 			m_uiGatheredSize = 0;
 			m_pGatheringBuffer = nullptr;
 
-			HRESULT hrTem = GetNet()->SendMsg( this, GatherSize, pGatherBuff );
-			if( FAILED(hrTem) )
-			{
-				netTrace( TRC_SENDRAW, "Gathered Send failed : CID:{0}, Len={1}, hr={2:X8}", 
-					GetCID(), GatherSize, hrTem );
+			netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
+			pSendBuffer->SetupSendUDP(GetSocket(), GetRemoteSockAddr(), GatherSize, pGatherBuff);
 
-				// ignore io send fail except connection closed
-				if( hrTem == E_NET_CONNECTION_CLOSED )
-					netErr( hrTem );
+			if (NetSystem::IsProactorSystem())
+			{
+				netChk(SendBufferUDP(pSendBuffer));
 			}
+			else
+			{
+				netChk(EnqueueBufferUDP(pSendBuffer));
+			}
+
+			//HRESULT hrTem = GetNet()->SendMsg( this, GatherSize, pGatherBuff );
+			//HRESULT hrTem = (this, GatherSize, pGatherBuff);
+			//if( FAILED(hrTem) )
+			//{
+			//	netTrace( TRC_SENDRAW, "Gathered Send failed : CID:{0}, Len={1}, hr={2:X8}", 
+			//		GetCID(), GatherSize, hrTem );
+
+			//	// ignore io send fail except connection closed
+			//	if( hrTem == E_NET_CONNECTION_CLOSED )
+			//		netErr( hrTem );
+			//}
 		}
 
 
@@ -551,6 +565,36 @@ namespace Net {
 		return GetWriteQueueUDP()->Enqueue(pSendBuffer);
 	}
 
+	HRESULT ConnectionUDPBase::SendRaw(Message::MessageData* &pMsg)
+	{
+		HRESULT hr = S_OK;
+		IOBUFFER_WRITE *pSendBuffer = nullptr;
+
+		netChkPtr(pMsg);
+
+		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
+		pSendBuffer->SetupSendUDP(GetSocket(), GetRemoteSockAddr(), pMsg);
+
+		if (NetSystem::IsProactorSystem())
+		{
+			netChk(SendBufferUDP(pSendBuffer));
+		}
+		else
+		{
+			netChk(EnqueueBufferUDP(pSendBuffer));
+		}
+		pMsg = nullptr;
+		pSendBuffer = nullptr;
+
+	Proc_End:
+
+		if (pSendBuffer != nullptr)
+		{
+			NetSystem::FreeBuffer(pSendBuffer);
+		}
+
+		return hr;
+	}
 
 	// Send message to connected entity
 	HRESULT ConnectionUDPBase::Send( Message::MessageData* &pMsg )
@@ -605,34 +649,14 @@ namespace Net {
 				msgID.IDSeq.Sequence,
 				uiMsgLen);
 
-			netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
-			pSendBuffer->SetupSendUDP(GetSocket(), GetRemoteSockAddr(), pMsg);
-
-			if (NetSystem::IsProactorSystem())
-			{
-				netChk(SendBufferUDP(pSendBuffer));
-			}
-			else
-			{
-				netChk(EnqueueBufferUDP(pSendBuffer));
-			}
+			netChk(SendRaw(pMsg));
 			//netChk( GetNet()->SendMsg( this, pMsg ) ); // ignore error to process all message
 		}
 		else
 		{
 			if( pMsg->GetIsSequenceAssigned() )
 			{
-				netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
-				pSendBuffer->SetupSendUDP(GetSocket(), GetRemoteSockAddr(), pMsg);
-
-				if (NetSystem::IsProactorSystem())
-				{
-					netChk(SendBufferUDP(pSendBuffer));
-				}
-				else
-				{
-					netChk(EnqueueBufferUDP(pSendBuffer));
-				}
+				netChk(SendRaw(pMsg));
 				//netChk( GetNet()->SendMsg( this, pMsg ) );
 			}
 			else

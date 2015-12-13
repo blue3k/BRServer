@@ -318,319 +318,263 @@ namespace Net {
 	}
 
 
-	// Send message to connection with network device
-	HRESULT ServerUDPBase::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
-	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+	//// Send message to connection with network device
+	//HRESULT ServerUDPBase::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
+	//{
+	//	HRESULT hr = S_OK, hrErr = S_OK;
 
-		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
-		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
-		ConnectionUDPBase *pUDPCon = (ConnectionUDPBase*)pConnection;
-		IOBUFFER_WRITE *pOverlapped = nullptr;
+	//	Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
+	//	UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
+	//	ConnectionUDPBase *pUDPCon = (ConnectionUDPBase*)pConnection;
+	//	IOBUFFER_WRITE *pOverlapped = nullptr;
 
-		Assert(pMsg->GetDataLength() == 0 || pMsg->GetMessageHeader()->Crc32 != 0 || pMsg->GetMessageHeader()->msgID.IDs.Policy == POLICY_NONE);
-
-
-		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
-		pOverlapped->SetupSendUDP(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), pMsg );
-
-		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
-		switch (hrErr)
-		{
-		case E_NET_TRY_AGAIN:
-			break;
-		case S_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_WOULDBLOCK:
-			break;
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
-		case E_NET_NOTCONN:
-		case E_NET_NOTSOCK:
-		case E_NET_SHUTDOWN:
-			// Send fail by connection close
-			// Need to disconnect
-			pUDPCon->Disconnect();
-			hr = E_NET_CONNECTION_CLOSED;
-			goto Proc_End;
-			break;
-		default:
-			netErr(E_NET_IO_SEND_FAIL);
-			break;
-		};
-
-	Proc_End:
-
-		if( FAILED(hr) )
-		{
-			if( pOverlapped )
-			{
-				Util::SafeRelease( pOverlapped->pMsgs );
-				Net::NetSystem::FreeBuffer(pOverlapped);
-			}
-			else
-			{
-				Util::SafeRelease( pMsg );
-			}
-
-			if( hr != E_NET_IO_SEND_FAIL )
-			{
-				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo(), hrErr, hr );
-			}
-			else
-			{
-				netTrace(Net::TRC_SENDRAW, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo(), hrErr, hr);
-				return S_OK;
-			}
-		}
-		else
-		{
-			if( msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
-			{
-				netTrace( TRC_NETCTRL, "UDP SendCtrl ip:{0}, msg:{1}, Len:{2}", pUDPCon->GetConnectionInfo(), msgID, uiMsgLen );
-			}
-			else
-			{
-				netTrace( TRC_SENDRAW, "UDP Send ip:{0}, msg:{1}, Len:{2}", pUDPCon->GetConnectionInfo(), msgID, uiMsgLen );
-			}
-		}
-
-		return hr;
-	}
-
-	// Send message to connection with network device to dst addr
-	HRESULT ServerUDPBase::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg )
-	{
-		HRESULT hr = S_OK, hrErr = S_OK;
-
-		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
-		UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
-
-		ConnectionUDPBase *pUDPCon = static_cast<ConnectionUDPBase*>(pConnection);
-		NetAddress dstAddress;
-		IOBUFFER_WRITE *pOverlapped = nullptr;
-
-		SOCKET socketToSend = INVALID_SOCKET;
-		if( pConnection != nullptr && pUDPCon != nullptr )
-		{
-			socketToSend = pUDPCon->GetSocket();
-			dstAddress = pUDPCon->GetConnectionInfo().Remote;
-		}
-		else
-		{
-			socketToSend = GetSocket();
-			SockAddr2Addr( dstAddr, dstAddress);
-		}
-
-		
-		// If the address isn't mapped yet. ignore it
-		if( (pUDPCon != nullptr && pUDPCon->GetRemoteSockAddr().sin6_port == 0)
-			|| dstAddr.sin6_port == 0)
-		{
-			netTrace( Net::TRC_NET, "Remote address isn't mapped yet, ignoring send CID:{0}", pConnection->GetCID() );
-			goto Proc_End;
-		}
+	//	Assert(pMsg->GetDataLength() == 0 || pMsg->GetMessageHeader()->Crc32 != 0 || pMsg->GetMessageHeader()->msgID.IDs.Policy == POLICY_NONE);
 
 
-		netChk( NetSystem::AllocBuffer(pOverlapped) );
+	//	netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
+	//	pOverlapped->SetupSendUDP(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), pMsg );
 
-		pOverlapped->SetupSendUDP(socketToSend, dstAddr, pMsg );
-		pMsg = nullptr;
+	//	hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
+	//	switch (hrErr)
+	//	{
+	//	case E_NET_TRY_AGAIN:
+	//		break;
+	//	case S_OK:
+	//	case E_NET_IO_PENDING:
+	//	case E_NET_WOULDBLOCK:
+	//		break;
+	//	case E_NET_CONNABORTED:
+	//	case E_NET_CONNRESET:
+	//	case E_NET_NETRESET:
+	//	case E_NET_NOTCONN:
+	//	case E_NET_NOTSOCK:
+	//	case E_NET_SHUTDOWN:
+	//		// Send fail by connection close
+	//		// Need to disconnect
+	//		pUDPCon->Disconnect();
+	//		hr = E_NET_CONNECTION_CLOSED;
+	//		goto Proc_End;
+	//		break;
+	//	default:
+	//		netErr(E_NET_IO_SEND_FAIL);
+	//		break;
+	//	};
 
+	//Proc_End:
 
-		hrErr = NetSystem::SendTo(socketToSend, pOverlapped);
-		switch (hrErr)
-		{
-		case S_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_TRY_AGAIN:
-		case E_NET_WOULDBLOCK:
-			break;
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
-		case E_NET_NOTCONN:
-		case E_NET_NOTSOCK:
-		case E_NET_SHUTDOWN:
-			// Send fail by connection close
-			// Need to disconnect
-			pUDPCon->Disconnect();
-			hr = E_NET_CONNECTION_CLOSED;
-			goto Proc_End;
-			break;
-		default:
-			netErr(E_NET_IO_SEND_FAIL);
-			break;
-		};
+	//	if( FAILED(hr) )
+	//	{
+	//		if( pOverlapped )
+	//		{
+	//			Util::SafeRelease( pOverlapped->pMsgs );
+	//			Net::NetSystem::FreeBuffer(pOverlapped);
+	//		}
+	//		else
+	//		{
+	//			Util::SafeRelease( pMsg );
+	//		}
 
-		//if( WSASendTo( socketToSend, &pOverlapped->wsaBuff, 1, nullptr, 0,
-		//	(sockaddr*)&dstAddr, sizeof(sockaddr_in6), 
-		//	pOverlapped, NULL ) == SOCKET_ERROR )
-		//{
-		//	iWSAErr = WSAGetLastError();
-		//	if( iWSAErr != WSA_IO_PENDING )
-		//	{
-		//		switch( iWSAErr )
-		//		{
-		//		case WSAECONNABORTED:
-		//		case WSAECONNRESET:
-		//		case WSAENETRESET:
-		//		case WSAENOTCONN:
-		//		case WSAENOTSOCK:
-		//		case WSAESHUTDOWN:
-		//			// Send fail by connection close
-		//			// Need to disconnect
-		//			pUDPCon->Disconnect();
-		//			netErrSilent( E_NET_CONNECTION_CLOSED );
-		//			break;
-		//		default:
-		//			netErr( E_NET_IO_SEND_FAIL );
-		//			break;
-		//		};
-		//	}
-		//}
+	//		if( hr != E_NET_IO_SEND_FAIL )
+	//		{
+	//			netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo(), hrErr, hr );
+	//		}
+	//		else
+	//		{
+	//			netTrace(Net::TRC_SENDRAW, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo(), hrErr, hr);
+	//			return S_OK;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		if( msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
+	//		{
+	//			netTrace( TRC_NETCTRL, "UDP SendCtrl ip:{0}, msg:{1}, Len:{2}", pUDPCon->GetConnectionInfo(), msgID, uiMsgLen );
+	//		}
+	//		else
+	//		{
+	//			netTrace( TRC_SENDRAW, "UDP Send ip:{0}, msg:{1}, Len:{2}", pUDPCon->GetConnectionInfo(), msgID, uiMsgLen );
+	//		}
+	//	}
 
-	Proc_End:
+	//	return hr;
+	//}
 
-		Util::SafeRelease( pMsg );
+	//// Send message to connection with network device to dst addr
+	//HRESULT ServerUDPBase::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg )
+	//{
+	//	HRESULT hr = S_OK, hrErr = S_OK;
 
-		if( FAILED(hr) )
-		{
-			if( pOverlapped )
-			{
-				Util::SafeRelease( pOverlapped->pMsgs );
-				NetSystem::FreeBuffer(pOverlapped);
-			}
+	//	Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
+	//	UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
 
-			if( hr != E_NET_IO_SEND_FAIL )
-			{
-				netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", dstAddress, hrErr, hr );
-			}
-			else
-				return S_OK;
-		}
-		else
-		{
-			if( msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
-			{
-				netTrace( TRC_NETCTRL, "UDP SendCtrl ip:{0}, msg:{1}, Len:{2}", dstAddress, msgID, uiMsgLen );
-			}
-			else
-			{
-				netTrace( TRC_SENDRAW, "UDP Send ip:{0}, msg:{1}, Len:{2}", dstAddress, msgID, uiMsgLen );
-			}
-		}
+	//	ConnectionUDPBase *pUDPCon = static_cast<ConnectionUDPBase*>(pConnection);
+	//	NetAddress dstAddress;
+	//	IOBUFFER_WRITE *pOverlapped = nullptr;
 
-		return hr;
-	}
+	//	SOCKET socketToSend = INVALID_SOCKET;
+	//	if( pConnection != nullptr && pUDPCon != nullptr )
+	//	{
+	//		socketToSend = pUDPCon->GetSocket();
+	//		dstAddress = pUDPCon->GetConnectionInfo().Remote;
+	//	}
+	//	else
+	//	{
+	//		socketToSend = GetSocket();
+	//		SockAddr2Addr( dstAddr, dstAddress);
+	//	}
 
-
-	HRESULT ServerUDPBase::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
-	{
-		HRESULT hr = S_OK, hrErr = S_OK;
-		ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
-		IOBUFFER_WRITE *pOverlapped = nullptr;
-
-		// If the address isn't mapped yet. ignore it
-		if (pUDPCon->GetRemoteSockAddr().sin6_port == 0)
-		{
-			netTrace( Net::TRC_NET, "Remote address isn't mapped yet, ignoring send CID:{0}", pConnection->GetCID() );
-			goto Proc_End;
-		}
-
-		netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
-
-		pOverlapped->SetupSendUDP(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), uiBuffSize, pBuff );
-		pBuff = nullptr;
+	//	
+	//	// If the address isn't mapped yet. ignore it
+	//	if( (pUDPCon != nullptr && pUDPCon->GetRemoteSockAddr().sin6_port == 0)
+	//		|| dstAddr.sin6_port == 0)
+	//	{
+	//		netTrace( Net::TRC_NET, "Remote address isn't mapped yet, ignoring send CID:{0}", pConnection->GetCID() );
+	//		goto Proc_End;
+	//	}
 
 
-		hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
-		switch (hrErr)
-		{
-		case S_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_TRY_AGAIN:
-		case E_NET_WOULDBLOCK:
-			break;
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
-		case E_NET_NOTCONN:
-		case E_NET_NOTSOCK:
-		case E_NET_SHUTDOWN:
-			// Send fail by connection close
-			// Need to disconnect
-			pUDPCon->Disconnect();
-			hr = E_NET_CONNECTION_CLOSED;
-			goto Proc_End;
-			break;
-		default:
-			netErr(E_NET_IO_SEND_FAIL);
-			break;
-		};
+	//	netChk( NetSystem::AllocBuffer(pOverlapped) );
 
-		//if( WSASendTo( pUDPCon->GetSocket(), &pOverlapped->wsaBuff, 1, nullptr, 0,
-		//	(sockaddr*)&pUDPCon->GetRemoteSockAddr(), sizeof(sockaddr_in6), 
-		//	pOverlapped, nullptr ) == SOCKET_ERROR )
-		//{
-		//	iWSAErr = WSAGetLastError();
-		//	if( iWSAErr != WSA_IO_PENDING )
-		//	{
-		//		switch( iWSAErr )
-		//		{
-		//		case WSAECONNABORTED:
-		//		case WSAECONNRESET:
-		//		case WSAENETRESET:
-		//		case WSAENOTCONN:
-		//		case WSAENOTSOCK:
-		//		case WSAESHUTDOWN:
-		//			// Send fail by connection close
-		//			// Need to disconnect
-		//			pUDPCon->Disconnect();
-		//			netErrSilent( E_NET_CONNECTION_CLOSED );
-		//			break;
-		//		default:
-		//			netErr( E_NET_IO_SEND_FAIL );
-		//			break;
-		//		};
-		//	}
-		//}
-		//else
-		//{
-		//}
+	//	pOverlapped->SetupSendUDP(socketToSend, dstAddr, pMsg );
+	//	pMsg = nullptr;
 
-	Proc_End:
 
-		if( pBuff )
-		{
-			NetSystem::FreeGatheringBuffer(pBuff);
-		}
+	//	hrErr = NetSystem::SendTo(socketToSend, pOverlapped);
+	//	switch (hrErr)
+	//	{
+	//	case S_OK:
+	//	case E_NET_IO_PENDING:
+	//	case E_NET_TRY_AGAIN:
+	//	case E_NET_WOULDBLOCK:
+	//		break;
+	//	case E_NET_CONNABORTED:
+	//	case E_NET_CONNRESET:
+	//	case E_NET_NETRESET:
+	//	case E_NET_NOTCONN:
+	//	case E_NET_NOTSOCK:
+	//	case E_NET_SHUTDOWN:
+	//		// Send fail by connection close
+	//		// Need to disconnect
+	//		pUDPCon->Disconnect();
+	//		hr = E_NET_CONNECTION_CLOSED;
+	//		goto Proc_End;
+	//		break;
+	//	default:
+	//		netErr(E_NET_IO_SEND_FAIL);
+	//		break;
+	//	};
 
-		if( FAILED(hr) )
-		{
-			if( pOverlapped )
-			{
-				if( pOverlapped->pSendBuff )
-					NetSystem::FreeGatheringBuffer(pOverlapped->pSendBuff);
-				pOverlapped->pSendBuff = nullptr;
-				Net::NetSystem::FreeBuffer(pOverlapped);
-			}
 
-			if( hr != E_NET_IO_SEND_FAIL )
-			{
-				netTrace( TRC_NETCTRL, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo(), hrErr, hr );
-			}
-			else
-				return S_OK;
-		}
-		else
-		{
-			netTrace( TRC_SENDRAW, "UDP Send ip:{0}, Len:{1}", pUDPCon->GetConnectionInfo(), uiBuffSize );
-		}
+	//Proc_End:
 
-		return hr;
-	}
+	//	Util::SafeRelease( pMsg );
+
+	//	if( FAILED(hr) )
+	//	{
+	//		if( pOverlapped )
+	//		{
+	//			Util::SafeRelease( pOverlapped->pMsgs );
+	//			NetSystem::FreeBuffer(pOverlapped);
+	//		}
+
+	//		if( hr != E_NET_IO_SEND_FAIL )
+	//		{
+	//			netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", dstAddress, hrErr, hr );
+	//		}
+	//		else
+	//			return S_OK;
+	//	}
+	//	else
+	//	{
+	//		if( msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
+	//		{
+	//			netTrace( TRC_NETCTRL, "UDP SendCtrl ip:{0}, msg:{1}, Len:{2}", dstAddress, msgID, uiMsgLen );
+	//		}
+	//		else
+	//		{
+	//			netTrace( TRC_SENDRAW, "UDP Send ip:{0}, msg:{1}, Len:{2}", dstAddress, msgID, uiMsgLen );
+	//		}
+	//	}
+
+	//	return hr;
+	//}
+
+
+	//HRESULT ServerUDPBase::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
+	//{
+	//	HRESULT hr = S_OK, hrErr = S_OK;
+	//	ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
+	//	IOBUFFER_WRITE *pOverlapped = nullptr;
+
+	//	// If the address isn't mapped yet. ignore it
+	//	if (pUDPCon->GetRemoteSockAddr().sin6_port == 0)
+	//	{
+	//		netTrace( Net::TRC_NET, "Remote address isn't mapped yet, ignoring send CID:{0}", pConnection->GetCID() );
+	//		goto Proc_End;
+	//	}
+
+	//	netChk( Net::NetSystem::AllocBuffer(pOverlapped) );
+
+	//	pOverlapped->SetupSendUDP(pUDPCon->GetSocket(), pUDPCon->GetRemoteSockAddr(), uiBuffSize, pBuff );
+	//	pBuff = nullptr;
+
+
+	//	hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
+	//	switch (hrErr)
+	//	{
+	//	case S_OK:
+	//	case E_NET_IO_PENDING:
+	//	case E_NET_TRY_AGAIN:
+	//	case E_NET_WOULDBLOCK:
+	//		break;
+	//	case E_NET_CONNABORTED:
+	//	case E_NET_CONNRESET:
+	//	case E_NET_NETRESET:
+	//	case E_NET_NOTCONN:
+	//	case E_NET_NOTSOCK:
+	//	case E_NET_SHUTDOWN:
+	//		// Send fail by connection close
+	//		// Need to disconnect
+	//		pUDPCon->Disconnect();
+	//		hr = E_NET_CONNECTION_CLOSED;
+	//		goto Proc_End;
+	//		break;
+	//	default:
+	//		netErr(E_NET_IO_SEND_FAIL);
+	//		break;
+	//	};
+
+	//Proc_End:
+
+	//	if( pBuff )
+	//	{
+	//		NetSystem::FreeGatheringBuffer(pBuff);
+	//	}
+
+	//	if( FAILED(hr) )
+	//	{
+	//		if( pOverlapped )
+	//		{
+	//			if( pOverlapped->pSendBuff )
+	//				NetSystem::FreeGatheringBuffer(pOverlapped->pSendBuff);
+	//			pOverlapped->pSendBuff = nullptr;
+	//			Net::NetSystem::FreeBuffer(pOverlapped);
+	//		}
+
+	//		if( hr != E_NET_IO_SEND_FAIL )
+	//		{
+	//			netTrace( TRC_NETCTRL, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo(), hrErr, hr );
+	//		}
+	//		else
+	//			return S_OK;
+	//	}
+	//	else
+	//	{
+	//		netTrace( TRC_SENDRAW, "UDP Send ip:{0}, Len:{1}", pUDPCon->GetConnectionInfo(), uiBuffSize );
+	//	}
+
+	//	return hr;
+	//}
 
 
 	// Pending recv New one
@@ -668,29 +612,6 @@ namespace Net {
 			};
 		}
 
-		//while( (iErr = WSARecvFrom( GetSocket(), &pOver->wsaBuff, 1, NULL, &pOver->dwFlags, (sockaddr*)&pOver->From, &pOver->iSockLen, pOver, nullptr )) == SOCKET_ERROR )
-		//{
-		//	iErr2 = WSAGetLastError();
-		//	switch( iErr2 )
-		//	{
-		//	case WSA_IO_PENDING:
-		//		goto Proc_End;// success
-		//		break;
-		//	case WSAENETUNREACH:
-		//	case WSAECONNABORTED:
-		//	case WSAECONNRESET:
-		//	case WSAENETRESET:
-		//		// some remove has problem with continue connection
-		//		netTrace( TRC_NETCTRL, "UDP Remote has connection error err={0}, {1}", iErr2, pOver->From );
-		//		//break;
-		//	default:
-		//		// Unknown error
-		//		netTrace( TRC_RECVRAW, "UDP Read Pending failed err={0}, hr={1:X8}", iErr2, HRESULT_FROM_WIN32(iErr2) );
-		//		//netErr( HRESULT_FROM_WIN32(iErr2) );
-		//		break;
-		//	};
-		//}
-
 	Proc_End:
 
 
@@ -717,7 +638,7 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ServerUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
+	HRESULT ServerUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
@@ -792,8 +713,16 @@ namespace Net {
 			}
 		}
 
-		if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
-			PendingRecv( (IOBUFFER_READ*)pIOBuffer );
+
+		if (NetSystem::IsProactorSystem())
+		{
+			if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
+				PendingRecv(pIOBuffer);
+		}
+		else
+		{
+			Util::SafeDelete(pIOBuffer);
+		}
 
 		return hr;
 	}

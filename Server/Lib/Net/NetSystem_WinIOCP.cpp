@@ -485,13 +485,13 @@ namespace Net {
 		// Socket handling 
 
 
-		HRESULT RegisterSocket(SOCKET sock, INetIOCallBack* cbInstance, bool isListenSocket)
+		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance)
 		{
 			HRESULT hr = S_OK;
 
 			unused(isListenSocket);
 
-			if (!CreateIoCompletionPort((HANDLE)sock, IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)cbInstance, 0))
+			if (!CreateIoCompletionPort((HANDLE)cbInstance->GetIOSocket(), IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)cbInstance, 0))
 			{
 				hr = GetLastHRESULT();
 				netTrace(Trace::TRC_ERROR, "Registering socket to IOCP is Failed, hr = {0:X8}", hr);

@@ -67,7 +67,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( LoginServer::PlayerJoinedToGameServerCmd::MID, __uiMessageSize ) );
 
@@ -157,7 +157,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( LoginServer::PlayerJoinedToGameServerRes::MID, __uiMessageSize ) );
 
@@ -248,7 +248,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( LoginServer::KickPlayerCmd::MID, __uiMessageSize ) );
 
@@ -337,7 +337,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( LoginServer::KickPlayerRes::MID, __uiMessageSize ) );
 

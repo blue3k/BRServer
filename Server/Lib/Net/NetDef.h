@@ -188,6 +188,9 @@ namespace Net {
 		// Connection information
 		ConnectionInformation	m_ConnectInfo;
 
+
+		virtual HRESULT SendRaw(Message::MessageData* &pMsg) = 0;
+
 	public:
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -386,14 +389,14 @@ namespace Net {
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Used by connection
 
-		// Send message to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg ) = 0;
+		//// Send message to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg ) = 0;
 
-		// Send message to connection with network device to dst addr
-		virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg ) = 0;
+		//// Send message to connection with network device to dst addr
+		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg ) = 0;
 
-		// Send array of message buffer to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff ) = 0;
+		//// Send array of message buffer to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff ) = 0;
 	};
 
 

@@ -80,22 +80,6 @@ namespace Net {
 		// check about initialize
 		virtual bool IsReady() override;
 
-		// Get connection from connection ID
-		//HRESULT GetConnection(UINT uiCID, SharedPointerT<Connection> &pConnection);
-
-
-		//// Send message to connection with network device
-		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
-
-		//// Send message to connection with network device to dst addr
-		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
-
-		//// Send array of message buffer to connection with network device
-		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
-
-		// Pending recv New one
-		//HRESULT PendingRecv( IOBUFFER_READ *pOver );
-
 
 		// Open host and start listen
 		virtual HRESULT HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort ) override;

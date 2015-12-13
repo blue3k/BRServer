@@ -61,7 +61,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(Context));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Monitoring::GetInstanceListCmd::MID, __uiMessageSize ) );
 
@@ -127,7 +127,7 @@ namespace BR
 					+ sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.GetSize() + sizeof(UINT16)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInCounterInstances = (UINT16)InCounterInstances.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Monitoring::GetInstanceListRes::MID, __uiMessageSize ) );
@@ -192,7 +192,7 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Monitoring::RequestCounterValuesCmd::MID, __uiMessageSize ) );
 
@@ -259,7 +259,7 @@ namespace BR
 					+ sizeof(EntityUID)
 					+ sizeof(UINT64)*InCounterValues.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInCounterValues = (UINT16)InCounterValues.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Monitoring::RequestCounterValuesRes::MID, __uiMessageSize ) );
@@ -331,7 +331,7 @@ namespace BR
 					+ sizeof(EntityUID)
 					+ sizeof(PerformanceCounterInfo)*InNewCounters.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInNewCounters = (UINT16)InNewCounters.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Monitoring::PerformanceCounterNewC2SEvt::MID, __uiMessageSize ) );
@@ -397,7 +397,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(EntityUID)*InFreeInstances.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInFreeInstances = (UINT16)InFreeInstances.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Monitoring::PerformanceCounterFreeC2SEvt::MID, __uiMessageSize ) );
@@ -462,7 +462,7 @@ namespace BR
 					+ sizeof(EntityUID)
 					+ sizeof(UINT64)*InCounterValues.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInCounterValues = (UINT16)InCounterValues.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Monitoring::PerformanceCounterUpdateC2SEvt::MID, __uiMessageSize ) );
@@ -523,7 +523,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID, __uiMessageSize ) );
 

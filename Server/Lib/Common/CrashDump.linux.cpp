@@ -28,6 +28,11 @@ namespace BR {
 namespace Trace {
 
 
+	void InitExceptionHandler()
+	{
+	}
+
+
 };	// namespace Trace
 } // namespace BR
 

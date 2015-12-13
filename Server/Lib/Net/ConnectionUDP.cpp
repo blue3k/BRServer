@@ -241,7 +241,7 @@ namespace Net {
 	}
 
 	// called when reciving TCP message
-	HRESULT ConnectionUDPClient::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
+	HRESULT ConnectionUDPClient::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
 		HRESULT hr = S_OK;
 

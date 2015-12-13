@@ -80,7 +80,9 @@ namespace Net {
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = true;
 		pMsg->UpdateChecksum();
 
-		hrTem = GetNet()->SendMsg( this, pMsg );
+
+		hrTem = SendRaw(pMsg);
+		//hrTem = GetNet()->SendMsg( this, pMsg );
 		if( FAILED(hrTem) )
 		{
 			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
@@ -97,6 +99,15 @@ namespace Net {
 		}
 
 	Proc_End:
+
+		if (FAILED(hrTem))
+		{
+			netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}",
+				GetCID(),
+				msgID.ID,
+				uiSequence,
+				hrTem);
+		}
 
 		return hr;
 	}

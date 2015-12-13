@@ -114,14 +114,14 @@ namespace Net {
 		// Get connection from connection ID
 		virtual HRESULT GetConnection( uintptr_t uiCID, SharedPointerT<Connection> &pIConnection );
 
-		// Send message to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
+		//// Send message to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
 
-		// Send message to connection with network device to dst addr
-		virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
+		//// Send message to connection with network device to dst addr
+		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
 
-		// Send array of message buffer to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
+		//// Send array of message buffer to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
 
 		// Called when connection state changed
 		HRESULT OnConnectionStateChange( IConnection *pConnection );
@@ -159,14 +159,14 @@ namespace Net {
 		// Get connection from connection ID
 		virtual HRESULT GetConnection(uintptr_t uiCID, SharedPointerT<Connection> &pIConnection);
 
-		// Send message to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
+		//// Send message to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
 
-		// Send message to connection with network device to dst addr
-		virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
+		//// Send message to connection with network device to dst addr
+		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
 
-		// Send array of message buffer to connection with network device
-		virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
+		//// Send array of message buffer to connection with network device
+		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
 
 		// Pending recv New one
 		//HRESULT PendingRecv( ConnectionUDPClient *pConnection );

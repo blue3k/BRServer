@@ -71,7 +71,7 @@ namespace BR
 					+ sizeof(FacebookUID)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::RegisterPlayerToJoinGameServerCmd::MID, __uiMessageSize ) );
 
@@ -165,7 +165,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(NetAddress));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::RegisterPlayerToJoinGameServerRes::MID, __uiMessageSize ) );
 
@@ -261,7 +261,7 @@ namespace BR
 					+ sizeof(AuthTicket)
 					+ sizeof(FacebookUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd::MID, __uiMessageSize ) );
 
@@ -352,7 +352,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes::MID, __uiMessageSize ) );
 
@@ -451,7 +451,7 @@ namespace BR
 					+ sizeof(AccountID)
 					+ sizeof(PlayerRole));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::ChatMessageC2SEvt::MID, __uiMessageSize ) );
 
@@ -556,7 +556,7 @@ namespace BR
 					+ sizeof(UINT64)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::NotifyC2SEvt::MID, __uiMessageSize ) );
 
@@ -651,7 +651,7 @@ namespace BR
 					+ sizeof(AccountID)
 					+ sizeof(ServerFriendInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::FriendAcceptedC2SEvt::MID, __uiMessageSize ) );
 
@@ -740,7 +740,7 @@ namespace BR
 					+ sizeof(AccountID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::FriendRemovedC2SEvt::MID, __uiMessageSize ) );
 
@@ -829,7 +829,7 @@ namespace BR
 					+ sizeof(AccountID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::RequestPlayerStatusUpdateC2SEvt::MID, __uiMessageSize ) );
 
@@ -920,7 +920,7 @@ namespace BR
 					+ sizeof(UINT32)
 					+ sizeof(BYTE));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::NotifyPlayerStatusUpdatedC2SEvt::MID, __uiMessageSize ) );
 
@@ -1016,7 +1016,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameServer::NotifyPartyInviteC2SEvt::MID, __uiMessageSize ) );
 

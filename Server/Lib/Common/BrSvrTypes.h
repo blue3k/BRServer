@@ -152,7 +152,7 @@ namespace BR {
 	//	Server Route context
 	//
 
-	typedef union tag_RouteContext
+	union RouteContext
 	{
 		struct {
 			EntityUID	From;
@@ -160,22 +160,22 @@ namespace BR {
 		} Components;
 		UINT64 ContextValue[2];
 
-		inline tag_RouteContext();
-		inline tag_RouteContext( const tag_RouteContext& routeContext );
-		inline tag_RouteContext( EntityUID InFromID, EntityUID InToID );
-		inline tag_RouteContext( int initValue );
+		inline RouteContext();
+		inline RouteContext( const RouteContext& routeContext );
+		inline RouteContext( EntityUID InFromID, EntityUID InToID );
+		inline RouteContext( int initValue );
 
 		EntityUID GetFrom() const { return Components.From; }
 		EntityUID GetTo() const { return Components.To; }
 
-		inline tag_RouteContext& operator = ( const tag_RouteContext& src );
+		inline RouteContext& operator = ( const RouteContext& src );
 
-		inline bool operator == ( const tag_RouteContext& routeContext ) const;
+		inline bool operator == ( const RouteContext& routeContext ) const;
 
 		// Get swaped context( From <==> To )
-		inline tag_RouteContext GetSwaped() const;
+		inline RouteContext GetSwaped() const;
 
-	} RouteContext;
+	};
 
 
 

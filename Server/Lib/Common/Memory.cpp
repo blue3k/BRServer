@@ -17,7 +17,7 @@
 #include "Common/Memory.h"
 #include "Common/Memory_Impl.h"
 #include "Common/MemLog.h"
-#include <stdlib.h> 
+#include "Common/TypeUtility.h"
 
 
 #ifdef _DEBUG

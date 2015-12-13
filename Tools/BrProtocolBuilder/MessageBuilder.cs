@@ -436,11 +436,13 @@ namespace ProtocolBuilder
 
         void BuildParseFunctionImpl(Parameter[] parameters)
         {
-            MatchIndent(); OutStream.WriteLine("INT iMsgSize;");
-            MatchIndent(); OutStream.WriteLine("BYTE* pCur;");
+            bool bHasParameter = parameters != null && parameters.Length > 0;
 
-            if(parameters != null)
+            if (bHasParameter)
             {
+                MatchIndent(); OutStream.WriteLine("INT iMsgSize;");
+                MatchIndent(); OutStream.WriteLine("BYTE* pCur;");
+
                 // define variable first
                 foreach (Parameter param in parameters)
                 {
@@ -463,16 +465,19 @@ namespace ProtocolBuilder
             MatchIndent(); OutStream.WriteLine("protocolChkPtr(pIMsg);");
             NewLine();
 
-            // array len types
-            if (Group.IsMobile)
+            if (bHasParameter)
             {
-                MatchIndent(); OutStream.WriteLine("iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);");
+                // array len types
+                if (Group.IsMobile)
+                {
+                    MatchIndent(); OutStream.WriteLine("iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);");
+                }
+                else
+                {
+                    MatchIndent(); OutStream.WriteLine("iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);");
+                }
+                MatchIndent(); OutStream.WriteLine("pCur = pIMsg->GetMessageData();");
             }
-            else
-            {
-                MatchIndent(); OutStream.WriteLine("iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);");
-            }
-            MatchIndent(); OutStream.WriteLine("pCur = pIMsg->GetMessageData();");
             NewLine();
 
             if (parameters == null)
@@ -811,19 +816,22 @@ namespace ProtocolBuilder
         void BuildBuilderImpl(string Name, string typeName, Parameter[] parameters)
         {
             string strClassName = MsgClassName(Name, typeName);
+            bool bHasParameters = parameters != null && parameters.Length > 0;
             OpenSection("HRESULT", strClassName + string.Format("::BuildIMsg( {0} )", BuilderParamString(parameters)));
 
             DefaultHRESULT(); NewLine();
 
-            MatchIndent(); OutStream.WriteLine("BYTE *pMsgData = nullptr;");
-            NewLine();
+            if(bHasParameters)
+            {
+                MatchIndent(); OutStream.WriteLine("BYTE *pMsgData = nullptr;");
+                NewLine();
+            }
 
             BuildBuilderMessageSize(parameters, "__uiMessageSize");
             NewLine();
 
-            MatchIndent(); OutStream.WriteLine("MessageData *pNewMsg = NULL;");
+            MatchIndent(); OutStream.WriteLine("MessageData *pNewMsg = nullptr;");
             NewLine();
-
 
             BuildParamCpyPreamble(parameters);
 
@@ -831,8 +839,11 @@ namespace ProtocolBuilder
                 string.Format("protocolMem( pNewMsg = MessageData::NewMessage( {0}::{1}{2}::MID, __uiMessageSize ) );", Group.Name, Name, typeName));
             NewLine();
 
-            MatchIndent(); OutStream.WriteLine("pMsgData = pNewMsg->GetMessageData();");
-            NewLine();
+            if (bHasParameters)
+            {
+                MatchIndent(); OutStream.WriteLine("pMsgData = pNewMsg->GetMessageData();");
+                NewLine();
+            }
 
             BuildParamCpy(parameters);
             NewLine();

@@ -71,35 +71,35 @@ TransactionID::operator Context() const
 //
 
 
-tag_RouteContext::tag_RouteContext()
+RouteContext::RouteContext()
 {
 	memset(ContextValue,0,sizeof(ContextValue));
 }
 
-tag_RouteContext::tag_RouteContext( const tag_RouteContext& routeContext )
+RouteContext::RouteContext( const RouteContext& routeContext )
 {
 	memcpy(ContextValue, routeContext.ContextValue, sizeof(ContextValue));
 }
 
-tag_RouteContext::tag_RouteContext( EntityUID InFromID, EntityUID InToID )
+RouteContext::RouteContext( EntityUID InFromID, EntityUID InToID )
 {
 	Components.From = InFromID;
 	Components.To = InToID;
 }
 
-tag_RouteContext::tag_RouteContext( int initValue )
+RouteContext::RouteContext( int initValue )
 {
 	Assert( initValue == 0 );
 	memset(ContextValue,0,sizeof(ContextValue));
 }
 
-tag_RouteContext& tag_RouteContext::operator = ( const tag_RouteContext& src )
+RouteContext& RouteContext::operator = ( const RouteContext& src )
 {
 	memcpy(ContextValue, src.ContextValue, sizeof(ContextValue));
 	return *this;
 }
 
-bool tag_RouteContext::operator == ( const tag_RouteContext& routeContext ) const
+bool RouteContext::operator == ( const RouteContext& routeContext ) const
 {
 	return ContextValue[0] == routeContext.ContextValue[0] && ContextValue[1] == routeContext.ContextValue[1];
 }
@@ -107,9 +107,9 @@ bool tag_RouteContext::operator == ( const tag_RouteContext& routeContext ) cons
 
 
 // Get swaped context( From <==> To )
-tag_RouteContext tag_RouteContext::GetSwaped() const
+RouteContext RouteContext::GetSwaped() const
 {
-	return tag_RouteContext(Components.To, Components.From);
+	return RouteContext(Components.To, Components.From);
 }
 
 

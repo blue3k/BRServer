@@ -67,7 +67,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(PlayerInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::JoinPartyCmd::MID, __uiMessageSize ) );
 
@@ -164,7 +164,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(BYTE)*InChatHistoryData.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInChatHistoryData = (UINT16)InChatHistoryData.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::JoinPartyRes::MID, __uiMessageSize ) );
@@ -257,7 +257,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::PlayerJoinedS2CEvt::MID, __uiMessageSize ) );
 
@@ -343,7 +343,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::PartyLeaderChangedS2CEvt::MID, __uiMessageSize ) );
 
@@ -431,7 +431,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::LeavePartyCmd::MID, __uiMessageSize ) );
 
@@ -520,7 +520,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::LeavePartyRes::MID, __uiMessageSize ) );
 
@@ -609,7 +609,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::PlayerLeftS2CEvt::MID, __uiMessageSize ) );
 
@@ -699,7 +699,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::KickPlayerCmd::MID, __uiMessageSize ) );
 
@@ -789,7 +789,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::KickPlayerRes::MID, __uiMessageSize ) );
 
@@ -878,7 +878,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::PlayerKickedS2CEvt::MID, __uiMessageSize ) );
 
@@ -968,7 +968,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::ChatMessageC2SEvt::MID, __uiMessageSize ) );
 
@@ -1064,7 +1064,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::ChatMessageS2CEvt::MID, __uiMessageSize ) );
 
@@ -1156,7 +1156,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::QuickChatMessageC2SEvt::MID, __uiMessageSize ) );
 
@@ -1245,7 +1245,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::QuickChatMessageS2CEvt::MID, __uiMessageSize ) );
 
@@ -1336,7 +1336,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::StartGameMatchCmd::MID, __uiMessageSize ) );
 
@@ -1426,7 +1426,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::StartGameMatchRes::MID, __uiMessageSize ) );
 
@@ -1515,7 +1515,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::QueuedGameMatchingS2CEvt::MID, __uiMessageSize ) );
 
@@ -1603,7 +1603,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::CancelGameMatchCmd::MID, __uiMessageSize ) );
 
@@ -1692,7 +1692,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::CancelGameMatchRes::MID, __uiMessageSize ) );
 
@@ -1781,7 +1781,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::CanceledGameMatchingS2CEvt::MID, __uiMessageSize ) );
 
@@ -1867,7 +1867,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(MatchingQueueTicket));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameParty::MatchingItemDequeuedS2CEvt::MID, __uiMessageSize ) );
 

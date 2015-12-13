@@ -50,7 +50,37 @@ namespace Net {
 	{
 	}
 
-	
+	HRESULT ServerMUDP::SendRaw(const sockaddr_in6& dstAddress, Message::MessageData* &pMsg)
+	{
+		HRESULT hr = S_OK;
+		IOBUFFER_WRITE *pSendBuffer = nullptr;
+
+		netChkPtr(pMsg);
+
+		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
+		pSendBuffer->SetupSendUDP(GetSocket(), dstAddress, pMsg);
+
+		if (NetSystem::IsProactorSystem())
+		{
+			netChk(SendBuffer(pSendBuffer));
+		}
+		else
+		{
+			netChk(EnqueueBuffer(pSendBuffer));
+		}
+		pMsg = nullptr;
+		pSendBuffer = nullptr;
+
+	Proc_End:
+
+		if (pSendBuffer != nullptr)
+		{
+			NetSystem::FreeBuffer(pSendBuffer);
+		}
+
+		return hr;
+	}
+
 	// Make Ack packet and enqueue to SendNetCtrlqueue
 	HRESULT ServerMUDP::SendNetCtrl( const sockaddr_in6& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
@@ -68,7 +98,8 @@ namespace Net {
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = true;
 		pMsg->UpdateChecksum();
 
-		hrTem = SendMsg( nullptr, dstAddress, pMsg );
+		hrTem = SendRaw(dstAddress, pMsg);
+		//hrTem = SendMsg( nullptr, dstAddress, pMsg );
 		if( FAILED(hrTem) )
 		{
 			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed in direct: DstAddr:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
@@ -156,7 +187,7 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ServerMUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ *pIOBuffer )
+	HRESULT ServerMUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
@@ -248,8 +279,15 @@ namespace Net {
 		//	}
 		//}
 
-		if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
-			PendingRecv( (IOBUFFER_READ*)pIOBuffer );
+		if (NetSystem::IsProactorSystem())
+		{
+			if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
+				PendingRecv(pIOBuffer);
+		}
+		else
+		{
+			Util::SafeDelete(pIOBuffer);
+		}
 
 		return hr;
 	}

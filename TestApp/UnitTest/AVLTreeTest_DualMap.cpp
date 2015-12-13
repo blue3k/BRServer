@@ -39,7 +39,7 @@ TEST_F(AVLTreeTest, DualSortedMapSimple)
 		AssertRel(order == 0);
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 
 		AssertRel(FAILED(sortedMap.Find(TestValues[iTest], value)));
 
@@ -63,7 +63,7 @@ TEST_F(AVLTreeTest, DualSortedMapSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
@@ -87,7 +87,7 @@ TEST_F(AVLTreeTest, DualSortedMapSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
@@ -107,14 +107,14 @@ TEST_F(AVLTreeTest, DualSortedMapSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Find(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 
 	for (int iTest = numberOfTest - 1; iTest >= 0; iTest--)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
@@ -130,7 +130,7 @@ TEST_F(AVLTreeTest, DualSortedMapSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
@@ -145,7 +145,7 @@ TEST_F(AVLTreeTest, DualSortedMapSimple)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
@@ -175,7 +175,7 @@ TEST_F(AVLTreeTest, DualSortedMapOrderSequential)
 		
 		sortedMap.ForeachOrder(iTest, numberOfTest, [&](const UINT& key, const UINT& value)
 		{
-			AssertRel(TestValues[iTest + innerTest] == value);
+			AssertRel(TestValues[iTest + innerTest] == (int)value);
 			innerTest++;
 			return true;
 		});
@@ -183,7 +183,7 @@ TEST_F(AVLTreeTest, DualSortedMapOrderSequential)
 		sortedMap.ForeachReverseOrder(iTest, numberOfTest, [&](const UINT& key, const UINT& value)
 		{
 			innerTest++;
-			AssertRel(TestValues[iTest + innerTest] == value);
+			AssertRel(TestValues[iTest + innerTest] == (int)value);
 			return true;
 		});
 	}
@@ -194,7 +194,7 @@ TEST_F(AVLTreeTest, DualSortedMapOrderSequential)
 
 		sortedMap.ForeachOrder(0, numberOfTest - iTest, [&](const UINT& key, const UINT& value)
 		{
-			AssertRel(TestValues[innerTest] == value);
+			AssertRel(TestValues[innerTest] == (int)value);
 			innerTest++;
 			return true;
 		});
@@ -202,7 +202,7 @@ TEST_F(AVLTreeTest, DualSortedMapOrderSequential)
 		sortedMap.ForeachReverseOrder(0, numberOfTest - iTest, [&](const UINT& key, const UINT& value)
 		{
 			innerTest--;
-			AssertRel(TestValues[innerTest] == value);
+			AssertRel(TestValues[innerTest] == (int)value);
 			return true;
 		});
 	}
@@ -211,7 +211,7 @@ TEST_F(AVLTreeTest, DualSortedMapOrderSequential)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
@@ -229,7 +229,7 @@ TEST_F(AVLTreeTest, DualSortedMapOrderSequential)
 
 		sortedMap.ForeachOrder(iTest, numberOfTest, [&](const UINT& key, const UINT& value)
 		{
-			AssertRel(TestValues[iTest + innerTest] == value);
+			AssertRel(TestValues[iTest + innerTest] == (int)value);
 			innerTest++;
 			return true;
 		});
@@ -237,7 +237,7 @@ TEST_F(AVLTreeTest, DualSortedMapOrderSequential)
 		sortedMap.ForeachReverseOrder(iTest, numberOfTest, [&](const UINT& key, const UINT& value)
 		{
 			innerTest--;
-			AssertRel(TestValues[iTest + innerTest] == value);
+			AssertRel(TestValues[iTest + innerTest] == (int)value);
 			return true;
 		});
 	}
@@ -246,7 +246,7 @@ TEST_F(AVLTreeTest, DualSortedMapOrderSequential)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
@@ -326,7 +326,7 @@ TEST_F(AVLTreeTest, DualSortedMapRandom)
 	{
 		UINT value = -1;
 		AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[iTest], value)));
-		AssertRel(value == TestValues[iTest]);
+		AssertRel((int)value == TestValues[iTest]);
 	}
 	AssertRel(SUCCEEDED(sortedMap.CommitChanges()));
 
@@ -362,7 +362,7 @@ TEST_F(AVLTreeTest, DualSortedMapRandomForeach)
 		{
 			Status[testIndex] = 1;
 			AssertRel(SUCCEEDED(sortedMap.Remove(TestValues[testIndex], value)));
-			AssertRel(value == TestValues[testIndex]);
+			AssertRel((int)value == TestValues[testIndex]);
 		}
 		else
 		{

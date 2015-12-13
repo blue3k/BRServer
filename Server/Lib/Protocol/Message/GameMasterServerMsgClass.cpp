@@ -65,7 +65,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInPlayerNameLength 
 					+ sizeof(AccountID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameMasterServer::PlayerEnteredC2SEvt::MID, __uiMessageSize ) );
 
@@ -125,7 +125,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(AccountID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameMasterServer::PlayerLeavedC2SEvt::MID, __uiMessageSize ) );
 

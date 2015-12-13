@@ -67,7 +67,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(ClusterID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::GetClusterMemberListCmd::MID, __uiMessageSize ) );
 
@@ -192,7 +192,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(ServiceInformation)*InMemberList.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInMemberList = (UINT16)InMemberList.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::GetClusterMemberListRes::MID, __uiMessageSize ) );
@@ -328,7 +328,7 @@ namespace BR
 					+ sizeof(ClusterType)
 					+ sizeof(ClusterMembership));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::JoinClusterCmd::MID, __uiMessageSize ) );
 
@@ -458,7 +458,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(ServiceInformation)*InMemberList.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInMemberList = (UINT16)InMemberList.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::JoinClusterRes::MID, __uiMessageSize ) );
@@ -592,7 +592,7 @@ namespace BR
 					+ sizeof(ClusterType)
 					+ sizeof(ClusterMembership));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::NewServerServiceJoinedC2SEvt::MID, __uiMessageSize ) );
 
@@ -722,7 +722,7 @@ namespace BR
 					+ sizeof(ClusterType)
 					+ sizeof(ServiceInformation)*InMemberList.GetSize() + sizeof(UINT16));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInMemberList = (UINT16)InMemberList.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::SyncClusterServiceC2SEvt::MID, __uiMessageSize ) );
@@ -846,7 +846,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(ClusterID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::RequestDataSyncCmd::MID, __uiMessageSize ) );
 
@@ -966,7 +966,7 @@ namespace BR
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::RequestDataSyncRes::MID, __uiMessageSize ) );
 
@@ -1089,7 +1089,7 @@ namespace BR
 					+ sizeof(ClusterID)
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::ClusterMasterAssignedS2CEvt::MID, __uiMessageSize ) );
 
@@ -1213,7 +1213,7 @@ namespace BR
 					+ sizeof(EntityUID)
 					+ sizeof(UINT64));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::ClusterMasterVoteC2SEvt::MID, __uiMessageSize ) );
 
@@ -1337,7 +1337,7 @@ namespace BR
 					+ sizeof(ClusterID)
 					+ sizeof(ServiceStatus));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::ClusterUpdateStatusC2SEvt::MID, __uiMessageSize ) );
 
@@ -1461,7 +1461,7 @@ namespace BR
 					+ sizeof(ClusterID)
 					+ sizeof(UINT32));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::ClusterUpdateWorkloadC2SEvt::MID, __uiMessageSize ) );
 
@@ -1583,7 +1583,7 @@ namespace BR
 					+ sizeof(UINT16)
 					+ sizeof(ClusterID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::GetLowestWorkloadClusterMemberCmd::MID, __uiMessageSize ) );
 
@@ -1705,7 +1705,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(ServiceInformation));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::GetLowestWorkloadClusterMemberRes::MID, __uiMessageSize ) );
 
@@ -1828,7 +1828,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::GamePlayerEntityCreatedC2SEvt::MID, __uiMessageSize ) );
 
@@ -1949,7 +1949,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(EntityUID));
 
-				MessageData *pNewMsg = NULL;
+				MessageData *pNewMsg = nullptr;
 
 				protocolMem( pNewMsg = MessageData::NewMessage( ClusterServer::GamePlayerEntityDeletedC2SEvt::MID, __uiMessageSize ) );
 
