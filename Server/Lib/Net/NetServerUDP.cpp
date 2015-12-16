@@ -95,6 +95,12 @@ namespace Net {
 		return hr;
 	}
 
+
+	HRESULT ServerUDPBase::OnSendReady()
+	{
+		return ProcessSendQueue();
+	}
+
 	HRESULT ServerUDPBase::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
 		HRESULT hr = S_OK, hrErr = S_OK;

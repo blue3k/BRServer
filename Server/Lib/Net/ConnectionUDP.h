@@ -147,8 +147,10 @@ namespace Net {
 		virtual HRESULT UpdateNetCtrl() = 0;
 
 		// Update send queue and return remain item count in send queue
-		virtual ULONG UpdateSendQueue();
+		virtual HRESULT UpdateSendQueue() override;
 
+		// Update Send buffer Queue, TCP and UDP client connection
+		virtual HRESULT UpdateSendBufferQueue() override;
 
 		virtual HRESULT ProcGuarrentedMessageWindow(const std::function<void(Message::MessageData* pMsgData)>& action);
 
@@ -262,9 +264,6 @@ namespace Net {
 	public:
 
 	private:
-		// recv io buffer
-		IOBUFFER_READ m_RecvBuffer;
-
 
 	protected:
 		// Send packet buffer to connection with network device
@@ -286,15 +285,14 @@ namespace Net {
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
 		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
+		virtual HRESULT OnSendReady() override;
+
 		// called when send completed
 		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 		// Pending recv New one
 		HRESULT PendingRecv();
 
-
-		// Get recv buffer pointer
-		inline IOBUFFER_READ* GetRecvBuffer();
 
 		
 		// Initialize connection
@@ -306,7 +304,12 @@ namespace Net {
 
 		// Update net control, process connection heartbit, ... etc
 		virtual HRESULT UpdateNetCtrl() override;
+
+		// Update Send buffer Queue, TCP and UDP client connection
+		virtual HRESULT UpdateSendBufferQueue() override;
 	};
+
+
 
 
 	#include "ConnectionUDP.inl"

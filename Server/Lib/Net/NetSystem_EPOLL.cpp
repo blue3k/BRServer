@@ -275,7 +275,7 @@ namespace Net {
 		if (m_HandleSend && (events & EPOLLOUT))
 		{
 			// This call will just poke working thread
-			hr = pCallBack->ProcessSendQueue();
+			hr = pCallBack->OnSendReady();
 			if (FAILED(hr))
 			{
 				netErr(hr);
@@ -381,6 +381,7 @@ namespace Net {
 			hr = S_OK;
 
 			do {
+				
 
 				// Check exit event
 				if (CheckKillEvent(DurationMS(0)))

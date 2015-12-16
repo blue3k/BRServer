@@ -355,12 +355,21 @@ namespace Svr
 	{
 		HRESULT hr = S_OK;
 		Transaction *pCurTran = nullptr;
+		SharedPointerT<Net::IConnection> pMyConn;
 
 		switch (eventTask.EventType)
 		{
 		case Svr::EventTask::EventTypes::CONNECTION_EVENT:
 		case Svr::EventTask::EventTypes::PACKET_MESSAGE_EVENT:
 			svrErr(E_NOTIMPL);
+			break;
+		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
+			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
+			break;
+		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
+			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
 		case Svr::EventTask::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)

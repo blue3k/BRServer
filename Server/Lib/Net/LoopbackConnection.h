@@ -65,7 +65,6 @@ namespace Net {
 		// Close connection immediately without notify
 		virtual HRESULT CloseConnection();
 
-
 		// Send message to connected entity
 		virtual HRESULT Send( Message::MessageData* &pMsg ) = 0;
 
@@ -84,6 +83,10 @@ namespace Net {
 		virtual HRESULT UpdateNetCtrl( );
 
 
+		// Update send queue, Reliable UDP
+		virtual HRESULT UpdateSendQueue() override { return E_FAIL; }
+		// Update Send buffer Queue, TCP and UDP client connection
+		virtual HRESULT UpdateSendBufferQueue() override { return E_FAIL; }
 
 	};
 

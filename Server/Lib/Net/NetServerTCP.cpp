@@ -247,6 +247,11 @@ namespace Net {
 		return E_NOTIMPL;
 	}
 
+	HRESULT ServerTCP::OnSendReady()
+	{
+		return ProcessSendQueue();
+	}
+
 	HRESULT ServerTCP::SendBuffer(IOBUFFER_WRITE *pIOBuffer)
 	{
 		return E_NOTIMPL;

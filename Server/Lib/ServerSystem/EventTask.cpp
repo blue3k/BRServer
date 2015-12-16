@@ -67,8 +67,8 @@ namespace Svr {
 		EventData.MessageEvent.pMessage = pMsg;
 	}
 
-	EventTask::EventTask(TickTask* pTickTask, WeakPointerT<Net::IConnection>&& pConn)
-		: EventType(EventTypes::PACKET_MESSAGE_SEND_EVENT)
+	EventTask::EventTask(EventTypes eventType, TickTask* pTickTask, WeakPointerT<Net::IConnection>&& pConn) // send buffer message
+		: EventType(eventType)
 	{
 		TaskPtr.FromSharedObject(pTickTask);
 		EventData.MessageEvent.pConn = std::forward<WeakPointerT<Net::IConnection>>(pConn);

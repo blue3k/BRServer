@@ -69,6 +69,7 @@ namespace Net {
 		// called when incomming message occure
 		HRESULT OnRecv(const sockaddr_in6& remoteAddr, UINT uiBuffSize, const BYTE* pBuff);
 
+		virtual HRESULT OnSendReady() override;
 		// called when reciving messag is completed
 		HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
 		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer) override;

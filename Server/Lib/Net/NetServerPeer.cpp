@@ -183,6 +183,11 @@ namespace Net {
 	}
 
 
+	HRESULT ServerPeer::OnSendReady()
+	{
+		return ProcessSendQueue();
+	}
+
 	// called when send completed
 	HRESULT ServerPeer::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer )
 	{

@@ -36,7 +36,10 @@
 	#define UDP_PACKETLOS_BOUND	1
 #endif // #ifdef UDP_PACKETLOS_EMULATE
 
+
 BR_MEMORYPOOL_IMPLEMENT(Net::ConnectionMUDPServer);
+BR_MEMORYPOOL_IMPLEMENT(Net::ConnectionMUDPClient);
+
 
 namespace BR {
 namespace Net {
@@ -49,7 +52,7 @@ namespace Net {
 	//
 
 	// Constructor
-	ConnectionMUDPServer::ConnectionMUDPServer()
+	ConnectionMUDP::ConnectionMUDP()
 		: ConnectionUDPBase( MUDP_BASE_WINDOW_SIZE )
 		, m_bSendSyncThisTick(false)
 	{
@@ -57,13 +60,13 @@ namespace Net {
 		SetMaxGuarantedRetry( Const::UDP_CLI_RETRY_ONETIME_MAX );
 	}
 
-	ConnectionMUDPServer::~ConnectionMUDPServer()
+	ConnectionMUDP::~ConnectionMUDP()
 	{
 	}
 
 	
 	// Make Ack packet and enqueue to SendNetCtrlqueue
-	HRESULT ConnectionMUDPServer::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	HRESULT ConnectionMUDP::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
 		HRESULT hr = S_OK, hrTem = S_OK;
 
@@ -112,13 +115,168 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionMUDPServer::InitConnection(SOCKET socket, const ConnectionInformation &connectInfo)
+	// Process network control message
+	HRESULT ConnectionMUDP::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
+	{
+		HRESULT hr = S_OK;
+		HRESULT hrTem = S_OK;
+
+		if (pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl))
+		{
+			netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
+			netChk(Disconnect());
+			netErr(E_NET_BADPACKET_NOTEXPECTED);
+		}
+
+		switch (pNetCtrl->msgID.IDs.MsgCode)
+		{
+		case NetCtrlCode_Ack:
+			if (pNetCtrl->rtnMsgID.IDs.Type == Message::MSGTYPE_NETCONTROL)// connecting process
+			{
+				switch (pNetCtrl->rtnMsgID.IDs.MsgCode)
+				{
+				case NetCtrlCode_Disconnect:
+					if (GetConnectionState() == IConnection::STATE_DISCONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
+					{
+						netTrace(TRC_CONNECTION, "RECV Disconnected CID:{0}", GetCID());
+						netChk(CloseConnection());
+					}
+					break;
+				case NetCtrlCode_Connect:
+					if (GetConnectionState() == IConnection::STATE_CONNECTING
+						&& m_ConnectInfo.RemoteClass != NetClass::Unknown)
+					{
+						OnConnectionResult(S_OK);
+					}
+					break;
+				default:
+					netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
+					netChk(Disconnect());
+					netErr(E_NET_BADPACKET_NOTEXPECTED);
+					break;
+				};
+			}
+			else // general message
+			{
+				netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
+				netChk(Disconnect());
+				netErr(E_NET_BADPACKET_NOTEXPECTED);
+			}
+			break;
+		case NetCtrlCode_Nack:
+			if (pNetCtrl->rtnMsgID.IDs.Type == Message::MSGTYPE_NETCONTROL)// connecting process
+			{
+				switch (pNetCtrl->rtnMsgID.IDs.MsgCode)
+				{
+				case NetCtrlCode_Connect:
+					if (GetConnectionState() == IConnection::STATE_CONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
+					{
+						// Protocol version mismatch
+						OnConnectionResult(E_NET_PROTOCOL_VERSION_MISMATCH);
+					}
+					netChk(Disconnect());
+					break;
+				default:
+					break;
+				};
+			}
+			break;
+		case NetCtrlCode_HeartBit:
+			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+			break;
+		case NetCtrlCode_TimeSync:
+			netChk(SendNetCtrl(PACKET_NETCTRL_TIMESYNC, 0, pNetCtrl->msgID, Util::Time.GetRawUTCSec().time_since_epoch().count()));
+			break;
+		case NetCtrlCode_SyncReliable:
+		{
+			MutexScopeLock localLock(m_SendReliableWindow.GetLock());
+
+			MsgMobileNetCtrlSync *pSyncCtrl = (MsgMobileNetCtrlSync*)pNetCtrl;
+			if (pSyncCtrl->Length != sizeof(MsgMobileNetCtrlSync))
+				netErr(E_NET_BADPACKET_SIZE);
+
+			hrTem = m_SendReliableWindow.ReleaseMsg(pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask);
+			netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Recv SendReliableMask : CID:{0}:{1}, seq:{2}, mask:{3:X8}, hr={4:X8}",
+				GetCID(), m_SendReliableWindow.GetBaseSequence(), pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask, hrTem);
+
+			if (hrTem == E_UNEXPECTED)
+				CloseConnection();
+
+			netChk(hrTem);
+
+			if (GetEventHandler() != nullptr && (m_SendGuaQueue.GetEnqueCount() > 0 || m_SendReliableWindow.GetMsgCount() > 0))
+				GetEventHandler()->OnNetSyncMessage(this);
+			else
+				SetSendSyncThisTick(true); // for regular ping. maybe I can get rid of this later
+			break;
+		}
+		case NetCtrlCode_Connect:
+		{
+			UINT ProtocolVersion = pNetCtrl->rtnMsgID.ID;
+			NetClass RemoteClass = (NetClass)pNetCtrl->msgID.IDSeq.Sequence;
+			switch (GetConnectionState())
+			{
+			case  IConnection::STATE_CONNECTING:
+				if (ProtocolVersion != BR_PROTOCOL_VERSION)
+				{
+					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+					OnConnectionResult(E_NET_PROTOCOL_VERSION_MISMATCH);
+					netChk(Disconnect());
+					break;
+				}
+				else if (GetConnectionInfo().RemoteClass != NetClass::Unknown && RemoteClass != GetConnectionInfo().RemoteClass)
+				{
+					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+					OnConnectionResult(E_NET_INVALID_NETCLASS);
+					netChk(Disconnect());
+					break;
+				}
+
+				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, (UINT)GetConnectionInfo().LocalClass, pNetCtrl->msgID, GetConnectionInfo().LocalID));
+
+				netTrace(TRC_NETCTRL, "UDP Recv Connecting CID({0}) : C:{1}, Ver:{2})", GetCID(), RemoteClass, ProtocolVersion);
+				m_ConnectInfo.SetRemoteInfo(RemoteClass, pNetCtrl->PeerID);
+
+				// Set connection is succeeded and connected
+				OnConnectionResult(S_OK);
+				break;
+			case IConnection::STATE_CONNECTED:
+				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, (UINT)GetConnectionInfo().LocalClass, pNetCtrl->msgID, GetConnectionInfo().LocalID));
+				break;
+			default:
+				break;
+			};
+
+			break;
+		}
+		case NetCtrlCode_Disconnect:
+			SendFlush();
+			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
+			SendFlush();
+			netTrace(TRC_CONNECTION, "Disconnect from remote CID:{0}", GetCID());
+			netChk(CloseConnection());
+			break;
+		default:
+			netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
+			netChk(CloseConnection());
+			netErr(E_UNEXPECTED);
+			break;
+		};
+
+
+	Proc_End:
+
+
+		return hr;
+	}
+
+	HRESULT ConnectionMUDP::InitConnection(SOCKET socket, const ConnectionInformation &connectInfo)
 	{
 		return ConnectionUDPBase::InitConnection(socket, connectInfo);
 	}
 
 	// called when incomming message occure
-	HRESULT ConnectionMUDPServer::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
+	HRESULT ConnectionMUDP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
 	{
 		HRESULT hr = S_OK;
 		Message::MessageData *pMsg = NULL;
@@ -204,7 +362,7 @@ namespace Net {
 	}
 
 
-	HRESULT ConnectionMUDPServer::OnRecv( Message::MessageData *pMsg )
+	HRESULT ConnectionMUDP::OnRecv( Message::MessageData *pMsg )
 	{
 		HRESULT hr = S_OK;
 		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
@@ -255,7 +413,7 @@ namespace Net {
 	
 
 	// gathering
-	HRESULT ConnectionMUDPServer::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	HRESULT ConnectionMUDP::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
 		HRESULT hr = S_OK;
 
@@ -283,7 +441,7 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionMUDPServer::SendSync( UINT uiSequence, UINT64 uiSyncMask )
+	HRESULT ConnectionMUDP::SendSync( UINT uiSequence, UINT64 uiSyncMask )
 	{
 		HRESULT hr = S_OK;
 		MsgMobileNetCtrlSync *pNetCtrlMsg = NULL;
@@ -313,166 +471,9 @@ namespace Net {
 		return hr;
 	}
 
-	// Process network control message
-	HRESULT ConnectionMUDPServer::ProcNetCtrl( const MsgMobileNetCtrl* pNetCtrl )
-	{
-		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
-		Message::MessageData *pIMsg = nullptr;
-
-		if( pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl) )
-		{
-			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
-			netChk( Disconnect() );
-			netErr(E_NET_BADPACKET_NOTEXPECTED);
-		}
-
-		switch( pNetCtrl->msgID.IDs.MsgCode )
-		{
-		case NetCtrlCode_Ack:
-			if( pNetCtrl->rtnMsgID.IDs.Type == Message::MSGTYPE_NETCONTROL )// connecting process
-			{
-				switch( pNetCtrl->rtnMsgID.IDs.MsgCode )
-				{
-				case NetCtrlCode_Disconnect:
-					if (GetConnectionState() == IConnection::STATE_DISCONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
-					{
-						netTrace( TRC_CONNECTION, "RECV Disconnected CID:{0}", GetCID() );
-						netChk( CloseConnection() );
-					}
-					break;
-				case NetCtrlCode_Connect:
-					if (GetConnectionState() == IConnection::STATE_CONNECTING
-						&& m_ConnectInfo.RemoteClass != NetClass::Unknown )
-					{
-						OnConnectionResult( S_OK );
-					}
-					break;
-				default:
-					netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
-					netChk( Disconnect() );
-					netErr(E_NET_BADPACKET_NOTEXPECTED);
-					break;
-				};
-			}
-			else // general message
-			{
-				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
-				netChk( Disconnect() );
-				netErr(E_NET_BADPACKET_NOTEXPECTED);
-			}
-			break;
-		case NetCtrlCode_Nack:
-			if( pNetCtrl->rtnMsgID.IDs.Type == Message::MSGTYPE_NETCONTROL )// connecting process
-			{
-				switch( pNetCtrl->rtnMsgID.IDs.MsgCode )
-				{
-				case NetCtrlCode_Connect:
-					if (GetConnectionState() == IConnection::STATE_CONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
-					{
-						// Protocol version mismatch
-						OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
-					}
-					netChk( Disconnect() );
-					break;
-				default:
-					break;
-				};
-			}
-			break;
-		case NetCtrlCode_HeartBit:
-			netChk( SendNetCtrl( PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID ) );
-			break;
-		case NetCtrlCode_TimeSync:
-			netChk(SendNetCtrl(PACKET_NETCTRL_TIMESYNC, 0, pNetCtrl->msgID, Util::Time.GetRawUTCSec().time_since_epoch().count()));
-			break;
-		case NetCtrlCode_SyncReliable:
-		{
-			MutexScopeLock localLock(m_SendReliableWindow.GetLock());
-
-			MsgMobileNetCtrlSync *pSyncCtrl = (MsgMobileNetCtrlSync*)pNetCtrl;
-			if( pSyncCtrl->Length != sizeof(MsgMobileNetCtrlSync) )
-				netErr(E_NET_BADPACKET_SIZE);
-
-			hrTem = m_SendReliableWindow.ReleaseMsg(pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask);
-			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Recv SendReliableMask : CID:{0}:{1}, seq:{2}, mask:{3:X8}, hr={4:X8}", 
-				GetCID(), m_SendReliableWindow.GetBaseSequence(), pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask, hrTem);
-
-			if (hrTem == E_UNEXPECTED)
-				CloseConnection();
-
-			netChk( hrTem );
-
-			if (GetEventHandler() != nullptr && (m_SendGuaQueue.GetEnqueCount() > 0 || m_SendReliableWindow.GetMsgCount() > 0))
-				GetEventHandler()->OnNetSyncMessage(this);
-			else
-				m_bSendSyncThisTick = true; // for regular ping. maybe I can get rid of this later
-			break;
-		}
-		case NetCtrlCode_Connect:
-		{
-			UINT ProtocolVersion = pNetCtrl->rtnMsgID.ID;
-			NetClass RemoteClass = (NetClass)pNetCtrl->msgID.IDSeq.Sequence;
-			switch( GetConnectionState() )
-			{
-			case  IConnection::STATE_CONNECTING:
-				if( ProtocolVersion != BR_PROTOCOL_VERSION)
-				{
-					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
-					OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
-					netChk( Disconnect() );
-					break;
-				}
-				else if( GetConnectionInfo().RemoteClass != NetClass::Unknown && RemoteClass != GetConnectionInfo().RemoteClass )
-				{
-					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
-					OnConnectionResult( E_NET_INVALID_NETCLASS );
-					netChk( Disconnect() );
-					break;
-				}
-
-				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, (UINT)GetConnectionInfo().LocalClass, pNetCtrl->msgID, GetConnectionInfo().LocalID));
-
-				netTrace( TRC_NETCTRL, "UDP Recv Connecting CID({0}) : C:{1}, Ver:{2})", GetCID(), RemoteClass, ProtocolVersion );
-				m_ConnectInfo.SetRemoteInfo( RemoteClass, pNetCtrl->PeerID );
-
-				// Set connection is succeeded and connected
-				OnConnectionResult( S_OK );
-				break;
-			case IConnection::STATE_CONNECTED:
-				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, (UINT)GetConnectionInfo().LocalClass, pNetCtrl->msgID, GetConnectionInfo().LocalID));
-				break;
-			default:
-				break;
-			};
-
-			break;
-		}
-		case NetCtrlCode_Disconnect:
-			SendFlush();
-			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
-			SendFlush();
-			netTrace( TRC_CONNECTION, "Disconnect from remote CID:{0}", GetCID() );
-			netChk( CloseConnection() );
-			break;
-		default:
-			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
-			netChk( CloseConnection() );
-			netErr( E_UNEXPECTED );
-			break;
-		};
-
-
-	Proc_End:
-
-		if( pIMsg ) pIMsg->Release();
-
-		return hr;
-	}
-
 
 	// Process NetCtrl queue
-	HRESULT ConnectionMUDPServer::ProcNetCtrlQueue()
+	HRESULT ConnectionMUDP::ProcNetCtrlQueue()
 	{
 		HRESULT hr = S_OK;
 
@@ -499,7 +500,7 @@ namespace Net {
 	}
 
 
-	HRESULT ConnectionMUDPServer::OnGuarrentedMessageRecv(Message::MessageData *pIMsg)
+	HRESULT ConnectionMUDP::OnGuarrentedMessageRecv(Message::MessageData *pIMsg)
 	{
 		HRESULT hr = S_OK;
 
@@ -552,7 +553,7 @@ namespace Net {
 	}
 
 	// Process recv reliable queue
-	HRESULT ConnectionMUDPServer::ProcRecvReliableQueue()
+	HRESULT ConnectionMUDP::ProcRecvReliableQueue()
 	{
 		HRESULT hr = S_OK;
 		Message::MessageData *pIMsg = nullptr;
@@ -600,7 +601,7 @@ namespace Net {
 	}
 
 	// Process Send queue
-	HRESULT ConnectionMUDPServer::ProcSendReliableQueue()
+	HRESULT ConnectionMUDP::ProcSendReliableQueue()
 	{
 		HRESULT hr = S_OK;
 		Message::MessageData *pIMsg = NULL;
@@ -647,7 +648,7 @@ namespace Net {
 	}
 		
 	// Process message window queue
-	HRESULT ConnectionMUDPServer::ProcReliableSendRetry()
+	HRESULT ConnectionMUDP::ProcReliableSendRetry()
 	{
 		HRESULT hr = S_OK;
 		MsgWindow::MessageElement *pMessageElement = nullptr;
@@ -687,14 +688,12 @@ namespace Net {
 
 	//Proc_End:
 
-		//if( pMessageElement && pMessageElement->pMsg ) pMessageElement->pMsg->Release();
-
 		return hr;
 	}
 
 
 	// Process connection state
-	HRESULT ConnectionMUDPServer::ProcConnectionState()
+	HRESULT ConnectionMUDP::ProcConnectionState()
 	{
 		HRESULT hr = S_OK;
 
@@ -715,11 +714,10 @@ namespace Net {
 
 
 	// Update net control, process connection heartbit, ... etc
-	HRESULT ConnectionMUDPServer::UpdateNetCtrl()
+	HRESULT ConnectionMUDP::UpdateNetCtrl()
 	{
 		HRESULT hr = S_OK;
 		Message::MessageID msgIDTem;
-		//TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
@@ -780,7 +778,7 @@ namespace Net {
 		return hr;
 	}
 
-	ULONG ConnectionMUDPServer::UpdateSendQueue()
+	HRESULT ConnectionMUDP::UpdateSendQueue()
 	{
 		HRESULT hr = S_OK;
 
@@ -817,6 +815,139 @@ namespace Net {
 
 		return hr;
 	}
+
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Server Mobile UDP Network connection class
+	//
+
+	// Constructor
+	ConnectionMUDPServer::ConnectionMUDPServer()
+	{
+
+	}
+
+	ConnectionMUDPServer::~ConnectionMUDPServer()
+	{
+
+	}
+
+
+	// Process network control message
+	HRESULT ConnectionMUDPServer::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
+	{
+		HRESULT hr = S_OK;
+
+		hr = ConnectionMUDP::ProcNetCtrl(pNetCtrl);
+		if (FAILED(hr)) return hr;
+
+
+	Proc_End:
+
+		return hr;
+
+	}
+
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Client Mobile UDP Network connection class
+	//
+
+	// Constructor
+	ConnectionMUDPClient::ConnectionMUDPClient()
+	{
+
+	}
+
+	ConnectionMUDPClient::~ConnectionMUDPClient()
+	{
+
+	}
+
+	// Process network control message
+	HRESULT ConnectionMUDPClient::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
+	{
+		HRESULT hr = S_OK;
+
+		hr = ConnectionMUDP::ProcNetCtrl(pNetCtrl);
+		if (FAILED(hr)) return hr;
+
+
+	Proc_End:
+
+		return hr;
+	}
+
+
+	// Process network control message
+	HRESULT ConnectionMUDPClient::ProcConnectionState()
+	{
+		HRESULT hr = S_OK;
+		Message::MessageID msgIDTem;
+		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
+
+		hr = ConnectionMUDP::ProcConnectionState();
+		if (FAILED(hr)) return hr;
+
+
+		// Update connection status
+		msgIDTem.ID = PACKET_NETCTRL_NONE;
+		switch (GetConnectionState())
+		{
+		case IConnection::STATE_CONNECTING:
+			if ((INT)(ulTimeCur - m_ulNetCtrlTime).count() > (INT)GetConnectingTimeOut()) // connection time out
+			{
+				netTrace(TRC_CONNECTION, "UDP Connecting Timeout CID:{0}, ({1},{2},{3})", GetCID(), ulTimeCur, m_ulNetCtrlTime, GetConnectingTimeOut());
+				netChk(CloseConnection());
+			}
+			else if ((INT)(ulTimeCur - m_ulNetCtrlTryTime).count() > Const::CONNECTION_RETRY_TIME) // retry
+			{
+				m_ulNetCtrlTryTime = ulTimeCur;
+				netTrace(TRC_NETCTRL, "UDP Send Connecting CID({0}) : C:{1}, V:{2})", GetCID(), GetConnectionInfo().LocalClass, (UINT32)BR_PROTOCOL_VERSION);
+				netChk(SendPending(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOL_VERSION), GetConnectionInfo().LocalID));
+			}
+
+			break;
+		case IConnection::STATE_CONNECTED:
+			if ((INT)(ulTimeCur - m_ulNetCtrlTime).count() > Const::HEARTBIT_TIMEOUT) // connection time out
+			{
+				netTrace(TRC_CONNECTION, "UDP Connection Timeout CID:{0}, ({1},{2})", GetCID(), ulTimeCur, m_ulNetCtrlTime);
+				netChk(CloseConnection());
+				goto Proc_End;
+			}
+			else if ((INT)(ulTimeCur - m_ulNetCtrlTryTime).count() > (INT)GetHeartbitTry()) // heartbit time
+			{
+				m_ulNetCtrlTryTime = ulTimeCur;
+				netChk(SendPending(PACKET_NETCTRL_HEARTBIT, 0, msgIDTem));
+			}
+			break;
+		case IConnection::STATE_DISCONNECTING:
+			if ((INT)(ulTimeCur - m_ulNetCtrlTime).count() > Const::DISCONNECT_TIMEOUT) // connection time out
+			{
+				netTrace(TRC_CONNECTION, "UDP Disconnecting Timeout CID:{0}, ({1},{2})", GetCID(), ulTimeCur, m_ulNetCtrlTime);
+				netChk(CloseConnection());
+			}
+			else if ((INT)(ulTimeCur - m_ulNetCtrlTryTime).count() > Const::DISCONNECT_RETRY_TIME) // retry
+			{
+				m_ulNetCtrlTryTime = ulTimeCur;
+				netChk(SendPending(PACKET_NETCTRL_DISCONNECT, 0, msgIDTem));
+			}
+
+			break;
+		default:
+			break;
+		};
+
+
+	Proc_End:
+
+		return hr;
+	}
+
 
 
 

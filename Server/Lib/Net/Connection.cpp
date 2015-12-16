@@ -448,11 +448,11 @@ namespace Net {
 		return hr;
 	}
 
-	// Get Recived message
-	HRESULT Connection::GetRecv( Message::MessageData* &pMsg )
-	{
-		return m_RecvQueue.Dequeue( pMsg );
-	}
+	//// Get Recived message
+	//HRESULT Connection::GetRecv( Message::MessageData* &pMsg )
+	//{
+	//	return m_RecvQueue.Dequeue( pMsg );
+	//}
 
 
 	HRESULT Connection::OnRecv( Message::MessageData *pMsg )

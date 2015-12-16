@@ -199,7 +199,7 @@ namespace Net {
 	{
 		ClearQueues();
 
-		if (GetWriteQueue()) delete GetWriteQueue();
+		//if (GetWriteQueue()) delete GetWriteQueue();
 	}
 
 
@@ -209,7 +209,7 @@ namespace Net {
 		HRESULT hr = S_OK, hrErr = S_OK;
 
 		netChkPtr(pIOBuffer);
-		//pIOBuffer = GetRecvBuffer();
+
 		pIOBuffer->SetupRecvUDP(GetCID());
 
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
@@ -287,6 +287,17 @@ namespace Net {
 		return SendBufferUDP(pSendBuffer);
 	}
 
+
+	HRESULT ConnectionUDPClient::OnSendReady()
+	{
+		if (GetEventHandler())
+			return GetEventHandler()->OnNetSendReadyMessage(this);
+		// process directly
+		else
+			return ProcessSendQueue();
+	}
+
+
 	// called when Send completed
 	HRESULT ConnectionUDPClient::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer )
 	{
@@ -299,6 +310,8 @@ namespace Net {
 	// Pending recv New one
 	HRESULT ConnectionUDPClient::PendingRecv()
 	{
+		IOBUFFER_READ *pOver = nullptr;
+
 		if (!NetSystem::IsProactorSystem())
 			return S_OK;
 
@@ -308,7 +321,7 @@ namespace Net {
 
 		while(1)
 		{
-			IOBUFFER_READ *pOver = GetRecvBuffer();
+			pOver = new IOBUFFER_READ;
 			hrErr = Recv(pOver);
 			switch (hrErr)
 			{
@@ -316,6 +329,7 @@ namespace Net {
 			case E_NET_IO_PENDING:
 			case E_NET_TRY_AGAIN:
 			case E_NET_WOULDBLOCK:
+				pOver = nullptr;
 				goto Proc_End;// success
 				break;
 			default:
@@ -326,6 +340,8 @@ namespace Net {
 
 
 	Proc_End:
+
+		Util::SafeDelete(pOver);
 
 		return hr;
 	}
@@ -373,6 +389,12 @@ namespace Net {
 		SendFlush();
 
 		return hr;
+	}
+
+	// Update Send buffer Queue, TCP and UDP client connection
+	HRESULT ConnectionUDPClient::UpdateSendBufferQueue()
+	{
+		return ProcessSendQueue();
 	}
 
 

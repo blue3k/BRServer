@@ -140,6 +140,7 @@ namespace Svr {
 		virtual void OnConnectionEvent(Net::IConnection* pConn, const Net::IConnection::Event& evt) override;
 		virtual HRESULT OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg) override;
 		virtual HRESULT OnNetSyncMessage(Net::IConnection* pConn) override;
+		virtual HRESULT OnNetSendReadyMessage(Net::IConnection* pConn) override;
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Event task handling

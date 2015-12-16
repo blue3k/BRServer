@@ -254,7 +254,7 @@ namespace Net {
 
 		if( SUCCEEDED(hr) )
 		{
-			netTrace(TRC_NET, "ServerPeer Allowing Server:%3%:%4%, {0}:{1}, CID:{2}", strDstIP, usDstPort, CID, netClass, serverID);
+			netTrace(TRC_NET, "ServerPeer Allowing Server:{3}:{4}, {0}:{1}, CID:{2}", strDstIP, usDstPort, CID, netClass, serverID);
 		}
 
 		return hr;

@@ -82,6 +82,8 @@ namespace Net {
 		// called when reciving TCP message
 		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
+		virtual HRESULT OnSendReady() override;
+
 		// called when send completed
 		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 

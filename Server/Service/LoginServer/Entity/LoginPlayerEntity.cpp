@@ -58,11 +58,11 @@ namespace LoginServer {
 
 
 	LoginPlayerEntity::LoginPlayerEntity()
-		: m_Allocator(STDAllocator::GetInstance())
-		, m_FacebookUID(0)
+		: m_FacebookUID(0)
 		, m_AuthTicket(0)
 		, m_ShardID(0)
 		, m_IsTicketOwner(false)
+		, m_Allocator(STDAllocator::GetInstance())
 	{
 		SetTickInterval(DurationMS(1000));
 	}
@@ -175,7 +175,7 @@ namespace LoginServer {
 			PendingCloseTransaction();
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

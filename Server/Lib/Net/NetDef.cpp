@@ -83,6 +83,35 @@ namespace Net {
 
 
 
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	IConnectionEventHandler Interface
+	//
+
+	IConnectionEventHandler::~IConnectionEventHandler()
+	{
+
+	}
+
+	HRESULT IConnectionEventHandler::OnNetSyncMessage(IConnection* pConn)
+	{
+		unused(pConn);
+		Assert(false);
+		return E_NOTIMPL;
+	};
+
+
+	// Net send message
+	HRESULT IConnectionEventHandler::OnNetSendReadyMessage(IConnection* pConn)
+	{
+		unused(pConn);
+		Assert(false);
+		return E_NOTIMPL;
+	};
+
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Network Interface

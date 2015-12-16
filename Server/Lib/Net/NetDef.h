@@ -288,16 +288,29 @@ namespace Net {
 		// Update net control, process connection heartbit, ... etc
 		virtual HRESULT UpdateNetCtrl(  ) = 0;
 
+		// Update send queue, Reliable UDP
+		virtual HRESULT UpdateSendQueue() = 0;
+		// Update Send buffer Queue, TCP and UDP client connection
+		virtual HRESULT UpdateSendBufferQueue() = 0;
 	};
 
 
 
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	IConnectionEventHandler Interface
+	//
+
 	class IConnectionEventHandler
 	{
 	public:
+		virtual ~IConnectionEventHandler();
+
 		virtual void OnConnectionEvent(IConnection* pConn, const IConnection::Event& evt) = 0;
 		virtual HRESULT OnRecvMessage(IConnection* pConn, Message::MessageData* pMsg) = 0;
-		virtual HRESULT OnNetSyncMessage(IConnection* pConn) = 0;
+		virtual HRESULT OnNetSyncMessage(IConnection* pConn);
+		// Net send message
+		virtual HRESULT OnNetSendReadyMessage(IConnection* pConn);
 	};
 
 
@@ -384,19 +397,6 @@ namespace Net {
 
 		// take over connection management
 		virtual HRESULT TakeOverConnection(IConnection* pIConnection) = 0;
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		// Used by connection
-
-		//// Send message to connection with network device
-		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg ) = 0;
-
-		//// Send message to connection with network device to dst addr
-		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg ) = 0;
-
-		//// Send array of message buffer to connection with network device
-		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff ) = 0;
 	};
 
 

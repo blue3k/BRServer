@@ -100,7 +100,7 @@ namespace Net {
 		m_sockAddrRemote = socAddr;
 	}
 
-	ULONG ConnectionUDPBase::UpdateSendQueue()
+	HRESULT ConnectionUDPBase::UpdateSendQueue()
 	{
 		HRESULT hr = S_OK;
 
@@ -119,6 +119,13 @@ namespace Net {
 		SendFlush();
 
 		return hr;
+	}
+
+	// Update Send buffer Queue, TCP and UDP client connection
+	HRESULT ConnectionUDPBase::UpdateSendBufferQueue()
+	{
+		Assert(false);
+		return E_NOTIMPL;
 	}
 
 	HRESULT ConnectionUDPBase::ProcGuarrentedMessageWindow(const std::function<void(Message::MessageData* pMsgData)>& action)

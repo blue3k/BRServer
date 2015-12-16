@@ -477,13 +477,19 @@ namespace Svr {
 
 	HRESULT ServerEntity::OnNetSyncMessage(Net::IConnection* pConn)
 	{
-		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(pConn)));
+		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
+	}
+
+	HRESULT ServerEntity::OnNetSendReadyMessage(Net::IConnection* pConn)
+	{
+		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
 	}
 
 	HRESULT ServerEntity::OnEventTask(const Svr::EventTask& eventTask)
 	{
 		Transaction *pCurTran = nullptr;
 		Message::MessageData* pMsg = nullptr;
+		SharedPointerT<Net::IConnection> pMyConn;
 
 		switch (eventTask.EventType)
 		{
@@ -502,7 +508,13 @@ namespace Svr {
 				svrTrace(Trace::TRC_ERROR, "null message pointer in event taqsk");
 			}
 			break;
+		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
+			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
+			break;
 		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
+			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
 		case Svr::EventTask::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)

@@ -23,12 +23,14 @@
 namespace BR {
 namespace Net {
 
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//
-	//	Server Mobile UDP Network connection class
+	//	Mobile UDP Network connection class
 	//
 
-	class ConnectionMUDPServer : public ConnectionUDPBase, public MemoryPoolObject<ConnectionMUDPServer>
+	class ConnectionMUDP : public ConnectionUDPBase
 	{
 	public:
 
@@ -41,8 +43,8 @@ namespace Net {
 
 	public:
 		// Constructor
-		ConnectionMUDPServer();
-		virtual ~ConnectionMUDPServer();
+		ConnectionMUDP();
+		virtual ~ConnectionMUDP();
 	protected:
 
 		// gathering
@@ -54,7 +56,7 @@ namespace Net {
 
 
 		// Process network control message
-		HRESULT ProcNetCtrl( const MsgMobileNetCtrl* pNetCtrl );
+		virtual HRESULT ProcNetCtrl( const MsgMobileNetCtrl* pNetCtrl );
 		HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl )			{ return E_NOTIMPL; }
 
 		// Process NetCtrl queue
@@ -74,6 +76,8 @@ namespace Net {
 
 		HRESULT OnGuarrentedMessageRecv(Message::MessageData *pMsg);
 
+		void SetSendSyncThisTick(bool bEnable) { m_bSendSyncThisTick = bEnable; }
+
 	public:
 		
 		virtual HRESULT InitConnection(SOCKET socket, const ConnectionInformation &connectInfo) override;
@@ -86,7 +90,57 @@ namespace Net {
 		// Update net control, process connection heartbit, ... etc
 		virtual HRESULT UpdateNetCtrl() override;
 
-		virtual ULONG UpdateSendQueue() override;
+		virtual HRESULT UpdateSendQueue() override;
+	};
+
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Server Mobile UDP Network connection class
+	//
+
+	class ConnectionMUDPServer : public ConnectionMUDP, public MemoryPoolObject<ConnectionMUDP>
+	{
+	public:
+
+	public:
+		// Constructor
+		ConnectionMUDPServer();
+		virtual ~ConnectionMUDPServer();
+	protected:
+
+		virtual HRESULT ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl) override;
+
+	public:
+
+		
+	};
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Client Mobile UDP Network connection class
+	//
+
+	class ConnectionMUDPClient : public ConnectionMUDP, public MemoryPoolObject<ConnectionMUDP>
+	{
+	public:
+
+	public:
+		// Constructor
+		ConnectionMUDPClient();
+		virtual ~ConnectionMUDPClient();
+	protected:
+
+		virtual HRESULT ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl) override;
+
+		// Process connection state
+		virtual HRESULT ProcConnectionState() override;
+
+	public:
+
+
 	};
 
 

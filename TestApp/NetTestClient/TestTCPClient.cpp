@@ -53,6 +53,7 @@ protected:
 
 	virtual void TearDown()
 	{
+
 		m_pServer->HostClose();
 		Util::SafeDelete(m_pServer);
 	}

@@ -383,6 +383,11 @@ namespace Net {
 		return hr;
 	}
 
+	HRESULT RawUDP::OnSendReady()
+	{
+		return ProcessSendQueue();
+	}
+
 	HRESULT RawUDP::Recv(IOBUFFER_READ* pIOBuffer)
 	{
 		HRESULT hr = S_OK, hrErr = S_OK;

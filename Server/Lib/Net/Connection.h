@@ -171,9 +171,6 @@ namespace Net {
 		virtual HRESULT CloseConnection();
 
 
-		// Get Recived message
-		virtual HRESULT GetRecv( Message::MessageData* &pMsg );
-
 		// called when incomming message occure
 		virtual HRESULT OnRecv( UINT uiBuffSize, const BYTE* pBuff ) = 0;
 		virtual HRESULT OnRecv( Message::MessageData *pMsg );

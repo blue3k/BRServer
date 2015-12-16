@@ -36,6 +36,7 @@ namespace Svr
 			NONE,
 			POKE_TICK_EVENT,
 			PACKET_MESSAGE_EVENT,
+			PACKET_MESSAGE_SYNC_EVENT,
 			PACKET_MESSAGE_SEND_EVENT,
 			CONNECTION_EVENT,
 			TRANSRESULT_EVENT,
@@ -60,7 +61,7 @@ namespace Svr
 		EventTask(TickTask* pTickTask); // poke ticking
 		EventTask(TickTask* pTickTask, const Net::IConnection::Event& connectionEvent);
 		EventTask(TickTask* pTickTask, WeakPointerT<Net::IConnection>&& pConn, Message::MessageData* pMsg);
-		EventTask(TickTask* pTickTask, WeakPointerT<Net::IConnection>&& pConn); // send message
+		EventTask(EventTypes eventType, TickTask* pTickTask, WeakPointerT<Net::IConnection>&& pConn); // send buffer message
 		EventTask(TickTask* pTickTask, TransactionResult* pTransRes);
 		~EventTask();
 

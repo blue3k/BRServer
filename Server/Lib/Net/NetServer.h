@@ -122,6 +122,7 @@ namespace Net {
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
 		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
+		virtual HRESULT OnSendReady() override;
 		// called when send completed
 		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
 		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;

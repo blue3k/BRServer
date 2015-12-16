@@ -32,10 +32,4 @@ void ConnectionUDPBase::SetMaxGuarantedRetry( UINT uiMaxGuarantedRetry )
 //	Client UDP Connection class
 //
 
-IOBUFFER_READ* ConnectionUDPClient::GetRecvBuffer()
-{
-	return &m_RecvBuffer;
-}
-
-
 

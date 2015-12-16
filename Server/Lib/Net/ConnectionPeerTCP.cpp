@@ -104,7 +104,7 @@ namespace Net {
 		switch (GetConnectionState())
 		{
 		case IConnection::STATE_CONNECTING:
-			if( (ulTimeCur-m_ulNetCtrlTime) > DurationMS(GetConnectingTimeOut()) ) // connection time out
+			if ((ulTimeCur - m_ulNetCtrlTime) > DurationMS((INT)GetConnectingTimeOut())) // connection time out
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
 				netTrace(TRC_CONNECTION, "Connecting Timeout CID:{0}", GetCID());
@@ -120,7 +120,6 @@ namespace Net {
 					netChk(SendNetCtrl(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOL_VERSION), GetConnectionInfo().LocalID));
 				}
 			}
-
 			goto Proc_End;
 			break;
 		case IConnection::STATE_DISCONNECTING:

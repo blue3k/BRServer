@@ -55,7 +55,7 @@ namespace LoginServer {
 	HRESULT LoginServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
 		HRESULT hr = S_OK;
-		Svr::ServerEntity *pServer = nullptr;
+		//Svr::ServerEntity *pServer = nullptr;
 
 		switch( m_Step )
 		{

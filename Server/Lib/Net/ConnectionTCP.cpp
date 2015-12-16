@@ -308,6 +308,15 @@ namespace Net {
 		return hr;
 	}
 
+	HRESULT ConnectionTCP::OnSendReady()
+	{
+		if (GetEventHandler())
+			return GetEventHandler()->OnNetSendReadyMessage(this);
+		// process directly
+		else
+			return ProcessSendQueue();
+	}
+
 	// called when Send completed
 	HRESULT ConnectionTCP::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer )
 	{
@@ -775,6 +784,7 @@ namespace Net {
 		else
 		{
 			netChk(EnqueueBuffer(pSendBuffer));
+			ProcessSendQueue();
 		}
 		pMsg = nullptr;
 		pSendBuffer = nullptr;
@@ -793,7 +803,6 @@ namespace Net {
 	HRESULT ConnectionTCP::Send( Message::MessageData* &pMsg )
 	{
 		HRESULT hr = S_OK;
-		IOBUFFER_WRITE *pSendBuffer = nullptr;
 		Message::MessageID msgID;
 
 		if (GetConnectionState() == STATE_DISCONNECTED)
@@ -865,6 +874,19 @@ namespace Net {
 		}
 
 		return hr;
+	}
+
+	// Update send queue, Reliable UDP
+	HRESULT ConnectionTCP::UpdateSendQueue()
+	{
+		Assert(false);
+		return E_NOTIMPL;
+	}
+
+	// Update Send buffer Queue, TCP and UDP client connection
+	HRESULT ConnectionTCP::UpdateSendBufferQueue()
+	{
+		return ProcessSendQueue();
 	}
 
 

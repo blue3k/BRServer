@@ -310,7 +310,12 @@ namespace Svr
 
 	HRESULT SimpleUserEntity::OnNetSyncMessage(Net::IConnection* pConn)
 	{
-		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(pConn)));
+		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
+	}
+
+	HRESULT SimpleUserEntity::OnNetSendReadyMessage(Net::IConnection* pConn)
+	{
+		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
 	}
 
 
@@ -321,6 +326,7 @@ namespace Svr
 		Transaction *pCurTran = nullptr;
 		Message::MessageData* pMsg = nullptr;
 		Net::ConnectionUDPBase* pConn = nullptr;
+		auto pMyConn = GetConnection();
 
 		switch (eventTask.EventType)
 		{
@@ -341,10 +347,11 @@ namespace Svr
 					pConn->ProcGuarrentedMessageWindow([&](Message::MessageData* pMsg){ ProcessMessage(pMsg); });
 			}
 			break;
+		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
+			break;
 		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
-			pMsg = eventTask.EventData.MessageEvent.pMessage;
-			pConn = BR_DYNAMIC_CAST(Net::ConnectionUDPBase*,GetConnection());
-			if (pConn) pConn->UpdateSendQueue();
+			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
 		case Svr::EventTask::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)

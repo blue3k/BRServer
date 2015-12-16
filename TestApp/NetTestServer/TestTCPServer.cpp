@@ -103,7 +103,6 @@ TEST_F(TCPServerTest, Peer)
 			itConnection->UpdateNetCtrl();
 		}
 
-
 		// Update server events
 		do
 		{

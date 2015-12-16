@@ -11,6 +11,7 @@
 #include "Net/NetServer.h"
 #include "Net/NetServerUDP.h"
 #include "../TestCommon/TestBaseCommon.h"
+#include "Protocol/Message/GameMsgClass.h"
 
 
 
@@ -34,7 +35,10 @@ protected:
 
 	enum {
 		SERVERID = 3,
+		CLIENTID = 5,
 		MAX_CLIENT = 1,
+		LOCAL_PORT = 52001,
+		REMOTE_PORT = 52000,
 	};
 
 	std::vector<SharedPointerT<Net::Connection>> m_ConnectionList;
@@ -48,7 +52,7 @@ protected:
 
 	virtual void SetUp()
 	{
-		m_pServer = new Net::ServerMUDP(SERVERID, GetNetClass());
+		m_pServer = new Net::ServerMUDP(CLIENTID, GetNetClass());
 	}
 
 	virtual void TearDown()
@@ -63,13 +67,13 @@ TEST_F(MUDPServerTest, Connect)
 {
 	HRESULT hr = S_OK;
 	NetAddress localAddr;
-	Net::Connection *pConnection = nullptr;
 	Net::IConnection::ConnectionInformation connectionInfo;
 	bool bWaitingTest = true;
+	TimeStampMS startTime, endTime;
 
 
 	EXPECT_HRESULT_SUCCEEDED(Net::GetLocalAddressIPv6(localAddr));
-	//localAddr.usPort = 52000;
+	localAddr.usPort = LOCAL_PORT;
 
 	hr = m_pServer->HostOpen(GetNetClass(), localAddr.strAddr, localAddr.usPort);
 	EXPECT_HRESULT_SUCCEEDED(hr);
@@ -78,38 +82,46 @@ TEST_F(MUDPServerTest, Connect)
 
 	m_pServer->SetIsEnableAccept(true);
 
-	for (int iClient = 0; iClient < MAX_CLIENT; iClient++)
-	{
-		defChkPtr(pConnection = m_pServer->GetConnectionManager().NewConnection());
 
-		memset(&connectionInfo, 0, sizeof(connectionInfo));
-		connectionInfo.SetLocalInfo(GetNetClass(), m_pServer->GetLocalAddress(), SERVERID);
-		connectionInfo.SetRemoteInfo(NetClass::Client, iClient+1);
 
-		defChk(pConnection->InitConnection(m_pServer->GetSocket(), connectionInfo));
-		defTrace(Trace::TRC_USER1, "Initialize connection CID:{0}, Addr:{1}:{2}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote.strAddr, pConnection->GetConnectionInfo().Remote.usPort);
-
-		defChk(m_pServer->GetConnectionManager().PendingConnection(pConnection));
-
-		m_ConnectionList.push_back(pConnection);
-	}
-
+	startTime = Util::Time.GetTimeMs();
 	while (bWaitingTest)
 	{
 		ThisThread::SleepFor(DurationMS(500));
 
-		size_t iDisconnected = 0;
 		for (auto itConnection : m_ConnectionList)
 		{
 			itConnection->UpdateNetCtrl();
-			if (itConnection->GetConnectionState() == Net::IConnection::ConnectionState::STATE_DISCONNECTED) iDisconnected++;
 		}
 
-		if (iDisconnected == m_ConnectionList.size())
+
+		// Update server events
+		do
 		{
+			Net::Connection* pNewConn = nullptr;
+			hr = m_pServer->DequeueNetEvent(curNetEvent);
+			if (FAILED(hr)) break;
+
+			switch (curNetEvent.EventType)
+			{
+			case Net::INet::Event::EVT_NEW_CONNECTION:
+				if (curNetEvent.EventConnection == nullptr)
+					break;
+
+				pNewConn = dynamic_cast<Net::Connection*>(curNetEvent.EventConnection);
+
+				m_ConnectionList.push_back(pNewConn);
+
+				break;
+			default:
+				break;
+			};
+
+
+		if (Util::TimeSince(startTime) > DurationMS(2 * 60 * 60 * 1000))
 			break;
-		}
 	}
+
 
 Proc_End:
 

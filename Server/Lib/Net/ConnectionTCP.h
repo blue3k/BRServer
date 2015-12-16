@@ -85,6 +85,8 @@ namespace Net {
 		// called when reciving TCP message
 		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
+		virtual HRESULT OnSendReady() override;
+
 		// called when Send completed
 		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
@@ -118,6 +120,11 @@ namespace Net {
 
 		virtual HRESULT SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0) override;
 
+
+		// Update send queue, Reliable UDP
+		virtual HRESULT UpdateSendQueue() override;
+		// Update Send buffer Queue, TCP and UDP client connection
+		virtual HRESULT UpdateSendBufferQueue() override;
 	};
 
 
