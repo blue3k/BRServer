@@ -112,6 +112,8 @@ namespace Net {
 		// Get socket handle
 		inline SOCKET GetSocket() const;
 
+		virtual INetIOCallBack* GetIOCallback() { return nullptr; }
+
 		// Close connections socket handle
 		void CloseSocket();
 

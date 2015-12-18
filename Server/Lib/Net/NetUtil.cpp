@@ -35,16 +35,27 @@ namespace Net {
 	//
 	//	Network Utility functions
 	//
-	void SockAddr2Addr(const sockaddr_in6 &sockAddr, NetAddress &addr)
+	HRESULT SockAddr2Addr(const sockaddr_in6 &sockAddr, NetAddress &addr)
 	{
-		//char ipstr[INET6_ADDRSTRLEN] = "";
+		Assert(sockAddr.sin6_family == AF_INET6);
 		addr.strAddr[0] = '\0';
-		inet_ntop(sockAddr.sin6_family, (void*)&sockAddr.sin6_addr, addr.strAddr, sizeof addr.strAddr);
-
+		auto result = inet_ntop(sockAddr.sin6_family, (void*)&sockAddr.sin6_addr, addr.strAddr, sizeof addr.strAddr);
+		if (result == nullptr) return GetLastWSAHRESULT();
 		addr.usPort = ntohs(sockAddr.sin6_port);
+		return S_OK;
 	}
 
-	void Addr2SockAddr(const NetAddress &addr, sockaddr_in6 &sockAddr)
+	HRESULT SockAddr2Addr(const sockaddr_in &sockAddr, NetAddress &addr)
+	{
+		Assert(sockAddr.sin_family == AF_INET);
+		addr.strAddr[0] = '\0';
+		auto result = inet_ntop(sockAddr.sin_family, (void*)&sockAddr.sin_addr, addr.strAddr, sizeof addr.strAddr);
+		if (result == nullptr) return GetLastWSAHRESULT();
+		addr.usPort = ntohs(sockAddr.sin_port);
+		return S_OK;
+	}
+
+	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_in6 &sockAddr)
 	{
 		memset(&sockAddr, 0, sizeof(sockAddr));
 		sockAddr.sin6_family = AF_INET6;
@@ -52,13 +63,27 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin6_family, addr.strAddr, &sockAddr.sin6_addr);
 		if (result != TRUE)
 		{
-			sockAddr.sin6_family = AF_INET;
-			result = inet_pton(sockAddr.sin6_family, addr.strAddr, &sockAddr.sin6_addr);
-			Assert(result == TRUE);
+			return E_FAIL;
 		}
+		else
+			return S_OK;
 	}
 
-	void SetSockAddr(sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort)
+	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_in &sockAddr)
+	{
+		memset(&sockAddr, 0, sizeof(sockAddr));
+		sockAddr.sin_family = AF_INET;
+		sockAddr.sin_port = htons(addr.usPort);
+		int result = inet_pton(sockAddr.sin_family, addr.strAddr, &sockAddr.sin_addr);
+		if (result != TRUE)
+		{
+			return E_FAIL;
+		}
+		else
+			return S_OK;
+	}
+
+	HRESULT SetSockAddr(sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort)
 	{
 		memset(&sockAddr, 0, sizeof(sockAddr));
 
@@ -67,10 +92,25 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin6_family, strAddr, &sockAddr.sin6_addr);
 		if (result != TRUE)
 		{
-			sockAddr.sin6_family = AF_INET;
-			result = inet_pton(sockAddr.sin6_family, strAddr, &sockAddr.sin6_addr);
-			Assert(strAddr == nullptr || strAddr[0] == '\0' || result == TRUE);
+			return E_FAIL;
 		}
+
+		return S_OK;
+	}
+
+	HRESULT SetSockAddr(sockaddr_in& sockAddr, const char *strAddr, USHORT usPort)
+	{
+		memset(&sockAddr, 0, sizeof(sockAddr));
+
+		sockAddr.sin_family = AF_INET;
+		sockAddr.sin_port = htons(usPort);
+		int result = inet_pton(sockAddr.sin_family, strAddr, &sockAddr.sin_addr);
+		if (result != TRUE)
+		{
+			return E_FAIL;
+		}
+
+		return S_OK;
 	}
 
 

@@ -380,46 +380,42 @@ namespace Net {
 		{
 			hr = S_OK;
 
-			do {
-				
+			// Check exit event
+			if (CheckKillEvent(DurationMS(0)))
+				break;
 
-				// Check exit event
-				if (CheckKillEvent(DurationMS(0)))
-					break;
+			if (pSendBuffer == nullptr) m_WriteQueue.Dequeue(pSendBuffer);
 
-				if (pSendBuffer == nullptr) m_WriteQueue.Dequeue(pSendBuffer);
+			if (pSendBuffer == nullptr) continue;
 
-				if (pSendBuffer == nullptr) break;
-
-				switch (pSendBuffer->Operation)
+			switch (pSendBuffer->Operation)
+			{
+			case IOBUFFER_OPERATION::OP_TCPWRITE:
+				Assert(false); // TCP packets will be sent by RW workers
+				break;
+			case IOBUFFER_OPERATION::OP_UDPWRITE:
+				hr = NetSystem::SendTo(pSendBuffer->SockWrite, pSendBuffer);
+				switch (hr)
 				{
-				case IOBUFFER_OPERATION::OP_TCPWRITE:
-					Assert(false); // TCP packets will be sent by RW workers
+				case E_NET_TRY_AGAIN:
+					continue; // try again
 					break;
-				case IOBUFFER_OPERATION::OP_UDPWRITE:
-					hr = NetSystem::SendTo(pSendBuffer->SockWrite, pSendBuffer);
-					switch (hr)
-					{
-					case E_NET_TRY_AGAIN:
-						continue; // try again
-						break;
-					case S_OK:
-						break;
-					default:
-						netTrace(TRC_RAW, "UDP send failed {0:X8}", hr);
-						// send fail
-						break;
-					}
+				case S_OK:
 					break;
 				default:
-					Assert(false);// This thread isn't designed to work on other stuffs
+					netTrace(TRC_RAW, "UDP send failed {0:X8}", hr);
+					// send fail
 					break;
 				}
+				break;
+			default:
+				Assert(false);// This thread isn't designed to work on other stuffs
+				break;
+			}
 
 
-				Util::SafeDelete(pSendBuffer);
-				pSendBuffer = nullptr;
-			} while (1);
+			Util::SafeDelete(pSendBuffer);
+			pSendBuffer = nullptr;
 			
 
 		} // while(1)
@@ -562,6 +558,33 @@ namespace Net {
 		}
 
 
+		WriteBufferQueue* GetWriteBufferQueue()
+		{
+			if (m_UDPSendWorker == nullptr)
+				return nullptr;
+
+			return &m_UDPSendWorker->GetWriteQueue();
+		}
+
+
+		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+		{
+			Assert(sockType == SockType::DataGram);
+			if (sockType != SockType::DataGram)
+				return E_UNEXPECTED;
+
+			if (m_WorkerUDP.GetSize() < 1)
+				return E_NET_NOTINITIALISED;
+
+			if (cbInstance->GetWriteQueue() == nullptr)
+			{
+				Assert(sockType == SockType::DataGram);
+				cbInstance->SetWriteQueue(&m_UDPSendWorker->GetWriteQueue());
+			}
+
+			return S_OK;
+		}
+
 		// Register the socket to EPOLL
 		HRESULT RegisterToEPOLL(SockType sockType, INetIOCallBack* cbInstance)
 		{
@@ -660,6 +683,12 @@ namespace Net {
 
 
 
+		WriteBufferQueue* GetWriteBufferQueue()
+		{
+			return EPOLLSystem::GetSystem().GetWriteBufferQueue();
+		}
+
+
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
 
@@ -672,6 +701,20 @@ namespace Net {
 
 			netChk(EPOLLSystem::GetSystem().MakeSocketNonBlocking(cbInstance->GetIOSocket()));
 			netChk(EPOLLSystem::GetSystem().RegisterToEPOLL(sockType, cbInstance));
+
+		Proc_End:
+
+			return hr;
+		}
+
+		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+		{
+			HRESULT hr = S_OK;
+
+			netChkPtr(cbInstance);
+			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
+
+			netChk(EPOLLSystem::GetSystem().RegisterSharedSocket(sockType, cbInstance));
 
 		Proc_End:
 

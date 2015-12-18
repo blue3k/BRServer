@@ -278,6 +278,7 @@ namespace Net {
 		ConnectionUDPClient();
 		~ConnectionUDPClient();
 
+		virtual INetIOCallBack* GetIOCallback() override { return this; }
 
 		virtual SOCKET GetIOSocket() override { return GetSocket(); }
 

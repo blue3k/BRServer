@@ -8,9 +8,9 @@
 #include "Common/MemoryPool.h"
 #include "Net/NetDef.h"
 #include "Net/NetServer.h"
-#include "Net/NetServerUDP.h"
+#include "Net/NetClient.h"
 #include "../TestCommon/TestBaseCommon.h"
-#include "Protocol/Policy/GameIPolicy.h
+#include "Protocol/Policy/GameIPolicy.h"
 
 
 
@@ -31,17 +31,20 @@ using namespace BR;
 class MUDPClientTest : public testing::Test
 {
 protected:
+
 	enum {
 		SERVERID = 3,
 		CLIENTID = 5,
 		MAX_CLIENT = 1,
-		LOCAL_PORT = 52001,
-		REMOTE_PORT = 52000,
+		LOCAL_PORT = 52000,
+		REMOTE_PORT = 52001,
 	};
 
 	std::vector<SharedPointerT<Net::Connection>> m_ConnectionList;
+	Net::ClientMUDP* m_Client;
+
 	MUDPClientTest()
-		: m_pServer(nullptr)
+		: m_Client(nullptr)
 	{
 	}
 
@@ -49,13 +52,12 @@ protected:
 
 	virtual void SetUp()
 	{
-		m_pServer = new Net::ServerMUDP(CLIENTID, GetNetClass());
+		m_Client = new Net::ClientMUDP;
 	}
 
 	virtual void TearDown()
 	{
-		m_pServer->HostClose();
-		Util::SafeDelete(m_pServer);
+		Util::SafeDelete(m_Client);
 	}
 };
 
@@ -70,20 +72,14 @@ TEST_F(MUDPClientTest, Connect)
 
 
 	EXPECT_HRESULT_SUCCEEDED(Net::GetLocalAddressIPv6(localAddr));
-	localAddr.usPort = LOCAL_PORT;
-
-
 
 
 	for (int iClient = 0; iClient < MAX_CLIENT; iClient++)
 	{
 		Net::IConnection* pConnection = nullptr;
-		defChk(m_pServer->RegisterServerConnection(CLIENTID, GetNetClass(), localAddr.strAddr, REMOTE_PORT, pConnection));
+		defChk(m_Client->ConnectCli(localAddr.strAddr, REMOTE_PORT, pConnection));
 
 		defTrace(Trace::TRC_USER1, "Initialize connection CID:{0}, Addr:{1}:{2}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote.strAddr, pConnection->GetConnectionInfo().Remote.usPort);
-
-
-		//defChk(m_pServer->GetConnectionManager().PendingConnection(pConnection));
 
 		m_ConnectionList.push_back(SharedPointerT<Net::Connection>((Net::Connection*)pConnection));
 	}
@@ -96,13 +92,8 @@ TEST_F(MUDPClientTest, Connect)
 
 		for (auto itConnection : m_ConnectionList)
 		{
-			itConnection->UpdateNetCtrl();
 			if (itConnection->GetConnectionState() == Net::IConnection::ConnectionState::STATE_DISCONNECTED)
 			{
-				auto tcpConn = dynamic_cast<Net::ConnectionTCP*>(itConnection.GetObjectPtr());
-				auto connectionInfo = tcpConn->GetConnectionInfo();
-				hr = m_pServer->Connect(tcpConn, (UINT)connectionInfo.RemoteID, connectionInfo.RemoteClass, connectionInfo.Remote.strAddr, connectionInfo.Remote.usPort);
-				EXPECT_HRESULT_SUCCEEDED(hr);
 			}
 			else if (itConnection->GetConnectionState() == Net::IConnection::ConnectionState::STATE_CONNECTED)
 			{
@@ -123,6 +114,7 @@ Proc_End:
 	for (auto itConnection : m_ConnectionList)
 	{
 		itConnection->CloseConnection();
+		m_Client->ReleaseConnection(itConnection.GetObjectPtr());
 	}
 	m_ConnectionList.clear();
 

@@ -186,7 +186,9 @@ namespace BR
 
 	bool Thread::CheckKillEvent(const DurationMS& waitTime)
 	{
-		return GetKillMutex().try_lock_for(waitTime);
+		bool isLocked = GetKillMutex().try_lock_for(waitTime);
+		if (isLocked) GetKillMutex().unlock();
+		return isLocked;
 	}
 
 	// thread Controlling

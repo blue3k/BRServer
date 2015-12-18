@@ -165,7 +165,7 @@ TEST_F(SystemSynchronizationTest, Event)
 	ThisThread::SleepFor(DurationMS(10));
 
 
-	for (INT64 iTest = 0; iTest < (TEST_LENGTH*NUM_THREAD); iTest++)
+	for (UINT64 iTest = 0; iTest < (TEST_LENGTH*NUM_THREAD); iTest++)
 	{
 		dataEvent.Set();
 		while (!workDoneEvent.WaitEvent(-1));

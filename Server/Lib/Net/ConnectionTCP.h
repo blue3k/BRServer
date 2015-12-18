@@ -74,6 +74,8 @@ namespace Net {
 		// Process network control message
 		HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl );
 
+		virtual INetIOCallBack* GetIOCallback() override { return this; }
+
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// callback

@@ -89,15 +89,17 @@ TEST_F(MUDPServerTest, Connect)
 	{
 		ThisThread::SleepFor(DurationMS(500));
 
+		// Connection manager will take care of this
 		for (auto itConnection : m_ConnectionList)
 		{
-			itConnection->UpdateNetCtrl();
+			//itConnection->UpdateNetCtrl();
 		}
 
 
 		// Update server events
 		do
 		{
+			Net::INet::Event curNetEvent;
 			Net::Connection* pNewConn = nullptr;
 			hr = m_pServer->DequeueNetEvent(curNetEvent);
 			if (FAILED(hr)) break;
@@ -109,13 +111,12 @@ TEST_F(MUDPServerTest, Connect)
 					break;
 
 				pNewConn = dynamic_cast<Net::Connection*>(curNetEvent.EventConnection);
-
 				m_ConnectionList.push_back(pNewConn);
-
 				break;
 			default:
 				break;
 			};
+		} while (1);
 
 
 		if (Util::TimeSince(startTime) > DurationMS(2 * 60 * 60 * 1000))

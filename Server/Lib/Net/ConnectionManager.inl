@@ -189,7 +189,7 @@ HRESULT ConnectionManagerT<ConnectionType>::InitManager( UINT poolCacheCount )
 template< class ConnectionType >
 Connection* ConnectionManagerT<ConnectionType>::NewConnection()
 {
-	Connection* pNewCon = new ConnectionType;
+	ConnectionType* pNewCon = new ConnectionType;
 	AssertRel(pNewCon->GetConnectionState() == IConnection::STATE_DISCONNECTED);
 	if( pNewCon && pNewCon->GetNet() == nullptr )
 	{

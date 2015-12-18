@@ -100,7 +100,7 @@ namespace Net {
 	//	Server Mobile UDP Network connection class
 	//
 
-	class ConnectionMUDPServer : public ConnectionMUDP, public MemoryPoolObject<ConnectionMUDP>
+	class ConnectionMUDPServer : public ConnectionMUDP, public MemoryPoolObject<ConnectionMUDPServer>
 	{
 	public:
 
@@ -123,7 +123,7 @@ namespace Net {
 	//	Client Mobile UDP Network connection class
 	//
 
-	class ConnectionMUDPClient : public ConnectionMUDP, public MemoryPoolObject<ConnectionMUDP>
+	class ConnectionMUDPClient : public ConnectionMUDP, public INetIOCallBack, public MemoryPoolObject<ConnectionMUDPClient>
 	{
 	public:
 
@@ -138,8 +138,37 @@ namespace Net {
 		// Process connection state
 		virtual HRESULT ProcConnectionState() override;
 
+
+		// Send packet buffer to connection with network device
+		//virtual HRESULT SendBufferUDP(IOBUFFER_WRITE *pSendBuffer) override;
+		virtual HRESULT EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer) override;
+
+		// Send message to connection with network device
+		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
+
+
 	public:
 
+		virtual INetIOCallBack* GetIOCallback() override { return this; }
+
+
+		HRESULT InitConnection(SOCKET socket, const ConnectionInformation &connectInfo) override;
+
+
+		virtual SOCKET GetIOSocket() override { return GetSocket(); }
+
+		// called when reciving TCP message
+		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
+		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer) override;
+
+		virtual HRESULT OnSendReady() override;
+
+		// called when send completed
+		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer) override;
+
+
+		// Pending recv New one
+		HRESULT PendingRecv();
 
 	};
 

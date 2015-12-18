@@ -188,7 +188,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		SOCKET socket = INVALID_SOCKET;
 		INT iOptValue;
-		bool bOptValue = 0;
+		//bool bOptValue = 0;
 		sockaddr_in6 bindAddr;
 		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
 
@@ -222,8 +222,8 @@ namespace Net {
 			netErr( E_UNEXPECTED );
 		}
 
-		iOptValue = 0;
 #if WINDOWS
+		iOptValue = 0;
 		{
 			INT iOptLen = sizeof(iOptValue);
 			if (getsockopt(socket, SOL_SOCKET, SO_MAX_MSG_SIZE, (char *)&iOptValue, &iOptLen) == SOCKET_ERROR)
@@ -232,25 +232,27 @@ namespace Net {
 				netErr(E_UNEXPECTED);
 			}
 		}
-#endif
-		if( iOptValue < Const::PACKET_SIZE_MAX )
+		if (iOptValue < Const::PACKET_SIZE_MAX)
 		{
-			netTrace(Trace::TRC_WARN, "Socket max packet size too small, Change to socket maximum SocketMax={0}, SvrMax={1}, err = {2:X8}", iOptValue, (UINT)Const::PACKET_SIZE_MAX, GetLastWSAHRESULT() );
+			netTrace(Trace::TRC_WARN, "Socket max packet size too small, Change to socket maximum SocketMax={0}, SvrMax={1}, err = {2:X8}", iOptValue, (UINT)Const::PACKET_SIZE_MAX, GetLastWSAHRESULT());
 			//Const::PACKET_SIZE_MAX = iOptValue;
 		}
+#endif
 
-		bOptValue = TRUE;
-		if( setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&bOptValue, sizeof(bOptValue)) == SOCKET_ERROR )
-		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_REUSEADDR = {0}, err = {1:X8}", bOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
-		}
+		//bOptValue = TRUE;
+		//if( setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&bOptValue, sizeof(bOptValue)) == SOCKET_ERROR )
+		//{
+		//	hr = GetLastWSAHRESULT();
+		//	netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_REUSEADDR = {0}, err = {1:X8}", bOptValue, hr);
+		//	netErr(hr);
+		//}
 
 		iOptValue = FALSE;
 		if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			hr = GetLastWSAHRESULT();
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, hr);
+			netErr(hr);
 		}
 
 

@@ -156,10 +156,14 @@ namespace Net {
 		HRESULT FreeGatheringBuffer( BYTE *pBuffer );
 
 
+		WriteBufferQueue* GetWriteBufferQueue();
+
+
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
 
 		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance);
+		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
 
 		SOCKET Socket(SockFamily domain, SockType type);
 		void CloseSocket(SOCKET sock);

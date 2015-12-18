@@ -383,6 +383,7 @@ namespace Net {
 					{
 						IConnection::ConnectionInformation connectionInfo;
 						ServerNet *pIServer = dynamic_cast<ServerNet*>(pConn->GetNet());
+
 						netChkPtr( pIServer );
 
 						memset( &connectionInfo, 0, sizeof(connectionInfo) );
@@ -404,12 +405,10 @@ namespace Net {
 						}
 
 						netChk( pConn->OnRecv( sizeof(oper.MobileNetCtrl), (const BYTE*)&oper.MobileNetCtrl ) );
-
-						//pConn = nullptr;
 					}
 					else
 					{
-						netTrace( Trace::TRC_ERROR, "Invalid Operation for creat connection" );
+						netTrace( Trace::TRC_ERROR, "Invalid Operation while creating a connection" );
 					}
 				}
 				break;

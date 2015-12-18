@@ -35,9 +35,12 @@ namespace Net {
 	//
 	//	Network Utility functions
 	//
-	void SockAddr2Addr( const sockaddr_in6 &sockAddr, NetAddress &addr );
-	void Addr2SockAddr( const NetAddress &addr, sockaddr_in6 &sockAddr );
-	void SetSockAddr( sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort );
+	HRESULT SockAddr2Addr( const sockaddr_in6 &sockAddr, NetAddress &addr );
+	HRESULT SockAddr2Addr(const sockaddr_in &sockAddr, NetAddress &addr);
+	HRESULT Addr2SockAddr( const NetAddress &addr, sockaddr_in6 &sockAddr );
+	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_in &sockAddr);
+	HRESULT SetSockAddr( sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort );
+	HRESULT SetSockAddr(sockaddr_in& sockAddr, const char *strAddr, USHORT usPort);
 	HRESULT GetLocalAddressIPv4(NetAddress &addr);
 	HRESULT GetLocalAddressIPv6(NetAddress &addr);
 

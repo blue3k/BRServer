@@ -17,6 +17,7 @@
 #include "Net/NetConnectionTask.h"
 #include "Net/ConnectionManager.h"
 #include "Net/ConnectionUDP.h"
+#include "Net/ConnectionMUDP.h"
 #include "Net/ConnectionTCP.h"
 
 
@@ -32,6 +33,7 @@ namespace Net {
 	class ClientConnectionManagerT : public ConnectionManagerT<ConnectionType>
 	{
 	private:
+		typedef ConnectionManagerT<ConnectionType> super;
 
 	public:
 		ClientConnectionManagerT() : ConnectionManagerT<ConnectionType>(5) {}
@@ -63,9 +65,14 @@ namespace Net {
 		// Add network event to queue
 		inline HRESULT EnqueueNetEvent( INet::Event& evt );
 
+		virtual ConnectionManager& GetConnectionManager() = 0;
+
 	public:
 		Client( UINT uiConMapBucketSize );
 		virtual ~Client();
+
+		// Get connection by connection ID
+		virtual HRESULT GetConnection(uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection) override;
 
 		// Query Network event
 		virtual HRESULT DequeueNetEvent( Event& curEvent );
@@ -73,6 +80,14 @@ namespace Net {
 
 		// Called when connection result 
 		virtual void OnConnectionResult( Connection *pConnection, HRESULT hrConnect );
+
+		virtual HRESULT ConnectCli(const char *strServerIP, USHORT usServerPort, IConnection* &pNewConnection) override;
+
+		// take over connection management
+		virtual HRESULT TakeOverConnection(IConnection* pIConnection) override;
+
+		// Release Connection
+		virtual HRESULT ReleaseConnection(IConnection* pIConnection) override;
 
 		// Release instance
 		virtual void Release();
@@ -103,16 +118,7 @@ namespace Net {
 		virtual bool IsReady();
 
 		// Connect to server
-		virtual HRESULT Connect( const char *strServerIP, USHORT usServerPort, IConnection* &pNewConnection );
-
-		// Release Connection
-		virtual HRESULT ReleaseConnection( IConnection* pIConnection ) override;
-
-		// take over connection management
-		virtual HRESULT TakeOverConnection(IConnection* pIConnection) override;
-
-		// Get connection from connection ID
-		virtual HRESULT GetConnection( uintptr_t uiCID, SharedPointerT<Connection> &pIConnection );
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) override;
 
 		// Called when connection state changed
 		HRESULT OnConnectionStateChange( IConnection *pConnection );
@@ -141,14 +147,35 @@ namespace Net {
 		virtual bool IsReady();
 
 		// Connect to server
-		virtual HRESULT Connect( const char *strServerIP, USHORT usServerPort, IConnection* &pNewConnection );
-		
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) override;
 
-		// Release Connection
-		virtual HRESULT ReleaseConnection( IConnection* pIConnection );
-		
-		// Get connection from connection ID
-		virtual HRESULT GetConnection(uintptr_t uiCID, SharedPointerT<Connection> &pIConnection);
+	};
+
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	MUDP Client class
+	//
+
+	class ClientMUDP : public Client
+	{
+	private:
+
+		ClientConnectionManagerT<ConnectionMUDPClient>	m_ConnectionManager;
+
+	public:
+		ClientMUDP();
+		virtual ~ClientMUDP();
+
+		// Get connection manager
+		ConnectionManager& GetConnectionManager() { return m_ConnectionManager; }
+
+		// check about initialize
+		virtual bool IsReady() override;
+
+		// Connect to server
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) override;
 
 	};
 

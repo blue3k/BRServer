@@ -151,7 +151,7 @@ TEST_F(NetTest, Simple)
 	defChkPtr(m_pNetClient);
 
 	// Connect TCP server
-	EXPECT_HRESULT_SUCCEEDED(m_pNetClient->Connect( "127.0.0.1", 4001, m_pIConnection ));
+	EXPECT_HRESULT_SUCCEEDED(m_pNetClient->ConnectCli( "127.0.0.1", 4001, m_pIConnection ));
 
 	// Policy create
 	EXPECT_HRESULT_SUCCEEDED( m_pIConnection->CreatePolicy( BR::POLICY_GAME ) );

@@ -412,11 +412,10 @@ namespace Net {
 	{
 	public:
 		// Get connection from connection ID
-		virtual HRESULT GetConnection( uintptr_t uiCID, IConnection* &pConnection ) = 0;
+		virtual HRESULT GetConnection( uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection) = 0;
 
 		// Connect to server
-		virtual HRESULT Connect( const char *strServerIP, USHORT usServerPort, IConnection* &pINewConnection ) = 0;
-		//virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) { return E_NOTIMPL; }
+		virtual HRESULT ConnectCli( const char *strServerIP, USHORT usServerPort, IConnection* &pINewConnection ) = 0;
 	};
 
 

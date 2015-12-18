@@ -60,6 +60,8 @@ namespace Net {
 		, m_pWriteQueuesUDP(nullptr)
 	{
 		SetHeartbitTry( Const::UDP_HEARTBIT_START_TIME );
+
+		SetWriteQueueUDP(NetSystem::GetWriteBufferQueue());
 	}
 
 	ConnectionUDPBase::~ConnectionUDPBase()

@@ -37,8 +37,8 @@ namespace Net {
 
 	// Connection task
 	ConnectionTask::ConnectionTask()
-		:m_pConnection(nullptr),
-		m_pConnectionManager(nullptr)
+		: m_pConnection(nullptr)
+		, m_pConnectionManager(nullptr)
 	{
 	}
 
@@ -51,6 +51,10 @@ namespace Net {
 	{
 		m_pConnectionManager = pConMgr;
 		m_pConnection = pConnection;
+		if (pConnection != nullptr)
+		{
+			SetTaskID(pConnection->GetCID());
+		}
 	}
 
 	

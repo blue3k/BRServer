@@ -480,9 +480,28 @@ namespace Net {
 
 
 
+		WriteBufferQueue* GetWriteBufferQueue()
+		{
+			return nullptr;
+		}
+
 
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
+
+		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+		{
+			HRESULT hr = S_OK;
+
+			netChkPtr(cbInstance);
+			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
+
+			//netChk(EPOLLSystem::GetSystem().RegisterSharedSocket(sockType, cbInstance));
+
+		Proc_End:
+
+			return hr;
+		}
 
 
 		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance)

@@ -18,7 +18,8 @@
 #include "Common/UniqueEntityIDGenerator.h"
 #include "Net/NetDef.h"
 #include "Net/Connection.h"
-
+#include "Net/ConnectionTCP.h"
+#include "Net/ConnectionUDP.h"
 #include "ServerSystem/TaskManager.h"
 
 
@@ -160,7 +161,7 @@ namespace Net {
 		// Managed for Add/Remove connections
 		ConnectionSet				m_ManagedConnections;
 
-		ULONG GetAddressHash(const sockaddr_in6& sockAddr);
+		//ULONG GetAddressHash(const sockaddr_in6& sockAddr);
 
 	protected:
 

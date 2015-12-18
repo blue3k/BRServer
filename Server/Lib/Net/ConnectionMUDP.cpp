@@ -844,7 +844,7 @@ namespace Net {
 		if (FAILED(hr)) return hr;
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 
@@ -873,15 +873,68 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 
-		hr = ConnectionMUDP::ProcNetCtrl(pNetCtrl);
-		if (FAILED(hr)) return hr;
+		if (pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl))
+		{
+			netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
+			netChk(Disconnect());
+			netErr(E_NET_BADPACKET_NOTEXPECTED);
+		}
 
+		switch (pNetCtrl->msgID.IDs.MsgCode)
+		{
+		case NetCtrlCode_Ack:
+			if (pNetCtrl->rtnMsgID.IDs.Type == Message::MSGTYPE_NETCONTROL)// connecting process
+			{
+				switch (pNetCtrl->rtnMsgID.IDs.MsgCode)
+				{
+				case NetCtrlCode_Disconnect:
+					if (GetConnectionState() == IConnection::STATE_DISCONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
+					{
+						netTrace(TRC_CONNECTION, "RECV Disconnected CID:{0}", GetCID());
+						netChk(CloseConnection());
+					}
+					break;
+				case NetCtrlCode_Connect:
+					if (GetConnectionState() == IConnection::STATE_CONNECTING)
+					{
+						OnConnectionResult(S_OK);
+					}
+					break;
+				default:
+					netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
+					netChk(Disconnect());
+					netErr(E_NET_BADPACKET_NOTEXPECTED);
+					break;
+				};
+			}
+			else // general message
+			{
+				netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
+				netChk(Disconnect());
+				netErr(E_NET_BADPACKET_NOTEXPECTED);
+			}
+			break;
+		default:
+			hr = ConnectionMUDP::ProcNetCtrl(pNetCtrl);
+			break;
+		}
 
 	Proc_End:
 
 		return hr;
 	}
 
+
+	HRESULT ConnectionMUDPClient::InitConnection(SOCKET socket, const ConnectionInformation &connectInfo)
+	{
+		HRESULT hr = ConnectionUDPBase::InitConnection(socket, connectInfo);
+		if (FAILED(hr)) return hr;
+
+		// Clear local ID, MUDP server will expect peerID is zero on initial connection
+		m_ConnectInfo.LocalID = 0;
+
+		return hr;
+	}
 
 	// Process network control message
 	HRESULT ConnectionMUDPClient::ProcConnectionState()
@@ -944,6 +997,151 @@ namespace Net {
 
 
 	Proc_End:
+
+		return hr;
+	}
+
+
+	// called when New connection TCP accepted
+	HRESULT ConnectionMUDPClient::Recv(IOBUFFER_READ* pIOBuffer)
+	{
+		HRESULT hr = S_OK, hrErr = S_OK;
+
+		netChkPtr(pIOBuffer);
+
+		pIOBuffer->SetupRecvUDP(GetCID());
+
+		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
+		switch (hrErr)
+		{
+		case S_OK:
+		case E_NET_IO_PENDING:
+		case E_NET_TRY_AGAIN:
+		case E_NET_WOULDBLOCK:
+			hr = hrErr;
+			goto Proc_End;// success
+			break;
+		case E_NET_NETUNREACH:
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+			// some remove has problem with connection
+			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
+		default:
+			// Unknown error
+			netTrace(Trace::TRC_ERROR, "UDP Read Pending failed err={0:X8}", hrErr);
+			netErr(hrErr);
+			break;
+		}
+
+	Proc_End:
+
+		return hr;
+	}
+
+	// called when reciving TCP message
+	HRESULT ConnectionMUDPClient::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer)
+	{
+		HRESULT hr = S_OK;
+
+		if (pIOBuffer != nullptr && pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD)
+		{
+			netErr(E_UNEXPECTED);
+		}
+
+		DecPendingRecvCount();
+
+		if (SUCCEEDED(hrRes))
+		{
+			netChkPtr(pIOBuffer);
+
+			if (FAILED(hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer)))
+				netTrace(TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", GetCID(), hr);
+
+			PendingRecv();
+
+			SendFlush();
+		}
+		else
+		{
+			// TODO: need to mark close connection
+			Disconnect();
+		}
+
+
+	Proc_End:
+
+		Util::SafeDelete(pIOBuffer);
+
+		return hr;
+	}
+
+	HRESULT ConnectionMUDPClient::EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer)
+	{
+		return EnqueueBuffer(pSendBuffer);
+	}
+
+	HRESULT ConnectionMUDPClient::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
+	{
+		return SendBufferUDP(pSendBuffer);
+	}
+
+
+	HRESULT ConnectionMUDPClient::OnSendReady()
+	{
+		if (GetEventHandler())
+			return GetEventHandler()->OnNetSendReadyMessage(this);
+		// process directly
+		else
+			return ProcessSendQueue();
+	}
+
+
+	// called when Send completed
+	HRESULT ConnectionMUDPClient::OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer)
+	{
+		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
+		Util::SafeRelease(pIOBuffer->pMsgs);
+		NetSystem::FreeBuffer(pIOBuffer);
+		return S_OK;
+	}
+
+
+	// Pending recv New one
+	HRESULT ConnectionMUDPClient::PendingRecv()
+	{
+		IOBUFFER_READ *pOver = nullptr;
+
+		if (!NetSystem::IsProactorSystem())
+			return S_OK;
+
+		IncPendingRecvCount();
+
+		HRESULT hr = S_OK, hrErr = S_OK;
+
+		while (1)
+		{
+			pOver = new IOBUFFER_READ;
+			hrErr = Recv(pOver);
+			switch (hrErr)
+			{
+			case S_OK:
+			case E_NET_IO_PENDING:
+			case E_NET_TRY_AGAIN:
+			case E_NET_WOULDBLOCK:
+				pOver = nullptr;
+				goto Proc_End;// success
+				break;
+			default:
+				Disconnect();
+				goto Proc_End;
+			}
+		}
+
+
+	Proc_End:
+
+		Util::SafeDelete(pOver);
 
 		return hr;
 	}
