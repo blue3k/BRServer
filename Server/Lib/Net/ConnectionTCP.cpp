@@ -241,8 +241,8 @@ namespace Net {
 				netErrSilent(E_NET_CONNECTION_CLOSED);
 				break;
 			default:
-				netTrace(Trace::TRC_ERROR, "TCP Recv failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
-				netErr(E_NET_IO_RECV_FAIL);
+				//netTrace(Trace::TRC_ERROR, "TCP Recv failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
+				netErrSilent(hrErr);
 				break;
 			case E_NET_IO_PENDING:
 			case E_NET_WOULDBLOCK:

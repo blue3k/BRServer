@@ -271,10 +271,9 @@ namespace BR
 			_AppendCharReturn(buf,length,strMantisa[iPos]);
 		}
 
-
 #else
-		auto resultLen = snprintf(buf, length, "%f", val);
-		Assert(resultLen > length);
+		auto resultLen = snprintf(buf, length, "%.4f", val);
+		if (resultLen > length) resultLen = length; // truncated, use original string
 		buf += resultLen;
 		length -= resultLen;
 #endif

@@ -13,6 +13,12 @@ sleep 2s
 
 ./EntityServer -debug -n:BREntityServer2&
 
+sleep 2s
+
+./LoginServer -debug -n:BRLoginServer01&
+
+
+
 
 popd > /dev/null
 

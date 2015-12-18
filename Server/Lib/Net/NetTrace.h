@@ -34,6 +34,7 @@ namespace Net {
 		TRC_CONNECTION	=	Trace::TRC_USER1,
 		TRC_NET			=	Trace::TRC_USER2,
 		TRC_INFO		=	Trace::TRC_USER3,
+		TRC_NETSYS = Trace::TRC_USER4,
 	};
 
 };

@@ -65,12 +65,12 @@ namespace Net {
 		case EISCONN: return E_NET_ISCONN;
 		case ENOTCONN: return E_NET_NOTCONN;
 		case ESHUTDOWN: return E_NET_SHUTDOWN;
+		case EPIPE: return E_NET_SHUTDOWN;
 		case ETOOMANYREFS: return E_NET_TOOMANYREFS;
 		case ETIMEDOUT: return E_NET_TIMEDOUT;
 		case ECONNREFUSED: return E_NET_CONNECTION_REFUSSED;
 		case ELOOP: return E_NET_LOOP;
 		case ENAMETOOLONG: return E_NET_NAMETOOLONG;
-
 
 		case EHOSTDOWN: return E_NET_HOSTDOWN;
 		case EHOSTUNREACH: return E_NET_HOSTUNREACH;
@@ -257,7 +257,7 @@ namespace Net {
 					Assert(false);
 					break;
 				default:
-					netTrace(Trace::TRC_ERROR, "Epoll Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
+					netTrace(TRC_NETSYS, "ERROR Epoll Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
 					// fallthru
 				case S_OK:
 					// toss data to working thread
@@ -278,7 +278,8 @@ namespace Net {
 			hr = pCallBack->OnSendReady();
 			if (FAILED(hr))
 			{
-				netErr(hr);
+				//netErr(hr);
+				goto Proc_End;
 			}
 		}
 
@@ -286,7 +287,7 @@ namespace Net {
 
 		if (FAILED(hr))
 		{
-			netTrace(Trace::TRC_ERROR, "Epoll RW fail events:{0:X8} hr:{1:X8}", events, hr);
+			netTrace(TRC_NETSYS, "ERROR Epoll RW fail events:{0:X8} hr:{1:X8}", events, hr);
 		}
 
 		Util::SafeDelete(pReadBuffer);
@@ -321,7 +322,7 @@ namespace Net {
 				case E_INVALID_ARG:
 				case E_NET_INVAL:
 				default:
-					netTrace(Trace::TRC_ERROR, "EPOLL wait failed hr={0:X8}", hr);
+					netTrace(TRC_NETSYS, "ERROR EPOLL wait failed hr={0:X8}", hr);
 					break;
 				}
 			}
@@ -330,7 +331,7 @@ namespace Net {
 			{
 				if (events[iEvent].data.ptr == nullptr)
 				{
-					netTrace(Trace::TRC_ERROR, "EPOLL null handler, skipping...");
+					netTrace(TRC_NETSYS, "ERROR EPOLL null handler, skipping...");
 					continue;
 				}
 
@@ -403,7 +404,7 @@ namespace Net {
 				case S_OK:
 					break;
 				default:
-					netTrace(TRC_RAW, "UDP send failed {0:X8}", hr);
+					netTrace(TRC_NETSYS, "ERROR UDP send failed {0:X8}", hr);
 					// send fail
 					break;
 				}

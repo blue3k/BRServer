@@ -96,7 +96,9 @@ namespace Svr {
 				goto Proc_End;
 			}
 
-			svrChk(hr);
+			//svrChk(hr);
+			if (FAILED(hr))
+				goto Proc_End;
 
 			ClearTimer();
 		}
