@@ -622,6 +622,11 @@ namespace Net {
 		msgID = pMsgHeader->msgID;
 		uiMsgLen = pMsg->GetMessageHeader()->Length;
 
+		if (pMsgHeader->msgID.IDs.Mobile)
+		{
+			pMsg->GetMobileMessageHeader()->PeerID = GetPeerID();
+		}
+
 		if( (msgID.IDs.Type != Message::MSGTYPE_NETCONTROL && GetConnectionState() == STATE_DISCONNECTING)
 			|| GetConnectionState() == STATE_DISCONNECTED)
 		{

@@ -472,7 +472,7 @@ namespace Net {
 		PrintDebugMessage( "RecvMsg:", pMsg );
 
 		Assert( MemoryPool::CheckMemoryHeader( pMsg ) );
-		Assert(pMsg->GetMessageHeader()->Crc32 != 0);
+		Assert(pMsg->GetDataLength() == 0 || pMsg->GetMessageHeader()->Crc32 != 0);
 
 		if (GetEventHandler() == nullptr )
 		{

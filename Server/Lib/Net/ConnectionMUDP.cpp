@@ -895,10 +895,16 @@ namespace Net {
 					}
 					break;
 				case NetCtrlCode_Connect:
-					if (GetConnectionState() == IConnection::STATE_CONNECTING)
+					if (GetConnectionState() == IConnection::STATE_CONNECTING) // we need to receive remote class
 					{
+						// put expected net class
+						m_ConnectInfo.RemoteClass = NetClass::Game;
 						OnConnectionResult(S_OK);
 					}
+					break;
+				case NetCtrlCode_HeartBit:
+					m_ulNetCtrlTime = Util::Time.GetTimeMs();
+					m_ulNetCtrlTryTime = m_ulNetCtrlTime;
 					break;
 				default:
 					netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);

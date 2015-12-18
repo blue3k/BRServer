@@ -89,13 +89,6 @@ TEST_F(MUDPServerTest, Connect)
 	{
 		ThisThread::SleepFor(DurationMS(500));
 
-		// Connection manager will take care of this
-		for (auto itConnection : m_ConnectionList)
-		{
-			//itConnection->UpdateNetCtrl();
-		}
-
-
 		// Update server events
 		do
 		{
