@@ -338,6 +338,78 @@ namespace Net {
 		return GetLocalAddress(SockFamily::IPV6, addr);
 	}
 
+	HRESULT CheckLocalAddress(SockFamily family, NetAddress &addr)
+	{
+		struct ifaddrs *ifaddr = nullptr;
+		bool bIsFound = false;
+		sockaddr_storage testSockAddr;
+
+		// make sock addr
+		memset(&testSockAddr, 0, sizeof testSockAddr);
+		if (family == SockFamily::IPV4)
+		{
+			auto *pSockAddr = (struct sockaddr_in *)&testSockAddr;
+			if (FAILED(Addr2SockAddr(addr, *pSockAddr)))
+				return E_FAIL;
+		}
+		else
+		{
+			auto *pSockAddr = (struct sockaddr_in6 *)&testSockAddr;
+			if (FAILED(Addr2SockAddr(addr, *pSockAddr)))
+				return E_FAIL;
+		}
+			
+		if (getifaddrs(&ifaddr) == -1)
+		{
+			return GetLastWSAHRESULT();
+		}
+
+		/* Walk through linked list, maintaining head pointer so we
+		can free list later */
+
+		for (struct ifaddrs *curAddr = ifaddr; curAddr != nullptr && !bIsFound; curAddr = curAddr->ifa_next)
+		{
+			if (curAddr->ifa_addr == nullptr)
+				continue;
+
+			if (!(curAddr->ifa_flags & IFF_UP))
+				continue;
+
+			if ((curAddr->ifa_flags & IFF_LOOPBACK))
+				continue;
+
+			if (curAddr->ifa_addr->sa_family != (int)family)
+				continue;
+
+			switch ((int)family)
+			{
+			case AF_INET:
+			{
+				auto *pTestSockAddr = (struct sockaddr_in *)&testSockAddr;
+				struct sockaddr_in *psockAddr = (struct sockaddr_in *)curAddr->ifa_addr;
+				bIsFound = memcmp(&psockAddr->sin_addr, &pTestSockAddr->sin_addr, sizeof(pTestSockAddr->sin_addr)) == 0;
+				break;
+			}
+
+			case AF_INET6:
+			{
+				auto *pTestSockAddr = (struct sockaddr_in6 *)&testSockAddr;
+				struct sockaddr_in6 *psockAddr = (struct sockaddr_in6 *)curAddr->ifa_addr;
+				bIsFound = memcmp(&psockAddr->sin6_addr, &pTestSockAddr->sin6_addr, sizeof(pTestSockAddr->sin6_addr)) == 0;
+				break;
+			}
+
+			default:
+				continue;
+			}
+		}
+
+		freeifaddrs(ifaddr);
+
+		return bIsFound ? S_OK : E_FAIL;
+
+	}
+
 #endif
 
 

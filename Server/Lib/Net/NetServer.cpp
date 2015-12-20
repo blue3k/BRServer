@@ -80,6 +80,14 @@ namespace Net {
 		netChk( StrUtil::StringCpy( localAddr.strAddr, strLocalIP ) );
 		localAddr.usPort = usLocalPort;
 
+		// validate local IP
+		if (FAILED(CheckLocalAddress(SockFamily::IPV6, localAddr)))
+		{
+			if(SUCCEEDED(GetLocalAddressIPv6(localAddr)))
+				netTrace(Trace::TRC_ERROR, "Invalid Address, expecte a local IPV6 address such as ... {0}", localAddr);
+			netErr(E_NET_INVALID_ADDRESS);
+		}
+
 		SetLocalAddress( localAddr );
 
 	Proc_End:

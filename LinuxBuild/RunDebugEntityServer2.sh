@@ -7,7 +7,7 @@ cd ../Server/bin/DEBUG
 
 rm -rf ../log/*
 
-./EntityServer -debug -n:BREntityServer2&
+./BREntityServer -debug -n:BREntityServer2&
 
 
 popd > /dev/null

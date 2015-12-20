@@ -69,6 +69,9 @@ namespace DB {
 		// Add DB source
 		HRESULT	AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword ); 
 
+	protected:
+
+		void Clear();
 
 	public:
 

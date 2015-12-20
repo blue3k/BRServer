@@ -29,7 +29,7 @@ namespace BR {
 namespace Net {
 
 	struct IOBUFFER_WRITE;
-
+	enum class SockFamily : UINT8;
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -43,6 +43,10 @@ namespace Net {
 	HRESULT SetSockAddr(sockaddr_in& sockAddr, const char *strAddr, USHORT usPort);
 	HRESULT GetLocalAddressIPv4(NetAddress &addr);
 	HRESULT GetLocalAddressIPv6(NetAddress &addr);
+
+	// Validate local IP
+	HRESULT CheckLocalAddress(SockFamily family, NetAddress &addr);
+
 
 	bool operator == ( const sockaddr_in6 &op1, const sockaddr_in6 &op2 );
 	bool operator != ( const sockaddr_in6 &op1, const sockaddr_in6 &op2 );

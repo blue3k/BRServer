@@ -137,10 +137,12 @@ namespace ConspiracyGameInstanceServer {
 			}
 			m_Werewolves.push_back(pPlayer);
 			break;
+		default:
+			break;
 		};
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -177,7 +179,7 @@ namespace ConspiracyGameInstanceServer {
 			// skip errnous player
 			if (iSlot >= GameConst::MAX_GAMEPLAYER)
 			{
-				svrTrace(Trace::TRC_WARN, "Failed to find requested role, player:%0%, requested:%1%", pPlayer->GetPlayerID(), (UINT)pPlayer->GetRequestedRole());
+				svrTrace(Trace::TRC_WARN, "Failed to find requested role, player:{0}, requested:{1}", pPlayer->GetPlayerID(), (UINT)pPlayer->GetRequestedRole());
 				return S_OK;
 			}
 
@@ -224,9 +226,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 		// notify other's role
-		for( int iwolf = 0; iwolf < m_Werewolves.GetSize(); iwolf++ )
+		for( UINT iwolf = 0; iwolf < m_Werewolves.GetSize(); iwolf++ )
 		{
-			for( int iother = 0; iother < m_Werewolves.GetSize(); iother++ )
+			for( UINT iother = 0; iother < m_Werewolves.GetSize(); iother++ )
 			{
 				if( iwolf == iother ) continue;
 
@@ -241,7 +243,7 @@ namespace ConspiracyGameInstanceServer {
 			}
 		}
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -336,7 +338,7 @@ namespace ConspiracyGameInstanceServer {
 
 		GetOwner().GetComponent<GameStateSystem>()->SetGameEnd(winner);
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -351,7 +353,7 @@ namespace ConspiracyGameInstanceServer {
 			if( FAILED(GetOwner().FindPlayer(exculdePlayer, pGamePlayer)) )
 			{
 				// pick random
-				svrTrace( Trace::TRC_ERROR, "Invalid hunted player: PlayerID:%0%", GetHuntedPlayer() );
+				svrTrace( Trace::TRC_ERROR, "Invalid hunted player: PlayerID:{0}", GetHuntedPlayer() );
 				GetOwner().ForeachPlayer( [&](GamePlayer* pPlayer ) -> HRESULT
 				{
 					if( pGamePlayer != nullptr )
@@ -392,7 +394,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 
-		svrTrace( Trace::TRC_ERROR, "Failed to find player PickAnyoneCloseToHuntedPlayer Hunted PlayerID:%0%", GetHuntedPlayer() );
+		svrTrace( Trace::TRC_ERROR, "Failed to find player PickAnyoneCloseToHuntedPlayer Hunted PlayerID:{0}", GetHuntedPlayer() );
 		return 0;
 	}
 
@@ -411,7 +413,7 @@ namespace ConspiracyGameInstanceServer {
 	Proc_End:
 
 		if( FAILED(hr) )
-			svrTrace( Trace::TRC_ERROR, "Failed to find player KillPlayer PlayerID:%0%, reason:%1%", playerToKill, (int)reason );
+			svrTrace( Trace::TRC_ERROR, "Failed to find player KillPlayer PlayerID:{0}, reason:{1}", playerToKill, (int)reason );
 
 		return hr;
 	}
@@ -419,6 +421,7 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GamePlaySystem::KillPlayer( GamePlayer* pPlayerToKill, PlayerKilledReason reason )
 	{
 		HRESULT hr = S_OK;
+
 		if( pPlayerToKill == nullptr )
 			return E_INVALIDARG;
 
@@ -434,6 +437,8 @@ namespace ConspiracyGameInstanceServer {
 			// Update lynched player to send it to the medium later
 			m_LynchedPlayer = pPlayerToKill->GetPlayerID();
 			m_LynchedRole = pPlayerToKill->GetRole();
+			break;
+		default:
 			break;
 		}
 
@@ -476,11 +481,11 @@ namespace ConspiracyGameInstanceServer {
 
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to kill a player PlayerID:%0%, reason:%1%, HRESULT:{2:X8}", pPlayerToKill->GetPlayerID(), (int)reason, hr );
+			svrTrace( Trace::TRC_ERROR, "Failed to kill a player PlayerID:{0}, reason:{1}, HRESULT:{2:X8}", pPlayerToKill->GetPlayerID(), (int)reason, hr );
 		}
 		else
 		{
-			svrTrace( Trace::TRC_TRACE, "Player PlayerID:%0% is killed by reason:%1%", pPlayerToKill->GetPlayerID(), (int)reason );
+			svrTrace( Trace::TRC_TRACE, "Player PlayerID:{0} is killed by reason:{1}", pPlayerToKill->GetPlayerID(), (int)reason );
 		}
 
 		return hr;
@@ -530,6 +535,8 @@ namespace ConspiracyGameInstanceServer {
 		case PlayerRole::Seer:
 			SetSeer(1);
 			break;
+		default:
+			break;
 		};
 
 
@@ -544,11 +551,11 @@ namespace ConspiracyGameInstanceServer {
 
 		if (FAILED(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to revive a player PlayerID:%0%, HRESULT:{1:X8}", pPlayerToRevive->GetPlayerID(), hr);
+			svrTrace(Trace::TRC_ERROR, "Failed to revive a player PlayerID:{0}, HRESULT:{1:X8}", pPlayerToRevive->GetPlayerID(), hr);
 		}
 		else
 		{
-			svrTrace(Trace::TRC_TRACE, "Player PlayerID:%0% is revived", pPlayerToRevive->GetPlayerID());
+			svrTrace(Trace::TRC_TRACE, "Player PlayerID:{0} is revived", pPlayerToRevive->GetPlayerID());
 		}
 
 		return hr;
@@ -571,6 +578,8 @@ namespace ConspiracyGameInstanceServer {
 		//	SetOwlman( 0 );
 		//	SetOwlmansChoice( 0 );
 		//	break;
+		default:
+			break;
 		};
 
 		return S_OK;
@@ -602,6 +611,8 @@ namespace ConspiracyGameInstanceServer {
 		case PlayerRole::Seer:
 			if( pOtherPlayer->GetRevealedBySeer() )
 				otherRole = pOtherPlayer->GetRole();
+			break;
+		default:
 			break;
 		}
 

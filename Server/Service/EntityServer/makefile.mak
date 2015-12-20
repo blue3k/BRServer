@@ -4,7 +4,7 @@
 
 
 export LINK_TYPE=EXE
-export PROJECT_NAME=EntityServer
+export PROJECT_NAME=BREntityServer
 
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))

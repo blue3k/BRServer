@@ -210,25 +210,16 @@ namespace Svr {
 				ThisThread::SleepFor(DurationMS(1000));
 			}
 
-			switch( g_pSvrInstance->GetServerState() )
-			{
-			case ServerState::STARTING:
-			case ServerState::RUNNING:
-				svrChk( g_pSvrInstance->StopServer() );
-			case ServerState::STOPED:
-			case ServerState::STOPING:
-			default:
-				break;
-			};
-
 
 		Proc_End:
 
+			g_pSvrInstance->StopServer();
+
 			svrTrace( Trace::TRC_TRACE, "<{0}> Closed", Util::GetServiceName() );
 
-			g_pSvrInstance = nullptr;
-
 			Trace::Uninitialize();
+
+			g_pSvrInstance = nullptr;
 
 			return hr;
 		}

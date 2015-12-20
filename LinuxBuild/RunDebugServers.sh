@@ -7,30 +7,30 @@ cd ../Server/bin/DEBUG
 
 rm -rf ../log/*
 
-./EntityServer -debug -n:BREntityServer1&
+./BREntityServer -debug -n:BREntityServer1&
 
 sleep 2s
 
-./EntityServer -debug -n:BREntityServer2&
+./BREntityServer -debug -n:BREntityServer2&
 
 sleep 2s
 
-./LoginServer -debug -n:BRLoginServer01&
+./BRLoginServer -debug -n:BRLoginServer01&
 
 
-./SharedModuleServer -debug -n:BRMatchingQueue01&
+./BRSharedModuleServer -debug -n:BRMatchingQueue01&
 
 
 sleep 1s
 
 
-./GameServer -debug -n:BRConspiracyGameServer01&
-./GameServer -debug -n:BRConspiracyGameServer02&
+./BRGameServer -debug -n:BRConspiracyGameServer01&
+./BRGameServer -debug -n:BRConspiracyGameServer02&
 
 sleep 1s
 
-./GameInstanceServer -debug -n:BRConspiracyGameInstanceServer01&
-./GameInstanceServer -debug -n:BRConspiracyGameInstanceServer02&
+./BRGameInstanceServer -debug -n:BRConspiracyGameInstanceServer01&
+./BRGameInstanceServer -debug -n:BRConspiracyGameInstanceServer02&
 
 
 

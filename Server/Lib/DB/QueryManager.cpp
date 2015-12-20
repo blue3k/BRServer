@@ -39,12 +39,7 @@ namespace DB {
 
 	QueryManager::~QueryManager()
 	{
-		for( UINT part =0; part < m_ShardingBucket.GetSize(); part++)
-		{
-			if( m_ShardingBucket[part] != nullptr )
-				delete m_ShardingBucket[part];
-		}
-		m_ShardingBucket.Clear();
+		Clear();
 	}
 
 	// Initialize QueryManager
@@ -90,10 +85,8 @@ namespace DB {
 		return hr;
 	}
 
-	void QueryManager::TerminateDB()
+	void QueryManager::Clear()
 	{
-		QueryWorkerManager::TerminateDBWorkerManager();
-
 		m_ShardingBucket.Foreach([](DataSource* dataSource) -> HRESULT {
 			if (dataSource != nullptr)
 			{
@@ -103,6 +96,13 @@ namespace DB {
 			return S_OK;
 		});
 		m_ShardingBucket.Clear();
+
+	}
+
+	void QueryManager::TerminateDB()
+	{
+		QueryWorkerManager::TerminateDBWorkerManager();
+		Clear();
 	}
 
 	HRESULT QueryManager::RequestShardList()

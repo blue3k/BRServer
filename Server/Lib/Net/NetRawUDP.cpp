@@ -72,7 +72,6 @@ namespace Net {
 
 		netTrace(Trace::TRC_TRACE, "RawUDP: Opening UDP Net {0}:{1}", m_LocalAddress.strAddr, m_LocalAddress.usPort);
 
-		//socket = WSASocket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 		socket = NetSystem::Socket(SockFamily::IPV6, SockType::DataGram);
 		if (socket == INVALID_SOCKET)
 		{

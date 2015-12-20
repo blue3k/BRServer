@@ -5,12 +5,12 @@
 pushd `dirname $0` > /dev/null
 cd ../Server/bin/DEBUG
 
-pkill EntityServer
-pkill GameServer
-pkill LoginServer
+pkill BREntityServer
+pkill BRGameServer
+pkill BRLoginServer
 sleep 0.5s
-pkill GameInstanceSer
-pkill SharedModuleSer
+pkill BRGameInstanceS
+pkill BRSharedModuleS
 
 
 popd > /dev/null

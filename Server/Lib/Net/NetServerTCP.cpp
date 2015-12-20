@@ -319,13 +319,11 @@ namespace Net {
 		if( GetSocket() != INVALID_SOCKET )// already initialized?
 			return S_OK;
 
-
 		netChk(Server::HostOpen( netCls, strLocalIP, usLocalPort ) );
 
 
 		netTrace(Trace::TRC_TRACE, "Open Server TCP Host {0}:{1}", strLocalIP, usLocalPort );
 
-		//socket = WSASocket(GetSocketAddr().sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 		socket = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
 		if( socket == INVALID_SOCKET )
 		{
@@ -419,8 +417,6 @@ namespace Net {
 			NetSystem::CloseSocket( GetSocket() );
 			SetSocket( INVALID_SOCKET );
 		}
-
-		netTrace( Trace::TRC_ERROR, "TCP Server closed completely" );
 
 		EnqueueNetEvent(netEvent);
 

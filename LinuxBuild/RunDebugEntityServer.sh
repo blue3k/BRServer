@@ -7,11 +7,11 @@ cd ../Server/bin/DEBUG
 
 rm -rf ../log/*
 
-./EntityServer -debug -n:BREntityServer1&
+./BREntityServer -debug -n:BREntityServer1&
 
 sleep 2s
 
-./EntityServer -debug -n:BREntityServer2&
+./BREntityServer -debug -n:BREntityServer2&
 
 
 popd > /dev/null

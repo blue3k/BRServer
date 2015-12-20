@@ -48,7 +48,7 @@ namespace Net {
 		OP_UDPWRITE,
 	};
 
-	enum class SockFamily
+	enum class SockFamily : UINT8
 	{
 		IPV4 = AF_INET,
 		IPV6 = AF_INET6

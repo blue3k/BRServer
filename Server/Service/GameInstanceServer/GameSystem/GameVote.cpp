@@ -128,6 +128,8 @@ namespace ConspiracyGameInstanceServer {
 			//	m_VoteState = VoteState::ForceVote;
 			//}
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -150,13 +152,13 @@ namespace ConspiracyGameInstanceServer {
 
 	PlayerID GameVoteSuspect::GetVoteRanker( int index )
 	{
-		AssertRel(index>=0 && index<countof(m_VoteRankers));
+		AssertRel(index>=0 && index<(int)countof(m_VoteRankers));
 		return m_VoteRankers[index];
 	}
 
 	void GameVoteSuspect::SetVoteRanker( PlayerID playerID, UINT rate )
 	{
-		for( int index = 0; index < countof(m_VoteRankers); index++ )
+		for( int index = 0; index < (int)countof(m_VoteRankers); index++ )
 		{
 			if( m_VoteRates[index] <= rate )
 			{
@@ -454,12 +456,12 @@ namespace ConspiracyGameInstanceServer {
 
 	GameVoteNight::GameVoteNight(GameInstanceEntity* Owner,UINT votingFlags)
 		:GameVote(Owner)
-		, m_PlayerToKill(0)
-		, m_TopRate(0)
+		, m_VotingFlags(votingFlags)
 		, m_SeersChoice(0)
 		, m_BodyGuardsChoice(0)
+		, m_PlayerToKill(0)
+		, m_TopRate(0)
 		, m_IsInVoting(false)
-		, m_VotingFlags(votingFlags)
 	{
 	}
 

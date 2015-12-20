@@ -3,7 +3,7 @@
 # Build rules
 
 export LINK_TYPE=EXE
-export PROJECT_NAME=LoginServer
+export PROJECT_NAME=BRLoginServer
 
 
 

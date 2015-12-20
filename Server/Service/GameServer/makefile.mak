@@ -3,7 +3,7 @@
 # Build rules
 
 export LINK_TYPE=EXE
-export PROJECT_NAME=GameServer
+export PROJECT_NAME=BRGameServer
 
 
 

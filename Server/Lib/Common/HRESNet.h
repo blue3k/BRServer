@@ -835,3 +835,12 @@
 //
 #define E_NET_INVALID_SERVICE            0xC7030054L
 
+//
+// MessageId: E_NET_INVALID_ADDRESS
+//
+// MessageText:
+//
+// Invalid network address
+//
+#define E_NET_INVALID_ADDRESS            0xC7030055L
+

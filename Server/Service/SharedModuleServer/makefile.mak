@@ -3,7 +3,7 @@
 # Build rules
 
 export LINK_TYPE=EXE
-export PROJECT_NAME=SharedModuleServer
+export PROJECT_NAME=BRSharedModuleServer
 
 
 
