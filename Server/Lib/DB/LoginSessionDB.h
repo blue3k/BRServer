@@ -42,6 +42,8 @@ namespace DB {
 		LoginSessionDB();
 		virtual ~LoginSessionDB();
 
+		virtual void TerminateComponent() override;
+
 	public:
 
 		/////////////////////////////////////////////////////////////////////////////////

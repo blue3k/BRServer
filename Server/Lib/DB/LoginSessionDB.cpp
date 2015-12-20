@@ -36,6 +36,12 @@ namespace DB {
 	{
 	}
 
+	void LoginSessionDB::TerminateComponent()
+	{
+		TerminateDB();
+		Svr::IServerComponent::TerminateComponent();
+	}
+
 
 	
 	/////////////////////////////////////////////////////////////////////////////////

@@ -167,6 +167,14 @@ namespace DB {
 
 	SessionMYSQL::~SessionMYSQL()
 	{
+		m_StatementPool.ClearStatementPools();
+
+		if (m_mySQL)
+		{
+			//mysql_thread_end();
+			mysql_close(m_mySQL);
+			m_mySQL = nullptr;
+		}
 	}
 	
 	// return context value
@@ -187,7 +195,7 @@ namespace DB {
 
 		if( m_Synced != m_InitSync )
 		{
-			mysql_thread_init();
+			//mysql_thread_init();
 
 			m_Synced = m_InitSync;
 
@@ -298,7 +306,7 @@ namespace DB {
 
 		if( m_mySQL )
 		{
-			mysql_thread_end();
+			//mysql_thread_end();
 			mysql_close(m_mySQL);
 			m_mySQL = nullptr;
 		}

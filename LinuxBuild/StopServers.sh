@@ -8,8 +8,9 @@ cd ../Server/bin/DEBUG
 pkill EntityServer
 pkill GameServer
 pkill LoginServer
-pkill GameInstanceServer
-pkill SharedModuleServer
+sleep 0.5s
+pkill GameInstanceSer
+pkill SharedModuleSer
 
 
 popd > /dev/null

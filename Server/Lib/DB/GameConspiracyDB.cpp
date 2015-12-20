@@ -36,6 +36,12 @@ namespace DB {
 	{
 	}
 
+	void GameConspiracyDB::TerminateComponent()
+	{
+		TerminateDB();
+		Svr::IServerComponent::TerminateComponent();
+	}
+
 	
 	/////////////////////////////////////////////////////////////////////////////////
 	//

@@ -42,6 +42,8 @@ namespace DB {
 		GameConspiracyDB();
 		virtual ~GameConspiracyDB();
 
+		virtual void TerminateComponent() override;
+
 	public:
 
 		/////////////////////////////////////////////////////////////////////////////////

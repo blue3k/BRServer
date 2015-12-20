@@ -37,6 +37,12 @@ namespace DB {
 	{
 	}
 
+	void RankingDB::TerminateComponent()
+	{
+		TerminateDB();
+		Svr::IServerComponent::TerminateComponent();
+	}
+
 
 	/////////////////////////////////////////////////////////////////////////////////
 	//

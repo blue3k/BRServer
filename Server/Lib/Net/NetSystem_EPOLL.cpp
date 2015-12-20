@@ -250,6 +250,7 @@ namespace Net {
 				{
 				case E_NET_TRY_AGAIN:
 				case E_NET_WOULDBLOCK:
+				case S_FALSE:
 					// These are expected return code
 					hr = S_OK;
 					break;
@@ -257,7 +258,10 @@ namespace Net {
 					Assert(false);
 					break;
 				default:
-					netTrace(TRC_NETSYS, "ERROR Epoll Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
+					if (FAILED(hr))
+					{
+						netTrace(TRC_NETSYS, "ERROR Epoll Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
+					}
 					// fallthru
 				case S_OK:
 					// toss data to working thread
@@ -652,15 +656,15 @@ namespace Net {
 		{
 			MutexScopeLock scopeLock(g_InitLock);
 
-			if (g_lWSOpenCount == 0)
+			auto orgCounter = g_lWSOpenCount.fetch_add(1, std::memory_order_relaxed);
+
+			if (orgCounter == 0)
 			{
 				Net::IOBUFFER_WRITE::MemoryPoolCache(uiOverBufferCount);
 				SetGatheringBufferSize(gatheringBufferSize);
 
 				return EPOLLSystem::GetSystem().Initialize(numNetThread);
 			}
-
-			g_lWSOpenCount.fetch_add(1, std::memory_order_relaxed);
 
 			return S_OK;
 		}

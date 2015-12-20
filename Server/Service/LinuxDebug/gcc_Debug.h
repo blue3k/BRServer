@@ -207,7 +207,7 @@
 #define __LDBL_HAS_QUIET_NAN__ 1
 #endif
 #ifndef __GNUC__
-#define __GNUC__ 1
+#define __GNUC__ 5
 #endif
 #ifndef __GXX_RTTI
 #define __GXX_RTTI 1
@@ -761,6 +761,7 @@
 ///usr/lib/gcc/x86_64-linux-gnu/5/include-fixed
 ///usr/include/x86_64-linux-gnu
 ///usr/include
+//../../Lib
 // --- Include directories end --- //
 
 

@@ -42,6 +42,9 @@ namespace DB {
 		GameTransactionDB();
 		virtual ~GameTransactionDB();
 
+
+		virtual void TerminateComponent() override;
+
 	public:
 
 		/////////////////////////////////////////////////////////////////////////////////

@@ -42,6 +42,8 @@ namespace Svr {
 			case SIGHUP:
 				break;
 			case SIGTERM:
+				printf("Stop Signaled");
+				defTrace(Trace::TRC_TRACE, "Stop Signaled");
 				m_StopSignaled = true;
 				//exit(0);
 				break;
@@ -77,8 +79,6 @@ namespace Svr {
 			signal(SIGTSTP, SIG_IGN); /* ignore tty signals */
 			signal(SIGTTOU, SIG_IGN);
 			signal(SIGTTIN, SIG_IGN);
-			signal(SIGHUP, signal_handler); /* catch hangup signal */
-			signal(SIGTERM, signal_handler); /* catch kill signal */
 		}
 
 
@@ -107,6 +107,7 @@ namespace Svr {
 			bool bIsInstall = false;
 			//wchar_t *strUser = nullptr; wchar_t *strPWD = nullptr;
 			const char *strServiceName = nullptr;
+			bool bRun = false;
 
 			chdir(Util::GetModulePathA());
 
@@ -182,47 +183,48 @@ namespace Svr {
 				daemonize();
 			}
 
-			// if not service mode
-			//if( bIsDebugRun )
+			// register signal handlers
+			signal(SIGHUP, signal_handler); /* catch hangup signal */
+			signal(SIGTERM, signal_handler); /* catch kill signal */
+
+
+			svrChk( g_pSvrInstance->StartServer() );
+
+			bRun = true;
+			while( bRun )
 			{
-				svrChk( g_pSvrInstance->StartServer() );
-
-				bool bRun = true;
-				while( bRun )
-				{
-					switch( g_pSvrInstance->GetServerState() )
-					{
-					case ServerState::STOPED:
-						bRun = false;
-						break;
-					default:
-						break;
-					};
-
-					if(m_StopSignaled || g_pSvrInstance->GetServerState() == ServerState::STOPED)
-					{
-						bRun = false;
-					}
-
-					ThisThread::SleepFor(DurationMS(1000));
-				}
-
 				switch( g_pSvrInstance->GetServerState() )
 				{
-				case ServerState::STARTING:
-				case ServerState::RUNNING:
-					svrChk( g_pSvrInstance->StopServer() );
 				case ServerState::STOPED:
-				case ServerState::STOPING:
+					bRun = false;
+					break;
 				default:
 					break;
 				};
+
+				if(m_StopSignaled || g_pSvrInstance->GetServerState() == ServerState::STOPED)
+				{
+					bRun = false;
+				}
+
+				ThisThread::SleepFor(DurationMS(1000));
 			}
+
+			switch( g_pSvrInstance->GetServerState() )
+			{
+			case ServerState::STARTING:
+			case ServerState::RUNNING:
+				svrChk( g_pSvrInstance->StopServer() );
+			case ServerState::STOPED:
+			case ServerState::STOPING:
+			default:
+				break;
+			};
 
 
 		Proc_End:
 
-			svrTrace( Trace::TRC_TRACE, "<%0%> Closed", Util::GetServiceName() );
+			svrTrace( Trace::TRC_TRACE, "<{0}> Closed", Util::GetServiceName() );
 
 			g_pSvrInstance = nullptr;
 
@@ -232,17 +234,6 @@ namespace Svr {
 		}
 
 	};
-	/*
-	UNIX Daemon Server Programming Sample Program
-	Levent Karakas <levent at mektup dot at> May 2001
-
-	To compile:	cc -o exampled examped.c
-	To run:		./exampled
-	To test daemon:	ps -ef|grep exampled (or ps -aux on BSD systems)
-	To test log:	tail -f /tmp/exampled.log
-	To test signal:	kill -HUP `cat /tmp/exampled.lock`
-	To terminate:	kill `cat /tmp/exampled.lock`
-	*/
 
 
 

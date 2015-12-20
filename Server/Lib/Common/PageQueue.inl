@@ -100,7 +100,7 @@ void PageQueue<DataType>::FreePage(Page* pPage)
 {
 	if (pPage == nullptr) return;
 	
-	pPage->DeleteThis(m_NumberOfItemsPerPage);
+	pPage->DeleteElements(m_NumberOfItemsPerPage);
 
 	if (m_pMemoryPool)
 		m_pMemoryPool->Free(pPage, "PageQueueBuffer");
@@ -460,7 +460,7 @@ void PageQueue<DataType>::ClearQueue()
 	// if it's not deleted, reuse it
 	if (enqueueNext)
 	{
-		enqueueNext->DeleteThis(m_NumberOfItemsPerPage);
+		enqueueNext->DeleteElements(m_NumberOfItemsPerPage);
 		new((void*)enqueueNext) Page(m_NumberOfItemsPerPage);
 		enqueueNext->Header.PageID = 1;
 		m_PageIndex++;
@@ -470,7 +470,7 @@ void PageQueue<DataType>::ClearQueue()
 		enqueueNext = AllocatePage();
 	}
 
-	headPage->DeleteThis(m_NumberOfItemsPerPage);
+	headPage->DeleteElements(m_NumberOfItemsPerPage);
 	headPage = new((void*)headPage) Page(m_NumberOfItemsPerPage);
 	headPage->Header.PageID = 0;
 	headPage->Header.pNext = enqueueNext;

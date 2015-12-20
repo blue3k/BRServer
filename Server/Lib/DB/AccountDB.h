@@ -45,6 +45,8 @@ namespace DB {
 		AccountDB();
 		virtual ~AccountDB();
 
+		virtual void TerminateComponent() override;
+
 	public:
 
 		/////////////////////////////////////////////////////////////////////////////////

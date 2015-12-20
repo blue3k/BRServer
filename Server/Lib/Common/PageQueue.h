@@ -73,7 +73,7 @@ namespace BR
 				}
 			}
 
-			void DeleteThis(CounterType ItemCpacity)
+			void DeleteElements(CounterType ItemCpacity)
 			{
 				for (CounterType iEle = 1; iEle < ItemCpacity; iEle++)
 				{

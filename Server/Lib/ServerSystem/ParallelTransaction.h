@@ -52,6 +52,15 @@ namespace Svr{
 		{}
 	};
 
+	class ParallelTransactionNop : public ParallelTransaction
+	{
+	public:
+		ParallelTransactionNop()
+			:ParallelTransaction(0, 0)
+		{}
+
+	};
+
 
 	
 
@@ -72,9 +81,12 @@ namespace Svr{
 		{
 		private:
 			PageQueue<ParallelTransaction*> &m_QuerieQueue;
+			std::atomic<bool> m_bExitRequested;
 
 		public:
 			TaskWorker(PageQueue<ParallelTransaction*> &querieQueue);
+
+			void SetExitRequested() { m_bExitRequested.store(true, std::memory_order_release); }
 
 			virtual void Run() override;
 		};

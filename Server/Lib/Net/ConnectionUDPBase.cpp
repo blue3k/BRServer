@@ -581,6 +581,12 @@ namespace Net {
 
 		netChkPtr(pMsg);
 
+		if (pMsg->GetDataLength() != 0 && pMsg->GetMessageHeader()->Crc32 == 0 && pMsg->GetMessageHeader()->msgID.IDs.Policy != POLICY_NONE)
+		{
+			Assert(pMsg->GetDataLength() == 0 || pMsg->GetMessageHeader()->Crc32 != 0 || pMsg->GetMessageHeader()->msgID.IDs.Policy == POLICY_NONE);
+			netErrSilent(E_FAIL);
+		}
+
 		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
 		pSendBuffer->SetupSendUDP(GetSocket(), GetRemoteSockAddr(), pMsg);
 
@@ -611,9 +617,6 @@ namespace Net {
 		HRESULT hr = S_OK;
 		Message::MessageID msgID;
 		UINT uiMsgLen;
-		IOBUFFER_WRITE *pSendBuffer = nullptr;
-
-		Assert(pMsg->GetDataLength() == 0 || pMsg->GetMessageHeader()->Crc32 != 0 || pMsg->GetMessageHeader()->msgID.IDs.Policy == POLICY_NONE);
 
 		if (GetConnectionState() == STATE_DISCONNECTED)
 			return S_FALSE;

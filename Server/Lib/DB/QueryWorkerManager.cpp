@@ -47,11 +47,18 @@ namespace DB {
 
 	QueryWorkerManager::~QueryWorkerManager()
 	{
+		StopWorkers();
+	}
+
+	void QueryWorkerManager::StopWorkers()
+	{
 		for (auto itWorker = m_QueryWorker.begin(); itWorker != m_QueryWorker.end(); itWorker++)
 		{
 			QueryWorker* pWorker = *itWorker;
-			pWorker->Stop();
+			pWorker->Stop(true);
+			delete pWorker;
 		}
+		m_QueryWorker.clear();
 	}
 
 	// Initialize QueryWorkerManager
@@ -76,7 +83,9 @@ namespace DB {
 		auto initCount = stm_InitializationCount.fetch_sub(1, std::memory_order_relaxed) - 1;
 		if (initCount <= 0 && stm_pInstance != nullptr)
 		{
+			stm_pInstance->StopWorkers();
 			delete stm_pInstance;
+			stm_pInstance = nullptr;
 		}
 	}
 

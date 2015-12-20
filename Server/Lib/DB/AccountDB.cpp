@@ -38,6 +38,12 @@ namespace DB {
 	{
 	}
 
+	void AccountDB::TerminateComponent()
+	{
+		TerminateDB();
+		Svr::IServerComponent::TerminateComponent();
+	}
+
 
 	/////////////////////////////////////////////////////////////////////////////////
 	//

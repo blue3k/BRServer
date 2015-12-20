@@ -255,12 +255,6 @@ namespace Net {
 				break;
 			};
 		}
-		else
-		{
-			// IOCP will handle this
-			//Assert(dwNumberOfByte > 0);
-			//OnRecv(dwNumberOfByte, (BYTE*)pOver->wsaBuff.buf);
-		}
 
 
 	Proc_End:
@@ -418,7 +412,12 @@ namespace Net {
 
 		ResetZeroRecvCount();
 
-		AssertRel(GetConnectionState() == STATE_CONNECTING || GetConnectionState() == STATE_DISCONNECTED);
+		if (GetConnectionState() != STATE_CONNECTING && GetConnectionState() != STATE_DISCONNECTED)
+		{
+			netTrace(Trace::TRC_ERROR, "Invalid connection state to try connect", GetConnectionState());
+			//AssertRel(GetConnectionState() == STATE_CONNECTING || GetConnectionState() == STATE_DISCONNECTED);
+			netErrSilent(E_NET_INVALID_CONNECTION_STATE);
+		}
 
 		connResult = connect(GetSocket(), (sockaddr*)&GetRemoteSockAddr(), sizeof(GetRemoteSockAddr()));
 		if (connResult == SOCKET_ERROR)
@@ -443,7 +442,7 @@ namespace Net {
 		m_isClientSide = true;
 		m_isActuallyConnected = false; // only client side need to check this condition
 
-	//Proc_End:
+	Proc_End:
 
 		if (FAILED(hr))
 		{

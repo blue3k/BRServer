@@ -43,7 +43,8 @@ namespace Svr
 
 
 	ParallelTransactionManager::TaskWorker::TaskWorker(PageQueue<ParallelTransaction*> &querieQueue)
-		:m_QuerieQueue(querieQueue)
+		: m_QuerieQueue(querieQueue)
+		, m_bExitRequested(false)
 	{
 	}
 
@@ -56,7 +57,8 @@ namespace Svr
 			ParallelTransaction* pTransaction = nullptr;
 			auto loopInterval = UpdateInterval( desiredLoopInterval );
 
-			if (CheckKillEvent(loopInterval))
+			auto bExitRequested = m_bExitRequested.load(std::memory_order_relaxed);
+			if (bExitRequested || CheckKillEvent(loopInterval))
 			{
 				// Kill Event signaled
 				break;
@@ -148,6 +150,22 @@ namespace Svr
 	// Terminate Manager
 	void ParallelTransactionManager::TerminateComponent()
 	{
+		// set exit flag for all
+		for (size_t iworker = 0; iworker < m_QueryWorker.size(); iworker++)
+		{
+			TaskWorker *pWorker = m_QueryWorker[iworker];
+			// Just kill the thread
+			pWorker->SetExitRequested();
+		}
+
+		// Poke all worker at least once
+		for (size_t iworker = 0; iworker < m_QueryWorker.size(); iworker++)
+		{
+			ParallelTransaction* pTransNOP = new ParallelTransactionNop;
+			m_PendingQueries.Enqueue(pTransNOP);
+		}
+
+		// request thread stop
 		for( size_t iworker = 0; iworker < m_QueryWorker.size(); iworker++ )
 		{
 			TaskWorker *pWorker = m_QueryWorker[iworker];

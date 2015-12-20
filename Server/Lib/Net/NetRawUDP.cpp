@@ -38,7 +38,7 @@ namespace Net {
 
 	RawUDP::~RawUDP()
 	{
-		if (GetWriteQueue()) delete GetWriteQueue();
+		//if (GetWriteQueue()) delete GetWriteQueue();
 	}
 
 	HRESULT RawUDP::InitializeNet(const NetAddress& localAddress, MessageHandler *pHandler)

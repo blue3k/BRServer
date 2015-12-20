@@ -46,6 +46,7 @@ DEFINE_TRACE_MODULE(svr)
 
 #define svrErr(e)					TrcErrJmp(svr,e,hr)
 #define svrChk(e)					{ do{ HRESULT hRes = e; if( FAILED(hRes) ) TrcErrJmp(svr,hRes,hr); } while(0); }
+#define svrChkSilent(e)				{ do{ HRESULT hRes = e; hr = hRes; if( FAILED(hRes) ) goto Proc_End; } while(0); }
 #define svrChkErr(ErrCode,exp)		{ do{ HRESULT hRes = exp; if( FAILED(hRes) ) TrcErrJmp(svr,ErrCode,hr); } while(0); }
 #define svrMem(a)					{ while( (a) == nullptr ){ TrcErrJmp(svr,E_OUTOFMEMORY,hr); } }
 #define svrChkPtr(a)				{ while( (a) == nullptr ){ TrcErrJmp(svr,E_POINTER,hr); }  }

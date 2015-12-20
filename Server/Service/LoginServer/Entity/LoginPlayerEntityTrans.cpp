@@ -173,11 +173,16 @@ namespace LoginServer {
 
 		// Find new game server for this player
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( (ClusterID)((UINT)ClusterID::Game + (UINT)super::GetGameID()), pServiceEntity ) );
-		svrChk( pServiceEntity->FindRandomService( pService ) );
+		hr = pServiceEntity->FindRandomService( pService );
+		if (FAILED(hr))
+		{
+			svrTrace(Trace::TRC_ERROR, "Faild to find cluster service entity for game:{0} PID:{0}", super::GetGameID(), super::GetMyOwner()->GetPlayerID());
+			goto Proc_End;
+		}
 
 		super::GetMyOwner()->HeartBit();
 
-		svrTrace(Svr::TRC_ENTITY, "Creating new Entity for UID:{0}, on svr:{1}", super::GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
+		svrTrace(Svr::TRC_ENTITY, "Creating new Entity for PID:{0}, on svr:{1}", super::GetMyOwner()->GetPlayerID(), pService->GetEntityUID());
 
 		svrChk( pService->GetService<Svr::GameServerService>()->RegisterPlayerToJoinGameServerCmd(super::GetTransID(),
 			super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID()));
@@ -205,7 +210,7 @@ namespace LoginServer {
 				// Garbage login session information will lead process to here. Ignore it and create new one
 				svrTrace(Svr::TRC_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}", 
 					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket());
-				svrChk( RegisterNewPlayerToJoinGameServer() );
+				svrChkSilent( RegisterNewPlayerToJoinGameServer() );
 			}
 			goto Proc_End;
 		}

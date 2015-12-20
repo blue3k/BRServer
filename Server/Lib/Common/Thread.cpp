@@ -169,13 +169,15 @@ namespace BR
 			return DurationMS(0);
 		}
 
-		DurationMS diffTime = ulCurTime - m_ulPreTime;
+		LONG diffTime = (LONG)(ulCurTime - m_ulPreTime).count();
 		DurationMS sleepInterval;
 
-		if (diffTime > ulExpectedInterval)
+		if (diffTime < 0) diffTime = 0;
+
+		if (diffTime > (LONG)ulExpectedInterval.count())
 			sleepInterval = DurationMS(0);
-		else if (diffTime < ulExpectedInterval)
-			sleepInterval = DurationMS((ulExpectedInterval - diffTime).count());
+		else if (diffTime < (LONG)ulExpectedInterval.count())
+			sleepInterval = DurationMS((LONG)ulExpectedInterval.count() - diffTime);
 		else
 			sleepInterval = ulExpectedInterval;
 		m_ulPreTime = ulCurTime;

@@ -45,6 +45,8 @@ namespace DB {
 		RankingDB();
 		virtual ~RankingDB();
 
+		virtual void TerminateComponent() override;
+
 	public:
 
 		/////////////////////////////////////////////////////////////////////////////////

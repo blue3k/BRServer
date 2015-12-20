@@ -55,6 +55,10 @@ namespace DB {
 
 		static QueryWorkerManager* stm_pInstance;
 
+	private:
+
+		void StopWorkers();
+
 	public:
 		// constructor / destructor
 		QueryWorkerManager();
