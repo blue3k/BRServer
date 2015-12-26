@@ -12,6 +12,7 @@
 
 
 #include "Common/Typedefs.h"
+#include "Common/BrLibComponents.h"
 #include "Common/Synchronization.h"
 #include "Common/StackPool.h"
 #include "Common/StackWalker.h"
@@ -223,16 +224,27 @@ namespace BR
 	//
 
 	class MemoryPoolManagerImpl;
-	class MemoryPoolManager
+	class MemoryPoolManager : public Component
 	{
+	public:
+		enum {
+			ComponentID = (UINT)LibCompoentIDs::MemoryPoolManager
+		};
 
 	private:
-		static MemoryPoolManagerImpl *stm_pInstance;
 
-		// prevent to created from somewhere
-		MemoryPoolManager() {}
+		static class MemoryPoolManagerImpl* stm_pInstance;
 
 	public:
+
+		MemoryPoolManager();
+		~MemoryPoolManager();
+
+		// Initialize server component
+		virtual HRESULT InitializeComponent() override;
+		// Terminate server component
+		virtual void TerminateComponent() override;
+
 		// Initialize and Terminate memory pool
 		static HRESULT Initialize();
 		static HRESULT Terminate();

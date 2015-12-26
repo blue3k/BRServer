@@ -553,32 +553,51 @@ namespace BR
 		}
 	};
 
-	MemoryPoolManagerImpl *MemoryPoolManager::stm_pInstance = nullptr;
 
 
-	// Initialize and Terminate memory pool
-	HRESULT MemoryPoolManager::Initialize()
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	//	MemoryPoolManager
+	//
+
+	MemoryPoolManagerImpl* MemoryPoolManager::stm_pInstance = nullptr;
+
+	MemoryPoolManager::MemoryPoolManager()
+		: Component((UINT)LibCompoentIDs::MemoryPoolManager)
 	{
-		if( stm_pInstance == nullptr )
-			stm_pInstance = new MemoryPoolManagerImpl;
 
-		StackWalker::Initialize();
-
-		return S_OK;
 	}
 
-	HRESULT MemoryPoolManager::Terminate()
+	MemoryPoolManager::~MemoryPoolManager()
 	{
-		if( stm_pInstance == nullptr )
-			return S_OK;
 
-		delete stm_pInstance;
-		stm_pInstance = nullptr;
+	}
+
+	// Initialize server component
+	HRESULT MemoryPoolManager::InitializeComponent()
+	{
+		HRESULT hr = Component::InitializeComponent();
+		if (FAILED(hr)) return hr;
+
+		StackWalker::Initialize();
+		stm_pInstance = new MemoryPoolManagerImpl;
+
+		return hr;
+	}
+
+	// Terminate server component
+	void MemoryPoolManager::TerminateComponent()
+	{
+		Component::TerminateComponent();
 
 		StackWalker::Deinitialize();
 
-		return S_OK;
+		Util::SafeDelete(stm_pInstance);
 	}
+
+
 
 	// Get memory pool by size
 	HRESULT MemoryPoolManager::GetMemoryPoolBySize( size_t allocationSize, MemoryPool* &pPool )

@@ -19,7 +19,7 @@
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/GameSystem.h"
-#include "ServerSystem/Component.h"
+#include "Common/BrComponent.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 
 #include "ConspiracyGameInstanceSvrConst.h"
@@ -63,7 +63,7 @@ namespace ConspiracyGameInstanceServer
 	//	Game Instance entity class
 	//
 
-	class GameInstanceEntity : public Svr::MasterEntity, public MemoryPoolObject<GameInstanceEntity>, public Svr::ComponentCarrier<GameSystemComponentID_Max>
+	class GameInstanceEntity : public Svr::MasterEntity, public MemoryPoolObject<GameInstanceEntity>, public ComponentCarrier<GameSystemComponentID_Max>
 	{
 	public:
 

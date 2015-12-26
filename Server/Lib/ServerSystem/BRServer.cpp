@@ -196,7 +196,7 @@ Proc_End:
 	{
 		HRESULT hr = S_OK;
 
-		if (joinable() && GetThreadID() != ThisThread::GetThreadID())
+		if (GetThreadID() != ThisThread::GetThreadID())
 			Stop(true);
 
 		svrChk(MasterEntity::TerminateEntity());
@@ -687,7 +687,7 @@ Proc_End:
 	// Get Service name
 	HRESULT BrServer::StartServer()
 	{
-		if( GetServerState() == ServerState::STOPED && !joinable() )
+		if( GetServerState() == ServerState::STOPED )
 		{
 			SetServerState( ServerState::STARTING );
 			Start();

@@ -97,6 +97,7 @@
 #include <sys/resource.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <sys/syscall.h>
 #include <sys/stat.h>
 #include <execinfo.h>
 #include <unistd.h>
@@ -107,6 +108,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+
 
 typedef unsigned char UINT8;
 typedef char INT8;

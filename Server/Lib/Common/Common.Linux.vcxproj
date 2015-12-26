@@ -153,6 +153,7 @@
     <ClCompile Include="Argument.cpp" />
     <ClCompile Include="Binary.cpp" />
     <ClCompile Include="BrGameTypes.cpp" />
+    <ClCompile Include="BrLibComponents.cpp" />
     <ClCompile Include="BrRandom.cpp" />
     <ClCompile Include="BrXML.cpp" />
     <ClCompile Include="CryptoBase64.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="ToStringGame.cpp" />
     <ClCompile Include="ToStringSvr.cpp" />
     <ClCompile Include="Trace.cpp" />
+    <ClCompile Include="TraceComponent.cpp" />
     <ClCompile Include="TypeUtility.cpp" />
     <ClCompile Include="UniqueEntityIDGenerator.cpp" />
     <ClCompile Include="Utility.cpp" />
@@ -194,7 +196,9 @@
     <ClInclude Include="BrAssert.h" />
     <ClInclude Include="BrBaseTypes.h" />
     <ClInclude Include="BrCommonTypes.h" />
+    <ClInclude Include="BrComponent.h" />
     <ClInclude Include="BrGameTypes.h" />
+    <ClInclude Include="BrLibComponents.h" />
     <ClInclude Include="BrLinkedList.h" />
     <ClInclude Include="BrRandom.h" />
     <ClInclude Include="BrSvrTypes.h" />
@@ -260,6 +264,7 @@
     <ClInclude Include="ToStringGame.h" />
     <ClInclude Include="ToStringSvr.h" />
     <ClInclude Include="Trace.h" />
+    <ClInclude Include="TraceComponent.h" />
     <ClInclude Include="Trace_Internal.h" />
     <ClInclude Include="Typedefs.h" />
     <ClInclude Include="TypeUtility.h" />

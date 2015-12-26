@@ -48,6 +48,9 @@ namespace BR
 		// Event handles for thread control
 		std::timed_mutex	m_KillMutex;
 
+		// thread running status
+		std::atomic<bool> m_IsRunning;
+
 		// Calculate sleep interval
 		TimeStampMS	m_ulPreTime;
 
@@ -64,6 +67,10 @@ namespace BR
 		// Get thread
 		inline ThreadHandle GetThread();
 		inline ThreadID GetThreadID();
+
+		intptr_t GetNativeThreadID() { return  syscall(SYS_gettid); }
+
+		bool GetIsRunning() { return m_IsRunning.load(std::memory_order_relaxed); }
 
 		// Get/Set Thread Priority
 		virtual void SetPriority(PRIORITY priority);

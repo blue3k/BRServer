@@ -69,6 +69,9 @@ namespace Net {
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
 		switch (hrErr)
 		{
+		case S_FALSE:
+			hr = E_NET_TRY_AGAIN;
+			break;
 		case S_OK:
 		case E_NET_IO_PENDING:
 		case E_NET_TRY_AGAIN:

@@ -233,7 +233,7 @@ namespace Trace {
 	//
 
 	// Static instance for singleton
-	BR::SharedPtr<TraceOutModule> TraceOutModule::stm_pInstance;
+	TraceOutModule* TraceOutModule::stm_pInstance = nullptr;
 	static const UINT _g_uiFileMask[] = {TRCOUT_FILE1, TRCOUT_FILE2};
 
 
@@ -341,12 +341,16 @@ namespace Trace {
 	{
 		DurationMS WaitDelay = DurationMS(5);
 		
+		//printf("TraceOut Start pid:%d, tid:%d\n", getpid(), GetNativeThreadID());
+
 		while( 1 )
 		{
 			auto loopInterval = UpdateInterval(WaitDelay);
 			if (CheckKillEvent(loopInterval))
 			{
+				//printf("TraceOut Kill Signal\n");
 				// Kill Event signaled
+				//ThisThread::SleepFor(DurationMS(9900*1000));
 				break;
 			}
 
@@ -373,6 +377,9 @@ namespace Trace {
 			}
 		}
 
+		//printf("TraceOut End\n");
+		//ThisThread::SleepFor(DurationMS(100 * 1000));
+		//stm_pInstance = nullptr;
 	}
 
 	void TraceOutModule::UpdateConsoleHandle()
@@ -613,7 +620,7 @@ namespace Trace {
 	void TraceOutModule::TracePush( UINT trcInputMask, const char *strTrace, const char* traceName )
 	{
 		// if not thread mode then print directly
-		if( !joinable() )
+		if(!GetIsRunning())
 		{
 			char strTraceBuff[4096];
 
@@ -717,63 +724,6 @@ namespace Trace {
 	//
 	// Trace system initialize
 	//
-
-	// Share initialize
-	void Initialize( TraceModule** trcMods, TraceOutModule &trcShare )
-	{
-		int iMod = 0;
-
-		for( int iNewMod = 0; iNewMod < Trace::TraceModule::MAX_TRACEMODULE; iNewMod++ )
-		{
-			if( TraceModule::GetModules()[iNewMod] == nullptr )
-				break;
-
-			for( ; iMod < Trace::TraceModule::MAX_TRACEMODULE; iMod++ )
-			{
-				if( trcMods[iMod] == nullptr )
-				{
-					trcMods[iMod] = TraceModule::GetModules()[iNewMod];
-					break;
-				}
-			}
-		}
-
-		TraceOutModule::SetInstance( &trcShare );
-	}
-
-	void Initialize()
-	{
-		TraceOutModule::NewInstance();
-		TraceOutModule::GetInstance()->CheckAndUpdate( Util::Time.GetRawUTCSec() );
-		TraceOutModule::GetInstance()->Start();
-	}
-
-	void Uninitialize( TraceModule** trcMods )
-	{
-
-		if( trcMods )
-		{
-			for( int iNewMod = 0; iNewMod < Trace::TraceModule::MAX_TRACEMODULE; iNewMod++ )
-			{
-				if( TraceModule::GetModules()[iNewMod] == nullptr )
-					break;
-
-				for( int iMod = 0; iMod < Trace::TraceModule::MAX_TRACEMODULE; iMod++ )
-				{
-					if( trcMods[iMod] == TraceModule::GetModules()[iNewMod] )
-					{
-						trcMods[iMod] = nullptr;
-						break;
-					}
-				}
-			}
-		}
-
-		if( TraceOutModule::GetInstance() && TraceOutModule::GetInstance()->GetRefCount() == 1 )
-			TraceOutModule::GetInstance()->Stop(true);
-
-		TraceOutModule::SetInstance( nullptr );
-	}
 
 
 	void Flush()

@@ -111,6 +111,7 @@ namespace BR
 
 	Thread::Thread()
 		: m_threadPriority(PRIORITY::NORMAL)
+		, m_IsRunning(false)
 	{
 	}
 
@@ -152,6 +153,8 @@ namespace BR
 		pThread->SetPriority(pThread->GetPriority());
 
 		pThread->Run();
+
+		pThread->m_IsRunning.store(false, std::memory_order_release);
 
 		return;
 	}
@@ -206,6 +209,8 @@ namespace BR
 			assert(false);
 			return;
 		}
+
+		m_IsRunning.store(true, std::memory_order_release);
 
 		std::thread localThread(ThreadFunc, this);
 		swap(localThread);

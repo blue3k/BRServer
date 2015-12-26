@@ -308,6 +308,12 @@ namespace Svr {
 			return hr;
 		}
 
+		// prepare service running
+		HRESULT ServicePrepare()
+		{
+			return S_OK;
+		}
+
 		// Run service main function
 		HRESULT ServiceRun(std::vector<std::string>& cmdArgs, BrServer *pSvrInstance )
 		{

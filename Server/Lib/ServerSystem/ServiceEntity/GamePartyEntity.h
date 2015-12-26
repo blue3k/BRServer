@@ -19,7 +19,7 @@
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/GameSystem.h"
-#include "ServerSystem/Component.h"
+#include "Common/BrComponent.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 

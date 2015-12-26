@@ -14,7 +14,7 @@
 //#include "Common/SvrTypes.h"
 #include "Common/Thread.h"
 //#include "Common/SpinBuffer.h"
-#include "Common/SharedObj.h"
+#include "Common/SharedObject.h"
 #include "Common/StrUtil.h"
 #include "Common/StrFormat.h"
 #include "Common/SpinBufferMT.h"
@@ -54,7 +54,7 @@ namespace Trace {
 	// Trace Output Module
 	//
 
-	class TraceOutModule : public BR::Thread, public BR::SharedObj
+	class TraceOutModule : public BR::Thread, public SharedObject
 	{
 	public:
 		typedef BR::SpinBufferMT<TraceBufferItem,30> TraceBufferType;
@@ -106,11 +106,7 @@ namespace Trace {
 		TraceBufferType m_TraceSpinBuffer;
 
 		// Static instance for singleton
-		static BR::SharedPtr<TraceOutModule> stm_pInstance;
-
-		// Private for singleton
-		TraceOutModule();
-		~TraceOutModule();
+		static TraceOutModule *stm_pInstance;
 
 
 		// Open Log file
@@ -122,7 +118,11 @@ namespace Trace {
 
 	public:
 
-		static inline void NewInstance();
+		// Private for singleton
+		TraceOutModule();
+		~TraceOutModule();
+
+
 		static inline void SetInstance( TraceOutModule *pInstance );
 		static inline TraceOutModule* GetInstance();
 

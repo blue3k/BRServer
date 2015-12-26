@@ -32,7 +32,7 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Write_Lock()
 {
 	// lock ticketing
 	CounterType myTicket = m_writeTicket.AcquireTicket();
-	
+
 
 	// Do not cross over the single cycle boundary
 	while (((SignedCounterType)(myTicket - m_readTicket.GetWorkingCompleteCount())) >= SIZE_BUFFER)

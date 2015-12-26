@@ -29,7 +29,7 @@ namespace Util {
 
 		TimerThread()
 		{
-			Start();
+			//Start();
 		}
 
 		virtual void Run() override
@@ -54,6 +54,45 @@ namespace Util {
 	};
 
 	TimerThread TimerUpdateThread;
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Module
+	//
+
+
+	LibComponentTime::LibComponentTime()
+		: Component((UINT)ComponentID)
+	{
+
+	}
+
+	LibComponentTime::~LibComponentTime()
+	{
+
+	}
+
+	// Initialize server component
+	HRESULT LibComponentTime::InitializeComponent()
+	{
+		HRESULT hr = Component::InitializeComponent();
+		if (FAILED(hr)) return hr;
+
+		TimerUpdateThread.Start();
+		return S_OK;
+	}
+
+	// Terminate server component
+	void LibComponentTime::TerminateComponent()
+	{
+		Component::TerminateComponent();
+
+		TimerUpdateThread.Stop(true);
+	}
+
 
 
 	Time_Chrono::Time_Chrono()

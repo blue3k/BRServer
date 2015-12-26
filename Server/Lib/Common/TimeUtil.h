@@ -13,7 +13,8 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/ClassUtil.h"
+//#include "Common/ClassUtil.h"
+#include "Common/BrLibComponents.h"
 
 namespace BR {
 namespace Util {
@@ -125,6 +126,33 @@ namespace Util {
 		// Timer check update
 		bool	CheckTimer();
 	};
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Module
+	//
+
+	class LibComponentTime : public Component
+	{
+	public:
+
+		enum {
+			ComponentID = (UINT)LibCompoentIDs::Timer
+		};
+
+	public:
+
+		LibComponentTime();
+		~LibComponentTime();
+
+		// Initialize server component
+		virtual HRESULT InitializeComponent() override;
+		// Terminate server component
+		virtual void TerminateComponent() override;
+	};
+
+
 
 
 	////////////////////////////////////////////////////////////////////////////////

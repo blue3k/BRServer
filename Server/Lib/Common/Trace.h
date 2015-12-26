@@ -175,10 +175,6 @@ namespace Trace {
 	// Trace system initialize
 	//
 
-	void Initialize( TraceModule** trcMods, TraceOutModule &trcShare );
-	void Initialize();
-	void Uninitialize( TraceModule** trcMods = NULL );
-
 	void Flush();
 
 	// Allocate console if not exist
@@ -201,7 +197,7 @@ namespace Trace {
 	void InitExceptionHandler();
 
 	
-}; // namespace Trace
+} // namespace Trace
 } // namespace BR
 
 

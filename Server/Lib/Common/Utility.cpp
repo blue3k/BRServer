@@ -127,8 +127,8 @@ namespace Util {
 
 	void SetServiceName(const char* serviceName)
 	{
-		StrUtil::UTF8ToWCS(serviceName, g_wszServiceName);
 		StrUtil::StringCpy(g_szServiceName, serviceName);
+		StrUtil::UTF8ToWCS(serviceName, g_wszServiceName);
 	}
 
 

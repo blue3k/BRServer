@@ -224,37 +224,39 @@ namespace Net {
 		pIOBuffer->SetupRecvTCP(GetCID());
 
 		hrErr = NetSystem::Recv(GetSocket(), pIOBuffer);
-		if (FAILED(hrErr))
+		switch (hrErr)
 		{
-			switch (hrErr)
-			{
-			case E_NET_CONNABORTED:
-			case E_NET_CONNRESET:
-			case E_NET_NETRESET:
-			case E_NET_NOTCONN:
-			case E_NET_NOTSOCK:
-			case E_NET_SHUTDOWN:
-				netTrace(Trace::TRC_WARN, "TCP Read failed, Connection Reset CID:{0}, err:{1:X8}, pending:{2}", GetCID(), hrErr, GetPendingRecvCount());
-				// Send fail by connection close
-				// Need to disconnect
-				CloseConnection();
-				netErrSilent(E_NET_CONNECTION_CLOSED);
-				break;
-			default:
-				//netTrace(Trace::TRC_ERROR, "TCP Recv failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
-				netErrSilent(hrErr);
-				break;
-			case E_NET_IO_PENDING:
-			case E_NET_WOULDBLOCK:
-				// Recv is pended
-				hr = hrErr;
-				break;
-			case E_NET_TRY_AGAIN:
-				// try again
-				hr = hrErr;
-				break;
-			};
-		}
+		case E_NET_CONNABORTED:
+		case E_NET_CONNRESET:
+		case E_NET_NETRESET:
+		case E_NET_NOTCONN:
+		case E_NET_NOTSOCK:
+		case E_NET_SHUTDOWN:
+			netTrace(Trace::TRC_WARN, "TCP Read failed, Connection Reset CID:{0}, err:{1:X8}, pending:{2}", GetCID(), hrErr, GetPendingRecvCount());
+			// Send fail by connection close
+			// Need to disconnect
+			CloseConnection();
+			netErrSilent(E_NET_CONNECTION_CLOSED);
+			break;
+		default:
+			//netTrace(Trace::TRC_ERROR, "TCP Recv failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
+			netErrSilent(hrErr);
+			break;
+		case E_NET_IO_PENDING:
+		case E_NET_WOULDBLOCK:
+			// Recv is pended
+			hr = hrErr;
+			break;
+		case E_NET_TRY_AGAIN:
+			// try again
+			hr = hrErr;
+			break;
+		case S_FALSE:
+			hr = E_NET_TRY_AGAIN;
+			break;
+		case S_OK:
+			break;
+		};
 
 
 	Proc_End:

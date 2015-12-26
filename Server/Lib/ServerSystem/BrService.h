@@ -38,6 +38,9 @@ namespace Svr
 		// Uninstall service
 		HRESULT ServiceUninstall();
 
+		// prepare service running
+		HRESULT ServicePrepare();
+
 		// Run service main function
 		HRESULT ServiceRun(std::vector<std::string>& cmdArgs, BR::Svr::BrServer *pSvrInstance );
 	};

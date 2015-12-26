@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/MemoryPool.h"
-#include "ServerSystem/Component.h"
+#include "Common/BrComponent.h"
 
 
 namespace BR {

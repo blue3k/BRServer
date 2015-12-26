@@ -2,6 +2,9 @@
 //
 
 #include "stdafx.h"
+#include "Common/BrLibComponents.h"
+#include "Common/TimeUtil.h"
+#include "Common/TraceComponent.h"
 #include "GameServer.h"
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
@@ -46,7 +49,16 @@ int main(int numArg, const char* argc[])
 	HRESULT hr = S_OK;
 	SharedPointerT<BR::SharedModuleServer::SharedModuleServer> pServerInstance;
 
-	BR::MemoryPoolManager::Initialize();
+	LibComponentCarrier libComponents;
+
+	svrChk(BR::Svr::Service::ServicePrepare());
+
+	svrChk(libComponents.AddComponent<LibComponentTrace>());
+	svrChk(libComponents.AddComponent<Util::LibComponentTime>());
+	svrChk(libComponents.AddComponent<MemoryPoolManager>());
+
+	svrChk(libComponents.InitializeComponents());
+
 
 	pServerInstance = SharedPointerT<BR::SharedModuleServer::SharedModuleServer>(new BR::SharedModuleServer::SharedModuleServer );
 
@@ -64,7 +76,7 @@ Proc_End:
 		pServerInstance = SharedPointerT<BR::SharedModuleServer::SharedModuleServer>();
 	}
 
-	BR::MemoryPoolManager::Terminate();
+	libComponents.TerminateComponents();
 
 	return 0;
 }

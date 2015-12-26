@@ -287,6 +287,12 @@
       <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="BrLibComponents.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="TraceComponent.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayUtil.h">
@@ -518,5 +524,14 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="BrComponent.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="BrLibComponents.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="TraceComponent.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

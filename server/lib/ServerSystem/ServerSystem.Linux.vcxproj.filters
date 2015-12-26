@@ -437,7 +437,6 @@
     <ClInclude Include="BrServer.h" />
     <ClInclude Include="BrServerUtil.h" />
     <ClInclude Include="BrService.h" />
-    <ClInclude Include="Component.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="EntityTable.h" />

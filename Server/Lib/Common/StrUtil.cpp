@@ -12,6 +12,7 @@
 
 #include "stdafx.h"
 #include "Common/StrUtil.h"
+#include "Common/Trace.h"
 #include "Common/ToString.h"
 #include "Common/Argument.h"
 #include "Common/StrFormat.h"
@@ -211,7 +212,7 @@ namespace StrUtil {
 		{
 			HRESULT hr = S_OK;
 			auto orgDestSize = destSize;
-			char* srcNonConst = const_cast<char*>(src);
+
 			convertedSize = 0;
 
 			iconv_t context = iconv_open(destCode, srcCode);
@@ -222,7 +223,14 @@ namespace StrUtil {
 			}
 
 #if LINUX
-			convertedSize = iconv(context, &srcNonConst, &srcSize, &dest, &destSize); // linux version uses char** for src
+			{
+				// On linux, source buffer can be changed.
+				char srcBuffer[2048];
+				char *srcTemp = sizeof(srcBuffer) >= srcSize ? srcBuffer : new char[srcSize];
+				defChkSilent(StrUtil::StringCpy(srcTemp, srcSize, src));
+
+				convertedSize = iconv(context, &srcTemp, &srcSize, &dest, &destSize); // linux version uses char** for src
+			}
 #else
 			convertedSize = iconv(context, &src, &srcSize, &dest, &destSize); // linux version uses char** for src
 #endif

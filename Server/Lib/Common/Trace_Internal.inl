@@ -18,10 +18,7 @@
 // Trace Output Module
 //
 
-void TraceOutModule::NewInstance()
-{
-	stm_pInstance = new TraceOutModule;
-}
+
 
 void TraceOutModule::SetInstance( TraceOutModule *pInstance )
 {

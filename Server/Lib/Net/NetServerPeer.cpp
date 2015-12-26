@@ -379,12 +379,15 @@ namespace Net {
 		m_PendingRecvCnt.fetch_add(1, std::memory_order_relaxed);
 
 
-
 		while (1)
 		{
 			hrErr = NetSystem::RecvFrom(GetSocket(), pOver);
 			switch (hrErr)
 			{
+			case S_FALSE:
+				hr = E_NET_TRY_AGAIN;
+				goto Proc_End;// success
+				break;
 			case S_OK:
 			case E_NET_IO_PENDING:
 			case E_NET_TRY_AGAIN:
@@ -406,35 +409,6 @@ namespace Net {
 				break;
 			};
 		}
-
-		//if( WSARecvFrom( GetSocket(), &pOver->wsaBuff, 1, NULL, &pOver->dwFlags, (sockaddr*)&pOver->From, &pOver->iSockLen, pOver, nullptr ) == SOCKET_ERROR )
-		//{
-		//	iErr = WSAGetLastError();
-		//	switch( iErr )
-		//	{
-		//	case WSA_IO_PENDING:
-		//		//goto Proc_End;// success
-		//		
-		//		break;
-		//	case WSAENETUNREACH:
-		//	case WSAECONNABORTED:
-		//	case WSAECONNRESET:
-		//	case WSAENETRESET:
-		//		// some remove has problem with continue connection
-		//		netTrace( TRC_NETCTRL, "UDP Remote has connection error err={0}, {1}", iErr, pOver->From );
-		//		//goto Proc_End;
-		//	default:
-		//		// Unknown error
-		//		netTrace( Trace::TRC_ERROR, "UDP Read Pending failed err={0}", iErr );
-		//		netErr( HRESULT_FROM_WIN32(iErr) );
-		//		break;
-		//	};
-		//}
-		//else
-		//{
-		//	netTrace( TRC_NETCTRL, "UDP Error Directive receive err={0}, {1}", iErr, pOver->From );
-		//}
-
 
 
 	Proc_End:

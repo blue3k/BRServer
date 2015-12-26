@@ -2,6 +2,9 @@
 //
 
 #include "stdafx.h"
+#include "Common/BrLibComponents.h"
+#include "Common/TimeUtil.h"
+#include "Common/TraceComponent.h"
 #include "EntityServer.h"
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
@@ -44,8 +47,16 @@ int main(int numArg, const char* argc[])
 
 	HRESULT hr = S_OK;
 	SharedPointerT<BR::EntityServer::EntityServer> pServerInstance;
+	LibComponentCarrier libComponents;
 
-	BR::MemoryPoolManager::Initialize();
+	svrChk(BR::Svr::Service::ServicePrepare());
+
+	svrChk(libComponents.AddComponent<LibComponentTrace>());
+	svrChk(libComponents.AddComponent<Util::LibComponentTime>());
+	svrChk(libComponents.AddComponent<MemoryPoolManager>());
+
+	svrChk(libComponents.InitializeComponents());
+
 
 	pServerInstance = SharedPointerT<BR::EntityServer::EntityServer>(new BR::EntityServer::EntityServer);
 
@@ -62,7 +73,7 @@ Proc_End:
 		pServerInstance = SharedPointerT<BR::EntityServer::EntityServer>();
 	}
 
-	BR::MemoryPoolManager::Terminate();
+	libComponents.TerminateComponents();
 
 
 	return (int)0;
