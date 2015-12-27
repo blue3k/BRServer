@@ -56,7 +56,8 @@ public class GameLogVoteResult : GameLogItem {
     } 
   }
 
-  public unsafe GameLogVoteResult(uint timeStamp, uint numRankers) : this(BRMonitoringPINVOKE.new_GameLogVoteResult(timeStamp, numRankers), true) {
+  public unsafe GameLogVoteResult(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t timeStamp, uint numRankers) : this(BRMonitoringPINVOKE.new_GameLogVoteResult(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.getCPtr(timeStamp), numRankers), true) {
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public unsafe void SetVotedRankers(uint numRankers, SWIGTYPE_p_unsigned___int64 ranker) {

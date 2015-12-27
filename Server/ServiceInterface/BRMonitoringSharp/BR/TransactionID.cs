@@ -36,27 +36,6 @@ public class TransactionID : global::System.IDisposable {
     }
   }
 
-  public unsafe EntityID EntityID {
-    set {
-      BRMonitoringPINVOKE.TransactionID_EntityID_set(swigCPtr, EntityID.getCPtr(value));
-    } 
-    get {
-      global::System.IntPtr cPtr = BRMonitoringPINVOKE.TransactionID_EntityID_get(swigCPtr);
-      EntityID ret = (cPtr == global::System.IntPtr.Zero) ? null : new EntityID(cPtr, false);
-      return ret;
-    } 
-  }
-
-  public unsafe uint TransID {
-    set {
-      BRMonitoringPINVOKE.TransactionID_TransID_set(swigCPtr, value);
-    } 
-    get {
-      uint ret = BRMonitoringPINVOKE.TransactionID_TransID_get(swigCPtr);
-      return ret;
-    } 
-  }
-
   public unsafe ulong ID {
     set {
       BRMonitoringPINVOKE.TransactionID_ID_set(swigCPtr, value);
@@ -83,6 +62,16 @@ public class TransactionID : global::System.IDisposable {
 
   public unsafe bool IsValid() {
     bool ret = BRMonitoringPINVOKE.TransactionID_IsValid(swigCPtr);
+    return ret;
+  }
+
+  public unsafe EntityID GetEntityID() {
+    EntityID ret = new EntityID(BRMonitoringPINVOKE.TransactionID_GetEntityID(swigCPtr), true);
+    return ret;
+  }
+
+  public unsafe uint GetTransactionIndex() {
+    uint ret = BRMonitoringPINVOKE.TransactionID_GetTransactionIndex(swigCPtr);
     return ret;
   }
 

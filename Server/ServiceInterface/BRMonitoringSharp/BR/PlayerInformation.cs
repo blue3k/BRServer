@@ -46,12 +46,12 @@ public class PlayerInformation : global::System.IDisposable {
     } 
   }
 
-  public unsafe ulong FacebookUID {
+  public unsafe ulong FBUID {
     set {
-      BRMonitoringPINVOKE.PlayerInformation_FacebookUID_set(swigCPtr, value);
+      BRMonitoringPINVOKE.PlayerInformation_FBUID_set(swigCPtr, value);
     } 
     get {
-      ulong ret = BRMonitoringPINVOKE.PlayerInformation_FacebookUID_get(swigCPtr);
+      ulong ret = BRMonitoringPINVOKE.PlayerInformation_FBUID_get(swigCPtr);
       return ret;
     } 
   }

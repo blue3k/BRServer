@@ -137,11 +137,13 @@
     <Compile Include="BR\RankingPlayerInformation.cs" />
     <Compile Include="BR\RankingType.cs" />
     <Compile Include="BR\RouteContext.cs" />
+    <Compile Include="BR\ServerFriendInformation.cs" />
     <Compile Include="BR\ServiceInformation.cs" />
     <Compile Include="BR\ServiceStatus.cs" />
     <Compile Include="BR\SharedObject.cs" />
     <Compile Include="BR\SharedPointer.cs" />
     <Compile Include="BR\SWIGTYPE_p_BR__ClusterID.cs" />
+    <Compile Include="BR\SWIGTYPE_p_BR__SharedPointerTT_BR__Net__IConnection_t.cs" />
     <Compile Include="BR\SWIGTYPE_p_BR__SharedReferenceManager.cs" />
     <Compile Include="BR\SWIGTYPE_p_char.cs" />
     <Compile Include="BR\SWIGTYPE_p_int.cs" />
@@ -156,14 +158,16 @@
     <Compile Include="BR\SWIGTYPE_p_p_unsigned_char.cs" />
     <Compile Include="BR\SWIGTYPE_p_signed___int64.cs" />
     <Compile Include="BR\SWIGTYPE_p_sockaddr_in6.cs" />
+    <Compile Include="BR\SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationMS_t.cs" />
+    <Compile Include="BR\SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.cs" />
     <Compile Include="BR\SWIGTYPE_p_unsigned_char.cs" />
     <Compile Include="BR\SWIGTYPE_p_unsigned_int.cs" />
     <Compile Include="BR\SWIGTYPE_p_unsigned___int64.cs" />
-    <Compile Include="BR\SWIGTYPE_p_WCHAR.cs" />
+    <Compile Include="BR\SWIGTYPE_p_void.cs" />
     <Compile Include="BR\TotalRankingPlayerInformation.cs" />
     <Compile Include="BR\TransactionID.cs" />
+    <Compile Include="BR\TransLogCategory.cs" />
     <Compile Include="BR\WeakPointer.cs" />
-    <Compile Include="BR\__UTF8.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

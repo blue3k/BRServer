@@ -45,7 +45,8 @@ public class GameLogGameStateChange : GameLogItem {
     } 
   }
 
-  public unsafe GameLogGameStateChange(uint timeStamp) : this(BRMonitoringPINVOKE.new_GameLogGameStateChange(timeStamp), true) {
+  public unsafe GameLogGameStateChange(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t timeStamp) : this(BRMonitoringPINVOKE.new_GameLogGameStateChange(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.getCPtr(timeStamp)), true) {
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public unsafe void SetState(GameStateID gameState) {

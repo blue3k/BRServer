@@ -4,6 +4,9 @@
 #include "stdafx.h"
 #include "Common/MemoryPool.h"
 #include "Common/TimeUtil.h"
+#include "Common/Trace.h"
+#include "Common/BrLibComponents.h"
+#include "Common/TraceComponent.h"
 #include "ServerSystem/SvrTrace.h"
 #include "BRMonitoring.h"
 #include "Common/BrXML.h"
@@ -11,18 +14,23 @@
 
 //// This is an example of an exported variable
 
+static BR::LibComponentCarrier g_libComponents;
+
+using namespace BR;
+
 BRMONITORING_API int InitializeNativeSystem(const char* serviceName)
 {
 	HRESULT hr = S_OK;
 
 	xmlInitParser();
 
-	BR::Util::SetServiceNameA(serviceName);
+	BR::Util::SetServiceName(serviceName);
 
-	BR::MemoryPoolManager::Initialize();
-	BR::Util::Time.InitializeTimer();
-	BR::Trace::InitExceptionHandler();
-	BR::Trace::Initialize();
+	defChk(g_libComponents.AddComponent<BR::LibComponentTrace>());
+	defChk(g_libComponents.AddComponent<BR::Util::LibComponentTime>());
+	defChk(g_libComponents.AddComponent<BR::MemoryPoolManager>());
+
+	defChk(g_libComponents.InitializeComponents());
 
 Proc_End:
 
@@ -33,9 +41,7 @@ BRMONITORING_API int TerminateNativeSystem(void)
 {
 	HRESULT hr = S_OK;
 
-	BR::Trace::Uninitialize();
-	BR::MemoryPoolManager::Terminate();
-	BR::Util::Time.TerminateTimer();
+	g_libComponents.TerminateComponents();
 
 
 	/*
@@ -61,3 +67,4 @@ BRMONITORING_API BR::SharedPointerT<BR::Svr::PerformanceCounterInstance>* Create
 {
 	return new BR::SharedPointerT<BR::Svr::PerformanceCounterInstance>;
 }
+

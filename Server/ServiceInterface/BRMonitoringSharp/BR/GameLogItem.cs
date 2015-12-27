@@ -56,17 +56,20 @@ public class GameLogItem : global::System.IDisposable {
     } 
   }
 
-  public unsafe uint TimeStamp {
+  public unsafe SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t TimeStamp {
     set {
-      BRMonitoringPINVOKE.GameLogItem_TimeStamp_set(swigCPtr, value);
+      BRMonitoringPINVOKE.GameLogItem_TimeStamp_set(swigCPtr, SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.getCPtr(value));
+      if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      uint ret = BRMonitoringPINVOKE.GameLogItem_TimeStamp_get(swigCPtr);
+      SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t ret = new SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t(BRMonitoringPINVOKE.GameLogItem_TimeStamp_get(swigCPtr), true);
+      if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public unsafe GameLogItem(GameLogType logType, uint timeStamp, uint logItemSize) : this(BRMonitoringPINVOKE.new_GameLogItem((int)logType, timeStamp, logItemSize), true) {
+  public unsafe GameLogItem(GameLogType logType, SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t timeStamp, uint logItemSize) : this(BRMonitoringPINVOKE.new_GameLogItem((int)logType, SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.getCPtr(timeStamp), logItemSize), true) {
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
 }

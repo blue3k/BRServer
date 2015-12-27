@@ -381,7 +381,7 @@ namespace Svr {
 			}
 
 
-			Trace::Initialize();
+//			Trace::Initialize();
 
 			Net::RegisterConnectionDebugMessage();
 
@@ -465,7 +465,7 @@ namespace Svr {
 
 			g_pSvrInstance = nullptr;
 
-			Trace::Uninitialize();
+//			Trace::Uninitialize();
 
 			return hr;
 		}

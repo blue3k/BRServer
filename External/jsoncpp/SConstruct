@@ -107,7 +107,7 @@ elif platform == 'mingw':
 elif platform.startswith('linux-gcc'):
     env.Tool( 'default' )
     env.Append( LIBS = ['pthread'], CCFLAGS = "-Wall -std=c++14 -pthread" )
-    env['SHARED_LIB_ENABLED'] = True
+    env['SHARED_LIB_ENABLED'] = False
 else:
     print "UNSUPPORTED PLATFORM."
     env.Exit(1)

@@ -34,7 +34,7 @@ namespace LoadTest
 
         static void DLLLoadTest()
         {
-            IntPtr Handle = LoadLibrary("BRMonitoring.dll");
+            IntPtr Handle = LoadLibrary("BRMonitoring");
             if (Handle == IntPtr.Zero)
             {
                 int errorCode = Marshal.GetLastWin32Error();

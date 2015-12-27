@@ -2,8 +2,8 @@
 
 
 
-REMOTE_BASEPATH=/GameServer/Server/bin/DEBUG
-SSH_PARAMS=-f blue3k@161.202.74.206 -i ./LinuxBuild/Bravesprivate2.popen
+export REMOTE_BASEPATH=/GameServer/Server/bin/DEBUG
+export SSH_PARAMS='-f blue3k@10.133.29.154 -i ./Bravesprivate2.popen'
 
 ssh $SSH_PARAMS "$REMOTE_BASEPATH/BREntityServer -n:BREntityServer1"
 

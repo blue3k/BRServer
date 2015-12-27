@@ -53,7 +53,7 @@ namespace Net {
 		m_pConnection = pConnection;
 		if (pConnection != nullptr)
 		{
-			SetTaskID(pConnection->GetCID());
+			SetTaskID((UINT)pConnection->GetCID());
 		}
 	}
 

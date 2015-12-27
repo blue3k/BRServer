@@ -23,12 +23,16 @@ public class IConnectionEventHandler : global::System.IDisposable {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
+  ~IConnectionEventHandler() {
+    Dispose();
+  }
+
   public virtual void Dispose() {
     lock(this) {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          throw new global::System.MethodAccessException("C++ destructor does not have public access");
+          BRMonitoringPINVOKE.delete_IConnectionEventHandler(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
@@ -36,8 +40,8 @@ public class IConnectionEventHandler : global::System.IDisposable {
     }
   }
 
-  public unsafe void OnConnectionEvent(IConnection pConn, IConnection.tag_Event evt) {
-    BRMonitoringPINVOKE.IConnectionEventHandler_OnConnectionEvent(swigCPtr, IConnection.getCPtr(pConn), IConnection.tag_Event.getCPtr(evt));
+  public unsafe void OnConnectionEvent(IConnection pConn, IConnection.Event evt) {
+    BRMonitoringPINVOKE.IConnectionEventHandler_OnConnectionEvent(swigCPtr, IConnection.getCPtr(pConn), IConnection.Event.getCPtr(evt));
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -46,8 +50,13 @@ public class IConnectionEventHandler : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int OnNetSyncMessage(IConnection pConn, NetCtrlIDs netCtrlID) {
-    int ret = BRMonitoringPINVOKE.IConnectionEventHandler_OnNetSyncMessage(swigCPtr, IConnection.getCPtr(pConn), (int)netCtrlID);
+  public unsafe int OnNetSyncMessage(IConnection pConn) {
+    int ret = BRMonitoringPINVOKE.IConnectionEventHandler_OnNetSyncMessage(swigCPtr, IConnection.getCPtr(pConn));
+    return ret;
+  }
+
+  public unsafe int OnNetSendReadyMessage(IConnection pConn) {
+    int ret = BRMonitoringPINVOKE.IConnectionEventHandler_OnNetSendReadyMessage(swigCPtr, IConnection.getCPtr(pConn));
     return ret;
   }
 

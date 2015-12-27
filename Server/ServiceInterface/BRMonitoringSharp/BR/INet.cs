@@ -66,17 +66,6 @@ public class INet : global::System.IDisposable {
       }
     }
   
-    public unsafe static INet.Event NullValue {
-      set {
-        BRMonitoringPINVOKE.INet_Event_NullValue_set(INet.Event.getCPtr(value));
-      } 
-      get {
-        global::System.IntPtr cPtr = BRMonitoringPINVOKE.INet_Event_NullValue_get();
-        INet.Event ret = (cPtr == global::System.IntPtr.Zero) ? null : new INet.Event(cPtr, false);
-        return ret;
-      } 
-    }
-  
     public unsafe INet.Event.EventTypes EventType {
       set {
         BRMonitoringPINVOKE.INet_Event_EventType_set(swigCPtr, (int)value);
@@ -98,13 +87,16 @@ public class INet : global::System.IDisposable {
       } 
     }
   
-    public unsafe Event() : this(BRMonitoringPINVOKE.new_INet_Event__SWIG_0(), true) {
+    public unsafe Event(SWIGTYPE_p_void ptr) : this(BRMonitoringPINVOKE.new_INet_Event__SWIG_0(SWIGTYPE_p_void.getCPtr(ptr)), true) {
     }
   
-    public unsafe Event(INet.Event.EventTypes eventType, IConnection pCon) : this(BRMonitoringPINVOKE.new_INet_Event__SWIG_1((int)eventType, IConnection.getCPtr(pCon)), true) {
+    public unsafe Event() : this(BRMonitoringPINVOKE.new_INet_Event__SWIG_1(), true) {
     }
   
-    public unsafe Event(INet.Event.EventTypes eventType) : this(BRMonitoringPINVOKE.new_INet_Event__SWIG_2((int)eventType), true) {
+    public unsafe Event(INet.Event.EventTypes eventType, IConnection pCon) : this(BRMonitoringPINVOKE.new_INet_Event__SWIG_2((int)eventType, IConnection.getCPtr(pCon)), true) {
+    }
+  
+    public unsafe Event(INet.Event.EventTypes eventType) : this(BRMonitoringPINVOKE.new_INet_Event__SWIG_3((int)eventType), true) {
     }
   
     public unsafe INet.Event CopyFrom(INet.Event src) {
@@ -115,6 +107,12 @@ public class INet : global::System.IDisposable {
   
     public unsafe bool EqualTo(INet.Event src) {
       bool ret = BRMonitoringPINVOKE.INet_Event_EqualTo(swigCPtr, INet.Event.getCPtr(src));
+      if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    }
+  
+    public unsafe bool NotEqualTo(INet.Event src) {
+      bool ret = BRMonitoringPINVOKE.INet_Event_NotEqualTo(swigCPtr, INet.Event.getCPtr(src));
       if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     }
@@ -178,22 +176,6 @@ public class INet : global::System.IDisposable {
 
   public unsafe int TakeOverConnection(IConnection pIConnection) {
     int ret = BRMonitoringPINVOKE.INet_TakeOverConnection(swigCPtr, IConnection.getCPtr(pIConnection));
-    return ret;
-  }
-
-  public unsafe int SendMsg(IConnection pConnection, MessageData pMsg) {
-    int ret = BRMonitoringPINVOKE.INet_SendMsg__SWIG_0(swigCPtr, IConnection.getCPtr(pConnection), MessageData.getCPtr(pMsg));
-    return ret;
-  }
-
-  public unsafe int SendMsg(IConnection pConnection, SWIGTYPE_p_sockaddr_in6 dstAddr, MessageData pMsg) {
-    int ret = BRMonitoringPINVOKE.INet_SendMsg__SWIG_1(swigCPtr, IConnection.getCPtr(pConnection), SWIGTYPE_p_sockaddr_in6.getCPtr(dstAddr), MessageData.getCPtr(pMsg));
-    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public unsafe int SendMsg(IConnection pConnection, uint uiBuffSize, SWIGTYPE_p_unsigned_char pBuff) {
-    int ret = BRMonitoringPINVOKE.INet_SendMsg__SWIG_2(swigCPtr, IConnection.getCPtr(pConnection), uiBuffSize, SWIGTYPE_p_unsigned_char.getCPtr(pBuff));
     return ret;
   }
 

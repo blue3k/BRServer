@@ -105,6 +105,8 @@
     <ClCompile Include="File\BRFile.win32.cpp">
       <Filter>File</Filter>
     </ClCompile>
+    <ClCompile Include="BrLibComponents.cpp" />
+    <ClCompile Include="TraceComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\GameConst.h" />
@@ -355,6 +357,9 @@
     <ClInclude Include="File\BRFile.h">
       <Filter>File</Filter>
     </ClInclude>
+    <ClInclude Include="BrComponent.h" />
+    <ClInclude Include="BrLibComponents.h" />
+    <ClInclude Include="TraceComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".\ArrayUtil.inl">

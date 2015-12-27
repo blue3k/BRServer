@@ -27,10 +27,6 @@ public class BRMonitoring {
     return ret;
   }
 
-  public unsafe static void RegisterConnectionDebugMessage() {
-    BRMonitoringPINVOKE.RegisterConnectionDebugMessage();
-  }
-
   public unsafe static int InitializeNativeSystem(string serviceName) {
     int ret = BRMonitoringPINVOKE.InitializeNativeSystem(serviceName);
     return ret;
@@ -51,6 +47,11 @@ public class BRMonitoring {
 		return result == null ? null : new PerformanceCounterInstancePtr(result,true);
 	}
 
+  public unsafe static readonly bool WINDOWS = BRMonitoringPINVOKE.WINDOWS_get();
+  public unsafe static readonly int TRUE = BRMonitoringPINVOKE.TRUE_get();
+  public unsafe static readonly int FALSE = BRMonitoringPINVOKE.FALSE_get();
+  public unsafe static readonly int S_OK = BRMonitoringPINVOKE.S_OK_get();
+  public unsafe static readonly int MAX_PATH = BRMonitoringPINVOKE.MAX_PATH_get();
   public unsafe static readonly int NET_SEQUENCE_BITS = BRMonitoringPINVOKE.NET_SEQUENCE_BITS_get();
   public unsafe static readonly int NET_SEQUENCE_MASK = BRMonitoringPINVOKE.NET_SEQUENCE_MASK_get();
   public unsafe static readonly int MAX_MESSAGE_SIZE = BRMonitoringPINVOKE.MAX_MESSAGE_SIZE_get();

@@ -35,8 +35,8 @@ public class PerformanceCounterInstance : SharedObject {
     }
   }
 
-  public unsafe uint GetUpdatedTime() {
-    uint ret = BRMonitoringPINVOKE.PerformanceCounterInstance_GetUpdatedTime(swigCPtr);
+  public unsafe SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationMS_t GetUpdatedTime() {
+    SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationMS_t ret = new SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationMS_t(BRMonitoringPINVOKE.PerformanceCounterInstance_GetUpdatedTime(swigCPtr), true);
     return ret;
   }
 

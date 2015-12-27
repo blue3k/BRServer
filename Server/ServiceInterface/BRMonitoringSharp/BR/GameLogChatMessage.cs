@@ -85,7 +85,8 @@ public class GameLogChatMessage : GameLogItem {
     } 
   }
 
-  public unsafe GameLogChatMessage(uint timeStamp, uint messageBufferSize) : this(BRMonitoringPINVOKE.new_GameLogChatMessage(timeStamp, messageBufferSize), true) {
+  public unsafe GameLogChatMessage(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t timeStamp, uint messageBufferSize) : this(BRMonitoringPINVOKE.new_GameLogChatMessage(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.getCPtr(timeStamp), messageBufferSize), true) {
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public unsafe int SetChatMessage(ulong player, byte playerStatus, ChatType type, string message) {

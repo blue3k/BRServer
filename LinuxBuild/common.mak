@@ -43,13 +43,13 @@ OBJECTS=$(addprefix $(TARGET_OBJ_PATH)/,$(SOURCES:.cpp=.o))
 DEPENDANCIES=$(addprefix $(TARGET_OBJ_PATH)/,$(SOURCES:.cpp=.d))
 
 
-INCLUDES+= $(ROOT_PATH)/Server/Lib /usr/include /usr/include/mysql
+INCLUDES+= $(ROOT_PATH)/Server/Lib $(ROOT_PATH)/Server/bin/include /usr/include /usr/include/mysql
 DEFINES+= $(BUILD_MODE) $(LOGNAME)
 
 CC=g++
-CFLAGS=-c -g -std=c++14 -pthread -static-libgcc -Wall $(addprefix -I,$(INCLUDES)) $(addprefix -D,$(DEFINES))
+CFLAGS=-c -g -std=c++14 -pthread -static-libgcc -static-libstdc++ -Wall $(addprefix -I,$(INCLUDES)) $(addprefix -D,$(DEFINES))
 CPPFLAGS:=$(CFLAGS)
-LDFLAGS=-g -std=c++14 -pthread -static-libgcc 
+LDFLAGS=-g -std=c++14 -pthread -static-libgcc  -static-libstdc++ -L=$(ROOT_PATH)/Server/bin/lib
 #LDFLAGS=-g -std=c++14 -pthread -static-libgcc
 
 ifeq "$(BUILD_MODE)" "DEBUG"

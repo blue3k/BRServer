@@ -45,7 +45,8 @@ public class GameLogGameEnd : GameLogItem {
     } 
   }
 
-  public unsafe GameLogGameEnd(uint timeStamp) : this(BRMonitoringPINVOKE.new_GameLogGameEnd(timeStamp), true) {
+  public unsafe GameLogGameEnd(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t timeStamp) : this(BRMonitoringPINVOKE.new_GameLogGameEnd(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.getCPtr(timeStamp)), true) {
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public unsafe void SetWinner(GameWinner winner) {

@@ -25,7 +25,7 @@ namespace BR.Config
             catch (Exception exp)
             {
                 System.Diagnostics.Debug.Assert(false, exp.Message);
-                return false;
+                throw exp;
             }
 
             Instance = config;

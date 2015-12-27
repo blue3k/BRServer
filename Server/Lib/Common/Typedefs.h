@@ -15,12 +15,12 @@
 
 // Decide target
 #if __GNUC__
-#if __x86_64__ || __ppc64__
-#define X64	true
-#else
-#define X32	true
-#endif
-#elif _WIN64
+	#if __x86_64__ || __ppc64__
+		#define X64	true
+	#else
+		#define X32	true
+	#endif
+#elif _WIN64 || defined(_WIN64)
 #define X64	true
 #elif _WIN32
 #define X32	true

@@ -40,17 +40,6 @@ public class SharedPointer : global::System.IDisposable {
     }
   }
 
-  public unsafe static SharedPointer NullValue {
-    set {
-      BRMonitoringPINVOKE.SharedPointer_NullValue_set(SharedPointer.getCPtr(value));
-    } 
-    get {
-      global::System.IntPtr cPtr = BRMonitoringPINVOKE.SharedPointer_NullValue_get();
-      SharedPointer ret = (cPtr == global::System.IntPtr.Zero) ? null : new SharedPointer(cPtr, false);
-      return ret;
-    } 
-  }
-
   public unsafe SharedPointer() : this(BRMonitoringPINVOKE.new_SharedPointer__SWIG_0(), true) {
   }
 

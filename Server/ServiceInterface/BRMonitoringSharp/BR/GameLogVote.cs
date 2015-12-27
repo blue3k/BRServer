@@ -114,7 +114,8 @@ public class GameLogVote : GameLogItem {
     } 
   }
 
-  public unsafe GameLogVote(uint timeStamp, uint numVoter) : this(BRMonitoringPINVOKE.new_GameLogVote(timeStamp, numVoter), true) {
+  public unsafe GameLogVote(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t timeStamp, uint numVoter) : this(BRMonitoringPINVOKE.new_GameLogVote(SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.getCPtr(timeStamp), numVoter), true) {
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public unsafe int InitializeVote(GameVoteType type, int voterCount) {

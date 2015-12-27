@@ -39,16 +39,16 @@ public class IConnection : SharedObject {
     }
   }
 
-  public class tag_Event : global::System.IDisposable {
+  public class Event : global::System.IDisposable {
     private global::System.Runtime.InteropServices.HandleRef swigCPtr;
     protected bool swigCMemOwn;
   
-    internal tag_Event(global::System.IntPtr cPtr, bool cMemoryOwn) {
+    internal Event(global::System.IntPtr cPtr, bool cMemoryOwn) {
       swigCMemOwn = cMemoryOwn;
       swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
     }
   
-    internal static global::System.Runtime.InteropServices.HandleRef getCPtr(tag_Event obj) {
+    internal static global::System.Runtime.InteropServices.HandleRef getCPtr(Event obj) {
       return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
     }
   
@@ -65,44 +65,42 @@ public class IConnection : SharedObject {
       }
     }
   
-    public unsafe static IConnection.tag_Event NullValue {
+    public unsafe IConnection.Event.EventTypes EventType {
       set {
-        BRMonitoringPINVOKE.IConnection_tag_Event_NullValue_set(IConnection.tag_Event.getCPtr(value));
+        BRMonitoringPINVOKE.IConnection_Event_EventType_set(swigCPtr, (int)value);
       } 
       get {
-        global::System.IntPtr cPtr = BRMonitoringPINVOKE.IConnection_tag_Event_NullValue_get();
-        IConnection.tag_Event ret = (cPtr == global::System.IntPtr.Zero) ? null : new IConnection.tag_Event(cPtr, false);
+        IConnection.Event.EventTypes ret = (IConnection.Event.EventTypes)BRMonitoringPINVOKE.IConnection_Event_EventType_get(swigCPtr);
         return ret;
       } 
     }
   
-    public unsafe IConnection.tag_Event.EventTypes EventType {
-      set {
-        BRMonitoringPINVOKE.IConnection_tag_Event_EventType_set(swigCPtr, (int)value);
-      } 
-      get {
-        IConnection.tag_Event.EventTypes ret = (IConnection.tag_Event.EventTypes)BRMonitoringPINVOKE.IConnection_tag_Event_EventType_get(swigCPtr);
-        return ret;
-      } 
+    public unsafe Event(SWIGTYPE_p_void ptr) : this(BRMonitoringPINVOKE.new_IConnection_Event__SWIG_0(SWIGTYPE_p_void.getCPtr(ptr)), true) {
     }
   
-    public unsafe tag_Event() : this(BRMonitoringPINVOKE.new_IConnection_tag_Event__SWIG_0(), true) {
+    public unsafe Event() : this(BRMonitoringPINVOKE.new_IConnection_Event__SWIG_1(), true) {
     }
   
-    public unsafe tag_Event(IConnection.tag_Event.EventTypes eventType, int hrRes) : this(BRMonitoringPINVOKE.new_IConnection_tag_Event__SWIG_1((int)eventType, hrRes), true) {
+    public unsafe Event(IConnection.Event.EventTypes eventType, int hrRes) : this(BRMonitoringPINVOKE.new_IConnection_Event__SWIG_2((int)eventType, hrRes), true) {
     }
   
-    public unsafe tag_Event(IConnection.tag_Event.EventTypes eventType, IConnection.ConnectionState InState) : this(BRMonitoringPINVOKE.new_IConnection_tag_Event__SWIG_2((int)eventType, (int)InState), true) {
+    public unsafe Event(IConnection.Event.EventTypes eventType, IConnection.ConnectionState InState) : this(BRMonitoringPINVOKE.new_IConnection_Event__SWIG_3((int)eventType, (int)InState), true) {
     }
   
-    public unsafe IConnection.tag_Event CopyFrom(IConnection.tag_Event src) {
-      IConnection.tag_Event ret = new IConnection.tag_Event(BRMonitoringPINVOKE.IConnection_tag_Event_CopyFrom(swigCPtr, IConnection.tag_Event.getCPtr(src)), false);
+    public unsafe IConnection.Event CopyFrom(IConnection.Event src) {
+      IConnection.Event ret = new IConnection.Event(BRMonitoringPINVOKE.IConnection_Event_CopyFrom(swigCPtr, IConnection.Event.getCPtr(src)), false);
       if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     }
   
-    public unsafe bool EqualTo(IConnection.tag_Event src) {
-      bool ret = BRMonitoringPINVOKE.IConnection_tag_Event_EqualTo(swigCPtr, IConnection.tag_Event.getCPtr(src));
+    public unsafe bool EqualTo(IConnection.Event src) {
+      bool ret = BRMonitoringPINVOKE.IConnection_Event_EqualTo(swigCPtr, IConnection.Event.getCPtr(src));
+      if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    }
+  
+    public unsafe bool NotEqualTo(IConnection.Event src) {
+      bool ret = BRMonitoringPINVOKE.IConnection_Event_NotEqualTo(swigCPtr, IConnection.Event.getCPtr(src));
       if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     }
@@ -324,9 +322,12 @@ public class IConnection : SharedObject {
   
   }
 
-  public unsafe int SetupNet(INet pNetInstance, uint uiCID) {
-    int ret = BRMonitoringPINVOKE.IConnection_SetupNet(swigCPtr, INet.getCPtr(pNetInstance), uiCID);
-    return ret;
+  public unsafe int SetupNet(INet pNetInstance, System.UInt64 uiCID) {
+System.UInt64* tempuiCID = &uiCID;
+    {
+      int ret = BRMonitoringPINVOKE.IConnection_SetupNet(swigCPtr, INet.getCPtr(pNetInstance), *tempuiCID);
+      return ret;
+    }
   }
 
   public unsafe IConnection.ConnectionInformation GetConnectionInfo() {
@@ -372,8 +373,8 @@ System.UInt64* tempUData = &UData;
     }
   }
 
-  public unsafe uint GetConnectionTime() {
-    uint ret = BRMonitoringPINVOKE.IConnection_GetConnectionTime(swigCPtr);
+  public unsafe SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationMS_t GetConnectionTime() {
+    SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationMS_t ret = new SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationMS_t(BRMonitoringPINVOKE.IConnection_GetConnectionTime(swigCPtr), true);
     return ret;
   }
 
@@ -419,18 +420,18 @@ System.UInt64* tempUData = &UData;
     return ret;
   }
 
-  public unsafe ulong GetRecvMessageCount() {
-    ulong ret = BRMonitoringPINVOKE.IConnection_GetRecvMessageCount(swigCPtr);
+  public unsafe uint GetRecvMessageCount() {
+    uint ret = BRMonitoringPINVOKE.IConnection_GetRecvMessageCount(swigCPtr);
     return ret;
   }
 
-  public unsafe ulong GetConnectionEventCount() {
-    ulong ret = BRMonitoringPINVOKE.IConnection_GetConnectionEventCount(swigCPtr);
+  public unsafe uint GetConnectionEventCount() {
+    uint ret = BRMonitoringPINVOKE.IConnection_GetConnectionEventCount(swigCPtr);
     return ret;
   }
 
-  public unsafe int DequeueConnectionEvent(IConnection.tag_Event curEvent) {
-    int ret = BRMonitoringPINVOKE.IConnection_DequeueConnectionEvent(swigCPtr, IConnection.tag_Event.getCPtr(curEvent));
+  public unsafe int DequeueConnectionEvent(IConnection.Event curEvent) {
+    int ret = BRMonitoringPINVOKE.IConnection_DequeueConnectionEvent(swigCPtr, IConnection.Event.getCPtr(curEvent));
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -443,6 +444,16 @@ System.UInt64* tempUData = &UData;
 
   public unsafe int UpdateNetCtrl() {
     int ret = BRMonitoringPINVOKE.IConnection_UpdateNetCtrl(swigCPtr);
+    return ret;
+  }
+
+  public unsafe int UpdateSendQueue() {
+    int ret = BRMonitoringPINVOKE.IConnection_UpdateSendQueue(swigCPtr);
+    return ret;
+  }
+
+  public unsafe int UpdateSendBufferQueue() {
+    int ret = BRMonitoringPINVOKE.IConnection_UpdateSendBufferQueue(swigCPtr);
     return ret;
   }
 

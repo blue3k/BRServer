@@ -40,17 +40,6 @@ public class WeakPointer : global::System.IDisposable {
     }
   }
 
-  public unsafe static WeakPointer NullValue {
-    set {
-      BRMonitoringPINVOKE.WeakPointer_NullValue_set(WeakPointer.getCPtr(value));
-    } 
-    get {
-      global::System.IntPtr cPtr = BRMonitoringPINVOKE.WeakPointer_NullValue_get();
-      WeakPointer ret = (cPtr == global::System.IntPtr.Zero) ? null : new WeakPointer(cPtr, false);
-      return ret;
-    } 
-  }
-
   public unsafe void FromSharedObject(SharedObject pObject) {
     BRMonitoringPINVOKE.WeakPointer_FromSharedObject(swigCPtr, SharedObject.getCPtr(pObject));
   }

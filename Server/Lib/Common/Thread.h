@@ -68,7 +68,11 @@ namespace BR
 		inline ThreadHandle GetThread();
 		inline ThreadID GetThreadID();
 
+#if WINDOWS
+		intptr_t GetNativeThreadID() { return  GetThreadId(GetThread()); }
+#else
 		intptr_t GetNativeThreadID() { return  syscall(SYS_gettid); }
+#endif
 
 		bool GetIsRunning() { return m_IsRunning.load(std::memory_order_relaxed); }
 

@@ -17,6 +17,7 @@ namespace BR.DB
         public DBConnectionConspiracyTable(DBConnection conn)
         {
             m_Conn = conn;
+            if (m_Conn == null) throw new Exception("Null DB connection");
         }
 
         public void Dispose()

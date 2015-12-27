@@ -417,31 +417,52 @@ SWIGINTERN void SWIG_CSharpException(int code, const char *msg) {
 extern "C" {
 #endif
 
-SWIGEXPORT void SWIGSTDCALL CSharp___UTF8_ch_set(void * jarg1, char * jarg2) {
-  __UTF8 *arg1 = (__UTF8 *) 0 ;
-  char *arg2 ;
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_WINDOWS_get() {
+  unsigned int jresult ;
+  bool result;
   
-  arg1 = (__UTF8 *)jarg1; 
-  arg2 = (char *)jarg2; 
-  {
-    if(arg2) {
-      strncpy((char*)arg1->ch, (const char *)arg2, 1-1);
-      arg1->ch[1-1] = 0;
-    } else {
-      arg1->ch[0] = 0;
-    }
-  }
+  result = (bool)(true);
+  jresult = result; 
+  return jresult;
 }
 
 
-SWIGEXPORT char * SWIGSTDCALL CSharp___UTF8_ch_get(void * jarg1) {
-  char * jresult ;
-  __UTF8 *arg1 = (__UTF8 *) 0 ;
-  char *result = 0 ;
+SWIGEXPORT int SWIGSTDCALL CSharp_TRUE_get() {
+  int jresult ;
+  int result;
   
-  arg1 = (__UTF8 *)jarg1; 
-  result = (char *)(char *) ((arg1)->ch);
-  jresult = SWIG_csharp_string_callback((const char *)result); 
+  result = (int)((1));
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_FALSE_get() {
+  int jresult ;
+  int result;
+  
+  result = (int)((0));
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_S_OK_get() {
+  int jresult ;
+  int result;
+  
+  result = (int)(0);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_MAX_PATH_get() {
+  int jresult ;
+  int result;
+  
+  result = (int)(512);
+  jresult = result; 
   return jresult;
 }
 
@@ -487,10 +508,10 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_NetAddress_strAddr_get(void * jarg1) {
 
 SWIGEXPORT void SWIGSTDCALL CSharp_NetAddress_usPort_set(void * jarg1, unsigned short jarg2) {
   BR::NetAddress *arg1 = (BR::NetAddress *) 0 ;
-  USHORT arg2 ;
+  UINT16 arg2 ;
   
   arg1 = (BR::NetAddress *)jarg1; 
-  arg2 = (USHORT)jarg2; 
+  arg2 = (UINT16)jarg2; 
   if (arg1) (arg1)->usPort = arg2;
 }
 
@@ -498,10 +519,10 @@ SWIGEXPORT void SWIGSTDCALL CSharp_NetAddress_usPort_set(void * jarg1, unsigned 
 SWIGEXPORT unsigned short SWIGSTDCALL CSharp_NetAddress_usPort_get(void * jarg1) {
   unsigned short jresult ;
   BR::NetAddress *arg1 = (BR::NetAddress *) 0 ;
-  USHORT result;
+  UINT16 result;
   
   arg1 = (BR::NetAddress *)jarg1; 
-  result = (USHORT) ((arg1)->usPort);
+  result = (UINT16) ((arg1)->usPort);
   jresult = result; 
   return jresult;
 }
@@ -520,11 +541,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetAddress__SWIG_0() {
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetAddress__SWIG_1(char * jarg1, unsigned short jarg2) {
   void * jresult ;
   char *arg1 = (char *) 0 ;
-  USHORT arg2 ;
+  UINT16 arg2 ;
   BR::NetAddress *result = 0 ;
   
   arg1 = (char *)jarg1; 
-  arg2 = (USHORT)jarg2; 
+  arg2 = (UINT16)jarg2; 
   result = (BR::NetAddress *)new BR::NetAddress((char const *)arg1,arg2);
   jresult = (void *)result; 
   return jresult;
@@ -579,50 +600,6 @@ SWIGEXPORT int SWIGSTDCALL CSharp_EntityID_MAX_IDBIT_get() {
   
   result = (int)BR::EntityID::MAX_IDBIT;
   jresult = (int)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_EntityID_EntityLID_set(void * jarg1, unsigned int jarg2) {
-  BR::EntityID *arg1 = (BR::EntityID *) 0 ;
-  UINT32 arg2 ;
-  
-  arg1 = (BR::EntityID *)jarg1; 
-  arg2 = (UINT32)jarg2; 
-  if (arg1) (arg1)->EntityLID = arg2;
-}
-
-
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_EntityID_EntityLID_get(void * jarg1) {
-  unsigned int jresult ;
-  BR::EntityID *arg1 = (BR::EntityID *) 0 ;
-  UINT32 result;
-  
-  arg1 = (BR::EntityID *)jarg1; 
-  result = (UINT32) ((arg1)->EntityLID);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_EntityID_FacultyID_set(void * jarg1, unsigned int jarg2) {
-  BR::EntityID *arg1 = (BR::EntityID *) 0 ;
-  UINT32 arg2 ;
-  
-  arg1 = (BR::EntityID *)jarg1; 
-  arg2 = (UINT32)jarg2; 
-  if (arg1) (arg1)->FacultyID = arg2;
-}
-
-
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_EntityID_FacultyID_get(void * jarg1) {
-  unsigned int jresult ;
-  BR::EntityID *arg1 = (BR::EntityID *) 0 ;
-  UINT32 result;
-  
-  arg1 = (BR::EntityID *)jarg1; 
-  result = (UINT32) ((arg1)->FacultyID);
-  jresult = result; 
   return jresult;
 }
 
@@ -703,6 +680,30 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_EntityID__SWIG_3(unsigned int jarg1) {
 }
 
 
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_EntityID_GetEntityLID(void * jarg1) {
+  unsigned int jresult ;
+  BR::EntityID *arg1 = (BR::EntityID *) 0 ;
+  UINT32 result;
+  
+  arg1 = (BR::EntityID *)jarg1; 
+  result = (UINT32)((BR::EntityID const *)arg1)->GetEntityLID();
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_EntityID_GetFacultyID(void * jarg1) {
+  unsigned int jresult ;
+  BR::EntityID *arg1 = (BR::EntityID *) 0 ;
+  UINT32 result;
+  
+  arg1 = (BR::EntityID *)jarg1; 
+  result = (UINT32)((BR::EntityID const *)arg1)->GetFacultyID();
+  jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void * SWIGSTDCALL CSharp_EntityID_CopyFrom(void * jarg1, void * jarg2) {
   void * jresult ;
   BR::EntityID *arg1 = (BR::EntityID *) 0 ;
@@ -717,50 +718,6 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_EntityID_CopyFrom(void * jarg1, void * jarg
   } 
   result = (BR::EntityID *) &(arg1)->operator =((BR::EntityID const &)*arg2);
   jresult = (void *)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_EntityUID_EntityID_set(void * jarg1, void * jarg2) {
-  BR::EntityUID *arg1 = (BR::EntityUID *) 0 ;
-  BR::EntityID *arg2 = (BR::EntityID *) 0 ;
-  
-  arg1 = (BR::EntityUID *)jarg1; 
-  arg2 = (BR::EntityID *)jarg2; 
-  if (arg1) (arg1)->EntityID = *arg2;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_EntityUID_EntityID_get(void * jarg1) {
-  void * jresult ;
-  BR::EntityUID *arg1 = (BR::EntityUID *) 0 ;
-  BR::EntityID *result = 0 ;
-  
-  arg1 = (BR::EntityUID *)jarg1; 
-  result = (BR::EntityID *)& ((arg1)->EntityID);
-  jresult = (void *)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_EntityUID_SvrID_set(void * jarg1, unsigned int jarg2) {
-  BR::EntityUID *arg1 = (BR::EntityUID *) 0 ;
-  BR::ServerID arg2 ;
-  
-  arg1 = (BR::EntityUID *)jarg1; 
-  arg2 = (BR::ServerID)jarg2; 
-  if (arg1) (arg1)->SvrID = arg2;
-}
-
-
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_EntityUID_SvrID_get(void * jarg1) {
-  unsigned int jresult ;
-  BR::EntityUID *arg1 = (BR::EntityUID *) 0 ;
-  BR::ServerID result;
-  
-  arg1 = (BR::EntityUID *)jarg1; 
-  result = (BR::ServerID) ((arg1)->SvrID);
-  jresult = result; 
   return jresult;
 }
 
@@ -837,6 +794,30 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_EntityUID__SWIG_3(unsigned long long ja
   arg1 = &temp1; 
   result = (BR::EntityUID *)new BR::EntityUID((BR::Context const &)*arg1);
   jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_EntityUID_GetEntityID(void * jarg1) {
+  void * jresult ;
+  BR::EntityUID *arg1 = (BR::EntityUID *) 0 ;
+  BR::EntityID result;
+  
+  arg1 = (BR::EntityUID *)jarg1; 
+  result = ((BR::EntityUID const *)arg1)->GetEntityID();
+  jresult = new BR::EntityID((const BR::EntityID &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_EntityUID_GetServerID(void * jarg1) {
+  unsigned int jresult ;
+  BR::EntityUID *arg1 = (BR::EntityUID *) 0 ;
+  BR::ServerID result;
+  
+  arg1 = (BR::EntityUID *)jarg1; 
+  result = (BR::ServerID)((BR::EntityUID const *)arg1)->GetServerID();
+  jresult = result; 
   return jresult;
 }
 
@@ -927,23 +908,23 @@ SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_PlayerInformation_PlayerID_get(
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_PlayerInformation_FacebookUID_set(void * jarg1, unsigned long long jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_PlayerInformation_FBUID_set(void * jarg1, unsigned long long jarg2) {
   BR::PlayerInformation *arg1 = (BR::PlayerInformation *) 0 ;
   BR::FacebookUID arg2 ;
   
   arg1 = (BR::PlayerInformation *)jarg1; 
   arg2 = (BR::FacebookUID)jarg2; 
-  if (arg1) (arg1)->FacebookUID = arg2;
+  if (arg1) (arg1)->FBUID = arg2;
 }
 
 
-SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_PlayerInformation_FacebookUID_get(void * jarg1) {
+SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_PlayerInformation_FBUID_get(void * jarg1) {
   unsigned long long jresult ;
   BR::PlayerInformation *arg1 = (BR::PlayerInformation *) 0 ;
   BR::FacebookUID result;
   
   arg1 = (BR::PlayerInformation *)jarg1; 
-  result =  ((arg1)->FacebookUID);
+  result =  ((arg1)->FBUID);
   jresult = result; 
   return jresult;
 }
@@ -1586,23 +1567,23 @@ SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_TotalRankingPlayerInformation_P
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_TotalRankingPlayerInformation_FacebookUID_set(void * jarg1, unsigned long long jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_TotalRankingPlayerInformation_FBUID_set(void * jarg1, unsigned long long jarg2) {
   BR::TotalRankingPlayerInformation *arg1 = (BR::TotalRankingPlayerInformation *) 0 ;
   BR::FacebookUID arg2 ;
   
   arg1 = (BR::TotalRankingPlayerInformation *)jarg1; 
   arg2 = (BR::FacebookUID)jarg2; 
-  if (arg1) (arg1)->FacebookUID = arg2;
+  if (arg1) (arg1)->FBUID = arg2;
 }
 
 
-SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_TotalRankingPlayerInformation_FacebookUID_get(void * jarg1) {
+SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_TotalRankingPlayerInformation_FBUID_get(void * jarg1) {
   unsigned long long jresult ;
   BR::TotalRankingPlayerInformation *arg1 = (BR::TotalRankingPlayerInformation *) 0 ;
   BR::FacebookUID result;
   
   arg1 = (BR::TotalRankingPlayerInformation *)jarg1; 
-  result =  ((arg1)->FacebookUID);
+  result =  ((arg1)->FBUID);
   jresult = result; 
   return jresult;
 }
@@ -1835,37 +1816,49 @@ SWIGEXPORT unsigned short SWIGSTDCALL CSharp_GameLogItem_LogItemSize_get(void * 
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_GameLogItem_TimeStamp_set(void * jarg1, unsigned int jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_GameLogItem_TimeStamp_set(void * jarg1, void * jarg2) {
   BR::GameLogItem *arg1 = (BR::GameLogItem *) 0 ;
-  UINT32 arg2 ;
+  TimeStampSec arg2 ;
+  TimeStampSec *argp2 ;
   
   arg1 = (BR::GameLogItem *)jarg1; 
-  arg2 = (UINT32)jarg2; 
+  argp2 = (TimeStampSec *)jarg2; 
+  if (!argp2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return ;
+  }
+  arg2 = *argp2; 
   if (arg1) (arg1)->TimeStamp = arg2;
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_GameLogItem_TimeStamp_get(void * jarg1) {
-  unsigned int jresult ;
+SWIGEXPORT void * SWIGSTDCALL CSharp_GameLogItem_TimeStamp_get(void * jarg1) {
+  void * jresult ;
   BR::GameLogItem *arg1 = (BR::GameLogItem *) 0 ;
-  UINT32 result;
+  TimeStampSec result;
   
   arg1 = (BR::GameLogItem *)jarg1; 
-  result = (UINT32) ((arg1)->TimeStamp);
-  jresult = result; 
+  result =  ((arg1)->TimeStamp);
+  jresult = new TimeStampSec((const TimeStampSec &)result); 
   return jresult;
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogItem(int jarg1, unsigned long jarg2, unsigned long jarg3) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogItem(int jarg1, void * jarg2, unsigned long jarg3) {
   void * jresult ;
   BR::GameLogType arg1 ;
-  ULONG arg2 ;
+  TimeStampSec arg2 ;
   size_t arg3 ;
+  TimeStampSec *argp2 ;
   BR::GameLogItem *result = 0 ;
   
   arg1 = (BR::GameLogType)jarg1; 
-  arg2 = (ULONG)jarg2; 
+  argp2 = (TimeStampSec *)jarg2; 
+  if (!argp2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return 0;
+  }
+  arg2 = *argp2; 
   arg3 = (size_t)jarg3; 
   result = (BR::GameLogItem *)new BR::GameLogItem(arg1,arg2,arg3);
   jresult = (void *)result; 
@@ -1990,13 +1983,19 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_GameLogChatMessage_MessageText_get(void * j
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogChatMessage(unsigned long jarg1, unsigned int jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogChatMessage(void * jarg1, unsigned int jarg2) {
   void * jresult ;
-  ULONG arg1 ;
+  TimeStampSec arg1 ;
   UINT arg2 ;
+  TimeStampSec *argp1 ;
   BR::GameLogChatMessage *result = 0 ;
   
-  arg1 = (ULONG)jarg1; 
+  argp1 = (TimeStampSec *)jarg1; 
+  if (!argp1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return 0;
+  }
+  arg1 = *argp1; 
   arg2 = (UINT)jarg2; 
   result = (BR::GameLogChatMessage *)new BR::GameLogChatMessage(arg1,arg2);
   jresult = (void *)result; 
@@ -2046,12 +2045,18 @@ SWIGEXPORT int SWIGSTDCALL CSharp_GameLogGameStateChange_GameState_get(void * ja
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogGameStateChange(unsigned long jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogGameStateChange(void * jarg1) {
   void * jresult ;
-  ULONG arg1 ;
+  TimeStampSec arg1 ;
+  TimeStampSec *argp1 ;
   BR::GameLogGameStateChange *result = 0 ;
   
-  arg1 = (ULONG)jarg1; 
+  argp1 = (TimeStampSec *)jarg1; 
+  if (!argp1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return 0;
+  }
+  arg1 = *argp1; 
   result = (BR::GameLogGameStateChange *)new BR::GameLogGameStateChange(arg1);
   jresult = (void *)result; 
   return jresult;
@@ -2182,13 +2187,19 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_GameLogVote_VoteStatus_get(void * jarg1) {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogVote(unsigned long jarg1, unsigned int jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogVote(void * jarg1, unsigned int jarg2) {
   void * jresult ;
-  ULONG arg1 ;
+  TimeStampSec arg1 ;
   UINT arg2 ;
+  TimeStampSec *argp1 ;
   BR::GameLogVote *result = 0 ;
   
-  arg1 = (ULONG)jarg1; 
+  argp1 = (TimeStampSec *)jarg1; 
+  if (!argp1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return 0;
+  }
+  arg1 = *argp1; 
   arg2 = (UINT)jarg2; 
   result = (BR::GameLogVote *)new BR::GameLogVote(arg1,arg2);
   jresult = (void *)result; 
@@ -2276,13 +2287,19 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_GameLogVoteResult_VotedRankers_get(void * j
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogVoteResult(unsigned long jarg1, unsigned int jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogVoteResult(void * jarg1, unsigned int jarg2) {
   void * jresult ;
-  ULONG arg1 ;
+  TimeStampSec arg1 ;
   UINT arg2 ;
+  TimeStampSec *argp1 ;
   BR::GameLogVoteResult *result = 0 ;
   
-  arg1 = (ULONG)jarg1; 
+  argp1 = (TimeStampSec *)jarg1; 
+  if (!argp1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return 0;
+  }
+  arg1 = *argp1; 
   arg2 = (UINT)jarg2; 
   result = (BR::GameLogVoteResult *)new BR::GameLogVoteResult(arg1,arg2);
   jresult = (void *)result; 
@@ -2346,12 +2363,18 @@ SWIGEXPORT int SWIGSTDCALL CSharp_GameLogPlayerKilled_killedReason_get(void * ja
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogPlayerKilled(unsigned long jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogPlayerKilled(void * jarg1) {
   void * jresult ;
-  ULONG arg1 ;
+  TimeStampSec arg1 ;
+  TimeStampSec *argp1 ;
   BR::GameLogPlayerKilled *result = 0 ;
   
-  arg1 = (ULONG)jarg1; 
+  argp1 = (TimeStampSec *)jarg1; 
+  if (!argp1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return 0;
+  }
+  arg1 = *argp1; 
   result = (BR::GameLogPlayerKilled *)new BR::GameLogPlayerKilled(arg1);
   jresult = (void *)result; 
   return jresult;
@@ -2392,12 +2415,18 @@ SWIGEXPORT int SWIGSTDCALL CSharp_GameLogGameEnd_Winner_get(void * jarg1) {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogGameEnd(unsigned long jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_GameLogGameEnd(void * jarg1) {
   void * jresult ;
-  ULONG arg1 ;
+  TimeStampSec arg1 ;
+  TimeStampSec *argp1 ;
   BR::GameLogGameEnd *result = 0 ;
   
-  arg1 = (ULONG)jarg1; 
+  argp1 = (TimeStampSec *)jarg1; 
+  if (!argp1) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return 0;
+  }
+  arg1 = *argp1; 
   result = (BR::GameLogGameEnd *)new BR::GameLogGameEnd(arg1);
   jresult = (void *)result; 
   return jresult;
@@ -2440,50 +2469,6 @@ SWIGEXPORT int SWIGSTDCALL CSharp_Increase__SWIG_1(void * jarg1, int jarg2) {
   arg2 = (int)jarg2; 
   result = (BR::ClusterID)BR::operator ++(*arg1,arg2);
   jresult = (int)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_TransactionID_EntityID_set(void * jarg1, void * jarg2) {
-  BR::TransactionID *arg1 = (BR::TransactionID *) 0 ;
-  BR::EntityID *arg2 = (BR::EntityID *) 0 ;
-  
-  arg1 = (BR::TransactionID *)jarg1; 
-  arg2 = (BR::EntityID *)jarg2; 
-  if (arg1) (arg1)->EntityID = *arg2;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_TransactionID_EntityID_get(void * jarg1) {
-  void * jresult ;
-  BR::TransactionID *arg1 = (BR::TransactionID *) 0 ;
-  BR::EntityID *result = 0 ;
-  
-  arg1 = (BR::TransactionID *)jarg1; 
-  result = (BR::EntityID *)& ((arg1)->EntityID);
-  jresult = (void *)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_TransactionID_TransID_set(void * jarg1, unsigned int jarg2) {
-  BR::TransactionID *arg1 = (BR::TransactionID *) 0 ;
-  UINT32 arg2 ;
-  
-  arg1 = (BR::TransactionID *)jarg1; 
-  arg2 = (UINT32)jarg2; 
-  if (arg1) (arg1)->TransID = arg2;
-}
-
-
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_TransactionID_TransID_get(void * jarg1) {
-  unsigned int jresult ;
-  BR::TransactionID *arg1 = (BR::TransactionID *) 0 ;
-  UINT32 result;
-  
-  arg1 = (BR::TransactionID *)jarg1; 
-  result = (UINT32) ((arg1)->TransID);
-  jresult = result; 
   return jresult;
 }
 
@@ -2580,6 +2565,30 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_TransactionID_IsValid(void * jarg1) {
 }
 
 
+SWIGEXPORT void * SWIGSTDCALL CSharp_TransactionID_GetEntityID(void * jarg1) {
+  void * jresult ;
+  BR::TransactionID *arg1 = (BR::TransactionID *) 0 ;
+  BR::EntityID result;
+  
+  arg1 = (BR::TransactionID *)jarg1; 
+  result = ((BR::TransactionID const *)arg1)->GetEntityID();
+  jresult = new BR::EntityID((const BR::EntityID &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_TransactionID_GetTransactionIndex(void * jarg1) {
+  unsigned int jresult ;
+  BR::TransactionID *arg1 = (BR::TransactionID *) 0 ;
+  UINT32 result;
+  
+  arg1 = (BR::TransactionID *)jarg1; 
+  result = (UINT32)((BR::TransactionID const *)arg1)->GetTransactionIndex();
+  jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void * SWIGSTDCALL CSharp_TransactionID_CopyFrom(void * jarg1, void * jarg2) {
   void * jresult ;
   BR::TransactionID *arg1 = (BR::TransactionID *) 0 ;
@@ -2616,55 +2625,11 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_TransactionID_EqualTo(void * jarg1, v
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_RouteContext_From_set(void * jarg1, void * jarg2) {
-  BR::tag_RouteContext *arg1 = (BR::tag_RouteContext *) 0 ;
-  BR::EntityUID *arg2 = (BR::EntityUID *) 0 ;
-  
-  arg1 = (BR::tag_RouteContext *)jarg1; 
-  arg2 = (BR::EntityUID *)jarg2; 
-  if (arg1) (arg1)->From = *arg2;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_RouteContext_From_get(void * jarg1) {
-  void * jresult ;
-  BR::tag_RouteContext *arg1 = (BR::tag_RouteContext *) 0 ;
-  BR::EntityUID *result = 0 ;
-  
-  arg1 = (BR::tag_RouteContext *)jarg1; 
-  result = (BR::EntityUID *)& ((arg1)->From);
-  jresult = (void *)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_RouteContext_To_set(void * jarg1, void * jarg2) {
-  BR::tag_RouteContext *arg1 = (BR::tag_RouteContext *) 0 ;
-  BR::EntityUID *arg2 = (BR::EntityUID *) 0 ;
-  
-  arg1 = (BR::tag_RouteContext *)jarg1; 
-  arg2 = (BR::EntityUID *)jarg2; 
-  if (arg1) (arg1)->To = *arg2;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_RouteContext_To_get(void * jarg1) {
-  void * jresult ;
-  BR::tag_RouteContext *arg1 = (BR::tag_RouteContext *) 0 ;
-  BR::EntityUID *result = 0 ;
-  
-  arg1 = (BR::tag_RouteContext *)jarg1; 
-  result = (BR::EntityUID *)& ((arg1)->To);
-  jresult = (void *)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT void SWIGSTDCALL CSharp_RouteContext_ContextValue_set(void * jarg1, void * jarg2) {
-  BR::tag_RouteContext *arg1 = (BR::tag_RouteContext *) 0 ;
+  BR::RouteContext *arg1 = (BR::RouteContext *) 0 ;
   UINT64 *arg2 ;
   
-  arg1 = (BR::tag_RouteContext *)jarg1; 
+  arg1 = (BR::RouteContext *)jarg1; 
   arg2 = (UINT64 *)jarg2; 
   {
     size_t ii;
@@ -2676,10 +2641,10 @@ SWIGEXPORT void SWIGSTDCALL CSharp_RouteContext_ContextValue_set(void * jarg1, v
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_RouteContext_ContextValue_get(void * jarg1) {
   void * jresult ;
-  BR::tag_RouteContext *arg1 = (BR::tag_RouteContext *) 0 ;
+  BR::RouteContext *arg1 = (BR::RouteContext *) 0 ;
   UINT64 *result = 0 ;
   
-  arg1 = (BR::tag_RouteContext *)jarg1; 
+  arg1 = (BR::RouteContext *)jarg1; 
   result = (UINT64 *)(UINT64 *) ((arg1)->ContextValue);
   jresult = result; 
   return jresult;
@@ -2688,9 +2653,9 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_RouteContext_ContextValue_get(void * jarg1)
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_RouteContext__SWIG_0() {
   void * jresult ;
-  BR::tag_RouteContext *result = 0 ;
+  BR::RouteContext *result = 0 ;
   
-  result = (BR::tag_RouteContext *)new BR::tag_RouteContext();
+  result = (BR::RouteContext *)new BR::RouteContext();
   jresult = (void *)result; 
   return jresult;
 }
@@ -2698,15 +2663,15 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_RouteContext__SWIG_0() {
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_RouteContext__SWIG_1(void * jarg1) {
   void * jresult ;
-  BR::tag_RouteContext *arg1 = 0 ;
-  BR::tag_RouteContext *result = 0 ;
+  BR::RouteContext *arg1 = 0 ;
+  BR::RouteContext *result = 0 ;
   
-  arg1 = (BR::tag_RouteContext *)jarg1;
+  arg1 = (BR::RouteContext *)jarg1;
   if (!arg1) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::tag_RouteContext const & type is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
     return 0;
   } 
-  result = (BR::tag_RouteContext *)new BR::tag_RouteContext((BR::tag_RouteContext const &)*arg1);
+  result = (BR::RouteContext *)new BR::RouteContext((BR::RouteContext const &)*arg1);
   jresult = (void *)result; 
   return jresult;
 }
@@ -2718,7 +2683,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_RouteContext__SWIG_2(void * jarg1, void
   BR::EntityUID arg2 ;
   BR::EntityUID *argp1 ;
   BR::EntityUID *argp2 ;
-  BR::tag_RouteContext *result = 0 ;
+  BR::RouteContext *result = 0 ;
   
   argp1 = (BR::EntityUID *)jarg1; 
   if (!argp1) {
@@ -2732,7 +2697,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_RouteContext__SWIG_2(void * jarg1, void
     return 0;
   }
   arg2 = *argp2; 
-  result = (BR::tag_RouteContext *)new BR::tag_RouteContext(arg1,arg2);
+  result = (BR::RouteContext *)new BR::RouteContext(arg1,arg2);
   jresult = (void *)result; 
   return jresult;
 }
@@ -2741,28 +2706,52 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_RouteContext__SWIG_2(void * jarg1, void
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_RouteContext__SWIG_3(int jarg1) {
   void * jresult ;
   int arg1 ;
-  BR::tag_RouteContext *result = 0 ;
+  BR::RouteContext *result = 0 ;
   
   arg1 = (int)jarg1; 
-  result = (BR::tag_RouteContext *)new BR::tag_RouteContext(arg1);
+  result = (BR::RouteContext *)new BR::RouteContext(arg1);
   jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_RouteContext_GetFrom(void * jarg1) {
+  void * jresult ;
+  BR::RouteContext *arg1 = (BR::RouteContext *) 0 ;
+  BR::EntityUID result;
+  
+  arg1 = (BR::RouteContext *)jarg1; 
+  result = ((BR::RouteContext const *)arg1)->GetFrom();
+  jresult = new BR::EntityUID((const BR::EntityUID &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_RouteContext_GetTo(void * jarg1) {
+  void * jresult ;
+  BR::RouteContext *arg1 = (BR::RouteContext *) 0 ;
+  BR::EntityUID result;
+  
+  arg1 = (BR::RouteContext *)jarg1; 
+  result = ((BR::RouteContext const *)arg1)->GetTo();
+  jresult = new BR::EntityUID((const BR::EntityUID &)result); 
   return jresult;
 }
 
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_RouteContext_CopyFrom(void * jarg1, void * jarg2) {
   void * jresult ;
-  BR::tag_RouteContext *arg1 = (BR::tag_RouteContext *) 0 ;
-  BR::tag_RouteContext *arg2 = 0 ;
-  BR::tag_RouteContext *result = 0 ;
+  BR::RouteContext *arg1 = (BR::RouteContext *) 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::RouteContext *result = 0 ;
   
-  arg1 = (BR::tag_RouteContext *)jarg1; 
-  arg2 = (BR::tag_RouteContext *)jarg2;
+  arg1 = (BR::RouteContext *)jarg1; 
+  arg2 = (BR::RouteContext *)jarg2;
   if (!arg2) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::tag_RouteContext const & type is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
     return 0;
   } 
-  result = (BR::tag_RouteContext *) &(arg1)->operator =((BR::tag_RouteContext const &)*arg2);
+  result = (BR::RouteContext *) &(arg1)->operator =((BR::RouteContext const &)*arg2);
   jresult = (void *)result; 
   return jresult;
 }
@@ -2770,17 +2759,17 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_RouteContext_CopyFrom(void * jarg1, void * 
 
 SWIGEXPORT unsigned int SWIGSTDCALL CSharp_RouteContext_EqualTo(void * jarg1, void * jarg2) {
   unsigned int jresult ;
-  BR::tag_RouteContext *arg1 = (BR::tag_RouteContext *) 0 ;
-  BR::tag_RouteContext *arg2 = 0 ;
+  BR::RouteContext *arg1 = (BR::RouteContext *) 0 ;
+  BR::RouteContext *arg2 = 0 ;
   bool result;
   
-  arg1 = (BR::tag_RouteContext *)jarg1; 
-  arg2 = (BR::tag_RouteContext *)jarg2;
+  arg1 = (BR::RouteContext *)jarg1; 
+  arg2 = (BR::RouteContext *)jarg2;
   if (!arg2) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::tag_RouteContext const & type is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
     return 0;
   } 
-  result = (bool)((BR::tag_RouteContext const *)arg1)->operator ==((BR::tag_RouteContext const &)*arg2);
+  result = (bool)((BR::RouteContext const *)arg1)->operator ==((BR::RouteContext const &)*arg2);
   jresult = result; 
   return jresult;
 }
@@ -2788,12 +2777,12 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_RouteContext_EqualTo(void * jarg1, vo
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_RouteContext_GetSwaped(void * jarg1) {
   void * jresult ;
-  BR::tag_RouteContext *arg1 = (BR::tag_RouteContext *) 0 ;
-  BR::tag_RouteContext result;
+  BR::RouteContext *arg1 = (BR::RouteContext *) 0 ;
+  BR::RouteContext result;
   
-  arg1 = (BR::tag_RouteContext *)jarg1; 
-  result = ((BR::tag_RouteContext const *)arg1)->GetSwaped();
-  jresult = new BR::tag_RouteContext((const BR::tag_RouteContext &)result); 
+  arg1 = (BR::RouteContext *)jarg1; 
+  result = ((BR::RouteContext const *)arg1)->GetSwaped();
+  jresult = new BR::RouteContext((const BR::RouteContext &)result); 
   return jresult;
 }
 
@@ -2908,24 +2897,30 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_ServiceInformation_ServerAddress_get(void *
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_ServiceInformation_ServerUpTime_set(void * jarg1, unsigned long long jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_ServiceInformation_ServerUpTime_set(void * jarg1, void * jarg2) {
   BR::ServiceInformation *arg1 = (BR::ServiceInformation *) 0 ;
-  ULONGLONG arg2 ;
+  TimeStampSec arg2 ;
+  TimeStampSec *argp2 ;
   
   arg1 = (BR::ServiceInformation *)jarg1; 
-  arg2 = (ULONGLONG)jarg2; 
+  argp2 = (TimeStampSec *)jarg2; 
+  if (!argp2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return ;
+  }
+  arg2 = *argp2; 
   if (arg1) (arg1)->ServerUpTime = arg2;
 }
 
 
-SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_ServiceInformation_ServerUpTime_get(void * jarg1) {
-  unsigned long long jresult ;
+SWIGEXPORT void * SWIGSTDCALL CSharp_ServiceInformation_ServerUpTime_get(void * jarg1) {
+  void * jresult ;
   BR::ServiceInformation *arg1 = (BR::ServiceInformation *) 0 ;
-  ULONGLONG result;
+  TimeStampSec result;
   
   arg1 = (BR::ServiceInformation *)jarg1; 
   result =  ((arg1)->ServerUpTime);
-  jresult = result; 
+  jresult = new TimeStampSec((const TimeStampSec &)result); 
   return jresult;
 }
 
@@ -2978,16 +2973,17 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_ServiceInformation__SWIG_1(void * jarg1
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_ServiceInformation__SWIG_2(void * jarg1, int jarg2, int jarg3, int jarg4, void * jarg5, unsigned long long jarg6, unsigned int jarg7) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_ServiceInformation__SWIG_2(void * jarg1, int jarg2, int jarg3, int jarg4, void * jarg5, void * jarg6, unsigned int jarg7) {
   void * jresult ;
   BR::EntityUID arg1 ;
   BR::ClusterMembership arg2 ;
   BR::ServiceStatus arg3 ;
   BR::NetClass arg4 ;
   BR::NetAddress *arg5 = 0 ;
-  ULONGLONG arg6 ;
+  TimeStampSec arg6 ;
   UINT32 arg7 ;
   BR::EntityUID *argp1 ;
+  TimeStampSec *argp6 ;
   BR::ServiceInformation *result = 0 ;
   
   argp1 = (BR::EntityUID *)jarg1; 
@@ -3004,7 +3000,12 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_ServiceInformation__SWIG_2(void * jarg1
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::NetAddress const & type is null", 0);
     return 0;
   } 
-  arg6 = (ULONGLONG)jarg6; 
+  argp6 = (TimeStampSec *)jarg6; 
+  if (!argp6) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null TimeStampSec", 0);
+    return 0;
+  }
+  arg6 = *argp6; 
   arg7 = (UINT32)jarg7; 
   result = (BR::ServiceInformation *)new BR::ServiceInformation(arg1,arg2,arg3,arg4,(BR::NetAddress const &)*arg5,arg6,arg7);
   jresult = (void *)result; 
@@ -3060,6 +3061,26 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_ServiceInformation_EqualTo(void * jar
 }
 
 
+SWIGEXPORT int SWIGSTDCALL CSharp_GlobalUID_BIT_SERVERID_get() {
+  int jresult ;
+  int result;
+  
+  result = (int)BR::GlobalUID::BIT_SERVERID;
+  jresult = (int)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_GlobalUID_BIT_ID_get() {
+  int jresult ;
+  int result;
+  
+  result = (int)BR::GlobalUID::BIT_ID;
+  jresult = (int)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void SWIGSTDCALL CSharp_GlobalUID_Time_set(void * jarg1, unsigned int jarg2) {
   BR::GlobalUID *arg1 = (BR::GlobalUID *) 0 ;
   UINT32 arg2 ;
@@ -3082,23 +3103,23 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_GlobalUID_Time_get(void * jarg1) {
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_GlobalUID_ServerID_set(void * jarg1, unsigned int jarg2) {
+SWIGEXPORT void SWIGSTDCALL CSharp_GlobalUID_SvrID_set(void * jarg1, unsigned int jarg2) {
   BR::GlobalUID *arg1 = (BR::GlobalUID *) 0 ;
   UINT32 arg2 ;
   
   arg1 = (BR::GlobalUID *)jarg1; 
   arg2 = (UINT32)jarg2; 
-  if (arg1) (arg1)->ServerID = arg2;
+  if (arg1) (arg1)->SvrID = arg2;
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_GlobalUID_ServerID_get(void * jarg1) {
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_GlobalUID_SvrID_get(void * jarg1) {
   unsigned int jresult ;
   BR::GlobalUID *arg1 = (BR::GlobalUID *) 0 ;
   UINT32 result;
   
   arg1 = (BR::GlobalUID *)jarg1; 
-  result = (UINT32) ((arg1)->ServerID);
+  result = (UINT32) ((arg1)->SvrID);
   jresult = result; 
   return jresult;
 }
@@ -4918,24 +4939,6 @@ SWIGEXPORT void SWIGSTDCALL CSharp_SharedObject_NativeDispose(void * jarg1) {
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_SharedPointer_NullValue_set(void * jarg1) {
-  BR::SharedPointer *arg1 = (BR::SharedPointer *) 0 ;
-  
-  arg1 = (BR::SharedPointer *)jarg1; 
-  BR::SharedPointer::NullValue = *arg1;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_SharedPointer_NullValue_get() {
-  void * jresult ;
-  BR::SharedPointer *result = 0 ;
-  
-  result = (BR::SharedPointer *)&BR::SharedPointer::NullValue;
-  jresult = (void *)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_SharedPointer__SWIG_0() {
   void * jresult ;
   BR::SharedPointer *result = 0 ;
@@ -5064,24 +5067,6 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_SharedPointer_NotEqualTo__SWIG_1(void
   arg2 = (BR::SharedObject *)jarg2; 
   result = (bool)((BR::SharedPointer const *)arg1)->operator !=(arg2);
   jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_WeakPointer_NullValue_set(void * jarg1) {
-  BR::WeakPointer *arg1 = (BR::WeakPointer *) 0 ;
-  
-  arg1 = (BR::WeakPointer *)jarg1; 
-  BR::WeakPointer::NullValue = *arg1;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_WeakPointer_NullValue_get() {
-  void * jresult ;
-  BR::WeakPointer *result = 0 ;
-  
-  result = (BR::WeakPointer *)&BR::WeakPointer::NullValue;
-  jresult = (void *)result; 
   return jresult;
 }
 
@@ -5286,125 +5271,137 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_WeakPointer_CopyFrom__SWIG_1(void * jarg1, 
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_tag_Event_NullValue_set(void * jarg1) {
-  BR::Net::IConnection::tag_Event *arg1 = (BR::Net::IConnection::tag_Event *) 0 ;
+SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_Event_EventType_set(void * jarg1, int jarg2) {
+  BR::Net::IConnection::Event *arg1 = (BR::Net::IConnection::Event *) 0 ;
+  BR::Net::IConnection::Event::EventTypes arg2 ;
   
-  arg1 = (BR::Net::IConnection::tag_Event *)jarg1; 
-  BR::Net::IConnection::tag_Event::NullValue = *arg1;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_IConnection_tag_Event_NullValue_get() {
-  void * jresult ;
-  BR::Net::IConnection::tag_Event *result = 0 ;
-  
-  result = (BR::Net::IConnection::tag_Event *)&BR::Net::IConnection::tag_Event::NullValue;
-  jresult = (void *)result; 
-  return jresult;
-}
-
-
-SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_tag_Event_EventType_set(void * jarg1, int jarg2) {
-  BR::Net::IConnection::tag_Event *arg1 = (BR::Net::IConnection::tag_Event *) 0 ;
-  BR::Net::IConnection::tag_Event::EventTypes arg2 ;
-  
-  arg1 = (BR::Net::IConnection::tag_Event *)jarg1; 
-  arg2 = (BR::Net::IConnection::tag_Event::EventTypes)jarg2; 
+  arg1 = (BR::Net::IConnection::Event *)jarg1; 
+  arg2 = (BR::Net::IConnection::Event::EventTypes)jarg2; 
   if (arg1) (arg1)->EventType = arg2;
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_IConnection_tag_Event_EventType_get(void * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_IConnection_Event_EventType_get(void * jarg1) {
   int jresult ;
-  BR::Net::IConnection::tag_Event *arg1 = (BR::Net::IConnection::tag_Event *) 0 ;
-  BR::Net::IConnection::tag_Event::EventTypes result;
+  BR::Net::IConnection::Event *arg1 = (BR::Net::IConnection::Event *) 0 ;
+  BR::Net::IConnection::Event::EventTypes result;
   
-  arg1 = (BR::Net::IConnection::tag_Event *)jarg1; 
-  result = (BR::Net::IConnection::tag_Event::EventTypes) ((arg1)->EventType);
+  arg1 = (BR::Net::IConnection::Event *)jarg1; 
+  result = (BR::Net::IConnection::Event::EventTypes) ((arg1)->EventType);
   jresult = (int)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_IConnection_tag_Event__SWIG_0() {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_IConnection_Event__SWIG_0(void * jarg1) {
   void * jresult ;
-  BR::Net::IConnection::tag_Event *result = 0 ;
+  void *arg1 = (void *) 0 ;
+  BR::Net::IConnection::Event *result = 0 ;
   
-  result = (BR::Net::IConnection::tag_Event *)new BR::Net::IConnection::tag_Event();
+  arg1 = (void *)jarg1; 
+  result = (BR::Net::IConnection::Event *)new BR::Net::IConnection::Event(arg1);
   jresult = (void *)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_IConnection_tag_Event__SWIG_1(int jarg1, long jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_IConnection_Event__SWIG_1() {
   void * jresult ;
-  BR::Net::IConnection::tag_Event::EventTypes arg1 ;
+  BR::Net::IConnection::Event *result = 0 ;
+  
+  result = (BR::Net::IConnection::Event *)new BR::Net::IConnection::Event();
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_IConnection_Event__SWIG_2(int jarg1, long jarg2) {
+  void * jresult ;
+  BR::Net::IConnection::Event::EventTypes arg1 ;
   HRESULT arg2 ;
-  BR::Net::IConnection::tag_Event *result = 0 ;
+  BR::Net::IConnection::Event *result = 0 ;
   
-  arg1 = (BR::Net::IConnection::tag_Event::EventTypes)jarg1; 
+  arg1 = (BR::Net::IConnection::Event::EventTypes)jarg1; 
   arg2 = (HRESULT)jarg2; 
-  result = (BR::Net::IConnection::tag_Event *)new BR::Net::IConnection::tag_Event(arg1,arg2);
+  result = (BR::Net::IConnection::Event *)new BR::Net::IConnection::Event(arg1,arg2);
   jresult = (void *)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_IConnection_tag_Event__SWIG_2(int jarg1, int jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_IConnection_Event__SWIG_3(int jarg1, int jarg2) {
   void * jresult ;
-  BR::Net::IConnection::tag_Event::EventTypes arg1 ;
+  BR::Net::IConnection::Event::EventTypes arg1 ;
   BR::Net::IConnection::ConnectionState arg2 ;
-  BR::Net::IConnection::tag_Event *result = 0 ;
+  BR::Net::IConnection::Event *result = 0 ;
   
-  arg1 = (BR::Net::IConnection::tag_Event::EventTypes)jarg1; 
+  arg1 = (BR::Net::IConnection::Event::EventTypes)jarg1; 
   arg2 = (BR::Net::IConnection::ConnectionState)jarg2; 
-  result = (BR::Net::IConnection::tag_Event *)new BR::Net::IConnection::tag_Event(arg1,arg2);
+  result = (BR::Net::IConnection::Event *)new BR::Net::IConnection::Event(arg1,arg2);
   jresult = (void *)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_IConnection_tag_Event_CopyFrom(void * jarg1, void * jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_IConnection_Event_CopyFrom(void * jarg1, void * jarg2) {
   void * jresult ;
-  BR::Net::IConnection::tag_Event *arg1 = (BR::Net::IConnection::tag_Event *) 0 ;
-  BR::Net::IConnection::tag_Event *arg2 = 0 ;
-  BR::Net::IConnection::tag_Event *result = 0 ;
+  BR::Net::IConnection::Event *arg1 = (BR::Net::IConnection::Event *) 0 ;
+  BR::Net::IConnection::Event *arg2 = 0 ;
+  BR::Net::IConnection::Event *result = 0 ;
   
-  arg1 = (BR::Net::IConnection::tag_Event *)jarg1; 
-  arg2 = (BR::Net::IConnection::tag_Event *)jarg2;
+  arg1 = (BR::Net::IConnection::Event *)jarg1; 
+  arg2 = (BR::Net::IConnection::Event *)jarg2;
   if (!arg2) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Net::IConnection::tag_Event const & type is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Net::IConnection::Event const & type is null", 0);
     return 0;
   } 
-  result = (BR::Net::IConnection::tag_Event *) &(arg1)->operator =((BR::Net::IConnection::tag_Event const &)*arg2);
+  result = (BR::Net::IConnection::Event *) &(arg1)->operator =((BR::Net::IConnection::Event const &)*arg2);
   jresult = (void *)result; 
   return jresult;
 }
 
 
-SWIGEXPORT unsigned int SWIGSTDCALL CSharp_IConnection_tag_Event_EqualTo(void * jarg1, void * jarg2) {
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_IConnection_Event_EqualTo(void * jarg1, void * jarg2) {
   unsigned int jresult ;
-  BR::Net::IConnection::tag_Event *arg1 = (BR::Net::IConnection::tag_Event *) 0 ;
-  BR::Net::IConnection::tag_Event *arg2 = 0 ;
+  BR::Net::IConnection::Event *arg1 = (BR::Net::IConnection::Event *) 0 ;
+  BR::Net::IConnection::Event *arg2 = 0 ;
   bool result;
   
-  arg1 = (BR::Net::IConnection::tag_Event *)jarg1; 
-  arg2 = (BR::Net::IConnection::tag_Event *)jarg2;
+  arg1 = (BR::Net::IConnection::Event *)jarg1; 
+  arg2 = (BR::Net::IConnection::Event *)jarg2;
   if (!arg2) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Net::IConnection::tag_Event const & type is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Net::IConnection::Event const & type is null", 0);
     return 0;
   } 
-  result = (bool)((BR::Net::IConnection::tag_Event const *)arg1)->operator ==((BR::Net::IConnection::tag_Event const &)*arg2);
+  result = (bool)((BR::Net::IConnection::Event const *)arg1)->operator ==((BR::Net::IConnection::Event const &)*arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_IConnection_Event_NotEqualTo(void * jarg1, void * jarg2) {
+  unsigned int jresult ;
+  BR::Net::IConnection::Event *arg1 = (BR::Net::IConnection::Event *) 0 ;
+  BR::Net::IConnection::Event *arg2 = 0 ;
+  bool result;
+  
+  arg1 = (BR::Net::IConnection::Event *)jarg1; 
+  arg2 = (BR::Net::IConnection::Event *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Net::IConnection::Event const & type is null", 0);
+    return 0;
+  } 
+  result = (bool)((BR::Net::IConnection::Event const *)arg1)->operator !=((BR::Net::IConnection::Event const &)*arg2);
   jresult = result; 
   return jresult;
 }
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_Local_set(void * jarg1, void * jarg2) {
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetAddress *arg2 = (BR::NetAddress *) 0 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   arg2 = (BR::NetAddress *)jarg2; 
   if (arg1) (arg1)->Local = *arg2;
 }
@@ -5412,10 +5409,10 @@ SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_Local_set(v
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_IConnection_ConnectionInformation_Local_get(void * jarg1) {
   void * jresult ;
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetAddress *result = 0 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   result = (BR::NetAddress *)& ((arg1)->Local);
   jresult = (void *)result; 
   return jresult;
@@ -5423,10 +5420,10 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_IConnection_ConnectionInformation_Local_get
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_LocalClass_set(void * jarg1, int jarg2) {
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetClass arg2 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   arg2 = (BR::NetClass)jarg2; 
   if (arg1) (arg1)->LocalClass = arg2;
 }
@@ -5434,10 +5431,10 @@ SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_LocalClass_
 
 SWIGEXPORT int SWIGSTDCALL CSharp_IConnection_ConnectionInformation_LocalClass_get(void * jarg1) {
   int jresult ;
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetClass result;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   result = (BR::NetClass) ((arg1)->LocalClass);
   jresult = (int)result; 
   return jresult;
@@ -5445,10 +5442,10 @@ SWIGEXPORT int SWIGSTDCALL CSharp_IConnection_ConnectionInformation_LocalClass_g
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_LocalID_set(void * jarg1, unsigned long long jarg2) {
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   UINT64 arg2 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   arg2 = (UINT64)jarg2; 
   if (arg1) (arg1)->LocalID = arg2;
 }
@@ -5456,10 +5453,10 @@ SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_LocalID_set
 
 SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_IConnection_ConnectionInformation_LocalID_get(void * jarg1) {
   unsigned long long jresult ;
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   UINT64 result;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   result =  ((arg1)->LocalID);
   jresult = result; 
   return jresult;
@@ -5467,10 +5464,10 @@ SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_IConnection_ConnectionInformati
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_Remote_set(void * jarg1, void * jarg2) {
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetAddress *arg2 = (BR::NetAddress *) 0 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   arg2 = (BR::NetAddress *)jarg2; 
   if (arg1) (arg1)->Remote = *arg2;
 }
@@ -5478,10 +5475,10 @@ SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_Remote_set(
 
 SWIGEXPORT void * SWIGSTDCALL CSharp_IConnection_ConnectionInformation_Remote_get(void * jarg1) {
   void * jresult ;
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetAddress *result = 0 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   result = (BR::NetAddress *)& ((arg1)->Remote);
   jresult = (void *)result; 
   return jresult;
@@ -5489,10 +5486,10 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_IConnection_ConnectionInformation_Remote_ge
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_RemoteClass_set(void * jarg1, int jarg2) {
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetClass arg2 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   arg2 = (BR::NetClass)jarg2; 
   if (arg1) (arg1)->RemoteClass = arg2;
 }
@@ -5500,10 +5497,10 @@ SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_RemoteClass
 
 SWIGEXPORT int SWIGSTDCALL CSharp_IConnection_ConnectionInformation_RemoteClass_get(void * jarg1) {
   int jresult ;
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetClass result;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   result = (BR::NetClass) ((arg1)->RemoteClass);
   jresult = (int)result; 
   return jresult;
@@ -5511,10 +5508,10 @@ SWIGEXPORT int SWIGSTDCALL CSharp_IConnection_ConnectionInformation_RemoteClass_
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_RemoteID_set(void * jarg1, unsigned long long jarg2) {
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   UINT64 arg2 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   arg2 = (UINT64)jarg2; 
   if (arg1) (arg1)->RemoteID = arg2;
 }
@@ -5522,10 +5519,10 @@ SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_RemoteID_se
 
 SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_IConnection_ConnectionInformation_RemoteID_get(void * jarg1) {
   unsigned long long jresult ;
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   UINT64 result;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   result =  ((arg1)->RemoteID);
   jresult = result; 
   return jresult;
@@ -5533,12 +5530,12 @@ SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_IConnection_ConnectionInformati
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_SetLocalInfo(void * jarg1, int jarg2, void * jarg3, unsigned long long jarg4) {
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetClass arg2 ;
   BR::NetAddress *arg3 = 0 ;
   UINT64 arg4 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   arg2 = (BR::NetClass)jarg2; 
   arg3 = (BR::NetAddress *)jarg3;
   if (!arg3) {
@@ -5551,11 +5548,11 @@ SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_SetLocalInf
 
 
 SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_ConnectionInformation_SetRemoteInfo(void * jarg1, int jarg2, unsigned long long jarg3) {
-  BR::Net::IConnection::tag_ConnectionInfo *arg1 = (BR::Net::IConnection::tag_ConnectionInfo *) 0 ;
+  BR::Net::IConnection::ConnectionInformation *arg1 = (BR::Net::IConnection::ConnectionInformation *) 0 ;
   BR::NetClass arg2 ;
   UINT64 arg3 ;
   
-  arg1 = (BR::Net::IConnection::tag_ConnectionInfo *)jarg1; 
+  arg1 = (BR::Net::IConnection::ConnectionInformation *)jarg1; 
   arg2 = (BR::NetClass)jarg2; 
   arg3 = (UINT64)jarg3; 
   (arg1)->SetRemoteInfo(arg2,arg3);
@@ -5746,16 +5743,16 @@ SWIGEXPORT void SWIGSTDCALL CSharp_delete_IConnection(void * jarg1) {
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_SetupNet(void * jarg1, void * jarg2, unsigned int jarg3) {
+SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_SetupNet(void * jarg1, void * jarg2, uintptr_t jarg3) {
   long jresult ;
   BR::Net::IConnection *arg1 = (BR::Net::IConnection *) 0 ;
   BR::Net::INet *arg2 = (BR::Net::INet *) 0 ;
-  UINT_PTR arg3 ;
+  uintptr_t arg3 ;
   HRESULT result;
   
   arg1 = (BR::Net::IConnection *)jarg1; 
   arg2 = (BR::Net::INet *)jarg2; 
-  arg3 = (UINT_PTR)jarg3; 
+  arg3 = jarg3;
   result = (HRESULT)(arg1)->SetupNet(arg2,arg3);
   jresult = result; 
   return jresult;
@@ -5874,14 +5871,14 @@ SWIGEXPORT void SWIGSTDCALL CSharp_IConnection_SetUData(void * jarg1, uintptr_t 
 }
 
 
-SWIGEXPORT unsigned long SWIGSTDCALL CSharp_IConnection_GetConnectionTime(void * jarg1) {
-  unsigned long jresult ;
+SWIGEXPORT void * SWIGSTDCALL CSharp_IConnection_GetConnectionTime(void * jarg1) {
+  void * jresult ;
   BR::Net::IConnection *arg1 = (BR::Net::IConnection *) 0 ;
-  ULONG result;
+  TimeStampMS result;
   
   arg1 = (BR::Net::IConnection *)jarg1; 
-  result = (ULONG)(arg1)->GetConnectionTime();
-  jresult = (unsigned long)result; 
+  result = (arg1)->GetConnectionTime();
+  jresult = new TimeStampMS((const TimeStampMS &)result); 
   return jresult;
 }
 
@@ -5992,26 +5989,26 @@ SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_Send(void * jarg1, void * jarg2) 
 }
 
 
-SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_IConnection_GetRecvMessageCount(void * jarg1) {
-  unsigned long long jresult ;
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_IConnection_GetRecvMessageCount(void * jarg1) {
+  unsigned int jresult ;
   BR::Net::IConnection *arg1 = (BR::Net::IConnection *) 0 ;
   SysUInt result;
   
   arg1 = (BR::Net::IConnection *)jarg1; 
-  result = (arg1)->GetRecvMessageCount();
+  result = (SysUInt)(arg1)->GetRecvMessageCount();
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT unsigned long long SWIGSTDCALL CSharp_IConnection_GetConnectionEventCount(void * jarg1) {
-  unsigned long long jresult ;
+SWIGEXPORT unsigned long SWIGSTDCALL CSharp_IConnection_GetConnectionEventCount(void * jarg1) {
+  unsigned long jresult ;
   BR::Net::IConnection *arg1 = (BR::Net::IConnection *) 0 ;
   CounterType result;
   
   arg1 = (BR::Net::IConnection *)jarg1; 
-  result = (arg1)->GetConnectionEventCount();
-  jresult = result; 
+  result = (CounterType)(arg1)->GetConnectionEventCount();
+  jresult = (unsigned long)result; 
   return jresult;
 }
 
@@ -6064,8 +6061,35 @@ SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_UpdateNetCtrl(void * jarg1) {
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_RegisterConnectionDebugMessage() {
-  BR::Net::RegisterConnectionDebugMessage();
+SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_UpdateSendQueue(void * jarg1) {
+  long jresult ;
+  BR::Net::IConnection *arg1 = (BR::Net::IConnection *) 0 ;
+  HRESULT result;
+  
+  arg1 = (BR::Net::IConnection *)jarg1; 
+  result = (HRESULT)(arg1)->UpdateSendQueue();
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_UpdateSendBufferQueue(void * jarg1) {
+  long jresult ;
+  BR::Net::IConnection *arg1 = (BR::Net::IConnection *) 0 ;
+  HRESULT result;
+  
+  arg1 = (BR::Net::IConnection *)jarg1; 
+  result = (HRESULT)(arg1)->UpdateSendBufferQueue();
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_delete_IConnectionEventHandler(void * jarg1) {
+  BR::Net::IConnectionEventHandler *arg1 = (BR::Net::IConnectionEventHandler *) 0 ;
+  
+  arg1 = (BR::Net::IConnectionEventHandler *)jarg1; 
+  delete arg1;
 }
 
 
@@ -6101,36 +6125,30 @@ SWIGEXPORT long SWIGSTDCALL CSharp_IConnectionEventHandler_OnRecvMessage(void * 
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_IConnectionEventHandler_OnNetSyncMessage(void * jarg1, void * jarg2, int jarg3) {
+SWIGEXPORT long SWIGSTDCALL CSharp_IConnectionEventHandler_OnNetSyncMessage(void * jarg1, void * jarg2) {
   long jresult ;
   BR::Net::IConnectionEventHandler *arg1 = (BR::Net::IConnectionEventHandler *) 0 ;
   BR::Net::IConnection *arg2 = (BR::Net::IConnection *) 0 ;
-  BR::Net::NetCtrlIDs arg3 ;
   HRESULT result;
   
   arg1 = (BR::Net::IConnectionEventHandler *)jarg1; 
   arg2 = (BR::Net::IConnection *)jarg2; 
-  arg3 = (BR::Net::NetCtrlIDs)jarg3; 
-  result = (HRESULT)(arg1)->OnNetSyncMessage(arg2,arg3);
+  result = (HRESULT)(arg1)->OnNetSyncMessage(arg2);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void SWIGSTDCALL CSharp_INet_Event_NullValue_set(void * jarg1) {
-  BR::Net::INet::Event *arg1 = (BR::Net::INet::Event *) 0 ;
+SWIGEXPORT long SWIGSTDCALL CSharp_IConnectionEventHandler_OnNetSendReadyMessage(void * jarg1, void * jarg2) {
+  long jresult ;
+  BR::Net::IConnectionEventHandler *arg1 = (BR::Net::IConnectionEventHandler *) 0 ;
+  BR::Net::IConnection *arg2 = (BR::Net::IConnection *) 0 ;
+  HRESULT result;
   
-  arg1 = (BR::Net::INet::Event *)jarg1; 
-  BR::Net::INet::Event::NullValue = *arg1;
-}
-
-
-SWIGEXPORT void * SWIGSTDCALL CSharp_INet_Event_NullValue_get() {
-  void * jresult ;
-  BR::Net::INet::Event *result = 0 ;
-  
-  result = (BR::Net::INet::Event *)&BR::Net::INet::Event::NullValue;
-  jresult = (void *)result; 
+  arg1 = (BR::Net::IConnectionEventHandler *)jarg1; 
+  arg2 = (BR::Net::IConnection *)jarg2; 
+  result = (HRESULT)(arg1)->OnNetSendReadyMessage(arg2);
+  jresult = result; 
   return jresult;
 }
 
@@ -6179,7 +6197,19 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_INet_Event_EventConnection_get(void * jarg1
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_INet_Event__SWIG_0() {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INet_Event__SWIG_0(void * jarg1) {
+  void * jresult ;
+  void *arg1 = (void *) 0 ;
+  BR::Net::INet::Event *result = 0 ;
+  
+  arg1 = (void *)jarg1; 
+  result = (BR::Net::INet::Event *)new BR::Net::INet::Event(arg1);
+  jresult = (void *)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INet_Event__SWIG_1() {
   void * jresult ;
   BR::Net::INet::Event *result = 0 ;
   
@@ -6189,7 +6219,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_INet_Event__SWIG_0() {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_INet_Event__SWIG_1(int jarg1, void * jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INet_Event__SWIG_2(int jarg1, void * jarg2) {
   void * jresult ;
   BR::Net::INet::Event::EventTypes arg1 ;
   BR::Net::IConnection *arg2 = (BR::Net::IConnection *) 0 ;
@@ -6203,7 +6233,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_INet_Event__SWIG_1(int jarg1, void * ja
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_INet_Event__SWIG_2(int jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_INet_Event__SWIG_3(int jarg1) {
   void * jresult ;
   BR::Net::INet::Event::EventTypes arg1 ;
   BR::Net::INet::Event *result = 0 ;
@@ -6246,6 +6276,24 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_INet_Event_EqualTo(void * jarg1, void
     return 0;
   } 
   result = (bool)((BR::Net::INet::Event const *)arg1)->operator ==((BR::Net::INet::Event const &)*arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_INet_Event_NotEqualTo(void * jarg1, void * jarg2) {
+  unsigned int jresult ;
+  BR::Net::INet::Event *arg1 = (BR::Net::INet::Event *) 0 ;
+  BR::Net::INet::Event *arg2 = 0 ;
+  bool result;
+  
+  arg1 = (BR::Net::INet::Event *)jarg1; 
+  arg2 = (BR::Net::INet::Event *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Net::INet::Event const & type is null", 0);
+    return 0;
+  } 
+  result = (bool)((BR::Net::INet::Event const *)arg1)->operator !=((BR::Net::INet::Event const &)*arg2);
   jresult = result; 
   return jresult;
 }
@@ -6399,74 +6447,18 @@ SWIGEXPORT long SWIGSTDCALL CSharp_INet_TakeOverConnection(void * jarg1, void * 
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_INet_SendMsg__SWIG_0(void * jarg1, void * jarg2, void * jarg3) {
-  long jresult ;
-  BR::Net::INet *arg1 = (BR::Net::INet *) 0 ;
-  BR::Net::IConnection *arg2 = (BR::Net::IConnection *) 0 ;
-  BR::Message::MessageData *arg3 = (BR::Message::MessageData *) 0 ;
-  HRESULT result;
-  
-  arg1 = (BR::Net::INet *)jarg1; 
-  arg2 = (BR::Net::IConnection *)jarg2; 
-  arg3 = (BR::Message::MessageData *)jarg3; 
-  result = (HRESULT)(arg1)->SendMsg(arg2,arg3);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT long SWIGSTDCALL CSharp_INet_SendMsg__SWIG_1(void * jarg1, void * jarg2, void * jarg3, void * jarg4) {
-  long jresult ;
-  BR::Net::INet *arg1 = (BR::Net::INet *) 0 ;
-  BR::Net::IConnection *arg2 = (BR::Net::IConnection *) 0 ;
-  sockaddr_in6 *arg3 = 0 ;
-  BR::Message::MessageData *arg4 = (BR::Message::MessageData *) 0 ;
-  HRESULT result;
-  
-  arg1 = (BR::Net::INet *)jarg1; 
-  arg2 = (BR::Net::IConnection *)jarg2; 
-  arg3 = (sockaddr_in6 *)jarg3;
-  if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "sockaddr_in6 const & type is null", 0);
-    return 0;
-  } 
-  arg4 = (BR::Message::MessageData *)jarg4; 
-  result = (HRESULT)(arg1)->SendMsg(arg2,(sockaddr_in6 const &)*arg3,arg4);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT long SWIGSTDCALL CSharp_INet_SendMsg__SWIG_2(void * jarg1, void * jarg2, unsigned int jarg3, void * jarg4) {
-  long jresult ;
-  BR::Net::INet *arg1 = (BR::Net::INet *) 0 ;
-  BR::Net::IConnection *arg2 = (BR::Net::IConnection *) 0 ;
-  UINT arg3 ;
-  BYTE *arg4 = (BYTE *) 0 ;
-  HRESULT result;
-  
-  arg1 = (BR::Net::INet *)jarg1; 
-  arg2 = (BR::Net::IConnection *)jarg2; 
-  arg3 = (UINT)jarg3; 
-  arg4 = (BYTE *)jarg4; 
-  result = (HRESULT)(arg1)->SendMsg(arg2,arg3,arg4);
-  jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT long SWIGSTDCALL CSharp_IClient_GetConnection(void * jarg1, unsigned int jarg2, void * jarg3) {
+SWIGEXPORT long SWIGSTDCALL CSharp_IClient_GetConnection(void * jarg1, uintptr_t jarg2, void * jarg3) {
   long jresult ;
   BR::Net::IClient *arg1 = (BR::Net::IClient *) 0 ;
-  UINT_PTR arg2 ;
-  BR::Net::IConnection **arg3 = 0 ;
+  uintptr_t arg2 ;
+  BR::SharedPointerT< BR::Net::IConnection > *arg3 = 0 ;
   HRESULT result;
   
   arg1 = (BR::Net::IClient *)jarg1; 
-  arg2 = (UINT_PTR)jarg2; 
-  arg3 = (BR::Net::IConnection **)jarg3;
+  arg2 = jarg2;
+  arg3 = (BR::SharedPointerT< BR::Net::IConnection > *)jarg3;
   if (!arg3) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Net::IConnection *& type is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::SharedPointerT< BR::Net::IConnection > & type is null", 0);
     return 0;
   } 
   result = (HRESULT)(arg1)->GetConnection(arg2,*arg3);
@@ -6475,7 +6467,7 @@ SWIGEXPORT long SWIGSTDCALL CSharp_IClient_GetConnection(void * jarg1, unsigned 
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_IClient_Connect(void * jarg1, char * jarg2, unsigned short jarg3, void * jarg4) {
+SWIGEXPORT long SWIGSTDCALL CSharp_IClient_ConnectCli(void * jarg1, char * jarg2, unsigned short jarg3, void * jarg4) {
   long jresult ;
   BR::Net::IClient *arg1 = (BR::Net::IClient *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -6491,7 +6483,7 @@ SWIGEXPORT long SWIGSTDCALL CSharp_IClient_Connect(void * jarg1, char * jarg2, u
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Net::IConnection *& type is null", 0);
     return 0;
   } 
-  result = (HRESULT)(arg1)->Connect((char const *)arg2,arg3,*arg4);
+  result = (HRESULT)(arg1)->ConnectCli((char const *)arg2,arg3,*arg4);
   jresult = result; 
   return jresult;
 }
@@ -9031,14 +9023,14 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_ArrayPerformanceCounterPtr_GetAt(void * jar
 }
 
 
-SWIGEXPORT unsigned long SWIGSTDCALL CSharp_PerformanceCounterInstance_GetUpdatedTime(void * jarg1) {
-  unsigned long jresult ;
+SWIGEXPORT void * SWIGSTDCALL CSharp_PerformanceCounterInstance_GetUpdatedTime(void * jarg1) {
+  void * jresult ;
   BR::Svr::PerformanceCounterInstance *arg1 = (BR::Svr::PerformanceCounterInstance *) 0 ;
-  ULONG result;
+  TimeStampMS result;
   
   arg1 = (BR::Svr::PerformanceCounterInstance *)jarg1; 
-  result = (ULONG)(arg1)->GetUpdatedTime();
-  jresult = (unsigned long)result; 
+  result = (arg1)->GetUpdatedTime();
+  jresult = new TimeStampMS((const TimeStampMS &)result); 
   return jresult;
 }
 

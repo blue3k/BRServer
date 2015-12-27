@@ -35,14 +35,17 @@ public class IClient : INet {
     }
   }
 
-  public unsafe int GetConnection(uint uiCID, SWIGTYPE_p_p_BR__Net__IConnection pConnection) {
-    int ret = BRMonitoringPINVOKE.IClient_GetConnection(swigCPtr, uiCID, SWIGTYPE_p_p_BR__Net__IConnection.getCPtr(pConnection));
-    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
+  public unsafe int GetConnection(System.UInt64 uiCID, SWIGTYPE_p_BR__SharedPointerTT_BR__Net__IConnection_t pIConnection) {
+System.UInt64* tempuiCID = &uiCID;
+    {
+      int ret = BRMonitoringPINVOKE.IClient_GetConnection(swigCPtr, *tempuiCID, SWIGTYPE_p_BR__SharedPointerTT_BR__Net__IConnection_t.getCPtr(pIConnection));
+      if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    }
   }
 
-  public unsafe int Connect(string strServerIP, ushort usServerPort, SWIGTYPE_p_p_BR__Net__IConnection pINewConnection) {
-    int ret = BRMonitoringPINVOKE.IClient_Connect(swigCPtr, strServerIP, usServerPort, SWIGTYPE_p_p_BR__Net__IConnection.getCPtr(pINewConnection));
+  public unsafe int ConnectCli(string strServerIP, ushort usServerPort, SWIGTYPE_p_p_BR__Net__IConnection pINewConnection) {
+    int ret = BRMonitoringPINVOKE.IClient_ConnectCli(swigCPtr, strServerIP, usServerPort, SWIGTYPE_p_p_BR__Net__IConnection.getCPtr(pINewConnection));
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

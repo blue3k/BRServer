@@ -36,28 +36,6 @@ public class RouteContext : global::System.IDisposable {
     }
   }
 
-  public unsafe EntityUID From {
-    set {
-      BRMonitoringPINVOKE.RouteContext_From_set(swigCPtr, EntityUID.getCPtr(value));
-    } 
-    get {
-      global::System.IntPtr cPtr = BRMonitoringPINVOKE.RouteContext_From_get(swigCPtr);
-      EntityUID ret = (cPtr == global::System.IntPtr.Zero) ? null : new EntityUID(cPtr, false);
-      return ret;
-    } 
-  }
-
-  public unsafe EntityUID To {
-    set {
-      BRMonitoringPINVOKE.RouteContext_To_set(swigCPtr, EntityUID.getCPtr(value));
-    } 
-    get {
-      global::System.IntPtr cPtr = BRMonitoringPINVOKE.RouteContext_To_get(swigCPtr);
-      EntityUID ret = (cPtr == global::System.IntPtr.Zero) ? null : new EntityUID(cPtr, false);
-      return ret;
-    } 
-  }
-
   public unsafe SWIGTYPE_p_unsigned___int64 ContextValue {
     set {
       BRMonitoringPINVOKE.RouteContext_ContextValue_set(swigCPtr, SWIGTYPE_p_unsigned___int64.getCPtr(value));
@@ -81,6 +59,16 @@ public class RouteContext : global::System.IDisposable {
   }
 
   public unsafe RouteContext(int initValue) : this(BRMonitoringPINVOKE.new_RouteContext__SWIG_3(initValue), true) {
+  }
+
+  public unsafe EntityUID GetFrom() {
+    EntityUID ret = new EntityUID(BRMonitoringPINVOKE.RouteContext_GetFrom(swigCPtr), true);
+    return ret;
+  }
+
+  public unsafe EntityUID GetTo() {
+    EntityUID ret = new EntityUID(BRMonitoringPINVOKE.RouteContext_GetTo(swigCPtr), true);
+    return ret;
   }
 
   public unsafe RouteContext CopyFrom(RouteContext src) {

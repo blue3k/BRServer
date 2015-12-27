@@ -32,6 +32,8 @@
     <ClInclude Include="..\ServerSystem\targetver.h" />
     <ClInclude Include="..\ServerSystem\TicketQueue.h" />
     <ClInclude Include=".\Argument.h" />
+    <ClInclude Include="BrComponent.h" />
+    <ClInclude Include="BrLibComponents.h" />
     <ClInclude Include="DualSortedMap.h" />
     <ClInclude Include="File\BRFile.h" />
     <ClInclude Include="HashTable2.h" />
@@ -101,6 +103,7 @@
     <ClInclude Include=".\Typedefs.h" />
     <ClInclude Include="ToStringGame.h" />
     <ClInclude Include="ToStringSvr.h" />
+    <ClInclude Include="TraceComponent.h" />
     <ClInclude Include="TypeUtility.h" />
     <ClInclude Include="UniqueEntityIDGenerator.h" />
     <ClInclude Include=".\Utility.h" />
@@ -108,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include=".\Argument.cpp" />
+    <ClCompile Include="BrLibComponents.cpp" />
     <ClCompile Include="CrashDump.linux.cpp" />
     <ClCompile Include="CrashDump.win32.cpp" />
     <ClCompile Include="CryptoBase64.cpp" />
@@ -144,6 +148,7 @@
     <ClCompile Include="ToString.cpp" />
     <ClCompile Include="ToStringGame.cpp" />
     <ClCompile Include="ToStringSvr.cpp" />
+    <ClCompile Include="TraceComponent.cpp" />
     <ClCompile Include="TypeUtility.cpp" />
     <ClCompile Include="UniqueEntityIDGenerator.cpp" />
     <ClCompile Include=".\Utility.cpp" />

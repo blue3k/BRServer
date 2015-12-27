@@ -36,26 +36,6 @@ public class EntityID : global::System.IDisposable {
     }
   }
 
-  public unsafe uint EntityLID {
-    set {
-      BRMonitoringPINVOKE.EntityID_EntityLID_set(swigCPtr, value);
-    } 
-    get {
-      uint ret = BRMonitoringPINVOKE.EntityID_EntityLID_get(swigCPtr);
-      return ret;
-    } 
-  }
-
-  public unsafe uint FacultyID {
-    set {
-      BRMonitoringPINVOKE.EntityID_FacultyID_set(swigCPtr, value);
-    } 
-    get {
-      uint ret = BRMonitoringPINVOKE.EntityID_FacultyID_get(swigCPtr);
-      return ret;
-    } 
-  }
-
   public unsafe uint ID {
     set {
       BRMonitoringPINVOKE.EntityID_ID_set(swigCPtr, value);
@@ -78,6 +58,16 @@ public class EntityID : global::System.IDisposable {
   }
 
   public unsafe EntityID(uint uiID) : this(BRMonitoringPINVOKE.new_EntityID__SWIG_3(uiID), true) {
+  }
+
+  public unsafe uint GetEntityLID() {
+    uint ret = BRMonitoringPINVOKE.EntityID_GetEntityLID(swigCPtr);
+    return ret;
+  }
+
+  public unsafe uint GetFacultyID() {
+    uint ret = BRMonitoringPINVOKE.EntityID_GetFacultyID(swigCPtr);
+    return ret;
   }
 
   public unsafe EntityID CopyFrom(EntityID entityID) {

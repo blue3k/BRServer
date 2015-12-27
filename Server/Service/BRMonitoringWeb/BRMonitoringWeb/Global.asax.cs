@@ -91,7 +91,9 @@ namespace BRMonitoringWeb
 
 
                 if (!MonitoringConfig.LoadConfig(serverConfigPath))
-                    return;
+                {
+                    throw new Exception("Failed to load Config!");
+                }
 
 
                 string serverAddress = LocalIPAddress();
@@ -104,6 +106,7 @@ namespace BRMonitoringWeb
                 AddDBCluster(MonitoringConfig.Instance.TableDB);
 
                 DLLLoadTest();
+
 
                 BR.BRMonitoring.InitializeNativeSystem("BRManigement");
                 BR.PerformanceCounterServer.Initialize(serverAddress, (uint)MonitoringConfig.Instance.Monitoring.MonitoringListenPort);

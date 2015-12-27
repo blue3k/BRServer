@@ -88,12 +88,14 @@ public class ServiceInformation : global::System.IDisposable {
     } 
   }
 
-  public unsafe ulong ServerUpTime {
+  public unsafe SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t ServerUpTime {
     set {
-      BRMonitoringPINVOKE.ServiceInformation_ServerUpTime_set(swigCPtr, value);
+      BRMonitoringPINVOKE.ServiceInformation_ServerUpTime_set(swigCPtr, SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.getCPtr(value));
+      if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      ulong ret = BRMonitoringPINVOKE.ServiceInformation_ServerUpTime_get(swigCPtr);
+      SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t ret = new SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t(BRMonitoringPINVOKE.ServiceInformation_ServerUpTime_get(swigCPtr), true);
+      if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
@@ -115,7 +117,7 @@ public class ServiceInformation : global::System.IDisposable {
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public unsafe ServiceInformation(EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, NetAddress address, ulong serverUpTime, uint workload) : this(BRMonitoringPINVOKE.new_ServiceInformation__SWIG_2(EntityUID.getCPtr(entityUID), (int)membership, (int)status, (int)netClass, NetAddress.getCPtr(address), serverUpTime, workload), true) {
+  public unsafe ServiceInformation(EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, NetAddress address, SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t serverUpTime, uint workload) : this(BRMonitoringPINVOKE.new_ServiceInformation__SWIG_2(EntityUID.getCPtr(entityUID), (int)membership, (int)status, (int)netClass, NetAddress.getCPtr(address), SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.getCPtr(serverUpTime), workload), true) {
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 

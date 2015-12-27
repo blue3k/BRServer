@@ -46,12 +46,12 @@ public class GlobalUID : global::System.IDisposable {
     } 
   }
 
-  public unsafe uint ServerID {
+  public unsafe uint SvrID {
     set {
-      BRMonitoringPINVOKE.GlobalUID_ServerID_set(swigCPtr, value);
+      BRMonitoringPINVOKE.GlobalUID_SvrID_set(swigCPtr, value);
     } 
     get {
-      uint ret = BRMonitoringPINVOKE.GlobalUID_ServerID_get(swigCPtr);
+      uint ret = BRMonitoringPINVOKE.GlobalUID_SvrID_get(swigCPtr);
       return ret;
     } 
   }
@@ -106,6 +106,9 @@ public class GlobalUID : global::System.IDisposable {
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
+
+  public unsafe static readonly int BIT_SERVERID = BRMonitoringPINVOKE.GlobalUID_BIT_SERVERID_get();
+  public unsafe static readonly int BIT_ID = BRMonitoringPINVOKE.GlobalUID_BIT_ID_get();
 
 }
 
