@@ -35,13 +35,13 @@ namespace Net {
 		class MessageHandler
 		{
 		public:
-			virtual HRESULT OnRecv(const sockaddr_in6& remoteAddr, Message::MessageData *pMsg) = 0;
+			virtual HRESULT OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) = 0;
 		};
 
 	private:
 
 		NetAddress m_LocalAddress;
-		sockaddr_in6 m_LocalSockAddress;
+		sockaddr_storage m_LocalSockAddress;
 		SOCKET m_Socket;
 
 		IOBUFFER_READ *m_pRecvBuffers;
@@ -62,12 +62,12 @@ namespace Net {
 
 		HRESULT PendingRecv(IOBUFFER_READ *pOver);
 		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
-		HRESULT SendMsg(const sockaddr_in6& dest, Message::MessageData *pMsg);
+		HRESULT SendMsg(const sockaddr_storage& dest, Message::MessageData *pMsg);
 
 		virtual SOCKET GetIOSocket() override { return GetSocket(); }
 
 		// called when incomming message occure
-		HRESULT OnRecv(const sockaddr_in6& remoteAddr, UINT uiBuffSize, const BYTE* pBuff);
+		HRESULT OnRecv(const sockaddr_storage& remoteAddr, UINT uiBuffSize, const BYTE* pBuff);
 
 		virtual HRESULT OnSendReady() override;
 		// called when reciving messag is completed

@@ -57,6 +57,7 @@ namespace Net {
 
 		SyncCounter				m_PendingRecvCnt;
 
+		HRESULT ServerHostOpen(NetClass netCls, const char *strLocalIP, USHORT usLocalPort);
 
 	public:
 		ServerPeer(ServerID InServerID, NetClass localClass);
@@ -119,7 +120,7 @@ namespace Net {
 
 
 		// Connect to other peer
-		virtual HRESULT RegisterServerConnection( ServerID serverID, NetClass netClass, const char *strIP, USHORT usPort, Net::IConnection* &pConnection );
+		virtual HRESULT RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection );
 
 	};
 

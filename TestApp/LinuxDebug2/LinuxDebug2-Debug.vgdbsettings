@@ -136,7 +136,7 @@
     <LaunchGDBSettings xsi:type="GDBLaunchParametersNewInstance">
       <DebuggedProgram>$(REMOTE_BASE_PATH)/Server/bin/DEBUG/NetTestServer</DebuggedProgram>
       <GDBServerPort>2000</GDBServerPort>
-      <ProgramArguments>--gtest_filter=TCPServerTest.Peer --gtest_catch_exceptions=0</ProgramArguments>
+      <ProgramArguments>--gtest_filter=PerformanceServerTest.Connect --gtest_catch_exceptions=0</ProgramArguments>
     </LaunchGDBSettings>
     <GenerateCtrlBreakInsteadOfCtrlC>false</GenerateCtrlBreakInsteadOfCtrlC>
     <DeploymentTargetPath />

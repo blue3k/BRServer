@@ -191,8 +191,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		SOCKET socket = INVALID_SOCKET;
 		INT iOptValue;
-		//bool bOptValue = 0;
-		sockaddr_in6 bindAddr;
+		sockaddr_storage bindAddr;
 		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
 
 		if( GetSocket() != INVALID_SOCKET )
@@ -203,8 +202,7 @@ namespace Net {
 
 		netTrace(Trace::TRC_TRACE, "Open Server UDP Host {0}:{1}", strLocalIP, usLocalPort );
 
-		//socket = WSASocket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
-		socket = NetSystem::Socket(SockFamily::IPV6, SockType::DataGram);
+		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::DataGram);
 		if( socket == INVALID_SOCKET )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
@@ -250,19 +248,21 @@ namespace Net {
 		//	netErr(hr);
 		//}
 
-		iOptValue = FALSE;
-		if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
+		// enable dual stack
+		if (GetLocalAddress().SocketFamily == SockFamily::IPV6)
 		{
-			hr = GetLastWSAHRESULT();
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, hr);
-			netErr(hr);
+			iOptValue = FALSE;
+			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
+			{
+				hr = GetLastWSAHRESULT();
+				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, hr);
+				netErr(hr);
+			}
 		}
 
 
-		bindAddr = GetSocketAddr();
-		bindAddr.sin6_family = AF_INET6;
-		bindAddr.sin6_addr = in6addr_any;
-		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
+		GetAnyBindAddr(GetSocketAddr(), bindAddr);
+		if (bind(socket, (sockaddr*)&bindAddr, GetSocketAddrSize()) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
@@ -411,7 +411,7 @@ namespace Net {
 	//}
 
 	//// Send message to connection with network device to dst addr
-	//HRESULT ServerUDPBase::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg )
+	//HRESULT ServerUDPBase::SendMsg( IConnection *pConnection, const sockaddr_storage& dstAddr, Message::MessageData *pMsg )
 	//{
 	//	HRESULT hr = S_OK, hrErr = S_OK;
 
@@ -655,7 +655,7 @@ namespace Net {
 		SharedPointerT<Connection> pConnection;
 		IConnection::ConnectionInformation connectionInfo;
 		bool bReleaseOnFail = false;
-		sockaddr_in6 from;
+		sockaddr_storage from;
 		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
 		else memset(&from, 0, sizeof(from));
 

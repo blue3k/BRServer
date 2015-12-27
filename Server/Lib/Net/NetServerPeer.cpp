@@ -77,7 +77,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
 
-		sockaddr_in6 from;
+		sockaddr_storage from;
 		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
 		else memset(&from, 0, sizeof(from));
 
@@ -418,33 +418,48 @@ namespace Net {
 	}
 
 
+	// Open host and start listen
+	HRESULT ServerPeer::ServerHostOpen(NetClass netCls, const char *strLocalIP, USHORT usLocalPort)
+	{
+		HRESULT hr = S_OK;
+		NetAddress localAddr;
+
+		netChk(NetSystem::OpenSystem(Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX));
+
+		m_NetClass = netCls;
+
+		netChk(SetLocalNetAddress(localAddr, strLocalIP, usLocalPort));
+
+		SetLocalAddress(localAddr);
+
+	Proc_End:
+
+
+		return hr;
+	}
+
 
 	// Open host and start listen
 	HRESULT ServerPeer::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
 		HRESULT hr = S_OK;
 		SOCKET socket = INVALID_SOCKET;
-		NetAddress localAddr;
 		INT iOptValue;
-		sockaddr_in6 bindAddr;
+		sockaddr_storage bindAddr;
 		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
 
-		netTrace(Trace::TRC_TRACE, "Opening Server Peer, {0}:{1}", strLocalIP, usLocalPort);
-
-		netChk( NetSystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
 
 		if( GetSocket() != INVALID_SOCKET )
 			return S_OK;
 
-		// set local address
-		svrChk( StrUtil::StringCpy( localAddr.strAddr, strLocalIP ) );
-		localAddr.usPort = usLocalPort;
-		SetLocalAddress( localAddr );
+		netTrace(Trace::TRC_TRACE, "Opening Server Peer, {0}:{1}", strLocalIP, usLocalPort);
+
+		//netChk( NetSystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
+		netChk(ServerHostOpen(netCls, strLocalIP, usLocalPort));
 
 		netTrace(Trace::TRC_TRACE, "Open Server Peer Host {0}:{1}", strLocalIP, usLocalPort );
 
-		//socket = WSASocket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
-		socket = NetSystem::Socket(SockFamily::IPV6, SockType::DataGram);
+		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::DataGram);
 		if( socket == INVALID_SOCKET )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
@@ -473,10 +488,8 @@ namespace Net {
 		}
 
 
-		bindAddr = GetSocketAddr();
-		bindAddr.sin6_family = AF_INET6;
-		bindAddr.sin6_addr = in6addr_any;
-		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
+		GetAnyBindAddr(GetSocketAddr(), bindAddr);
+		if (bind(socket, (sockaddr*)&bindAddr, GetSocketAddrSize()) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
@@ -548,7 +561,7 @@ namespace Net {
 
 
 	// Connect to other peer
-	HRESULT ServerPeer::RegisterServerConnection( ServerID serverID, NetClass netClass, const char *strDstIP, USHORT usDstPort, Net::IConnection* &pConnection )
+	HRESULT ServerPeer::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
 	{
 		HRESULT hr = S_OK;
 		Net::IConnection::ConnectionInformation connectionInfo;
@@ -562,8 +575,7 @@ namespace Net {
 
 		connectionInfo.SetLocalInfo( GetNetClass(), GetLocalAddress(), GetServerID() );
 
-		netChk( StrUtil::StringCpy( connectionInfo.Remote.strAddr, strDstIP ) );
-		connectionInfo.Remote.usPort = usDstPort;
+		connectionInfo.Remote = destAddress;
 		connectionInfo.RemoteClass = netClass;
 		connectionInfo.RemoteID = serverID;
 
@@ -590,7 +602,7 @@ namespace Net {
 
 		if( SUCCEEDED(hr) )
 		{
-			netTrace(TRC_NET, "ServerPeer Allowing Server:%3%:%4%, {0}:{1}, CID:{2}", strDstIP, usDstPort, CID, netClass, serverID);
+			netTrace(TRC_NET, "ServerPeer Allowing Server:{2}:{3}, {0}, CID:{1}", destAddress, CID, netClass, serverID);
 		}
 
 		return hr;

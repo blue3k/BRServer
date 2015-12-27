@@ -48,18 +48,6 @@ namespace Net {
 		OP_UDPWRITE,
 	};
 
-	enum class SockFamily : UINT8
-	{
-		IPV4 = AF_INET,
-		IPV6 = AF_INET6
-	};
-
-	enum class SockType
-	{
-		Stream = SOCK_STREAM,       // TCP
-		DataGram  = SOCK_DGRAM,     // UDP
-	};
-
 
 	// Get lastest socket error 
 	HRESULT GetLastWSAHRESULT();
@@ -169,7 +157,7 @@ namespace Net {
 		void CloseSocket(SOCKET sock);
 
 		HRESULT Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept);
-		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_in6& remoteAddr);
+		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_storage& remoteAddr);
 
 		HRESULT Recv(SOCKET sock, IOBUFFER_READ* pBuffer);
 		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer);

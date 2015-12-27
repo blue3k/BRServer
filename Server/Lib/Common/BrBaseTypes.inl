@@ -20,13 +20,15 @@ NetAddress::NetAddress()
 {
 	memset( strAddr, 0, sizeof(strAddr) );
 	usPort = 0;
+	SocketFamily = SockFamily::None;
 }
 
-NetAddress::NetAddress( const char* strAdr, UINT16 port )
+NetAddress::NetAddress(SockFamily sockFamily, const char* strAdr, UINT16 port )
 {
 	AssertRel(strAdr);
 	StrUtil::StringCpy( strAddr, strAdr );
 	usPort = port;
+	SocketFamily = sockFamily;
 }
 
 NetAddress::NetAddress( int iVal )
@@ -34,6 +36,7 @@ NetAddress::NetAddress( int iVal )
 	unused(iVal);
 	memset( strAddr, 0, sizeof(strAddr) );
 	usPort = 0;
+	SocketFamily = SockFamily::None;
 }
 
 bool NetAddress::operator == ( const NetAddress& op ) const

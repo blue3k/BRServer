@@ -155,22 +155,24 @@ namespace SharedModuleServer {
 	HRESULT SharedModuleServer::InitializeNetPrivate()
 	{
 		HRESULT hr = S_OK;
-		//Svr::LoginClusterServiceEntity *pLoginService = nullptr;
-		//Svr::GameClusterServiceEntity *pGameService = nullptr;
-		//UINT componentID = 0;
 		Svr::Config::SharedModuleServer *pServerConfig = nullptr;
+		SockFamily privateNetSockFamily;
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
 		// Register entity servers
+		// All server should use same sock family(IPV4 or IPV6)
+		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 		for( auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity )
 		{
 			EntityServerEntity *pEntity = nullptr;
 			auto pEntityCfg = *itEntity;
 
-			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port, pEntity));
+			NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
+
+			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
 		}
 
 

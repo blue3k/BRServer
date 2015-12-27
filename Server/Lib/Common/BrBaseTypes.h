@@ -61,6 +61,19 @@ namespace BR {
 	};
 
 
+	enum class SockFamily : UINT8
+	{
+		None = 0,
+		IPV4 = AF_INET,
+		IPV6 = AF_INET6
+	};
+
+	enum class SockType
+	{
+		Stream = SOCK_STREAM,       // TCP
+		DataGram = SOCK_DGRAM,     // UDP
+	};
+
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -74,9 +87,10 @@ namespace BR {
 		};
 		char strAddr[MAX_NETNAME];
 		UINT16 usPort;
+		SockFamily SocketFamily;
 
 		inline NetAddress();
-		inline NetAddress( const char* strAdr, UINT16 port = 0 );
+		inline NetAddress(SockFamily sockFamily, const char* strAdr, UINT16 port = 0);
 		inline NetAddress( int );
 
 		inline bool operator == ( const NetAddress& op ) const;

@@ -63,14 +63,17 @@ protected:
 TEST_F(TCPServerTest, Peer)
 {
 	HRESULT hr = S_OK;
-	NetAddress localAddr;
+	NetAddress localAddr, destAddr;
 	Net::IConnection::ConnectionInformation connectionInfo;
 	bool bWaitingTest = true;
 	TimeStampMS startTime;
 
 
-	EXPECT_HRESULT_SUCCEEDED(Net::GetLocalAddressIPv6(localAddr));
+	EXPECT_HRESULT_SUCCEEDED(Net::GetLocalAddressIPv4(localAddr));
 	localAddr.usPort = LOCAL_PORT;
+
+	destAddr = localAddr;
+	destAddr.usPort = REMOTE_PORT;
 
 	hr = m_pServer->HostOpen(GetNetClass(), localAddr.strAddr, localAddr.usPort);
 	EXPECT_HRESULT_SUCCEEDED(hr);
@@ -82,7 +85,8 @@ TEST_F(TCPServerTest, Peer)
 	for (int iClient = 0; iClient < MAX_CLIENT; iClient++)
 	{
 		Net::IConnection* pConnection = nullptr;
-		defChk(m_pServer->RegisterServerConnection(CLIENTID, GetNetClass(), localAddr.strAddr, REMOTE_PORT, pConnection));
+
+		defChk(m_pServer->RegisterServerConnection(CLIENTID, GetNetClass(), destAddr, pConnection));
 
 		defTrace(Trace::TRC_USER1, "Initialize connection CID:{0}, Addr:{1}:{2}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote.strAddr, pConnection->GetConnectionInfo().Remote.usPort);
 

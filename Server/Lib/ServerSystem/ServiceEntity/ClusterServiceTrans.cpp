@@ -266,7 +266,7 @@ namespace Svr {
 				continue;
 
 			svrChk(pServerEntityManager->GetOrRegisterServer(pServiceInfo->UID.GetServerID(), pServiceInfo->ServerClass,
-				pServiceInfo->ServerAddress.strAddr, pServiceInfo->ServerAddress.usPort,
+				pServiceInfo->ServerAddress,
 				pServerEntity ) );
 
 			if( pServerEntity->GetServerUpTime() == TimeStampSec::min() || pServerEntity->GetServerUpTime() < pServiceInfo->ServerUpTime )

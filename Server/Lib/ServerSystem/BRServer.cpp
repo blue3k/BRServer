@@ -255,8 +255,10 @@ Proc_End:
 		netInfo = Svr::Config::GetConfig().MonitoringServer->NetPrivate;
 		svrChkPtr(netInfo);
 
+		svrChk(Net::SetNetAddress(svrAddress, netInfo->IP.c_str(), netInfo->Port));
+
 		Assert(GetServerUID() != 0);
-		svrChk(PerformanceCounterClient::Initialize(GetServerUID(), NetAddress(netInfo->IP.c_str(), netInfo->Port)));
+		svrChk(PerformanceCounterClient::Initialize(GetServerUID(), svrAddress));
 
 	Proc_End:
 

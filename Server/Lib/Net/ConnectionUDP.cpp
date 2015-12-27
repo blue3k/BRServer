@@ -360,7 +360,7 @@ namespace Net {
 
 
 	// Reinitialize and set remote address
-	HRESULT ConnectionUDPClient::ReInitialize( const sockaddr_in6& socAddr )
+	HRESULT ConnectionUDPClient::ReInitialize( const sockaddr_storage& socAddr )
 	{
 		SetConnectionState(STATE_CONNECTING);
 

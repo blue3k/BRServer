@@ -7,11 +7,11 @@ cd ../Server/bin/DEBUG
 
 rm -rf ../log/*
 
-./BREntityServer -n:BREntityServer1
+./BREntityServer -n:BREntityServer1&
 
 sleep 2s
 
-./BREntityServer -n:BREntityServer2
+./BREntityServer -n:BREntityServer2&
 
 
 popd > /dev/null

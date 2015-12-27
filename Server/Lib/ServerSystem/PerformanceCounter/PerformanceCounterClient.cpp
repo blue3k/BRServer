@@ -29,7 +29,7 @@ namespace Svr {
 
 	PerformanceCounterClient *PerformanceCounterClient::stm_pInstance = nullptr;
 
-	HRESULT PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_in6& remoteAddr, Message::MessageData *pMsg)
+	HRESULT PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
 	{
 		HRESULT hr = S_OK;
 
@@ -343,7 +343,7 @@ namespace Svr {
 	}
 
 
-	HRESULT PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_in6& remoteAddr, Message::MessageData* &pMsg)
+	HRESULT PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
 		HRESULT hr = S_OK;
 		Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt messageClass(pMsg);

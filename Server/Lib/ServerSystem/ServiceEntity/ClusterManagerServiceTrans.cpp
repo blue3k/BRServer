@@ -128,7 +128,7 @@ namespace Svr {
 				memberShip = ClusterMembership::Slave; // make it a slave
 		}
 
-		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().GetServerID(), GetSenderNetClass(), GetSenderAddress().strAddr, GetSenderAddress().usPort, pSenderEntity ) );
+		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().GetServerID(), GetSenderNetClass(), GetSenderAddress(), pSenderEntity ) );
 
 		svrChk( pServiceEntity->NewServerService( GetSender(), pSenderEntity, memberShip, ServiceStatus::Online, pRequestedService ) );
 
@@ -202,7 +202,7 @@ namespace Svr {
 				memberShip = ClusterMembership::Slave; // make it as a slave
 		}
 
-		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().GetServerID(), GetSenderNetClass(), GetSenderAddress().strAddr, GetSenderAddress().usPort, pSenderEntity ) );
+		svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( GetSender().GetServerID(), GetSenderNetClass(), GetSenderAddress(), pSenderEntity ) );
 
 		svrChk( pServiceEntity->NewServerService( GetSender(), pSenderEntity, memberShip, ServiceStatus::Online, pRequestedService ) );
 
@@ -402,7 +402,7 @@ namespace Svr {
 			}
 		}
 		
-		svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress().strAddr, GetJoinedServiceAddress().usPort, pSenderEntity));
+		svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
 
 		svrChk( pServiceEntity->NewServerService( GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService ) );
 
@@ -450,7 +450,7 @@ namespace Svr {
 				}
 			}
 
-			svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress().strAddr, GetJoinedServiceAddress().usPort, pSenderEntity));
+			svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
 
 			svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
 		}
@@ -496,7 +496,7 @@ namespace Svr {
 			if( !bAddStatusWatcher && serviceInfo.Membership == ClusterMembership::StatusWatcher )
 				continue;
 
-			svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( serviceInfo.UID.GetServerID(), serviceInfo.ServerClass, serviceInfo.ServerAddress.strAddr, serviceInfo.ServerAddress.usPort, pServerEntity ) );
+			svrChk( GetServerComponent<ServerEntityManager>()->GetOrRegisterServer( serviceInfo.UID.GetServerID(), serviceInfo.ServerClass, serviceInfo.ServerAddress, pServerEntity ) );
 
 			pNewService = nullptr;
 			svrChk( pServiceEntity->NewServerService( serviceInfo.UID, pServerEntity, serviceInfo.Membership, serviceInfo.Status, pNewService ) );

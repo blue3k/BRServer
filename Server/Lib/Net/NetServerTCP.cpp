@@ -82,8 +82,7 @@ namespace Net {
 
 		memset(pAcceptInfo, 0, sizeof(IOBUFFER_ACCEPT));
 
-		//sockAccept = WSASocket(GetSocketAddr().sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
-		sockAccept = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
+		sockAccept = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::Stream);
 		if (sockAccept == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Accept Socket {0:X8}", GetLastWSAHRESULT());
@@ -127,7 +126,7 @@ namespace Net {
 	HRESULT ServerTCP::OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pOverAccept )
 	{
 		HRESULT hr = S_OK;
-		sockaddr_in6 remoteAddr;
+		sockaddr_storage remoteAddr;
 		SOCKET sockSvr = GetSocket();
 		SOCKET sockAccept = pOverAccept->sockAccept;
 		Net::IConnection::ConnectionInformation connectionInfo;
@@ -179,7 +178,7 @@ namespace Net {
 	}
 
 	// handle Socket accept
-	HRESULT ServerTCP::OnNewSocket( SOCKET acceptedSocket, const sockaddr_in6& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut )
+	HRESULT ServerTCP::OnNewSocket( SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut )
 	{
 		HRESULT hr = S_OK;
 		ConnectionTCP *pConnection = nullptr;
@@ -313,7 +312,7 @@ namespace Net {
 		SOCKET socket = INVALID_SOCKET;
 		INT32 iOptValue;
 		int bOptValue;
-		sockaddr_in6 bindAddr;
+		sockaddr_storage bindAddr;
 		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
 
 		if( GetSocket() != INVALID_SOCKET )// already initialized?
@@ -324,7 +323,7 @@ namespace Net {
 
 		netTrace(Trace::TRC_TRACE, "Open Server TCP Host {0}:{1}", strLocalIP, usLocalPort );
 
-		socket = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
+		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::Stream);
 		if( socket == INVALID_SOCKET )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
@@ -353,8 +352,7 @@ namespace Net {
 			netErr( E_UNEXPECTED );
 		}
 
-		bindAddr = GetSocketAddr();
-		if (GetSocketAddr().sin6_family == AF_INET6)
+		if (GetSocketAddr().ss_family== AF_INET6)
 		{
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
@@ -362,11 +360,10 @@ namespace Net {
 				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
 				netErr( E_UNEXPECTED );
 			}
-
-			bindAddr.sin6_family = AF_INET6;
-			bindAddr.sin6_addr = in6addr_any;
 		}
-		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
+
+		GetAnyBindAddr(GetSocketAddr(), bindAddr);
+		if (bind(socket, (sockaddr*)&bindAddr, GetSocketAddrSize()) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, TCP {0:X8}", GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );

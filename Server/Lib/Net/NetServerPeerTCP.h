@@ -71,7 +71,7 @@ namespace Net {
 		//  Net callback
 
 		// handle Socket accept
-		virtual HRESULT OnNewSocket(SOCKET acceptedSocket, const sockaddr_in6& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut ) override;
+		virtual HRESULT OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut ) override;
 
 
 		// Release instance
@@ -88,10 +88,10 @@ namespace Net {
 		//virtual HRESULT HostClose();
 
 		// Make a connection to another server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) override;
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
 
 		// Connect to other peer
-		HRESULT RegisterServerConnection(ServerID serverID, NetClass netClass, const char *strIP, USHORT usPort, Net::IConnection* &pConnection);
+		HRESULT RegisterServerConnection(ServerID serverID, NetClass netClass, const NetAddress& netAddress, Net::IConnection* &pConnection);
 
 	};
 

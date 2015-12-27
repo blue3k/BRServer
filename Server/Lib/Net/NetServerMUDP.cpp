@@ -50,7 +50,7 @@ namespace Net {
 	{
 	}
 
-	HRESULT ServerMUDP::SendRaw(const sockaddr_in6& dstAddress, Message::MessageData* &pMsg)
+	HRESULT ServerMUDP::SendRaw(const sockaddr_storage& dstAddress, Message::MessageData* &pMsg)
 	{
 		HRESULT hr = S_OK;
 		IOBUFFER_WRITE *pSendBuffer = nullptr;
@@ -82,7 +82,7 @@ namespace Net {
 	}
 
 	// Make Ack packet and enqueue to SendNetCtrlqueue
-	HRESULT ServerMUDP::SendNetCtrl( const sockaddr_in6& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	HRESULT ServerMUDP::SendNetCtrl( const sockaddr_storage& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
 		HRESULT hr = S_OK, hrTem = S_OK;
 		MsgMobileNetCtrl *pNetCtrl = NULL;
@@ -120,7 +120,7 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ServerMUDP::OnNoConnectionPacket(const struct sockaddr_in6& from, const BYTE* pData)
+	HRESULT ServerMUDP::OnNoConnectionPacket(const struct sockaddr_storage& from, const BYTE* pData)
 	{
 		HRESULT hr = S_OK;
 
@@ -192,7 +192,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		SharedPointerT<Connection> pConnection;
 		IConnection::ConnectionInformation connectionInfo;
-		sockaddr_in6 from;
+		sockaddr_storage from;
 		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
 		else memset(&from, 0, sizeof(from));
 

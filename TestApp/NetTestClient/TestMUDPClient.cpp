@@ -76,8 +76,11 @@ TEST_F(MUDPClientTest, Connect)
 
 	for (int iClient = 0; iClient < MAX_CLIENT; iClient++)
 	{
+		NetAddress destAddress;
 		Net::IConnection* pConnection = nullptr;
-		defChk(m_Client->ConnectCli(localAddr.strAddr, REMOTE_PORT, pConnection));
+
+		Net::SetNetAddress(destAddress, localAddr.strAddr, REMOTE_PORT);
+		defChk(m_Client->ConnectCli(destAddress, pConnection));
 
 		defTrace(Trace::TRC_USER1, "Initialize connection CID:{0}, Addr:{1}:{2}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote.strAddr, pConnection->GetConnectionInfo().Remote.usPort);
 

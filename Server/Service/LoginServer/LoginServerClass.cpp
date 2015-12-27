@@ -150,6 +150,7 @@ namespace LoginServer {
 		HRESULT hr = S_OK;
 		Svr::LoginClusterServiceEntity *pLoginService = nullptr;
 		Svr::ClusteredServiceEntity *pClusteredEntity = nullptr;
+		SockFamily privateNetSockFamily;
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
@@ -157,13 +158,16 @@ namespace LoginServer {
 
 
 		// Register entity servers
+		// All server should use same sock family(IPV4 or IPV6)
+		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 		for( auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity )
 		{
 			Svr::EntityServerEntity *pEntity = nullptr;
 			auto pEntityCfg = *itEntity;
 			if( pEntityCfg->Name != Util::GetServiceNameA() )
 			{
-				svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port, pEntity));
+				NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
+				svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
 			}
 		}
 

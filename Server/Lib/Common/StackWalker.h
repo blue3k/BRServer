@@ -12,9 +12,6 @@
 
 
 #include "Common/Typedefs.h"
-#include "Common/Trace.h"
-#include "Common/Synchronization.h"
-#include "Common/StackPool.h"
 
 
 
@@ -48,7 +45,7 @@ namespace BR
 		CallStackTrace();
 
 		// print stack trace
-		HRESULT PrintStackTrace( Trace::TraceChannels channel, NativeHandle hProcess );
+		HRESULT PrintStackTrace( int channel, NativeHandle hProcess );
 	};
 
 
@@ -73,7 +70,7 @@ namespace BR
 		static void STACKWALKER_CALL CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth = 0, UINT maxDepth = CallStackTrace::MAX_CALLSTACK_DEPTH );
 
 		// print stack trace
-		static void PrintStackTrace(Trace::TraceChannels channel);
+		static void PrintStackTrace(int channel);
 	};
 
 

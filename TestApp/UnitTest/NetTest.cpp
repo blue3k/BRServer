@@ -76,9 +76,10 @@ TEST_F(NetTest, MessageMap)
 	const HRESULT InResult = S_FALSE;
 	const BR::AccountID InAccID = 123456;
 	const BR::AuthTicket InTicket = 654321;
-	const BR::NetAddress InGameInsSvr("127.0.0.1",1234);
+	BR::NetAddress InGameInsSvr;
 	const BR::GameInsUID InInsUID(3,67893);
 
+	Net::SetNetAddress(InGameInsSvr, "127.0.0.1", 1234);
 	typedef std::function<HRESULT(BR::Message::MessageData*)> MessageHandlerType;
 	typedef BR::Svr::MessageHandlerTable<MessageHandlerType> TestMessageTable;
 	BR::CheckCtrMemory();
@@ -146,12 +147,15 @@ TEST_F(NetTest, Simple)
 	BR::Message::MessageData *pIMsg = nullptr;
 	TimeStampMS dwTimeStart = Util::Time.GetTimeMs();
 	TimeStampMS dwTime = Util::Time.GetTimeMs();
+	NetAddress destAddress;
 
 	m_pNetClient = dynamic_cast<BR::Net::IClient*>(m_pNet);
 	defChkPtr(m_pNetClient);
 
+	Net::SetNetAddress(destAddress, "127.0.0.1", 4001);
+
 	// Connect TCP server
-	EXPECT_HRESULT_SUCCEEDED(m_pNetClient->ConnectCli( "127.0.0.1", 4001, m_pIConnection ));
+	EXPECT_HRESULT_SUCCEEDED(m_pNetClient->ConnectCli(destAddress, m_pIConnection ));
 
 	// Policy create
 	EXPECT_HRESULT_SUCCEEDED( m_pIConnection->CreatePolicy( BR::POLICY_GAME ) );

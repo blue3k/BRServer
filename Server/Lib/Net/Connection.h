@@ -53,7 +53,7 @@ namespace Net {
 	protected:
 
 		// Remote Socket address
-		struct sockaddr_in6	m_sockAddrRemote;
+		sockaddr_storage	m_sockAddrRemote;
 
 		std::atomic<LONG> m_PendingSend;
 
@@ -118,7 +118,8 @@ namespace Net {
 		void CloseSocket();
 
 		// Get remote address
-		inline const sockaddr_in6& GetRemoteSockAddr() const;
+		const sockaddr_storage& GetRemoteSockAddr() const;
+		size_t GetRemoteSockAddrSize() const;
 
 		// Get Recv queue
 		MsgQueue& GetRecvQueue();

@@ -81,7 +81,7 @@ namespace Net {
 		// Called when connection result 
 		virtual void OnConnectionResult( Connection *pConnection, HRESULT hrConnect );
 
-		virtual HRESULT ConnectCli(const char *strServerIP, USHORT usServerPort, IConnection* &pNewConnection) override;
+		virtual HRESULT ConnectCli(const NetAddress& destAddress, IConnection* &pNewConnection) override;
 
 		// take over connection management
 		virtual HRESULT TakeOverConnection(IConnection* pIConnection) override;
@@ -118,7 +118,7 @@ namespace Net {
 		virtual bool IsReady();
 
 		// Connect to server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) override;
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
 
 		// Called when connection state changed
 		HRESULT OnConnectionStateChange( IConnection *pConnection );
@@ -147,7 +147,7 @@ namespace Net {
 		virtual bool IsReady();
 
 		// Connect to server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) override;
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
 
 	};
 
@@ -175,7 +175,7 @@ namespace Net {
 		virtual bool IsReady() override;
 
 		// Connect to server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) override;
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
 
 	};
 

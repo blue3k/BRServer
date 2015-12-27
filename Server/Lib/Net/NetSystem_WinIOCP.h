@@ -51,8 +51,8 @@ namespace Net {
 
 		union {
 			// UDP Read from
-			struct sockaddr_in6 From;
-			struct sockaddr_in6 To;
+			struct sockaddr_storage From;
+			struct sockaddr_storage To;
 		} NetAddr;
 
 
@@ -82,8 +82,8 @@ namespace Net {
 		inline void InitBuff( UINT uiBuffSize, BYTE* pBuff );
 
 		// Setup sending mode
-		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_in6& to, Message::MessageData *pMsg );
-		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_in6& to, UINT uiBuffSize, BYTE* pBuff );
+		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_storage& to, Message::MessageData *pMsg );
+		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_storage& to, UINT uiBuffSize, BYTE* pBuff );
 		inline void SetupSendTCP( Message::MessageData *pMsg );
 		inline void SetupSendTCP( UINT uiBuffSize, BYTE* pBuff );
 
@@ -127,7 +127,7 @@ namespace Net {
 	{
 		//Connection	*pConnection;
 		SOCKET sockAccept;
-		BYTE pAcceptInfo[(sizeof(sockaddr_in6)+16)*2];
+		BYTE pAcceptInfo[sizeof(sockaddr_storage)*2];
 		DWORD dwByteReceived;
 
 		// Constructor

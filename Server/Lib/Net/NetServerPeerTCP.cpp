@@ -48,13 +48,12 @@ namespace Net {
 
 
 	// handle Socket accept
-	HRESULT ServerPeerTCP::OnNewSocket(SOCKET acceptedSocket, const sockaddr_in6& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut)
+	HRESULT ServerPeerTCP::OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut)
 	{
 		HRESULT hr = S_OK;
 		ConnectionTCP *pConnection = nullptr;
 		SharedPointerT<Connection> pConn;
 		uintptr_t cid = 0;
-//		ConnectionManager::AddrIterator itCon;
 		bool bNeedPending = false;
 
 		pConnOut = nullptr;
@@ -62,7 +61,6 @@ namespace Net {
 		// Connect to IOCP
 		if (SUCCEEDED(GetConnectionManager().GetConnectionByAddr(remoteSockAddr, pConn)))
 		{
-			//pConnection = (ConnectionTCP*)(*itCon).pConnection;
 			pConnection = (ConnectionTCP*)(Connection*)pConn;
 			pConnection->CloseConnection();
 			pConn = SharedPointerT<Connection>();
@@ -154,13 +152,13 @@ namespace Net {
 
 
 	// Make a connection to another server
-	HRESULT ServerPeerTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort)
+	HRESULT ServerPeerTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
 		HRESULT hr = S_OK;
 		Net::IConnection::ConnectionInformation connectionInfo;
 		ConnectionTCP *pConn = nullptr;
 		SOCKET socket = INVALID_SOCKET;
-		sockaddr_in6 remoteAddr, localsockAddr;
+		sockaddr_storage remoteAddr;
 		INT32 iOptValue;
 
 		netChkPtr(pIConn);
@@ -171,16 +169,11 @@ namespace Net {
 
 		connectionInfo.SetLocalInfo(GetNetClass(), GetLocalAddress(), GetServerID());
 
-		netChk(StrUtil::StringCpy(connectionInfo.Remote.strAddr, strDstIP));
-		connectionInfo.Remote.usPort = usDstPort;
+		connectionInfo.Remote = destAddress;
 		connectionInfo.RemoteClass = netClass;
 		connectionInfo.RemoteID = remoteID;
 
-		// Get the local host information
-		SetSockAddr(localsockAddr, GetLocalAddress().strAddr, 0);// to make port generation
-
-		//socket = WSASocket(localsockAddr.sin6_family, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
-		socket = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
+		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::Stream);
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open a Socket {0:X8}", GetLastWSAHRESULT());
@@ -201,7 +194,7 @@ namespace Net {
 		}
 #endif
 
-		if (localsockAddr.sin6_family == AF_INET6)
+		if (GetLocalAddress().SocketFamily == SockFamily::IPV6)
 		{
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
@@ -211,7 +204,7 @@ namespace Net {
 			}
 		}
 
-		SetSockAddr(remoteAddr, strDstIP, usDstPort);
+		Addr2SockAddr(destAddress, remoteAddr);
 
 		netChk(pConn->InitConnection(socket, connectionInfo));
 		socket = INVALID_SOCKET;
@@ -232,7 +225,7 @@ namespace Net {
 
 
 	// Connect to other peer
-	HRESULT ServerPeerTCP::RegisterServerConnection( ServerID serverID, NetClass netClass, const char *strDstIP, USHORT usDstPort, Net::IConnection* &pConnection )
+	HRESULT ServerPeerTCP::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
 	{
 		HRESULT hr = S_OK;
 		ConnectionTCP *pConn = nullptr;
@@ -242,7 +235,7 @@ namespace Net {
 
 		CID = pConn->GetCID();
 
-		if(FAILED(Connect(pConn, serverID, netClass, strDstIP, usDstPort)))
+		if(FAILED(Connect(pConn, serverID, netClass, destAddress)))
 		{
 			netTrace(Trace::TRC_WARN, "Opening connection is failed, ServerID {0}", serverID);
 		}
@@ -254,7 +247,7 @@ namespace Net {
 
 		if( SUCCEEDED(hr) )
 		{
-			netTrace(TRC_NET, "ServerPeer Allowing Server:{3}:{4}, {0}:{1}, CID:{2}", strDstIP, usDstPort, CID, netClass, serverID);
+			netTrace(TRC_NET, "ServerPeer Allowing Server:{2}:{3}, {0}, CID:{1}", destAddress, CID, netClass, serverID);
 		}
 
 		return hr;

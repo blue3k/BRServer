@@ -4,6 +4,10 @@
 #include "stdafx.h"
 #include <gtest/gtest.h>
 #include "TestBase.h"
+#include "Common/Trace.h"
+#include "Common/Memory.h"
+#include "Common/MemoryPool.h"
+#include "Common/TraceComponent.h"
 
 using ::testing::EmptyTestEventListener;
 using ::testing::InitGoogleTest;
@@ -75,7 +79,14 @@ bool MyTestBase::cfg_MemLog = true;
 
 int main(int argc, char **argv)
 {
-	Trace::Initialize();
+	LibComponentCarrier libComponents;
+
+	libComponents.AddComponent<LibComponentTrace>();
+	libComponents.AddComponent<Util::LibComponentTime>();
+	libComponents.AddComponent<MemoryPoolManager>();
+
+	libComponents.InitializeComponents();
+
 
 	InitGoogleTest(&argc, argv);
 
@@ -116,13 +127,8 @@ int main(int argc, char **argv)
 
 	int iRes = RUN_ALL_TESTS();
 
+	libComponents.TerminateComponents();
 
-	Trace::Uninitialize();
-
-	//BR::MemoryPoolManager::Terminate();
-
-	//if( BR::GetMemLogger() )
-	//	BR::GetMemLogger()->Terminate();
 
 	return iRes;
 }

@@ -15,6 +15,8 @@
 #include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
+#include "Common/Synchronization.h"
+#include "Common/StackPool.h"
 
 #include "Common/StackWalker.h"
 
@@ -79,7 +81,7 @@ namespace BR
 		void STDCALL CaptureCallStack( CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth );
 
 		// print stack trace
-		void PrintStackTrace(Trace::TraceChannels channel);
+		void PrintStackTrace(int channel);
 	};
 
 
@@ -95,7 +97,7 @@ namespace BR
 	}
 
 #if WINDOWS
-	HRESULT CallStackTrace::PrintStackTrace( Trace::TraceChannels channel, NativeHandle hProcess )
+	HRESULT CallStackTrace::PrintStackTrace( int channel, NativeHandle hProcess )
 	{
 		BYTE Buffer[1024];
 		memset( Buffer, 0, sizeof(Buffer) );
@@ -142,7 +144,7 @@ namespace BR
 		return E_FAIL;
 	}
 #else
-	HRESULT CallStackTrace::PrintStackTrace(Trace::TraceChannels channel, NativeHandle hProcess)
+	HRESULT CallStackTrace::PrintStackTrace(int channel, NativeHandle hProcess)
 	{
 		char **strings;
 
@@ -510,7 +512,7 @@ namespace BR
 
 
 	// print stack trace
-	void StackWalkerImpl::PrintStackTrace(Trace::TraceChannels channel)
+	void StackWalkerImpl::PrintStackTrace(int channel)
 	{
 		CallStackTrace stackTrace;
 		CaptureCallStack( stackTrace, 0, CallStackTrace::MAX_CALLSTACK_DEPTH );
@@ -560,7 +562,7 @@ namespace BR
 	}
 
 	// print stack trace
-	void StackWalker::PrintStackTrace(Trace::TraceChannels channel)
+	void StackWalker::PrintStackTrace(int channel)
 	{
 		if( stm_pInstance == nullptr )
 			return;

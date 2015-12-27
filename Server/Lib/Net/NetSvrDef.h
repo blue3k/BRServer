@@ -38,7 +38,7 @@ namespace Net {
 		NetClass m_LocalClass;
 
 		// Socket local address
-		sockaddr_in6 m_LocalSockAddr;
+		sockaddr_storage m_LocalSockAddr;
 
 		// Event queue
 		PageQueue<INet::Event>	m_NetEventQueue;
@@ -66,7 +66,9 @@ namespace Net {
 		virtual void SetIsEnableAccept(bool bIsEnable);
 
 		// Get Socket address
-		inline const sockaddr_in6& GetSocketAddr();
+		inline const sockaddr_storage& GetSocketAddr();
+
+		size_t GetSocketAddrSize() { return m_LocalSockAddr.ss_family == AF_INET6 ? sizeof(sockaddr_in6) : sizeof(sockaddr_in); }
 
 		// Get local address
 		inline const NetAddress& GetLocalAddress();
@@ -84,7 +86,7 @@ namespace Net {
 		// Query Network event
 		virtual HRESULT DequeueNetEvent( Event& curEvent );
 
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) { return E_NOTIMPL; }
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) { return E_NOTIMPL; }
 
 		// Close all connection
 		virtual HRESULT CloseAllConnection() = 0;

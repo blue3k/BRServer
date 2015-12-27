@@ -46,6 +46,37 @@ namespace BR {
 	}
 
 
+	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const sockaddr_storage& Data, int Option)
+	{
+		unused(Option);
+		char ipstr[INET6_ADDRSTRLEN] = "";
+		int port = 0;
+		if (Data.ss_family == AF_INET6)
+		{
+			auto sockAddr = (sockaddr_in6*)&Data;
+			inet_ntop(Data.ss_family, (void*)&sockAddr->sin6_addr, ipstr, sizeof ipstr);
+			port = ntohs(sockAddr->sin6_port);
+		}
+		else
+		{
+			auto sockAddr = (sockaddr_in*)&Data;
+			inet_ntop(Data.ss_family, (void*)&sockAddr->sin_addr, ipstr, sizeof ipstr);
+			port = ntohs(sockAddr->sin_port);
+		}
+
+		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ipstr)))
+			return E_FAIL;
+
+		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
+			return E_FAIL;
+		
+		if( FAILED( _IToA( (UINT32)port, pBuff, iBuffLen, 10, -1 ) ) )
+			return E_FAIL;
+
+		return S_OK;
+	}
+
 
 	template<>
 	HRESULT ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionInformation& Data, int Option )

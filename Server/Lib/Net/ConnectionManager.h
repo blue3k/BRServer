@@ -41,12 +41,12 @@ namespace Net {
 		//	Address to connection map
 		//
 
-		class Sockaddress : public sockaddr_in6
+		class Sockaddress : public sockaddr_storage
 		{
 		public:
 			Sockaddress() = default;
 			Sockaddress(const Sockaddress& src) = default;
-			Sockaddress(const sockaddr_in6& src);
+			Sockaddress(const sockaddr_storage& src);
 			Sockaddress(int value);
 			~Sockaddress() = default;
 
@@ -54,13 +54,14 @@ namespace Net {
 
 			bool operator > (const Sockaddress& src);
 			bool operator == (const Sockaddress& src);
+			bool operator != (const Sockaddress& src);
 
-			operator const sockaddr_in6& () { return *this; }
+			operator const sockaddr_storage& () { return *this; }
 		};
 
 		//////////////////////////////////////////////////////////////////
 		// Hash definition
-		typedef Hash::HashTable2< Sockaddress, WeakPointerT<Connection>, Hash::UniqueKeyTrait, ThreadSyncTraitReadWriteT<Sockaddress, WeakPointerT<Connection>>, Hash::hash < sockaddr_in6 >
+		typedef Hash::HashTable2< Sockaddress, WeakPointerT<Connection>, Hash::UniqueKeyTrait, ThreadSyncTraitReadWriteT<Sockaddress, WeakPointerT<Connection>>, Hash::hash < sockaddr_storage >
 									> AddrMap;
 
 
@@ -99,8 +100,8 @@ namespace Net {
 
 			// address or connection data
 			SharedPointerT<Connection> pConn;
-			sockaddr_in6 addrOrg;
-			sockaddr_in6 addrNew;
+			sockaddr_storage addrOrg;
+			sockaddr_storage addrNew;
 
 			// Used when UDP connection
 			MsgMobileNetCtrl	MobileNetCtrl;
@@ -111,10 +112,9 @@ namespace Net {
 			// Constructor
 			inline Operation(void* ptr = nullptr);
 			inline Operation( Operation&& src );
-			inline Operation(const sockaddr_in6& sockAddr, MsgNetCtrlConnect *pNetCtrl);
-			inline Operation(OperationCode code, const sockaddr_in6& sockAddr, MsgMobileNetCtrl *pNetCtrl);
-			//inline Operation( OperationCode code, const sockaddr_in6& sockAddr, Connection *pCo );
-			inline Operation(OperationCode code, const sockaddr_in6& sockAddrOrg, const sockaddr_in6& sockAddrNew, Connection *pCo);
+			inline Operation(const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl);
+			inline Operation(OperationCode code, const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl);
+			inline Operation(OperationCode code, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew, Connection *pCo);
 			inline Operation(OperationCode code, AuthTicket ticket, Connection *pCo);
 			inline Operation( OperationCode code, Connection *pCo );
 			inline ~Operation();
@@ -167,7 +167,7 @@ namespace Net {
 
 		// mapping Add/Remove
 		virtual HRESULT AddMap( Connection *pConn );
-		HRESULT AddressRemap(Connection *pConn, const sockaddr_in6 &addressOrg, const sockaddr_in6 &newAddress);
+		HRESULT AddressRemap(Connection *pConn, const sockaddr_storage &addressOrg, const sockaddr_storage &newAddress);
 		HRESULT RemoveMap( Connection *pConn );
 
 		// Remap PeerID
@@ -239,14 +239,14 @@ namespace Net {
 		virtual HRESULT PendingConnection( Connection* pConnection );
 
 		// Create new connection from connection pool with UDP address and add to connecting process
-		HRESULT PendingNewConnection(const sockaddr_in6& sockAddr, MsgNetCtrlConnect *pNetCtrl);
-		HRESULT PendingNewConnection(const sockaddr_in6& sockAddr, MsgMobileNetCtrl *pNetCtrl);
+		HRESULT PendingNewConnection(const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl);
+		HRESULT PendingNewConnection(const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl);
 
 		// Change address mapping of connection
 		HRESULT PendingRemapPeerID( Connection* pConnection, AuthTicket ticket );
 
 		// Change address mapping of connection
-		HRESULT PendingAddressRemap(Connection* pConnection, const sockaddr_in6& sockAddrOrg, const sockaddr_in6& sockAddrNew);
+		HRESULT PendingAddressRemap(Connection* pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew);
 
 		// Pending Init connection
 		HRESULT PendingInitConnection( Connection* pConnection );
@@ -265,7 +265,7 @@ namespace Net {
 
 
 		// Find and return connection
-		HRESULT GetConnectionByAddr(const sockaddr_in6& sockAddr, SharedPointerT<Connection> &pFound);
+		HRESULT GetConnectionByAddr(const sockaddr_storage& sockAddr, SharedPointerT<Connection> &pFound);
 		HRESULT GetConnectionByCID( uintptr_t uiCID, SharedPointerT<Connection> &pConn );
 		HRESULT GetConnectionByPeerID(UINT64 peerID, SharedPointerT<Connection> &pConn);
 	};

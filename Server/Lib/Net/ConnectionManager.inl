@@ -35,7 +35,7 @@ ConnectionManager::Operation::Operation( Operation&& src )
 	OpCode.store(src.OpCode.load(std::memory_order_relaxed), std::memory_order_release);
 }
 
-ConnectionManager::Operation::Operation( const sockaddr_in6& sockAddr, MsgNetCtrlConnect *pNetCtrl )
+ConnectionManager::Operation::Operation( const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl )
 	: OpCode(OP_PENDING_ADDR)
 	, pConn(nullptr)
 	, addrOrg(sockAddr)
@@ -44,7 +44,7 @@ ConnectionManager::Operation::Operation( const sockaddr_in6& sockAddr, MsgNetCtr
 {
 }
 
-ConnectionManager::Operation::Operation( OperationCode code, const sockaddr_in6& sockAddr, MsgMobileNetCtrl *pNetCtrl )
+ConnectionManager::Operation::Operation( OperationCode code, const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl )
 	: OpCode(code)
 	, pConn(nullptr)
 	, addrOrg(sockAddr)
@@ -53,7 +53,7 @@ ConnectionManager::Operation::Operation( OperationCode code, const sockaddr_in6&
 {
 }
 
-ConnectionManager::Operation::Operation(OperationCode code, const sockaddr_in6& sockAddrOrg, const sockaddr_in6& sockAddrNew, Connection *pCo)
+ConnectionManager::Operation::Operation(OperationCode code, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew, Connection *pCo)
 	: OpCode(code)
 	, pConn(pCo)
 	, addrOrg(sockAddrOrg)

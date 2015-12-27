@@ -189,6 +189,7 @@ namespace GameServer {
 		Svr::LoginClusterServiceEntity *pLoginService = nullptr;
 		Svr::GameClusterServiceEntity *pGameService = nullptr;
 		UINT componentID = 0;
+		SockFamily privateNetSockFamily;
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
 
@@ -196,12 +197,16 @@ namespace GameServer {
 
 
 		// Register entity servers
+		// All server should use same sock family(IPV4 or IPV6)
+		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 		for( auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity )
 		{
 			EntityServerEntity *pEntity = nullptr;
 			auto pEntityCfg = *itEntity;
 
-			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port, pEntity));
+			NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
+
+			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
 		}
 
 		// Register login cluster
@@ -335,7 +340,9 @@ namespace GameServer {
 		m_pNetPublic->GetConnectionManager().SetUseAddressMap(false);
 
 		m_PublicNetAddressIPv4 = m_pNetPublic->GetLocalAddress();
-		Net::GetLocalAddressIPv4(m_PublicNetAddressIPv4);
+
+		// Let's give what it is
+		//Net::GetLocalAddressIPv4(m_PublicNetAddressIPv4);
 
 	Proc_End:
 

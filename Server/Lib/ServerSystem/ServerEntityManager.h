@@ -78,8 +78,8 @@ namespace Svr
 
 		// Register server
 		template<class ServerEntityType>
-		HRESULT GetOrRegisterServer( ServerID serverID, NetClass netClass, const char *strIP, USHORT usPort, ServerEntityType* &pServerEntity );
-		HRESULT GetOrRegisterServer(ServerID serverID, NetClass netClass, const char *strIP, USHORT usPort, ServerEntity* &pServerEntity);
+		HRESULT GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity );
+		HRESULT GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity);
 
 		// Get remote entity
 		HRESULT GetServerEntity( ServerID svrID, ServerEntity* &pServerEntity );
@@ -109,7 +109,7 @@ namespace Svr
 	
 	// Register server
 	template<class ServerEntityType>
-	HRESULT ServerEntityManager::GetOrRegisterServer(ServerID serverID, NetClass netClass, const char *strIP, USHORT usPort, ServerEntityType* &pServerEntity)
+	HRESULT ServerEntityManager::GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity)
 	{
 		HRESULT hr = S_OK;
 		ServerEntityType *pNewServerEntity = nullptr;
@@ -126,13 +126,11 @@ namespace Svr
 			return hr;
 		}
 
-		svrChkPtr( strIP );
-
-		svrTrace( Svr::TRC_ENTITY, "Registering Server {0} SvrID:{1}, {2}:{3}", typeid(ServerEntityType).name(), serverID, strIP, usPort );
+		svrTrace( Svr::TRC_ENTITY, "Registering Server {0} SvrID:{1}, {2}", typeid(ServerEntityType).name(), serverID, netAddress);
 
 		svrMem( pNewServerEntity = new ServerEntityType );
 
-		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, strIP, usPort, pConnection ) );
+		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, netAddress, pConnection ) );
 
 		pNewServerEntity->SetServerID( serverID );
 		pNewServerEntity->SetLocalConnection(pConnection);

@@ -139,13 +139,48 @@ namespace BR
 				size_t carry = StdHash()(_Keyval.sin6_port) + MAGIC;
 
 				auto& rawAddress = _Keyval.sin6_addr.s6_addr;
-				auto check = carry;
 				for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
 				{
-					check ^= StdHash()((ULONG)(rawAddress[iAddr])) + MAGIC;
+					carry ^= StdHash()((ULONG)(rawAddress[iAddr])) + MAGIC;
 				}
 
 				return carry;
+			}
+		};
+
+		template<>
+		class hash<sockaddr_storage>
+		{
+		public:
+			typedef sockaddr_storage KeyType;
+			typedef std::hash<ULONG> StdHash;
+
+			const unsigned MAGIC = 0x9e3779b9;
+
+			size_t operator()(const KeyType& _Keyval) const
+			{
+				if (_Keyval.ss_family == AF_INET6)
+				{
+					auto sockAddr = (sockaddr_in6*)&_Keyval;
+					size_t carry = StdHash()(sockAddr->sin6_port) + MAGIC;
+
+					auto& rawAddress = sockAddr->sin6_addr.s6_addr;
+					for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
+					{
+						carry ^= StdHash()((ULONG)(rawAddress[iAddr])) + MAGIC;
+					}
+
+					return carry;
+				}
+				else
+				{
+					auto sockAddr = (sockaddr_in*)&_Keyval;
+					size_t carry = StdHash()(sockAddr->sin_port) + MAGIC;
+
+					carry ^= StdHash()((ULONG)(sockAddr->sin_addr.s_addr)) + MAGIC;
+
+					return carry;
+				}
 			}
 		};
 

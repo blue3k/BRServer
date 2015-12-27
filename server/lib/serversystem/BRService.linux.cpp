@@ -76,7 +76,7 @@ namespace Svr {
 
 
 			setsid(); /* obtain a new process group */
-			printf("Service pid:%d, tid:%d\n", getpid(), (intptr_t)syscall(SYS_gettid));
+			printf("Service pid:%d, tid:%d\n", getpid(), (int)syscall(SYS_gettid));
 			//for (int iDescriptor = getdtablesize(); iDescriptor >= 0; --iDescriptor) close(iDescriptor); /* close all descriptors */
 			int i = open("/dev/null", O_RDWR); dup(i); dup(i); /* handle standart I/O */
 			//umask(027); /* set newly created file permissions */

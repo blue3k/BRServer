@@ -44,8 +44,8 @@ namespace DB {
 
 		static std::atomic<LONG>	stm_InitializationCount;
 
-		BR::CriticalSection		m_QueryQueueLock;
-		BR::Semaphore			m_QueryCounter;
+		CriticalSection		m_QueryQueueLock;
+		//BR::Semaphore			m_QueryCounter;
 
 		// DB Query Worker class
 		WorkerList			m_QueryWorker;

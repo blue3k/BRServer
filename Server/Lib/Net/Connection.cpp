@@ -256,10 +256,8 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		HRESULT hrTem;
-		IOBUFFER_WRITE* pSendBuffer = nullptr;
-
-		MsgNetCtrl *pAckMsg = NULL;
-		Message::MessageData *pMsg = NULL;
+		MsgNetCtrl *pAckMsg = nullptr;
+		Message::MessageData *pMsg = nullptr;
 
 		if (uiCtrlCode == PACKET_NETCTRL_CONNECT || UID != 0)
 		{

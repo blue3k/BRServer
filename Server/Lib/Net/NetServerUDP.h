@@ -82,7 +82,7 @@ namespace Net {
 		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
 
 		//// Send message to connection with network device to dst addr
-		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
+		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_storage& dstAddr, Message::MessageData *pMsg );
 
 		//// Send array of message buffer to connection with network device
 		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
@@ -142,15 +142,15 @@ namespace Net {
 		ServerMUDP(ServerID InServerID, NetClass localClass);
 		virtual ~ServerMUDP();
 
-		HRESULT SendRaw(const sockaddr_in6& dstAddress, Message::MessageData* &pMsg);
-		HRESULT SendNetCtrl( const sockaddr_in6& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID );
+		HRESULT SendRaw(const sockaddr_storage& dstAddress, Message::MessageData* &pMsg);
+		HRESULT SendNetCtrl( const sockaddr_storage& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID );
 		
 		// Maximum connection
 		inline ConnectionManager& GetConnectionManager();
 
 		// Register PeerID to map
 
-		HRESULT OnNoConnectionPacket(const struct sockaddr_in6& from, const BYTE* pData);
+		HRESULT OnNoConnectionPacket(const struct sockaddr_storage& from, const BYTE* pData);
 
 		// called when network message is received
 		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer );

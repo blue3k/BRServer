@@ -47,7 +47,7 @@ namespace Net {
 		SOCKET socket = INVALID_SOCKET;
 		INT iOptValue;
 		int bOptValue = 0;
-		sockaddr_in6 bindAddr;
+		sockaddr_storage bindAddr;
 		NetAddress myAddress;
 
 		if (GetSocket() != INVALID_SOCKET)
@@ -72,7 +72,7 @@ namespace Net {
 
 		netTrace(Trace::TRC_TRACE, "RawUDP: Opening UDP Net {0}:{1}", m_LocalAddress.strAddr, m_LocalAddress.usPort);
 
-		socket = NetSystem::Socket(SockFamily::IPV6, SockType::DataGram);
+		socket = NetSystem::Socket(m_LocalAddress.SocketFamily, SockType::DataGram);
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Failed to Open RawUDP Socket {0:X8}", GetLastWSAHRESULT());
@@ -123,9 +123,7 @@ namespace Net {
 		}
 
 
-		bindAddr = m_LocalSockAddress;
-		bindAddr.sin6_family = AF_INET6;
-		bindAddr.sin6_addr = in6addr_any;
+		GetAnyBindAddr(m_LocalSockAddress, bindAddr);
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT());
@@ -283,7 +281,7 @@ namespace Net {
 
 
 	// Send message to connection with network device
-	HRESULT RawUDP::SendMsg(const sockaddr_in6& dest, Message::MessageData *pMsg)
+	HRESULT RawUDP::SendMsg(const sockaddr_storage& dest, Message::MessageData *pMsg)
 	{
 		HRESULT hr = S_OK, hrErr = S_OK;
 
@@ -345,7 +343,7 @@ namespace Net {
 
 
 	// called when incomming message occure
-	HRESULT RawUDP::OnRecv(const sockaddr_in6& remoteAddr, UINT uiBuffSize, const BYTE* pBuff)
+	HRESULT RawUDP::OnRecv(const sockaddr_storage& remoteAddr, UINT uiBuffSize, const BYTE* pBuff)
 	{
 		HRESULT hr = S_OK;
 		Message::MessageData *pMsg = nullptr;
@@ -434,7 +432,7 @@ namespace Net {
 	HRESULT RawUDP::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer)
 	{
 		HRESULT hr = S_OK;
-		sockaddr_in6 from;
+		sockaddr_storage from;
 		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
 		else memset(&from, 0, sizeof(from));
 

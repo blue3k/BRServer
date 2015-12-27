@@ -38,7 +38,7 @@ namespace Svr {
 		BR_MESSAGE_HANDLER(PerformanceCounterUpdateC2SEvt, PerformanceCounterUpdateC2SEvt);
 	}
 
-	HRESULT PerformanceCounterServer::MessageHandler::OnRecv(const sockaddr_in6& remoteAddr, Message::MessageData *pMsg)
+	HRESULT PerformanceCounterServer::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
 	{
 		HRESULT hr = S_OK;
 		MessageHandlerType handler;
@@ -141,9 +141,19 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::Initialize(const char* serverAddress, UINT port)
 	{
+		HRESULT hr = S_OK;
+		NetAddress localAddr;
 		if (serverAddress == nullptr) serverAddress = "";
 		if (port > USHRT_MAX) port = 0;
-		return Initialize(NetAddress(serverAddress, port));
+
+		// validate local IP
+		svrChk(Net::SetLocalNetAddress(localAddr, serverAddress, port));
+
+		svrChk(Initialize(localAddr));
+
+	Proc_End:
+
+		return hr;
 	}
 
 	HRESULT PerformanceCounterServer::Initialize(const NetAddress& serverAddress)
@@ -283,7 +293,7 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessageEnqueue(const sockaddr_in6& remoteAddr, Message::MessageData* &pMsg)
+	HRESULT PerformanceCounterServer::HandleMessageEnqueue(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
 		HRESULT hr = S_OK;
 
@@ -297,7 +307,7 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessageEnqueueUpdate(const sockaddr_in6& remoteAddr, Message::MessageData* &pMsg)
+	HRESULT PerformanceCounterServer::HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
 		HRESULT hr = S_OK;
 
@@ -311,7 +321,7 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_in6& remoteAddr, Message::MessageData* &pMsg)
+	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
 		HRESULT hr = S_OK;
 		Message::Monitoring::PerformanceCounterNewC2SEvt messageClass(pMsg);
@@ -370,7 +380,7 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_in6& remoteAddr, Message::MessageData* &pMsg)
+	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
 		HRESULT hr = S_OK;
 		Message::Monitoring::PerformanceCounterFreeC2SEvt messageClass(pMsg);
@@ -394,7 +404,7 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_in6& remoteAddr, Message::MessageData* &pMsg)
+	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
 		HRESULT hr = S_OK;
 		Message::Monitoring::PerformanceCounterUpdateC2SEvt messageClass(pMsg);

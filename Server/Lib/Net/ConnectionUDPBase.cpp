@@ -95,7 +95,7 @@ namespace Net {
 	}
 
 	// Change remote Address
-	void ConnectionUDPBase::ChangeRemoteAddress( const sockaddr_in6& socAddr )
+	void ConnectionUDPBase::ChangeRemoteAddress( const sockaddr_storage& socAddr )
 	{
 		SockAddr2Addr( socAddr, m_ConnectInfo.Remote );
 

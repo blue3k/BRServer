@@ -51,13 +51,13 @@ namespace BR {
 					: m_CounterClient(*CounterServer)
 				{}
 
-				virtual HRESULT OnRecv(const sockaddr_in6& remoteAddr, Message::MessageData *pMsg) override;
+				virtual HRESULT OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) override;
 			};
 
 		private:
 
 			NetAddress m_RemoteAddress;
-			sockaddr_in6 m_RemoteSockAddress;
+			sockaddr_storage m_RemoteSockAddress;
 
 			Net::RawUDP* m_RawUDP;
 
@@ -112,7 +112,7 @@ namespace BR {
 			void UpdateValues();
 
 
-			HRESULT HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_in6& remoteAddr, Message::MessageData* &pMsg);
+			HRESULT HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
 
 			virtual void Run() override;
 

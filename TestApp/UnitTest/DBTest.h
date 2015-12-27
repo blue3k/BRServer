@@ -45,8 +45,6 @@ namespace BRTest
 		// Remember that SetUp() is run immediately before a test starts.
 		virtual void SetUp()
 		{
-			BR::Trace::Initialize();
-			BR::MemoryPoolManager::Initialize();
 			MyTestBase::SetUp();
 		}
 
@@ -56,8 +54,6 @@ namespace BRTest
 			MyTestBase::TearDown();
 
 			StopAllThread();
-			BR::Trace::Uninitialize();
-			BR::MemoryPoolManager::Terminate();
 		}
 	};
 

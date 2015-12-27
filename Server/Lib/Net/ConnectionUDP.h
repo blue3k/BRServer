@@ -110,7 +110,7 @@ namespace Net {
 		HRESULT SetMessageWindowSize( UINT uiSend, UINT uiRecv );
 
 		// Change remote Address
-		void ChangeRemoteAddress( const sockaddr_in6& socAddr );
+		void ChangeRemoteAddress( const sockaddr_storage& socAddr );
 
 		// gathering
 		virtual HRESULT SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
@@ -300,7 +300,7 @@ namespace Net {
 		virtual HRESULT InitConnection( SOCKET socket, const ConnectionInformation &connectInfo ) override;
 
 		// Reinitialize and set remote address
-		HRESULT ReInitialize( const sockaddr_in6& socAddr );
+		HRESULT ReInitialize( const sockaddr_storage& socAddr );
 
 
 		// Update net control, process connection heartbit, ... etc

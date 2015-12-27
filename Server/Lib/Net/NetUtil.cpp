@@ -55,6 +55,18 @@ namespace Net {
 		return S_OK;
 	}
 
+	HRESULT SockAddr2Addr(const sockaddr_storage &sockAddr, NetAddress &addr)
+	{
+		if (sockAddr.ss_family == AF_INET6)
+		{
+			return SockAddr2Addr(*(sockaddr_in6*)&sockAddr, addr);
+		}
+		else
+		{
+			return SockAddr2Addr(*(sockaddr_in*)&sockAddr, addr);
+		}
+	}
+
 	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_in6 &sockAddr)
 	{
 		memset(&sockAddr, 0, sizeof(sockAddr));
@@ -81,6 +93,18 @@ namespace Net {
 		}
 		else
 			return S_OK;
+	}
+
+	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_storage &sockAddr)
+	{
+		if (addr.SocketFamily == SockFamily::IPV6)
+		{
+			return Addr2SockAddr(addr, *(sockaddr_in6*)&sockAddr);
+		}
+		else
+		{
+			return Addr2SockAddr(addr, *(sockaddr_in*)&sockAddr);
+		}
 	}
 
 	HRESULT SetSockAddr(sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort)
@@ -110,6 +134,76 @@ namespace Net {
 			return E_FAIL;
 		}
 
+		return S_OK;
+	}
+
+	HRESULT SetSockAddr(sockaddr_storage& sockAddr, const char *strAddr, USHORT usPort)
+	{
+		if (FAILED(SetSockAddr(*(sockaddr_in6*)&sockAddr, strAddr, usPort)))
+		{
+			return SetSockAddr(*(sockaddr_in*)&sockAddr, strAddr, usPort);
+		}
+		return S_OK;
+	}
+
+
+	HRESULT GetAnyBindAddr(const sockaddr_storage &sockAddr, sockaddr_storage&bindAddr)
+	{
+		bindAddr = sockAddr;
+		if (bindAddr.ss_family == (int)SockFamily::IPV6)
+		{
+			auto bindSockaddr = (sockaddr_in6*)&bindAddr;
+			bindSockaddr->sin6_addr = in6addr_any;
+		}
+		else
+		{
+			auto bindSockaddr = (sockaddr_in*)&bindAddr;
+			bindSockaddr->sin_addr.s_addr = INADDR_ANY;
+		}
+		return S_OK;
+	}
+
+	HRESULT SetLocalNetAddress(NetAddress &localAddr, const char *strLocalAddress, USHORT port)
+	{
+		StrUtil::StringCpy(localAddr.strAddr, strLocalAddress);
+		localAddr.usPort = port;
+
+		// validate local IP
+		if (FAILED(CheckLocalAddress(SockFamily::IPV6, localAddr)))
+		{
+			if (FAILED(CheckLocalAddress(SockFamily::IPV4, localAddr)))
+			{
+				if (SUCCEEDED(GetLocalAddressIPv6(localAddr)))
+					netTrace(Trace::TRC_ERROR, "Invalid Address, expecte a local IPV6 address such as ... {0}", localAddr);
+				return E_NET_INVALID_ADDRESS;
+			}
+			else
+			{
+				localAddr.SocketFamily = SockFamily::IPV4;
+			}
+		}
+		else
+		{
+			localAddr.SocketFamily = SockFamily::IPV6;
+		}
+
+		return S_OK;
+	}
+
+	HRESULT SetNetAddress(NetAddress &netAddr, const char *strAddress, USHORT port)
+	{
+		sockaddr_storage sockAddr;
+
+		HRESULT hr = SetSockAddr(sockAddr, strAddress, port);
+		if (FAILED(hr))
+			return hr;
+
+		netAddr.SocketFamily = (SockFamily)sockAddr.ss_family;
+		hr = StrUtil::StringCpy(netAddr.strAddr, countof(netAddr.strAddr), strAddress);
+		if (FAILED(hr))
+			return hr;
+
+		netAddr.usPort = port;
 		return S_OK;
 	}
 
@@ -393,6 +487,7 @@ namespace Net {
 
 		if (bIsFound)
 		{
+			addr.SocketFamily = family;
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
@@ -496,6 +591,48 @@ namespace Net {
 			|| op1.sin6_port != op2.sin6_port;
 		//return op1.sin_addr.S_un.S_addr != op2.sin_addr.S_un.S_addr
 		//	|| op1.sin_port != op2.sin_port;
+	}
+
+	bool operator == (const sockaddr_storage &op1, const sockaddr_storage &op2)
+	{
+		if (op1.ss_family != op2.ss_family)
+			return false;
+
+		if (op1.ss_family == AF_INET6)
+		{
+			auto op1SockAddr = (sockaddr_in6*)&op1;
+			auto op2SockAddr = (sockaddr_in6*)&op2;
+			return memcmp(&op1SockAddr->sin6_addr, &op2SockAddr->sin6_addr, sizeof op1SockAddr->sin6_addr) == 0
+				&& op1SockAddr->sin6_port == op2SockAddr->sin6_port;
+		}
+		else
+		{
+			auto op1SockAddr = (sockaddr_in*)&op1;
+			auto op2SockAddr = (sockaddr_in*)&op2;
+			return op1SockAddr->sin_addr.s_addr == op2SockAddr->sin_addr.s_addr
+				&& op1SockAddr->sin_port == op2SockAddr->sin_port;
+		}
+	}
+
+	bool operator != (const sockaddr_storage &op1, const sockaddr_storage &op2)
+	{
+		if (op1.ss_family != op2.ss_family)
+			return true;
+
+		if (op1.ss_family == AF_INET6)
+		{
+			auto op1SockAddr = (sockaddr_in6*)&op1;
+			auto op2SockAddr = (sockaddr_in6*)&op2;
+			return memcmp(&op1SockAddr->sin6_addr, &op2SockAddr->sin6_addr, sizeof op1SockAddr->sin6_addr) != 0
+				|| op1SockAddr->sin6_port != op2SockAddr->sin6_port;
+		}
+		else
+		{
+			auto op1SockAddr = (sockaddr_in*)&op1;
+			auto op2SockAddr = (sockaddr_in*)&op2;
+			return op1SockAddr->sin_addr.s_addr != op2SockAddr->sin_addr.s_addr
+				|| op1SockAddr->sin_port != op2SockAddr->sin_port;
+		}
 	}
 
 	bool operator == (const NetAddress &op1, const NetAddress &op2)

@@ -292,12 +292,7 @@ namespace Svr {
 				if( pGeneric )
 				{
 					svrChkPtr(pGeneric->NetPublic);
-					svrChk( StrUtil::StringCpy( publicAddr.strAddr, pGeneric->NetPublic->IP.c_str() ) );
-					publicAddr.usPort = pGeneric->NetPublic->Port;
-				}
-				else
-				{
-					memset( &publicAddr, 0, sizeof(NetAddress) );
+					svrChk(Net::SetLocalNetAddress(publicAddr, pGeneric->NetPublic->IP.c_str(), pGeneric->NetPublic->Port));
 				}
 
 				svrTrace( Svr::TRC_DBGSVR, "Sending Server Connected to Entity Server from:{0}", BrServer::GetInstance()->GetMyConfig()->Name.c_str() );
@@ -416,11 +411,11 @@ namespace Svr {
 						auto connectionInfo = pConn->GetConnectionInfo();
 						if (GetPrivateNetAddress().usPort != 0)
 						{
-							svrChk(pConn->GetNet()->Connect(pConn, (UINT)connectionInfo.RemoteID, connectionInfo.RemoteClass, GetPrivateNetAddress().strAddr, GetPrivateNetAddress().usPort));
+							svrChk(pConn->GetNet()->Connect(pConn, (UINT)connectionInfo.RemoteID, connectionInfo.RemoteClass, GetPrivateNetAddress()));
 						}
 						else
 						{
-							svrChk(pConn->GetNet()->Connect(pConn, (UINT)connectionInfo.RemoteID, connectionInfo.RemoteClass, connectionInfo.Remote.strAddr, connectionInfo.Remote.usPort));
+							svrChk(pConn->GetNet()->Connect(pConn, (UINT)connectionInfo.RemoteID, connectionInfo.RemoteClass, connectionInfo.Remote));
 						}
 					}
 				}

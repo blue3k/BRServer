@@ -20,7 +20,7 @@ void ServerNet::SetLocalAddress( const NetAddress& localAddr )
 
 
 // Get Socket address
-const sockaddr_in6& ServerNet::GetSocketAddr()
+const sockaddr_storage& ServerNet::GetSocketAddr()
 {
 	return m_LocalSockAddr;
 }

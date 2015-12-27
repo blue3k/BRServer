@@ -639,7 +639,7 @@ namespace Trace {
 				iBuffLen = 3;
 			}
 
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, "\r\n" );
+			StrUtil::StringCpyEx( pOutBuff, iBuffLen, "\n" );
 
 			TraceOut( trcInputMask, strTraceBuff );
 
@@ -665,7 +665,7 @@ namespace Trace {
 				iBuffLen = 3;
 			}
 
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, "\r\n" );
+			StrUtil::StringCpyEx( pOutBuff, iBuffLen, "\n" );
 
 			pSpinBlock->Data.InputMask = trcInputMask;
 			pSpinBlock->Data.KillSignal = false;
@@ -706,7 +706,7 @@ namespace Trace {
 			buffLen = 3;
 		}
 
-		StrUtil::StringCpyEx( pOutBuff, buffLen, "\r\n" );
+		StrUtil::StringCpyEx( pOutBuff, buffLen, "\n" );
 
 		pWriteBuffer->Data.KillSignal = false;
 		m_TraceSpinBuffer.Write_Unlock( pWriteBuffer );

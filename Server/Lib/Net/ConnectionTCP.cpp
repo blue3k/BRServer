@@ -421,7 +421,7 @@ namespace Net {
 			netErrSilent(E_NET_INVALID_CONNECTION_STATE);
 		}
 
-		connResult = connect(GetSocket(), (sockaddr*)&GetRemoteSockAddr(), sizeof(GetRemoteSockAddr()));
+		connResult = connect(GetSocket(), (sockaddr*)&GetRemoteSockAddr(), GetRemoteSockAddrSize());
 		if (connResult == SOCKET_ERROR)
 		{
 			auto lastError = GetLastWSAHRESULT();

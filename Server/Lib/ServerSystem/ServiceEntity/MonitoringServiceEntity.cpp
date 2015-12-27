@@ -52,6 +52,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_OK;
 		Svr::Config::NetSocket *netAddress = nullptr;
+		NetAddress localAddr;
 
 		svrChk(ServiceEntity::InitializeEntity(newEntityID) );
 
@@ -60,7 +61,9 @@ namespace Svr {
 		
 		netAddress = Svr::Config::GetConfig().MonitoringServer->NetPrivate;
 
-		svrChk(PerformanceCounterServer::Initialize(NetAddress(netAddress->IP.c_str(), netAddress->Port)));
+		svrChk(Net::SetLocalNetAddress(localAddr, netAddress->IP.c_str(), netAddress->Port));
+
+		svrChk(PerformanceCounterServer::Initialize(localAddr));
 
 	Proc_End:
 

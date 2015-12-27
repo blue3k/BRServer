@@ -50,7 +50,7 @@ namespace Svr
 	{
 	}
 
-	HRESULT ServerEntityManager::GetOrRegisterServer( ServerID serverID, NetClass netClass, const char *strIP, USHORT usPort, ServerEntity* &pServerEntity )
+	HRESULT ServerEntityManager::GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity )
 	{
 		HRESULT hr = S_OK;
 		ServerEntity *pNewServerEntity = nullptr;
@@ -66,17 +66,15 @@ namespace Svr
 			return hr;
 		}
 
-		svrChkPtr( strIP );
-
 		Assert(netClass != NetClass::Unknown);
 
-		svrTrace( Svr::TRC_ENTITY, "Registering Server %0% SvrID:%1% %2%:%3%", netClass, serverID, strIP, usPort );
+		svrTrace( Svr::TRC_ENTITY, "Registering Server {0} SvrID:{1} {2}", netClass, serverID, netAddress);
 
 		svrChk( BrServer::GetInstance()->CreateServerEntity(netClass, pNewServerEntity) );
 
-		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, strIP, usPort, pConnection ) );
+		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, netAddress, pConnection ) );
 
-		pNewServerEntity->SetPrivateNetAddress(NetAddress(strIP, usPort));
+		pNewServerEntity->SetPrivateNetAddress(netAddress);
 		pNewServerEntity->SetServerID( serverID );
 		pNewServerEntity->SetLocalConnection(pConnection);
 
@@ -223,7 +221,7 @@ namespace Svr
 			AssertRel(netClass == pOldEntity->GetRemoteClass());
 			if (pServerEntity != nullptr && pOldEntity != pServerEntity)
 			{
-				svrTrace(Svr::TRC_ENTITY, "Adding Duplicated Server %0% SvrID:%1%", netClass, serverID);
+				svrTrace(Svr::TRC_ENTITY, "Adding Duplicated Server {0} SvrID:{1}", netClass, serverID);
 				AssertRel(false);
 				return E_UNEXPECTED;
 			}
@@ -234,7 +232,7 @@ namespace Svr
 
 		Assert(netClass != NetClass::Unknown);
 
-		svrTrace(Svr::TRC_ENTITY, "Adding Server %0% SvrID:%1%", netClass, serverID);
+		svrTrace(Svr::TRC_ENTITY, "Adding Server {0} SvrID:{1}", netClass, serverID);
 
 		if (pServerEntity == nullptr)
 		{

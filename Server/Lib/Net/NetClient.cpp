@@ -264,14 +264,14 @@ namespace BR {
 	{
 	}
 
-	HRESULT Client::ConnectCli(const char *strServerIP, USHORT usServerPort, IConnection* &pNewConnection)
+	HRESULT Client::ConnectCli(const NetAddress& destAddress, IConnection* &pNewConnection)
 	{
 		HRESULT hr = S_OK;
 
 		pNewConnection = GetConnectionManager().NewConnection();
 		netChkPtr(pNewConnection);
 
-		netChk(Connect(pNewConnection, 0, NetClass::Client, strServerIP, usServerPort));
+		netChk(Connect(pNewConnection, 0, NetClass::Client, destAddress));
 
 	Proc_End:
 
@@ -385,22 +385,26 @@ namespace BR {
 
 
 	// Connect to server
-	HRESULT ClientTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort)
+	HRESULT ClientTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
 		HRESULT hr = S_OK;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
-		sockaddr_in6 sockAddr, sockAddrDest;
+		sockaddr_storage sockAddr, sockAddrDest;
 		ConnectionTCPClient *pConn = nullptr;
 		Net::IConnection::ConnectionInformation connectionInfo;
-		sockaddr_in6 bindAddr;
+		sockaddr_storage bindAddr;
 		NetAddress localAddress;
 
-		Net::GetLocalAddressIPv4(localAddress);
+		if(destAddress.SocketFamily == SockFamily::IPV4)
+			Net::GetLocalAddressIPv4(localAddress);
+		else
+			Net::GetLocalAddressIPv6(localAddress);
+
 		Addr2SockAddr(localAddress, sockAddr);
 
 
-		socket = NetSystem::Socket(SockFamily::IPV6, SockType::Stream);
+		socket = NetSystem::Socket(localAddress.SocketFamily, SockType::Stream);
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
@@ -422,7 +426,7 @@ namespace BR {
 			netErr(E_UNEXPECTED);
 		}
 
-		if (sockAddr.sin6_family == AF_INET6)
+		if (sockAddr.ss_family == AF_INET6)
 		{
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
@@ -445,7 +449,6 @@ namespace BR {
 #endif
 
 		bindAddr = sockAddr;
-		//bindAddr.sin6_addr = in6addr_any;
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, TCP {0:X8}", GetLastWSAHRESULT() );
@@ -456,15 +459,14 @@ namespace BR {
 		netMem( pConn = dynamic_cast<ConnectionTCPClient*>(pIConn) );
 
 
-		SetSockAddr( sockAddrDest, strDstIP, usDstPort);
+		netChk(Addr2SockAddr(destAddress, sockAddrDest));
 
 		memset( &connectionInfo, 0, sizeof(connectionInfo) );
 		SockAddr2Addr( sockAddr, connectionInfo.Local );
 		connectionInfo.LocalClass = netClass;
 		connectionInfo.LocalID = 1;
 
-		netChk( StrUtil::StringCpy( connectionInfo.Remote.strAddr, strDstIP) );
-		connectionInfo.Remote.usPort = usDstPort;
+		connectionInfo.Remote = destAddress;
 		connectionInfo.RemoteID = remoteID;
 
 		netChk( pConn->InitConnection( socket, connectionInfo ) );
@@ -558,11 +560,6 @@ namespace BR {
 
 		//ClientIO::g_ClientNetThread.Release();
 		CliSystem::CloseSystem();
-
-		//OverBufferMap::iterator iterBuffer = m_ioBuffers.begin();
-		//for( ; iterBuffer != m_ioBuffers.end(); iterBuffer++ )
-		//	delete iterBuffer->second;
-		//m_ioBuffers.clear();
 	}
 
 
@@ -574,24 +571,28 @@ namespace BR {
 
 
 	// Connect to server
-	HRESULT ClientUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort)
+	HRESULT ClientUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
 		HRESULT hr = S_OK;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
-		sockaddr_in6 sockAddr;
-		sockaddr_in6 sockAddrDest;
+		sockaddr_storage sockAddr;
+		sockaddr_storage sockAddrDest;
 		ConnectionUDPClient *pConn = nullptr;
 		IConnection::ConnectionInformation connectionInfo;
-		sockaddr_in6 bindAddr;
+		sockaddr_storage bindAddr;
 
 		NetAddress localAddress;
 
-		Net::GetLocalAddressIPv4(localAddress);
+		if (destAddress.SocketFamily == SockFamily::IPV4)
+			Net::GetLocalAddressIPv4(localAddress);
+		else
+			Net::GetLocalAddressIPv6(localAddress);
+
 		Addr2SockAddr(localAddress, sockAddr);
 
 
-		socket = NetSystem::Socket(SockFamily::IPV6, SockType::DataGram);
+		socket = NetSystem::Socket(localAddress.SocketFamily, SockType::DataGram);
 		if( socket == INVALID_SOCKET )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
@@ -614,7 +615,7 @@ namespace BR {
 		}
 
 
-		if (sockAddr.sin6_family == AF_INET6)
+		if (sockAddr.ss_family == AF_INET6)
 		{
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
@@ -626,15 +627,13 @@ namespace BR {
 
 
 		bindAddr = sockAddr;
-		//bindAddr.sin6_addr = in6addr_any;
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
 			netErr( E_UNEXPECTED );
 		}
 
-
-		SetSockAddr( sockAddrDest, strDstIP, usDstPort);
+		netChk(Addr2SockAddr(destAddress, sockAddrDest));
 
 
 		memset( &connectionInfo, 0, sizeof(connectionInfo) );
@@ -642,8 +641,7 @@ namespace BR {
 		connectionInfo.LocalClass = netClass;
 		connectionInfo.LocalID = 1;
 
-		netChk( StrUtil::StringCpy( connectionInfo.Remote.strAddr, strDstIP) );
-		connectionInfo.Remote.usPort = usDstPort;
+		connectionInfo.Remote = destAddress;
 		connectionInfo.RemoteID = remoteID;
 
 		netMem( pConn = (ConnectionUDPClient*)pIConn);
@@ -711,24 +709,26 @@ namespace BR {
 
 
 	// Connect to server
-	HRESULT ClientMUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort)
+	HRESULT ClientMUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
 		HRESULT hr = S_OK;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
-		sockaddr_in6 sockAddr;
-		sockaddr_in6 sockAddrDest;
+		sockaddr_storage sockAddr;
+		sockaddr_storage sockAddrDest;
 		ConnectionMUDPClient *pConn = nullptr;
 		IConnection::ConnectionInformation connectionInfo;
-		sockaddr_in6 bindAddr;
-		SockFamily sockFamily;
+		sockaddr_storage bindAddr;
 		NetAddress localAddress;
 
-		Net::GetLocalAddressIPv6(localAddress);
+		if (destAddress.SocketFamily == SockFamily::IPV4)
+			Net::GetLocalAddressIPv4(localAddress);
+		else
+			Net::GetLocalAddressIPv6(localAddress);
+
 		netChk(Addr2SockAddr(localAddress, sockAddr));
 
-		sockFamily = sockAddr.sin6_family == AF_INET6 ? SockFamily::IPV6 : SockFamily::IPV4;
-		socket = NetSystem::Socket(sockFamily, SockType::DataGram);
+		socket = NetSystem::Socket(localAddress.SocketFamily, SockType::DataGram);
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
@@ -751,7 +751,7 @@ namespace BR {
 		}
 
 
-		if (sockFamily == SockFamily::IPV6)
+		if (localAddress.SocketFamily == SockFamily::IPV6)
 		{
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
@@ -770,7 +770,7 @@ namespace BR {
 		}
 
 
-		netChk(SetSockAddr(sockAddrDest, strDstIP, usDstPort));
+		netChk(Addr2SockAddr(destAddress, sockAddrDest));
 
 
 		memset(&connectionInfo, 0, sizeof(connectionInfo));
@@ -778,8 +778,7 @@ namespace BR {
 		connectionInfo.LocalClass = netClass;
 		connectionInfo.LocalID = 1;
 
-		netChk(StrUtil::StringCpy(connectionInfo.Remote.strAddr, strDstIP));
-		connectionInfo.Remote.usPort = usDstPort;
+		connectionInfo.Remote = destAddress;
 		connectionInfo.RemoteID = remoteID;
 
 		netMem(pConn = dynamic_cast<ConnectionMUDPClient*>(pIConn));

@@ -132,7 +132,7 @@ namespace Net {
 		memset( this, 0, sizeof(IOBUFFER_READ) );
 		hEvent = WSA_INVALID_EVENT;
 
-		iSockLen = sizeof(sockaddr_in6);
+		iSockLen = sizeof(sockaddr_storage);
 	}
 
 	IOBUFFER_READ::~IOBUFFER_READ()
@@ -549,7 +549,7 @@ namespace Net {
 
 			if (!AcceptEx(sockListen, pAccept->sockAccept,
 				pAccept->pAcceptInfo, 0,
-				sizeof(sockaddr_in6) + 16, sizeof(sockaddr_in6) + 16,
+				sizeof(sockaddr_storage), sizeof(sockaddr_storage),
 				&pAccept->dwByteReceived, pAccept))
 			{
 				HRESULT iErr = GetLastWSAHRESULT();
@@ -580,10 +580,10 @@ namespace Net {
 			return hr;
 		}
 
-		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_in6& remoteAddr)
+		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_storage& remoteAddr)
 		{
 			int iLenLocalAddr = 0, iLenRemoteAddr = 0;
-			sockaddr_in6 *pLocalAddr = nullptr, *pRemoteAddr = nullptr;
+			sockaddr_storage *pLocalAddr = nullptr, *pRemoteAddr = nullptr;
 
 			if (setsockopt(pAccept->sockAccept, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (char *)&sockListen, sizeof(SOCKET)) == SOCKET_ERROR)
 			{
@@ -594,8 +594,8 @@ namespace Net {
 
 			GetAcceptExSockaddrs( (void*)pAccept->pAcceptInfo,
 								  0,
-								  sizeof(sockaddr_in6)+16,
-								  sizeof(sockaddr_in6)+16, 
+								  sizeof(sockaddr_storage),
+								  sizeof(sockaddr_storage),
 								  (SOCKADDR**)&pLocalAddr, 
 								  &iLenLocalAddr, 
 								  (SOCKADDR**)&pRemoteAddr, 
@@ -644,9 +644,9 @@ namespace Net {
 
 		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer)
 		{
-			const sockaddr_in6& dstAddress = pBuffer->NetAddr.To;
+			const sockaddr_storage& dstAddress = pBuffer->NetAddr.To;
 			INT iErr = WSASendTo(sock, &pBuffer->wsaBuff, 1, nullptr, 0, 
-				(sockaddr*)&dstAddress, sizeof(sockaddr_in6),
+				(sockaddr*)&dstAddress, GetSockAddrSize(dstAddress),
 				pBuffer, NULL);
 
 			if (iErr == SOCKET_ERROR)

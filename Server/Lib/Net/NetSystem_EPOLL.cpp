@@ -48,7 +48,7 @@ namespace Net {
 		case EFAULT: return E_NET_FAULT;
 		case EINVAL: return E_NET_INVAL;
 		case EMFILE: return E_NET_MFILE;
-		case EWOULDBLOCK: return E_NET_WOULDBLOCK;
+		case EWOULDBLOCK: return E_NET_TRY_AGAIN; // Linux epoll
 #if EWOULDBLOCK != EAGAIN
 		case EAGAIN: return E_NET_TRY_AGAIN;
 #endif
@@ -136,7 +136,7 @@ namespace Net {
 	{
 		memset(this, 0, sizeof(IOBUFFER_READ));
 
-		iSockLen = sizeof(sockaddr_in6);
+		iSockLen = sizeof(sockaddr_storage);
 	}
 
 	IOBUFFER_READ::~IOBUFFER_READ()
@@ -265,7 +265,10 @@ namespace Net {
 					// fallthru
 				case S_OK:
 					// toss data to working thread
-					netChk(pCallBack->OnIORecvCompleted(hrErr, pReadBuffer));
+					if (pReadBuffer != nullptr)
+					{
+						netChk(pCallBack->OnIORecvCompleted(hrErr, pReadBuffer));
+					}
 					pReadBuffer = nullptr;
 					hr = hrErr;
 					break;
@@ -380,18 +383,28 @@ namespace Net {
 	{
 		HRESULT hr = S_OK;
 		IOBUFFER_WRITE* pSendBuffer = nullptr;
+		DurationMS tickInterval(0);
 
 		while (1)
 		{
 			hr = S_OK;
 
 			// Check exit event
-			if (CheckKillEvent(DurationMS(0)))
+			if (CheckKillEvent(tickInterval))
 				break;
+
 
 			if (pSendBuffer == nullptr) m_WriteQueue.Dequeue(pSendBuffer);
 
-			if (pSendBuffer == nullptr) continue;
+			if (pSendBuffer == nullptr)
+			{
+				tickInterval = DurationMS(1);
+				continue;
+			}
+			else
+			{
+				tickInterval = DurationMS(0);
+			}
 
 			switch (pSendBuffer->Operation)
 			{
@@ -730,14 +743,6 @@ namespace Net {
 		SOCKET Socket(SockFamily domain, SockType type)
 		{
 			return socket((int)domain, (int)type, 0);
-			if ((int)type == SOCK_STREAM)
-			{
-				return socket((int)domain, (int)type, 0);
-			}
-			else
-			{
-				return socket((int)domain, (int)type, 0);
-			}
 		}
 
 		void CloseSocket(SOCKET sock)
@@ -755,7 +760,7 @@ namespace Net {
 
 			pAccept->sockAccept = accept4(sockListen, (sockaddr*)&pAccept->sockAddr, &len, SOCK_NONBLOCK);
 
-			if (len != sizeof(pAccept->sockAddr))
+			if (len == 0)
 			{
 				netErr(E_UNEXPECTED);
 			}
@@ -797,28 +802,14 @@ namespace Net {
 			return hr;
 		}
 
-		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_in6& remoteAddr)
+		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_storage& remoteAddr)
 		{
 			socklen_t len;
-			struct sockaddr_storage addr;
 
 			unused(sockListen);
 
-			len = sizeof addr;
-			getpeername(pAccept->sockAccept, (struct sockaddr*)&addr, &len);
-
-			// deal with both IPv4 and IPv6:
-			if (addr.ss_family == AF_INET)
-			{
-				// this shouldn't happened
-				AssertRel(false);
-				memset(&remoteAddr, 0, sizeof remoteAddr);
-			}
-			else
-			{ // AF_INET6
-				struct sockaddr_in6 *s = (struct sockaddr_in6 *)&addr;
-				remoteAddr = *s;
-			}
+			len = sizeof remoteAddr;
+			getpeername(pAccept->sockAccept, (struct sockaddr*)&remoteAddr, &len);
 
 			return S_OK;
 		}
@@ -877,9 +868,9 @@ namespace Net {
 
 		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer)
 		{
-			const sockaddr_in6& dstAddress = pBuffer->NetAddr.To;
+			const sockaddr_storage& dstAddress = pBuffer->NetAddr.To;
 			ssize_t sendSize = sendto(sock, pBuffer->pRawSendBuffer, pBuffer->RawSendSize, MSG_DONTWAIT | MSG_NOSIGNAL,
-				(sockaddr*)&dstAddress, sizeof(sockaddr_in6));
+				(sockaddr*)&dstAddress, GetSockAddrSize(dstAddress));
 
 			if (sendSize < 0)
 			{

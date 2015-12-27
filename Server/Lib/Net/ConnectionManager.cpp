@@ -62,54 +62,89 @@ namespace Net {
 
 
 
-	ConnectionManager::Sockaddress::Sockaddress(const sockaddr_in6& src)
+	ConnectionManager::Sockaddress::Sockaddress(const sockaddr_storage& src)
 	{
 		memcpy(this, &src, sizeof(src));
 	}
 
 	ConnectionManager::Sockaddress::Sockaddress(int value)
 	{
-		memset(this, 0, sizeof(sockaddr_in6));
+		memset(this, 0, sizeof(sockaddr_storage));
 	}
 
 	bool ConnectionManager::Sockaddress::operator > (const Sockaddress& src)
 	{
-		if (sin6_family > src.sin6_family) return true;
+		if (ss_family > src.ss_family) return true;
+
+		if (ss_family == AF_INET6)
+		{
+			auto op1 = (sockaddr_in6*)this;
+			auto op2 = (sockaddr_in6*)&src;
+
 #if WINDOWS
-		auto& rawAddress = sin6_addr.s6_addr;
-		auto& rawAddressSrc = src.sin6_addr.s6_addr;
-		for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
-			if (rawAddress[iAddr] > rawAddressSrc[iAddr]) return true;
+			auto& rawAddress = op1->sin6_addr.s6_addr;
+			auto& rawAddressSrc = op2->sin6_addr.s6_addr;
+			for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
+				if (rawAddress[iAddr] > rawAddressSrc[iAddr]) return true;
 #elif LINUX
-		auto& rawAddress = sin6_addr.s6_addr32;
-		auto& rawAddressSrc = src.sin6_addr.s6_addr32;
-		for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
-			if (rawAddress[iAddr] > rawAddressSrc[iAddr]) return true;
+			auto& rawAddress = op1->sin6_addr.s6_addr32;
+			auto& rawAddressSrc = op2->sin6_addr.s6_addr32;
+			for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
+				if (rawAddress[iAddr] > rawAddressSrc[iAddr]) return true;
 #endif
-		if (sin6_port > src.sin6_port) return true;
+			if (op1->sin6_port > op2->sin6_port) return true;
+		}
+		else
+		{
+			auto op1 = (sockaddr_in*)this;
+			auto op2 = (sockaddr_in*)&src;
+
+			if (op1->sin_addr.s_addr > op2->sin_addr.s_addr) return true;
+			if (op1->sin_port > op2->sin_port) return true;
+		}
+
 
 		return false;
 	}
 
 	bool ConnectionManager::Sockaddress::operator == (const Sockaddress& src)
 	{
-		if (sin6_family != src.sin6_family) return false;
+		if (ss_family != src.ss_family) return false;
+
+		if (ss_family == AF_INET6)
+		{
+			auto op1 = (sockaddr_in6*)this;
+			auto op2 = (sockaddr_in6*)&src;
 
 #if WINDOWS
-		auto& rawAddress = sin6_addr.s6_addr;
-		auto& rawAddressSrc = src.sin6_addr.s6_addr;
-		for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
-			if (rawAddress[iAddr] != rawAddressSrc[iAddr]) return false;
+			auto& rawAddress = op1->sin6_addr.s6_addr;
+			auto& rawAddressSrc = op2->sin6_addr.s6_addr;
+			for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
+				if (rawAddress[iAddr] != rawAddressSrc[iAddr]) return false;
 #else
-		auto& rawAddress = sin6_addr.s6_addr32;
-		auto& rawAddressSrc = src.sin6_addr.s6_addr32;
-		for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
-			if (rawAddress[iAddr] != rawAddressSrc[iAddr]) return false;
+			auto& rawAddress = op1->sin6_addr.s6_addr32;
+			auto& rawAddressSrc = op2->sin6_addr.s6_addr32;
+			for (UINT iAddr = 0; iAddr < countof(rawAddress); iAddr++)
+				if (rawAddress[iAddr] != rawAddressSrc[iAddr]) return false;
 #endif
 
-		if (sin6_port != src.sin6_port) return false;
+			if (op1->sin6_port != op2->sin6_port) return false;
+		}
+		else
+		{
+			auto op1 = (sockaddr_in*)this;
+			auto op2 = (sockaddr_in*)&src;
+
+			if (op1->sin_addr.s_addr != op2->sin_addr.s_addr) return false;
+			if (op1->sin_port != op2->sin_port) return false;
+		}
 
 		return true;
+	}
+
+	bool ConnectionManager::Sockaddress::operator != (const Sockaddress& src)
+	{
+		return !((*this) == src);
 	}
 
 
@@ -471,7 +506,7 @@ namespace Net {
 
 		if (m_UseAddressMap)
 		{
-			if (pConn->GetRemoteSockAddr().sin6_port != 0 && SUCCEEDED(m_AddrMap.Find(pConn->GetRemoteSockAddr(), pPtr)))
+			if (pConn->GetRemoteSockAddr().ss_family != 0 && SUCCEEDED(m_AddrMap.Find(pConn->GetRemoteSockAddr(), pPtr)))
 			{
 				// already in map
 				netErr(E_INVALIDARG);
@@ -484,7 +519,7 @@ namespace Net {
 			netErr( E_INVALIDARG );
 		}
 
-		if (m_UseAddressMap && pConn->GetRemoteSockAddr().sin6_port != 0)
+		if (m_UseAddressMap && pConn->GetRemoteSockAddr().ss_family != 0)
 		{
 			netChk(m_AddrMap.Insert(pConn->GetRemoteSockAddr(), WeakPointerT<Connection>(pConn)));
 		}
@@ -509,7 +544,7 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionManager::AddressRemap(Connection *pConn, const sockaddr_in6 &addressOrg, const sockaddr_in6 &newAddress)
+	HRESULT ConnectionManager::AddressRemap(Connection *pConn, const sockaddr_storage &addressOrg, const sockaddr_storage &newAddress)
 	{
 		HRESULT hr = S_OK;
 		WeakPointerT<Connection> pPtr;
@@ -721,13 +756,13 @@ namespace Net {
 	}
 
 	// Create new connection from connection pool with UDP address and add to connecting process
-	HRESULT ConnectionManager::PendingNewConnection(const sockaddr_in6& sockAddr, MsgNetCtrlConnect *pNetCtrl)
+	HRESULT ConnectionManager::PendingNewConnection(const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl)
 	{
 		return m_PendingOperations.Enqueue( Operation(sockAddr,pNetCtrl) );
 	}
 
 	// Create new connection from connection pool with UDP address and add to connecting process
-	HRESULT ConnectionManager::PendingNewConnection(const sockaddr_in6& sockAddr, MsgMobileNetCtrl *pNetCtrl)
+	HRESULT ConnectionManager::PendingNewConnection(const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl)
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_PENDING_MOBILECONNECTION, sockAddr, pNetCtrl) );
 	}
@@ -739,7 +774,7 @@ namespace Net {
 	}
 
 	// Change address mapping of connection
-	HRESULT ConnectionManager::PendingAddressRemap(Connection* pConnection, const sockaddr_in6& sockAddrOrg, const sockaddr_in6& sockAddrNew)
+	HRESULT ConnectionManager::PendingAddressRemap(Connection* pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew)
 	{
 		return m_PendingOperations.Enqueue(Operation(Operation::OP_PENDING_MOBILEREMAP, sockAddrOrg, sockAddrNew, pConnection));
 	}
@@ -785,7 +820,7 @@ namespace Net {
 	}
 
 	// Find and return connection
-	HRESULT ConnectionManager::GetConnectionByAddr(const sockaddr_in6& sockAddr, SharedPointerT<Connection> &pConn)
+	HRESULT ConnectionManager::GetConnectionByAddr(const sockaddr_storage& sockAddr, SharedPointerT<Connection> &pConn)
 	{
 		WeakPointerT<Connection> pPtr;
 		if(SUCCEEDED(m_AddrMap.Find(sockAddr, pPtr)))

@@ -47,9 +47,14 @@ SOCKET Connection::GetSocket() const
 
 
 // Get remote address
-const sockaddr_in6& Connection::GetRemoteSockAddr() const
+inline const sockaddr_storage& Connection::GetRemoteSockAddr() const
 {
 	return m_sockAddrRemote;
+}
+
+inline size_t Connection::GetRemoteSockAddrSize() const
+{
+	return m_sockAddrRemote.ss_family == AF_INET6 ? sizeof(sockaddr_in6) : sizeof(sockaddr_in);
 }
 
 // Get Recv queue

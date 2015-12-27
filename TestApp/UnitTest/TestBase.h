@@ -51,13 +51,11 @@ namespace BRTest
 		// Remember that SetUp() is run immediately before a test starts.
 		virtual void SetUp()
 		{
-			BR::MemoryPoolManager::Initialize();
 		}
 
 		// TearDown() is invoked immediately after a test finishes.  Here we
 		virtual void TearDown()
 		{
-			BR::MemoryPoolManager::Terminate();
 		}
 	};
 

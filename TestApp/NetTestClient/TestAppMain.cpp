@@ -6,6 +6,8 @@
 #include "Common/Trace.h"
 #include "Common/Memory.h"
 #include "Common/MemoryPool.h"
+#include "Common/TraceComponent.h"
+#include "Common/TimeUtil.h"
 #include "../TestCommon/TestBaseCommon.h"
 
 
@@ -16,9 +18,13 @@ using namespace BR;
 
 int main(int argc, char **argv)
 {
-	Trace::Initialize();
+	LibComponentCarrier libComponents;
 
-	BR::MemoryPoolManager::Initialize();
+	libComponents.AddComponent<LibComponentTrace>();
+	libComponents.AddComponent<Util::LibComponentTime>();
+	libComponents.AddComponent<MemoryPoolManager>();
+
+	libComponents.InitializeComponents();
 
 	InitGoogleTest(&argc, argv);
 
@@ -26,11 +32,7 @@ int main(int argc, char **argv)
 	int iRes = RUN_ALL_TESTS();
 
 
-	Trace::Uninitialize();
-
-	BR::MemoryPoolManager::Terminate();
-
-	Trace::Uninitialize();
+	libComponents.TerminateComponents();
 
 	return iRes;
 }

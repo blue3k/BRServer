@@ -390,7 +390,7 @@ namespace Net {
 		virtual HRESULT EnqueueNetEvent( Event& curEvent ) = 0;
 
 		// Make a connection to another server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const char *strDstIP, USHORT usDstPort) = 0;
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) = 0;
 
 		// Release Connection
 		virtual HRESULT ReleaseConnection(IConnection* pIConnection) = 0;
@@ -415,7 +415,7 @@ namespace Net {
 		virtual HRESULT GetConnection( uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection) = 0;
 
 		// Connect to server
-		virtual HRESULT ConnectCli( const char *strServerIP, USHORT usServerPort, IConnection* &pINewConnection ) = 0;
+		virtual HRESULT ConnectCli(const NetAddress& destAddress, IConnection* &pINewConnection ) = 0;
 	};
 
 
