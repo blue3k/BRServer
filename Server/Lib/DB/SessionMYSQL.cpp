@@ -205,7 +205,6 @@ namespace DB {
 		}
 
 
-		//dbMem( pStatement = new StatementMYSQL(pMyQuery->GetQueryString()) );
 		dbMem( pStatement = m_StatementPool.GetFreeStatement(pMyQuery->GetQueryString()) );
 
 		if( !pStatement->IsPrepared() )
@@ -236,7 +235,7 @@ namespace DB {
 				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8}", hr );
 			}
 
-			if( hr == E_DB_CONNECTION_LOST )
+			if( hr == E_DB_CONNECTION_LOST)
 			{
 				defTrace( Trace::TRC_WARN, "DB connection is lost, recovering the connection... " );
 				HRESULT hrTem = OpenSession();
@@ -320,8 +319,9 @@ namespace DB {
 		if (m_mySQL == nullptr)
 			return E_NOT_INITIALIZED;
 
-		if (!mysql_ping(m_mySQL))
+		if (mysql_ping(m_mySQL))
 		{
+			dbTrace(TRC_INFO, "DBConnection lost, reconnecting..");
 			// ignore close errors
 			CloseSession();
 			dbChk(OpenSession());

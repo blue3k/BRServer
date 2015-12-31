@@ -743,24 +743,18 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		switch (hr)
 		{
-			//if (pSendBuffer)
-			//{
-			//	Util::SafeRelease(pSendBuffer->pMsgs);
-			//	Net::NetSystem::FreeBuffer(pSendBuffer);
-			//}
-
-			if (hr != E_NET_IO_SEND_FAIL)
-			{
-				netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo().Remote, hrErr, hr, GetCID());
-			}
-			else
-				return S_OK;
-		}
-		else
-		{
-			//netTrace(TRC_TCPSENDRAW, "TCP Send Raw CID:{1}, ip:{0}", GetConnectionInfo().Remote, GetCID());
+		case S_OK:
+		case S_FALSE:
+			break;
+		case E_NET_IO_SEND_FAIL:
+			return S_OK;
+		case E_NET_TRY_AGAIN:
+			break;
+		default:
+			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo().Remote, hrErr, hr, GetCID());
+			break;
 		}
 
 

@@ -69,14 +69,14 @@ namespace Svr
 				HRESULT hr = pTransaction->StartTransaction();
 				if( FAILED(hr) )
 				{
-					svrTrace( Trace::TRC_ERROR, "Transaction Failed hr = 0x{0:X8}, %1%", hr, typeid(*pTransaction).name() );
+					svrTrace( Trace::TRC_ERROR, "Transaction Failed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
 				}
 
 				if( pTransaction->IsClosed() )
 					pTransaction->FlushTransaction();
 				else
 				{
-					svrTrace( Trace::TRC_ERROR, "Transaction must be closed hr = 0x{0:X8}, %1%", hr, typeid(*pTransaction).name() );
+					svrTrace( Trace::TRC_ERROR, "Transaction must be closed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
 					pTransaction->CloseTransaction(S_OK);
 					pTransaction->FlushTransaction();
 				}

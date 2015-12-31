@@ -316,9 +316,11 @@ namespace BR {
 	extern template class Arg < UINT32>;
 	extern template class Arg < INT64>;
 	extern template class Arg < UINT64>;
+#if WINDOWS
 	extern template class Arg < LONG>;
 	extern template class Arg < ULONG>;
 	extern template class Arg < char>;
+#endif
 	extern template class Arg < LPCSTR>;
 	extern template class Arg < LPSTR>;
 	extern template class Arg < wchar_t>;

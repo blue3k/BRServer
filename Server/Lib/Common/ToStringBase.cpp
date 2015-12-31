@@ -384,7 +384,7 @@ namespace BR
 		return S_OK;
 	}
 
-
+#if WINDOWS
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LONG& iData, int Option)
 	{
@@ -414,7 +414,7 @@ namespace BR
 		return S_OK;
 	}
 
-#if WINDOWS
+
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const char& Data, int Option)
 	{

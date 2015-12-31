@@ -89,7 +89,7 @@ namespace GameServer {
 		if (m_WaitingTransactions <= 0)
 			CloseTransaction(hr);
 
-		return hr;
+		return S_OK;
 	}
 
 	HRESULT PlayerTransCloseInstance::DeleteLoginSessionRes(Svr::TransactionResult* &pRes)
@@ -123,7 +123,7 @@ namespace GameServer {
 		if (FAILED(pRes->GetHRESULT()))
 			svrTrace(Svr::TRC_INFO, "Unregister Matching is failed hr:{0:X8}", pRes->GetHRESULT());
 
-	Proc_End:
+	//Proc_End:
 
 		if (m_WaitingTransactions <= 0)
 			CloseTransaction(hr);

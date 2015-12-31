@@ -195,6 +195,11 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT32>& Data, int Option);
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT64>& Data, int Option);
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT64>& Data, int Option);
+#if WINDOWS
+	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<LONG>& Data, int Option);
+	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<ULONG>& Data, int Option);
+	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<char>& Data, int Option);
+#endif
 
 	template<>
 	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<BYTE>& Data, int Option)

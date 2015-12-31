@@ -105,9 +105,9 @@ namespace BR
 	template class Arg < UINT32>;
 	template class Arg < INT64>;
 	template class Arg < UINT64>;
+#if WINDOWS
 	template class Arg < LONG>;
 	template class Arg < ULONG>;
-#if WINDOWS
 	template class Arg < char>;
 #endif
 	template class Arg < LPCSTR>;

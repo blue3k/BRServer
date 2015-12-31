@@ -60,6 +60,7 @@
 #include <SDKDDKVer.h>
 //#include <Winnt.h>
 #include <windows.h>
+#include <stdint.h>
 
 #include <psapi.h>
 #include <DbgHelp.h>
@@ -108,16 +109,17 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
+#include <stdint.h>
 
 
-typedef unsigned char UINT8;
-typedef char INT8;
-typedef unsigned short UINT16;
-typedef short INT16;
-typedef unsigned int UINT32;
-typedef int INT32;
-typedef unsigned long long UINT64;
-typedef long long INT64;
+typedef uint8_t UINT8;
+typedef int8_t INT8;
+typedef uint16_t UINT16;
+typedef int16_t INT16;
+typedef uint32_t UINT32;
+typedef int32_t INT32;
+typedef uint64_t UINT64;
+typedef int64_t INT64;
 typedef unsigned long ULONG;
 typedef long LONG;
 typedef long long LONGLONG;
@@ -137,13 +139,13 @@ typedef short SHORT;
 typedef unsigned int DWORD;
 typedef unsigned short WORD;
 typedef UINT8 BYTE;
-typedef char SBYTE;
+
 
 // Additional alise type
 typedef INT8				SBYTE;
 typedef SBYTE				*PSBYTE;
 
-typedef int  HRESULT;
+typedef int32_t  HRESULT;
 
 typedef void* HANDLE;
 typedef HANDLE HMODULE;
