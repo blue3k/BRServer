@@ -47,7 +47,9 @@ namespace GameConst {
 
 		PLAYER_UPDATE_STATUS_TIME = 30 * 1000,
 
-		MAX_PLAYER_REVEAL = 1
+		MAX_PLAYER_REVEAL = 1,
+
+		MATCHING_TIMEOUT = 60*1000,
 	};
 
 

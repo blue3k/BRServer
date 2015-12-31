@@ -403,7 +403,7 @@ namespace Svr {
 			{
 				if (m_LocalConnectionRetryTime != TimeStampMS::min())
 				{
-					if ((Util::Time.GetTimeMs() - m_LocalConnectionRetryTime) > m_LocalConnectionRetryWait)
+					if (Util::TimeSince(m_LocalConnectionRetryTime) > m_LocalConnectionRetryWait)
 					{
 						m_LocalConnectionRetryWait = Util::TimeMinNonZero(m_LocalConnectionRetryWait + DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY), DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY_MAX));
 

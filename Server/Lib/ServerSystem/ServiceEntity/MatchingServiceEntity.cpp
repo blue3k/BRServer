@@ -491,14 +491,14 @@ namespace Svr {
 
 			if (pInstance != nullptr)
 			{
-				StrUtil::Format(strName, "Matching Cache: %0%-%1%", m_TargetMatchingMemberCount, iQueue);
+				StrUtil::Format(strName, "Matching Cache: {0}-{1}", m_TargetMatchingMemberCount, iQueue);
 				m_ItemCounts[iQueue - 1].SetCounterName(strName);
 
 				pInstance->AddCounter(&m_ItemCounts[iQueue - 1]);
 			}
 		}
 
-		StrUtil::Format(strName, "Matching matched : %0%", m_TargetMatchingMemberCount);
+		StrUtil::Format(strName, "Matching matched : {0}", m_TargetMatchingMemberCount);
 		m_MatchedCount.SetCounterName(strName);
 		if (pInstance != nullptr)
 		{
@@ -592,6 +592,9 @@ namespace Svr {
 			numItemsInQueues += itemCountPerQueue[iQueue];
 		}
 
+		// no itmes to match
+		if (numItemsInQueues == 0)
+			goto Proc_End;
 
 		// Pick matching pattern
 		pCurMatchingPattern = pMatchingPatternTable;

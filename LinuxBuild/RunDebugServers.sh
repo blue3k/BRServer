@@ -13,7 +13,7 @@ sleep 2s
 
 ./BREntityServer -n:BREntityServer2&
 
-sleep 2s
+sleep 4s
 
 ./BRLoginServer  -n:BRLoginServer01&
 

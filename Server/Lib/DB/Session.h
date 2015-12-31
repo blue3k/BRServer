@@ -50,6 +50,8 @@ namespace DB {
 		// Release session after use, this call will return session to Data source
 		HRESULT ReleaseSession();
 
+		virtual HRESULT Ping() = 0;
+
 	private:
 
 		// Is session opened?

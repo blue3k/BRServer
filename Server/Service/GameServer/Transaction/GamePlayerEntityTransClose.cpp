@@ -119,7 +119,9 @@ namespace GameServer {
 
 		GetMyOwner()->SetMatchingTicket(0);
 
-		svrChk(pRes->GetHRESULT());
+		//svrChk(pRes->GetHRESULT());
+		if (FAILED(pRes->GetHRESULT()))
+			svrTrace(Svr::TRC_INFO, "Unregister Matching is failed hr:{0:X8}", pRes->GetHRESULT());
 
 	Proc_End:
 

@@ -10,7 +10,7 @@ export BUILD_MODE=$1
 
 
 
-scp -i ./LinuxBuild/Bravesprivate2.popen -r Server/bin/DEBUG/ blue3k@161.202.74.206:/GameServer/Server/bin/
+scp -C -i ./LinuxBuild/Bravesprivate2.popen -r Server/bin/DEBUG/ blue3k@161.202.74.206:/GameServer/Server/bin/
 
 
 

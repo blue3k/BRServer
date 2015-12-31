@@ -201,23 +201,30 @@ namespace Net {
 		HRESULT hr = S_OK;
 		IOBUFFER_ACCEPT* pAcceptInfo = nullptr;
 
-		// Accept will happened in network thread
-		hr = pCallBack->Accept(pAcceptInfo);
-		switch (hr)
+		while (1)
 		{
-		case S_OK:
-			break;
-		case E_NOTIMPL:
-			Assert(false); // Fix it!
-			break;
-		case E_NET_TRY_AGAIN:
-		default:
-			goto Proc_End;
-			break;
-		}
+			// Accept will happened in network thread
+			hr = pCallBack->Accept(pAcceptInfo);
+			switch (hr)
+			{
+			case S_OK:
+				netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
+				pAcceptInfo = nullptr;
+				break;
+			case E_NOTIMPL:
+				Assert(false); // Fix it!
+				break;
+			case E_NET_TRY_AGAIN:
+			case E_NET_WOULDBLOCK:
+			case E_NET_IO_PENDING:
+				goto Proc_End;
+			default:
+				// some failure? try again
+				break;
+			}
 
-		netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
-		pAcceptInfo = nullptr;
+			Util::SafeDelete(pAcceptInfo);
+		}
 
 	Proc_End:
 

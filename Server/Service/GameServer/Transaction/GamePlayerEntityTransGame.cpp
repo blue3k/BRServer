@@ -1014,8 +1014,14 @@ namespace GameServer {
 		if( GetMyOwner()->GetGameInsUID() != 0 )
 			svrErrClose(E_GAME_ALREADY_IN_GAME);
 
-		if( GetMyOwner()->GetMatchingTicket() != 0 )
-			svrErrClose(E_SVR_ALREADY_INQUEUE);
+		if (GetMyOwner()->GetMatchingTicket() != 0)
+		{
+			if( Util::TimeSince(GetMyOwner()->GetMatchingStartTime()) < DurationMS(GameConst::MATCHING_TIMEOUT) )
+				svrErrClose(E_SVR_ALREADY_INQUEUE);
+
+			// clear timeouted tickets
+			GetMyOwner()->SetMatchingTicket(0);
+		}
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 		// Update player state

@@ -159,6 +159,8 @@ namespace DB {
 
 		// Close session
 		virtual HRESULT CloseSession();
+
+		virtual HRESULT Ping() override;
 	};
 
 

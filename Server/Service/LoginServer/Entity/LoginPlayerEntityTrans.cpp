@@ -329,7 +329,7 @@ namespace LoginServer {
 		if( FAILED(hr) )
 			CloseTransaction(hr);
 
-		return hr; 
+		return S_OK; 
 	}
 
 

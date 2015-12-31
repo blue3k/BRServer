@@ -148,7 +148,11 @@ namespace Trace {
 		void EventLog( DWORD dwEventId, const WCHAR *string1 = L"", const WCHAR *string2 = L"" );
 
 		// Console output
+#if WINDOWS
 		void ConsoleOut( const WCHAR *strString1, const WCHAR *strString2 );
+#else
+		void ConsoleOut(const char *strString1, const char *strString2);
+#endif
 
 
 		// Trace print out

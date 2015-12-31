@@ -70,6 +70,7 @@ namespace DB {
 		else
 		{
 			pSession = (Session*)pItem;
+			dbChk(pSession->Ping());
 		}
 
 	Proc_End:

@@ -83,7 +83,9 @@ namespace GameServer {
 		BRCLASS_ATTRIBUTE(PartyUID,PartyUID);
 		BRCLASS_ATTRIBUTE(UINT, ShardID);
 
-		BRCLASS_ATTRIBUTE(MatchingQueueTicket,MatchingTicket);
+		BRCLASS_ATTRIBUTE_READONLY(TimeStampMS, MatchingStartTime);
+		BRCLASS_ATTRIBUTE_READONLY(MatchingQueueTicket,MatchingTicket);
+		void SetMatchingTicket(MatchingQueueTicket ticket);
 
 		// Time for kill this game
 		BRCLASS_ATTRIBUTE_CONST(Util::TimeStampTimer,TimeToKill);

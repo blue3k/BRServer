@@ -91,6 +91,7 @@ namespace GameServer {
 		m_PartyUID = 0;
 		m_ShardID = 0;
 		m_MatchingTicket = 0;
+		m_MatchingStartTime = TimeStampMS(DurationMS(0));
 
 		memset( &m_PlayerInformation, 0, sizeof(m_PlayerInformation) );
 
@@ -152,6 +153,15 @@ namespace GameServer {
 	//
 	//	Entity process
 	//
+
+	void GamePlayerEntity::SetMatchingTicket(MatchingQueueTicket ticket)
+	{
+		if (ticket != 0)
+		{
+			m_MatchingStartTime = Util::Time.GetTimeMs();
+		}
+		m_MatchingTicket = ticket;
+	}
 
 	void GamePlayerEntity::SetLatestActiveTime(TimeStampSec latestActiveTime)
 	{

@@ -57,7 +57,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GamePlayState() {}
 
 		// Get time in this state in ms
-		DurationMS GetTimeInState()						{ return Util::Time.GetTimeMs() - m_StateStartTime; }
+		DurationMS GetTimeInState()						{ return Util::TimeSince(m_StateStartTime); }
 		TimeStampSec GetStateTimeUTC()					{ return m_StateStartTimeUTC; }
 
 		GamePlaySystem& GetGamePlaySystem();

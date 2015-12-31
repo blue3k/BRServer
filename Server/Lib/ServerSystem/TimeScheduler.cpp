@@ -291,7 +291,7 @@ namespace Svr {
 			pAction->m_InQueueKey.Components.NextTickTime = TimeStampMS::max();
 		}
 
-		Assert(!m_AssertOnInvalidTickTime || ((pAction->TimeData.Components.NextTickTime - Util::Time.GetTimeMs()) < DurationMS(2*60*1000)));
+		Assert(!m_AssertOnInvalidTickTime || ( (LONG)(pAction->TimeData.Components.NextTickTime - Util::Time.GetTimeMs()).count() < (2*60*1000)));
 		Assert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
 		if (pAction->TimeData.Components.NextTickTime != TimeStampMS::max())
 		{

@@ -92,7 +92,7 @@ namespace Net {
 				ConnectionState state;
 			} Value;
 
-			Event(void* ptr = nullptr)									{ assert(ptr == nullptr); }
+			Event(void* ptr = nullptr) : EventType(EventTypes::EVT_NONE) { Value.hr = 0; assert(ptr == nullptr); }
 			Event(EventTypes eventType, HRESULT hrRes) :EventType(eventType) { Value.hr = hrRes; }
 			Event(EventTypes eventType, ConnectionState InState) :EventType(eventType) { Value.state = InState; }
 			Event& operator =(const Event& src);

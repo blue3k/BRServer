@@ -52,11 +52,7 @@ inline bool IConnection::Event::operator == (const IConnection::Event& src) cons
 	if( src.EventType != EventType )
 		return false;
 
-	if( EventType == EVT_NONE ) 
-	{
-		assert(false); // who access this?
-		return true;
-	}
+	assert(EventType != EVT_NONE); // who access this?
 
 	return Value.hr == src.Value.hr;
 }

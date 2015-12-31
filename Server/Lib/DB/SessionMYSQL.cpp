@@ -229,7 +229,7 @@ namespace DB {
 		{
 			if( pMyQuery )
 			{
-				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8} : %1% : %2%", hr, typeid(*pMyQuery).name(), pMyQuery->GetQueryString() );
+				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8} : {1} : {2}", hr, typeid(*pMyQuery).name(), pMyQuery->GetQueryString() );
 			}
 			else
 			{
@@ -313,6 +313,24 @@ namespace DB {
 		return S_OK;
 	}
 
+	HRESULT SessionMYSQL::Ping()
+	{
+		HRESULT hr = S_OK;
+
+		if (m_mySQL == nullptr)
+			return E_NOT_INITIALIZED;
+
+		if (!mysql_ping(m_mySQL))
+		{
+			// ignore close errors
+			CloseSession();
+			dbChk(OpenSession());
+		}
+
+	Proc_End:
+
+		return hr;
+	}
 
 
 	
@@ -448,7 +466,7 @@ namespace DB {
 					pResults = m_pParameter + pMyQuery->GetInputParameterCount();
 					if( (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()) != num_fields )
 					{
-						dbTrace( Trace::TRC_ERROR, "Database output count is mismatched. Query: %0%, %2% is specified, %1% is expected", pMyQuery->GetQueryString(), num_fields, (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()));
+						dbTrace( Trace::TRC_ERROR, "Database output count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()));
 						dbErr(E_DB_RESULT_COUNT_MISMATCH);
 					}
 				}
@@ -457,7 +475,7 @@ namespace DB {
 					pResults = pMyQuery->BuildResult();
 					if( pMyQuery->GetResultCount() != num_fields )
 					{
-						dbTrace( Trace::TRC_ERROR, "Database result column count is mismatched. Query: %0%, %2% is specified, %1% is expected", pMyQuery->GetQueryString(), num_fields, pMyQuery->GetResultCount() );
+						dbTrace( Trace::TRC_ERROR, "Database result column count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, pMyQuery->GetResultCount() );
 						dbErr(E_DB_RESULT_COUNT_MISMATCH);
 					}
 				}
@@ -469,8 +487,8 @@ namespace DB {
 				{
 					if( !MYSQL_IsCompatibleType( pResults[i].buffer_type, fields[i].type ) )
 					{
-						dbTrace( Trace::TRC_ERROR, "Database result column type is mismatched. Query: %0%", pMyQuery->GetQueryString() );
-						dbTrace( Trace::TRC_ERROR, "DB column info: %4%.%0%.%1%, %4%.%2%.%3%, %5%: binded Type:%d, Required Type:%d",
+						dbTrace( Trace::TRC_ERROR, "Database result column type is mismatched. Query: {0}", pMyQuery->GetQueryString() );
+						dbTrace( Trace::TRC_ERROR, "DB column info: {4}.{0}.{1}, {4}.{2}.{3}, {5}: binded Type:%d, Required Type:%d",
 							(const char *) fields[i].table,
 							(const char *) fields[i].name,
 							(const char *) fields[i].org_table,

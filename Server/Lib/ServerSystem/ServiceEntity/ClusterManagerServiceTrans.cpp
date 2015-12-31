@@ -258,24 +258,24 @@ namespace Svr {
 			}
 			else
 			{
-				svrTrace( Svr::TRC_CLUSTER, "Ignoring update status for ClusterID:%0%, Entity:%1% to %2%, The entity seems not ready.", GetClusterID(), GetSender(), GetMemberStatus() );
+				svrTrace( Svr::TRC_CLUSTER, "Ignoring update status for ClusterID:{0}, Entity:{1} to {2}, The entity seems not ready.", GetClusterID(), GetSender(), GetMemberStatus() );
 			}
 		}
 		else
 		{
-			svrTrace( Svr::TRC_CLUSTER, "Ignoring update status for ClusterID:%0%, Entity:%1% to %2%", GetClusterID(), GetSender(), GetMemberStatus() );
+			svrTrace( Svr::TRC_CLUSTER, "Ignoring update status for ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus() );
 		}
 
 	Proc_End:
 
 		if( FAILED(hr) )
 		{
-			svrTrace( Svr::TRC_CLUSTER, "Update state is failed ClusterID:%0%, Entity:%1% to %2%", GetClusterID(), GetSender(), GetMemberStatus() );
+			svrTrace( Svr::TRC_CLUSTER, "Update state is failed ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus() );
 			CloseTransaction( hr );
 		}
 		else
 		{
-			svrTrace( Svr::TRC_CLUSTER, "State is updated ClusterID:%0%, Entity:%1% to %2%", GetClusterID(), GetSender(), GetMemberStatus() );
+			svrTrace( Svr::TRC_CLUSTER, "State is updated ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus() );
 			CloseTransaction( hr );
 		}
 
@@ -300,7 +300,7 @@ namespace Svr {
 		{
 			if( FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 			{
-				svrTrace( Svr::TRC_CLUSTER, "Ignoring workload update of an unregistered cluster ClusterID:%0% Sender:%1%", GetClusterID(), GetSender() );
+				svrTrace( Svr::TRC_CLUSTER, "Ignoring workload update of an unregistered cluster ClusterID:{0} Sender:{1}", GetClusterID(), GetSender() );
 				CloseTransaction(hr);
 				goto Proc_End;
 			}
@@ -332,7 +332,7 @@ namespace Svr {
 
 		if( FAILED(hr) )
 		{
-			svrTrace( Trace::TRC_ERROR, "Failed to update workload of unregistered cluster ClusterID:%0%, Sender:%1%", GetClusterID(), GetSender() );
+			svrTrace( Trace::TRC_ERROR, "Failed to update workload of unregistered cluster ClusterID:{0}, Sender:{1}", GetClusterID(), GetSender() );
 			CloseTransaction( hr );
 		}
 		else
@@ -397,7 +397,7 @@ namespace Svr {
 		{
 			if( FAILED( GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity( GetClusterID(), pServiceEntity ) ) )
 			{
-				svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:%0%, Joined:%1%", GetClusterID(), GetJoinedServiceUID() );
+				svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID() );
 				goto Proc_End;
 			}
 		}
@@ -411,7 +411,7 @@ namespace Svr {
 
 		if(FAILED(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:%0%, Joined:%1%", GetClusterID(), GetJoinedServiceUID() );
+			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID() );
 		}
 
 		CloseTransaction( hr );
@@ -445,7 +445,7 @@ namespace Svr {
 			{
 				if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
 				{
-					svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:%0%, Joined:%1%", GetClusterID(), GetJoinedServiceUID());
+					svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 					goto Proc_End;
 				}
 			}
@@ -460,7 +460,7 @@ namespace Svr {
 
 		if (FAILED(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:%0%, Joined:%1%", GetClusterID(), GetJoinedServiceUID());
+			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 		}
 
 		CloseTransaction(hr);
@@ -482,7 +482,7 @@ namespace Svr {
 		// This should not be failed
 		if( FAILED(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
-			svrTrace(Svr::TRC_CLUSTER, "Ignoring unregistered cluster service sync: ClusterID:%0%", GetClusterID() );
+			svrTrace(Svr::TRC_CLUSTER, "Ignoring unregistered cluster service sync: ClusterID:{0}", GetClusterID() );
 			//svrErr(E_SVR_INVALID_CLUSTERID);
 			goto Proc_End;
 		}

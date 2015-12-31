@@ -11,7 +11,7 @@ sleep 2s
 
 ssh $SSH_PARAMS "$REMOTE_BASEPATH/BREntityServer -n:BREntityServer2"
 
-sleep 2s
+sleep 5s
 
 ssh $SSH_PARAMS "$REMOTE_BASEPATH/BRLoginServer -n:BRLoginServer01"
 

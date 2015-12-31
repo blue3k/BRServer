@@ -319,15 +319,15 @@ namespace Trace {
 
 		// Write open header
 		char szLogBuff[1024];
-		snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
+		snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\n");
 		DWORD dwStrLen = (DWORD)strlen(szLogBuff);
 		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
 
-		snprintf(szLogBuff, MAX_PATH, "Start Log: %04d-%02d-%02d-%02d:%02d \r\n", curtm.tm_year + 1900, curtm.tm_mon + 1, curtm.tm_mday, curtm.tm_hour, curtm.tm_min );
+		snprintf(szLogBuff, MAX_PATH, "Start Log: %04d-%02d-%02d-%02d:%02d \n", curtm.tm_year + 1900, curtm.tm_mon + 1, curtm.tm_mday, curtm.tm_hour, curtm.tm_min );
 		dwStrLen = (DWORD)strlen(szLogBuff);
 		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
 
-		snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\r\n");
+		snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\n");
 		dwStrLen = (DWORD)strlen(szLogBuff);
 		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
 
@@ -505,9 +505,9 @@ namespace Trace {
 	}
 
 	// Console output
+#if WINDOWS
 	void TraceOutModule::ConsoleOut( const WCHAR *strString1, const WCHAR *strString2 )
 	{
-#if WINDOWS
 		DWORD dwWriten = 0;
 		// Get the standard input handle.
 		if (m_hConsole != INVALID_NATIVE_HANDLE_VALUE)
@@ -519,12 +519,14 @@ namespace Trace {
 				WriteConsoleW( m_hConsole, strString2, (DWORD)wcslen(strString2), &dwWriten, nullptr );
 		}
 #else
+	void TraceOutModule::ConsoleOut(const char *strString1, const char *strString2)
+	{
 
 		if (strString1 != nullptr)
-			wprintf(strString1);
+			printf("%s", strString1);
 
 		if (strString2 != nullptr)
-			wprintf(strString2);
+			printf("%s", strString2);
 
 #endif
 	//Proc_End:
@@ -534,6 +536,13 @@ namespace Trace {
 	// Trace print out
 	void TraceOutModule::TraceOut( UINT trcOutMask, const char * szOutput )
 	{
+#if WINDOWS
+		const bool wcharConsole = true;
+		const bool eventOut = true;
+#else
+		const bool wcharConsole = false;
+		const bool eventOut = false;
+#endif
 		if( trcOutMask == 0 )
 			return;
 
@@ -542,8 +551,8 @@ namespace Trace {
 
 
 		static WCHAR wszOutput[2048] = L"";
-		if( (uiOutputMask&(TRCOUT_DEBUG|TRCOUT_EVENT))
-			|| ((uiOutputMask&TRCOUT_CONSOLE)) )
+		if( ((uiOutputMask&(TRCOUT_DEBUG|TRCOUT_EVENT)) && eventOut)
+			|| ((uiOutputMask&TRCOUT_CONSOLE) && wcharConsole) )
 		{
 			StrUtil::UTF8ToWCS( szOutput, wszOutput );
 		}
@@ -558,7 +567,11 @@ namespace Trace {
 
 		if( uiOutputMask&TRCOUT_CONSOLE )
 		{
+#if WINDOWS
 			ConsoleOut( m_wszLineHeader, wszOutput );
+#else
+			ConsoleOut(m_szLineHeader, szOutput);
+#endif
 		}
 
 		if( uiOutputMask&TRCOUT_EVENT )
