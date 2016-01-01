@@ -116,16 +116,16 @@ namespace ConspiracyGameInstanceServer {
 			pMyPlayer = pNewPlayer;
 			svrChk( GetMyOwner()->AddPlayerToJoin( pNewPlayer ) );
 
-			svrTrace(Svr::TRC_INFO, "GameUID:%0% Join player %1%, NumPlayer:%2%, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
+			svrTrace(Svr::TRC_INFO, "GameUID:{0} Join player {1}, NumPlayer:{2}, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
 
 			m_bIsFirstJoin = true;
 		}
 		else
 		{
-			svrTrace(Svr::TRC_INFO, "GameUID:%0% Rejoin player %1%, NumPlayer:%2%, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
+			svrTrace(Svr::TRC_INFO, "GameUID:{0} Rejoin player {1}, NumPlayer:{2}, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
 
 			// Player ID should be bigger than 10, 1~10 is used by bot
-			Assert(GetPlayer().PlayerID < 10);
+			Assert(GetPlayer().PlayerID > 10);
 
 			// Just update name and ticket
 			pMyPlayer->SetPlayerName(GetPlayer().NickName);

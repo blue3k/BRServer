@@ -467,7 +467,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 
 		if (GetConnectionState() != STATE_DISCONNECTED)
-			Disconnect();
+			Disconnect("CloseConnection");
 
 		hr = Connection::CloseConnection();
 
@@ -492,7 +492,7 @@ namespace Net {
 
 
 	// Disconnect connection
-	HRESULT ConnectionUDPBase::Disconnect()
+	HRESULT ConnectionUDPBase::Disconnect(const char* reason)
 	{
 		if (GetConnectionState() != STATE_DISCONNECTING
 			&& GetConnectionState() != STATE_DISCONNECTED)
@@ -504,7 +504,7 @@ namespace Net {
 			SendNetCtrl(PACKET_NETCTRL_DISCONNECT, 0, msgIDTem);
 		}
 
-		return Connection::Disconnect();
+		return Connection::Disconnect(reason);
 	}
 
 	// Send packet buffer to connection with network device
@@ -530,7 +530,7 @@ namespace Net {
 		case E_NET_SHUTDOWN:
 			// Send fail by connection close
 			// Need to disconnect
-			Disconnect();
+			Disconnect("SendBufferUDP is failed");
 			hr = E_NET_CONNECTION_CLOSED;
 			goto Proc_End;
 			break;
@@ -741,7 +741,7 @@ namespace Net {
 
 			if( GetZeroRecvCount() > (ULONG)Const::CONNECTION_ZEROPACKET_MAX )
 			{
-				Disconnect();
+				Disconnect("Too many zero packets");
 			}
 			goto Proc_End;
 		}
@@ -917,7 +917,7 @@ namespace Net {
 						// Protocol version mismatch
 						OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
 					}
-					netChk( Disconnect() );
+					netChk( Disconnect("Protocol mismatch") );
 					break;
 				case NetCtrlCode_HeartBit:
 					break;
@@ -938,7 +938,7 @@ namespace Net {
 			if( pNetCtrl->Length < sizeof(MsgNetCtrlConnect) )
 			{
 				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
-				netChk( Disconnect() );
+				netChk( Disconnect("Invalid packet") );
 				netErr( E_UNEXPECTED );
 			}
 			const MsgNetCtrlConnect *pNetCtrlCon = (const MsgNetCtrlConnect*)pNetCtrl;
@@ -951,14 +951,14 @@ namespace Net {
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
-					netChk( Disconnect() );
+					netChk( Disconnect("Protocol mismatch") );
 					break;
 				}
 				else if( GetConnectionInfo().RemoteClass != NetClass::Unknown && RemoteClass != GetConnectionInfo().RemoteClass )
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					OnConnectionResult( E_NET_INVALID_NETCLASS );
-					netChk( Disconnect() );
+					netChk( Disconnect("Invalid netclass") );
 					break;
 				}
 

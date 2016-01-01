@@ -269,7 +269,7 @@ namespace Net {
 		else
 		{
 			// TODO: need to mark close connection
-			Disconnect();
+			Disconnect("OnIORecvCompleted error");
 		}
 
 
@@ -336,7 +336,7 @@ namespace Net {
 				goto Proc_End;// success
 				break;
 			default:
-				Disconnect();
+				Disconnect("Pending recv is failed");
 				goto Proc_End;
 			}
 		}

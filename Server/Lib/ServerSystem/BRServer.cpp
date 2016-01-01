@@ -149,7 +149,7 @@ namespace Svr{
 						{
 							//Assert(pConn->GetRefCount() == 0);
 							if (oldConn != nullptr)
-								oldConn->Disconnect();
+								oldConn->Disconnect("ProcessPrivateNetworkEvent, Disconnect old connection");
 							svrChk(pServerEntity->SetRemoteConnection(pConn));
 						}
 						pConn = nullptr;

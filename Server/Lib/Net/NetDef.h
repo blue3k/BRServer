@@ -266,7 +266,7 @@ namespace Net {
 		virtual HRESULT InitConnection(const NetAddress& Addr, NetClass netClass);
 
 		// Disconnect connection
-		virtual HRESULT Disconnect() = 0;
+		virtual HRESULT Disconnect(const char* reason) = 0;
 
 		// Close connection immediately without notify
 		virtual HRESULT CloseConnection() = 0;

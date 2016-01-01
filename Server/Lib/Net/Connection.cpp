@@ -402,18 +402,21 @@ namespace Net {
 	}
 
 	// Disconnect connection
-	HRESULT Connection::Disconnect()
+	HRESULT Connection::Disconnect(const char* reason)
 	{
 		HRESULT hr = S_OK;
 
 		if( GetConnectionState() != STATE_DISCONNECTING 
 			&& GetConnectionState() != STATE_DISCONNECTED)
 		{
+			if (reason == nullptr)
+				reason = "Unknown";
+
 			SetConnectionState(STATE_DISCONNECTING);
 
 			EnqueueConnectionEvent(IConnection::Event(IConnection::Event::EVT_STATE_CHANGE, GetConnectionState()));
 
-			netTrace( TRC_CONNECTION, "Entering Disconnect CID:{0}", GetCID() );
+			netTrace( TRC_CONNECTION, "Entering Disconnect CID:{0}, reason:{1}", GetCID(), reason );
 		}
 
 	//Proc_End:

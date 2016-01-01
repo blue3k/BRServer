@@ -217,6 +217,7 @@ namespace Net {
 			case E_NET_TRY_AGAIN:
 			case E_NET_WOULDBLOCK:
 			case E_NET_IO_PENDING:
+			case E_NET_BADF:
 				goto Proc_End;
 			default:
 				// some failure? try again
@@ -794,13 +795,13 @@ namespace Net {
 				case E_NET_HOSTUNREACH:
 				case E_NET_OPNOTSUPP:
 				case E_NET_NETUNREACH:
+				case E_NET_BADF:
 					// silently handle them
 					hr = err;
 					goto Proc_End;
 				}
 
 				netTrace(Trace::TRC_ERROR, "TCP accept failed err={0:X8}", err);
-				netErr(err);
 			}
 
 

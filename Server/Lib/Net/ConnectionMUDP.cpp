@@ -124,7 +124,7 @@ namespace Net {
 		if (pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl))
 		{
 			netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
-			netChk(Disconnect());
+			netChk(Disconnect("Invalid packet"));
 			netErr(E_NET_BADPACKET_NOTEXPECTED);
 		}
 
@@ -151,7 +151,7 @@ namespace Net {
 					break;
 				default:
 					netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
-					netChk(Disconnect());
+					netChk(Disconnect("Invalid packet"));
 					netErr(E_NET_BADPACKET_NOTEXPECTED);
 					break;
 				};
@@ -159,7 +159,7 @@ namespace Net {
 			else // general message
 			{
 				netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
-				netChk(Disconnect());
+				netChk(Disconnect("Invalid packet"));
 				netErr(E_NET_BADPACKET_NOTEXPECTED);
 			}
 			break;
@@ -174,7 +174,7 @@ namespace Net {
 						// Protocol version mismatch
 						OnConnectionResult(E_NET_PROTOCOL_VERSION_MISMATCH);
 					}
-					netChk(Disconnect());
+					netChk(Disconnect("Protocal mismatch"));
 					break;
 				default:
 					break;
@@ -221,14 +221,14 @@ namespace Net {
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					OnConnectionResult(E_NET_PROTOCOL_VERSION_MISMATCH);
-					netChk(Disconnect());
+					netChk(Disconnect("Protocol mismatch"));
 					break;
 				}
 				else if (GetConnectionInfo().RemoteClass != NetClass::Unknown && RemoteClass != GetConnectionInfo().RemoteClass)
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					OnConnectionResult(E_NET_INVALID_NETCLASS);
-					netChk(Disconnect());
+					netChk(Disconnect("Invalid netclass"));
 					break;
 				}
 
@@ -290,7 +290,7 @@ namespace Net {
 
 			if( GetZeroRecvCount() > (ULONG)Const::CONNECTION_ZEROPACKET_MAX )
 			{
-				Disconnect();
+				Disconnect("Too many zero packet");
 			}
 			goto Proc_End;
 		}
@@ -341,7 +341,7 @@ namespace Net {
 					{
 						// Sending normal message packet without connection process.
 						// Disconnect them
-						netChk(Disconnect());
+						netChk(Disconnect("Invalid packet type"));
 						netErr(E_NET_BADPACKET_NOTEXPECTED);
 					}
 				}
@@ -642,7 +642,7 @@ namespace Net {
 		Util::SafeRelease( pIMsg );
 
 		if( FAILED(hr) )
-			Disconnect();
+			Disconnect("Failed to send reliable packets");
 
 		return hr;
 	}
@@ -876,7 +876,7 @@ namespace Net {
 		if (pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl))
 		{
 			netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
-			netChk(Disconnect());
+			netChk(Disconnect("Invalid packet"));
 			netErr(E_NET_BADPACKET_NOTEXPECTED);
 		}
 
@@ -908,7 +908,7 @@ namespace Net {
 					break;
 				default:
 					netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
-					netChk(Disconnect());
+					netChk(Disconnect("Invalid packet"));
 					netErr(E_NET_BADPACKET_NOTEXPECTED);
 					break;
 				};
@@ -916,7 +916,7 @@ namespace Net {
 			else // general message
 			{
 				netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
-				netChk(Disconnect());
+				netChk(Disconnect("Invalid packet"));
 				netErr(E_NET_BADPACKET_NOTEXPECTED);
 			}
 			break;
@@ -1074,7 +1074,7 @@ namespace Net {
 		else
 		{
 			// TODO: need to mark close connection
-			Disconnect();
+			Disconnect("Recv failed");
 		}
 
 
@@ -1142,7 +1142,7 @@ namespace Net {
 				goto Proc_End;// success
 				break;
 			default:
-				Disconnect();
+				Disconnect("Failed to pending recv");
 				goto Proc_End;
 			}
 		}

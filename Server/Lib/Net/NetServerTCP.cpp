@@ -78,8 +78,6 @@ namespace Net {
 		pAcceptInfo = new IOBUFFER_ACCEPT;
 		netMem(pAcceptInfo);
 
-		netTrace(TRC_CONNECTION, "Accept : {0}, {1}", m_PendingAccept.load(std::memory_order_relaxed), GetConnectionManager().GetNumActiveConnection());
-
 		memset(pAcceptInfo, 0, sizeof(IOBUFFER_ACCEPT));
 
 		sockAccept = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::Stream);
@@ -102,7 +100,7 @@ namespace Net {
 			// successed
 			break;
 		case E_NET_TRY_AGAIN:
-			netTrace(TRC_NET, "TCP accept busy, try again {0} queued", m_PendingAccept.load(std::memory_order_relaxed));
+			netTrace(TRC_NET, "TCP accept busy, try again {0} accepts are queued", m_PendingAccept.load(std::memory_order_relaxed));
 		default:
 			hr = hrErr;
 			break;
@@ -113,10 +111,6 @@ namespace Net {
 		if (FAILED(hr))
 		{
 			Util::SafeDelete(pAcceptInfo);
-		}
-		else
-		{
-			m_PendingAccept.fetch_add(1, std::memory_order_relaxed);
 		}
 
 		return hr;
@@ -285,7 +279,11 @@ namespace Net {
 		{
 			IOBUFFER_ACCEPT* pAcceptInfo = nullptr;
 
+			netTrace(TRC_CONNECTION, "Pending accept : {0}, {1}", m_PendingAccept.load(std::memory_order_relaxed), GetConnectionManager().GetNumActiveConnection());
+
 			netChk(Accept(pAcceptInfo));
+
+			m_PendingAccept.fetch_add(1, std::memory_order_relaxed);
 
 		}// while
 

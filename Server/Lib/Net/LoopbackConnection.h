@@ -60,7 +60,7 @@ namespace Net {
 		virtual void DeleteThis() const;
 
 		// Disconnect connection
-		virtual HRESULT Disconnect();
+		virtual HRESULT Disconnect(const char* reason);
 
 		// Close connection immediately without notify
 		virtual HRESULT CloseConnection();

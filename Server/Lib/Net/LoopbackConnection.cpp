@@ -102,8 +102,9 @@ namespace Net {
 	}
 
 	// Disconnect LoopbackConnection
-	HRESULT LoopbackConnection::Disconnect()
+	HRESULT LoopbackConnection::Disconnect(const char* reason)
 	{
+		unused(reason);
 		// cant disconnected
 		return S_OK;
 	}

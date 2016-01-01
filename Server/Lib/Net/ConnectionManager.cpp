@@ -723,7 +723,7 @@ namespace Net {
 					//	oper.pConn.GetSharedPointer(pConn);
 
 					if (pConn != nullptr)
-						pConn->Disconnect();
+						pConn->Disconnect("DisconnectAllConnection");
 				}
 				break;
 			case Operation::OP_PENDING_ADDR:
@@ -735,7 +735,7 @@ namespace Net {
 		// clear connection queue
 		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn)-> bool
 		{
-			pConn->Disconnect();
+			pConn->Disconnect("DisconnectAllConnection");
 			return true;
 		});
 
@@ -799,7 +799,7 @@ namespace Net {
 		// force to close
 		if (pConnection->GetConnectionState() != IConnection::STATE_DISCONNECTED)
 		{
-			pConnection->Disconnect();
+			pConnection->Disconnect("ConnectionManager::PendingReleaseConnection");
 			pConnection->CloseConnection();
 		}
 

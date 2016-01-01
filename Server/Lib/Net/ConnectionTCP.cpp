@@ -135,7 +135,7 @@ namespace Net {
 				case NetCtrlCode_Connect:
 					// Protocol version mismatch
 					OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
-					netChk( Disconnect() );
+					netChk( Disconnect("Protocol mismatch") );
 					break;
 				case NetCtrlCode_HeartBit:
 					break;
@@ -171,14 +171,14 @@ namespace Net {
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					if (GetConnectionState() != STATE_CONNECTED)
 						OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
-					netChk( Disconnect() );
+					netChk( Disconnect("Protocol mismatch") );
 				}
 				else if( GetConnectionInfo().RemoteClass != NetClass::Unknown && RemoteClass != GetConnectionInfo().RemoteClass )
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					if (GetConnectionState() != STATE_CONNECTED)
 						OnConnectionResult(E_NET_INVALID_NETCLASS);
-					netChk( Disconnect() );
+					netChk( Disconnect("Invalid netclass") );
 				}
 				else
 				{
@@ -556,7 +556,7 @@ namespace Net {
 			IncZeroRecvCount();
 			if( GetZeroRecvCount() > (ULONG)Const::CONNECTION_ZEROPACKET_MAX )
 			{
-				//Disconnect();
+				//Disconnect("Too many zero packets");
 			}
 			goto Proc_End;
 		}
@@ -732,7 +732,7 @@ namespace Net {
 		case E_NET_SHUTDOWN:
 			// Send fail by connection close
 			// Need to disconnect
-			Disconnect();
+			Disconnect("Send failed by error");
 			hr = E_NET_CONNECTION_CLOSED;
 			goto Proc_End;
 			break;

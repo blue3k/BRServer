@@ -136,7 +136,7 @@ namespace Net {
 		virtual HRESULT ClearQueues() override;
 
 		// Disconnect connection
-		virtual HRESULT Disconnect() override;
+		virtual HRESULT Disconnect(const char* reason) override;
 
 
 		// Send message to connected entity

@@ -168,7 +168,7 @@ namespace Net {
 		virtual HRESULT InitSynchronization();
 
 		// Disconnect connection
-		virtual HRESULT Disconnect();
+		virtual HRESULT Disconnect(const char* reason);
 
 		// Close connection
 		virtual HRESULT CloseConnection();
