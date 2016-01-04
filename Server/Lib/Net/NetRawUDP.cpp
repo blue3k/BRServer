@@ -115,11 +115,14 @@ namespace Net {
 			netErr(E_UNEXPECTED);
 		}
 
-		iOptValue = FALSE;
-		if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
+		if (m_LocalAddress.SocketFamily == SockFamily::IPV6)
 		{
-			netTrace(Trace::TRC_ERROR, "RawUDP: Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			iOptValue = FALSE;
+			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
+			{
+				netTrace(Trace::TRC_ERROR, "RawUDP: Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
+				netErr(E_UNEXPECTED);
+			}
 		}
 
 
@@ -146,7 +149,7 @@ namespace Net {
 
 			for (INT uiRecv = 0; uiRecv < Const::SVR_NUM_RECV_THREAD; uiRecv++)
 			{
-				netChk(PendingRecv(&m_pRecvBuffers[uiRecv]));
+				PendingRecv(&m_pRecvBuffers[uiRecv]);
 			}
 		}
 
@@ -349,7 +352,7 @@ namespace Net {
 		Message::MessageData *pMsg = nullptr;
 		Message::MobileMessageHeader * pMsgHeader = (Message::MobileMessageHeader*)pBuff;
 
-		//netTrace(TRC_RECVRAW, "UDP Recv ip:{0}, msg:{1}, seq:{2}, len:%3%", GetConnectionInfo().Remote, pMsgHeader->msgID, pMsgHeader->msgID.IDSeq.Sequence, uiBuffSize);
+		//netTrace(TRC_RECVRAW, "UDP Recv ip:{0}, msg:{1}, seq:{2}, len:{3}", GetConnectionInfo().Remote, pMsgHeader->msgID, pMsgHeader->msgID.IDSeq.Sequence, uiBuffSize);
 
 		if (uiBuffSize == 0)
 			goto Proc_End;

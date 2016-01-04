@@ -63,6 +63,16 @@ namespace Net {
 	// Validate local IP
 	HRESULT CheckLocalAddress(SockFamily family, NetAddress &addr);
 
+	/////////////////////////////////////////////////////////////////////////////////
+	//
+	// Socket value
+	//
+
+	int ToSockValue(SockFamily family);
+	int ToSockValue(SockType family);
+
+	SockFamily ToSockFamily(int family);
+	SockType ToSockType(int family);
 
 	bool operator == ( const sockaddr_in6 &op1, const sockaddr_in6 &op2 );
 	bool operator != ( const sockaddr_in6 &op1, const sockaddr_in6 &op2 );

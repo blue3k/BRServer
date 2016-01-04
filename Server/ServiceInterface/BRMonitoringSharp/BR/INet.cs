@@ -164,8 +164,9 @@ public class INet : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int Connect(IConnection pIConn, uint remoteID, NetClass netClass, string strDstIP, ushort usDstPort) {
-    int ret = BRMonitoringPINVOKE.INet_Connect(swigCPtr, IConnection.getCPtr(pIConn), remoteID, (int)netClass, strDstIP, usDstPort);
+  public unsafe int Connect(IConnection pIConn, uint remoteID, NetClass netClass, NetAddress destAddress) {
+    int ret = BRMonitoringPINVOKE.INet_Connect(swigCPtr, IConnection.getCPtr(pIConn), remoteID, (int)netClass, NetAddress.getCPtr(destAddress));
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 

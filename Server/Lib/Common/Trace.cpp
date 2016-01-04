@@ -22,9 +22,6 @@
 
 
 #if WINDOWS
-#define _ERRTRACE_KEY_ L"SoftWare\\TheBraves\\Svr"
-
-
 // For crash dump
 #pragma comment(lib, "Dbghelp.lib")
 #endif
@@ -239,7 +236,7 @@ namespace Trace {
 
 
 	TraceOutModule::TraceOutModule()
-		: m_uiOutputMask(TRCOUT_NONE)
+		: m_uiOutputMask(TRCOUT_DEFAULT)
 		, m_uiDbgOutputMask(TRCOUT_NONE)
 		, m_uiLineHeaderLen(0)
 #if WINDOWS
@@ -376,10 +373,6 @@ namespace Trace {
 				CheckAndUpdate( ulCurTime );
 			}
 		}
-
-		//printf("TraceOut End\n");
-		//ThisThread::SleepFor(DurationMS(100 * 1000));
-		//stm_pInstance = nullptr;
 	}
 
 	void TraceOutModule::UpdateConsoleHandle()

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+ï»¿////////////////////////////////////////////////////////////////////////////////
 // 
 // CopyRight (c) 2013 The Braves
 // 
@@ -173,7 +173,7 @@ namespace Svr
 		if( m_Headers == nullptr )
 		{
 			char strAPIKeyOpt[512];
-			StrUtil::Format( strAPIKeyOpt, "Authorization: key=%0%", stm_strAPIKey );
+			StrUtil::Format( strAPIKeyOpt, "Authorization: key={0}", stm_strAPIKey );
 			svrMem( m_Headers = curl_slist_append( m_Headers, strAPIKeyOpt) );
 			svrMem( m_Headers = curl_slist_append( m_Headers, "Content-Type: application/json") );
 			svrMem( m_Headers = curl_slist_append( m_Headers, "charsets: utf-8") );
@@ -181,7 +181,7 @@ namespace Svr
 
 		char strPostFields[1024];
 
-		svrChk( StrUtil::Format( strPostFields, " { \"registration_ids\" :[ \"%0%\"], \"data\": { \"Message\" :  \"%1%\" }, { \"Param\" :  \"%2%\" }   } ", m_strRegID, m_strMessage, m_Param0 ) );
+		svrChk( StrUtil::Format( strPostFields, " { \"registration_ids\" :[ \"{0}\"], \"data\": { \"Message\" :  \"{1}\" }, { \"Param\" :  \"{2}\" }   } ", m_strRegID, m_strMessage, m_Param0 ) );
 
 		svrChk(ExternalTransactionManager::ToHRESULT(m_CurlResult));
 
@@ -202,7 +202,7 @@ Proc_End:
 
 		if( FAILED(hr) && m_CurlResult != 0 )
 		{
-			svrTrace( Trace::TRC_ERROR, "GCM query failed by %0%:%1%, result:%2%", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString );
+			svrTrace( Trace::TRC_ERROR, "GCM query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString );
 		}
 
 		CloseTransaction(hr);
@@ -307,8 +307,6 @@ Proc_End:
 		const char prefix[] = "{\"receipt-data\":\"";
 		const char postfix[] = "\"}";
 		HRESULT hr = S_OK;
-		//StaticArray<BYTE, 20 * 1024> buffer;
-		//StaticArray<BYTE, 20 * 1024> alternate;
 
 		svrChk(StrUtil::StringCpy(m_strPackageName, packageName));
 		svrChk(StrUtil::StringCpy(m_strProductID, productID));
@@ -318,15 +316,6 @@ Proc_End:
 		svrChk(m_strReceipt.AddItems(sizeof(prefix)-1, (const BYTE*)prefix));
 		svrChk(Util::Base64Encode(purchaseToken.GetSize(), purchaseToken.data(), m_strReceipt, '='));
 		svrChk(m_strReceipt.AddItems(sizeof(postfix)-1, (const BYTE*)postfix)); // IOS requires no null terminate string
-
-
-		//svrChk(Util::Base64Encode(purchaseToken.GetSize(), (const BYTE*)purchaseToken.data(), buffer, '='));
-		//svrChk(buffer.push_back('\0'));
-
-		//INT BuffLen = (INT)alternate.GetAllocatedSize();
-		//svrChk(StrUtil::Format((char*)alternate.data(), (INT)BuffLen, "{\"receipt-data\":\"%0%\"}", (const char*)buffer.data()));
-		//alternate.SetSize(alternate.GetAllocatedSize() - BuffLen);
-
 
 	Proc_End:
 
@@ -379,13 +368,12 @@ Proc_End:
 			hr = E_UNEXPECTED; break;
 		}
 
-		svrTrace(Trace::TRC_ERROR, "IOSAuth Failed: %0%", reason );
+		svrTrace(Trace::TRC_ERROR, "IOSAuth Failed: {0}", reason );
 
 		return hr;
 	}
 
-	// Start Transaction
-	HRESULT ExternalTransactionIOSRecepitCheck::StartTransaction()
+	HRESULT ExternalTransactionIOSRecepitCheck::VerifyReceipt()
 	{
 		HRESULT hr = S_OK;
 
@@ -403,7 +391,7 @@ Proc_End:
 
 
 		// "https://sandbox.itunes.apple.com/verifyReceipt"
-		// À§´Â ºô¸µ Å×½ºÆ®¿ë »÷µå¹Ú½º. https://buy.itunes.apple.com/verifyReceipt ½ÇÀüÀº ¿©±â´Ù.
+		// Ã€Â§Â´Ã‚ ÂºÃ´Â¸Âµ Ã…Ã—Â½ÂºÃ†Â®Â¿Ã« Â»Ã·ÂµÃ¥Â¹ÃšÂ½Âº. https://buy.itunes.apple.com/verifyReceipt Â½Ã‡Ã€Ã¼Ã€Âº Â¿Â©Â±Ã¢Â´Ã™.
 		m_CurlResult = curl_easy_setopt(GetCURL(), CURLOPT_POST, 1L);
 		svrChk(ExternalTransactionManager::ToHRESULT(m_CurlResult));
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_URL, m_strURL);
@@ -414,13 +402,6 @@ Proc_End:
 		//m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_COPYPOSTFIELDS, strBuffer);
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_POSTFIELDS, (const char*)m_strReceipt.data());
 		svrChk(ExternalTransactionManager::ToHRESULT(m_CurlResult));
-		//m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_POSTFIELDSIZE, strlen(receipt));
-		//svrChk(ExternalTransactionManager::ToHRESULT(m_CurlResult));
-		////m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_COPYPOSTFIELDS, strBuffer);
-		//m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_POSTFIELDS, (const char*)receipt);
-		//svrChk(ExternalTransactionManager::ToHRESULT(m_CurlResult));
-		//m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_SSL_VERIFYPEER, 0L);
-		//svrChk(ExternalTransactionManager::ToHRESULT(m_CurlResult));
 		m_CurlResult = curl_easy_setopt(m_Curl, CURLOPT_SSL_VERIFYHOST, 0L);
 		svrChk(ExternalTransactionManager::ToHRESULT(m_CurlResult));
 
@@ -517,12 +498,31 @@ Proc_End:
 
 		if (FAILED(hr) && m_CurlResult != 0)
 		{
-			svrTrace(Trace::TRC_ERROR, "IOS receipt query failed by %0%:%1%, result:%2%", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString);
+			svrTrace(Trace::TRC_ERROR, "IOS receipt query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString);
 		}
+
+		return hr;
+	}
+
+	// Start Transaction
+	HRESULT ExternalTransactionIOSRecepitCheck::StartTransaction()
+	{
+		HRESULT hr = S_OK;
+
+		hr = VerifyReceipt();
+		if (FAILED(hr))
+		{
+			// try with sand box url
+			m_strURL = "https://sandbox.itunes.apple.com/verifyReceipt";
+			hr = VerifyReceipt();
+		}
+
+
+	//Proc_End:
 
 		CloseTransaction(hr);
 
-		return hr;
+		return S_OK;
 	}
 
 

@@ -44,8 +44,8 @@ System.UInt64* tempuiCID = &uiCID;
     }
   }
 
-  public unsafe int ConnectCli(string strServerIP, ushort usServerPort, SWIGTYPE_p_p_BR__Net__IConnection pINewConnection) {
-    int ret = BRMonitoringPINVOKE.IClient_ConnectCli(swigCPtr, strServerIP, usServerPort, SWIGTYPE_p_p_BR__Net__IConnection.getCPtr(pINewConnection));
+  public unsafe int ConnectCli(NetAddress destAddress, SWIGTYPE_p_p_BR__Net__IConnection pINewConnection) {
+    int ret = BRMonitoringPINVOKE.IClient_ConnectCli(swigCPtr, NetAddress.getCPtr(destAddress), SWIGTYPE_p_p_BR__Net__IConnection.getCPtr(pINewConnection));
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

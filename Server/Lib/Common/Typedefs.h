@@ -81,6 +81,7 @@
 #include <emmintrin.h>
 #include <concurrent_queue.h>
 #include <concurrent_unordered_map.h>
+#include <stdint.h>
 
 
 #define timegm _mkgmtime

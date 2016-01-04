@@ -142,6 +142,8 @@
     <Compile Include="BR\ServiceStatus.cs" />
     <Compile Include="BR\SharedObject.cs" />
     <Compile Include="BR\SharedPointer.cs" />
+    <Compile Include="BR\SockFamily.cs" />
+    <Compile Include="BR\SockType.cs" />
     <Compile Include="BR\SWIGTYPE_p_BR__ClusterID.cs" />
     <Compile Include="BR\SWIGTYPE_p_BR__SharedPointerTT_BR__Net__IConnection_t.cs" />
     <Compile Include="BR\SWIGTYPE_p_BR__SharedReferenceManager.cs" />
@@ -158,6 +160,7 @@
     <Compile Include="BR\SWIGTYPE_p_p_unsigned_char.cs" />
     <Compile Include="BR\SWIGTYPE_p_signed___int64.cs" />
     <Compile Include="BR\SWIGTYPE_p_sockaddr_in6.cs" />
+    <Compile Include="BR\SWIGTYPE_p_sockaddr_storage.cs" />
     <Compile Include="BR\SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationMS_t.cs" />
     <Compile Include="BR\SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.cs" />
     <Compile Include="BR\SWIGTYPE_p_unsigned_char.cs" />

@@ -60,18 +60,17 @@ namespace BR {
 		Max
 	};
 
-
 	enum class SockFamily : UINT8
 	{
 		None = 0,
-		IPV4 = AF_INET,
-		IPV6 = AF_INET6
+		IPV4,// = AF_INET,
+		IPV6,// = AF_INET6
 	};
 
 	enum class SockType
 	{
-		Stream = SOCK_STREAM,       // TCP
-		DataGram = SOCK_DGRAM,     // UDP
+		Stream,// = SOCK_STREAM,       // TCP
+		DataGram,// = SOCK_DGRAM,     // UDP
 	};
 
 

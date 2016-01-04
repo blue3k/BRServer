@@ -404,8 +404,8 @@ System.UInt64* tempUData = &UData;
     return ret;
   }
 
-  public unsafe int Disconnect() {
-    int ret = BRMonitoringPINVOKE.IConnection_Disconnect(swigCPtr);
+  public unsafe int Disconnect(string reason) {
+    int ret = BRMonitoringPINVOKE.IConnection_Disconnect(swigCPtr, reason);
     return ret;
   }
 

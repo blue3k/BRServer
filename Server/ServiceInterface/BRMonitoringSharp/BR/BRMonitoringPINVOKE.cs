@@ -218,14 +218,20 @@ class BRMonitoringPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetAddress_usPort_get")]
   public static extern ushort NetAddress_usPort_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetAddress_SocketFamily_set")]
+  public static extern void NetAddress_SocketFamily_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetAddress_SocketFamily_get")]
+  public static extern int NetAddress_SocketFamily_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_NetAddress__SWIG_0")]
   public static extern global::System.IntPtr new_NetAddress__SWIG_0();
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_NetAddress__SWIG_1")]
-  public static extern global::System.IntPtr new_NetAddress__SWIG_1(string jarg1, ushort jarg2);
+  public static extern global::System.IntPtr new_NetAddress__SWIG_1(int jarg1, string jarg2, ushort jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_NetAddress__SWIG_2")]
-  public static extern global::System.IntPtr new_NetAddress__SWIG_2(string jarg1);
+  public static extern global::System.IntPtr new_NetAddress__SWIG_2(int jarg1, string jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_NetAddress__SWIG_3")]
   public static extern global::System.IntPtr new_NetAddress__SWIG_3(int jarg1);
@@ -1464,7 +1470,7 @@ class BRMonitoringPINVOKE {
   public static extern int IConnection_InitConnection(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_Disconnect")]
-  public static extern int IConnection_Disconnect(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern int IConnection_Disconnect(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_CloseConnection")]
   public static extern int IConnection_CloseConnection(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -1566,7 +1572,7 @@ class BRMonitoringPINVOKE {
   public static extern int INet_EnqueueNetEvent(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_INet_Connect")]
-  public static extern int INet_Connect(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, int jarg4, string jarg5, ushort jarg6);
+  public static extern int INet_Connect(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, int jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_INet_ReleaseConnection")]
   public static extern int INet_ReleaseConnection(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -1578,7 +1584,7 @@ class BRMonitoringPINVOKE {
   public static extern int IClient_GetConnection(global::System.Runtime.InteropServices.HandleRef jarg1, System.UInt64 jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IClient_ConnectCli")]
-  public static extern int IClient_ConnectCli(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, ushort jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
+  public static extern int IClient_ConnectCli(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_INetPolicy")]
   public static extern global::System.IntPtr new_INetPolicy(uint jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);

@@ -68,20 +68,18 @@
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <NMakeBuildCommandLine>AutoGenerate.cmd build
-@echo built &gt; $(OutDir)$(ProjectName)</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>AutoGenerate.cmd build</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>AutoGenerate.cmd rebuild
-@echo built &gt; $(OutDir)$(ProjectName)</NMakeReBuildCommandLine>
+@echo build &gt; $(OutDir)$(ProjectName)</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>AutoGenerate.cmd clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeOutput>
     </NMakeOutput>
     <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeBuildCommandLine>AutoGenerate.cmd build
-@echo built &gt; $(OutDir)$(ProjectName)</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>AutoGenerate.cmd build</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>AutoGenerate.cmd rebuild
-@echo built &gt; $(OutDir)$(ProjectName)</NMakeReBuildCommandLine>
+@echo build &gt; $(OutDir)$(ProjectName)</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>AutoGenerate.cmd clean</NMakeCleanCommandLine>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
@@ -90,20 +88,18 @@
     <NMakeOutput>
     </NMakeOutput>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeBuildCommandLine>AutoGenerate.cmd build
-@echo built &gt; $(OutDir)$(ProjectName)</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>AutoGenerate.cmd build</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>AutoGenerate.cmd rebuild
-@echo built &gt; $(OutDir)$(ProjectName)</NMakeReBuildCommandLine>
+@echo build &gt; $(OutDir)$(ProjectName)</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>AutoGenerate.cmd clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <NMakeOutput>
     </NMakeOutput>
     <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
-    <NMakeBuildCommandLine>AutoGenerate.cmd build
-@echo built &gt; $(OutDir)$(ProjectName)</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine>AutoGenerate.cmd build</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>AutoGenerate.cmd rebuild
-@echo built &gt; $(OutDir)$(ProjectName)</NMakeReBuildCommandLine>
+@echo build &gt; $(OutDir)$(ProjectName)</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>AutoGenerate.cmd clean</NMakeCleanCommandLine>
   </PropertyGroup>
   <ItemDefinitionGroup>

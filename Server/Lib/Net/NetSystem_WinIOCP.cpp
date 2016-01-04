@@ -524,13 +524,13 @@ namespace Net {
 
 		SOCKET Socket(SockFamily domain, SockType type)
 		{
-			if ((int)type == SOCK_STREAM)
+			if (type == SockType::Stream)
 			{
-				return WSASocket((int)domain, (int)type, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+				return WSASocket(ToSockValue(domain), ToSockValue(type), IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 			}
 			else
 			{
-				return WSASocket((int)domain, (int)type, IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
+				return WSASocket(ToSockValue(domain), ToSockValue(type), IPPROTO_UDP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 			}
 		}
 

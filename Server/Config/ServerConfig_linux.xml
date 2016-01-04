@@ -66,15 +66,15 @@
 
 		<Game UID="100" Name="BRConspiracyGameServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
 		  <ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
-      <!--<ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>-->
-      <ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
-      <NetPrivate IP="192.168.1.81" Port="10000"/>
+			<!--<ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>-->
+			<ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
+			<NetPrivate IP="192.168.1.81" Port="10000"/>
 			<NetPublic IP="192.168.1.81" Port="11000"/>
 		</Game>
 
 		<Game UID="101" Name="BRConspiracyGameServer02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
 			<ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
-      <ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
+			<ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
 			<NetPrivate IP="192.168.1.81" Port="10001"/>
 			<NetPublic IP="192.168.1.81" Port="11001"/>
 		</Game>

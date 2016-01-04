@@ -65,8 +65,8 @@ public class PerformanceCounterServer : global::System.IDisposable {
     public unsafe MessageHandler(PerformanceCounterServer CounterServer) : this(BRMonitoringPINVOKE.new_PerformanceCounterServer_MessageHandler(PerformanceCounterServer.getCPtr(CounterServer)), true) {
     }
   
-    public unsafe int OnRecv(SWIGTYPE_p_sockaddr_in6 remoteAddr, MessageData pMsg) {
-      int ret = BRMonitoringPINVOKE.PerformanceCounterServer_MessageHandler_OnRecv(swigCPtr, SWIGTYPE_p_sockaddr_in6.getCPtr(remoteAddr), MessageData.getCPtr(pMsg));
+    public unsafe int OnRecv(SWIGTYPE_p_sockaddr_storage remoteAddr, MessageData pMsg) {
+      int ret = BRMonitoringPINVOKE.PerformanceCounterServer_MessageHandler_OnRecv(swigCPtr, SWIGTYPE_p_sockaddr_storage.getCPtr(remoteAddr), MessageData.getCPtr(pMsg));
       if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     }

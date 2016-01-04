@@ -38,6 +38,7 @@ namespace Net {
 	HRESULT SockAddr2Addr(const sockaddr_in6 &sockAddr, NetAddress &addr)
 	{
 		Assert(sockAddr.sin6_family == AF_INET6);
+		addr.SocketFamily = SockFamily::IPV6;
 		addr.strAddr[0] = '\0';
 		auto result = inet_ntop(sockAddr.sin6_family, (void*)&sockAddr.sin6_addr, addr.strAddr, sizeof addr.strAddr);
 		if (result == nullptr) return GetLastWSAHRESULT();
@@ -48,6 +49,7 @@ namespace Net {
 	HRESULT SockAddr2Addr(const sockaddr_in &sockAddr, NetAddress &addr)
 	{
 		Assert(sockAddr.sin_family == AF_INET);
+		addr.SocketFamily = SockFamily::IPV4;
 		addr.strAddr[0] = '\0';
 		auto result = inet_ntop(sockAddr.sin_family, (void*)&sockAddr.sin_addr, addr.strAddr, sizeof addr.strAddr);
 		if (result == nullptr) return GetLastWSAHRESULT();
@@ -150,7 +152,7 @@ namespace Net {
 	HRESULT GetAnyBindAddr(const sockaddr_storage &sockAddr, sockaddr_storage&bindAddr)
 	{
 		bindAddr = sockAddr;
-		if (bindAddr.ss_family == (int)SockFamily::IPV6)
+		if (bindAddr.ss_family == ToSockValue(SockFamily::IPV6))
 		{
 			auto bindSockaddr = (sockaddr_in6*)&bindAddr;
 			bindSockaddr->sin6_addr = in6addr_any;
@@ -198,7 +200,7 @@ namespace Net {
 		if (FAILED(hr))
 			return hr;
 
-		netAddr.SocketFamily = (SockFamily)sockAddr.ss_family;
+		netAddr.SocketFamily = ToSockFamily(sockAddr.ss_family);
 		hr = StrUtil::StringCpy(netAddr.strAddr, countof(netAddr.strAddr), strAddress);
 		if (FAILED(hr))
 			return hr;
@@ -220,7 +222,7 @@ namespace Net {
 
 		// Convert remote address
 		memset(&hints, 0, sizeof hints);
-		hints.ai_family = (int)family;
+		hints.ai_family = ToSockValue(family);
 		hints.ai_socktype = SOCK_STREAM;
 		hints.ai_flags = AI_PASSIVE;
 		auto error = getaddrinfo("", nullptr, &hints, &res);
@@ -273,112 +275,21 @@ namespace Net {
 		return GetLocalAddress(SockFamily::IPV6, addr);
 	}
 
-	//HRESULT GetLocalAddressIPv4(NetAddress &addr)
-	//{
-	//	char tempBuffer[128];
-	//	//Convert IPV6 to IPV4
-	//	struct addrinfo hints, *res;
-	//	bool bIsFound = false;
-
-	//	// Convert remote address
-	//	memset(&hints, 0, sizeof hints);
-	//	hints.ai_family = AF_INET;  // use IPv4
-	//	hints.ai_socktype = SOCK_STREAM;
-	//	hints.ai_flags = AI_PASSIVE;
-	//	auto error = getaddrinfo("", nullptr, &hints, &res);
-	//	switch (error)
-	//	{
-	//	case 0:				break;
-	//	case EAI_AGAIN:		return E_NET_TRY_AGAIN;
-	//	case EAI_BADFLAGS:	return E_NET_BADFLAGS;
-	//	case EAI_FAIL:		return E_FAIL;
-	//	case EAI_FAMILY:	return E_NET_FAMILY;
-	//	case EAI_MEMORY:	return E_OUTOFMEMORY;
-	//	case EAI_NONAME:	return E_NET_HOST_NOT_FOUND;
-	//	case EAI_SERVICE:	return E_NET_INVALID_SERVICE;
-	//	case EAI_SOCKTYPE:	return E_NET_NOTSOCK;
-	//	default:			return E_UNEXPECTED;
-	//	}
-
-	//	for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
-	//	{
-	//		if (curAddr->ai_family == AF_INET)
-	//		{
-	//			sockaddr_in* psockAddr4 = ((sockaddr_in*)curAddr->ai_addr);
-	//			bIsFound = inet_ntop(AF_INET, &psockAddr4->sin_addr, tempBuffer, sizeof tempBuffer) != nullptr;
-	//			break;
-	//		}
-	//	}
-	//	freeaddrinfo(res);
-
-	//	if (bIsFound)
-	//	{
-	//		StrUtil::StringCpy(addr.strAddr, tempBuffer);
-	//	}
-
-	//	return bIsFound ? S_OK : E_FAIL;
-	//}
-
-	//HRESULT GetLocalAddressIPv6(NetAddress &addr)
-	//{
-	//	char tempBuffer[256];
-	//	//Convert IPV6
-	//	struct addrinfo hints, *res;
-	//	bool bIsFound = false;
-
-	//	// Convert remote address
-	//	memset(&hints, 0, sizeof hints);
-	//	hints.ai_family = AF_INET6;  // use IPv6
-	//	hints.ai_socktype = SOCK_DGRAM;
-	//	hints.ai_flags = AI_PASSIVE;
-	//	auto error = getaddrinfo("", nullptr, &hints, &res);
-	//	switch (error)
-	//	{
-	//	case 0:				break;
-	//	case EAI_AGAIN:		return E_NET_TRY_AGAIN;
-	//	case EAI_BADFLAGS:	return E_NET_BADFLAGS;
-	//	case EAI_FAIL:		return E_FAIL;
-	//	case EAI_FAMILY:	return E_NET_FAMILY;
-	//	case EAI_MEMORY:	return E_OUTOFMEMORY;
-	//	case EAI_NONAME:	return E_NET_HOST_NOT_FOUND;
-	//	case EAI_SERVICE:	return E_NET_INVALID_SERVICE;
-	//	case EAI_SOCKTYPE:	return E_NET_NOTSOCK;
-	//	default:			return E_UNEXPECTED;
-	//	}
-
-	//	for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
-	//	{
-	//		if (curAddr->ai_family == AF_INET6)
-	//		{
-	//			sockaddr_in6* psockAddr6 = ((sockaddr_in6*)curAddr->ai_addr);
-	//			if (inet_ntop(AF_INET6, &psockAddr6->sin6_addr, tempBuffer, sizeof(tempBuffer)) != nullptr)
-	//			{
-	//				bIsFound = true;
-	//				break;
-	//			}
-	//		}
-	//	}
-	//	freeaddrinfo(res);
-
-	//	if (bIsFound)
-	//	{
-	//		StrUtil::StringCpy(addr.strAddr, tempBuffer);
-	//	}
-
-	//	return bIsFound ? S_OK : E_FAIL;
-	//}
-
 	HRESULT CheckLocalAddress(SockFamily family, NetAddress &addr)
 	{
-		char tempBuffer[256];
 		//Convert IPV6
 		struct addrinfo hints, *res;
 		sockaddr_storage testSockAddr;
 		bool bIsFound = false;
 
+		addr.SocketFamily = family;
+		HRESULT hr = Addr2SockAddr(addr, testSockAddr);
+		if (FAILED(hr))
+			return hr;
+
 		// Convert remote address
 		memset(&hints, 0, sizeof hints);
-		hints.ai_family = (int)family;
+		hints.ai_family = ToSockValue(family);
 		hints.ai_socktype = SOCK_DGRAM;
 		hints.ai_flags = AI_PASSIVE;
 		auto error = getaddrinfo("", nullptr, &hints, &res);
@@ -398,9 +309,9 @@ namespace Net {
 
 		for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
 		{
-			switch ((int)family)
+			switch (family)
 			{
-			case AF_INET:
+			case SockFamily::IPV4:
 			{
 				auto *pTestSockAddr = (struct sockaddr_in *)&testSockAddr;
 				struct sockaddr_in *psockAddr = (struct sockaddr_in *)curAddr->ai_addr;
@@ -408,7 +319,7 @@ namespace Net {
 				break;
 			}
 
-			case AF_INET6:
+			case SockFamily::IPV6:
 			{
 				auto *pTestSockAddr = (struct sockaddr_in6 *)&testSockAddr;
 				struct sockaddr_in6 *psockAddr = (struct sockaddr_in6 *)curAddr->ai_addr;
@@ -422,11 +333,6 @@ namespace Net {
 
 		}
 		freeaddrinfo(res);
-
-		if (bIsFound)
-		{
-			StrUtil::StringCpy(addr.strAddr, tempBuffer);
-		}
 
 		return bIsFound ? S_OK : E_FAIL;
 	}
@@ -447,7 +353,7 @@ namespace Net {
 
 		/* Walk through linked list, maintaining head pointer so we
 		can free list later */
-
+		int sockFamily = ToSockValue(family);
 		for (struct ifaddrs *curAddr = ifaddr; curAddr != nullptr && !bIsFound; curAddr = curAddr->ifa_next)
 		{
 			if (curAddr->ifa_addr == nullptr)
@@ -459,7 +365,7 @@ namespace Net {
 			if ((curAddr->ifa_flags & IFF_LOOPBACK))
 				continue;
 
-			if (curAddr->ifa_addr->sa_family != (int)family)
+			if (curAddr->ifa_addr->sa_family != sockFamily)
 				continue;
 
 			switch (curAddr->ifa_addr->sa_family)
@@ -532,7 +438,7 @@ namespace Net {
 
 		/* Walk through linked list, maintaining head pointer so we
 		can free list later */
-
+		int sockFamily = ToSockValue(family);
 		for (struct ifaddrs *curAddr = ifaddr; curAddr != nullptr && !bIsFound; curAddr = curAddr->ifa_next)
 		{
 			if (curAddr->ifa_addr == nullptr)
@@ -544,10 +450,10 @@ namespace Net {
 			if ((curAddr->ifa_flags & IFF_LOOPBACK))
 				continue;
 
-			if (curAddr->ifa_addr->sa_family != (int)family)
+			if (curAddr->ifa_addr->sa_family != sockFamily)
 				continue;
 
-			switch ((int)family)
+			switch (sockFamily)
 			{
 			case AF_INET:
 			{
@@ -577,6 +483,54 @@ namespace Net {
 	}
 
 #endif
+
+	/////////////////////////////////////////////////////////////////////////////////
+	//
+	// Socket value
+	//
+
+	int ToSockValue(SockFamily family)
+	{
+		switch (family)
+		{
+		case SockFamily::IPV4: return AF_INET;
+		case SockFamily::IPV6: return AF_INET6;
+		default:
+			return 0;
+		}
+	}
+
+	int ToSockValue(SockType family)
+	{
+		switch (family)
+		{
+		case SockType::Stream: return SOCK_STREAM;
+		case SockType::DataGram: return SOCK_DGRAM;
+		default:
+			return 0;
+		}
+	}
+
+	SockFamily ToSockFamily(int family)
+	{
+		switch (family)
+		{
+		case AF_INET: return SockFamily::IPV4;
+		case AF_INET6: return SockFamily::IPV6;
+		default:
+			return SockFamily::None;
+		}
+	}
+
+	SockType ToSockType(int family)
+	{
+		switch (family)
+		{
+		case SOCK_STREAM: return SockType::Stream;
+		default:
+		case SOCK_DGRAM: return SockType::DataGram;
+		}
+	}
 
 
 	bool operator == (const sockaddr_in6 &op1, const sockaddr_in6 &op2)

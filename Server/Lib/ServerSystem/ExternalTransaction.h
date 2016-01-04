@@ -192,6 +192,8 @@ namespace Svr{
 		// Initialize Transaction
 		virtual HRESULT InitializeTransaction(Entity* pOwner) override;
 
+		HRESULT VerifyReceipt();
+
 		// Start Transaction
 		virtual HRESULT StartTransaction() override;
 	};

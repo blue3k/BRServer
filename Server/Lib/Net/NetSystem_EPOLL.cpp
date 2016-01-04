@@ -750,7 +750,7 @@ namespace Net {
 
 		SOCKET Socket(SockFamily domain, SockType type)
 		{
-			return socket((int)domain, (int)type, 0);
+			return socket(ToSockValue(domain), ToSockValue(type), 0);
 		}
 
 		void CloseSocket(SOCKET sock)

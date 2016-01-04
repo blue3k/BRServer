@@ -56,13 +56,23 @@ public class NetAddress : global::System.IDisposable {
     } 
   }
 
+  public unsafe SockFamily SocketFamily {
+    set {
+      BRMonitoringPINVOKE.NetAddress_SocketFamily_set(swigCPtr, (int)value);
+    } 
+    get {
+      SockFamily ret = (SockFamily)BRMonitoringPINVOKE.NetAddress_SocketFamily_get(swigCPtr);
+      return ret;
+    } 
+  }
+
   public unsafe NetAddress() : this(BRMonitoringPINVOKE.new_NetAddress__SWIG_0(), true) {
   }
 
-  public unsafe NetAddress(string strAdr, ushort port) : this(BRMonitoringPINVOKE.new_NetAddress__SWIG_1(strAdr, port), true) {
+  public unsafe NetAddress(SockFamily sockFamily, string strAdr, ushort port) : this(BRMonitoringPINVOKE.new_NetAddress__SWIG_1((int)sockFamily, strAdr, port), true) {
   }
 
-  public unsafe NetAddress(string strAdr) : this(BRMonitoringPINVOKE.new_NetAddress__SWIG_2(strAdr), true) {
+  public unsafe NetAddress(SockFamily sockFamily, string strAdr) : this(BRMonitoringPINVOKE.new_NetAddress__SWIG_2((int)sockFamily, strAdr), true) {
   }
 
   public unsafe NetAddress(int arg0) : this(BRMonitoringPINVOKE.new_NetAddress__SWIG_3(arg0), true) {

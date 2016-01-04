@@ -26,7 +26,7 @@ namespace BRMonitoringWeb
             {
                 if (ip.IsIPv6LinkLocal) continue;
 
-                if (ip.AddressFamily == AddressFamily.InterNetworkV6)
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
                     localIP = ip.ToString();
                     break;

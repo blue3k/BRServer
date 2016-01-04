@@ -9,6 +9,6 @@ xsi:schemaLocation="http://www.TheBraves.com config.xsd">
   <RankingDB ClusterName="RankingDB" ConnectionString="server=192.168.1.81;Port=21022; database=dbconspiracyranking; uid=blue3k; pwd=pious75;"></RankingDB>
   <TableDB ClusterName="TableDB" ConnectionString="server=192.168.1.81;Port=21022; database=dbconspiracytable; uid=blue3k; pwd=pious75;"></TableDB>
 
-  <Monitoring MonitoringListenPort="1999"></Monitoring>
+  <Monitoring MonitoringListenPort="50000"></Monitoring>
 
 </MonitoringConfig>

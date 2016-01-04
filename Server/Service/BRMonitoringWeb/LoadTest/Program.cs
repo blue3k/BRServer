@@ -49,18 +49,18 @@ namespace LoadTest
         {
             DLLLoadTest();
 
-            SWIGRegisterExceptionCallbacks_BRMonitoring(
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null);
+            //SWIGRegisterExceptionCallbacks_BRMonitoring(
+            //                    null,
+            //                    null,
+            //                    null,
+            //                    null,
+            //                    null,
+            //                    null,
+            //                    null,
+            //                    null,
+            //                    null,
+            //                    null,
+            //                    null);
 
             BR.BRMonitoring.InitializeNativeSystem("BRManigement");
             BR.PerformanceCounterServer.Initialize("", (uint)1999);

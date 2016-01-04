@@ -97,7 +97,7 @@ namespace BR
 	}
 
 #if WINDOWS
-	HRESULT CallStackTrace::PrintStackTrace( int channel, NativeHandle hProcess )
+	HRESULT CallStackTrace::PrintStackTrace( int channel, HANDLE hProcess )
 	{
 		BYTE Buffer[1024];
 		memset( Buffer, 0, sizeof(Buffer) );

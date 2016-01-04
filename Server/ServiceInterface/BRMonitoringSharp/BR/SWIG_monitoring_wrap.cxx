@@ -528,6 +528,28 @@ SWIGEXPORT unsigned short SWIGSTDCALL CSharp_NetAddress_usPort_get(void * jarg1)
 }
 
 
+SWIGEXPORT void SWIGSTDCALL CSharp_NetAddress_SocketFamily_set(void * jarg1, int jarg2) {
+  BR::NetAddress *arg1 = (BR::NetAddress *) 0 ;
+  BR::SockFamily arg2 ;
+  
+  arg1 = (BR::NetAddress *)jarg1; 
+  arg2 = (BR::SockFamily)jarg2; 
+  if (arg1) (arg1)->SocketFamily = arg2;
+}
+
+
+SWIGEXPORT int SWIGSTDCALL CSharp_NetAddress_SocketFamily_get(void * jarg1) {
+  int jresult ;
+  BR::NetAddress *arg1 = (BR::NetAddress *) 0 ;
+  BR::SockFamily result;
+  
+  arg1 = (BR::NetAddress *)jarg1; 
+  result = (BR::SockFamily) ((arg1)->SocketFamily);
+  jresult = (int)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetAddress__SWIG_0() {
   void * jresult ;
   BR::NetAddress *result = 0 ;
@@ -538,27 +560,31 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetAddress__SWIG_0() {
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetAddress__SWIG_1(char * jarg1, unsigned short jarg2) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetAddress__SWIG_1(int jarg1, char * jarg2, unsigned short jarg3) {
   void * jresult ;
-  char *arg1 = (char *) 0 ;
-  UINT16 arg2 ;
+  BR::SockFamily arg1 ;
+  char *arg2 = (char *) 0 ;
+  UINT16 arg3 ;
   BR::NetAddress *result = 0 ;
   
-  arg1 = (char *)jarg1; 
-  arg2 = (UINT16)jarg2; 
-  result = (BR::NetAddress *)new BR::NetAddress((char const *)arg1,arg2);
+  arg1 = (BR::SockFamily)jarg1; 
+  arg2 = (char *)jarg2; 
+  arg3 = (UINT16)jarg3; 
+  result = (BR::NetAddress *)new BR::NetAddress(arg1,(char const *)arg2,arg3);
   jresult = (void *)result; 
   return jresult;
 }
 
 
-SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetAddress__SWIG_2(char * jarg1) {
+SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetAddress__SWIG_2(int jarg1, char * jarg2) {
   void * jresult ;
-  char *arg1 = (char *) 0 ;
+  BR::SockFamily arg1 ;
+  char *arg2 = (char *) 0 ;
   BR::NetAddress *result = 0 ;
   
-  arg1 = (char *)jarg1; 
-  result = (BR::NetAddress *)new BR::NetAddress((char const *)arg1);
+  arg1 = (BR::SockFamily)jarg1; 
+  arg2 = (char *)jarg2; 
+  result = (BR::NetAddress *)new BR::NetAddress(arg1,(char const *)arg2);
   jresult = (void *)result; 
   return jresult;
 }
@@ -5947,13 +5973,15 @@ SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_InitConnection(void * jarg1, void
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_Disconnect(void * jarg1) {
+SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_Disconnect(void * jarg1, char * jarg2) {
   long jresult ;
   BR::Net::IConnection *arg1 = (BR::Net::IConnection *) 0 ;
+  char *arg2 = (char *) 0 ;
   HRESULT result;
   
   arg1 = (BR::Net::IConnection *)jarg1; 
-  result = (HRESULT)(arg1)->Disconnect();
+  arg2 = (char *)jarg2; 
+  result = (HRESULT)(arg1)->Disconnect((char const *)arg2);
   jresult = result; 
   return jresult;
 }
@@ -6397,23 +6425,25 @@ SWIGEXPORT long SWIGSTDCALL CSharp_INet_EnqueueNetEvent(void * jarg1, void * jar
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_INet_Connect(void * jarg1, void * jarg2, unsigned int jarg3, int jarg4, char * jarg5, unsigned short jarg6) {
+SWIGEXPORT long SWIGSTDCALL CSharp_INet_Connect(void * jarg1, void * jarg2, unsigned int jarg3, int jarg4, void * jarg5) {
   long jresult ;
   BR::Net::INet *arg1 = (BR::Net::INet *) 0 ;
   BR::Net::IConnection *arg2 = (BR::Net::IConnection *) 0 ;
   UINT arg3 ;
   BR::NetClass arg4 ;
-  char *arg5 = (char *) 0 ;
-  USHORT arg6 ;
+  BR::NetAddress *arg5 = 0 ;
   HRESULT result;
   
   arg1 = (BR::Net::INet *)jarg1; 
   arg2 = (BR::Net::IConnection *)jarg2; 
   arg3 = (UINT)jarg3; 
   arg4 = (BR::NetClass)jarg4; 
-  arg5 = (char *)jarg5; 
-  arg6 = (USHORT)jarg6; 
-  result = (HRESULT)(arg1)->Connect(arg2,arg3,arg4,(char const *)arg5,arg6);
+  arg5 = (BR::NetAddress *)jarg5;
+  if (!arg5) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::NetAddress const & type is null", 0);
+    return 0;
+  } 
+  result = (HRESULT)(arg1)->Connect(arg2,arg3,arg4,(BR::NetAddress const &)*arg5);
   jresult = result; 
   return jresult;
 }
@@ -6467,23 +6497,25 @@ SWIGEXPORT long SWIGSTDCALL CSharp_IClient_GetConnection(void * jarg1, uintptr_t
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_IClient_ConnectCli(void * jarg1, char * jarg2, unsigned short jarg3, void * jarg4) {
+SWIGEXPORT long SWIGSTDCALL CSharp_IClient_ConnectCli(void * jarg1, void * jarg2, void * jarg3) {
   long jresult ;
   BR::Net::IClient *arg1 = (BR::Net::IClient *) 0 ;
-  char *arg2 = (char *) 0 ;
-  USHORT arg3 ;
-  BR::Net::IConnection **arg4 = 0 ;
+  BR::NetAddress *arg2 = 0 ;
+  BR::Net::IConnection **arg3 = 0 ;
   HRESULT result;
   
   arg1 = (BR::Net::IClient *)jarg1; 
-  arg2 = (char *)jarg2; 
-  arg3 = (USHORT)jarg3; 
-  arg4 = (BR::Net::IConnection **)jarg4;
-  if (!arg4) {
+  arg2 = (BR::NetAddress *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::NetAddress const & type is null", 0);
+    return 0;
+  } 
+  arg3 = (BR::Net::IConnection **)jarg3;
+  if (!arg3) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Net::IConnection *& type is null", 0);
     return 0;
   } 
-  result = (HRESULT)(arg1)->ConnectCli((char const *)arg2,arg3,*arg4);
+  result = (HRESULT)(arg1)->ConnectCli((BR::NetAddress const &)*arg2,*arg3);
   jresult = result; 
   return jresult;
 }
@@ -9484,18 +9516,18 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_PerformanceCounterServer_MessageHandler
 SWIGEXPORT long SWIGSTDCALL CSharp_PerformanceCounterServer_MessageHandler_OnRecv(void * jarg1, void * jarg2, void * jarg3) {
   long jresult ;
   BR::Svr::PerformanceCounterServer::MessageHandler *arg1 = (BR::Svr::PerformanceCounterServer::MessageHandler *) 0 ;
-  sockaddr_in6 *arg2 = 0 ;
+  sockaddr_storage *arg2 = 0 ;
   BR::Message::MessageData *arg3 = (BR::Message::MessageData *) 0 ;
   HRESULT result;
   
   arg1 = (BR::Svr::PerformanceCounterServer::MessageHandler *)jarg1; 
-  arg2 = (sockaddr_in6 *)jarg2;
+  arg2 = (sockaddr_storage *)jarg2;
   if (!arg2) {
-    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "sockaddr_in6 const & type is null", 0);
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "sockaddr_storage const & type is null", 0);
     return 0;
   } 
   arg3 = (BR::Message::MessageData *)jarg3; 
-  result = (HRESULT)(arg1)->OnRecv((sockaddr_in6 const &)*arg2,arg3);
+  result = (HRESULT)(arg1)->OnRecv((sockaddr_storage const &)*arg2,arg3);
   jresult = result; 
   return jresult;
 }
