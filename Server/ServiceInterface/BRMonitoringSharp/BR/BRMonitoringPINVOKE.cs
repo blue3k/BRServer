@@ -2388,7 +2388,7 @@ class BRMonitoringPINVOKE {
   public static extern int NetSvrPolicyRanking_GetRankingRes(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_InitializeNativeSystem")]
-  public static extern int InitializeNativeSystem(string jarg1);
+  public static extern int InitializeNativeSystem(string jarg1, string jarg2, string jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_TerminateNativeSystem")]
   public static extern int TerminateNativeSystem();

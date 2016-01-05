@@ -52,20 +52,18 @@ namespace Trace {
 	// Trace Log Module
 	//
 
-	const char* TraceModule::CONFIG_FILENAME = "traceConfig.cfg";
+	const char* TraceModule::CONFIG_FILENAME = "../../Config/traceConfig.cfg";
 
 	TraceModule* TraceModule::stm_ModuleList[MAX_TRACEMODULE] = {0,};
 	std::unordered_map<std::string, UINT32> TraceModule::stm_Masks;
 
 	// Module state registry key
-	//HKEY TraceModule::stm_hRegKey = nullptr;
 	TimeStampMS TraceModule::m_MaskUpdated;
 
 	TraceModule::TraceModule( const char *szName, const char *szNameTag )
 		:m_uiTraceMask(TRC_DEFAULT),
 		m_szName(nullptr),m_szNameTag(nullptr)
 	{
-		//char strErrString[MAX_PATH] = "";
 		StrUtil::StringDup( m_szName, szName );
 		StrUtil::StringDup( m_szNameTag, szNameTag );
 
@@ -112,7 +110,7 @@ namespace Trace {
 		m_MaskUpdated = Util::Time.GetTimeMs();
 
 		std::string strCfgPath = Util::GetModulePathA();
-		strCfgPath.append("../../Config/traceConfig.cfg");
+		strCfgPath.append(CONFIG_FILENAME);
 
 		FILE *file = fopen(strCfgPath.c_str(), "r");
 		if (file == nullptr)
@@ -148,7 +146,6 @@ namespace Trace {
 
 			auto maskValue = strtol(numberStart, nullptr, 16);
 			StrUtil::StringLwr(nameStart, sizeof(stringBuffer));
-			//strlwr(nameStart);
 			stm_Masks[nameStart] = maskValue;
 		}
 
@@ -338,14 +335,11 @@ namespace Trace {
 	{
 		DurationMS WaitDelay = DurationMS(5);
 		
-		//printf("TraceOut Start pid:%d, tid:%d\n", getpid(), GetNativeThreadID());
-
 		while( 1 )
 		{
 			auto loopInterval = UpdateInterval(WaitDelay);
 			if (CheckKillEvent(loopInterval))
 			{
-				//printf("TraceOut Kill Signal\n");
 				// Kill Event signaled
 				//ThisThread::SleepFor(DurationMS(9900*1000));
 				break;

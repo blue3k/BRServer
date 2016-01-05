@@ -156,6 +156,22 @@ namespace Util {
 		return g_szModulePath;
 	}
 
+	void SetModulePathA(const char* customModulePath, const char* moduleName)
+	{
+		StrUtil::StringCpy(g_szModulePath, customModulePath);
+		StrUtil::StringCpy(g_szModuleName, moduleName);
+
+		StrUtil::UTF8ToWCS(g_szModulePath, g_wszModulePath);
+		StrUtil::UTF8ToWCS(g_szModuleName, g_wszModuleName);
+
+		// If the service name isn't specified, use module name for it
+		if (g_wszServiceName[0] == L'\0' || g_szServiceName[0] == '\0')
+		{
+			StrUtil::StringCpy(g_wszServiceName, g_wszModuleName);
+			StrUtil::StringCpy(g_szServiceName, g_szModuleName);
+		}
+	}
+
 
 
 	////////////////////////////////////////////////////////////////////////////////

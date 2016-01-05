@@ -12,13 +12,13 @@
 #include "Common/BrXML.h"
 #include "Common/Utility.h"
 
-//// This is an example of an exported variable
+// This is an example of an exported variable
 
 static BR::LibComponentCarrier g_libComponents;
 
 using namespace BR;
 
-BRMONITORING_API int InitializeNativeSystem(const char* serviceName)
+BRMONITORING_API int InitializeNativeSystem(const char* serviceName, const char* modulePath, const char* logCfgPath)
 {
 	HRESULT hr = S_OK;
 
@@ -26,7 +26,7 @@ BRMONITORING_API int InitializeNativeSystem(const char* serviceName)
 
 	BR::Util::SetServiceName(serviceName);
 
-	defChk(g_libComponents.AddComponent<BR::LibComponentTrace>());
+	defChk(g_libComponents.AddComponent<BR::LibComponentTrace>(modulePath, serviceName, logCfgPath));
 	defChk(g_libComponents.AddComponent<BR::Util::LibComponentTime>());
 	defChk(g_libComponents.AddComponent<BR::MemoryPoolManager>());
 

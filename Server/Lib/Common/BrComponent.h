@@ -237,6 +237,28 @@ namespace BR {
 			return hr;
 		}
 
+		template< class ComponentType, class ParamType0, class ParamType1, class ParamType2 >
+		HRESULT AddComponent(ParamType0 p0, ParamType1 p1, ParamType2 p2, bool bAllowDuplicatedComponent = false)
+		{
+			if (!bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr)
+			{
+				// already inserted
+				return S_FALSE;
+			}
+
+			ComponentType* newComponent = new ComponentType(p0, p1, p2);
+			if (newComponent == nullptr)
+				return E_OUTOFMEMORY;
+
+			HRESULT hr = AddComponent(newComponent);
+			if (FAILED(hr))
+			{
+				delete newComponent;
+			}
+
+			return hr;
+		}
+
 
 		virtual void OnAddComponent( Component* newComponent)
 		{}

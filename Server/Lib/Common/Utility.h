@@ -75,6 +75,8 @@ namespace Util {
 	const WCHAR* GetModulePath();
 	const char* GetModulePathA();
 
+	void SetModulePathA(const char* customModulePath, const char* moduleName);
+
 	// Array duplication
 	template<class DupType>
 	HRESULT ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc );

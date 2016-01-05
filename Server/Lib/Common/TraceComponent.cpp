@@ -16,6 +16,7 @@
 #include "Common/Trace.h"
 #include "Common/Trace_Internal.h"
 #include "Common/TraceComponent.h"
+#include "Common/Utility.h"
 
 
 
@@ -25,6 +26,16 @@ namespace BR
 	LibComponentTrace::LibComponentTrace()
 		: Component((UINT)ComponentID)
 	{
+	}
+
+	LibComponentTrace::LibComponentTrace(const char* modulePath, const char* moduleName, const char* traceCfgPath)
+		: Component((UINT)ComponentID)
+	{
+		if (modulePath != nullptr)
+			Util::SetModulePathA(modulePath, moduleName);
+
+		if (traceCfgPath != nullptr)
+			Trace::TraceModule::CONFIG_FILENAME = traceCfgPath;
 	}
 
 	LibComponentTrace::~LibComponentTrace()

@@ -49,6 +49,8 @@ namespace LoadTest
         {
             DLLLoadTest();
 
+            string serverPath = Directory.GetCurrentDirectory();
+
             //SWIGRegisterExceptionCallbacks_BRMonitoring(
             //                    null,
             //                    null,
@@ -62,8 +64,8 @@ namespace LoadTest
             //                    null,
             //                    null);
 
-            BR.BRMonitoring.InitializeNativeSystem("BRManigement");
-            BR.PerformanceCounterServer.Initialize("", (uint)1999);
+            BR.BRMonitoring.InitializeNativeSystem("BRManigement", serverPath, "../traceConfig.cfg");
+            BR.PerformanceCounterServer.Initialize("", (uint)50000);
         }
     }
 }

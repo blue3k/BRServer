@@ -34,6 +34,7 @@ namespace BR {
 	public:
 
 		LibComponentTrace();
+		LibComponentTrace(const char* modulePath, const char* moduleName, const char* traceCfgPath);
 		~LibComponentTrace();
 
 		// Initialize server component

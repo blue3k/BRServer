@@ -10177,13 +10177,17 @@ SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_GetRankingRes(void * jarg
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_InitializeNativeSystem(char * jarg1) {
+SWIGEXPORT int SWIGSTDCALL CSharp_InitializeNativeSystem(char * jarg1, char * jarg2, char * jarg3) {
   int jresult ;
   char *arg1 = (char *) 0 ;
+  char *arg2 = (char *) 0 ;
+  char *arg3 = (char *) 0 ;
   int result;
   
   arg1 = (char *)jarg1; 
-  result = (int)InitializeNativeSystem((char const *)arg1);
+  arg2 = (char *)jarg2; 
+  arg3 = (char *)jarg3; 
+  result = (int)InitializeNativeSystem((char const *)arg1,(char const *)arg2,(char const *)arg3);
   jresult = result; 
   return jresult;
 }

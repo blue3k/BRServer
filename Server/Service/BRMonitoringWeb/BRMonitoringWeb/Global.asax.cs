@@ -25,12 +25,10 @@ namespace BRMonitoringWeb
             foreach (IPAddress ip in host.AddressList)
             {
                 if (ip.IsIPv6LinkLocal) continue;
+                if (ip.IsIPv4MappedToIPv6) continue;
+                if (ip.AddressFamily == AddressFamily.InterNetworkV6) continue;
 
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localIP = ip.ToString();
-                    break;
-                }
+                localIP = ip.ToString();
             }
             return localIP;
         }
@@ -87,6 +85,7 @@ namespace BRMonitoringWeb
 
             try
             {
+                string serverPath = Server.MapPath("~/");
                 string serverConfigPath = Server.MapPath("~/config.xml");
 
 
@@ -105,10 +104,10 @@ namespace BRMonitoringWeb
                 AddDBCluster(MonitoringConfig.Instance.RankingDB);
                 AddDBCluster(MonitoringConfig.Instance.TableDB);
 
-                DLLLoadTest();
+                //DLLLoadTest();
 
 
-                BR.BRMonitoring.InitializeNativeSystem("BRManigement");
+                BR.BRMonitoring.InitializeNativeSystem("BRManigement", serverPath, "traceConfig.cfg");
                 BR.PerformanceCounterServer.Initialize(serverAddress, (uint)MonitoringConfig.Instance.Monitoring.MonitoringListenPort);
             }
             catch (Exception exp)

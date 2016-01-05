@@ -27,8 +27,8 @@ public class BRMonitoring {
     return ret;
   }
 
-  public unsafe static int InitializeNativeSystem(string serviceName) {
-    int ret = BRMonitoringPINVOKE.InitializeNativeSystem(serviceName);
+  public unsafe static int InitializeNativeSystem(string serviceName, string modulePath, string logCfgPath) {
+    int ret = BRMonitoringPINVOKE.InitializeNativeSystem(serviceName, modulePath, logCfgPath);
     return ret;
   }
 
