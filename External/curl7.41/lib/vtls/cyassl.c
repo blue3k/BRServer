@@ -30,6 +30,20 @@
 
 #ifdef USE_CYASSL
 
+#define WOLFSSL_OPTIONS_IGNORE_SYS
+/* CyaSSL's version.h, which should contain only the version, should come
+before all other CyaSSL includes and be immediately followed by build config
+aka options.h. http://curl.haxx.se/mail/lib-2015-04/0069.html */
+#include <cyassl/version.h>
+#if defined(HAVE_CYASSL_OPTIONS_H) && (LIBCYASSL_VERSION_HEX > 0x03004008)
+#if defined(CYASSL_API) || defined(WOLFSSL_API)
+/* Safety measure. If either is defined some API include was already included
+and that's a problem since options.h hasn't been included yet. */
+#error "CyaSSL API was included before the CyaSSL build options."
+#endif
+#include <cyassl/options.h>
+#endif
+
 #ifdef HAVE_LIMITS_H
 #include <limits.h>
 #endif
@@ -43,16 +57,17 @@
 #include "connect.h" /* for the connect timeout */
 #include "select.h"
 #include "rawstr.h"
+#include "x509asn1.h"
 #include "curl_printf.h"
 
 #include <cyassl/ssl.h>
-#include <cyassl/version.h>
 #ifdef HAVE_CYASSL_ERROR_SSL_H
 #include <cyassl/error-ssl.h>
 #else
 #include <cyassl/error.h>
 #endif
 #include <cyassl/ctaocrypt/random.h>
+#include <cyassl/ctaocrypt/sha256.h>
 
 /* The last #include files should be: */
 #include "curl_memory.h"
@@ -91,6 +106,12 @@ cyassl_connect_step1(struct connectdata *conn,
   SSL_METHOD* req_method = NULL;
   void* ssl_sessionid = NULL;
   curl_socket_t sockfd = conn->sock[sockindex];
+#ifdef HAVE_SNI
+  bool sni = FALSE;
+#define use_sni(x)  sni = (x)
+#else
+#define use_sni(x)  Curl_nop_stmt
+#endif
 
   if(conssl->state == ssl_connection_complete)
     return CURLE_OK;
@@ -107,18 +128,23 @@ cyassl_connect_step1(struct connectdata *conn,
           "TLS 1.0 is used exclusively\n");
     req_method = TLSv1_client_method();
 #endif
+    use_sni(TRUE);
     break;
   case CURL_SSLVERSION_TLSv1_0:
     req_method = TLSv1_client_method();
+    use_sni(TRUE);
     break;
   case CURL_SSLVERSION_TLSv1_1:
     req_method = TLSv1_1_client_method();
+    use_sni(TRUE);
     break;
   case CURL_SSLVERSION_TLSv1_2:
     req_method = TLSv1_2_client_method();
+    use_sni(TRUE);
     break;
   case CURL_SSLVERSION_SSLv3:
     req_method = SSLv3_client_method();
+    use_sni(FALSE);
     break;
   case CURL_SSLVERSION_SSLv2:
     failf(data, "CyaSSL does not support SSLv2");
@@ -226,6 +252,26 @@ cyassl_connect_step1(struct connectdata *conn,
   SSL_CTX_set_verify(conssl->ctx,
                      data->set.ssl.verifypeer?SSL_VERIFY_PEER:SSL_VERIFY_NONE,
                      NULL);
+
+#ifdef HAVE_SNI
+  if(sni) {
+    struct in_addr addr4;
+#ifdef ENABLE_IPV6
+    struct in6_addr addr6;
+#endif
+    size_t hostname_len = strlen(conn->host.name);
+    if((hostname_len < USHRT_MAX) &&
+       (0 == Curl_inet_pton(AF_INET, conn->host.name, &addr4)) &&
+#ifdef ENABLE_IPV6
+       (0 == Curl_inet_pton(AF_INET6, conn->host.name, &addr6)) &&
+#endif
+       (CyaSSL_CTX_UseSNI(conssl->ctx, CYASSL_SNI_HOST_NAME, conn->host.name,
+                          (unsigned short)hostname_len) != 1)) {
+      infof(data, "WARNING: failed to configure server name indication (SNI) "
+            "TLS extension\n");
+    }
+  }
+#endif
 
   /* give application a chance to interfere with SSL set up. */
   if(data->set.ssl.fsslctx) {
@@ -356,6 +402,45 @@ cyassl_connect_step2(struct connectdata *conn,
       failf(data, "SSL_connect failed with error %d: %s", detail,
           ERR_error_string(detail, error_buffer));
       return CURLE_SSL_CONNECT_ERROR;
+    }
+  }
+
+  if(data->set.str[STRING_SSL_PINNEDPUBLICKEY]) {
+    X509 *x509;
+    const char *x509_der;
+    int x509_der_len;
+    curl_X509certificate x509_parsed;
+    curl_asn1Element *pubkey;
+    CURLcode result;
+
+    x509 = SSL_get_peer_certificate(conssl->handle);
+    if(!x509) {
+      failf(data, "SSL: failed retrieving server certificate");
+      return CURLE_SSL_PINNEDPUBKEYNOTMATCH;
+    }
+
+    x509_der = (const char *)CyaSSL_X509_get_der(x509, &x509_der_len);
+    if(!x509_der) {
+      failf(data, "SSL: failed retrieving ASN.1 server certificate");
+      return CURLE_SSL_PINNEDPUBKEYNOTMATCH;
+    }
+
+    memset(&x509_parsed, 0, sizeof x509_parsed);
+    Curl_parseX509(&x509_parsed, x509_der, x509_der + x509_der_len);
+
+    pubkey = &x509_parsed.subjectPublicKeyInfo;
+    if(!pubkey->header || pubkey->end <= pubkey->header) {
+      failf(data, "SSL: failed retrieving public key from server certificate");
+      return CURLE_SSL_PINNEDPUBKEYNOTMATCH;
+    }
+
+    result = Curl_pin_peer_pubkey(data,
+                                  data->set.str[STRING_SSL_PINNEDPUBLICKEY],
+                                  (const unsigned char *)pubkey->header,
+                                  (size_t)(pubkey->end - pubkey->header));
+    if(result) {
+      failf(data, "SSL: public key does not match pinned public key!");
+      return result;
     }
   }
 
@@ -685,6 +770,18 @@ int Curl_cyassl_random(struct SessionHandle *data,
   if(RNG_GenerateBlock(&rng, entropy, (unsigned)length))
     return 1;
   return 0;
+}
+
+void Curl_cyassl_sha256sum(const unsigned char *tmp, /* input */
+                      size_t tmplen,
+                      unsigned char *sha256sum /* output */,
+                      size_t unused)
+{
+  Sha256 SHA256pw;
+  (void)unused;
+  InitSha256(&SHA256pw);
+  Sha256Update(&SHA256pw, tmp, tmplen);
+  Sha256Final(&SHA256pw, sha256sum);
 }
 
 #endif

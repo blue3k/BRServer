@@ -5,7 +5,7 @@
 #                            | (__| |_| |  _ <| |___
 #                             \___|\___/|_| \_\_____|
 #
-# Copyright (C) 1998 - 2014, Daniel Stenberg, <daniel@haxx.se>, et al.
+# Copyright (C) 1998 - 2015, Daniel Stenberg, <daniel@haxx.se>, et al.
 #
 # This software is licensed as described in the file COPYING, which
 # you should have received as part of this distribution. The terms
@@ -33,22 +33,22 @@ SUBDIRS = examples libcurl
 
 CLEANFILES = $(GENHTMLPAGES) $(PDFPAGES)
 
-EXTRA_DIST = MANUAL BUGS CONTRIBUTE FAQ FEATURES INTERNALS SSLCERTS	 \
- README.win32 RESOURCES TODO TheArtOfHttpScripting THANKS VERSIONS	 \
- KNOWN_BUGS BINDINGS $(man_MANS) $(HTMLPAGES) HISTORY INSTALL		 \
- $(PDFPAGES) LICENSE-MIXING README.netware DISTRO-DILEMMA INSTALL.devcpp \
- MAIL-ETIQUETTE HTTP-COOKIES LIBCURL-STRUCTS SECURITY RELEASE-PROCEDURE  \
- SSL-PROBLEMS
+EXTRA_DIST = MANUAL BUGS CONTRIBUTE FAQ FEATURES INTERNALS SSLCERTS	\
+ README.win32 RESOURCES TODO TheArtOfHttpScripting THANKS VERSIONS	\
+ KNOWN_BUGS BINDINGS $(man_MANS) $(HTMLPAGES) HISTORY INSTALL		\
+ $(PDFPAGES) LICENSE-MIXING README.netware INSTALL.devcpp		\
+ MAIL-ETIQUETTE HTTP-COOKIES SECURITY RELEASE-PROCEDURE SSL-PROBLEMS	\
+ HTTP2.md ROADMAP.md CODE_OF_CONDUCT.md
 
 MAN2HTML= roffit < $< >$@
 
 SUFFIXES = .1 .html .pdf
 
 html: $(HTMLPAGES)
-	cd libcurl; make html
+	cd libcurl && make html
 
 pdf: $(PDFPAGES)
-	cd libcurl; make pdf
+	cd libcurl && make pdf
 
 .1.html:
 	$(MAN2HTML)

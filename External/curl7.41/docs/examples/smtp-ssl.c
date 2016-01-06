@@ -5,7 +5,7 @@
  *                            | (__| |_| |  _ <| |___
  *                             \___|\___/|_| \_\_____|
  *
- * Copyright (C) 1998 - 2014, Daniel Stenberg, <daniel@haxx.se>, et al.
+ * Copyright (C) 1998 - 2015, Daniel Stenberg, <daniel@haxx.se>, et al.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution. The terms
@@ -19,6 +19,12 @@
  * KIND, either express or implied.
  *
  ***************************************************************************/
+
+/* <DESC>
+ * SMTP example using SSL
+ * </DESC>
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <curl/curl.h>
@@ -111,7 +117,7 @@ int main(void)
      * they have mentioned in their server certificate's commonName (or
      * subjectAltName) fields, libcurl will refuse to connect. You can skip
      * this check, but this will make the connection less secure. */
-#ifdef SKIP_HOSTNAME_VERFICATION
+#ifdef SKIP_HOSTNAME_VERIFICATION
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 #endif
 

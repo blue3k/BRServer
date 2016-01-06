@@ -51,6 +51,7 @@ struct OperationConfig {
   bool proto_present;
   long proto_redir;
   bool proto_redir_present;
+  char *proto_default;
   curl_off_t resume_from;
   char *postfields;
   curl_off_t postfieldsize;
@@ -166,8 +167,12 @@ struct OperationConfig {
   int socksver;             /* set to CURLPROXY_SOCKS* define */
   char *socks5_gssapi_service;  /* set service name for gssapi principal
                                  * default rcmd */
+  char *proxy_service_name; /* set service name for proxy negotiation
+                             * default HTTP */
   int socks5_gssapi_nec ;   /* The NEC reference server does not protect
                              * the encryption type exchange */
+  char *service_name;       /* set negotiation service name
+                             * default HTTP */
 
   bool tcp_nodelay;
   long req_retry;           /* number of retries */
@@ -195,6 +200,7 @@ struct OperationConfig {
   bool xattr;               /* store metadata in extended attributes */
   long gssapi_delegation;
   bool ssl_allow_beast;     /* allow this SSL vulnerability */
+  bool ssl_no_revoke;       /* disable SSL certificate revocation checks */
 
   bool use_metalink;        /* process given URLs as metalink XML file */
   metalinkfile *metalinkfile_list; /* point to the first node */
@@ -202,7 +208,7 @@ struct OperationConfig {
 #ifdef CURLDEBUG
   bool test_event_based;
 #endif
-  char *xoauth2_bearer;           /* XOAUTH2 bearer token */
+  char *oauth_bearer;             /* OAuth 2.0 bearer token */
   bool nonpn;                     /* enable/disable TLS NPN extension */
   bool noalpn;                    /* enable/disable TLS ALPN extension */
   char *unix_socket_path;         /* path to Unix domain socket */

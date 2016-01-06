@@ -5,7 +5,7 @@
  *                            | (__| |_| |  _ <| |___
  *                             \___|\___/|_| \_\_____|
  *
- * Copyright (C) 1998 - 2014, Daniel Stenberg, <daniel@haxx.se>, et al.
+ * Copyright (C) 1998 - 2015, Daniel Stenberg, <daniel@haxx.se>, et al.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution. The terms
@@ -19,7 +19,14 @@
  * KIND, either express or implied.
  *
  ***************************************************************************/
+
+/* <DESC>
+ * POP3 example using the multi interface
+ * </DESC>
+ */
+
 #include <stdio.h>
+#include <string.h>
 #include <curl/curl.h>
 
 /* This is a simple example showing how to retrieve mail using libcurl's POP3
@@ -69,7 +76,7 @@ int main(void)
   curl_easy_setopt(curl, CURLOPT_USERNAME, "user");
   curl_easy_setopt(curl, CURLOPT_PASSWORD, "secret");
 
-  /* This will retreive message 1 from the user's mailbox */
+  /* This will retrieve message 1 from the user's mailbox */
   curl_easy_setopt(curl, CURLOPT_URL, "pop3://pop.example.com/1");
 
   /* Tell the multi stack about our easy handle */

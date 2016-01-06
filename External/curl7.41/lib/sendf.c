@@ -520,11 +520,13 @@ CURLcode Curl_read_plain(curl_socket_t sockfd,
 
   if(-1 == nread) {
     int err = SOCKERRNO;
+    int return_error;
 #ifdef USE_WINSOCK
-    if(WSAEWOULDBLOCK == err)
+    return_error = WSAEWOULDBLOCK == err;
 #else
-    if((EWOULDBLOCK == err) || (EAGAIN == err) || (EINTR == err))
+    return_error = EWOULDBLOCK == err || EAGAIN == err || EINTR == err;
 #endif
+    if(return_error)
       return CURLE_AGAIN;
     else
       return CURLE_RECV_ERROR;
@@ -551,7 +553,7 @@ CURLcode Curl_read(struct connectdata *conn, /* connection data */
   ssize_t nread = 0;
   size_t bytesfromsocket = 0;
   char *buffertofill = NULL;
-  bool pipelining = Curl_multi_pipeline_enabled(conn->data->multi);
+  bool pipelining = Curl_pipeline_wanted(conn->data->multi, CURLPIPE_HTTP1);
 
   /* Set 'num' to 0 or 1, depending on which socket that has been sent here.
      If it is the second socket, we set num to 1. Otherwise to 0. This lets

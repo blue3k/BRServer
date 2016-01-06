@@ -24,6 +24,7 @@
  * RFC4422 Simple Authentication and Security Layer (SASL)
  * RFC4616 PLAIN authentication
  * RFC6749 OAuth 2.0 Authorization Framework
+ * RFC7628 A Set of SASL Mechanisms for OAuth
  * Draft   LOGIN SASL Mechanism <draft-murchison-sasl-login-00.txt>
  *
  ***************************************************************************/
@@ -56,15 +57,16 @@ const struct {
   size_t        len;   /* Name length */
   unsigned int  bit;   /* Flag bit */
 } mechtable[] = {
-  { "LOGIN",      5,  SASL_MECH_LOGIN },
-  { "PLAIN",      5,  SASL_MECH_PLAIN },
-  { "CRAM-MD5",   8,  SASL_MECH_CRAM_MD5 },
-  { "DIGEST-MD5", 10, SASL_MECH_DIGEST_MD5 },
-  { "GSSAPI",     6,  SASL_MECH_GSSAPI },
-  { "EXTERNAL",   8,  SASL_MECH_EXTERNAL },
-  { "NTLM",       4,  SASL_MECH_NTLM },
-  { "XOAUTH2",    7,  SASL_MECH_XOAUTH2 },
-  { ZERO_NULL,    0,  0 }
+  { "LOGIN",        5,  SASL_MECH_LOGIN },
+  { "PLAIN",        5,  SASL_MECH_PLAIN },
+  { "CRAM-MD5",     8,  SASL_MECH_CRAM_MD5 },
+  { "DIGEST-MD5",   10, SASL_MECH_DIGEST_MD5 },
+  { "GSSAPI",       6,  SASL_MECH_GSSAPI },
+  { "EXTERNAL",     8,  SASL_MECH_EXTERNAL },
+  { "NTLM",         4,  SASL_MECH_NTLM },
+  { "XOAUTH2",      7,  SASL_MECH_XOAUTH2 },
+  { "OAUTHBEARER",  11, SASL_MECH_OAUTHBEARER },
+  { ZERO_NULL,      0,  0 }
 };
 
 #if !defined(CURL_DISABLE_CRYPTO_AUTH) && !defined(USE_WINDOWS_SSPI)
@@ -75,9 +77,6 @@ const struct {
 #define DIGEST_QOP_VALUE_STRING_AUTH      "auth"
 #define DIGEST_QOP_VALUE_STRING_AUTH_INT  "auth-int"
 #define DIGEST_QOP_VALUE_STRING_AUTH_CONF "auth-conf"
-
-#define DIGEST_MAX_VALUE_LENGTH           256
-#define DIGEST_MAX_CONTENT_LENGTH         1024
 
 /* The CURL_OUTPUT_DIGEST_CONV macro below is for non-ASCII machines.
    It converts digest text to ASCII so the MD5 will be correct for
@@ -90,13 +89,16 @@ const struct {
     return result; \
   }
 
+#endif
+
+#if !defined(CURL_DISABLE_CRYPTO_AUTH)
 /*
  * Returns 0 on success and then the buffers are filled in fine.
  *
  * Non-zero means failure to parse.
  */
-static int sasl_digest_get_pair(const char *str, char *value, char *content,
-                                const char **endptr)
+int Curl_sasl_digest_get_pair(const char *str, char *value, char *content,
+                              const char **endptr)
 {
   int c;
   bool starts_with_quote = FALSE;
@@ -157,7 +159,9 @@ static int sasl_digest_get_pair(const char *str, char *value, char *content,
 
   return 0; /* all is fine! */
 }
+#endif
 
+#if !defined(CURL_DISABLE_CRYPTO_AUTH) && !defined(USE_WINDOWS_SSPI)
 /* Convert md5 chunk to RFC2617 (section 3.1.3) -suitable ascii string*/
 static void sasl_digest_md5_to_ascii(unsigned char *source, /* 16 bytes */
                                      unsigned char *dest) /* 33 bytes */
@@ -261,19 +265,19 @@ static CURLcode sasl_digest_get_qop_values(const char *options, int *value)
 /*
  * Curl_sasl_build_spn()
  *
- * This is used to build a SPN string in the format service/host.
+ * This is used to build a SPN string in the format service/instance.
  *
  * Parameters:
  *
  * service  [in] - The service type such as www, smtp, pop or imap.
- * host     [in] - The host name or realm.
+ * instance [in] - The host name or realm.
  *
  * Returns a pointer to the newly allocated SPN.
  */
-char *Curl_sasl_build_spn(const char *service, const char *host)
+char *Curl_sasl_build_spn(const char *service, const char *instance)
 {
   /* Generate and return our SPN */
-  return aprintf("%s/%s", service, host);
+  return aprintf("%s/%s", service, instance);
 }
 #endif
 
@@ -776,7 +780,7 @@ CURLcode Curl_sasl_decode_digest_http_message(const char *chlg,
       chlg++;
 
     /* Extract a value=content pair */
-    if(!sasl_digest_get_pair(chlg, value, content, &chlg)) {
+    if(!Curl_sasl_digest_get_pair(chlg, value, content, &chlg)) {
       if(Curl_raw_equal(value, "nonce")) {
         digest->nonce = strdup(content);
         if(!digest->nonce)
@@ -1151,7 +1155,7 @@ void Curl_sasl_ntlm_cleanup(struct ntlmdata *ntlm)
 #endif /* USE_NTLM && !USE_WINDOWS_SSPI*/
 
 /*
- * sasl_create_xoauth2_message()
+ * sasl_create_oauth_bearer_message()
  *
  * This is used to generate an already encoded OAuth 2.0 message ready for
  * sending to the recipient.
@@ -1160,6 +1164,8 @@ void Curl_sasl_ntlm_cleanup(struct ntlmdata *ntlm)
  *
  * data    [in]     - The session handle.
  * user    [in]     - The user name.
+ * host    [in]     - The host name (for OAUTHBEARER).
+ * port    [in]     - The port (for OAUTHBEARER when not Port 80).
  * bearer  [in]     - The bearer token.
  * outptr  [in/out] - The address where a pointer to newly allocated memory
  *                    holding the result will be stored upon completion.
@@ -1167,23 +1173,32 @@ void Curl_sasl_ntlm_cleanup(struct ntlmdata *ntlm)
  *
  * Returns CURLE_OK on success.
  */
-static CURLcode sasl_create_xoauth2_message(struct SessionHandle *data,
-                                            const char *user,
-                                            const char *bearer,
-                                            char **outptr, size_t *outlen)
+static CURLcode sasl_create_oauth_bearer_message(struct SessionHandle *data,
+                                                 const char *user,
+                                                 const char *host,
+                                                 const long port,
+                                                 const char *bearer,
+                                                 char **outptr, size_t *outlen)
 {
   CURLcode result = CURLE_OK;
-  char *xoauth = NULL;
+  char *oauth = NULL;
 
   /* Generate the message */
-  xoauth = aprintf("user=%s\1auth=Bearer %s\1\1", user, bearer);
-  if(!xoauth)
+  if(host == NULL && (port == 0 || port == 80))
+    oauth = aprintf("user=%s\1auth=Bearer %s\1\1", user, bearer);
+  else if(port == 0 || port == 80)
+    oauth = aprintf("user=%s\1host=%s\1auth=Bearer %s\1\1", user, host,
+                    bearer);
+  else
+    oauth = aprintf("user=%s\1host=%s\1port=%ld\1auth=Bearer %s\1\1", user,
+                    host, port, bearer);
+  if(!oauth)
     return CURLE_OUT_OF_MEMORY;
 
   /* Base64 encode the reply */
-  result = Curl_base64_encode(data, xoauth, strlen(xoauth), outptr, outlen);
+  result = Curl_base64_encode(data, oauth, strlen(oauth), outptr, outlen);
 
-  free(xoauth);
+  free(oauth);
 
   return result;
 }
@@ -1330,7 +1345,8 @@ static void state(struct SASL *sasl, struct connectdata *conn,
     "GSSAPI",
     "GSSAPI_TOKEN",
     "GSSAPI_NO_DATA",
-    "XOAUTH2",
+    "OAUTH2",
+    "OAUTH2_RESP",
     "CANCEL",
     "FINAL",
     /* LAST */
@@ -1441,15 +1457,29 @@ CURLcode Curl_sasl_start(struct SASL *sasl, struct connectdata *conn,
       }
     else
 #endif
-    if((enabledmechs & SASL_MECH_XOAUTH2) || conn->xoauth2_bearer) {
+    if((enabledmechs & SASL_MECH_OAUTHBEARER) && conn->oauth_bearer) {
+      mech = SASL_MECH_STRING_OAUTHBEARER;
+      state1 = SASL_OAUTH2;
+      state2 = SASL_OAUTH2_RESP;
+      sasl->authused = SASL_MECH_OAUTHBEARER;
+
+      if(force_ir || data->set.sasl_ir)
+        result = sasl_create_oauth_bearer_message(data, conn->user,
+                                                  conn->host.name,
+                                                  conn->port,
+                                                  conn->oauth_bearer,
+                                                  &resp, &len);
+    }
+    else if((enabledmechs & SASL_MECH_XOAUTH2) && conn->oauth_bearer) {
       mech = SASL_MECH_STRING_XOAUTH2;
-      state1 = SASL_XOAUTH2;
+      state1 = SASL_OAUTH2;
       sasl->authused = SASL_MECH_XOAUTH2;
 
       if(force_ir || data->set.sasl_ir)
-        result = sasl_create_xoauth2_message(data, conn->user,
-                                             conn->xoauth2_bearer,
-                                             &resp, &len);
+        result = sasl_create_oauth_bearer_message(data, conn->user,
+                                                  NULL, 0,
+                                                  conn->oauth_bearer,
+                                                  &resp, &len);
     }
     else if(enabledmechs & SASL_MECH_LOGIN) {
       mech = SASL_MECH_STRING_LOGIN;
@@ -1521,7 +1551,8 @@ CURLcode Curl_sasl_continue(struct SASL *sasl, struct connectdata *conn,
     return result;
   }
 
-  if(sasl->state != SASL_CANCEL && code != sasl->params->contcode) {
+  if(sasl->state != SASL_CANCEL && sasl->state != SASL_OAUTH2_RESP &&
+     code != sasl->params->contcode) {
     *progress = SASL_DONE;
     state(sasl, conn, SASL_STOP);
     return CURLE_LOGIN_DENIED;
@@ -1624,11 +1655,47 @@ CURLcode Curl_sasl_continue(struct SASL *sasl, struct connectdata *conn,
     break;
 #endif
 
-  case SASL_XOAUTH2:
+  case SASL_OAUTH2:
     /* Create the authorisation message */
-    result = sasl_create_xoauth2_message(data, conn->user,
-                                         conn->xoauth2_bearer, &resp, &len);
+    if(sasl->authused == SASL_MECH_OAUTHBEARER) {
+      result = sasl_create_oauth_bearer_message(data, conn->user,
+                                                conn->host.name,
+                                                conn->port,
+                                                conn->oauth_bearer,
+                                                &resp, &len);
+
+      /* Failures maybe sent by the server as continuations for OAUTHBEARER */
+      newstate = SASL_OAUTH2_RESP;
+    }
+    else
+      result = sasl_create_oauth_bearer_message(data, conn->user,
+                                                NULL, 0,
+                                                conn->oauth_bearer,
+                                                &resp, &len);
     break;
+
+  case SASL_OAUTH2_RESP:
+    /* The continuation is optional so check the response code */
+    if(code == sasl->params->finalcode) {
+      /* Final response was received so we are done */
+      *progress = SASL_DONE;
+      state(sasl, conn, SASL_STOP);
+      return result;
+    }
+    else if(code == sasl->params->contcode) {
+      /* Acknowledge the continuation by sending a 0x01 response base64
+         encoded */
+      resp = strdup("AQ==");
+      if(!resp)
+        result = CURLE_OUT_OF_MEMORY;
+      break;
+    }
+    else {
+      *progress = SASL_DONE;
+      state(sasl, conn, SASL_STOP);
+      return CURLE_LOGIN_DENIED;
+    }
+
   case SASL_CANCEL:
     /* Remove the offending mechanism from the supported list */
     sasl->authmechs ^= sasl->authused;

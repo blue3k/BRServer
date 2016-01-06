@@ -145,7 +145,7 @@ static const struct LongShort aliases[]= {
   {"$v", "ssl-reqd",                 FALSE},
          /* 'ssl-reqd' new in 7.20.0, previously this was ftp-ssl-reqd */
   {"$w", "sessionid",                FALSE},
-         /* ¡sessionid' listed as --no-sessionid in the help */
+         /* 'sessionid' listed as --no-sessionid in the help */
   {"$x", "ftp-ssl-control",          FALSE},
   {"$y", "ftp-ssl-ccc",              FALSE},
   {"$j", "ftp-ssl-ccc-mode",         TRUE},
@@ -158,10 +158,8 @@ static const struct LongShort aliases[]= {
   {"$3", "keepalive-time",           TRUE},
   {"$4", "post302",                  FALSE},
   {"$5", "noproxy",                  TRUE},
-#if defined(HAVE_GSSAPI) || defined(USE_WINDOWS_SSPI)
   {"$6", "socks5-gssapi-service",    TRUE},
   {"$7", "socks5-gssapi-nec",        FALSE},
-#endif
   {"$8", "proxy1.0",                 TRUE},
   {"$9", "tftp-blksize",             TRUE},
   {"$A", "mail-from",                TRUE},
@@ -178,6 +176,9 @@ static const struct LongShort aliases[]= {
   {"$L", "test-event",               FALSE},
   {"$M", "unix-socket",              TRUE},
   {"$N", "path-as-is",               FALSE},
+  {"$O", "proxy-service-name",       TRUE},
+  {"$P", "service-name",             TRUE},
+  {"$Q", "proto-default",            TRUE},
   {"0",   "http1.0",                 FALSE},
   {"01",  "http1.1",                 FALSE},
   {"02",  "http2",                   FALSE},
@@ -196,6 +197,7 @@ static const struct LongShort aliases[]= {
   {"c",  "cookie-jar",               TRUE},
   {"C",  "continue-at",              TRUE},
   {"d",  "data",                     TRUE},
+  {"dr", "data-raw",                 TRUE},
   {"da", "data-ascii",               TRUE},
   {"db", "data-binary",              TRUE},
   {"de", "data-urlencode",           TRUE},
@@ -220,6 +222,7 @@ static const struct LongShort aliases[]= {
   {"Ep", "pinnedpubkey",             TRUE},
   {"Eq", "cert-status",              FALSE},
   {"Er", "false-start",              FALSE},
+  {"Es", "ssl-no-revoke",            FALSE},
   {"f",  "fail",                     FALSE},
   {"F",  "form",                     TRUE},
   {"Fs", "form-string",              TRUE},
@@ -492,8 +495,8 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
       case 'b': /* egd-file */
         GetStr(&config->egd_file, nextarg);
         break;
-      case 'B': /* XOAUTH2 Bearer */
-        GetStr(&config->xoauth2_bearer, nextarg);
+      case 'B': /* OAuth 2.0 bearer token */
+        GetStr(&config->oauth_bearer, nextarg);
         break;
       case 'c': /* connect-timeout */
         err = str2udouble(&config->connecttimeout, nextarg);
@@ -678,7 +681,7 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
 
       case 'v': /* --stderr */
         if(strcmp(nextarg, "-")) {
-          FILE *newfile = fopen(nextarg, "wt");
+          FILE *newfile = fopen(nextarg, FOPEN_WRITETEXT);
           if(!newfile)
             warnf(global, "Failed to open %s!\n", nextarg);
           else {
@@ -895,14 +898,12 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
         /* This specifies the noproxy list */
         GetStr(&config->noproxy, nextarg);
         break;
-#if defined(HAVE_GSSAPI) || defined(USE_WINDOWS_SSPI)
       case '6': /* --socks5-gssapi-service */
         GetStr(&config->socks5_gssapi_service, nextarg);
         break;
       case '7': /* --socks5-gssapi-nec*/
         config->socks5_gssapi_nec = toggle;
         break;
-#endif
       case '8': /* --proxy1.0 */
         /* http 1.0 proxy */
         GetStr(&config->proxy, nextarg);
@@ -985,6 +986,18 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
         break;
       case 'N': /* --path-as-is */
         config->path_as_is = toggle;
+        break;
+      case 'O': /* --proxy-service-name */
+        GetStr(&config->proxy_service_name, nextarg);
+        break;
+      case 'P': /* --service-name */
+        GetStr(&config->service_name, nextarg);
+        break;
+      case 'Q': /* --proto-default */
+        GetStr(&config->proto_default, nextarg);
+        err = check_protocol(config->proto_default);
+        if(err)
+          return err;
         break;
       }
       break;
@@ -1099,6 +1112,7 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
       char *postdata = NULL;
       FILE *file;
       size_t size = 0;
+      bool raw_mode = (subletter == 'r');
 
       if(subletter == 'e') { /* --data-urlencode*/
         /* [name]=[content], we encode the content part only
@@ -1124,7 +1138,6 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
         }
         if('@' == is_file) {
           /* a '@' letter, it means that a file name or - (stdin) follows */
-
           if(curlx_strequal("-", p)) {
             file = stdin;
             set_binmode(stdin);
@@ -1185,7 +1198,7 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
             return PARAM_NO_MEM;
         }
       }
-      else if('@' == *nextarg) {
+      else if('@' == *nextarg && !raw_mode) {
         /* the data begins with a '@' letter, it means that a file name
            or - (stdin) follows */
         nextarg++; /* pass the @ */
@@ -1377,6 +1390,11 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
         config->falsestart = TRUE;
         break;
 
+      case 's': /* --ssl-no-revoke */
+        if(curlinfo->features & CURL_VERSION_SSL)
+          config->ssl_no_revoke = TRUE;
+        break;
+
       default: /* certificate file */
       {
         char *certname, *passphrase;
@@ -1404,7 +1422,7 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
                    &config->last_post,
                    (subletter=='s')?TRUE:FALSE)) /* 's' means literal string */
         return PARAM_BAD_USE;
-      if(SetHTTPrequest(config, HTTPREQ_POST, &config->httpreq))
+      if(SetHTTPrequest(config, HTTPREQ_FORMPOST, &config->httpreq))
         return PARAM_BAD_USE;
       break;
 
@@ -1739,7 +1757,7 @@ ParameterError getparameter(char *flag,    /* f or -long-flag */
         }
         else {
           fname = nextarg;
-          file = fopen(nextarg, "r");
+          file = fopen(nextarg, FOPEN_READTEXT);
         }
         err = file2string(&config->writeout, file);
         if(file && (file != stdin))

@@ -143,6 +143,11 @@ sub scanfile {
             checkwarn($line, length($1), $file, $l, "Trailing whitespace");
         }
 
+        # crude attempt to detect // comments without too many false
+        # positives
+        if($l =~ /^([^"\*]*)[^:"]\/\//) {
+            checkwarn($line, length($1), $file, $l, "\/\/ comment");
+        }
         # check spaces after for/if/while
         if($l =~ /^(.*)(for|if|while) \(/) {
             if($1 =~ / *\#/) {
@@ -226,6 +231,15 @@ sub scanfile {
         if($l =~ /^(.*\W)(sprintf|vsprintf|strcat|strncat|gets)\s*\(/) {
             checkwarn($line, length($1), $file, $l,
                       "use of $2 is banned");
+        }
+
+        # scan for use of non-binary fopen without the macro
+        if($l =~ /^(.*\W)fopen\s*\([^"]*\"([^"]*)/) {
+            my $mode = $2;
+            if($mode !~ /b/) {
+                checkwarn($line, length($1), $file, $l,
+                          "use of non-binary fopen without FOPEN_* macro");
+            }
         }
 
         # check for open brace first on line but not first column
