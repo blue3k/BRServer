@@ -47,11 +47,11 @@ namespace BR
 			{}
 
 			// Cmd: Login request
-			HRESULT LoginRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+			HRESULT LoginRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 			// Cmd: Login request with Facebook UID
-			HRESULT LoginByFacebookRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+			HRESULT LoginByFacebookRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 			// Cmd: Login request
-			HRESULT CreateRandomUserRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+			HRESULT CreateRandomUserRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 
 		}; // class NetSvrPolicyLogin : public ISvrPolicyLogin
 

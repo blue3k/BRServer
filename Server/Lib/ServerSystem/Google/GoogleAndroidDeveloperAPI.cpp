@@ -109,6 +109,39 @@ namespace Google {
 		return hr;
 	}
 
+
+	int debug_cb(CURL *handle, curl_infotype type, char *data, size_t size, void *userp)
+	{
+		switch (type) {
+		case CURLINFO_TEXT: {
+			printf("INFO: %s\n", data);
+			break;
+		}
+		case CURLINFO_HEADER_IN: {
+			printf("RESPONSE: %s", data);
+			break;
+		}
+		case CURLINFO_HEADER_OUT: { /* There is no null-terminator on this one ! */
+			size_t i;
+			printf("REQUEST: \n");
+			for (i = 0; i < size; i++) printf("%c", data[i]);
+			break;
+		}
+		case CURLINFO_DATA_IN: {
+			printf("RECIEVED: %d bytes\n", size);
+			break;
+		}
+		case CURLINFO_DATA_OUT: {
+			printf("TRANSMIT: %d bytes\n", size);
+			break;
+		}
+		case CURLINFO_END: {
+			printf("This should never happen!");
+			break;
+		}
+		}
+	}
+
 	// Check purchase receipt
 	HRESULT AndroidDeveloperAPI::CheckReceipt(const char* packageName, const char* productID, const char* purchaseToken)
 	{
@@ -156,6 +189,9 @@ namespace Google {
 		if (res != CURLE_OK)
 			svrErr(E_UNEXPECTED);
 		Assert(res == 0);
+
+		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
+		curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, debug_cb);
 
 		res = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
 		if (res != CURLE_OK)

@@ -57,7 +57,8 @@ namespace GameServer {
 		svrChk(pRes->GetHRESULT());
 		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
 
-		m_PublicAddress = GetMyServer()->GetPublicNetAddressIPv4();
+		m_PublicAddress = GetMyServer()->GetNetPublic()->GetLocalAddress();
+		m_PublicAddressIPV4 = GetMyServer()->GetPublicNetAddressIPv4();
 
 	Proc_End:
 

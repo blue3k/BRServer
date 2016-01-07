@@ -192,13 +192,13 @@ namespace BR
 
 
 		// Cmd: Kick
-		HRESULT NetSvrPolicyGameServer::RegisterPlayerToJoinGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress )
+		HRESULT NetSvrPolicyGameServer::RegisterPlayerToJoinGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 )
 		{
  			HRESULT hr = S_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameServer::RegisterPlayerToJoinGameServerRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext, InPublicAddress));
+			 protocolChk(Message::GameServer::RegisterPlayerToJoinGameServerRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext, InPublicAddress, InPublicAddressIPV4));
 
 			 protocolChkPtr(GetConnection());
 
@@ -208,7 +208,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameServer::RegisterPlayerToJoinGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress )
+		}; // HRESULT NetSvrPolicyGameServer::RegisterPlayerToJoinGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 )
 		// Cmd: Kick
 		HRESULT NetSvrPolicyGameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{

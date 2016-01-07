@@ -5,6 +5,6 @@
 namespace BR
 {
 	enum {
-		BR_PROTOCOL_VERSION = 9
+		BR_PROTOCOL_VERSION = 10
 	};
 };

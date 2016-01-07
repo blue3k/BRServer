@@ -35,7 +35,7 @@ namespace BR
 			{}
 
 			// Cmd: Kick
-			virtual HRESULT RegisterPlayerToJoinGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress ) = 0;
+			virtual HRESULT RegisterPlayerToJoinGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 ) = 0;
 			// Cmd: Kick
 			virtual HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext ) = 0;
 			// C2S: Chatting message

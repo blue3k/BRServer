@@ -330,7 +330,9 @@ namespace GameServer {
 
 		svrChk( CloseNetPublic() );
 
-		svrChkPtr( GetGameConfig() );
+		svrChkPtr(GetGameConfig());
+		svrChkPtr(GetGameConfig()->NetPublic);
+		svrChkPtr(GetGameConfig()->NetPublicIPV4);
 
 		svrMem(m_pNetPublic = new BR::Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
 
@@ -339,10 +341,10 @@ namespace GameServer {
 		// Game server only accept public connection with valid peerID(AuthTicket)
 		m_pNetPublic->GetConnectionManager().SetUseAddressMap(false);
 
-		m_PublicNetAddressIPv4 = m_pNetPublic->GetLocalAddress();
+		//m_PublicNetAddressIPv4 = m_pNetPublic->GetLocalAddress();
 
-		// Let's give what it is
-		//Net::GetLocalAddressIPv4(m_PublicNetAddressIPv4);
+		m_PublicNetAddressIPv4 = NetAddress(SockFamily::IPV4, GetGameConfig()->NetPublicIPV4->IP.c_str(), GetGameConfig()->NetPublicIPV4->Port);
+		svrChk(Net::CheckLocalAddress(SockFamily::IPV4, m_PublicNetAddressIPv4));
 
 	Proc_End:
 

@@ -241,7 +241,8 @@ namespace Config {
 
 		// Public network info
 		NetSocket*		NetPublic;
-		
+		NetSocket*		NetPublicIPV4;
+
 		///////////////////////////////////////////////////////////////////////////
 		//
 		//	Overriding

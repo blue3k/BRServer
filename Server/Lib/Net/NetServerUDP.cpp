@@ -248,8 +248,8 @@ namespace Net {
 		//	netErr(hr);
 		//}
 
-		// enable dual stack
-		if (GetLocalAddress().SocketFamily == SockFamily::IPV6)
+		// enable dual stack all the time
+		//if (GetLocalAddress().SocketFamily == SockFamily::IPV6)
 		{
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)

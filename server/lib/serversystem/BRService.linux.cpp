@@ -130,7 +130,7 @@ namespace Svr {
 		// prepare service running
 		HRESULT ServicePrepare()
 		{
-			daemonize();
+			//daemonize();
 			return S_OK;
 		}
 

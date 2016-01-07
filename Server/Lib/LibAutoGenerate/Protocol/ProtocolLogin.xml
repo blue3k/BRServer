@@ -11,6 +11,7 @@
       </Cmd>
       <Res>
         <Params Type="NetAddress" Name="GameServerAddr" Desc="Game server address to connect"/>
+        <Params Type="NetAddress" Name="GameServerAddrIPV4" Desc="Game server address to connect"/>
         <Params Type="AccountID" Name="AccID" Desc="AccountID for the player"/>
         <Params Type="AuthTicket" Name="Ticket" Desc="Login session Ticket"/>
     		<Params Type="UINT64" Name="LoginEntityUID" Desc="Login entity ID. This need to be used when you connect to the game server"/>
@@ -26,6 +27,7 @@
       </Cmd>
       <Res>
         <Params Type="NetAddress" Name="GameServerAddr" Desc="Game server address to connect"/>
+        <Params Type="NetAddress" Name="GameServerAddrIPV4" Desc="Game server address to connect"/>
         <Params Type="AccountID" Name="AccID" Desc="AccountID for the player"/>
         <Params Type="AuthTicket" Name="Ticket" Desc="Login session Ticket"/>
         <Params Type="UINT64" Name="LoginEntityUID" Desc="Login entity ID. This need to be used when you connect to the game server"/>
@@ -39,6 +41,7 @@
       </Cmd>
       <Res>
         <Params Type="NetAddress" Name="GameServerAddr" Desc="Game server address to connect"/>
+        <Params Type="NetAddress" Name="GameServerAddrIPV4" Desc="Game server address to connect"/>
         <Params Type="AccountID" Name="AccID" Desc="AccountID for the player"/>
         <Params Type="AuthTicket" Name="Ticket" Desc="Login session Ticket"/>
         <Params Type="UINT64" Name="LoginEntityUID" Desc="Login entity ID. This need to be used when you connect to the game server"/>

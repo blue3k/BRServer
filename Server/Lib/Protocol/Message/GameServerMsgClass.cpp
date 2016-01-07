@@ -145,6 +145,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PublicAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PublicAddressIPV4, pCur, iMsgSize, sizeof(NetAddress) ) );
 
 
 			Proc_End:
@@ -153,7 +154,7 @@ namespace BR
 
 			}; // HRESULT RegisterPlayerToJoinGameServerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress )
+			HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 )
 			{
  				HRESULT hr = S_OK;
 
@@ -163,6 +164,7 @@ namespace BR
 					+ sizeof(Context)
 					+ sizeof(HRESULT)
 					+ sizeof(RouteContext)
+					+ sizeof(NetAddress)
 					+ sizeof(NetAddress));
 
 				MessageData *pNewMsg = nullptr;
@@ -175,6 +177,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InPublicAddress, sizeof(NetAddress));
+				Protocol::PackParamCopy( pMsgData, &InPublicAddressIPV4, sizeof(NetAddress));
 
 				pMsg = pNewMsg;
 
@@ -183,7 +186,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress )
+			}; // HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 )
 
 			HRESULT RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -217,8 +220,8 @@ namespace BR
 			void RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, PublicAddress:{6}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_PublicAddress); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, PublicAddress:{6}, PublicAddressIPV4:{7}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_PublicAddress, m_PublicAddressIPV4); 
 			}; // void RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Kick

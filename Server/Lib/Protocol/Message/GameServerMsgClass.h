@@ -96,6 +96,7 @@ namespace BR
 				HRESULT m_Result;
 				RouteContext m_RouteContext;
 				NetAddress m_PublicAddress;
+				NetAddress m_PublicAddressIPV4;
 			public:
 				RegisterPlayerToJoinGameServerRes()
 					{}
@@ -110,12 +111,13 @@ namespace BR
 				const HRESULT& GetResult() const	{ return m_Result; };
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const NetAddress& GetPublicAddress() const	{ return m_PublicAddress; };
+				const NetAddress& GetPublicAddressIPV4() const	{ return m_PublicAddressIPV4; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 

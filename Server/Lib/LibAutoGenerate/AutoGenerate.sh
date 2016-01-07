@@ -15,6 +15,8 @@ cd Protocol
 
 make -f makefile.mak $1
 
+cp ./Temp/Lib/Protocol/CSharp/*.cs ../../../../../Conspiracy/trunk/Client/Conspiracy/Conspiracy/Net/Message
+
 cd ..
 
 

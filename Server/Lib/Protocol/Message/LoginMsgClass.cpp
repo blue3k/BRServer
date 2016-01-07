@@ -113,6 +113,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_GameServerAddr, pCur, iMsgSize, sizeof(NetAddress) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameServerAddrIPV4, pCur, iMsgSize, sizeof(NetAddress) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_AccID, pCur, iMsgSize, sizeof(AccountID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_LoginEntityUID, pCur, iMsgSize, sizeof(UINT64) ) );
@@ -124,7 +125,7 @@ namespace BR
 
 			}; // HRESULT LoginRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT LoginRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+			HRESULT LoginRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 			{
  				HRESULT hr = S_OK;
 
@@ -132,6 +133,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT)
+					+ sizeof(NetAddress)
 					+ sizeof(NetAddress)
 					+ sizeof(AccountID)
 					+ sizeof(AuthTicket)
@@ -145,6 +147,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InGameServerAddr, sizeof(NetAddress));
+				Protocol::PackParamCopy( pMsgData, &InGameServerAddrIPV4, sizeof(NetAddress));
 				Protocol::PackParamCopy( pMsgData, &InAccID, sizeof(AccountID));
 				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
 				Protocol::PackParamCopy( pMsgData, &InLoginEntityUID, sizeof(UINT64));
@@ -156,15 +159,15 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT LoginRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+			}; // HRESULT LoginRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 
 
 
 			void LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:LoginRes:{1}:{2} , Result:{3:X8}, GameServerAddr:{4}, AccID:{5}, Ticket:{6}, LoginEntityUID:{7}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:LoginRes:{1}:{2} , Result:{3:X8}, GameServerAddr:{4}, GameServerAddrIPV4:{5}, AccID:{6}, Ticket:{7}, LoginEntityUID:{8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_GameServerAddrIPV4, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // void LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Login request with Facebook UID
@@ -261,6 +264,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_GameServerAddr, pCur, iMsgSize, sizeof(NetAddress) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameServerAddrIPV4, pCur, iMsgSize, sizeof(NetAddress) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_AccID, pCur, iMsgSize, sizeof(AccountID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_LoginEntityUID, pCur, iMsgSize, sizeof(UINT64) ) );
@@ -272,7 +276,7 @@ namespace BR
 
 			}; // HRESULT LoginByFacebookRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT LoginByFacebookRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+			HRESULT LoginByFacebookRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 			{
  				HRESULT hr = S_OK;
 
@@ -280,6 +284,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT)
+					+ sizeof(NetAddress)
 					+ sizeof(NetAddress)
 					+ sizeof(AccountID)
 					+ sizeof(AuthTicket)
@@ -293,6 +298,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InGameServerAddr, sizeof(NetAddress));
+				Protocol::PackParamCopy( pMsgData, &InGameServerAddrIPV4, sizeof(NetAddress));
 				Protocol::PackParamCopy( pMsgData, &InAccID, sizeof(AccountID));
 				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
 				Protocol::PackParamCopy( pMsgData, &InLoginEntityUID, sizeof(UINT64));
@@ -304,15 +310,15 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT LoginByFacebookRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+			}; // HRESULT LoginByFacebookRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 
 
 
 			void LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:LoginByFacebookRes:{1}:{2} , Result:{3:X8}, GameServerAddr:{4}, AccID:{5}, Ticket:{6}, LoginEntityUID:{7}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:LoginByFacebookRes:{1}:{2} , Result:{3:X8}, GameServerAddr:{4}, GameServerAddrIPV4:{5}, AccID:{6}, Ticket:{7}, LoginEntityUID:{8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_GameServerAddrIPV4, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // void LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Login request
@@ -394,6 +400,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_GameServerAddr, pCur, iMsgSize, sizeof(NetAddress) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameServerAddrIPV4, pCur, iMsgSize, sizeof(NetAddress) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_AccID, pCur, iMsgSize, sizeof(AccountID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_LoginEntityUID, pCur, iMsgSize, sizeof(UINT64) ) );
@@ -405,7 +412,7 @@ namespace BR
 
 			}; // HRESULT CreateRandomUserRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT CreateRandomUserRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+			HRESULT CreateRandomUserRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 			{
  				HRESULT hr = S_OK;
 
@@ -413,6 +420,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(HRESULT)
+					+ sizeof(NetAddress)
 					+ sizeof(NetAddress)
 					+ sizeof(AccountID)
 					+ sizeof(AuthTicket)
@@ -426,6 +434,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InGameServerAddr, sizeof(NetAddress));
+				Protocol::PackParamCopy( pMsgData, &InGameServerAddrIPV4, sizeof(NetAddress));
 				Protocol::PackParamCopy( pMsgData, &InAccID, sizeof(AccountID));
 				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
 				Protocol::PackParamCopy( pMsgData, &InLoginEntityUID, sizeof(UINT64));
@@ -437,15 +446,15 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT CreateRandomUserRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+			}; // HRESULT CreateRandomUserRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 
 
 
 			void CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:CreateRandomUserRes:{1}:{2} , Result:{3:X8}, GameServerAddr:{4}, AccID:{5}, Ticket:{6}, LoginEntityUID:{7}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_AccID, m_Ticket, m_LoginEntityUID); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:CreateRandomUserRes:{1}:{2} , Result:{3:X8}, GameServerAddr:{4}, GameServerAddrIPV4:{5}, AccID:{6}, Ticket:{7}, LoginEntityUID:{8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_GameServerAddrIPV4, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // void CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 

@@ -32,6 +32,7 @@ namespace GameServer {
 
 	private:
 		NetAddress m_PublicAddress;
+		NetAddress m_PublicAddressIPV4;
 		EntityUID m_PlayerUID;
 
 	public:
@@ -46,7 +47,7 @@ namespace GameServer {
 
 		Policy::ISvrPolicyGameServer* GetPolicy() { return GetMyOwner()->GetPolicy<Policy::ISvrPolicyGameServer>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress);
+		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV4);
 	};
 
 

@@ -377,6 +377,8 @@ namespace Config
 	///////////////////////////////////////////////////////////////////////////////
 
 	PublicServer::PublicServer()
+		: NetPublic(nullptr)
+		, NetPublicIPV4(nullptr)
 	{
 	}
 
@@ -389,6 +391,10 @@ namespace Config
 		if( pChild->GetName() == "NetPublic" )
 		{
 			NetPublic = dynamic_cast<NetSocket*>(pChild);
+		}
+		else if( pChild->GetName() == "NetPublicIPV4" )
+		{
+			NetPublicIPV4 = dynamic_cast<NetSocket*>(pChild);
 		}
 	}
 
@@ -619,6 +625,7 @@ namespace Config
 
 			RegisterElementCreator( "NetPrivate", []()-> XML::DOMElement* { return new NetSocket; } );
 			RegisterElementCreator( "NetPublic", []()-> XML::DOMElement* { return new NetSocket; } );
+			RegisterElementCreator( "NetPublicIPV4", []()-> XML::DOMElement* { return new NetSocket; } );
 
 
 			cfgData.ClearConfig();

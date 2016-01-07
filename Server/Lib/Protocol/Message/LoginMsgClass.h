@@ -95,6 +95,7 @@ namespace BR
 			private:
 				HRESULT m_Result;
 				NetAddress m_GameServerAddr;
+				NetAddress m_GameServerAddrIPV4;
 				AccountID m_AccID;
 				AuthTicket m_Ticket;
 				UINT64 m_LoginEntityUID;
@@ -110,6 +111,7 @@ namespace BR
 
 				const HRESULT& GetResult() const	{ return m_Result; };
 				const NetAddress& GetGameServerAddr() const	{ return m_GameServerAddr; };
+				const NetAddress& GetGameServerAddrIPV4() const	{ return m_GameServerAddrIPV4; };
 				const AccountID& GetAccID() const	{ return m_AccID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
 				const UINT64& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
@@ -118,7 +120,7 @@ namespace BR
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 
 			}; // class LoginRes : public MessageBase
 
@@ -200,6 +202,7 @@ namespace BR
 			private:
 				HRESULT m_Result;
 				NetAddress m_GameServerAddr;
+				NetAddress m_GameServerAddrIPV4;
 				AccountID m_AccID;
 				AuthTicket m_Ticket;
 				UINT64 m_LoginEntityUID;
@@ -215,6 +218,7 @@ namespace BR
 
 				const HRESULT& GetResult() const	{ return m_Result; };
 				const NetAddress& GetGameServerAddr() const	{ return m_GameServerAddr; };
+				const NetAddress& GetGameServerAddrIPV4() const	{ return m_GameServerAddrIPV4; };
 				const AccountID& GetAccID() const	{ return m_AccID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
 				const UINT64& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
@@ -223,7 +227,7 @@ namespace BR
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 
 			}; // class LoginByFacebookRes : public MessageBase
 
@@ -295,6 +299,7 @@ namespace BR
 			private:
 				HRESULT m_Result;
 				NetAddress m_GameServerAddr;
+				NetAddress m_GameServerAddrIPV4;
 				AccountID m_AccID;
 				AuthTicket m_Ticket;
 				UINT64 m_LoginEntityUID;
@@ -310,6 +315,7 @@ namespace BR
 
 				const HRESULT& GetResult() const	{ return m_Result; };
 				const NetAddress& GetGameServerAddr() const	{ return m_GameServerAddr; };
+				const NetAddress& GetGameServerAddrIPV4() const	{ return m_GameServerAddrIPV4; };
 				const AccountID& GetAccID() const	{ return m_AccID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
 				const UINT64& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
@@ -318,7 +324,7 @@ namespace BR
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 
 			}; // class CreateRandomUserRes : public MessageBase
 

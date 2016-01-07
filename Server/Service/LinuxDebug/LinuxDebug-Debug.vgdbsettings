@@ -135,9 +135,9 @@
       <EnableNonStopMode>false</EnableNonStopMode>
     </AdditionalGDBSettings>
     <LaunchGDBSettings xsi:type="GDBLaunchParametersNewInstance">
-      <DebuggedProgram>$(REMOTE_BASE_PATH)/Server/bin/DEBUG/BREntityServer</DebuggedProgram>
+      <DebuggedProgram>$(REMOTE_BASE_PATH)/Server/bin/DEBUG/BRGameServer</DebuggedProgram>
       <GDBServerPort>2000</GDBServerPort>
-      <ProgramArguments>-debug -n:BREntityServer1</ProgramArguments>
+      <ProgramArguments> -n:BRConspiracyGameServer01</ProgramArguments>
     </LaunchGDBSettings>
     <GenerateCtrlBreakInsteadOfCtrlC>false</GenerateCtrlBreakInsteadOfCtrlC>
     <DeploymentTargetPath />

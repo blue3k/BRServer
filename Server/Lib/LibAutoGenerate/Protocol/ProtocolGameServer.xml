@@ -12,6 +12,7 @@
       </Cmd>
       <Res>
         <Params Type="NetAddress" Name="PublicAddress"/>
+        <Params Type="NetAddress" Name="PublicAddressIPV4"/>
       </Res>
     </Command>
 

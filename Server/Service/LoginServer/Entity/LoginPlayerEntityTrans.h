@@ -46,6 +46,7 @@ namespace LoginServer {
 	protected:
 
 		NetAddress m_GameServerAddr;
+		NetAddress m_GameServerAddrIPV4;
 		//UINT m_RegisterTryCount;
 		EntityUID m_GameEntityUID;
 
@@ -55,9 +56,6 @@ namespace LoginServer {
 
 		HRESULT OnLogin( HRESULT hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID );
 		HRESULT OnSessionRegistered( Svr::TransactionResult* &pRes );
-		//HRESULT OnSessionDeleted( Svr::TransactionResult* &pRes );
-		//HRESULT OnSessionReplaced(Svr::TransactionResult* &pRes);
-		//HRESULT OnKickedPlyaer(Svr::TransactionResult* &pRes);
 		HRESULT OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes );
 		HRESULT OnConnectToGameServerRes(Svr::TransactionResult* &pRes);
 
@@ -94,7 +92,7 @@ namespace LoginServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginRes,m_GameServerAddr,GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginRes,m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
 
 
@@ -119,7 +117,7 @@ namespace LoginServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction() override;
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginByFacebookRes,m_GameServerAddr,GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginByFacebookRes,m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
 
 
@@ -142,7 +140,7 @@ namespace LoginServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(CreateRandomUserRes, m_GameServerAddr, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(CreateRandomUserRes, m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
 
 	
