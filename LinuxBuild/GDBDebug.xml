@@ -1,5 +1,0 @@
-<PipeLaunchOptions xmlns="http://schemas.microsoft.com/vstudio/MDDDebuggerOptions/2014" 
-    PipePath="plink.exe" PipeArguments="blue3k@LocalLinux -batch -t gdb --interpreter=mi" 
-    ExePath="/home/blue3k/work/test/lib/LinuxTest2/LinuxTest2" ExeArguments="" 
-    TargetArchitecture="X64" WorkingDirectory="/home/blue3k/work/test" AdditionalSOLibSearchPath=""> 
-</PipeLaunchOptions>
