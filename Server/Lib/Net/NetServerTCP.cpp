@@ -127,7 +127,8 @@ namespace Net {
 
 		netChkPtr( pOverAccept );
 
-		m_PendingAccept.fetch_sub(1, std::memory_order_relaxed);
+		if(NetSystem::IsProactorSystem())
+			m_PendingAccept.fetch_sub(1, std::memory_order_relaxed);
 
 		memset( &connectionInfo, 0, sizeof(connectionInfo) );
 

@@ -354,7 +354,7 @@ namespace Svr {
 
 		if (FAILED(m_CounterInstanceMap.Find(messageClass.GetInstanceUID().UID, pFound)))
 		{
-			svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:%0%, %1%, counter already deleted1", remoteAddr, messageClass.GetInstanceUID());
+			svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, {1}, counter already deleted1", remoteAddr, messageClass.GetInstanceUID());
 			return hr;
 		}
 
@@ -366,7 +366,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:%0%, %1%, counter already deleted", remoteAddr, messageClass.GetInstanceUID());
+			svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, {1}, counter already deleted", remoteAddr, messageClass.GetInstanceUID());
 		}
 
 	Proc_End:

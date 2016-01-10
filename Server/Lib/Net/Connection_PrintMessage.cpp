@@ -145,7 +145,7 @@ namespace Net {
 			Message::Debug::DebugOutMonitoring(strPrefix, pMsg);
 			break;
 		default:
-			netTrace( TRC_NETCTRL, "Invalid MsgID for Debug %0%", pMsg->GetMessageHeader()->msgID );
+			netTrace( TRC_NETCTRL, "Invalid MsgID for Debug {0}", pMsg->GetMessageHeader()->msgID );
 			break;
 		}
 	}

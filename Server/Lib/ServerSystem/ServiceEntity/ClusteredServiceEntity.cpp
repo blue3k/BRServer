@@ -574,7 +574,7 @@ namespace Svr {
 
 			if( pCandidate != nullptr )
 			{
-				svrTrace( Svr::TRC_CLUSTER, "New Master is selected Cluster:%0% Entity:%1%", GetClusterID(), pCandidate->GetEntityUID() );
+				svrTrace( Svr::TRC_CLUSTER, "New Master is selected Cluster:{0} Entity:{1}", GetClusterID(), pCandidate->GetEntityUID() );
 				svrChk( AssignMaster( pCandidate->GetEntityUID() ) );
 			}
 		}
@@ -781,11 +781,11 @@ namespace Svr {
 #if 0 //defined(DEBUG)
 	if( pService == nullptr )
 	{
-		svrTrace( Svr::TRC_DBGINFO, "Service Item: ClusterID:%0%, EntityUID:%1%, Membership:%2%", GetClusterID(), GetEntityUID(), GetClusterMembership() );
+		svrTrace( Svr::TRC_DBGINFO, "Service Item: ClusterID:{0}, EntityUID:{1}, Membership:{2}", GetClusterID(), GetEntityUID(), GetClusterMembership() );
 		for( auto itService = m_ServiceList.begin(); itService.IsValid(); ++itService )
 		{
 			ServiceTableItem *pServiceItem = converter(&*itService);
-			svrTrace( Svr::TRC_DBGINFO, "Service Item: ClusterID:%0%, EntityUID:%1%, Membership:%2%", pServiceItem->GetClusterID(), pServiceItem->GetEntityUID(), pServiceItem->GetClusterMembership() );
+			svrTrace( Svr::TRC_DBGINFO, "Service Item: ClusterID:{0}, EntityUID:{1}, Membership:{2}", pServiceItem->GetClusterID(), pServiceItem->GetEntityUID(), pServiceItem->GetClusterMembership() );
 		}
 	}
 #endif

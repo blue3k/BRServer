@@ -135,7 +135,7 @@ namespace Svr {
 		// NOTE: Workload bug, just try to grab
 		if (pService->GetWorkload() > 0)
 		{
-			svrTrace(Svr::TRC_MATCHING, "Try to make a reservation. Matching:%0%, TargetQueueCompo:%1%, expected %2%", m_MatchingMemberCount, m_TargetQueueComponentID, pService->GetWorkload());
+			svrTrace(Svr::TRC_MATCHING, "Try to make a reservation. Matching:{0}, TargetQueueCompo:{1}, expected {2}", m_MatchingMemberCount, m_TargetQueueComponentID, pService->GetWorkload());
 			svrChk(pService->GetService<Svr::PartyMatchingQueueService>()->ReserveItemsCmd(GetTransID(), 0, grabCount));
 		}
 		else
@@ -149,11 +149,11 @@ namespace Svr {
 		{
 			if (pServiceEntity != nullptr)
 			{
-				svrTrace(Trace::TRC_ERROR, "Matching queue watcher query is failed, matching queueID:%0%, ServiceEntityUID:%1%, ClusterID:%2%", m_TargetQueueComponentID, pServiceEntity->GetEntityUID(), pServiceEntity->GetClusterID());
+				svrTrace(Trace::TRC_ERROR, "Matching queue watcher query is failed, matching queueID:{0}, ServiceEntityUID:{1}, ClusterID:{2}", m_TargetQueueComponentID, pServiceEntity->GetEntityUID(), pServiceEntity->GetClusterID());
 			}
 			else
 			{
-				svrTrace(Trace::TRC_ERROR, "Matching queue watcher query is failed, matching queueID:%0%", m_TargetQueueComponentID);
+				svrTrace(Trace::TRC_ERROR, "Matching queue watcher query is failed, matching queueID:{0}", m_TargetQueueComponentID);
 			}
 		}
 
@@ -166,7 +166,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerEntity *pServerEntity = nullptr;
 
-		svrTrace(Svr::TRC_MATCHING, "Request Delete item Matching:%0%, MatchingQueueID:%1%, MTicket:%2%", m_MatchingMemberCount, m_TargetQueueComponentID, ticket);
+		svrTrace(Svr::TRC_MATCHING, "Request Delete item Matching:{0}, MatchingQueueID:{1}, MTicket:{2}", m_MatchingMemberCount, m_TargetQueueComponentID, ticket);
 
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
@@ -200,7 +200,7 @@ namespace Svr {
 			auto& pNumPlayersInItems = msgRes.GetNumberOfPlayersInTheItem();
 			auto& pMatchingTickets = msgRes.GetMatchingTicket();
 
-			svrTrace(Svr::TRC_MATCHING, "%2% items are cached, Matching:%0%, MatchingQueueCompo:%1%, Count:%2%", m_MatchingMemberCount, m_TargetQueueComponentID, numItems);
+			svrTrace(Svr::TRC_MATCHING, "{2} items are cached, Matching:{0}, MatchingQueueCompo:{1}, Count:{2}", m_MatchingMemberCount, m_TargetQueueComponentID, numItems);
 
 			for (UINT iItem = 0; iItem < numItems; iItem++)
 			{
@@ -299,7 +299,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerEntity *pServerEntity = nullptr;
 
-		svrTrace(Svr::TRC_MATCHING, "Dequeue item Matching:%0%, MTicket:%1%", GetTargetMatchingMemberCount(), ticket);
+		svrTrace(Svr::TRC_MATCHING, "Dequeue item Matching:{0}, MTicket:{1}", GetTargetMatchingMemberCount(), ticket);
 
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
@@ -366,7 +366,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 		ServerServiceInformation *pService = nullptr;
 
-		svrTrace(Svr::TRC_MATCHING, "Creating game Matching:%0%", GetTargetMatchingMemberCount());
+		svrTrace(Svr::TRC_MATCHING, "Creating game Matching:{0}", GetTargetMatchingMemberCount());
 
 		svrChk(GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService(pService));
 
@@ -410,7 +410,7 @@ namespace Svr {
 				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.Players[member].PlayerUID.GetServerID(), pServerEntity)))
 				{
 					// skip this player
-					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity(%0%) while broadcasting for a player(%1%)", reservedMember.Players[member].PlayerUID.GetServerID(), reservedMember.Players[member].PlayerID);
+					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity({0}) while broadcasting for a player({1})", reservedMember.Players[member].PlayerUID.GetServerID(), reservedMember.Players[member].PlayerID);
 					continue;
 				}
 
@@ -426,7 +426,7 @@ namespace Svr {
 				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.RegisterEntityUID.GetServerID(), pServerEntity)))
 				{
 					// skip this player
-					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity(%0%) while broadcasting", reservedMember.RegisterEntityUID.GetServerID());
+					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity({0}) while broadcasting", reservedMember.RegisterEntityUID.GetServerID());
 					continue;
 				}
 

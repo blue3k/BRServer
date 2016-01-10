@@ -89,7 +89,7 @@ namespace XML {
 		}
 		else
 		{
-			defTrace( Trace::TRC_ERROR, "Invalid element:%0%, Att:%1%", GetName(), name );
+			defTrace( Trace::TRC_ERROR, "Invalid element:{0}, Att:{1}", GetName(), name );
 			return false;
 		}
 	}
@@ -120,7 +120,7 @@ namespace XML {
 		vsnprintf( strBuff, sizeof(strBuff), msg, args );
 		va_end(args);
 
-		defTrace( Trace::TRC_ERROR, "XML Parse Error : %0%", strBuff );
+		defTrace( Trace::TRC_ERROR, "XML Parse Error : {0}", strBuff );
 	}
 
 
@@ -139,7 +139,7 @@ namespace XML {
 		vsnprintf( strBuff, sizeof(strBuff), msg, args );
 		va_end(args);
 
-		defTrace( Trace::TRC_ERROR, "XML Parse Warning : %0%", strBuff );
+		defTrace( Trace::TRC_ERROR, "XML Parse Warning : {0}", strBuff );
 	}
 
 	/** SAX2 callback when an element start has been detected by the parser. It provides the namespace informations for the element, as well as the new namespace declarations on the element.
@@ -187,7 +187,7 @@ namespace XML {
 
 			if( !pNewElement->SetAttributeValue( (char*)attName, value ) )
 			{
-				defTrace( Trace::TRC_ERROR, "Invalid XML Element:%0%, Att:%1%", (const char*)localname, (const char*)attName );
+				defTrace( Trace::TRC_ERROR, "Invalid XML Element:{0}, Att:{1}", (const char*)localname, (const char*)attName );
 			}
 		}
 

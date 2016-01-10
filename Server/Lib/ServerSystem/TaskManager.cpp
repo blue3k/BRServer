@@ -101,7 +101,7 @@ namespace Svr {
 				Assert(pTask->GetTaskID() != 0);
 				if (pTask->GetTaskID() == 0)
 				{
-					svrTrace(Trace::TRC_ERROR, "Failed to insert a tick task:%0%", pTask->GetTaskID());
+					svrTrace(Trace::TRC_ERROR, "Failed to insert a tick task:{0}", pTask->GetTaskID());
 				}
 
 				SharedPointerT<TickTask> pFound;
@@ -115,7 +115,7 @@ namespace Svr {
 					}
 
 					// maximum retry is exceeded, just add
-					svrTrace(Trace::TRC_WARN, "Failed to insert a unique task:%0%, task already exists, douplicated task will be exists", pTask->GetTaskID());
+					svrTrace(Trace::TRC_WARN, "Failed to insert a unique task:{0}, task already exists, douplicated task will be exists", pTask->GetTaskID());
 				}
 
 				pTask->ResetRetryCount();
@@ -151,7 +151,7 @@ namespace Svr {
 				{
 					if (FAILED(m_TaskList.Remove(pTask->GetTaskID(), pFound)))
 					{
-						svrTrace(Trace::TRC_ERROR, "Failed to remove a task:%0%", pTask->GetTaskID());
+						svrTrace(Trace::TRC_ERROR, "Failed to remove a task:{0}", pTask->GetTaskID());
 					}
 					else if (pTask != pFound)
 					{
@@ -164,12 +164,12 @@ namespace Svr {
 
 							// pending again
 							m_PendingRemoveTask.Enqueue(pTask);
-							svrTrace(Svr::TRC_DBGSVR, "Remove is failed, retry task:%0%", pTask->GetTaskID());
+							svrTrace(Svr::TRC_DBGSVR, "Remove is failed, retry task:{0}", pTask->GetTaskID());
 							continue;
 						}
 						else
 						{
-							svrTrace(Trace::TRC_ERROR, "Remove is failed, delete the task:%0%", pTask->GetTaskID());
+							svrTrace(Trace::TRC_ERROR, "Remove is failed, delete the task:{0}", pTask->GetTaskID());
 							// throw it away, delete can cause crash
 							continue;
 						}
@@ -187,12 +187,12 @@ namespace Svr {
 					{
 						pTask->IncRetryCount();
 						m_PendingRemoveTask.Dequeue(pTask);
-						svrTrace(Svr::TRC_DBGSVR, "Remove is failed, retry task:%0%", pTask->GetTaskID());
+						svrTrace(Svr::TRC_DBGSVR, "Remove is failed, retry task:{0}", pTask->GetTaskID());
 						continue;
 					}
 					else
 					{
-						svrTrace(Trace::TRC_ERROR, "Try to remove not-existing task:%0%, taskgroup:%1%, from taskgroup:%2%", pTask->GetTaskID(), pTask->GetTaskGroupID(), GetGroupID());
+						svrTrace(Trace::TRC_ERROR, "Try to remove not-existing task:{0}, taskgroup:{1}, from taskgroup:{2}", pTask->GetTaskID(), pTask->GetTaskGroupID(), GetGroupID());
 						// throw it away, delete can cause crash
 					}
 				}
@@ -246,7 +246,7 @@ namespace Svr {
 
 			if (FAILED(tickTask->OnEventTask(pEvtTask)))
 			{
-				svrTrace(Svr::TRC_ENTITY, "EventTask is failed, Evt:%0%", (UINT)pEvtTask.EventType.load(std::memory_order_relaxed))
+				svrTrace(Svr::TRC_ENTITY, "EventTask is failed, Evt:{0}", (UINT)pEvtTask.EventType.load(std::memory_order_relaxed))
 			}
 
 			m_TimeScheduler.Reschedul(threadID, tickTask->GetTimerAction());

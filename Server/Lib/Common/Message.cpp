@@ -81,13 +81,13 @@ namespace Message {
 
 		if (uiMsgBufSize > MAX_MESSAGE_SIZE)
 		{
-			defTrace(Trace::TRC_ERROR, "Too big message allocation request, over MAX_MESSAGE_SIZE, %0% is requested", uiMsgBufSize);
+			defTrace(Trace::TRC_ERROR, "Too big message allocation request, over MAX_MESSAGE_SIZE, {0} is requested", uiMsgBufSize);
 			return nullptr;
 		}
 
 		if (szAllocate > USHRT_MAX)
 		{
-			defTrace(Trace::TRC_ERROR, "Too big message allocation request, over 64KB, %0% is requested", szAllocate);
+			defTrace(Trace::TRC_ERROR, "Too big message allocation request, over 64KB, {0} is requested", szAllocate);
 			return nullptr;
 		}
 

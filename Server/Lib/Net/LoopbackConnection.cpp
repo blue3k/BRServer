@@ -94,7 +94,7 @@ namespace Net {
 		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_CONNECTION_RESULT, S_OK)  );
 		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_STATE_CHANGE, GetConnectionState())  );
 
-		netTrace( TRC_CONNECTION, "Initialize LoopbackConnection CID:%0%, Addr:%1%:%2%", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
+		netTrace( TRC_CONNECTION, "Initialize LoopbackConnection CID:{0}, Addr:{1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
 
 	Proc_End:
 

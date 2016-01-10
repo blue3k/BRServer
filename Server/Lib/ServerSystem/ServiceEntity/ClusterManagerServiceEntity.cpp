@@ -149,7 +149,7 @@ namespace Svr {
 			break;
 		}
 
-		svrTrace(Svr::TRC_CLUSTER, "Creating a watcher:%0% for ClusterID:%1% in %2%", entityID, clusterID, GetClusterID());
+		svrTrace(Svr::TRC_CLUSTER, "Creating a watcher:{0} for ClusterID:{1} in {2}", entityID, clusterID, GetClusterID());
 
 		// We are going to use reserved entity ID
 		svrChk( GetServerComponent<EntityManager>()->AddEntity( entityID, pServiceEntity ) );

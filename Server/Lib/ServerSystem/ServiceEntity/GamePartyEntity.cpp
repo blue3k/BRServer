@@ -339,7 +339,7 @@ namespace Svr {
 
 		svrMem( pTrans = new PartyTransCloseInstance );
 
-		svrTrace(Svr::TRC_INFO, "Closing party instance %0%, memberCount:%1%", GetEntityUID(), m_PartyPlayerByUID.size());
+		svrTrace(Svr::TRC_INFO, "Closing party instance {0}, memberCount:{1}", GetEntityUID(), m_PartyPlayerByUID.size());
 
 		svrChk(PendingTransaction(GetTaskWorker()->GetThreadID(), pTrans));
 		

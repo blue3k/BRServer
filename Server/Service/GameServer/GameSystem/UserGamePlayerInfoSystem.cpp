@@ -235,7 +235,7 @@ namespace GameServer {
 		m_GameMoney -= pCostItem->RequiredGameMoney;
 		//m_Cash -= pShopItem->RequiredCash;
 
-		GetOwner().AddGameTransactionLogT(TransLogCategory::Buy, pCostItem->RequiredGem, pCostItem->RequiredGameMoney, 0, "Remain, Gem:%0%, GameMoney:%1%, message:%2%", GetGem(), GetGameMoney(), message != nullptr ? message : "");
+		GetOwner().AddGameTransactionLogT(TransLogCategory::Buy, pCostItem->RequiredGem, pCostItem->RequiredGameMoney, 0, "Remain, Gem:{0}, GameMoney:{1}, message:{2}", GetGem(), GetGameMoney(), message != nullptr ? message : "");
 
 
 	//Proc_End:
@@ -262,7 +262,7 @@ namespace GameServer {
 	Proc_End:
 
 		if( FAILED(hr) )
-			svrTrace( Trace::TRC_ERROR, "Player Setlevel is failed to set %0%", newLevel );
+			svrTrace( Trace::TRC_ERROR, "Player Setlevel is failed to set {0}", newLevel );
 
 		return hr;
 	}

@@ -336,7 +336,7 @@ namespace Net {
 			{
 				if( m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.IDSeq.Sequence != uiSequence )
 				{
-					netTrace( TRC_GUARREANTEDCTRL, "Validation error : Message has Invalid Sequence %0%, %1% Required, msg:{2:X8}", m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.IDSeq.Sequence, uiSequence, m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.ID );
+					netTrace( TRC_GUARREANTEDCTRL, "Validation error : Message has Invalid Sequence {0}, {1} Required, msg:{2:X8}", m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.IDSeq.Sequence, uiSequence, m_pMsgWnd[iPosIdx].pMsg->GetMessageHeader()->msgID.ID );
 				}
 
 				Util::SafeRelease( m_pMsgWnd[iPosIdx].pMsg );

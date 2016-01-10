@@ -128,7 +128,7 @@ namespace Svr {
 
 					if( FAILED(hr) )
 					{
-						svrTrace( Trace::TRC_ERROR, "Error, FailedStep %0%:%1%", m_CurStep, typeid(*m_Steps[m_CurStep]).name() );
+						svrTrace( Trace::TRC_ERROR, "Error, FailedStep {0}:{1}", m_CurStep, typeid(*m_Steps[m_CurStep]).name() );
 						m_CurStep++;
 						pRes = nullptr;
 					}

@@ -354,7 +354,7 @@ namespace Svr {
 			auto matchingQueueService = Svr::GetServerComponent<Svr::RingClusterServiceEntity>(matchingCompID);
 			if (matchingQueueService == nullptr)
 			{
-				svrTrace(Trace::TRC_ERROR, "Failed to get matching queue service MaxGamePlayer:%0%, NumberOfPlayer:%1%, matchingCompID:%2%", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), matchingCompID);
+				svrTrace(Trace::TRC_ERROR, "Failed to get matching queue service MaxGamePlayer:{0}, NumberOfPlayer:{1}, matchingCompID:{2}", GetMaxGamePlayers(), GetMyOwner()->GetNumPlayer(), matchingCompID);
 				svrErr(E_SVR_INVALID_CLUSTERID);
 			}
 			else

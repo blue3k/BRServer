@@ -229,7 +229,7 @@ namespace GameServer {
 
 		if (FAILED(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Failed to close entity:%0%, hr:{1:X8}", GetOwnerEntityUID(), hr);
+			svrTrace(Trace::TRC_ERROR, "Failed to close entity:{0}, hr:{1:X8}", GetOwnerEntityUID(), hr);
 		}
 
 		if (m_WaitingTransactions <= 0)

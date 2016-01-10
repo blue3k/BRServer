@@ -173,13 +173,13 @@ namespace Svr
 			Assert(m_pHandlerTable);
 			if (FAILED(m_pHandlerTable->HandleMessage<Svr::Transaction*&>(GetConnection(), pIMsg, pNewTrans)))
 			{
-				svrTrace(Trace::TRC_ERROR, "Failed to handle remote message Entity:%0%:%1%, MsgID:%2%", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
+				svrTrace(Trace::TRC_ERROR, "Failed to handle remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
 				svrErr(E_SVR_NOTEXPECTED_MESSAGE);
 			}
 			break;
 		}
 		default:
-			svrTrace(Trace::TRC_ERROR, "Not Processed Remote message Entity:%0%:%1%, MsgID:%2%", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
+			svrTrace(Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
 			svrErr(E_SVR_NOTEXPECTED_MESSAGE);
 			break;
 		};
@@ -362,7 +362,7 @@ namespace Svr
 				}
 				else
 				{
-					svrTrace(Trace::TRC_WARN, "Transaction result for TID:%0% is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
+					svrTrace(Trace::TRC_WARN, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
 					Util::SafeRelease(pRes);
 					//svrErr(E_FAIL);

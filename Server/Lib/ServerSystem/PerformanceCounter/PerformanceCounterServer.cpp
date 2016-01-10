@@ -337,7 +337,7 @@ namespace Svr {
 		{
 			if (FAILED(m_InstanceMap.FindInWriteTree(pInstance->GetInstanceEntityUID().UID, pInstance)))
 			{
-				svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:%0%, Create/Find Both failed?", pInstance->GetInstanceEntityUID());
+				svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Create/Find Both failed?", pInstance->GetInstanceEntityUID());
 			}
 			else
 			{
@@ -368,7 +368,7 @@ namespace Svr {
 					pInstance->AddCounter(new PerformanceCounterRaw<UINT64>(counters[iCounter].CounterName));
 					break;
 				default:
-					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:%0%, Invalid counter type:%1%", pInstance->GetInstanceEntityUID(), counters[iCounter].DateType);
+					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Invalid counter type:{1}", pInstance->GetInstanceEntityUID(), counters[iCounter].DateType);
 					break;
 				}
 			}
@@ -394,7 +394,7 @@ namespace Svr {
 				SharedPointerT<PerformanceCounterInstance> pInstance;
 				if (FAILED(m_InstanceMap.Remove(instances[iInstance].UID, pInstance)))
 				{
-					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:%0%, Failed to remove", instances[iInstance]);
+					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Failed to remove", instances[iInstance]);
 				}
 			}
 		}

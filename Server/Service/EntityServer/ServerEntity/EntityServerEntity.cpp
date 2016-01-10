@@ -74,7 +74,7 @@ namespace EntityServer {
 				if( FAILED(pServiceEntity->FindService( expectedUID, pServiceInfo )) )
 				{
 					Svr::ServerServiceInformation *pService = nullptr;
-					svrTrace( Svr::TRC_CLUSTER, "Adding remote cluster info EntityID:%0%, ClusterID:%1%", expectedUID, clusterID );
+					svrTrace( Svr::TRC_CLUSTER, "Adding remote cluster info EntityID:{0}, ClusterID:{1}", expectedUID, clusterID );
 					svrChk( pServiceEntity->NewServerService( expectedUID, this, clusterID == ClusterID::ClusterManager ? ClusterMembership::Slave : ClusterMembership::StatusWatcher, ServiceStatus::Ready, pService ) );
 				}
 			}

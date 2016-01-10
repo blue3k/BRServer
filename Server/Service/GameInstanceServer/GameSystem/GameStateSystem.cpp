@@ -550,7 +550,7 @@ namespace ConspiracyGameInstanceServer {
 				case PlayerRole::Seer:
 					if( FAILED(conspiracy::RewardTbl::FindItem( (int)conspiracy::RewardTbl::ERole::Enum::Seer, pItem )) )
 					{
-						svrTrace( Trace::TRC_ERROR, "Can't find expericend for the seer, no exp for PID:%0%", pPlayer->GetPlayerID() );
+						svrTrace( Trace::TRC_ERROR, "Can't find expericend for the seer, no exp for PID:{0}", pPlayer->GetPlayerID() );
 						break;
 					}
 					expGain = isWinner ? pItem->WinExp : pItem->LoseExp;
@@ -561,7 +561,7 @@ namespace ConspiracyGameInstanceServer {
 				//case PlayerRole::Owlman:
 					if( FAILED(conspiracy::RewardTbl::FindItem( (int)conspiracy::RewardTbl::ERole::Enum::Villager, pItem )) )
 					{
-						svrTrace( Trace::TRC_ERROR, "Can't find expericend for villager side, no exp for PID:%0%", pPlayer->GetPlayerID() );
+						svrTrace( Trace::TRC_ERROR, "Can't find expericend for villager side, no exp for PID:{0}", pPlayer->GetPlayerID() );
 						break;
 					}
 					expGain = isWinner ? pItem->WinExp : pItem->LoseExp;
@@ -570,7 +570,7 @@ namespace ConspiracyGameInstanceServer {
 				//case PlayerRole::Possessed:
 					if (FAILED(conspiracy::RewardTbl::FindItem((int)conspiracy::RewardTbl::ERole::Enum::Monster, pItem)))
 					{
-						svrTrace( Trace::TRC_ERROR, "Can't find expericend for werewolf side, no exp for PID:%0%", pPlayer->GetPlayerID() );
+						svrTrace( Trace::TRC_ERROR, "Can't find expericend for werewolf side, no exp for PID:{0}", pPlayer->GetPlayerID() );
 						break;
 					}
 					expGain = isWinner ? pItem->WinExp : pItem->LoseExp;

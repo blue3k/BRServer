@@ -95,12 +95,12 @@ namespace GameServer {
 				svrErrClose(E_INVALID_PLAYERID);
 			}
 
-			svrTrace(Svr::TRC_ENTITY, "Reinitialize Player Entity UID:%0%", GetPlayerID());
+			svrTrace(Svr::TRC_ENTITY, "Reinitialize Player Entity UID:{0}", GetPlayerID());
 			Assert(pPlayerEntity->GetShardID() == GetShardID());
 		}
 		else
 		{
-			svrTrace(Svr::TRC_ENTITY, "Create new Player Entity UID:%0%", GetPlayerID());
+			svrTrace(Svr::TRC_ENTITY, "Create new Player Entity UID:{0}", GetPlayerID());
 			svrChk(Svr::GetServerComponent<GameEntityManager>()->CreateGamePlayer(GetPlayerID(), pPlayerEntity));
 
 		}

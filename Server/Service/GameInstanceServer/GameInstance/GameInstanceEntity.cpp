@@ -322,7 +322,7 @@ namespace ConspiracyGameInstanceServer {
 	// Close Game Instance
 	void GameInstanceEntity::CloseGameInstance()
 	{
-		svrTrace(Trace::TRC_TRACE, "CloseGameInstance:%0%", GetEntityUID());
+		svrTrace(Trace::TRC_TRACE, "CloseGameInstance:{0}", GetEntityUID());
 
 		LeaveAllPlayerForGameDelete();
 
@@ -358,7 +358,7 @@ namespace ConspiracyGameInstanceServer {
 		if (numBot > maxPlayer)
 		{
 			// Too many boot number
-			svrTrace(Trace::TRC_ERROR, "Too many bot number numBot:%0% -> %1%, maxPlayer:%2%", numBot, maxPlayer-1, maxPlayer);
+			svrTrace(Trace::TRC_ERROR, "Too many bot number numBot:{0} -> {1}, maxPlayer:{2}", numBot, maxPlayer-1, maxPlayer);
 			numBot = maxPlayer - 1;
 		}
 
@@ -396,7 +396,7 @@ namespace ConspiracyGameInstanceServer {
 			PlayerInformation playerInfo;
 			playerInfo.PlayerID = iBot + 1;
 			playerInfo.Level = 1;
-			StrUtil::Format(playerInfo.NickName, "Bot%0%", iBot);
+			StrUtil::Format(playerInfo.NickName, "Bot{0}", iBot);
 			pPlayer = new GamePlayer(this, playerInfo);
 			pPlayer->SetIsBot(true);
 			svrChk(AddPlayerToJoin(pPlayer));
@@ -522,7 +522,7 @@ namespace ConspiracyGameInstanceServer {
 
 	//Proc_End:
 
-		svrTrace(Trace::TRC_TRACE, "LeavePlayer, remain:%0%", m_GamePlayerByUID.GetItemCount());
+		svrTrace(Trace::TRC_TRACE, "LeavePlayer, remain:{0}", m_GamePlayerByUID.GetItemCount());
 
 		if (m_GamePlayerByUID.GetItemCount() == 0) // if no player remain
 		{

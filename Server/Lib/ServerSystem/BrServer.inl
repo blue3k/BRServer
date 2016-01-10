@@ -148,7 +148,7 @@ HRESULT BrServer::InitializeDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 	svrChk( pDBManager->InitializeDB( pDBClusterCfg->PartitioningCount ) );
 
 	m_DBManagers.push_back(pDBManager);
-	svrTrace(Trace::TRC_TRACE, "Adding DB manager %0% clusterType:%1%", typeid(DBManagerType).name(), (UINT32)pDBClusterCfg->ClusterType);
+	svrTrace(Trace::TRC_TRACE, "Adding DB manager {0} clusterType:{1}", typeid(DBManagerType).name(), (UINT32)pDBClusterCfg->ClusterType);
 
 
 	for( auto dbInstanceInfo = DBMembers.begin(); dbInstanceInfo != DBMembers.end(); ++dbInstanceInfo )
@@ -162,7 +162,7 @@ HRESULT BrServer::InitializeDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 
 		auto instanceInfo = itInstnace->second;
 
-		svrTrace(Trace::TRC_TRACE, "	DB manager Instance:%0% DB:%1%, ConnectionString:%2%", instanceInfo->InstanceName, pClusterInstanceCfg->DBName, instanceInfo->ConnectionString);
+		svrTrace(Trace::TRC_TRACE, "	DB manager Instance:{0} DB:{1}, ConnectionString:{2}", instanceInfo->InstanceName, pClusterInstanceCfg->DBName, instanceInfo->ConnectionString);
 
 		svrChk( pDBManager->AddDBSource( 
 			pClusterInstanceCfg->PartitioningID,

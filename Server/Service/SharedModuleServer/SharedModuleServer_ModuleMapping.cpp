@@ -111,11 +111,11 @@ namespace SharedModuleServer {
 
 			if (pServiceEntity->GetClusterMembership() <= ClusterMembership::StatusWatcher)
 			{
-				svrTrace(Trace::TRC_WARN, "Duplicated entity watcher entity %0% EntityUID:%1%, while adding %2% EntityUID:%3%", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
+				svrTrace(Trace::TRC_WARN, "Duplicated entity watcher entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
 			}
 			else
 			{
-				svrTrace(Trace::TRC_ERROR, "Duplicated cluster entity %0% EntityUID:%1%, while adding %2% EntityUID:%3%", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
+				svrTrace(Trace::TRC_ERROR, "Duplicated cluster entity {0} EntityUID:{1}, while adding {2} EntityUID:{3}", typeid(*pServiceEntityTest).name(), pServiceEntityTest->GetEntityUID(), typeid(*pServiceEntity).name(), pServiceEntity->GetEntityUID());
 			}
 			delete pServiceEntity;
 			goto Proc_End;

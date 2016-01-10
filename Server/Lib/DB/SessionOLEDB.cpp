@@ -37,7 +37,7 @@ namespace DB {
 	template< class CmdClass >
 	HRESULT SendQueryT(CSession& session, CmdClass& cmd)
 	{
-		dbTrace( BR::DB::TRC_QUERYSTR, "Query %0%", cmd.GetQueryString() );
+		dbTrace( BR::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
 		HRESULT hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DBSQL, false);
 
 		if( hr == DB_E_CANNOTCONNECT ) hr = E_DB_CONNECTION_FAILED;
@@ -56,7 +56,7 @@ namespace DB {
 	template< class CmdClass >
 	HRESULT SendQueryRowsetT(CSession& session, CmdClass& cmd)
 	{
-		dbTrace( BR::DB::TRC_QUERYSTR, "Query %0%", cmd.GetQueryString() );
+		dbTrace( BR::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
 		HRESULT hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DEFAULT, true);
 		if( FAILED(hr) ) {
 			return E_FAIL;
