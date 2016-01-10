@@ -385,7 +385,8 @@ namespace LoginServer {
 		}
 		else
 		{
-			svrErr(E_UNEXPECTED);
+			svrTrace(Trace::TRC_ERROR, "Failed to create player FBUID:{0}, email:{1}, result:{2}", GetUID(), pDBRes->EMail, pDBRes->Result);
+			hr = E_INVALID_VALUE;
 		}
 
 	Proc_End:
@@ -393,7 +394,7 @@ namespace LoginServer {
 		if( FAILED(hr) )
 			CloseTransaction(hr);
 
-		return hr; 
+		return S_OK; 
 	}
 
 	HRESULT LoginPlayerTransLoginByFacebook::OnLoginFacebook( Svr::TransactionResult* &pRes )
@@ -404,7 +405,17 @@ namespace LoginServer {
 
 		svrChk(pRes->GetHRESULT());
 
-		svrChk(StrUtil::StringLwr(email, GetEMail()));
+
+		if (GetEMail() == nullptr || GetEMail()[0] == '\0')
+		{
+			// Generate fake&unique email from UID
+			svrChk(StrUtil::Format(email, "{0}@braveplayer.com__", GetUID()));
+		}
+		else
+		{
+			svrChk(StrUtil::StringLwr(email, GetEMail()));
+		}
+
 
 		GetMyOwner()->HeartBit();
 

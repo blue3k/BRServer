@@ -721,7 +721,7 @@ namespace DB {
 
 		pQuery->SetTransaction(Sender);
 		pQuery->UserID = ToUserID;
-		pQuery->Collapsable = isCollapsable;
+		pQuery->Collapsable = isCollapsable ? 1 : 0;
 		pQuery->MessageID = (UINT16)messageID;
 		pQuery->MessageParam0 = messageParam0;
 		pQuery->MessageParam1 = messageParam1;

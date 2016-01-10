@@ -366,6 +366,13 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID() != 0 )
 			svrErrClose(E_GAME_ALREADY_IN_PARTY);
 
+
+		GetMyOwner()->UpdateGamePlayer();
+		if (GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetStamina() < GetMyServer()->GetPresetGameConfig()->StaminaForGame)
+		{
+			svrErrClose(E_GAME_LOW_STAMINA);
+		}
+
 		svrChk( Svr::GetServerComponent<Svr::GamePartyManagerServiceEntity>()->GetService( pService ) );
 
 		svrChk( pService->GetService<Svr::GamePartyManagerService>()->CreatePartyCmd(  GetTransID(), 0, GetMyOwner()->GetPlayerInformation() ) );

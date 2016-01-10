@@ -847,7 +847,7 @@ namespace DB {
 	public:
 
 		INT64 UserID;
-		bool Collapsable;
+		INT8 Collapsable;
 		UINT16 MessageID;
 		INT64 MessageParam0;
 		INT64 MessageParam1;
