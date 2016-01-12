@@ -1,5 +1,0 @@
-F:\fwork\BRServer\BRServer\Tools\TableBuilder\TableBuilder\bin\Debug\TableBuilder.exe
-F:\fwork\BRServer\BRServer\Tools\TableBuilder\TableBuilder\bin\Debug\TableBuilder.pdb
-F:\fwork\BRServer\BRServer\Tools\TableBuilder\TableBuilder\obj\Debug\TableBuilder.csprojResolveAssemblyReference.cache
-F:\fwork\BRServer\BRServer\Tools\TableBuilder\TableBuilder\obj\Debug\TableBuilder.exe
-F:\fwork\BRServer\BRServer\Tools\TableBuilder\TableBuilder\obj\Debug\TableBuilder.pdb
