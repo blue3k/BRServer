@@ -34,8 +34,8 @@
 #include "GameSystem/GameVote.h"
 #include "GameInstance/GameInstanceEntity.h"
 
-
 #include "Table/conspiracy/RewardTbl.h"
+
 
 
 BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameStateSystem);
@@ -127,13 +127,13 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GamePlayState_FreeDebate : public GamePlayState_TimeLimit
+	class GamePlayState_FirstFreeDebate : public GamePlayState_TimeLimit
 	{
 	private:
 
 	public:
-		GamePlayState_FreeDebate(GameInstanceEntity* Owner):GamePlayState_TimeLimit(Owner,GameStateID::FreeDebate) {}
-		virtual ~GamePlayState_FreeDebate() {}
+		GamePlayState_FirstFreeDebate(GameInstanceEntity* Owner):GamePlayState_TimeLimit(Owner,GameStateID::FreeDebate) {}
+		virtual ~GamePlayState_FirstFreeDebate() {}
 
 		virtual HRESULT OnEnter()
 		{
@@ -145,6 +145,13 @@ namespace ConspiracyGameInstanceServer {
 
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
 			m_TimeToNext.SetTimer( DurationMS(GetOwner().GetPresetGameConfig()->FreeDiscussion*1000) );
+
+
+			GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->HRESULT {
+				if (pPlayer->GetPlayerEntityUID() != 0)
+					pPolicy->VoteEndS2CEvt(RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), rankers);
+				return S_OK;
+			});
 
 		Proc_End:
 
@@ -659,7 +666,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		memset( m_GamePlayStates, 0, sizeof(m_GamePlayStates) );
 		m_GamePlayStates[(UINT)GameStateID::None] = new GamePlayState_None(&GetOwner());
-		m_GamePlayStates[(UINT)GameStateID::FreeDebate] = new GamePlayState_FreeDebate(&GetOwner());
+		m_GamePlayStates[(UINT)GameStateID::FreeDebate] = new GamePlayState_FirstFreeDebate(&GetOwner());
 		//m_GamePlayStates[(UINT)GameStateID::FirstNightVote] = new GamePlayState_Night(&GetOwner(), GameStateID::FirstNightVote, GameVoteNight::FREEMASON | GameVoteNight::OWLMAN);
 		//m_GamePlayStates[(UINT)GameStateID::SecondNightVote] = new GamePlayState_Night(&GetOwner(), GameStateID::SecondNightVote, GameVoteNight::BODYGUARD | GameVoteNight::OWLMAN | GameVoteNight::MEDIUM );
 		m_GamePlayStates[(UINT)GameStateID::NightVote] = new GamePlayState_Night(&GetOwner(), GameStateID::NightVote, GameVoteNight::BODYGUARD | GameVoteNight::OWLMAN | GameVoteNight::MEDIUM );

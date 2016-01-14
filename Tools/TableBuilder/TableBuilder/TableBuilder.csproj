@@ -119,11 +119,13 @@
     <Compile Include="TableBuilder\UnrealTableBuilder.CPP.FuncImpl.cs" />
     <Compile Include="TableBuilder\UnrealTableBuilder.cs" />
     <Compile Include="TableBuilder\UnrealTableBuilder.UC.CodeGen.cs" />
+    <Compile Include="TableFormat\botTalkTable.cs" />
     <Compile Include="TableFormat\gameConfigTable.cs" />
     <Compile Include="TableFormat\levelTable.cs" />
     <Compile Include="TableFormat\organicTable.cs" />
     <Compile Include="TableFormat\rewardTable.cs" />
     <Compile Include="TableFormat\shopTable.cs" />
+    <Compile Include="TableFormat\stringTableBot.cs" />
     <Compile Include="TreeBuilder\CPPTreeBuilder.CPP.CodeGen.cs" />
     <Compile Include="TreeBuilder\CPPTreeBuilder.CPP.FuncImpl.cs" />
     <Compile Include="TreeBuilder\CPPTreeBuilder.cs" />

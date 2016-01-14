@@ -37,6 +37,8 @@ namespace BRMonitoringWeb.Controllers
             new GameTableInformation("OrganicTable", null, typeof(GameTbl.OrganicTbl) ),
             new GameTableInformation("RewardTable", null, typeof(GameTbl.RewardTbl) ),
             new GameTableInformation("ShopTable", null, typeof(GameTbl.ShopTbl) ),
+            new GameTableInformation("BotTalkTable", null, typeof(conspiracy.BotTalkTbl) ),
+            //new GameTableInformation("StringTblBot", null, typeof(conspiracy.StringTblBot) ),
         };
         Dictionary<string, GameTableInformation> m_TableMap = new Dictionary<string, GameTableInformation>();
 

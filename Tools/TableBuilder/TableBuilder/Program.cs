@@ -117,6 +117,8 @@ namespace TableBuilder
                                              new TableInfo("LevelTbl"               , new KeyInfo(KeyType.EKEY_UNIQUE, "Level") ),
                                              new TableInfo("ShopTbl"                , new KeyInfo(KeyType.EKEY_UNIQUE, "ShopItemID") ),
                                              new TableInfo("GameConfigTbl"          , new KeyInfo(KeyType.EKEY_UNIQUE, "PresetID") ),
+                                             new TableInfo("BotTalkTbl"             , new KeyInfo(KeyType.EKEY_UNIQUE, "ItemID") ),
+                                             new TableInfo("StringTblBot"           , new KeyInfo(KeyType.EKEY_UNIQUE, "StringItemID") ),
                                            };
 
         /// <summary>

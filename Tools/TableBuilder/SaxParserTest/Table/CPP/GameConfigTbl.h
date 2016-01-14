@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2014 The Braves Co.
+// CopyRight (c) 2015 The Braves Co.
 // 
 // Author : Generated
 // 
@@ -11,7 +11,6 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/BRXML.h"
 
 
 
@@ -22,10 +21,9 @@ namespace conspiracy
  	public:
 
 		// GameConfigItem structure defition
-		class GameConfigItem: public BR::XML::DOMElement
+		struct GameConfigItem
 		{
- 		public:
-			int	PresetID;
+ 			int	PresetID;
 			int	DefaultMail;
 			int	DefaultGem;
 			int	MaxGem;
@@ -51,12 +49,9 @@ namespace conspiracy
 			int	ForceProgressCount;
 			int	PlayerAutoLogout;
 
-			GameConfigItem();
-			bool SetAttributeValue( const std::string& name, const std::string& value ) override;
-			void AddChild( DOMElement *pChild ) override;
-		}; // class GameConfigItem: public BR::XML::DOMElement
+		}; // struct GameConfigItem
 
-		typedef std::tr1::unordered_map<int, GameConfigItem*> TableMap;
+		typedef std::unordered_map<int, GameConfigItem*> TableMap;
 		typedef TableMap::iterator TableMapItr;
 		static TableMap m_TableMap;
 		static GameConfigTbl m_Instance;
@@ -64,7 +59,7 @@ namespace conspiracy
 
 
 		// declare member function
-		static HRESULT LoadTable( const char *strFileName );
+		static HRESULT LoadTable( const std::list<GameConfigItem>& rowList );
 		static HRESULT ClearTable();
 
 		static HRESULT FindItem( const int& Key, GameConfigItem*& pRow);

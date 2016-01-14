@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2014 The Braves Co.
+// CopyRight (c) 2015 The Braves Co.
 // 
 // Author : Generated
 // 
@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 #include "Common/Typedefs.h"
-#include "Common/BrXML.h"
 #include "RewardTbl.h"
 
 
@@ -90,67 +89,18 @@ namespace conspiracy
 		return "INVALID_ENUM";
 	}
 
-
-	class RewardTblLoaderElement : public BR::XML::DOMElement
-	{
- 	public:
-		RewardTblLoaderElement::RewardTblLoaderElement() : BR::XML::DOMElement("RewardTblLoaderElement")
-		{
- 		}
-		void AddChild( DOMElement *pChild ) override
-		{
- 			if( pChild->GetTypeName() == "RewardItem" )
-			{
- 				auto* pRewardItem = dynamic_cast<RewardTbl::RewardItem*>(pChild);
-				RewardTbl::m_TableMap.insert(std::make_pair(pRewardItem->Role, pRewardItem));
-			}
-		}
-	}; // class RewardTblLoaderElement : public BR::XML::DOMElement
-
-	// RewardTblParser decl/impl
-	class RewardTblParser : public BR::XML::XMLParserHandler
-	{
- 	public:
-		enum ATT_ID_RewardItem
-		{
- 			EATT_Role,
-			EATT_WinExp,
-			EATT_LoseExp,
-			EATT_WinMoney,
-			EATT_LoseMoney,
-		}; // enum ATT_ID_RewardItem
-
-
-	public:
-		RewardTblParser()
-		{
- 			RegisterElementCreator( "RewardItem", []()-> BR::XML::DOMElement* { return new RewardTbl::RewardItem; } );
-			RegisterElementCreator( "RewardTbl", []()-> BR::XML::DOMElement* { return new RewardTblLoaderElement; } );
-		}
-
-		HRESULT LoadTable( const char *strFileName )
-		{
- 			int result = xmlSAXUserParseFile( *this, this, strFileName );
-
-			if (result != 0)
-			{
- 				// error log
-				return E_FAIL;
-			}
-			xmlCleanupParser();
-			return S_OK;
-		}
-	}; // class RewardTblParser : public BR::XML::XMLParserHandler
-
 	RewardTbl RewardTbl::m_Instance;
 	RewardTbl::TableMap RewardTbl::m_TableMap;
 
-	HRESULT RewardTbl::LoadTable( const char *strFileName )
+	HRESULT RewardTbl::LoadTable( const std::list<RewardItem>& rowList )
 	{
- 		RewardTblParser parser;
-		if (FAILED(parser.LoadTable(strFileName)))
-			return E_FAIL;
-
+ 
+		for( auto rowItem : rowList )
+		{
+ 			auto* pRewardItem = new RewardTbl::RewardItem;
+			*pRewardItem = rowItem;
+			RewardTbl::m_TableMap.insert(std::make_pair(pRewardItem->Role, pRewardItem));
+		}
 		return S_OK;
 	}
 
@@ -173,45 +123,6 @@ namespace conspiracy
 		}
 		pRow = itr->second;
 		return S_OK;
-	}
-
-	// sub class RewardItem member implementations
-	RewardTbl::RewardItem::RewardItem() : BR::XML::DOMElement("RewardItem")
-	{
- 	}
-	bool RewardTbl::RewardItem::SetAttributeValue( const std::string& name, const std::string& value )
-	{
- 		if(name == "Role")
-		{
- 			this->Role = value.c_str();
-			if (this->Role == "INVALID_ENUM") return false;
-			return true;
-		}
-		else if(name == "WinExp")
-		{
- 			this->WinExp = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "LoseExp")
-		{
- 			this->LoseExp = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "WinMoney")
-		{
- 			this->WinMoney = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "LoseMoney")
-		{
- 			this->LoseMoney = atoi( value.c_str() );
-			return true;
-		}
-		return __super::SetAttributeValue(name,value);
-	}
-	void RewardTbl::RewardItem::AddChild( DOMElement *pChild )
-	{
- 		return __super::AddChild(pChild);
 	}
 
 }; // namespace conspiracy

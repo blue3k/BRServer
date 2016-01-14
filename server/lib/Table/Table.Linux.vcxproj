@@ -114,6 +114,7 @@
     <ProjectCapability Include="Linux" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="conspiracy\BotTalkTbl.cpp" />
     <ClCompile Include="conspiracy\GameConfigTbl.cpp" />
     <ClCompile Include="conspiracy\LevelTbl.cpp" />
     <ClCompile Include="conspiracy\OrganicTbl.cpp" />
@@ -124,6 +125,7 @@
     <ClCompile Include="TableSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="conspiracy\BotTalkTbl.h" />
     <ClInclude Include="conspiracy\GameConfigTbl.h" />
     <ClInclude Include="conspiracy\LevelTbl.h" />
     <ClInclude Include="conspiracy\OrganicTbl.h" />

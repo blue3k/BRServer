@@ -22,6 +22,7 @@
 #include "Table/conspiracy/OrganicTbl.h"
 #include "Table/conspiracy/ShopTbl.h"
 #include "Table/conspiracy/RewardTbl.h"
+#include "Table/conspiracy/BotTalkTbl.h"
 
 
 namespace BR {
@@ -41,6 +42,7 @@ namespace DB {
 		MCODE_QueryOrganicTbl,
 		MCODE_QueryShopTbl,
 		MCODE_QueryRewardTbl,
+		MCODE_QueryBotTalkTable,
 	}; // enum MsgCode
 
 
@@ -197,6 +199,39 @@ namespace DB {
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryRewardTbl, conspiracy::RewardTbl::RewardItem);
+
+
+
+	class QueryBotTalkTable : public conspiracy::BotTalkTbl::BotTalkTblItem, public QueryBase
+	{
+	public:
+		INT32 Dummy;
+
+
+	public:
+		BRDB_BEGIN_EMPTY_PARAM_MAP(QueryBotTalkTable)
+			BRDB_END_EMPTY_PARAM_MAP()
+
+			BRDB_BEGIN_RESULT_MAP(QueryBotTalkTable, 13)
+				BRDB_COLUMN_ENTRY(ItemID)
+				BRDB_COLUMN_ENTRY(BotName_Begin)
+				BRDB_COLUMN_ENTRY(BotName_End)
+				BRDB_COLUMN_ENTRY(FirstDay_Begin)
+				BRDB_COLUMN_ENTRY(FirstDay_End)
+				BRDB_COLUMN_ENTRY(FreeTalk_Begin)
+				BRDB_COLUMN_ENTRY(FreeTalk_End)
+				BRDB_COLUMN_ENTRY(Defense_Begin)
+				BRDB_COLUMN_ENTRY(Defense_End)
+				BRDB_COLUMN_ENTRY(GameResultWinner_Begin)
+				BRDB_COLUMN_ENTRY(GameResultWinner_End)
+				BRDB_COLUMN_ENTRY(GameResultLoser_Begin)
+				BRDB_COLUMN_ENTRY(GameResultLoser_End)
+			BRDB_END_RESULT_MAP()
+
+			BRDB_RAW_QUERY_STRING("select * from gtbl_stringtblbot;")
+	};
+
+	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryBotTalkTable, conspiracy::BotTalkTbl::BotTalkTblItem);
 
 
 

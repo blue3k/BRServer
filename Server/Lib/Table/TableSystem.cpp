@@ -26,14 +26,6 @@
 #include "ServerSystem/SvrConfig.h"
 #include "TableQueries.h"
 
-#define TABLE_BASEPATH "../../conspiracy/Table/"
-
-#define LOADTABLE( TblName, PathName ) \
-	if( FAILED(TblName##::LoadTable( TABLE_BASEPATH PathName )) )\
-	{\
-		defTrace( Trace::TRC_ERROR, #TblName " load failed!");\
-		return E_FAIL;\
-	}
 
 
 namespace BR {
@@ -170,6 +162,10 @@ namespace GameTable {
 
 		defChk(::conspiracy::GameConfigTbl::ClearTable());
 		hr = TableSystem::stm_Instance.QueryTable<DB::QueryGameConfigTblCmd, conspiracy::GameConfigTbl>();
+		defChk(hr);
+
+		defChk(::conspiracy::BotTalkTbl::ClearTable());
+		hr = TableSystem::stm_Instance.QueryTable<DB::QueryBotTalkTableCmd, conspiracy::BotTalkTbl>();
 		defChk(hr);
 
 	Proc_End:

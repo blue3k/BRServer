@@ -82,13 +82,13 @@
 #define E_GAME_ALREADY_IN_GAME           0xC7060001L
 
 //
-// MessageId: E_GAME_INAVLID_PLAYER
+// MessageId: E_GAME_INVALID_PLAYER
 //
 // MessageText:
 //
 // Invalid player
 //
-#define E_GAME_INAVLID_PLAYER            0xC7060002L
+#define E_GAME_INVALID_PLAYER            0xC7060002L
 
 //
 // MessageId: E_GAME_NOTREADY
@@ -172,13 +172,13 @@
 #define E_GAME_INVALID_PARTYID           0xC706000BL
 
 //
-// MessageId: E_GAME_INAVLID_PLAYER_COUNT
+// MessageId: E_GAME_INVALID_PLAYER_COUNT
 //
 // MessageText:
 //
 // Invalid player count for game
 //
-#define E_GAME_INAVLID_PLAYER_COUNT      0xC706000CL
+#define E_GAME_INVALID_PLAYER_COUNT      0xC706000CL
 
 //
 // MessageId: E_GAME_ALREADY_IN_PARTY
@@ -269,4 +269,13 @@
 // Invalid cost table id
 //
 #define E_GAME_INVALID_COSTID            0xC7060016L
+
+//
+// MessageId: E_GAME_INVALID_BOTTALK_TABLE
+//
+// MessageText:
+//
+// Invalid bot talk table
+//
+#define E_GAME_INVALID_BOTTALK_TABLE     0xC7060017L
 

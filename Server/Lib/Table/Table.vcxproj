@@ -170,6 +170,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="conspiracy\BotTalkTbl.cpp" />
     <ClCompile Include="conspiracy\GameConfigTbl.cpp" />
     <ClCompile Include="conspiracy\LevelTbl.cpp" />
     <ClCompile Include="conspiracy\OrganicTbl.cpp" />

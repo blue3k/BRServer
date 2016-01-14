@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2014 The Braves Co.
+// CopyRight (c) 2015 The Braves Co.
 // 
 // Author : Generated
 // 
@@ -11,7 +11,6 @@
 
 #include "stdafx.h"
 #include "Common/Typedefs.h"
-#include "Common/BrXML.h"
 #include "OrganicTbl.h"
 
 
@@ -93,67 +92,18 @@ namespace conspiracy
 		return "INVALID_ENUM";
 	}
 
-
-	class OrganicTblLoaderElement : public BR::XML::DOMElement
-	{
- 	public:
-		OrganicTblLoaderElement::OrganicTblLoaderElement() : BR::XML::DOMElement("OrganicTblLoaderElement")
-		{
- 		}
-		void AddChild( DOMElement *pChild ) override
-		{
- 			if( pChild->GetTypeName() == "OrganicItem" )
-			{
- 				auto* pOrganicItem = dynamic_cast<OrganicTbl::OrganicItem*>(pChild);
-				OrganicTbl::m_TableMap.insert(std::make_pair(pOrganicItem->ItemEffect, pOrganicItem));
-			}
-		}
-	}; // class OrganicTblLoaderElement : public BR::XML::DOMElement
-
-	// OrganicTblParser decl/impl
-	class OrganicTblParser : public BR::XML::XMLParserHandler
-	{
- 	public:
-		enum ATT_ID_OrganicItem
-		{
- 			EATT_OrganicItemID,
-			EATT_ItemInfo,
-			EATT_RequiredGem,
-			EATT_RequiredGameMoney,
-			EATT_ItemEffect,
-		}; // enum ATT_ID_OrganicItem
-
-
-	public:
-		OrganicTblParser()
-		{
- 			RegisterElementCreator( "OrganicItem", []()-> BR::XML::DOMElement* { return new OrganicTbl::OrganicItem; } );
-			RegisterElementCreator( "OrganicTbl", []()-> BR::XML::DOMElement* { return new OrganicTblLoaderElement; } );
-		}
-
-		HRESULT LoadTable( const char *strFileName )
-		{
- 			int result = xmlSAXUserParseFile( *this, this, strFileName );
-
-			if (result != 0)
-			{
- 				// error log
-				return E_FAIL;
-			}
-			xmlCleanupParser();
-			return S_OK;
-		}
-	}; // class OrganicTblParser : public BR::XML::XMLParserHandler
-
 	OrganicTbl OrganicTbl::m_Instance;
 	OrganicTbl::TableMap OrganicTbl::m_TableMap;
 
-	HRESULT OrganicTbl::LoadTable( const char *strFileName )
+	HRESULT OrganicTbl::LoadTable( const std::list<OrganicItem>& rowList )
 	{
- 		OrganicTblParser parser;
-		if (FAILED(parser.LoadTable(strFileName)))
-			return E_FAIL;
-
+ 
+		for( auto rowItem : rowList )
+		{
+ 			auto* pOrganicItem = new OrganicTbl::OrganicItem;
+			*pOrganicItem = rowItem;
+			OrganicTbl::m_TableMap.insert(std::make_pair(pOrganicItem->ItemEffect, pOrganicItem));
+		}
 		return S_OK;
 	}
 
@@ -176,45 +126,6 @@ namespace conspiracy
 		}
 		pRow = itr->second;
 		return S_OK;
-	}
-
-	// sub class OrganicItem member implementations
-	OrganicTbl::OrganicItem::OrganicItem() : BR::XML::DOMElement("OrganicItem")
-	{
- 	}
-	bool OrganicTbl::OrganicItem::SetAttributeValue( const std::string& name, const std::string& value )
-	{
- 		if(name == "OrganicItemID")
-		{
- 			this->OrganicItemID = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "ItemInfo")
-		{
- 			this->ItemInfo = value;
-			return true;
-		}
-		else if(name == "RequiredGem")
-		{
- 			this->RequiredGem = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "RequiredGameMoney")
-		{
- 			this->RequiredGameMoney = atoi( value.c_str() );
-			return true;
-		}
-		else if(name == "ItemEffect")
-		{
- 			this->ItemEffect = value.c_str();
-			if (this->ItemEffect == "INVALID_ENUM") return false;
-			return true;
-		}
-		return __super::SetAttributeValue(name,value);
-	}
-	void OrganicTbl::OrganicItem::AddChild( DOMElement *pChild )
-	{
- 		return __super::AddChild(pChild);
 	}
 
 }; // namespace conspiracy

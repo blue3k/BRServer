@@ -71,5 +71,8 @@
     <ClCompile Include="TableQueries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="conspiracy\BotTalkTbl.cpp">
+      <Filter>conspiracy</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

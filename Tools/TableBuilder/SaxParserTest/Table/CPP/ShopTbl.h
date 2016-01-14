@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2014 The Braves Co.
+// CopyRight (c) 2015 The Braves Co.
 // 
 // Author : Generated
 // 
@@ -11,7 +11,6 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/BRXML.h"
 
 
 
@@ -34,11 +33,11 @@ namespace conspiracy
 			}; // enum class Enum
 
 		private:
-			class EnumMap : public std::tr1::unordered_map<std::string, Enum>
+			class EnumMap : public std::unordered_map<std::string, Enum>
 			{
  			public:
 				EnumMap();
-			}; // class EnumMap : public std::tr1::unordered_map<std::string, Enum>
+			}; // class EnumMap : public std::unordered_map<std::string, Enum>
 
 			typedef EnumMap::iterator EnumMapItr;
 
@@ -55,31 +54,26 @@ namespace conspiracy
 			static Enum AsEnum(Enum e);
 			static const char* AsName(Enum e);
 
-		private:
-			Enum m_Enum;
+			union { int m_iEnum; Enum m_Enum; };
 			static EnumMap m_Map;
 		}; // class EItemEffect
 
 		// ShopItem structure defition
-		class ShopItem: public BR::XML::DOMElement
+		struct ShopItem
 		{
- 		public:
-			int	ShopItemID;
-			std::string	ItemInfo;
-			int	RequiredCash;
+ 			int	ShopItemID;
+			char 	ItemInfo[256];
+			char 	RequiredCash[256];
 			int	RequiredGem;
 			int	RequiredGameMoney;
 			EItemEffect	ItemEffect;
 			int	Quantity;
-			std::string	AndroidItemID;
-			std::string	iOSItemID;
+			char 	AndroidItemID[256];
+			char 	iOSItemID[256];
 
-			ShopItem();
-			bool SetAttributeValue( const std::string& name, const std::string& value ) override;
-			void AddChild( DOMElement *pChild ) override;
-		}; // class ShopItem: public BR::XML::DOMElement
+		}; // struct ShopItem
 
-		typedef std::tr1::unordered_map<int, ShopItem*> TableMap;
+		typedef std::unordered_map<int, ShopItem*> TableMap;
 		typedef TableMap::iterator TableMapItr;
 		static TableMap m_TableMap;
 		static ShopTbl m_Instance;
@@ -87,7 +81,7 @@ namespace conspiracy
 
 
 		// declare member function
-		static HRESULT LoadTable( const char *strFileName );
+		static HRESULT LoadTable( const std::list<ShopItem>& rowList );
 		static HRESULT ClearTable();
 
 		static HRESULT FindItem( const int& Key, ShopItem*& pRow);

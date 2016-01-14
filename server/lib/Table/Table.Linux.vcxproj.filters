@@ -64,6 +64,9 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TableQueries.cpp" />
     <ClCompile Include="TableSystem.cpp" />
+    <ClCompile Include="conspiracy\BotTalkTbl.cpp">
+      <Filter>conspiracy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="conspiracy\GameConfigTbl.h">
@@ -85,5 +88,8 @@
     <ClInclude Include="TableQueries.h" />
     <ClInclude Include="TableSystem.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="conspiracy\BotTalkTbl.h">
+      <Filter>conspiracy</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

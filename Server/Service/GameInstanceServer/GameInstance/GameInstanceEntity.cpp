@@ -43,6 +43,7 @@
 #include "GamePlayer.h"
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
 #include "ServerSystem/ServiceEntity/GameInstanceManagerServiceEntity.h"
+#include "Table/conspiracy/BotTalkTbl.h"
 
 
 
@@ -64,6 +65,7 @@ namespace ConspiracyGameInstanceServer {
 		, m_PresetGameConfigID(1) // 1 is default
 		, m_PresetGameConfig(nullptr)
 		, m_NumBot(0)
+		, m_pBotTalk(nullptr)
 		, m_Allocator(STDAllocator::GetInstance())
 	{
 		memset(m_PlayerByIndex,0, sizeof(m_PlayerByIndex));
@@ -350,9 +352,16 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_OK;
 		GamePlayer *pPlayer = nullptr;
 
+
+		if (FAILED(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
+		{
+			svrTrace(Trace::TRC_ERROR, "Failed to find bot talk item");
+			svrErr(E_GAME_INVALID_BOTTALK_TABLE);
+		}
+
 		if (maxPlayer > GameConst::MAX_GAMEPLAYER)
 		{
-			svrErr(E_GAME_INAVLID_PLAYER_COUNT);
+			svrErr(E_GAME_INVALID_PLAYER_COUNT);
 		}
 
 		if (numBot > maxPlayer)

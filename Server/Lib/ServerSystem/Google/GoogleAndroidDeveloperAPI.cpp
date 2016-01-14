@@ -128,18 +128,22 @@ namespace Google {
 			break;
 		}
 		case CURLINFO_DATA_IN: {
-			printf("RECIEVED: %d bytes\n", size);
+			printf("RECIEVED: %d bytes\n", (int)size);
 			break;
 		}
 		case CURLINFO_DATA_OUT: {
-			printf("TRANSMIT: %d bytes\n", size);
+			printf("TRANSMIT: %d bytes\n", (int)size);
 			break;
 		}
 		case CURLINFO_END: {
 			printf("This should never happen!");
 			break;
+		default:
+			break;
 		}
 		}
+
+		return 0;
 	}
 
 	// Check purchase receipt

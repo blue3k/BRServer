@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2014 The Braves Co.
+// CopyRight (c) 2015 The Braves Co.
 // 
 // Author : Generated
 // 
@@ -11,7 +11,6 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/BRXML.h"
 
 
 
@@ -34,11 +33,11 @@ namespace conspiracy
 			}; // enum class Enum
 
 		private:
-			class EnumMap : public std::tr1::unordered_map<std::string, Enum>
+			class EnumMap : public std::unordered_map<std::string, Enum>
 			{
  			public:
 				EnumMap();
-			}; // class EnumMap : public std::tr1::unordered_map<std::string, Enum>
+			}; // class EnumMap : public std::unordered_map<std::string, Enum>
 
 			typedef EnumMap::iterator EnumMapItr;
 
@@ -55,27 +54,22 @@ namespace conspiracy
 			static Enum AsEnum(Enum e);
 			static const char* AsName(Enum e);
 
-		private:
-			Enum m_Enum;
+			union { int m_iEnum; Enum m_Enum; };
 			static EnumMap m_Map;
 		}; // class ERole
 
 		// RewardItem structure defition
-		class RewardItem: public BR::XML::DOMElement
+		struct RewardItem
 		{
- 		public:
-			ERole	Role;
+ 			ERole	Role;
 			int	WinExp;
 			int	LoseExp;
 			int	WinMoney;
 			int	LoseMoney;
 
-			RewardItem();
-			bool SetAttributeValue( const std::string& name, const std::string& value ) override;
-			void AddChild( DOMElement *pChild ) override;
-		}; // class RewardItem: public BR::XML::DOMElement
+		}; // struct RewardItem
 
-		typedef std::tr1::unordered_map<unsigned int, RewardItem*> TableMap;
+		typedef std::unordered_map<unsigned int, RewardItem*> TableMap;
 		typedef TableMap::iterator TableMapItr;
 		static TableMap m_TableMap;
 		static RewardTbl m_Instance;
@@ -83,7 +77,7 @@ namespace conspiracy
 
 
 		// declare member function
-		static HRESULT LoadTable( const char *strFileName );
+		static HRESULT LoadTable( const std::list<RewardItem>& rowList );
 		static HRESULT ClearTable();
 
 		static HRESULT FindItem( const unsigned int& Key, RewardItem*& pRow);

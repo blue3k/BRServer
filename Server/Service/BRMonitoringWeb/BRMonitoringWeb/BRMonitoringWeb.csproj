@@ -127,6 +127,7 @@
     <Compile Include="Conspiracy\BRDBConnectionConspiracyTransactionLog.cs" />
     <Compile Include="Conspiracy\BRDBConnectionUser.cs" />
     <Compile Include="Conspiracy\table\animationTable.cs" />
+    <Compile Include="Conspiracy\table\botTalkTable.cs" />
     <Compile Include="Conspiracy\table\clientSettingTable.cs" />
     <Compile Include="Conspiracy\table\effectTable.cs" />
     <Compile Include="Conspiracy\table\gameConfigTable.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Conspiracy\table\shopTable.cs" />
     <Compile Include="Conspiracy\table\soundTable.cs" />
     <Compile Include="Conspiracy\table\stringTable.cs" />
+    <Compile Include="Conspiracy\table\stringTableBot.cs" />
     <Compile Include="Conspiracy\table\tutorialTable.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagementController.cs" />

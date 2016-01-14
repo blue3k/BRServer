@@ -29,6 +29,7 @@
 #include "GamePlayer.h"
 
 #include "Table/conspiracy/GameConfigTbl.h"
+#include "Table/conspiracy/BotTalkTbl.h"
 
 
 namespace BR{ 
@@ -119,6 +120,8 @@ namespace ConspiracyGameInstanceServer
 		BRCLASS_ATTRIBUTE(UINT, RoleRequestSeer);
 		BRCLASS_ATTRIBUTE(UINT, RoleRequestWerewolf);
 
+		conspiracy::BotTalkTbl::BotTalkTblItem *m_pBotTalk;
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		//	Game state delegate
@@ -151,6 +154,8 @@ namespace ConspiracyGameInstanceServer
 
 		// Get player count at this game
 		inline UINT GetNumPlayer();
+
+		conspiracy::BotTalkTbl::BotTalkTblItem *GetBotTalkTbl() { return m_pBotTalk; }
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,8 +195,6 @@ namespace ConspiracyGameInstanceServer
 
 		HRESULT ForeachPlayerSvrGameInstance( std::function<HRESULT(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func );
 
-		// foreach game player with world master policy
-		HRESULT ForeachPlayerGameMaster( std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameMasterServer *pPolicy)> func );
 
 
 		////////////////////////////////////////////////////////////
