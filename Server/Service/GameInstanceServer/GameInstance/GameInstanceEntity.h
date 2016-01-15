@@ -14,19 +14,22 @@
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
 #include "Common/BrBaseTypes.h"
+#include "Common/Indexing.h"
+#include "Common/HashTable.h"
+#include "Common/BrComponent.h"
 
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/GameSystem.h"
-#include "Common/BrComponent.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
+#include "GameSystem/GameSystemComponentIDs.h"
 
 #include "ConspiracyGameInstanceSvrConst.h"
-#include "Common/Indexing.h"
-#include "Common/HashTable.h"
-#include "GameSystem/GameSystemComponentIDs.h"
 #include "GamePlayer.h"
+
+#include "Protocol/Policy/GameServerIPolicy.h"
+#include "Protocol/Policy/GameInstanceIPolicy.h"
 
 #include "Table/conspiracy/GameConfigTbl.h"
 #include "Table/conspiracy/BotTalkTbl.h"
@@ -189,7 +192,9 @@ namespace ConspiracyGameInstanceServer
 		//
 
 		// foreach game player
-		HRESULT ForeachPlayer( std::function<HRESULT(GamePlayer* pPlayer)> func );
+		template< class Func >
+		HRESULT ForeachPlayer(Func func);
+		//HRESULT ForeachPlayer( std::function<HRESULT(GamePlayer* pPlayer)> func );
 
 		HRESULT ForeachPlayerGameServer( std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
 

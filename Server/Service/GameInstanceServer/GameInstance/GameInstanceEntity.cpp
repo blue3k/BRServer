@@ -26,8 +26,6 @@
 #include "ConspiracyGameInstanceSvrConst.h"
 #include "ConspiracyGameInstanceServerClass.h"
 
-#include "Protocol/Policy/GameServerIPolicy.h"
-#include "Protocol/Policy/GameInstanceIPolicy.h"
 //#include "Protocol/Policy/GameIPolicy.h"
 #include "Protocol/Policy/GameMasterServerIPolicy.h"
 
@@ -232,73 +230,6 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
-	//////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//	foreach implementations
-	//
-
-	// foreach game player
-	HRESULT GameInstanceEntity::ForeachPlayer( std::function<HRESULT(GamePlayer* pPlayer)> func )
-	{
-		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
-		{
-			HRESULT hrRes = func( pPlayer );
-			if( FAILED(hrRes) )
-				return false;
-			return true;
-		});
-		return S_OK;
-	}
-
-
-	// foreach game player with Game policy
-	HRESULT GameInstanceEntity::ForeachPlayerGameServer( std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func )
-	{
-		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
-		{
-			if( pGamePlayer == nullptr )
-				return true;
-
-			if( pGamePlayer->GetPlayerState() == PlayerState::None )
-				return true;
-
-			Policy::IPolicyGameServer *pPolicy = pGamePlayer->GetPolicy<Policy::IPolicyGameServer>();
-			if( pPolicy )
-			{
-				HRESULT hrRes = func( pGamePlayer, pPolicy );
-				if (FAILED(hrRes))
-					return false;
-			}
-			return true;
-		});
-		return S_OK;
-	}
-
-	// foreach game player with Game policy
-	HRESULT GameInstanceEntity::ForeachPlayerSvrGameInstance( std::function<HRESULT(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func )
-	{
-		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
-		{
-			if( pGamePlayer == nullptr )
-				return true;
-
-			if( pGamePlayer->GetPlayerState() == PlayerState::None )
-				return true;
-
-			Policy::ISvrPolicyGameInstance *pPolicy = pGamePlayer->GetPolicy<Policy::ISvrPolicyGameInstance>();
-			if( pPolicy )
-			{
-				HRESULT hrRes = func( pGamePlayer, pPolicy );
-				if (FAILED(hrRes))
-					return false;
-			}
-
-			return true;
-		});
-
-		return S_OK;
-	}
-
 
 	////////////////////////////////////////////////////////////
 	//
@@ -383,7 +314,7 @@ namespace ConspiracyGameInstanceServer {
 		// randomize player character
 		for (INT character = 0; character < GameConst::MAX_GAMEPLAYER; character++)
 		{
-			UINT player = (UINT)Util::Random.Rand(m_MaxPlayer);
+			UINT player = (UINT)Util::Random.Rand() % m_MaxPlayer;
 			for (UINT iPlayer = 0; iPlayer < m_MaxPlayer; iPlayer++)
 			{
 				if (m_PlayerCharacter[player] == 0xFF)

@@ -71,10 +71,10 @@ namespace Svr {
 		//GetMyOwner()->SetLastRankingFailed(true);
 
 		//if( m_TargetMemberCount <= 0 || m_TargetMemberCount > GameConst::MAX_GAMEPLAYER )
-		//	svrErr(E_GAME_INAVLID_PLAYER_COUNT);
+		//	svrErr(E_GAME_INVALID_PLAYER_COUNT);
 
 		//if( m_QueryMemberCount <= 0 || m_QueryMemberCount > GameConst::MAX_GAMEPLAYER || m_QueryMemberCount >= m_TargetMemberCount )
-		//	svrErr(E_GAME_INAVLID_PLAYER_COUNT);
+		//	svrErr(E_GAME_INVALID_PLAYER_COUNT);
 
 		//m_Step = Step::Grabbing;
 		//SetCurrentGrabbing(0);

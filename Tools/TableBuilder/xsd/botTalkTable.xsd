@@ -6,19 +6,19 @@
 			<xs:sequence>
         <xs:element name="BotTalkTblItem" minOccurs="1" maxOccurs="unbounded">
           <xs:complexType>
-            <xs:attribute name="ItemID" type="xs:int"/>
-            <xs:attribute name="BotName_Begin" type="xs:int"/>
-            <xs:attribute name="BotName_End" type="xs:int"/>
-            <xs:attribute name="FirstDay_Begin" type="xs:int"/>
-            <xs:attribute name="FirstDay_End" type="xs:int"/>
-            <xs:attribute name="FreeTalk_Begin" type="xs:int"/>
-            <xs:attribute name="FreeTalk_End" type="xs:int"/>
-            <xs:attribute name="Defense_Begin" type="xs:int"/>
-            <xs:attribute name="Defense_End" type="xs:int"/>
-            <xs:attribute name="GameResultWinner_Begin" type="xs:int"/>
-            <xs:attribute name="GameResultWinner_End" type="xs:int"/>
-            <xs:attribute name="GameResultLoser_Begin" type="xs:int"/>
-            <xs:attribute name="GameResultLoser_End" type="xs:int"/>
+            <xs:attribute name="ItemID" type="xs:int" use="required"/>
+            <xs:attribute name="BotName_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="BotName_End" type="xs:int" use="required"/>
+            <xs:attribute name="FirstDay_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="FirstDay_End" type="xs:int" use="required"/>
+            <xs:attribute name="FreeTalk_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="FreeTalk_End" type="xs:int" use="required"/>
+            <xs:attribute name="Defense_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="Defense_End" type="xs:int" use="required"/>
+            <xs:attribute name="GameResultWinner_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="GameResultWinner_End" type="xs:int" use="required"/>
+            <xs:attribute name="GameResultLoser_Begin" type="xs:int" use="required"/>
+            <xs:attribute name="GameResultLoser_End" type="xs:int" use="required"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>

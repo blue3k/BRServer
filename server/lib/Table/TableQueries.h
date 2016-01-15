@@ -228,7 +228,7 @@ namespace DB {
 				BRDB_COLUMN_ENTRY(GameResultLoser_End)
 			BRDB_END_RESULT_MAP()
 
-			BRDB_RAW_QUERY_STRING("select * from gtbl_stringtblbot;")
+			BRDB_RAW_QUERY_STRING("select * from gtbl_bottalktable;")
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryBotTalkTable, conspiracy::BotTalkTbl::BotTalkTblItem);

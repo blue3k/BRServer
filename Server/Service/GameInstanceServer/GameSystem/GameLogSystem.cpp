@@ -117,7 +117,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if( voterCount <= 0 || voterCount > GameConst::MAX_GAMEPLAYER )
 		{
-			return E_GAME_INAVLID_PLAYER_COUNT;
+			return E_GAME_INVALID_PLAYER_COUNT;
 		}
 
 		size_t allocationSize = sizeof(GameLogVote) + (voterCount-1)*sizeof(GameLogVote::VoteInfo);
@@ -166,7 +166,7 @@ namespace ConspiracyGameInstanceServer {
 		Assert(numRankers > 0 );
 		if( numRankers <= 0 || numRankers > GameConst::MAX_GAMEPLAYER )
 		{
-			return E_GAME_INAVLID_PLAYER_COUNT;
+			return E_GAME_INVALID_PLAYER_COUNT;
 		}
 
 		size_t allocationSize = sizeof(GameLogVoteResult) + (numRankers-1)*sizeof(PlayerID);

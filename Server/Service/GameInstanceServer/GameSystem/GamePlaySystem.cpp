@@ -30,6 +30,7 @@
 #include "GameSystem/GamePlaySystem.h"
 #include "GameSystem/GameStateSystem.h"
 #include "GameSystem/GameLogSystem.h"
+#include "GameSystem/ChattingLogSystem.h"
 #include "GameInstance/GameInstanceEntity.h"
 
 
@@ -200,7 +201,7 @@ namespace ConspiracyGameInstanceServer {
 			if (pPlayer->GetRole() != PlayerRole::None)
 				return S_OK;
 
-			int iRandom = (int)Util::Random.Rand(0, (int)numPlayer - 1);
+			int iRandom = (int)Util::Random.Rand() % numPlayer;
 			for( int count = 0; count < GameConst::MAX_GAMEPLAYER; count++, iRandom = (iRandom+1)%numPlayer )
 			{
 				if( !ShufflingBuffer[iRandom] )
@@ -619,7 +620,120 @@ namespace ConspiracyGameInstanceServer {
 		return otherRole;
 	}
 
+	HRESULT GamePlaySystem::BroadCastChatMessage(GamePlayer *pMyPlayer, PlayerRole role, const char* message)
+	{
+		HRESULT hr = S_OK;
+		ChatType charType;
+		GameStateID gameState;
+		bool bIsGhost;
+		auto ownerEntityUID = GetOwner().GetEntityUID();
+
+
+		if (role != PlayerRole::None && role != PlayerRole::Werewolf)
+			svrErr(E_GAME_INVALID_ROLE);
+
+		gameState = GetOwner().GetComponent<GameStateSystem>()->GetCurrentGameState();
+		bIsGhost = gameState != GameStateID::None && gameState != GameStateID::End && pMyPlayer->GetPlayerState() == PlayerState::Ghost;
+
+		// prevent chatting during night
+		switch (gameState)
+		{
+		//case GameStateID::FirstNightVote:
+		//case GameStateID::SecondNightVote:
+		case GameStateID::NightVote:
+			if (!bIsGhost && role != PlayerRole::Werewolf)
+			{
+				hr = E_GAME_INVALID_GAMESTATE;
+				goto Proc_End;
+			}
+			break;
+		default:
+			break;
+		};
+
+		charType = role != PlayerRole::None ? ChatType::Role : ChatType::Normal;
+		svrChk(GetOwner().GetComponent<ChattingLogSystem>()->AddChattingLog(Util::Time.GetTimeUTCSec(), pMyPlayer->GetPlayerID(), pMyPlayer->GetPlayerState() == PlayerState::Ghost, charType, message));
+
+		GetOwner().ForeachPlayerGameServer([&](GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)->HRESULT {
+			if (role == PlayerRole::None || role == pPlayer->GetRole())
+			{
+				if (bIsGhost && pPlayer->GetPlayerState() != PlayerState::Ghost)
+				{
+					// Skip broadcast from ghost to others
+					return S_OK;
+				}
+				pPolicy->ChatMessageC2SEvt(RouteContext(ownerEntityUID, pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerID(), role, pMyPlayer->GetPlayerName(), message);
+			}
+			return S_OK;
+		});
+
+
+
+	Proc_End:
+
+		return hr;
+	}
+
+	HRESULT GamePlaySystem::BroadCastRandomBotMessage(int minID, int maxID)
+	{
+		return BroadCastRandomBotMessage(PlayerRole::None, minID, maxID);
+	}
+
 	
+	HRESULT GamePlaySystem::BroadCastRandomBotMessage(PlayerRole roleToTalk, int minID, int maxID)
+	{
+		char strBuffer[1024];
+
+		GetOwner().ForeachPlayer( [&](GamePlayer* pPlayerFrom) ->HRESULT
+		{
+			if (!pPlayerFrom->GetIsBot()
+				|| pPlayerFrom->GetPlayerState() != PlayerState::Playing) return S_OK;
+
+			if (roleToTalk != PlayerRole::None && pPlayerFrom->GetRole() != roleToTalk) return S_OK;
+
+			int randTalkPossibility = Util::Random.Rand(1000);
+			if (randTalkPossibility > 700) return S_OK;
+
+			int randTalkID = Util::Random.Rand(minID, maxID);
+			StrUtil::Format(strBuffer, "<chatmsg><n><t>b</t><v>{0}</v></n></chatmsg>", randTalkID);
+
+			GetOwner().GetComponent<GamePlaySystem>()->BroadCastChatMessage(pPlayerFrom, PlayerRole::None, strBuffer);
+
+			return S_OK;
+		});
+
+
+		return S_OK;
+	}
+
+	HRESULT GamePlaySystem::BroadCastRandomBotMessageSuspect(int minID, int maxID)
+	{
+		char strBuffer[1024];
+
+		GetOwner().ForeachPlayer([&](GamePlayer* pPlayerFrom) ->HRESULT
+		{
+			if (!pPlayerFrom->GetIsBot()
+				|| pPlayerFrom->GetPlayerState() != PlayerState::Playing) return S_OK;
+
+			if (!IsSuspect(pPlayerFrom->GetPlayerID())) return S_OK;
+
+			int randTalkPossibility = Util::Random.Rand(1000);
+			if (randTalkPossibility > 700) return S_OK;
+
+			int randTalkID = Util::Random.Rand(minID, maxID);
+			StrUtil::Format(strBuffer, "<chatmsg><n><t>b</t><v>{0}</v></n></chatmsg>", randTalkID);
+
+			GetOwner().GetComponent<GamePlaySystem>()->BroadCastChatMessage(pPlayerFrom, PlayerRole::None, strBuffer);
+
+			return S_OK;
+		});
+
+
+		return S_OK;
+	}
+
+
+
 }; // namespace ConspiracyGameInstanceServer
 }; // namespace BR
 

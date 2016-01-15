@@ -273,51 +273,52 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_OK;
 
 		GamePlayer *pMyPlayer = nullptr;
-		const char* message = nullptr;
-		ChatType charType;
-		GameStateID gameState;
-		bool bIsGhost;
+		//const char* message = nullptr;
+		//ChatType charType;
+		//GameStateID gameState;
+		//bool bIsGhost;
 
 		svrChk( super::StartTransaction() );
 
 		svrChk( GetMyPlayer( pMyPlayer ) );
 
-		if( GetRole() != PlayerRole::None && GetRole() != PlayerRole::Werewolf  )
-			svrErr(E_GAME_INVALID_ROLE);
+		hr = GetMyOwner()->GetComponent<GamePlaySystem>()->BroadCastChatMessage(pMyPlayer, GetRole(), GetChatMessage());
 
-		gameState = GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState();
-		bIsGhost = gameState != GameStateID::None && gameState != GameStateID::End && pMyPlayer->GetPlayerState() == PlayerState::Ghost;
+		//if( GetRole() != PlayerRole::None && GetRole() != PlayerRole::Werewolf  )
+		//	svrErr(E_GAME_INVALID_ROLE);
 
-		// prevent chatting during night
-		switch( gameState )
-		{
-		//case GameStateID::FirstNightVote:
-		//case GameStateID::SecondNightVote:
-		case GameStateID::NightVote:
-			if( !bIsGhost && GetRole() != PlayerRole::Werewolf )
-				svrErrClose(E_GAME_INVALID_GAMESTATE);
-			break;
-		default:
-			break;
-		};
+		//gameState = GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState();
+		//bIsGhost = gameState != GameStateID::None && gameState != GameStateID::End && pMyPlayer->GetPlayerState() == PlayerState::Ghost;
 
-		charType = GetRole() != PlayerRole::None ? ChatType::Role : ChatType::Normal;
-		svrChk( GetMyOwner()->GetComponent<ChattingLogSystem>()->AddChattingLog( Util::Time.GetTimeUTCSec(), pMyPlayer->GetPlayerID(), pMyPlayer->GetPlayerState() == PlayerState::Ghost, charType, GetChatMessage() ) );
+		//// prevent chatting during night
+		//switch( gameState )
+		//{
+		////case GameStateID::FirstNightVote:
+		////case GameStateID::SecondNightVote:
+		//case GameStateID::NightVote:
+		//	if( !bIsGhost && GetRole() != PlayerRole::Werewolf )
+		//		svrErrClose(E_GAME_INVALID_GAMESTATE);
+		//	break;
+		//default:
+		//	break;
+		//};
 
-		GetMyOwner()->ForeachPlayerGameServer( [&]( GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy )->HRESULT {
-			if( GetRole() == PlayerRole::None || GetRole() == pPlayer->GetRole() )
-			{
-				message = GetChatMessage();
-				if( bIsGhost && pPlayer->GetPlayerState() != PlayerState::Ghost )
-				{
-					// Skip broadcast from ghost to others
-					return S_OK;
-					//message = "SsssSSS~~~~SSSss~~~~~.......";
-				}
-				pPolicy->ChatMessageC2SEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerID(), GetRole(), pMyPlayer->GetPlayerName(), message );
-			}
-			return S_OK;
-		});
+		//charType = GetRole() != PlayerRole::None ? ChatType::Role : ChatType::Normal;
+		//svrChk( GetMyOwner()->GetComponent<ChattingLogSystem>()->AddChattingLog( Util::Time.GetTimeUTCSec(), pMyPlayer->GetPlayerID(), pMyPlayer->GetPlayerState() == PlayerState::Ghost, charType, GetChatMessage() ) );
+
+		//GetMyOwner()->ForeachPlayerGameServer( [&]( GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy )->HRESULT {
+		//	if( GetRole() == PlayerRole::None || GetRole() == pPlayer->GetRole() )
+		//	{
+		//		message = GetChatMessage();
+		//		if( bIsGhost && pPlayer->GetPlayerState() != PlayerState::Ghost )
+		//		{
+		//			// Skip broadcast from ghost to others
+		//			return S_OK;
+		//		}
+		//		pPolicy->ChatMessageC2SEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerID(), GetRole(), pMyPlayer->GetPlayerName(), message );
+		//	}
+		//	return S_OK;
+		//});
 
 	Proc_End:
 

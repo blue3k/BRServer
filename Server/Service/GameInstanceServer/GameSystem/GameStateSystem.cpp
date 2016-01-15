@@ -138,6 +138,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnEnter()
 		{
 			HRESULT hr = S_OK;
+			auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
 
 			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
@@ -146,12 +147,8 @@ namespace ConspiracyGameInstanceServer {
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
 			m_TimeToNext.SetTimer( DurationMS(GetOwner().GetPresetGameConfig()->FreeDiscussion*1000) );
 
-
-			GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->HRESULT {
-				if (pPlayer->GetPlayerEntityUID() != 0)
-					pPolicy->VoteEndS2CEvt(RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), rankers);
-				return S_OK;
-			});
+			svrChkPtr(pBotTalkTbl);
+			GetGamePlaySystem().BroadCastRandomBotMessage(pBotTalkTbl->FirstDay_Begin, pBotTalkTbl->FirstDay_End);
 
 		Proc_End:
 
@@ -328,6 +325,12 @@ namespace ConspiracyGameInstanceServer {
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
 			m_TimeToNext.SetTimer( DurationMS(GetOwner().GetPresetGameConfig()->MorningDiscussion*1000) );
 
+			{
+				auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
+				svrChkPtr(pBotTalkTbl);
+				GetGamePlaySystem().BroadCastRandomBotMessage(pBotTalkTbl->FreeTalk_Begin, pBotTalkTbl->FreeTalk_End);
+			}
+
 		Proc_End:
 
 			return hr;
@@ -439,6 +442,12 @@ namespace ConspiracyGameInstanceServer {
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
 			m_TimeToNext.SetTimer(DurationMS(GetOwner().GetPresetGameConfig()->DefenceTime*1000) );
 
+			{
+				auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
+				svrChkPtr(pBotTalkTbl);
+				GetGamePlaySystem().BroadCastRandomBotMessageSuspect(pBotTalkTbl->Defense_Begin, pBotTalkTbl->Defense_End);
+			}
+
 		Proc_End:
 
 			return hr;
@@ -539,6 +548,8 @@ namespace ConspiracyGameInstanceServer {
 			HRESULT hr = S_OK;
 			GameWinner winner = GetGamePlaySystem().GetGameWinner();
 			conspiracy::RewardTbl::RewardItem *pItem = nullptr;
+			char strBuffer[1024];
+			auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
 
 			svrChk(GamePlayState::OnEnter() );
 
@@ -598,6 +609,35 @@ namespace ConspiracyGameInstanceServer {
 
 				return S_OK;
 			});
+
+
+			// bot talking
+			svrChkPtr(pBotTalkTbl);
+			GetOwner().ForeachPlayer([&](GamePlayer* pPlayerFrom) ->HRESULT
+			{
+				int randTalkID = 0;
+				if (!pPlayerFrom->GetIsBot()) return S_OK;
+
+				int randTalkPossibility = Util::Random.Rand(1000);
+				if (randTalkPossibility > 700) return S_OK;
+
+				bool isWinner = pPlayerFrom->IsWinnerSide(winner);
+
+
+				if(isWinner)
+					randTalkID = Util::Random.Rand(pBotTalkTbl->GameResultWinner_Begin, pBotTalkTbl->GameResultWinner_End);
+				else
+					randTalkID = Util::Random.Rand(pBotTalkTbl->GameResultLoser_Begin, pBotTalkTbl->GameResultLoser_End);
+
+
+				StrUtil::Format(strBuffer, "<chatmsg><n><t>b</t><v>{0}</v></n></chatmsg>", randTalkID);
+
+				GetOwner().GetComponent<GamePlaySystem>()->BroadCastChatMessage(pPlayerFrom, PlayerRole::None, strBuffer);
+
+				return S_OK;
+			});
+
+
 
 		Proc_End:
 

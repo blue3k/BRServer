@@ -191,9 +191,193 @@ namespace BR
 		// get number of values
 		SynchronizeCounterType GetItemCount()								{ return m_ItemCount; }
 
+
 		// enumerate the values
-		HRESULT ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
-		HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+		//HRESULT ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+		template<class Func>
+		HRESULT ForeachOrder(INT startOrderIndex, UINT count, Func functor)
+		{
+			MapNode* pCurNode = m_Root;
+			if (pCurNode == nullptr)
+				return S_OK;
+
+			OperationTraversalHistory travelHistory(m_Root, m_ItemCount);
+			travelHistory.Clear();
+			travelHistory.SetConserveDataOnResize(true);
+
+			// find start point
+			do
+			{
+				travelHistory.AddHistory(pCurNode);
+
+				auto right = pCurNode->Right;
+				auto rightNumChildren = right != nullptr ? right->NumberOfChildren : -1;
+				if (rightNumChildren >= startOrderIndex)
+				{
+					pCurNode = right;
+				}
+				else
+				{
+					if (rightNumChildren >= 0)
+					{
+						startOrderIndex -= rightNumChildren + 1;
+					}
+					if (startOrderIndex == 0) // current node is the start point
+						break;
+
+					startOrderIndex--;
+					auto left = pCurNode->Left;
+					pCurNode = left;
+				}
+
+			} while (pCurNode != nullptr);
+
+			if (pCurNode == nullptr)
+				return S_OK;
+
+
+			// interate
+			do
+			{
+				if (!functor(pCurNode->Key, pCurNode->Value))
+					return S_OK;
+
+				count--;
+				if (count == 0)
+					break;
+
+				auto left = pCurNode->Left;
+				if (left != nullptr)
+				{
+					pCurNode = FindBiggestNode(travelHistory, left);
+				}
+				else // this is a leap node pop up
+				{
+					travelHistory.RemoveLastHistory();
+					MapNode* parent = nullptr;
+					do
+					{
+						parent = travelHistory.GetLastHistory();
+						if (parent == nullptr)
+						{
+							// nothing to process
+							pCurNode = nullptr;
+							break;
+						}
+
+						if (pCurNode == parent->Left)
+							travelHistory.RemoveLastHistory();
+						else
+						{
+							pCurNode = parent;
+							break;
+						}
+
+						pCurNode = parent;
+
+					} while (parent != nullptr);
+				}
+
+			} while (pCurNode != nullptr);
+
+
+			travelHistory.SetConserveDataOnResize(false);
+
+			return S_OK;
+		}
+
+		//HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+		template<class Func>
+		HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, Func functor)
+		{
+			MapNode* pCurNode = m_Root;
+			if (pCurNode == nullptr)
+				return S_OK;
+
+			OperationTraversalHistory travelHistory(m_Root, m_ItemCount);
+			travelHistory.Clear();
+			travelHistory.SetConserveDataOnResize(true);
+
+			// find start point
+			do
+			{
+				travelHistory.AddHistory(pCurNode);
+
+				auto left = pCurNode->Left;
+				auto leftNumChildren = left != nullptr ? left->NumberOfChildren : -1;
+				if (leftNumChildren >= startOrderIndex)
+				{
+					pCurNode = left;
+				}
+				else
+				{
+					if (leftNumChildren >= 0)
+					{
+						startOrderIndex -= leftNumChildren + 1;
+					}
+					if (startOrderIndex == 0) // current node is the start point
+						break;
+
+					startOrderIndex--;
+					auto right = pCurNode->Right;
+					pCurNode = right;
+				}
+
+			} while (pCurNode != nullptr);
+
+			if (pCurNode == nullptr)
+				return S_OK;
+
+
+			// interate
+			do
+			{
+				if (!functor(pCurNode->Key, pCurNode->Value))
+					return S_OK;
+
+				count--;
+				if (count == 0)
+					break;
+
+				auto right = pCurNode->Right;
+				if (right != nullptr)
+				{
+					pCurNode = FindSmallestNode(travelHistory, right);
+				}
+				else // this is a leap node pop up
+				{
+					travelHistory.RemoveLastHistory();
+					MapNode* parent = nullptr;
+					do
+					{
+						parent = travelHistory.GetLastHistory();
+						if (parent == nullptr)
+						{
+							// nothing to process
+							pCurNode = nullptr;
+							break;
+						}
+
+						if (pCurNode == parent->Right)
+							travelHistory.RemoveLastHistory();
+						else
+						{
+							pCurNode = parent;
+							break;
+						}
+
+						pCurNode = parent;
+
+					} while (parent != nullptr);
+				}
+
+			} while (pCurNode != nullptr);
+
+
+			travelHistory.SetConserveDataOnResize(false);
+
+			return S_OK;
+		}
 
 		// for interface match
 		HRESULT CommitChanges() { return S_OK;  }

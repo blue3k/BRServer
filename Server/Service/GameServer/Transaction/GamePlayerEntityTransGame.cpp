@@ -1246,14 +1246,14 @@ namespace GameServer {
 
 		// This means it's not full game
 		//if (m_RetryCount <= 1 
-		//	&& pRes->GetHRESULT() == E_GAME_INAVLID_PLAYER_COUNT // if some members are missing
+		//	&& pRes->GetHRESULT() == E_GAME_INVALID_PLAYER_COUNT // if some members are missing
 		//	&& GetMyOwner()->GetPartyUID() == 0)
 		//{
 		//	svrChk(RequestCreateParty()));
 		//}
 		//else
 		if (res.GetReplayMemberCount() > GameConst::MAX_GAMEPLAYER)
-			svrErr(E_GAME_INAVLID_PLAYER_COUNT);
+			svrErr(E_GAME_INVALID_PLAYER_COUNT);
 
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());

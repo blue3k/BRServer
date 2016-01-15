@@ -2,6 +2,7 @@
 
 
 OUTPUT_PATH=../TableBuilder/TableFormat
+OUTPUT_PATH2=../../../Server/Service/BRMonitoringWeb/BRMonitoringWeb/Conspiracy/table
 
 
 
@@ -24,6 +25,7 @@ $(OUTPUT_PATH)/%.cs: %.xsd
  
 
 build: $(TARGET_FILES) 
+	cp $(OUTPUT_PATH)/*.cs $(OUTPUT_PATH2)/
 	@echo Done
 
 

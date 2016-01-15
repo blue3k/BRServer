@@ -32,11 +32,11 @@ namespace BRMonitoringWeb.Controllers
         // table informations
         static GameTableInformation[] m_TableInfos = new GameTableInformation[]
         {
-            new GameTableInformation("GameConfigTable", null, typeof(GameTbl.GameConfigTbl) ),
-            new GameTableInformation("LevelTable", null, typeof(GameTbl.LevelTbl) ),
-            new GameTableInformation("OrganicTable", null, typeof(GameTbl.OrganicTbl) ),
-            new GameTableInformation("RewardTable", null, typeof(GameTbl.RewardTbl) ),
-            new GameTableInformation("ShopTable", null, typeof(GameTbl.ShopTbl) ),
+            new GameTableInformation("GameConfigTable", null, typeof(conspiracy.GameConfigTbl) ),
+            new GameTableInformation("LevelTable", null, typeof(conspiracy.LevelTbl) ),
+            new GameTableInformation("OrganicTable", null, typeof(conspiracy.OrganicTbl) ),
+            new GameTableInformation("RewardTable", null, typeof(conspiracy.RewardTbl) ),
+            new GameTableInformation("ShopTable", null, typeof(conspiracy.ShopTbl) ),
             new GameTableInformation("BotTalkTable", null, typeof(conspiracy.BotTalkTbl) ),
             //new GameTableInformation("StringTblBot", null, typeof(conspiracy.StringTblBot) ),
         };

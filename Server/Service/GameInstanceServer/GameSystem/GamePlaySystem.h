@@ -119,6 +119,11 @@ namespace ConspiracyGameInstanceServer {
 
 		// Called when a player get out of game
 		HRESULT OnPlayerGetOutOfGame( GamePlayer* pPlayer );
+
+		HRESULT BroadCastChatMessage(GamePlayer *pMyPlayer, PlayerRole role, const char* chatMessage);
+		HRESULT BroadCastRandomBotMessage(int minID, int maxID);
+		HRESULT BroadCastRandomBotMessage(PlayerRole roleToTalk, int minID, int maxID);
+		HRESULT BroadCastRandomBotMessageSuspect(int minID, int maxID);
 	};
 
 

@@ -160,9 +160,11 @@ namespace GameTable {
 		hr = TableSystem::stm_Instance.QueryTable<DB::QueryShopTblCmd, conspiracy::ShopTbl>();
 		defChk(hr);
 
+
 		defChk(::conspiracy::GameConfigTbl::ClearTable());
 		hr = TableSystem::stm_Instance.QueryTable<DB::QueryGameConfigTblCmd, conspiracy::GameConfigTbl>();
 		defChk(hr);
+
 
 		defChk(::conspiracy::BotTalkTbl::ClearTable());
 		hr = TableSystem::stm_Instance.QueryTable<DB::QueryBotTalkTableCmd, conspiracy::BotTalkTbl>();

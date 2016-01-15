@@ -48,55 +48,29 @@ namespace conspiracy {
         
         private int itemIDField;
         
-        private bool itemIDFieldSpecified;
-        
         private int botName_BeginField;
-        
-        private bool botName_BeginFieldSpecified;
         
         private int botName_EndField;
         
-        private bool botName_EndFieldSpecified;
-        
         private int firstDay_BeginField;
-        
-        private bool firstDay_BeginFieldSpecified;
         
         private int firstDay_EndField;
         
-        private bool firstDay_EndFieldSpecified;
-        
         private int freeTalk_BeginField;
-        
-        private bool freeTalk_BeginFieldSpecified;
         
         private int freeTalk_EndField;
         
-        private bool freeTalk_EndFieldSpecified;
-        
         private int defense_BeginField;
-        
-        private bool defense_BeginFieldSpecified;
         
         private int defense_EndField;
         
-        private bool defense_EndFieldSpecified;
-        
         private int gameResultWinner_BeginField;
-        
-        private bool gameResultWinner_BeginFieldSpecified;
         
         private int gameResultWinner_EndField;
         
-        private bool gameResultWinner_EndFieldSpecified;
-        
         private int gameResultLoser_BeginField;
         
-        private bool gameResultLoser_BeginFieldSpecified;
-        
         private int gameResultLoser_EndField;
-        
-        private bool gameResultLoser_EndFieldSpecified;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -106,17 +80,6 @@ namespace conspiracy {
             }
             set {
                 this.itemIDField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ItemIDSpecified {
-            get {
-                return this.itemIDFieldSpecified;
-            }
-            set {
-                this.itemIDFieldSpecified = value;
             }
         }
         
@@ -132,17 +95,6 @@ namespace conspiracy {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool BotName_BeginSpecified {
-            get {
-                return this.botName_BeginFieldSpecified;
-            }
-            set {
-                this.botName_BeginFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int BotName_End {
             get {
@@ -150,17 +102,6 @@ namespace conspiracy {
             }
             set {
                 this.botName_EndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool BotName_EndSpecified {
-            get {
-                return this.botName_EndFieldSpecified;
-            }
-            set {
-                this.botName_EndFieldSpecified = value;
             }
         }
         
@@ -176,17 +117,6 @@ namespace conspiracy {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool FirstDay_BeginSpecified {
-            get {
-                return this.firstDay_BeginFieldSpecified;
-            }
-            set {
-                this.firstDay_BeginFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int FirstDay_End {
             get {
@@ -194,17 +124,6 @@ namespace conspiracy {
             }
             set {
                 this.firstDay_EndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool FirstDay_EndSpecified {
-            get {
-                return this.firstDay_EndFieldSpecified;
-            }
-            set {
-                this.firstDay_EndFieldSpecified = value;
             }
         }
         
@@ -220,17 +139,6 @@ namespace conspiracy {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool FreeTalk_BeginSpecified {
-            get {
-                return this.freeTalk_BeginFieldSpecified;
-            }
-            set {
-                this.freeTalk_BeginFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int FreeTalk_End {
             get {
@@ -238,17 +146,6 @@ namespace conspiracy {
             }
             set {
                 this.freeTalk_EndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool FreeTalk_EndSpecified {
-            get {
-                return this.freeTalk_EndFieldSpecified;
-            }
-            set {
-                this.freeTalk_EndFieldSpecified = value;
             }
         }
         
@@ -264,17 +161,6 @@ namespace conspiracy {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Defense_BeginSpecified {
-            get {
-                return this.defense_BeginFieldSpecified;
-            }
-            set {
-                this.defense_BeginFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int Defense_End {
             get {
@@ -282,17 +168,6 @@ namespace conspiracy {
             }
             set {
                 this.defense_EndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool Defense_EndSpecified {
-            get {
-                return this.defense_EndFieldSpecified;
-            }
-            set {
-                this.defense_EndFieldSpecified = value;
             }
         }
         
@@ -308,17 +183,6 @@ namespace conspiracy {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool GameResultWinner_BeginSpecified {
-            get {
-                return this.gameResultWinner_BeginFieldSpecified;
-            }
-            set {
-                this.gameResultWinner_BeginFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int GameResultWinner_End {
             get {
@@ -326,17 +190,6 @@ namespace conspiracy {
             }
             set {
                 this.gameResultWinner_EndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool GameResultWinner_EndSpecified {
-            get {
-                return this.gameResultWinner_EndFieldSpecified;
-            }
-            set {
-                this.gameResultWinner_EndFieldSpecified = value;
             }
         }
         
@@ -352,17 +205,6 @@ namespace conspiracy {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool GameResultLoser_BeginSpecified {
-            get {
-                return this.gameResultLoser_BeginFieldSpecified;
-            }
-            set {
-                this.gameResultLoser_BeginFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public int GameResultLoser_End {
             get {
@@ -370,17 +212,6 @@ namespace conspiracy {
             }
             set {
                 this.gameResultLoser_EndField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool GameResultLoser_EndSpecified {
-            get {
-                return this.gameResultLoser_EndFieldSpecified;
-            }
-            set {
-                this.gameResultLoser_EndFieldSpecified = value;
             }
         }
     }

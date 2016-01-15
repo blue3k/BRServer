@@ -513,7 +513,7 @@ namespace GameServer {
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrErr(E_GAME_INAVLID_PLAYER);
+			svrErr(E_GAME_INVALID_PLAYER);
 		}
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerInfoCmd(GetTransID(), pDBRes->ShardID, GetPlayerID()));
@@ -537,7 +537,7 @@ namespace GameServer {
 		// succeeded to query
 		if( pDBRes->Result < 0 )
 		{
-			svrErr(E_GAME_INAVLID_PLAYER);
+			svrErr(E_GAME_INVALID_PLAYER);
 		}
 
 		svrAssert( pDBRes->m_RowsetResult.size() >= 1 );
@@ -619,7 +619,7 @@ namespace GameServer {
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrErr(E_GAME_INAVLID_PLAYER);
+			svrErr(E_GAME_INVALID_PLAYER);
 		}
 
 		svrChkCloseErr(E_UNEXPECTED, StrUtil::StringCpy(m_ComplitionState, pDBRes->ComplitionState));
@@ -677,7 +677,7 @@ namespace GameServer {
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrErr(E_GAME_INAVLID_PLAYER);
+			svrErr(E_GAME_INVALID_PLAYER);
 		}
 
 	Proc_End:
@@ -1045,7 +1045,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
-			svrErr(E_GAME_INAVLID_PLAYER);
+			svrErr(E_GAME_INVALID_PLAYER);
 
 		svrChk( GetMyOwner()->GetComponent<UserNotifySystem>()->AddNotification(GetNotificationID(), (NotificationType)GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp() ) );
 		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
@@ -1402,7 +1402,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
-			svrErr(E_GAME_INAVLID_PLAYER);
+			svrErr(E_GAME_INVALID_PLAYER);
 
 		playerUID = GetRouteContext().GetFrom();
 
