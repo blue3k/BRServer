@@ -115,7 +115,7 @@ namespace Net {
 		virtual INetIOCallBack* GetIOCallback() { return nullptr; }
 
 		// Close connections socket handle
-		void CloseSocket();
+		virtual void CloseSocket();
 
 		// Get remote address
 		const sockaddr_storage& GetRemoteSockAddr() const;

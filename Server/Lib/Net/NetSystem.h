@@ -151,6 +151,7 @@ namespace Net {
 		// Socket handling 
 
 		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance);
+		HRESULT UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance);
 		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
 
 		SOCKET Socket(SockFamily domain, SockType type);
@@ -175,7 +176,7 @@ namespace Net {
 #if WINDOWS
 #include "Net/NetSystem_WinIOCP.h"
 #else
-#include "Net/NetSystem_EPOLL.h"
+#include "Net/NetSystem_Linux.h"
 #endif
 
 

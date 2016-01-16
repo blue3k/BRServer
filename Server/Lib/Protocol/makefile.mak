@@ -17,6 +17,7 @@ include $(ROOT_PATH)/LinuxBuild/common.mak
 
 include $(DEPENDANCIES)
 
+.PHONY: clean
 
 build: $(SOURCES) $(TARGET_FILE)
 	@echo Done
@@ -24,5 +25,4 @@ build: $(SOURCES) $(TARGET_FILE)
 
 clean: $(TARGET_OBJ_PATH) $(TARGET_LIB_PATH) $(TARGET_BIN_PATH)
 	rm -rf $(TARGET_OBJ_PATH)
-	rm -rf $(TARGET_LIB_PATH)/*.d $(TARGET_FILE)
-	rm -rf $(TARGET_BIN_PATH)/*.o $(TARGET_FILE)
+	rm -f $(TARGET_FILE)

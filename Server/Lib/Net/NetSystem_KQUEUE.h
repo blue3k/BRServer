@@ -23,7 +23,7 @@
 #include "Net/NetUtil.h"
 
 
-#if EPOLL
+#if KQUEUE
 
 
 
@@ -37,32 +37,32 @@ namespace Net {
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
-	//	EPOLL thread worker
+	//	KQUEUE thread worker
 	//
 
 
-	class EPOLLWorker : public Thread
+	class KQUEUEWorker : public Thread
 	{
 	public:
 
 		enum {
-			MAX_EPOLL_EVENTS = 1000,
-			MAX_EPOLL_WAIT = 500,
+			MAX_KQUEUE_EVENTS = 1000,
+			MAX_KQUEUE_WAIT = 500,
 		};
 
 	private:
-		// Epoll handle
-		int m_hEpoll;
+		// KQUEUE handle
+		int m_hKQUEUE;
 		bool m_HandleSend;
 
 	public:
 		// Constructor/destructor
-		EPOLLWorker(bool bHandleSend, int hEpoll = 0);
+		KQUEUEWorker(bool bHandleSend, int hKQUEUE = 0);
 
-		~EPOLLWorker();
+		~KQUEUEWorker();
 
-		int GetEpollHandle() {
-			return m_hEpoll;
+		int GetKQUEUEHandle() {
+			return m_hKQUEUE;
 		}
 
 		HRESULT RegisterSocket(INetIOCallBack* cbInstance);
@@ -77,20 +77,20 @@ namespace Net {
 
 
 
-	class EPOLLSendWorker : public Thread
+	class KQUEUESendWorker : public Thread
 	{
 	public:
 
 	private:
-		// Epoll handle
+		// KQUEUE handle
 		
 		WriteBufferQueue m_WriteQueue;
 
 	public:
 		// Constructor/destructor
-		EPOLLSendWorker();
+		KQUEUESendWorker();
 
-		~EPOLLSendWorker();
+		~KQUEUESendWorker();
 
 		WriteBufferQueue& GetWriteQueue() { return m_WriteQueue; }
 
@@ -103,24 +103,24 @@ namespace Net {
 	//	
 	//
 
-	class EPOLLSystem
+	class KQUEUESystem
 	{
 	private:
 
-		static EPOLLSystem stm_Instance;
+		static KQUEUESystem stm_Instance;
 
-		EPOLLWorker* m_ListenWorker;
+		KQUEUEWorker* m_ListenWorker;
 		// workers for TCP
 		std::atomic<int> m_iTCPAssignIndex;
-		DynamicArray<EPOLLWorker*> m_WorkerTCP;
+		DynamicArray<KQUEUEWorker*> m_WorkerTCP;
 
 		// workers for UDP
-		EPOLLSendWorker* m_UDPSendWorker;
-		DynamicArray<EPOLLWorker*> m_WorkerUDP;
+		KQUEUESendWorker* m_UDPSendWorker;
+		DynamicArray<KQUEUEWorker*> m_WorkerUDP;
 
 	public:
 
-		EPOLLSystem();
+		KQUEUESystem();
 
 		HRESULT Initialize(UINT netThreadCount);
 		void Terminate();
@@ -129,21 +129,22 @@ namespace Net {
 		WriteBufferQueue* GetWriteBufferQueue();
 		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
 
-		// Register the socket to EPOLL
+		// Register the socket to KQUEUE
 		HRESULT RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance);
 		HRESULT UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance);
 
-		static EPOLLSystem& GetInstance() { return stm_Instance; }
+
+		static KQUEUESystem& GetInstance() { return stm_Instance; }
 	};
 
 	// Get system instance
-	inline EPOLLSystem& GetNetIOSystem()
+	inline KQUEUESystem& GetNetIOSystem()
 	{
-		return EPOLLSystem::GetInstance();
+		return KQUEUESystem::GetInstance();
 	}
 
 
-#include "NetSystem_EPOLL.inl"
+#include "NetSystem_KQUEUE.inl"
 
 } // namespace Net
 } // namespace BR

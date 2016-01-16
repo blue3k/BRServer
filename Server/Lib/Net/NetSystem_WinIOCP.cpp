@@ -203,11 +203,16 @@ namespace Net {
 				// If End of IOCP signaled
 				if( pOverlappedSys == nullptr || pOverlapped == nullptr )
 				{
-					// chain call to end all IOCP worker
-					if( !PostQueuedCompletionStatus( m_hIOCP, 0, 0, NULL ) )
+					// Release?
+					if (ulKey != 0)
 					{
-						netTrace( Trace::TRC_ERROR, "PostQueuedCompletionStatus failed hr={0:X8}", GetLastHRESULT() );
+						//INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
 					}
+					// chain call to end all IOCP worker
+					//if( !PostQueuedCompletionStatus( m_hIOCP, 0, 0, NULL ) )
+					//{
+					//	netTrace( Trace::TRC_ERROR, "PostQueuedCompletionStatus failed hr={0:X8}", GetLastHRESULT() );
+					//}
 					break;
 				}
 
@@ -508,9 +513,23 @@ namespace Net {
 		{
 			HRESULT hr = S_OK;
 
-			unused(isListenSocket);
-
 			if (!CreateIoCompletionPort((HANDLE)cbInstance->GetIOSocket(), IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)cbInstance, 0))
+			{
+				hr = GetLastHRESULT();
+				netTrace(Trace::TRC_ERROR, "Registering socket to IOCP is Failed, hr = {0:X8}", hr);
+				netErr(E_UNEXPECTED);
+			}
+
+		Proc_End:
+
+			return hr;
+		}
+
+		HRESULT UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance)
+		{
+			HRESULT hr = S_OK;
+
+			if (!PostQueuedCompletionStatus(IOCPSystem::GetSystem().GetIOCP(), 0, (ULONG_PTR)cbInstance, 0))
 			{
 				hr = GetLastHRESULT();
 				netTrace(Trace::TRC_ERROR, "Registering socket to IOCP is Failed, hr = {0:X8}", hr);

@@ -84,6 +84,8 @@
     <None Include="NetSvrDef.inl" />
     <None Include="NetSystem.inl" />
     <None Include="NetSystem_EPOLL.inl" />
+    <None Include="NetSystem_KQUEUE.inl" />
+    <None Include="NetSystem_Linux.inl" />
     <None Include="NetSystem_WinIOCP.inl" />
     <None Include="Readme\images\debugproperties.png" />
     <None Include="Readme\images\remotebuild.png" />
@@ -156,6 +158,8 @@
     <ClCompile Include="NetSvrDef.cpp" />
     <ClCompile Include="NetSystem.cpp" />
     <ClCompile Include="NetSystem_EPOLL.cpp" />
+    <ClCompile Include="NetSystem_KQUEUE.cpp" />
+    <ClCompile Include="NetSystem_Linux.cpp" />
     <ClCompile Include="NetSystem_WinIOCP.cpp" />
     <ClCompile Include="NetToString.cpp" />
     <ClCompile Include="NetTrace.cpp" />
@@ -186,6 +190,8 @@
     <ClInclude Include="NetSystem.h" />
     <ClInclude Include="NetSystem_EPOLL.h" />
     <ClInclude Include="NetSystem_impl.h" />
+    <ClInclude Include="NetSystem_KQUEUE.h" />
+    <ClInclude Include="NetSystem_Linux.h" />
     <ClInclude Include="NetSystem_WinIOCP.h" />
     <ClInclude Include="NetToString.h" />
     <ClInclude Include="NetTrace.h" />

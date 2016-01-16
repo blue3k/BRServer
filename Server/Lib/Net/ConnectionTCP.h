@@ -113,6 +113,8 @@ namespace Net {
 		// Close connection
 		virtual HRESULT CloseConnection() override;
 
+		virtual void CloseSocket() override;
+
 		// called when incomming message occure
 		virtual HRESULT OnRecv(UINT uiBuffSize, const BYTE* pBuff) override;
 		virtual HRESULT OnRecv(Message::MessageData *pMsg) override;

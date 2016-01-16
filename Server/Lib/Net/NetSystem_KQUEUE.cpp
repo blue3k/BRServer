@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "Net/NetSystem.h"
-#include "Net/NetSystem_EPOLL.h"
+#include "Net/NetSystem_KQUEUE.h"
 #include "Net/NetSystem_impl.h"
 #include "Common/HRESNet.h"
 #include "Common/HRESCommon.h"
@@ -24,10 +24,9 @@
 #include "Common/MemoryPool.h"
 
 
-#if EPOLL
+#if KQUEUE
 
-#include <sys/epoll.h>
-
+#include <sys/event.h>
 
 
 
@@ -40,55 +39,53 @@ namespace Net {
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
-	//	EPOLL thread worker
+	//	KQUEUE thread worker
 	//
 
-	EPOLLWorker::EPOLLWorker(bool bHandleSend, int hEpoll)
-		: m_hEpoll(hEpoll)
+	KQUEUEWorker::KQUEUEWorker(bool bHandleSend, int hKQUEUE)
+		: m_hKQUEUE(hKQUEUE)
 		, m_HandleSend(bHandleSend)
 	{
-		if (m_hEpoll == 0)
+		if (m_hKQUEUE == 0)
 		{
-			m_hEpoll = epoll_create(1);
+			m_hKQUEUE = kqueue();
 		}
 	}
 
-	EPOLLWorker::~EPOLLWorker()
+	KQUEUEWorker::~KQUEUEWorker()
 	{
 
 	}
 
-	HRESULT EPOLLWorker::RegisterSocket(INetIOCallBack* cbInstance)
+	HRESULT KQUEUEWorker::RegisterSocket(INetIOCallBack* cbInstance)
 	{
-		epoll_event epollEvent;
+		struct kevent evSet;
 
-		memset(&epollEvent, 0, sizeof(epollEvent));
-		epollEvent.events = EPOLLIN | EPOLLOUT | EPOLLPRI | EPOLLET;// EPOLLERR | EPOLLHUP;
-		epollEvent.data.ptr = cbInstance;
-		if (epoll_ctl(m_hEpoll, EPOLL_CTL_ADD, cbInstance->GetIOSocket(), &epollEvent) == -1) {
-			netTrace(Trace::TRC_ERROR, "epoll_ctl: RegisterSocket");
-			return E_FAIL;
-		}
-
-		return S_OK;
-	}
-
-	HRESULT EPOLLWorker::UnregisterSocket(INetIOCallBack* cbInstance)
-	{
-		epoll_event epollEvent;
-
-		memset(&epollEvent, 0, sizeof(epollEvent));
-		epollEvent.events = EPOLLIN | EPOLLOUT | EPOLLPRI | EPOLLET;// EPOLLERR | EPOLLHUP;
-		epollEvent.data.ptr = cbInstance;
-		if (epoll_ctl(m_hEpoll, EPOLL_CTL_DEL, cbInstance->GetIOSocket(), &epollEvent) == -1) {
-			netTrace(Trace::TRC_ERROR, "epoll_ctl: UnregisterSocket");
-			return E_FAIL;
+		EV_SET(&evSet, cbInstance->GetIOSocket(), EVFILT_READ | EVFILT_WRITE, EV_ADD, 0, 0, cbInstance);
+		if (kevent(m_hKQUEUE, &evSet, 1, NULL, 0, NULL) == -1)
+		{
+			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: RegisterSocket");
+			return GetLastWSAHRESULT();
 		}
 
 		return S_OK;
 	}
 
-	HRESULT EPOLLWorker::HandleAccept(SOCKET sock, INetIOCallBack* pCallBack)
+	HRESULT KQUEUEWorker::UnregisterSocket(INetIOCallBack* cbInstance)
+	{
+		struct kevent evSet;
+
+		EV_SET(&evSet, cbInstance->GetIOSocket(), EVFILT_READ | EVFILT_WRITE, EV_DELETE, 0, 0, cbInstance);
+		if (kevent(m_hKQUEUE, &evSet, 1, NULL, 0, NULL) == -1)
+		{
+			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: RegisterSocket");
+			return GetLastWSAHRESULT();
+		}
+
+		return S_OK;
+	}
+
+	HRESULT KQUEUEWorker::HandleAccept(SOCKET sock, INetIOCallBack* pCallBack)
 	{
 		HRESULT hr = S_OK;
 		IOBUFFER_ACCEPT* pAcceptInfo = nullptr;
@@ -127,18 +124,18 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT EPOLLWorker::HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack)
+	HRESULT KQUEUEWorker::HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack)
 	{
 		HRESULT hr = S_OK, hrErr = S_OK;
 		IOBUFFER_READ* pReadBuffer = nullptr;
 
-		if (!(events & (EPOLLIN | EPOLLOUT)))
+		if (!(events & (EVFILT_READ| EVFILT_WRITE)))
 		{
 			netTrace(Trace::TRC_ERROR, "Error sock:{0}, event:{1}", sock, events);
 			return E_UNEXPECTED;
 		}
 
-		if (events & EPOLLIN)
+		if (events & EVFILT_READ)
 		{
 			while (SUCCEEDED(hrErr))
 			{
@@ -160,7 +157,7 @@ namespace Net {
 				default:
 					if (FAILED(hr))
 					{
-						netTrace(TRC_NETSYS, "ERROR Epoll Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
+						netTrace(TRC_NETSYS, "ERROR KQUEUE Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
 					}
 					// fallthru
 				case S_OK:
@@ -179,7 +176,7 @@ namespace Net {
 			}
 		}
 
-		if (m_HandleSend && (events & EPOLLOUT))
+		if (m_HandleSend && (events & EVFILT_WRITE))
 		{
 			// This call will just poke working thread
 			hr = pCallBack->OnSendReady();
@@ -194,7 +191,7 @@ namespace Net {
 
 		if (FAILED(hr))
 		{
-			netTrace(TRC_NETSYS, "ERROR Epoll RW fail events:{0:X8} hr:{1:X8}", events, hr);
+			netTrace(TRC_NETSYS, "ERROR KQUEUE RW fail events:{0:X8} hr:{1:X8}", events, hr);
 		}
 
 		Util::SafeDelete(pReadBuffer);
@@ -202,18 +199,18 @@ namespace Net {
 		return hr;
 	}
 
-	void EPOLLWorker::Run()
+	void KQUEUEWorker::Run()
 	{
 		HRESULT hr = S_OK;
 		int iNumEvents;
-		epoll_event events[MAX_EPOLL_EVENTS];
+		struct kevent events[MAX_KQUEUE_EVENTS];
 
 		while (1)
 		{
 			hr = S_OK;
 
 			// Getting status
-			iNumEvents = epoll_wait(m_hEpoll, events, countof(events), MAX_EPOLL_WAIT);
+			iNumEvents = kevent(m_hKQUEUE, NULL, 0, events, countof(events), NULL);
 			if (iNumEvents < 0)
 			{
 				hr = GetLastHRESULT();
@@ -229,21 +226,21 @@ namespace Net {
 				case E_INVALID_ARG:
 				case E_NET_INVAL:
 				default:
-					netTrace(TRC_NETSYS, "ERROR EPOLL wait failed hr={0:X8}", hr);
+					netTrace(TRC_NETSYS, "ERROR KQUEUE wait failed hr={0:X8}", hr);
 					break;
 				}
 			}
 
 			for (int iEvent = 0; iEvent < iNumEvents; iEvent++)
 			{
-				if (events[iEvent].data.ptr == nullptr)
+				if (events[iEvent].udata == nullptr)
 				{
-					netTrace(TRC_NETSYS, "ERROR EPOLL null handler, skipping...");
+					netTrace(TRC_NETSYS, "ERROR KQUEUE null handler, skipping...");
 					continue;
 				}
 
 				auto& curEvent = events[iEvent];
-				auto pCallback = (INetIOCallBack*)curEvent.data.ptr;
+				auto pCallback = (INetIOCallBack*)curEvent.udata;
 				bool isListenSocket = pCallback->GetIOFlags().IsListenSocket != 0;
 				SOCKET sock = pCallback->GetIOSocket();
 
@@ -253,7 +250,7 @@ namespace Net {
 				}
 				else
 				{
-					HandleRW(sock, curEvent.events, pCallback);
+					HandleRW(sock, curEvent.flags, pCallback);
 				}
 
 			}
@@ -270,16 +267,16 @@ namespace Net {
 
 
 	// Constructor/destructor
-	EPOLLSendWorker::EPOLLSendWorker()
+	KQUEUESendWorker::KQUEUESendWorker()
 	{
 	}
 
-	EPOLLSendWorker::~EPOLLSendWorker()
+	KQUEUESendWorker::~KQUEUESendWorker()
 	{
 		m_WriteQueue.ClearQueue();
 	}
 
-	void EPOLLSendWorker::Run()
+	void KQUEUESendWorker::Run()
 	{
 		HRESULT hr = S_OK;
 		IOBUFFER_WRITE* pSendBuffer = nullptr;
@@ -347,68 +344,55 @@ namespace Net {
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
-	//	EPOLL network system
+	//	KQUEUE network system
 	//
 
 
 
-	EPOLLSystem::EPOLLSystem()
+	KQUEUESystem::KQUEUESystem()
 		: m_ListenWorker(nullptr)
 		, m_iTCPAssignIndex(0)
 		, m_UDPSendWorker(nullptr)
 	{
 	}
 
-	HRESULT EPOLLSystem::Initialize(UINT netThreadCount)
+	HRESULT KQUEUESystem::Initialize(UINT netThreadCount)
 	{
 		if (m_ListenWorker != nullptr)
 			return S_OK;
 
 
-		int hEPollUDP = epoll_create(1);
+		m_ListenWorker = new KQUEUEWorker(false);
+		m_ListenWorker->Start();
 
-		// client will use only 1 thread
-		if (netThreadCount <= 1)
+		m_iTCPAssignIndex = 0;
+
+		// 
+		for (UINT iThread = 0; iThread < netThreadCount; iThread++)
 		{
-			// TODO: Use one thread for all these
+			auto pNewWorker = new KQUEUEWorker(true);
+			m_WorkerTCP.push_back(pNewWorker);
+
+			pNewWorker->Start();
 		}
-		else
+
+		m_UDPSendWorker = new KQUEUESendWorker;
+		m_UDPSendWorker->Start();
+
+		// 
+		int hKQUEUEUDP = kqueue();
+		for (UINT iThread = 0; iThread < netThreadCount; iThread++)
 		{
-			// divide by 2
-			netThreadCount >>= 1;
+			auto pNewWorker = new KQUEUEWorker(false, hKQUEUEUDP);
+			m_WorkerUDP.push_back(pNewWorker);
 
-			m_ListenWorker = new EPOLLWorker(false);
-			m_ListenWorker->Start();
-
-			m_iTCPAssignIndex = 0;
-
-			// 
-			for (UINT iThread = 0; iThread < netThreadCount; iThread++)
-			{
-				auto pNewWorker = new EPOLLWorker(true);
-				m_WorkerTCP.push_back(pNewWorker);
-
-				pNewWorker->Start();
-			}
-
-			m_UDPSendWorker = new EPOLLSendWorker;
-			m_UDPSendWorker->Start();
-
-			// 
-			for (UINT iThread = 0; iThread < netThreadCount; iThread++)
-			{
-				auto pNewWorker = new EPOLLWorker(false, hEPollUDP);
-				m_WorkerUDP.push_back(pNewWorker);
-
-				pNewWorker->Start();
-			}
-
+			pNewWorker->Start();
 		}
 
 		return S_OK;
 	}
 
-	void EPOLLSystem::Terminate()
+	void KQUEUESystem::Terminate()
 	{
 		if (m_ListenWorker)
 		{
@@ -434,30 +418,30 @@ namespace Net {
 		m_UDPSendWorker = nullptr;
 
 		// 
-		int hEpoll = 0;
+		int hKQUEUE = 0;
 		for (UINT iThread = 0; iThread < m_WorkerUDP.GetSize(); iThread++)
 		{
 			auto pThread = m_WorkerUDP[iThread];
-			hEpoll = pThread->GetEpollHandle();
+			hKQUEUE = pThread->GetKQUEUEHandle();
 			pThread->Stop(true);
 			delete pThread;
 		}
 		m_WorkerUDP.Clear();
 
-		if (hEpoll != 0)
+		if (hKQUEUE != 0)
 		{
-			close(hEpoll);
+			close(hKQUEUE);
 		}
 	}
 
-	HRESULT EPOLLSystem::MakeSocketNonBlocking(SOCKET sfd)
+	HRESULT KQUEUESystem::MakeSocketNonBlocking(SOCKET sfd)
 	{
 		int flags, s;
 
 		flags = fcntl(sfd, F_GETFL, 0);
 		if (flags == -1)
 		{
-			netTrace(Trace::TRC_ERROR, "epoll_ctl: fcntl F_GETFL");
+			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: fcntl F_GETFL");
 			return E_FAIL;
 		}
 
@@ -465,15 +449,15 @@ namespace Net {
 		s = fcntl(sfd, F_SETFL, flags);
 		if (s == -1)
 		{
-			netTrace(Trace::TRC_ERROR, "epoll_ctl: fcntl F_SETFL");
+			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: fcntl F_SETFL");
 			return E_FAIL;
 		}
 
 		return S_OK;
 	}
 
-
-	WriteBufferQueue* EPOLLSystem::GetWriteBufferQueue()
+	// UDP shares the send queue
+	WriteBufferQueue* KQUEUESystem::GetWriteBufferQueue()
 	{
 		if (m_UDPSendWorker == nullptr)
 			return nullptr;
@@ -482,7 +466,7 @@ namespace Net {
 	}
 
 
-	HRESULT EPOLLSystem::RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+	HRESULT KQUEUESystem::RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
 	{
 		Assert(sockType == SockType::DataGram);
 		if (sockType != SockType::DataGram)
@@ -500,8 +484,8 @@ namespace Net {
 		return S_OK;
 	}
 
-	// Register the socket to EPOLL
-	HRESULT EPOLLSystem::RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance)
+	// Register the socket to KQUEUE
+	HRESULT KQUEUESystem::RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance)
 	{
 		if (sockType == SockType::Stream) // TCP
 		{
@@ -529,14 +513,15 @@ namespace Net {
 				cbInstance->SetWriteQueue( &m_UDPSendWorker->GetWriteQueue() );
 			}
 
-			// UDP workers are sharing epoll, add any of them will work same.
+			// UDP workers are sharing KQUEUE, add any of them will work same.
 			return m_WorkerUDP[0]->RegisterSocket(cbInstance);
 		}
 
 		return S_OK;
 	}
 
-	HRESULT EPOLLSystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
+
+	HRESULT KQUEUESystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
 	{
 		if (sockType == SockType::Stream) // TCP
 		{
@@ -572,8 +557,7 @@ namespace Net {
 	}
 
 
-
-	EPOLLSystem EPOLLSystem::stm_Instance;
+	KQUEUESystem KQUEUESystem::stm_Instance;
 
 
 
@@ -584,6 +568,6 @@ namespace Net {
 } // namespace BR
 
 #else
-void Dummp_NetSystem_EPOLL() {}
+void Dummp_NetSystem_KQUEUE() {}
 #endif
 

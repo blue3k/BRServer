@@ -23,6 +23,10 @@ cd ..
 
 export ROOT_PATH=`pwd`
 export BUILD_MODE=$1
+export DEFINES=EPOLL
+#export DEFINES=KQUEUE 
+#export INCLUDES=/usr/include/kqueue 
+#export EXTERNAL_LIBS=kqueue
 
 cd Server
 

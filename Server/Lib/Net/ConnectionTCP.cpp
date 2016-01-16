@@ -534,11 +534,17 @@ namespace Net {
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
 
+		
 		CloseSocket();
 
 	Proc_End:
 
 		return hr;
+	}
+
+	void ConnectionTCP::CloseSocket()
+	{
+		Connection::CloseSocket();
 	}
 
 

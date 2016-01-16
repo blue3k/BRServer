@@ -23,6 +23,7 @@ cd ..
 
 export ROOT_PATH=`pwd`
 export BUILD_MODE=$1
+export DEFINES=EPOLL
 
 
 cd $ROOT_PATH/Server/Lib

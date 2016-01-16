@@ -4,9 +4,10 @@
 # inputs
 
 # need to put generic defines
-INCLUDES?=.
+INCLUDES?=
 DEFINES?=
 LIBS?=
+EXTERNAL_LIBS?=
 
 # in-case not specified - for test
 OBJ_PATH=$(ROOT_PATH)/Server/bin/obj
@@ -42,14 +43,14 @@ export TARGET_LIB_PATH
 OBJECTS=$(addprefix $(TARGET_OBJ_PATH)/,$(SOURCES:.cpp=.o))
 DEPENDANCIES=$(addprefix $(TARGET_OBJ_PATH)/,$(SOURCES:.cpp=.d))
 
-
-INCLUDES+= $(ROOT_PATH)/Server/Lib $(ROOT_PATH)/Server/bin/include /usr/include /usr/include/mysql
+INCLUDES+= . $(ROOT_PATH)/Server/Lib $(ROOT_PATH)/Server/bin/include /usr/include /usr/include/mysql /usr/include/kqueue 
 DEFINES+= $(BUILD_MODE) $(LOGNAME)
 
 CC=g++
 CFLAGS=-c -g -std=c++14 -pthread -static-libgcc -static-libstdc++ -Wall $(addprefix -I,$(INCLUDES)) $(addprefix -D,$(DEFINES))
 CPPFLAGS:=$(CFLAGS)
 LDFLAGS=-g -std=c++14 -pthread -static-libgcc  -static-libstdc++ -L=$(ROOT_PATH)/Server/bin/lib
+EXTERNAL_LIBS+= c kqueue z xml2 ssl crypto jsoncpp curl mysqlclient
 #LDFLAGS=-g -std=c++14 -pthread -static-libgcc
 
 ifeq "$(BUILD_MODE)" "DEBUG"
@@ -65,30 +66,16 @@ TARGET_BUILD_COMMAND=
 ifeq "$(LINK_TYPE)" "EXE"
 	OBJECTS+= $(addprefix $(TARGET_LIB_PATH)/,$(LIBS))
 	TARGET_FILE=$(TARGET_BIN_PATH)/$(PROJECT_NAME)
-	TARGET_BUILD_COMMAND=$(CC) $(LDFLAGS) $(OBJECTS) -lz -lxml2 -lssl -lcrypto -ljsoncpp -lcurl -lmysqlclient -lgtest -o $(TARGET_FILE) 
+	TARGET_BUILD_COMMAND=$(CC) $(LDFLAGS) $(OBJECTS) $(addprefix -l,$(EXTERNAL_LIBS)) -lgtest -o $(TARGET_FILE) 
 else ifeq "$(LINK_TYPE)" "LIB"
 	TARGET_FILE=$(TARGET_LIB_PATH)/lib$(PROJECT_NAME).a
 	TARGET_BUILD_COMMAND=$(AR) cr $(TARGET_FILE) $(OBJECTS)
 else ifeq "$(LINK_TYPE)" "DLL"
 	OBJECTS+= $(addprefix $(TARGET_LIB_PATH)/,$(LIBS))
 	TARGET_FILE=$(TARGET_BIN_PATH)/lib$(PROJECT_NAME).so
-	TARGET_BUILD_COMMAND=$(CC) -shared $(LDFLAGS) $(OBJECTS) -lz -lxml2 -lssl -lcrypto -ljsoncpp -lcurl -lmysqlclient -o $(TARGET_FILE)  
+	TARGET_BUILD_COMMAND=$(CC) -shared $(LDFLAGS) $(OBJECTS) $(addprefix -l,$(EXTERNAL_LIBS)) -o $(TARGET_FILE)  
 endif
 
-
-export CC
-export DEFINES
-export CFLAGS
-export CPPFLAGS
-export LDFLAGS
-
-export DEPENDANCIES
-
-export TARGET_FILE
-export TARGET_OBJ_PATH
-export TARGET_BIN_PATH
-export TARGET_LIB_PATH
-export TARGET_BUILD_COMMAND
 
 #--------------------------------------------------------------------
 # Common rules
@@ -125,7 +112,24 @@ $(TARGET_FILE): $(TARGET_OBJ_PATH) $(OBJECTS)
 	$(TARGET_BUILD_COMMAND)
 
 
-$(DEPENDANCIES): | $(TARGET_OBJ_PATH) $(TARGET_LIB_PATH) $(TARGET_BIN_PATH)
+#$(DEPENDANCIES): | $(TARGET_OBJ_PATH) $(TARGET_LIB_PATH) $(TARGET_BIN_PATH)
 
 
+
+#--------------------------------------------------------------------
+# Exports
+	
+export CC
+export DEFINES
+export CFLAGS
+export CPPFLAGS
+export LDFLAGS
+
+export DEPENDANCIES
+
+export TARGET_FILE
+export TARGET_OBJ_PATH
+export TARGET_BIN_PATH
+export TARGET_LIB_PATH
+export TARGET_BUILD_COMMAND
 

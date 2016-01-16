@@ -70,6 +70,12 @@
     <None Include="NetSystem_WinIOCP.inl">
       <Filter>NetSystem</Filter>
     </None>
+    <None Include="NetSystem_Linux.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetSystem_KQUEUE.inl">
+      <Filter>NetSystem</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Readme\readme.html">
@@ -185,6 +191,12 @@
     <ClCompile Include="NetTrace.cpp" />
     <ClCompile Include="NetUtil.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="NetSystem_Linux.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetSystem_KQUEUE.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Connection.h">
@@ -264,5 +276,11 @@
     <ClInclude Include="NetUtil.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="NetSystem_Linux.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem_KQUEUE.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
