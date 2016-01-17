@@ -75,6 +75,12 @@
     <None Include="NetSystem_WinIOCP.inl">
       <Filter>NetSystem</Filter>
     </None>
+    <None Include="NetSystem_KQUEUE.inl">
+      <Filter>NetSystem</Filter>
+    </None>
+    <None Include="NetSystem_Linux.inl">
+      <Filter>NetSystem</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -159,6 +165,12 @@
       <Filter>NetSystem</Filter>
     </ClInclude>
     <ClInclude Include="NetSystem_impl.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem_KQUEUE.h">
+      <Filter>NetSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="NetSystem_Linux.h">
       <Filter>NetSystem</Filter>
     </ClInclude>
   </ItemGroup>
@@ -252,6 +264,12 @@
     </ClCompile>
     <ClCompile Include="ConnectionUDPBase.cpp">
       <Filter>Connection</Filter>
+    </ClCompile>
+    <ClCompile Include="NetSystem_KQUEUE.cpp">
+      <Filter>NetSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="NetSystem_Linux.cpp">
+      <Filter>NetSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

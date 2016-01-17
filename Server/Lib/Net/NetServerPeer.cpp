@@ -107,8 +107,8 @@ namespace Net {
 		if(pIOBuffer == nullptr || pIOBuffer->TransferredSize == 0)
 			goto Proc_End;
 
-		Assert(pIOBuffer->bIsPending == true);
-		pIOBuffer->bIsPending = false;
+		//Assert(pIOBuffer->bIsPending == true);
+		//pIOBuffer->bIsPending = false;
 		m_PendingRecvCnt.fetch_sub(1, std::memory_order_relaxed);
 
 
@@ -166,8 +166,12 @@ namespace Net {
 
 		if (NetSystem::IsProactorSystem())
 		{
+			pIOBuffer->SetPendingFalse();
+
 			if (hrRes != E_NET_IO_ABORTED)
+			{
 				PendingRecv(pIOBuffer);
+			}
 			else
 			{
 				netTrace(Trace::TRC_ERROR, "NoPending {0}", from);
@@ -372,10 +376,11 @@ namespace Net {
 		if (!NetSystem::IsProactorSystem())
 			return S_OK;
 
+		netChk(pOver->SetPendingTrue());
 		pOver->SetupRecvUDP(0);
 
-		Assert(pOver->bIsPending == false);
-		pOver->bIsPending = true;
+		//Assert(pOver->bIsPending == false);
+		//pOver->bIsPending = true;
 		m_PendingRecvCnt.fetch_add(1, std::memory_order_relaxed);
 
 
@@ -454,7 +459,6 @@ namespace Net {
 
 		netTrace(Trace::TRC_TRACE, "Opening Server Peer, {0}:{1}", strLocalIP, usLocalPort);
 
-		//netChk( NetSystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
 		netChk(ServerHostOpen(netCls, strLocalIP, usLocalPort));
 
 		netTrace(Trace::TRC_TRACE, "Open Server Peer Host {0}:{1}", strLocalIP, usLocalPort );

@@ -266,10 +266,13 @@ Proc_End:
 		{
 			ExternalTransactionManager* pExtMgr = nullptr;
 
+			svrTrace(TRC_INFO, "Authentication error, Reauthorizing...");
+
 			svrChkPtr(pExtMgr = GetServerComponent<ExternalTransactionManager>());
 
 			svrChk(pExtMgr->UpdateGoogleAuth());
 
+			// try again
 			svrChk(m_DevAPI.CheckReceipt(m_strPackageName, m_strProductID, m_strPurchaseToken));
 		}
 		else
@@ -281,7 +284,7 @@ Proc_End:
 
 		CloseTransaction(hr);
 
-		return hr;
+		return S_OK;
 	}
 
 

@@ -146,6 +146,36 @@ namespace Net {
 		ClearBuffer();
 	}
 
+	HRESULT IOBUFFER_READ::SetPendingTrue()
+	{
+		bool expected = false;
+		while (!bIsPending.compare_exchange_weak(expected, true, std::memory_order_seq_cst))
+		{
+			if (expected == true)
+			{
+				return E_FAIL;
+			}
+
+			expected = false;
+		}
+		return S_OK;
+	}
+
+	HRESULT IOBUFFER_READ::SetPendingFalse()
+	{
+		bool expected = true;
+		while (!bIsPending.compare_exchange_weak(expected, false, std::memory_order_seq_cst))
+		{
+			if (expected == true)
+			{
+				return E_FAIL;
+			}
+
+			expected = false;
+		}
+		return S_OK;
+	}
+
 
 	IOBUFFER_ACCEPT::IOBUFFER_ACCEPT()
 	{

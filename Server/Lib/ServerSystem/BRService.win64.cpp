@@ -322,7 +322,7 @@ namespace Svr {
 			std::string strCfgPath = Util::GetModulePathA();
 			bool bIsInstall = false;
 			const char *strUser = nullptr; const char *strPWD = nullptr;
-			const char *strServiceName = nullptr;
+			std::string strServiceName = "";
 
 			SetCurrentDirectoryW( Util::GetModulePath() );
 
@@ -375,9 +375,9 @@ namespace Svr {
 				};
 			}
 
-			if( strServiceName != nullptr )
+			if( strServiceName.length() > 0 )
 			{
-				Util::SetServiceName(strServiceName);
+				Util::SetServiceName(strServiceName.c_str());
 			}
 
 

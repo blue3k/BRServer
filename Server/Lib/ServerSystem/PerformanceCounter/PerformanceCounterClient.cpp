@@ -265,6 +265,9 @@ namespace Svr {
 
 		stm_pInstance->m_ServerID = serverID;
 
+		// use same network family
+		svrChk(Net::GetLocalAddress(serverAddress.SocketFamily, localAddress));
+
 		svrChk(pRawUDP->InitializeNet(localAddress, &stm_pInstance->m_MessageHandler));
 
 		stm_pInstance->m_RawUDP = pRawUDP;

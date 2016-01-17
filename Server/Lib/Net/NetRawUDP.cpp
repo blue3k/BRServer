@@ -194,7 +194,7 @@ namespace Net {
 		if (!NetSystem::IsProactorSystem())
 			return S_OK;
 
-
+		netChk(pOver->SetPendingTrue());
 		pOver->SetupRecvUDP(0);
 
 		while (1)
@@ -464,6 +464,8 @@ namespace Net {
 
 		if (NetSystem::IsProactorSystem())
 		{
+			Assert(pIOBuffer->bIsPending);
+			pIOBuffer->bIsPending.store(false, std::memory_order_relaxed);
 			if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
 				PendingRecv(pIOBuffer);
 		}

@@ -96,8 +96,13 @@ void IOBUFFER_WRITE::SetupSendTCP( UINT uiBuffSize, BYTE* pBuff )
 void IOBUFFER_READ::InitForIO()
 {
 	HANDLE hEventTemp = hEvent;
-	memset( this, 0, sizeof(IOBUFFER_READ) );
+	memset( this, 0, sizeof(IOBUFFER_RWBASE) );
 	hEvent = hEventTemp;
+
+	dwFlags = 0;
+	dwNumberOfByte = 0;
+	CID = 0;
+	Assert(!NetSystem::IsProactorSystem() || bIsPending.load(std::memory_order_relaxed));
 
 	iSockLen = sizeof(NetAddr.From);
 }

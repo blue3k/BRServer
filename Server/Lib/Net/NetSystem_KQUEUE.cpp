@@ -361,32 +361,35 @@ namespace Net {
 		if (m_ListenWorker != nullptr)
 			return S_OK;
 
+		int hKQUEUEUDP = kqueue();
 
 		m_ListenWorker = new KQUEUEWorker(false);
 		m_ListenWorker->Start();
 
-		m_iTCPAssignIndex = 0;
-
-		// 
-		for (UINT iThread = 0; iThread < netThreadCount; iThread++)
-		{
-			auto pNewWorker = new KQUEUEWorker(true);
-			m_WorkerTCP.push_back(pNewWorker);
-
-			pNewWorker->Start();
-		}
-
 		m_UDPSendWorker = new KQUEUESendWorker;
 		m_UDPSendWorker->Start();
 
-		// 
-		int hKQUEUEUDP = kqueue();
-		for (UINT iThread = 0; iThread < netThreadCount; iThread++)
-		{
-			auto pNewWorker = new KQUEUEWorker(false, hKQUEUEUDP);
-			m_WorkerUDP.push_back(pNewWorker);
+		m_iTCPAssignIndex = 0;
 
-			pNewWorker->Start();
+		if (netThreadCount > 1)
+		{
+			// 
+			for (UINT iThread = 0; iThread < netThreadCount; iThread++)
+			{
+				auto pNewWorker = new KQUEUEWorker(true);
+				m_WorkerTCP.push_back(pNewWorker);
+
+				pNewWorker->Start();
+			}
+
+			// 
+			for (UINT iThread = 0; iThread < netThreadCount; iThread++)
+			{
+				auto pNewWorker = new KQUEUEWorker(false, hKQUEUEUDP);
+				m_WorkerUDP.push_back(pNewWorker);
+
+				pNewWorker->Start();
+			}
 		}
 
 		return S_OK;
@@ -484,73 +487,91 @@ namespace Net {
 		return S_OK;
 	}
 
-	// Register the socket to KQUEUE
+	// Register the socket to EPOLL
 	HRESULT KQUEUESystem::RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance)
 	{
+		if (m_ListenWorker == nullptr)
+			return E_NET_NOTINITIALISED;
+
 		if (sockType == SockType::Stream) // TCP
 		{
-			if (m_ListenWorker == nullptr)
-				return E_NET_NOTINITIALISED;
-
-			if (cbInstance->GetIOFlags().IsListenSocket != 0)
+			// Listen worker will do all job when there is no other thread.
+			if (cbInstance->GetIOFlags().IsListenSocket != 0 || m_WorkerTCP.GetSize() == 0)
 			{
 				return m_ListenWorker->RegisterSocket(cbInstance);
 			}
 			else
 			{
-				auto assignIndex = m_iTCPAssignIndex.fetch_add(1,std::memory_order_relaxed) % m_WorkerTCP.GetSize();
+				auto assignIndex = m_iTCPAssignIndex.fetch_add(1, std::memory_order_relaxed) % m_WorkerTCP.GetSize();
+				cbInstance->SetAssignedIOWorker(assignIndex);
 				m_WorkerTCP[assignIndex]->RegisterSocket(cbInstance);
 			}
 		}
 		else
 		{
-			if(m_WorkerUDP.GetSize() < 1)
-				return E_NET_NOTINITIALISED;
-
-			if (cbInstance->GetWriteQueue() == nullptr)
-			{
-				Assert(sockType == SockType::DataGram);
-				cbInstance->SetWriteQueue( &m_UDPSendWorker->GetWriteQueue() );
-			}
-
-			// UDP workers are sharing KQUEUE, add any of them will work same.
-			return m_WorkerUDP[0]->RegisterSocket(cbInstance);
-		}
-
-		return S_OK;
-	}
-
-
-	HRESULT KQUEUESystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
-	{
-		if (sockType == SockType::Stream) // TCP
-		{
-			if (m_ListenWorker == nullptr)
-				return E_NET_NOTINITIALISED;
-
-			if (cbInstance->GetIOFlags().IsListenSocket != 0)
-			{
-				return m_ListenWorker->UnregisterSocket(cbInstance);
-			}
-			else
-			{
-				auto assignIndex = m_iTCPAssignIndex.fetch_add(1, std::memory_order_relaxed) % m_WorkerTCP.GetSize();
-				m_WorkerTCP[assignIndex]->UnregisterSocket(cbInstance);
-			}
-		}
-		else
-		{
-			if (m_WorkerUDP.GetSize() < 1)
-				return E_NET_NOTINITIALISED;
-
 			if (cbInstance->GetWriteQueue() == nullptr)
 			{
 				Assert(sockType == SockType::DataGram);
 				cbInstance->SetWriteQueue(&m_UDPSendWorker->GetWriteQueue());
 			}
 
-			// UDP workers are sharing epoll, add any of them will work same.
-			return m_WorkerUDP[0]->UnregisterSocket(cbInstance);
+			if (m_WorkerUDP.GetSize() < 1)
+			{
+				HRESULT hr = m_ListenWorker->RegisterSocket(cbInstance);
+				if (FAILED(hr)) return hr;
+			}
+			else
+			{
+				// UDP workers are sharing epoll, add any of them will work same.
+				HRESULT hr = m_WorkerUDP[0]->RegisterSocket(cbInstance);
+				if (FAILED(hr)) return hr;
+			}
+			cbInstance->SetAssignedIOWorker(0);
+		}
+
+		return S_OK;
+	}
+
+	HRESULT KQUEUESystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
+	{
+		if (m_ListenWorker == nullptr)
+			return E_NET_NOTINITIALISED;
+
+		if (sockType == SockType::Stream) // TCP
+		{
+			if (cbInstance->GetIOFlags().IsListenSocket != 0 || m_WorkerTCP.GetSize() == 0)
+			{
+				return m_ListenWorker->UnregisterSocket(cbInstance);
+			}
+			else
+			{
+				auto assignIndex = cbInstance->GetAssignedIOWorker();
+				if (assignIndex >= 0 && assignIndex < (int)m_WorkerTCP.GetSize())
+				{
+					m_WorkerTCP[assignIndex]->UnregisterSocket(cbInstance);
+					cbInstance->SetAssignedIOWorker(-1);
+				}
+			}
+		}
+		else
+		{
+			if (cbInstance->GetWriteQueue() == nullptr)
+			{
+				Assert(sockType == SockType::DataGram);
+				cbInstance->SetWriteQueue(&m_UDPSendWorker->GetWriteQueue());
+			}
+
+			if (m_WorkerUDP.GetSize() < 1)
+			{
+				HRESULT hr = m_ListenWorker->UnregisterSocket(cbInstance);
+				if (FAILED(hr)) return hr;
+			}
+			else
+			{
+				HRESULT hr = m_WorkerUDP[0]->UnregisterSocket(cbInstance);
+				if (FAILED(hr)) return hr;
+			}
+			cbInstance->SetAssignedIOWorker(-1);
 		}
 
 		return S_OK;

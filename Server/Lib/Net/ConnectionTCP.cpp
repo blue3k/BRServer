@@ -272,6 +272,8 @@ namespace Net {
 		if(pIOBuffer != nullptr && pIOBuffer->CID != GetCID() )
 			netErr( E_INVALIDARG );
 
+		Assert(!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_relaxed));
+
 		if( FAILED( hrRes ) )
 		{
 			switch( hrRes )
@@ -282,7 +284,6 @@ namespace Net {
 				break;
 			default:
 				netTrace(TRC_TCPRECVRAW, "Recv Msg Failed, SvrTCP, CID {0}, hr={1:X8}", GetCID(), hrRes);
-				PendingRecv();
 				break;
 			};
 		}
@@ -290,14 +291,24 @@ namespace Net {
 		{
 			netChkPtr(pIOBuffer);
 			netChk( OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer) );
-			PendingRecv();
 		}
 
 	Proc_End:
 
-		Util::SafeDelete(pIOBuffer);
 
-		DecPendingRecvCount();
+		if (!NetSystem::IsProactorSystem())
+		{
+			Util::SafeDelete(pIOBuffer);
+		}
+		else
+		{
+			pIOBuffer->SetPendingFalse();
+		}
+
+		//DecPendingRecvCount();
+		// Update will process new pending recv
+		PendingRecv();
+		//AssertRel(!NetSystem::IsProactorSystem() || GetPendingRecvCount() == 1);
 
 		netTrace(TRC_TCPRECVRAW, "TCP Recv CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 
@@ -338,23 +349,38 @@ namespace Net {
 		if (!NetSystem::IsProactorSystem())
 			return S_OK;
 
+		if (GetConnectionState() == ConnectionState::STATE_DISCONNECTED)
+			return S_OK;
+
 		// On client side, we need to check writable status by calling connect again
-		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == IConnection::ConnectionState::STATE_CONNECTING)
+		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == ConnectionState::STATE_CONNECTING)
 		{
 			m_isActuallyConnected = Connect() == S_OK;
 			if (!m_isActuallyConnected)
 				return S_OK;
 		}
 
+		// For TCP, we need only single buffer is in waiting read operation
 		pOver = GetRecvBuffer();
-		netChk(Recv(pOver));
+		hr = pOver->SetPendingTrue();
+		if (FAILED(hr))
+			return S_OK;
 
-		IncPendingRecvCount();
-
+		hr = Recv(pOver);
+		if (FAILED(hr) && hr != E_NET_IO_PENDING)
+		{
+			netTrace(Trace::TRC_WARN, "Pending Recv failed, CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
+			Assert(false);
+			// Failed, release pending flag
+			pOver->SetPendingFalse();
+		}
+		else
+		{
+			netTrace(TRC_TCPRECVRAW, "Pending Recv CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
+		}
 
 	Proc_End:
 
-		netTrace(TRC_TCPRECVRAW, "Pending Recv CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 
 		return hr;
 	}
@@ -544,6 +570,10 @@ namespace Net {
 
 	void ConnectionTCP::CloseSocket()
 	{
+		if (GetSocket() == INVALID_SOCKET) return;
+
+		NetSystem::UnregisterSocket(SockType::Stream, this);
+
 		Connection::CloseSocket();
 	}
 
@@ -901,7 +931,7 @@ namespace Net {
 	ConnectionTCPClient::ConnectionTCPClient()
 		:ConnectionTCP()
 	{
-		GetRecvBuffer()->SetupRecvTCP( GetCID() );
+		//GetRecvBuffer()->SetupRecvTCP( GetCID() );
 	}
 
 	ConnectionTCPClient::~ConnectionTCPClient()
@@ -917,8 +947,7 @@ namespace Net {
 
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
-		if( GetPendingRecvCount() == 0 
-			&& GetConnectionState() != IConnection::STATE_DISCONNECTED)
+		if( GetConnectionState() != IConnection::STATE_DISCONNECTED)
 		{
 			PendingRecv();
 		}
@@ -1041,9 +1070,7 @@ namespace Net {
 
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
-		if( NetSystem::IsProactorSystem()
-			&& GetPendingRecvCount() == 0 
-			&& GetConnectionState() != IConnection::STATE_DISCONNECTED)
+		if( GetConnectionState() != IConnection::STATE_DISCONNECTED)
 		{
 			PendingRecv();
 		}

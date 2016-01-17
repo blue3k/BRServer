@@ -15,9 +15,9 @@
 #if WINDOWS
 
 #include "Common/Typedefs.h"
+#include "Common/StackWalker.h"
 #include "Net/NetDef.h"
 #include "Net/NetConst.h"
-
 
 namespace BR {
 namespace Net {
@@ -106,7 +106,10 @@ namespace Net {
 		// Recv buffer
 		char buffer[Const::INTER_PACKET_SIZE_MAX];
 
-		bool bIsPending;
+		// Mark wheather this buffer is in use
+		std::atomic<bool> bIsPending;
+		//CallStackTrace PendingTrace;
+
 
 		// constructor
 		IOBUFFER_READ();
@@ -119,6 +122,10 @@ namespace Net {
 		// Setup recving mode
 		inline void SetupRecvUDP( uintptr_t iCID );
 		inline void SetupRecvTCP( uintptr_t iCID );
+
+		HRESULT SetPendingTrue();
+		HRESULT SetPendingFalse();
+
 	};
 
 

@@ -110,7 +110,7 @@ namespace Net {
 		// Recv buffer
 		char buffer[Const::INTER_PACKET_SIZE_MAX];
 
-		bool bIsPending;
+		std::atomic<bool> bIsPending;
 
 		// constructor
 		IOBUFFER_READ();
@@ -123,6 +123,9 @@ namespace Net {
 		// Setup recving mode
 		inline void SetupRecvUDP(uintptr_t iCID);
 		inline void SetupRecvTCP(uintptr_t iCID);
+
+		HRESULT SetPendingTrue();
+		HRESULT SetPendingFalse();
 	};
 
 

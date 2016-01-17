@@ -65,7 +65,7 @@ namespace Net {
 		case WSAELOOP: return E_NET_LOOP;
 		case WSAENAMETOOLONG: return E_NET_NAMETOOLONG;
 
-
+		case WSAEAFNOSUPPORT: return E_NET_INVALID_ADDRESS;
 		case WSAEHOSTDOWN: return E_NET_HOSTDOWN;
 		case WSAEHOSTUNREACH: return E_NET_HOSTUNREACH;
 		case WSAENOTEMPTY: return E_NET_NOTEMPTY;
@@ -139,6 +139,38 @@ namespace Net {
 	{
 		ClearBuffer();
 	}
+
+	HRESULT IOBUFFER_READ::SetPendingTrue()
+	{
+		bool expected = false;
+		while (!bIsPending.compare_exchange_weak(expected, true, std::memory_order_seq_cst))
+		{
+			if (expected == true)
+			{
+				return E_FAIL;
+			}
+
+			expected = false;
+		}
+		return S_OK;
+	}
+
+	HRESULT IOBUFFER_READ::SetPendingFalse()
+	{
+		bool expected = true;
+		while (!bIsPending.compare_exchange_weak(expected, false, std::memory_order_seq_cst))
+		{
+			if (expected == true)
+			{
+				Assert(false);
+				return E_FAIL;
+			}
+
+			expected = false;
+		}
+		return S_OK;
+	}
+
 
 	IOBUFFER_ACCEPT::IOBUFFER_ACCEPT()
 		//:pConnection(nullptr)

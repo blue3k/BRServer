@@ -178,6 +178,8 @@
     <None Include="NetSystem.inl" />
     <None Include="NetServer.inl" />
     <None Include="NetSystem_EPOLL.inl" />
+    <None Include="NetSystem_KQUEUE.inl" />
+    <None Include="NetSystem_Linux.inl" />
     <None Include="NetSystem_WinIOCP.inl" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +207,8 @@
     <ClInclude Include="NetSvrDef.h" />
     <ClInclude Include="NetSystem_EPOLL.h" />
     <ClInclude Include="NetSystem_impl.h" />
+    <ClInclude Include="NetSystem_KQUEUE.h" />
+    <ClInclude Include="NetSystem_Linux.h" />
     <ClInclude Include="NetSystem_WinIOCP.h" />
     <ClInclude Include="NetToString.h" />
     <ClInclude Include="NetTrace.h" />
@@ -240,6 +244,8 @@
     <ClCompile Include="NetSvrDef.cpp" />
     <ClCompile Include="NetSystem.cpp" />
     <ClCompile Include="NetSystem_EPOLL.cpp" />
+    <ClCompile Include="NetSystem_KQUEUE.cpp" />
+    <ClCompile Include="NetSystem_Linux.cpp" />
     <ClCompile Include="NetSystem_WinIOCP.cpp" />
     <ClCompile Include="NetToString.cpp" />
     <ClCompile Include="NetTrace.cpp" />

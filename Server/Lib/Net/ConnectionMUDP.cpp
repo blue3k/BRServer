@@ -1080,7 +1080,10 @@ namespace Net {
 
 	Proc_End:
 
-		Util::SafeDelete(pIOBuffer);
+		if (!NetSystem::IsProactorSystem())
+		{
+			Util::SafeDelete(pIOBuffer);
+		}
 
 		return hr;
 	}
@@ -1119,6 +1122,7 @@ namespace Net {
 	// Pending recv New one
 	HRESULT ConnectionMUDPClient::PendingRecv()
 	{
+		HRESULT hr = S_OK, hrErr = S_OK;
 		IOBUFFER_READ *pOver = nullptr;
 
 		if (!NetSystem::IsProactorSystem())
@@ -1126,7 +1130,6 @@ namespace Net {
 
 		IncPendingRecvCount();
 
-		HRESULT hr = S_OK, hrErr = S_OK;
 
 		while (1)
 		{

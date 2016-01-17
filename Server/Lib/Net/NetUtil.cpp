@@ -251,14 +251,19 @@ namespace Net {
 			else if(curAddr->ai_family == AF_INET6)
 			{
 				sockaddr_in6* psockAddr6 = ((sockaddr_in6*)curAddr->ai_addr);
-				bIsFound = inet_ntop(AF_INET6, &psockAddr6->sin6_addr, tempBuffer, sizeof tempBuffer) != nullptr;
-				break;
+				if (!bIsFound || psockAddr6->sin6_scope_id == 0)
+				{
+					bIsFound = inet_ntop(AF_INET6, &psockAddr6->sin6_addr, tempBuffer, sizeof tempBuffer) != nullptr;
+					if (bIsFound && psockAddr6->sin6_scope_id == 0)
+						break;
+				}
 			}
 		}
 		freeaddrinfo(res);
 
 		if (bIsFound)
 		{
+			addr.SocketFamily = family;
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
@@ -307,8 +312,11 @@ namespace Net {
 		default:			return E_UNEXPECTED;
 		}
 
-		for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
+		for (auto curAddr = res; curAddr != nullptr && !bIsFound; curAddr = curAddr->ai_next)
 		{
+			if (curAddr->ai_family != ToSockValue(family))
+				continue;
+
 			switch (family)
 			{
 			case SockFamily::IPV4:
@@ -380,8 +388,12 @@ namespace Net {
 			case AF_INET6:
 			{
 				struct sockaddr_in6 *psockAddr = (struct sockaddr_in6 *)curAddr->ifa_addr;
-				bIsFound = inet_ntop(AF_INET6, &psockAddr->sin6_addr, tempBuffer, sizeof tempBuffer) != nullptr;
-				break;
+				if (!bIsFound || psockAddr->sin6_scope_id == 0)
+				{
+					bIsFound = inet_ntop(AF_INET6, &psockAddr->sin6_addr, tempBuffer, sizeof tempBuffer) != nullptr;
+					if (bIsFound && psockAddr->sin6_scope_id == 0)
+						break;
+				}
 			}
 
 			default:

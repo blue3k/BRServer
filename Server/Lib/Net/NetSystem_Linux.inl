@@ -90,7 +90,8 @@ void IOBUFFER_WRITE::SetupSendTCP(UINT uiBuffSize, BYTE* pBuff)
 // Initialize for IO
 void IOBUFFER_READ::InitForIO()
 {
-	memset(this, 0, sizeof(IOBUFFER_READ));
+	memset(this, 0, sizeof(IOBUFFER_RWBASE));
+	CID = 0;
 	iSockLen = sizeof(NetAddr.From);
 }
 

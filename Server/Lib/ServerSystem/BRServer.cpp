@@ -571,7 +571,6 @@ Proc_End:
 			svrErr( E_UNEXPECTED );
 		}
 
-
 		// Create private network and open it
 		svrMem( m_pNetPrivate = new Net::ServerPeerTCP(GetMyConfig()->UID, GetNetClass()) );
 		svrChkPtr(GetMyConfig()->NetPrivate);

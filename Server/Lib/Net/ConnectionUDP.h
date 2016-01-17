@@ -100,7 +100,7 @@ namespace Net {
 		ConnectionUDPBase( UINT reliableWindowSize );
 		virtual ~ConnectionUDPBase();
 
-		void SetWriteQueueUDP(WriteBufferQueue* writeQueue) { Assert(writeQueue != nullptr); m_pWriteQueuesUDP = writeQueue; }
+		void SetWriteQueueUDP(WriteBufferQueue* writeQueue);
 
 
 		// Set maximum guaranted retry count

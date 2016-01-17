@@ -63,9 +63,7 @@ namespace BR {
 			{
 				HRESULT hr = S_OK;
 
-
 				netChk(NetSystem::OpenSystem(uiOverBufferCount, Const::CLI_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX));
-
 
 				if (g_lSysOpenCount.fetch_add(1, std::memory_order_relaxed) == 0)
 				{

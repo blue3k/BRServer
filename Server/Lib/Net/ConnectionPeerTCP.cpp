@@ -59,7 +59,7 @@ namespace Net {
 	ConnectionPeerTCP::ConnectionPeerTCP()
 		:ConnectionTCP()
 	{
-		GetRecvBuffer()->SetupRecvTCP( GetCID() );
+		//GetRecvBuffer()->SetupRecvTCP( GetCID() );
 		SetHeartbitTry(Const::SVR_HEARTBIT_TIME_PEER);
 		SetConnectingTimeOut(Const::SVR_CONNECTION_TIMEOUT);
 	}

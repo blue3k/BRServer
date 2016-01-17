@@ -282,7 +282,10 @@ namespace Net {
 		if (NetSystem::IsProactorSystem())
 		{
 			if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
+			{
+				pIOBuffer->SetPendingFalse();
 				PendingRecv(pIOBuffer);
+			}
 		}
 		else
 		{

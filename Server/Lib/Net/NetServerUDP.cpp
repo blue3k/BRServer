@@ -338,6 +338,7 @@ namespace Net {
 		if (!NetSystem::IsProactorSystem())
 			return S_OK;
 
+		netChk(pOver->SetPendingTrue());
 
 		while (1)
 		{
@@ -466,15 +467,20 @@ namespace Net {
 			}
 		}
 
-
-		if (NetSystem::IsProactorSystem())
+		if (pIOBuffer != nullptr)
 		{
-			if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
-				PendingRecv(pIOBuffer);
-		}
-		else
-		{
-			Util::SafeDelete(pIOBuffer);
+			if (NetSystem::IsProactorSystem())
+			{
+				pIOBuffer->SetPendingFalse();
+				if (hrRes != E_NET_IO_ABORTED)
+				{
+					PendingRecv(pIOBuffer);
+				}
+			}
+			else
+			{
+				Util::SafeDelete(pIOBuffer);
+			}
 		}
 
 		return hr;

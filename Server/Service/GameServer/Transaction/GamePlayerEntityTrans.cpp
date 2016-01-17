@@ -1602,7 +1602,7 @@ namespace GameServer {
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 		StaticArray<BYTE, 512> purchaseID;
 
-		svrChk(pRes->GetHRESULT());
+		svrChkClose(pRes->GetHRESULT());
 
 		if (pCheckRes->GetDeveloperPayload().length() == 0)
 			svrErrClose(E_SVR_INVALID_PURCHASE_INFO);

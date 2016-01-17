@@ -46,6 +46,7 @@ namespace Net {
 	HRESULT SetSockAddr( sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort );
 	HRESULT SetSockAddr(sockaddr_in& sockAddr, const char *strAddr, USHORT usPort);
 	HRESULT SetSockAddr(sockaddr_storage& sockAddr, const char *strAddr, USHORT usPort);
+	HRESULT GetLocalAddress(SockFamily family, NetAddress &addr);
 	HRESULT GetLocalAddressIPv4(NetAddress &addr);
 	HRESULT GetLocalAddressIPv6(NetAddress &addr);
 

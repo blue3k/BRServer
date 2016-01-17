@@ -79,10 +79,17 @@ namespace Net {
 
 		WriteBufferQueue* m_pWriteQueues;
 
+		// Assigned IO worker thread 
+		int m_AssignedIOWorker;
+
 	public:
 
-		INetIOCallBack() : m_pWriteQueues(nullptr) {}
+		INetIOCallBack() : m_pWriteQueues(nullptr), m_AssignedIOWorker(-1) {}
 		virtual ~INetIOCallBack() {}
+
+		int GetAssignedIOWorker() { return m_AssignedIOWorker; }
+		void SetAssignedIOWorker(int assignedIOWorker) { m_AssignedIOWorker = assignedIOWorker; }
+
 
 		const CBFlags& GetIOFlags() const { return m_CBFlags; }
 		CBFlags& GetIOFlagsEditable() { return m_CBFlags; }

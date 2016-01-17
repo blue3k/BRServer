@@ -78,6 +78,13 @@ namespace Net {
 		Util::SafeRelease(m_SubFrameMessage);
 	}
 
+	void ConnectionUDPBase::SetWriteQueueUDP(WriteBufferQueue* writeQueue)
+	{
+		Assert(NetSystem::IsProactorSystem() || writeQueue != nullptr);
+
+		m_pWriteQueuesUDP = writeQueue;
+	}
+
 	// Set message window size connection
 	HRESULT ConnectionUDPBase::SetMessageWindowSize( UINT uiSend, UINT uiRecv )
 	{
@@ -569,7 +576,11 @@ namespace Net {
 
 	HRESULT ConnectionUDPBase::EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer)
 	{
-		if (GetWriteQueueUDP() == nullptr) return E_UNEXPECTED;
+		if (GetWriteQueueUDP() == nullptr)
+		{
+			Assert(false);
+			return E_UNEXPECTED;
+		}
 
 		return GetWriteQueueUDP()->Enqueue(pSendBuffer);
 	}
