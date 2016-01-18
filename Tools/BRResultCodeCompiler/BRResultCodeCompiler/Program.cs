@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using BR;
 using BR.ToolLib;
 using BR.Table;
 
@@ -38,6 +39,7 @@ namespace BRResultCodeCompiler
             ToolEnvironment.CheckDebugOption("brresultcodecompiler");
 
             string outDir = ToolEnvironment.GetSettingString("out");
+            string outDirSharp = ToolEnvironment.GetSettingString("outSharp");
             string tableOutPath = ToolEnvironment.GetSettingString("tablepath");
             var inputPath = ToolEnvironment.GetValueSet("in");
             string facilitiyPath = ToolEnvironment.GetSettingString("facilitiy");
@@ -50,6 +52,12 @@ namespace BRResultCodeCompiler
             if (string.IsNullOrEmpty(outDir))
             {
                 Console.WriteLine("Empty outDir paramater:");
+                return -1;
+            }
+
+            if (string.IsNullOrEmpty(outDirSharp))
+            {
+                Console.WriteLine("Empty outDirSharp paramater:");
                 return -1;
             }
 
@@ -80,6 +88,7 @@ namespace BRResultCodeCompiler
                     UpdateResultCode(m_Facilities, m_Codes);
 
                     GenerateHeaders(m_Codes, inputName, outDir);
+                    GenerateSharp(m_Codes, inputName, outDirSharp);
 
                     exporterXml.AddNewTable(m_Codes);
                 }
@@ -158,6 +167,12 @@ namespace BRResultCodeCompiler
         static void GenerateHeaders(ResultCodes Codes, string inputName, string outDir)
         {
             var exporter = new ResultCodeExporterH();
+            exporter.Export(Codes, inputName, outDir);
+        }
+
+        static void GenerateSharp(ResultCodes Codes, string inputName, string outDir)
+        {
+            var exporter = new ResultCodeExporterSharp();
             exporter.Export(Codes, inputName, outDir);
         }
 

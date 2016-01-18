@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A37D7DF4-9675-41BE-A040-BCD53BFAD0AD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{41B4330E-5E46-48C5-9114-FEED5D655447}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BRResultCodeCompiler</RootNamespace>
-    <AssemblyName>BRResultCodeCompiler</AssemblyName>
+    <RootNamespace>CommonSharp</RootNamespace>
+    <AssemblyName>CommonSharp</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,26 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BRResultCode.cs" />
-    <Compile Include="BRResultCodeFacility.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResultCodeExporterSharp.cs" />
-    <Compile Include="ResultCodeExporterXml.cs" />
-    <Compile Include="serverErrorTable.cs" />
-    <Compile Include="ResultCodeExporterH.cs" />
+    <Compile Include="ResultCode\BRResultCodeCommon.cs" />
+    <Compile Include="ResultCode\BRResultCodeDB.cs" />
+    <Compile Include="ResultCode\BRResultCodeGame.cs" />
+    <Compile Include="ResultCode\BRResultCodeLogin.cs" />
+    <Compile Include="ResultCode\BRResultCodeNet.cs" />
+    <Compile Include="ResultCode\BRResultCodeSvr.cs" />
+    <Compile Include="ResultCode\BRResultCodeSystem.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Server\LibSharp\CoreSharp\CoreSharp.csproj">
+    <ProjectReference Include="..\CoreSharp\CoreSharp.csproj">
       <Project>{de89b4bf-feb7-4fee-ab5f-85d286295bd7}</Project>
       <Name>CoreSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\toolLib\toolLib.csproj">
-      <Project>{20a96d9b-67cb-413a-a6ca-6d77df4f8dfd}</Project>
-      <Name>toolLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

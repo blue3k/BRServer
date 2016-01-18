@@ -1,6 +1,7 @@
 
 MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 CURRENT_DIR?=$(MAKE_DIR)
+ROOT_DIR?=$(CURRENT_DIR)../
 
 ###################################################
 
@@ -19,7 +20,9 @@ export SHARP_FLAGS
 export BASE_PATH
 	
 build : 
-	@echo $(BASE_PATH)
+	$(MAKE) -C ../Server/LibSharp/CommonSharp build
+	$(MAKE) -C ../Server/LibSharp/CoreSharp build
+	
 	for buildTool in $(BUILD_LIBS); do \
 		$(MAKE) -C $$buildTool build; \
 	done

@@ -14,9 +14,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BR.ToolLib
+namespace BR
 {
-    public struct ResultCode
+    public partial struct ResultCode
     {
         #region Constants
 
@@ -68,6 +68,11 @@ namespace BR.ToolLib
         public ResultCode(Int32 inID)
         {
             ID = inID;
+        }
+
+        public ResultCode(UInt32 inID)
+        {
+            ID = (int)inID;
         }
 
         public ResultCode(SeverityType severity, bool custom, int facility, int code)

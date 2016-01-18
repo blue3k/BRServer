@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using BR;
 using BR.ToolLib;
 using BR.Table;
 
