@@ -20,34 +20,34 @@ namespace BR {
 	public partial struct ResultCode {
 
 		// Database connection failed 
-		const uint E_DB_INVALID_CONFIG =                                    unchecked(0xE7050000); 
+		const int E_DB_INVALID_CONFIG =                                     unchecked((int)0xE7050000); 
 
 		// Database connection failed 
-		const uint E_DB_CONNECTION_FAILED =                                 unchecked(0xE7050001); 
+		const int E_DB_CONNECTION_FAILED =                                  unchecked((int)0xE7050001); 
 
 		// Database connection lost 
-		const uint E_DB_CONNECTION_LOST =                                   unchecked(0xE7050002); 
+		const int E_DB_CONNECTION_LOST =                                    unchecked((int)0xE7050002); 
 
 		// Database statement prepare is failed 
-		const uint E_DB_STATEMENT_PREPARE_FAILED =                          unchecked(0xE7050003); 
+		const int E_DB_STATEMENT_PREPARE_FAILED =                           unchecked((int)0xE7050003); 
 
 		// Database parameter binding is failed 
-		const uint E_DB_PARAMETER_BIND_FAILED =                             unchecked(0xE7050004); 
+		const int E_DB_PARAMETER_BIND_FAILED =                              unchecked((int)0xE7050004); 
 
 		// Database result patch is failed 
-		const uint E_DB_RESULT_PATCH_FAILED =                               unchecked(0xE7050005); 
+		const int E_DB_RESULT_PATCH_FAILED =                                unchecked((int)0xE7050005); 
 
 		// Database result column count is mismatched 
-		const uint E_DB_RESULT_COUNT_MISMATCH =                             unchecked(0xE7050006); 
+		const int E_DB_RESULT_COUNT_MISMATCH =                              unchecked((int)0xE7050006); 
 
 		// Database result column type is mismatched 
-		const uint E_DB_RESULT_FIELDTYPE_MISMATCH =                         unchecked(0xE7050007); 
+		const int E_DB_RESULT_FIELDTYPE_MISMATCH =                          unchecked((int)0xE7050007); 
 
 		// Duplicated Database source is specified 
-		const uint E_DB_DUPLICATED_SOURCE =                                 unchecked(0xE7050008); 
+		const int E_DB_DUPLICATED_SOURCE =                                  unchecked((int)0xE7050008); 
 
 		// Invalid partitioning ID 
-		const uint E_DB_INVALID_PARTITIONINGID =                            unchecked(0xE7050009); 
+		const int E_DB_INVALID_PARTITIONINGID =                             unchecked((int)0xE7050009); 
 
 	}
 }

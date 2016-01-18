@@ -63,6 +63,10 @@ namespace BR
             }
         }
 
+        public static bool IsSuccessed(Int32 resCode) { return resCode >= 0; }
+        public static bool IsFailed(Int32 resCode) { return resCode < 0; }
+
+
         public Int32 ID;
 
         public ResultCode(Int32 inID)
@@ -83,6 +87,10 @@ namespace BR
             Facility = facility;
             Code = code;
         }
+
+        public bool IsSuccessed() { return IsSuccessed(ID); }
+        public bool IsFailed() { return IsFailed(ID); }
+
 
         public SeverityType Severity
         {

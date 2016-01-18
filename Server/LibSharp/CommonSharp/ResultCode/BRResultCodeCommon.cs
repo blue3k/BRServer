@@ -20,199 +20,199 @@ namespace BR {
 	public partial struct ResultCode {
 
 		// Called without initialization. 
-		const uint E_NOT_INITIALIZED =                                      unchecked(0xE7020000); 
+		const int E_NOT_INITIALIZED =                                       unchecked((int)0xE7020000); 
 
 		// The version not available or miss match with system. 
-		const uint E_VERSION_NOT_AVAIL =                                    unchecked(0xE7020001); 
+		const int E_VERSION_NOT_AVAIL =                                     unchecked((int)0xE7020001); 
 
 		// Invalid Cluster Master server 
-		const uint E_INVALID_CLUSTERMASTER =                                unchecked(0xE7020002); 
+		const int E_INVALID_CLUSTERMASTER =                                 unchecked((int)0xE7020002); 
 
 		// The version not available or miss match with system. 
-		const uint E_INVALID_STATE =                                        unchecked(0xE7020003); 
+		const int E_INVALID_STATE =                                         unchecked((int)0xE7020003); 
 
 		// Invalid string format. 
-		const uint E_INVALID_STR_FORMAT =                                   unchecked(0xE7020004); 
+		const int E_INVALID_STR_FORMAT =                                    unchecked((int)0xE7020004); 
 
 		// ServerID is duplicated. 
-		const uint E_DUPLICATED_SERVERID =                                  unchecked(0xE7020005); 
+		const int E_DUPLICATED_SERVERID =                                   unchecked((int)0xE7020005); 
 
 		// Invalid entity 
-		const uint E_INVALID_ENTITY =                                       unchecked(0xE7020006); 
+		const int E_INVALID_ENTITY =                                        unchecked((int)0xE7020006); 
 
 		// Invalid duplicated entity 
-		const uint E_DUPLICATED_ENTITY =                                    unchecked(0xE7020007); 
+		const int E_DUPLICATED_ENTITY =                                     unchecked((int)0xE7020007); 
 
 		// Invalid duplicated entity 
-		const uint E_DUPLICATED_ENTITYID =                                  unchecked(0xE7020008); 
+		const int E_DUPLICATED_ENTITYID =                                   unchecked((int)0xE7020008); 
 
 		// Duplicated Account ID 
-		const uint E_DUPLICATED_ACCOUNTID =                                 unchecked(0xE7020009); 
+		const int E_DUPLICATED_ACCOUNTID =                                  unchecked((int)0xE7020009); 
 
 		// Duplicated Player ID 
-		const uint E_DUPLICATED_PLAYERID =                                  unchecked(0xE702000A); 
+		const int E_DUPLICATED_PLAYERID =                                   unchecked((int)0xE702000A); 
 
 		// Duplicated name 
-		const uint E_DUPLICATED_NAME =                                      unchecked(0xE702000B); 
+		const int E_DUPLICATED_NAME =                                       unchecked((int)0xE702000B); 
 
 		// Duplicated ID 
-		const uint E_DUPLICATED_ID =                                        unchecked(0xE702000C); 
+		const int E_DUPLICATED_ID =                                         unchecked((int)0xE702000C); 
 
 		// Invalid duplicated entity 
-		const uint E_INVALID_ACCOUNTID =                                    unchecked(0xE702000D); 
+		const int E_INVALID_ACCOUNTID =                                     unchecked((int)0xE702000D); 
 
 		// Invalid ticket 
-		const uint E_INVALID_TICKET =                                       unchecked(0xE702000E); 
+		const int E_INVALID_TICKET =                                        unchecked((int)0xE702000E); 
 
 		// Invalid player ID 
-		const uint E_INVALID_PLAYERID =                                     unchecked(0xE702000F); 
+		const int E_INVALID_PLAYERID =                                      unchecked((int)0xE702000F); 
 
 		// Invalid value 
-		const uint E_INVALID_VALUE =                                        unchecked(0xE7020010); 
+		const int E_INVALID_VALUE =                                         unchecked((int)0xE7020010); 
 
 		// Invalid class value 
-		const uint E_INVALID_CLASS =                                        unchecked(0xE7020011); 
+		const int E_INVALID_CLASS =                                         unchecked((int)0xE7020011); 
 
 		// Invalid Difficulty 
-		const uint E_INVALID_DIFFICULTY =                                   unchecked(0xE7020012); 
+		const int E_INVALID_DIFFICULTY =                                    unchecked((int)0xE7020012); 
 
 		// Invalid registration to play 
-		const uint E_INVALID_REGISTRATION =                                 unchecked(0xE7020013); 
+		const int E_INVALID_REGISTRATION =                                  unchecked((int)0xE7020013); 
 
 		// Invalid Channel ID 
-		const uint E_INVALID_CHANNELID =                                    unchecked(0xE7020014); 
+		const int E_INVALID_CHANNELID =                                     unchecked((int)0xE7020014); 
 
 		// Invalid Zone instance ID 
-		const uint E_INVALID_INSTANCEID =                                   unchecked(0xE7020015); 
+		const int E_INVALID_INSTANCEID =                                    unchecked((int)0xE7020015); 
 
 		// Duplicated component 
-		const uint E_DUPLICATED_COMPONENT =                                 unchecked(0xE7020016); 
+		const int E_DUPLICATED_COMPONENT =                                  unchecked((int)0xE7020016); 
 
 		// Maximum friend 
-		const uint E_MAX_FRIEND =                                           unchecked(0xE7020017); 
+		const int E_MAX_FRIEND =                                            unchecked((int)0xE7020017); 
 
 		// Invalid player count for service 
-		const uint E_INVALID_PLAYER_COUNT =                                 unchecked(0xE7020018); 
+		const int E_INVALID_PLAYER_COUNT =                                  unchecked((int)0xE7020018); 
 
 		// Invalid player level 
-		const uint E_INVALID_PLAYER_LEVEL =                                 unchecked(0xE7020019); 
+		const int E_INVALID_PLAYER_LEVEL =                                  unchecked((int)0xE7020019); 
 
 		// Invalid player nick 
-		const uint E_INVALID_PLAYER_NICK =                                  unchecked(0xE702001A); 
+		const int E_INVALID_PLAYER_NICK =                                   unchecked((int)0xE702001A); 
 
 		// Invalid Notification ID 
-		const uint E_INVALID_NOTIFICATIONID =                               unchecked(0xE702001B); 
+		const int E_INVALID_NOTIFICATIONID =                                unchecked((int)0xE702001B); 
 
 		// Invalid Ranking range 
-		const uint E_INVALID_RANKING_RANGE =                                unchecked(0xE702001C); 
+		const int E_INVALID_RANKING_RANGE =                                 unchecked((int)0xE702001C); 
 
 		// Target Maximum friend 
-		const uint E_TARGET_MAX_FRIEND =                                    unchecked(0xE702001D); 
+		const int E_TARGET_MAX_FRIEND =                                     unchecked((int)0xE702001D); 
 
 		// Invalid string data. 
-		const uint E_INVALID_STR_DATA =                                     unchecked(0xE702001E); 
+		const int E_INVALID_STR_DATA =                                      unchecked((int)0xE702001E); 
 
 		// Not authorized 
-		const uint E_NOT_AUTORIZED =                                        unchecked(0xE702001F); 
+		const int E_NOT_AUTORIZED =                                         unchecked((int)0xE702001F); 
 
 		// No permition 
-		const uint E_NO_PERMITION =                                         unchecked(0xE7020020); 
+		const int E_NO_PERMITION =                                          unchecked((int)0xE7020020); 
 
 		// No file or directory 
-		const uint E_NO_FILE_OR_DIR =                                       unchecked(0xE7020021); 
+		const int E_NO_FILE_OR_DIR =                                        unchecked((int)0xE7020021); 
 
 		// No such process 
-		const uint E_NO_SUCH_PROCESS =                                      unchecked(0xE7020022); 
+		const int E_NO_SUCH_PROCESS =                                       unchecked((int)0xE7020022); 
 
 		// Interrupted system call 
-		const uint E_INTERRUPTED_SYSCALL =                                  unchecked(0xE7020023); 
+		const int E_INTERRUPTED_SYSCALL =                                   unchecked((int)0xE7020023); 
 
 		// I/O error 
-		const uint E_IO_ERROR =                                             unchecked(0xE7020024); 
+		const int E_IO_ERROR =                                              unchecked((int)0xE7020024); 
 
 		// No such device or address 
-		const uint E_NOT_DEVICE =                                           unchecked(0xE7020025); 
+		const int E_NOT_DEVICE =                                            unchecked((int)0xE7020025); 
 
 		// Arg list too long 
-		const uint E_TOO_MANY_ARGLIST =                                     unchecked(0xE7020026); 
+		const int E_TOO_MANY_ARGLIST =                                      unchecked((int)0xE7020026); 
 
 		// Exec format error 
-		const uint E_INVALID_EXEC_FROMAT =                                  unchecked(0xE7020027); 
+		const int E_INVALID_EXEC_FROMAT =                                   unchecked((int)0xE7020027); 
 
 		// Bad file number 
-		const uint E_INVALID_FILE_HANDLE =                                  unchecked(0xE7020028); 
+		const int E_INVALID_FILE_HANDLE =                                   unchecked((int)0xE7020028); 
 
 		// No child process 
-		const uint E_NO_CHILD_PROCESS =                                     unchecked(0xE7020029); 
+		const int E_NO_CHILD_PROCESS =                                      unchecked((int)0xE7020029); 
 
 		// Try again 
-		const uint E_TRY_AGAIN =                                            unchecked(0xE702002A); 
+		const int E_TRY_AGAIN =                                             unchecked((int)0xE702002A); 
 
 		// Bad address 
-		const uint E_INVALID_POINTER =                                      unchecked(0xE702002B); 
+		const int E_INVALID_POINTER =                                       unchecked((int)0xE702002B); 
 
 		// Block device required 
-		const uint E_NOT_BLOCK =                                            unchecked(0xE702002C); 
+		const int E_NOT_BLOCK =                                             unchecked((int)0xE702002C); 
 
 		// Busy 
-		const uint E_BUSY =                                                 unchecked(0xE702002D); 
+		const int E_BUSY =                                                  unchecked((int)0xE702002D); 
 
 		// File exists 
-		const uint E_FILE_EXISTS =                                          unchecked(0xE702002E); 
+		const int E_FILE_EXISTS =                                           unchecked((int)0xE702002E); 
 
 		// Cross-device link 
-		const uint E_CROSS_LINK =                                           unchecked(0xE702002F); 
+		const int E_CROSS_LINK =                                            unchecked((int)0xE702002F); 
 
 		// No such device 
-		const uint E_INVALID_DEVICE =                                       unchecked(0xE7020030); 
+		const int E_INVALID_DEVICE =                                        unchecked((int)0xE7020030); 
 
 		// Not a directory 
-		const uint E_INVALID_DIRECTORY =                                    unchecked(0xE7020031); 
+		const int E_INVALID_DIRECTORY =                                     unchecked((int)0xE7020031); 
 
 		// Is a directory 
-		const uint E_DIRECTORY =                                            unchecked(0xE7020032); 
+		const int E_DIRECTORY =                                             unchecked((int)0xE7020032); 
 
 		// Invalid argument 
-		const uint E_INVALID_ARG =                                          unchecked(0xE7020033); 
+		const int E_INVALID_ARG =                                           unchecked((int)0xE7020033); 
 
 		// File table overflow 
-		const uint E_NOT_ENOUGH_FILE_TABLE =                                unchecked(0xE7020034); 
+		const int E_NOT_ENOUGH_FILE_TABLE =                                 unchecked((int)0xE7020034); 
 
 		// Too many open files 
-		const uint E_TOO_MANY_OPENED_FILE =                                 unchecked(0xE7020035); 
+		const int E_TOO_MANY_OPENED_FILE =                                  unchecked((int)0xE7020035); 
 
 		// Not a typewriter 
-		const uint E_INVALID_TYPEWRITER =                                   unchecked(0xE7020036); 
+		const int E_INVALID_TYPEWRITER =                                    unchecked((int)0xE7020036); 
 
 		// Text file busy 
-		const uint E_BUSY_FILE =                                            unchecked(0xE7020037); 
+		const int E_BUSY_FILE =                                             unchecked((int)0xE7020037); 
 
 		// File too large 
-		const uint E_TOO_BIG_FILE =                                         unchecked(0xE7020038); 
+		const int E_TOO_BIG_FILE =                                          unchecked((int)0xE7020038); 
 
 		// No space left on device 
-		const uint E_NOT_ENOUGH_SPACE =                                     unchecked(0xE7020039); 
+		const int E_NOT_ENOUGH_SPACE =                                      unchecked((int)0xE7020039); 
 
 		// Illegal seek 
-		const uint E_INVALID_SEEK =                                         unchecked(0xE702003A); 
+		const int E_INVALID_SEEK =                                          unchecked((int)0xE702003A); 
 
 		// Read-only file system 
-		const uint E_READ_ONLY =                                            unchecked(0xE702003B); 
+		const int E_READ_ONLY =                                             unchecked((int)0xE702003B); 
 
 		// Too many links 
-		const uint E_TOO_MANY_LINK =                                        unchecked(0xE702003C); 
+		const int E_TOO_MANY_LINK =                                         unchecked((int)0xE702003C); 
 
 		// Broken pipe 
-		const uint E_INVALID_PIPE =                                         unchecked(0xE702003D); 
+		const int E_INVALID_PIPE =                                          unchecked((int)0xE702003D); 
 
 		// Math argument out of domain of func 
-		const uint E_INVALID_MATH_DOMAIN =                                  unchecked(0xE702003E); 
+		const int E_INVALID_MATH_DOMAIN =                                   unchecked((int)0xE702003E); 
 
 		// Math result not representable 
-		const uint E_INVALID_NUMERIC =                                      unchecked(0xE702003F); 
+		const int E_INVALID_NUMERIC =                                       unchecked((int)0xE702003F); 
 
 		// Invalid password 
-		const uint E_INVALID_PASSWORD =                                     unchecked(0xE7020040); 
+		const int E_INVALID_PASSWORD =                                      unchecked((int)0xE7020040); 
 
 	}
 }

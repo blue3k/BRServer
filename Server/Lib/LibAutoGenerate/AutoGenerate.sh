@@ -3,11 +3,11 @@
 
 export PATH=/cygdrive/c/cygwin64/bin:$PATH
 
-cd HResult
+# cd HResult
 
-make -f makefile.mak $1
+# make -f makefile.mak $1
 
-cd ..
+# cd ..
 
 
 cd BRCode
