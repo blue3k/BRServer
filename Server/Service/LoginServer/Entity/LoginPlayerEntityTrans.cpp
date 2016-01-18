@@ -122,7 +122,6 @@ namespace LoginServer {
 	{
 		HRESULT hr = S_OK;
 		DB::QueryRegisterAuthTicketCmd* pDBRes = (DB::QueryRegisterAuthTicketCmd*)pRes;
-		//Svr::ServerServiceInformation *pServiceInfo = nullptr;
 		Policy::IPolicyGameServer *pGameServerPolicy = nullptr;
 
 		svrChk(pRes->GetHRESULT());
