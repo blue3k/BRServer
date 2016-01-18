@@ -28,11 +28,14 @@ namespace BR.Table {
         
         private string facilityField;
         
+        private bool customField;
+        
         private bool useFacilityNameField;
         
         private bool iDTableField;
         
         public ResultCodes() {
+            this.customField = true;
             this.useFacilityNameField = true;
             this.iDTableField = false;
         }
@@ -56,6 +59,18 @@ namespace BR.Table {
             }
             set {
                 this.facilityField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(true)]
+        public bool Custom {
+            get {
+                return this.customField;
+            }
+            set {
+                this.customField = value;
             }
         }
         
@@ -94,15 +109,9 @@ namespace BR.Table {
         
         private Severity severityField;
         
-        private bool customField;
-        
         private string codeNameField;
         
         private string descField;
-        
-        public ResultCodesResultCodeItem() {
-            this.customField = true;
-        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -112,18 +121,6 @@ namespace BR.Table {
             }
             set {
                 this.severityField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(true)]
-        public bool Custom {
-            get {
-                return this.customField;
-            }
-            set {
-                this.customField = value;
             }
         }
         

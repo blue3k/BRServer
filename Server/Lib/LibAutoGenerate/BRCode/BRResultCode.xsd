@@ -17,13 +17,13 @@
         <xs:element name="ResultCodeItem" minOccurs="1" maxOccurs="unbounded">
           <xs:complexType>
             <xs:attribute name="Severity" type="Severity" use="required" />
-            <xs:attribute name="Custom" type="xs:boolean" use="optional" default="true" />
             <xs:attribute name="CodeName" type="xs:string" use="required"/>
             <xs:attribute name="Desc" type="xs:string" use="required"/>
           </xs:complexType>
         </xs:element>
       </xs:sequence>
       <xs:attribute name="Facility" type="xs:string" use="required" />
+      <xs:attribute name="Custom" type="xs:boolean" use="optional" default="true" />
       <xs:attribute name="UseFacilityName" type="xs:boolean" use="optional" default="true" />
       <xs:attribute name="IDTable" type="xs:boolean" use="optional" default="false" />
     </xs:complexType>

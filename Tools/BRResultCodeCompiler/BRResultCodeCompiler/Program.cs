@@ -150,12 +150,12 @@ namespace BRResultCodeCompiler
 
             ResultCode codeValue = new ResultCode();
             codeValue.Facility = facilityValue;
+            codeValue.Custom = Codes.Custom;
 
             int codeIndex = 0;
             foreach (var codeItem in m_Codes.ResultCodeItem)
             {
                 codeValue.Severity = ToLocalSeverityType(codeItem.Severity);
-                codeValue.Custom = codeItem.Custom;
                 codeValue.Code = codeIndex;
                 codeIndex++;
 

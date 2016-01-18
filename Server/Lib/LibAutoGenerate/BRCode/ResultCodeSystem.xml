@@ -2,11 +2,13 @@
 <ResultCodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:noNamespaceSchemaLocation="BRResultCode.xsd"
              Facility="System"
+             Custom="false"
              UseFacilityName="true"
              IDTable="true"
              >
 
 
+  <ResultCodeItem Severity="Success" CodeName="OK" Desc="Success"/>
   <ResultCodeItem Severity="Success" CodeName="FALSE" Desc="Success"/>
   <ResultCodeItem Severity="Error" CodeName="POINTER" Desc="Invalid pointer"/>
   <ResultCodeItem Severity="Error" CodeName="FAIL" Desc="Fail"/>

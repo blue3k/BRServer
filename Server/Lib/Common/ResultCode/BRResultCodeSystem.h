@@ -13,25 +13,28 @@
 
 
 // Success 
-#define S_SYSTEM_FALSE                                                ((int32_t)0x20000000L) 
+#define S_SYSTEM_OK                                                   ((int32_t)0x00000000L) 
+
+// Success 
+#define S_SYSTEM_FALSE                                                ((int32_t)0x00000001L) 
 
 // Invalid pointer 
-#define E_SYSTEM_POINTER                                              ((int32_t)0xE0000001L) 
+#define E_SYSTEM_POINTER                                              ((int32_t)0xC0000002L) 
 
 // Fail 
-#define E_SYSTEM_FAIL                                                 ((int32_t)0xE0000002L) 
+#define E_SYSTEM_FAIL                                                 ((int32_t)0xC0000003L) 
 
 // Not implemented 
-#define E_SYSTEM_NOTIMPL                                              ((int32_t)0xE0000003L) 
+#define E_SYSTEM_NOTIMPL                                              ((int32_t)0xC0000004L) 
 
 // Out of memory 
-#define E_SYSTEM_OUTOFMEMORY                                          ((int32_t)0xE0000004L) 
+#define E_SYSTEM_OUTOFMEMORY                                          ((int32_t)0xC0000005L) 
 
 // Unexpected 
-#define E_SYSTEM_UNEXPECTED                                           ((int32_t)0xE0000005L) 
+#define E_SYSTEM_UNEXPECTED                                           ((int32_t)0xC0000006L) 
 
 // Invalid argument 
-#define E_SYSTEM_INVALIDARG                                           ((int32_t)0xE0000006L) 
+#define E_SYSTEM_INVALIDARG                                           ((int32_t)0xC0000007L) 
 
 
 
