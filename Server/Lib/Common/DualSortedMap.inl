@@ -154,14 +154,14 @@
 		if (FAILED(FindNode(travelHistory, key, pFound)))
 		{
 			if (m_WriteRoot != nullptr)
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			else
 			{
 				auto newNode = AllocateNode(key, value);
 				m_WriteRoot = newNode;
 
 				if (newNode == nullptr)
-					return E_OUTOFMEMORY;
+					return E_SYSTEM_OUTOFMEMORY;
 
 				m_IsModified = true;
 				m_ItemCount.fetch_add(1, std::memory_order_relaxed);
@@ -180,7 +180,7 @@
 		{
 			auto right = pFound->Right;
 			if (right != nullptr)
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			pFound->Right = pInserted = AllocateNode(key, value);
 		}
@@ -192,7 +192,7 @@
 				auto biggestNode = FindBiggestNode(travelHistory, left);
 				auto right = biggestNode->Right;
 				if (right != nullptr)
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				biggestNode->Right = pInserted = AllocateNode(key, value);
 			}
@@ -205,7 +205,7 @@
 		{
 			auto left = pFound->Left;
 			if (left != nullptr)
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			pFound->Left = pInserted = AllocateNode(key, value);
 		}
@@ -234,11 +234,11 @@
 		MapNode* pRemoved = nullptr;
 		MapNode* pFound = nullptr;
 		if (FAILED(FindNode(travelHistory, key, pFound)))
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		// unique key
 		if (pFound->Key != key)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		value = std::forward<ValueType>(pFound->Value);
 
@@ -335,13 +335,13 @@
 		MapNode* pFound = nullptr;
 		if (FAILED(FindNode(travelHistory, key, pFound)))
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		// unique key
 		if (pFound->Key != key)
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		value = pFound->Value;
@@ -430,7 +430,7 @@
 		auto pReadRoot = (MapNode*)m_CurReadRoot;
 		if (pReadRoot == nullptr)
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		Assert(m_UpdateSerial != pReadRoot->UpdateSerial);
@@ -442,13 +442,13 @@
 		
 		if (FAILED(FindNodeRead(travelHistory, pReadRoot, key, pFound)))
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		// unique key
 		if (pFound->Key != key)
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		value = pFound->Value;
@@ -471,7 +471,7 @@
 		m_CurReadRoot = m_ReadRoot.load(std::memory_order_acquire);
 		auto readRoot = (MapNode*)m_CurReadRoot;
 		if (readRoot == nullptr)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return ForeachOrder(readRoot, startOrderIndex, count, functor);
 	}
@@ -486,7 +486,7 @@
 		m_CurReadRoot = m_ReadRoot.load(std::memory_order_acquire);
 		auto readRoot = (MapNode*)m_CurReadRoot;
 		if (readRoot == nullptr)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return ForeachReverseOrder(readRoot, startOrderIndex, count, functor);
 	}
@@ -515,7 +515,7 @@
 			{
 				auto readRoot = m_ReadRoot.load(std::memory_order_relaxed);
 				if (readRoot == nullptr)
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 				Assert(m_UpdateSerial != readRoot->UpdateSerial);
 				pCurNode = m_WriteRoot = CloneNode(readRoot);
 				Assert(m_WriteRoot != readRoot);
@@ -523,7 +523,7 @@
 			}
 			else
 			{
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 		}
 		Assert(m_WriteRoot != m_ReadRoot.load());
@@ -638,7 +638,7 @@
 	{
 		MapNode* pCurNode = pRootNode;
 		if (pCurNode == nullptr)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		do
 		{

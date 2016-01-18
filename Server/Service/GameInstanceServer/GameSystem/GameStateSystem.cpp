@@ -15,8 +15,8 @@
 
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/HRESSvrSys.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -213,7 +213,7 @@ namespace ConspiracyGameInstanceServer {
 					if( pPlayer->GetPlayerEntityUID() != 0 )
 						pPolicy->PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), GetGamePlaySystem().GetLynchedPlayer(), GetGamePlaySystem().GetLynchedRole(), PlayerRevealedReason::Medium );
 
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 				});
 			}
 
@@ -816,7 +816,7 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_OK;
 
 		if( pVoter == nullptr )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		if( !pVoter->GetIsActivePlayer() )
 			return E_GAME_INVALID_PLAYER_STATE;

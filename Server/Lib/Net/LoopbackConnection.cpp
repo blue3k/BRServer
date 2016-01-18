@@ -16,7 +16,7 @@
 #include "Common/BrAssert.h"
 #include "Common/Utility.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/LoopbackConnection.h"
 #include "Net/NetTrace.h"
@@ -133,13 +133,13 @@ namespace Net {
 	// Get received Message
 	HRESULT LoopbackConnection::GetRecvMessage( Message::MessageData* &pIMsg )
 	{
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 
 	// Update net control, process connection heartbit, ... etc
 	HRESULT LoopbackConnection::UpdateNetCtrl( )
 	{
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 
 

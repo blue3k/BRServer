@@ -43,7 +43,7 @@ PlayerInformation::PlayerInformation(AccountID playerID, FacebookUID fbUID, cons
 HRESULT PlayerInformation::InitPlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime)
 {
 	if( nickName == nullptr ) 
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	this->PlayerID = playerID;
 	this->FBUID = fbUID;
@@ -177,7 +177,7 @@ TotalRankingPlayerInformation& TotalRankingPlayerInformation::operator = ( const
 TotalRankingPlayerInformation::TotalRankingPlayerInformation(UINT32 rankingID, UINT32 ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose)
 {
 	//if( nickName == nullptr ) 
-	//	return E_INVALIDARG;
+	//	return E_SYSTEM_INVALIDARG;
 
 	RankingID = rankingID;
 	Ranking = ranking;

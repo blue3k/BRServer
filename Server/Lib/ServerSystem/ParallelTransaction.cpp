@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"

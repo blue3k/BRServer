@@ -12,12 +12,13 @@
 
 #include "stdafx.h"
 #include "Common/StrUtil.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 #include "Common/Trace.h"
 #include "Common/ToString.h"
 #include "Common/Argument.h"
 #include "Common/StrFormat.h"
 #include "Common/Utility.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 
 #include "iconv.h"
 
@@ -87,7 +88,7 @@ namespace StrUtil {
 	HRESULT Format_Internal( char*& szBuffer, INT& iBuffLen, const char* szFormating, int iNumArg, Argument* Args )
 	{
 		if( szBuffer == nullptr || iBuffLen == 0 )
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		register char curChar;
 
@@ -114,17 +115,17 @@ namespace StrUtil {
 				if (curChar == ':')
 				{
 					if (curChar == '\0')
-						return E_INVALIDARG;
+						return E_SYSTEM_INVALIDARG;
 
 					SkipSpace(szFormating);
 
 					if (curChar == '\0')
-						return E_INVALIDARG;
+						return E_SYSTEM_INVALIDARG;
 
 					curChar = *szFormating++;
 
 					if (curChar == '\0')
-						return E_INVALIDARG;
+						return E_SYSTEM_INVALIDARG;
 
 					option = curChar;
 
@@ -132,7 +133,7 @@ namespace StrUtil {
 				}
 
 				if( curChar == '\0' )
-					return E_INVALIDARG;
+					return E_SYSTEM_INVALIDARG;
 
 				if (iArg < iNumArg)
 				{
@@ -218,7 +219,7 @@ namespace StrUtil {
 			iconv_t context = iconv_open(destCode, srcCode);
 			if (context == (iconv_t)-1)
 			{
-				hr = E_FAIL;
+				hr = E_SYSTEM_FAIL;
 				goto Proc_End;
 			}
 
@@ -239,16 +240,16 @@ namespace StrUtil {
 				switch (errno)
 				{
 				case E2BIG:
-					hr = E_OUTOFMEMORY;
+					hr = E_SYSTEM_OUTOFMEMORY;
 					break;
 				case EILSEQ:
 					hr = E_INVALID_STR_DATA;
 					break;
 				case EINVAL:
-					hr = E_OUTOFMEMORY;
+					hr = E_SYSTEM_OUTOFMEMORY;
 					break;
 				default:
-					hr = E_UNEXPECTED;
+					hr = E_SYSTEM_UNEXPECTED;
 					break;
 				}
 
@@ -283,7 +284,7 @@ namespace StrUtil {
 	//	size_t convertedSize;
 
 	//	if (strWCS == nullptr || strMBCS == nullptr)
-	//		return E_INVALIDARG;
+	//		return E_SYSTEM_INVALIDARG;
 
 	//	HRESULT hr = ModuleIconv.Convert("", (char*)strMBCS, iBuffLen, "UTF-16", (const char*)strWCS, wcslen(strWCS)*sizeof(wchar_t), convertedSize);
 	//	if (FAILED(hr)) return hr;
@@ -325,7 +326,7 @@ namespace StrUtil {
 		size_t convertedSize;
 
 		if (strWCS == nullptr || strUTF8 == nullptr)
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)strUTF8, iBuffLen, "UTF-16LE", (const char*)strWCS, wcslen(strWCS)*sizeof(wchar_t), convertedSize);
 		if (FAILED(hr)) return hr;
@@ -367,7 +368,7 @@ namespace StrUtil {
 	//	size_t convertedSize;
 
 	//	if (strWCS == nullptr || strMBCS == nullptr)
-	//		return E_INVALIDARG;
+	//		return E_SYSTEM_INVALIDARG;
 
 	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)strWCS, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
 	//	if (FAILED(hr)) return hr;
@@ -410,7 +411,7 @@ namespace StrUtil {
 		size_t convertedSize;
 
 		if (strWCS == nullptr || strUTF8 == nullptr)
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		HRESULT hr = ModuleIconv.Convert("UTF-16LE", (char*)strWCS, iBuffLen, "UTF-8", (const char*)strUTF8, strlen(strUTF8)+1, convertedSize);
 		if (FAILED(hr)) return hr;
@@ -453,7 +454,7 @@ namespace StrUtil {
 	//	size_t convertedSize;
 
 	//	if (strUTF8 == nullptr || strMBCS == nullptr)
-	//		return E_INVALIDARG;
+	//		return E_SYSTEM_INVALIDARG;
 
 	//	HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)strUTF8, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
 	//	if (FAILED(hr)) return hr;
@@ -496,7 +497,7 @@ namespace StrUtil {
 	//	size_t convertedSize;
 
 	//	if (strUTF8 == nullptr || strMBCS == nullptr)
-	//		return E_INVALIDARG;
+	//		return E_SYSTEM_INVALIDARG;
 
 	//	HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)strMBCS, iBuffLen, "", (const char*)strUTF8, strlen(strUTF8), convertedSize);
 	//	if (FAILED(hr)) return hr;

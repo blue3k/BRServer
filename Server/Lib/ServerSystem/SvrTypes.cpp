@@ -38,7 +38,7 @@ namespace BR {
 	//	{
 	//		pBlobData = new BYTE[uiSize];
 	//		if( pBlobData == NULL )
-	//			return E_OUTOFMEMORY;
+	//			return E_SYSTEM_OUTOFMEMORY;
 	//	}
 
 	//	cbSize = uiSize;
@@ -55,7 +55,7 @@ namespace BR {
 	//	{
 	//		pBlobDataTem = new BYTE[uiSize];
 	//		if( pBlobDataTem == NULL )
-	//			return E_OUTOFMEMORY;
+	//			return E_SYSTEM_OUTOFMEMORY;
 	//	}
 
 	//	if( cbSize && pBlobData )

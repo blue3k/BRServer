@@ -211,7 +211,7 @@ inline size_t CircularBufferAllocator<BufferSize,alignment>::GetFreeMemorySize()
 template< size_t BufferSize, size_t alignment >
 HRESULT CircularBufferAllocator<BufferSize,alignment>::Realloc( size_t uiSize, void* &pPtr )
 {
-	return E_NOTIMPL;
+	return E_SYSTEM_NOTIMPL;
 }
 
 // Free
@@ -220,7 +220,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 {
 	assert(pPtr != nullptr);
 	if( pPtr == nullptr ) // null free
-		return S_FALSE;
+		return S_SYSTEM_FALSE;
 
 	bool bIsInStaticBuffer = GetIsInStaticBuffer(pPtr);
 
@@ -241,7 +241,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 		if( pChunk->ChunkType != ChunkTypes::Dummy && pChunk->ChunkType != ChunkTypes::Allocated )
 		{
 			// Duplicate free? or broken memory
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 		}
 		pChunk->ChunkType = ChunkTypes::Free;
 		if( m_FreePosition != ((intptr_t)pChunk - (intptr_t)m_AllocationBuffer) )
@@ -264,7 +264,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 				if( pChunk->ChunkType != ChunkTypes::Free && pChunk->ChunkType != ChunkTypes::Dummy && pChunk->ChunkType != ChunkTypes::Allocated )
 				{
 					// Broken memory
-					return E_UNEXPECTED;
+					return E_SYSTEM_UNEXPECTED;
 				}
 
 				// Validate allocated chunks
@@ -303,14 +303,14 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::ValidateAllocatedChunks()
 			pChunk = (MemoryChunkHeader*)(m_AllocationBuffer + curPosition);
 			AssertRel(pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated);
 			if( !(pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated) )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 			curPosition += pChunk->ChunkSize;
 			AssertRel( curPosition <= (decltype(curPosition))BufferSize );
 			if( curPosition == BufferSize ) 
 				curPosition = 0;
 			AssertRel( GetIsInStaticBuffer(m_AllocationBuffer + curPosition) );
 			if( !GetIsInStaticBuffer(m_AllocationBuffer + curPosition) )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 		} while(curPosition != m_AllocatePosition);
 	}
 

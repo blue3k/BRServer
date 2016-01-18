@@ -65,7 +65,7 @@ namespace Svr {
 			return S_OK;
 		}
 
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 
 
@@ -169,7 +169,7 @@ namespace Svr {
 					GetEntityUID());
 			}
 			if (!pCurTran->IsClosed())
-				pCurTran->CloseTransaction(E_FAIL);
+				pCurTran->CloseTransaction(E_SYSTEM_FAIL);
 		}
 
 		if (pCurTran->IsClosed())

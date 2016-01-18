@@ -568,7 +568,7 @@ Proc_End:
 		if( GetMyConfig() == nullptr )
 		{
 			svrTrace( Trace::TRC_ERROR, "No configuration is specified for this server {0}", typeid(*this).name() );
-			svrErr( E_UNEXPECTED );
+			svrErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		// Create private network and open it

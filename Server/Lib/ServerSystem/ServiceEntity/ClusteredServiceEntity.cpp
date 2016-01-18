@@ -252,7 +252,7 @@ namespace Svr {
 
 		if( m_MasterUID.UID == 0 )
 		{
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 		}
 
 		// Ask to the cluster manager master to update status
@@ -325,7 +325,7 @@ namespace Svr {
 
 				ActionOnAlreadyExist(*itFound);
 
-				hr = S_FALSE;
+				hr = S_SYSTEM_FALSE;
 				goto Proc_End;
 			}
 		}
@@ -337,7 +337,7 @@ namespace Svr {
 
 				ActionOnAlreadyExist(*itFound);
 
-				hr = S_FALSE;
+				hr = S_SYSTEM_FALSE;
 				goto Proc_End; // already exist, just ignore it
 			}
 		}
@@ -365,7 +365,7 @@ namespace Svr {
 		if (FAILED(m_ServiceEntityUIDMap.find((UINT64)entityUID, itFound)))
 		{
 			if (FAILED(m_WatcherUIDMap.find((UINT64)entityUID, itFound)))
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 		}
 		pService = *itFound;
 
@@ -396,7 +396,7 @@ namespace Svr {
 
 	//Proc_End:
 
-		return pBestService != nullptr ? S_OK : E_FAIL;
+		return pBestService != nullptr ? S_OK : E_SYSTEM_FAIL;
 	}
 
 	// Foreach service
@@ -647,9 +647,9 @@ namespace Svr {
 		svrChkPtr(pService);
 		pTblItem = (ServiceTableItem*)pService;
 
-		// When the return value is S_FALSE, it means this service is already in the list
+		// When the return value is S_SYSTEM_FALSE, it means this service is already in the list
 		// Remove it if the key value isn't same
-		if( hrRes == S_FALSE && pTblItem->m_ListNode.Key != pServerEntity->GetServerUpTime().time_since_epoch().count() )
+		if( hrRes == S_SYSTEM_FALSE && pTblItem->m_ListNode.Key != pServerEntity->GetServerUpTime().time_since_epoch().count() )
 		{
 			// I hope this not happened here
 			Assert(pTblItem->GetServerEntity() == pServerEntity);
@@ -663,11 +663,11 @@ namespace Svr {
 			svrChk( m_ServiceList.FindPrevNode( pServerEntity->GetServerUpTime().time_since_epoch().count(), pPrevNode ) );
 
 			// we don't have to update it again
-			if( hrRes != S_FALSE )
+			if( hrRes != S_SYSTEM_FALSE )
 			{
 				Assert(pPrevNode != &pTblItem->m_ListNode );
 				Assert(pTblItem->m_ListNode.pNext == nullptr);
-				// If the table already exist in the list, and it just updated hrRes would have S_FALSE
+				// If the table already exist in the list, and it just updated hrRes would have S_SYSTEM_FALSE
 				Assert(pPrevNode->pNext != &pTblItem->m_ListNode);
 
 				svrChk( m_ServiceList.Insert( pPrevNode, pServerEntity->GetServerUpTime().time_since_epoch().count(), &pTblItem->m_ListNode ) );
@@ -712,7 +712,7 @@ namespace Svr {
 
 	//Proc_End:
 
-		return pNextService ? hr : E_FAIL;
+		return pNextService ? hr : E_SYSTEM_FAIL;
 	}
 
 	// Get a service form the ring
@@ -790,7 +790,7 @@ namespace Svr {
 	}
 #endif
 
-		return pService ? hr : E_FAIL;
+		return pService ? hr : E_SYSTEM_FAIL;
 	}
 
 
@@ -889,7 +889,7 @@ namespace Svr {
 
 		pTblItem = (ServiceTableItem*)pService;
 
-		// When the return value is S_FALSE, it means this service is already in the list
+		// When the return value is S_SYSTEM_FALSE, it means this service is already in the list
 		if( hr == S_OK )
 		{
 			if( pService->GetClusterMembership() <= ClusterMembership::Slave )
@@ -963,7 +963,7 @@ namespace Svr {
 
 	//Proc_End:
 
-		return pService ? hr : E_FAIL;
+		return pService ? hr : E_SYSTEM_FAIL;
 	}
 
 

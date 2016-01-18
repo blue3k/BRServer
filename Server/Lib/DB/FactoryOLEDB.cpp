@@ -63,7 +63,7 @@ namespace DB {
 		if( pDBSource = new DataSourceOLEDB )
 			return S_OK;
 
-		return E_OUTOFMEMORY;
+		return E_SYSTEM_OUTOFMEMORY;
 	}
 
 	// close DB source
@@ -72,7 +72,7 @@ namespace DB {
 		if( pSession = new SessionOLEDB(pDBSource) )
 			return S_OK;
 
-		return E_OUTOFMEMORY;
+		return E_SYSTEM_OUTOFMEMORY;
 	}
 
 } // namespace DB

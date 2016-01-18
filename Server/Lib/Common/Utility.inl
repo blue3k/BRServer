@@ -48,7 +48,7 @@ HRESULT ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc )
 	{
 		pDest = new DupType[ iSrcCount ];
 		if( pDest == NULL )
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 		memcpy( pDest, pSrc, iSrcCount*sizeof(DupType) );
 	}
@@ -65,7 +65,7 @@ HRESULT MemCpy( BYTE (&Dest)[szDstSize], const DataType& Src )
 	static_assert( szDstSize >= sizeof(DataType), "Invalid Binary data size" );
 	memcpy( Dest, &Src, sizeof(DataType) );
 	if( szDstSize < sizeof(DataType) )
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	return S_OK;
 }
 
@@ -77,7 +77,7 @@ HRESULT MemCpy( DataType& Dest, const BYTE (&Src)[szDstSize] )
 	static_assert( szDstSize >= sizeof(DataType), "Invalid Binary data size" );
 	memcpy( &Dest, Src, sizeof(DataType) );
 	if( szDstSize < sizeof(DataType) )
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	return S_OK;
 }
 

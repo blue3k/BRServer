@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
 #include "Common/Thread.h"
@@ -290,7 +290,7 @@ namespace BR {
 		Connection* pConn = (Connection*)pIConnection;
 
 		netChkPtr(pIConnection);
-		netErr(E_NOTIMPL);
+		netErr(E_SYSTEM_NOTIMPL);
 		netChk(GetConnectionManager().PendingManagedConnectionTakenOver(pConn));
 
 	Proc_End:
@@ -311,7 +311,7 @@ namespace BR {
 
 		if (pIConnection == nullptr)
 		{
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		if (pIConnection->GetConnectionState() != Net::IConnection::STATE_DISCONNECTED)
@@ -406,7 +406,7 @@ namespace BR {
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 
@@ -414,14 +414,14 @@ namespace BR {
 		if (setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		if (sockAddr.ss_family == AF_INET6)
@@ -430,7 +430,7 @@ namespace BR {
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
 				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 		}
 
@@ -441,7 +441,7 @@ namespace BR {
 			if (ioctlsocket(socket, FIONBIO, &iMode) == SOCKET_ERROR)
 			{
 				netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err={0:X8}", iMode, GetLastWSAHRESULT());
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 		}
 #endif
@@ -450,7 +450,7 @@ namespace BR {
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, TCP {0:X8}", GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 
@@ -478,7 +478,7 @@ namespace BR {
 			|| GetLastWSAHRESULT() != E_NET_WOULDBLOCK)
 		{
 			netTrace(Trace::TRC_ERROR, "connect failed, TCP {0:X8}", GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		netChk( GetConnectionManager().PendingWaitConnection( pConn ) );
@@ -594,7 +594,7 @@ namespace BR {
 		if( socket == INVALID_SOCKET )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 
@@ -602,14 +602,14 @@ namespace BR {
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 
@@ -619,7 +619,7 @@ namespace BR {
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
 				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 		}
 
@@ -628,7 +628,7 @@ namespace BR {
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		netChk(Addr2SockAddr(destAddress, sockAddrDest));
@@ -730,7 +730,7 @@ namespace BR {
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 
@@ -738,14 +738,14 @@ namespace BR {
 		if (setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 
@@ -755,7 +755,7 @@ namespace BR {
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
 				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 		}
 
@@ -764,7 +764,7 @@ namespace BR {
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 

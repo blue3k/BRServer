@@ -141,7 +141,7 @@ namespace BR
 
 		Trace::Flush();
 
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 #else
 	HRESULT CallStackTrace::PrintStackTrace(int channel, NativeHandle hProcess)
@@ -223,13 +223,13 @@ namespace BR
 		HRESULT result = 0;
 
 		if( m_hProcess == NULL )
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 
 		memset(hModules, 0, sizeof(hModules));
 		if( !EnumProcessModulesEx( m_hProcess, hModules, sizeof(hModules), &cbNeeded, LIST_MODULES_ALL ) )
 		{
 			AssertRel( cbNeeded <= sizeof(hModules) );
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		for( UINT iModule = 0; iModule < countof(hModules) && hModules[iModule] != 0; iModule++ )

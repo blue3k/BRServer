@@ -15,7 +15,9 @@
 #include "Common/StrUtil.h"
 #include "Common/Utility.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 #include "ServerSystem/SvrTrace.h"
 
 #include "curl/curl.h"
@@ -62,7 +64,7 @@ namespace Google {
 		HRESULT hr = S_OK;
 
 		if (m_privateKey != nullptr)
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 		// load all open ssl algorithms
 		OpenSSL_add_all_algorithms();
@@ -85,7 +87,7 @@ namespace Google {
 			char errorMessage[512];
 			auto error = ERR_get_error();
 			ERR_error_string(error, errorMessage);
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		}
 
 	Proc_End:
@@ -128,11 +130,11 @@ namespace Google {
 		if (m_privateKey == nullptr
 			|| strAccount == nullptr
 			|| scopes == nullptr)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		RSA* pkey = m_privateKey->pkey.rsa;
 		if (pkey == nullptr)
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 
 
 		// 1hour later from now
@@ -157,7 +159,7 @@ namespace Google {
 		sslResult = RSA_sign(NID_sha256, digest.data(), (UINT)digest.GetSize(), sign_buffer, &sign_len, pkey);
 		if (sslResult == FALSE)
 		{
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		svrChk(requestString.push_back('.'));
@@ -176,7 +178,7 @@ namespace Google {
 		HRESULT hr = S_OK;
 
 		if (strAccount == nullptr || scopes == nullptr)
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		m_Account = strAccount;
 		m_Scopes = scopes;
@@ -216,45 +218,45 @@ namespace Google {
 
 		res = curl_easy_setopt(curl, CURLOPT_URL, url);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		Assert(res == 0);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
 
 		res = curl_easy_setopt(curl, CURLOPT_POST, 1L);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_POSTFIELDS, strPostFields);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, strlen(strPostFields));
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		headers = curl_slist_append(headers, "Content-Type: application/x-www-form-urlencoded");
 		//headers = curl_slist_append(headers, "charsets: utf-8");
 		res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteResultCB);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, &m_ResultBuffer);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		Assert(res == 0);
 
 		res = curl_easy_perform(curl); /* ignores error */
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		Assert(res == 0);
 
 		res = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		Assert(res == 0);
 
 		curl_easy_cleanup(curl);
@@ -292,17 +294,17 @@ namespace Google {
 			// report to the user the failure and their locations in the document.
 			//std::cout << "Failed to parse configuration\n"
 			//	<< reader.getFormatedErrorMessages();
-			svrErr(E_FAIL);
+			svrErr(E_SYSTEM_FAIL);
 		}
 
 		{
 			auto value = root.get("access_token", "");
 			if (value.isNull() || value.isString() != true)
-				svrErr(E_FAIL);
+				svrErr(E_SYSTEM_FAIL);
 
 			accessToken = std::forward<std::string>(value.asString());
 			if (accessToken.length() == 0)
-				svrErr(E_FAIL);
+				svrErr(E_SYSTEM_FAIL);
 		}
 
 		m_AuthStringIndex++;

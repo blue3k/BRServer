@@ -15,7 +15,7 @@
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 #include "ServerSystem/SvrConstDefault.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/Transaction.h"
@@ -122,7 +122,7 @@ namespace Svr
 
 	//Proc_End:
 
-		return pServerEntity != nullptr ? hr : E_FAIL;
+		return pServerEntity != nullptr ? hr : E_SYSTEM_FAIL;
 	}
 
 	HRESULT ServerEntityManager::UpdateEntityManagerServerEntity( ServerEntity* pServerEntity )
@@ -150,7 +150,7 @@ namespace Svr
 
 		pPrevListNode = (ServerUpTimeListNodeItem*)pPrevNode;
 		if( pPrevNode->Key != 0 && pPrevListNode->pServerEntity == pServerEntity )
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 		svrMem( pNewListNode = new ServerUpTimeListNodeItem );
 		memset( pNewListNode, 0, sizeof(ServerUpTimeListNodeItem) );
@@ -179,7 +179,7 @@ namespace Svr
 		if (netClass < NetClass::Unknown
 			|| netClass >= BR::NetClass::Max)
 		{
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 		}
 
 		svrChk( pServerEntity->InitializeEntity(entityTable.GenEntityID(EntityFaculty::Server) ) );
@@ -212,7 +212,7 @@ namespace Svr
 		if (netClass < NetClass::Unknown
 			|| netClass >= BR::NetClass::Max)
 		{
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 		}
 
 		ServerEntity* pOldEntity = nullptr;
@@ -223,7 +223,7 @@ namespace Svr
 			{
 				svrTrace(Svr::TRC_ENTITY, "Adding Duplicated Server {0} SvrID:{1}", netClass, serverID);
 				AssertRel(false);
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 			}
 
 			pServerEntity = pOldEntity;

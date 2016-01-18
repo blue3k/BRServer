@@ -105,9 +105,9 @@ namespace Net {
 		virtual HRESULT EnqueueBuffer(IOBUFFER_WRITE *pSendBuffer);
 
 
-		virtual HRESULT Accept(IOBUFFER_ACCEPT* &pAcceptInfo) { return E_NOTIMPL; };
+		virtual HRESULT Accept(IOBUFFER_ACCEPT* &pAcceptInfo) { return E_SYSTEM_NOTIMPL; };
 		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept(HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo) { return E_NOTIMPL; };
+		virtual HRESULT OnIOAccept(HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo) { return E_SYSTEM_NOTIMPL; };
 
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) = 0;
 		// called when reciving messag is completed

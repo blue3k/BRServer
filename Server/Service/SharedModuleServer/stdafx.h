@@ -6,7 +6,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 #include "Common/Utility.h"
 #include "Common/StrUtil.h"
 #include "Common/Message.h"

@@ -65,7 +65,7 @@ namespace BR {
 		if( name )
 		{
 			if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, name ) ) )
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 		}
 		else
 			return ToStringEnum( pBuff, iBuffLen, Data );

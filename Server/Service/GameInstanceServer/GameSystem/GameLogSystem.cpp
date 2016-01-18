@@ -15,8 +15,8 @@
 
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/HRESSvrSys.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -90,7 +90,7 @@ namespace ConspiracyGameInstanceServer {
 		GameLogGameStateChange *pLogItem;
 
 		if( gameState < GameStateID::None || gameState >= GameStateID::Max )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogGameStateChange>();
 		svrMem( itemBuffer );
@@ -112,7 +112,7 @@ namespace ConspiracyGameInstanceServer {
 		GameLogVote *logItem;
 
 		if( type < GameVoteType(0) || type >= GameVoteType::Max )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 
 		if( voterCount <= 0 || voterCount > GameConst::MAX_GAMEPLAYER )
@@ -158,10 +158,10 @@ namespace ConspiracyGameInstanceServer {
 		GameLogVoteResult *logItem;
 
 		if( numRankers > 2 )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		if( ranker == nullptr )
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		Assert(numRankers > 0 );
 		if( numRankers <= 0 || numRankers > GameConst::MAX_GAMEPLAYER )
@@ -211,7 +211,7 @@ namespace ConspiracyGameInstanceServer {
 		GameLogGameEnd *logItem;
 
 		if( winner < GameWinner(0) || winner >= GameWinner::Max )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogGameEnd>();
 		svrMem( itemBuffer );

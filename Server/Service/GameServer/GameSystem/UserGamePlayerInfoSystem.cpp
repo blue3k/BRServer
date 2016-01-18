@@ -15,8 +15,9 @@
 
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/HRESSvrSys.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -160,7 +161,7 @@ namespace GameServer {
 		conspiracy::LevelTbl::LevelItem *pLevelInfo = nullptr;
 
 		if( pShopItem == nullptr )
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		if( FAILED(conspiracy::LevelTbl::FindItem( m_Level, pLevelInfo )) )
 			return E_INVALID_PLAYER_LEVEL;
@@ -210,7 +211,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 
 		if (pCostItem == nullptr)
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		if (GetGem() < pCostItem->RequiredGem || GetGameMoney() < pCostItem->RequiredGameMoney)
 			return E_GAME_NOTENOUGH_RESOURCE;
@@ -225,7 +226,7 @@ namespace GameServer {
 		HRESULT hr = S_OK;
 
 		if (pCostItem == nullptr)
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		hr = CheckCost(pCostItem);
 		if (FAILED(hr))
@@ -516,7 +517,7 @@ namespace GameServer {
 	HRESULT UserGamePlayerInfoSystem::SavePurchaseInfoToDB(TransactionID transID, const Array<BYTE>& purchaseID, const char* purchasePlatform, const char* purchaseToken)
 	{
 		if (purchasePlatform == nullptr || purchaseToken == nullptr)
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		return Svr::GetServerComponent<DB::GameConspiracyDB>()->SavePurchaseInfoToDB(transID, GetOwner().GetShardID(), GetOwner().GetPlayerID(),
 			GetLevel(), GetExp(),

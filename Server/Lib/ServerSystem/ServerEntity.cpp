@@ -530,7 +530,7 @@ namespace Svr {
 			}
 			break;
 		default:
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		}
 
 		return S_OK;

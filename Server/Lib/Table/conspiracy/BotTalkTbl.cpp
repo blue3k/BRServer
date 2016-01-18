@@ -48,7 +48,7 @@ namespace conspiracy
 		if (itr == m_TableMap.end())
 		{
  			// write error log
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 		pRow = itr->second;
 		return S_OK;

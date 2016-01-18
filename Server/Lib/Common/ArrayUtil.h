@@ -14,6 +14,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 
 namespace BR
@@ -341,7 +342,7 @@ namespace BR
 			if( DstMaxCount < GetSize() )
 			{
 				//defTrace( Trace::TRC_ERROR, "Error, Invalid Binary size, Droping Data, {0}", typeid(DataType).name() );
-				hr = E_FAIL;
+				hr = E_SYSTEM_FAIL;
 
 				CopyCount = DstMaxCount;
 			}

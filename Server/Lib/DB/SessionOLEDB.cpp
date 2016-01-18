@@ -59,7 +59,7 @@ namespace DB {
 		dbTrace( BR::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
 		HRESULT hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DEFAULT, true);
 		if( FAILED(hr) ) {
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		while(cmd.MoveNext() == S_OK) {

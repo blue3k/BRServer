@@ -418,7 +418,7 @@ namespace TableBuilder
             WriteStatement("if (result != 0)");
             OpenSection();
             WriteStatement("// error log");
-            WriteStatement("return E_FAIL;");
+            WriteStatement("return E_SYSTEM_FAIL;");
             CloseSection();
             WriteStatement("xmlCleanupParser();");
             WriteStatement("return S_OK;");
@@ -575,7 +575,7 @@ namespace TableBuilder
             statement = string.Format("{0} parser;", ParserName);
             WriteStatement(statement);
             WriteStatement("if (FAILED(parser.LoadTable(strFileName)))");
-            WriteStatement("return E_FAIL;", 1);
+            WriteStatement("return E_SYSTEM_FAIL;", 1);
             NewLine(1);
             WriteStatement("return S_OK;");
             CloseSection();

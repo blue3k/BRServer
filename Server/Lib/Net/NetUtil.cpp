@@ -11,7 +11,7 @@
 
 
 #include "stdafx.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/TimeUtil.h"
 #include "Common/Utility.h"
 #include "Common/SpinSharedBuffer.h"
@@ -77,7 +77,7 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin6_family, addr.strAddr, &sockAddr.sin6_addr);
 		if (result != TRUE)
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 		else
 			return S_OK;
@@ -91,7 +91,7 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin_family, addr.strAddr, &sockAddr.sin_addr);
 		if (result != TRUE)
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 		else
 			return S_OK;
@@ -118,7 +118,7 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin6_family, strAddr, &sockAddr.sin6_addr);
 		if (result != TRUE)
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		return S_OK;
@@ -133,7 +133,7 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin_family, strAddr, &sockAddr.sin_addr);
 		if (result != TRUE)
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		return S_OK;
@@ -231,13 +231,13 @@ namespace Net {
 		case 0:				break;
 		case EAI_AGAIN:		return E_NET_TRY_AGAIN;
 		case EAI_BADFLAGS:	return E_NET_BADFLAGS;
-		case EAI_FAIL:		return E_FAIL;
+		case EAI_FAIL:		return E_SYSTEM_FAIL;
 		case EAI_FAMILY:	return E_NET_FAMILY;
-		case EAI_MEMORY:	return E_OUTOFMEMORY;
+		case EAI_MEMORY:	return E_SYSTEM_OUTOFMEMORY;
 		case EAI_NONAME:	return E_NET_HOST_NOT_FOUND;
 		case EAI_SERVICE:	return E_NET_INVALID_SERVICE;
 		case EAI_SOCKTYPE:	return E_NET_NOTSOCK;
-		default:			return E_UNEXPECTED;
+		default:			return E_SYSTEM_UNEXPECTED;
 		}
 
 		for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
@@ -267,7 +267,7 @@ namespace Net {
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
-		return bIsFound ? S_OK : E_FAIL;
+		return bIsFound ? S_OK : E_SYSTEM_FAIL;
 	}
 
 	HRESULT GetLocalAddressIPv4(NetAddress &addr)
@@ -303,13 +303,13 @@ namespace Net {
 		case 0:				break;
 		case EAI_AGAIN:		return E_NET_TRY_AGAIN;
 		case EAI_BADFLAGS:	return E_NET_BADFLAGS;
-		case EAI_FAIL:		return E_FAIL;
+		case EAI_FAIL:		return E_SYSTEM_FAIL;
 		case EAI_FAMILY:	return E_NET_FAMILY;
-		case EAI_MEMORY:	return E_OUTOFMEMORY;
+		case EAI_MEMORY:	return E_SYSTEM_OUTOFMEMORY;
 		case EAI_NONAME:	return E_NET_HOST_NOT_FOUND;
 		case EAI_SERVICE:	return E_NET_INVALID_SERVICE;
 		case EAI_SOCKTYPE:	return E_NET_NOTSOCK;
-		default:			return E_UNEXPECTED;
+		default:			return E_SYSTEM_UNEXPECTED;
 		}
 
 		for (auto curAddr = res; curAddr != nullptr && !bIsFound; curAddr = curAddr->ai_next)
@@ -342,7 +342,7 @@ namespace Net {
 		}
 		freeaddrinfo(res);
 
-		return bIsFound ? S_OK : E_FAIL;
+		return bIsFound ? S_OK : E_SYSTEM_FAIL;
 	}
 
 #else
@@ -409,7 +409,7 @@ namespace Net {
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
-		return bIsFound ? S_OK : E_FAIL;
+		return bIsFound ? S_OK : E_SYSTEM_FAIL;
 	}
 
 	HRESULT GetLocalAddressIPv4(NetAddress &addr)
@@ -434,13 +434,13 @@ namespace Net {
 		{
 			auto *pSockAddr = (struct sockaddr_in *)&testSockAddr;
 			if (FAILED(Addr2SockAddr(addr, *pSockAddr)))
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 		}
 		else
 		{
 			auto *pSockAddr = (struct sockaddr_in6 *)&testSockAddr;
 			if (FAILED(Addr2SockAddr(addr, *pSockAddr)))
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 		}
 			
 		if (getifaddrs(&ifaddr) == -1)
@@ -490,7 +490,7 @@ namespace Net {
 
 		freeifaddrs(ifaddr);
 
-		return bIsFound ? S_OK : E_FAIL;
+		return bIsFound ? S_OK : E_SYSTEM_FAIL;
 
 	}
 

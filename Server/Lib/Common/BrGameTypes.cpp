@@ -104,7 +104,7 @@ namespace BR
         }
         // can't find slot for the voter
         Assert(false);
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
     }
 
 

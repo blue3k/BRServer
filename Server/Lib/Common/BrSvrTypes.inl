@@ -382,7 +382,7 @@ HRESULT MatchingQueueItem::SetQueueItem( EntityUID registerUID, PlayerID registe
 {
 	Assert(playerInformations);
 	if( playerInformations == nullptr) 
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 	
 	RegisterUID = registerUID;
 	RegisterID = registerID;

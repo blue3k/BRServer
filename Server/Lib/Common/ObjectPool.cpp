@@ -14,7 +14,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Synchronization.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 
 #include "Common/ObjectPool.h"
 #include "Common/MemLog.h"
@@ -93,7 +93,7 @@ namespace BR
 				void *pPage = nullptr;
 
 				if (FAILED(m_Allocator.Alloc(pPage)))
-					return E_OUTOFMEMORY;
+					return E_SYSTEM_OUTOFMEMORY;
 
 				pMemItem = (ObjectItem*)pPage;
 				for (size_t iItem = 1; iItem < m_AllocCountPerPage; iItem++)
@@ -240,7 +240,7 @@ namespace BR
 			void *pPage = nullptr;
 
 			if( FAILED(m_Allocator.Alloc( pPage )) )
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			pMemItem = (MemItem*)pPage;
 			for( size_t iItem = 1; iItem < m_AllocCountPerPage; iItem++ )

@@ -15,7 +15,7 @@
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Net/Connection.h"
 #include "Net/NetDef.h"

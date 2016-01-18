@@ -11,8 +11,8 @@
 
 
 #include "stdafx.h"
-#include "Common/HRESNet.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 #include "Common/TimeUtil.h"
 #include "Common/Utility.h"
 #include "Common/TypeUtility.h"
@@ -153,7 +153,7 @@ namespace Net {
 		{
 			if (expected == true)
 			{
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			expected = false;
@@ -168,7 +168,7 @@ namespace Net {
 		{
 			if (expected == true)
 			{
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			expected = false;
@@ -313,7 +313,7 @@ namespace Net {
 
 			if (len == 0)
 			{
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 
 			if(pAccept->sockAccept < 0)
@@ -377,7 +377,7 @@ namespace Net {
 			pBuffer->TransferredSize = recvSize;
 			if (recvSize == 0)
 			{
-				return S_FALSE;
+				return S_SYSTEM_FALSE;
 			}
 
 			return S_OK;
@@ -397,7 +397,7 @@ namespace Net {
 			pBuffer->TransferredSize = recvSize;
 			if (recvSize == 0)
 			{
-				return S_FALSE;
+				return S_SYSTEM_FALSE;
 			}
 
 			return S_OK;

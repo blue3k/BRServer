@@ -13,7 +13,8 @@
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 #include "Net/NetTrace.h"
 #include "Net/ConnectionUDP.h"
 #include "Net/NetDef.h"
@@ -57,7 +58,7 @@ namespace Net {
 		UINT iIdxCur = (uiIdx+m_uiWndBaseIndex)%GetWindowSize();
 
 		if( m_pMsgWnd == NULL )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		pMessageElement = &m_pMsgWnd[iIdxCur];
 
@@ -159,11 +160,11 @@ namespace Net {
 		auto baseSequence = m_uiBaseSequence.load(std::memory_order_relaxed);
 		INT iPosIdx = baseSequence % CIRCULAR_QUEUE_SIZE;
 		if (m_pMsgWnd == nullptr )//|| m_pMsgWnd[iPosIdx].load(std::memory_order_relaxed) == nullptr)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		pIMsg = m_pMsgWnd[iPosIdx].exchange(nullptr,std::memory_order_acquire);
 		if (pIMsg == nullptr)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		auto prevSeq = m_uiBaseSequence.fetch_add(1,std::memory_order_release);// Message window clear can't cross bese sequence change, and this will make sure the previous sync mask change is commited.
 		Assert(Message::SequenceDifference(pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence, prevSeq) == 0);
@@ -274,7 +275,7 @@ namespace Net {
 			return E_NET_NOT_ENOUGH_WINDOWSPACE;
 
 		if( pIMsg == nullptr )
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		// assign head sequence
 		AssertRel(pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence == 0);
@@ -391,7 +392,7 @@ namespace Net {
 			{
 				if ((uiMsgMask & uiSyncMaskCur) == 0)
 				{
-					netErr(E_UNEXPECTED);
+					netErr(E_SYSTEM_UNEXPECTED);
 				}
 			}
 		}
@@ -420,7 +421,7 @@ namespace Net {
 			m_pMsgWnd[ m_uiWndBaseIndex ].state = MSGSTATE_FREE;
 			m_uiMsgCount--;
 			m_uiWndBaseIndex = (m_uiWndBaseIndex+1)%GetWindowSize();
-			hr = S_FALSE;
+			hr = S_SYSTEM_FALSE;
 		}
 
 
@@ -500,7 +501,7 @@ namespace Net {
 		UINT expectedID;
 
 		if (pIMsg == nullptr)
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		if (GetAvailableSize() <= 0)
 			return E_NET_NOT_ENOUGH_WINDOWSPACE;

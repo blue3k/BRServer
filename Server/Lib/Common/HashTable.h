@@ -449,7 +449,7 @@ namespace Hash {
 			{
 				iter = begin();
 
-				return iter.IsValid() ? S_OK : E_FAIL;
+				return iter.IsValid() ? S_OK : E_SYSTEM_FAIL;
 			}
 
 			iterator begin()
@@ -506,7 +506,7 @@ namespace Hash {
 						KeyType curIdx = iter->Key;
 						if( equal_to<KeyType>()(inKey, curIdx) )
 						{
-							return E_FAIL;
+							return E_SYSTEM_FAIL;
 						}
 					}
 
@@ -561,7 +561,7 @@ namespace Hash {
 					}
 				}
 
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			HRESULT find( const KeyType& keyVal, iterator &iterData )
@@ -585,14 +585,14 @@ namespace Hash {
 				}
 
 				bucket.ReadUnlock();
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			// Erase a data from hash map
 			HRESULT erase(const KeyType& inKey, const ItemType &data)
 			{
 				if( m_Bucket.size() == 0 )
-					return S_FALSE;
+					return S_SYSTEM_FALSE;
 
 				size_t hashVal = Hasher()( inKey );
 				size_t iBucket = hashVal%m_Bucket.size();
@@ -621,13 +621,13 @@ namespace Hash {
 				Assert( bucket.Validate(iBucket, m_Bucket.size()) );
 				bucket.WriteUnlock();
 
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			HRESULT eraseByKey(const KeyType &key)
 			{
 				if (m_Bucket.size() == 0)
-					return S_FALSE;
+					return S_SYSTEM_FALSE;
 
 				KeyType inKey = key;
 				size_t hashVal = Hasher()(inKey);
@@ -657,20 +657,20 @@ namespace Hash {
 				Assert(bucket.Validate(iBucket, m_Bucket.size()));
 				bucket.WriteUnlock();
 
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			HRESULT erase( iterator &iterData )
 			{
 				KeyType Key;
 				if( iterData.m_pContainer != this )
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				if( iterData.m_iterBucket == bucket_end() )
-					return E_INVALIDARG;
+					return E_SYSTEM_INVALIDARG;
 
 				if( iterData.m_iIdx <= iterator::END_IDX )
-					return E_INVALIDARG;
+					return E_SYSTEM_INVALIDARG;
 
 				//ItemType data = *iterData;
 				INT iIdx = iterData.m_iIdx;
@@ -699,7 +699,7 @@ namespace Hash {
 				{
 					// data not found. maybe erased?
 					iterBucket->WriteUnlock();
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 				}
 				auto iterBucketData = iterBucket->m_Items.begin() + iIdx;
 #ifdef _DEBUG

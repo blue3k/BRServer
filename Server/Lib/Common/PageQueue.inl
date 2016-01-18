@@ -115,12 +115,12 @@ HRESULT PageQueue<DataType>::DequeuePageMove()
 	Page* curDequeue = m_DequeuePage.load(std::memory_order_relaxed);
 	if (//curDequeue->Header.PageID == m_EnqueuePageID.load(std::memory_order_acquire) || 
 		curDequeue == m_EnqueuePage.load(std::memory_order_relaxed))
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 
 	if (curDequeue->Header.WriteCounter.load(std::memory_order_relaxed) <= m_NumberOfItemsPerPage)
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 
-	if (curDequeue->Header.pNext == nullptr) return E_FAIL;
+	if (curDequeue->Header.pNext == nullptr) return E_SYSTEM_FAIL;
 
 	// change the tail header pointer
 	m_DequeuePage.store(curDequeue->Header.pNext,std::memory_order_release);
@@ -137,13 +137,13 @@ HRESULT PageQueue<DataType>::DequeuePageMoveMT()
 	Page* curDequeue = m_DequeuePage.load(std::memory_order_relaxed);
 	if (//curDequeue->Header.PageID == m_EnqueuePageID.load(std::memory_order_acquire) || 
 		curDequeue == m_EnqueuePage.load(std::memory_order_relaxed))
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 
 	if (curDequeue->Header.WriteCounter.load(std::memory_order_relaxed) <= m_NumberOfItemsPerPage)
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 
 	if (curDequeue->Header.pNext == nullptr)
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 
 	// change the tail header pointer
 	Page* pNewDequeueHead = curDequeue->Header.pNext;
@@ -203,7 +203,7 @@ HRESULT PageQueue<DataType>::Enqueue( DataType&& item )
 
 	Assert(item != defaultValue);
 	if (item == defaultValue)
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 
 	// total ticket number
 	CounterType myTicket = m_EnqueueTicket.fetch_add(1, std::memory_order_relaxed);// m_EnqueueTicket.AcquireTicket() - 1;
@@ -273,10 +273,10 @@ HRESULT PageQueue<DataType>::Dequeue( DataType& item )
 {
 	auto defaultValue = DefaultValue<DataType>();
 	// empty state / readcount is bigger than written count
-	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return E_FAIL;
+	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return E_SYSTEM_FAIL;
 
 	Page* pCurPage = m_DequeuePage.load(std::memory_order_relaxed);
-	if (pCurPage->Header.WriteCounter.load(std::memory_order_relaxed) == 0) return E_FAIL;
+	if (pCurPage->Header.WriteCounter.load(std::memory_order_relaxed) == 0) return E_SYSTEM_FAIL;
 
 	// read all of the page items...delete used page
 	if (pCurPage->Header.ReadCounter.load(std::memory_order_relaxed) == m_NumberOfItemsPerPage)
@@ -389,10 +389,10 @@ HRESULT PageQueue<DataType>::GetFront( DataType& item )
 {
 	auto defaultValue = DefaultValue<DataType>();
 	// empty state / readcount is bigger than written count
-	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return E_FAIL;
+	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return E_SYSTEM_FAIL;
 
 	Page* pCurPage = m_DequeuePage.load(std::memory_order_relaxed);
-	if (pCurPage->Header.WriteCounter.load(std::memory_order_relaxed) == 0) return E_FAIL;
+	if (pCurPage->Header.WriteCounter.load(std::memory_order_relaxed) == 0) return E_SYSTEM_FAIL;
 
 	// read all of the page items...delete used page
 	if (pCurPage->Header.ReadCounter.load(std::memory_order_relaxed) == m_NumberOfItemsPerPage)

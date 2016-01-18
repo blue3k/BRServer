@@ -365,7 +365,7 @@ namespace Svr
 					svrTrace(Trace::TRC_WARN, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
 					Util::SafeRelease(pRes);
-					//svrErr(E_FAIL);
+					//svrErr(E_SYSTEM_FAIL);
 				}
 			}
 			else
@@ -374,7 +374,7 @@ namespace Svr
 			}
 			break;
 		default:
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		}
 
 	//Proc_End:

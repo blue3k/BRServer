@@ -63,7 +63,7 @@ namespace Svr {
 	HRESULT TaskWorker::AddEventTask(EventTask&& pEvtTask)
 	{
 		if (pEvtTask.EventType == EventTask::EventTypes::NONE)
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		return m_EventTask.Enqueue(pEvtTask);
 	}
@@ -376,7 +376,7 @@ namespace Svr {
 	HRESULT TaskManager::AddEventTask(SysUInt groupID, EventTask&& pEvtTask)
 	{
 		if (groupID <= 0 || groupID > m_TaskGroups.GetSize())
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 
 		return m_TaskGroups[groupID - 1]->AddEventTask(std::forward<EventTask>(pEvtTask));
 	}
@@ -428,7 +428,7 @@ namespace Svr {
 
 		groupID = pTask->GetTaskGroupID();
 		if (groupID <= 0 || groupID > m_TaskGroups.GetSize())
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 
 		svrChk(m_TaskGroups[groupID - 1]->PendingRemoveTask(pTask));
 

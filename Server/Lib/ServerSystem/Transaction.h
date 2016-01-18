@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 #include "Common/MemoryPool.h"
 #include "Common/SharedObject.h"
 #include "Common/SharedPointer.h"

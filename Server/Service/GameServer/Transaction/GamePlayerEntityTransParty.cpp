@@ -13,9 +13,9 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-#include "Common/HRESCommon.h"
-#include "Common/HRESGame.h"
-#include "Common/HRESLogin.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
+#include "Common/ResultCode/BRResultCodeLogin.h"
 #include "Common/MemoryPool.h"
 #include "Common/BrBaseTypes.h"
 

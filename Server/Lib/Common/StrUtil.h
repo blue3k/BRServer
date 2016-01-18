@@ -13,6 +13,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 
 namespace BR {

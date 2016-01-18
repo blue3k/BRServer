@@ -15,8 +15,8 @@
 
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/HRESSvrSys.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -358,7 +358,7 @@ namespace ConspiracyGameInstanceServer {
 				GetOwner().ForeachPlayer( [&](GamePlayer* pPlayer ) -> HRESULT
 				{
 					if( pGamePlayer != nullptr )
-						return E_FAIL;
+						return E_SYSTEM_FAIL;
 
 					if( pPlayer != nullptr && pPlayer->IsInGame() && pPlayer->GetPlayerState() != PlayerState::Ghost )
 					{
@@ -424,7 +424,7 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_OK;
 
 		if( pPlayerToKill == nullptr )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		if( pPlayerToKill->GetPlayerState() == PlayerState::Ghost )
 		{
@@ -497,7 +497,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_OK;
 		if (pPlayerToRevive == nullptr)
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		if (pPlayerToRevive->GetPlayerState() != PlayerState::Ghost)
 		{

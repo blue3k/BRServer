@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/BrServer.h"
@@ -279,7 +279,7 @@ namespace LoginServer {
 		};
 
 		if( pServerEntity == nullptr )
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 		return S_OK;
 	}

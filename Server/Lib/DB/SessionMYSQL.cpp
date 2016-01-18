@@ -27,7 +27,8 @@
 #include "SessionMYSQL.h"
 #include "Query.h"
 #include "QueryMYSQL.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeDB.h"
 
 #include "errmsg.h"
 
@@ -52,10 +53,10 @@ namespace DB {
 		case CR_COMMANDS_OUT_OF_SYNC:
 			return E_DB_CONNECTION_LOST;
 		case CR_OUT_OF_MEMORY:
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 		};
 
-		return E_UNEXPECTED;
+		return E_SYSTEM_UNEXPECTED;
 	}
 
 	
@@ -132,7 +133,7 @@ namespace DB {
 			pPool = new StackPool;
 
 			if( m_StatementPoolMap.insert( std::make_pair(key,pPool) ).second == false )
-				dbErr(E_UNEXPECTED);
+				dbErr(E_SYSTEM_UNEXPECTED);
 		}
 		else
 		{
@@ -215,7 +216,7 @@ namespace DB {
 		dbChk( pStatement->Bind( pMyQuery ) );
 
 		hr = pStatement->Execute();
-		if (hr == E_DB_CONNECTION_LOST) goto Proc_End;
+		if (hr == ((HRESULT)E_DB_CONNECTION_LOST)) goto Proc_End;
 		dbChk(hr);
 
 		dbChk( pStatement->PatchResults( pMyQuery ) );
@@ -235,7 +236,7 @@ namespace DB {
 				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8}", hr );
 			}
 
-			if( hr == E_DB_CONNECTION_LOST)
+			if( hr == ((HRESULT)E_DB_CONNECTION_LOST))
 			{
 				defTrace( Trace::TRC_WARN, "DB connection is lost, recovering the connection... " );
 				HRESULT hrTem = OpenSession();

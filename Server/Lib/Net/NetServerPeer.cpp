@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/Thread.h"
 #include "Common/StrUtil.h"
 #include "Net/Connection.h"
@@ -127,7 +127,7 @@ namespace Net {
 			else
 			{
 				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet From {0}", from);
-				netErr( E_UNEXPECTED );
+				netErr( E_SYSTEM_UNEXPECTED );
 			}
 
 		}
@@ -148,7 +148,7 @@ namespace Net {
 					else
 					{
 						netTrace( Trace::TRC_WARN, "Unexpected packet From {0}", from);
-						netErr( E_UNEXPECTED );
+						netErr( E_SYSTEM_UNEXPECTED );
 					}
 				}
 				else
@@ -301,7 +301,7 @@ namespace Net {
 	//// Send message to connection with network device to dst addr
 	//HRESULT ServerPeer::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg )
 	//{
-	//	return E_NOTIMPL;
+	//	return E_SYSTEM_NOTIMPL;
 	//}
 
 	//HRESULT ServerPeer::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
@@ -389,7 +389,7 @@ namespace Net {
 			hrErr = NetSystem::RecvFrom(GetSocket(), pOver);
 			switch (hrErr)
 			{
-			case S_FALSE:
+			case S_SYSTEM_FALSE:
 				hr = E_NET_TRY_AGAIN;
 				goto Proc_End;// success
 				break;
@@ -467,28 +467,28 @@ namespace Net {
 		if( socket == INVALID_SOCKET )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		iOptValue = Const::CLI_RECV_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		iOptValue = FALSE;
 		if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 
@@ -496,7 +496,7 @@ namespace Net {
 		if (bind(socket, (sockaddr*)&bindAddr, GetSocketAddrSize()) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		SetSocket( socket );

@@ -282,7 +282,7 @@ namespace Svr {
 		Policy::ISvrPolicyPartyMatchingQueue* pPolicyMatchingQueueSvr = nullptr;
 
 		if (pItem == nullptr)
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		if ((pItem->NumPlayers != 0 && !pItem->PendingCancel) || pItem->ReservedTime != TimeStampMS::min())
 			return E_INVALID_STATE;

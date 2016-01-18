@@ -37,7 +37,7 @@ namespace TableBuilder
                 //WriteStatement("if (itr == m_TableMap.end())");
                 //OpenSection();
                 //WriteStatement("// write error log");
-                //WriteStatement("return E_FAIL;");
+                //WriteStatement("return E_SYSTEM_FAIL;");
                 //CloseSection();
 
                 //WriteStatement("pRow = itr->second;");
@@ -55,7 +55,7 @@ namespace TableBuilder
                 //WriteStatement("if (pair1.first == pair1.second)");
                 //OpenSection();
                 //WriteStatement("// write error log");
-                //WriteStatement("return E_FAIL;");
+                //WriteStatement("return E_SYSTEM_FAIL;");
                 //CloseSection();
                 //WriteStatement("for (; pair1.first != pair1.second; ++pair1.first)");
                 //WriteStatement("rows.insert(pair1.first->second);", 1);
@@ -72,7 +72,7 @@ namespace TableBuilder
                 //WriteStatement("if (itr == m_TableMap.end())");
                 //OpenSection();
                 //WriteStatement("// write error log");
-                //WriteStatement("return E_FAIL;");
+                //WriteStatement("return E_SYSTEM_FAIL;");
                 //CloseSection();
 
                 //WriteStatement("pRow = itr->second;");
@@ -122,7 +122,7 @@ namespace TableBuilder
                 //WriteStatement(statement);
                 //OpenSection();
                 //WriteStatement("// write error log");
-                //WriteStatement("return E_FAIL;");
+                //WriteStatement("return E_SYSTEM_FAIL;");
                 //CloseSection();
 
                 //WriteStatement("pRow = itr->second;");
@@ -141,7 +141,7 @@ namespace TableBuilder
                 //WriteStatement("if (pair1.first == pair1.second)");
                 //OpenSection();
                 //WriteStatement("// write error log");
-                //WriteStatement("return E_FAIL;");
+                //WriteStatement("return E_SYSTEM_FAIL;");
                 //CloseSection();
                 //WriteStatement("for (; pair1.first != pair1.second; ++pair1.first)");
                 //WriteStatement("rows.insert(pair1.first->second);", 1);
@@ -160,7 +160,7 @@ namespace TableBuilder
                 //WriteStatement(statement);
                 //OpenSection();
                 //WriteStatement("// write error log");
-                //WriteStatement("return E_FAIL;");
+                //WriteStatement("return E_SYSTEM_FAIL;");
                 //CloseSection();
 
                 //WriteStatement("pRow = itr->second;");

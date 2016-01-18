@@ -29,13 +29,13 @@ namespace Util {
 
 		SHA256_CTX sha256;
 		if (SHA256_Init(&sha256) == FALSE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (SHA256_Update(&sha256, bytes_to_encode, srcSize) == FALSE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (SHA256_Final(destBuffer.data(), &sha256) == FALSE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}

@@ -48,8 +48,8 @@ DEFINE_TRACE_MODULE(svr)
 #define svrChk(e)					{ do{ HRESULT hRes = e; if( FAILED(hRes) ) TrcErrJmp(svr,hRes,hr); } while(0); }
 #define svrChkSilent(e)				{ do{ HRESULT hRes = e; hr = hRes; if( FAILED(hRes) ) goto Proc_End; } while(0); }
 #define svrChkErr(ErrCode,exp)		{ do{ HRESULT hRes = exp; if( FAILED(hRes) ) TrcErrJmp(svr,ErrCode,hr); } while(0); }
-#define svrMem(a)					{ while( (a) == nullptr ){ TrcErrJmp(svr,E_OUTOFMEMORY,hr); } }
-#define svrChkPtr(a)				{ while( (a) == nullptr ){ TrcErrJmp(svr,E_POINTER,hr); }  }
+#define svrMem(a)					{ while( (a) == nullptr ){ TrcErrJmp(svr,E_SYSTEM_OUTOFMEMORY,hr); } }
+#define svrChkPtr(a)				{ while( (a) == nullptr ){ TrcErrJmp(svr,E_SYSTEM_POINTER,hr); }  }
 
 #define svrAssert(e)				trcAssert(e)
 #define svrAssertExp(e,expr)		trcAssertExp(e,expr)
@@ -69,8 +69,8 @@ DEFINE_TRACE_MODULE(svr)
 #define svrErrReturn(e)					TrcErrReturn(svr,e)
 #define svrChkReturn(e)					{ do{ HRESULT hRes = e; if( FAILED(hRes) ) TrcErrReturn(svr,hRes); } while(0); }
 #define svrChkErrReturn(ErrCode,exp)	{ do{ HRESULT hRes = exp; if( FAILED(hRes) ) TrcErrReturn(svr,ErrCode); } while(0); }
-#define svrMemReturn(a)					{ while( (a) == nullptr ){ TrcErrReturn(svr,E_OUTOFMEMORY); } }
-#define svrChkPtrReturn(a)				{ while( (a) == nullptr ){ TrcErrReturn(svr,E_POINTER); }  }
+#define svrMemReturn(a)					{ while( (a) == nullptr ){ TrcErrReturn(svr,E_SYSTEM_OUTOFMEMORY); } }
+#define svrChkPtrReturn(a)				{ while( (a) == nullptr ){ TrcErrReturn(svr,E_SYSTEM_POINTER); }  }
 
 #define svrAssertReturn(e)				TrcAssertReturn(e)
 #define svrAssertExpReturn(e,expr)		TrcAssertReturnExp(e,expr)

@@ -98,7 +98,7 @@ namespace BR
 		{
 			void* pPtr = m_DataBuffer;
 			if( FAILED(m_Allocator.Realloc( sizeof(DataType)*newSize, pPtr )) )
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			if( pPtr != m_DataBuffer )
 			{
@@ -115,7 +115,7 @@ namespace BR
 		virtual HRESULT Append( size_t dataSize, const DataType* data )
 		{
 			if( data == nullptr || dataSize == 0 )
-				return E_INVALIDARG;
+				return E_SYSTEM_INVALIDARG;
 
 			// Increase size
 			if( m_Allocated < (m_Used+dataSize) )
@@ -137,10 +137,10 @@ namespace BR
 		virtual HRESULT Remove( const DataType* data )
 		{
 			if( data == nullptr )
-				return E_INVALIDARG;
+				return E_SYSTEM_INVALIDARG;
 
 			if( GetPtr() == nullptr )
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			DataType* dataList = GetPtr();
 			for( unsigned int index = 0; index < GetSize(); index++ )
@@ -156,16 +156,16 @@ namespace BR
 				}
 			}
 
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		virtual HRESULT RemoveAt( int removeIndex )
 		{
 			if( removeIndex < 0 || removeIndex >= (INT)GetSize() )
-				return E_INVALIDARG;
+				return E_SYSTEM_INVALIDARG;
 
 			if( GetPtr() == nullptr )
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			DataType* dataList = GetPtr();
 			if( (size_t)(removeIndex+1) < GetSize() )
@@ -189,7 +189,7 @@ namespace BR
 		virtual HRESULT Append( size_t dataSize, const char* data )
 		{
 			if( data == nullptr || dataSize == 0 )
-				return E_INVALIDARG;
+				return E_SYSTEM_INVALIDARG;
 
 			HRESULT hr = super::Append( dataSize, data );
 			if( FAILED(hr) ) return hr;

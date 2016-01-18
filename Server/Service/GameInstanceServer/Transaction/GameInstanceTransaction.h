@@ -153,7 +153,7 @@ namespace ConspiracyGameInstanceServer {
 			else
 			{
 				pPlayer = nullptr;
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 		}
 	};

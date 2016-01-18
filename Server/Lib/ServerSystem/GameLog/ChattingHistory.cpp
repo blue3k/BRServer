@@ -44,7 +44,7 @@ namespace Svr {
 		GameLogChatMessage *chatLog = nullptr;
 
 		if( message == nullptr )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		size_t messageBufferSize = strlen(message) + 1;
 		if (messageBufferSize >= GameConst::MAX_CHATMESSAGE_SIZE)

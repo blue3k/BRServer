@@ -84,9 +84,9 @@ namespace Net {
 
 
 		// Update send queue, Reliable UDP
-		virtual HRESULT UpdateSendQueue() override { return E_FAIL; }
+		virtual HRESULT UpdateSendQueue() override { return E_SYSTEM_FAIL; }
 		// Update Send buffer Queue, TCP and UDP client connection
-		virtual HRESULT UpdateSendBufferQueue() override { return E_FAIL; }
+		virtual HRESULT UpdateSendBufferQueue() override { return E_SYSTEM_FAIL; }
 
 	};
 

@@ -12,8 +12,8 @@
 
 #include "stdafx.h"
 #include "Common/TypeUtility.h"
-#include "Common/HRESCommon.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/Trace.h"
 
 
@@ -53,7 +53,7 @@ namespace BR {
 		case EBADF: return E_INVALID_FILE_HANDLE;
 		case ECHILD: return E_NO_CHILD_PROCESS;
 		case EAGAIN: return E_TRY_AGAIN;
-		case ENOMEM: return E_OUTOFMEMORY;
+		case ENOMEM: return E_SYSTEM_OUTOFMEMORY;
 		case EACCES: return E_NO_PERMITION;
 		case EFAULT: return E_INVALID_POINTER;
 		case ENOTBLK: return E_NOT_BLOCK;
@@ -76,7 +76,7 @@ namespace BR {
 		case EPIPE: return E_INVALID_PIPE;
 		case EDOM: return E_INVALID_MATH_DOMAIN;
 		case ERANGE: return E_INVALID_NUMERIC;
-		default: return E_UNEXPECTED;
+		default: return E_SYSTEM_UNEXPECTED;
 		}
 	}
 

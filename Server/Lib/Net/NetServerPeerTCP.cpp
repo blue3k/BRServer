@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/Thread.h"
 #include "Common/StrUtil.h"
 #include "Net/Connection.h"
@@ -73,7 +73,7 @@ namespace Net {
 			if (pConnection == nullptr)// Maybe maxconnection ?
 			{
 				netTrace(Trace::TRC_ERROR, "Failed to allocate a new connection now active:{0}", GetConnectionManager().GetNumActiveConnection());
-				netErr(E_FAIL);
+				netErr(E_SYSTEM_FAIL);
 			}
 
 			pConn = SharedPointerT<Connection>(pConnection);
@@ -177,7 +177,7 @@ namespace Net {
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open a Socket {0:X8}", GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		netChk(SetupSocketOption(socket));
@@ -189,7 +189,7 @@ namespace Net {
 			if (ioctlsocket(socket, FIONBIO, &iMode) == SOCKET_ERROR)
 			{
 				netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err = {1:X8}", iMode, GetLastWSAHRESULT());
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 		}
 #endif
@@ -200,7 +200,7 @@ namespace Net {
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
 				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 		}
 

@@ -102,7 +102,7 @@ namespace XML {
 		if( m_CreatorMap.insert( std::make_pair( elementName, funcCreator ) ).second )
 			return S_OK;
 
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 
 	/** Display and format an error messages, callback.

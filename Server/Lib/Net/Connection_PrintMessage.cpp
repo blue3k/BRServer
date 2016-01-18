@@ -13,7 +13,7 @@
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/Utility.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
 #include "Net/NetTrace.h"

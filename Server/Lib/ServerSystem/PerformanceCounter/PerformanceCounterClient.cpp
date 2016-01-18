@@ -326,7 +326,7 @@ namespace Svr {
 	HRESULT PerformanceCounterClient::RegisterPerformanceCounterInstance(PerformanceCounterInstance *pInstance)
 	{
 		if (stm_pInstance == nullptr)
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 		// This will gurantee that Dispose will be called in the same thread
 		pInstance->AssignManager(stm_pInstance);

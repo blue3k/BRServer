@@ -1,4 +1,14 @@
-﻿using System;
+﻿////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2016 Blue3k
+// 
+// Author : KyungKun Ko
+//
+// Description : 
+//
+////////////////////////////////////////////////////////////////////////////////
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,104 +18,78 @@ namespace BR.ToolLib
 {
     public static class ToolEnvironment
     {
-        static Dictionary<string, string> m_Settings = new Dictionary<string, string>();
+        static Setting m_Settings = new Setting();
 
-        static string[] m_EnvironmentSettingNames = new string[]
+
+        static void ImportEnvironmentVariables()
         {
-            "BASE_PATH",
-            "DEBUG_TOOLS",
-        };
+            var envVars = Environment.GetEnvironmentVariables();
+            if (envVars.Contains("DEFINES"))
+            {
+                var defineVar = envVars["DEFINES"] as string;
+                var defines = defineVar.Split(';');
+
+                foreach (var define in defines)
+                {
+                    var keyValueSet = define.Split('=');
+                    if (keyValueSet.Length == 0) continue;
+
+                    m_Settings.SetValue("DEFINE", keyValueSet[0], keyValueSet.Length > 1 ? keyValueSet[1] : "");
+                }
+            }
+
+            if (envVars.Contains("TARGET_PLATFORM"))
+            {
+                var defineVar = envVars["TARGET_PLATFORM"] as string;
+                m_Settings.SetValue("TARGET_PLATFORM", defineVar);
+            }
+
+            if (envVars.Contains("BASE_PATH"))
+            {
+                var defineVar = envVars["BASE_PATH"] as string;
+                m_Settings.SetValue("BASE_PATH", defineVar);
+            }
+
+            if (envVars.Contains("TOOL_DEBUG"))
+            {
+                var defineVar = envVars["TOOL_DEBUG"] as string;
+                if (!string.IsNullOrEmpty(defineVar))
+                {
+                    var tool_debugs = defineVar.Split(';');
+                    foreach (var tool_debug in tool_debugs)
+                    {
+                        m_Settings.SetValue("TOOL_DEBUG", tool_debug, "");
+                    }
+                }
+            }
+        }
 
 
+        static void ImportCommandParameter()
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            m_Settings.ProcessParameter(args);
+        }
 
         static ToolEnvironment()
         {
-            // apply environmane
-            foreach (var environmentName in m_EnvironmentSettingNames)
-            {
-                var settingName = Environment.GetEnvironmentVariable(environmentName);
-                var environmentNameLwr = environmentName.ToLower();
-                m_Settings.Add(environmentNameLwr, settingName);
-            }
-
-            string[] args = Environment.GetCommandLineArgs();
-            for (int iArg = 1; iArg < args.Length; iArg++ )
-            {
-                string argument = args[iArg];
-                bool isRemove = argument.StartsWith("-");
-                if (isRemove || argument.StartsWith("+"))
-                {
-                    argument = argument.Substring(1);
-                }
-                else
-                {
-                    string value = "";
-                    if (m_Settings.TryGetValue("", out value))
-                        value += ",";
-                    value += argument;
-                    m_Settings["UNNAMED"] = value;
-                }
-
-                if (string.IsNullOrEmpty(argument))
-                {
-                    continue;
-                }
-
-                string argumentValue = "";
-                int splitIndex = argument.IndexOf(':');
-                if (splitIndex < 0)
-                {
-                    argumentValue = "true";
-                }
-                else
-                {
-                    argumentValue = argument.Substring(splitIndex + 1);
-                    argument = argument.Substring(0, splitIndex);
-                }
-
-                argument = argument.ToLower();
-                if (isRemove)
-                {
-                    m_Settings.Remove(argument);
-                }
-                else
-                {
-                    m_Settings.Add(argument, argumentValue);
-                }
-            }
-
-
+            ImportEnvironmentVariables();
+            ImportCommandParameter();
         }
 
         public static string GetSettingString(string key, string defaultValue = "")
         {
-            key = key.ToLower();
-            string stringValue = defaultValue;
-            m_Settings.TryGetValue(key, out stringValue);
-            return stringValue;
+            return m_Settings.GetValue<string>(key, defaultValue);
         }
 
         public static T GetSetting<T>(string key, T defaultValue = default(T))
         {
-            key = key.ToLower();
-            string stringValue = "";
-            if(m_Settings.TryGetValue(key, out stringValue))
-            {
+            return m_Settings.GetValue<T>(key, defaultValue);
+        }
 
-            }
-
-            T resultValue = defaultValue;
-            try
-            {
-                if (!string.IsNullOrEmpty(stringValue))
-                    resultValue = (T)Convert.ChangeType(stringValue, typeof(T));
-            }
-            catch(Exception)
-            {
-                resultValue = defaultValue;
-            }
-
-            return resultValue;
+        static public SettingValueSet GetValueSet(string key)
+        {
+            return m_Settings.GetValueSet(key);
         }
 
 
@@ -113,7 +97,7 @@ namespace BR.ToolLib
         public static void CheckDebugOption(string toolName)
         {
             toolName = toolName.ToLower();
-            string debugTools = GetSettingString("DEBUG_TOOLS");
+            string debugTools = GetSettingString("TOOL_DEBUG");
             if (!string.IsNullOrEmpty(debugTools))
             {
                 foreach (var debugTool in debugTools.Split(','))

@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
 #include "Common/Thread.h"
@@ -55,14 +55,14 @@ namespace Net {
 		if (setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		iOptValue = Net::Const::SVR_SEND_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 	Proc_End:
@@ -84,7 +84,7 @@ namespace Net {
 		if (sockAccept == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Accept Socket {0:X8}", GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		pAcceptInfo->SetupAccept(sockAccept);
@@ -187,7 +187,7 @@ namespace Net {
 		if( pConnection == nullptr )// Maybe maxconnection ?
 		{
 			netTrace( Trace::TRC_ERROR, "Failed to allocated new connection now active:{0}", GetConnectionManager().GetNumActiveConnection() );
-			netErr( E_FAIL );
+			netErr( E_SYSTEM_FAIL );
 		}
 
 		Assert(pConnection->GetWriteQueue() != nullptr);
@@ -231,14 +231,14 @@ namespace Net {
 
 	HRESULT ServerTCP::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		return E_NOTIMPL;
+		return E_SYSTEM_NOTIMPL;
 	}
 
 	// called when reciving message
 	HRESULT ServerTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
 		Assert(false);
-		return E_NOTIMPL;
+		return E_SYSTEM_NOTIMPL;
 	}
 
 	HRESULT ServerTCP::OnSendReady()
@@ -248,7 +248,7 @@ namespace Net {
 
 	HRESULT ServerTCP::SendBuffer(IOBUFFER_WRITE *pIOBuffer)
 	{
-		return E_NOTIMPL;
+		return E_SYSTEM_NOTIMPL;
 	}
 
 	// called when send completed
@@ -326,7 +326,7 @@ namespace Net {
 		if( socket == INVALID_SOCKET )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 
@@ -334,21 +334,21 @@ namespace Net {
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		iOptValue = Const::SVR_SEND_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		bOptValue = TRUE;
 		if( setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&bOptValue, sizeof(bOptValue)) == SOCKET_ERROR )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_REUSEADDR = {0}, err = {1:X8}", bOptValue, GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		if (GetSocketAddr().ss_family== AF_INET6)
@@ -357,7 +357,7 @@ namespace Net {
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
 				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr( E_UNEXPECTED );
+				netErr( E_SYSTEM_UNEXPECTED );
 			}
 		}
 
@@ -365,13 +365,13 @@ namespace Net {
 		if (bind(socket, (sockaddr*)&bindAddr, GetSocketAddrSize()) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "Socket bind failed, TCP {0:X8}", GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		if( listen(socket, SOMAXCONN) == SOCKET_ERROR )
 		{
 			netTrace(Trace::TRC_ERROR, "Failed to listen socket {0:X8}", GetLastWSAHRESULT() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		SetSocket( socket );
@@ -584,7 +584,7 @@ namespace Net {
 	//// Send message to connection with network device to dst addr
 	//HRESULT ServerTCP::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg )
 	//{
-	//	return E_NOTIMPL;
+	//	return E_SYSTEM_NOTIMPL;
 	//}
 
 

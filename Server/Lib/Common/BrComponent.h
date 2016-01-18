@@ -17,7 +17,7 @@
 #include "Common/ClassUtil.h"
 //#include "Common/Memory.h"
 //#include "Common/Trace.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 
 
 
@@ -177,12 +177,12 @@ namespace BR {
 			if( !bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr )
 			{
 				// already inserted
-				return S_FALSE;
+				return S_SYSTEM_FALSE;
 			}
 
 			ComponentType* newComponent = new ComponentType;
 			if( newComponent == nullptr )
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			HRESULT hr = AddComponent(newComponent);
 			if( FAILED(hr) )
@@ -199,12 +199,12 @@ namespace BR {
 			if( !bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr )
 			{
 				// already inserted
-				return S_FALSE;
+				return S_SYSTEM_FALSE;
 			}
 
 			ComponentType* newComponent = new ComponentType(p0);
 			if( newComponent == nullptr )
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			HRESULT hr = AddComponent(newComponent);
 			if( FAILED(hr) )
@@ -221,12 +221,12 @@ namespace BR {
 			if( !bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr )
 			{
 				// already inserted
-				return S_FALSE;
+				return S_SYSTEM_FALSE;
 			}
 
 			ComponentType* newComponent = new ComponentType(p0,p1);
 			if( newComponent == nullptr )
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			HRESULT hr = AddComponent(newComponent);
 			if( FAILED(hr) )
@@ -243,12 +243,12 @@ namespace BR {
 			if (!bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr)
 			{
 				// already inserted
-				return S_FALSE;
+				return S_SYSTEM_FALSE;
 			}
 
 			ComponentType* newComponent = new ComponentType(p0, p1, p2);
 			if (newComponent == nullptr)
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			HRESULT hr = AddComponent(newComponent);
 			if (FAILED(hr))
@@ -268,7 +268,7 @@ namespace BR {
 		{
 			// invalid component id range
 			if( newComponent->GetComponentID() >= (MaxComponentID+1) )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			if( m_Components[newComponent->GetComponentID()] != nullptr )
 			{

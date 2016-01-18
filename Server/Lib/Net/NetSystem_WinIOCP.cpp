@@ -14,7 +14,7 @@
 #include "Net/NetSystem.h"
 #include "Net/NetSystem_WinIOCP.h"
 #include "Net/NetSystem_impl.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Common/TimeUtil.h"
 #include "Common/Utility.h"
@@ -147,7 +147,7 @@ namespace Net {
 		{
 			if (expected == true)
 			{
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			expected = false;
@@ -163,7 +163,7 @@ namespace Net {
 			if (expected == true)
 			{
 				Assert(false);
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			expected = false;
@@ -549,7 +549,7 @@ namespace Net {
 			{
 				hr = GetLastHRESULT();
 				netTrace(Trace::TRC_ERROR, "Registering socket to IOCP is Failed, hr = {0:X8}", hr);
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 
 		Proc_End:
@@ -565,7 +565,7 @@ namespace Net {
 			{
 				hr = GetLastHRESULT();
 				netTrace(Trace::TRC_ERROR, "Registering socket to IOCP is Failed, hr = {0:X8}", hr);
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 
 		Proc_End:
@@ -622,7 +622,7 @@ namespace Net {
 			else
 			{
 				netTrace(Trace::TRC_ERROR, "TCP Abnormal accept err={0:X8}", GetLastWSAHRESULT());
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 
 
@@ -639,7 +639,7 @@ namespace Net {
 			if (setsockopt(pAccept->sockAccept, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, (char *)&sockListen, sizeof(SOCKET)) == SOCKET_ERROR)
 			{
 				netTrace(TRC_CONNECTION, "Failed set socket option SO_UPDATE_ACCEPT_CONTEXT err:{0:X8}", GetLastWSAHRESULT());
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 

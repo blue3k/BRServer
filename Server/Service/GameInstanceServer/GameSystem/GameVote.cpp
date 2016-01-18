@@ -15,8 +15,8 @@
 
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/HRESSvrSys.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -75,7 +75,7 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameVote::Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget )
 	{
 		if( pVoter == nullptr || pVoteTarget == nullptr )
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		if( !pVoter->IsInGame() )
 			return E_GAME_NO_SUFFRAGE;
@@ -280,7 +280,7 @@ namespace ConspiracyGameInstanceServer {
 				&& pPlayer->GetVote() == 0)
 			{
 				m_IsInVoting = true;
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 				return S_OK;
 		});
@@ -440,7 +440,7 @@ namespace ConspiracyGameInstanceServer {
 			if( pPlayer->IsInGame() && !GetGamePlaySystem().IsSuspect(pPlayer->GetPlayerID()) && pPlayer->GetVote() == 0 )
 			{
 				m_IsInVoting = true;
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 			return S_OK;
 		});
@@ -484,7 +484,7 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_OK;
 
 		if( pVoter == nullptr || pVoteTarget == nullptr )
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		if( !pVoter->IsInGame() || pVoter->GetPlayerState() == PlayerState::Ghost )
 			return E_GAME_NO_SUFFRAGE;
@@ -500,7 +500,7 @@ namespace ConspiracyGameInstanceServer {
 				return E_GAME_NO_SUFFRAGE;
 
 			if (GetGamePlaySystem().GetSeer() == 0)
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			if (pVoteTarget->GetRevealedBySeer())
 				return E_GAME_INVALID_VOTE_TARGET;
@@ -591,7 +591,7 @@ namespace ConspiracyGameInstanceServer {
 			if (pPlayer->IsInGame() && pPlayer->GetRole() == PlayerRole::Werewolf && pPlayer->GetVote() == 0)
 			{
 				m_IsInVoting = true;
-				return E_FAIL;// we don't need to proceed anymore
+				return E_SYSTEM_FAIL;// we don't need to proceed anymore
 			}
 
 			return S_OK;

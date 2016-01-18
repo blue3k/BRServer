@@ -639,7 +639,7 @@ namespace Config
 			if (result != 0)
 			{
  				// error log
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			xmlCleanupParser();
@@ -699,7 +699,7 @@ namespace Config
 		if (result != 0)
 		{
  			// error log
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 		xmlCleanupParser();
 		return S_OK;

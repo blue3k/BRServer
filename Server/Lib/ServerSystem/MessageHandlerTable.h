@@ -130,11 +130,11 @@ namespace Svr {
 
 			void* pPtr = nullptr;
 			if( FAILED(m_Allocator.Alloc( sizeof(TableItem), pPtr )) )
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			TableItem *pNewItem = new(pPtr) TableItem( MessageClassType::MID, newHandler, fileName, lineNumber);
 			if( pNewItem == nullptr )
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			return m_HandlerTable.insert(key, pNewItem );
 		}

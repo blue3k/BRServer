@@ -15,9 +15,9 @@
 
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/HRESSvrSys.h"
-#include "Common/HRESCommon.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -115,7 +115,7 @@ namespace GameServer {
 			}
 		}
 
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 
 
@@ -133,7 +133,7 @@ namespace GameServer {
 	HRESULT UserFriendSystem::AddFriend(const ServerFriendInformation& info)
 	{
 		if( IsFriend(info.PlayerID) )
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 		if (!CanAddFriend())
 		{
@@ -148,7 +148,7 @@ namespace GameServer {
 	{
 		auto* pFriend = GetFriend(friendID);
 		if( pFriend == nullptr )
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 		return m_Friends.Remove( pFriend );
 	}

@@ -31,7 +31,7 @@ HRESULT SpinBuffer<T>::Push(const T& item)
 	// check a condtion 
 	if((this->m_SpinBuffer[m_nWritePos].eBufferMode != __BUFFERMODE__::BUFFERSTATE_FREE))
 	{
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 
 	// Change a mode : free->write (writing now...)
@@ -59,7 +59,7 @@ HRESULT SpinBuffer<T>::Pop(T& item)
 	// check a condtion 
 	if((this->m_SpinBuffer[m_nReadPos].eBufferMode != __BUFFERMODE__::BUFFERSTATE_READ))
 	{
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 
 	item = m_SpinBuffer[m_nReadPos].item;									// R-1

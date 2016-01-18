@@ -15,8 +15,8 @@
 #include "ServerSystem/SvrTrace.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrBaseTypes.h"
-#include "Common/HRESCommon.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 #include "Common/Message.h"
 
 #include "Protocol/Policy/GameServerIPolicy.h"
@@ -300,7 +300,7 @@ namespace Svr {
 
 		if( FAILED(m_PartyPlayerByUID.find( pltID, itPlayer )) )
 		{
-			return E_PLAYER_NOT_FOUND;
+			return E_SVR_PLAYER_NOT_FOUND;
 		}
 
 		pPartyPlayer = *itPlayer;

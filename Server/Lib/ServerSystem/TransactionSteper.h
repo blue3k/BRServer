@@ -12,7 +12,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 #include "Common/Message.h"
 
 
@@ -108,7 +108,7 @@ namespace Svr {
 			if( iStep >= iMaxStep )
 			{
 				AssertRel( 0 );
-				return E_INVALIDARG;
+				return E_SYSTEM_INVALIDARG;
 			}
 
 			m_Steps[iStep] = pStep;

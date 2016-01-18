@@ -154,7 +154,8 @@ typedef HANDLE HMODULE;
 #define INVALID_NATIVE_HANDLE_VALUE NativeHandle(-1)
 
 
-#include "Common/HRESSystem.h"
+
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 #define TRUE (1)
 #define FALSE (0)

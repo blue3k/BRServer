@@ -16,7 +16,6 @@
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
 #include "Common/Trace_Internal.h"
-#include "Common/HRESEvent.h"
 #include "Common/Thread.h"
 #include "Common/SharedObj.h"
 
@@ -557,19 +556,20 @@ namespace Trace {
 #if WINDOWS
 			ConsoleOut( m_wszLineHeader, wszOutput );
 #else
-			ConsoleOut(m_szLineHeader, szOutput);
+			//ConsoleOut(m_szLineHeader, szOutput);
 #endif
 		}
 
-		if( uiOutputMask&TRCOUT_EVENT )
-		{
-			if( trcOutMask&(TRC_ERROR) )
-				EventLog( BR_EVENT_ERROR, m_wszLineHeader, wszOutput );
-			else if( trcOutMask&(TRC_WARN) )
-				EventLog( BR_EVENT_WARNING, m_wszLineHeader, wszOutput );
-			else if( trcOutMask&(TRC_ASSERT) )
-				EventLog( BR_EVENT_ASSERT, m_wszLineHeader, wszOutput );
-		}
+		// Disable event log
+		//if( uiOutputMask&TRCOUT_EVENT )
+		//{
+		//	if( trcOutMask&(TRC_ERROR) )
+		//		EventLog( BR_EVENT_ERROR, m_wszLineHeader, wszOutput );
+		//	else if( trcOutMask&(TRC_WARN) )
+		//		EventLog( BR_EVENT_WARNING, m_wszLineHeader, wszOutput );
+		//	else if( trcOutMask&(TRC_ASSERT) )
+		//		EventLog( BR_EVENT_ASSERT, m_wszLineHeader, wszOutput );
+		//}
 
 		DWORD dwszLineHeader = (DWORD)strlen(m_szLineHeader);
 		DWORD dwszOutput = (DWORD)strlen(szOutput);

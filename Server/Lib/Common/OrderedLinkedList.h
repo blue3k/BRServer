@@ -13,6 +13,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 
 namespace BR {
@@ -157,7 +158,7 @@ namespace BR {
 
 		HRESULT Insert( iterator itNode, KeyType keyValue, Node* pNew )
 		{
-			if( itNode.m_pCur == nullptr ) return E_POINTER;
+			if( itNode.m_pCur == nullptr ) return E_SYSTEM_POINTER;
 
 			return Insert( itNode.m_pCur, keyValue, pNew );
 		}
@@ -166,14 +167,14 @@ namespace BR {
 		HRESULT Insert( Node* pPrevNode, KeyType keyValue, Node* pNew )
 		{
 			if( pPrevNode == nullptr )
-				return E_POINTER;
+				return E_SYSTEM_POINTER;
 
 			if( pNew->pNext != nullptr )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			// This node should be in the list already
 			if( pPrevNode == pNew || pPrevNode->pNext == pNew )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			if( pPrevNode != &m_Header )
 			{
@@ -197,7 +198,7 @@ namespace BR {
 		
 		HRESULT Remove( iterator &itNode )
 		{
-			if( !itNode.IsValid() ) return E_POINTER;
+			if( !itNode.IsValid() ) return E_SYSTEM_POINTER;
 
 			return Remove( itNode.m_pCur, itNode.m_pCur->pNext );
 		}
@@ -213,7 +214,7 @@ namespace BR {
 			}
 
 			if( pSearchPrevNode == nullptr )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			pSearchPrevNode->pNext = pRemove->pNext;
 			pRemove->pNext = nullptr;
@@ -226,10 +227,10 @@ namespace BR {
 		HRESULT Remove( Node* pPrevNode, Node* pRemove )
 		{
 			if( pPrevNode == nullptr )
-				return E_POINTER;
+				return E_SYSTEM_POINTER;
 
 			if( pPrevNode->pNext != pRemove )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			pPrevNode->pNext = pRemove->pNext;
 			pRemove->pNext = nullptr;
@@ -257,7 +258,7 @@ namespace BR {
 		HRESULT erase( const iterator& itCur )
 		{
 			if( !itCur.IsValid() )
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			return Remove( itCur.m_pCur, itCur.m_pCur->pNext );
 		}

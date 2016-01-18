@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
 #include "Common/Thread.h"
@@ -125,7 +125,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 
 		if (pData == nullptr)
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		MsgMobileNetCtrl *pNetCtrl = (MsgMobileNetCtrl*)pData;
 		if (pNetCtrl->Length != sizeof(MsgMobileNetCtrl) 
@@ -153,7 +153,7 @@ namespace Net {
 				netTrace(Trace::TRC_WARN, "Invalid packet size. Try to disconnect from:{0} msg:{1}", from, pNetCtrl->msgID);
 			}
 
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 		}
 
 

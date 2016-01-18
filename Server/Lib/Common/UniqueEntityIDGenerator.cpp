@@ -105,7 +105,7 @@ namespace BR {
 	HRESULT UniqueEntityIDGenerator::ReserveID( UINT idToReserve )
 	{
 		if( !IsFreeID(idToReserve) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		MarkAsUsing(idToReserve);
 		return S_OK;

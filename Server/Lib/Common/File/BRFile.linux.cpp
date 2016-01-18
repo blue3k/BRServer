@@ -52,7 +52,7 @@ namespace IO {
 	HRESULT File::Seek(SeekMode seekMode, LONGLONG offset)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		lseek((int)(intptr_t)m_FileHandle, offset, ToOSSeekMode[(int)seekMode]);
 
@@ -62,7 +62,7 @@ namespace IO {
 	LONGLONG File::GetLocation()
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return lseek((int)(intptr_t)m_FileHandle, 0, SEEK_CUR);
 	}
@@ -70,7 +70,7 @@ namespace IO {
 	LONGLONG File::GetFileSize()
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		struct stat buf;
 		fstat((int)(intptr_t)m_FileHandle, &buf);
@@ -96,7 +96,7 @@ namespace IO {
 			uiOpenMode = O_RDWR | O_CREAT | O_APPEND;
 			break;
 		default:
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		}
 
 		switch (sharingMode)
@@ -149,7 +149,7 @@ namespace IO {
 			fcntl((int)(intptr_t)m_FileHandle, F_SETLK, &fl);
 			break;
 		default:
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		}
 
 		m_OpenMode = openMode;
@@ -172,13 +172,13 @@ namespace IO {
 	HRESULT File::Read(BYTE* buffer, size_t bufferLen, size_t &readSize)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 
 		int dwRead = 0;
 		dwRead = read((int)(intptr_t)m_FileHandle, buffer, bufferLen);
 		if(dwRead < 0)
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		readSize = dwRead;
@@ -189,12 +189,12 @@ namespace IO {
 	HRESULT File::Write(const BYTE* buffer, size_t bufferLen, size_t &writen)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 
 		int dwWritten = write((int)(intptr_t)m_FileHandle, buffer, bufferLen);
 		if (dwWritten < 0)
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		writen = dwWritten;

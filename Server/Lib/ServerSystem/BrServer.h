@@ -13,6 +13,7 @@
 
 #include "Common/StrUtil.h"
 #include "Common/ArrayUtil.h"
+#include "Common/ResultCode/BRResultCodeDB.h"
 #include "Net/NetDef.h"
 #include "DB/QueryManager.h"
 //#include "ServerSystem/PlugIn.h"

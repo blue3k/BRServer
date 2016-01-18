@@ -13,9 +13,9 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-#include "Common/HRESCommon.h"
-#include "Common/HRESGame.h"
-#include "Common/HRESLogin.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
+#include "Common/ResultCode/BRResultCodeLogin.h"
 #include "Common/MemoryPool.h"
 #include "Common/BrBaseTypes.h"
 #include "Common/GameConst.h"
@@ -622,7 +622,7 @@ namespace GameServer {
 			svrErr(E_GAME_INVALID_PLAYER);
 		}
 
-		svrChkCloseErr(E_UNEXPECTED, StrUtil::StringCpy(m_ComplitionState, pDBRes->ComplitionState));
+		svrChkCloseErr(E_SYSTEM_UNEXPECTED, StrUtil::StringCpy(m_ComplitionState, pDBRes->ComplitionState));
 
 	Proc_End:
 
@@ -1160,7 +1160,7 @@ namespace GameServer {
 		svrChk(pRes->GetHRESULT());
 
 		if( pDBRes->UserID == 0 )
-			svrErrClose(E_PLAYER_NOT_FOUND);
+			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
 
 		m_Player.PlayerID = pDBRes->UserID;
 		m_Player.FBUID = pDBRes->FacebookUID;
@@ -1184,7 +1184,7 @@ namespace GameServer {
 		svrChk(pRes->GetHRESULT());
 
 		if (pDBRes->Result < 0)
-			svrErrClose(E_PLAYER_NOT_FOUND);
+			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
 
 		StrUtil::StringCpy( m_Player.NickName, pDBRes->NickName );
 
@@ -1232,10 +1232,10 @@ namespace GameServer {
 		svrChk(pRes->GetHRESULT());
 
 		if (pDBRes->PlayerID == 0)
-			svrErrClose(E_PLAYER_NOT_FOUND);
+			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
 
 		if (pDBRes->Result != 0)
-			svrErrClose(E_PLAYER_NOT_FOUND);
+			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
 
 		m_Player.PlayerID = pDBRes->PlayerID;
 		m_Player.FBUID = pDBRes->FacebookUID;
@@ -1259,7 +1259,7 @@ namespace GameServer {
 		svrChk(pRes->GetHRESULT());
 
 		if (pDBRes->Result < 0)
-			svrErrClose(E_PLAYER_NOT_FOUND);
+			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
 
 		StrUtil::StringCpy( m_Player.NickName, pDBRes->NickName );
 
@@ -1513,7 +1513,7 @@ namespace GameServer {
 			m_RetryCount++;
 			if (m_RetryCount > MAX_RETRY)
 			{
-				svrErrClose(E_FAIL);
+				svrErrClose(E_SYSTEM_FAIL);
 			}
 			else
 			{
@@ -1825,7 +1825,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetResource() < 0 || GetResource() >= (int)DebugGameResource::Max )
-			svrErrClose(E_INVALIDARG);
+			svrErrClose(E_SYSTEM_INVALIDARG);
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::DbgGain, GetValue(), 0, GetResource());
 
@@ -1841,7 +1841,7 @@ namespace GameServer {
 			svrChk( GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina( GetValue() ) );
 			break;
 		default:
-			svrErrClose(E_INVALIDARG);
+			svrErrClose(E_SYSTEM_INVALIDARG);
 			break;
 		}
 

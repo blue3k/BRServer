@@ -15,7 +15,7 @@
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Net/Connection.h"
 #include "Net/NetDef.h"
@@ -156,7 +156,7 @@ namespace Net {
 			{
 				netTrace( Trace::TRC_WARN, "HackWarn : Invalid Connect packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 				netChk( CloseConnection() );
-				netErr( E_UNEXPECTED );
+				netErr( E_SYSTEM_UNEXPECTED );
 			}
 
 			if (GetConnectionState() == STATE_CONNECTING || GetConnectionState() == STATE_CONNECTED)// ServerTCP connection will occure this case
@@ -201,7 +201,7 @@ namespace Net {
 		default:
 			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 			netChk( CloseConnection() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 			break;
 		};
 
@@ -251,7 +251,7 @@ namespace Net {
 			// try again
 			hr = hrErr;
 			break;
-		case S_FALSE:
+		case S_SYSTEM_FALSE:
 			hr = E_NET_TRY_AGAIN;
 			break;
 		case S_OK:
@@ -270,7 +270,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 
 		if(pIOBuffer != nullptr && pIOBuffer->CID != GetCID() )
-			netErr( E_INVALIDARG );
+			netErr( E_SYSTEM_INVALIDARG );
 
 		Assert(!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_relaxed));
 
@@ -456,7 +456,7 @@ namespace Net {
 			case E_NET_INPROGRESS:
 			case E_NET_WOULDBLOCK:  // First call need to wait
 			case E_NET_ALREADY:		// called again, still need to wait
-				hr = S_FALSE;
+				hr = S_SYSTEM_FALSE;
 				break;
 			case E_NET_ISCONN:		// Connection estabalished
 				hr = S_OK;
@@ -623,7 +623,7 @@ namespace Net {
 				if( pMsgHdr->Length < sizeof(Message::MessageHeader) )
 				{
 					// too small invalid packet
-					netErr( E_UNEXPECTED );
+					netErr( E_SYSTEM_UNEXPECTED );
 				}
 
 				netMem( pMsg = Message::MessageData::NewMessage( pMsgHdr->msgID.ID, pMsgHdr->Length, pBuff ) );
@@ -782,7 +782,7 @@ namespace Net {
 		switch (hr)
 		{
 		case S_OK:
-		case S_FALSE:
+		case S_SYSTEM_FALSE:
 			break;
 		case E_NET_IO_SEND_FAIL:
 			return S_OK;
@@ -911,7 +911,7 @@ namespace Net {
 	HRESULT ConnectionTCP::UpdateSendQueue()
 	{
 		Assert(false);
-		return E_NOTIMPL;
+		return E_SYSTEM_NOTIMPL;
 	}
 
 	// Update Send buffer Queue, TCP and UDP client connection

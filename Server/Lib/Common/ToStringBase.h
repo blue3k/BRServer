@@ -15,6 +15,7 @@
 #include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
 #include "Common/ArrayUtil.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 
 namespace BR {
@@ -60,7 +61,7 @@ namespace BR {
 COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() )
 #endif
 		Assert(!"InvalidType ToString");
-		return SUCCEEDED(hr) ? E_FAIL : hr;
+		return SUCCEEDED(hr) ? E_SYSTEM_FAIL : hr;
 	}
 
 
@@ -132,15 +133,15 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	inline HRESULT ToStringEnum( char*& pBuff, INT& iBuffLen, EnumType Data, int Radix = 10 )
 	{
 		//if( FAILED( ToString( pBuff, iBuffLen, typeid(Data).name(), 0 ) ) )
-		//	return E_FAIL;
+		//	return E_SYSTEM_FAIL;
 
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "(" ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		_IToA( (UINT32)Data, pBuff, iBuffLen, Radix, -1 );
 
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}
@@ -150,15 +151,15 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	inline HRESULT ToStringArray( char*& pBuff, INT& iBuffLen, size_t szArray, const ArrayType* pData, int Radix = 10 )
 	{
 		if( pData == nullptr )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED(_IToA( (UINT32)szArray, pBuff, iBuffLen, 10, -1 )) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		for( size_t uiIdx = 0; uiIdx < szArray; uiIdx++ )
 		{
 			if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			ToString( pBuff, iBuffLen, pData[uiIdx], 0 );
 		}
@@ -174,12 +175,12 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 		auto szArray = pData.GetSize();
 
 		if (FAILED(_IToA((UINT32)szArray, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		for (size_t uiIdx = 0; uiIdx < szArray; uiIdx++)
 		{
 			if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			ToString(pBuff, iBuffLen, pData[uiIdx], 0);
 		}

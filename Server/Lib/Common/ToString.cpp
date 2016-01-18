@@ -26,13 +26,13 @@ namespace BR
 	{
 		unused(Option);
 		if (FAILED(ToStringEnum(pBuff, iBuffLen, (EntityFaculty)Data.Components.FacultyID)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(_IToA((UINT32)Data.Components.EntityLID, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}
@@ -44,13 +44,13 @@ namespace BR
 	{
 		unused(Option);
 		if (FAILED(_IToA((UINT32)Data.Components.SvrID, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(ToString(pBuff, iBuffLen, Data.Components.EntID, Option)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}
@@ -62,19 +62,19 @@ namespace BR
 	{
 		unused(Option);
 		if (FAILED(ToStringEnum(pBuff, iBuffLen, (BR::PolicyID)Data.IDs.Policy)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(ToStringEnum(pBuff, iBuffLen, Data.IDs.MsgCode)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":Seq")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(ToStringEnum(pBuff, iBuffLen, Data.IDs.Sequence)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}
@@ -84,13 +84,13 @@ namespace BR
 	{
 		unused(Option);
 		if (FAILED(ToString(pBuff, iBuffLen, (LPCSTR)Data.strAddr, 0)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(_IToA((UINT32)Data.usPort, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}
@@ -102,7 +102,7 @@ namespace BR
 		unused(Option);
 
 		if (FAILED(_IToA((UINT32)Data, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}
@@ -114,19 +114,19 @@ namespace BR
 		unused(Option);
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(_IToA((UINT64)Data.PlayerID, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}
@@ -138,19 +138,19 @@ namespace BR
 		unused(Option);
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(_IToA((UINT64)Data.PlayerID, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}
@@ -161,19 +161,19 @@ namespace BR
 		unused(Option);
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(_IToA((UINT64)Data.PlayerID, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}

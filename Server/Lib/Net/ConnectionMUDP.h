@@ -15,7 +15,7 @@
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetSystem.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/PageQueue.h"
 #include "Net/ConnectionUDP.h"
 
@@ -57,7 +57,7 @@ namespace Net {
 
 		// Process network control message
 		virtual HRESULT ProcNetCtrl( const MsgMobileNetCtrl* pNetCtrl );
-		HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl )			{ return E_NOTIMPL; }
+		HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl )			{ return E_SYSTEM_NOTIMPL; }
 
 		// Process NetCtrl queue
 		virtual HRESULT ProcNetCtrlQueue();

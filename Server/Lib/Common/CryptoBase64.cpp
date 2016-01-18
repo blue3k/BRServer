@@ -49,7 +49,7 @@ namespace Util {
 			else if (encoding_chars[26 * 2 + 10 + 1] == in)
 				out = 26 * 2 + 10 + 1;
 			else
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 		}
 
 		return S_OK;

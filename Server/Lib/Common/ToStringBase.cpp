@@ -12,6 +12,7 @@
 
 #include "stdafx.h"
 #include "Common/BrAssert.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 #include "Common/StrUtil.h"
 #include "Common/ToStringBase.h"
 
@@ -23,7 +24,7 @@ namespace BR
 	//	help operations
 	//
 
-	#define _AppendCharReturn( buf, length, charToAppend ) {*buf++ = charToAppend;	length--;	if(length <=0 ) return E_OUTOFMEMORY;}
+	#define _AppendCharReturn( buf, length, charToAppend ) {*buf++ = charToAppend;	length--;	if(length <=0 ) return E_SYSTEM_OUTOFMEMORY;}
 
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +49,7 @@ namespace BR
 		if( buf == NULL || length <= 0
 			|| radix < 2 || radix > 36 )
 		{
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 		}
 
 
@@ -60,7 +61,7 @@ namespace BR
 		}
 
 		if( length <= 0 )
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 
 		char DigitBuffer[128];
@@ -201,16 +202,16 @@ namespace BR
 		int digitCount = std::min( (int)digit, (int)(countof(strMantisa)) );
 
 		if( digit < 0 )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		if( length <= 0 )
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 		if( buf == NULL )
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		if( _fcvt_s( strMantisa, countof(strMantisa), val, digitCount, &Decimal, &sign ) != 0 )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		// discard end zeros
 		if( Decimal >= 0 )
@@ -419,7 +420,7 @@ namespace BR
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const char& Data, int Option)
 	{
 		if (iBuffLen <= 0)
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 		*pBuff++ = Data;
 		iBuffLen--;
@@ -455,13 +456,13 @@ namespace BR
 	{
 		unused(Option);
 		if (iBuffLen <= 0)
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 		wchar_t string[2] = { Data, 0 };
 		char DestBuff[16];
 
 		if (FAILED(StrUtil::WCSToUTF8(string, DestBuff)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, DestBuff);
 	}
@@ -474,10 +475,10 @@ namespace BR
 		unused(Option);
 
 		if (Data == NULL)
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		if (FAILED(StrUtil::WCSToUTF8(Data, DestBuff)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, DestBuff);
 	}
@@ -490,10 +491,10 @@ namespace BR
 		unused(Option);
 
 		if (Data == NULL)
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		if (FAILED(StrUtil::WCSToUTF8(Data, DestBuff)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, DestBuff);
 	}

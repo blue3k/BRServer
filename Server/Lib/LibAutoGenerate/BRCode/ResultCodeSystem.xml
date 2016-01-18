@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ResultCodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="BRResultCode.xsd"
+             Facility="System"
+             UseFacilityName="true"
+             IDTable="true"
+             >
+
+
+  <ResultCodeItem Severity="Success" CodeName="FALSE" Desc="Success"/>
+  <ResultCodeItem Severity="Error" CodeName="POINTER" Desc="Invalid pointer"/>
+  <ResultCodeItem Severity="Error" CodeName="FAIL" Desc="Fail"/>
+  <ResultCodeItem Severity="Error" CodeName="NOTIMPL" Desc="Not implemented"/>
+  <ResultCodeItem Severity="Error" CodeName="OUTOFMEMORY" Desc="Out of memory"/>
+  <ResultCodeItem Severity="Error" CodeName="UNEXPECTED" Desc="Unexpected"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALIDARG" Desc="Invalid argument"/>
+
+
+</ResultCodes>
+

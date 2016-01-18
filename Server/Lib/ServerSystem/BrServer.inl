@@ -138,7 +138,7 @@ HRESULT BrServer::InitializeDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 	DBManagerType *pDB = nullptr;
 
 	if (pDBClusterCfg == nullptr)
-		return E_UNEXPECTED;
+		return E_SYSTEM_UNEXPECTED;
 
 	auto& DBinstances = Svr::Config::GetConfig().DBInstances;
 	auto& DBMembers = pDBClusterCfg->DBMembers;

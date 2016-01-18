@@ -226,14 +226,14 @@ namespace Hash {
 					{
 						if (SUCCEEDED(bucket.m_Items->FindInWriteTree(key, dataFound)))
 						{
-							return E_FAIL;
+							return E_SYSTEM_FAIL;
 						}
 					}
 					else
 					{
 						if (SUCCEEDED(bucket.m_Items->Find(key, dataFound)))
 						{
-							return E_FAIL;
+							return E_SYSTEM_FAIL;
 						}
 					}
 				}
@@ -268,7 +268,7 @@ namespace Hash {
 			HRESULT Erase(const KeyType &key, ValueType& erasedValue)
 			{
 				if (m_Buckets.size() == 0)
-					return S_FALSE;
+					return S_SYSTEM_FALSE;
 
 				size_t hashVal = HasherType()(key);
 				size_t iBucket = hashVal%m_Buckets.size();
@@ -288,7 +288,7 @@ namespace Hash {
 
 				Assert(bucket.Validate(iBucket, m_Buckets.size()));
 
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 

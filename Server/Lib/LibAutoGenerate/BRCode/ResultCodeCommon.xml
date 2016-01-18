@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ResultCodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="BRResultCode.xsd"
+             Facility="Common"
+             UseFacilityName="false"
+             IDTable="true"
+             >
+
+
+  <ResultCodeItem Severity="Error" CodeName="NOT_INITIALIZED" Desc="Called without initialization."/>
+  <ResultCodeItem Severity="Error" CodeName="VERSION_NOT_AVAIL" Desc="The version not available or miss match with system."/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_CLUSTERMASTER" Desc="Invalid Cluster Master server"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_STATE" Desc="The version not available or miss match with system."/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_STR_FORMAT" Desc="Invalid string format."/>
+  <ResultCodeItem Severity="Error" CodeName="DUPLICATED_SERVERID" Desc="ServerID is duplicated."/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_ENTITY" Desc="Invalid entity"/>
+  <ResultCodeItem Severity="Error" CodeName="DUPLICATED_ENTITY" Desc="Invalid duplicated entity"/>
+  <ResultCodeItem Severity="Error" CodeName="DUPLICATED_ENTITYID" Desc="Invalid duplicated entity"/>
+  <ResultCodeItem Severity="Error" CodeName="DUPLICATED_ACCOUNTID" Desc="Duplicated Account ID"/>
+  <ResultCodeItem Severity="Error" CodeName="DUPLICATED_PLAYERID" Desc="Duplicated Player ID"/>
+  <ResultCodeItem Severity="Error" CodeName="DUPLICATED_NAME" Desc="Duplicated name"/>
+  <ResultCodeItem Severity="Error" CodeName="DUPLICATED_ID" Desc="Duplicated ID"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_ACCOUNTID" Desc="Invalid duplicated entity"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_TICKET" Desc="Invalid ticket"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PLAYERID" Desc="Invalid player ID"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_VALUE" Desc="Invalid value"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_CLASS" Desc="Invalid class value"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_DIFFICULTY" Desc="Invalid Difficulty"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_REGISTRATION" Desc="Invalid registration to play"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_CHANNELID" Desc="Invalid Channel ID"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_INSTANCEID" Desc="Invalid Zone instance ID"/>
+  <ResultCodeItem Severity="Error" CodeName="DUPLICATED_COMPONENT" Desc="Duplicated component"/>
+  <ResultCodeItem Severity="Error" CodeName="MAX_FRIEND" Desc="Maximum friend"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PLAYER_COUNT" Desc="Invalid player count for service"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PLAYER_LEVEL" Desc="Invalid player level"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PLAYER_NICK" Desc="Invalid player nick"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_NOTIFICATIONID" Desc="Invalid Notification ID"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_RANKING_RANGE" Desc="Invalid Ranking range"/>
+  <ResultCodeItem Severity="Error" CodeName="TARGET_MAX_FRIEND" Desc="Target Maximum friend"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_STR_DATA" Desc="Invalid string data."/>
+  <ResultCodeItem Severity="Error" CodeName="NOT_AUTORIZED" Desc="Not authorized"/>
+  <ResultCodeItem Severity="Error" CodeName="NO_PERMITION" Desc="No permition"/>
+  <ResultCodeItem Severity="Error" CodeName="NO_FILE_OR_DIR" Desc="No file or directory"/>
+  <ResultCodeItem Severity="Error" CodeName="NO_SUCH_PROCESS" Desc="No such process"/>
+  <ResultCodeItem Severity="Error" CodeName="INTERRUPTED_SYSCALL" Desc="Interrupted system call"/>
+  <ResultCodeItem Severity="Error" CodeName="IO_ERROR" Desc="I/O error"/>
+  <ResultCodeItem Severity="Error" CodeName="NOT_DEVICE" Desc="No such device or address"/>
+  <ResultCodeItem Severity="Error" CodeName="TOO_MANY_ARGLIST" Desc="Arg list too long"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_EXEC_FROMAT" Desc="Exec format error"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_FILE_HANDLE" Desc="Bad file number"/>
+  <ResultCodeItem Severity="Error" CodeName="NO_CHILD_PROCESS" Desc="No child process"/>
+  <ResultCodeItem Severity="Error" CodeName="TRY_AGAIN" Desc="Try again"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_POINTER" Desc="Bad address"/>
+  <ResultCodeItem Severity="Error" CodeName="NOT_BLOCK" Desc="Block device required"/>
+  <ResultCodeItem Severity="Error" CodeName="BUSY" Desc="Busy"/>
+  <ResultCodeItem Severity="Error" CodeName="FILE_EXISTS" Desc="File exists"/>
+  <ResultCodeItem Severity="Error" CodeName="CROSS_LINK" Desc="Cross-device link"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_DEVICE" Desc="No such device"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_DIRECTORY" Desc="Not a directory"/>
+  <ResultCodeItem Severity="Error" CodeName="DIRECTORY" Desc="Is a directory"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_ARG" Desc="Invalid argument"/>
+  <ResultCodeItem Severity="Error" CodeName="NOT_ENOUGH_FILE_TABLE" Desc="File table overflow"/>
+  <ResultCodeItem Severity="Error" CodeName="TOO_MANY_OPENED_FILE" Desc="Too many open files"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_TYPEWRITER" Desc="Not a typewriter"/>
+  <ResultCodeItem Severity="Error" CodeName="BUSY_FILE" Desc="Text file busy"/>
+  <ResultCodeItem Severity="Error" CodeName="TOO_BIG_FILE" Desc="File too large"/>
+  <ResultCodeItem Severity="Error" CodeName="NOT_ENOUGH_SPACE" Desc="No space left on device"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_SEEK" Desc="Illegal seek"/>
+  <ResultCodeItem Severity="Error" CodeName="READ_ONLY" Desc="Read-only file system"/>
+  <ResultCodeItem Severity="Error" CodeName="TOO_MANY_LINK" Desc="Too many links"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PIPE" Desc="Broken pipe"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_MATH_DOMAIN" Desc="Math argument out of domain of func"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_NUMERIC" Desc="Math result not representable"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PASSWORD" Desc="Invalid password"/>
+
+  
+</ResultCodes>
+

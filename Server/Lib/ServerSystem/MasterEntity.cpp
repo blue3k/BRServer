@@ -137,7 +137,7 @@ namespace Svr
 			pTransaction = (Transaction*)activeTrans;
 			return S_OK;
 		}
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -160,14 +160,14 @@ namespace Svr
 		if( GetEntityState() == EntityState::FREE )
 		{
 			//goto Proc_End;
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 		}
 
 		if( GetEntityState() == EntityState::CLOSING )
 		{
 			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
 			svrChk( TerminateEntity() );
-			hr = S_FALSE;
+			hr = S_SYSTEM_FALSE;
 			goto Proc_End;
 		}
 
@@ -271,7 +271,7 @@ namespace Svr
 		{
 			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
 			svrChk( TerminateEntity() );
-			hr = S_FALSE;
+			hr = S_SYSTEM_FALSE;
 			goto Proc_End;
 		}
 
@@ -361,7 +361,7 @@ namespace Svr
 		{
 		case Svr::EventTask::EventTypes::CONNECTION_EVENT:
 		case Svr::EventTask::EventTypes::PACKET_MESSAGE_EVENT:
-			svrErr(E_NOTIMPL);
+			svrErr(E_SYSTEM_NOTIMPL);
 			break;
 		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
 			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
@@ -383,7 +383,7 @@ namespace Svr
 					svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pNonConstTransRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
 					Util::SafeRelease(pNonConstTransRes);
-					svrErr(E_FAIL);
+					svrErr(E_SYSTEM_FAIL);
 				}
 			}
 			else
@@ -392,7 +392,7 @@ namespace Svr
 			}
 			break;
 		default:
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		}
 
 	Proc_End:

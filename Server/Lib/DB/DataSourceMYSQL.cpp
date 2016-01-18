@@ -46,7 +46,7 @@ namespace DB {
 
 		if( strConnectionString.size() <= (idx+1) )
 		{
-			dbErr(E_INVALIDARG);
+			dbErr(E_SYSTEM_INVALIDARG);
 		}
 
 		m_Port = atoi( strConnectionString.substr( idx+1, strConnectionString.size() ).c_str() );

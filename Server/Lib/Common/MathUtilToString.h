@@ -22,19 +22,19 @@ namespace BR
 	inline HRESULT ToString( char*& pBuff, INT& iBuffLen, const Vector2& Data, int Option )
 	{
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "(" ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED( ToString( pBuff, iBuffLen, Data.x, Option ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "," ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED( ToString( pBuff, iBuffLen, Data.y, Option ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}
@@ -50,25 +50,25 @@ namespace BR
 	inline HRESULT ToString( char*& pBuff, INT& iBuffLen, const Vector3& Data, int Option )
 	{
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "(" ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED( ToString( pBuff, iBuffLen, Data.x, Option ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "," ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED( ToString( pBuff, iBuffLen, Data.y, Option ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "," ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		
 		if( FAILED( ToString( pBuff, iBuffLen, Data.z, Option ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return S_OK;
 	}

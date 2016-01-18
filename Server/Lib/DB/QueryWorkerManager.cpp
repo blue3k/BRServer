@@ -94,7 +94,7 @@ namespace DB {
 		HRESULT hr = S_OK;
 
 		if (stm_pInstance == nullptr)
-			dbErr(E_FAIL);
+			dbErr(E_SYSTEM_FAIL);
 
 		dbChk(stm_pInstance->m_PendingQueries.Enqueue(pQuery));
 		pQuery = nullptr;
@@ -113,14 +113,14 @@ namespace DB {
 		MutexScopeLock lockScope(m_QueryQueueLock);
 
 		//if (!m_QueryCounter.Acquire(Const::DB_WORKER_JOB_WAITING_MAX))
-		//	return E_FAIL;
+		//	return E_SYSTEM_FAIL;
 
 		if (FAILED(m_PendingQueries.Dequeue(pQuery)))
 		{
 			// if this faild we need to retry
 			// Return back the query counter
 			//m_QueryCounter.Release();
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 	//Proc_End:

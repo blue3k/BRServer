@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "Common/Binary.h"
 #include "Common/BrAssert.h"
-
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 
 
@@ -40,10 +40,10 @@ namespace BR
 	HRESULT Binary::CopyBinary( Binary& dst, const Binary& src )
 	{
 		if( dst.MaxSize < src.Size )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		if( dst.Magic != src.Magic )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		memcpy( &dst.Version, &src.Version, src.Size - (UINT)((intptr_t)&dst.Version - (intptr_t)&dst) );
 

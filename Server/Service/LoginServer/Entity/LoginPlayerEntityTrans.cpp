@@ -13,9 +13,9 @@
 #include "LoginServer.h"
 #include "LoginServerClass.h"
 
-#include "Common/HRESCommon.h"
-#include "Common/HRESGame.h"
-#include "Common/HRESLogin.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
+#include "Common/ResultCode/BRResultCodeLogin.h"
 #include "Common/MemoryPool.h"
 #include "Common/BrBaseTypes.h"
 #include "Common/GameConst.h"
@@ -135,7 +135,7 @@ namespace LoginServer {
 		// if someone already logged in
 		if (pDBRes->Result != 0)
 		{
-			svrErrClose(E_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 		else
 		{
@@ -252,7 +252,7 @@ namespace LoginServer {
 		}
 		else
 		{
-			svrErrClose(E_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 
 	Proc_End:
@@ -277,7 +277,7 @@ namespace LoginServer {
 
 		if(super::GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(E_ALREADY_LOGGEDIN);
+			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN);
 		}
 
 	Proc_End:
@@ -317,11 +317,11 @@ namespace LoginServer {
 			// Login failed
 			if( pDBRes->Result == -1 )
 			{
-				CloseTransaction(E_INVALID_USERNAME);
+				CloseTransaction(E_LOGIN_INVALID_USERNAME);
 			}
 			else
 			{
-				CloseTransaction(E_INVALID_PASSWORD);
+				CloseTransaction(E_LOGIN_INVALID_PASSWORD);
 			}
 		}
 
@@ -343,7 +343,7 @@ namespace LoginServer {
 
 		if( GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(E_ALREADY_LOGGEDIN);
+			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
@@ -458,7 +458,7 @@ namespace LoginServer {
 
 		if( GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(E_ALREADY_LOGGEDIN);
+			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
@@ -502,7 +502,7 @@ namespace LoginServer {
 		}
 		else
 		{
-			CloseTransaction(E_INVALID_SIGNATURE);
+			CloseTransaction(E_LOGIN_INVALID_SIGNATURE);
 		}
 
 	Proc_End:
@@ -524,14 +524,14 @@ namespace LoginServer {
 
 		if (GetMyOwner()->GetAccountID() != 0)
 		{
-			svrErrClose(E_ALREADY_LOGGEDIN);
+			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
 
 		if (GetCellPhone() == nullptr || GetCellPhone()[0] == '\0')
 		{
-			svrErrClose(E_INVALID_SIGNATURE);
+			svrErrClose(E_LOGIN_INVALID_SIGNATURE);
 		}
 
 		svrChk(StrUtil::Format(strUserName, "Auto{0}", GetCellPhone()));
@@ -638,7 +638,7 @@ namespace LoginServer {
 		}
 		else
 		{
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		}
 
 	Proc_End:
@@ -657,7 +657,7 @@ namespace LoginServer {
 		svrChk( super::StartTransaction() );
 
 		// TODO: need this?
-		svrChk(E_NOTIMPL);
+		svrChk(E_SYSTEM_NOTIMPL);
 		//if( GetMyOwner()->GetAccountID() != 0 || GetMyOwner()->GetAccountID() != GetPlayerID() )
 		//{
 		//	svrErrClose(E_INVALID_PLAYERID);
@@ -708,7 +708,7 @@ namespace LoginServer {
 		}
 		else
 		{
-			svrErrClose(E_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 
 	Proc_End:
@@ -734,7 +734,7 @@ namespace LoginServer {
 		}
 		else
 		{
-			svrErrClose(E_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 
 	Proc_End:

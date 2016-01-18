@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
 #include "Common/Thread.h"
@@ -76,21 +76,21 @@ namespace Net {
 		if (socket == INVALID_SOCKET)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Failed to Open RawUDP Socket {0:X8}", GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		iOptValue = Const::SVR_RECV_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Failed to change socket option SO_RCVBUF = {0:X8}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		iOptValue = Const::SVR_SEND_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		iOptValue = 0;
@@ -99,7 +99,7 @@ namespace Net {
 		if (getsockopt(socket, SOL_SOCKET, SO_MAX_MSG_SIZE, (char *)&iOptValue, &iOptLen) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Failed to get socket option SO_MAX_MSG_SIZE = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 		if (iOptValue < Const::PACKET_SIZE_MAX)
 		{
@@ -112,7 +112,7 @@ namespace Net {
 		if (setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&bOptValue, sizeof(bOptValue)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Failed to change socket option SO_REUSEADDR = {0}, err = {1:X8}", bOptValue, GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		if (m_LocalAddress.SocketFamily == SockFamily::IPV6)
@@ -121,7 +121,7 @@ namespace Net {
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
 				netTrace(Trace::TRC_ERROR, "RawUDP: Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_UNEXPECTED);
+				netErr(E_SYSTEM_UNEXPECTED);
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace Net {
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
 			netTrace(Trace::TRC_ERROR, "RawUDP: Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 		m_LocalSockAddress = bindAddr;
 
@@ -202,7 +202,7 @@ namespace Net {
 			hrErr = NetSystem::RecvFrom(GetSocket(), pOver);
 			switch (hrErr)
 			{
-			case S_FALSE:
+			case S_SYSTEM_FALSE:
 				hr = E_NET_TRY_AGAIN;
 				goto Proc_End;// success
 				break;
@@ -403,7 +403,7 @@ namespace Net {
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
 		switch (hrErr)
 		{
-		case S_FALSE:
+		case S_SYSTEM_FALSE:
 			hr = E_NET_TRY_AGAIN;
 			break;
 		case S_OK:

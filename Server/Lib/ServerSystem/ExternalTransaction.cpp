@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"
@@ -152,7 +152,7 @@ namespace Svr
 
 		if( m_CurlResult != 0 )
 		{
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		svrChk(HTTPExternalTransaction::InitializeTransaction( pOwner ) );
@@ -262,11 +262,11 @@ Proc_End:
 		svrChk(ParallelTransaction::StartTransaction());
 
 		hrTem = m_DevAPI.CheckReceipt(m_strPackageName, m_strProductID, m_strPurchaseToken);
-		if (hrTem == E_SVR_INVALID_EXTERNAL_AUTH)
+		if (hrTem == ((HRESULT)E_SVR_INVALID_EXTERNAL_AUTH))
 		{
 			ExternalTransactionManager* pExtMgr = nullptr;
 
-			svrTrace(TRC_INFO, "Authentication error, Reauthorizing...");
+			svrTrace(TRC_INFO, "Google Authentication error, Reauthorizing...");
 
 			svrChkPtr(pExtMgr = GetServerComponent<ExternalTransactionManager>());
 
@@ -335,7 +335,7 @@ Proc_End:
 
 		if (m_CurlResult != 0)
 		{
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		}
 
 	Proc_End:
@@ -368,7 +368,7 @@ Proc_End:
 		case 21008:				reason = "This receipt is from the production environment, but it was sent to the test environment for verification. Send it to the production environment instead.";
 			hr = E_SVR_INVALID_PURCHASE_INFO; break;
 		default:				reason = "Unknown error code";
-			hr = E_UNEXPECTED; break;
+			hr = E_SYSTEM_UNEXPECTED; break;
 		}
 
 		svrTrace(Trace::TRC_ERROR, "IOSAuth Failed: {0}", reason );
@@ -424,7 +424,7 @@ Proc_End:
 		parsingSuccessful = reader.parse((char*)m_HTTPResult.GetPtr(), root);
 		if (!parsingSuccessful)
 		{
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		{

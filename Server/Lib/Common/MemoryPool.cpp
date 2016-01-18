@@ -14,7 +14,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Synchronization.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 
 #include "Common/MemoryPool.h"
 #include "Common/MemLog.h"
@@ -178,7 +178,7 @@ namespace BR
 		PageItem *pItem = nullptr;
 
 		if( pPtr == nullptr )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		pItem = (PageItem*)((BYTE*)pPtr - PAGEITEM_SIZE);
 		AssertRel( pItem->Magic == (intptr_t)MAGIC_PAGEPOOL );
@@ -261,7 +261,7 @@ namespace BR
 
 
 			if( FAILED(m_Allocator.Alloc( pPage )) )
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			pMemItem = (MemItem*)pPage;
 			for( size_t iItem = 1; iItem < m_AllocCountPerPage; iItem++ )

@@ -254,7 +254,7 @@ namespace Svr {
 		for (UINT iDequeue = 0; iDequeue < numDequeue; iDequeue++)
 		{
 			ReservedMatchingItem item;
-			if(FAILED(m_pQueuePtr->Dequeue(item))) return E_FAIL;
+			if(FAILED(m_pQueuePtr->Dequeue(item))) return E_SYSTEM_FAIL;
 			svrChk(items.push_back(item));
 		}
 
@@ -363,7 +363,7 @@ namespace Svr {
 
 	Proc_End:
 
-		return iDequeue > 0 ? S_OK : E_FAIL;
+		return iDequeue > 0 ? S_OK : E_SYSTEM_FAIL;
 	}
 
 	UINT MatchingServiceEntity::MatchingQueue_Multiple::GetEnqueueCount()
@@ -550,7 +550,7 @@ namespace Svr {
 			pTable = g_MatchingPattern8;
 			break;
 		default:
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		};
 
 		// table count will be smaller one
@@ -731,7 +731,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 
 		hr = ShardedClusterServiceEntity::TickUpdate(pAction);
-		if (hr == S_FALSE)
+		if (hr == S_SYSTEM_FALSE)
 			return hr;
 		svrChk(hr);
 
@@ -836,7 +836,7 @@ namespace Svr {
 		HRESULT hr = S_OK;
 
 		hr = MasterEntity::TickUpdate(pAction);
-		if (hr == S_FALSE)
+		if (hr == S_SYSTEM_FALSE)
 			return hr;
 
 		// don't update query when the server isn't running

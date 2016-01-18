@@ -13,7 +13,8 @@
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 #include "Net/NetTrace.h"
 #include "Net/ConnectionUDP.h"
 #include "Net/NetDef.h"
@@ -89,7 +90,7 @@ namespace Net {
 	HRESULT ConnectionUDPBase::SetMessageWindowSize( UINT uiSend, UINT uiRecv )
 	{
 		if( m_RecvReliableWindow.GetMsgCount() || m_SendReliableWindow.GetMsgCount() )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		// TODO: Not impl
 #ifdef _DEBUG
@@ -134,7 +135,7 @@ namespace Net {
 	HRESULT ConnectionUDPBase::UpdateSendBufferQueue()
 	{
 		Assert(false);
-		return E_NOTIMPL;
+		return E_SYSTEM_NOTIMPL;
 	}
 
 	HRESULT ConnectionUDPBase::ProcGuarrentedMessageWindow(const std::function<void(Message::MessageData* pMsgData)>& action)
@@ -293,7 +294,7 @@ namespace Net {
 		// You tryed to use this method in a wrong way
 		if( uiRequiredSize > Const::PACKET_GATHER_SIZE_MAX )
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		if( (m_uiGatheredSize + uiRequiredSize) > (UINT)Const::PACKET_GATHER_SIZE_MAX )
@@ -372,7 +373,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 		Message::MessageData* pFrameMessage = nullptr;
 		if (pMsg == nullptr)
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
 
@@ -579,7 +580,7 @@ namespace Net {
 		if (GetWriteQueueUDP() == nullptr)
 		{
 			Assert(false);
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		}
 
 		return GetWriteQueueUDP()->Enqueue(pSendBuffer);
@@ -595,7 +596,7 @@ namespace Net {
 		if (pMsg->GetDataLength() != 0 && pMsg->GetMessageHeader()->Crc32 == 0 && pMsg->GetMessageHeader()->msgID.IDs.Policy != POLICY_NONE)
 		{
 			Assert(pMsg->GetDataLength() == 0 || pMsg->GetMessageHeader()->Crc32 != 0 || pMsg->GetMessageHeader()->msgID.IDs.Policy == POLICY_NONE);
-			netErrSilent(E_FAIL);
+			netErrSilent(E_SYSTEM_FAIL);
 		}
 
 		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
@@ -630,7 +631,7 @@ namespace Net {
 		UINT uiMsgLen;
 
 		if (GetConnectionState() == STATE_DISCONNECTED)
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
 		msgID = pMsgHeader->msgID;
@@ -950,7 +951,7 @@ namespace Net {
 			{
 				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 				netChk( Disconnect("Invalid packet") );
-				netErr( E_UNEXPECTED );
+				netErr( E_SYSTEM_UNEXPECTED );
 			}
 			const MsgNetCtrlConnect *pNetCtrlCon = (const MsgNetCtrlConnect*)pNetCtrl;
 			UINT ProtocolVersion = pNetCtrl->rtnMsgID.ID;
@@ -1002,7 +1003,7 @@ namespace Net {
 			//netAssert( 0 );
 			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 			netChk( CloseConnection() );
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 			break;
 		};
 

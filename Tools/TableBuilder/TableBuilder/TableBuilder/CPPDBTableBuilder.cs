@@ -206,6 +206,7 @@ namespace TableBuilder
 
             OpenOutFile(ClassName + ".h", true);
             _includesAtHeader.Add("Common/Typedefs.h");
+            _includesAtHeader.Add("Common/ResultCode/BRResultCodeSystem.h");
             //_includesAtHeader.Add("DB/Query.h");
             //_includesAtHeader.Add("DB/DBConst.h");
             //_includesAtHeader.Add("DB/QueryConst.h");

@@ -13,7 +13,9 @@
 #include "Common/Typedefs.h"
 #include "Common/BrXML.h"
 #include "Common/Trace.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeDB.h"
+
 #include "TableSystem.h"
 #include "DB/DataSource.h"
 #include "DB/Factory.h"

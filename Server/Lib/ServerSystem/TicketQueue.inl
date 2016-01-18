@@ -23,7 +23,7 @@ HRESULT TicketQueue<DataObject,TTicketType>::AssignItem( const DataObject&& Data
 	pItem = new ItemTicket(Data);
 
 	if( pItem == nullptr )
-		return E_POINTER;
+		return E_SYSTEM_POINTER;
 
 	HRESULT hr = m_TicketMap.insert( pItem );
 	if( FAILED(hr) )
@@ -38,7 +38,7 @@ HRESULT TicketQueue<DataObject,TTicketType>::AssignItem( DataObject&& Data, Item
 	pItem = new ItemTicket(Data);
 
 	if( pItem == nullptr )
-		return E_POINTER;
+		return E_SYSTEM_POINTER;
 
 	HRESULT hr = m_TicketMap.insert( pItem );
 	if( FAILED(hr) )
@@ -50,7 +50,7 @@ HRESULT TicketQueue<DataObject,TTicketType>::AssignItem( DataObject&& Data, Item
 template< class DataObject, class TTicketType >
 HRESULT TicketQueue<DataObject,TTicketType>::ReleaseItem( ItemTicket* pItem )
 {
-	if( pItem == nullptr ) return E_POINTER;
+	if( pItem == nullptr ) return E_SYSTEM_POINTER;
 
 	m_TicketMap.erase( pItem );
 

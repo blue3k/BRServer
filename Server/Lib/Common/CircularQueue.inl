@@ -61,7 +61,7 @@ HRESULT CircularQueue<T,SIZE_BUFFER>::Enqueue( T&& item )
 {
 	if(IsFull())
 	{
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 	}
 
 	Assert(T(0) == m_Buffer[m_nWritePtr]);
@@ -79,7 +79,7 @@ HRESULT CircularQueue<T,SIZE_BUFFER>::Dequeue(T &item )
 {
     if (m_nItemCount == 0)
     {
-        return E_FAIL;
+        return E_SYSTEM_FAIL;
     }
 
 	item = m_Buffer[m_nReadPtr];

@@ -257,7 +257,7 @@ namespace ConspiracyGameInstanceServer {
 		};
 
 		if( pServerEntity == nullptr )
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 		return S_OK;
 	}

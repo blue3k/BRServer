@@ -112,7 +112,7 @@ namespace DB {
 		if (m_GetShardListLockTimer.IsTimerWorking()
 			&& !m_GetShardListLockTimer.CheckTimer())
 		{
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 		}
 
 		auto pQuery = new QueryGetShardListCmd();
@@ -220,7 +220,7 @@ Proc_End:
 			{
 				dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
 				// It's not expected
-				pQuery->SetResult(E_UNEXPECTED);
+				pQuery->SetResult(E_SYSTEM_UNEXPECTED);
 				RouteResult(pQuery);
 				continue;
 			}
@@ -237,7 +237,7 @@ Proc_End:
 			if (FAILED(pDBSource->AssignSession(pSession)))
 			{
 				// It's not expected
-				pQuery->SetResult(E_UNEXPECTED);
+				pQuery->SetResult(E_SYSTEM_UNEXPECTED);
 				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 				RouteResult(pQuery);
 				continue;
@@ -247,7 +247,7 @@ Proc_End:
 			{
 				if (FAILED(pSession->OpenSession()))
 				{
-					pQuery->SetResult(E_UNEXPECTED);
+					pQuery->SetResult(E_SYSTEM_UNEXPECTED);
 					pSession->ReleaseSession();
 					dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
 					RouteResult(pQuery);
@@ -260,7 +260,7 @@ Proc_End:
 			if (FAILED(QueryWorkerManager::PendingQuery(pQuery)))
 			{
 				// It's not expected
-				pQuery->SetResult(E_UNEXPECTED);
+				pQuery->SetResult(E_SYSTEM_UNEXPECTED);
 				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
 			}
 			else
@@ -317,7 +317,7 @@ Proc_End:
 			else
 			{
 				// not handled query result
-				dbErr(E_NOTIMPL);
+				dbErr(E_SYSTEM_NOTIMPL);
 			}
 		}
 
@@ -340,8 +340,8 @@ Proc_End:
 		{
 			dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
 			// It's not expected
-			pQuery->SetResult(E_UNEXPECTED);
-			dbErr(E_UNEXPECTED);
+			pQuery->SetResult(E_SYSTEM_UNEXPECTED);
+			dbErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		if (!pDBSource->GetOpened())
@@ -355,19 +355,19 @@ Proc_End:
 		if (FAILED(pDBSource->AssignSession(pSession)))
 		{
 			// It's not expected
-			pQuery->SetResult(E_UNEXPECTED);
+			pQuery->SetResult(E_SYSTEM_UNEXPECTED);
 			dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
-			dbErr(E_UNEXPECTED);
+			dbErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		if (!pSession->IsOpened())
 		{
 			if (FAILED(pSession->OpenSession()))
 			{
-				pQuery->SetResult(E_UNEXPECTED);
+				pQuery->SetResult(E_SYSTEM_UNEXPECTED);
 				pSession->ReleaseSession();
 				dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
-				dbErr(E_UNEXPECTED);
+				dbErr(E_SYSTEM_UNEXPECTED);
 			}
 		}
 

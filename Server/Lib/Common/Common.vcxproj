@@ -48,12 +48,6 @@
     <ClInclude Include="BrAssert.h" />
     <ClInclude Include=".\GameConst.h" />
     <ClInclude Include="HashTableTrait.h" />
-    <ClInclude Include="HRESCommon.h" />
-    <ClInclude Include="HRESEvent.h" />
-    <ClInclude Include="HRESGame.h" />
-    <ClInclude Include="HRESLogin.h" />
-    <ClInclude Include="HRESNet.h" />
-    <ClInclude Include="HRESSvrSys.h" />
     <ClInclude Include="Indexing.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include=".\MathUtil.h" />
@@ -66,6 +60,13 @@
     <ClInclude Include="Message.h" />
     <ClInclude Include=".\PageQueue.h" />
     <ClInclude Include="BrRandom.h" />
+    <ClInclude Include="ResultCode\BRResultCodeCommon.h" />
+    <ClInclude Include="ResultCode\BRResultCodeDB.h" />
+    <ClInclude Include="ResultCode\BRResultCodeGame.h" />
+    <ClInclude Include="ResultCode\BRResultCodeLogin.h" />
+    <ClInclude Include="ResultCode\BRResultCodeNet.h" />
+    <ClInclude Include="ResultCode\BRResultCodeSvr.h" />
+    <ClInclude Include="ResultCode\BRResultCodeSystem.h" />
     <ClInclude Include="SharedObject.h" />
     <ClInclude Include="SharedPointer.h" />
     <ClInclude Include="SharedReferenceManager.h" />
@@ -184,6 +185,7 @@
     <None Include="BrGameTypes.inl" />
     <None Include="BrRandom.inl" />
     <None Include="SortedMap.inl" />
+    <None Include="SystemSynchronize_linux.inl" />
     <None Include="SystemSynchronize_win.inl" />
     <None Include="ObjectPool.inl" />
     <None Include="SpinBufferMT.inl" />

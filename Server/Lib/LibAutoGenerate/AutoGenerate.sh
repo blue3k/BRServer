@@ -10,6 +10,12 @@ make -f makefile.mak $1
 cd ..
 
 
+cd BRCode
+
+make $1
+
+cd ..
+
 
 cd Protocol
 

@@ -30,16 +30,16 @@ public:
 		{
 			const char* errorString = strerror(result);
 			printf("%s", errorString);
-			hr = E_FAIL;
+			hr = E_SYSTEM_FAIL;
 			switch(result)
 			{
-				case EBUSY:		hr = E_UNEXPECTED;		break;
-				case EINVAL:	hr = E_INVALIDARG;		break;
-				case EAGAIN:	hr = E_UNEXPECTED;		break;
-				case ENOMEM:	hr = E_OUTOFMEMORY;		break;
-				case EPERM:		hr = E_FAIL;			break;
+				case EBUSY:		hr = E_SYSTEM_UNEXPECTED;		break;
+				case EINVAL:	hr = E_SYSTEM_INVALIDARG;		break;
+				case EAGAIN:	hr = E_SYSTEM_UNEXPECTED;		break;
+				case ENOMEM:	hr = E_SYSTEM_OUTOFMEMORY;		break;
+				case EPERM:		hr = E_SYSTEM_FAIL;			break;
 				default:
-					hr = E_UNEXPECTED;
+					hr = E_SYSTEM_UNEXPECTED;
 					break;
 			}
 

@@ -130,7 +130,7 @@ namespace Svr {
 		{
 			Assert(bufferSize >= sizeof(DataType));
 			if (bufferSize < sizeof(DataType))
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			DataType temp = m_RawValue.load(std::memory_order_relaxed);
 
@@ -143,7 +143,7 @@ namespace Svr {
 		{
 			Assert(bufferSize >= sizeof(DataType));
 			if (bufferSize < sizeof(DataType))
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			DataType temp;
 			memcpy(&temp, pBuffer, sizeof(DataType));

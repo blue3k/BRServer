@@ -453,7 +453,7 @@ namespace Hash {
 			{
 				iter = begin();
 
-				return iter.IsValid() ? S_OK : E_FAIL;
+				return iter.IsValid() ? S_OK : E_SYSTEM_FAIL;
 			}
 
 			iterator begin()
@@ -500,13 +500,13 @@ namespace Hash {
 				typename BucketContainer::Node *pPrevNode = nullptr;
 
 				if( FAILED(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				if(Trait::UniqueKey)
 				{
 					if( pPrevNode->pNext && pPrevNode->pNext->Key == inKey )
 					{
-						return E_FAIL;
+						return E_SYSTEM_FAIL;
 					}
 				}
 
@@ -532,14 +532,14 @@ namespace Hash {
 
 				typename BucketContainer::Node *pPrevNode = nullptr;
 				if( FAILED(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				if( pPrevNode->pNext == nullptr || pPrevNode->pNext->Key != inKey )
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				data = MapItemConverter()(pPrevNode->pNext);
 
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			HRESULT find( const KeyType& keyVal, iterator &iterData )
@@ -558,13 +558,13 @@ namespace Hash {
 				if( FAILED(bucket.m_Items.FindPrevNode( keyVal, pPrevNode )) )
 				{
 					iterData = nullptr;
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 				}
 
 				if( pPrevNode->pNext == nullptr || pPrevNode->pNext->Key != keyVal )
 				{
 					iterData = nullptr;
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 				}
 
 				iterData.SetInBucketIter( pPrevNode );
@@ -585,10 +585,10 @@ namespace Hash {
 				
 				typename BucketContainer::Node *pPrevNode = nullptr;
 				if( FAILED(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				if( pPrevNode->pNext == nullptr || pPrevNode->pNext->Key != inKey )
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				bucket.m_Items.Remove( pPrevNode, pPrevNode->pNext );
 				m_lItemCount--;
@@ -597,20 +597,20 @@ namespace Hash {
 
 				Assert( bucket.Validate(iBucket, m_Bucket.size()) );
 
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			}
 
 			HRESULT erase( iterator &iterData )
 			{
 				KeyType Key;
 				if( iterData.m_pContainer != this )
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				if( iterData.m_iterBucket == bucket_end() )
-					return E_INVALIDARG;
+					return E_SYSTEM_INVALIDARG;
 
 				if( !iterData.m_itInBucket.IsValid() )
-					return E_INVALIDARG;
+					return E_SYSTEM_INVALIDARG;
 
 				//ItemType* data = *iterData;
 
@@ -627,10 +627,10 @@ namespace Hash {
 
 				typename BucketContainer::Node *pPrevNode = nullptr;
 				if( FAILED(bucket.m_Items.FindPrevNode( Key, pPrevNode )) )
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				if( pPrevNode->pNext == nullptr || pPrevNode->pNext->Key != Key )
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				bucket.m_Items.Remove( pPrevNode, pPrevNode->pNext );
 				m_lItemCount--;

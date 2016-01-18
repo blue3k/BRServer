@@ -14,8 +14,9 @@
 #include "Net/NetSystem.h"
 #include "Net/NetSystem_EPOLL.h"
 #include "Net/NetSystem_impl.h"
-#include "Common/HRESNet.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+
 #include "Net/NetTrace.h"
 #include "Common/TimeUtil.h"
 #include "Common/Utility.h"
@@ -67,7 +68,7 @@ namespace Net {
 		epollEvent.data.ptr = cbInstance;
 		if (epoll_ctl(m_hEpoll, EPOLL_CTL_ADD, cbInstance->GetIOSocket(), &epollEvent) == -1) {
 			netTrace(Trace::TRC_ERROR, "epoll_ctl: RegisterSocket");
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		return S_OK;
@@ -82,7 +83,7 @@ namespace Net {
 		epollEvent.data.ptr = cbInstance;
 		if (epoll_ctl(m_hEpoll, EPOLL_CTL_DEL, cbInstance->GetIOSocket(), &epollEvent) == -1) {
 			netTrace(Trace::TRC_ERROR, "epoll_ctl: UnregisterSocket");
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		return S_OK;
@@ -103,7 +104,7 @@ namespace Net {
 				netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
 				pAcceptInfo = nullptr;
 				break;
-			case E_NOTIMPL:
+			case E_SYSTEM_NOTIMPL:
 				Assert(false); // Fix it!
 				break;
 			case E_NET_TRY_AGAIN:
@@ -135,7 +136,7 @@ namespace Net {
 		if (!(events & (EPOLLIN | EPOLLOUT)))
 		{
 			netTrace(Trace::TRC_ERROR, "Error sock:{0}, event:{1}", sock, events);
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		}
 
 		if (events & EPOLLIN)
@@ -150,7 +151,7 @@ namespace Net {
 				{
 				case E_NET_TRY_AGAIN:
 				case E_NET_WOULDBLOCK:
-				case S_FALSE:
+				case S_SYSTEM_FALSE:
 					// These are expected return code
 					hr = S_OK;
 					break;
@@ -454,7 +455,7 @@ namespace Net {
 		if (flags == -1)
 		{
 			netTrace(Trace::TRC_ERROR, "epoll_ctl: fcntl F_GETFL");
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		flags |= O_NONBLOCK;
@@ -462,7 +463,7 @@ namespace Net {
 		if (s == -1)
 		{
 			netTrace(Trace::TRC_ERROR, "epoll_ctl: fcntl F_SETFL");
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		return S_OK;
@@ -482,7 +483,7 @@ namespace Net {
 	{
 		Assert(sockType == SockType::DataGram);
 		if (sockType != SockType::DataGram)
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 
 		if (m_WorkerUDP.GetSize() < 1)
 			return E_NET_NOTINITIALISED;

@@ -42,10 +42,10 @@ namespace BR
 	HRESULT OutputMemoryStream::Write( UINT sizeToWrite, const BYTE* pData )
 	{
 		if( pData == nullptr )
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		if( (m_WritingPosition + sizeToWrite) > m_BufferSize )
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 		memcpy( m_Buffer + m_WritingPosition, pData, sizeToWrite );
 		m_WritingPosition += sizeToWrite;

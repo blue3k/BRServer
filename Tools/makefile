@@ -1,6 +1,6 @@
 
-CURRENT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-
+MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+CURRENT_DIR?=$(MAKE_DIR)
 
 ###################################################
 
@@ -8,7 +8,7 @@ CURRENT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 ###################################################
 
 BASE_PATH?=$(CURRENT_DIR)
-BUILD_LIBS = toolLib PathConvert ValidatePath
+BUILD_LIBS = toolLib PathConvert ValidatePath BRResultCodeCompiler
 SHARP_FLAGS = 
 
 ifeq ($(BUILD_CONFIGURATION), 'DEBUG')

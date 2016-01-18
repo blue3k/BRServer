@@ -17,7 +17,7 @@
 #include "Common/MemLog.h"
 #include "Common/Memory.h"
 #include "Common/MemoryPool.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 
 
 
@@ -230,7 +230,7 @@ namespace Message {
 		if( m_pMsgHeader == nullptr || m_pMsgHeader->Length == 0 )
 		{
 			Assert(0);
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		// Nothing to check
@@ -255,7 +255,7 @@ namespace Message {
 		if( m_pMsgHeader == nullptr || m_pMsgHeader->Length == 0 )
 		{
 			m_pMsgHeader->msgID.IDs.Encrypted = false;
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 		}
 
 		if( !m_pMsgHeader->msgID.IDs.Encrypted )

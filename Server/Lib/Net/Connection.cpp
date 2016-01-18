@@ -13,7 +13,8 @@
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/Utility.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
+
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
 #include "Net/NetTrace.h"
@@ -70,7 +71,7 @@ namespace Net {
 		HRESULT hr = S_OK;
 
 		if( uiPolicy >= POLICY_NETMAX )
-			netErr( E_INVALIDARG );
+			netErr( E_SYSTEM_INVALIDARG );
 
 		if( m_pPolicy[uiPolicy] == NULL )// try create
 		{ 
@@ -189,7 +190,7 @@ namespace Net {
 				break;
 
 			default:
-				netErr( E_INVALIDARG );
+				netErr( E_SYSTEM_INVALIDARG );
 				break;
 			};
 		}
@@ -292,7 +293,7 @@ namespace Net {
 							hrTem );
 
 			// ignore io send fail except connection closed
-			if( hrTem == E_NET_CONNECTION_CLOSED )
+			if( hrTem == ((HRESULT)E_NET_CONNECTION_CLOSED) )
 			{
 				goto Proc_End;
 			}
@@ -532,7 +533,7 @@ namespace Net {
 
 		if( FAILED(GetRecvQueue().Dequeue( pIMsg )) )
 		{
-			hr = E_FAIL;
+			hr = E_SYSTEM_FAIL;
 			goto Proc_End;
 		}
 

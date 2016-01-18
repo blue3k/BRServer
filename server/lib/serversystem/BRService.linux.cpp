@@ -10,8 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/HRESEvent.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 #include "SvrTrace.h"
 #include "BrService.h"
 #include "Common/TimeUtil.h"
@@ -77,8 +76,13 @@ namespace Svr {
 
 			setsid(); /* obtain a new process group */
 			printf("Service pid:%d, tid:%d\n", getpid(), (int)syscall(SYS_gettid));
-			//for (int iDescriptor = getdtablesize(); iDescriptor >= 0; --iDescriptor) close(iDescriptor); /* close all descriptors */
+			for (int iDescriptor = getdtablesize(); iDescriptor >= 0; --iDescriptor) close(iDescriptor); /* close all descriptors */
 			int i = open("/dev/null", O_RDWR); dup(i); dup(i); /* handle standart I/O */
+
+			/* Close out the standard file descriptors */
+			close(STDIN_FILENO);
+			close(STDOUT_FILENO);
+			close(STDERR_FILENO);
 			//umask(027); /* set newly created file permissions */
 			//chdir(RUNNING_DIR); /* change running directory */
 
@@ -200,7 +204,7 @@ namespace Svr {
 
 			svrChk( Svr::Config::LoadConfig( strCfgPath.c_str() ) );
 
-			svrTrace( Trace::TRC_TRACE, "<{0}> Start with Mode {1} ", Util::GetServiceName(), "Service" );
+			svrTrace( Trace::TRC_TRACE, "<{0}> Start with Mode {1} ", Util::GetServiceNameA(), "Service" );
 
 			// register signal handlers
 			signal(SIGHUP, signal_handler); /* catch hangup signal */
@@ -234,7 +238,7 @@ namespace Svr {
 
 			g_pSvrInstance->StopServer();
 
-			svrTrace( Trace::TRC_TRACE, "<{0}> Closed", Util::GetServiceName() );
+			svrTrace( Trace::TRC_TRACE, "<{0}> Closed", Util::GetServiceNameA() );
 
 			//Trace::Uninitialize();
 

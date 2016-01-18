@@ -13,7 +13,7 @@
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Net/ConnectionMUDP.h"
 #include "Net/NetDef.h"
@@ -95,7 +95,7 @@ namespace Net {
 							hrTem );
 
 			// ignore io send fail except connection closed
-			if( hrTem == E_NET_CONNECTION_CLOSED )
+			if( hrTem == ((HRESULT)E_NET_CONNECTION_CLOSED) )
 			{
 				goto Proc_End;
 			}
@@ -199,7 +199,7 @@ namespace Net {
 			netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Recv SendReliableMask : CID:{0}:{1}, seq:{2}, mask:{3:X8}, hr={4:X8}",
 				GetCID(), m_SendReliableWindow.GetBaseSequence(), pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask, hrTem);
 
-			if (hrTem == E_UNEXPECTED)
+			if (hrTem == E_SYSTEM_UNEXPECTED)
 				CloseConnection();
 
 			netChk(hrTem);
@@ -259,7 +259,7 @@ namespace Net {
 		default:
 			netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
 			netChk(CloseConnection());
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 			break;
 		};
 
@@ -1020,7 +1020,7 @@ namespace Net {
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
 		switch (hrErr)
 		{
-		case S_FALSE:
+		case S_SYSTEM_FALSE:
 			hr = E_NET_TRY_AGAIN;
 			break;
 		case S_OK:
@@ -1055,7 +1055,7 @@ namespace Net {
 
 		if (pIOBuffer != nullptr && pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD)
 		{
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		DecPendingRecvCount();

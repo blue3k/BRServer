@@ -15,7 +15,7 @@
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetSystem.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/PageQueue.h"
 #include "Common/SystemSynchronization.h"
 #include "Net/Connection.h"

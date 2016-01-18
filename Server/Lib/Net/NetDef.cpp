@@ -98,7 +98,7 @@ namespace Net {
 	{
 		unused(pConn);
 		Assert(false);
-		return E_NOTIMPL;
+		return E_SYSTEM_NOTIMPL;
 	};
 
 
@@ -107,7 +107,7 @@ namespace Net {
 	{
 		unused(pConn);
 		Assert(false);
-		return E_NOTIMPL;
+		return E_SYSTEM_NOTIMPL;
 	};
 
 

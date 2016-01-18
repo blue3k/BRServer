@@ -129,7 +129,7 @@ namespace BR
 			TrcAssertRel( pMemBlock );
 
 			if( pMemBlock == nullptr )
-				trcErr( E_OUTOFMEMORY );// Out of memory or borken heap
+				trcErr( E_SYSTEM_OUTOFMEMORY );// Out of memory or borken heap
 
 			pMemBlock->uiMagic = BR::MemBlockHdr::MEM_MAGIC;
 			pMemBlock->uiSize = uiSize;
@@ -151,7 +151,7 @@ namespace BR
 				m_hHeap = GetProcessHeap();
 
 			if( pPtr == nullptr )
-				trcErr( E_INVALIDARG );
+				trcErr( E_SYSTEM_INVALIDARG );
 
 			BR::MemBlockHdr* pMemBlock = (BR::MemBlockHdr*)pPtr - 1;
 
@@ -166,7 +166,7 @@ namespace BR
 
 			BR::MemBlockHdr* pNewMemBlock = (BR::MemBlockHdr*)HeapReAlloc( m_hHeap, 0, pMemBlock, uiSize + sizeof(BR::MemBlockHdr) );
 			if( pNewMemBlock == nullptr )
-				trcErr( E_OUTOFMEMORY );// Out of memory or borken heap
+				trcErr( E_SYSTEM_OUTOFMEMORY );// Out of memory or borken heap
 
 
 			pNewMemBlock->uiMagic = BR::MemBlockHdr::MEM_MAGIC;
@@ -195,7 +195,7 @@ namespace BR
 			if( pPtr == nullptr )
 			{
 				goto Proc_End;
-				//trcErr( E_INVALIDARG );
+				//trcErr( E_SYSTEM_INVALIDARG );
 			}
 
 			BR::MemBlockHdr* pMemBlock = (BR::MemBlockHdr*)pPtr - 1;
@@ -261,7 +261,7 @@ namespace BR
 			TrcAssertRel( pMemBlock );
 
 			if( pMemBlock == nullptr )
-				trcErr( E_OUTOFMEMORY );// Out of memory or borken heap
+				trcErr( E_SYSTEM_OUTOFMEMORY );// Out of memory or borken heap
 
 			pMemBlock->uiMagic = BR::MemBlockHdr::MEM_MAGIC;
 			pMemBlock->uiSize = uiSize;
@@ -282,7 +282,7 @@ namespace BR
 			BR::MemBlockHdr* pMemBlock = nullptr;
 
 			if( pPtr == nullptr )
-				trcErr( E_INVALIDARG );
+				trcErr( E_SYSTEM_INVALIDARG );
 
 			pMemBlock = (BR::MemBlockHdr*)pPtr - 1;
 
@@ -297,7 +297,7 @@ namespace BR
 
 			pNewMemBlock = (BR::MemBlockHdr*)realloc( pMemBlock, uiSize + sizeof(BR::MemBlockHdr) );
 			if( pNewMemBlock == nullptr )
-				trcErr( E_OUTOFMEMORY );// Out of memory or borken heap
+				trcErr( E_SYSTEM_OUTOFMEMORY );// Out of memory or borken heap
 
 
 			pNewMemBlock->uiMagic = BR::MemBlockHdr::MEM_MAGIC;
@@ -324,7 +324,7 @@ namespace BR
 			if( pPtr == nullptr )
 			{
 				goto Proc_End;
-				//trcErr( E_INVALIDARG );
+				//trcErr( E_SYSTEM_INVALIDARG );
 			}
 
 			pMemBlock = (BR::MemBlockHdr*)pPtr - 1;

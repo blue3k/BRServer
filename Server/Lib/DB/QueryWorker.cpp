@@ -14,6 +14,8 @@
 //#include <atldbcli.h>
 #include "Common/Typedefs.h"
 #include "Common/StrUtil.h"
+#include "Common/ResultCode/BRResultCodeDB.h"
+
 #include "QueryWorker.h"
 #include "DBTrace.h"
 #include "QueryManager.h"
@@ -53,7 +55,7 @@ namespace DB {
 		dbChkPtr(pQueryManager);
 
 		hr = pSession->SendQuery(pQuery);
-		if( hr == E_DB_CONNECTION_LOST )
+		if( hr == ((HRESULT)E_DB_CONNECTION_LOST) )
 		{
 			// Give one more chance, because the session will try to reconnect
 			hr = pSession->SendQuery(pQuery);

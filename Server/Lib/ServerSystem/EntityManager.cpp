@@ -132,7 +132,7 @@ namespace Svr {
 		hr = entityTable.Erase(entityID, pEntity);
 		if (FAILED(hr))
 		{
-			hr = S_FALSE;
+			hr = S_SYSTEM_FALSE;
 			goto Proc_End;
 		}
 		pEntity->SetEntityUID(0);
@@ -162,7 +162,7 @@ namespace Svr {
 		//HRESULT hr = S_OK;
 
 		if (pEntity == nullptr)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		return RemoveEntity(pEntity->GetEntityID());
 
@@ -171,7 +171,7 @@ namespace Svr {
 		//hr = GetEntityTable().Erase(pEntity->GetEntityID(), pRemoved);
 		//if (FAILED(hr))
 		//{
-		//	hr = S_FALSE;
+		//	hr = S_SYSTEM_FALSE;
 		//	goto Proc_End;
 		//}
 		////svrChk(GetEntityTable().Erase(pEntity->GetEntityID(), pRemoved));

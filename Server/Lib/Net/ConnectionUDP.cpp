@@ -13,7 +13,7 @@
 #include "Common/Thread.h"
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Net/ConnectionUDP.h"
 #include "Net/NetDef.h"
@@ -215,7 +215,7 @@ namespace Net {
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
 		switch (hrErr)
 		{
-		case S_FALSE:
+		case S_SYSTEM_FALSE:
 			hr = E_NET_TRY_AGAIN;
 			break;
 		case S_OK:
@@ -250,7 +250,7 @@ namespace Net {
 
 		if(pIOBuffer != nullptr && pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD)
 		{
-			netErr(E_UNEXPECTED);
+			netErr(E_SYSTEM_UNEXPECTED);
 		}
 
 		DecPendingRecvCount();

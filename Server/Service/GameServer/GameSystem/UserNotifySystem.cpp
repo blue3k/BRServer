@@ -15,9 +15,9 @@
 
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/HRESSvrSys.h"
-#include "Common/HRESCommon.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -113,7 +113,7 @@ namespace GameServer {
 	HRESULT UserNotifySystem::AddNotification( const Notification& info )
 	{
 		if( GetNotification(info.NotificationID) )
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 		return m_Notifications.Append( 1, &info );
 	}
@@ -121,7 +121,7 @@ namespace GameServer {
 	HRESULT UserNotifySystem::AddNotification( UINT NotificationID, NotificationType MessageID, INT64 MessageParam0, INT64 MessageParam1, const char* MessageText, BYTE IsRead, INT64 timeStamp )
 	{
 		if( MessageText == nullptr)
-			return E_INVALIDARG;
+			return E_SYSTEM_INVALIDARG;
 
 		Notification info;
 		memset( &info, 0, sizeof(info) );
@@ -143,7 +143,7 @@ namespace GameServer {
 	{
 		INT index = FindNotification(notificationID);
 		if( index < 0 )
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 		return m_Notifications.RemoveAt( index );
 	}

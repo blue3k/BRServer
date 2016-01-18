@@ -1,6 +1,6 @@
 
 
-SRC_LIST = PathTool.cs ToolEnvironment.cs Properties/AssemblyInfo.cs
+SRC_LIST = PathTool.cs FileUtil.cs ResultCode.cs ToolEnvironment.cs Setting.cs SettingValue.cs ToolDebug.cs Properties/AssemblyInfo.cs
 
 
 

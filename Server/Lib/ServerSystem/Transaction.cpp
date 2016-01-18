@@ -138,7 +138,7 @@ namespace BR {
 								typeid(*this).name(),
 								GetTransID(),
 								pRes->GetMsgID() );
-		svrErr( E_NOTIMPL );
+		svrErr( E_SYSTEM_NOTIMPL );
 
 	Proc_End:
 
@@ -223,7 +223,7 @@ namespace BR {
 
 		if( IsClosed() )
 		{
-			defErr( E_UNEXPECTED );
+			defErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		if( !GetParentTransID().IsValid() ) goto Proc_End;
@@ -306,7 +306,7 @@ namespace BR {
 	TimerResult::TimerResult()
 	{
 		SetTransaction( TransactionID(), MID );
-		SetResult( S_FALSE );
+		SetResult( S_SYSTEM_FALSE );
 	}
 
 	TimerResult::~TimerResult()
@@ -345,7 +345,7 @@ namespace BR {
 	HRESULT MessageResult::SetMessage( Message::MessageData* &pIMsg )
 	{
 		if( pIMsg == nullptr )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		Message::MessageHeader *pMsgRes = pIMsg->GetMessageHeader();
 		// This assumed that Message result has context

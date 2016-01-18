@@ -15,8 +15,8 @@
 #include "ServerSystem/SvrTrace.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrBaseTypes.h"
-#include "Common/HRESCommon.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 #include "Common/Message.h"
 #include "Common/BrRandom.h"
 
@@ -167,7 +167,7 @@ namespace ConspiracyGameInstanceServer {
 		INT playerCount = 0;
 
 		hr = super::TickUpdate(pAction);
-		if (FAILED(hr) || hr == S_FALSE)
+		if (FAILED(hr) || hr == S_SYSTEM_FALSE)
 			return hr;
 
 		// Update Players
@@ -199,7 +199,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		if (GetEntityState() == EntityState::FREE)
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 	//Proc_End:
 
@@ -380,7 +380,7 @@ namespace ConspiracyGameInstanceServer {
 
 		pGamePlayer = m_PlayerByIndex[playerIndex];
 
-		return pGamePlayer ? S_OK : E_FAIL;
+		return pGamePlayer ? S_OK : E_SYSTEM_FAIL;
 	}
 
 
@@ -512,7 +512,7 @@ namespace ConspiracyGameInstanceServer {
 
 		if (FAILED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
 		{
-			return E_PLAYER_NOT_FOUND;
+			return E_SVR_PLAYER_NOT_FOUND;
 		}
 
 	//Proc_End:

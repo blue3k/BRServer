@@ -15,7 +15,7 @@
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
 #include "Common/Trace_Internal.h"
-#include "Common/HRESEvent.h"
+
 
 #if WINDOWS
 

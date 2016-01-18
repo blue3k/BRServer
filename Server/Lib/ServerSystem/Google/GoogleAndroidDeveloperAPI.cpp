@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Utility.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 #include "ServerSystem/SvrTrace.h"
 
 #include "curl/curl.h"
@@ -67,15 +67,15 @@ namespace Google {
 		Json::Value errorValue, errors;
 
 		if (root.isNull())
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		errorValue = root.get("error", "Invalid");
 		if (errorValue.isNull() || errorValue.isObject() != true)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		errors = errorValue.get("errors", "Invalid");
 		if (errors.isNull() || errors.isArray() != true)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		for (auto itError = errors.begin(); itError != errors.end(); ++itError)
 		{
@@ -171,27 +171,27 @@ namespace Google {
 
 		res = curl_easy_setopt(curl, CURLOPT_URL, strRequest);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		Assert(res == 0);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
 
 		headers = curl_slist_append(headers, authChar);
 		res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteResultCB);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, &m_ResultBuffer);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		Assert(res == 0);
 
 		res = curl_easy_perform(curl); /* ignores error */
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		Assert(res == 0);
 
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
@@ -199,27 +199,13 @@ namespace Google {
 
 		res = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
 		if (res != CURLE_OK)
-			svrErr(E_UNEXPECTED);
+			svrErr(E_SYSTEM_UNEXPECTED);
 		Assert(res == 0);
 
 		curl_easy_cleanup(curl);
 
 		svrChk(m_ResultBuffer.push_back('\0'));
 
-		//const char* testString = "{ \n\"error\": {\n"
-		//	"\"errors\": [\n"
-		//	"{\n"
-		//	"	\"domain\": \"global\",\n"
-		//	"			\"reason\" : \"authError\",\n"
-		//	"			\"message\" : \"Invalid Credentials\",\n"
-		//	"			\"locationType\" : \"header\",\n"
-		//	"			\"location\" : \"Authorization\"\n"
-		//	"	}\n"
-		//	"	],\n"
-		//	"		\"code\": 401,\n"
-		//	"		\"message\" : \"Invalid Credentials\"\n"
-		//	"} \n }\n";
-		//bool parsingSuccessful = reader.parse((char*)testString, root);
 		parsingSuccessful = reader.parse((char*)m_ResultBuffer.data(), root);
 		if (!parsingSuccessful)
 		{
@@ -249,8 +235,6 @@ namespace Google {
 				goto Proc_End;
 			}
 
-			//consumptionState = value.asInt();
-
 			value = root.get("developerPayload", "");
 			if (value.isNull() || value.isString() == false)
 			{
@@ -274,7 +258,7 @@ namespace Google {
 
 		if (FAILED(hr))
 		{
-			if (hr == E_SVR_INVALID_EXTERNAL_AUTH)
+			if (hr == ((HRESULT)E_SVR_INVALID_EXTERNAL_AUTH))
 			{
 				// silently ignore it
 				//svrTrace(Trace::TRC_ERROR, "Invalid auth: hr:{0}, {1}, token:{2}", ArgHex32<UINT32>(hr), (const char*)m_ResultBuffer.data(), authChar);

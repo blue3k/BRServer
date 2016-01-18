@@ -138,14 +138,14 @@
 		if (FAILED(FindNode(traversalHistory, key, pFound)))
 		{
 			if (m_Root != nullptr)
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 			else
 			{
 				auto newNode = AllocateNode(key, value);
 				m_Root = newNode;
 
 				if (newNode == nullptr)
-					return E_OUTOFMEMORY;
+					return E_SYSTEM_OUTOFMEMORY;
 
 				m_ItemCount++;
 
@@ -163,7 +163,7 @@
 		{
 			auto right = pFound->Right;
 			if (right != nullptr)
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			pFound->Right = pInserted = AllocateNode(key, value);
 		}
@@ -175,7 +175,7 @@
 				auto biggestNode = FindBiggestNode(traversalHistory, left);
 				auto right = biggestNode->Right;
 				if (right != nullptr)
-					return E_FAIL;
+					return E_SYSTEM_FAIL;
 
 				biggestNode->Right = pInserted = AllocateNode(key, value);
 			}
@@ -188,7 +188,7 @@
 		{
 			auto left = pFound->Left;
 			if (left != nullptr)
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			pFound->Left = pInserted = AllocateNode(key, value);
 		}
@@ -217,11 +217,11 @@
 		MapNode* pRemoved = nullptr;
 		MapNode* pFound = nullptr;
 		if (FAILED(FindNode(travelHistory, key, pFound)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		// unique key
 		if (pFound->Key != key)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		value = std::forward<ValueType>(pFound->Value);
 
@@ -309,11 +309,11 @@
 
 		MapNode* pFound = nullptr;
 		if (FAILED(FindNode(travelHistory, key, pFound)))
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		// unique key
 		if (pFound->Key != key)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		value = pFound->Value;
 
@@ -332,7 +332,7 @@
 	{
 		MapNode* pCurNode = m_Root;
 		if (pCurNode == nullptr)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		travelHistory.Clear();
 		travelHistory.SetConserveDataOnResize(true);

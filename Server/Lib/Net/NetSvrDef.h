@@ -86,7 +86,7 @@ namespace Net {
 		// Query Network event
 		virtual HRESULT DequeueNetEvent( Event& curEvent );
 
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) { return E_NOTIMPL; }
+		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) { return E_SYSTEM_NOTIMPL; }
 
 		// Close all connection
 		virtual HRESULT CloseAllConnection() = 0;

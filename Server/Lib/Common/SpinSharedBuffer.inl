@@ -32,7 +32,7 @@ template <class ItemType>
 HRESULT SpinSharedBuffer<ItemType>::SetBufferCount(  UINT BufferCount  )
 {
 	if( BufferCount == 0 )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	if( m_SpinBuffer )
 		delete[] m_SpinBuffer;
@@ -41,7 +41,7 @@ HRESULT SpinSharedBuffer<ItemType>::SetBufferCount(  UINT BufferCount  )
 
 	m_SpinBuffer = new Buffer[m_BufferCount];
 	if( m_SpinBuffer == nullptr )
-		return E_OUTOFMEMORY;
+		return E_SYSTEM_OUTOFMEMORY;
 
 	return S_OK;
 }
@@ -65,7 +65,7 @@ template <class ItemType>
 HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pBuffer )
 {
 	if( m_SpinBuffer == nullptr )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	// get access ticket
 	CounterType myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
@@ -82,11 +82,11 @@ HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pB
 			// Try limit
 			iTry++;
 			if( iTry > iTryCount )
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			// if enguaged to maximum buffer state
 			if( m_UsedBufferCount >= m_BufferCount )
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
 			accessPos = myTicket % m_BufferCount;
@@ -110,7 +110,7 @@ template <class ItemType>
 HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 {
 	if( m_SpinBuffer == nullptr )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	// get access ticket
 	CounterType myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
@@ -149,13 +149,13 @@ template <class ItemType>
 HRESULT SpinSharedBuffer<ItemType>::FreeBuffer( ItemType* pBuffer )
 {
 	if( pBuffer == NULL )
-		return E_FAIL;
+		return E_SYSTEM_FAIL;
 
 	// Offset calculation for Buffer
 	Buffer *pBufferPtr = (Buffer*)( ((BYTE*)pBuffer) + (intptr_t)(&m_SpinBuffer[0]) - (intptr_t)(&m_SpinBuffer[0].Data) );
 
 	if( pBufferPtr < m_SpinBuffer || pBufferPtr > (m_SpinBuffer + m_BufferCount) )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	pBufferPtr->State.store(Buffer::STATE_FREE, std::memory_order_relaxed);
 

@@ -76,7 +76,7 @@ namespace DB {
 		if( (pDBSource = new DataSourceMYSQL) != nullptr )
 			return S_OK;
 
-		return E_OUTOFMEMORY;
+		return E_SYSTEM_OUTOFMEMORY;
 	}
 
 	// close DB source
@@ -85,7 +85,7 @@ namespace DB {
 		if( (pSession = new SessionMYSQL((DataSourceMYSQL*)pDBSource)) != nullptr)
 			return S_OK;
 
-		return E_OUTOFMEMORY;
+		return E_SYSTEM_OUTOFMEMORY;
 	}
 
 } // namespace DB

@@ -13,8 +13,7 @@
 #if WINDOWS
 
 #include <conio.h>
-#include "Common/HRESEvent.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 #include "Serversystem/SvrTrace.h"
 #include "Serversystem/BRService.h"
 #include "Common/TimeUtil.h"
@@ -192,7 +191,7 @@ namespace Svr {
 					if ( g_SvcStatus.dwCurrentState != SERVICE_STOPPED )
 					{
 						svrTrace( Trace::TRC_ERROR, "Service Stop Failed" );
-						trcErr( E_UNEXPECTED );
+						trcErr( E_SYSTEM_UNEXPECTED );
 					}
 				}
 
@@ -278,7 +277,7 @@ namespace Svr {
 				if ( g_SvcStatus.dwCurrentState != SERVICE_STOPPED )
 				{
 					svrTrace( Trace::TRC_ERROR, "Service Stop Failed" );
-					trcErr( E_UNEXPECTED );
+					trcErr( E_SYSTEM_UNEXPECTED );
 				}
 			}
 
@@ -533,7 +532,7 @@ namespace Svr {
 			{
 				svrTrace( Trace::TRC_ERROR, "Invalid ServerInstance" );
 				ReportServiceStatus( SERVICE_STOPPED, E_SVR_SERVICE_FAILED, 0 );
-				trcErr( E_UNEXPECTED );
+				trcErr( E_SYSTEM_UNEXPECTED );
 			}
 
 
@@ -562,13 +561,13 @@ namespace Svr {
 						}
 						else
 						{
-							trcErr( E_UNEXPECTED );
+							trcErr( E_SYSTEM_UNEXPECTED );
 						}
 					}
 					else
 					{
 						ReportServiceStatus( SERVICE_STOPPED, NO_ERROR, 0 );
-						//trcErr( E_UNEXPECTED );
+						//trcErr( E_SYSTEM_UNEXPECTED );
 					}
 					goto Proc_End;
 					break;
@@ -584,12 +583,12 @@ namespace Svr {
 					//	}
 					//	else
 					//	{
-					//		trcErr( E_UNEXPECTED );
+					//		trcErr( E_SYSTEM_UNEXPECTED );
 					//	}
 					//}
 					//else
 					//{
-					//	//trcErr( E_UNEXPECTED );
+					//	//trcErr( E_SYSTEM_UNEXPECTED );
 					//}
 					//break;
 				case WAIT_OBJECT_0+SVCCTRL_RESUME:
@@ -610,12 +609,12 @@ namespace Svr {
 					//	}
 					//	else
 					//	{
-					//		trcErr( E_UNEXPECTED );
+					//		trcErr( E_SYSTEM_UNEXPECTED );
 					//	}
 					//}
 					//else
 					//{
-					//	//trcErr( E_UNEXPECTED );
+					//	//trcErr( E_SYSTEM_UNEXPECTED );
 					//}
 					//break;
 				case WAIT_TIMEOUT:
@@ -627,7 +626,7 @@ namespace Svr {
 					}
 					break;
 				default:
-					trcErr( E_UNEXPECTED );
+					trcErr( E_SYSTEM_UNEXPECTED );
 					break;
 				}
 			}

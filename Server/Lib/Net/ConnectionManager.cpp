@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/Thread.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
@@ -509,14 +509,14 @@ namespace Net {
 			if (pConn->GetRemoteSockAddr().ss_family != 0 && SUCCEEDED(m_AddrMap.Find(pConn->GetRemoteSockAddr(), pPtr)))
 			{
 				// already in map
-				netErr(E_INVALIDARG);
+				netErr(E_SYSTEM_INVALIDARG);
 			}
 		}
 
 		if (SUCCEEDED(m_CIDMap.Find(pConn->GetCID(), pConnPtr)))
 		{
 			// already in map
-			netErr( E_INVALIDARG );
+			netErr( E_SYSTEM_INVALIDARG );
 		}
 
 		if (m_UseAddressMap && pConn->GetRemoteSockAddr().ss_family != 0)
@@ -528,7 +528,7 @@ namespace Net {
 		{
 			// remove
 			m_AddrMap.Erase(pConn->GetRemoteSockAddr(), pPtr);
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		if ((m_UsePeerIDMap && pConn->GetPeerID() != 0 && FAILED(m_PeerIDMap.Insert(pConn->GetPeerID(), WeakPointerT<Connection>(pConn)))))
@@ -536,7 +536,7 @@ namespace Net {
 			// remove
 			m_AddrMap.Erase(pConn->GetRemoteSockAddr(), pPtr);
 			m_CIDMap.Erase(pConn->GetCID(), pConnPtr);
-			netErr( E_UNEXPECTED );
+			netErr( E_SYSTEM_UNEXPECTED );
 		}
 
 	Proc_End:
@@ -827,7 +827,7 @@ namespace Net {
 		{
 			pPtr.GetSharedPointer(pConn);
 		}
-		return pConn != nullptr ? S_OK : E_FAIL;
+		return pConn != nullptr ? S_OK : E_SYSTEM_FAIL;
 	}
 
 
@@ -845,7 +845,7 @@ namespace Net {
 		{
 			pPtr.GetSharedPointer(pConn);
 		}
-		return pConn != nullptr ? S_OK : E_FAIL;
+		return pConn != nullptr ? S_OK : E_SYSTEM_FAIL;
 	}
 
 

@@ -153,10 +153,10 @@ namespace BR {
 		HRESULT Insert( Node* pPrevNode, Node* pNew )
 		{
 			if( pPrevNode == nullptr )
-				return E_POINTER;
+				return E_SYSTEM_POINTER;
 
 			if( pNew->pNext != nullptr )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			pNew->pNext = pPrevNode->pNext;
 
@@ -175,7 +175,7 @@ namespace BR {
 		{
 			auto pPrevNode = &m_Header;
 			if( pNew->pNext != nullptr )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			pNew->pNext = pPrevNode->pNext;
 
@@ -193,10 +193,10 @@ namespace BR {
 		HRESULT Remove( Node* pPrevNode, Node* pRemove )
 		{
 			if( pPrevNode == nullptr )
-				return E_POINTER;
+				return E_SYSTEM_POINTER;
 
 			if( pPrevNode->pNext != pRemove )
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			pPrevNode->pNext = pRemove->pNext;
 			pRemove->pNext = nullptr;
@@ -224,7 +224,7 @@ namespace BR {
 		HRESULT erase( const iterator& itCur )
 		{
 			if( !itCur.IsValid() )
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			return Remove( itCur.m_pCur, itCur.m_pCur->pNext );
 		}

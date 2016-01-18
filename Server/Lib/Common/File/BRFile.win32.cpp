@@ -11,6 +11,7 @@
 #include "stdafx.h"
 #include "Common/TypeUtility.h"
 #include "Common/File/BRFile.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 #if WINDOWS
 
@@ -48,7 +49,7 @@ namespace IO {
 	HRESULT File::Seek(SeekMode seekMode, LONGLONG offset)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		LARGE_INTEGER lInt;
 		lInt.QuadPart = offset;
@@ -65,7 +66,7 @@ namespace IO {
 	LONGLONG File::GetLocation()
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		LARGE_INTEGER lInt;
 		lInt.QuadPart = 0;
@@ -77,7 +78,7 @@ namespace IO {
 	LONGLONG File::GetFileSize()
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		LARGE_INTEGER szSize;
 		if (GetFileSizeEx(m_FileHandle, &szSize) == INVALID_FILE_SIZE)
@@ -110,7 +111,7 @@ namespace IO {
 			creationDesc = OPEN_ALWAYS;
 			break;
 		default:
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		}
 
 		switch (sharingMode)
@@ -128,7 +129,7 @@ namespace IO {
 			shareMode = 0;
 			break;
 		default:
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		}
 
 		m_FileHandle = CreateFileA(
@@ -142,7 +143,7 @@ namespace IO {
 			nullptr);
 
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		m_OpenMode = openMode;
 		m_SharingMode = sharingMode;
@@ -164,7 +165,7 @@ namespace IO {
 	HRESULT File::Read(BYTE* buffer, size_t bufferLen, size_t &read)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 
 		DWORD dwRead = 0;
 		if (ReadFile(m_FileHandle, buffer, (DWORD)bufferLen, &dwRead, nullptr) == FALSE)
@@ -180,7 +181,7 @@ namespace IO {
 	HRESULT File::Write(const BYTE* buffer, size_t bufferLen, size_t &writen)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 
 		DWORD dwWritten = 0;
 		if (WriteFile(m_FileHandle, buffer, (DWORD)bufferLen, &dwWritten, nullptr) == FALSE)

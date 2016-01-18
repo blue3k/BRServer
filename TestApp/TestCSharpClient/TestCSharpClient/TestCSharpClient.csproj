@@ -54,6 +54,12 @@
   <ItemGroup>
     <Folder Include="Client\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Server\ServiceInterface\BRClientLib\BRClientLib.csproj">
+      <Project>{6e427468-2686-4c62-9e8a-90ee9155b353}</Project>
+      <Name>BRClientLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

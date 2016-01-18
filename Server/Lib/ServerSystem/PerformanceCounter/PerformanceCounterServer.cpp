@@ -279,13 +279,13 @@ namespace Svr {
 			{
 				stm_pInstance->m_TimedOutQueue.Enqueue((void*)instanceUID.UID);
 				pInstance = SharedPointerT<PerformanceCounterInstance>();
-				hr = E_FAIL;
+				hr = E_SYSTEM_FAIL;
 				goto Proc_End;
 			}
 		}
 		else
 		{
-			hr = E_FAIL;
+			hr = E_SYSTEM_FAIL;
 		}
 
 	Proc_End:

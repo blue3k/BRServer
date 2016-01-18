@@ -212,7 +212,7 @@ namespace Svr {
 
 		if( FAILED(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
-			return E_PLAYER_NOT_FOUND;
+			return E_SVR_PLAYER_NOT_FOUND;
 		}
 
 		// Check validity
@@ -227,7 +227,7 @@ namespace Svr {
 
 			Util::SafeDelete( pPlayerInfo );
 
-			return E_PLAYER_NOT_FOUND;
+			return E_SVR_PLAYER_NOT_FOUND;
 		}
 
 		playerUID = itPlayer->GetEntityUID();

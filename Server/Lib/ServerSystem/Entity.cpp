@@ -15,6 +15,8 @@
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 #include "ServerSystem/SvrConstDefault.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
@@ -92,7 +94,7 @@ namespace BR {
 		if( GetEntityState() != EntityState::FREE )
 		{
 			Assert( 0 );
-			svrErr( E_UNEXPECTED );
+			svrErr( E_SYSTEM_UNEXPECTED );
 		}
 
 		// create message handler table
@@ -132,7 +134,7 @@ namespace BR {
 				Transaction *pCurTran = nullptr;
 				if (SUCCEEDED(m_transactionQueue.Dequeue(pCurTran)))
 				{
-					pCurTran->CloseTransaction(E_UNEXPECTED);
+					pCurTran->CloseTransaction(E_SYSTEM_UNEXPECTED);
 					ReleaseTransaction(pCurTran);
 				}
 			}
@@ -207,7 +209,7 @@ namespace BR {
 			if (FAILED(pEntity->FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
 			{
 				svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pMsgRes->GetMsgID());
-				goto Proc_End;// svrErr(E_FAIL);
+				goto Proc_End;// svrErr(E_SYSTEM_FAIL);
 			}
 			svrChk(pEntity->ProcessTransactionResult(pTransaction, pTransRes));
 			pTransRes = nullptr;
@@ -243,10 +245,10 @@ namespace BR {
 		HRESULT hr = S_OK;
 
 		if( GetEntityState() == EntityState::FREE )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		if( pTrans == nullptr )
-			return E_POINTER;
+			return E_SYSTEM_POINTER;
 
 		pTrans->SetOwnerEntity( this );
 		pTrans->SetTransID( TransactionID( (UINT32)GetEntityID(), GenTransIndex() ) ); 
@@ -300,7 +302,7 @@ namespace BR {
 			if (FAILED(pTrans->StartTransaction()))// make transaction start
 			{
 				if (!pTrans->IsClosed())
-					pTrans->CloseTransaction(E_UNEXPECTED);
+					pTrans->CloseTransaction(E_SYSTEM_UNEXPECTED);
 			}
 			else if (pTrans->GetState() == Transaction::STATE_WAITSTART)
 			{
@@ -366,7 +368,7 @@ namespace BR {
 		HRESULT hr = S_OK;
 
 		if( GetEntityState() == EntityState::FREE )
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 
 		svrChkPtr( pTransRes );
 

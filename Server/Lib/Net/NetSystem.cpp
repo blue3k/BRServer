@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "Net/NetSystem.h"
 #include "Net/NetSystem_impl.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Common/TimeUtil.h"
 #include "Common/Utility.h"
@@ -99,7 +99,7 @@ namespace Net {
 		{
 			pIOBuffer = new IOBUFFER_WRITE;
 
-			return pIOBuffer == nullptr ? E_FAIL : S_OK;
+			return pIOBuffer == nullptr ? E_SYSTEM_FAIL : S_OK;
 		}
 
 		HRESULT FreeBuffer(IOBUFFER_WRITE *pIOBuffer)
@@ -114,7 +114,7 @@ namespace Net {
 			g_GatheringSize = bufferSize;
 			MemoryPoolManager::GetMemoryPoolBySize(g_GatheringSize, g_pGatheringBufferPool);
 			if (g_pGatheringBufferPool == nullptr)
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			return S_OK;
 		}
@@ -122,12 +122,12 @@ namespace Net {
 		HRESULT AllocGatheringBuffer(BYTE* &pBuffer, UINT& bufferSize)
 		{
 			if (g_pGatheringBufferPool == nullptr)
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			void* pPtr = nullptr;
 			bufferSize = g_GatheringSize;
 			if(FAILED(g_pGatheringBufferPool->Alloc(pPtr, "AllocGatheringBuffer")))
-				return E_OUTOFMEMORY;
+				return E_SYSTEM_OUTOFMEMORY;
 
 			pBuffer = (BYTE*)pPtr;
 
@@ -137,7 +137,7 @@ namespace Net {
 		HRESULT FreeGatheringBuffer(BYTE *pBuffer)
 		{
 			if (g_pGatheringBufferPool == nullptr)
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			return g_pGatheringBufferPool->Free(pBuffer, "AllocGatheringBuffer");
 		}

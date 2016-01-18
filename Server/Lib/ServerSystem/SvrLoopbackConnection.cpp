@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "Common/Typedefs.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 #include "SvrLoopbackConnection.h"
 #include "ServerSystem/ServerEntity.h"
 

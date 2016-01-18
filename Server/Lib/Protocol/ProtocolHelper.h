@@ -12,7 +12,7 @@
 #pragma once
 
 #include "Common/BrBaseTypes.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetDef.h"
 #include "Common/StrUtil.h"
 

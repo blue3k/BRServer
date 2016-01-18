@@ -26,7 +26,7 @@ HRESULT StringDup( char* &szDest, const char* szSrc )
 		INT iLen = (INT)strlen(szSrc)+1;
 		szDest = new char[ iLen ];
 		if( szDest == NULL )
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 		memcpy( szDest, szSrc, iLen*sizeof(char) );
 	}
@@ -47,7 +47,7 @@ HRESULT StringDup( WCHAR* &szDest, const WCHAR* szSrc )
 		INT iLen = (INT)wcslen(szSrc)+1;
 		szDest = new WCHAR[ iLen ];
 		if( szDest == NULL )
-			return E_OUTOFMEMORY;
+			return E_SYSTEM_OUTOFMEMORY;
 
 		memcpy( szDest, szSrc, iLen*sizeof(WCHAR) );
 	}
@@ -510,7 +510,7 @@ int StringCmpLwr( WCHAR (&szSrc)[iSrcBuffLen], const WCHAR* szDest, INT iDestBuf
 HRESULT StringLwr( char* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	if( iBuffLen <= 0 ) iBuffLen = (INT)strlen(szSrc);
 
@@ -528,7 +528,7 @@ HRESULT StringLwr( char* szSrc, INT iBuffLen )
 HRESULT StringLwr( WCHAR* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	if( iBuffLen <= 0 ) iBuffLen = (INT)wcslen(szSrc);
 
@@ -565,7 +565,7 @@ HRESULT StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	HRESULT hr = S_OK;
 
 	if( szSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
@@ -590,7 +590,7 @@ HRESULT StringLwr(WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc)
 	HRESULT hr = S_OK;
 
 	if (szSrc == NULL)
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 
 	INT iSrcBuffLen = (INT)wcslen(szSrc) + 1;
@@ -619,7 +619,7 @@ HRESULT StringLwr( char (&szDest)[iBuffLen], const char *szSrc )
 	HRESULT hr = S_OK;
 
 	if( szSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
@@ -640,7 +640,7 @@ HRESULT StringLwr( WCHAR (&wszDest)[iBuffLen], const WCHAR *wszSrc )
 	HRESULT hr = S_OK;
 
 	if(wszSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 
 	INT iSrcBuffLen = (INT)wcslen(wszSrc) + 1;
@@ -664,7 +664,7 @@ HRESULT StringLwr( WCHAR (&wszDest)[iBuffLen], const WCHAR *wszSrc )
 HRESULT StringUpr( char* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	if( iBuffLen <= 0 ) iBuffLen = (INT)strlen(szSrc);
 
@@ -682,7 +682,7 @@ HRESULT StringUpr( char* szSrc, INT iBuffLen )
 HRESULT StringUpr( WCHAR* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	if( iBuffLen <= 0 ) iBuffLen = (INT)wcslen(szSrc);
 
@@ -719,7 +719,7 @@ HRESULT StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	HRESULT hr = S_OK;
 
 	if( szSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
@@ -744,7 +744,7 @@ HRESULT StringUpr( WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc )
 	HRESULT hr = S_OK;
 
 	if( szSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 
 	INT iSrcBuffLen = (INT)wcslen( szSrc ) + 1;
@@ -773,7 +773,7 @@ HRESULT StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 	HRESULT hr = S_OK;
 
 	if( szSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
@@ -794,7 +794,7 @@ HRESULT StringUpr( WCHAR (&wszDest)[iBuffLen], const WCHAR *wszSrc )
 	HRESULT hr = S_OK;
 
 	if(wszSrc == NULL )
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 
 	INT iSrcBuffLen = (INT)wcslen(wszSrc) + 1;

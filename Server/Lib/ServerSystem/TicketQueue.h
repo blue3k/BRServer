@@ -14,6 +14,7 @@
 
 
 #include "Common/Typedefs.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 #include "ServerSystem/SvrTrace.h"
 #include "Common/Utility.h"

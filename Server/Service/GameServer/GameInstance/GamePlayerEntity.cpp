@@ -19,8 +19,8 @@
 #include "Net/NetServerUDP.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrBaseTypes.h"
-#include "Common/HRESCommon.h"
-#include "Common/HRESGame.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeGame.h"
 
 
 #include "GameSvrConst.h"
@@ -179,7 +179,7 @@ namespace GameServer {
 	{
 		// m_LatestUpdateTime is used as a valid character data signal
 		if (m_LatestUpdateTime == TimeStampSec::min())
-			return S_FALSE;
+			return S_SYSTEM_FALSE;
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 
@@ -299,7 +299,7 @@ namespace GameServer {
 		Svr::Transaction *trans = nullptr;
 
 		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
-		if (hr == S_FALSE)
+		if (hr == S_SYSTEM_FALSE)
 			return hr;
 
 		//if (m_LatestDBSyncTime == 0 || Util::TimeSinceUTC(m_LatestDBSyncTime) > GameConst::PLAYER_UPDATE_STATUS_TIME)
@@ -348,7 +348,7 @@ namespace GameServer {
 		// m_LatestUpdateTime will be initialized when character data is loaded
 		if (m_LatestUpdateTime == TimeStampSec::min())
 		{
-			return E_FAIL;
+			return E_SYSTEM_FAIL;
 		}
 
 		auto playerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();

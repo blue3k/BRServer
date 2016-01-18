@@ -17,7 +17,7 @@
 #include "SessionMYSQL.h"
 #include "Query.h"
 #include "QueryMYSQL.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 
 
 

@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 #include "Net/NetDef.h"
 #include "Common/MemoryPool.h"
 #include "Common/Message.h"
@@ -127,7 +127,7 @@ namespace Svr {
 				}
 				else
 				{
-					svrErr(E_NOTIMPL);
+					svrErr(E_SYSTEM_NOTIMPL);
 				}
 			}
 

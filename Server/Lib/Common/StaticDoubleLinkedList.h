@@ -15,6 +15,7 @@
 #include "Common/BrAssert.h"
 #include "Common/MemoryPool.h"
 #include "Common/HashTableTrait.h"
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 namespace BR {
 
@@ -155,10 +156,10 @@ namespace BR {
 		HRESULT Add(Node* pNew)
 		{
 			if (pNew == nullptr)
-				return E_POINTER;
+				return E_SYSTEM_POINTER;
 
 			if (pNew->pNext != nullptr || pNew->pPrev != nullptr)
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			pNew->pPrev = &m_Header;
 			pNew->pNext = m_Header.pNext;
@@ -175,10 +176,10 @@ namespace BR {
 		HRESULT Remove( Node* pRemove )
 		{
 			if (pRemove == nullptr)
-				return E_POINTER;
+				return E_SYSTEM_POINTER;
 
 			if (pRemove->pNext == nullptr || pRemove->pPrev == nullptr)
-				return E_UNEXPECTED;
+				return E_SYSTEM_UNEXPECTED;
 
 			pRemove->pPrev->pNext = pRemove->pNext;
 			pRemove->pNext->pPrev = pRemove->pPrev;
@@ -208,7 +209,7 @@ namespace BR {
 		HRESULT erase( const iterator& itCur )
 		{
 			if( !itCur.IsValid() )
-				return E_FAIL;
+				return E_SYSTEM_FAIL;
 
 			return Remove( itCur.m_pCur );
 		}

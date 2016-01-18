@@ -12,7 +12,7 @@
 #pragma once 
 
 #include "Common/Typedefs.h"
-#include "Common/HRESCommon.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 #include "Common/Thread.h"
 #include "Common/Synchronization.h"
 #include "Common/SortedMap.h"

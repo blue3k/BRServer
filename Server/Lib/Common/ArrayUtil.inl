@@ -211,7 +211,7 @@ template< class DataType >
 HRESULT Array<DataType>::RemoveAt( INT iIndex )
 {
 	if (iIndex < 0 || (decltype(m_Size))iIndex >= m_Size)
-		return E_INVALIDARG;
+		return E_SYSTEM_INVALIDARG;
 
 	for (INT iIdx = iIndex + 1; (decltype(m_Size))iIdx < m_Size; iIdx++)
 	{
@@ -322,11 +322,11 @@ HRESULT StaticArray<DataType, DefaultBufferSize>::Reserve(size_t szNewSize)
 	DataType *pOldBuffer = nullptr;
 
 	if( szNewSize <= Array<DataType>::GetAllocatedSize() )
-		return S_FALSE;
+		return S_SYSTEM_FALSE;
 
 	pNewBuffer = new DataType[szNewSize];
 	if( pNewBuffer == nullptr )
-		return E_OUTOFMEMORY;
+		return E_SYSTEM_OUTOFMEMORY;
 
 	Array<DataType>::SetBuffPtr( szNewSize, pNewBuffer );
 
@@ -372,11 +372,11 @@ HRESULT DynamicArray<DataType>::Reserve(size_t szNewSize)
 	DataType *pOldBuffer = nullptr;
 
 	if (szNewSize <= Array<DataType>::GetAllocatedSize())
-		return S_FALSE;
+		return S_SYSTEM_FALSE;
 
 	pNewBuffer = new DataType[szNewSize];
 	if (pNewBuffer == nullptr)
-		return E_OUTOFMEMORY;
+		return E_SYSTEM_OUTOFMEMORY;
 
 	Array<DataType>::SetBuffPtr(szNewSize, pNewBuffer);
 
@@ -430,7 +430,7 @@ HRESULT LinkedArray<DataType>::Reserve(size_t szReserv)
 	if (szReserv <= Array<DataType>::GetAllocatedSize())
 		return S_OK;
 
-	return E_FAIL;
+	return E_SYSTEM_FAIL;
 }
 
 

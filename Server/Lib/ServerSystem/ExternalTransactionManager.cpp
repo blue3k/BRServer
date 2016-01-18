@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"
-#include "Common/HRESNet.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"
@@ -89,22 +89,22 @@ namespace Svr
 		switch (code)
 		{
 		case CURLE_OK:							return S_OK;
-		case CURLE_UNSUPPORTED_PROTOCOL:		return E_CURLE_UNSUPPORTED_PROTOCOL;
-		case CURLE_FAILED_INIT:					return E_CURLE_FAILED_INIT;
-		case CURLE_URL_MALFORMAT:				return E_CURLE_URL_MALFORMAT;
-		case CURLE_NOT_BUILT_IN:				return E_CURLE_NOT_BUILT_IN;
-		case CURLE_COULDNT_RESOLVE_PROXY:		return E_CURLE_COULDNT_RESOLVE_PROXY;
-		case CURLE_COULDNT_RESOLVE_HOST:		return E_CURLE_COULDNT_RESOLVE_HOST;
-		case CURLE_COULDNT_CONNECT:				return E_CURLE_COULDNT_CONNECT;
-		case CURLE_HTTP_POST_ERROR:				return E_CURLE_HTTP_POST_ERROR;
-		case CURLE_SSL_ENGINE_NOTFOUND:			return E_CURLE_SSL_ENGINE_NOTFOUND;
-		case CURLE_SSL_ENGINE_SETFAILED:		return E_CURLE_SSL_ENGINE_SETFAILED;
-		case CURLE_SEND_ERROR:					return E_CURLE_SEND_ERROR;
-		case CURLE_RECV_ERROR:					return E_CURLE_RECV_ERROR;
-		case CURLE_USE_SSL_FAILED:				return E_CURLE_USE_SSL_FAILED;
-		case CURLE_NO_CONNECTION_AVAILABLE:		return E_CURLE_NO_CONNECTION_AVAILABLE;
+		case CURLE_UNSUPPORTED_PROTOCOL:		return E_SVR_CURL_UNSUPPORTED_PROTOCOL;
+		case CURLE_FAILED_INIT:					return E_SVR_CURL_FAILED_INIT;
+		case CURLE_URL_MALFORMAT:				return E_SVR_CURL_URL_MALFORMAT;
+		case CURLE_NOT_BUILT_IN:				return E_SVR_CURL_NOT_BUILT_IN;
+		case CURLE_COULDNT_RESOLVE_PROXY:		return E_SVR_CURL_COULDNT_RESOLVE_PROXY;
+		case CURLE_COULDNT_RESOLVE_HOST:		return E_SVR_CURL_COULDNT_RESOLVE_HOST;
+		case CURLE_COULDNT_CONNECT:				return E_SVR_CURL_COULDNT_CONNECT;
+		case CURLE_HTTP_POST_ERROR:				return E_SVR_CURL_HTTP_POST_ERROR;
+		case CURLE_SSL_ENGINE_NOTFOUND:			return E_SVR_CURL_SSL_ENGINE_NOTFOUND;
+		case CURLE_SSL_ENGINE_SETFAILED:		return E_SVR_CURL_SSL_ENGINE_SETFAILED;
+		case CURLE_SEND_ERROR:					return E_SVR_CURL_SEND_ERROR;
+		case CURLE_RECV_ERROR:					return E_SVR_CURL_RECV_ERROR;
+		case CURLE_USE_SSL_FAILED:				return E_SVR_CURL_USE_SSL_FAILED;
+		case CURLE_NO_CONNECTION_AVAILABLE:		return E_SVR_CURL_NO_CONNECTION_AVAILABLE;
 		default:
-			return E_UNEXPECTED;
+			return E_SYSTEM_UNEXPECTED;
 		};
 	}
 
@@ -146,7 +146,7 @@ namespace Svr
 
 		// Initialize HTTP interface
 		res = curl_global_init_mem(CURL_GLOBAL_ALL, CURL_malloc, CURL_free, CURL_realloc, CURL_strdup, CURL_calloc);
-		if (res != 0) svrErr(E_UNEXPECTED);
+		if (res != 0) svrErr(E_SYSTEM_UNEXPECTED);
 
 		svrChk(m_GoogleAuth.Authenticate());
 
@@ -166,7 +166,7 @@ namespace Svr
 		HRESULT hr = S_OK;
 
 		hr = ParallelTransactionManager::TickUpdate(pAction);
-		if (hr == S_FALSE || FAILED(hr))
+		if (hr == S_SYSTEM_FALSE || FAILED(hr))
 			return hr;
 
 		//svrChk(m_GoogleAuth.UpdateAuthentication(false));

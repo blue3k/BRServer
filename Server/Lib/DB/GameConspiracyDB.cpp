@@ -206,7 +206,7 @@ namespace DB {
 		pQuery->AddedFriendSlot = AddedFriendSlot;
 
 		if (purchaseID.GetSize() > sizeof(pQuery->PurchaseID))
-			dbErr(E_INVALIDARG);
+			dbErr(E_SYSTEM_INVALIDARG);
 		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
 		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.GetSize());
 
@@ -241,7 +241,7 @@ namespace DB {
 		pQuery->SetTransaction(Sender);
 
 		if (purchaseID.GetSize() > sizeof(pQuery->PurchaseID))
-			dbErr(E_INVALIDARG);
+			dbErr(E_SYSTEM_INVALIDARG);
 		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
 		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.GetSize());
 
