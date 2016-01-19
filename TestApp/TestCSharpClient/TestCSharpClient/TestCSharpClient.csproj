@@ -45,15 +45,11 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\Transaction\TransactionIterator.cs" />
-    <Compile Include="Server\Transaction\Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Client\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\..\Server\ServiceInterface\BRClientLib\BRClientLib.csproj">
       <Project>{6e427468-2686-4c62-9e8a-90ee9155b353}</Project>

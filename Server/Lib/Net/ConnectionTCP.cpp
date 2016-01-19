@@ -379,7 +379,7 @@ namespace Net {
 			netTrace(TRC_TCPRECVRAW, "Pending Recv CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 		}
 
-	Proc_End:
+	//Proc_End:
 
 
 		return hr;
