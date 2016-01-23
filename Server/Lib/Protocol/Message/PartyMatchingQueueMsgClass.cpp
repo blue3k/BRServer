@@ -33,7 +33,7 @@ namespace BR
 			const MessageID RegisterPartyMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 0);
 			HRESULT RegisterPartyMatchingCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -60,7 +60,7 @@ namespace BR
 
 			HRESULT RegisterPartyMatchingCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -94,7 +94,7 @@ namespace BR
 
 			HRESULT RegisterPartyMatchingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -121,7 +121,7 @@ namespace BR
 
 			HRESULT RegisterPartyMatchingCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -160,7 +160,7 @@ namespace BR
 			const MessageID RegisterPartyMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 0);
 			HRESULT RegisterPartyMatchingRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -184,7 +184,7 @@ namespace BR
 
 			HRESULT RegisterPartyMatchingRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -216,7 +216,7 @@ namespace BR
 
 			HRESULT RegisterPartyMatchingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -244,7 +244,7 @@ namespace BR
 
 			HRESULT RegisterPartyMatchingRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -283,7 +283,7 @@ namespace BR
 			const MessageID RegisterPlayerMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 1);
 			HRESULT RegisterPlayerMatchingCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -307,7 +307,7 @@ namespace BR
 
 			HRESULT RegisterPlayerMatchingCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -339,7 +339,7 @@ namespace BR
 
 			HRESULT RegisterPlayerMatchingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -366,7 +366,7 @@ namespace BR
 
 			HRESULT RegisterPlayerMatchingCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -405,7 +405,7 @@ namespace BR
 			const MessageID RegisterPlayerMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 1);
 			HRESULT RegisterPlayerMatchingRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -429,7 +429,7 @@ namespace BR
 
 			HRESULT RegisterPlayerMatchingRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -461,7 +461,7 @@ namespace BR
 
 			HRESULT RegisterPlayerMatchingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -489,7 +489,7 @@ namespace BR
 
 			HRESULT RegisterPlayerMatchingRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -528,7 +528,7 @@ namespace BR
 			const MessageID UpdateMatchingEntityUIDCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 2);
 			HRESULT UpdateMatchingEntityUIDCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -553,7 +553,7 @@ namespace BR
 
 			HRESULT UpdateMatchingEntityUIDCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -587,7 +587,7 @@ namespace BR
 
 			HRESULT UpdateMatchingEntityUIDCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -614,7 +614,7 @@ namespace BR
 
 			HRESULT UpdateMatchingEntityUIDCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -653,7 +653,7 @@ namespace BR
 			const MessageID UpdateMatchingEntityUIDRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 2);
 			HRESULT UpdateMatchingEntityUIDRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -676,7 +676,7 @@ namespace BR
 
 			HRESULT UpdateMatchingEntityUIDRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -706,7 +706,7 @@ namespace BR
 
 			HRESULT UpdateMatchingEntityUIDRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -734,7 +734,7 @@ namespace BR
 
 			HRESULT UpdateMatchingEntityUIDRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -772,7 +772,7 @@ namespace BR
 			const MessageID UnregisterMatchingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 3);
 			HRESULT UnregisterMatchingCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -796,7 +796,7 @@ namespace BR
 
 			HRESULT UnregisterMatchingCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -828,7 +828,7 @@ namespace BR
 
 			HRESULT UnregisterMatchingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -855,7 +855,7 @@ namespace BR
 
 			HRESULT UnregisterMatchingCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -894,7 +894,7 @@ namespace BR
 			const MessageID UnregisterMatchingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 3);
 			HRESULT UnregisterMatchingRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -917,7 +917,7 @@ namespace BR
 
 			HRESULT UnregisterMatchingRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -947,7 +947,7 @@ namespace BR
 
 			HRESULT UnregisterMatchingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -975,7 +975,7 @@ namespace BR
 
 			HRESULT UnregisterMatchingRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1013,7 +1013,7 @@ namespace BR
 			const MessageID PartyMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 4);
 			HRESULT PartyMatchingCanceledS2CEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1037,7 +1037,7 @@ namespace BR
 
 			HRESULT PartyMatchingCanceledS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1069,7 +1069,7 @@ namespace BR
 
 			HRESULT PartyMatchingCanceledS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1095,7 +1095,7 @@ namespace BR
 
 			HRESULT PartyMatchingCanceledS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1134,7 +1134,7 @@ namespace BR
 			const MessageID PlayerMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 5);
 			HRESULT PlayerMatchingCanceledS2CEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1158,7 +1158,7 @@ namespace BR
 
 			HRESULT PlayerMatchingCanceledS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1190,7 +1190,7 @@ namespace BR
 
 			HRESULT PlayerMatchingCanceledS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1216,7 +1216,7 @@ namespace BR
 
 			HRESULT PlayerMatchingCanceledS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1255,7 +1255,7 @@ namespace BR
 			const MessageID PartyMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 6);
 			HRESULT PartyMatchingItemDequeuedS2CEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1278,7 +1278,7 @@ namespace BR
 
 			HRESULT PartyMatchingItemDequeuedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1308,7 +1308,7 @@ namespace BR
 
 			HRESULT PartyMatchingItemDequeuedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1334,7 +1334,7 @@ namespace BR
 
 			HRESULT PartyMatchingItemDequeuedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1373,7 +1373,7 @@ namespace BR
 			const MessageID PlayerMatchingItemDequeuedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 7);
 			HRESULT PlayerMatchingItemDequeuedS2CEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1396,7 +1396,7 @@ namespace BR
 
 			HRESULT PlayerMatchingItemDequeuedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1426,7 +1426,7 @@ namespace BR
 
 			HRESULT PlayerMatchingItemDequeuedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1452,7 +1452,7 @@ namespace BR
 
 			HRESULT PlayerMatchingItemDequeuedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1491,7 +1491,7 @@ namespace BR
 			const MessageID ReserveItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 8);
 			HRESULT ReserveItemCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1514,7 +1514,7 @@ namespace BR
 
 			HRESULT ReserveItemCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1544,7 +1544,7 @@ namespace BR
 
 			HRESULT ReserveItemCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1571,7 +1571,7 @@ namespace BR
 
 			HRESULT ReserveItemCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1610,7 +1610,7 @@ namespace BR
 			const MessageID ReserveItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 8);
 			HRESULT ReserveItemRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1635,7 +1635,7 @@ namespace BR
 
 			HRESULT ReserveItemRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1669,7 +1669,7 @@ namespace BR
 
 			HRESULT ReserveItemRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1697,7 +1697,7 @@ namespace BR
 
 			HRESULT ReserveItemRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1737,7 +1737,7 @@ namespace BR
 			const MessageID ReserveItemsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 9);
 			HRESULT ReserveItemsCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1761,7 +1761,7 @@ namespace BR
 
 			HRESULT ReserveItemsCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1793,7 +1793,7 @@ namespace BR
 
 			HRESULT ReserveItemsCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1820,7 +1820,7 @@ namespace BR
 
 			HRESULT ReserveItemsCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1859,7 +1859,7 @@ namespace BR
 			const MessageID ReserveItemsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 9);
 			HRESULT ReserveItemsRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1890,7 +1890,7 @@ namespace BR
 
 			HRESULT ReserveItemsRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<UINT32>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1928,7 +1928,7 @@ namespace BR
 
 			HRESULT ReserveItemsRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1956,7 +1956,7 @@ namespace BR
 
 			HRESULT ReserveItemsRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1998,7 +1998,7 @@ namespace BR
 			const MessageID CancelReservationCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 10);
 			HRESULT CancelReservationCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2022,7 +2022,7 @@ namespace BR
 
 			HRESULT CancelReservationCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -2054,7 +2054,7 @@ namespace BR
 
 			HRESULT CancelReservationCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2081,7 +2081,7 @@ namespace BR
 
 			HRESULT CancelReservationCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2120,7 +2120,7 @@ namespace BR
 			const MessageID CancelReservationRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 10);
 			HRESULT CancelReservationRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2143,7 +2143,7 @@ namespace BR
 
 			HRESULT CancelReservationRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -2173,7 +2173,7 @@ namespace BR
 
 			HRESULT CancelReservationRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2201,7 +2201,7 @@ namespace BR
 
 			HRESULT CancelReservationRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2239,7 +2239,7 @@ namespace BR
 			const MessageID CancelReservationsCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 11);
 			HRESULT CancelReservationsCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2266,7 +2266,7 @@ namespace BR
 
 			HRESULT CancelReservationsCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -2300,7 +2300,7 @@ namespace BR
 
 			HRESULT CancelReservationsCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2327,7 +2327,7 @@ namespace BR
 
 			HRESULT CancelReservationsCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2366,7 +2366,7 @@ namespace BR
 			const MessageID CancelReservationsRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 11);
 			HRESULT CancelReservationsRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2389,7 +2389,7 @@ namespace BR
 
 			HRESULT CancelReservationsRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -2419,7 +2419,7 @@ namespace BR
 
 			HRESULT CancelReservationsRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2447,7 +2447,7 @@ namespace BR
 
 			HRESULT CancelReservationsRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2485,7 +2485,7 @@ namespace BR
 			const MessageID DequeueItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 12);
 			HRESULT DequeueItemCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2509,7 +2509,7 @@ namespace BR
 
 			HRESULT DequeueItemCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -2541,7 +2541,7 @@ namespace BR
 
 			HRESULT DequeueItemCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2568,7 +2568,7 @@ namespace BR
 
 			HRESULT DequeueItemCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2607,7 +2607,7 @@ namespace BR
 			const MessageID DequeueItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 12);
 			HRESULT DequeueItemRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2637,7 +2637,7 @@ namespace BR
 
 			HRESULT DequeueItemRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -2677,7 +2677,7 @@ namespace BR
 
 			HRESULT DequeueItemRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2705,7 +2705,7 @@ namespace BR
 
 			HRESULT DequeueItemRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2748,7 +2748,7 @@ namespace BR
 			const MessageID MatchingItemErrorC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHINGQUEUE, 13);
 			HRESULT MatchingItemErrorC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2771,7 +2771,7 @@ namespace BR
 
 			HRESULT MatchingItemErrorC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -2801,7 +2801,7 @@ namespace BR
 
 			HRESULT MatchingItemErrorC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2827,7 +2827,7 @@ namespace BR
 
 			HRESULT MatchingItemErrorC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;

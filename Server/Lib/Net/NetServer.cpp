@@ -70,7 +70,7 @@ namespace Net {
 	// Open host and start listen
 	HRESULT Server::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		NetAddress localAddr;
 
 		netChk( NetSystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
@@ -90,7 +90,7 @@ namespace Net {
 	// Close host and close all connections
 	HRESULT Server::HostClose()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		GetConnectionManager().TerminateManager();
 
@@ -114,7 +114,7 @@ namespace Net {
 	// Release Connection, Make connection to send free state
 	HRESULT Server::ReleaseConnection( IConnection* pIConnection )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Connection* pConn = (Connection*)pIConnection;
 
 		netChkPtr( pIConnection );
@@ -135,7 +135,7 @@ namespace Net {
 	// take over connection management
 	HRESULT Server::TakeOverConnection(IConnection* pIConnection)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Connection* pConn = (Connection*)pIConnection;
 
 		netChkPtr(pIConnection);
@@ -155,7 +155,7 @@ namespace Net {
 	// Called when connection state changed
 	HRESULT Server::OnConnectionStateChange( IConnection *pIConnection )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		INet::Event netDisEvent(INet::Event::EVT_CONNECTION_DISCONNECTED);
 
 		netTrace(TRC_CONNECTION, "Net Con state Port:{0}, CID:{1}, state:{2}", GetLocalAddress().usPort, pIConnection->GetCID(), pIConnection->GetConnectionState());

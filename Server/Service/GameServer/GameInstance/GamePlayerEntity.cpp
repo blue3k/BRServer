@@ -81,7 +81,7 @@ namespace GameServer {
 	// Initialize entity to proceed new connection
 	HRESULT GamePlayerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto pGameConfig = GetMyServer()->GetPresetGameConfig();
 		auto PlayerAutoLogout = pGameConfig->PlayerAutoLogout;
 
@@ -119,7 +119,7 @@ namespace GameServer {
 	// Set connection for pilot
 	HRESULT GamePlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (pCon == GetConnection())
 			return hr;
@@ -188,12 +188,12 @@ namespace GameServer {
 			UpdateDBSync(0);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT GamePlayerEntity::UpdateDBSync(TransactionID transID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (FAILED(UpdateGamePlayer()))
 			return hr;
@@ -216,15 +216,15 @@ namespace GameServer {
 	{
 		
 		BR_ENTITY_MESSAGE(Message::Game::HeartBitC2SEvt)				{ pNewTrans = nullptr; return OnNewUserTranscation(); } );
-		BR_ENTITY_MESSAGE(Message::Game::JoinGameServerCmd)				{ pNewTrans = new PlayerTransJoinGameServer(pMsgData); return S_OK; } );
+		BR_ENTITY_MESSAGE(Message::Game::JoinGameServerCmd)				{ pNewTrans = new PlayerTransJoinGameServer(pMsgData); return S_SYSTEM_OK; } );
 		BR_ENTITY_MESSAGE(Message::Game::GetUserGamePlayerInfoCmd)		{ pNewTrans = new PlayerTransGetUserGamePlayerInfo(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::GetGamePlayerInfoCmd)			{ pNewTrans = new PlayerTransGetGamePlayerInfo(pMsgData); return OnNewUserTranscation(); } );
 
 		BR_ENTITY_MESSAGE(Message::Game::GetComplitionStateCmd)			{ pNewTrans = new PlayerTransGetComplitionState(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::SetComplitionStateCmd)			{ pNewTrans = new PlayerTransSetComplitionState(pMsgData); return OnNewUserTranscation(); } );
 
-		BR_ENTITY_MESSAGE(Message::Game::RegisterGCMCmd)				{ pNewTrans = new PlayerTransRegisterGCM(pMsgData); return S_OK; } );
-		BR_ENTITY_MESSAGE(Message::Game::UnregisterGCMCmd)				{ pNewTrans = new PlayerTransUnregisterGCM(pMsgData); return S_OK; } );
+		BR_ENTITY_MESSAGE(Message::Game::RegisterGCMCmd)				{ pNewTrans = new PlayerTransRegisterGCM(pMsgData); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::Game::UnregisterGCMCmd)				{ pNewTrans = new PlayerTransUnregisterGCM(pMsgData); return S_SYSTEM_OK; } );
 
 		BR_ENTITY_MESSAGE(Message::Game::InviteFriendCmd)				{ pNewTrans = new PlayerTransInviteFriend(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::AcceptFriendRequestCmd)		{ pNewTrans = new PlayerTransFriendAccept(pMsgData); return OnNewUserTranscation(); } );
@@ -275,13 +275,13 @@ namespace GameServer {
 		BR_ENTITY_MESSAGE(Message::Game::SetPresetGameConfigIDCmd)		{ pNewTrans = new PlayerTransSetConfigPreset(pMsgData); return OnNewUserTranscation(); } );
 		BR_ENTITY_MESSAGE(Message::Game::GainGameResourceCmd)			{ pNewTrans = new PlayerTransGainGameResource(pMsgData); return OnNewUserTranscation(); } );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// clear transaction
 	HRESULT GamePlayerEntity::ClearEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		ReleaseConnection();
 
@@ -295,7 +295,7 @@ namespace GameServer {
 	// Run the task
 	HRESULT GamePlayerEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::Transaction *trans = nullptr;
 
 		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
@@ -330,7 +330,7 @@ namespace GameServer {
 	// Update game configuration
 	HRESULT GamePlayerEntity::UpdateGameConfig()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( GetComponent<UserGamePlayerInfoSystem>()->UpdateStatMaximum() );
 
@@ -343,7 +343,7 @@ namespace GameServer {
 	// Update Game Player 
 	HRESULT GamePlayerEntity::UpdateGamePlayer()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// m_LatestUpdateTime will be initialized when character data is loaded
 		if (m_LatestUpdateTime == TimeStampSec::min())
@@ -445,7 +445,7 @@ namespace GameServer {
 	// Send push notify
 	HRESULT GamePlayerEntity::SendPushNotify( const char* strMessage, UINT64 param )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// Send GCM push notify
 		if( GetGCMKeys() != nullptr && GetGCMKeys()[0] != '\0' )

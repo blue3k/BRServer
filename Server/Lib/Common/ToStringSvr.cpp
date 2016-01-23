@@ -49,7 +49,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -87,7 +87,7 @@ namespace BR
 		if (FAILED(_IToA((UINT32)Data.ID, pBuff, iBuffLen, 10, -1)))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -134,7 +134,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -160,7 +160,7 @@ namespace BR
 			return E_SYSTEM_FAIL;
 
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -183,7 +183,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -207,7 +207,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -231,7 +231,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -250,7 +250,7 @@ namespace BR
 		if (FAILED(ToString(pBuff, iBuffLen, Data.ShardID, Option)))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

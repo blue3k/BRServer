@@ -72,7 +72,7 @@ namespace Net {
 	// Initialize packet synchronization
 	HRESULT ConnectionUDPServerPeer::InitSynchronization()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		netChk(ConnectionUDP::InitSynchronization() );
 
@@ -88,7 +88,7 @@ namespace Net {
 	// Process network control message
 	HRESULT ConnectionUDPServerPeer::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 
 		netChk(ConnectionUDP::ProcNetCtrl( pNetCtrl ) );
@@ -120,7 +120,7 @@ namespace Net {
 	// Update net control, process connection heartbit, ... etc
 	HRESULT ConnectionUDPServerPeer::UpdateNetCtrl()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		netChk(ConnectionUDP::UpdateNetCtrl() );
 
@@ -159,7 +159,7 @@ namespace Net {
 	// Update net control, process connection heartbit, ... etc
 	HRESULT ConnectionUDPServer::UpdateNetCtrl()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		netChk(ConnectionUDP::UpdateNetCtrl() );
 
@@ -206,7 +206,7 @@ namespace Net {
 	// called when New connection TCP accepted
 	HRESULT ConnectionUDPClient::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 		netChkPtr(pIOBuffer);
 
@@ -218,7 +218,7 @@ namespace Net {
 		case S_SYSTEM_FALSE:
 			hr = E_NET_TRY_AGAIN;
 			break;
-		case S_OK:
+		case S_SYSTEM_OK:
 		case E_NET_IO_PENDING:
 		case E_NET_TRY_AGAIN:
 		case E_NET_WOULDBLOCK:
@@ -246,7 +246,7 @@ namespace Net {
 	// called when reciving TCP message
 	HRESULT ConnectionUDPClient::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if(pIOBuffer != nullptr && pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD)
 		{
@@ -311,17 +311,17 @@ namespace Net {
 		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
 		Util::SafeRelease( pIOBuffer->pMsgs );
 		NetSystem::FreeBuffer( pIOBuffer );
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 	// Pending recv New one
 	HRESULT ConnectionUDPClient::PendingRecv()
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 		IOBUFFER_READ *pOver = nullptr;
 
 		if (!NetSystem::IsProactorSystem())
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		IncPendingRecvCount();
 
@@ -332,7 +332,7 @@ namespace Net {
 			hrErr = Recv(pOver);
 			switch (hrErr)
 			{
-			case S_OK:
+			case S_SYSTEM_OK:
 			case E_NET_IO_PENDING:
 			case E_NET_TRY_AGAIN:
 			case E_NET_WOULDBLOCK:
@@ -377,14 +377,14 @@ namespace Net {
 
 		SetLocalClass( NetClass::Client );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	// Update net control, process connection heartbit, ... etc
 	HRESULT ConnectionUDPClient::UpdateNetCtrl()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 
 		//netChk(IConnection::UpdateNetCtrl() );

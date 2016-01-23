@@ -98,7 +98,7 @@ namespace Svr {
 		// Initialize Transaction
 		virtual HRESULT InitializeTransaction( Svr::Entity* pOwner )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			svrChkPtr( pOwner );
 
@@ -197,7 +197,7 @@ namespace Svr {
 		// Toss a message to a target
 		HRESULT TossMessageToTarget( ServerServiceInformation* pService )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			Net::IConnection *pConn = nullptr;
 			ClusteredServiceEntity *pMyOwner = nullptr;
 			Message::MessageData *pClonedMessage = nullptr;
@@ -241,7 +241,7 @@ namespace Svr {
 		// Override for the automatic broad cast
 		virtual HRESULT CloseTransaction( HRESULT hrRes )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			ClusteredServiceEntity *pMyOwner = nullptr;
 
@@ -315,7 +315,7 @@ namespace Svr {
 
 		HRESULT BroadcastToChildren()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			ClusteredServiceEntity *pMyOwner = nullptr;
 			pMyOwner = super::GetMyOwner();
@@ -376,7 +376,7 @@ namespace Svr {
 		// Toss to the message to next ring
 		HRESULT TossToNextRing()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			RingClusterServiceEntity *pMyOwner = nullptr;
 			ServerServiceInformation *pNextService = nullptr;

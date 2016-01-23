@@ -51,7 +51,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT RegisterPartyMatchingTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_MatchingTicket = 0;
 
@@ -70,7 +70,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT RegisterPlayerMatchingTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		MatchingPlayerInformation playerInfo(GetRouteContext().GetFrom(), GetPlayerID(), PlayerRole::None);
 		m_MatchingTicket = 0;
@@ -90,7 +90,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT UpdateMatchingEntityUIDTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -107,7 +107,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT UnregisterMatchingTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -124,7 +124,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT ReserveItemTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -141,7 +141,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT MatchingQueueReserveItemsTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(super::StartTransaction());
 
@@ -158,7 +158,7 @@ namespace Svr {
 			m_MatchingTicket.push_back(matchingTicket);
 		}
 
-		hr = m_NumPlayersInTheTicket.GetSize() == 0 ? E_SVR_NOITEM_INQUEUE : S_OK;
+		hr = m_NumPlayersInTheTicket.GetSize() == 0 ? E_SVR_NOITEM_INQUEUE : S_SYSTEM_OK;
 
 	Proc_End:
 
@@ -172,7 +172,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT CancelReservationTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -190,7 +190,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT DequeueItemTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntity *pServerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -232,7 +232,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT MatchingQueueTransMatchingItemError::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntity *pServerEntity = nullptr;
 		MatchingQueueItem matchingQueueItem;
 

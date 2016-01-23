@@ -31,7 +31,7 @@ namespace DB {
 	// Make this factory as the DB factory
 	HRESULT FactoryOLEDB::Instanciate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		dbMem( Factory::stm_pInstance = new FactoryOLEDB );
 
@@ -61,7 +61,7 @@ namespace DB {
 	HRESULT	FactoryOLEDB::CreateDataSource( DataSource* &pDBSource )
 	{
 		if( pDBSource = new DataSourceOLEDB )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		return E_SYSTEM_OUTOFMEMORY;
 	}
@@ -70,7 +70,7 @@ namespace DB {
 	HRESULT	FactoryOLEDB::CreateSession( DataSource* pDBSource, Session* &pSession )
 	{
 		if( pSession = new SessionOLEDB(pDBSource) )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		return E_SYSTEM_OUTOFMEMORY;
 	}

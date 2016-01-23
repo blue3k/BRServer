@@ -52,7 +52,7 @@ namespace GameServer {
 	// Create new game instance
 	HRESULT GameEntityManager::CreateGamePlayer(PlayerID playerID, GamePlayerEntity* &pGamePlayer)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr( pGamePlayer = new GamePlayerEntity );
 
@@ -91,7 +91,7 @@ namespace GameServer {
 
 	void GameEntityManager::RegisterCounter()
 	{
-		//HRESULT hr = S_OK;
+		//HRESULT hr = S_SYSTEM_OK;
 
 		auto pCounterInstance = Svr::PerformanceCounterClient::GetDefaultCounterInstance();
 		if (pCounterInstance != nullptr)
@@ -107,7 +107,7 @@ namespace GameServer {
 	// Initialize TaskManager
 	HRESULT GameEntityManager::InitializeManager( UINT uiNumGroup )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::EntityManager::InitializeManager( uiNumGroup ) );
 
@@ -120,7 +120,7 @@ namespace GameServer {
 	// Terminate TaskManager
 	HRESULT GameEntityManager::TerminateManager()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::EntityManager::TerminateManager() );
 

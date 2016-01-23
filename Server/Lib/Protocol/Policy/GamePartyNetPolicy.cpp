@@ -30,7 +30,7 @@ namespace BR
  		// Cmd: Join Party
 		HRESULT NetPolicyGameParty::JoinPartyCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -48,7 +48,7 @@ namespace BR
 		// Cmd: Kick player
 		HRESULT NetPolicyGameParty::LeavePartyCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -66,7 +66,7 @@ namespace BR
 		// Cmd: Kick player
 		HRESULT NetPolicyGameParty::KickPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -84,7 +84,7 @@ namespace BR
 		// C2S: Chatting message
 		HRESULT NetPolicyGameParty::ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const char* InChatMessage )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -102,7 +102,7 @@ namespace BR
 		// C2S: Quick Chatting message
 		HRESULT NetPolicyGameParty::QuickChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InQuickChatID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -120,7 +120,7 @@ namespace BR
 		// Cmd: Match
 		HRESULT NetPolicyGameParty::StartGameMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -138,7 +138,7 @@ namespace BR
 		// Cmd: Match
 		HRESULT NetPolicyGameParty::CancelGameMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -158,7 +158,7 @@ namespace BR
 		// Cmd: Join Party
 		HRESULT NetSvrPolicyGameParty::JoinPartyRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -176,7 +176,7 @@ namespace BR
 		// S2C: Player Joined
 		HRESULT NetSvrPolicyGameParty::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -194,7 +194,7 @@ namespace BR
 		// S2C: Player Joined
 		HRESULT NetSvrPolicyGameParty::PartyLeaderChangedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InNewLeaderID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -212,7 +212,7 @@ namespace BR
 		// Cmd: Kick player
 		HRESULT NetSvrPolicyGameParty::LeavePartyRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -230,7 +230,7 @@ namespace BR
 		// S2C: Player left
 		HRESULT NetSvrPolicyGameParty::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -248,7 +248,7 @@ namespace BR
 		// Cmd: Kick player
 		HRESULT NetSvrPolicyGameParty::KickPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -266,7 +266,7 @@ namespace BR
 		// S2C: Player kicked
 		HRESULT NetSvrPolicyGameParty::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -284,7 +284,7 @@ namespace BR
 		// S2C: Chatting message
 		HRESULT NetSvrPolicyGameParty::ChatMessageS2CEvt( const RouteContext &InRouteContext, const PlayerID &InSenderID, const char* InSenderName, const char* InChatMessage )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -302,7 +302,7 @@ namespace BR
 		// S2C: Quick Chatting message
 		HRESULT NetSvrPolicyGameParty::QuickChatMessageS2CEvt( const RouteContext &InRouteContext, const PlayerID &InSenderID, const UINT32 &InQuickChatID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -320,7 +320,7 @@ namespace BR
 		// Cmd: Match
 		HRESULT NetSvrPolicyGameParty::StartGameMatchRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -338,7 +338,7 @@ namespace BR
 		// S2C: Enqueued at a game matching
 		HRESULT NetSvrPolicyGameParty::QueuedGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -356,7 +356,7 @@ namespace BR
 		// Cmd: Match
 		HRESULT NetSvrPolicyGameParty::CancelGameMatchRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -374,7 +374,7 @@ namespace BR
 		// S2C: Canceled at a game matching
 		HRESULT NetSvrPolicyGameParty::CanceledGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -392,7 +392,7 @@ namespace BR
 		// S2C: Enqueued item is dequeued
 		HRESULT NetSvrPolicyGameParty::MatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 

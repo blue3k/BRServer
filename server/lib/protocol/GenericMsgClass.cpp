@@ -25,7 +25,7 @@ namespace Message {
 		// S2C: Used for sending generial failure for not started transaction messages
 		HRESULT FailResultS2CEvt::ParseIMsg( MessageData* pIMsg )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 			INT iMsgSize;
 			BYTE* pCur;
 

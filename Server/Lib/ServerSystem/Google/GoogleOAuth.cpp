@@ -61,7 +61,7 @@ namespace Google {
 
 	HRESULT OAuth::LoadPrivateKey(const char* strPKeyFile)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (m_privateKey != nullptr)
 			return S_SYSTEM_FALSE;
@@ -109,7 +109,7 @@ namespace Google {
 
 	HRESULT OAuth::BuildAuthRequestString(const char* strAccount, const char* scopes, Array<BYTE>& requestString)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		StaticArray<BYTE, 128> digest;
 		int sslResult = TRUE;
@@ -175,7 +175,7 @@ namespace Google {
 
 	HRESULT OAuth::Initialize(const char* strPKeyFile, const char* strAccount, const char* scopes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (strAccount == nullptr || scopes == nullptr)
 			return E_SYSTEM_POINTER;
@@ -203,7 +203,7 @@ namespace Google {
 
 	HRESULT OAuth::ProcessAuthRequest(const Array<BYTE>& requestString)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		const char* url = "https://www.googleapis.com/oauth2/v3/token";
 		CURL *curl = nullptr;
 		char strPostFields[2048];
@@ -272,7 +272,7 @@ namespace Google {
 	// Authenticate
 	HRESULT OAuth::Authenticate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		std::string accessToken;
 		bool parsingSuccessful;
 
@@ -330,7 +330,7 @@ namespace Google {
 	// Refresh
 	HRESULT OAuth::UpdateAuthentication(bool forceUpdate)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (!forceUpdate
 			&& Util::TimeSince(m_AuthenticatedTime) <= DurationMS(AUTHTICKET_TIMEOUT))

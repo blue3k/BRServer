@@ -68,7 +68,7 @@ namespace Svr {
 	// Timer handling
 	HRESULT ClusterInitializationTrans::OnTimer(TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrTrace(Svr::TRC_CLUSTER, "Cluster OnTimer Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}, Step:{4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (UINT)m_Step);
 
@@ -89,13 +89,13 @@ namespace Svr {
 
 		SetFailRetryTimer(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	HRESULT ClusterInitializationTrans::JoinCluster(  )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//ClusterServerService *pService = nullptr;
 		ServerEntity *pMasterServerEntity = nullptr;
 		EntityUID clusterManagerMasterUID;
@@ -169,7 +169,7 @@ namespace Svr {
 
 	HRESULT ClusterInitializationTrans::OnClusterJoined(TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::ClusterServer::JoinClusterRes msgRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -198,12 +198,12 @@ namespace Svr {
 			SetFailRetryTimer(hr);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT ClusterInitializationTrans::RequestDataSync()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntity *pServerEntity = nullptr;
 
 		if( m_currentMaster.UID == 0 )
@@ -231,7 +231,7 @@ namespace Svr {
 
 	HRESULT ClusterInitializationTrans::OnClusterDataSync(TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//Message::ClusterServer::GetClusterMemberListRes msgRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -245,13 +245,13 @@ namespace Svr {
 
 		SetFailRetryTimer(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Add other services to me
 	HRESULT ClusterInitializationTrans::AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		bool bAddStatusWatcher = GetMyOwner()->GetClusterMembership() != ClusterMembership::StatusWatcher;
 
 		ServerEntityManager *pServerEntityManager = GetServerComponent<ServerEntityManager>();
@@ -286,9 +286,9 @@ namespace Svr {
 	// Start Transaction
 	HRESULT ClusterInitializationTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
-		m_hr = S_OK;
+		m_hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -303,7 +303,7 @@ namespace Svr {
 
 		SetFailRetryTimer(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT ClusterInitializationTrans::OnCloseTransaction( HRESULT hrRes )
@@ -334,7 +334,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT RequestDataSyncTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -350,7 +350,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT ClusterMasterAssignedTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -368,7 +368,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT ClusterMasterVoteTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerServiceInformation *pVotedService = nullptr;
 		UINT uiExpectedVoterCount = 0, uiTotalVoted = 0;
 		UINT uiMaxVotedCount = 0;

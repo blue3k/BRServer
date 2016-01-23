@@ -71,7 +71,7 @@ HRESULT CircularQueue<T,SIZE_BUFFER>::Enqueue( T&& item )
 
 	m_nItemCount++;
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template <typename T, int SIZE_BUFFER>
@@ -89,7 +89,7 @@ HRESULT CircularQueue<T,SIZE_BUFFER>::Dequeue(T &item )
 	m_nReadPtr = (m_nReadPtr+1)%SIZE_BUFFER;
 	m_nItemCount--;
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template <typename T, int SIZE_BUFFER>

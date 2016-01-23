@@ -30,7 +30,7 @@ namespace BR
  		// Cmd: Register match by party
 		HRESULT NetPolicyPartyMatchingQueue::RegisterPartyMatchingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -48,7 +48,7 @@ namespace BR
 		// Cmd: Register match alone
 		HRESULT NetPolicyPartyMatchingQueue::RegisterPlayerMatchingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -66,7 +66,7 @@ namespace BR
 		// Cmd: update registration information
 		HRESULT NetPolicyPartyMatchingQueue::UpdateMatchingEntityUIDCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -84,7 +84,7 @@ namespace BR
 		// Cmd: calcel registration
 		HRESULT NetPolicyPartyMatchingQueue::UnregisterMatchingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -102,7 +102,7 @@ namespace BR
 		// Cmd: Reserve a item
 		HRESULT NetPolicyPartyMatchingQueue::ReserveItemCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -120,7 +120,7 @@ namespace BR
 		// Cmd: Reserve a item
 		HRESULT NetPolicyPartyMatchingQueue::ReserveItemsCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -138,7 +138,7 @@ namespace BR
 		// Cmd: Cancel reservation
 		HRESULT NetPolicyPartyMatchingQueue::CancelReservationCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -156,7 +156,7 @@ namespace BR
 		// Cmd: Cancel reservation
 		HRESULT NetPolicyPartyMatchingQueue::CancelReservationsCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -174,7 +174,7 @@ namespace BR
 		// Cmd: Dequeue a reserved item
 		HRESULT NetPolicyPartyMatchingQueue::DequeueItemCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -192,7 +192,7 @@ namespace BR
 		// C2S: Item error you should delete it
 		HRESULT NetPolicyPartyMatchingQueue::MatchingItemErrorC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -212,7 +212,7 @@ namespace BR
 		// Cmd: Register match by party
 		HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPartyMatchingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -230,7 +230,7 @@ namespace BR
 		// Cmd: Register match alone
 		HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPlayerMatchingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -248,7 +248,7 @@ namespace BR
 		// Cmd: update registration information
 		HRESULT NetSvrPolicyPartyMatchingQueue::UpdateMatchingEntityUIDRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -266,7 +266,7 @@ namespace BR
 		// Cmd: calcel registration
 		HRESULT NetSvrPolicyPartyMatchingQueue::UnregisterMatchingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -284,7 +284,7 @@ namespace BR
 		// S2C: For some reason, matching is canceled
 		HRESULT NetSvrPolicyPartyMatchingQueue::PartyMatchingCanceledS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -302,7 +302,7 @@ namespace BR
 		// S2C: For some reason, matching is canceled
 		HRESULT NetSvrPolicyPartyMatchingQueue::PlayerMatchingCanceledS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -320,7 +320,7 @@ namespace BR
 		// S2C: Enqueued item is dequeued
 		HRESULT NetSvrPolicyPartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -338,7 +338,7 @@ namespace BR
 		// S2C: Enqueued item is dequeued
 		HRESULT NetSvrPolicyPartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -356,7 +356,7 @@ namespace BR
 		// Cmd: Reserve a item
 		HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -374,7 +374,7 @@ namespace BR
 		// Cmd: Reserve a item
 		HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemsRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<UINT32>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -392,7 +392,7 @@ namespace BR
 		// Cmd: Cancel reservation
 		HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -410,7 +410,7 @@ namespace BR
 		// Cmd: Cancel reservation
 		HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationsRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -428,7 +428,7 @@ namespace BR
 		// Cmd: Dequeue a reserved item
 		HRESULT NetSvrPolicyPartyMatchingQueue::DequeueItemRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 

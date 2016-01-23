@@ -141,7 +141,7 @@ namespace BR
 
 		m_AllocatedCount.fetch_add(1, std::memory_order_relaxed);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT ObjectPool::Free(ObjectPoolObject* pPtr)
@@ -149,7 +149,7 @@ namespace BR
 		ObjectItem *pMemItem = nullptr;
 
 		if (pPtr == nullptr)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		pPtr->Dispose();
 
@@ -179,7 +179,7 @@ namespace BR
 
 		m_AllocatedCount.fetch_sub(1, std::memory_order_relaxed);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -282,7 +282,7 @@ namespace BR
 
 		m_AllocatedCount.fetch_add(1,std::memory_order_relaxed);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT ObjectPoolMT::Free( ObjectPoolObject* pPtr )
@@ -290,7 +290,7 @@ namespace BR
 		MemItem *pMemItem = nullptr;
 
 		if( pPtr == nullptr )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		pPtr->Dispose();
 
@@ -315,7 +315,7 @@ namespace BR
 		
 		m_AllocatedCount.fetch_sub(1, std::memory_order_relaxed);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

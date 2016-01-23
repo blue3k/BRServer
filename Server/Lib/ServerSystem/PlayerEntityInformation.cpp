@@ -60,7 +60,7 @@ namespace Svr {
 		if( m_ServerEntity == nullptr || m_PlayerEntityUID == 0 )
 			m_IsActivePlayer = false;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 

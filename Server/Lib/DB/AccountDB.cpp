@@ -52,7 +52,7 @@ namespace DB {
 
 	HRESULT AccountDB::FacebookCreateUser(TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryFacebookCreateUserCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryFacebookCreateUserCmd );
@@ -79,7 +79,7 @@ namespace DB {
 
 	HRESULT AccountDB::FacebookLogIn( TransactionID Sender, UINT64 facebookUID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryFacebookLoginCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryFacebookLoginCmd );
@@ -108,7 +108,7 @@ namespace DB {
 	
 	HRESULT AccountDB::CreateUser( TransactionID Sender, const char* UserName, const char* Password)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryCreateUserCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryCreateUserCmd );
@@ -132,7 +132,7 @@ namespace DB {
 
 	HRESULT AccountDB::LogIn( TransactionID Sender, const char* UserName, const char* Password)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryLoginCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryLoginCmd );
@@ -159,7 +159,7 @@ namespace DB {
 
 	HRESULT AccountDB::LogOut( TransactionID Sender)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryLogoutCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryLogoutCmd );
@@ -180,7 +180,7 @@ namespace DB {
 
 	HRESULT AccountDB::CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryCreateRandomUserCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryCreateRandomUserCmd);
@@ -207,7 +207,7 @@ namespace DB {
 
 	HRESULT AccountDB::UserList( TransactionID Sender)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryUserListCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryUserListCmd );
@@ -227,7 +227,7 @@ namespace DB {
 
 	HRESULT AccountDB::UpdateGCMKeys( TransactionID Sender, AccountID accountID, const char* strGCMKeys )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryUpdateGCMKeysCmd *pQuery = nullptr;
 
 		dbChkPtr( strGCMKeys );
@@ -253,7 +253,7 @@ namespace DB {
 
 	HRESULT AccountDB::UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryUpdateUserContactInfoCmd *pQuery = nullptr;
 
 		dbChkPtr(strEMail);
@@ -280,7 +280,7 @@ namespace DB {
 	// Find player
 	HRESULT AccountDB::FindPlayerByEMail( TransactionID Sender, const char* email )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryFindPlayerByEMailCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryFindPlayerByEMailCmd );
@@ -308,7 +308,7 @@ namespace DB {
 
 	HRESULT AccountDB::FindPlayerByPlayerID(TransactionID Sender, AccountID accountID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryFindPlayerByPlayerIDCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryFindPlayerByPlayerIDCmd);
@@ -337,7 +337,7 @@ namespace DB {
 	// Player shard id
 	HRESULT AccountDB::GetPlayerShardID(TransactionID Sender, AccountID accountID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetPlayerShardIDCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetPlayerShardIDCmd);

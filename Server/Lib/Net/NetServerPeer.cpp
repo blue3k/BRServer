@@ -74,7 +74,7 @@ namespace Net {
 	// called when reciving message
 	HRESULT ServerPeer::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SharedPointerT<Connection> pConnection;
 
 		sockaddr_storage from;
@@ -198,7 +198,7 @@ namespace Net {
 		NetSystem::FreeGatheringBuffer( pIOBuffer->pSendBuff );
 		Util::SafeRelease( pIOBuffer->pMsgs );
 		NetSystem::FreeBuffer( pIOBuffer );
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -225,7 +225,7 @@ namespace Net {
 	//// Send message to connection with network device
 	//HRESULT ServerPeer::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
 	//{
-	//	HRESULT hr = S_OK, hrErr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 	//	Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 	//	UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
@@ -240,7 +240,7 @@ namespace Net {
 	//	hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 	//	switch (hrErr)
 	//	{
-	//	case S_OK:
+	//	case S_SYSTEM_OK:
 	//	case E_NET_IO_PENDING:
 	//	case E_NET_TRY_AGAIN:
 	//	case E_NET_WOULDBLOCK:
@@ -281,7 +281,7 @@ namespace Net {
 	//			netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, hrErr, hr );
 	//		}
 	//		else
-	//			return S_OK;
+	//			return S_SYSTEM_OK;
 	//	}
 	//	else
 	//	{
@@ -306,7 +306,7 @@ namespace Net {
 
 	//HRESULT ServerPeer::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
 	//{
-	//	HRESULT hr = S_OK, hrErr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 	//	ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
 
@@ -319,7 +319,7 @@ namespace Net {
 	//	hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 	//	switch (hrErr)
 	//	{
-	//	case S_OK:
+	//	case S_SYSTEM_OK:
 	//	case E_NET_IO_PENDING:
 	//	case E_NET_TRY_AGAIN:
 	//	case E_NET_WOULDBLOCK:
@@ -357,7 +357,7 @@ namespace Net {
 	//			netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, hrErr, hr );
 	//		}
 	//		else
-	//			return S_OK;
+	//			return S_SYSTEM_OK;
 	//	}
 	//	else
 	//	{
@@ -370,11 +370,11 @@ namespace Net {
 	// Pending recv New one
 	HRESULT ServerPeer::PendingRecv( IOBUFFER_READ *pOver )
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 		//int iErr = 0;//, iSockLen = sizeof(sockaddr_in6);
 
 		if (!NetSystem::IsProactorSystem())
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		netChk(pOver->SetPendingTrue());
 		pOver->SetupRecvUDP(0);
@@ -393,7 +393,7 @@ namespace Net {
 				hr = E_NET_TRY_AGAIN;
 				goto Proc_End;// success
 				break;
-			case S_OK:
+			case S_SYSTEM_OK:
 			case E_NET_IO_PENDING:
 			case E_NET_TRY_AGAIN:
 			case E_NET_WOULDBLOCK:
@@ -426,7 +426,7 @@ namespace Net {
 	// Open host and start listen
 	HRESULT ServerPeer::ServerHostOpen(NetClass netCls, const char *strLocalIP, USHORT usLocalPort)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		NetAddress localAddr;
 
 		netChk(NetSystem::OpenSystem(Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX));
@@ -447,7 +447,7 @@ namespace Net {
 	// Open host and start listen
 	HRESULT ServerPeer::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SOCKET socket = INVALID_SOCKET;
 		INT iOptValue;
 		sockaddr_storage bindAddr;
@@ -455,7 +455,7 @@ namespace Net {
 
 
 		if( GetSocket() != INVALID_SOCKET )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		netTrace(Trace::TRC_TRACE, "Opening Server Peer, {0}:{1}", strLocalIP, usLocalPort);
 
@@ -538,7 +538,7 @@ namespace Net {
 	// Close host and close all connections
 	HRESULT ServerPeer::HostClose()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		INet::Event myEvent(INet::Event::EVT_NET_CLOSED);
 
 		m_ConnectionManager.Stop( true );
@@ -567,7 +567,7 @@ namespace Net {
 	// Connect to other peer
 	HRESULT ServerPeer::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Net::IConnection::ConnectionInformation connectionInfo;
 		ConnectionUDPServerPeer *pConn = nullptr;
 		uintptr_t CID = 0;

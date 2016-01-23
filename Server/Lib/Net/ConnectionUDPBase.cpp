@@ -99,7 +99,7 @@ namespace Net {
 		//m_RecvReliableWindow.SetWndSize( uiRecv );
 #endif
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Change remote Address
@@ -112,7 +112,7 @@ namespace Net {
 
 	HRESULT ConnectionUDPBase::UpdateSendQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
@@ -140,7 +140,7 @@ namespace Net {
 
 	HRESULT ConnectionUDPBase::ProcGuarrentedMessageWindow(const std::function<void(Message::MessageData* pMsgData)>& action)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pIMsg = nullptr;
 
 		// slide recv window
@@ -178,7 +178,7 @@ namespace Net {
 	// gathering
 	HRESULT ConnectionUDPBase::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		MsgNetCtrl *pNetCtrlMsg = NULL;
 
@@ -210,7 +210,7 @@ namespace Net {
 
 	HRESULT ConnectionUDPBase::SendPending( Message::MessageData* pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		netChkPtr( pMsg );
 
@@ -238,7 +238,7 @@ namespace Net {
 
 	HRESULT ConnectionUDPBase::SendFlush()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		IOBUFFER_WRITE *pSendBuffer = nullptr;
 
 		if( m_uiGatheredSize && m_pGatheringBuffer )
@@ -289,7 +289,7 @@ namespace Net {
 	// Prepare gathering buffer
 	HRESULT ConnectionUDPBase::PrepareGatheringBuffer( UINT uiRequiredSize )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// You tryed to use this method in a wrong way
 		if( uiRequiredSize > Const::PACKET_GATHER_SIZE_MAX )
@@ -319,7 +319,7 @@ namespace Net {
 	// frame sequence
 	HRESULT ConnectionUDPBase::SendFrameSequenceMessage(Message::MessageData* pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData* pNewMessageData = nullptr;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 		auto pMsgHeader = pMsg->GetMessageHeader();
@@ -370,7 +370,7 @@ namespace Net {
 
 	HRESULT ConnectionUDPBase::OnFrameSequenceMessage(Message::MessageData* pMsg, const std::function<void(Message::MessageData* pMsgData)>& action)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData* pFrameMessage = nullptr;
 		if (pMsg == nullptr)
 			return E_SYSTEM_POINTER;
@@ -451,7 +451,7 @@ namespace Net {
 	// Initialize connection
 	HRESULT ConnectionUDPBase::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_uiGatheredSize = 0;
 
@@ -472,7 +472,7 @@ namespace Net {
 	// Close connection
 	HRESULT ConnectionUDPBase::CloseConnection()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (GetConnectionState() != STATE_DISCONNECTED)
 			Disconnect("CloseConnection");
@@ -495,7 +495,7 @@ namespace Net {
 
 		Util::SafeRelease(m_SubFrameMessage);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -518,7 +518,7 @@ namespace Net {
 	// Send packet buffer to connection with network device
 	HRESULT ConnectionUDPBase::SendBufferUDP(IOBUFFER_WRITE *pSendBuffer)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 		//UINT bufferLen = pSendBuffer->TransferredSize;
 
 		hrErr = NetSystem::SendTo(GetSocket(), pSendBuffer);
@@ -526,7 +526,7 @@ namespace Net {
 		{
 		case E_NET_TRY_AGAIN:
 			break;
-		case S_OK:
+		case S_SYSTEM_OK:
 		case E_NET_IO_PENDING:
 		case E_NET_WOULDBLOCK:
 			break;
@@ -564,7 +564,7 @@ namespace Net {
 			else
 			{
 				netTrace(Net::TRC_SENDRAW, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo(), hrErr, hr);
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 		}
 		else
@@ -588,7 +588,7 @@ namespace Net {
 
 	HRESULT ConnectionUDPBase::SendRaw(Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		IOBUFFER_WRITE *pSendBuffer = nullptr;
 
 		netChkPtr(pMsg);
@@ -626,7 +626,7 @@ namespace Net {
 	// Send message to connected entity
 	HRESULT ConnectionUDPBase::Send( Message::MessageData* &pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageID msgID;
 		UINT uiMsgLen;
 
@@ -740,7 +740,7 @@ namespace Net {
 	// called when incomming message occure
 	HRESULT ConnectionUDP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pMsg = NULL;
 
 		Message::MessageHeader * pMsgHeader = (Message::MessageHeader*)pBuff;
@@ -813,7 +813,7 @@ namespace Net {
 
 	HRESULT ConnectionUDP::OnRecv( Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		UINT length = 0;
 		BYTE* pDataPtr = nullptr;
 
@@ -872,8 +872,8 @@ namespace Net {
 	// Process network control message
 	HRESULT ConnectionUDP::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
 	{
-		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
+		HRESULT hrTem = S_SYSTEM_OK;
 
 		switch( pNetCtrl->msgID.IDs.MsgCode )
 		{
@@ -893,7 +893,7 @@ namespace Net {
 					if (GetConnectionState() == IConnection::STATE_CONNECTING
 						&& GetConnectionInfo().RemoteClass != NetClass::Unknown )
 					{
-						OnConnectionResult( S_OK );
+						OnConnectionResult( S_SYSTEM_OK );
 					}
 					break;
 				case NetCtrlCode_HeartBit:
@@ -1017,7 +1017,7 @@ namespace Net {
 	// Process NetCtrl queue
 	HRESULT ConnectionUDP::ProcNetCtrlQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// Process received net ctrl messages
 		MsgNetCtrlBuffer netCtrl;
@@ -1044,7 +1044,7 @@ namespace Net {
 	// Process Recv queue
 	HRESULT ConnectionUDP::ProcRecvReliableQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pIMsg = nullptr;
 		Message::MessageID msgIDTem;
 		Message::MessageHeader *pMsgHeader = nullptr;
@@ -1052,7 +1052,7 @@ namespace Net {
 
 
 		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 
 		// Recv guaranted queue process
@@ -1122,7 +1122,7 @@ Proc_End:
 	// Process Send queue
 	HRESULT ConnectionUDP::ProcSendReliableQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pIMsg = nullptr;
 		Message::MessageHeader *pMsgHeader = nullptr;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
@@ -1180,7 +1180,7 @@ Proc_End:
 	// Process message window queue
 	HRESULT ConnectionUDP::ProcReliableSendRetry()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		MsgWindow::MessageElement *pMessageElement = nullptr;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
@@ -1218,7 +1218,7 @@ Proc_End:
 	// Process connection state
 	HRESULT ConnectionUDP::ProcConnectionState()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageID msgIDTem;
 
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
@@ -1281,7 +1281,7 @@ Proc_End:
 	// Update net control, process connection heartbit, ... etc
 	HRESULT ConnectionUDP::UpdateNetCtrl()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageID msgIDTem;
 
 		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)

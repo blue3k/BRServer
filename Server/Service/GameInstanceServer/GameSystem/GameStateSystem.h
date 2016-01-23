@@ -72,10 +72,10 @@ namespace ConspiracyGameInstanceServer {
 		virtual bool CanBeEntered()									{ return true; }
 
 		// regular state change event handling
-		virtual HRESULT OnPlayerGetOutOfGame( GamePlayer* pPlayer ) { return S_OK; }
+		virtual HRESULT OnPlayerGetOutOfGame( GamePlayer* pPlayer ) { return S_SYSTEM_OK; }
 		virtual HRESULT OnEnter();
-		virtual HRESULT OnUpdate()									{ return S_OK; }
-		virtual HRESULT OnLeave()									{ return S_OK; }
+		virtual HRESULT OnUpdate()									{ return S_SYSTEM_OK; }
+		virtual HRESULT OnLeave()									{ return S_SYSTEM_OK; }
 
 		friend class GamePlaySystem;
 	};

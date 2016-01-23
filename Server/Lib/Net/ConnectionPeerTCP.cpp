@@ -81,14 +81,14 @@ namespace Net {
 	// Update net control, process connection heartbit, ... etc
 	HRESULT ConnectionPeerTCP::UpdateNetCtrl()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageID msgIDTem;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		// On client side, we need to check readable/writable status by calling connect again
 		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == IConnection::ConnectionState::STATE_CONNECTING)
 		{
-			m_isActuallyConnected = Connect() == S_OK;
+			m_isActuallyConnected = Connect() == S_SYSTEM_OK;
 		}
 
 

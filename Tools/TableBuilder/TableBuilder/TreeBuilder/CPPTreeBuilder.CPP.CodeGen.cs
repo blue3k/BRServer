@@ -328,7 +328,7 @@ namespace TableBuilder
             WriteStatement("return E_SYSTEM_FAIL;");
             CloseSection();
             WriteStatement("xmlCleanupParser();");
-            WriteStatement("return S_OK;");
+            WriteStatement("return S_SYSTEM_OK;");
             CloseSection();
             // Define parser member function end
 
@@ -457,7 +457,7 @@ namespace TableBuilder
             WriteStatement("if (FAILED(parser.LoadTable(strFileName)))");
             WriteStatement("return E_SYSTEM_FAIL;", 1);
             NewLine(1);
-            WriteStatement("return S_OK;");
+            WriteStatement("return S_SYSTEM_OK;");
             CloseSection();
             // End - LoadTable
             
@@ -537,7 +537,7 @@ namespace TableBuilder
             }
 
 
-            WriteStatement("return S_OK;");
+            WriteStatement("return S_SYSTEM_OK;");
             CloseSection();
             // End - ClearTable
         }

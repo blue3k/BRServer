@@ -82,7 +82,7 @@ namespace ConspiracyGameInstanceServer {
 	// Initialize game system
 	HRESULT GameInstanceEntity::InitializeSystem()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( UpdateGameConfig(m_PresetGameConfigID) );
 
@@ -101,7 +101,7 @@ namespace ConspiracyGameInstanceServer {
 	// Update game config
 	HRESULT GameInstanceEntity::UpdateGameConfig(UINT configPresetID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		conspiracy::GameConfigTbl::GameConfigItem *pGameConfig = nullptr;
 		svrChk( conspiracy::GameConfigTbl::FindItem(configPresetID, pGameConfig ) );
@@ -118,7 +118,7 @@ namespace ConspiracyGameInstanceServer {
 	// Initialize entity to proceed new connection
 	HRESULT GameInstanceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::InitializeEntity( newEntityID ) );
 
@@ -134,10 +134,10 @@ namespace ConspiracyGameInstanceServer {
 	// Close entity and clear transaction
 	HRESULT GameInstanceEntity::TerminateEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		CloseGameInstance();
 
@@ -158,7 +158,7 @@ namespace ConspiracyGameInstanceServer {
 	// Run entity
 	HRESULT GameInstanceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto CurTime = Util::Time.GetTimeMs();
 		StaticArray<PlayerID,64> LeaverList;
 		//GamePlayerUIDMap::iterator itPlayer;
@@ -217,7 +217,7 @@ namespace ConspiracyGameInstanceServer {
 	// Update Game status
 	HRESULT GameInstanceEntity::UpdateGameStatus( TimeStampMS ulCurTime )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// Call check timer to update
 		m_TimeToKill.CheckTimer();
@@ -280,7 +280,7 @@ namespace ConspiracyGameInstanceServer {
 	// Initialize entity to proceed new connection
 	HRESULT GameInstanceEntity::InitializeGameEntity(UINT numBot, UINT maxPlayer)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer *pPlayer = nullptr;
 
 
@@ -370,7 +370,7 @@ namespace ConspiracyGameInstanceServer {
 			return E_INVALID_PLAYERID;
 
 		playerIndex = pGamePlayer->GetIndex();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT GameInstanceEntity::GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer )
@@ -380,14 +380,14 @@ namespace ConspiracyGameInstanceServer {
 
 		pGamePlayer = m_PlayerByIndex[playerIndex];
 
-		return pGamePlayer ? S_OK : E_SYSTEM_FAIL;
+		return pGamePlayer ? S_SYSTEM_OK : E_SYSTEM_FAIL;
 	}
 
 
 	// Register new player to join
 	HRESULT GameInstanceEntity::AddPlayerToJoin(GamePlayer* &pPlayer)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer* pFound = nullptr;
 		UINT playerIndex;
 
@@ -453,7 +453,7 @@ namespace ConspiracyGameInstanceServer {
 	// Player leave
 	HRESULT GameInstanceEntity::LeavePlayer( GamePlayer* &pPlayer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		pPlayer->SetServerEntity(nullptr,0);
 
@@ -475,7 +475,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GameInstanceEntity::LeavePlayer( PlayerID pltID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( m_PendingReleasePlayer.Enqueue( pltID ) );
 
@@ -502,13 +502,13 @@ namespace ConspiracyGameInstanceServer {
 
 		m_GamePlayerByUID.ClearMap();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Find Player pilotid
 	HRESULT GameInstanceEntity::FindPlayer( PlayerID pltID, GamePlayer* &pGamePlayer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (FAILED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
 		{
@@ -524,7 +524,7 @@ namespace ConspiracyGameInstanceServer {
 	// Called when a player get out of game
 	HRESULT GameInstanceEntity::OnPlayerGetOutOfGame( GamePlayer* pPlayer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// update exit status
 		svrChk( GetComponent<GamePlaySystem>()->OnPlayerGetOutOfGame(pPlayer) );

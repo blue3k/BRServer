@@ -30,7 +30,7 @@ namespace BR
  		// Cmd: Add a player to ranking
 		HRESULT NetPolicyMonitoring::GetInstanceListCmd( const Context &InContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -48,7 +48,7 @@ namespace BR
 		// Cmd: Remove a player to ranking
 		HRESULT NetPolicyMonitoring::RequestCounterValuesCmd( const Context &InContext, const EntityUID &InInstanceUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -66,7 +66,7 @@ namespace BR
 		// C2S: Counter instance is created
 		HRESULT NetPolicyMonitoring::PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -84,7 +84,7 @@ namespace BR
 		// C2S: Counter instance is deleted
 		HRESULT NetPolicyMonitoring::PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -102,7 +102,7 @@ namespace BR
 		// C2S: Counter update broadcast
 		HRESULT NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -122,7 +122,7 @@ namespace BR
 		// Cmd: Add a player to ranking
 		HRESULT NetSvrPolicyMonitoring::GetInstanceListRes( const Context &InContext, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -140,7 +140,7 @@ namespace BR
 		// Cmd: Remove a player to ranking
 		HRESULT NetSvrPolicyMonitoring::RequestCounterValuesRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -158,7 +158,7 @@ namespace BR
 		// S2C: Request from server
 		HRESULT NetSvrPolicyMonitoring::PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 

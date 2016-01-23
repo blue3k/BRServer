@@ -63,7 +63,7 @@ namespace Google {
 
 	HRESULT AndroidDeveloperAPI::ToHRESULT(const Json::Value& root)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Json::Value errorValue, errors;
 
 		if (root.isNull())
@@ -149,7 +149,7 @@ namespace Google {
 	// Check purchase receipt
 	HRESULT AndroidDeveloperAPI::CheckReceipt(const char* packageName, const char* productID, const char* purchaseToken)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		const char* urlFormat = "https://www.googleapis.com/androidpublisher/v2/applications/{0}/purchases/products/{1}/tokens/{2}";
 		CURL *curl = nullptr;
 		char strRequest[2048];

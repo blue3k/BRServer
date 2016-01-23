@@ -33,10 +33,10 @@ namespace BR
 			void RegisterDebugTraceGameInstanceManager()
 			{
  				// Cmd: Create a game instance
-				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::CreateGameCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GameInstanceManager::CreateGameCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
-				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::CreateGameRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GameInstanceManager::CreateGameRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::CreateGameCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GameInstanceManager::CreateGameCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::CreateGameRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GameInstanceManager::CreateGameRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
 				// C2S: Game instance notify of deletion
-				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::GameDeletedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GameInstanceManager::GameDeletedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::GameDeletedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GameInstanceManager::GameDeletedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
 			}; // void RegisterDebugTraceGameInstanceManager()
 
 
@@ -45,7 +45,7 @@ namespace BR
 			HRESULT DebugOutGameInstanceManager( const char *Prefix, MessageData *pMsg )
 			{
  
-				HRESULT hr = S_OK;
+				HRESULT hr = S_SYSTEM_OK;
 				auto itFount = MessageDebugTraceMapGameInstanceManager.end();
 
 				protocolChkPtr(pMsg);

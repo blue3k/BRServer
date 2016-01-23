@@ -155,12 +155,10 @@ typedef HANDLE HMODULE;
 
 
 
-#include "Common/ResultCode/BRResultCodeSystem.h"
 
 #define TRUE (1)
 #define FALSE (0)
 
-#define S_OK 0
 
 #define FAILED(hr)      ((hr) < 0)
 #define SUCCEEDED(hr)   ((hr) >= 0)
@@ -337,6 +335,7 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 
 
 
+#include "Common/ResultCode/BRResultCodeSystem.h"
 
 
 

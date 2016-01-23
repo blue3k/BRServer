@@ -62,7 +62,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT RankingPartyTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -86,7 +86,7 @@ namespace Svr {
 		////hr = ReserveItem(GetQueryMemberCount());
 		//if( hr == E_SVR_NOITEM_INQUEUE )
 		//{
-		//	hr = S_OK;
+		//	hr = S_SYSTEM_OK;
 		//	SetTimer(1000);
 		//}
 

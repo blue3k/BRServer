@@ -37,7 +37,7 @@ namespace BR
 		// Cmd: Join Party
 		HRESULT GamePartyService::JoinPartyCmd( const Context &InContext, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
@@ -51,7 +51,7 @@ namespace BR
 		// Cmd: Kick player
 		HRESULT GamePartyService::LeavePartyCmd( const Context &InContext, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
@@ -65,7 +65,7 @@ namespace BR
 		// Cmd: Kick player
 		HRESULT GamePartyService::KickPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
@@ -79,7 +79,7 @@ namespace BR
 		// C2S: Chatting message
 		HRESULT GamePartyService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyGameParty()->ChatMessageC2SEvt( InRouteContext, InPlayerID, InChatMessage ) );
@@ -92,7 +92,7 @@ namespace BR
 		// C2S: Quick Chatting message
 		HRESULT GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const UINT32 &InQuickChatID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyGameParty()->QuickChatMessageC2SEvt( InRouteContext, InPlayerID, InQuickChatID ) );
@@ -105,7 +105,7 @@ namespace BR
 		// Cmd: Match
 		HRESULT GamePartyService::StartGameMatchCmd( const Context &InContext, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
@@ -119,7 +119,7 @@ namespace BR
 		// Cmd: Match
 		HRESULT GamePartyService::CancelGameMatchCmd( const Context &InContext, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );

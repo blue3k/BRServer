@@ -63,7 +63,7 @@ namespace GameServer {
 	HRESULT UserNotifySystem::InitializeComponent()
 	{
 		m_Notifications.Clear();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Terminate component
@@ -158,7 +158,7 @@ namespace GameServer {
 				return hr;
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 }; // namespace GameServer

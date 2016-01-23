@@ -85,7 +85,7 @@ namespace ConspiracyGameInstanceServer {
 	// Initialzie system
 	HRESULT GamePlaySystem::InitializeComponent()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_NumVillager = 0;
 		m_NumWereWolf = 0;
@@ -107,7 +107,7 @@ namespace ConspiracyGameInstanceServer {
 			pPlayer->SetRevealedBySeer( false );
 			pPlayer->SetPlayerState( PlayerState::Playing );
 			pPlayer->SetReviveCount(0);
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		svrChk( super::InitializeComponent() );
@@ -119,7 +119,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GamePlaySystem::PlayerRoleAssigned(GamePlayer* pPlayer)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		switch (pPlayer->GetRole())
 		{
@@ -150,7 +150,7 @@ namespace ConspiracyGameInstanceServer {
 	
 	HRESULT GamePlaySystem::AssignRole()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		bool ShufflingBuffer[GameConst::MAX_GAMEPLAYER];
 		size_t numPlayer = GetOwner().GetNumPlayer();
@@ -166,7 +166,7 @@ namespace ConspiracyGameInstanceServer {
 
 			if (pPlayer->GetRequestedRole() == PlayerRole::None)
 			{
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			// Find empty slot
@@ -181,7 +181,7 @@ namespace ConspiracyGameInstanceServer {
 			if (iSlot >= GameConst::MAX_GAMEPLAYER)
 			{
 				svrTrace(Trace::TRC_WARN, "Failed to find requested role, player:{0}, requested:{1}", pPlayer->GetPlayerID(), (UINT)pPlayer->GetRequestedRole());
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			ShufflingBuffer[iSlot] = true;
@@ -191,7 +191,7 @@ namespace ConspiracyGameInstanceServer {
 
 			PlayerRoleAssigned(pPlayer);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 
@@ -199,7 +199,7 @@ namespace ConspiracyGameInstanceServer {
 		GetOwner().ForeachPlayer( [&](GamePlayer* pPlayer) ->HRESULT {
 
 			if (pPlayer->GetRole() != PlayerRole::None)
-				return S_OK;
+				return S_SYSTEM_OK;
 
 			int iRandom = (int)Util::Random.Rand() % numPlayer;
 			for( int count = 0; count < GameConst::MAX_GAMEPLAYER; count++, iRandom = (iRandom+1)%numPlayer )
@@ -215,14 +215,14 @@ namespace ConspiracyGameInstanceServer {
 
 			PlayerRoleAssigned(pPlayer);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 
 		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->RoleAssignedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetRole() );
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 
@@ -263,11 +263,11 @@ namespace ConspiracyGameInstanceServer {
 		m_NumVillager = 0;
 		m_NumWereWolf = 0;
 
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GetOwner().ForeachPlayer( [&]( GamePlayer* pPlayer )->HRESULT
 		{
 			if( pPlayer->GetPlayerState() != PlayerState::Playing )
-				return S_OK;
+				return S_SYSTEM_OK;
 
 			switch( pPlayer->GetRole() )
 			{
@@ -307,7 +307,7 @@ namespace ConspiracyGameInstanceServer {
 				hr = E_GAME_INVALID_ROLE;
 				return hr;
 			};
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		return hr;
@@ -331,7 +331,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GamePlaySystem::UpdateGameEnd()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		GameWinner winner = GetGameWinner();
 		if( winner == GameWinner::None )
@@ -365,7 +365,7 @@ namespace ConspiracyGameInstanceServer {
 						pGamePlayer = pPlayer;
 					}
 
-					return S_OK;
+					return S_SYSTEM_OK;
 				});
 			}
 		}
@@ -403,7 +403,7 @@ namespace ConspiracyGameInstanceServer {
 	// Kill Player
 	HRESULT GamePlaySystem::KillPlayer( PlayerID playerToKill, PlayerKilledReason reason )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer *pPlayer = nullptr;
 
 
@@ -421,7 +421,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GamePlaySystem::KillPlayer( GamePlayer* pPlayerToKill, PlayerKilledReason reason )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( pPlayerToKill == nullptr )
 			return E_SYSTEM_INVALIDARG;
@@ -473,7 +473,7 @@ namespace ConspiracyGameInstanceServer {
 		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->PlayerKilledS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayerToKill->GetPlayerID(), reason);
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		//svrChk( UpdateGameEnd() );
@@ -495,7 +495,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GamePlaySystem::RevivePlayer(GamePlayer* pPlayerToRevive)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		if (pPlayerToRevive == nullptr)
 			return E_SYSTEM_INVALIDARG;
 
@@ -544,7 +544,7 @@ namespace ConspiracyGameInstanceServer {
 		GetOwner().ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->HRESULT {
 			if (pPlayer->GetPlayerEntityUID() != 0)
 				pPolicy->GamePlayerRevivedS2CEvt(RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayerToRevive->GetPlayerID());
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 
@@ -583,7 +583,7 @@ namespace ConspiracyGameInstanceServer {
 			break;
 		};
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -622,7 +622,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GamePlaySystem::BroadCastChatMessage(GamePlayer *pMyPlayer, PlayerRole role, const char* message)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ChatType charType;
 		GameStateID gameState;
 		bool bIsGhost;
@@ -660,11 +660,11 @@ namespace ConspiracyGameInstanceServer {
 				if (bIsGhost && pPlayer->GetPlayerState() != PlayerState::Ghost)
 				{
 					// Skip broadcast from ghost to others
-					return S_OK;
+					return S_SYSTEM_OK;
 				}
 				pPolicy->ChatMessageC2SEvt(RouteContext(ownerEntityUID, pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerID(), role, pMyPlayer->GetPlayerName(), message);
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 
@@ -687,23 +687,23 @@ namespace ConspiracyGameInstanceServer {
 		GetOwner().ForeachPlayer( [&](GamePlayer* pPlayerFrom) ->HRESULT
 		{
 			if (!pPlayerFrom->GetIsBot()
-				|| pPlayerFrom->GetPlayerState() != PlayerState::Playing) return S_OK;
+				|| pPlayerFrom->GetPlayerState() != PlayerState::Playing) return S_SYSTEM_OK;
 
-			if (roleToTalk != PlayerRole::None && pPlayerFrom->GetRole() != roleToTalk) return S_OK;
+			if (roleToTalk != PlayerRole::None && pPlayerFrom->GetRole() != roleToTalk) return S_SYSTEM_OK;
 
 			int randTalkPossibility = Util::Random.Rand(1000);
-			if (randTalkPossibility > 700) return S_OK;
+			if (randTalkPossibility > 700) return S_SYSTEM_OK;
 
 			int randTalkID = Util::Random.Rand(minID, maxID);
 			StrUtil::Format(strBuffer, "<chatmsg><n><t>b</t><v>{0}</v></n></chatmsg>", randTalkID);
 
 			GetOwner().GetComponent<GamePlaySystem>()->BroadCastChatMessage(pPlayerFrom, PlayerRole::None, strBuffer);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT GamePlaySystem::BroadCastRandomBotMessageSuspect(int minID, int maxID)
@@ -713,23 +713,23 @@ namespace ConspiracyGameInstanceServer {
 		GetOwner().ForeachPlayer([&](GamePlayer* pPlayerFrom) ->HRESULT
 		{
 			if (!pPlayerFrom->GetIsBot()
-				|| pPlayerFrom->GetPlayerState() != PlayerState::Playing) return S_OK;
+				|| pPlayerFrom->GetPlayerState() != PlayerState::Playing) return S_SYSTEM_OK;
 
-			if (!IsSuspect(pPlayerFrom->GetPlayerID())) return S_OK;
+			if (!IsSuspect(pPlayerFrom->GetPlayerID())) return S_SYSTEM_OK;
 
 			int randTalkPossibility = Util::Random.Rand(1000);
-			if (randTalkPossibility > 700) return S_OK;
+			if (randTalkPossibility > 700) return S_SYSTEM_OK;
 
 			int randTalkID = Util::Random.Rand(minID, maxID);
 			StrUtil::Format(strBuffer, "<chatmsg><n><t>b</t><v>{0}</v></n></chatmsg>", randTalkID);
 
 			GetOwner().GetComponent<GamePlaySystem>()->BroadCastChatMessage(pPlayerFrom, PlayerRole::None, strBuffer);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

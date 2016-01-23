@@ -33,7 +33,7 @@ namespace BR
 			const MessageID CreatePartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEPARTYMANAGER, 0);
 			HRESULT CreatePartyCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -57,7 +57,7 @@ namespace BR
 
 			HRESULT CreatePartyCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -89,7 +89,7 @@ namespace BR
 
 			HRESULT CreatePartyCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -116,7 +116,7 @@ namespace BR
 
 			HRESULT CreatePartyCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -155,7 +155,7 @@ namespace BR
 			const MessageID CreatePartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEPARTYMANAGER, 0);
 			HRESULT CreatePartyRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -178,7 +178,7 @@ namespace BR
 
 			HRESULT CreatePartyRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -208,7 +208,7 @@ namespace BR
 
 			HRESULT CreatePartyRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -236,7 +236,7 @@ namespace BR
 
 			HRESULT CreatePartyRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -274,7 +274,7 @@ namespace BR
 			const MessageID PartyDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEPARTYMANAGER, 1);
 			HRESULT PartyDeletedC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -296,7 +296,7 @@ namespace BR
 
 			HRESULT PartyDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -324,7 +324,7 @@ namespace BR
 
 			HRESULT PartyDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -350,7 +350,7 @@ namespace BR
 
 			HRESULT PartyDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;

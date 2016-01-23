@@ -43,7 +43,7 @@ namespace Svr {
 	//template< class MsgClass >
 	//HRESULT RouteMessage( Message::MessageData* &pMsg )
 	//{
-	//	HRESULT hr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK;
 	//	ServerEntity* pServerEntity = nullptr;
 	//	MsgClass msg;
 

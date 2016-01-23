@@ -32,7 +32,7 @@ namespace BR
 			const MessageID LoginCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 0);
 			HRESULT LoginCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -59,7 +59,7 @@ namespace BR
 
 			HRESULT LoginCmd::BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const char* InID, const char* InPassword )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -101,7 +101,7 @@ namespace BR
 			const MessageID LoginRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 0);
 			HRESULT LoginRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -127,7 +127,7 @@ namespace BR
 
 			HRESULT LoginRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -174,7 +174,7 @@ namespace BR
 			const MessageID LoginByFacebookCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 1);
 			HRESULT LoginByFacebookCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -205,7 +205,7 @@ namespace BR
 
 			HRESULT LoginByFacebookCmd::BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -252,7 +252,7 @@ namespace BR
 			const MessageID LoginByFacebookRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 1);
 			HRESULT LoginByFacebookRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -278,7 +278,7 @@ namespace BR
 
 			HRESULT LoginByFacebookRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -325,7 +325,7 @@ namespace BR
 			const MessageID CreateRandomUserCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 2);
 			HRESULT CreateRandomUserCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -349,7 +349,7 @@ namespace BR
 
 			HRESULT CreateRandomUserCmd::BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const char* InCellPhone )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -388,7 +388,7 @@ namespace BR
 			const MessageID CreateRandomUserRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 2);
 			HRESULT CreateRandomUserRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -414,7 +414,7 @@ namespace BR
 
 			HRESULT CreateRandomUserRes::BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 

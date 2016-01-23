@@ -33,7 +33,7 @@ namespace BR
 			const MessageID AddPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 0);
 			HRESULT AddPlayerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -61,7 +61,7 @@ namespace BR
 
 			HRESULT AddPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -97,7 +97,7 @@ namespace BR
 
 			HRESULT AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -133,7 +133,7 @@ namespace BR
 			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 0);
 			HRESULT AddPlayerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -157,7 +157,7 @@ namespace BR
 
 			HRESULT AddPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InRanking )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -189,7 +189,7 @@ namespace BR
 
 			HRESULT AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -227,7 +227,7 @@ namespace BR
 			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 1);
 			HRESULT RemovePlayerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -250,7 +250,7 @@ namespace BR
 
 			HRESULT RemovePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -280,7 +280,7 @@ namespace BR
 
 			HRESULT RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -316,7 +316,7 @@ namespace BR
 			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 1);
 			HRESULT RemovePlayerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -339,7 +339,7 @@ namespace BR
 
 			HRESULT RemovePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -369,7 +369,7 @@ namespace BR
 
 			HRESULT RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -407,7 +407,7 @@ namespace BR
 			const MessageID GetPlayerRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 2);
 			HRESULT GetPlayerRankingCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -430,7 +430,7 @@ namespace BR
 
 			HRESULT GetPlayerRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -460,7 +460,7 @@ namespace BR
 
 			HRESULT GetPlayerRankingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -496,7 +496,7 @@ namespace BR
 			const MessageID GetPlayerRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 2);
 			HRESULT GetPlayerRankingRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -520,7 +520,7 @@ namespace BR
 
 			HRESULT GetPlayerRankingRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InRanking )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -552,7 +552,7 @@ namespace BR
 
 			HRESULT GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -590,7 +590,7 @@ namespace BR
 			const MessageID UpdatePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 3);
 			HRESULT UpdatePlayerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -618,7 +618,7 @@ namespace BR
 
 			HRESULT UpdatePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -654,7 +654,7 @@ namespace BR
 
 			HRESULT UpdatePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -690,7 +690,7 @@ namespace BR
 			const MessageID UpdatePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 3);
 			HRESULT UpdatePlayerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -714,7 +714,7 @@ namespace BR
 
 			HRESULT UpdatePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InRanking )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -746,7 +746,7 @@ namespace BR
 
 			HRESULT UpdatePlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -784,7 +784,7 @@ namespace BR
 			const MessageID GetRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 4);
 			HRESULT GetRankingCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -808,7 +808,7 @@ namespace BR
 
 			HRESULT GetRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT32 &InFrom, const UINT32 &InCount )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -840,7 +840,7 @@ namespace BR
 
 			HRESULT GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -876,7 +876,7 @@ namespace BR
 			const MessageID GetRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 4);
 			HRESULT GetRankingRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -900,7 +900,7 @@ namespace BR
 
 			HRESULT GetRankingRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InPlayerRanking )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -932,7 +932,7 @@ namespace BR
 
 			HRESULT GetRankingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;

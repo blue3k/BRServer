@@ -77,12 +77,12 @@ namespace Svr {
 	{
 		ProcessGrabbing();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT MatchingTransGrabPlayer::ProcessGrabbing()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		UINT itemsInQueue = 0;
 
 		if (itemsInQueue < m_MinQueueCount)
@@ -115,12 +115,12 @@ namespace Svr {
 		}
 		
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT MatchingTransGrabPlayer::ReserveItem(UINT grabCount)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerServiceInformation *pService = nullptr;
 		RingClusterServiceEntity *pServiceEntity = nullptr;
 
@@ -162,7 +162,7 @@ namespace Svr {
 
 	HRESULT MatchingTransGrabPlayer::RequestDeleteItem(MatchingQueueTicket ticket)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntity *pServerEntity = nullptr;
 
 		svrTrace(Svr::TRC_MATCHING, "Request Delete item Matching:{0}, MatchingQueueID:{1}, MTicket:{2}", m_MatchingMemberCount, m_TargetQueueComponentID, ticket);
@@ -180,7 +180,7 @@ namespace Svr {
 
 	HRESULT MatchingTransGrabPlayer::OnReserveItem(TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::PartyMatchingQueue::ReserveItemsRes msgRes;
 
 		//m_RequestedTime = 0;
@@ -237,13 +237,13 @@ namespace Svr {
 			ClearTimer();
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Start Transaction
 	HRESULT MatchingTransGrabPlayer::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(super::StartTransaction());
 
@@ -295,7 +295,7 @@ namespace Svr {
 
 	HRESULT MatchingTransProcessMatchedItems::DequeueItem(const MatchingQueueTicket& ticket)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntity *pServerEntity = nullptr;
 
 		svrTrace(Svr::TRC_MATCHING, "Dequeue item Matching:{0}, MTicket:{1}", GetTargetMatchingMemberCount(), ticket);
@@ -314,7 +314,7 @@ namespace Svr {
 
 	HRESULT MatchingTransProcessMatchedItems::OnDequeueItem(TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::PartyMatchingQueue::DequeueItemRes msgRes;
 
 		m_PendingDequeueItem--;
@@ -354,7 +354,7 @@ namespace Svr {
 			if (m_DequeuedTotalMembers > 0)
 				CreateGame();
 			else
-				CloseTransaction(S_OK);
+				CloseTransaction(S_SYSTEM_OK);
 		}
 
 		return hr;
@@ -362,7 +362,7 @@ namespace Svr {
 
 	HRESULT MatchingTransProcessMatchedItems::CreateGame()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerServiceInformation *pService = nullptr;
 
 		svrTrace(Svr::TRC_MATCHING, "Creating game Matching:{0}", GetTargetMatchingMemberCount());
@@ -382,7 +382,7 @@ namespace Svr {
 
 	HRESULT MatchingTransProcessMatchedItems::OnCreateGame(TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::GameInstanceManager::CreateGameRes msgRes;
 		GameInsUID gameUID;
 		UINT notifiedPlayerCount = 0;
@@ -459,7 +459,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT MatchingTransProcessMatchedItems::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_PendingDequeueItem = 0;
 		m_DequeuedTotalMembers = 0;

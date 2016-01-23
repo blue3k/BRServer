@@ -42,7 +42,7 @@ namespace DB {
 	// Send query
 	HRESULT QueryWorker::ExecuteQuery(Query* &pQuery)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryManager *pQueryManager = nullptr;
 		Session* pSession = nullptr;
 
@@ -95,7 +95,7 @@ namespace DB {
 	
 	void QueryWorker::Run()
 	{
-		//HRESULT	hr = S_OK;
+		//HRESULT	hr = S_SYSTEM_OK;
 		DurationMS expectedTickInterval(5);
 
 		while(1)

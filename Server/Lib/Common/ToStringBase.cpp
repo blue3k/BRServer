@@ -113,7 +113,7 @@ namespace BR
 
 		*buf = '\0';            // terminate string;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -285,7 +285,7 @@ namespace BR
 		else
 			*(buf-1) = '\0';
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -298,7 +298,7 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -310,7 +310,7 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -322,7 +322,7 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -334,7 +334,7 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -346,7 +346,7 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -358,7 +358,7 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -370,7 +370,7 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -382,7 +382,7 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 #if WINDOWS
@@ -400,7 +400,7 @@ namespace BR
 			_IToA((INT32)iData, pBuff, iBuffLen, Radix, -1);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -412,7 +412,7 @@ namespace BR
 
 		_IToA((UINT32)iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -432,7 +432,7 @@ namespace BR
 
 		unused(Option);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 #endif
 
@@ -524,7 +524,7 @@ namespace BR
 	{
 		int degit = Option >> 16;
 		_FToA(Data, pBuff, iBuffLen, degit, 0);
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -533,7 +533,7 @@ namespace BR
 		int degit = Option >> 16;
 		_FToA(Data, pBuff, iBuffLen, degit, (char)(Option & 0xFFFF));
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -547,7 +547,7 @@ namespace BR
 
 		_IToA(value, pBuff, iBuffLen, 16, sizeof(value) * 2);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

@@ -122,7 +122,7 @@ namespace ProtocolBuilder
             strFunction += string.Format("  {0} parser; ", strMsgClass);
             strFunction += "parser.ParseIMsg(pMsg); ";
             strFunction += "parser.TraceOut(prefix,pMsg); ";
-            strFunction += "return S_OK; ";
+            strFunction += "return S_SYSTEM_OK; ";
             strFunction += "} ";
 
             MatchIndent(); OutStream.WriteLine(string.Format("{0}.insert(std::make_pair({1},{2}));", MappingTableName(), strKey, strFunction));

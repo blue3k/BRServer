@@ -34,7 +34,7 @@ namespace BR
 		if (FAILED(_IToA((UINT32)Data.Components.EntityLID, pBuff, iBuffLen, 10, -1)))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -52,7 +52,7 @@ namespace BR
 		if (FAILED(ToString(pBuff, iBuffLen, Data.Components.EntID, Option)))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -76,7 +76,7 @@ namespace BR
 		if (FAILED(ToStringEnum(pBuff, iBuffLen, Data.IDs.Sequence)))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -92,7 +92,7 @@ namespace BR
 		if (FAILED(_IToA((UINT32)Data.usPort, pBuff, iBuffLen, 10, -1)))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -104,7 +104,7 @@ namespace BR
 		if (FAILED(_IToA((UINT32)Data, pBuff, iBuffLen, 10, -1)))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -128,7 +128,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -152,7 +152,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<>
@@ -175,7 +175,7 @@ namespace BR
 		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -195,7 +195,7 @@ namespace BR
 	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<TotalRankingPlayerInformation>& Data, int Option)
 	{
-		return S_OK;// TODO: ToStringArray(pBuff, iBuffLen, Data, Option);
+		return S_SYSTEM_OK;// TODO: ToStringArray(pBuff, iBuffLen, Data, Option);
 	}
 
 	template<>

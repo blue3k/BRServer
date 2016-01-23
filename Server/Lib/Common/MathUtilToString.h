@@ -36,7 +36,7 @@ namespace BR
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	
@@ -70,7 +70,7 @@ namespace BR
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

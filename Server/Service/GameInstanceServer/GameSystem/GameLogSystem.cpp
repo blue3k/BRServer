@@ -55,7 +55,7 @@ namespace ConspiracyGameInstanceServer {
 	// Initialzie system
 	HRESULT GameLogSystem::InitializeComponent()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( InitializeLog() );
 
@@ -86,7 +86,7 @@ namespace ConspiracyGameInstanceServer {
 	// Add log items
 	HRESULT GameLogSystem::AddGameStateChange(TimeStampSec timeStamp, GameStateID gameState )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GameLogGameStateChange *pLogItem;
 
 		if( gameState < GameStateID::None || gameState >= GameStateID::Max )
@@ -108,7 +108,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GameLogSystem::AddGameVote( TimeStampSec timeStamp, GameVoteType type, UINT voterCount )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GameLogVote *logItem;
 
 		if( type < GameVoteType(0) || type >= GameVoteType::Max )
@@ -140,7 +140,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 	HRESULT GameLogSystem::UpdateGameVote( PlayerID voter, PlayerID voted )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( m_CurrentVoteLogItem == nullptr /*|| m_CurrentVoteLogItem->Type != type*/ )
 			return E_GAME_INVALID_VOTETYPE;
@@ -154,7 +154,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GameLogSystem::AddGameVoteResult(TimeStampSec timeStamp, UINT numRankers, const PlayerID* ranker )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GameLogVoteResult *logItem;
 
 		if( numRankers > 2 )
@@ -188,7 +188,7 @@ namespace ConspiracyGameInstanceServer {
 	
 	HRESULT GameLogSystem::AddGamePlayerKilled(TimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GameLogPlayerKilled *logItem;
 
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogPlayerKilled>();
@@ -207,7 +207,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GameLogSystem::AddGameEnd(TimeStampSec timeStamp, GameWinner winner )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GameLogGameEnd *logItem;
 
 		if( winner < GameWinner(0) || winner >= GameWinner::Max )

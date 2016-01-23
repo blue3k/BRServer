@@ -85,7 +85,7 @@ namespace Net {
 	// Process network control message
 	HRESULT ConnectionTCP::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pIMsg = NULL;
 
 		switch( pNetCtrl->msgID.IDs.MsgCode )
@@ -110,7 +110,7 @@ namespace Net {
 						auto pConnectCtrl = ((MsgNetCtrlConnect*)pNetCtrl);
 						m_ConnectInfo.SetRemoteInfo(RemoteClass, pConnectCtrl->PeerUID);
 						m_ConnectInfo.Remote = pConnectCtrl->Address;
-						OnConnectionResult(S_OK);
+						OnConnectionResult(S_SYSTEM_OK);
 					}
 					break;
 				};
@@ -187,7 +187,7 @@ namespace Net {
 					if (GetConnectionState() != STATE_CONNECTED)
 					{
 						m_ConnectInfo.SetRemoteInfo(RemoteClass, pNetCtrlCon->PeerUID);
-						OnConnectionResult(S_OK);
+						OnConnectionResult(S_SYSTEM_OK);
 					}
 				}
 			}
@@ -215,7 +215,7 @@ namespace Net {
 
 	HRESULT ConnectionTCP::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			return E_NET_CONNECTION_CLOSED;
@@ -254,7 +254,7 @@ namespace Net {
 		case S_SYSTEM_FALSE:
 			hr = E_NET_TRY_AGAIN;
 			break;
-		case S_OK:
+		case S_SYSTEM_OK:
 			break;
 		};
 
@@ -267,7 +267,7 @@ namespace Net {
 	// called when reciving message
 	HRESULT ConnectionTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if(pIOBuffer != nullptr && pIOBuffer->CID != GetCID() )
 			netErr( E_SYSTEM_INVALIDARG );
@@ -331,40 +331,40 @@ namespace Net {
 		Util::SafeRelease( pIOBuffer->pMsgs );
 		NetSystem::FreeBuffer( pIOBuffer );
 		m_PendingSend.fetch_sub(1, std::memory_order_release);
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Clear Queue
 	HRESULT ConnectionTCP::ClearQueues()
 	{
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Pending recv New one
 	HRESULT ConnectionTCP::PendingRecv()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		IOBUFFER_READ *pOver = nullptr;
 
 		if (!NetSystem::IsProactorSystem())
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		if (GetConnectionState() == ConnectionState::STATE_DISCONNECTED)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		// On client side, we need to check writable status by calling connect again
 		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == ConnectionState::STATE_CONNECTING)
 		{
-			m_isActuallyConnected = Connect() == S_OK;
+			m_isActuallyConnected = Connect() == S_SYSTEM_OK;
 			if (!m_isActuallyConnected)
-				return S_OK;
+				return S_SYSTEM_OK;
 		}
 
 		// For TCP, we need only single buffer is in waiting read operation
 		pOver = GetRecvBuffer();
 		hr = pOver->SetPendingTrue();
 		if (FAILED(hr))
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		hr = Recv(pOver);
 		if (FAILED(hr) && hr != E_NET_IO_PENDING)
@@ -435,7 +435,7 @@ namespace Net {
 
 	HRESULT ConnectionTCP::Connect()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		int connResult;
 
 		ResetZeroRecvCount();
@@ -459,7 +459,7 @@ namespace Net {
 				hr = S_SYSTEM_FALSE;
 				break;
 			case E_NET_ISCONN:		// Connection estabalished
-				hr = S_OK;
+				hr = S_SYSTEM_OK;
 				break;
 			default:
 				netTrace(Trace::TRC_WARN, "Connection try is failed, RemoteAddr:{0}, RemoteID:{1}, hr:{2:X8}", GetConnectionInfo().Remote, GetConnectionInfo().RemoteID, lastError);
@@ -485,7 +485,7 @@ namespace Net {
 	// Wait connection event
 	HRESULT ConnectionTCP::WaitConnect()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// disable wait for non-windows platform
 #if WINDOWS
@@ -549,7 +549,7 @@ namespace Net {
 	// Close connection
 	HRESULT ConnectionTCP::CloseConnection()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		//socket
 		m_uiRecvTemUsed = 0;
@@ -582,7 +582,7 @@ namespace Net {
 	// called when incomming message occure
 	HRESULT ConnectionTCP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pMsg = NULL;
 
 		netTrace(TRC_TCPRECVRAW, "TCP RecvBuf Len={0}", uiBuffSize);
@@ -711,7 +711,7 @@ namespace Net {
 
 	HRESULT ConnectionTCP::OnRecv( Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageHeader *pMsgHeader = pMsg->GetMessageHeader();
 
 		if( pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
@@ -746,14 +746,14 @@ namespace Net {
 	// Send message to connection with network device
 	HRESULT ConnectionTCP::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 		netChkPtr(pSendBuffer);
 
 		hrErr = NetSystem::Send(GetSocket(), pSendBuffer);
 		switch (hrErr)
 		{
-		case S_OK:
+		case S_SYSTEM_OK:
 		case E_NET_IO_PENDING:
 		case E_NET_WOULDBLOCK:
 			break;
@@ -781,11 +781,11 @@ namespace Net {
 
 		switch (hr)
 		{
-		case S_OK:
+		case S_SYSTEM_OK:
 		case S_SYSTEM_FALSE:
 			break;
 		case E_NET_IO_SEND_FAIL:
-			return S_OK;
+			return S_SYSTEM_OK;
 		case E_NET_TRY_AGAIN:
 			break;
 		default:
@@ -800,7 +800,7 @@ namespace Net {
 
 	HRESULT ConnectionTCP::SendRaw(Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		IOBUFFER_WRITE *pSendBuffer = nullptr;
 
 		netChkPtr(pMsg);
@@ -833,7 +833,7 @@ namespace Net {
 	// Send message to connected entity
 	HRESULT ConnectionTCP::Send( Message::MessageData* &pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageID msgID;
 
 		if (GetConnectionState() == STATE_DISCONNECTED)
@@ -942,7 +942,7 @@ namespace Net {
 	// Update net control, process connection heartbit, ... etc
 	HRESULT ConnectionTCPClient::UpdateNetCtrl()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageID msgIDTem;
 
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
@@ -1020,7 +1020,7 @@ namespace Net {
 	// Wait connection event
 	HRESULT ConnectionTCPClient::WaitConnect()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if(SUCCEEDED(ConnectionTCP::WaitConnect()))
 		{
@@ -1065,7 +1065,7 @@ namespace Net {
 	// Update net control, process connection heartbit, ... etc
 	HRESULT ConnectionTCPServer::UpdateNetCtrl()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageID msgIDTem;
 
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();

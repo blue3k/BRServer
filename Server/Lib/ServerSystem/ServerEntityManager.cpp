@@ -52,7 +52,7 @@ namespace Svr
 
 	HRESULT ServerEntityManager::GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntity *pNewServerEntity = nullptr;
 		Net::IConnection *pConnection = nullptr;
 
@@ -92,7 +92,7 @@ namespace Svr
 	// Get remote entity
 	HRESULT ServerEntityManager::GetServerEntity( ServerID svrID, ServerEntity* &pServerEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		hr = m_ServerIDMap.Find(svrID, pServerEntity);
 
@@ -106,7 +106,7 @@ namespace Svr
 
 	HRESULT ServerEntityManager::GetEntityManagerServerEntity( ServerEntity* &pServerEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// Get first non-zero one, This should be the biggest one
 		ServerUpTimeList::iterator itEntity = m_EntityManagerServerUpTimeMap.begin();
@@ -127,7 +127,7 @@ namespace Svr
 
 	HRESULT ServerEntityManager::UpdateEntityManagerServerEntity( ServerEntity* pServerEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerUpTimeList::Node *pPrevNode = nullptr;
 		ServerUpTimeListNodeItem *pPrevListNode = nullptr;
 		ServerUpTimeListNodeItem *pNewListNode = nullptr;
@@ -172,7 +172,7 @@ namespace Svr
 	// Add new connection
 	HRESULT ServerEntityManager::AddServerEntity(NetClass netClass, ServerEntity* pServerEntity)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto& entityTable = GetEntityTable();
 		svrChkPtr( pServerEntity );
 
@@ -205,7 +205,7 @@ namespace Svr
 
 	HRESULT ServerEntityManager::AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		MutexScopeLock localLock(m_ServerTableLock);
 

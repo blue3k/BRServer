@@ -644,7 +644,7 @@ namespace Config
 
 			xmlCleanupParser();
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 	};
@@ -678,7 +678,7 @@ namespace Config
 
 		RemoveAllChildren();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	
@@ -702,7 +702,7 @@ namespace Config
 			return E_SYSTEM_FAIL;
 		}
 		xmlCleanupParser();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Clear Config data

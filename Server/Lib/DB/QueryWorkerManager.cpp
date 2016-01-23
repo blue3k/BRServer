@@ -64,7 +64,7 @@ namespace DB {
 	// Initialize QueryWorkerManager
 	HRESULT QueryWorkerManager::InitializeDBWorkerManager()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		auto initCount = stm_InitializationCount.fetch_add(1, std::memory_order_relaxed);
 		if (initCount == 0 && stm_pInstance == nullptr)
@@ -91,7 +91,7 @@ namespace DB {
 
 	HRESULT	QueryWorkerManager::PendingQuery(Query* &pQuery)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (stm_pInstance == nullptr)
 			dbErr(E_SYSTEM_FAIL);
@@ -108,7 +108,7 @@ namespace DB {
 
 	HRESULT	QueryWorkerManager::TryGetQuery(Query* &pQuery)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		MutexScopeLock lockScope(m_QueryQueueLock);
 

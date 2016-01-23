@@ -33,10 +33,10 @@ namespace BR
 			void RegisterDebugTraceGamePartyManager()
 			{
  				// Cmd: Create a party instance
-				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::CreatePartyCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GamePartyManager::CreatePartyCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
-				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::CreatePartyRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GamePartyManager::CreatePartyRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::CreatePartyCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GamePartyManager::CreatePartyCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::CreatePartyRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GamePartyManager::CreatePartyRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
 				// C2S: Party instance notify of deletion
-				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::PartyDeletedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GamePartyManager::PartyDeletedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::PartyDeletedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GamePartyManager::PartyDeletedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
 			}; // void RegisterDebugTraceGamePartyManager()
 
 
@@ -45,7 +45,7 @@ namespace BR
 			HRESULT DebugOutGamePartyManager( const char *Prefix, MessageData *pMsg )
 			{
  
-				HRESULT hr = S_OK;
+				HRESULT hr = S_SYSTEM_OK;
 				auto itFount = MessageDebugTraceMapGamePartyManager.end();
 
 				protocolChkPtr(pMsg);

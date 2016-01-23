@@ -155,7 +155,7 @@ namespace Trace {
 	// check and update trace module
 	HRESULT TraceModule::CheckAndUpdate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// Update output mask
 		if(Util::TimeSince(m_MaskUpdated) > DurationMS(60*1000))
@@ -324,7 +324,7 @@ namespace Trace {
 		dwStrLen = (DWORD)strlen(szLogBuff);
 		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -407,7 +407,7 @@ namespace Trace {
 			m_tRegCheck = tCurTime;
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	void TraceOutModule::ValidateLogFile()

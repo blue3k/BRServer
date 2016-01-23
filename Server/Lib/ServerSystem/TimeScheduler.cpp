@@ -170,7 +170,7 @@ namespace Svr {
 
 	HRESULT TimeScheduler::AddTimerAction(ThreadID threadID, TimerAction* pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 
 		Assert(m_WorkingThreadID == threadID);
@@ -211,7 +211,7 @@ namespace Svr {
 
 	HRESULT TimeScheduler::RemoveTimerAction(ThreadID threadID, TimerAction* pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SharedPointerT<TimerAction> removed;
 
 		if (pAction == nullptr)
@@ -264,10 +264,10 @@ namespace Svr {
 
 	HRESULT TimeScheduler::Reschedul(ThreadID threadID, TimerAction* pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (pAction == nullptr)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		//Assert(m_IsWriteLocked.load(std::memory_order_relaxed) == 0);
 

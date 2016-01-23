@@ -85,7 +85,7 @@ namespace LoginServer {
 	// Apply configuration
 	HRESULT LoginServer::ApplyConfiguration()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		const Svr::Config::PublicServer* pMySvr = nullptr;
 
 		std::for_each( Svr::Config::GetConfig().LoginServers.begin(), Svr::Config::GetConfig().LoginServers.end(), 
@@ -114,7 +114,7 @@ namespace LoginServer {
 	// Initialize server resource
 	HRESULT LoginServer::InitializeServerResource()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
@@ -130,7 +130,7 @@ namespace LoginServer {
 	// Close server and release resource
 	HRESULT LoginServer::CloseServerResource()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::BrServer::CloseServerResource() );
 
@@ -147,7 +147,7 @@ namespace LoginServer {
 	// Initialize private Network
 	HRESULT LoginServer::InitializeNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::LoginClusterServiceEntity *pLoginService = nullptr;
 		Svr::ClusteredServiceEntity *pClusteredEntity = nullptr;
 		SockFamily privateNetSockFamily;
@@ -206,7 +206,7 @@ namespace LoginServer {
 	// Close Private Network
 	HRESULT LoginServer::CloseNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		hr = Svr::BrServer::CloseNetPrivate();
 
@@ -221,7 +221,7 @@ namespace LoginServer {
 	// Initialize private Network
 	HRESULT LoginServer::InitializeNetPublic()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::Config::PublicServer* pMyConfog = nullptr;
 
 		svrChk( CloseNetPublic() );
@@ -243,10 +243,10 @@ namespace LoginServer {
 	// Close Public Network
 	HRESULT LoginServer::CloseNetPublic()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( m_pNetPublic == nullptr )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		svrChk( m_pNetPublic->CloseAllConnection() );
 
@@ -281,7 +281,7 @@ namespace LoginServer {
 		if( pServerEntity == nullptr )
 			return E_SYSTEM_OUTOFMEMORY;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -296,13 +296,13 @@ namespace LoginServer {
 	// Process Private network event
 	HRESULT LoginServer::ProcessPublicNetworkEvent()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Net::INet::Event curEvent;
 		LoginPlayerEntity *pLoginPlayerEntity = nullptr;
 		Net::Connection *pConn = nullptr;
 
 		if( m_pNetPublic == nullptr )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		while( SUCCEEDED(m_pNetPublic->DequeueNetEvent( curEvent )) )
 		{

@@ -55,7 +55,7 @@ namespace EntityServer {
 
 	HRESULT EntityServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//Svr::ServerEntity *pServer = nullptr;
 		
 		switch( m_Step )
@@ -98,7 +98,7 @@ namespace EntityServer {
 
 	HRESULT EntityServerStartProcess::InitializeServices()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 
 		// Grab Game server list from entity
@@ -115,7 +115,7 @@ namespace EntityServer {
 	// Start Transaction
 	HRESULT EntityServerStartProcess::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 

@@ -31,15 +31,17 @@ namespace BR {
 		// Single linked list
 		struct Node {
 			Node*		pNext;
-			// Maximum 64bit Key value
-			union {
-				KeyType	Key;
-				UINT64	Padding;
-			};
+
+			KeyType	Key;
+			//// Maximum 64bit Key value
+			//union {
+			//	KeyType	Key;
+			//	UINT64	Padding;
+			//};
 
 			Node() {}
 		};
-		static_assert(sizeof(KeyType) <= sizeof(UINT64), " Maximum 64bit Key value");
+		//static_assert(sizeof(KeyType) <= sizeof(UINT64), " Maximum 64bit Key value");
 
 
 		// iterator class
@@ -143,7 +145,7 @@ namespace BR {
 		{
 		}
 
-		// Find Previous Node
+		// Find Previous of same or smaller Node
 		HRESULT FindPrevNode( KeyType keyValue, Node* &pPrevNode )
 		{
 			pPrevNode = &m_Header;
@@ -153,7 +155,7 @@ namespace BR {
 				if( pNextNode->Key <= keyValue )
 					break;
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT Insert( iterator itNode, KeyType keyValue, Node* pNew )
@@ -191,7 +193,7 @@ namespace BR {
 
 			m_NumItems++;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Remove 
@@ -221,7 +223,7 @@ namespace BR {
 
 			m_NumItems--;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT Remove( Node* pPrevNode, Node* pRemove )
@@ -237,7 +239,7 @@ namespace BR {
 
 			m_NumItems--;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		iterator begin()

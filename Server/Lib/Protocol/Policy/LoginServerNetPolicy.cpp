@@ -30,7 +30,7 @@ namespace BR
  		// Cmd: Notify user joind and see it's valid authticket instance
 		HRESULT NetPolicyLoginServer::PlayerJoinedToGameServerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -48,7 +48,7 @@ namespace BR
 		// Cmd: Kick logged in player
 		HRESULT NetPolicyLoginServer::KickPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -68,7 +68,7 @@ namespace BR
 		// Cmd: Notify user joind and see it's valid authticket instance
 		HRESULT NetSvrPolicyLoginServer::PlayerJoinedToGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -86,7 +86,7 @@ namespace BR
 		// Cmd: Kick logged in player
 		HRESULT NetSvrPolicyLoginServer::KickPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 

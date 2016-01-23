@@ -449,7 +449,7 @@ namespace Hash {
 			{
 				iter = begin();
 
-				return iter.IsValid() ? S_OK : E_SYSTEM_FAIL;
+				return iter.IsValid() ? S_SYSTEM_OK : E_SYSTEM_FAIL;
 			}
 
 			iterator begin()
@@ -540,7 +540,7 @@ namespace Hash {
 #ifdef _DEBUG
 				Assert( bucket.Validate(iBucket, m_Bucket.size()) );
 #endif
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			HRESULT find( const KeyType& keyVal, ItemType &data )
@@ -557,7 +557,7 @@ namespace Hash {
 					if( equal_to<KeyType>()( keyVal, iter->Key ) )
 					{
 						data = iter->Data;
-						return S_OK;
+						return S_SYSTEM_OK;
 					}
 				}
 
@@ -580,7 +580,7 @@ namespace Hash {
 					if( equal_to<KeyType>()( keyVal, iter->Key ) )
 					{
 						iterData.Set( this, m_Bucket.begin() + iBucket, iIdx, false );
-						return S_OK;
+						return S_SYSTEM_OK;
 					}
 				}
 
@@ -614,7 +614,7 @@ namespace Hash {
 						//_WriteBarrier();
 						std::atomic_thread_fence(std::memory_order_seq_cst);
 						bucket.WriteUnlock();
-						return S_OK;
+						return S_SYSTEM_OK;
 					}
 				}
 
@@ -650,7 +650,7 @@ namespace Hash {
 						//_WriteBarrier();
 						std::atomic_thread_fence(std::memory_order_seq_cst);
 						bucket.WriteUnlock();
-						return S_OK;
+						return S_SYSTEM_OK;
 					}
 				}
 
@@ -721,7 +721,7 @@ namespace Hash {
 #endif
 				iterBucket->WriteUnlock();
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			HRESULT clear()
@@ -734,7 +734,7 @@ namespace Hash {
 					iterBucket->m_Items.clear();
 				}
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			bool Validate()

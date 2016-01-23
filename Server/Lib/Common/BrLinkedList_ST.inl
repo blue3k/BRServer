@@ -196,7 +196,7 @@ public:
 
 	HRESULT Insert(Iterator& Iter, const DataType& Value)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		Assert(Iter.m_pNode != nullptr);
 
@@ -221,7 +221,7 @@ Proc_End:
 
 	HRESULT Erase(Iterator& Iter)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		Assert(Iter.m_pNode != nullptr);
 		Assert(Iter.m_pNode != &m_Tail);

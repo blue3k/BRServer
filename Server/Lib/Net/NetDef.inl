@@ -68,7 +68,7 @@ HRESULT IConnection::SetupNet( INet *pNetInstance, uintptr_t uiCID )
 {
 	m_CID = uiCID;
 	m_pINet = pNetInstance;
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 

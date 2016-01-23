@@ -49,7 +49,7 @@ namespace Svr {
 
 	HRESULT RankingServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(ReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
 
@@ -67,7 +67,7 @@ namespace Svr {
 	// clear transaction
 	HRESULT RankingServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(ReplicaClusterServiceEntity::ClearEntity() );
 
@@ -78,7 +78,7 @@ namespace Svr {
 
 	HRESULT RankingServiceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(ReplicaClusterServiceEntity::TickUpdate(pAction) );
 

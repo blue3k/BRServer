@@ -52,14 +52,14 @@ namespace Util {
 				return E_SYSTEM_FAIL;
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	// Base 64 encode/decode
 	static HRESULT Base64Encode_(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		int i = 0;
 		int j = 0;
 		unsigned char char_array_3[3];
@@ -116,7 +116,7 @@ namespace Util {
 
 	static HRESULT Base64Decode_(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		int in_len = (int)srcSize;
 		int i = 0;
 		int j = 0;

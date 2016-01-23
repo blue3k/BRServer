@@ -53,7 +53,7 @@ HRESULT ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc )
 		memcpy( pDest, pSrc, iSrcCount*sizeof(DupType) );
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 
@@ -66,7 +66,7 @@ HRESULT MemCpy( BYTE (&Dest)[szDstSize], const DataType& Src )
 	memcpy( Dest, &Src, sizeof(DataType) );
 	if( szDstSize < sizeof(DataType) )
 		return E_SYSTEM_FAIL;
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 
@@ -78,7 +78,7 @@ HRESULT MemCpy( DataType& Dest, const BYTE (&Src)[szDstSize] )
 	memcpy( &Dest, Src, sizeof(DataType) );
 	if( szDstSize < sizeof(DataType) )
 		return E_SYSTEM_FAIL;
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 
@@ -91,7 +91,7 @@ HRESULT SafeDeleteArray( ArrayType* &pArray )
 		pArray = NULL;
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template<class ValueType>
@@ -103,7 +103,7 @@ HRESULT SafeDelete( ValueType* &pObj )
 		pObj = nullptr;
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template<class ValueType>
@@ -115,7 +115,7 @@ HRESULT SafeRelease( ValueType* &pObj )
 		pObj = nullptr;
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 

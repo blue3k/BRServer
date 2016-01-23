@@ -33,11 +33,11 @@ namespace BR
 			void RegisterDebugTraceLoginServer()
 			{
  				// Cmd: Notify user joind and see it's valid authticket instance
-				MessageDebugTraceMapLoginServer.insert(std::make_pair(LoginServer::PlayerJoinedToGameServerCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   LoginServer::PlayerJoinedToGameServerCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
-				MessageDebugTraceMapLoginServer.insert(std::make_pair(LoginServer::PlayerJoinedToGameServerRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   LoginServer::PlayerJoinedToGameServerRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapLoginServer.insert(std::make_pair(LoginServer::PlayerJoinedToGameServerCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   LoginServer::PlayerJoinedToGameServerCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapLoginServer.insert(std::make_pair(LoginServer::PlayerJoinedToGameServerRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   LoginServer::PlayerJoinedToGameServerRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
 				// Cmd: Kick logged in player
-				MessageDebugTraceMapLoginServer.insert(std::make_pair(LoginServer::KickPlayerCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   LoginServer::KickPlayerCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
-				MessageDebugTraceMapLoginServer.insert(std::make_pair(LoginServer::KickPlayerRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   LoginServer::KickPlayerRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_OK; } ));
+				MessageDebugTraceMapLoginServer.insert(std::make_pair(LoginServer::KickPlayerCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   LoginServer::KickPlayerCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapLoginServer.insert(std::make_pair(LoginServer::KickPlayerRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   LoginServer::KickPlayerRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
 			}; // void RegisterDebugTraceLoginServer()
 
 
@@ -46,7 +46,7 @@ namespace BR
 			HRESULT DebugOutLoginServer( const char *Prefix, MessageData *pMsg )
 			{
  
-				HRESULT hr = S_OK;
+				HRESULT hr = S_SYSTEM_OK;
 				auto itFount = MessageDebugTraceMapLoginServer.end();
 
 				protocolChkPtr(pMsg);

@@ -15,8 +15,6 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-//#include "Common/Memory.h"
-//#include "Common/Trace.h"
 #include "Common/ResultCode/BRResultCodeCommon.h"
 
 
@@ -44,7 +42,7 @@ namespace BR {
 		virtual ~Component() {}
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() { m_IsInitialized = true; return S_OK; }
+		virtual HRESULT InitializeComponent() { m_IsInitialized = true; return S_SYSTEM_OK; }
 		// Terminate server component
 		virtual void TerminateComponent() { m_IsInitialized = false;  }
 	};
@@ -96,7 +94,7 @@ namespace BR {
 		// Initialize components
 		virtual HRESULT InitializeComponents()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			size_t iComponent = 0;
 			for( ; iComponent < (MaxComponentID+1); iComponent++ )
 			{
@@ -122,7 +120,7 @@ namespace BR {
 
 		HRESULT TerminateComponents()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			// Terminate in reverse order
 			int iComponent = (int)MaxComponentID;
 			for (; iComponent >= 0; iComponent--)
@@ -282,7 +280,7 @@ namespace BR {
 
 			newComponent = nullptr;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Get component with its ID

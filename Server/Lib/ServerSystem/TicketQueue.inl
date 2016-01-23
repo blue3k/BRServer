@@ -83,7 +83,7 @@ TicketQueue<DataObject,TTicketType>::~TicketQueue()
 template< class DataObject, class TTicketType >
 HRESULT TicketQueue<DataObject,TTicketType>::Enqueue( const DataObject& newData, TicketType& hTicket )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	ItemTicket *pItem = nullptr;
 
 	svrChk( AssignItem( newData, pItem ) );
@@ -99,7 +99,7 @@ Proc_End:
 template< class DataObject, class TTicketType >
 HRESULT TicketQueue<DataObject,TTicketType>::Enqueue( DataObject&& newData, TicketType& hTicket )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	ItemTicket *pItem = nullptr;
 
 	svrChk( AssignItem( newData, pItem ) );
@@ -117,7 +117,7 @@ Proc_End:
 template< class DataObject, class TTicketType >
 HRESULT TicketQueue<DataObject,TTicketType>::Dequeue( DataObject& Data )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	ItemTicket *pItem = nullptr;
 
 	svrChk( AssignItem( newData, pItem ) );
@@ -135,7 +135,7 @@ Proc_End:
 template< class DataObject, class TTicketType >
 HRESULT TicketQueue<DataObject,TTicketType>::DropItem( TicketType hTicket )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	TicketMap::Iterator itItem;
 
 	svrChk( m_TicketMap.find( (ItemTicket*)hTicket, itItem ) );

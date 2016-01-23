@@ -60,7 +60,7 @@ namespace EntityServer {
 //	// Start Transaction
 //	HRESULT TransRegisterUserEntity::StartTransaction()
 //	{
-//		HRESULT hr = S_OK;
+//		HRESULT hr = S_SYSTEM_OK;
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //
@@ -83,10 +83,10 @@ namespace EntityServer {
 //	// process abnormal termination of transaction
 //	HRESULT TransRegisterUserEntity::CloseTransaction( HRESULT hrRes )
 //	{
-//		HRESULT hr = S_OK;
+//		HRESULT hr = S_SYSTEM_OK;
 //
 //		if( IsClosed() )
-//			return S_OK;
+//			return S_SYSTEM_OK;
 //
 //		svrChkPtr( GetPolicy() );
 //
@@ -113,7 +113,7 @@ namespace EntityServer {
 //	// Start Transaction
 //	HRESULT TransUnregisterUserEntity::StartTransaction()
 //	{
-//		HRESULT hr = S_OK;
+//		HRESULT hr = S_SYSTEM_OK;
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //
@@ -136,10 +136,10 @@ namespace EntityServer {
 //	// process abnormal termination of transaction
 //	HRESULT TransUnregisterUserEntity::CloseTransaction( HRESULT hrRes )
 //	{
-//		HRESULT hr = S_OK;
+//		HRESULT hr = S_SYSTEM_OK;
 //
 //		if( IsClosed() )
-//			return S_OK;
+//			return S_SYSTEM_OK;
 //
 //		svrChkPtr( GetPolicy() );
 //
@@ -166,7 +166,7 @@ namespace EntityServer {
 //	// Start Transaction
 //	HRESULT TransUpdateUserEntity::StartTransaction()
 //	{
-//		HRESULT hr = S_OK;
+//		HRESULT hr = S_SYSTEM_OK;
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //
@@ -188,10 +188,10 @@ namespace EntityServer {
 //	// process abnormal termination of transaction
 //	HRESULT TransUpdateUserEntity::CloseTransaction( HRESULT hrRes )
 //	{
-//		HRESULT hr = S_OK;
+//		HRESULT hr = S_SYSTEM_OK;
 //
 //		if( IsClosed() )
-//			return S_OK;
+//			return S_SYSTEM_OK;
 //
 //		svrChkPtr( GetPolicy() );
 //
@@ -219,7 +219,7 @@ namespace EntityServer {
 //	// Start Transaction
 //	HRESULT TransFindUserEntity::StartTransaction()
 //	{
-//		HRESULT hr = S_OK;
+//		HRESULT hr = S_SYSTEM_OK;
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //		EntityInfoTable::AccountIDMap::iterator iterAcc;
@@ -245,10 +245,10 @@ namespace EntityServer {
 //	// process abnormal termination of transaction
 //	HRESULT TransFindUserEntity::CloseTransaction( HRESULT hrRes )
 //	{
-//		HRESULT hr = S_OK;
+//		HRESULT hr = S_SYSTEM_OK;
 //
 //		if( IsClosed() )
-//			return S_OK;
+//			return S_SYSTEM_OK;
 //
 //		svrChkPtr( GetPolicy() );
 //

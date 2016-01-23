@@ -78,10 +78,10 @@ namespace ConspiracyGameInstanceServer {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->GameAdvancedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_StateStartTimeUTC.time_since_epoch().count(), GetGameState(), day );
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -137,7 +137,7 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual HRESULT OnEnter()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
 
 			svrChk(GamePlayState_TimeLimit::OnEnter() );
@@ -189,7 +189,7 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual HRESULT OnEnter() override
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			UINT numVotePlayer;
 
 			auto stateTime = GetGameStateSystem().GetCurrentDay() == 1 ? 
@@ -208,7 +208,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
 					if( pPlayer->GetRole() != PlayerRole::Medium )
-						return S_OK;
+						return S_SYSTEM_OK;
 
 					if( pPlayer->GetPlayerEntityUID() != 0 )
 						pPolicy->PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), GetGamePlaySystem().GetLynchedPlayer(), GetGamePlaySystem().GetLynchedRole(), PlayerRevealedReason::Medium );
@@ -229,10 +229,10 @@ namespace ConspiracyGameInstanceServer {
 
 			return hr;
 		}
-		//virtual HRESULT OnUpdate()	{ return S_OK; }
+		//virtual HRESULT OnUpdate()	{ return S_SYSTEM_OK; }
 		virtual HRESULT OnLeave() override
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			// vote system will send result when he voted
 			// process seer
@@ -264,7 +264,7 @@ namespace ConspiracyGameInstanceServer {
 					GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
 						if( pPlayer->GetPlayerEntityUID() != 0 )
 							pPolicy->PlayerKilledS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_vote.GetPlayerToKill(), PlayerKilledReason::BlockedByBodyguard );
-						return S_OK;
+						return S_SYSTEM_OK;
 					});
 					svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGamePlayerKilled( Util::Time.GetTimeUTCSec(), PlayerKilledReason::BlockedByBodyguard, m_vote.GetPlayerToKill() ) );
 				}
@@ -315,7 +315,7 @@ namespace ConspiracyGameInstanceServer {
 		
 		virtual HRESULT OnEnter()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			GetOwner().GetComponent<GameStateSystem>()->NextDay();
 
@@ -360,7 +360,7 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual HRESULT OnEnter() override
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			UINT totalAlives;
 
 			svrChk(GamePlayState_TimeLimit::OnEnter() );
@@ -381,10 +381,10 @@ namespace ConspiracyGameInstanceServer {
 			return hr;
 		}
 
-		//virtual HRESULT OnUpdate()	{ return S_OK; }
+		//virtual HRESULT OnUpdate()	{ return S_SYSTEM_OK; }
 		virtual HRESULT OnLeave() override
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			
 			// put someone who sit next to the latest dead player
 			if( m_vote.GetVoteRanker(1) == 0 )
@@ -403,7 +403,7 @@ namespace ConspiracyGameInstanceServer {
 			GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
 				if( pPlayer->GetPlayerEntityUID() != 0 )
 					pPolicy->VoteEndS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), rankers );
-				return S_OK;
+				return S_SYSTEM_OK;
 			});
 
 			svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameVoteResult( Util::Time.GetTimeUTCSec(), 2, rankers.data() ) );
@@ -435,7 +435,7 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual HRESULT OnEnter() override
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			svrChk(GamePlayState_TimeLimit::OnEnter() );
 
 			// Set vote timer
@@ -482,7 +482,7 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual HRESULT OnEnter() override
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			UINT totalAlives, totalSuspect;
 
 			svrChk(GamePlayState_TimeLimit::OnEnter() );
@@ -506,7 +506,7 @@ namespace ConspiracyGameInstanceServer {
 
 		virtual HRESULT OnLeave() override
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			// kill the top vote ranker
 			if( m_vote.GetPlayerToHang() == 0 )
@@ -545,7 +545,7 @@ namespace ConspiracyGameInstanceServer {
 		
 		virtual HRESULT OnEnter() override
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			GameWinner winner = GetGamePlaySystem().GetGameWinner();
 			conspiracy::RewardTbl::RewardItem *pItem = nullptr;
 			char strBuffer[1024];
@@ -598,7 +598,7 @@ namespace ConspiracyGameInstanceServer {
 				// Broadcast other player's role to me
 				GetOwner().ForeachPlayer( [&]( GamePlayer* pOtherPlayer )->HRESULT {
 					pPolicy->PlayerRevealedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pOtherPlayer->GetPlayerID(), pOtherPlayer->GetRole(), PlayerRevealedReason::GameEnd );
-					return S_OK;
+					return S_SYSTEM_OK;
 				});
 
 
@@ -607,7 +607,7 @@ namespace ConspiracyGameInstanceServer {
 				// send game end
 				pPolicy->GameEndedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), winner, expGain, gainedMoney, pPlayer->GetRole(), isWinner );
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			});
 
 
@@ -616,10 +616,10 @@ namespace ConspiracyGameInstanceServer {
 			GetOwner().ForeachPlayer([&](GamePlayer* pPlayerFrom) ->HRESULT
 			{
 				int randTalkID = 0;
-				if (!pPlayerFrom->GetIsBot()) return S_OK;
+				if (!pPlayerFrom->GetIsBot()) return S_SYSTEM_OK;
 
 				int randTalkPossibility = Util::Random.Rand(1000);
-				if (randTalkPossibility > 700) return S_OK;
+				if (randTalkPossibility > 700) return S_SYSTEM_OK;
 
 				bool isWinner = pPlayerFrom->IsWinnerSide(winner);
 
@@ -634,7 +634,7 @@ namespace ConspiracyGameInstanceServer {
 
 				GetOwner().GetComponent<GamePlaySystem>()->BroadCastChatMessage(pPlayerFrom, PlayerRole::None, strBuffer);
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			});
 
 
@@ -756,7 +756,7 @@ namespace ConspiracyGameInstanceServer {
 	// Advance State if can
 	HRESULT GameStateSystem::AdvanceState()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( !m_GamePlayStates[(UINT)m_CurrentGameState]->CanAdvanceToNext() )
 			return E_GAME_NOT_READY_FOR_NEXT_STATE;
@@ -772,7 +772,7 @@ namespace ConspiracyGameInstanceServer {
 		// If a player died the game play state already changed, we need to check wether it can be advanced or not
 		if( !m_GamePlayStates[(UINT)m_CurrentGameState]->CanAdvanceToNext() )
 		{
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		GameWinner winner = GetOwner().GetComponent<GamePlaySystem>()->GetGameWinner();
@@ -813,7 +813,7 @@ namespace ConspiracyGameInstanceServer {
 	// Vote game advance
 	HRESULT GameStateSystem::VoteGameAdvance( GamePlayer* pVoter )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( pVoter == nullptr )
 			return E_SYSTEM_INVALIDARG;
@@ -833,7 +833,7 @@ namespace ConspiracyGameInstanceServer {
 		GetOwner().ForeachPlayerSvrGameInstance( [&](GamePlayer *pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)
 		{
 			pPolicy->GameAdvanceVotedS2CEvt( BR::RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID() );
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		// if the majority of the people are voted
@@ -850,7 +850,7 @@ namespace ConspiracyGameInstanceServer {
 	// process vote
 	HRESULT GameStateSystem::Vote( GamePlayer* pVoter, GamePlayer* pPlayer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		hr = m_GamePlayStates[(UINT)m_CurrentGameState]->Vote(pVoter,pPlayer);
 		if( hr != E_GAME_INVALID_PLAYER_STATE )
@@ -868,7 +868,7 @@ namespace ConspiracyGameInstanceServer {
 	// Update state if can
 	HRESULT GameStateSystem::AdvanceStateIfCan()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( m_GamePlayStates[(UINT)m_CurrentGameState]->CanAdvanceToNext() )
 		{
@@ -884,10 +884,10 @@ namespace ConspiracyGameInstanceServer {
 	// Set game end
 	HRESULT GameStateSystem::SetGameEnd(GameWinner winner)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( m_CurrentGameState == GameStateID::End )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		{
 		LockStateChangingScope stateChangingLock(m_IsInStateChanging);
@@ -910,7 +910,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Game
 	HRESULT GameStateSystem::OnStartGame()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		{
 		LockStateChangingScope stateChangingLock(m_IsInStateChanging);
@@ -941,7 +941,7 @@ namespace ConspiracyGameInstanceServer {
 	// Called when a player get out of game
 	HRESULT GameStateSystem::OnPlayerGetOutOfGame( GamePlayer* pPlayer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( m_GamePlayStates[(UINT)m_CurrentGameState]->OnPlayerGetOutOfGame( pPlayer ) );
 

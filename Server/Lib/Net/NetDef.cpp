@@ -78,7 +78,7 @@ namespace Net {
 
 		m_tConnectionTime = Util::Time.GetTimeMs();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

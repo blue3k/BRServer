@@ -59,7 +59,7 @@ namespace Svr {
 
 	HRESULT GamePartyManagerServiceEntity::InitializeEntity(EntityID newEntityID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 		if (pInstance != nullptr)
@@ -76,26 +76,26 @@ namespace Svr {
 
 	HRESULT GamePartyManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(LoadbalanceClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
 		// Game party manager transactions
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::CreatePartyCmd)						{ svrMemReturn(pNewTrans = new PartyManagerTransCreateParty(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::PartyDeletedC2SEvt)					{ svrMemReturn(pNewTrans = new PartyManagerTransPartyDeleted(pMsgData)); return S_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::CreatePartyCmd)						{ svrMemReturn(pNewTrans = new PartyManagerTransCreateParty(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GamePartyManager::PartyDeletedC2SEvt)					{ svrMemReturn(pNewTrans = new PartyManagerTransPartyDeleted(pMsgData)); return S_SYSTEM_OK; } );
 
 		// Game party instance transactions
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::JoinPartyCmd)								{ svrMemReturn(pNewTrans = new PartyTransJoinParty(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::LeavePartyCmd)								{ svrMemReturn(pNewTrans = new PartyTransLeaveParty(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::KickPlayerCmd)								{ svrMemReturn(pNewTrans = new PartyTransKickPlayer(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::ChatMessageC2SEvt)							{ svrMemReturn(pNewTrans = new PartyTransChatMessage(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::QuickChatMessageC2SEvt)					{ svrMemReturn(pNewTrans = new PartyTransQuickChatMessage(pMsgData)); return S_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::JoinPartyCmd)								{ svrMemReturn(pNewTrans = new PartyTransJoinParty(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::LeavePartyCmd)								{ svrMemReturn(pNewTrans = new PartyTransLeaveParty(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::KickPlayerCmd)								{ svrMemReturn(pNewTrans = new PartyTransKickPlayer(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::ChatMessageC2SEvt)							{ svrMemReturn(pNewTrans = new PartyTransChatMessage(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::QuickChatMessageC2SEvt)					{ svrMemReturn(pNewTrans = new PartyTransQuickChatMessage(pMsgData)); return S_SYSTEM_OK; } );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::StartGameMatchCmd)							{ svrMemReturn(pNewTrans = new PartyTransStartGameMatchCmd(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::CancelGameMatchCmd)						{ svrMemReturn(pNewTrans = new PartyTransCancelGameMatchCmd(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt)		{ svrMemReturn(pNewTrans = new PartyTransPartyMatchingCanceled(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt)	{ svrMemReturn(pNewTrans = new PartyTransMatchingItemDequeued(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatching::PartyGameMatchedS2CEvt)				{ svrMemReturn(pNewTrans = new PartyTransPartyGameMatchedS2CEvt(pMsgData)); return S_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::StartGameMatchCmd)							{ svrMemReturn(pNewTrans = new PartyTransStartGameMatchCmd(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameParty::CancelGameMatchCmd)						{ svrMemReturn(pNewTrans = new PartyTransCancelGameMatchCmd(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt)		{ svrMemReturn(pNewTrans = new PartyTransPartyMatchingCanceled(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt)	{ svrMemReturn(pNewTrans = new PartyTransMatchingItemDequeued(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatching::PartyGameMatchedS2CEvt)				{ svrMemReturn(pNewTrans = new PartyTransPartyGameMatchedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
 
 	Proc_End:
 
@@ -111,7 +111,7 @@ namespace Svr {
 	// Add new Entity
 	HRESULT GamePartyManagerServiceEntity::CreateGameParty( const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, PartyUID &partyUID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePartyEntity *pGameParty = nullptr;
 		PartyPlayer *pPlayer = nullptr;
 
@@ -141,7 +141,7 @@ namespace Svr {
 	// Called when a game party is deleted
 	HRESULT GamePartyManagerServiceEntity::FreeGameParty( PartyUID partyUID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (FAILED(Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(partyUID.GetEntityID())))
 		{

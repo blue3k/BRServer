@@ -80,7 +80,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransInviteFriend::OnGetPlayerShardID(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		//Policy::IPolicyGameServer* pTargetPolicy = nullptr;
@@ -104,13 +104,13 @@ namespace GameServer {
 		if (FAILED(hr))
 			CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 		
 	}
 
 	HRESULT PlayerTransInviteFriend::OnNotifyAdded(  Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
@@ -132,13 +132,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 		
 	}
 	// Start Transaction
 	HRESULT PlayerTransInviteFriend::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_TimeStamp = Util::Time.GetTimeUTCSec();
 
@@ -173,7 +173,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransFriendAccept::OnGetPlayerShardID(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryGetPlayerShardIDCmd* pDBRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -196,7 +196,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransFriendAccept::OnFriendSlotStatus(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto *pDBRes = (DB::QueryGetFriendSlotStatusCmd*)pRes;
 		INT maxFriend;
 
@@ -232,7 +232,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransFriendAccept::OnFriendAdded(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		UserFriendSystem *pFriendSystem = nullptr;
 		auto *pDBRes = (DB::QueryAddFriendCmd*)pRes;
 
@@ -282,12 +282,12 @@ namespace GameServer {
 			}
 		}
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 	HRESULT PlayerTransFriendAccept::OnFriendQuickInfo(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerFriendInformation *pFriend = nullptr;
 		auto *pDBRes = (DB::QueryGetFriendQuickInfoWithNickCmd*)pRes;
 
@@ -312,12 +312,12 @@ namespace GameServer {
 		if (m_WaitingResultCount <= 0)
 			CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 /*
 	HRESULT PlayerTransFriendAccept::OnGetNickName( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerFriendInformation *pFriend = nullptr;
 
 		svrChk(pRes->GetHRESULT());
@@ -341,12 +341,12 @@ namespace GameServer {
 		if (m_WaitingResultCount <= 0)
 			CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 */
 	HRESULT PlayerTransFriendAccept::SendNotifyToInviter()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
@@ -371,7 +371,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransFriendAccept::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_WaitingResultCount = 0;
 		memset( &m_NewFriend, 0, sizeof(m_NewFriend) );
@@ -399,7 +399,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransFriendAcceptedS2S::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Policy::ISvrPolicyGame *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -436,7 +436,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransRemoveFriend::OnRemoved( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryRemoveFriendCmd *pDBRes = (DB::QueryRemoveFriendCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -450,13 +450,13 @@ namespace GameServer {
 		if( m_WaitingResultCount <= 0 )
 			CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 	// Start Transaction
 	HRESULT PlayerTransRemoveFriend::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Policy::IPolicyGameServer *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
@@ -500,7 +500,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransFriendRemovedS2S::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -533,7 +533,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransGetFriendList::OnGetList( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		UserFriendSystem *pFriendSystem = nullptr;
 		DB::QueryGetFriendListCmd *pDBRes = (DB::QueryGetFriendListCmd*)pRes;
 
@@ -574,12 +574,12 @@ namespace GameServer {
 		if( FAILED(hr) || m_WaitingCount <= 0 )
 			CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 /*
 	HRESULT PlayerTransGetFriendList::OnGetQuickInfo( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		FriendInformation *pFriend = nullptr;
 		DB::QueryGetFriendQuickInfoCmd *pDBRes = nullptr;
 
@@ -612,13 +612,13 @@ namespace GameServer {
 		if( m_WaitingCount <= 0 )
 			CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 */
 
 	HRESULT PlayerTransGetFriendList::OnGetQuickInfoWithNick(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		FriendInformation *pFriend = nullptr;
 		DB::QueryGetFriendQuickInfoWithNickCmd *pDBRes = nullptr;
 
@@ -652,14 +652,14 @@ namespace GameServer {
 		if( m_WaitingCount <= 0 )
 			CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 
 	// Start Transaction
 	HRESULT PlayerTransGetFriendList::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		UserFriendSystem* friendSystem = nullptr;
 		m_MaxFriendSlot = 0;
 		m_TotalNumberOfFriends = 0;
@@ -682,7 +682,7 @@ namespace GameServer {
 				{
 					if (SUCCEEDED(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), friendInfo.ShardID, friendInfo.PlayerID)))
 						m_WaitingCount++;
-					return S_OK;
+					return S_SYSTEM_OK;
 				});
 
 				friendSystem->SetLatestStatusSync(Util::Time.GetTimeMs());
@@ -705,7 +705,7 @@ namespace GameServer {
 	HRESULT PlayerTransGetFriendList::CloseTransaction( HRESULT hr )
 	{
 		if( IsClosed() )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		auto friendSystem = GetMyOwner()->GetComponent<UserFriendSystem>();
 
@@ -716,7 +716,7 @@ namespace GameServer {
 		friendSystem->ForeachFriends(GetStartIndex(), maxRequest, [&](const FriendInformation& friendInfo)
 		{
 			m_Friends.push_back(friendInfo);
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		return super::CloseTransaction(hr);
@@ -737,7 +737,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransGiveStamina::OnSavedToDB( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//DB::QueryUpdateTickStatusCmd *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 
 
@@ -756,12 +756,12 @@ namespace GameServer {
 		if (m_WaitingQueries <= 0)
 			CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 	
 	HRESULT PlayerTransGiveStamina::OnUpdateTime( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//DB::QueryUpdateFriendStaminaTimeCmd *pDBRes = (DB::QueryUpdateFriendStaminaTimeCmd*)pRes;
 		svrChk(pRes->GetHRESULT());
 
@@ -780,12 +780,12 @@ namespace GameServer {
 			CloseTransaction( hr );
 		}
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 	HRESULT PlayerTransGiveStamina::OnNotifyAdded(  Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
@@ -810,7 +810,7 @@ namespace GameServer {
 			CloseTransaction( hr );
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 		
 	}
 
@@ -818,7 +818,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransGiveStamina::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 		ServerFriendInformation* pFriend = nullptr;
 		EntityUID playerUID;
@@ -884,7 +884,7 @@ namespace GameServer {
 
 	//HRESULT PlayerTransGiveStaminaS2S::OnSavedToDB( Svr::TransactionResult* &pRes )
 	//{
-	//	HRESULT hr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK;
 	//	DB::QueryUpdateTickStatusCmd *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 	//	svrChk(pRes->GetHRESULT());
 
@@ -898,14 +898,14 @@ namespace GameServer {
 
 	//	CloseTransaction(hr);
 
-	//	return S_OK; 
+	//	return S_SYSTEM_OK; 
 	//}
 
 
 	//// Start Transaction
 	//HRESULT PlayerTransGiveStaminaS2S::StartTransaction()
 	//{
-	//	HRESULT hr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK;
 	//	UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 
 	//	svrChk( super::StartTransaction() );

@@ -57,7 +57,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT ClusterGetMemberListTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ClusteredServiceEntity *pClusterService = nullptr;
 
 		svrChk(super::StartTransaction() );
@@ -90,7 +90,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT JoinClusterTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ClusterMembership memberShip = GetClusterMembership();
@@ -165,7 +165,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT JoinClusterTransForEntityServer::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ClusterMembership memberShip = GetClusterMembership();
@@ -244,7 +244,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT ClusterUpdateStatusTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerServiceInformation *pService = nullptr;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 
@@ -286,7 +286,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT ClusterUpdateWorkloadTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ClusteredServiceEntity* pServiceEntity = nullptr;
 		ServerServiceInformation *pUpdatedService = nullptr;
 
@@ -346,7 +346,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT GetLowestWorkloadClusterMemberTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerServiceInformation *pLowestService = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -378,7 +378,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT ClusterNewServerServiceJoinedC2SEvtEntityTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ServerEntity *pSenderEntity = nullptr;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
@@ -424,7 +424,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT ClusterNewServerServiceJoinedC2SEvtTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ServerEntity *pSenderEntity = nullptr;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
@@ -473,7 +473,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT SyncClusterServiceTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 		ServerEntity *pServerEntity = nullptr;
 		ServerServiceInformation* pNewService = nullptr;

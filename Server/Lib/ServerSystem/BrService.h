@@ -42,7 +42,7 @@ namespace Svr
 		HRESULT ServicePrepare();
 
 		// Run service main function
-		HRESULT ServiceRun(std::vector<std::string>& cmdArgs, BR::Svr::BrServer *pSvrInstance );
+		HRESULT ServiceRun(BR::Svr::BrServer *pSvrInstance );
 	};
 
 

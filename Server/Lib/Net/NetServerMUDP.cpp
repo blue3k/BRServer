@@ -52,7 +52,7 @@ namespace Net {
 
 	HRESULT ServerMUDP::SendRaw(const sockaddr_storage& dstAddress, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		IOBUFFER_WRITE *pSendBuffer = nullptr;
 
 		netChkPtr(pMsg);
@@ -84,7 +84,7 @@ namespace Net {
 	// Make Ack packet and enqueue to SendNetCtrlqueue
 	HRESULT ServerMUDP::SendNetCtrl( const sockaddr_storage& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_OK, hrTem = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrTem = S_SYSTEM_OK;
 		MsgMobileNetCtrl *pNetCtrl = NULL;
 		Message::MessageData *pMsg = NULL;
 
@@ -122,7 +122,7 @@ namespace Net {
 
 	HRESULT ServerMUDP::OnNoConnectionPacket(const struct sockaddr_storage& from, const BYTE* pData)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (pData == nullptr)
 			return E_SYSTEM_INVALIDARG;
@@ -189,7 +189,7 @@ namespace Net {
 	// called when reciving message
 	HRESULT ServerMUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SharedPointerT<Connection> pConnection;
 		IConnection::ConnectionInformation connectionInfo;
 		sockaddr_storage from;

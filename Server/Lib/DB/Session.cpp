@@ -34,7 +34,7 @@ namespace DB {
 	// Open session
 	HRESULT Session::OpenSession()
 	{
-		HRESULT	hr = S_OK;
+		HRESULT	hr = S_SYSTEM_OK;
 
 		m_bIsOpened = true;
 
@@ -46,7 +46,7 @@ namespace DB {
 	// Close session
 	HRESULT Session::CloseSession()
 	{
-		HRESULT	hr = S_OK;
+		HRESULT	hr = S_SYSTEM_OK;
 
 		m_bIsOpened = false;
 
@@ -58,7 +58,7 @@ namespace DB {
 	// Free a session
 	HRESULT	Session::ReleaseSession()
 	{
-		HRESULT	hr = S_OK;
+		HRESULT	hr = S_SYSTEM_OK;
 
 		dbChkPtr(m_pDataSource);
 

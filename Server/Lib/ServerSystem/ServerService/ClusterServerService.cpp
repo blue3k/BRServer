@@ -37,7 +37,7 @@ namespace BR
 		// Cmd: Cluster member list query
 		HRESULT ClusterServerService::GetClusterMemberListCmd( const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
@@ -51,7 +51,7 @@ namespace BR
 		// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
 		HRESULT ClusterServerService::JoinClusterCmd( const Context &InContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
@@ -65,7 +65,7 @@ namespace BR
 		// C2S: Do not let it broadcasted while it's manual broadcast packet
 		HRESULT ClusterServerService::NewServerServiceJoinedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyClusterServer()->NewServerServiceJoinedC2SEvt( InRouteContext, InRouteHopCount, InJoinedServiceUID, InJoinedServiceNetClass, InJoinedServiceAddress, InClusterID, InClusterType, InJoinedServiceMembership ) );
@@ -78,7 +78,7 @@ namespace BR
 		// C2S: Sync cluster service informations
 		HRESULT ClusterServerService::SyncClusterServiceC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyClusterServer()->SyncClusterServiceC2SEvt( InRouteContext, InRouteHopCount, InClusterID, InClusterType, InMemberList ) );
@@ -91,7 +91,7 @@ namespace BR
 		// Cmd: Join to the cluster
 		HRESULT ClusterServerService::RequestDataSyncCmd( const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
@@ -105,7 +105,7 @@ namespace BR
 		// C2S: Master vote
 		HRESULT ClusterServerService::ClusterMasterVoteC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyClusterServer()->ClusterMasterVoteC2SEvt( InRouteContext, InRouteHopCount, InClusterID, InVoteToUID, InVotedUpTime ) );
@@ -118,7 +118,7 @@ namespace BR
 		// C2S: Update cluster service status
 		HRESULT ClusterServerService::ClusterUpdateStatusC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyClusterServer()->ClusterUpdateStatusC2SEvt( InRouteContext, InRouteHopCount, InSender, InClusterID, InMemberStatus ) );
@@ -131,7 +131,7 @@ namespace BR
 		// C2S: Update cluster service workload
 		HRESULT ClusterServerService::ClusterUpdateWorkloadC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyClusterServer()->ClusterUpdateWorkloadC2SEvt( InRouteContext, InRouteHopCount, InSender, InClusterID, InWorkload ) );
@@ -144,7 +144,7 @@ namespace BR
 		// Cmd: Get lowest workloaded cluster member
 		HRESULT ClusterServerService::GetLowestWorkloadClusterMemberCmd( const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
@@ -158,7 +158,7 @@ namespace BR
 		// C2S: Called when a player entity is created
 		HRESULT ClusterServerService::GamePlayerEntityCreatedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyClusterServer()->GamePlayerEntityCreatedC2SEvt( InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID ) );
@@ -171,7 +171,7 @@ namespace BR
 		// C2S: Called when a player entity is deleted
 		HRESULT ClusterServerService::GamePlayerEntityDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyClusterServer()->GamePlayerEntityDeletedC2SEvt( InRouteContext, InRouteHopCount, InPlayerID, InPlayerUID ) );

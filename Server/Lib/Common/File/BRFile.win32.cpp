@@ -60,7 +60,7 @@ namespace IO {
 			return GetLastHRESULT();
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	LONGLONG File::GetLocation()
@@ -148,7 +148,7 @@ namespace IO {
 		m_OpenMode = openMode;
 		m_SharingMode = sharingMode;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 
 	}
 
@@ -175,7 +175,7 @@ namespace IO {
 
 		read = dwRead;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT File::Write(const BYTE* buffer, size_t bufferLen, size_t &writen)
@@ -191,7 +191,7 @@ namespace IO {
 
 		writen = dwWritten;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

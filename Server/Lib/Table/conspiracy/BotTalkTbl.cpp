@@ -30,7 +30,7 @@ namespace conspiracy
 			*pBotTalkTblItem = rowItem;
 			BotTalkTbl::m_TableMap.insert(std::make_pair(pBotTalkTblItem->ItemID, pBotTalkTblItem));
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT BotTalkTbl::ClearTable()
@@ -39,7 +39,7 @@ namespace conspiracy
 			delete itr->second;
 
 		m_TableMap.clear();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT BotTalkTbl::FindItem( const int& Key, BotTalkTblItem*& pRow)
@@ -51,7 +51,7 @@ namespace conspiracy
 			return E_SYSTEM_FAIL;
 		}
 		pRow = itr->second;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 }; // namespace conspiracy

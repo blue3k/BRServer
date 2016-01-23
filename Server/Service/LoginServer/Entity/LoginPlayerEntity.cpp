@@ -74,7 +74,7 @@ namespace LoginServer {
 	// Initialize entity to proceed new connection
 	HRESULT LoginPlayerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::InitializeEntity( newEntityID ) );
 
@@ -92,7 +92,7 @@ namespace LoginServer {
 	// Set connection for pilot
 	HRESULT LoginPlayerEntity::SetConnection( Net::Connection* &pCon )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetConnection() == pCon )
 			return hr;
@@ -127,18 +127,18 @@ namespace LoginServer {
 	// register message handlers
 	HRESULT LoginPlayerEntity::RegisterMessageHandlers()
 	{
-		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new LoginPlayerTransLogin(pMsgData); return S_OK; } );
-		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new LoginPlayerTransLoginByFacebook(pMsgData); return S_OK; } );
-		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new LoginPlayerTransCreateRandomUser(pMsgData); return S_OK; } );
-		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new LoginPlayerJoinedToGameServerTrans(pMsgData); return S_OK; } );
+		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new LoginPlayerTransLogin(pMsgData); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new LoginPlayerTransLoginByFacebook(pMsgData); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new LoginPlayerTransCreateRandomUser(pMsgData); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new LoginPlayerJoinedToGameServerTrans(pMsgData); return S_SYSTEM_OK; } );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// clear transaction
 	HRESULT LoginPlayerEntity::ClearEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		ReleaseConnection();
 
@@ -152,7 +152,7 @@ namespace LoginServer {
 	// Run the task
 	HRESULT LoginPlayerEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto curTime = Util::Time.GetTimeMs();
 
 		svrChk( super::TickUpdate(pAction) );
@@ -168,7 +168,7 @@ namespace LoginServer {
 	// Update Game Player 
 	HRESULT LoginPlayerEntity::UpdateLoginPlayer( TimeStampMS ulCurTime )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( m_TimeToKill.CheckTimer() )
 		{
@@ -182,7 +182,7 @@ namespace LoginServer {
 	
 	HRESULT LoginPlayerEntity::PendingCloseTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::Transaction *trans = nullptr;
 
 		svrMem( trans = new LoginPlayerTransCloseInstance );

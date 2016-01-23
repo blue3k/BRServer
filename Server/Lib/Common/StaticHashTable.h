@@ -453,7 +453,7 @@ namespace Hash {
 			{
 				iter = begin();
 
-				return iter.IsValid() ? S_OK : E_SYSTEM_FAIL;
+				return iter.IsValid() ? S_SYSTEM_OK : E_SYSTEM_FAIL;
 			}
 
 			iterator begin()
@@ -519,7 +519,7 @@ namespace Hash {
 #ifdef _DEBUG
 				Assert( bucket.Validate(iBucket, m_Bucket.size()) );
 #endif
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			HRESULT find( const KeyType& inKey, ItemType *data )
@@ -569,7 +569,7 @@ namespace Hash {
 
 				iterData.SetInBucketIter( pPrevNode );
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			// Erase a data from hash map
@@ -639,7 +639,7 @@ namespace Hash {
 
 				//Assert( bucket.Validate(iBucket, m_Bucket.size()) );
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			HRESULT clear()
@@ -652,7 +652,7 @@ namespace Hash {
 					iterBucket->m_Items.clear();
 				}
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			bool Validate()

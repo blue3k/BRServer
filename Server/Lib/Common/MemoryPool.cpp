@@ -63,7 +63,7 @@ namespace BR
 
 	HRESULT PageAllocator::Alloc( void* &pPtr )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		trcChk( ProcessorHeap::Alloc( m_szPageSize, pPtr ) );
 		m_PageCount.fetch_add(1, std::memory_order_relaxed);
@@ -73,20 +73,20 @@ namespace BR
 
 	Proc_End:
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	HRESULT PageAllocator::Free( void* pPtr )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		trcChk( ProcessorHeap::Free( pPtr ) );
 		m_PageCount.fetch_sub(1, std::memory_order_relaxed);
 
 	Proc_End:
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -170,7 +170,7 @@ namespace BR
 		pPtr = (void*)((BYTE*)pItem + PAGEITEM_SIZE);
 		AssertRel( ((intptr_t)pPtr & (BR_ALIGN_DOUBLE-1)) == 0 );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT PagePool::Free( void* pPtr )
@@ -186,7 +186,7 @@ namespace BR
 
 		m_FreePages.Push( pItem );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT PagePool::OrgFree( void* pPtr )
@@ -344,7 +344,7 @@ namespace BR
 
 		m_AllocatedCount.fetch_add(1,std::memory_order_relaxed);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT MemoryPool::Free( void* pPtr, const char* typeName )
@@ -352,7 +352,7 @@ namespace BR
 		MemItem *pMemItem = nullptr;
 
 		if( pPtr == nullptr )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		pMemItem = (MemItem*)((BYTE*)pPtr - MEMITEM_SIZE);
 
@@ -411,7 +411,7 @@ namespace BR
 			PrintAllocatedList();
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Check pooled memory block header
@@ -548,7 +548,7 @@ namespace BR
 
 			Assert( pNewPool->GetAllocSize() == allocationSize );
 
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		}
 	};

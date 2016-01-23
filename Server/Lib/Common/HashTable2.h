@@ -248,7 +248,7 @@ namespace Hash {
 #ifdef _DEBUG
 				Assert( bucket.Validate(iBucket, m_Buckets.size()) );
 #endif
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			HRESULT Find( const KeyType& keyVal, ItemType &data )
@@ -283,7 +283,7 @@ namespace Hash {
 						bucket.m_Items->CommitChanges();
 					}
 					m_lItemCount.fetch_sub(1, std::memory_order_relaxed);
-					return S_OK;
+					return S_SYSTEM_OK;
 				}
 
 				Assert(bucket.Validate(iBucket, m_Buckets.size()));
@@ -302,7 +302,7 @@ namespace Hash {
 					iterBucket->m_Items->ClearMap();
 				}
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			bool Validate()

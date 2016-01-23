@@ -30,7 +30,7 @@ namespace conspiracy
 			*pGameConfigItem = rowItem;
 			GameConfigTbl::m_TableMap.insert(std::make_pair(pGameConfigItem->PresetID, pGameConfigItem));
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT GameConfigTbl::ClearTable()
@@ -39,7 +39,7 @@ namespace conspiracy
 			delete itr->second;
 
 		m_TableMap.clear();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT GameConfigTbl::FindItem( const int& Key, GameConfigItem*& pRow)
@@ -51,7 +51,7 @@ namespace conspiracy
 			return E_SYSTEM_FAIL;
 		}
 		pRow = itr->second;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 }; // namespace conspiracy

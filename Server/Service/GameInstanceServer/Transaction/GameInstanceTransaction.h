@@ -78,7 +78,7 @@ namespace ConspiracyGameInstanceServer {
 		// Initialize Transaction
 		virtual HRESULT InitializeTransaction( Svr::Entity* pOwner )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			SharedPointerT<Svr::Entity> pEntity;
 
 			svrChkPtr( pOwner );

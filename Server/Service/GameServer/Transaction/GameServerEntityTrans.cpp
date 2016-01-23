@@ -49,7 +49,7 @@ namespace GameServer {
 
 	HRESULT GameServerTransRegisterPlayerToJoinGameServer::OnPlayerRegisteredRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes res;
@@ -64,13 +64,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Start Transaction
 	HRESULT GameServerTransRegisterPlayerToJoinGameServer::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SharedPointerT<Svr::Entity> pEntity;
 		GamePlayerEntity *pPlayerEntity = nullptr;
 		Policy::IPolicyGameServer *pTargetPolicy = nullptr;

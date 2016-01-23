@@ -48,7 +48,7 @@ namespace Net {
 	
 	HRESULT ServerTCP::SetupSocketOption(SOCKET socket)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		socklen_t iOptValue = 0;
 
 		iOptValue = Net::Const::SVR_RECV_BUFFER_SIZE;
@@ -72,7 +72,7 @@ namespace Net {
 
 	HRESULT ServerTCP::Accept(IOBUFFER_ACCEPT* &pAcceptInfo)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 		SOCKET sockAccept = INVALID_SOCKET;
 
 		pAcceptInfo = new IOBUFFER_ACCEPT;
@@ -94,7 +94,7 @@ namespace Net {
 		hrErr = NetSystem::Accept(GetSocket(), pAcceptInfo);
 		switch (hrErr)
 		{
-		case S_OK:
+		case S_SYSTEM_OK:
 		case E_NET_WOULDBLOCK:
 		case E_NET_IO_PENDING:
 			// successed
@@ -119,7 +119,7 @@ namespace Net {
 	// On New connection accepted
 	HRESULT ServerTCP::OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pOverAccept )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		sockaddr_storage remoteAddr;
 		SOCKET sockSvr = GetSocket();
 		SOCKET sockAccept = pOverAccept->sockAccept;
@@ -175,7 +175,7 @@ namespace Net {
 	// handle Socket accept
 	HRESULT ServerTCP::OnNewSocket( SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ConnectionTCP *pConnection = nullptr;
 		Connection *pConn = nullptr;
 		uintptr_t cid = 0;
@@ -257,14 +257,14 @@ namespace Net {
 		Util::SafeDeleteArray( pIOBuffer->pSendBuff );
 		Util::SafeRelease( pIOBuffer->pMsgs );
 		NetSystem::FreeBuffer( pIOBuffer );
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	// Pending Accept New one
 	HRESULT ServerTCP::PendingAccept()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		UINT iMaxAccept = Util::Max((UINT)Const::TCP_ACCEPT_PENDING_MAX, (UINT)1);
 
 		// skip if not accept mode
@@ -307,7 +307,7 @@ namespace Net {
 	// Open host and start listen
 	HRESULT ServerTCP::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SOCKET socket = INVALID_SOCKET;
 		INT32 iOptValue;
 		int bOptValue;
@@ -315,7 +315,7 @@ namespace Net {
 		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
 
 		if( GetSocket() != INVALID_SOCKET )// already initialized?
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		netChk(Server::HostOpen( netCls, strLocalIP, usLocalPort ) );
 
@@ -403,7 +403,7 @@ namespace Net {
 	// Close host and close all connections
 	HRESULT ServerTCP::HostClose()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		INet::Event netEvent(INet::Event::EVT_NET_CLOSED);
 
 		netChk(Server::HostClose() );
@@ -427,7 +427,7 @@ namespace Net {
 	// Release Connection, Make connection to send free state
 	HRESULT ServerTCP::ReleaseConnection( IConnection* pIConnection )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		
 		netChk(Server::ReleaseConnection( pIConnection ) );
 
@@ -443,7 +443,7 @@ namespace Net {
 	//// Send message to connection with network device
 	//HRESULT ServerTCP::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
 	//{
-	//	HRESULT hr = S_OK, hrErr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 	//	Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 	//	UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
@@ -460,7 +460,7 @@ namespace Net {
 	//	hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
 	//	switch (hrErr)
 	//	{
-	//	case S_OK:
+	//	case S_SYSTEM_OK:
 	//	case E_NET_IO_PENDING:
 	//	case E_NET_TRY_AGAIN:
 	//	case E_NET_WOULDBLOCK:
@@ -501,7 +501,7 @@ namespace Net {
 	//			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr, pTCPCon->GetCID());
 	//		}
 	//		else
-	//			return S_OK;
+	//			return S_SYSTEM_OK;
 	//	}
 	//	else
 	//	{
@@ -521,7 +521,7 @@ namespace Net {
 
 	//HRESULT ServerTCP::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
 	//{
-	//	HRESULT hr = S_OK, hrErr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 	//	ConnectionTCP *pTCPCon = (ConnectionTCP*)pConnection;
 
@@ -533,7 +533,7 @@ namespace Net {
 	//	hrErr = NetSystem::Send(pTCPCon->GetSocket(), pOverlapped);
 	//	switch (hrErr)
 	//	{
-	//	case S_OK:
+	//	case S_SYSTEM_OK:
 	//	case E_NET_IO_PENDING:
 	//	case E_NET_TRY_AGAIN:
 	//	case E_NET_WOULDBLOCK:
@@ -569,7 +569,7 @@ namespace Net {
 	//			netTrace( Trace::TRC_ERROR, "TCP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pTCPCon->GetConnectionInfo().Remote, hrErr, hr );
 	//		}
 	//		else
-	//			return S_OK;
+	//			return S_SYSTEM_OK;
 	//	}
 	//	else
 	//	{

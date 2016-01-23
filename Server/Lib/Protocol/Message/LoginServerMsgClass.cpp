@@ -33,7 +33,7 @@ namespace BR
 			const MessageID PlayerJoinedToGameServerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 0);
 			HRESULT PlayerJoinedToGameServerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -57,7 +57,7 @@ namespace BR
 
 			HRESULT PlayerJoinedToGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -89,7 +89,7 @@ namespace BR
 
 			HRESULT PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -125,7 +125,7 @@ namespace BR
 			const MessageID PlayerJoinedToGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 0);
 			HRESULT PlayerJoinedToGameServerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -148,7 +148,7 @@ namespace BR
 
 			HRESULT PlayerJoinedToGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -178,7 +178,7 @@ namespace BR
 
 			HRESULT PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -216,7 +216,7 @@ namespace BR
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 1);
 			HRESULT KickPlayerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -239,7 +239,7 @@ namespace BR
 
 			HRESULT KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -269,7 +269,7 @@ namespace BR
 
 			HRESULT KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -305,7 +305,7 @@ namespace BR
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 1);
 			HRESULT KickPlayerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -328,7 +328,7 @@ namespace BR
 
 			HRESULT KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -358,7 +358,7 @@ namespace BR
 
 			HRESULT KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;

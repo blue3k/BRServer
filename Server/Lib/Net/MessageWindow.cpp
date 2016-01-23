@@ -62,7 +62,7 @@ namespace Net {
 
 		pMessageElement = &m_pMsgWnd[iIdxCur];
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -108,7 +108,7 @@ namespace Net {
 	// Add message
 	HRESULT RecvMsgWindow::AddMsg( Message::MessageData* pIMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto msgSeq = pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence;
 		INT diff = Message::SequenceDifference(msgSeq, m_uiBaseSequence);
 
@@ -156,7 +156,7 @@ namespace Net {
 	// Pop message and return it if can
 	HRESULT RecvMsgWindow::PopMsg( Message::MessageData* &pIMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto baseSequence = m_uiBaseSequence.load(std::memory_order_relaxed);
 		INT iPosIdx = baseSequence % CIRCULAR_QUEUE_SIZE;
 		if (m_pMsgWnd == nullptr )//|| m_pMsgWnd[iPosIdx].load(std::memory_order_relaxed) == nullptr)
@@ -268,7 +268,7 @@ namespace Net {
 	// Add a message at the end
 	HRESULT SendMsgWindow::EnqueueMessage( TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		INT iIdx = 0;
 
 		if( GetAvailableSize() == 0 )
@@ -308,12 +308,12 @@ namespace Net {
 	// Release message sequence and slide window if can
 	HRESULT SendMsgWindow::ReleaseMsg( UINT16 uiSequence )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		INT iIdx;
 		UINT iPosIdx;
 
 		if( m_pMsgWnd == NULL )
-			return S_OK;// nothing to release
+			return S_SYSTEM_OK;// nothing to release
 
 
 		iIdx = Message::SequenceDifference(uiSequence, m_uiBaseSequence);
@@ -364,13 +364,13 @@ namespace Net {
 	// Release message sequence and slide window if can
 	HRESULT SendMsgWindow::ReleaseMsg( UINT16 uiSequenceBase, UINT64 uiMsgMask )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		INT iIdx;
 
 		MutexScopeLock localLock(m_Lock);
 
 		if( m_pMsgWnd == nullptr )
-			return S_OK;// nothing to release
+			return S_SYSTEM_OK;// nothing to release
 
 		UINT uiCurBit = 0, uiSyncMaskCur = 1;
 
@@ -495,7 +495,7 @@ namespace Net {
 	// Add a message at the end
 	HRESULT SendMsgWindowMT::EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		INT iIdx = 0;
 		Message::MessageData* expectedMsg;
 		UINT expectedID;
@@ -556,12 +556,12 @@ namespace Net {
 	// Release message sequence and slide window if can
 	HRESULT SendMsgWindowMT::ReleaseMsg(UINT16 uiSequenceBase, UINT64 uiMsgMask)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		INT iIdx;
 		UINT sequence;
 
 		if (m_pMsgWnd == nullptr)
-			return S_OK;// nothing to release
+			return S_SYSTEM_OK;// nothing to release
 
 		UINT uiCurBit = 0, uiSyncMaskCur = 1;
 

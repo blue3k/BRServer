@@ -40,7 +40,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT GameInstanceTransCreateGame::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -57,7 +57,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT GameInstanceTransGameDeleted::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(super::StartTransaction());
 

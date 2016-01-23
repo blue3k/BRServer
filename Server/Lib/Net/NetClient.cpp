@@ -61,7 +61,7 @@ namespace BR {
 			// Open network system
 			HRESULT OpenSystem(UINT uiOverBufferCount)
 			{
-				HRESULT hr = S_OK;
+				HRESULT hr = S_SYSTEM_OK;
 
 				netChk(NetSystem::OpenSystem(uiOverBufferCount, Const::CLI_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX));
 
@@ -84,7 +84,7 @@ namespace BR {
 			// Close network system
 			void CloseSystem()
 			{
-				HRESULT hr = S_OK;
+				HRESULT hr = S_SYSTEM_OK;
 				CounterType lCount = 0;
 
 				if (g_lSysOpenCount > 0)
@@ -114,7 +114,7 @@ namespace BR {
 			// Add connection update task
 			HRESULT AddConnectionTask(ConnectionManager *pConMgr, Connection * pConnection)
 			{
-				HRESULT hr = S_OK;
+				HRESULT hr = S_SYSTEM_OK;
 				ConnectionTask *pTask = nullptr;
 
 				if (g_ConnectionTaskManager == nullptr)
@@ -139,7 +139,7 @@ namespace BR {
 			// Remove Connection update task
 			HRESULT RemoveConnectionTask(Connection * pConnection)
 			{
-				HRESULT hr = S_OK;
+				HRESULT hr = S_SYSTEM_OK;
 				ConnectionTask *pTask = nullptr;
 
 				if (g_ConnectionTaskManager == nullptr)
@@ -174,7 +174,7 @@ namespace BR {
 		template< class ConnectionType >
 		HRESULT ClientConnectionManagerT<ConnectionType>::TerminateManager()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			ConnectionManager::Operation oper;
 			ConnectionTask *pTask = nullptr;
 
@@ -184,7 +184,7 @@ namespace BR {
 
 
 			// Clear pending operation queue
-			while (super::m_PendingOperations.Dequeue(oper) == S_OK)
+			while (super::m_PendingOperations.Dequeue(oper) == S_SYSTEM_OK)
 			{
 				switch (oper.OpCode)
 				{
@@ -264,7 +264,7 @@ namespace BR {
 
 	HRESULT Client::ConnectCli(const NetAddress& destAddress, IConnection* &pNewConnection)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		pNewConnection = GetConnectionManager().NewConnection();
 		netChkPtr(pNewConnection);
@@ -286,7 +286,7 @@ namespace BR {
 	// take over connection management
 	HRESULT Client::TakeOverConnection(IConnection* pIConnection)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Connection* pConn = (Connection*)pIConnection;
 
 		netChkPtr(pIConnection);
@@ -306,7 +306,7 @@ namespace BR {
 	// Release Connection
 	HRESULT Client::ReleaseConnection(IConnection* pIConnection)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ConnectionTCP *pConTCP = (ConnectionTCP*)pIConnection;
 
 		if (pIConnection == nullptr)
@@ -385,7 +385,7 @@ namespace BR {
 	// Connect to server
 	HRESULT ClientTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
 		sockaddr_storage sockAddr, sockAddrDest;
@@ -517,7 +517,7 @@ namespace BR {
 	// Called when connection state changed
 	HRESULT ClientTCP::OnConnectionStateChange( IConnection *pConnection )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		switch (pConnection->GetConnectionState())
 		{
@@ -571,7 +571,7 @@ namespace BR {
 	// Connect to server
 	HRESULT ClientUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
 		sockaddr_storage sockAddr;
@@ -709,7 +709,7 @@ namespace BR {
 	// Connect to server
 	HRESULT ClientMUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
 		sockaddr_storage sockAddr;

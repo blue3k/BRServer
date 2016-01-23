@@ -64,7 +64,7 @@ namespace Svr {
 		// Route Message Cmd/Evt
 		HRESULT EntityTable::RouteTransaction( EntityID entityID, Transaction* &pTrans )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			SharedPointerT<Entity> pEntity;
 
 			svrChk(Find(entityID.ID, pEntity));
@@ -82,7 +82,7 @@ namespace Svr {
 		// Route Transaction result
 		HRESULT EntityTable::RouteTransactionResult( TransactionResult* &pRes )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			SharedPointerT<Entity> pEntity;
 
 			svrChkPtr( pRes );

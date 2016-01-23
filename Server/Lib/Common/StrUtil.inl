@@ -12,126 +12,6 @@
 
 
 
-// String duplication, szDest will destroyded if exist, and new memory will be allocated
-HRESULT StringDup( char* &szDest, const char* szSrc )
-{
-	if( szDest != NULL )
-	{
-		delete[] szDest;
-		szDest = NULL;
-	}
-
-	if( szSrc )
-	{
-		INT iLen = (INT)strlen(szSrc)+1;
-		szDest = new char[ iLen ];
-		if( szDest == NULL )
-			return E_SYSTEM_OUTOFMEMORY;
-
-		memcpy( szDest, szSrc, iLen*sizeof(char) );
-	}
-
-	return S_OK;
-}
-
-HRESULT StringDup( WCHAR* &szDest, const WCHAR* szSrc )
-{
-	if( szDest != NULL )
-	{
-		delete[] szDest;
-		szDest = NULL;
-	}
-
-	if( szSrc )
-	{
-		INT iLen = (INT)wcslen(szSrc)+1;
-		szDest = new WCHAR[ iLen ];
-		if( szDest == NULL )
-			return E_SYSTEM_OUTOFMEMORY;
-
-		memcpy( szDest, szSrc, iLen*sizeof(WCHAR) );
-	}
-
-	return S_OK;
-}
-
-
-// String copy to szDest. if szDest is NULL, operation failed
-HRESULT StringCpyEx( char* &szDest, INT& iBuffLen, const char* szSrc )
-{
-	if( szSrc && szDest )
-	{
-		register char curChar;
-		while( iBuffLen > 0 && (curChar = *szSrc++) != 0 )
-		{
-			*szDest++ = curChar;
-			iBuffLen--;
-		}
-
-		if( iBuffLen == 0 )// force null terminate
-			*(szDest -1) = '\0';
-		else
-			*(szDest) = '\0';
-	}
-	else
-	{
-		if( szDest && iBuffLen > 0 )
-			szDest[0] = '\0';
-	}
-
-	return S_OK;
-}
-
-HRESULT StringCpy( char* szDest, INT iBuffLen, const char* szSrc )
-{
-	if( szSrc && szDest )
-	{
-		register char curChar;
-		while( iBuffLen > 0 && (curChar = *szSrc++) != 0 )
-		{
-			*szDest++ = curChar;
-			iBuffLen--;
-		}
-
-		if( iBuffLen == 0 )// force null terminate
-			*(szDest -1) = '\0';
-		else
-			szDest[0] = '\0';
-	}
-	else
-	{
-		if( szDest && iBuffLen > 0 )
-			szDest[0] = '\0';
-	}
-
-	return S_OK;
-}
-
-HRESULT StringCpy( WCHAR* szDest, INT iBuffLen, const WCHAR* szSrc )
-{
-	if( szSrc )
-	{
-		register WCHAR curChar;
-		while( iBuffLen > 0 && (curChar = *szSrc++) != 0 )
-		{
-			*szDest++ = curChar;
-			iBuffLen--;
-		}
-
-		if( iBuffLen == 0 )// force null terminate
-			*(szDest -1) = '\0';
-		else
-			szDest[0] = '\0';
-	}
-	else
-	{
-		if( szDest && iBuffLen > 0 )
-			szDest[0] = L'\0';
-	}
-
-	return S_OK;
-}
-
 template<INT iBuffLen>
 HRESULT StringCpy( char (&szDest)[iBuffLen], const char *szSrc )
 {
@@ -153,11 +33,11 @@ HRESULT StringCpy( char (&szDest)[iBuffLen], const char *szSrc )
 			szDest[0] = '\0';
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template<INT iBuffLen>
-HRESULT StringCpy( WCHAR (&szDest)[iBuffLen], const WCHAR *szSrc )
+HRESULT StringCpy( wchar_t (&szDest)[iBuffLen], const wchar_t *szSrc )
 {
 	if( szSrc )
 	{
@@ -166,7 +46,7 @@ HRESULT StringCpy( WCHAR (&szDest)[iBuffLen], const WCHAR *szSrc )
 
 		if( szDest && iBuffLen > 0 )
 		{
-			memcpy( szDest, szSrc, iLen*sizeof(WCHAR) );
+			memcpy( szDest, szSrc, iLen*sizeof(wchar_t) );
 			if( iLen > 0 )
 				szDest[iLen-1] = L'\0';
 		}
@@ -177,13 +57,13 @@ HRESULT StringCpy( WCHAR (&szDest)[iBuffLen], const WCHAR *szSrc )
 			szDest[0] = L'\0';
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 
 //
 //template<INT iBuffLen>
-//HRESULT WCSToMBCS( const WCHAR* strWCS, char (&strMBCS)[iBuffLen] )
+//HRESULT WCSToMBCS( const wchar_t* strWCS, char (&strMBCS)[iBuffLen] )
 //{
 //	return WCSToMBCS( strWCS, strMBCS, iBuffLen );
 //}
@@ -192,14 +72,14 @@ HRESULT StringCpy( WCHAR (&szDest)[iBuffLen], const WCHAR *szSrc )
 
 
 template<INT iBuffLen>
-HRESULT WCSToUTF8( const WCHAR* strWCS, char (&strUTF8)[iBuffLen] )
+HRESULT WCSToUTF8( const wchar_t* strWCS, char (&strUTF8)[iBuffLen] )
 {
 	return WCSToUTF8( strWCS, strUTF8, iBuffLen );
 }
 //
 //
 //template<int iBuffLen>
-//HRESULT MBCSToWCS( const char *strMBCS, WCHAR (&strWCS)[iBuffLen] )
+//HRESULT MBCSToWCS( const char *strMBCS, wchar_t (&strWCS)[iBuffLen] )
 //{
 //	return MBCSToWCS( strMBCS, strWCS, iBuffLen );
 //}
@@ -211,7 +91,7 @@ HRESULT WCSToUTF8( const WCHAR* strWCS, char (&strUTF8)[iBuffLen] )
 //}
 
 template<INT iBuffLen>
-HRESULT UTF8ToWCS( const char *strUTF8, WCHAR (&strWCS)[iBuffLen] )
+HRESULT UTF8ToWCS( const char *strUTF8, wchar_t (&strWCS)[iBuffLen] )
 {
 	return UTF8ToWCS( strUTF8, strWCS, iBuffLen );
 }
@@ -234,7 +114,7 @@ HRESULT UTF8ToUTF8Bin( BYTE (&UTF8BinBuff)[iBuffLen], const char* strSrc )
 
 HRESULT UTF8BinToUTF8( char* strDst, INT dstLen, const BYTE* strSrc )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	UTF8Bin *pUTF8 = (UTF8Bin*)strSrc;
 
@@ -305,7 +185,7 @@ int StringCmp( const char* szSrc, const char* szDest, INT MaxTry )
 	return 0;
 }
 
-int StringCmp( const WCHAR* szSrc, INT iSrcBuffLen, const WCHAR* szDest, INT iDestBuffLen )
+int StringCmp( const wchar_t* szSrc, INT iSrcBuffLen, const wchar_t* szDest, INT iDestBuffLen )
 {
 	if( szSrc == NULL && szDest == NULL )
 		return 0;
@@ -363,19 +243,19 @@ int StringCmp( char (&szSrc)[iSrcBuffLen], const char* szDest, INT iDestBuffLen 
 
 
 template<INT iSrcBuffLen, INT iDestBuffLen>
-int StringCmp( WCHAR (&szSrc)[iSrcBuffLen], WCHAR (&szDest)[iDestBuffLen] )
+int StringCmp( wchar_t (&szSrc)[iSrcBuffLen], wchar_t (&szDest)[iDestBuffLen] )
 {
 	return StringCmp( szSrc, iSrcBuffLen, szDest, iDestBuffLen );
 }
 
 template<INT iDestBuffLen>
-int StringCmp( const WCHAR* szSrc, INT iSrcBuffLen, WCHAR (&szDest)[iDestBuffLen] )
+int StringCmp( const wchar_t* szSrc, INT iSrcBuffLen, wchar_t (&szDest)[iDestBuffLen] )
 {
 	return StringCmp( szSrc, iSrcBuffLen, szDest, iDestBuffLen );
 }
 
 template<INT iSrcBuffLen>
-int StringCmp( WCHAR (&szSrc)[iSrcBuffLen], const WCHAR* szDest, INT iDestBuffLen )
+int StringCmp( wchar_t (&szSrc)[iSrcBuffLen], const wchar_t* szDest, INT iDestBuffLen )
 {
 	return StringCmp( szSrc, iSrcBuffLen, szDest, iDestBuffLen );
 }
@@ -424,7 +304,7 @@ int StringCmpLwr( const char* szSrc, INT iSrcBuffLen, const char* szDest, INT iD
 	return 0;
 }
 
-int StringCmpLwr( const WCHAR* szSrc, INT iSrcBuffLen, const WCHAR* szDest, INT iDestBuffLen )
+int StringCmpLwr( const wchar_t* szSrc, INT iSrcBuffLen, const wchar_t* szDest, INT iDestBuffLen )
 {
 	if (szSrc == nullptr && szDest == nullptr)
 		return 0;
@@ -442,8 +322,8 @@ int StringCmpLwr( const WCHAR* szSrc, INT iSrcBuffLen, const WCHAR* szDest, INT 
 
 	for( INT iComp = 0; iComp < iCompLen && szSrc[0] != L'\0' && szDest[0] != L'\0'; iComp++ )
 	{
-		WCHAR src = (szSrc[0] >= L'A' && szSrc[0] <= L'Z') ? (szSrc[0] - L'A' + L'a') : szSrc[0];
-		WCHAR dst = (szDest[0] >= L'A' && szDest[0] <= L'Z') ? (szDest[0] - L'A' + L'a') : szDest[0];
+		wchar_t src = (szSrc[0] >= L'A' && szSrc[0] <= L'Z') ? (szSrc[0] - L'A' + L'a') : szSrc[0];
+		wchar_t dst = (szDest[0] >= L'A' && szDest[0] <= L'Z') ? (szDest[0] - L'A' + L'a') : szDest[0];
 		int iDiff = src - dst;
 		if( iDiff != 0 )
 			return iDiff;
@@ -484,19 +364,19 @@ int StringCmpLwr( char (&szSrc)[iSrcBuffLen], const char* szDest, INT iDestBuffL
 
 
 template<INT iSrcBuffLen, INT iDestBuffLen>
-int StringCmpLwr( WCHAR (&szSrc)[iSrcBuffLen], WCHAR (&szDest)[iDestBuffLen] )
+int StringCmpLwr( wchar_t (&szSrc)[iSrcBuffLen], wchar_t (&szDest)[iDestBuffLen] )
 {
 	return StringCmpLwr( szSrc, iSrcBuffLen, szDest, iDestBuffLen );
 }
 
 template<INT iDestBuffLen>
-int StringCmpLwr( const WCHAR* szSrc, INT iSrcBuffLen, WCHAR (&szDest)[iDestBuffLen] )
+int StringCmpLwr( const wchar_t* szSrc, INT iSrcBuffLen, wchar_t (&szDest)[iDestBuffLen] )
 {
 	return StringCmpLwr( szSrc, iSrcBuffLen, szDest, iDestBuffLen );
 }
 
 template<INT iSrcBuffLen>
-int StringCmpLwr( WCHAR (&szSrc)[iSrcBuffLen], const WCHAR* szDest, INT iDestBuffLen )
+int StringCmpLwr( wchar_t (&szSrc)[iSrcBuffLen], const wchar_t* szDest, INT iDestBuffLen )
 {
 	return StringCmpLwr( szSrc, iSrcBuffLen, szDest, iDestBuffLen );
 }
@@ -522,10 +402,10 @@ HRESULT StringLwr( char* szSrc, INT iBuffLen )
 		szSrc++;
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
-HRESULT StringLwr( WCHAR* szSrc, INT iBuffLen )
+HRESULT StringLwr( wchar_t* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
 		return E_SYSTEM_INVALIDARG;
@@ -540,7 +420,7 @@ HRESULT StringLwr( WCHAR* szSrc, INT iBuffLen )
 		szSrc++;
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template<INT iBuffLen>
@@ -550,7 +430,7 @@ HRESULT StringLwr( char (&szSrc)[iBuffLen] )
 }
 
 template<INT iBuffLen>
-HRESULT StringLwr( WCHAR (&szSrc)[iBuffLen] )
+HRESULT StringLwr( wchar_t (&szSrc)[iBuffLen] )
 {
 	return StringLwr( szSrc, iBuffLen );
 }
@@ -562,7 +442,7 @@ HRESULT StringLwr( WCHAR (&szSrc)[iBuffLen] )
 // iBuffLen(In/Out)		: Destination buffer size. if buffer is small to take all source message, then reallocated
 HRESULT StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	if( szSrc == NULL )
 		return E_SYSTEM_INVALIDARG;
@@ -585,9 +465,9 @@ HRESULT StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	return StringLwr( szDest, iBuffLen );
 }
 
-HRESULT StringLwr(WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc)
+HRESULT StringLwr(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	if (szSrc == NULL)
 		return E_SYSTEM_INVALIDARG;
@@ -610,13 +490,42 @@ HRESULT StringLwr(WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc)
 	return StringLwr(szDest, iBuffLen);
 }
 
+
+HRESULT StringLwrEx(char* &szDest, INT &iBuffLen, const char* szSrc)
+{
+	HRESULT hr = S_SYSTEM_OK;
+
+	if (szSrc == NULL)
+		return E_SYSTEM_INVALIDARG;
+
+
+	hr = StringCpyEx(szDest, iBuffLen, szSrc);
+	if (FAILED(hr)) return hr;
+
+	return StringLwr(szDest, iBuffLen);
+}
+
+HRESULT StringLwrEx(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
+{
+	HRESULT hr = S_SYSTEM_OK;
+
+	if (szSrc == NULL)
+		return E_SYSTEM_INVALIDARG;
+
+
+	hr = StringCpyEx(szDest, iBuffLen, szSrc);
+	if (FAILED(hr)) return hr;
+
+	return StringLwr(szDest, iBuffLen);
+}
+
 // String convert to lower case with truncate, if source string longer then testination buffer
 // szSrc				: Source string to convert
 // szDest(In)			: Buffer pointer to copy
 template<INT iBuffLen>
 HRESULT StringLwr( char (&szDest)[iBuffLen], const char *szSrc )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	if( szSrc == NULL )
 		return E_SYSTEM_INVALIDARG;
@@ -635,9 +544,9 @@ HRESULT StringLwr( char (&szDest)[iBuffLen], const char *szSrc )
 }
 
 template<INT iBuffLen>
-HRESULT StringLwr( WCHAR (&wszDest)[iBuffLen], const WCHAR *wszSrc )
+HRESULT StringLwr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	if(wszSrc == NULL )
 		return E_SYSTEM_INVALIDARG;
@@ -676,10 +585,10 @@ HRESULT StringUpr( char* szSrc, INT iBuffLen )
 		szSrc++;
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
-HRESULT StringUpr( WCHAR* szSrc, INT iBuffLen )
+HRESULT StringUpr( wchar_t* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
 		return E_SYSTEM_INVALIDARG;
@@ -694,7 +603,7 @@ HRESULT StringUpr( WCHAR* szSrc, INT iBuffLen )
 		szSrc++;
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template<INT iBuffLen>
@@ -704,7 +613,7 @@ HRESULT StringUpr( char (&szSrc)[iBuffLen] )
 }
 
 template<INT iBuffLen>
-HRESULT StringUpr( WCHAR (&szSrc)[iBuffLen] )
+HRESULT StringUpr( wchar_t (&szSrc)[iBuffLen] )
 {
 	return StringUpr( szSrc, iBuffLen );
 }
@@ -716,7 +625,7 @@ HRESULT StringUpr( WCHAR (&szSrc)[iBuffLen] )
 // iBuffLen(In/Out)		: Destination buffer size. if buffer is small to take all source message, then reallocated
 HRESULT StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	if( szSrc == NULL )
 		return E_SYSTEM_INVALIDARG;
@@ -739,9 +648,9 @@ HRESULT StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	return StringUpr( szDest, iBuffLen );
 }
 
-HRESULT StringUpr( WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc )
+HRESULT StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	if( szSrc == NULL )
 		return E_SYSTEM_INVALIDARG;
@@ -770,7 +679,7 @@ HRESULT StringUpr( WCHAR* &szDest, INT &iBuffLen, const WCHAR* szSrc )
 template<INT iBuffLen>
 HRESULT StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	if( szSrc == NULL )
 		return E_SYSTEM_INVALIDARG;
@@ -789,9 +698,9 @@ HRESULT StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 }
 
 template<INT iBuffLen>
-HRESULT StringUpr( WCHAR (&wszDest)[iBuffLen], const WCHAR *wszSrc )
+HRESULT StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	if(wszSrc == NULL )
 		return E_SYSTEM_INVALIDARG;
@@ -817,7 +726,7 @@ void SafeDelete( char* &szStr )
 	if( szStr ) delete[] szStr;
 }
 
-void SafeDelete( WCHAR* &szStr )
+void SafeDelete( wchar_t* &szStr )
 {
 	if( szStr ) delete[] szStr;
 }

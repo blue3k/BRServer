@@ -129,7 +129,7 @@ namespace Svr
 	// Set parameters
 	HRESULT GCMHttpExternalTransaction::SetParameters( const char* strRegID, const char* strMessage, UINT64 param0 )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr( strRegID );
 		svrChkPtr( strMessage );
@@ -148,7 +148,7 @@ namespace Svr
 	// Initialize Transaction
 	HRESULT GCMHttpExternalTransaction::InitializeTransaction( Entity* pOwner )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( m_CurlResult != 0 )
 		{
@@ -165,7 +165,7 @@ namespace Svr
 	// Start Transaction
 	HRESULT GCMHttpExternalTransaction::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		char *resultString = nullptr;
 
 		svrChk(HTTPExternalTransaction::StartTransaction() );
@@ -230,7 +230,7 @@ Proc_End:
 	// Set parameters
 	HRESULT ExternalTransactionGoogleAndroidReceiptCheck::SetParameters(const char* packageName, const char* productID, const char* purchaseToken)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(StrUtil::StringCpy(m_strPackageName, packageName));
 		svrChk(StrUtil::StringCpy(m_strProductID, productID));
@@ -245,7 +245,7 @@ Proc_End:
 	// Initialize Transaction
 	HRESULT ExternalTransactionGoogleAndroidReceiptCheck::InitializeTransaction(Entity* pOwner)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(ParallelTransaction::InitializeTransaction(pOwner));
 
@@ -257,7 +257,7 @@ Proc_End:
 	// Start Transaction
 	HRESULT ExternalTransactionGoogleAndroidReceiptCheck::StartTransaction()
 	{
-		HRESULT hr = S_OK, hrTem = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrTem = S_SYSTEM_OK;
 
 		svrChk(ParallelTransaction::StartTransaction());
 
@@ -284,7 +284,7 @@ Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -309,7 +309,7 @@ Proc_End:
 	{
 		const char prefix[] = "{\"receipt-data\":\"";
 		const char postfix[] = "\"}";
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(StrUtil::StringCpy(m_strPackageName, packageName));
 		svrChk(StrUtil::StringCpy(m_strProductID, productID));
@@ -329,7 +329,7 @@ Proc_End:
 	// Initialize Transaction
 	HRESULT ExternalTransactionIOSRecepitCheck::InitializeTransaction(Entity* pOwner)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(HTTPExternalTransaction::InitializeTransaction(pOwner));
 
@@ -345,12 +345,12 @@ Proc_End:
 
 	HRESULT ExternalTransactionIOSRecepitCheck::ToHRESULT(int status)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		const char* reason = "";
 		switch (status)
 		{
 		case 0:
-			return S_OK;
+			return S_SYSTEM_OK;
 		case 21000:				reason = "The App Store could not read the JSON object you provided."; 
 			hr = E_SVR_INVALID_PURCHASE_INFO; break;
 		case 21002:				reason = "The data in the receipt-data property was malformed or missing."; 
@@ -378,7 +378,7 @@ Proc_End:
 
 	HRESULT ExternalTransactionIOSRecepitCheck::VerifyReceipt()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		char *resultString = nullptr;
 		curl_slist *headers = nullptr;
@@ -510,7 +510,7 @@ Proc_End:
 	// Start Transaction
 	HRESULT ExternalTransactionIOSRecepitCheck::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		hr = VerifyReceipt();
 		if (FAILED(hr))
@@ -525,7 +525,7 @@ Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

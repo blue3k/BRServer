@@ -43,7 +43,7 @@ namespace BR {
 
 	//	cbSize = uiSize;
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 	//// Reallocate given size of buffer 
@@ -68,7 +68,7 @@ namespace BR {
 	//		delete[] pBlobData;
 	//	pBlobData = pBlobDataTem;
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 

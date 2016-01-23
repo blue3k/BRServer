@@ -39,7 +39,7 @@ namespace BR
 	{
 #ifdef MEMORY_LOG
 
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		if( g_pLogger == nullptr && g_bFirst )
 		{
 			g_bFirst = false;
@@ -119,7 +119,7 @@ namespace BR
 
 		HRESULT Alloc( size_t uiSize, void* &pPtr )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			if( m_hHeap == nullptr )
 				m_hHeap = GetProcessHeap();
@@ -145,7 +145,7 @@ namespace BR
 
 		HRESULT Realloc( size_t uiSize, void* &pPtr )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			if( m_hHeap == nullptr )
 				m_hHeap = GetProcessHeap();
@@ -182,12 +182,12 @@ namespace BR
 
 		Proc_End:
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT Free( void* pPtr )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			if( m_hHeap == nullptr )
 				m_hHeap = GetProcessHeap();
@@ -216,7 +216,7 @@ namespace BR
 
 		Proc_End:
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 #else
@@ -254,7 +254,7 @@ namespace BR
 
 		HRESULT Alloc( size_t uiSize, void* &pPtr )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			BR::MemBlockHdr* pMemBlock = (BR::MemBlockHdr*)malloc( uiSize + sizeof(BR::MemBlockHdr) );
 
@@ -277,7 +277,7 @@ namespace BR
 
 		HRESULT Realloc( size_t uiSize, void* &pPtr )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			BR::MemBlockHdr* pNewMemBlock = nullptr;
 			BR::MemBlockHdr* pMemBlock = nullptr;
 
@@ -313,12 +313,12 @@ namespace BR
 
 		Proc_End:
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT Free( void* pPtr )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			BR::MemBlockHdr* pMemBlock = nullptr;
 
 			if( pPtr == nullptr )
@@ -346,7 +346,7 @@ namespace BR
 
 		Proc_End:
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 	}; // namespace StdHeap
 

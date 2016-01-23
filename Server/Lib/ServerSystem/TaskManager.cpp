@@ -50,7 +50,7 @@ namespace Svr {
 		//while( m_PendingAddTask.GetEnqueCount() > 0 )
 		//{
 		//	SharedPointerT<TickTask> pTask = nullptr;
-		//	if( m_PendingAddTask.Dequeue( pTask ) == S_OK )
+		//	if( m_PendingAddTask.Dequeue( pTask ) == S_SYSTEM_OK )
 		//		delete pTask;
 		//}
 
@@ -96,7 +96,7 @@ namespace Svr {
 		for (; loopCount > 0; loopCount--)
 		{
 			SharedPointerT<TickTask> pTask;
-			if (m_PendingAddTask.Dequeue(pTask) == S_OK)
+			if (m_PendingAddTask.Dequeue(pTask) == S_SYSTEM_OK)
 			{
 				Assert(pTask->GetTaskID() != 0);
 				if (pTask->GetTaskID() == 0)
@@ -135,7 +135,7 @@ namespace Svr {
 			}
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT TaskWorker::UpdateRemoveTickTaskQueue()
@@ -144,7 +144,7 @@ namespace Svr {
 		for (; loopCount > 0; loopCount--)
 		{
 			SharedPointerT<TickTask> pTask;
-			if (m_PendingRemoveTask.Dequeue(pTask) == S_OK)
+			if (m_PendingRemoveTask.Dequeue(pTask) == S_SYSTEM_OK)
 			{
 				SharedPointerT<TickTask> pFound;
 				if (SUCCEEDED(m_TaskList.Find(pTask->GetTaskID(), pFound)))
@@ -200,7 +200,7 @@ namespace Svr {
 		}
 
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT TaskWorker::UpdateTickTask()
@@ -217,7 +217,7 @@ namespace Svr {
 		m_GroupWorkLoad = WorkLoad;
 		m_GroupWorkLoadDiff = 0;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT TaskWorker::UpdateEventTask()
@@ -252,13 +252,13 @@ namespace Svr {
 			m_TimeScheduler.Reschedul(threadID, tickTask->GetTimerAction());
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT TaskWorker::UpdateTimer()
 	{
 		m_TimeScheduler.UpdateTick(GetThreadID());
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// run function
@@ -318,7 +318,7 @@ namespace Svr {
 	// Get/Set Working group count
 	HRESULT TaskManager::SetWorkGroupCount( size_t WorkGroupCount )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// decrease case not allowed
 		if( m_TaskGroups.size() >= WorkGroupCount )
@@ -348,10 +348,10 @@ namespace Svr {
 		m_TaskGroups.Foreach([](TaskWorker *pTaskWorker)
 		{
 			pTaskWorker->Start();
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Terminate TaskManager
@@ -363,12 +363,12 @@ namespace Svr {
 			if (pTaskWorker->GetThreadID() != ThreadID())
 				pTaskWorker->Stop(true);
 			delete pTaskWorker;
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		m_TaskGroups.Clear();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -384,7 +384,7 @@ namespace Svr {
 	// Add TickTask
 	HRESULT TaskManager::AddTickTask( TickTask* pTask )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SysUInt BestGroupLoad = (SysUInt)-1;
 		TaskWorker *pBestGroup = nullptr;
 
@@ -392,7 +392,7 @@ namespace Svr {
 		m_TaskGroups.Foreach([&](TaskWorker *pTaskWorker)
 		{
 			if (pTaskWorker == nullptr)
-				return S_OK;
+				return S_SYSTEM_OK;
 
 			SysUInt GroupLoad = pTaskWorker->GetGroupWorkLoad();
 			if( GroupLoad < BestGroupLoad )
@@ -400,7 +400,7 @@ namespace Svr {
 				BestGroupLoad = GroupLoad;
 				pBestGroup = pTaskWorker;
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 
@@ -421,7 +421,7 @@ namespace Svr {
 	// Remove TickTask
 	HRESULT TaskManager::RemoveTickTask( TickTask *pTask )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SysUInt groupID;
 
 		svrChkPtr(pTask);

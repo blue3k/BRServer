@@ -95,7 +95,7 @@ namespace TableBuilder
             });
 
             CloseSection();
-            WriteStatement("return S_OK;");
+            WriteStatement("return S_SYSTEM_OK;");
             CloseSection();
 
         }
@@ -247,7 +247,7 @@ namespace TableBuilder
             //WriteStatement("if (FAILED(parser.LoadTable(strFileName)))");
             //WriteStatement("return E_SYSTEM_FAIL;", 1);
             //NewLine(1);
-            //WriteStatement("return S_OK;");
+            //WriteStatement("return S_SYSTEM_OK;");
             //CloseSection();
             WriteLoadTableList();
 

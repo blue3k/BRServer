@@ -53,7 +53,7 @@ namespace Svr {
 		// Start Transaction
 		virtual HRESULT StartTransaction()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			Svr::ServerEntity *pServerEntity = nullptr;
 
 			svrChk( super::StartTransaction() );

@@ -54,7 +54,7 @@ namespace LoginServer {
 
 	HRESULT LoginServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//Svr::ServerEntity *pServer = nullptr;
 
 		switch( m_Step )
@@ -90,7 +90,7 @@ namespace LoginServer {
 
 	HRESULT LoginServerStartProcess::InitializeServices()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//Svr::LoginClusterServiceEntity *pLoginService = nullptr;
 
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
@@ -123,7 +123,7 @@ namespace LoginServer {
 	// Start Transaction
 	HRESULT LoginServerStartProcess::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 

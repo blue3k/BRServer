@@ -45,7 +45,7 @@ namespace EntityServer {
 
 	HRESULT TransServerStarted::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		const ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
 		Svr::ServerServiceInformation *pService = nullptr;
 
@@ -80,7 +80,7 @@ namespace EntityServer {
 	//// Start Transaction
 	//HRESULT TransEntityServerStarted::StartTransaction()
 	//{
-	//	HRESULT hr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK;
 	//	Svr::ServerEntity *pServerEntity = nullptr;
 
 	//	svrChk( super::StartTransaction() );

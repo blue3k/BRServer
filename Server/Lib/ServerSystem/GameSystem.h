@@ -73,7 +73,7 @@ namespace Svr {
 		virtual void TerminateComponent() { Component::TerminateComponent(); }
 
 		// Update system
-		virtual HRESULT UpdateSystem() { return S_OK; }
+		virtual HRESULT UpdateSystem() { return S_SYSTEM_OK; }
 
 	};
 

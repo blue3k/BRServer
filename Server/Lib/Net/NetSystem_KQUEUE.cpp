@@ -68,7 +68,7 @@ namespace Net {
 			return GetLastWSAHRESULT();
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT KQUEUEWorker::UnregisterSocket(INetIOCallBack* cbInstance)
@@ -82,12 +82,12 @@ namespace Net {
 			return GetLastWSAHRESULT();
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT KQUEUEWorker::HandleAccept(SOCKET sock, INetIOCallBack* pCallBack)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		IOBUFFER_ACCEPT* pAcceptInfo = nullptr;
 
 		while (1)
@@ -96,7 +96,7 @@ namespace Net {
 			hr = pCallBack->Accept(pAcceptInfo);
 			switch (hr)
 			{
-			case S_OK:
+			case S_SYSTEM_OK:
 				netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
 				pAcceptInfo = nullptr;
 				break;
@@ -126,7 +126,7 @@ namespace Net {
 
 	HRESULT KQUEUEWorker::HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 		IOBUFFER_READ* pReadBuffer = nullptr;
 
 		if (!(events & (EVFILT_READ| EVFILT_WRITE)))
@@ -149,7 +149,7 @@ namespace Net {
 				case E_NET_WOULDBLOCK:
 				case S_SYSTEM_FALSE:
 					// These are expected return code
-					hr = S_OK;
+					hr = S_SYSTEM_OK;
 					break;
 				case E_NET_IO_PENDING:
 					Assert(false);
@@ -160,7 +160,7 @@ namespace Net {
 						netTrace(TRC_NETSYS, "ERROR KQUEUE Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
 					}
 					// fallthru
-				case S_OK:
+				case S_SYSTEM_OK:
 					// toss data to working thread
 					if (pReadBuffer != nullptr)
 					{
@@ -201,13 +201,13 @@ namespace Net {
 
 	void KQUEUEWorker::Run()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		int iNumEvents;
 		struct kevent events[MAX_KQUEUE_EVENTS];
 
 		while (1)
 		{
-			hr = S_OK;
+			hr = S_SYSTEM_OK;
 
 			// Getting status
 			iNumEvents = kevent(m_hKQUEUE, NULL, 0, events, countof(events), NULL);
@@ -278,13 +278,13 @@ namespace Net {
 
 	void KQUEUESendWorker::Run()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		IOBUFFER_WRITE* pSendBuffer = nullptr;
 		DurationMS tickInterval(0);
 
 		while (1)
 		{
-			hr = S_OK;
+			hr = S_SYSTEM_OK;
 
 			// Check exit event
 			if (CheckKillEvent(tickInterval))
@@ -315,7 +315,7 @@ namespace Net {
 				case E_NET_TRY_AGAIN:
 					continue; // try again
 					break;
-				case S_OK:
+				case S_SYSTEM_OK:
 					break;
 				default:
 					netTrace(TRC_NETSYS, "ERROR UDP send failed {0:X8}", hr);
@@ -359,7 +359,7 @@ namespace Net {
 	HRESULT KQUEUESystem::Initialize(UINT netThreadCount)
 	{
 		if (m_ListenWorker != nullptr)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		int hKQUEUEUDP = kqueue();
 
@@ -392,7 +392,7 @@ namespace Net {
 			}
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	void KQUEUESystem::Terminate()
@@ -456,7 +456,7 @@ namespace Net {
 			return E_SYSTEM_FAIL;
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// UDP shares the send queue
@@ -484,7 +484,7 @@ namespace Net {
 			cbInstance->SetWriteQueue(&m_UDPSendWorker->GetWriteQueue());
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Register the socket to EPOLL
@@ -529,7 +529,7 @@ namespace Net {
 			cbInstance->SetAssignedIOWorker(0);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT KQUEUESystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
@@ -574,7 +574,7 @@ namespace Net {
 			cbInstance->SetAssignedIOWorker(-1);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

@@ -48,7 +48,7 @@ namespace Svr {
 	// Initialize entity to proceed new connection
 	HRESULT GameServerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 

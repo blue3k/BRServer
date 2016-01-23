@@ -110,13 +110,13 @@ namespace Svr{
 	// Process Private network event
 	HRESULT BrServer::ProcessPrivateNetworkEvent()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Net::INet::Event curEvent;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		Net::Connection *pConn = nullptr;
 
 		if( m_pNetPrivate == nullptr )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 
 		while( SUCCEEDED(m_pNetPrivate->DequeueNetEvent( curEvent )) )
@@ -185,7 +185,7 @@ Proc_End:
 	// Process Public network event
 	HRESULT BrServer::ProcessPublicNetworkEvent()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 	//Proc_End:
 
@@ -194,7 +194,7 @@ Proc_End:
 
 	HRESULT BrServer::TerminateEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (GetThreadID() != ThisThread::GetThreadID())
 			Stop(true);
@@ -216,7 +216,7 @@ Proc_End:
 	// initialize memory pool
 	HRESULT BrServer::InitializeMemoryPool()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 	//Proc_End:
 
@@ -226,7 +226,7 @@ Proc_End:
 	// Terminate memory pool
 	HRESULT BrServer::TerminateMemoryPool()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 	//Proc_End:
 
@@ -236,7 +236,7 @@ Proc_End:
 	// Apply configuration
 	HRESULT BrServer::ApplyConfiguration()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		SetServerUID( GetMyConfig()->UID );
 
@@ -247,7 +247,7 @@ Proc_End:
 	
 	HRESULT BrServer::InitializeMonitoring()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::Config::NetSocket *netInfo = nullptr;
 		NetAddress svrAddress;
 
@@ -268,7 +268,7 @@ Proc_End:
 	// Initialize server basic entities
 	HRESULT BrServer::InitializeEntities()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntity *pLoopbackEntity = nullptr;
 		ServerEntity *pEntity = nullptr;
 		EntityManager *pEntityManager = nullptr;
@@ -325,7 +325,7 @@ Proc_End:
 
 	HRESULT BrServer::InitializeComponents()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto myConfig = GetMyConfig();
 
 		svrChkPtr(myConfig);
@@ -366,7 +366,7 @@ Proc_End:
 	{
 		srand( (UINT)Util::Time.GetRawTimeMs().time_since_epoch().count() );
 		Util::Random.Srand( nullptr );
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Close server and release resource
@@ -374,13 +374,13 @@ Proc_End:
 	{
 		TerminateComponents();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	bool BrServer::OnStart()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		SetServerState( ServerState::STARTING );
 
@@ -456,7 +456,7 @@ Proc_End:
 
 	void BrServer::Run()
 	{
-		//HRESULT hr = S_OK;
+		//HRESULT hr = S_SYSTEM_OK;
 		const DurationMS lMinCheckTime = DurationMS(10); // 10ms
 
 		m_bIsKillSignaled = false;
@@ -512,7 +512,7 @@ Proc_End:
 
 	bool BrServer::OnEnd()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		SetServerState( ServerState::STOPING );
 
@@ -560,7 +560,7 @@ Proc_End:
 	// Initialize private Network
 	HRESULT BrServer::InitializeNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 
 		svrChk( CloseNetPrivate() );
@@ -599,7 +599,7 @@ Proc_End:
 	// Close Private Network
 	HRESULT BrServer::CloseNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 
 		// Terminate remote entity manager
@@ -639,19 +639,19 @@ Proc_End:
 	// Initialize private Network
 	HRESULT BrServer::InitializeNetPublic()
 	{
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Close Public Network
 	HRESULT BrServer::CloseNetPublic()
 	{
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	HRESULT BrServer::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		
 
 		// Process private network event
@@ -694,7 +694,7 @@ Proc_End:
 			Start();
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Get Service name
@@ -705,7 +705,7 @@ Proc_End:
 			Stop( true );
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

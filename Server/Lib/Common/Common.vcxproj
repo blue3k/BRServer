@@ -72,6 +72,8 @@
     <ClInclude Include="SharedReferenceManager.h" />
     <ClInclude Include="SortedMap.h" />
     <ClInclude Include="StaticDoubleLinkedList.h" />
+    <ClInclude Include="StringKey.h" />
+    <ClInclude Include="StrParserUtil.h" />
     <ClInclude Include="SynchronizationTrait.h" />
     <ClInclude Include="SystemSynchronization.h" />
     <ClInclude Include="ObjectPool.h" />
@@ -102,6 +104,7 @@
     <ClInclude Include=".\Trace.h" />
     <ClInclude Include=".\Trace_Internal.h" />
     <ClInclude Include=".\Typedefs.h" />
+    <ClInclude Include="ThirdPartyComponent.h" />
     <ClInclude Include="ToStringGame.h" />
     <ClInclude Include="ToStringSvr.h" />
     <ClInclude Include="TraceComponent.h" />
@@ -135,6 +138,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include=".\StrUtil.cpp" />
+    <ClCompile Include="StringKey.cpp" />
+    <ClCompile Include="StrParserUtil.cpp" />
     <ClCompile Include="Synchronization.cpp" />
     <ClCompile Include=".\Thread.cpp" />
     <ClCompile Include=".\TimeUtil.cpp" />
@@ -146,6 +151,7 @@
     <ClCompile Include="SharedObject.cpp" />
     <ClCompile Include="SharedReferenceManager.cpp" />
     <ClCompile Include="StackWalker.cpp" />
+    <ClCompile Include="ThirdPartyComponent.cpp" />
     <ClCompile Include="ToString.cpp" />
     <ClCompile Include="ToStringGame.cpp" />
     <ClCompile Include="ToStringSvr.cpp" />

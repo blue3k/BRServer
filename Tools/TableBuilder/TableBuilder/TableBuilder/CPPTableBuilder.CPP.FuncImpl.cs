@@ -17,7 +17,7 @@ namespace TableBuilder
             WriteStatement("delete itr->second;", 1);
             NewLine(1);
             WriteStatement("m_TableMap.clear();");
-            WriteStatement("return S_OK;");
+            WriteStatement("return S_SYSTEM_OK;");
             CloseSection();
         }
 
@@ -41,7 +41,7 @@ namespace TableBuilder
                 CloseSection();
 
                 WriteStatement("pRow = itr->second;");
-                WriteStatement("return S_OK;");
+                WriteStatement("return S_SYSTEM_OK;");
                 CloseSection();
             }
             else if (keyInfo.keyType == KeyType.EKEY_NONUNIQUE)
@@ -59,7 +59,7 @@ namespace TableBuilder
                 CloseSection();
                 WriteStatement("for (; pair1.first != pair1.second; ++pair1.first)");
                 WriteStatement("rows.insert(pair1.first->second);", 1);
-                WriteStatement("return S_OK;");
+                WriteStatement("return S_SYSTEM_OK;");
                 CloseSection();
             }
             else if (keyInfo.keyType == KeyType.EKEY_COMPOSIT)
@@ -76,7 +76,7 @@ namespace TableBuilder
                 CloseSection();
 
                 WriteStatement("pRow = itr->second;");
-                WriteStatement("return S_OK;");
+                WriteStatement("return S_SYSTEM_OK;");
                 CloseSection();
             }
         }
@@ -98,7 +98,7 @@ namespace TableBuilder
             NewLine(1);
             statement = string.Format("{0}.clear();", tableName);
             WriteStatement(statement);
-            WriteStatement("return S_OK;");
+            WriteStatement("return S_SYSTEM_OK;");
             CloseSection();
         }
 
@@ -126,7 +126,7 @@ namespace TableBuilder
                 CloseSection();
 
                 WriteStatement("pRow = itr->second;");
-                WriteStatement("return S_OK;");
+                WriteStatement("return S_SYSTEM_OK;");
                 CloseSection();
             }
             else if (keyInfo.keyType == KeyType.EKEY_NONUNIQUE)
@@ -145,7 +145,7 @@ namespace TableBuilder
                 CloseSection();
                 WriteStatement("for (; pair1.first != pair1.second; ++pair1.first)");
                 WriteStatement("rows.insert(pair1.first->second);", 1);
-                WriteStatement("return S_OK;");
+                WriteStatement("return S_SYSTEM_OK;");
                 CloseSection();
             }
             else if (keyInfo.keyType == KeyType.EKEY_COMPOSIT)
@@ -164,7 +164,7 @@ namespace TableBuilder
                 CloseSection();
 
                 WriteStatement("pRow = itr->second;");
-                WriteStatement("return S_OK;");
+                WriteStatement("return S_SYSTEM_OK;");
                 CloseSection();
             }
         }
@@ -182,7 +182,7 @@ namespace TableBuilder
                 statement = string.Format("ClearTable{0}();", keyName);
                 WriteStatement(statement);
             }
-            WriteStatement("return S_OK;");
+            WriteStatement("return S_SYSTEM_OK;");
             CloseSection();
         }
 	}

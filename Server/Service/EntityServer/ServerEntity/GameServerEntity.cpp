@@ -51,15 +51,15 @@ namespace EntityServer {
 	// Initialize entity to proceed new connection
 	HRESULT GameServerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::GameServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)			{ pNewTrans = new TransGameServerStarted( pMsgData ); return S_OK; } );
-		//BR_ENTITY_MESSAGE( Message::EntityServer::RegisterUserEntityCmd)	{ pNewTrans = new TransRegisterUserEntity( pMsgData );return S_OK; } );
-		//BR_ENTITY_MESSAGE( Message::EntityServer::UnregisterUserEntityCmd)	{ pNewTrans = new TransUnregisterUserEntity( pMsgData );return S_OK;  } );
-		//BR_ENTITY_MESSAGE( Message::EntityServer::UpdateUserEntityCmd)		{ pNewTrans = new TransUpdateUserEntity( pMsgData );return S_OK;  } );
-		//BR_ENTITY_MESSAGE( Message::EntityServer::FindUserEntityCmd)		{ pNewTrans = new TransFindUserEntity( pMsgData );return S_OK;  } );
+		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)			{ pNewTrans = new TransGameServerStarted( pMsgData ); return S_SYSTEM_OK; } );
+		//BR_ENTITY_MESSAGE( Message::EntityServer::RegisterUserEntityCmd)	{ pNewTrans = new TransRegisterUserEntity( pMsgData );return S_SYSTEM_OK; } );
+		//BR_ENTITY_MESSAGE( Message::EntityServer::UnregisterUserEntityCmd)	{ pNewTrans = new TransUnregisterUserEntity( pMsgData );return S_SYSTEM_OK;  } );
+		//BR_ENTITY_MESSAGE( Message::EntityServer::UpdateUserEntityCmd)		{ pNewTrans = new TransUpdateUserEntity( pMsgData );return S_SYSTEM_OK;  } );
+		//BR_ENTITY_MESSAGE( Message::EntityServer::FindUserEntityCmd)		{ pNewTrans = new TransFindUserEntity( pMsgData );return S_SYSTEM_OK;  } );
 
 	Proc_End:
 

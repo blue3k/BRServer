@@ -40,7 +40,7 @@ namespace DB {
 	HRESULT Factory::InitializeDBFactory()
 	{
 		stm_pInstance = new DBFACTORY_CLASS;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT Factory::TerminateDBFactory()
@@ -49,7 +49,7 @@ namespace DB {
 			delete stm_pInstance;
 
 		stm_pInstance = nullptr;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 } // namespace DB

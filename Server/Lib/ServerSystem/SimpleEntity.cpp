@@ -62,7 +62,7 @@ namespace Svr {
 		if (m_pCurTran != nullptr && m_pCurTran->GetTransID() == transID)
 		{
 			pTransaction = (Transaction*)m_pCurTran;
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		return E_SYSTEM_FAIL;
@@ -75,7 +75,7 @@ namespace Svr {
 	//  - Process transaction
 	HRESULT SimpleEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		CounterType loopCount;
 		Transaction* pCurTrans = nullptr;
 
@@ -131,8 +131,8 @@ namespace Svr {
 
 	HRESULT SimpleEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTranRes)
 	{
-		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
+		HRESULT hrTem = S_SYSTEM_OK;
 
 		if (pCurTran->GetState() != Transaction::STATE_STARTED)
 			goto Proc_End;

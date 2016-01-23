@@ -101,7 +101,7 @@ namespace conspiracy
 			*pRewardItem = rowItem;
 			RewardTbl::m_TableMap.insert(std::make_pair(pRewardItem->Role, pRewardItem));
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT RewardTbl::ClearTable()
@@ -110,7 +110,7 @@ namespace conspiracy
 			delete itr->second;
 
 		m_TableMap.clear();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT RewardTbl::FindItem( const unsigned int& Key, RewardItem*& pRow)
@@ -122,7 +122,7 @@ namespace conspiracy
 			return E_SYSTEM_FAIL;
 		}
 		pRow = itr->second;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 }; // namespace conspiracy

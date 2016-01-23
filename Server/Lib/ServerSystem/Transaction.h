@@ -217,7 +217,7 @@ namespace Svr {
 
 		void	RecordTransactionHistory(TransactionResult* pRes);
 
-		virtual HRESULT OnCloseTransaction( HRESULT hrRes ){return S_OK;}
+		virtual HRESULT OnCloseTransaction( HRESULT hrRes ){return S_SYSTEM_OK;}
 
 		// Close transaction and notify to parent
 		// process abnormal termination of transaction
@@ -432,7 +432,7 @@ namespace Svr {
 
 		HRESULT OnGenericError(Svr::TransactionResult* &pRes)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			CloseTransaction(pRes->GetHRESULT());
 
@@ -450,7 +450,7 @@ namespace Svr {
 		// Caller handler 
 		virtual HRESULT ProcessTransaction( TransactionResult* &pRes )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			svrChk(m_Handlers.HandleMessage(pRes->GetMsgID(), pRes));
 
@@ -476,7 +476,7 @@ namespace Svr {
 		// Message processor. When get result, just check result and close
 		HRESULT OnMessageClose( Svr::TransactionResult* &pRes )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			svrChk(pRes->GetHRESULT());
 
@@ -546,7 +546,7 @@ namespace Svr {
 		// Initialize Transaction
 		virtual HRESULT InitializeTransaction( Entity *pOwner )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			//OwnerType *pOwnerEntity = nullptr;
 
 			svrChkPtr( pOwner );
@@ -611,7 +611,7 @@ namespace Svr {
 		// Initialize Transaction
 		virtual HRESULT InitializeTransaction( Entity *pOwner )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			OwnerEntityType *pOwnerEntity = nullptr;
 			SharedPointerT<Entity> pFound;
@@ -668,7 +668,7 @@ namespace Svr {
 		// Initialize Transaction
 		virtual HRESULT InitializeTransaction( Entity *pOwner )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			SharedPointerT<Entity> entity;
 
 			OwnerEntityType *pOwnerEntity = nullptr;

@@ -77,7 +77,7 @@ namespace Svr
 				else
 				{
 					svrTrace( Trace::TRC_ERROR, "Transaction must be closed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
-					pTransaction->CloseTransaction(S_OK);
+					pTransaction->CloseTransaction(S_SYSTEM_OK);
 					pTransaction->FlushTransaction();
 				}
 
@@ -114,7 +114,7 @@ namespace Svr
 
 	HRESULT ParallelTransactionManager::EnqueueTransaction(ParallelTransaction* pTrans)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(m_PendingQueries.Enqueue(pTrans));
 
@@ -126,7 +126,7 @@ namespace Svr
 	// Initialize Manager
 	HRESULT ParallelTransactionManager::InitializeComponent()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (GetServerComponent<EntityManager>() != nullptr)
 		{

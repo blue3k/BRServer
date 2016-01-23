@@ -35,9 +35,9 @@ namespace BR
 		virtual ~ObjectPoolObject(){}
 
 		// Called when the object is going to be reused
-		virtual HRESULT Reuse(){ return S_OK; }
+		virtual HRESULT Reuse(){ return S_SYSTEM_OK; }
 		// Called when the object is going to be disposed
-		virtual HRESULT Dispose() { return S_OK; }
+		virtual HRESULT Dispose() { return S_SYSTEM_OK; }
 	};
 
 

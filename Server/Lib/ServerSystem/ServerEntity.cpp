@@ -61,7 +61,7 @@ namespace Svr {
 	// set connection
 	HRESULT ServerEntity::SetConnection(SharedPointerT<Net::IConnection> &destConn, Net::IConnection * pConn)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		MutexScopeLock localLock(m_ConnectionLock);
 
 		Assert(destConn == nullptr || destConn == pConn);
@@ -104,7 +104,7 @@ namespace Svr {
 
 
 			if (pConn == nullptr)
-				return S_OK;
+				return S_SYSTEM_OK;
 		}
 		return SetConnection(m_pConnRemote, pConn);
 	}
@@ -128,7 +128,7 @@ namespace Svr {
 	// Initialize entity to proceed new connection
 	HRESULT ServerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(MasterEntity::InitializeEntity( newEntityID ) );
 
@@ -148,10 +148,10 @@ namespace Svr {
 	// Close entity and clear transaction
 	HRESULT ServerEntity::TerminateEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		auto localCon = m_pConnLocal;
 		if (localCon != nullptr) localCon->SetConnectionEventHandler(nullptr);
@@ -169,7 +169,7 @@ namespace Svr {
 	// Process Message and release message after all processed
 	HRESULT ServerEntity::ProcessMessage( Net::IConnection *pCon, Message::MessageData* &pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
 		Svr::Transaction *pNewTrans = nullptr;
@@ -267,14 +267,14 @@ namespace Svr {
 
 		Util::SafeRelease( pMsg );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	// Process Connection event
 	HRESULT ServerEntity::ProcessConnectionEvent( const Net::IConnection::Event& conEvent )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		switch( conEvent.EventType )
 		{
@@ -329,12 +329,12 @@ namespace Svr {
 
 	Proc_End:
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT ServerEntity::UpdateConnection(Net::IConnection* pConn)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pMsg = nullptr;
 		Net::IConnection::Event conEvent;
 
@@ -387,12 +387,12 @@ namespace Svr {
 
 	HRESULT ServerEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Net::IConnection* pConn = nullptr;
 		Net::IConnection* pConnRemote = nullptr;
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		svrChk(MasterEntity::TickUpdate(pAction) );
 
@@ -533,7 +533,7 @@ namespace Svr {
 			return E_SYSTEM_UNEXPECTED;
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

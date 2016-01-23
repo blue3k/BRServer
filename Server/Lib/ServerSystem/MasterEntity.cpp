@@ -128,14 +128,14 @@ namespace Svr
 		if (m_pExclusiveTransaction != nullptr && m_pExclusiveTransaction->GetTransID() == transID)
 		{
 			pTransaction = (Transaction*)m_pExclusiveTransaction;
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		SharedPointerT<Transaction> activeTrans;
 		if (SUCCEEDED(m_activeTrans.Find(transID.GetTransactionIndex(), activeTrans)))
 		{
 			pTransaction = (Transaction*)activeTrans;
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 		return E_SYSTEM_FAIL;
 	}
@@ -151,7 +151,7 @@ namespace Svr
 	//  - Process transaction
 	HRESULT MasterEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Transaction* pNewTran = nullptr;
 		ThreadID currentThreadID = GetTaskWorker() == nullptr ? ThisThread::GetThreadID() : GetTaskWorker()->GetThreadID();
 		Assert(currentThreadID == ThisThread::GetThreadID());
@@ -285,8 +285,8 @@ namespace Svr
 	
 	HRESULT MasterEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes)
 	{
-		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
+		HRESULT hrTem = S_SYSTEM_OK;
 		ThreadID currentThreadID = GetTaskWorker() == nullptr ? ThisThread::GetThreadID() : GetTaskWorker()->GetThreadID();
 		Assert(currentThreadID == ThisThread::GetThreadID());
 
@@ -353,7 +353,7 @@ namespace Svr
 
 	HRESULT MasterEntity::OnEventTask(const Svr::EventTask& eventTask)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Transaction *pCurTran = nullptr;
 		SharedPointerT<Net::IConnection> pMyConn;
 

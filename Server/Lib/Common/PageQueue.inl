@@ -127,7 +127,7 @@ HRESULT PageQueue<DataType>::DequeuePageMove()
 
 	FreePage(curDequeue);
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template <class DataType>
@@ -152,7 +152,7 @@ HRESULT PageQueue<DataType>::DequeuePageMoveMT()
 
 	FreePage(curDequeue);
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template <class DataType>
@@ -198,7 +198,7 @@ HRESULT PageQueue<DataType>::Enqueue(const DataType& item)
 template <class DataType>
 HRESULT PageQueue<DataType>::Enqueue( DataType&& item )
 {
-	//HRESULT hr = S_OK;
+	//HRESULT hr = S_SYSTEM_OK;
 	auto defaultValue = DefaultValue<DataType>();
 
 	Assert(item != defaultValue);
@@ -265,7 +265,7 @@ HRESULT PageQueue<DataType>::Enqueue( DataType&& item )
 
 //Proc_End:
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template <class DataType>
@@ -284,7 +284,7 @@ HRESULT PageQueue<DataType>::Dequeue( DataType& item )
 		// shorten queue size (delete a used page)
 		HRESULT hr = DequeuePageMove();
 
-		if(hr != S_OK) 
+		if(hr != S_SYSTEM_OK) 
 		{	
 			return hr;
 		}
@@ -322,13 +322,13 @@ HRESULT PageQueue<DataType>::Dequeue( DataType& item )
 	// increment item read count
 	pMyPage->Header.ReadCounter.fetch_add(1, std::memory_order_relaxed);
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template <class DataType>
 HRESULT PageQueue<DataType>::DequeueMT( DataType& item, DurationMS uiCheckInterval )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	auto defaultValue = DefaultValue<DataType>();
 
 	// total ticket number
@@ -400,7 +400,7 @@ HRESULT PageQueue<DataType>::GetFront( DataType& item )
 		// shorten queue size (delete a used page)
 		HRESULT hr = DequeuePageMove();
 
-		if (hr != S_OK)
+		if (hr != S_SYSTEM_OK)
 		{
 			return hr;
 		}
@@ -428,7 +428,7 @@ HRESULT PageQueue<DataType>::GetFront( DataType& item )
 
 	item = pMyPage->Element[myCellID];
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template <class DataType>

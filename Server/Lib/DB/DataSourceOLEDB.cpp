@@ -36,7 +36,7 @@ namespace DB {
 	// initialize DB source
 	HRESULT	DataSourceOLEDB::InitializeDBSource( const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		dbChk(DataSource::InitializeDBSource( strConnectionString, strDBName, strUserID, strPassword ) );
 
@@ -62,7 +62,7 @@ namespace DB {
 	// reopen DB source
 	HRESULT DataSourceOLEDB::Reopen()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		CloseDBSource();
 
@@ -79,7 +79,7 @@ namespace DB {
 		DataSource::CloseDBSource();
 		m_DataSource.Close();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 

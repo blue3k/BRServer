@@ -56,12 +56,12 @@ namespace LoginServer {
 	// Initialize entity to proceed new connection
 	HRESULT GameServerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)							{ svrMemReturn(pNewTrans = new TransGameServerStarted( pMsgData )); return S_OK; } );
-		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd)				{ svrMemReturn(pNewTrans = new LoginPlayerJoinedToGameServerTrans(pMsgData)); return S_OK; } );
+		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)							{ svrMemReturn(pNewTrans = new TransGameServerStarted( pMsgData )); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd)				{ svrMemReturn(pNewTrans = new LoginPlayerJoinedToGameServerTrans(pMsgData)); return S_SYSTEM_OK; } );
 
 
 	Proc_End:

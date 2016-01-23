@@ -47,7 +47,7 @@ namespace GameTable {
 
 		HRESULT Initialize(const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword)
 		{
-			HRESULT	hr = S_OK;
+			HRESULT	hr = S_SYSTEM_OK;
 
 			if (m_pDataSource == nullptr)
 			{
@@ -63,7 +63,7 @@ namespace GameTable {
 
 		HRESULT Terminate()
 		{
-			HRESULT	hr = S_OK;
+			HRESULT	hr = S_SYSTEM_OK;
 
 			if (m_pDataSource != nullptr)
 			{
@@ -79,7 +79,7 @@ namespace GameTable {
 		template<class TableQueryType, class TableClass>
 		HRESULT QueryTable()
 		{
-			HRESULT	hr = S_OK;
+			HRESULT	hr = S_SYSTEM_OK;
 			DB::Session* pSession = nullptr;
 			TableQueryType* pTblQuery = nullptr;
 
@@ -110,7 +110,7 @@ namespace GameTable {
 	// Initialize tables
 	HRESULT InitializeTable()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto found = Svr::Config::GetConfig().DBInstances.begin();
 		auto tableDB = Svr::Config::GetConfig().TableDB;
 		defChkPtr(tableDB);
@@ -138,13 +138,13 @@ namespace GameTable {
 	HRESULT TerminateTable()
 	{
 		TableSystem::stm_Instance.Terminate();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	HRESULT LoadTables()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		defChk(::conspiracy::OrganicTbl::ClearTable());
 		hr = TableSystem::stm_Instance.QueryTable<DB::QueryOrganicTblCmd, conspiracy::OrganicTbl>();

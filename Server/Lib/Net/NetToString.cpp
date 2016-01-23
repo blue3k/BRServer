@@ -43,7 +43,7 @@ namespace BR {
 		if( FAILED( _IToA( (UINT32)ntohs(Data.sin6_port), pBuff, iBuffLen, 10, -1 ) ) )
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -64,7 +64,7 @@ namespace BR {
 		if( FAILED( _IToA( (UINT32)addr.usPort, pBuff, iBuffLen, 10, -1 ) ) )
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -85,7 +85,7 @@ namespace BR {
 			return E_SYSTEM_FAIL;
 
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 		

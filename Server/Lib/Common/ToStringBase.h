@@ -116,7 +116,7 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	{
 		_IToA( (UINT32)iData, pBuff, iBuffLen, Radix, (int)MaxDigit );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	inline HRESULT ToStringHex( char*& pBuff, INT& iBuffLen, UINT64 iData, float MaxDigit, int Radix )
@@ -125,7 +125,7 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 		StrUtil::StringCpyEx(pBuff, iBuffLen, ":");
 		_IToA((UINT32)iData, pBuff, iBuffLen, Radix, (int)MaxDigit);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// enumeration to string
@@ -143,7 +143,7 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// enumeration to string
@@ -164,7 +164,7 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 			ToString( pBuff, iBuffLen, pData[uiIdx], 0 );
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -185,7 +185,7 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 			ToString(pBuff, iBuffLen, pData[uiIdx], 0);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	extern template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT8>& Data, int Option);

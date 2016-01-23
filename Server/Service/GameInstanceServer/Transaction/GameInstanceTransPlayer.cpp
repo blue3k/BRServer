@@ -68,7 +68,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransDeleteGame::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		
 		svrChk(super::StartTransaction());
 
@@ -91,7 +91,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransJoinGame::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer *pNewPlayer = nullptr, *pMyPlayer = nullptr;
 		Policy::ISvrPolicyGameInstance *pMyPolicy = nullptr;
 		auto pGameStateSystem = GetMyOwner()->GetComponent<GameStateSystem>();
@@ -154,7 +154,7 @@ namespace ConspiracyGameInstanceServer {
 				PlayerRole otherRole = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole(pMyPlayer, pPlayer);
 				pMyPolicy->PlayerJoinedS2CEvt(RouteContext(GetOwnerEntityUID(), pMyPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerInformation(), otherRole, pPlayer->GetPlayerState() != PlayerState::Playing, pPlayer->GetIndex(), pPlayer->GetCharacter());
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			});
 		}
 
@@ -165,7 +165,7 @@ namespace ConspiracyGameInstanceServer {
 				PlayerRole myRoleToOther = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole( pPlayer, pMyPlayer );
 				pPolicy->PlayerJoinedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerInformation(), myRoleToOther, pMyPlayer->GetPlayerState() != PlayerState::Playing, pMyPlayer->GetIndex(), pMyPlayer->GetCharacter()  );
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 
@@ -194,7 +194,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransLeaveGame::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -212,7 +212,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransKickPlayer::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -247,7 +247,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransAssignRole::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -270,7 +270,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransChatMessage::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		GamePlayer *pMyPlayer = nullptr;
 		//const char* message = nullptr;
@@ -313,11 +313,11 @@ namespace ConspiracyGameInstanceServer {
 		//		if( bIsGhost && pPlayer->GetPlayerState() != PlayerState::Ghost )
 		//		{
 		//			// Skip broadcast from ghost to others
-		//			return S_OK;
+		//			return S_SYSTEM_OK;
 		//		}
 		//		pPolicy->ChatMessageC2SEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerID(), GetRole(), pMyPlayer->GetPlayerName(), message );
 		//	}
-		//	return S_OK;
+		//	return S_SYSTEM_OK;
 		//});
 
 	Proc_End:
@@ -332,7 +332,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransVoteGameAdvance::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer *pMyPlayer = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -352,7 +352,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransVote::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer *pMyPlayer = nullptr;
 		GamePlayer *pVoteTarget = nullptr;
 
@@ -376,7 +376,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransAdvanceGame::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -386,13 +386,13 @@ namespace ConspiracyGameInstanceServer {
 
 		CloseTransaction( hr );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Start Transaction
 	HRESULT GameEntityTransGamePlayAgain::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		EntityUID ownerUID = GetOwnerEntityUID();
 
 		m_MemberCount = 0;
@@ -402,12 +402,12 @@ namespace ConspiracyGameInstanceServer {
 		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->HRESULT
 		{
 			if (pPlayer->GetPlayerEntityUID() == 0)
-				return S_OK;
+				return S_SYSTEM_OK;
 
 			m_MemberCount++;
 
 			pPolicy->GamePlayAgainS2CEvt(RouteContext(ownerUID, pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID(), GetPartyUID(), GetLeadPlayer());
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		GetMyOwner()->CloseGameInstance();
@@ -416,7 +416,7 @@ namespace ConspiracyGameInstanceServer {
 
 		CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -426,7 +426,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransGameRevealPlayer::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer* pMyPlayer = nullptr;
 		GamePlayer* pTargetPlayer = nullptr;
 		size_t numReveal;
@@ -455,7 +455,7 @@ namespace ConspiracyGameInstanceServer {
 
 		CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -464,7 +464,7 @@ namespace ConspiracyGameInstanceServer {
 	// Start Transaction
 	HRESULT GameEntityTransGamePlayerRevive::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer* pMyPlayer = nullptr;
 
 		svrChk(super::StartTransaction());
@@ -488,7 +488,7 @@ namespace ConspiracyGameInstanceServer {
 
 		CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

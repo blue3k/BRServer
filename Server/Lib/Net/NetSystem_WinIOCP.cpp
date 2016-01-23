@@ -38,7 +38,7 @@ namespace Net {
 		int ierr = WSAGetLastError();
 		switch (ierr)
 		{
-		case 0: return S_OK;
+		case 0: return S_SYSTEM_OK;
 		case WSAEINTR: return E_NET_INTR;
 		case WSAEBADF: return E_NET_BADF;
 		case WSAEACCES: return E_NET_ACCES;
@@ -152,7 +152,7 @@ namespace Net {
 
 			expected = false;
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT IOBUFFER_READ::SetPendingFalse()
@@ -168,7 +168,7 @@ namespace Net {
 
 			expected = false;
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -208,7 +208,7 @@ namespace Net {
 
 		void IOCPWorker::Run()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			BOOL bResult;
 			DWORD dwTransferred = 0;
 			IOBUFFER *pOverlapped = nullptr;
@@ -225,7 +225,7 @@ namespace Net {
 				ulKey = 0;
 				iErr = 0;
 				iLastError = 0;
-				hr = S_OK;
+				hr = S_SYSTEM_OK;
 
 
 				// Getting IOCP status
@@ -348,14 +348,14 @@ namespace Net {
 		// Initialize IOCP
 		HRESULT IOCPSystem::InitIOCP( UINT uiNumIOCPThread )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 
 			m_RefCount.fetch_add(1, std::memory_order_relaxed);
 
 			if( m_hIOCP != INVALID_HANDLE_VALUE )
 			{
-				return S_OK;// already initialized
+				return S_SYSTEM_OK;// already initialized
 			}
 
 
@@ -396,12 +396,12 @@ namespace Net {
 		// Close IOCP
 		HRESULT IOCPSystem::CloseIOCP()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			CounterType lCount = m_RefCount.fetch_sub(1, std::memory_order_relaxed) - 1;
 
 			if( lCount > 0 )
-				return S_OK;
+				return S_SYSTEM_OK;
 
 			if( m_hIOCP != INVALID_HANDLE_VALUE )
 			{
@@ -492,7 +492,7 @@ namespace Net {
 
 			g_lWSOpenCount.fetch_add(1, std::memory_order_relaxed);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Close network system
@@ -528,7 +528,7 @@ namespace Net {
 
 		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			netChkPtr(cbInstance);
 			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
@@ -543,7 +543,7 @@ namespace Net {
 
 		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			if (!CreateIoCompletionPort((HANDLE)cbInstance->GetIOSocket(), IOCPSystem::GetSystem().GetIOCP(), (ULONG_PTR)cbInstance, 0))
 			{
@@ -559,7 +559,7 @@ namespace Net {
 
 		HRESULT UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			if (!PostQueuedCompletionStatus(IOCPSystem::GetSystem().GetIOCP(), 0, (ULONG_PTR)cbInstance, 0))
 			{
@@ -594,7 +594,7 @@ namespace Net {
 
 		HRESULT Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			netChkPtr(pAccept);
 
@@ -654,7 +654,7 @@ namespace Net {
 
 			remoteAddr = *pRemoteAddr;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 
@@ -667,7 +667,7 @@ namespace Net {
 				return GetLastWSAHRESULT();
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer)
@@ -679,7 +679,7 @@ namespace Net {
 				return GetLastWSAHRESULT();
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT Send(SOCKET sock, IOBUFFER_WRITE* pBuffer)
@@ -690,7 +690,7 @@ namespace Net {
 				return GetLastWSAHRESULT();
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer)
@@ -705,7 +705,7 @@ namespace Net {
 				return GetLastWSAHRESULT();
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 	}; // namespace NetSystem

@@ -13,8 +13,10 @@
 
 #include "stdafx.h"
 #include "Common/Typedefs.h"
+#include "Common/StrUtil.h"
 #include "Common/BrXML.h"
 #include "Common/Trace.h"
+
 
 
 
@@ -100,7 +102,7 @@ namespace XML {
 	HRESULT XMLParserHandler::RegisterElementCreator( const std::string& elementName, std::function<DOMElement*()> funcCreator )
 	{
 		if( m_CreatorMap.insert( std::make_pair( elementName, funcCreator ) ).second )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		return E_SYSTEM_FAIL;
 	}

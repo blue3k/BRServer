@@ -49,7 +49,7 @@ HRESULT SpinBuffer<T>::Push(const T& item)
 	m_SpinBuffer[nBeforePos].eBufferMode = __BUFFERMODE__::BUFFERSTATE_READ;	// W-3
 
 	// Writing success!
-	return S_OK; 
+	return S_SYSTEM_OK; 
 }
 
 // Comsumer(reader) read from the Readbuffer
@@ -77,7 +77,7 @@ HRESULT SpinBuffer<T>::Pop(T& item)
 	m_SpinBuffer[nBeforePos].eBufferMode = __BUFFERMODE__::BUFFERSTATE_FREE;	// R-2
 	
 	// Reading success!
-	return S_OK; 
+	return S_SYSTEM_OK; 
 }
 
 

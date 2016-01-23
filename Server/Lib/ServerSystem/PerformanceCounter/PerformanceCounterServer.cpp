@@ -40,7 +40,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		MessageHandlerType handler;
 		svrChkPtr(pMsg);
 
@@ -141,7 +141,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::Initialize(const char* serverAddress, UINT port)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		NetAddress localAddr;
 		if (serverAddress == nullptr) serverAddress = "";
 		if (port > USHRT_MAX) port = 0;
@@ -158,7 +158,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::Initialize(const NetAddress& serverAddress)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		NetAddress localAddress;
 		auto pRawUDP = new Net::RawUDP();
 		svrChkPtr(pRawUDP);
@@ -189,14 +189,14 @@ namespace Svr {
 	HRESULT PerformanceCounterServer::Terminate()
 	{
 		if (stm_pInstance == nullptr)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		stm_pInstance->Stop(true);
 
 		delete stm_pInstance;
 		stm_pInstance = nullptr;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	UINT PerformanceCounterServer::GetInstanceCount()
@@ -209,7 +209,7 @@ namespace Svr {
 
 	UINT PerformanceCounterServer::GetInstanceList(UINT startIndex, Array<SharedPointerT<PerformanceCounterInstance>>& instanceList)
 	{
-		//HRESULT hr = S_OK;
+		//HRESULT hr = S_SYSTEM_OK;
 		UINT numInstances = 0;
 		if (stm_pInstance == nullptr)
 			return numInstances;
@@ -237,7 +237,7 @@ namespace Svr {
 /*
 	UINT PerformanceCounterServer::GetInstanceList(UINT startIndex, UINT bufferSize, PerformanceCounterInstance** pInstanceBuffer)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		UINT numInstances = 0;
 		if (stm_pInstance == nullptr)
 			return numInstances;
@@ -269,7 +269,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::GetInstance(EntityUID instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto& instanceMap = stm_pInstance->m_InstanceMap;
 
 		if (SUCCEEDED(instanceMap.Find(instanceUID.UID, pInstance)))
@@ -295,7 +295,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::HandleMessageEnqueue(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(m_NewDeleteQueue.Enqueue(PacketInfo(remoteAddr,pMsg)));
 		pMsg = nullptr;
@@ -309,7 +309,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(m_UpdateQueue.Enqueue(PacketInfo(remoteAddr, pMsg)));
 		pMsg = nullptr;
@@ -323,7 +323,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::Monitoring::PerformanceCounterNewC2SEvt messageClass(pMsg);
 		SharedPointerT<PerformanceCounterInstance> pInstance;
 
@@ -382,7 +382,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::Monitoring::PerformanceCounterFreeC2SEvt messageClass(pMsg);
 
 		svrChk(messageClass.ParseMsg());
@@ -406,7 +406,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::Monitoring::PerformanceCounterUpdateC2SEvt messageClass(pMsg);
 		SharedPointerT<PerformanceCounterInstance> pInstance;
 

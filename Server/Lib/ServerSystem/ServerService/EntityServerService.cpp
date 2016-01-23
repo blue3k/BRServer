@@ -37,7 +37,7 @@ namespace BR
 		// Cmd: Register entity
 		HRESULT EntityServerService::RegisterEntityCmd( const Context &InContext, const EntityID &InLocalEntID, const char* InEntName )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 svrChk(GetPolicyEntityServer()->RegisterEntityCmd( InContext, InLocalEntID, InEntName ) );
 
@@ -49,7 +49,7 @@ namespace BR
 		// Cmd: Find Entity
 		HRESULT EntityServerService::UnregisterEntityCmd( const Context &InContext, const EntityUID &InEntUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 svrChk(GetPolicyEntityServer()->UnregisterEntityCmd( InContext, InEntUID ) );
 
@@ -61,7 +61,7 @@ namespace BR
 		// Cmd: Find Entity
 		HRESULT EntityServerService::FindEntityCmd( const Context &InContext, const EntityID &InLocalEntID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 svrChk(GetPolicyEntityServer()->FindEntityCmd( InContext, InLocalEntID ) );
 

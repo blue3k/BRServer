@@ -321,7 +321,7 @@ namespace BR
 				HRESULT hr = functor( m_pDataPtr[iData] );
 				if( FAILED(hr) ) return hr;
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT Foreach( std::function<HRESULT(DataType&)> functor ) const
@@ -333,7 +333,7 @@ namespace BR
 		template< size_t szBinSize >
 		HRESULT CopyToBin( BYTE (&Dest)[szBinSize] ) const
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			BinaryType *pDst = (BinaryType*)Dest;
 
 			static_assert( szBinSize >= sizeof(BinaryType), "Invalid dest binary size" );

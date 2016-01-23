@@ -88,7 +88,7 @@ namespace Svr
 	{
 		switch (code)
 		{
-		case CURLE_OK:							return S_OK;
+		case CURLE_OK:							return S_SYSTEM_OK;
 		case CURLE_UNSUPPORTED_PROTOCOL:		return E_SVR_CURL_UNSUPPORTED_PROTOCOL;
 		case CURLE_FAILED_INIT:					return E_SVR_CURL_FAILED_INIT;
 		case CURLE_URL_MALFORMAT:				return E_SVR_CURL_URL_MALFORMAT;
@@ -115,7 +115,7 @@ namespace Svr
 
 	HRESULT ExternalTransactionManager::InitializeManagerGoogle(const char* strP12KeyFile, const char* strAccount, const char* scopes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(m_GoogleAuth.Initialize(strP12KeyFile, strAccount, scopes));
 
@@ -126,7 +126,7 @@ namespace Svr
 
 	HRESULT ExternalTransactionManager::InitializeManagerIOS(const char* strURL)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_IOSURL = strURL;
 		//svrChk(m_GoogleAuth.Initialize(strP12KeyFile, strAccount, scopes));
@@ -139,7 +139,7 @@ namespace Svr
 	// Initialize Manager
 	HRESULT ExternalTransactionManager::InitializeComponent()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		CURLcode res;
 
 		svrChk(ParallelTransactionManager::InitializeComponent());
@@ -163,7 +163,7 @@ namespace Svr
 
 	HRESULT ExternalTransactionManager::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		hr = ParallelTransactionManager::TickUpdate(pAction);
 		if (hr == S_SYSTEM_FALSE || FAILED(hr))
@@ -180,7 +180,7 @@ namespace Svr
 	// Send gcm notify
 	HRESULT ExternalTransactionManager::SendGCMNotify( TransactionID sender, const char* strRegisterIDs, const char* strMessage, UINT64 param0 )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GCMHttpExternalTransaction *newTrans = nullptr;
 
 		svrMem( newTrans = new GCMHttpExternalTransaction );
@@ -206,7 +206,7 @@ namespace Svr
 	// check receipt
 	HRESULT ExternalTransactionManager::AndroidCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* purchaseToken)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ExternalTransactionGoogleAndroidReceiptCheck *newTrans = nullptr;
 
 		svrMem(newTrans = new ExternalTransactionGoogleAndroidReceiptCheck(sender, &m_GoogleAuth));
@@ -230,7 +230,7 @@ namespace Svr
 
 	HRESULT ExternalTransactionManager::IOSCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* transactionID, const Array<BYTE>& purchaseToken)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ExternalTransactionIOSRecepitCheck *newTrans = nullptr;
 
 		svrMem(newTrans = new ExternalTransactionIOSRecepitCheck(sender, m_IOSURL.c_str()));

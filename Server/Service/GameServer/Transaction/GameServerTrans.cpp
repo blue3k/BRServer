@@ -59,7 +59,7 @@ namespace GameServer {
 
 	HRESULT GameServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		switch( m_Step )
 		{
@@ -94,7 +94,7 @@ namespace GameServer {
 
 	HRESULT GameServerStartProcess::InitializeServices()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
 
@@ -106,7 +106,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT GameServerStartProcess::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 

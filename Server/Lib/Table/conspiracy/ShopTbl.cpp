@@ -101,7 +101,7 @@ namespace conspiracy
 			*pShopItem = rowItem;
 			ShopTbl::m_TableMap.insert(std::make_pair(pShopItem->ShopItemID, pShopItem));
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT ShopTbl::ClearTable()
@@ -110,7 +110,7 @@ namespace conspiracy
 			delete itr->second;
 
 		m_TableMap.clear();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT ShopTbl::FindItem( const int& Key, ShopItem*& pRow)
@@ -122,7 +122,7 @@ namespace conspiracy
 			return E_SYSTEM_FAIL;
 		}
 		pRow = itr->second;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 }; // namespace conspiracy

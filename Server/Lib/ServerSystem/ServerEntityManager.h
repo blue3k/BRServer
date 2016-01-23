@@ -111,7 +111,7 @@ namespace Svr
 	template<class ServerEntityType>
 	HRESULT ServerEntityManager::GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntityType *pNewServerEntity = nullptr;
 		Net::IConnection *pConnection = nullptr;
 

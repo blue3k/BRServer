@@ -50,7 +50,7 @@ HRESULT StaticAllocator<BufferSize>::Alloc( size_t uiSize, void* &pPtr )
 	{
 		pPtr = (void*)(m_AllocationBuffer + m_AllocatePosition);
 		m_AllocatePosition += uiSize;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	return m_OverflowHeap.Alloc( uiSize, pPtr );
@@ -76,7 +76,7 @@ HRESULT StaticAllocator<BufferSize>::Realloc( size_t uiSize, void* &pPtr )
 		{
 			pPtr = (void*)(m_AllocationBuffer + m_AllocatePosition);
 			m_AllocatePosition += uiSize;
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 		else
 		{
@@ -102,7 +102,7 @@ HRESULT StaticAllocator<BufferSize>::Free( void* pPtr )
 	{
 		return m_OverflowHeap.Free( pPtr );
 	}
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 
@@ -188,7 +188,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, voi
 #ifdef DEBUG
 	Assert(SUCCEEDED(ValidateAllocatedChunks()));
 #endif
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template< size_t BufferSize, size_t alignment >
@@ -247,7 +247,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 		if( m_FreePosition != ((intptr_t)pChunk - (intptr_t)m_AllocationBuffer) )
 		{
 			// If this memory isn't exist in the free position, we should leave it for later
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		while( (pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy) && m_FreeSize <= (decltype(m_FreeSize))BufferSize )
@@ -287,7 +287,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 		return m_OverflowHeap.Free( pPtr );
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 // Validate allocated chunks for debug
@@ -314,6 +314,6 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::ValidateAllocatedChunks()
 		} while(curPosition != m_AllocatePosition);
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 

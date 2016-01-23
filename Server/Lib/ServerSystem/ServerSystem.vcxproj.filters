@@ -379,6 +379,9 @@
     <ClInclude Include="SvrLoopbackConnection.h">
       <Filter>ServerEntity</Filter>
     </ClInclude>
+    <ClInclude Include="ParameterSetting.h">
+      <Filter>Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -608,6 +611,9 @@
     </ClCompile>
     <ClCompile Include="SvrLoopbackConnection.cpp">
       <Filter>ServerEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ParameterSetting.cpp">
+      <Filter>Server</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

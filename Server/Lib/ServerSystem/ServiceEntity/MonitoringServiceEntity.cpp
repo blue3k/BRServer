@@ -50,7 +50,7 @@ namespace Svr {
 
 	HRESULT MonitoringServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::Config::NetSocket *netAddress = nullptr;
 		NetAddress localAddr;
 
@@ -73,7 +73,7 @@ namespace Svr {
 	// clear transaction
 	HRESULT MonitoringServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(ServiceEntity::ClearEntity() );
 
@@ -86,19 +86,19 @@ namespace Svr {
 
 	HRESULT MonitoringServiceEntity::RegisterServiceMessageHandler(ServerEntity *pServerEntity)
 	{
-		//HRESULT hr = S_OK;
+		//HRESULT hr = S_SYSTEM_OK;
 
 		ServiceEntity::RegisterServiceMessageHandler(pServerEntity);
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)				{ svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return S_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)				{ svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return S_SYSTEM_OK; } );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT MonitoringServiceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(ServiceEntity::TickUpdate(pAction) );
 

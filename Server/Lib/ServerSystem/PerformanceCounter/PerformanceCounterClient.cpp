@@ -31,7 +31,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (pMsg->GetMessageHeader()->msgID.GetMsgID() == Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.GetMsgID())
 		{
@@ -253,7 +253,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterClient::Initialize(UINT serverID, const NetAddress& serverAddress)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		NetAddress localAddress;
 		auto pRawUDP = new Net::RawUDP();
 		svrChkPtr(pRawUDP);
@@ -292,14 +292,14 @@ namespace Svr {
 	HRESULT PerformanceCounterClient::Terminate()
 	{
 		if (stm_pInstance == nullptr)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		stm_pInstance->Stop(true);
 
 		delete stm_pInstance;
 		stm_pInstance = nullptr;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	PerformanceCounterInstance* PerformanceCounterClient::GetDefaultCounterInstance()
@@ -348,7 +348,7 @@ namespace Svr {
 
 	HRESULT PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt messageClass(pMsg);
 		WeakPointerT<PerformanceCounterInstance> pFound;
 		SharedPointerT<PerformanceCounterInstance> pInstance;

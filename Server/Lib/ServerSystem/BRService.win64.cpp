@@ -18,7 +18,7 @@
 #include "Serversystem/BRService.h"
 #include "Common/TimeUtil.h"
 #include "Net/NetUtil.h"
-
+#include "ServerSystem/ParameterSetting.h"
 
 namespace BR {
 namespace Svr {
@@ -99,7 +99,8 @@ namespace Svr {
 		// Install Service
 		HRESULT ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
 		{
-			HRESULT hr = S_OK;
+			unused(strCfgPath);
+			HRESULT hr = S_SYSTEM_OK;
 			const char* strServiceName = Util::GetServiceNameA();
 
 			SC_HANDLE schSCManager = NULL;
@@ -114,9 +115,6 @@ namespace Svr {
 				svrTrace( Trace::TRC_ERROR, "GetModuleFileName failed err:{0}", iErr );
 				trcErr( HRESULT_FROM_WIN32(iErr) );
 			}
-
-			strcat( strPath, " " );
-			strcat( strPath, strCfgPath );
 
 			strcat(strPath, " -n:");
 			strcat(strPath, strServiceName);
@@ -233,7 +231,7 @@ namespace Svr {
 		// Uninstall service
 		HRESULT ServiceUninstall()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			SC_HANDLE   schService = NULL;
 			SC_HANDLE   schSCManager = NULL;
 
@@ -310,75 +308,38 @@ namespace Svr {
 		// prepare service running
 		HRESULT ServicePrepare()
 		{
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Run service main function
-		HRESULT ServiceRun(std::vector<std::string>& cmdArgs, BrServer *pSvrInstance )
+		HRESULT ServiceRun(BrServer *pSvrInstance )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			bool bIsDebugRun = false;
-			std::string strCfgPath = Util::GetModulePathA();
+			char strCfgPath[1024];
 			bool bIsInstall = false;
 			const char *strUser = nullptr; const char *strPWD = nullptr;
-			std::string strServiceName = "";
+			const char *strServiceName = nullptr;
 
 			SetCurrentDirectoryW( Util::GetModulePath() );
-
-			strCfgPath.append("..\\..\\Config\\ServerConfig.xml");
 
 
 			g_pSvrInstance = pSvrInstance;
 			Assert( BrServer::GetInstance() == pSvrInstance );
 
 
-			for( auto itArg : cmdArgs)
-			{
-				const char* pCurParam = itArg.c_str();
+			svrChk(StrUtil::Format(strCfgPath, "{0}{1}", Util::GetModulePathA(), ParameterSetting::GetSetting("config", "..\\..\\Config\\ServerConfig.xml")));
 
-				switch( pCurParam[0] )
-				{
-				case '-':
-					pCurParam++;
-					if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "install", (INT)strlen("install") ) == 0 )
-					{
-						bIsInstall = true;
-					}
-					else if( pCurParam[0] == 'n' || pCurParam[0] == 'N' )
-					{
-						pCurParam += 2;
-						strServiceName = pCurParam;
-					}
-					else if( pCurParam[0] == 'u' || pCurParam[0] == 'U'  )
-					{
-						pCurParam += 2;
-						strUser = pCurParam;
-					}
-					else if( pCurParam[0] == 'p' || pCurParam[0] == 'P' )
-					{
-						pCurParam += 2;
-						strPWD = pCurParam;
-					}
-					else if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "uninstall", (INT)strlen("uninstall") ) == 0 )
-					{
-						svrChk( Service::ServiceUninstall() );
-						goto Proc_End;
-					}
-					else if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "debug", (INT)strlen("debug") ) == 0 )
-					{
-						bIsDebugRun = true;
-					}
-					break;
-				default:
-					break;
-				};
+			strServiceName = ParameterSetting::GetSetting("servicename");
+			if (strServiceName != nullptr && strServiceName[0] != '\0')
+			{
+				Util::SetServiceName(strServiceName);
 			}
 
-			if( strServiceName.length() > 0 )
-			{
-				Util::SetServiceName(strServiceName.c_str());
-			}
-
+			bIsInstall = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("install"), -1, "true", -1) == 0;
+			bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1) == 0;
+			strUser = ParameterSetting::GetSetting("user");
+			strPWD = ParameterSetting::GetSetting("password");
 
 //			Trace::Initialize();
 
@@ -386,7 +347,7 @@ namespace Svr {
 
 			if( bIsInstall )
 			{
-				svrChk( Service::ServiceInstall( strCfgPath.c_str(), strUser, strPWD ) );
+				svrChk( Service::ServiceInstall( strCfgPath, strUser, strPWD ) );
 				goto Proc_End;
 			}
 
@@ -397,11 +358,11 @@ namespace Svr {
 
 			svrTrace( Trace::TRC_TRACE, "Loading configuration" );
 
-			svrChk( Svr::Config::LoadConfig( strCfgPath.c_str() ) );
+			svrChk( Svr::Config::LoadConfig( strCfgPath ) );
 
 
 
-			svrTrace( Trace::TRC_TRACE, "<{0}> Start with Mode {1} ", Util::GetServiceName(), bIsDebugRun ? "Debug" : "Service" );
+			svrTrace( Trace::TRC_TRACE, "<{0}> Start with Mode {1} ", Util::GetServiceNameA(), bIsDebugRun ? "Debug" : "Service" );
 
 
 			// if not service mode
@@ -484,7 +445,7 @@ namespace Svr {
 		//
 		void WINAPI ServiceMain( DWORD dwArgc, LPWSTR *lpszArgv )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			// Create events for service control
 			for( int iEvt = 0; iEvt < NUM_SVCCTRLEVT; iEvt++ )

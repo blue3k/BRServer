@@ -91,7 +91,7 @@ namespace MatchingUtil {
 			return E_SYSTEM_UNEXPECTED;
 		};
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	UINT GetQueueCount(UINT matchingMemberCount)

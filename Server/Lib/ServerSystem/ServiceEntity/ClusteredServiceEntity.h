@@ -147,7 +147,7 @@ namespace Svr {
 		// clear transaction
 		virtual HRESULT ClearEntity();
 
-		virtual HRESULT UpdateOnMasterManager() { return S_OK; }
+		virtual HRESULT UpdateOnMasterManager() { return S_SYSTEM_OK; }
 
 		virtual HRESULT TickUpdate(TimerAction *pAction = nullptr) override;
 		virtual HRESULT ProcessTransaction(Transaction* &pTrans) override;

@@ -75,8 +75,8 @@ namespace Svr {
 
 		virtual INT64 GetRawValue() = 0;
 
-		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) { return S_OK; }
-		virtual HRESULT CopyFrom(UINT bufferSize, BYTE* pBuffer) { return S_OK; }
+		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) { return S_SYSTEM_OK; }
+		virtual HRESULT CopyFrom(UINT bufferSize, BYTE* pBuffer) { return S_SYSTEM_OK; }
 
 	};
 
@@ -136,7 +136,7 @@ namespace Svr {
 
 			memcpy(pBuffer, &temp, sizeof(DataType));
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		virtual HRESULT CopyFrom(UINT bufferSize, BYTE* pBuffer) override
@@ -152,7 +152,7 @@ namespace Svr {
 
 			IncSyncSerial();
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		virtual INT64 GetRawValue() override						{ return (INT64)m_RawValue.load(std::memory_order_relaxed); }

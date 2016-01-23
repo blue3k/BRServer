@@ -94,7 +94,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransGameMatchedS2SEvt::OnJoinGameRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::JoinGameRes joinRes;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
@@ -172,12 +172,12 @@ namespace GameServer {
 		if( FAILED(hr) )
 			CloseTransaction( hr );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT PlayerTransGameMatchedS2SEvt::OnLeavePartyRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameParty::LeavePartyRes leavePartyRes;
 
@@ -196,12 +196,12 @@ namespace GameServer {
 		}
 
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT PlayerTransGameMatchedS2SEvt::OnUpdateDBRes(  Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( pRes->GetHRESULT() );
 		//DB::QueryUpdateJoinGameCmd *pMsgRes = (DB::QueryUpdateJoinGameCmd*)pRes;
@@ -221,7 +221,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransGameMatchedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance* pPolicy = nullptr;
 
@@ -250,13 +250,13 @@ namespace GameServer {
 		if( FAILED(hr) )
 			CloseTransaction( hr );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Start Transaction
 	HRESULT PlayerTransPartyQueuedGameMatchingS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//Policy::IPolicyGameParty *pPolicy = nullptr;
 		//Svr::ServerEntity *pServerEntity = nullptr;
 
@@ -279,7 +279,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyMatchingItemDequeuedS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//Policy::IPolicyGameParty *pPolicy = nullptr;
 		//Svr::ServerEntity *pServerEntity = nullptr;
 
@@ -300,7 +300,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyCanceledGameMatchingS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//Policy::IPolicyGameParty *pPolicy = nullptr;
 		//Svr::ServerEntity *pServerEntity = nullptr;
 
@@ -330,7 +330,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransCreateParty::OnCreatePartyRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GamePartyManager::CreatePartyRes res;
@@ -345,13 +345,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 	// Start Transaction
 	HRESULT PlayerTransCreateParty::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::ServerServiceInformation *pService = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -396,7 +396,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransJoinParty::OnJoinPartyRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameParty::JoinPartyRes res;
@@ -418,13 +418,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 	// Start Transaction
 	HRESULT PlayerTransJoinParty::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		auto config = GetMyServer()->GetPresetGameConfig();
@@ -471,7 +471,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyPlayerJoinedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -491,7 +491,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyLeaderChangedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -517,7 +517,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransLeaveParty::OnLeavePartyRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameParty::LeavePartyRes res;
@@ -540,13 +540,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 	// Start Transaction
 	HRESULT PlayerTransLeaveParty::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
@@ -578,7 +578,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyPlayerLeftS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -607,7 +607,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransPartyKickPlayer::OnPlayerKickRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::GameParty::KickPlayerRes res;
@@ -619,13 +619,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 	// Start Transaction
 	HRESULT PlayerTransPartyKickPlayer::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
@@ -657,7 +657,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyPlayerKickedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -676,7 +676,7 @@ namespace GameServer {
 
 		CloseTransaction( hr );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 
@@ -688,7 +688,7 @@ namespace GameServer {
 
 	//HRESULT PlayerTransPartyInvite::OnNotifyAdded(  Svr::TransactionResult* &pRes )
 	//{
-	//	HRESULT hr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK;
 	//	Svr::ServerEntity *pServerEntity = nullptr;
 	//	EntityUID playerUID;
 	//	Policy::IPolicyGameServer* pTargetPolicy = nullptr;
@@ -718,7 +718,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyInvite::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
@@ -764,7 +764,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransNotifyPartyInviteS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -785,7 +785,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyChatMessage::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 
@@ -818,7 +818,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyChatMessageS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -837,7 +837,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyQuickChatMessage::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 
@@ -869,7 +869,7 @@ namespace GameServer {
 	// Start Transaction
 	HRESULT PlayerTransPartyQuickChatMessageS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -879,7 +879,7 @@ namespace GameServer {
 
 		CloseTransaction( hr );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

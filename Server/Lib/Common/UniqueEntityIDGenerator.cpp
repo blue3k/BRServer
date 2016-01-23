@@ -108,7 +108,7 @@ namespace BR {
 			return E_SYSTEM_FAIL;
 
 		MarkAsUsing(idToReserve);
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Check ID integrety

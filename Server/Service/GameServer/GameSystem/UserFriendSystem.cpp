@@ -64,7 +64,7 @@ namespace GameServer {
 	{
 //		m_MaxFriend = 0;
 		m_LatestStatusSync = TimeStampSec(DurationSec(0));
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Terminate component
@@ -167,7 +167,7 @@ namespace GameServer {
 				return hr;
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 }; // namespace GameServer

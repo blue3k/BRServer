@@ -41,7 +41,7 @@ namespace Svr {
 	// Send message to connected entity
 	HRESULT LoopbackConnection::Send( Message::MessageData* &pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageHeader* pMsgHeader = nullptr;
 		UINT uiPolicy = 0;
 

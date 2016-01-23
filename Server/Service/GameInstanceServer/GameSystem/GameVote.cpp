@@ -67,9 +67,9 @@ namespace ConspiracyGameInstanceServer {
 		GetOwner().ForeachPlayer( [&]( GamePlayer* pPlayer )->HRESULT {
 			pPlayer->SetVote(0);
 			pPlayer->SetVoted(0);
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT GameVote::Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget )
@@ -104,7 +104,7 @@ namespace ConspiracyGameInstanceServer {
 		// Set vote 
 		pVoter->SetVote( pVoteTarget->GetPlayerID() );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Update vote state
@@ -184,7 +184,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GameVoteSuspect::Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		
 		if( !pVoter->IsInGame() || pVoter->GetPlayerState() == PlayerState::Ghost )
 			return E_GAME_INVALID_PLAYER_STATE;
@@ -202,7 +202,7 @@ namespace ConspiracyGameInstanceServer {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->VotedS2CEvt( RouteContext(GetOwner().GetEntityUID(),pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID(), pVoteTarget->GetPlayerID()  );
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 	Proc_End:
@@ -218,7 +218,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				voteTargets.push_back(pPlayer);
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		return (UINT)voteTargets.GetSize();
@@ -242,7 +242,7 @@ namespace ConspiracyGameInstanceServer {
 				// Select random target except himself
 				VoteRandomTarget(pPlayer,voteTargets);
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 	}
 
@@ -262,7 +262,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				VoteRandomTarget(pPlayer, voteTargets);
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 	}
 
@@ -282,7 +282,7 @@ namespace ConspiracyGameInstanceServer {
 				m_IsInVoting = true;
 				return E_SYSTEM_FAIL;
 			}
-				return S_OK;
+				return S_SYSTEM_OK;
 		});
 
 		return !m_IsInVoting;
@@ -333,7 +333,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GameVoteHanging::Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if(GetGamePlaySystem().IsSuspect(pVoter->GetPlayerID()) )
 			return E_GAME_NO_SUFFRAGE;
@@ -360,7 +360,7 @@ namespace ConspiracyGameInstanceServer {
 		GetOwner().ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
 			if( pPlayer->GetPlayerEntityUID() != 0 )
 				pPolicy->VotedS2CEvt( RouteContext(GetOwner().GetEntityUID(),pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID(), pVoteTarget->GetPlayerID()  );
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 	Proc_End:
@@ -402,7 +402,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				VoteRandomTarget(pPlayer, voteTargets);
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 	}
 
@@ -424,7 +424,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				VoteRandomTarget(pPlayer, voteTargets);
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 	}
 
@@ -442,7 +442,7 @@ namespace ConspiracyGameInstanceServer {
 				m_IsInVoting = true;
 				return E_SYSTEM_FAIL;
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		return !m_IsInVoting;
@@ -481,7 +481,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GameVoteNight::Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( pVoter == nullptr || pVoteTarget == nullptr )
 			return E_SYSTEM_POINTER;
@@ -519,21 +519,21 @@ namespace ConspiracyGameInstanceServer {
 			if (pSeers->GetPlayerEntityUID() != 0 && pPolicy != nullptr)
 				pPolicy->PlayerRevealedS2CEvt(RouteContext(GetOwner().GetEntityUID(), pSeers->GetPlayerEntityUID()), pSeersChoice->GetPlayerID(), pSeersChoice->GetRole(), PlayerRevealedReason::SeersChoice);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Bodygard
 		if( IsFlagSet(BODYGUARD) && pVoter->GetPlayerID() == GetGamePlaySystem().GetBodyGuard() )
 		{
 			SetBodyGuardsChoice( pVoteTarget->GetPlayerID() );
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Owlman
 		if( IsFlagSet(OWLMAN) && pVoter->GetPlayerID() == GetGamePlaySystem().GetOwlman() )
 		{
 			GetGamePlaySystem().SetOwlmansChoice( pVoteTarget->GetPlayerID() );
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		if( pVoter->GetRole() != PlayerRole::Werewolf )
@@ -553,7 +553,7 @@ namespace ConspiracyGameInstanceServer {
 				pPolicy->VotedS2CEvt(RouteContext(GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), pVoter->GetPlayerID(), pVoteTarget->GetPlayerID());
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		// Update vote ranker
@@ -594,7 +594,7 @@ namespace ConspiracyGameInstanceServer {
 				return E_SYSTEM_FAIL;// we don't need to proceed anymore
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		return !m_IsInVoting;
@@ -608,7 +608,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				voteTargets.push_back(pPlayer);
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		return (UINT)voteTargets.GetSize();
@@ -625,7 +625,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				voteTargets.push_back(pPlayer);
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		return (UINT)voteTargets.GetSize();
@@ -643,7 +643,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				voteTargets.push_back(pPlayer);
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 
 		return (UINT)voteTargets.GetSize();
@@ -698,7 +698,7 @@ namespace ConspiracyGameInstanceServer {
 				{
 					VoteRandomTarget(pPlayer, voteTargets);
 				}
-				return S_OK;
+				return S_SYSTEM_OK;
 			});
 		}
 	}
@@ -751,7 +751,7 @@ namespace ConspiracyGameInstanceServer {
 				{
 					VoteRandomTarget(pPlayer, voteTargets);
 				}
-				return S_OK;
+				return S_SYSTEM_OK;
 			});
 		}
 	}

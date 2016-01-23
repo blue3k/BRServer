@@ -97,13 +97,13 @@ namespace BR {
 	{
 		SetTransID( TransactionID( pOwner->GetEntityID(), GetTransID().GetTransactionIndex() ) );
 		SetOwnerEntity(pOwner);
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Start Transaction
 	HRESULT Transaction::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetState() != Transaction::STATE_WAITSTART )
 			svrErr( E_SVR_TRANSACTION_INVALID_STATE );
@@ -130,7 +130,7 @@ namespace BR {
 	// Process Transaction
 	HRESULT Transaction::ProcessTransaction( TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr( pRes );
 
@@ -149,10 +149,10 @@ namespace BR {
 	// process abnormal termination of transaction
 	HRESULT Transaction::CloseTransaction( HRESULT hrRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( IsClosed() )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		OnCloseTransaction(hrRes);
 
@@ -166,7 +166,7 @@ namespace BR {
 	// flush transaction result
 	HRESULT Transaction::FlushTransaction()
 	{
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	///////////////////////////////////////////////////////////
@@ -216,7 +216,7 @@ namespace BR {
 
 	HRESULT SubTransactionWithResult::CloseTransaction( HRESULT hrRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		SetResult( hrRes );
 
@@ -242,7 +242,7 @@ namespace BR {
 	// flush transaction result
 	HRESULT SubTransactionWithResult::FlushTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//TransactionResult *pRes = this;
 
 		SetClosed();
@@ -272,7 +272,7 @@ namespace BR {
 		://m_uiContext(-1),
 		m_transID(-1,0),
 		m_msgID(0),
-		m_hrRes(S_OK)
+		m_hrRes(S_SYSTEM_OK)
 	{
 	}
 
@@ -280,7 +280,7 @@ namespace BR {
 		:
 		m_transID(-1,0),
 		m_msgID(msgID),
-		m_hrRes(S_OK)
+		m_hrRes(S_SYSTEM_OK)
 	{
 	}
 

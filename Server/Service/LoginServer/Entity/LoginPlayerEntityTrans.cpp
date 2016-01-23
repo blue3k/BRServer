@@ -87,7 +87,7 @@ namespace LoginServer {
 	template<class MessageClass, class TransactionClass>
 	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnLogin( HRESULT hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		AuthTicket newTicket = 0;
 
 		svrChkClose(hrRes);
@@ -120,7 +120,7 @@ namespace LoginServer {
 	template<class MessageClass, class TransactionClass>
 	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnSessionRegistered( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryRegisterAuthTicketCmd* pDBRes = (DB::QueryRegisterAuthTicketCmd*)pRes;
 		Policy::IPolicyGameServer *pGameServerPolicy = nullptr;
 
@@ -166,7 +166,7 @@ namespace LoginServer {
 	template<class MessageClass, class TransactionClass>
 	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::RegisterNewPlayerToJoinGameServer()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 		Svr::ServerServiceInformation *pService = nullptr;
 
@@ -193,7 +193,7 @@ namespace LoginServer {
 	template<class MessageClass, class TransactionClass>
 	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameServer::RegisterPlayerToJoinGameServerRes res;
@@ -237,7 +237,7 @@ namespace LoginServer {
 	template<class MessageClass, class TransactionClass>
 	HRESULT LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnConnectToGameServerRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryConnectedToGameServerCmd* pDBRes = (DB::QueryConnectedToGameServerCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -265,7 +265,7 @@ namespace LoginServer {
 	template<class MessageClass, class TransactionClass>
 	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		//m_RegisterTryCount = 0;
 		m_GameEntityUID = 0;
@@ -299,7 +299,7 @@ namespace LoginServer {
 
 	HRESULT LoginPlayerTransLogin::OnLogin( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryLoginCmd* pDBRes = (DB::QueryLoginCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -329,14 +329,14 @@ namespace LoginServer {
 		if( FAILED(hr) )
 			CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 
 	// Start Transaction
 	HRESULT LoginPlayerTransLogin::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -370,7 +370,7 @@ namespace LoginServer {
 	
 	HRESULT LoginPlayerTransLoginByFacebook::OnUserCreated( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryFacebookCreateUserCmd* pDBRes = (DB::QueryFacebookCreateUserCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -393,12 +393,12 @@ namespace LoginServer {
 		if( FAILED(hr) )
 			CloseTransaction(hr);
 
-		return S_OK; 
+		return S_SYSTEM_OK; 
 	}
 
 	HRESULT LoginPlayerTransLoginByFacebook::OnLoginFacebook( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryFacebookLoginCmd* pDBRes = (DB::QueryFacebookLoginCmd*)pRes;
 		char email[GameConst::MAX_EMAIL];
 
@@ -446,7 +446,7 @@ namespace LoginServer {
 	// Start Transaction
 	HRESULT LoginPlayerTransLoginByFacebook::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -487,7 +487,7 @@ namespace LoginServer {
 
 	HRESULT LoginPlayerTransCreateRandomUser::OnCreated(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto* pDBRes = (DB::QueryCreateRandomUserCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -516,7 +516,7 @@ namespace LoginServer {
 	// Start Transaction
 	HRESULT LoginPlayerTransCreateRandomUser::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		char strUserName[DB::Const::MAX_USERNAME];
 
 		svrChk(super::StartTransaction());
@@ -559,7 +559,7 @@ namespace LoginServer {
 
 	HRESULT LoginPlayerTransCloseInstance::OnDeleteLoginSessionRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//DB::QueryDeleteLoginSessionCmd* pDBRes = (DB::QueryDeleteLoginSessionCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -573,7 +573,7 @@ namespace LoginServer {
 
 	HRESULT LoginPlayerTransCloseInstance::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//LoginPlayerEntity* pOwner = (LoginPlayerEntity*)GetOwnerEntity();
 
 		svrChk( super::StartTransaction() );
@@ -603,7 +603,7 @@ namespace LoginServer {
 
 		Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity( GetMyOwner() );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	
@@ -623,7 +623,7 @@ namespace LoginServer {
 
 	HRESULT LoginPlayerKickPlayerTrans::OnDeleteSession( Svr::TransactionResult *pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryDeleteLoginSessionCmd* pDBRes = (DB::QueryDeleteLoginSessionCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -651,7 +651,7 @@ namespace LoginServer {
 	// Start Transaction
 	HRESULT LoginPlayerKickPlayerTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 
@@ -694,7 +694,7 @@ namespace LoginServer {
 	
 	HRESULT LoginPlayerJoinedToGameServerTrans::OnConnectToGameServerRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryConnectedToGameServerCmd* pDBRes = (DB::QueryConnectedToGameServerCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -720,7 +720,7 @@ namespace LoginServer {
 
 	HRESULT LoginPlayerJoinedToGameServerTrans::OnValidateGameServerSessionRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		DB::QueryValidateGameServerSessionCmd* pDBRes = (DB::QueryValidateGameServerSessionCmd*)pRes;
 
 		svrChk(pRes->GetHRESULT());
@@ -747,7 +747,7 @@ namespace LoginServer {
 	// Start Transaction
 	HRESULT LoginPlayerJoinedToGameServerTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 

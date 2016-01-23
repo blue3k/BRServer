@@ -37,7 +37,7 @@ namespace BR
 		// Cmd: Add a player to ranking
 		HRESULT MonitoringService::GetInstanceListCmd( const Context &InContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 svrChk(GetPolicyMonitoring()->GetInstanceListCmd( InContext ) );
 
@@ -49,7 +49,7 @@ namespace BR
 		// Cmd: Remove a player to ranking
 		HRESULT MonitoringService::RequestCounterValuesCmd( const Context &InContext, const EntityUID &InInstanceUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 svrChk(GetPolicyMonitoring()->RequestCounterValuesCmd( InContext, InInstanceUID ) );
 
@@ -61,7 +61,7 @@ namespace BR
 		// C2S: Counter instance is created
 		HRESULT MonitoringService::PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 svrChk(GetPolicyMonitoring()->PerformanceCounterNewC2SEvt( InInstanceName, InInstanceUID, InNewCounters ) );
 
@@ -73,7 +73,7 @@ namespace BR
 		// C2S: Counter instance is deleted
 		HRESULT MonitoringService::PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 svrChk(GetPolicyMonitoring()->PerformanceCounterFreeC2SEvt( InFreeInstances ) );
 
@@ -85,7 +85,7 @@ namespace BR
 		// C2S: Counter update broadcast
 		HRESULT MonitoringService::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 svrChk(GetPolicyMonitoring()->PerformanceCounterUpdateC2SEvt( InInstanceUID, InCounterValues ) );
 

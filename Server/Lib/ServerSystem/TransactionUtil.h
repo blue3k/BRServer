@@ -28,9 +28,9 @@ namespace BR {
 #define BR_IMPLEMENT_USERMSGTRANS_CLOSE( MessageName ) \
 	virtual HRESULT OnCloseTransaction( HRESULT hrRes )\
 		{\
-		HRESULT hr = S_OK;\
+		HRESULT hr = S_SYSTEM_OK;\
 		if( IsClosed() )\
-			return S_OK;\
+			return S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( hrRes ) );\
@@ -45,9 +45,9 @@ namespace BR {
 #define BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS( MessageName, ... ) \
 	virtual HRESULT OnCloseTransaction( HRESULT hrRes )\
 		{\
-		HRESULT hr = S_OK;\
+		HRESULT hr = S_SYSTEM_OK;\
 		if( IsClosed() )\
-			return S_OK;\
+			return S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( hrRes, ##__VA_ARGS__ ) );\
@@ -62,7 +62,7 @@ namespace BR {
 #define BR_IMPLEMENT_MSGTRANS_CLOSE( MessageName ) \
 	virtual HRESULT OnCloseTransaction( HRESULT hrRes )\
 		{\
-		HRESULT hr = S_OK;\
+		HRESULT hr = S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( GetContext(), hrRes ) );\
@@ -77,7 +77,7 @@ namespace BR {
 #define BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS( MessageName, ... ) \
 	virtual HRESULT OnCloseTransaction( HRESULT hrRes )\
 		{\
-		HRESULT hr = S_OK;\
+		HRESULT hr = S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( GetContext(), hrRes, ##__VA_ARGS__ ) );\
@@ -92,7 +92,7 @@ namespace BR {
 #define BR_IMPLEMENT_EVTTRANS_CLOSE( MessageName ) \
 	virtual HRESULT OnCloseTransaction( HRESULT hrRes )\
 		{\
-		HRESULT hr = S_OK;\
+		HRESULT hr = S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName() );\
@@ -107,7 +107,7 @@ namespace BR {
 #define BR_IMPLEMENT_EVTTRANS_CLOSE_ARGS( MessageName, ... ) \
 	virtual HRESULT OnCloseTransaction( HRESULT hrRes )\
 		{\
-		HRESULT hr = S_OK;\
+		HRESULT hr = S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
 			svrChk( pPolicy->MessageName( __VA_ARGS__ ) );\

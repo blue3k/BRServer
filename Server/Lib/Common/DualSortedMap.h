@@ -246,7 +246,7 @@ namespace BR
 			HRESULT Reserve(size_t szReserv)
 			{
 				if (szReserv <= m_TraversalHistory.GetAllocatedSize())
-					return S_OK;
+					return S_SYSTEM_OK;
 
 				szReserv = GrowthBy * ((szReserv + GrowthBy - 1) / GrowthBy);
 

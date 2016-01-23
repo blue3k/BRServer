@@ -65,7 +65,7 @@ namespace GameServer {
 	// Initialzie system
 	HRESULT UserGamePlayerInfoSystem::InitializeComponent()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_Grade = 0;
 		m_Level = 0;
@@ -114,7 +114,7 @@ namespace GameServer {
 	// Save to memento
 	HRESULT UserGamePlayerInfoSystem::SaveStatToMemento( Memento<MEMENTO_SIZE> &memento )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( memento.Add(m_Level) );
 		svrChk( memento.Add(m_Exp) );
@@ -133,7 +133,7 @@ namespace GameServer {
 	// Save to memento
 	HRESULT UserGamePlayerInfoSystem::SaveWinLoseToMemento( Memento<MEMENTO_SIZE> &memento )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( memento.Add(m_WinPlaySCitizen) );
 		svrChk( memento.Add(m_WinPlaySMonster) );
@@ -157,7 +157,7 @@ namespace GameServer {
 	// Apply shop item
 	HRESULT UserGamePlayerInfoSystem::ApplyItem( conspiracy::ShopTbl::ShopItem *pShopItem )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		conspiracy::LevelTbl::LevelItem *pLevelInfo = nullptr;
 
 		if( pShopItem == nullptr )
@@ -208,7 +208,7 @@ namespace GameServer {
 	// Apply Cost
 	HRESULT UserGamePlayerInfoSystem::CheckCost(conspiracy::OrganicTbl::OrganicItem *pCostItem)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (pCostItem == nullptr)
 			return E_SYSTEM_POINTER;
@@ -223,7 +223,7 @@ namespace GameServer {
 
 	HRESULT UserGamePlayerInfoSystem::ApplyCost(conspiracy::OrganicTbl::OrganicItem *pCostItem, TransLogCategory logCategory, const char* message)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (pCostItem == nullptr)
 			return E_SYSTEM_POINTER;
@@ -247,7 +247,7 @@ namespace GameServer {
 
 	HRESULT UserGamePlayerInfoSystem::SetLevel( UINT newLevel )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		conspiracy::LevelTbl::LevelItem *pLevelInfo = nullptr;
 
@@ -270,7 +270,7 @@ namespace GameServer {
 
 	HRESULT UserGamePlayerInfoSystem::GainExp( UINT64 expGain )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		conspiracy::LevelTbl::LevelItem *pNextLevelInfo = nullptr;
 
 		m_Exp += expGain;
@@ -301,7 +301,7 @@ namespace GameServer {
 
 	HRESULT UserGamePlayerInfoSystem::AchivedWin( PlayerRole playedRole, bool isWon )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		switch( playedRole )
 		{
@@ -370,7 +370,7 @@ namespace GameServer {
 	// Add stamina, negative will reduce the stamina
 	HRESULT UserGamePlayerInfoSystem::GainStamina( INT stamina )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
@@ -388,7 +388,7 @@ namespace GameServer {
 	// Add Friend slot, negative will reduce the friend slot
 	HRESULT UserGamePlayerInfoSystem::GainFriendSlot( INT numSlot )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto maxFriend = m_MaxFriend >= m_DefaultFriendSlot ? m_MaxFriend - m_DefaultFriendSlot : 0;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
@@ -411,7 +411,7 @@ namespace GameServer {
 	// gain game money
 	HRESULT UserGamePlayerInfoSystem::GainGameMoney( INT64 numValue )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
@@ -428,7 +428,7 @@ namespace GameServer {
 	// gain gem
 	HRESULT UserGamePlayerInfoSystem::GainGem( INT64 numValue )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
@@ -446,7 +446,7 @@ namespace GameServer {
 	// Called when the stat maiximum need to be calculated again.
 	HRESULT UserGamePlayerInfoSystem::UpdateStatMaximum()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
@@ -468,7 +468,7 @@ namespace GameServer {
 	// Setup default stat for new player
 	HRESULT UserGamePlayerInfoSystem::SetupDefaultStat()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
@@ -484,7 +484,7 @@ namespace GameServer {
 	}
 	HRESULT UserGamePlayerInfoSystem::UpdateStatByLevel()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		conspiracy::LevelTbl::LevelItem *pLevelInfo = nullptr;
 
 		svrChk( conspiracy::LevelTbl::FindItem( GetLevel(), pLevelInfo ) );
@@ -498,7 +498,7 @@ namespace GameServer {
 
 	HRESULT UserGamePlayerInfoSystem::UpdateStatByLevel(conspiracy::LevelTbl::LevelItem *pLevelInfo)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrAssert(pLevelInfo->Level == m_Level);
 

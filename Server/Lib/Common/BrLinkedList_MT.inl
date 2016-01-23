@@ -448,7 +448,7 @@ public:
 
 	HRESULT Insert(Iterator& Iter, const DataType& Value)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// 1. Get  a ticket and wait my turn.
 		CounterType myTicket = m_UpdateTicket.AcquireTicket();
@@ -525,7 +525,7 @@ public:
 		while( _InterlockedCompareExchange64( (__int64*)&(Iter.GetPredNode()->m_Next), *(__int64*)&newNodeRef, iOldHdrValue) != iOldHdrValue);
 #endif
 
-		if (hr == S_OK)
+		if (hr == S_SYSTEM_OK)
 			m_Size.Increment();
 
 		// 5. Release a write lock
@@ -541,7 +541,7 @@ Proc_End:
 
 	HRESULT Erase(Iterator& Iter)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// 1. Get  a ticket and wait my turn.
 		CounterType myTicket = m_UpdateTicket.AcquireTicket();
@@ -615,7 +615,7 @@ Proc_End:
 		Iter.GetNode()->~Node();
 		m_pNodePool->Free(Iter.GetNode());
 
-		if (hr == S_OK)
+		if (hr == S_SYSTEM_OK)
 			m_Size.Decrement();
 
 		// 5. Release a delete lock

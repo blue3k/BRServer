@@ -39,7 +39,7 @@ namespace Svr {
 	// Add chatting log
 	HRESULT ChattingHistory::AddChattingLog( TimeStampSec timeStamp, PlayerID player, BYTE playerStatus, ChatType type, const char* message )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		BYTE* itemBuffer = nullptr;
 		GameLogChatMessage *chatLog = nullptr;
 

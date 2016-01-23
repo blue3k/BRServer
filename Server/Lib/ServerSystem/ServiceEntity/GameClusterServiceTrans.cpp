@@ -38,7 +38,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT GameServerTransGamePlayerEntityCreatedS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntity *pServerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -60,7 +60,7 @@ namespace Svr {
 	// Start Transaction
 	HRESULT GameServerTransGamePlayerEntityDeletedS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::StartTransaction() );
 

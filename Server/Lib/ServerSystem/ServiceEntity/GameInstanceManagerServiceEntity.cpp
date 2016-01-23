@@ -53,7 +53,7 @@ namespace Svr {
 
 	HRESULT GameInstanceManagerServiceEntity::InitializeEntity(EntityID newEntityID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		EntityUID entityUID;
 		PerformanceCounterInstance* pInstance = nullptr;
 
@@ -73,12 +73,12 @@ namespace Svr {
 
 	HRESULT GameInstanceManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(LoadbalanceClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)				{ svrMemReturn(pNewTrans = new GameInstanceTransCreateGame(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)			{ svrMemReturn(pNewTrans = new GameInstanceTransGameDeleted(pMsgData)); return S_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)				{ svrMemReturn(pNewTrans = new GameInstanceTransCreateGame(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)			{ svrMemReturn(pNewTrans = new GameInstanceTransGameDeleted(pMsgData)); return S_SYSTEM_OK; } );
 
 	Proc_End:
 

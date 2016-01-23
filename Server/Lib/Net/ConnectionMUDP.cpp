@@ -68,7 +68,7 @@ namespace Net {
 	// Make Ack packet and enqueue to SendNetCtrlqueue
 	HRESULT ConnectionMUDP::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_OK, hrTem = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrTem = S_SYSTEM_OK;
 
 		MsgMobileNetCtrl *pNetCtrl = nullptr;
 		Message::MessageData *pMsg = nullptr;
@@ -118,8 +118,8 @@ namespace Net {
 	// Process network control message
 	HRESULT ConnectionMUDP::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
 	{
-		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
+		HRESULT hrTem = S_SYSTEM_OK;
 
 		if (pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl))
 		{
@@ -146,7 +146,7 @@ namespace Net {
 					if (GetConnectionState() == IConnection::STATE_CONNECTING
 						&& m_ConnectInfo.RemoteClass != NetClass::Unknown)
 					{
-						OnConnectionResult(S_OK);
+						OnConnectionResult(S_SYSTEM_OK);
 					}
 					break;
 				default:
@@ -238,7 +238,7 @@ namespace Net {
 				m_ConnectInfo.SetRemoteInfo(RemoteClass, pNetCtrl->PeerID);
 
 				// Set connection is succeeded and connected
-				OnConnectionResult(S_OK);
+				OnConnectionResult(S_SYSTEM_OK);
 				break;
 			case IConnection::STATE_CONNECTED:
 				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, (UINT)GetConnectionInfo().LocalClass, pNetCtrl->msgID, GetConnectionInfo().LocalID));
@@ -278,7 +278,7 @@ namespace Net {
 	// called when incomming message occure
 	HRESULT ConnectionMUDP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pMsg = NULL;
 		Message::MobileMessageHeader * pMsgHeader = (Message::MobileMessageHeader*)pBuff;
 
@@ -364,7 +364,7 @@ namespace Net {
 
 	HRESULT ConnectionMUDP::OnRecv( Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
 
 		if (GetConnectionState() != IConnection::STATE_CONNECTED)
@@ -415,7 +415,7 @@ namespace Net {
 	// gathering
 	HRESULT ConnectionMUDP::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		MsgMobileNetCtrl *pNetCtrlMsg = nullptr;
 
@@ -443,7 +443,7 @@ namespace Net {
 
 	HRESULT ConnectionMUDP::SendSync( UINT uiSequence, UINT64 uiSyncMask )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		MsgMobileNetCtrlSync *pNetCtrlMsg = NULL;
 
 		netChk( PrepareGatheringBuffer(sizeof(MsgMobileNetCtrlSync)) );
@@ -475,7 +475,7 @@ namespace Net {
 	// Process NetCtrl queue
 	HRESULT ConnectionMUDP::ProcNetCtrlQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// Process received net ctrl messages
 		MsgNetCtrlBuffer netCtrl;
@@ -502,7 +502,7 @@ namespace Net {
 
 	HRESULT ConnectionMUDP::OnGuarrentedMessageRecv(Message::MessageData *pIMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		auto msgID = pIMsg->GetMessageHeader()->msgID;
 		auto seq = pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence;
@@ -555,11 +555,11 @@ namespace Net {
 	// Process recv reliable queue
 	HRESULT ConnectionMUDP::ProcRecvReliableQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pIMsg = nullptr;
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		// Recv guaranted queue process
 		pIMsg = nullptr;
@@ -603,7 +603,7 @@ namespace Net {
 	// Process Send queue
 	HRESULT ConnectionMUDP::ProcSendReliableQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pIMsg = NULL;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
@@ -650,7 +650,7 @@ namespace Net {
 	// Process message window queue
 	HRESULT ConnectionMUDP::ProcReliableSendRetry()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		MsgWindow::MessageElement *pMessageElement = nullptr;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
@@ -695,7 +695,7 @@ namespace Net {
 	// Process connection state
 	HRESULT ConnectionMUDP::ProcConnectionState()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// Update connection status
 		switch( GetConnectionState() )
@@ -716,7 +716,7 @@ namespace Net {
 	// Update net control, process connection heartbit, ... etc
 	HRESULT ConnectionMUDP::UpdateNetCtrl()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageID msgIDTem;
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
@@ -780,7 +780,7 @@ namespace Net {
 
 	HRESULT ConnectionMUDP::UpdateSendQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		MutexScopeLock localLock(m_SendReliableWindow.GetLock());
 
@@ -838,7 +838,7 @@ namespace Net {
 	// Process network control message
 	HRESULT ConnectionMUDPServer::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		hr = ConnectionMUDP::ProcNetCtrl(pNetCtrl);
 		if (FAILED(hr)) return hr;
@@ -871,7 +871,7 @@ namespace Net {
 	// Process network control message
 	HRESULT ConnectionMUDPClient::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl))
 		{
@@ -899,7 +899,7 @@ namespace Net {
 					{
 						// put expected net class
 						m_ConnectInfo.RemoteClass = NetClass::Game;
-						OnConnectionResult(S_OK);
+						OnConnectionResult(S_SYSTEM_OK);
 					}
 					break;
 				case NetCtrlCode_HeartBit:
@@ -945,7 +945,7 @@ namespace Net {
 	// Process network control message
 	HRESULT ConnectionMUDPClient::ProcConnectionState()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageID msgIDTem;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
@@ -1011,7 +1011,7 @@ namespace Net {
 	// called when New connection TCP accepted
 	HRESULT ConnectionMUDPClient::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 		netChkPtr(pIOBuffer);
 
@@ -1023,7 +1023,7 @@ namespace Net {
 		case S_SYSTEM_FALSE:
 			hr = E_NET_TRY_AGAIN;
 			break;
-		case S_OK:
+		case S_SYSTEM_OK:
 		case E_NET_IO_PENDING:
 		case E_NET_TRY_AGAIN:
 		case E_NET_WOULDBLOCK:
@@ -1051,7 +1051,7 @@ namespace Net {
 	// called when reciving TCP message
 	HRESULT ConnectionMUDPClient::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (pIOBuffer != nullptr && pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD)
 		{
@@ -1115,18 +1115,18 @@ namespace Net {
 		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
 		Util::SafeRelease(pIOBuffer->pMsgs);
 		NetSystem::FreeBuffer(pIOBuffer);
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	// Pending recv New one
 	HRESULT ConnectionMUDPClient::PendingRecv()
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 		IOBUFFER_READ *pOver = nullptr;
 
 		if (!NetSystem::IsProactorSystem())
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		IncPendingRecvCount();
 
@@ -1137,7 +1137,7 @@ namespace Net {
 			hrErr = Recv(pOver);
 			switch (hrErr)
 			{
-			case S_OK:
+			case S_SYSTEM_OK:
 			case E_NET_IO_PENDING:
 			case E_NET_TRY_AGAIN:
 			case E_NET_WOULDBLOCK:

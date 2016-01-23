@@ -104,7 +104,7 @@ namespace conspiracy
 			*pOrganicItem = rowItem;
 			OrganicTbl::m_TableMap.insert(std::make_pair(pOrganicItem->ItemEffect, pOrganicItem));
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT OrganicTbl::ClearTable()
@@ -113,7 +113,7 @@ namespace conspiracy
 			delete itr->second;
 
 		m_TableMap.clear();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT OrganicTbl::FindItem( const unsigned int& Key, OrganicItem*& pRow)
@@ -125,7 +125,7 @@ namespace conspiracy
 			return E_SYSTEM_FAIL;
 		}
 		pRow = itr->second;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 }; // namespace conspiracy

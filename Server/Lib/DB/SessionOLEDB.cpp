@@ -62,7 +62,7 @@ namespace DB {
 			return E_SYSTEM_FAIL;
 		}
 
-		while(cmd.MoveNext() == S_OK) {
+		while(cmd.MoveNext() == S_SYSTEM_OK) {
 			cmd.m_RowsetResult.push_back(cmd);	
 		}
 		
@@ -99,7 +99,7 @@ namespace DB {
 	// Send a query
 	HRESULT SessionOLEDB::SendQuery( Query *pQuery )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( pQuery->GetHasRowSetResult() )
 		{
@@ -132,7 +132,7 @@ namespace DB {
 		Session::CloseSession();
 
 		m_Session.Close();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	

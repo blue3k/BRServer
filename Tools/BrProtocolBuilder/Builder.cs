@@ -276,7 +276,7 @@ namespace ProtocolBuilder
         public void DefaultHRESULT()
         {
             MatchIndent();
-            OutStream.WriteLine("HRESULT hr = S_OK;");
+            OutStream.WriteLine("HRESULT hr = S_SYSTEM_OK;");
         }
 
         public void ProcEnd()

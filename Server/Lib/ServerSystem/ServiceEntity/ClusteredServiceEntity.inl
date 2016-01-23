@@ -14,7 +14,7 @@
 template<class ServiceType>
 HRESULT ClusteredServiceEntity::GetService( ServiceType* &pService )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	ServerServiceInformation* pServiceInfo = nullptr;
 
 	if( GetMasterUID() == 0 )

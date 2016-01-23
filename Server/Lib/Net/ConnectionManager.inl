@@ -174,7 +174,7 @@ ConnectionManagerT<ConnectionType>::ConnectionManagerT( UINT uiBucketSize )
 template< class ConnectionType >
 HRESULT ConnectionManagerT<ConnectionType>::InitManager( UINT poolCacheCount )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 
 	//if( FAILED( hr = m_ConnectionPool.PoolCache( poolCacheCount ) ) )
 	//	return hr;

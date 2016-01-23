@@ -41,7 +41,7 @@ namespace BR {
 		int ierr = errno;
 		switch (ierr)
 		{
-		case 0: return S_OK;
+		case 0: return S_SYSTEM_OK;
 		case EPERM: return E_NO_PERMITION;
 		case ENOENT: return E_NO_FILE_OR_DIR;
 		case ESRCH: return E_NO_SUCH_PROCESS;

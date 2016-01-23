@@ -35,7 +35,7 @@ namespace Net {
 
 	HRESULT INetIOCallBack::ProcessSendQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		IOBUFFER_WRITE* pSendBuffer = nullptr;
 
 		auto writeQueue = m_pWriteQueues;
@@ -46,14 +46,14 @@ namespace Net {
 			hr = writeQueue->GetFront(pSendBuffer);
 			if (FAILED(hr))
 			{
-				hr = S_OK;
+				hr = S_SYSTEM_OK;
 				break;
 			}
 
 			hr = SendBuffer(pSendBuffer);
 			switch (hr)
 			{
-			case S_OK:
+			case S_SYSTEM_OK:
 				writeQueue->Dequeue(pSendBuffer);
 				break;
 			case E_NET_IO_PENDING:
@@ -75,7 +75,7 @@ namespace Net {
 
 	HRESULT INetIOCallBack::EnqueueBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		auto writeQueue = m_pWriteQueues;
 		netChkPtr(writeQueue);
@@ -99,14 +99,14 @@ namespace Net {
 		{
 			pIOBuffer = new IOBUFFER_WRITE;
 
-			return pIOBuffer == nullptr ? E_SYSTEM_FAIL : S_OK;
+			return pIOBuffer == nullptr ? E_SYSTEM_FAIL : S_SYSTEM_OK;
 		}
 
 		HRESULT FreeBuffer(IOBUFFER_WRITE *pIOBuffer)
 		{
 			Util::SafeDelete(pIOBuffer);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT SetGatheringBufferSize(UINT bufferSize)
@@ -116,7 +116,7 @@ namespace Net {
 			if (g_pGatheringBufferPool == nullptr)
 				return E_SYSTEM_FAIL;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT AllocGatheringBuffer(BYTE* &pBuffer, UINT& bufferSize)
@@ -131,7 +131,7 @@ namespace Net {
 
 			pBuffer = (BYTE*)pPtr;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT FreeGatheringBuffer(BYTE *pBuffer)

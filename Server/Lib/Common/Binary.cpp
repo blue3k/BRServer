@@ -47,7 +47,7 @@ namespace BR
 
 		memcpy( &dst.Version, &src.Version, src.Size - (UINT)((intptr_t)&dst.Version - (intptr_t)&dst) );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

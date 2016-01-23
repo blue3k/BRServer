@@ -50,7 +50,7 @@ namespace BR
 		memcpy( m_Buffer + m_WritingPosition, pData, sizeToWrite );
 		m_WritingPosition += sizeToWrite;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 };	// namespace BR

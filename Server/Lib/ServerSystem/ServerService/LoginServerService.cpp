@@ -37,7 +37,7 @@ namespace BR
 		// Cmd: Notify user joind and see it's valid authticket instance
 		HRESULT LoginServerService::PlayerJoinedToGameServerCmd( const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
@@ -51,7 +51,7 @@ namespace BR
 		// Cmd: Kick logged in player
 		HRESULT LoginServerService::KickPlayerCmd( const Context &InContext, const PlayerID &InKickedPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );

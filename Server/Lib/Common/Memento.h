@@ -56,7 +56,7 @@ namespace BR {
 		template<class DataType>
 		HRESULT Add( const DataType &data )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			void *pPtr = nullptr;
 			SaveData *pNewData = nullptr;
 
@@ -87,7 +87,7 @@ namespace BR {
 				memcpy(pSavedData->pOrgDataPtr, pSavedData->pSavedDataPtr, pSavedData->DataSize);
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 	};
 

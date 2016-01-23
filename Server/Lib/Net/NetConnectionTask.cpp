@@ -82,7 +82,7 @@ namespace Net {
 			m_pConnection->UpdateNetCtrl();
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -104,7 +104,7 @@ namespace Net {
 	// Create TickTask
 	HRESULT ConnectionTaskManager::CreateTask( ConnectionTask* &pTask )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ConnectionTask *pNewTask = nullptr;
 
 		netMem( pNewTask = new ConnectionTask );

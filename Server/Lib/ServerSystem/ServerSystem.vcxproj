@@ -205,6 +205,7 @@
     <ClInclude Include="MessageHandlerTable.h" />
     <ClInclude Include="MessageRoute.h" />
     <ClInclude Include="ParallelTransaction.h" />
+    <ClInclude Include="ParameterSetting.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounter.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounterClient.h" />
     <ClInclude Include="PerformanceCounter\PerformanceCounterInstance.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="Google\GoogleOAuth.cpp" />
     <ClCompile Include="MasterEntity.cpp" />
     <ClCompile Include="ParallelTransaction.cpp" />
+    <ClCompile Include="ParameterSetting.cpp" />
     <ClCompile Include="PerformanceCounter\PerformanceCounter.cpp" />
     <ClCompile Include="PerformanceCounter\PerformanceCounterClient.cpp" />
     <ClCompile Include="PerformanceCounter\PerformanceCounterInstance.cpp" />

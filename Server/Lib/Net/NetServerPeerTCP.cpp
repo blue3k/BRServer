@@ -50,7 +50,7 @@ namespace Net {
 	// handle Socket accept
 	HRESULT ServerPeerTCP::OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ConnectionTCP *pConnection = nullptr;
 		SharedPointerT<Connection> pConn;
 		uintptr_t cid = 0;
@@ -138,7 +138,7 @@ namespace Net {
 	// Open host and start listen
 	HRESULT ServerPeerTCP::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		netChk( ServerTCP::HostOpen( netCls, strLocalIP, usLocalPort ) );
 
@@ -154,7 +154,7 @@ namespace Net {
 	// Make a connection to another server
 	HRESULT ServerPeerTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Net::IConnection::ConnectionInformation connectionInfo;
 		ConnectionTCP *pConn = nullptr;
 		SOCKET socket = INVALID_SOCKET;
@@ -227,7 +227,7 @@ namespace Net {
 	// Connect to other peer
 	HRESULT ServerPeerTCP::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ConnectionTCP *pConn = nullptr;
 		uintptr_t CID = 0;
 

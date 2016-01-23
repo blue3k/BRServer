@@ -240,7 +240,7 @@ namespace Net {
 	// Update Operation queue
 	void ConnectionManager::UpdateOperationQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Operation oper;
 
 		auto loopCount = m_PendingOperations.GetEnqueCount();
@@ -498,7 +498,7 @@ namespace Net {
 	// mapping Add/Remove
 	HRESULT ConnectionManager::AddMap( Connection *pConn )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SharedPointerT<Connection> pConnPtr;
 		WeakPointerT<Connection> pPtr;
 
@@ -546,7 +546,7 @@ namespace Net {
 
 	HRESULT ConnectionManager::AddressRemap(Connection *pConn, const sockaddr_storage &addressOrg, const sockaddr_storage &newAddress)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		WeakPointerT<Connection> pPtr;
 		ConnectionUDPBase *pConnUDP = dynamic_cast<ConnectionUDPBase*>(pConn);
 		netChkPtr(pConnUDP);
@@ -565,8 +565,8 @@ namespace Net {
 
 	HRESULT ConnectionManager::RemoveMap( Connection *pConn )
 	{
-		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
+		HRESULT hrTem = S_SYSTEM_OK;
 		SharedPointerT<Connection> pConnPtr;
 		WeakPointerT<Connection> pPtr;
 
@@ -593,8 +593,8 @@ namespace Net {
 	// Remap PeerID
 	HRESULT ConnectionManager::RemapPeerID( Connection *pConn, AuthTicket ticket )
 	{
-		HRESULT hr = S_OK;
-		HRESULT hrTem = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
+		HRESULT hrTem = S_SYSTEM_OK;
 		WeakPointerT<Connection> pConnMapPtr;
 
 		if( pConn->GetConnectionInfo().RemoteID != 0 )
@@ -629,7 +629,7 @@ namespace Net {
 	// Initialize Manager
 	HRESULT ConnectionManager::InitManager( UINT poolCacheCount )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_bNoNewConnection = false;
 
@@ -643,7 +643,7 @@ namespace Net {
 	// Release all connection and terminate manager
 	HRESULT ConnectionManager::TerminateManager()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Operation oper;
 
 
@@ -653,7 +653,7 @@ namespace Net {
 
 
 		// Clear pending operation queue
-		while( m_PendingOperations.Dequeue( oper ) == S_OK )
+		while( m_PendingOperations.Dequeue( oper ) == S_SYSTEM_OK )
 		{
 			SharedPointerT<Connection>& pConn = oper.pConn;
 
@@ -703,11 +703,11 @@ namespace Net {
 	// Disconnect all connection
 	HRESULT ConnectionManager::DisconnectAllConnection()
 	{
-		//HRESULT hr  = S_OK;
+		//HRESULT hr  = S_SYSTEM_OK;
 		Operation oper;
 
 		// Clear pending operation queue
-		while( m_PendingOperations.Dequeue( oper ) == S_OK )
+		while( m_PendingOperations.Dequeue( oper ) == S_SYSTEM_OK )
 		{
 			switch( oper.OpCode )
 			{
@@ -739,7 +739,7 @@ namespace Net {
 			return true;
 		});
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Add connection to wait connect process
@@ -794,7 +794,7 @@ namespace Net {
 	// Close and release connection
 	HRESULT ConnectionManager::PendingReleaseConnection( Connection* pConnection )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		// force to close
 		if (pConnection->GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -827,7 +827,7 @@ namespace Net {
 		{
 			pPtr.GetSharedPointer(pConn);
 		}
-		return pConn != nullptr ? S_OK : E_SYSTEM_FAIL;
+		return pConn != nullptr ? S_SYSTEM_OK : E_SYSTEM_FAIL;
 	}
 
 
@@ -845,7 +845,7 @@ namespace Net {
 		{
 			pPtr.GetSharedPointer(pConn);
 		}
-		return pConn != nullptr ? S_OK : E_SYSTEM_FAIL;
+		return pConn != nullptr ? S_SYSTEM_OK : E_SYSTEM_FAIL;
 	}
 
 

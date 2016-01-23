@@ -92,7 +92,7 @@ namespace SharedModuleServer {
 	// Apply configuration
 	HRESULT SharedModuleServer::ApplyConfiguration()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		const Svr::Config::SharedModuleServer* pMySvr = nullptr;
 
@@ -121,7 +121,7 @@ namespace SharedModuleServer {
 	// Initialize server resource
 	HRESULT SharedModuleServer::InitializeServerResource()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
@@ -137,7 +137,7 @@ namespace SharedModuleServer {
 	// Close server and release resource
 	HRESULT SharedModuleServer::CloseServerResource()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::BrServer::CloseServerResource() );
 
@@ -154,7 +154,7 @@ namespace SharedModuleServer {
 	// Initialize private Network
 	HRESULT SharedModuleServer::InitializeNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::Config::SharedModuleServer *pServerConfig = nullptr;
 		SockFamily privateNetSockFamily;
 
@@ -209,7 +209,7 @@ namespace SharedModuleServer {
 	// Close Private Network
 	HRESULT SharedModuleServer::CloseNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		hr = Svr::BrServer::CloseNetPrivate();
 
@@ -241,7 +241,7 @@ namespace SharedModuleServer {
 		if( pServerEntity == nullptr )
 			return E_SYSTEM_OUTOFMEMORY;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

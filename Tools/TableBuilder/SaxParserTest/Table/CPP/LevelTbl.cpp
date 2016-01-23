@@ -30,7 +30,7 @@ namespace conspiracy
 			*pLevelItem = rowItem;
 			LevelTbl::m_TableMap.insert(std::make_pair(pLevelItem->Level, pLevelItem));
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT LevelTbl::ClearTable()
@@ -39,7 +39,7 @@ namespace conspiracy
 			delete itr->second;
 
 		m_TableMap.clear();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT LevelTbl::FindItem( const int& Key, LevelItem*& pRow)
@@ -51,7 +51,7 @@ namespace conspiracy
 			return E_SYSTEM_FAIL;
 		}
 		pRow = itr->second;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 }; // namespace conspiracy

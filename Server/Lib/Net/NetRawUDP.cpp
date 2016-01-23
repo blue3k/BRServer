@@ -43,7 +43,7 @@ namespace Net {
 
 	HRESULT RawUDP::InitializeNet(const NetAddress& localAddress, MessageHandler *pHandler)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SOCKET socket = INVALID_SOCKET;
 		INT iOptValue;
 		int bOptValue = 0;
@@ -51,7 +51,7 @@ namespace Net {
 		NetAddress myAddress;
 
 		if (GetSocket() != INVALID_SOCKET)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		m_pMessageHandler = pHandler;
 
@@ -169,7 +169,7 @@ namespace Net {
 
 	HRESULT RawUDP::TerminateNet()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (GetSocket() != INVALID_SOCKET)
 		{
@@ -189,10 +189,10 @@ namespace Net {
 
 	HRESULT RawUDP::PendingRecv(IOBUFFER_READ *pOver)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 		if (!NetSystem::IsProactorSystem())
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		netChk(pOver->SetPendingTrue());
 		pOver->SetupRecvUDP(0);
@@ -206,7 +206,7 @@ namespace Net {
 				hr = E_NET_TRY_AGAIN;
 				goto Proc_End;// success
 				break;
-			case S_OK:
+			case S_SYSTEM_OK:
 			case E_NET_IO_PENDING:
 			case E_NET_TRY_AGAIN:
 			case E_NET_WOULDBLOCK:
@@ -236,14 +236,14 @@ namespace Net {
 
 	HRESULT RawUDP::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 		hrErr = NetSystem::SendTo(GetSocket(), pSendBuffer);
 		switch (hrErr)
 		{
 		case E_NET_TRY_AGAIN:
 			break;
-		case S_OK:
+		case S_SYSTEM_OK:
 		case E_NET_IO_PENDING:
 		case E_NET_WOULDBLOCK:
 			break;
@@ -286,7 +286,7 @@ namespace Net {
 	// Send message to connection with network device
 	HRESULT RawUDP::SendMsg(const sockaddr_storage& dest, Message::MessageData *pMsg)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 		Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 		IOBUFFER_WRITE *pOverlapped = nullptr;
@@ -326,7 +326,7 @@ namespace Net {
 			else
 			{
 				netTrace(Net::TRC_SENDRAW, "RawUDP Send Failed, err:{1:X8}, hr:{2:X8}", hrErr, hr);
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 		}
 		else
@@ -348,7 +348,7 @@ namespace Net {
 	// called when incomming message occure
 	HRESULT RawUDP::OnRecv(const sockaddr_storage& remoteAddr, UINT uiBuffSize, const BYTE* pBuff)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pMsg = nullptr;
 		Message::MobileMessageHeader * pMsgHeader = (Message::MobileMessageHeader*)pBuff;
 
@@ -394,7 +394,7 @@ namespace Net {
 
 	HRESULT RawUDP::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 		netChkPtr(pIOBuffer);
 
@@ -406,7 +406,7 @@ namespace Net {
 		case S_SYSTEM_FALSE:
 			hr = E_NET_TRY_AGAIN;
 			break;
-		case S_OK:
+		case S_SYSTEM_OK:
 		case E_NET_IO_PENDING:
 		case E_NET_TRY_AGAIN:
 		case E_NET_WOULDBLOCK:
@@ -434,7 +434,7 @@ namespace Net {
 	// called when reciving messag is completed
 	HRESULT RawUDP::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		sockaddr_storage from;
 		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
 		else memset(&from, 0, sizeof(from));
@@ -483,7 +483,7 @@ namespace Net {
 		Util::SafeDeleteArray(pIOBuffer->pSendBuff);
 		Util::SafeRelease(pIOBuffer->pMsgs);
 		NetSystem::FreeBuffer(pIOBuffer);
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

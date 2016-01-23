@@ -148,7 +148,7 @@ namespace BR
 			HRESULT Reserve(size_t szReserv)
 			{
 				if (szReserv <= m_TraversalHistory.GetAllocatedSize())
-					return S_OK;
+					return S_SYSTEM_OK;
 
 				szReserv = GrowthBy * ((szReserv + GrowthBy - 1) / GrowthBy);
 
@@ -199,7 +199,7 @@ namespace BR
 		{
 			MapNode* pCurNode = m_Root;
 			if (pCurNode == nullptr)
-				return S_OK;
+				return S_SYSTEM_OK;
 
 			OperationTraversalHistory travelHistory(m_Root, m_ItemCount);
 			travelHistory.Clear();
@@ -233,14 +233,14 @@ namespace BR
 			} while (pCurNode != nullptr);
 
 			if (pCurNode == nullptr)
-				return S_OK;
+				return S_SYSTEM_OK;
 
 
 			// interate
 			do
 			{
 				if (!functor(pCurNode->Key, pCurNode->Value))
-					return S_OK;
+					return S_SYSTEM_OK;
 
 				count--;
 				if (count == 0)
@@ -283,7 +283,7 @@ namespace BR
 
 			travelHistory.SetConserveDataOnResize(false);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		//HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
@@ -292,7 +292,7 @@ namespace BR
 		{
 			MapNode* pCurNode = m_Root;
 			if (pCurNode == nullptr)
-				return S_OK;
+				return S_SYSTEM_OK;
 
 			OperationTraversalHistory travelHistory(m_Root, m_ItemCount);
 			travelHistory.Clear();
@@ -326,14 +326,14 @@ namespace BR
 			} while (pCurNode != nullptr);
 
 			if (pCurNode == nullptr)
-				return S_OK;
+				return S_SYSTEM_OK;
 
 
 			// interate
 			do
 			{
 				if (!functor(pCurNode->Key, pCurNode->Value))
-					return S_OK;
+					return S_SYSTEM_OK;
 
 				count--;
 				if (count == 0)
@@ -376,11 +376,11 @@ namespace BR
 
 			travelHistory.SetConserveDataOnResize(false);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// for interface match
-		HRESULT CommitChanges() { return S_OK;  }
+		HRESULT CommitChanges() { return S_SYSTEM_OK;  }
 
 
 	private:

@@ -171,10 +171,158 @@ namespace StrUtil {
 		else
 			szBuffer[0] = 0;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
+
+
+
+
+	// String duplication, szDest will destroyded if exist, and new memory will be allocated
+	HRESULT StringDup(char* &szDest, const char* szSrc)
+	{
+		if (szDest != NULL)
+		{
+			delete[] szDest;
+			szDest = NULL;
+		}
+
+		if (szSrc)
+		{
+			INT iLen = (INT)strlen(szSrc) + 1;
+			szDest = new char[iLen];
+			if (szDest == NULL)
+				return E_SYSTEM_OUTOFMEMORY;
+
+			memcpy(szDest, szSrc, iLen*sizeof(char));
+		}
+
+		return S_SYSTEM_OK;
+	}
+
+	HRESULT StringDup(wchar_t* &szDest, const wchar_t* szSrc)
+	{
+		if (szDest != NULL)
+		{
+			delete[] szDest;
+			szDest = NULL;
+		}
+
+		if (szSrc)
+		{
+			INT iLen = (INT)wcslen(szSrc) + 1;
+			szDest = new wchar_t[iLen];
+			if (szDest == NULL)
+				return E_SYSTEM_OUTOFMEMORY;
+
+			memcpy(szDest, szSrc, iLen*sizeof(wchar_t));
+		}
+
+		return S_SYSTEM_OK;
+	}
+
+	// String copy to szDest. if szDest is NULL, operation failed
+	HRESULT StringCpyEx(char* &szDest, INT& iBuffLen, const char* szSrc)
+	{
+		if (szSrc && szDest)
+		{
+			register char curChar;
+			while (iBuffLen > 0 && (curChar = *szSrc++) != 0)
+			{
+				*szDest++ = curChar;
+				iBuffLen--;
+			}
+
+			if (iBuffLen == 0)// force null terminate
+				*(szDest - 1) = '\0';
+			else
+				*(szDest) = '\0';
+		}
+		else
+		{
+			if (szDest && iBuffLen > 0)
+				szDest[0] = '\0';
+		}
+
+		return S_SYSTEM_OK;
+	}
+
+	// String copy to szDest. if szDest is NULL, operation failed
+	HRESULT StringCpyEx(wchar_t* &szDest, INT& iBuffLen, const wchar_t* szSrc)
+	{
+		if (szSrc && szDest)
+		{
+			register wchar_t curChar;
+			while (iBuffLen > 0 && (curChar = *szSrc++) != 0)
+			{
+				*szDest++ = curChar;
+				iBuffLen--;
+			}
+
+			if (iBuffLen == 0)// force null terminate
+				*(szDest - 1) = '\0';
+			else
+				*(szDest) = '\0';
+		}
+		else
+		{
+			if (szDest && iBuffLen > 0)
+				szDest[0] = '\0';
+		}
+
+		return S_SYSTEM_OK;
+	}
+
+	HRESULT StringCpy(char* szDest, INT iBuffLen, const char* szSrc)
+	{
+		if (szSrc && szDest)
+		{
+			register char curChar;
+			while (iBuffLen > 0 && (curChar = *szSrc++) != 0)
+			{
+				*szDest++ = curChar;
+				iBuffLen--;
+			}
+
+			if (iBuffLen == 0)// force null terminate
+				*(szDest - 1) = '\0';
+			else
+				szDest[0] = '\0';
+		}
+		else
+		{
+			if (szDest && iBuffLen > 0)
+				szDest[0] = '\0';
+		}
+
+		return S_SYSTEM_OK;
+	}
+
+	HRESULT StringCpy(wchar_t* szDest, INT iBuffLen, const wchar_t* szSrc)
+	{
+		if (szSrc)
+		{
+			register wchar_t curChar;
+			while (iBuffLen > 0 && (curChar = *szSrc++) != 0)
+			{
+				*szDest++ = curChar;
+				iBuffLen--;
+			}
+
+			if (iBuffLen == 0)// force null terminate
+				*(szDest - 1) = '\0';
+			else
+				szDest[0] = '\0';
+		}
+		else
+		{
+			if (szDest && iBuffLen > 0)
+				szDest[0] = L'\0';
+		}
+
+		return S_SYSTEM_OK;
+	}
 
 	
 	/////////////////////////////////////////////////////////////////////////////
@@ -211,7 +359,7 @@ namespace StrUtil {
 		// remain buffer size will be in destSize
 		HRESULT Convert(const char* destCode, char* dest, size_t destSize, const char* srcCode, const char* src, size_t srcSize, size_t& convertedSize)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			auto orgDestSize = destSize;
 
 			convertedSize = 0;
@@ -295,7 +443,7 @@ namespace StrUtil {
 	//		strMBCS[iBuffLen] = '\0';
 	//	}
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 	//HRESULT WCSToMBCS(const std::wstring &strWCS, std::string &strMBCS)
@@ -306,7 +454,7 @@ namespace StrUtil {
 	//	if (strWCS.c_str() == nullptr)
 	//	{
 	//		strMBCS = "";
-	//		return S_OK;
+	//		return S_SYSTEM_OK;
 	//	}
 
 	//	HRESULT hr = ModuleIconv.Convert("", (char*)stringBuffer, countof(stringBuffer), "UTF-16", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
@@ -317,7 +465,7 @@ namespace StrUtil {
 
 	//	strMBCS = stringBuffer;
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 	// Unicode to UTF8 string conversion
@@ -337,7 +485,7 @@ namespace StrUtil {
 			strUTF8[iBuffLen] = '\0';
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT WCSToUTF8(const std::wstring &strWCS, std::string &strUTF8)
@@ -348,7 +496,7 @@ namespace StrUtil {
 		if (strWCS.c_str() == nullptr)
 		{
 			strUTF8 = "";
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)stringBuffer, countof(stringBuffer), "UTF-16LE", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
@@ -359,7 +507,7 @@ namespace StrUtil {
 
 		strUTF8 = stringBuffer;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	//// MBCS to Unicode string conversion
@@ -379,7 +527,7 @@ namespace StrUtil {
 	//		strWCS[iBuffLen] = '\0';
 	//	}
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 	//HRESULT MBCSToWCS(const std::string &strMBCS, std::wstring &strWCS)
@@ -390,7 +538,7 @@ namespace StrUtil {
 	//	if (strWCS.c_str() == nullptr)
 	//	{
 	//		strWCS = L"";
-	//		return S_OK;
+	//		return S_SYSTEM_OK;
 	//	}
 
 	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
@@ -401,7 +549,7 @@ namespace StrUtil {
 
 	//	strWCS = stringBuffer;
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 
@@ -422,7 +570,7 @@ namespace StrUtil {
 			strWCS[iBuffLen] = '\0';
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT UTF8ToWCS(const std::string& strUTF8, std::wstring& strWCS)
@@ -433,7 +581,7 @@ namespace StrUtil {
 		if (strWCS.c_str() == nullptr)
 		{
 			strWCS = L"";
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT hr = ModuleIconv.Convert("UTF-16LE", (char*)stringBuffer, countof(stringBuffer), "UTF-8", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
@@ -444,7 +592,7 @@ namespace StrUtil {
 
 		strWCS = stringBuffer;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -465,7 +613,7 @@ namespace StrUtil {
 	//		strUTF8[iBuffLen] = '\0';
 	//	}
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 	//HRESULT MBCSToUTF8(const std::string &strMBCS, std::string &strUTF8)
@@ -476,7 +624,7 @@ namespace StrUtil {
 	//	if (strUTF8.c_str() == nullptr)
 	//	{
 	//		strUTF8 = "";
-	//		return S_OK;
+	//		return S_SYSTEM_OK;
 	//	}
 
 	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
@@ -487,7 +635,7 @@ namespace StrUtil {
 
 	//	strUTF8 = stringBuffer;
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 
@@ -508,7 +656,7 @@ namespace StrUtil {
 	//		strMBCS[iBuffLen] = '\0';
 	//	}
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 	//HRESULT UTF8ToMBCS(const std::string& strUTF8, std::string& strMBCS)
@@ -519,7 +667,7 @@ namespace StrUtil {
 	//	if (strMBCS.c_str() == nullptr)
 	//	{
 	//		strMBCS = "";
-	//		return S_OK;
+	//		return S_SYSTEM_OK;
 	//	}
 
 	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
@@ -530,7 +678,7 @@ namespace StrUtil {
 
 	//	strMBCS = stringBuffer;
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 

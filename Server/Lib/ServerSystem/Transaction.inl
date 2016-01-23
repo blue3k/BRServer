@@ -120,7 +120,7 @@ inline HRESULT Transaction::CheckHeartBitTimeout()
 	if ((INT)(GetHeartBitTimeout() - Util::Time.GetTimeMs()).count() < 0)
 		return E_SVR_TRANSACTION_TIMEOUT;
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 inline TimeStampMS Transaction::GetHeartBitTimeout()

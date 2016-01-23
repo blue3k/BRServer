@@ -54,7 +54,7 @@ namespace SharedModuleServer {
 
 	HRESULT SharedModuleServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//Svr::ServerEntity *pServer = nullptr;
 
 		switch( m_Step )
@@ -90,7 +90,7 @@ namespace SharedModuleServer {
 
 	HRESULT SharedModuleServerStartProcess::InitializeServices()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//UINT componentID = 0;
 		
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
@@ -108,7 +108,7 @@ namespace SharedModuleServer {
 	// Start Transaction
 	HRESULT SharedModuleServerStartProcess::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(super::StartTransaction() );
 

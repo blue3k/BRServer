@@ -169,7 +169,7 @@ namespace BR {
 
 			m_NumItems++;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 		
 		// Remove 
@@ -188,7 +188,7 @@ namespace BR {
 
 			m_NumItems--;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		iterator begin()

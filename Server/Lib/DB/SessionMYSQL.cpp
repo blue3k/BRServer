@@ -47,7 +47,7 @@ namespace DB {
 		switch( errorValue )
 		{
 		case 0:
-			return S_OK;
+			return S_SYSTEM_OK;
 		case CR_SERVER_GONE_ERROR:
 		case CR_SERVER_LOST:
 		case CR_COMMANDS_OUT_OF_SYNC:
@@ -91,7 +91,7 @@ namespace DB {
 
 		m_StatementPoolMap.clear();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Get free statement
@@ -116,7 +116,7 @@ namespace DB {
 	// free statement
 	HRESULT StatementPoolMYSQL::FreeStatement( StatementMYSQL* &pStatement )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		StatementPoolMap::iterator itFound;
 		StackPool* pPool = nullptr;
 		intptr_t key;
@@ -187,7 +187,7 @@ namespace DB {
 	// Send a query
 	HRESULT SessionMYSQL::SendQuery( Query *pQuery )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryMYSQL* pMyQuery = BR_DYNAMIC_CAST(QueryMYSQL*,pQuery);
 		StatementMYSQL *pStatement = nullptr;
 
@@ -259,7 +259,7 @@ namespace DB {
 	// Open session
 	HRESULT SessionMYSQL::OpenSession()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		dbChkPtr(GetDataSource());
 		dbChkPtr( m_pMyDataSource = (DataSourceMYSQL*)GetDataSource() );
@@ -310,12 +310,12 @@ namespace DB {
 			mysql_close(m_mySQL);
 			m_mySQL = nullptr;
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT SessionMYSQL::Ping()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (m_mySQL == nullptr)
 			return E_NOT_INITIALIZED;
@@ -361,7 +361,7 @@ namespace DB {
 	// Prepare statement
 	HRESULT StatementMYSQL::PrepareState( MYSQL *pContext, CounterType syncInit )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		int rc;
 
 		m_Context = pContext;
@@ -390,7 +390,7 @@ namespace DB {
 	// Bind query instance
 	HRESULT StatementMYSQL::Bind( QueryMYSQL *pMyQuery )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		int paramCount;
 
 		m_pParameter = nullptr;
@@ -422,7 +422,7 @@ namespace DB {
 	// Execute
 	HRESULT StatementMYSQL::Execute()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		int rc;
 
 		dbChkPtr( m_Stmt );
@@ -446,7 +446,7 @@ namespace DB {
 	// Patch result
 	HRESULT StatementMYSQL::PatchResults( QueryMYSQL *pMyQuery )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//MYSQL_BIND *pResults = nullptr;
 		int resultStatus = 0, rc;
 

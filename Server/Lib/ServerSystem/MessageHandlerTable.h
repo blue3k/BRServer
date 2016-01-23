@@ -147,14 +147,14 @@ namespace Svr {
 			if( FAILED(hr) )
 				return hr;
 			handler = itHandler->Handler;
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 
 		// Call handler 
 		HRESULT HandleMessage( Message::MessageData* &pMsg )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
@@ -165,7 +165,7 @@ namespace Svr {
 
 		HRESULT HandleMessage( Message::MessageID msgID, TransactionResult* pRes )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			MessageHandlerType handler;
 
 			hr = GetHandler(msgID,handler);
@@ -177,7 +177,7 @@ namespace Svr {
 		template<class Param1>
 		HRESULT HandleMessage( Net::IConnection * pCon, Message::MessageData* &pMsg, Param1 param1 )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
@@ -189,7 +189,7 @@ namespace Svr {
 		template<class Param1, class Param2>
 		HRESULT HandleMessage( Message::MessageData* &pMsg, Param1 param1, Param2 param2 )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);

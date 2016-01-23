@@ -82,7 +82,7 @@ namespace Util {
 		if (FAILED(hr)) return hr;
 
 		TimerUpdateThread.Start();
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Terminate server component
@@ -186,7 +186,7 @@ namespace Util {
 		m_ulTimeToExpire = ulNewTime;
 		if( m_ulTimeToExpire.time_since_epoch().count() == 0 ) m_ulTimeToExpire = Time.GetTimeMs();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

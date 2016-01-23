@@ -43,7 +43,7 @@ namespace Net {
 		int ierr = errno;
 		switch (ierr)
 		{
-		case 0: return S_OK;
+		case 0: return S_SYSTEM_OK;
 		case EINTR: return E_NET_INTR;
 		case EBADF: return E_NET_BADF;
 		case EACCES: return E_NET_ACCES;
@@ -158,7 +158,7 @@ namespace Net {
 
 			expected = false;
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT IOBUFFER_READ::SetPendingFalse()
@@ -173,7 +173,7 @@ namespace Net {
 
 			expected = false;
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -216,7 +216,7 @@ namespace Net {
 				return GetNetIOSystem().Initialize(numNetThread);
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Close network system
@@ -249,7 +249,7 @@ namespace Net {
 
 		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			netChkPtr(cbInstance);
 			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
@@ -264,7 +264,7 @@ namespace Net {
 
 		HRESULT UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			netChkPtr(cbInstance);
 			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
@@ -278,7 +278,7 @@ namespace Net {
 
 		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 
 			netChkPtr(cbInstance);
 			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
@@ -304,7 +304,7 @@ namespace Net {
 
 		HRESULT Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			socklen_t len = sizeof(pAccept->sockAddr);
 
 			netChkPtr(pAccept);
@@ -362,7 +362,7 @@ namespace Net {
 			len = sizeof remoteAddr;
 			getpeername(pAccept->sockAccept, (struct sockaddr*)&remoteAddr, &len);
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 
@@ -380,7 +380,7 @@ namespace Net {
 				return S_SYSTEM_FALSE;
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer)
@@ -400,7 +400,7 @@ namespace Net {
 				return S_SYSTEM_FALSE;
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 
@@ -414,7 +414,7 @@ namespace Net {
 
 			pBuffer->TransferredSize = sendSize;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer)
@@ -430,7 +430,7 @@ namespace Net {
 
 			pBuffer->TransferredSize = sendSize;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 

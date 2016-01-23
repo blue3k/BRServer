@@ -48,13 +48,13 @@ namespace GameServer {
 	// Process Private network event
 	HRESULT GameServer::ProcessPublicNetworkEvent()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Net::INet::Event curEvent;
 		//GamePlayerEntity *pGamePlayerEntity = nullptr;
 		//Net::Connection *pConn = nullptr;
 
 		if( m_pNetPublic == nullptr )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		while( SUCCEEDED(m_pNetPublic->DequeueNetEvent( curEvent )) )
 		{

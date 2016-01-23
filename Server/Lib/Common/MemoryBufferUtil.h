@@ -108,7 +108,7 @@ namespace BR
 
 			m_Allocated = newSize;
 			m_DataBuffer = (DataType*)pPtr;
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Append data
@@ -130,7 +130,7 @@ namespace BR
 			memcpy( m_DataBuffer + m_Used, data, sizeof(DataType)*dataSize );
 			m_Used += dataSize;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// remove data
@@ -152,7 +152,7 @@ namespace BR
 						memcpy( &dataList[index], &dataList[index+1], sizeof(DataType)*(GetSize() - (index+1)) );
 					}
 					m_Used--;
-					return S_OK;
+					return S_SYSTEM_OK;
 				}
 			}
 
@@ -174,7 +174,7 @@ namespace BR
 			}
 			m_Used--;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 	};
 
@@ -200,7 +200,7 @@ namespace BR
 				if( FAILED(hr) ) return hr;
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 	};
 

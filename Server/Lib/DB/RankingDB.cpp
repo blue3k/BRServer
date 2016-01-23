@@ -51,7 +51,7 @@ namespace DB {
 
 	HRESULT RankingDB::GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetTotalRankingCmd *pQuery = nullptr;
 		QueryGetTotalRankingSet *pSet = nullptr;
 

@@ -154,7 +154,7 @@
 					*insertedOrder = 0;
 				}
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 		}
 
@@ -204,7 +204,7 @@
 
 		m_ItemCount++;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -297,7 +297,7 @@
 
 		m_ItemCount--;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -322,7 +322,7 @@
 			*pOrder = CalculateOrder(travelHistory, pFound);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -345,7 +345,7 @@
 			if (pCurNode->Key == key)
 			{
 				pNode = pCurNode;
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			if (key > pCurNode->Key)
@@ -354,7 +354,7 @@
 				if (right == nullptr)
 				{
 					pNode = pCurNode;
-					return S_OK;
+					return S_SYSTEM_OK;
 				}
 				else
 				{
@@ -367,7 +367,7 @@
 				if (left == nullptr)
 				{
 					pNode = pCurNode;
-					return S_OK;
+					return S_SYSTEM_OK;
 				}
 				else 
 				{
@@ -378,7 +378,7 @@
 						if (left->Key != key)
 						{
 							pNode = FindBiggestNode(travelHistory, left);
-							return S_OK;
+							return S_SYSTEM_OK;
 						}
 					}
 					pCurNode = left;
@@ -389,7 +389,7 @@
 
 		travelHistory.SetConserveDataOnResize(false);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<class KeyType, class ValueType>

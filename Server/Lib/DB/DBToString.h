@@ -70,7 +70,7 @@ namespace BR {
 		else
 			return ToStringEnum( pBuff, iBuffLen, Data );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

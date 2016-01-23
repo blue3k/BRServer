@@ -89,7 +89,7 @@ namespace BR {
 	// Initialize entity to proceed new connection
 	HRESULT Entity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetEntityState() != EntityState::FREE )
 		{
@@ -148,7 +148,7 @@ namespace BR {
 			GetEntityTable().Erase(GetEntityID(), erased);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT Entity::ClearEntity()
@@ -161,7 +161,7 @@ namespace BR {
 	HRESULT Entity::TerminateEntity()
 	{
 		if( GetEntityState() == EntityState::FREE )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		ClearEntity();
 
@@ -169,7 +169,7 @@ namespace BR {
 
 		SetEntityUID(0);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 
@@ -182,12 +182,12 @@ namespace BR {
 	HRESULT Entity::RegisterMessageHandlers()
 	{
 		// nothing for default
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT Entity::ProcessMessageResult( Message::MessageData* &pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		MessageResult *pMsgRes = nullptr;
 		TransactionResult *pTransRes = nullptr;
 		auto pMySvr = BrServer::GetInstance();
@@ -242,7 +242,7 @@ namespace BR {
 	// Pending new transaction job
 	HRESULT Entity::PendingTransaction(ThreadID thisThreadID, Transaction* &pTrans)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetEntityState() == EntityState::FREE )
 			return E_SYSTEM_FAIL;
@@ -288,7 +288,7 @@ namespace BR {
 
 	HRESULT Entity::ProcessTransaction(Transaction* &pTrans)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr(pTrans);
 
@@ -365,7 +365,7 @@ namespace BR {
 	// Pending transaction result
 	HRESULT Entity::PendingTransactionResult( TransactionResult* &pTransRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetEntityState() == EntityState::FREE )
 			return E_SYSTEM_FAIL;

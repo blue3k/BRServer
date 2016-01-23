@@ -9,6 +9,7 @@
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ConspiracyGameInstanceServerClass.h"
+#include "ServerSystem/ParameterSetting.h"
 
 #include "Common/MemoryPool.h"
 
@@ -32,35 +33,32 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 #endif
 	_ASSERTE(SUCCEEDED(hRes));
 
-	std::string cmdLine = lpCmdLine;
-	std::istringstream iss(cmdLine);
-	std::vector<std::string> cmdArgs{
-		std::istream_iterator<std::string>{iss},
-		std::istream_iterator<std::string>{} };
+	ParameterSetting::SetSetting("config", "..\\..\\Config\\ServerConfig.xml");
+	ParameterSetting::ProcessParameter(lpCmdLine);
 
 #elif LINUX
 int main(int numArg, const char* argc[])
 {
-	std::vector<std::string> cmdArgs;
-	for (int iArg = 0; iArg < numArg; iArg++) cmdArgs.push_back(argc[iArg]);
+	ParameterSetting::SetSetting("config", "../../Config/ServerConfig_linux.xml");
+	ParameterSetting::ProcessParameter(numArg, argc);
 #endif
 
-	HRESULT hr = S_OK;
+
+	HRESULT hr = S_SYSTEM_OK;
 	SharedPointerT<BR::ConspiracyGameInstanceServer::GameInstanceServer> pServerInstance;
-	LibComponentCarrier libComponents;
 
 	svrChk(BR::Svr::Service::ServicePrepare());
 
-	svrChk(libComponents.AddComponent<LibComponentTrace>());
-	svrChk(libComponents.AddComponent<Util::LibComponentTime>());
-	svrChk(libComponents.AddComponent<MemoryPoolManager>());
+	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentTrace>());
+	svrChk(LibComponentManager::GetInstance().AddComponent<Util::LibComponentTime>());
+	svrChk(LibComponentManager::GetInstance().AddComponent<MemoryPoolManager>());
 
-	svrChk(libComponents.InitializeComponents());
+	svrChk(LibComponentManager::GetInstance().InitializeComponents());
 
 
 	pServerInstance = SharedPointerT<BR::ConspiracyGameInstanceServer::GameInstanceServer>(new BR::ConspiracyGameInstanceServer::GameInstanceServer );
 
-	svrChk(BR::Svr::Service::ServiceRun(cmdArgs, (BR::ConspiracyGameInstanceServer::GameInstanceServer*)pServerInstance));
+	svrChk(BR::Svr::Service::ServiceRun((BR::ConspiracyGameInstanceServer::GameInstanceServer*)pServerInstance));
 
 
 Proc_End:
@@ -72,7 +70,7 @@ Proc_End:
 		pServerInstance = SharedPointerT<BR::ConspiracyGameInstanceServer::GameInstanceServer>();
 	}
 
-	libComponents.TerminateComponents();
+	LibComponentManager::GetInstance().TerminateComponents();
 
 	return 0;
 }

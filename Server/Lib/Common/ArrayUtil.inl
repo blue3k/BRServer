@@ -130,7 +130,7 @@ DataType* Array<DataType>::data()
 template< class DataType >
 inline HRESULT Array<DataType>::push_back( const DataType& NewData )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	if( GetSize() ==  GetAllocatedSize() )
 	{
 		hr = IncreaseSize();
@@ -149,7 +149,7 @@ inline HRESULT Array<DataType>::push_back( const DataType& NewData )
 template< class DataType >
 inline HRESULT Array<DataType>::push_back( DataType&& NewData )
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	if( GetSize() ==  GetAllocatedSize() )
 	{
 		hr = IncreaseSize();
@@ -168,7 +168,7 @@ inline HRESULT Array<DataType>::push_back( DataType&& NewData )
 //template< class DataType >
 //HRESULT Array<DataType>::operator +=( const DataType& NewData )
 //{
-//	HRESULT hr = S_OK;
+//	HRESULT hr = S_SYSTEM_OK;
 //	if( GetSize() ==  GetAllocatedSize() )
 //	{
 //		hr = IncreaseSize();
@@ -186,7 +186,7 @@ inline HRESULT Array<DataType>::push_back( DataType&& NewData )
 template< class DataType >
 inline HRESULT Array<DataType>::AddItems(size_t numItems, const DataType* NewData)
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	auto newSize = numItems + GetSize();
 	if (newSize > GetAllocatedSize())
 	{
@@ -219,7 +219,7 @@ HRESULT Array<DataType>::RemoveAt( INT iIndex )
 	}
 	m_Size--;
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template< class DataType >
@@ -230,7 +230,7 @@ HRESULT Array<DataType>::RemoveItem( const DataType& RemoveData )
 	if( iIdx >= 0 )
 		return RemoveAt( iIdx );
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 // find
@@ -337,7 +337,7 @@ HRESULT StaticArray<DataType, DefaultBufferSize>::Reserve(size_t szNewSize)
 		delete[] pOldBuffer;
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 
@@ -387,7 +387,7 @@ HRESULT DynamicArray<DataType>::Reserve(size_t szNewSize)
 		delete[] pOldBuffer;
 	}
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 
@@ -428,7 +428,7 @@ template< class DataType >
 HRESULT LinkedArray<DataType>::Reserve(size_t szReserv)
 {
 	if (szReserv <= Array<DataType>::GetAllocatedSize())
-		return S_OK;
+		return S_SYSTEM_OK;
 
 	return E_SYSTEM_FAIL;
 }

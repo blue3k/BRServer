@@ -33,7 +33,7 @@ namespace BR
 			const MessageID PlayerEnteredC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEMASTERSERVER, 0);
 			HRESULT PlayerEnteredC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -57,7 +57,7 @@ namespace BR
 
 			HRESULT PlayerEnteredC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
@@ -97,7 +97,7 @@ namespace BR
 			const MessageID PlayerLeavedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEMASTERSERVER, 1);
 			HRESULT PlayerLeavedC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -118,7 +118,7 @@ namespace BR
 
 			HRESULT PlayerLeavedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID )
 			{
- 				HRESULT hr = S_OK;
+ 				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 

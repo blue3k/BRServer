@@ -106,7 +106,7 @@ namespace ConspiracyGameInstanceServer {
 	// Apply configuration
 	HRESULT GameInstanceServer::ApplyConfiguration()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		//const Svr::Config::GameCluster* pMyGame = nullptr;
 		const Svr::Config::GenericServer* pMySvr = nullptr;
@@ -139,7 +139,7 @@ namespace ConspiracyGameInstanceServer {
 	// Initialize server resource
 	HRESULT GameInstanceServer::InitializeServerResource()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
@@ -155,7 +155,7 @@ namespace ConspiracyGameInstanceServer {
 	// Close server and release resource
 	HRESULT GameInstanceServer::CloseServerResource()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::BrServer::CloseServerResource() );
 
@@ -172,7 +172,7 @@ namespace ConspiracyGameInstanceServer {
 	// Initialize private Network
 	HRESULT GameInstanceServer::InitializeNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SockFamily privateNetSockFamily;
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
@@ -228,7 +228,7 @@ namespace ConspiracyGameInstanceServer {
 	// Close Private Network
 	HRESULT GameInstanceServer::CloseNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		hr = Svr::BrServer::CloseNetPrivate();
 
@@ -259,7 +259,7 @@ namespace ConspiracyGameInstanceServer {
 		if( pServerEntity == nullptr )
 			return E_SYSTEM_OUTOFMEMORY;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

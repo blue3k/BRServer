@@ -22,6 +22,8 @@ namespace BR {
 
 	enum class LibCompoentIDs : UINT8
 	{
+		EnvSetting,
+		ThirdParty,
 		Trace,
 		MemoryPoolManager,
 		Timer,
@@ -35,14 +37,22 @@ namespace BR {
 	//
 
 
-	class LibComponentCarrier : public ComponentCarrier<(size_t)LibCompoentIDs::Max>
+	class LibComponentManager : public ComponentCarrier<(size_t)LibCompoentIDs::Max>
 	{
+	private:
+
+		static LibComponentManager stm_Instance;
+
+		LibComponentManager();
+		~LibComponentManager();
+
 	public:
 
-		LibComponentCarrier();
-		~LibComponentCarrier();
+		static LibComponentManager& GetInstance();
 
 		virtual void ClearComponents() override;
+
+
 	};
 
 

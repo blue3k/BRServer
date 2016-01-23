@@ -43,7 +43,7 @@ namespace ConspiracyGameInstanceServer {
 	//// Process connection event
 	//HRESULT GameInstanceEntity::ProcessConnectionEvent( GamePlayer *pGamePlayer, Net::Connection *pCon, const Net::IConnection::Event& conEvent )
 	//{
-	//	HRESULT hr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK;
 
 	//	svrChkPtr( pGamePlayer );
 	//	svrChkPtr( pCon );
@@ -62,7 +62,7 @@ namespace ConspiracyGameInstanceServer {
 
 	//Proc_End:
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 

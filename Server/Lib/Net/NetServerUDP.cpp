@@ -60,7 +60,7 @@ namespace Net {
 
 	HRESULT ServerUDPBase::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 
 		netChkPtr(pIOBuffer);
 
@@ -72,7 +72,7 @@ namespace Net {
 		case S_SYSTEM_FALSE:
 			hr = E_NET_TRY_AGAIN;
 			break;
-		case S_OK:
+		case S_SYSTEM_OK:
 		case E_NET_IO_PENDING:
 		case E_NET_TRY_AGAIN:
 		case E_NET_WOULDBLOCK:
@@ -106,7 +106,7 @@ namespace Net {
 
 	HRESULT ServerUDPBase::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
-		HRESULT hr = S_OK, hrErr = S_OK;
+		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 		auto addrTo = pSendBuffer->NetAddr.To;
 
 		hrErr = NetSystem::SendTo(GetSocket(), pSendBuffer);
@@ -114,7 +114,7 @@ namespace Net {
 		{
 		case E_NET_TRY_AGAIN:
 			break;
-		case S_OK:
+		case S_SYSTEM_OK:
 		case E_NET_IO_PENDING:
 		case E_NET_WOULDBLOCK:
 			break;
@@ -151,7 +151,7 @@ namespace Net {
 			else
 			{
 				netTrace(Net::TRC_SENDRAW, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", addrTo, hrErr, hr);
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 		}
 		else
@@ -175,7 +175,7 @@ namespace Net {
 		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
 		Util::SafeRelease( pIOBuffer->pMsgs );
 		NetSystem::FreeBuffer( pIOBuffer );
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	
@@ -188,14 +188,14 @@ namespace Net {
 	// Open host and start listen
 	HRESULT ServerUDPBase::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SOCKET socket = INVALID_SOCKET;
 		INT iOptValue;
 		sockaddr_storage bindAddr;
 		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
 
 		if( GetSocket() != INVALID_SOCKET )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 
 		netChk(Server::HostOpen( netCls, strLocalIP, usLocalPort ) );
@@ -308,7 +308,7 @@ namespace Net {
 	// Close host and close all connections
 	HRESULT ServerUDPBase::HostClose()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		INet::Event netEvent(INet::Event::EVT_NET_CLOSED);
 
 		netChk(Server::HostClose() );
@@ -333,10 +333,10 @@ namespace Net {
 	// Pending recv New one
 	HRESULT ServerUDPBase::PendingRecv( IOBUFFER_READ *pOver )
 	{
-		HRESULT hr = S_OK, hrErr;
+		HRESULT hr = S_SYSTEM_OK, hrErr;
 
 		if (!NetSystem::IsProactorSystem())
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		netChk(pOver->SetPendingTrue());
 
@@ -345,7 +345,7 @@ namespace Net {
 			hrErr = Recv(pOver);
 			switch (hrErr)
 			{
-			case S_OK:
+			case S_SYSTEM_OK:
 			case E_NET_IO_PENDING:
 			case E_NET_TRY_AGAIN:
 			case E_NET_WOULDBLOCK:
@@ -394,7 +394,7 @@ namespace Net {
 	// called when reciving message
 	HRESULT ServerUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		SharedPointerT<Connection> pConnection;
 		IConnection::ConnectionInformation connectionInfo;
 		bool bReleaseOnFail = false;

@@ -68,7 +68,7 @@ namespace Net {
 	// Create policy if not exist
 	HRESULT IConnection::CreatePolicy( UINT uiPolicy )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( uiPolicy >= POLICY_NETMAX )
 			netErr( E_SYSTEM_INVALIDARG );
@@ -248,14 +248,14 @@ namespace Net {
 
 		// When the queue is cleared these synchronization variables need to be cleared
 		m_usSeqNone = 0;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	// Make Ack packet and enqueue to SendNetCtrlqueue
 	HRESULT Connection::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		HRESULT hrTem;
 		MsgNetCtrl *pAckMsg = nullptr;
 		Message::MessageData *pMsg = nullptr;
@@ -351,13 +351,13 @@ namespace Net {
 
 		m_RecvQueue.ClearQueue();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Initialize connection
 	HRESULT Connection::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		netAssert(GetConnectionState() == STATE_DISCONNECTED);
 		// Except client everybody should have port number when it gets here
@@ -405,7 +405,7 @@ namespace Net {
 	// Disconnect connection
 	HRESULT Connection::Disconnect(const char* reason)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetConnectionState() != STATE_DISCONNECTING 
 			&& GetConnectionState() != STATE_DISCONNECTED)
@@ -429,7 +429,7 @@ namespace Net {
 	// Close connection
 	HRESULT Connection::CloseConnection()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
@@ -459,7 +459,7 @@ namespace Net {
 
 	HRESULT Connection::OnRecv( Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 	
 		if (pMsg == nullptr)
 			return hr;
@@ -520,14 +520,14 @@ namespace Net {
 		}
 		//return m_EventQueue.Enqueue( evt );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
 	// Get received Message
 	HRESULT Connection::GetRecvMessage( Message::MessageData* &pIMsg )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		pIMsg = nullptr;
 

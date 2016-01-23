@@ -30,7 +30,7 @@ namespace BR
  		// Cmd: Add a player to ranking
 		HRESULT NetPolicyRanking::AddPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -48,7 +48,7 @@ namespace BR
 		// Cmd: Remove a player to ranking
 		HRESULT NetPolicyRanking::RemovePlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -66,7 +66,7 @@ namespace BR
 		// Cmd: Remove a player to ranking
 		HRESULT NetPolicyRanking::GetPlayerRankingCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -84,7 +84,7 @@ namespace BR
 		// Cmd: Update a player to ranking
 		HRESULT NetPolicyRanking::UpdatePlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -102,7 +102,7 @@ namespace BR
 		// Cmd: Remove a player to ranking
 		HRESULT NetPolicyRanking::GetRankingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT32 &InFrom, const UINT32 &InCount )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -122,7 +122,7 @@ namespace BR
 		// Cmd: Add a player to ranking
 		HRESULT NetSvrPolicyRanking::AddPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InRanking )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -140,7 +140,7 @@ namespace BR
 		// Cmd: Remove a player to ranking
 		HRESULT NetSvrPolicyRanking::RemovePlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -158,7 +158,7 @@ namespace BR
 		// Cmd: Remove a player to ranking
 		HRESULT NetSvrPolicyRanking::GetPlayerRankingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InRanking )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -176,7 +176,7 @@ namespace BR
 		// Cmd: Update a player to ranking
 		HRESULT NetSvrPolicyRanking::UpdatePlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InRanking )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -194,7 +194,7 @@ namespace BR
 		// Cmd: Remove a player to ranking
 		HRESULT NetSvrPolicyRanking::GetRankingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InPlayerRanking )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 

@@ -48,7 +48,7 @@ HRESULT GameInstanceEntity::ForeachPlayer(Func func)
 			return false;
 		return true;
 	});
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 
@@ -72,7 +72,7 @@ inline HRESULT GameInstanceEntity::ForeachPlayerGameServer(std::function<HRESULT
 		}
 		return true;
 	});
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 // foreach game player with Game policy
@@ -97,6 +97,6 @@ inline HRESULT GameInstanceEntity::ForeachPlayerSvrGameInstance(std::function<HR
 		return true;
 	});
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 

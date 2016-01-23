@@ -50,11 +50,11 @@ namespace EntityServer {
 	// Initialize entity to proceed new connection
 	HRESULT GameMasterServerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::GameMasterServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)		{ pNewTrans = new TransServerStarted( pMsgData ); return S_OK; } );
+		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)		{ pNewTrans = new TransServerStarted( pMsgData ); return S_SYSTEM_OK; } );
 
 	Proc_End:
 

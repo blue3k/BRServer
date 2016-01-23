@@ -43,7 +43,7 @@ namespace Net {
 		auto result = inet_ntop(sockAddr.sin6_family, (void*)&sockAddr.sin6_addr, addr.strAddr, sizeof addr.strAddr);
 		if (result == nullptr) return GetLastWSAHRESULT();
 		addr.usPort = ntohs(sockAddr.sin6_port);
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT SockAddr2Addr(const sockaddr_in &sockAddr, NetAddress &addr)
@@ -54,7 +54,7 @@ namespace Net {
 		auto result = inet_ntop(sockAddr.sin_family, (void*)&sockAddr.sin_addr, addr.strAddr, sizeof addr.strAddr);
 		if (result == nullptr) return GetLastWSAHRESULT();
 		addr.usPort = ntohs(sockAddr.sin_port);
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT SockAddr2Addr(const sockaddr_storage &sockAddr, NetAddress &addr)
@@ -80,7 +80,7 @@ namespace Net {
 			return E_SYSTEM_FAIL;
 		}
 		else
-			return S_OK;
+			return S_SYSTEM_OK;
 	}
 
 	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_in &sockAddr)
@@ -94,7 +94,7 @@ namespace Net {
 			return E_SYSTEM_FAIL;
 		}
 		else
-			return S_OK;
+			return S_SYSTEM_OK;
 	}
 
 	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_storage &sockAddr)
@@ -121,7 +121,7 @@ namespace Net {
 			return E_SYSTEM_FAIL;
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT SetSockAddr(sockaddr_in& sockAddr, const char *strAddr, USHORT usPort)
@@ -136,7 +136,7 @@ namespace Net {
 			return E_SYSTEM_FAIL;
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT SetSockAddr(sockaddr_storage& sockAddr, const char *strAddr, USHORT usPort)
@@ -145,7 +145,7 @@ namespace Net {
 		{
 			return SetSockAddr(*(sockaddr_in*)&sockAddr, strAddr, usPort);
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -162,7 +162,7 @@ namespace Net {
 			auto bindSockaddr = (sockaddr_in*)&bindAddr;
 			bindSockaddr->sin_addr.s_addr = INADDR_ANY;
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT SetLocalNetAddress(NetAddress &localAddr, const char *strLocalAddress, USHORT port)
@@ -189,7 +189,7 @@ namespace Net {
 			localAddr.SocketFamily = SockFamily::IPV6;
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT SetNetAddress(NetAddress &netAddr, const char *strAddress, USHORT port)
@@ -206,7 +206,7 @@ namespace Net {
 			return hr;
 
 		netAddr.usPort = port;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -267,7 +267,7 @@ namespace Net {
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
-		return bIsFound ? S_OK : E_SYSTEM_FAIL;
+		return bIsFound ? S_SYSTEM_OK : E_SYSTEM_FAIL;
 	}
 
 	HRESULT GetLocalAddressIPv4(NetAddress &addr)
@@ -342,7 +342,7 @@ namespace Net {
 		}
 		freeaddrinfo(res);
 
-		return bIsFound ? S_OK : E_SYSTEM_FAIL;
+		return bIsFound ? S_SYSTEM_OK : E_SYSTEM_FAIL;
 	}
 
 #else
@@ -409,7 +409,7 @@ namespace Net {
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
-		return bIsFound ? S_OK : E_SYSTEM_FAIL;
+		return bIsFound ? S_SYSTEM_OK : E_SYSTEM_FAIL;
 	}
 
 	HRESULT GetLocalAddressIPv4(NetAddress &addr)
@@ -490,7 +490,7 @@ namespace Net {
 
 		freeifaddrs(ifaddr);
 
-		return bIsFound ? S_OK : E_SYSTEM_FAIL;
+		return bIsFound ? S_SYSTEM_OK : E_SYSTEM_FAIL;
 
 	}
 
@@ -633,7 +633,7 @@ namespace Net {
 	{
 		Message::MessageData* data = NULL;
 
-		while (Dequeue(data) == S_OK)
+		while (Dequeue(data) == S_SYSTEM_OK)
 		{
 			if (data) data->Release();
 		}
@@ -657,7 +657,7 @@ namespace Net {
 	{
 		IOBUFFER_WRITE* data = NULL;
 
-		while (Dequeue(data) == S_OK)
+		while (Dequeue(data) == S_SYSTEM_OK)
 		{
 			Util::SafeDelete(data);
 		}

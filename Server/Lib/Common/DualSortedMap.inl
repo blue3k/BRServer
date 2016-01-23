@@ -171,7 +171,7 @@
 					*insertedOrder = 0;
 				}
 
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 		}
 
@@ -221,7 +221,7 @@
 		m_IsModified = true;
 		m_ItemCount.fetch_add(1, std::memory_order_relaxed);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -314,7 +314,7 @@
 		m_IsModified = true;
 		m_ItemCount.fetch_sub(1, std::memory_order_release);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -346,7 +346,7 @@
 
 		value = pFound->Value;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// commit changes
@@ -356,7 +356,7 @@
 		// Nothing to commit
 		if (!m_IsModified)
 		{
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 #ifdef DEBUG
@@ -416,7 +416,7 @@
 
 		m_ReadItemCount = m_ItemCount.load(std::memory_order_relaxed);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Find a key value
@@ -458,7 +458,7 @@
 			*pOrder = CalculateOrder(travelHistory, pFound);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// enumerate the values
@@ -541,7 +541,7 @@
 			if (pCurNode->Key == key)
 			{
 				pNode = pCurNode;
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			if (key > pCurNode->Key)
@@ -550,7 +550,7 @@
 				if (right == nullptr)
 				{
 					pNode = pCurNode;
-					return S_OK;
+					return S_SYSTEM_OK;
 				}
 				else
 				{
@@ -566,7 +566,7 @@
 				if (left == nullptr)
 				{
 					pNode = pCurNode;
-					return S_OK;
+					return S_SYSTEM_OK;
 				}
 				else 
 				{
@@ -577,7 +577,7 @@
 						if (left->Key != key)
 						{
 							pNode = FindBiggestNode(travelHistory, left);
-							return S_OK;
+							return S_SYSTEM_OK;
 						}
 					}
 					pCurNode = left;
@@ -588,7 +588,7 @@
 
 		travelHistory.SetConserveDataOnResize(false);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<class KeyType, class ValueType>
@@ -648,7 +648,7 @@
 			if (pCurNode->Key == key)
 			{
 				pNode = pCurNode;
-				return S_OK;
+				return S_SYSTEM_OK;
 			}
 
 			if (key > pCurNode->Key)
@@ -657,7 +657,7 @@
 				if (right == nullptr)
 				{
 					pNode = pCurNode;
-					return S_OK;
+					return S_SYSTEM_OK;
 				}
 				else
 				{
@@ -670,7 +670,7 @@
 				if (left == nullptr)
 				{
 					pNode = pCurNode;
-					return S_OK;
+					return S_SYSTEM_OK;
 				}
 				else
 				{
@@ -681,7 +681,7 @@
 						if (left->Key != key)
 						{
 							pNode = FindBiggestNodeRead(travelHistory, left);
-							return S_OK;
+							return S_SYSTEM_OK;
 						}
 					}
 					pCurNode = left;
@@ -690,7 +690,7 @@
 
 		} while (pCurNode != nullptr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<class KeyType, class ValueType>
@@ -737,14 +737,14 @@
 	HRESULT DualSortedMap<KeyType, ValueType>::ForeachOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
 	{
 		if (pRootNode == nullptr)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		OperationTraversalHistory travelHistory(pRootNode, m_ReadItemCount);
 
 		MapNode* pCurNode = pRootNode;
 		if (pCurNode == nullptr)
 		{
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		travelHistory.Clear();
@@ -779,7 +779,7 @@
 
 		if (pCurNode == nullptr)
 		{
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 
@@ -787,7 +787,7 @@
 		do
 		{
 			if (!functor(pCurNode->Key, pCurNode->Value))
-				return S_OK;
+				return S_SYSTEM_OK;
 
 			count--;
 			if (count == 0)
@@ -830,7 +830,7 @@
 		} while (pCurNode != nullptr);
 
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -838,14 +838,14 @@
 	HRESULT DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
 	{
 		if (pRootNode == nullptr)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		OperationTraversalHistory travelHistory(pRootNode, m_ReadItemCount);
 
 		MapNode* pCurNode = pRootNode;
 		if (pCurNode == nullptr)
 		{
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		travelHistory.Clear();
@@ -880,7 +880,7 @@
 
 		if (pCurNode == nullptr)
 		{
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 
@@ -931,7 +931,7 @@
 		} while (pCurNode != nullptr);
 
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	template<class KeyType, class ValueType>
@@ -1090,7 +1090,7 @@
 			functor(curNode);
 			curNode = curNode->NextPendingFree;
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

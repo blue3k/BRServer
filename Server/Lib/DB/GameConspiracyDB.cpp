@@ -50,7 +50,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::CreatePlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID, INT initialStamina)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryCreatePlayerInfoCmd *pQuery = nullptr;
 		QueryGetPlayerInfoData *pRawSet = nullptr;
 
@@ -80,7 +80,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::GetPlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetPlayerInfoCmd *pQuery = nullptr;
 		QueryGetPlayerInfoData *pRawSet = nullptr;
 
@@ -125,7 +125,7 @@ namespace DB {
 		TimeStampSec	LatestTickTime
 																			)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QuerySetPlayerInfoCmd *pQuery = nullptr;
 		QuerySetPlayerInfoData *pDataSet = nullptr;
 
@@ -188,7 +188,7 @@ namespace DB {
 		TimeStampSec	LatestTickTime
 		)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QuerySavePurchaseInfoToDBCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QuerySavePurchaseInfoToDBCmd);
@@ -231,7 +231,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::CheckPurchaseID(TransactionID Sender, UINT shardID, const Array<BYTE>& purchaseID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryCheckPurchaseIDCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryCheckPurchaseIDCmd);
@@ -261,7 +261,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::SetNickName(TransactionID Sender, UINT shardID, PlayerID playerID, const char* nickName)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QuerySetNickNameCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QuerySetNickNameCmd);
@@ -289,7 +289,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::GetNickName(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetNickNameCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetNickNameCmd);
@@ -327,7 +327,7 @@ namespace DB {
 																			TimeStampSec	LatestActiveTime
 																			)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryUpdateGameEndCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryUpdateGameEndCmd );
@@ -378,7 +378,7 @@ namespace DB {
 																			TimeStampSec	LatestTickTime
 																			)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryUpdateJoinGameCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryUpdateJoinGameCmd );
@@ -418,7 +418,7 @@ namespace DB {
 																			TimeStampSec	LatestTickTime
 																			)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryUpdateTickStatusCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryUpdateTickStatusCmd );
@@ -451,7 +451,7 @@ namespace DB {
 	// Save player info
 	HRESULT GameConspiracyDB::GetPlayerStatusCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetPlayerStatusCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryGetPlayerStatusCmd );
@@ -480,7 +480,7 @@ namespace DB {
 	// Save player info
 	HRESULT GameConspiracyDB::GetPlayerQuickInfoCmd(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetPlayerQuickInfoCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryGetPlayerQuickInfoCmd );
@@ -511,7 +511,7 @@ namespace DB {
 	// Save player info
 	HRESULT GameConspiracyDB::GetFriendQuickInfoCmd(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetFriendQuickInfoCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetFriendQuickInfoCmd);
@@ -543,7 +543,7 @@ namespace DB {
 	// Save player info
 	HRESULT GameConspiracyDB::GetFriendQuickInfoWithNickCmd(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetFriendQuickInfoWithNickCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetFriendQuickInfoWithNickCmd);
@@ -577,7 +577,7 @@ namespace DB {
 	// Save player info
 	HRESULT GameConspiracyDB::GetFriendSlotStatus(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetFriendSlotStatusCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetFriendSlotStatusCmd);
@@ -605,7 +605,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::AddFriend(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, UINT friendShardID, FacebookUID FriendFacebookUID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryAddFriendCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryAddFriendCmd);
@@ -633,7 +633,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::RemoveFriend(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryRemoveFriendCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryRemoveFriendCmd);
@@ -659,7 +659,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::GetFriendList(TransactionID Sender, UINT shardID, PlayerID accountID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetFriendListCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetFriendListCmd);
@@ -683,7 +683,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::UpdateFriendStaminaTime(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, TimeStampSec timeStamp)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryUpdateFriendStaminaTimeCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryUpdateFriendStaminaTimeCmd);
@@ -712,7 +712,7 @@ namespace DB {
 	// Notifications
 	HRESULT GameConspiracyDB::Notification_Add(TransactionID Sender, UINT shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, INT64 messageParam0, INT64 messageParam1, const char* messageText, TimeStampSec timeStamp)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryNotification_AddCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryNotification_AddCmd);
@@ -744,7 +744,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::Notification_GetList(TransactionID Sender, UINT shardID, PlayerID UserID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryNotification_GetListCmd *pQuery = nullptr;
 		QueryNotification_GetListSet *pSet = nullptr;
 
@@ -774,7 +774,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::Notification_Remove(TransactionID Sender, UINT shardID, PlayerID userID, INT32 notificationID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryNotification_RemoveCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryNotification_RemoveCmd);
@@ -802,7 +802,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::Notification_RemoveByMessageID(TransactionID Sender, UINT shardID, PlayerID UserID, INT16 messageID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryNotification_RemoveByMessageIDCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryNotification_RemoveByMessageIDCmd);
@@ -829,7 +829,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::Notification_SetRead(TransactionID Sender, UINT shardID, PlayerID userID, INT32 notificationID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryNotification_SetReadCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryNotification_SetReadCmd);
@@ -857,7 +857,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::SetComplitionState(TransactionID Sender, UINT shardID, PlayerID userID, const char* complitionState)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QuerySetComplitionStateCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QuerySetComplitionStateCmd);
@@ -885,7 +885,7 @@ namespace DB {
 
 	HRESULT GameConspiracyDB::GetComplitionState(TransactionID Sender, UINT shardID, PlayerID userID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueryGetComplitionStateCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetComplitionStateCmd);

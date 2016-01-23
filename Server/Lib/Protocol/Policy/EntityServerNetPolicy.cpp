@@ -30,7 +30,7 @@ namespace BR
  		// Cmd: Register entity
 		HRESULT NetPolicyEntityServer::RegisterEntityCmd( const Context &InContext, const EntityID &InLocalEntID, const char* InEntName )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -48,7 +48,7 @@ namespace BR
 		// Cmd: Find Entity
 		HRESULT NetPolicyEntityServer::UnregisterEntityCmd( const Context &InContext, const EntityUID &InEntUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -66,7 +66,7 @@ namespace BR
 		// Cmd: Find Entity
 		HRESULT NetPolicyEntityServer::FindEntityCmd( const Context &InContext, const EntityID &InLocalEntID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -86,7 +86,7 @@ namespace BR
 		// Cmd: Register entity
 		HRESULT NetSvrPolicyEntityServer::RegisterEntityRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -104,7 +104,7 @@ namespace BR
 		// Cmd: Find Entity
 		HRESULT NetSvrPolicyEntityServer::UnregisterEntityRes( const Context &InContext, const HRESULT &InResult )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -122,7 +122,7 @@ namespace BR
 		// Cmd: Find Entity
 		HRESULT NetSvrPolicyEntityServer::FindEntityRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 

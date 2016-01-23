@@ -30,7 +30,7 @@ namespace BR
  		// C2S: Player entered
 		HRESULT NetPolicyGameMasterServer::PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -48,7 +48,7 @@ namespace BR
 		// C2S: Player leaved
 		HRESULT NetPolicyGameMasterServer::PlayerLeavedC2SEvt( const AccountID &InPlayerID )
 		{
- 			HRESULT hr = S_OK;
+ 			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 

@@ -33,7 +33,7 @@ HRESULT StreamParamCopy( DataType* pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT i
 	pMsgCur += iParamSize;
 	iCurMsgSize -= iParamSize;
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template< class DataType >
@@ -51,7 +51,7 @@ HRESULT StreamParamLnk( DataType* &pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT i
 	else
 		pDst = NULL;
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 template<>
@@ -69,7 +69,7 @@ inline HRESULT StreamParamLnk( const char* &pDst, BYTE* &pMsgCur, INT &iCurMsgSi
 	else
 		pDst = StrUtil::EmptyString;
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 

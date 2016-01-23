@@ -43,7 +43,7 @@ HRESULT SpinSharedBuffer<ItemType>::SetBufferCount(  UINT BufferCount  )
 	if( m_SpinBuffer == nullptr )
 		return E_SYSTEM_OUTOFMEMORY;
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 // Get buffer count
@@ -102,7 +102,7 @@ HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pB
 	m_UsedBufferCount.fetch_add(1, std::memory_order_relaxed);
 
 	// Writing success!
-	return S_OK; 
+	return S_SYSTEM_OK; 
 }
 
 // Get free buffer
@@ -141,7 +141,7 @@ HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 	m_UsedBufferCount.fetch_add(1, std::memory_order_release);
 
 	// Writing success!
-	return S_OK; 
+	return S_SYSTEM_OK; 
 }
 
 // Free given buffer
@@ -161,7 +161,7 @@ HRESULT SpinSharedBuffer<ItemType>::FreeBuffer( ItemType* pBuffer )
 
 	m_UsedBufferCount.fetch_sub(1, std::memory_order_relaxed);
 
-	return S_OK;
+	return S_SYSTEM_OK;
 }
 
 

@@ -132,7 +132,7 @@ ServerEntity* GetLoopbackServerEntity()
 template<class DBManagerType>
 HRESULT BrServer::InitializeDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 {
-	HRESULT hr = S_OK;
+	HRESULT hr = S_SYSTEM_OK;
 	//Svr::ServerEntity *pEntity = nullptr;
 	DB::QueryManager* pDBManager = nullptr;
 	DBManagerType *pDB = nullptr;

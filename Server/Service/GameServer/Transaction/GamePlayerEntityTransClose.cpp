@@ -78,7 +78,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransCloseInstance::UpdateDBRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_WaitingTransactions--;
 
@@ -89,12 +89,12 @@ namespace GameServer {
 		if (m_WaitingTransactions <= 0)
 			CloseTransaction(hr);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT PlayerTransCloseInstance::DeleteLoginSessionRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_WaitingTransactions--;
 
@@ -110,7 +110,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransCloseInstance::UnregisterMatchingRes( Svr::TransactionResult* & pRes )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::PartyMatchingQueue::UnregisterMatchingRes res;
@@ -133,7 +133,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransCloseInstance::LeaveGameRes(Svr::TransactionResult* & pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::GameInstance::LeaveGameRes res;
@@ -154,7 +154,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransCloseInstance::LeavePartyRes(Svr::TransactionResult* & pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::GameParty::LeavePartyRes res;
@@ -175,7 +175,7 @@ namespace GameServer {
 
 	HRESULT PlayerTransCloseInstance::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		GamePlayerEntity* pOwner = (GamePlayerEntity*)GetOwnerEntity();
 		Svr::GameClusterServiceEntity *pGameService = nullptr;
 
@@ -244,7 +244,7 @@ namespace GameServer {
 
 		Svr::GetServerComponent<GameEntityManager>()->RemoveEntity(GetMyOwner());
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

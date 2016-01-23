@@ -159,7 +159,7 @@ namespace BR
 
 		free(strings);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 #endif
@@ -212,7 +212,7 @@ namespace BR
 			}
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT StackWalkerImpl::LoadModuleSymbols()
@@ -253,7 +253,7 @@ namespace BR
 		}
 		
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 	void StackWalkerImpl::GetStackFrame( CONTEXT& context, STACKFRAME64& stackFrame, DWORD& imageType )

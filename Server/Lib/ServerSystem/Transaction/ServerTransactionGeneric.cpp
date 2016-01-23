@@ -49,7 +49,7 @@ namespace Svr {
 	
 	HRESULT EntityServerStartedTrans::OnGetClusterMemberList(Svr::TransactionResult* pRes)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::ClusterServer::GetClusterMemberListRes msgRes;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		ServerEntityManager *pServerEntityManager = BrServer::GetInstance()->GetComponent<Svr::ServerEntityManager>();
@@ -81,13 +81,13 @@ namespace Svr {
 
 	Proc_End:
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 		// Start Transaction
 	HRESULT EntityServerStartedTrans::StartTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::ServerServiceInformation *pService = nullptr;
 		const BR::ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
 		Svr::ClusterManagerServiceEntity *pClusterManagerEntity = nullptr;

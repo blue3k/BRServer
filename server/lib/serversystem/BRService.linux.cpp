@@ -15,7 +15,7 @@
 #include "BrService.h"
 #include "Common/TimeUtil.h"
 #include "Net/NetUtil.h"
-
+#include "ServerSystem/ParameterSetting.h"
 
 #if LINUX
 #include <signal.h>
@@ -120,71 +120,46 @@ namespace Svr {
 		// Install Service
 		HRESULT ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
+			unused(strCfgPath, strUser, strPWD);
 			return hr;
 		}
 
 		// Uninstall service
 		HRESULT ServiceUninstall()
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr = S_SYSTEM_OK;
 			return hr;
 		}
 
 		// prepare service running
 		HRESULT ServicePrepare()
 		{
-			//daemonize();
-			return S_OK;
+			bool bIsDebugRun = StrUtil::StringCmpLwr(ParameterSetting::GetSetting("debug"), -1, "true", -1) == 0;
+			if(bIsDebugRun)
+				daemonize();
+
+			return S_SYSTEM_OK;
 		}
 
 		// Run service main function
-		HRESULT ServiceRun(std::vector<std::string>& cmdArgs, BrServer *pSvrInstance )
+		HRESULT ServiceRun(BrServer *pSvrInstance )
 		{
-			HRESULT hr = S_OK;
-			std::string strCfgPath = Util::GetModulePathA();
-			bool bIsInstall = false;
+			HRESULT hr = S_SYSTEM_OK;
+			bool bIsDebugRun = false;
+			char strCfgPath[1024];
 			const char *strServiceName = nullptr;
 			bool bRun = false;
 
 			chdir(Util::GetModulePathA());
 
-			strCfgPath.append("../../Config/ServerConfig_linux.xml");
-
-
 			g_pSvrInstance = pSvrInstance;
 			Assert( BrServer::GetInstance() == pSvrInstance );
 
+			svrChk(StrUtil::Format(strCfgPath, "{0}{1}", Util::GetModulePathA(), ParameterSetting::GetSetting("config", "../../Config/ServerConfig_linux.xml")));
 
-			for (auto itArg : cmdArgs)
-			{
-				const char* pCurParam = itArg.c_str();
-
-				switch( pCurParam[0] )
-				{
-				case L'-':
-					pCurParam++;
-					if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "install", (INT)strlen("install") ) == 0 )
-					{
-						bIsInstall = true;
-					}
-					else if( pCurParam[0] == 'n' || pCurParam[0] == 'N' )
-					{
-						pCurParam += 2;
-						strServiceName = pCurParam;
-					}
-					else if( StrUtil::StringCmpLwr( pCurParam, (INT)strlen(pCurParam), "uninstall", (INT)strlen("uninstall") ) == 0 )
-					{
-						svrChk( Service::ServiceUninstall() );
-						goto Proc_End;
-					}
-					break;
-				default:
-					break;
-				};
-			}
-
-			if( strServiceName != nullptr )
+			strServiceName = ParameterSetting::GetSetting("servicename");
+			if( strServiceName != nullptr && strServiceName[0] != '\0' )
 			{
 				Util::SetServiceName(strServiceName);
 			}
@@ -194,17 +169,12 @@ namespace Svr {
 
 			Net::RegisterConnectionDebugMessage();
 
-			if( bIsInstall )
-			{
-				// Nothing to do
-				goto Proc_End;
-			}
 
 			svrTrace( Trace::TRC_TRACE, "Loading configuration" );
 
-			svrChk( Svr::Config::LoadConfig( strCfgPath.c_str() ) );
+			svrChk( Svr::Config::LoadConfig( strCfgPath ) );
 
-			svrTrace( Trace::TRC_TRACE, "<{0}> Start with Mode {1} ", Util::GetServiceNameA(), "Service" );
+			svrTrace( Trace::TRC_TRACE, "<{0}> Starting", Util::GetServiceNameA() );
 
 			// register signal handlers
 			signal(SIGHUP, signal_handler); /* catch hangup signal */

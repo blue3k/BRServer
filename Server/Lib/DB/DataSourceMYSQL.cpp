@@ -34,7 +34,7 @@ namespace DB {
 	// initialize DB source
 	HRESULT	DataSourceMYSQL::InitializeDBSource( const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		//const char *next_token = nullptr;
 		//const char *strPos = nullptr;
 		size_t idx;
@@ -64,7 +64,7 @@ namespace DB {
 	// reopen DB source
 	HRESULT DataSourceMYSQL::Reopen()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 	//Proc_End:
 

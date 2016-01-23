@@ -37,7 +37,7 @@ namespace Util {
 		if (SHA256_Final(destBuffer.data(), &sha256) == FALSE)
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

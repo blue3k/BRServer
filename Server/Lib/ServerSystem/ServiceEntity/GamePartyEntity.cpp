@@ -57,7 +57,7 @@ namespace Svr {
 	// Initialize entity to proceed new connection
 	HRESULT GamePartyEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(MasterEntity::InitializeEntity( newEntityID ) );
 
@@ -76,16 +76,16 @@ namespace Svr {
 	// Close entity and clear transaction
 	HRESULT GamePartyEntity::TerminateEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		m_ChatHistory.TerminateLog();
 
 		ForeachPlayer( [](PartyPlayer* pPlayer)->HRESULT {
 			Util::SafeDelete(pPlayer);
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 		m_PartyPlayerByUID.clear();
 
@@ -119,7 +119,7 @@ namespace Svr {
 					return hrRes;
 			}
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// foreach game player with Game policy
@@ -139,7 +139,7 @@ namespace Svr {
 					return hrRes;
 			}
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	HRESULT GamePartyEntity::ForeachPlayerSvrGameParty( std::function<HRESULT(PartyPlayer* pPlayer, Policy::ISvrPolicyGameParty *pPolicy)> func )
@@ -158,7 +158,7 @@ namespace Svr {
 					return hrRes;
 			}
 		}
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 
@@ -172,7 +172,7 @@ namespace Svr {
 	// Register new player to join
 	HRESULT GamePartyEntity::JoinPlayer( PartyPlayer* &pPlayer, bool bIsSilent )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		PartyPlayerUIDMap::iterator itLeader;
 
 		svrChkPtr( pPlayer );
@@ -192,7 +192,7 @@ namespace Svr {
 					// Send joined to others
 					pOtherPolicy->PlayerJoinedS2CEvt( pOtherPlayer->GetRouteContext(GetEntityUID()), pPlayer->GetPlayerInformation() );
 				}
-				return S_OK;
+				return S_SYSTEM_OK;
 			});
 
 		}
@@ -215,7 +215,7 @@ namespace Svr {
 	// Player leave
 	HRESULT GamePartyEntity::LeavePlayer( PartyPlayer* &pPlayer, bool bIsSilent )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_PartyPlayerByUID.erase(pPlayer->GetPlayerID() );
 
@@ -223,7 +223,7 @@ namespace Svr {
 		{
 			ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::ISvrPolicyGameParty *pPolicy )->HRESULT {
 				pPolicy->PlayerLeftS2CEvt( pOtherPlayer->GetRouteContext(GetEntityUID()), pPlayer->GetPlayerID() );
-				return S_OK;
+				return S_SYSTEM_OK;
 			});
 		}
 
@@ -244,7 +244,7 @@ namespace Svr {
 	// Select new leader
 	HRESULT GamePartyEntity::SelectNewLeader( bool bIsSilent )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		auto itPlayer = m_PartyPlayerByUID.begin();
 		if( itPlayer.IsValid() )
@@ -255,7 +255,7 @@ namespace Svr {
 			{
 				ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::ISvrPolicyGameParty *pPolicy )->HRESULT {
 					pPolicy->PartyLeaderChangedS2CEvt( pOtherPlayer->GetRouteContext(GetEntityUID()), m_LeaderID );
-					return S_OK;
+					return S_SYSTEM_OK;
 				});
 			}
 		}
@@ -289,13 +289,13 @@ namespace Svr {
 
 		m_PartyPlayerByUID.clear();
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Find Player pilotid
 	HRESULT GamePartyEntity::FindPlayer( PlayerID pltID, PartyPlayer* &pPartyPlayer )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		PartyPlayerUIDMap::iterator itPlayer;
 
 		if( FAILED(m_PartyPlayerByUID.find( pltID, itPlayer )) )
@@ -315,7 +315,7 @@ namespace Svr {
 	// Called when a player get out of the party
 	HRESULT GamePartyEntity::OnPlayerGetOutOfParty( PartyPlayer* pPlayer, bool bIsSilent )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChkPtr(pPlayer);
 
@@ -334,7 +334,7 @@ namespace Svr {
 	// Pending close transaction
 	HRESULT GamePartyEntity::PendingCloseTransaction()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::Transaction *pTrans = nullptr;
 
 		svrMem( pTrans = new PartyTransCloseInstance );

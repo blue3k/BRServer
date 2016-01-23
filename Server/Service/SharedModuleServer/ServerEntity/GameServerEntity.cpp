@@ -59,7 +59,7 @@ namespace SharedModuleServer {
 	// Initialize entity to proceed new connection
 	HRESULT GameServerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::InitializeEntity( newEntityID ) );
 
@@ -71,7 +71,7 @@ namespace SharedModuleServer {
 	// Process Connection event
 	HRESULT GameServerEntity::ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent )
 	{
-		//HRESULT hr = S_OK;
+		//HRESULT hr = S_SYSTEM_OK;
 
 		switch( conEvent.EventType )
 		{
@@ -93,11 +93,11 @@ namespace SharedModuleServer {
 	// register message handlers
 	HRESULT GameServerEntity::RegisterMessageHandlers()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( super::RegisterMessageHandlers() );
 
-		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)					{ svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans( pMsgData )); return S_OK; } );
+		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)					{ svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans( pMsgData )); return S_SYSTEM_OK; } );
 
 
 	Proc_End:

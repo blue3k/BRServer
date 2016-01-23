@@ -235,7 +235,7 @@ namespace Message {
 
 		// Nothing to check
 		if( length == 0 )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		UINT16 Crc32 = Util::Crc32( length, pDataPtr );
 		if( Crc32 == 0 ) Crc32 = ~Crc32;
@@ -243,7 +243,7 @@ namespace Message {
 		if( Crc32 != m_pMsgHeader->Crc32 )
 			return E_NET_INVALID_MESSAGE_CHECKSUM;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 	HRESULT MessageData::ValidateChecksumNDecrypt()
@@ -267,7 +267,7 @@ namespace Message {
 		if( length == 0 )
 		{
 			m_pMsgHeader->msgID.IDs.Encrypted = false;
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		UINT16 Crc32 = Util::Crc32NDecrypt( length, pDataPtr );
@@ -279,7 +279,7 @@ namespace Message {
 		if( Crc32 != m_pMsgHeader->Crc32 )
 			return E_NET_INVALID_MESSAGE_CHECKSUM;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

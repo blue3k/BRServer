@@ -112,7 +112,7 @@ namespace Svr {
 			}
 
 			m_Steps[iStep] = pStep;
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Process step
@@ -151,7 +151,7 @@ namespace Svr {
 				Util::SafeRelease( pRes );
 			}
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 	};
 

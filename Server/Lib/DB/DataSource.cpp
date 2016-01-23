@@ -33,13 +33,13 @@ namespace DB {
 
 		m_Opened = true;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 	
 	// close DB source
 	HRESULT	DataSource::CloseDBSource()
 	{
-		HRESULT	hr = S_OK;
+		HRESULT	hr = S_SYSTEM_OK;
 
 		StackPool::Item *pItem = nullptr;
 		do{
@@ -58,7 +58,7 @@ namespace DB {
 	// Assign a session
 	HRESULT	DataSource::AssignSession( Session* &pSession )
 	{
-		HRESULT	hr = S_OK;
+		HRESULT	hr = S_SYSTEM_OK;
 
 		pSession = nullptr;
 
@@ -81,7 +81,7 @@ namespace DB {
 	// Free a session
 	HRESULT	DataSource::FreeSession( Session* pSession )
 	{
-		HRESULT	hr = S_OK;
+		HRESULT	hr = S_SYSTEM_OK;
 
 		dbChkPtr(pSession);
 

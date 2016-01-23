@@ -83,7 +83,7 @@ namespace Svr {
 
 	HRESULT MatchingQueueServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
 
 		svrChk(RingClusterServiceEntity::InitializeEntity(newEntityID) );
@@ -103,7 +103,7 @@ namespace Svr {
 	// clear transaction
 	HRESULT MatchingQueueServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_ItemIDTable.Foreach([](const UINT64& key, const QueueItem* pItem)
 		{
@@ -127,7 +127,7 @@ namespace Svr {
 
 	HRESULT MatchingQueueServiceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServiceEntityUIDMap::iterator itService;
 
 		svrChk(RingClusterServiceEntity::TickUpdate(pAction) );
@@ -152,7 +152,7 @@ namespace Svr {
 
 	HRESULT MatchingQueueServiceEntity::UpdateResevationQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		
 		// if any old reserved item is found remove it
 		UINT numItems = (UINT)m_ReservedQueue.GetEnqueCount();
@@ -209,7 +209,7 @@ namespace Svr {
 
 	HRESULT MatchingQueueServiceEntity::UpdateMatchigQueue()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		
 		// clean up front
@@ -256,17 +256,17 @@ namespace Svr {
 	{
 		RingClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPartyMatchingCmd)				{ svrMemReturn(pNewTrans = new RegisterPartyMatchingTrans(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPlayerMatchingCmd)			{ svrMemReturn(pNewTrans = new RegisterPlayerMatchingTrans(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd)			{ svrMemReturn(pNewTrans = new UpdateMatchingEntityUIDTrans(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UnregisterMatchingCmd)				{ svrMemReturn(pNewTrans = new UnregisterMatchingTrans(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemCmd)						{ svrMemReturn(pNewTrans = new ReserveItemTrans(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemsCmd)						{ svrMemReturn(pNewTrans = new MatchingQueueReserveItemsTrans(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::CancelReservationCmd)					{ svrMemReturn(pNewTrans = new CancelReservationTrans(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::DequeueItemCmd)						{ svrMemReturn(pNewTrans = new DequeueItemTrans(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::MatchingItemErrorC2SEvt)				{ svrMemReturn(pNewTrans = new MatchingQueueTransMatchingItemError(pMsgData)); return S_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPartyMatchingCmd)				{ svrMemReturn(pNewTrans = new RegisterPartyMatchingTrans(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPlayerMatchingCmd)			{ svrMemReturn(pNewTrans = new RegisterPlayerMatchingTrans(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd)			{ svrMemReturn(pNewTrans = new UpdateMatchingEntityUIDTrans(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UnregisterMatchingCmd)				{ svrMemReturn(pNewTrans = new UnregisterMatchingTrans(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemCmd)						{ svrMemReturn(pNewTrans = new ReserveItemTrans(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemsCmd)						{ svrMemReturn(pNewTrans = new MatchingQueueReserveItemsTrans(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::CancelReservationCmd)					{ svrMemReturn(pNewTrans = new CancelReservationTrans(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::DequeueItemCmd)						{ svrMemReturn(pNewTrans = new DequeueItemTrans(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::MatchingItemErrorC2SEvt)				{ svrMemReturn(pNewTrans = new MatchingQueueTransMatchingItemError(pMsgData)); return S_SYSTEM_OK; } );
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -277,7 +277,7 @@ namespace Svr {
 
 	HRESULT MatchingQueueServiceEntity::CancelItem(QueueItem *pItem)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		ServerEntity* pServerEntity = nullptr;
 		Policy::ISvrPolicyPartyMatchingQueue* pPolicyMatchingQueueSvr = nullptr;
 
@@ -323,7 +323,7 @@ namespace Svr {
 	// Add new Entity
 	HRESULT MatchingQueueServiceEntity::Enqueue( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* players, MatchingQueueTicket& ticket )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueueItem *pNewItem = nullptr;
 
 		svrMem( pNewItem = new QueueItem );
@@ -358,7 +358,7 @@ namespace Svr {
 	// Update ticket 
 	HRESULT MatchingQueueServiceEntity::UpdateTicket( const MatchingQueueTicket& ticket, const EntityUID& UIDFrom, const EntityUID& UIDTo )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueueItem *pItem = nullptr;
 		MatchingPlayerInformation *pPlayers = nullptr;
 
@@ -387,7 +387,7 @@ namespace Svr {
 
 	HRESULT MatchingQueueServiceEntity::CancelTicket( const MatchingQueueTicket& ticket )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueueItem *pItem = nullptr;
 
 		if (FAILED(m_ItemIDTable.Find(ticket.QueueItemID, pItem)))
@@ -420,7 +420,7 @@ namespace Svr {
 	// Reserve a item int the queue from the top
 	HRESULT MatchingQueueServiceEntity::ReserveItem( EntityUID reserverUID, UINT &numPlayersInItem, MatchingQueueTicket& ticket )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueueItem *pItem = nullptr;
 
 		do {
@@ -464,7 +464,7 @@ namespace Svr {
 	// Cancel a reservation
 	HRESULT MatchingQueueServiceEntity::CancelReservation( const MatchingQueueTicket& ticket )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueueItem *pItem = nullptr;
 
 		svrChk(m_ItemIDTable.Find(ticket.QueueItemID, pItem));
@@ -484,7 +484,7 @@ namespace Svr {
 	// Dequeue reserved item
 	HRESULT MatchingQueueServiceEntity::DequeueItem( const MatchingQueueTicket& ticket, MatchingQueueItem &item )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		QueueItem *pItem = nullptr, *erasedValue = nullptr;
 
 		svrChk(m_ItemIDTable.Find(ticket.QueueItemID, pItem));

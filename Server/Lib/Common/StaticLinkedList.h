@@ -146,7 +146,7 @@ namespace BR {
 				if( pNextNode == pNode )
 					break;
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// insert after specific node, if null for pPrevNode, added at front
@@ -167,7 +167,7 @@ namespace BR {
 
 			m_NumItems++;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 		
 		// insert after specific node, if null for pPrevNode, added at front
@@ -186,7 +186,7 @@ namespace BR {
 
 			m_NumItems++;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Remove 
@@ -203,7 +203,7 @@ namespace BR {
 
 			m_NumItems--;
 
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		iterator begin()

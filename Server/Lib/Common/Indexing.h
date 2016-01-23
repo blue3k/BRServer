@@ -220,6 +220,9 @@ namespace BR
 					Value = 16777619U * Value ^ (size_t)(*pCur);
 				}
 
+				// do not allow 0 for string hash
+				if (Value == 0) Value = ~Value;
+
 				return Value;
 			}
 		};

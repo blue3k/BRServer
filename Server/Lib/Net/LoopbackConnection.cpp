@@ -78,7 +78,7 @@ namespace Net {
 	// Initialize LoopbackConnection
 	HRESULT LoopbackConnection::InitConnection( const NetAddress& Addr, NetClass netClass )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		netAssert(GetConnectionState() == STATE_DISCONNECTED);
 
@@ -91,7 +91,7 @@ namespace Net {
 		//m_RecvQueue.ClearQueue();
 
 
-		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_CONNECTION_RESULT, S_OK)  );
+		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_CONNECTION_RESULT, S_SYSTEM_OK)  );
 		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_STATE_CHANGE, GetConnectionState())  );
 
 		netTrace( TRC_CONNECTION, "Initialize LoopbackConnection CID:{0}, Addr:{1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
@@ -106,7 +106,7 @@ namespace Net {
 	{
 		unused(reason);
 		// cant disconnected
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -114,7 +114,7 @@ namespace Net {
 	HRESULT LoopbackConnection::CloseConnection()
 	{
 		// cant closed
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

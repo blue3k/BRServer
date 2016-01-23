@@ -99,7 +99,7 @@ namespace GameServer {
 	// Update game config
 	HRESULT GameServer::UpdateGameConfig(UINT configPresetID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		GameConfigType *pGameConfig = nullptr;
 		svrChk( ::conspiracy::GameConfigTbl::FindItem(configPresetID, pGameConfig ) );
@@ -117,7 +117,7 @@ namespace GameServer {
 	// Apply configuration
 	HRESULT GameServer::ApplyConfiguration()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		//const Svr::Config::GameCluster* pMyGame = nullptr;
 		const Svr::Config::PublicServer* pMySvr = nullptr;
@@ -150,7 +150,7 @@ namespace GameServer {
 	// Initialize server resource
 	HRESULT GameServer::InitializeServerResource()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
@@ -168,7 +168,7 @@ namespace GameServer {
 	// Close server and release resource
 	HRESULT GameServer::CloseServerResource()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(Svr::BrServer::CloseServerResource() );
 
@@ -185,7 +185,7 @@ namespace GameServer {
 	// Initialize private Network
 	HRESULT GameServer::InitializeNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::LoginClusterServiceEntity *pLoginService = nullptr;
 		Svr::GameClusterServiceEntity *pGameService = nullptr;
 		UINT componentID = 0;
@@ -312,7 +312,7 @@ namespace GameServer {
 	// Close Private Network
 	HRESULT GameServer::CloseNetPrivate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		hr = Svr::BrServer::CloseNetPrivate();
 
@@ -326,7 +326,7 @@ namespace GameServer {
 	// Initialize private Network
 	HRESULT GameServer::InitializeNetPublic()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk( CloseNetPublic() );
 
@@ -355,10 +355,10 @@ namespace GameServer {
 	// Close Public Network
 	HRESULT GameServer::CloseNetPublic()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( m_pNetPublic == nullptr )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		svrChk( m_pNetPublic->CloseAllConnection() );
 
@@ -393,7 +393,7 @@ namespace GameServer {
 		if( pServerEntity == nullptr )
 			return E_SYSTEM_OUTOFMEMORY;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

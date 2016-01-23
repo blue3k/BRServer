@@ -67,12 +67,12 @@ namespace Svr {
 
 	HRESULT GameClusterServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(FreeReplicaClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return S_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return S_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
 
 
 	Proc_End:
@@ -82,7 +82,7 @@ namespace Svr {
 
 	HRESULT GameClusterServiceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(FreeReplicaClusterServiceEntity::TickUpdate(pAction) );
 
@@ -99,7 +99,7 @@ namespace Svr {
 	// Create PlayerInfo
 	HRESULT GameClusterServiceEntity::CreatePlayer( PlayerID playerID, EntityUID entityUID, ServerEntity* pGameServerEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		PlayerTableItem *pNewPlayerInfo = nullptr;
 		PlayerIDMap::iterator itPlayer;
 
@@ -132,7 +132,7 @@ namespace Svr {
 
 	HRESULT GameClusterServiceEntity::CreatePlayer( PlayerID playerID, EntityUID entityUID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( playerID == 0 || entityUID == 0 ) svrErr(E_INVALID_PLAYERID);
 
@@ -161,7 +161,7 @@ namespace Svr {
 	// Create PlayerInfo
 	HRESULT GameClusterServiceEntity::DeletePlayer( PlayerID playerID, EntityUID playerEntityUID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		PlayerTableItem *pPlayerInfo = nullptr;
 		PlayerIDMap::iterator itPlayer;
 
@@ -207,7 +207,7 @@ namespace Svr {
 	// Get Player info
 	HRESULT GameClusterServiceEntity::FindPlayer( PlayerID playerID, EntityUID &playerUID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		PlayerIDMap::iterator itPlayer;
 
 		if( FAILED(m_PlayerIDMap.find( playerID, itPlayer )) )

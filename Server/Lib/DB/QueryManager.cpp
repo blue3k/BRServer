@@ -45,7 +45,7 @@ namespace DB {
 	// Initialize QueryManager
 	HRESULT QueryManager::InitializeDB( UINT partitioningCount )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		m_PartitioningCount = partitioningCount;
 
@@ -61,7 +61,7 @@ namespace DB {
 					dataSource->CloseDBSource();
 					delete dataSource;
 				}
-				return S_OK;
+				return S_SYSTEM_OK;
 			});
 			m_ShardingBucket.Clear();
 		}
@@ -93,7 +93,7 @@ namespace DB {
 				dataSource->CloseDBSource();
 				delete dataSource;
 			}
-			return S_OK;
+			return S_SYSTEM_OK;
 		});
 		m_ShardingBucket.Clear();
 
@@ -107,7 +107,7 @@ namespace DB {
 
 	HRESULT QueryManager::RequestShardList()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if (m_GetShardListLockTimer.IsTimerWorking()
 			&& !m_GetShardListLockTimer.CheckTimer())
@@ -132,7 +132,7 @@ namespace DB {
 
 	HRESULT	QueryManager::AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
 	{
-		HRESULT	hr = S_OK;
+		HRESULT	hr = S_SYSTEM_OK;
 		DataSource *pDBSource = nullptr;
 
 		dbAssert(partitioningID < m_PartitioningCount);
@@ -172,7 +172,7 @@ namespace DB {
 	// select db source by partitioning key
 	HRESULT QueryManager::SelectDBByKey(UINT partitioningKey, DataSource* &pDataSource)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		pDataSource = nullptr;
 		
@@ -191,12 +191,12 @@ Proc_End:
 	// Update query worker status
 	HRESULT QueryManager::UpdateQuery()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Query* pQuery = nullptr;
 
 		// Don't try any query while disconnected
 		if( m_bIsDisconnected )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		auto maxTry = m_PendingQueries.GetEnqueCount();
 		for (decltype(maxTry) iQuery = 0; iQuery < maxTry; iQuery++)
@@ -281,7 +281,7 @@ Proc_End:
 
 	HRESULT	QueryManager::UpdateResultQueries()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		Query* pQuery = nullptr;
 		auto numQueries = m_ResultQueries.GetEnqueCount();
@@ -328,7 +328,7 @@ Proc_End:
 
 	HRESULT	QueryManager::RequestQuery(Query* pQuery)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Session * pSession = nullptr;
 		DataSource *pDBSource = nullptr;
 
@@ -348,7 +348,7 @@ Proc_End:
 		{
 			// DB source fail, put it in the local queue and try again
 			dbChk(m_PendingQueries.Enqueue(pQuery));
-			return S_OK;
+			return S_SYSTEM_OK;
 		}
 
 		// Get Session
@@ -383,7 +383,7 @@ Proc_End:
 	// Route query result to entity
 	HRESULT	QueryManager::RouteResult(Query* &pQuery)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Svr::TransactionResult *pRes = pQuery;
 
 		if( pRes->GetTransID() != 0 )

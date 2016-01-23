@@ -45,7 +45,7 @@ namespace DB {
 	// Make this factory as the DB factory
 	HRESULT FactoryMYSQL::Instanciate()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		dbMem( Factory::stm_pInstance = new FactoryMYSQL );
 
@@ -74,7 +74,7 @@ namespace DB {
 	HRESULT	FactoryMYSQL::CreateDataSource( DataSource* &pDBSource )
 	{
 		if( (pDBSource = new DataSourceMYSQL) != nullptr )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		return E_SYSTEM_OUTOFMEMORY;
 	}
@@ -83,7 +83,7 @@ namespace DB {
 	HRESULT	FactoryMYSQL::CreateSession( DataSource* pDBSource, Session* &pSession )
 	{
 		if( (pSession = new SessionMYSQL((DataSourceMYSQL*)pDBSource)) != nullptr)
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		return E_SYSTEM_OUTOFMEMORY;
 	}

@@ -52,7 +52,7 @@ namespace Svr {
 	// add entity to table
 	HRESULT EntityManager::AddEntity( EntityFaculty faculty, Svr::Entity* pEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto& entityTable = GetEntityTable();
 		svrChk( pEntity->InitializeEntity(entityTable.GenEntityID(faculty) ) );
 
@@ -80,7 +80,7 @@ namespace Svr {
 	// add entity to table
 	HRESULT EntityManager::AddEntity( EntityID entityID, Svr::Entity* pEntity )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto& entityTable = GetEntityTable();
 
 		svrChk(entityTable.ReserveEntityID( entityID ) );
@@ -125,7 +125,7 @@ namespace Svr {
 	// add entity to table
 	HRESULT EntityManager::RemoveEntity(EntityID entityID)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		auto& entityTable = GetEntityTable();
 
 		SharedPointerT<Entity> pEntity;
@@ -159,7 +159,7 @@ namespace Svr {
 	// add entity to table
 	HRESULT EntityManager::RemoveEntity( Svr::Entity* pEntity )
 	{
-		//HRESULT hr = S_OK;
+		//HRESULT hr = S_SYSTEM_OK;
 
 		if (pEntity == nullptr)
 			return E_SYSTEM_FAIL;
@@ -202,7 +202,7 @@ namespace Svr {
 	// Initialize TaskManager
 	HRESULT EntityManager::InitializeManager(UINT uiNumGroup)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		PerformanceCounterInstance* counterInstance = nullptr;
 
 		svrChk(TaskManager::InitializeManager(uiNumGroup));
@@ -226,7 +226,7 @@ namespace Svr {
 	// Terminate TaskManager
 	HRESULT EntityManager::TerminateManager()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		//if (m_PerformanceCounterInstance != nullptr)
 		//{

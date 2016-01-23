@@ -107,6 +107,15 @@
     </ClCompile>
     <ClCompile Include="BrLibComponents.cpp" />
     <ClCompile Include="TraceComponent.cpp" />
+    <ClCompile Include="ThirdPartyComponent.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="StrParserUtil.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="StringKey.cpp">
+      <Filter>Container</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\GameConst.h" />
@@ -362,6 +371,15 @@
     </ClInclude>
     <ClInclude Include="ResultCode\BRResultCodeSystem.h">
       <Filter>ResultCode</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdPartyComponent.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="StrParserUtil.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="StringKey.h">
+      <Filter>Container</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

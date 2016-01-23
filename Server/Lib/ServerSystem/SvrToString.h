@@ -32,7 +32,7 @@ namespace BR {
 		if( FAILED( _IToA( (UINT32)Data.GetTransactionIndex(), pBuff, iBuffLen, 10, -1 ) ) )
 			return E_SYSTEM_FAIL;
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 

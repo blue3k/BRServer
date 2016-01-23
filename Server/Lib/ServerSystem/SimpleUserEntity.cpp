@@ -63,7 +63,7 @@ namespace Svr
 			m_pConnection->GetNet()->TakeOverConnection((Net::Connection*)m_pConnection);
 		}
 
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 	// Release connection if has
@@ -89,7 +89,7 @@ namespace Svr
 	// Initialize entity to proceed new connection
 	HRESULT SimpleUserEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		SetAccountID( 0 );
 		SetAuthTicket( 0 );
@@ -106,10 +106,10 @@ namespace Svr
 	// Close entity and clear transaction
 	HRESULT SimpleUserEntity::TerminateEntity()
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		SetAccountID( 0 );
 		SetAuthTicket( 0 );
@@ -128,7 +128,7 @@ namespace Svr
 	// Process Connection event
 	HRESULT SimpleUserEntity::ProcessConnectionEvent( const Net::IConnection::Event& conEvent )
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		switch( conEvent.EventType )
 		{
@@ -151,7 +151,7 @@ namespace Svr
 	// Process Message and release message after all processed
 	HRESULT SimpleUserEntity::ProcessMessage(Message::MessageData* &pIMsg)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
 		Svr::Transaction *pNewTrans = nullptr;
@@ -218,7 +218,7 @@ namespace Svr
 		ReleaseTransaction(pNewTrans);
 		Util::SafeRelease(pIMsg);
 
-		return S_OK;
+		return S_SYSTEM_OK;
 
 	}
 
@@ -226,13 +226,13 @@ namespace Svr
 
 	HRESULT SimpleUserEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 		Message::MessageData *pIMsg = nullptr;
 		Net::IConnection::Event conEvent;
 
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_OK;
+			return S_SYSTEM_OK;
 
 		// Update connection
 		// We need to make a copy here while m_pConnection can be changed on another thread
@@ -289,7 +289,7 @@ namespace Svr
 	HRESULT SimpleUserEntity::SetAccountID( AccountID accID )
 	{
 		m_AccountID = accID;
-		return S_OK;
+		return S_SYSTEM_OK;
 	}
 
 
@@ -321,7 +321,7 @@ namespace Svr
 
 	HRESULT SimpleUserEntity::OnEventTask(const Svr::EventTask& eventTask)
 	{
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
 		Transaction *pCurTran = nullptr;
 		Message::MessageData* pMsg = nullptr;

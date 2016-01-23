@@ -39,7 +39,7 @@ namespace BR
         
     HRESULT GameLogChatMessage::SetChatMessage( PlayerID player, BYTE playerStatus, ChatType type, const char* message)
     {
-		HRESULT hr = S_OK;
+		HRESULT hr = S_SYSTEM_OK;
 
         Player = player;
 		PlayerStatus = playerStatus;
@@ -86,7 +86,7 @@ namespace BR
             VoteStatus[vote].Voted = 0;
         }
 
-		return S_OK;
+		return S_SYSTEM_OK;
     }
 
 	HRESULT GameLogVote::SetVoteStatus( PlayerID voter, PlayerID voted )
@@ -99,7 +99,7 @@ namespace BR
                 VoteStatus[vote].Voter = voter;
                 VoteStatus[vote].Voted = voted;
 
-                return S_OK;
+                return S_SYSTEM_OK;
             }
         }
         // can't find slot for the voter

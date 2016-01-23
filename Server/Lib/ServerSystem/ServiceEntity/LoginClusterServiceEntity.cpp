@@ -48,7 +48,7 @@ namespace Svr {
 
 	//HRESULT LoginClusterServiceEntity::InitializeEntity( EntityID newEntityID )
 	//{
-	//	HRESULT hr = S_OK;
+	//	HRESULT hr = S_SYSTEM_OK;
 
 	//	svrChk( ReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
 
@@ -62,9 +62,9 @@ namespace Svr {
 	//{
 	//	ReplicaClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity );
 
-	//	pServerEntity->BR_ENTITY_MESSAGE(Message::LoginServer::KickPlayerCmd)			{ svrMemReturn(pNewTrans = new LoginPlayerJoindToGameServerTrans(pMsgData)); return S_OK; } );
+	//	pServerEntity->BR_ENTITY_MESSAGE(Message::LoginServer::KickPlayerCmd)			{ svrMemReturn(pNewTrans = new LoginPlayerJoindToGameServerTrans(pMsgData)); return S_SYSTEM_OK; } );
 
-	//	return S_OK;
+	//	return S_SYSTEM_OK;
 	//}
 
 
