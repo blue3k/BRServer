@@ -146,7 +146,6 @@ namespace Svr {
 		HRESULT ServiceRun(BrServer *pSvrInstance )
 		{
 			HRESULT hr = S_SYSTEM_OK;
-			bool bIsDebugRun = false;
 			char strCfgPath[1024];
 			const char *strServiceName = nullptr;
 			bool bRun = false;

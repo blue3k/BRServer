@@ -78,7 +78,6 @@ namespace BR
 	HRESULT ParameterSetting::ProcessParameter(const char* arg)
 	{
 		HRESULT hr = S_SYSTEM_OK;
-		int numArg = 0;
 		char* curArg = nullptr;
 		char settingBufferForParsing[64 * 1024];
 
