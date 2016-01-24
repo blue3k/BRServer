@@ -6,15 +6,17 @@
 #include "Common/TimeUtil.h"
 #include "Common/Trace.h"
 #include "Common/BrLibComponents.h"
+#include "Common/DefaultLibComponent.h"
 #include "Common/TraceComponent.h"
-#include "ServerSystem/SvrTrace.h"
-#include "BRMonitoring.h"
 #include "Common/BrXML.h"
 #include "Common/Utility.h"
+#include "ServerSystem/SvrTrace.h"
+#include "ServerSystem/ParameterSetting.h"
+
+#include "BRMonitoring.h"
+
 
 // This is an example of an exported variable
-
-static BR::LibComponentCarrier g_libComponents;
 
 using namespace BR;
 
@@ -22,15 +24,20 @@ BRMONITORING_API int InitializeNativeSystem(const char* serviceName, const char*
 {
 	HRESULT hr = S_OK;
 
-	xmlInitParser();
+	ParameterSetting::SetSetting("modulepath", modulePath);
+	ParameterSetting::SetSetting("servicename", serviceName);
+	ParameterSetting::SetSetting("config", logCfgPath);
+	ParameterSetting::SetSetting("logconfig", logCfgPath);
+	ParameterSetting::SetSetting("logconfig", logCfgPath);
 
 	BR::Util::SetServiceName(serviceName);
 
-	defChk(g_libComponents.AddComponent<BR::LibComponentTrace>(modulePath, serviceName, logCfgPath));
-	defChk(g_libComponents.AddComponent<BR::Util::LibComponentTime>());
-	defChk(g_libComponents.AddComponent<BR::MemoryPoolManager>());
+	defChk(LibComponentManager::GetInstance().AddComponent<BR::LibComponentDefault>());
+	defChk(LibComponentManager::GetInstance().AddComponent<BR::LibComponentTrace>(modulePath, serviceName, logCfgPath));
+	defChk(LibComponentManager::GetInstance().AddComponent<BR::Util::LibComponentTime>());
+	defChk(LibComponentManager::GetInstance().AddComponent<BR::MemoryPoolManager>());
 
-	defChk(g_libComponents.InitializeComponents());
+	defChk(LibComponentManager::GetInstance().InitializeComponents());
 
 Proc_End:
 
@@ -41,17 +48,8 @@ BRMONITORING_API int TerminateNativeSystem(void)
 {
 	HRESULT hr = S_OK;
 
-	g_libComponents.TerminateComponents();
+	LibComponentManager::GetInstance().TerminateComponents();
 
-
-	/*
-	* Cleanup function for the XML library.
-	*/
-	xmlCleanupParser();
-	/*
-	* this is to debug memory for regression tests
-	*/
-	xmlMemoryDump();
 
 Proc_End:
 

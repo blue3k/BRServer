@@ -145,16 +145,19 @@ namespace BR {
 		{
 		}
 
-		// Find Previous of same or smaller Node
+		// Find Previous which is same or smaller Node
 		HRESULT FindPrevNode( KeyType keyValue, Node* &pPrevNode )
 		{
 			pPrevNode = &m_Header;
 			for( ; pPrevNode->pNext != nullptr; pPrevNode = pPrevNode->pNext )
 			{
 				Node *pNextNode = pPrevNode->pNext;
-				if( pNextNode->Key <= keyValue )
-					break;
+				if (pNextNode->Key <= keyValue)
+					return S_SYSTEM_OK;
 			}
+
+			// No smaller or same node is found, return head
+			AssertRel(pPrevNode == &m_Header || pPrevNode->Key > keyValue);
 			return S_SYSTEM_OK;
 		}
 

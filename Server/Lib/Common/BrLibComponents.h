@@ -27,6 +27,7 @@ namespace BR {
 		Trace,
 		MemoryPoolManager,
 		Timer,
+		DB,
 		Max,
 	};
 

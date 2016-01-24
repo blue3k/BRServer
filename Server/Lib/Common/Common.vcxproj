@@ -34,6 +34,7 @@
     <ClInclude Include=".\Argument.h" />
     <ClInclude Include="BrComponent.h" />
     <ClInclude Include="BrLibComponents.h" />
+    <ClInclude Include="DefaultLibComponent.h" />
     <ClInclude Include="DualSortedMap.h" />
     <ClInclude Include="File\BRFile.h" />
     <ClInclude Include="HashTable2.h" />
@@ -104,7 +105,6 @@
     <ClInclude Include=".\Trace.h" />
     <ClInclude Include=".\Trace_Internal.h" />
     <ClInclude Include=".\Typedefs.h" />
-    <ClInclude Include="ThirdPartyComponent.h" />
     <ClInclude Include="ToStringGame.h" />
     <ClInclude Include="ToStringSvr.h" />
     <ClInclude Include="TraceComponent.h" />
@@ -123,6 +123,7 @@
     <ClCompile Include=".\Memory.cpp" />
     <ClCompile Include=".\MemoryPool.cpp" />
     <ClCompile Include="CryptoSHA.cpp" />
+    <ClCompile Include="DefaultLibComponent.cpp" />
     <ClCompile Include="File\BRFile.linux.cpp" />
     <ClCompile Include="File\BRFile.win32.cpp" />
     <ClCompile Include="LocalUIDGenerator.cpp" />
@@ -151,7 +152,6 @@
     <ClCompile Include="SharedObject.cpp" />
     <ClCompile Include="SharedReferenceManager.cpp" />
     <ClCompile Include="StackWalker.cpp" />
-    <ClCompile Include="ThirdPartyComponent.cpp" />
     <ClCompile Include="ToString.cpp" />
     <ClCompile Include="ToStringGame.cpp" />
     <ClCompile Include="ToStringSvr.cpp" />

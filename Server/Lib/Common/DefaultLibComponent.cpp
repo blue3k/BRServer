@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 MadK
+// CopyRight (c) 2016 MadK
 // 
 // Author : KyungKun Ko
 //
-// Description : Base type ToString implementation
+// Description : Default library component
 //	
 //
 ////////////////////////////////////////////////////////////////////////////////
@@ -13,8 +13,9 @@
 #include "stdafx.h"
 #include "Common/BrAssert.h"
 #include "Common/Trace.h"
-#include "Common/ThirdPartyComponent.h"
+#include "Common/DefaultLibComponent.h"
 #include "Common/Utility.h"
+#include "Common/BrRandom.h"
 #include "Common/BrXML.h"
 
 
@@ -22,28 +23,33 @@
 namespace BR
 {
 
-	LibComponentThirdParty::LibComponentThirdParty()
+	LibComponentDefault::LibComponentDefault()
 		: Component((UINT)ComponentID)
 	{
 	}
 
-	LibComponentThirdParty::~LibComponentThirdParty()
+	LibComponentDefault::~LibComponentDefault()
 	{
 	}
 
 	// Initialize server component
-	HRESULT LibComponentThirdParty::InitializeComponent()
+	HRESULT LibComponentDefault::InitializeComponent()
 	{
 		HRESULT hr = Component::InitializeComponent();
 		if (FAILED(hr)) return hr;
 
+		srand((UINT)Util::Time.GetRawTimeMs().time_since_epoch().count());
+		Util::Random.Srand(nullptr);
+
 		xmlInitParser();
+
+		LIBXML_TEST_VERSION
 
 		return hr;
 	}
 
 	// Terminate server component
-	void LibComponentThirdParty::TerminateComponent()
+	void LibComponentDefault::TerminateComponent()
 	{
 		Component::TerminateComponent();
 

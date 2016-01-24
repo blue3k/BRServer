@@ -154,6 +154,12 @@ namespace BR {
 		// No Connection is available now. 
 		const int E_SVR_CURL_NO_CONNECTION_AVAILABLE =                      unchecked((int)0xE704002C); 
 
+		// Invalid state transition 
+		const int E_SVR_INVALID_STATE =                                     unchecked((int)0xE704002D); 
+
+		// Invalid state transition 
+		const int E_SVR_INVALID_PURCHASE_MODE =                             unchecked((int)0xE704002E); 
+
 	}
 }
 

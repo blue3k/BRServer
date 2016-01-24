@@ -50,6 +50,8 @@
   <ResultCodeItem Severity="Error" CodeName="CURL_RECV_ERROR" Desc="Network receive failed"/>
   <ResultCodeItem Severity="Error" CodeName="CURL_USE_SSL_FAILED" Desc="Invalid SSL setting."/>
   <ResultCodeItem Severity="Error" CodeName="CURL_NO_CONNECTION_AVAILABLE" Desc="No Connection is available now."/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_STATE" Desc="Invalid state transition"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PURCHASE_MODE" Desc="Invalid purchase environment(public/test)"/>
 
 
 </ResultCodes>

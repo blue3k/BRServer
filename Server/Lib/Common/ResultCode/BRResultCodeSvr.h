@@ -147,5 +147,11 @@
 // No Connection is available now. 
 #define E_SVR_CURL_NO_CONNECTION_AVAILABLE                            ((int32_t)0xE704002CL) 
 
+// Invalid state transition 
+#define E_SVR_INVALID_STATE                                           ((int32_t)0xE704002DL) 
+
+// Invalid state transition 
+#define E_SVR_INVALID_PURCHASE_MODE                                   ((int32_t)0xE704002EL) 
+
 
 

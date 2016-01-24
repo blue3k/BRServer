@@ -37,7 +37,7 @@
 
   <LoginServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
 		<NetPrivate IP="192.168.1.81" Port="2011"/>
-		<NetPublic IP="2602:306:83ac:a940:5c03:8e8a:baf0:59de" Port="21001"/>
+		<NetPublic IP="2602:306:83ac:a940:50a:d6:68bd:a434" Port="21001"/>
 		<NetPublicIPV4 IP="192.168.1.81" Port="21001"/>
 	</LoginServer>
 
@@ -70,7 +70,7 @@
 			<!--<ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>-->
 			<ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
 			<NetPrivate IP="192.168.1.81" Port="10000"/>
-			<NetPublic IP="2602:306:83ac:a940:5c03:8e8a:baf0:59de" Port="11000"/>
+			<NetPublic IP="2602:306:83ac:a940:50a:d6:68bd:a434" Port="11000"/>
 			<NetPublicIPV4 IP="192.168.1.81" Port="11000"/>
 		</Game>
 
@@ -78,7 +78,7 @@
 			<ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
 			<ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
 			<NetPrivate IP="192.168.1.81" Port="10001"/>
-			<NetPublic IP="2602:306:83ac:a940:5c03:8e8a:baf0:59de" Port="11001"/>
+			<NetPublic IP="2602:306:83ac:a940:50a:d6:68bd:a434" Port="11001"/>
 			<NetPublicIPV4 IP="192.168.1.81" Port="11001"/>
 		</Game>
 

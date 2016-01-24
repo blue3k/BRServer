@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 Madk
+// CopyRight (c) 2016 Madk
 // 
 // Author : KyungKun Ko
 //
-// Description : Server constants definitions. 
+// Description : Default library component
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -18,7 +18,7 @@
 namespace BR {
 
 
-	class LibComponentThirdParty : public Component
+	class LibComponentDefault : public Component
 	{
 	public:
 
@@ -30,8 +30,8 @@ namespace BR {
 
 	public:
 
-		LibComponentThirdParty();
-		~LibComponentThirdParty();
+		LibComponentDefault();
+		~LibComponentDefault();
 
 		// Initialize server component
 		virtual HRESULT InitializeComponent() override;

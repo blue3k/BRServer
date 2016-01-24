@@ -50,6 +50,9 @@ namespace BR
 		HRESULT hr = Component::InitializeComponent();
 		if (FAILED(hr)) return hr;
 
+		// initialize exception Handler
+		Trace::InitExceptionHandler();
+
 		//int iMod = 0;
 
 		//for (int iNewMod = 0; iNewMod < Trace::TraceModule::MAX_TRACEMODULE; iNewMod++)

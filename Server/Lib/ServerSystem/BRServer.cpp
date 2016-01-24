@@ -65,35 +65,16 @@ namespace Svr{
 	{
 		SetInstance( this );
 
-		xmlInitParser();
-
 		// main server class has private thread for task
 		SetTickInterval(DurationMS(0));
 
-		// initialize exception Handler
-		Trace::InitExceptionHandler();
-
 		DB::Factory::InitializeDBFactory();
-
-		LIBXML_TEST_VERSION
 	}
 
 
 	BrServer::~BrServer()
 	{
-		//CloseNetPublic();
-		//CloseNetPrivate();
-
 		Util::SafeDelete( m_pLoopbackServerEntity );
-
-		/*
-		* Cleanup function for the XML library.
-		*/
-		xmlCleanupParser();
-		/*
-		* this is to debug memory for regression tests
-		*/
-		xmlMemoryDump();
 
 		DB::Factory::TerminateDBFactory();
 	}
@@ -213,25 +194,6 @@ Proc_End:
 	//	virtual Thread interface
 	//
 
-	// initialize memory pool
-	HRESULT BrServer::InitializeMemoryPool()
-	{
-		HRESULT hr = S_SYSTEM_OK;
-
-	//Proc_End:
-
-		return hr;
-	}
-
-	// Terminate memory pool
-	HRESULT BrServer::TerminateMemoryPool()
-	{
-		HRESULT hr = S_SYSTEM_OK;
-
-	//Proc_End:
-
-		return hr;
-	}
 
 	// Apply configuration
 	HRESULT BrServer::ApplyConfiguration()
@@ -364,8 +326,6 @@ Proc_End:
 	// Initialize server resource
 	HRESULT BrServer::InitializeServerResource()
 	{
-		srand( (UINT)Util::Time.GetRawTimeMs().time_since_epoch().count() );
-		Util::Random.Srand( nullptr );
 		return S_SYSTEM_OK;
 	}
 
@@ -387,15 +347,6 @@ Proc_End:
 		m_ServerUpUTCTIme = Util::Time.GetTimeUTCSec();
 
 		svrTrace( Trace::TRC_TRACE, "Starting Server" );
-
-		svrTrace( Trace::TRC_TRACE, "Initialize Memory" );
-		// Initialize Memory Pool
-		hr = InitializeMemoryPool();
-		if( FAILED(hr) )
-		{
-			svrTrace( Trace::TRC_ERROR, "Failed to Initialize Memory Pool, hr={0:X8}", hr );
-			svrErr( hr );
-		}
 
 		svrTrace( Trace::TRC_TRACE, "Apply configuration" );
 		// Apply configuration
@@ -534,13 +485,6 @@ Proc_End:
 		ClearComponents();
 
 		PerformanceCounterClient::Terminate();
-
-		hr = TerminateMemoryPool();
-		if( FAILED(hr) )
-		{
-			svrTrace( Trace::TRC_ERROR, "Failed to terminate memory pool, hr={0:X8}", hr );
-		}
-
 
 		if( GetMemLogger() )
 		{

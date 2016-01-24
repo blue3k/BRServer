@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) 2013 Blue3k
 // 
 // Author : KyungKun Ko
 //
@@ -84,10 +84,6 @@ namespace Svr {
 		// UID of this server
 		UINT32			m_uiUID;
 
-		// Cluster ID
-		//UINT			m_uiClusterID;
-
-
 		// Network address
 		NetAddress					m_AddrPrivate;
 
@@ -143,6 +139,7 @@ namespace Svr {
 		virtual EntityManager* CreateEntityManager();
 		virtual ServerEntity* CreateLoopbackEntity();
 
+
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	Thread override
@@ -177,7 +174,7 @@ namespace Svr {
 
 		// Get Server state
 		inline ServerState GetServerState();
-		
+
 		// Get Loopback entity
 		inline ServerEntity* GetLoopbackServerEntity();
 
@@ -224,12 +221,6 @@ namespace Svr {
 		//
 		//	virtual interface definition
 		//
-
-		// initialize memory pool
-		virtual HRESULT InitializeMemoryPool();
-
-		// Terminate memory pool
-		virtual HRESULT TerminateMemoryPool();
 
 
 		// Apply configuration

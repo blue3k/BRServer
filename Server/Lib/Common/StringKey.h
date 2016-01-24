@@ -48,10 +48,10 @@ namespace BR
 
 		bool operator == (const StringKey& src) { return GetHash() == src.GetHash() && CompareRawString(src.m_String, src.m_Length) == 0; }
 		bool operator != (const StringKey& src) { return GetHash() != src.GetHash() || CompareRawString(src.m_String, src.m_Length) != 0; }
-		bool operator <= (const StringKey& src) { return GetHash() <= src.GetHash() && CompareRawString(src.m_String, src.m_Length) <= 0; }
-		bool operator >= (const StringKey& src) { return GetHash() >= src.GetHash() && CompareRawString(src.m_String, src.m_Length) >= 0; }
-		bool operator < (const StringKey& src)  { return GetHash() < src.GetHash() && CompareRawString(src.m_String, src.m_Length) < 0; }
-		bool operator > (const StringKey& src)  { return GetHash() > src.GetHash() && CompareRawString(src.m_String, src.m_Length) > 0; }
+		bool operator <= (const StringKey& src) { return GetHash() < src.GetHash() || (GetHash() == src.GetHash() && CompareRawString(src.m_String, src.m_Length) <= 0); }
+		bool operator >= (const StringKey& src) { return GetHash() > src.GetHash() || (GetHash() == src.GetHash() && CompareRawString(src.m_String, src.m_Length) >= 0); }
+		bool operator < (const StringKey& src)  { return GetHash() < src.GetHash() || (GetHash() == src.GetHash() && CompareRawString(src.m_String, src.m_Length) < 0); }
+		bool operator > (const StringKey& src)  { return GetHash() > src.GetHash() || (GetHash() == src.GetHash() && CompareRawString(src.m_String, src.m_Length) > 0); }
 	};
 
 }; // namespace BR

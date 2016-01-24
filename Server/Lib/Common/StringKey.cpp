@@ -63,6 +63,7 @@ namespace BR
 	size_t StringKey::GetHash() const
 	{
 		if (m_Hash != 0) return m_Hash;
+		if (m_String == nullptr) return m_Hash; // Start node of OrderedLinkedList should be 0
 
 		m_Hash = Hash::hash<const char*>()(m_String);
 

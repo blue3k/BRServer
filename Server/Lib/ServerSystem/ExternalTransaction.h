@@ -177,6 +177,8 @@ namespace Svr{
 
 		StaticArray<BYTE,64> m_strTransactionID;
 
+		typedef HTTPExternalTransaction super;
+
 	public:
 
 		HRESULT ToHRESULT(int status);

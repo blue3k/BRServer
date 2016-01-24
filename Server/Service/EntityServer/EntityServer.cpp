@@ -5,14 +5,14 @@
 #include "Common/BrLibComponents.h"
 #include "Common/TimeUtil.h"
 #include "Common/TraceComponent.h"
-#include "EntityServer.h"
+#include "Common/DefaultLibComponent.h"
+#include "Common/MemoryPool.h"
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
-#include "EntityServerClass.h"
-#include "Common/MemoryPool.h"
 #include "ServerSystem/ParameterSetting.h"
 
-#include "Common/MemoryPool.h"
+#include "EntityServer.h"
+#include "EntityServerClass.h"
 
 
 using namespace BR;
@@ -51,6 +51,7 @@ int main(int numArg, const char* argc[])
 
 	svrChk(BR::Svr::Service::ServicePrepare());
 
+	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentDefault>());
 	svrChk(LibComponentManager::GetInstance().AddComponent<LibComponentTrace>());
 	svrChk(LibComponentManager::GetInstance().AddComponent<Util::LibComponentTime>());
 	svrChk(LibComponentManager::GetInstance().AddComponent<MemoryPoolManager>());

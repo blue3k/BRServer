@@ -364,14 +364,14 @@ Proc_End:
 		case 21006:				reason = "This receipt is valid but the subscription has expired. When this status code is returned to your server, the receipt data is also decoded and returned as part of the response.";
 			hr = E_SVR_PURCHASE_CANCELED; break;
 		case 21007:				reason = "This receipt is from the test environment, but it was sent to the production environment for verification. Send it to the test environment instead.";
-			hr = E_SVR_INVALID_PURCHASE_INFO; break;
+			hr = E_SVR_INVALID_PURCHASE_MODE; break;
 		case 21008:				reason = "This receipt is from the production environment, but it was sent to the test environment for verification. Send it to the production environment instead.";
-			hr = E_SVR_INVALID_PURCHASE_INFO; break;
+			hr = E_SVR_INVALID_PURCHASE_MODE; break;
 		default:				reason = "Unknown error code";
 			hr = E_SYSTEM_UNEXPECTED; break;
 		}
 
-		svrTrace(Trace::TRC_ERROR, "IOSAuth Failed: {0}", reason );
+		svrTrace(Trace::TRC_ERROR, "IOS Purchase check Failed: {0}", reason );
 
 		return hr;
 	}
@@ -385,8 +385,6 @@ Proc_End:
 		Json::Value root;
 		Json::Reader reader;
 		bool parsingSuccessful;
-
-		svrChk(HTTPExternalTransaction::StartTransaction());
 
 		svrChkPtr(m_strURL);
 
@@ -512,16 +510,20 @@ Proc_End:
 	{
 		HRESULT hr = S_SYSTEM_OK;
 
+		svrChk(super::StartTransaction());
+
+
 		hr = VerifyReceipt();
-		if (FAILED(hr))
+		if (hr == E_SVR_INVALID_PURCHASE_MODE)
 		{
+			svrTrace(Trace::TRC_TRACE, "IOS receipt query failed with invalid environment retrying with test mode");
 			// try with sand box url
 			m_strURL = "https://sandbox.itunes.apple.com/verifyReceipt";
 			hr = VerifyReceipt();
 		}
 
 
-	//Proc_End:
+	Proc_End:
 
 		CloseTransaction(hr);
 
