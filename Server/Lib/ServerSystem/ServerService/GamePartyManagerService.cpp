@@ -41,7 +41,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGamePartyManager()->CreatePartyCmd( InContext, InRouteContext, InRouteHopCount, InCreator ) );
+			svrChk(GetPolicyGamePartyManager()->CreatePartyCmd( InRouteContext, InContext, InRouteHopCount, InCreator ) );
 
 		Proc_End:
 

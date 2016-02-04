@@ -27,7 +27,7 @@
 
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "ServerSystem/ServerService/GamePartyManagerService.h"
-#include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Protocol/Policy/GameInstanceIPolicy.h"
@@ -157,7 +157,7 @@ namespace GameServer {
 			svrChk(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(GetMyOwner()->GetPartyUID().GetServerID(), pServerEntity));
 			svrChkPtr(pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>());
 
-			svrChk(pPolicy->LeavePartyCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetMyOwner()->GetPlayerID()));
+			svrChk(pPolicy->LeavePartyCmd(RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetPartyUID()), GetTransID(), GetMyOwner()->GetPlayerID()) );
 
 			m_WaitingQueires++;
 		}
@@ -242,7 +242,7 @@ namespace GameServer {
 		insUID = GetGameInsUID();
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
 
-		svrChk( pPolicy->JoinGameCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),insUID),
+		svrChk( pPolicy->JoinGameCmd( RouteContext(GetOwnerEntityUID(),insUID), GetTransID(),
 			GetMyOwner()->GetPlayerInformation(), GetMyOwner()->GetAuthTicket(), GetRequestedRole()));
 
 	Proc_End:
@@ -456,8 +456,8 @@ namespace GameServer {
 
 		svrChkPtr( pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>() );
 
-		svrChk( pPolicy->JoinPartyCmd( GetTransID(), 
-			RouteContext(GetOwnerEntityUID(),GetPartyUID()), GetInviterID(), GetMyOwner()->GetPlayerInformation() ) );
+		svrChk( pPolicy->JoinPartyCmd(RouteContext(GetOwnerEntityUID(), GetPartyUID()), GetTransID(),
+			GetInviterID(), GetMyOwner()->GetPlayerInformation() ) );
 
 	Proc_End:
 
@@ -562,7 +562,7 @@ namespace GameServer {
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetPartyUID().GetServerID(), pServerEntity ) );
 		svrChkPtr( pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>() );
 
-		svrChk( pPolicy->LeavePartyCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), 
+		svrChk( pPolicy->LeavePartyCmd( RouteContext(GetOwnerEntityUID(),GetMyOwner()->GetPartyUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID() ) );
 	
 	Proc_End:
@@ -641,7 +641,7 @@ namespace GameServer {
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetPartyUID().GetServerID(), pServerEntity ) );
 		svrChkPtr( pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameParty>() );
 
-		svrChk( pPolicy->KickPlayerCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),GetPartyUID()), 
+		svrChk( pPolicy->KickPlayerCmd( RouteContext(GetOwnerEntityUID(),GetPartyUID()), GetTransID(),
 			GetMyOwner()->GetPlayerID(), GetPlayerToKick() ) );
 	
 	Proc_End:

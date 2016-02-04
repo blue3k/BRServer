@@ -149,7 +149,7 @@ namespace BR
 			char* curSettingName = bufferPos;
 			svrChk(StrUtil::StringLwrEx(bufferPos, bufferSize, settingName));
 			*bufferPos++ = '\0'; bufferSize--;
-			if (bufferSize < sizeof(LinkedListNode))
+			if (bufferSize < (INT)sizeof(LinkedListNode))
 				return E_SYSTEM_OUTOFMEMORY;
 
 			pNewNode = (LinkedListNode*)bufferPos;

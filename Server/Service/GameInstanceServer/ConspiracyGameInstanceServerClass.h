@@ -65,7 +65,6 @@ namespace ConspiracyGameInstanceServer
 		GameInstanceServer();
 		~GameInstanceServer();
 
-		virtual MemoryAllocator& GetAllocator() override			{ return STDAllocator::GetInstance(); }
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//

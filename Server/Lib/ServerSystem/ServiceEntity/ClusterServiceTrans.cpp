@@ -34,6 +34,11 @@ BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterInitializationTrans);
 BR_MEMORYPOOL_IMPLEMENT(Svr::RequestDataSyncTrans);
 BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterMasterAssignedTrans);
 BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterMasterVoteTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterUpdateStatusTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterUpdateWorkloadTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::GetLowestWorkloadClusterMemberTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterNewServerServiceJoinedC2SEvtTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterNewServerServiceJoinedC2SEvtEntityTrans);
 
 
 
@@ -145,7 +150,7 @@ namespace Svr {
 		svrTrace( Svr::TRC_CLUSTER, "Cluster memberlist query Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		// 2. Get service entity list in the cluster
-		svrChk(pMasterServerEntity->GetPolicy<Policy::IPolicyClusterServer>()->JoinClusterCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), 0, 
+		svrChk(pMasterServerEntity->GetPolicy<Policy::IPolicyClusterServer>()->JoinClusterCmd( RouteContext(GetOwnerEntityUID(),clusterManagerMasterUID), GetTransID(), 0,
 			GetOwnerEntityUID(), netPrivate->GetNetClass(), netPrivate->GetLocalAddress(),
 			GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), membership));
 
@@ -218,7 +223,7 @@ namespace Svr {
 			m_Step = Step_RequestDataSync;
 			svrChk( GetServerComponent<ServerEntityManager>()->GetServerEntity( m_currentMaster.UID.GetServerID(), pServerEntity ) );
 
-			svrChk( pServerEntity->GetPolicy<Policy::IPolicyClusterServer>()->RequestDataSyncCmd( GetTransID(), RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), 0, 
+			svrChk( pServerEntity->GetPolicy<Policy::IPolicyClusterServer>()->RequestDataSyncCmd( RouteContext(GetMyOwner()->GetEntityUID(), m_currentMaster.UID), GetTransID(), 0,
 				GetMyOwner()->GetClusterID() ) );
 		}
 
@@ -416,6 +421,234 @@ namespace Svr {
 	Proc_End:
 
 		CloseTransaction( hr );
+
+		return hr;
+	}
+
+
+	// Start Transaction
+	HRESULT ClusterUpdateStatusTrans::StartTransaction()
+	{
+		HRESULT hr = S_SYSTEM_OK;
+		ServerServiceInformation *pService = nullptr;
+		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
+
+		svrChk(super::StartTransaction());
+
+		if (SUCCEEDED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+		{
+			if (SUCCEEDED(pServiceEntity->FindService(GetSender(), pService)))
+			{
+				pService->SetServiceStatus(GetMemberStatus());
+			}
+			else
+			{
+				svrTrace(Svr::TRC_CLUSTER, "Ignoring update status for ClusterID:{0}, Entity:{1} to {2}, The entity seems not ready.", GetClusterID(), GetSender(), GetMemberStatus());
+			}
+		}
+		else
+		{
+			svrTrace(Svr::TRC_CLUSTER, "Ignoring update status for ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
+		}
+
+	Proc_End:
+
+		if (FAILED(hr))
+		{
+			svrTrace(Svr::TRC_CLUSTER, "Update state is failed ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
+			CloseTransaction(hr);
+		}
+		else
+		{
+			svrTrace(Svr::TRC_CLUSTER, "State is updated ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
+			CloseTransaction(hr);
+		}
+
+		return hr;
+	}
+
+
+	// Start Transaction
+	HRESULT ClusterUpdateWorkloadTrans::StartTransaction()
+	{
+		HRESULT hr = S_SYSTEM_OK;
+		ClusteredServiceEntity* pServiceEntity = nullptr;
+		ServerServiceInformation *pUpdatedService = nullptr;
+
+		svrChk(super::StartTransaction());
+
+		if (GetMyOwner()->GetClusterID() == GetClusterID())
+		{
+			pServiceEntity = GetMyOwner();
+		}
+		else
+		{
+			if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+			{
+				svrTrace(Svr::TRC_CLUSTER, "Ignoring workload update of an unregistered cluster ClusterID:{0} Sender:{1}", GetClusterID(), GetSender());
+				CloseTransaction(hr);
+				goto Proc_End;
+			}
+		}
+
+		hr = pServiceEntity->FindService(GetSender(), pUpdatedService);
+		if (FAILED(hr))
+		{
+			goto Proc_End;
+		}
+
+		pUpdatedService->SetWorkload(GetWorkload());
+
+		// Manual replication is needed while this is not a usual transaction
+		// Hop count 1 is the maximum number with replica clustring model
+		if (GetRouteHopCount() >= 1)
+			goto Proc_End;
+
+		pServiceEntity->ForEach([&](ServerServiceInformation* pService)
+		{
+			if (pService->GetEntityUID() == pUpdatedService->GetEntityUID())
+				return;
+
+			TossMessageToTarget(pService);
+		});
+
+
+	Proc_End:
+
+		if (FAILED(hr))
+		{
+			svrTrace(Trace::TRC_ERROR, "Failed to update workload of unregistered cluster ClusterID:{0}, Sender:{1}", GetClusterID(), GetSender());
+			CloseTransaction(hr);
+		}
+		else
+			CloseTransaction(hr);
+
+		return hr;
+	}
+
+
+
+	// Start Transaction
+	HRESULT GetLowestWorkloadClusterMemberTrans::StartTransaction()
+	{
+		HRESULT hr = S_SYSTEM_OK;
+		ServerServiceInformation *pLowestService = nullptr;
+
+		svrChk(super::StartTransaction());
+
+		GetMyOwner()->ForEachNonWatcher([&](ServerServiceInformation* pService)
+		{
+			if (!pService->IsServiceAvailable()) return;
+
+			if (pLowestService == nullptr || pLowestService->GetWorkload() > pService->GetWorkload())
+				pLowestService = pService;
+
+			return;
+		});
+
+		if (pLowestService == nullptr)
+			svrErrClose(E_SVR_CLUSTER_NOTREADY);
+
+		pLowestService->GetServiceInformation(m_LowestMemberInfo);
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
+
+
+
+	// Start Transaction
+	HRESULT ClusterNewServerServiceJoinedC2SEvtEntityTrans::StartTransaction()
+	{
+		HRESULT hr = S_SYSTEM_OK;
+		ServerServiceInformation *pRequestedService = nullptr;
+		ServerEntity *pSenderEntity = nullptr;
+		ClusteredServiceEntity *pServiceEntity = nullptr;
+
+		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
+		Assert(GetJoinedServiceUID().GetServerID() < 1000);
+
+		svrChk(super::StartTransaction());
+
+		// This transaction is used for two cases. so it's better to query cluster service again
+		if (GetMyOwner()->GetClusterID() == GetClusterID())
+		{
+			pServiceEntity = GetMyOwner();
+		}
+		else
+		{
+			if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+			{
+				svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
+				goto Proc_End;
+			}
+		}
+
+		svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
+
+		svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
+
+
+	Proc_End:
+
+		if (FAILED(hr))
+		{
+			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
+		}
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
+
+
+
+	// Start Transaction
+	HRESULT ClusterNewServerServiceJoinedC2SEvtTrans::StartTransaction()
+	{
+		HRESULT hr = S_SYSTEM_OK;
+		ServerServiceInformation *pRequestedService = nullptr;
+		ServerEntity *pSenderEntity = nullptr;
+		ClusteredServiceEntity *pServiceEntity = nullptr;
+
+		Assert(GetJoinedServiceNetClass() != NetClass::Unknown);
+		Assert(GetJoinedServiceUID().GetServerID() < 1000);
+
+		svrChk(super::StartTransaction());
+
+		if (GetClusterID() != ClusterID::ClusterManager || GetJoinedServiceNetClass() == NetClass::Entity)
+		{
+			// This transaction is used for two cases. so it's better to query cluster service again
+			if (GetMyOwner()->GetClusterID() == GetClusterID())
+			{
+				pServiceEntity = GetMyOwner();
+			}
+			else
+			{
+				if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+				{
+					svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
+					goto Proc_End;
+				}
+			}
+
+			svrChk(GetServerComponent<ServerEntityManager>()->GetOrRegisterServer(GetJoinedServiceUID().GetServerID(), GetJoinedServiceNetClass(), GetJoinedServiceAddress(), pSenderEntity));
+
+			svrChk(pServiceEntity->NewServerService(GetJoinedServiceUID(), pSenderEntity, GetJoinedServiceMembership(), ServiceStatus::Online, pRequestedService));
+		}
+
+
+	Proc_End:
+
+		if (FAILED(hr))
+		{
+			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
+		}
+
+		CloseTransaction(hr);
 
 		return hr;
 	}

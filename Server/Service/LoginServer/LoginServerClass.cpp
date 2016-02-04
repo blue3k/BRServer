@@ -38,7 +38,6 @@
 #include "Net/NetServerUDP.h"
 
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/LoginClusterServiceEntity.h"
 
 #include "LoginSvrConst.h"
 #include "LoginServerClass.h"
@@ -148,7 +147,6 @@ namespace LoginServer {
 	HRESULT LoginServer::InitializeNetPrivate()
 	{
 		HRESULT hr = S_SYSTEM_OK;
-		Svr::LoginClusterServiceEntity *pLoginService = nullptr;
 		Svr::ClusteredServiceEntity *pClusteredEntity = nullptr;
 		SockFamily privateNetSockFamily;
 
@@ -172,22 +170,16 @@ namespace LoginServer {
 		}
 
 		// Account DB
-		svrChk( InitializeDBCluster<DB::AccountDB>(Svr::Config::GetConfig().AccountDB) );
+		svrChk(AddDBCluster<DB::AccountDB>(Svr::Config::GetConfig().AccountDB) );
 
 		// Session DB initialize
-		svrChk( InitializeDBCluster<DB::LoginSessionDB>(Svr::Config::GetConfig().LoginSessionDB) );
+		svrChk(AddDBCluster<DB::LoginSessionDB>(Svr::Config::GetConfig().LoginSessionDB) );
 
 		// Register game clusters, so that login server can monitor game servers status
 		for( ClusterID gameCluster = (ClusterID)((UINT)ClusterID::Game + 1); gameCluster < ClusterID::Game_Max; gameCluster++ )
 		{
 			svrChk( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->CreateWatcherForCluster( gameCluster, ClusterType::Shard, pClusteredEntity ) );
 		}
-
-		// Local slave entity manager service
-		svrMem( pLoginService = new Svr::LoginClusterServiceEntity(ClusterMembership::Slave) );
-		svrChk( GetMyServer()->GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pLoginService ) );
-		svrChk( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pLoginService ) );
-		GetMyServer()->AddComponent(pLoginService);
 
 		// push Startup transaction
 		{
@@ -231,7 +223,7 @@ namespace LoginServer {
 
 		svrMem(m_pNetPublic = new Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
 
-		svrChk( m_pNetPublic->HostOpen( GetNetClass(), pMyConfog->NetPublic->IP.c_str(), pMyConfog->NetPublic->Port ) );
+		svrChk( m_pNetPublic->HostOpen( GetNetClass(), pMyConfog->NetPublic->IPV6.c_str(), pMyConfog->NetPublic->Port ) );
 
 
 	Proc_End:

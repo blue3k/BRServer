@@ -54,6 +54,25 @@ namespace Svr {
 		, m_IsInVoting(false)
 		, m_Initialized(false)
 	{
+		if (BrServer::GetInstance()->GetNetClass() == NetClass::Entity)
+		{
+			//BR_ENTITY_MESSAGE(Message::ClusterServer::GetClusterMemberListCmd) { svrMemReturn(pNewTrans = new ClusterGetMemberListTrans(pMsgData)); return S_SYSTEM_OK; } );
+			//BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd) { svrMemReturn(pNewTrans = new JoinClusterTransForEntityServer(pMsgData)); return S_SYSTEM_OK; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::GetLowestWorkloadClusterMemberCmd) { svrMemReturn(pNewTrans = new GetLowestWorkloadClusterMemberTrans(pMsgData)); return S_SYSTEM_OK; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt) { svrMemReturn(pNewTrans = new ClusterNewServerServiceJoinedC2SEvtEntityTrans(pMsgData)); return S_SYSTEM_OK; } );
+		}
+		else
+		{
+			//BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd) { svrMemReturn(pNewTrans = new JoinClusterTrans(pMsgData)); return S_SYSTEM_OK; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt) { svrMemReturn(pNewTrans = new ClusterNewServerServiceJoinedC2SEvtTrans(pMsgData)); return S_SYSTEM_OK; } );
+		}
+		//BR_ENTITY_MESSAGE(Message::ClusterServer::SyncClusterServiceC2SEvt) { svrMemReturn(pNewTrans = new SyncClusterServiceTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterAssignedS2CEvt) { svrMemReturn(pNewTrans = new ClusterMasterAssignedTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterVoteC2SEvt) { svrMemReturn(pNewTrans = new ClusterMasterVoteTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::RequestDataSyncCmd) { svrMemReturn(pNewTrans = new RequestDataSyncTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateStatusC2SEvt) { svrMemReturn(pNewTrans = new ClusterUpdateStatusTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateWorkloadC2SEvt) { svrMemReturn(pNewTrans = new ClusterUpdateWorkloadTrans(pMsgData)); return S_SYSTEM_OK; } );
+
 	}
 
 	ClusteredServiceEntity::~ClusteredServiceEntity()

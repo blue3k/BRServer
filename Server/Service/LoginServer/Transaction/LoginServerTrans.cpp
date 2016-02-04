@@ -20,7 +20,6 @@
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/LoginClusterServiceEntity.h"
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/MessageRoute.h"
@@ -91,13 +90,8 @@ namespace LoginServer {
 	HRESULT LoginServerStartProcess::InitializeServices()
 	{
 		HRESULT hr = S_SYSTEM_OK;
-		//Svr::LoginClusterServiceEntity *pLoginService = nullptr;
 
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
-
-		//svrChkPtr( pLoginService = Svr::GetServerComponent<Svr::LoginClusterServiceEntity>() );
-		//pLoginService->StartInitializeTransaction();
-
 
 	Proc_End:
 

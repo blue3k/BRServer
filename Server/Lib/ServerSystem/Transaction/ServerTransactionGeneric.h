@@ -77,14 +77,6 @@ namespace Svr {
 
 					svrTrace( Trace::TRC_ASSERT, "Error, Duplicated ServerID:{0} : Already from : {1}:{2}, New {3}:{4}", super::GetRouteContext().GetFrom().GetServerID(), pAlreadyConn->GetCID(), AlreadyAddr, pMyConn->GetCID(), MyAddr );
 				}
-				else
-				{
-					super::GetMyOwner()->SetPublicNetAddress(super::GetPublicAddress() );
-				}
-			}
-			else
-			{
-				super::GetMyOwner()->SetPublicNetAddress(super::GetPublicAddress() );
 			}
 
 			super::GetMyOwner()->SetPrivateNetAddress(super::GetPrivateAddress());

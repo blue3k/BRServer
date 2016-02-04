@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: 
-		HRESULT NetPolicyServer::GenericFailureCmd( const Context &InContext, const RouteContext &InRouteContext )
+		HRESULT NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const Context &InContext )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Server::GenericFailureCmd::BuildIMsg(pMsg, InContext, InRouteContext));
+			 protocolChk(Message::Server::GenericFailureCmd::BuildIMsg(pMsg, InRouteContext, InContext));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,15 +44,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyServer::GenericFailureCmd( const Context &InContext, const RouteContext &InRouteContext )
+		}; // HRESULT NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const Context &InContext )
 		// C2S: Server Started or Connected
-		HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+		HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Server::ServerConnectedC2SEvt::BuildIMsg(pMsg, InRouteContext, InClusterManagerServiceInformation, InStartUpTime, InPublicAddress, InPrivateAddress));
+			 protocolChk(Message::Server::ServerConnectedC2SEvt::BuildIMsg(pMsg, InRouteContext, InClusterManagerServiceInformation, InStartUpTime, InPrivateAddress));
 
 			 protocolChkPtr(GetConnection());
 
@@ -62,17 +62,17 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+		}; // HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
 
 
 		// Cmd: 
-		HRESULT NetSvrPolicyServer::GenericFailureRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Server::GenericFailureRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::Server::GenericFailureRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -82,7 +82,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyServer::GenericFailureRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 
 
 	}; // namespace Policy

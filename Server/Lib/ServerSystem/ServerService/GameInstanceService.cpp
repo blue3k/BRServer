@@ -54,7 +54,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->JoinGameCmd( InContext, InRouteContext, InPlayer, InTicket, InRequestedRole ) );
+			svrChk(GetPolicyGameInstance()->JoinGameCmd( InRouteContext, InContext, InPlayer, InTicket, InRequestedRole ) );
 
 		Proc_End:
 
@@ -81,7 +81,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->LeaveGameCmd( InContext, InRouteContext, InPlayerID ) );
+			svrChk(GetPolicyGameInstance()->LeaveGameCmd( InRouteContext, InContext, InPlayerID ) );
 
 		Proc_End:
 
@@ -95,7 +95,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->KickPlayerCmd( InContext, InRouteContext, InPlayerID, InPlayerToKick ) );
+			svrChk(GetPolicyGameInstance()->KickPlayerCmd( InRouteContext, InContext, InPlayerID, InPlayerToKick ) );
 
 		Proc_End:
 
@@ -109,7 +109,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->AssignRoleCmd( InContext, InRouteContext, InPlayerID ) );
+			svrChk(GetPolicyGameInstance()->AssignRoleCmd( InRouteContext, InContext, InPlayerID ) );
 
 		Proc_End:
 
@@ -136,7 +136,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->AdvanceGameCmd( InContext, InRouteContext, InPlayerID ) );
+			svrChk(GetPolicyGameInstance()->AdvanceGameCmd( InRouteContext, InContext, InPlayerID ) );
 
 		Proc_End:
 
@@ -150,7 +150,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->VoteGameAdvanceCmd( InContext, InRouteContext, InPlayerID ) );
+			svrChk(GetPolicyGameInstance()->VoteGameAdvanceCmd( InRouteContext, InContext, InPlayerID ) );
 
 		Proc_End:
 
@@ -164,7 +164,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->VoteCmd( InContext, InRouteContext, InPlayerID, InVoteTarget, InActionSerial ) );
+			svrChk(GetPolicyGameInstance()->VoteCmd( InRouteContext, InContext, InPlayerID, InVoteTarget, InActionSerial ) );
 
 		Proc_End:
 
@@ -178,7 +178,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->GamePlayAgainCmd( InContext, InRouteContext, InLeadPlayer, InPartyUID ) );
+			svrChk(GetPolicyGameInstance()->GamePlayAgainCmd( InRouteContext, InContext, InLeadPlayer, InPartyUID ) );
 
 		Proc_End:
 
@@ -192,7 +192,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->GameRevealPlayerCmd( InContext, InRouteContext, InPlayerID, InTargetPlayerID ) );
+			svrChk(GetPolicyGameInstance()->GameRevealPlayerCmd( InRouteContext, InContext, InPlayerID, InTargetPlayerID ) );
 
 		Proc_End:
 
@@ -206,7 +206,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->GamePlayerReviveCmd( InContext, InRouteContext, InPlayerID ) );
+			svrChk(GetPolicyGameInstance()->GamePlayerReviveCmd( InRouteContext, InContext, InPlayerID ) );
 
 		Proc_End:
 

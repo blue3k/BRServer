@@ -50,9 +50,6 @@ namespace Svr {
 		typedef TransactionT<OwnerEntityType, MemoryPoolClass, MessageHandlerBufferSize> superTrans;
 
 	protected:
-		// Route entity
-		Svr::ServerEntity	*m_ServerEntity;
-
 		// Select which entity will work
 		bool				m_WorkOnServerEntity;
 
@@ -60,7 +57,6 @@ namespace Svr {
 		ServerEntityMessageTransaction( Message::MessageData* &pIMsg )
 			:superTrans( TransactionID() )
 			,MessageClass( pIMsg )
-			,m_ServerEntity(nullptr)
 			,m_WorkOnServerEntity(true)
 		{
 		}
@@ -95,6 +91,9 @@ namespace Svr {
 			return hr;
 		}
 
+		// route function call
+		ServerEntity* GetServerEntity() { return superTrans::GetServerEntity(); }
+
 		// Initialize Transaction
 		virtual HRESULT InitializeTransaction( Svr::Entity* pOwner )
 		{
@@ -104,7 +103,8 @@ namespace Svr {
 
 			svrChk(ParseMessage());
 
-			svrChkPtr( m_ServerEntity = dynamic_cast<Svr::ServerEntity*>(pOwner) );
+			assert(superTrans::GetServerEntity() != nullptr);
+			svrChkPtr(superTrans::GetServerEntity());
 
 			if( m_WorkOnServerEntity )
 			{
@@ -115,15 +115,18 @@ namespace Svr {
 			{
 				if(MessageClass::HasRouteContext)
 				{
-					SharedPointerT<Entity> pEntity;
-					if (FAILED(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity)))
-					{
-						svrTrace(Trace::TRC_ERROR, "Target entity:{0} for transaction:{1} is not found", MessageClass::GetRouteContext().GetTo(), typeid(*this).name());
-						hr = E_SVR_INVALID_ENTITYUID;
-						goto Proc_End;
-					}
-					svrAssert(dynamic_cast<OwnerEntityType*>((Entity*)pEntity));
-					svrChk(superTrans::InitializeTransaction((Entity*)pEntity));
+					assert(pOwner->GetEntityUID() == MessageClass::GetRouteContext().GetTo());
+					svrAssert(dynamic_cast<OwnerEntityType*>(pOwner));
+					svrChk(superTrans::InitializeTransaction(pOwner));
+					//SharedPointerT<Entity> pEntity;
+					//if (FAILED(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity)))
+					//{
+					//	svrTrace(Trace::TRC_ERROR, "Target entity:{0} for transaction:{1} is not found", MessageClass::GetRouteContext().GetTo(), typeid(*this).name());
+					//	hr = E_SVR_INVALID_ENTITYUID;
+					//	goto Proc_End;
+					//}
+					//svrAssert(dynamic_cast<OwnerEntityType*>((Entity*)pEntity));
+					//svrChk(superTrans::InitializeTransaction((Entity*)pEntity));
 				}
 				else
 				{
@@ -145,7 +148,7 @@ namespace Svr {
 		ServerEntityType *GetServerEntity()
 		{
 			ServerEntityType *pSvrEnt = nullptr;
-			pSvrEnt = dynamic_cast<ServerEntityType*>(m_ServerEntity);
+			pSvrEnt = dynamic_cast<ServerEntityType*>(superTrans::GetServerEntity());
 			Assert(pSvrEnt);
 			return pSvrEnt;
 		}
@@ -154,7 +157,7 @@ namespace Svr {
 		PolicyType* GetPolicy()
 		{
 			SharedPointerT<Net::Connection> pConn;
-			m_ServerEntity->GetConnectionShared(pConn);
+			superTrans::GetServerEntity()->GetConnectionShared(pConn);
 			if (pConn != nullptr)
 				return pConn->GetPolicy<PolicyType>();
 			else

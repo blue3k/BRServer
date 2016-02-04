@@ -124,7 +124,7 @@ namespace Svr{
 		HRESULT SetParameters( const char* strRegID, const char* strMessage, UINT64 param0 );
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction( Entity* pOwner );
+		virtual HRESULT InitializeTransaction(Entity* pOwner );
 
 		// Start Transaction
 		virtual HRESULT StartTransaction();

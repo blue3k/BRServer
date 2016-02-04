@@ -71,6 +71,9 @@ namespace Svr {
 
 		void UpdateWorkingThreadID(ThreadID threadID);
 
+
+		//virtual HRESULT OnRoutedMessage(Message::MessageData* &pMsg) override { assert(false); return E_SYSTEM_NOTIMPL; }
+
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Event task handling
 

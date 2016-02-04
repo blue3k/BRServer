@@ -316,7 +316,20 @@ namespace BR
 
 		// enumerate the values
 		HRESULT ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
-		HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+
+		template<class Func>
+		HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, Func functor)
+		{
+			auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % countof(m_ReadCount);
+			ScopeCounter localCounter(m_ReadCount[readIdx]);
+
+			m_CurReadRoot = m_ReadRoot.load(std::memory_order_acquire);
+			auto readRoot = (MapNode*)m_CurReadRoot;
+			if (readRoot == nullptr)
+				return E_SYSTEM_FAIL;
+
+			return ForeachReverseOrder(readRoot, startOrderIndex, count, functor);
+		}
 
 		//
 		HRESULT ForeachOrderWrite(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
@@ -334,8 +347,106 @@ namespace BR
 		MapNode* FindBiggestNodeRead(OperationTraversalHistory &travelHistory, MapNode* pRootNode);
 
 		HRESULT ForeachOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
-		HRESULT ForeachReverseOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
 
+		template<class Func>
+		HRESULT ForeachReverseOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, Func functor)
+		{
+			if (pRootNode == nullptr)
+				return S_SYSTEM_OK;
+
+			OperationTraversalHistory travelHistory(pRootNode, m_ReadItemCount);
+
+			MapNode* pCurNode = pRootNode;
+			if (pCurNode == nullptr)
+			{
+				return S_SYSTEM_OK;
+			}
+
+			travelHistory.Clear();
+			travelHistory.SetConserveDataOnResize(true);
+
+			// find start point
+			do
+			{
+				travelHistory.AddHistory(pCurNode);
+
+				auto left = pCurNode->Left.load();
+				auto leftNumChildren = left != nullptr ? left->NumberOfChildren : -1;
+				if (leftNumChildren >= startOrderIndex)
+				{
+					pCurNode = left;
+				}
+				else
+				{
+					if (leftNumChildren >= 0)
+					{
+						startOrderIndex -= leftNumChildren + 1;
+					}
+					if (startOrderIndex == 0) // current node is the start point
+						break;
+
+					startOrderIndex--;
+					auto right = pCurNode->Right.load();
+					pCurNode = right;
+				}
+
+			} while (pCurNode != nullptr);
+
+			if (pCurNode == nullptr)
+			{
+				return S_SYSTEM_OK;
+			}
+
+
+			// interate
+			do
+			{
+				if (!functor(pCurNode->Key, pCurNode->Value))
+					break;
+
+				count--;
+				if (count == 0)
+					break;
+
+				auto right = pCurNode->Right.load();
+				if (right != nullptr)
+				{
+					pCurNode = FindSmallestNodeRead(travelHistory, right);
+				}
+				else // this is a leap node pop up
+				{
+					travelHistory.RemoveLastHistory();
+					MapNode* parent = nullptr;
+					do
+					{
+						parent = travelHistory.GetLastHistory();
+						if (parent == nullptr)
+						{
+							// nothing to process
+							pCurNode = nullptr;
+							break;
+						}
+
+						if (pCurNode == parent->Right.load())
+						{
+							travelHistory.RemoveLastHistory();
+						}
+						else
+						{
+							pCurNode = parent;
+							break;
+						}
+
+						pCurNode = parent;
+
+					} while (parent != nullptr);
+				}
+
+			} while (pCurNode != nullptr);
+
+
+			return S_SYSTEM_OK;
+		}
 		//RoateLeft(pNode);
 		// Update valance factor and return new balance value
 		void FixupBalance(OperationTraversalHistory &travelHistory);

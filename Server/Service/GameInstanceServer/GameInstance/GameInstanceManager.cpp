@@ -82,21 +82,6 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
-	// Called when a game instance is deleted
-	HRESULT GameInstanceManagerServiceEntity::FreeGameInstance( GameInsUID gameUID )
-	{
-		HRESULT hr = S_SYSTEM_OK;
-
-		if (SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(gameUID.GetEntityID())))
-		{
-			--m_NumberOfInstance;
-			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
-		}
-
-	//Proc_End:
-
-		return hr;
-	}
 
 	
 	HRESULT GameInstanceManagerServiceEntity::RegisterServiceMessageHandler( Svr::ServerEntity *pServerEntity )

@@ -41,8 +41,8 @@ namespace BR
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				Context m_Context;
 				RouteContext m_RouteContext;
+				Context m_Context;
 				PlayerID m_PlayerID;
 				AuthTicket m_Ticket;
 				FacebookUID m_FBUserID;
@@ -57,8 +57,8 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const Context& GetContext() const	{ return m_Context; };
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const Context& GetContext() const	{ return m_Context; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
 				const FacebookUID& GetFBUserID() const	{ return m_FBUserID; };
@@ -68,7 +68,7 @@ namespace BR
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 
@@ -92,9 +92,9 @@ namespace BR
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
+				RouteContext m_RouteContext;
 				Context m_Context;
 				HRESULT m_Result;
-				RouteContext m_RouteContext;
 				NetAddress m_PublicAddress;
 				NetAddress m_PublicAddressIPV4;
 			public:
@@ -107,9 +107,9 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const Context& GetContext() const	{ return m_Context; };
 				const HRESULT& GetResult() const	{ return m_Result; };
-				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const NetAddress& GetPublicAddress() const	{ return m_PublicAddress; };
 				const NetAddress& GetPublicAddressIPV4() const	{ return m_PublicAddressIPV4; };
 
@@ -117,7 +117,7 @@ namespace BR
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 
@@ -141,8 +141,8 @@ namespace BR
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				Context m_Context;
 				RouteContext m_RouteContext;
+				Context m_Context;
 				PlayerID m_PlayerID;
 				AuthTicket m_Ticket;
 				FacebookUID m_FBUserID;
@@ -156,8 +156,8 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const Context& GetContext() const	{ return m_Context; };
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const Context& GetContext() const	{ return m_Context; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
 				const FacebookUID& GetFBUserID() const	{ return m_FBUserID; };
@@ -166,7 +166,7 @@ namespace BR
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 
@@ -190,9 +190,9 @@ namespace BR
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
+				RouteContext m_RouteContext;
 				Context m_Context;
 				HRESULT m_Result;
-				RouteContext m_RouteContext;
 			public:
 				RegisterPlayerToJoinGameServerOnPlayerEntityRes()
 					{}
@@ -203,15 +203,15 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const Context& GetContext() const	{ return m_Context; };
 				const HRESULT& GetResult() const	{ return m_Result; };
-				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 

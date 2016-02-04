@@ -38,6 +38,11 @@ namespace XML {
 		RemoveAllChildren();
 	}
 
+	void DOMElement::SetName(const char* Name)
+	{
+		m_Name = Name;
+	}
+
 	// Get child element by name
 	DOMElement* DOMElement::GetChildElement( const std::string& childName )
 	{
@@ -190,6 +195,7 @@ namespace XML {
 			if( !pNewElement->SetAttributeValue( (char*)attName, value ) )
 			{
 				defTrace( Trace::TRC_ERROR, "Invalid XML Element:{0}, Att:{1}", (const char*)localname, (const char*)attName );
+				Assert(false);
 			}
 		}
 

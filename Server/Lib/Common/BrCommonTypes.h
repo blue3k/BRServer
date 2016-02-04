@@ -24,7 +24,8 @@ namespace BR {
 	enum class GameID : UINT16
 	{
 		Invalid,				// Not used
-		Conspiracy,
+		Conspiracy,				// Conspiracy
+		Game,					// Generic game
 	};
 
 	// Notification message

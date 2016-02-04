@@ -146,7 +146,7 @@ namespace Svr
 	}
 
 	// Initialize Transaction
-	HRESULT GCMHttpExternalTransaction::InitializeTransaction( Entity* pOwner )
+	HRESULT GCMHttpExternalTransaction::InitializeTransaction(Entity* pOwner )
 	{
 		HRESULT hr = S_SYSTEM_OK;
 

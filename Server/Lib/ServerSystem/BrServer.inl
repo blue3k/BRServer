@@ -119,6 +119,14 @@ componentType* GetServerComponent(UINT componentID)
 	return BrServer::GetInstance()->GetComponent<componentType>(componentID);
 }
 
+template< class ComponentType >
+HRESULT AddServerComponent(ComponentType* &newComponent)
+{
+	if (BrServer::GetInstance() == nullptr) return E_SYSTEM_UNEXPECTED;
+	return BrServer::GetInstance()->AddComponent(newComponent);
+}
+
+
 
 // Get Remote Entity Manager
 ServerEntity* GetLoopbackServerEntity()
@@ -130,15 +138,19 @@ ServerEntity* GetLoopbackServerEntity()
 
 
 template<class DBManagerType>
-HRESULT BrServer::InitializeDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
+HRESULT BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 {
 	HRESULT hr = S_SYSTEM_OK;
-	//Svr::ServerEntity *pEntity = nullptr;
 	DB::QueryManager* pDBManager = nullptr;
 	DBManagerType *pDB = nullptr;
 
 	if (pDBClusterCfg == nullptr)
 		return E_SYSTEM_UNEXPECTED;
+
+	// Just add it once
+	if (GetComponent<DBManagerType>() != nullptr)
+		return S_SYSTEM_FALSE;
+
 
 	auto& DBinstances = Svr::Config::GetConfig().DBInstances;
 	auto& DBMembers = pDBClusterCfg->DBMembers;

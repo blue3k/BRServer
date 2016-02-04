@@ -30,9 +30,9 @@ namespace BR
 			{}
 
 			// Cmd: 
-			HRESULT GenericFailureCmd( const Context &InContext, const RouteContext &InRouteContext );
+			HRESULT GenericFailureCmd( const RouteContext &InRouteContext, const Context &InContext );
 			// C2S: Server Started or Connected
-			HRESULT ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress );
+			HRESULT ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress );
 
 		}; // class NetPolicyServer : public IPolicyServer
 
@@ -45,7 +45,7 @@ namespace BR
 			{}
 
 			// Cmd: 
-			HRESULT GenericFailureRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext );
+			HRESULT GenericFailureRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult );
 
 		}; // class NetSvrPolicyServer : public ISvrPolicyServer
 

@@ -26,7 +26,7 @@
 
 #include "ServerSystem/ServerService/PartyMatchingQueueService.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 
@@ -193,7 +193,7 @@ namespace GameServer {
 			Policy::IPolicyPartyMatchingQueue *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyPartyMatchingQueue>(pOwner->GetMatchingTicket().QueueUID.GetServerID());
 			if (pPolicy != nullptr)
 			{
-				if(SUCCEEDED(pPolicy->UnregisterMatchingCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), pOwner->GetMatchingTicket().QueueUID), 0, pOwner->GetMatchingTicket())))
+				if(SUCCEEDED(pPolicy->UnregisterMatchingCmd(RouteContext(GetOwnerEntityUID(), pOwner->GetMatchingTicket().QueueUID), GetTransID(), 0, pOwner->GetMatchingTicket())))
 					m_WaitingTransactions++;
 			}
 		}
@@ -203,7 +203,7 @@ namespace GameServer {
 			Policy::IPolicyGameParty *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameParty>(pOwner->GetPartyUID().GetServerID());
 			if (pPolicy != nullptr)
 			{
-				if (SUCCEEDED(pPolicy->LeavePartyCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), pOwner->GetPartyUID()), pOwner->GetPlayerID())))
+				if (SUCCEEDED(pPolicy->LeavePartyCmd(RouteContext(GetOwnerEntityUID(), pOwner->GetPartyUID()), GetTransID(), pOwner->GetPlayerID())))
 					m_WaitingTransactions++;
 			}
 		}
@@ -213,7 +213,7 @@ namespace GameServer {
 			Policy::IPolicyGameInstance *pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(pOwner->GetGameInsUID().GetServerID());
 			if (pPolicy != nullptr)
 			{
-				if (SUCCEEDED(pPolicy->LeaveGameCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), pOwner->GetGameInsUID()), pOwner->GetPlayerID())))
+				if (SUCCEEDED(pPolicy->LeaveGameCmd(RouteContext(GetOwnerEntityUID(), pOwner->GetGameInsUID()), GetTransID(), pOwner->GetPlayerID())))
 					m_WaitingTransactions++;
 			}
 		}

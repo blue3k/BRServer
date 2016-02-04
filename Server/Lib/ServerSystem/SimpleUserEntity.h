@@ -100,6 +100,10 @@ namespace Svr {
 		inline void SetAuthTicket( AuthTicket authTicket );
 
 
+		// Called when this entity have a routed message
+		//virtual HRESULT OnRoutedMessage(Message::MessageData* &pMsg) override;
+
+
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		// Overriding IConnectionEventHandler
 		virtual void OnConnectionEvent(Net::IConnection* pConn, const Net::IConnection::Event& evt) override;

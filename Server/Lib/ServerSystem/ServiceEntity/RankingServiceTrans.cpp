@@ -28,7 +28,7 @@
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServiceEntity/RankingServiceTrans.h"
 #include "ServerSystem/ServiceEntity/RankingServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GameInstanceManagerServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
 

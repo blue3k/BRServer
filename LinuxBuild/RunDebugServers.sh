@@ -15,10 +15,10 @@ sleep 2s
 
 sleep 4s
 
-./BRLoginServer  -n:BRLoginServer01&
+./BRModuleServer  -n:BRLoginServer01&
 
 
-./BRSharedModuleServer -n:BRMatchingQueue01&
+./BRModuleServer -n:BRMatchingQueue01&
 
 
 sleep 1s

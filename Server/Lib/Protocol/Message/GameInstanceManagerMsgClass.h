@@ -41,8 +41,8 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				Context m_Context;
 				RouteContext m_RouteContext;
+				Context m_Context;
 				UINT16 m_RouteHopCount;
 				UINT16 m_NumberOfBotPlayer;
 				UINT16 m_MaxPlayer;
@@ -56,8 +56,8 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const Context& GetContext() const	{ return m_Context; };
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const Context& GetContext() const	{ return m_Context; };
 				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const UINT16& GetNumberOfBotPlayer() const	{ return m_NumberOfBotPlayer; };
 				const UINT16& GetMaxPlayer() const	{ return m_MaxPlayer; };
@@ -66,7 +66,7 @@ namespace BR
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 
@@ -92,9 +92,9 @@ namespace BR
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
+				RouteContext m_RouteContext;
 				Context m_Context;
 				HRESULT m_Result;
-				RouteContext m_RouteContext;
 			public:
 				CreateGameRes()
 					{}
@@ -105,15 +105,15 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const Context& GetContext() const	{ return m_Context; };
 				const HRESULT& GetResult() const	{ return m_Result; };
-				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext );
+				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult );
 
 				HRESULT OverrideRouteContextDestination( EntityUID to );
 

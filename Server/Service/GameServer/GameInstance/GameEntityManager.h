@@ -36,6 +36,7 @@ namespace GameServer {
 	class GameEntityManager : public Svr::EntityManager
 	{
 	public:
+		typedef Svr::EntityManager super;
 
 	private:
 		Svr::PerformanceCounterRaw < UINT64 > m_NumberOfPlayers;
@@ -51,9 +52,10 @@ namespace GameServer {
 		// TickTask add/remove proving
 		//
 
+		virtual HRESULT CreateEntity(ClusterID clusterID, EntityFaculty faculty, Svr::Entity* &pEntity) override;
 
 		// Create new game instance
-		HRESULT CreateGamePlayer( PlayerID playerID, GamePlayerEntity* &pGamePlayer );
+		//HRESULT CreateGamePlayer( PlayerID playerID, GamePlayerEntity* &pGamePlayer );
 
 		virtual void OnEntityAdded(Svr::Entity* pEntity) override;
 		virtual void OnEntityRemoved(Svr::Entity* pEntity) override;

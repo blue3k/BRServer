@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Join Party
-		HRESULT NetPolicyGameParty::JoinPartyCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
+		HRESULT NetPolicyGameParty::JoinPartyCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::JoinPartyCmd::BuildIMsg(pMsg, InContext, InRouteContext, InInviterID, InInvitedPlayer));
+			 protocolChk(Message::GameParty::JoinPartyCmd::BuildIMsg(pMsg, InRouteContext, InContext, InInviterID, InInvitedPlayer));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,15 +44,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameParty::JoinPartyCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
+		}; // HRESULT NetPolicyGameParty::JoinPartyCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
 		// Cmd: Kick player
-		HRESULT NetPolicyGameParty::LeavePartyCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
+		HRESULT NetPolicyGameParty::LeavePartyCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::LeavePartyCmd::BuildIMsg(pMsg, InContext, InRouteContext, InPlayerID));
+			 protocolChk(Message::GameParty::LeavePartyCmd::BuildIMsg(pMsg, InRouteContext, InContext, InPlayerID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -62,15 +62,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameParty::LeavePartyCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
+		}; // HRESULT NetPolicyGameParty::LeavePartyCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID )
 		// Cmd: Kick player
-		HRESULT NetPolicyGameParty::KickPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		HRESULT NetPolicyGameParty::KickPlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::KickPlayerCmd::BuildIMsg(pMsg, InContext, InRouteContext, InPlayerID, InPlayerToKick));
+			 protocolChk(Message::GameParty::KickPlayerCmd::BuildIMsg(pMsg, InRouteContext, InContext, InPlayerID, InPlayerToKick));
 
 			 protocolChkPtr(GetConnection());
 
@@ -80,7 +80,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameParty::KickPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		}; // HRESULT NetPolicyGameParty::KickPlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		// C2S: Chatting message
 		HRESULT NetPolicyGameParty::ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const char* InChatMessage )
 		{
@@ -118,13 +118,13 @@ namespace BR
 
 		}; // HRESULT NetPolicyGameParty::QuickChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InQuickChatID )
 		// Cmd: Match
-		HRESULT NetPolicyGameParty::StartGameMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
+		HRESULT NetPolicyGameParty::StartGameMatchCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::StartGameMatchCmd::BuildIMsg(pMsg, InContext, InRouteContext, InPlayerID, InMaxGamePlayers));
+			 protocolChk(Message::GameParty::StartGameMatchCmd::BuildIMsg(pMsg, InRouteContext, InContext, InPlayerID, InMaxGamePlayers));
 
 			 protocolChkPtr(GetConnection());
 
@@ -134,15 +134,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameParty::StartGameMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
+		}; // HRESULT NetPolicyGameParty::StartGameMatchCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
 		// Cmd: Match
-		HRESULT NetPolicyGameParty::CancelGameMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
+		HRESULT NetPolicyGameParty::CancelGameMatchCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::CancelGameMatchCmd::BuildIMsg(pMsg, InContext, InRouteContext, InPlayerID));
+			 protocolChk(Message::GameParty::CancelGameMatchCmd::BuildIMsg(pMsg, InRouteContext, InContext, InPlayerID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -152,17 +152,17 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameParty::CancelGameMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID )
+		}; // HRESULT NetPolicyGameParty::CancelGameMatchCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID )
 
 
 		// Cmd: Join Party
-		HRESULT NetSvrPolicyGameParty::JoinPartyRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
+		HRESULT NetSvrPolicyGameParty::JoinPartyRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::JoinPartyRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext, InPartyLeaderID, InChatHistoryData));
+			 protocolChk(Message::GameParty::JoinPartyRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult, InPartyLeaderID, InChatHistoryData));
 
 			 protocolChkPtr(GetConnection());
 
@@ -172,7 +172,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameParty::JoinPartyRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
+		}; // HRESULT NetSvrPolicyGameParty::JoinPartyRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
 		// S2C: Player Joined
 		HRESULT NetSvrPolicyGameParty::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer )
 		{
@@ -210,13 +210,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyGameParty::PartyLeaderChangedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InNewLeaderID )
 		// Cmd: Kick player
-		HRESULT NetSvrPolicyGameParty::LeavePartyRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyGameParty::LeavePartyRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::LeavePartyRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::GameParty::LeavePartyRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -226,7 +226,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameParty::LeavePartyRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyGameParty::LeavePartyRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		// S2C: Player left
 		HRESULT NetSvrPolicyGameParty::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		{
@@ -246,13 +246,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyGameParty::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		// Cmd: Kick player
-		HRESULT NetSvrPolicyGameParty::KickPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyGameParty::KickPlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::KickPlayerRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::GameParty::KickPlayerRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -262,7 +262,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameParty::KickPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyGameParty::KickPlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		// S2C: Player kicked
 		HRESULT NetSvrPolicyGameParty::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 		{
@@ -318,13 +318,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyGameParty::QuickChatMessageS2CEvt( const RouteContext &InRouteContext, const PlayerID &InSenderID, const UINT32 &InQuickChatID )
 		// Cmd: Match
-		HRESULT NetSvrPolicyGameParty::StartGameMatchRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyGameParty::StartGameMatchRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::StartGameMatchRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::GameParty::StartGameMatchRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -334,7 +334,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameParty::StartGameMatchRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyGameParty::StartGameMatchRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		// S2C: Enqueued at a game matching
 		HRESULT NetSvrPolicyGameParty::QueuedGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket )
 		{
@@ -354,13 +354,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyGameParty::QueuedGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket )
 		// Cmd: Match
-		HRESULT NetSvrPolicyGameParty::CancelGameMatchRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyGameParty::CancelGameMatchRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameParty::CancelGameMatchRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::GameParty::CancelGameMatchRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -370,7 +370,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameParty::CancelGameMatchRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyGameParty::CancelGameMatchRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		// S2C: Canceled at a game matching
 		HRESULT NetSvrPolicyGameParty::CanceledGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket )
 		{

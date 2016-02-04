@@ -41,7 +41,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerCmd( InContext, InRouteContext, InPlayerID, InTicket, InFBUserID, InShardID ) );
+			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerCmd( InRouteContext, InContext, InPlayerID, InTicket, InFBUserID, InShardID ) );
 
 		Proc_End:
 
@@ -55,7 +55,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerOnPlayerEntityCmd( InContext, InRouteContext, InPlayerID, InTicket, InFBUserID ) );
+			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerOnPlayerEntityCmd( InRouteContext, InContext, InPlayerID, InTicket, InFBUserID ) );
 
 		Proc_End:
 

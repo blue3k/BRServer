@@ -43,11 +43,9 @@ namespace Svr
 
 	private:
 
-		StaticAllocator< sizeof(Svr::EntityMessageHandlerItem)*30 > m_Allocator;
 
 	protected:
 
-		virtual MemoryAllocator& GetAllocator()			{ return m_Allocator; }
 
 
 	public:

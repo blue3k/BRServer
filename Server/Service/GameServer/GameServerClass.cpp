@@ -18,13 +18,12 @@
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/LoginClusterServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GameInstanceManagerServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
 
 #include "Table/TableSystem.h"
@@ -186,7 +185,6 @@ namespace GameServer {
 	HRESULT GameServer::InitializeNetPrivate()
 	{
 		HRESULT hr = S_SYSTEM_OK;
-		Svr::LoginClusterServiceEntity *pLoginService = nullptr;
 		Svr::GameClusterServiceEntity *pGameService = nullptr;
 		UINT componentID = 0;
 		SockFamily privateNetSockFamily;
@@ -209,12 +207,6 @@ namespace GameServer {
 			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
 		}
 
-		// Register login cluster
-		svrMem( pLoginService = new Svr::LoginClusterServiceEntity(ClusterMembership::StatusWatcher) );
-		svrChk( GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pLoginService ) );
-		svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pLoginService ) );
-		AddComponent(pLoginService);
-
 
 		// Register game conspiracy cluster as a slave
 		svrMem( pGameService = new Svr::GameClusterServiceEntity(GameID::Conspiracy, ClusterMembership::Slave) );
@@ -224,18 +216,18 @@ namespace GameServer {
 
 
 		// Account DB
-		svrChk(InitializeDBCluster<DB::AccountDB>(Svr::Config::GetConfig().AccountDB));
+		svrChk(AddDBCluster<DB::AccountDB>(Svr::Config::GetConfig().AccountDB));
 
-		svrChk(InitializeDBCluster<DB::LoginSessionDB>(Svr::Config::GetConfig().LoginSessionDB));
+		svrChk(AddDBCluster<DB::LoginSessionDB>(Svr::Config::GetConfig().LoginSessionDB));
 
 		// Game DB initialize
 		svrChkPtr(Svr::Config::GetConfig().GameCluster);
-		svrChk(InitializeDBCluster<DB::GameConspiracyDB>(Svr::Config::GetConfig().GameCluster->GameDB));
+		svrChk(AddDBCluster<DB::GameConspiracyDB>(Svr::Config::GetConfig().GameCluster->GameDB));
 
-		svrChk(InitializeDBCluster<DB::GameTransactionDB>(Svr::Config::GetConfig().GameCluster->GameTransactionLogDB));
+		svrChk(AddDBCluster<DB::GameTransactionDB>(Svr::Config::GetConfig().GameCluster->GameTransactionLogDB));
 
 		// Ranking DB 
-		svrChk( InitializeDBCluster<DB::RankingDB>(Svr::Config::GetConfig().RankingDB) );
+		svrChk(AddDBCluster<DB::RankingDB>(Svr::Config::GetConfig().RankingDB) );
 
 		// push Startup transaction
 		{
@@ -332,18 +324,17 @@ namespace GameServer {
 
 		svrChkPtr(GetGameConfig());
 		svrChkPtr(GetGameConfig()->NetPublic);
-		svrChkPtr(GetGameConfig()->NetPublicIPV4);
 
 		svrMem(m_pNetPublic = new BR::Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
 
-		svrChk( m_pNetPublic->HostOpen( GetNetClass(), GetGameConfig()->NetPublic->IP.c_str(), GetGameConfig()->NetPublic->Port ) );
+		svrChk( m_pNetPublic->HostOpen( GetNetClass(), GetGameConfig()->NetPublic->IPV6.c_str(), GetGameConfig()->NetPublic->Port ) );
 
 		// Game server only accept public connection with valid peerID(AuthTicket)
 		m_pNetPublic->GetConnectionManager().SetUseAddressMap(false);
 
 		//m_PublicNetAddressIPv4 = m_pNetPublic->GetLocalAddress();
 
-		m_PublicNetAddressIPv4 = NetAddress(SockFamily::IPV4, GetGameConfig()->NetPublicIPV4->IP.c_str(), GetGameConfig()->NetPublicIPV4->Port);
+		m_PublicNetAddressIPv4 = NetAddress(SockFamily::IPV4, GetGameConfig()->NetPublic->IPV4.c_str(), GetGameConfig()->NetPublic->Port);
 		svrChk(Net::CheckLocalAddress(SockFamily::IPV4, m_PublicNetAddressIPv4));
 
 	Proc_End:

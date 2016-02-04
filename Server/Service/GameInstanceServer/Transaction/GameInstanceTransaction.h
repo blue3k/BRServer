@@ -43,15 +43,12 @@ namespace ConspiracyGameInstanceServer {
 	protected:
 		// Player Player ID
 		PlayerID	m_PlayerID;
-		// Route entity
-		Svr::ServerEntity	*m_ServerEntity;
 
 	public:
 		RoutedGamePlayerMessageTransaction( Message::MessageData* &pIMsg )
 			:super( TransactionID() )
 			,MessageClass( pIMsg )
 			,m_PlayerID(0)
-			,m_ServerEntity(nullptr)
 		{
 		}
 
@@ -85,7 +82,8 @@ namespace ConspiracyGameInstanceServer {
 
 			svrChk(ParseMessage());
 
-			svrChkPtr( m_ServerEntity = dynamic_cast<Svr::ServerEntity*>(pOwner) );
+			assert(super::GetServerEntity()!= nullptr);
+			svrChkPtr(super::GetServerEntity());// = dynamic_cast<Svr::ServerEntity*>(pOwner) );
 
 			if(GetMyServer()->GetServerUID() != MessageClass::GetRouteContext().GetTo().GetServerID())
 			{
@@ -117,7 +115,7 @@ namespace ConspiracyGameInstanceServer {
 		ServerEntityType *GetServerEntity()
 		{
 			ServerEntityType *pSvrEnt = nullptr;
-			pSvrEnt = dynamic_cast<ServerEntityType*>(m_ServerEntity);
+			pSvrEnt = dynamic_cast<ServerEntityType*>(super::GetServerEntity());
 			Assert(pSvrEnt);
 			return pSvrEnt;
 		}
@@ -132,7 +130,7 @@ namespace ConspiracyGameInstanceServer {
 		PolicyType* GetPolicy()
 		{
 			SharedPointerT<Net::Connection> pConn;
-			m_ServerEntity->GetConnectionShared(pConn);
+			super::GetServerEntity()->GetConnectionShared(pConn);
 			if (pConn != nullptr)
 				return pConn->GetPolicy<PolicyType>();
 			return nullptr;

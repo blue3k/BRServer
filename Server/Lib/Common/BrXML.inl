@@ -18,11 +18,6 @@ const std::string& DOMElement::GetName()
 	return m_Name;
 }
 
-void DOMElement::SetName( const char* Name )
-{
-	m_Name = Name;
-}
-
 // Type name
 const std::string& DOMElement::GetTypeName()
 {

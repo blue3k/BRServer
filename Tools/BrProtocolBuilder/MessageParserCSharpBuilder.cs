@@ -63,7 +63,7 @@ namespace ProtocolBuilder
             OutStream.WriteLine("#if ANDROID");
             OutStream.WriteLine("using Preserve = Android.Runtime.PreserveAttribute;");
             OutStream.WriteLine("#elif IOS");
-            OutStream.WriteLine("using Preserve = MonoTouch.Foundation.PreserveAttribute;");
+            OutStream.WriteLine("using Preserve = Foundation.PreserveAttribute;");
             OutStream.WriteLine("#else");
             OutStream.WriteLine("using Preserve = MonoGame.Framework.PreserveAttribute;");
             OutStream.WriteLine("#endif");

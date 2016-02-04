@@ -69,7 +69,6 @@ namespace GameServer
 		GameServer();
 		~GameServer();
 
-		virtual MemoryAllocator& GetAllocator() override			{ return STDAllocator::GetInstance(); }
 
 
 		

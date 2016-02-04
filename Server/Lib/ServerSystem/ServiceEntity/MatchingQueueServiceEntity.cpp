@@ -50,6 +50,15 @@ namespace Svr {
 		, m_ItemCounter(0)
 		, m_QueuedItemCount(GetCounterNameFromClusterID(clusterID))
 	{
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPartyMatchingCmd) { svrMemReturn(pNewTrans = new RegisterPartyMatchingTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::RegisterPlayerMatchingCmd) { svrMemReturn(pNewTrans = new RegisterPlayerMatchingTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd) { svrMemReturn(pNewTrans = new UpdateMatchingEntityUIDTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::UnregisterMatchingCmd) { svrMemReturn(pNewTrans = new UnregisterMatchingTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemCmd) { svrMemReturn(pNewTrans = new ReserveItemTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::ReserveItemsCmd) { svrMemReturn(pNewTrans = new MatchingQueueReserveItemsTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::CancelReservationCmd) { svrMemReturn(pNewTrans = new CancelReservationTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::DequeueItemCmd) { svrMemReturn(pNewTrans = new DequeueItemTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::MatchingItemErrorC2SEvt) { svrMemReturn(pNewTrans = new MatchingQueueTransMatchingItemError(pMsgData)); return S_SYSTEM_OK; } );
 	}
 
 	MatchingQueueServiceEntity::~MatchingQueueServiceEntity()

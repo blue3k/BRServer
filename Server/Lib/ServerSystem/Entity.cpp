@@ -30,6 +30,7 @@
 #include "ServerSystem/EntityTable.h"
 #include "Common/Message.h"
 
+#include "Protocol/Policy/ServerIPolicy.h"
 
 
 
@@ -52,14 +53,18 @@ namespace BR {
 		, m_ulCreateTime(TimeStampMS::min())
 		, m_lTransIdx(0)
 		, m_transactionQueue(uiTransQueueSize)
-		, m_pHandlerTable(nullptr)
+		, m_Allocator(STDAllocator::GetInstance())
+		, m_HandlerTable(m_Allocator)
 	{
+
+		//// create message handler table
+		//m_pHandlerTable = new MessageHandlerTable<MessageHandlerType>(m_Allocator);
 	}
 
 	Entity::~Entity()
 	{
 		_ClearEntity();
-		Util::SafeDelete(m_pHandlerTable);
+		//Util::SafeDelete(m_pHandlerTable);
 	}
 
 	TimeStampMS Entity::SetBestScehdulingTime(Transaction* pTrans)
@@ -95,12 +100,6 @@ namespace BR {
 		{
 			Assert( 0 );
 			svrErr( E_SYSTEM_UNEXPECTED );
-		}
-
-		// create message handler table
-		if( m_pHandlerTable == nullptr )
-		{
-			svrMem( m_pHandlerTable = new MessageHandlerTable<MessageHandlerType>(GetAllocator()) );
 		}
 
 		// register message handlers
@@ -185,13 +184,130 @@ namespace BR {
 		return S_SYSTEM_OK;
 	}
 
+	// Process Message and release message after all processed
+	HRESULT Entity::ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg)
+	{
+		HRESULT hr = S_SYSTEM_OK;
+		EntityID entityID; // entity ID to route
+		Message::MessageHeader *pMsgHdr = nullptr;
+		Svr::Transaction *pNewTrans = nullptr;
+		RouteContext routeContext;
+		SharedPointerT<Entity> pEntity;
+
+		svrChkPtr(pMsg);
+		pMsgHdr = pMsg->GetMessageHeader();
+
+		// First try to route message
+		routeContext = *(RouteContext*)pMsg->GetMessageData();
+		assert(routeContext.GetTo().UID == 0 || routeContext.GetTo() == GetEntityUID());
+
+		switch (pMsgHdr->msgID.IDs.Type)
+		{
+		case Message::MSGTYPE_RESULT:
+			svrChk(ProcessMessageResult(pMsg));
+			goto Proc_End;
+			break;
+		case Message::MSGTYPE_COMMAND:
+		case Message::MSGTYPE_EVENT:
+		{
+			Assert(GetMessageHandlerTable());
+			if (FAILED(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(pCon, pMsg, pNewTrans)))
+			{
+				// If it couldn't find a handler in server entity handlers, looking for it in server loopback entity
+				MessageHandlerType handler;
+				assert(false);// this shouldn't be happened now. We route all message to destination entity
+				hr = GetLoopbackServerEntity()->GetMessageHandlerTable()->GetHandler(pMsg->GetMessageHeader()->msgID, handler);
+				if (FAILED(hr))
+				{
+					assert(false);
+					svrTrace(Trace::TRC_ERROR, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
+					svrErr(E_SVR_NO_MESSAGE_HANDLER);
+				}
+
+				svrChk(handler(pCon, pMsg, pNewTrans));
+			}
+			break;
+		}
+		default:
+			svrTrace(Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
+			svrErr(E_SVR_NOTEXPECTED_MESSAGE);
+			break;
+		};
+
+
+		if (pNewTrans)
+		{
+			pNewTrans->SetServerEntity(pServerEntity);
+
+			if (pNewTrans->GetOwnerEntity() == nullptr)
+			{
+				hr = pNewTrans->InitializeTransaction(this);
+				if (FAILED(hr)) goto Proc_End;
+			}
+
+			if (pNewTrans->IsDirectProcess())
+			{
+				assert(false); // disable direct process for now
+				// This need to be run on correct worker thread
+				HRESULT hrRes = pNewTrans->StartTransaction();
+				if (!pNewTrans->IsClosed())
+				{
+					pNewTrans->CloseTransaction(hrRes);
+				}
+			}
+			else
+			{
+				assert(this == pNewTrans->GetOwnerEntity());
+				if (this == pNewTrans->GetOwnerEntity())
+				{
+					//auto threadID = GetTaskWorker() ? GetTaskWorker()->GetThreadID() : ThisThread::GetThreadID();
+					auto threadID = ThisThread::GetThreadID();
+					PendingTransaction(threadID, pNewTrans);
+				}
+
+				if (pNewTrans != nullptr && BrServer::GetInstance())
+				{
+					assert(false); // This shouldn't be happend now
+					svrChk(GetEntityTable().RouteTransaction(pNewTrans->GetTransID().GetEntityID(), pNewTrans));
+				}
+			}
+		}
+
+	Proc_End:
+
+		if (pNewTrans != nullptr)
+		{
+			if (FAILED(hr))
+			{
+				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
+				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
+				{
+					pCon->GetPolicy<Policy::ISvrPolicyServer>()->GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
+				}
+			}
+
+			if (!pNewTrans->IsClosed() && pNewTrans->GetOwnerEntity() != nullptr)
+			{
+				//Assert(false);
+				svrTrace(Trace::TRC_ERROR, "Transaction isn't closed Transaction:{0}, MsgID:{1}", typeid(*pNewTrans).name(), pMsgHdr->msgID);
+				pNewTrans->CloseTransaction(hr);
+			}
+
+			ReleaseTransaction(pNewTrans);
+		}
+
+		Util::SafeRelease(pMsg);
+
+		return S_SYSTEM_OK;
+	}
+
 	HRESULT Entity::ProcessMessageResult( Message::MessageData* &pMsg )
 	{
 		HRESULT hr = S_SYSTEM_OK;
 		MessageResult *pMsgRes = nullptr;
 		TransactionResult *pTransRes = nullptr;
 		auto pMySvr = BrServer::GetInstance();
-		SharedPointerT<Entity> pEntity;
+		//SharedPointerT<Entity> pEntity;
 		Transaction *pTransaction = nullptr;
 
 		svrChkPtr(pMySvr);
@@ -201,22 +317,25 @@ namespace BR {
 
 		pTransRes = pMsgRes;
 
-		//svrChk( RouteTransactionResult( pTransRes ) );
-		svrChk(GetEntityTable().Find(pTransRes->GetTransID().GetEntityID(), pEntity));
+		assert(pTransRes->GetTransID().GetEntityID() == GetEntityID());
 
-		if (pEntity->GetTaskGroupID() == GetTaskGroupID() && pEntity->GetTaskManager() == GetTaskManager()) // If assigned on the same thread
+		//svrChk( RouteTransactionResult( pTransRes ) );
+		//svrChk(GetEntityTable().Find(pTransRes->GetTransID().GetEntityID(), pEntity));
+
+		//if (pEntity->GetTaskGroupID() == GetTaskGroupID() && pEntity->GetTaskManager() == GetTaskManager()) // If assigned on the same thread
+		if (GetTaskWorker()->GetThreadID() == ThisThread::GetThreadID())
 		{
-			if (FAILED(pEntity->FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
+			if (FAILED(FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
 			{
 				svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pMsgRes->GetMsgID());
 				goto Proc_End;// svrErr(E_SYSTEM_FAIL);
 			}
-			svrChk(pEntity->ProcessTransactionResult(pTransaction, pTransRes));
+			svrChk(ProcessTransactionResult(pTransaction, pTransRes));
 			pTransRes = nullptr;
 		}
 		else
 		{
-			svrChk(pEntity->PendingTransactionResult(pTransRes));
+			svrChk(PendingTransactionResult(pTransRes));
 		}
 
 	Proc_End:

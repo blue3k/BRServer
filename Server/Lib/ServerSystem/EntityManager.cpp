@@ -22,6 +22,8 @@
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterClient.h"
+#include "ServerSystem/ServiceEntity/Login/LoginPlayerEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GamePlayerEntity.h"
 
 
 namespace BR {
@@ -48,6 +50,22 @@ namespace Svr {
 	{
 	}
 
+	HRESULT EntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity)
+	{
+		switch (clusterID)
+		{
+		case ClusterID::Login:
+			pEntity = new LoginPlayerEntity;
+			break;
+		case ClusterID::Game:
+			pEntity = new GamePlayerEntity;
+			break;
+		default:
+			return E_SYSTEM_INVALIDARG;
+		}
+
+		return pEntity != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+	}
 
 	// add entity to table
 	HRESULT EntityManager::AddEntity( EntityFaculty faculty, Svr::Entity* pEntity )
@@ -56,15 +74,16 @@ namespace Svr {
 		auto& entityTable = GetEntityTable();
 		svrChk( pEntity->InitializeEntity(entityTable.GenEntityID(faculty) ) );
 
-		if( faculty == EntityFaculty::Service )
-		{
-			ServiceEntity* pServiceEntity = dynamic_cast<ServiceEntity*>(pEntity);
-			//AssertRel(pServiceEntity != nullptr);
-			if (pServiceEntity != nullptr)
-			{
-				pServiceEntity->RegisterServiceMessageHandler(GetLoopbackServerEntity());
-			}
-		}
+		// Disable ServiceMessage handler
+		//if( faculty == EntityFaculty::Service )
+		//{
+		//	ServiceEntity* pServiceEntity = dynamic_cast<ServiceEntity*>(pEntity);
+		//	//AssertRel(pServiceEntity != nullptr);
+		//	if (pServiceEntity != nullptr)
+		//	{
+		//		pServiceEntity->RegisterServiceMessageHandler(GetLoopbackServerEntity());
+		//	}
+		//}
 
 		svrChk( AddTickTask( pEntity ) );
 
@@ -87,12 +106,13 @@ namespace Svr {
 
 		svrChk( pEntity->InitializeEntity( entityID ) );
 
-		if( entityID.GetFacultyID() == (UINT)EntityFaculty::Service )
-		{
-			ClusteredServiceEntity* pClusterService = dynamic_cast<ClusteredServiceEntity*>(pEntity);
-			if( pClusterService != nullptr )
-				pClusterService->RegisterServiceMessageHandler( GetLoopbackServerEntity() );
-		}
+		// Disable ServiceMessage handler
+		//if( entityID.GetFacultyID() == (UINT)EntityFaculty::Service )
+		//{
+		//	ClusteredServiceEntity* pClusterService = dynamic_cast<ClusteredServiceEntity*>(pEntity);
+		//	if( pClusterService != nullptr )
+		//		pClusterService->RegisterServiceMessageHandler( GetLoopbackServerEntity() );
+		//}
 
 		svrChk( AddTickTask( pEntity ) );
 

@@ -200,7 +200,7 @@ namespace Svr {
 		inline Net::ServerPeerTCP* GetNetPrivate()								{ return m_pNetPrivate; }
 
 		template<class DBManagerType>
-		HRESULT InitializeDBCluster(Svr::Config::DBCluster *pDBClusterCfg);
+		HRESULT AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg);
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -266,7 +266,6 @@ namespace Svr {
 
 		// Stop server thread
 		virtual HRESULT StopServer();
-
 	};
 
 
@@ -282,6 +281,8 @@ namespace Svr {
 	template< class ComponentType >
 	ComponentType* GetServerComponent();
 
+	template< class ComponentType >
+	HRESULT AddServerComponent(ComponentType* &newComponent);
 
 
 

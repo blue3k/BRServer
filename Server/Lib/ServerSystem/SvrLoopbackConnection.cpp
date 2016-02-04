@@ -65,7 +65,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrChk(m_pServerEntity->ProcessMessage(this, pMsg));
+			svrChk(m_pServerEntity->ProcessMessage(m_pServerEntity, this, pMsg));
 		}
 
 		pMsg = nullptr;

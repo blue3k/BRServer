@@ -75,11 +75,14 @@ namespace Svr{
 		// Entity transaction queue
 		PageQueue<Transaction*>			m_transactionQueue;
 
+		StaticAllocator< sizeof(Svr::EntityMessageHandlerItem) * 30 > m_Allocator;
+
+		// Message handler table
+		MessageHandlerTable<MessageHandlerType>	m_HandlerTable;
+
 
 	protected:
 
-		// Message handler table
-		MessageHandlerTable<MessageHandlerType>*	m_pHandlerTable;
 
 		// Get transaction queue
 		inline PageQueue<Transaction*>& GetTransactionQueue();
@@ -125,10 +128,10 @@ namespace Svr{
 		// Initialize entity to proceed new connection
 		virtual HRESULT InitializeEntity( EntityID newEntityID );
 
-		// clear transaction
+		// clear entity resources such as transactions
 		virtual HRESULT ClearEntity();
 
-		// Close entity and clear transaction
+		// Clear resources and change entity state to closed
 		virtual HRESULT TerminateEntity();
 
 
@@ -137,8 +140,6 @@ namespace Svr{
 		//	Message handling
 		//
 
-		// Get allocator, This will be used for initializing message handler table
-		virtual MemoryAllocator& GetAllocator() = 0;
 
 		// register message handlers
 		virtual HRESULT RegisterMessageHandlers();
@@ -147,11 +148,15 @@ namespace Svr{
 		template< class MessageClassType >
 		HRESULT RegisterMessageHandler(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
 		{
-			AssertRel(m_pHandlerTable);
-			return m_pHandlerTable->Register<MessageClassType>(fileName, lineNumber, newHandler );
+			//AssertRel(m_pHandlerTable);
+			return m_HandlerTable.Register<MessageClassType>(fileName, lineNumber, newHandler );
 		}
 
-		Svr::MessageHandlerTable<MessageHandlerType>* GetMessageHandlerTable() { return m_pHandlerTable; }
+		Svr::MessageHandlerTable<MessageHandlerType>* GetMessageHandlerTable() { return &m_HandlerTable; }
+
+
+		// Process Message and release message after all processed
+		virtual HRESULT ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg);
 
 		// Process result
 		virtual HRESULT ProcessMessageResult( Message::MessageData* &pMsg );

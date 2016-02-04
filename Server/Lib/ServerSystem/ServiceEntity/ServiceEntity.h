@@ -54,8 +54,6 @@ namespace Svr {
 		ServiceEntity();
 		~ServiceEntity();
 
-		MemoryAllocator& GetAllocator() { return STDAllocator::GetInstance(); }
-
 
 		// Register message handler for this component
 		virtual HRESULT RegisterServiceMessageHandler( ServerEntity *pServerEntity ) { return S_SYSTEM_OK; }

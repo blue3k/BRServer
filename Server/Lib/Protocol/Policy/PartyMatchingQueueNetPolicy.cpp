@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Register match by party
-		HRESULT NetPolicyPartyMatchingQueue::RegisterPartyMatchingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
+		HRESULT NetPolicyPartyMatchingQueue::RegisterPartyMatchingCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::RegisterPartyMatchingCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount, InPlayers));
+			 protocolChk(Message::PartyMatchingQueue::RegisterPartyMatchingCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InPlayers));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,15 +44,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyPartyMatchingQueue::RegisterPartyMatchingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
+		}; // HRESULT NetPolicyPartyMatchingQueue::RegisterPartyMatchingCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 		// Cmd: Register match alone
-		HRESULT NetPolicyPartyMatchingQueue::RegisterPlayerMatchingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID )
+		HRESULT NetPolicyPartyMatchingQueue::RegisterPlayerMatchingCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::RegisterPlayerMatchingCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount, InPlayerID));
+			 protocolChk(Message::PartyMatchingQueue::RegisterPlayerMatchingCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InPlayerID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -62,15 +62,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyPartyMatchingQueue::RegisterPlayerMatchingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID )
+		}; // HRESULT NetPolicyPartyMatchingQueue::RegisterPlayerMatchingCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID )
 		// Cmd: update registration information
-		HRESULT NetPolicyPartyMatchingQueue::UpdateMatchingEntityUIDCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
+		HRESULT NetPolicyPartyMatchingQueue::UpdateMatchingEntityUIDCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount, InMatchingTicket, InPreviousUID));
+			 protocolChk(Message::PartyMatchingQueue::UpdateMatchingEntityUIDCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InMatchingTicket, InPreviousUID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -80,15 +80,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyPartyMatchingQueue::UpdateMatchingEntityUIDCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
+		}; // HRESULT NetPolicyPartyMatchingQueue::UpdateMatchingEntityUIDCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
 		// Cmd: calcel registration
-		HRESULT NetPolicyPartyMatchingQueue::UnregisterMatchingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		HRESULT NetPolicyPartyMatchingQueue::UnregisterMatchingCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::UnregisterMatchingCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount, InMatchingTicket));
+			 protocolChk(Message::PartyMatchingQueue::UnregisterMatchingCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InMatchingTicket));
 
 			 protocolChkPtr(GetConnection());
 
@@ -98,15 +98,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyPartyMatchingQueue::UnregisterMatchingCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		}; // HRESULT NetPolicyPartyMatchingQueue::UnregisterMatchingCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		// Cmd: Reserve a item
-		HRESULT NetPolicyPartyMatchingQueue::ReserveItemCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+		HRESULT NetPolicyPartyMatchingQueue::ReserveItemCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::ReserveItemCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount));
+			 protocolChk(Message::PartyMatchingQueue::ReserveItemCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount));
 
 			 protocolChkPtr(GetConnection());
 
@@ -116,15 +116,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyPartyMatchingQueue::ReserveItemCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+		}; // HRESULT NetPolicyPartyMatchingQueue::ReserveItemCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount )
 		// Cmd: Reserve a item
-		HRESULT NetPolicyPartyMatchingQueue::ReserveItemsCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve )
+		HRESULT NetPolicyPartyMatchingQueue::ReserveItemsCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::ReserveItemsCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount, InNumberOfItemsToReserve));
+			 protocolChk(Message::PartyMatchingQueue::ReserveItemsCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InNumberOfItemsToReserve));
 
 			 protocolChkPtr(GetConnection());
 
@@ -134,15 +134,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyPartyMatchingQueue::ReserveItemsCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve )
+		}; // HRESULT NetPolicyPartyMatchingQueue::ReserveItemsCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve )
 		// Cmd: Cancel reservation
-		HRESULT NetPolicyPartyMatchingQueue::CancelReservationCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
+		HRESULT NetPolicyPartyMatchingQueue::CancelReservationCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::CancelReservationCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount, InTicketToCancel));
+			 protocolChk(Message::PartyMatchingQueue::CancelReservationCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InTicketToCancel));
 
 			 protocolChkPtr(GetConnection());
 
@@ -152,15 +152,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyPartyMatchingQueue::CancelReservationCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
+		}; // HRESULT NetPolicyPartyMatchingQueue::CancelReservationCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 		// Cmd: Cancel reservation
-		HRESULT NetPolicyPartyMatchingQueue::CancelReservationsCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
+		HRESULT NetPolicyPartyMatchingQueue::CancelReservationsCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::CancelReservationsCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount, InTicketToCancel));
+			 protocolChk(Message::PartyMatchingQueue::CancelReservationsCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InTicketToCancel));
 
 			 protocolChkPtr(GetConnection());
 
@@ -170,15 +170,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyPartyMatchingQueue::CancelReservationsCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
+		}; // HRESULT NetPolicyPartyMatchingQueue::CancelReservationsCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 		// Cmd: Dequeue a reserved item
-		HRESULT NetPolicyPartyMatchingQueue::DequeueItemCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		HRESULT NetPolicyPartyMatchingQueue::DequeueItemCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::DequeueItemCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount, InMatchingTicket));
+			 protocolChk(Message::PartyMatchingQueue::DequeueItemCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InMatchingTicket));
 
 			 protocolChkPtr(GetConnection());
 
@@ -188,7 +188,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyPartyMatchingQueue::DequeueItemCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		}; // HRESULT NetPolicyPartyMatchingQueue::DequeueItemCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		// C2S: Item error you should delete it
 		HRESULT NetPolicyPartyMatchingQueue::MatchingItemErrorC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
@@ -210,13 +210,13 @@ namespace BR
 
 
 		// Cmd: Register match by party
-		HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPartyMatchingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket )
+		HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPartyMatchingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::RegisterPartyMatchingRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext, InMatchingTicket));
+			 protocolChk(Message::PartyMatchingQueue::RegisterPartyMatchingRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult, InMatchingTicket));
 
 			 protocolChkPtr(GetConnection());
 
@@ -226,15 +226,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPartyMatchingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket )
+		}; // HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPartyMatchingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket )
 		// Cmd: Register match alone
-		HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPlayerMatchingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket )
+		HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPlayerMatchingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::RegisterPlayerMatchingRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext, InMatchingTicket));
+			 protocolChk(Message::PartyMatchingQueue::RegisterPlayerMatchingRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult, InMatchingTicket));
 
 			 protocolChkPtr(GetConnection());
 
@@ -244,15 +244,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPlayerMatchingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket )
+		}; // HRESULT NetSvrPolicyPartyMatchingQueue::RegisterPlayerMatchingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket )
 		// Cmd: update registration information
-		HRESULT NetSvrPolicyPartyMatchingQueue::UpdateMatchingEntityUIDRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyPartyMatchingQueue::UpdateMatchingEntityUIDRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::UpdateMatchingEntityUIDRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::PartyMatchingQueue::UpdateMatchingEntityUIDRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -262,15 +262,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatchingQueue::UpdateMatchingEntityUIDRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyPartyMatchingQueue::UpdateMatchingEntityUIDRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		// Cmd: calcel registration
-		HRESULT NetSvrPolicyPartyMatchingQueue::UnregisterMatchingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyPartyMatchingQueue::UnregisterMatchingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::UnregisterMatchingRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::PartyMatchingQueue::UnregisterMatchingRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -280,7 +280,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatchingQueue::UnregisterMatchingRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyPartyMatchingQueue::UnregisterMatchingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		// S2C: For some reason, matching is canceled
 		HRESULT NetSvrPolicyPartyMatchingQueue::PartyMatchingCanceledS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket )
 		{
@@ -354,13 +354,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyPartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		// Cmd: Reserve a item
-		HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
+		HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::ReserveItemRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext, InNumberOfPlayersInTheItem, InMatchingTicket));
+			 protocolChk(Message::PartyMatchingQueue::ReserveItemRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult, InNumberOfPlayersInTheItem, InMatchingTicket));
 
 			 protocolChkPtr(GetConnection());
 
@@ -370,15 +370,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const UINT32 &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
+		}; // HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket )
 		// Cmd: Reserve a item
-		HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemsRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<UINT32>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
+		HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemsRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const Array<UINT32>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::ReserveItemsRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext, InNumberOfPlayersInTheItem, InMatchingTicket));
+			 protocolChk(Message::PartyMatchingQueue::ReserveItemsRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult, InNumberOfPlayersInTheItem, InMatchingTicket));
 
 			 protocolChkPtr(GetConnection());
 
@@ -388,15 +388,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemsRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const Array<UINT32>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
+		}; // HRESULT NetSvrPolicyPartyMatchingQueue::ReserveItemsRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const Array<UINT32>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket )
 		// Cmd: Cancel reservation
-		HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::CancelReservationRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::PartyMatchingQueue::CancelReservationRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -406,15 +406,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		// Cmd: Cancel reservation
-		HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationsRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationsRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::CancelReservationsRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::PartyMatchingQueue::CancelReservationsRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -424,15 +424,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationsRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyPartyMatchingQueue::CancelReservationsRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		// Cmd: Dequeue a reserved item
-		HRESULT NetSvrPolicyPartyMatchingQueue::DequeueItemRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
+		HRESULT NetSvrPolicyPartyMatchingQueue::DequeueItemRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::PartyMatchingQueue::DequeueItemRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext, InMatchingTicket, InRegisterUID, InRegisterID, InPlayers));
+			 protocolChk(Message::PartyMatchingQueue::DequeueItemRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult, InMatchingTicket, InRegisterUID, InRegisterID, InPlayers));
 
 			 protocolChkPtr(GetConnection());
 
@@ -442,7 +442,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyPartyMatchingQueue::DequeueItemRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
+		}; // HRESULT NetSvrPolicyPartyMatchingQueue::DequeueItemRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers )
 
 
 	}; // namespace Policy

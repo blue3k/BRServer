@@ -42,6 +42,9 @@ namespace Svr {
 		: ServiceEntity()
 	{
 		SetTickInterval(DurationMS(10000));
+
+		BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd) { svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd) { svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return S_SYSTEM_OK; } );
 	}
 
 	MonitoringServiceEntity::~MonitoringServiceEntity()

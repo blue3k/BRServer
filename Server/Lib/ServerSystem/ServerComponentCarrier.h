@@ -39,7 +39,6 @@ namespace Svr {
 		ServerComponentID_ParallelTransactionManager,
 
 		ServerComponentID_ClusterManagerService,
-		ServerComponentID_LoginClusterService,
 		ServerComponentID_GameClusterService,
 		ServerComponentID_GameInstanceManagerService,
 		ServerComponentID_GamePartyManagerService,

@@ -39,11 +39,8 @@ namespace Svr {
 	{
 	private:
 		
-		StaticAllocator< sizeof(EntityMessageHandlerItem)*128 > m_Allocator;
-
 	protected:
 
-		virtual MemoryAllocator& GetAllocator()			{ return m_Allocator; }
 
 	public:
 		GameServerEntity( UINT uiTransQueueSize, UINT TransResQueueSize );

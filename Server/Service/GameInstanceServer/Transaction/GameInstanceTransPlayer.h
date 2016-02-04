@@ -79,7 +79,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS( JoinGameRes, RouteContext( m_GameInsUID, GetRouteContext().GetFrom()), m_Addr, m_TimeStamp.time_since_epoch().count(), m_GameState, m_Day,
+		BR_SVR_MSGTRANS_CLOSE_ARGS( JoinGameRes, RouteContext( m_GameInsUID, GetRouteContext().GetFrom()), m_Addr, m_TimeStamp.time_since_epoch().count(), m_GameState, m_Day,
 			GetMyOwner()->GetMaxPlayer(),
 			m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_bIsFirstJoin, 
 			m_ChatHistoryBuffer.ToArray(),
@@ -101,7 +101,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(LeaveGameRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(LeaveGameRes, GetRouteContext().GetSwaped());
 	};
 
 	class GameEntityTransKickPlayer : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::KickPlayerCmd, GameEntityTransKickPlayer>
@@ -118,7 +118,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(KickPlayerRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(KickPlayerRes, GetRouteContext().GetSwaped());
 	};
 
 	
@@ -137,7 +137,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(AssignRoleRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(AssignRoleRes, GetRouteContext().GetSwaped());
 	};
 
 
@@ -172,7 +172,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(VoteGameAdvanceRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(VoteGameAdvanceRes, GetRouteContext().GetSwaped());
 	};
 
 
@@ -191,7 +191,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(VoteRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(VoteRes, GetRouteContext().GetSwaped());
 	};
 
 	class GameEntityTransAdvanceGame : public RoutedGamePlayerMessageTransaction< GameInstanceEntity, Policy::ISvrPolicyGameInstance, Message::GameInstance::AdvanceGameCmd, GameEntityTransAdvanceGame>
@@ -208,7 +208,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(AdvanceGameRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(AdvanceGameRes, GetRouteContext().GetSwaped());
 	};
 	
 
@@ -228,7 +228,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(GamePlayAgainRes, GetRouteContext().GetSwaped(), m_MemberCount);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(GamePlayAgainRes, GetRouteContext().GetSwaped(), m_MemberCount);
 	};
 
 
@@ -249,7 +249,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(GameRevealPlayerRes, GetRouteContext().GetSwaped(), m_RevealedPlayerID, m_RevealedPlayerRole);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(GameRevealPlayerRes, GetRouteContext().GetSwaped(), m_RevealedPlayerID, m_RevealedPlayerRole);
 	};
 
 
@@ -268,7 +268,7 @@ namespace ConspiracyGameInstanceServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(GamePlayerReviveRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(GamePlayerReviveRes, GetRouteContext().GetSwaped());
 	};
 
 

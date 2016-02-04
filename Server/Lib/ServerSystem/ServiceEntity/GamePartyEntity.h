@@ -104,7 +104,6 @@ namespace Svr {
 		
 	protected:
 
-		virtual MemoryAllocator& GetAllocator()			{ return STDAllocator::GetInstance(); }
 
 	public:
 

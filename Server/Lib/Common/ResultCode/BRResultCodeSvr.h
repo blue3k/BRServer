@@ -150,7 +150,7 @@
 // Invalid state transition 
 #define E_SVR_INVALID_STATE                                           ((int32_t)0xE704002DL) 
 
-// Invalid state transition 
+// Invalid purchase environment(public/test) 
 #define E_SVR_INVALID_PURCHASE_MODE                                   ((int32_t)0xE704002EL) 
 
 

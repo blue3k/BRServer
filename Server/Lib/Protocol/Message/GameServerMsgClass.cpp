@@ -43,8 +43,8 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_FBUserID, pCur, iMsgSize, sizeof(FacebookUID) ) );
@@ -57,15 +57,15 @@ namespace BR
 
 			}; // HRESULT RegisterPlayerToJoinGameServerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+			HRESULT RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
-					+ sizeof(Context)
 					+ sizeof(RouteContext)
+					+ sizeof(Context)
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket)
 					+ sizeof(FacebookUID)
@@ -77,8 +77,8 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
 				Protocol::PackParamCopy( pMsgData, &InFBUserID, sizeof(FacebookUID));
@@ -91,7 +91,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+			}; // HRESULT RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
 
 			HRESULT RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -107,7 +107,6 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
@@ -124,8 +123,8 @@ namespace BR
 			void RegisterPlayerToJoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}, Ticket:{6}, FBUserID:{7}, ShardID:{8}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_Ticket, m_FBUserID, m_ShardID); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerCmd:{1}:{2} , RouteContext:{3}, Context:{4}, PlayerID:{5}, Ticket:{6}, FBUserID:{7}, ShardID:{8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context, m_PlayerID, m_Ticket, m_FBUserID, m_ShardID); 
 			}; // void RegisterPlayerToJoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterPlayerToJoinGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 0);
@@ -141,9 +140,9 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PublicAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PublicAddressIPV4, pCur, iMsgSize, sizeof(NetAddress) ) );
 
@@ -154,16 +153,16 @@ namespace BR
 
 			}; // HRESULT RegisterPlayerToJoinGameServerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 )
+			HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
 					+ sizeof(Context)
 					+ sizeof(HRESULT)
-					+ sizeof(RouteContext)
 					+ sizeof(NetAddress)
 					+ sizeof(NetAddress));
 
@@ -173,9 +172,9 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
-				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InPublicAddress, sizeof(NetAddress));
 				Protocol::PackParamCopy( pMsgData, &InPublicAddressIPV4, sizeof(NetAddress));
 
@@ -186,7 +185,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 )
+			}; // HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 )
 
 			HRESULT RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -202,8 +201,6 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
@@ -220,8 +217,8 @@ namespace BR
 			void RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}, PublicAddress:{6}, PublicAddressIPV4:{7}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext, m_PublicAddress, m_PublicAddressIPV4); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerRes:{1}:{2} , RouteContext:{3}, Context:{4}, Result:{5:X8}, PublicAddress:{6}, PublicAddressIPV4:{7}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context, m_Result, m_PublicAddress, m_PublicAddressIPV4); 
 			}; // void RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Kick
@@ -238,8 +235,8 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_FBUserID, pCur, iMsgSize, sizeof(FacebookUID) ) );
@@ -251,15 +248,15 @@ namespace BR
 
 			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
-					+ sizeof(Context)
 					+ sizeof(RouteContext)
+					+ sizeof(Context)
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket)
 					+ sizeof(FacebookUID));
@@ -270,8 +267,8 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
 				Protocol::PackParamCopy( pMsgData, &InFBUserID, sizeof(FacebookUID));
@@ -283,7 +280,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 
 			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -299,7 +296,6 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
@@ -316,8 +312,8 @@ namespace BR
 			void RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerOnPlayerEntityCmd:{1}:{2} , Context:{3}, RouteContext:{4}, PlayerID:{5}, Ticket:{6}, FBUserID:{7}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext, m_PlayerID, m_Ticket, m_FBUserID); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerOnPlayerEntityCmd:{1}:{2} , RouteContext:{3}, Context:{4}, PlayerID:{5}, Ticket:{6}, FBUserID:{7}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context, m_PlayerID, m_Ticket, m_FBUserID); 
 			}; // void RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterPlayerToJoinGameServerOnPlayerEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 1);
@@ -333,9 +329,9 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 
 
 			Proc_End:
@@ -344,16 +340,16 @@ namespace BR
 
 			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
 					+ sizeof(Context)
-					+ sizeof(HRESULT)
-					+ sizeof(RouteContext));
+					+ sizeof(HRESULT));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -361,9 +357,9 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
-				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 
 				pMsg = pNewMsg;
 
@@ -372,7 +368,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 
 			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -388,8 +384,6 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
@@ -406,8 +400,8 @@ namespace BR
 			void RegisterPlayerToJoinGameServerOnPlayerEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerOnPlayerEntityRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterPlayerToJoinGameServerOnPlayerEntityRes:{1}:{2} , RouteContext:{3}, Context:{4}, Result:{5:X8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context, m_Result); 
 			}; // void RegisterPlayerToJoinGameServerOnPlayerEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Chatting message

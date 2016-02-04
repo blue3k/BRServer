@@ -58,7 +58,6 @@ namespace LoginServer
 		LoginServer();
 		~LoginServer();
 
-		virtual MemoryAllocator& GetAllocator() override			{ return STDAllocator::GetInstance(); }
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//

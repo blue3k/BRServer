@@ -92,8 +92,9 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameEntityTransJoinGame::StartTransaction()
 	{
 		HRESULT hr = S_SYSTEM_OK;
-		GamePlayer *pNewPlayer = nullptr, *pMyPlayer = nullptr;
+		GamePlayer *pMyPlayer = nullptr;
 		Policy::ISvrPolicyGameInstance *pMyPolicy = nullptr;
+		Svr::GameInstancePlayer* pNewInsPlayer = nullptr;
 		auto pGameStateSystem = GetMyOwner()->GetComponent<GameStateSystem>();
 
 		svrChk( super::StartTransaction() );
@@ -109,13 +110,13 @@ namespace ConspiracyGameInstanceServer {
 
 		if( FAILED(GetMyOwner()->FindPlayer( GetPlayer().PlayerID, pMyPlayer )) )
 		{
-			svrMem(pNewPlayer = new GamePlayer(GetMyOwner(), GetPlayer()));
-			svrChk( pNewPlayer->InitializePlayer( GetMyOwner() ) );
-			pNewPlayer->SetRequestedRole(GetRequestedRole());
+			svrChk(GetMyOwner()->CreatePlayerInstance(GetPlayer(), pNewInsPlayer));
+			pMyPlayer =  dynamic_cast<GamePlayer*>(pNewInsPlayer);
+			svrChk(pMyPlayer->InitializePlayer( GetMyOwner() ) );
+			pMyPlayer->SetRequestedRole(GetRequestedRole());
 
-			pMyPlayer = pNewPlayer;
-			svrChk( GetMyOwner()->AddPlayerToJoin( pNewPlayer ) );
-
+			svrChk( GetMyOwner()->AddPlayerToJoin(pNewInsPlayer) );
+			pNewInsPlayer = nullptr;
 			svrTrace(Svr::TRC_INFO, "GameUID:{0} Join player {1}, NumPlayer:{2}, ", GetMyOwner()->GetEntityUID(), GetPlayer().PlayerID, GetMyOwner()->GetNumPlayer());
 
 			m_bIsFirstJoin = true;
@@ -182,7 +183,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Proc_End:
 
-		Util::SafeDelete(pNewPlayer);
+		Util::SafeDelete(pNewInsPlayer);
 
 		CloseTransaction( hr );
 

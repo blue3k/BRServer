@@ -384,7 +384,7 @@ namespace Svr {
 	//
 	//
 
-	MatchingServiceEntity::MatchingServiceEntity(ClusterID clusterID, ClusterMembership initialMembership, const char* parameters)
+	MatchingServiceEntity::MatchingServiceEntity(ClusterID clusterID, ClusterMembership initialMembership, bool useBot)
 		: ShardedClusterServiceEntity(clusterID, initialMembership )
 		, m_IsUseBot(true)
 		, m_MatchedCount("Matched")
@@ -406,34 +406,7 @@ namespace Svr {
 		m_MaxMatchingQueue = m_TargetMatchingMemberCount + 2; // 
 
 
-		if (parameters == nullptr)
-			return;
-
-		char strParameterBuffer[1024];
-		char *curParameter = strParameterBuffer;
-		StrUtil::StringCpy(strParameterBuffer, parameters);
-		StrUtil::StringLwr(strParameterBuffer);
-		while (curParameter != nullptr && curParameter[0] != '\0')
-		{
-			auto tokParam = strtok(curParameter, ",");
-			if (tokParam == nullptr) break; // end of pattern
-
-			size_t parameterLength = 0;
-			*tokParam = '\0';
-			parameterLength = strlen(curParameter);
-
-			const char* parameterName = "usebot";
-			auto parameterNameLen = strlen(parameterName);
-			size_t separate = std::min(parameterLength, parameterNameLen);
-			curParameter[separate] = '\0';
-			if (StrUtil::StringCmp(curParameter, (int)separate, parameterName, (int)parameterNameLen) == 0)
-			{
-				m_IsUseBot = StrUtil::StringCmp(curParameter + parameterNameLen + 1, (int)(parameterLength - parameterNameLen - 1), "true", (int)strlen("true")) == 0;
-			}
-
-			curParameter = tokParam+1;
-		}
-
+		m_IsUseBot = useBot;
 
 		SetTickInterval(DurationMS(1));
 	}

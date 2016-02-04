@@ -119,7 +119,13 @@ namespace Svr {
 		TransactionHistory m_History[2];
 
 
+		// Server entity who issued this transaction
+		// This pointer will be valid for inter server messages
+		ServerEntity* m_ServerEntity;
+
+
 	protected:
+
 
 		// set Exclusive option
 		void SetExclusive( bool bIsExclusive );
@@ -140,6 +146,15 @@ namespace Svr {
 		Transaction( TransactionID parentTransID );
 
 		virtual void Dispose() override;
+
+
+		inline void SetServerEntity(ServerEntity* pServerEntity)
+		{
+			assert(pServerEntity != nullptr);
+			m_ServerEntity = pServerEntity;
+		}
+
+		ServerEntity* GetServerEntity() { return m_ServerEntity; }
 
 		const RouteContext& GetMessageRouteContext()					{ return m_MessageRouteContext; }
 		void SetMessageRouteContext(const RouteContext& src)			{ m_MessageRouteContext = src; }
@@ -654,16 +669,14 @@ namespace Svr {
 	class UserTransactionS2SCmd : public MessageTransaction<OwnerEntityType,PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>
 	{
 	private:
+		typedef MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize> superTrans;
 
-		ServerEntity* m_ServerEntity;
 	protected:
 		UserTransactionS2SCmd( Message::MessageData* &pIMsg )
 			: MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>(pIMsg )
-			, m_ServerEntity(nullptr)
 		{
 		}
 
-		ServerEntity* GetServerEntity() { return m_ServerEntity; }
 
 		// Initialize Transaction
 		virtual HRESULT InitializeTransaction( Entity *pOwner )
@@ -685,8 +698,10 @@ namespace Svr {
 
 			svrChkPtr(pOwnerEntity = static_cast<OwnerEntityType*>((Entity*)entity));
 
+			assert(superTrans::GetServerEntity() != nullptr);
+			svrChkPtr(superTrans::GetServerEntity());
 			// S2S Communication so return policy owner is server entity
-			svrChkPtr( m_ServerEntity = BR_DYNAMIC_CAST(ServerEntity*, pOwner) );
+			//svrChkPtr( m_ServerEntity = BR_DYNAMIC_CAST(ServerEntity*, pOwner) );
 
 			svrChk( Transaction::InitializeTransaction( pOwnerEntity ) );
 
@@ -697,7 +712,7 @@ namespace Svr {
 
 		virtual PolicyType* GetPolicy() override
 		{
-			auto pConn = Transaction::GetServerEntityConnection(m_ServerEntity);
+			auto pConn = Transaction::GetServerEntityConnection(superTrans::GetServerEntity());
 			if (pConn != nullptr)
 			{
 				return pConn->template GetPolicy<PolicyType>();

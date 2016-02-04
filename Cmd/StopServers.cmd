@@ -4,7 +4,7 @@
 taskkill /IM BRConspiracyGameInstanceServer.exe
 taskkill /IM BRConspiracyGameServer.exe
 
-taskkill /IM BRSharedModuleServer.exe
+taskkill /IM BRModuleServer.exe
 
 
 taskkill /IM BRLoginServer.exe

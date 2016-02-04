@@ -88,6 +88,36 @@ namespace BR {
 		}\
 
 
+
+		// Generic transaction close with argument, return Context and HRESULT by default
+#define BR_SVR_MSGTRANS_CLOSE( MessageName, routeContext ) \
+	virtual HRESULT OnCloseTransaction( HRESULT hrRes )\
+		{\
+		HRESULT hr = S_SYSTEM_OK;\
+		auto pPolicy = GetPolicy();\
+		if( pPolicy != nullptr ) {\
+			svrChk( pPolicy->MessageName( routeContext, GetContext(), hrRes ) );\
+				}\
+				Proc_End:\
+		super::OnCloseTransaction(hrRes);\
+		return hr;\
+		}\
+
+		// Generic transaction close with argument, return Context and HRESULT by default
+#define BR_SVR_MSGTRANS_CLOSE_ARGS( MessageName, routeContext, ... ) \
+	virtual HRESULT OnCloseTransaction( HRESULT hrRes )\
+		{\
+		HRESULT hr = S_SYSTEM_OK;\
+		auto pPolicy = GetPolicy();\
+		if( pPolicy != nullptr ) {\
+			svrChk( pPolicy->MessageName( routeContext, GetContext(), hrRes, ##__VA_ARGS__ ) );\
+				}\
+				Proc_End:\
+		super::OnCloseTransaction(hrRes);\
+		return hr;\
+		}\
+
+
 		// Event transaction close, no default arguemnt
 #define BR_IMPLEMENT_EVTTRANS_CLOSE( MessageName ) \
 	virtual HRESULT OnCloseTransaction( HRESULT hrRes )\

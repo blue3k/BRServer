@@ -42,6 +42,7 @@ namespace Svr {
 	{
 	public:
 		typedef NetClass ServerEntityClass;
+		typedef MasterEntity super;
 		
 
 	private:
@@ -73,7 +74,6 @@ namespace Svr {
 
 	protected:
 
-		virtual MemoryAllocator& GetAllocator()			{ return STDAllocator::GetInstance(); }
 
 		HRESULT SetConnection(SharedPointerT<Net::IConnection> &destConn, Net::IConnection * pConn);
 		HRESULT UpdateConnection(Net::IConnection* pConn);
@@ -123,17 +123,18 @@ namespace Svr {
 		// Close entity and clear transaction
 		virtual HRESULT TerminateEntity() override;
 
-				// Process result
-		//virtual HRESULT ProcessMessageResult( Message::MessageData* &pMsg ) override;
+		// Called when this entity have a routed message
+		//virtual HRESULT OnRoutedMessage(Message::MessageData* &pMsg) override;
 
 		// Process Message and release message after all processed
-		virtual HRESULT ProcessMessage( Net::IConnection *pCon, Message::MessageData* &pMsg );
+		virtual HRESULT ProcessMessage(ServerEntity *pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg ) override;
 
 		// Process Connection event
 		virtual HRESULT ProcessConnectionEvent( const Net::IConnection::Event& conEvent );
 
 		// Run entity
 		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		// Overriding IConnectionEventHandler

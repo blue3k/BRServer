@@ -66,7 +66,7 @@ namespace GameServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction() override;
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerOnPlayerEntityRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(RegisterPlayerToJoinGameServerOnPlayerEntityRes, GetRouteContext().GetSwaped());
 	};
 
 

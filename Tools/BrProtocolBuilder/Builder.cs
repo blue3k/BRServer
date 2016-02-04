@@ -349,6 +349,12 @@ namespace ProtocolBuilder
             int iNumOrg = parameter != null ? parameter.Length : 0;
             List<Parameter> newParams = new List<Parameter>();
 
+            // Route context need to be the first
+            if (m_group.GenParameterRouteContext && m_ParamRouteContext != null)
+            {
+                newParams.Add(m_ParamRouteContext);
+            }
+
             if (MsgType.Cmd == type)
             {
                 if (m_group.GenParameterContext)
@@ -363,11 +369,6 @@ namespace ProtocolBuilder
                     newParams.Add(m_ParamContext);
                 }
                 newParams.Add(m_ParamResult);
-            }
-
-            if (m_group.GenParameterRouteContext && m_ParamRouteContext != null)
-            {
-                newParams.Add(m_ParamRouteContext);
             }
 
             if (Group.GenParameterRouteHopCount && type != MsgType.Res)

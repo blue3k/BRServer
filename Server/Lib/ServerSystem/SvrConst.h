@@ -59,6 +59,16 @@ namespace Const{
 		PARALLEL_TRANSACTION_MANAGER_TICKTASK_INTERVAL = 1000,
 
 		PARTY_TICKTASK_INTERVAL = 2 * 60 * 1000,
+
+		// Wait time for login sequences
+#ifdef DEBUG
+		LOGIN_TIME_WAIT_PLAYER_JOIN = 1 * 60 * 1000,
+#else
+		LOGIN_TIME_WAIT_PLAYER_JOIN = 2 * 60 * 1000,  // This is DB maximum, see spRegisterAuthTicket
+#endif
+
+		GAMEINSTANCE_TICK_TIME = 3 * 1000,
+		GAMEINSTANCE_EMPTYINSTANCE_KILL_TIMEOUT = 60 * 1000,
 	};
 
 

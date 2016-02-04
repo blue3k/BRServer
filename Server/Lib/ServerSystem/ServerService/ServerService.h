@@ -35,7 +35,7 @@ namespace BR
 			// Cmd: 
 			HRESULT GenericFailureCmd( const Context &InContext );
 			// C2S: Server Started or Connected
-			HRESULT ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress );
+			HRESULT ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress );
 
 		}; // class ServerService : public ServerServiceBase
 

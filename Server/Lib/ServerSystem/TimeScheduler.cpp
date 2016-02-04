@@ -287,7 +287,10 @@ namespace Svr {
 			{
 				Assert(false);
 			}
-			Assert(removed == pAction);
+			else
+			{
+				Assert(removed == pAction);
+			}
 			pAction->m_InQueueKey.Components.NextTickTime = TimeStampMS::max();
 		}
 

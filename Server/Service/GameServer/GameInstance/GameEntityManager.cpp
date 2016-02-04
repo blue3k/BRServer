@@ -49,21 +49,39 @@ namespace GameServer {
 	}
 
 
-	// Create new game instance
-	HRESULT GameEntityManager::CreateGamePlayer(PlayerID playerID, GamePlayerEntity* &pGamePlayer)
+	HRESULT GameEntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Svr::Entity* &pEntity)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		switch (clusterID)
+		{
+		case ClusterID::Game:
+		case ClusterID::Game_Conspiracy:
+		{
+			assert(faculty == EntityFaculty::User);
+			pEntity = new GamePlayerEntity;
+			return pEntity != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+		}
+		default:
+			return super::CreateEntity(clusterID, faculty, pEntity);
+		}
 
-		svrChkPtr( pGamePlayer = new GamePlayerEntity );
-
-		svrChk(AddEntity(EntityFaculty::User, pGamePlayer));
-
-		pGamePlayer->SetAccountID(playerID);
-
-	Proc_End:
-
-		return hr;
+		return pEntity != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
 	}
+
+	//// Create new game instance
+	//HRESULT GameEntityManager::CreateGamePlayer(PlayerID playerID, GamePlayerEntity* &pGamePlayer)
+	//{
+	//	HRESULT hr = S_SYSTEM_OK;
+
+	//	svrChkPtr( pGamePlayer = new GamePlayerEntity );
+
+	//	svrChk(AddEntity(EntityFaculty::User, pGamePlayer));
+
+	//	pGamePlayer->SetAccountID(playerID);
+
+	//Proc_End:
+
+	//	return hr;
+	//}
 
 	void GameEntityManager::OnEntityAdded(Svr::Entity* pEntity)
 	{

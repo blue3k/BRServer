@@ -95,7 +95,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(GetClusterMemberListRes,GetRouteContext().GetSwaped(), m_MemberList);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(GetClusterMemberListRes,GetRouteContext().GetSwaped(), m_MemberList);
 	};
 
 
@@ -116,7 +116,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(JoinClusterRes,GetRouteContext().GetSwaped(), m_MemberList);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(JoinClusterRes,GetRouteContext().GetSwaped(), m_MemberList);
 	};
 	
 
@@ -137,100 +137,10 @@ namespace Svr {
 
 		Policy::ISvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(JoinClusterRes,GetRouteContext().GetSwaped(), m_MemberList);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(JoinClusterRes,GetRouteContext().GetSwaped(), m_MemberList);
 	};
 
 
-
-	class ClusterUpdateStatusTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateStatusC2SEvt, ClusterUpdateStatusTrans, 1>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateStatusC2SEvt, ClusterUpdateStatusTrans, 1> super;
-
-	private:
-
-	public:
-		ClusterUpdateStatusTrans( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
-		virtual ~ClusterUpdateStatusTrans() {}
-
-		// Start Transaction
-		virtual HRESULT StartTransaction();
-	};
-
-
-
-	class ClusterUpdateWorkloadTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateWorkloadC2SEvt, ClusterUpdateWorkloadTrans, 1>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::ClusterUpdateWorkloadC2SEvt, ClusterUpdateWorkloadTrans, 1> super;
-
-	private:
-
-	public:
-		ClusterUpdateWorkloadTrans( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
-		virtual ~ClusterUpdateWorkloadTrans() {}
-
-		// Start Transaction
-		virtual HRESULT StartTransaction();
-	};
-	
-
-	class GetLowestWorkloadClusterMemberTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::GetLowestWorkloadClusterMemberCmd, GetLowestWorkloadClusterMemberTrans>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::GetLowestWorkloadClusterMemberCmd, GetLowestWorkloadClusterMemberTrans> super;
-
-	private:
-		ServiceInformation m_LowestMemberInfo;
-
-	public:
-		GetLowestWorkloadClusterMemberTrans( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg )
-		{
-			// let's enable runtime data sync
-			//SetExclusive( true );
-		}
-		virtual ~GetLowestWorkloadClusterMemberTrans() {}
-
-		// Start Transaction
-		virtual HRESULT StartTransaction();
-
-		Policy::ISvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
-
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(GetLowestWorkloadClusterMemberRes,GetRouteContext().GetSwaped(), m_LowestMemberInfo);
-	};
-	
-
-
-	class ClusterNewServerServiceJoinedC2SEvtEntityTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtEntityTrans, 1>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtEntityTrans, 1> super;
-
-	private:
-
-	public:
-		ClusterNewServerServiceJoinedC2SEvtEntityTrans(Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
-		virtual ~ClusterNewServerServiceJoinedC2SEvtEntityTrans() {}
-
-		// Start Transaction
-		virtual HRESULT StartTransaction();
-	};
-
-
-	class ClusterNewServerServiceJoinedC2SEvtTrans : public ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtTrans, 1>
-	{
-	public:
-		typedef ClusterEntityMessageTransaction< ClusteredServiceEntity, Message::ClusterServer::NewServerServiceJoinedC2SEvt, ClusterNewServerServiceJoinedC2SEvtTrans, 1> super;
-
-	private:
-
-	public:
-		ClusterNewServerServiceJoinedC2SEvtTrans(Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
-		virtual ~ClusterNewServerServiceJoinedC2SEvtTrans() {}
-
-		// Start Transaction
-		virtual HRESULT StartTransaction();
-	};
 
 	
 	class SyncClusterServiceTrans : public ClusterEntityMessageTransaction< ClusterManagerServiceEntity, Message::ClusterServer::SyncClusterServiceC2SEvt, SyncClusterServiceTrans, 1>

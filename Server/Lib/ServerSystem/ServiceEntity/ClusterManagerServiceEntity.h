@@ -49,8 +49,6 @@ namespace Svr {
 
 		// Server Entity table
 		typedef Hash::HashTable<	UINT, ClusteredServiceEntity*
-										//BR::Indexing::ConstMemFunc<ClusteredServiceEntity,ClusterID,&ClusteredServiceEntity::GetClusterID> 
-										//,Hash::NonUniqueKeyTrait
 									> 
 				ClusterIDMap;
 
@@ -58,7 +56,6 @@ namespace Svr {
 		ClusterIDMap			m_ClusterIDMap;
 
 
-		MemoryAllocator& GetAllocator() { return STDAllocator::GetInstance(); }
 
 	public:
 		// Constructor/Destructor

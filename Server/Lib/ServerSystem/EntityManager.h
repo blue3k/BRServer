@@ -49,12 +49,12 @@ namespace Svr {
 		virtual ~EntityManager();
 
 
-		//PerformanceCounterInstance* GetPerformanceCounterInstance() { return (PerformanceCounterInstance*)m_PerformanceCounterInstance; }
-
 		////////////////////////////////////////////////////////////////////////////
 		//
 		// TickTask add/remove proving
 		//
+
+		virtual HRESULT CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity);
 
 		// add entity to table
 		HRESULT AddEntity( EntityFaculty faculty, Svr::Entity* pEntity );

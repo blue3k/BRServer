@@ -48,6 +48,12 @@
     <Filter Include="Google">
       <UniqueIdentifier>{004ecab7-6e4e-437b-96a2-5f6be819049f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ServiceEntity\Login">
+      <UniqueIdentifier>{4177b398-96b9-4e3f-a8d3-97ae7047df57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServiceEntity\Game">
+      <UniqueIdentifier>{3d95adb2-8c6b-4d97-aa4d-834daf1fd768}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="EntityTable.inl">
@@ -121,6 +127,15 @@
     </None>
     <None Include="BrServerUtil.inl">
       <Filter>Server</Filter>
+    </None>
+    <None Include="ServiceEntity\Game\GamePlayerEntity.inl">
+      <Filter>ServiceEntity\Game</Filter>
+    </None>
+    <None Include="ServiceEntity\Game\GameInstanceEntity.inl">
+      <Filter>ServiceEntity\Game</Filter>
+    </None>
+    <None Include="ServiceEntity\Game\GameInstancePlayer.inl">
+      <Filter>ServiceEntity\Game</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -232,12 +247,6 @@
     <ClInclude Include="ServerService\GameInstanceManagerService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="ServiceEntity\GameInstanceManagerServiceEntity.h">
-      <Filter>ServiceEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceEntity\GameInstanceManagerServiceTrans.h">
-      <Filter>ServiceEntity</Filter>
-    </ClInclude>
     <ClInclude Include="ServerService\GamePartyService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
@@ -274,9 +283,6 @@
     <ClInclude Include="ServerService\LoginServerService.h">
       <Filter>ServerService</Filter>
     </ClInclude>
-    <ClInclude Include="ServiceEntity\LoginClusterServiceEntity.h">
-      <Filter>ServiceEntity</Filter>
-    </ClInclude>
     <ClInclude Include="ServiceEntity\ClusterServiceTrans.h">
       <Filter>ServiceEntity</Filter>
     </ClInclude>
@@ -287,12 +293,6 @@
       <Filter>ServerService</Filter>
     </ClInclude>
     <ClInclude Include="ServiceEntity\ClusterManagerServiceTrans.h">
-      <Filter>ServiceEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceEntity\GameClusterServiceEntity.h">
-      <Filter>ServiceEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="ServiceEntity\GameClusterServiceTrans.h">
       <Filter>ServiceEntity</Filter>
     </ClInclude>
     <ClInclude Include="ServiceEntity\RankingServiceEntity.h">
@@ -381,6 +381,51 @@
     </ClInclude>
     <ClInclude Include="ParameterSetting.h">
       <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Login\LoginServiceEntity.h">
+      <Filter>ServiceEntity\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Login\LoginServiceTrans.h">
+      <Filter>ServiceEntity\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Login\LoginPlayerEntity.h">
+      <Filter>ServiceEntity\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Login\LoginPlayerEntityTrans.h">
+      <Filter>ServiceEntity\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameServiceTrans.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameServiceEntity.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameInstanceManagerServiceEntity.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameInstanceManagerServiceTrans.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameInstanceServiceEntity.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameInstanceServiceTrans.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameClusterServiceEntity.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameClusterServiceTrans.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GamePlayerEntity.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameInstanceEntity.h">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="ServiceEntity\Game\GameInstancePlayer.h">
+      <Filter>ServiceEntity\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -483,12 +528,6 @@
     <ClCompile Include="ServerService\GameInstanceManagerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="ServiceEntity\GameInstanceManagerServiceEntity.cpp">
-      <Filter>ServiceEntity</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceEntity\GameInstanceManagerServiceTrans.cpp">
-      <Filter>ServiceEntity</Filter>
-    </ClCompile>
     <ClCompile Include="ServerService\GamePartyService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
@@ -519,9 +558,6 @@
     <ClCompile Include="ServerService\LoginServerService.cpp">
       <Filter>ServerService</Filter>
     </ClCompile>
-    <ClCompile Include="ServiceEntity\LoginClusterServiceEntity.cpp">
-      <Filter>ServiceEntity</Filter>
-    </ClCompile>
     <ClCompile Include="ServiceEntity\ClusterServiceTrans.cpp">
       <Filter>ServiceEntity</Filter>
     </ClCompile>
@@ -532,12 +568,6 @@
       <Filter>ServerService</Filter>
     </ClCompile>
     <ClCompile Include="ServiceEntity\ClusterManagerServiceTrans.cpp">
-      <Filter>ServiceEntity</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceEntity\GameClusterServiceEntity.cpp">
-      <Filter>ServiceEntity</Filter>
-    </ClCompile>
-    <ClCompile Include="ServiceEntity\GameClusterServiceTrans.cpp">
       <Filter>ServiceEntity</Filter>
     </ClCompile>
     <ClCompile Include="ServiceEntity\RankingServiceEntity.cpp">
@@ -614,6 +644,51 @@
     </ClCompile>
     <ClCompile Include="ParameterSetting.cpp">
       <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Login\LoginServiceTrans.cpp">
+      <Filter>ServiceEntity\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Login\LoginPlayerEntity.cpp">
+      <Filter>ServiceEntity\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Login\LoginPlayerEntityTrans.cpp">
+      <Filter>ServiceEntity\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Login\LoginServiceEntity.cpp">
+      <Filter>ServiceEntity\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameServiceTrans.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameServiceEntity.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameInstanceManagerServiceTrans.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameInstanceServiceEntity.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameInstanceServiceTrans.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameClusterServiceEntity.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameClusterServiceTrans.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameInstanceManagerServiceEntity.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GamePlayerEntity.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameInstanceEntity.cpp">
+      <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceEntity\Game\GameInstancePlayer.cpp">
+      <Filter>ServiceEntity\Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

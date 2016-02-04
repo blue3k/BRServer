@@ -36,7 +36,6 @@ namespace Svr {
 
 	GameServerEntity::GameServerEntity( UINT uiTransQueueSize, UINT TransResQueueSize )
 		:ServerEntity( uiTransQueueSize, TransResQueueSize )
-		,m_Allocator(STDAllocator::GetInstance())
 	{
 	}
 

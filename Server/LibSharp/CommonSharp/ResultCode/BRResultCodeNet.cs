@@ -20,214 +20,214 @@ namespace BR {
 	public partial struct ResultCode {
 
 		// Network sequence already processed 
-		const int S_NET_PROCESSED_SEQUENCE =                                unchecked((int)0x27030000); 
+		public const int S_NET_PROCESSED_SEQUENCE =                         unchecked((int)0x27030000); 
 
 		// The version not available or miss match with system. 
-		const int E_NET_PROTOCOL_VERSION_MISMATCH =                         unchecked((int)0xE7030001); 
+		public const int E_NET_PROTOCOL_VERSION_MISMATCH =                  unchecked((int)0xE7030001); 
 
 		// Network is not initialized 
-		const int E_NET_NOTINITIALIZED =                                    unchecked((int)0xE7030002); 
+		public const int E_NET_NOTINITIALIZED =                             unchecked((int)0xE7030002); 
 
 		// The version not available or miss match with system. 
-		const int E_NET_INVALID_NETCLASS =                                  unchecked((int)0xE7030003); 
+		public const int E_NET_INVALID_NETCLASS =                           unchecked((int)0xE7030003); 
 
 		// Not enough space in sliding window 
-		const int E_NET_NOT_ENOUGH_WINDOWSPACE =                            unchecked((int)0xE7030004); 
+		public const int E_NET_NOT_ENOUGH_WINDOWSPACE =                     unchecked((int)0xE7030004); 
 
 		// Network IO aborted 
-		const int E_NET_IO_ABORTED =                                        unchecked((int)0xE7030005); 
+		public const int E_NET_IO_ABORTED =                                 unchecked((int)0xE7030005); 
 
 		// Network IO send failed 
-		const int E_NET_IO_SEND_FAIL =                                      unchecked((int)0xE7030006); 
+		public const int E_NET_IO_SEND_FAIL =                               unchecked((int)0xE7030006); 
 
 		// Network IO recv failed 
-		const int E_NET_IO_RECV_FAIL =                                      unchecked((int)0xE7030007); 
+		public const int E_NET_IO_RECV_FAIL =                               unchecked((int)0xE7030007); 
 
 		// Network send failed 
-		const int E_NET_SEND_FAIL =                                         unchecked((int)0xE7030008); 
+		public const int E_NET_SEND_FAIL =                                  unchecked((int)0xE7030008); 
 
 		// Network recv failed 
-		const int E_NET_RECV_FAIL =                                         unchecked((int)0xE7030009); 
+		public const int E_NET_RECV_FAIL =                                  unchecked((int)0xE7030009); 
 
 		// Network Message sequence is invalid 
-		const int E_NET_INVALID_SEQUENCE =                                  unchecked((int)0xE703000A); 
+		public const int E_NET_INVALID_SEQUENCE =                           unchecked((int)0xE703000A); 
 
 		// Network Message not expected bad packet size 
-		const int E_NET_BADPACKET_SIZE =                                    unchecked((int)0xE703000B); 
+		public const int E_NET_BADPACKET_SIZE =                             unchecked((int)0xE703000B); 
 
 		// Network connection closed 
-		const int E_NET_CONNECTION_CLOSED =                                 unchecked((int)0xE703000C); 
+		public const int E_NET_CONNECTION_CLOSED =                          unchecked((int)0xE703000C); 
 
 		// Network connection is never made 
-		const int E_NET_NOT_CONNECTED =                                     unchecked((int)0xE703000D); 
+		public const int E_NET_NOT_CONNECTED =                              unchecked((int)0xE703000D); 
 
 		// Network connection ID is invalid 
-		const int E_NET_INVALID_CID =                                       unchecked((int)0xE703000E); 
+		public const int E_NET_INVALID_CID =                                unchecked((int)0xE703000E); 
 
 		// Network Connection timeout 
-		const int E_NET_CONNECTION_TIMEOUT =                                unchecked((int)0xE703000F); 
+		public const int E_NET_CONNECTION_TIMEOUT =                         unchecked((int)0xE703000F); 
 
 		// Network connection is failed 
-		const int E_NET_CONNECTION_FAIL =                                   unchecked((int)0xE7030010); 
+		public const int E_NET_CONNECTION_FAIL =                            unchecked((int)0xE7030010); 
 
 		// Too big packet data 
-		const int E_NET_BADPACKET_TOOBIG =                                  unchecked((int)0xE7030011); 
+		public const int E_NET_BADPACKET_TOOBIG =                           unchecked((int)0xE7030011); 
 
 		// Network Message not expected bad packet 
-		const int E_NET_BADPACKET_NOTEXPECTED =                             unchecked((int)0xE7030012); 
+		public const int E_NET_BADPACKET_NOTEXPECTED =                      unchecked((int)0xE7030012); 
 
 		// Checksum value of the message is invalid 
-		const int E_NET_INVALID_MESSAGE_CHECKSUM =                          unchecked((int)0xE7030013); 
+		public const int E_NET_INVALID_MESSAGE_CHECKSUM =                   unchecked((int)0xE7030013); 
 
 		// Message encryption is invalid 
-		const int E_NET_INVALID_MESSAGE_ENCRYPTION =                        unchecked((int)0xE7030014); 
+		public const int E_NET_INVALID_MESSAGE_ENCRYPTION =                 unchecked((int)0xE7030014); 
 
 		// Invalid connection state 
-		const int E_NET_INVALID_CONNECTION_STATE =                          unchecked((int)0xE7030015); 
+		public const int E_NET_INVALID_CONNECTION_STATE =                   unchecked((int)0xE7030015); 
 
 		// Too big sequence id 
-		const int E_NET_SEQUENCE_OVERFLOW =                                 unchecked((int)0xE7030016); 
+		public const int E_NET_SEQUENCE_OVERFLOW =                          unchecked((int)0xE7030016); 
 
 		// A blocking operation was interrupted by a call to WSACancelBlockingCall. 
-		const int E_NET_INTR =                                              unchecked((int)0xE7030017); 
+		public const int E_NET_INTR =                                       unchecked((int)0xE7030017); 
 
 		// The file handle supplied is not valid. 
-		const int E_NET_BADF =                                              unchecked((int)0xE7030018); 
+		public const int E_NET_BADF =                                       unchecked((int)0xE7030018); 
 
 		// An attempt was made to access a socket in a way forbidden by its access permissions 
-		const int E_NET_ACCES =                                             unchecked((int)0xE7030019); 
+		public const int E_NET_ACCES =                                      unchecked((int)0xE7030019); 
 
 		// The system detected an invalid pointer address in attempting to use a pointer argument in a call. 
-		const int E_NET_FAULT =                                             unchecked((int)0xE703001A); 
+		public const int E_NET_FAULT =                                      unchecked((int)0xE703001A); 
 
 		// An invalid argument was supplied. 
-		const int E_NET_INVAL =                                             unchecked((int)0xE703001B); 
+		public const int E_NET_INVAL =                                      unchecked((int)0xE703001B); 
 
 		// Too many open sockets. 
-		const int E_NET_MFILE =                                             unchecked((int)0xE703001C); 
+		public const int E_NET_MFILE =                                      unchecked((int)0xE703001C); 
 
 		// A non-blocking socket operation could not be completed immediately. 
-		const int E_NET_WOULDBLOCK =                                        unchecked((int)0xE703001D); 
+		public const int E_NET_WOULDBLOCK =                                 unchecked((int)0xE703001D); 
 
 		// A blocking operation is currently executing. 
-		const int E_NET_INPROGRESS =                                        unchecked((int)0xE703001E); 
+		public const int E_NET_INPROGRESS =                                 unchecked((int)0xE703001E); 
 
 		// An operation was attempted on a non-blocking socket that already had an operation in progress. 
-		const int E_NET_ALREADY =                                           unchecked((int)0xE703001F); 
+		public const int E_NET_ALREADY =                                    unchecked((int)0xE703001F); 
 
 		// An operation was attempted on something that is not a socket. 
-		const int E_NET_NOTSOCK =                                           unchecked((int)0xE7030020); 
+		public const int E_NET_NOTSOCK =                                    unchecked((int)0xE7030020); 
 
 		// A required address was omitted from an operation on a socket. 
-		const int E_NET_DESTADDRREQ =                                       unchecked((int)0xE7030021); 
+		public const int E_NET_DESTADDRREQ =                                unchecked((int)0xE7030021); 
 
 		// A socket operation encountered a dead network. 
-		const int E_NET_NETDOWN =                                           unchecked((int)0xE7030022); 
+		public const int E_NET_NETDOWN =                                    unchecked((int)0xE7030022); 
 
 		// A socket operation was attempted to an unreachable network. 
-		const int E_NET_NETUNREACH =                                        unchecked((int)0xE7030023); 
+		public const int E_NET_NETUNREACH =                                 unchecked((int)0xE7030023); 
 
 		// The connection has been broken due to keep-alive activity detecting a failure while the operation was in progress. 
-		const int E_NET_NETRESET =                                          unchecked((int)0xE7030024); 
+		public const int E_NET_NETRESET =                                   unchecked((int)0xE7030024); 
 
 		// An established connection was aborted by the software in your host machine. 
-		const int E_NET_CONNABORTED =                                       unchecked((int)0xE7030025); 
+		public const int E_NET_CONNABORTED =                                unchecked((int)0xE7030025); 
 
 		// An existing connection was forcibly closed by the remote host. 
-		const int E_NET_CONNRESET =                                         unchecked((int)0xE7030026); 
+		public const int E_NET_CONNRESET =                                  unchecked((int)0xE7030026); 
 
 		// An operation on a socket could not be performed because the system lacked sufficient buffer space or because a queue was full. 
-		const int E_NET_NOBUFS =                                            unchecked((int)0xE7030027); 
+		public const int E_NET_NOBUFS =                                     unchecked((int)0xE7030027); 
 
 		// A connect request was made on an already connected socket. 
-		const int E_NET_ISCONN =                                            unchecked((int)0xE7030028); 
+		public const int E_NET_ISCONN =                                     unchecked((int)0xE7030028); 
 
 		// A request to send or receive data was disallowed because the socket is not connected and (when sending on a datagram socket using a sendto call) no address was supplied. 
-		const int E_NET_NOTCONN =                                           unchecked((int)0xE7030029); 
+		public const int E_NET_NOTCONN =                                    unchecked((int)0xE7030029); 
 
 		// A request to send or receive data was disallowed because the socket had already been shut down in that direction with a previous shutdown call. 
-		const int E_NET_SHUTDOWN =                                          unchecked((int)0xE703002A); 
+		public const int E_NET_SHUTDOWN =                                   unchecked((int)0xE703002A); 
 
 		// Too many references to some kernel object. 
-		const int E_NET_TOOMANYREFS =                                       unchecked((int)0xE703002B); 
+		public const int E_NET_TOOMANYREFS =                                unchecked((int)0xE703002B); 
 
 		// A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. 
-		const int E_NET_TIMEDOUT =                                          unchecked((int)0xE703002C); 
+		public const int E_NET_TIMEDOUT =                                   unchecked((int)0xE703002C); 
 
 		// No connection could be made because the target machine actively refused it. 
-		const int E_NET_CONNECTION_REFUSSED =                               unchecked((int)0xE703002D); 
+		public const int E_NET_CONNECTION_REFUSSED =                        unchecked((int)0xE703002D); 
 
 		// Cannot translate name. 
-		const int E_NET_LOOP =                                              unchecked((int)0xE703002E); 
+		public const int E_NET_LOOP =                                       unchecked((int)0xE703002E); 
 
 		// Name component or name was too long. 
-		const int E_NET_NAMETOOLONG =                                       unchecked((int)0xE703002F); 
+		public const int E_NET_NAMETOOLONG =                                unchecked((int)0xE703002F); 
 
 		// A socket operation failed because the destination host was down. 
-		const int E_NET_HOSTDOWN =                                          unchecked((int)0xE7030030); 
+		public const int E_NET_HOSTDOWN =                                   unchecked((int)0xE7030030); 
 
 		// A socket operation was attempted to an unreachable host. 
-		const int E_NET_HOSTUNREACH =                                       unchecked((int)0xE7030031); 
+		public const int E_NET_HOSTUNREACH =                                unchecked((int)0xE7030031); 
 
 		// Cannot remove a directory that is not empty. 
-		const int E_NET_NOTEMPTY =                                          unchecked((int)0xE7030032); 
+		public const int E_NET_NOTEMPTY =                                   unchecked((int)0xE7030032); 
 
 		// A Windows Sockets implementation may have a limit on the number of applications that may use it simultaneously. 
-		const int E_NET_PROCLIM =                                           unchecked((int)0xE7030033); 
+		public const int E_NET_PROCLIM =                                    unchecked((int)0xE7030033); 
 
 		// WSAStartup cannot function at this time because the underlying system it uses to provide network services is currently unavailable. 
-		const int E_NET_SYSNOTREADY =                                       unchecked((int)0xE7030034); 
+		public const int E_NET_SYSNOTREADY =                                unchecked((int)0xE7030034); 
 
 		// The Windows Sockets version requested is not supported. 
-		const int E_NET_VERNOTSUPPORTED =                                   unchecked((int)0xE7030035); 
+		public const int E_NET_VERNOTSUPPORTED =                            unchecked((int)0xE7030035); 
 
 		// Either the application has not called WSAStartup, or WSAStartup failed. 
-		const int E_NET_NOTINITIALISED =                                    unchecked((int)0xE7030036); 
+		public const int E_NET_NOTINITIALISED =                             unchecked((int)0xE7030036); 
 
 		// Returned by WSARecv or WSARecvFrom to indicate the remote party has initiated a graceful shutdown sequence. 
-		const int E_NET_DISCON =                                            unchecked((int)0xE7030037); 
+		public const int E_NET_DISCON =                                     unchecked((int)0xE7030037); 
 
 		// A system call has failed. 
-		const int E_NET_SYSCALLFAILURE =                                    unchecked((int)0xE7030038); 
+		public const int E_NET_SYSCALLFAILURE =                             unchecked((int)0xE7030038); 
 
 		// Host not found. 
-		const int E_NET_HOST_NOT_FOUND =                                    unchecked((int)0xE7030039); 
+		public const int E_NET_HOST_NOT_FOUND =                             unchecked((int)0xE7030039); 
 
 		// Try again 
-		const int E_NET_TRY_AGAIN =                                         unchecked((int)0xE703003A); 
+		public const int E_NET_TRY_AGAIN =                                  unchecked((int)0xE703003A); 
 
 		// IOPending 
-		const int E_NET_IO_PENDING =                                        unchecked((int)0xE703003B); 
+		public const int E_NET_IO_PENDING =                                 unchecked((int)0xE703003B); 
 
 		// No such host is known securely. 
-		const int E_NET_SECURE_HOST_NOT_FOUND =                             unchecked((int)0xE703003C); 
+		public const int E_NET_SECURE_HOST_NOT_FOUND =                      unchecked((int)0xE703003C); 
 
 		// Protocol error 
-		const int E_NET_PROTO =                                             unchecked((int)0xE703003D); 
+		public const int E_NET_PROTO =                                      unchecked((int)0xE703003D); 
 
 		// Protocol wrong type for socket. 
-		const int E_NET_PROTOTYPE =                                         unchecked((int)0xE703003E); 
+		public const int E_NET_PROTOTYPE =                                  unchecked((int)0xE703003E); 
 
 		// Protocol not available 
-		const int E_NET_NOPROTOOPT =                                        unchecked((int)0xE703003F); 
+		public const int E_NET_NOPROTOOPT =                                 unchecked((int)0xE703003F); 
 
 		// Machine is not on the network 
-		const int E_NET_NONET =                                             unchecked((int)0xE7030040); 
+		public const int E_NET_NONET =                                      unchecked((int)0xE7030040); 
 
 		// Operation not supported on socket 
-		const int E_NET_OPNOTSUPP =                                         unchecked((int)0xE7030041); 
+		public const int E_NET_OPNOTSUPP =                                  unchecked((int)0xE7030041); 
 
 		// An invalid value was provided for the ai_flags member of the pHints parameter. 
-		const int E_NET_BADFLAGS =                                          unchecked((int)0xE7030042); 
+		public const int E_NET_BADFLAGS =                                   unchecked((int)0xE7030042); 
 
 		// Bad network family 
-		const int E_NET_FAMILY =                                            unchecked((int)0xE7030043); 
+		public const int E_NET_FAMILY =                                     unchecked((int)0xE7030043); 
 
 		// The pServiceName parameter is not supported for the specified ai_socktype member of the pHints parameter. 
-		const int E_NET_INVALID_SERVICE =                                   unchecked((int)0xE7030044); 
+		public const int E_NET_INVALID_SERVICE =                            unchecked((int)0xE7030044); 
 
 		// Invalid network address 
-		const int E_NET_INVALID_ADDRESS =                                   unchecked((int)0xE7030045); 
+		public const int E_NET_INVALID_ADDRESS =                            unchecked((int)0xE7030045); 
 
 	}
 }

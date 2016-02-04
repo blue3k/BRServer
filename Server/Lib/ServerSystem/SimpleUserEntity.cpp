@@ -170,8 +170,8 @@ namespace Svr
 		case Message::MSGTYPE_COMMAND:
 		case Message::MSGTYPE_EVENT:
 		{
-			Assert(m_pHandlerTable);
-			if (FAILED(m_pHandlerTable->HandleMessage<Svr::Transaction*&>(GetConnection(), pIMsg, pNewTrans)))
+			//Assert(m_pHandlerTable);
+			if (FAILED(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(GetConnection(), pIMsg, pNewTrans)))
 			{
 				svrTrace(Trace::TRC_ERROR, "Failed to handle remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
 				svrErr(E_SVR_NOTEXPECTED_MESSAGE);
@@ -265,7 +265,7 @@ namespace Svr
 					if (FAILED(pConn->GetRecvMessage(pIMsg)))
 						break;
 
-					ProcessMessage( pIMsg );
+					ProcessMessage(pIMsg );
 
 					Util::SafeRelease( pIMsg );
 				}
@@ -292,6 +292,17 @@ namespace Svr
 		return S_SYSTEM_OK;
 	}
 
+
+	//// Called when this entity have a routed message
+	//HRESULT SimpleUserEntity::OnRoutedMessage(Message::MessageData* &pMsg)
+	//{
+	//	// TODO: Call process message directly when it runs on the same thread
+	//	HRESULT hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(), pMsg));
+	//	if (SUCCEEDED(hr))
+	//		pMsg = nullptr;
+
+	//	return hr;
+	//}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Overriding IConnectionEventHandler

@@ -104,7 +104,7 @@ namespace Svr {
 		// If we got connected to the master, request member list so that we can get dynamically added cluster manager informations
 		if( serviceInfo.Membership == ClusterMembership::Master )
 		{
-			svrChk( GetMyOwner()->GetPolicy<Policy::IPolicyClusterServer>()->GetClusterMemberListCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),serviceInfo.UID), 0, pService->GetClusterID() ) );
+			svrChk( GetMyOwner()->GetPolicy<Policy::IPolicyClusterServer>()->GetClusterMemberListCmd( RouteContext(GetOwnerEntityUID(),serviceInfo.UID), GetTransID(), 0, pService->GetClusterID() ) );
 		}
 		else
 			CloseTransaction(hr);

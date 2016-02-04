@@ -51,12 +51,10 @@ namespace ConspiracyGameInstanceServer {
 
 
 	GamePlayer::GamePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player)
-		: PlayerEntityInformation(player)
-		, m_GameOwner(pGameOwner)
+		: super(pGameOwner, player)
 		, m_Index(0)
 		, m_Character(0)
 		, m_PlayerState(PlayerState::None)
-		, m_IsBot(false)
 		, m_RevealedBySeer(false)
 		, m_RequestedRole(PlayerRole::None)
 		, m_Voted(0)
@@ -75,11 +73,8 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_SYSTEM_OK;
 
 		// disable, not implemented yet
-		svrChkPtr( m_GameOwner = pGameOwner );
+		svrChk(super::InitializePlayer(pGameOwner, isBot));
 
-		// Clear kick timer
-
-		m_IsBot = isBot;
 		SetRole( PlayerRole::None );
 
 		m_RevealedBySeer = false;
@@ -98,10 +93,12 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_SYSTEM_OK;
 
+		svrChk(super::UpdateGamePlayer(ulCurTime));
+
 		auto gameStateSystem = GetGameOwner()->GetComponent<GameStateSystem>();
 		svrChkPtr(gameStateSystem);
 
-		if (m_IsBot)
+		if (GetIsBot())
 		{
 			switch (gameStateSystem->GetCurrentGameState())
 			{

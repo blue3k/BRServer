@@ -36,7 +36,7 @@
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
 #include "ServerSystem/ServerService/GamePartyManagerService.h"
-#include "ServerSystem/ServiceEntity/GameInstanceManagerServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
 
 #include "ServerSystem/BrServer.h"
@@ -443,7 +443,7 @@ namespace Svr {
 
 		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( GetMyOwner()->GetMatchingTicket().QueueUID.GetServerID(), pServer ) );
 
-		svrChk( pServer->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->UnregisterMatchingCmd( GetTransID(), RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingTicket().QueueUID), 0, 
+		svrChk( pServer->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->UnregisterMatchingCmd( RouteContext(GetOwnerEntityUID(), GetMyOwner()->GetMatchingTicket().QueueUID), GetTransID(), 0,
 			GetMyOwner()->GetMatchingTicket() ) );
 
 		

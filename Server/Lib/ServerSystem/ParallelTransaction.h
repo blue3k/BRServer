@@ -101,8 +101,6 @@ namespace Svr{
 		// Pending transaction Queue
 		PageQueue<ParallelTransaction*>		m_PendingQueries;
 
-		virtual MemoryAllocator& GetAllocator() { return STDAllocator::GetInstance(); }
-
 	protected:
 
 		HRESULT EnqueueTransaction(ParallelTransaction* pTrans);
@@ -117,6 +115,7 @@ namespace Svr{
 		// Terminate server component
 		virtual void TerminateComponent();
 
+		//virtual HRESULT OnRoutedMessage(Message::MessageData* &pMsg) override { assert(false); return E_SYSTEM_NOTIMPL; }
 	};
 
 

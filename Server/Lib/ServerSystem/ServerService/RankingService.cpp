@@ -41,7 +41,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->AddPlayerCmd( InContext, InRouteContext, InPlayerID, InRankingScore, InPlayerInfo ) );
+			svrChk(GetPolicyRanking()->AddPlayerCmd( InRouteContext, InContext, InPlayerID, InRankingScore, InPlayerInfo ) );
 
 		Proc_End:
 
@@ -55,7 +55,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->RemovePlayerCmd( InContext, InRouteContext, InPlayerID ) );
+			svrChk(GetPolicyRanking()->RemovePlayerCmd( InRouteContext, InContext, InPlayerID ) );
 
 		Proc_End:
 
@@ -69,7 +69,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->GetPlayerRankingCmd( InContext, InRouteContext, InPlayerID ) );
+			svrChk(GetPolicyRanking()->GetPlayerRankingCmd( InRouteContext, InContext, InPlayerID ) );
 
 		Proc_End:
 
@@ -83,7 +83,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->UpdatePlayerCmd( InContext, InRouteContext, InPlayerID, InRankingScore, InPlayerInfo ) );
+			svrChk(GetPolicyRanking()->UpdatePlayerCmd( InRouteContext, InContext, InPlayerID, InRankingScore, InPlayerInfo ) );
 
 		Proc_End:
 
@@ -97,7 +97,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->GetRankingCmd( InContext, InRouteContext, InFrom, InCount ) );
+			svrChk(GetPolicyRanking()->GetRankingCmd( InRouteContext, InContext, InFrom, InCount ) );
 
 		Proc_End:
 

@@ -20,28 +20,28 @@ namespace BR {
 	public partial struct ResultCode {
 
 		// Success 
-		const int S_SYSTEM_OK =                                             unchecked((int)0x00000000); 
+		public const int S_SYSTEM_OK =                                      unchecked((int)0x00000000); 
 
 		// Success 
-		const int S_SYSTEM_FALSE =                                          unchecked((int)0x00000001); 
+		public const int S_SYSTEM_FALSE =                                   unchecked((int)0x00000001); 
 
 		// Invalid pointer 
-		const int E_SYSTEM_POINTER =                                        unchecked((int)0xC0000002); 
+		public const int E_SYSTEM_POINTER =                                 unchecked((int)0xC0000002); 
 
 		// Fail 
-		const int E_SYSTEM_FAIL =                                           unchecked((int)0xC0000003); 
+		public const int E_SYSTEM_FAIL =                                    unchecked((int)0xC0000003); 
 
 		// Not implemented 
-		const int E_SYSTEM_NOTIMPL =                                        unchecked((int)0xC0000004); 
+		public const int E_SYSTEM_NOTIMPL =                                 unchecked((int)0xC0000004); 
 
 		// Out of memory 
-		const int E_SYSTEM_OUTOFMEMORY =                                    unchecked((int)0xC0000005); 
+		public const int E_SYSTEM_OUTOFMEMORY =                             unchecked((int)0xC0000005); 
 
 		// Unexpected 
-		const int E_SYSTEM_UNEXPECTED =                                     unchecked((int)0xC0000006); 
+		public const int E_SYSTEM_UNEXPECTED =                              unchecked((int)0xC0000006); 
 
 		// Invalid argument 
-		const int E_SYSTEM_INVALIDARG =                                     unchecked((int)0xC0000007); 
+		public const int E_SYSTEM_INVALIDARG =                              unchecked((int)0xC0000007); 
 
 	}
 }

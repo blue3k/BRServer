@@ -50,7 +50,6 @@ namespace Svr
 	EntityServerEntity::EntityServerEntity( UINT uiTransQueueSize, UINT TransResQueueSize )
 		:ServerEntity(	uiTransQueueSize > 64 ? uiTransQueueSize : Const::ENTITY_ENTITY_TRANS_QUEUE, 
 						TransResQueueSize > 64 ? TransResQueueSize : Const::ENTITY_ENTITY_TRANSRES_QUEUE )
-		,m_Allocator(STDAllocator::GetInstance())
 	{
 	}
 

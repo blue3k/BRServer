@@ -41,7 +41,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyServer()->GenericFailureCmd( InContext, InRouteContext ) );
+			svrChk(GetPolicyServer()->GenericFailureCmd( InRouteContext, InContext ) );
 
 		Proc_End:
 
@@ -49,18 +49,18 @@ namespace BR
 
 		}; // HRESULT ServerService::GenericFailureCmd( const Context &InContext )
 		// C2S: Server Started or Connected
-		HRESULT ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+		HRESULT ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
-			svrChk(GetPolicyServer()->ServerConnectedC2SEvt( InRouteContext, InClusterManagerServiceInformation, InStartUpTime, InPublicAddress, InPrivateAddress ) );
+			svrChk(GetPolicyServer()->ServerConnectedC2SEvt( InRouteContext, InClusterManagerServiceInformation, InStartUpTime, InPrivateAddress ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+		}; // HRESULT ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
 
 
 	}; // namespace Svr

@@ -41,7 +41,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->JoinPartyCmd( InContext, InRouteContext, InInviterID, InInvitedPlayer ) );
+			svrChk(GetPolicyGameParty()->JoinPartyCmd( InRouteContext, InContext, InInviterID, InInvitedPlayer ) );
 
 		Proc_End:
 
@@ -55,7 +55,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->LeavePartyCmd( InContext, InRouteContext, InPlayerID ) );
+			svrChk(GetPolicyGameParty()->LeavePartyCmd( InRouteContext, InContext, InPlayerID ) );
 
 		Proc_End:
 
@@ -69,7 +69,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->KickPlayerCmd( InContext, InRouteContext, InPlayerID, InPlayerToKick ) );
+			svrChk(GetPolicyGameParty()->KickPlayerCmd( InRouteContext, InContext, InPlayerID, InPlayerToKick ) );
 
 		Proc_End:
 
@@ -109,7 +109,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->StartGameMatchCmd( InContext, InRouteContext, InPlayerID, InMaxGamePlayers ) );
+			svrChk(GetPolicyGameParty()->StartGameMatchCmd( InRouteContext, InContext, InPlayerID, InMaxGamePlayers ) );
 
 		Proc_End:
 
@@ -123,7 +123,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->CancelGameMatchCmd( InContext, InRouteContext, InPlayerID ) );
+			svrChk(GetPolicyGameParty()->CancelGameMatchCmd( InRouteContext, InContext, InPlayerID ) );
 
 		Proc_End:
 

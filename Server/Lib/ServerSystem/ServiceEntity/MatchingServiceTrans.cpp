@@ -31,7 +31,7 @@
 #include "ServerSystem/ServiceEntity/MatchingServiceTrans.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GameInstanceManagerServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
 #include "ServerSystem/ServerService/PartyMatchingQueueService.h"
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
@@ -303,7 +303,7 @@ namespace Svr {
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(ticket.QueueUID.GetServerID(), pServerEntity));
 
 		// 2. Get service entity list in the cluster
-		svrChk(pServerEntity->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->DequeueItemCmd(GetTransID(), RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), 0, ticket));
+		svrChk(pServerEntity->GetPolicy<Policy::IPolicyPartyMatchingQueue>()->DequeueItemCmd(RouteContext(GetMyOwner()->GetEntityUID(), ticket.QueueUID), GetTransID(), 0, ticket));
 
 		m_PendingDequeueItem++;
 

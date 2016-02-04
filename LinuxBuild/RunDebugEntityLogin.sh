@@ -15,7 +15,7 @@ sleep 2s
 
 sleep 2s
 
-./BRLoginServer -debug -n:BRLoginServer01&
+./BRModuleServer -debug -n:BRLoginServer01&
 
 
 

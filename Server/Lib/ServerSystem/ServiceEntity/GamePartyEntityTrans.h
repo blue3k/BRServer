@@ -83,7 +83,7 @@ namespace Svr {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(JoinPartyRes,GetRouteContext().GetSwaped(), m_LeaderID,m_MessageBuffer.ToArray());
+		BR_SVR_MSGTRANS_CLOSE_ARGS(JoinPartyRes,GetRouteContext().GetSwaped(), m_LeaderID,m_MessageBuffer.ToArray());
 	};
 	
 
@@ -101,7 +101,7 @@ namespace Svr {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(LeavePartyRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(LeavePartyRes,GetRouteContext().GetSwaped());
 	};
 
 	
@@ -120,7 +120,7 @@ namespace Svr {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(KickPlayerRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(KickPlayerRes,GetRouteContext().GetSwaped());
 	};
 	
 	
@@ -173,7 +173,7 @@ namespace Svr {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(StartGameMatchRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(StartGameMatchRes,GetRouteContext().GetSwaped());
 	};
 
 
@@ -192,7 +192,7 @@ namespace Svr {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(CancelGameMatchRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(CancelGameMatchRes,GetRouteContext().GetSwaped());
 	};
 
 	

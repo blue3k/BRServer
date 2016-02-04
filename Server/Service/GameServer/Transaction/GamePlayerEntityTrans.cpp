@@ -27,7 +27,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServerSystem/ExternalTransaction.h"
 #include "ServerSystem/ExternalTransactionManager.h"
 
@@ -288,7 +288,7 @@ namespace GameServer {
 			Policy::IPolicyGameParty* pPolicy = nullptr;
 
 			svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameParty>(partyUID.GetServerID()));
-			svrChk(pPolicy->JoinPartyCmd(GetTransID(), RouteContext(GetOwnerEntityUID(), partyUID), 0, GetMyOwner()->GetPlayerInformation()));
+			svrChk(pPolicy->JoinPartyCmd(RouteContext(GetOwnerEntityUID(), partyUID), GetTransID(), 0, GetMyOwner()->GetPlayerInformation()));
 		}
 		else
 		{
@@ -402,9 +402,6 @@ namespace GameServer {
 	HRESULT PlayerTransJoinGameServer::StartTransaction()
 	{
 		HRESULT hr = S_SYSTEM_OK;
-		//Svr::ClusteredServiceEntity *pLoginServiceEntity = nullptr;
-		//Svr::ServerServiceInformation *pLoginService = nullptr;
-		//Svr::ServerEntity *pLoginEntity = nullptr;
 		EntityUID loginEntityUID(GetLoginEntityUID());
 		Policy::IPolicyLoginServer *pLoginPolicy = nullptr;
 
@@ -428,7 +425,7 @@ namespace GameServer {
 
 		// TODO: We need to distinguish whether character data is updated or not
 		svrChkPtr( pLoginPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyLoginServer>( loginEntityUID.GetServerID()) );
-		svrChk( pLoginPolicy->PlayerJoinedToGameServerCmd( GetTransID(), RouteContext(GetOwnerEntityUID(),loginEntityUID),
+		svrChk( pLoginPolicy->PlayerJoinedToGameServerCmd( RouteContext(GetOwnerEntityUID(),loginEntityUID), GetTransID(),
 			GetAccID(), GetTicket() ) );
 
 	Proc_End:

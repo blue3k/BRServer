@@ -41,7 +41,28 @@ namespace Config {
 		// for parsing
 		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
-	
+
+
+	// Public Net socket
+	class PublicNetSocket : public XML::DOMElement
+	{
+	public:
+		PublicNetSocket();
+
+		// IP address
+		std::string	IPV4;
+		std::string	IPV6;
+
+		// Port
+		USHORT Port;
+
+		// Max connection
+		UINT MaxConnection;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
 
 	//////////////////////////////////////////////////////////////
 	// DB Instance 
@@ -157,6 +178,129 @@ namespace Config {
 	};
 
 
+	///////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Modules
+	//
+
+	// ModuleBase
+	class ModuleBase : public XML::DOMElement
+	{
+	private:
+		ClusterID m_ModuleClusterID;
+
+	protected:
+		void SetModuleClusterID(ClusterID clusterID) { m_ModuleClusterID = clusterID; }
+
+	public:
+		ModuleBase();
+		ModuleBase(const char* name, ClusterID clusterID);
+
+		ClusterID GetModuleClusterID() { return m_ModuleClusterID; }
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+	// ModuleSimple
+	class ModuleSimple : public ModuleBase
+	{
+	public:
+		ModuleSimple();
+
+		virtual void SetName(const char* Name) override;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+	// ModuleMatching
+	class ModuleMatching : public ModuleBase
+	{
+	public:
+		ModuleMatching();
+
+		bool UseBot;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+	// ModuleLogin
+	class ModuleLogin : public ModuleBase
+	{
+	public:
+		ModuleLogin();
+
+		PublicNetSocket* NetPublic;
+
+		virtual void AddChild(DOMElement *pChild) override;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+	// ModuleGame
+	class ModuleGame : public ModuleBase
+	{
+	private:
+
+		GameID m_GameID;
+
+	public:
+		ModuleGame();
+
+		GameID GetGameID() { return m_GameID; }
+
+		PublicNetSocket* NetPublic;
+
+		virtual void AddChild(DOMElement *pChild) override;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+	// ModuleGameInstance
+	class ModuleGameInstance : public ModuleBase
+	{
+	public:
+		ModuleGameInstance();
+
+		virtual void AddChild(DOMElement *pChild) override;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+	// ModulePurchaseValidateGoogle
+	class ModulePurchaseValidateGoogle : public ModuleBase
+	{
+	public:
+		ModulePurchaseValidateGoogle();
+
+		std::string      Account;
+		std::string      P12KeyFile;
+		std::string      AuthScopes;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+	// ModulePurchaseValidateIOS
+	class ModulePurchaseValidateIOS : public ModuleBase
+	{
+	public:
+		ModulePurchaseValidateIOS();
+
+		std::string      URL;
+		std::string      AltURL;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+
+
 	class ServerComponent : public XML::DOMElement
 	{
 	public:
@@ -240,8 +384,7 @@ namespace Config {
 		ULONG			MaxPublicConnection;
 
 		// Public network info
-		NetSocket*		NetPublic;
-		NetSocket*		NetPublicIPV4;
+		PublicNetSocket*		NetPublic;
 
 		///////////////////////////////////////////////////////////////////////////
 		//
@@ -257,30 +400,20 @@ namespace Config {
 
 	//////////////////////////////////////////////////////////////
 	// Server setting
-	
-	class Module : public XML::DOMElement
+	//
+
+	class ModuleServer : public GenericServer
 	{
+	private:
+
+		GameID m_GameID;
+
 	public:
+		ModuleServer();
 
-		static std::unordered_map<std::string,ClusterID> stm_ModuleNameMap;
+		GameID GetGameID() const { return m_GameID; }
 
-	public:
-		Module();
-
-		ClusterID ModuleID;
-		std::string Parameters;
-
-		// for parsing
-		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
-	};
-
-
-	class SharedModuleServer : public GenericServer
-	{
-	public:
-		SharedModuleServer();
-
-		std::vector<Module*> Modules;
+		std::vector<ModuleBase*> Modules;
 		
 		///////////////////////////////////////////////////////////////////////////
 		//
@@ -294,12 +427,15 @@ namespace Config {
 	};
 
 
-	
+
 
 	//////////////////////////////////////////////////////////////
 	// Server cluster
 	class GameClusterInfo : public XML::DOMElement
 	{
+	private:
+		GameID              m_GameID;
+
 	public:
 		// Generic server
 		DBCluster*			GameDB;
@@ -322,6 +458,8 @@ namespace Config {
 
 		// Game instance Servers
 		std::vector<GenericServer*>	GameMatchings;
+
+		GameID GetGameID() { return m_GameID; }
 		
 		///////////////////////////////////////////////////////////////////////////
 		//
@@ -383,7 +521,7 @@ namespace Config {
 		std::vector<PublicServer*>			LoginServers;
 
 		// Shared module servers
-		std::vector<SharedModuleServer*>	SharedModuleServers;
+		std::vector<ModuleServer*>			ModuleServers;
 
 		// game cluster Server
 		GameClusterInfo*					GameCluster;

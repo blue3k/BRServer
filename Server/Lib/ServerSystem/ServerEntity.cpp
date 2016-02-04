@@ -27,6 +27,7 @@
 #include "ServerSystem/EventTask.h"
 #include "ServerSystem/EntityTable.h"
 #include "ServerSystem/BrServerUtil.h"
+#include "ServerSystem/EntityManager.h"
 
 #include "ServerSystem/ServerEntity/EntityServerEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
@@ -166,108 +167,34 @@ namespace Svr {
 		return hr;
 	}
 
+	//// Called when this entity have a routed message
+	//HRESULT ServerEntity::OnRoutedMessage(Message::MessageData* &pMsg)
+	//{
+	//	// TODO: Call process message directly when it runs on the same thread
+	//	HRESULT hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(), pMsg));
+	//	if (SUCCEEDED(hr))
+	//		pMsg = nullptr;
+
+	//	return hr;
+	//}
+
 	// Process Message and release message after all processed
-	HRESULT ServerEntity::ProcessMessage( Net::IConnection *pCon, Message::MessageData* &pMsg )
+	HRESULT ServerEntity::ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
-		EntityID entityID; // entity ID to route
-		Message::MessageHeader *pMsgHdr = nullptr;
-		Svr::Transaction *pNewTrans = nullptr;
+		RouteContext routeContext;
+		SharedPointerT<Entity> pEntity;
 
-		svrChkPtr( pMsg );
-		pMsgHdr = pMsg->GetMessageHeader();
+		if(pServerEntity == nullptr)
+			pServerEntity = this;
 
-		switch( pMsgHdr->msgID.IDs.Type )
+		// First try to route message
+		routeContext = *(RouteContext*)pMsg->GetMessageData();
+		if (routeContext.GetTo() != GetEntityUID() && SUCCEEDED(GetServerComponent<EntityManager>()->FindEntity(routeContext.GetTo(), pEntity)))
 		{
-		case Message::MSGTYPE_RESULT:
-			svrChk( ProcessMessageResult( pMsg ) );
-			goto Proc_End;
-
-			break;
-		case Message::MSGTYPE_COMMAND:
-		case Message::MSGTYPE_EVENT:
-		{
-			Assert(GetMessageHandlerTable());
-			if(FAILED( GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>( pCon, pMsg, pNewTrans ) ) )
-			{
-				// If it couldn't find a handler in server entity handlers, looking for it in server loopback entity
-				MessageHandlerType handler;
-
-				hr = GetLoopbackServerEntity()->GetMessageHandlerTable()->GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-				if(FAILED(hr))
-				{
-					svrTrace( Trace::TRC_ERROR, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID );
-					svrErr(E_SVR_NO_MESSAGE_HANDLER);
-				}
-
-				svrChk( handler( pCon, pMsg, pNewTrans ) );
-			}
-			break;
-		}
-		default:
-			svrTrace( Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID );
-			svrErr( E_SVR_NOTEXPECTED_MESSAGE );
-			break;
-		};
-
-
-		if( pNewTrans )
-		{
-			if( pNewTrans->GetOwnerEntity() == nullptr )
-			{
-				hr = pNewTrans->InitializeTransaction(this);
-				if (FAILED(hr)) goto Proc_End;
-			}
-
-			if( pNewTrans->IsDirectProcess() )
-			{
-				HRESULT hrRes = pNewTrans->StartTransaction();
-				if( !pNewTrans->IsClosed() )
-				{
-					pNewTrans->CloseTransaction(hrRes);
-				}
-			}
-			else
-			{
-				if (this == pNewTrans->GetOwnerEntity())
-				{
-					auto threadID = GetTaskWorker() ? GetTaskWorker()->GetThreadID() : ThisThread::GetThreadID();
-					PendingTransaction(threadID, pNewTrans);
-				}
-
-				if (pNewTrans != nullptr && BrServer::GetInstance())
-				{
-					svrChk(GetEntityTable().RouteTransaction(pNewTrans->GetTransID().GetEntityID(), pNewTrans));
-				}
-			}
+			return pEntity->ProcessMessage(pServerEntity, pCon, pMsg);
 		}
 
-	Proc_End:
-
-		if (pNewTrans != nullptr)
-		{
-			if (FAILED(hr))
-			{
-				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
-				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
-				{
-					pCon->GetPolicy<Policy::ISvrPolicyServer>()->GenericFailureRes(pNewTrans->GetParentTransID(), hr, pNewTrans->GetMessageRouteContext().GetSwaped());
-				}
-			}
-
-			if (!pNewTrans->IsClosed() && pNewTrans->GetOwnerEntity() != nullptr)
-			{
-				//Assert(false);
-				svrTrace(Trace::TRC_ERROR, "Transaction isn't closed Transaction:{0}, MsgID:{1}", typeid(*pNewTrans).name(), pMsgHdr->msgID);
-				pNewTrans->CloseTransaction(hr);
-			}
-
-			ReleaseTransaction(pNewTrans);
-		}
-
-		Util::SafeRelease( pMsg );
-
-		return S_SYSTEM_OK;
+		return super::ProcessMessage(pServerEntity, pCon, pMsg);
 	}
 
 
@@ -281,21 +208,14 @@ namespace Svr {
 		case Net::IConnection::Event::EVT_CONNECTION_RESULT:
 			if( SUCCEEDED(conEvent.Value.hr) )
 			{
-				NetAddress publicAddr;
 				auto myConfig = BrServer::GetInstance()->GetMyConfig();
 				auto netPrivate = Svr::BrServer::GetInstance()->GetNetPrivate();
 				const Svr::Config::PublicServer *pGeneric = nullptr;
 
-				svrChkPtr( BrServer::GetInstance() );
-				svrChkPtr( BrServer::GetInstance()->GetMyConfig() );
-				pGeneric = dynamic_cast<const Svr::Config::PublicServer*>(myConfig);
-				if( pGeneric )
-				{
-					svrChkPtr(pGeneric->NetPublic);
-					svrChk(Net::SetLocalNetAddress(publicAddr, pGeneric->NetPublic->IP.c_str(), pGeneric->NetPublic->Port));
-				}
+				svrChkPtr(myConfig);
 
-				svrTrace( Svr::TRC_DBGSVR, "Sending Server Connected to Entity Server from:{0}", BrServer::GetInstance()->GetMyConfig()->Name.c_str() );
+
+				svrTrace( Svr::TRC_DBGSVR, "Sending Server Connected to Entity Server from:{0}", myConfig->Name.c_str() );
 
 				Policy::IPolicyServer *pPolicy = GetConnection()->GetPolicy<Policy::IPolicyServer>();
 				svrChkPtr(pPolicy);
@@ -312,7 +232,7 @@ namespace Svr {
 				svrChk(pPolicy->ServerConnectedC2SEvt(RouteContext(Svr::BrServer::GetInstance()->GetServerUID(), 0),
 					serviceInformation, 
 					BrServer::GetInstance()->GetServerUpTime().time_since_epoch().count(),
-					publicAddr, netPrivate->GetLocalAddress()));
+					netPrivate->GetLocalAddress()));
 			}
 
 			if( SUCCEEDED(conEvent.Value.hr) )
@@ -363,7 +283,7 @@ namespace Svr {
 				if (FAILED(pConn->GetRecvMessage(pMsg)))
 					break;
 
-				ProcessMessage(pConn, pMsg);
+				ProcessMessage(this, pConn, pMsg);
 
 				Util::SafeRelease(pMsg);
 			}
@@ -455,6 +375,7 @@ namespace Svr {
 	}
 
 
+
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Overriding IConnectionEventHandler
 	void ServerEntity::OnConnectionEvent(Net::IConnection* pConn, const Net::IConnection::Event& evt)
@@ -495,7 +416,7 @@ namespace Svr {
 			pMsg = eventTask.EventData.MessageEvent.pMessage;
 			if (pMsg != nullptr)
 			{
-				ProcessMessage(GetConnection(), pMsg);
+				ProcessMessage(this, GetConnection(), pMsg);
 				Util::SafeRelease(pMsg);
 			}
 			else

@@ -55,6 +55,7 @@ namespace BR {
 		, m_state(STATE_WAITSTART)
 		, m_TimerAction(nullptr)
 		, m_CurrentHistoryIdx(0)
+		, m_ServerEntity(nullptr)
 	{
 		m_Flags.IsExclusive = false;
 		m_Flags.IsDeleteByEntity = true;
@@ -349,8 +350,9 @@ namespace BR {
 
 		Message::MessageHeader *pMsgRes = pIMsg->GetMessageHeader();
 		// This assumed that Message result has context
-		AssertRel( pIMsg->GetMessageSize() >= (sizeof(Message::MessageHeader) + sizeof(HRESULT) + sizeof(Context)) );
-		Context *pContext = (Context*)(pMsgRes+1);
+		AssertRel( pIMsg->GetMessageSize() >= (sizeof(Message::MessageHeader) + sizeof(RouteContext) + sizeof(HRESULT) + sizeof(Context)) );
+		RouteContext *pRouteContext = (RouteContext*)(pMsgRes + 1);
+		Context *pContext = (Context*)(pRouteContext +1);
 		HRESULT *phrRes = (HRESULT*)(pContext+1);
 		TransactionID transID;
 		transID.ID = *pContext;

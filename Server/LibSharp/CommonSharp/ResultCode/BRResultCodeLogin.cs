@@ -20,19 +20,19 @@ namespace BR {
 	public partial struct ResultCode {
 
 		// Invalid username 
-		const int E_LOGIN_INVALID_USERNAME =                                unchecked((int)0xE7060000); 
+		public const int E_LOGIN_INVALID_USERNAME =                         unchecked((int)0xE7060000); 
 
 		// Invalid password 
-		const int E_LOGIN_INVALID_PASSWORD =                                unchecked((int)0xE7060001); 
+		public const int E_LOGIN_INVALID_PASSWORD =                         unchecked((int)0xE7060001); 
 
 		// Already logged in 
-		const int E_LOGIN_ALREADY_LOGGEDIN =                                unchecked((int)0xE7060002); 
+		public const int E_LOGIN_ALREADY_LOGGEDIN =                         unchecked((int)0xE7060002); 
 
 		// Already logged in at another place, and failed to kick 
-		const int E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE =                     unchecked((int)0xE7060003); 
+		public const int E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE =              unchecked((int)0xE7060003); 
 
 		// Invalid user signature 
-		const int E_LOGIN_INVALID_SIGNATURE =                               unchecked((int)0xE7060004); 
+		public const int E_LOGIN_INVALID_SIGNATURE =                        unchecked((int)0xE7060004); 
 
 	}
 }

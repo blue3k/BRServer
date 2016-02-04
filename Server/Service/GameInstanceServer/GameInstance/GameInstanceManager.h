@@ -14,7 +14,7 @@
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
 
-#include "ServerSystem/ServiceEntity/GameInstanceManagerServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
 
 
@@ -53,7 +53,7 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT CreateGameInstance(GameInsUID &gameUID, UINT numBot, UINT maxPlayer) override;
 
 		// Called when a game instance is deleted
-		virtual HRESULT FreeGameInstance(GameInsUID gameUID) override;
+		//virtual HRESULT FreeGameInstance(GameInsUID gameUID) override;
 
 		virtual HRESULT RegisterServiceMessageHandler(Svr::ServerEntity *pServerEntity) override;
 	};

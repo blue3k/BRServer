@@ -45,7 +45,7 @@ namespace XML {
 
 		// name
 		inline const std::string& GetName();
-		inline void SetName( const char* Name );
+		virtual void SetName( const char* Name );
 
 		// Type name
 		inline const std::string& GetTypeName();

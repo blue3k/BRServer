@@ -43,8 +43,8 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 
 
 			Proc_End:
@@ -53,15 +53,15 @@ namespace BR
 
 			}; // HRESULT GenericFailureCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GenericFailureCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext )
+			HRESULT GenericFailureCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
-					+ sizeof(Context)
-					+ sizeof(RouteContext));
+					+ sizeof(RouteContext)
+					+ sizeof(Context));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -69,8 +69,8 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 
 				pMsg = pNewMsg;
 
@@ -79,7 +79,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GenericFailureCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const RouteContext &InRouteContext )
+			}; // HRESULT GenericFailureCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext )
 
 			HRESULT GenericFailureCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -95,7 +95,6 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
@@ -112,8 +111,8 @@ namespace BR
 			void GenericFailureCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:GenericFailureCmd:{1}:{2} , Context:{3}, RouteContext:{4}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:GenericFailureCmd:{1}:{2} , RouteContext:{3}, Context:{4}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context); 
 			}; // void GenericFailureCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GenericFailureRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_SERVER, 0);
@@ -129,9 +128,9 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 
 
 			Proc_End:
@@ -140,16 +139,16 @@ namespace BR
 
 			}; // HRESULT GenericFailureRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GenericFailureRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+			HRESULT GenericFailureRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
 					+ sizeof(Context)
-					+ sizeof(HRESULT)
-					+ sizeof(RouteContext));
+					+ sizeof(HRESULT));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -157,9 +156,9 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
-				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 
 				pMsg = pNewMsg;
 
@@ -168,7 +167,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GenericFailureRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+			}; // HRESULT GenericFailureRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 
 			HRESULT GenericFailureRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -184,8 +183,6 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				pCur += sizeof(Context); iMsgSize -= sizeof(Context);
-				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
@@ -202,8 +199,8 @@ namespace BR
 			void GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:GenericFailureRes:{1}:{2} , Context:{3}, Result:{4:X8}, RouteContext:{5}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_RouteContext); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:GenericFailureRes:{1}:{2} , RouteContext:{3}, Context:{4}, Result:{5:X8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context, m_Result); 
 			}; // void GenericFailureRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Server Started or Connected
@@ -223,7 +220,6 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterManagerServiceInformation, pCur, iMsgSize, sizeof(ServiceInformation) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_StartUpTime, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PublicAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PrivateAddress, pCur, iMsgSize, sizeof(NetAddress) ) );
 
 
@@ -233,7 +229,7 @@ namespace BR
 
 			}; // HRESULT ServerConnectedC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+			HRESULT ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
@@ -243,7 +239,6 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(ServiceInformation)
 					+ sizeof(UINT32)
-					+ sizeof(NetAddress)
 					+ sizeof(NetAddress));
 
 				MessageData *pNewMsg = nullptr;
@@ -255,7 +250,6 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InClusterManagerServiceInformation, sizeof(ServiceInformation));
 				Protocol::PackParamCopy( pMsgData, &InStartUpTime, sizeof(UINT32));
-				Protocol::PackParamCopy( pMsgData, &InPublicAddress, sizeof(NetAddress));
 				Protocol::PackParamCopy( pMsgData, &InPrivateAddress, sizeof(NetAddress));
 
 				pMsg = pNewMsg;
@@ -265,7 +259,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPublicAddress, const NetAddress &InPrivateAddress )
+			}; // HRESULT ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
 
 			HRESULT ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -297,8 +291,8 @@ namespace BR
 			void ServerConnectedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "{0}:ServerConnectedC2SEvt:{1}:{2} , RouteContext:{3}, ClusterManagerServiceInformation:{4}, StartUpTime:{5}, PublicAddress:{6}, PrivateAddress:{7}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_ClusterManagerServiceInformation, m_StartUpTime, m_PublicAddress, m_PrivateAddress); 
+				protocolTrace(Trace::TRC_DBG2, "{0}:ServerConnectedC2SEvt:{1}:{2} , RouteContext:{3}, ClusterManagerServiceInformation:{4}, StartUpTime:{5}, PrivateAddress:{6}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_ClusterManagerServiceInformation, m_StartUpTime, m_PrivateAddress); 
 			}; // void ServerConnectedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 

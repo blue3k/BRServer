@@ -47,7 +47,7 @@ namespace GameServer {
 
 		Policy::ISvrPolicyGameServer* GetPolicy() { return GetMyOwner()->GetPolicy<Policy::ISvrPolicyGameServer>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV4);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV4);
 	};
 
 

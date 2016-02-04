@@ -47,7 +47,7 @@ namespace Svr {
 		
 		PolicyClassType* GetPolicy()
 		{
-			return super::m_ServerEntity->GetConnection()->template GetPolicy<PolicyClassType>();
+			return super::GetServerEntity()->GetConnection()->template GetPolicy<PolicyClassType>();
 		}
 
 		HRESULT GetMyPlayer( PartyPlayer* &pPlayer )

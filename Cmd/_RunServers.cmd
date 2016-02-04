@@ -12,9 +12,9 @@ start %PATH_BIN%\BREntityServer.exe -debug -n:BREntityServer2
 
 timeout /t 4 /nobreak
 
-start %PATH_BIN%\BRLoginServer.exe -debug -n:BRLoginServer01
+start %PATH_BIN%\BRModuleServer.exe -debug -n:BRLoginServer01
 
-start %PATH_BIN%\BRSharedModuleServer.exe -debug -n:BRMatchingQueue01
+start %PATH_BIN%\BRModuleServer.exe -debug -n:BRMatchingQueue01
 
 
 timeout /t 2 /nobreak

@@ -11,26 +11,6 @@
 
 
 
-// Instance ID query
-GameInsID GameInstanceEntity::GetInstanceID()
-{
-	return GameInsID(GetEntityID());
-}
-
-GameInsUID GameInstanceEntity::GetInstanceUID()
-{
-	return GameInsUID( Svr::BrServer::GetInstance()->GetServerUID(), GetEntityID() );
-}
-
-
-
-// Get player count at this zone
-UINT GameInstanceEntity::GetNumPlayer()
-{
-	return (UINT)m_GamePlayerByUID.GetItemCount();
-}
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 //
 //	foreach implementations
@@ -41,9 +21,9 @@ UINT GameInstanceEntity::GetNumPlayer()
 template< class Func >
 HRESULT GameInstanceEntity::ForeachPlayer(Func func)
 {
-	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
+	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pPlayer)-> bool
 	{
-		HRESULT hrRes = func(pPlayer);
+		HRESULT hrRes = func((GamePlayer*)pPlayer);
 		if (FAILED(hrRes))
 			return false;
 		return true;
@@ -53,12 +33,15 @@ HRESULT GameInstanceEntity::ForeachPlayer(Func func)
 
 
 // foreach game player with Game policy
-inline HRESULT GameInstanceEntity::ForeachPlayerGameServer(std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func)
+template< class Func >
+inline HRESULT GameInstanceEntity::ForeachPlayerGameServer(Func func)
 {
-	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
+	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pGameInsPlayer)-> bool
 	{
-		if (pGamePlayer == nullptr)
+		if (pGameInsPlayer == nullptr)
 			return true;
+
+		GamePlayer* pGamePlayer = (GamePlayer*)pGameInsPlayer;
 
 		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 			return true;
@@ -76,12 +59,15 @@ inline HRESULT GameInstanceEntity::ForeachPlayerGameServer(std::function<HRESULT
 }
 
 // foreach game player with Game policy
-inline HRESULT GameInstanceEntity::ForeachPlayerSvrGameInstance(std::function<HRESULT(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func)
+template< class Func >
+inline HRESULT GameInstanceEntity::ForeachPlayerSvrGameInstance(Func func)
 {
-	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
+	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pGameInsPlayer)-> bool
 	{
-		if (pGamePlayer == nullptr)
+		if (pGameInsPlayer == nullptr)
 			return true;
+
+		GamePlayer* pGamePlayer = (GamePlayer*)pGameInsPlayer;
 
 		if (pGamePlayer->GetPlayerState() == PlayerState::None)
 			return true;

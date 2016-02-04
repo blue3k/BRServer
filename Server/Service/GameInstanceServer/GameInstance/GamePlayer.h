@@ -18,6 +18,7 @@
 #include "Common/MemoryPool.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/GameSystem.h"
+#include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
 #include "Common/GameConst.h"
 #include "Common/BrGameTypes.h"
 
@@ -65,14 +66,13 @@ namespace ConspiracyGameInstanceServer {
 		Ghost,		// dead
 	};
 
-	class GamePlayer : public Svr::PlayerEntityInformation, public MemoryPoolObject<GamePlayer>
+	class GamePlayer : public Svr::GameInstancePlayer, public MemoryPoolObject<GamePlayer>
 	{
 	public:
+		typedef Svr::GameInstancePlayer super;
 
 	private:
 
-		// Game instance that this player
-		BRCLASS_ATTRIBUTE_READONLY(GameInstanceEntity*,GameOwner);
 
 		// Player index in game
 		BRCLASS_ATTRIBUTE(UINT,Index);
@@ -80,8 +80,6 @@ namespace ConspiracyGameInstanceServer {
 
 		// Player state
 		BRCLASS_ATTRIBUTE(PlayerState,PlayerState);
-
-		BRCLASS_ATTRIBUTE(bool, IsBot);
 
 		// Is revealed by seer?
 		BRCLASS_ATTRIBUTE(bool,RevealedBySeer);
@@ -97,8 +95,6 @@ namespace ConspiracyGameInstanceServer {
 		//	Player Info
 		//
 
-		//BRCLASS_ATTRIBUTE(AuthTicket,AuthTicket);
-
 		// 
 		BRCLASS_ATTRIBUTE(PlayerRole, RequestedRole);
 		BRCLASS_ATTRIBUTE(PlayerRole, Role);
@@ -112,6 +108,9 @@ namespace ConspiracyGameInstanceServer {
 
 		GamePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player);
 		virtual ~GamePlayer();
+
+
+		GameInstanceEntity* GetGameOwner() { return (GameInstanceEntity*)super::GetGameOwner(); }
 
 		// check weather the player is in game or not
 		bool IsInGame();

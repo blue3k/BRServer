@@ -53,13 +53,10 @@ namespace BR
 	{
 		Component::TerminateComponent();
 
-		/*
-		* Cleanup function for the XML library.
-		*/
+		// Cleanup function for the XML library.
 		xmlCleanupParser();
-		/*
-		* this is to debug memory for regression tests
-		*/
+
+		// this is to debug memory for regression tests
 		xmlMemoryDump();
 	}
 

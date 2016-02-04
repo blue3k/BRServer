@@ -292,6 +292,32 @@ namespace Net {
 		if (FAILED(hr))
 			return hr;
 
+
+		switch (family)
+		{
+		case SockFamily::IPV4:
+		{
+			auto *pTestSockAddr = (struct sockaddr_in *)&testSockAddr;
+			if (pTestSockAddr->sin_addr.s_addr == INADDR_ANY) return S_SYSTEM_OK;
+			break;
+		}
+
+		case SockFamily::IPV6:
+		{
+			auto *pTestSockAddr = (struct sockaddr_in6 *)&testSockAddr;
+			auto& rawAddress = pTestSockAddr->sin6_addr.s6_addr;
+			auto& rawAddressSrc = in6addr_any.s6_addr;
+			int iAddr = 0;
+			for (; iAddr < countof(rawAddress); iAddr++)
+			{
+				if (rawAddress[iAddr] != rawAddressSrc[iAddr]) break;
+			}
+			if (iAddr >= countof(rawAddress)) return S_SYSTEM_OK;
+			break;
+		}
+		}
+
+
 		// Convert remote address
 		memset(&hints, 0, sizeof hints);
 		hints.ai_family = ToSockValue(family);

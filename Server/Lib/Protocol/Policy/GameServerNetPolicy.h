@@ -30,9 +30,9 @@ namespace BR
 			{}
 
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID );
+			HRESULT RegisterPlayerToJoinGameServerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID );
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
+			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
 			// C2S: Chatting message
 			HRESULT ChatMessageC2SEvt( const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage );
 			// C2S: Notification
@@ -59,9 +59,9 @@ namespace BR
 			{}
 
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 );
+			HRESULT RegisterPlayerToJoinGameServerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 );
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext );
+			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult );
 
 		}; // class NetSvrPolicyGameServer : public ISvrPolicyGameServer
 

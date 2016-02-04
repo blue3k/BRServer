@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Create a party instance
-		HRESULT NetPolicyGamePartyManager::CreatePartyCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+		HRESULT NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GamePartyManager::CreatePartyCmd::BuildIMsg(pMsg, InContext, InRouteContext, InRouteHopCount, InCreator));
+			 protocolChk(Message::GamePartyManager::CreatePartyCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InCreator));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,7 +44,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGamePartyManager::CreatePartyCmd( const Context &InContext, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+		}; // HRESULT NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
 		// C2S: Party instance notify of deletion
 		HRESULT NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
 		{
@@ -66,13 +66,13 @@ namespace BR
 
 
 		// Cmd: Create a party instance
-		HRESULT NetSvrPolicyGamePartyManager::CreatePartyRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GamePartyManager::CreatePartyRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::GamePartyManager::CreatePartyRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -82,7 +82,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGamePartyManager::CreatePartyRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 
 
 	}; // namespace Policy

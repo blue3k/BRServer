@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Notify user joind and see it's valid authticket instance
-		HRESULT NetPolicyLoginServer::PlayerJoinedToGameServerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+		HRESULT NetPolicyLoginServer::PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::LoginServer::PlayerJoinedToGameServerCmd::BuildIMsg(pMsg, InContext, InRouteContext, InPlayerID, InAuthTicket));
+			 protocolChk(Message::LoginServer::PlayerJoinedToGameServerCmd::BuildIMsg(pMsg, InRouteContext, InContext, InPlayerID, InAuthTicket));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,15 +44,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyLoginServer::PlayerJoinedToGameServerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+		}; // HRESULT NetPolicyLoginServer::PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		// Cmd: Kick logged in player
-		HRESULT NetPolicyLoginServer::KickPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
+		HRESULT NetPolicyLoginServer::KickPlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InKickedPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::LoginServer::KickPlayerCmd::BuildIMsg(pMsg, InContext, InRouteContext, InKickedPlayerID));
+			 protocolChk(Message::LoginServer::KickPlayerCmd::BuildIMsg(pMsg, InRouteContext, InContext, InKickedPlayerID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -62,17 +62,17 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyLoginServer::KickPlayerCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
+		}; // HRESULT NetPolicyLoginServer::KickPlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InKickedPlayerID )
 
 
 		// Cmd: Notify user joind and see it's valid authticket instance
-		HRESULT NetSvrPolicyLoginServer::PlayerJoinedToGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyLoginServer::PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::LoginServer::PlayerJoinedToGameServerRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::LoginServer::PlayerJoinedToGameServerRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -82,15 +82,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyLoginServer::PlayerJoinedToGameServerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyLoginServer::PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		// Cmd: Kick logged in player
-		HRESULT NetSvrPolicyLoginServer::KickPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		HRESULT NetSvrPolicyLoginServer::KickPlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::LoginServer::KickPlayerRes::BuildIMsg(pMsg, InContext, InResult, InRouteContext));
+			 protocolChk(Message::LoginServer::KickPlayerRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -100,7 +100,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyLoginServer::KickPlayerRes( const Context &InContext, const HRESULT &InResult, const RouteContext &InRouteContext )
+		}; // HRESULT NetSvrPolicyLoginServer::KickPlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
 
 
 	}; // namespace Policy

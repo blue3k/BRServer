@@ -18,8 +18,7 @@
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServiceEntity/LoginClusterServiceEntity.h"
-#include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
@@ -63,21 +62,6 @@ namespace BR {
 namespace ConspiracyGameInstanceServer {
 
 	
-	//// Get Entity Server
-	//EntityServerEntity* GetEntityServer()
-	//{
-	//	EntityServerEntity *pEntityServer = nullptr;
-	//	Svr::ServerEntity *pServerEntity = nullptr;
-	//	Svr::ServerEntityManager *pRemoteMgr = Svr::GetServerComponent<Svr::ServerEntityManager>();
-
-	//	if( pRemoteMgr 
-	//		&& SUCCEEDED(pRemoteMgr->GetServerEntity( BR::NetClass::Entity, pServerEntity ) ) )
-	//	{
-	//		pEntityServer = dynamic_cast<EntityServerEntity*>(pServerEntity);
-	//	}
-
-	//	return pEntityServer;
-	//}
 
 	//////////////////////////////////////////////////////////////////////////
 	//

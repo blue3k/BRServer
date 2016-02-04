@@ -38,13 +38,16 @@ namespace BR {
 		EntityManager				= 1,
 		ClusterManager,
 		Monitoring,
-		LoginServers,
+		Login,
 		Game,
 		Game_Conspiracy,
 		Game_Max,
 		GameInstanceManager = Game_Max,
 		GamePartyManager,
 		Ranking,
+
+		PurchaseValidateGoogle,
+		PurchaseValidateIOS,
 
 		Matching_Game_4,
 		Matching_Game_8,
@@ -176,8 +179,6 @@ namespace BR {
 		inline RouteContext GetSwaped() const;
 
 	};
-
-
 
 	// Clustering model
 	enum class ClusterType : UINT32

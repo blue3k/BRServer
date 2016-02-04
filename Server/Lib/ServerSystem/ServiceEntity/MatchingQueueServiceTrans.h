@@ -47,7 +47,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(RegisterPartyMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPartyMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
 	};
 
 	
@@ -68,7 +68,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(RegisterPlayerMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerMatchingRes, GetRouteContext().GetSwaped(), m_MatchingTicket);
 	};
 	
 	
@@ -88,7 +88,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(UpdateMatchingEntityUIDRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(UpdateMatchingEntityUIDRes, GetRouteContext().GetSwaped());
 	};
 
 
@@ -109,7 +109,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(UnregisterMatchingRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(UnregisterMatchingRes, GetRouteContext().GetSwaped());
 	};
 
 
@@ -133,7 +133,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(ReserveItemRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(ReserveItemRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
 	};
 
 
@@ -156,7 +156,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(ReserveItemsRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(ReserveItemsRes, GetRouteContext().GetSwaped(), m_NumPlayersInTheTicket, m_MatchingTicket);
 	};
 
 
@@ -177,7 +177,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(CancelReservationRes, GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(CancelReservationRes, GetRouteContext().GetSwaped());
 	};
 	
 	
@@ -198,7 +198,7 @@ namespace Svr {
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(DequeueItemRes, GetRouteContext().GetSwaped(), GetMatchingTicket(), m_matchingQueueItem.RegisterUID, m_matchingQueueItem.RegisterID, LinkedArray<MatchingPlayerInformation>((UINT)countof(m_matchingQueueItem.Players), m_matchingQueueItem.NumPlayers, m_matchingQueueItem.Players));
+		BR_SVR_MSGTRANS_CLOSE_ARGS(DequeueItemRes, GetRouteContext().GetSwaped(), GetMatchingTicket(), m_matchingQueueItem.RegisterUID, m_matchingQueueItem.RegisterID, LinkedArray<MatchingPlayerInformation>((UINT)countof(m_matchingQueueItem.Players), m_matchingQueueItem.NumPlayers, m_matchingQueueItem.Players));
 	};
 
 

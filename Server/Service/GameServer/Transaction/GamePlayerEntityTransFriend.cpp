@@ -23,7 +23,7 @@
 #include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntityManager.h"
-#include "ServerSystem/ServiceEntity/GameClusterServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerIPolicy.h"

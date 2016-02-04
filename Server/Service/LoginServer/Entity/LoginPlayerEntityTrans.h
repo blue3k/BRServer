@@ -185,7 +185,7 @@ namespace LoginServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(KickPlayerRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(KickPlayerRes,GetRouteContext().GetSwaped());
 	};
 
 
@@ -210,7 +210,7 @@ namespace LoginServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction();
 
-		BR_IMPLEMENT_MSGTRANS_CLOSE_ARGS(PlayerJoinedToGameServerRes,GetRouteContext().GetSwaped());
+		BR_SVR_MSGTRANS_CLOSE(PlayerJoinedToGameServerRes,GetRouteContext().GetSwaped());
 	};
 
 

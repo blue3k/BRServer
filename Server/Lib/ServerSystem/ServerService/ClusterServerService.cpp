@@ -41,7 +41,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->GetClusterMemberListCmd( InContext, InRouteContext, InRouteHopCount, InClusterID ) );
+			svrChk(GetPolicyClusterServer()->GetClusterMemberListCmd( InRouteContext, InContext, InRouteHopCount, InClusterID ) );
 
 		Proc_End:
 
@@ -55,7 +55,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->JoinClusterCmd( InContext, InRouteContext, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership ) );
+			svrChk(GetPolicyClusterServer()->JoinClusterCmd( InRouteContext, InContext, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership ) );
 
 		Proc_End:
 
@@ -95,7 +95,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->RequestDataSyncCmd( InContext, InRouteContext, InRouteHopCount, InClusterID ) );
+			svrChk(GetPolicyClusterServer()->RequestDataSyncCmd( InRouteContext, InContext, InRouteHopCount, InClusterID ) );
 
 		Proc_End:
 
@@ -148,7 +148,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->GetLowestWorkloadClusterMemberCmd( InContext, InRouteContext, InRouteHopCount, InClusterID ) );
+			svrChk(GetPolicyClusterServer()->GetLowestWorkloadClusterMemberCmd( InRouteContext, InContext, InRouteHopCount, InClusterID ) );
 
 		Proc_End:
 

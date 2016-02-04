@@ -27,7 +27,6 @@
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/EntityManager.h"
-#include "ServerSystem/ServiceEntity/LoginClusterServiceEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 #include "ServerSystem/ServerService/LoginServerService.h"
 #include "ServerSystem/ServerService/GameServerService.h"
@@ -147,7 +146,7 @@ namespace LoginServer {
 			{
 				pGameServerPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameServer>(m_GameEntityUID.GetServerID());
 				if (pGameServerPolicy == nullptr
-					|| FAILED(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(super::GetTransID(), RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID),
+					|| FAILED(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID), super::GetTransID(),
 						super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID())))
 				{
 					svrChk(RegisterNewPlayerToJoinGameServer());

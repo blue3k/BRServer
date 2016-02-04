@@ -22,6 +22,7 @@
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/GameSystem.h"
+#include "ServerSystem/ServiceEntity/Game/GameInstanceEntity.h"
 #include "ServerSystem/GameLog/ChattingHistory.h"
 #include "GameSystem/GameSystemComponentIDs.h"
 
@@ -67,30 +68,21 @@ namespace ConspiracyGameInstanceServer
 	//	Game Instance entity class
 	//
 
-	class GameInstanceEntity : public Svr::MasterEntity, public MemoryPoolObject<GameInstanceEntity>, public ComponentCarrier<GameSystemComponentID_Max>
+	class GameInstanceEntity : public Svr::GameInstanceEntity, public MemoryPoolObject<GameInstanceEntity>, public ComponentCarrier<GameSystemComponentID_Max>
 	{
 	public:
 
 		typedef ::conspiracy::GameConfigTbl::GameConfigItem GameConfigType;
 
-		typedef SortedMap<PlayerID,GamePlayer*>
-				GamePlayerUIDMap;
-
-
 	private:
-		typedef Svr::MasterEntity super;
+		typedef Svr::GameInstanceEntity super;
 
-		// Player by PlayerID
-		GamePlayerUIDMap		m_GamePlayerByUID;
 
 		// Player by index
 		GamePlayer*				m_PlayerByIndex[GameConst::MAX_GAMEPLAYER];
 
 		// Player character table
 		BYTE					m_PlayerCharacter[GameConst::MAX_GAMEPLAYER];
-
-		// Release array
-		PageQueue<PlayerID>		m_PendingReleasePlayer;
 
 		// Game configuration
 		UINT					m_PresetGameConfigID;
@@ -102,41 +94,11 @@ namespace ConspiracyGameInstanceServer
 		//
 
 
-		// Time for kill this game
-		BRCLASS_ATTRIBUTE_CONST(Util::TimeStampTimer,TimeToKill);
-
-		// Is accept join?
-		BRCLASS_ATTRIBUTE_READONLY(bool,AcceptJoin);
-
-		// Team Leader UID
-		BRCLASS_ATTRIBUTE(PlayerID,LeaderUID);
-
-		// Max player
-		BRCLASS_ATTRIBUTE_READONLY(UINT,MaxPlayer);
-
-		// Total joined player since game instance is created
-		BRCLASS_ATTRIBUTE(UINT, TotalJoinedPlayer);
-
-		// Number of bot
-		BRCLASS_ATTRIBUTE(UINT, NumBot);
-
 		BRCLASS_ATTRIBUTE(UINT, RoleRequestSeer);
 		BRCLASS_ATTRIBUTE(UINT, RoleRequestWerewolf);
 
 		conspiracy::BotTalkTbl::BotTalkTblItem *m_pBotTalk;
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////
-		//
-		//	Game state delegate
-		//
-
-	
-		// Allocator for member
-		StaticAllocator< sizeof(Svr::EntityMessageHandlerItem)*30 > m_Allocator;
-
-	protected:
-
-		virtual MemoryAllocator& GetAllocator()			{ return m_Allocator; }
 
 	public:
 
@@ -148,15 +110,11 @@ namespace ConspiracyGameInstanceServer
 		GameInstanceEntity();
 		~GameInstanceEntity();
 
-		// Get server instance
-		GameInstanceServer* GetMyOwner();
-
-		// Instance ID query
-		inline GameInsID GetInstanceID();
-		inline GameInsUID GetInstanceUID();
+		//// Get server instance
+		//GameInstanceServer* GetMyOwner();
 
 		// Get player count at this game
-		inline UINT GetNumPlayer();
+		//inline UINT GetNumPlayer();
 
 		conspiracy::BotTalkTbl::BotTalkTblItem *GetBotTalkTbl() { return m_pBotTalk; }
 
@@ -182,7 +140,7 @@ namespace ConspiracyGameInstanceServer
 		virtual HRESULT TerminateEntity() override;
 
 		// Run entity
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		//virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 
 
@@ -196,9 +154,13 @@ namespace ConspiracyGameInstanceServer
 		HRESULT ForeachPlayer(Func func);
 		//HRESULT ForeachPlayer( std::function<HRESULT(GamePlayer* pPlayer)> func );
 
-		HRESULT ForeachPlayerGameServer( std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
+		template< class Func >
+		HRESULT ForeachPlayerGameServer(Func func );
+		//HRESULT ForeachPlayerGameServer(std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func);
 
-		HRESULT ForeachPlayerSvrGameInstance( std::function<HRESULT(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func );
+		template< class Func >
+		HRESULT ForeachPlayerSvrGameInstance(Func func );
+		//HRESULT ForeachPlayerSvrGameInstance(std::function<HRESULT(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func);
 
 
 
@@ -208,7 +170,7 @@ namespace ConspiracyGameInstanceServer
 		//
 
 		// Initialize entity to proceed new connection
-		HRESULT InitializeGameEntity( UINT numBot, UINT maxPlayer );
+		virtual HRESULT InitializeGameEntity( UINT numBot, UINT maxPlayer ) override;
 
 
 
@@ -219,27 +181,10 @@ namespace ConspiracyGameInstanceServer
 
 
 		// Update Game status
-		HRESULT UpdateGameStatus(TimeStampMS ulCurTime );
+		virtual HRESULT UpdateGameStatus(TimeStampMS ulCurTime ) override;
 
 
 
-		////////////////////////////////////////////////////////////
-		//
-		//	Game timers
-		//
-
-
-		// set game instance kill timer
-		HRESULT SetGameKillTimer( DurationMS ulWaitTime );
-
-
-
-		// On Game Kill timer
-		void OnGameKillTimer();
-
-
-		// Close Game Instance
-		void CloseGameInstance();
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -250,14 +195,11 @@ namespace ConspiracyGameInstanceServer
 		HRESULT GetPlayerIndex( PlayerID playerID, UINT &playerIndex );
 		HRESULT GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer );
 
+		virtual HRESULT CreatePlayerInstance(const PlayerInformation& playerInfo, Svr::GameInstancePlayer* &pPlayer) override;
+
 		// Register new player to join
-		HRESULT AddPlayerToJoin( GamePlayer* &pPlayer );
+		virtual HRESULT AddPlayerToJoin(Svr::GameInstancePlayer* &pPlayer ) override;
 
-		// Player leave
-		HRESULT LeavePlayer( GamePlayer* &pPlayer );
-
-		//HRESULT LeavePlayer( Net::Connection *pCon );
-		HRESULT LeavePlayer( PlayerID pltID );
 
 		// Leave all player
 		HRESULT LeaveAllPlayerForGameDelete();
@@ -266,7 +208,7 @@ namespace ConspiracyGameInstanceServer
 		HRESULT FindPlayer( PlayerID pltID, GamePlayer* &pGamePlayer );
 
 		// Called when a player get out of game
-		HRESULT OnPlayerGetOutOfGame( GamePlayer *pPlayer );
+		virtual HRESULT OnPlayerGetOutOfGame(Svr::GameInstancePlayer *pPlayer ) override;
 	};
 
 #include "GameInstanceEntity.inl"

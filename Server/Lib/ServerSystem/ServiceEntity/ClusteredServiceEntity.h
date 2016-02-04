@@ -123,7 +123,6 @@ namespace Svr {
 
 	public:
 
-		MemoryAllocator& GetAllocator() { return STDAllocator::GetInstance(); }
 
 
 		ClusteredServiceEntity( ClusterType clusterType, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );

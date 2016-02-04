@@ -40,8 +40,10 @@
 
 #include "GamePlayer.h"
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
-#include "ServerSystem/ServiceEntity/GameInstanceManagerServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "Table/conspiracy/BotTalkTbl.h"
+#include "Protocol/Message/GameInstanceMsgClass.h"
+#include "Transaction/GameInstanceTransPlayer.h"
 
 
 
@@ -59,24 +61,33 @@ namespace ConspiracyGameInstanceServer {
 
 
 	GameInstanceEntity::GameInstanceEntity()
-		: MasterEntity(64,64)
-		, m_PresetGameConfigID(1) // 1 is default
+		: m_PresetGameConfigID(1) // 1 is default
 		, m_PresetGameConfig(nullptr)
-		, m_NumBot(0)
 		, m_pBotTalk(nullptr)
-		, m_Allocator(STDAllocator::GetInstance())
 	{
 		memset(m_PlayerByIndex,0, sizeof(m_PlayerByIndex));
 		SetTickInterval(DurationMS(ConspiracyGameInstanceServer::Const::GAMEINSTANCE_TICK_TIME));
+		SetEmptyInstanceKillTimeOut(DurationMS());
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		// To game instance
+		BR_ENTITY_MESSAGE(Message::GameInstance::DeleteGameC2SEvt) { svrMemReturn(pNewTrans = new GameEntityTransDeleteGame(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::JoinGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransJoinGame(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::LeaveGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransLeaveGame(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::KickPlayerCmd) { svrMemReturn(pNewTrans = new GameEntityTransKickPlayer(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::AssignRoleCmd) { svrMemReturn(pNewTrans = new GameEntityTransAssignRole(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::ChatMessageC2SEvt) { svrMemReturn(pNewTrans = new GameEntityTransChatMessage(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::VoteGameAdvanceCmd) { svrMemReturn(pNewTrans = new GameEntityTransVoteGameAdvance(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::VoteCmd) { svrMemReturn(pNewTrans = new GameEntityTransVote(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::AdvanceGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransAdvanceGame(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayAgainCmd) { svrMemReturn(pNewTrans = new GameEntityTransGamePlayAgain(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GameRevealPlayerCmd) { svrMemReturn(pNewTrans = new GameEntityTransGameRevealPlayer(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayerReviveCmd) { svrMemReturn(pNewTrans = new GameEntityTransGamePlayerRevive(pMsgData)); return S_SYSTEM_OK; } );
 	}
 
 	GameInstanceEntity::~GameInstanceEntity()
 	{
-	}
-
-	GameInstanceServer* GameInstanceEntity::GetMyOwner()
-	{
-		return dynamic_cast<GameInstanceServer*>(Svr::BrServer::GetInstance());
 	}
 
 	// Initialize game system
@@ -124,8 +135,6 @@ namespace ConspiracyGameInstanceServer {
 
 		svrChk( InitializeSystem() );
 
-		m_AcceptJoin = true;
-
 	Proc_End:	
 
 		return hr;
@@ -139,72 +148,65 @@ namespace ConspiracyGameInstanceServer {
 		if( GetEntityState() == EntityState::FREE )
 			return S_SYSTEM_OK;
 
-		CloseGameInstance();
-
-		 super::TerminateEntity();
+		svrChk(super::TerminateEntity());
 
 		ClearComponents();
 
-		m_AcceptJoin = false;
-
-		Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(GetMyOwner());
-
-	//Proc_End:
+	Proc_End:
 
 
 		return hr;
 	}
 
-	// Run entity
-	HRESULT GameInstanceEntity::TickUpdate(Svr::TimerAction *pAction)
-	{
-		HRESULT hr = S_SYSTEM_OK;
-		auto CurTime = Util::Time.GetTimeMs();
-		StaticArray<PlayerID,64> LeaverList;
-		//GamePlayerUIDMap::iterator itPlayer;
-		GamePlayer *pGamePlayer = nullptr;
-		PlayerID pltID;
-		INT playerCount = 0;
+	//// Run entity
+	//HRESULT GameInstanceEntity::TickUpdate(Svr::TimerAction *pAction)
+	//{
+	//	HRESULT hr = S_SYSTEM_OK;
+	//	auto CurTime = Util::Time.GetTimeMs();
+	//	StaticArray<PlayerID,64> LeaverList;
+	//	Svr::GameInstancePlayer *pGamePlayer = nullptr;
+	//	PlayerID pltID;
+	//	INT playerCount = 0;
 
-		hr = super::TickUpdate(pAction);
-		if (FAILED(hr) || hr == S_SYSTEM_FALSE)
-			return hr;
+	//	hr = super::TickUpdate(pAction);
+	//	if (FAILED(hr) || hr == S_SYSTEM_FALSE)
+	//		return hr;
 
-		// Update Players
-		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&CurTime, &playerCount](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
-		{
-			if (pPlayer->GetServerEntity() != nullptr)
-				playerCount++;
+	//	// Update Players
+	//	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&CurTime, &playerCount](const PlayerID& playerID, Svr::GameInstancePlayer* pPlayer)-> bool
+	//	{
+	//		if (pPlayer->GetServerEntity() != nullptr)
+	//			playerCount++;
 
-			pPlayer->UpdateGamePlayer(CurTime);
-			return true;
-		});
+	//		pPlayer->UpdateGamePlayer(CurTime);
+	//		return true;
+	//	});
 
-		UpdateGameStatus( CurTime );
+	//	UpdateGameStatus( CurTime );
 
-		// Leave player
-		while( SUCCEEDED(m_PendingReleasePlayer.Dequeue( pltID )) )
-		{
-			if (SUCCEEDED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
-			{
-				playerCount--;
-				LeavePlayer( pGamePlayer );
+	//	// Leave player
+	//	while( SUCCEEDED(m_PendingReleasePlayer.Dequeue( pltID )) )
+	//	{
+	//		if (SUCCEEDED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
+	//		{
+	//			playerCount--;
+	//			LeavePlayer( pGamePlayer );
 
-				if (playerCount <= 0)
-				{
-					CloseGameInstance();
-				}
+	//			if (playerCount <= 0)
+	//			{
+	//				CloseGameInstance();
+	//			}
 
-			}
-		}
+	//		}
+	//	}
 
-		if (GetEntityState() == EntityState::FREE)
-			return S_SYSTEM_FALSE;
+	//	if (GetEntityState() == EntityState::FREE)
+	//		return S_SYSTEM_FALSE;
 
-	//Proc_End:
+	////Proc_End:
 
-		return hr;
-	}
+	//	return hr;
+	//}
 
 
 	////////////////////////////////////////////////////////////
@@ -220,7 +222,7 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_SYSTEM_OK;
 
 		// Call check timer to update
-		m_TimeToKill.CheckTimer();
+		svrChk(super::UpdateGameStatus(ulCurTime));
 
 		svrChk( GetComponent<GameStateSystem>()->UpdateSystem() );
 
@@ -231,44 +233,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 
-	////////////////////////////////////////////////////////////
-	//
-	//	Game timers
-	//
 
-
-	// set game instance kill timer
-	HRESULT GameInstanceEntity::SetGameKillTimer(DurationMS ulWaitTime )
-	{
-		// Server Notice ?
-
-		return m_TimeToKill.SetTimer( ulWaitTime );
-	}
-
-
-	// On Game Kill timer
-	void GameInstanceEntity::OnGameKillTimer()
-	{
-		CloseGameInstance();
-	}
-
-	// Close Game Instance
-	void GameInstanceEntity::CloseGameInstance()
-	{
-		svrTrace(Trace::TRC_TRACE, "CloseGameInstance:{0}", GetEntityUID());
-
-		LeaveAllPlayerForGameDelete();
-
-		m_AcceptJoin = false;
-
-		if (GetEntityState() == EntityState::WORKING)
-			SetEntityState(EntityState::CLOSING);
-
-
-		// 2. Get service entity list in the cluster
-		Svr::GetServerComponent<Svr::GameInstanceManagerServiceEntity>()->FreeGameInstance(GetEntityUID());
-
-	}
 
 
 
@@ -283,6 +248,7 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer *pPlayer = nullptr;
 
+		svrChk(super::InitializeGameEntity(numBot, maxPlayer));
 
 		if (FAILED(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
 		{
@@ -290,32 +256,14 @@ namespace ConspiracyGameInstanceServer {
 			svrErr(E_GAME_INVALID_BOTTALK_TABLE);
 		}
 
-		if (maxPlayer > GameConst::MAX_GAMEPLAYER)
-		{
-			svrErr(E_GAME_INVALID_PLAYER_COUNT);
-		}
-
-		if (numBot > maxPlayer)
-		{
-			// Too many boot number
-			svrTrace(Trace::TRC_ERROR, "Too many bot number numBot:{0} -> {1}, maxPlayer:{2}", numBot, maxPlayer-1, maxPlayer);
-			numBot = maxPlayer - 1;
-		}
-
-		m_TotalJoinedPlayer = 0;
-		m_NumBot = numBot;
-		m_MaxPlayer = maxPlayer;
-
-		// set kill timer
-		SetGameKillTimer(DurationMS(Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER));
-
+		// initialize
 		memset(m_PlayerCharacter, 0xFF, sizeof(m_PlayerCharacter));
 
 		// randomize player character
 		for (INT character = 0; character < GameConst::MAX_GAMEPLAYER; character++)
 		{
-			UINT player = (UINT)Util::Random.Rand() % m_MaxPlayer;
-			for (UINT iPlayer = 0; iPlayer < m_MaxPlayer; iPlayer++)
+			UINT player = (UINT)Util::Random.Rand() % GetMaxPlayer();
+			for (UINT iPlayer = 0; iPlayer < GetMaxPlayer(); iPlayer++)
 			{
 				if (m_PlayerCharacter[player] == 0xFF)
 				{
@@ -323,23 +271,8 @@ namespace ConspiracyGameInstanceServer {
 					break;
 				}
 				player++;
-				player = player % m_MaxPlayer;
+				player = player % GetMaxPlayer();
 			}
-		}
-
-		m_TimeToKill.SetTimerFunc( [&]()  { OnGameKillTimer(); } );
-
-
-		// add fake bot player
-		for (UINT iBot = 0; iBot < m_NumBot; iBot++)
-		{
-			PlayerInformation playerInfo;
-			playerInfo.PlayerID = iBot + 1;
-			playerInfo.Level = 1;
-			StrUtil::Format(playerInfo.NickName, "Bot{0}", iBot);
-			pPlayer = new GamePlayer(this, playerInfo);
-			pPlayer->SetIsBot(true);
-			svrChk(AddPlayerToJoin(pPlayer));
 		}
 
 
@@ -375,7 +308,7 @@ namespace ConspiracyGameInstanceServer {
 
 	HRESULT GameInstanceEntity::GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer )
 	{
-		if( playerIndex < 0 || playerIndex >= (INT)m_MaxPlayer )
+		if( playerIndex < 0 || playerIndex >= (INT)GetMaxPlayer() )
 			return E_INVALID_PLAYERID;
 
 		pGamePlayer = m_PlayerByIndex[playerIndex];
@@ -384,20 +317,27 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
+	HRESULT GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, Svr::GameInstancePlayer* &pPlayer)
+	{
+		pPlayer = new GamePlayer(this, playerInfo);
+
+		return pPlayer != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+	}
+
+
 	// Register new player to join
-	HRESULT GameInstanceEntity::AddPlayerToJoin(GamePlayer* &pPlayer)
+	HRESULT GameInstanceEntity::AddPlayerToJoin(Svr::GameInstancePlayer* &pInsPlayer)
 	{
 		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer* pFound = nullptr;
+		GamePlayer* pPlayer = nullptr;
 		UINT playerIndex;
 
-		svrChkPtr( pPlayer );
-		if (SUCCEEDED(m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound)))
-		{
-			svrErr(E_GAME_ALREADY_IN_GAME);
-		}
 
-		m_TotalJoinedPlayer++;
+		svrChk(super::AddPlayerToJoin(pInsPlayer));
+		pPlayer = (GamePlayer*)pInsPlayer;
+		pInsPlayer = nullptr;
+
 
 		// Check role availability
 		if (pPlayer->GetRequestedRole() != PlayerRole::None)
@@ -418,11 +358,9 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 
-		svrChk(m_GamePlayerByUID.Insert(pPlayer->GetPlayerID(), pPlayer));
-
 		// search empty player index from start
-		playerIndex = (UINT)Util::Random.Rand() % m_MaxPlayer;
-		for( UINT search = 0; search < m_MaxPlayer; search++ )
+		playerIndex = (UINT)Util::Random.Rand() % GetMaxPlayer();
+		for( UINT search = 0; search < GetMaxPlayer(); search++ )
 		{
 			if( m_PlayerByIndex[playerIndex] == nullptr )
 			{
@@ -431,18 +369,13 @@ namespace ConspiracyGameInstanceServer {
 				break;
 			}
 			playerIndex++;
-			if( playerIndex >= m_MaxPlayer ) playerIndex = 0;
+			if( playerIndex >= GetMaxPlayer() ) playerIndex = 0;
 		}
 
 		pPlayer->SetPlayerState( PlayerState::Playing );
 		pPlayer->SetCharacter( m_PlayerCharacter[playerIndex] );
 
 
-		// clear game killing timer
-		m_TimeToKill.ClearTimer();
-
-		pPlayer = nullptr;
-
 	Proc_End:
 
 
@@ -450,85 +383,33 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
-	// Player leave
-	HRESULT GameInstanceEntity::LeavePlayer( GamePlayer* &pPlayer )
-	{
-		HRESULT hr = S_SYSTEM_OK;
-
-		pPlayer->SetServerEntity(nullptr,0);
-
-		// We will leave him as an inactive player so the clean-up and any notify aren't needed
-
-
-	//Proc_End:
-
-		svrTrace(Trace::TRC_TRACE, "LeavePlayer, remain:{0}", m_GamePlayerByUID.GetItemCount());
-
-		if (m_GamePlayerByUID.GetItemCount() == 0) // if no player remain
-		{
-			SetGameKillTimer(DurationMS(Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER));
-		}
-
-
-		return hr;
-	}
-
-	HRESULT GameInstanceEntity::LeavePlayer( PlayerID pltID )
-	{
-		HRESULT hr = S_SYSTEM_OK;
-
-		svrChk( m_PendingReleasePlayer.Enqueue( pltID ) );
-
-	Proc_End:
-
-		return hr;
-	}
-
-	// Leave all player
-	HRESULT GameInstanceEntity::LeaveAllPlayerForGameDelete()
-	{
-		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
-		{
-			auto pPolicy = pPlayer->GetPolicy<Policy::ISvrPolicyGameInstance>();
-			if (pPolicy != nullptr && pPlayer->GetPlayerEntityUID() != 0)
-				pPolicy->PlayerKickedS2CEvt(RouteContext(GetEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID());
-
-			LeavePlayer( pPlayer );
-
-			Util::SafeDelete(pPlayer);
-
-			return true;
-		});
-
-		m_GamePlayerByUID.ClearMap();
-
-		return S_SYSTEM_OK;
-	}
 
 	// Find Player pilotid
 	HRESULT GameInstanceEntity::FindPlayer( PlayerID pltID, GamePlayer* &pGamePlayer )
 	{
 		HRESULT hr = S_SYSTEM_OK;
+		Svr::GameInstancePlayer* pGameInsPlayer = nullptr;
 
-		if (FAILED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
-		{
-			return E_SVR_PLAYER_NOT_FOUND;
-		}
+		svrChk(super::FindPlayer(pltID, pGameInsPlayer));
 
-	//Proc_End:
+		pGamePlayer = (GamePlayer*)pGameInsPlayer;
+
+	Proc_End:
 
 		return hr;
 	}
 
 
 	// Called when a player get out of game
-	HRESULT GameInstanceEntity::OnPlayerGetOutOfGame( GamePlayer* pPlayer )
+	HRESULT GameInstanceEntity::OnPlayerGetOutOfGame( Svr::GameInstancePlayer* pPlayer )
 	{
 		HRESULT hr = S_SYSTEM_OK;
 
 		// update exit status
-		svrChk( GetComponent<GamePlaySystem>()->OnPlayerGetOutOfGame(pPlayer) );
-		svrChk( GetComponent<GameStateSystem>()->OnPlayerGetOutOfGame(pPlayer) );
+		svrChk(super::OnPlayerGetOutOfGame(pPlayer));
+
+		svrChk( GetComponent<GamePlaySystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer) );
+		svrChk( GetComponent<GameStateSystem>()->OnPlayerGetOutOfGame((GamePlayer*)pPlayer) );
 
 	Proc_End:
 

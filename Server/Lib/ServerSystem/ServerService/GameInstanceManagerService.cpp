@@ -41,7 +41,7 @@ namespace BR
 
 			TransactionID localTransID(InContext);
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstanceManager()->CreateGameCmd( InContext, InRouteContext, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer ) );
+			svrChk(GetPolicyGameInstanceManager()->CreateGameCmd( InRouteContext, InContext, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer ) );
 
 		Proc_End:
 

@@ -36,28 +36,33 @@
 
 
 
-  <LoginServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
+  <!--<LoginServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
 		<NetPrivate IP="10.133.29.154" Port="2011"/>
-		<NetPublic IP="2401:c900:1001:15b::7" Port="21001"/>
-		<NetPublicIPV4 IP="161.202.74.202" Port="21001"/>
-	</LoginServer>
+		<NetPublic IPV4="161.202.74.202" IPV6="2401:c900:1001:15b::7" Port="21001"/>
+	</LoginServer>-->
 
-	<SharedModule UID="52" Name="BRMatchingQueue01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
+  <ModuleServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" GameID="Conspiracy">
+    <NetPrivate IP="10.133.29.154" Port="2011"/>
+    <ModLogin>
+      <NetPublic IPV4="10.133.29.154" IPV6="2401:c900:1001:15b::7" Port="21001" MaxConnection="200000"/>
+    </ModLogin>
+  </ModuleServer>
+
+  <ModuleServer UID="52" Name="BRMatchingQueue01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" GameID="Conspiracy" >
 		<NetPrivate IP="10.133.29.154" Port="2052"/>
-		<Module ModuleID="MatchingQueue_Game_8x1" />
-		<Module ModuleID="MatchingQueue_Game_8x2" />
-		<Module ModuleID="MatchingQueue_Game_8x3" />
-		<Module ModuleID="MatchingQueue_Game_8x4" />
-		<Module ModuleID="MatchingQueue_Game_8x5" />
-		<Module ModuleID="MatchingQueue_Game_8x6" />
-		<Module ModuleID="MatchingQueue_Game_8x7" />
-		<Module ModuleID="MatchingQueue_Game_8x1S" />
-		<Module ModuleID="MatchingQueue_Game_8x1W" />
-		<Module ModuleID="Matching_Game_8" Parameters="usebot:true" />
-		<Module ModuleID="GamePartyManager" />
-	</SharedModule>
+    <ModMatchingQueue_Game_8x1 />
+    <ModMatchingQueue_Game_8x2 />
+    <ModMatchingQueue_Game_8x3 />
+    <ModMatchingQueue_Game_8x4 />
+    <ModMatchingQueue_Game_8x5 />
+    <ModMatchingQueue_Game_8x6 />
+    <ModMatchingQueue_Game_8x7 />
+    <ModMatchingQueue_Game_8x1S/>
+    <ModMatchingQueue_Game_8x1W/>
+    <ModMatching_Game_8 UseBot="true"/>
+  </ModuleServer>
 
-	<GameCluster Name="First Game">
+	<GameCluster Name="First Game" GameID="Conspiracy">
 		<GameDB ClusterType="Sharding" PartitioningCount="3">
 		  <DBMember DBInstanceName="conspiracy00" DBName="dbconspiracy00" PartitioningID="0" />
 		</GameDB>
@@ -66,21 +71,19 @@
 		  <DBMember DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" PartitioningID="0" />
 		</GameTransactionLogDB>
 
-		<Game UID="100" Name="BRConspiracyGameServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
+		<Game UID="100" Name="BRConspiracyGameServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4">
 			<ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
 			<ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>
 			<!-- <ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/> -->
 			<NetPrivate IP="10.133.29.154" Port="10000"/>
-			<NetPublic IP="2401:c900:1001:15b::7" Port="11000"/>
-			<NetPublicIPV4 IP="161.202.74.202" Port="11000"/>
+			<NetPublic IPV4="161.202.74.202" IPV6="2401:c900:1001:15b::7" Port="11000"/>
 		</Game>
 
-		<Game UID="101" Name="BRConspiracyGameServer02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
+		<Game UID="101" Name="BRConspiracyGameServer02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4">
 			<ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
 			<ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>
 			<NetPrivate IP="10.133.29.154" Port="10001"/>
-			<NetPublic IP="2401:c900:1001:15b::7" Port="11001"/>
-			<NetPublicIPV4 IP="161.202.74.202" Port="11001"/>
+			<NetPublic IPV4="161.202.74.202" IPV6="2401:c900:1001:15b::7" Port="11001"/>
 		</Game>
 
 		<GameInstance UID="200" Name="BRConspiracyGameInstanceServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >

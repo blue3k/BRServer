@@ -100,9 +100,16 @@ namespace GameServer {
 		}
 		else
 		{
+			Svr::Entity* pEntity = nullptr;
 			svrTrace(Svr::TRC_ENTITY, "Create new Player Entity UID:{0}", GetPlayerID());
-			svrChk(Svr::GetServerComponent<GameEntityManager>()->CreateGamePlayer(GetPlayerID(), pPlayerEntity));
 
+			svrChk(Svr::GetServerComponent<GameEntityManager>()->CreateEntity(ClusterID::Game_Conspiracy, EntityFaculty::User, pEntity));
+			svrChkPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
+			svrChk(Svr::GetServerComponent<GameEntityManager>()->AddEntity(EntityFaculty::User, pEntity));
+
+			// Add Entity will Initialize entity so that AccountID is erased.
+			// SetAccountID need to be set after entity is added
+			pPlayerEntity->SetAccountID(GetPlayerID());
 		}
 
 		pPlayerEntity->SetShardID(GetShardID());
@@ -111,8 +118,8 @@ namespace GameServer {
 		// it's local player send message to local loopback entity
 		svrChkPtr(pTargetPolicy = GetMyServer()->GetLoopbackServerEntity()->GetPolicy<Policy::IPolicyGameServer>());
 
-		svrChk(pTargetPolicy->RegisterPlayerToJoinGameServerOnPlayerEntityCmd(GetTransID(), 
-			RouteContext(GetOwnerEntityUID(),m_PlayerUID), 
+		svrChk(pTargetPolicy->RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
+			RouteContext(GetOwnerEntityUID(),m_PlayerUID), GetTransID(),
 			GetPlayerID(), GetTicket(), GetFBUserID() ));
 
 
