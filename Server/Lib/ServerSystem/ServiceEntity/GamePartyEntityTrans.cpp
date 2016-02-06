@@ -343,7 +343,7 @@ namespace Svr {
 			svrChk( GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService( pService ) );
 
 			// 2. Get service entity list in the cluster
-			svrChk( pService->GetService<GameInstanceManagerService>()->CreateGameCmd( GetTransID(), 0, 0, GetMaxGamePlayers()) );
+			svrChk( pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, 0, GetMaxGamePlayers()) );
 
 			//CloseTransaction(hr);
 			goto Proc_End;

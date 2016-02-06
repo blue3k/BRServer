@@ -78,9 +78,9 @@ namespace Svr {
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
-					if(MessageClass::HasContext)
+					if(MessageClass::HasTransactionID)
 					{
-						superTrans::SetParentTransID(MessageClass::GetContext());
+						superTrans::SetParentTransID(MessageClass::GetTransactionID());
 					}
 					else if(MessageClass::HasRouteContext)
 					{
@@ -108,7 +108,7 @@ namespace Svr {
 
 			if( m_WorkOnServerEntity )
 			{
-				svrAssert( dynamic_cast<OwnerEntityType*>(pOwner) );
+				svrAssert(dynamic_cast<OwnerEntityType*>(pOwner));
 				svrChk(superTrans::InitializeTransaction( pOwner ) );
 			}
 			else
@@ -118,15 +118,6 @@ namespace Svr {
 					assert(pOwner->GetEntityUID() == MessageClass::GetRouteContext().GetTo());
 					svrAssert(dynamic_cast<OwnerEntityType*>(pOwner));
 					svrChk(superTrans::InitializeTransaction(pOwner));
-					//SharedPointerT<Entity> pEntity;
-					//if (FAILED(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity)))
-					//{
-					//	svrTrace(Trace::TRC_ERROR, "Target entity:{0} for transaction:{1} is not found", MessageClass::GetRouteContext().GetTo(), typeid(*this).name());
-					//	hr = E_SVR_INVALID_ENTITYUID;
-					//	goto Proc_End;
-					//}
-					//svrAssert(dynamic_cast<OwnerEntityType*>((Entity*)pEntity));
-					//svrChk(superTrans::InitializeTransaction((Entity*)pEntity));
 				}
 				else
 				{
@@ -138,12 +129,8 @@ namespace Svr {
 
 			return hr;
 		}
-/*
-		virtual void Release()
-		{
-			delete this;
-		}
-*/
+
+
 		template< class ServerEntityType >
 		ServerEntityType *GetServerEntity()
 		{

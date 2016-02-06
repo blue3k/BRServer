@@ -44,7 +44,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_AuthTicket, pCur, iMsgSize, sizeof(AuthTicket) ) );
 
@@ -55,7 +55,7 @@ namespace BR
 
 			}; // HRESULT PlayerJoinedToGameServerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PlayerJoinedToGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+			HRESULT PlayerJoinedToGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
@@ -63,7 +63,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket));
 
@@ -74,7 +74,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InAuthTicket, sizeof(AuthTicket));
 
@@ -85,7 +85,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerJoinedToGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+			}; // HRESULT PlayerJoinedToGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 
 			HRESULT PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -117,8 +117,8 @@ namespace BR
 			void PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerJoinedToGameServerCmd:{1}:{2} , RouteContext:{3}, Context:{4}, PlayerID:{5}, AuthTicket:{6}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context, m_PlayerID, m_AuthTicket); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerJoinedToGameServerCmd:{1}:{2} , RouteContext:{3}, TransactionID:{4}, PlayerID:{5}, AuthTicket:{6}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID, m_AuthTicket); 
 			}; // void PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID PlayerJoinedToGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 0);
@@ -135,7 +135,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 
 
@@ -145,7 +145,7 @@ namespace BR
 
 			}; // HRESULT PlayerJoinedToGameServerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PlayerJoinedToGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+			HRESULT PlayerJoinedToGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
@@ -153,7 +153,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(HRESULT));
 
 				MessageData *pNewMsg = nullptr;
@@ -163,7 +163,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 
 				pMsg = pNewMsg;
@@ -173,7 +173,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerJoinedToGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+			}; // HRESULT PlayerJoinedToGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 
 			HRESULT PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -205,8 +205,8 @@ namespace BR
 			void PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerJoinedToGameServerRes:{1}:{2} , RouteContext:{3}, Context:{4}, Result:{5:X8}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context, m_Result); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerJoinedToGameServerRes:{1}:{2} , RouteContext:{3}, TransactionID:{4}, Result:{5:X8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_Result); 
 			}; // void PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Kick logged in player
@@ -224,7 +224,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_KickedPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
 
 
@@ -234,7 +234,7 @@ namespace BR
 
 			}; // HRESULT KickPlayerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InKickedPlayerID )
+			HRESULT KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
@@ -242,7 +242,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(PlayerID));
 
 				MessageData *pNewMsg = nullptr;
@@ -252,7 +252,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InKickedPlayerID, sizeof(PlayerID));
 
 				pMsg = pNewMsg;
@@ -262,7 +262,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InKickedPlayerID )
+			}; // HRESULT KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
 
 			HRESULT KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -294,8 +294,8 @@ namespace BR
 			void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerCmd:{1}:{2} , RouteContext:{3}, Context:{4}, KickedPlayerID:{5}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context, m_KickedPlayerID); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerCmd:{1}:{2} , RouteContext:{3}, TransactionID:{4}, KickedPlayerID:{5}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_KickedPlayerID); 
 			}; // void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 1);
@@ -312,7 +312,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 
 
@@ -322,7 +322,7 @@ namespace BR
 
 			}; // HRESULT KickPlayerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+			HRESULT KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
@@ -330,7 +330,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(HRESULT));
 
 				MessageData *pNewMsg = nullptr;
@@ -340,7 +340,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 
 				pMsg = pNewMsg;
@@ -350,7 +350,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+			}; // HRESULT KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 
 			HRESULT KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -382,8 +382,8 @@ namespace BR
 			void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerRes:{1}:{2} , RouteContext:{3}, Context:{4}, Result:{5:X8}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_Context, m_Result); 
+				protocolTrace(Trace::TRC_DBG1, "{0}:KickPlayerRes:{1}:{2} , RouteContext:{3}, TransactionID:{4}, Result:{5:X8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_Result); 
 			}; // void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 

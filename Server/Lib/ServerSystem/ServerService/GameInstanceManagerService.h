@@ -33,7 +33,7 @@ namespace BR
 			GameInstanceManagerService ( ServerServiceInformation* pService );
 
 			// Cmd: Create a game instance
-			HRESULT CreateGameCmd( const Context &InContext, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer );
+			HRESULT CreateGameCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer );
 			// C2S: Game instance notify of deletion
 			HRESULT GameDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount );
 

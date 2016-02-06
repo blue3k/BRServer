@@ -268,7 +268,7 @@ namespace BR
             new TypeMap( ParameterType.DWORD, 4, typeof(UInt32) ),
             new TypeMap( ParameterType.QWORD, 8, typeof(UInt64) ),
             new TypeMap( ParameterType.FLOAT, 4, typeof(float) ),
-            new TypeMap( ParameterType.Context, 8, typeof(UInt64) ),
+            new TypeMap( ParameterType.TransactionID, 8, typeof(UInt64) ),
             new TypeMap( ParameterType.AccountID, 8, typeof(UInt64) ),
             new TypeMap( ParameterType.PlayerID, 8, typeof(UInt64) ),
             new TypeMap( ParameterType.FacebookUID, 8, typeof(UInt64) ),

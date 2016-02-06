@@ -30,15 +30,15 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			HRESULT AddPlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
+			HRESULT AddPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
 			// Cmd: Remove a player to ranking
-			HRESULT RemovePlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID );
+			HRESULT RemovePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Remove a player to ranking
-			HRESULT GetPlayerRankingCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID );
+			HRESULT GetPlayerRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Update a player to ranking
-			HRESULT UpdatePlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
+			HRESULT UpdatePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
 			// Cmd: Remove a player to ranking
-			HRESULT GetRankingCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT32 &InFrom, const UINT32 &InCount );
+			HRESULT GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount );
 
 		}; // class NetPolicyRanking : public IPolicyRanking
 
@@ -51,15 +51,15 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			HRESULT AddPlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InRanking );
+			HRESULT AddPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking );
 			// Cmd: Remove a player to ranking
-			HRESULT RemovePlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult );
+			HRESULT RemovePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
 			// Cmd: Remove a player to ranking
-			HRESULT GetPlayerRankingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InRanking );
+			HRESULT GetPlayerRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking );
 			// Cmd: Update a player to ranking
-			HRESULT UpdatePlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InRanking );
+			HRESULT UpdatePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking );
 			// Cmd: Remove a player to ranking
-			HRESULT GetRankingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InPlayerRanking );
+			HRESULT GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InPlayerRanking );
 
 		}; // class NetSvrPolicyRanking : public ISvrPolicyRanking
 

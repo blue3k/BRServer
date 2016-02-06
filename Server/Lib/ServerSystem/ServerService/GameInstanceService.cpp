@@ -48,19 +48,18 @@ namespace BR
 
 		}; // HRESULT GameInstanceService::DeleteGameC2SEvt( const EntityID &InSenderEntityID )
 		// Cmd: Join Game
-		HRESULT GameInstanceService::JoinGameCmd( const Context &InContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
+		HRESULT GameInstanceService::JoinGameCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->JoinGameCmd( InRouteContext, InContext, InPlayer, InTicket, InRequestedRole ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->JoinGameCmd( InRouteContext, InTransactionID, InPlayer, InTicket, InRequestedRole ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::JoinGameCmd( const Context &InContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
+		}; // HRESULT GameInstanceService::JoinGameCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 		// C2S: Change configue preset
 		HRESULT GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const UINT32 &InPresetID )
 		{
@@ -75,47 +74,44 @@ namespace BR
 
 		}; // HRESULT GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const UINT32 &InPresetID )
 		// Cmd: Leave Game
-		HRESULT GameInstanceService::LeaveGameCmd( const Context &InContext, const PlayerID &InPlayerID )
+		HRESULT GameInstanceService::LeaveGameCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->LeaveGameCmd( InRouteContext, InContext, InPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->LeaveGameCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::LeaveGameCmd( const Context &InContext, const PlayerID &InPlayerID )
+		}; // HRESULT GameInstanceService::LeaveGameCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Kick player
-		HRESULT GameInstanceService::KickPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		HRESULT GameInstanceService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->KickPlayerCmd( InRouteContext, InContext, InPlayerID, InPlayerToKick ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::KickPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		}; // HRESULT GameInstanceService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		// Cmd: Assign role
-		HRESULT GameInstanceService::AssignRoleCmd( const Context &InContext, const PlayerID &InPlayerID )
+		HRESULT GameInstanceService::AssignRoleCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->AssignRoleCmd( InRouteContext, InContext, InPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->AssignRoleCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::AssignRoleCmd( const Context &InContext, const PlayerID &InPlayerID )
+		}; // HRESULT GameInstanceService::AssignRoleCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// C2S: Chatting message
 		HRESULT GameInstanceService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
 		{
@@ -130,89 +126,83 @@ namespace BR
 
 		}; // HRESULT GameInstanceService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
 		// Cmd: Advance game
-		HRESULT GameInstanceService::AdvanceGameCmd( const Context &InContext, const PlayerID &InPlayerID )
+		HRESULT GameInstanceService::AdvanceGameCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->AdvanceGameCmd( InRouteContext, InContext, InPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->AdvanceGameCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::AdvanceGameCmd( const Context &InContext, const PlayerID &InPlayerID )
+		}; // HRESULT GameInstanceService::AdvanceGameCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: *Vote game advance
-		HRESULT GameInstanceService::VoteGameAdvanceCmd( const Context &InContext, const PlayerID &InPlayerID )
+		HRESULT GameInstanceService::VoteGameAdvanceCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->VoteGameAdvanceCmd( InRouteContext, InContext, InPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->VoteGameAdvanceCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::VoteGameAdvanceCmd( const Context &InContext, const PlayerID &InPlayerID )
+		}; // HRESULT GameInstanceService::VoteGameAdvanceCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Assign role
-		HRESULT GameInstanceService::VoteCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
+		HRESULT GameInstanceService::VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->VoteCmd( InRouteContext, InContext, InPlayerID, InVoteTarget, InActionSerial ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->VoteCmd( InRouteContext, InTransactionID, InPlayerID, InVoteTarget, InActionSerial ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::VoteCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
+		}; // HRESULT GameInstanceService::VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
 		// Cmd: Play again with the current players
-		HRESULT GameInstanceService::GamePlayAgainCmd( const Context &InContext, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
+		HRESULT GameInstanceService::GamePlayAgainCmd( const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->GamePlayAgainCmd( InRouteContext, InContext, InLeadPlayer, InPartyUID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->GamePlayAgainCmd( InRouteContext, InTransactionID, InLeadPlayer, InPartyUID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::GamePlayAgainCmd( const Context &InContext, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
+		}; // HRESULT GameInstanceService::GamePlayAgainCmd( const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
 		// Cmd: Player. revive himself
-		HRESULT GameInstanceService::GameRevealPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
+		HRESULT GameInstanceService::GameRevealPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->GameRevealPlayerCmd( InRouteContext, InContext, InPlayerID, InTargetPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->GameRevealPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InTargetPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::GameRevealPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
+		}; // HRESULT GameInstanceService::GameRevealPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		// Cmd: Player. revive himself
-		HRESULT GameInstanceService::GamePlayerReviveCmd( const Context &InContext, const PlayerID &InPlayerID )
+		HRESULT GameInstanceService::GamePlayerReviveCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstance()->GamePlayerReviveCmd( InRouteContext, InContext, InPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstance()->GamePlayerReviveCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceService::GamePlayerReviveCmd( const Context &InContext, const PlayerID &InPlayerID )
+		}; // HRESULT GameInstanceService::GamePlayerReviveCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
 
 	}; // namespace Svr

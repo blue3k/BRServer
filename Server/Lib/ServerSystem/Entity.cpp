@@ -260,7 +260,6 @@ namespace BR {
 				assert(this == pNewTrans->GetOwnerEntity());
 				if (this == pNewTrans->GetOwnerEntity())
 				{
-					//auto threadID = GetTaskWorker() ? GetTaskWorker()->GetThreadID() : ThisThread::GetThreadID();
 					auto threadID = ThisThread::GetThreadID();
 					PendingTransaction(threadID, pNewTrans);
 				}
@@ -307,7 +306,6 @@ namespace BR {
 		MessageResult *pMsgRes = nullptr;
 		TransactionResult *pTransRes = nullptr;
 		auto pMySvr = BrServer::GetInstance();
-		//SharedPointerT<Entity> pEntity;
 		Transaction *pTransaction = nullptr;
 
 		svrChkPtr(pMySvr);
@@ -319,10 +317,6 @@ namespace BR {
 
 		assert(pTransRes->GetTransID().GetEntityID() == GetEntityID());
 
-		//svrChk( RouteTransactionResult( pTransRes ) );
-		//svrChk(GetEntityTable().Find(pTransRes->GetTransID().GetEntityID(), pEntity));
-
-		//if (pEntity->GetTaskGroupID() == GetTaskGroupID() && pEntity->GetTaskManager() == GetTaskManager()) // If assigned on the same thread
 		if (GetTaskWorker()->GetThreadID() == ThisThread::GetThreadID())
 		{
 			if (FAILED(FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))

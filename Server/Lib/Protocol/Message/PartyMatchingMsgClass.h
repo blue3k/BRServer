@@ -32,14 +32,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 1,
 					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
@@ -78,14 +78,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 1,
 					HasRouteHopCount = 1,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;

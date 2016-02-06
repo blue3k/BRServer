@@ -49,6 +49,7 @@
 #include "ConspiracyGameInstanceServerClass.h"
 //#include "PlayerInfoManager.h"
 #include "Transaction/GameInstanceServerTrans.h"
+#include "GameInstance/GameEntityManager.h"
 
 #include "DB/GameConspiracyDB.h"
 #include "DB/AccountDB.h"
@@ -80,6 +81,11 @@ namespace ConspiracyGameInstanceServer {
 	{
 	}
 
+
+	Svr::EntityManager* GameInstanceServer::CreateEntityManager()
+	{
+		return new GameEntityManager;
+	}
 
 	Svr::ServerEntity* GameInstanceServer::CreateLoopbackEntity()
 	{

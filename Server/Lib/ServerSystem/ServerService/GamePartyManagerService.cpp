@@ -35,19 +35,18 @@ namespace BR
 
 
 		// Cmd: Create a party instance
-		HRESULT GamePartyManagerService::CreatePartyCmd( const Context &InContext, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+		HRESULT GamePartyManagerService::CreatePartyCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGamePartyManager()->CreatePartyCmd( InRouteContext, InContext, InRouteHopCount, InCreator ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGamePartyManager()->CreatePartyCmd( InRouteContext, InTransactionID, InRouteHopCount, InCreator ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GamePartyManagerService::CreatePartyCmd( const Context &InContext, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+		}; // HRESULT GamePartyManagerService::CreatePartyCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
 		// C2S: Party instance notify of deletion
 		HRESULT GamePartyManagerService::PartyDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount )
 		{

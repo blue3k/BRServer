@@ -49,6 +49,8 @@ namespace Svr {
 		//UINT m_RegisterTryCount;
 		EntityUID m_GameEntityUID;
 
+		UINT m_CreateRequestCount;
+
 	public:
 		LoginPlayerTransLoginBase( Message::MessageData* &pIMsg );
 		virtual ~LoginPlayerTransLoginBase() {}
@@ -60,7 +62,7 @@ namespace Svr {
 
 		HRESULT RegisterNewPlayerToJoinGameServer();
 
-
+		virtual HRESULT OnGenericError(Svr::TransactionResult* &pRes) override;
 
 		// Start Transaction
 		virtual HRESULT StartTransaction() override;

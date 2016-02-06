@@ -178,8 +178,7 @@ namespace ProtocolBuilder
             {
                 if (type == MsgType.Cmd)
                 {
-                    MatchIndent(); OutStream.WriteLine("TransactionID localTransID(InContext);");
-                    MatchIndent(); OutStream.WriteLine("RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );");
+                    MatchIndent(); OutStream.WriteLine("RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );");
                     ParamRouteContext = m_ParameterRouteHopContext;
                     parameters = MakeParameters(type, originalParameters);
                     ParamRouteContext = null;

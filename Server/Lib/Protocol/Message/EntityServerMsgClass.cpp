@@ -44,7 +44,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_LocalEntID, pCur, iMsgSize, sizeof(EntityID) ) );
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfEntName, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_EntName, pCur, iMsgSize, sizeof(char)*uiSizeOfEntName ) );
@@ -56,7 +56,7 @@ namespace BR
 
 			}; // HRESULT RegisterEntityCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const EntityID &InLocalEntID, const char* InEntName )
+			HRESULT RegisterEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
@@ -64,7 +64,7 @@ namespace BR
 
 				UINT16 __uiInEntNameLength = InEntName ? (UINT16)(strlen(InEntName)+1) : 1;
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInEntNameLength 
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(EntityID));
 
 				MessageData *pNewMsg = nullptr;
@@ -73,7 +73,7 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InLocalEntID, sizeof(EntityID));
 				Protocol::PackParamCopy( pMsgData, &__uiInEntNameLength, sizeof(UINT16) );
 				Protocol::PackParamCopy( pMsgData, InEntName ? InEntName : "", __uiInEntNameLength );
@@ -85,15 +85,15 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const EntityID &InLocalEntID, const char* InEntName )
+			}; // HRESULT RegisterEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 
 
 
 			void RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "{0}:RegisterEntityCmd:{1}:{2} , Context:{3}, LocalEntID:{4}, EntName:{5}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_LocalEntID, m_EntName); 
+				protocolTrace(Trace::TRC_DBG2, "{0}:RegisterEntityCmd:{1}:{2} , TransactionID:{3}, LocalEntID:{4}, EntName:{5}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TransactionID, m_LocalEntID, m_EntName); 
 			}; // void RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_ENTITYSERVER, 0);
@@ -109,7 +109,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_EntUID, pCur, iMsgSize, sizeof(EntityUID) ) );
 
@@ -120,14 +120,14 @@ namespace BR
 
 			}; // HRESULT RegisterEntityRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterEntityRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
+			HRESULT RegisterEntityRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(HRESULT)
 					+ sizeof(EntityUID));
 
@@ -137,7 +137,7 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InEntUID, sizeof(EntityUID));
 
@@ -148,15 +148,15 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterEntityRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
+			}; // HRESULT RegisterEntityRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
 
 
 
 			void RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "{0}:RegisterEntityRes:{1}:{2} , Context:{3}, Result:{4:X8}, EntUID:{5}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_EntUID); 
+				protocolTrace(Trace::TRC_DBG2, "{0}:RegisterEntityRes:{1}:{2} , TransactionID:{3}, Result:{4:X8}, EntUID:{5}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TransactionID, m_Result, m_EntUID); 
 			}; // void RegisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Find Entity
@@ -173,7 +173,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_EntUID, pCur, iMsgSize, sizeof(EntityUID) ) );
 
 
@@ -183,14 +183,14 @@ namespace BR
 
 			}; // HRESULT UnregisterEntityCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT UnregisterEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const EntityUID &InEntUID )
+			HRESULT UnregisterEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InEntUID )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(EntityUID));
 
 				MessageData *pNewMsg = nullptr;
@@ -199,7 +199,7 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InEntUID, sizeof(EntityUID));
 
 				pMsg = pNewMsg;
@@ -209,15 +209,15 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT UnregisterEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const EntityUID &InEntUID )
+			}; // HRESULT UnregisterEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InEntUID )
 
 
 
 			void UnregisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "{0}:UnregisterEntityCmd:{1}:{2} , Context:{3}, EntUID:{4}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_EntUID); 
+				protocolTrace(Trace::TRC_DBG2, "{0}:UnregisterEntityCmd:{1}:{2} , TransactionID:{3}, EntUID:{4}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TransactionID, m_EntUID); 
 			}; // void UnregisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID UnregisterEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_ENTITYSERVER, 1);
@@ -233,7 +233,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 
 
@@ -243,14 +243,14 @@ namespace BR
 
 			}; // HRESULT UnregisterEntityRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT UnregisterEntityRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult )
+			HRESULT UnregisterEntityRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(HRESULT));
 
 				MessageData *pNewMsg = nullptr;
@@ -259,7 +259,7 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 
 				pMsg = pNewMsg;
@@ -269,15 +269,15 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT UnregisterEntityRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult )
+			}; // HRESULT UnregisterEntityRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult )
 
 
 
 			void UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "{0}:UnregisterEntityRes:{1}:{2} , Context:{3}, Result:{4:X8}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result); 
+				protocolTrace(Trace::TRC_DBG2, "{0}:UnregisterEntityRes:{1}:{2} , TransactionID:{3}, Result:{4:X8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TransactionID, m_Result); 
 			}; // void UnregisterEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Find Entity
@@ -294,7 +294,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_LocalEntID, pCur, iMsgSize, sizeof(EntityID) ) );
 
 
@@ -304,14 +304,14 @@ namespace BR
 
 			}; // HRESULT FindEntityCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT FindEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const EntityID &InLocalEntID )
+			HRESULT FindEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(EntityID));
 
 				MessageData *pNewMsg = nullptr;
@@ -320,7 +320,7 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InLocalEntID, sizeof(EntityID));
 
 				pMsg = pNewMsg;
@@ -330,15 +330,15 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FindEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const EntityID &InLocalEntID )
+			}; // HRESULT FindEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 
 
 
 			void FindEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "{0}:FindEntityCmd:{1}:{2} , Context:{3}, LocalEntID:{4}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_LocalEntID); 
+				protocolTrace(Trace::TRC_DBG2, "{0}:FindEntityCmd:{1}:{2} , TransactionID:{3}, LocalEntID:{4}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TransactionID, m_LocalEntID); 
 			}; // void FindEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID FindEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_ENTITYSERVER, 2);
@@ -354,7 +354,7 @@ namespace BR
 				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Context, pCur, iMsgSize, sizeof(Context) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_EntUID, pCur, iMsgSize, sizeof(EntityUID) ) );
 
@@ -365,14 +365,14 @@ namespace BR
 
 			}; // HRESULT FindEntityRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT FindEntityRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
+			HRESULT FindEntityRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
 			{
  				HRESULT hr = S_SYSTEM_OK;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
-					+ sizeof(Context)
+					+ sizeof(TransactionID)
 					+ sizeof(HRESULT)
 					+ sizeof(EntityUID));
 
@@ -382,7 +382,7 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &InContext, sizeof(Context));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
 				Protocol::PackParamCopy( pMsgData, &InEntUID, sizeof(EntityUID));
 
@@ -393,15 +393,15 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FindEntityRes::BuildIMsg( OUT MessageData* &pMsg, const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
+			}; // HRESULT FindEntityRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
 
 
 
 			void FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "{0}:FindEntityRes:{1}:{2} , Context:{3}, Result:{4:X8}, EntUID:{5}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Context, m_Result, m_EntUID); 
+				protocolTrace(Trace::TRC_DBG2, "{0}:FindEntityRes:{1}:{2} , TransactionID:{3}, Result:{4:X8}, EntUID:{5}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TransactionID, m_Result, m_EntUID); 
 			}; // void FindEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 

@@ -196,6 +196,8 @@ namespace Config {
 		ModuleBase();
 		ModuleBase(const char* name, ClusterID clusterID);
 
+		virtual void SetName(const char* Name) override;
+
 		ClusterID GetModuleClusterID() { return m_ModuleClusterID; }
 
 		// for parsing
@@ -208,7 +210,6 @@ namespace Config {
 	public:
 		ModuleSimple();
 
-		virtual void SetName(const char* Name) override;
 
 		// for parsing
 		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;

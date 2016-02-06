@@ -18,26 +18,29 @@
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerIPolicy.h"
 #include "GameServerClass.h"
-
+#include "GameInstance/GameClusterServiceEntity.h"
+#include "GameInstance/GamePlayerEntity.h"
 
 namespace BR {
 namespace GameServer {
 
-	
 
-	class GameServerTransRegisterPlayerToJoinGameServer : public Svr::ServerEntityMessageTransaction< Svr::ServerEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer, sizeof(Svr::TransactionMessageHandlerType)*2>
+
+	template<class ProcessEntity>
+	class GameServerTransRegisterPlayerToJoinGameServer : public Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>, sizeof(Svr::TransactionMessageHandlerType)*2>
 	{
 	public:
-		typedef Svr::ServerEntityMessageTransaction< Svr::ServerEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer, sizeof(Svr::TransactionMessageHandlerType) * 2> super;
+		typedef Svr::ServerEntityMessageTransaction< ProcessEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer, sizeof(Svr::TransactionMessageHandlerType) * 2> super;
 
 	private:
-		NetAddress m_PublicAddress;
-		NetAddress m_PublicAddressIPV4;
+		const char* m_PublicAddress;
+		const char* m_PublicAddressIPV6;
+		UINT m_Port;
 		EntityUID m_PlayerUID;
 
 	public:
 
-		GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg);// : ServerEntityMessageTransaction(pIMsg) { SetWorkOnServerEntity(true); }
+		GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg);
 		virtual ~GameServerTransRegisterPlayerToJoinGameServer() {}
 
 		HRESULT OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
@@ -45,11 +48,14 @@ namespace GameServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction() override;
 
-		Policy::ISvrPolicyGameServer* GetPolicy() { return GetMyOwner()->GetPolicy<Policy::ISvrPolicyGameServer>(); }
+		Policy::ISvrPolicyGameServer* GetPolicy() { return super::GetPolicy<Policy::ISvrPolicyGameServer>(); }
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV4);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
 	};
 
+
+	extern template class GameServerTransRegisterPlayerToJoinGameServer<GameClusterServiceEntity>;
+	extern template class GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>;
 
 
 };// namespace GameServer 

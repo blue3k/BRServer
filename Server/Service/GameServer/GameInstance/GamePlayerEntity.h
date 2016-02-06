@@ -142,6 +142,8 @@ namespace GameServer {
 		//	Entity process
 		//
 
+		HRESULT OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID);
+
 		HRESULT OnNewUserTranscation();
 		HRESULT UpdateDBSync(TransactionID transID);
 

@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Add a player to ranking
-		HRESULT NetPolicyMonitoring::GetInstanceListCmd( const Context &InContext )
+		HRESULT NetPolicyMonitoring::GetInstanceListCmd( const TransactionID &InTransactionID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Monitoring::GetInstanceListCmd::BuildIMsg(pMsg, InContext));
+			 protocolChk(Message::Monitoring::GetInstanceListCmd::BuildIMsg(pMsg, InTransactionID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,15 +44,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyMonitoring::GetInstanceListCmd( const Context &InContext )
+		}; // HRESULT NetPolicyMonitoring::GetInstanceListCmd( const TransactionID &InTransactionID )
 		// Cmd: Remove a player to ranking
-		HRESULT NetPolicyMonitoring::RequestCounterValuesCmd( const Context &InContext, const EntityUID &InInstanceUID )
+		HRESULT NetPolicyMonitoring::RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Monitoring::RequestCounterValuesCmd::BuildIMsg(pMsg, InContext, InInstanceUID));
+			 protocolChk(Message::Monitoring::RequestCounterValuesCmd::BuildIMsg(pMsg, InTransactionID, InInstanceUID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -62,7 +62,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyMonitoring::RequestCounterValuesCmd( const Context &InContext, const EntityUID &InInstanceUID )
+		}; // HRESULT NetPolicyMonitoring::RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
 		// C2S: Counter instance is created
 		HRESULT NetPolicyMonitoring::PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{
@@ -120,13 +120,13 @@ namespace BR
 
 
 		// Cmd: Add a player to ranking
-		HRESULT NetSvrPolicyMonitoring::GetInstanceListRes( const Context &InContext, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
+		HRESULT NetSvrPolicyMonitoring::GetInstanceListRes( const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Monitoring::GetInstanceListRes::BuildIMsg(pMsg, InContext, InResult, InCounterInstances, InTotalInstanceCount));
+			 protocolChk(Message::Monitoring::GetInstanceListRes::BuildIMsg(pMsg, InTransactionID, InResult, InCounterInstances, InTotalInstanceCount));
 
 			 protocolChkPtr(GetConnection());
 
@@ -136,15 +136,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyMonitoring::GetInstanceListRes( const Context &InContext, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
+		}; // HRESULT NetSvrPolicyMonitoring::GetInstanceListRes( const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
 		// Cmd: Remove a player to ranking
-		HRESULT NetSvrPolicyMonitoring::RequestCounterValuesRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+		HRESULT NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Monitoring::RequestCounterValuesRes::BuildIMsg(pMsg, InContext, InResult, InInstanceUID, InCounterValues));
+			 protocolChk(Message::Monitoring::RequestCounterValuesRes::BuildIMsg(pMsg, InTransactionID, InResult, InInstanceUID, InCounterValues));
 
 			 protocolChkPtr(GetConnection());
 
@@ -154,7 +154,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyMonitoring::RequestCounterValuesRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+		}; // HRESULT NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
 		// S2C: Request from server
 		HRESULT NetSvrPolicyMonitoring::PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID )
 		{

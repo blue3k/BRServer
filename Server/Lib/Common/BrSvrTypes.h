@@ -140,11 +140,9 @@ namespace BR {
 
 		inline TransactionID& operator = ( const TransactionID& transID );
 
+		inline bool operator != (const TransactionID& src) const;
 		inline bool operator == ( const TransactionID& src ) const;
 
-#if !defined(SWIG)
-		inline operator Context() const;
-#endif
 	};
 
 	

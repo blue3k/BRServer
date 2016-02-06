@@ -88,6 +88,23 @@ namespace Svr {
 		return hr;
 	}
 
+	HRESULT GameInstanceManagerServiceEntity::OnNewInstance(GameInstanceEntity* pGameInstance)
+	{
+		HRESULT hr = S_SYSTEM_OK;
+
+		svrChkPtr(pGameInstance);
+
+		if (SUCCEEDED(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance)))
+		{
+			++m_NumberOfInstance;
+			m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
+		}
+
+	Proc_End:
+
+		return hr;
+	}
+
 	// Called when a game instance is deleted
 	HRESULT GameInstanceManagerServiceEntity::FreeGameInstance(GameInsUID gameUID)
 	{

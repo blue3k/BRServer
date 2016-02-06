@@ -370,7 +370,7 @@ namespace Net {
 		if (FAILED(hr) && hr != E_NET_IO_PENDING)
 		{
 			netTrace(Trace::TRC_WARN, "Pending Recv failed, CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
-			Assert(false);
+			//Assert(false);
 			// Failed, release pending flag
 			pOver->SetPendingFalse();
 		}

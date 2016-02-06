@@ -59,9 +59,9 @@ namespace ConspiracyGameInstanceServer {
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
-					if(MessageClass::HasContext)
+					if(MessageClass::HasTransactionID)
 					{
-						super::SetParentTransID(MessageClass::GetContext());
+						super::SetParentTransID(MessageClass::GetTransactionID());
 					}
 					if(MessageClass::HasRouteContext)
 					{

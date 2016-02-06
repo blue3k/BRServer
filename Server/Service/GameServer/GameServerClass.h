@@ -83,6 +83,9 @@ namespace GameServer
 		// Get Login server config
 		inline const Svr::Config::PublicServer* GetGameConfig();
 
+		const Svr::Config::PublicNetSocket* GetPublicNetConfig() { return GetGameConfig()->NetPublic; }
+
+
 		// Get net public
 		inline Net::ServerMUDP* GetNetPublic();
 

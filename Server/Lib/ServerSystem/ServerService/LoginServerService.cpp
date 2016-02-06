@@ -35,33 +35,31 @@ namespace BR
 
 
 		// Cmd: Notify user joind and see it's valid authticket instance
-		HRESULT LoginServerService::PlayerJoinedToGameServerCmd( const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+		HRESULT LoginServerService::PlayerJoinedToGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyLoginServer()->PlayerJoinedToGameServerCmd( InRouteContext, InContext, InPlayerID, InAuthTicket ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyLoginServer()->PlayerJoinedToGameServerCmd( InRouteContext, InTransactionID, InPlayerID, InAuthTicket ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT LoginServerService::PlayerJoinedToGameServerCmd( const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+		}; // HRESULT LoginServerService::PlayerJoinedToGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		// Cmd: Kick logged in player
-		HRESULT LoginServerService::KickPlayerCmd( const Context &InContext, const PlayerID &InKickedPlayerID )
+		HRESULT LoginServerService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyLoginServer()->KickPlayerCmd( InRouteContext, InContext, InKickedPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyLoginServer()->KickPlayerCmd( InRouteContext, InTransactionID, InKickedPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT LoginServerService::KickPlayerCmd( const Context &InContext, const PlayerID &InKickedPlayerID )
+		}; // HRESULT LoginServerService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
 
 
 	}; // namespace Svr

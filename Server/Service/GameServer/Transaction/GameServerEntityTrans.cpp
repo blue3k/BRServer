@@ -27,27 +27,33 @@
 
 #include "GameServerEntityTrans.h"
 #include "GameInstance/GamePlayerEntity.h"
+#include "GameInstance/GameClusterServiceEntity.h"
 #include "GameInstance/GameEntityManager.h"
 #include "Protocol/Message/GameServerMsgClass.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::GameServerTransRegisterPlayerToJoinGameServer);
+BR_MEMORYPOOL_IMPLEMENT(GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::GameClusterServiceEntity>);
+BR_MEMORYPOOL_IMPLEMENT(GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::GamePlayerEntity>);
 
 
 namespace BR {
 namespace GameServer {
 
 
-
-	GameServerTransRegisterPlayerToJoinGameServer::GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg)
+	template<class ProcessEntity>
+	GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg)
 		: ServerEntityMessageTransaction(pIMsg)
+		, m_PublicAddress(nullptr)
+		, m_PublicAddressIPV6(nullptr)
+		, m_Port(0)
 	{
 		SetWorkOnServerEntity(true);
 
 		BR_TRANS_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes, { return OnPlayerRegisteredRes(pRes); });
 	}
 
-	HRESULT GameServerTransRegisterPlayerToJoinGameServer::OnPlayerRegisteredRes(Svr::TransactionResult* &pRes)
+	template<class ProcessEntity>
+	HRESULT GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::OnPlayerRegisteredRes(Svr::TransactionResult* &pRes)
 	{
 		HRESULT hr = S_SYSTEM_OK;
 
@@ -57,8 +63,6 @@ namespace GameServer {
 		svrChk(pRes->GetHRESULT());
 		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
 
-		m_PublicAddress = GetMyServer()->GetNetPublic()->GetLocalAddress();
-		m_PublicAddressIPV4 = GetMyServer()->GetPublicNetAddressIPv4();
 
 	Proc_End:
 
@@ -68,7 +72,8 @@ namespace GameServer {
 	}
 
 	// Start Transaction
-	HRESULT GameServerTransRegisterPlayerToJoinGameServer::StartTransaction()
+	template<class ProcessEntity>
+	HRESULT GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::StartTransaction()
 	{
 		HRESULT hr = S_SYSTEM_OK;
 		SharedPointerT<Svr::Entity> pEntity;
@@ -115,13 +120,25 @@ namespace GameServer {
 		pPlayerEntity->SetShardID(GetShardID());
 		m_PlayerUID = pPlayerEntity->GetEntityUID();
 
-		// it's local player send message to local loopback entity
-		svrChkPtr(pTargetPolicy = GetMyServer()->GetLoopbackServerEntity()->GetPolicy<Policy::IPolicyGameServer>());
+		m_PublicAddress = GetMyServer()->GetPublicNetConfig()->IPV4.c_str();
+		m_PublicAddressIPV6 = GetMyServer()->GetPublicNetConfig()->IPV6.c_str();
+		m_Port = GetMyServer()->GetPublicNetConfig()->Port;
 
-		svrChk(pTargetPolicy->RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
-			RouteContext(GetOwnerEntityUID(),m_PlayerUID), GetTransID(),
-			GetPlayerID(), GetTicket(), GetFBUserID() ));
+		if ((Svr::Entity*)pPlayerEntity == (Svr::Entity*)GetMyOwner())
+		{
+			svrChk(pPlayerEntity->OnJoinGameServerInitialize(GetTicket(), GetFBUserID()));
+			CloseTransaction(hr);
+		}
+		else
+		{
+			// it's local player send message to local loopback entity
+			svrChkPtr(pTargetPolicy = GetMyServer()->GetLoopbackServerEntity()->GetPolicy<Policy::IPolicyGameServer>());
 
+			svrChk(pTargetPolicy->RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
+				RouteContext(GetOwnerEntityUID(), m_PlayerUID), GetTransID(),
+				GetPlayerID(), GetTicket(), GetFBUserID()));
+
+		}
 
 	Proc_End:
 
@@ -132,6 +149,8 @@ namespace GameServer {
 	}
 
 
+	template class GameServerTransRegisterPlayerToJoinGameServer<GameClusterServiceEntity>;
+	template class GameServerTransRegisterPlayerToJoinGameServer<GamePlayerEntity>;
 
 
 };// namespace GameServer 

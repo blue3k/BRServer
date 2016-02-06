@@ -5,6 +5,7 @@
 
     <!-- ============================  Server cluster  ============================================ -->
 
+    
     <Command Name="GetClusterMemberList" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusRead" Desc="Cluster member list query">
       <Cmd>
         <Params Type="ClusterID" Name="ClusterID"/>

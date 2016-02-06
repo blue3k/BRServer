@@ -149,7 +149,7 @@
 					<xs:enumeration value="DWORD"/>
 					<xs:enumeration value="QWORD"/>
 					<xs:enumeration value="FLOAT"/>
-					<xs:enumeration value="Context"/>
+					<xs:enumeration value="TransactionID"/>
           <xs:enumeration value="ClusterID"/>
 					<xs:enumeration value="AccountID"/>
           <xs:enumeration value="PlayerID"/>

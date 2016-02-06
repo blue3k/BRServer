@@ -71,7 +71,7 @@ namespace Svr
 
 	void MasterEntity::ReleaseTransaction(Transaction* pTrans)
 	{
-		ThreadID currentThreadID = GetTaskWorker() == nullptr ? ThisThread::GetThreadID() : GetTaskWorker()->GetThreadID();
+		ThreadID currentThreadID = ThisThread::GetThreadID();
 		SharedPointerT<Transaction> pDeleted;
 
 		if (pTrans == nullptr)
@@ -153,8 +153,7 @@ namespace Svr
 	{
 		HRESULT hr = S_SYSTEM_OK;
 		Transaction* pNewTran = nullptr;
-		ThreadID currentThreadID = GetTaskWorker() == nullptr ? ThisThread::GetThreadID() : GetTaskWorker()->GetThreadID();
-		Assert(currentThreadID == ThisThread::GetThreadID());
+		ThreadID currentThreadID = ThisThread::GetThreadID();
 		TimeStampMS nextTick = TimeStampMS::max();
 
 		if( GetEntityState() == EntityState::FREE )
@@ -287,8 +286,7 @@ namespace Svr
 	{
 		HRESULT hr = S_SYSTEM_OK;
 		HRESULT hrTem = S_SYSTEM_OK;
-		ThreadID currentThreadID = GetTaskWorker() == nullptr ? ThisThread::GetThreadID() : GetTaskWorker()->GetThreadID();
-		Assert(currentThreadID == ThisThread::GetThreadID());
+		ThreadID currentThreadID = ThisThread::GetThreadID();
 
 		svrChkPtr(pCurTran);
 		svrChkPtr(pTransRes);

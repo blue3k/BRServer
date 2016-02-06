@@ -70,7 +70,6 @@ namespace Svr {
 			// Linked server entity
 			BRCLASS_ATTRIBUTE_READONLY(ServerEntity*,ServerEntity);
 
-			friend class GameClusterServiceEntity;
 
 		public:
 
@@ -84,7 +83,7 @@ namespace Svr {
 				memset(&m_TableNode, 0, sizeof(m_TableNode) );
 			}
 
-		private:
+		public:
 
 			void UpdateEntityInfo( EntityUID entityUID, ServerEntity* pServerEntity );
 		};
@@ -108,9 +107,12 @@ namespace Svr {
 		// Number of player who exists on this server
 		SyncCounter m_NumberOfPlayerOnThisServer;
 
+
+		Config::PublicNetSocket*	m_PublicNetSocket;
+
 	public:
 		// Constructor/Destructor
-		GameClusterServiceEntity( GameID gameID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
+		GameClusterServiceEntity(Config::PublicNetSocket *publicNetSocket, GameID gameID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
 		virtual ~GameClusterServiceEntity();
 
 		virtual HRESULT RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
@@ -121,6 +123,8 @@ namespace Svr {
 		// Game Cluster ID
 		static ClusterID GetGameClusterID( GameID gameID ) { return (ClusterID)((UINT)ClusterID::Game + (UINT)gameID); }
 
+
+		Config::PublicNetSocket* GetPublicNetConfig() { return m_PublicNetSocket; }
 
 		//////////////////////////////////////////////////////////////////////////
 		//

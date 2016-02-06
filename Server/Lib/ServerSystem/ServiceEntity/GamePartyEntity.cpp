@@ -47,6 +47,19 @@ namespace Svr {
 		,m_LeaderID(0)
 	{
 		SetTickInterval(DurationMS(Const::PARTY_TICKTASK_INTERVAL));
+
+		// Game party instance transactions
+		BR_ENTITY_MESSAGE(Message::GameParty::JoinPartyCmd) { svrMemReturn(pNewTrans = new PartyTransJoinParty(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::LeavePartyCmd) { svrMemReturn(pNewTrans = new PartyTransLeaveParty(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::KickPlayerCmd) { svrMemReturn(pNewTrans = new PartyTransKickPlayer(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::ChatMessageC2SEvt) { svrMemReturn(pNewTrans = new PartyTransChatMessage(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::QuickChatMessageC2SEvt) { svrMemReturn(pNewTrans = new PartyTransQuickChatMessage(pMsgData)); return S_SYSTEM_OK; } );
+
+		BR_ENTITY_MESSAGE(Message::GameParty::StartGameMatchCmd) { svrMemReturn(pNewTrans = new PartyTransStartGameMatchCmd(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameParty::CancelGameMatchCmd) { svrMemReturn(pNewTrans = new PartyTransCancelGameMatchCmd(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingCanceledS2CEvt) { svrMemReturn(pNewTrans = new PartyTransPartyMatchingCanceled(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatchingQueue::PartyMatchingItemDequeuedS2CEvt) { svrMemReturn(pNewTrans = new PartyTransMatchingItemDequeued(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::PartyMatching::PartyGameMatchedS2CEvt) { svrMemReturn(pNewTrans = new PartyTransPartyGameMatchedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
 	}
 
 	GamePartyEntity::~GamePartyEntity()

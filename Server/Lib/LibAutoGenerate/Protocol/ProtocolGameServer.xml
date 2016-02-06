@@ -11,8 +11,9 @@
         <Params Type="UINT32" Name="ShardID"/>
       </Cmd>
       <Res>
-        <Params Type="NetAddress" Name="PublicAddress"/>
-        <Params Type="NetAddress" Name="PublicAddressIPV4"/>
+        <Params Type="String" Name="PublicAddress"/>
+        <Params Type="String" Name="PublicAddressV6"/> 
+        <Params Type="UINT32" Name="Port"/>
       </Res>
     </Command>
 

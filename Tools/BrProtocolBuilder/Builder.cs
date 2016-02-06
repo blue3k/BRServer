@@ -136,8 +136,8 @@ namespace ProtocolBuilder
             m_ParamContext = new Parameter();
             m_ParamContext.IsArray = false;
             m_ParamContext.IsArraySpecified = false;
-            m_ParamContext.Name = "Context";
-            m_ParamContext.Type = ParameterType.Context;
+            m_ParamContext.Name = "TransactionID";
+            m_ParamContext.Type = ParameterType.TransactionID;
 
             m_ParamResult = new Parameter();
             m_ParamResult.IsArray = false;

@@ -33,7 +33,7 @@ namespace BR
 			ServerService ( ServerServiceInformation* pService );
 
 			// Cmd: 
-			HRESULT GenericFailureCmd( const Context &InContext );
+			HRESULT GenericFailureCmd( const TransactionID &InTransactionID );
 			// C2S: Server Started or Connected
 			HRESULT ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress );
 

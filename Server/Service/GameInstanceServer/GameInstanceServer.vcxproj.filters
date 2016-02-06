@@ -119,6 +119,9 @@
     <ClInclude Include="Transaction\GameInstanceServerTrans.h">
       <Filter>Transaction</Filter>
     </ClInclude>
+    <ClInclude Include="GameInstance\GameEntityManager.h">
+      <Filter>GameInstance</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -177,6 +180,9 @@
     </ClCompile>
     <ClCompile Include="Transaction\GameInstanceServerTrans.cpp">
       <Filter>Transaction</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance\GameEntityManager.cpp">
+      <Filter>GameInstance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

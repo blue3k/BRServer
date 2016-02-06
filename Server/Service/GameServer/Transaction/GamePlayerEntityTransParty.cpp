@@ -375,7 +375,7 @@ namespace GameServer {
 
 		svrChk( Svr::GetServerComponent<Svr::GamePartyManagerServiceEntity>()->GetService( pService ) );
 
-		svrChk( pService->GetService<Svr::GamePartyManagerService>()->CreatePartyCmd(  GetTransID(), 0, GetMyOwner()->GetPlayerInformation() ) );
+		svrChk( pService->GetService<Svr::GamePartyManagerService>()->CreatePartyCmd(GetTransID(), 0, GetMyOwner()->GetPlayerInformation() ) );
 
 	Proc_End:
 

@@ -35,29 +35,29 @@ namespace BR
 			// C2S: Game instance deletion
 			HRESULT DeleteGameC2SEvt( const EntityID &InSenderEntityID );
 			// Cmd: Join Game
-			HRESULT JoinGameCmd( const Context &InContext, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole );
+			HRESULT JoinGameCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole );
 			// C2S: Change configue preset
 			HRESULT SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const UINT32 &InPresetID );
 			// Cmd: Leave Game
-			HRESULT LeaveGameCmd( const Context &InContext, const PlayerID &InPlayerID );
+			HRESULT LeaveGameCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Kick player
-			HRESULT KickPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
+			HRESULT KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
 			// Cmd: Assign role
-			HRESULT AssignRoleCmd( const Context &InContext, const PlayerID &InPlayerID );
+			HRESULT AssignRoleCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// C2S: Chatting message
 			HRESULT ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage );
 			// Cmd: Advance game
-			HRESULT AdvanceGameCmd( const Context &InContext, const PlayerID &InPlayerID );
+			HRESULT AdvanceGameCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: *Vote game advance
-			HRESULT VoteGameAdvanceCmd( const Context &InContext, const PlayerID &InPlayerID );
+			HRESULT VoteGameAdvanceCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Assign role
-			HRESULT VoteCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial );
+			HRESULT VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial );
 			// Cmd: Play again with the current players
-			HRESULT GamePlayAgainCmd( const Context &InContext, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID );
+			HRESULT GamePlayAgainCmd( const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID );
 			// Cmd: Player. revive himself
-			HRESULT GameRevealPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID );
+			HRESULT GameRevealPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID );
 			// Cmd: Player. revive himself
-			HRESULT GamePlayerReviveCmd( const Context &InContext, const PlayerID &InPlayerID );
+			HRESULT GamePlayerReviveCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 
 		}; // class GameInstanceService : public ServerServiceBase
 

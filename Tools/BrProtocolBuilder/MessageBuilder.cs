@@ -234,7 +234,7 @@ namespace ProtocolBuilder
         static Parameter[] GenerateParameterTypeInfoList = new Parameter[]
         {
             new Parameter() { Name = "PlayerID", Type = ParameterType.PlayerID },
-            new Parameter() { Name = "Context", Type = ParameterType.Context },
+            new Parameter() { Name = "TransactionID", Type = ParameterType.TransactionID },
             new Parameter() { Name = "RouteContext", Type = ParameterType.RouteContext },
             new Parameter() { Name = "RouteHopCount", Type = ParameterType.UINT32 },
             new Parameter() { Name = "Sender", Type = ParameterType.PlayerID },

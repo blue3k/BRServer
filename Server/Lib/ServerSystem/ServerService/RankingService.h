@@ -33,15 +33,15 @@ namespace BR
 			RankingService ( ServerServiceInformation* pService );
 
 			// Cmd: Add a player to ranking
-			HRESULT AddPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
+			HRESULT AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
 			// Cmd: Remove a player to ranking
-			HRESULT RemovePlayerCmd( const Context &InContext, const PlayerID &InPlayerID );
+			HRESULT RemovePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Remove a player to ranking
-			HRESULT GetPlayerRankingCmd( const Context &InContext, const PlayerID &InPlayerID );
+			HRESULT GetPlayerRankingCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Update a player to ranking
-			HRESULT UpdatePlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
+			HRESULT UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
 			// Cmd: Remove a player to ranking
-			HRESULT GetRankingCmd( const Context &InContext, const UINT32 &InFrom, const UINT32 &InCount );
+			HRESULT GetRankingCmd( const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount );
 
 		}; // class RankingService : public ServerServiceBase
 

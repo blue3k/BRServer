@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Create a game instance
-		HRESULT NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
+		HRESULT NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameInstanceManager::CreateGameCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer));
+			 protocolChk(Message::GameInstanceManager::CreateGameCmd::BuildIMsg(pMsg, InRouteContext, InTransactionID, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,7 +44,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
+		}; // HRESULT NetPolicyGameInstanceManager::CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
 		// C2S: Game instance notify of deletion
 		HRESULT NetPolicyGameInstanceManager::GameDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
 		{
@@ -66,13 +66,13 @@ namespace BR
 
 
 		// Cmd: Create a game instance
-		HRESULT NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+		HRESULT NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::GameInstanceManager::CreateGameRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
+			 protocolChk(Message::GameInstanceManager::CreateGameRes::BuildIMsg(pMsg, InRouteContext, InTransactionID, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -82,7 +82,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+		}; // HRESULT NetSvrPolicyGameInstanceManager::CreateGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 
 
 	}; // namespace Policy

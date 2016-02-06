@@ -35,19 +35,18 @@ namespace BR
 
 
 		// Cmd: Create a game instance
-		HRESULT GameInstanceManagerService::CreateGameCmd( const Context &InContext, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
+		HRESULT GameInstanceManagerService::CreateGameCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameInstanceManager()->CreateGameCmd( InRouteContext, InContext, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameInstanceManager()->CreateGameCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameInstanceManagerService::CreateGameCmd( const Context &InContext, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
+		}; // HRESULT GameInstanceManagerService::CreateGameCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
 		// C2S: Game instance notify of deletion
 		HRESULT GameInstanceManagerService::GameDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount )
 		{

@@ -65,7 +65,7 @@ namespace BR {
 		HRESULT hr = S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( GetContext(), hrRes ) );\
+			svrChk( pPolicy->MessageName( GetTransactionID(), hrRes ) );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -80,7 +80,7 @@ namespace BR {
 		HRESULT hr = S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( GetContext(), hrRes, ##__VA_ARGS__ ) );\
+			svrChk( pPolicy->MessageName( GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -96,7 +96,7 @@ namespace BR {
 		HRESULT hr = S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( routeContext, GetContext(), hrRes ) );\
+			svrChk( pPolicy->MessageName( routeContext, GetTransactionID(), hrRes ) );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\
@@ -110,7 +110,7 @@ namespace BR {
 		HRESULT hr = S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( routeContext, GetContext(), hrRes, ##__VA_ARGS__ ) );\
+			svrChk( pPolicy->MessageName( routeContext, GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\

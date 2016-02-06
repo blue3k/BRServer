@@ -67,7 +67,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		memset(m_PlayerByIndex,0, sizeof(m_PlayerByIndex));
 		SetTickInterval(DurationMS(ConspiracyGameInstanceServer::Const::GAMEINSTANCE_TICK_TIME));
-		SetEmptyInstanceKillTimeOut(DurationMS());
+		SetEmptyInstanceKillTimeOut(DurationMS(Const::TIME_DELETE_GAMEINSTANCE_NOPLAYER));
 
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -334,8 +334,9 @@ namespace ConspiracyGameInstanceServer {
 		UINT playerIndex;
 
 
-		svrChk(super::AddPlayerToJoin(pInsPlayer));
 		pPlayer = (GamePlayer*)pInsPlayer;
+
+		svrChk(super::AddPlayerToJoin(pInsPlayer));
 		pInsPlayer = nullptr;
 
 

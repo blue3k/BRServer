@@ -35,19 +35,18 @@ namespace BR
 
 
 		// Cmd: 
-		HRESULT ServerService::GenericFailureCmd( const Context &InContext )
+		HRESULT ServerService::GenericFailureCmd( const TransactionID &InTransactionID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyServer()->GenericFailureCmd( InRouteContext, InContext ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyServer()->GenericFailureCmd( InRouteContext, InTransactionID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT ServerService::GenericFailureCmd( const Context &InContext )
+		}; // HRESULT ServerService::GenericFailureCmd( const TransactionID &InTransactionID )
 		// C2S: Server Started or Connected
 		HRESULT ServerService::ServerConnectedC2SEvt( const EntityID &InSenderEntityID, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
 		{

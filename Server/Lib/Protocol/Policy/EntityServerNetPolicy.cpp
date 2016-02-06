@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Register entity
-		HRESULT NetPolicyEntityServer::RegisterEntityCmd( const Context &InContext, const EntityID &InLocalEntID, const char* InEntName )
+		HRESULT NetPolicyEntityServer::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::EntityServer::RegisterEntityCmd::BuildIMsg(pMsg, InContext, InLocalEntID, InEntName));
+			 protocolChk(Message::EntityServer::RegisterEntityCmd::BuildIMsg(pMsg, InTransactionID, InLocalEntID, InEntName));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,15 +44,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyEntityServer::RegisterEntityCmd( const Context &InContext, const EntityID &InLocalEntID, const char* InEntName )
+		}; // HRESULT NetPolicyEntityServer::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 		// Cmd: Find Entity
-		HRESULT NetPolicyEntityServer::UnregisterEntityCmd( const Context &InContext, const EntityUID &InEntUID )
+		HRESULT NetPolicyEntityServer::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::EntityServer::UnregisterEntityCmd::BuildIMsg(pMsg, InContext, InEntUID));
+			 protocolChk(Message::EntityServer::UnregisterEntityCmd::BuildIMsg(pMsg, InTransactionID, InEntUID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -62,15 +62,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyEntityServer::UnregisterEntityCmd( const Context &InContext, const EntityUID &InEntUID )
+		}; // HRESULT NetPolicyEntityServer::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
 		// Cmd: Find Entity
-		HRESULT NetPolicyEntityServer::FindEntityCmd( const Context &InContext, const EntityID &InLocalEntID )
+		HRESULT NetPolicyEntityServer::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::EntityServer::FindEntityCmd::BuildIMsg(pMsg, InContext, InLocalEntID));
+			 protocolChk(Message::EntityServer::FindEntityCmd::BuildIMsg(pMsg, InTransactionID, InLocalEntID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -80,17 +80,17 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyEntityServer::FindEntityCmd( const Context &InContext, const EntityID &InLocalEntID )
+		}; // HRESULT NetPolicyEntityServer::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 
 
 		// Cmd: Register entity
-		HRESULT NetSvrPolicyEntityServer::RegisterEntityRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
+		HRESULT NetSvrPolicyEntityServer::RegisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::EntityServer::RegisterEntityRes::BuildIMsg(pMsg, InContext, InResult, InEntUID));
+			 protocolChk(Message::EntityServer::RegisterEntityRes::BuildIMsg(pMsg, InTransactionID, InResult, InEntUID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -100,15 +100,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyEntityServer::RegisterEntityRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
+		}; // HRESULT NetSvrPolicyEntityServer::RegisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
 		// Cmd: Find Entity
-		HRESULT NetSvrPolicyEntityServer::UnregisterEntityRes( const Context &InContext, const HRESULT &InResult )
+		HRESULT NetSvrPolicyEntityServer::UnregisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::EntityServer::UnregisterEntityRes::BuildIMsg(pMsg, InContext, InResult));
+			 protocolChk(Message::EntityServer::UnregisterEntityRes::BuildIMsg(pMsg, InTransactionID, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -118,15 +118,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyEntityServer::UnregisterEntityRes( const Context &InContext, const HRESULT &InResult )
+		}; // HRESULT NetSvrPolicyEntityServer::UnregisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult )
 		// Cmd: Find Entity
-		HRESULT NetSvrPolicyEntityServer::FindEntityRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
+		HRESULT NetSvrPolicyEntityServer::FindEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::EntityServer::FindEntityRes::BuildIMsg(pMsg, InContext, InResult, InEntUID));
+			 protocolChk(Message::EntityServer::FindEntityRes::BuildIMsg(pMsg, InTransactionID, InResult, InEntUID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -136,7 +136,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyEntityServer::FindEntityRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InEntUID )
+		}; // HRESULT NetSvrPolicyEntityServer::FindEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
 
 
 	}; // namespace Policy

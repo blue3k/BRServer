@@ -18,6 +18,7 @@
 #include "Common/Memory.h"
 #include "Common/MemoryPool.h"
 #include "Common/ResultCode/BRResultCodeNet.h"
+#include "Common/BrSvrTypes.h"
 
 
 
@@ -64,6 +65,33 @@ namespace Message {
 
 		GetMessageHeader()->msgID.IDSeq.Sequence = sequence;
 	}
+
+	void MessageData::GetRouteInfo(RouteContext& routeContext, TransactionID& transID)
+	{
+		UINT length = 0;
+		BYTE* pDataPtr = nullptr;
+		GetLengthNDataPtr(length, pDataPtr);
+
+		if (length < sizeof(RouteContext))
+		{
+			routeContext = 0;
+			transID = 0;
+			return;
+		}
+
+		auto pRouteContext = (RouteContext*)GetMessageData();
+		routeContext = *pRouteContext;
+
+
+		if (length < (sizeof(RouteContext)+sizeof(TransactionID)))
+		{
+			transID = 0;
+			return;
+		}
+
+		transID = *(TransactionID*)(pRouteContext+1);
+	}
+
 
 	void MessageData::ClearAssignedSequence()
 	{

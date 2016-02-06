@@ -114,35 +114,8 @@ namespace GameServer {
 	HRESULT PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity::StartTransaction()
 	{
 		HRESULT hr = S_SYSTEM_OK;
-		auto pPlayerEntity = GetMyOwner();
-		Net::Connection *pConnection = nullptr;
-		Net::IConnection::ConnectionInformation connectionInfo;
 
-		svrChk(super::StartTransaction());
-		svrChkPtr(GetMyServer()->GetNetPublic());
-
-		pPlayerEntity->ReleaseConnection();
-
-		pPlayerEntity->SetAuthTicket(GetTicket());
-		pPlayerEntity->SetFacebookUID(GetFBUserID());
-
-		svrChkPtr(pConnection = GetMyServer()->GetNetPublic()->GetConnectionManager().NewConnection());
-
-		memset(&connectionInfo, 0, sizeof(connectionInfo));
-		connectionInfo.SetLocalInfo(GetMyServer()->GetNetClass(), GetMyServer()->GetNetPublic()->GetLocalAddress(), GetMyServer()->GetServerUID());
-		connectionInfo.SetRemoteInfo(NetClass::Client, GetTicket());
-
-		svrChk(pConnection->InitConnection(GetMyServer()->GetNetPublic()->GetSocket(), connectionInfo));
-		svrTrace(Trace::TRC_USER1, "Initialize connection CID:{0}, Addr:{1}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote);
-
-		svrChk(GetMyServer()->GetNetPublic()->GetConnectionManager().PendingConnection(pConnection));
-
-		svrChk(pPlayerEntity->SetConnection(pConnection));
-
-		GetMyOwner()->SetLatestActiveTime(Util::Time.GetTimeUTCSec());
-
-		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, 2, 0, 0, "Entity Initialize");
-
+		svrChk(GetMyOwner()->OnJoinGameServerInitialize(GetTicket(), GetFBUserID()));
 
 	Proc_End:
 
@@ -252,7 +225,7 @@ namespace GameServer {
 		playerInfoSystem->UpdateStatByLevel();
 
 
-		svrTrace(Svr::TRC_TRANSACTION, "SetPlayerGameData PlayerID:{0}. Grade:{1}, lvl:{2}, Exp:%3%, GameMoney:%4%, Gem:%5%, Sta:%6%, updateTick:%7%", GetMyOwner()->GetPlayerID(), 
+		svrTrace(Svr::TRC_TRANSACTION, "SetPlayerGameData PlayerID:{0}. Grade:{1}, lvl:{2}, Exp:{3}, GameMoney:{4}, Gem:{5}, Sta:{6}, updateTick:{7}", GetMyOwner()->GetPlayerID(), 
 			playerData.Grade, playerData.Level, playerData.Exp, playerData.GameMoney, playerData.Gem, playerData.Stamina,
 			(UINT64)playerData.LatestTickTime);
 

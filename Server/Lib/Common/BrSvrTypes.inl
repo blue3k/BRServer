@@ -52,15 +52,16 @@ TransactionID& TransactionID::operator = ( const TransactionID& transID )
 	return *this;
 }
 
-bool TransactionID::operator == ( const TransactionID& src ) const
+bool TransactionID::operator != ( const TransactionID& src ) const
+{
+	return ID != src.ID;
+}
+
+bool TransactionID::operator == (const TransactionID& src) const
 {
 	return ID == src.ID;
 }
 
-TransactionID::operator Context() const
-{
-	return (Context)ID;
-}
 
 
 

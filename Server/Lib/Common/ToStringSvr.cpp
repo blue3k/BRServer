@@ -23,6 +23,21 @@ namespace BR
 
 
 	template<>
+	HRESULT ToString(char*& pBuff, INT& iBuffLen, const TransactionID& Data, int Option)
+	{
+		if (FAILED(ToString(pBuff, iBuffLen, Data.GetEntityID(), Option)))
+			return E_SYSTEM_FAIL;
+
+		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+			return E_SYSTEM_FAIL;
+
+		if (FAILED(_IToA((UINT32)Data.GetTransactionIndex(), pBuff, iBuffLen, 10, -1)))
+			return E_SYSTEM_FAIL;
+
+		return S_SYSTEM_OK;
+	}
+
+	template<>
 	HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterID& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
@@ -261,6 +276,7 @@ namespace BR
 	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<PerformanceCounterInstanceInfo>& Data, int Option);
 
 
+	template class Arg < TransactionID>;
 	template class Arg < ClusterID>;
 	template class Arg < RouteContext>;
 	template class Arg < ClusterType>;

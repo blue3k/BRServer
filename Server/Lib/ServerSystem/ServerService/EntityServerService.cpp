@@ -35,41 +35,41 @@ namespace BR
 
 
 		// Cmd: Register entity
-		HRESULT EntityServerService::RegisterEntityCmd( const Context &InContext, const EntityID &InLocalEntID, const char* InEntName )
+		HRESULT EntityServerService::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			 svrChk(GetPolicyEntityServer()->RegisterEntityCmd( InContext, InLocalEntID, InEntName ) );
+			 svrChk(GetPolicyEntityServer()->RegisterEntityCmd( InTransactionID, InLocalEntID, InEntName ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT EntityServerService::RegisterEntityCmd( const Context &InContext, const EntityID &InLocalEntID, const char* InEntName )
+		}; // HRESULT EntityServerService::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 		// Cmd: Find Entity
-		HRESULT EntityServerService::UnregisterEntityCmd( const Context &InContext, const EntityUID &InEntUID )
+		HRESULT EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			 svrChk(GetPolicyEntityServer()->UnregisterEntityCmd( InContext, InEntUID ) );
+			 svrChk(GetPolicyEntityServer()->UnregisterEntityCmd( InTransactionID, InEntUID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT EntityServerService::UnregisterEntityCmd( const Context &InContext, const EntityUID &InEntUID )
+		}; // HRESULT EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
 		// Cmd: Find Entity
-		HRESULT EntityServerService::FindEntityCmd( const Context &InContext, const EntityID &InLocalEntID )
+		HRESULT EntityServerService::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			 svrChk(GetPolicyEntityServer()->FindEntityCmd( InContext, InLocalEntID ) );
+			 svrChk(GetPolicyEntityServer()->FindEntityCmd( InTransactionID, InLocalEntID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT EntityServerService::FindEntityCmd( const Context &InContext, const EntityID &InLocalEntID )
+		}; // HRESULT EntityServerService::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 
 
 	}; // namespace Svr

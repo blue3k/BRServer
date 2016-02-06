@@ -33,9 +33,9 @@ namespace BR
 			MonitoringService ( ServerServiceInformation* pService );
 
 			// Cmd: Add a player to ranking
-			HRESULT GetInstanceListCmd( const Context &InContext );
+			HRESULT GetInstanceListCmd( const TransactionID &InTransactionID );
 			// Cmd: Remove a player to ranking
-			HRESULT RequestCounterValuesCmd( const Context &InContext, const EntityUID &InInstanceUID );
+			HRESULT RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID );
 			// C2S: Counter instance is created
 			HRESULT PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
 			// C2S: Counter instance is deleted

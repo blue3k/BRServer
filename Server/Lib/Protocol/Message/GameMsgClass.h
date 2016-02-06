@@ -32,14 +32,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -72,14 +72,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -117,14 +117,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -171,14 +171,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -210,14 +210,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -256,14 +256,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -299,14 +299,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -341,14 +341,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -384,14 +384,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -426,14 +426,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -469,14 +469,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -511,14 +511,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -552,14 +552,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -594,14 +594,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -637,14 +637,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -681,14 +681,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -723,14 +723,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -764,14 +764,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -808,14 +808,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -850,14 +850,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -893,14 +893,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -943,14 +943,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -982,14 +982,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1024,14 +1024,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1065,14 +1065,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1109,14 +1109,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1150,14 +1150,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1194,14 +1194,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1235,14 +1235,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1279,14 +1279,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1335,14 +1335,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1378,14 +1378,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1422,13 +1422,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1462,14 +1462,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1506,14 +1506,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1547,14 +1547,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1589,13 +1589,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1634,14 +1634,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1679,14 +1679,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1723,14 +1723,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1762,14 +1762,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1846,13 +1846,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1886,13 +1886,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -1961,14 +1961,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2005,14 +2005,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2050,14 +2050,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2096,14 +2096,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2135,14 +2135,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2179,14 +2179,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2222,14 +2222,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2270,14 +2270,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2314,14 +2314,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2358,13 +2358,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2400,14 +2400,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2442,14 +2442,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2486,13 +2486,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2530,14 +2530,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2572,14 +2572,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2616,14 +2616,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2657,14 +2657,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2699,14 +2699,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2747,14 +2747,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2788,14 +2788,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2830,14 +2830,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2874,14 +2874,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2917,14 +2917,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -2959,14 +2959,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3009,13 +3009,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3053,14 +3053,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3117,14 +3117,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3169,13 +3169,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3213,14 +3213,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3255,14 +3255,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3299,13 +3299,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3343,14 +3343,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3385,14 +3385,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3429,13 +3429,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3473,14 +3473,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3515,13 +3515,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3560,14 +3560,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3605,14 +3605,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3647,14 +3647,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3699,13 +3699,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3743,14 +3743,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3785,14 +3785,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3833,14 +3833,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3881,13 +3881,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3925,14 +3925,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -3967,14 +3967,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4011,13 +4011,13 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 1,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4059,14 +4059,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4101,14 +4101,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4147,14 +4147,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4191,14 +4191,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4237,14 +4237,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4285,14 +4285,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4324,14 +4324,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4370,14 +4370,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4414,14 +4414,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4455,14 +4455,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4505,14 +4505,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4544,14 +4544,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4590,14 +4590,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4632,14 +4632,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4671,14 +4671,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4717,14 +4717,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4760,14 +4760,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4806,14 +4806,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4874,14 +4874,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4916,14 +4916,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4956,14 +4956,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -4995,14 +4995,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5037,14 +5037,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5077,14 +5077,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5118,14 +5118,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5166,14 +5166,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5221,14 +5221,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5265,14 +5265,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5306,14 +5306,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5352,14 +5352,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5393,14 +5393,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5435,14 +5435,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
@@ -5478,14 +5478,14 @@ namespace BR
 				enum ParameterTypeInfo
 				{
  					HasPlayerID = 0,
-					HasContext = 0,
+					HasTransactionID = 0,
 					HasRouteContext = 0,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				Context GetContext() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }

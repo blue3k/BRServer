@@ -67,6 +67,7 @@ namespace Svr {
 	template<class MessageClass, class TransactionClass>
 	LoginPlayerTransLoginBase<MessageClass,TransactionClass>::LoginPlayerTransLoginBase( Message::MessageData* &pIMsg )
 		: super( pIMsg )
+		, m_CreateRequestCount(0)
 	{
 		super::SetExclusive(true);
 		//BR_TRANS_MESSAGE( DB::QueryLoginCmd, { return OnLogin(pRes); });
@@ -76,6 +77,35 @@ namespace Svr {
 		//BR_TRANS_MESSAGE( Message::LoginServer::KickPlayerRes, { return OnKickedPlyaer(pRes); });
 		super::template BR_TRANS_MESSAGE( Message::GameServer::RegisterPlayerToJoinGameServerRes, { return OnRegisterPlayerToJoinGameServer(pRes); });
 		super::template BR_TRANS_MESSAGE(DB::QueryConnectedToGameServerCmd, { return OnConnectToGameServerRes(pRes); });
+	}
+
+	template<class MessageClass, class TransactionClass>
+	HRESULT LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnGenericError(Svr::TransactionResult* &pRes)
+	{
+		if (pRes->GetHRESULT() == E_INVALID_PLAYERID || pRes->GetHRESULT() == E_SVR_INVALID_ENTITYUID)
+		{
+			if (super::GetMyOwner()->GetPlayerID() != 0 && m_CreateRequestCount == 0)
+			{
+				m_CreateRequestCount++;
+				// Garbage login session information will lead process to here. Ignore it and create new one
+				svrTrace(Svr::TRC_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}",
+					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket());
+				if (FAILED(RegisterNewPlayerToJoinGameServer()))
+				{
+					return super::OnGenericError(pRes);
+				}
+			}
+			else
+			{
+				return super::OnGenericError(pRes);
+			}
+		}
+		else
+		{
+			return super::OnGenericError(pRes);
+		}
+
+		return S_SYSTEM_OK;
 	}
 
 	template<class MessageClass, class TransactionClass>
@@ -192,7 +222,7 @@ namespace Svr {
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameServer::RegisterPlayerToJoinGameServerRes res;
 
-		if( pRes->GetHRESULT() == E_INVALID_PLAYERID )
+		if( pRes->GetHRESULT() == E_INVALID_PLAYERID || pRes->GetHRESULT() == E_SVR_INVALID_ENTITYUID)
 		{
 			if (super::GetMyOwner()->GetPlayerID() == 0)
 			{
@@ -213,8 +243,10 @@ namespace Svr {
 
 		super::GetMyOwner()->HeartBit();
 
-		m_GameServerAddr = res.GetPublicAddress();
-		m_GameServerAddrIPV4 = res.GetPublicAddressIPV4();
+		svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), res.GetPort()));
+		svrChk(Net::SetNetAddress(m_GameServerAddrIPV4, res.GetPublicAddress(), res.GetPort()));
+		//m_GameServerAddr = res.GetPublicAddressV6();
+		//m_GameServerAddrIPV4 = res.GetPublicAddressIPV4();
 		m_GameEntityUID = res.GetRouteContext().GetFrom();
 
 		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(super::GetTransID(), super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetOwnerEntityUID(), m_GameEntityUID));

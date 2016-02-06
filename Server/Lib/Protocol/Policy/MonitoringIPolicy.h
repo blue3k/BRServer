@@ -35,9 +35,9 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			virtual HRESULT GetInstanceListRes( const Context &InContext, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount ) = 0;
+			virtual HRESULT GetInstanceListRes( const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT RequestCounterValuesRes( const Context &InContext, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues ) = 0;
+			virtual HRESULT RequestCounterValuesRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues ) = 0;
 			// C2S: Counter instance is created
 			// C2S: Counter instance is deleted
 			// C2S: Counter update broadcast
@@ -57,9 +57,9 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			virtual HRESULT GetInstanceListCmd( const Context &InContext ) = 0;
+			virtual HRESULT GetInstanceListCmd( const TransactionID &InTransactionID ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT RequestCounterValuesCmd( const Context &InContext, const EntityUID &InInstanceUID ) = 0;
+			virtual HRESULT RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID ) = 0;
 			// C2S: Counter instance is created
 			virtual HRESULT PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters ) = 0;
 			// C2S: Counter instance is deleted

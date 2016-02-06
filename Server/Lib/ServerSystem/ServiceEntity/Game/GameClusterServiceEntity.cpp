@@ -41,10 +41,13 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	GameClusterServiceEntity::GameClusterServiceEntity(GameID gameID, ClusterMembership initialMembership)
+	GameClusterServiceEntity::GameClusterServiceEntity(Config::PublicNetSocket *publicNetSocket, GameID gameID, ClusterMembership initialMembership)
 		: FreeReplicaClusterServiceEntity(GetGameClusterID(gameID), initialMembership)
 		, IServerComponent(ComponentID)
+		, m_PublicNetSocket(publicNetSocket)
 	{
+		//BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new GameServerTransRegisterPlayerToJoinGameServer(pMsgData)); return S_SYSTEM_OK; } );
+
 		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt) { svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
 		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt) { svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
 	}
@@ -114,7 +117,7 @@ namespace Svr {
 
 		if( SUCCEEDED(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
-			Assert(itPlayer->m_PlayerID == playerID);
+			Assert(itPlayer->GetPlayerID() == playerID);
 			itPlayer->UpdateEntityInfo( entityUID, pGameServerEntity );
 			goto Proc_End;
 		}

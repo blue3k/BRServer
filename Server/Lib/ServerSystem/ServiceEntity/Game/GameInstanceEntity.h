@@ -192,7 +192,6 @@ namespace Svr
 		virtual HRESULT InitializeGameEntity( UINT numBot, UINT maxPlayer );
 
 
-
 		////////////////////////////////////////////////////////////
 		//
 		//	Update processes

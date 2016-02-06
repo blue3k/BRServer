@@ -21,6 +21,7 @@
 
 namespace BR {
 
+	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const TransactionID& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterID& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const RouteContext& Data, int Option);
 	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const ClusterType& Data, int Option);
@@ -84,6 +85,7 @@ namespace BR {
 	}
 
 
+	extern template class Arg < TransactionID>;
 	extern template class Arg < ClusterID>;
 	extern template class Arg < RouteContext>;
 	extern template class Arg < ClusterType>;

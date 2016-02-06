@@ -19,6 +19,10 @@
 
 
 namespace BR {
+
+	union RouteContext;
+	union TransactionID;
+
 namespace Message {
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -217,6 +221,9 @@ namespace Message {
 		// Data except header
 		void GetLengthNDataPtr( UINT& length, BYTE* &pDataPtr);
 		UINT GetDataLength();
+
+		// Parsing helper
+		void GetRouteInfo(RouteContext& routeContext, TransactionID& transID);
 
 		void ClearAssignedSequence();
 		void AssignSequence( UINT sequence );

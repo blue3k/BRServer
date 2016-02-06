@@ -20,6 +20,8 @@
 #include "Common/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Message/GameServerMsgClass.h"
+#include "Protocol/Policy/GameServerIPolicy.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
@@ -27,6 +29,33 @@
 
 namespace BR {
 namespace Svr {
+
+
+	//class GameServerTransRegisterPlayerToJoinGameServer : public ServerEntityMessageTransaction< GameClusterServiceEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer, sizeof(Svr::TransactionMessageHandlerType) * 2>
+	//{
+	//public:
+	//	typedef ServerEntityMessageTransaction< GameClusterServiceEntity, Message::GameServer::RegisterPlayerToJoinGameServerCmd, GameServerTransRegisterPlayerToJoinGameServer, sizeof(Svr::TransactionMessageHandlerType) * 2> super;
+
+	//private:
+	//	const char* m_PublicAddress;
+	//	const char* m_PublicAddressIPV6;
+	//	UINT m_Port;
+	//	EntityUID m_PlayerUID;
+
+	//public:
+
+	//	GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg);// : ServerEntityMessageTransaction(pIMsg) { SetWorkOnServerEntity(true); }
+	//	virtual ~GameServerTransRegisterPlayerToJoinGameServer() {}
+
+	//	HRESULT OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
+
+	//	// Start Transaction
+	//	virtual HRESULT StartTransaction() override;
+
+	//	Policy::ISvrPolicyGameServer* GetPolicy() { return super::GetPolicy<Policy::ISvrPolicyGameServer>(); }
+
+	//	BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
+	//};
 
 
 	class GameServerTransGamePlayerEntityCreatedS2CEvt : public ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityCreatedC2SEvt, GameServerTransGamePlayerEntityCreatedS2CEvt>

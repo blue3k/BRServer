@@ -182,16 +182,26 @@ namespace Svr {
 	HRESULT ServerEntity::ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg )
 	{
 		RouteContext routeContext;
+		TransactionID transID;
 		SharedPointerT<Entity> pEntity;
 
 		if(pServerEntity == nullptr)
 			pServerEntity = this;
 
 		// First try to route message
-		routeContext = *(RouteContext*)pMsg->GetMessageData();
+		pMsg->GetRouteInfo(routeContext, transID);
 		if (routeContext.GetTo() != GetEntityUID() && SUCCEEDED(GetServerComponent<EntityManager>()->FindEntity(routeContext.GetTo(), pEntity)))
 		{
 			return pEntity->ProcessMessage(pServerEntity, pCon, pMsg);
+		}
+
+		if (routeContext.GetTo() != 0)
+		{
+			if(pMsg->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
+				pCon->GetPolicy<Policy::ISvrPolicyServer>()->GenericFailureRes(routeContext.GetSwaped(), transID, E_SVR_INVALID_ENTITYUID);
+
+			Util::SafeRelease(pMsg);
+			return S_SYSTEM_FALSE;
 		}
 
 		return super::ProcessMessage(pServerEntity, pCon, pMsg);

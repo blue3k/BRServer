@@ -68,7 +68,7 @@ namespace Svr {
 
 
 		// Register game conspiracy cluster as a slave
-		svrMem(pGameService = new Svr::GameClusterServiceEntity(GameID::Conspiracy, ClusterMembership::Slave));
+		svrMem(pGameService = new Svr::GameClusterServiceEntity(m_PublicNetSocket, GameID::Conspiracy, ClusterMembership::Slave));
 		svrChk(GetServerComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pGameService));
 		svrChk(GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
 		svrChk(AddServerComponent(pGameService));

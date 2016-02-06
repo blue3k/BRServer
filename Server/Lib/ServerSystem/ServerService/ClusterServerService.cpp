@@ -35,33 +35,31 @@ namespace BR
 
 
 		// Cmd: Cluster member list query
-		HRESULT ClusterServerService::GetClusterMemberListCmd( const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		HRESULT ClusterServerService::GetClusterMemberListCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->GetClusterMemberListCmd( InRouteContext, InContext, InRouteHopCount, InClusterID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyClusterServer()->GetClusterMemberListCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT ClusterServerService::GetClusterMemberListCmd( const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		}; // HRESULT ClusterServerService::GetClusterMemberListCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
-		HRESULT ClusterServerService::JoinClusterCmd( const Context &InContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+		HRESULT ClusterServerService::JoinClusterCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->JoinClusterCmd( InRouteContext, InContext, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyClusterServer()->JoinClusterCmd( InRouteContext, InTransactionID, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT ClusterServerService::JoinClusterCmd( const Context &InContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+		}; // HRESULT ClusterServerService::JoinClusterCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 		// C2S: Do not let it broadcasted while it's manual broadcast packet
 		HRESULT ClusterServerService::NewServerServiceJoinedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 		{
@@ -89,19 +87,18 @@ namespace BR
 
 		}; // HRESULT ClusterServerService::SyncClusterServiceC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 		// Cmd: Join to the cluster
-		HRESULT ClusterServerService::RequestDataSyncCmd( const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		HRESULT ClusterServerService::RequestDataSyncCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->RequestDataSyncCmd( InRouteContext, InContext, InRouteHopCount, InClusterID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyClusterServer()->RequestDataSyncCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT ClusterServerService::RequestDataSyncCmd( const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		}; // HRESULT ClusterServerService::RequestDataSyncCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		// C2S: Master vote
 		HRESULT ClusterServerService::ClusterMasterVoteC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime )
 		{
@@ -142,19 +139,18 @@ namespace BR
 
 		}; // HRESULT ClusterServerService::ClusterUpdateWorkloadC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload )
 		// Cmd: Get lowest workloaded cluster member
-		HRESULT ClusterServerService::GetLowestWorkloadClusterMemberCmd( const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		HRESULT ClusterServerService::GetLowestWorkloadClusterMemberCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyClusterServer()->GetLowestWorkloadClusterMemberCmd( InRouteContext, InContext, InRouteHopCount, InClusterID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyClusterServer()->GetLowestWorkloadClusterMemberCmd( InRouteContext, InTransactionID, InRouteHopCount, InClusterID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT ClusterServerService::GetLowestWorkloadClusterMemberCmd( const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		}; // HRESULT ClusterServerService::GetLowestWorkloadClusterMemberCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		// C2S: Called when a player entity is created
 		HRESULT ClusterServerService::GamePlayerEntityCreatedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 		{

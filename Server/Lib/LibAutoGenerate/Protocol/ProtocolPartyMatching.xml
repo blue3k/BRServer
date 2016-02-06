@@ -5,6 +5,7 @@
 
     <!-- ============================  Server cluster  ============================================ -->
 
+    
     <S2CEvent Name="PartyGameMatched" Reliable="true" Crypto="No" Trace="DBG1" Desc="">
     </S2CEvent>
 

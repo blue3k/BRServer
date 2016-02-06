@@ -33,23 +33,23 @@ namespace BR
 			PartyMatchingQueueService ( ServerServiceInformation* pService );
 
 			// Cmd: Register match by party
-			HRESULT RegisterPartyMatchingCmd( const Context &InContext, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers );
+			HRESULT RegisterPartyMatchingCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers );
 			// Cmd: Register match alone
-			HRESULT RegisterPlayerMatchingCmd( const Context &InContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID );
+			HRESULT RegisterPlayerMatchingCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID );
 			// Cmd: update registration information
-			HRESULT UpdateMatchingEntityUIDCmd( const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID );
+			HRESULT UpdateMatchingEntityUIDCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID );
 			// Cmd: calcel registration
-			HRESULT UnregisterMatchingCmd( const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
+			HRESULT UnregisterMatchingCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 			// Cmd: Reserve a item
-			HRESULT ReserveItemCmd( const Context &InContext, const UINT16 &InRouteHopCount );
+			HRESULT ReserveItemCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount );
 			// Cmd: Reserve a item
-			HRESULT ReserveItemsCmd( const Context &InContext, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve );
+			HRESULT ReserveItemsCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve );
 			// Cmd: Cancel reservation
-			HRESULT CancelReservationCmd( const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel );
+			HRESULT CancelReservationCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel );
 			// Cmd: Cancel reservation
-			HRESULT CancelReservationsCmd( const Context &InContext, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel );
+			HRESULT CancelReservationsCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel );
 			// Cmd: Dequeue a reserved item
-			HRESULT DequeueItemCmd( const Context &InContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
+			HRESULT DequeueItemCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 			// C2S: Item error you should delete it
 			HRESULT MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 

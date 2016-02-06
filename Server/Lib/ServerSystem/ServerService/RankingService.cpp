@@ -35,75 +35,70 @@ namespace BR
 
 
 		// Cmd: Add a player to ranking
-		HRESULT RankingService::AddPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		HRESULT RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->AddPlayerCmd( InRouteContext, InContext, InPlayerID, InRankingScore, InPlayerInfo ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyRanking()->AddPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InRankingScore, InPlayerInfo ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT RankingService::AddPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		}; // HRESULT RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		// Cmd: Remove a player to ranking
-		HRESULT RankingService::RemovePlayerCmd( const Context &InContext, const PlayerID &InPlayerID )
+		HRESULT RankingService::RemovePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->RemovePlayerCmd( InRouteContext, InContext, InPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyRanking()->RemovePlayerCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT RankingService::RemovePlayerCmd( const Context &InContext, const PlayerID &InPlayerID )
+		}; // HRESULT RankingService::RemovePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Remove a player to ranking
-		HRESULT RankingService::GetPlayerRankingCmd( const Context &InContext, const PlayerID &InPlayerID )
+		HRESULT RankingService::GetPlayerRankingCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->GetPlayerRankingCmd( InRouteContext, InContext, InPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyRanking()->GetPlayerRankingCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT RankingService::GetPlayerRankingCmd( const Context &InContext, const PlayerID &InPlayerID )
+		}; // HRESULT RankingService::GetPlayerRankingCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Update a player to ranking
-		HRESULT RankingService::UpdatePlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		HRESULT RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->UpdatePlayerCmd( InRouteContext, InContext, InPlayerID, InRankingScore, InPlayerInfo ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyRanking()->UpdatePlayerCmd( InRouteContext, InTransactionID, InPlayerID, InRankingScore, InPlayerInfo ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT RankingService::UpdatePlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		}; // HRESULT RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		// Cmd: Remove a player to ranking
-		HRESULT RankingService::GetRankingCmd( const Context &InContext, const UINT32 &InFrom, const UINT32 &InCount )
+		HRESULT RankingService::GetRankingCmd( const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyRanking()->GetRankingCmd( InRouteContext, InContext, InFrom, InCount ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyRanking()->GetRankingCmd( InRouteContext, InTransactionID, InFrom, InCount ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT RankingService::GetRankingCmd( const Context &InContext, const UINT32 &InFrom, const UINT32 &InCount )
+		}; // HRESULT RankingService::GetRankingCmd( const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
 
 
 	}; // namespace Svr

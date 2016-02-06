@@ -30,7 +30,7 @@ namespace BR
 			{}
 
 			// Cmd: Create a party instance
-			HRESULT CreatePartyCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator );
+			HRESULT CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator );
 			// C2S: Party instance notify of deletion
 			HRESULT PartyDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount );
 
@@ -45,7 +45,7 @@ namespace BR
 			{}
 
 			// Cmd: Create a party instance
-			HRESULT CreatePartyRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult );
+			HRESULT CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
 
 		}; // class NetSvrPolicyGamePartyManager : public ISvrPolicyGamePartyManager
 

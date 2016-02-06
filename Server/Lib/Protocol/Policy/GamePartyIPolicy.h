@@ -35,17 +35,17 @@ namespace BR
 			{}
 
 			// Cmd: Join Party
-			virtual HRESULT JoinPartyRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData ) = 0;
+			virtual HRESULT JoinPartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData ) = 0;
 			// S2C: Player Joined
 			virtual HRESULT PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer ) = 0;
 			// S2C: Player Joined
 			virtual HRESULT PartyLeaderChangedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InNewLeaderID ) = 0;
 			// Cmd: Kick player
-			virtual HRESULT LeavePartyRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult ) = 0;
+			virtual HRESULT LeavePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
 			// S2C: Player left
 			virtual HRESULT PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID ) = 0;
 			// Cmd: Kick player
-			virtual HRESULT KickPlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult ) = 0;
+			virtual HRESULT KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
 			// S2C: Player kicked
 			virtual HRESULT PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID ) = 0;
 			// C2S: Chatting message
@@ -55,11 +55,11 @@ namespace BR
 			// S2C: Quick Chatting message
 			virtual HRESULT QuickChatMessageS2CEvt( const RouteContext &InRouteContext, const PlayerID &InSenderID, const UINT32 &InQuickChatID ) = 0;
 			// Cmd: Match
-			virtual HRESULT StartGameMatchRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult ) = 0;
+			virtual HRESULT StartGameMatchRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
 			// S2C: Enqueued at a game matching
 			virtual HRESULT QueuedGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket ) = 0;
 			// Cmd: Match
-			virtual HRESULT CancelGameMatchRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult ) = 0;
+			virtual HRESULT CancelGameMatchRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
 			// S2C: Canceled at a game matching
 			virtual HRESULT CanceledGameMatchingS2CEvt( const RouteContext &InRouteContext, const MatchingQueueTicket &InMatchingQueueTicket ) = 0;
 			// S2C: Enqueued item is dequeued
@@ -78,14 +78,14 @@ namespace BR
 			{}
 
 			// Cmd: Join Party
-			virtual HRESULT JoinPartyCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer ) = 0;
+			virtual HRESULT JoinPartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer ) = 0;
 			// S2C: Player Joined
 			// S2C: Player Joined
 			// Cmd: Kick player
-			virtual HRESULT LeavePartyCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID ) = 0;
+			virtual HRESULT LeavePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// S2C: Player left
 			// Cmd: Kick player
-			virtual HRESULT KickPlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick ) = 0;
+			virtual HRESULT KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick ) = 0;
 			// S2C: Player kicked
 			// C2S: Chatting message
 			virtual HRESULT ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const char* InChatMessage ) = 0;
@@ -94,10 +94,10 @@ namespace BR
 			virtual HRESULT QuickChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InQuickChatID ) = 0;
 			// S2C: Quick Chatting message
 			// Cmd: Match
-			virtual HRESULT StartGameMatchCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers ) = 0;
+			virtual HRESULT StartGameMatchCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers ) = 0;
 			// S2C: Enqueued at a game matching
 			// Cmd: Match
-			virtual HRESULT CancelGameMatchCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID ) = 0;
+			virtual HRESULT CancelGameMatchCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// S2C: Canceled at a game matching
 			// S2C: Enqueued item is dequeued
 

@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Cluster member list query
-		HRESULT NetPolicyClusterServer::GetClusterMemberListCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		HRESULT NetPolicyClusterServer::GetClusterMemberListCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::ClusterServer::GetClusterMemberListCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InClusterID));
+			 protocolChk(Message::ClusterServer::GetClusterMemberListCmd::BuildIMsg(pMsg, InRouteContext, InTransactionID, InRouteHopCount, InClusterID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,15 +44,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyClusterServer::GetClusterMemberListCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		}; // HRESULT NetPolicyClusterServer::GetClusterMemberListCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
-		HRESULT NetPolicyClusterServer::JoinClusterCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+		HRESULT NetPolicyClusterServer::JoinClusterCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::ClusterServer::JoinClusterCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership));
+			 protocolChk(Message::ClusterServer::JoinClusterCmd::BuildIMsg(pMsg, InRouteContext, InTransactionID, InRouteHopCount, InSender, InSenderNetClass, InSenderAddress, InClusterID, InClusterType, InClusterMembership));
 
 			 protocolChkPtr(GetConnection());
 
@@ -62,7 +62,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyClusterServer::JoinClusterCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+		}; // HRESULT NetPolicyClusterServer::JoinClusterCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 		// C2S: Do not let it broadcasted while it's manual broadcast packet
 		HRESULT NetPolicyClusterServer::NewServerServiceJoinedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 		{
@@ -100,13 +100,13 @@ namespace BR
 
 		}; // HRESULT NetPolicyClusterServer::SyncClusterServiceC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 		// Cmd: Join to the cluster
-		HRESULT NetPolicyClusterServer::RequestDataSyncCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		HRESULT NetPolicyClusterServer::RequestDataSyncCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::ClusterServer::RequestDataSyncCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InClusterID));
+			 protocolChk(Message::ClusterServer::RequestDataSyncCmd::BuildIMsg(pMsg, InRouteContext, InTransactionID, InRouteHopCount, InClusterID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -116,7 +116,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyClusterServer::RequestDataSyncCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		}; // HRESULT NetPolicyClusterServer::RequestDataSyncCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		// C2S: Master vote
 		HRESULT NetPolicyClusterServer::ClusterMasterVoteC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime )
 		{
@@ -172,13 +172,13 @@ namespace BR
 
 		}; // HRESULT NetPolicyClusterServer::ClusterUpdateWorkloadC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload )
 		// Cmd: Get lowest workloaded cluster member
-		HRESULT NetPolicyClusterServer::GetLowestWorkloadClusterMemberCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		HRESULT NetPolicyClusterServer::GetLowestWorkloadClusterMemberCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::ClusterServer::GetLowestWorkloadClusterMemberCmd::BuildIMsg(pMsg, InRouteContext, InContext, InRouteHopCount, InClusterID));
+			 protocolChk(Message::ClusterServer::GetLowestWorkloadClusterMemberCmd::BuildIMsg(pMsg, InRouteContext, InTransactionID, InRouteHopCount, InClusterID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -188,7 +188,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyClusterServer::GetLowestWorkloadClusterMemberCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+		}; // HRESULT NetPolicyClusterServer::GetLowestWorkloadClusterMemberCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 		// C2S: Called when a player entity is created
 		HRESULT NetPolicyClusterServer::GamePlayerEntityCreatedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 		{
@@ -228,13 +228,13 @@ namespace BR
 
 
 		// Cmd: Cluster member list query
-		HRESULT NetSvrPolicyClusterServer::GetClusterMemberListRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
+		HRESULT NetSvrPolicyClusterServer::GetClusterMemberListRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::ClusterServer::GetClusterMemberListRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult, InMemberList));
+			 protocolChk(Message::ClusterServer::GetClusterMemberListRes::BuildIMsg(pMsg, InRouteContext, InTransactionID, InResult, InMemberList));
 
 			 protocolChkPtr(GetConnection());
 
@@ -244,15 +244,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyClusterServer::GetClusterMemberListRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
+		}; // HRESULT NetSvrPolicyClusterServer::GetClusterMemberListRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
 		// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
-		HRESULT NetSvrPolicyClusterServer::JoinClusterRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
+		HRESULT NetSvrPolicyClusterServer::JoinClusterRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::ClusterServer::JoinClusterRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult, InMemberList));
+			 protocolChk(Message::ClusterServer::JoinClusterRes::BuildIMsg(pMsg, InRouteContext, InTransactionID, InResult, InMemberList));
 
 			 protocolChkPtr(GetConnection());
 
@@ -262,15 +262,15 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyClusterServer::JoinClusterRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
+		}; // HRESULT NetSvrPolicyClusterServer::JoinClusterRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
 		// Cmd: Join to the cluster
-		HRESULT NetSvrPolicyClusterServer::RequestDataSyncRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+		HRESULT NetSvrPolicyClusterServer::RequestDataSyncRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::ClusterServer::RequestDataSyncRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
+			 protocolChk(Message::ClusterServer::RequestDataSyncRes::BuildIMsg(pMsg, InRouteContext, InTransactionID, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -280,7 +280,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyClusterServer::RequestDataSyncRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+		}; // HRESULT NetSvrPolicyClusterServer::RequestDataSyncRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 		// S2C: Master instance of the cluster is assigned
 		HRESULT NetSvrPolicyClusterServer::ClusterMasterAssignedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
 		{
@@ -300,13 +300,13 @@ namespace BR
 
 		}; // HRESULT NetSvrPolicyClusterServer::ClusterMasterAssignedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
 		// Cmd: Get lowest workloaded cluster member
-		HRESULT NetSvrPolicyClusterServer::GetLowestWorkloadClusterMemberRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const ServiceInformation &InMember )
+		HRESULT NetSvrPolicyClusterServer::GetLowestWorkloadClusterMemberRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const ServiceInformation &InMember )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::ClusterServer::GetLowestWorkloadClusterMemberRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult, InMember));
+			 protocolChk(Message::ClusterServer::GetLowestWorkloadClusterMemberRes::BuildIMsg(pMsg, InRouteContext, InTransactionID, InResult, InMember));
 
 			 protocolChkPtr(GetConnection());
 
@@ -316,7 +316,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyClusterServer::GetLowestWorkloadClusterMemberRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const ServiceInformation &InMember )
+		}; // HRESULT NetSvrPolicyClusterServer::GetLowestWorkloadClusterMemberRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const ServiceInformation &InMember )
 
 
 	}; // namespace Policy

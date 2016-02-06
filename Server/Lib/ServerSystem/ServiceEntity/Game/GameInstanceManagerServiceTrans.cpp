@@ -23,6 +23,7 @@
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceTrans.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
+#include "ServerSystem/ServiceEntity/Game/GameInstanceEntity.h"
 
 
 
@@ -42,13 +43,20 @@ namespace Svr {
 	{
 		HRESULT hr = S_SYSTEM_OK;
 		Entity *pEntity = nullptr;
+		GameInstanceEntity* pGameInstance = nullptr;
 
 		svrChk( super::StartTransaction() );
 
-		//GetNumberOfBotPlayer(), GetMaxPlayer()
 		svrChk( GetServerComponent<EntityManager>()->CreateEntity( ClusterID::GameInstanceManager, EntityFaculty::GameInstance, pEntity ) );
-		
+
+		svrChkPtr(pGameInstance = dynamic_cast<GameInstanceEntity*>(pEntity));
+		svrChk(pGameInstance->InitializeGameEntity(GetNumberOfBotPlayer(), GetMaxPlayer()));
+
+		svrChk(GetMyOwner()->OnNewInstance(pGameInstance));
+
 		m_GameInsUID = pEntity->GetEntityUID();
+
+		svrTrace(Trace::TRC_TRACE, "CreateGameInstance:{0}, numBot:{1}, maxPlayer:{2}", pGameInstance->GetEntityUID(), GetNumberOfBotPlayer(), GetMaxPlayer());
 
 	Proc_End:
 

@@ -28,13 +28,13 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: 
-		HRESULT NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const Context &InContext )
+		HRESULT NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Server::GenericFailureCmd::BuildIMsg(pMsg, InRouteContext, InContext));
+			 protocolChk(Message::Server::GenericFailureCmd::BuildIMsg(pMsg, InRouteContext, InTransactionID));
 
 			 protocolChkPtr(GetConnection());
 
@@ -44,7 +44,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const Context &InContext )
+		}; // HRESULT NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID )
 		// C2S: Server Started or Connected
 		HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
 		{
@@ -66,13 +66,13 @@ namespace BR
 
 
 		// Cmd: 
-		HRESULT NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+		HRESULT NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Server::GenericFailureRes::BuildIMsg(pMsg, InRouteContext, InContext, InResult));
+			 protocolChk(Message::Server::GenericFailureRes::BuildIMsg(pMsg, InRouteContext, InTransactionID, InResult));
 
 			 protocolChkPtr(GetConnection());
 
@@ -82,7 +82,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult )
+		}; // HRESULT NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
 
 
 	}; // namespace Policy

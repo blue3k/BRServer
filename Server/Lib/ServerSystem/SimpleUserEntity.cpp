@@ -155,7 +155,7 @@ namespace Svr
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
 		Svr::Transaction *pNewTrans = nullptr;
-		ThreadID currentThreadID = GetTaskWorker() != nullptr ? GetTaskWorker()->GetThreadID() : ThisThread::GetThreadID();
+		ThreadID currentThreadID = ThisThread::GetThreadID();
 
 		svrChkPtr(pIMsg);
 		pMsgHdr = pIMsg->GetMessageHeader();

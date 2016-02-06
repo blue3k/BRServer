@@ -35,15 +35,15 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			virtual HRESULT AddPlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InRanking ) = 0;
+			virtual HRESULT AddPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT RemovePlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult ) = 0;
+			virtual HRESULT RemovePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT GetPlayerRankingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InRanking ) = 0;
+			virtual HRESULT GetPlayerRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking ) = 0;
 			// Cmd: Update a player to ranking
-			virtual HRESULT UpdatePlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InRanking ) = 0;
+			virtual HRESULT UpdatePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT GetRankingRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const UINT32 &InPlayerRanking ) = 0;
+			virtual HRESULT GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InPlayerRanking ) = 0;
 
 		}; // class ISvrPolicyRanking : public Net::INetPolicy
 
@@ -58,15 +58,15 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			virtual HRESULT AddPlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo ) = 0;
+			virtual HRESULT AddPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT RemovePlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID ) = 0;
+			virtual HRESULT RemovePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT GetPlayerRankingCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID ) = 0;
+			virtual HRESULT GetPlayerRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// Cmd: Update a player to ranking
-			virtual HRESULT UpdatePlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo ) = 0;
+			virtual HRESULT UpdatePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT GetRankingCmd( const RouteContext &InRouteContext, const Context &InContext, const UINT32 &InFrom, const UINT32 &InCount ) = 0;
+			virtual HRESULT GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount ) = 0;
 
 		}; // class IPolicyRanking : public Net::INetPolicy
 

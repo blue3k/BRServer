@@ -80,6 +80,8 @@ namespace Svr {
 		virtual UINT KeyHash( UINT64 key ) { return (UINT)key; }
 		
 
+		Config::PublicNetSocket* GetPublicNetConfig() { return m_PublicNetSocket;  }
+
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	Entity operations

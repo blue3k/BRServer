@@ -30,9 +30,9 @@ namespace BR
 			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance
-			HRESULT PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
+			HRESULT PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
 			// Cmd: Kick logged in player
-			HRESULT KickPlayerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InKickedPlayerID );
+			HRESULT KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID );
 
 		}; // class NetPolicyLoginServer : public IPolicyLoginServer
 
@@ -45,9 +45,9 @@ namespace BR
 			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance
-			HRESULT PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult );
+			HRESULT PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
 			// Cmd: Kick logged in player
-			HRESULT KickPlayerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult );
+			HRESULT KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
 
 		}; // class NetSvrPolicyLoginServer : public ISvrPolicyLoginServer
 

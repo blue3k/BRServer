@@ -35,9 +35,9 @@ namespace BR
 			{}
 
 			// Cmd: Kick
-			virtual HRESULT RegisterPlayerToJoinGameServerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 ) = 0;
+			virtual HRESULT RegisterPlayerToJoinGameServerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort ) = 0;
 			// Cmd: Kick
-			virtual HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult ) = 0;
+			virtual HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
 			// C2S: Chatting message
 			// C2S: Notification
 			// C2S: Friend Accept
@@ -59,9 +59,9 @@ namespace BR
 			{}
 
 			// Cmd: Kick
-			virtual HRESULT RegisterPlayerToJoinGameServerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID ) = 0;
+			virtual HRESULT RegisterPlayerToJoinGameServerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID ) = 0;
 			// Cmd: Kick
-			virtual HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID ) = 0;
+			virtual HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID ) = 0;
 			// C2S: Chatting message
 			virtual HRESULT ChatMessageC2SEvt( const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage ) = 0;
 			// C2S: Notification

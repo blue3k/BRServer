@@ -445,7 +445,7 @@ namespace Svr {
 		{
 		}
 
-		HRESULT OnGenericError(Svr::TransactionResult* &pRes)
+		virtual HRESULT OnGenericError(Svr::TransactionResult* &pRes)
 		{
 			HRESULT hr = S_SYSTEM_OK;
 
@@ -545,9 +545,9 @@ namespace Svr {
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
-					if(MessageClass::HasContext)
+					if(MessageClass::HasTransactionID)
 					{
-						TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::SetParentTransID(MessageClass::GetContext());
+						TransactionT<OwnerType, MemoryPoolClass, MessageHandlerBufferSize>::SetParentTransID(MessageClass::GetTransactionID());
 					}
 					else if(MessageClass::HasRouteContext)
 					{

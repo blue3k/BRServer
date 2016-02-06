@@ -386,7 +386,7 @@ Proc_End:
 		HRESULT hr = S_SYSTEM_OK;
 		Svr::TransactionResult *pRes = pQuery;
 
-		if( pRes->GetTransID() != 0 )
+		if( pRes->GetTransID() != TransactionID(0) )
 		{
 			Svr::BrServer *pMyServer = Svr::BrServer::GetInstance();
 			dbChkPtr( pMyServer );

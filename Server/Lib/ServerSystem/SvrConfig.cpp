@@ -230,30 +230,10 @@ namespace Config
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	ModuleBase::ModuleBase()
-		: XML::DOMElement("ModuleBase")
-		, m_ModuleClusterID(ClusterID::Max)
-	{
-	}
-
-	ModuleBase::ModuleBase(const char* name, ClusterID clusterID)
-		: XML::DOMElement(name)
-		, m_ModuleClusterID(clusterID)
-	{
-	}
-
-	// for parsing
-	bool ModuleBase::SetAttributeValue(const std::string& name, const std::string& value)
-	{
-		return XML::DOMElement::SetAttributeValue(name, value);
-	}
-
-	///////////////////////////////////////////////////////////////////////////////
-
 	static const struct ModuleClusterIDDef {
 		const char* Name;
 		ClusterID ModuleClusterID;
-	} g_ModuleClusterIDValues[] = 
+	} g_ModuleClusterIDValues[] =
 	{
 		{ "ModGamePartyManager", ClusterID::GamePartyManager },
 		{ "ModMonitoring", ClusterID::Monitoring },
@@ -282,8 +262,9 @@ namespace Config
 
 	static std::unordered_map<std::string, const ModuleClusterIDDef*> g_ModuleClusterIDMap;
 
-	ModuleSimple::ModuleSimple()
-		: ModuleBase("ModuleSimple", ClusterID::Max)
+	ModuleBase::ModuleBase()
+		: XML::DOMElement("ModuleBase")
+		, m_ModuleClusterID(ClusterID::Max)
 	{
 		if (g_ModuleClusterIDMap.size() == 0)
 		{
@@ -294,14 +275,40 @@ namespace Config
 		}
 	}
 
-	void ModuleSimple::SetName(const char* Name)
+	ModuleBase::ModuleBase(const char* name, ClusterID clusterID)
+		: XML::DOMElement(name)
+		, m_ModuleClusterID(clusterID)
 	{
-		ModuleBase::SetName(Name);
+		if (g_ModuleClusterIDMap.size() == 0)
+		{
+			for (int iValue = 0; iValue < countof(g_ModuleClusterIDValues); iValue++)
+			{
+				g_ModuleClusterIDMap.insert(std::make_pair(g_ModuleClusterIDValues[iValue].Name, &g_ModuleClusterIDValues[iValue]));
+			}
+		}
+	}
+
+	void ModuleBase::SetName(const char* Name)
+	{
+		XML::DOMElement::SetName(Name);
 
 		auto itFound = g_ModuleClusterIDMap.find(Name);
 		AssertRel(itFound != g_ModuleClusterIDMap.end());
 
 		SetModuleClusterID(itFound->second->ModuleClusterID);
+	}
+
+	// for parsing
+	bool ModuleBase::SetAttributeValue(const std::string& name, const std::string& value)
+	{
+		return XML::DOMElement::SetAttributeValue(name, value);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	ModuleSimple::ModuleSimple()
+		: ModuleBase("ModuleSimple", ClusterID::Max)
+	{
 	}
 
 	// for parsing

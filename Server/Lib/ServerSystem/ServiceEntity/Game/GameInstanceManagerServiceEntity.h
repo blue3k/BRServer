@@ -77,7 +77,7 @@ namespace Svr {
 		//
 
 		// Add new Entity
-		virtual HRESULT CreateGameInstance(GameInsUID &gameUID, UINT numBot, UINT maxPlayer) = 0;
+		virtual HRESULT OnNewInstance(GameInstanceEntity* pGameInstance);
 
 		// Called when a game instance is deleted
 		virtual HRESULT FreeGameInstance( GameInsUID gameUID );

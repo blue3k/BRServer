@@ -33,9 +33,9 @@ namespace BR
 			GameServerService ( ServerServiceInformation* pService );
 
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerCmd( const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID );
+			HRESULT RegisterPlayerToJoinGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID );
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
+			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
 			// C2S: Chatting message
 			HRESULT ChatMessageC2SEvt( const EntityID &InSenderEntityID, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage );
 			// C2S: Notification

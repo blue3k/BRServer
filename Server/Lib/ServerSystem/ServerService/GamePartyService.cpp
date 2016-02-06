@@ -35,47 +35,44 @@ namespace BR
 
 
 		// Cmd: Join Party
-		HRESULT GamePartyService::JoinPartyCmd( const Context &InContext, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
+		HRESULT GamePartyService::JoinPartyCmd( const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->JoinPartyCmd( InRouteContext, InContext, InInviterID, InInvitedPlayer ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameParty()->JoinPartyCmd( InRouteContext, InTransactionID, InInviterID, InInvitedPlayer ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GamePartyService::JoinPartyCmd( const Context &InContext, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
+		}; // HRESULT GamePartyService::JoinPartyCmd( const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer )
 		// Cmd: Kick player
-		HRESULT GamePartyService::LeavePartyCmd( const Context &InContext, const PlayerID &InPlayerID )
+		HRESULT GamePartyService::LeavePartyCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->LeavePartyCmd( InRouteContext, InContext, InPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameParty()->LeavePartyCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GamePartyService::LeavePartyCmd( const Context &InContext, const PlayerID &InPlayerID )
+		}; // HRESULT GamePartyService::LeavePartyCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Kick player
-		HRESULT GamePartyService::KickPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		HRESULT GamePartyService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->KickPlayerCmd( InRouteContext, InContext, InPlayerID, InPlayerToKick ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameParty()->KickPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InPlayerToKick ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GamePartyService::KickPlayerCmd( const Context &InContext, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		}; // HRESULT GamePartyService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		// C2S: Chatting message
 		HRESULT GamePartyService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage )
 		{
@@ -103,33 +100,31 @@ namespace BR
 
 		}; // HRESULT GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const UINT32 &InQuickChatID )
 		// Cmd: Match
-		HRESULT GamePartyService::StartGameMatchCmd( const Context &InContext, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
+		HRESULT GamePartyService::StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->StartGameMatchCmd( InRouteContext, InContext, InPlayerID, InMaxGamePlayers ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameParty()->StartGameMatchCmd( InRouteContext, InTransactionID, InPlayerID, InMaxGamePlayers ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GamePartyService::StartGameMatchCmd( const Context &InContext, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
+		}; // HRESULT GamePartyService::StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
 		// Cmd: Match
-		HRESULT GamePartyService::CancelGameMatchCmd( const Context &InContext, const PlayerID &InPlayerID )
+		HRESULT GamePartyService::CancelGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameParty()->CancelGameMatchCmd( InRouteContext, InContext, InPlayerID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameParty()->CancelGameMatchCmd( InRouteContext, InTransactionID, InPlayerID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GamePartyService::CancelGameMatchCmd( const Context &InContext, const PlayerID &InPlayerID )
+		}; // HRESULT GamePartyService::CancelGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
 
 	}; // namespace Svr

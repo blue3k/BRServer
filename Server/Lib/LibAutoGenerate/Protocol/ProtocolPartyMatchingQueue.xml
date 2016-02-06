@@ -5,7 +5,6 @@
 
     <!-- ============================  From Player/Party to Matching queue  ============================================ -->
 
-
     <Command Name="RegisterPartyMatching" Reliable="true" Crypto="No" Trace="DBG1" Desc="Register match by party">
       <Cmd>
         <Params Type="MatchingPlayerInformation" Name="Players" IsArray="true"/>

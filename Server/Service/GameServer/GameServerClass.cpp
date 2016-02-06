@@ -48,6 +48,7 @@
 #include "GameSvrConst.h"
 #include "GameServerClass.h"
 #include "Transaction/GameServerTrans.h"
+#include "GameInstance/GameClusterServiceEntity.h"
 
 #include "DB/GameConspiracyDB.h"
 #include "DB/GameTransactionDB.h"
@@ -209,7 +210,8 @@ namespace GameServer {
 
 
 		// Register game conspiracy cluster as a slave
-		svrMem( pGameService = new Svr::GameClusterServiceEntity(GameID::Conspiracy, ClusterMembership::Slave) );
+		auto pMySvr = (const Svr::Config::PublicServer*)GetMyConfig();
+		svrMem( pGameService = new GameClusterServiceEntity(pMySvr->NetPublic, GameID::Conspiracy, ClusterMembership::Slave) );
 		svrChk( GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGameService ) );
 		svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameService ) );
 		AddComponent(pGameService);

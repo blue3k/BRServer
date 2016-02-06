@@ -293,7 +293,7 @@ namespace Svr {
 		if (pItem == nullptr)
 			return E_SYSTEM_INVALIDARG;
 
-		if ((pItem->NumPlayers != 0 && !pItem->PendingCancel) || pItem->ReservedTime != TimeStampMS::min())
+		if ((pItem->NumPlayers != 0 && !pItem->PendingCancel) || pItem->ReservedTime == TimeStampMS::min())
 			return E_INVALID_STATE;
 
 		// If delete is required by canceling

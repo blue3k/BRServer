@@ -101,6 +101,7 @@
     <None Include="GameServerClass.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameInstance\GameClusterServiceEntity.h" />
     <ClInclude Include="GameInstance\GameEntityManager.h" />
     <ClInclude Include="GameInstance\GamePlayerEntity.h" />
     <ClInclude Include="GameSystem\UserFriendSystem.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="GameSvrConst.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameInstance\GameClusterServiceEntity.cpp" />
     <ClCompile Include="GameInstance\GameEntityManager.cpp" />
     <ClCompile Include="GameInstance\GamePlayerEntity.cpp" />
     <ClCompile Include="GameSystem\UserFriendSystem.cpp" />

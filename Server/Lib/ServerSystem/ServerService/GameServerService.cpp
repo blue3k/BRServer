@@ -35,33 +35,31 @@ namespace BR
 
 
 		// Cmd: Kick
-		HRESULT GameServerService::RegisterPlayerToJoinGameServerCmd( const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+		HRESULT GameServerService::RegisterPlayerToJoinGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerCmd( InRouteContext, InContext, InPlayerID, InTicket, InFBUserID, InShardID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerCmd( InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID, InShardID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameServerService::RegisterPlayerToJoinGameServerCmd( const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+		}; // HRESULT GameServerService::RegisterPlayerToJoinGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
 		// Cmd: Kick
-		HRESULT GameServerService::RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+		HRESULT GameServerService::RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			TransactionID localTransID(InContext);
-			RouteContext InRouteContext( EntityUID(GetMyServerID(),localTransID.GetEntityID()), GetServiceEntityUID() );
-			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerOnPlayerEntityCmd( InRouteContext, InContext, InPlayerID, InTicket, InFBUserID ) );
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyGameServer()->RegisterPlayerToJoinGameServerOnPlayerEntityCmd( InRouteContext, InTransactionID, InPlayerID, InTicket, InFBUserID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT GameServerService::RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+		}; // HRESULT GameServerService::RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 		// C2S: Chatting message
 		HRESULT GameServerService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
 		{

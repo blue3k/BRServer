@@ -1050,7 +1050,7 @@ namespace GameServer {
 			svrChkPtr(watcherService);
 			svrChk(watcherService->GetService(pService));
 
-			svrChk( pService->GetService<Svr::PartyMatchingQueueService>()->RegisterPlayerMatchingCmd( GetTransID(), 0, GetMyOwner()->GetPlayerID() ) );
+			svrChk( pService->GetService<Svr::PartyMatchingQueueService>()->RegisterPlayerMatchingCmd(GetTransID(), 0, GetMyOwner()->GetPlayerID() ) );
 		}
 		else
 		{

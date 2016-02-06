@@ -218,8 +218,10 @@ namespace LoginServer {
 
 		super::GetMyOwner()->HeartBit();
 
-		m_GameServerAddr = res.GetPublicAddress();
-		m_GameServerAddrIPV4 = res.GetPublicAddressIPV4();
+		svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), res.GetPort()));
+		svrChk(Net::SetNetAddress(m_GameServerAddrIPV4, res.GetPublicAddress(), res.GetPort()));
+		//m_GameServerAddr = res.GetPublicAddress();
+		//m_GameServerAddrIPV4 = res.GetPublicAddressIPV4();
 		m_GameEntityUID = res.GetRouteContext().GetFrom();
 
 		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(super::GetTransID(), super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetOwnerEntityUID(), m_GameEntityUID));

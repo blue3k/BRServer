@@ -103,6 +103,7 @@
     <None Include="ConspiracyGameInstanceServerClass.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameInstance\GameEntityManager.h" />
     <ClInclude Include="GameInstance\GameInstanceEntity.h" />
     <ClInclude Include="GameInstance\GameInstanceManager.h" />
     <ClInclude Include="GameInstance\GamePlayer.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="ConspiracyGameInstanceSvrConst.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GameInstance\GameEntityManager.cpp" />
     <ClCompile Include="GameInstance\GameInstanceEntity.cpp" />
     <ClCompile Include="GameInstance\GameInstanceManager.cpp" />
     <ClCompile Include="GameInstance\GameInstanceEntity_MsgProc.cpp" />

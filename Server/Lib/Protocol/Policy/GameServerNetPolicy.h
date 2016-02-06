@@ -30,9 +30,9 @@ namespace BR
 			{}
 
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID );
+			HRESULT RegisterPlayerToJoinGameServerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID );
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const RouteContext &InRouteContext, const Context &InContext, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
+			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID );
 			// C2S: Chatting message
 			HRESULT ChatMessageC2SEvt( const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage );
 			// C2S: Notification
@@ -59,9 +59,9 @@ namespace BR
 			{}
 
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult, const NetAddress &InPublicAddress, const NetAddress &InPublicAddressIPV4 );
+			HRESULT RegisterPlayerToJoinGameServerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort );
 			// Cmd: Kick
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes( const RouteContext &InRouteContext, const Context &InContext, const HRESULT &InResult );
+			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
 
 		}; // class NetSvrPolicyGameServer : public ISvrPolicyGameServer
 

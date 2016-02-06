@@ -35,29 +35,29 @@ namespace BR
 
 
 		// Cmd: Add a player to ranking
-		HRESULT MonitoringService::GetInstanceListCmd( const Context &InContext )
+		HRESULT MonitoringService::GetInstanceListCmd( const TransactionID &InTransactionID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			 svrChk(GetPolicyMonitoring()->GetInstanceListCmd( InContext ) );
+			 svrChk(GetPolicyMonitoring()->GetInstanceListCmd( InTransactionID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT MonitoringService::GetInstanceListCmd( const Context &InContext )
+		}; // HRESULT MonitoringService::GetInstanceListCmd( const TransactionID &InTransactionID )
 		// Cmd: Remove a player to ranking
-		HRESULT MonitoringService::RequestCounterValuesCmd( const Context &InContext, const EntityUID &InInstanceUID )
+		HRESULT MonitoringService::RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
 		{
  			HRESULT hr = S_SYSTEM_OK;
 
-			 svrChk(GetPolicyMonitoring()->RequestCounterValuesCmd( InContext, InInstanceUID ) );
+			 svrChk(GetPolicyMonitoring()->RequestCounterValuesCmd( InTransactionID, InInstanceUID ) );
 
 		Proc_End:
 
 			return hr;
 
-		}; // HRESULT MonitoringService::RequestCounterValuesCmd( const Context &InContext, const EntityUID &InInstanceUID )
+		}; // HRESULT MonitoringService::RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
 		// C2S: Counter instance is created
 		HRESULT MonitoringService::PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 		{

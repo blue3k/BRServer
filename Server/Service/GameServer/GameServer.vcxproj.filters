@@ -116,6 +116,9 @@
     <ClInclude Include="GameSystem\UserNotifySystem.h">
       <Filter>GameSystem</Filter>
     </ClInclude>
+    <ClInclude Include="GameInstance\GameClusterServiceEntity.h">
+      <Filter>GameEntityInstance</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -180,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="GameSystem\UserNotifySystem.cpp">
       <Filter>GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInstance\GameClusterServiceEntity.cpp">
+      <Filter>GameEntityInstance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

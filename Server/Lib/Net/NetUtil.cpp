@@ -201,7 +201,7 @@ namespace Net {
 			return hr;
 
 		netAddr.SocketFamily = ToSockFamily(sockAddr.ss_family);
-		hr = StrUtil::StringCpy(netAddr.strAddr, countof(netAddr.strAddr), strAddress);
+		hr = StrUtil::StringCpy(netAddr.strAddr, (INT)countof(netAddr.strAddr), strAddress);
 		if (FAILED(hr))
 			return hr;
 
