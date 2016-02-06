@@ -222,5 +222,8 @@
 // Invalid network address 
 #define E_NET_INVALID_ADDRESS                                         ((int32_t)0xE7030045L) 
 
+// Address in use 
+#define E_NET_ADDRINUSE                                               ((int32_t)0xE7030046L) 
+
 
 

@@ -83,6 +83,7 @@ namespace Net {
 		case WSAEPROTOTYPE: return E_NET_PROTOTYPE;
 		case WSAENOPROTOOPT: return E_NET_NOPROTOOPT;
 		case WSAEOPNOTSUPP: return E_NET_OPNOTSUPP;
+		case WSAEADDRINUSE: return E_NET_ADDRINUSE;
 		default:
 			defTrace(Trace::TRC_WARN, "Unknown Winsock error {0}", ierr);
 			return GetLastHRESULT();

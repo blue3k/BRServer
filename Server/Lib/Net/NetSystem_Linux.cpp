@@ -82,6 +82,7 @@ namespace Net {
 		case ENOPROTOOPT: return E_NET_NOPROTOOPT;
 		case ENONET: return E_NET_NONET;
 		case EOPNOTSUPP: return E_NET_OPNOTSUPP;
+		case EADDRINUSE: return E_NET_ADDRINUSE;
 			//case EPROCLIM: return E_NET_PROCLIM;
 			//case SYSNOTREADY: return E_NET_SYSNOTREADY;
 			//case VERNOTSUPPORTED: return E_NET_VERNOTSUPPORTED;
@@ -94,7 +95,7 @@ namespace Net {
 			//case _SECURE_HOST_NOT_FOUND: return E_NET_SECURE_HOST_NOT_FOUND;
 			//case WSA_IO_PENDING: return E_NET_IO_PENDING;
 		default:
-			defTrace(Trace::TRC_WARN, "Unknown Winsock error {0}", ierr);
+			defTrace(Trace::TRC_WARN, "Unknown sock error {0}", ierr);
 			return GetLastHRESULT();
 		}
 	}

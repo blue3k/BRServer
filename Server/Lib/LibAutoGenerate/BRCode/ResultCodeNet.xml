@@ -76,6 +76,7 @@
   <ResultCodeItem Severity="Error" CodeName="FAMILY" Desc="Bad network family"/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_SERVICE" Desc="The pServiceName parameter is not supported for the specified ai_socktype member of the pHints parameter."/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_ADDRESS" Desc="Invalid network address"/>
+  <ResultCodeItem Severity="Error" CodeName="ADDRINUSE" Desc="Address in use"/>
 
 </ResultCodes>
 

@@ -229,6 +229,9 @@ namespace BR {
 		// Invalid network address 
 		public const int E_NET_INVALID_ADDRESS =                            unchecked((int)0xE7030045); 
 
+		// Address in use 
+		public const int E_NET_ADDRINUSE =                                  unchecked((int)0xE7030046); 
+
 	}
 }
 
