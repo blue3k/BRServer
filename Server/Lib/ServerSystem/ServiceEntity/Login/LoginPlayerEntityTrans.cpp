@@ -126,7 +126,7 @@ namespace Svr {
 		super::GetMyOwner()->SetShardID(shardID);
 
 		// Generate new authenticate ID
-		newTicket = GetMyOwner()->GetAuthTicketGenerator().NewUID();
+		newTicket = super::GetMyOwner()->GetAuthTicketGenerator().NewUID();
 		svrTrace(Svr::TRC_ENTITY, "New Player Ticket Ticket:{0}", newTicket);
 		super::GetMyOwner()->SetAuthTicket(newTicket);
 

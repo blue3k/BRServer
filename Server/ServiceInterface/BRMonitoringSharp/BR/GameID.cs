@@ -12,7 +12,8 @@ namespace BR {
 
 public enum GameID {
   Invalid,
-  Conspiracy
+  Conspiracy,
+  Game
 }
 
 }

@@ -81,6 +81,12 @@ public class TransactionID : global::System.IDisposable {
     return ret;
   }
 
+  public unsafe bool NotEqualTo(TransactionID src) {
+    bool ret = BRMonitoringPINVOKE.TransactionID_NotEqualTo(swigCPtr, TransactionID.getCPtr(src));
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public unsafe bool EqualTo(TransactionID src) {
     bool ret = BRMonitoringPINVOKE.TransactionID_EqualTo(swigCPtr, TransactionID.getCPtr(src));
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();

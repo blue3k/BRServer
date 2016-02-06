@@ -56,13 +56,31 @@ namespace conspiracy {
         
         private int firstDay_EndField;
         
+        private float firstDay_PlayDelayField;
+        
+        private float firstDay_BotDelay1Field;
+        
+        private float firstDay_BotDelay2Field;
+        
         private int freeTalk_BeginField;
         
         private int freeTalk_EndField;
         
+        private float freeTalk_PlayDelayField;
+        
+        private float freeTalk_BotDelay1Field;
+        
+        private float freeTalk_BotDelay2Field;
+        
         private int defense_BeginField;
         
         private int defense_EndField;
+        
+        private float defense_PlayDelayField;
+        
+        private float defense_BotDelay1Field;
+        
+        private float defense_BotDelay2Field;
         
         private int gameResultWinner_BeginField;
         
@@ -129,6 +147,39 @@ namespace conspiracy {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
+        public float FirstDay_PlayDelay {
+            get {
+                return this.firstDay_PlayDelayField;
+            }
+            set {
+                this.firstDay_PlayDelayField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public float FirstDay_BotDelay1 {
+            get {
+                return this.firstDay_BotDelay1Field;
+            }
+            set {
+                this.firstDay_BotDelay1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public float FirstDay_BotDelay2 {
+            get {
+                return this.firstDay_BotDelay2Field;
+            }
+            set {
+                this.firstDay_BotDelay2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public int FreeTalk_Begin {
             get {
                 return this.freeTalk_BeginField;
@@ -151,6 +202,39 @@ namespace conspiracy {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
+        public float FreeTalk_PlayDelay {
+            get {
+                return this.freeTalk_PlayDelayField;
+            }
+            set {
+                this.freeTalk_PlayDelayField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public float FreeTalk_BotDelay1 {
+            get {
+                return this.freeTalk_BotDelay1Field;
+            }
+            set {
+                this.freeTalk_BotDelay1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public float FreeTalk_BotDelay2 {
+            get {
+                return this.freeTalk_BotDelay2Field;
+            }
+            set {
+                this.freeTalk_BotDelay2Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         public int Defense_Begin {
             get {
                 return this.defense_BeginField;
@@ -168,6 +252,39 @@ namespace conspiracy {
             }
             set {
                 this.defense_EndField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public float Defense_PlayDelay {
+            get {
+                return this.defense_PlayDelayField;
+            }
+            set {
+                this.defense_PlayDelayField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public float Defense_BotDelay1 {
+            get {
+                return this.defense_BotDelay1Field;
+            }
+            set {
+                this.defense_BotDelay1Field = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public float Defense_BotDelay2 {
+            get {
+                return this.defense_BotDelay2Field;
+            }
+            set {
+                this.defense_BotDelay2Field = value;
             }
         }
         

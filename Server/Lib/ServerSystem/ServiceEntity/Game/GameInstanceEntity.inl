@@ -35,21 +35,21 @@ UINT GameInstanceEntity::GetNumPlayer()
 //
 //	foreach implementations
 //
-
-// foreach game player
-//HRESULT GameInstanceEntity::ForeachPlayer(std::function<HRESULT(GamePlayer* pPlayer)> func)
-template< class Func >
-HRESULT GameInstanceEntity::ForeachPlayer(Func func)
-{
-	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
-	{
-		HRESULT hrRes = func(pPlayer);
-		if (FAILED(hrRes))
-			return false;
-		return true;
-	});
-	return S_SYSTEM_OK;
-}
+//
+//// foreach game player
+////HRESULT GameInstanceEntity::ForeachPlayer(std::function<HRESULT(GamePlayer* pPlayer)> func)
+//template< class Func >
+//HRESULT GameInstanceEntity::ForeachPlayer(Func func)
+//{
+//	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
+//	{
+//		HRESULT hrRes = func(pPlayer);
+//		if (FAILED(hrRes))
+//			return false;
+//		return true;
+//	});
+//	return S_SYSTEM_OK;
+//}
 
 //
 //// foreach game player with Game policy

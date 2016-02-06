@@ -39,13 +39,14 @@ public class NetPolicyMonitoring : global::System.IDisposable {
   public unsafe NetPolicyMonitoring(IConnection pConn) : this(BRMonitoringPINVOKE.new_NetPolicyMonitoring(IConnection.getCPtr(pConn)), true) {
   }
 
-  public unsafe int GetInstanceListCmd(ulong InContext) {
-    int ret = BRMonitoringPINVOKE.NetPolicyMonitoring_GetInstanceListCmd(swigCPtr, InContext);
+  public unsafe int GetInstanceListCmd(TransactionID InTransactionID) {
+    int ret = BRMonitoringPINVOKE.NetPolicyMonitoring_GetInstanceListCmd(swigCPtr, TransactionID.getCPtr(InTransactionID));
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int RequestCounterValuesCmd(ulong InContext, EntityUID InInstanceUID) {
-    int ret = BRMonitoringPINVOKE.NetPolicyMonitoring_RequestCounterValuesCmd(swigCPtr, InContext, EntityUID.getCPtr(InInstanceUID));
+  public unsafe int RequestCounterValuesCmd(TransactionID InTransactionID, EntityUID InInstanceUID) {
+    int ret = BRMonitoringPINVOKE.NetPolicyMonitoring_RequestCounterValuesCmd(swigCPtr, TransactionID.getCPtr(InTransactionID), EntityUID.getCPtr(InInstanceUID));
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

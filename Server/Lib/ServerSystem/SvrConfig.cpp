@@ -268,7 +268,7 @@ namespace Config
 	{
 		if (g_ModuleClusterIDMap.size() == 0)
 		{
-			for (int iValue = 0; iValue < countof(g_ModuleClusterIDValues); iValue++)
+			for (int iValue = 0; iValue < (int)countof(g_ModuleClusterIDValues); iValue++)
 			{
 				g_ModuleClusterIDMap.insert(std::make_pair(g_ModuleClusterIDValues[iValue].Name, &g_ModuleClusterIDValues[iValue]));
 			}
@@ -281,7 +281,7 @@ namespace Config
 	{
 		if (g_ModuleClusterIDMap.size() == 0)
 		{
-			for (int iValue = 0; iValue < countof(g_ModuleClusterIDValues); iValue++)
+			for (int iValue = 0; iValue < (int)countof(g_ModuleClusterIDValues); iValue++)
 			{
 				g_ModuleClusterIDMap.insert(std::make_pair(g_ModuleClusterIDValues[iValue].Name, &g_ModuleClusterIDValues[iValue]));
 			}

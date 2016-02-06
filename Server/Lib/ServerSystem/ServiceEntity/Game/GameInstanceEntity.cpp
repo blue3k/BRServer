@@ -169,7 +169,7 @@ namespace Svr {
 		// Call check timer to update
 		m_TimeToKill.CheckTimer();
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}
@@ -396,7 +396,7 @@ namespace Svr {
 		HRESULT hr = S_SYSTEM_OK;
 
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

@@ -110,7 +110,7 @@ namespace BR {
 		HRESULT hr = S_SYSTEM_OK;\
 		auto pPolicy = GetPolicy();\
 		if( pPolicy != nullptr ) {\
-			svrChk( pPolicy->MessageName( routeContext, GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
+			svrChk( pPolicy->MessageName( routeContext, super::GetTransactionID(), hrRes, ##__VA_ARGS__ ) );\
 				}\
 				Proc_End:\
 		super::OnCloseTransaction(hrRes);\

@@ -92,10 +92,10 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GamePlayer::UpdateGamePlayer( TimeStampMS ulCurTime )
 	{
 		HRESULT hr = S_SYSTEM_OK;
+		auto gameStateSystem = GetGameOwner()->GetComponent<GameStateSystem>();
 
 		svrChk(super::UpdateGamePlayer(ulCurTime));
 
-		auto gameStateSystem = GetGameOwner()->GetComponent<GameStateSystem>();
 		svrChkPtr(gameStateSystem);
 
 		if (GetIsBot())

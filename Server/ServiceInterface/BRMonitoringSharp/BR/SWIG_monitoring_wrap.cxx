@@ -447,16 +447,6 @@ SWIGEXPORT int SWIGSTDCALL CSharp_FALSE_get() {
 }
 
 
-SWIGEXPORT int SWIGSTDCALL CSharp_S_OK_get() {
-  int jresult ;
-  int result;
-  
-  result = (int)(0);
-  jresult = result; 
-  return jresult;
-}
-
-
 SWIGEXPORT int SWIGSTDCALL CSharp_MAX_PATH_get() {
   int jresult ;
   int result;
@@ -2633,6 +2623,24 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_TransactionID_CopyFrom(void * jarg1, void *
 }
 
 
+SWIGEXPORT unsigned int SWIGSTDCALL CSharp_TransactionID_NotEqualTo(void * jarg1, void * jarg2) {
+  unsigned int jresult ;
+  BR::TransactionID *arg1 = (BR::TransactionID *) 0 ;
+  BR::TransactionID *arg2 = 0 ;
+  bool result;
+  
+  arg1 = (BR::TransactionID *)jarg1; 
+  arg2 = (BR::TransactionID *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
+  result = (bool)((BR::TransactionID const *)arg1)->operator !=((BR::TransactionID const &)*arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT unsigned int SWIGSTDCALL CSharp_TransactionID_EqualTo(void * jarg1, void * jarg2) {
   unsigned int jresult ;
   BR::TransactionID *arg1 = (BR::TransactionID *) 0 ;
@@ -4668,6 +4676,26 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_MessageData_GetDataLength(void * jarg
   result = (UINT)(arg1)->GetDataLength();
   jresult = result; 
   return jresult;
+}
+
+
+SWIGEXPORT void SWIGSTDCALL CSharp_MessageData_GetRouteInfo(void * jarg1, void * jarg2, void * jarg3) {
+  BR::Message::MessageData *arg1 = (BR::Message::MessageData *) 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
+  
+  arg1 = (BR::Message::MessageData *)jarg1; 
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext & type is null", 0);
+    return ;
+  } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID & type is null", 0);
+    return ;
+  } 
+  (arg1)->GetRouteInfo(*arg2,*arg3);
 }
 
 
@@ -9655,39 +9683,43 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetPolicyMonitoring(void * jarg1) {
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyMonitoring_GetInstanceListCmd(void * jarg1, unsigned long long jarg2) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyMonitoring_GetInstanceListCmd(void * jarg1, void * jarg2) {
   long jresult ;
   BR::Policy::NetPolicyMonitoring *arg1 = (BR::Policy::NetPolicyMonitoring *) 0 ;
-  BR::Context *arg2 = 0 ;
-  BR::Context temp2 ;
+  BR::TransactionID *arg2 = 0 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetPolicyMonitoring *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  result = (HRESULT)(arg1)->GetInstanceListCmd((BR::Context const &)*arg2);
+  arg2 = (BR::TransactionID *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
+  result = (HRESULT)(arg1)->GetInstanceListCmd((BR::TransactionID const &)*arg2);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyMonitoring_RequestCounterValuesCmd(void * jarg1, unsigned long long jarg2, void * jarg3) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyMonitoring_RequestCounterValuesCmd(void * jarg1, void * jarg2, void * jarg3) {
   long jresult ;
   BR::Policy::NetPolicyMonitoring *arg1 = (BR::Policy::NetPolicyMonitoring *) 0 ;
-  BR::Context *arg2 = 0 ;
+  BR::TransactionID *arg2 = 0 ;
   BR::EntityUID *arg3 = 0 ;
-  BR::Context temp2 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetPolicyMonitoring *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
+  arg2 = (BR::TransactionID *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
   arg3 = (BR::EntityUID *)jarg3;
   if (!arg3) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::EntityUID const & type is null", 0);
     return 0;
   } 
-  result = (HRESULT)(arg1)->RequestCounterValuesCmd((BR::Context const &)*arg2,(BR::EntityUID const &)*arg3);
+  result = (HRESULT)(arg1)->RequestCounterValuesCmd((BR::TransactionID const &)*arg2,(BR::EntityUID const &)*arg3);
   jresult = result; 
   return jresult;
 }
@@ -9773,21 +9805,23 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetSvrPolicyMonitoring(void * jarg1) {
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyMonitoring_GetInstanceListRes(void * jarg1, unsigned long long jarg2, long jarg3, void * jarg4, unsigned int jarg5) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyMonitoring_GetInstanceListRes(void * jarg1, void * jarg2, long jarg3, void * jarg4, unsigned int jarg5) {
   long jresult ;
   BR::Policy::NetSvrPolicyMonitoring *arg1 = (BR::Policy::NetSvrPolicyMonitoring *) 0 ;
-  BR::Context *arg2 = 0 ;
+  BR::TransactionID *arg2 = 0 ;
   HRESULT *arg3 = 0 ;
   BR::Array< BR::PerformanceCounterInstanceInfo > *arg4 = 0 ;
   UINT32 *arg5 = 0 ;
-  BR::Context temp2 ;
   HRESULT temp3 ;
   UINT32 temp5 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetSvrPolicyMonitoring *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
+  arg2 = (BR::TransactionID *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
   temp3 = (HRESULT)jarg3; 
   arg3 = &temp3; 
   arg4 = (BR::Array< BR::PerformanceCounterInstanceInfo > *)jarg4;
@@ -9797,26 +9831,28 @@ SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyMonitoring_GetInstanceListRes(voi
   } 
   temp5 = (UINT32)jarg5; 
   arg5 = &temp5; 
-  result = (HRESULT)(arg1)->GetInstanceListRes((BR::Context const &)*arg2,(HRESULT const &)*arg3,(BR::Array< BR::PerformanceCounterInstanceInfo > const &)*arg4,(UINT32 const &)*arg5);
+  result = (HRESULT)(arg1)->GetInstanceListRes((BR::TransactionID const &)*arg2,(HRESULT const &)*arg3,(BR::Array< BR::PerformanceCounterInstanceInfo > const &)*arg4,(UINT32 const &)*arg5);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyMonitoring_RequestCounterValuesRes(void * jarg1, unsigned long long jarg2, long jarg3, void * jarg4, void * jarg5) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyMonitoring_RequestCounterValuesRes(void * jarg1, void * jarg2, long jarg3, void * jarg4, void * jarg5) {
   long jresult ;
   BR::Policy::NetSvrPolicyMonitoring *arg1 = (BR::Policy::NetSvrPolicyMonitoring *) 0 ;
-  BR::Context *arg2 = 0 ;
+  BR::TransactionID *arg2 = 0 ;
   HRESULT *arg3 = 0 ;
   BR::EntityUID *arg4 = 0 ;
   BR::Array< UINT64 > *arg5 = 0 ;
-  BR::Context temp2 ;
   HRESULT temp3 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetSvrPolicyMonitoring *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
+  arg2 = (BR::TransactionID *)jarg2;
+  if (!arg2) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
   temp3 = (HRESULT)jarg3; 
   arg3 = &temp3; 
   arg4 = (BR::EntityUID *)jarg4;
@@ -9829,7 +9865,7 @@ SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyMonitoring_RequestCounterValuesRe
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Array< UINT64 > const & type is null", 0);
     return 0;
   } 
-  result = (HRESULT)(arg1)->RequestCounterValuesRes((BR::Context const &)*arg2,(HRESULT const &)*arg3,(BR::EntityUID const &)*arg4,(BR::Array< UINT64 > const &)*arg5);
+  result = (HRESULT)(arg1)->RequestCounterValuesRes((BR::TransactionID const &)*arg2,(HRESULT const &)*arg3,(BR::EntityUID const &)*arg4,(BR::Array< UINT64 > const &)*arg5);
   jresult = result; 
   return jresult;
 }
@@ -9865,25 +9901,27 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetPolicyRanking(void * jarg1) {
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_AddPlayerCmd(void * jarg1, unsigned long long jarg2, void * jarg3, unsigned long long jarg4, unsigned long long jarg5, void * jarg6) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_AddPlayerCmd(void * jarg1, void * jarg2, void * jarg3, unsigned long long jarg4, unsigned long long jarg5, void * jarg6) {
   long jresult ;
   BR::Policy::NetPolicyRanking *arg1 = (BR::Policy::NetPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  BR::RouteContext *arg3 = 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
   BR::PlayerID *arg4 = 0 ;
   UINT64 *arg5 = 0 ;
   BR::Array< BYTE > *arg6 = 0 ;
-  BR::Context temp2 ;
   BR::PlayerID temp4 ;
   UINT64 temp5 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  arg3 = (BR::RouteContext *)jarg3;
-  if (!arg3) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
+    return 0;
+  } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
     return 0;
   } 
   temp4 = (BR::PlayerID)jarg4; 
@@ -9895,83 +9933,89 @@ SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_AddPlayerCmd(void * jarg1, u
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Array< BYTE > const & type is null", 0);
     return 0;
   } 
-  result = (HRESULT)(arg1)->AddPlayerCmd((BR::Context const &)*arg2,(BR::RouteContext const &)*arg3,(BR::PlayerID const &)*arg4,(UINT64 const &)*arg5,(BR::Array< BYTE > const &)*arg6);
+  result = (HRESULT)(arg1)->AddPlayerCmd((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(BR::PlayerID const &)*arg4,(UINT64 const &)*arg5,(BR::Array< BYTE > const &)*arg6);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_RemovePlayerCmd(void * jarg1, unsigned long long jarg2, void * jarg3, unsigned long long jarg4) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_RemovePlayerCmd(void * jarg1, void * jarg2, void * jarg3, unsigned long long jarg4) {
   long jresult ;
   BR::Policy::NetPolicyRanking *arg1 = (BR::Policy::NetPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  BR::RouteContext *arg3 = 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
   BR::PlayerID *arg4 = 0 ;
-  BR::Context temp2 ;
   BR::PlayerID temp4 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  arg3 = (BR::RouteContext *)jarg3;
-  if (!arg3) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
+    return 0;
+  } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
     return 0;
   } 
   temp4 = (BR::PlayerID)jarg4; 
   arg4 = &temp4; 
-  result = (HRESULT)(arg1)->RemovePlayerCmd((BR::Context const &)*arg2,(BR::RouteContext const &)*arg3,(BR::PlayerID const &)*arg4);
+  result = (HRESULT)(arg1)->RemovePlayerCmd((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(BR::PlayerID const &)*arg4);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_GetPlayerRankingCmd(void * jarg1, unsigned long long jarg2, void * jarg3, unsigned long long jarg4) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_GetPlayerRankingCmd(void * jarg1, void * jarg2, void * jarg3, unsigned long long jarg4) {
   long jresult ;
   BR::Policy::NetPolicyRanking *arg1 = (BR::Policy::NetPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  BR::RouteContext *arg3 = 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
   BR::PlayerID *arg4 = 0 ;
-  BR::Context temp2 ;
   BR::PlayerID temp4 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  arg3 = (BR::RouteContext *)jarg3;
-  if (!arg3) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
+    return 0;
+  } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
     return 0;
   } 
   temp4 = (BR::PlayerID)jarg4; 
   arg4 = &temp4; 
-  result = (HRESULT)(arg1)->GetPlayerRankingCmd((BR::Context const &)*arg2,(BR::RouteContext const &)*arg3,(BR::PlayerID const &)*arg4);
+  result = (HRESULT)(arg1)->GetPlayerRankingCmd((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(BR::PlayerID const &)*arg4);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_UpdatePlayerCmd(void * jarg1, unsigned long long jarg2, void * jarg3, unsigned long long jarg4, unsigned long long jarg5, void * jarg6) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_UpdatePlayerCmd(void * jarg1, void * jarg2, void * jarg3, unsigned long long jarg4, unsigned long long jarg5, void * jarg6) {
   long jresult ;
   BR::Policy::NetPolicyRanking *arg1 = (BR::Policy::NetPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  BR::RouteContext *arg3 = 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
   BR::PlayerID *arg4 = 0 ;
   UINT64 *arg5 = 0 ;
   BR::Array< BYTE > *arg6 = 0 ;
-  BR::Context temp2 ;
   BR::PlayerID temp4 ;
   UINT64 temp5 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  arg3 = (BR::RouteContext *)jarg3;
-  if (!arg3) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
+    return 0;
+  } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
     return 0;
   } 
   temp4 = (BR::PlayerID)jarg4; 
@@ -9983,37 +10027,39 @@ SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_UpdatePlayerCmd(void * jarg1
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::Array< BYTE > const & type is null", 0);
     return 0;
   } 
-  result = (HRESULT)(arg1)->UpdatePlayerCmd((BR::Context const &)*arg2,(BR::RouteContext const &)*arg3,(BR::PlayerID const &)*arg4,(UINT64 const &)*arg5,(BR::Array< BYTE > const &)*arg6);
+  result = (HRESULT)(arg1)->UpdatePlayerCmd((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(BR::PlayerID const &)*arg4,(UINT64 const &)*arg5,(BR::Array< BYTE > const &)*arg6);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_GetRankingCmd(void * jarg1, unsigned long long jarg2, void * jarg3, unsigned int jarg4, unsigned int jarg5) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetPolicyRanking_GetRankingCmd(void * jarg1, void * jarg2, void * jarg3, unsigned int jarg4, unsigned int jarg5) {
   long jresult ;
   BR::Policy::NetPolicyRanking *arg1 = (BR::Policy::NetPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  BR::RouteContext *arg3 = 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
   UINT32 *arg4 = 0 ;
   UINT32 *arg5 = 0 ;
-  BR::Context temp2 ;
   UINT32 temp4 ;
   UINT32 temp5 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  arg3 = (BR::RouteContext *)jarg3;
-  if (!arg3) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
+    return 0;
+  } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
     return 0;
   } 
   temp4 = (UINT32)jarg4; 
   arg4 = &temp4; 
   temp5 = (UINT32)jarg5; 
   arg5 = &temp5; 
-  result = (HRESULT)(arg1)->GetRankingCmd((BR::Context const &)*arg2,(BR::RouteContext const &)*arg3,(UINT32 const &)*arg4,(UINT32 const &)*arg5);
+  result = (HRESULT)(arg1)->GetRankingCmd((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(UINT32 const &)*arg4,(UINT32 const &)*arg5);
   jresult = result; 
   return jresult;
 }
@@ -10031,147 +10077,157 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_new_NetSvrPolicyRanking(void * jarg1) {
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_AddPlayerRes(void * jarg1, unsigned long long jarg2, long jarg3, void * jarg4, unsigned int jarg5) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_AddPlayerRes(void * jarg1, void * jarg2, void * jarg3, long jarg4, unsigned int jarg5) {
   long jresult ;
   BR::Policy::NetSvrPolicyRanking *arg1 = (BR::Policy::NetSvrPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  HRESULT *arg3 = 0 ;
-  BR::RouteContext *arg4 = 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
+  HRESULT *arg4 = 0 ;
   UINT32 *arg5 = 0 ;
-  BR::Context temp2 ;
-  HRESULT temp3 ;
+  HRESULT temp4 ;
   UINT32 temp5 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetSvrPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  temp3 = (HRESULT)jarg3; 
-  arg3 = &temp3; 
-  arg4 = (BR::RouteContext *)jarg4;
-  if (!arg4) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
     return 0;
   } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
+  temp4 = (HRESULT)jarg4; 
+  arg4 = &temp4; 
   temp5 = (UINT32)jarg5; 
   arg5 = &temp5; 
-  result = (HRESULT)(arg1)->AddPlayerRes((BR::Context const &)*arg2,(HRESULT const &)*arg3,(BR::RouteContext const &)*arg4,(UINT32 const &)*arg5);
+  result = (HRESULT)(arg1)->AddPlayerRes((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(HRESULT const &)*arg4,(UINT32 const &)*arg5);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_RemovePlayerRes(void * jarg1, unsigned long long jarg2, long jarg3, void * jarg4) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_RemovePlayerRes(void * jarg1, void * jarg2, void * jarg3, long jarg4) {
   long jresult ;
   BR::Policy::NetSvrPolicyRanking *arg1 = (BR::Policy::NetSvrPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  HRESULT *arg3 = 0 ;
-  BR::RouteContext *arg4 = 0 ;
-  BR::Context temp2 ;
-  HRESULT temp3 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
+  HRESULT *arg4 = 0 ;
+  HRESULT temp4 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetSvrPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  temp3 = (HRESULT)jarg3; 
-  arg3 = &temp3; 
-  arg4 = (BR::RouteContext *)jarg4;
-  if (!arg4) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
     return 0;
   } 
-  result = (HRESULT)(arg1)->RemovePlayerRes((BR::Context const &)*arg2,(HRESULT const &)*arg3,(BR::RouteContext const &)*arg4);
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
+  temp4 = (HRESULT)jarg4; 
+  arg4 = &temp4; 
+  result = (HRESULT)(arg1)->RemovePlayerRes((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(HRESULT const &)*arg4);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_GetPlayerRankingRes(void * jarg1, unsigned long long jarg2, long jarg3, void * jarg4, unsigned int jarg5) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_GetPlayerRankingRes(void * jarg1, void * jarg2, void * jarg3, long jarg4, unsigned int jarg5) {
   long jresult ;
   BR::Policy::NetSvrPolicyRanking *arg1 = (BR::Policy::NetSvrPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  HRESULT *arg3 = 0 ;
-  BR::RouteContext *arg4 = 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
+  HRESULT *arg4 = 0 ;
   UINT32 *arg5 = 0 ;
-  BR::Context temp2 ;
-  HRESULT temp3 ;
+  HRESULT temp4 ;
   UINT32 temp5 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetSvrPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  temp3 = (HRESULT)jarg3; 
-  arg3 = &temp3; 
-  arg4 = (BR::RouteContext *)jarg4;
-  if (!arg4) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
     return 0;
   } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
+  temp4 = (HRESULT)jarg4; 
+  arg4 = &temp4; 
   temp5 = (UINT32)jarg5; 
   arg5 = &temp5; 
-  result = (HRESULT)(arg1)->GetPlayerRankingRes((BR::Context const &)*arg2,(HRESULT const &)*arg3,(BR::RouteContext const &)*arg4,(UINT32 const &)*arg5);
+  result = (HRESULT)(arg1)->GetPlayerRankingRes((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(HRESULT const &)*arg4,(UINT32 const &)*arg5);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_UpdatePlayerRes(void * jarg1, unsigned long long jarg2, long jarg3, void * jarg4, unsigned int jarg5) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_UpdatePlayerRes(void * jarg1, void * jarg2, void * jarg3, long jarg4, unsigned int jarg5) {
   long jresult ;
   BR::Policy::NetSvrPolicyRanking *arg1 = (BR::Policy::NetSvrPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  HRESULT *arg3 = 0 ;
-  BR::RouteContext *arg4 = 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
+  HRESULT *arg4 = 0 ;
   UINT32 *arg5 = 0 ;
-  BR::Context temp2 ;
-  HRESULT temp3 ;
+  HRESULT temp4 ;
   UINT32 temp5 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetSvrPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  temp3 = (HRESULT)jarg3; 
-  arg3 = &temp3; 
-  arg4 = (BR::RouteContext *)jarg4;
-  if (!arg4) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
     return 0;
   } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
+  temp4 = (HRESULT)jarg4; 
+  arg4 = &temp4; 
   temp5 = (UINT32)jarg5; 
   arg5 = &temp5; 
-  result = (HRESULT)(arg1)->UpdatePlayerRes((BR::Context const &)*arg2,(HRESULT const &)*arg3,(BR::RouteContext const &)*arg4,(UINT32 const &)*arg5);
+  result = (HRESULT)(arg1)->UpdatePlayerRes((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(HRESULT const &)*arg4,(UINT32 const &)*arg5);
   jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_GetRankingRes(void * jarg1, unsigned long long jarg2, long jarg3, void * jarg4, unsigned int jarg5) {
+SWIGEXPORT long SWIGSTDCALL CSharp_NetSvrPolicyRanking_GetRankingRes(void * jarg1, void * jarg2, void * jarg3, long jarg4, unsigned int jarg5) {
   long jresult ;
   BR::Policy::NetSvrPolicyRanking *arg1 = (BR::Policy::NetSvrPolicyRanking *) 0 ;
-  BR::Context *arg2 = 0 ;
-  HRESULT *arg3 = 0 ;
-  BR::RouteContext *arg4 = 0 ;
+  BR::RouteContext *arg2 = 0 ;
+  BR::TransactionID *arg3 = 0 ;
+  HRESULT *arg4 = 0 ;
   UINT32 *arg5 = 0 ;
-  BR::Context temp2 ;
-  HRESULT temp3 ;
+  HRESULT temp4 ;
   UINT32 temp5 ;
   HRESULT result;
   
   arg1 = (BR::Policy::NetSvrPolicyRanking *)jarg1; 
-  temp2 = (BR::Context)jarg2; 
-  arg2 = &temp2; 
-  temp3 = (HRESULT)jarg3; 
-  arg3 = &temp3; 
-  arg4 = (BR::RouteContext *)jarg4;
-  if (!arg4) {
+  arg2 = (BR::RouteContext *)jarg2;
+  if (!arg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::RouteContext const & type is null", 0);
     return 0;
   } 
+  arg3 = (BR::TransactionID *)jarg3;
+  if (!arg3) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "BR::TransactionID const & type is null", 0);
+    return 0;
+  } 
+  temp4 = (HRESULT)jarg4; 
+  arg4 = &temp4; 
   temp5 = (UINT32)jarg5; 
   arg5 = &temp5; 
-  result = (HRESULT)(arg1)->GetRankingRes((BR::Context const &)*arg2,(HRESULT const &)*arg3,(BR::RouteContext const &)*arg4,(UINT32 const &)*arg5);
+  result = (HRESULT)(arg1)->GetRankingRes((BR::RouteContext const &)*arg2,(BR::TransactionID const &)*arg3,(HRESULT const &)*arg4,(UINT32 const &)*arg5);
   jresult = result; 
   return jresult;
 }

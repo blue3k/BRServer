@@ -127,28 +127,82 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GamePlayState_FirstFreeDebate : public GamePlayState_TimeLimit
+	class GamePlayState_TimeLimitBotTalk : public GamePlayState_TimeLimit
+	{
+	protected:
+		Util::TimeStampTimer m_TimeToNextBotTalk;
+		int m_BotTalkBegin;
+		int m_BotTalkEnd;
+		float m_PlayDelay;
+		float m_BotDelay1;
+		float m_BotDelay2;
+		int m_BotIndex;
+
+	public:
+		GamePlayState_TimeLimitBotTalk(GameInstanceEntity* Owner, GameStateID state) :GamePlayState_TimeLimit(Owner, state) {}
+		virtual ~GamePlayState_TimeLimitBotTalk() {}
+
+		virtual HRESULT OnEnter()
+		{
+			m_BotIndex = 0;
+
+			float delay = ((m_BotDelay2 - m_BotDelay1) * Util::Random.Rand(0, 100)) / 100.0f;
+			m_TimeToNextBotTalk.SetTimer(DurationMS((int)((m_PlayDelay + delay) * 1000)));
+			return GamePlayState_TimeLimit::OnEnter();
+		}
+
+		virtual HRESULT OnUpdate()
+		{
+			if (m_TimeToNextBotTalk.CheckTimer())
+			{
+				BroadCastRandomBotMessage(m_BotTalkBegin, m_BotTalkEnd, m_BotIndex);
+
+				float delay = ((m_BotDelay2 - m_BotDelay1) * Util::Random.Rand(0, 100)) / 100.0f;
+				m_TimeToNextBotTalk.SetTimer(DurationMS((int)(delay * 1000)));
+			}
+			return GamePlayState_TimeLimit::OnUpdate();
+		}
+
+		virtual HRESULT OnLeave()
+		{
+			m_TimeToNextBotTalk.ClearTimer();
+			return GamePlayState_TimeLimit::OnLeave();
+		}
+
+		virtual HRESULT BroadCastRandomBotMessage(int minID, int maxID, int& index)
+		{
+			return GetGamePlaySystem().BroadCastRandomBotMessage(m_BotTalkBegin, m_BotTalkEnd, m_BotIndex);
+		}
+	};
+
+
+	class GamePlayState_FirstFreeDebate : public GamePlayState_TimeLimitBotTalk
 	{
 	private:
 
 	public:
-		GamePlayState_FirstFreeDebate(GameInstanceEntity* Owner):GamePlayState_TimeLimit(Owner,GameStateID::FreeDebate) {}
+		GamePlayState_FirstFreeDebate(GameInstanceEntity* Owner):GamePlayState_TimeLimitBotTalk(Owner,GameStateID::FreeDebate)
+		{
+			auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
+			m_BotTalkBegin = pBotTalkTbl->FirstDay_Begin;
+			m_BotTalkEnd = pBotTalkTbl->FirstDay_End;
+			m_PlayDelay = pBotTalkTbl->FirstDay_PlayDelay;
+			m_BotDelay1 = pBotTalkTbl->FirstDay_BotDelay1;
+			m_BotDelay2 = pBotTalkTbl->FirstDay_BotDelay2;
+		}
+
 		virtual ~GamePlayState_FirstFreeDebate() {}
 
 		virtual HRESULT OnEnter()
 		{
 			HRESULT hr = S_SYSTEM_OK;
-			auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
 
-			svrChk(GamePlayState_TimeLimit::OnEnter() );
+			svrChk(GamePlayState_TimeLimitBotTalk::OnEnter() );
 
 			GetGamePlaySystem().SetHuntedPlayer(0);
 
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
 			m_TimeToNext.SetTimer( DurationMS(GetOwner().GetPresetGameConfig()->FreeDiscussion*1000) );
-
-			svrChkPtr(pBotTalkTbl);
-			GetGamePlaySystem().BroadCastRandomBotMessage(pBotTalkTbl->FirstDay_Begin, pBotTalkTbl->FirstDay_End);
 
 		Proc_End:
 
@@ -305,12 +359,20 @@ namespace ConspiracyGameInstanceServer {
 	//};
 
 
-	class GamePlayState_MorningDebate : public GamePlayState_TimeLimit
+	class GamePlayState_MorningDebate : public GamePlayState_TimeLimitBotTalk
 	{
 	private:
 
 	public:
-		GamePlayState_MorningDebate(GameInstanceEntity* Owner):GamePlayState_TimeLimit(Owner,GameStateID::MorningDebate) {}
+		GamePlayState_MorningDebate(GameInstanceEntity* Owner):GamePlayState_TimeLimitBotTalk(Owner,GameStateID::MorningDebate)
+		{
+			auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
+			m_BotTalkBegin = pBotTalkTbl->FreeTalk_Begin;
+			m_BotTalkEnd = pBotTalkTbl->FreeTalk_End;
+			m_PlayDelay = pBotTalkTbl->FreeTalk_PlayDelay;
+			m_BotDelay1 = pBotTalkTbl->FreeTalk_BotDelay1;
+			m_BotDelay2 = pBotTalkTbl->FreeTalk_BotDelay2;
+		}
 		virtual ~GamePlayState_MorningDebate() {}
 		
 		virtual HRESULT OnEnter()
@@ -319,17 +381,11 @@ namespace ConspiracyGameInstanceServer {
 
 			GetOwner().GetComponent<GameStateSystem>()->NextDay();
 
-			svrChk(GamePlayState_TimeLimit::OnEnter() );
+			svrChk(GamePlayState_TimeLimitBotTalk::OnEnter() );
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
 			m_TimeToNext.SetTimer( DurationMS(GetOwner().GetPresetGameConfig()->MorningDiscussion*1000) );
-
-			{
-				auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
-				svrChkPtr(pBotTalkTbl);
-				GetGamePlaySystem().BroadCastRandomBotMessage(pBotTalkTbl->FreeTalk_Begin, pBotTalkTbl->FreeTalk_End);
-			}
 
 		Proc_End:
 
@@ -422,12 +478,20 @@ namespace ConspiracyGameInstanceServer {
 	};
 
 
-	class GamePlayState_DefenceOfSuspects : public GamePlayState_TimeLimit
+	class GamePlayState_DefenceOfSuspects : public GamePlayState_TimeLimitBotTalk
 	{
 	private:
 
 	public:
-		GamePlayState_DefenceOfSuspects(GameInstanceEntity* Owner):GamePlayState_TimeLimit(Owner,GameStateID::DefenceOfSuspects) {}
+		GamePlayState_DefenceOfSuspects(GameInstanceEntity* Owner):GamePlayState_TimeLimitBotTalk(Owner,GameStateID::DefenceOfSuspects)
+		{
+			auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
+			m_BotTalkBegin = pBotTalkTbl->Defense_Begin;
+			m_BotTalkEnd = pBotTalkTbl->Defense_End;
+			m_PlayDelay = pBotTalkTbl->Defense_PlayDelay;
+			m_BotDelay1 = pBotTalkTbl->Defense_BotDelay1;
+			m_BotDelay2 = pBotTalkTbl->Defense_BotDelay2;
+		}
 		virtual ~GamePlayState_DefenceOfSuspects() {}
 		
 		// Check whether it can be proceeded or not
@@ -436,26 +500,20 @@ namespace ConspiracyGameInstanceServer {
 		virtual HRESULT OnEnter() override
 		{
 			HRESULT hr = S_SYSTEM_OK;
-			svrChk(GamePlayState_TimeLimit::OnEnter() );
+			svrChk(GamePlayState_TimeLimitBotTalk::OnEnter() );
 
 			// Set vote timer
 			m_TimeToNext.SetTimerFunc( [&](){ GetGameStateSystem().AdvanceState(); } );
 			m_TimeToNext.SetTimer(DurationMS(GetOwner().GetPresetGameConfig()->DefenceTime*1000) );
-
-			{
-				auto pBotTalkTbl = GetOwner().GetBotTalkTbl();
-				svrChkPtr(pBotTalkTbl);
-				GetGamePlaySystem().BroadCastRandomBotMessageSuspect(pBotTalkTbl->Defense_Begin, pBotTalkTbl->Defense_End);
-			}
 
 		Proc_End:
 
 			return hr;
 		}
 
-		virtual HRESULT OnLeave() override
+		virtual HRESULT BroadCastRandomBotMessage(int minID, int maxID, int& index) override
 		{
-			return GamePlayState_TimeLimit::OnLeave();
+			return GetGamePlaySystem().BroadCastRandomBotMessageSuspect(m_BotTalkBegin, m_BotTalkEnd, m_BotIndex);
 		}
 	};
 

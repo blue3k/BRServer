@@ -674,20 +674,34 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	HRESULT GamePlaySystem::BroadCastRandomBotMessage(int minID, int maxID)
+	HRESULT GamePlaySystem::BroadCastRandomBotMessage(int minID, int maxID, int& index)
 	{
-		return BroadCastRandomBotMessage(PlayerRole::None, minID, maxID);
+		return BroadCastRandomBotMessage(PlayerRole::None, minID, maxID, index);
 	}
 
 	
-	HRESULT GamePlaySystem::BroadCastRandomBotMessage(PlayerRole roleToTalk, int minID, int maxID)
+	HRESULT GamePlaySystem::BroadCastRandomBotMessage(PlayerRole roleToTalk, int minID, int maxID, int& index)
 	{
+		int botIndex = -1;
 		char strBuffer[1024];
+
+		if(index >= (int)GetOwner().GetNumBot())
+			return S_SYSTEM_OK;
 
 		GetOwner().ForeachPlayer( [&](GamePlayer* pPlayerFrom) ->HRESULT
 		{
-			if (!pPlayerFrom->GetIsBot()
-				|| pPlayerFrom->GetPlayerState() != PlayerState::Playing) return S_SYSTEM_OK;
+			if (!pPlayerFrom->GetIsBot()) return S_SYSTEM_OK;
+
+			botIndex++;
+
+			if(botIndex < index)
+				return S_SYSTEM_OK;
+
+			if (botIndex > index)
+				return E_SYSTEM_FAIL;
+
+			if(pPlayerFrom->GetPlayerState() != PlayerState::Playing)
+				return S_SYSTEM_OK;
 
 			if (roleToTalk != PlayerRole::None && pPlayerFrom->GetRole() != roleToTalk) return S_SYSTEM_OK;
 
@@ -702,20 +716,32 @@ namespace ConspiracyGameInstanceServer {
 			return S_SYSTEM_OK;
 		});
 
-
+		index++;
 		return S_SYSTEM_OK;
 	}
 
-	HRESULT GamePlaySystem::BroadCastRandomBotMessageSuspect(int minID, int maxID)
+	HRESULT GamePlaySystem::BroadCastRandomBotMessageSuspect(int minID, int maxID, int& index)
 	{
+		int botIndex = -1;
 		char strBuffer[1024];
+
+		if (index >= (int)GetOwner().GetNumBot())
+			return S_SYSTEM_OK;
 
 		GetOwner().ForeachPlayer([&](GamePlayer* pPlayerFrom) ->HRESULT
 		{
-			if (!pPlayerFrom->GetIsBot()
-				|| pPlayerFrom->GetPlayerState() != PlayerState::Playing) return S_SYSTEM_OK;
+			if (!pPlayerFrom->GetIsBot()) return S_SYSTEM_OK;
 
-			if (!IsSuspect(pPlayerFrom->GetPlayerID())) return S_SYSTEM_OK;
+			if (!IsSuspect(pPlayerFrom->GetPlayerID()))
+				return S_SYSTEM_OK;
+
+			botIndex++;
+
+			if (botIndex < index)
+				return S_SYSTEM_OK;
+
+			if (botIndex > index)
+				return E_SYSTEM_FAIL;
 
 			int randTalkPossibility = Util::Random.Rand(1000);
 			if (randTalkPossibility > 700) return S_SYSTEM_OK;
@@ -728,7 +754,7 @@ namespace ConspiracyGameInstanceServer {
 			return S_SYSTEM_OK;
 		});
 
-
+		index++;
 		return S_SYSTEM_OK;
 	}
 

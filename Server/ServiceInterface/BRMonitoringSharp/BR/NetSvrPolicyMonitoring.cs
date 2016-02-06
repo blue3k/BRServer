@@ -39,14 +39,14 @@ public class NetSvrPolicyMonitoring : global::System.IDisposable {
   public unsafe NetSvrPolicyMonitoring(IConnection pConn) : this(BRMonitoringPINVOKE.new_NetSvrPolicyMonitoring(IConnection.getCPtr(pConn)), true) {
   }
 
-  public unsafe int GetInstanceListRes(ulong InContext, int InResult, ArrayPerformanceCounterInstanceInfo InCounterInstances, uint InTotalInstanceCount) {
-    int ret = BRMonitoringPINVOKE.NetSvrPolicyMonitoring_GetInstanceListRes(swigCPtr, InContext, InResult, ArrayPerformanceCounterInstanceInfo.getCPtr(InCounterInstances), InTotalInstanceCount);
+  public unsafe int GetInstanceListRes(TransactionID InTransactionID, int InResult, ArrayPerformanceCounterInstanceInfo InCounterInstances, uint InTotalInstanceCount) {
+    int ret = BRMonitoringPINVOKE.NetSvrPolicyMonitoring_GetInstanceListRes(swigCPtr, TransactionID.getCPtr(InTransactionID), InResult, ArrayPerformanceCounterInstanceInfo.getCPtr(InCounterInstances), InTotalInstanceCount);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int RequestCounterValuesRes(ulong InContext, int InResult, EntityUID InInstanceUID, ArrayUInt64 InCounterValues) {
-    int ret = BRMonitoringPINVOKE.NetSvrPolicyMonitoring_RequestCounterValuesRes(swigCPtr, InContext, InResult, EntityUID.getCPtr(InInstanceUID), ArrayUInt64.getCPtr(InCounterValues));
+  public unsafe int RequestCounterValuesRes(TransactionID InTransactionID, int InResult, EntityUID InInstanceUID, ArrayUInt64 InCounterValues) {
+    int ret = BRMonitoringPINVOKE.NetSvrPolicyMonitoring_RequestCounterValuesRes(swigCPtr, TransactionID.getCPtr(InTransactionID), InResult, EntityUID.getCPtr(InInstanceUID), ArrayUInt64.getCPtr(InCounterValues));
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

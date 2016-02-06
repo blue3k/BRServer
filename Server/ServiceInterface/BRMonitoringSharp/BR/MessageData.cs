@@ -79,6 +79,11 @@ public class MessageData : global::System.IDisposable {
     return ret;
   }
 
+  public unsafe void GetRouteInfo(RouteContext routeContext, TransactionID transID) {
+    BRMonitoringPINVOKE.MessageData_GetRouteInfo(swigCPtr, RouteContext.getCPtr(routeContext), TransactionID.getCPtr(transID));
+    if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public unsafe void ClearAssignedSequence() {
     BRMonitoringPINVOKE.MessageData_ClearAssignedSequence(swigCPtr);
   }

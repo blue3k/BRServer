@@ -50,7 +50,6 @@ public class BRMonitoring {
   public unsafe static readonly bool WINDOWS = BRMonitoringPINVOKE.WINDOWS_get();
   public unsafe static readonly int TRUE = BRMonitoringPINVOKE.TRUE_get();
   public unsafe static readonly int FALSE = BRMonitoringPINVOKE.FALSE_get();
-  public unsafe static readonly int S_OK = BRMonitoringPINVOKE.S_OK_get();
   public unsafe static readonly int MAX_PATH = BRMonitoringPINVOKE.MAX_PATH_get();
   public unsafe static readonly int NET_SEQUENCE_BITS = BRMonitoringPINVOKE.NET_SEQUENCE_BITS_get();
   public unsafe static readonly int NET_SEQUENCE_MASK = BRMonitoringPINVOKE.NET_SEQUENCE_MASK_get();

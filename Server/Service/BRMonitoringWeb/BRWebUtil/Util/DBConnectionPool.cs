@@ -65,7 +65,8 @@ namespace BR.DB
                 case "UInt64": return "bigint";
                 case "Int32": return "int";
                 case "Int64": return "bigint";
-                case "long": return "bigint";
+                case "Long": return "bigint";
+                case "Single": return "float";
                 default:
                     System.Diagnostics.Debug.Assert(type.IsEnum);
                     return "int";

@@ -329,7 +329,7 @@ namespace ConspiracyGameInstanceServer {
 	HRESULT GameInstanceEntity::AddPlayerToJoin(Svr::GameInstancePlayer* &pInsPlayer)
 	{
 		HRESULT hr = S_SYSTEM_OK;
-		GamePlayer* pFound = nullptr;
+		//GamePlayer* pFound = nullptr;
 		GamePlayer* pPlayer = nullptr;
 		UINT playerIndex;
 

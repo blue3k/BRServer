@@ -48,9 +48,9 @@ namespace GameServer {
 		// Start Transaction
 		virtual HRESULT StartTransaction() override;
 
-		Policy::ISvrPolicyGameServer* GetPolicy() { return super::GetPolicy<Policy::ISvrPolicyGameServer>(); }
+		Policy::ISvrPolicyGameServer* GetPolicy() { return super::template GetPolicy<Policy::ISvrPolicyGameServer>(); }
 
-		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
+		BR_SVR_MSGTRANS_CLOSE_ARGS(RegisterPlayerToJoinGameServerRes, RouteContext(m_PlayerUID, super::GetRouteContext().GetFrom()), m_PublicAddress, m_PublicAddressIPV6, m_Port);
 	};
 
 

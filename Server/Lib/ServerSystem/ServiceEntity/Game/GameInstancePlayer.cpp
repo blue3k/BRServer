@@ -78,7 +78,7 @@ namespace Svr {
 	{
 		HRESULT hr = S_SYSTEM_OK;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

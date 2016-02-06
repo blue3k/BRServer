@@ -197,9 +197,6 @@ class BRMonitoringPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_FALSE_get")]
   public static extern int FALSE_get();
 
-  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_S_OK_get")]
-  public static extern int S_OK_get();
-
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MAX_PATH_get")]
   public static extern int MAX_PATH_get();
 
@@ -686,6 +683,9 @@ class BRMonitoringPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_TransactionID_CopyFrom")]
   public static extern global::System.IntPtr TransactionID_CopyFrom(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_TransactionID_NotEqualTo")]
+  public static extern bool TransactionID_NotEqualTo(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_TransactionID_EqualTo")]
   public static extern bool TransactionID_EqualTo(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
@@ -1150,6 +1150,9 @@ class BRMonitoringPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageData_GetDataLength")]
   public static extern uint MessageData_GetDataLength(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageData_GetRouteInfo")]
+  public static extern void MessageData_GetRouteInfo(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageData_ClearAssignedSequence")]
   public static extern void MessageData_ClearAssignedSequence(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -2325,10 +2328,10 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr new_NetPolicyMonitoring(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyMonitoring_GetInstanceListCmd")]
-  public static extern int NetPolicyMonitoring_GetInstanceListCmd(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
+  public static extern int NetPolicyMonitoring_GetInstanceListCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyMonitoring_RequestCounterValuesCmd")]
-  public static extern int NetPolicyMonitoring_RequestCounterValuesCmd(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern int NetPolicyMonitoring_RequestCounterValuesCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyMonitoring_PerformanceCounterNewC2SEvt")]
   public static extern int NetPolicyMonitoring_PerformanceCounterNewC2SEvt(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
@@ -2343,10 +2346,10 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr new_NetSvrPolicyMonitoring(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyMonitoring_GetInstanceListRes")]
-  public static extern int NetSvrPolicyMonitoring_GetInstanceListRes(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
+  public static extern int NetSvrPolicyMonitoring_GetInstanceListRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyMonitoring_RequestCounterValuesRes")]
-  public static extern int NetSvrPolicyMonitoring_RequestCounterValuesRes(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
+  public static extern int NetSvrPolicyMonitoring_RequestCounterValuesRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyMonitoring_PerformanceCounterUpdateCounterInfoS2CEvt")]
   public static extern int NetSvrPolicyMonitoring_PerformanceCounterUpdateCounterInfoS2CEvt(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -2355,37 +2358,37 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr new_NetPolicyRanking(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_AddPlayerCmd")]
-  public static extern int NetPolicyRanking_AddPlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4, ulong jarg5, global::System.Runtime.InteropServices.HandleRef jarg6);
+  public static extern int NetPolicyRanking_AddPlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4, ulong jarg5, global::System.Runtime.InteropServices.HandleRef jarg6);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_RemovePlayerCmd")]
-  public static extern int NetPolicyRanking_RemovePlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4);
+  public static extern int NetPolicyRanking_RemovePlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_GetPlayerRankingCmd")]
-  public static extern int NetPolicyRanking_GetPlayerRankingCmd(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4);
+  public static extern int NetPolicyRanking_GetPlayerRankingCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_UpdatePlayerCmd")]
-  public static extern int NetPolicyRanking_UpdatePlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4, ulong jarg5, global::System.Runtime.InteropServices.HandleRef jarg6);
+  public static extern int NetPolicyRanking_UpdatePlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4, ulong jarg5, global::System.Runtime.InteropServices.HandleRef jarg6);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_GetRankingCmd")]
-  public static extern int NetPolicyRanking_GetRankingCmd(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, uint jarg4, uint jarg5);
+  public static extern int NetPolicyRanking_GetRankingCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, uint jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_NetSvrPolicyRanking")]
   public static extern global::System.IntPtr new_NetSvrPolicyRanking(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_AddPlayerRes")]
-  public static extern int NetSvrPolicyRanking_AddPlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
+  public static extern int NetSvrPolicyRanking_AddPlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_RemovePlayerRes")]
-  public static extern int NetSvrPolicyRanking_RemovePlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
+  public static extern int NetSvrPolicyRanking_RemovePlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_GetPlayerRankingRes")]
-  public static extern int NetSvrPolicyRanking_GetPlayerRankingRes(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
+  public static extern int NetSvrPolicyRanking_GetPlayerRankingRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_UpdatePlayerRes")]
-  public static extern int NetSvrPolicyRanking_UpdatePlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
+  public static extern int NetSvrPolicyRanking_UpdatePlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_GetRankingRes")]
-  public static extern int NetSvrPolicyRanking_GetRankingRes(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
+  public static extern int NetSvrPolicyRanking_GetRankingRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_InitializeNativeSystem")]
   public static extern int InitializeNativeSystem(string jarg1, string jarg2, string jarg3);

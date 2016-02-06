@@ -220,7 +220,6 @@ namespace Svr {
 			{
 				auto myConfig = BrServer::GetInstance()->GetMyConfig();
 				auto netPrivate = Svr::BrServer::GetInstance()->GetNetPrivate();
-				const Svr::Config::PublicServer *pGeneric = nullptr;
 
 				svrChkPtr(myConfig);
 

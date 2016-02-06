@@ -208,13 +208,14 @@ namespace GameServer {
 			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
 		}
 
-
-		// Register game conspiracy cluster as a slave
-		auto pMySvr = (const Svr::Config::PublicServer*)GetMyConfig();
-		svrMem( pGameService = new GameClusterServiceEntity(pMySvr->NetPublic, GameID::Conspiracy, ClusterMembership::Slave) );
-		svrChk( GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGameService ) );
-		svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameService ) );
-		AddComponent(pGameService);
+		{
+			// Register game conspiracy cluster as a slave
+			auto pMySvr = (const Svr::Config::PublicServer*)GetMyConfig();
+			svrMem(pGameService = new GameClusterServiceEntity(pMySvr->NetPublic, GameID::Conspiracy, ClusterMembership::Slave));
+			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pGameService));
+			svrChk(GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
+			AddComponent(pGameService);
+		}
 
 
 		// Account DB

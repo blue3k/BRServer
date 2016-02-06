@@ -42,14 +42,12 @@ namespace GameServer {
 
 	template<class ProcessEntity>
 	GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg)
-		: ServerEntityMessageTransaction(pIMsg)
+		: super(pIMsg)
 		, m_PublicAddress(nullptr)
 		, m_PublicAddressIPV6(nullptr)
 		, m_Port(0)
 	{
-		SetWorkOnServerEntity(true);
-
-		BR_TRANS_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes, { return OnPlayerRegisteredRes(pRes); });
+		super::template RegisterMessageHandler<Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes>(__FILE__, __LINE__, [&](::BR::Svr::TransactionResult* pRes)->HRESULT { return OnPlayerRegisteredRes(pRes); });
 	}
 
 	template<class ProcessEntity>
@@ -66,7 +64,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		CloseTransaction(hr);
+		super::CloseTransaction(hr);
 
 		return S_SYSTEM_OK;
 	}
@@ -84,29 +82,30 @@ namespace GameServer {
 
 		svrChk( super::StartTransaction() );
 
-		if( GetPlayerID() == 0 )
+		if( super::GetPlayerID() == 0 )
 		{
 			svrErr(E_INVALID_PLAYERID);
 		}
 
-		if( SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->FindEntity( GetRouteContext().GetTo(), pEntity ))
+		if( SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(super::GetRouteContext().GetTo(), pEntity ))
 			&& pEntity->GetEntityID().GetFacultyID() == (UINT)EntityFaculty::User )
 		{
 			svrChkPtr( pPlayerEntity = BR_DYNAMIC_CAST(GamePlayerEntity*,(Svr::Entity*)pEntity) );
 
 			// If a login server has invalid login session information from the DB. the player ID will not be match
-			if( pPlayerEntity->GetPlayerID() != GetPlayerID() )
+			if( pPlayerEntity->GetPlayerID() != super::GetPlayerID() )
 			{
-				svrErrClose(E_INVALID_PLAYERID);
+				super::CloseTransaction(E_INVALID_PLAYERID);
+				goto Proc_End;
 			}
 
-			svrTrace(Svr::TRC_ENTITY, "Reinitialize Player Entity UID:{0}", GetPlayerID());
-			Assert(pPlayerEntity->GetShardID() == GetShardID());
+			svrTrace(Svr::TRC_ENTITY, "Reinitialize Player Entity UID:{0}", super::GetPlayerID());
+			Assert(pPlayerEntity->GetShardID() == super::GetShardID());
 		}
 		else
 		{
 			Svr::Entity* pEntity = nullptr;
-			svrTrace(Svr::TRC_ENTITY, "Create new Player Entity UID:{0}", GetPlayerID());
+			svrTrace(Svr::TRC_ENTITY, "Create new Player Entity UID:{0}", super::GetPlayerID());
 
 			svrChk(Svr::GetServerComponent<GameEntityManager>()->CreateEntity(ClusterID::Game_Conspiracy, EntityFaculty::User, pEntity));
 			svrChkPtr(pPlayerEntity = dynamic_cast<GamePlayerEntity*>(pEntity));
@@ -114,20 +113,20 @@ namespace GameServer {
 
 			// Add Entity will Initialize entity so that AccountID is erased.
 			// SetAccountID need to be set after entity is added
-			pPlayerEntity->SetAccountID(GetPlayerID());
+			pPlayerEntity->SetAccountID(super::GetPlayerID());
 		}
 
-		pPlayerEntity->SetShardID(GetShardID());
+		pPlayerEntity->SetShardID(super::GetShardID());
 		m_PlayerUID = pPlayerEntity->GetEntityUID();
 
 		m_PublicAddress = GetMyServer()->GetPublicNetConfig()->IPV4.c_str();
 		m_PublicAddressIPV6 = GetMyServer()->GetPublicNetConfig()->IPV6.c_str();
 		m_Port = GetMyServer()->GetPublicNetConfig()->Port;
 
-		if ((Svr::Entity*)pPlayerEntity == (Svr::Entity*)GetMyOwner())
+		if ((Svr::Entity*)pPlayerEntity == (Svr::Entity*)super::GetMyOwner())
 		{
-			svrChk(pPlayerEntity->OnJoinGameServerInitialize(GetTicket(), GetFBUserID()));
-			CloseTransaction(hr);
+			svrChk(pPlayerEntity->OnJoinGameServerInitialize(super::GetTicket(), super::GetFBUserID()));
+			super::CloseTransaction(hr);
 		}
 		else
 		{
@@ -135,15 +134,15 @@ namespace GameServer {
 			svrChkPtr(pTargetPolicy = GetMyServer()->GetLoopbackServerEntity()->GetPolicy<Policy::IPolicyGameServer>());
 
 			svrChk(pTargetPolicy->RegisterPlayerToJoinGameServerOnPlayerEntityCmd(
-				RouteContext(GetOwnerEntityUID(), m_PlayerUID), GetTransID(),
-				GetPlayerID(), GetTicket(), GetFBUserID()));
+				RouteContext(super::GetOwnerEntityUID(), m_PlayerUID), super::GetTransID(),
+				super::GetPlayerID(), super::GetTicket(), super::GetFBUserID()));
 
 		}
 
 	Proc_End:
 
 		if (FAILED(hr))
-			CloseTransaction(hr);
+			super::CloseTransaction(hr);
 
 		return hr;
 	}
