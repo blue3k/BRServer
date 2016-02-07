@@ -248,8 +248,6 @@ namespace ConspiracyGameInstanceServer {
 		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer *pPlayer = nullptr;
 
-		svrChk(super::InitializeGameEntity(numBot, maxPlayer));
-
 		if (FAILED(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to find bot talk item");
@@ -262,8 +260,8 @@ namespace ConspiracyGameInstanceServer {
 		// randomize player character
 		for (INT character = 0; character < GameConst::MAX_GAMEPLAYER; character++)
 		{
-			UINT player = (UINT)Util::Random.Rand() % GetMaxPlayer();
-			for (UINT iPlayer = 0; iPlayer < GetMaxPlayer(); iPlayer++)
+			UINT player = (UINT)Util::Random.Rand() % maxPlayer;
+			for (UINT iPlayer = 0; iPlayer < maxPlayer; iPlayer++)
 			{
 				if (m_PlayerCharacter[player] == 0xFF)
 				{
@@ -271,13 +269,15 @@ namespace ConspiracyGameInstanceServer {
 					break;
 				}
 				player++;
-				player = player % GetMaxPlayer();
+				player = player % maxPlayer;
 			}
 		}
 
 
 		m_RoleRequestSeer = 0;
 		m_RoleRequestWerewolf = 0;
+
+		svrChk(super::InitializeGameEntity(numBot, maxPlayer));
 
 
 	Proc_End:
