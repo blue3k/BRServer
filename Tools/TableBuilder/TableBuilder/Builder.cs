@@ -662,6 +662,13 @@ namespace TableBuilder
             _outStream.WriteLine(statement);
         }
 
+        protected void WriteStatement(string statement, params object[] args)
+        {
+            MatchIndent(0);
+            _outStream.WriteLine(statement, args);
+        }
+
+
         protected void WriteStatement(string statement, int diff)
         {
             MatchIndent(diff);
@@ -688,7 +695,7 @@ namespace TableBuilder
         // Build declaration
         protected abstract void DeclareEnum(string name, Type typeInfo);
         protected abstract void DeclareClass(string name, Type typeInfo);
-        protected abstract void DeclareMemberData(Type rootTypeInfo);
+        protected abstract void DefineMemberVariables(Type rootTypeInfo);
         protected abstract void DeclareMemberFunction();
 
         // Build definition

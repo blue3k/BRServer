@@ -174,7 +174,7 @@ namespace TableBuilder
             }
 
             // Build member data.
-            DeclareMemberData(GetTypeInfo(ClassName));
+            DefineMemberVariables(GetTypeInfo(ClassName));
 
             // Build member function.
             DeclareMemberFunction();

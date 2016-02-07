@@ -89,34 +89,35 @@ namespace conspiracy
 		return "INVALID_ENUM";
 	}
 
-	ShopTbl ShopTbl::m_Instance;
-	ShopTbl::TableMap ShopTbl::m_TableMap;
+	ShopTbl::ShopItemIDTable *ShopTbl::m_ShopItemIDTable = nullptr;
+	ShopTbl::ShopItemIDTable *ShopTbl::m_ShopItemIDTablePrev = nullptr;
 
 	HRESULT ShopTbl::LoadTable( const std::list<ShopItem>& rowList )
 	{
- 
+ 		auto pNewShopItemIDTable = new ShopItemIDTable;
+
 		for( auto rowItem : rowList )
 		{
  			auto* pShopItem = new ShopTbl::ShopItem;
 			*pShopItem = rowItem;
-			ShopTbl::m_TableMap.insert(std::make_pair(pShopItem->ShopItemID, pShopItem));
+			pNewShopItemIDTable->insert(std::make_pair(pShopItem->ShopItemID, pShopItem));
 		}
+
+		if (m_ShopItemIDTablePrev != nullptr)
+		{
+ 			for( auto itItem : *m_ShopItemIDTablePrev) { delete itItem.second; } ;
+			delete m_ShopItemIDTablePrev;
+		}
+		m_ShopItemIDTablePrev = m_ShopItemIDTable;
+		m_ShopItemIDTable = pNewShopItemIDTable;
 		return S_SYSTEM_OK;
 	}
 
-	HRESULT ShopTbl::ClearTable()
-	{
- 		for (TableMapItr itr = m_TableMap.begin(); itr != m_TableMap.end(); ++itr)
-			delete itr->second;
-
-		m_TableMap.clear();
-		return S_SYSTEM_OK;
-	}
 
 	HRESULT ShopTbl::FindItem( const int& Key, ShopItem*& pRow)
 	{
- 		TableMapItr itr = m_TableMap.find(Key);
-		if (itr == m_TableMap.end())
+ 		auto itr = m_ShopItemIDTable->find(Key);
+		if (itr == m_ShopItemIDTable->end())
 		{
  			// write error log
 			return E_SYSTEM_FAIL;

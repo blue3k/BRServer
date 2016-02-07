@@ -23,6 +23,7 @@
 #include "Table/conspiracy/ShopTbl.h"
 #include "Table/conspiracy/RewardTbl.h"
 #include "Table/conspiracy/BotTalkTbl.h"
+#include "Table/conspiracy/TableVersionTbl.h"
 
 
 namespace BR {
@@ -37,6 +38,7 @@ namespace DB {
 	enum MsgCode
 	{
 		MCODE_QueryNull,
+		MCODE_QueryTableVersionTbl,
 		MCODE_QueryGameConfigTbl,
 		MCODE_QueryLevelTbl,
 		MCODE_QueryOrganicTbl,
@@ -44,6 +46,25 @@ namespace DB {
 		MCODE_QueryRewardTbl,
 		MCODE_QueryBotTalkTable,
 	}; // enum MsgCode
+
+
+
+	class QueryTableVersionTbl : public QueryBase
+	{
+	public:
+		INT32 TableVersion;
+
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryTableVersionTbl,1)
+			BRDB_SET_PARAM_TYPE(BRDB_PARAMIO_OUTPUT)
+			BRDB_COLUMN_ENTRY(TableVersion)
+		BRDB_END_PARAM_MAP()
+
+		BRDB_QUERYSTRING("spGetTableVersion", BRDB_PARAM_1)
+	};
+
+	BRDB_DEFINE_QUERYCLASS(POLICY_TABLEDB, QueryTableVersionTbl);
 
 
 
@@ -90,8 +111,6 @@ namespace DB {
 	};
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryGameConfigTbl, conspiracy::GameConfigTbl::GameConfigItem);
-
-
 
 
 	class QueryLevelTbl : public conspiracy::LevelTbl::LevelItem, public QueryBase

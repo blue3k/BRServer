@@ -33,7 +33,6 @@
 
 #include "GameInstance/GamePlayerEntity.h"
 
-#include "Table/conspiracy/LevelTbl.h"
 
 
 BR_MEMORYPOOL_IMPLEMENT(GameServer::UserNotifySystem);

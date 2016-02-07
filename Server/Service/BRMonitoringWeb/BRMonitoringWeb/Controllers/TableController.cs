@@ -38,7 +38,6 @@ namespace BRMonitoringWeb.Controllers
             new GameTableInformation("RewardTable", null, typeof(conspiracy.RewardTbl) ),
             new GameTableInformation("ShopTable", null, typeof(conspiracy.ShopTbl) ),
             new GameTableInformation("BotTalkTable", null, typeof(conspiracy.BotTalkTbl) ),
-            //new GameTableInformation("StringTblBot", null, typeof(conspiracy.StringTblBot) ),
         };
         Dictionary<string, GameTableInformation> m_TableMap = new Dictionary<string, GameTableInformation>();
 
@@ -119,6 +118,35 @@ namespace BRMonitoringWeb.Controllers
             return Json(new
             {
                 TableName = tableName,
+                Succeeded = succeeded,
+                Message = message,
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult RequestReload()
+        {
+            string message = "";
+            bool succeeded = false;
+
+            try
+            {
+                using (var myConn = DBConnectionManager.GetConnection("TableDB"))
+                using (var dbTable = new DBConnectionConspiracyTable(myConn))
+                {
+                    int newVersion = dbTable.IncreaseTableVersion();
+                    message = string.Format("TableVersion = {0}", newVersion);
+                    succeeded = true;
+                }
+            }
+            catch (Exception exp)
+            {
+                message = exp.Message + exp.StackTrace;
+                succeeded = false;
+            }
+
+            return Json(new
+            {
                 Succeeded = succeeded,
                 Message = message,
             }, JsonRequestBehavior.AllowGet);

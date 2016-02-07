@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Text;
+using System.Data;
 using MySql.Data.MySqlClient;
 using BR;
 
@@ -25,6 +26,46 @@ namespace BR.DB
             if (m_Conn != null)
                 m_Conn.Dispose();
             m_Conn = null;
+        }
+
+        public int GetTableVersion()
+        {
+            using (var cmd = new MySqlCommand())
+            {
+                cmd.Connection = m_Conn.SqlConnection;
+                cmd.CommandText = "spGetTableVersion";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                var outputParameter = new MySqlParameter("@outTableVersion", MySqlDbType.Int32, sizeof(int));
+                outputParameter.Direction = ParameterDirection.Output;
+
+                cmd.Parameters.Add(outputParameter);
+                cmd.Prepare();
+
+                var reader = cmd.ExecuteNonQuery();
+
+                return (int)cmd.Parameters["@outTableVersion"].Value;
+            }
+
+        }
+
+        public int IncreaseTableVersion()
+        {
+            int tableVersion = GetTableVersion() + 1;
+
+            using (var cmd = new MySqlCommand())
+            {
+                cmd.Connection = m_Conn.SqlConnection;
+                cmd.CommandText = "spSetTableVersion";
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@inTableVersion", tableVersion);
+                cmd.Prepare();
+
+                var reader = cmd.ExecuteNonQuery();
+            }
+
+            return tableVersion;
         }
 
         public bool CreateTable(string tableName, string keyElementName, Type tableType)

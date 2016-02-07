@@ -73,16 +73,15 @@ namespace conspiracy
 
 		}; // struct OrganicItem
 
-		typedef std::unordered_map<unsigned int, OrganicItem*> TableMap;
-		typedef TableMap::iterator TableMapItr;
-		static TableMap m_TableMap;
-		static OrganicTbl m_Instance;
+		typedef std::unordered_map<unsigned int, OrganicItem*> ItemEffectTable;
+		typedef ItemEffectTable::iterator ItemEffectTableItr;
+		static ItemEffectTable *m_ItemEffectTable;
+		static ItemEffectTable *m_ItemEffectTablePrev;
 
 
 
 		// declare member function
 		static HRESULT LoadTable( const std::list<OrganicItem>& rowList );
-		static HRESULT ClearTable();
 
 		static HRESULT FindItem( const unsigned int& Key, OrganicItem*& pRow);
 	}; // class OrganicTbl

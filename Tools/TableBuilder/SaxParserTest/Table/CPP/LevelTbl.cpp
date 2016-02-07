@@ -18,34 +18,35 @@
 namespace conspiracy
 {
  
-	LevelTbl LevelTbl::m_Instance;
-	LevelTbl::TableMap LevelTbl::m_TableMap;
+	LevelTbl::LevelTable *LevelTbl::m_LevelTable = nullptr;
+	LevelTbl::LevelTable *LevelTbl::m_LevelTablePrev = nullptr;
 
 	HRESULT LevelTbl::LoadTable( const std::list<LevelItem>& rowList )
 	{
- 
+ 		auto pNewLevelTable = new LevelTable;
+
 		for( auto rowItem : rowList )
 		{
  			auto* pLevelItem = new LevelTbl::LevelItem;
 			*pLevelItem = rowItem;
-			LevelTbl::m_TableMap.insert(std::make_pair(pLevelItem->Level, pLevelItem));
+			pNewLevelTable->insert(std::make_pair(pLevelItem->Level, pLevelItem));
 		}
+
+		if (m_LevelTablePrev != nullptr)
+		{
+ 			for( auto itItem : *m_LevelTablePrev) { delete itItem.second; } ;
+			delete m_LevelTablePrev;
+		}
+		m_LevelTablePrev = m_LevelTable;
+		m_LevelTable = pNewLevelTable;
 		return S_SYSTEM_OK;
 	}
 
-	HRESULT LevelTbl::ClearTable()
-	{
- 		for (TableMapItr itr = m_TableMap.begin(); itr != m_TableMap.end(); ++itr)
-			delete itr->second;
-
-		m_TableMap.clear();
-		return S_SYSTEM_OK;
-	}
 
 	HRESULT LevelTbl::FindItem( const int& Key, LevelItem*& pRow)
 	{
- 		TableMapItr itr = m_TableMap.find(Key);
-		if (itr == m_TableMap.end())
+ 		auto itr = m_LevelTable->find(Key);
+		if (itr == m_LevelTable->end())
 		{
  			// write error log
 			return E_SYSTEM_FAIL;

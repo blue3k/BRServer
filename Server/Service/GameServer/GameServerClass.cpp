@@ -72,11 +72,12 @@ namespace GameServer {
 
 
 	GameServer::GameServer()
-		:BrServer(BR::NetClass::Game)
-		,m_pNetPublic(nullptr)
-		,m_pGameClusterCfg(nullptr)
-		,m_PresetGameConfigID(1)
-		,m_PresetGameConfig(nullptr)
+		: BrServer(BR::NetClass::Game)
+		, m_pNetPublic(nullptr)
+		, m_pGameClusterCfg(nullptr)
+		, m_TableVersion(0)
+		, m_PresetGameConfigID(1)
+		, m_PresetGameConfig(nullptr)
 	{
 	}
 
@@ -105,6 +106,7 @@ namespace GameServer {
 		svrChk( ::conspiracy::GameConfigTbl::FindItem(configPresetID, pGameConfig ) );
 
 		// set value only if it succeeded
+		m_TableVersion = GameTable::GetTableVersion();
 		m_PresetGameConfigID = configPresetID;
 		m_PresetGameConfig = pGameConfig;
 
@@ -363,6 +365,17 @@ namespace GameServer {
 	Proc_End:
 
 		return hr;
+	}
+
+	// Run the task
+	HRESULT GameServer::TickUpdate(Svr::TimerAction *pAction)
+	{
+		if (m_TableVersion != GameTable::GetTableVersion())
+		{
+			UpdateGameConfig(m_PresetGameConfigID);
+		}
+
+		return Svr::BrServer::TickUpdate(pAction);
 	}
 
 

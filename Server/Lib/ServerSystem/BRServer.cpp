@@ -33,6 +33,7 @@
 #include "ServerSystem/Transaction.h"
 #include "ServerSystem/SvrConfig.h"
 #include "DB/Factory.h"
+#include "Table/TableSystem.h"
 
 #include "ServerSystem/ExternalTransactionManager.h"
 
@@ -615,6 +616,7 @@ Proc_End:
 			itMgr->Update();
 		}
 
+		GameTable::Update();
 
 		MasterEntity::TickUpdate(pAction);
 

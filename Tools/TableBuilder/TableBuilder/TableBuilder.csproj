@@ -126,6 +126,7 @@
     <Compile Include="TableFormat\rewardTable.cs" />
     <Compile Include="TableFormat\shopTable.cs" />
     <Compile Include="TableFormat\stringTableBot.cs" />
+    <Compile Include="TableFormat\tableVersion.cs" />
     <Compile Include="TreeBuilder\CPPTreeBuilder.CPP.CodeGen.cs" />
     <Compile Include="TreeBuilder\CPPTreeBuilder.CPP.FuncImpl.cs" />
     <Compile Include="TreeBuilder\CPPTreeBuilder.cs" />

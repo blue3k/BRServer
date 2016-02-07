@@ -1,9 +1,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2011 Bluenauts Corporation.
+// CopyRight (c) 2014 Blue3k
 // 
 // Author : KyungKun Ko
-// Date : 01/27/2011
 //
 // Description : Zone master server implementation
 //
@@ -36,7 +35,7 @@ namespace BR {
 namespace Svr {
 
 
-	
+
 	EntityServerStartedTrans::EntityServerStartedTrans( Message::MessageData* &pIMsg )
 		:ServerStartedTrans(pIMsg)
 	{
@@ -46,7 +45,7 @@ namespace Svr {
 	EntityServerStartedTrans::~EntityServerStartedTrans()
 	{
 	}
-	
+
 	HRESULT EntityServerStartedTrans::OnGetClusterMemberList(Svr::TransactionResult* pRes)
 	{
 		HRESULT hr = S_SYSTEM_OK;

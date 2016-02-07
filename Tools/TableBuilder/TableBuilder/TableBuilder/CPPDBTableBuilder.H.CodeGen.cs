@@ -118,49 +118,29 @@ namespace TableBuilder
             CloseSection();
         }
 
-        protected override void DeclareMemberData(Type typeInfo)
+        protected override void DefineMemberVariables(Type typeInfo)
         {
             NewLine(1);
-            string statement = "";
 
-            if (ThisTableType == TableType.TTYPE_SINGLEKEY)
+            foreach (KeyValuePair<string, KeyInfo> kvp in _keyInfos)
             {
+                KeyInfo KeyInformation = kvp.Value;
+                string tableTypeName = kvp.Value.GetMapTypeName();
+                string tableVarName = kvp.Value.GetMapVarName();
+
                 if (KeyInformation.keyType == KeyType.EKEY_UNIQUE)
-                    statement = string.Format("typedef std::unordered_map<{0}, {1}*> TableMap;", GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName);
+                    WriteStatement("typedef std::unordered_map<{0}, {1}*> {2};", 
+                        GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName, tableTypeName);
                 else if (KeyInformation.keyType == KeyType.EKEY_NONUNIQUE)
-                    statement = string.Format("typedef std::unordered_multimap<{0}, {1}*> TableMap;", GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName);
+                    WriteStatement("typedef std::unordered_multimap<{0}, {1}*> {2};", 
+                        GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName, tableTypeName);
                 else if (KeyInformation.keyType == KeyType.EKEY_COMPOSIT)
-                    statement = string.Format("typedef std::unordered_map<ULONGLONG, {0}*> TableMap;", RowTypeName);
+                    WriteStatement("typedef std::unordered_map<ULONGLONG, {0}*> {1};", 
+                        RowTypeName, tableTypeName);
 
-                WriteStatement(statement);
-                WriteStatement("typedef TableMap::iterator TableMapItr;");
-                WriteStatement("static TableMap m_TableMap;");
-                WriteStatement(string.Format("static {0} m_Instance;",ClassName));
-            }
-            else
-            {
-                foreach (KeyValuePair<string, KeyInfo> kvp in _keyInfos)
-                {
-                    KeyInfo KeyInformation = kvp.Value;
-                    string tableName        = KeyInformation._keyName1 + "Table";
-                    string tableTypeName    = KeyInformation._keyName1 + "TableMap";
-
-                    if (KeyInformation.keyType == KeyType.EKEY_UNIQUE)
-                        statement = string.Format("typedef std::unordered_map<{0}, {1}*> {2};", 
-                            GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName, tableTypeName);
-                    else if (KeyInformation.keyType == KeyType.EKEY_NONUNIQUE)
-                        statement = string.Format("typedef std::unordered_multimap<{0}, {1}*> {2};", 
-                            GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName, tableTypeName);
-                    else if (KeyInformation.keyType == KeyType.EKEY_COMPOSIT)
-                        statement = string.Format("typedef std::unordered_map<ULONGLONG, {0}*> {1};", 
-                            RowTypeName, tableTypeName);
-                    WriteStatement(statement);
-
-                    statement = string.Format("typedef {0}::iterator {0}Itr;", tableTypeName);
-                    WriteStatement(statement);
-                    statement = string.Format("static {0} {1};", tableTypeName, tableName);
-                    WriteStatement(statement);
-                }
+                WriteStatement("typedef {0}::iterator {0}Itr;", tableTypeName);
+                WriteStatement("static {0} *{1};", tableTypeName, tableVarName);
+                WriteStatement("static {0} *{1}Prev;", tableTypeName, tableVarName);
             }
         }
 
@@ -185,7 +165,6 @@ namespace TableBuilder
             //WriteStatement("static HRESULT LoadTable( const char *strFileName );", 0);
             statement = string.Format("static HRESULT LoadTable( const std::list<{0}>& rowList );", RowTypeName);
             WriteStatement(statement, 0);
-            WriteStatement("static HRESULT ClearTable();", 0);
             NewLine(1);
 
             if (ThisTableType == TableType.TTYPE_SINGLEKEY)

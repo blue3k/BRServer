@@ -66,7 +66,7 @@ namespace TableBuilder
             CloseSection();
         }
 
-        protected override void DeclareMemberData(Type typeInfo)
+        protected override void DefineMemberVariables(Type typeInfo)
         {
             NewLine(1);
 

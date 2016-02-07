@@ -29,16 +29,15 @@ namespace conspiracy
 
 		}; // struct LevelItem
 
-		typedef std::unordered_map<int, LevelItem*> TableMap;
-		typedef TableMap::iterator TableMapItr;
-		static TableMap m_TableMap;
-		static LevelTbl m_Instance;
+		typedef std::unordered_map<int, LevelItem*> LevelTable;
+		typedef LevelTable::iterator LevelTableItr;
+		static LevelTable *m_LevelTable;
+		static LevelTable *m_LevelTablePrev;
 
 
 
 		// declare member function
 		static HRESULT LoadTable( const std::list<LevelItem>& rowList );
-		static HRESULT ClearTable();
 
 		static HRESULT FindItem( const int& Key, LevelItem*& pRow);
 	}; // class LevelTbl

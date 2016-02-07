@@ -45,6 +45,9 @@
     <ClInclude Include="TableQueries.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="conspiracy\TableVersionTbl.h">
+      <Filter>conspiracy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="conspiracy\BotTalkTbl.cpp">
+      <Filter>conspiracy</Filter>
+    </ClCompile>
+    <ClCompile Include="conspiracy\TableVersionTbl.cpp">
       <Filter>conspiracy</Filter>
     </ClCompile>
   </ItemGroup>

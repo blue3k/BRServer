@@ -18,34 +18,35 @@
 namespace conspiracy
 {
  
-	GameConfigTbl GameConfigTbl::m_Instance;
-	GameConfigTbl::TableMap GameConfigTbl::m_TableMap;
+	GameConfigTbl::PresetIDTable *GameConfigTbl::m_PresetIDTable = nullptr;
+	GameConfigTbl::PresetIDTable *GameConfigTbl::m_PresetIDTablePrev = nullptr;
 
 	HRESULT GameConfigTbl::LoadTable( const std::list<GameConfigItem>& rowList )
 	{
- 
+ 		auto pNewPresetIDTable = new PresetIDTable;
+
 		for( auto rowItem : rowList )
 		{
  			auto* pGameConfigItem = new GameConfigTbl::GameConfigItem;
 			*pGameConfigItem = rowItem;
-			GameConfigTbl::m_TableMap.insert(std::make_pair(pGameConfigItem->PresetID, pGameConfigItem));
+			pNewPresetIDTable->insert(std::make_pair(pGameConfigItem->PresetID, pGameConfigItem));
 		}
+
+		if (m_PresetIDTablePrev != nullptr)
+		{
+ 			for( auto itItem : *m_PresetIDTablePrev) { delete itItem.second; } ;
+			delete m_PresetIDTablePrev;
+		}
+		m_PresetIDTablePrev = m_PresetIDTable;
+		m_PresetIDTable = pNewPresetIDTable;
 		return S_SYSTEM_OK;
 	}
 
-	HRESULT GameConfigTbl::ClearTable()
-	{
- 		for (TableMapItr itr = m_TableMap.begin(); itr != m_TableMap.end(); ++itr)
-			delete itr->second;
-
-		m_TableMap.clear();
-		return S_SYSTEM_OK;
-	}
 
 	HRESULT GameConfigTbl::FindItem( const int& Key, GameConfigItem*& pRow)
 	{
- 		TableMapItr itr = m_TableMap.find(Key);
-		if (itr == m_TableMap.end())
+ 		auto itr = m_PresetIDTable->find(Key);
+		if (itr == m_PresetIDTable->end())
 		{
  			// write error log
 			return E_SYSTEM_FAIL;

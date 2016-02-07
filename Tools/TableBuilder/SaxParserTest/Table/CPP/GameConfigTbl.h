@@ -52,16 +52,15 @@ namespace conspiracy
 
 		}; // struct GameConfigItem
 
-		typedef std::unordered_map<int, GameConfigItem*> TableMap;
-		typedef TableMap::iterator TableMapItr;
-		static TableMap m_TableMap;
-		static GameConfigTbl m_Instance;
+		typedef std::unordered_map<int, GameConfigItem*> PresetIDTable;
+		typedef PresetIDTable::iterator PresetIDTableItr;
+		static PresetIDTable *m_PresetIDTable;
+		static PresetIDTable *m_PresetIDTablePrev;
 
 
 
 		// declare member function
 		static HRESULT LoadTable( const std::list<GameConfigItem>& rowList );
-		static HRESULT ClearTable();
 
 		static HRESULT FindItem( const int& Key, GameConfigItem*& pRow);
 	}; // class GameConfigTbl

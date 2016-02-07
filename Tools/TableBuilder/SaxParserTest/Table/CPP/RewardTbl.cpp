@@ -89,34 +89,35 @@ namespace conspiracy
 		return "INVALID_ENUM";
 	}
 
-	RewardTbl RewardTbl::m_Instance;
-	RewardTbl::TableMap RewardTbl::m_TableMap;
+	RewardTbl::RoleTable *RewardTbl::m_RoleTable = nullptr;
+	RewardTbl::RoleTable *RewardTbl::m_RoleTablePrev = nullptr;
 
 	HRESULT RewardTbl::LoadTable( const std::list<RewardItem>& rowList )
 	{
- 
+ 		auto pNewRoleTable = new RoleTable;
+
 		for( auto rowItem : rowList )
 		{
  			auto* pRewardItem = new RewardTbl::RewardItem;
 			*pRewardItem = rowItem;
-			RewardTbl::m_TableMap.insert(std::make_pair(pRewardItem->Role, pRewardItem));
+			pNewRoleTable->insert(std::make_pair(pRewardItem->Role, pRewardItem));
 		}
+
+		if (m_RoleTablePrev != nullptr)
+		{
+ 			for( auto itItem : *m_RoleTablePrev) { delete itItem.second; } ;
+			delete m_RoleTablePrev;
+		}
+		m_RoleTablePrev = m_RoleTable;
+		m_RoleTable = pNewRoleTable;
 		return S_SYSTEM_OK;
 	}
 
-	HRESULT RewardTbl::ClearTable()
-	{
- 		for (TableMapItr itr = m_TableMap.begin(); itr != m_TableMap.end(); ++itr)
-			delete itr->second;
-
-		m_TableMap.clear();
-		return S_SYSTEM_OK;
-	}
 
 	HRESULT RewardTbl::FindItem( const unsigned int& Key, RewardItem*& pRow)
 	{
- 		TableMapItr itr = m_TableMap.find(Key);
-		if (itr == m_TableMap.end())
+ 		auto itr = m_RoleTable->find(Key);
+		if (itr == m_RoleTable->end())
 		{
  			// write error log
 			return E_SYSTEM_FAIL;

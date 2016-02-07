@@ -164,6 +164,7 @@
     <ClInclude Include="conspiracy\OrganicTbl.h" />
     <ClInclude Include="conspiracy\RewardTbl.h" />
     <ClInclude Include="conspiracy\ShopTbl.h" />
+    <ClInclude Include="conspiracy\TableVersionTbl.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TableQueries.h" />
     <ClInclude Include="TableSystem.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="conspiracy\OrganicTbl.cpp" />
     <ClCompile Include="conspiracy\RewardTbl.cpp" />
     <ClCompile Include="conspiracy\ShopTbl.cpp" />
+    <ClCompile Include="conspiracy\TableVersionTbl.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -66,6 +66,27 @@
                 }
 
             });
+
+
+            $("#RequestReload").click(function () {
+
+                // Request reload
+                $.ajax({
+                    url: '@Url.Action("RequestReload")',
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var requestStatus = $('#requestStatus');
+                        requestStatus.text(' => Success:' + data['Succeeded'] + ', ' + data['Message']);
+                    },
+                    error: function (result) {
+                        alert('error:' + result);
+                        // alert("Failed");
+                    }
+                });
+
+            });
         });
 
         function setfilename(val)
@@ -80,7 +101,10 @@
 
     <input type="file" id="TableFiles" name="TableFiles" size="12" accept=".xml" multiple />
     <input id="uploadbutton" type="button" value="UploadAllTables" />
+    <input id="RequestReload" type="button" value="RequestReload" />
     <ul id="UploadStatus"></ul>
+    <br/>
+    <p id="requestStatus">requestStatus</p>
 
 </body>
 </html>

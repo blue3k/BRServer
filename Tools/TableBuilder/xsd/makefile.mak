@@ -12,7 +12,8 @@ SOURCES=gameConfigTable.xsd \
 	rewardTable.xsd \
 	shopTable.xsd \
 	botTalkTable.xsd \
-	stringTableBot.xsd 
+	stringTableBot.xsd \
+	tableVersion.xsd
 	
 
 

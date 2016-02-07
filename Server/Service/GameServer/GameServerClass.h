@@ -54,6 +54,7 @@ namespace GameServer
 		const Svr::Config::GameClusterInfo*	m_pGameClusterCfg;
 
 		// game config preset
+		int m_TableVersion;
 		UINT					m_PresetGameConfigID;
 		BRCLASS_ATTRIBUTE_READONLY_PTR(GameConfigType*,PresetGameConfig);
 
@@ -139,6 +140,8 @@ namespace GameServer
 		// Close Public Network
 		virtual HRESULT CloseNetPublic() override;
 
+		// Run the task
+		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 	};
 

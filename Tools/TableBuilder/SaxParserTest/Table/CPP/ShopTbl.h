@@ -74,16 +74,15 @@ namespace conspiracy
 
 		}; // struct ShopItem
 
-		typedef std::unordered_map<int, ShopItem*> TableMap;
-		typedef TableMap::iterator TableMapItr;
-		static TableMap m_TableMap;
-		static ShopTbl m_Instance;
+		typedef std::unordered_map<int, ShopItem*> ShopItemIDTable;
+		typedef ShopItemIDTable::iterator ShopItemIDTableItr;
+		static ShopItemIDTable *m_ShopItemIDTable;
+		static ShopItemIDTable *m_ShopItemIDTablePrev;
 
 
 
 		// declare member function
 		static HRESULT LoadTable( const std::list<ShopItem>& rowList );
-		static HRESULT ClearTable();
 
 		static HRESULT FindItem( const int& Key, ShopItem*& pRow);
 	}; // class ShopTbl

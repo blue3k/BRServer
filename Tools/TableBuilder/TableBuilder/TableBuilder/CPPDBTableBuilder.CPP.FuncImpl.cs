@@ -13,7 +13,7 @@ namespace TableBuilder
             statement = string.Format("HRESULT {0}::ClearTable()", ClassName);
             WriteStatement(statement);
             OpenSection();
-            WriteStatement("for (TableMapItr itr = m_TableMap.begin(); itr != m_TableMap.end(); ++itr)");
+            WriteStatement("for (auto itr = m_TableMap.begin(); itr != m_TableMap.end(); ++itr)");
             WriteStatement("delete itr->second;", 1);
             NewLine(1);
             WriteStatement("m_TableMap.clear();");
@@ -23,18 +23,16 @@ namespace TableBuilder
 
         private void WriteFindItem(KeyInfo keyInfo)
         {
-            string statement;
-            string tableName        = keyInfo._keyName1 + "Table";
-            string tableTypeName    = keyInfo._keyName1 + "TableMap";
+            string tableTypeName = keyInfo.GetMapTypeName();
+            string tableVarName = keyInfo.GetMapVarName();
 
             if (keyInfo.keyType == KeyType.EKEY_UNIQUE)
             {
-                statement = string.Format("HRESULT {0}::FindItem( const {1}& Key, {2}*& pRow)", 
+                WriteStatement("HRESULT {0}::FindItem( const {1}& Key, {2}*& pRow)", 
                     ClassName, GetBuiltInType(keyInfo._keyTypeName1), RowTypeName);
-                WriteStatement(statement);
                 OpenSection();
-                WriteStatement("TableMapItr itr = m_TableMap.find(Key);");
-                WriteStatement("if (itr == m_TableMap.end())");
+                WriteStatement("auto itr = {0}->find(Key);", tableVarName);
+                WriteStatement("if (itr == {0}->end())", tableVarName);
                 OpenSection();
                 WriteStatement("// write error log");
                 WriteStatement("return E_SYSTEM_FAIL;");
@@ -46,12 +44,10 @@ namespace TableBuilder
             }
             else if (keyInfo.keyType == KeyType.EKEY_NONUNIQUE)
             {
-                statement = string.Format("HRESULT {0}::FindItem( const {1}& Key, std::tr1::unordered_set<{2}*>& rows)",
+                WriteStatement("HRESULT {0}::FindItem( const {1}& Key, std::tr1::unordered_set<{2}*>& rows)",
                     ClassName, GetBuiltInType(keyInfo._keyTypeName1), RowTypeName);
-                WriteStatement(statement);
                 OpenSection();
-                statement = string.Format("std::pair<{0}::TableMapItr, {0}::TableMapItr> pair1 = m_TableMap.equal_range(Key);", ClassName);
-                WriteStatement(statement);
+                WriteStatement("auto pair1 = {0}->equal_range(Key);", ClassName, tableVarName);
                 WriteStatement("if (pair1.first == pair1.second)");
                 OpenSection();
                 WriteStatement("// write error log");
@@ -64,12 +60,11 @@ namespace TableBuilder
             }
             else if (keyInfo.keyType == KeyType.EKEY_COMPOSIT)
             {
-                statement = string.Format("HRESULT {0}::FindItem( ULONGLONG Key, {1}*& pRow)", 
+                WriteStatement("HRESULT {0}::FindItem( ULONGLONG Key, {1}*& pRow)", 
                     ClassName, RowTypeName);
-                WriteStatement(statement);
                 OpenSection();
-                WriteStatement("TableMapItr itr = m_TableMap.find(Key);");
-                WriteStatement("if (itr == m_TableMap.end())");
+                WriteStatement("auto itr = {0}->find(Key);", tableVarName);
+                WriteStatement("if (itr == {0}->end())", tableVarName);
                 OpenSection();
                 WriteStatement("// write error log");
                 WriteStatement("return E_SYSTEM_FAIL;");

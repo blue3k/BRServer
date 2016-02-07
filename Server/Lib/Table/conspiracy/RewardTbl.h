@@ -70,16 +70,15 @@ namespace conspiracy
 
 		}; // struct RewardItem
 
-		typedef std::unordered_map<unsigned int, RewardItem*> TableMap;
-		typedef TableMap::iterator TableMapItr;
-		static TableMap m_TableMap;
-		static RewardTbl m_Instance;
+		typedef std::unordered_map<unsigned int, RewardItem*> RoleTable;
+		typedef RoleTable::iterator RoleTableItr;
+		static RoleTable *m_RoleTable;
+		static RoleTable *m_RoleTablePrev;
 
 
 
 		// declare member function
 		static HRESULT LoadTable( const std::list<RewardItem>& rowList );
-		static HRESULT ClearTable();
 
 		static HRESULT FindItem( const unsigned int& Key, RewardItem*& pRow);
 	}; // class RewardTbl

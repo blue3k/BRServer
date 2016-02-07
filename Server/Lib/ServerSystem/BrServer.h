@@ -257,7 +257,7 @@ namespace Svr {
 
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr);
+		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 
 

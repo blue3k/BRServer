@@ -19,10 +19,14 @@ namespace GameTable {
 	// Initialize tables
 	HRESULT InitializeTable();
 
+	int GetTableVersion();
+
 	HRESULT LoadTables();
 
 	// Release all tables
 	HRESULT TerminateTable();
+
+	HRESULT Update();
 
 }; // namespace GameTable
 

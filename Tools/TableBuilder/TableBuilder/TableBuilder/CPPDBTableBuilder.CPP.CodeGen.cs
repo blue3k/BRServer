@@ -35,66 +35,70 @@ namespace TableBuilder
             string statement = string.Format("HRESULT {0}::LoadTable( const std::list<{1}>& rowList )", ClassName, RowTypeName);
             WriteStatement(statement);
             OpenSection();
-            NewLine(1);
 
+            // prepare swap and new variables
+            foreach (KeyValuePair<string, KeyInfo> itKeyInfo in _keyInfos)
+            {
+                KeyInfo keyInfo = itKeyInfo.Value;
+                string tableTypeName = KeyInformation.GetMapTypeName();
+                string tableVarName = KeyInformation.GetMapVarName();
+
+                WriteStatement("auto pNew{0} = new {0};", tableTypeName);
+            }
+
+            NewLine(1);
             WriteStatement("for( auto rowItem : rowList )");
             OpenSection();
 
             ForeachSubElement((elementInfo) =>
             {
-                WriteStatement(string.Format("auto* p{1} = new {0};", elementInfo.OutputTypeName, elementInfo.TypeName));
-                WriteStatement(string.Format("*p{1} = rowItem;", elementInfo.OutputTypeName, elementInfo.TypeName));
+                WriteStatement("auto* p{1} = new {0};", elementInfo.OutputTypeName, elementInfo.TypeName);
+                WriteStatement("*p{1} = rowItem;", elementInfo.OutputTypeName, elementInfo.TypeName);
 
-                if (ThisTableType == TableType.TTYPE_SINGLEKEY)
+                foreach (KeyValuePair<string, KeyInfo> kvp1 in _keyInfos)
                 {
-                    KeyInfo KeyInformation = this["first"];
+                    KeyInfo KeyInformation = kvp1.Value;
+                    string tableTypeName = KeyInformation.GetMapTypeName();
+                    string tableVarName = KeyInformation.GetMapVarName();
 
                     if (KeyInformation.keyType == KeyType.EKEY_UNIQUE ||
-                            KeyInformation.keyType == KeyType.EKEY_NONUNIQUE)
+                        KeyInformation.keyType == KeyType.EKEY_NONUNIQUE)
                     {
-                        statement = string.Format("{0}::m_TableMap.insert(std::make_pair(p{1}->{2}, p{1}));",
-                        ClassName, elementInfo.TypeName, KeyInformation._keyName1);
-                        WriteStatement(statement);
+                        WriteStatement("pNew{2}->insert(std::make_pair(p{0}->{1}, p{0}));",
+                        elementInfo.TypeName, KeyInformation._keyName1, tableTypeName);
                     }
                     else if (KeyInformation.keyType == KeyType.EKEY_COMPOSIT)
                     {
-                        statement = string.Format("ULONGLONG ulCombined = BR::Access::Combine64(p{0}->{1}, p{0}->{2});",
+                        WriteStatement("ULONGLONG ulCombined = BR::Access::Combine64(p{0}->{1}, p{0}->{2});",
                             elementInfo.TypeName, KeyInformation._keyName1, KeyInformation._keyName2);
-                        WriteStatement(statement);
-                        statement = string.Format("{0}::m_TableMap.insert(std::make_pair(ulCombined, p{1}));",
-                            ClassName, elementInfo.TypeName);
-                        WriteStatement(statement);
-                    }
-                }
-                else
-                {
-                    foreach (KeyValuePair<string, KeyInfo> kvp1 in _keyInfos)
-                    {
-                        KeyInfo KeyInformation = kvp1.Value;
-                        string tableName = KeyInformation._keyName1 + "Table";
-
-                        if (KeyInformation.keyType == KeyType.EKEY_UNIQUE ||
-                            KeyInformation.keyType == KeyType.EKEY_NONUNIQUE)
-                        {
-                            statement = string.Format("{0}::{3}.insert(std::make_pair(p{1}->{2}, p{1}));",
-                            ClassName, elementInfo.TypeName, KeyInformation._keyName1, tableName);
-                            WriteStatement(statement);
-                        }
-                        else if (KeyInformation.keyType == KeyType.EKEY_COMPOSIT)
-                        {
-                            statement = string.Format("ULONGLONG ulCombined = BR::Access::Combine64(p{0}->{1}, p{0}->{2});",
-                                elementInfo.TypeName, KeyInformation._keyName1, KeyInformation._keyName2);
-                            WriteStatement(statement);
-                            statement = string.Format("{0}::{2}.insert(std::make_pair(ulCombined, p{1}));",
-                                ClassName, elementInfo.TypeName, tableName);
-                            WriteStatement(statement);
-                        }
+                        WriteStatement("pNew{1}->insert(std::make_pair(ulCombined, p{0}));",
+                            elementInfo.TypeName, tableTypeName);
                     }
                 }
 
             });
 
             CloseSection();
+
+
+            NewLine(1);
+            // New data is ready, swap variables
+            foreach (KeyValuePair<string, KeyInfo> itKeyInfo in _keyInfos)
+            {
+                KeyInfo keyInfo = itKeyInfo.Value;
+                string tableTypeName = KeyInformation.GetMapTypeName();
+                string tableVarName = KeyInformation.GetMapVarName();
+
+                WriteStatement("if ({0}Prev != nullptr)", tableVarName);
+                OpenSection();
+                WriteStatement("for( auto itItem : *{0}Prev) {{ delete itItem.second; }} ;", tableVarName);
+                WriteStatement("delete {0}Prev;", tableVarName);
+                CloseSection();
+                WriteStatement("{0}Prev = {0};", tableVarName);
+                WriteStatement("{1} = pNew{0};", tableTypeName, tableVarName);
+            }
+
+
             WriteStatement("return S_SYSTEM_OK;");
             CloseSection();
 
@@ -216,39 +220,17 @@ namespace TableBuilder
         protected override void DefineMemberFunction()
         {
             NewLine(1);
-            string statement;
 
-            WriteStatement(string.Format("{0} {0}::m_Instance;", ClassName));
-
-            // Define table map
-            if (ThisTableType == TableType.TTYPE_SINGLEKEY)
+            // Declare static table map variables
+            foreach (KeyValuePair<string, KeyInfo> kvp in _keyInfos)
             {
-                statement = string.Format("{0}::TableMap {0}::m_TableMap;", ClassName);
-                WriteStatement(statement);
-            }
-            else
-            {
-                foreach (KeyValuePair<string, KeyInfo> kvp in _keyInfos)
-                {
-                    string tableName        = kvp.Value._keyName1 + "Table";
-                    string tableTypeName    = kvp.Value._keyName1 + "TableMap";
-                    statement = string.Format("{0}::{2} {0}::{1};", ClassName, tableName, tableTypeName);
-                    WriteStatement(statement);
-                }
+                string tableTypeName = kvp.Value.GetMapTypeName();
+                string tableVarName = kvp.Value.GetMapVarName();
+                WriteStatement("{0}::{1} *{0}::{2} = nullptr;", ClassName, tableTypeName, tableVarName);
+                WriteStatement("{0}::{1} *{0}::{2}Prev = nullptr;", ClassName, tableTypeName, tableVarName);
             }
 
             // Load table
-            //NewLine(1);
-            //statement = string.Format("HRESULT {0}::LoadTable( const char *strFileName )", ClassName);
-            //WriteStatement(statement);
-            //OpenSection();
-            //statement = string.Format("{0} parser;", ParserName);
-            //WriteStatement(statement);
-            //WriteStatement("if (FAILED(parser.LoadTable(strFileName)))");
-            //WriteStatement("return E_SYSTEM_FAIL;", 1);
-            //NewLine(1);
-            //WriteStatement("return S_SYSTEM_OK;");
-            //CloseSection();
             WriteLoadTableList();
 
             NewLine(1);
@@ -256,7 +238,7 @@ namespace TableBuilder
             if (ThisTableType == TableType.TTYPE_SINGLEKEY)
             {
                 // ClearTable
-                WriteClearTable(this["first"]);
+                //WriteClearTable(this["first"]);
 
                 NewLine(1);
                 // FindItem

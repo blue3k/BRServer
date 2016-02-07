@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="TableVersionTbl">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="TableVersionItem" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="TableVersion" type="xs:int" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

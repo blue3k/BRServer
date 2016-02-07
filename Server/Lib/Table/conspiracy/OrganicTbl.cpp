@@ -92,34 +92,35 @@ namespace conspiracy
 		return "INVALID_ENUM";
 	}
 
-	OrganicTbl OrganicTbl::m_Instance;
-	OrganicTbl::TableMap OrganicTbl::m_TableMap;
+	OrganicTbl::ItemEffectTable *OrganicTbl::m_ItemEffectTable = nullptr;
+	OrganicTbl::ItemEffectTable *OrganicTbl::m_ItemEffectTablePrev = nullptr;
 
 	HRESULT OrganicTbl::LoadTable( const std::list<OrganicItem>& rowList )
 	{
- 
+ 		auto pNewItemEffectTable = new ItemEffectTable;
+
 		for( auto rowItem : rowList )
 		{
  			auto* pOrganicItem = new OrganicTbl::OrganicItem;
 			*pOrganicItem = rowItem;
-			OrganicTbl::m_TableMap.insert(std::make_pair(pOrganicItem->ItemEffect, pOrganicItem));
+			pNewItemEffectTable->insert(std::make_pair(pOrganicItem->ItemEffect, pOrganicItem));
 		}
+
+		if (m_ItemEffectTablePrev != nullptr)
+		{
+ 			for( auto itItem : *m_ItemEffectTablePrev) { delete itItem.second; } ;
+			delete m_ItemEffectTablePrev;
+		}
+		m_ItemEffectTablePrev = m_ItemEffectTable;
+		m_ItemEffectTable = pNewItemEffectTable;
 		return S_SYSTEM_OK;
 	}
 
-	HRESULT OrganicTbl::ClearTable()
-	{
- 		for (TableMapItr itr = m_TableMap.begin(); itr != m_TableMap.end(); ++itr)
-			delete itr->second;
-
-		m_TableMap.clear();
-		return S_SYSTEM_OK;
-	}
 
 	HRESULT OrganicTbl::FindItem( const unsigned int& Key, OrganicItem*& pRow)
 	{
- 		TableMapItr itr = m_TableMap.find(Key);
-		if (itr == m_TableMap.end())
+ 		auto itr = m_ItemEffectTable->find(Key);
+		if (itr == m_ItemEffectTable->end())
 		{
  			// write error log
 			return E_SYSTEM_FAIL;

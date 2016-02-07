@@ -12,6 +12,8 @@
 #include "TableQueries.h"
 
 
+BRDB_DEFINE_QUERY_IMPL(QueryTableVersionTbl);
+
 BRDB_DEFINE_QUERY_IMPL(QueryGameConfigTbl);
 
 BRDB_DEFINE_QUERY_IMPL(QueryLevelTbl);

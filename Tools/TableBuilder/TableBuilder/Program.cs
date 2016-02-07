@@ -54,6 +54,15 @@ namespace TableBuilder
         public string _keyTypeName1;
         public string _keyName2;
         public string _keyTypeName2;
+
+        public string GetMapTypeName()
+        {
+            return _keyName1 + "Table";
+        }
+        public string GetMapVarName()
+        {
+            return string.Format("m_{0}",GetMapTypeName());
+        }
     }
 
 
@@ -118,7 +127,7 @@ namespace TableBuilder
                                              new TableInfo("ShopTbl"                , new KeyInfo(KeyType.EKEY_UNIQUE, "ShopItemID") ),
                                              new TableInfo("GameConfigTbl"          , new KeyInfo(KeyType.EKEY_UNIQUE, "PresetID") ),
                                              new TableInfo("BotTalkTbl"             , new KeyInfo(KeyType.EKEY_UNIQUE, "ItemID") ),
-                                             new TableInfo("StringTblBot"           , new KeyInfo(KeyType.EKEY_UNIQUE, "StringItemID") ),
+                                             new TableInfo("TableVersionTbl"        , new KeyInfo(KeyType.EKEY_UNIQUE, "TableVersion") ),
                                            };
 
         /// <summary>
