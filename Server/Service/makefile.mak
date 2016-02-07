@@ -2,7 +2,7 @@
 #--------------------------------------------------------------------
 # Build rules
 
-BUILD_SERVICES?=EntityServer GameInstanceServer GameServer LoginServer ModuleServer
+BUILD_SERVICES?=EntityServer GameInstanceServer GameServer ModuleServer
 
 
 export ROOT_PATH?=/home/blue3k/work/BRServer

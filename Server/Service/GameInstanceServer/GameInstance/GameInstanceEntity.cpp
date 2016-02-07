@@ -158,56 +158,6 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	//// Run entity
-	//HRESULT GameInstanceEntity::TickUpdate(Svr::TimerAction *pAction)
-	//{
-	//	HRESULT hr = S_SYSTEM_OK;
-	//	auto CurTime = Util::Time.GetTimeMs();
-	//	StaticArray<PlayerID,64> LeaverList;
-	//	Svr::GameInstancePlayer *pGamePlayer = nullptr;
-	//	PlayerID pltID;
-	//	INT playerCount = 0;
-
-	//	hr = super::TickUpdate(pAction);
-	//	if (FAILED(hr) || hr == S_SYSTEM_FALSE)
-	//		return hr;
-
-	//	// Update Players
-	//	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&CurTime, &playerCount](const PlayerID& playerID, Svr::GameInstancePlayer* pPlayer)-> bool
-	//	{
-	//		if (pPlayer->GetServerEntity() != nullptr)
-	//			playerCount++;
-
-	//		pPlayer->UpdateGamePlayer(CurTime);
-	//		return true;
-	//	});
-
-	//	UpdateGameStatus( CurTime );
-
-	//	// Leave player
-	//	while( SUCCEEDED(m_PendingReleasePlayer.Dequeue( pltID )) )
-	//	{
-	//		if (SUCCEEDED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
-	//		{
-	//			playerCount--;
-	//			LeavePlayer( pGamePlayer );
-
-	//			if (playerCount <= 0)
-	//			{
-	//				CloseGameInstance();
-	//			}
-
-	//		}
-	//	}
-
-	//	if (GetEntityState() == EntityState::FREE)
-	//		return S_SYSTEM_FALSE;
-
-	////Proc_End:
-
-	//	return hr;
-	//}
-
 
 	////////////////////////////////////////////////////////////
 	//

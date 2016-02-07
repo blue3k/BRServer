@@ -199,7 +199,7 @@ namespace Svr {
 		hr = pServiceEntity->FindRandomService( pService );
 		if (FAILED(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Faild to find cluster service entity for game:{0} PID:{0}", super::GetGameID(), super::GetMyOwner()->GetPlayerID());
+			svrTrace(Trace::TRC_ERROR, "Faild to find cluster service entity for game:{0} PlayerID:{1}", super::GetGameID(), super::GetMyOwner()->GetPlayerID());
 			goto Proc_End;
 		}
 
@@ -245,8 +245,6 @@ namespace Svr {
 
 		svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), res.GetPort()));
 		svrChk(Net::SetNetAddress(m_GameServerAddrIPV4, res.GetPublicAddress(), res.GetPort()));
-		//m_GameServerAddr = res.GetPublicAddressV6();
-		//m_GameServerAddrIPV4 = res.GetPublicAddressIPV4();
 		m_GameEntityUID = res.GetRouteContext().GetFrom();
 
 		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(super::GetTransID(), super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetOwnerEntityUID(), m_GameEntityUID));
