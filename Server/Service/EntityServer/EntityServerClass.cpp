@@ -25,8 +25,7 @@
 #include "EntityServerClass.h"
 #include "Transaction/EntityServerTrans.h"
 
-#include "ServerEntity/LoginServerEntity.h"
-#include "ServerEntity/GameServerEntity.h"
+#include "ServerSystem/ServerEntity/GenericServerEntity.h"
 #include "ServerEntity/EntityServerEntity.h"
 
 #include "Protocol/Policy/GameServerIPolicy.h"
@@ -219,16 +218,17 @@ namespace EntityServer {
 	{
 		switch( netClass )
 		{
-		case BR::NetClass::Game:
-			pServerEntity = new GameServerEntity();
-			break;
-		case BR::NetClass::Login:
-			pServerEntity = new LoginServerEntity();
-			break;
+		//case BR::NetClass::Game:
+		//	pServerEntity = new GameServerEntity();
+		//	break;
+		//case BR::NetClass::Login:
+		//	pServerEntity = new LoginServerEntity();
+		//	break;
 		case BR::NetClass::Entity:
 			pServerEntity = new EntityServerEntity();
 			break;
 		default:
+			pServerEntity = new Svr::GenericServerEntity();
 			break;
 		};
 

@@ -16,11 +16,13 @@
 #include "Common/Typedefs.h"
 #include "Common/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/ServerEntity/GameServerEntity.h"
+#include "ServerSystem/ServerEntity.h"
+
 
 
 namespace BR {
-namespace SharedModuleServer {
+
+namespace Svr {
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,29 +30,26 @@ namespace SharedModuleServer {
 	//	Game server entity entity class
 	//
 
-	class GameServerEntity : public Svr::GameServerEntity
+	class GenericServerEntity : public ServerEntity
 	{
 	private:
-		typedef Svr::GameServerEntity super;
+		
+	protected:
+
 
 	public:
-		GameServerEntity();
-		virtual ~GameServerEntity();
-
+		GenericServerEntity();
+		virtual ~GenericServerEntity();
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID ) override;
-
-		// Process Connection event
-		virtual HRESULT ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent ) override;
-
-		// register message handlers
-		virtual HRESULT RegisterMessageHandlers() override;
+		HRESULT InitializeEntity( EntityID newEntityID );
 
 	};
 
 
-}; // namespace SharedModuleServer
+
+
+}; // namespace Svr
 }; // namespace BR
 
 

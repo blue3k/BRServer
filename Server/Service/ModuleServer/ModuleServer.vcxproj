@@ -101,9 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ServerEntity\EntityServerEntity.h" />
-    <ClInclude Include="ServerEntity\GameServerEntity.h" />
-    <ClInclude Include="ServerEntity\ServerEntityTrans.h" />
     <ClInclude Include="SharedModuleSvrConst.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -112,9 +109,6 @@
     <ClInclude Include="Transaction\SharedModuleServerTrans.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ServerEntity\EntityServerEntity.cpp" />
-    <ClCompile Include="ServerEntity\GameServerEntity.cpp" />
-    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp" />
     <ClCompile Include="SharedModuleServer_ModuleMapping.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

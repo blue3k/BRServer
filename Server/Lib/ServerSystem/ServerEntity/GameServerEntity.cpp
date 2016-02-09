@@ -16,10 +16,12 @@
 #include "Common/Trace.h"
 #include "Common/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"
+#include "ServerSystem/SvrConst.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/Transaction.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntity/GameServerEntity.h"
+#include "ServerSystem/Transaction/ServerTransactionGeneric.h"
 
 #include "Protocol/Policy/GameServerIPolicy.h"
 
@@ -34,8 +36,8 @@ namespace Svr {
 	//
 
 
-	GameServerEntity::GameServerEntity( UINT uiTransQueueSize, UINT TransResQueueSize )
-		:ServerEntity( uiTransQueueSize, TransResQueueSize )
+	GameServerEntity::GameServerEntity()
+		:ServerEntity(Const::ENTITY_GAME_TRANS_QUEUE, Const::ENTITY_GAME_TRANSRES_QUEUE)
 	{
 	}
 
@@ -50,6 +52,8 @@ namespace Svr {
 		HRESULT hr = S_SYSTEM_OK;
 
 		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
+
+		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans(pMsgData)); return S_SYSTEM_OK; } );
 
 	Proc_End:
 

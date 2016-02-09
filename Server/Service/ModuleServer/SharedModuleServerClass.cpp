@@ -27,8 +27,8 @@
 
 #include "Table/TableSystem.h"
 
-#include "ServerEntity/EntityServerEntity.h"
-#include "ServerEntity/GameServerEntity.h"
+#include "ServerSystem/ServerEntity/EntityServerEntity.h"
+#include "ServerSystem/ServerEntity/GenericServerEntity.h"
 
 
 #include "Protocol/Policy/EntityServerIPolicy.h"
@@ -162,19 +162,26 @@ namespace SharedModuleServer {
 
 		GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
-		// Register entity servers
-		// All server should use same sock family(IPV4 or IPV6)
-		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
-		for( auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity )
+		if (Svr::Config::GetConfig().EntityServers.size() > 0)
 		{
-			EntityServerEntity *pEntity = nullptr;
-			auto pEntityCfg = *itEntity;
+			// Register entity servers
+			// All server should use same sock family(IPV4 or IPV6)
+			privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
+			for (auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity)
+			{
+				Svr::EntityServerEntity *pEntity = nullptr;
+				auto pEntityCfg = *itEntity;
 
-			NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
+				NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
 
-			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
+				svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
+			}
 		}
-
+		else
+		{
+			// No entity server is assigned.
+			// Add local entity manager
+		}
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -189,7 +196,6 @@ namespace SharedModuleServer {
 			RegisterClusteredService(pModule);
 		});
 
-
 		// push Startup transaction
 		{
 			Svr::Transaction * pProcess = nullptr;
@@ -197,7 +203,6 @@ namespace SharedModuleServer {
 			svrChk( pProcess->InitializeTransaction(this) );
 			svrChk( PendingTransaction(ThisThread::GetThreadID(), pProcess) );
 		}
-
 
 
 	Proc_End:
@@ -227,14 +232,11 @@ namespace SharedModuleServer {
 	{
 		switch( netClass )
 		{
-		case BR::NetClass::Game:
-			pServerEntity = new GameServerEntity();
-			break;
 		case BR::NetClass::Entity:
-			pServerEntity = new EntityServerEntity();
+			pServerEntity = new Svr::EntityServerEntity();
 			break;
 		default:
-			pServerEntity = new Svr::ServerEntity;
+			pServerEntity = new Svr::GenericServerEntity();
 			break;
 		};
 

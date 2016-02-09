@@ -43,7 +43,7 @@ namespace Svr {
 
 
 	public:
-		GameServerEntity( UINT uiTransQueueSize, UINT TransResQueueSize );
+		GameServerEntity();
 		virtual ~GameServerEntity();
 
 		// Initialize entity to proceed new connection

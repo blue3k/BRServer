@@ -27,13 +27,13 @@ namespace Net {
 
 
 namespace BR {
+
+	namespace Svr {
+		class ServerEntity;
+	}
+
 namespace GameServer
 {
-
-	class GameEntityManager;
-	class EntityServerEntity;
-	class GameServerEntity;
-
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ namespace GameServer
 		inline Net::ServerMUDP* GetNetPublic();
 
 		// Query Loopback entity
-		inline GameServerEntity* GetLoopbackGameServerEntity();
+		inline Svr::ServerEntity* GetLoopbackGameServerEntity();
 		
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -150,7 +150,7 @@ namespace GameServer
 	inline GameServer* GetMyServer();
 
 	// Query Loopback entity
-	inline GameServerEntity* GetLoopbackGameServerEntity();
+	inline Svr::ServerEntity* GetLoopbackGameServerEntity();
 
 	// Get Entity Server
 	//EntityServerEntity* GetEntityServer();

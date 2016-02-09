@@ -42,6 +42,7 @@
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 #include "Table/conspiracy/BotTalkTbl.h"
+#include "Table/TableSystem.h"
 #include "Protocol/Message/GameInstanceMsgClass.h"
 #include "Transaction/GameInstanceTransPlayer.h"
 
@@ -61,7 +62,8 @@ namespace ConspiracyGameInstanceServer {
 
 
 	GameInstanceEntity::GameInstanceEntity()
-		: m_PresetGameConfigID(1) // 1 is default
+		: m_TableVersion(-1)
+		, m_PresetGameConfigID(1) // 1 is default
 		, m_PresetGameConfig(nullptr)
 		, m_pBotTalk(nullptr)
 	{
@@ -95,7 +97,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_SYSTEM_OK;
 
-		svrChk( UpdateGameConfig(m_PresetGameConfigID) );
+		svrChk(UpdateGameTable() );
 
 		svrChk( AddComponent<GamePlaySystem>( this, false ) );
 		svrChk( AddComponent<GameStateSystem>( this, false ) );
@@ -110,16 +112,27 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Update game config
-	HRESULT GameInstanceEntity::UpdateGameConfig(UINT configPresetID)
+	HRESULT GameInstanceEntity::UpdateGameTable()
 	{
 		HRESULT hr = S_SYSTEM_OK;
-
 		conspiracy::GameConfigTbl::GameConfigItem *pGameConfig = nullptr;
-		svrChk( conspiracy::GameConfigTbl::FindItem(configPresetID, pGameConfig ) );
+
+		m_TableVersion = GameTable::GetTableVersion();
+
+		if (FAILED( conspiracy::GameConfigTbl::FindItem(m_PresetGameConfigID, pGameConfig) ))
+		{
+			svrTrace(Trace::TRC_ERROR, "Failed to find Gameconfig");
+			goto Proc_End;
+		}
 
 		// set value only if it succeeded
-		m_PresetGameConfigID = configPresetID;
 		m_PresetGameConfig = pGameConfig;
+
+		if (FAILED(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
+		{
+			svrTrace(Trace::TRC_ERROR, "Failed to find bot talk item");
+		}
+
 
 	Proc_End:
 
@@ -171,6 +184,11 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_SYSTEM_OK;
 
+		if (m_TableVersion != GameTable::GetTableVersion())
+		{
+			UpdateGameTable();
+		}
+
 		// Call check timer to update
 		svrChk(super::UpdateGameStatus(ulCurTime));
 
@@ -197,12 +215,6 @@ namespace ConspiracyGameInstanceServer {
 	{
 		HRESULT hr = S_SYSTEM_OK;
 		GamePlayer *pPlayer = nullptr;
-
-		if (FAILED(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
-		{
-			svrTrace(Trace::TRC_ERROR, "Failed to find bot talk item");
-			svrErr(E_GAME_INVALID_BOTTALK_TABLE);
-		}
 
 		// initialize
 		memset(m_PlayerCharacter, 0xFF, sizeof(m_PlayerCharacter));

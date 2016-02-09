@@ -23,14 +23,13 @@
 #include "ServerSystem/ServiceEntity/MatchingQueueServiceEntity.h"
 #include "ServerSystem/ServiceEntity/MatchingServiceEntity.h"
 #include "ServerSystem/ServiceEntity/GamePartyManagerServiceEntity.h"
+#include "ServerSystem/ServerEntity/GenericServerEntity.h"
 #include "GameInstance/GameInstanceManager.h"
 
 
 #include "Table/TableSystem.h"
 
-#include "ServerEntity/EntityServerEntity.h"
-#include "ServerEntity/GameServerEntity.h"
-#include "ServerEntity/ConspiracyGameInstanceServerEntity.h"
+#include "ServerSystem/ServerEntity/EntityServerEntity.h"
 
 
 #include "Protocol/Policy/EntityServerIPolicy.h"
@@ -89,7 +88,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Svr::ServerEntity* GameInstanceServer::CreateLoopbackEntity()
 	{
-		return new ConspiracyGameInstanceServerEntity;
+		return new Svr::GenericServerEntity;
 	}
 
 
@@ -175,12 +174,12 @@ namespace ConspiracyGameInstanceServer {
 		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 		for( auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity )
 		{
-			EntityServerEntity *pEntity = nullptr;
+			Svr::EntityServerEntity *pEntity = nullptr;
 			auto pEntityCfg = *itEntity;
 
 			NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
 
-			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
+			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
 		}
 
 
@@ -236,13 +235,11 @@ namespace ConspiracyGameInstanceServer {
 	{
 		switch( netClass )
 		{
-		case BR::NetClass::Game:
-			pServerEntity = new GameServerEntity();
-			break;
 		case BR::NetClass::Entity:
-			pServerEntity = new EntityServerEntity();
+			pServerEntity = new Svr::EntityServerEntity();
 			break;
 		default:
+			pServerEntity = new Svr::GenericServerEntity();
 			break;
 		};
 

@@ -23,8 +23,6 @@
 #include "GameInstance/GamePlayerEntity.h"
 #include "GameInstance/GameEntityManager.h"
 
-#include "ServerEntity/EntityServerEntity.h"
-#include "ServerEntity/GameServerEntity.h"
 //#include "ServerEntity/GameMasterServerEntity.h"
 
 #include "Protocol/Policy/EntityServerIPolicy.h"

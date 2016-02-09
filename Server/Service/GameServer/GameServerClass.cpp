@@ -28,9 +28,8 @@
 
 #include "Table/TableSystem.h"
 
-#include "ServerEntity/EntityServerEntity.h"
-#include "ServerEntity/GameServerEntity.h"
-#include "ServerEntity/LoginServerEntity.h"
+#include "ServerSystem/ServerEntity/EntityServerEntity.h"
+#include "ServerSystem/ServerEntity/GenericServerEntity.h"
 
 #include "Protocol/Policy/EntityServerIPolicy.h"
 
@@ -94,7 +93,7 @@ namespace GameServer {
 	
 	Svr::ServerEntity* GameServer::CreateLoopbackEntity()
 	{
-		return new GameServerEntity;
+		return new Svr::GameServerEntity;
 	}
 	
 	// Update game config
@@ -202,12 +201,12 @@ namespace GameServer {
 		privateNetSockFamily = GetMyServer()->GetNetPrivate()->GetLocalAddress().SocketFamily;
 		for( auto itEntity = Svr::Config::GetConfig().EntityServers.begin(); itEntity != Svr::Config::GetConfig().EntityServers.end(); ++itEntity )
 		{
-			EntityServerEntity *pEntity = nullptr;
+			Svr::EntityServerEntity *pEntity = nullptr;
 			auto pEntityCfg = *itEntity;
 
 			NetAddress netAddress(privateNetSockFamily, pEntityCfg->NetPrivate->IP.c_str(), pEntityCfg->NetPrivate->Port);
 
-			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
+			svrChk(GetComponent<Svr::ServerEntityManager>()->GetOrRegisterServer<Svr::EntityServerEntity>(pEntityCfg->UID, NetClass::Entity, netAddress, pEntity));
 		}
 
 		{
@@ -384,16 +383,11 @@ namespace GameServer {
 	{
 		switch( netClass )
 		{
-		case BR::NetClass::Login:
-			pServerEntity = new LoginServerEntity();
-			break;
-		case BR::NetClass::Game:
-			pServerEntity = new GameServerEntity();
-			break;
 		case BR::NetClass::Entity:
-			pServerEntity = new EntityServerEntity();
+			pServerEntity = new Svr::EntityServerEntity();
 			break;
 		default:
+			pServerEntity = new Svr::GenericServerEntity();
 			break;
 		};
 

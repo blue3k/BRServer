@@ -263,10 +263,6 @@ namespace Svr {
 		}
 
 
-		//m_RoleRequestSeer = 0;
-		//m_RoleRequestWerewolf = 0;
-
-
 	Proc_End:
 
 		Util::SafeDelete(pPlayer);

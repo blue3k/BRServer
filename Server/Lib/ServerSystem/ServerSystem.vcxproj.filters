@@ -427,6 +427,9 @@
     <ClInclude Include="ServiceEntity\Game\GameInstancePlayer.h">
       <Filter>ServiceEntity\Game</Filter>
     </ClInclude>
+    <ClInclude Include="ServerEntity\GenericServerEntity.h">
+      <Filter>ServerEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -689,6 +692,9 @@
     </ClCompile>
     <ClCompile Include="ServiceEntity\Game\GameInstancePlayer.cpp">
       <Filter>ServiceEntity\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerEntity\GenericServerEntity.cpp">
+      <Filter>ServerEntity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

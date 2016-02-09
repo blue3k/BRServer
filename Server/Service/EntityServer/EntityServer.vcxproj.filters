@@ -59,17 +59,8 @@
     <ClInclude Include="EntitySvrConst.h">
       <Filter>Server</Filter>
     </ClInclude>
-    <ClInclude Include="ServerEntity\GameMasterServerEntity.h">
-      <Filter>ServerEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerEntity\GameServerEntity.h">
-      <Filter>ServerEntity</Filter>
-    </ClInclude>
     <ClInclude Include="Transaction\EntityServerTrans.h">
       <Filter>Transaction</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerEntity\LoginServerEntity.h">
-      <Filter>ServerEntity</Filter>
     </ClInclude>
     <ClInclude Include="ServerEntity\EntityServerEntity.h">
       <Filter>ServerEntity</Filter>
@@ -91,17 +82,8 @@
     <ClCompile Include="EntityServerClass.cpp">
       <Filter>Server</Filter>
     </ClCompile>
-    <ClCompile Include="ServerEntity\GameMasterServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerEntity\GameServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
-    </ClCompile>
     <ClCompile Include="Transaction\EntityServerTrans.cpp">
       <Filter>Transaction</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerEntity\LoginServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
     </ClCompile>
     <ClCompile Include="ServerEntity\EntityServerEntity.cpp">
       <Filter>ServerEntity</Filter>

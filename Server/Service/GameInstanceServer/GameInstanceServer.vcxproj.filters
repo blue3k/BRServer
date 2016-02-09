@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ServerEntity">
-      <UniqueIdentifier>{3e778c63-deca-4204-9e75-0982416ed230}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Transaction">
       <UniqueIdentifier>{ec1d7fce-a3a4-4956-a30d-6d95061d8b58}</UniqueIdentifier>
     </Filter>
@@ -86,12 +83,6 @@
     <ClInclude Include="GameSystem\GameSystemComponentIDs.h">
       <Filter>GameSystem</Filter>
     </ClInclude>
-    <ClInclude Include="ServerEntity\GameServerEntity.h">
-      <Filter>ServerEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerEntity\EntityServerEntity.h">
-      <Filter>ServerEntity</Filter>
-    </ClInclude>
     <ClInclude Include="GameInstance\GameInstanceManager.h">
       <Filter>GameService</Filter>
     </ClInclude>
@@ -101,9 +92,6 @@
     <ClInclude Include="GameSystem\ChattingLogSystem.h">
       <Filter>GameSystem</Filter>
     </ClInclude>
-    <ClInclude Include="ServerEntity\ServerEntityTrans.h">
-      <Filter>ServerEntity</Filter>
-    </ClInclude>
     <ClInclude Include="ConspiracyGameInstanceServerClass.h">
       <Filter>Server</Filter>
     </ClInclude>
@@ -112,9 +100,6 @@
     </ClInclude>
     <ClInclude Include="GameInstance\GameInstanceEntity.h">
       <Filter>GameInstance</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerEntity\ConspiracyGameInstanceServerEntity.h">
-      <Filter>ServerEntity</Filter>
     </ClInclude>
     <ClInclude Include="Transaction\GameInstanceServerTrans.h">
       <Filter>Transaction</Filter>
@@ -142,12 +127,6 @@
     <ClCompile Include="GameSystem\GameStateSystem.cpp">
       <Filter>GameSystem</Filter>
     </ClCompile>
-    <ClCompile Include="ServerEntity\GameServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerEntity\EntityServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
-    </ClCompile>
     <ClCompile Include="GameInstance\GameInstanceManager.cpp">
       <Filter>GameService</Filter>
     </ClCompile>
@@ -156,9 +135,6 @@
     </ClCompile>
     <ClCompile Include="GameSystem\ChattingLogSystem.cpp">
       <Filter>GameSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp">
-      <Filter>ServerEntity</Filter>
     </ClCompile>
     <ClCompile Include="ConspiracyGameInstanceServer.cpp">
       <Filter>Server</Filter>
@@ -174,9 +150,6 @@
     </ClCompile>
     <ClCompile Include="GameInstance\GameInstanceEntity.cpp">
       <Filter>GameInstance</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerEntity\ConspiracyGameInstanceServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
     </ClCompile>
     <ClCompile Include="Transaction\GameInstanceServerTrans.cpp">
       <Filter>Transaction</Filter>

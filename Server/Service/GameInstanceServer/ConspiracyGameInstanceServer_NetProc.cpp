@@ -22,9 +22,6 @@
 #include "ConspiracyGameInstanceServerClass.h"
 #include "ServerSystem/EntityManager.h"
 
-#include "ServerEntity/EntityServerEntity.h"
-#include "ServerEntity/GameServerEntity.h"
-
 
 #include "Protocol/Policy/EntityServerIPolicy.h"
 #include "Protocol/Policy/GameServerIPolicy.h"

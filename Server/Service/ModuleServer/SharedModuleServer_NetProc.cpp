@@ -22,8 +22,7 @@
 #include "SharedModuleServerClass.h"
 #include "ServerSystem/EntityManager.h"
 
-#include "ServerEntity/EntityServerEntity.h"
-#include "ServerEntity/GameServerEntity.h"
+#include "ServerSystem/ServerEntity/EntityServerEntity.h"
 
 
 #include "Protocol/Policy/EntityServerIPolicy.h"

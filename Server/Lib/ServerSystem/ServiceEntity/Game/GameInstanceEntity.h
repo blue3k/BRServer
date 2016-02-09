@@ -189,7 +189,7 @@ namespace Svr
 		//
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeGameEntity( UINT numBot, UINT maxPlayer );
+		virtual HRESULT InitializeGameEntity(UINT numBot, UINT maxPlayer);
 
 
 		////////////////////////////////////////////////////////////

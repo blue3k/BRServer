@@ -78,7 +78,6 @@ namespace EntityServer {
 					svrChk( pServiceEntity->NewServerService( expectedUID, this, clusterID == ClusterID::ClusterManager ? ClusterMembership::Slave : ClusterMembership::StatusWatcher, ServiceStatus::Ready, pService ) );
 				}
 			}
-
 			break;
 		default:
 			break;

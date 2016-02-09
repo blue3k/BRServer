@@ -20,7 +20,7 @@
 
 
 #include "ServerSystem/ServerEntity.h"
-#include "ServerEntity/GameServerEntity.h"
+//#include "ServerEntity/GameServerEntity.h"
 
 #include "Protocol/Policy/EntityServerIPolicy.h"
 #include "Protocol/Policy/GameServerIPolicy.h"

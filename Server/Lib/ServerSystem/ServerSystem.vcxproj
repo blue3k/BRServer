@@ -222,6 +222,7 @@
     <ClInclude Include="ServerEntity\EntityServerEntity.h" />
     <ClInclude Include="ServerEntity\GameServerEntity.h" />
     <ClInclude Include="ServerEntity\GameMasterServerEntity.h" />
+    <ClInclude Include="ServerEntity\GenericServerEntity.h" />
     <ClInclude Include="ServerServiceBase.h" />
     <ClInclude Include="ServerService\ClusterServerService.h" />
     <ClInclude Include="ServerService\EntityServerService.h" />
@@ -313,6 +314,7 @@
     <ClCompile Include="ServerEntity\EntityServerEntity.cpp" />
     <ClCompile Include="ServerEntity\GameServerEntity.cpp" />
     <ClCompile Include="ServerEntity\GameMasterServerEntity.cpp" />
+    <ClCompile Include="ServerEntity\GenericServerEntity.cpp" />
     <ClCompile Include="ServerService\ClusterServerService.cpp" />
     <ClCompile Include="ServerService\EntityServerService.cpp" />
     <ClCompile Include="ServerService\GameInstanceManagerService.cpp" />

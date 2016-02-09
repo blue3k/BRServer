@@ -85,6 +85,7 @@ namespace ConspiracyGameInstanceServer
 		BYTE					m_PlayerCharacter[GameConst::MAX_GAMEPLAYER];
 
 		// Game configuration
+		int m_TableVersion;
 		UINT					m_PresetGameConfigID;
 		BRCLASS_ATTRIBUTE_READONLY_PTR(GameConfigType*,PresetGameConfig);
 
@@ -128,7 +129,7 @@ namespace ConspiracyGameInstanceServer
 		HRESULT InitializeSystem();
 
 		// Update game config
-		HRESULT UpdateGameConfig(UINT configPresetID);
+		HRESULT UpdateGameTable();
 
 
 	private:
@@ -170,7 +171,7 @@ namespace ConspiracyGameInstanceServer
 		//
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeGameEntity( UINT numBot, UINT maxPlayer ) override;
+		virtual HRESULT InitializeGameEntity( UINT numBot, UINT maxPlayer) override;
 
 
 

@@ -161,7 +161,7 @@ namespace Svr
 		svrChk( m_EntityManagerServerUpTimeMap.Insert( pPrevNode, pServerEntity->GetServerUpTime().time_since_epoch().count(), pNewListNode ) );
 
 		pNewListNode = nullptr;
-	
+
 	Proc_End:
 
 		Util::SafeDelete( pNewListNode );

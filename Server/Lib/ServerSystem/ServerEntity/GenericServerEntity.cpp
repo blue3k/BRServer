@@ -16,21 +16,19 @@
 #include "Common/Trace.h"
 #include "Common/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"
+#include "ServerSystem/SvrConst.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/Transaction.h"
-//#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTrace.h"
-#include "LoginServerEntity.h"
-#include "EntitySvrConst.h"
+#include "ServerSystem/ServerEntity/GenericServerEntity.h"
+#include "ServerSystem/Transaction/ServerTransactionGeneric.h"
 
-#include "Protocol/Policy/LoginServerIPolicy.h"
-#include "Transaction/EntityTransactionServer.h"
-#include "Transaction/EntityTransactionUser.h"
+#include "Protocol/Policy/GameServerIPolicy.h"
 
 
 
 namespace BR {
-namespace EntityServer {
+namespace Svr {
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -38,25 +36,24 @@ namespace EntityServer {
 	//
 
 
-	LoginServerEntity::LoginServerEntity()
-		:Svr::ServerEntity( Const::ENTITY_WORLD_TRANS_QUEUE, Const::ENTITY_WORLD_TRANSRES_QUEUE )
+	GenericServerEntity::GenericServerEntity()
+		:ServerEntity(Const::ENTITY_GAME_TRANS_QUEUE, Const::ENTITY_GAME_TRANSRES_QUEUE)
 	{
 	}
 
-	LoginServerEntity::~LoginServerEntity()
+	GenericServerEntity::~GenericServerEntity()
 	{
 	}
 
 
 	// Initialize entity to proceed new connection
-	HRESULT LoginServerEntity::InitializeEntity( EntityID newEntityID )
+	HRESULT GenericServerEntity::InitializeEntity( EntityID newEntityID )
 	{
 		HRESULT hr = S_SYSTEM_OK;
 
-		svrChk(Svr::ServerEntity::InitializeEntity( newEntityID ) );
+		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)			{ pNewTrans = new TransServerStarted( pMsgData ); return S_SYSTEM_OK; } );
-
+		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans(pMsgData)); return S_SYSTEM_OK; } );
 
 	Proc_End:
 
@@ -64,7 +61,8 @@ namespace EntityServer {
 	}
 
 
-}; // namespace EntityServer
+
+}; // namespace Svr
 }; // namespace BR
 
 

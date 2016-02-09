@@ -24,9 +24,9 @@ BR::Net::ServerMUDP* GameServer::GetNetPublic()
 
 
 // Query Loopback entity
-GameServerEntity* GameServer::GetLoopbackGameServerEntity()
+Svr::ServerEntity* GameServer::GetLoopbackGameServerEntity()
 {
-	return (GameServerEntity*)GetLoopbackServerEntity();
+	return GetLoopbackServerEntity();
 }
 
 // Query Game server instance
@@ -38,7 +38,7 @@ GameServer* GetMyServer()
 
 
 // Query Loopback entity
-GameServerEntity* GetLoopbackGameServerEntity()
+Svr::ServerEntity* GetLoopbackGameServerEntity()
 {
 	GameServer* pSvr = GetMyServer() ;
 	return pSvr ? pSvr->GetLoopbackGameServerEntity() : nullptr;

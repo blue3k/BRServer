@@ -31,33 +31,19 @@ namespace EntityServer {
 	//	Entity command transaction
 	//
 
-	// Server started
-	class TransServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted>
-	{
-	private:
-		typedef Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted> super;
-
-	public:
-		TransServerStarted( Message::MessageData* &pIMsg ) : ServerStartedTrans(pIMsg) {}
-		virtual ~TransServerStarted() {}
-
-		virtual HRESULT StartTransaction();
-	};
-
-
 	//// Server started
-	//class TransEntityServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransEntityServerStarted>
+	//class TransServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted>
 	//{
 	//private:
+	//	typedef Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted> super;
 
 	//public:
-	//	TransEntityServerStarted( Message::MessageData* &pIMsg );
-	//	virtual ~TransEntityServerStarted();
+	//	TransServerStarted( Message::MessageData* &pIMsg ) : ServerStartedTrans(pIMsg) {}
+	//	virtual ~TransServerStarted() {}
 
-	//	// Start Transaction
 	//	virtual HRESULT StartTransaction();
-
 	//};
+
 
 
 	
@@ -67,13 +53,13 @@ namespace EntityServer {
 	//
 
 	// Server started
-	class TransGameServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransGameServerStarted>
+	class TransGenericServerStarted : public Svr::ServerStartedTrans< Svr::ServerEntity, Policy::ISvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransGenericServerStarted>
 	{
 	private:
 
 	public:
-		TransGameServerStarted( Message::MessageData* &pIMsg ) : ServerStartedTrans(pIMsg) {}
-		virtual ~TransGameServerStarted() {}
+		TransGenericServerStarted( Message::MessageData* &pIMsg ) : ServerStartedTrans(pIMsg) {}
+		virtual ~TransGenericServerStarted() {}
 	};
 	
 

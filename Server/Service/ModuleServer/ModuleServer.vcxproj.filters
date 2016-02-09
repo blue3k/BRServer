@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ServerEntity">
-      <UniqueIdentifier>{3e778c63-deca-4204-9e75-0982416ed230}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Transaction">
       <UniqueIdentifier>{ec1d7fce-a3a4-4956-a30d-6d95061d8b58}</UniqueIdentifier>
     </Filter>
@@ -47,15 +44,6 @@
     <ClInclude Include="GameServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerEntity\GameServerEntity.h">
-      <Filter>ServerEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerEntity\EntityServerEntity.h">
-      <Filter>ServerEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerEntity\ServerEntityTrans.h">
-      <Filter>ServerEntity</Filter>
-    </ClInclude>
     <ClInclude Include="SharedModuleServerClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,15 +57,6 @@
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerEntity\GameServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerEntity\EntityServerEntity.cpp">
-      <Filter>ServerEntity</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp">
-      <Filter>ServerEntity</Filter>
     </ClCompile>
     <ClCompile Include="SharedModuleServer.cpp">
       <Filter>Source Files</Filter>

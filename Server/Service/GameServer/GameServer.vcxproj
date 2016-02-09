@@ -109,10 +109,6 @@
     <ClInclude Include="GameSystem\UserNotifySystem.h" />
     <ClInclude Include="GameSystem\UserSystemComponentIDs.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ServerEntity\EntityServerEntity.h" />
-    <ClInclude Include="ServerEntity\GameServerEntity.h" />
-    <ClInclude Include="ServerEntity\LoginServerEntity.h" />
-    <ClInclude Include="ServerEntity\ServerEntityTrans.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Transaction\GameMasterTrans.h" />
@@ -134,10 +130,6 @@
     <ClCompile Include="GameSystem\UserFriendSystem.cpp" />
     <ClCompile Include="GameSystem\UserGamePlayerInfoSystem.cpp" />
     <ClCompile Include="GameSystem\UserNotifySystem.cpp" />
-    <ClCompile Include="ServerEntity\EntityServerEntity.cpp" />
-    <ClCompile Include="ServerEntity\GameServerEntity.cpp" />
-    <ClCompile Include="ServerEntity\LoginServerEntity.cpp" />
-    <ClCompile Include="ServerEntity\ServerEntityTrans.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
