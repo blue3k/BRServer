@@ -56,6 +56,7 @@
     <ModMatchingQueue_Game_8x1S/>
     <ModMatchingQueue_Game_8x1W/>
     <ModMatching_Game_8 UseBot="true"/>
+	  <ModGamePartyManager/>
   </ModuleServer>
 
 	<GameCluster Name="First Game" GameID="Conspiracy">

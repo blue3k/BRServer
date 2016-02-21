@@ -18,7 +18,7 @@
 #endif
 
 
-BRSERVERINTERFACE_API int InitializeNativeSystem(const char* serviceName, const char* modulePath, const char* logCfgPath);
+BRSERVERINTERFACE_API int InitializeNativeSystem(const char* serviceName, const char* modulePath, const char* logCfgPath, const char* configPath);
 BRSERVERINTERFACE_API int TerminateNativeSystem();
 
 BRSERVERINTERFACE_API BR::Array<BR::SharedPointerT<BR::Svr::PerformanceCounterInstance>>* CreatePerformanceCounterInstanceArray();

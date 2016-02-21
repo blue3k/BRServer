@@ -21,14 +21,20 @@
 using namespace BR;
 
 
+//SharedPointerT<BR::SharedModuleServer::SharedModuleServer> pServerInstance;
 
-BRSERVERINTERFACE_API int InitializeNativeSystem(const char* serviceName, const char* modulePath, const char* logCfgPath)
+
+
+BRSERVERINTERFACE_API int InitializeNativeSystem(const char* serviceName, const char* modulePath, const char* logCfgPath, const char*configPath)
 {
 	HRESULT hr = S_OK;
 
+	//ParameterSetting::SetSetting("config", "..\\..\\Config\\ServerConfig.xml");
+	//ParameterSetting::ProcessParameter(lpCmdLine);
+
 	ParameterSetting::SetSetting("modulepath", modulePath);
 	ParameterSetting::SetSetting("servicename", serviceName);
-	ParameterSetting::SetSetting("config", logCfgPath);
+	ParameterSetting::SetSetting("config", configPath);
 
 	BR::Util::SetServiceName(serviceName);
 
@@ -38,6 +44,9 @@ BRSERVERINTERFACE_API int InitializeNativeSystem(const char* serviceName, const 
 	defChk(LibComponentManager::GetInstance().AddComponent<BR::MemoryPoolManager>());
 
 	defChk(LibComponentManager::GetInstance().InitializeComponents());
+
+	//pServerInstance = SharedPointerT<BR::SharedModuleServer::SharedModuleServer>(new BR::SharedModuleServer::SharedModuleServer);
+	//svrChk(BR::Svr::Service::ServiceRun((BR::SharedModuleServer::SharedModuleServer*)pServerInstance));
 
 	svrTrace(Trace::TRC_TRACE, "Starting native system, {0}", Util::GetServiceNameA());
 
@@ -51,6 +60,13 @@ BRSERVERINTERFACE_API int TerminateNativeSystem(void)
 	HRESULT hr = S_OK;
 
 	svrTrace(Trace::TRC_TRACE, "Native system terminated {0}", Util::GetServiceNameA());
+
+	//if (pServerInstance != nullptr)
+	//{
+	//	pServerInstance->TerminateEntity();
+	//	pServerInstance->OnRemovedFromTaskManager(nullptr);
+	//	pServerInstance = SharedPointerT<BR::SharedModuleServer::SharedModuleServer>();
+	//}
 
 	LibComponentManager::GetInstance().TerminateComponents();
 

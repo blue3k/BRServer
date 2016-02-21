@@ -59,7 +59,6 @@
 
 
 
-#define PATH_DATABASE L"../../Data"
 
 
 
@@ -183,27 +182,6 @@ namespace SharedModuleServer {
 		case ClusterID::MatchingQueue_Game_8x1W:
 		case ClusterID::MatchingQueue_Game_8x1S:
 
-		//case ClusterID::MatchingQueue_Game_10x1:
-		//case ClusterID::MatchingQueue_Game_10x2:
-		//case ClusterID::MatchingQueue_Game_10x3:
-		//case ClusterID::MatchingQueue_Game_10x4:
-		//case ClusterID::MatchingQueue_Game_10x5:
-		//case ClusterID::MatchingQueue_Game_10x6:
-		//case ClusterID::MatchingQueue_Game_10x7:
-		//case ClusterID::MatchingQueue_Game_10x8:
-		//case ClusterID::MatchingQueue_Game_10x9:
-
-		//case ClusterID::MatchingQueue_Game_12x1:
-		//case ClusterID::MatchingQueue_Game_12x2:
-		//case ClusterID::MatchingQueue_Game_12x3:
-		//case ClusterID::MatchingQueue_Game_12x4:
-		//case ClusterID::MatchingQueue_Game_12x5:
-		//case ClusterID::MatchingQueue_Game_12x6:
-		//case ClusterID::MatchingQueue_Game_12x7:
-		//case ClusterID::MatchingQueue_Game_12x8:
-		//case ClusterID::MatchingQueue_Game_12x9:
-		//case ClusterID::MatchingQueue_Game_12x10:
-		//case ClusterID::MatchingQueue_Game_12x11:
 			svrChk( AddServiceEntityComponent<Svr::MatchingQueueServiceEntity>( clusterID, ClusterMembership::Slave ) );
 			break;
 		default:

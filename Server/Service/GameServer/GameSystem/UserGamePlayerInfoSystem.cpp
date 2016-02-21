@@ -374,7 +374,7 @@ namespace GameServer {
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
-		Assert(m_MaxStamina > 10);
+		Assert(m_MaxStamina > 0);
 
 		m_Stamina = std::min( m_Stamina + stamina, m_MaxStamina );
 		m_Stamina = std::max( m_Stamina, (SHORT)0 );
@@ -393,7 +393,7 @@ namespace GameServer {
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
-		Assert(m_MaxFriend > 10);
+		Assert(m_MaxFriend > 0);
 
 		m_AddedFriendSlot = std::min(m_AddedFriendSlot + numSlot, maxFriend);
 		m_AddedFriendSlot = std::max(m_AddedFriendSlot, (SHORT)0);
@@ -415,7 +415,7 @@ namespace GameServer {
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
-		Assert(m_MaxGameMoney > 10);
+		Assert(m_MaxGameMoney > 0);
 
 		m_GameMoney = std::min( m_GameMoney + numValue, m_MaxGameMoney );
 		m_GameMoney = std::max( m_GameMoney, (INT64)0 );
@@ -432,7 +432,7 @@ namespace GameServer {
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
-		Assert(m_MaxGem > 10);
+		Assert(m_MaxGem > 0);
 
 		m_Gem = std::min( m_Gem + numValue, m_MaxGem );
 		m_Gem = std::max( m_Gem, (INT64)0 );

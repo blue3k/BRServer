@@ -936,9 +936,14 @@ namespace Svr {
 		ServiceTableItem *pTblItem = nullptr;
 		Indexing::MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
 
+		pService = nullptr;
+
 		if( m_pCurrentQueryService == nullptr )
 		{
-			m_pCurrentQueryService = converter(&*m_ServiceList.begin());
+			auto itService = m_ServiceList.begin();
+			if (!itService.IsValid())
+				return E_SVR_SERVICE_FAILED;
+			m_pCurrentQueryService = converter(&*itService);
 		}
 
 		pTblItem = (ServiceTableItem*)m_pCurrentQueryService;
@@ -950,7 +955,10 @@ namespace Svr {
 			// circulate the list until meet itself
 			if( pTblItem == nullptr )
 			{
-				pTblItem = converter(&*m_ServiceList.begin());
+				auto itService = m_ServiceList.begin();
+				if (!itService.IsValid())
+					return E_SVR_SERVICE_FAILED;
+				pTblItem = converter(&*itService);
 			}
 
 			// We don't have any service now

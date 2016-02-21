@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5708FC4F-E2C8-4428-9F3F-A537E60ECF5B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BRServerLib</RootNamespace>
+    <AssemblyName>BRServerLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Generated\ArrayBYTE.cs" />
+    <Compile Include="Generated\ArrayChar.cs" />
+    <Compile Include="Generated\ArrayEntityUID.cs" />
+    <Compile Include="Generated\ArrayInt32.cs" />
+    <Compile Include="Generated\ArrayInt64.cs" />
+    <Compile Include="Generated\ArrayPerformanceCounterInfo.cs" />
+    <Compile Include="Generated\ArrayPerformanceCounterInstanceInfo.cs" />
+    <Compile Include="Generated\ArrayPerformanceCounterInstancePtr.cs" />
+    <Compile Include="Generated\ArrayPerformanceCounterPtr.cs" />
+    <Compile Include="Generated\ArrayUInt32.cs" />
+    <Compile Include="Generated\ArrayUInt64.cs" />
+    <Compile Include="Generated\BinaryHeader.cs" />
+    <Compile Include="Generated\BRMonitoring.cs" />
+    <Compile Include="Generated\BRMonitoringPINVOKE.cs" />
+    <Compile Include="Generated\BRServerInterface.cs" />
+    <Compile Include="Generated\BRServerInterfacePINVOKE.cs" />
+    <Compile Include="Generated\ChatType.cs" />
+    <Compile Include="Generated\ClusterID.cs" />
+    <Compile Include="Generated\ClusterMembership.cs" />
+    <Compile Include="Generated\ClusterType.cs" />
+    <Compile Include="Generated\DBClusterType.cs" />
+    <Compile Include="Generated\DebugGameResource.cs" />
+    <Compile Include="Generated\EntityFaculty.cs" />
+    <Compile Include="Generated\EntityID.cs" />
+    <Compile Include="Generated\EntityUID.cs" />
+    <Compile Include="Generated\FriendInformation.cs" />
+    <Compile Include="Generated\GameID.cs" />
+    <Compile Include="Generated\GameLogChatMessage.cs" />
+    <Compile Include="Generated\GameLogGameEnd.cs" />
+    <Compile Include="Generated\GameLogGameStateChange.cs" />
+    <Compile Include="Generated\GameLogItem.cs" />
+    <Compile Include="Generated\GameLogPlayerKilled.cs" />
+    <Compile Include="Generated\GameLogType.cs" />
+    <Compile Include="Generated\GameLogVote.cs" />
+    <Compile Include="Generated\GameLogVoteResult.cs" />
+    <Compile Include="Generated\GameStateID.cs" />
+    <Compile Include="Generated\GameVoteType.cs" />
+    <Compile Include="Generated\GameWinner.cs" />
+    <Compile Include="Generated\GlobalUID.cs" />
+    <Compile Include="Generated\IBRServer.cs" />
+    <Compile Include="Generated\IClient.cs" />
+    <Compile Include="Generated\IConnection.cs" />
+    <Compile Include="Generated\IConnectionEventHandler.cs" />
+    <Compile Include="Generated\INet.cs" />
+    <Compile Include="Generated\INetPolicy.cs" />
+    <Compile Include="Generated\IPolicyBase.cs" />
+    <Compile Include="Generated\LocalUID.cs" />
+    <Compile Include="Generated\MatchingPlayerInformation.cs" />
+    <Compile Include="Generated\MatchingQueueItem.cs" />
+    <Compile Include="Generated\MatchingQueueTicket.cs" />
+    <Compile Include="Generated\MessageBase.cs" />
+    <Compile Include="Generated\MessageData.cs" />
+    <Compile Include="Generated\MessageHeader.cs" />
+    <Compile Include="Generated\MessageID.cs" />
+    <Compile Include="Generated\MessageUsage.cs" />
+    <Compile Include="Generated\MobileMessageHeader.cs" />
+    <Compile Include="Generated\NetAddress.cs" />
+    <Compile Include="Generated\NetClass.cs" />
+    <Compile Include="Generated\NetPolicyMonitoring.cs" />
+    <Compile Include="Generated\NetPolicyRanking.cs" />
+    <Compile Include="Generated\NetSvrPolicyMonitoring.cs" />
+    <Compile Include="Generated\NetSvrPolicyRanking.cs" />
+    <Compile Include="Generated\NotificationType.cs" />
+    <Compile Include="Generated\PerformanceCounter.cs" />
+    <Compile Include="Generated\PerformanceCounterInfo.cs" />
+    <Compile Include="Generated\PerformanceCounterInstance.cs" />
+    <Compile Include="Generated\PerformanceCounterInstanceInfo.cs" />
+    <Compile Include="Generated\PerformanceCounterInstancePtr.cs" />
+    <Compile Include="Generated\PerformanceCounterServer.cs" />
+    <Compile Include="Generated\PlayerInformation.cs" />
+    <Compile Include="Generated\PlayerKilledReason.cs" />
+    <Compile Include="Generated\PlayerRevealedReason.cs" />
+    <Compile Include="Generated\PlayerRole.cs" />
+    <Compile Include="Generated\PolicyID.cs" />
+    <Compile Include="Generated\RankingPlayerInformation.cs" />
+    <Compile Include="Generated\RankingType.cs" />
+    <Compile Include="Generated\RouteContext.cs" />
+    <Compile Include="Generated\ServerFriendInformation.cs" />
+    <Compile Include="Generated\ServiceInformation.cs" />
+    <Compile Include="Generated\ServiceStatus.cs" />
+    <Compile Include="Generated\SharedObject.cs" />
+    <Compile Include="Generated\SharedPointer.cs" />
+    <Compile Include="Generated\SockFamily.cs" />
+    <Compile Include="Generated\SockType.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_BR__ClusterID.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_BR__SharedPointerTT_BR__Net__IConnection_t.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_BR__SharedReferenceManager.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_int.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_p_BR__Message__MessageData.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_p_BR__Net__IConnection.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_p_BR__Svr__PerformanceCounter.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_p_unsigned_char.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_signed___int64.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_sockaddr_storage.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationMS_t.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_std__chrono__time_pointT_ClockType_DurationSec_t.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_unsigned_char.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_unsigned_int.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_unsigned___int64.cs" />
+    <Compile Include="Generated\SWIGTYPE_p_void.cs" />
+    <Compile Include="Generated\TotalRankingPlayerInformation.cs" />
+    <Compile Include="Generated\TransactionID.cs" />
+    <Compile Include="Generated\TransLogCategory.cs" />
+    <Compile Include="Generated\WeakPointer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transaction\Transaction.cs" />
+    <Compile Include="Transaction\TransactionIterator.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

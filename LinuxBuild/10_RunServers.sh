@@ -13,10 +13,10 @@ ssh $SSH_PARAMS "$REMOTE_BASEPATH/BREntityServer -n:BREntityServer2"
 
 sleep 5s
 
-ssh $SSH_PARAMS "$REMOTE_BASEPATH/BRModuleServer -n:BRLoginServer01"
+ssh $SSH_PARAMS "$REMOTE_BASEPATH/BRLoginServer -n:BRLoginServer01"
 
 
-ssh $SSH_PARAMS "$REMOTE_BASEPATH/BRModuleServer -n:BRMatchingQueue01"
+ssh $SSH_PARAMS "$REMOTE_BASEPATH/BRSharedModuleServer -n:BRMatchingQueue01"
 
 
 sleep 1s
