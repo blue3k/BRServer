@@ -32,7 +32,7 @@ namespace Svr {
 
 
 	TimerAction::TimerAction()
-		//: m_InQueueKey(0)
+		: m_Queued(false)
 	{
 		m_InQueueKey.TimerKey = -1;
 		TimeData.TimerKey = -1;
@@ -45,8 +45,10 @@ namespace Svr {
 	void TimerAction::SetNextTickTime(TimeStampMS nextTickTime)
 	{
 		auto curTime = Util::Time.GetTimeMs();
-		Assert(nextTickTime != TimeStampMS::min());
-		if (nextTickTime < curTime || nextTickTime == TimeStampMS::min()) // correct the time
+		// circular time can be any value
+		//Assert(nextTickTime != TimeStampMS::min());
+		//if (nextTickTime < curTime || nextTickTime == TimeStampMS::min()) // correct the time
+		if (nextTickTime < curTime) // correct the time
 			nextTickTime = curTime;
 		auto diffTime = nextTickTime - curTime;
 		Assert((INT)diffTime.count() < 60*60*1000);
@@ -95,6 +97,7 @@ namespace Svr {
 		Assert(removed == pAction);
 		// removed clear in-queue time
 		pAction->m_InQueueKey.Components.NextTickTime = TimeStampMS::max();
+		pAction->m_Queued = false;
 
 		//auto savedTime = key;
 		auto diffTime = pAction->TimeData.Components.NextTickTime - Util::Time.GetTimeMs();
@@ -115,25 +118,26 @@ namespace Svr {
 					pAction->TimeData.Components.NextTickTime = Util::Time.GetTimeMs() + m_FailSafeTimerTickInterval;
 				}
 			}
-			else if (pAction->TimeData.Components.NextTickTime == TimeStampMS::max() || !bIsNeedToKeep)
-			{
-				if (!bIsNeedToKeep)
-				{
-					//svrTrace(Trace::TRC_DBG1, "Remove tick timer value:-1, {0}", typeid(*(const TimerAction*)pAction).name());
-					return true;
-				}
-			}
-			else
-			{
-				// Too short period, but negative value is fine
-				//if (bIsNeedToKeep)
-				//{
-				//	svrTrace(Trace::TRC_WARN, "Negative tick timer value:{0}, {1}", nextDiff, typeid(*(const TimerAction*)pAction).name());
-				//}
-				//Assert(!m_AssertOnInvalidTickTime);
-				//pAction->TimeData.NextTickTime = Util::Time.GetTimeMs() + m_FailSafeTimerTickInterval;
-				//svrTrace(Trace::TRC_ERROR, "Invalid Timer value, correct to fail safe timer value");
-			}
+			// this condition isn't true for long running machine
+			//else if (pAction->TimeData.Components.NextTickTime == TimeStampMS::max() || !bIsNeedToKeep)
+			//{
+			//	if (!bIsNeedToKeep)
+			//	{
+			//		//svrTrace(Trace::TRC_DBG1, "Remove tick timer value:-1, {0}", typeid(*(const TimerAction*)pAction).name());
+			//		return true;
+			//	}
+			//}
+			//else
+			//{
+			//	// Too short period, but negative value is fine
+			//	//if (bIsNeedToKeep)
+			//	//{
+			//	//	svrTrace(Trace::TRC_WARN, "Negative tick timer value:{0}, {1}", nextDiff, typeid(*(const TimerAction*)pAction).name());
+			//	//}
+			//	//Assert(!m_AssertOnInvalidTickTime);
+			//	//pAction->TimeData.NextTickTime = Util::Time.GetTimeMs() + m_FailSafeTimerTickInterval;
+			//	//svrTrace(Trace::TRC_ERROR, "Invalid Timer value, correct to fail safe timer value");
+			//}
 		}
 		else
 		{
@@ -142,12 +146,15 @@ namespace Svr {
 
 		if (bIsNeedToKeep)
 		{
-			//MutexScopeLock localLock(m_WriteLock);
-			Assert(pAction->TimeData.TimerKey != 0);
-			Assert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
+			//Assert(pAction->TimeData.TimerKey != 0);
+			// Time tick can be 0xffffffff
+			//Assert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
+			Assert(pAction->m_Queued == false);
 			pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
+			pAction->m_Queued = true;
 			if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
 			{
+				pAction->m_Queued = false;
 				Assert(false);
 			}
 		}
@@ -182,27 +189,20 @@ namespace Svr {
 		//Assert(m_IsWriteLocked.load(std::memory_order_relaxed) == 0);
 
 		svrChkPtr(pAction);
-		svrAssert(pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max());
-		svrAssert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
-		svrAssert(pAction->TimeData.TimerKey != 0);
+		svrAssert(pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max() && pAction->m_Queued == false);
+		// new time can be TimeStampMS::max() if muchine is running over 28 days
+		//svrAssert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
+		//svrAssert(pAction->TimeData.TimerKey != 0);
 
-
+		Assert(pAction->m_Queued == false);
+		pAction->m_Queued = true;
 		pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
 		if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
 		{
+			pAction->m_Queued = false;
 			Assert(false);
 		}
 
-//#ifdef DEBUG
-//		UINT found = 0;
-//		m_TimerMap.ForeachOrderWrite(0, (UINT)m_TimerMap.GetWriteItemCount(), [&](const UINT64& keyVal, SharedPointerT<TimerAction> pInAction) -> bool
-//		{
-//			if (pInAction == pAction) found++;
-//			return true;
-//		});
-//		Assert(found == 1);
-//#endif
-		//ValidateTimerKeys();
 
 	Proc_End:
 
@@ -217,7 +217,7 @@ namespace Svr {
 		if (pAction == nullptr)
 			return hr;
 
-		if (pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max()) // if not schedule
+		if (pAction->m_Queued == false) // if not schedule
 			return hr;
 
 		Assert(m_WorkingThreadID == threadID);
@@ -230,11 +230,12 @@ namespace Svr {
 
 		if (FAILED(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
 		{
-			Assert(pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max());
+			Assert(pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max() && pAction->m_Queued == false);
 		}
 
 		Assert(removed == pAction);
 		pAction->m_InQueueKey.Components.NextTickTime = TimeStampMS::max();
+		pAction->m_Queued = false;
 
 //#ifdef DEBUG
 //		m_TimerMap.ForeachOrderWrite(0, (UINT)m_TimerMap.GetWriteItemCount(), [&](const UINT64& keyVal, SharedPointerT<TimerAction> pInAction) -> bool
@@ -280,7 +281,8 @@ namespace Svr {
 		if (pAction->TimeData.Components.NextTickTime == pAction->m_InQueueKey.Components.NextTickTime)
 			return hr;
 
-		if (pAction->m_InQueueKey.Components.NextTickTime != TimeStampMS::max())
+		//if (pAction->m_InQueueKey.Components.NextTickTime != TimeStampMS::max())
+		if (pAction->m_Queued)
 		{
 			SharedPointerT<TimerAction> removed;
 			if (FAILED(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
@@ -292,6 +294,7 @@ namespace Svr {
 				Assert(removed == pAction);
 			}
 			pAction->m_InQueueKey.Components.NextTickTime = TimeStampMS::max();
+			pAction->m_Queued = false;
 		}
 
 		Assert(!m_AssertOnInvalidTickTime || ( (LONG)(pAction->TimeData.Components.NextTickTime - Util::Time.GetTimeMs()).count() < (2*60*1000)));
@@ -299,8 +302,10 @@ namespace Svr {
 		if (pAction->TimeData.Components.NextTickTime != TimeStampMS::max())
 		{
 			pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
+			pAction->m_Queued = true;
 			if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
 			{
+				pAction->m_Queued = false;
 				Assert(false);
 			}
 		}

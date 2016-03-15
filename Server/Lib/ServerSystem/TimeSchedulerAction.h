@@ -44,7 +44,7 @@ namespace Svr {
 	private:
 
 		TimeKey m_InQueueKey;
-
+		bool    m_Queued;
 		friend class TimeScheduler;
 
 	protected:

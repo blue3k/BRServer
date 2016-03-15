@@ -248,7 +248,6 @@ namespace GameServer {
 	HRESULT UserGamePlayerInfoSystem::SetLevel( UINT newLevel )
 	{
 		HRESULT hr = S_SYSTEM_OK;
-
 		conspiracy::LevelTbl::LevelItem *pLevelInfo = nullptr;
 
 		// modify
@@ -317,8 +316,6 @@ namespace GameServer {
 			break;
 		case PlayerRole::Villager:
 		case PlayerRole::Medium:
-		//case PlayerRole::Bodyguard:
-		//case PlayerRole::Owlman:
 			if( isWon )
 			{
 				m_WinPlayNCitizen++;

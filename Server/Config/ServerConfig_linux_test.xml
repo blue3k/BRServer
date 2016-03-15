@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
 <Servers xmlns="http://www.TheBraves.com/ServerConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/ServerConfig ServerConfig.xsd">
   <DBInstances InstanceName="account00" ConnectionString="10.133.29.149,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
   <DBInstances InstanceName="tabledb" ConnectionString="10.133.29.149,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
