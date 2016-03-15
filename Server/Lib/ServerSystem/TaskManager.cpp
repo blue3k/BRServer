@@ -123,7 +123,8 @@ namespace Svr {
 
 				pTask->OnAddedToTaskManager(this);
 				pTask->TickUpdate();
-				if (pTask->GetTimerAction() && pTask->GetTimerAction()->GetNexTickTime() != TimeStampMS::max())
+				// If it need to be scheduled
+				if (pTask->GetTimerAction() && pTask->GetTickInterval() != DurationMS(0))
 				{
 					GetTimeScheduler().AddTimerAction(GetThreadID(), pTask->GetTimerAction());
 				}
