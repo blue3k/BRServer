@@ -207,5 +207,8 @@
 // Invalid password 
 #define E_INVALID_PASSWORD                                            ((int32_t)0xE7020040L) 
 
+// Target already in friends list 
+#define E_ALREADY_IN_FRIEND                                           ((int32_t)0xE7020041L) 
+
 
 

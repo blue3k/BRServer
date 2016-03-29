@@ -147,6 +147,9 @@ namespace GameServer {
 		if (!GetMyOwner()->GetComponent<UserFriendSystem>()->CanAddFriend())
 			svrErrClose(E_MAX_FRIEND);
 
+		if (!GetMyOwner()->GetComponent<UserFriendSystem>()->IsFriend(GetFriendID()))
+			svrErrClose(E_ALREADY_IN_FRIEND);
+
 		svrChk( Svr::GetServerComponent<DB::AccountDB>()->GetPlayerShardID( GetTransID(), GetFriendID() ) );
 
 	Proc_End:

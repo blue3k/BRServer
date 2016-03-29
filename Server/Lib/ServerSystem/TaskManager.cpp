@@ -47,13 +47,6 @@ namespace Svr {
 	TaskWorker::~TaskWorker()
 	{
 		m_PendingAddTask.ClearQueue();
-		//while( m_PendingAddTask.GetEnqueCount() > 0 )
-		//{
-		//	SharedPointerT<TickTask> pTask = nullptr;
-		//	if( m_PendingAddTask.Dequeue( pTask ) == S_SYSTEM_OK )
-		//		delete pTask;
-		//}
-
 		m_PendingRemoveTask.ClearQueue();
 
 		m_TaskList.ClearMap();

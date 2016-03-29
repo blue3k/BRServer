@@ -72,6 +72,7 @@
   <ResultCodeItem Severity="Error" CodeName="INVALID_MATH_DOMAIN" Desc="Math argument out of domain of func"/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_NUMERIC" Desc="Math result not representable"/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_PASSWORD" Desc="Invalid password"/>
+  <ResultCodeItem Severity="Error" CodeName="ALREADY_IN_FRIEND" Desc="Target already in friends list"/>
 
   
 </ResultCodes>

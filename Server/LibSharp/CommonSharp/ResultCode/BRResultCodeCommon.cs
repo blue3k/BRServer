@@ -214,6 +214,9 @@ namespace BR {
 		// Invalid password 
 		public const int E_INVALID_PASSWORD =                               unchecked((int)0xE7020040); 
 
+		// Target already in friends list 
+		public const int E_ALREADY_IN_FRIEND =                              unchecked((int)0xE7020041); 
+
 	}
 }
 
