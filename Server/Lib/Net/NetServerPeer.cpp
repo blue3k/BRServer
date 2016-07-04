@@ -36,6 +36,7 @@ namespace Net {
 
 	ServerPeer::ServerPeer( ServerID InServerID, NetClass localClass )
 		: ServerNet( InServerID, localClass )
+		, INetIOCallBack(GetSocket())
 		, m_ConnectionManager(Net::Const::SVR_PRIVATE_CONNECTION_BUCKET_SIZE)
 		, m_CIDGen(0)
 		, m_pRecvBuffers(nullptr)

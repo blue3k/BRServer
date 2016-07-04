@@ -859,6 +859,7 @@ namespace Net {
 
 	// Constructor
 	ConnectionMUDPClient::ConnectionMUDPClient()
+		: INetIOCallBack(GetSocket())
 	{
 
 	}

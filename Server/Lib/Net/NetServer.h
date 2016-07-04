@@ -112,7 +112,6 @@ namespace Net {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// callback
 
-		virtual SOCKET GetIOSocket() override { return GetSocket(); }
 
 		virtual HRESULT Accept(IOBUFFER_ACCEPT* &pAcceptInfo) override;
 		// called when New connection TCP accepted

@@ -35,6 +35,7 @@ namespace Net {
 
 	ServerTCP::ServerTCP(ServerID InServerID, NetClass localClass)
 		: Server(InServerID, localClass)
+		, INetIOCallBack(GetSocket())
 		, m_PendingAccept(0)
 	{
 		// ServerTCP listen only for accept

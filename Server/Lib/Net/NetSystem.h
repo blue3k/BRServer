@@ -82,9 +82,12 @@ namespace Net {
 		// Assigned IO worker thread 
 		int m_AssignedIOWorker;
 
+		// Link to original socket variable
+		const SOCKET &m_IOSocket;
+
 	public:
 
-		INetIOCallBack() : m_pWriteQueues(nullptr), m_AssignedIOWorker(-1) {}
+		INetIOCallBack(const SOCKET &IOSocketVariable) : m_pWriteQueues(nullptr), m_AssignedIOWorker(-1), m_IOSocket(IOSocketVariable) {}
 		virtual ~INetIOCallBack() {}
 
 		int GetAssignedIOWorker() { return m_AssignedIOWorker; }
@@ -93,7 +96,7 @@ namespace Net {
 
 		const CBFlags& GetIOFlags() const { return m_CBFlags; }
 		CBFlags& GetIOFlagsEditable() { return m_CBFlags; }
-		virtual SOCKET GetIOSocket() = 0;
+		SOCKET GetIOSocket() { return m_IOSocket; }
 
 		// Write queue
 		WriteBufferQueue* GetWriteQueue() { return m_pWriteQueues; }

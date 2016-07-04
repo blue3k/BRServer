@@ -40,7 +40,7 @@ inline CounterType Connection::GetConnectionEventCount()
 //}
 
 // Get socket handle
-SOCKET Connection::GetSocket() const
+inline const SOCKET& Connection::GetSocket() const
 {
 	return m_socket;
 }
@@ -52,9 +52,9 @@ inline const sockaddr_storage& Connection::GetRemoteSockAddr() const
 	return m_sockAddrRemote;
 }
 
-inline size_t Connection::GetRemoteSockAddrSize() const
+inline int Connection::GetRemoteSockAddrSize() const
 {
-	return m_sockAddrRemote.ss_family == AF_INET6 ? sizeof(sockaddr_in6) : sizeof(sockaddr_in);
+	return m_sockAddrRemote.ss_family == AF_INET6 ? (int)sizeof(sockaddr_in6) : (int)sizeof(sockaddr_in);
 }
 
 // Get Recv queue

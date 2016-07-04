@@ -133,6 +133,9 @@ namespace Net {
 		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
 		IOBUFFER_READ* pReadBuffer = nullptr;
 
+		//  spik when the socket value is different
+		if (pCallBack->GetIOSocket() != sock) return S_SYSTEM_FALSE;
+
 		if (!(events & (EPOLLIN | EPOLLOUT)))
 		{
 			netTrace(Trace::TRC_ERROR, "Error sock:{0}, event:{1}", sock, events);
@@ -168,6 +171,7 @@ namespace Net {
 					// toss data to working thread
 					if (pReadBuffer != nullptr)
 					{
+						// TODO: crash site, pure vitual call
 						netChk(pCallBack->OnIORecvCompleted(hrErr, pReadBuffer));
 					}
 					pReadBuffer = nullptr;
@@ -183,6 +187,7 @@ namespace Net {
 		if (m_HandleSend && (events & EPOLLOUT))
 		{
 			// This call will just poke working thread
+			// TODO: crash site, pure vitual call
 			hr = pCallBack->OnSendReady();
 			if (FAILED(hr))
 			{

@@ -39,7 +39,7 @@ void ServerNet::SetSocket( SOCKET sock )
 }
 
 // Get Socket
-SOCKET ServerNet::GetSocket()
+inline const SOCKET& ServerNet::GetSocket()
 {
 	return m_socket;
 }

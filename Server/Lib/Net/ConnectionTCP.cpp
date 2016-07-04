@@ -56,7 +56,8 @@ namespace Net {
 
 	// Constructor
 	ConnectionTCP::ConnectionTCP()
-		: m_lGuarantedSent(0)
+		: INetIOCallBack(GetSocket())
+		, m_lGuarantedSent(0)
 		, m_lGuarantedAck(0)
 		, m_uiRecvTemUsed(0)
 		, m_uiSendNetCtrlCount(0)

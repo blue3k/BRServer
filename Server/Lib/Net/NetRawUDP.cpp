@@ -28,7 +28,8 @@ namespace BR {
 namespace Net {
 
 	RawUDP::RawUDP()
-		: m_Socket(INVALID_SOCKET)
+		: INetIOCallBack(m_Socket)
+		, m_Socket(INVALID_SOCKET)
 		, m_pRecvBuffers(nullptr)
 		, m_pMessageHandler(nullptr)
 	{

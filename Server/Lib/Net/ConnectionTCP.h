@@ -80,7 +80,6 @@ namespace Net {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// callback
 
-		virtual SOCKET GetIOSocket() override { return GetSocket(); }
 
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
 

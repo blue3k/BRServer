@@ -110,7 +110,7 @@ namespace Net {
 		virtual ~Connection();
 
 		// Get socket handle
-		inline SOCKET GetSocket() const;
+		const SOCKET& GetSocket() const;
 
 		virtual INetIOCallBack* GetIOCallback() { return nullptr; }
 
@@ -119,7 +119,7 @@ namespace Net {
 
 		// Get remote address
 		const sockaddr_storage& GetRemoteSockAddr() const;
-		size_t GetRemoteSockAddrSize() const;
+		int GetRemoteSockAddrSize() const;
 
 		// Get Recv queue
 		MsgQueue& GetRecvQueue();

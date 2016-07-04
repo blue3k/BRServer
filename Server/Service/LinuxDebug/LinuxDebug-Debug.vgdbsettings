@@ -137,7 +137,7 @@
     <LaunchGDBSettings xsi:type="GDBLaunchParametersNewInstance">
       <DebuggedProgram>$(REMOTE_BASE_PATH)/Server/bin/DEBUG/BRGameServer</DebuggedProgram>
       <GDBServerPort>2000</GDBServerPort>
-      <ProgramArguments> -n:BRConspiracyGameServer01</ProgramArguments>
+      <ProgramArguments> -n:BRConspiracyGameServer01 -debug</ProgramArguments>
     </LaunchGDBSettings>
     <GenerateCtrlBreakInsteadOfCtrlC>false</GenerateCtrlBreakInsteadOfCtrlC>
     <DeploymentTargetPath />

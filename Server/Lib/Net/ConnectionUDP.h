@@ -280,7 +280,6 @@ namespace Net {
 
 		virtual INetIOCallBack* GetIOCallback() override { return this; }
 
-		virtual SOCKET GetIOSocket() override { return GetSocket(); }
 
 		// called when reciving TCP message
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;

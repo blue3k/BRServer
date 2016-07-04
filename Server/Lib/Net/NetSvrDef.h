@@ -68,7 +68,7 @@ namespace Net {
 		// Get Socket address
 		inline const sockaddr_storage& GetSocketAddr();
 
-		size_t GetSocketAddrSize() { return m_LocalSockAddr.ss_family == AF_INET6 ? sizeof(sockaddr_in6) : sizeof(sockaddr_in); }
+		int GetSocketAddrSize() { return m_LocalSockAddr.ss_family == AF_INET6 ? (int)sizeof(sockaddr_in6) : (int)sizeof(sockaddr_in); }
 
 		// Get local address
 		inline const NetAddress& GetLocalAddress();
@@ -77,7 +77,7 @@ namespace Net {
 
 
 		// Get Socket
-		inline SOCKET GetSocket();
+		const SOCKET& GetSocket();
 
 
 		// Add network event to queue

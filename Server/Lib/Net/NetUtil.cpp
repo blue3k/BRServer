@@ -63,9 +63,16 @@ namespace Net {
 		{
 			return SockAddr2Addr(*(sockaddr_in6*)&sockAddr, addr);
 		}
-		else
+		else if(sockAddr.ss_family == AF_INET)
 		{
 			return SockAddr2Addr(*(sockaddr_in*)&sockAddr, addr);
+		}
+		else
+		{
+			// Not supported address family
+			addr.SocketFamily = SockFamily::None;
+			addr.strAddr[0] = '\0';
+			addr.usPort = 0;
 		}
 	}
 

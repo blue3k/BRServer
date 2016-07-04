@@ -155,7 +155,6 @@ namespace Net {
 		HRESULT InitConnection(SOCKET socket, const ConnectionInformation &connectInfo) override;
 
 
-		virtual SOCKET GetIOSocket() override { return GetSocket(); }
 
 		// called when reciving TCP message
 		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;

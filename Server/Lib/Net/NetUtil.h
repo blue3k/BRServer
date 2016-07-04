@@ -59,7 +59,7 @@ namespace Net {
 	// Set net address with family check
 	HRESULT SetNetAddress(NetAddress &netAddr, const char *strAddress, USHORT port);
 
-	inline size_t GetSockAddrSize(const sockaddr_storage &sockAddr) { return sockAddr.ss_family == AF_INET6 ? sizeof(sockaddr_in6) : sizeof(sockaddr_in); }
+	inline int GetSockAddrSize(const sockaddr_storage &sockAddr) { return sockAddr.ss_family == AF_INET6 ? (int)sizeof(sockaddr_in6) : (int)sizeof(sockaddr_in); }
 
 	// Validate local IP
 	HRESULT CheckLocalAddress(SockFamily family, NetAddress &addr);

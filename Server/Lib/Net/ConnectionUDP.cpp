@@ -183,7 +183,8 @@ namespace Net {
 
 	// Constructor
 	ConnectionUDPClient::ConnectionUDPClient( )
-		:ConnectionUDP()
+		: ConnectionUDP()
+		, INetIOCallBack(GetSocket())
 	{
 		// limit client net retry maximum
 		SetMaxGuarantedRetry( Const::UDP_CLI_RETRY_ONETIME_MAX );

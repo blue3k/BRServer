@@ -37,8 +37,9 @@ namespace Net {
 	//
 
 	ServerUDPBase::ServerUDPBase(ServerID InServerID, NetClass localClass)
-		:Server(InServerID, localClass),
-		m_pRecvBuffers(nullptr)
+		: Server(InServerID, localClass)
+		, INetIOCallBack(GetSocket())
+		, m_pRecvBuffers(nullptr)
 	{
 		// We will share the write queue in net system for UDP
 		//SetWriteQueue(new WriteBufferQueue);
