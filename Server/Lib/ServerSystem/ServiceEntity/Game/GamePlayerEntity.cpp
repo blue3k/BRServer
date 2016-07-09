@@ -298,41 +298,8 @@ namespace Svr {
 			return S_SYSTEM_FALSE;
 		}
 
-		//auto playerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
 
-		//auto tickTime = GetMyServer()->GetPresetGameConfig()->StaminaRecoveryTime;
-		//TimeStampSec curUTCSec = Util::Time.GetTimeUTCSec();
-		//DurationSec timeDiff = curUTCSec - m_LatestUpdateTime;
-		//auto numberOfTicks = timeDiff.count() / tickTime;
-		//DurationSec remainTime = timeDiff % tickTime;
-
-		//svrChkPtr(GetMyServer()->GetPresetGameConfig());
-
-		//svrTrace(Svr::TRC_TRANSACTION, "Check GamePlayer Update Tick PID:{0} last:{1}, curTime:{2}, numTick:{3}, remain:{4}", GetPlayerID(), m_LatestUpdateTime, curUTCSec, numberOfTicks, remainTime);
-
-		//if( numberOfTicks > 0 )
-		//{
-		//	svrTrace(Svr::TRC_TRANSACTION, "GamePlayer Update PID:{0}, numTick:{1}, Sta:{2}", GetPlayerID(), numberOfTicks, playerInfoSystem->GetStamina());
-
-		//	if (numberOfTicks > std::numeric_limits<UINT16>::max())
-		//	{
-		//		svrTrace( Trace::TRC_ERROR, "Invalid tick count, applying maximum int16" );
-		//		numberOfTicks = std::numeric_limits<UINT16>::max();
-		//	}
-
-		//	if (playerInfoSystem->GetStamina() < playerInfoSystem->GetMaxAutoRefillStamina())
-		//	{
-		//		// limit stamina gain to MaxAutoRefillStamina
-		//		auto maxCanGain = std::min((INT)(numberOfTicks * 1), (playerInfoSystem->GetMaxAutoRefillStamina()- playerInfoSystem->GetStamina()));
-		//		playerInfoSystem->GainStamina(maxCanGain);
-		//	}
-
-		//	curUTCSec -= remainTime; // Subtract the remain from current time so that it can add up the the next tick calculation
-		//	SetLatestUpdateTime(curUTCSec);
-		//}
-
-
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

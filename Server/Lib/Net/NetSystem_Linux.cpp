@@ -270,7 +270,7 @@ namespace Net {
 			netChkPtr(cbInstance);
 			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
 
-			netChk(GetNetIOSystem().RegisterToNETIO(sockType, cbInstance));
+			netChk(GetNetIOSystem().UnregisterFromNETIO(sockType, cbInstance));
 
 		Proc_End:
 

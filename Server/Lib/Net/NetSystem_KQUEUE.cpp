@@ -78,7 +78,7 @@ namespace Net {
 		EV_SET(&evSet, cbInstance->GetIOSocket(), EVFILT_READ | EVFILT_WRITE, EV_DELETE, 0, 0, cbInstance);
 		if (kevent(m_hKQUEUE, &evSet, 1, NULL, 0, NULL) == -1)
 		{
-			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: RegisterSocket");
+			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: UnregisterSocket");
 			return GetLastWSAHRESULT();
 		}
 
