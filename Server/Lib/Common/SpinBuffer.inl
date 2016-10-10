@@ -26,12 +26,12 @@ SpinBuffer<T>::~SpinBuffer(void)
 }
 
 template <typename T>
-HRESULT SpinBuffer<T>::Push(const T& item)
+Result SpinBuffer<T>::Push(const T& item)
 {
 	// check a condtion 
 	if((this->m_SpinBuffer[m_nWritePos].eBufferMode != __BUFFERMODE__::BUFFERSTATE_FREE))
 	{
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	// Change a mode : free->write (writing now...)
@@ -49,17 +49,17 @@ HRESULT SpinBuffer<T>::Push(const T& item)
 	m_SpinBuffer[nBeforePos].eBufferMode = __BUFFERMODE__::BUFFERSTATE_READ;	// W-3
 
 	// Writing success!
-	return S_SYSTEM_OK; 
+	return ResultCode::SUCCESS; 
 }
 
 // Comsumer(reader) read from the Readbuffer
 template <typename T>
-HRESULT SpinBuffer<T>::Pop(T& item)
+Result SpinBuffer<T>::Pop(T& item)
 {
 	// check a condtion 
 	if((this->m_SpinBuffer[m_nReadPos].eBufferMode != __BUFFERMODE__::BUFFERSTATE_READ))
 	{
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	item = m_SpinBuffer[m_nReadPos].item;									// R-1
@@ -77,7 +77,7 @@ HRESULT SpinBuffer<T>::Pop(T& item)
 	m_SpinBuffer[nBeforePos].eBufferMode = __BUFFERMODE__::BUFFERSTATE_FREE;	// R-2
 	
 	// Reading success!
-	return S_SYSTEM_OK; 
+	return ResultCode::SUCCESS; 
 }
 
 

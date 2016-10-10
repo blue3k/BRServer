@@ -65,13 +65,13 @@ namespace DB {
 		~StatementPoolMYSQL();
 
 		// Cleanup the pool
-		HRESULT ClearStatementPools();
+		Result ClearStatementPools();
 
 		// Get free statement
 		StatementMYSQL* GetFreeStatement( const char* queryString );
 
 		// free statement
-		HRESULT FreeStatement( StatementMYSQL* &pStatement );
+		Result FreeStatement( StatementMYSQL* &pStatement );
 		
 	};
 
@@ -103,16 +103,16 @@ namespace DB {
 		bool IsPrepared();
 
 		// Prepare statement
-		HRESULT PrepareState( MYSQL *pContext, CounterType syncInit );
+		Result PrepareState( MYSQL *pContext, CounterType syncInit );
 
 		// Bind query instance
-		HRESULT Bind( QueryMYSQL *pMyQuery );
+		Result Bind( QueryMYSQL *pMyQuery );
 
 		// Execute
-		HRESULT Execute();
+		Result Execute();
 
 		// Patch result
-		HRESULT PatchResults( QueryMYSQL *pMyQuery );
+		Result PatcResults( QueryMYSQL *pMyQuery );
 
 		// Clear prepared statement
 		void Clear();
@@ -152,15 +152,15 @@ namespace DB {
 		virtual void* GetContext();
 
 		// Send a query
-		virtual HRESULT SendQuery( Query *pQuery );
+		virtual Result SendQuery( Query *pQuery );
 
 		// Open session
-		virtual HRESULT OpenSession();
+		virtual Result OpenSession();
 
 		// Close session
-		virtual HRESULT CloseSession();
+		virtual Result CloseSession();
 
-		virtual HRESULT Ping() override;
+		virtual Result Ping() override;
 	};
 
 

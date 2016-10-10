@@ -67,9 +67,9 @@ namespace SharedModuleServer {
 
 
 	template< class ServiceEntityType, typename... ConstructorArgs >
-	HRESULT SharedModuleServer::AddServiceEntityComponent(ConstructorArgs... constructorArgs)
+	Result SharedModuleServer::AddServiceEntityComponent(ConstructorArgs... constructorArgs)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::IServerComponent *pComponent = nullptr;
 		Svr::ClusteredServiceEntity *pServiceEntityTest = nullptr;
 		ServiceEntityType* pServiceEntity = nullptr;
@@ -108,9 +108,9 @@ namespace SharedModuleServer {
 	}
 
 	// Create clustered service
-	HRESULT SharedModuleServer::RegisterClusteredService(Svr::Config::ModuleBase* module)
+	Result SharedModuleServer::RegisterClusteredService(Svr::Config::ModuleBase* module)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusterID clusterID;
 
 		svrChkPtr(module);
@@ -197,9 +197,9 @@ namespace SharedModuleServer {
 	}
 
 
-	HRESULT SharedModuleServer::RegisterClustereWatcherComponents(ClusterID clusterID, Svr::ServerComponentID componentIDStart, Svr::ServerComponentID componentIDEnd)
+	Result SharedModuleServer::RegisterClustereWatcherComponents(ClusterID clusterID, Svr::ServerComponentID componentIDStart, Svr::ServerComponentID componentIDEnd)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (componentIDStart != 0 && componentIDEnd != 0)
 		{

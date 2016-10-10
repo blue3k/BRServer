@@ -35,12 +35,12 @@ namespace DB {
 	
 	// Send query
 	template< class CmdClass >
-	HRESULT SendQueryT(CSession& session, CmdClass& cmd)
+	Result SendQueryT(CSession& session, CmdClass& cmd)
 	{
 		dbTrace( BR::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
-		HRESULT hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DBSQL, false);
+		Result hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DBSQL, false);
 
-		if( hr == DB_E_CANNOTCONNECT ) hr = E_DB_CONNECTION_FAILED;
+		if( hr == DB_E_CANNOTCONNECT ) hr = ResultCode::E_DB_CONNECTION_FAILED;
 		cmd.SetResult(hr);
 
 		if( FAILED(hr) ) {
@@ -54,19 +54,19 @@ namespace DB {
 
 	// send rowset Query
 	template< class CmdClass >
-	HRESULT SendQueryRowsetT(CSession& session, CmdClass& cmd)
+	Result SendQueryRowsetT(CSession& session, CmdClass& cmd)
 	{
 		dbTrace( BR::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
-		HRESULT hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DEFAULT, true);
+		Result hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DEFAULT, true);
 		if( FAILED(hr) ) {
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
-		while(cmd.MoveNext() == S_SYSTEM_OK) {
+		while(cmd.MoveNext() == ResultCode::SUCCESS) {
 			cmd.m_RowsetResult.push_back(cmd);	
 		}
 		
-		if( hr == DB_E_CANNOTCONNECT ) hr = E_DB_CONNECTION_FAILED;
+		if( hr == DB_E_CANNOTCONNECT ) hr = ResultCode::E_DB_CONNECTION_FAILED;
 		cmd.SetResult(hr);
 
 		if( FAILED(hr) ) {
@@ -97,9 +97,9 @@ namespace DB {
 	}
 
 	// Send a query
-	HRESULT SessionOLEDB::SendQuery( Query *pQuery )
+	Result SessionOLEDB::SendQuery( Query *pQuery )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( pQuery->GetHasRowSetResult() )
 		{
@@ -116,7 +116,7 @@ namespace DB {
 	}
 
 	// Open session
-	HRESULT SessionOLEDB::OpenSession()
+	Result SessionOLEDB::OpenSession()
 	{
 		Session::OpenSession();
 
@@ -127,12 +127,12 @@ namespace DB {
 	}
 
 	// Close session
-	HRESULT SessionOLEDB::CloseSession()
+	Result SessionOLEDB::CloseSession()
 	{
 		Session::CloseSession();
 
 		m_Session.Close();
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	

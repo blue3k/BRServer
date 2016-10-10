@@ -60,9 +60,9 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT RankingPartyTrans::StartTransaction()
+	Result RankingPartyTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -70,10 +70,10 @@ namespace Svr {
 		//GetMyOwner()->SetLastRankingFailed(true);
 
 		//if( m_TargetMemberCount <= 0 || m_TargetMemberCount > GameConst::MAX_GAMEPLAYER )
-		//	svrErr(E_GAME_INVALID_PLAYER_COUNT);
+		//	svrErr(ResultCode::E_GAME_INVALID_PLAYER_COUNT);
 
 		//if( m_QueryMemberCount <= 0 || m_QueryMemberCount > GameConst::MAX_GAMEPLAYER || m_QueryMemberCount >= m_TargetMemberCount )
-		//	svrErr(E_GAME_INVALID_PLAYER_COUNT);
+		//	svrErr(ResultCode::E_GAME_INVALID_PLAYER_COUNT);
 
 		//m_Step = Step::Grabbing;
 		//SetCurrentGrabbing(0);
@@ -84,9 +84,9 @@ namespace Svr {
 		//m_ReservedMember.Clear();
 
 		////hr = ReserveItem(GetQueryMemberCount());
-		//if( hr == E_SVR_NOITEM_INQUEUE )
+		//if( hr == ResultCode::E_NOITEM_INQUEUE )
 		//{
-		//	hr = S_SYSTEM_OK;
+		//	hr = ResultCode::SUCCESS;
 		//	SetTimer(1000);
 		//}
 

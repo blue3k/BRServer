@@ -113,7 +113,7 @@ namespace Util {
 		inline  void	SetTimerFunc( std::function<void()> funcOnExpired );
 
 		// set timer
-		HRESULT	SetTimer(DurationMS TimerDuration );
+		Result	SetTimer(DurationMS TimerDuration );
 
 		// clear timer
 		inline void	ClearTimer();
@@ -147,7 +147,7 @@ namespace Util {
 		~LibComponentTime();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() override;
+		virtual Result InitializeComponent() override;
 		// Terminate server component
 		virtual void TerminateComponent() override;
 	};

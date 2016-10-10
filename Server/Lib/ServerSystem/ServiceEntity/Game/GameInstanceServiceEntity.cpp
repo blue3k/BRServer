@@ -47,9 +47,9 @@ namespace Svr {
 	{
 	}
 
-	HRESULT GameInstanceServiceEntity::InitializeEntity( EntityID newEntityID )
+	Result GameInstanceServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
 
@@ -63,9 +63,9 @@ namespace Svr {
 	}
 
 	// clear transaction
-	HRESULT GameInstanceServiceEntity::ClearEntity()
+	Result GameInstanceServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ReplicaClusterServiceEntity::ClearEntity() );
 
@@ -74,9 +74,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT GameInstanceServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result GameInstanceServiceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ReplicaClusterServiceEntity::TickUpdate(pAction) );
 

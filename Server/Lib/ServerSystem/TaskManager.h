@@ -76,11 +76,11 @@ namespace Svr {
 
 	private:
 
-		HRESULT UpdateAddTickTaskQueue();
-		HRESULT UpdateRemoveTickTaskQueue();
-		HRESULT UpdateTickTask();
-		HRESULT UpdateEventTask();
-		HRESULT UpdateTimer();
+		Result UpdateAddTickTaskQueue();
+		Result UpdateRemoveTickTaskQueue();
+		Result UpdateTickTask();
+		Result UpdateEventTask();
+		Result UpdateTimer();
 
 	public:
 
@@ -103,13 +103,13 @@ namespace Svr {
 		TimeScheduler& GetTimeScheduler()											{ return m_TimeScheduler; }
 
 		// Add event task
-		HRESULT AddEventTask(EventTask&& pEvtTask);
+		Result AddEventTask(EventTask&& pEvtTask);
 
 		// Add task
-		HRESULT PendingAddTask( TickTask* pTask );
+		Result PendingAddTask( TickTask* pTask );
 
 		// Remove task
-		HRESULT PendingRemoveTask( TickTask* pTask );
+		Result PendingRemoveTask( TickTask* pTask );
 
 		// run function
 		virtual void Run() override;
@@ -151,23 +151,23 @@ namespace Svr {
 		virtual ~TaskManager();
 
 		// Get/Set Working group count
-		HRESULT SetWorkGroupCount( size_t WorkGroupCount );
+		Result SetWorkGroupCount( size_t WorkGroupCount );
 		inline size_t GetWorkGroupCount();
 
 		// Initialize TaskManager
-		virtual HRESULT InitializeManager( UINT uiNumGroup = 2 );
+		virtual Result InitializeManager( UINT uiNumGroup = 2 );
 
 		// Terminate TaskManager
-		virtual HRESULT TerminateManager();
+		virtual Result TerminateManager();
 
 		// Add event task
-		HRESULT AddEventTask(SysUInt groupID, EventTask&& pEvtTask);
+		Result AddEventTask(SysUInt groupID, EventTask&& pEvtTask);
 
 		// Add TickTask
-		virtual HRESULT AddTickTask( TickTask* pTask );
+		virtual Result AddTickTask( TickTask* pTask );
 
 		// Remove TickTask
-		virtual HRESULT RemoveTickTask( TickTask *pTask );
+		virtual Result RemoveTickTask( TickTask *pTask );
 	};
 
 

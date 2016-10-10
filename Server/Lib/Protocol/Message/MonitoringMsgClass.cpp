@@ -31,9 +31,9 @@ namespace BR
 		{
  			// Cmd: Add a player to ranking
 			const MessageID GetInstanceListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_MONITORING, 0);
-			HRESULT GetInstanceListCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetInstanceListCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -50,11 +50,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetInstanceListCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetInstanceListCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetInstanceListCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID )
+			Result GetInstanceListCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -76,7 +76,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetInstanceListCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID )
+			}; // Result GetInstanceListCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID )
 
 
 
@@ -88,9 +88,9 @@ namespace BR
 			}; // void GetInstanceListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetInstanceListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_MONITORING, 0);
-			HRESULT GetInstanceListRes::ParseIMsg( MessageData* pIMsg )
+			Result GetInstanceListRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -102,7 +102,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofCounterInstances, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pCounterInstances, pCur, iMsgSize, sizeof(PerformanceCounterInstanceInfo)*numberofCounterInstances ) );
 				m_CounterInstances.SetLinkedBuffer(numberofCounterInstances, numberofCounterInstances, pCounterInstances);
@@ -113,17 +113,17 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetInstanceListRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetInstanceListRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetInstanceListRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
+			Result GetInstanceListRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.GetSize() + sizeof(UINT16)
 					+ sizeof(UINT32));
 
@@ -135,7 +135,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterInstances, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InCounterInstances.data(), (INT)(sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.GetSize())); 
 				Protocol::PackParamCopy( pMsgData, &InTotalInstanceCount, sizeof(UINT32));
@@ -147,7 +147,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetInstanceListRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
+			}; // Result GetInstanceListRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
 
 
 
@@ -160,9 +160,9 @@ namespace BR
 
 			// Cmd: Remove a player to ranking
 			const MessageID RequestCounterValuesCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_MONITORING, 1);
-			HRESULT RequestCounterValuesCmd::ParseIMsg( MessageData* pIMsg )
+			Result RequestCounterValuesCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -180,11 +180,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestCounterValuesCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestCounterValuesCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RequestCounterValuesCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
+			Result RequestCounterValuesCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -208,7 +208,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestCounterValuesCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
+			}; // Result RequestCounterValuesCmd::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InInstanceUID )
 
 
 
@@ -220,9 +220,9 @@ namespace BR
 			}; // void RequestCounterValuesCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RequestCounterValuesRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_MONITORING, 1);
-			HRESULT RequestCounterValuesRes::ParseIMsg( MessageData* pIMsg )
+			Result RequestCounterValuesRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -234,7 +234,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, sizeof(EntityUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofCounterValues, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pCounterValues, pCur, iMsgSize, sizeof(UINT64)*numberofCounterValues ) );
@@ -245,17 +245,17 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestCounterValuesRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestCounterValuesRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RequestCounterValuesRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+			Result RequestCounterValuesRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(EntityUID)
 					+ sizeof(UINT64)*InCounterValues.GetSize() + sizeof(UINT16));
 
@@ -267,7 +267,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(EntityUID));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterValues, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(UINT64)*InCounterValues.GetSize())); 
@@ -279,7 +279,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestCounterValuesRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+			}; // Result RequestCounterValuesRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
 
 
 
@@ -292,9 +292,9 @@ namespace BR
 
 			// C2S: Counter instance is created
 			const MessageID PerformanceCounterNewC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_MONITORING, 2);
-			HRESULT PerformanceCounterNewC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result PerformanceCounterNewC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -318,11 +318,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PerformanceCounterNewC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PerformanceCounterNewC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PerformanceCounterNewC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
+			Result PerformanceCounterNewC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -351,7 +351,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PerformanceCounterNewC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
+			}; // Result PerformanceCounterNewC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters )
 
 
 
@@ -364,9 +364,9 @@ namespace BR
 
 			// C2S: Counter instance is deleted
 			const MessageID PerformanceCounterFreeC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_MONITORING, 3);
-			HRESULT PerformanceCounterFreeC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result PerformanceCounterFreeC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -386,11 +386,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PerformanceCounterFreeC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PerformanceCounterFreeC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PerformanceCounterFreeC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const Array<EntityUID>& InFreeInstances )
+			Result PerformanceCounterFreeC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const Array<EntityUID>& InFreeInstances )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -414,7 +414,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PerformanceCounterFreeC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const Array<EntityUID>& InFreeInstances )
+			}; // Result PerformanceCounterFreeC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const Array<EntityUID>& InFreeInstances )
 
 
 
@@ -427,9 +427,9 @@ namespace BR
 
 			// C2S: Counter update broadcast
 			const MessageID PerformanceCounterUpdateC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_MONITORING, 4);
-			HRESULT PerformanceCounterUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result PerformanceCounterUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -450,11 +450,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PerformanceCounterUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PerformanceCounterUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PerformanceCounterUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+			Result PerformanceCounterUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -480,7 +480,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PerformanceCounterUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+			}; // Result PerformanceCounterUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
 
 
 
@@ -493,9 +493,9 @@ namespace BR
 
 			// S2C: Request from server
 			const MessageID PerformanceCounterUpdateCounterInfoS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_MONITORING, 5);
-			HRESULT PerformanceCounterUpdateCounterInfoS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -512,11 +512,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PerformanceCounterUpdateCounterInfoS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID )
+			Result PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -538,7 +538,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID )
+			}; // Result PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID )
 
 
 

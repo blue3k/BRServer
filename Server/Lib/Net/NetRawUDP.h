@@ -35,7 +35,7 @@ namespace Net {
 		class MessageHandler
 		{
 		public:
-			virtual HRESULT OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) = 0;
+			virtual Result OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) = 0;
 		};
 
 	private:
@@ -55,26 +55,26 @@ namespace Net {
 		RawUDP();
 		virtual ~RawUDP();
 
-		HRESULT InitializeNet(const NetAddress& localAddress, MessageHandler *pHandler);
-		HRESULT TerminateNet();
+		Result InitializeNet(const NetAddress& localAddress, MessageHandler *pHandler);
+		Result TerminateNet();
 
 		SOCKET GetSocket()								{ return m_Socket; }
 
-		HRESULT PendingRecv(IOBUFFER_READ *pOver);
-		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
-		HRESULT SendMsg(const sockaddr_storage& dest, Message::MessageData *pMsg);
+		Result PendingRecv(IOBUFFER_READ *pOver);
+		virtual Result SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
+		Result SendMsg(const sockaddr_storage& dest, Message::MessageData *pMsg);
 
 
 		// called when incomming message occure
-		HRESULT OnRecv(const sockaddr_storage& remoteAddr, UINT uiBuffSize, const BYTE* pBuff);
+		Result OnRecv(const sockaddr_storage& remoteAddr, UINT uiBuffSize, const BYTE* pBuff);
 
-		virtual HRESULT OnSendReady() override;
+		virtual Result OnSendReady() override;
 		// called when reciving messag is completed
-		HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
-		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer) override;
+		Result Recv(IOBUFFER_READ* pIOBuffer) override;
+		virtual Result OnIORecvCompleted(Result hrRes, IOBUFFER_READ* &pIOBuffer) override;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer) override;
+		virtual Result OnIOSendCompleted(Result hrRes, IOBUFFER_WRITE *pIOBuffer) override;
 	};
 
 

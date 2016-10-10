@@ -145,7 +145,7 @@ namespace ProtocolBuilder
                     ProtocolsProtocolGroupCommand msg = baseMsg as ProtocolsProtocolGroupCommand;
 
                     newparams = MakeParameters(MsgType.Cmd, msg.Cmd);
-                    MatchIndent(); OutStream.WriteLine("HRESULT {0}Cmd( {1} );", msg.Name, ParamString(newparams));
+                    MatchIndent(); OutStream.WriteLine("Result {0}Cmd( {1} );", msg.Name, ParamString(newparams));
                 }
 
                 if (baseMsg is ProtocolsProtocolGroupC2SEvent)
@@ -157,7 +157,7 @@ namespace ProtocolBuilder
                         newparams = MakeParametersForEvent(msg.Params);
                     else
                         newparams = MakeParameters(MsgType.Evt, msg.Params);
-                    MatchIndent(); OutStream.WriteLine("HRESULT {0}C2SEvt( {1} );", msg.Name, ParamString(newparams));
+                    MatchIndent(); OutStream.WriteLine("Result {0}C2SEvt( {1} );", msg.Name, ParamString(newparams));
                 }
             }
 
@@ -170,7 +170,7 @@ namespace ProtocolBuilder
         // Build parser class implementation
         void BuildServerServiceMethodImpl(MsgType type, Parameter[] originalParameters, string Name, string typeName, Parameter[] parameters)
         {
-            OpenSection("HRESULT", string.Format("{0}::{1}{2}( {3} )", ServiceClassName, Name, typeName, ParamInString(parameters)));
+            OpenSection("Result", string.Format("{0}::{1}{2}( {3} )", ServiceClassName, Name, typeName, ParamInString(parameters)));
 
             DefaultHRESULT(); NewLine();
 

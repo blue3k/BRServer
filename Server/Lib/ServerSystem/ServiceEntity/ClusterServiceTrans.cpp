@@ -61,7 +61,7 @@ namespace Svr {
 	}
 
 	// Set timer when it fails
-	void ClusterInitializationTrans::SetFailRetryTimer(HRESULT hrRes)
+	void ClusterInitializationTrans::SetFailRetryTimer(Result hrRes)
 	{
 		if( FAILED(hrRes) )
 		{
@@ -71,9 +71,9 @@ namespace Svr {
 	}
 
 	// Timer handling
-	HRESULT ClusterInitializationTrans::OnTimer(TransactionResult* pRes)
+	Result ClusterInitializationTrans::OnTimer(TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrTrace(Svr::TRC_CLUSTER, "Cluster OnTimer Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}, Step:{4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (UINT)m_Step);
 
@@ -94,13 +94,13 @@ namespace Svr {
 
 		SetFailRetryTimer(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	HRESULT ClusterInitializationTrans::JoinCluster(  )
+	Result ClusterInitializationTrans::JoinCluster(  )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//ClusterServerService *pService = nullptr;
 		ServerEntity *pMasterServerEntity = nullptr;
 		EntityUID clusterManagerMasterUID;
@@ -172,12 +172,12 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT ClusterInitializationTrans::OnClusterJoined(TransactionResult* pRes)
+	Result ClusterInitializationTrans::OnClusterJoined(TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::ClusterServer::JoinClusterRes msgRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
 
@@ -203,12 +203,12 @@ namespace Svr {
 			SetFailRetryTimer(hr);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT ClusterInitializationTrans::RequestDataSync()
+	Result ClusterInitializationTrans::RequestDataSync()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pServerEntity = nullptr;
 
 		if( m_currentMaster.UID == 0 )
@@ -234,12 +234,12 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT ClusterInitializationTrans::OnClusterDataSync(TransactionResult* pRes)
+	Result ClusterInitializationTrans::OnClusterDataSync(TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//Message::ClusterServer::GetClusterMemberListRes msgRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		//svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
 		svrTrace( Svr::TRC_CLUSTER, "Cluster RequestDataSync Done Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
@@ -250,13 +250,13 @@ namespace Svr {
 
 		SetFailRetryTimer(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Add other services to me
-	HRESULT ClusterInitializationTrans::AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations )
+	Result ClusterInitializationTrans::AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		bool bAddStatusWatcher = GetMyOwner()->GetClusterMembership() != ClusterMembership::StatusWatcher;
 
 		ServerEntityManager *pServerEntityManager = GetServerComponent<ServerEntityManager>();
@@ -289,11 +289,11 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT ClusterInitializationTrans::StartTransaction()
+	Result ClusterInitializationTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		m_hr = S_SYSTEM_OK;
+		m_hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -308,10 +308,10 @@ namespace Svr {
 
 		SetFailRetryTimer(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT ClusterInitializationTrans::OnCloseTransaction( HRESULT hrRes )
+	Result ClusterInitializationTrans::OnCloseTransaction( Result hrRes )
 	{
 		m_hr = hrRes;
 
@@ -337,9 +337,9 @@ namespace Svr {
 	//
 
 	// Start Transaction
-	HRESULT RequestDataSyncTrans::StartTransaction()
+	Result RequestDataSyncTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -353,9 +353,9 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT ClusterMasterAssignedTrans::StartTransaction()
+	Result ClusterMasterAssignedTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -371,9 +371,9 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT ClusterMasterVoteTrans::StartTransaction()
+	Result ClusterMasterVoteTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pVotedService = nullptr;
 		UINT uiExpectedVoterCount = 0, uiTotalVoted = 0;
 		UINT uiMaxVotedCount = 0;
@@ -427,9 +427,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ClusterUpdateStatusTrans::StartTransaction()
+	Result ClusterUpdateStatusTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pService = nullptr;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 
@@ -469,9 +469,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ClusterUpdateWorkloadTrans::StartTransaction()
+	Result ClusterUpdateWorkloadTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusteredServiceEntity* pServiceEntity = nullptr;
 		ServerServiceInformation *pUpdatedService = nullptr;
 
@@ -529,9 +529,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT GetLowestWorkloadClusterMemberTrans::StartTransaction()
+	Result GetLowestWorkloadClusterMemberTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pLowestService = nullptr;
 
 		svrChk(super::StartTransaction());
@@ -547,7 +547,7 @@ namespace Svr {
 		});
 
 		if (pLowestService == nullptr)
-			svrErrClose(E_SVR_CLUSTER_NOTREADY);
+			svrErrClose(ResultCode::E_SVR_CLUSTER_NOTREADY);
 
 		pLowestService->GetServiceInformation(m_LowestMemberInfo);
 
@@ -561,9 +561,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ClusterNewServerServiceJoinedC2SEvtEntityTrans::StartTransaction()
+	Result ClusterNewServerServiceJoinedC2SEvtEntityTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ServerEntity *pSenderEntity = nullptr;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
@@ -607,9 +607,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ClusterNewServerServiceJoinedC2SEvtTrans::StartTransaction()
+	Result ClusterNewServerServiceJoinedC2SEvtTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ServerEntity *pSenderEntity = nullptr;
 		ClusteredServiceEntity *pServiceEntity = nullptr;

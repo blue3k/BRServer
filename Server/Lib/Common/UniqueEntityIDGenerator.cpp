@@ -102,13 +102,13 @@ namespace BR {
 	}
 
 	// Reserve ID
-	HRESULT UniqueEntityIDGenerator::ReserveID( UINT idToReserve )
+	Result UniqueEntityIDGenerator::ReserveID( UINT idToReserve )
 	{
 		if( !IsFreeID(idToReserve) )
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		MarkAsUsing(idToReserve);
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Check ID integrety

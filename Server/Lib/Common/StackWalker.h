@@ -12,6 +12,7 @@
 
 
 #include "Common/Typedefs.h"
+#include "Common/BRResult.h"
 
 
 
@@ -40,7 +41,7 @@ namespace BR
 		CallStackTrace();
 
 		// print stack trace
-		HRESULT PrintStackTrace( int channel, HANDLE hProcess );
+		BR::Result PrintStackTrace( int channel, HANDLE hProcess );
 	};
 
 

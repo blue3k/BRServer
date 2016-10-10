@@ -44,11 +44,11 @@ namespace Svr{
 	//	External task base class
 	//
 
-	class ParallelTransaction : public SubTransactionWithResult
+	class ParallelTransaction : public SubTransactionWitResult
 	{
 	public:
 		ParallelTransaction(TransactionID parentTransID, Message::MessageID MsgID)
-			:SubTransactionWithResult( parentTransID, MsgID )
+			:SubTransactionWitResult( parentTransID, MsgID )
 		{}
 	};
 
@@ -103,19 +103,19 @@ namespace Svr{
 
 	protected:
 
-		HRESULT EnqueueTransaction(ParallelTransaction* pTrans);
+		Result EnqueueTransaction(ParallelTransaction* pTrans);
 
 	public:
 		ParallelTransactionManager();
 		~ParallelTransactionManager();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent();
+		virtual Result InitializeComponent();
 
 		// Terminate server component
 		virtual void TerminateComponent();
 
-		//virtual HRESULT OnRoutedMessage(Message::MessageData* &pMsg) override { assert(false); return E_SYSTEM_NOTIMPL; }
+		//virtual Result OnRoutedMessage(Message::MessageData* &pMsg) override { assert(false); return ResultCode::NOT_IMPLEMENTED; }
 	};
 
 

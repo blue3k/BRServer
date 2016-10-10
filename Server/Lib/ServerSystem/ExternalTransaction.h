@@ -84,7 +84,7 @@ namespace Svr{
 		CURL *GetCURL()				{ return m_Curl; }
 		CURLcode GetCURLResult()	{ return m_CurlResult; }
 
-		virtual HRESULT CloseTransaction(HRESULT hrRes) override;
+		virtual Result CloseTransaction(Result hrRes) override;
 	};
 
 	
@@ -121,13 +121,13 @@ namespace Svr{
 		GCMHttpExternalTransaction();
 
 		// Set parameters
-		HRESULT SetParameters( const char* strRegID, const char* strMessage, UINT64 param0 );
+		Result SetParameters( const char* strRegID, const char* strMessage, UINT64 param0 );
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction(Entity* pOwner );
+		virtual Result InitializeTransaction(Entity* pOwner );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -152,14 +152,14 @@ namespace Svr{
 		const std::string& GetDeveloperPayload() { return m_DevAPI.GetDeveloperPayload(); }
 
 		// Set parameters
-		HRESULT SetParameters(const char* packageName, const char* productID, const char* purchaseToken);
+		Result SetParameters(const char* packageName, const char* productID, const char* purchaseToken);
 
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction(Entity* pOwner) override;
+		virtual Result InitializeTransaction(Entity* pOwner) override;
 
 		// Start Transaction
-		virtual HRESULT StartTransaction() override;
+		virtual Result StartTransaction() override;
 	};
 
 
@@ -181,23 +181,23 @@ namespace Svr{
 
 	public:
 
-		HRESULT ToHRESULT(int status);
+		Result ToResult(int status);
 
 		// Constructor
 		ExternalTransactionIOSRecepitCheck(TransactionID parentTransID, const char* strURL);
 
 		// Set parameters
-		HRESULT SetParameters(const char* packageName, const char* productID, const char* transactionID, const Array<BYTE>& purchaseToken);
+		Result SetParameters(const char* packageName, const char* productID, const char* transactionID, const Array<BYTE>& purchaseToken);
 
 		const Array<BYTE>& GetPurchaseTransactionID()         { return m_strTransactionID; }
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction(Entity* pOwner) override;
+		virtual Result InitializeTransaction(Entity* pOwner) override;
 
-		HRESULT VerifyReceipt();
+		Result VerifyReceipt();
 
 		// Start Transaction
-		virtual HRESULT StartTransaction() override;
+		virtual Result StartTransaction() override;
 	};
 
 

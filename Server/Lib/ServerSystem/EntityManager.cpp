@@ -50,7 +50,7 @@ namespace Svr {
 	{
 	}
 
-	HRESULT EntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity)
+	Result EntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity)
 	{
 		switch (clusterID)
 		{
@@ -61,16 +61,16 @@ namespace Svr {
 			pEntity = new GamePlayerEntity;
 			break;
 		default:
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 		}
 
-		return pEntity != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+		return pEntity != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 	}
 
 	// add entity to table
-	HRESULT EntityManager::AddEntity( EntityFaculty faculty, Svr::Entity* pEntity )
+	Result EntityManager::AddEntity( EntityFaculty faculty, Svr::Entity* pEntity )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto& entityTable = GetEntityTable();
 		svrChk( pEntity->InitializeEntity(entityTable.GenEntityID(faculty) ) );
 
@@ -97,9 +97,9 @@ namespace Svr {
 	}
 	
 	// add entity to table
-	HRESULT EntityManager::AddEntity( EntityID entityID, Svr::Entity* pEntity )
+	Result EntityManager::AddEntity( EntityID entityID, Svr::Entity* pEntity )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto& entityTable = GetEntityTable();
 
 		svrChk(entityTable.ReserveEntityID( entityID ) );
@@ -136,23 +136,23 @@ namespace Svr {
 		++m_NumberOfTotalEntities;
 	}
 
-	HRESULT EntityManager::FindEntity(EntityID entityID, SharedPointerT<Entity> &pEntity)
+	Result EntityManager::FindEntity(EntityID entityID, SharedPointerT<Entity> &pEntity)
 	{
 		auto& entityTable = GetEntityTable();
 		return entityTable.Find( entityID, pEntity );
 	}
 
 	// add entity to table
-	HRESULT EntityManager::RemoveEntity(EntityID entityID)
+	Result EntityManager::RemoveEntity(EntityID entityID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto& entityTable = GetEntityTable();
 
 		SharedPointerT<Entity> pEntity;
 		hr = entityTable.Erase(entityID, pEntity);
 		if (FAILED(hr))
 		{
-			hr = S_SYSTEM_FALSE;
+			hr = ResultCode::SUCCESS_FALSE;
 			goto Proc_End;
 		}
 		pEntity->SetEntityUID(0);
@@ -177,12 +177,12 @@ namespace Svr {
 	}
 
 	// add entity to table
-	HRESULT EntityManager::RemoveEntity( Svr::Entity* pEntity )
+	Result EntityManager::RemoveEntity( Svr::Entity* pEntity )
 	{
-		//HRESULT hr = S_SYSTEM_OK;
+		//Result hr = ResultCode::SUCCESS;
 
 		if (pEntity == nullptr)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		return RemoveEntity(pEntity->GetEntityID());
 
@@ -191,7 +191,7 @@ namespace Svr {
 		//hr = GetEntityTable().Erase(pEntity->GetEntityID(), pRemoved);
 		//if (FAILED(hr))
 		//{
-		//	hr = S_SYSTEM_FALSE;
+		//	hr = ResultCode::SUCCESS_FALSE;
 		//	goto Proc_End;
 		//}
 		////svrChk(GetEntityTable().Erase(pEntity->GetEntityID(), pRemoved));
@@ -220,9 +220,9 @@ namespace Svr {
 
 
 	// Initialize TaskManager
-	HRESULT EntityManager::InitializeManager(UINT uiNumGroup)
+	Result EntityManager::InitializeManager(UINT uiNumGroup)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		PerformanceCounterInstance* counterInstance = nullptr;
 
 		svrChk(TaskManager::InitializeManager(uiNumGroup));
@@ -244,9 +244,9 @@ namespace Svr {
 
 
 	// Terminate TaskManager
-	HRESULT EntityManager::TerminateManager()
+	Result EntityManager::TerminateManager()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		//if (m_PerformanceCounterInstance != nullptr)
 		//{

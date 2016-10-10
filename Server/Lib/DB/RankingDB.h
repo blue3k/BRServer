@@ -54,7 +54,7 @@ namespace DB {
 		//	Ranking DB interface
 		//
 
-		HRESULT GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount );
+		Result GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount );
 
 
 	};

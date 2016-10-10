@@ -24,11 +24,11 @@ GameLog<MaxBufferSize,MaxLog>::~GameLog()
 	
 // Initialize 
 template<size_t MaxBufferSize, size_t MaxLog>
-HRESULT GameLog<MaxBufferSize,MaxLog>::InitializeLog()
+Result GameLog<MaxBufferSize,MaxLog>::InitializeLog()
 {
 	TerminateLog();
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 // Terminate
@@ -47,9 +47,9 @@ void GameLog<MaxBufferSize,MaxLog>::TerminateLog()
 }
 
 template<size_t MaxBufferSize, size_t MaxLog>
-HRESULT GameLog<MaxBufferSize,MaxLog>::AddLogItem( GameLogItem* logItem )
+Result GameLog<MaxBufferSize,MaxLog>::AddLogItem( GameLogItem* logItem )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	// If full, remove old one
 	if( m_gameLogQueue.GetSize() == MaxLog )
@@ -71,9 +71,9 @@ Proc_End:
 
 // Get log binary
 template<size_t MaxBufferSize, size_t MaxLog>
-HRESULT GameLog<MaxBufferSize,MaxLog>::GetGameLogBinary( OutputMemoryStream& stream, UINT startIndex, UINT count )
+Result GameLog<MaxBufferSize,MaxLog>::GetGameLogBinary( OutputMemoryStream& stream, UINT startIndex, UINT count )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	m_gameLogQueue.ReverseForeach( startIndex, count, [&]( GameLogItem* pLogItem ) 
 	{

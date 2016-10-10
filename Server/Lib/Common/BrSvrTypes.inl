@@ -379,17 +379,17 @@ MatchingQueueItem::MatchingQueueItem( int initValue )
 	memset( Players, 0, sizeof(Players) );
 }
 
-HRESULT MatchingQueueItem::SetQueueItem( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* playerInformations )
+Result MatchingQueueItem::SetQueueItem( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* playerInformations )
 {
 	Assert(playerInformations);
 	if( playerInformations == nullptr) 
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 	
 	RegisterUID = registerUID;
 	RegisterID = registerID;
 	NumPlayers = std::min((UINT32)MAX_NUM_PLAYER,numPlayer);
 	memcpy( Players, playerInformations, sizeof(MatchingPlayerInformation)*NumPlayers );
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 MatchingQueueItem& MatchingQueueItem::operator = ( const MatchingQueueItem& src )

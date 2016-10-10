@@ -29,7 +29,7 @@ namespace BR
 			// PartyMatching Debug output function 
 
 			void RegisterDebugTracePartyMatching();
-			HRESULT DebugOutPartyMatching( const char*Prefix, MessageData*pMsg );
+			Result DebugOutPartyMatching( const char*Prefix, MessageData*pMsg );
 
 
 

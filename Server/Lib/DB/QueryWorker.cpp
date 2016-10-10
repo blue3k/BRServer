@@ -40,9 +40,9 @@ namespace DB {
 
 
 	// Send query
-	HRESULT QueryWorker::ExecuteQuery(Query* &pQuery)
+	Result QueryWorker::ExecuteQuery(Query* &pQuery)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryManager *pQueryManager = nullptr;
 		Session* pSession = nullptr;
 
@@ -55,7 +55,7 @@ namespace DB {
 		dbChkPtr(pQueryManager);
 
 		hr = pSession->SendQuery(pQuery);
-		if( hr == ((HRESULT)E_DB_CONNECTION_LOST) )
+		if( hr == ((Result)ResultCode::E_DB_CONNECTION_LOST) )
 		{
 			// Give one more chance, because the session will try to reconnect
 			hr = pSession->SendQuery(pQuery);
@@ -95,7 +95,7 @@ namespace DB {
 	
 	void QueryWorker::Run()
 	{
-		//HRESULT	hr = S_SYSTEM_OK;
+		//Result	hr = ResultCode::SUCCESS;
 		DurationMS expectedTickInterval(5);
 
 		while(1)

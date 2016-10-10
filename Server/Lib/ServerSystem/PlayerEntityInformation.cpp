@@ -47,7 +47,7 @@ namespace Svr {
 
 	
 	// Set game server entity
-	HRESULT PlayerEntityInformation::SetServerEntity( ServerEntity* pServerEntity, EntityUID playerUID )
+	Result PlayerEntityInformation::SetServerEntity( ServerEntity* pServerEntity, EntityUID playerUID )
 	{
 		if( pServerEntity )
 			m_LatestServerUpTime = pServerEntity->GetServerUpTime();
@@ -60,7 +60,7 @@ namespace Svr {
 		if( m_ServerEntity == nullptr || m_PlayerEntityUID == 0 )
 			m_IsActivePlayer = false;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 	
 

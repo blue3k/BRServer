@@ -57,6 +57,7 @@ namespace BRResultCodeCompiler
             output.Append("//\n");
             output.Append("////////////////////////////////////////////////////////////////////////////////\n");
             output.AppendLine("");
+            output.AppendLine("#pragma once");
             output.AppendLine("#include <stdint.h>");
             output.AppendLine("");
             output.AppendLine("");
@@ -68,24 +69,41 @@ namespace BRResultCodeCompiler
             var facility = m_Codes.Facility;
             var facilityUpr = facility.ToUpper();
 
+            output.AppendFormat("\n");
+            output.AppendFormat("namespace BR {{\n");
+            output.AppendFormat("\tnamespace ResultCode {{\n");
+            output.AppendFormat("\n");
+            output.AppendFormat("\t\tenum {{\n");
+            output.AppendFormat("\n");
+
             foreach (var codeItem in m_Codes.ResultCodeItem)
             {
                 var codeValue = codeItem.ResultCode;
                 string strDefine = "";
-                if(m_Codes.UseFacilityName)
-                    strDefine = string.Format("#define {0}_{1}_{2}        ", ResultCode.ServerityToDefineString(codeValue.Severity), facilityUpr, codeItem.CodeName.ToUpper());
+                //if(m_Codes.UseFacilityName)
+                //    strDefine = string.Format("#define {0}_{1}_{2}        ", ResultCode.ServerityToDefineString(codeValue.Severity), facilityUpr, codeItem.CodeName.ToUpper());
+                //else
+                //    strDefine = string.Format("#define {0}_{1}        ", ResultCode.ServerityToDefineString(codeValue.Severity), codeItem.CodeName.ToUpper());
+                if (m_Codes.UseFacilityName)
+                    strDefine = string.Format("\t\t\t{0}{1}_{2}        ", ResultCode.ServerityToDefineString(codeValue.Severity), facilityUpr, codeItem.CodeName.ToUpper());
                 else
-                    strDefine = string.Format("#define {0}_{1}        ", ResultCode.ServerityToDefineString(codeValue.Severity), codeItem.CodeName.ToUpper());
+                    strDefine = string.Format("\t\t\t{0}{1}        ", ResultCode.ServerityToDefineString(codeValue.Severity), codeItem.CodeName.ToUpper());
 
                 output.AppendFormat("\n");
-                output.AppendFormat("// {0} \n", string.IsNullOrEmpty(codeItem.Desc) ? "" : codeItem.Desc);
+                output.AppendFormat("\t\t\t// {0} \n", string.IsNullOrEmpty(codeItem.Desc) ? "" : codeItem.Desc);
                 output.AppendFormat("{0}", strDefine);
-                if(strDefine.Length <= tabSize)
+                if (strDefine.Length <= tabSize)
                     output.Append(' ', tabSize - strDefine.Length);
-                output.AppendFormat("((int32_t)0x{0:X8}L) \n", codeValue.ID);
+                output.AppendFormat("= 0x{0:X8}L, \n", codeValue.ID);
             }
-        }
 
+
+            output.AppendFormat("\n");
+            output.AppendFormat("\t\t}};//enum \n");
+            output.AppendFormat("\t}}//namespace ResultCode \n");
+            output.AppendFormat("}}//namespace SF \n");
+            output.AppendFormat("\n");
+        }
         void WritePostamble(StringBuilder output)
         {
             output.AppendLine("");

@@ -24,7 +24,7 @@ namespace BR
 	//	help operations
 	//
 
-	#define _AppendCharReturn( buf, length, charToAppend ) {*buf++ = charToAppend;	length--;	if(length <=0 ) return E_SYSTEM_OUTOFMEMORY;}
+	#define _AppendCharReturn( buf, length, charToAppend ) {*buf++ = charToAppend;	length--;	if(length <=0 ) return ResultCode::OUT_OF_MEMORY;}
 
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ namespace BR
 
 	// Itoa customized version from VC
 	template< class Type >
-	HRESULT _MyIToA(
+	Result _MyIToA(
 				Type val,
 				char* &buf,
 				INT& length,
@@ -49,7 +49,7 @@ namespace BR
 		if( buf == NULL || length <= 0
 			|| radix < 2 || radix > 36 )
 		{
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 		}
 
 
@@ -61,7 +61,7 @@ namespace BR
 		}
 
 		if( length <= 0 )
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 
 
 		char DigitBuffer[128];
@@ -113,13 +113,13 @@ namespace BR
 
 		*buf = '\0';            // terminate string;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 
 	// 
-	HRESULT _IToA( INT8 val,char* &buf, INT& length, unsigned radix, int iDigit )
+	Result _IToA( INT8 val,char* &buf, INT& length, unsigned radix, int iDigit )
 	{
 		bool bIsNeg = false;
 		if( val < 0 )
@@ -131,13 +131,13 @@ namespace BR
 		return _MyIToA( val, buf, length, radix, bIsNeg, iDigit );
 	}
 
-	HRESULT _IToA( UINT8 val,char* &buf, INT& length, unsigned radix, int iDigit )
+	Result _IToA( UINT8 val,char* &buf, INT& length, unsigned radix, int iDigit )
 	{
 		bool bIsNeg = false;
 		return _MyIToA( val, buf, length, radix, bIsNeg, iDigit );
 	}
 
-	HRESULT _IToA( INT16 val,char* &buf, INT& length, unsigned radix, int iDigit )
+	Result _IToA( INT16 val,char* &buf, INT& length, unsigned radix, int iDigit )
 	{
 		bool bIsNeg = false;
 		if( val < 0 )
@@ -149,13 +149,13 @@ namespace BR
 		return _MyIToA( val, buf, length, radix, bIsNeg, iDigit );
 	}
 
-	HRESULT _IToA( UINT16 val,char* &buf, INT& length, unsigned radix, int iDigit )
+	Result _IToA( UINT16 val,char* &buf, INT& length, unsigned radix, int iDigit )
 	{
 		bool bIsNeg = false;
 		return _MyIToA( val, buf, length, radix, bIsNeg, iDigit );
 	}
 
-	HRESULT _IToA( INT32 val,char* &buf, INT& length, unsigned radix, int iDigit )
+	Result _IToA( INT32 val,char* &buf, INT& length, unsigned radix, int iDigit )
 	{
 		bool bIsNeg = false;
 		if(val < 0 && radix == 10) // use sign only for base 10 description
@@ -168,13 +168,13 @@ namespace BR
 		return _MyIToA( (UINT32)val, buf, length, radix, bIsNeg, iDigit );
 	}
 
-	HRESULT _IToA( UINT32 val,char* &buf, INT& length, unsigned radix, int iDigit )
+	Result _IToA( UINT32 val,char* &buf, INT& length, unsigned radix, int iDigit )
 	{
 		bool bIsNeg = false;
 		return _MyIToA( val, buf, length, radix, bIsNeg, iDigit );
 	}
 
-	HRESULT _IToA( INT64 val,char* &buf, INT& length, unsigned radix, int iDigit )
+	Result _IToA( INT64 val,char* &buf, INT& length, unsigned radix, int iDigit )
 	{
 		bool bIsNeg = false;
 		if( val < 0 )
@@ -186,14 +186,14 @@ namespace BR
 		return _MyIToA( val, buf, length, radix, bIsNeg, iDigit );
 	}
 
-	HRESULT _IToA( UINT64 val,char* &buf, INT& length, unsigned radix, int iDigit )
+	Result _IToA( UINT64 val,char* &buf, INT& length, unsigned radix, int iDigit )
 	{
 		bool bIsNeg = false;
 		return _MyIToA( val, buf, length, radix, bIsNeg, iDigit );
 	}
 
 
-	HRESULT _FToA( double val,char* &buf, INT& length, unsigned digit, char Option )
+	Result _FToA( double val,char* &buf, INT& length, unsigned digit, char Option )
 	{
 		unused(Option);
 #if WINDOWS
@@ -202,16 +202,16 @@ namespace BR
 		int digitCount = std::min( (int)digit, (int)(countof(strMantisa)) );
 
 		if( digit < 0 )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		if( length <= 0 )
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 
 		if( buf == NULL )
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		if( _fcvt_s( strMantisa, countof(strMantisa), val, digitCount, &Decimal, &sign ) != 0 )
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		// discard end zeros
 		if( Decimal >= 0 )
@@ -285,12 +285,12 @@ namespace BR
 		else
 			*(buf-1) = '\0';
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT8& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const INT8& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -298,11 +298,11 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT8& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const UINT8& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -310,11 +310,11 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT16& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const INT16& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -322,11 +322,11 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT16& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const UINT16& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -334,11 +334,11 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT32& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const INT32& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -346,11 +346,11 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT32& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const UINT32& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -358,11 +358,11 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const INT64& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const INT64& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -370,11 +370,11 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const UINT64& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const UINT64& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -382,12 +382,12 @@ namespace BR
 
 		_IToA(iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 #if WINDOWS
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LONG& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const LONG& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -400,11 +400,11 @@ namespace BR
 			_IToA((INT32)iData, pBuff, iBuffLen, Radix, -1);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const ULONG& iData, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const ULONG& iData, int Option)
 	{
 		int Radix = 10;
 		if (Option == 'x' || Option == 'X')
@@ -412,15 +412,15 @@ namespace BR
 
 		_IToA((UINT32)iData, pBuff, iBuffLen, Radix, -1);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const char& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const char& Data, int Option)
 	{
 		if (iBuffLen <= 0)
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 
 		*pBuff++ = Data;
 		iBuffLen--;
@@ -432,19 +432,19 @@ namespace BR
 
 		unused(Option);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 #endif
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPCSTR& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const LPCSTR& Data, int Option)
 	{
 		unused(Option);
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, Data);
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPSTR& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const LPSTR& Data, int Option)
 	{
 		unused(Option);
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, Data);
@@ -452,93 +452,93 @@ namespace BR
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const wchar_t& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const wchar_t& Data, int Option)
 	{
 		unused(Option);
 		if (iBuffLen <= 0)
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 
 		wchar_t string[2] = { Data, 0 };
 		char DestBuff[16];
 
 		if (FAILED(StrUtil::WCSToUTF8(string, DestBuff)))
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, DestBuff);
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPCWSTR& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const LPCWSTR& Data, int Option)
 	{
 		char DestBuff[1024];
 
 		unused(Option);
 
 		if (Data == NULL)
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		if (FAILED(StrUtil::WCSToUTF8(Data, DestBuff)))
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, DestBuff);
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const LPWSTR& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const LPWSTR& Data, int Option)
 	{
 		char DestBuff[1024];
 
 		unused(Option);
 
 		if (Data == NULL)
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		if (FAILED(StrUtil::WCSToUTF8(Data, DestBuff)))
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, DestBuff);
 	}
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const std::string& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const std::string& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, Data.c_str(), Option);
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const std::wstring& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const std::wstring& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, Data.c_str(), Option);
 	}
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const bool& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const bool& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, Data ? "true" : "false", Option);
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const float& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const float& Data, int Option)
 	{
 		int degit = Option >> 16;
 		_FToA(Data, pBuff, iBuffLen, degit, 0);
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const double& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const double& Data, int Option)
 	{
 		int degit = Option >> 16;
 		_FToA(Data, pBuff, iBuffLen, degit, (char)(Option & 0xFFFF));
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	template<void*>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const PVOID& Data, int Option)
+	template<>
+	Result ToString(char*& pBuff, INT& iBuffLen, const PVOID& Data, int Option)
 	{
 		unused(Option);
 		auto value = (UINT64)Data;
@@ -547,18 +547,32 @@ namespace BR
 
 		_IToA(value, pBuff, iBuffLen, 16, sizeof(value) * 2);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT8>& Data, int Option);
-	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT8>& Data, int Option);
-	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT16>& Data, int Option);
-	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT16>& Data, int Option);
-	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT32>& Data, int Option);
-	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT32>& Data, int Option);
-	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT64>& Data, int Option);
-	template HRESULT ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT64>& Data, int Option);
+	template<>
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::Result& Data, int Option)
+	{
+		unused(Option);
+		auto value = (uint32_t)(int32_t)Data;
+
+		StrUtil::StringCpyEx(pBuff, iBuffLen, "0x");
+
+		_IToA(value, pBuff, iBuffLen, 16, sizeof(value) * 2);
+
+		return ResultCode::SUCCESS;
+	}
+
+
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT8>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT8>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT16>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT16>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT32>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT32>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<INT64>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<UINT64>& Data, int Option);
 
 
 

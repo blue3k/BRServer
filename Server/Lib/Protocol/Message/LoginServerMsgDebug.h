@@ -29,7 +29,7 @@ namespace BR
 			// LoginServer Debug output function 
 
 			void RegisterDebugTraceLoginServer();
-			HRESULT DebugOutLoginServer( const char*Prefix, MessageData*pMsg );
+			Result DebugOutLoginServer( const char*Prefix, MessageData*pMsg );
 
 
 

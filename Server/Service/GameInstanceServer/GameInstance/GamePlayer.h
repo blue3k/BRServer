@@ -116,7 +116,7 @@ namespace ConspiracyGameInstanceServer {
 		bool IsInGame();
 
 		// Initialize player
-		HRESULT InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);
+		Result InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);
 
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ namespace ConspiracyGameInstanceServer {
 		//
 
 		// Update Game Player 
-		HRESULT UpdateGamePlayer(TimeStampMS CurTime );
+		Result UpdateGamePlayer(TimeStampMS CurTime );
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//

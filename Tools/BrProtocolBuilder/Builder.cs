@@ -143,7 +143,7 @@ namespace ProtocolBuilder
             m_ParamResult.IsArray = false;
             m_ParamResult.IsArraySpecified = false;
             m_ParamResult.Name = "Result";
-            m_ParamResult.Type = ParameterType.HRESULT;
+            m_ParamResult.Type = ParameterType.Result;
 
             m_ParamRouteContext = new Parameter();
             m_ParamRouteContext.IsArray = false;
@@ -276,7 +276,7 @@ namespace ProtocolBuilder
         public void DefaultHRESULT()
         {
             MatchIndent();
-            OutStream.WriteLine("HRESULT hr = S_SYSTEM_OK;");
+            OutStream.WriteLine("Result hr;");
         }
 
         public void ProcEnd()

@@ -445,11 +445,11 @@ namespace Hash {
 			}
 
 			// Iterator 
-			HRESULT begin( iterator &iter )
+			Result begin( iterator &iter )
 			{
 				iter = begin();
 
-				return iter.IsValid() ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+				return iter.IsValid() ? ResultCode::SUCCESS : ResultCode::FAIL;
 			}
 
 			iterator begin()
@@ -484,7 +484,7 @@ namespace Hash {
 			//	Insert/erase/clear
 			//
 
-			HRESULT insert( const KeyType& inKey, const ItemType &data )
+			Result insert( const KeyType& inKey, const ItemType &data )
 			{
 				size_t hashVal = Hasher()( inKey );
 				size_t iBucket = hashVal%m_Bucket.size();
@@ -506,7 +506,7 @@ namespace Hash {
 						KeyType curIdx = iter->Key;
 						if( equal_to<KeyType>()(inKey, curIdx) )
 						{
-							return E_SYSTEM_FAIL;
+							return ResultCode::FAIL;
 						}
 					}
 
@@ -540,10 +540,10 @@ namespace Hash {
 #ifdef _DEBUG
 				Assert( bucket.Validate(iBucket, m_Bucket.size()) );
 #endif
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
-			HRESULT find( const KeyType& keyVal, ItemType &data )
+			Result find( const KeyType& keyVal, ItemType &data )
 			{
 				size_t hashVal = Hasher()( keyVal );
 				size_t iBucket = hashVal%m_Bucket.size();
@@ -557,14 +557,14 @@ namespace Hash {
 					if( equal_to<KeyType>()( keyVal, iter->Key ) )
 					{
 						data = iter->Data;
-						return S_SYSTEM_OK;
+						return ResultCode::SUCCESS;
 					}
 				}
 
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 
-			HRESULT find( const KeyType& keyVal, iterator &iterData )
+			Result find( const KeyType& keyVal, iterator &iterData )
 			{
 				size_t hashVal = Hasher()( keyVal );
 				size_t iBucket = hashVal%m_Bucket.size();
@@ -580,19 +580,19 @@ namespace Hash {
 					if( equal_to<KeyType>()( keyVal, iter->Key ) )
 					{
 						iterData.Set( this, m_Bucket.begin() + iBucket, iIdx, false );
-						return S_SYSTEM_OK;
+						return ResultCode::SUCCESS;
 					}
 				}
 
 				bucket.ReadUnlock();
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 
 			// Erase a data from hash map
-			HRESULT erase(const KeyType& inKey, const ItemType &data)
+			Result erase(const KeyType& inKey, const ItemType &data)
 			{
 				if( m_Bucket.size() == 0 )
-					return S_SYSTEM_FALSE;
+					return ResultCode::SUCCESS_FALSE;
 
 				size_t hashVal = Hasher()( inKey );
 				size_t iBucket = hashVal%m_Bucket.size();
@@ -614,20 +614,20 @@ namespace Hash {
 						//_WriteBarrier();
 						std::atomic_thread_fence(std::memory_order_seq_cst);
 						bucket.WriteUnlock();
-						return S_SYSTEM_OK;
+						return ResultCode::SUCCESS;
 					}
 				}
 
 				Assert( bucket.Validate(iBucket, m_Bucket.size()) );
 				bucket.WriteUnlock();
 
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 
-			HRESULT eraseByKey(const KeyType &key)
+			Result eraseByKey(const KeyType &key)
 			{
 				if (m_Bucket.size() == 0)
-					return S_SYSTEM_FALSE;
+					return ResultCode::SUCCESS_FALSE;
 
 				KeyType inKey = key;
 				size_t hashVal = Hasher()(inKey);
@@ -650,27 +650,27 @@ namespace Hash {
 						//_WriteBarrier();
 						std::atomic_thread_fence(std::memory_order_seq_cst);
 						bucket.WriteUnlock();
-						return S_SYSTEM_OK;
+						return ResultCode::SUCCESS;
 					}
 				}
 
 				Assert(bucket.Validate(iBucket, m_Bucket.size()));
 				bucket.WriteUnlock();
 
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 
-			HRESULT erase( iterator &iterData )
+			Result erase( iterator &iterData )
 			{
 				KeyType Key;
 				if( iterData.m_pContainer != this )
-					return E_SYSTEM_FAIL;
+					return ResultCode::FAIL;
 
 				if( iterData.m_iterBucket == bucket_end() )
-					return E_SYSTEM_INVALIDARG;
+					return ResultCode::INVALID_ARG;
 
 				if( iterData.m_iIdx <= iterator::END_IDX )
-					return E_SYSTEM_INVALIDARG;
+					return ResultCode::INVALID_ARG;
 
 				//ItemType data = *iterData;
 				INT iIdx = iterData.m_iIdx;
@@ -699,7 +699,7 @@ namespace Hash {
 				{
 					// data not found. maybe erased?
 					iterBucket->WriteUnlock();
-					return E_SYSTEM_FAIL;
+					return ResultCode::FAIL;
 				}
 				auto iterBucketData = iterBucket->m_Items.begin() + iIdx;
 #ifdef _DEBUG
@@ -721,10 +721,10 @@ namespace Hash {
 #endif
 				iterBucket->WriteUnlock();
 
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
-			HRESULT clear()
+			Result clear()
 			{
 				m_lItemCount = 0;
 
@@ -734,7 +734,7 @@ namespace Hash {
 					iterBucket->m_Items.clear();
 				}
 
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
 			bool Validate()

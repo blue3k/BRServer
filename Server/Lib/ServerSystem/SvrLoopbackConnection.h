@@ -43,10 +43,10 @@ namespace Svr
 		LoopbackConnection(NetClass netClass, Svr::ServerEntity* pServerEntity);
 		~LoopbackConnection();
 
-		virtual HRESULT SendRaw(Message::MessageData* &pMsg) override { unused(pMsg);  return E_SYSTEM_FAIL; }
+		virtual Result SendRaw(Message::MessageData* &pMsg) override { unused(pMsg);  return ResultCode::FAIL; }
 
 		// Send message to connected entity
-		virtual HRESULT Send( Message::MessageData* &pMsg );
+		virtual Result Send( Message::MessageData* &pMsg );
 
 	};
 

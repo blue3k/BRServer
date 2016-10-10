@@ -51,9 +51,9 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT GameInstanceTrans::StartTransaction()
+	Result GameInstanceTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 

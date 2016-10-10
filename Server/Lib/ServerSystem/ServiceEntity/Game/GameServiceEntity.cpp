@@ -53,9 +53,9 @@ namespace Svr {
 	{
 	}
 
-	HRESULT GameServiceEntity::InitializeEntity( EntityID newEntityID )
+	Result GameServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameClusterServiceEntity *pGameService = nullptr;
 
 		svrChk(FreeReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
@@ -80,9 +80,9 @@ namespace Svr {
 	}
 
 	// clear transaction
-	HRESULT GameServiceEntity::ClearEntity()
+	Result GameServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(FreeReplicaClusterServiceEntity::ClearEntity() );
 
@@ -95,9 +95,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT GameServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result GameServiceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(FreeReplicaClusterServiceEntity::TickUpdate(pAction) );
 
@@ -119,9 +119,9 @@ namespace Svr {
 
 
 	// Process network event
-	HRESULT GameServiceEntity::ProcessPublicNetworkEvent()
+	Result GameServiceEntity::ProcessPublicNetworkEvent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Net::INet::Event curEvent;
 		GamePlayerEntity *pGamePlayerEntity = nullptr;
 		Net::Connection *pConn = nullptr;
@@ -129,7 +129,7 @@ namespace Svr {
 		Entity* pEntity = nullptr;
 
 		if (m_pNetPublic == nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		while (SUCCEEDED(m_pNetPublic->DequeueNetEvent(curEvent)))
 		{
@@ -182,7 +182,7 @@ namespace Svr {
 
 		Util::SafeDelete(pGamePlayerEntity);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

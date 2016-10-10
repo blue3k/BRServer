@@ -72,7 +72,7 @@ namespace GameServer {
 
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent();
+		virtual Result InitializeComponent();
 
 		// Terminate server component
 		virtual void TerminateComponent();
@@ -94,17 +94,17 @@ namespace GameServer {
 		INT FindNotification( UINT notificationID );
 
 		// Add a Notification
-		HRESULT AddNotification( const Notification& info );
-		HRESULT AddNotification( UINT NotificationID, NotificationType MessageID, INT64 MessageParam0, INT64 MessageParam1, const char* MessageText, BYTE IsRead, INT64 timeStamp );
+		Result AddNotification( const Notification& info );
+		Result AddNotification( UINT NotificationID, NotificationType MessageID, INT64 MessageParam0, INT64 MessageParam1, const char* MessageText, BYTE IsRead, INT64 timeStamp );
 
 		// Remove a Notification
-		HRESULT RemoveNotification( UINT notificationID ); 
+		Result RemoveNotification( UINT notificationID ); 
 
 		//// Read Notification
-		//HRESULT ReadNotification( UINT notificationID ); 
+		//Result ReadNotification( UINT notificationID ); 
 
 		// iterate all Notification list
-		HRESULT ForeachNotification( std::function<HRESULT(const Notification&)> functor );
+		Result ForeachNotification( std::function<Result(const Notification&)> functor );
 	};
 
 

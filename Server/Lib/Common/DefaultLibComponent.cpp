@@ -33,9 +33,9 @@ namespace BR
 	}
 
 	// Initialize server component
-	HRESULT LibComponentDefault::InitializeComponent()
+	Result LibComponentDefault::InitializeComponent()
 	{
-		HRESULT hr = Component::InitializeComponent();
+		Result hr = Component::InitializeComponent();
 		if (FAILED(hr)) return hr;
 
 		srand((UINT)Util::Time.GetRawTimeMs().time_since_epoch().count());

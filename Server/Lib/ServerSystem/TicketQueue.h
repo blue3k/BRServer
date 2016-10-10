@@ -91,11 +91,11 @@ namespace Svr {
 		//
 
 		// Assign Item
-		HRESULT AssignItem( const DataObject&& Data, ItemTicket* &pItem );
-		HRESULT AssignItem( DataObject&& Data, ItemTicket* &pItem );
+		Result AssignItem( const DataObject&& Data, ItemTicket* &pItem );
+		Result AssignItem( DataObject&& Data, ItemTicket* &pItem );
 
 		// Release Item
-		HRESULT ReleaseItem( ItemTicket* pItem );
+		Result ReleaseItem( ItemTicket* pItem );
 
 
 	public:
@@ -110,18 +110,18 @@ namespace Svr {
 		//
 
 		// item enque
-		inline HRESULT Enqueue( const DataObject& newData, TicketType& hTicket );
-		inline HRESULT Enqueue( DataObject&& newData, TicketType& hTicket );
+		inline Result Enqueue( const DataObject& newData, TicketType& hTicket );
+		inline Result Enqueue( DataObject&& newData, TicketType& hTicket );
 
 		// item deque
-		inline HRESULT Dequeue( DataObject& Data );
+		inline Result Dequeue( DataObject& Data );
 
 		// drop item in queue of that ticket
-		inline HRESULT DropItem( TicketType hTicket );
+		inline Result DropItem( TicketType hTicket );
 
 		// Just get first dequeue item if exist, not dequeue
 		// This will not safe if use DequeueMT
-		inline HRESULT GetFront( DataObject& item );
+		inline Result GetFront( DataObject& item );
 
 		// Item count in queue
 		inline CounterType GetEnqueCount() const;

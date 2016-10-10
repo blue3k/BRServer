@@ -59,8 +59,8 @@ namespace BR
 		void UpdateSkipDepth();
 
 #if WINDOWS
-		HRESULT BuildSymbolPath();
-		HRESULT LoadModuleSymbols();
+		Result BuildSymbolPath();
+		Result LoadModuleSymbols();
 
 		FORCEINLINE void GetStackFrame( CONTEXT& context, STACKFRAME64& stackFrame, DWORD& imageType );
 
@@ -97,7 +97,7 @@ namespace BR
 	}
 
 #if WINDOWS
-	HRESULT CallStackTrace::PrintStackTrace( int channel, HANDLE hProcess )
+	Result CallStackTrace::PrintStackTrace( int channel, HANDLE hProcess )
 	{
 		BYTE Buffer[1024];
 		memset( Buffer, 0, sizeof(Buffer) );
@@ -141,10 +141,10 @@ namespace BR
 
 		Trace::Flush();
 
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 #else
-	HRESULT CallStackTrace::PrintStackTrace(int channel, NativeHandle hProcess)
+	Result CallStackTrace::PrintStackTrace(int channel, NativeHandle hProcess)
 	{
 		char **strings;
 
@@ -159,7 +159,7 @@ namespace BR
 
 		free(strings);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 #endif
@@ -179,7 +179,7 @@ namespace BR
 	{
 	}
 #if WINDOWS
-	HRESULT StackWalkerImpl::BuildSymbolPath()
+	Result StackWalkerImpl::BuildSymbolPath()
 	{
 		wchar_t curDir[1024], tempBuffer[1024];
 
@@ -212,24 +212,24 @@ namespace BR
 			}
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT StackWalkerImpl::LoadModuleSymbols()
+	Result StackWalkerImpl::LoadModuleSymbols()
 	{
 		HMODULE hModules[512];
 		wchar_t imageFileName[1024];
 		DWORD cbNeeded = 0;
-		HRESULT result = 0;
+		Result result = 0;
 
 		if( m_hProcess == NULL )
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 
 		memset(hModules, 0, sizeof(hModules));
 		if( !EnumProcessModulesEx( m_hProcess, hModules, sizeof(hModules), &cbNeeded, LIST_MODULES_ALL ) )
 		{
 			AssertRel( cbNeeded <= sizeof(hModules) );
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		for( UINT iModule = 0; iModule < countof(hModules) && hModules[iModule] != 0; iModule++ )
@@ -241,19 +241,19 @@ namespace BR
 
 			if( GetModuleFileNameExW( m_hProcess, hModules[iModule], imageFileName, (DWORD)countof(imageFileName) ) == 0 )
 			{
-				//result = GetLatestHRESULT();
+				//result = GetLatestResult();
 				continue;
 			}
 
 			if( SymLoadModuleExW( m_hProcess, NULL, imageFileName, NULL, (DWORD64)moduleInfo.lpBaseOfDll, moduleInfo.SizeOfImage, NULL, 0 ) == 0 )
 			{
-				//result = GetLatestHRESULT();
+				//result = GetLatestResult();
 				continue;
 			}
 		}
 		
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 	
 	void StackWalkerImpl::GetStackFrame( CONTEXT& context, STACKFRAME64& stackFrame, DWORD& imageType )

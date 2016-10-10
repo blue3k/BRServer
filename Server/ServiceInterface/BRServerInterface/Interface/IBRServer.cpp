@@ -41,13 +41,13 @@ namespace BR {
 		}
 
 
-		HRESULT IBRServer::StartServer()
+		Result IBRServer::StartServer()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			auto pServer = BrServer::GetInstance();
-			if (pServer == nullptr) return E_SYSTEM_FAIL;
-			if (pServer->GetServerState() != ServerState::STOPED) return E_SVR_INVALID_STATE;
+			if (pServer == nullptr) return ResultCode::FAIL;
+			if (pServer->GetServerState() != ServerState::STOPED) return ResultCode::E_INVALID_STATE;
 
 			svrTrace(Trace::TRC_TRACE, "<{0}> Starting", Util::GetServiceNameA());
 
@@ -58,13 +58,13 @@ namespace BR {
 			return hr;
 		}
 
-		HRESULT IBRServer::StopServer()
+		Result IBRServer::StopServer()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			auto pServer = BrServer::GetInstance();
-			if (pServer == nullptr) return E_SYSTEM_FAIL;
-			if (pServer->GetServerState() != ServerState::RUNNING) return E_SVR_INVALID_STATE;
+			if (pServer == nullptr) return ResultCode::FAIL;
+			if (pServer->GetServerState() != ServerState::RUNNING) return ResultCode::E_INVALID_STATE;
 
 			svrChk(pServer->StopServer());
 

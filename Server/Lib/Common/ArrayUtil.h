@@ -236,7 +236,7 @@ namespace BR
 		void SetBuffPtr( size_t AllocatedSize, DataType *pDataPtr );
 
 		// Called for reallocation
-		virtual HRESULT IncreaseSize();
+		virtual Result IncreaseSize();
 
 	public:
 		// Static buffer
@@ -248,7 +248,7 @@ namespace BR
 		inline size_t size() const { return GetSize(); }
 
 		// set Reserve size
-		inline  HRESULT SetSize( size_t szNewSize );
+		inline  Result SetSize( size_t szNewSize );
 		void resize(size_t szNewSize) { SetSize(szNewSize); }
 
 		// Clear array, buffer size not reallocated, buffer data didn't erased, clear manually if need
@@ -266,7 +266,7 @@ namespace BR
 		void SetIncreaseSize( size_t szNewIncSize );
 
 		// set Reserve size
-		virtual HRESULT Reserve( size_t szReserv ) = 0;
+		virtual Result Reserve( size_t szReserv ) = 0;
 
 #if !defined(SWIG)
 		// Get data pointer
@@ -275,15 +275,15 @@ namespace BR
 		inline DataType* data();
 
 		// push_back
-		HRESULT push_back( const DataType& NewData );
-		HRESULT AddItems(size_t numItems, const DataType* NewData);
+		Result push_back( const DataType& NewData );
+		Result AddItems(size_t numItems, const DataType* NewData);
 #if !defined(SWIG)
-		HRESULT push_back( DataType&& NewData );
+		Result push_back( DataType&& NewData );
 #endif
 
 		// Remove element
-		inline HRESULT RemoveAt( INT iIndex );
-		inline HRESULT RemoveItem( const DataType& RemoveData );
+		inline Result RemoveAt( INT iIndex );
+		inline Result RemoveItem( const DataType& RemoveData );
 
 		// find and return index, -1 is not found
 		inline INT FindItem( const DataType& FindData );
@@ -314,26 +314,26 @@ namespace BR
 		iterator end() { return iterator(this, iterator::END_IDX); }
 
 		// Foreach operator
-		HRESULT Foreach( std::function<HRESULT(DataType&)> functor )
+		Result Foreach( std::function<Result(DataType&)> functor )
 		{
 			for( size_t iData = 0; iData < GetSize(); iData++ )
 			{
-				HRESULT hr = functor( m_pDataPtr[iData] );
+				Result hr = functor( m_pDataPtr[iData] );
 				if( FAILED(hr) ) return hr;
 			}
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT Foreach( std::function<HRESULT(DataType&)> functor ) const
+		Result Foreach( std::function<Result(DataType&)> functor ) const
 		{
 			return const_cast<Array<DataType>*>(this)->Foreach( functor );
 		}
 
 		// Copy to Bin
 		template< size_t szBinSize >
-		HRESULT CopyToBin( BYTE (&Dest)[szBinSize] ) const
+		Result CopyToBin( BYTE (&Dest)[szBinSize] ) const
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			BinaryType *pDst = (BinaryType*)Dest;
 
 			static_assert( szBinSize >= sizeof(BinaryType), "Invalid dest binary size" );
@@ -342,7 +342,7 @@ namespace BR
 			if( DstMaxCount < GetSize() )
 			{
 				//defTrace( Trace::TRC_ERROR, "Error, Invalid Binary size, Droping Data, {0}", typeid(DataType).name() );
-				hr = E_SYSTEM_FAIL;
+				hr = ResultCode::FAIL;
 
 				CopyCount = DstMaxCount;
 			}
@@ -381,7 +381,7 @@ namespace BR
 
 
 		// set Reserve size
-		virtual HRESULT Reserve(size_t szReserv);
+		virtual Result Reserve(size_t szReserv);
 	};
 
 
@@ -403,7 +403,7 @@ namespace BR
 
 
 		// set Reserve size
-		virtual HRESULT Reserve(size_t szReserv);
+		virtual Result Reserve(size_t szReserv);
 	};
 
 
@@ -425,7 +425,7 @@ namespace BR
 		void SetLinkedBuffer(UINT maxDataCount, UINT dataCount, DataType* pDataPtr);
 		void SetLinkedBuffer(const Array<DataType>& srcLink);
 
-		HRESULT Reserve(size_t szReserv) override;
+		Result Reserve(size_t szReserv) override;
 	};
 
 

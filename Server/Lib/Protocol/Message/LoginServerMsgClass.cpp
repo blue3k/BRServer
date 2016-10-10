@@ -31,9 +31,9 @@ namespace BR
 		{
  			// Cmd: Notify user joind and see it's valid authticket instance
 			const MessageID PlayerJoinedToGameServerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 0);
-			HRESULT PlayerJoinedToGameServerCmd::ParseIMsg( MessageData* pIMsg )
+			Result PlayerJoinedToGameServerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -53,11 +53,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerJoinedToGameServerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerJoinedToGameServerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PlayerJoinedToGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+			Result PlayerJoinedToGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -85,11 +85,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerJoinedToGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+			}; // Result PlayerJoinedToGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 
-			HRESULT PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
+			Result PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -111,7 +111,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -122,9 +122,9 @@ namespace BR
 			}; // void PlayerJoinedToGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID PlayerJoinedToGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 0);
-			HRESULT PlayerJoinedToGameServerRes::ParseIMsg( MessageData* pIMsg )
+			Result PlayerJoinedToGameServerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -136,25 +136,25 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT PlayerJoinedToGameServerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerJoinedToGameServerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PlayerJoinedToGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			Result PlayerJoinedToGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT));
+					+ sizeof(Result));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -164,7 +164,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 
 				pMsg = pNewMsg;
 
@@ -173,11 +173,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerJoinedToGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			}; // Result PlayerJoinedToGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
-			HRESULT PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
+			Result PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -199,7 +199,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void PlayerJoinedToGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -211,9 +211,9 @@ namespace BR
 
 			// Cmd: Kick logged in player
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 1);
-			HRESULT KickPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			Result KickPlayerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -232,11 +232,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT KickPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result KickPlayerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
+			Result KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -262,11 +262,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
+			}; // Result KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
 
-			HRESULT KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			Result KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -288,7 +288,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -299,9 +299,9 @@ namespace BR
 			}; // void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_LOGINSERVER, 1);
-			HRESULT KickPlayerRes::ParseIMsg( MessageData* pIMsg )
+			Result KickPlayerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -313,25 +313,25 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT KickPlayerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result KickPlayerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			Result KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT));
+					+ sizeof(Result));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -341,7 +341,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 
 				pMsg = pNewMsg;
 
@@ -350,11 +350,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			}; // Result KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
-			HRESULT KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
+			Result KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -376,7 +376,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)

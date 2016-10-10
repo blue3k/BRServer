@@ -75,7 +75,7 @@ namespace Svr {
 		virtual ~RankingPartyTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 	};
 

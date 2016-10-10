@@ -43,7 +43,7 @@ namespace Google {
 
 		static int WriteResultCB(char *data, size_t size, size_t nmemb, void *param);
 
-		HRESULT ToHRESULT(const Json::Value& root);
+		Result ToResult(const Json::Value& root);
 
 	public:
 		AndroidDeveloperAPI(OAuth* pOAuth);
@@ -52,7 +52,7 @@ namespace Google {
 		const std::string& GetDeveloperPayload() { return m_DeveloperPayload; }
 
 		// Check purchase receipt
-		HRESULT CheckReceipt(const char* packageName, const char* productID, const char* purchaseToken);
+		Result CheckReceipt(const char* packageName, const char* productID, const char* purchaseToken);
 	};
 
 

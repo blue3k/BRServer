@@ -59,13 +59,13 @@ namespace Svr
 		
 
 	// Initialize entity to proceed new connection
-	HRESULT EntityServerEntity::InitializeEntity( EntityID newEntityID )
+	Result EntityServerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)		{ pNewTrans = new EntityServerStartedTrans( pMsgData ); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE( Message::Server::ServerConnectedC2SEvt)		{ pNewTrans = new EntityServerStartedTrans( pMsgData ); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 
@@ -75,14 +75,14 @@ namespace Svr
 
 
 	// Process Connection event
-	HRESULT EntityServerEntity::ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent )
+	Result EntityServerEntity::ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		switch( conEvent.EventType )
 		{
 		case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
-			if( SUCCEEDED(conEvent.Value.hr) // && IsInitialConnection()
+			if( SUCCEEDED(conEvent.hr) // && IsInitialConnection()
 				&& GetPolicy<Policy::IPolicyEntityServer>() )
 			{
 				// Register entity manager server

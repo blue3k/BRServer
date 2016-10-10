@@ -81,9 +81,9 @@ namespace BRResultCodeCompiler
                 var codeValue = codeItem.ResultCode;
                 string strDefine = "";
                 if(m_Codes.UseFacilityName)
-                    strDefine = string.Format("\t\tpublic const int {0}_{1}_{2} = ", ResultCode.ServerityToDefineString(codeValue.Severity), facilityUpr, codeItem.CodeName.ToUpper());
+                    strDefine = string.Format("\t\tpublic const int {0}{1}_{2} = ", ResultCode.ServerityToDefineString(codeValue.Severity), facilityUpr, codeItem.CodeName.ToUpper());
                 else
-                    strDefine = string.Format("\t\tpublic const int {0}_{1} = ", ResultCode.ServerityToDefineString(codeValue.Severity), codeItem.CodeName.ToUpper());
+                    strDefine = string.Format("\t\tpublic const int {0}{1} = ", ResultCode.ServerityToDefineString(codeValue.Severity), codeItem.CodeName.ToUpper());
 
                 output.AppendFormat("\n");
                 output.AppendFormat("\t\t// {0} \n", string.IsNullOrEmpty(codeItem.Desc) ? "" : codeItem.Desc);

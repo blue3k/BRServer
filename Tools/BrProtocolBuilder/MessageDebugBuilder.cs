@@ -101,7 +101,7 @@ namespace ProtocolBuilder
             MatchIndent(); OutStream.WriteLine(string.Format("// {0} Debug output function ", Group.Name));
             NewLine();
             MatchIndent(); OutStream.WriteLine(string.Format("void RegisterDebugTrace{0}();", Group.Name));
-            MatchIndent(); OutStream.WriteLine(string.Format("HRESULT DebugOut{0}( const char*Prefix, MessageData*pMsg );", Group.Name));
+            MatchIndent(); OutStream.WriteLine(string.Format("Result DebugOut{0}( const char*Prefix, MessageData*pMsg );", Group.Name));
             NewLine();
         }
 
@@ -118,11 +118,11 @@ namespace ProtocolBuilder
             string strMsgClass = string.Format("{0}::{1}", Group.Name, MsgClassName(Name, typeString));
             string strKey = string.Format("{0}::MID.IDSeq.MsgID", strMsgClass);
 
-            string strFunction = "[](const char* prefix, MessageData* pMsg)->HRESULT{ ";
+            string strFunction = "[](const char* prefix, MessageData* pMsg)->Result{ ";
             strFunction += string.Format("  {0} parser; ", strMsgClass);
             strFunction += "parser.ParseIMsg(pMsg); ";
             strFunction += "parser.TraceOut(prefix,pMsg); ";
-            strFunction += "return S_SYSTEM_OK; ";
+            strFunction += "return ResultCode::SUCCESS; ";
             strFunction += "} ";
 
             MatchIndent(); OutStream.WriteLine(string.Format("{0}.insert(std::make_pair({1},{2}));", MappingTableName(), strKey, strFunction));
@@ -130,7 +130,7 @@ namespace ProtocolBuilder
         
         void BuildMsgMapImpl()
         {
-            MatchIndent(); OutStream.WriteLine(string.Format("static std::unordered_map<UINT,std::function<HRESULT(const char* prefix,MessageData *pMsg)>> {0};", MappingTableName()));
+            MatchIndent(); OutStream.WriteLine(string.Format("static std::unordered_map<UINT,std::function<Result(const char* prefix,MessageData *pMsg)>> {0};", MappingTableName()));
             NewLine();
 
             OpenSection("void", string.Format("RegisterDebugTrace{0}()", Group.Name));
@@ -177,7 +177,7 @@ namespace ProtocolBuilder
 
             MatchIndent(); OutStream.WriteLine(string.Format("///////////////////////////////////////////////////////////////"));
             MatchIndent(); OutStream.WriteLine(string.Format("// {0} Debug trace", Group.Name));
-            OpenSection("HRESULT", string.Format("DebugOut{0}( const char *Prefix, MessageData *pMsg )", Group.Name));
+            OpenSection("Result", string.Format("DebugOut{0}( const char *Prefix, MessageData *pMsg )", Group.Name));
             NewLine();
             DefaultHRESULT();
             MatchIndent(); OutStream.WriteLine(string.Format("auto itFount = {0}.end();", MappingTableName()));

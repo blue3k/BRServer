@@ -63,7 +63,7 @@ namespace Net {
 
 	
 	// Add network event to queue
-	HRESULT LoopbackConnection::EnqueueConnectionEvent( const IConnection::Event &evt )
+	Result LoopbackConnection::EnqueueConnectionEvent( const IConnection::Event &evt )
 	{
 		return m_EventQueue.Enqueue( evt );
 	}
@@ -76,9 +76,9 @@ namespace Net {
 	}
 
 	// Initialize LoopbackConnection
-	HRESULT LoopbackConnection::InitConnection( const NetAddress& Addr, NetClass netClass )
+	Result LoopbackConnection::InitConnection( const NetAddress& Addr, NetClass netClass )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		netAssert(GetConnectionState() == STATE_DISCONNECTED);
 
@@ -91,7 +91,7 @@ namespace Net {
 		//m_RecvQueue.ClearQueue();
 
 
-		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_CONNECTION_RESULT, S_SYSTEM_OK)  );
+		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_CONNECTION_RESULT, ResultCode::SUCCESS)  );
 		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_STATE_CHANGE, GetConnectionState())  );
 
 		netTrace( TRC_CONNECTION, "Initialize LoopbackConnection CID:{0}, Addr:{1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
@@ -102,19 +102,19 @@ namespace Net {
 	}
 
 	// Disconnect LoopbackConnection
-	HRESULT LoopbackConnection::Disconnect(const char* reason)
+	Result LoopbackConnection::Disconnect(const char* reason)
 	{
 		unused(reason);
 		// cant disconnected
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Close LoopbackConnection
-	HRESULT LoopbackConnection::CloseConnection()
+	Result LoopbackConnection::CloseConnection()
 	{
 		// cant closed
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -124,22 +124,22 @@ namespace Net {
 	}
 
 	// Query LoopbackConnection event
-	HRESULT LoopbackConnection::DequeueConnectionEvent( Event& curEvent )
+	Result LoopbackConnection::DequeueConnectionEvent( Event& curEvent )
 	{
 		return m_EventQueue.Dequeue( curEvent );
 	}
 
 
 	// Get received Message
-	HRESULT LoopbackConnection::GetRecvMessage( Message::MessageData* &pIMsg )
+	Result LoopbackConnection::GetRecvMessage( Message::MessageData* &pIMsg )
 	{
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	// Update net control, process connection heartbit, ... etc
-	HRESULT LoopbackConnection::UpdateNetCtrl( )
+	Result LoopbackConnection::UpdateNetCtrl( )
 	{
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 
 

@@ -32,9 +32,9 @@ namespace DB {
 
 
 	// initialize DB source
-	HRESULT	DataSourceMYSQL::InitializeDBSource( const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
+	Result	DataSourceMYSQL::InitializeDBSource( const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//const char *next_token = nullptr;
 		//const char *strPos = nullptr;
 		size_t idx;
@@ -46,7 +46,7 @@ namespace DB {
 
 		if( strConnectionString.size() <= (idx+1) )
 		{
-			dbErr(E_SYSTEM_INVALIDARG);
+			dbErr(ResultCode::INVALID_ARG);
 		}
 
 		m_Port = atoi( strConnectionString.substr( idx+1, strConnectionString.size() ).c_str() );
@@ -62,9 +62,9 @@ namespace DB {
 	}
 
 	// reopen DB source
-	HRESULT DataSourceMYSQL::Reopen()
+	Result DataSourceMYSQL::Reopen()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 	//Proc_End:
 
@@ -72,7 +72,7 @@ namespace DB {
 	}
 
 	// close DB source
-	HRESULT	DataSourceMYSQL::CloseDBSource()
+	Result	DataSourceMYSQL::CloseDBSource()
 	{
 		return DataSource::CloseDBSource();
 	}

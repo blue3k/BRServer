@@ -52,9 +52,9 @@ namespace ConspiracyGameInstanceServer {
 		{
 		}
 
-		HRESULT ParseMessage()
+		Result ParseMessage()
 		{
-			HRESULT hr = MessageClass::ParseMsg();
+			Result hr = MessageClass::ParseMsg();
 			if (SUCCEEDED(hr))
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
@@ -73,9 +73,9 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction( Svr::Entity* pOwner )
+		virtual Result InitializeTransaction( Svr::Entity* pOwner )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			SharedPointerT<Svr::Entity> pEntity;
 
 			svrChkPtr( pOwner );
@@ -87,7 +87,7 @@ namespace ConspiracyGameInstanceServer {
 
 			if(GetMyServer()->GetServerUID() != MessageClass::GetRouteContext().GetTo().GetServerID())
 			{
-				svrErr( E_SVR_INVALID_SERVERID );
+				svrErr( ResultCode::E_SVR_INVALID_SERVERID );
 			}
 
 			hr = FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity);
@@ -142,7 +142,7 @@ namespace ConspiracyGameInstanceServer {
 			return (GameInstanceEntity*)super::GetOwnerEntity();
 		}
 
-		HRESULT GetMyPlayer( GamePlayer* &pPlayer )
+		Result GetMyPlayer( GamePlayer* &pPlayer )
 		{
 			if( MessageClass::HasPlayerID )
 			{
@@ -151,7 +151,7 @@ namespace ConspiracyGameInstanceServer {
 			else
 			{
 				pPlayer = nullptr;
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 		}
 	};

@@ -49,10 +49,10 @@ namespace Net {
 DEFINE_TRACE_MODULE(net)
 
 #define netErr(e)				TrcErrJmp(net,e,hr)
-#define netChk(e)				{ do{ HRESULT hRes = e; if( FAILED(hRes) ) TrcErrJmp(net,hRes,hr); } while(0); }
-#define netChkErr(ErrCode,exp)	{ do{ HRESULT hRes = exp; if( FAILED(hRes) ) TrcErrJmp(net,ErrCode,hr); } while(0); }
-#define netMem(a)				{ if( (a) == NULL ) TrcErrJmp(net,E_SYSTEM_OUTOFMEMORY,hr); }
-#define netChkPtr(a)			{ if( (a) == NULL ) TrcErrJmp(net,E_SYSTEM_POINTER,hr); }
+#define netChk(e)				{ do{ Result hRes = e; if( FAILED(hRes) ) TrcErrJmp(net,hRes,hr); } while(0); }
+#define netChkErr(ErrCode,exp)	{ do{ Result hRes = exp; if( FAILED(hRes) ) TrcErrJmp(net,ErrCode,hr); } while(0); }
+#define netMem(a)				{ if( (a) == NULL ) TrcErrJmp(net,ResultCode::OUT_OF_MEMORY,hr); }
+#define netChkPtr(a)			{ if( (a) == NULL ) TrcErrJmp(net,ResultCode::INVALID_POINTER,hr); }
 
 #define netAssert(e)			trcAssert(e)
 #define netAssertExp(e,expr)	trcAssertExp(e,expr)

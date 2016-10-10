@@ -121,7 +121,7 @@ namespace XML {
 		inline DOMElement* GetCurDOM();
 
 		// Register element creator
-		HRESULT RegisterElementCreator( const std::string& elementName, std::function<DOMElement*()> funcCreator );
+		Result RegisterElementCreator( const std::string& elementName, std::function<DOMElement*()> funcCreator );
 
 	protected:
 

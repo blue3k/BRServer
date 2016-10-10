@@ -31,9 +31,9 @@ namespace BR
 		{
  			// C2S: Player entered
 			const MessageID PlayerEnteredC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEMASTERSERVER, 0);
-			HRESULT PlayerEnteredC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerEnteredC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -53,11 +53,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerEnteredC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerEnteredC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PlayerEnteredC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName )
+			Result PlayerEnteredC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -82,7 +82,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerEnteredC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName )
+			}; // Result PlayerEnteredC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName )
 
 
 
@@ -95,9 +95,9 @@ namespace BR
 
 			// C2S: Player leaved
 			const MessageID PlayerLeavedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEMASTERSERVER, 1);
-			HRESULT PlayerLeavedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerLeavedC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -114,11 +114,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerLeavedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerLeavedC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PlayerLeavedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID )
+			Result PlayerLeavedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -140,7 +140,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerLeavedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID )
+			}; // Result PlayerLeavedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID )
 
 
 

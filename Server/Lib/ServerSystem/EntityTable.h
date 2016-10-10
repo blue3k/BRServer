@@ -57,7 +57,7 @@ namespace Svr {
 		//
 
 		EntityID GenEntityID(EntityFaculty faculty);
-		HRESULT ReserveEntityID( EntityID uiEntityID );
+		Result ReserveEntityID( EntityID uiEntityID );
 		bool FreeEntityID( EntityID uiEntityID );
 
 		//////////////////////////////////////////////////////////////////////////
@@ -66,10 +66,10 @@ namespace Svr {
 		//
 
 		// Route Message Cmd/Evt
-		HRESULT RouteTransaction( EntityID entityID, Transaction* &pTrans );
+		Result RouteTransaction( EntityID entityID, Transaction* &pTrans );
 
 		// Route Transaction result
-		HRESULT RouteTransactionResult( TransactionResult* &pRes );
+		Result RouteTransactionResult( TransactionResult* &pRes );
 	};
 
 

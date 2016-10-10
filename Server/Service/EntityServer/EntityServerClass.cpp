@@ -73,9 +73,9 @@ namespace EntityServer {
 	//
 
 	// Apply configuration
-	HRESULT EntityServer::ApplyConfiguration()
+	Result EntityServer::ApplyConfiguration()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		const Svr::Config::GenericServer* pMySvr = nullptr;
 
 		std::for_each( Svr::Config::GetConfig().EntityServers.begin(), Svr::Config::GetConfig().EntityServers.end(), 
@@ -99,9 +99,9 @@ namespace EntityServer {
 
 
 	// Initialize server resource
-	HRESULT EntityServer::InitializeServerResource()
+	Result EntityServer::InitializeServerResource()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
@@ -113,9 +113,9 @@ namespace EntityServer {
 	}
 
 	// Close server and release resource
-	HRESULT EntityServer::CloseServerResource()
+	Result EntityServer::CloseServerResource()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::BrServer::CloseServerResource() );
 
@@ -128,9 +128,9 @@ namespace EntityServer {
 
 
 	// Initialize private Network
-	HRESULT EntityServer::InitializeNetPrivate()
+	Result EntityServer::InitializeNetPrivate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::ClusterManagerServiceEntity *pClusterManager = nullptr;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 		SockFamily privateNetSockFamily;
@@ -191,9 +191,9 @@ namespace EntityServer {
 	}
 
 	// Close Private Network
-	HRESULT EntityServer::CloseNetPrivate()
+	Result EntityServer::CloseNetPrivate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		hr = Svr::BrServer::CloseNetPrivate();
 
@@ -214,7 +214,7 @@ namespace EntityServer {
 
 
 	// create remote entity by class
-	HRESULT EntityServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
+	Result EntityServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
 		switch( netClass )
 		{
@@ -233,9 +233,9 @@ namespace EntityServer {
 		};
 
 		if( pServerEntity == nullptr )
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

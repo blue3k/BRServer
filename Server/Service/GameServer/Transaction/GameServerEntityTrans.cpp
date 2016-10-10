@@ -47,18 +47,18 @@ namespace GameServer {
 		, m_PublicAddressIPV6(nullptr)
 		, m_Port(0)
 	{
-		super::template RegisterMessageHandler<Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes>(__FILE__, __LINE__, [&](::BR::Svr::TransactionResult* pRes)->HRESULT { return OnPlayerRegisteredRes(pRes); });
+		super::template RegisterMessageHandler<Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes>(__FILE__, __LINE__, [&](::BR::Svr::TransactionResult* pRes)->Result { return OnPlayerRegisteredRes(pRes); });
 	}
 
 	template<class ProcessEntity>
-	HRESULT GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::OnPlayerRegisteredRes(Svr::TransactionResult* &pRes)
+	Result GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::OnPlayerRegisteredRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes res;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
 
 
@@ -66,14 +66,14 @@ namespace GameServer {
 
 		super::CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
 	template<class ProcessEntity>
-	HRESULT GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::StartTransaction()
+	Result GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Svr::Entity> pEntity;
 		GamePlayerEntity *pPlayerEntity = nullptr;
 		Policy::IPolicyGameServer *pTargetPolicy = nullptr;
@@ -84,7 +84,7 @@ namespace GameServer {
 
 		if( super::GetPlayerID() == 0 )
 		{
-			svrErr(E_INVALID_PLAYERID);
+			svrErr(ResultCode::E_INVALID_PLAYERID);
 		}
 
 		if( SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(super::GetRouteContext().GetTo(), pEntity ))
@@ -95,7 +95,7 @@ namespace GameServer {
 			// If a login server has invalid login session information from the DB. the player ID will not be match
 			if( pPlayerEntity->GetPlayerID() != super::GetPlayerID() )
 			{
-				super::CloseTransaction(E_INVALID_PLAYERID);
+				super::CloseTransaction(ResultCode::E_INVALID_PLAYERID);
 				goto Proc_End;
 			}
 

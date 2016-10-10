@@ -21,7 +21,7 @@ private:
 public:
 	CriticalSection()
 	{
-		HRESULT hr;
+		Result hr;
 		pthread_mutexattr_t mAttr;
 		pthread_mutexattr_init(&mAttr);
 		pthread_mutexattr_settype(&mAttr, PTHREAD_MUTEX_RECURSIVE_NP);
@@ -30,16 +30,16 @@ public:
 		{
 			const char* errorString = strerror(result);
 			printf("%s", errorString);
-			hr = E_SYSTEM_FAIL;
+			hr = ResultCode::FAIL;
 			switch(result)
 			{
-				case EBUSY:		hr = E_SYSTEM_UNEXPECTED;		break;
-				case EINVAL:	hr = E_SYSTEM_INVALIDARG;		break;
-				case EAGAIN:	hr = E_SYSTEM_UNEXPECTED;		break;
-				case ENOMEM:	hr = E_SYSTEM_OUTOFMEMORY;		break;
-				case EPERM:		hr = E_SYSTEM_FAIL;			break;
+				case EBUSY:		hr = ResultCode::UNEXPECTED;		break;
+				case EINVAL:	hr = ResultCode::INVALID_ARG;		break;
+				case EAGAIN:	hr = ResultCode::UNEXPECTED;		break;
+				case ENOMEM:	hr = ResultCode::OUT_OF_MEMORY;		break;
+				case EPERM:		hr = ResultCode::FAIL;			break;
 				default:
-					hr = E_SYSTEM_UNEXPECTED;
+					hr = ResultCode::UNEXPECTED;
 					break;
 			}
 

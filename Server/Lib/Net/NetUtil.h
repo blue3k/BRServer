@@ -37,32 +37,32 @@ namespace Net {
 	//
 	//	Network Utility functions
 	//
-	HRESULT SockAddr2Addr( const sockaddr_in6 &sockAddr, NetAddress &addr );
-	HRESULT SockAddr2Addr(const sockaddr_in &sockAddr, NetAddress &addr);
-	HRESULT SockAddr2Addr(const sockaddr_storage &sockAddr, NetAddress &addr);
-	HRESULT Addr2SockAddr( const NetAddress &addr, sockaddr_in6 &sockAddr );
-	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_in &sockAddr);
-	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_storage &sockAddr);
-	HRESULT SetSockAddr( sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort );
-	HRESULT SetSockAddr(sockaddr_in& sockAddr, const char *strAddr, USHORT usPort);
-	HRESULT SetSockAddr(sockaddr_storage& sockAddr, const char *strAddr, USHORT usPort);
-	HRESULT GetLocalAddress(SockFamily family, NetAddress &addr);
-	HRESULT GetLocalAddressIPv4(NetAddress &addr);
-	HRESULT GetLocalAddressIPv6(NetAddress &addr);
+	Result SockAddr2Addr( const sockaddr_in6 &sockAddr, NetAddress &addr );
+	Result SockAddr2Addr(const sockaddr_in &sockAddr, NetAddress &addr);
+	Result SockAddr2Addr(const sockaddr_storage &sockAddr, NetAddress &addr);
+	Result Addr2SockAddr( const NetAddress &addr, sockaddr_in6 &sockAddr );
+	Result Addr2SockAddr(const NetAddress &addr, sockaddr_in &sockAddr);
+	Result Addr2SockAddr(const NetAddress &addr, sockaddr_storage &sockAddr);
+	Result SetSockAddr( sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort );
+	Result SetSockAddr(sockaddr_in& sockAddr, const char *strAddr, USHORT usPort);
+	Result SetSockAddr(sockaddr_storage& sockAddr, const char *strAddr, USHORT usPort);
+	Result GetLocalAddress(SockFamily family, NetAddress &addr);
+	Result GetLocalAddressIPv4(NetAddress &addr);
+	Result GetLocalAddressIPv6(NetAddress &addr);
 
 	// Make bind addr with any address
-	HRESULT GetAnyBindAddr(const sockaddr_storage &sockAddr, sockaddr_storage&bindAddr);
+	Result GetAnyBindAddr(const sockaddr_storage &sockAddr, sockaddr_storage&bindAddr);
 
 	// Set local net address with family check
-	HRESULT SetLocalNetAddress(NetAddress &netAddr, const char *strLocalAddress, USHORT port);
+	Result SetLocalNetAddress(NetAddress &netAddr, const char *strLocalAddress, USHORT port);
 
 	// Set net address with family check
-	HRESULT SetNetAddress(NetAddress &netAddr, const char *strAddress, USHORT port);
+	Result SetNetAddress(NetAddress &netAddr, const char *strAddress, USHORT port);
 
 	inline int GetSockAddrSize(const sockaddr_storage &sockAddr) { return sockAddr.ss_family == AF_INET6 ? (int)sizeof(sockaddr_in6) : (int)sizeof(sockaddr_in); }
 
 	// Validate local IP
-	HRESULT CheckLocalAddress(SockFamily family, NetAddress &addr);
+	Result CheckLocalAddress(SockFamily family, NetAddress &addr);
 
 	/////////////////////////////////////////////////////////////////////////////////
 	//

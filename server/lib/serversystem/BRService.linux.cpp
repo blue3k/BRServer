@@ -118,35 +118,35 @@ namespace Svr {
 
 
 		// Install Service
-		HRESULT ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
+		Result ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			unused(strCfgPath, strUser, strPWD);
 			return hr;
 		}
 
 		// Uninstall service
-		HRESULT ServiceUninstall()
+		Result ServiceUninstall()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			return hr;
 		}
 
 		// prepare service running
-		HRESULT ServicePrepare()
+		Result ServicePrepare()
 		{
 			auto debugSetting = ParameterSetting::GetSetting("debug");
 			bool bIsDebugRun = StrUtil::StringCmpLwr(debugSetting, -1, "true", -1) == 0;
 			if(!bIsDebugRun)
 				daemonize();
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// Run service main function
-		HRESULT ServiceRun(BrServer *pSvrInstance )
+		Result ServiceRun(BrServer *pSvrInstance )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			char strCfgPath[1024];
 			const char *strServiceName = nullptr;
 			bool bRun = false;

@@ -30,9 +30,9 @@ namespace BR
 			{}
 
 			// Cmd: Create a game instance
-			HRESULT CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer );
+			Result CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer );
 			// C2S: Game instance notify of deletion
-			HRESULT GameDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount );
+			Result GameDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount );
 
 		}; // class NetPolicyGameInstanceManager : public IPolicyGameInstanceManager
 
@@ -45,7 +45,7 @@ namespace BR
 			{}
 
 			// Cmd: Create a game instance
-			HRESULT CreateGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
+			Result CreateGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
 		}; // class NetSvrPolicyGameInstanceManager : public ISvrPolicyGameInstanceManager
 

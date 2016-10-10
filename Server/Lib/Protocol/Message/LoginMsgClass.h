@@ -67,9 +67,9 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const char* InID, const char* InPassword );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const char* InID, const char* InPassword );
 
 			}; // class LoginCmd : public MessageBase
 
@@ -93,7 +93,7 @@ namespace BR
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				HRESULT m_Result;
+				Result m_Result;
 				NetAddress m_GameServerAddr;
 				NetAddress m_GameServerAddrIPV4;
 				AccountID m_AccID;
@@ -109,7 +109,7 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const NetAddress& GetGameServerAddr() const	{ return m_GameServerAddr; };
 				const NetAddress& GetGameServerAddrIPV4() const	{ return m_GameServerAddrIPV4; };
 				const AccountID& GetAccID() const	{ return m_AccID; };
@@ -118,9 +118,9 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 
 			}; // class LoginRes : public MessageBase
 
@@ -174,9 +174,9 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken );
 
 			}; // class LoginByFacebookCmd : public MessageBase
 
@@ -200,7 +200,7 @@ namespace BR
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				HRESULT m_Result;
+				Result m_Result;
 				NetAddress m_GameServerAddr;
 				NetAddress m_GameServerAddrIPV4;
 				AccountID m_AccID;
@@ -216,7 +216,7 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const NetAddress& GetGameServerAddr() const	{ return m_GameServerAddr; };
 				const NetAddress& GetGameServerAddrIPV4() const	{ return m_GameServerAddrIPV4; };
 				const AccountID& GetAccID() const	{ return m_AccID; };
@@ -225,9 +225,9 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 
 			}; // class LoginByFacebookRes : public MessageBase
 
@@ -271,9 +271,9 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const char* InCellPhone );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const char* InCellPhone );
 
 			}; // class CreateRandomUserCmd : public MessageBase
 
@@ -297,7 +297,7 @@ namespace BR
 				UINT32 GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				HRESULT m_Result;
+				Result m_Result;
 				NetAddress m_GameServerAddr;
 				NetAddress m_GameServerAddrIPV4;
 				AccountID m_AccID;
@@ -313,7 +313,7 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const NetAddress& GetGameServerAddr() const	{ return m_GameServerAddr; };
 				const NetAddress& GetGameServerAddrIPV4() const	{ return m_GameServerAddrIPV4; };
 				const AccountID& GetAccID() const	{ return m_AccID; };
@@ -322,9 +322,9 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 
 			}; // class CreateRandomUserRes : public MessageBase
 

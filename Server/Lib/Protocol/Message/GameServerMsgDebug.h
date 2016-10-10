@@ -29,7 +29,7 @@ namespace BR
 			// GameServer Debug output function 
 
 			void RegisterDebugTraceGameServer();
-			HRESULT DebugOutGameServer( const char*Prefix, MessageData*pMsg );
+			Result DebugOutGameServer( const char*Prefix, MessageData*pMsg );
 
 
 

@@ -124,8 +124,8 @@ namespace Net {
 		inline void SetupRecvUDP(uintptr_t iCID);
 		inline void SetupRecvTCP(uintptr_t iCID);
 
-		HRESULT SetPendingTrue();
-		HRESULT SetPendingFalse();
+		Result SetPendingTrue();
+		Result SetPendingFalse();
 	};
 
 

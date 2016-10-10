@@ -29,7 +29,7 @@ namespace BR
 			// Server Debug output function 
 
 			void RegisterDebugTraceServer();
-			HRESULT DebugOutServer( const char*Prefix, MessageData*pMsg );
+			Result DebugOutServer( const char*Prefix, MessageData*pMsg );
 
 
 

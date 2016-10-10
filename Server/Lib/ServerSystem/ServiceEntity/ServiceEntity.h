@@ -56,7 +56,7 @@ namespace Svr {
 
 
 		// Register message handler for this component
-		virtual HRESULT RegisterServiceMessageHandler( ServerEntity *pServerEntity ) { return S_SYSTEM_OK; }
+		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) { return ResultCode::SUCCESS; }
 
 	};
 

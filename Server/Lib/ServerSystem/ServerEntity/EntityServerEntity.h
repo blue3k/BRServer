@@ -55,11 +55,11 @@ namespace Svr
 
 
 		// Initialize entity to proceed new connection
-		HRESULT InitializeEntity( EntityID newEntityID );
+		Result InitializeEntity( EntityID newEntityID );
 
 
 		// Process Connection event
-		virtual HRESULT ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent );
+		virtual Result ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent );
 	};
 
 

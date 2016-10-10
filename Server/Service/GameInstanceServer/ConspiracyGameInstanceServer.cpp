@@ -27,9 +27,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 #if _WIN32_WINNT >= 0x0400 & defined(_ATL_FREE_THREADED)
-	HRESULT hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	Result hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
 #else
-	HRESULT hRes = CoInitialize(NULL);
+	Result hRes = CoInitialize(NULL);
 #endif
 	_ASSERTE(SUCCEEDED(hRes));
 
@@ -44,7 +44,7 @@ int main(int numArg, const char* argc[])
 #endif
 
 
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	SharedPointerT<BR::ConspiracyGameInstanceServer::GameInstanceServer> pServerInstance;
 
 	svrChk(BR::Svr::Service::ServicePrepare());

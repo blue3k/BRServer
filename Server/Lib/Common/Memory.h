@@ -15,11 +15,7 @@
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
 
-namespace MemLog
-{
-	enum class Logging : UINT8;
-	class IMemLogger;
-};
+
 
 #ifdef X64
 #define BR_ALIGN				16
@@ -51,26 +47,6 @@ namespace BR {
 	//	Memory log system 
 	//
 
-	// Initialize memory logger
-	bool InitializeMemLogger( MemLog::Logging log, int logMask = 0 );
-
-	// get memory logger
-	MemLog::IMemLogger* GetMemLogger();
-
-
-	// Scoped memory logging 
-	class ScopedMemLog
-	{
-	private:
-		UINT32 m_uiLogMaskOrg;
-
-	public:
-		ScopedMemLog( UINT32 uiNewMask = 0xFFFFFFFFL );
-		~ScopedMemLog();
-	};
-
-	#define MEMCHECKSCOPE() BR::ScopedMemLog __MemLogScope;
-
 
 	////////////////////////////////////////////////////////////////////////////////
 	//
@@ -100,9 +76,9 @@ namespace BR {
 
 	namespace ProcessorHeap
 	{
-		HRESULT Alloc( size_t uiSize, void* &pPtr );
-		HRESULT Realloc( size_t uiSize, void* &pPtr );
-		HRESULT Free( void* pPtr );
+		Result Alloc( size_t uiSize, void* &pPtr );
+		Result Realloc( size_t uiSize, void* &pPtr );
+		Result Free( void* pPtr );
 	};
 
 
@@ -113,9 +89,9 @@ namespace BR {
 
 	namespace StdHeap
 	{
-		HRESULT Alloc( size_t uiSize, void* &pPtr );
-		HRESULT Realloc( size_t uiSize, void* &pPtr );
-		HRESULT Free( void* pPtr );
+		Result Alloc( size_t uiSize, void* &pPtr );
+		Result Realloc( size_t uiSize, void* &pPtr );
+		Result Free( void* pPtr );
 	};
 
 
@@ -128,13 +104,13 @@ namespace BR {
 	{
 	public:
 		// Allocate 
-		virtual HRESULT Alloc( size_t uiSize, void* &pPtr ) = 0;
+		virtual Result Alloc( size_t uiSize, void* &pPtr ) = 0;
 
 		// Reallocate
-		virtual HRESULT Realloc( size_t uiSize, void* &pPtr ) = 0;
+		virtual Result Realloc( size_t uiSize, void* &pPtr ) = 0;
 
 		// Free
-		virtual HRESULT Free( void* pPtr ) = 0;
+		virtual Result Free( void* pPtr ) = 0;
 	};
 	
 
@@ -153,13 +129,13 @@ namespace BR {
 		static STDAllocator& GetInstance();
 
 		// Allocate 
-		virtual HRESULT Alloc( size_t uiSize, void* &pPtr );
+		virtual Result Alloc( size_t uiSize, void* &pPtr );
 
 		// Reallocate
-		virtual HRESULT Realloc( size_t uiSize, void* &pPtr );
+		virtual Result Realloc( size_t uiSize, void* &pPtr );
 
 		// Free
-		virtual HRESULT Free( void* pPtr );
+		virtual Result Free( void* pPtr );
 	};
 
 
@@ -178,13 +154,13 @@ namespace BR {
 		static ProcessorAllocator& GetInstance();
 
 		// Allocate 
-		virtual HRESULT Alloc( size_t uiSize, void* &pPtr );
+		virtual Result Alloc( size_t uiSize, void* &pPtr );
 
 		// Reallocate
-		virtual HRESULT Realloc( size_t uiSize, void* &pPtr );
+		virtual Result Realloc( size_t uiSize, void* &pPtr );
 
 		// Free
-		virtual HRESULT Free( void* pPtr );
+		virtual Result Free( void* pPtr );
 	};
 	
 
@@ -213,13 +189,13 @@ namespace BR {
 		bool GetIsInStaticBuffer( void* pPtr );
 
 		// Allocate 
-		virtual HRESULT Alloc( size_t uiSize, void* &pPtr );
+		virtual Result Alloc( size_t uiSize, void* &pPtr );
 
 		// Reallocate
-		virtual HRESULT Realloc( size_t uiSize, void* &pPtr );
+		virtual Result Realloc( size_t uiSize, void* &pPtr );
 
 		// Free
-		virtual HRESULT Free( void* pPtr );
+		virtual Result Free( void* pPtr );
 	};
 
 	
@@ -276,16 +252,16 @@ namespace BR {
 		size_t GetFreeMemorySize();
 
 		// Validate allocated chunks for debug
-		HRESULT ValidateAllocatedChunks();
+		Result ValidateAllocatedChunks();
 
 		// Allocate 
-		virtual HRESULT Alloc( size_t uiSize, void* &pPtr );
+		virtual Result Alloc( size_t uiSize, void* &pPtr );
 
 		// Reallocate
-		virtual HRESULT Realloc( size_t uiSize, void* &pPtr );
+		virtual Result Realloc( size_t uiSize, void* &pPtr );
 
 		// Free
-		virtual HRESULT Free( void* pPtr );
+		virtual Result Free( void* pPtr );
 	};
 
 

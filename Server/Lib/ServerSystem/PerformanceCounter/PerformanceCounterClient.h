@@ -51,7 +51,7 @@ namespace BR {
 					: m_CounterClient(*CounterServer)
 				{}
 
-				virtual HRESULT OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) override;
+				virtual Result OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) override;
 			};
 
 		private:
@@ -112,18 +112,18 @@ namespace BR {
 			void UpdateValues();
 
 
-			HRESULT HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
+			Result HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
 
 			virtual void Run() override;
 
 		public:
 
-			static HRESULT Initialize(UINT serverID, const NetAddress& serverAddress);
-			static HRESULT Terminate();
+			static Result Initialize(UINT serverID, const NetAddress& serverAddress);
+			static Result Terminate();
 
 			static PerformanceCounterInstance* GetDefaultCounterInstance();
 
-			static HRESULT RegisterPerformanceCounterInstance(PerformanceCounterInstance *pInstance);
+			static Result RegisterPerformanceCounterInstance(PerformanceCounterInstance *pInstance);
 
 			// Remove counter instance, this will be called by counter instance
 			void RemovePerformanceCounterInstance(PerformanceCounterInstance* pInstance);

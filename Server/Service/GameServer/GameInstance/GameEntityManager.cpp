@@ -49,7 +49,7 @@ namespace GameServer {
 	}
 
 
-	HRESULT GameEntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Svr::Entity* &pEntity)
+	Result GameEntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Svr::Entity* &pEntity)
 	{
 		switch (clusterID)
 		{
@@ -58,19 +58,19 @@ namespace GameServer {
 		{
 			assert(faculty == EntityFaculty::User);
 			pEntity = new GamePlayerEntity;
-			return pEntity != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+			return pEntity != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 		}
 		default:
 			return super::CreateEntity(clusterID, faculty, pEntity);
 		}
 
-		return pEntity != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+		return pEntity != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 	}
 
 	//// Create new game instance
-	//HRESULT GameEntityManager::CreateGamePlayer(PlayerID playerID, GamePlayerEntity* &pGamePlayer)
+	//Result GameEntityManager::CreateGamePlayer(PlayerID playerID, GamePlayerEntity* &pGamePlayer)
 	//{
-	//	HRESULT hr = S_SYSTEM_OK;
+	//	Result hr = ResultCode::SUCCESS;
 
 	//	svrChkPtr( pGamePlayer = new GamePlayerEntity );
 
@@ -109,7 +109,7 @@ namespace GameServer {
 
 	void GameEntityManager::RegisterCounter()
 	{
-		//HRESULT hr = S_SYSTEM_OK;
+		//Result hr = ResultCode::SUCCESS;
 
 		auto pCounterInstance = Svr::PerformanceCounterClient::GetDefaultCounterInstance();
 		if (pCounterInstance != nullptr)
@@ -123,9 +123,9 @@ namespace GameServer {
 	}
 
 	// Initialize TaskManager
-	HRESULT GameEntityManager::InitializeManager( UINT uiNumGroup )
+	Result GameEntityManager::InitializeManager( UINT uiNumGroup )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::EntityManager::InitializeManager( uiNumGroup ) );
 
@@ -136,9 +136,9 @@ namespace GameServer {
 
 
 	// Terminate TaskManager
-	HRESULT GameEntityManager::TerminateManager()
+	Result GameEntityManager::TerminateManager()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::EntityManager::TerminateManager() );
 

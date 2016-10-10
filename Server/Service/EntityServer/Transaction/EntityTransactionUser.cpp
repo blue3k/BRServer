@@ -58,9 +58,9 @@ namespace EntityServer {
 //	}
 //
 //	// Start Transaction
-//	HRESULT TransRegisterUserEntity::StartTransaction()
+//	Result TransRegisterUserEntity::StartTransaction()
 //	{
-//		HRESULT hr = S_SYSTEM_OK;
+//		Result hr = ResultCode::SUCCESS;
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //
@@ -81,12 +81,12 @@ namespace EntityServer {
 //
 //	// Close transaction and notify to parent
 //	// process abnormal termination of transaction
-//	HRESULT TransRegisterUserEntity::CloseTransaction( HRESULT hrRes )
+//	Result TransRegisterUserEntity::CloseTransaction( Result hrRes )
 //	{
-//		HRESULT hr = S_SYSTEM_OK;
+//		Result hr = ResultCode::SUCCESS;
 //
 //		if( IsClosed() )
-//			return S_SYSTEM_OK;
+//			return ResultCode::SUCCESS;
 //
 //		svrChkPtr( GetPolicy() );
 //
@@ -111,9 +111,9 @@ namespace EntityServer {
 //	}
 //
 //	// Start Transaction
-//	HRESULT TransUnregisterUserEntity::StartTransaction()
+//	Result TransUnregisterUserEntity::StartTransaction()
 //	{
-//		HRESULT hr = S_SYSTEM_OK;
+//		Result hr = ResultCode::SUCCESS;
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //
@@ -134,12 +134,12 @@ namespace EntityServer {
 //
 //	// Close transaction and notify to parent
 //	// process abnormal termination of transaction
-//	HRESULT TransUnregisterUserEntity::CloseTransaction( HRESULT hrRes )
+//	Result TransUnregisterUserEntity::CloseTransaction( Result hrRes )
 //	{
-//		HRESULT hr = S_SYSTEM_OK;
+//		Result hr = ResultCode::SUCCESS;
 //
 //		if( IsClosed() )
-//			return S_SYSTEM_OK;
+//			return ResultCode::SUCCESS;
 //
 //		svrChkPtr( GetPolicy() );
 //
@@ -164,9 +164,9 @@ namespace EntityServer {
 //	}
 //
 //	// Start Transaction
-//	HRESULT TransUpdateUserEntity::StartTransaction()
+//	Result TransUpdateUserEntity::StartTransaction()
 //	{
-//		HRESULT hr = S_SYSTEM_OK;
+//		Result hr = ResultCode::SUCCESS;
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //
@@ -186,12 +186,12 @@ namespace EntityServer {
 //
 //	// Close transaction and notify to parent
 //	// process abnormal termination of transaction
-//	HRESULT TransUpdateUserEntity::CloseTransaction( HRESULT hrRes )
+//	Result TransUpdateUserEntity::CloseTransaction( Result hrRes )
 //	{
-//		HRESULT hr = S_SYSTEM_OK;
+//		Result hr = ResultCode::SUCCESS;
 //
 //		if( IsClosed() )
-//			return S_SYSTEM_OK;
+//			return ResultCode::SUCCESS;
 //
 //		svrChkPtr( GetPolicy() );
 //
@@ -217,9 +217,9 @@ namespace EntityServer {
 //	}
 //
 //	// Start Transaction
-//	HRESULT TransFindUserEntity::StartTransaction()
+//	Result TransFindUserEntity::StartTransaction()
 //	{
-//		HRESULT hr = S_SYSTEM_OK;
+//		Result hr = ResultCode::SUCCESS;
 //		EntityInfoTable *pInfoTbl = nullptr;
 //		EntityInformation *pEntInfo = nullptr;
 //		EntityInfoTable::AccountIDMap::iterator iterAcc;
@@ -243,12 +243,12 @@ namespace EntityServer {
 //
 //	// Close transaction and notify to parent
 //	// process abnormal termination of transaction
-//	HRESULT TransFindUserEntity::CloseTransaction( HRESULT hrRes )
+//	Result TransFindUserEntity::CloseTransaction( Result hrRes )
 //	{
-//		HRESULT hr = S_SYSTEM_OK;
+//		Result hr = ResultCode::SUCCESS;
 //
 //		if( IsClosed() )
-//			return S_SYSTEM_OK;
+//			return ResultCode::SUCCESS;
 //
 //		svrChkPtr( GetPolicy() );
 //

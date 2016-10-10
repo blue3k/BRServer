@@ -37,9 +37,9 @@ namespace BR
     {
     }
         
-    HRESULT GameLogChatMessage::SetChatMessage( PlayerID player, BYTE playerStatus, ChatType type, const char* message)
+    Result GameLogChatMessage::SetChatMessage( PlayerID player, BYTE playerStatus, ChatType type, const char* message)
     {
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
         Player = player;
 		PlayerStatus = playerStatus;
@@ -73,7 +73,7 @@ namespace BR
 		Assert(numVoter <= GameConst::MAX_GAMEPLAYER);
     }
 
-    HRESULT GameLogVote::InitializeVote(GameVoteType type, int voterCount)
+    Result GameLogVote::InitializeVote(GameVoteType type, int voterCount)
     {
 		Assert( voterCount == NumberOfVoter );
 		if( voterCount > NumberOfVoter )
@@ -86,10 +86,10 @@ namespace BR
             VoteStatus[vote].Voted = 0;
         }
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
     }
 
-	HRESULT GameLogVote::SetVoteStatus( PlayerID voter, PlayerID voted )
+	Result GameLogVote::SetVoteStatus( PlayerID voter, PlayerID voted )
     {
         for (int vote = 0; vote < NumberOfVoter; vote++)
         {
@@ -99,12 +99,12 @@ namespace BR
                 VoteStatus[vote].Voter = voter;
                 VoteStatus[vote].Voted = voted;
 
-                return S_SYSTEM_OK;
+                return ResultCode::SUCCESS;
             }
         }
         // can't find slot for the voter
         Assert(false);
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
     }
 
 

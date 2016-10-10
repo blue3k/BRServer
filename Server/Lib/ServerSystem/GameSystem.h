@@ -68,12 +68,12 @@ namespace Svr {
 		std::unordered_set<UINT>& GetModifiedList();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() { ClearModifiedInfo(); return Component::InitializeComponent(); }
+		virtual Result InitializeComponent() { ClearModifiedInfo(); return Component::InitializeComponent(); }
 		// Terminate server component
 		virtual void TerminateComponent() { Component::TerminateComponent(); }
 
 		// Update system
-		virtual HRESULT UpdateSystem() { return S_SYSTEM_OK; }
+		virtual Result UpdateSystem() { return ResultCode::SUCCESS; }
 
 	};
 

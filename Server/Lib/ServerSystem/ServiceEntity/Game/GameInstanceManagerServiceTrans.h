@@ -42,7 +42,7 @@ namespace Svr {
 		virtual ~GameInstanceTransCreateGame() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyGameInstanceManager* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyGameInstanceManager>(); }
 
@@ -63,7 +63,7 @@ namespace Svr {
 		virtual ~GameInstanceTransGameDeleted() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	

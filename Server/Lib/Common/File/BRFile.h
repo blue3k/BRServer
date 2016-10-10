@@ -60,15 +60,15 @@ namespace IO {
 
 		bool IsOpened();
 
-		HRESULT Seek(SeekMode seekMode, LONGLONG offset = 0);
+		Result Seek(SeekMode seekMode, LONGLONG offset = 0);
 		LONGLONG GetLocation();
 		LONGLONG GetFileSize();
 
-		HRESULT Open(const char* filePath, OpenMode openMode, SharingMode sharingMode = SharingMode::Shared);
+		Result Open(const char* filePath, OpenMode openMode, SharingMode sharingMode = SharingMode::Shared);
 		void Close();
 
-		HRESULT Read(BYTE* buffer, size_t bufferLen, size_t &read);
-		HRESULT Write(const BYTE* buffer, size_t bufferLen, size_t &writen);
+		Result Read(BYTE* buffer, size_t bufferLen, size_t &read);
+		Result Write(const BYTE* buffer, size_t bufferLen, size_t &writen);
 
 	};
 

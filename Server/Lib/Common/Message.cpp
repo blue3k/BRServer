@@ -14,7 +14,6 @@
 #include "stdafx.h"
 #include "Common/Trace.h"
 #include "Common/Message.h"
-#include "Common/MemLog.h"
 #include "Common/Memory.h"
 #include "Common/MemoryPool.h"
 #include "Common/ResultCode/BRResultCodeNet.h"
@@ -51,10 +50,6 @@ namespace Message {
 
 	MessageData::~MessageData()
 	{
-	#ifdef DEBUG
-		if( GetMemLogger() )
-			GetMemLogger()->RemoveFromLog(((BYTE*)this)+1);
-	#endif
 	}
 
 	void MessageData::AssignSequence( UINT sequence )
@@ -136,10 +131,7 @@ namespace Message {
 		pMsg->GetMessageHeader()->msgID.ID = uiMsgID;
 		pMsg->GetMessageHeader()->Length = uiMsgBufSize;
 
-#ifdef _DEBUG
-		if( GetMemLogger() )
-			GetMemLogger()->AddToLog( 2, ((BYTE*)pMsg)+1, uiMsgID );
-#endif
+
 		// Increase one for message
 		pMsg->AddRef();
 
@@ -249,7 +241,7 @@ namespace Message {
 		m_pMsgHeader->msgID.IDs.Encrypted = true;
 	}
 
-	HRESULT MessageData::ValidateChecksum()
+	Result MessageData::ValidateChecksum()
 	{
 		UINT length = 0;
 		BYTE* pDataPtr = nullptr;
@@ -258,23 +250,23 @@ namespace Message {
 		if( m_pMsgHeader == nullptr || m_pMsgHeader->Length == 0 )
 		{
 			Assert(0);
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		// Nothing to check
 		if( length == 0 )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		UINT16 Crc32 = Util::Crc32( length, pDataPtr );
 		if( Crc32 == 0 ) Crc32 = ~Crc32;
 
 		if( Crc32 != m_pMsgHeader->Crc32 )
-			return E_NET_INVALID_MESSAGE_CHECKSUM;
+			return ResultCode::E_NET_INVALID_MESSAGE_CHECKSUM;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 	
-	HRESULT MessageData::ValidateChecksumNDecrypt()
+	Result MessageData::ValidateChecksumNDecrypt()
 	{
 		UINT length = 0;
 		BYTE* pDataPtr = nullptr;
@@ -283,7 +275,7 @@ namespace Message {
 		if( m_pMsgHeader == nullptr || m_pMsgHeader->Length == 0 )
 		{
 			m_pMsgHeader->msgID.IDs.Encrypted = false;
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 		}
 
 		if( !m_pMsgHeader->msgID.IDs.Encrypted )
@@ -295,7 +287,7 @@ namespace Message {
 		if( length == 0 )
 		{
 			m_pMsgHeader->msgID.IDs.Encrypted = false;
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		UINT16 Crc32 = Util::Crc32NDecrypt( length, pDataPtr );
@@ -305,9 +297,9 @@ namespace Message {
 
 		//Assert(m_pMsgHeader->Crc32 != 0);
 		if( Crc32 != m_pMsgHeader->Crc32 )
-			return E_NET_INVALID_MESSAGE_CHECKSUM;
+			return ResultCode::E_NET_INVALID_MESSAGE_CHECKSUM;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -328,7 +320,7 @@ namespace Message {
 
 
 
-	HRESULT MessageBase::ParseMsg()
+	Result MessageBase::ParseMsg()
 	{ 
 		if(m_bIsParsed)
 			return m_hrParsing;

@@ -61,11 +61,11 @@ namespace Svr {
 
 		void UpdateWorkingThreadID(ThreadID threadID);
 
-		HRESULT AddTimerAction(ThreadID threadID, TimerAction* pAction);
-		HRESULT RemoveTimerAction(ThreadID threadID, TimerAction* pAction);
-		HRESULT CommitChanges(ThreadID threadID);
+		Result AddTimerAction(ThreadID threadID, TimerAction* pAction);
+		Result RemoveTimerAction(ThreadID threadID, TimerAction* pAction);
+		Result CommitChanges(ThreadID threadID);
 
-		HRESULT Reschedul(ThreadID threadID, TimerAction* pAction);
+		Result Reschedul(ThreadID threadID, TimerAction* pAction);
 
 		TimeStampMS GetNextTimeTick();
 

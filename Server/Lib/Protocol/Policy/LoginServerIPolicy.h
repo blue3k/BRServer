@@ -35,9 +35,9 @@ namespace BR
 			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance
-			virtual HRESULT PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result PlayerJoinedToGameServerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// Cmd: Kick logged in player
-			virtual HRESULT KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 
 		}; // class ISvrPolicyLoginServer : public Net::INetPolicy
 
@@ -52,9 +52,9 @@ namespace BR
 			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance
-			virtual HRESULT PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket ) = 0;
+			virtual Result PlayerJoinedToGameServerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket ) = 0;
 			// Cmd: Kick logged in player
-			virtual HRESULT KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID ) = 0;
+			virtual Result KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID ) = 0;
 
 		}; // class IPolicyLoginServer : public Net::INetPolicy
 

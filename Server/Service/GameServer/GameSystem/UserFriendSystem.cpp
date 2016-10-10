@@ -60,11 +60,11 @@ namespace GameServer {
 	}
 
 	// Initialzie system
-	HRESULT UserFriendSystem::InitializeComponent()
+	Result UserFriendSystem::InitializeComponent()
 	{
 //		m_MaxFriend = 0;
 		m_LatestStatusSync = TimeStampSec(DurationSec(0));
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Terminate component
@@ -105,7 +105,7 @@ namespace GameServer {
 	}
 
 	// Change friend nick name
-	HRESULT UserFriendSystem::SetFriendName( PlayerID friendID, const char* strNewName )
+	Result UserFriendSystem::SetFriendName( PlayerID friendID, const char* strNewName )
 	{
 		for( unsigned int index = 0; index < m_Friends.GetSize(); index++ )
 		{
@@ -115,7 +115,7 @@ namespace GameServer {
 			}
 		}
 
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 
 
@@ -130,25 +130,25 @@ namespace GameServer {
 	}
 
 	// Add a friend
-	HRESULT UserFriendSystem::AddFriend(const ServerFriendInformation& info)
+	Result UserFriendSystem::AddFriend(const ServerFriendInformation& info)
 	{
 		if( IsFriend(info.PlayerID) )
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		if (!CanAddFriend())
 		{
-			return E_MAX_FRIEND;
+			return ResultCode::E_MAX_FRIEND;
 		}
 
 		return m_Friends.Append( 1, &info );
 	}
 
 	// Remove a friend
-	HRESULT UserFriendSystem::RemoveFriend( PlayerID friendID )
+	Result UserFriendSystem::RemoveFriend( PlayerID friendID )
 	{
 		auto* pFriend = GetFriend(friendID);
 		if( pFriend == nullptr )
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		return m_Friends.Remove( pFriend );
 	}
@@ -158,16 +158,16 @@ namespace GameServer {
 		return (UINT)m_Friends.GetSize();
 	}
 
-	HRESULT UserFriendSystem::ForeachFriends(UINT start, UINT maxCount, std::function<HRESULT(const ServerFriendInformation&)> functor)
+	Result UserFriendSystem::ForeachFriends(UINT start, UINT maxCount, std::function<Result(const ServerFriendInformation&)> functor)
 	{
 		for (unsigned int index = start; index < m_Friends.GetSize() && index < maxCount; index++)
 		{
-			HRESULT hr = functor( m_Friends[index] );
+			Result hr = functor( m_Friends[index] );
 			if( FAILED(hr) )
 				return hr;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 }; // namespace GameServer

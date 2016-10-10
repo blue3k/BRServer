@@ -77,7 +77,7 @@ namespace BR
 		~SpinSharedBuffer();
 
 		// Set buffer count, all pervious buffer data will be lost
-		HRESULT SetBufferCount(  UINT BufferCount  );
+		Result SetBufferCount(  UINT BufferCount  );
 
 		// Get buffer count
 		UINT GetBufferCount();
@@ -86,13 +86,13 @@ namespace BR
 		CounterType GetUsedBufferCount();
 
 		// Try to get one buffer while given times
-		HRESULT TryAllocBuffer( INT iTryCount, ItemType* &pBuffer );
+		Result TryAllocBuffer( INT iTryCount, ItemType* &pBuffer );
 
 		// Get free buffer
-		HRESULT AllocBuffer( ItemType* &pBuffer );
+		Result AllocBuffer( ItemType* &pBuffer );
 
 		// Free given buffer
-		HRESULT FreeBuffer( ItemType* pBuffer );
+		Result FreeBuffer( ItemType* pBuffer );
 	};
 
 	#include "SpinSharedBuffer.inl"

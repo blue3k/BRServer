@@ -28,9 +28,9 @@ namespace BR
  	namespace Policy
 	{
  		// C2S: Player entered
-		HRESULT NetPolicyGameMasterServer::PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName )
+		Result NetPolicyGameMasterServer::PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -44,11 +44,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameMasterServer::PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName )
+		}; // Result NetPolicyGameMasterServer::PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName )
 		// C2S: Player leaved
-		HRESULT NetPolicyGameMasterServer::PlayerLeavedC2SEvt( const AccountID &InPlayerID )
+		Result NetPolicyGameMasterServer::PlayerLeavedC2SEvt( const AccountID &InPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -62,7 +62,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameMasterServer::PlayerLeavedC2SEvt( const AccountID &InPlayerID )
+		}; // Result NetPolicyGameMasterServer::PlayerLeavedC2SEvt( const AccountID &InPlayerID )
 
 
 

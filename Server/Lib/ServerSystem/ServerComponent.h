@@ -65,7 +65,7 @@ namespace Svr {
 		}
 
 		// Check server component
-		virtual HRESULT CheckService() { return S_SYSTEM_OK; }
+		virtual Result CheckService() { return ResultCode::SUCCESS; }
 
 		
 		// Get entity, default implementation is return null

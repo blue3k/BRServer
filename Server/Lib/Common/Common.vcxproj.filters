@@ -129,9 +129,6 @@
     <ClInclude Include=".\Memory.h">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include=".\MemLog.h">
-      <Filter>System</Filter>
-    </ClInclude>
     <ClInclude Include=".\MemoryPool.h">
       <Filter>System</Filter>
     </ClInclude>
@@ -381,6 +378,7 @@
     <ClInclude Include="DefaultLibComponent.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="BRResult.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".\ArrayUtil.inl">

@@ -88,7 +88,7 @@ namespace Svr {
 			return false;
 
 		SharedPointerT<TimerAction> removed;
-		HRESULT hr = m_TimerMap.Remove(key.TimerKey, removed);
+		Result hr = m_TimerMap.Remove(key.TimerKey, removed);
 		if (FAILED(hr))
 		{
 			hr = m_TimerMap.Remove(pAction->GetInQueueKey().TimerKey, removed);
@@ -175,15 +175,15 @@ namespace Svr {
 		m_WorkingThreadID = threadID;
 	}
 
-	HRESULT TimeScheduler::AddTimerAction(ThreadID threadID, TimerAction* pAction)
+	Result TimeScheduler::AddTimerAction(ThreadID threadID, TimerAction* pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			svrErr(E_SVR_INVALID_THREAD);
+			svrErr(ResultCode::E_SVR_INVALID_THREAD);
 		}
 
 		//Assert(m_IsWriteLocked.load(std::memory_order_relaxed) == 0);
@@ -209,9 +209,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT TimeScheduler::RemoveTimerAction(ThreadID threadID, TimerAction* pAction)
+	Result TimeScheduler::RemoveTimerAction(ThreadID threadID, TimerAction* pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<TimerAction> removed;
 
 		if (pAction == nullptr)
@@ -223,7 +223,7 @@ namespace Svr {
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			svrErr(E_SVR_INVALID_THREAD);
+			svrErr(ResultCode::E_SVR_INVALID_THREAD);
 		}
 
 		svrChkPtr(pAction);
@@ -251,31 +251,31 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT TimeScheduler::CommitChanges(ThreadID threadID)
+	Result TimeScheduler::CommitChanges(ThreadID threadID)
 	{
 		//Assert(m_IsWriteLocked.load(std::memory_order_relaxed) == 0);
 
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			return E_SVR_INVALID_THREAD;
+			return ResultCode::E_SVR_INVALID_THREAD;
 		}
 		return m_TimerMap.CommitChanges();
 	}
 
-	HRESULT TimeScheduler::Reschedul(ThreadID threadID, TimerAction* pAction)
+	Result TimeScheduler::Reschedul(ThreadID threadID, TimerAction* pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (pAction == nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		//Assert(m_IsWriteLocked.load(std::memory_order_relaxed) == 0);
 
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			svrErr(E_SVR_INVALID_THREAD);
+			svrErr(ResultCode::E_SVR_INVALID_THREAD);
 		}
 
 		if (pAction->TimeData.Components.NextTickTime == pAction->m_InQueueKey.Components.NextTickTime)

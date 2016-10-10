@@ -61,19 +61,19 @@ namespace DB {
 
 
 		// initialize DB source. This will open source if necessary
-		virtual HRESULT	InitializeDBSource( const std::string& strConnectionString, const std::string& strDefaultDB, const std::string& strUserID, const std::string& strPassword );
+		virtual Result	InitializeDBSource( const std::string& strConnectionString, const std::string& strDefaultDB, const std::string& strUserID, const std::string& strPassword );
 
 		// reopen DB source
-		virtual HRESULT Reopen() = 0;
+		virtual Result Reopen() = 0;
 
 		// close DB source
-		virtual HRESULT	CloseDBSource();
+		virtual Result	CloseDBSource();
 
 		// Assign a session
-		virtual HRESULT	AssignSession( Session* &pSession );
+		virtual Result	AssignSession( Session* &pSession );
 
 		// Free a session
-		virtual HRESULT	FreeSession( Session* pSession );
+		virtual Result	FreeSession( Session* pSession );
 
 	};
 

@@ -51,8 +51,8 @@ namespace Svr{
 	class ExternalTransactionManager : public ParallelTransactionManager
 	{
 	public:
-		// convert CURL error to HRESULT
-		static HRESULT ToHRESULT(CURLcode code);
+		// convert CURL error to Result
+		static Result ToResult(CURLcode code);
 
 	private:
 
@@ -72,25 +72,25 @@ namespace Svr{
 		ExternalTransactionManager();
 		~ExternalTransactionManager();
 
-		HRESULT UpdateGoogleAuth();
+		Result UpdateGoogleAuth();
 
-		HRESULT InitializeManagerGoogle(const char* strP12KeyFile, const char* strAccount, const char* scopes);
-		HRESULT InitializeManagerIOS(const char* strURL);
+		Result InitializeManagerGoogle(const char* strP12KeyFile, const char* strAccount, const char* scopes);
+		Result InitializeManagerIOS(const char* strURL);
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() override;
+		virtual Result InitializeComponent() override;
 
 		// Terminate server component
 		virtual void TerminateComponent() override;
 
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 		// Send gcm notify
-		HRESULT SendGCMNotify(TransactionID sender, const char* strRegisterIDs, const char* strMessage, UINT64 param0 = 0);
+		Result SendGCMNotify(TransactionID sender, const char* strRegisterIDs, const char* strMessage, UINT64 param0 = 0);
 
 		// check receipt
-		HRESULT AndroidCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* purchaseToken);
-		HRESULT IOSCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* transactionID, const Array<BYTE>& purchaseToken);
+		Result AndroidCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* purchaseToken);
+		Result IOSCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* transactionID, const Array<BYTE>& purchaseToken);
 
 	};
 

@@ -61,13 +61,13 @@ namespace DB {
 		virtual ~QueryManager();
 
 		// Initialize DB
-		HRESULT InitializeDB( UINT partitioningCount );
+		Result InitializeDB( UINT partitioningCount );
 
 		// Terminate DB module and close connections
 		void TerminateDB();
 
 		// Add DB source
-		HRESULT	AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword ); 
+		Result	AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword ); 
 
 	protected:
 
@@ -76,22 +76,22 @@ namespace DB {
 	public:
 
 		// Request a DB Qurey
-		HRESULT	RequestQuery(Query* pQuery);
+		Result	RequestQuery(Query* pQuery);
 
 		// Route query result to entity
-		virtual HRESULT RouteResult(Query* &pQuery);
+		virtual Result RouteResult(Query* &pQuery);
 
 		void Update();
 
 	private:
 
 		// select db source by partitioning key
-		HRESULT SelectDBByKey(UINT partitioningKey, DataSource* &pDataSource);
-		HRESULT RequestShardList();
+		Result SelectDBByKey(UINT partitioningKey, DataSource* &pDataSource);
+		Result RequestShardList();
 
 		// Update query worker status
-		HRESULT UpdateQuery();
-		HRESULT UpdateResultQueries();
+		Result UpdateQuery();
+		Result UpdateResultQueries();
 
 		////////////////////////////////////////////////////////////////
 		// Override thread run

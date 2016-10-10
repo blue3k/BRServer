@@ -57,9 +57,9 @@ namespace Svr {
 
 
 	// Initialize player
-	HRESULT GameInstancePlayer::InitializePlayer( GameInstanceEntity* pGameOwner, bool isBot )
+	Result GameInstancePlayer::InitializePlayer( GameInstanceEntity* pGameOwner, bool isBot )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// disable, not implemented yet
 		svrChkPtr( m_GameOwner = pGameOwner );
@@ -74,9 +74,9 @@ namespace Svr {
 
 
 	// Update Game Player 
-	HRESULT GameInstancePlayer::UpdateGamePlayer( TimeStampMS ulCurTime )
+	Result GameInstancePlayer::UpdateGamePlayer( TimeStampMS ulCurTime )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 	//Proc_End:
 

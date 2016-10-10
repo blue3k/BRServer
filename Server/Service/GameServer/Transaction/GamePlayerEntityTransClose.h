@@ -50,16 +50,16 @@ namespace GameServer {
 		PlayerTransCloseInstance();
 		virtual ~PlayerTransCloseInstance() {}
 
-		HRESULT UpdateDBRes(Svr::TransactionResult* &pRes);
-		HRESULT DeleteLoginSessionRes(Svr::TransactionResult* &pRes);
-		HRESULT UnregisterMatchingRes(Svr::TransactionResult* &pRes);
-		HRESULT LeaveGameRes(Svr::TransactionResult* &pRes);
-		HRESULT LeavePartyRes(Svr::TransactionResult* &pRes);
+		Result UpdateDBRes(Svr::TransactionResult* &pRes);
+		Result DeleteLoginSessionRes(Svr::TransactionResult* &pRes);
+		Result UnregisterMatchingRes(Svr::TransactionResult* &pRes);
+		Result LeaveGameRes(Svr::TransactionResult* &pRes);
+		Result LeavePartyRes(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
-		virtual HRESULT OnCloseTransaction( HRESULT hrRes );
+		virtual Result OnCloseTransaction( Result hrRes );
 
 	};
 	

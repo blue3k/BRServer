@@ -17,16 +17,16 @@ namespace BR {
 namespace GameTable {
 
 	// Initialize tables
-	HRESULT InitializeTable();
+	Result InitializeTable();
 
 	int GetTableVersion();
 
-	HRESULT LoadTables();
+	Result LoadTables();
 
 	// Release all tables
-	HRESULT TerminateTable();
+	Result TerminateTable();
 
-	HRESULT Update();
+	Result Update();
 
 }; // namespace GameTable
 

@@ -28,9 +28,9 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Login request
-		HRESULT NetPolicyLogin::LoginCmd( const GameID &InGameID, const char* InID, const char* InPassword )
+		Result NetPolicyLogin::LoginCmd( const GameID &InGameID, const char* InID, const char* InPassword )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -44,11 +44,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyLogin::LoginCmd( const GameID &InGameID, const char* InID, const char* InPassword )
+		}; // Result NetPolicyLogin::LoginCmd( const GameID &InGameID, const char* InID, const char* InPassword )
 		// Cmd: Login request with Facebook UID
-		HRESULT NetPolicyLogin::LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
+		Result NetPolicyLogin::LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -62,11 +62,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyLogin::LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
+		}; // Result NetPolicyLogin::LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
 		// Cmd: Login request
-		HRESULT NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
+		Result NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -80,13 +80,13 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
+		}; // Result NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
 
 
 		// Cmd: Login request
-		HRESULT NetSvrPolicyLogin::LoginRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		Result NetSvrPolicyLogin::LoginRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -100,11 +100,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyLogin::LoginRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		}; // Result NetSvrPolicyLogin::LoginRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 		// Cmd: Login request with Facebook UID
-		HRESULT NetSvrPolicyLogin::LoginByFacebookRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		Result NetSvrPolicyLogin::LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -118,11 +118,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyLogin::LoginByFacebookRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		}; // Result NetSvrPolicyLogin::LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 		// Cmd: Login request
-		HRESULT NetSvrPolicyLogin::CreateRandomUserRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		Result NetSvrPolicyLogin::CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -136,7 +136,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyLogin::CreateRandomUserRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		}; // Result NetSvrPolicyLogin::CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 
 
 	}; // namespace Policy

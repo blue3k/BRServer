@@ -43,7 +43,7 @@ namespace Svr {
 		virtual ~RegisterPartyMatchingTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
@@ -64,7 +64,7 @@ namespace Svr {
 		virtual ~RegisterPlayerMatchingTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
@@ -84,7 +84,7 @@ namespace Svr {
 		virtual ~UpdateMatchingEntityUIDTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
@@ -105,7 +105,7 @@ namespace Svr {
 		virtual ~UnregisterMatchingTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
@@ -129,7 +129,7 @@ namespace Svr {
 		virtual ~ReserveItemTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
@@ -152,7 +152,7 @@ namespace Svr {
 		virtual ~MatchingQueueReserveItemsTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
@@ -173,7 +173,7 @@ namespace Svr {
 		virtual ~CancelReservationTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
@@ -194,7 +194,7 @@ namespace Svr {
 		virtual ~DequeueItemTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyPartyMatchingQueue* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyPartyMatchingQueue>(); }
 
@@ -215,7 +215,7 @@ namespace Svr {
 		virtual ~MatchingQueueTransMatchingItemError() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 	};
 

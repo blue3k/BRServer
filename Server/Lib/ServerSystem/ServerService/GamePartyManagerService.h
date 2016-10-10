@@ -33,9 +33,9 @@ namespace BR
 			GamePartyManagerService ( ServerServiceInformation* pService );
 
 			// Cmd: Create a party instance
-			HRESULT CreatePartyCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator );
+			Result CreatePartyCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator );
 			// C2S: Party instance notify of deletion
-			HRESULT PartyDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount );
+			Result PartyDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount );
 
 		}; // class GamePartyManagerService : public ServerServiceBase
 

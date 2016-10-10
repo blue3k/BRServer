@@ -64,7 +64,7 @@ namespace ConspiracyGameInstanceServer {
 		GameStateSystem& GetGameStateSystem();
 		GameInstanceEntity& GetOwner()					{ return *m_Owner; }
 
-		virtual HRESULT Vote(GamePlayer* pVoter, GamePlayer* pVoteTarget )		{ return E_GAME_INVALID_VOTE_STATE; }
+		virtual Result Vote(GamePlayer* pVoter, GamePlayer* pVoteTarget )		{ return ResultCode::E_GAME_INVALID_VOTE_STATE; }
 
 		// Check whether it can be proceeded or not
 		virtual bool CanAdvanceToNext()								{ return true; }
@@ -72,10 +72,10 @@ namespace ConspiracyGameInstanceServer {
 		virtual bool CanBeEntered()									{ return true; }
 
 		// regular state change event handling
-		virtual HRESULT OnPlayerGetOutOfGame( GamePlayer* pPlayer ) { return S_SYSTEM_OK; }
-		virtual HRESULT OnEnter();
-		virtual HRESULT OnUpdate()									{ return S_SYSTEM_OK; }
-		virtual HRESULT OnLeave()									{ return S_SYSTEM_OK; }
+		virtual Result OnPlayerGetOutOfGame( GamePlayer* pPlayer ) { return ResultCode::SUCCESS; }
+		virtual Result OnEnter();
+		virtual Result OnUpdate()									{ return ResultCode::SUCCESS; }
+		virtual Result OnLeave()									{ return ResultCode::SUCCESS; }
 
 		friend class GamePlaySystem;
 	};
@@ -136,31 +136,31 @@ namespace ConspiracyGameInstanceServer {
 		void NextDay();
 
 		// Initialzie system
-		HRESULT InitializeComponent();
+		Result InitializeComponent();
 
 		// Update system
-		HRESULT UpdateSystem();
+		Result UpdateSystem();
 
 		// Advance State if can
-		HRESULT AdvanceState();
+		Result AdvanceState();
 
 		// Vote game advance
-		HRESULT VoteGameAdvance( GamePlayer* pVoter );
+		Result VoteGameAdvance( GamePlayer* pVoter );
 
 		// process vote
-		HRESULT Vote( GamePlayer* pVoter, GamePlayer* pPlayer );
+		Result Vote( GamePlayer* pVoter, GamePlayer* pPlayer );
 
 		// Update state if can, no error is generated even if the state can't be advanced
-		HRESULT AdvanceStateIfCan();
+		Result AdvanceStateIfCan();
 
 		// Set game end
-		HRESULT SetGameEnd(GameWinner winner);
+		Result SetGameEnd(GameWinner winner);
 
 		// Start Game
-		HRESULT OnStartGame();
+		Result OnStartGame();
 		
 		// Called when a player get out of game
-		HRESULT OnPlayerGetOutOfGame( GamePlayer* pPlayer );
+		Result OnPlayerGetOutOfGame( GamePlayer* pPlayer );
 	};
 
 

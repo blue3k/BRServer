@@ -80,9 +80,9 @@ namespace Svr {
 	}
 
 	template<class MessageClass, class TransactionClass>
-	HRESULT LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnGenericError(Svr::TransactionResult* &pRes)
+	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnGenericError(Svr::TransactionResult* &pRes)
 	{
-		if (pRes->GetHRESULT() == E_INVALID_PLAYERID || pRes->GetHRESULT() == E_SVR_INVALID_ENTITYUID)
+		if (pRes->GetResult() == ResultCode::E_INVALID_PLAYERID || pRes->GetResult() == ResultCode::E_SVR_INVALID_ENTITYUID)
 		{
 			if (super::GetMyOwner()->GetPlayerID() != 0 && m_CreateRequestCount == 0)
 			{
@@ -105,13 +105,13 @@ namespace Svr {
 			return super::OnGenericError(pRes);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<class MessageClass, class TransactionClass>
-	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnLogin( HRESULT hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID )
+	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnLogin( Result hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		AuthTicket newTicket = 0;
 
 		svrChkClose(hrRes);
@@ -142,13 +142,13 @@ namespace Svr {
 	}
 
 	template<class MessageClass, class TransactionClass>
-	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnSessionRegistered( Svr::TransactionResult* &pRes )
+	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnSessionRegistered( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryRegisterAuthTicketCmd* pDBRes = (DB::QueryRegisterAuthTicketCmd*)pRes;
 		Policy::IPolicyGameServer *pGameServerPolicy = nullptr;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		super::GetMyOwner()->SetIsTicketOwner(pDBRes->Result != 0);
 		m_GameEntityUID = pDBRes->GameEntityUID;
@@ -158,7 +158,7 @@ namespace Svr {
 		// if someone already logged in
 		if (pDBRes->Result != 0)
 		{
-			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 		else
 		{
@@ -188,9 +188,9 @@ namespace Svr {
 	}
 
 	template<class MessageClass, class TransactionClass>
-	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::RegisterNewPlayerToJoinGameServer()
+	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::RegisterNewPlayerToJoinGameServer()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 		Svr::ServerServiceInformation *pService = nullptr;
 
@@ -215,18 +215,18 @@ namespace Svr {
 	}
 
 	template<class MessageClass, class TransactionClass>
-	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes )
+	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameServer::RegisterPlayerToJoinGameServerRes res;
 
-		if( pRes->GetHRESULT() == E_INVALID_PLAYERID || pRes->GetHRESULT() == E_SVR_INVALID_ENTITYUID)
+		if( pRes->GetResult() == ResultCode::E_INVALID_PLAYERID || pRes->GetResult() == ResultCode::E_SVR_INVALID_ENTITYUID)
 		{
 			if (super::GetMyOwner()->GetPlayerID() == 0)
 			{
-				hr = pRes->GetHRESULT();
+				hr = pRes->GetResult();
 			}
 			else
 			{
@@ -238,7 +238,7 @@ namespace Svr {
 			goto Proc_End;
 		}
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
 
 		super::GetMyOwner()->HeartBit();
@@ -259,12 +259,12 @@ namespace Svr {
 	}
 
 	template<class MessageClass, class TransactionClass>
-	HRESULT LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnConnectToGameServerRes(Svr::TransactionResult* &pRes)
+	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnConnectToGameServerRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryConnectedToGameServerCmd* pDBRes = (DB::QueryConnectedToGameServerCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		super::GetMyOwner()->HeartBit();
 
@@ -275,7 +275,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 
 	Proc_End:
@@ -287,9 +287,9 @@ namespace Svr {
 
 	// Start Transaction
 	template<class MessageClass, class TransactionClass>
-	HRESULT LoginPlayerTransLoginBase<MessageClass,TransactionClass>::StartTransaction()
+	Result LoginPlayerTransLoginBase<MessageClass,TransactionClass>::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		//m_RegisterTryCount = 0;
 		m_GameEntityUID = 0;
@@ -300,7 +300,7 @@ namespace Svr {
 
 		if(super::GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN);
+			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN);
 		}
 
 	Proc_End:
@@ -321,30 +321,30 @@ namespace Svr {
 		BR_TRANS_MESSAGE( DB::QueryLoginCmd, { return OnLogin(pRes); });
 	}
 
-	HRESULT LoginPlayerTransLogin::OnLogin( Svr::TransactionResult* &pRes )
+	Result LoginPlayerTransLogin::OnLogin( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryLoginCmd* pDBRes = (DB::QueryLoginCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		GetMyOwner()->HeartBit();
 
 		// succeeded to login
 		if( pDBRes->Result == 0 )
 		{
-			svrChk( super::OnLogin( pRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID ) );
+			svrChk( super::OnLogin( pRes->GetResult(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID ) );
 		}
 		else
 		{
 			// Login failed
 			if( pDBRes->Result == -1 )
 			{
-				CloseTransaction(E_LOGIN_INVALID_USERNAME);
+				CloseTransaction(ResultCode::E_LOGIN_INVALID_USERNAME);
 			}
 			else
 			{
-				CloseTransaction(E_LOGIN_INVALID_PASSWORD);
+				CloseTransaction(ResultCode::E_LOGIN_INVALID_PASSWORD);
 			}
 		}
 
@@ -353,20 +353,20 @@ namespace Svr {
 		if( FAILED(hr) )
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 
 	// Start Transaction
-	HRESULT LoginPlayerTransLogin::StartTransaction()
+	Result LoginPlayerTransLogin::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN);
+			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
@@ -392,24 +392,24 @@ namespace Svr {
 		BR_TRANS_MESSAGE( DB::QueryFacebookLoginCmd, { return OnLoginFacebook(pRes); });
 	}
 	
-	HRESULT LoginPlayerTransLoginByFacebook::OnUserCreated( Svr::TransactionResult* &pRes )
+	Result LoginPlayerTransLoginByFacebook::OnUserCreated( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryFacebookCreateUserCmd* pDBRes = (DB::QueryFacebookCreateUserCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		GetMyOwner()->HeartBit();
 
 		// succeeded to create
 		if( pDBRes->Result == 0 )
 		{
-			svrChk(OnLogin(pDBRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID));
+			svrChk(OnLogin(pDBRes->GetResult(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID));
 		}
 		else
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to create player FBUID:{0}, email:{1}, result:{2}", GetUID(), pDBRes->EMail, pDBRes->Result);
-			hr = E_INVALID_VALUE;
+			hr = ResultCode::E_INVALID_VALUE;
 		}
 
 	Proc_End:
@@ -417,16 +417,16 @@ namespace Svr {
 		if( FAILED(hr) )
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
-	HRESULT LoginPlayerTransLoginByFacebook::OnLoginFacebook( Svr::TransactionResult* &pRes )
+	Result LoginPlayerTransLoginByFacebook::OnLoginFacebook( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryFacebookLoginCmd* pDBRes = (DB::QueryFacebookLoginCmd*)pRes;
 		char email[GameConst::MAX_EMAIL];
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 
 		if (GetEMail() == nullptr || GetEMail()[0] == '\0')
@@ -450,7 +450,7 @@ namespace Svr {
 				svrChk(Svr::GetServerComponent<DB::AccountDB>()->UpdateUserContactInfo(0, pDBRes->AccountID, email, ""));
 			}
 
-			svrChk( OnLogin( pDBRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID ) );
+			svrChk( OnLogin( pDBRes->GetResult(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID ) );
 		}
 		else
 		{
@@ -468,20 +468,20 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT LoginPlayerTransLoginByFacebook::StartTransaction()
+	Result LoginPlayerTransLoginByFacebook::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetUID() == 0 )
 		{
-			svrErr(E_INVALID_ACCOUNTID);
+			svrErr(ResultCode::E_INVALID_ACCOUNTID);
 		}
 
 		if( GetMyOwner()->GetAccountID() != 0 )
 		{
-			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN);
+			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
@@ -509,23 +509,23 @@ namespace Svr {
 		BR_TRANS_MESSAGE(DB::QueryCreateRandomUserCmd, { return OnCreated(pRes); });
 	}
 
-	HRESULT LoginPlayerTransCreateRandomUser::OnCreated(Svr::TransactionResult* &pRes)
+	Result LoginPlayerTransCreateRandomUser::OnCreated(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto* pDBRes = (DB::QueryCreateRandomUserCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		GetMyOwner()->HeartBit();
 
 		// succeeded to login
 		if (pDBRes->Result == 0)
 		{
-			svrChk(super::OnLogin(pRes->GetHRESULT(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID));
+			svrChk(super::OnLogin(pRes->GetResult(), pDBRes->AccountID, pDBRes->FBUserID, pDBRes->ShardID));
 		}
 		else
 		{
-			CloseTransaction(E_LOGIN_INVALID_SIGNATURE);
+			CloseTransaction(ResultCode::E_LOGIN_INVALID_SIGNATURE);
 		}
 
 	Proc_End:
@@ -538,23 +538,23 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT LoginPlayerTransCreateRandomUser::StartTransaction()
+	Result LoginPlayerTransCreateRandomUser::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		char strUserName[DB::Const::MAX_USERNAME];
 
 		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetAccountID() != 0)
 		{
-			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN);
+			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN);
 		}
 
 		GetMyOwner()->HeartBit();
 
 		if (GetCellPhone() == nullptr || GetCellPhone()[0] == '\0')
 		{
-			svrErrClose(E_LOGIN_INVALID_SIGNATURE);
+			svrErrClose(ResultCode::E_LOGIN_INVALID_SIGNATURE);
 		}
 
 		svrChk(StrUtil::Format(strUserName, "Auto{0}", GetCellPhone()));
@@ -581,12 +581,12 @@ namespace Svr {
 		BR_TRANS_MESSAGE( DB::QueryDeleteLoginSessionCmd, { return OnDeleteLoginSessionRes(pRes); });
 	}
 
-	HRESULT LoginPlayerTransCloseInstance::OnDeleteLoginSessionRes( Svr::TransactionResult* &pRes )
+	Result LoginPlayerTransCloseInstance::OnDeleteLoginSessionRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//DB::QueryDeleteLoginSessionCmd* pDBRes = (DB::QueryDeleteLoginSessionCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 	Proc_End:
 
@@ -595,9 +595,9 @@ namespace Svr {
 		return hr; 
 	}
 
-	HRESULT LoginPlayerTransCloseInstance::StartTransaction()
+	Result LoginPlayerTransCloseInstance::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//LoginPlayerEntity* pOwner = (LoginPlayerEntity*)GetOwnerEntity();
 
 		svrChk( super::StartTransaction() );
@@ -620,14 +620,14 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT LoginPlayerTransCloseInstance::OnCloseTransaction( HRESULT hrRes )
+	Result LoginPlayerTransCloseInstance::OnCloseTransaction( Result hrRes )
 	{
 		// This must be called prior to clear authTicket otherwise the connection must be released already
 		GetMyOwner()->ReleaseConnection();
 
 		Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity( GetMyOwner() );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	
@@ -645,12 +645,12 @@ namespace Svr {
 		BR_TRANS_MESSAGE( DB::QueryDeleteLoginSessionCmd, { return OnDeleteSession(pRes); } );
 	}
 
-	HRESULT LoginPlayerKickPlayerTrans::OnDeleteSession( Svr::TransactionResult *pRes )
+	Result LoginPlayerKickPlayerTrans::OnDeleteSession( Svr::TransactionResult *pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryDeleteLoginSessionCmd* pDBRes = (DB::QueryDeleteLoginSessionCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		// succeeded to create
 		if( pDBRes->Result >= 0 )
@@ -661,7 +661,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 		}
 
 	Proc_End:
@@ -673,22 +673,22 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT LoginPlayerKickPlayerTrans::StartTransaction()
+	Result LoginPlayerKickPlayerTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		// TODO: need this?
-		svrChk(E_SYSTEM_NOTIMPL);
+		svrChk(ResultCode::NOT_IMPLEMENTED);
 		//if( GetMyOwner()->GetAccountID() != 0 || GetMyOwner()->GetAccountID() != GetPlayerID() )
 		//{
-		//	svrErrClose(E_INVALID_PLAYERID);
+		//	svrErrClose(ResultCode::E_INVALID_PLAYERID);
 		//}
 
 		//if( GetMyOwner()->GetAuthTicket() != 0 || GetMyOwner()->GetAuthTicket() != GetAuthTicket() )
 		//{
-		//	svrErrClose(E_INVALID_TICKET);
+		//	svrErrClose(ResultCode::E_INVALID_TICKET);
 		//}
 
 		//svrChk( Svr::GetServerComponent<DB::LoginSessionDB>()->DeleteLoginSession( GetTransID(), GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket() ) );
@@ -716,12 +716,12 @@ namespace Svr {
 		BR_TRANS_MESSAGE(DB::QueryValidateGameServerSessionCmd, { return OnValidateGameServerSessionRes(pRes); });
 	}
 
-	HRESULT LoginPlayerJoinedToGameServerTrans::OnConnectToGameServerRes( Svr::TransactionResult* &pRes )
+	Result LoginPlayerJoinedToGameServerTrans::OnConnectToGameServerRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryConnectedToGameServerCmd* pDBRes = (DB::QueryConnectedToGameServerCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		// succeeded to create
 		if( pDBRes->Result >= 0 )
@@ -731,7 +731,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 
 	Proc_End:
@@ -742,12 +742,12 @@ namespace Svr {
 		return hr; 
 	}
 
-	HRESULT LoginPlayerJoinedToGameServerTrans::OnValidateGameServerSessionRes(Svr::TransactionResult* &pRes)
+	Result LoginPlayerJoinedToGameServerTrans::OnValidateGameServerSessionRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryValidateGameServerSessionCmd* pDBRes = (DB::QueryValidateGameServerSessionCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		// succeeded to create
 		if (pDBRes->Result >= 0)
@@ -757,7 +757,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrErrClose(E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
+			svrErrClose(ResultCode::E_LOGIN_ALREADY_LOGGEDIN_OTHERPLACE);
 		}
 
 	Proc_End:
@@ -769,20 +769,20 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT LoginPlayerJoinedToGameServerTrans::StartTransaction()
+	Result LoginPlayerJoinedToGameServerTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAccountID() == 0 || GetMyOwner()->GetAccountID() != GetPlayerID() )
 		{
-			svrErrClose(E_INVALID_PLAYERID);
+			svrErrClose(ResultCode::E_INVALID_PLAYERID);
 		}
 
 		if( GetMyOwner()->GetAuthTicket() == 0 || GetMyOwner()->GetAuthTicket() != GetAuthTicket() )
 		{
-			svrErrClose(E_INVALID_TICKET);
+			svrErrClose(ResultCode::E_INVALID_TICKET);
 		}
 
 		if (GetMyOwner()->GetIsTicketOwner())

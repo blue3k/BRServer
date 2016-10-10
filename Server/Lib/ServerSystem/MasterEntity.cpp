@@ -114,7 +114,7 @@ namespace Svr
 	}
 
 	// clear transaction
-	HRESULT MasterEntity::ClearEntity()
+	Result MasterEntity::ClearEntity()
 	{
 		// just drop transaction with freed entity
 		m_activeTrans.ClearMap();
@@ -123,21 +123,21 @@ namespace Svr
 		return Entity::ClearEntity();
 	}
 
-	HRESULT MasterEntity::FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction)
+	Result MasterEntity::FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction)
 	{
 		if (m_pExclusiveTransaction != nullptr && m_pExclusiveTransaction->GetTransID() == transID)
 		{
 			pTransaction = (Transaction*)m_pExclusiveTransaction;
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		SharedPointerT<Transaction> activeTrans;
 		if (SUCCEEDED(m_activeTrans.Find(transID.GetTransactionIndex(), activeTrans)))
 		{
 			pTransaction = (Transaction*)activeTrans;
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -149,9 +149,9 @@ namespace Svr
 	//  - Make new transaction from connection queue
 	//  - status update for game
 	//  - Process transaction
-	HRESULT MasterEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result MasterEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Transaction* pNewTran = nullptr;
 		ThreadID currentThreadID = ThisThread::GetThreadID();
 		TimeStampMS nextTick = TimeStampMS::max();
@@ -159,14 +159,14 @@ namespace Svr
 		if( GetEntityState() == EntityState::FREE )
 		{
 			//goto Proc_End;
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 		}
 
 		if( GetEntityState() == EntityState::CLOSING )
 		{
 			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
 			svrChk( TerminateEntity() );
-			hr = S_SYSTEM_FALSE;
+			hr = ResultCode::SUCCESS_FALSE;
 			goto Proc_End;
 		}
 
@@ -270,7 +270,7 @@ namespace Svr
 		{
 			svrTrace( Svr::TRC_TRANSACTION, "Entity Close - Entity ID : {0} , name : {1}, State : {2}", GetEntityID(), typeid(*this).name(), GetEntityState() );
 			svrChk( TerminateEntity() );
-			hr = S_SYSTEM_FALSE;
+			hr = ResultCode::SUCCESS_FALSE;
 			goto Proc_End;
 		}
 
@@ -282,10 +282,10 @@ namespace Svr
 		return hr;
 	}
 	
-	HRESULT MasterEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes)
+	Result MasterEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
-		HRESULT hrTem = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
+		Result hrTem = ResultCode::SUCCESS;
 		ThreadID currentThreadID = ThisThread::GetThreadID();
 
 		svrChkPtr(pCurTran);
@@ -349,9 +349,9 @@ namespace Svr
 		Entity::OnAddedToTaskManager(pWorker);
 	}
 
-	HRESULT MasterEntity::OnEventTask(const Svr::EventTask& eventTask)
+	Result MasterEntity::OnEventTask(const Svr::EventTask& eventTask)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Transaction *pCurTran = nullptr;
 		SharedPointerT<Net::IConnection> pMyConn;
 
@@ -359,7 +359,7 @@ namespace Svr
 		{
 		case Svr::EventTask::EventTypes::CONNECTION_EVENT:
 		case Svr::EventTask::EventTypes::PACKET_MESSAGE_EVENT:
-			svrErr(E_SYSTEM_NOTIMPL);
+			svrErr(ResultCode::NOT_IMPLEMENTED);
 			break;
 		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
 			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
@@ -381,7 +381,7 @@ namespace Svr
 					svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pNonConstTransRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
 					Util::SafeRelease(pNonConstTransRes);
-					svrErr(E_SYSTEM_FAIL);
+					svrErr(ResultCode::FAIL);
 				}
 			}
 			else
@@ -390,7 +390,7 @@ namespace Svr
 			}
 			break;
 		default:
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 		}
 
 	Proc_End:

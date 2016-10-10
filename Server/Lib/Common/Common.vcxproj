@@ -34,6 +34,7 @@
     <ClInclude Include=".\Argument.h" />
     <ClInclude Include="BrComponent.h" />
     <ClInclude Include="BrLibComponents.h" />
+    <ClInclude Include="BRResult.h" />
     <ClInclude Include="DefaultLibComponent.h" />
     <ClInclude Include="DualSortedMap.h" />
     <ClInclude Include="File\BRFile.h" />
@@ -52,7 +53,6 @@
     <ClInclude Include="Indexing.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include=".\MathUtil.h" />
-    <ClInclude Include=".\MemLog.h" />
     <ClInclude Include=".\Memory.h" />
     <ClInclude Include=".\MemoryPool.h" />
     <ClInclude Include="GlobalUIDGenerator.h" />

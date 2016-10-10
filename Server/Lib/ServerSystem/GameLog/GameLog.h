@@ -66,7 +66,7 @@ namespace Svr {
 			return (BYTE*)pPtr;
 		}
 
-		HRESULT AddLogItem( GameLogItem* logItem );
+		Result AddLogItem( GameLogItem* logItem );
 
 	public:
 
@@ -74,13 +74,13 @@ namespace Svr {
 		virtual ~GameLog();
 
 		// Initialize 
-		virtual HRESULT InitializeLog();
+		virtual Result InitializeLog();
 
 		// Terminate
 		virtual void TerminateLog();
 
 		// Get log binary
-		HRESULT GetGameLogBinary( OutputMemoryStream& stream, UINT startIndex, UINT count );
+		Result GetGameLogBinary( OutputMemoryStream& stream, UINT startIndex, UINT count );
 
 	};
 

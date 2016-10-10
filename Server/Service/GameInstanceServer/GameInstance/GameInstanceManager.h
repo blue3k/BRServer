@@ -50,12 +50,12 @@ namespace ConspiracyGameInstanceServer {
 
 
 		// Add new Entity
-		//virtual HRESULT CreateGameInstance(GameInsUID &gameUID, UINT numBot, UINT maxPlayer) override;
+		//virtual Result CreateGameInstance(GameInsUID &gameUID, UINT numBot, UINT maxPlayer) override;
 
 		// Called when a game instance is deleted
-		//virtual HRESULT FreeGameInstance(GameInsUID gameUID) override;
+		//virtual Result FreeGameInstance(GameInsUID gameUID) override;
 
-		virtual HRESULT RegisterServiceMessageHandler(Svr::ServerEntity *pServerEntity) override;
+		virtual Result RegisterServiceMessageHandler(Svr::ServerEntity *pServerEntity) override;
 	};
 
 

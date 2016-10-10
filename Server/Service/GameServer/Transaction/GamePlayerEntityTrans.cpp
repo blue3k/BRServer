@@ -111,9 +111,9 @@ namespace GameServer {
 	//
 
 	// Start Transaction
-	HRESULT PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity::StartTransaction()
+	Result PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(GetMyOwner()->OnJoinGameServerInitialize(GetTicket(), GetFBUserID()));
 
@@ -136,13 +136,13 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); });
 	}
 
-	HRESULT PlayerTransJoinGameServer::OnGameServerJoined( Svr::TransactionResult* &pRes )
+	Result PlayerTransJoinGameServer::OnGameServerJoined( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::LoginServer::PlayerJoinedToGameServerRes msgRes;
 
 		// TODO: We need to close this entity on error
-		svrChkClose(pRes->GetHRESULT());
+		svrChkClose(pRes->GetResult());
 		svrChk( msgRes.ParseIMsg( ((Svr::MessageResult*)pRes)->GetMessage() ) );
 
 		// succeeded to create
@@ -155,15 +155,15 @@ namespace GameServer {
 		if( FAILED(hr) )
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
-	HRESULT PlayerTransJoinGameServer::OnJoinPartyRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransJoinGameServer::OnJoinPartyRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::GameParty::JoinPartyRes msgRes;
 
-		hr = pRes->GetHRESULT();
+		hr = pRes->GetResult();
 		if (FAILED(hr))
 		{
 			m_PartyLeaderID = 0;
@@ -184,12 +184,12 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransJoinGameServer::SetPlayerGameData(const DB::QueryGetPlayerInfoData &playerData)
+	Result PlayerTransJoinGameServer::SetPlayerGameData(const DB::QueryGetPlayerInfoData &playerData)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto playerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>();
 
 		// TODO: Need to change initial nick name setup process
@@ -271,20 +271,20 @@ namespace GameServer {
 
 	Proc_End:
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransJoinGameServer::OnCreatePlayerGameDataRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransJoinGameServer::OnCreatePlayerGameDataRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto pDBRes = (DB::QueryCreatePlayerInfoCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		// succeeded to query
 		if( pDBRes->Result < 0 )
 		{
-			svrErr(E_SVR_INVALID_PLAYER_GAMEDB);
+			svrErr(ResultCode::E_SVR_INVALID_PLAYER_GAMEDB);
 		}
 
 		svrAssert( pDBRes->m_RowsetResult.size() >= 1 );
@@ -309,15 +309,15 @@ namespace GameServer {
 		if( FAILED(hr) )
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
-	HRESULT PlayerTransJoinGameServer::OnGetPlayerGameDataRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransJoinGameServer::OnGetPlayerGameDataRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto pDBRes = (DB::QueryGetPlayerInfoCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		// succeeded to query
 		if (pDBRes->Result < 0)
@@ -340,12 +340,12 @@ namespace GameServer {
 		if (FAILED(hr))
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransJoinGameServer::RegisterToPlayerManager()
+	Result PlayerTransJoinGameServer::RegisterToPlayerManager()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::GameClusterServiceEntity *pGameService = nullptr;
 		EntityUID playerUID;
 
@@ -372,9 +372,9 @@ namespace GameServer {
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransJoinGameServer::StartTransaction()
+	Result PlayerTransJoinGameServer::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		EntityUID loginEntityUID(GetLoginEntityUID());
 		Policy::IPolicyLoginServer *pLoginPolicy = nullptr;
 
@@ -388,12 +388,12 @@ namespace GameServer {
 		if( GetAccID() == 0 || GetMyOwner()->GetAccountID() == 0
 			|| GetMyOwner()->GetAccountID() != GetAccID() )
 		{
-			svrErr(E_INVALID_ACCOUNTID);
+			svrErr(ResultCode::E_INVALID_ACCOUNTID);
 		}
 
 		if( GetTicket() != GetMyOwner()->GetAuthTicket() )
 		{
-			svrErrClose(E_INVALID_TICKET);
+			svrErrClose(ResultCode::E_INVALID_TICKET);
 		}
 
 		// TODO: We need to distinguish whether character data is updated or not
@@ -413,9 +413,9 @@ namespace GameServer {
 
 
 	// Start Transaction
-	HRESULT PlayerTransGetUserGamePlayerInfo::StartTransaction()
+	Result PlayerTransGetUserGamePlayerInfo::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		memset(&m_Result, 0, sizeof(m_Result));
 
@@ -425,7 +425,7 @@ namespace GameServer {
 
 		if( GetMyOwner()->GetAccountID() == 0 )
 		{
-			svrErrClose(E_INVALID_TICKET);
+			svrErrClose(ResultCode::E_INVALID_TICKET);
 		}
 
 
@@ -473,17 +473,17 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerInfoCmd, { return OnGetGamePlayerInfo(pRes); });
 	}
 
-	HRESULT PlayerTransGetGamePlayerInfo::OnGetPlayerShardID(Svr::TransactionResult* &pRes)
+	Result PlayerTransGetGamePlayerInfo::OnGetPlayerShardID(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto* pDBRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrErr(E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
 		}
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerInfoCmd(GetTransID(), pDBRes->ShardID, GetPlayerID()));
@@ -493,21 +493,21 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	HRESULT PlayerTransGetGamePlayerInfo::OnGetGamePlayerInfo( Svr::TransactionResult* &pRes )
+	Result PlayerTransGetGamePlayerInfo::OnGetGamePlayerInfo( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto pDBRes = (DB::QueryGetPlayerInfoCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		// succeeded to query
 		if( pDBRes->Result < 0 )
 		{
-			svrErr(E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
 		}
 
 		svrAssert( pDBRes->m_RowsetResult.size() >= 1 );
@@ -540,15 +540,15 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	
 	
 	// Start Transaction
-	HRESULT PlayerTransGetGamePlayerInfo::StartTransaction()
+	Result PlayerTransGetGamePlayerInfo::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		memset(&m_Result, 0, sizeof(m_Result));
 
@@ -556,7 +556,7 @@ namespace GameServer {
 
 		if( GetMyOwner()->GetAccountID() == 0 )
 		{
-			svrErrClose(E_INVALID_TICKET);
+			svrErrClose(ResultCode::E_INVALID_TICKET);
 		}
 
 		svrChk( Svr::GetServerComponent<DB::AccountDB>()->GetPlayerShardID( GetTransID(), GetPlayerID() ) );
@@ -578,21 +578,21 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(DB::QueryGetComplitionStateCmd, { return OnGetComplitionState(pRes); });
 	}
 
-	HRESULT PlayerTransGetComplitionState::OnGetComplitionState(Svr::TransactionResult* &pRes)
+	Result PlayerTransGetComplitionState::OnGetComplitionState(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		auto* pDBRes = (DB::QueryGetComplitionStateCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrErr(E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
 		}
 
-		svrChkCloseErr(E_SYSTEM_UNEXPECTED, StrUtil::StringCpy(m_ComplitionState, pDBRes->ComplitionState));
+		svrChkCloseErr(ResultCode::UNEXPECTED, StrUtil::StringCpy(m_ComplitionState, pDBRes->ComplitionState));
 
 	Proc_End:
 
@@ -603,9 +603,9 @@ namespace GameServer {
 
 
 	// Start Transaction
-	HRESULT PlayerTransGetComplitionState::StartTransaction()
+	Result PlayerTransGetComplitionState::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		memset(&m_ComplitionState, 0, sizeof(m_ComplitionState));
 
@@ -613,7 +613,7 @@ namespace GameServer {
 
 		if (GetMyOwner()->GetAccountID() == 0)
 		{
-			svrErrClose(E_INVALID_TICKET);
+			svrErrClose(ResultCode::E_INVALID_TICKET);
 		}
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID()));
@@ -636,18 +636,18 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(DB::QuerySetComplitionStateCmd, { return OnSetComplitionState(pRes); });
 	}
 
-	HRESULT PlayerTransSetComplitionState::OnSetComplitionState(Svr::TransactionResult* &pRes)
+	Result PlayerTransSetComplitionState::OnSetComplitionState(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		auto* pDBRes = (DB::QuerySetComplitionStateCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		// succeeded to query
 		if (pDBRes->Result < 0)
 		{
-			svrErr(E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
 		}
 
 	Proc_End:
@@ -658,15 +658,15 @@ namespace GameServer {
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransSetComplitionState::StartTransaction()
+	Result PlayerTransSetComplitionState::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetAccountID() == 0)
 		{
-			svrErrClose(E_INVALID_TICKET);
+			svrErrClose(ResultCode::E_INVALID_TICKET);
 		}
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetComplitionState(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetComplitionState()));
@@ -694,23 +694,23 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( DB::QueryUpdateGCMKeysCmd, { return OnUpdated(pRes); });
 	}
 
-	HRESULT PlayerTransRegisterGCM::OnUpdated( Svr::TransactionResult* &pRes )
+	Result PlayerTransRegisterGCM::OnUpdated( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 	Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransRegisterGCM::StartTransaction()
+	Result PlayerTransRegisterGCM::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -736,23 +736,23 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( DB::QueryUpdateGCMKeysCmd, { return OnUpdated(pRes); });
 	}
 
-	HRESULT PlayerTransUnregisterGCM::OnUpdated( Svr::TransactionResult* &pRes )
+	Result PlayerTransUnregisterGCM::OnUpdated( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 	Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransUnregisterGCM::StartTransaction()
+	Result PlayerTransUnregisterGCM::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -783,14 +783,14 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( DB::QueryNotification_GetListCmd, { return OnGetList(pRes); });
 	}
 	
-	HRESULT PlayerTransGetNotificationList::OnGetList( Svr::TransactionResult* &pRes )
+	Result PlayerTransGetNotificationList::OnGetList( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryNotification_GetListCmd::RowsetList::iterator itNotification;
 		UserNotifySystem* pNotifySystem = GetMyOwner()->GetComponent<UserNotifySystem>();
 		DB::QueryNotification_GetListCmd *pDBRes = (DB::QueryNotification_GetListCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		pNotifySystem->ClearNotificationList();
 
@@ -806,13 +806,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransGetNotificationList::StartTransaction()
+	Result PlayerTransGetNotificationList::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -833,12 +833,12 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( DB::QueryNotification_RemoveCmd, { return OnDeletedNotification(pRes); });
 	}
 
-	HRESULT PlayerTransDeleteNotification::OnDeletedNotification( Svr::TransactionResult* &pRes )
+	Result PlayerTransDeleteNotification::OnDeletedNotification( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//DB::QueryNotification_RemoveCmd *pDBRes = (DB::QueryNotification_RemoveCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		svrChk( GetMyOwner()->GetComponent<UserNotifySystem>()->RemoveNotification(GetNotificationID()) );
 
@@ -846,13 +846,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransDeleteNotification::StartTransaction()
+	Result PlayerTransDeleteNotification::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -874,13 +874,13 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( DB::QueryUpdateTickStatusCmd, { return OnUpdateStatus(pRes); });
 	}
 
-	HRESULT PlayerTransSetNotificationRead::OnSetRead( Svr::TransactionResult* &pRes )
+	Result PlayerTransSetNotificationRead::OnSetRead( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		UserNotifySystem::Notification *pNotify = nullptr;
 		//DB::QueryNotification_SetReadCmd *pDBRes = (DB::QueryNotification_SetReadCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 
 		svrChkPtr( pNotify = GetMyOwner()->GetComponent<UserNotifySystem>()->GetNotification(GetNotificationID()) );
@@ -904,16 +904,16 @@ namespace GameServer {
 		if( FAILED(hr) )
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
-	HRESULT PlayerTransSetNotificationRead::OnUpdateStatus( Svr::TransactionResult* &pRes )
+	Result PlayerTransSetNotificationRead::OnUpdateStatus( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//UserNotifySystem::Notification *pNotify = nullptr;
 		//DB::QueryUpdateTickStatusCmd *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 
 
@@ -921,19 +921,19 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 
 	// Start Transaction
-	HRESULT PlayerTransSetNotificationRead::StartTransaction()
+	Result PlayerTransSetNotificationRead::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetComponent<UserNotifySystem>()->GetNotification(GetNotificationID()) == nullptr )
-			svrErrClose(E_INVALID_NOTIFICATIONID);
+			svrErrClose(ResultCode::E_INVALID_NOTIFICATIONID);
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->Notification_SetRead(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNotificationID()));
 
@@ -952,17 +952,17 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(DB::QueryNotification_RemoveCmd, { return OnDeletedNotification(pRes); });
 	}
 
-	HRESULT PlayerTransAcceptNotification::OnDeletedNotification(Svr::TransactionResult* &pRes)
+	Result PlayerTransAcceptNotification::OnDeletedNotification(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//DB::QueryNotification_RemoveCmd *pDBRes = (DB::QueryNotification_RemoveCmd*)pRes;
 		auto notification = GetMyOwner()->GetComponent<UserNotifySystem>()->GetNotification(GetNotificationID());
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		if (notification!= nullptr)
 		{
-			HRESULT hrRes = S_SYSTEM_OK;
+			Result hrRes = ResultCode::SUCCESS;
 			// accept notification
 			// Friend will be processed separately
 			// for now, only stamina is processed here
@@ -985,13 +985,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransAcceptNotification::StartTransaction()
+	Result PlayerTransAcceptNotification::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(super::StartTransaction());
 
@@ -1007,15 +1007,15 @@ namespace GameServer {
 
 	
 	// Start Transaction
-	HRESULT PlayerTransNotifyS2S::StartTransaction()
+	Result PlayerTransNotifyS2S::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Policy::ISvrPolicyGame *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
-			svrErr(E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
 
 		svrChk( GetMyOwner()->GetComponent<UserNotifySystem>()->AddNotification(GetNotificationID(), (NotificationType)GetMessageID(), GetMessageParam0(), GetMessageParam1(), GetMessageText(), 0, GetTimeStamp() ) );
 		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
@@ -1041,17 +1041,17 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( DB::QuerySetNickNameCmd, { return OnNickChanged(pRes); });
 	}
 
-	HRESULT PlayerTransSetNickName::OnNickChanged( Svr::TransactionResult* &pRes )
+	Result PlayerTransSetNickName::OnNickChanged( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto pDBRes = (DB::QuerySetNickNameCmd*)pRes;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0)
-			svrErrClose(E_INVALID_PLAYERID);
+			svrErrClose(ResultCode::E_INVALID_PLAYERID);
 
 		GetMyOwner()->AddGameTransactionLogT(TransLogCategory::Account, 0, 0, 0, "From {0} to {1}", GetMyOwner()->GetNickName(), GetNickName());
 
@@ -1061,8 +1061,8 @@ namespace GameServer {
 
 		if (GetIsCostFree() == 0)
 		{
-			svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
-			svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "SetNickName"));
+			svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
+			svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "SetNickName"));
 		}
 
 		m_TotalGem = pPlayerInfoSystem->GetGem();
@@ -1073,13 +1073,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransSetNickName::StartTransaction()
+	Result PlayerTransSetNickName::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
@@ -1092,8 +1092,8 @@ namespace GameServer {
 
 		if (GetIsCostFree() == 0)
 		{
-			svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
-			svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
+			svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::NickName, pCostItem));
+			svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
 		}
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->SetNickName(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(), GetNickName()));
@@ -1122,15 +1122,15 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(DB::QueryGetNickNameCmd, { return OnGetNickName(pRes); });
 	}
 
-	HRESULT PlayerTransFindPlayerByEMail::OnFindPlayer( Svr::TransactionResult* &pRes )
+	Result PlayerTransFindPlayerByEMail::OnFindPlayer( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryFindPlayerByEMailCmd *pDBRes = (DB::QueryFindPlayerByEMailCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		if( pDBRes->UserID == 0 )
-			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
 
 		m_Player.PlayerID = pDBRes->UserID;
 		m_Player.FBUID = pDBRes->FacebookUID;
@@ -1143,18 +1143,18 @@ namespace GameServer {
 		if (FAILED(hr))
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
-	HRESULT PlayerTransFindPlayerByEMail::OnGetNickName(Svr::TransactionResult* &pRes)
+	Result PlayerTransFindPlayerByEMail::OnGetNickName(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto *pDBRes = (DB::QueryGetNickNameCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0)
-			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
 
 		StrUtil::StringCpy( m_Player.NickName, pDBRes->NickName );
 
@@ -1162,13 +1162,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransFindPlayerByEMail::StartTransaction()
+	Result PlayerTransFindPlayerByEMail::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		char email[GameConst::MAX_EMAIL];
 
 		svrChk( super::StartTransaction() );
@@ -1195,17 +1195,17 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(DB::QueryGetNickNameCmd, { return OnGetNickName(pRes); });
 	}
 
-	HRESULT PlayerTransFindPlayerByPlayerID::OnFindPlayer(Svr::TransactionResult* &pRes)
+	Result PlayerTransFindPlayerByPlayerID::OnFindPlayer(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto pDBRes = (DB::QueryFindPlayerByPlayerIDCmd*)pRes;
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		if (pDBRes->PlayerID == 0)
-			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
 
 		if (pDBRes->Result != 0)
-			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
 
 		m_Player.PlayerID = pDBRes->PlayerID;
 		m_Player.FBUID = pDBRes->FacebookUID;
@@ -1218,18 +1218,18 @@ namespace GameServer {
 		if (FAILED(hr))
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransFindPlayerByPlayerID::OnGetNickName(Svr::TransactionResult* &pRes)
+	Result PlayerTransFindPlayerByPlayerID::OnGetNickName(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto *pDBRes = (DB::QueryGetNickNameCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0)
-			svrErrClose(E_SVR_PLAYER_NOT_FOUND);
+			svrErrClose(ResultCode::E_SVR_PLAYER_NOT_FOUND);
 
 		StrUtil::StringCpy( m_Player.NickName, pDBRes->NickName );
 
@@ -1237,13 +1237,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransFindPlayerByPlayerID::StartTransaction()
+	Result PlayerTransFindPlayerByPlayerID::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -1267,15 +1267,15 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerStatusCmd, { return OnPlayerStatusUpdateRes(pRes); });
 	}
 
-	HRESULT PlayerTransRequestPlayerStatusUpdate::OnPlayerShardIDRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransRequestPlayerStatusUpdate::OnPlayerShardIDRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//Policy::ISvrPolicyGame *pPolicy = nullptr;
 		auto *pDBRes = (DB::QueryGetPlayerShardIDCmd*)pRes;
 
 		m_PlayerStatusQueryCount--;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetPlayerStatusCmd(GetTransID(), pDBRes->ShardID, pDBRes->UserID));
 		m_PlayerStatusQueryCount++;
@@ -1285,18 +1285,18 @@ namespace GameServer {
 		if (m_PlayerStatusQueryCount == 0)
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransRequestPlayerStatusUpdate::OnPlayerStatusUpdateRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransRequestPlayerStatusUpdate::OnPlayerStatusUpdateRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Policy::ISvrPolicyGame *pPolicy = nullptr;
 		DB::QueryGetPlayerStatusCmd *pDBRes = (DB::QueryGetPlayerStatusCmd*)pRes;
 
 		m_PlayerStatusQueryCount--;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		svrChkPtr(pPolicy = GetPolicy<Policy::ISvrPolicyGame>());
 		svrChk(pPolicy->NotifyPlayerStatusUpdatedS2CEvt(pDBRes->PlayerID, pDBRes->LatestActiveTime, pDBRes->PlayerState != 0 ? 1 : 0));
@@ -1306,13 +1306,13 @@ namespace GameServer {
 		if( m_PlayerStatusQueryCount == 0 )
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransRequestPlayerStatusUpdate::StartTransaction()
+	Result PlayerTransRequestPlayerStatusUpdate::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		//Policy::IPolicyGameServer* pTargetPolicy = nullptr;
@@ -1360,9 +1360,9 @@ namespace GameServer {
 	
 	
 	// Start Transaction
-	HRESULT PlayerTransRequestPlayerStatusUpdateS2S::StartTransaction()
+	Result PlayerTransRequestPlayerStatusUpdateS2S::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
@@ -1372,7 +1372,7 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetPlayerID() != GetDestPlayerID() )
-			svrErr(E_GAME_INVALID_PLAYER);
+			svrErr(ResultCode::E_GAME_INVALID_PLAYER);
 
 		playerUID = GetRouteContext().GetFrom();
 
@@ -1391,9 +1391,9 @@ namespace GameServer {
 	}
 	
 	// Start Transaction
-	HRESULT PlayerTransNotifyPlayerStatusUpdatedS2S::StartTransaction()
+	Result PlayerTransNotifyPlayerStatusUpdatedS2S::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Policy::ISvrPolicyGame *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -1417,12 +1417,12 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( DB::QueryGetTotalRankingCmd, { return OnGetRankingListRes(pRes); });
 	}
 
-	HRESULT PlayerTransGetRankingList::OnGetRankingListRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransGetRankingList::OnGetRankingListRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		DB::QueryGetTotalRankingCmd *pDBRes = (DB::QueryGetTotalRankingCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		m_RankingList.Reserve( pDBRes->m_RowsetResult.size() );
 		std::for_each( pDBRes->m_RowsetResult.begin(), pDBRes->m_RowsetResult.end(), [&]( DB::QueryGetTotalRankingSet &set )
@@ -1436,21 +1436,21 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransGetRankingList::StartTransaction()
+	Result PlayerTransGetRankingList::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if (GetBaseRanking() <= 0 || GetBaseRanking() > GameConst::MAX_RANKING_QUERY_COUNT)
-			svrErrClose(E_INVALID_RANKING_RANGE);
+			svrErrClose(ResultCode::E_INVALID_RANKING_RANGE);
 
 		if (GetCount() <= 0 || GetCount() > GameConst::MAX_RANKING_QUERY_COUNT)
-			svrErrClose(E_INVALID_RANKING_RANGE);
+			svrErrClose(ResultCode::E_INVALID_RANKING_RANGE);
 		
 		svrChk( Svr::GetServerComponent<DB::RankingDB>()->GetRankingListCmd( GetTransID(), GetBaseRanking(), GetCount() ) );
 
@@ -1471,19 +1471,19 @@ namespace GameServer {
 		m_Signagure.push_back('\0');
 	}
 
-	HRESULT PlayerTransBuyShopItemPrepare::OnPurchaseIDChecked(Svr::TransactionResult* &pRes)
+	Result PlayerTransBuyShopItemPrepare::OnPurchaseIDChecked(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto *pDBRes = (DB::QueryCheckPurchaseIDCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0)
 		{
 			m_RetryCount++;
 			if (m_RetryCount > MAX_RETRY)
 			{
-				svrErrClose(E_SYSTEM_FAIL);
+				svrErrClose(ResultCode::FAIL);
 			}
 			else
 			{
@@ -1501,12 +1501,12 @@ namespace GameServer {
 		if (FAILED(hr))
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransBuyShopItemPrepare::GenerateSigunatureAndCheck()
+	Result PlayerTransBuyShopItemPrepare::GenerateSigunatureAndCheck()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		StaticArray<BYTE, 1024> dataBuffer;
 		StaticArray<BYTE, 128> hash;
 		//AuthTicket authTicket = GetMyOwner()->GetAuthTicket();
@@ -1534,9 +1534,9 @@ namespace GameServer {
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransBuyShopItemPrepare::StartTransaction()
+	Result PlayerTransBuyShopItemPrepare::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 
 		svrChk(super::StartTransaction());
@@ -1565,22 +1565,22 @@ namespace GameServer {
 	}
 
 
-	HRESULT PlayerTransBuyShopItem::OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes)
+	Result PlayerTransBuyShopItem::OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto *pCheckRes = (Svr::ExternalTransactionGoogleAndroidReceiptCheck*)pRes;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 		StaticArray<BYTE, 512> purchaseID;
 
-		svrChkClose(pRes->GetHRESULT());
+		svrChkClose(pRes->GetResult());
 
 		if (pCheckRes->GetDeveloperPayload().length() == 0)
-			svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
 
-		svrChkCloseErr(E_SVR_INVALID_PURCHASE_INFO, Util::Base64URLDecode(pCheckRes->GetDeveloperPayload().length(), (const BYTE*)pCheckRes->GetDeveloperPayload().c_str(), purchaseID));
+		svrChkCloseErr(ResultCode::E_SVR_INVALID_PURCHASE_INFO, Util::Base64URLDecode(pCheckRes->GetDeveloperPayload().length(), (const BYTE*)pCheckRes->GetDeveloperPayload().c_str(), purchaseID));
 
 		if (purchaseID.GetSize() != SHA256_DIGEST_LENGTH)
-			svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
@@ -1597,20 +1597,20 @@ namespace GameServer {
 			CloseTransaction(hr);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransBuyShopItem::OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes)
+	Result PlayerTransBuyShopItem::OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto *pCheckRes = (Svr::ExternalTransactionIOSRecepitCheck*)pRes;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 
-		svrChkClose(pRes->GetHRESULT());
+		svrChkClose(pRes->GetResult());
 
 		if (pCheckRes->GetPurchaseTransactionID().GetSize() == 0
 			|| StrUtil::StringCmp((const char*)pCheckRes->GetPurchaseTransactionID().data(), (INT)pCheckRes->GetPurchaseTransactionID().GetSize(), GetPurchaseTransactionID(), -1) != 0)
-			svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
 
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
@@ -1628,19 +1628,19 @@ namespace GameServer {
 			CloseTransaction(hr);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransBuyShopItem::OnSavedToDB( Svr::TransactionResult* &pRes )
+	Result PlayerTransBuyShopItem::OnSavedToDB( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto *pDBRes = (DB::QuerySavePurchaseInfoToDBCmd*)pRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 		if (pDBRes->Result < 0)
 		{
-			svrErrClose(E_SVR_INVALID_PURCHASE_DUPLICATED);
+			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_DUPLICATED);
 		}
 
 
@@ -1654,13 +1654,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransBuyShopItem::StartTransaction()
+	Result PlayerTransBuyShopItem::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::ExternalTransactionManager* pExtMgr = nullptr;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 
@@ -1670,12 +1670,12 @@ namespace GameServer {
 
 		if (GetPurchaseTransactionID() == nullptr || GetPurchaseTransactionID()[0] == '\0')
 		{
-			svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
 		}
 
 		if( FAILED( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
 		{
-			svrErrClose(E_GAME_INVALID_SHOPITEMID);
+			svrErrClose(ResultCode::E_GAME_INVALID_SHOPITEMID);
 		}
 
 		svrChkPtr(pExtMgr = Svr::GetServerComponent<Svr::ExternalTransactionManager>());
@@ -1707,7 +1707,7 @@ namespace GameServer {
 			{
 				if (GetPurchaseToken().GetSize() == 0)
 				{
-					svrErrClose(E_SVR_INVALID_PURCHASE_INFO);
+					svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
 				}
 
 				svrChk(pExtMgr->IOSCheckReceipt(GetTransID(), GetPackageName(), m_pShopItem->iOSItemID, GetPurchaseTransactionID(), GetPurchaseToken()));
@@ -1735,9 +1735,9 @@ namespace GameServer {
 
 
 	// Start Transaction
-	HRESULT PlayerTransSetConfigPreset::StartTransaction()
+	Result PlayerTransSetConfigPreset::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID;
 
@@ -1770,11 +1770,11 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( DB::QuerySetPlayerInfoCmd, { return OnSetPlayerInfoRes(pRes); } );
 	}
 
-	HRESULT PlayerTransGainGameResource::OnSetPlayerInfoRes(  Svr::TransactionResult* &pRes )
+	Result PlayerTransGainGameResource::OnSetPlayerInfoRes(  Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		svrChk( pRes->GetHRESULT() );
+		svrChk( pRes->GetResult() );
 		//DB::QuerySetPlayerInfoCmd *pMsgRes = (DB::QuerySetPlayerInfoCmd*)pRes;
 
 
@@ -1782,20 +1782,20 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransGainGameResource::StartTransaction()
+	Result PlayerTransGainGameResource::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 		DebugGameResource res = (DebugGameResource)GetResource();
 
 		svrChk( super::StartTransaction() );
 
 		if( GetResource() < 0 || GetResource() >= (int)DebugGameResource::Max )
-			svrErrClose(E_SYSTEM_INVALIDARG);
+			svrErrClose(ResultCode::INVALID_ARG);
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::DbgGain, GetValue(), 0, GetResource());
 
@@ -1811,7 +1811,7 @@ namespace GameServer {
 			svrChk( GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina( GetValue() ) );
 			break;
 		default:
-			svrErrClose(E_SYSTEM_INVALIDARG);
+			svrErrClose(ResultCode::INVALID_ARG);
 			break;
 		}
 

@@ -53,9 +53,9 @@ namespace ConspiracyGameInstanceServer {
 	
 
 	// Initialzie system
-	HRESULT GameLogSystem::InitializeComponent()
+	Result GameLogSystem::InitializeComponent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( InitializeLog() );
 
@@ -84,13 +84,13 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Add log items
-	HRESULT GameLogSystem::AddGameStateChange(TimeStampSec timeStamp, GameStateID gameState )
+	Result GameLogSystem::AddGameStateChange(TimeStampSec timeStamp, GameStateID gameState )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameLogGameStateChange *pLogItem;
 
 		if( gameState < GameStateID::None || gameState >= GameStateID::Max )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogGameStateChange>();
 		svrMem( itemBuffer );
@@ -106,18 +106,18 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	HRESULT GameLogSystem::AddGameVote( TimeStampSec timeStamp, GameVoteType type, UINT voterCount )
+	Result GameLogSystem::AddGameVote( TimeStampSec timeStamp, GameVoteType type, UINT voterCount )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameLogVote *logItem;
 
 		if( type < GameVoteType(0) || type >= GameVoteType::Max )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 
 		if( voterCount <= 0 || voterCount > GameConst::MAX_GAMEPLAYER )
 		{
-			return E_GAME_INVALID_PLAYER_COUNT;
+			return ResultCode::E_GAME_INVALID_PLAYER_COUNT;
 		}
 
 		size_t allocationSize = sizeof(GameLogVote) + (voterCount-1)*sizeof(GameLogVote::VoteInfo);
@@ -138,12 +138,12 @@ namespace ConspiracyGameInstanceServer {
 
 		return hr;
 	}
-	HRESULT GameLogSystem::UpdateGameVote( PlayerID voter, PlayerID voted )
+	Result GameLogSystem::UpdateGameVote( PlayerID voter, PlayerID voted )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( m_CurrentVoteLogItem == nullptr /*|| m_CurrentVoteLogItem->Type != type*/ )
-			return E_GAME_INVALID_VOTETYPE;
+			return ResultCode::E_GAME_INVALID_VOTETYPE;
 
 		svrChk( m_CurrentVoteLogItem->SetVoteStatus( voter, voted ) );
 
@@ -152,21 +152,21 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	HRESULT GameLogSystem::AddGameVoteResult(TimeStampSec timeStamp, UINT numRankers, const PlayerID* ranker )
+	Result GameLogSystem::AddGameVoteResult(TimeStampSec timeStamp, UINT numRankers, const PlayerID* ranker )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameLogVoteResult *logItem;
 
 		if( numRankers > 2 )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		if( ranker == nullptr )
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		Assert(numRankers > 0 );
 		if( numRankers <= 0 || numRankers > GameConst::MAX_GAMEPLAYER )
 		{
-			return E_GAME_INVALID_PLAYER_COUNT;
+			return ResultCode::E_GAME_INVALID_PLAYER_COUNT;
 		}
 
 		size_t allocationSize = sizeof(GameLogVoteResult) + (numRankers-1)*sizeof(PlayerID);
@@ -186,9 +186,9 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 	
-	HRESULT GameLogSystem::AddGamePlayerKilled(TimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID )
+	Result GameLogSystem::AddGamePlayerKilled(TimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameLogPlayerKilled *logItem;
 
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogPlayerKilled>();
@@ -205,13 +205,13 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	HRESULT GameLogSystem::AddGameEnd(TimeStampSec timeStamp, GameWinner winner )
+	Result GameLogSystem::AddGameEnd(TimeStampSec timeStamp, GameWinner winner )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameLogGameEnd *logItem;
 
 		if( winner < GameWinner(0) || winner >= GameWinner::Max )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		BYTE* itemBuffer = NewLogItemBuffer<GameLogGameEnd>();
 		svrMem( itemBuffer );

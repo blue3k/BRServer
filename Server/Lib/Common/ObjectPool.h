@@ -35,9 +35,9 @@ namespace BR
 		virtual ~ObjectPoolObject(){}
 
 		// Called when the object is going to be reused
-		virtual HRESULT Reuse(){ return S_SYSTEM_OK; }
+		virtual Result Reuse(){ return ResultCode::SUCCESS; }
 		// Called when the object is going to be disposed
-		virtual HRESULT Dispose() { return S_SYSTEM_OK; }
+		virtual Result Dispose() { return ResultCode::SUCCESS; }
 	};
 
 
@@ -116,8 +116,8 @@ namespace BR
 		virtual ObjectPoolObject* OnNewObject(void* pNewObject) = 0;
 
 		// Allocate/Free
-		HRESULT Alloc(ObjectPoolObject* &pPtr);
-		HRESULT Free(ObjectPoolObject* pPtr);
+		Result Alloc(ObjectPoolObject* &pPtr);
+		Result Free(ObjectPoolObject* pPtr);
 	};
 
 
@@ -139,15 +139,15 @@ namespace BR
 			return new(pNewObject)ObjectType;
 		}
 
-		HRESULT Alloc(ObjectType* &pPtr)
+		Result Alloc(ObjectType* &pPtr)
 		{
 			ObjectPoolObject *pObj = nullptr;
-			HRESULT hr = ObjectPool::Alloc(pObj);
+			Result hr = ObjectPool::Alloc(pObj);
 			pPtr = (ObjectType*)(pObj);
 			return hr;
 		}
 
-		HRESULT Free(ObjectType* pPtr)
+		Result Free(ObjectType* pPtr)
 		{
 			return ObjectPool::Free(pPtr);
 		}
@@ -226,8 +226,8 @@ namespace BR
 		virtual ObjectPoolObject* OnNewObject( void* pNewObject ) = 0;
 
 		// Allocate/Free
-		HRESULT Alloc( ObjectPoolObject* &pPtr );
-		HRESULT Free( ObjectPoolObject* pPtr );
+		Result Alloc( ObjectPoolObject* &pPtr );
+		Result Free( ObjectPoolObject* pPtr );
 	};
 
 
@@ -249,15 +249,15 @@ namespace BR
 			return new(pNewObject) ObjectType;
 		}
 
-		HRESULT Alloc( ObjectType* &pPtr )
+		Result Alloc( ObjectType* &pPtr )
 		{
 			ObjectPoolObject *pObj = nullptr;
-			HRESULT hr = ObjectPoolMT::Alloc( pObj );
+			Result hr = ObjectPoolMT::Alloc( pObj );
 			pPtr = (ObjectType*)(pObj);
 			return hr;
 		}
 
-		HRESULT Free( ObjectType* pPtr )
+		Result Free( ObjectType* pPtr )
 		{
 			return ObjectPoolMT::Free( pPtr );
 		}

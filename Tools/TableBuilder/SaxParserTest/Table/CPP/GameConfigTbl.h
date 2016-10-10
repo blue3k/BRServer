@@ -60,9 +60,9 @@ namespace conspiracy
 
 
 		// declare member function
-		static HRESULT LoadTable( const std::list<GameConfigItem>& rowList );
+		static BR::Result LoadTable( const std::list<GameConfigItem>& rowList );
 
-		static HRESULT FindItem( const int& Key, GameConfigItem*& pRow);
+		static BR::Result FindItem( const int& Key, GameConfigItem*& pRow);
 	}; // class GameConfigTbl
 }; // namespace conspiracy
 

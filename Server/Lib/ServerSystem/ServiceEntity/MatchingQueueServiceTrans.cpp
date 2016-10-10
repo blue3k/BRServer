@@ -49,9 +49,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT RegisterPartyMatchingTrans::StartTransaction()
+	Result RegisterPartyMatchingTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		m_MatchingTicket = 0;
 
@@ -68,9 +68,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT RegisterPlayerMatchingTrans::StartTransaction()
+	Result RegisterPlayerMatchingTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		MatchingPlayerInformation playerInfo(GetRouteContext().GetFrom(), GetPlayerID(), PlayerRole::None);
 		m_MatchingTicket = 0;
@@ -88,9 +88,9 @@ namespace Svr {
 	
 
 	// Start Transaction
-	HRESULT UpdateMatchingEntityUIDTrans::StartTransaction()
+	Result UpdateMatchingEntityUIDTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -105,9 +105,9 @@ namespace Svr {
 	
 
 	// Start Transaction
-	HRESULT UnregisterMatchingTrans::StartTransaction()
+	Result UnregisterMatchingTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -122,9 +122,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ReserveItemTrans::StartTransaction()
+	Result ReserveItemTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -139,9 +139,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT MatchingQueueReserveItemsTrans::StartTransaction()
+	Result MatchingQueueReserveItemsTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(super::StartTransaction());
 
@@ -158,7 +158,7 @@ namespace Svr {
 			m_MatchingTicket.push_back(matchingTicket);
 		}
 
-		hr = m_NumPlayersInTheTicket.GetSize() == 0 ? E_SVR_NOITEM_INQUEUE : S_SYSTEM_OK;
+		hr = m_NumPlayersInTheTicket.GetSize() == 0 ? ResultCode::E_SVR_NOITEM_INQUEUE : ResultCode::SUCCESS;
 
 	Proc_End:
 
@@ -170,9 +170,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT CancelReservationTrans::StartTransaction()
+	Result CancelReservationTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -188,9 +188,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT DequeueItemTrans::StartTransaction()
+	Result DequeueItemTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pServerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -201,7 +201,7 @@ namespace Svr {
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity( m_matchingQueueItem.RegisterUID.GetServerID(), pServerEntity ));
 
 		if( m_matchingQueueItem.NumPlayers == 0 )
-			svrErrClose(E_SVR_INVALID_QUEUEITEM);
+			svrErrClose(ResultCode::E_SVR_INVALID_QUEUEITEM);
 
 		if( m_matchingQueueItem.NumPlayers > 1 || m_matchingQueueItem.Players[0].PlayerUID != m_matchingQueueItem.RegisterUID ) // This should be a party
 		{
@@ -230,9 +230,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT MatchingQueueTransMatchingItemError::StartTransaction()
+	Result MatchingQueueTransMatchingItemError::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pServerEntity = nullptr;
 		MatchingQueueItem matchingQueueItem;
 
@@ -244,7 +244,7 @@ namespace Svr {
 		svrChk(GetServerComponent<ServerEntityManager>()->GetServerEntity(matchingQueueItem.RegisterUID.GetServerID(), pServerEntity));
 
 		if (matchingQueueItem.NumPlayers == 0)
-			svrErrClose(E_SVR_INVALID_QUEUEITEM);
+			svrErrClose(ResultCode::E_SVR_INVALID_QUEUEITEM);
 
 		if (matchingQueueItem.NumPlayers > 1 || matchingQueueItem.Players[0].PlayerUID != matchingQueueItem.RegisterUID) // This should be a party
 		{

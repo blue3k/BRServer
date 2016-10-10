@@ -28,7 +28,7 @@ namespace Net {
 	//
 	namespace NetSystem
 	{
-		HRESULT SetGatheringBufferSize(UINT bufferSize);
+		Result SetGatheringBufferSize(UINT bufferSize);
 	};
 
 } // namespace Net

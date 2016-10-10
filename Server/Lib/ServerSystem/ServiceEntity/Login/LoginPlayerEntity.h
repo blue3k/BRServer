@@ -87,15 +87,15 @@ namespace Svr {
 		virtual ~LoginPlayerEntity();
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID );
 
 		// Set connection for pilot
-		virtual HRESULT SetConnection( Net::Connection* &pCon );
+		virtual Result SetConnection( Net::Connection* &pCon );
 
 		void HeartBit();
 
 		// pending close transaction
-		HRESULT PendingCloseTransaction();
+		Result PendingCloseTransaction();
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -103,7 +103,7 @@ namespace Svr {
 		//
 
 		const char* GetGCMKey()								{ return m_GCMKeys; }
-		HRESULT SetGCMKey(const char* gcmKey)				{ return StrUtil::StringCpy(m_GCMKeys, gcmKey); }
+		Result SetGCMKey(const char* gcmKey)				{ return StrUtil::StringCpy(m_GCMKeys, gcmKey); }
 
 		static GlobalUIDGenerator& GetAuthTicketGenerator() { return stm_AuthTicketGenerator; }
 
@@ -113,13 +113,13 @@ namespace Svr {
 		//
 
 		// register message handlers
-		virtual HRESULT RegisterMessageHandlers();
+		virtual Result RegisterMessageHandlers();
 
 		// clear transaction
-		virtual HRESULT ClearEntity() override;
+		virtual Result ClearEntity() override;
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,7 +128,7 @@ namespace Svr {
 		//
 
 		// Update Game Player 
-		HRESULT UpdateLoginPlayer(TimeStampMS CurTime );
+		Result UpdateLoginPlayer(TimeStampMS CurTime );
 
 	};
 

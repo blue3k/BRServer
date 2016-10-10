@@ -33,7 +33,7 @@ namespace Svr {
 		return g_EntityTable;
 	}
 
-	HRESULT FindEntity(EntityID entityID, SharedPointerT<Entity>& entity)
+	Result FindEntity(EntityID entityID, SharedPointerT<Entity>& entity)
 	{
 		return g_EntityTable.Find(entityID, entity);
 	}

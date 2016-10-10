@@ -66,12 +66,12 @@ namespace BR {
 namespace Net {
 
 	// Create policy if not exist
-	HRESULT IConnection::CreatePolicy( UINT uiPolicy )
+	Result IConnection::CreatePolicy( UINT uiPolicy )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( uiPolicy >= POLICY_NETMAX )
-			netErr( E_SYSTEM_INVALIDARG );
+			netErr( ResultCode::INVALID_ARG );
 
 		if( m_pPolicy[uiPolicy] == NULL )// try create
 		{ 
@@ -190,7 +190,7 @@ namespace Net {
 				break;
 
 			default:
-				netErr( E_SYSTEM_INVALIDARG );
+				netErr( ResultCode::INVALID_ARG );
 				break;
 			};
 		}
@@ -241,22 +241,22 @@ namespace Net {
 
 
 
-	HRESULT Connection::ClearQueues()
+	Result Connection::ClearQueues()
 	{
 		m_RecvQueue.ClearQueue();
 		m_SendGuaQueue.ClearQueue();
 
 		// When the queue is cleared these synchronization variables need to be cleared
 		m_usSeqNone = 0;
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Make Ack packet and enqueue to SendNetCtrlqueue
-	HRESULT Connection::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	Result Connection::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
-		HRESULT hrTem;
+		Result hr = ResultCode::SUCCESS;
+		Result hrTem;
 		MsgNetCtrl *pAckMsg = nullptr;
 		Message::MessageData *pMsg = nullptr;
 
@@ -293,7 +293,7 @@ namespace Net {
 							hrTem );
 
 			// ignore io send fail except connection closed
-			if( hrTem == ((HRESULT)E_NET_CONNECTION_CLOSED) )
+			if( hrTem == ((Result)ResultCode::E_NET_CONNECTION_CLOSED) )
 			{
 				goto Proc_End;
 			}
@@ -312,7 +312,7 @@ namespace Net {
 	}
 
 	// Called on connection result
-	void Connection::OnConnectionResult( HRESULT hrConnect )
+	void Connection::OnConnectionResult( Result hrConnect )
 	{
 		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_CONNECTION_RESULT, hrConnect)  );
 
@@ -343,7 +343,7 @@ namespace Net {
 	}
 
 	// Initialize packet synchronization
-	HRESULT Connection::InitSynchronization()
+	Result Connection::InitSynchronization()
 	{
 		UpdateConnectionTime();
 
@@ -351,13 +351,13 @@ namespace Net {
 
 		m_RecvQueue.ClearQueue();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Initialize connection
-	HRESULT Connection::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
+	Result Connection::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		netAssert(GetConnectionState() == STATE_DISCONNECTED);
 		// Except client everybody should have port number when it gets here
@@ -403,9 +403,9 @@ namespace Net {
 	}
 
 	// Disconnect connection
-	HRESULT Connection::Disconnect(const char* reason)
+	Result Connection::Disconnect(const char* reason)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetConnectionState() != STATE_DISCONNECTING 
 			&& GetConnectionState() != STATE_DISCONNECTED)
@@ -427,9 +427,9 @@ namespace Net {
 
 
 	// Close connection
-	HRESULT Connection::CloseConnection()
+	Result Connection::CloseConnection()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
@@ -451,15 +451,15 @@ namespace Net {
 	}
 
 	//// Get Recived message
-	//HRESULT Connection::GetRecv( Message::MessageData* &pMsg )
+	//Result Connection::GetRecv( Message::MessageData* &pMsg )
 	//{
 	//	return m_RecvQueue.Dequeue( pMsg );
 	//}
 
 
-	HRESULT Connection::OnRecv( Message::MessageData *pMsg )
+	Result Connection::OnRecv( Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 	
 		if (pMsg == nullptr)
 			return hr;
@@ -502,13 +502,13 @@ namespace Net {
 
 
 	// Query connection event
-	HRESULT Connection::DequeueConnectionEvent( Event& curEvent )
+	Result Connection::DequeueConnectionEvent( Event& curEvent )
 	{
 		return m_EventQueue.Dequeue( curEvent );
 	}
 
 	// Add network event to queue
-	HRESULT Connection::EnqueueConnectionEvent(const IConnection::Event &evt)
+	Result Connection::EnqueueConnectionEvent(const IConnection::Event &evt)
 	{
 		if (GetEventHandler())
 		{
@@ -520,20 +520,20 @@ namespace Net {
 		}
 		//return m_EventQueue.Enqueue( evt );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Get received Message
-	HRESULT Connection::GetRecvMessage( Message::MessageData* &pIMsg )
+	Result Connection::GetRecvMessage( Message::MessageData* &pIMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		pIMsg = nullptr;
 
 		if( FAILED(GetRecvQueue().Dequeue( pIMsg )) )
 		{
-			hr = E_SYSTEM_FAIL;
+			hr = ResultCode::FAIL;
 			goto Proc_End;
 		}
 
@@ -543,7 +543,7 @@ namespace Net {
 			if (uiPolicy == 0
 				|| uiPolicy >= POLICY_NETMAX) // invalid policy
 			{
-				netErr(E_NET_BADPACKET_NOTEXPECTED);
+				netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 			}
 		}
 

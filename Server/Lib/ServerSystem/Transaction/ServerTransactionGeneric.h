@@ -50,9 +50,9 @@ namespace Svr {
 		}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction()
+		virtual Result StartTransaction()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			Svr::ServerEntity *pServerEntity = nullptr;
 
 			svrChk( super::StartTransaction() );
@@ -114,10 +114,10 @@ namespace Svr {
 		EntityServerStartedTrans( Message::MessageData* &pIMsg );
 		virtual ~EntityServerStartedTrans();
 
-		HRESULT OnGetClusterMemberList(Svr::TransactionResult* pRes);
+		Result OnGetClusterMemberList(Svr::TransactionResult* pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 	};
 

@@ -28,7 +28,7 @@ namespace BR {
 
 
 	//// Allocate given size of buffer 
-	//HRESULT BLOBBuffer::Allocate( UINT uiSize )
+	//Result BLOBBuffer::Allocate( UINT uiSize )
 	//{
 	//	if( pBlobData )
 	//		delete[] pBlobData;
@@ -38,16 +38,16 @@ namespace BR {
 	//	{
 	//		pBlobData = new BYTE[uiSize];
 	//		if( pBlobData == NULL )
-	//			return E_SYSTEM_OUTOFMEMORY;
+	//			return ResultCode::OUT_OF_MEMORY;
 	//	}
 
 	//	cbSize = uiSize;
 
-	//	return S_SYSTEM_OK;
+	//	return ResultCode::SUCCESS;
 	//}
 
 	//// Reallocate given size of buffer 
-	//HRESULT BLOBBuffer::Reallocate( UINT uiSize )
+	//Result BLOBBuffer::Reallocate( UINT uiSize )
 	//{
 	//	BYTE *pBlobDataTem = NULL;
 
@@ -55,7 +55,7 @@ namespace BR {
 	//	{
 	//		pBlobDataTem = new BYTE[uiSize];
 	//		if( pBlobDataTem == NULL )
-	//			return E_SYSTEM_OUTOFMEMORY;
+	//			return ResultCode::OUT_OF_MEMORY;
 	//	}
 
 	//	if( cbSize && pBlobData )
@@ -68,7 +68,7 @@ namespace BR {
 	//		delete[] pBlobData;
 	//	pBlobData = pBlobDataTem;
 
-	//	return S_SYSTEM_OK;
+	//	return ResultCode::SUCCESS;
 	//}
 
 

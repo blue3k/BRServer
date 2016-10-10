@@ -8,39 +8,51 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#pragma once
 #include <stdint.h>
 
 
 
-// Database connection failed 
-#define E_DB_INVALID_CONFIG                                           ((int32_t)0xE7050000L) 
+namespace BR {
+	namespace ResultCode {
 
-// Database connection failed 
-#define E_DB_CONNECTION_FAILED                                        ((int32_t)0xE7050001L) 
+		enum {
 
-// Database connection lost 
-#define E_DB_CONNECTION_LOST                                          ((int32_t)0xE7050002L) 
 
-// Database statement prepare is failed 
-#define E_DB_STATEMENT_PREPARE_FAILED                                 ((int32_t)0xE7050003L) 
+			// Database connection failed 
+			E_DB_INVALID_CONFIG                                                = 0xE7050000L, 
 
-// Database parameter binding is failed 
-#define E_DB_PARAMETER_BIND_FAILED                                    ((int32_t)0xE7050004L) 
+			// Database connection failed 
+			E_DB_CONNECTION_FAILED                                             = 0xE7050001L, 
 
-// Database result patch is failed 
-#define E_DB_RESULT_PATCH_FAILED                                      ((int32_t)0xE7050005L) 
+			// Database connection lost 
+			E_DB_CONNECTION_LOST                                               = 0xE7050002L, 
 
-// Database result column count is mismatched 
-#define E_DB_RESULT_COUNT_MISMATCH                                    ((int32_t)0xE7050006L) 
+			// Database statement prepare is failed 
+			E_DB_STATEMENT_PREPARE_FAILED                                      = 0xE7050003L, 
 
-// Database result column type is mismatched 
-#define E_DB_RESULT_FIELDTYPE_MISMATCH                                ((int32_t)0xE7050007L) 
+			// Database parameter binding is failed 
+			E_DB_PARAMETER_BIND_FAILED                                         = 0xE7050004L, 
 
-// Duplicated Database source is specified 
-#define E_DB_DUPLICATED_SOURCE                                        ((int32_t)0xE7050008L) 
+			// Database result patch is failed 
+			E_DB_RESULT_PATCH_FAILED                                           = 0xE7050005L, 
 
-// Invalid partitioning ID 
-#define E_DB_INVALID_PARTITIONINGID                                   ((int32_t)0xE7050009L) 
+			// Database result column count is mismatched 
+			E_DB_RESULT_COUNT_MISMATCH                                         = 0xE7050006L, 
+
+			// Database result column type is mismatched 
+			E_DB_RESULT_FIELDTYPE_MISMATCH                                     = 0xE7050007L, 
+
+			// Duplicated Database source is specified 
+			E_DB_DUPLICATED_SOURCE                                             = 0xE7050008L, 
+
+			// Invalid partitioning ID 
+			E_DB_INVALID_PARTITIONINGID                                        = 0xE7050009L, 
+
+		};//enum 
+	}//namespace ResultCode 
+}//namespace SF 
+
 
 
 

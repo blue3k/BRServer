@@ -39,9 +39,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT GameInstanceTransCreateGame::StartTransaction()
+	Result GameInstanceTransCreateGame::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Entity *pEntity = nullptr;
 		GameInstanceEntity* pGameInstance = nullptr;
 
@@ -67,9 +67,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT GameInstanceTransGameDeleted::StartTransaction()
+	Result GameInstanceTransGameDeleted::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(super::StartTransaction());
 

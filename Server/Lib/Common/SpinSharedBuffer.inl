@@ -29,10 +29,10 @@ SpinSharedBuffer<ItemType>::~SpinSharedBuffer(void)
 
 // Set buffer count, all pervious buffer data will be lost
 template <class ItemType>
-HRESULT SpinSharedBuffer<ItemType>::SetBufferCount(  UINT BufferCount  )
+Result SpinSharedBuffer<ItemType>::SetBufferCount(  UINT BufferCount  )
 {
 	if( BufferCount == 0 )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 	if( m_SpinBuffer )
 		delete[] m_SpinBuffer;
@@ -41,9 +41,9 @@ HRESULT SpinSharedBuffer<ItemType>::SetBufferCount(  UINT BufferCount  )
 
 	m_SpinBuffer = new Buffer[m_BufferCount];
 	if( m_SpinBuffer == nullptr )
-		return E_SYSTEM_OUTOFMEMORY;
+		return ResultCode::OUT_OF_MEMORY;
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 // Get buffer count
@@ -62,10 +62,10 @@ CounterType SpinSharedBuffer<ItemType>::GetUsedBufferCount()
 
 // Try to get one buffer while given times
 template <class ItemType>
-HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pBuffer )
+Result SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pBuffer )
 {
 	if( m_SpinBuffer == nullptr )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 	// get access ticket
 	CounterType myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
@@ -82,11 +82,11 @@ HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pB
 			// Try limit
 			iTry++;
 			if( iTry > iTryCount )
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			// if enguaged to maximum buffer state
 			if( m_UsedBufferCount >= m_BufferCount )
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
 			myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
 			accessPos = myTicket % m_BufferCount;
@@ -102,15 +102,15 @@ HRESULT SpinSharedBuffer<ItemType>::TryAllocBuffer( INT iTryCount, ItemType* &pB
 	m_UsedBufferCount.fetch_add(1, std::memory_order_relaxed);
 
 	// Writing success!
-	return S_SYSTEM_OK; 
+	return ResultCode::SUCCESS; 
 }
 
 // Get free buffer
 template <class ItemType>
-HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
+Result SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 {
 	if( m_SpinBuffer == nullptr )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 	// get access ticket
 	CounterType myTicket = m_AccessPosition.fetch_add(1, std::memory_order_relaxed) + 1;
@@ -141,27 +141,27 @@ HRESULT SpinSharedBuffer<ItemType>::AllocBuffer( ItemType* &pBuffer )
 	m_UsedBufferCount.fetch_add(1, std::memory_order_release);
 
 	// Writing success!
-	return S_SYSTEM_OK; 
+	return ResultCode::SUCCESS; 
 }
 
 // Free given buffer
 template <class ItemType>
-HRESULT SpinSharedBuffer<ItemType>::FreeBuffer( ItemType* pBuffer )
+Result SpinSharedBuffer<ItemType>::FreeBuffer( ItemType* pBuffer )
 {
 	if( pBuffer == NULL )
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 
 	// Offset calculation for Buffer
 	Buffer *pBufferPtr = (Buffer*)( ((BYTE*)pBuffer) + (intptr_t)(&m_SpinBuffer[0]) - (intptr_t)(&m_SpinBuffer[0].Data) );
 
 	if( pBufferPtr < m_SpinBuffer || pBufferPtr > (m_SpinBuffer + m_BufferCount) )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 	pBufferPtr->State.store(Buffer::STATE_FREE, std::memory_order_relaxed);
 
 	m_UsedBufferCount.fetch_sub(1, std::memory_order_relaxed);
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 

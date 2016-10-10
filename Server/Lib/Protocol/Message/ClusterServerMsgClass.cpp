@@ -31,9 +31,9 @@ namespace BR
 		{
  			// Cmd: Cluster member list query
 			const MessageID GetClusterMemberListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 0);
-			HRESULT GetClusterMemberListCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetClusterMemberListCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -53,11 +53,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetClusterMemberListCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetClusterMemberListCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetClusterMemberListCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			Result GetClusterMemberListCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -85,11 +85,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetClusterMemberListCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			}; // Result GetClusterMemberListCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 
-			HRESULT GetClusterMemberListCmd::OverrideRouteContextDestination( EntityUID to )
+			Result GetClusterMemberListCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -111,11 +111,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetClusterMemberListCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GetClusterMemberListCmd::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT GetClusterMemberListCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result GetClusterMemberListCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -142,7 +142,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetClusterMemberListCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result GetClusterMemberListCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void GetClusterMemberListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -152,9 +152,9 @@ namespace BR
 			}; // void GetClusterMemberListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetClusterMemberListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 0);
-			HRESULT GetClusterMemberListRes::ParseIMsg( MessageData* pIMsg )
+			Result GetClusterMemberListRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -167,7 +167,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofMemberList, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pMemberList, pCur, iMsgSize, sizeof(ServiceInformation)*numberofMemberList ) );
 				m_MemberList.SetLinkedBuffer(numberofMemberList, numberofMemberList, pMemberList);
@@ -177,18 +177,18 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetClusterMemberListRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetClusterMemberListRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetClusterMemberListRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
+			Result GetClusterMemberListRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(ServiceInformation)*InMemberList.GetSize() + sizeof(UINT16));
 
 				MessageData *pNewMsg = nullptr;
@@ -200,7 +200,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInMemberList, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.GetSize())); 
 
@@ -211,11 +211,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetClusterMemberListRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
+			}; // Result GetClusterMemberListRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 
-			HRESULT GetClusterMemberListRes::OverrideRouteContextDestination( EntityUID to )
+			Result GetClusterMemberListRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -237,11 +237,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetClusterMemberListRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GetClusterMemberListRes::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT GetClusterMemberListRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result GetClusterMemberListRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -259,7 +259,7 @@ namespace BR
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
+				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 				pCur += sizeof(ServiceInformation)*m_MemberList.GetSize(); iMsgSize -= (INT)(sizeof(ServiceInformation)*m_MemberList.GetSize());
 
@@ -268,7 +268,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetClusterMemberListRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result GetClusterMemberListRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void GetClusterMemberListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -279,9 +279,9 @@ namespace BR
 
 			// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
 			const MessageID JoinClusterCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 1);
-			HRESULT JoinClusterCmd::ParseIMsg( MessageData* pIMsg )
+			Result JoinClusterCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -306,11 +306,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT JoinClusterCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result JoinClusterCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT JoinClusterCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+			Result JoinClusterCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -348,11 +348,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT JoinClusterCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+			}; // Result JoinClusterCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 
-			HRESULT JoinClusterCmd::OverrideRouteContextDestination( EntityUID to )
+			Result JoinClusterCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -374,11 +374,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT JoinClusterCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result JoinClusterCmd::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT JoinClusterCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result JoinClusterCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -405,7 +405,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT JoinClusterCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result JoinClusterCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void JoinClusterCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -415,9 +415,9 @@ namespace BR
 			}; // void JoinClusterCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID JoinClusterRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 1);
-			HRESULT JoinClusterRes::ParseIMsg( MessageData* pIMsg )
+			Result JoinClusterRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -430,7 +430,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofMemberList, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pMemberList, pCur, iMsgSize, sizeof(ServiceInformation)*numberofMemberList ) );
 				m_MemberList.SetLinkedBuffer(numberofMemberList, numberofMemberList, pMemberList);
@@ -440,18 +440,18 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT JoinClusterRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result JoinClusterRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT JoinClusterRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
+			Result JoinClusterRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(ServiceInformation)*InMemberList.GetSize() + sizeof(UINT16));
 
 				MessageData *pNewMsg = nullptr;
@@ -463,7 +463,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInMemberList, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InMemberList.data(), (INT)(sizeof(ServiceInformation)*InMemberList.GetSize())); 
 
@@ -474,11 +474,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT JoinClusterRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList )
+			}; // Result JoinClusterRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 
-			HRESULT JoinClusterRes::OverrideRouteContextDestination( EntityUID to )
+			Result JoinClusterRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -500,11 +500,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT JoinClusterRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result JoinClusterRes::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT JoinClusterRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result JoinClusterRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -522,7 +522,7 @@ namespace BR
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
+				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
 				pCur += sizeof(ServiceInformation)*m_MemberList.GetSize(); iMsgSize -= (INT)(sizeof(ServiceInformation)*m_MemberList.GetSize());
 
@@ -531,7 +531,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT JoinClusterRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result JoinClusterRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void JoinClusterRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -542,9 +542,9 @@ namespace BR
 
 			// C2S: Do not let it broadcasted while it's manual broadcast packet
 			const MessageID NewServerServiceJoinedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 2);
-			HRESULT NewServerServiceJoinedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result NewServerServiceJoinedC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -568,11 +568,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NewServerServiceJoinedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result NewServerServiceJoinedC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT NewServerServiceJoinedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
+			Result NewServerServiceJoinedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -608,11 +608,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NewServerServiceJoinedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
+			}; // Result NewServerServiceJoinedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 
-			HRESULT NewServerServiceJoinedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result NewServerServiceJoinedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -634,11 +634,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NewServerServiceJoinedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result NewServerServiceJoinedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT NewServerServiceJoinedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result NewServerServiceJoinedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -664,7 +664,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NewServerServiceJoinedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result NewServerServiceJoinedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void NewServerServiceJoinedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -675,9 +675,9 @@ namespace BR
 
 			// C2S: Sync cluster service informations
 			const MessageID SyncClusterServiceC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 3);
-			HRESULT SyncClusterServiceC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result SyncClusterServiceC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -701,11 +701,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT SyncClusterServiceC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result SyncClusterServiceC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT SyncClusterServiceC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
+			Result SyncClusterServiceC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -737,11 +737,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT SyncClusterServiceC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
+			}; // Result SyncClusterServiceC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 
-			HRESULT SyncClusterServiceC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result SyncClusterServiceC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -763,11 +763,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT SyncClusterServiceC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result SyncClusterServiceC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT SyncClusterServiceC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result SyncClusterServiceC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -793,7 +793,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT SyncClusterServiceC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result SyncClusterServiceC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void SyncClusterServiceC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -804,9 +804,9 @@ namespace BR
 
 			// Cmd: Join to the cluster
 			const MessageID RequestDataSyncCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 4);
-			HRESULT RequestDataSyncCmd::ParseIMsg( MessageData* pIMsg )
+			Result RequestDataSyncCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -826,11 +826,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestDataSyncCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestDataSyncCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RequestDataSyncCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			Result RequestDataSyncCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -858,11 +858,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestDataSyncCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			}; // Result RequestDataSyncCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 
-			HRESULT RequestDataSyncCmd::OverrideRouteContextDestination( EntityUID to )
+			Result RequestDataSyncCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -884,11 +884,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestDataSyncCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RequestDataSyncCmd::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT RequestDataSyncCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result RequestDataSyncCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -915,7 +915,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestDataSyncCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result RequestDataSyncCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void RequestDataSyncCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -925,9 +925,9 @@ namespace BR
 			}; // void RequestDataSyncCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RequestDataSyncRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 4);
-			HRESULT RequestDataSyncRes::ParseIMsg( MessageData* pIMsg )
+			Result RequestDataSyncRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -939,25 +939,25 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT RequestDataSyncRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestDataSyncRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RequestDataSyncRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			Result RequestDataSyncRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT));
+					+ sizeof(Result));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -967,7 +967,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 
 				pMsg = pNewMsg;
 
@@ -976,11 +976,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestDataSyncRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			}; // Result RequestDataSyncRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
-			HRESULT RequestDataSyncRes::OverrideRouteContextDestination( EntityUID to )
+			Result RequestDataSyncRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1002,11 +1002,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestDataSyncRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RequestDataSyncRes::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT RequestDataSyncRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result RequestDataSyncRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1024,14 +1024,14 @@ namespace BR
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
+				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT RequestDataSyncRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result RequestDataSyncRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void RequestDataSyncRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -1042,9 +1042,9 @@ namespace BR
 
 			// S2C: Master instance of the cluster is assigned
 			const MessageID ClusterMasterAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 5);
-			HRESULT ClusterMasterAssignedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result ClusterMasterAssignedS2CEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1065,11 +1065,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterMasterAssignedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result ClusterMasterAssignedS2CEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT ClusterMasterAssignedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
+			Result ClusterMasterAssignedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1099,11 +1099,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterMasterAssignedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
+			}; // Result ClusterMasterAssignedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
 
-			HRESULT ClusterMasterAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			Result ClusterMasterAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1125,11 +1125,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterMasterAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result ClusterMasterAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT ClusterMasterAssignedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result ClusterMasterAssignedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1155,7 +1155,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterMasterAssignedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result ClusterMasterAssignedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void ClusterMasterAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -1166,9 +1166,9 @@ namespace BR
 
 			// C2S: Master vote
 			const MessageID ClusterMasterVoteC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 6);
-			HRESULT ClusterMasterVoteC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result ClusterMasterVoteC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1189,11 +1189,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterMasterVoteC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result ClusterMasterVoteC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT ClusterMasterVoteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime )
+			Result ClusterMasterVoteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1223,11 +1223,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterMasterVoteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime )
+			}; // Result ClusterMasterVoteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime )
 
-			HRESULT ClusterMasterVoteC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result ClusterMasterVoteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1249,11 +1249,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterMasterVoteC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result ClusterMasterVoteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT ClusterMasterVoteC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result ClusterMasterVoteC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1279,7 +1279,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterMasterVoteC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result ClusterMasterVoteC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void ClusterMasterVoteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -1290,9 +1290,9 @@ namespace BR
 
 			// C2S: Update cluster service status
 			const MessageID ClusterUpdateStatusC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 7);
-			HRESULT ClusterUpdateStatusC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result ClusterUpdateStatusC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1313,11 +1313,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterUpdateStatusC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result ClusterUpdateStatusC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT ClusterUpdateStatusC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
+			Result ClusterUpdateStatusC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1347,11 +1347,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterUpdateStatusC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
+			}; // Result ClusterUpdateStatusC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 
-			HRESULT ClusterUpdateStatusC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result ClusterUpdateStatusC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1373,11 +1373,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterUpdateStatusC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result ClusterUpdateStatusC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT ClusterUpdateStatusC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result ClusterUpdateStatusC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1403,7 +1403,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterUpdateStatusC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result ClusterUpdateStatusC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void ClusterUpdateStatusC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -1414,9 +1414,9 @@ namespace BR
 
 			// C2S: Update cluster service workload
 			const MessageID ClusterUpdateWorkloadC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 8);
-			HRESULT ClusterUpdateWorkloadC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result ClusterUpdateWorkloadC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1437,11 +1437,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterUpdateWorkloadC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result ClusterUpdateWorkloadC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT ClusterUpdateWorkloadC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload )
+			Result ClusterUpdateWorkloadC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1471,11 +1471,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterUpdateWorkloadC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload )
+			}; // Result ClusterUpdateWorkloadC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload )
 
-			HRESULT ClusterUpdateWorkloadC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result ClusterUpdateWorkloadC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1497,11 +1497,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterUpdateWorkloadC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result ClusterUpdateWorkloadC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT ClusterUpdateWorkloadC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result ClusterUpdateWorkloadC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1527,7 +1527,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ClusterUpdateWorkloadC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result ClusterUpdateWorkloadC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void ClusterUpdateWorkloadC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -1538,9 +1538,9 @@ namespace BR
 
 			// Cmd: Get lowest workloaded cluster member
 			const MessageID GetLowestWorkloadClusterMemberCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 9);
-			HRESULT GetLowestWorkloadClusterMemberCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetLowestWorkloadClusterMemberCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1560,11 +1560,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetLowestWorkloadClusterMemberCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetLowestWorkloadClusterMemberCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetLowestWorkloadClusterMemberCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			Result GetLowestWorkloadClusterMemberCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1592,11 +1592,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetLowestWorkloadClusterMemberCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			}; // Result GetLowestWorkloadClusterMemberCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
 
-			HRESULT GetLowestWorkloadClusterMemberCmd::OverrideRouteContextDestination( EntityUID to )
+			Result GetLowestWorkloadClusterMemberCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1618,11 +1618,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetLowestWorkloadClusterMemberCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GetLowestWorkloadClusterMemberCmd::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT GetLowestWorkloadClusterMemberCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result GetLowestWorkloadClusterMemberCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1649,7 +1649,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetLowestWorkloadClusterMemberCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result GetLowestWorkloadClusterMemberCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void GetLowestWorkloadClusterMemberCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -1659,9 +1659,9 @@ namespace BR
 			}; // void GetLowestWorkloadClusterMemberCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetLowestWorkloadClusterMemberRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 9);
-			HRESULT GetLowestWorkloadClusterMemberRes::ParseIMsg( MessageData* pIMsg )
+			Result GetLowestWorkloadClusterMemberRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1673,7 +1673,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Member, pCur, iMsgSize, sizeof(ServiceInformation) ) );
 
 
@@ -1681,18 +1681,18 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetLowestWorkloadClusterMemberRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetLowestWorkloadClusterMemberRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetLowestWorkloadClusterMemberRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const ServiceInformation &InMember )
+			Result GetLowestWorkloadClusterMemberRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(ServiceInformation));
 
 				MessageData *pNewMsg = nullptr;
@@ -1703,7 +1703,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InMember, sizeof(ServiceInformation));
 
 				pMsg = pNewMsg;
@@ -1713,11 +1713,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetLowestWorkloadClusterMemberRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const ServiceInformation &InMember )
+			}; // Result GetLowestWorkloadClusterMemberRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember )
 
-			HRESULT GetLowestWorkloadClusterMemberRes::OverrideRouteContextDestination( EntityUID to )
+			Result GetLowestWorkloadClusterMemberRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1739,11 +1739,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetLowestWorkloadClusterMemberRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GetLowestWorkloadClusterMemberRes::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT GetLowestWorkloadClusterMemberRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result GetLowestWorkloadClusterMemberRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1761,7 +1761,7 @@ namespace BR
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
+				pCur += sizeof(Result); iMsgSize -= sizeof(Result);
 				pCur += sizeof(ServiceInformation); iMsgSize -= sizeof(ServiceInformation);
 
 
@@ -1769,7 +1769,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetLowestWorkloadClusterMemberRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result GetLowestWorkloadClusterMemberRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void GetLowestWorkloadClusterMemberRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -1780,9 +1780,9 @@ namespace BR
 
 			// C2S: Called when a player entity is created
 			const MessageID GamePlayerEntityCreatedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 10);
-			HRESULT GamePlayerEntityCreatedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayerEntityCreatedC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1802,11 +1802,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GamePlayerEntityCreatedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayerEntityCreatedC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GamePlayerEntityCreatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			Result GamePlayerEntityCreatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1834,11 +1834,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GamePlayerEntityCreatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			}; // Result GamePlayerEntityCreatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 
-			HRESULT GamePlayerEntityCreatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result GamePlayerEntityCreatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1860,11 +1860,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GamePlayerEntityCreatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GamePlayerEntityCreatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT GamePlayerEntityCreatedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result GamePlayerEntityCreatedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1890,7 +1890,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GamePlayerEntityCreatedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result GamePlayerEntityCreatedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void GamePlayerEntityCreatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -1901,9 +1901,9 @@ namespace BR
 
 			// C2S: Called when a player entity is deleted
 			const MessageID GamePlayerEntityDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_CLUSTERSERVER, 11);
-			HRESULT GamePlayerEntityDeletedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayerEntityDeletedC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1923,11 +1923,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GamePlayerEntityDeletedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayerEntityDeletedC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GamePlayerEntityDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			Result GamePlayerEntityDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1955,11 +1955,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GamePlayerEntityDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			}; // Result GamePlayerEntityDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 
-			HRESULT GamePlayerEntityDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result GamePlayerEntityDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1981,11 +1981,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GamePlayerEntityDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GamePlayerEntityDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT GamePlayerEntityDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result GamePlayerEntityDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -2011,7 +2011,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GamePlayerEntityDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result GamePlayerEntityDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void GamePlayerEntityDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{

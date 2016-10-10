@@ -57,24 +57,24 @@ namespace EntityServer {
 		//
 
 		// Apply configuration
-		virtual HRESULT ApplyConfiguration();
+		virtual Result ApplyConfiguration();
 
 
 		// Initialize server resource
-		virtual HRESULT InitializeServerResource();
+		virtual Result InitializeServerResource();
 
 		// Close server and release resource
-		virtual HRESULT CloseServerResource();
+		virtual Result CloseServerResource();
 
 
 		// Initialize private Network
-		virtual HRESULT InitializeNetPrivate();
+		virtual Result InitializeNetPrivate();
 
 		// Close Private Network
-		virtual HRESULT CloseNetPrivate();
+		virtual Result CloseNetPrivate();
 		
 		// create remote entity by class
-		virtual HRESULT CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity );
+		virtual Result CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity );
 
 
 	};

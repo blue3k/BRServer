@@ -113,12 +113,12 @@ namespace Svr {
 
 		// Register a new message handler
 		template< class MessageClassType >
-		HRESULT Register(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
+		Result Register(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
 		{
 			auto key = MessageClassType::MID.IDSeq.MsgID;
 			// prevent duplicated insert
 			typename HandlerTableType::iterator itHandler;
-			HRESULT hr = m_HandlerTable.find(key, itHandler );
+			Result hr = m_HandlerTable.find(key, itHandler );
 			if( SUCCEEDED(hr) )
 			{
 				// Same category can be called multiple times. let's just ignore silently
@@ -130,70 +130,70 @@ namespace Svr {
 
 			void* pPtr = nullptr;
 			if( FAILED(m_Allocator.Alloc( sizeof(TableItem), pPtr )) )
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
 			TableItem *pNewItem = new(pPtr) TableItem( MessageClassType::MID, newHandler, fileName, lineNumber);
 			if( pNewItem == nullptr )
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
 			return m_HandlerTable.insert(key, pNewItem );
 		}
 
 		// Get message handler
-		FORCEINLINE HRESULT GetHandler( Message::MessageID msgID, MessageHandlerType &handler )
+		FORCEINLINE Result GetHandler( Message::MessageID msgID, MessageHandlerType &handler )
 		{
 			typename HandlerTableType::iterator itHandler;
-			HRESULT hr = m_HandlerTable.find(msgID.IDSeq.MsgID, itHandler);
+			Result hr = m_HandlerTable.find(msgID.IDSeq.MsgID, itHandler);
 			if( FAILED(hr) )
 				return hr;
 			handler = itHandler->Handler;
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 
 		// Call handler 
-		HRESULT HandleMessage( Message::MessageData* &pMsg )
+		Result HandleMessage( Message::MessageData* &pMsg )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( FAILED(hr) ) return E_SVR_NO_MESSAGE_HANDLER;
+			if( FAILED(hr) ) return ResultCode::E_NO_MESSAGE_HANDLER;
 
 			return handler( pMsg );
 		}
 
-		HRESULT HandleMessage( Message::MessageID msgID, TransactionResult* pRes )
+		Result HandleMessage( Message::MessageID msgID, TransactionResult* pRes )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
 
 			hr = GetHandler(msgID,handler);
-			if( FAILED(hr) ) return E_SVR_NO_RESULT_HANDLER;
+			if( FAILED(hr) ) return ResultCode::E_SVR_NO_RESULT_HANDLER;
 
 			return handler( pRes );
 		}
 
 		template<class Param1>
-		HRESULT HandleMessage( Net::IConnection * pCon, Message::MessageData* &pMsg, Param1 param1 )
+		Result HandleMessage( Net::IConnection * pCon, Message::MessageData* &pMsg, Param1 param1 )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( FAILED(hr) ) return E_SVR_NO_MESSAGE_HANDLER;
+			if( FAILED(hr) ) return ResultCode::E_SVR_NO_MESSAGE_HANDLER;
 
 			return handler( pCon, pMsg, param1 );
 		}
 		
 		template<class Param1, class Param2>
-		HRESULT HandleMessage( Message::MessageData* &pMsg, Param1 param1, Param2 param2 )
+		Result HandleMessage( Message::MessageData* &pMsg, Param1 param1, Param2 param2 )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( FAILED(hr) ) return E_SVR_NO_MESSAGE_HANDLER;
+			if( FAILED(hr) ) return ResultCode::E_NO_MESSAGE_HANDLER;
 
 			return handler( pMsg, param1, param2 );
 		}
@@ -203,13 +203,13 @@ namespace Svr {
 	};
 
 
-	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::IConnection* pConn, Message::MessageData* &pMsgData, ::BR::Svr::Transaction* &pNewTrans)->HRESULT 
+	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::IConnection* pConn, Message::MessageData* &pMsgData, ::BR::Svr::Transaction* &pNewTrans)->Result 
 
 	#define BR_TRANS_MESSAGE(MessageType,MessageHandlerImpl) \
-		RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&](::BR::Svr::TransactionResult* pRes)->HRESULT MessageHandlerImpl );
+		RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&](::BR::Svr::TransactionResult* pRes)->Result MessageHandlerImpl );
 
 
-	typedef std::function<HRESULT(Net::IConnection *, Message::MessageData* &, Transaction* &)>	EntityMessageHandlerItem;
+	typedef std::function<Result(Net::IConnection *, Message::MessageData* &, Transaction* &)>	EntityMessageHandlerItem;
 
 
 

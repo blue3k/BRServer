@@ -35,16 +35,16 @@ namespace BR {
 
 	private:
 
-		static HRESULT ProcessSingleParameter(const char* argument);
+		static Result ProcessSingleParameter(const char* argument);
 
 	public:
 
 		// Prcess parameter
-		static HRESULT ProcessParameter(int numArg, const char* argc[]);
-		static HRESULT ProcessParameter(const char* arg);
+		static Result ProcessParameter(int numArg, const char* argc[]);
+		static Result ProcessParameter(const char* arg);
 
 		// Set setting value
-		static HRESULT SetSetting(const char* settingName, const char* value);
+		static Result SetSetting(const char* settingName, const char* value);
 
 		// Get setting value
 		static const char* GetSetting(const char* settingName, const char* defaultValue = "");

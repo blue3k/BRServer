@@ -27,7 +27,7 @@ namespace MatchingUtil
 
 	PlayerRole GetPlayerRoleFromQueueComponentID(UINT componentID);
 	UINT GetPartyMemberCountFromQueueComponentID(UINT componentID);
-	HRESULT GetQueueComponentIDMinMax(UINT matchingMemberCount, UINT& minComponentID, UINT& maxComponentID);
+	Result GetQueueComponentIDMinMax(UINT matchingMemberCount, UINT& minComponentID, UINT& maxComponentID);
 	UINT GetQueueCount(UINT matchingMemberCount);
 
 	UINT GetQueueComponentID(UINT matchingMemberCount, UINT partyMemberCount, PlayerRole playerRole);

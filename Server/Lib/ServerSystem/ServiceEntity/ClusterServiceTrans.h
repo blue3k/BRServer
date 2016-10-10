@@ -47,7 +47,7 @@ namespace Svr {
 
 		ServiceInformation m_currentMaster;
 
-		HRESULT m_hr;
+		Result m_hr;
 
 	public:
 		ClusterInitializationTrans();
@@ -56,27 +56,27 @@ namespace Svr {
 		//virtual void Dispose() override;
 
 		// Set timer when it fails
-		void SetFailRetryTimer(HRESULT hrRes);
+		void SetFailRetryTimer(Result hrRes);
 
 		// Timer handling
-		HRESULT OnTimer(TransactionResult* pRes);
+		Result OnTimer(TransactionResult* pRes);
 
-		//HRESULT GetClusterMemberList();
-		//HRESULT OnGetClusterMemberList(TransactionResult* pRes);
+		//Result GetClusterMemberList();
+		//Result OnGetClusterMemberList(TransactionResult* pRes);
 
-		HRESULT JoinCluster(  );
-		HRESULT OnClusterJoined(TransactionResult* pRes);
+		Result JoinCluster(  );
+		Result OnClusterJoined(TransactionResult* pRes);
 
-		HRESULT RequestDataSync();
-		HRESULT OnClusterDataSync(TransactionResult* pRes);
+		Result RequestDataSync();
+		Result OnClusterDataSync(TransactionResult* pRes);
 
 		// Add other services to me
-		HRESULT AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations );
+		Result AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations );
 
-		virtual HRESULT OnCloseTransaction( HRESULT hrRes ) override;
+		virtual Result OnCloseTransaction( Result hrRes ) override;
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -102,7 +102,7 @@ namespace Svr {
 		virtual ~RequestDataSyncTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyClusterServer* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
 
@@ -123,7 +123,7 @@ namespace Svr {
 		virtual ~ClusterMasterAssignedTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -140,7 +140,7 @@ namespace Svr {
 		virtual ~ClusterMasterVoteTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -156,7 +156,7 @@ namespace Svr {
 		virtual ~ClusterUpdateStatusTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -173,7 +173,7 @@ namespace Svr {
 		virtual ~ClusterUpdateWorkloadTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -194,7 +194,7 @@ namespace Svr {
 		virtual ~GetLowestWorkloadClusterMemberTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyClusterServer* GetPolicy() { return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyClusterServer>(); }
 
@@ -215,7 +215,7 @@ namespace Svr {
 		virtual ~ClusterNewServerServiceJoinedC2SEvtEntityTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -231,7 +231,7 @@ namespace Svr {
 		virtual ~ClusterNewServerServiceJoinedC2SEvtTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 

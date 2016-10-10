@@ -30,11 +30,11 @@ namespace BR
 			{}
 
 			// Cmd: Register entity
-			HRESULT RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
+			Result RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
 			// Cmd: Find Entity
-			HRESULT UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID );
+			Result UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID );
 			// Cmd: Find Entity
-			HRESULT FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID );
+			Result FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID );
 
 		}; // class NetPolicyEntityServer : public IPolicyEntityServer
 
@@ -47,11 +47,11 @@ namespace BR
 			{}
 
 			// Cmd: Register entity
-			HRESULT RegisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID );
+			Result RegisterEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID );
 			// Cmd: Find Entity
-			HRESULT UnregisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult );
+			Result UnregisterEntityRes( const TransactionID &InTransactionID, const Result &InResult );
 			// Cmd: Find Entity
-			HRESULT FindEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID );
+			Result FindEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID );
 
 		}; // class NetSvrPolicyEntityServer : public ISvrPolicyEntityServer
 

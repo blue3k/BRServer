@@ -90,25 +90,25 @@ namespace ConspiracyGameInstanceServer
 
 
 		// Apply configuration
-		virtual HRESULT ApplyConfiguration() override;
+		virtual Result ApplyConfiguration() override;
 
 
 		// Initialize server resource
-		virtual HRESULT InitializeServerResource() override;
+		virtual Result InitializeServerResource() override;
 
 		// Close server and release resource
-		virtual HRESULT CloseServerResource() override;
+		virtual Result CloseServerResource() override;
 
 
 		// Initialize private Network
-		virtual HRESULT InitializeNetPrivate() override;
+		virtual Result InitializeNetPrivate() override;
 
 		// Close Private Network
-		virtual HRESULT CloseNetPrivate() override;
+		virtual Result CloseNetPrivate() override;
 
 
 		// create remote entity by class
-		virtual HRESULT CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity ) override;
+		virtual Result CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity ) override;
 
 
 	};

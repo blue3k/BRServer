@@ -38,9 +38,9 @@ namespace BRResultCodeCompiler
                 xmlItem.ErrorCode = codeItem.ResultCode.ID;
                 string strDefine = "";
                 if (Codes.UseFacilityName)
-                    strDefine = string.Format("{0}_{1}_{2}", ResultCode.ServerityToDefineString(codeItem.ResultCode.Severity), facilityUpr, codeItem.CodeName.ToUpper());
+                    strDefine = string.Format("{0}{1}_{2}", ResultCode.ServerityToDefineString(codeItem.ResultCode.Severity), facilityUpr, codeItem.CodeName.ToUpper());
                 else
-                    strDefine = string.Format("{0}_{1}", ResultCode.ServerityToDefineString(codeItem.ResultCode.Severity), codeItem.CodeName.ToUpper());
+                    strDefine = string.Format("{0}{1}", ResultCode.ServerityToDefineString(codeItem.ResultCode.Severity), codeItem.CodeName.ToUpper());
                 xmlItem.Description = strDefine;
 
                 m_itemList.Add(xmlItem);

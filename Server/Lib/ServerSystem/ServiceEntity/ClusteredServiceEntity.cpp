@@ -56,22 +56,22 @@ namespace Svr {
 	{
 		if (BrServer::GetInstance()->GetNetClass() == NetClass::Entity)
 		{
-			//BR_ENTITY_MESSAGE(Message::ClusterServer::GetClusterMemberListCmd) { svrMemReturn(pNewTrans = new ClusterGetMemberListTrans(pMsgData)); return S_SYSTEM_OK; } );
-			//BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd) { svrMemReturn(pNewTrans = new JoinClusterTransForEntityServer(pMsgData)); return S_SYSTEM_OK; } );
-			BR_ENTITY_MESSAGE(Message::ClusterServer::GetLowestWorkloadClusterMemberCmd) { svrMemReturn(pNewTrans = new GetLowestWorkloadClusterMemberTrans(pMsgData)); return S_SYSTEM_OK; } );
-			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt) { svrMemReturn(pNewTrans = new ClusterNewServerServiceJoinedC2SEvtEntityTrans(pMsgData)); return S_SYSTEM_OK; } );
+			//BR_ENTITY_MESSAGE(Message::ClusterServer::GetClusterMemberListCmd) { svrMemReturn(pNewTrans = new ClusterGetMemberListTrans(pMsgData)); return ResultCode::SUCCESS; } );
+			//BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd) { svrMemReturn(pNewTrans = new JoinClusterTransForEntityServer(pMsgData)); return ResultCode::SUCCESS; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::GetLowestWorkloadClusterMemberCmd) { svrMemReturn(pNewTrans = new GetLowestWorkloadClusterMemberTrans(pMsgData)); return ResultCode::SUCCESS; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt) { svrMemReturn(pNewTrans = new ClusterNewServerServiceJoinedC2SEvtEntityTrans(pMsgData)); return ResultCode::SUCCESS; } );
 		}
 		else
 		{
-			//BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd) { svrMemReturn(pNewTrans = new JoinClusterTrans(pMsgData)); return S_SYSTEM_OK; } );
-			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt) { svrMemReturn(pNewTrans = new ClusterNewServerServiceJoinedC2SEvtTrans(pMsgData)); return S_SYSTEM_OK; } );
+			//BR_ENTITY_MESSAGE(Message::ClusterServer::JoinClusterCmd) { svrMemReturn(pNewTrans = new JoinClusterTrans(pMsgData)); return ResultCode::SUCCESS; } );
+			BR_ENTITY_MESSAGE(Message::ClusterServer::NewServerServiceJoinedC2SEvt) { svrMemReturn(pNewTrans = new ClusterNewServerServiceJoinedC2SEvtTrans(pMsgData)); return ResultCode::SUCCESS; } );
 		}
-		//BR_ENTITY_MESSAGE(Message::ClusterServer::SyncClusterServiceC2SEvt) { svrMemReturn(pNewTrans = new SyncClusterServiceTrans(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterAssignedS2CEvt) { svrMemReturn(pNewTrans = new ClusterMasterAssignedTrans(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterVoteC2SEvt) { svrMemReturn(pNewTrans = new ClusterMasterVoteTrans(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::RequestDataSyncCmd) { svrMemReturn(pNewTrans = new RequestDataSyncTrans(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateStatusC2SEvt) { svrMemReturn(pNewTrans = new ClusterUpdateStatusTrans(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateWorkloadC2SEvt) { svrMemReturn(pNewTrans = new ClusterUpdateWorkloadTrans(pMsgData)); return S_SYSTEM_OK; } );
+		//BR_ENTITY_MESSAGE(Message::ClusterServer::SyncClusterServiceC2SEvt) { svrMemReturn(pNewTrans = new SyncClusterServiceTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterAssignedS2CEvt) { svrMemReturn(pNewTrans = new ClusterMasterAssignedTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterMasterVoteC2SEvt) { svrMemReturn(pNewTrans = new ClusterMasterVoteTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::RequestDataSyncCmd) { svrMemReturn(pNewTrans = new RequestDataSyncTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateStatusC2SEvt) { svrMemReturn(pNewTrans = new ClusterUpdateStatusTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::ClusterUpdateWorkloadC2SEvt) { svrMemReturn(pNewTrans = new ClusterUpdateWorkloadTrans(pMsgData)); return ResultCode::SUCCESS; } );
 
 	}
 
@@ -139,9 +139,9 @@ namespace Svr {
 	//
 
 	// Initialize entity to proceed new connection
-	HRESULT ClusteredServiceEntity::InitializeEntity( EntityID newEntityID )
+	Result ClusteredServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation* pMyService = nullptr;
 
 		m_Initialized = false;
@@ -165,9 +165,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT ClusteredServiceEntity::StartInitializeTransaction()
+	Result ClusteredServiceEntity::StartInitializeTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusterInitializationTrans *pInitTransaction = nullptr;
 		Transaction* pTrans = nullptr;
 
@@ -190,9 +190,9 @@ namespace Svr {
 	}
 
 	// clear transaction
-	HRESULT ClusteredServiceEntity::ClearEntity()
+	Result ClusteredServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		auto itIDMap = m_ServiceEntityUIDMap.begin();
 		for(; itIDMap.IsValid(); ++itIDMap )
@@ -220,12 +220,12 @@ namespace Svr {
 	}
 
 
-	HRESULT ClusteredServiceEntity::TickUpdate(TimerAction *pAction)
+	Result ClusteredServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		return ServiceEntity::TickUpdate(pAction);
 	}
 
-	HRESULT ClusteredServiceEntity::ProcessTransaction(Transaction* &pTrans)
+	Result ClusteredServiceEntity::ProcessTransaction(Transaction* &pTrans)
 	{
 		return ServiceEntity::ProcessTransaction(pTrans);
 	}
@@ -238,14 +238,14 @@ namespace Svr {
 	//
 
 	// Change workload
-	HRESULT ClusteredServiceEntity::SetWorkload( UINT workload )
+	Result ClusteredServiceEntity::SetWorkload( UINT workload )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pServiceInfo = nullptr;
 		ClusterServerService *pService = nullptr;
 
 		if( m_Workload == workload )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		m_Workload = workload;
 
@@ -261,9 +261,9 @@ namespace Svr {
 	}
 
 
-	HRESULT ClusteredServiceEntity::SetServiceStatus( ServiceStatus newStatus )
+	Result ClusteredServiceEntity::SetServiceStatus( ServiceStatus newStatus )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pServiceInfo = nullptr;
 		ClusterServerService *pService = nullptr;
 
@@ -271,7 +271,7 @@ namespace Svr {
 
 		if( m_MasterUID.UID == 0 )
 		{
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 		}
 
 		// Ask to the cluster manager master to update status
@@ -302,9 +302,9 @@ namespace Svr {
 	}
 
 	// Register Entity by Given serverID
-	HRESULT ClusteredServiceEntity::NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService )
+	Result ClusteredServiceEntity::NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pNewService = nullptr;
 		ServiceEntityUIDMap::iterator itFound;
 
@@ -344,7 +344,7 @@ namespace Svr {
 
 				ActionOnAlreadyExist(*itFound);
 
-				hr = S_SYSTEM_FALSE;
+				hr = ResultCode::SUCCESS_FALSE;
 				goto Proc_End;
 			}
 		}
@@ -356,7 +356,7 @@ namespace Svr {
 
 				ActionOnAlreadyExist(*itFound);
 
-				hr = S_SYSTEM_FALSE;
+				hr = ResultCode::SUCCESS_FALSE;
 				goto Proc_End; // already exist, just ignore it
 			}
 		}
@@ -376,15 +376,15 @@ namespace Svr {
 	}
 
 	// Find Service information by ServiceID
-	HRESULT ClusteredServiceEntity::FindService( EntityUID entityUID, ServerServiceInformation* &pService )
+	Result ClusteredServiceEntity::FindService( EntityUID entityUID, ServerServiceInformation* &pService )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServiceEntityUIDMap::iterator itFound;
 
 		if (FAILED(m_ServiceEntityUIDMap.find((UINT64)entityUID, itFound)))
 		{
 			if (FAILED(m_WatcherUIDMap.find((UINT64)entityUID, itFound)))
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 		}
 		pService = *itFound;
 
@@ -394,9 +394,9 @@ namespace Svr {
 	}
 	
 	// Find random service, maybe lowest workload service
-	HRESULT ClusteredServiceEntity::FindRandomService( ServerServiceInformation* &pService )
+	Result ClusteredServiceEntity::FindRandomService( ServerServiceInformation* &pService )
 	{
-		//HRESULT hr = S_SYSTEM_OK;
+		//Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pBestService = nullptr;
 
 		auto itIDMap = m_ServiceEntityUIDMap.begin();
@@ -415,13 +415,13 @@ namespace Svr {
 
 	//Proc_End:
 
-		return pBestService != nullptr ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+		return pBestService != nullptr ? ResultCode::SUCCESS : ResultCode::FAIL;
 	}
 
 	// Foreach service
-	HRESULT ClusteredServiceEntity::ForEach( std::function<void(ServerServiceInformation*)> func )
+	Result ClusteredServiceEntity::ForEach( std::function<void(ServerServiceInformation*)> func )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto itIDMap = m_ServiceEntityUIDMap.begin();
 		for(; itIDMap.IsValid(); ++itIDMap )
 		{
@@ -445,9 +445,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT ClusteredServiceEntity::ForEachNonWatcher( std::function<void(ServerServiceInformation*)> func )
+	Result ClusteredServiceEntity::ForEachNonWatcher( std::function<void(ServerServiceInformation*)> func )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto itIDMap = m_ServiceEntityUIDMap.begin();
 		for(; itIDMap.IsValid(); ++itIDMap )
 		{
@@ -464,9 +464,9 @@ namespace Svr {
 
 
 	// Assign master to given UID
-	HRESULT ClusteredServiceEntity::SetMaster( EntityUID entityUID )
+	Result ClusteredServiceEntity::SetMaster( EntityUID entityUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation* pNewMaster = nullptr;
 
 		svrChk( FindService( entityUID, pNewMaster ) );
@@ -490,9 +490,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT ClusteredServiceEntity::AssignMaster( EntityUID entityUID )
+	Result ClusteredServiceEntity::AssignMaster( EntityUID entityUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( SetMaster( entityUID ) );
 
@@ -511,9 +511,9 @@ namespace Svr {
 
 	
 	// Sync data to target 
-	HRESULT ClusteredServiceEntity::SyncDataToTarget( EntityUID entityUID )
+	Result ClusteredServiceEntity::SyncDataToTarget( EntityUID entityUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//ServerServiceInformation* pNewMaster = nullptr;
 
 		//svrChk( FindService( entityUID, pNewMaster ) );
@@ -546,9 +546,9 @@ namespace Svr {
 	{
 	}
 
-	HRESULT ReplicaClusterServiceEntity::UpdateOnMasterManager()
+	Result ReplicaClusterServiceEntity::UpdateOnMasterManager()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServiceEntityUIDMap::iterator itService;
 
 		
@@ -604,16 +604,16 @@ namespace Svr {
 	}
 
 	// Register message handler for this component
-	HRESULT ReplicaClusterServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
+	Result ReplicaClusterServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
 		ClusteredServiceEntity::RegisterServiceMessageHandler( pServerEntity );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT ReplicaClusterServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result ReplicaClusterServiceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ClusteredServiceEntity::TickUpdate(pAction) );
 
@@ -652,29 +652,29 @@ namespace Svr {
 	}
 
 	// Override so that we can make ring linked list
-	HRESULT RingClusterServiceEntity::NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService )
+	Result RingClusterServiceEntity::NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pTblItem = nullptr;
 		OrderedServiceList::Node *pPrevNode = nullptr;
 
 		// This need to be thread safe
 		MutexScopeLock scopelock(m_ListLock);
 
-		HRESULT hrRes = ClusteredServiceEntity::NewServerService(entityUID, pServerEntity, membership, status, pService);
+		Result hrRes = ClusteredServiceEntity::NewServerService(entityUID, pServerEntity, membership, status, pService);
 
 		svrChkPtr(pService);
 		pTblItem = (ServiceTableItem*)pService;
 
-		// When the return value is S_SYSTEM_FALSE, it means this service is already in the list
+		// When the return value is ResultCode::SUCCESS_FALSE, it means this service is already in the list
 		// Remove it if the key value isn't same
-		if( hrRes == S_SYSTEM_FALSE && pTblItem->m_ListNode.Key != pServerEntity->GetServerUpTime().time_since_epoch().count() )
+		if( hrRes == ResultCode::SUCCESS_FALSE && pTblItem->m_ListNode.Key != pServerEntity->GetServerUpTime().time_since_epoch().count() )
 		{
 			// I hope this not happened here
 			Assert(pTblItem->GetServerEntity() == pServerEntity);
 			svrChk( m_ServiceList.FindPrevNode( pTblItem->m_ListNode.Key, pPrevNode ) );
 			svrChk( m_ServiceList.FindAndRemove( pPrevNode, &pTblItem->m_ListNode ) );
-			hrRes = S_SYSTEM_OK;
+			hrRes = ResultCode::SUCCESS;
 		}
 
 		if( SUCCEEDED(hrRes) )
@@ -682,11 +682,11 @@ namespace Svr {
 			svrChk( m_ServiceList.FindPrevNode( pServerEntity->GetServerUpTime().time_since_epoch().count(), pPrevNode ) );
 
 			// we don't have to update it again
-			if( hrRes != S_SYSTEM_FALSE )
+			if( hrRes != ResultCode::SUCCESS_FALSE )
 			{
 				Assert(pPrevNode != &pTblItem->m_ListNode );
 				Assert(pTblItem->m_ListNode.pNext == nullptr);
-				// If the table already exist in the list, and it just updated hrRes would have S_SYSTEM_FALSE
+				// If the table already exist in the list, and it just updated hrRes would have ResultCode::SUCCESS_FALSE
 				Assert(pPrevNode->pNext != &pTblItem->m_ListNode);
 
 				svrChk( m_ServiceList.Insert( pPrevNode, pServerEntity->GetServerUpTime().time_since_epoch().count(), &pTblItem->m_ListNode ) );
@@ -700,9 +700,9 @@ namespace Svr {
 	}
 
 	// Get next ring token
-	HRESULT RingClusterServiceEntity::GetNextRing( ServerServiceInformation* pService, ServerServiceInformation* &pNextService )
+	Result RingClusterServiceEntity::GetNextRing( ServerServiceInformation* pService, ServerServiceInformation* &pNextService )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pTblItem = nullptr;
 		Indexing::MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
 
@@ -731,13 +731,13 @@ namespace Svr {
 
 	//Proc_End:
 
-		return pNextService ? hr : E_SYSTEM_FAIL;
+		return pNextService ? hr : ResultCode::FAIL;
 	}
 
 	// Get a service form the ring
-	HRESULT RingClusterServiceEntity::GetService( ServerServiceInformation* &pService )
+	Result RingClusterServiceEntity::GetService( ServerServiceInformation* &pService )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pTblItem = nullptr;
 		Indexing::MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
 
@@ -809,7 +809,7 @@ namespace Svr {
 	}
 #endif
 
-		return pService ? hr : E_SYSTEM_FAIL;
+		return pService ? hr : ResultCode::FAIL;
 	}
 
 
@@ -831,9 +831,9 @@ namespace Svr {
 	}
 
 	// Get Service shard by key
-	HRESULT ShardedClusterServiceEntity::GetShard( UINT64 key, ServerServiceInformation* &pService )
+	Result ShardedClusterServiceEntity::GetShard( UINT64 key, ServerServiceInformation* &pService )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		UINT hashedKey = KeyHash(key);
 		UINT serviceIndex = -1;
 		StaticArray<ServerServiceInformation*,50> services;
@@ -883,9 +883,9 @@ namespace Svr {
 
 	
 	// Initialize entity to proceed new connection
-	HRESULT LoadbalanceClusterServiceEntity::InitializeEntity( EntityID newEntityID )
+	Result LoadbalanceClusterServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ClusteredServiceEntity::InitializeEntity(newEntityID) );
 
@@ -898,9 +898,9 @@ namespace Svr {
 
 
 	// Override so that we can make ring linked list
-	HRESULT LoadbalanceClusterServiceEntity::NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService )
+	Result LoadbalanceClusterServiceEntity::NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pTblItem = nullptr;
 		OrderedServiceList::Node *pPrevNode = nullptr;
 
@@ -908,8 +908,8 @@ namespace Svr {
 
 		pTblItem = (ServiceTableItem*)pService;
 
-		// When the return value is S_SYSTEM_FALSE, it means this service is already in the list
-		if( hr == S_SYSTEM_OK )
+		// When the return value is ResultCode::SUCCESS_FALSE, it means this service is already in the list
+		if( hr == ResultCode::SUCCESS )
 		{
 			if( pService->GetClusterMembership() <= ClusterMembership::Slave )
 			{
@@ -930,9 +930,9 @@ namespace Svr {
 	}
 
 	// Get a service form the ring
-	HRESULT LoadbalanceClusterServiceEntity::GetService( ServerServiceInformation* &pService )
+	Result LoadbalanceClusterServiceEntity::GetService( ServerServiceInformation* &pService )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServiceTableItem *pTblItem = nullptr;
 		Indexing::MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_ListNode> converter;
 
@@ -942,7 +942,7 @@ namespace Svr {
 		{
 			auto itService = m_ServiceList.begin();
 			if (!itService.IsValid())
-				return E_SVR_SERVICE_FAILED;
+				return ResultCode::E_SVR_SERVICE_FAILED;
 			m_pCurrentQueryService = converter(&*itService);
 		}
 
@@ -957,7 +957,7 @@ namespace Svr {
 			{
 				auto itService = m_ServiceList.begin();
 				if (!itService.IsValid())
-					return E_SVR_SERVICE_FAILED;
+					return ResultCode::E_SVR_SERVICE_FAILED;
 				pTblItem = converter(&*itService);
 			}
 
@@ -990,13 +990,13 @@ namespace Svr {
 
 	//Proc_End:
 
-		return pService ? hr : E_SYSTEM_FAIL;
+		return pService ? hr : ResultCode::FAIL;
 	}
 
 
-	HRESULT LoadbalanceClusterServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result LoadbalanceClusterServiceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ClusteredServiceEntity::TickUpdate(pAction) );
 

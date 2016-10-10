@@ -130,7 +130,7 @@
 
 	// Insert a key
 	template<class KeyType, class ValueType>
-	HRESULT SortedMap<KeyType, ValueType>::Insert(KeyType key, const ValueType& value, INT64 *insertedOrder)
+	Result SortedMap<KeyType, ValueType>::Insert(KeyType key, const ValueType& value, INT64 *insertedOrder)
 	{
 		OperationTraversalHistory traversalHistory(m_Root, m_ItemCount);
 
@@ -138,14 +138,14 @@
 		if (FAILED(FindNode(traversalHistory, key, pFound)))
 		{
 			if (m_Root != nullptr)
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			else
 			{
 				auto newNode = AllocateNode(key, value);
 				m_Root = newNode;
 
 				if (newNode == nullptr)
-					return E_SYSTEM_OUTOFMEMORY;
+					return ResultCode::OUT_OF_MEMORY;
 
 				m_ItemCount++;
 
@@ -154,7 +154,7 @@
 					*insertedOrder = 0;
 				}
 
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 		}
 
@@ -163,7 +163,7 @@
 		{
 			auto right = pFound->Right;
 			if (right != nullptr)
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			pFound->Right = pInserted = AllocateNode(key, value);
 		}
@@ -175,7 +175,7 @@
 				auto biggestNode = FindBiggestNode(traversalHistory, left);
 				auto right = biggestNode->Right;
 				if (right != nullptr)
-					return E_SYSTEM_FAIL;
+					return ResultCode::FAIL;
 
 				biggestNode->Right = pInserted = AllocateNode(key, value);
 			}
@@ -188,7 +188,7 @@
 		{
 			auto left = pFound->Left;
 			if (left != nullptr)
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			pFound->Left = pInserted = AllocateNode(key, value);
 		}
@@ -204,24 +204,24 @@
 
 		m_ItemCount++;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Remove an item and return the removed value
 	template<class KeyType, class ValueType>
-	HRESULT SortedMap<KeyType,ValueType>::Remove(KeyType key, ValueType& value)
+	Result SortedMap<KeyType,ValueType>::Remove(KeyType key, ValueType& value)
 	{
 		OperationTraversalHistory travelHistory(m_Root, m_ItemCount);
 
 		MapNode* pRemoved = nullptr;
 		MapNode* pFound = nullptr;
 		if (FAILED(FindNode(travelHistory, key, pFound)))
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		// unique key
 		if (pFound->Key != key)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		value = std::forward<ValueType>(pFound->Value);
 
@@ -297,23 +297,23 @@
 
 		m_ItemCount--;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Find a key value
 	template<class KeyType, class ValueType>
-	HRESULT SortedMap<KeyType, ValueType>::Find(KeyType key, ValueType& value, INT64 *pOrder)
+	Result SortedMap<KeyType, ValueType>::Find(KeyType key, ValueType& value, INT64 *pOrder)
 	{
 		OperationTraversalHistory travelHistory(m_Root, m_ItemCount);
 
 		MapNode* pFound = nullptr;
 		if (FAILED(FindNode(travelHistory, key, pFound)))
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		// unique key
 		if (pFound->Key != key)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		value = pFound->Value;
 
@@ -322,17 +322,17 @@
 			*pOrder = CalculateOrder(travelHistory, pFound);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// find parent node or candidate
 	template<class KeyType, class ValueType>
-	HRESULT SortedMap<KeyType,ValueType>::FindNode(OperationTraversalHistory &travelHistory, KeyType key, MapNode* &pNode)
+	Result SortedMap<KeyType,ValueType>::FindNode(OperationTraversalHistory &travelHistory, KeyType key, MapNode* &pNode)
 	{
 		MapNode* pCurNode = m_Root;
 		if (pCurNode == nullptr)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		travelHistory.Clear();
 		travelHistory.SetConserveDataOnResize(true);
@@ -345,7 +345,7 @@
 			if (pCurNode->Key == key)
 			{
 				pNode = pCurNode;
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
 			if (key > pCurNode->Key)
@@ -354,7 +354,7 @@
 				if (right == nullptr)
 				{
 					pNode = pCurNode;
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 				}
 				else
 				{
@@ -367,7 +367,7 @@
 				if (left == nullptr)
 				{
 					pNode = pCurNode;
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 				}
 				else 
 				{
@@ -378,7 +378,7 @@
 						if (left->Key != key)
 						{
 							pNode = FindBiggestNode(travelHistory, left);
-							return S_SYSTEM_OK;
+							return ResultCode::SUCCESS;
 						}
 					}
 					pCurNode = left;
@@ -389,7 +389,7 @@
 
 		travelHistory.SetConserveDataOnResize(false);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<class KeyType, class ValueType>

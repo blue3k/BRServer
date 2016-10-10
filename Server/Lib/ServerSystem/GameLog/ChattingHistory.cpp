@@ -25,7 +25,7 @@ namespace Svr {
 
 	
 	// Initialize 
-	HRESULT ChattingHistory::InitializeLog()
+	Result ChattingHistory::InitializeLog()
 	{
 		return GameLog<GameConst::MAX_CHATLOG_BUFFER, GameConst::MAX_CHATLOG>::InitializeLog();
 	}
@@ -37,14 +37,14 @@ namespace Svr {
 	}
 
 	// Add chatting log
-	HRESULT ChattingHistory::AddChattingLog( TimeStampSec timeStamp, PlayerID player, BYTE playerStatus, ChatType type, const char* message )
+	Result ChattingHistory::AddChattingLog( TimeStampSec timeStamp, PlayerID player, BYTE playerStatus, ChatType type, const char* message )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		BYTE* itemBuffer = nullptr;
 		GameLogChatMessage *chatLog = nullptr;
 
 		if( message == nullptr )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		size_t messageBufferSize = strlen(message) + 1;
 		if (messageBufferSize >= GameConst::MAX_CHATMESSAGE_SIZE)

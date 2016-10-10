@@ -33,9 +33,9 @@ namespace Net {
 	//
 
 
-	HRESULT INetIOCallBack::ProcessSendQueue()
+	Result INetIOCallBack::ProcessSendQueue()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		IOBUFFER_WRITE* pSendBuffer = nullptr;
 
 		auto writeQueue = m_pWriteQueues;
@@ -46,20 +46,20 @@ namespace Net {
 			hr = writeQueue->GetFront(pSendBuffer);
 			if (FAILED(hr))
 			{
-				hr = S_SYSTEM_OK;
+				hr = ResultCode::SUCCESS;
 				break;
 			}
 
 			hr = SendBuffer(pSendBuffer);
-			switch (hr)
+			switch ((int32_t)hr)
 			{
-			case S_SYSTEM_OK:
+			case ResultCode::SUCCESS:
 				writeQueue->Dequeue(pSendBuffer);
 				break;
-			case E_NET_IO_PENDING:
+			case ResultCode::E_NET_IO_PENDING:
 				break;
-			case E_NET_WOULDBLOCK:  // WOULDBLOCK in linux can be try again
-			case E_NET_TRY_AGAIN:
+			case ResultCode::E_NET_WOULDBLOCK:  // WOULDBLOCK in linux can be try again
+			case ResultCode::E_NET_TRY_AGAIN:
 			default:
 				goto Proc_End;
 				break;
@@ -73,9 +73,9 @@ namespace Net {
 
 
 
-	HRESULT INetIOCallBack::EnqueueBuffer(IOBUFFER_WRITE *pSendBuffer)
+	Result INetIOCallBack::EnqueueBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		auto writeQueue = m_pWriteQueues;
 		netChkPtr(writeQueue);
@@ -95,49 +95,49 @@ namespace Net {
 		static MemoryPool* g_pGatheringBufferPool = nullptr;
 
 
-		HRESULT AllocBuffer(IOBUFFER_WRITE* &pIOBuffer)
+		Result AllocBuffer(IOBUFFER_WRITE* &pIOBuffer)
 		{
 			pIOBuffer = new IOBUFFER_WRITE;
 
-			return pIOBuffer == nullptr ? E_SYSTEM_FAIL : S_SYSTEM_OK;
+			return pIOBuffer == nullptr ? ResultCode::FAIL : ResultCode::SUCCESS;
 		}
 
-		HRESULT FreeBuffer(IOBUFFER_WRITE *pIOBuffer)
+		Result FreeBuffer(IOBUFFER_WRITE *pIOBuffer)
 		{
 			Util::SafeDelete(pIOBuffer);
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT SetGatheringBufferSize(UINT bufferSize)
+		Result SetGatheringBufferSize(UINT bufferSize)
 		{
 			g_GatheringSize = bufferSize;
 			MemoryPoolManager::GetMemoryPoolBySize(g_GatheringSize, g_pGatheringBufferPool);
 			if (g_pGatheringBufferPool == nullptr)
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT AllocGatheringBuffer(BYTE* &pBuffer, UINT& bufferSize)
+		Result AllocGatheringBuffer(BYTE* &pBuffer, UINT& bufferSize)
 		{
 			if (g_pGatheringBufferPool == nullptr)
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			void* pPtr = nullptr;
 			bufferSize = g_GatheringSize;
 			if(FAILED(g_pGatheringBufferPool->Alloc(pPtr, "AllocGatheringBuffer")))
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
 			pBuffer = (BYTE*)pPtr;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT FreeGatheringBuffer(BYTE *pBuffer)
+		Result FreeGatheringBuffer(BYTE *pBuffer)
 		{
 			if (g_pGatheringBufferPool == nullptr)
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			return g_pGatheringBufferPool->Free(pBuffer, "AllocGatheringBuffer");
 		}

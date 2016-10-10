@@ -39,18 +39,18 @@ namespace BR
 	}
 
 	// Write data to stream
-	HRESULT OutputMemoryStream::Write( UINT sizeToWrite, const BYTE* pData )
+	Result OutputMemoryStream::Write( UINT sizeToWrite, const BYTE* pData )
 	{
 		if( pData == nullptr )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		if( (m_WritingPosition + sizeToWrite) > m_BufferSize )
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 
 		memcpy( m_Buffer + m_WritingPosition, pData, sizeToWrite );
 		m_WritingPosition += sizeToWrite;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 };	// namespace BR

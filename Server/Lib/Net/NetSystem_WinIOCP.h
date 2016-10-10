@@ -123,8 +123,8 @@ namespace Net {
 		inline void SetupRecvUDP( uintptr_t iCID );
 		inline void SetupRecvTCP( uintptr_t iCID );
 
-		HRESULT SetPendingTrue();
-		HRESULT SetPendingFalse();
+		Result SetPendingTrue();
+		Result SetPendingFalse();
 
 	};
 
@@ -216,10 +216,10 @@ namespace Net {
 			inline HANDLE GetIOCP();
 
 			// Initialize IOCP
-			HRESULT InitIOCP( UINT uiNumIOCPThread );
+			Result InitIOCP( UINT uiNumIOCPThread );
 
 			// Close IOCP
-			HRESULT CloseIOCP();
+			Result CloseIOCP();
 		};
 
 

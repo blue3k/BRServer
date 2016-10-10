@@ -162,8 +162,8 @@ namespace TableBuilder
             //WriteStatement(string.Format("{0}();", ClassName));
             NewLine(1);
             WriteStatement("// declare member function", 0);
-            //WriteStatement("static HRESULT LoadTable( const char *strFileName );", 0);
-            statement = string.Format("static HRESULT LoadTable( const std::list<{0}>& rowList );", RowTypeName);
+            //WriteStatement("static BR::Result LoadTable( const char *strFileName );", 0);
+            statement = string.Format("static BR::Result LoadTable( const std::list<{0}>& rowList );", RowTypeName);
             WriteStatement(statement, 0);
             NewLine(1);
 
@@ -171,17 +171,17 @@ namespace TableBuilder
             {
                 if (KeyInformation.keyType == KeyType.EKEY_UNIQUE)
                 {
-                    statement = string.Format("static HRESULT FindItem( const {0}& Key, {1}*& pRow);",
+                    statement = string.Format("static BR::Result FindItem( const {0}& Key, {1}*& pRow);",
                         GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName);
                 }
                 else if (KeyInformation.keyType == KeyType.EKEY_NONUNIQUE)
                 {
-                    statement = string.Format("static HRESULT FindItem( const {0}& Key, std::tr1::unordered_set<{1}*>& rows);",
+                    statement = string.Format("static BR::Result FindItem( const {0}& Key, std::tr1::unordered_set<{1}*>& rows);",
                         GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName);
                 }
                 else if (KeyInformation.keyType == KeyType.EKEY_COMPOSIT)
                 {
-                    statement = string.Format("static HRESULT FindItem( ULONGLONG Key, {0}*& pRow);",
+                    statement = string.Format("static BR::Result FindItem( ULONGLONG Key, {0}*& pRow);",
                         RowTypeName);
                 }
 
@@ -194,21 +194,21 @@ namespace TableBuilder
                     NewLine(1);
                     KeyInfo KeyInformation  = kvp.Value;
                     string keyName          = KeyInformation._keyName1;
-                    statement = string.Format("static HRESULT ClearTable{0}();", keyName);
+                    statement = string.Format("static BR::Result ClearTable{0}();", keyName);
                     WriteStatement(statement);
                     if (KeyInformation.keyType == KeyType.EKEY_UNIQUE)
                     {
-                        statement = string.Format("static HRESULT FindItem{2}( const {0}& Key, {1}*& pRow);",
+                        statement = string.Format("static BR::Result FindItem{2}( const {0}& Key, {1}*& pRow);",
                             GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName, keyName);
                     }
                     else if (KeyInformation.keyType == KeyType.EKEY_NONUNIQUE)
                     {
-                        statement = string.Format("static HRESULT FindItem{2}( const {0}& Key, std::tr1::unordered_set<{1}*>& rows);",
+                        statement = string.Format("static BR::Result FindItem{2}( const {0}& Key, std::tr1::unordered_set<{1}*>& rows);",
                             GetBuiltInType(KeyInformation._keyTypeName1), RowTypeName, keyName);
                     }
                     else if (KeyInformation.keyType == KeyType.EKEY_COMPOSIT)
                     {
-                        statement = string.Format("static HRESULT FindItem{1}( ULONGLONG Key, {0}*& pRow);",
+                        statement = string.Format("static BR::Result FindItem{1}( ULONGLONG Key, {0}*& pRow);",
                             RowTypeName, keyName);
                     }
 

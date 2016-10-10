@@ -97,13 +97,13 @@ namespace Svr
 		inline void SetTaskLoad( SysUInt workLoad );
 
 		// Run the task
-		// return S_SYSTEM_FALSE means it doesn't need to rescheduled
-		virtual HRESULT TickUpdate(TimerAction *pAction = nullptr) = 0;
+		// return ResultCode::SUCCESS_FALSE means it doesn't need to rescheduled
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) = 0;
 
 		virtual void OnAddedToTaskManager(TaskWorker *pWorker);
 		virtual void OnRemovedFromTaskManager(TaskWorker *pWorker);
 
-		virtual HRESULT OnEventTask(const EventTask& eventTask) { Assert(false);  return E_SYSTEM_NOTIMPL; }
+		virtual Result OnEventTask(const EventTask& eventTask) { Assert(false);  return ResultCode::NOT_IMPLEMENTED; }
 	};
 
 

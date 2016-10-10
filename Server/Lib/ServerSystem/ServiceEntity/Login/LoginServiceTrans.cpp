@@ -51,9 +51,9 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT LoginPartyTrans::StartTransaction()
+	Result LoginPartyTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 

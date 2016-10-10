@@ -37,17 +37,17 @@ namespace BR
 
 
 	// Copy
-	HRESULT Binary::CopyBinary( Binary& dst, const Binary& src )
+	Result Binary::CopyBinary( Binary& dst, const Binary& src )
 	{
 		if( dst.MaxSize < src.Size )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		if( dst.Magic != src.Magic )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		memcpy( &dst.Version, &src.Version, src.Size - (UINT)((intptr_t)&dst.Version - (intptr_t)&dst) );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

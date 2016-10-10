@@ -55,8 +55,8 @@ namespace BR
 		inline CounterType GetPageCount() const;
 
 		// Alloc/Free page method
-		virtual HRESULT Alloc( void* &pPtr );
-		virtual HRESULT Free( void* pPtr );
+		virtual Result Alloc( void* &pPtr );
+		virtual Result Free( void* pPtr );
 
 		// Suggest Page size
 		static size_t SuggestElementCountPerPage( size_t HeaderSize, size_t ElementSize );
@@ -98,7 +98,7 @@ namespace BR
 		StackPool	m_FreePages;
 
 
-		HRESULT OrgFree( void* pPtr );
+		Result OrgFree( void* pPtr );
 
 	public:
 		// Constructor
@@ -112,8 +112,8 @@ namespace BR
 		virtual size_t GetPageSize() const;
 
 		// Alloc/Free page method
-		virtual HRESULT Alloc( void* &pPtr );
-		virtual HRESULT Free( void* pPtr );
+		virtual Result Alloc( void* &pPtr );
+		virtual Result Free( void* pPtr );
 
 	};
 
@@ -205,8 +205,8 @@ namespace BR
 		void ForceClear();
 
 		// Allocate/Free
-		HRESULT Alloc( void* &pPtr, const char* typeName );
-		HRESULT Free( void* pPtr, const char* typeName );
+		Result Alloc( void* &pPtr, const char* typeName );
+		Result Free( void* pPtr, const char* typeName );
 
 		// Check pooled memory block header
 		static bool CheckMemoryHeader(void* pPtr);
@@ -241,16 +241,16 @@ namespace BR
 		~MemoryPoolManager();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() override;
+		virtual Result InitializeComponent() override;
 		// Terminate server component
 		virtual void TerminateComponent() override;
 
 		// Initialize and Terminate memory pool
-		static HRESULT Initialize();
-		static HRESULT Terminate();
+		static Result Initialize();
+		static Result Terminate();
 
 		// Get memory pool by size
-		static HRESULT GetMemoryPoolBySize( size_t allocationSize, MemoryPool* &pPool );
+		static Result GetMemoryPoolBySize( size_t allocationSize, MemoryPool* &pPool );
 	};
 
 
@@ -276,7 +276,7 @@ namespace BR
 			Assert(sizeof(ObjectType)==size);
 			if( stm_MemoryPool == nullptr )
 			{
-				HRESULT hr = MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
+				Result hr = MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
 				Assert(SUCCEEDED(hr)&&stm_MemoryPool);
 			}
 			void *pPtr = NULL;
@@ -329,7 +329,7 @@ namespace BR
 			Assert(sizeof(ObjectType)==size);
 			if( stm_MemoryPool == nullptr )
 			{
-				HRESULT hr = MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
+				Result hr = MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
 				Assert(SUCCEEDED(hr)&&stm_MemoryPool);
 			}
 			void *pPtr = NULL;

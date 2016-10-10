@@ -29,7 +29,7 @@ namespace BR
 			// EntityServer Debug output function 
 
 			void RegisterDebugTraceEntityServer();
-			HRESULT DebugOutEntityServer( const char*Prefix, MessageData*pMsg );
+			Result DebugOutEntityServer( const char*Prefix, MessageData*pMsg );
 
 
 

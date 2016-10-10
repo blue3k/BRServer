@@ -47,13 +47,13 @@ namespace Svr {
 
 
 	// Initialize entity to proceed new connection
-	HRESULT GenericServerEntity::InitializeEntity( EntityID newEntityID )
+	Result GenericServerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ServerEntity::InitializeEntity( newEntityID ) );
 
-		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::Server::ServerConnectedC2SEvt) { svrMemReturn(pNewTrans = new Svr::GenericServerStartedTrans(pMsgData)); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 

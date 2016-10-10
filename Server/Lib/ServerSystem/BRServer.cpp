@@ -13,7 +13,6 @@
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Common/StrUtil.h"
-#include "Common/MemLog.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
 #include "Common/BrXML.h"
@@ -90,15 +89,15 @@ namespace Svr{
 
 	
 	// Process Private network event
-	HRESULT BrServer::ProcessPrivateNetworkEvent()
+	Result BrServer::ProcessPrivateNetworkEvent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Net::INet::Event curEvent;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		Net::Connection *pConn = nullptr;
 
 		if( m_pNetPrivate == nullptr )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 
 		while( SUCCEEDED(m_pNetPrivate->DequeueNetEvent( curEvent )) )
@@ -165,18 +164,18 @@ Proc_End:
 
 
 	// Process Public network event
-	HRESULT BrServer::ProcessPublicNetworkEvent()
+	Result BrServer::ProcessPublicNetworkEvent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 	//Proc_End:
 
 		return hr;
 	}
 
-	HRESULT BrServer::TerminateEntity()
+	Result BrServer::TerminateEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (GetThreadID() != ThisThread::GetThreadID())
 			Stop(true);
@@ -197,9 +196,9 @@ Proc_End:
 
 
 	// Apply configuration
-	HRESULT BrServer::ApplyConfiguration()
+	Result BrServer::ApplyConfiguration()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		SetServerUID( GetMyConfig()->UID );
 
@@ -208,9 +207,9 @@ Proc_End:
 		return hr;
 	}
 	
-	HRESULT BrServer::InitializeMonitoring()
+	Result BrServer::InitializeMonitoring()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::Config::NetSocket *netInfo = nullptr;
 		NetAddress svrAddress;
 
@@ -229,9 +228,9 @@ Proc_End:
 	}
 	
 	// Initialize server basic entities
-	HRESULT BrServer::InitializeEntities()
+	Result BrServer::InitializeEntities()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pLoopbackEntity = nullptr;
 		ServerEntity *pEntity = nullptr;
 		EntityManager *pEntityManager = nullptr;
@@ -286,9 +285,9 @@ Proc_End:
 		return hr;
 	}
 
-	HRESULT BrServer::InitializeComponents()
+	Result BrServer::InitializeComponents()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto myConfig = GetMyConfig();
 
 		svrChkPtr(myConfig);
@@ -325,23 +324,23 @@ Proc_End:
 
 
 	// Initialize server resource
-	HRESULT BrServer::InitializeServerResource()
+	Result BrServer::InitializeServerResource()
 	{
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Close server and release resource
-	HRESULT BrServer::CloseServerResource()
+	Result BrServer::CloseServerResource()
 	{
 		TerminateComponents();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	bool BrServer::OnStart()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		SetServerState( ServerState::STARTING );
 
@@ -385,8 +384,6 @@ Proc_End:
 
 		svrChk( InitializeComponents() );
 
-		InitializeMemLogger( MemLog::Logging::LOG_ALL, 0 );
-
 		svrChk(InitializeNetPublic());
 
 	Proc_End:
@@ -408,7 +405,7 @@ Proc_End:
 
 	void BrServer::Run()
 	{
-		//HRESULT hr = S_SYSTEM_OK;
+		//Result hr = ResultCode::SUCCESS;
 		const DurationMS lMinCheckTime = DurationMS(10); // 10ms
 
 		m_bIsKillSignaled = false;
@@ -464,7 +461,7 @@ Proc_End:
 
 	bool BrServer::OnEnd()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		SetServerState( ServerState::STOPING );
 
@@ -487,10 +484,6 @@ Proc_End:
 
 		PerformanceCounterClient::Terminate();
 
-		if( GetMemLogger() )
-		{
-			GetMemLogger()->Terminate();
-		}
 
 		SetServerState( ServerState::STOPED );
 
@@ -503,9 +496,9 @@ Proc_End:
 
 
 	// Initialize private Network
-	HRESULT BrServer::InitializeNetPrivate()
+	Result BrServer::InitializeNetPrivate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 
 		svrChk( CloseNetPrivate() );
@@ -513,7 +506,7 @@ Proc_End:
 		if( GetMyConfig() == nullptr )
 		{
 			svrTrace( Trace::TRC_ERROR, "No configuration is specified for this server {0}", typeid(*this).name() );
-			svrErr( E_SYSTEM_UNEXPECTED );
+			svrErr( ResultCode::UNEXPECTED );
 		}
 
 		// Create private network and open it
@@ -542,9 +535,9 @@ Proc_End:
 	}
 
 	// Close Private Network
-	HRESULT BrServer::CloseNetPrivate()
+	Result BrServer::CloseNetPrivate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 
 		// Terminate remote entity manager
@@ -582,21 +575,21 @@ Proc_End:
 	}
 
 	// Initialize private Network
-	HRESULT BrServer::InitializeNetPublic()
+	Result BrServer::InitializeNetPublic()
 	{
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Close Public Network
-	HRESULT BrServer::CloseNetPublic()
+	Result BrServer::CloseNetPublic()
 	{
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	HRESULT BrServer::TickUpdate(Svr::TimerAction *pAction)
+	Result BrServer::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		
 
 		// Process private network event
@@ -632,7 +625,7 @@ Proc_End:
 	//
 
 	// Get Service name
-	HRESULT BrServer::StartServer()
+	Result BrServer::StartServer()
 	{
 		if( GetServerState() == ServerState::STOPED )
 		{
@@ -640,18 +633,18 @@ Proc_End:
 			Start();
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Get Service name
-	HRESULT BrServer::StopServer()
+	Result BrServer::StopServer()
 	{
 		if( GetServerState() != ServerState::STOPED )
 		{
 			Stop( true );
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

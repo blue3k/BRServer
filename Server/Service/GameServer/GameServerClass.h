@@ -74,7 +74,7 @@ namespace GameServer
 
 		
 		// Update game config
-		HRESULT UpdateGameConfig(UINT configPresetID);
+		Result UpdateGameConfig(UINT configPresetID);
 
 		///////////////////////////////////////////////////////////////////////////////////
 		//
@@ -99,7 +99,7 @@ namespace GameServer
 		//
 
 		// Process Public network event
-		virtual HRESULT ProcessPublicNetworkEvent() override;
+		virtual Result ProcessPublicNetworkEvent() override;
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -109,39 +109,39 @@ namespace GameServer
 
 
 		// Apply configuration
-		virtual HRESULT ApplyConfiguration() override;
+		virtual Result ApplyConfiguration() override;
 
 
 		// Initialize server resource
-		virtual HRESULT InitializeServerResource() override;
+		virtual Result InitializeServerResource() override;
 
 		// Close server and release resource
-		virtual HRESULT CloseServerResource() override;
+		virtual Result CloseServerResource() override;
 
 
 		// Initialize private Network
-		virtual HRESULT InitializeNetPrivate() override;
+		virtual Result InitializeNetPrivate() override;
 
 		// Close Private Network
-		virtual HRESULT CloseNetPrivate() override;
+		virtual Result CloseNetPrivate() override;
 
 
 		// create remote entity by class
-		virtual HRESULT CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity ) override;
+		virtual Result CreateServerEntity( NetClass netClass, Svr::ServerEntity* &pServerEntity ) override;
 
 
-		//HRESULT InitializeAccountDB();
-		//HRESULT InitializeGameDB(Svr::Config::DBCluster* pDBClusterCfg);
+		//Result InitializeAccountDB();
+		//Result InitializeGameDB(Svr::Config::DBCluster* pDBClusterCfg);
 
 
 		// Initialize private Network
-		virtual HRESULT InitializeNetPublic() override;
+		virtual Result InitializeNetPublic() override;
 
 		// Close Public Network
-		virtual HRESULT CloseNetPublic() override;
+		virtual Result CloseNetPublic() override;
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 	};
 

@@ -88,13 +88,13 @@ namespace Svr {
 		//	Entity operations
 		//
 
-		HRESULT InitializeEntity( EntityID newEntityID );
+		Result InitializeEntity( EntityID newEntityID );
 
 		// clear transaction
-		virtual HRESULT ClearEntity();
+		virtual Result ClearEntity();
 
 		// TickUpdate 
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ namespace Svr {
 		Net::ServerMUDP* GetNetPublic() { return m_pNetPublic; }
 
 		// Process network event
-		HRESULT ProcessPublicNetworkEvent();
+		Result ProcessPublicNetworkEvent();
 	};
 
 

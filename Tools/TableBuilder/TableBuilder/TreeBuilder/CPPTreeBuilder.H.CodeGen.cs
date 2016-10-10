@@ -183,8 +183,8 @@ namespace TableBuilder
             NewLine(1);
 
             WriteStatement("// declare member function");
-            WriteStatement("static HRESULT LoadTable( const char *strFileName );");
-            WriteStatement("static HRESULT ClearTable();");
+            WriteStatement("static BR::Result LoadTable( const char *strFileName );");
+            WriteStatement("static BR::Result ClearTable();");
         }
     }
 }

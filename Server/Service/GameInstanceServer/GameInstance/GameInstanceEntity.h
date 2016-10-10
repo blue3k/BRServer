@@ -126,22 +126,22 @@ namespace ConspiracyGameInstanceServer
 		//
 
 		// Initialize game system
-		HRESULT InitializeSystem();
+		Result InitializeSystem();
 
 		// Update game config
-		HRESULT UpdateGameTable();
+		Result UpdateGameTable();
 
 
 	private:
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID ) override;
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 	public:
 		// Close entity and clear transaction
-		virtual HRESULT TerminateEntity() override;
+		virtual Result TerminateEntity() override;
 
 		// Run entity
-		//virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		//virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 
 
@@ -152,16 +152,16 @@ namespace ConspiracyGameInstanceServer
 
 		// foreach game player
 		template< class Func >
-		HRESULT ForeachPlayer(Func func);
-		//HRESULT ForeachPlayer( std::function<HRESULT(GamePlayer* pPlayer)> func );
+		Result ForeachPlayer(Func func);
+		//Result ForeachPlayer( std::function<Result(GamePlayer* pPlayer)> func );
 
 		template< class Func >
-		HRESULT ForeachPlayerGameServer(Func func );
-		//HRESULT ForeachPlayerGameServer(std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func);
+		Result ForeachPlayerGameServer(Func func );
+		//Result ForeachPlayerGameServer(std::function<Result(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func);
 
 		template< class Func >
-		HRESULT ForeachPlayerSvrGameInstance(Func func );
-		//HRESULT ForeachPlayerSvrGameInstance(std::function<HRESULT(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func);
+		Result ForeachPlayerSvrGameInstance(Func func );
+		//Result ForeachPlayerSvrGameInstance(std::function<Result(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func);
 
 
 
@@ -171,7 +171,7 @@ namespace ConspiracyGameInstanceServer
 		//
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeGameEntity( UINT numBot, UINT maxPlayer) override;
+		virtual Result InitializeGameEntity( UINT numBot, UINT maxPlayer) override;
 
 
 
@@ -182,7 +182,7 @@ namespace ConspiracyGameInstanceServer
 
 
 		// Update Game status
-		virtual HRESULT UpdateGameStatus(TimeStampMS ulCurTime ) override;
+		virtual Result UpdateGameStatus(TimeStampMS ulCurTime ) override;
 
 
 
@@ -193,23 +193,23 @@ namespace ConspiracyGameInstanceServer
 		//	Game Player
 		//
 
-		HRESULT GetPlayerIndex( PlayerID playerID, UINT &playerIndex );
-		HRESULT GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer );
+		Result GetPlayerIndex( PlayerID playerID, UINT &playerIndex );
+		Result GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer );
 
-		virtual HRESULT CreatePlayerInstance(const PlayerInformation& playerInfo, Svr::GameInstancePlayer* &pPlayer) override;
+		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, Svr::GameInstancePlayer* &pPlayer) override;
 
 		// Register new player to join
-		virtual HRESULT AddPlayerToJoin(Svr::GameInstancePlayer* &pPlayer ) override;
+		virtual Result AddPlayerToJoin(Svr::GameInstancePlayer* &pPlayer ) override;
 
 
 		// Leave all player
-		HRESULT LeaveAllPlayerForGameDelete();
+		Result LeaveAllPlayerForGameDelete();
 
 		// Find Player pilotid
-		HRESULT FindPlayer( PlayerID pltID, GamePlayer* &pGamePlayer );
+		Result FindPlayer( PlayerID pltID, GamePlayer* &pGamePlayer );
 
 		// Called when a player get out of game
-		virtual HRESULT OnPlayerGetOutOfGame(Svr::GameInstancePlayer *pPlayer ) override;
+		virtual Result OnPlayerGetOutOfGame(Svr::GameInstancePlayer *pPlayer ) override;
 	};
 
 #include "GameInstanceEntity.inl"

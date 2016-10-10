@@ -126,10 +126,10 @@ namespace Svr {
 	public:
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID );
 
 		// Close entity and clear transaction
-		virtual HRESULT TerminateEntity();
+		virtual Result TerminateEntity();
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////
@@ -138,10 +138,10 @@ namespace Svr {
 		//
 
 		// foreach game player
-		HRESULT ForeachPlayer( std::function<HRESULT(PartyPlayer* pPlayer)> func );
+		Result ForeachPlayer( std::function<Result(PartyPlayer* pPlayer)> func );
 
-		HRESULT ForeachPlayerGameServer( std::function<HRESULT(PartyPlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
-		HRESULT ForeachPlayerSvrGameParty( std::function<HRESULT(PartyPlayer* pPlayer, Policy::ISvrPolicyGameParty *pPolicy)> func );
+		Result ForeachPlayerGameServer( std::function<Result(PartyPlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
+		Result ForeachPlayerSvrGameParty( std::function<Result(PartyPlayer* pPlayer, Policy::ISvrPolicyGameParty *pPolicy)> func );
 
 
 
@@ -152,25 +152,25 @@ namespace Svr {
 		//
 
 		// Join Player
-		HRESULT JoinPlayer( PartyPlayer* &pPlayer, bool bIsSilent = true );
+		Result JoinPlayer( PartyPlayer* &pPlayer, bool bIsSilent = true );
 
 		// Player leave
-		HRESULT LeavePlayer( PartyPlayer* &pPlayer, bool bIsSilent = true );
+		Result LeavePlayer( PartyPlayer* &pPlayer, bool bIsSilent = true );
 
 		// Select new leader
-		HRESULT SelectNewLeader( bool bIsSilent = true );
+		Result SelectNewLeader( bool bIsSilent = true );
 
 		// Leave all player
-		HRESULT LeaveAllPlayer();
+		Result LeaveAllPlayer();
 
 		// Find Player pilotid
-		HRESULT FindPlayer( PlayerID pltID, PartyPlayer* &pPartyPlayer );
+		Result FindPlayer( PlayerID pltID, PartyPlayer* &pPartyPlayer );
 
 		// Called when a player get out of game
-		HRESULT OnPlayerGetOutOfParty( PartyPlayer *pPlayer, bool bIsSilent = true );
+		Result OnPlayerGetOutOfParty( PartyPlayer *pPlayer, bool bIsSilent = true );
 
 		// Pending close transaction
-		HRESULT PendingCloseTransaction();
+		Result PendingCloseTransaction();
 	};
 
 #include "GamePartyEntity.inl"

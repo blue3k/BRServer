@@ -113,7 +113,7 @@ namespace Svr {
 			virtual ~MatchingQueueInterface() {}
 
 			virtual void ResetForMatch() {}
-			virtual HRESULT Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) = 0;
+			virtual Result Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) = 0;
 			virtual UINT GetEnqueueCount() = 0;
 		};
 
@@ -128,7 +128,7 @@ namespace Svr {
 			//MatchingQueue_Single();
 			MatchingQueue_Single(PageQueue<ReservedMatchingItem>* pQueuePtr);
 
-			virtual HRESULT Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) override;
+			virtual Result Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) override;
 			virtual UINT GetEnqueueCount() override;
 		};
 
@@ -168,10 +168,10 @@ namespace Svr {
 
 			MatchingQueue_Multiple();
 
-			HRESULT AddQueue(PageQueue<ReservedMatchingItem>* pQueuePtr, UINT maxPerMatch, PlayerRole requestRole);
+			Result AddQueue(PageQueue<ReservedMatchingItem>* pQueuePtr, UINT maxPerMatch, PlayerRole requestRole);
 
 			virtual void ResetForMatch() override;
-			virtual HRESULT Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) override;
+			virtual Result Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) override;
 			virtual UINT GetEnqueueCount() override;
 		};
 
@@ -217,10 +217,10 @@ namespace Svr {
 		PerformanceCounterTickPerSec<INT64> m_MatchedCount;
 
 	protected:
-		HRESULT GetMatchingPatterTable(UINT targetMatchingMemberCount, UINT& numTableEntries, const UINT* &pTable);
+		Result GetMatchingPatterTable(UINT targetMatchingMemberCount, UINT& numTableEntries, const UINT* &pTable);
 
-		HRESULT UpdateMatching();
-		HRESULT UpdateBotMatching();
+		Result UpdateMatching();
+		Result UpdateBotMatching();
 
 		UINT GetGrabbedPlayerCount(Array<ReservedMatchingItem>& grabbedItems);
 
@@ -238,13 +238,13 @@ namespace Svr {
 		//	Entity operations
 		//
 
-		virtual HRESULT InitializeEntity(EntityID newEntityID) override;
+		virtual Result InitializeEntity(EntityID newEntityID) override;
 
 		// clear transaction
-		virtual HRESULT ClearEntity() override;
+		virtual Result ClearEntity() override;
 
 		// TickUpdate 
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 	};
 
@@ -303,10 +303,10 @@ namespace Svr {
 		void TransactionClosedForQueue(UINT iMemberCount)								{ m_ReservedItemQueueTransaction[iMemberCount]--; if (m_ReservedItemQueueTransaction[iMemberCount] < 0) m_ReservedItemQueueTransaction[iMemberCount] = 0; }
 		INT GetTransactionStartedForQueue(UINT iMemberCount)							{ return m_ReservedItemQueueTransaction[iMemberCount]; }
 
-		virtual HRESULT InitializeEntity(EntityID newEntityID) override;
+		virtual Result InitializeEntity(EntityID newEntityID) override;
 
 		// TickUpdate 
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 	};
 
 
@@ -323,7 +323,7 @@ namespace Svr {
 		MatchingServiceHandleMatchedEntity();
 		~MatchingServiceHandleMatchedEntity();
 
-		virtual HRESULT InitializeEntity(EntityID newEntityID) override;
+		virtual Result InitializeEntity(EntityID newEntityID) override;
 	};
 
 

@@ -94,11 +94,11 @@ namespace BR
 			m_Used = 0;
 		}
 
-		virtual HRESULT Resize( size_t newSize )
+		virtual Result Resize( size_t newSize )
 		{
 			void* pPtr = m_DataBuffer;
 			if( FAILED(m_Allocator.Realloc( sizeof(DataType)*newSize, pPtr )) )
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
 			if( pPtr != m_DataBuffer )
 			{
@@ -108,21 +108,21 @@ namespace BR
 
 			m_Allocated = newSize;
 			m_DataBuffer = (DataType*)pPtr;
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// Append data
-		virtual HRESULT Append( size_t dataSize, const DataType* data )
+		virtual Result Append( size_t dataSize, const DataType* data )
 		{
 			if( data == nullptr || dataSize == 0 )
-				return E_SYSTEM_INVALIDARG;
+				return ResultCode::INVALID_ARG;
 
 			// Increase size
 			if( m_Allocated < (m_Used+dataSize) )
 			{
 				size_t newSize = m_Allocated + ((dataSize + m_Increase - 1) / m_Increase) * m_Increase;
 
-				HRESULT hr = Resize(newSize);
+				Result hr = Resize(newSize);
 				if( FAILED(hr) )
 					return hr;
 			}
@@ -130,17 +130,17 @@ namespace BR
 			memcpy( m_DataBuffer + m_Used, data, sizeof(DataType)*dataSize );
 			m_Used += dataSize;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// remove data
-		virtual HRESULT Remove( const DataType* data )
+		virtual Result Remove( const DataType* data )
 		{
 			if( data == nullptr )
-				return E_SYSTEM_INVALIDARG;
+				return ResultCode::INVALID_ARG;
 
 			if( GetPtr() == nullptr )
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			DataType* dataList = GetPtr();
 			for( unsigned int index = 0; index < GetSize(); index++ )
@@ -152,20 +152,20 @@ namespace BR
 						memcpy( &dataList[index], &dataList[index+1], sizeof(DataType)*(GetSize() - (index+1)) );
 					}
 					m_Used--;
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 				}
 			}
 
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
-		virtual HRESULT RemoveAt( int removeIndex )
+		virtual Result RemoveAt( int removeIndex )
 		{
 			if( removeIndex < 0 || removeIndex >= (INT)GetSize() )
-				return E_SYSTEM_INVALIDARG;
+				return ResultCode::INVALID_ARG;
 
 			if( GetPtr() == nullptr )
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			DataType* dataList = GetPtr();
 			if( (size_t)(removeIndex+1) < GetSize() )
@@ -174,7 +174,7 @@ namespace BR
 			}
 			m_Used--;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 	};
 
@@ -186,12 +186,12 @@ namespace BR
 	public:
 		typedef MemoryBuffer<char, StaticBufferSize> super;
 
-		virtual HRESULT Append( size_t dataSize, const char* data )
+		virtual Result Append( size_t dataSize, const char* data )
 		{
 			if( data == nullptr || dataSize == 0 )
-				return E_SYSTEM_INVALIDARG;
+				return ResultCode::INVALID_ARG;
 
-			HRESULT hr = super::Append( dataSize, data );
+			Result hr = super::Append( dataSize, data );
 			if( FAILED(hr) ) return hr;
 
 			if(super::GetPtr()[super::GetUsedSize()-1] != '\0' )
@@ -200,7 +200,7 @@ namespace BR
 				if( FAILED(hr) ) return hr;
 			}
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 	};
 

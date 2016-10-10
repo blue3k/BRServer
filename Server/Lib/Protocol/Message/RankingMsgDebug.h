@@ -29,7 +29,7 @@ namespace BR
 			// Ranking Debug output function 
 
 			void RegisterDebugTraceRanking();
-			HRESULT DebugOutRanking( const char*Prefix, MessageData*pMsg );
+			Result DebugOutRanking( const char*Prefix, MessageData*pMsg );
 
 
 

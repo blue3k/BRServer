@@ -81,15 +81,15 @@ namespace Net {
 
 
 		// Add network event to queue
-		virtual HRESULT EnqueueNetEvent( INet::Event& evt );
+		virtual Result EnqueueNetEvent( INet::Event& evt );
 
 		// Query Network event
-		virtual HRESULT DequeueNetEvent( Event& curEvent );
+		virtual Result DequeueNetEvent( Event& curEvent );
 
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) { return E_SYSTEM_NOTIMPL; }
+		virtual Result Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) { return ResultCode::NOT_IMPLEMENTED; }
 
 		// Close all connection
-		virtual HRESULT CloseAllConnection() = 0;
+		virtual Result CloseAllConnection() = 0;
 	};
 
 

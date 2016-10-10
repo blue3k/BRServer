@@ -31,9 +31,9 @@ namespace BR
 		{
  			// Cmd: Kick
 			const MessageID RegisterPlayerToJoinGameServerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 0);
-			HRESULT RegisterPlayerToJoinGameServerCmd::ParseIMsg( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -55,11 +55,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+			Result RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -91,11 +91,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+			}; // Result RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
 
-			HRESULT RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
+			Result RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -117,7 +117,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RegisterPlayerToJoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -128,9 +128,9 @@ namespace BR
 			}; // void RegisterPlayerToJoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterPlayerToJoinGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 0);
-			HRESULT RegisterPlayerToJoinGameServerRes::ParseIMsg( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -144,7 +144,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPublicAddress, pCur, iMsgSize, sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_PublicAddress, pCur, iMsgSize, sizeof(char)*uiSizeOfPublicAddress ) );
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPublicAddressV6, pCur, iMsgSize, sizeof(UINT16) ) );
@@ -156,11 +156,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort )
+			Result RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -169,7 +169,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInPublicAddressLength + sizeof(UINT16) + __uiInPublicAddressV6Length 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(UINT32));
 
 				MessageData *pNewMsg = nullptr;
@@ -180,7 +180,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &__uiInPublicAddressLength, sizeof(UINT16) );
 				Protocol::PackParamCopy( pMsgData, InPublicAddress ? InPublicAddress : "", __uiInPublicAddressLength );
 				Protocol::PackParamCopy( pMsgData, &__uiInPublicAddressV6Length, sizeof(UINT16) );
@@ -194,11 +194,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort )
+			}; // Result RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort )
 
-			HRESULT RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
+			Result RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -220,7 +220,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -232,9 +232,9 @@ namespace BR
 
 			// Cmd: Kick
 			const MessageID RegisterPlayerToJoinGameServerOnPlayerEntityCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 1);
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseIMsg( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -255,11 +255,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -289,11 +289,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -315,7 +315,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -326,9 +326,9 @@ namespace BR
 			}; // void RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterPlayerToJoinGameServerOnPlayerEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 1);
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseIMsg( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -340,25 +340,25 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT));
+					+ sizeof(Result));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -368,7 +368,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 
 				pMsg = pNewMsg;
 
@@ -377,11 +377,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -403,7 +403,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RegisterPlayerToJoinGameServerOnPlayerEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -415,9 +415,9 @@ namespace BR
 
 			// C2S: Chatting message
 			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 2);
-			HRESULT ChatMessageC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result ChatMessageC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -442,11 +442,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ChatMessageC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result ChatMessageC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT ChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
+			Result ChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -478,11 +478,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
+			}; // Result ChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
 
-			HRESULT ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -504,7 +504,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void ChatMessageC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -516,9 +516,9 @@ namespace BR
 
 			// C2S: Notification
 			const MessageID NotifyC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 3);
-			HRESULT NotifyC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result NotifyC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -544,11 +544,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result NotifyC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const UINT64 &InTimeStamp )
+			Result NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const UINT64 &InTimeStamp )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -585,11 +585,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const UINT64 &InTimeStamp )
+			}; // Result NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const UINT64 &InTimeStamp )
 
-			HRESULT NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -611,7 +611,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void NotifyC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -623,9 +623,9 @@ namespace BR
 
 			// C2S: Friend Accept
 			const MessageID FriendAcceptedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 4);
-			HRESULT FriendAcceptedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result FriendAcceptedC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -644,11 +644,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendAcceptedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result FriendAcceptedC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT FriendAcceptedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
+			Result FriendAcceptedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -674,11 +674,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendAcceptedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
+			}; // Result FriendAcceptedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
 
-			HRESULT FriendAcceptedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result FriendAcceptedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -700,7 +700,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendAcceptedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result FriendAcceptedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void FriendAcceptedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -712,9 +712,9 @@ namespace BR
 
 			// C2S: Friend Remove
 			const MessageID FriendRemovedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 5);
-			HRESULT FriendRemovedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result FriendRemovedC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -733,11 +733,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendRemovedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result FriendRemovedC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT FriendRemovedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
+			Result FriendRemovedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -763,11 +763,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendRemovedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
+			}; // Result FriendRemovedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
 
-			HRESULT FriendRemovedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result FriendRemovedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -789,7 +789,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendRemovedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result FriendRemovedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void FriendRemovedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -801,9 +801,9 @@ namespace BR
 
 			// C2S: Request Player Status Update
 			const MessageID RequestPlayerStatusUpdateC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 6);
-			HRESULT RequestPlayerStatusUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result RequestPlayerStatusUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -822,11 +822,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestPlayerStatusUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestPlayerStatusUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RequestPlayerStatusUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
+			Result RequestPlayerStatusUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -852,11 +852,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestPlayerStatusUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
+			}; // Result RequestPlayerStatusUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
 
-			HRESULT RequestPlayerStatusUpdateC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result RequestPlayerStatusUpdateC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -878,7 +878,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestPlayerStatusUpdateC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RequestPlayerStatusUpdateC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RequestPlayerStatusUpdateC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -890,9 +890,9 @@ namespace BR
 
 			// C2S: Notify Player Status Updated
 			const MessageID NotifyPlayerStatusUpdatedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 7);
-			HRESULT NotifyPlayerStatusUpdatedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result NotifyPlayerStatusUpdatedC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -912,11 +912,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPlayerStatusUpdatedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
+			Result NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -944,11 +944,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
+			}; // Result NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
 
-			HRESULT NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -970,7 +970,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void NotifyPlayerStatusUpdatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -982,9 +982,9 @@ namespace BR
 
 			// C2S: Notification
 			const MessageID NotifyPartyInviteC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 8);
-			HRESULT NotifyPartyInviteC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result NotifyPartyInviteC2SEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1007,11 +1007,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPartyInviteC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result NotifyPartyInviteC2SEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT NotifyPartyInviteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const EntityUID &InPartyUID )
+			Result NotifyPartyInviteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const EntityUID &InPartyUID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1042,11 +1042,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPartyInviteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const EntityUID &InPartyUID )
+			}; // Result NotifyPartyInviteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const EntityUID &InPartyUID )
 
-			HRESULT NotifyPartyInviteC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result NotifyPartyInviteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1068,7 +1068,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPartyInviteC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result NotifyPartyInviteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void NotifyPartyInviteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)

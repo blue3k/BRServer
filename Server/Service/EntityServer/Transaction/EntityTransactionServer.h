@@ -41,7 +41,7 @@ namespace EntityServer {
 	//	TransServerStarted( Message::MessageData* &pIMsg ) : ServerStartedTrans(pIMsg) {}
 	//	virtual ~TransServerStarted() {}
 
-	//	virtual HRESULT StartTransaction();
+	//	virtual Result StartTransaction();
 	//};
 
 

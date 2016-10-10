@@ -491,7 +491,7 @@ namespace Config {
 		virtual ~ConfigData();
 
 		// clear loaded config values
-		HRESULT ClearConfig();
+		Result ClearConfig();
 
 
 		//////////////////////////////////////////////////////////////////////////////////////
@@ -551,10 +551,10 @@ namespace Config {
 	//
 
 	// Load Config file
-	HRESULT LoadConfig( const char* strConfigFileName );
+	Result LoadConfig( const char* strConfigFileName );
 
 	// Clear Config data
-	HRESULT ClearConfig();
+	Result ClearConfig();
 
 	// Get Config data instance
 	const ConfigData& GetConfig();

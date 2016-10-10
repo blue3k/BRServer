@@ -970,19 +970,19 @@ namespace Config
 		}
 
 
-		HRESULT LoadTable( const char *strFileName )
+		Result LoadTable( const char *strFileName )
 		{
  			int result = xmlSAXUserParseFile( *this, this, strFileName );
 
 			if (result != 0)
 			{
  				// error log
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 
 			xmlCleanupParser();
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 	};
@@ -1003,7 +1003,7 @@ namespace Config
 		ClearConfig();
 	}
 
-	HRESULT ConfigData::ClearConfig()
+	Result ConfigData::ClearConfig()
 	{
 		DBInstances.clear();
 
@@ -1016,7 +1016,7 @@ namespace Config
 
 		RemoveAllChildren();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	
@@ -1028,7 +1028,7 @@ namespace Config
 
 
 	// Load Config file
-	HRESULT LoadConfig( const char* strConfigFileName )
+	Result LoadConfig( const char* strConfigFileName )
 	{
 		ServerConfigParser parser ( __ConfigData );
 
@@ -1037,14 +1037,14 @@ namespace Config
 		if (result != 0)
 		{
  			// error log
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 		xmlCleanupParser();
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Clear Config data
-	HRESULT ClearConfig()
+	Result ClearConfig()
 	{
 		return __ConfigData.ClearConfig();
 	}

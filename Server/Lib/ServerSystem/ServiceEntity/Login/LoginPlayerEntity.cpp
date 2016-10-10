@@ -67,9 +67,9 @@ namespace Svr {
 	}
 
 	// Initialize entity to proceed new connection
-	HRESULT LoginPlayerEntity::InitializeEntity( EntityID newEntityID )
+	Result LoginPlayerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::InitializeEntity( newEntityID ) );
 
@@ -85,9 +85,9 @@ namespace Svr {
 	}
 
 	// Set connection for pilot
-	HRESULT LoginPlayerEntity::SetConnection( Net::Connection* &pCon )
+	Result LoginPlayerEntity::SetConnection( Net::Connection* &pCon )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetConnection() == pCon )
 			return hr;
@@ -120,20 +120,20 @@ namespace Svr {
 	//
 
 	// register message handlers
-	HRESULT LoginPlayerEntity::RegisterMessageHandlers()
+	Result LoginPlayerEntity::RegisterMessageHandlers()
 	{
-		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new LoginPlayerTransLogin(pMsgData); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new LoginPlayerTransLoginByFacebook(pMsgData); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new LoginPlayerTransCreateRandomUser(pMsgData); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new LoginPlayerJoinedToGameServerTrans(pMsgData); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new LoginPlayerTransLogin(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new LoginPlayerTransLoginByFacebook(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new LoginPlayerTransCreateRandomUser(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new LoginPlayerJoinedToGameServerTrans(pMsgData); return ResultCode::SUCCESS; } );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// clear transaction
-	HRESULT LoginPlayerEntity::ClearEntity()
+	Result LoginPlayerEntity::ClearEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		ReleaseConnection();
 
@@ -145,9 +145,9 @@ namespace Svr {
 	}
 
 	// Run the task
-	HRESULT LoginPlayerEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result LoginPlayerEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto curTime = Util::Time.GetTimeMs();
 
 		svrChk( super::TickUpdate(pAction) );
@@ -161,9 +161,9 @@ namespace Svr {
 
 
 	// Update Game Player 
-	HRESULT LoginPlayerEntity::UpdateLoginPlayer( TimeStampMS ulCurTime )
+	Result LoginPlayerEntity::UpdateLoginPlayer( TimeStampMS ulCurTime )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( m_TimeToKill.CheckTimer() )
 		{
@@ -175,9 +175,9 @@ namespace Svr {
 		return hr;
 	}
 	
-	HRESULT LoginPlayerEntity::PendingCloseTransaction()
+	Result LoginPlayerEntity::PendingCloseTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::Transaction *trans = nullptr;
 
 		svrMem( trans = new LoginPlayerTransCloseInstance );

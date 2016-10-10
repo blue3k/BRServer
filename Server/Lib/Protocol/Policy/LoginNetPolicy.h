@@ -30,11 +30,11 @@ namespace BR
 			{}
 
 			// Cmd: Login request
-			HRESULT LoginCmd( const GameID &InGameID, const char* InID, const char* InPassword );
+			Result LoginCmd( const GameID &InGameID, const char* InID, const char* InPassword );
 			// Cmd: Login request with Facebook UID
-			HRESULT LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken );
+			Result LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken );
 			// Cmd: Login request
-			HRESULT CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone );
+			Result CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone );
 
 		}; // class NetPolicyLogin : public IPolicyLogin
 
@@ -47,11 +47,11 @@ namespace BR
 			{}
 
 			// Cmd: Login request
-			HRESULT LoginRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+			Result LoginRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 			// Cmd: Login request with Facebook UID
-			HRESULT LoginByFacebookRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+			Result LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 			// Cmd: Login request
-			HRESULT CreateRandomUserRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+			Result CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
 
 		}; // class NetSvrPolicyLogin : public ISvrPolicyLogin
 

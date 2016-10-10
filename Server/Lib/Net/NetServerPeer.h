@@ -57,7 +57,7 @@ namespace Net {
 
 		SyncCounter				m_PendingRecvCnt;
 
-		HRESULT ServerHostOpen(NetClass netCls, const char *strLocalIP, USHORT usLocalPort);
+		Result ServerHostOpen(NetClass netCls, const char *strLocalIP, USHORT usLocalPort);
 
 	public:
 		ServerPeer(ServerID InServerID, NetClass localClass);
@@ -71,7 +71,7 @@ namespace Net {
 		virtual CounterType GetActiveConnectionCount();
 
 		// Close all connection
-		virtual HRESULT CloseAllConnection();
+		virtual Result CloseAllConnection();
 
 
 
@@ -80,12 +80,12 @@ namespace Net {
 
 
 		// called when reciving TCP message
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
+		virtual Result OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
-		virtual HRESULT OnSendReady() override;
+		virtual Result OnSendReady() override;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
+		virtual Result OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 
 		// Release instance
@@ -95,31 +95,31 @@ namespace Net {
 		virtual bool IsReady();
 
 		// Get connection from connection ID
-		virtual HRESULT GetConnection(UINT uiCID, SharedPointerT<Connection> &pConnection);
+		virtual Result GetConnection(UINT uiCID, SharedPointerT<Connection> &pConnection);
 
 
 		//// Send message to connection with network device
-		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
+		//virtual Result SendMsg( IConnection *pConnection, Message::MessageData *pMsg );
 
 		//// Send message to connection with network device to dst addr
-		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
+		//virtual Result SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
 
 		//// Send array of message buffer to connection with network device
-		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
+		//virtual Result SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
 
 		// Pending recv New one
-		HRESULT PendingRecv( IOBUFFER_READ *pOver );
+		Result PendingRecv( IOBUFFER_READ *pOver );
 
 
 		// Open host and start listen
-		virtual HRESULT HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort );
+		virtual Result HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort );
 
 		// Close host and close all connections
-		virtual HRESULT HostClose();
+		virtual Result HostClose();
 
 
 		// Connect to other peer
-		virtual HRESULT RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection );
+		virtual Result RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection );
 
 	};
 

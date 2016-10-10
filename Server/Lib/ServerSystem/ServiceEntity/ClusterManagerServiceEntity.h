@@ -62,28 +62,28 @@ namespace Svr {
 		ClusterManagerServiceEntity( ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
 		virtual ~ClusterManagerServiceEntity();
 
-		virtual HRESULT InitializeEntity( EntityID newEntityID ) override;
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 		// Initialize not initialized cluster entities
 		// This need to be called after clusterManagerService is initialized
-		HRESULT InitializeNotInitializedClusterEntities();
+		Result InitializeNotInitializedClusterEntities();
 
 		// Get cluster service entity
-		HRESULT GetClusterServiceEntity( ClusterID clusterID, ClusteredServiceEntity* &pServiceEntity );
+		Result GetClusterServiceEntity( ClusterID clusterID, ClusteredServiceEntity* &pServiceEntity );
 
 		// Add cluster service entity
-		HRESULT AddClusterServiceEntity( ClusteredServiceEntity* pServiceEntity );
+		Result AddClusterServiceEntity( ClusteredServiceEntity* pServiceEntity );
 
 		// Create a watcher for cluster
-		HRESULT CreateWatcherForCluster( ClusterID clusterID, ClusterType clusterType, ClusteredServiceEntity* &pServiceEntity );
+		Result CreateWatcherForCluster( ClusterID clusterID, ClusterType clusterType, ClusteredServiceEntity* &pServiceEntity );
 
 
 		// Sync data to target 
-		virtual HRESULT SyncDataToTarget( EntityUID entityUID ) override;
+		virtual Result SyncDataToTarget( EntityUID entityUID ) override;
 
-		virtual HRESULT RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
 
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 	};
 
 

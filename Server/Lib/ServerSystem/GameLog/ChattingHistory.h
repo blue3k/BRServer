@@ -52,16 +52,16 @@ namespace Svr {
 	public:
 
 		// Initialize 
-		virtual HRESULT InitializeLog() override;
+		virtual Result InitializeLog() override;
 
 		// Terminate
 		virtual void TerminateLog() override;
 
 		// Add chatting log
-		virtual HRESULT AddChattingLog(TimeStampSec timeStamp, PlayerID player, BYTE playerStatus, ChatType type, const char* message );
+		virtual Result AddChattingLog(TimeStampSec timeStamp, PlayerID player, BYTE playerStatus, ChatType type, const char* message );
 
 		//// Get chatting binary
-		//HRESULT GetChattingBinary( OutputMemoryStream& stream, UINT startIndex, UINT count );
+		//Result GetChattingBinary( OutputMemoryStream& stream, UINT startIndex, UINT count );
 
 		// 
 	};

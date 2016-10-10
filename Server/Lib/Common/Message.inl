@@ -138,14 +138,14 @@ BYTE* MessageData::GetMessageData()
 
 MessageBase::MessageBase()
 	:m_pIMsg(NULL),
-	m_hrParsing(S_SYSTEM_FALSE),
+	m_hrParsing(ResultCode::SUCCESS_FALSE),
 	m_bIsParsed(false)
 {
 }
 
 MessageBase::MessageBase(MessageData* &pIMsg)
 	:m_pIMsg(pIMsg),
-	m_hrParsing(S_SYSTEM_FALSE),
+	m_hrParsing(ResultCode::SUCCESS_FALSE),
 	m_bIsParsed(false)
 {
 	pIMsg = nullptr;
@@ -167,7 +167,7 @@ MessageData* MessageBase::GetMessage()
 
 
 // Get Parsing Result
-HRESULT MessageBase::GetParsingResult()
+Result MessageBase::GetParsingResult()
 {
 	return m_hrParsing;
 }

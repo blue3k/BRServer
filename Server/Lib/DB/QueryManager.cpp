@@ -43,9 +43,9 @@ namespace DB {
 	}
 
 	// Initialize QueryManager
-	HRESULT QueryManager::InitializeDB( UINT partitioningCount )
+	Result QueryManager::InitializeDB( UINT partitioningCount )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		m_PartitioningCount = partitioningCount;
 
@@ -55,13 +55,13 @@ namespace DB {
 		// Clear if something is remain
 		if (m_ShardingBucket.GetSize() > 0)
 		{
-			m_ShardingBucket.Foreach([](DataSource* dataSource) -> HRESULT {
+			m_ShardingBucket.Foreach([](DataSource* dataSource) -> Result {
 				if (dataSource != nullptr)
 				{
 					dataSource->CloseDBSource();
 					delete dataSource;
 				}
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			});
 			m_ShardingBucket.Clear();
 		}
@@ -87,13 +87,13 @@ namespace DB {
 
 	void QueryManager::Clear()
 	{
-		m_ShardingBucket.Foreach([](DataSource* dataSource) -> HRESULT {
+		m_ShardingBucket.Foreach([](DataSource* dataSource) -> Result {
 			if (dataSource != nullptr)
 			{
 				dataSource->CloseDBSource();
 				delete dataSource;
 			}
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		});
 		m_ShardingBucket.Clear();
 
@@ -105,14 +105,14 @@ namespace DB {
 		Clear();
 	}
 
-	HRESULT QueryManager::RequestShardList()
+	Result QueryManager::RequestShardList()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (m_GetShardListLockTimer.IsTimerWorking()
 			&& !m_GetShardListLockTimer.CheckTimer())
 		{
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 		}
 
 		auto pQuery = new QueryGetShardListCmd();
@@ -130,9 +130,9 @@ namespace DB {
 		return hr;
 	}
 
-	HRESULT	QueryManager::AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
+	Result	QueryManager::AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
 	{
-		HRESULT	hr = S_SYSTEM_OK;
+		Result	hr = ResultCode::SUCCESS;
 		DataSource *pDBSource = nullptr;
 
 		dbAssert(partitioningID < m_PartitioningCount);
@@ -170,9 +170,9 @@ namespace DB {
 
 
 	// select db source by partitioning key
-	HRESULT QueryManager::SelectDBByKey(UINT partitioningKey, DataSource* &pDataSource)
+	Result QueryManager::SelectDBByKey(UINT partitioningKey, DataSource* &pDataSource)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		pDataSource = nullptr;
 		
@@ -189,14 +189,14 @@ Proc_End:
 
 
 	// Update query worker status
-	HRESULT QueryManager::UpdateQuery()
+	Result QueryManager::UpdateQuery()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Query* pQuery = nullptr;
 
 		// Don't try any query while disconnected
 		if( m_bIsDisconnected )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		auto maxTry = m_PendingQueries.GetEnqueCount();
 		for (decltype(maxTry) iQuery = 0; iQuery < maxTry; iQuery++)
@@ -210,7 +210,7 @@ Proc_End:
 
 			if (Util::TimeSince(pQuery->GetRequestedTime()) > DurationMS(DB::MAX_QUERY_TIMEOUT))
 			{
-				pQuery->SetResult(E_SVR_TIMEOUT);
+				pQuery->SetResult(ResultCode::E_SVR_TIMEOUT);
 				RouteResult(pQuery);
 				continue;
 			}
@@ -220,7 +220,7 @@ Proc_End:
 			{
 				dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
 				// It's not expected
-				pQuery->SetResult(E_SYSTEM_UNEXPECTED);
+				pQuery->SetResult(ResultCode::UNEXPECTED);
 				RouteResult(pQuery);
 				continue;
 			}
@@ -237,7 +237,7 @@ Proc_End:
 			if (FAILED(pDBSource->AssignSession(pSession)))
 			{
 				// It's not expected
-				pQuery->SetResult(E_SYSTEM_UNEXPECTED);
+				pQuery->SetResult(ResultCode::UNEXPECTED);
 				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
 				RouteResult(pQuery);
 				continue;
@@ -247,7 +247,7 @@ Proc_End:
 			{
 				if (FAILED(pSession->OpenSession()))
 				{
-					pQuery->SetResult(E_SYSTEM_UNEXPECTED);
+					pQuery->SetResult(ResultCode::UNEXPECTED);
 					pSession->ReleaseSession();
 					dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
 					RouteResult(pQuery);
@@ -260,7 +260,7 @@ Proc_End:
 			if (FAILED(QueryWorkerManager::PendingQuery(pQuery)))
 			{
 				// It's not expected
-				pQuery->SetResult(E_SYSTEM_UNEXPECTED);
+				pQuery->SetResult(ResultCode::UNEXPECTED);
 				dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(*pQuery).name(), pQuery->GetTransID());
 			}
 			else
@@ -268,7 +268,7 @@ Proc_End:
 				pQuery = nullptr;
 			}
 
-			if (pQuery != nullptr && FAILED(pQuery->GetHRESULT()))
+			if (pQuery != nullptr && FAILED(pQuery->GetResult()))
 			{
 				RouteResult(pQuery);
 			}
@@ -279,9 +279,9 @@ Proc_End:
 		return hr;
 	}
 
-	HRESULT	QueryManager::UpdateResultQueries()
+	Result	QueryManager::UpdateResultQueries()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Query* pQuery = nullptr;
 		auto numQueries = m_ResultQueries.GetEnqueCount();
@@ -317,7 +317,7 @@ Proc_End:
 			else
 			{
 				// not handled query result
-				dbErr(E_SYSTEM_NOTIMPL);
+				dbErr(ResultCode::NOT_IMPLEMENTED);
 			}
 		}
 
@@ -326,9 +326,9 @@ Proc_End:
 		return hr;
 	}
 
-	HRESULT	QueryManager::RequestQuery(Query* pQuery)
+	Result	QueryManager::RequestQuery(Query* pQuery)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Session * pSession = nullptr;
 		DataSource *pDBSource = nullptr;
 
@@ -340,34 +340,34 @@ Proc_End:
 		{
 			dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
 			// It's not expected
-			pQuery->SetResult(E_SYSTEM_UNEXPECTED);
-			dbErr(E_SYSTEM_UNEXPECTED);
+			pQuery->SetResult(ResultCode::UNEXPECTED);
+			dbErr(ResultCode::UNEXPECTED);
 		}
 
 		if (!pDBSource->GetOpened())
 		{
 			// DB source fail, put it in the local queue and try again
 			dbChk(m_PendingQueries.Enqueue(pQuery));
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// Get Session
 		if (FAILED(pDBSource->AssignSession(pSession)))
 		{
 			// It's not expected
-			pQuery->SetResult(E_SYSTEM_UNEXPECTED);
+			pQuery->SetResult(ResultCode::UNEXPECTED);
 			dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
-			dbErr(E_SYSTEM_UNEXPECTED);
+			dbErr(ResultCode::UNEXPECTED);
 		}
 
 		if (!pSession->IsOpened())
 		{
 			if (FAILED(pSession->OpenSession()))
 			{
-				pQuery->SetResult(E_SYSTEM_UNEXPECTED);
+				pQuery->SetResult(ResultCode::UNEXPECTED);
 				pSession->ReleaseSession();
 				dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
-				dbErr(E_SYSTEM_UNEXPECTED);
+				dbErr(ResultCode::UNEXPECTED);
 			}
 		}
 
@@ -381,9 +381,9 @@ Proc_End:
 	}
 
 	// Route query result to entity
-	HRESULT	QueryManager::RouteResult(Query* &pQuery)
+	Result	QueryManager::RouteResult(Query* &pQuery)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::TransactionResult *pRes = pQuery;
 
 		if( pRes->GetTransID() != TransactionID(0) )
@@ -398,7 +398,7 @@ Proc_End:
 			if (FAILED(hr))
 			{
 				dbTrace(TRC_INFO, "Failed to route a message msgID:{0}, target entityID:{1}, query:{2}", hr, msgID, entityID, queryName);
-				hr = E_INVALID_ENTITY;
+				hr = ResultCode::E_INVALID_ENTITY;
 				goto Proc_End;
 			}
 		}

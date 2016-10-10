@@ -85,16 +85,14 @@ namespace Net {
 			};
 			EventTypes		EventType;
 
-			union {
-				// connection result
-				HRESULT hr;
-				// State changed
-				ConnectionState state;
-			} Value;
+			// connection result
+			Result hr;
+			// State changed
+			ConnectionState state;
 
-			Event(void* ptr = nullptr) : EventType(EventTypes::EVT_NONE) { Value.hr = 0; assert(ptr == nullptr); }
-			Event(EventTypes eventType, HRESULT hrRes) :EventType(eventType) { Value.hr = hrRes; }
-			Event(EventTypes eventType, ConnectionState InState) :EventType(eventType) { Value.state = InState; }
+			Event(void* ptr = nullptr) : EventType(EventTypes::EVT_NONE) { assert(ptr == nullptr); }
+			Event(EventTypes eventType, Result hrRes) :EventType(eventType) { hr = hrRes; }
+			Event(EventTypes eventType, ConnectionState InState) :EventType(eventType) { state = InState; }
 			Event& operator =(const Event& src);
 			bool operator == (const Event& src) const;
 			bool operator != (const Event& src) const;
@@ -189,7 +187,7 @@ namespace Net {
 		ConnectionInformation	m_ConnectInfo;
 
 
-		virtual HRESULT SendRaw(Message::MessageData* &pMsg) = 0;
+		virtual Result SendRaw(Message::MessageData* &pMsg) = 0;
 
 	public:
 		//////////////////////////////////////////////////////////////////////////
@@ -202,7 +200,7 @@ namespace Net {
 		virtual ~IConnection();
 
 		// setup Net
-		inline HRESULT SetupNet( INet *pNetInstance, uintptr_t uiCID );
+		inline Result SetupNet( INet *pNetInstance, uintptr_t uiCID );
 
 
 
@@ -239,7 +237,7 @@ namespace Net {
 		inline IPolicyType* GetPolicyByID( UINT policyID );
 
 		// Create policy if not exist
-		HRESULT CreatePolicy( UINT uiPolicy );
+		Result CreatePolicy( UINT uiPolicy );
 
 		// User data
 		uintptr_t GetUData();
@@ -263,35 +261,35 @@ namespace Net {
 		//	virtual implementations
 		//
 
-		virtual HRESULT InitConnection(const NetAddress& Addr, NetClass netClass);
+		virtual Result InitConnection(const NetAddress& Addr, NetClass netClass);
 
 		// Disconnect connection
-		virtual HRESULT Disconnect(const char* reason) = 0;
+		virtual Result Disconnect(const char* reason) = 0;
 
 		// Close connection immediately without notify
-		virtual HRESULT CloseConnection() = 0;
+		virtual Result CloseConnection() = 0;
 
 
 		// Send message to connected entity
-		virtual HRESULT Send( Message::MessageData* &pMsg ) = 0;
+		virtual Result Send( Message::MessageData* &pMsg ) = 0;
 
 		// Message count currently in recv queue
 		virtual SysUInt GetRecvMessageCount() = 0;
 
 		// Query connection event
 		virtual CounterType GetConnectionEventCount() = 0;
-		virtual HRESULT DequeueConnectionEvent(Event& curEvent) = 0;
+		virtual Result DequeueConnectionEvent(Event& curEvent) = 0;
 
 		// Get received Message
-		virtual HRESULT GetRecvMessage( Message::MessageData* &pIMsg ) = 0;
+		virtual Result GetRecvMessage( Message::MessageData* &pIMsg ) = 0;
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl(  ) = 0;
+		virtual Result UpdateNetCtrl(  ) = 0;
 
 		// Update send queue, Reliable UDP
-		virtual HRESULT UpdateSendQueue() = 0;
+		virtual Result UpdateSendQueue() = 0;
 		// Update Send buffer Queue, TCP and UDP client connection
-		virtual HRESULT UpdateSendBufferQueue() = 0;
+		virtual Result UpdateSendBufferQueue() = 0;
 	};
 
 
@@ -307,10 +305,10 @@ namespace Net {
 		virtual ~IConnectionEventHandler();
 
 		virtual void OnConnectionEvent(IConnection* pConn, const IConnection::Event& evt) = 0;
-		virtual HRESULT OnRecvMessage(IConnection* pConn, Message::MessageData* pMsg) = 0;
-		virtual HRESULT OnNetSyncMessage(IConnection* pConn);
+		virtual Result OnRecvMessage(IConnection* pConn, Message::MessageData* pMsg) = 0;
+		virtual Result OnNetSyncMessage(IConnection* pConn);
 		// Net send message
-		virtual HRESULT OnNetSendReadyMessage(IConnection* pConn);
+		virtual Result OnNetSendReadyMessage(IConnection* pConn);
 	};
 
 
@@ -385,18 +383,18 @@ namespace Net {
 		virtual bool IsReady() = 0;
 
 		// Query Network event
-		virtual HRESULT DequeueNetEvent( Event& curEvent ) = 0;
+		virtual Result DequeueNetEvent( Event& curEvent ) = 0;
 
-		virtual HRESULT EnqueueNetEvent( Event& curEvent ) = 0;
+		virtual Result EnqueueNetEvent( Event& curEvent ) = 0;
 
 		// Make a connection to another server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) = 0;
+		virtual Result Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) = 0;
 
 		// Release Connection
-		virtual HRESULT ReleaseConnection(IConnection* pIConnection) = 0;
+		virtual Result ReleaseConnection(IConnection* pIConnection) = 0;
 
 		// take over connection management
-		virtual HRESULT TakeOverConnection(IConnection* pIConnection) = 0;
+		virtual Result TakeOverConnection(IConnection* pIConnection) = 0;
 	};
 
 
@@ -412,10 +410,10 @@ namespace Net {
 	{
 	public:
 		// Get connection from connection ID
-		virtual HRESULT GetConnection( uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection) = 0;
+		virtual Result GetConnection( uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection) = 0;
 
 		// Connect to server
-		virtual HRESULT ConnectCli(const NetAddress& destAddress, IConnection* &pINewConnection ) = 0;
+		virtual Result ConnectCli(const NetAddress& destAddress, IConnection* &pINewConnection ) = 0;
 	};
 
 

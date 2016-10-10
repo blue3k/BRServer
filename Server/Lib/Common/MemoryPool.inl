@@ -38,12 +38,12 @@ CounterType PageAllocator::GetPageCount() const
 //
 //// allocate object
 //template< class ObjectType >
-//HRESULT MemoryPoolT<ObjectType>::Alloc( ObjectType* &pObject )
+//Result MemoryPoolT<ObjectType>::Alloc( ObjectType* &pObject )
 //{
 //}
 //
 //// free object
 //template< class ObjectType >
-//HRESULT MemoryPoolT<ObjectType>::Free( ObjectType* pObject )
+//Result MemoryPoolT<ObjectType>::Free( ObjectType* pObject )
 //{
 //}

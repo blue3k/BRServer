@@ -47,10 +47,10 @@ namespace Svr {
 	//	GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg);// : ServerEntityMessageTransaction(pIMsg) { SetWorkOnServerEntity(true); }
 	//	virtual ~GameServerTransRegisterPlayerToJoinGameServer() {}
 
-	//	HRESULT OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
+	//	Result OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
 
 	//	// Start Transaction
-	//	virtual HRESULT StartTransaction() override;
+	//	virtual Result StartTransaction() override;
 
 	//	Policy::ISvrPolicyGameServer* GetPolicy() { return super::GetPolicy<Policy::ISvrPolicyGameServer>(); }
 
@@ -70,7 +70,7 @@ namespace Svr {
 		virtual ~GameServerTransGamePlayerEntityCreatedS2CEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	class GameServerTransGamePlayerEntityDeletedS2CEvt : public ClusterEntityMessageTransaction< GameClusterServiceEntity, Message::ClusterServer::GamePlayerEntityDeletedC2SEvt, GameServerTransGamePlayerEntityDeletedS2CEvt>
@@ -85,7 +85,7 @@ namespace Svr {
 		virtual ~GameServerTransGamePlayerEntityDeletedS2CEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	

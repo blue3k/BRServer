@@ -331,7 +331,7 @@ namespace BR {
 		inline MatchingQueueItem( EntityUID RegisterUID, PlayerID RegisterID, UINT numPlayer, const MatchingPlayerInformation* playerInformations );
 		inline MatchingQueueItem( int initValue );
 
-		inline HRESULT SetQueueItem( EntityUID RegisterUID, PlayerID RegisterID, UINT numPlayer, const MatchingPlayerInformation* playerInformations );
+		inline Result SetQueueItem( EntityUID RegisterUID, PlayerID RegisterID, UINT numPlayer, const MatchingPlayerInformation* playerInformations );
 
 		inline MatchingQueueItem& operator = ( const MatchingQueueItem& src );
 

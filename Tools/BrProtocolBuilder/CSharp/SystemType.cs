@@ -23,7 +23,6 @@ namespace BR
     using AuthTicket = UInt64;
     using GameInstanceID = UInt32;
     using GameInstanceUID = UInt64;
-    using HRESULT = Int32;
     using EntityID = UInt32;
     using EntityUID = UInt64;
     using ServerID = UInt32;
@@ -280,7 +279,7 @@ namespace BR
             new TypeMap( ParameterType.PartyUID, 8, typeof(UInt64) ),
             new TypeMap( ParameterType.ServerID, 4, typeof(UInt32) ),
             new TypeMap( ParameterType.ClusterID, 4, typeof(UInt32) ),
-            new TypeMap( ParameterType.HRESULT, 4, typeof(Int32) ),
+            new TypeMap( ParameterType.Result, 4, typeof(Int32) ),
             new TypeMap( ParameterType.NotificationType, 2, typeof(Int16) ),
 
             new TypeMap( ParameterType.RankingType, 1, typeof(RankingType) ),

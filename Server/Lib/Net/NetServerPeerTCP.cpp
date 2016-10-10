@@ -48,9 +48,9 @@ namespace Net {
 
 
 	// handle Socket accept
-	HRESULT ServerPeerTCP::OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut)
+	Result ServerPeerTCP::OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ConnectionTCP *pConnection = nullptr;
 		SharedPointerT<Connection> pConn;
 		uintptr_t cid = 0;
@@ -73,7 +73,7 @@ namespace Net {
 			if (pConnection == nullptr)// Maybe maxconnection ?
 			{
 				netTrace(Trace::TRC_ERROR, "Failed to allocate a new connection now active:{0}", GetConnectionManager().GetNumActiveConnection());
-				netErr(E_SYSTEM_FAIL);
+				netErr(ResultCode::FAIL);
 			}
 
 			pConn = SharedPointerT<Connection>(pConnection);
@@ -136,9 +136,9 @@ namespace Net {
 
 
 	// Open host and start listen
-	HRESULT ServerPeerTCP::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
+	Result ServerPeerTCP::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		netChk( ServerTCP::HostOpen( netCls, strLocalIP, usLocalPort ) );
 
@@ -152,9 +152,9 @@ namespace Net {
 
 
 	// Make a connection to another server
-	HRESULT ServerPeerTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
+	Result ServerPeerTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Net::IConnection::ConnectionInformation connectionInfo;
 		ConnectionTCP *pConn = nullptr;
 		SOCKET socket = INVALID_SOCKET;
@@ -176,8 +176,8 @@ namespace Net {
 		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::Stream);
 		if (socket == INVALID_SOCKET)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to Open a Socket {0:X8}", GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "Failed to Open a Socket {0:X8}", GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 		netChk(SetupSocketOption(socket));
@@ -188,8 +188,8 @@ namespace Net {
 			iMode = true;
 			if (ioctlsocket(socket, FIONBIO, &iMode) == SOCKET_ERROR)
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err = {1:X8}", iMode, GetLastWSAHRESULT());
-				netErr(E_SYSTEM_UNEXPECTED);
+				netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err = {1:X8}", iMode, GetLastWSAResult());
+				netErr(ResultCode::UNEXPECTED);
 			}
 		}
 #endif
@@ -199,8 +199,8 @@ namespace Net {
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_SYSTEM_UNEXPECTED);
+				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAResult());
+				netErr(ResultCode::UNEXPECTED);
 			}
 		}
 
@@ -225,9 +225,9 @@ namespace Net {
 
 
 	// Connect to other peer
-	HRESULT ServerPeerTCP::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
+	Result ServerPeerTCP::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ConnectionTCP *pConn = nullptr;
 		uintptr_t CID = 0;
 

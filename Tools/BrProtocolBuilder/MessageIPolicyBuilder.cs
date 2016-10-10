@@ -135,7 +135,7 @@ namespace ProtocolBuilder
 
                     newparams = MakeParameters(MsgType.Res, msg.Res);
                     MatchIndent(); OutStream.WriteLine(
-                        string.Format("virtual HRESULT {0}Res( {1} ) = 0;", msg.Name, ParamInString(newparams)));
+                        string.Format("virtual Result {0}Res( {1} ) = 0;", msg.Name, ParamInString(newparams)));
                 }
 
                 if (baseMsg is ProtocolsProtocolGroupC2SEvent)
@@ -152,7 +152,7 @@ namespace ProtocolBuilder
 
                     newparams = MakeParameters(MsgType.Evt, msg.Params);
                     MatchIndent(); OutStream.WriteLine(
-                        string.Format("virtual HRESULT {0}S2CEvt( {1} ) = 0;", msg.Name, ParamInString(newparams)));
+                        string.Format("virtual Result {0}S2CEvt( {1} ) = 0;", msg.Name, ParamInString(newparams)));
                 }
             }
 
@@ -190,7 +190,7 @@ namespace ProtocolBuilder
 
                     newparams = MakeParameters(MsgType.Cmd, msg.Cmd);
                     MatchIndent(); OutStream.WriteLine(
-                        string.Format("virtual HRESULT {0}Cmd( {1} ) = 0;", msg.Name, ParamInString(newparams)));
+                        string.Format("virtual Result {0}Cmd( {1} ) = 0;", msg.Name, ParamInString(newparams)));
                 }
 
                 if (baseMsg is ProtocolsProtocolGroupC2SEvent)
@@ -200,7 +200,7 @@ namespace ProtocolBuilder
 
                     newparams = MakeParameters(MsgType.Evt, msg.Params);
                     MatchIndent(); OutStream.WriteLine(
-                        string.Format("virtual HRESULT {0}C2SEvt( {1} ) = 0;", msg.Name, ParamInString(newparams)));
+                        string.Format("virtual Result {0}C2SEvt( {1} ) = 0;", msg.Name, ParamInString(newparams)));
                 }
 
                 if (baseMsg is ProtocolsProtocolGroupS2CEvent)

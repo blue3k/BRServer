@@ -65,16 +65,16 @@ namespace DB {
 		virtual ~QueryWorkerManager();
 
 		// Initialize DB
-		static HRESULT InitializeDBWorkerManager();
+		static Result InitializeDBWorkerManager();
 
 		// Terminate DB module and close connections
 		static void TerminateDBWorkerManager();
 
 		// Request a DB Qurey
-		static HRESULT	PendingQuery(Query* &pQuery);
+		static Result	PendingQuery(Query* &pQuery);
 
 		// 
-		HRESULT	TryGetQuery(Query* &pQuery);
+		Result	TryGetQuery(Query* &pQuery);
 
 	private:
 	};

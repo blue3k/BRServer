@@ -50,7 +50,7 @@ namespace Net {
 
 
 	// Get lastest socket error 
-	HRESULT GetLastWSAHRESULT();
+	Result GetLastWSAResult();
 
 
 
@@ -104,22 +104,22 @@ namespace Net {
 
 
 		// Send message to connection with network device
-		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) = 0;
-		virtual HRESULT EnqueueBuffer(IOBUFFER_WRITE *pSendBuffer);
+		virtual Result SendBuffer(IOBUFFER_WRITE *pSendBuffer) = 0;
+		virtual Result EnqueueBuffer(IOBUFFER_WRITE *pSendBuffer);
 
 
-		virtual HRESULT Accept(IOBUFFER_ACCEPT* &pAcceptInfo) { return E_SYSTEM_NOTIMPL; };
+		virtual Result Accept(IOBUFFER_ACCEPT* &pAcceptInfo) { return ResultCode::NOT_IMPLEMENTED; };
 		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept(HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo) { return E_SYSTEM_NOTIMPL; };
+		virtual Result OnIOAccept(Result hrRes, IOBUFFER_ACCEPT *pAcceptInfo) { return ResultCode::NOT_IMPLEMENTED; };
 
-		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) = 0;
+		virtual Result Recv(IOBUFFER_READ* pIOBuffer) = 0;
 		// called when reciving messag is completed
-		virtual HRESULT OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer) = 0;
+		virtual Result OnIORecvCompleted(Result hrRes, IOBUFFER_READ* &pIOBuffer) = 0;
 
-		virtual HRESULT OnSendReady() = 0;
-		virtual HRESULT ProcessSendQueue();
+		virtual Result OnSendReady() = 0;
+		virtual Result ProcessSendQueue();
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer) = 0;
+		virtual Result OnIOSendCompleted(Result hrRes, IOBUFFER_WRITE *pIOBuffer) = 0;
 	};
 
 
@@ -142,16 +142,16 @@ namespace Net {
 		}
 
 		// Open network system
-		HRESULT OpenSystem( UINT uiOverBufferCount, UINT numRecvThread, UINT gatheringBufferSize );
+		Result OpenSystem( UINT uiOverBufferCount, UINT numRecvThread, UINT gatheringBufferSize );
 
 		void CloseSystem();
 
 		// Network buffer operation
-		HRESULT AllocBuffer( IOBUFFER_WRITE* &pIOBuffer );
-		HRESULT FreeBuffer( IOBUFFER_WRITE *pIOBuffer );
+		Result AllocBuffer( IOBUFFER_WRITE* &pIOBuffer );
+		Result FreeBuffer( IOBUFFER_WRITE *pIOBuffer );
 
-		HRESULT AllocGatheringBuffer( BYTE* &pBuffer, UINT& bufferSize );
-		HRESULT FreeGatheringBuffer( BYTE *pBuffer );
+		Result AllocGatheringBuffer( BYTE* &pBuffer, UINT& bufferSize );
+		Result FreeGatheringBuffer( BYTE *pBuffer );
 
 
 		WriteBufferQueue* GetWriteBufferQueue();
@@ -160,21 +160,21 @@ namespace Net {
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
 
-		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance);
-		HRESULT UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance);
-		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
+		Result RegisterSocket(SockType sockType, INetIOCallBack* cbInstance);
+		Result UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance);
+		Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
 
 		SOCKET Socket(SockFamily domain, SockType type);
 		void CloseSocket(SOCKET sock);
 
-		HRESULT Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept);
-		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_storage& remoteAddr);
+		Result Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept);
+		Result HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_storage& remoteAddr);
 
-		HRESULT Recv(SOCKET sock, IOBUFFER_READ* pBuffer);
-		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer);
+		Result Recv(SOCKET sock, IOBUFFER_READ* pBuffer);
+		Result RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer);
 
-		HRESULT Send(SOCKET sock, IOBUFFER_WRITE* pBuffer);
-		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer);
+		Result Send(SOCKET sock, IOBUFFER_WRITE* pBuffer);
+		Result SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer);
 	};
 
 

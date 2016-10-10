@@ -121,18 +121,18 @@ namespace Svr {
 		//	Entity operations
 		//
 
-		HRESULT InitializeEntity( EntityID newEntityID ) override;
+		Result InitializeEntity( EntityID newEntityID ) override;
 
 		// clear transaction
-		virtual HRESULT ClearEntity() override;
+		virtual Result ClearEntity() override;
 
-		HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
-		HRESULT UpdateResevationQueue();
-		HRESULT UpdateMatchigQueue();
+		Result UpdateResevationQueue();
+		Result UpdateMatchigQueue();
 
 		// Register message handler for this component
-		virtual HRESULT RegisterServiceMessageHandler( ServerEntity *pServerEntity );
+		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity );
 
 	private:
 		//////////////////////////////////////////////////////////////////////////
@@ -140,7 +140,7 @@ namespace Svr {
 		//	internal operations
 		//
 
-		HRESULT CancelItem(QueueItem *pItem);
+		Result CancelItem(QueueItem *pItem);
 
 	public:
 		//////////////////////////////////////////////////////////////////////////
@@ -149,25 +149,25 @@ namespace Svr {
 		//
 
 		// Add new Entity
-		HRESULT Enqueue( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* players, MatchingQueueTicket& ticket );
+		Result Enqueue( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* players, MatchingQueueTicket& ticket );
 
 		// Update ticket 
-		HRESULT UpdateTicket( const MatchingQueueTicket& ticket, const EntityUID& UIDFrom, const EntityUID& UIDTo );
+		Result UpdateTicket( const MatchingQueueTicket& ticket, const EntityUID& UIDFrom, const EntityUID& UIDTo );
 
 		// Cancel enqueued ticket 
-		HRESULT CancelTicket( const MatchingQueueTicket& ticket );
+		Result CancelTicket( const MatchingQueueTicket& ticket );
 
 		// Reserve a item in the queue from the top
-		HRESULT ReserveItem( EntityUID reserverUID, UINT &numPlayersInItem, MatchingQueueTicket& ticket );
+		Result ReserveItem( EntityUID reserverUID, UINT &numPlayersInItem, MatchingQueueTicket& ticket );
 
 		// Cancel a reservation
-		HRESULT CancelReservation(const MatchingQueueTicket& ticket );
+		Result CancelReservation(const MatchingQueueTicket& ticket );
 
 		// Dequeue reserved item
-		HRESULT DequeueItem( const MatchingQueueTicket& ticket, MatchingQueueItem &item );
+		Result DequeueItem( const MatchingQueueTicket& ticket, MatchingQueueItem &item );
 
 		// Delete item by error
-		HRESULT DeleteItem(const MatchingQueueTicket& ticket, MatchingQueueItem &item);
+		Result DeleteItem(const MatchingQueueTicket& ticket, MatchingQueueItem &item);
 	};
 
 

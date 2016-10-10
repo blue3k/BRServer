@@ -151,7 +151,7 @@ private:
 public:
 	LinkedList() : m_Size(0)
 	{
-		HRESULT hr = BR::MemoryPoolManager::GetMemoryPool( sizeof(Node), m_pNodePool );
+		Result hr = BR::MemoryPoolManager::GetMemoryPool( sizeof(Node), m_pNodePool );
 		Assert(SUCCEEDED(hr)&&m_pNodePool);
 
 		// Init list
@@ -194,9 +194,9 @@ public:
 		m_Size = 0;
 	}
 
-	HRESULT Insert(Iterator& Iter, const DataType& Value)
+	Result Insert(Iterator& Iter, const DataType& Value)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Assert(Iter.m_pNode != nullptr);
 
@@ -219,9 +219,9 @@ Proc_End:
 		return hr;
 	}
 
-	HRESULT Erase(Iterator& Iter)
+	Result Erase(Iterator& Iter)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Assert(Iter.m_pNode != nullptr);
 		Assert(Iter.m_pNode != &m_Tail);

@@ -54,29 +54,29 @@ namespace Svr {
 		// TickTask add/remove proving
 		//
 
-		virtual HRESULT CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity);
+		virtual Result CreateEntity(ClusterID clusterID, EntityFaculty faculty, Entity* &pEntity);
 
 		// add entity to table
-		HRESULT AddEntity( EntityFaculty faculty, Svr::Entity* pEntity );
-		HRESULT AddEntity( EntityID entityID, Svr::Entity* pEntity );
+		Result AddEntity( EntityFaculty faculty, Svr::Entity* pEntity );
+		Result AddEntity( EntityID entityID, Svr::Entity* pEntity );
 
 		virtual void OnEntityAdded(Entity* pEntity);
 
-		HRESULT FindEntity(EntityID entityID, SharedPointerT<Entity> &pEntity);
+		Result FindEntity(EntityID entityID, SharedPointerT<Entity> &pEntity);
 
 		// add entity to table
-		HRESULT RemoveEntity( EntityID entityID );
-		HRESULT RemoveEntity( Svr::Entity* pEntity );
+		Result RemoveEntity( EntityID entityID );
+		Result RemoveEntity( Svr::Entity* pEntity );
 
 		virtual void OnEntityRemoved(Entity* pEntity);
 
 		virtual void RegisterCounter() {}
 
 		// Initialize TaskManager
-		virtual HRESULT InitializeManager(UINT uiNumGroup = 2) override;
+		virtual Result InitializeManager(UINT uiNumGroup = 2) override;
 
 		// Terminate TaskManager
-		virtual HRESULT TerminateManager() override;
+		virtual Result TerminateManager() override;
 
 
 		// Use different initialization but same terminate to component

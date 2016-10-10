@@ -48,13 +48,13 @@ namespace Net {
 	}
 
 	// Add network event to queue
-	HRESULT ServerNet::EnqueueNetEvent( INet::Event& curEvent )
+	Result ServerNet::EnqueueNetEvent( INet::Event& curEvent )
 	{
 		return m_NetEventQueue.Enqueue( curEvent );
 	}
 
 	// Query Network event
-	HRESULT ServerNet::DequeueNetEvent( Event& curEvent )
+	Result ServerNet::DequeueNetEvent( Event& curEvent )
 	{
 		return m_NetEventQueue.Dequeue( curEvent );
 	}

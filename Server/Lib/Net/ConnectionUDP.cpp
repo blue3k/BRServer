@@ -70,9 +70,9 @@ namespace Net {
 
 
 	// Initialize packet synchronization
-	HRESULT ConnectionUDPServerPeer::InitSynchronization()
+	Result ConnectionUDPServerPeer::InitSynchronization()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		netChk(ConnectionUDP::InitSynchronization() );
 
@@ -86,9 +86,9 @@ namespace Net {
 	}
 	
 	// Process network control message
-	HRESULT ConnectionUDPServerPeer::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
+	Result ConnectionUDPServerPeer::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 
 		netChk(ConnectionUDP::ProcNetCtrl( pNetCtrl ) );
@@ -118,9 +118,9 @@ namespace Net {
 
 
 	// Update net control, process connection heartbit, ... etc
-	HRESULT ConnectionUDPServerPeer::UpdateNetCtrl()
+	Result ConnectionUDPServerPeer::UpdateNetCtrl()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		netChk(ConnectionUDP::UpdateNetCtrl() );
 
@@ -157,9 +157,9 @@ namespace Net {
 
 
 	// Update net control, process connection heartbit, ... etc
-	HRESULT ConnectionUDPServer::UpdateNetCtrl()
+	Result ConnectionUDPServer::UpdateNetCtrl()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		netChk(ConnectionUDP::UpdateNetCtrl() );
 
@@ -205,31 +205,31 @@ namespace Net {
 
 
 	// called when New connection TCP accepted
-	HRESULT ConnectionUDPClient::Recv(IOBUFFER_READ* pIOBuffer)
+	Result ConnectionUDPClient::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 
 		netChkPtr(pIOBuffer);
 
 		pIOBuffer->SetupRecvUDP(GetCID());
 
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
-		switch (hrErr)
+		switch ((int32_t)hrErr)
 		{
-		case S_SYSTEM_FALSE:
-			hr = E_NET_TRY_AGAIN;
+		case ResultCode::SUCCESS_FALSE:
+			hr = ResultCode::E_NET_TRY_AGAIN;
 			break;
-		case S_SYSTEM_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_TRY_AGAIN:
-		case E_NET_WOULDBLOCK:
+		case ResultCode::SUCCESS:
+		case ResultCode::E_NET_IO_PENDING:
+		case ResultCode::E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_WOULDBLOCK:
 			hr = hrErr;
 			goto Proc_End;// success
 			break;
-		case E_NET_NETUNREACH:
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
+		case ResultCode::E_NET_NETUNREACH:
+		case ResultCode::E_NET_CONNABORTED:
+		case ResultCode::E_NET_CONNRESET:
+		case ResultCode::E_NET_NETRESET:
 			// some remove has problem with connection
 			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
 		default:
@@ -245,13 +245,13 @@ namespace Net {
 	}
 
 	// called when reciving TCP message
-	HRESULT ConnectionUDPClient::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
+	Result ConnectionUDPClient::OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if(pIOBuffer != nullptr && pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD)
 		{
-			netErr(E_SYSTEM_UNEXPECTED);
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 		DecPendingRecvCount();
@@ -285,18 +285,18 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionUDPClient::EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer)
+	Result ConnectionUDPClient::EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer)
 	{
 		return EnqueueBuffer(pSendBuffer);
 	}
 
-	HRESULT ConnectionUDPClient::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
+	Result ConnectionUDPClient::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
 		return SendBufferUDP(pSendBuffer);
 	}
 
 
-	HRESULT ConnectionUDPClient::OnSendReady()
+	Result ConnectionUDPClient::OnSendReady()
 	{
 		if (GetEventHandler())
 			return GetEventHandler()->OnNetSendReadyMessage(this);
@@ -307,22 +307,22 @@ namespace Net {
 
 
 	// called when Send completed
-	HRESULT ConnectionUDPClient::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer )
+	Result ConnectionUDPClient::OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer )
 	{
 		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
 		Util::SafeRelease( pIOBuffer->pMsgs );
 		NetSystem::FreeBuffer( pIOBuffer );
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 	
 	// Pending recv New one
-	HRESULT ConnectionUDPClient::PendingRecv()
+	Result ConnectionUDPClient::PendingRecv()
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 		IOBUFFER_READ *pOver = nullptr;
 
 		if (!NetSystem::IsProactorSystem())
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		IncPendingRecvCount();
 
@@ -331,12 +331,12 @@ namespace Net {
 		{
 			pOver = new IOBUFFER_READ;
 			hrErr = Recv(pOver);
-			switch (hrErr)
+			switch ((int32_t)hrErr)
 			{
-			case S_SYSTEM_OK:
-			case E_NET_IO_PENDING:
-			case E_NET_TRY_AGAIN:
-			case E_NET_WOULDBLOCK:
+			case ResultCode::SUCCESS:
+			case ResultCode::E_NET_IO_PENDING:
+			case ResultCode::E_NET_TRY_AGAIN:
+			case ResultCode::E_NET_WOULDBLOCK:
 				pOver = nullptr;
 				goto Proc_End;// success
 				break;
@@ -356,16 +356,16 @@ namespace Net {
 
 	
 	// Initialize connection
-	HRESULT ConnectionUDPClient::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
+	Result ConnectionUDPClient::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
 	{
-		HRESULT hr = ConnectionUDP::InitConnection( socket, connectInfo );
+		Result hr = ConnectionUDP::InitConnection( socket, connectInfo );
 		SetLocalClass( NetClass::Client );
 		return hr;
 	}
 
 
 	// Reinitialize and set remote address
-	HRESULT ConnectionUDPClient::ReInitialize( const sockaddr_storage& socAddr )
+	Result ConnectionUDPClient::ReInitialize( const sockaddr_storage& socAddr )
 	{
 		SetConnectionState(STATE_CONNECTING);
 
@@ -378,14 +378,14 @@ namespace Net {
 
 		SetLocalClass( NetClass::Client );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Update net control, process connection heartbit, ... etc
-	HRESULT ConnectionUDPClient::UpdateNetCtrl()
+	Result ConnectionUDPClient::UpdateNetCtrl()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 
 		//netChk(IConnection::UpdateNetCtrl() );
@@ -400,7 +400,7 @@ namespace Net {
 	}
 
 	// Update Send buffer Queue, TCP and UDP client connection
-	HRESULT ConnectionUDPClient::UpdateSendBufferQueue()
+	Result ConnectionUDPClient::UpdateSendBufferQueue()
 	{
 		return ProcessSendQueue();
 	}

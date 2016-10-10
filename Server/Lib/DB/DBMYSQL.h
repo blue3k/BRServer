@@ -139,7 +139,7 @@ namespace DB {
 	//	Error handling
 	//
 
-	HRESULT MYSQL_ToHRESULT( int errorValue );
+	Result MYSQL_ToResult( int errorValue );
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//

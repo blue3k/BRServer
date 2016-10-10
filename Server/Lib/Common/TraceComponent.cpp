@@ -43,11 +43,11 @@ namespace BR
 	}
 
 	// Initialize server component
-	HRESULT LibComponentTrace::InitializeComponent()
+	Result LibComponentTrace::InitializeComponent()
 	{
 		SharedPointerT<Trace::TraceOutModule> pInstance;
 
-		HRESULT hr = Component::InitializeComponent();
+		Result hr = Component::InitializeComponent();
 		if (FAILED(hr)) return hr;
 
 		// initialize exception Handler

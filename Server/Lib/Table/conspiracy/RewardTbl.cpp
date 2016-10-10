@@ -92,7 +92,7 @@ namespace conspiracy
 	RewardTbl::RoleTable *RewardTbl::m_RoleTable = nullptr;
 	RewardTbl::RoleTable *RewardTbl::m_RoleTablePrev = nullptr;
 
-	HRESULT RewardTbl::LoadTable( const std::list<RewardItem>& rowList )
+	BR::Result RewardTbl::LoadTable( const std::list<RewardItem>& rowList )
 	{
  		auto pNewRoleTable = new RoleTable;
 
@@ -110,20 +110,20 @@ namespace conspiracy
 		}
 		m_RoleTablePrev = m_RoleTable;
 		m_RoleTable = pNewRoleTable;
-		return S_SYSTEM_OK;
+		return BR::ResultCode::SUCCESS;
 	}
 
 
-	HRESULT RewardTbl::FindItem( const unsigned int& Key, RewardItem*& pRow)
+	BR::Result RewardTbl::FindItem( const unsigned int& Key, RewardItem*& pRow)
 	{
  		auto itr = m_RoleTable->find(Key);
 		if (itr == m_RoleTable->end())
 		{
  			// write error log
-			return E_SYSTEM_FAIL;
+			return BR::ResultCode::FAIL;
 		}
 		pRow = itr->second;
-		return S_SYSTEM_OK;
+		return BR::ResultCode::SUCCESS;
 	}
 
 }; // namespace conspiracy

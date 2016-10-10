@@ -35,9 +35,9 @@ namespace BR
 
 
 		// Cmd: Notify user joind and see it's valid authticket instance
-		HRESULT LoginServerService::PlayerJoinedToGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+		Result LoginServerService::PlayerJoinedToGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyLoginServer()->PlayerJoinedToGameServerCmd( InRouteContext, InTransactionID, InPlayerID, InAuthTicket ) );
@@ -46,11 +46,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT LoginServerService::PlayerJoinedToGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
+		}; // Result LoginServerService::PlayerJoinedToGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 		// Cmd: Kick logged in player
-		HRESULT LoginServerService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
+		Result LoginServerService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyLoginServer()->KickPlayerCmd( InRouteContext, InTransactionID, InKickedPlayerID ) );
@@ -59,7 +59,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT LoginServerService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
+		}; // Result LoginServerService::KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
 
 
 	}; // namespace Svr

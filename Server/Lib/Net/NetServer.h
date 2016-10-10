@@ -59,25 +59,25 @@ namespace Net {
 		virtual CounterType GetActiveConnectionCount() = 0;
 
 		// Get connection from connection ID
-		virtual HRESULT GetConnection( uintptr_t uiCID, SharedPointerT<Connection> &pConn );
+		virtual Result GetConnection( uintptr_t uiCID, SharedPointerT<Connection> &pConn );
 
 
 
 		// Open host and start listen
-		virtual HRESULT HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort );
+		virtual Result HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort );
 
 		// Close host and close all connections
-		virtual HRESULT HostClose();
+		virtual Result HostClose();
 
 
 		// Release Connection, Make connection to send free state
-		virtual HRESULT ReleaseConnection( IConnection* pIConnection ) override;
+		virtual Result ReleaseConnection( IConnection* pIConnection ) override;
 
 		// take over connection management
-		virtual HRESULT TakeOverConnection(IConnection* pIConnection) override;
+		virtual Result TakeOverConnection(IConnection* pIConnection) override;
 
 		// Called when connection state changed
-		virtual HRESULT OnConnectionStateChange( IConnection *pConnection );
+		virtual Result OnConnectionStateChange( IConnection *pConnection );
 
 	};
 
@@ -102,7 +102,7 @@ namespace Net {
 
 	protected:
 
-		virtual HRESULT SetupSocketOption(SOCKET socket);
+		virtual Result SetupSocketOption(SOCKET socket);
 
 
 	public:
@@ -113,24 +113,24 @@ namespace Net {
 		// callback
 
 
-		virtual HRESULT Accept(IOBUFFER_ACCEPT* &pAcceptInfo) override;
+		virtual Result Accept(IOBUFFER_ACCEPT* &pAcceptInfo) override;
 		// called when New connection TCP accepted
-		virtual HRESULT OnIOAccept( HRESULT hrRes, IOBUFFER_ACCEPT *pAcceptInfo ) override;
+		virtual Result OnIOAccept( Result hrRes, IOBUFFER_ACCEPT *pAcceptInfo ) override;
 
 		// called when network message is received
-		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
+		virtual Result Recv(IOBUFFER_READ* pIOBuffer) override;
+		virtual Result OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
-		virtual HRESULT OnSendReady() override;
+		virtual Result OnSendReady() override;
 		// called when send completed
-		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
+		virtual Result SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
+		virtual Result OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 		// Pending Accept New one
-		HRESULT PendingAccept();
+		Result PendingAccept();
 
 		// handle Socket accept
-		virtual HRESULT OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut);
+		virtual Result OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut);
 
 		// Get pending accept count
 		inline CounterType GetPendingAccept();
@@ -141,24 +141,24 @@ namespace Net {
 
 
 		// Open host and start listen
-		virtual HRESULT HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort ) override;
+		virtual Result HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort ) override;
 
 		// Close host and close all connections
-		virtual HRESULT HostClose() override;
+		virtual Result HostClose() override;
 
 
 		// Release Connection, Make connection to send free state
-		virtual HRESULT ReleaseConnection( IConnection* pIConnection ) override;
+		virtual Result ReleaseConnection( IConnection* pIConnection ) override;
 
 
 		//// Send message to connection with network device
-		//virtual HRESULT SendMsg( IConnection *pConnection, Message::MessageData *pMsg ) override;
+		//virtual Result SendMsg( IConnection *pConnection, Message::MessageData *pMsg ) override;
 
 		//// Send message to connection with network device to dst addr
-		//virtual HRESULT SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg ) override;
+		//virtual Result SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg ) override;
 
 		//// Send array of message buffer to connection with network device
-		//virtual HRESULT SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff ) override;
+		//virtual Result SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff ) override;
 	};
 
 
@@ -185,7 +185,7 @@ namespace Net {
 		inline virtual CounterType GetActiveConnectionCount() override;
 
 		// Close all connection
-		inline virtual HRESULT CloseAllConnection() override;
+		inline virtual Result CloseAllConnection() override;
 	};
 
 

@@ -62,9 +62,9 @@ namespace DB {
 	}
 
 	// Initialize QueryWorkerManager
-	HRESULT QueryWorkerManager::InitializeDBWorkerManager()
+	Result QueryWorkerManager::InitializeDBWorkerManager()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		auto initCount = stm_InitializationCount.fetch_add(1, std::memory_order_relaxed);
 		if (initCount == 0 && stm_pInstance == nullptr)
@@ -89,12 +89,12 @@ namespace DB {
 		}
 	}
 
-	HRESULT	QueryWorkerManager::PendingQuery(Query* &pQuery)
+	Result	QueryWorkerManager::PendingQuery(Query* &pQuery)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (stm_pInstance == nullptr)
-			dbErr(E_SYSTEM_FAIL);
+			dbErr(ResultCode::FAIL);
 
 		dbChk(stm_pInstance->m_PendingQueries.Enqueue(pQuery));
 		pQuery = nullptr;
@@ -106,21 +106,21 @@ namespace DB {
 		return hr;
 	}
 
-	HRESULT	QueryWorkerManager::TryGetQuery(Query* &pQuery)
+	Result	QueryWorkerManager::TryGetQuery(Query* &pQuery)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		MutexScopeLock lockScope(m_QueryQueueLock);
 
 		//if (!m_QueryCounter.Acquire(Const::DB_WORKER_JOB_WAITING_MAX))
-		//	return E_SYSTEM_FAIL;
+		//	return ResultCode::FAIL;
 
 		if (FAILED(m_PendingQueries.Dequeue(pQuery)))
 		{
 			// if this faild we need to retry
 			// Return back the query counter
 			//m_QueryCounter.Release();
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 	//Proc_End:

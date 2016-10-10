@@ -79,7 +79,7 @@ namespace GameServer {
 
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent();
+		virtual Result InitializeComponent();
 
 		// Terminate server component
 		virtual void TerminateComponent();
@@ -103,21 +103,21 @@ namespace GameServer {
 		ServerFriendInformation* GetFriend(PlayerID friendID);
 
 		// Change friend nick name
-		HRESULT SetFriendName( PlayerID friendID, const char* strNewName );
+		Result SetFriendName( PlayerID friendID, const char* strNewName );
 
 		UINT GetMaxFriendSlot();
 		bool CanAddFriend();
 
 		// Add a friend
-		HRESULT AddFriend(const ServerFriendInformation& info);
+		Result AddFriend(const ServerFriendInformation& info);
 
 		// Remove a friend
-		HRESULT RemoveFriend( PlayerID friendID ); 
+		Result RemoveFriend( PlayerID friendID ); 
 
 		UINT GetNumberOfFriends();
 
 		// iterate all friend list
-		HRESULT ForeachFriends(UINT start, UINT maxCount, std::function<HRESULT(const ServerFriendInformation&)> functor);
+		Result ForeachFriends(UINT start, UINT maxCount, std::function<Result(const ServerFriendInformation&)> functor);
 	};
 
 

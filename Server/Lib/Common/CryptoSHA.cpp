@@ -23,21 +23,21 @@ namespace Util {
 	
 
 	// SHA 256 hashing
-	HRESULT SHA256Hash(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer)
+	Result SHA256Hash(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer)
 	{
 		destBuffer.SetSize(SHA256_DIGEST_LENGTH);
 
 		SHA256_CTX sha256;
 		if (SHA256_Init(&sha256) == FALSE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		if (SHA256_Update(&sha256, bytes_to_encode, srcSize) == FALSE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		if (SHA256_Final(destBuffer.data(), &sha256) == FALSE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

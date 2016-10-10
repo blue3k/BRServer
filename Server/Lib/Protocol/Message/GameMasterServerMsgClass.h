@@ -62,9 +62,9 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName );
 
 			}; // class PlayerEnteredC2SEvt : public MessageBase
 
@@ -103,9 +103,9 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseIMsg( IN MessageData* pIMsg );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID );
 
 			}; // class PlayerLeavedC2SEvt : public MessageBase
 

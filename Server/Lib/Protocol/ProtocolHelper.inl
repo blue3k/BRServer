@@ -24,22 +24,22 @@ void PackParamCopy( BYTE* &pMsgCur, SrcType* pSrc, INT iParamSize )
 
 // parsing helper
 template< class DataType >
-HRESULT StreamParamCopy( DataType* pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
+Result StreamParamCopy( DataType* pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
 {
-	if( iCurMsgSize < iParamSize ) return E_NET_BADPACKET_SIZE;// sizeCheck
+	if( iCurMsgSize < iParamSize ) return ResultCode::E_NET_BADPACKET_SIZE;// sizeCheck
 
 	memcpy( pDst, pMsgCur, iParamSize );
 
 	pMsgCur += iParamSize;
 	iCurMsgSize -= iParamSize;
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template< class DataType >
-HRESULT StreamParamLnk( DataType* &pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
+Result StreamParamLnk( DataType* &pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
 {
-	if( iCurMsgSize < iParamSize ) return E_NET_BADPACKET_SIZE;// sizeCheck
+	if( iCurMsgSize < iParamSize ) return ResultCode::E_NET_BADPACKET_SIZE;// sizeCheck
 
 	if( iParamSize > 0 )
 	{
@@ -51,13 +51,13 @@ HRESULT StreamParamLnk( DataType* &pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT i
 	else
 		pDst = NULL;
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template<>
-inline HRESULT StreamParamLnk( const char* &pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
+inline Result StreamParamLnk( const char* &pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
 {
-	if( iCurMsgSize < iParamSize ) return E_NET_BADPACKET_SIZE;// sizeCheck
+	if( iCurMsgSize < iParamSize ) return ResultCode::E_NET_BADPACKET_SIZE;// sizeCheck
 
 	if( iParamSize > 0 )
 	{
@@ -69,7 +69,7 @@ inline HRESULT StreamParamLnk( const char* &pDst, BYTE* &pMsgCur, INT &iCurMsgSi
 	else
 		pDst = StrUtil::EmptyString;
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 

@@ -83,7 +83,7 @@ namespace Util {
 				char m_##AttrName[StringLen];\
 			public:\
 				FORCEINLINE const char* Get##AttrName() const					{ return m_##AttrName; }\
-				FORCEINLINE HRESULT Set##AttrName( const char* newValue )		{ return StrUtil::StringCpy( m_##AttrName, newValue ); }
+				FORCEINLINE Result Set##AttrName( const char* newValue )		{ return StrUtil::StringCpy( m_##AttrName, newValue ); }
 
 	
 	///////////////////////////////////////////////////////////////////////

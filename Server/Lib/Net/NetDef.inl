@@ -54,21 +54,21 @@ inline bool IConnection::Event::operator == (const IConnection::Event& src) cons
 
 	assert(EventType != EVT_NONE); // who access this?
 
-	return Value.hr == src.Value.hr;
+	return hr == src.hr;
 }
 
 inline bool IConnection::Event::operator != (const IConnection::Event& src) const
 {
-	return src.EventType != EventType || Value.hr != src.Value.hr;
+	return src.EventType != EventType || hr != src.hr;
 }
 
 
 // setup Net
-HRESULT IConnection::SetupNet( INet *pNetInstance, uintptr_t uiCID )
+Result IConnection::SetupNet( INet *pNetInstance, uintptr_t uiCID )
 {
 	m_CID = uiCID;
 	m_pINet = pNetInstance;
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 

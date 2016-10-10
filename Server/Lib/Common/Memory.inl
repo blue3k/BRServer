@@ -44,13 +44,13 @@ StaticAllocator<BufferSize>::~StaticAllocator()
 
 // Allocate 
 template< size_t BufferSize >
-HRESULT StaticAllocator<BufferSize>::Alloc( size_t uiSize, void* &pPtr )
+Result StaticAllocator<BufferSize>::Alloc( size_t uiSize, void* &pPtr )
 {
 	if( (m_AllocatePosition + uiSize) < BufferSize )
 	{
 		pPtr = (void*)(m_AllocationBuffer + m_AllocatePosition);
 		m_AllocatePosition += uiSize;
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	return m_OverflowHeap.Alloc( uiSize, pPtr );
@@ -66,7 +66,7 @@ inline bool StaticAllocator<BufferSize>::GetIsInStaticBuffer( void* pPtr )
 
 // Reallocate
 template< size_t BufferSize >
-HRESULT StaticAllocator<BufferSize>::Realloc( size_t uiSize, void* &pPtr )
+Result StaticAllocator<BufferSize>::Realloc( size_t uiSize, void* &pPtr )
 {
 	bool bIsInStaticBuffer = GetIsInStaticBuffer(pPtr);
 
@@ -76,7 +76,7 @@ HRESULT StaticAllocator<BufferSize>::Realloc( size_t uiSize, void* &pPtr )
 		{
 			pPtr = (void*)(m_AllocationBuffer + m_AllocatePosition);
 			m_AllocatePosition += uiSize;
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 		else
 		{
@@ -90,7 +90,7 @@ HRESULT StaticAllocator<BufferSize>::Realloc( size_t uiSize, void* &pPtr )
 
 // Free
 template< size_t BufferSize >
-HRESULT StaticAllocator<BufferSize>::Free( void* pPtr )
+Result StaticAllocator<BufferSize>::Free( void* pPtr )
 {
 	bool bIsInStaticBuffer = GetIsInStaticBuffer(pPtr);
 	
@@ -102,7 +102,7 @@ HRESULT StaticAllocator<BufferSize>::Free( void* pPtr )
 	{
 		return m_OverflowHeap.Free( pPtr );
 	}
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 
@@ -134,7 +134,7 @@ CircularBufferAllocator<BufferSize,alignment>::~CircularBufferAllocator()
 
 // Allocate 
 template< size_t BufferSize, size_t alignment >
-HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, void* &pPtr )
+Result CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, void* &pPtr )
 {
 	assert(uiSize < BufferSize);
 
@@ -188,7 +188,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, voi
 #ifdef DEBUG
 	Assert(SUCCEEDED(ValidateAllocatedChunks()));
 #endif
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template< size_t BufferSize, size_t alignment >
@@ -209,18 +209,18 @@ inline size_t CircularBufferAllocator<BufferSize,alignment>::GetFreeMemorySize()
 
 // Reallocate
 template< size_t BufferSize, size_t alignment >
-HRESULT CircularBufferAllocator<BufferSize,alignment>::Realloc( size_t uiSize, void* &pPtr )
+Result CircularBufferAllocator<BufferSize,alignment>::Realloc( size_t uiSize, void* &pPtr )
 {
-	return E_SYSTEM_NOTIMPL;
+	return ResultCode::NOT_IMPLEMENTED;
 }
 
 // Free
 template< size_t BufferSize, size_t alignment >
-HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
+Result CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 {
 	assert(pPtr != nullptr);
 	if( pPtr == nullptr ) // null free
-		return S_SYSTEM_FALSE;
+		return ResultCode::SUCCESS_FALSE;
 
 	bool bIsInStaticBuffer = GetIsInStaticBuffer(pPtr);
 
@@ -241,13 +241,13 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 		if( pChunk->ChunkType != ChunkTypes::Dummy && pChunk->ChunkType != ChunkTypes::Allocated )
 		{
 			// Duplicate free? or broken memory
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 		}
 		pChunk->ChunkType = ChunkTypes::Free;
 		if( m_FreePosition != ((intptr_t)pChunk - (intptr_t)m_AllocationBuffer) )
 		{
 			// If this memory isn't exist in the free position, we should leave it for later
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		while( (pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy) && m_FreeSize <= (decltype(m_FreeSize))BufferSize )
@@ -264,7 +264,7 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 				if( pChunk->ChunkType != ChunkTypes::Free && pChunk->ChunkType != ChunkTypes::Dummy && pChunk->ChunkType != ChunkTypes::Allocated )
 				{
 					// Broken memory
-					return E_SYSTEM_UNEXPECTED;
+					return ResultCode::UNEXPECTED;
 				}
 
 				// Validate allocated chunks
@@ -287,12 +287,12 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 		return m_OverflowHeap.Free( pPtr );
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 // Validate allocated chunks for debug
 template< size_t BufferSize, size_t alignment >
-HRESULT CircularBufferAllocator<BufferSize,alignment>::ValidateAllocatedChunks()
+Result CircularBufferAllocator<BufferSize,alignment>::ValidateAllocatedChunks()
 {
 	MemoryChunkHeader* pChunk = nullptr;
 
@@ -303,17 +303,17 @@ HRESULT CircularBufferAllocator<BufferSize,alignment>::ValidateAllocatedChunks()
 			pChunk = (MemoryChunkHeader*)(m_AllocationBuffer + curPosition);
 			AssertRel(pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated);
 			if( !(pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated) )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 			curPosition += pChunk->ChunkSize;
 			AssertRel( curPosition <= (decltype(curPosition))BufferSize );
 			if( curPosition == BufferSize ) 
 				curPosition = 0;
 			AssertRel( GetIsInStaticBuffer(m_AllocationBuffer + curPosition) );
 			if( !GetIsInStaticBuffer(m_AllocationBuffer + curPosition) )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 		} while(curPosition != m_AllocatePosition);
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 

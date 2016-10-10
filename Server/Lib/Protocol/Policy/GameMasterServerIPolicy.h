@@ -50,9 +50,9 @@ namespace BR
 			{}
 
 			// C2S: Player entered
-			virtual HRESULT PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName ) = 0;
+			virtual Result PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName ) = 0;
 			// C2S: Player leaved
-			virtual HRESULT PlayerLeavedC2SEvt( const AccountID &InPlayerID ) = 0;
+			virtual Result PlayerLeavedC2SEvt( const AccountID &InPlayerID ) = 0;
 
 		}; // class IPolicyGameMasterServer : public Net::INetPolicy
 

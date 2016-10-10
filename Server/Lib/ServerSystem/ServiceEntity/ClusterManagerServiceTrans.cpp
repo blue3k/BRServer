@@ -50,9 +50,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ClusterGetMemberListTrans::StartTransaction()
+	Result ClusterGetMemberListTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusteredServiceEntity *pClusterService = nullptr;
 
 		svrChk(super::StartTransaction() );
@@ -83,9 +83,9 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT JoinClusterTrans::StartTransaction()
+	Result JoinClusterTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ClusterMembership memberShip = GetClusterMembership();
@@ -105,7 +105,7 @@ namespace Svr {
 			}
 			else
 			{
-				svrErrClose(E_SVR_INVALID_SERVERID);
+				svrErrClose(ResultCode::E_SVR_INVALID_SERVERID);
 			}
 		}
 
@@ -158,9 +158,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT JoinClusterTransForEntityServer::StartTransaction()
+	Result JoinClusterTransForEntityServer::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ClusterMembership memberShip = GetClusterMembership();
@@ -238,9 +238,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT SyncClusterServiceTrans::StartTransaction()
+	Result SyncClusterServiceTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
 		ServerEntity *pServerEntity = nullptr;
 		ServerServiceInformation* pNewService = nullptr;
@@ -250,7 +250,7 @@ namespace Svr {
 		if( FAILED(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
 			svrTrace(Svr::TRC_CLUSTER, "Ignoring unregistered cluster service sync: ClusterID:{0}", GetClusterID() );
-			//svrErr(E_SVR_INVALID_CLUSTERID);
+			//svrErr(ResultCode::E_SVR_INVALID_CLUSTERID);
 			goto Proc_End;
 		}
 

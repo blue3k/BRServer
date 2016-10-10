@@ -35,9 +35,9 @@ namespace BR
 
 
 		// Cmd: Add a player to ranking
-		HRESULT RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		Result RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyRanking()->AddPlayerCmd( InRouteContext, InTransactionID, InPlayerID, InRankingScore, InPlayerInfo ) );
@@ -46,11 +46,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		}; // Result RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		// Cmd: Remove a player to ranking
-		HRESULT RankingService::RemovePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result RankingService::RemovePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyRanking()->RemovePlayerCmd( InRouteContext, InTransactionID, InPlayerID ) );
@@ -59,11 +59,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT RankingService::RemovePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result RankingService::RemovePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Remove a player to ranking
-		HRESULT RankingService::GetPlayerRankingCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result RankingService::GetPlayerRankingCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyRanking()->GetPlayerRankingCmd( InRouteContext, InTransactionID, InPlayerID ) );
@@ -72,11 +72,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT RankingService::GetPlayerRankingCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result RankingService::GetPlayerRankingCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Update a player to ranking
-		HRESULT RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		Result RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyRanking()->UpdatePlayerCmd( InRouteContext, InTransactionID, InPlayerID, InRankingScore, InPlayerInfo ) );
@@ -85,11 +85,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		}; // Result RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 		// Cmd: Remove a player to ranking
-		HRESULT RankingService::GetRankingCmd( const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+		Result RankingService::GetRankingCmd( const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyRanking()->GetRankingCmd( InRouteContext, InTransactionID, InFrom, InCount ) );
@@ -98,7 +98,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT RankingService::GetRankingCmd( const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+		}; // Result RankingService::GetRankingCmd( const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
 
 
 	}; // namespace Svr

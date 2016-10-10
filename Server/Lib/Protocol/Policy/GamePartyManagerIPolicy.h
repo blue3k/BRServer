@@ -35,7 +35,7 @@ namespace BR
 			{}
 
 			// Cmd: Create a party instance
-			virtual HRESULT CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// C2S: Party instance notify of deletion
 
 		}; // class ISvrPolicyGamePartyManager : public Net::INetPolicy
@@ -51,9 +51,9 @@ namespace BR
 			{}
 
 			// Cmd: Create a party instance
-			virtual HRESULT CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator ) = 0;
+			virtual Result CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator ) = 0;
 			// C2S: Party instance notify of deletion
-			virtual HRESULT PartyDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount ) = 0;
+			virtual Result PartyDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount ) = 0;
 
 		}; // class IPolicyGamePartyManager : public Net::INetPolicy
 

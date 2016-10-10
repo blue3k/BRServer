@@ -146,7 +146,7 @@
 
 	// Insert a key
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType, ValueType>::Insert(KeyType key, const ValueType& value, INT64 *insertedOrder)
+	Result DualSortedMap<KeyType, ValueType>::Insert(KeyType key, const ValueType& value, INT64 *insertedOrder)
 	{
 		OperationTraversalHistory travelHistory(m_WriteRoot, m_ItemCount.load(std::memory_order_relaxed));
 
@@ -154,14 +154,14 @@
 		if (FAILED(FindNode(travelHistory, key, pFound)))
 		{
 			if (m_WriteRoot != nullptr)
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			else
 			{
 				auto newNode = AllocateNode(key, value);
 				m_WriteRoot = newNode;
 
 				if (newNode == nullptr)
-					return E_SYSTEM_OUTOFMEMORY;
+					return ResultCode::OUT_OF_MEMORY;
 
 				m_IsModified = true;
 				m_ItemCount.fetch_add(1, std::memory_order_relaxed);
@@ -171,7 +171,7 @@
 					*insertedOrder = 0;
 				}
 
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 		}
 
@@ -180,7 +180,7 @@
 		{
 			auto right = pFound->Right;
 			if (right != nullptr)
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			pFound->Right = pInserted = AllocateNode(key, value);
 		}
@@ -192,7 +192,7 @@
 				auto biggestNode = FindBiggestNode(travelHistory, left);
 				auto right = biggestNode->Right;
 				if (right != nullptr)
-					return E_SYSTEM_FAIL;
+					return ResultCode::FAIL;
 
 				biggestNode->Right = pInserted = AllocateNode(key, value);
 			}
@@ -205,7 +205,7 @@
 		{
 			auto left = pFound->Left;
 			if (left != nullptr)
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			pFound->Left = pInserted = AllocateNode(key, value);
 		}
@@ -221,24 +221,24 @@
 		m_IsModified = true;
 		m_ItemCount.fetch_add(1, std::memory_order_relaxed);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Remove an item and return the removed value
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType,ValueType>::Remove(KeyType key, ValueType& value)
+	Result DualSortedMap<KeyType,ValueType>::Remove(KeyType key, ValueType& value)
 	{
 		OperationTraversalHistory travelHistory(m_WriteRoot, m_ItemCount.load(std::memory_order_relaxed));
 
 		MapNode* pRemoved = nullptr;
 		MapNode* pFound = nullptr;
 		if (FAILED(FindNode(travelHistory, key, pFound)))
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		// unique key
 		if (pFound->Key != key)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		value = std::forward<ValueType>(pFound->Value);
 
@@ -314,14 +314,14 @@
 		m_IsModified = true;
 		m_ItemCount.fetch_sub(1, std::memory_order_release);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 
 	// Find a key value
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType, ValueType>::FindInWriteTree(KeyType key, ValueType& value)
+	Result DualSortedMap<KeyType, ValueType>::FindInWriteTree(KeyType key, ValueType& value)
 	{
 		auto pReadRoot = m_WriteRoot;
 		if (pReadRoot == nullptr)
@@ -335,28 +335,28 @@
 		MapNode* pFound = nullptr;
 		if (FAILED(FindNode(travelHistory, key, pFound)))
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		// unique key
 		if (pFound->Key != key)
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		value = pFound->Value;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// commit changes
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType,ValueType>::CommitChanges()
+	Result DualSortedMap<KeyType,ValueType>::CommitChanges()
 	{
 		// Nothing to commit
 		if (!m_IsModified)
 		{
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 #ifdef DEBUG
@@ -416,12 +416,12 @@
 
 		m_ReadItemCount = m_ItemCount.load(std::memory_order_relaxed);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Find a key value
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType, ValueType>::Find(KeyType key, ValueType& value, INT64 *pOrder)
+	Result DualSortedMap<KeyType, ValueType>::Find(KeyType key, ValueType& value, INT64 *pOrder)
 	{
 		auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % countof(m_ReadCount);
 		ScopeCounter localCounter(m_ReadCount[readIdx]);
@@ -430,7 +430,7 @@
 		auto pReadRoot = (MapNode*)m_CurReadRoot;
 		if (pReadRoot == nullptr)
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		Assert(m_UpdateSerial != pReadRoot->UpdateSerial);
@@ -442,13 +442,13 @@
 		
 		if (FAILED(FindNodeRead(travelHistory, pReadRoot, key, pFound)))
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		// unique key
 		if (pFound->Key != key)
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		value = pFound->Value;
@@ -458,12 +458,12 @@
 			*pOrder = CalculateOrder(travelHistory, pFound);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// enumerate the values
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType, ValueType>::ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
+	Result DualSortedMap<KeyType, ValueType>::ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
 	{
 		auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % countof(m_ReadCount);
 		ScopeCounter localCounter(m_ReadCount[readIdx]);
@@ -471,20 +471,20 @@
 		m_CurReadRoot = m_ReadRoot.load(std::memory_order_acquire);
 		auto readRoot = (MapNode*)m_CurReadRoot;
 		if (readRoot == nullptr)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		return ForeachOrder(readRoot, startOrderIndex, count, functor);
 	}
 
 
 	//template<class KeyType, class ValueType, class Func>
-	//HRESULT DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(INT startOrderIndex, UINT count, Func functor)
-	////HRESULT DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
+	//Result DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(INT startOrderIndex, UINT count, Func functor)
+	////Result DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
 
 
 	// enumerate the values
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType, ValueType>::ForeachOrderWrite(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
+	Result DualSortedMap<KeyType, ValueType>::ForeachOrderWrite(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
 	{
 		if (!m_IsModified)
 		{
@@ -496,7 +496,7 @@
 
 	// find parent node or candidate
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType,ValueType>::FindNode(OperationTraversalHistory &travelHistory, KeyType key, MapNode* &pNode)
+	Result DualSortedMap<KeyType,ValueType>::FindNode(OperationTraversalHistory &travelHistory, KeyType key, MapNode* &pNode)
 	{
 		MapNode* pCurNode = m_WriteRoot;
 		if (pCurNode == nullptr)
@@ -505,7 +505,7 @@
 			{
 				auto readRoot = m_ReadRoot.load(std::memory_order_relaxed);
 				if (readRoot == nullptr)
-					return E_SYSTEM_FAIL;
+					return ResultCode::FAIL;
 				Assert(m_UpdateSerial != readRoot->UpdateSerial);
 				pCurNode = m_WriteRoot = CloneNode(readRoot);
 				Assert(m_WriteRoot != readRoot);
@@ -513,7 +513,7 @@
 			}
 			else
 			{
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 		}
 		Assert(m_WriteRoot != m_ReadRoot.load());
@@ -531,7 +531,7 @@
 			if (pCurNode->Key == key)
 			{
 				pNode = pCurNode;
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
 			if (key > pCurNode->Key)
@@ -540,7 +540,7 @@
 				if (right == nullptr)
 				{
 					pNode = pCurNode;
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 				}
 				else
 				{
@@ -556,7 +556,7 @@
 				if (left == nullptr)
 				{
 					pNode = pCurNode;
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 				}
 				else 
 				{
@@ -567,7 +567,7 @@
 						if (left->Key != key)
 						{
 							pNode = FindBiggestNode(travelHistory, left);
-							return S_SYSTEM_OK;
+							return ResultCode::SUCCESS;
 						}
 					}
 					pCurNode = left;
@@ -578,7 +578,7 @@
 
 		travelHistory.SetConserveDataOnResize(false);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<class KeyType, class ValueType>
@@ -624,11 +624,11 @@
 	}
 
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType, ValueType>::FindNodeRead(OperationTraversalHistory &travelHistory, MapNode* pRootNode, KeyType key, MapNode* &pNode)
+	Result DualSortedMap<KeyType, ValueType>::FindNodeRead(OperationTraversalHistory &travelHistory, MapNode* pRootNode, KeyType key, MapNode* &pNode)
 	{
 		MapNode* pCurNode = pRootNode;
 		if (pCurNode == nullptr)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		do
 		{
@@ -638,7 +638,7 @@
 			if (pCurNode->Key == key)
 			{
 				pNode = pCurNode;
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
 			if (key > pCurNode->Key)
@@ -647,7 +647,7 @@
 				if (right == nullptr)
 				{
 					pNode = pCurNode;
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 				}
 				else
 				{
@@ -660,7 +660,7 @@
 				if (left == nullptr)
 				{
 					pNode = pCurNode;
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 				}
 				else
 				{
@@ -671,7 +671,7 @@
 						if (left->Key != key)
 						{
 							pNode = FindBiggestNodeRead(travelHistory, left);
-							return S_SYSTEM_OK;
+							return ResultCode::SUCCESS;
 						}
 					}
 					pCurNode = left;
@@ -680,7 +680,7 @@
 
 		} while (pCurNode != nullptr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	template<class KeyType, class ValueType>
@@ -724,17 +724,17 @@
 	}
 
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType, ValueType>::ForeachOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
+	Result DualSortedMap<KeyType, ValueType>::ForeachOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
 	{
 		if (pRootNode == nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		OperationTraversalHistory travelHistory(pRootNode, m_ReadItemCount);
 
 		MapNode* pCurNode = pRootNode;
 		if (pCurNode == nullptr)
 		{
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		travelHistory.Clear();
@@ -769,7 +769,7 @@
 
 		if (pCurNode == nullptr)
 		{
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 
@@ -777,7 +777,7 @@
 		do
 		{
 			if (!functor(pCurNode->Key, pCurNode->Value))
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 
 			count--;
 			if (count == 0)
@@ -820,13 +820,13 @@
 		} while (pCurNode != nullptr);
 
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	//template<class KeyType, class ValueType, class Func>
-	//HRESULT DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, Func functor)
-	////HRESULT DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
+	//Result DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, Func functor)
+	////Result DualSortedMap<KeyType, ValueType>::ForeachReverseOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor)
 	//
 
 	template<class KeyType, class ValueType>
@@ -977,7 +977,7 @@
 	}
 
 	template<class KeyType, class ValueType>
-	HRESULT DualSortedMap<KeyType, ValueType>::ForeachPendingFree(std::function<void(MapNode*)> functor)
+	Result DualSortedMap<KeyType, ValueType>::ForeachPendingFree(std::function<void(MapNode*)> functor)
 	{
 		auto curNode = m_PendingFreeList;
 		while (curNode != nullptr)
@@ -985,7 +985,7 @@
 			functor(curNode);
 			curNode = curNode->NextPendingFree;
 		}
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

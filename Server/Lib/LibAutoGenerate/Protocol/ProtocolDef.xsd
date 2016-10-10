@@ -180,7 +180,7 @@
 
           <xs:enumeration value="Vector2"/>
 					<xs:enumeration value="Vector3"/>
-					<xs:enumeration value="HRESULT"/>
+					<xs:enumeration value="Result"/>
           <xs:enumeration value="NetClass"/>
 					<xs:enumeration value="NetAddress"/>
 					<xs:enumeration value="EntityID"/>

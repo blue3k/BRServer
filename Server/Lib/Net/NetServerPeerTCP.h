@@ -64,14 +64,14 @@ namespace Net {
 		inline virtual CounterType GetActiveConnectionCount() override;
 
 		// Close all connection
-		inline virtual HRESULT CloseAllConnection() override;
+		inline virtual Result CloseAllConnection() override;
 
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		//  Net callback
 
 		// handle Socket accept
-		virtual HRESULT OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut ) override;
+		virtual Result OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut ) override;
 
 
 		// Release instance
@@ -82,16 +82,16 @@ namespace Net {
 
 
 		// Open host and start listen
-		virtual HRESULT HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort ) override;
+		virtual Result HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort ) override;
 
 		// Close host and close all connections
-		//virtual HRESULT HostClose();
+		//virtual Result HostClose();
 
 		// Make a connection to another server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
+		virtual Result Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
 
 		// Connect to other peer
-		HRESULT RegisterServerConnection(ServerID serverID, NetClass netClass, const NetAddress& netAddress, Net::IConnection* &pConnection);
+		Result RegisterServerConnection(ServerID serverID, NetClass netClass, const NetAddress& netAddress, Net::IConnection* &pConnection);
 
 	};
 

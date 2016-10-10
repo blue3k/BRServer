@@ -69,9 +69,9 @@ namespace Svr {
 		//	Entity operations
 		//
 
-		virtual HRESULT InitializeEntity(EntityID newEntityID) override;
+		virtual Result InitializeEntity(EntityID newEntityID) override;
 
-		virtual HRESULT RegisterServiceMessageHandler(ServerEntity *pServerEntity) override;
+		virtual Result RegisterServiceMessageHandler(ServerEntity *pServerEntity) override;
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -79,10 +79,10 @@ namespace Svr {
 		//
 
 		// Add new Entity
-		virtual HRESULT CreateGameParty( const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, PartyUID &partyUID );
+		virtual Result CreateGameParty( const PlayerInformation& creator, EntityUID playerUID, ServerEntity *pServerEntity, PartyUID &partyUID );
 
 		// Called when a game party is deleted
-		virtual HRESULT FreeGameParty( PartyUID partyUID );
+		virtual Result FreeGameParty( PartyUID partyUID );
 
 	};
 

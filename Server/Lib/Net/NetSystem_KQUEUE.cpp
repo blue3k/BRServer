@@ -57,7 +57,7 @@ namespace Net {
 
 	}
 
-	HRESULT KQUEUEWorker::RegisterSocket(INetIOCallBack* cbInstance)
+	Result KQUEUEWorker::RegisterSocket(INetIOCallBack* cbInstance)
 	{
 		struct kevent evSet;
 
@@ -65,13 +65,13 @@ namespace Net {
 		if (kevent(m_hKQUEUE, &evSet, 1, NULL, 0, NULL) == -1)
 		{
 			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: RegisterSocket");
-			return GetLastWSAHRESULT();
+			return GetLastWSAResult();
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT KQUEUEWorker::UnregisterSocket(INetIOCallBack* cbInstance)
+	Result KQUEUEWorker::UnregisterSocket(INetIOCallBack* cbInstance)
 	{
 		struct kevent evSet;
 
@@ -79,15 +79,15 @@ namespace Net {
 		if (kevent(m_hKQUEUE, &evSet, 1, NULL, 0, NULL) == -1)
 		{
 			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: UnregisterSocket");
-			return GetLastWSAHRESULT();
+			return GetLastWSAResult();
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT KQUEUEWorker::HandleAccept(SOCKET sock, INetIOCallBack* pCallBack)
+	Result KQUEUEWorker::HandleAccept(SOCKET sock, INetIOCallBack* pCallBack)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		IOBUFFER_ACCEPT* pAcceptInfo = nullptr;
 
 		while (1)
@@ -96,17 +96,17 @@ namespace Net {
 			hr = pCallBack->Accept(pAcceptInfo);
 			switch (hr)
 			{
-			case S_SYSTEM_OK:
+			case ResultCode::SUCCESS:
 				netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
 				pAcceptInfo = nullptr;
 				break;
-			case E_SYSTEM_NOTIMPL:
+			case ResultCode::NOT_IMPLEMENTED:
 				Assert(false); // Fix it!
 				break;
-			case E_NET_TRY_AGAIN:
-			case E_NET_WOULDBLOCK:
-			case E_NET_IO_PENDING:
-			case E_NET_BADF:
+			case ResultCode::E_NET_TRY_AGAIN:
+			case ResultCode::E_NET_WOULDBLOCK:
+			case ResultCode::E_NET_IO_PENDING:
+			case ResultCode::E_NET_BADF:
 				goto Proc_End;
 			default:
 				// some failure? try again
@@ -124,15 +124,15 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT KQUEUEWorker::HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack)
+	Result KQUEUEWorker::HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack)
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 		IOBUFFER_READ* pReadBuffer = nullptr;
 
 		if (!(events & (EVFILT_READ| EVFILT_WRITE)))
 		{
 			netTrace(Trace::TRC_ERROR, "Error sock:{0}, event:{1}", sock, events);
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 		}
 
 		if (events & EVFILT_READ)
@@ -145,13 +145,13 @@ namespace Net {
 				hr = hrErr;
 				switch (hrErr)
 				{
-				case E_NET_TRY_AGAIN:
-				case E_NET_WOULDBLOCK:
-				case S_SYSTEM_FALSE:
+				case ResultCode::E_NET_TRY_AGAIN:
+				case ResultCode::E_NET_WOULDBLOCK:
+				case ResultCode::SUCCESS_FALSE:
 					// These are expected return code
-					hr = S_SYSTEM_OK;
+					hr = ResultCode::SUCCESS;
 					break;
-				case E_NET_IO_PENDING:
+				case ResultCode::E_NET_IO_PENDING:
 					Assert(false);
 					break;
 				default:
@@ -160,7 +160,7 @@ namespace Net {
 						netTrace(TRC_NETSYS, "ERROR KQUEUE Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
 					}
 					// fallthru
-				case S_SYSTEM_OK:
+				case ResultCode::SUCCESS:
 					// toss data to working thread
 					if (pReadBuffer != nullptr)
 					{
@@ -201,30 +201,30 @@ namespace Net {
 
 	void KQUEUEWorker::Run()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		int iNumEvents;
 		struct kevent events[MAX_KQUEUE_EVENTS];
 
 		while (1)
 		{
-			hr = S_SYSTEM_OK;
+			hr = ResultCode::SUCCESS;
 
 			// Getting status
 			iNumEvents = kevent(m_hKQUEUE, NULL, 0, events, countof(events), NULL);
 			if (iNumEvents < 0)
 			{
-				hr = GetLastHRESULT();
+				hr = GetLastResult();
 				switch (hr)
 				{
-				case E_INTERRUPTED_SYSCALL:
+				case ResultCode::E_INTERRUPTED_SYSCALL:
 					break;
-				case E_INVALID_FILE_HANDLE:
-				case E_NET_BADF:
-				case E_INVALID_POINTER:
-				case E_NET_FAULT:
-				case E_NET_INTR:
-				case E_INVALID_ARG:
-				case E_NET_INVAL:
+				case ResultCode::E_INVALID_FILE_HANDLE:
+				case ResultCode::E_NET_BADF:
+				case ResultCode::E_INVALID_POINTER:
+				case ResultCode::E_NET_FAULT:
+				case ResultCode::E_NET_INTR:
+				case ResultCode::E_INVALID_ARG:
+				case ResultCode::E_NET_INVAL:
 				default:
 					netTrace(TRC_NETSYS, "ERROR KQUEUE wait failed hr={0:X8}", hr);
 					break;
@@ -278,13 +278,13 @@ namespace Net {
 
 	void KQUEUESendWorker::Run()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		IOBUFFER_WRITE* pSendBuffer = nullptr;
 		DurationMS tickInterval(0);
 
 		while (1)
 		{
-			hr = S_SYSTEM_OK;
+			hr = ResultCode::SUCCESS;
 
 			// Check exit event
 			if (CheckKillEvent(tickInterval))
@@ -312,10 +312,10 @@ namespace Net {
 				hr = NetSystem::SendTo(pSendBuffer->SockWrite, pSendBuffer);
 				switch (hr)
 				{
-				case E_NET_TRY_AGAIN:
+				case ResultCode::E_NET_TRY_AGAIN:
 					continue; // try again
 					break;
-				case S_SYSTEM_OK:
+				case ResultCode::SUCCESS:
 					break;
 				default:
 					netTrace(TRC_NETSYS, "ERROR UDP send failed {0:X8}", hr);
@@ -356,10 +356,10 @@ namespace Net {
 	{
 	}
 
-	HRESULT KQUEUESystem::Initialize(UINT netThreadCount)
+	Result KQUEUESystem::Initialize(UINT netThreadCount)
 	{
 		if (m_ListenWorker != nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		int hKQUEUEUDP = kqueue();
 
@@ -392,7 +392,7 @@ namespace Net {
 			}
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	void KQUEUESystem::Terminate()
@@ -437,7 +437,7 @@ namespace Net {
 		}
 	}
 
-	HRESULT KQUEUESystem::MakeSocketNonBlocking(SOCKET sfd)
+	Result KQUEUESystem::MakeSocketNonBlocking(SOCKET sfd)
 	{
 		int flags, s;
 
@@ -445,7 +445,7 @@ namespace Net {
 		if (flags == -1)
 		{
 			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: fcntl F_GETFL");
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		flags |= O_NONBLOCK;
@@ -453,10 +453,10 @@ namespace Net {
 		if (s == -1)
 		{
 			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: fcntl F_SETFL");
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// UDP shares the send queue
@@ -469,14 +469,14 @@ namespace Net {
 	}
 
 
-	HRESULT KQUEUESystem::RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+	Result KQUEUESystem::RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
 	{
 		Assert(sockType == SockType::DataGram);
 		if (sockType != SockType::DataGram)
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 
 		if (m_WorkerUDP.GetSize() < 1)
-			return E_NET_NOTINITIALISED;
+			return ResultCode::E_NET_NOTINITIALISED;
 
 		if (cbInstance->GetWriteQueue() == nullptr)
 		{
@@ -484,14 +484,14 @@ namespace Net {
 			cbInstance->SetWriteQueue(&m_UDPSendWorker->GetWriteQueue());
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Register the socket to EPOLL
-	HRESULT KQUEUESystem::RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance)
+	Result KQUEUESystem::RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance)
 	{
 		if (m_ListenWorker == nullptr)
-			return E_NET_NOTINITIALISED;
+			return ResultCode::E_NET_NOTINITIALISED;
 
 		if (sockType == SockType::Stream) // TCP
 		{
@@ -517,25 +517,25 @@ namespace Net {
 
 			if (m_WorkerUDP.GetSize() < 1)
 			{
-				HRESULT hr = m_ListenWorker->RegisterSocket(cbInstance);
+				Result hr = m_ListenWorker->RegisterSocket(cbInstance);
 				if (FAILED(hr)) return hr;
 			}
 			else
 			{
 				// UDP workers are sharing epoll, add any of them will work same.
-				HRESULT hr = m_WorkerUDP[0]->RegisterSocket(cbInstance);
+				Result hr = m_WorkerUDP[0]->RegisterSocket(cbInstance);
 				if (FAILED(hr)) return hr;
 			}
 			cbInstance->SetAssignedIOWorker(0);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT KQUEUESystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
+	Result KQUEUESystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
 	{
 		if (m_ListenWorker == nullptr)
-			return E_NET_NOTINITIALISED;
+			return ResultCode::E_NET_NOTINITIALISED;
 
 		if (sockType == SockType::Stream) // TCP
 		{
@@ -563,18 +563,18 @@ namespace Net {
 
 			if (m_WorkerUDP.GetSize() < 1)
 			{
-				HRESULT hr = m_ListenWorker->UnregisterSocket(cbInstance);
+				Result hr = m_ListenWorker->UnregisterSocket(cbInstance);
 				if (FAILED(hr)) return hr;
 			}
 			else
 			{
-				HRESULT hr = m_WorkerUDP[0]->UnregisterSocket(cbInstance);
+				Result hr = m_WorkerUDP[0]->UnregisterSocket(cbInstance);
 				if (FAILED(hr)) return hr;
 			}
 			cbInstance->SetAssignedIOWorker(-1);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

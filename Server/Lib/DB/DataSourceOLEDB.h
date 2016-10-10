@@ -41,13 +41,13 @@ namespace DB {
 		CDataSource& GetDataSource() { return m_DataSource; }
 
 		// initialize DB source
-		virtual HRESULT	InitializeDBSource( const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword );
+		virtual Result	InitializeDBSource( const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword );
 
 		// reopen DB source
-		virtual HRESULT Reopen();
+		virtual Result Reopen();
 
 		// close DB source
-		virtual HRESULT	CloseDBSource();
+		virtual Result	CloseDBSource();
 
 	};
 

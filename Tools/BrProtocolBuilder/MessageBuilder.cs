@@ -155,7 +155,7 @@ namespace ProtocolBuilder
                             }
                             else
                             {
-                                if (param.Type == ParameterType.HRESULT)
+                                if (param.Type == ParameterType.Result)
                                 {
                                     strTrace += string.Format(", {0}:{{{1}:X8}}", param.Name, ParamCount++);
                                     strTraceMember += string.Format(", m_{0}", param.Name);
@@ -362,24 +362,24 @@ namespace ProtocolBuilder
             NewLine();
 
             // Parse function
-            MatchIndent(); OutStream.WriteLine("virtual HRESULT ParseIMsg( IN MessageData* pIMsg );");
+            MatchIndent(); OutStream.WriteLine("virtual Result ParseIMsg( IN MessageData* pIMsg );");
             NewLine();
 
             // Build function
-            MatchIndent(); OutStream.WriteLine("static HRESULT BuildIMsg( {0} );", BuilderParamString(parameters));
+            MatchIndent(); OutStream.WriteLine("static Result BuildIMsg( {0} );", BuilderParamString(parameters));
             NewLine();
 
             // Override route context function
             if (Group.GenParameterRouteContext)
             {
-                MatchIndent(); OutStream.WriteLine("HRESULT OverrideRouteContextDestination( EntityUID to );");
+                MatchIndent(); OutStream.WriteLine("Result OverrideRouteContextDestination( EntityUID to );");
                 NewLine();
             }
 
             // Override route hop function
             if (Group.GenParameterRouteHopCount)
             {
-                MatchIndent(); OutStream.WriteLine("HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );");
+                MatchIndent(); OutStream.WriteLine("Result OverrideRouteInformation( EntityUID to, UINT hopCount );");
                 NewLine();
             }
 
@@ -519,7 +519,7 @@ namespace ProtocolBuilder
         void BuildParserImpl(string Name, string typeName, Parameter[] parameters)
         {
             string strClassName = MsgClassName(Name, typeName);
-            OpenSection("HRESULT", strClassName + "::ParseIMsg( MessageData* pIMsg )");
+            OpenSection("Result", strClassName + "::ParseIMsg( MessageData* pIMsg )");
 
             DefaultHRESULT(); NewLine();
 
@@ -541,7 +541,7 @@ namespace ProtocolBuilder
                 return;
 
             string strClassName = MsgClassName(Name, typeName);
-            OpenSection("HRESULT", strClassName + "::OverrideRouteContextDestination( EntityUID to )");
+            OpenSection("Result", strClassName + "::OverrideRouteContextDestination( EntityUID to )");
 
             DefaultHRESULT(); NewLine();
 
@@ -627,7 +627,7 @@ namespace ProtocolBuilder
                 return;
 
             string strClassName = MsgClassName(Name, typeName);
-            OpenSection("HRESULT", strClassName + "::OverrideRouteInformation( EntityUID to, UINT hopCount )");
+            OpenSection("Result", strClassName + "::OverrideRouteInformation( EntityUID to, UINT hopCount )");
 
             DefaultHRESULT(); NewLine();
 
@@ -817,7 +817,7 @@ namespace ProtocolBuilder
         {
             string strClassName = MsgClassName(Name, typeName);
             bool bHasParameters = parameters != null && parameters.Length > 0;
-            OpenSection("HRESULT", strClassName + string.Format("::BuildIMsg( {0} )", BuilderParamString(parameters)));
+            OpenSection("Result", strClassName + string.Format("::BuildIMsg( {0} )", BuilderParamString(parameters)));
 
             DefaultHRESULT(); NewLine();
 

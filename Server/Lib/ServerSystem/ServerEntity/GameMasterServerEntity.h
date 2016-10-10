@@ -59,7 +59,7 @@ namespace Svr
 		Policy::IPolicyGameMasterServer* GetPolicy();
 
 		// Initialize entity to proceed new connection
-		HRESULT InitializeEntity( EntityID newEntityID );
+		Result InitializeEntity( EntityID newEntityID );
 
 	};
 

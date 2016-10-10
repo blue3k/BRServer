@@ -145,7 +145,7 @@ namespace Trace {
 		// Update trace
 		void UpdateTrace();
 
-		static HRESULT CheckAndUpdate();
+		static Result CheckAndUpdate();
 
 		friend class TraceOutModule;
 
@@ -260,7 +260,7 @@ namespace Trace {
 #define trcChk(checkState) \
 	do{\
 		hr = checkState;\
-		if( FAILED(hr) )\
+		if( !(hr) )\
 		{\
 			defTrace( Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}", __FILE__, __LINE__, hr ); \
 			goto Proc_End;\
@@ -281,7 +281,7 @@ namespace Trace {
 		{\
 			defTrace( Trace::TRC_ERROR, "{0}({1}): Null Exception",     \
 				__FILE__, __LINE__ ); \
-			hr = E_SYSTEM_OUTOFMEMORY;\
+			hr = ResultCode::OUT_OF_MEMORY;\
 			goto Proc_End;\
 		}\
 	} while(0);\
@@ -292,7 +292,7 @@ namespace Trace {
 		if( (checkPointer) == NULL )\
 		{\
 			defTrace( Trace::TRC_ERROR, "{0}({1}): Invalid Pointer", __FILE__, __LINE__ ); \
-			hr = E_SYSTEM_POINTER;\
+			hr = ResultCode::INVALID_POINTER;\
 			goto Proc_End;\
 		}\
 	}while(0);\
@@ -305,7 +305,7 @@ namespace Trace {
 					if( !(condi) ) {\
 					defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Trace::Flush();\
 						Assert(condi);\
-						trcErr(E_SYSTEM_UNEXPECTED);\
+						trcErr(ResultCode::UNEXPECTED);\
 					}\
 				}while(0) \
 
@@ -316,7 +316,7 @@ namespace Trace {
 					if( !(condi) ) {\
 						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
 						Assert(condi);\
-						trcErr(E_SYSTEM_UNEXPECTED);\
+						trcErr(ResultCode::UNEXPECTED);\
 					}\
 				}while(0) \
 
@@ -327,7 +327,7 @@ namespace Trace {
 					if( !(condi) ) {\
 					defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi );  Trace::Flush();\
 						Assert(condi);\
-						return E_SYSTEM_UNEXPECTED;\
+						return ResultCode::UNEXPECTED;\
 					}\
 				}while(0) \
 
@@ -338,7 +338,7 @@ namespace Trace {
 					if( !(condi) ) {\
 						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
 						Assert(condi);\
-						return E_SYSTEM_UNEXPECTED;\
+						return ResultCode::UNEXPECTED;\
 					}\
 				}while(0) \
 
@@ -360,7 +360,7 @@ namespace Trace {
 #define trcChk(checkState) \
 	do{\
 		hr = checkState;\
-		if( FAILED(hr) )\
+		if( !(hr) )\
 		{\
 			goto Proc_End;\
 		}\
@@ -377,7 +377,7 @@ namespace Trace {
 	do{\
 		if( (checkPointer) == NULL )\
 		{\
-			hr = E_SYSTEM_OUTOFMEMORY;\
+			hr = ResultCode::OUT_OF_MEMORY;\
 			goto Proc_End;\
 		}\
 	}while(0)\
@@ -387,7 +387,7 @@ namespace Trace {
 	do{\
 		if( (checkPointer) == NULL )\
 		{\
-			hr = E_SYSTEM_POINTER;\
+			hr = ResultCode::INVALID_POINTER;\
 			goto Proc_End;\
 		}\
 	}while(0)\
@@ -400,7 +400,7 @@ namespace Trace {
 				{ \
 					if( !(condi) ) {\
 						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi ); Trace::Flush();\
-						trcErr(E_SYSTEM_UNEXPECTED);\
+						trcErr(ResultCode::UNEXPECTED);\
 					}\
 				} \
 
@@ -410,7 +410,7 @@ namespace Trace {
 				do{ \
 					if( !(condi) ) {\
 						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
-						trcErr(E_SYSTEM_UNEXPECTED);\
+						trcErr(ResultCode::UNEXPECTED);\
 					}\
 				} while(0); \
 
@@ -419,7 +419,7 @@ namespace Trace {
 				{ \
 					if( !(condi) ) {\
 						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2}", __FILE__, __LINE__, #condi ); Trace::Flush();\
-						return E_SYSTEM_UNEXPECTED;\
+						return ResultCode::UNEXPECTED;\
 					}\
 				} \
 
@@ -429,7 +429,7 @@ namespace Trace {
 				do{ \
 					if( !(condi) ) {\
 						defTrace( Trace::TRC_ASSERT, "{0}({1}): Assert occure : {2} : {3}", __FILE__, __LINE__, #condi, expr ); Trace::Flush();\
-						return E_SYSTEM_UNEXPECTED;\
+						return ResultCode::UNEXPECTED;\
 					}\
 				} while(0); \
 
@@ -442,7 +442,7 @@ namespace Trace {
 #define trcChkSilent(checkState) \
 	do{\
 	hr = checkState;\
-	if( FAILED(hr) )\
+	if( !(hr) )\
 		{\
 		goto Proc_End;\
 		}\
@@ -462,7 +462,7 @@ namespace Trace {
 				do{ \
 					if( !(condi) ) {\
 						AssertRel(condi);\
-						trcErr(E_SYSTEM_UNEXPECTED);\
+						trcErr(ResultCode::UNEXPECTED);\
 					}\
 				} while(0)\
 
@@ -480,7 +480,7 @@ DEFINE_TRACE_MODULE(def)
 
 #define defErr(e)			trcErr(e)
 #define defChk(e)			trcChk(e)
-#define defChkErr(ErrCode,exp)			{ do{ HRESULT hRes = exp; if( FAILED(hRes) ) TrcErrJmp(svr,ErrCode,hr); } while(0); }
+#define defChkErr(ErrCode,exp)			{ do{ Result hRes = exp; if( !(hRes) ) TrcErrJmp(svr,ErrCode,hr); } while(0); }
 #define defMem(a)			trcMem(a)
 #define defChkPtr(a)		trcChkPtr(a)
 

@@ -56,7 +56,7 @@ namespace Net {
 		ConnectionManager* GetConnectionManager();
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction* pAction);
+		virtual Result TickUpdate(Svr::TimerAction* pAction);
 	};
 
 
@@ -78,7 +78,7 @@ namespace Net {
 
 		
 		// Create TickTask
-		virtual HRESULT CreateTask( ConnectionTask* &pTask );
+		virtual Result CreateTask( ConnectionTask* &pTask );
 
 	};
 

@@ -57,9 +57,9 @@ namespace ConspiracyGameInstanceServer {
 	{
 	}
 
-	HRESULT GameInstanceServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
+	Result GameInstanceServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		switch( m_Step )
 		{
@@ -92,9 +92,9 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	HRESULT GameInstanceServerStartProcess::InitializeServices()
+	Result GameInstanceServerStartProcess::InitializeServices()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
 		
@@ -105,9 +105,9 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Start Transaction
-	HRESULT GameInstanceServerStartProcess::StartTransaction()
+	Result GameInstanceServerStartProcess::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -119,7 +119,7 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	HRESULT GameInstanceServerStartProcess::OnCloseTransaction( HRESULT hrRes )
+	Result GameInstanceServerStartProcess::OnCloseTransaction( Result hrRes )
 	{
 		if( SUCCEEDED(hrRes) )
 		{

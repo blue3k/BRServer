@@ -164,7 +164,7 @@ namespace BR
 
         GameLogChatMessage(TimeStampSec timeStamp, UINT messageBufferSize);
         
-        HRESULT SetChatMessage( PlayerID player, BYTE playerStatus, ChatType type, const char* message);
+        Result SetChatMessage( PlayerID player, BYTE playerStatus, ChatType type, const char* message);
     };
 
 
@@ -191,9 +191,9 @@ namespace BR
 
         GameLogVote(TimeStampSec timeStamp, UINT numVoter);
 
-        HRESULT InitializeVote(GameVoteType type, int voterCount);
+        Result InitializeVote(GameVoteType type, int voterCount);
 
-		HRESULT SetVoteStatus( PlayerID voter, PlayerID voted );
+		Result SetVoteStatus( PlayerID voter, PlayerID voted );
     };
 
     struct GameLogVoteResult : GameLogItem

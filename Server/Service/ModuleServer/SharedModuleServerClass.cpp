@@ -88,9 +88,9 @@ namespace SharedModuleServer {
 
 
 	// Apply configuration
-	HRESULT SharedModuleServer::ApplyConfiguration()
+	Result SharedModuleServer::ApplyConfiguration()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		const Svr::Config::ModuleServer* pMySvr = nullptr;
 
@@ -119,9 +119,9 @@ namespace SharedModuleServer {
 
 
 	// Initialize server resource
-	HRESULT SharedModuleServer::InitializeServerResource()
+	Result SharedModuleServer::InitializeServerResource()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
@@ -135,9 +135,9 @@ namespace SharedModuleServer {
 	}
 
 	// Close server and release resource
-	HRESULT SharedModuleServer::CloseServerResource()
+	Result SharedModuleServer::CloseServerResource()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::BrServer::CloseServerResource() );
 
@@ -152,9 +152,9 @@ namespace SharedModuleServer {
 
 
 	// Initialize private Network
-	HRESULT SharedModuleServer::InitializeNetPrivate()
+	Result SharedModuleServer::InitializeNetPrivate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::Config::ModuleServer *pServerConfig = nullptr;
 		SockFamily privateNetSockFamily;
 
@@ -212,9 +212,9 @@ namespace SharedModuleServer {
 
 
 	// Close Private Network
-	HRESULT SharedModuleServer::CloseNetPrivate()
+	Result SharedModuleServer::CloseNetPrivate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		hr = Svr::BrServer::CloseNetPrivate();
 
@@ -228,7 +228,7 @@ namespace SharedModuleServer {
 
 
 	// create remote entity by class
-	HRESULT SharedModuleServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
+	Result SharedModuleServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
 		switch( netClass )
 		{
@@ -241,9 +241,9 @@ namespace SharedModuleServer {
 		};
 
 		if( pServerEntity == nullptr )
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

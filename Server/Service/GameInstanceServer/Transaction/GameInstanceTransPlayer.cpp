@@ -66,9 +66,9 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Start Transaction
-	HRESULT GameEntityTransDeleteGame::StartTransaction()
+	Result GameEntityTransDeleteGame::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		
 		svrChk(super::StartTransaction());
 
@@ -89,9 +89,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Start Transaction
-	HRESULT GameEntityTransJoinGame::StartTransaction()
+	Result GameEntityTransJoinGame::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GamePlayer *pMyPlayer = nullptr;
 		Policy::ISvrPolicyGameInstance *pMyPolicy = nullptr;
 		Svr::GameInstancePlayer* pNewInsPlayer = nullptr;
@@ -150,23 +150,23 @@ namespace ConspiracyGameInstanceServer {
 		// Send all other player to me
 		if (pMyPolicy != nullptr)
 		{
-			GetMyOwner()->ForeachPlayer([&](GamePlayer* pPlayer)->HRESULT {
+			GetMyOwner()->ForeachPlayer([&](GamePlayer* pPlayer)->Result {
 
 				PlayerRole otherRole = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole(pMyPlayer, pPlayer);
 				pMyPolicy->PlayerJoinedS2CEvt(RouteContext(GetOwnerEntityUID(), pMyPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerInformation(), otherRole, pPlayer->GetPlayerState() != PlayerState::Playing, pPlayer->GetIndex(), pPlayer->GetCharacter());
 
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			});
 		}
 
 		// Send my info to others
-		GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
+		GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->Result {
 			if( pMyPlayer != pPlayer )
 			{
 				PlayerRole myRoleToOther = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole( pPlayer, pMyPlayer );
 				pPolicy->PlayerJoinedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerInformation(), myRoleToOther, pMyPlayer->GetPlayerState() != PlayerState::Playing, pMyPlayer->GetIndex(), pMyPlayer->GetCharacter()  );
 			}
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		});
 
 
@@ -193,9 +193,9 @@ namespace ConspiracyGameInstanceServer {
 	
 
 	// Start Transaction
-	HRESULT GameEntityTransLeaveGame::StartTransaction()
+	Result GameEntityTransLeaveGame::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -211,15 +211,15 @@ namespace ConspiracyGameInstanceServer {
 	
 
 	// Start Transaction
-	HRESULT GameEntityTransKickPlayer::StartTransaction()
+	Result GameEntityTransKickPlayer::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetPlayerToKick() == (PlayerID)(-1) )
 		{
-			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->HRESULT {
+			svrChk( GetMyOwner()->ForeachPlayerSvrGameInstance( [&]( GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy )->Result {
 				pPolicy->PlayerKickedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID()  );
 				return GetMyOwner()->LeavePlayer( pPlayer->GetPlayerID() );
 			}) );
@@ -246,9 +246,9 @@ namespace ConspiracyGameInstanceServer {
 	
 
 	// Start Transaction
-	HRESULT GameEntityTransAssignRole::StartTransaction()
+	Result GameEntityTransAssignRole::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -269,9 +269,9 @@ namespace ConspiracyGameInstanceServer {
 	
 
 	// Start Transaction
-	HRESULT GameEntityTransChatMessage::StartTransaction()
+	Result GameEntityTransChatMessage::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		GamePlayer *pMyPlayer = nullptr;
 		//const char* message = nullptr;
@@ -286,7 +286,7 @@ namespace ConspiracyGameInstanceServer {
 		hr = GetMyOwner()->GetComponent<GamePlaySystem>()->BroadCastChatMessage(pMyPlayer, GetRole(), GetChatMessage());
 
 		//if( GetRole() != PlayerRole::None && GetRole() != PlayerRole::Werewolf  )
-		//	svrErr(E_GAME_INVALID_ROLE);
+		//	svrErr(ResultCode::E_GAME_INVALID_ROLE);
 
 		//gameState = GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState();
 		//bIsGhost = gameState != GameStateID::None && gameState != GameStateID::End && pMyPlayer->GetPlayerState() == PlayerState::Ghost;
@@ -298,7 +298,7 @@ namespace ConspiracyGameInstanceServer {
 		////case GameStateID::SecondNightVote:
 		//case GameStateID::NightVote:
 		//	if( !bIsGhost && GetRole() != PlayerRole::Werewolf )
-		//		svrErrClose(E_GAME_INVALID_GAMESTATE);
+		//		svrErrClose(ResultCode::E_GAME_INVALID_GAMESTATE);
 		//	break;
 		//default:
 		//	break;
@@ -307,18 +307,18 @@ namespace ConspiracyGameInstanceServer {
 		//charType = GetRole() != PlayerRole::None ? ChatType::Role : ChatType::Normal;
 		//svrChk( GetMyOwner()->GetComponent<ChattingLogSystem>()->AddChattingLog( Util::Time.GetTimeUTCSec(), pMyPlayer->GetPlayerID(), pMyPlayer->GetPlayerState() == PlayerState::Ghost, charType, GetChatMessage() ) );
 
-		//GetMyOwner()->ForeachPlayerGameServer( [&]( GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy )->HRESULT {
+		//GetMyOwner()->ForeachPlayerGameServer( [&]( GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy )->Result {
 		//	if( GetRole() == PlayerRole::None || GetRole() == pPlayer->GetRole() )
 		//	{
 		//		message = GetChatMessage();
 		//		if( bIsGhost && pPlayer->GetPlayerState() != PlayerState::Ghost )
 		//		{
 		//			// Skip broadcast from ghost to others
-		//			return S_SYSTEM_OK;
+		//			return ResultCode::SUCCESS;
 		//		}
 		//		pPolicy->ChatMessageC2SEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerID(), GetRole(), pMyPlayer->GetPlayerName(), message );
 		//	}
-		//	return S_SYSTEM_OK;
+		//	return ResultCode::SUCCESS;
 		//});
 
 	Proc_End:
@@ -331,9 +331,9 @@ namespace ConspiracyGameInstanceServer {
 	
 
 	// Start Transaction
-	HRESULT GameEntityTransVoteGameAdvance::StartTransaction()
+	Result GameEntityTransVoteGameAdvance::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GamePlayer *pMyPlayer = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -351,14 +351,14 @@ namespace ConspiracyGameInstanceServer {
 	
 
 	// Start Transaction
-	HRESULT GameEntityTransVote::StartTransaction()
+	Result GameEntityTransVote::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GamePlayer *pMyPlayer = nullptr;
 		GamePlayer *pVoteTarget = nullptr;
 
 		if( GetVoteTarget() == 0 )
-			svrErrClose(E_INVALID_PLAYERID);
+			svrErrClose(ResultCode::E_INVALID_PLAYERID);
 
 		svrChk( super::StartTransaction() );
 
@@ -375,9 +375,9 @@ namespace ConspiracyGameInstanceServer {
 	}
 	
 	// Start Transaction
-	HRESULT GameEntityTransAdvanceGame::StartTransaction()
+	Result GameEntityTransAdvanceGame::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -387,28 +387,28 @@ namespace ConspiracyGameInstanceServer {
 
 		CloseTransaction( hr );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT GameEntityTransGamePlayAgain::StartTransaction()
+	Result GameEntityTransGamePlayAgain::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		EntityUID ownerUID = GetOwnerEntityUID();
 
 		m_MemberCount = 0;
 
 		svrChk(super::StartTransaction());
 
-		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->HRESULT
+		GetMyOwner()->ForeachPlayerSvrGameInstance([&](GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)->Result
 		{
 			if (pPlayer->GetPlayerEntityUID() == 0)
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 
 			m_MemberCount++;
 
 			pPolicy->GamePlayAgainS2CEvt(RouteContext(ownerUID, pPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerID(), GetPartyUID(), GetLeadPlayer());
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		});
 
 		GetMyOwner()->CloseGameInstance();
@@ -417,7 +417,7 @@ namespace ConspiracyGameInstanceServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -425,9 +425,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Start Transaction
-	HRESULT GameEntityTransGameRevealPlayer::StartTransaction()
+	Result GameEntityTransGameRevealPlayer::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GamePlayer* pMyPlayer = nullptr;
 		GamePlayer* pTargetPlayer = nullptr;
 		size_t numReveal;
@@ -437,10 +437,10 @@ namespace ConspiracyGameInstanceServer {
 		svrChk(GetMyPlayer(pMyPlayer));
 
 		if (GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState() != GameStateID::MorningDebate)
-			svrErrClose(E_GAME_INVALID_GAMESTATE);
+			svrErrClose(ResultCode::E_GAME_INVALID_GAMESTATE);
 
 		if (pMyPlayer->GetPlayerState() != PlayerState::Ghost)
-			svrErrClose(E_GAME_INVALID_PLAYER_STATE);
+			svrErrClose(ResultCode::E_GAME_INVALID_PLAYER_STATE);
 
 		numReveal = std::min((size_t)GameConst::MAX_PLAYER_REVEAL, GetTargetPlayerID().GetSize());
 		for (UINT iTargetPlayer = 0; iTargetPlayer < numReveal; iTargetPlayer++)
@@ -456,16 +456,16 @@ namespace ConspiracyGameInstanceServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 
 
 	// Start Transaction
-	HRESULT GameEntityTransGamePlayerRevive::StartTransaction()
+	Result GameEntityTransGamePlayerRevive::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GamePlayer* pMyPlayer = nullptr;
 
 		svrChk(super::StartTransaction());
@@ -473,13 +473,13 @@ namespace ConspiracyGameInstanceServer {
 		svrChk(GetMyPlayer(pMyPlayer));
 
 		if (pMyPlayer->GetReviveCount() > 0)
-			svrErrClose(E_GAME_MAX_TRY);
+			svrErrClose(ResultCode::E_GAME_MAX_TRY);
 
 		if (GetMyOwner()->GetComponent<GameStateSystem>()->GetCurrentGameState() != GameStateID::MorningDebate)
-			svrErrClose(E_GAME_INVALID_GAMESTATE);
+			svrErrClose(ResultCode::E_GAME_INVALID_GAMESTATE);
 
 		if (pMyPlayer->GetPlayerState() != PlayerState::Ghost)
-			svrErrClose(E_GAME_INVALID_PLAYER_STATE);
+			svrErrClose(ResultCode::E_GAME_INVALID_PLAYER_STATE);
 
 		svrChkClose(GetMyOwner()->GetComponent<GamePlaySystem>()->RevivePlayer(pMyPlayer));
 
@@ -489,7 +489,7 @@ namespace ConspiracyGameInstanceServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

@@ -62,9 +62,9 @@ namespace Svr {
 	{
 	}
 
-	HRESULT LoginServiceEntity::InitializeEntity( EntityID newEntityID )
+	Result LoginServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusteredServiceEntity *pClusteredEntity = nullptr;
 		auto pServerInst = BrServer::GetInstance();
 
@@ -101,9 +101,9 @@ namespace Svr {
 	}
 
 	// clear transaction
-	HRESULT LoginServiceEntity::ClearEntity()
+	Result LoginServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ReplicaClusterServiceEntity::ClearEntity() );
 
@@ -117,9 +117,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT LoginServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result LoginServiceEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ReplicaClusterServiceEntity::TickUpdate(pAction) );
 
@@ -140,15 +140,15 @@ namespace Svr {
 
 
 	// Process network event
-	HRESULT LoginServiceEntity::ProcessPublicNetworkEvent()
+	Result LoginServiceEntity::ProcessPublicNetworkEvent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Net::INet::Event curEvent;
 		LoginPlayerEntity *pLoginPlayerEntity = nullptr;
 		Net::Connection *pConn = nullptr;
 
 		if (m_pNetPublic == nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		while (SUCCEEDED(m_pNetPublic->DequeueNetEvent(curEvent)))
 		{
@@ -197,7 +197,7 @@ namespace Svr {
 
 		Util::SafeDelete(pLoginPlayerEntity);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

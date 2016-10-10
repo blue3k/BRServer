@@ -49,20 +49,20 @@ namespace IO {
 		return m_FileHandle != INVALID_NATIVE_HANDLE_VALUE;
 	}
 
-	HRESULT File::Seek(SeekMode seekMode, LONGLONG offset)
+	Result File::Seek(SeekMode seekMode, LONGLONG offset)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		lseek((int)(intptr_t)m_FileHandle, offset, ToOSSeekMode[(int)seekMode]);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	LONGLONG File::GetLocation()
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		return lseek((int)(intptr_t)m_FileHandle, 0, SEEK_CUR);
 	}
@@ -70,14 +70,14 @@ namespace IO {
 	LONGLONG File::GetFileSize()
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		struct stat buf;
 		fstat((int)(intptr_t)m_FileHandle, &buf);
 		return buf.st_size;
 	}
 
-	HRESULT File::Open(const char* filePath, OpenMode openMode, SharingMode sharingMode)
+	Result File::Open(const char* filePath, OpenMode openMode, SharingMode sharingMode)
 	{
 		Close();
 
@@ -96,7 +96,7 @@ namespace IO {
 			uiOpenMode = O_RDWR | O_CREAT | O_APPEND;
 			break;
 		default:
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 		}
 
 		switch (sharingMode)
@@ -123,7 +123,7 @@ namespace IO {
 
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
 		{
-			return GetLastHRESULT();
+			return GetLastResult();
 		}
 
 		flock fl;
@@ -149,13 +149,13 @@ namespace IO {
 			fcntl((int)(intptr_t)m_FileHandle, F_SETLK, &fl);
 			break;
 		default:
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 		}
 
 		m_OpenMode = openMode;
 		m_SharingMode = sharingMode;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 
 	}
 
@@ -169,37 +169,37 @@ namespace IO {
 	}
 
 
-	HRESULT File::Read(BYTE* buffer, size_t bufferLen, size_t &readSize)
+	Result File::Read(BYTE* buffer, size_t bufferLen, size_t &readSize)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 
 		int dwRead = 0;
 		dwRead = read((int)(intptr_t)m_FileHandle, buffer, bufferLen);
 		if(dwRead < 0)
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		readSize = dwRead;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT File::Write(const BYTE* buffer, size_t bufferLen, size_t &writen)
+	Result File::Write(const BYTE* buffer, size_t bufferLen, size_t &writen)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 
 		int dwWritten = write((int)(intptr_t)m_FileHandle, buffer, bufferLen);
 		if (dwWritten < 0)
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		writen = dwWritten;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

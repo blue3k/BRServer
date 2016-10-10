@@ -59,12 +59,12 @@ namespace Google {
 			EVP_PKEY_free(m_privateKey);
 	}
 
-	HRESULT OAuth::LoadPrivateKey(const char* strPKeyFile)
+	Result OAuth::LoadPrivateKey(const char* strPKeyFile)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (m_privateKey != nullptr)
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		// load all open ssl algorithms
 		OpenSSL_add_all_algorithms();
@@ -79,7 +79,7 @@ namespace Google {
 
 		auto sslResult = PKCS12_verify_mac(p12, GoogleDefaultPassword, (int)strlen(GoogleDefaultPassword));
 		if (sslResult == FALSE) // invalid password
-			svrErr(E_INVALID_PASSWORD);
+			svrErr(ResultCode::E_INVALID_PASSWORD);
 
 		sslResult = PKCS12_parse(p12, GoogleDefaultPassword, &m_privateKey, &cert, &ca);
 		if (sslResult == FALSE)
@@ -87,7 +87,7 @@ namespace Google {
 			char errorMessage[512];
 			auto error = ERR_get_error();
 			ERR_error_string(error, errorMessage);
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 		}
 
 	Proc_End:
@@ -107,9 +107,9 @@ namespace Google {
 		return hr;
 	}
 
-	HRESULT OAuth::BuildAuthRequestString(const char* strAccount, const char* scopes, Array<BYTE>& requestString)
+	Result OAuth::BuildAuthRequestString(const char* strAccount, const char* scopes, Array<BYTE>& requestString)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		StaticArray<BYTE, 128> digest;
 		int sslResult = TRUE;
@@ -130,11 +130,11 @@ namespace Google {
 		if (m_privateKey == nullptr
 			|| strAccount == nullptr
 			|| scopes == nullptr)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		RSA* pkey = m_privateKey->pkey.rsa;
 		if (pkey == nullptr)
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 
 
 		// 1hour later from now
@@ -159,7 +159,7 @@ namespace Google {
 		sslResult = RSA_sign(NID_sha256, digest.data(), (UINT)digest.GetSize(), sign_buffer, &sign_len, pkey);
 		if (sslResult == FALSE)
 		{
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 		}
 
 		svrChk(requestString.push_back('.'));
@@ -173,12 +173,12 @@ namespace Google {
 		return hr;
 	}
 
-	HRESULT OAuth::Initialize(const char* strPKeyFile, const char* strAccount, const char* scopes)
+	Result OAuth::Initialize(const char* strPKeyFile, const char* strAccount, const char* scopes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (strAccount == nullptr || scopes == nullptr)
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		m_Account = strAccount;
 		m_Scopes = scopes;
@@ -201,9 +201,9 @@ namespace Google {
 		return (int)(size * nmemb);
 	}
 
-	HRESULT OAuth::ProcessAuthRequest(const Array<BYTE>& requestString)
+	Result OAuth::ProcessAuthRequest(const Array<BYTE>& requestString)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		const char* url = "https://www.googleapis.com/oauth2/v3/token";
 		CURL *curl = nullptr;
 		char strPostFields[2048];
@@ -218,45 +218,45 @@ namespace Google {
 
 		res = curl_easy_setopt(curl, CURLOPT_URL, url);
 		if (res != CURLE_OK)
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 		Assert(res == 0);
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, false);
 
 		res = curl_easy_setopt(curl, CURLOPT_POST, 1L);
 		if (res != CURLE_OK)
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_POSTFIELDS, strPostFields);
 		if (res != CURLE_OK)
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, strlen(strPostFields));
 		if (res != CURLE_OK)
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 
 		headers = curl_slist_append(headers, "Content-Type: application/x-www-form-urlencoded");
 		//headers = curl_slist_append(headers, "charsets: utf-8");
 		res = curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		if (res != CURLE_OK)
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteResultCB);
 		if (res != CURLE_OK)
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 
 		res = curl_easy_setopt(curl, CURLOPT_WRITEDATA, &m_ResultBuffer);
 		if (res != CURLE_OK)
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 		Assert(res == 0);
 
 		res = curl_easy_perform(curl); /* ignores error */
 		if (res != CURLE_OK)
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 		Assert(res == 0);
 
 		res = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
 		if (res != CURLE_OK)
-			svrErr(E_SYSTEM_UNEXPECTED);
+			svrErr(ResultCode::UNEXPECTED);
 		Assert(res == 0);
 
 		curl_easy_cleanup(curl);
@@ -270,9 +270,9 @@ namespace Google {
 
 
 	// Authenticate
-	HRESULT OAuth::Authenticate()
+	Result OAuth::Authenticate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		std::string accessToken;
 		bool parsingSuccessful;
 
@@ -294,17 +294,17 @@ namespace Google {
 			// report to the user the failure and their locations in the document.
 			//std::cout << "Failed to parse configuration\n"
 			//	<< reader.getFormatedErrorMessages();
-			svrErr(E_SYSTEM_FAIL);
+			svrErr(ResultCode::FAIL);
 		}
 
 		{
 			auto value = root.get("access_token", "");
 			if (value.isNull() || value.isString() != true)
-				svrErr(E_SYSTEM_FAIL);
+				svrErr(ResultCode::FAIL);
 
 			accessToken = std::forward<std::string>(value.asString());
 			if (accessToken.length() == 0)
-				svrErr(E_SYSTEM_FAIL);
+				svrErr(ResultCode::FAIL);
 		}
 
 		m_AuthStringIndex++;
@@ -328,9 +328,9 @@ namespace Google {
 	}
 
 	// Refresh
-	HRESULT OAuth::UpdateAuthentication(bool forceUpdate)
+	Result OAuth::UpdateAuthentication(bool forceUpdate)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (!forceUpdate
 			&& Util::TimeSince(m_AuthenticatedTime) <= DurationMS(AUTHTICKET_TIMEOUT))

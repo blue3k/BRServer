@@ -146,7 +146,6 @@ typedef UINT8 BYTE;
 typedef INT8				SBYTE;
 typedef SBYTE				*PSBYTE;
 
-typedef int32_t  HRESULT;
 
 typedef void* HANDLE;
 typedef HANDLE HMODULE;
@@ -279,8 +278,6 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 
 
 
-
-
 #define unused(...) 
 
 
@@ -334,6 +331,8 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 #endif
 
 
+
+#include "Common/BRResult.h"
 
 #include "Common/ResultCode/BRResultCodeSystem.h"
 

@@ -88,7 +88,7 @@ namespace GameServer {
 		~UserGamePlayerInfoSystem();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent();
+		virtual Result InitializeComponent();
 
 		// Terminate server component
 		virtual void TerminateComponent();
@@ -100,49 +100,49 @@ namespace GameServer {
 		//
 
 		// Save to memento
-		HRESULT SaveStatToMemento( Memento<MEMENTO_SIZE> &memento );
-		HRESULT SaveWinLoseToMemento( Memento<MEMENTO_SIZE> &memento );
+		Result SaveStatToMemento( Memento<MEMENTO_SIZE> &memento );
+		Result SaveWinLoseToMemento( Memento<MEMENTO_SIZE> &memento );
 
 		// Apply shop item
-		HRESULT ApplyItem( conspiracy::ShopTbl::ShopItem *pShopItem );
+		Result ApplyItem( conspiracy::ShopTbl::ShopItem *pShopItem );
 
 		// Apply Cost
-		HRESULT CheckCost(conspiracy::OrganicTbl::OrganicItem *pCostItem);
-		HRESULT ApplyCost(conspiracy::OrganicTbl::OrganicItem *pCostItem, TransLogCategory logCategory, const char* message);
+		Result CheckCost(conspiracy::OrganicTbl::OrganicItem *pCostItem);
+		Result ApplyCost(conspiracy::OrganicTbl::OrganicItem *pCostItem, TransLogCategory logCategory, const char* message);
 
-		HRESULT SetLevel( UINT newLevel );
+		Result SetLevel( UINT newLevel );
 
-		HRESULT GainExp( UINT64 expGain );
+		Result GainExp( UINT64 expGain );
 
-		HRESULT AchivedWin( PlayerRole playedRole, bool isWon );
+		Result AchivedWin( PlayerRole playedRole, bool isWon );
 
-		HRESULT ResetRankNormal(conspiracy::OrganicTbl::OrganicItem *pCostItem);
+		Result ResetRankNormal(conspiracy::OrganicTbl::OrganicItem *pCostItem);
 
 		// Add stamina, negative will reduce the stamina
-		HRESULT GainStamina( INT stamina );
+		Result GainStamina( INT stamina );
 
 		// Add Friend slot, negative will reduce the friend slot
-		HRESULT GainFriendSlot( INT numSlot );
+		Result GainFriendSlot( INT numSlot );
 		UINT GetFriendSlot();
 
 		// gain game money
-		HRESULT GainGameMoney( INT64 numValue );
+		Result GainGameMoney( INT64 numValue );
 
 		// gain gem
-		HRESULT GainGem( INT64 numValue );
+		Result GainGem( INT64 numValue );
 
 		// Called when the stat maiximum need to be calculated again.
-		HRESULT UpdateStatMaximum();
+		Result UpdateStatMaximum();
 
 		// Setup default stat for new player
-		HRESULT SetupDefaultStat();
+		Result SetupDefaultStat();
 
 		// Called when level is changed
-		HRESULT UpdateStatByLevel();
-		HRESULT UpdateStatByLevel(conspiracy::LevelTbl::LevelItem *pLevelInfo);
+		Result UpdateStatByLevel();
+		Result UpdateStatByLevel(conspiracy::LevelTbl::LevelItem *pLevelInfo);
 
-		HRESULT SavePurchaseInfoToDB(TransactionID transID, const Array<BYTE>& purchaseID, const char* purchasePlatform, const char* purchaseToken);
-		HRESULT SavePlayerInfoToDB(TransactionID transID);
+		Result SavePurchaseInfoToDB(TransactionID transID, const Array<BYTE>& purchaseID, const char* purchasePlatform, const char* purchaseToken);
+		Result SavePlayerInfoToDB(TransactionID transID);
 	};
 
 

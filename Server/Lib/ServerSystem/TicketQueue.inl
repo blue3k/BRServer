@@ -18,14 +18,14 @@
 
 // Assign Item
 template< class DataObject, class TTicketType >
-HRESULT TicketQueue<DataObject,TTicketType>::AssignItem( const DataObject&& Data, ItemTicket* &pItem )
+Result TicketQueue<DataObject,TTicketType>::AssignItem( const DataObject&& Data, ItemTicket* &pItem )
 {
 	pItem = new ItemTicket(Data);
 
 	if( pItem == nullptr )
-		return E_SYSTEM_POINTER;
+		return ResultCode::INVALID_POINTER;
 
-	HRESULT hr = m_TicketMap.insert( pItem );
+	Result hr = m_TicketMap.insert( pItem );
 	if( FAILED(hr) )
 		Util::SafeDelete( pItem );
 	return hr;
@@ -33,14 +33,14 @@ HRESULT TicketQueue<DataObject,TTicketType>::AssignItem( const DataObject&& Data
 
 
 template< class DataObject, class TTicketType >
-HRESULT TicketQueue<DataObject,TTicketType>::AssignItem( DataObject&& Data, ItemTicket* &pItem )
+Result TicketQueue<DataObject,TTicketType>::AssignItem( DataObject&& Data, ItemTicket* &pItem )
 {
 	pItem = new ItemTicket(Data);
 
 	if( pItem == nullptr )
-		return E_SYSTEM_POINTER;
+		return ResultCode::INVALID_POINTER;
 
-	HRESULT hr = m_TicketMap.insert( pItem );
+	Result hr = m_TicketMap.insert( pItem );
 	if( FAILED(hr) )
 		Util::SafeDelete( pItem );
 	return hr;
@@ -48,9 +48,9 @@ HRESULT TicketQueue<DataObject,TTicketType>::AssignItem( DataObject&& Data, Item
 
 // Drop Item
 template< class DataObject, class TTicketType >
-HRESULT TicketQueue<DataObject,TTicketType>::ReleaseItem( ItemTicket* pItem )
+Result TicketQueue<DataObject,TTicketType>::ReleaseItem( ItemTicket* pItem )
 {
-	if( pItem == nullptr ) return E_SYSTEM_POINTER;
+	if( pItem == nullptr ) return ResultCode::INVALID_POINTER;
 
 	m_TicketMap.erase( pItem );
 
@@ -81,9 +81,9 @@ TicketQueue<DataObject,TTicketType>::~TicketQueue()
 
 // item enque
 template< class DataObject, class TTicketType >
-HRESULT TicketQueue<DataObject,TTicketType>::Enqueue( const DataObject& newData, TicketType& hTicket )
+Result TicketQueue<DataObject,TTicketType>::Enqueue( const DataObject& newData, TicketType& hTicket )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	ItemTicket *pItem = nullptr;
 
 	svrChk( AssignItem( newData, pItem ) );
@@ -97,9 +97,9 @@ Proc_End:
 }
 
 template< class DataObject, class TTicketType >
-HRESULT TicketQueue<DataObject,TTicketType>::Enqueue( DataObject&& newData, TicketType& hTicket )
+Result TicketQueue<DataObject,TTicketType>::Enqueue( DataObject&& newData, TicketType& hTicket )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	ItemTicket *pItem = nullptr;
 
 	svrChk( AssignItem( newData, pItem ) );
@@ -115,9 +115,9 @@ Proc_End:
 
 // item deque
 template< class DataObject, class TTicketType >
-HRESULT TicketQueue<DataObject,TTicketType>::Dequeue( DataObject& Data )
+Result TicketQueue<DataObject,TTicketType>::Dequeue( DataObject& Data )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	ItemTicket *pItem = nullptr;
 
 	svrChk( AssignItem( newData, pItem ) );
@@ -133,9 +133,9 @@ Proc_End:
 
 // drop item in queue of that ticket
 template< class DataObject, class TTicketType >
-HRESULT TicketQueue<DataObject,TTicketType>::DropItem( TicketType hTicket )
+Result TicketQueue<DataObject,TTicketType>::DropItem( TicketType hTicket )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	TicketMap::Iterator itItem;
 
 	svrChk( m_TicketMap.find( (ItemTicket*)hTicket, itItem ) );
@@ -149,7 +149,7 @@ Proc_End:
 // Just get first dequeue item if exist, not dequeue
 // This will not safe if use DequeueMT
 template< class DataObject, class TTicketType >
-HRESULT TicketQueue<DataObject,TTicketType>::GetFront( DataObject& item )
+Result TicketQueue<DataObject,TTicketType>::GetFront( DataObject& item )
 {
 	ItemTicket* pItem = nullptr;
 	while( m_Queue.GetEnqueCount() > 0 && SUCCEEDED(m_Queue.GetFront(pItem)) )

@@ -42,16 +42,16 @@ namespace Svr {
 		virtual ~SimpleEntity();
 
 		// clear transaction
-		virtual HRESULT ClearEntity();
+		virtual Result ClearEntity();
 
-		virtual HRESULT FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) override;
+		virtual Result FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) override;
 		
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr);
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr);
 
 
-		virtual HRESULT ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
+		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
 
 		virtual UINT GetActiveTransactionCount();
 	};

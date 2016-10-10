@@ -148,22 +148,22 @@ namespace Svr
 		//
 
 		//// Initialize game system
-		//HRESULT InitializeSystem();
+		//Result InitializeSystem();
 
 		//// Update game config
-		//HRESULT UpdateGameConfig(UINT configPresetID);
+		//Result UpdateGameConfig(UINT configPresetID);
 
 
 	protected:
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID ) override;
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 	public:
 		// Close entity and clear transaction
-		virtual HRESULT TerminateEntity() override;
+		virtual Result TerminateEntity() override;
 
 		// Run entity
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 
 
@@ -174,12 +174,12 @@ namespace Svr
 
 		//// foreach game player
 		//template< class Func >
-		//HRESULT ForeachPlayer(Func func);
-		////HRESULT ForeachPlayer( std::function<HRESULT(GamePlayer* pPlayer)> func );
+		//Result ForeachPlayer(Func func);
+		////Result ForeachPlayer( std::function<Result(GamePlayer* pPlayer)> func );
 
-		//HRESULT ForeachPlayerGameServer( std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
+		//Result ForeachPlayerGameServer( std::function<Result(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func );
 
-		//HRESULT ForeachPlayerSvrGameInstance( std::function<HRESULT(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func );
+		//Result ForeachPlayerSvrGameInstance( std::function<Result(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func );
 
 
 
@@ -189,7 +189,7 @@ namespace Svr
 		//
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeGameEntity(UINT numBot, UINT maxPlayer);
+		virtual Result InitializeGameEntity(UINT numBot, UINT maxPlayer);
 
 
 		////////////////////////////////////////////////////////////
@@ -199,7 +199,7 @@ namespace Svr
 
 
 		// Update Game status
-		virtual HRESULT UpdateGameStatus(TimeStampMS ulCurTime );
+		virtual Result UpdateGameStatus(TimeStampMS ulCurTime );
 
 
 
@@ -210,7 +210,7 @@ namespace Svr
 
 
 		// set game instance kill timer
-		HRESULT SetGameKillTimer( DurationMS ulWaitTime );
+		Result SetGameKillTimer( DurationMS ulWaitTime );
 
 
 		// On Game Kill timer
@@ -226,27 +226,27 @@ namespace Svr
 		//	Game Player
 		//
 
-		virtual HRESULT CreatePlayerInstance(const PlayerInformation& playerInfo, GameInstancePlayer* &pPlayer);
+		virtual Result CreatePlayerInstance(const PlayerInformation& playerInfo, GameInstancePlayer* &pPlayer);
 
-		//HRESULT GetPlayerIndex( PlayerID playerID, UINT &playerIndex );
-		//HRESULT GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer );
+		//Result GetPlayerIndex( PlayerID playerID, UINT &playerIndex );
+		//Result GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer );
 
 		// Register new player to join
-		virtual HRESULT AddPlayerToJoin( GameInstancePlayer* &pPlayer );
+		virtual Result AddPlayerToJoin( GameInstancePlayer* &pPlayer );
 
 		// Player leave
-		virtual HRESULT LeavePlayer(GameInstancePlayer* &pPlayer );
+		virtual Result LeavePlayer(GameInstancePlayer* &pPlayer );
 
-		virtual HRESULT LeavePlayer( PlayerID pltID );
+		virtual Result LeavePlayer( PlayerID pltID );
 
 		// Leave all player
-		HRESULT LeaveAllPlayerForGameDelete();
+		Result LeaveAllPlayerForGameDelete();
 
 		// Find Player pilotid
-		HRESULT FindPlayer( PlayerID pltID, GameInstancePlayer* &pGamePlayer );
+		Result FindPlayer( PlayerID pltID, GameInstancePlayer* &pGamePlayer );
 
 		// Called when a player get out of game
-		virtual HRESULT OnPlayerGetOutOfGame(GameInstancePlayer *pPlayer );
+		virtual Result OnPlayerGetOutOfGame(GameInstancePlayer *pPlayer );
 	};
 
 #include "GameInstanceEntity.inl"

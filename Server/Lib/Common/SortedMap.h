@@ -145,10 +145,10 @@ namespace BR
 			MapNode* GetLastHistory()								{ if (m_TraversalHistory.GetSize() == 0) return nullptr; return m_TraversalHistory[m_TraversalHistory.GetSize()-1]; }
 
 			// set Reserve size
-			HRESULT Reserve(size_t szReserv)
+			Result Reserve(size_t szReserv)
 			{
 				if (szReserv <= m_TraversalHistory.GetAllocatedSize())
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 
 				szReserv = GrowthBy * ((szReserv + GrowthBy - 1) / GrowthBy);
 
@@ -179,27 +179,27 @@ namespace BR
 		void ClearMap();
 
 		// Insert a key
-		HRESULT Insert(KeyType key, const ValueType& value, INT64 *insertedOrder = nullptr);
+		Result Insert(KeyType key, const ValueType& value, INT64 *insertedOrder = nullptr);
 
 		// Remove an item and return the removed value
-		HRESULT Remove(KeyType key, ValueType& value);
+		Result Remove(KeyType key, ValueType& value);
 
 		// Find a key value
-		HRESULT Find(KeyType key, ValueType& value, INT64 *pOrder = nullptr);
-		HRESULT FindInWriteTree(KeyType key, ValueType& value)				{ return Find(key, value); }
+		Result Find(KeyType key, ValueType& value, INT64 *pOrder = nullptr);
+		Result FindInWriteTree(KeyType key, ValueType& value)				{ return Find(key, value); }
 
 		// get number of values
 		SynchronizeCounterType GetItemCount()								{ return m_ItemCount; }
 
 
 		// enumerate the values
-		//HRESULT ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+		//Result ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
 		template<class Func>
-		HRESULT ForeachOrder(INT startOrderIndex, UINT count, Func functor)
+		Result ForeachOrder(INT startOrderIndex, UINT count, Func functor)
 		{
 			MapNode* pCurNode = m_Root;
 			if (pCurNode == nullptr)
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 
 			OperationTraversalHistory travelHistory(m_Root, m_ItemCount);
 			travelHistory.Clear();
@@ -233,14 +233,14 @@ namespace BR
 			} while (pCurNode != nullptr);
 
 			if (pCurNode == nullptr)
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 
 
 			// interate
 			do
 			{
 				if (!functor(pCurNode->Key, pCurNode->Value))
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 
 				count--;
 				if (count == 0)
@@ -283,16 +283,16 @@ namespace BR
 
 			travelHistory.SetConserveDataOnResize(false);
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		//HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+		//Result ForeachReverseOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
 		template<class Func>
-		HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, Func functor)
+		Result ForeachReverseOrder(INT startOrderIndex, UINT count, Func functor)
 		{
 			MapNode* pCurNode = m_Root;
 			if (pCurNode == nullptr)
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 
 			OperationTraversalHistory travelHistory(m_Root, m_ItemCount);
 			travelHistory.Clear();
@@ -326,14 +326,14 @@ namespace BR
 			} while (pCurNode != nullptr);
 
 			if (pCurNode == nullptr)
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 
 
 			// interate
 			do
 			{
 				if (!functor(pCurNode->Key, pCurNode->Value))
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 
 				count--;
 				if (count == 0)
@@ -376,17 +376,17 @@ namespace BR
 
 			travelHistory.SetConserveDataOnResize(false);
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// for interface match
-		HRESULT CommitChanges() { return S_SYSTEM_OK;  }
+		Result CommitChanges() { return ResultCode::SUCCESS;  }
 
 
 	private:
 
 		// find parent node or candidate
-		HRESULT FindNode(OperationTraversalHistory &travelHistory, KeyType key, MapNode* &pNode);
+		Result FindNode(OperationTraversalHistory &travelHistory, KeyType key, MapNode* &pNode);
 
 		MapNode* FindSmallestNode(OperationTraversalHistory &travelHistory, MapNode* pRootNode);
 		MapNode* FindBiggestNode(OperationTraversalHistory &travelHistory, MapNode* pRootNode);

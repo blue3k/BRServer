@@ -57,9 +57,9 @@ namespace conspiracy
 
 
 		// declare member function
-		static HRESULT LoadTable( const std::list<BotTalkTblItem>& rowList );
+		static BR::Result LoadTable( const std::list<BotTalkTblItem>& rowList );
 
-		static HRESULT FindItem( const int& Key, BotTalkTblItem*& pRow);
+		static BR::Result FindItem( const int& Key, BotTalkTblItem*& pRow);
 	}; // class BotTalkTbl
 }; // namespace conspiracy
 

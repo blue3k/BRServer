@@ -62,9 +62,9 @@ namespace Svr {
 	}
 
 	// Initialize entity to proceed new connection
-	HRESULT GamePlayerEntity::InitializeEntity( EntityID newEntityID )
+	Result GamePlayerEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::SimpleUserEntity::InitializeEntity( newEntityID ) );
 
@@ -95,9 +95,9 @@ namespace Svr {
 
 
 	// Set connection for pilot
-	HRESULT GamePlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon)
+	Result GamePlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (pCon == GetConnection())
 			return hr;
@@ -139,11 +139,11 @@ namespace Svr {
 		m_LatestActiveTime = latestActiveTime;
 	}
 
-	HRESULT GamePlayerEntity::OnNewUserTranscation()
+	Result GamePlayerEntity::OnNewUserTranscation()
 	{
 		// m_LatestUpdateTime is used as a valid character data signal
 		if (m_LatestUpdateTime == TimeStampSec::min())
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 
@@ -152,15 +152,15 @@ namespace Svr {
 			UpdateDBSync(0);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT GamePlayerEntity::UpdateDBSync(TransactionID transID)
+	Result GamePlayerEntity::UpdateDBSync(TransactionID transID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (FAILED(UpdateGamePlayer()))
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		m_LatestDBSyncTime = Util::Time.GetTimeUTCSec();
 		//auto pPlayerInfoSystem = GetComponent<UserGamePlayerInfoSystem>();
@@ -176,19 +176,19 @@ namespace Svr {
 	}
 
 	// register message handlers
-	HRESULT GamePlayerEntity::RegisterMessageHandlers()
+	Result GamePlayerEntity::RegisterMessageHandlers()
 	{
 		
 		BR_ENTITY_MESSAGE(Message::Game::HeartBitC2SEvt)				{ pNewTrans = nullptr; return OnNewUserTranscation(); } );
-		//BR_ENTITY_MESSAGE(Message::Game::JoinGameServerCmd)				{ pNewTrans = new PlayerTransJoinGameServer(pMsgData); return S_SYSTEM_OK; } );
+		//BR_ENTITY_MESSAGE(Message::Game::JoinGameServerCmd)				{ pNewTrans = new PlayerTransJoinGameServer(pMsgData); return ResultCode::SUCCESS; } );
 		//BR_ENTITY_MESSAGE(Message::Game::GetUserGamePlayerInfoCmd)		{ pNewTrans = new PlayerTransGetUserGamePlayerInfo(pMsgData); return OnNewUserTranscation(); } );
 		//BR_ENTITY_MESSAGE(Message::Game::GetGamePlayerInfoCmd)			{ pNewTrans = new PlayerTransGetGamePlayerInfo(pMsgData); return OnNewUserTranscation(); } );
 
 		//BR_ENTITY_MESSAGE(Message::Game::GetComplitionStateCmd)			{ pNewTrans = new PlayerTransGetComplitionState(pMsgData); return OnNewUserTranscation(); } );
 		//BR_ENTITY_MESSAGE(Message::Game::SetComplitionStateCmd)			{ pNewTrans = new PlayerTransSetComplitionState(pMsgData); return OnNewUserTranscation(); } );
 
-		//BR_ENTITY_MESSAGE(Message::Game::RegisterGCMCmd)				{ pNewTrans = new PlayerTransRegisterGCM(pMsgData); return S_SYSTEM_OK; } );
-		//BR_ENTITY_MESSAGE(Message::Game::UnregisterGCMCmd)				{ pNewTrans = new PlayerTransUnregisterGCM(pMsgData); return S_SYSTEM_OK; } );
+		//BR_ENTITY_MESSAGE(Message::Game::RegisterGCMCmd)				{ pNewTrans = new PlayerTransRegisterGCM(pMsgData); return ResultCode::SUCCESS; } );
+		//BR_ENTITY_MESSAGE(Message::Game::UnregisterGCMCmd)				{ pNewTrans = new PlayerTransUnregisterGCM(pMsgData); return ResultCode::SUCCESS; } );
 
 		//BR_ENTITY_MESSAGE(Message::Game::InviteFriendCmd)				{ pNewTrans = new PlayerTransInviteFriend(pMsgData); return OnNewUserTranscation(); } );
 		//BR_ENTITY_MESSAGE(Message::Game::AcceptFriendRequestCmd)		{ pNewTrans = new PlayerTransFriendAccept(pMsgData); return OnNewUserTranscation(); } );
@@ -239,13 +239,13 @@ namespace Svr {
 		//BR_ENTITY_MESSAGE(Message::Game::SetPresetGameConfigIDCmd)		{ pNewTrans = new PlayerTransSetConfigPreset(pMsgData); return OnNewUserTranscation(); } );
 		//BR_ENTITY_MESSAGE(Message::Game::GainGameResourceCmd)			{ pNewTrans = new PlayerTransGainGameResource(pMsgData); return OnNewUserTranscation(); } );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// clear transaction
-	HRESULT GamePlayerEntity::ClearEntity()
+	Result GamePlayerEntity::ClearEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		ReleaseConnection();
 
@@ -257,13 +257,13 @@ namespace Svr {
 	}
 
 	// Run the task
-	HRESULT GamePlayerEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result GamePlayerEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Transaction *trans = nullptr;
 
 		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
-		if (hr == S_SYSTEM_FALSE)
+		if (hr == ResultCode::SUCCESS_FALSE)
 			return hr;
 
 
@@ -288,14 +288,14 @@ namespace Svr {
 
 
 	// Update Game Player 
-	HRESULT GamePlayerEntity::UpdateGamePlayer()
+	Result GamePlayerEntity::UpdateGamePlayer()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// m_LatestUpdateTime will be initialized when character data is loaded
 		if (m_LatestUpdateTime == TimeStampSec::min())
 		{
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 		}
 
 
@@ -357,9 +357,9 @@ namespace Svr {
 	}
 
 	//// Send push notify
-	//HRESULT GamePlayerEntity::SendPushNotify( const char* strMessage, UINT64 param )
+	//Result GamePlayerEntity::SendPushNotify( const char* strMessage, UINT64 param )
 	//{
-	//	HRESULT hr = S_SYSTEM_OK;
+	//	Result hr = ResultCode::SUCCESS;
 
 	//	// Send GCM push notify
 	//	if( GetGCMKeys() != nullptr && GetGCMKeys()[0] != '\0' )

@@ -105,7 +105,7 @@ namespace Svr {
 
 
 		// Initialize player
-		HRESULT InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);
+		Result InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);
 
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@ namespace Svr {
 		//
 
 		// Update Game Player 
-		virtual HRESULT UpdateGamePlayer(TimeStampMS CurTime );
+		virtual Result UpdateGamePlayer(TimeStampMS CurTime );
 		
 	};
 

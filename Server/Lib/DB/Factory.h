@@ -50,20 +50,20 @@ namespace DB {
 		Factory(){}
 		virtual ~Factory(){}
 
-		static HRESULT InitializeDBFactory();
-		static HRESULT TerminateDBFactory();
+		static Result InitializeDBFactory();
+		static Result TerminateDBFactory();
 
 		static Factory &GetInstance()									{ return *stm_pInstance; }
 
-		static void ErrorLog( void* DBContext, HRESULT hr, const char* className )		{ GetInstance().ReportError(DBContext, hr,className); }
+		static void ErrorLog( void* DBContext, Result hr, const char* className )		{ GetInstance().ReportError(DBContext, hr,className); }
 
-		virtual void ReportError( void* DBContext, HRESULT hr, const char* className ) = 0;
+		virtual void ReportError( void* DBContext, Result hr, const char* className ) = 0;
 
 		// initialize DB source
-		virtual HRESULT	CreateDataSource( DataSource* &pDBSource ) = 0;
+		virtual Result	CreateDataSource( DataSource* &pDBSource ) = 0;
 
 		// close DB source
-		virtual HRESULT	CreateSession( DataSource* pDBSource, Session* &pSession ) = 0;
+		virtual Result	CreateSession( DataSource* pDBSource, Session* &pSession ) = 0;
 
 	};
 

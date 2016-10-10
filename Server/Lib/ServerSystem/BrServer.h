@@ -155,7 +155,7 @@ namespace Svr {
 		//	Message Processing
 		//
 
-		//virtual HRESULT ProcessPrivateMessage( pIMsg
+		//virtual Result ProcessPrivateMessage( pIMsg
 
 	public:
 		BrServer( NetClass svrNetClass );
@@ -200,7 +200,7 @@ namespace Svr {
 		inline Net::ServerPeerTCP* GetNetPrivate()								{ return m_pNetPrivate; }
 
 		template<class DBManagerType>
-		HRESULT AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg);
+		Result AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg);
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -208,13 +208,13 @@ namespace Svr {
 		//
 
 		// Process Private network event
-		virtual HRESULT ProcessPrivateNetworkEvent();
+		virtual Result ProcessPrivateNetworkEvent();
 
 		// Process Public network event
-		virtual HRESULT ProcessPublicNetworkEvent();
+		virtual Result ProcessPublicNetworkEvent();
 
 
-		virtual HRESULT TerminateEntity() override;
+		virtual Result TerminateEntity() override;
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -224,48 +224,48 @@ namespace Svr {
 
 
 		// Apply configuration
-		virtual HRESULT ApplyConfiguration();
+		virtual Result ApplyConfiguration();
 
-		virtual HRESULT InitializeMonitoring();
+		virtual Result InitializeMonitoring();
 
 		// Initialize server basic entities
-		virtual HRESULT InitializeEntities();
+		virtual Result InitializeEntities();
 
-		virtual HRESULT InitializeComponents() override;
+		virtual Result InitializeComponents() override;
 
 		// Initialize server resource
-		virtual HRESULT InitializeServerResource();
+		virtual Result InitializeServerResource();
 
 		// Close server and release resource
-		virtual HRESULT CloseServerResource();
+		virtual Result CloseServerResource();
 
 
 		// Initialize private Network
-		virtual HRESULT InitializeNetPrivate();
+		virtual Result InitializeNetPrivate();
 
 		// Close Private Network
-		virtual HRESULT CloseNetPrivate();
+		virtual Result CloseNetPrivate();
 
 		// create remote entity by class
-		virtual HRESULT CreateServerEntity( NetClass netClass, ServerEntity* &pServerEntity ) = 0;
+		virtual Result CreateServerEntity( NetClass netClass, ServerEntity* &pServerEntity ) = 0;
 
 		// Initialize private Network
-		virtual HRESULT InitializeNetPublic();
+		virtual Result InitializeNetPublic();
 
 		// Close Public Network
-		virtual HRESULT CloseNetPublic();
+		virtual Result CloseNetPublic();
 
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
 
 
 
 		// Start server thread
-		virtual HRESULT StartServer();
+		virtual Result StartServer();
 
 		// Stop server thread
-		virtual HRESULT StopServer();
+		virtual Result StopServer();
 	};
 
 
@@ -282,7 +282,7 @@ namespace Svr {
 	ComponentType* GetServerComponent();
 
 	template< class ComponentType >
-	HRESULT AddServerComponent(ComponentType* &newComponent);
+	Result AddServerComponent(ComponentType* &newComponent);
 
 
 

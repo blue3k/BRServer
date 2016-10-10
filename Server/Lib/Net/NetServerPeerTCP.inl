@@ -34,7 +34,7 @@ CounterType ServerPeerTCP::GetActiveConnectionCount()
 }
 
 // Close all connection
-HRESULT ServerPeerTCP::CloseAllConnection()
+Result ServerPeerTCP::CloseAllConnection()
 {
 	return GetConnectionManager().PendingCloseAllConnection();
 }

@@ -110,7 +110,7 @@ namespace Trace {
 
 
 		// Open Log file
-		HRESULT OpenLogFile( int iFile, const struct tm &curtm, const char *strFileName );
+		Result OpenLogFile( int iFile, const struct tm &curtm, const char *strFileName );
 
 
 		// Append Trace mask prefix
@@ -134,7 +134,7 @@ namespace Trace {
 		virtual void Run() override;
 
 		// Check file system and update
-		HRESULT CheckAndUpdate( TimeStampSec tCurTime );
+		Result CheckAndUpdate( TimeStampSec tCurTime );
 
 		void ValidateLogFile();
 

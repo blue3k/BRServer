@@ -47,14 +47,14 @@ namespace Svr {
 	//	BR_TRANS_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes, { return OnPlayerRegisteredRes(pRes); });
 	//}
 
-	//HRESULT GameServerTransRegisterPlayerToJoinGameServer::OnPlayerRegisteredRes(Svr::TransactionResult* &pRes)
+	//Result GameServerTransRegisterPlayerToJoinGameServer::OnPlayerRegisteredRes(Svr::TransactionResult* &pRes)
 	//{
-	//	HRESULT hr = S_SYSTEM_OK;
+	//	Result hr = ResultCode::SUCCESS;
 
 	//	Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 	//	Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes res;
 
-	//	svrChk(pRes->GetHRESULT());
+	//	svrChk(pRes->GetResult());
 	//	svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
 
 	//	m_PublicAddress = GetMyOwner()->GetPublicNetConfig()->IPV4.c_str();
@@ -65,13 +65,13 @@ namespace Svr {
 
 	//	CloseTransaction(hr);
 
-	//	return S_SYSTEM_OK;
+	//	return ResultCode::SUCCESS;
 	//}
 
 	//// Start Transaction
-	//HRESULT GameServerTransRegisterPlayerToJoinGameServer::StartTransaction()
+	//Result GameServerTransRegisterPlayerToJoinGameServer::StartTransaction()
 	//{
-	//	HRESULT hr = S_SYSTEM_OK;
+	//	Result hr = ResultCode::SUCCESS;
 	//	SharedPointerT<Svr::Entity> pEntity;
 	//	GamePlayerEntity *pPlayerEntity = nullptr;
 	//	Policy::IPolicyGameServer *pTargetPolicy = nullptr;
@@ -82,7 +82,7 @@ namespace Svr {
 
 	//	if (GetPlayerID() == 0)
 	//	{
-	//		svrErr(E_INVALID_PLAYERID);
+	//		svrErr(ResultCode::E_INVALID_PLAYERID);
 	//	}
 
 	//	if (SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(GetRouteContext().GetTo(), pEntity))
@@ -93,7 +93,7 @@ namespace Svr {
 	//		// If a login server has invalid login session information from the DB. the player ID will not be match
 	//		if (pPlayerEntity->GetPlayerID() != GetPlayerID())
 	//		{
-	//			svrErrClose(E_INVALID_PLAYERID);
+	//			svrErrClose(ResultCode::E_INVALID_PLAYERID);
 	//		}
 
 	//		svrTrace(Svr::TRC_ENTITY, "Reinitialize Player Entity UID:{0}", GetPlayerID());
@@ -135,9 +135,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT GameServerTransGamePlayerEntityCreatedS2CEvt::StartTransaction()
+	Result GameServerTransGamePlayerEntityCreatedS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pServerEntity = nullptr;
 
 		svrChk( super::StartTransaction() );
@@ -157,9 +157,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT GameServerTransGamePlayerEntityDeletedS2CEvt::StartTransaction()
+	Result GameServerTransGamePlayerEntityDeletedS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 

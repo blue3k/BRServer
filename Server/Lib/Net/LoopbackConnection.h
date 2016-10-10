@@ -40,7 +40,7 @@ namespace Net {
 		PageQueue<IConnection::Event>	m_EventQueue;
 
 		// Add network event to queue
-		HRESULT EnqueueConnectionEvent( const IConnection::Event& evt );
+		Result EnqueueConnectionEvent( const IConnection::Event& evt );
 
 
 	public:
@@ -48,7 +48,7 @@ namespace Net {
 		virtual ~LoopbackConnection();
 
 		// Initialize LoopbackConnection
-		virtual HRESULT InitConnection( const NetAddress& Addr, NetClass netClass );
+		virtual Result InitConnection( const NetAddress& Addr, NetClass netClass );
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -60,13 +60,13 @@ namespace Net {
 		virtual void DeleteThis() const;
 
 		// Disconnect connection
-		virtual HRESULT Disconnect(const char* reason);
+		virtual Result Disconnect(const char* reason);
 
 		// Close connection immediately without notify
-		virtual HRESULT CloseConnection();
+		virtual Result CloseConnection();
 
 		// Send message to connected entity
-		virtual HRESULT Send( Message::MessageData* &pMsg ) = 0;
+		virtual Result Send( Message::MessageData* &pMsg ) = 0;
 
 		// Message count currently in recv queue
 		virtual SysUInt GetRecvMessageCount();
@@ -74,19 +74,19 @@ namespace Net {
 		// Query connection event
 
 		virtual CounterType GetConnectionEventCount() override;
-		virtual HRESULT DequeueConnectionEvent( Event& curEvent ) override;
+		virtual Result DequeueConnectionEvent( Event& curEvent ) override;
 
 		// Get received Message
-		virtual HRESULT GetRecvMessage( Message::MessageData* &pIMsg );
+		virtual Result GetRecvMessage( Message::MessageData* &pIMsg );
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl( );
+		virtual Result UpdateNetCtrl( );
 
 
 		// Update send queue, Reliable UDP
-		virtual HRESULT UpdateSendQueue() override { return E_SYSTEM_FAIL; }
+		virtual Result UpdateSendQueue() override { return ResultCode::FAIL; }
 		// Update Send buffer Queue, TCP and UDP client connection
-		virtual HRESULT UpdateSendBufferQueue() override { return E_SYSTEM_FAIL; }
+		virtual Result UpdateSendBufferQueue() override { return ResultCode::FAIL; }
 
 	};
 

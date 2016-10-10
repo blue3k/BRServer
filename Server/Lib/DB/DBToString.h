@@ -23,7 +23,7 @@ namespace BR {
 	
 
 	template<>
-	inline HRESULT ToString( char*& pBuff, INT& iBuffLen, const enum_field_types& Data, int Option )
+	inline Result ToString( char*& pBuff, INT& iBuffLen, const enum_field_types& Data, int Option )
 	{
 		const char* name = nullptr;
 
@@ -65,12 +65,12 @@ namespace BR {
 		if( name )
 		{
 			if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, name ) ) )
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 		}
 		else
 			return ToStringEnum( pBuff, iBuffLen, Data );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

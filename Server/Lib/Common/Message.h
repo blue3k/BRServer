@@ -238,8 +238,8 @@ namespace Message {
 		void UpdateChecksum();
 		void UpdateChecksumNEncrypt();
 
-		HRESULT ValidateChecksum();
-		HRESULT ValidateChecksumNDecrypt();
+		Result ValidateChecksum();
+		Result ValidateChecksumNDecrypt();
 
 		// From ISharedObj
 		virtual void DeleteThis() const;
@@ -260,7 +260,7 @@ namespace Message {
 		MessageData	*m_pIMsg;
 		
 		// Parsing result
-		HRESULT		m_hrParsing;
+		Result		m_hrParsing;
 
 		bool		m_bIsParsed;
 
@@ -273,13 +273,13 @@ namespace Message {
 		inline MessageData* GetMessage();
 
 		// Get Parsing Result
-		inline HRESULT GetParsingResult();
+		inline Result GetParsingResult();
 
-		virtual HRESULT ParseMsg();
-		virtual HRESULT ParseIMsg( MessageData* pIMsg ) = 0;
+		virtual Result ParseMsg();
+		virtual Result ParseIMsg( MessageData* pIMsg ) = 0;
 
-		virtual HRESULT OverrideRouteContextDestination( EntityUID to ) { unused(to); AssertRel(false); return S_SYSTEM_OK; }
-		virtual HRESULT OverrideRouteInfomation( EntityUID to, UINT hopCount ) { unused(to, hopCount); AssertRel(false); return S_SYSTEM_OK; }
+		virtual Result OverrideRouteContextDestination( EntityUID to ) { unused(to); AssertRel(false); return ResultCode::SUCCESS; }
+		virtual Result OverrideRouteInfomation( EntityUID to, UINT hopCount ) { unused(to, hopCount); AssertRel(false); return ResultCode::SUCCESS; }
 	};
 
 

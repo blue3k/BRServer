@@ -28,7 +28,7 @@ namespace Util {
 													"abcdefghijklmnopqrstuvwxyz"
 													"0123456789-_";
 
-	static inline HRESULT Base64_DecodeChar(BYTE in, BYTE& out, const char* encoding_chars)
+	static inline Result Base64_DecodeChar(BYTE in, BYTE& out, const char* encoding_chars)
 	{
 		if ('A' <= in && in <= 'Z')
 		{
@@ -49,17 +49,17 @@ namespace Util {
 			else if (encoding_chars[26 * 2 + 10 + 1] == in)
 				out = 26 * 2 + 10 + 1;
 			else
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Base 64 encode/decode
-	static HRESULT Base64Encode_(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
+	static Result Base64Encode_(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		int i = 0;
 		int j = 0;
 		unsigned char char_array_3[3];
@@ -114,9 +114,9 @@ namespace Util {
 	}
 
 
-	static HRESULT Base64Decode_(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
+	static Result Base64Decode_(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		int in_len = (int)srcSize;
 		int i = 0;
 		int j = 0;
@@ -163,23 +163,23 @@ namespace Util {
 	}
 
 
-	HRESULT Base64Encode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar)
+	Result Base64Encode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar)
 	{
 		return Base64Encode_(srcSize, bytes_to_encode, destBuffer, dummyChar, g_Crypto_Base64_chars);
 	}
 
-	HRESULT Base64Decode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar)
+	Result Base64Decode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar)
 	{
 		return Base64Decode_(srcSize, bytes_to_decode, destBuffer, dummyChar, g_Crypto_Base64_chars);
 	}
 
 
-	HRESULT Base64URLEncode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar)
+	Result Base64URLEncode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar)
 	{
 		return Base64Encode_(srcSize, bytes_to_encode, destBuffer, dummyChar, g_Crypto_Base64URL_chars);
 	}
 
-	HRESULT Base64URLDecode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar)
+	Result Base64URLDecode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar)
 	{
 		return Base64Decode_(srcSize, bytes_to_decode, destBuffer, dummyChar, g_Crypto_Base64URL_chars);
 	}

@@ -54,7 +54,7 @@ namespace BR {
 		inline PlayerInformation();
 		inline PlayerInformation(const PlayerInformation& src);
 		inline PlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime);
-		inline HRESULT InitPlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime);
+		inline Result InitPlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime);
 		inline PlayerInformation& operator = ( const PlayerInformation& src );
 		inline bool operator == ( const PlayerInformation& src ) const;
 	};

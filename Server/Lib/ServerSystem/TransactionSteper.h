@@ -44,7 +44,7 @@ namespace Svr {
 		inline void NextStep()				{ m_uiStepTick++; }
 
 		// Process step
-		virtual HRESULT ProcessStep( Svr::TransactionResult* &pRes, bool &IsCompleted ) = 0;
+		virtual Result ProcessStep( Svr::TransactionResult* &pRes, bool &IsCompleted ) = 0;
 	};
 
 
@@ -103,20 +103,20 @@ namespace Svr {
 		}
 
 		// Assign step
-		HRESULT AssignStep( UINT iStep, TransactionStep *pStep )
+		Result AssignStep( UINT iStep, TransactionStep *pStep )
 		{
 			if( iStep >= iMaxStep )
 			{
 				AssertRel( 0 );
-				return E_SYSTEM_INVALIDARG;
+				return ResultCode::INVALID_ARG;
 			}
 
 			m_Steps[iStep] = pStep;
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// Process step
-		HRESULT ProcessStep( Svr::TransactionResult* &pRes )
+		Result ProcessStep( Svr::TransactionResult* &pRes )
 		{
 			bool IsCompleted = true;
 			while( !IsCompletedAllStep() && IsCompleted )
@@ -124,7 +124,7 @@ namespace Svr {
 				if( m_Steps[m_CurStep] )
 				{
 					IsCompleted = false;
-					HRESULT hr = m_Steps[m_CurStep]->ProcessStep( pRes, IsCompleted );
+					Result hr = m_Steps[m_CurStep]->ProcessStep( pRes, IsCompleted );
 
 					if( FAILED(hr) )
 					{
@@ -151,7 +151,7 @@ namespace Svr {
 				Util::SafeRelease( pRes );
 			}
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 	};
 

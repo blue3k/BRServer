@@ -153,9 +153,9 @@ namespace Trace {
 	}
 
 	// check and update trace module
-	HRESULT TraceModule::CheckAndUpdate()
+	Result TraceModule::CheckAndUpdate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// Update output mask
 		if(Util::TimeSince(m_MaskUpdated) > DurationMS(60*1000))
@@ -284,13 +284,13 @@ namespace Trace {
 	}
 
 	// Open Log file
-	HRESULT TraceOutModule::OpenLogFile( int iFile, const struct tm &curtm, const char *strFileName )
+	Result TraceOutModule::OpenLogFile( int iFile, const struct tm &curtm, const char *strFileName )
 	{
 		// close previous opened file
 		m_LogFile[iFile].Close();
 
 		// Open file
-		HRESULT hr = m_LogFile[iFile].Open(strFileName, IO::File::OpenMode::Append, IO::File::SharingMode::ReadShared);
+		Result hr = m_LogFile[iFile].Open(strFileName, IO::File::OpenMode::Append, IO::File::SharingMode::ReadShared);
 		if (FAILED(hr))
 		{
 			return hr;
@@ -324,7 +324,7 @@ namespace Trace {
 		dwStrLen = (DWORD)strlen(szLogBuff);
 		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -376,7 +376,7 @@ namespace Trace {
 	}
 
 	// Check file system and update
-	HRESULT TraceOutModule::CheckAndUpdate(TimeStampSec tCurTime )
+	Result TraceOutModule::CheckAndUpdate(TimeStampSec tCurTime )
 	{
 		// Update curtime
 		m_tCurTime = Util::Time.GetRawUTCSec();
@@ -407,7 +407,7 @@ namespace Trace {
 			m_tRegCheck = tCurTime;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	void TraceOutModule::ValidateLogFile()

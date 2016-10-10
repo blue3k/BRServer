@@ -54,9 +54,9 @@ namespace BR {
 
 		// Save data to memento
 		template<class DataType>
-		HRESULT Add( const DataType &data )
+		Result Add( const DataType &data )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			void *pPtr = nullptr;
 			SaveData *pNewData = nullptr;
 
@@ -79,7 +79,7 @@ namespace BR {
 		}
 
 		// Restore All saved data
-		HRESULT RestoreAllData()
+		Result RestoreAllData()
 		{
 			for(auto itList = m_LinkedList.begin(); itList.IsValid(); ++itList)
 			{
@@ -87,7 +87,7 @@ namespace BR {
 				memcpy(pSavedData->pOrgDataPtr, pSavedData->pSavedDataPtr, pSavedData->DataSize);
 			}
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 	};
 

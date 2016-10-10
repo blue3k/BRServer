@@ -33,9 +33,9 @@ namespace BR
 			LoginServerService ( ServerServiceInformation* pService );
 
 			// Cmd: Notify user joind and see it's valid authticket instance
-			HRESULT PlayerJoinedToGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
+			Result PlayerJoinedToGameServerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
 			// Cmd: Kick logged in player
-			HRESULT KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID );
+			Result KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID );
 
 		}; // class LoginServerService : public ServerServiceBase
 

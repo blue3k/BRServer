@@ -55,7 +55,7 @@ namespace BR {
 		bool FreeID( UINT uiID );
 
 		// Reserve ID
-		HRESULT ReserveID( UINT idToReserve );
+		Result ReserveID( UINT idToReserve );
 
 		// Clear all IDs
 		void ClearAllIDs();

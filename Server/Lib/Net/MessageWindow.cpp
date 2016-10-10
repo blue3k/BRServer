@@ -53,16 +53,16 @@ namespace Net {
 
 
 	// Get message info in window, index based on window base
-	HRESULT MsgWindow::GetAt( UINT uiIdx, MsgWindow::MessageElement* &pMessageElement )
+	Result MsgWindow::GetAt( UINT uiIdx, MsgWindow::MessageElement* &pMessageElement )
 	{
 		UINT iIdxCur = (uiIdx+m_uiWndBaseIndex)%GetWindowSize();
 
 		if( m_pMsgWnd == NULL )
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		pMessageElement = &m_pMsgWnd[iIdxCur];
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -106,20 +106,20 @@ namespace Net {
 	}
 
 	// Add message
-	HRESULT RecvMsgWindow::AddMsg( Message::MessageData* pIMsg )
+	Result RecvMsgWindow::AddMsg( Message::MessageData* pIMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto msgSeq = pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence;
 		INT diff = Message::SequenceDifference(msgSeq, m_uiBaseSequence);
 
 		if (diff >= GetWindowSize())
 		{
-			return E_NET_SEQUENCE_OVERFLOW; // No room for new message
+			return ResultCode::E_NET_SEQUENCE_OVERFLOW; // No room for new message
 		}
 
 		if (diff < 0)
 		{
-			return S_NET_PROCESSED_SEQUENCE;
+			return ResultCode::S_NET_PROCESSED_SEQUENCE;
 		}
 
 
@@ -154,17 +154,17 @@ namespace Net {
 
 	// Non-thread safe
 	// Pop message and return it if can
-	HRESULT RecvMsgWindow::PopMsg( Message::MessageData* &pIMsg )
+	Result RecvMsgWindow::PopMsg( Message::MessageData* &pIMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto baseSequence = m_uiBaseSequence.load(std::memory_order_relaxed);
 		INT iPosIdx = baseSequence % CIRCULAR_QUEUE_SIZE;
 		if (m_pMsgWnd == nullptr )//|| m_pMsgWnd[iPosIdx].load(std::memory_order_relaxed) == nullptr)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		pIMsg = m_pMsgWnd[iPosIdx].exchange(nullptr,std::memory_order_acquire);
 		if (pIMsg == nullptr)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		auto prevSeq = m_uiBaseSequence.fetch_add(1,std::memory_order_release);// Message window clear can't cross bese sequence change, and this will make sure the previous sync mask change is commited.
 		Assert(Message::SequenceDifference(pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence, prevSeq) == 0);
@@ -266,16 +266,16 @@ namespace Net {
 	}
 
 	// Add a message at the end
-	HRESULT SendMsgWindow::EnqueueMessage( TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg )
+	Result SendMsgWindow::EnqueueMessage( TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		INT iIdx = 0;
 
 		if( GetAvailableSize() == 0 )
-			return E_NET_NOT_ENOUGH_WINDOWSPACE;
+			return ResultCode::E_NET_NOT_ENOUGH_WINDOWSPACE;
 
 		if( pIMsg == nullptr )
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		// assign head sequence
 		AssertRel(pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence == 0);
@@ -306,26 +306,26 @@ namespace Net {
 	}
 
 	// Release message sequence and slide window if can
-	HRESULT SendMsgWindow::ReleaseMsg( UINT16 uiSequence )
+	Result SendMsgWindow::ReleaseMsg( UINT16 uiSequence )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		INT iIdx;
 		UINT iPosIdx;
 
 		if( m_pMsgWnd == NULL )
-			return S_SYSTEM_OK;// nothing to release
+			return ResultCode::SUCCESS;// nothing to release
 
 
 		iIdx = Message::SequenceDifference(uiSequence, m_uiBaseSequence);
 
 		if( iIdx >= GetWindowSize() )
 		{
-			netErr( E_NET_INVALID_SEQUENCE ); // Out of range
+			netErr( ResultCode::E_NET_INVALID_SEQUENCE ); // Out of range
 		}
 
 		if(  iIdx < 0 )
 		{
-			return S_NET_PROCESSED_SEQUENCE;
+			return ResultCode::S_NET_PROCESSED_SEQUENCE;
 		}
 
 		iPosIdx = (m_uiWndBaseIndex + iIdx)%GetWindowSize();
@@ -362,15 +362,15 @@ namespace Net {
 
 
 	// Release message sequence and slide window if can
-	HRESULT SendMsgWindow::ReleaseMsg( UINT16 uiSequenceBase, UINT64 uiMsgMask )
+	Result SendMsgWindow::ReleaseMsg( UINT16 uiSequenceBase, UINT64 uiMsgMask )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		INT iIdx;
 
 		MutexScopeLock localLock(m_Lock);
 
 		if( m_pMsgWnd == nullptr )
-			return S_SYSTEM_OK;// nothing to release
+			return ResultCode::SUCCESS;// nothing to release
 
 		UINT uiCurBit = 0, uiSyncMaskCur = 1;
 
@@ -378,7 +378,7 @@ namespace Net {
 
 		if( iIdx >= GetWindowSize() )
 		{
-			netErr( E_NET_INVALID_SEQUENCE ); // Out of range
+			netErr( ResultCode::E_NET_INVALID_SEQUENCE ); // Out of range
 		}
 
 		if(  iIdx < 0 )
@@ -392,7 +392,7 @@ namespace Net {
 			{
 				if ((uiMsgMask & uiSyncMaskCur) == 0)
 				{
-					netErr(E_SYSTEM_UNEXPECTED);
+					netErr(ResultCode::UNEXPECTED);
 				}
 			}
 		}
@@ -421,7 +421,7 @@ namespace Net {
 			m_pMsgWnd[ m_uiWndBaseIndex ].state = MSGSTATE_FREE;
 			m_uiMsgCount--;
 			m_uiWndBaseIndex = (m_uiWndBaseIndex+1)%GetWindowSize();
-			hr = S_SYSTEM_FALSE;
+			hr = ResultCode::SUCCESS_FALSE;
 		}
 
 
@@ -493,18 +493,18 @@ namespace Net {
 	}
 
 	// Add a message at the end
-	HRESULT SendMsgWindowMT::EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg)
+	Result SendMsgWindowMT::EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		INT iIdx = 0;
 		Message::MessageData* expectedMsg;
 		UINT expectedID;
 
 		if (pIMsg == nullptr)
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		if (GetAvailableSize() <= 0)
-			return E_NET_NOT_ENOUGH_WINDOWSPACE;
+			return ResultCode::E_NET_NOT_ENOUGH_WINDOWSPACE;
 
 		AssertRel(pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence == 0);
 
@@ -523,7 +523,7 @@ namespace Net {
 					// out of sequence, this will very suck.
 					Assert(false);
 					pIMsg->ClearAssignedSequence();
-					netErr(E_NET_NOT_ENOUGH_WINDOWSPACE);
+					netErr(ResultCode::E_NET_NOT_ENOUGH_WINDOWSPACE);
 				}
 				expectedMsg = nullptr;
 			}
@@ -554,14 +554,14 @@ namespace Net {
 
 
 	// Release message sequence and slide window if can
-	HRESULT SendMsgWindowMT::ReleaseMsg(UINT16 uiSequenceBase, UINT64 uiMsgMask)
+	Result SendMsgWindowMT::ReleaseMsg(UINT16 uiSequenceBase, UINT64 uiMsgMask)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		INT iIdx;
 		UINT sequence;
 
 		if (m_pMsgWnd == nullptr)
-			return S_SYSTEM_OK;// nothing to release
+			return ResultCode::SUCCESS;// nothing to release
 
 		UINT uiCurBit = 0, uiSyncMaskCur = 1;
 
@@ -569,7 +569,7 @@ namespace Net {
 
 		if (iIdx >= GetWindowSize())
 		{
-			netErr(E_NET_INVALID_SEQUENCE); // Out of range
+			netErr(ResultCode::E_NET_INVALID_SEQUENCE); // Out of range
 		}
 
 		if (iIdx < 0)

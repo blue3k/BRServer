@@ -29,9 +29,9 @@ namespace Svr {
 
 	PerformanceCounterClient *PerformanceCounterClient::stm_pInstance = nullptr;
 
-	HRESULT PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
+	Result PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (pMsg->GetMessageHeader()->msgID.GetMsgID() == Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.GetMsgID())
 		{
@@ -251,9 +251,9 @@ namespace Svr {
 		}
 	}
 
-	HRESULT PerformanceCounterClient::Initialize(UINT serverID, const NetAddress& serverAddress)
+	Result PerformanceCounterClient::Initialize(UINT serverID, const NetAddress& serverAddress)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddress;
 		auto pRawUDP = new Net::RawUDP();
 		svrChkPtr(pRawUDP);
@@ -289,17 +289,17 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterClient::Terminate()
+	Result PerformanceCounterClient::Terminate()
 	{
 		if (stm_pInstance == nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		stm_pInstance->Stop(true);
 
 		delete stm_pInstance;
 		stm_pInstance = nullptr;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	PerformanceCounterInstance* PerformanceCounterClient::GetDefaultCounterInstance()
@@ -323,10 +323,10 @@ namespace Svr {
 	}
 
 	// 
-	HRESULT PerformanceCounterClient::RegisterPerformanceCounterInstance(PerformanceCounterInstance *pInstance)
+	Result PerformanceCounterClient::RegisterPerformanceCounterInstance(PerformanceCounterInstance *pInstance)
 	{
 		if (stm_pInstance == nullptr)
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		// This will gurantee that Dispose will be called in the same thread
 		pInstance->AssignManager(stm_pInstance);
@@ -346,9 +346,9 @@ namespace Svr {
 	}
 
 
-	HRESULT PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt messageClass(pMsg);
 		WeakPointerT<PerformanceCounterInstance> pFound;
 		SharedPointerT<PerformanceCounterInstance> pInstance;

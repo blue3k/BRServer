@@ -59,7 +59,7 @@ namespace Net {
 
 	}
 
-	HRESULT EPOLLWorker::RegisterSocket(INetIOCallBack* cbInstance)
+	Result EPOLLWorker::RegisterSocket(INetIOCallBack* cbInstance)
 	{
 		epoll_event epollEvent;
 
@@ -68,13 +68,13 @@ namespace Net {
 		epollEvent.data.ptr = cbInstance;
 		if (epoll_ctl(m_hEpoll, EPOLL_CTL_ADD, cbInstance->GetIOSocket(), &epollEvent) == -1) {
 			netTrace(Trace::TRC_ERROR, "epoll_ctl: RegisterSocket");
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT EPOLLWorker::UnregisterSocket(INetIOCallBack* cbInstance)
+	Result EPOLLWorker::UnregisterSocket(INetIOCallBack* cbInstance)
 	{
 		epoll_event epollEvent;
 
@@ -83,15 +83,15 @@ namespace Net {
 		epollEvent.data.ptr = cbInstance;
 		if (epoll_ctl(m_hEpoll, EPOLL_CTL_DEL, cbInstance->GetIOSocket(), &epollEvent) == -1) {
 			netTrace(Trace::TRC_ERROR, "epoll_ctl: UnregisterSocket");
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT EPOLLWorker::HandleAccept(SOCKET sock, INetIOCallBack* pCallBack)
+	Result EPOLLWorker::HandleAccept(SOCKET sock, INetIOCallBack* pCallBack)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		IOBUFFER_ACCEPT* pAcceptInfo = nullptr;
 
 		while (1)
@@ -100,17 +100,17 @@ namespace Net {
 			hr = pCallBack->Accept(pAcceptInfo);
 			switch (hr)
 			{
-			case S_SYSTEM_OK:
+			case ResultCode::SUCCESS:
 				netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
 				pAcceptInfo = nullptr;
 				break;
-			case E_SYSTEM_NOTIMPL:
+			case ResultCode::NOT_IMPLEMENTED:
 				Assert(false); // Fix it!
 				break;
-			case E_NET_TRY_AGAIN:
-			case E_NET_WOULDBLOCK:
-			case E_NET_IO_PENDING:
-			case E_NET_BADF:
+			case ResultCode::E_NET_TRY_AGAIN:
+			case ResultCode::E_NET_WOULDBLOCK:
+			case ResultCode::E_NET_IO_PENDING:
+			case ResultCode::E_NET_BADF:
 				goto Proc_End;
 			default:
 				// some failure? try again
@@ -128,18 +128,18 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT EPOLLWorker::HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack)
+	Result EPOLLWorker::HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack)
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 		IOBUFFER_READ* pReadBuffer = nullptr;
 
 		//  spik when the socket value is different
-		if (pCallBack->GetIOSocket() != sock) return S_SYSTEM_FALSE;
+		if (pCallBack->GetIOSocket() != sock) return ResultCode::SUCCESS_FALSE;
 
 		if (!(events & (EPOLLIN | EPOLLOUT)))
 		{
 			netTrace(Trace::TRC_ERROR, "Error sock:{0}, event:{1}", sock, events);
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 		}
 
 		if (events & EPOLLIN)
@@ -152,13 +152,13 @@ namespace Net {
 				hr = hrErr;
 				switch (hrErr)
 				{
-				case E_NET_TRY_AGAIN:
-				case E_NET_WOULDBLOCK:
-				case S_SYSTEM_FALSE:
+				case ResultCode::E_NET_TRY_AGAIN:
+				case ResultCode::E_NET_WOULDBLOCK:
+				case ResultCode::SUCCESS_FALSE:
 					// These are expected return code
-					hr = S_SYSTEM_OK;
+					hr = ResultCode::SUCCESS;
 					break;
-				case E_NET_IO_PENDING:
+				case ResultCode::E_NET_IO_PENDING:
 					Assert(false);
 					break;
 				default:
@@ -167,7 +167,7 @@ namespace Net {
 						netTrace(TRC_NETSYS, "ERROR Epoll Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
 					}
 					// fallthru
-				case S_SYSTEM_OK:
+				case ResultCode::SUCCESS:
 					// toss data to working thread
 					if (pReadBuffer != nullptr)
 					{
@@ -210,30 +210,30 @@ namespace Net {
 
 	void EPOLLWorker::Run()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		int iNumEvents;
 		epoll_event events[MAX_EPOLL_EVENTS];
 
 		while (1)
 		{
-			hr = S_SYSTEM_OK;
+			hr = ResultCode::SUCCESS;
 
 			// Getting status
 			iNumEvents = epoll_wait(m_hEpoll, events, countof(events), MAX_EPOLL_WAIT);
 			if (iNumEvents < 0)
 			{
-				hr = GetLastHRESULT();
+				hr = GetLastResult();
 				switch (hr)
 				{
-				case E_INTERRUPTED_SYSCALL:
+				case ResultCode::E_INTERRUPTED_SYSCALL:
 					break;
-				case E_INVALID_FILE_HANDLE:
-				case E_NET_BADF:
-				case E_INVALID_POINTER:
-				case E_NET_FAULT:
-				case E_NET_INTR:
-				case E_INVALID_ARG:
-				case E_NET_INVAL:
+				case ResultCode::E_INVALID_FILE_HANDLE:
+				case ResultCode::E_NET_BADF:
+				case ResultCode::E_INVALID_POINTER:
+				case ResultCode::E_NET_FAULT:
+				case ResultCode::E_NET_INTR:
+				case ResultCode::E_INVALID_ARG:
+				case ResultCode::E_NET_INVAL:
 				default:
 					netTrace(TRC_NETSYS, "ERROR EPOLL wait failed hr={0:X8}", hr);
 					break;
@@ -287,13 +287,13 @@ namespace Net {
 
 	void EPOLLSendWorker::Run()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		IOBUFFER_WRITE* pSendBuffer = nullptr;
 		DurationMS tickInterval(0);
 
 		while (1)
 		{
-			hr = S_SYSTEM_OK;
+			hr = ResultCode::SUCCESS;
 
 			// Check exit event
 			if (CheckKillEvent(tickInterval))
@@ -321,10 +321,10 @@ namespace Net {
 				hr = NetSystem::SendTo(pSendBuffer->SockWrite, pSendBuffer);
 				switch (hr)
 				{
-				case E_NET_TRY_AGAIN:
+				case ResultCode::E_NET_TRY_AGAIN:
 					continue; // try again
 					break;
-				case S_SYSTEM_OK:
+				case ResultCode::SUCCESS:
 					break;
 				default:
 					netTrace(TRC_NETSYS, "ERROR UDP send failed {0:X8}", hr);
@@ -365,10 +365,10 @@ namespace Net {
 	{
 	}
 
-	HRESULT EPOLLSystem::Initialize(UINT netThreadCount)
+	Result EPOLLSystem::Initialize(UINT netThreadCount)
 	{
 		if (m_ListenWorker != nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 
 		int hEPollUDP = epoll_create(1);
@@ -407,7 +407,7 @@ namespace Net {
 
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	void EPOLLSystem::Terminate()
@@ -452,7 +452,7 @@ namespace Net {
 		}
 	}
 
-	HRESULT EPOLLSystem::MakeSocketNonBlocking(SOCKET sfd)
+	Result EPOLLSystem::MakeSocketNonBlocking(SOCKET sfd)
 	{
 		int flags, s;
 
@@ -460,7 +460,7 @@ namespace Net {
 		if (flags == -1)
 		{
 			netTrace(Trace::TRC_ERROR, "epoll_ctl: fcntl F_GETFL");
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		flags |= O_NONBLOCK;
@@ -468,10 +468,10 @@ namespace Net {
 		if (s == -1)
 		{
 			netTrace(Trace::TRC_ERROR, "epoll_ctl: fcntl F_SETFL");
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -484,14 +484,14 @@ namespace Net {
 	}
 
 
-	HRESULT EPOLLSystem::RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+	Result EPOLLSystem::RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
 	{
 		Assert(sockType == SockType::DataGram);
 		if (sockType != SockType::DataGram)
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 
 		if (m_WorkerUDP.GetSize() < 1)
-			return E_NET_NOTINITIALISED;
+			return ResultCode::E_NET_NOTINITIALISED;
 
 		if (cbInstance->GetWriteQueue() == nullptr)
 		{
@@ -499,14 +499,14 @@ namespace Net {
 			cbInstance->SetWriteQueue(&m_UDPSendWorker->GetWriteQueue());
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Register the socket to EPOLL
-	HRESULT EPOLLSystem::RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance)
+	Result EPOLLSystem::RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance)
 	{
 		if (m_ListenWorker == nullptr)
-			return E_NET_NOTINITIALISED;
+			return ResultCode::E_NET_NOTINITIALISED;
 
 		if (sockType == SockType::Stream) // TCP
 		{
@@ -532,25 +532,25 @@ namespace Net {
 
 			if (m_WorkerUDP.GetSize() < 1)
 			{
-				HRESULT hr = m_ListenWorker->RegisterSocket(cbInstance);
+				Result hr = m_ListenWorker->RegisterSocket(cbInstance);
 				if (FAILED(hr)) return hr;
 			}
 			else
 			{
 				// UDP workers are sharing epoll, add any of them will work same.
-				HRESULT hr = m_WorkerUDP[0]->RegisterSocket(cbInstance);
+				Result hr = m_WorkerUDP[0]->RegisterSocket(cbInstance);
 				if (FAILED(hr)) return hr;
 			}
 			cbInstance->SetAssignedIOWorker(0);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT EPOLLSystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
+	Result EPOLLSystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
 	{
 		if (m_ListenWorker == nullptr)
-			return E_NET_NOTINITIALISED;
+			return ResultCode::E_NET_NOTINITIALISED;
 
 		if (sockType == SockType::Stream) // TCP
 		{
@@ -578,18 +578,18 @@ namespace Net {
 
 			if (m_WorkerUDP.GetSize() < 1)
 			{
-				HRESULT hr = m_ListenWorker->UnregisterSocket(cbInstance);
+				Result hr = m_ListenWorker->UnregisterSocket(cbInstance);
 				if (FAILED(hr)) return hr;
 			}
 			else
 			{
-				HRESULT hr = m_WorkerUDP[0]->UnregisterSocket(cbInstance);
+				Result hr = m_WorkerUDP[0]->UnregisterSocket(cbInstance);
 				if (FAILED(hr)) return hr;
 			}
 			cbInstance->SetAssignedIOWorker(-1);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

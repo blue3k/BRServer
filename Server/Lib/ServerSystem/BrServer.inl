@@ -120,9 +120,9 @@ componentType* GetServerComponent(UINT componentID)
 }
 
 template< class ComponentType >
-HRESULT AddServerComponent(ComponentType* &newComponent)
+Result AddServerComponent(ComponentType* &newComponent)
 {
-	if (BrServer::GetInstance() == nullptr) return E_SYSTEM_UNEXPECTED;
+	if (BrServer::GetInstance() == nullptr) return ResultCode::UNEXPECTED;
 	return BrServer::GetInstance()->AddComponent(newComponent);
 }
 
@@ -138,18 +138,18 @@ ServerEntity* GetLoopbackServerEntity()
 
 
 template<class DBManagerType>
-HRESULT BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
+Result BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	DB::QueryManager* pDBManager = nullptr;
 	DBManagerType *pDB = nullptr;
 
 	if (pDBClusterCfg == nullptr)
-		return E_SYSTEM_UNEXPECTED;
+		return ResultCode::UNEXPECTED;
 
 	// Just add it once
 	if (GetComponent<DBManagerType>() != nullptr)
-		return S_SYSTEM_FALSE;
+		return ResultCode::SUCCESS_FALSE;
 
 
 	auto& DBinstances = Svr::Config::GetConfig().DBInstances;
@@ -169,7 +169,7 @@ HRESULT BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 		auto itInstnace = DBinstances.find( pClusterInstanceCfg->DBInstanceName );
 		if( itInstnace == DBinstances.end() )
 		{
-			svrErr(E_DB_INVALID_CONFIG);
+			svrErr(ResultCode::E_DB_INVALID_CONFIG);
 		}
 
 		auto instanceInfo = itInstnace->second;

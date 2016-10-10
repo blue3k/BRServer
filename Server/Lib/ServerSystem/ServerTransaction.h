@@ -71,9 +71,9 @@ namespace Svr {
 			m_WorkOnServerEntity = workOnServerEntity;
 		}
 
-		HRESULT ParseMessage()
+		Result ParseMessage()
 		{
-			HRESULT hr = MessageClass::ParseMsg();
+			Result hr = MessageClass::ParseMsg();
 			if (SUCCEEDED(hr))
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
@@ -95,9 +95,9 @@ namespace Svr {
 		ServerEntity* GetServerEntity() { return superTrans::GetServerEntity(); }
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction( Svr::Entity* pOwner )
+		virtual Result InitializeTransaction( Svr::Entity* pOwner )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			svrChkPtr( pOwner );
 
@@ -121,7 +121,7 @@ namespace Svr {
 				}
 				else
 				{
-					svrErr(E_SYSTEM_NOTIMPL);
+					svrErr(ResultCode::NOT_IMPLEMENTED);
 				}
 			}
 
@@ -185,9 +185,9 @@ namespace Svr {
 		}
 
 		// Toss a message to a target
-		HRESULT TossMessageToTarget( ServerServiceInformation* pService )
+		Result TossMessageToTarget( ServerServiceInformation* pService )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			Net::IConnection *pConn = nullptr;
 			ClusteredServiceEntity *pMyOwner = nullptr;
 			Message::MessageData *pClonedMessage = nullptr;
@@ -203,7 +203,7 @@ namespace Svr {
 			if( pConn == nullptr )
 			{
 				svrTrace( Trace::TRC_ERROR, "Failed routing a message({0}) for {1}", super::GetMessage()->GetMessageHeader()->msgID, typeid(*pMyOwner).name() );
-				svrErr(E_SVR_CLUSTER_NOTREADY);
+				svrErr(ResultCode::E_SVR_CLUSTER_NOTREADY);
 			}
 
 			if (pConn->GetConnectionState() != Net::IConnection::STATE_CONNECTED)
@@ -229,9 +229,9 @@ namespace Svr {
 		}
 
 		// Override for the automatic broad cast
-		virtual HRESULT CloseTransaction( HRESULT hrRes )
+		virtual Result CloseTransaction( Result hrRes )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			ClusteredServiceEntity *pMyOwner = nullptr;
 
@@ -303,9 +303,9 @@ namespace Svr {
 
 	private:
 
-		HRESULT BroadcastToChildren()
+		Result BroadcastToChildren()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			ClusteredServiceEntity *pMyOwner = nullptr;
 			pMyOwner = super::GetMyOwner();
@@ -364,9 +364,9 @@ namespace Svr {
 		}
 
 		// Toss to the message to next ring
-		HRESULT TossToNextRing()
+		Result TossToNextRing()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			RingClusterServiceEntity *pMyOwner = nullptr;
 			ServerServiceInformation *pNextService = nullptr;

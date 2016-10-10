@@ -104,12 +104,12 @@ namespace XML {
 
 
 	// Register element creator
-	HRESULT XMLParserHandler::RegisterElementCreator( const std::string& elementName, std::function<DOMElement*()> funcCreator )
+	Result XMLParserHandler::RegisterElementCreator( const std::string& elementName, std::function<DOMElement*()> funcCreator )
 	{
 		if( m_CreatorMap.insert( std::make_pair( elementName, funcCreator ) ).second )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	/** Display and format an error messages, callback.

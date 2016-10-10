@@ -31,9 +31,9 @@ namespace BR
 		{
  			// S2C: 
 			const MessageID PartyGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHING, 0);
-			HRESULT PartyGameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PartyGameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -51,11 +51,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PartyGameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyGameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PartyGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+			Result PartyGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -79,11 +79,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PartyGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+			}; // Result PartyGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
 
-			HRESULT PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			Result PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -105,11 +105,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -135,7 +135,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void PartyGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -146,9 +146,9 @@ namespace BR
 
 			// S2C: 
 			const MessageID PlayerGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHING, 1);
-			HRESULT PlayerGameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerGameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -169,11 +169,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerGameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerGameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
+			Result PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -203,11 +203,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
+			}; // Result PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
 
-			HRESULT PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			Result PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -229,11 +229,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -259,7 +259,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void PlayerGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{

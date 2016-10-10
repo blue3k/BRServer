@@ -48,14 +48,14 @@ namespace Util {
 
 
 	// Base 64 encode/decode
-	HRESULT Base64Encode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
-	HRESULT Base64Decode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
+	Result Base64Encode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
+	Result Base64Decode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
 
-	HRESULT Base64URLEncode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
-	HRESULT Base64URLDecode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
+	Result Base64URLEncode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
+	Result Base64URLDecode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
 
 	// SHA 256 hashing
-	HRESULT SHA256Hash(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer);
+	Result SHA256Hash(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer);
 
 
 	// Make power of 2 value from given number, will bigger then input
@@ -79,25 +79,25 @@ namespace Util {
 
 	// Array duplication
 	template<class DupType>
-	HRESULT ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc );
+	Result ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc );
 
 	// MemCopy Data to binary
 	template< size_t szDstSize, class DataType >
-	HRESULT MemCpy( BYTE (&Dest)[szDstSize], const DataType& Src );
+	Result MemCpy( BYTE (&Dest)[szDstSize], const DataType& Src );
 
 	// MemCopy Data From binary
 	template< size_t szDstSize, class DataType >
-	HRESULT MemCpy( DataType& Dest, const BYTE (&Src)[szDstSize] );
+	Result MemCpy( DataType& Dest, const BYTE (&Src)[szDstSize] );
 
 
 	template<class ArrayType>
-	HRESULT SafeDeleteArray( ArrayType* &pArray );
+	Result SafeDeleteArray( ArrayType* &pArray );
 
 	template<class ValueType>
-	HRESULT SafeDelete( ValueType* &pObj );
+	Result SafeDelete( ValueType* &pObj );
 
 	template<class ValueType>
-	HRESULT SafeRelease( ValueType* &pObj );
+	Result SafeRelease( ValueType* &pObj );
 
 	template<class ValueType>
 	ValueType Min( ValueType Objmin, ValueType Objmax );
@@ -109,7 +109,7 @@ namespace Util {
 	ValType Abs( ValType value );
 
 	// Peek key from console
-	//HRESULT PeekKey( int &inputKey, NativeHandle hConsole = INVALID_NATIVE_HANDLE_VALUE);
+	//Result PeekKey( int &inputKey, NativeHandle hConsole = INVALID_NATIVE_HANDLE_VALUE);
 
 	
 #include "Utility.inl"

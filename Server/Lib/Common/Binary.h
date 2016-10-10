@@ -52,7 +52,7 @@ namespace BR
 
 
 		// Copy
-		HRESULT CopyBinary( Binary& dst, const Binary& src );
+		Result CopyBinary( Binary& dst, const Binary& src );
 	};
 
 	

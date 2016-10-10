@@ -41,13 +41,13 @@ namespace DB {
 		virtual void* GetContext();
 
 		// Send a query
-		virtual HRESULT SendQuery( Query *pQuery );
+		virtual Result SendQuery( Query *pQuery );
 
 		// Open session
-		virtual HRESULT OpenSession();
+		virtual Result OpenSession();
 
 		// Close session
-		virtual HRESULT CloseSession();
+		virtual Result CloseSession();
 	};
 
 } // namespace DB

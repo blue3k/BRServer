@@ -63,7 +63,7 @@ namespace DB {
 
 
 		// Send Query
-		HRESULT ExecuteQuery(Query* &pQuery);  
+		Result ExecuteQuery(Query* &pQuery);  
 	};
 
 } // namespace DB

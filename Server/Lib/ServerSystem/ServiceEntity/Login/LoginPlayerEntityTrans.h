@@ -55,20 +55,20 @@ namespace Svr {
 		LoginPlayerTransLoginBase( Message::MessageData* &pIMsg );
 		virtual ~LoginPlayerTransLoginBase() {}
 
-		HRESULT OnLogin( HRESULT hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID );
-		HRESULT OnSessionRegistered( Svr::TransactionResult* &pRes );
-		HRESULT OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes );
-		HRESULT OnConnectToGameServerRes(Svr::TransactionResult* &pRes);
+		Result OnLogin( Result hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID );
+		Result OnSessionRegistered( Svr::TransactionResult* &pRes );
+		Result OnRegisterPlayerToJoinGameServer( Svr::TransactionResult* &pRes );
+		Result OnConnectToGameServerRes(Svr::TransactionResult* &pRes);
 
-		HRESULT RegisterNewPlayerToJoinGameServer();
+		Result RegisterNewPlayerToJoinGameServer();
 
-		virtual HRESULT OnGenericError(Svr::TransactionResult* &pRes) override;
+		virtual Result OnGenericError(Svr::TransactionResult* &pRes) override;
 
 		// Start Transaction
-		virtual HRESULT StartTransaction() override;
+		virtual Result StartTransaction() override;
 
 		// dummies for template chainning
-		virtual HRESULT CloseTransaction(HRESULT hrRes) override { return super::CloseTransaction(hrRes); }
+		virtual Result CloseTransaction(Result hrRes) override { return super::CloseTransaction(hrRes); }
 	};
 
 
@@ -86,10 +86,10 @@ namespace Svr {
 		LoginPlayerTransLogin( Message::MessageData* &pIMsg );
 		virtual ~LoginPlayerTransLogin() {}
 
-		HRESULT OnLogin( Svr::TransactionResult* &pRes );
+		Result OnLogin( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginRes,m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
@@ -109,12 +109,12 @@ namespace Svr {
 		LoginPlayerTransLoginByFacebook( Message::MessageData* &pIMsg );
 		virtual ~LoginPlayerTransLoginByFacebook() {}
 
-		HRESULT OnUserCreated( Svr::TransactionResult* &pRes );
-		HRESULT OnLoginFacebook( Svr::TransactionResult* &pRes );
+		Result OnUserCreated( Svr::TransactionResult* &pRes );
+		Result OnLoginFacebook( Svr::TransactionResult* &pRes );
 
 
 		// Start Transaction
-		virtual HRESULT StartTransaction() override;
+		virtual Result StartTransaction() override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(LoginByFacebookRes,m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
@@ -134,10 +134,10 @@ namespace Svr {
 		LoginPlayerTransCreateRandomUser(Message::MessageData* &pIMsg);
 		virtual ~LoginPlayerTransCreateRandomUser() {}
 
-		HRESULT OnCreated(Svr::TransactionResult* &pRes);
+		Result OnCreated(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(CreateRandomUserRes, m_GameServerAddr, m_GameServerAddrIPV4, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetAuthTicket(), (Context)GetMyOwner()->GetEntityUID());
 	};
@@ -154,12 +154,12 @@ namespace Svr {
 		LoginPlayerTransCloseInstance();
 		virtual ~LoginPlayerTransCloseInstance() {}
 
-		HRESULT OnDeleteLoginSessionRes( Svr::TransactionResult* &pRes );
+		Result OnDeleteLoginSessionRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction() override;
+		virtual Result StartTransaction() override;
 
-		virtual HRESULT OnCloseTransaction( HRESULT hrRes ) override;
+		virtual Result OnCloseTransaction( Result hrRes ) override;
 
 	};
 
@@ -179,10 +179,10 @@ namespace Svr {
 		LoginPlayerKickPlayerTrans( Message::MessageData* &pIMsg );// : UserTransactionS2SCmd(pIMsg) {}
 		virtual ~LoginPlayerKickPlayerTrans() {}
 
-		HRESULT OnDeleteSession( Svr::TransactionResult *pRes );
+		Result OnDeleteSession( Svr::TransactionResult *pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_SVR_MSGTRANS_CLOSE(KickPlayerRes,GetRouteContext().GetSwaped());
 	};
@@ -203,11 +203,11 @@ namespace Svr {
 		LoginPlayerJoinedToGameServerTrans( Message::MessageData* &pIMsg );
 		virtual ~LoginPlayerJoinedToGameServerTrans() {}
 
-		HRESULT OnConnectToGameServerRes( Svr::TransactionResult* &pRes );
-		HRESULT OnValidateGameServerSessionRes(Svr::TransactionResult* &pRes);
+		Result OnConnectToGameServerRes( Svr::TransactionResult* &pRes );
+		Result OnValidateGameServerSessionRes(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_SVR_MSGTRANS_CLOSE(PlayerJoinedToGameServerRes,GetRouteContext().GetSwaped());
 	};

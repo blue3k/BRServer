@@ -51,14 +51,14 @@ namespace BR {
 	//	inline ~BLOBBuffer();
 
 	//	// Allocate given size of buffer 
-	//	HRESULT Allocate( UINT uiSize );
+	//	Result Allocate( UINT uiSize );
 
 	//	// Reallocate given size of buffer , data will be copied to new memory
-	//	HRESULT Reallocate( UINT uiSize );
+	//	Result Reallocate( UINT uiSize );
 
 
 	//	// check 
-	//	HRESULT IsSameSize( UINT uiSize, const BYTE *pData );
+	//	Result IsSameSize( UINT uiSize, const BYTE *pData );
 
 	//	inline operator LPBLOB() const;
 

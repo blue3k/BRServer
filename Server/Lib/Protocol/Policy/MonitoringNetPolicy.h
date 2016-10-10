@@ -30,15 +30,15 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			HRESULT GetInstanceListCmd( const TransactionID &InTransactionID );
+			Result GetInstanceListCmd( const TransactionID &InTransactionID );
 			// Cmd: Remove a player to ranking
-			HRESULT RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID );
+			Result RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID );
 			// C2S: Counter instance is created
-			HRESULT PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
+			Result PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
 			// C2S: Counter instance is deleted
-			HRESULT PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances );
+			Result PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances );
 			// C2S: Counter update broadcast
-			HRESULT PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues );
+			Result PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues );
 
 		}; // class NetPolicyMonitoring : public IPolicyMonitoring
 
@@ -51,11 +51,11 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			HRESULT GetInstanceListRes( const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount );
+			Result GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount );
 			// Cmd: Remove a player to ranking
-			HRESULT RequestCounterValuesRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues );
+			Result RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues );
 			// S2C: Request from server
-			HRESULT PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID );
+			Result PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID );
 
 		}; // class NetSvrPolicyMonitoring : public ISvrPolicyMonitoring
 

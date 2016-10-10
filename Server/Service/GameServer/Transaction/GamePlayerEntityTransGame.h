@@ -66,11 +66,11 @@ namespace GameServer {
 		PlayerTransJoinGame( Message::MessageData* &pIMsg );
 		virtual ~PlayerTransJoinGame() {}
 
-		HRESULT OnJoinGameRes( Svr::TransactionResult* &pRes );
-		HRESULT OnLeavePartyRes(Svr::TransactionResult* &pRes);
+		Result OnJoinGameRes( Svr::TransactionResult* &pRes );
+		Result OnLeavePartyRes(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(JoinGameRes,m_GameInsID, m_TimeStamp, m_GameState, m_Day, m_MaxPlayer,
 			m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_ChatHistoryData, m_GameLogData );
@@ -88,7 +88,7 @@ namespace GameServer {
 		virtual ~PlayerTransJoinedS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	
@@ -103,10 +103,10 @@ namespace GameServer {
 		PlayerTransLeaveGame( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransLeaveGame() {}
 
-		HRESULT OnLeaveGameRes( Svr::TransactionResult* & pRes );
+		Result OnLeaveGameRes( Svr::TransactionResult* & pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(LeaveGameRes);
 	};
@@ -123,7 +123,7 @@ namespace GameServer {
 		virtual ~PlayerTransLeftS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -138,10 +138,10 @@ namespace GameServer {
 		PlayerTransKickPlayer( Message::MessageData* &pIMsg );
 		virtual ~PlayerTransKickPlayer() {}
 
-		HRESULT OnKickPlayerRes( Svr::TransactionResult* & pRes );
+		Result OnKickPlayerRes( Svr::TransactionResult* & pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(KickPlayerRes);
 	};
@@ -157,7 +157,7 @@ namespace GameServer {
 		virtual ~PlayerTransPlayerKickedS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	
@@ -172,10 +172,10 @@ namespace GameServer {
 		PlayerTransAssignRole( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransAssignRole() {}
 
-		HRESULT OnAssignRoleRes( Svr::TransactionResult* &pRes );
+		Result OnAssignRoleRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(AssignRoleRes);
 	};
@@ -192,7 +192,7 @@ namespace GameServer {
 		virtual ~PlayerTransRoleAssignedS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	
@@ -207,7 +207,7 @@ namespace GameServer {
 		virtual ~PlayerTransChatMessage() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(ChatMessageRes);
 	};
@@ -223,7 +223,7 @@ namespace GameServer {
 		virtual ~PlayerTransChatMessageFromOtherEntity() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	
@@ -239,10 +239,10 @@ namespace GameServer {
 		PlayerTransVoteGameAdvance( Message::MessageData* &pIMsg );
 		virtual ~PlayerTransVoteGameAdvance() {}
 
-		HRESULT OnVoteRes( Svr::TransactionResult* &pRes );
+		Result OnVoteRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(VoteGameAdvanceRes);
 	};
@@ -258,7 +258,7 @@ namespace GameServer {
 		virtual ~PlayerTransGameAdvanceVotedS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -273,10 +273,10 @@ namespace GameServer {
 		PlayerTransVote( Message::MessageData* &pIMsg );
 		virtual ~PlayerTransVote() {}
 
-		HRESULT OnVoteRes( Svr::TransactionResult* &pRes );
+		Result OnVoteRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(VoteRes);
 	};
@@ -292,7 +292,7 @@ namespace GameServer {
 		virtual ~PlayerTransVoteEndS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -307,7 +307,7 @@ namespace GameServer {
 		virtual ~PlayerTransPlayerRevealedS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -321,10 +321,10 @@ namespace GameServer {
 		PlayerTransAdvanceGame( Message::MessageData* &pIMsg );
 		virtual ~PlayerTransAdvanceGame() {}
 
-		HRESULT OnAdvanceGameRes( Svr::TransactionResult* &pRes );
+		Result OnAdvanceGameRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(AdvanceGameRes);
 	};
@@ -340,7 +340,7 @@ namespace GameServer {
 		virtual ~PlayerTransGameAdvancedS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	// game end event from game instance server
@@ -353,10 +353,10 @@ namespace GameServer {
 		PlayerTransGameEndedS2SEvt( Message::MessageData* &pIMsg );//  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransGameEndedS2SEvt() {}
 
-		HRESULT OnUpdateDBRes(  Svr::TransactionResult* &pRes );
+		Result OnUpdateDBRes(  Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 	
 	// Game player killed event
@@ -370,7 +370,7 @@ namespace GameServer {
 		virtual ~PlayerTransPlayerKilledS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	
@@ -385,7 +385,7 @@ namespace GameServer {
 		virtual ~PlayerTransPlayerVotedS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -404,11 +404,11 @@ namespace GameServer {
 		PlayerTransRequestGameMatch( Message::MessageData* &pIMsg );
 		virtual ~PlayerTransRequestGameMatch() {}
 
-		HRESULT OnRequestPartyMatchingRes( Svr::TransactionResult* &pRes );
-		HRESULT OnRequestPlayerMatchingRes( Svr::TransactionResult* &pRes );
+		Result OnRequestPartyMatchingRes( Svr::TransactionResult* &pRes );
+		Result OnRequestPlayerMatchingRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(RequestGameMatchRes, m_TotalGem, m_TotalGameMoney);
 	};
@@ -422,11 +422,11 @@ namespace GameServer {
 		PlayerTransCancelGameMatch( Message::MessageData* &pIMsg );
 		virtual ~PlayerTransCancelGameMatch() {}
 
-		HRESULT OnCancelPartyMatchingRes( Svr::TransactionResult* &pRes );
-		HRESULT OnCancelPlayerMatchingRes( Svr::TransactionResult* &pRes );
+		Result OnCancelPartyMatchingRes( Svr::TransactionResult* &pRes );
+		Result OnCancelPlayerMatchingRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(CancelGameMatchRes);
 	};
@@ -447,7 +447,7 @@ namespace GameServer {
 		virtual ~PlayerTransPlayerMatchingCanceledS2CEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -462,7 +462,7 @@ namespace GameServer {
 		virtual ~PlayerTransPlayerMatchingItemDequeuedS2CEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -479,14 +479,14 @@ namespace GameServer {
 		PlayerTransPlayAgain(Message::MessageData* &pIMsg);
 		virtual ~PlayerTransPlayAgain() {}
 
-		HRESULT OnPlayAgainRes(Svr::TransactionResult* &pRes);
-		HRESULT OnCreatePartyRes(Svr::TransactionResult* &pRes);
+		Result OnPlayAgainRes(Svr::TransactionResult* &pRes);
+		Result OnCreatePartyRes(Svr::TransactionResult* &pRes);
 
-		HRESULT RequestPlayAgain();
-		HRESULT RequestCreateParty();
+		Result RequestPlayAgain();
+		Result RequestCreateParty();
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GamePlayAgainRes, m_TotalGem, m_TotalGameMoney);
 	};
@@ -506,10 +506,10 @@ namespace GameServer {
 		PlayerTransPlayAgainS2SEvt(Message::MessageData* &pIMsg);// : UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransPlayAgainS2SEvt() {}
 
-		HRESULT OnJoinPartyRes(Svr::TransactionResult* &pRes);
+		Result OnJoinPartyRes(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		//BR_IMPLEMENT_EVTTRANS_CLOSE_ARGS(GamePlayAgainS2CEvt, m_PartyUID, m_LeadPlayer);
 
@@ -533,11 +533,11 @@ namespace GameServer {
 		PlayerTransGameRevealPlayer(Message::MessageData* &pIMsg);
 		virtual ~PlayerTransGameRevealPlayer() {}
 
-		HRESULT OnUpdatePlayerRes(Svr::TransactionResult* &pRes);
-		HRESULT OnGameRevealPlayerRes(Svr::TransactionResult* &pRes);
+		Result OnUpdatePlayerRes(Svr::TransactionResult* &pRes);
+		Result OnGameRevealPlayerRes(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GameRevealPlayerRes, m_RevealedPlayerID, m_RevealedPlayerRole, m_TotalGem, m_TotalGameMoney);
 	};
@@ -558,11 +558,11 @@ namespace GameServer {
 		PlayerTransGamePlayerRevive(Message::MessageData* &pIMsg);
 		virtual ~PlayerTransGamePlayerRevive() {}
 
-		HRESULT OnUpdatePlayerRes(Svr::TransactionResult* &pRes);
-		HRESULT OnGamePlayerReviveRes(Svr::TransactionResult* &pRes);
+		Result OnUpdatePlayerRes(Svr::TransactionResult* &pRes);
+		Result OnGamePlayerReviveRes(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GamePlayerReviveRes, m_TotalGem, m_TotalGameMoney);
 	};
@@ -580,7 +580,7 @@ namespace GameServer {
 		virtual ~PlayerTransGamePlayerRevivedS2SEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -599,7 +599,7 @@ namespace GameServer {
 		virtual ~PlayerTransGamePlayerResetRank() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GamePlayerResetRankRes, m_TotalGem, m_TotalGameMoney);
 	};

@@ -65,7 +65,7 @@ namespace Net {
 		m_tConnectionTime = Util::Time.GetTimeMs();
 	}
 
-	HRESULT IConnection::InitConnection(const NetAddress& Addr, NetClass netClass)
+	Result IConnection::InitConnection(const NetAddress& Addr, NetClass netClass)
 	{
 
 		m_ConnectInfo.Local = Addr;
@@ -78,7 +78,7 @@ namespace Net {
 
 		m_tConnectionTime = Util::Time.GetTimeMs();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -94,20 +94,20 @@ namespace Net {
 
 	}
 
-	HRESULT IConnectionEventHandler::OnNetSyncMessage(IConnection* pConn)
+	Result IConnectionEventHandler::OnNetSyncMessage(IConnection* pConn)
 	{
 		unused(pConn);
 		Assert(false);
-		return E_SYSTEM_NOTIMPL;
+		return ResultCode::NOT_IMPLEMENTED;
 	};
 
 
 	// Net send message
-	HRESULT IConnectionEventHandler::OnNetSendReadyMessage(IConnection* pConn)
+	Result IConnectionEventHandler::OnNetSendReadyMessage(IConnection* pConn)
 	{
 		unused(pConn);
 		Assert(false);
-		return E_SYSTEM_NOTIMPL;
+		return ResultCode::NOT_IMPLEMENTED;
 	};
 
 

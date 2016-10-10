@@ -50,7 +50,7 @@ namespace ConspiracyGameInstanceServer {
 		~ChattingLogSystem();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() override;
+		virtual Result InitializeComponent() override;
 
 		virtual void TerminateComponent() override;
 

@@ -76,29 +76,29 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(Message::GameParty::LeavePartyRes, { return LeavePartyRes(pRes); });
 	}
 
-	HRESULT PlayerTransCloseInstance::UpdateDBRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransCloseInstance::UpdateDBRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		m_WaitingTransactions--;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 	Proc_End:
 
 		if (m_WaitingTransactions <= 0)
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransCloseInstance::DeleteLoginSessionRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransCloseInstance::DeleteLoginSessionRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		m_WaitingTransactions--;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 	Proc_End:
 
@@ -108,9 +108,9 @@ namespace GameServer {
 		return hr;
 	}
 
-	HRESULT PlayerTransCloseInstance::UnregisterMatchingRes( Svr::TransactionResult* & pRes )
+	Result PlayerTransCloseInstance::UnregisterMatchingRes( Svr::TransactionResult* & pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::PartyMatchingQueue::UnregisterMatchingRes res;
@@ -119,9 +119,9 @@ namespace GameServer {
 
 		GetMyOwner()->SetMatchingTicket(0);
 
-		//svrChk(pRes->GetHRESULT());
-		if (FAILED(pRes->GetHRESULT()))
-			svrTrace(Svr::TRC_INFO, "Unregister Matching is failed hr:{0:X8}", pRes->GetHRESULT());
+		//svrChk(pRes->GetResult());
+		if (FAILED(pRes->GetResult()))
+			svrTrace(Svr::TRC_INFO, "Unregister Matching is failed hr:{0:X8}", pRes->GetResult());
 
 	//Proc_End:
 
@@ -131,9 +131,9 @@ namespace GameServer {
 		return hr; 
 	}
 
-	HRESULT PlayerTransCloseInstance::LeaveGameRes(Svr::TransactionResult* & pRes)
+	Result PlayerTransCloseInstance::LeaveGameRes(Svr::TransactionResult* & pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::GameInstance::LeaveGameRes res;
@@ -142,7 +142,7 @@ namespace GameServer {
 
 		GetMyOwner()->SetGameInsUID(0);
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 	Proc_End:
 
@@ -152,9 +152,9 @@ namespace GameServer {
 		return hr;
 	}
 
-	HRESULT PlayerTransCloseInstance::LeavePartyRes(Svr::TransactionResult* & pRes)
+	Result PlayerTransCloseInstance::LeavePartyRes(Svr::TransactionResult* & pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::GameParty::LeavePartyRes res;
@@ -163,7 +163,7 @@ namespace GameServer {
 
 		GetMyOwner()->SetPartyUID(0);
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
 	Proc_End:
 
@@ -173,9 +173,9 @@ namespace GameServer {
 		return hr;
 	}
 
-	HRESULT PlayerTransCloseInstance::StartTransaction()
+	Result PlayerTransCloseInstance::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GamePlayerEntity* pOwner = (GamePlayerEntity*)GetOwnerEntity();
 		Svr::GameClusterServiceEntity *pGameService = nullptr;
 
@@ -238,13 +238,13 @@ namespace GameServer {
 		return hr;
 	}
 
-	HRESULT PlayerTransCloseInstance::OnCloseTransaction( HRESULT hrRes )
+	Result PlayerTransCloseInstance::OnCloseTransaction( Result hrRes )
 	{
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Account, -2, 0, 0, "EntityClose");
 
 		Svr::GetServerComponent<GameEntityManager>()->RemoveEntity(GetMyOwner());
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

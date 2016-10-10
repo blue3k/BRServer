@@ -47,7 +47,7 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 
-	HRESULT GameEntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Svr::Entity* &pEntity)
+	Result GameEntityManager::CreateEntity(ClusterID clusterID, EntityFaculty faculty, Svr::Entity* &pEntity)
 	{
 		switch (clusterID)
 		{
@@ -55,13 +55,13 @@ namespace ConspiracyGameInstanceServer {
 		{
 			assert(faculty == EntityFaculty::GameInstance);
 			pEntity = new GameInstanceEntity;
-			return pEntity != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+			return pEntity != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 		}
 		default:
 			return super::CreateEntity(clusterID, faculty, pEntity);
 		}
 
-		return pEntity != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+		return pEntity != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 	}
 
 
@@ -91,7 +91,7 @@ namespace ConspiracyGameInstanceServer {
 
 	void GameEntityManager::RegisterCounter()
 	{
-		//HRESULT hr = S_SYSTEM_OK;
+		//Result hr = ResultCode::SUCCESS;
 
 		auto pCounterInstance = Svr::PerformanceCounterClient::GetDefaultCounterInstance();
 		if (pCounterInstance != nullptr)
@@ -105,9 +105,9 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Initialize TaskManager
-	HRESULT GameEntityManager::InitializeManager( UINT uiNumGroup )
+	Result GameEntityManager::InitializeManager( UINT uiNumGroup )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::EntityManager::InitializeManager( uiNumGroup ) );
 
@@ -118,9 +118,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Terminate TaskManager
-	HRESULT GameEntityManager::TerminateManager()
+	Result GameEntityManager::TerminateManager()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::EntityManager::TerminateManager() );
 

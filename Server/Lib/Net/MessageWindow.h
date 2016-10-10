@@ -80,7 +80,7 @@ namespace Net {
 		UINT GetBaseSequence();
 
 		// Get message info in window, index based on window base
-		HRESULT GetAt( UINT uiIdx, MsgWindow::MessageElement* &pTimeMsg );
+		Result GetAt( UINT uiIdx, MsgWindow::MessageElement* &pTimeMsg );
 		
 		// Clear window element
 		virtual void ClearWindow();
@@ -133,10 +133,10 @@ namespace Net {
 		FORCEINLINE UINT16 GetBaseSequence()					{ return m_uiBaseSequence.load(std::memory_order_relaxed); }
 
 		// Add message
-		HRESULT AddMsg( Message::MessageData* pIMsg );
+		Result AddMsg( Message::MessageData* pIMsg );
 
 		// Pop message and return it if can
-		HRESULT PopMsg( Message::MessageData* &pIMsg );
+		Result PopMsg( Message::MessageData* &pIMsg );
 
 		// Get SyncMask
 		UINT64 GetSyncMask();
@@ -180,12 +180,12 @@ namespace Net {
 		UINT GetAvailableSize();
 		
 		// Add a message at the end
-		HRESULT EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg );
+		Result EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg );
 
 		// Release message sequence and slide window if can
-		HRESULT ReleaseMsg( UINT16 uiSequence );
+		Result ReleaseMsg( UINT16 uiSequence );
 		// Release message by message mask
-		HRESULT ReleaseMsg( UINT16 uiSequenceBase, UINT64 uiMsgMask );
+		Result ReleaseMsg( UINT16 uiSequenceBase, UINT64 uiMsgMask );
 
 	};
 
@@ -248,13 +248,13 @@ namespace Net {
 		INT GetAvailableSize();
 
 		// Add a message at the end
-		HRESULT EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg);
+		Result EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg);
 
 		// Release message sequence and slide window if can
-		HRESULT ReleaseMsg(UINT16 uiSequence);
+		Result ReleaseMsg(UINT16 uiSequence);
 
 		// Release message by message mask
-		HRESULT ReleaseMsg(UINT16 uiSequenceBase, UINT64 uiMsgMask);
+		Result ReleaseMsg(UINT16 uiSequenceBase, UINT64 uiMsgMask);
 
 	};
 

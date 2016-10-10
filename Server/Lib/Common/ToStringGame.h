@@ -21,15 +21,15 @@
 
 namespace BR {
 
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const PlayerRole& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const GameStateID& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const GameWinner& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const PlayerKilledReason& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const PlayerRevealedReason& Data, int Option);
-	template<> HRESULT ToString(char*& pBuff, INT& iBuffLen, const RankingType& Data, int Option);
+	template<> Result ToString(char*& pBuff, INT& iBuffLen, const PlayerRole& Data, int Option);
+	template<> Result ToString(char*& pBuff, INT& iBuffLen, const GameStateID& Data, int Option);
+	template<> Result ToString(char*& pBuff, INT& iBuffLen, const GameWinner& Data, int Option);
+	template<> Result ToString(char*& pBuff, INT& iBuffLen, const PlayerKilledReason& Data, int Option);
+	template<> Result ToString(char*& pBuff, INT& iBuffLen, const PlayerRevealedReason& Data, int Option);
+	template<> Result ToString(char*& pBuff, INT& iBuffLen, const RankingType& Data, int Option);
 
 	template<>
-	inline HRESULT ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PlayerRole>& Data, int Option)
+	inline Result ToString(char*& pBuff, INT& iBuffLen, const LinkedArray<PlayerRole>& Data, int Option)
 	{
 		return ToStringArray(pBuff, iBuffLen, Data, Option);
 	}

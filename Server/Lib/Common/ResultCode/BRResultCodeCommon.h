@@ -8,207 +8,219 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#pragma once
 #include <stdint.h>
 
 
 
-// Called without initialization. 
-#define E_NOT_INITIALIZED                                             ((int32_t)0xE7020000L) 
+namespace BR {
+	namespace ResultCode {
 
-// The version not available or miss match with system. 
-#define E_VERSION_NOT_AVAIL                                           ((int32_t)0xE7020001L) 
+		enum {
 
-// Invalid Cluster Master server 
-#define E_INVALID_CLUSTERMASTER                                       ((int32_t)0xE7020002L) 
 
-// The version not available or miss match with system. 
-#define E_INVALID_STATE                                               ((int32_t)0xE7020003L) 
+			// Called without initialization. 
+			E_NOT_INITIALIZED                                                  = 0xE7020000L, 
 
-// Invalid string format. 
-#define E_INVALID_STR_FORMAT                                          ((int32_t)0xE7020004L) 
+			// The version not available or miss match with system. 
+			E_VERSION_NOT_AVAIL                                                = 0xE7020001L, 
 
-// ServerID is duplicated. 
-#define E_DUPLICATED_SERVERID                                         ((int32_t)0xE7020005L) 
+			// Invalid Cluster Master server 
+			E_INVALID_CLUSTERMASTER                                            = 0xE7020002L, 
 
-// Invalid entity 
-#define E_INVALID_ENTITY                                              ((int32_t)0xE7020006L) 
+			// The version not available or miss match with system. 
+			E_INVALID_STATE                                                    = 0xE7020003L, 
 
-// Invalid duplicated entity 
-#define E_DUPLICATED_ENTITY                                           ((int32_t)0xE7020007L) 
+			// Invalid string format. 
+			E_INVALID_STR_FORMAT                                               = 0xE7020004L, 
 
-// Invalid duplicated entity 
-#define E_DUPLICATED_ENTITYID                                         ((int32_t)0xE7020008L) 
+			// ServerID is duplicated. 
+			E_DUPLICATED_SERVERID                                              = 0xE7020005L, 
 
-// Duplicated Account ID 
-#define E_DUPLICATED_ACCOUNTID                                        ((int32_t)0xE7020009L) 
+			// Invalid entity 
+			E_INVALID_ENTITY                                                   = 0xE7020006L, 
 
-// Duplicated Player ID 
-#define E_DUPLICATED_PLAYERID                                         ((int32_t)0xE702000AL) 
+			// Invalid duplicated entity 
+			E_DUPLICATED_ENTITY                                                = 0xE7020007L, 
 
-// Duplicated name 
-#define E_DUPLICATED_NAME                                             ((int32_t)0xE702000BL) 
+			// Invalid duplicated entity 
+			E_DUPLICATED_ENTITYID                                              = 0xE7020008L, 
 
-// Duplicated ID 
-#define E_DUPLICATED_ID                                               ((int32_t)0xE702000CL) 
+			// Duplicated Account ID 
+			E_DUPLICATED_ACCOUNTID                                             = 0xE7020009L, 
 
-// Invalid duplicated entity 
-#define E_INVALID_ACCOUNTID                                           ((int32_t)0xE702000DL) 
+			// Duplicated Player ID 
+			E_DUPLICATED_PLAYERID                                              = 0xE702000AL, 
 
-// Invalid ticket 
-#define E_INVALID_TICKET                                              ((int32_t)0xE702000EL) 
+			// Duplicated name 
+			E_DUPLICATED_NAME                                                  = 0xE702000BL, 
 
-// Invalid player ID 
-#define E_INVALID_PLAYERID                                            ((int32_t)0xE702000FL) 
+			// Duplicated ID 
+			E_DUPLICATED_ID                                                    = 0xE702000CL, 
 
-// Invalid value 
-#define E_INVALID_VALUE                                               ((int32_t)0xE7020010L) 
+			// Invalid duplicated entity 
+			E_INVALID_ACCOUNTID                                                = 0xE702000DL, 
 
-// Invalid class value 
-#define E_INVALID_CLASS                                               ((int32_t)0xE7020011L) 
+			// Invalid ticket 
+			E_INVALID_TICKET                                                   = 0xE702000EL, 
 
-// Invalid Difficulty 
-#define E_INVALID_DIFFICULTY                                          ((int32_t)0xE7020012L) 
+			// Invalid player ID 
+			E_INVALID_PLAYERID                                                 = 0xE702000FL, 
 
-// Invalid registration to play 
-#define E_INVALID_REGISTRATION                                        ((int32_t)0xE7020013L) 
+			// Invalid value 
+			E_INVALID_VALUE                                                    = 0xE7020010L, 
 
-// Invalid Channel ID 
-#define E_INVALID_CHANNELID                                           ((int32_t)0xE7020014L) 
+			// Invalid class value 
+			E_INVALID_CLASS                                                    = 0xE7020011L, 
 
-// Invalid Zone instance ID 
-#define E_INVALID_INSTANCEID                                          ((int32_t)0xE7020015L) 
+			// Invalid Difficulty 
+			E_INVALID_DIFFICULTY                                               = 0xE7020012L, 
 
-// Duplicated component 
-#define E_DUPLICATED_COMPONENT                                        ((int32_t)0xE7020016L) 
+			// Invalid registration to play 
+			E_INVALID_REGISTRATION                                             = 0xE7020013L, 
 
-// Maximum friend 
-#define E_MAX_FRIEND                                                  ((int32_t)0xE7020017L) 
+			// Invalid Channel ID 
+			E_INVALID_CHANNELID                                                = 0xE7020014L, 
 
-// Invalid player count for service 
-#define E_INVALID_PLAYER_COUNT                                        ((int32_t)0xE7020018L) 
+			// Invalid Zone instance ID 
+			E_INVALID_INSTANCEID                                               = 0xE7020015L, 
 
-// Invalid player level 
-#define E_INVALID_PLAYER_LEVEL                                        ((int32_t)0xE7020019L) 
+			// Duplicated component 
+			E_DUPLICATED_COMPONENT                                             = 0xE7020016L, 
 
-// Invalid player nick 
-#define E_INVALID_PLAYER_NICK                                         ((int32_t)0xE702001AL) 
+			// Maximum friend 
+			E_MAX_FRIEND                                                       = 0xE7020017L, 
 
-// Invalid Notification ID 
-#define E_INVALID_NOTIFICATIONID                                      ((int32_t)0xE702001BL) 
+			// Invalid player count for service 
+			E_INVALID_PLAYER_COUNT                                             = 0xE7020018L, 
 
-// Invalid Ranking range 
-#define E_INVALID_RANKING_RANGE                                       ((int32_t)0xE702001CL) 
+			// Invalid player level 
+			E_INVALID_PLAYER_LEVEL                                             = 0xE7020019L, 
 
-// Target Maximum friend 
-#define E_TARGET_MAX_FRIEND                                           ((int32_t)0xE702001DL) 
+			// Invalid player nick 
+			E_INVALID_PLAYER_NICK                                              = 0xE702001AL, 
 
-// Invalid string data. 
-#define E_INVALID_STR_DATA                                            ((int32_t)0xE702001EL) 
+			// Invalid Notification ID 
+			E_INVALID_NOTIFICATIONID                                           = 0xE702001BL, 
 
-// Not authorized 
-#define E_NOT_AUTORIZED                                               ((int32_t)0xE702001FL) 
+			// Invalid Ranking range 
+			E_INVALID_RANKING_RANGE                                            = 0xE702001CL, 
 
-// No permition 
-#define E_NO_PERMITION                                                ((int32_t)0xE7020020L) 
+			// Target Maximum friend 
+			E_TARGET_MAX_FRIEND                                                = 0xE702001DL, 
 
-// No file or directory 
-#define E_NO_FILE_OR_DIR                                              ((int32_t)0xE7020021L) 
+			// Invalid string data. 
+			E_INVALID_STR_DATA                                                 = 0xE702001EL, 
 
-// No such process 
-#define E_NO_SUCH_PROCESS                                             ((int32_t)0xE7020022L) 
+			// Not authorized 
+			E_NOT_AUTORIZED                                                    = 0xE702001FL, 
 
-// Interrupted system call 
-#define E_INTERRUPTED_SYSCALL                                         ((int32_t)0xE7020023L) 
+			// No permition 
+			E_NO_PERMITION                                                     = 0xE7020020L, 
 
-// I/O error 
-#define E_IO_ERROR                                                    ((int32_t)0xE7020024L) 
+			// No file or directory 
+			E_NO_FILE_OR_DIR                                                   = 0xE7020021L, 
 
-// No such device or address 
-#define E_NOT_DEVICE                                                  ((int32_t)0xE7020025L) 
+			// No such process 
+			E_NO_SUCH_PROCESS                                                  = 0xE7020022L, 
 
-// Arg list too long 
-#define E_TOO_MANY_ARGLIST                                            ((int32_t)0xE7020026L) 
+			// Interrupted system call 
+			E_INTERRUPTED_SYSCALL                                              = 0xE7020023L, 
 
-// Exec format error 
-#define E_INVALID_EXEC_FROMAT                                         ((int32_t)0xE7020027L) 
+			// I/O error 
+			E_IO_ERROR                                                         = 0xE7020024L, 
 
-// Bad file number 
-#define E_INVALID_FILE_HANDLE                                         ((int32_t)0xE7020028L) 
+			// No such device or address 
+			E_NOT_DEVICE                                                       = 0xE7020025L, 
 
-// No child process 
-#define E_NO_CHILD_PROCESS                                            ((int32_t)0xE7020029L) 
+			// Arg list too long 
+			E_TOO_MANY_ARGLIST                                                 = 0xE7020026L, 
 
-// Try again 
-#define E_TRY_AGAIN                                                   ((int32_t)0xE702002AL) 
+			// Exec format error 
+			E_INVALID_EXEC_FROMAT                                              = 0xE7020027L, 
 
-// Bad address 
-#define E_INVALID_POINTER                                             ((int32_t)0xE702002BL) 
+			// Bad file number 
+			E_INVALID_FILE_HANDLE                                              = 0xE7020028L, 
 
-// Block device required 
-#define E_NOT_BLOCK                                                   ((int32_t)0xE702002CL) 
+			// No child process 
+			E_NO_CHILD_PROCESS                                                 = 0xE7020029L, 
 
-// Busy 
-#define E_BUSY                                                        ((int32_t)0xE702002DL) 
+			// Try again 
+			E_TRY_AGAIN                                                        = 0xE702002AL, 
 
-// File exists 
-#define E_FILE_EXISTS                                                 ((int32_t)0xE702002EL) 
+			// Bad address 
+			E_INVALID_POINTER                                                  = 0xE702002BL, 
 
-// Cross-device link 
-#define E_CROSS_LINK                                                  ((int32_t)0xE702002FL) 
+			// Block device required 
+			E_NOT_BLOCK                                                        = 0xE702002CL, 
 
-// No such device 
-#define E_INVALID_DEVICE                                              ((int32_t)0xE7020030L) 
+			// Busy 
+			E_BUSY                                                             = 0xE702002DL, 
 
-// Not a directory 
-#define E_INVALID_DIRECTORY                                           ((int32_t)0xE7020031L) 
+			// File exists 
+			E_FILE_EXISTS                                                      = 0xE702002EL, 
 
-// Is a directory 
-#define E_DIRECTORY                                                   ((int32_t)0xE7020032L) 
+			// Cross-device link 
+			E_CROSS_LINK                                                       = 0xE702002FL, 
 
-// Invalid argument 
-#define E_INVALID_ARG                                                 ((int32_t)0xE7020033L) 
+			// No such device 
+			E_INVALID_DEVICE                                                   = 0xE7020030L, 
 
-// File table overflow 
-#define E_NOT_ENOUGH_FILE_TABLE                                       ((int32_t)0xE7020034L) 
+			// Not a directory 
+			E_INVALID_DIRECTORY                                                = 0xE7020031L, 
 
-// Too many open files 
-#define E_TOO_MANY_OPENED_FILE                                        ((int32_t)0xE7020035L) 
+			// Is a directory 
+			E_DIRECTORY                                                        = 0xE7020032L, 
 
-// Not a typewriter 
-#define E_INVALID_TYPEWRITER                                          ((int32_t)0xE7020036L) 
+			// Invalid argument 
+			E_INVALID_ARG                                                      = 0xE7020033L, 
 
-// Text file busy 
-#define E_BUSY_FILE                                                   ((int32_t)0xE7020037L) 
+			// File table overflow 
+			E_NOT_ENOUGH_FILE_TABLE                                            = 0xE7020034L, 
 
-// File too large 
-#define E_TOO_BIG_FILE                                                ((int32_t)0xE7020038L) 
+			// Too many open files 
+			E_TOO_MANY_OPENED_FILE                                             = 0xE7020035L, 
 
-// No space left on device 
-#define E_NOT_ENOUGH_SPACE                                            ((int32_t)0xE7020039L) 
+			// Not a typewriter 
+			E_INVALID_TYPEWRITER                                               = 0xE7020036L, 
 
-// Illegal seek 
-#define E_INVALID_SEEK                                                ((int32_t)0xE702003AL) 
+			// Text file busy 
+			E_BUSY_FILE                                                        = 0xE7020037L, 
 
-// Read-only file system 
-#define E_READ_ONLY                                                   ((int32_t)0xE702003BL) 
+			// File too large 
+			E_TOO_BIG_FILE                                                     = 0xE7020038L, 
 
-// Too many links 
-#define E_TOO_MANY_LINK                                               ((int32_t)0xE702003CL) 
+			// No space left on device 
+			E_NOT_ENOUGH_SPACE                                                 = 0xE7020039L, 
 
-// Broken pipe 
-#define E_INVALID_PIPE                                                ((int32_t)0xE702003DL) 
+			// Illegal seek 
+			E_INVALID_SEEK                                                     = 0xE702003AL, 
 
-// Math argument out of domain of func 
-#define E_INVALID_MATH_DOMAIN                                         ((int32_t)0xE702003EL) 
+			// Read-only file system 
+			E_READ_ONLY                                                        = 0xE702003BL, 
 
-// Math result not representable 
-#define E_INVALID_NUMERIC                                             ((int32_t)0xE702003FL) 
+			// Too many links 
+			E_TOO_MANY_LINK                                                    = 0xE702003CL, 
 
-// Invalid password 
-#define E_INVALID_PASSWORD                                            ((int32_t)0xE7020040L) 
+			// Broken pipe 
+			E_INVALID_PIPE                                                     = 0xE702003DL, 
 
-// Target already in friends list 
-#define E_ALREADY_IN_FRIEND                                           ((int32_t)0xE7020041L) 
+			// Math argument out of domain of func 
+			E_INVALID_MATH_DOMAIN                                              = 0xE702003EL, 
+
+			// Math result not representable 
+			E_INVALID_NUMERIC                                                  = 0xE702003FL, 
+
+			// Invalid password 
+			E_INVALID_PASSWORD                                                 = 0xE7020040L, 
+
+			// Target already in friends list 
+			E_ALREADY_IN_FRIEND                                                = 0xE7020041L, 
+
+		};//enum 
+	}//namespace ResultCode 
+}//namespace SF 
+
 
 
 

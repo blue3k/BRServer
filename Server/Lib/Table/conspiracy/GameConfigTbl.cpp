@@ -21,7 +21,7 @@ namespace conspiracy
 	GameConfigTbl::PresetIDTable *GameConfigTbl::m_PresetIDTable = nullptr;
 	GameConfigTbl::PresetIDTable *GameConfigTbl::m_PresetIDTablePrev = nullptr;
 
-	HRESULT GameConfigTbl::LoadTable( const std::list<GameConfigItem>& rowList )
+	BR::Result GameConfigTbl::LoadTable( const std::list<GameConfigItem>& rowList )
 	{
  		auto pNewPresetIDTable = new PresetIDTable;
 
@@ -39,20 +39,20 @@ namespace conspiracy
 		}
 		m_PresetIDTablePrev = m_PresetIDTable;
 		m_PresetIDTable = pNewPresetIDTable;
-		return S_SYSTEM_OK;
+		return BR::ResultCode::SUCCESS;
 	}
 
 
-	HRESULT GameConfigTbl::FindItem( const int& Key, GameConfigItem*& pRow)
+	BR::Result GameConfigTbl::FindItem( const int& Key, GameConfigItem*& pRow)
 	{
  		auto itr = m_PresetIDTable->find(Key);
 		if (itr == m_PresetIDTable->end())
 		{
  			// write error log
-			return E_SYSTEM_FAIL;
+			return BR::ResultCode::FAIL;
 		}
 		pRow = itr->second;
-		return S_SYSTEM_OK;
+		return BR::ResultCode::SUCCESS;
 	}
 
 }; // namespace conspiracy

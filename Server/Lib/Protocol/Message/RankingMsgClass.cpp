@@ -31,9 +31,9 @@ namespace BR
 		{
  			// Cmd: Add a player to ranking
 			const MessageID AddPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 0);
-			HRESULT AddPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			Result AddPlayerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -57,11 +57,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT AddPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result AddPlayerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT AddPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+			Result AddPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -93,11 +93,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT AddPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+			}; // Result AddPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 
-			HRESULT AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			Result AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -119,7 +119,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void AddPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -130,9 +130,9 @@ namespace BR
 			}; // void AddPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 0);
-			HRESULT AddPlayerRes::ParseIMsg( MessageData* pIMsg )
+			Result AddPlayerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -144,7 +144,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ranking, pCur, iMsgSize, sizeof(UINT32) ) );
 
 
@@ -152,18 +152,18 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT AddPlayerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result AddPlayerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT AddPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking )
+			Result AddPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(UINT32));
 
 				MessageData *pNewMsg = nullptr;
@@ -174,7 +174,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InRanking, sizeof(UINT32));
 
 				pMsg = pNewMsg;
@@ -184,11 +184,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT AddPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking )
+			}; // Result AddPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
 
-			HRESULT AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
+			Result AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -210,7 +210,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void AddPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -222,9 +222,9 @@ namespace BR
 
 			// Cmd: Remove a player to ranking
 			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 1);
-			HRESULT RemovePlayerCmd::ParseIMsg( MessageData* pIMsg )
+			Result RemovePlayerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -243,11 +243,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RemovePlayerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RemovePlayerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RemovePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			Result RemovePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -273,11 +273,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RemovePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			}; // Result RemovePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
-			HRESULT RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			Result RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -299,7 +299,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RemovePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -310,9 +310,9 @@ namespace BR
 			}; // void RemovePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 1);
-			HRESULT RemovePlayerRes::ParseIMsg( MessageData* pIMsg )
+			Result RemovePlayerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -324,25 +324,25 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT RemovePlayerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RemovePlayerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT RemovePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			Result RemovePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT));
+					+ sizeof(Result));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -352,7 +352,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 
 				pMsg = pNewMsg;
 
@@ -361,11 +361,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RemovePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			}; // Result RemovePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
-			HRESULT RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
+			Result RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -387,7 +387,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RemovePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -399,9 +399,9 @@ namespace BR
 
 			// Cmd: Remove a player to ranking
 			const MessageID GetPlayerRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 2);
-			HRESULT GetPlayerRankingCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetPlayerRankingCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -420,11 +420,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetPlayerRankingCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetPlayerRankingCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetPlayerRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			Result GetPlayerRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -450,11 +450,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetPlayerRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+			}; // Result GetPlayerRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
-			HRESULT GetPlayerRankingCmd::OverrideRouteContextDestination( EntityUID to )
+			Result GetPlayerRankingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -476,7 +476,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetPlayerRankingCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GetPlayerRankingCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void GetPlayerRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -487,9 +487,9 @@ namespace BR
 			}; // void GetPlayerRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetPlayerRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 2);
-			HRESULT GetPlayerRankingRes::ParseIMsg( MessageData* pIMsg )
+			Result GetPlayerRankingRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -501,7 +501,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ranking, pCur, iMsgSize, sizeof(UINT32) ) );
 
 
@@ -509,18 +509,18 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetPlayerRankingRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetPlayerRankingRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetPlayerRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking )
+			Result GetPlayerRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(UINT32));
 
 				MessageData *pNewMsg = nullptr;
@@ -531,7 +531,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InRanking, sizeof(UINT32));
 
 				pMsg = pNewMsg;
@@ -541,11 +541,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetPlayerRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking )
+			}; // Result GetPlayerRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
 
-			HRESULT GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
+			Result GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -567,7 +567,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void GetPlayerRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -579,9 +579,9 @@ namespace BR
 
 			// Cmd: Update a player to ranking
 			const MessageID UpdatePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 3);
-			HRESULT UpdatePlayerCmd::ParseIMsg( MessageData* pIMsg )
+			Result UpdatePlayerCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -605,11 +605,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT UpdatePlayerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result UpdatePlayerCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT UpdatePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+			Result UpdatePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -641,11 +641,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT UpdatePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+			}; // Result UpdatePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
 
-			HRESULT UpdatePlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			Result UpdatePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -667,7 +667,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT UpdatePlayerCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result UpdatePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void UpdatePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -678,9 +678,9 @@ namespace BR
 			}; // void UpdatePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID UpdatePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 3);
-			HRESULT UpdatePlayerRes::ParseIMsg( MessageData* pIMsg )
+			Result UpdatePlayerRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -692,7 +692,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ranking, pCur, iMsgSize, sizeof(UINT32) ) );
 
 
@@ -700,18 +700,18 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT UpdatePlayerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result UpdatePlayerRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT UpdatePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking )
+			Result UpdatePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(UINT32));
 
 				MessageData *pNewMsg = nullptr;
@@ -722,7 +722,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InRanking, sizeof(UINT32));
 
 				pMsg = pNewMsg;
@@ -732,11 +732,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT UpdatePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InRanking )
+			}; // Result UpdatePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
 
-			HRESULT UpdatePlayerRes::OverrideRouteContextDestination( EntityUID to )
+			Result UpdatePlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -758,7 +758,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT UpdatePlayerRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result UpdatePlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void UpdatePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -770,9 +770,9 @@ namespace BR
 
 			// Cmd: Remove a player to ranking
 			const MessageID GetRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 4);
-			HRESULT GetRankingCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetRankingCmd::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -792,11 +792,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetRankingCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetRankingCmd::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+			Result GetRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -824,11 +824,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+			}; // Result GetRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
 
-			HRESULT GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
+			Result GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -850,7 +850,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void GetRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -861,9 +861,9 @@ namespace BR
 			}; // void GetRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKING, 4);
-			HRESULT GetRankingRes::ParseIMsg( MessageData* pIMsg )
+			Result GetRankingRes::ParseIMsg( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -875,7 +875,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerRanking, pCur, iMsgSize, sizeof(UINT32) ) );
 
 
@@ -883,18 +883,18 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetRankingRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetRankingRes::ParseIMsg( MessageData* pIMsg )
 
-			HRESULT GetRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InPlayerRanking )
+			Result GetRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InPlayerRanking )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
+					+ sizeof(Result)
 					+ sizeof(UINT32));
 
 				MessageData *pNewMsg = nullptr;
@@ -905,7 +905,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InPlayerRanking, sizeof(UINT32));
 
 				pMsg = pNewMsg;
@@ -915,11 +915,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InPlayerRanking )
+			}; // Result GetRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InPlayerRanking )
 
-			HRESULT GetRankingRes::OverrideRouteContextDestination( EntityUID to )
+			Result GetRankingRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -941,7 +941,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT GetRankingRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result GetRankingRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void GetRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)

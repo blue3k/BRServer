@@ -24,7 +24,7 @@ namespace BR {
 
 
 	template<>
-	inline HRESULT ToString( char*& pBuff, INT& iBuffLen, const EntityState& Data, int Option )
+	inline Result ToString( char*& pBuff, INT& iBuffLen, const EntityState& Data, int Option )
 	{
 		return ToStringEnum( pBuff, iBuffLen, Data );
 	}

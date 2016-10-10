@@ -93,9 +93,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Apply configuration
-	HRESULT GameInstanceServer::ApplyConfiguration()
+	Result GameInstanceServer::ApplyConfiguration()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		//const Svr::Config::GameCluster* pMyGame = nullptr;
 		const Svr::Config::GenericServer* pMySvr = nullptr;
@@ -126,9 +126,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Initialize server resource
-	HRESULT GameInstanceServer::InitializeServerResource()
+	Result GameInstanceServer::InitializeServerResource()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::BrServer::InitializeServerResource() );
 
@@ -142,9 +142,9 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Close server and release resource
-	HRESULT GameInstanceServer::CloseServerResource()
+	Result GameInstanceServer::CloseServerResource()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(Svr::BrServer::CloseServerResource() );
 
@@ -159,9 +159,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Initialize private Network
-	HRESULT GameInstanceServer::InitializeNetPrivate()
+	Result GameInstanceServer::InitializeNetPrivate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SockFamily privateNetSockFamily;
 
 		svrChk(Svr::BrServer::InitializeNetPrivate() );
@@ -215,9 +215,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Close Private Network
-	HRESULT GameInstanceServer::CloseNetPrivate()
+	Result GameInstanceServer::CloseNetPrivate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		hr = Svr::BrServer::CloseNetPrivate();
 
@@ -231,7 +231,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// create remote entity by class
-	HRESULT GameInstanceServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
+	Result GameInstanceServer::CreateServerEntity( BR::NetClass netClass, Svr::ServerEntity* &pServerEntity )
 	{
 		switch( netClass )
 		{
@@ -244,9 +244,9 @@ namespace ConspiracyGameInstanceServer {
 		};
 
 		if( pServerEntity == nullptr )
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

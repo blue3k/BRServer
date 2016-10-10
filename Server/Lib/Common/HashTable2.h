@@ -211,7 +211,7 @@ namespace Hash {
 			//	Insert/erase/clear
 			//
 
-			HRESULT Insert( const KeyType key, const ItemType &data )
+			Result Insert( const KeyType key, const ItemType &data )
 			{
 				size_t hashVal = HasherType()(key);
 				size_t iBucket = hashVal%m_Buckets.size();
@@ -226,14 +226,14 @@ namespace Hash {
 					{
 						if (SUCCEEDED(bucket.m_Items->FindInWriteTree(key, dataFound)))
 						{
-							return E_SYSTEM_FAIL;
+							return ResultCode::FAIL;
 						}
 					}
 					else
 					{
 						if (SUCCEEDED(bucket.m_Items->Find(key, dataFound)))
 						{
-							return E_SYSTEM_FAIL;
+							return ResultCode::FAIL;
 						}
 					}
 				}
@@ -248,10 +248,10 @@ namespace Hash {
 #ifdef _DEBUG
 				Assert( bucket.Validate(iBucket, m_Buckets.size()) );
 #endif
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
-			HRESULT Find( const KeyType& keyVal, ItemType &data )
+			Result Find( const KeyType& keyVal, ItemType &data )
 			{
 				size_t hashVal = HasherType()( keyVal );
 				size_t iBucket = hashVal%m_Buckets.size();
@@ -259,16 +259,16 @@ namespace Hash {
 				Bucket& bucket = m_Buckets[iBucket];
 				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_NONEXCLUSIVE, bucket.m_Lock );
 
-				HRESULT hr = bucket.m_Items->Find(keyVal, data);
+				Result hr = bucket.m_Items->Find(keyVal, data);
 
 				return hr;
 			}
 
 			// Erase a data from hash map
-			HRESULT Erase(const KeyType &key, ValueType& erasedValue)
+			Result Erase(const KeyType &key, ValueType& erasedValue)
 			{
 				if (m_Buckets.size() == 0)
-					return S_SYSTEM_FALSE;
+					return ResultCode::SUCCESS_FALSE;
 
 				size_t hashVal = HasherType()(key);
 				size_t iBucket = hashVal%m_Buckets.size();
@@ -283,16 +283,16 @@ namespace Hash {
 						bucket.m_Items->CommitChanges();
 					}
 					m_lItemCount.fetch_sub(1, std::memory_order_relaxed);
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 				}
 
 				Assert(bucket.Validate(iBucket, m_Buckets.size()));
 
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 
 
-			HRESULT Clear()
+			Result Clear()
 			{
 				m_lItemCount = 0;
 
@@ -302,7 +302,7 @@ namespace Hash {
 					iterBucket->m_Items->ClearMap();
 				}
 
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
 			bool Validate()

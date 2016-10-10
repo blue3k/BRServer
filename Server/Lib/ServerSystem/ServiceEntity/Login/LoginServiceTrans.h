@@ -49,7 +49,7 @@ namespace Svr {
 		virtual ~LoginPartyTrans() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 	};
 

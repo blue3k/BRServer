@@ -68,9 +68,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Initialize player
-	HRESULT GamePlayer::InitializePlayer( GameInstanceEntity* pGameOwner, bool isBot )
+	Result GamePlayer::InitializePlayer( GameInstanceEntity* pGameOwner, bool isBot )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// disable, not implemented yet
 		svrChk(super::InitializePlayer(pGameOwner, isBot));
@@ -89,9 +89,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Update Game Player 
-	HRESULT GamePlayer::UpdateGamePlayer( TimeStampMS ulCurTime )
+	Result GamePlayer::UpdateGamePlayer( TimeStampMS ulCurTime )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto gameStateSystem = GetGameOwner()->GetComponent<GameStateSystem>();
 
 		svrChk(super::UpdateGamePlayer(ulCurTime));

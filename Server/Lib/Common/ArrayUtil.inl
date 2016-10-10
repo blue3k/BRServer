@@ -58,7 +58,7 @@ size_t Array<DataType>::GetSize() const
 
 // set Reserve size
 template< class DataType >
-HRESULT Array<DataType>::SetSize( size_t szNewSize )
+Result Array<DataType>::SetSize( size_t szNewSize )
 {
 	auto hr = Reserve(szNewSize);
 	if (SUCCEEDED(hr))
@@ -128,9 +128,9 @@ DataType* Array<DataType>::data()
 
 // push_back
 template< class DataType >
-inline HRESULT Array<DataType>::push_back( const DataType& NewData )
+inline Result Array<DataType>::push_back( const DataType& NewData )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	if( GetSize() ==  GetAllocatedSize() )
 	{
 		hr = IncreaseSize();
@@ -147,9 +147,9 @@ inline HRESULT Array<DataType>::push_back( const DataType& NewData )
 
 // push_back
 template< class DataType >
-inline HRESULT Array<DataType>::push_back( DataType&& NewData )
+inline Result Array<DataType>::push_back( DataType&& NewData )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	if( GetSize() ==  GetAllocatedSize() )
 	{
 		hr = IncreaseSize();
@@ -166,9 +166,9 @@ inline HRESULT Array<DataType>::push_back( DataType&& NewData )
 
 //
 //template< class DataType >
-//HRESULT Array<DataType>::operator +=( const DataType& NewData )
+//Result Array<DataType>::operator +=( const DataType& NewData )
 //{
-//	HRESULT hr = S_SYSTEM_OK;
+//	Result hr = ResultCode::SUCCESS;
 //	if( GetSize() ==  GetAllocatedSize() )
 //	{
 //		hr = IncreaseSize();
@@ -184,9 +184,9 @@ inline HRESULT Array<DataType>::push_back( DataType&& NewData )
 //}
 
 template< class DataType >
-inline HRESULT Array<DataType>::AddItems(size_t numItems, const DataType* NewData)
+inline Result Array<DataType>::AddItems(size_t numItems, const DataType* NewData)
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	auto newSize = numItems + GetSize();
 	if (newSize > GetAllocatedSize())
 	{
@@ -208,10 +208,10 @@ inline HRESULT Array<DataType>::AddItems(size_t numItems, const DataType* NewDat
 
 // Remove element
 template< class DataType >
-HRESULT Array<DataType>::RemoveAt( INT iIndex )
+Result Array<DataType>::RemoveAt( INT iIndex )
 {
 	if (iIndex < 0 || (decltype(m_Size))iIndex >= m_Size)
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 	for (INT iIdx = iIndex + 1; (decltype(m_Size))iIdx < m_Size; iIdx++)
 	{
@@ -219,18 +219,18 @@ HRESULT Array<DataType>::RemoveAt( INT iIndex )
 	}
 	m_Size--;
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template< class DataType >
-HRESULT Array<DataType>::RemoveItem( const DataType& RemoveData )
+Result Array<DataType>::RemoveItem( const DataType& RemoveData )
 {
 	INT iIdx = FindItem( RemoveData );
 
 	if( iIdx >= 0 )
 		return RemoveAt( iIdx );
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 // find
@@ -266,7 +266,7 @@ const DataType& Array<DataType>::GetAt(UINT iElement) const
 
 // Called for reallocation
 template< class DataType >
-HRESULT Array<DataType>::IncreaseSize()
+Result Array<DataType>::IncreaseSize()
 {
 	size_t szNewSize = GetAllocatedSize() + GetIncreaseSize();
 	Assert(szNewSize > GetAllocatedSize());
@@ -316,17 +316,17 @@ StaticArray<DataType,DefaultBufferSize>::~StaticArray()
 
 // reallocate
 template< class DataType, size_t DefaultBufferSize >
-HRESULT StaticArray<DataType, DefaultBufferSize>::Reserve(size_t szNewSize)
+Result StaticArray<DataType, DefaultBufferSize>::Reserve(size_t szNewSize)
 {
 	DataType *pNewBuffer = nullptr;
 	DataType *pOldBuffer = nullptr;
 
 	if( szNewSize <= Array<DataType>::GetAllocatedSize() )
-		return S_SYSTEM_FALSE;
+		return ResultCode::SUCCESS_FALSE;
 
 	pNewBuffer = new DataType[szNewSize];
 	if( pNewBuffer == nullptr )
-		return E_SYSTEM_OUTOFMEMORY;
+		return ResultCode::OUT_OF_MEMORY;
 
 	Array<DataType>::SetBuffPtr( szNewSize, pNewBuffer );
 
@@ -337,7 +337,7 @@ HRESULT StaticArray<DataType, DefaultBufferSize>::Reserve(size_t szNewSize)
 		delete[] pOldBuffer;
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 
@@ -366,17 +366,17 @@ DynamicArray<DataType>::~DynamicArray()
 
 // reallocate
 template< class DataType >
-HRESULT DynamicArray<DataType>::Reserve(size_t szNewSize)
+Result DynamicArray<DataType>::Reserve(size_t szNewSize)
 {
 	DataType *pNewBuffer = nullptr;
 	DataType *pOldBuffer = nullptr;
 
 	if (szNewSize <= Array<DataType>::GetAllocatedSize())
-		return S_SYSTEM_FALSE;
+		return ResultCode::SUCCESS_FALSE;
 
 	pNewBuffer = new DataType[szNewSize];
 	if (pNewBuffer == nullptr)
-		return E_SYSTEM_OUTOFMEMORY;
+		return ResultCode::OUT_OF_MEMORY;
 
 	Array<DataType>::SetBuffPtr(szNewSize, pNewBuffer);
 
@@ -387,7 +387,7 @@ HRESULT DynamicArray<DataType>::Reserve(size_t szNewSize)
 		delete[] pOldBuffer;
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 
@@ -425,12 +425,12 @@ void LinkedArray<DataType>::SetLinkedBuffer(const Array<DataType>& srcLink)
 }
 
 template< class DataType >
-HRESULT LinkedArray<DataType>::Reserve(size_t szReserv)
+Result LinkedArray<DataType>::Reserve(size_t szReserv)
 {
 	if (szReserv <= Array<DataType>::GetAllocatedSize())
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 
-	return E_SYSTEM_FAIL;
+	return ResultCode::FAIL;
 }
 
 

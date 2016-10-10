@@ -103,7 +103,7 @@ namespace ProtocolBuilder
                             }
                             else
                             {
-                                if (param.Type == ParameterType.HRESULT)
+                                if (param.Type == ParameterType.Result)
                                 {
                                     strTrace += string.Format(", {0}:{{{1}}}", param.Name, ParamCount++);
                                     strTraceMember += string.Format(", {0}.ToString()", param.Name);

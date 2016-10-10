@@ -48,14 +48,14 @@ namespace EntityServer {
 		// Override delete function
 		virtual void Release();
 
-		HRESULT OnTimer(Svr::TransactionResult* pRes);
+		Result OnTimer(Svr::TransactionResult* pRes);
 
-		HRESULT InitializeServices();
+		Result InitializeServices();
 
-		//virtual HRESULT OnCloseTransaction( HRESULT hrRes ) override;
+		//virtual Result OnCloseTransaction( Result hrRes ) override;
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 

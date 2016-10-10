@@ -68,7 +68,7 @@ namespace Svr
 		BR::CriticalSection			m_ServerTableLock;
 
 	private:
-		HRESULT AddServerEntity(NetClass netClass, ServerEntity* pServerEntity);
+		Result AddServerEntity(NetClass netClass, ServerEntity* pServerEntity);
 
 
 	public:
@@ -78,20 +78,20 @@ namespace Svr
 
 		// Register server
 		template<class ServerEntityType>
-		HRESULT GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity );
-		HRESULT GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity);
+		Result GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity );
+		Result GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity);
 
 		// Get remote entity
-		HRESULT GetServerEntity( ServerID svrID, ServerEntity* &pServerEntity );
+		Result GetServerEntity( ServerID svrID, ServerEntity* &pServerEntity );
 
 		// Get available firstEntity server entity
-		HRESULT GetEntityManagerServerEntity( ServerEntity* &pServerEntity );
+		Result GetEntityManagerServerEntity( ServerEntity* &pServerEntity );
 
 		// Add new remote entity
-		HRESULT UpdateEntityManagerServerEntity( ServerEntity* pServerEntity );
+		Result UpdateEntityManagerServerEntity( ServerEntity* pServerEntity );
 
 		// Add new remote entity
-		HRESULT AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity);
+		Result AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity);
 
 		// GetServerPolicy
 		template< class PolicyType >
@@ -109,9 +109,9 @@ namespace Svr
 	
 	// Register server
 	template<class ServerEntityType>
-	HRESULT ServerEntityManager::GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity)
+	Result ServerEntityManager::GetOrRegisterServer(ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntityType* &pServerEntity)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntityType *pNewServerEntity = nullptr;
 		Net::IConnection *pConnection = nullptr;
 

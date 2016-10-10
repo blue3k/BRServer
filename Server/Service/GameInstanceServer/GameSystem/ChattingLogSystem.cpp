@@ -52,9 +52,9 @@ namespace ConspiracyGameInstanceServer {
 	
 
 	// Initialzie system
-	HRESULT ChattingLogSystem::InitializeComponent()
+	Result ChattingLogSystem::InitializeComponent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( InitializeLog() );
 
