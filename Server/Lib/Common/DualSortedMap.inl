@@ -151,7 +151,7 @@
 		OperationTraversalHistory travelHistory(m_WriteRoot, m_ItemCount.load(std::memory_order_relaxed));
 
 		MapNode* pFound = nullptr;
-		if (FAILED(FindNode(travelHistory, key, pFound)))
+		if (!(FindNode(travelHistory, key, pFound)))
 		{
 			if (m_WriteRoot != nullptr)
 				return ResultCode::FAIL;
@@ -233,7 +233,7 @@
 
 		MapNode* pRemoved = nullptr;
 		MapNode* pFound = nullptr;
-		if (FAILED(FindNode(travelHistory, key, pFound)))
+		if (!(FindNode(travelHistory, key, pFound)))
 			return ResultCode::INVALID_ARG;
 
 		// unique key
@@ -333,7 +333,7 @@
 		OperationTraversalHistory travelHistory(pReadRoot, m_ItemCount.load(std::memory_order_relaxed));
 
 		MapNode* pFound = nullptr;
-		if (FAILED(FindNode(travelHistory, key, pFound)))
+		if (!(FindNode(travelHistory, key, pFound)))
 		{
 			return ResultCode::FAIL;
 		}
@@ -440,7 +440,7 @@
 
 		MapNode* pFound = nullptr;
 		
-		if (FAILED(FindNodeRead(travelHistory, pReadRoot, key, pFound)))
+		if (!(FindNodeRead(travelHistory, pReadRoot, key, pFound)))
 		{
 			return ResultCode::FAIL;
 		}

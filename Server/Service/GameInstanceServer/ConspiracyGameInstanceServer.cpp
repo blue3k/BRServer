@@ -31,7 +31,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 #else
 	Result hRes = CoInitialize(NULL);
 #endif
-	_ASSERTE(SUCCEEDED(hRes));
+	_ASSERTE((hRes));
 
 	ParameterSetting::SetSetting("config", "..\\..\\Config\\ServerConfig.xml");
 	ParameterSetting::ProcessParameter(lpCmdLine);

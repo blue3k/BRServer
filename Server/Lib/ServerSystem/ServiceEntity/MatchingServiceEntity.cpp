@@ -254,7 +254,7 @@ namespace Svr {
 		for (UINT iDequeue = 0; iDequeue < numDequeue; iDequeue++)
 		{
 			ReservedMatchingItem item;
-			if(FAILED(m_pQueuePtr->Dequeue(item))) return ResultCode::FAIL;
+			if(!(m_pQueuePtr->Dequeue(item))) return ResultCode::FAIL;
 			svrChk(items.push_back(item));
 		}
 
@@ -344,7 +344,7 @@ namespace Svr {
 			auto pickedNumber = pickedNumbers[currentQueue];
 			if (pickedNumber < m_pQueuePtr[currentQueue].MaxAllowPerMatch)
 			{
-				if (SUCCEEDED(m_pQueuePtr[currentQueue].pQueue->Dequeue(item)))
+				if ((m_pQueuePtr[currentQueue].pQueue->Dequeue(item)))
 				{
 					item.RequestedRole = m_pQueuePtr[currentQueue].RequestRole;
 					svrChk(items.push_back(item));
@@ -607,7 +607,7 @@ namespace Svr {
 			UINT numItemsToDequeue = pMatchingPattern[iQueue];
 			for (UINT iItem = 0; iItem < numItemsToDequeue; iItem++)
 			{
-				if (FAILED(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, numItemsToDequeue)))
+				if (!(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, numItemsToDequeue)))
 				{
 					Assert(false);
 				}
@@ -651,7 +651,7 @@ namespace Svr {
 		INT iQueue = 1;
 		for (; iQueue < (INT)m_TargetMatchingMemberCount; iQueue++)
 		{
-			if (SUCCEEDED(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
+			if ((m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
 			{
 				break;
 			}
@@ -662,7 +662,7 @@ namespace Svr {
 
 		for (iQueue = m_TargetMatchingMemberCount - grabbedPlayerCount; grabbedPlayerCount < m_TargetMatchingMemberCount && iQueue > 0;)
 		{
-			if (SUCCEEDED(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
+			if ((m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
 			{
 				grabbedPlayerCount = GetGrabbedPlayerCount(grabbedItems);
 				iQueue = m_TargetMatchingMemberCount - grabbedPlayerCount;

@@ -25,13 +25,13 @@ namespace BR
 	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const TransactionID& Data, int Option)
 	{
-		if (FAILED(ToString(pBuff, iBuffLen, Data.GetEntityID(), Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.GetEntityID(), Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT32)Data.GetTransactionIndex(), pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT32)Data.GetTransactionIndex(), pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -49,19 +49,19 @@ namespace BR
 	{
 		unused(Option);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.Components.From, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.Components.From, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.Components.To, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.Components.To, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -93,13 +93,13 @@ namespace BR
 	Result ToString(char*& pBuff, INT& iBuffLen, const LocalUID& Data, int Option)
 	{
 		unused(Option);
-		if (FAILED(_IToA((UINT32)Data.Time, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT32)Data.Time, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT32)Data.ID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT32)Data.ID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -110,43 +110,43 @@ namespace BR
 	{
 		unused(Option);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.UID, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.UID, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":C")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":C")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, (UINT)Data.ServerClass, Option)))
+		if (!(ToString(pBuff, iBuffLen, (UINT)Data.ServerClass, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":M")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":M")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.Membership, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.Membership, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":S")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":S")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.Status, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.Status, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":T")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":T")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.ServerUpTime.time_since_epoch().count(), Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.ServerUpTime.time_since_epoch().count(), Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":W")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":W")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.Workload, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.Workload, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -158,20 +158,20 @@ namespace BR
 	{
 		unused(Option);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.QueueUID, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.QueueUID, Option)))
 			return ResultCode::FAIL;
 
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.QueueItemID, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.QueueItemID, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return ResultCode::FAIL;
 
 
@@ -182,20 +182,20 @@ namespace BR
 	Result ToString(char*& pBuff, INT& iBuffLen, const MatchingPlayerInformation& Data, int Option)
 	{
 		unused(Option);
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.PlayerUID, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.PlayerUID, Option)))
 			return ResultCode::FAIL;
 
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.PlayerID, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.PlayerID, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -206,20 +206,20 @@ namespace BR
 	Result ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInfo& Data, int Option)
 	{
 		unused(Option);
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.DateType, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.DateType, Option)))
 			return ResultCode::FAIL;
 
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, Data.CounterName)))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, Data.CounterName)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -230,20 +230,20 @@ namespace BR
 	Result ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInstanceInfo& Data, int Option)
 	{
 		unused(Option);
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, Data.InstanceName)))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, Data.InstanceName)))
 			return ResultCode::FAIL;
 
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.InstanceUID, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.InstanceUID, Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -256,13 +256,13 @@ namespace BR
 	{
 		unused(Option);
 
-		if (FAILED(ToString(pBuff, iBuffLen, reinterpret_cast<const FriendInformation&>(Data), Option)))
+		if (!(ToString(pBuff, iBuffLen, reinterpret_cast<const FriendInformation&>(Data), Option)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":S")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":S")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.ShardID, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.ShardID, Option)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;

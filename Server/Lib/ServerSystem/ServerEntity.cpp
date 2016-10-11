@@ -172,7 +172,7 @@ namespace Svr {
 	//{
 	//	// TODO: Call process message directly when it runs on the same thread
 	//	Result hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(), pMsg));
-	//	if (SUCCEEDED(hr))
+	//	if ((hr))
 	//		pMsg = nullptr;
 
 	//	return hr;
@@ -190,7 +190,7 @@ namespace Svr {
 
 		// First try to route message
 		pMsg->GetRouteInfo(routeContext, transID);
-		if (routeContext.GetTo() != GetEntityUID() && SUCCEEDED(GetServerComponent<EntityManager>()->FindEntity(routeContext.GetTo(), pEntity)))
+		if (routeContext.GetTo() != GetEntityUID() && (GetServerComponent<EntityManager>()->FindEntity(routeContext.GetTo(), pEntity)))
 		{
 			return pEntity->ProcessMessage(pServerEntity, pCon, pMsg);
 		}
@@ -277,7 +277,7 @@ namespace Svr {
 		auto loopCount = pConn->GetConnectionEventCount();
 		for (decltype(loopCount) iProc = 0; iProc < loopCount; iProc++)
 		{
-			if (FAILED(pConn->DequeueConnectionEvent(conEvent)))
+			if (!(pConn->DequeueConnectionEvent(conEvent)))
 				break;
 
 			ProcessConnectionEvent(conEvent);
@@ -289,7 +289,7 @@ namespace Svr {
 			loopCount = pConn->GetRecvMessageCount();
 			for (decltype(loopCount) iProc = 0; iProc < loopCount; iProc++)
 			{
-				if (FAILED(pConn->GetRecvMessage(pMsg)))
+				if (!(pConn->GetRecvMessage(pMsg)))
 					break;
 
 				ProcessMessage(this, pConn, pMsg);
@@ -444,7 +444,7 @@ namespace Svr {
 		case Svr::EventTask::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)
 			{
-				if (SUCCEEDED(FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
+				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
 					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
 				}

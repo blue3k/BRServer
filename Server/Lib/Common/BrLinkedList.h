@@ -28,7 +28,7 @@ namespace BR
 	template< class DataType, class SyncTrait = BR::ThreadSyncTraitNone >
 	class LinkedList
 	{
-		// MT Safe
+		// MT Safe. TODO
 		//if( SyncTrait::ThreadSafe )
 		//{
 		//	#include "BRLinkedList_MT.inl"

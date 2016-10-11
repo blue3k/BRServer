@@ -150,7 +150,7 @@ namespace Svr {
 		if (m_pNetPublic == nullptr)
 			return ResultCode::SUCCESS;
 
-		while (SUCCEEDED(m_pNetPublic->DequeueNetEvent(curEvent)))
+		while ((m_pNetPublic->DequeueNetEvent(curEvent)))
 		{
 			pConn = nullptr;
 
@@ -173,7 +173,7 @@ namespace Svr {
 
 				svrChk(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::User, pLoginPlayerEntity));
 
-				if (FAILED(pLoginPlayerEntity->SetConnection(pConn)))
+				if (!(pLoginPlayerEntity->SetConnection(pConn)))
 				{
 					// NOTE: We need to mark to close this
 					pLoginPlayerEntity->ClearEntity();

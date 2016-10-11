@@ -43,7 +43,7 @@ namespace DB {
 		if( hr == DB_E_CANNOTCONNECT ) hr = ResultCode::E_DB_CONNECTION_FAILED;
 		cmd.SetResult(hr);
 
-		if( FAILED(hr) ) {
+		if( !(hr) ) {
 			BR::DB::ReportError( hr, typeid(cmd).name() );
 		}
 
@@ -58,7 +58,7 @@ namespace DB {
 	{
 		dbTrace( BR::DB::TRC_QUERYSTR, "Query {0}", cmd.GetQueryString() );
 		Result hr = cmd.Open(session, cmd.GetQueryString(), NULL, NULL, DBGUID_DEFAULT, true);
-		if( FAILED(hr) ) {
+		if( !(hr) ) {
 			return ResultCode::FAIL;
 		}
 
@@ -69,7 +69,7 @@ namespace DB {
 		if( hr == DB_E_CANNOTCONNECT ) hr = ResultCode::E_DB_CONNECTION_FAILED;
 		cmd.SetResult(hr);
 
-		if( FAILED(hr) ) {
+		if( !(hr) ) {
 			ReportError( hr, typeid(cmd).name() );
 		}
 

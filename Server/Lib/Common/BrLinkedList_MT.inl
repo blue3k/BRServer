@@ -356,7 +356,7 @@ public:
 	LinkedList()
 	{
 		Result hr = BR::MemoryPoolManager::GetMemoryPool( sizeof(Node), m_pNodePool );
-		Assert(SUCCEEDED(hr)&&m_pNodePool);
+		Assert((hr)&&m_pNodePool);
 
 		// Init list
 		m_Head.m_Next.m_pNode =  &m_Tail;
@@ -492,7 +492,7 @@ public:
 		void* pPtr = nullptr;
 
 		hr = m_pNodePool->Alloc(pPtr);
-		Assert(SUCCEEDED(hr));
+		Assert((hr));
 		Node* pNewNode = new(pPtr)Node(Value);
 
 

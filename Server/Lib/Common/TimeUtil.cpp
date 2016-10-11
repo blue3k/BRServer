@@ -79,7 +79,7 @@ namespace Util {
 	Result LibComponentTime::InitializeComponent()
 	{
 		Result hr = Component::InitializeComponent();
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 		TimerUpdateThread.Start();
 		return ResultCode::SUCCESS;

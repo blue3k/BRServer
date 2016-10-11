@@ -315,7 +315,7 @@ namespace Google {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to Authorize google API hr:{0:X8}, account:{1}, {2}", hr, m_Account, m_ResultBuffer.GetSize() > 0 ? (char*)m_ResultBuffer.data() : "null");
 		}

@@ -284,7 +284,7 @@ namespace Net {
 
 		hrTem = SendRaw(pMsg);
 		//hrTem = GetNet()->SendMsg( this, pMsg );
-		if( FAILED(hrTem) )
+		if( !(hrTem) )
 		{
 			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							GetCID(), 
@@ -317,7 +317,7 @@ namespace Net {
 		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_CONNECTION_RESULT, hrConnect)  );
 
 
-		if( FAILED(hrConnect) )
+		if( !(hrConnect) )
 		{
 			netTrace(TRC_CONNECTION, "Connection failed CID:{0}, Dst={1}:{2}, hr={3:X8}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort, hrConnect);
 			if (GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -480,7 +480,7 @@ namespace Net {
 		{
 			netChk(GetRecvQueue().Enqueue(pMsg));
 		}
-		else if (FAILED(GetEventHandler()->OnRecvMessage(this, pMsg)))
+		else if (!(GetEventHandler()->OnRecvMessage(this, pMsg)))
 		{
 			netTrace(TRC_GUARREANTEDCTRL, "Failed to route a message to recv msg:{0}", msgID);
 			if (pMsg != nullptr)
@@ -494,7 +494,7 @@ namespace Net {
 
 	Proc_End:
 
-		Assert(FAILED(hr) || pMsg == nullptr);
+		Assert(!(hr) || pMsg == nullptr);
 		Util::SafeRelease( pMsg );
 
 		return hr;
@@ -531,7 +531,7 @@ namespace Net {
 
 		pIMsg = nullptr;
 
-		if( FAILED(GetRecvQueue().Dequeue( pIMsg )) )
+		if( !(GetRecvQueue().Dequeue( pIMsg )) )
 		{
 			hr = ResultCode::FAIL;
 			goto Proc_End;
@@ -549,7 +549,7 @@ namespace Net {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pIMsg );
 
 		return hr;

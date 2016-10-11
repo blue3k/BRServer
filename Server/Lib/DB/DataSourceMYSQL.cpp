@@ -53,7 +53,7 @@ namespace DB {
 
 	Proc_End:
 
-		if(FAILED(hr))
+		if(!(hr))
 		{
 			Factory::ErrorLog( nullptr, hr, typeid(*this).name() );
 		}

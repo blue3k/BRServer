@@ -96,7 +96,7 @@ namespace Svr {
 			}
 
 			//svrChk(hr);
-			if (FAILED(hr))
+			if (!(hr))
 				goto Proc_End;
 
 			ClearTimer();
@@ -109,7 +109,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			SetTimer(DurationMS(GRAB_RETRY_TIME));
 		}
@@ -126,7 +126,7 @@ namespace Svr {
 
 		svrChkPtr(pServiceEntity = GetServerComponent<RingClusterServiceEntity>(m_TargetQueueComponentID));
 
-		if (FAILED(pServiceEntity->GetService(pService)))
+		if (!(pServiceEntity->GetService(pService)))
 		{
 			return ResultCode::E_SVR_CLUSTER_NOTREADY;
 		}
@@ -144,7 +144,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			if (pServiceEntity != nullptr)
 			{
@@ -185,7 +185,7 @@ namespace Svr {
 
 		//m_RequestedTime = 0;
 
-		if (FAILED(pRes->GetResult()))
+		if (!(pRes->GetResult()))
 		{
 			// 
 			hr = pRes->GetResult();
@@ -228,7 +228,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			SetTimer(DurationMS(GRAB_RETRY_TIME));
 		}
@@ -320,7 +320,7 @@ namespace Svr {
 		m_PendingDequeueItem--;
 
 		// Maybe canceled?
-		if (SUCCEEDED(pRes->GetResult()))
+		if ((pRes->GetResult()))
 		{
 			svrChk(msgRes.ParseIMsg(((MessageResult*)pRes)->GetMessage()));
 
@@ -374,7 +374,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			SetTimer(DurationMS(1000));
 
 		return hr;
@@ -406,7 +406,7 @@ namespace Svr {
 			{
 				if (reservedMember.Players[member].PlayerUID == reservedMember.RegisterEntityUID) notifiedToRegister = true;
 
-				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.Players[member].PlayerUID.GetServerID(), pServerEntity)))
+				if (!(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.Players[member].PlayerUID.GetServerID(), pServerEntity)))
 				{
 					// skip this player
 					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity({0}) while broadcasting for a player({1})", reservedMember.Players[member].PlayerUID.GetServerID(), reservedMember.Players[member].PlayerID);
@@ -422,7 +422,7 @@ namespace Svr {
 			// this should be a party, or canceled item
 			if (!notifiedToRegister)
 			{
-				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.RegisterEntityUID.GetServerID(), pServerEntity)))
+				if (!(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.RegisterEntityUID.GetServerID(), pServerEntity)))
 				{
 					// skip this player
 					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity({0}) while broadcasting", reservedMember.RegisterEntityUID.GetServerID());
@@ -442,7 +442,7 @@ namespace Svr {
 		if (notifiedPlayerCount == 0)
 		{
 			ServerEntity *pServerEntity = nullptr;
-			if (SUCCEEDED(GetServerComponent<ServerEntityManager>()->GetServerEntity(gameUID.GetServerID(), pServerEntity)))
+			if ((GetServerComponent<ServerEntityManager>()->GetServerEntity(gameUID.GetServerID(), pServerEntity)))
 			{
 				auto pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameInstance>();
 				if (pPolicy != nullptr)
@@ -474,7 +474,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr) || m_PendingDequeueItem <= 0)
+		if (!(hr) || m_PendingDequeueItem <= 0)
 		{
 			// We need to retry until it's successed
 			CloseTransaction(hr);

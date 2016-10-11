@@ -256,7 +256,7 @@ namespace Google {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			if (hr == ((Result)ResultCode::E_SVR_INVALID_EXTERNAL_AUTH))
 			{

@@ -153,7 +153,7 @@ namespace GameServer {
 		for( unsigned int index = 0; index < m_Notifications.GetSize(); index++ )
 		{
 			Result hr = functor( m_Notifications[index] );
-			if( FAILED(hr) )
+			if( !(hr) )
 				return hr;
 		}
 

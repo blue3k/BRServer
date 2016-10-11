@@ -236,10 +236,11 @@ namespace Net {
 				// If End of IOCP signaled
 				if( pOverlappedSys == nullptr || pOverlapped == nullptr )
 				{
-					// Release?
+					// Release
 					if (ulKey != 0)
 					{
-						//INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
+						INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
+						pCallback->GetIOFlagsEditable().IsRegistered = 0;
 					}
 					// chain call to end all IOCP worker
 					//if( !PostQueuedCompletionStatus( m_hIOCP, 0, 0, NULL ) )
@@ -387,7 +388,7 @@ namespace Net {
 
 		Proc_End:
 
-			if( FAILED(hr) )
+			if( !(hr) )
 			{
 				CloseIOCP();
 			}
@@ -527,19 +528,19 @@ namespace Net {
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
 
-		Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
-		{
-			Result hr = ResultCode::SUCCESS;
+		//Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+		//{
+		//	Result hr = ResultCode::SUCCESS;
 
-			netChkPtr(cbInstance);
-			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
+		//	netChkPtr(cbInstance);
+		//	Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
 
-			//netChk(EPOLLSystem::GetSystem().RegisterSharedSocket(sockType, cbInstance));
+		//	//netChk(EPOLLSystem::GetSystem().RegisterSharedSocket(sockType, cbInstance));
 
-		Proc_End:
+		//Proc_End:
 
-			return hr;
-		}
+		//	return hr;
+		//}
 
 
 		Result RegisterSocket(SockType sockType, INetIOCallBack* cbInstance)
@@ -552,6 +553,8 @@ namespace Net {
 				netTrace(Trace::TRC_ERROR, "Registering socket to IOCP is Failed, hr = {0:X8}", hr);
 				netErr(ResultCode::UNEXPECTED);
 			}
+
+			cbInstance->GetIOFlagsEditable().IsRegistered = 1;
 
 		Proc_End:
 

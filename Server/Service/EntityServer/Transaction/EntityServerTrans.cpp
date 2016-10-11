@@ -64,7 +64,7 @@ namespace EntityServer {
 			GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
 			if( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-			//if( (SUCCEEDED(GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) && pServer != Svr::BrServer::GetInstance()->GetLoopbackServerEntity())
+			//if( ((GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) && pServer != Svr::BrServer::GetInstance()->GetLoopbackServerEntity())
 			//	|| m_WaitCount > 6 ) // wait 6*500 ms
 			{
 				svrChk( InitializeServices() );
@@ -90,7 +90,7 @@ namespace EntityServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr;

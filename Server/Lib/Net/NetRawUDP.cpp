@@ -157,7 +157,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			TerminateNet();
 
 		if (socket != INVALID_SOCKET)
@@ -266,7 +266,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			//if (pSendBuffer)
 			//{
@@ -308,7 +308,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			if (pOverlapped)
 			{
@@ -440,7 +440,7 @@ namespace Net {
 		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
 		else memset(&from, 0, sizeof(from));
 
-		if (FAILED(hrRes))
+		if (!(hrRes))
 		{
 			switch ((int32_t)hrRes)
 			{

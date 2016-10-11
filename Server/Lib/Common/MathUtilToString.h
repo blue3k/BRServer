@@ -21,19 +21,19 @@ namespace BR
 	template<>
 	inline Result ToString( char*& pBuff, INT& iBuffLen, const Vector2& Data, int Option )
 	{
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "(" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "(" ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( ToString( pBuff, iBuffLen, Data.x, Option ) ) )
+		if( !( ToString( pBuff, iBuffLen, Data.x, Option ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "," ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "," ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( ToString( pBuff, iBuffLen, Data.y, Option ) ) )
+		if( !( ToString( pBuff, iBuffLen, Data.y, Option ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -49,25 +49,25 @@ namespace BR
 	template<>
 	inline Result ToString( char*& pBuff, INT& iBuffLen, const Vector3& Data, int Option )
 	{
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "(" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "(" ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( ToString( pBuff, iBuffLen, Data.x, Option ) ) )
+		if( !( ToString( pBuff, iBuffLen, Data.x, Option ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "," ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "," ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( ToString( pBuff, iBuffLen, Data.y, Option ) ) )
+		if( !( ToString( pBuff, iBuffLen, Data.y, Option ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "," ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "," ) ) )
 			return ResultCode::FAIL;
 		
-		if( FAILED( ToString( pBuff, iBuffLen, Data.z, Option ) ) )
+		if( !( ToString( pBuff, iBuffLen, Data.z, Option ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;

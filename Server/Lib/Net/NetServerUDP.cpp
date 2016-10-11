@@ -137,7 +137,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			//if (pSendBuffer)
 			//{
@@ -295,7 +295,7 @@ namespace Net {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			HostClose();
 
 		if( socket != INVALID_SOCKET )
@@ -410,7 +410,7 @@ namespace Net {
 			{
 			case ResultCode::E_NET_CONNECTION_CLOSED:
 			case ResultCode::E_NET_IO_ABORTED:
-				if (SUCCEEDED(GetConnectionManager().GetConnectionByAddr(from, pConnection)))
+				if ((GetConnectionManager().GetConnectionByAddr(from, pConnection)))
 				{
 					netTrace( TRC_RECV, "UDP bad connection state IP:{0}", from);
 				}
@@ -427,7 +427,7 @@ namespace Net {
 				goto Proc_End;
 
 			if( GetIsEnableAccept()
-				&& FAILED(GetConnectionManager().GetConnectionByAddr(pIOBuffer->NetAddr.From, pConnection)))
+				&& !(GetConnectionManager().GetConnectionByAddr(pIOBuffer->NetAddr.From, pConnection)))
 			{
 				MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pIOBuffer->buffer;
 				if (pNetCtrl->Length == sizeof(MsgNetCtrlConnect) && pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID && pNetCtrl->rtnMsgID.ID == BR_PROTOCOL_VERSION)

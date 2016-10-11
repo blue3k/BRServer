@@ -24,7 +24,7 @@ Result GameInstanceEntity::ForeachPlayer(Func func)
 	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pPlayer)-> bool
 	{
 		Result hrRes = func((GamePlayer*)pPlayer);
-		if (FAILED(hrRes))
+		if (!(hrRes))
 			return false;
 		return true;
 	});
@@ -50,7 +50,7 @@ inline Result GameInstanceEntity::ForeachPlayerGameServer(Func func)
 		if (pPolicy)
 		{
 			Result hrRes = func(pGamePlayer, pPolicy);
-			if (FAILED(hrRes))
+			if (!(hrRes))
 				return false;
 		}
 		return true;
@@ -76,7 +76,7 @@ inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(Func func)
 		if (pPolicy)
 		{
 			Result hrRes = func(pGamePlayer, pPolicy);
-			if (FAILED(hrRes))
+			if (!(hrRes))
 				return false;
 		}
 

@@ -75,7 +75,7 @@ namespace Svr
 	{
 		size_t totalSize = size*nmemb;
 		void *pPtr = nullptr;
-		if (SUCCEEDED(m_Allocator.Alloc(totalSize, pPtr)))
+		if ((m_Allocator.Alloc(totalSize, pPtr)))
 		{
 			memset(pPtr, 0, totalSize);
 		}
@@ -166,7 +166,7 @@ namespace Svr
 		Result hr = ResultCode::SUCCESS;
 
 		hr = ParallelTransactionManager::TickUpdate(pAction);
-		if (hr == ResultCode::SUCCESS_FALSE || FAILED(hr))
+		if (hr == ResultCode::SUCCESS_FALSE || !(hr))
 			return hr;
 
 		//svrChk(m_GoogleAuth.UpdateAuthentication(false));
@@ -194,7 +194,7 @@ namespace Svr
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Util::SafeRelease( newTrans );
 		}
@@ -220,7 +220,7 @@ namespace Svr
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			Util::SafeDelete(newTrans);
 		}
@@ -244,7 +244,7 @@ namespace Svr
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			Util::SafeDelete(newTrans);
 		}

@@ -256,11 +256,11 @@ namespace Net {
 
 		DecPendingRecvCount();
 
-		if( SUCCEEDED(hrRes) )
+		if( (hrRes) )
 		{
 			netChkPtr(pIOBuffer);
 
-			if( FAILED( hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer ) ) )
+			if( !( hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer ) ) )
 				netTrace( TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", GetCID(), hr );
 
 			PendingRecv();

@@ -60,7 +60,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			// We need to retry until it's successed
 			CloseTransaction(hr);

@@ -453,12 +453,12 @@ Result StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iBuffLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 	else
 	{
 		hr = StringDup( szDest, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 		iBuffLen = iSrcBuffLen;
 	}
 
@@ -478,12 +478,12 @@ Result StringLwr(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
 	if (iBuffLen >= iSrcBuffLen)
 	{
 		hr = StringCpy(szDest, iBuffLen, szSrc);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 	}
 	else
 	{
 		hr = StringDup(szDest, szSrc);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 		iBuffLen = iSrcBuffLen;
 	}
 
@@ -500,7 +500,7 @@ Result StringLwrEx(char* &szDest, INT &iBuffLen, const char* szSrc)
 
 
 	hr = StringCpyEx(szDest, iBuffLen, szSrc);
-	if (FAILED(hr)) return hr;
+	if (!(hr)) return hr;
 
 	return StringLwr(szDest, iBuffLen);
 }
@@ -514,7 +514,7 @@ Result StringLwrEx(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
 
 
 	hr = StringCpyEx(szDest, iBuffLen, szSrc);
-	if (FAILED(hr)) return hr;
+	if (!(hr)) return hr;
 
 	return StringLwr(szDest, iBuffLen);
 }
@@ -537,7 +537,7 @@ Result StringLwr( char (&szDest)[iBuffLen], const char *szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iConvLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	return StringLwr( szDest, iConvLen );
@@ -558,7 +558,7 @@ Result StringLwr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy(wszDest, iConvLen, wszSrc);
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	return StringLwr(wszDest, iConvLen );
@@ -636,12 +636,12 @@ Result StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iBuffLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 	else
 	{
 		hr = StringDup( szDest, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 		iBuffLen = iSrcBuffLen;
 	}
 
@@ -661,12 +661,12 @@ Result StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iBuffLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 	else
 	{
 		hr = StringDup( szDest, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 		iBuffLen = iSrcBuffLen;
 	}
 
@@ -691,7 +691,7 @@ Result StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iConvLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	return StringUpr( szDest, iConvLen );
@@ -712,7 +712,7 @@ Result StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy(wszDest, iConvLen, wszSrc);
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	return StringUpr(wszDest, iConvLen );

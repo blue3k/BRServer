@@ -225,7 +225,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			if( pMyQuery )
 			{
@@ -240,7 +240,7 @@ namespace DB {
 			{
 				defTrace( Trace::TRC_WARN, "DB connection is lost, recovering the connection... " );
 				Result hrTem = OpenSession();
-				if( FAILED(hrTem) )
+				if( !(hrTem) )
 				{
 					defTrace( Trace::TRC_ERROR, "DB connection recovery is failed ... {0:X8}", hrTem );
 				}
@@ -288,7 +288,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog(m_mySQL,hr,typeid(*this).name());
 			CloseSession();
@@ -377,7 +377,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog( pContext, hr, m_Stmt ? mysql_stmt_error(m_Stmt) : typeid(*this).name() );
 			Clear();
@@ -411,7 +411,7 @@ namespace DB {
 
 	Proc_End:
 		
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog( m_Context, hr, m_Stmt ? mysql_stmt_error(m_Stmt) : typeid(*this).name() );
 		}
@@ -435,7 +435,7 @@ namespace DB {
 
 	Proc_End:
 		
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog( m_Context, hr, m_Stmt ? mysql_stmt_error(m_Stmt) : typeid(*this).name() );
 		}
@@ -452,7 +452,9 @@ namespace DB {
 
 		dbChkPtr( m_Stmt );
 		dbChkPtr( m_Context );
-		
+
+		int outParamCount = pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount();
+
 		while(resultStatus == 0)
 		{
 			int num_fields = mysql_stmt_field_count(m_Stmt);
@@ -461,15 +463,17 @@ namespace DB {
 			{
 				//const int ResultMax = 32;
 				MYSQL_BIND *pResults = nullptr;
-				bool bOutParamBind = (m_Context->server_status & SERVER_PS_OUT_PARAMS) != 0;
+				bool bOutParamBind = (m_Context->server_status & SERVER_PS_OUT_PARAMS) != 0 // If server says it is a out parameter
+					|| (outParamCount > 0 && outParamCount == num_fields);					// Maybe conntor library bug, let's assume the first one is the out parameter
 				if( bOutParamBind )
 				{
 					pResults = m_pParameter + pMyQuery->GetInputParameterCount();
-					if( (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()) != num_fields )
+					if(outParamCount != num_fields )
 					{
 						dbTrace( Trace::TRC_ERROR, "Database output count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()));
 						dbErr(ResultCode::E_DB_RESULT_COUNT_MISMATCH);
 					}
+					outParamCount = 0;
 				}
 				else
 				{
@@ -531,7 +535,7 @@ namespace DB {
 
 	Proc_End:
 		
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog( m_Context, hr, m_Stmt ? mysql_stmt_error(m_Stmt) : typeid(*this).name() );
 		}

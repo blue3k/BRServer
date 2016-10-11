@@ -147,7 +147,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (FAILED(Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(partyUID.GetEntityID())))
+		if (!(Svr::GetServerComponent<Svr::EntityManager>()->RemoveEntity(partyUID.GetEntityID())))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to delete party info {0}", partyUID);
 		}

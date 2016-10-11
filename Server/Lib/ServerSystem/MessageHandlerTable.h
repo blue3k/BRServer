@@ -119,7 +119,7 @@ namespace Svr {
 			// prevent duplicated insert
 			typename HandlerTableType::iterator itHandler;
 			Result hr = m_HandlerTable.find(key, itHandler );
-			if( SUCCEEDED(hr) )
+			if( (hr) )
 			{
 				// Same category can be called multiple times. let's just ignore silently
 				//auto pConflictedHandler = *itHandler;
@@ -129,7 +129,7 @@ namespace Svr {
 			}
 
 			void* pPtr = nullptr;
-			if( FAILED(m_Allocator.Alloc( sizeof(TableItem), pPtr )) )
+			if( !(m_Allocator.Alloc( sizeof(TableItem), pPtr )) )
 				return ResultCode::OUT_OF_MEMORY;
 
 			TableItem *pNewItem = new(pPtr) TableItem( MessageClassType::MID, newHandler, fileName, lineNumber);
@@ -144,7 +144,7 @@ namespace Svr {
 		{
 			typename HandlerTableType::iterator itHandler;
 			Result hr = m_HandlerTable.find(msgID.IDSeq.MsgID, itHandler);
-			if( FAILED(hr) )
+			if( !(hr) )
 				return hr;
 			handler = itHandler->Handler;
 			return ResultCode::SUCCESS;
@@ -158,7 +158,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( FAILED(hr) ) return ResultCode::E_NO_MESSAGE_HANDLER;
+			if( !(hr) ) return ResultCode::E_NO_MESSAGE_HANDLER;
 
 			return handler( pMsg );
 		}
@@ -169,7 +169,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(msgID,handler);
-			if( FAILED(hr) ) return ResultCode::E_SVR_NO_RESULT_HANDLER;
+			if( !(hr) ) return ResultCode::E_SVR_NO_RESULT_HANDLER;
 
 			return handler( pRes );
 		}
@@ -181,7 +181,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( FAILED(hr) ) return ResultCode::E_SVR_NO_MESSAGE_HANDLER;
+			if( !(hr) ) return ResultCode::E_SVR_NO_MESSAGE_HANDLER;
 
 			return handler( pCon, pMsg, param1 );
 		}
@@ -193,7 +193,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( FAILED(hr) ) return ResultCode::E_NO_MESSAGE_HANDLER;
+			if( !(hr) ) return ResultCode::E_NO_MESSAGE_HANDLER;
 
 			return handler( pMsg, param1, param2 );
 		}

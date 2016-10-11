@@ -113,7 +113,7 @@ namespace Svr {
 		ClusterIDMap::iterator iterMap;
 
 		hr = m_ClusterIDMap.find((UINT)clusterID, iterMap );
-		if( SUCCEEDED(hr) )
+		if( (hr) )
 			pServiceEntity = *iterMap;
 
 	//Proc_End:
@@ -145,7 +145,7 @@ namespace Svr {
 		EntityID entityID(EntityFaculty::Service,(UINT32)clusterID);
 		SharedPointerT<Entity> pEntity;
 
-		if( SUCCEEDED( GetServerComponent<EntityManager>()->FindEntity( entityID, pEntity ) ) )
+		if( ( GetServerComponent<EntityManager>()->FindEntity( entityID, pEntity ) ) )
 		{
 			// same entity already registered, just check integrity
 			ClusteredServiceEntity* pClusterEntity = BR_DYNAMIC_CAST(ClusteredServiceEntity*,(Entity*)pEntity);

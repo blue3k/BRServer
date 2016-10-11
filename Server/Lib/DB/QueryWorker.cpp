@@ -68,7 +68,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			if (pSession != nullptr)
 				Factory::ErrorLog(pSession->GetContext(), hr, pQuery ? typeid(*pQuery).name() : "");
@@ -111,7 +111,7 @@ namespace DB {
 				break;
 			}
 
-			if (FAILED(m_pWorkerManager->TryGetQuery(pQuery)))
+			if (!(m_pWorkerManager->TryGetQuery(pQuery)))
 				continue;
 
 			if (pQuery != nullptr)

@@ -291,7 +291,7 @@ namespace Trace {
 
 		// Open file
 		Result hr = m_LogFile[iFile].Open(strFileName, IO::File::OpenMode::Append, IO::File::SharingMode::ReadShared);
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			return hr;
 		}

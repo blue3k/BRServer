@@ -74,9 +74,16 @@ namespace Net {
 
 	ConnectionTCP::~ConnectionTCP()
 	{
-		//Assert( SUCCEEDED( CloseConnection() ) );
-		if( GetSocket() != INVALID_SOCKET )
-			NetSystem::CloseSocket( GetSocket() );
+		//Assert( ( CloseConnection() ) );
+		if (GetSocket() != INVALID_SOCKET)
+		{
+			AssertRel(!GetIOFlags().IsRegistered);
+			AssertRel(GetAssignedIOWorker() == -1);
+
+			NetSystem::UnregisterSocket(SockType::Stream, this);
+
+			NetSystem::CloseSocket(GetSocket());
+		}
 
 		if (GetWriteQueue()) delete GetWriteQueue();
 	}
@@ -275,9 +282,9 @@ namespace Net {
 
 		Assert(!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_relaxed));
 
-		if( FAILED( hrRes ) )
+		if( !( hrRes ) )
 		{
-			switch( hrRes )
+			switch((int32_t)hrRes )
 			{
 			case ResultCode::E_NET_CONNECTION_CLOSED:
 			case ResultCode::E_NET_IO_ABORTED:
@@ -364,11 +371,11 @@ namespace Net {
 		// For TCP, we need only single buffer is in waiting read operation
 		pOver = GetRecvBuffer();
 		hr = pOver->SetPendingTrue();
-		if (FAILED(hr))
+		if (!(hr))
 			return ResultCode::SUCCESS;
 
 		hr = Recv(pOver);
-		if (FAILED(hr) && hr != ResultCode::E_NET_IO_PENDING)
+		if (!(hr) && hr != ResultCode::E_NET_IO_PENDING)
 		{
 			netTrace(Trace::TRC_WARN, "Pending Recv failed, CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 			//Assert(false);
@@ -393,7 +400,7 @@ namespace Net {
 	{
 		Connection::OnConnectionResult( hrConnect );
 
-		if( SUCCEEDED( hrConnect ) )
+		if( ( hrConnect ) )
 		{
 		}
 		else
@@ -473,7 +480,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			SetConnectionState(STATE_DISCONNECTED);
 			CloseSocket();
@@ -558,11 +565,11 @@ namespace Net {
 
 		netChk(Connection::CloseConnection() );
 
+		CloseSocket();
+
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
-
 		
-		CloseSocket();
 
 	Proc_End:
 
@@ -573,9 +580,9 @@ namespace Net {
 	{
 		if (GetSocket() == INVALID_SOCKET) return;
 
-		NetSystem::UnregisterSocket(SockType::Stream, this);
-
 		Connection::CloseSocket();
+
+		NetSystem::UnregisterSocket(SockType::Stream, this);
 	}
 
 
@@ -878,7 +885,7 @@ namespace Net {
 
 	Proc_End:
 
-		if(FAILED(hr))
+		if(!(hr))
 		{
 			Util::SafeRelease(pMsg);
 		}
@@ -900,7 +907,7 @@ namespace Net {
 	Result ConnectionTCP::SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID)
 	{
 		Result hr = Connection::SendNetCtrl(uiCtrlCode, uiSequence, msgID, UID);
-		if (SUCCEEDED(hr))
+		if ((hr))
 		{
 			m_PendingSend.fetch_add(1, std::memory_order_acquire);
 		}
@@ -1023,7 +1030,7 @@ namespace Net {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if(SUCCEEDED(ConnectionTCP::WaitConnect()))
+		if((ConnectionTCP::WaitConnect()))
 		{
 			ThisThread::SleepFor(DurationMS(50));
 

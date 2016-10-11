@@ -152,7 +152,7 @@ public:
 	LinkedList() : m_Size(0)
 	{
 		Result hr = BR::MemoryPoolManager::GetMemoryPool( sizeof(Node), m_pNodePool );
-		Assert(SUCCEEDED(hr)&&m_pNodePool);
+		Assert((hr)&&m_pNodePool);
 
 		// Init list
 		m_Head.m_pNext = &m_Tail;
@@ -203,7 +203,7 @@ public:
 		void* pPtr = nullptr;
 
 		hr = m_pNodePool->Alloc(pPtr);
-		Assert(SUCCEEDED(hr));
+		Assert((hr));
 		Node* pNewNode = new(pPtr)Node(Value);
 
 		// Set link
@@ -213,7 +213,7 @@ public:
 		Iter.m_pNode->m_pPrev->m_pNext	= pNewNode;
 		Iter.m_pNode->m_pPrev			= pNewNode;
 
-		if (SUCCEEDED(hr))
+		if ((hr))
 			++m_Size;
 Proc_End:
 		return hr;

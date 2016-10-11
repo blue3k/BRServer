@@ -471,7 +471,7 @@ namespace Svr {
 
 		Proc_End:
 
-			if( FAILED(hr) )
+			if( !(hr) )
 			{
 				if( hr == ResultCode::E_SVR_NO_RESULT_HANDLER )
 				{
@@ -541,7 +541,7 @@ namespace Svr {
 		Result ParseMessage()
 		{
 			Result hr = MessageClass::ParseMsg();
-			if (SUCCEEDED(hr))
+			if ((hr))
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
@@ -689,7 +689,7 @@ namespace Svr {
 			hr = MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>::ParseMessage();
 			svrChk(hr);
 
-			if (FAILED(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))
+			if (!(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))
 			{
 				// Can't find target player entity, maybe logged out?
 				hr = ResultCode::E_SVR_INVALID_ENTITYUID;

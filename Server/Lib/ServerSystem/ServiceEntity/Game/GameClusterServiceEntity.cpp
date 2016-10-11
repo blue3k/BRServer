@@ -115,7 +115,7 @@ namespace Svr {
 			svrErr(ResultCode::E_SVR_INVALID_SERVERID);
 		}
 
-		if( SUCCEEDED(m_PlayerIDMap.find( playerID, itPlayer )) )
+		if( (m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
 			Assert(itPlayer->GetPlayerID() == playerID);
 			itPlayer->UpdateEntityInfo( entityUID, pGameServerEntity );
@@ -170,7 +170,7 @@ namespace Svr {
 		PlayerTableItem *pPlayerInfo = nullptr;
 		PlayerIDMap::iterator itPlayer;
 
-		if( FAILED(m_PlayerIDMap.find( playerID, itPlayer )) )
+		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
 			svrErr( ResultCode::E_INVALID_PLAYERID );
 		}
@@ -215,7 +215,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		PlayerIDMap::iterator itPlayer;
 
-		if( FAILED(m_PlayerIDMap.find( playerID, itPlayer )) )
+		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
 			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
 		}

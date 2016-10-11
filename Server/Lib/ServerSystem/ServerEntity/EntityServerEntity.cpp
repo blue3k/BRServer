@@ -82,7 +82,7 @@ namespace Svr
 		switch( conEvent.EventType )
 		{
 		case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
-			if( SUCCEEDED(conEvent.hr) // && IsInitialConnection()
+			if( (conEvent.hr) // && IsInitialConnection()
 				&& GetPolicy<Policy::IPolicyEntityServer>() )
 			{
 				// Register entity manager server

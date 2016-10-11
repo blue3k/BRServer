@@ -118,7 +118,7 @@ namespace Net {
 			goto Proc_End;
 
 		hr = ProcSendReliableQueue();
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			netTrace(TRC_CONNECTION, "Process Send Guaranted queue failed {0:X8}", hr);
 		}
@@ -144,7 +144,7 @@ namespace Net {
 		Message::MessageData *pIMsg = nullptr;
 
 		// slide recv window
-		while (SUCCEEDED(m_RecvReliableWindow.PopMsg(pIMsg)))
+		while ((m_RecvReliableWindow.PopMsg(pIMsg)))
 		{
 			Assert(pIMsg);
 			Message::MessageHeader *pQMsgHeader = pIMsg->GetMessageHeader();
@@ -219,7 +219,7 @@ namespace Net {
 			netErr( ResultCode::E_NET_BADPACKET_TOOBIG );
 		}
 
-		if( FAILED(PrepareGatheringBuffer(pMsg->GetMessageSize()) ) )
+		if( !(PrepareGatheringBuffer(pMsg->GetMessageSize()) ) )
 		{
 			return Send(pMsg);
 		}
@@ -263,7 +263,7 @@ namespace Net {
 
 			//Result hrTem = GetNet()->SendMsg( this, GatherSize, pGatherBuff );
 			//Result hrTem = (this, GatherSize, pGatherBuff);
-			//if( FAILED(hrTem) )
+			//if( !(hrTem) )
 			//{
 			//	netTrace( TRC_SENDRAW, "Gathered Send failed : CID:{0}, Len={1}, hr={2:X8}", 
 			//		GetCID(), GatherSize, hrTem );
@@ -549,7 +549,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			//if (pSendBuffer)
 			//{
@@ -709,7 +709,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			Util::SafeRelease(pMsg);
 		}
@@ -860,7 +860,7 @@ namespace Net {
 
 		Util::SafeRelease( pMsg );
 
-		if( FAILED( hr ) )
+		if( !( hr ) )
 		{
 			CloseConnection();
 		}
@@ -1024,7 +1024,7 @@ namespace Net {
 		auto loopCount = m_RecvNetCtrlQueue.GetEnqueCount();
 		for (unsigned iCount = 0; iCount < loopCount; iCount++)
 		{
-			if (FAILED(m_RecvNetCtrlQueue.Dequeue(netCtrl)))
+			if (!(m_RecvNetCtrlQueue.Dequeue(netCtrl)))
 				break;
 
 			if( netCtrl.msgID.ID != 0 )
@@ -1059,7 +1059,7 @@ namespace Net {
 		auto loopCount = m_RecvGuaQueue.GetEnqueCount();
 		for (unsigned iCount = 0; iCount < loopCount; iCount++)
 		{
-			if (FAILED(m_RecvGuaQueue.Dequeue(pIMsg)))
+			if (!(m_RecvGuaQueue.Dequeue(pIMsg)))
 				break;
 
 			if( pIMsg == nullptr )
@@ -1136,7 +1136,7 @@ Proc_End:
 		auto NumProc = Util::Min(availablePush, uiNumPacket);
 		for( CounterType uiPacket = 0; uiPacket < NumProc; uiPacket++ )
 		{
-			if( FAILED(m_SendGuaQueue.Dequeue( pIMsg )) )
+			if( !(m_SendGuaQueue.Dequeue( pIMsg )) )
 				break;
 
 			if (pMsgHeader->msgID.IDs.Reliability)
@@ -1148,7 +1148,7 @@ Proc_End:
 				}
 				else
 				{
-					if (SUCCEEDED(m_SendReliableWindow.EnqueueMessage(ulTimeCur, pIMsg)))
+					if ((m_SendReliableWindow.EnqueueMessage(ulTimeCur, pIMsg)))
 					{
 						pIMsg->AddRef();// Inc Ref for send
 						Assert(pIMsg->GetDataLength() == 0 || pIMsg->GetMessageHeader()->Crc32 != 0);
@@ -1188,7 +1188,7 @@ Proc_End:
 		UINT uiMaxProcess = Util::Min( m_SendReliableWindow.GetMsgCount(), m_uiMaxGuarantedRetry );
 		for( UINT uiIdx = 0, uiMsgProcessed = 0; uiIdx < (UINT)m_SendReliableWindow.GetWindowSize() && uiMsgProcessed < uiMaxProcess; uiIdx++ )
 		{
-			if( SUCCEEDED(m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
+			if( (m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
 				&& pMessageElement && pMessageElement->pMsg != NULL )
 			{
 				if( (ulTimeCur-pMessageElement->ulTimeStamp) > DurationMS(Const::SEND_RETRY_TIME) )
@@ -1288,32 +1288,32 @@ Proc_End:
 			goto Proc_End;
 
 		hr = ProcNetCtrlQueue();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process NetCtrlQueue failed {0:X8}", hr );
 		}
 
 		hr = ProcConnectionState();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process Connection state failed {0:X8}", hr );
 		}
 
 
 		hr = ProcRecvReliableQueue();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process Recv Guaranted queue failed {0:X8}", hr );
 		}
 
 		hr = ProcSendReliableQueue();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process Send Guaranted queue failed {0:X8}", hr );
 		}
 
 		hr = ProcReliableSendRetry();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process message window failed {0:X8}", hr );
 		}

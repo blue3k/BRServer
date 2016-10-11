@@ -100,7 +100,7 @@ namespace Net {
 
 		hrTem = SendRaw(dstAddress, pMsg);
 		//hrTem = SendMsg( nullptr, dstAddress, pMsg );
-		if( FAILED(hrTem) )
+		if( !(hrTem) )
 		{
 			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed in direct: DstAddr:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							dstAddress, 
@@ -196,7 +196,7 @@ namespace Net {
 		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
 		else memset(&from, 0, sizeof(from));
 
-		if( FAILED( hrRes ) )
+		if( !( hrRes ) )
 		{
 
 			switch((int32_t)hrRes )

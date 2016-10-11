@@ -461,7 +461,7 @@ namespace BR
 		wchar_t string[2] = { Data, 0 };
 		char DestBuff[16];
 
-		if (FAILED(StrUtil::WCSToUTF8(string, DestBuff)))
+		if (!(StrUtil::WCSToUTF8(string, DestBuff)))
 			return ResultCode::FAIL;
 
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, DestBuff);
@@ -477,7 +477,7 @@ namespace BR
 		if (Data == NULL)
 			return ResultCode::INVALID_POINTER;
 
-		if (FAILED(StrUtil::WCSToUTF8(Data, DestBuff)))
+		if (!(StrUtil::WCSToUTF8(Data, DestBuff)))
 			return ResultCode::FAIL;
 
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, DestBuff);
@@ -493,7 +493,7 @@ namespace BR
 		if (Data == NULL)
 			return ResultCode::INVALID_POINTER;
 
-		if (FAILED(StrUtil::WCSToUTF8(Data, DestBuff)))
+		if (!(StrUtil::WCSToUTF8(Data, DestBuff)))
 			return ResultCode::FAIL;
 
 		return StrUtil::StringCpyEx(pBuff, iBuffLen, DestBuff);

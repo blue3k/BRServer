@@ -94,7 +94,7 @@ namespace Svr {
 
 		svrChkPtr(pGameInstance);
 
-		if (SUCCEEDED(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance)))
+		if ((GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance)))
 		{
 			++m_NumberOfInstance;
 			m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
@@ -110,7 +110,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (SUCCEEDED(GetServerComponent<EntityManager>()->RemoveEntity(gameUID.GetEntityID())))
+		if ((GetServerComponent<EntityManager>()->RemoveEntity(gameUID.GetEntityID())))
 		{
 			--m_NumberOfInstance;
 			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);

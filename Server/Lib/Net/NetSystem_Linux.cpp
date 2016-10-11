@@ -258,6 +258,8 @@ namespace Net {
 			netChk(GetNetIOSystem().MakeSocketNonBlocking(cbInstance->GetIOSocket()));
 			netChk(GetNetIOSystem().RegisterToNETIO(sockType, cbInstance));
 
+			cbInstance->GetIOFlagsEditable().IsRegistered = 1;
+
 		Proc_End:
 
 			return hr;
@@ -277,19 +279,19 @@ namespace Net {
 			return hr;
 		}
 
-		Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
-		{
-			Result hr = ResultCode::SUCCESS;
+		//Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+		//{
+		//	Result hr = ResultCode::SUCCESS;
 
-			netChkPtr(cbInstance);
-			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
+		//	netChkPtr(cbInstance);
+		//	Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
 
-			netChk(GetNetIOSystem().RegisterSharedSocket(sockType, cbInstance));
+		//	netChk(GetNetIOSystem().RegisterSharedSocket(sockType, cbInstance));
 
-		Proc_End:
+		//Proc_End:
 
-			return hr;
-		}
+		//	return hr;
+		//}
 
 
 		SOCKET Socket(SockFamily domain, SockType type)

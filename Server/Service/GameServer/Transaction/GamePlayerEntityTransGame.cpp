@@ -179,7 +179,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction( hr );
 
 		return ResultCode::SUCCESS;
@@ -252,7 +252,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -341,7 +341,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -418,7 +418,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -500,7 +500,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -629,7 +629,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -706,7 +706,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -805,7 +805,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -895,7 +895,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if(FAILED(hr) )
+		if(!(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -1062,7 +1062,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -1161,7 +1161,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -1288,7 +1288,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS;
@@ -1358,7 +1358,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -1439,7 +1439,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -1476,7 +1476,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS;
@@ -1543,7 +1543,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -1579,7 +1579,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS;
@@ -1634,7 +1634,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;

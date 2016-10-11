@@ -41,9 +41,11 @@ namespace Svr {
 		Result EntityTable::ReserveEntityID( EntityID uiEntityID )
 		{
 			if (uiEntityID.GetFacultyID() == (UINT)EntityFaculty::Service)
-				return EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGenerator.ReserveID(uiEntityID.GetEntityLID()));
+				EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGenerator.ReserveID(uiEntityID.GetEntityLID()));
 			else
-				return EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGeneratorForService.ReserveID(uiEntityID.GetEntityLID()));
+				EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGeneratorForService.ReserveID(uiEntityID.GetEntityLID()));
+
+			return ResultCode::SUCCESS;
 		}
 
 		bool EntityTable::FreeEntityID( EntityID uiEntityID )

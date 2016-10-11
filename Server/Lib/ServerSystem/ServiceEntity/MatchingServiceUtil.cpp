@@ -98,7 +98,7 @@ namespace MatchingUtil {
 	{
 		UINT minComponentID, maxComponentID;
 
-		if (FAILED(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
+		if (!(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
 		{
 			Assert(false);
 			return (UINT)0;
@@ -112,7 +112,7 @@ namespace MatchingUtil {
 	{
 		UINT minComponentID, maxComponentID;
 
-		if (FAILED(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
+		if (!(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
 		{
 			Assert(false);
 			return (UINT)-1;

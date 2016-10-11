@@ -338,7 +338,7 @@ namespace Svr {
 
 		if( membership == ClusterMembership::StatusWatcher )
 		{
-			if( FAILED(m_WatcherUIDMap.insert((Context)pNewService->GetEntityUID(), pNewService)) )
+			if( !(m_WatcherUIDMap.insert((Context)pNewService->GetEntityUID(), pNewService)) )
 			{
 				svrChk(m_WatcherUIDMap.find((UINT64)entityUID, itFound));
 
@@ -350,7 +350,7 @@ namespace Svr {
 		}
 		else
 		{
-			if( FAILED(m_ServiceEntityUIDMap.insert((Context)pNewService->GetEntityUID(), pNewService)) )
+			if( !(m_ServiceEntityUIDMap.insert((Context)pNewService->GetEntityUID(), pNewService)) )
 			{
 				svrChk(m_ServiceEntityUIDMap.find((UINT64)entityUID, itFound));
 
@@ -381,9 +381,9 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		ServiceEntityUIDMap::iterator itFound;
 
-		if (FAILED(m_ServiceEntityUIDMap.find((UINT64)entityUID, itFound)))
+		if (!(m_ServiceEntityUIDMap.find((UINT64)entityUID, itFound)))
 		{
-			if (FAILED(m_WatcherUIDMap.find((UINT64)entityUID, itFound)))
+			if (!(m_WatcherUIDMap.find((UINT64)entityUID, itFound)))
 				return ResultCode::FAIL;
 		}
 		pService = *itFound;
@@ -553,7 +553,7 @@ namespace Svr {
 
 		
 		// Vote for new master if the master isn't available
-		if (FAILED(m_ServiceEntityUIDMap.find((UINT64)GetMasterUID(), itService))
+		if (!(m_ServiceEntityUIDMap.find((UINT64)GetMasterUID(), itService))
 			|| !itService->IsServiceAvailable() )
 		{
 			//ServiceTableItem *pMaster = itService.IsValid() ? *itService : nullptr;
@@ -677,7 +677,7 @@ namespace Svr {
 			hrRes = ResultCode::SUCCESS;
 		}
 
-		if( SUCCEEDED(hrRes) )
+		if( (hrRes) )
 		{
 			svrChk( m_ServiceList.FindPrevNode( pServerEntity->GetServerUpTime().time_since_epoch().count(), pPrevNode ) );
 

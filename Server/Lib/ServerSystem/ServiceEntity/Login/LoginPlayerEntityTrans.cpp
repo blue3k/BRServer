@@ -90,7 +90,7 @@ namespace Svr {
 				// Garbage login session information will lead process to here. Ignore it and create new one
 				svrTrace(Svr::TRC_ENTITY, "Garbage login session information will lead process to here. Ignore it and create new one UID:{0} ticket:{1}",
 					super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket());
-				if (FAILED(RegisterNewPlayerToJoinGameServer()))
+				if (!(RegisterNewPlayerToJoinGameServer()))
 				{
 					return super::OnGenericError(pRes);
 				}
@@ -135,7 +135,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr; 
@@ -171,7 +171,7 @@ namespace Svr {
 			{
 				pGameServerPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameServer>(m_GameEntityUID.GetServerID());
 				if (pGameServerPolicy == nullptr
-					|| FAILED(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID), super::GetTransID(),
+					|| !(pGameServerPolicy->RegisterPlayerToJoinGameServerCmd(RouteContext(super::GetOwnerEntityUID(), m_GameEntityUID), super::GetTransID(),
 						super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetMyOwner()->GetFacebookUID(), super::GetMyOwner()->GetShardID())))
 				{
 					svrChk(RegisterNewPlayerToJoinGameServer());
@@ -181,7 +181,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr; 
@@ -197,7 +197,7 @@ namespace Svr {
 		// Find new game server for this player
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( (ClusterID)((UINT)ClusterID::Game + (UINT)super::GetGameID()), pServiceEntity ) );
 		hr = pServiceEntity->FindRandomService( pService );
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Faild to find cluster service entity for game:{0} PlayerID:{1}", super::GetGameID(), super::GetMyOwner()->GetPlayerID());
 			goto Proc_End;
@@ -252,7 +252,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr; 
@@ -305,7 +305,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -350,7 +350,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS; 
@@ -375,7 +375,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -414,7 +414,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS; 
@@ -460,7 +460,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr; 
@@ -490,7 +490,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -530,7 +530,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -563,7 +563,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			CloseTransaction(hr);
 		}
@@ -614,7 +614,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr;
@@ -695,7 +695,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			GetMyOwner()->PendingCloseTransaction();
 			CloseTransaction( hr );
@@ -797,7 +797,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			GetMyOwner()->PendingCloseTransaction();
 			CloseTransaction( hr );

@@ -163,7 +163,7 @@ namespace GameServer {
 		if( pShopItem == nullptr )
 			return ResultCode::INVALID_POINTER;
 
-		if( FAILED(conspiracy::LevelTbl::FindItem( m_Level, pLevelInfo )) )
+		if( !(conspiracy::LevelTbl::FindItem( m_Level, pLevelInfo )) )
 			return ResultCode::E_INVALID_PLAYER_LEVEL;
 
 		if( pShopItem->RequiredGem > GetGem()
@@ -229,7 +229,7 @@ namespace GameServer {
 			return ResultCode::INVALID_POINTER;
 
 		hr = CheckCost(pCostItem);
-		if (FAILED(hr))
+		if (!(hr))
 			return hr;
 
 		m_Gem -= pCostItem->RequiredGem;
@@ -261,7 +261,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			svrTrace( Trace::TRC_ERROR, "Player Setlevel is failed to set {0}", newLevel );
 
 		return hr;
@@ -350,7 +350,7 @@ namespace GameServer {
 	Result UserGamePlayerInfoSystem::ResetRankNormal(conspiracy::OrganicTbl::OrganicItem *pCostItem)
 	{
 		Result hr = ApplyCost(pCostItem, TransLogCategory::Buy, "ResetRank");
-		if (FAILED(hr))
+		if (!(hr))
 			return hr;
 
 		m_WinPlayNCitizen = 0;

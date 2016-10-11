@@ -61,7 +61,7 @@ template< class DataType >
 Result Array<DataType>::SetSize( size_t szNewSize )
 {
 	auto hr = Reserve(szNewSize);
-	if (SUCCEEDED(hr))
+	if ((hr))
 		m_Size = szNewSize;
 	return hr;
 }
@@ -134,7 +134,7 @@ inline Result Array<DataType>::push_back( const DataType& NewData )
 	if( GetSize() ==  GetAllocatedSize() )
 	{
 		hr = IncreaseSize();
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	Assert( GetSize() <  GetAllocatedSize() );
@@ -153,7 +153,7 @@ inline Result Array<DataType>::push_back( DataType&& NewData )
 	if( GetSize() ==  GetAllocatedSize() )
 	{
 		hr = IncreaseSize();
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	Assert( GetSize() <  GetAllocatedSize() );
@@ -172,7 +172,7 @@ inline Result Array<DataType>::push_back( DataType&& NewData )
 //	if( GetSize() ==  GetAllocatedSize() )
 //	{
 //		hr = IncreaseSize();
-//		if( FAILED(hr) ) return hr;
+//		if( !(hr) ) return hr;
 //	}
 //
 //	Assert( GetSize() <  GetAllocatedSize() );
@@ -191,7 +191,7 @@ inline Result Array<DataType>::AddItems(size_t numItems, const DataType* NewData
 	if (newSize > GetAllocatedSize())
 	{
 		hr = Reserve(newSize + GetIncreaseSize());
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	Assert(newSize <=  GetAllocatedSize());

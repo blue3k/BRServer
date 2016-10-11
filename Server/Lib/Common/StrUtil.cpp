@@ -435,7 +435,7 @@ namespace StrUtil {
 	//		return ResultCode::INVALID_ARG;
 
 	//	Result hr = ModuleIconv.Convert("", (char*)strMBCS, iBuffLen, "UTF-16", (const char*)strWCS, wcslen(strWCS)*sizeof(wchar_t), convertedSize);
-	//	if (FAILED(hr)) return hr;
+	//	if (!(hr)) return hr;
 
 	//	if (iBuffLen >= 1)
 	//	{
@@ -458,7 +458,7 @@ namespace StrUtil {
 	//	}
 
 	//	Result hr = ModuleIconv.Convert("", (char*)stringBuffer, countof(stringBuffer), "UTF-16", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
-	//	if (FAILED(hr)) return hr;
+	//	if (!(hr)) return hr;
 
 	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
 	//	stringBuffer[lastPos] = '\0';
@@ -477,7 +477,7 @@ namespace StrUtil {
 			return ResultCode::INVALID_ARG;
 
 		Result hr = ModuleIconv.Convert("UTF-8", (char*)strUTF8, iBuffLen, "UTF-16LE", (const char*)strWCS, wcslen(strWCS)*sizeof(wchar_t), convertedSize);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 		if (iBuffLen >= 1)
 		{
@@ -500,7 +500,7 @@ namespace StrUtil {
 		}
 
 		Result hr = ModuleIconv.Convert("UTF-8", (char*)stringBuffer, countof(stringBuffer), "UTF-16LE", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
 		stringBuffer[lastPos] = '\0';
@@ -519,7 +519,7 @@ namespace StrUtil {
 	//		return ResultCode::INVALID_ARG;
 
 	//	Result hr = ModuleIconv.Convert("UTF-16", (char*)strWCS, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
-	//	if (FAILED(hr)) return hr;
+	//	if (!(hr)) return hr;
 
 	//	if (iBuffLen >= 1)
 	//	{
@@ -542,7 +542,7 @@ namespace StrUtil {
 	//	}
 
 	//	Result hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
-	//	if (FAILED(hr)) return hr;
+	//	if (!(hr)) return hr;
 
 	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
 	//	stringBuffer[lastPos] = '\0';
@@ -562,7 +562,7 @@ namespace StrUtil {
 			return ResultCode::INVALID_ARG;
 
 		Result hr = ModuleIconv.Convert("UTF-16LE", (char*)strWCS, iBuffLen, "UTF-8", (const char*)strUTF8, strlen(strUTF8)+1, convertedSize);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 		if (iBuffLen >= 1)
 		{
@@ -585,7 +585,7 @@ namespace StrUtil {
 		}
 
 		Result hr = ModuleIconv.Convert("UTF-16LE", (char*)stringBuffer, countof(stringBuffer), "UTF-8", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
 		stringBuffer[lastPos] = '\0';
@@ -605,7 +605,7 @@ namespace StrUtil {
 	//		return ResultCode::INVALID_ARG;
 
 	//	Result hr = ModuleIconv.Convert("UTF-8", (char*)strUTF8, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
-	//	if (FAILED(hr)) return hr;
+	//	if (!(hr)) return hr;
 
 	//	if (iBuffLen >= 1)
 	//	{
@@ -628,7 +628,7 @@ namespace StrUtil {
 	//	}
 
 	//	Result hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
-	//	if (FAILED(hr)) return hr;
+	//	if (!(hr)) return hr;
 
 	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
 	//	stringBuffer[lastPos] = '\0';
@@ -648,7 +648,7 @@ namespace StrUtil {
 	//		return ResultCode::INVALID_ARG;
 
 	//	Result hr = ModuleIconv.Convert("UTF-8", (char*)strMBCS, iBuffLen, "", (const char*)strUTF8, strlen(strUTF8), convertedSize);
-	//	if (FAILED(hr)) return hr;
+	//	if (!(hr)) return hr;
 
 	//	if (iBuffLen >= 1)
 	//	{
@@ -671,7 +671,7 @@ namespace StrUtil {
 	//	}
 
 	//	Result hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
-	//	if (FAILED(hr)) return hr;
+	//	if (!(hr)) return hr;
 
 	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
 	//	stringBuffer[lastPos] = '\0';

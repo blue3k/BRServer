@@ -159,7 +159,7 @@ namespace BR
 		if( pItem == nullptr )
 		{
 			Result hr = PageAllocator::Alloc( pRes );
-			if( FAILED(hr) ) return hr;
+			if( !(hr) ) return hr;
 
 			pItem = (PageItem*)pRes;
 		}
@@ -259,7 +259,7 @@ namespace BR
 			}
 
 
-			if( FAILED(m_Allocator.Alloc( pPage )) )
+			if( !(m_Allocator.Alloc( pPage )) )
 				return ResultCode::OUT_OF_MEMORY;
 
 			pMemItem = (MemItem*)pPage;
@@ -493,7 +493,7 @@ namespace BR
 
 			// if it's already exist, exit
 			MemoryPool* pFound = nullptr;
-			if (SUCCEEDED(m_MemoryPoolbySize.Find(allocationSize, pFound)))
+			if ((m_MemoryPoolbySize.Find(allocationSize, pFound)))
 			{
 				return pFound;
 			}
@@ -536,7 +536,7 @@ namespace BR
 			allocationSize = GetQuantizedMemorySize(allocationSize);
 
 			MemoryPool* pFound = nullptr;
-			if (FAILED(m_MemoryPoolbySize.Find(allocationSize, pFound)))
+			if (!(m_MemoryPoolbySize.Find(allocationSize, pFound)))
 			{
 				pNewPool = AddMemoryPool( allocationSize );
 			}
@@ -578,7 +578,7 @@ namespace BR
 	Result MemoryPoolManager::InitializeComponent()
 	{
 		Result hr = Component::InitializeComponent();
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 		StackWalker::Initialize();
 		stm_pInstance = new MemoryPoolManagerImpl;

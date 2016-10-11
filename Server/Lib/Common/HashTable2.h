@@ -224,14 +224,14 @@ namespace Hash {
 					ItemType dataFound;
 					if(ThreadTrait::ThreadSafe)
 					{
-						if (SUCCEEDED(bucket.m_Items->FindInWriteTree(key, dataFound)))
+						if ((bucket.m_Items->FindInWriteTree(key, dataFound)))
 						{
 							return ResultCode::FAIL;
 						}
 					}
 					else
 					{
-						if (SUCCEEDED(bucket.m_Items->Find(key, dataFound)))
+						if ((bucket.m_Items->Find(key, dataFound)))
 						{
 							return ResultCode::FAIL;
 						}
@@ -276,7 +276,7 @@ namespace Hash {
 				Bucket& bucket = m_Buckets[iBucket];
 				TicketScopeLockT<TicketLockType> scopeLock(TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock);
 
-				if (SUCCEEDED(bucket.m_Items->Remove(key, erasedValue)))
+				if ((bucket.m_Items->Remove(key, erasedValue)))
 				{
 					if(ThreadTrait::ThreadSafe)
 					{

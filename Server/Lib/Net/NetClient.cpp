@@ -295,7 +295,7 @@ namespace BR {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			netTrace(Trace::TRC_ERROR, "ReleaseConnection Failed hr={0:X8}", hr);
 		}
@@ -335,7 +335,7 @@ namespace BR {
 		SharedPointerT<Connection> pConnection;
 
 		Result hr = GetConnectionManager().GetConnectionByCID(uiCID, pConnection);
-		if (SUCCEEDED(hr))
+		if ((hr))
 		{
 			pIConnection = pConnection;
 		}

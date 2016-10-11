@@ -89,7 +89,7 @@ namespace ConspiracyGameInstanceServer {
 		if( pVoter->GetVote() != 0 )
 		{
 			GamePlayer *pPreviousVoteTarget = nullptr;
-			if( SUCCEEDED(GetOwner().FindPlayer( pVoter->GetVote(), pPreviousVoteTarget )) )
+			if( (GetOwner().FindPlayer( pVoter->GetVote(), pPreviousVoteTarget )) )
 			{
 				UINT numVoted = pPreviousVoteTarget->GetVoted();
 				Assert(numVoted>0);
@@ -140,7 +140,7 @@ namespace ConspiracyGameInstanceServer {
 		if( voteTargets[randTarget] == pVoter ) randTarget = (randTarget+1) % voteTargets.GetSize();
 		
 		Result voteRes = GetOwner().GetComponent<GameStateSystem>()->Vote( pVoter, voteTargets[randTarget] );
-		if( FAILED(voteRes) )
+		if( !(voteRes) )
 		{
 		}
 	}
@@ -659,7 +659,7 @@ namespace ConspiracyGameInstanceServer {
 
 		// Seer random vote
 		if( GetGamePlaySystem().GetSeer() != 0 && GetSeersChoice() == 0
-			&& SUCCEEDED(GetOwner().FindPlayer(gamePlaySystem.GetSeer(), pVoter )) 
+			&& (GetOwner().FindPlayer(gamePlaySystem.GetSeer(), pVoter )) 
 			&& !pVoter->GetIsActivePlayer()									// The seer must be inactive
 			&& (GatherVoteTargetForSeer(voteTargets) > 0) )
 		{
@@ -669,7 +669,7 @@ namespace ConspiracyGameInstanceServer {
 		// Bodygard
 		voteTargets.Clear();
 		if( IsFlagSet(BODYGUARD) && gamePlaySystem.GetBodyGuard() != 0 && GetBodyGuardsChoice() == 0
-			&& SUCCEEDED(GetOwner().FindPlayer(gamePlaySystem.GetBodyGuard(), pVoter )) 
+			&& (GetOwner().FindPlayer(gamePlaySystem.GetBodyGuard(), pVoter )) 
 			&& !pVoter->GetIsActivePlayer()									// The bodyguard must be inactive
 			&& (GatherVoteTarget(voteTargets) > 0) )
 		{
@@ -679,7 +679,7 @@ namespace ConspiracyGameInstanceServer {
 		// Owlman
 		voteTargets.Clear();
 		if( IsFlagSet(OWLMAN) && gamePlaySystem.GetOwlman() != 0 && gamePlaySystem.GetOwlmansChoice() == 0
-			&& SUCCEEDED(GetOwner().FindPlayer(gamePlaySystem.GetOwlman(), pVoter )) 
+			&& (GetOwner().FindPlayer(gamePlaySystem.GetOwlman(), pVoter )) 
 			&& !pVoter->GetIsActivePlayer()									// The seer must be inactive
 			&& (GatherVoteTarget(voteTargets) > 0) )
 		{
@@ -716,7 +716,7 @@ namespace ConspiracyGameInstanceServer {
 
 		// Seer random vote
 		if( GetGamePlaySystem().GetSeer() != 0 && GetSeersChoice() == 0
-			&& SUCCEEDED(GetOwner().FindPlayer(gamePlaySystem.GetSeer(), pVoter )) 
+			&& (GetOwner().FindPlayer(gamePlaySystem.GetSeer(), pVoter )) 
 			&& (GatherVoteTargetForSeer(voteTargets) > 0) )
 		{
 			VoteRandomTarget(pVoter, voteTargets);
@@ -725,7 +725,7 @@ namespace ConspiracyGameInstanceServer {
 		// Bodygard
 		voteTargets.Clear();
 		if( IsFlagSet(BODYGUARD) && gamePlaySystem.GetBodyGuard() != 0 && GetBodyGuardsChoice() == 0
-			&& SUCCEEDED(GetOwner().FindPlayer(gamePlaySystem.GetBodyGuard(), pVoter )) 
+			&& (GetOwner().FindPlayer(gamePlaySystem.GetBodyGuard(), pVoter )) 
 			&& (GatherVoteTarget(voteTargets) > 0) )
 		{
 			VoteRandomTarget(pVoter, voteTargets);
@@ -734,7 +734,7 @@ namespace ConspiracyGameInstanceServer {
 		// Owlman
 		voteTargets.Clear();
 		if( IsFlagSet(OWLMAN) && gamePlaySystem.GetOwlman() != 0 && gamePlaySystem.GetOwlmansChoice() == 0
-			&& SUCCEEDED(GetOwner().FindPlayer(gamePlaySystem.GetOwlman(), pVoter )) 
+			&& (GetOwner().FindPlayer(gamePlaySystem.GetOwlman(), pVoter )) 
 			&& (GatherVoteTarget(voteTargets) > 0) )
 		{
 			VoteRandomTarget(pVoter, voteTargets);

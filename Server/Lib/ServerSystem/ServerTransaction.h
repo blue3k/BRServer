@@ -74,7 +74,7 @@ namespace Svr {
 		Result ParseMessage()
 		{
 			Result hr = MessageClass::ParseMsg();
-			if (SUCCEEDED(hr))
+			if ((hr))
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
@@ -262,10 +262,10 @@ namespace Svr {
 				break;
 			case Message::MessageUsage_ClusterDataRead:
 				// If data read failed on this we need to send it to Next ring
-				if( pMyOwner->GetClusterType() == ClusterType::Ring && FAILED(hrRes) )
+				if( pMyOwner->GetClusterType() == ClusterType::Ring && !(hrRes) )
 				{
 					hr = TossToNextRing();
-					if( FAILED(hr) ) 
+					if( !(hr) ) 
 						this->OnCloseTransaction(hrRes);
 					svrChk( hr );
 				}
@@ -276,7 +276,7 @@ namespace Svr {
 				break;
 			case Message::MessageUsage_ClusterDataWrite:
 				// All success write must be replicated to slaves
-				if( SUCCEEDED(hrRes) 
+				if( (hrRes) 
 					&& (pMyOwner->GetClusterType() == ClusterType::Replication || pMyOwner->GetClusterType() == ClusterType::FreeReplication)  )
 				{
 					svrChk( BroadcastToChildren() );
@@ -326,7 +326,7 @@ namespace Svr {
 			//if( MessageClass::HasSender )
 			//{
 			//	ServerServiceInformation *pSender = nullptr;
-			//	if( SUCCEEDED(pMyOwner->FindService( GetSender(), pSender )) )
+			//	if( (pMyOwner->FindService( GetSender(), pSender )) )
 			//	{
 			//		//if( pSender->GetClusterMembership() >= ClusterMembership::StatusWatcher )
 			//		//{

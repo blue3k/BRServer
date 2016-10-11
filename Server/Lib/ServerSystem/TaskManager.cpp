@@ -77,7 +77,7 @@ namespace Svr {
 	{
 		Result hr = m_PendingRemoveTask.Enqueue( pTask );
 
-		if( SUCCEEDED(hr) )
+		if( (hr) )
 			m_GroupWorkLoadDiff -= pTask->GetTaskLoad();
 
 		return hr;
@@ -98,7 +98,7 @@ namespace Svr {
 				}
 
 				SharedPointerT<TickTask> pFound;
-				if (SUCCEEDED(m_TaskList.Find(pTask->GetTaskID(), pFound)))
+				if ((m_TaskList.Find(pTask->GetTaskID(), pFound)))
 				{
 					if (pTask->GetRetryCount())
 					{
@@ -141,9 +141,9 @@ namespace Svr {
 			if (m_PendingRemoveTask.Dequeue(pTask) == ResultCode::SUCCESS)
 			{
 				SharedPointerT<TickTask> pFound;
-				if (SUCCEEDED(m_TaskList.Find(pTask->GetTaskID(), pFound)))
+				if ((m_TaskList.Find(pTask->GetTaskID(), pFound)))
 				{
-					if (FAILED(m_TaskList.Remove(pTask->GetTaskID(), pFound)))
+					if (!(m_TaskList.Remove(pTask->GetTaskID(), pFound)))
 					{
 						svrTrace(Trace::TRC_ERROR, "Failed to remove a task:{0}", pTask->GetTaskID());
 					}
@@ -221,7 +221,7 @@ namespace Svr {
 		for (; loopCount > 0; loopCount--)
 		{
 			EventTask pEvtTask;
-			if (FAILED(m_EventTask.Dequeue(pEvtTask)))
+			if (!(m_EventTask.Dequeue(pEvtTask)))
 				break;
 
 			SharedPointerT<TickTask> tickTask;
@@ -238,7 +238,7 @@ namespace Svr {
 				break;
 			};
 
-			if (FAILED(tickTask->OnEventTask(pEvtTask)))
+			if (!(tickTask->OnEventTask(pEvtTask)))
 			{
 				svrTrace(Svr::TRC_ENTITY, "EventTask is failed, Evt:{0}", (UINT)pEvtTask.EventType.load(std::memory_order_relaxed))
 			}

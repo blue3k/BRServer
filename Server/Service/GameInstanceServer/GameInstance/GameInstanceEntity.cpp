@@ -119,7 +119,7 @@ namespace ConspiracyGameInstanceServer {
 
 		m_TableVersion = GameTable::GetTableVersion();
 
-		if (FAILED( conspiracy::GameConfigTbl::FindItem(m_PresetGameConfigID, pGameConfig) ))
+		if (!( conspiracy::GameConfigTbl::FindItem(m_PresetGameConfigID, pGameConfig) ))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to find Gameconfig");
 			goto Proc_End;
@@ -128,7 +128,7 @@ namespace ConspiracyGameInstanceServer {
 		// set value only if it succeeded
 		m_PresetGameConfig = pGameConfig;
 
-		if (FAILED(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
+		if (!(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to find bot talk item");
 		}
@@ -261,7 +261,7 @@ namespace ConspiracyGameInstanceServer {
 	{
 		GamePlayer* pGamePlayer = nullptr;
 
-		if( FAILED(FindPlayer( playerID, pGamePlayer )) )
+		if( !(FindPlayer( playerID, pGamePlayer )) )
 			return ResultCode::E_INVALID_PLAYERID;
 
 		playerIndex = pGamePlayer->GetIndex();

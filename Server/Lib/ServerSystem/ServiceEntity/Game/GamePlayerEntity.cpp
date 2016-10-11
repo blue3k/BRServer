@@ -159,7 +159,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (FAILED(UpdateGamePlayer()))
+		if (!(UpdateGamePlayer()))
 			return ResultCode::SUCCESS_FALSE;
 
 		m_LatestDBSyncTime = Util::Time.GetTimeUTCSec();

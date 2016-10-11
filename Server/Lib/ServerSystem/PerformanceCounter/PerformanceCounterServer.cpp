@@ -73,7 +73,7 @@ namespace Svr {
 	{
 		PacketInfo packetInfo;
 		auto numItems = m_NewDeleteQueue.GetEnqueCount();
-		for (UINT iItem = 0; iItem < numItems&& SUCCEEDED(m_NewDeleteQueue.Dequeue(packetInfo)); iItem++)
+		for (UINT iItem = 0; iItem < numItems&& (m_NewDeleteQueue.Dequeue(packetInfo)); iItem++)
 		{
 			if (packetInfo.pMessage->GetMessageHeader()->msgID.IDSeq.MsgID == Message::Monitoring::PerformanceCounterNewC2SEvt::MID.IDSeq.MsgID)
 			{
@@ -95,7 +95,7 @@ namespace Svr {
 	{
 		PacketInfo packetInfo;
 		auto numItems = m_UpdateQueue.GetEnqueCount();
-		for (UINT iItem = 0; iItem < numItems&& SUCCEEDED(m_UpdateQueue.Dequeue(packetInfo)); iItem++)
+		for (UINT iItem = 0; iItem < numItems&& (m_UpdateQueue.Dequeue(packetInfo)); iItem++)
 		{
 			if (packetInfo.pMessage->GetMessageHeader()->msgID.IDSeq.MsgID == Message::Monitoring::PerformanceCounterUpdateC2SEvt::MID.IDSeq.MsgID)
 			{
@@ -127,7 +127,7 @@ namespace Svr {
 			UpdateNewFreeInstance();
 
 			void* item;
-			while (SUCCEEDED(m_TimedOutQueue.Dequeue(item)))
+			while ((m_TimedOutQueue.Dequeue(item)))
 			{
 				SharedPointerT<PerformanceCounterInstance> removed;
 				m_InstanceMap.Remove((UINT64)item, removed);
@@ -180,7 +180,7 @@ namespace Svr {
 			Util::SafeDelete(pRawUDP);
 		}
 
-		if (FAILED(hr))
+		if (!(hr))
 			Terminate();
 
 		return hr;
@@ -225,7 +225,7 @@ namespace Svr {
 				return true;
 			}
 
-			if (FAILED(instanceList.push_back(const_cast<SharedPointerT<PerformanceCounterInstance>&>(value))))
+			if (!(instanceList.push_back(const_cast<SharedPointerT<PerformanceCounterInstance>&>(value))))
 				return false;
 			return true;
 		});
@@ -272,7 +272,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		auto& instanceMap = stm_pInstance->m_InstanceMap;
 
-		if (SUCCEEDED(instanceMap.Find(instanceUID.UID, pInstance)))
+		if ((instanceMap.Find(instanceUID.UID, pInstance)))
 		{
 			auto timeSince = Util::TimeSince(pInstance->GetUpdatedTime());
 			if (timeSince <= DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
@@ -333,9 +333,9 @@ namespace Svr {
 		m_InstanceMap.Remove(messageClass.GetInstanceUID().UID, pInstance);
 
 		pInstance = SharedPointerT<PerformanceCounterInstance>(new PerformanceCounterInstance(messageClass.GetInstanceName(), messageClass.GetInstanceUID()));
-		if (FAILED(m_InstanceMap.Insert(pInstance->GetInstanceEntityUID().UID, pInstance)))
+		if (!(m_InstanceMap.Insert(pInstance->GetInstanceEntityUID().UID, pInstance)))
 		{
-			if (FAILED(m_InstanceMap.FindInWriteTree(pInstance->GetInstanceEntityUID().UID, pInstance)))
+			if (!(m_InstanceMap.FindInWriteTree(pInstance->GetInstanceEntityUID().UID, pInstance)))
 			{
 				svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Create/Find Both failed?", pInstance->GetInstanceEntityUID());
 			}
@@ -392,7 +392,7 @@ namespace Svr {
 			for (UINT iInstance = 0; iInstance < instances.GetSize(); iInstance++)
 			{
 				SharedPointerT<PerformanceCounterInstance> pInstance;
-				if (FAILED(m_InstanceMap.Remove(instances[iInstance].UID, pInstance)))
+				if (!(m_InstanceMap.Remove(instances[iInstance].UID, pInstance)))
 				{
 					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Failed to remove", instances[iInstance]);
 				}
@@ -412,13 +412,13 @@ namespace Svr {
 
 		svrChk(messageClass.ParseMsg());
 
-		if (FAILED(m_InstanceMap.Find(messageClass.GetInstanceUID().UID, pInstance))
+		if (!(m_InstanceMap.Find(messageClass.GetInstanceUID().UID, pInstance))
 			|| pInstance->GetCounters().GetSize() != messageClass.GetCounterValues().GetSize())
 		{
 			if (m_RawUDP != nullptr)
 			{
 				Message::MessageData* pMsgSend = nullptr;
-				if (FAILED(Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg(pMsgSend, messageClass.GetInstanceUID())))
+				if (!(Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg(pMsgSend, messageClass.GetInstanceUID())))
 				{
 					svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter update request packet");
 				}

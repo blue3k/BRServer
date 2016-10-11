@@ -131,7 +131,7 @@ namespace BR {
 			while (m_transactionQueue.GetEnqueCount() > 0)
 			{
 				Transaction *pCurTran = nullptr;
-				if (SUCCEEDED(m_transactionQueue.Dequeue(pCurTran)))
+				if ((m_transactionQueue.Dequeue(pCurTran)))
 				{
 					pCurTran->CloseTransaction(ResultCode::UNEXPECTED);
 					ReleaseTransaction(pCurTran);
@@ -211,13 +211,13 @@ namespace BR {
 		case Message::MSGTYPE_EVENT:
 		{
 			Assert(GetMessageHandlerTable());
-			if (FAILED(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(pCon, pMsg, pNewTrans)))
+			if (!(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(pCon, pMsg, pNewTrans)))
 			{
 				// If it couldn't find a handler in server entity handlers, looking for it in server loopback entity
 				MessageHandlerType handler;
 				assert(false);// this shouldn't be happened now. We route all message to destination entity
 				hr = GetLoopbackServerEntity()->GetMessageHandlerTable()->GetHandler(pMsg->GetMessageHeader()->msgID, handler);
-				if (FAILED(hr))
+				if (!(hr))
 				{
 					assert(false);
 					svrTrace(Trace::TRC_ERROR, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
@@ -242,7 +242,7 @@ namespace BR {
 			if (pNewTrans->GetOwnerEntity() == nullptr)
 			{
 				hr = pNewTrans->InitializeTransaction(this);
-				if (FAILED(hr)) goto Proc_End;
+				if (!(hr)) goto Proc_End;
 			}
 
 			if (pNewTrans->IsDirectProcess())
@@ -276,7 +276,7 @@ namespace BR {
 
 		if (pNewTrans != nullptr)
 		{
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
@@ -319,7 +319,7 @@ namespace BR {
 
 		if (GetTaskWorker()->GetThreadID() == ThisThread::GetThreadID())
 		{
-			if (FAILED(FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
+			if (!(FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
 			{
 				svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pMsgRes->GetMsgID());
 				goto Proc_End;// svrErr(ResultCode::FAIL);
@@ -412,7 +412,7 @@ namespace BR {
 			{
 				svrTrace(Svr::TRC_TRANSACTION, "Trans Start TID:{0}:{1}, Entity:{2}", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID());
 			}
-			if (FAILED(pTrans->StartTransaction()))// make transaction start
+			if (!(pTrans->StartTransaction()))// make transaction start
 			{
 				if (!pTrans->IsClosed())
 					pTrans->CloseTransaction(ResultCode::UNEXPECTED);
@@ -433,7 +433,7 @@ namespace BR {
 				pTrans->ProcessTransaction(pTranRes);
 				Util::SafeRelease(pTranRes);
 			}
-			else if (FAILED(pTrans->CheckHeartBitTimeout()))// Transaction time out
+			else if (!(pTrans->CheckHeartBitTimeout()))// Transaction time out
 			{
 				if (pTrans->IsPrintTrace())
 				{

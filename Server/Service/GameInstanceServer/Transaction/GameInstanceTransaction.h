@@ -55,7 +55,7 @@ namespace ConspiracyGameInstanceServer {
 		Result ParseMessage()
 		{
 			Result hr = MessageClass::ParseMsg();
-			if (SUCCEEDED(hr))
+			if ((hr))
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
@@ -91,7 +91,7 @@ namespace ConspiracyGameInstanceServer {
 			}
 
 			hr = FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pEntity);
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				svrTrace(Trace::TRC_WARN, "Can't find transaction target instance:{0}", MessageClass::GetRouteContext().GetTo());
 				goto Proc_End;

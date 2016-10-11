@@ -86,11 +86,11 @@ namespace Net {
 
 		if( !( hrRes ) )
 		{
-			switch( hrRes )
+			switch((int32_t)hrRes )
 			{
 			case ResultCode::E_NET_CONNECTION_CLOSED:
 			case ResultCode::E_NET_IO_ABORTED:
-				if (SUCCEEDED(m_ConnectionManager.GetConnectionByAddr(from, pConnection)))
+				if ((m_ConnectionManager.GetConnectionByAddr(from, pConnection)))
 				{
 					// Release connection table
 					if (pConnection->GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -113,7 +113,7 @@ namespace Net {
 		m_PendingRecvCnt.fetch_sub(1, std::memory_order_relaxed);
 
 
-		if (FAILED(m_ConnectionManager.GetConnectionByAddr(from, pConnection))) // not mapped yet. We need to make a new connection
+		if (!(m_ConnectionManager.GetConnectionByAddr(from, pConnection))) // not mapped yet. We need to make a new connection
 		{
 			// check control packet
 			MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pIOBuffer->buffer;
@@ -265,7 +265,7 @@ namespace Net {
 
 	//Proc_End:
 
-	//	if( FAILED(hr) )
+	//	if( !(hr) )
 	//	{
 	//		if( pOverlapped )
 	//		{
@@ -344,7 +344,7 @@ namespace Net {
 
 	//Proc_End:
 
-	//	if( FAILED(hr) )
+	//	if( !(hr) )
 	//	{
 	//		Util::SafeDelete( pBuff );
 	//		if( pOverlapped )
@@ -528,7 +528,7 @@ namespace Net {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			HostClose();
 
 		netTrace( TRC_NET, "HostOpen {0}, hr={1:X8}", GetLocalAddress(), hr );
@@ -605,7 +605,7 @@ namespace Net {
 
 		if( pConn ) delete pConn;
 
-		if( SUCCEEDED(hr) )
+		if( (hr) )
 		{
 			netTrace(TRC_NET, "ServerPeer Allowing Server:{2}:{3}, {0}, CID:{1}", destAddress, CID, netClass, serverID);
 		}

@@ -135,7 +135,7 @@
 		OperationTraversalHistory traversalHistory(m_Root, m_ItemCount);
 
 		MapNode* pFound = nullptr;
-		if (FAILED(FindNode(traversalHistory, key, pFound)))
+		if (!(FindNode(traversalHistory, key, pFound)))
 		{
 			if (m_Root != nullptr)
 				return ResultCode::FAIL;
@@ -216,7 +216,7 @@
 
 		MapNode* pRemoved = nullptr;
 		MapNode* pFound = nullptr;
-		if (FAILED(FindNode(travelHistory, key, pFound)))
+		if (!(FindNode(travelHistory, key, pFound)))
 			return ResultCode::FAIL;
 
 		// unique key
@@ -308,7 +308,7 @@
 		OperationTraversalHistory travelHistory(m_Root, m_ItemCount);
 
 		MapNode* pFound = nullptr;
-		if (FAILED(FindNode(travelHistory, key, pFound)))
+		if (!(FindNode(travelHistory, key, pFound)))
 			return ResultCode::FAIL;
 
 		// unique key

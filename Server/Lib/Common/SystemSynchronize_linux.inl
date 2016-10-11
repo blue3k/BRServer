@@ -46,7 +46,7 @@ public:
 			unused(hr);
 		}
 
-		if (SUCCEEDED(hr))
+		if ((hr))
 		{
 			Lock();
 			UnLock();

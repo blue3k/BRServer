@@ -48,6 +48,7 @@ namespace Svr {
 	{
 		SetTickInterval(DurationMS(Const::PARTY_TICKTASK_INTERVAL));
 
+
 		// Game party instance transactions
 		BR_ENTITY_MESSAGE(Message::GameParty::JoinPartyCmd) { svrMemReturn(pNewTrans = new PartyTransJoinParty(pMsgData)); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::GameParty::LeavePartyCmd) { svrMemReturn(pNewTrans = new PartyTransLeaveParty(pMsgData)); return ResultCode::SUCCESS; } );
@@ -128,7 +129,7 @@ namespace Svr {
 			if( pPartyPlayer )
 			{
 				Result hrRes = func( pPartyPlayer );
-				if( FAILED(hrRes) )
+				if( !(hrRes) )
 					return hrRes;
 			}
 		}
@@ -148,7 +149,7 @@ namespace Svr {
 			if( pPolicy )
 			{
 				Result hrRes = func( pPartyPlayer, pPolicy );
-				if( FAILED(hrRes) )
+				if( !(hrRes) )
 					return hrRes;
 			}
 		}
@@ -167,7 +168,7 @@ namespace Svr {
 			if( pPolicy )
 			{
 				Result hrRes = func( pPartyPlayer, pPolicy );
-				if( FAILED(hrRes) )
+				if( !(hrRes) )
 					return hrRes;
 			}
 		}
@@ -211,7 +212,7 @@ namespace Svr {
 		}
 
 		// We need a new leader
-		if( m_LeaderID == 0 || FAILED(m_PartyPlayerByUID.find( m_LeaderID, itLeader )) )
+		if( m_LeaderID == 0 || !(m_PartyPlayerByUID.find( m_LeaderID, itLeader )) )
 		{
 			m_LeaderID = 0;
 			svrChk( SelectNewLeader(bIsSilent) );
@@ -311,7 +312,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		PartyPlayerUIDMap::iterator itPlayer;
 
-		if( FAILED(m_PartyPlayerByUID.find( pltID, itPlayer )) )
+		if( !(m_PartyPlayerByUID.find( pltID, itPlayer )) )
 		{
 			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
 		}

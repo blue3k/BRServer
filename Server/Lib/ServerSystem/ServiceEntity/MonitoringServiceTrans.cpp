@@ -65,7 +65,7 @@ namespace Svr {
 			PerformanceCounterInstanceInfo info;
 			StrUtil::StringCpy(info.InstanceName, pInstance->GetInstanceName());
 			info.InstanceUID = pInstance->GetInstanceEntityUID();
-			if (FAILED(m_InstanceList.push_back(info)))
+			if (!(m_InstanceList.push_back(info)))
 				break;
 		}
 

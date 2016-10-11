@@ -45,9 +45,9 @@ namespace Svr {
 DEFINE_TRACE_MODULE(svr)
 
 #define svrErr(e)					TrcErrJmp(svr,e,hr)
-#define svrChk(e)					{ do{ Result hRes = e; if( FAILED(hRes) ) TrcErrJmp(svr,hRes,hr); } while(0); }
-#define svrChkSilent(e)				{ do{ Result hRes = e; hr = hRes; if( FAILED(hRes) ) goto Proc_End; } while(0); }
-#define svrChkErr(ErrCode,exp)		{ do{ Result hRes = exp; if( FAILED(hRes) ) TrcErrJmp(svr,ErrCode,hr); } while(0); }
+#define svrChk(e)					{ do{ Result hRes = e; if( !(hRes) ) TrcErrJmp(svr,hRes,hr); } while(0); }
+#define svrChkSilent(e)				{ do{ Result hRes = e; hr = hRes; if( !(hRes) ) goto Proc_End; } while(0); }
+#define svrChkErr(ErrCode,exp)		{ do{ Result hRes = exp; if( !(hRes) ) TrcErrJmp(svr,ErrCode,hr); } while(0); }
 #define svrMem(a)					{ while( (a) == nullptr ){ TrcErrJmp(svr,ResultCode::OUT_OF_MEMORY,hr); } }
 #define svrChkPtr(a)				{ while( (a) == nullptr ){ TrcErrJmp(svr,ResultCode::INVALID_POINTER,hr); }  }
 
@@ -61,14 +61,14 @@ DEFINE_TRACE_MODULE(svr)
 
 // Transaction operations
 #define svrErrClose(e)				{ do{ CloseTransaction(e); goto Proc_End; } while(0); }
-#define svrChkClose(e)				{ do{ Result hRes = e; if( FAILED(hRes) ) {CloseTransaction(hRes); goto Proc_End;} } while(0); }
-#define svrChkCloseErr(ErrCode,e)	{ do{ Result hRes = e; if( FAILED(hRes) ) {CloseTransaction(ErrCode); goto Proc_End;} } while(0); }
+#define svrChkClose(e)				{ do{ Result hRes = e; if( !(hRes) ) {CloseTransaction(hRes); goto Proc_End;} } while(0); }
+#define svrChkCloseErr(ErrCode,e)	{ do{ Result hRes = e; if( !(hRes) ) {CloseTransaction(ErrCode); goto Proc_End;} } while(0); }
 
 
 // Transaction operations
 #define svrErrReturn(e)					TrcErrReturn(svr,e)
-#define svrChkReturn(e)					{ do{ Result hRes = e; if( FAILED(hRes) ) TrcErrReturn(svr,hRes); } while(0); }
-#define svrChkErrReturn(ErrCode,exp)	{ do{ Result hRes = exp; if( FAILED(hRes) ) TrcErrReturn(svr,ErrCode); } while(0); }
+#define svrChkReturn(e)					{ do{ Result hRes = e; if( !(hRes) ) TrcErrReturn(svr,hRes); } while(0); }
+#define svrChkErrReturn(ErrCode,exp)	{ do{ Result hRes = exp; if( !(hRes) ) TrcErrReturn(svr,ErrCode); } while(0); }
 #define svrMemReturn(a)					{ while( (a) == nullptr ){ TrcErrReturn(svr,ResultCode::OUT_OF_MEMORY); } }
 #define svrChkPtrReturn(a)				{ while( (a) == nullptr ){ TrcErrReturn(svr,ResultCode::INVALID_POINTER); }  }
 

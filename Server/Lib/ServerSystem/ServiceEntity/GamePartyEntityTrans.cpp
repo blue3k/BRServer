@@ -373,7 +373,7 @@ namespace Svr {
 		
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;

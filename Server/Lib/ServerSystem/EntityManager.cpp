@@ -150,7 +150,7 @@ namespace Svr {
 
 		SharedPointerT<Entity> pEntity;
 		hr = entityTable.Erase(entityID, pEntity);
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			hr = ResultCode::SUCCESS_FALSE;
 			goto Proc_End;
@@ -189,7 +189,7 @@ namespace Svr {
 		//SharedPointerT<Entity> pRemoved;
 
 		//hr = GetEntityTable().Erase(pEntity->GetEntityID(), pRemoved);
-		//if (FAILED(hr))
+		//if (!(hr))
 		//{
 		//	hr = ResultCode::SUCCESS_FALSE;
 		//	goto Proc_End;

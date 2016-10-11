@@ -499,7 +499,7 @@ namespace Hash {
 
 				typename BucketContainer::Node *pPrevNode = nullptr;
 
-				if( FAILED(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
+				if( !(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
 					return ResultCode::FAIL;
 
 				if(Trait::UniqueKey)
@@ -531,7 +531,7 @@ namespace Hash {
 				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_NONEXCLUSIVE, bucket.m_Lock );
 
 				typename BucketContainer::Node *pPrevNode = nullptr;
-				if( FAILED(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
+				if( !(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
 					return ResultCode::FAIL;
 
 				if( pPrevNode->pNext == nullptr || pPrevNode->pNext->Key != inKey )
@@ -555,7 +555,7 @@ namespace Hash {
 				iterData.Set( this, m_Bucket.begin() + iBucket );
 
 				typename BucketContainer::Node *pPrevNode = nullptr;
-				if( FAILED(bucket.m_Items.FindPrevNode( keyVal, pPrevNode )) )
+				if( !(bucket.m_Items.FindPrevNode( keyVal, pPrevNode )) )
 				{
 					iterData = nullptr;
 					return ResultCode::FAIL;
@@ -584,7 +584,7 @@ namespace Hash {
 				std::atomic_thread_fence(std::memory_order_consume);
 				
 				typename BucketContainer::Node *pPrevNode = nullptr;
-				if( FAILED(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
+				if( !(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
 					return ResultCode::FAIL;
 
 				if( pPrevNode->pNext == nullptr || pPrevNode->pNext->Key != inKey )
@@ -626,7 +626,7 @@ namespace Hash {
 				std::atomic_thread_fence(std::memory_order_consume);
 
 				typename BucketContainer::Node *pPrevNode = nullptr;
-				if( FAILED(bucket.m_Items.FindPrevNode( Key, pPrevNode )) )
+				if( !(bucket.m_Items.FindPrevNode( Key, pPrevNode )) )
 					return ResultCode::FAIL;
 
 				if( pPrevNode->pNext == nullptr || pPrevNode->pNext->Key != Key )

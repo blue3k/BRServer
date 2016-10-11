@@ -59,7 +59,7 @@ namespace Net {
 		pConnOut = nullptr;
 
 		// Connect to IOCP
-		if (SUCCEEDED(GetConnectionManager().GetConnectionByAddr(remoteSockAddr, pConn)))
+		if ((GetConnectionManager().GetConnectionByAddr(remoteSockAddr, pConn)))
 		{
 			pConnection = (ConnectionTCP*)(Connection*)pConn;
 			pConnection->CloseConnection();
@@ -99,7 +99,7 @@ namespace Net {
 	Proc_End:
 
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			if( pConn != nullptr )
 			{
@@ -144,7 +144,7 @@ namespace Net {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			HostClose();
 
 		return hr;
@@ -211,7 +211,7 @@ namespace Net {
 
 		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn));
 
-		if(SUCCEEDED(pConn->Connect()))
+		if((pConn->Connect()))
 			pConn->WaitConnect();
 
 
@@ -235,7 +235,7 @@ namespace Net {
 
 		CID = pConn->GetCID();
 
-		if(FAILED(Connect(pConn, serverID, netClass, destAddress)))
+		if(!(Connect(pConn, serverID, netClass, destAddress)))
 		{
 			netTrace(Trace::TRC_WARN, "Opening connection is failed, ServerID {0}", serverID);
 		}
@@ -245,7 +245,7 @@ namespace Net {
 
 	Proc_End:
 
-		if( SUCCEEDED(hr) )
+		if( (hr) )
 		{
 			netTrace(TRC_NET, "ServerPeer Allowing Server:{2}:{3}, {0}, CID:{1}", destAddress, CID, netClass, serverID);
 		}

@@ -152,7 +152,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS; 
@@ -164,7 +164,7 @@ namespace GameServer {
 		Message::GameParty::JoinPartyRes msgRes;
 
 		hr = pRes->GetResult();
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			m_PartyLeaderID = 0;
 			goto Proc_End;
@@ -177,7 +177,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			GetMyOwner()->SetPartyUID(0);
 
 		GetMyOwner()->UpdateDBSync(0);
@@ -306,7 +306,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS; 
@@ -337,7 +337,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS;
@@ -350,7 +350,7 @@ namespace GameServer {
 		EntityUID playerUID;
 
 		svrChkPtr( pGameService = Svr::GetServerComponent<Svr::GameClusterServiceEntity>() );
-		if( SUCCEEDED(pGameService->FindPlayer( GetAccID(), playerUID)) )
+		if( (pGameService->FindPlayer( GetAccID(), playerUID)) )
 		{
 			// We don't have to kick because we use previous entity
 			//Assert( playerUID == GetMyOwner()->GetEntityUID() );
@@ -363,7 +363,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -403,7 +403,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -564,7 +564,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -621,7 +621,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -674,7 +674,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -720,7 +720,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -762,7 +762,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -820,7 +820,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -860,7 +860,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -901,7 +901,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS; 
@@ -939,7 +939,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -970,7 +970,7 @@ namespace GameServer {
 			{
 			case NotificationType::GiftStamina:
 				hrRes = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina(1);
-				if (FAILED(hrRes))
+				if (!(hrRes))
 				{
 					svrTrace(Trace::TRC_WARN, "Stamina gain is failed, PlayerID:{0}, hr:{1:X8}", GetMyOwner()->GetPlayerID(), hrRes);
 				}
@@ -999,7 +999,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -1100,7 +1100,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -1140,7 +1140,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS; 
@@ -1179,7 +1179,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -1215,7 +1215,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS;
@@ -1251,7 +1251,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -1329,7 +1329,7 @@ namespace GameServer {
 
 		for( UINT iPlayer = 0; iPlayer < uiRequestMax; iPlayer++ )
 		{
-			if( SUCCEEDED( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( targetPlayerID[iPlayer], playerUID )) )
+			if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( targetPlayerID[iPlayer], playerUID )) )
 			{
 				// Now we know he is online we can check with DB
 				auto pFriend = GetMyOwner()->GetComponent<UserFriendSystem>()->GetFriend(targetPlayerID[iPlayer]);
@@ -1456,7 +1456,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -1498,7 +1498,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS;
@@ -1547,7 +1547,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -1592,7 +1592,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			CloseTransaction(hr);
 		}
@@ -1623,7 +1623,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			CloseTransaction(hr);
 		}
@@ -1647,7 +1647,7 @@ namespace GameServer {
 	Proc_End:
 
 		// if failed to write to DB, roleback the changes
-		if(FAILED(hr))
+		if(!(hr))
 		{
 			m_SavedData.RestoreAllData();
 		}
@@ -1673,7 +1673,7 @@ namespace GameServer {
 			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
 		}
 
-		if( FAILED( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
+		if( !( conspiracy::ShopTbl::FindItem( GetShopItemID(), m_pShopItem ) ) )
 		{
 			svrErrClose(ResultCode::E_GAME_INVALID_SHOPITEMID);
 		}
@@ -1717,7 +1717,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -1823,7 +1823,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;

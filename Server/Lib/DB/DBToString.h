@@ -64,7 +64,7 @@ namespace BR {
 		unused(Option);
 		if( name )
 		{
-			if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, name ) ) )
+			if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, name ) ) )
 				return ResultCode::FAIL;
 		}
 		else

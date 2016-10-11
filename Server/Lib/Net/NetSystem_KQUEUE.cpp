@@ -137,13 +137,13 @@ namespace Net {
 
 		if (events & EVFILT_READ)
 		{
-			while (SUCCEEDED(hrErr))
+			while ((hrErr))
 			{
 				// Read
 				pReadBuffer = new IOBUFFER_READ;
 				hrErr = pCallBack->Recv(pReadBuffer);
 				hr = hrErr;
-				switch (hrErr)
+				switch ((int32_t)hrErr)
 				{
 				case ResultCode::E_NET_TRY_AGAIN:
 				case ResultCode::E_NET_WOULDBLOCK:
@@ -155,7 +155,7 @@ namespace Net {
 					Assert(false);
 					break;
 				default:
-					if (FAILED(hr))
+					if (!(hr))
 					{
 						netTrace(TRC_NETSYS, "ERROR KQUEUE Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
 					}
@@ -180,7 +180,7 @@ namespace Net {
 		{
 			// This call will just poke working thread
 			hr = pCallBack->OnSendReady();
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				//netErr(hr);
 				goto Proc_End;
@@ -189,7 +189,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			netTrace(TRC_NETSYS, "ERROR KQUEUE RW fail events:{0:X8} hr:{1:X8}", events, hr);
 		}
@@ -214,7 +214,7 @@ namespace Net {
 			if (iNumEvents < 0)
 			{
 				hr = GetLastResult();
-				switch (hr)
+				switch ((int32_t)hr)
 				{
 				case ResultCode::E_INTERRUPTED_SYSCALL:
 					break;
@@ -243,6 +243,17 @@ namespace Net {
 				auto pCallback = (INetIOCallBack*)curEvent.udata;
 				bool isListenSocket = pCallback->GetIOFlags().IsListenSocket != 0;
 				SOCKET sock = pCallback->GetIOSocket();
+
+				// skip invalid handlers
+				if (pCallback == nullptr || pCallBack->GetIOFlagsEditable().IsRegistered == 0)
+					continue;
+
+				if ((events&(EV_EOF)))
+				{
+					netTrace(Trace::TRC_INFO, "Closing epoll worker sock:{0}, event:{1}", sock, curEvent.flags);
+					pCallBack->GetIOFlagsEditable().IsRegistered = 0;
+					continue;
+				}
 
 				if (isListenSocket)
 				{
@@ -469,23 +480,23 @@ namespace Net {
 	}
 
 
-	Result KQUEUESystem::RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
-	{
-		Assert(sockType == SockType::DataGram);
-		if (sockType != SockType::DataGram)
-			return ResultCode::UNEXPECTED;
+	//Result KQUEUESystem::RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+	//{
+	//	Assert(sockType == SockType::DataGram);
+	//	if (sockType != SockType::DataGram)
+	//		return ResultCode::UNEXPECTED;
 
-		if (m_WorkerUDP.GetSize() < 1)
-			return ResultCode::E_NET_NOTINITIALISED;
+	//	if (m_WorkerUDP.GetSize() < 1)
+	//		return ResultCode::E_NET_NOTINITIALISED;
 
-		if (cbInstance->GetWriteQueue() == nullptr)
-		{
-			Assert(sockType == SockType::DataGram);
-			cbInstance->SetWriteQueue(&m_UDPSendWorker->GetWriteQueue());
-		}
+	//	if (cbInstance->GetWriteQueue() == nullptr)
+	//	{
+	//		Assert(sockType == SockType::DataGram);
+	//		cbInstance->SetWriteQueue(&m_UDPSendWorker->GetWriteQueue());
+	//	}
 
-		return ResultCode::SUCCESS;
-	}
+	//	return ResultCode::SUCCESS;
+	//}
 
 	// Register the socket to EPOLL
 	Result KQUEUESystem::RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance)
@@ -518,13 +529,13 @@ namespace Net {
 			if (m_WorkerUDP.GetSize() < 1)
 			{
 				Result hr = m_ListenWorker->RegisterSocket(cbInstance);
-				if (FAILED(hr)) return hr;
+				if (!(hr)) return hr;
 			}
 			else
 			{
 				// UDP workers are sharing epoll, add any of them will work same.
 				Result hr = m_WorkerUDP[0]->RegisterSocket(cbInstance);
-				if (FAILED(hr)) return hr;
+				if (!(hr)) return hr;
 			}
 			cbInstance->SetAssignedIOWorker(0);
 		}
@@ -564,12 +575,12 @@ namespace Net {
 			if (m_WorkerUDP.GetSize() < 1)
 			{
 				Result hr = m_ListenWorker->UnregisterSocket(cbInstance);
-				if (FAILED(hr)) return hr;
+				if (!(hr)) return hr;
 			}
 			else
 			{
 				Result hr = m_WorkerUDP[0]->UnregisterSocket(cbInstance);
-				if (FAILED(hr)) return hr;
+				if (!(hr)) return hr;
 			}
 			cbInstance->SetAssignedIOWorker(-1);
 		}

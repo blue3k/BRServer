@@ -116,10 +116,10 @@ namespace Message {
 
 		MemoryPool *pMemPool = nullptr;
 		void *pPtr = nullptr;
-		if( FAILED(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
+		if( !(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
 			return nullptr;
 
-		if( FAILED(pMemPool->Alloc(pPtr,"MessageData::NewMessage") ) )
+		if( !(pMemPool->Alloc(pPtr,"MessageData::NewMessage") ) )
 			return nullptr;
 
 		pBuffer = (BYTE*)pPtr;
@@ -310,10 +310,10 @@ namespace Message {
 		this->~MessageData();
 
 		MemoryPool *pMemPool = nullptr;
-		if( FAILED(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
+		if( !(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
 			return;
 
-		if( FAILED(pMemPool->Free((void*)this, "MessageData::DeleteThis") ) )
+		if( !(pMemPool->Free((void*)this, "MessageData::DeleteThis") ) )
 			return;
 	}
 

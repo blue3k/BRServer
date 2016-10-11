@@ -104,13 +104,13 @@ namespace BR {
 						m_Components[iComponent]->TerminateComponent();
 
 					hr = m_Components[iComponent]->InitializeComponent();
-					if (FAILED(hr)) goto Proc_End;
+					if (!(hr)) goto Proc_End;
 				}
 			}
 
 		Proc_End:
 
-			//if( FAILED(hr) )
+			//if( !(hr) )
 			//{
 			//	defTrace( Trace::TRC_ERROR, "Component {0} failed to initialize", iComponent );
 			//}
@@ -133,7 +133,7 @@ namespace BR {
 
 		//Proc_End:
 
-			//if (FAILED(hr))
+			//if (!(hr))
 			//{
 			//	defTrace(Trace::TRC_ERROR, "Component {0} failed to terminate", iComponent);
 			//}
@@ -183,7 +183,7 @@ namespace BR {
 				return ResultCode::OUT_OF_MEMORY;
 
 			Result hr = AddComponent(newComponent);
-			if( FAILED(hr) )
+			if( !(hr) )
 			{
 				delete newComponent;
 			}
@@ -205,7 +205,7 @@ namespace BR {
 				return ResultCode::OUT_OF_MEMORY;
 
 			Result hr = AddComponent(newComponent);
-			if( FAILED(hr) )
+			if( !(hr) )
 			{
 				delete newComponent;
 			}
@@ -227,7 +227,7 @@ namespace BR {
 				return ResultCode::OUT_OF_MEMORY;
 
 			Result hr = AddComponent(newComponent);
-			if( FAILED(hr) )
+			if( !(hr) )
 			{
 				delete newComponent;
 			}
@@ -249,7 +249,7 @@ namespace BR {
 				return ResultCode::OUT_OF_MEMORY;
 
 			Result hr = AddComponent(newComponent);
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				delete newComponent;
 			}

@@ -100,7 +100,7 @@ namespace Svr{
 			return ResultCode::SUCCESS;
 
 
-		while( SUCCEEDED(m_pNetPrivate->DequeueNetEvent( curEvent )) )
+		while( (m_pNetPrivate->DequeueNetEvent( curEvent )) )
 		{
 			pServerEntity = nullptr;
 			pConn = nullptr;
@@ -121,7 +121,7 @@ namespace Svr{
 				{
 					std::atomic_thread_fence(std::memory_order_acquire);
 
-					if (SUCCEEDED(GetServerComponent<ServerEntityManager>()->AddOrGetServerEntity((ServerID)pConn->GetConnectionInfo().RemoteID, pConn->GetConnectionInfo().RemoteClass, 
+					if ((GetServerComponent<ServerEntityManager>()->AddOrGetServerEntity((ServerID)pConn->GetConnectionInfo().RemoteID, pConn->GetConnectionInfo().RemoteClass, 
 						pServerEntity)))
 					{
 						auto localConn = pServerEntity->GetLocalConnection();
@@ -351,14 +351,14 @@ Proc_End:
 		svrTrace( Trace::TRC_TRACE, "Apply configuration" );
 		// Apply configuration
 		hr = ApplyConfiguration();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed Apply configuration, hr={0:X8}", hr );
 			svrErr( hr );
 		}
 
 		hr = InitializeMonitoring();
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed Apply configuration, hr={0:X8}", hr);
 			svrErr(hr);
@@ -367,7 +367,7 @@ Proc_End:
 		// Initialize server resource
 		svrTrace( Trace::TRC_TRACE, "Initialize server resource" );
 		hr = InitializeServerResource();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed Initialize resource, hr={0:X8}", hr );
 			svrErr( hr );
@@ -376,7 +376,7 @@ Proc_End:
 		// Initialize Network
 		svrTrace( Trace::TRC_TRACE, "Initialize Private network" );
 		hr = InitializeNetPrivate();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed Initialize Private Network, hr={0:X8}", hr );
 			svrErr( hr );
@@ -389,7 +389,7 @@ Proc_End:
 	Proc_End:
 
 
-		if( FAILED( hr ) )
+		if( !( hr ) )
 		{
 			SetServerState( ServerState::STOPED );
 			svrTrace( Trace::TRC_TRACE, "Start failed hr:{0:X8}", hr );
@@ -399,7 +399,7 @@ Proc_End:
 			svrTrace( Trace::TRC_TRACE, "Start process done" );
 		}
 
-		return SUCCEEDED(hr);
+		return (hr);
 	}
 
 
@@ -466,13 +466,13 @@ Proc_End:
 		SetServerState( ServerState::STOPING );
 
 		hr = CloseNetPrivate();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed Close Private Network, hr={0:X8}", hr );
 		}
 
 		hr = CloseServerResource();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed Close Private Network, hr={0:X8}", hr );
 		}
@@ -516,7 +516,7 @@ Proc_End:
 
 		svrTrace( Trace::TRC_TRACE, "Initialize basic entities" );
 		hr = InitializeEntities();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed Initialize basic entities, hr={0:X8}", hr );
 			svrErr( hr );
@@ -525,7 +525,7 @@ Proc_End:
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseNetPublic();
 			CloseNetPrivate();
@@ -593,13 +593,13 @@ Proc_End:
 		
 
 		// Process private network event
-		if( FAILED(ProcessPrivateNetworkEvent()) )
+		if( !(ProcessPrivateNetworkEvent()) )
 		{
 			svrTrace( Svr::TRC_DBGFAIL, "ProcessPrivateNetworkEvent : {0:X8}", hr );
 		}
 
 
-		if( FAILED(ProcessPublicNetworkEvent()) )
+		if( !(ProcessPublicNetworkEvent()) )
 		{
 			svrTrace( Svr::TRC_DBGFAIL, "ProcessPublicNetworkEvent : {0:X8}", hr );
 		}

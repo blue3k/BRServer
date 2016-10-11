@@ -597,7 +597,7 @@ namespace Svr {
 
 
 
-			if( FAILED(hr) )
+			if( !(hr) )
 			{
 				ReportServiceStatus( SERVICE_STOPPED, ResultCode::E_SVR_SERVICE_FAILED, 0 );
 			}

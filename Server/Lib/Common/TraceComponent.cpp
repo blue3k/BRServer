@@ -48,7 +48,7 @@ namespace BR
 		SharedPointerT<Trace::TraceOutModule> pInstance;
 
 		Result hr = Component::InitializeComponent();
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 		// initialize exception Handler
 		Trace::InitExceptionHandler();

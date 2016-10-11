@@ -200,7 +200,7 @@ namespace Svr
 
 Proc_End:
 
-		if( FAILED(hr) && m_CurlResult != 0 )
+		if( !(hr) && m_CurlResult != 0 )
 		{
 			svrTrace( Trace::TRC_ERROR, "GCM query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString );
 		}
@@ -497,7 +497,7 @@ Proc_End:
 
 	Proc_End:
 
-		if (FAILED(hr) && m_CurlResult != 0)
+		if (!(hr) && m_CurlResult != 0)
 		{
 			svrTrace(Trace::TRC_ERROR, "IOS receipt query failed by {0}:{1}, result:{2}", (int)m_CurlResult, curl_easy_strerror(m_CurlResult), resultString);
 		}

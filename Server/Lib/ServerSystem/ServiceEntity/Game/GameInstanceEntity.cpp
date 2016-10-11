@@ -114,7 +114,7 @@ namespace Svr {
 		INT playerCount = 0;
 
 		hr = super::TickUpdate(pAction);
-		if (FAILED(hr) || hr == ResultCode::SUCCESS_FALSE)
+		if (!(hr) || hr == ResultCode::SUCCESS_FALSE)
 			return hr;
 
 		// Update Players
@@ -130,9 +130,9 @@ namespace Svr {
 		UpdateGameStatus( CurTime );
 
 		// Leave player
-		while( SUCCEEDED(m_PendingReleasePlayer.Dequeue( pltID )) )
+		while( (m_PendingReleasePlayer.Dequeue( pltID )) )
 		{
-			if (SUCCEEDED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
+			if ((m_GamePlayerByUID.Find(pltID, pGamePlayer)))
 			{
 				playerCount--;
 				LeavePlayer( pGamePlayer );
@@ -294,7 +294,7 @@ namespace Svr {
 //		UINT playerIndex;
 
 		svrChkPtr( pPlayer );
-		if (SUCCEEDED(m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound)))
+		if ((m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound)))
 		{
 			svrErr(ResultCode::E_GAME_ALREADY_IN_GAME);
 		}
@@ -375,7 +375,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (FAILED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
+		if (!(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
 		{
 			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
 		}

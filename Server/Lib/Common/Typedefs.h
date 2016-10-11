@@ -159,8 +159,8 @@ typedef HANDLE HMODULE;
 #define FALSE (0)
 
 
-#define FAILED(hr)      ((hr) < 0)
-#define SUCCEEDED(hr)   ((hr) >= 0)
+#define !(hr)      ((hr) < 0)
+#define (hr)   ((hr) >= 0)
 
 #define IN
 #define OUT

@@ -33,14 +33,14 @@ namespace BR {
 		char ipstr[INET6_ADDRSTRLEN] = "";
 		inet_ntop(Data.sin6_family, (void*)&Data.sin6_addr, ipstr, sizeof ipstr);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ipstr)))
-		//if (FAILED(ToString(pBuff, iBuffLen, ipstr, 0)))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ipstr)))
+		//if (!(ToString(pBuff, iBuffLen, ipstr, 0)))
 			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
 			return ResultCode::FAIL;
 		
-		if( FAILED( _IToA( (UINT32)ntohs(Data.sin6_port), pBuff, iBuffLen, 10, -1 ) ) )
+		if( !( _IToA( (UINT32)ntohs(Data.sin6_port), pBuff, iBuffLen, 10, -1 ) ) )
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -55,13 +55,13 @@ namespace BR {
 
 		Net::SockAddr2Addr(Data, addr);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, addr.strAddr)))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, addr.strAddr)))
 			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
 			return ResultCode::FAIL;
 		
-		if( FAILED( _IToA( (UINT32)addr.usPort, pBuff, iBuffLen, 10, -1 ) ) )
+		if( !( _IToA( (UINT32)addr.usPort, pBuff, iBuffLen, 10, -1 ) ) )
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -72,16 +72,16 @@ namespace BR {
 	Result ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionInformation& Data, int Option )
 	{
 		unused(Option);
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "Local:" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "Local:" ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( ToString( pBuff, iBuffLen, Data.Local, 0) ) )
+		if( !( ToString( pBuff, iBuffLen, Data.Local, 0) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "Remote:" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "Remote:" ) ) )
 			return ResultCode::FAIL;
 
-		if( FAILED( ToString( pBuff, iBuffLen, Data.Remote, 0) ) )
+		if( !( ToString( pBuff, iBuffLen, Data.Remote, 0) ) )
 			return ResultCode::FAIL;
 
 

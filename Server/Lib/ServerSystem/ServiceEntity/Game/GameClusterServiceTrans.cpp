@@ -85,7 +85,7 @@ namespace Svr {
 	//		svrErr(ResultCode::E_INVALID_PLAYERID);
 	//	}
 
-	//	if (SUCCEEDED(Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(GetRouteContext().GetTo(), pEntity))
+	//	if ((Svr::GetServerComponent<Svr::EntityManager>()->FindEntity(GetRouteContext().GetTo(), pEntity))
 	//		&& pEntity->GetEntityID().GetFacultyID() == (UINT)EntityFaculty::User)
 	//	{
 	//		svrChkPtr(pPlayerEntity = BR_DYNAMIC_CAST(GamePlayerEntity*, (Svr::Entity*)pEntity));
@@ -126,7 +126,7 @@ namespace Svr {
 
 	//Proc_End:
 
-	//	if (FAILED(hr))
+	//	if (!(hr))
 	//		CloseTransaction(hr);
 
 	//	return hr;

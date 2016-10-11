@@ -176,7 +176,7 @@ Result ConnectionManagerT<ConnectionType>::InitManager( UINT poolCacheCount )
 {
 	Result hr = ResultCode::SUCCESS;
 
-	//if( FAILED( hr = m_ConnectionPool.PoolCache( poolCacheCount ) ) )
+	//if( !( hr = m_ConnectionPool.PoolCache( poolCacheCount ) ) )
 	//	return hr;
 
 	Start();

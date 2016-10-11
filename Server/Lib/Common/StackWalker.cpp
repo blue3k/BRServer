@@ -471,7 +471,7 @@ namespace BR
 	{
 		m_hProcess = GetCurrentProcess();
 
-		if (FAILED(BuildSymbolPath()))
+		if (!(BuildSymbolPath()))
 			return false;
 
 		if (!SymInitializeW(m_hProcess, (PWSTR)m_SymbolPath, false))
@@ -482,7 +482,7 @@ namespace BR
 		symbolLoadOptions |= SYMOPT_LOAD_LINES | SYMOPT_FAIL_CRITICAL_ERRORS;
 		symbolLoadOptions = SymSetOptions(symbolLoadOptions);
 
-		if (FAILED(LoadModuleSymbols()))
+		if (!(LoadModuleSymbols()))
 			return false;
 
 		UpdateSkipDepth();

@@ -58,7 +58,7 @@ namespace Svr {
 		svrChk(super::StartTransaction() );
 
 		// Get cluster watcher for this server
-		if( SUCCEEDED(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pClusterService )) )
+		if( (GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pClusterService )) )
 		{
 			svrChk( m_MemberList.Reserve( pClusterService->GetNumberOfServices() ) );
 
@@ -95,7 +95,7 @@ namespace Svr {
 
 		Trace::Flush();
 
-		if( FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
+		if( !(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
 			if( GetSender().GetServerID() == GetMyServerID() )
 			{
@@ -169,7 +169,7 @@ namespace Svr {
 		svrChk( super::StartTransaction() );
 
 		svrAssert( GetMyOwner() == GetServerComponent<ClusterManagerServiceEntity>() );
-		if( FAILED(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
+		if( !(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
 			if( GetSender().GetServerID() == GetMyServerID() )
 			{
@@ -247,7 +247,7 @@ namespace Svr {
 		bool bAddStatusWatcher;
 
 		// This should not be failed
-		if( FAILED(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
+		if( !(GetMyOwner()->GetClusterServiceEntity( GetClusterID(), pServiceEntity )) )
 		{
 			svrTrace(Svr::TRC_CLUSTER, "Ignoring unregistered cluster service sync: ClusterID:{0}", GetClusterID() );
 			//svrErr(ResultCode::E_SVR_INVALID_CLUSTERID);

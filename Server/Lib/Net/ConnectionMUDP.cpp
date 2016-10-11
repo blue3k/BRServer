@@ -86,7 +86,7 @@ namespace Net {
 
 		hrTem = SendRaw(pMsg);
 		//hrTem = GetNet()->SendMsg( this, pMsg );
-		if( FAILED(hrTem) )
+		if( !(hrTem) )
 		{
 			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							GetCID(), 
@@ -103,7 +103,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hrTem))
+		if (!(hrTem))
 		{
 			netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}",
 				GetCID(),
@@ -403,7 +403,7 @@ namespace Net {
 
 		Util::SafeRelease( pMsg );
 
-		if( FAILED( hr ) )
+		if( !( hr ) )
 		{
 			CloseConnection();
 		}
@@ -482,7 +482,7 @@ namespace Net {
 		auto loopCount = m_RecvNetCtrlQueue.GetEnqueCount();
 		for (decltype(loopCount) iLoop = 0; iLoop < loopCount; iLoop++)
 		{
-			if (FAILED(m_RecvNetCtrlQueue.Dequeue(netCtrl)))
+			if (!(m_RecvNetCtrlQueue.Dequeue(netCtrl)))
 				break;
 
 			if( netCtrl.msgID.ID != 0 )
@@ -566,7 +566,7 @@ namespace Net {
 		auto loopCount = m_RecvGuaQueue.GetEnqueCount();
 		for (decltype(loopCount) iLoop = 0; iLoop < loopCount; iLoop++)
 		{
-			if (FAILED(m_RecvGuaQueue.Dequeue(pIMsg)))
+			if (!(m_RecvGuaQueue.Dequeue(pIMsg)))
 				break;
 
 			if (pIMsg == nullptr)
@@ -613,7 +613,7 @@ namespace Net {
 		NumProc = Util::Min( NumProc, uiNumPacket );
 		for( CounterType uiPacket = 0; uiPacket < NumProc ; uiPacket++ )
 		{
-			if( FAILED(m_SendGuaQueue.Dequeue( pIMsg )) )
+			if( !(m_SendGuaQueue.Dequeue( pIMsg )) )
 				break;
 
 			AssertRel(pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence == 0);
@@ -621,7 +621,7 @@ namespace Net {
 			// check sending window size
 			pIMsg->AddRef(); // inc before send
 			hr = m_SendReliableWindow.EnqueueMessage(ulTimeCur, pIMsg);
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				pIMsg->Release();
 				netErr(hr);
@@ -641,7 +641,7 @@ namespace Net {
 
 		Util::SafeRelease( pIMsg );
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Disconnect("Failed to send reliable packets");
 
 		return hr;
@@ -658,7 +658,7 @@ namespace Net {
 		UINT uiMaxProcess = Util::Min( m_SendReliableWindow.GetMsgCount(), m_uiMaxGuarantedRetry );
 		for( UINT uiIdx = 0, uiMsgProcessed = 0; uiIdx < (UINT)m_SendReliableWindow.GetWindowSize() && uiMsgProcessed < uiMaxProcess; uiIdx++ )
 		{
-			if( SUCCEEDED(m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
+			if( (m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
 				&& pMessageElement && pMessageElement->pMsg != nullptr )
 			{
 				if (Util::TimeSince(pMessageElement->ulTimeStamp) <= DurationMS(Const::MUDP_SEND_RETRY_TIME))
@@ -723,13 +723,13 @@ namespace Net {
 			goto Proc_End;
 
 		hr = ProcNetCtrlQueue();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process NetCtrlQueue failed {0:X8}", hr );
 		}
 
 		hr = ProcConnectionState();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process Connection state failed {0:X8}", hr );
 		}
@@ -742,7 +742,7 @@ namespace Net {
 			MutexScopeLock localLock(m_SendReliableWindow.GetLock());
 
 			hr = ProcSendReliableQueue();
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				netTrace(TRC_CONNECTION, "Process Recv Guaranted queue failed {0:X8}", hr);
 			}
@@ -751,7 +751,7 @@ namespace Net {
 			if (m_bSendSyncThisTick)
 			{
 				hr = ProcReliableSendRetry();
-				if (FAILED(hr))
+				if (!(hr))
 				{
 					netTrace(TRC_CONNECTION, "Process message window failed {0:X8}", hr);
 				}
@@ -765,7 +765,7 @@ namespace Net {
 			goto Proc_End;
 
 		hr = ProcRecvReliableQueue();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process Recv Guaranted queue failed {0:X8}", hr );
 		}
@@ -789,7 +789,7 @@ namespace Net {
 
 
 		hr = ProcSendReliableQueue();
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			netTrace(TRC_CONNECTION, "Process Send Guaranted queue failed {0:X8}", hr);
 		}
@@ -798,7 +798,7 @@ namespace Net {
 		//if (m_bSendSyncThisTick)
 		//{
 			hr = ProcReliableSendRetry();
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				netTrace(TRC_CONNECTION, "Process message window failed {0:X8}", hr);
 			}
@@ -841,7 +841,7 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS;
 
 		hr = ConnectionMUDP::ProcNetCtrl(pNetCtrl);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 
 	//Proc_End:
@@ -935,7 +935,7 @@ namespace Net {
 	Result ConnectionMUDPClient::InitConnection(SOCKET socket, const ConnectionInformation &connectInfo)
 	{
 		Result hr = ConnectionUDPBase::InitConnection(socket, connectInfo);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 		// Clear local ID, MUDP server will expect peerID is zero on initial connection
 		m_ConnectInfo.LocalID = 0;
@@ -951,7 +951,7 @@ namespace Net {
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		hr = ConnectionMUDP::ProcConnectionState();
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 
 		// Update connection status
@@ -1061,11 +1061,11 @@ namespace Net {
 
 		DecPendingRecvCount();
 
-		if (SUCCEEDED(hrRes))
+		if ((hrRes))
 		{
 			netChkPtr(pIOBuffer);
 
-			if (FAILED(hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer)))
+			if (!(hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer)))
 				netTrace(TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", GetCID(), hr);
 
 			PendingRecv();

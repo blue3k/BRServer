@@ -75,7 +75,7 @@ namespace ConspiracyGameInstanceServer {
 
 	//Proc_End:
 
-	//	if( FAILED(hr) )
+	//	if( !(hr) )
 	//		Util::SafeDelete(pGameInstance);
 
 	//	return hr;

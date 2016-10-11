@@ -64,10 +64,10 @@ namespace Svr
 				break;
 			}
 
-			if( SUCCEEDED(m_QuerieQueue.DequeueMT( pTransaction, desiredLoopInterval )) )
+			if( (m_QuerieQueue.DequeueMT( pTransaction, desiredLoopInterval )) )
 			{
 				Result hr = pTransaction->StartTransaction();
-				if( FAILED(hr) )
+				if( !(hr) )
 				{
 					svrTrace( Trace::TRC_ERROR, "Transaction Failed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
 				}
@@ -85,7 +85,7 @@ namespace Svr
 				{
 					auto& entityTable = GetEntityTable();
 					TransactionResult* pRes = pTransaction;
-					if (SUCCEEDED(entityTable.RouteTransactionResult(pRes)))
+					if ((entityTable.RouteTransactionResult(pRes)))
 					{
 						pTransaction = nullptr;
 					}

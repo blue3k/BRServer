@@ -176,7 +176,7 @@ namespace BR
 		decltype(m_Settings)::Node *pPrevNode = nullptr, *pCur = nullptr;
 		StringKey key(settingName);
 
-		if (FAILED(m_Settings.FindPrevNode(key, pPrevNode)))
+		if (!(m_Settings.FindPrevNode(key, pPrevNode)))
 			return defaultValue;
 
 		pCur = pPrevNode->pNext;

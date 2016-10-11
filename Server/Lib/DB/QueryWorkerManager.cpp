@@ -115,7 +115,7 @@ namespace DB {
 		//if (!m_QueryCounter.Acquire(Const::DB_WORKER_JOB_WAITING_MAX))
 		//	return ResultCode::FAIL;
 
-		if (FAILED(m_PendingQueries.Dequeue(pQuery)))
+		if (!(m_PendingQueries.Dequeue(pQuery)))
 		{
 			// if this faild we need to retry
 			// Return back the query counter

@@ -36,7 +36,7 @@ namespace BR
 	Result LibComponentDefault::InitializeComponent()
 	{
 		Result hr = Component::InitializeComponent();
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 		srand((UINT)Util::Time.GetRawTimeMs().time_since_epoch().count());
 		Util::Random.Srand(nullptr);

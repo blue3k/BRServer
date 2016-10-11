@@ -54,7 +54,7 @@ namespace GameServer {
 		if( m_pNetPublic == nullptr )
 			return ResultCode::SUCCESS;
 
-		while( SUCCEEDED(m_pNetPublic->DequeueNetEvent( curEvent )) )
+		while( (m_pNetPublic->DequeueNetEvent( curEvent )) )
 		{
 			//pConn = nullptr;
 
@@ -75,7 +75,7 @@ namespace GameServer {
 
 				//svrChk( Svr::GetServerComponent<GameEntityManager>()->CreateGamePlayer(pGamePlayerEntity) );
 
-				//if( FAILED(pGamePlayerEntity->SetConnection( pConn )) )
+				//if( !(pGamePlayerEntity->SetConnection( pConn )) )
 				//{
 				//	// NOTE: We need to mark to close this
 				//	pGamePlayerEntity->ClearEntity();

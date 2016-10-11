@@ -63,7 +63,7 @@ namespace Svr {
 	// Set timer when it fails
 	void ClusterInitializationTrans::SetFailRetryTimer(Result hrRes)
 	{
-		if( FAILED(hrRes) )
+		if( !(hrRes) )
 		{
 			svrTrace( Svr::TRC_CLUSTER, "Cluster initialization Failed Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}, Step:{4}, hr:{5:X8}. Retrying ...", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (int)m_Step, hrRes );
 			SetTimer(DurationMS(10*1000));
@@ -162,7 +162,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			// if failed something retry after 1 sec from scratch
 			m_Step = Step_JoinCluster;
@@ -187,7 +187,7 @@ namespace Svr {
 		svrChk( AddOtherServicesToMe((UINT)msgRes.GetMemberList().GetSize(), msgRes.GetMemberList().data()) );
 
 		// 4. Request full data if replica
-		if( FAILED(RequestDataSync()) )
+		if( !(RequestDataSync()) )
 		{
 			// if failed sync we can retry laster
 			m_Step = Step_RequestDataSync;
@@ -196,7 +196,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			// if failed something retry after 1 sec from scratch
 			m_Step = Step_JoinCluster;
@@ -315,16 +315,16 @@ namespace Svr {
 	{
 		m_hr = hrRes;
 
-		if (SUCCEEDED(hrRes))
+		if ((hrRes))
 			m_Step = Step_Done;
 
-		GetMyOwner()->SetInitialized(SUCCEEDED(hrRes));
+		GetMyOwner()->SetInitialized((hrRes));
 
 		BrServer::GetInstance()->GetNumberServicesToWait().fetch_sub(1, std::memory_order_relaxed);
 
 		super::OnCloseTransaction( hrRes );
 
-		if( SUCCEEDED(hrRes) )
+		if( (hrRes) )
 			GetMyOwner()->SetServiceStatus( ServiceStatus::Ready );
 
 		return hrRes;
@@ -435,9 +435,9 @@ namespace Svr {
 
 		svrChk(super::StartTransaction());
 
-		if (SUCCEEDED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+		if ((GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
 		{
-			if (SUCCEEDED(pServiceEntity->FindService(GetSender(), pService)))
+			if ((pServiceEntity->FindService(GetSender(), pService)))
 			{
 				pService->SetServiceStatus(GetMemberStatus());
 			}
@@ -453,7 +453,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Svr::TRC_CLUSTER, "Update state is failed ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
 			CloseTransaction(hr);
@@ -483,7 +483,7 @@ namespace Svr {
 		}
 		else
 		{
-			if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+			if (!(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
 			{
 				svrTrace(Svr::TRC_CLUSTER, "Ignoring workload update of an unregistered cluster ClusterID:{0} Sender:{1}", GetClusterID(), GetSender());
 				CloseTransaction(hr);
@@ -492,7 +492,7 @@ namespace Svr {
 		}
 
 		hr = pServiceEntity->FindService(GetSender(), pUpdatedService);
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			goto Proc_End;
 		}
@@ -515,7 +515,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to update workload of unregistered cluster ClusterID:{0}, Sender:{1}", GetClusterID(), GetSender());
 			CloseTransaction(hr);
@@ -580,7 +580,7 @@ namespace Svr {
 		}
 		else
 		{
-			if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+			if (!(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
 			{
 				svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 				goto Proc_End;
@@ -594,7 +594,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 		}
@@ -628,7 +628,7 @@ namespace Svr {
 			}
 			else
 			{
-				if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+				if (!(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
 				{
 					svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 					goto Proc_End;
@@ -643,7 +643,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 		}

@@ -66,11 +66,21 @@ namespace Net {
 
 		struct CBFlags
 		{
-			UINT32 IsListenSocket : 1;
+			// Is listen only socket?
+			uint32_t IsListenSocket : 1;
+
+			// Is registered to IO sub system
+			uint32_t IsRegistered : 1;
 
 			CBFlags()
 				: IsListenSocket(0)
+				, IsRegistered(0)
 			{}
+
+			~CBFlags()
+			{
+				AssertRel(IsRegistered == 0);
+			}
 		};
 
 	private:
@@ -79,7 +89,7 @@ namespace Net {
 
 		WriteBufferQueue* m_pWriteQueues;
 
-		// Assigned IO worker thread 
+		// Assigned IO worker thread index
 		int m_AssignedIOWorker;
 
 		// Link to original socket variable
@@ -92,6 +102,10 @@ namespace Net {
 
 		int GetAssignedIOWorker() { return m_AssignedIOWorker; }
 		void SetAssignedIOWorker(int assignedIOWorker) { m_AssignedIOWorker = assignedIOWorker; }
+
+		// casting, a bit faster than dynamic cast
+		virtual SharedObject* AsSharedObject() { return nullptr; }
+
 
 
 		const CBFlags& GetIOFlags() const { return m_CBFlags; }
@@ -162,7 +176,7 @@ namespace Net {
 
 		Result RegisterSocket(SockType sockType, INetIOCallBack* cbInstance);
 		Result UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance);
-		Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
+		//Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
 
 		SOCKET Socket(SockFamily domain, SockType type);
 		void CloseSocket(SOCKET sock);

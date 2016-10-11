@@ -277,7 +277,7 @@ namespace BR
 			if( stm_MemoryPool == nullptr )
 			{
 				Result hr = MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
-				Assert(SUCCEEDED(hr)&&stm_MemoryPool);
+				Assert((hr)&&stm_MemoryPool);
 			}
 			void *pPtr = NULL;
 			stm_MemoryPool->Alloc( pPtr, typeid(ObjectType).name() );
@@ -330,7 +330,7 @@ namespace BR
 			if( stm_MemoryPool == nullptr )
 			{
 				Result hr = MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
-				Assert(SUCCEEDED(hr)&&stm_MemoryPool);
+				Assert((hr)&&stm_MemoryPool);
 			}
 			void *pPtr = NULL;
 			stm_MemoryPool->Alloc( pPtr, typeid(ObjectType).name() );

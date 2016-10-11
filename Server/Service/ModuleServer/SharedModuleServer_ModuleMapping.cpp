@@ -76,7 +76,7 @@ namespace SharedModuleServer {
 
 		svrMem(pServiceEntity = new ServiceEntityType(constructorArgs...));
 
-		if( SUCCEEDED(GetComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( pServiceEntity->GetClusterID(), pServiceEntityTest )) )
+		if( (GetComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( pServiceEntity->GetClusterID(), pServiceEntityTest )) )
 		{
 			if (pServiceEntityTest == pServiceEntity)
 				goto Proc_End;
@@ -216,7 +216,7 @@ namespace SharedModuleServer {
 
 	Proc_End:
 
-		Assert(SUCCEEDED(hr));
+		Assert((hr));
 
 		return hr;
 	}

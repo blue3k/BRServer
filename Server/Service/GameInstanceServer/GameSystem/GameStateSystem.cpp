@@ -624,7 +624,7 @@ namespace ConspiracyGameInstanceServer {
 				case PlayerRole::None:
 					break;
 				case PlayerRole::Seer:
-					if( FAILED(conspiracy::RewardTbl::FindItem( (int)conspiracy::RewardTbl::ERole::Enum::Seer, pItem )) )
+					if( !(conspiracy::RewardTbl::FindItem( (int)conspiracy::RewardTbl::ERole::Enum::Seer, pItem )) )
 					{
 						svrTrace( Trace::TRC_ERROR, "Can't find expericend for the seer, no exp for PID:{0}", pPlayer->GetPlayerID() );
 						break;
@@ -635,7 +635,7 @@ namespace ConspiracyGameInstanceServer {
 				case PlayerRole::Medium:
 				//case PlayerRole::Bodyguard:
 				//case PlayerRole::Owlman:
-					if( FAILED(conspiracy::RewardTbl::FindItem( (int)conspiracy::RewardTbl::ERole::Enum::Villager, pItem )) )
+					if( !(conspiracy::RewardTbl::FindItem( (int)conspiracy::RewardTbl::ERole::Enum::Villager, pItem )) )
 					{
 						svrTrace( Trace::TRC_ERROR, "Can't find expericend for villager side, no exp for PID:{0}", pPlayer->GetPlayerID() );
 						break;
@@ -644,7 +644,7 @@ namespace ConspiracyGameInstanceServer {
 					break;
 				case PlayerRole::Werewolf:
 				//case PlayerRole::Possessed:
-					if (FAILED(conspiracy::RewardTbl::FindItem((int)conspiracy::RewardTbl::ERole::Enum::Monster, pItem)))
+					if (!(conspiracy::RewardTbl::FindItem((int)conspiracy::RewardTbl::ERole::Enum::Monster, pItem)))
 					{
 						svrTrace( Trace::TRC_ERROR, "Can't find expericend for werewolf side, no exp for PID:{0}", pPlayer->GetPlayerID() );
 						break;
@@ -858,7 +858,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		hr = m_GamePlayStates[(UINT)m_CurrentGameState]->OnEnter();
-		if(FAILED(hr)) svrErr(hr);
+		if(!(hr)) svrErr(hr);
 
 		}
 		//svrChk( GetOwner().GetComponent<GamePlaySystem>()->UpdateGameEnd() );
@@ -986,7 +986,7 @@ namespace ConspiracyGameInstanceServer {
 		svrChk( GetOwner().GetComponent<GameLogSystem>()->AddGameStateChange(Util::Time.GetTimeUTCSec(), m_CurrentGameState) );
 
 		hr = m_GamePlayStates[(UINT)m_CurrentGameState]->OnEnter();
-		if(FAILED(hr)) svrErr(hr);
+		if(!(hr)) svrErr(hr);
 		}
 
 		svrChk( GetOwner().GetComponent<GamePlaySystem>()->UpdateGameEnd() );

@@ -89,10 +89,10 @@ namespace Svr {
 
 		SharedPointerT<TimerAction> removed;
 		Result hr = m_TimerMap.Remove(key.TimerKey, removed);
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			hr = m_TimerMap.Remove(pAction->GetInQueueKey().TimerKey, removed);
-			Assert(SUCCEEDED(hr));
+			Assert((hr));
 		}
 		Assert(removed == pAction);
 		// removed clear in-queue time
@@ -152,7 +152,7 @@ namespace Svr {
 			Assert(pAction->m_Queued == false);
 			pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
 			pAction->m_Queued = true;
-			if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
+			if (!(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
 			{
 				pAction->m_Queued = false;
 				Assert(false);
@@ -197,7 +197,7 @@ namespace Svr {
 		Assert(pAction->m_Queued == false);
 		pAction->m_Queued = true;
 		pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
-		if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
+		if (!(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
 		{
 			pAction->m_Queued = false;
 			Assert(false);
@@ -228,7 +228,7 @@ namespace Svr {
 
 		svrChkPtr(pAction);
 
-		if (FAILED(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
+		if (!(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
 		{
 			Assert(pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max() && pAction->m_Queued == false);
 		}
@@ -285,7 +285,7 @@ namespace Svr {
 		if (pAction->m_Queued)
 		{
 			SharedPointerT<TimerAction> removed;
-			if (FAILED(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
+			if (!(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
 			{
 				Assert(false);
 			}
@@ -303,7 +303,7 @@ namespace Svr {
 		{
 			pAction->m_InQueueKey.TimerKey = pAction->TimeData.TimerKey;
 			pAction->m_Queued = true;
-			if (FAILED(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
+			if (!(m_TimerMap.Insert(pAction->m_InQueueKey.TimerKey, pAction)))
 			{
 				pAction->m_Queued = false;
 				Assert(false);

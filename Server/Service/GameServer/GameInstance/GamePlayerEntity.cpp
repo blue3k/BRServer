@@ -284,7 +284,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (FAILED(UpdateGamePlayer()))
+		if (!(UpdateGamePlayer()))
 			return hr;
 
 		m_LatestDBSyncTime = Util::Time.GetTimeUTCSec();

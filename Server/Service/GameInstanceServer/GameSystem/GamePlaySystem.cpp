@@ -349,9 +349,9 @@ namespace ConspiracyGameInstanceServer {
 	{
 		GamePlayer *pGamePlayer = nullptr;
 
-		if( FAILED(GetOwner().FindPlayer(GetHuntedPlayer(), pGamePlayer)) )
+		if( !(GetOwner().FindPlayer(GetHuntedPlayer(), pGamePlayer)) )
 		{
-			if( FAILED(GetOwner().FindPlayer(exculdePlayer, pGamePlayer)) )
+			if( !(GetOwner().FindPlayer(exculdePlayer, pGamePlayer)) )
 			{
 				// pick random
 				svrTrace( Trace::TRC_ERROR, "Invalid hunted player: PlayerID:{0}", GetHuntedPlayer() );
@@ -377,7 +377,7 @@ namespace ConspiracyGameInstanceServer {
 		{
 			// search right
 			int checkIndex = (playerIndexToCheck + iPlayer) % GetOwner().GetMaxPlayer();
-			if( SUCCEEDED(GetOwner().GetPlayerByIndex(checkIndex, pCheckPlayer))
+			if( (GetOwner().GetPlayerByIndex(checkIndex, pCheckPlayer))
 				&& pCheckPlayer != nullptr && pCheckPlayer->IsInGame() && pCheckPlayer->GetPlayerState() != PlayerState::Ghost
 				&& pCheckPlayer->GetPlayerID() != exculdePlayer )
 			{
@@ -386,7 +386,7 @@ namespace ConspiracyGameInstanceServer {
 
 			// search left
 			checkIndex = (playerIndexToCheck - iPlayer) % GetOwner().GetMaxPlayer();
-			if( SUCCEEDED(GetOwner().GetPlayerByIndex(checkIndex, pCheckPlayer))
+			if( (GetOwner().GetPlayerByIndex(checkIndex, pCheckPlayer))
 				&& pCheckPlayer != nullptr && pCheckPlayer->IsInGame() && pCheckPlayer->GetPlayerState() != PlayerState::Ghost
 				&& pCheckPlayer->GetPlayerID() != exculdePlayer )
 			{
@@ -413,7 +413,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			svrTrace( Trace::TRC_ERROR, "Failed to find player KillPlayer PlayerID:{0}, reason:{1}", playerToKill, (int)reason );
 
 		return hr;
@@ -480,7 +480,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed to kill a player PlayerID:{0}, reason:{1}, Result:{2:X8}", pPlayerToKill->GetPlayerID(), (int)reason, hr );
 		}
@@ -550,7 +550,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to revive a player PlayerID:{0}, Result:{1:X8}", pPlayerToRevive->GetPlayerID(), hr);
 		}

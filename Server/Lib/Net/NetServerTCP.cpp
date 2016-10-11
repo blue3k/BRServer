@@ -93,7 +93,7 @@ namespace Net {
 		netChk(SetupSocketOption(pAcceptInfo->sockAccept));
 
 		hrErr = NetSystem::Accept(GetSocket(), pAcceptInfo);
-		switch (hrErr)
+		switch ((int32_t)hrErr)
 		{
 		case ResultCode::SUCCESS:
 		case ResultCode::E_NET_WOULDBLOCK:
@@ -109,7 +109,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			Util::SafeDelete(pAcceptInfo);
 		}
@@ -139,7 +139,7 @@ namespace Net {
 			goto Proc_End;
 		}
 
-		if( SUCCEEDED( hrRes ) )
+		if( ( hrRes ) )
 		{
 			netChk(NetSystem::HandleAcceptedSocket(sockSvr, pOverAccept, remoteAddr));
 
@@ -211,7 +211,7 @@ namespace Net {
 			
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			if( pConn != nullptr )
 			{
@@ -485,7 +485,7 @@ namespace Net {
 
 	//Proc_End:
 
-	//	if( FAILED(hr) )
+	//	if( !(hr) )
 	//	{
 	//		if( pOverlapped )
 	//		{
@@ -558,7 +558,7 @@ namespace Net {
 
 	//Proc_End:
 
-	//	if( FAILED(hr) )
+	//	if( !(hr) )
 	//	{
 	//		if( pOverlapped )
 	//		{

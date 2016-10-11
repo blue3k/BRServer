@@ -68,10 +68,10 @@ namespace EntityServer {
 			for( ClusterID clusterID = ClusterID::ClusterManager; clusterID < ClusterID::Max; clusterID++ )
 			{
 				EntityUID expectedUID( GetServerID(), EntityID(EntityFaculty::Service,(UINT)clusterID) );
-				if (FAILED(pClusterManager->GetClusterServiceEntity(clusterID, pServiceEntity)))
+				if (!(pClusterManager->GetClusterServiceEntity(clusterID, pServiceEntity)))
 					continue;
 
-				if( FAILED(pServiceEntity->FindService( expectedUID, pServiceInfo )) )
+				if( !(pServiceEntity->FindService( expectedUID, pServiceInfo )) )
 				{
 					Svr::ServerServiceInformation *pService = nullptr;
 					svrTrace( Svr::TRC_CLUSTER, "Adding remote cluster info EntityID:{0}, ClusterID:{1}", expectedUID, clusterID );

@@ -54,14 +54,14 @@ namespace BR {
 	{
 		static const char Unknown[]="UnknownType:";
 		Result hr = ::BR::StrUtil::StringCpyEx( pBuff, iBuffLen, Unknown );
-		if( SUCCEEDED(hr) )
+		if( (hr) )
 			::BR::StrUtil::StringCpyEx( pBuff, iBuffLen, typeid(Type).name() );
 #if WINDOWS
 		// If you got this warnning fix type or add type ToString implementation
 COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() )
 #endif
 		Assert(!"InvalidType ToString");
-		return SUCCEEDED(hr) ? ResultCode::FAIL : hr;
+		return (hr) ? ResultCode::FAIL : hr;
 	}
 
 
@@ -134,15 +134,15 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	template< class EnumType >
 	inline Result ToStringEnum( char*& pBuff, INT& iBuffLen, EnumType Data, int Radix = 10 )
 	{
-		//if( FAILED( ToString( pBuff, iBuffLen, typeid(Data).name(), 0 ) ) )
+		//if( !( ToString( pBuff, iBuffLen, typeid(Data).name(), 0 ) ) )
 		//	return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "(" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "(" ) ) )
 			return ResultCode::FAIL;
 
 		_IToA( (UINT32)Data, pBuff, iBuffLen, Radix, -1 );
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ")" ) ) )
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -155,12 +155,12 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 		if( pData == nullptr )
 			return ResultCode::FAIL;
 
-		if( FAILED(_IToA( (UINT32)szArray, pBuff, iBuffLen, 10, -1 )) )
+		if( !(_IToA( (UINT32)szArray, pBuff, iBuffLen, 10, -1 )) )
 			return ResultCode::FAIL;
 
 		for( size_t uiIdx = 0; uiIdx < szArray; uiIdx++ )
 		{
-			if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
+			if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
 				return ResultCode::FAIL;
 
 			ToString( pBuff, iBuffLen, pData[uiIdx], 0 );
@@ -176,12 +176,12 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 	{
 		auto szArray = pData.GetSize();
 
-		if (FAILED(_IToA((UINT32)szArray, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT32)szArray, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
 		for (size_t uiIdx = 0; uiIdx < szArray; uiIdx++)
 		{
-			if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+			if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 				return ResultCode::FAIL;
 
 			ToString(pBuff, iBuffLen, pData[uiIdx], 0);

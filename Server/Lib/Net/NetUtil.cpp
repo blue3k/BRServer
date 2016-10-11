@@ -150,7 +150,7 @@ namespace Net {
 
 	Result SetSockAddr(sockaddr_storage& sockAddr, const char *strAddr, USHORT usPort)
 	{
-		if (FAILED(SetSockAddr(*(sockaddr_in6*)&sockAddr, strAddr, usPort)))
+		if (!(SetSockAddr(*(sockaddr_in6*)&sockAddr, strAddr, usPort)))
 		{
 			return SetSockAddr(*(sockaddr_in*)&sockAddr, strAddr, usPort);
 		}
@@ -180,11 +180,11 @@ namespace Net {
 		localAddr.usPort = port;
 
 		// validate local IP
-		if (FAILED(CheckLocalAddress(SockFamily::IPV6, localAddr)))
+		if (!(CheckLocalAddress(SockFamily::IPV6, localAddr)))
 		{
-			if (FAILED(CheckLocalAddress(SockFamily::IPV4, localAddr)))
+			if (!(CheckLocalAddress(SockFamily::IPV4, localAddr)))
 			{
-				if (SUCCEEDED(GetLocalAddressIPv6(localAddr)))
+				if ((GetLocalAddressIPv6(localAddr)))
 					netTrace(Trace::TRC_ERROR, "Invalid Address, expecte a local IPV6 address such as ... {0}", localAddr);
 				return ResultCode::E_NET_INVALID_ADDRESS;
 			}
@@ -206,12 +206,12 @@ namespace Net {
 		sockaddr_storage sockAddr;
 
 		Result hr = SetSockAddr(sockAddr, strAddress, port);
-		if (FAILED(hr))
+		if (!(hr))
 			return hr;
 
 		netAddr.SocketFamily = ToSockFamily(sockAddr.ss_family);
 		hr = StrUtil::StringCpy(netAddr.strAddr, (INT)countof(netAddr.strAddr), strAddress);
-		if (FAILED(hr))
+		if (!(hr))
 			return hr;
 
 		netAddr.usPort = port;
@@ -298,7 +298,7 @@ namespace Net {
 
 		addr.SocketFamily = family;
 		Result hr = Addr2SockAddr(addr, testSockAddr);
-		if (FAILED(hr))
+		if (!(hr))
 			return hr;
 
 
@@ -468,13 +468,13 @@ namespace Net {
 		if (family == SockFamily::IPV4)
 		{
 			auto *pSockAddr = (struct sockaddr_in *)&testSockAddr;
-			if (FAILED(Addr2SockAddr(addr, *pSockAddr)))
+			if (!(Addr2SockAddr(addr, *pSockAddr)))
 				return ResultCode::FAIL;
 		}
 		else
 		{
 			auto *pSockAddr = (struct sockaddr_in6 *)&testSockAddr;
-			if (FAILED(Addr2SockAddr(addr, *pSockAddr)))
+			if (!(Addr2SockAddr(addr, *pSockAddr)))
 				return ResultCode::FAIL;
 		}
 			

@@ -70,7 +70,7 @@ namespace Net {
 
 	void ConnectionPeerTCP::OnConnectionResult(Result hrConnect)
 	{
-		if (SUCCEEDED(hrConnect))
+		if ((hrConnect))
 		{
 			Assert(m_ConnectInfo.RemoteID != 0);
 		}

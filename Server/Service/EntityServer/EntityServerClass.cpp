@@ -169,7 +169,7 @@ namespace EntityServer {
 
 		for( ClusterID clusterID = ClusterID::ClusterManager; clusterID < ClusterID::Max; clusterID++ )
 		{
-			if( FAILED(pClusterManager->GetClusterServiceEntity( clusterID, pServiceEntity )) )
+			if( !(pClusterManager->GetClusterServiceEntity( clusterID, pServiceEntity )) )
 			{
 				// We need to add a table of cluster types
 				svrChk(pClusterManager->CreateWatcherForCluster( clusterID, ClusterType::Replication, pServiceEntity ));

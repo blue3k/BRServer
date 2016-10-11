@@ -126,7 +126,7 @@ namespace Svr {
 					IsCompleted = false;
 					Result hr = m_Steps[m_CurStep]->ProcessStep( pRes, IsCompleted );
 
-					if( FAILED(hr) )
+					if( !(hr) )
 					{
 						svrTrace( Trace::TRC_ERROR, "Error, FailedStep {0}:{1}", m_CurStep, typeid(*m_Steps[m_CurStep]).name() );
 						m_CurStep++;

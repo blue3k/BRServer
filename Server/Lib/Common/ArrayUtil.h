@@ -319,7 +319,7 @@ namespace BR
 			for( size_t iData = 0; iData < GetSize(); iData++ )
 			{
 				Result hr = functor( m_pDataPtr[iData] );
-				if( FAILED(hr) ) return hr;
+				if( !(hr) ) return hr;
 			}
 			return ResultCode::SUCCESS;
 		}

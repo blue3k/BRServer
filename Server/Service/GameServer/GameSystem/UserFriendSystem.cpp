@@ -163,7 +163,7 @@ namespace GameServer {
 		for (unsigned int index = start; index < m_Friends.GetSize() && index < maxCount; index++)
 		{
 			Result hr = functor( m_Friends[index] );
-			if( FAILED(hr) )
+			if( !(hr) )
 				return hr;
 		}
 

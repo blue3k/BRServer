@@ -91,7 +91,7 @@ namespace BR
 				// Allocate page if no free item
 				void *pPage = nullptr;
 
-				if (FAILED(m_Allocator.Alloc(pPage)))
+				if (!(m_Allocator.Alloc(pPage)))
 					return ResultCode::OUT_OF_MEMORY;
 
 				pMemItem = (ObjectItem*)pPage;
@@ -238,7 +238,7 @@ namespace BR
 			// Allocate page if no free item
 			void *pPage = nullptr;
 
-			if( FAILED(m_Allocator.Alloc( pPage )) )
+			if( !(m_Allocator.Alloc( pPage )) )
 				return ResultCode::OUT_OF_MEMORY;
 
 			pMemItem = (MemItem*)pPage;

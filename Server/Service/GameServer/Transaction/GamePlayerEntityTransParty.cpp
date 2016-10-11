@@ -99,7 +99,7 @@ namespace GameServer {
 		Message::GameInstance::JoinGameRes joinRes;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
-		if( FAILED(pRes->GetResult()) )
+		if( !(pRes->GetResult()) )
 		{
 			GetMyOwner()->GetISvrGamePolicy()->GameMatchFailedS2CEvt(pRes->GetResult());
 			goto Proc_End;
@@ -120,7 +120,7 @@ namespace GameServer {
 			GetMyOwner()->UpdateGamePlayer();
 
 			// Apply regardless of its error
-			if (SUCCEEDED(conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::RoleChoice, pCostItem)))
+			if ((conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::RoleChoice, pCostItem)))
 			{
 				pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "RoleSelection");
 			}
@@ -132,7 +132,7 @@ namespace GameServer {
 			GetMyOwner()->UpdateGamePlayer();
 			GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina( -GetMyServer()->GetPresetGameConfig()->StaminaForGame );
 
-			if (SUCCEEDED(Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateJoinGameCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(),
+			if ((Svr::GetServerComponent<DB::GameConspiracyDB>()->UpdateJoinGameCmd(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetPlayerID(),
 				pPlayerInfoSystem->GetGem(), pPlayerInfoSystem->GetStamina(),
 				GetMyOwner()->GetIsInGame() != 0 ? 1 : 0,
 				GetMyOwner()->GetLatestActiveTime(),
@@ -169,7 +169,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return ResultCode::SUCCESS;
@@ -247,7 +247,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return ResultCode::SUCCESS;
@@ -379,7 +379,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -461,7 +461,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -567,7 +567,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -646,7 +646,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -698,7 +698,7 @@ namespace GameServer {
 
 
 	//	// Find player and send notify
-	//	if( SUCCEEDED(Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
+	//	if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
 	//	{
 	//		svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.SvrID, pServerEntity ) );
 	//		pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>();
@@ -735,7 +735,7 @@ namespace GameServer {
 		//svrChk( Svr::GetServerComponent<DB::AccountDB>()->Notification_Add( GetTransID(), GetInviteTargetID(), true, NotificationType::PartyRequest, GetMyOwner()->GetPlayerID(), GetMyOwner()->GetPartyUID(), GetMyOwner()->GetNickName() ) );
 		
 		// Find player and send notify
-		if( SUCCEEDED(Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
+		if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetInviteTargetID(), playerUID )) )
 		{
 			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 			svrChkPtr(pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>());
@@ -753,7 +753,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;

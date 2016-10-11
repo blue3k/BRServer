@@ -374,7 +374,7 @@ Result PageQueue<DataType>::DequeueMT( DataType& item, DurationMS uiCheckInterva
 	if(ReadCount == m_NumberOfItemsPerPage) 
 	{
 		hr = DequeuePageMoveMT();
-		AssertRel(SUCCEEDED(hr));
+		AssertRel((hr));
 	}
 
 	return hr;

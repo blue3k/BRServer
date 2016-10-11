@@ -44,7 +44,7 @@ UINT GameInstanceEntity::GetNumPlayer()
 //	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
 //	{
 //		Result hrRes = func(pPlayer);
-//		if (FAILED(hrRes))
+//		if (!(hrRes))
 //			return false;
 //		return true;
 //	});
@@ -67,7 +67,7 @@ UINT GameInstanceEntity::GetNumPlayer()
 //		if (pPolicy)
 //		{
 //			Result hrRes = func(pGamePlayer, pPolicy);
-//			if (FAILED(hrRes))
+//			if (!(hrRes))
 //				return false;
 //		}
 //		return true;
@@ -90,7 +90,7 @@ UINT GameInstanceEntity::GetNumPlayer()
 //		if (pPolicy)
 //		{
 //			Result hrRes = func(pGamePlayer, pPolicy);
-//			if (FAILED(hrRes))
+//			if (!(hrRes))
 //				return false;
 //		}
 //

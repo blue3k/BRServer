@@ -65,7 +65,7 @@ namespace ConspiracyGameInstanceServer {
 		{
 		case StartingStep::WaitEntityServer:
 			if( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-//			if( SUCCEEDED(GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
+//			if( (GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
@@ -86,7 +86,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr;
@@ -121,7 +121,7 @@ namespace ConspiracyGameInstanceServer {
 
 	Result GameInstanceServerStartProcess::OnCloseTransaction( Result hrRes )
 	{
-		if( SUCCEEDED(hrRes) )
+		if( (hrRes) )
 		{
 			// New connection will not be allowed.
 			// The only way to make new connection is registering from a login server by loggin

@@ -44,7 +44,7 @@ namespace Net {
 		while (1)
 		{
 			hr = writeQueue->GetFront(pSendBuffer);
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				hr = ResultCode::SUCCESS;
 				break;
@@ -126,7 +126,7 @@ namespace Net {
 
 			void* pPtr = nullptr;
 			bufferSize = g_GatheringSize;
-			if(FAILED(g_pGatheringBufferPool->Alloc(pPtr, "AllocGatheringBuffer")))
+			if(!(g_pGatheringBufferPool->Alloc(pPtr, "AllocGatheringBuffer")))
 				return ResultCode::OUT_OF_MEMORY;
 
 			pBuffer = (BYTE*)pPtr;

@@ -99,7 +99,7 @@ namespace Svr {
 		loopCount = GetTransactionQueue().GetEnqueCount();
 		for (decltype(loopCount) iTrans = 0; pCurTrans == nullptr && iTrans < loopCount; iTrans++)
 		{
-			if (FAILED(GetTransactionQueue().Dequeue(pCurTrans)))
+			if (!(GetTransactionQueue().Dequeue(pCurTrans)))
 				break;
 
 			m_pCurTran = SharedPointerT<Transaction>(pCurTrans);
@@ -159,7 +159,7 @@ namespace Svr {
 			}
 		}
 
-		if (FAILED(hrTem))// Transaction failed
+		if (!(hrTem))// Transaction failed
 		{
 			if (pCurTran->IsPrintTrace())
 			{

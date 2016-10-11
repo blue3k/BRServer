@@ -205,7 +205,7 @@ Proc_End:
 			DataSource *pDBSource = nullptr;
 
 			// dequeue one item
-			if (FAILED(m_PendingQueries.Dequeue(pQuery)))
+			if (!(m_PendingQueries.Dequeue(pQuery)))
 				continue;
 
 			if (Util::TimeSince(pQuery->GetRequestedTime()) > DurationMS(DB::MAX_QUERY_TIMEOUT))
@@ -216,7 +216,7 @@ Proc_End:
 			}
 
 			// Find the data source
-			if (FAILED(SelectDBByKey(pQuery->GetPartitioningKey(), pDBSource)))
+			if (!(SelectDBByKey(pQuery->GetPartitioningKey(), pDBSource)))
 			{
 				dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
 				// It's not expected
@@ -234,7 +234,7 @@ Proc_End:
 			}
 
 			// Get Session
-			if (FAILED(pDBSource->AssignSession(pSession)))
+			if (!(pDBSource->AssignSession(pSession)))
 			{
 				// It's not expected
 				pQuery->SetResult(ResultCode::UNEXPECTED);
@@ -245,7 +245,7 @@ Proc_End:
 
 			if (!pSession->IsOpened())
 			{
-				if (FAILED(pSession->OpenSession()))
+				if (!(pSession->OpenSession()))
 				{
 					pQuery->SetResult(ResultCode::UNEXPECTED);
 					pSession->ReleaseSession();
@@ -257,7 +257,7 @@ Proc_End:
 
 			pQuery->SetSession(pSession);
 
-			if (FAILED(QueryWorkerManager::PendingQuery(pQuery)))
+			if (!(QueryWorkerManager::PendingQuery(pQuery)))
 			{
 				// It's not expected
 				pQuery->SetResult(ResultCode::UNEXPECTED);
@@ -268,7 +268,7 @@ Proc_End:
 				pQuery = nullptr;
 			}
 
-			if (pQuery != nullptr && FAILED(pQuery->GetResult()))
+			if (pQuery != nullptr && !(pQuery->GetResult()))
 			{
 				RouteResult(pQuery);
 			}
@@ -287,7 +287,7 @@ Proc_End:
 		auto numQueries = m_ResultQueries.GetEnqueCount();
 		for (decltype(numQueries) iQuery = 0; iQuery < numQueries; iQuery++)
 		{
-			if (FAILED(m_ResultQueries.Dequeue(pQuery)))
+			if (!(m_ResultQueries.Dequeue(pQuery)))
 				break;
 
 			if (pQuery->GetMsgID().GetMsgID() == QueryGetShardListCmd::MID.GetMsgID())
@@ -298,7 +298,7 @@ Proc_End:
 				auto pDBRes = (QueryGetShardListCmd*)pQuery;
 				for (auto& rowRes : pDBRes->m_RowsetResult)
 				{
-					if (SUCCEEDED(SelectDBByKey(rowRes.ShardID, pDBSource)))
+					if ((SelectDBByKey(rowRes.ShardID, pDBSource)))
 					{
 						if (pDBSource->GetDefaultDB() != rowRes.DBName
 							|| pDBSource->GetConnectionString() != rowRes.ConnectionString)
@@ -336,7 +336,7 @@ Proc_End:
 		pQuery->SetQueryManager(this);
 
 		// Find the data source
-		if (FAILED(SelectDBByKey(pQuery->GetPartitioningKey(), pDBSource)))
+		if (!(SelectDBByKey(pQuery->GetPartitioningKey(), pDBSource)))
 		{
 			dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
 			// It's not expected
@@ -352,7 +352,7 @@ Proc_End:
 		}
 
 		// Get Session
-		if (FAILED(pDBSource->AssignSession(pSession)))
+		if (!(pDBSource->AssignSession(pSession)))
 		{
 			// It's not expected
 			pQuery->SetResult(ResultCode::UNEXPECTED);
@@ -362,7 +362,7 @@ Proc_End:
 
 		if (!pSession->IsOpened())
 		{
-			if (FAILED(pSession->OpenSession()))
+			if (!(pSession->OpenSession()))
 			{
 				pQuery->SetResult(ResultCode::UNEXPECTED);
 				pSession->ReleaseSession();
@@ -395,7 +395,7 @@ Proc_End:
 			auto msgID = pRes->GetMsgID();
 			auto entityID = pRes->GetTransID().GetEntityID();
 			hr = Svr::GetEntityTable().RouteTransactionResult(pRes);
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				dbTrace(TRC_INFO, "Failed to route a message msgID:{0}, target entityID:{1}, query:{2}", hr, msgID, entityID, queryName);
 				hr = ResultCode::E_INVALID_ENTITY;

@@ -26,7 +26,7 @@ Result TicketQueue<DataObject,TTicketType>::AssignItem( const DataObject&& Data,
 		return ResultCode::INVALID_POINTER;
 
 	Result hr = m_TicketMap.insert( pItem );
-	if( FAILED(hr) )
+	if( !(hr) )
 		Util::SafeDelete( pItem );
 	return hr;
 }
@@ -41,7 +41,7 @@ Result TicketQueue<DataObject,TTicketType>::AssignItem( DataObject&& Data, ItemT
 		return ResultCode::INVALID_POINTER;
 
 	Result hr = m_TicketMap.insert( pItem );
-	if( FAILED(hr) )
+	if( !(hr) )
 		Util::SafeDelete( pItem );
 	return hr;
 }
@@ -89,7 +89,7 @@ Result TicketQueue<DataObject,TTicketType>::Enqueue( const DataObject& newData, 
 	svrChk( AssignItem( newData, pItem ) );
 
 Proc_End:
-	if( FAILED(hr) )
+	if( !(hr) )
 		ReleaseItem( pItem );
 	else
 		hTicket = pItem;
@@ -106,7 +106,7 @@ Result TicketQueue<DataObject,TTicketType>::Enqueue( DataObject&& newData, Ticke
 	svrChk( m_Queue.Enqueue( pItem ) );
 
 Proc_End:
-	if( FAILED(hr) )
+	if( !(hr) )
 		ReleaseItem( pItem );
 	else
 		hTicket = pItem;
@@ -152,7 +152,7 @@ template< class DataObject, class TTicketType >
 Result TicketQueue<DataObject,TTicketType>::GetFront( DataObject& item )
 {
 	ItemTicket* pItem = nullptr;
-	while( m_Queue.GetEnqueCount() > 0 && SUCCEEDED(m_Queue.GetFront(pItem)) )
+	while( m_Queue.GetEnqueCount() > 0 && (m_Queue.GetFront(pItem)) )
 	{
 		if( pItem->GetDroped() )
 			Util::SafeDelete(pItem);
@@ -175,7 +175,7 @@ void TicketQueue<DataObject,TTicketType>::ClearQueue()
 	ItemTicket* pItem = nullptr;
 	while( m_Queue.GetEnqueCount() > 0 )
 	{
-		if( SUCCEEDED(m_Queue.Dequeue(pItem)) )
+		if( (m_Queue.Dequeue(pItem)) )
 		{
 			Util::SafeDelete(pItem);
 		}

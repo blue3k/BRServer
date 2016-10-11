@@ -59,7 +59,7 @@ namespace Svr
 		MutexScopeLock localLock(m_ServerTableLock);
 
 		ServerEntity* pSvrEntity = nullptr;
-		if (SUCCEEDED(GetServerEntity(serverID, pSvrEntity)))
+		if ((GetServerEntity(serverID, pSvrEntity)))
 		{
 			AssertRel(netClass == pSvrEntity->GetRemoteClass());
 			pServerEntity = pSvrEntity;
@@ -98,7 +98,7 @@ namespace Svr
 
 	//Proc_End:
 
-		Assert(FAILED(hr) || pServerEntity != nullptr);
+		Assert(!(hr) || pServerEntity != nullptr);
 		return hr;
 	}
 
@@ -216,7 +216,7 @@ namespace Svr
 		}
 
 		ServerEntity* pOldEntity = nullptr;
-		if (SUCCEEDED(GetServerEntity(serverID, pOldEntity)))
+		if ((GetServerEntity(serverID, pOldEntity)))
 		{
 			AssertRel(netClass == pOldEntity->GetRemoteClass());
 			if (pServerEntity != nullptr && pOldEntity != pServerEntity)

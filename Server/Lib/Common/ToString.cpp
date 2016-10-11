@@ -25,13 +25,13 @@ namespace BR
 	Result ToString(char*& pBuff, INT& iBuffLen, const EntityID& Data, int Option)
 	{
 		unused(Option);
-		if (FAILED(ToStringEnum(pBuff, iBuffLen, (EntityFaculty)Data.Components.FacultyID)))
+		if (!(ToStringEnum(pBuff, iBuffLen, (EntityFaculty)Data.Components.FacultyID)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT32)Data.Components.EntityLID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT32)Data.Components.EntityLID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -43,13 +43,13 @@ namespace BR
 	Result ToString(char*& pBuff, INT& iBuffLen, const EntityUID& Data, int Option)
 	{
 		unused(Option);
-		if (FAILED(_IToA((UINT32)Data.Components.SvrID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT32)Data.Components.SvrID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToString(pBuff, iBuffLen, Data.Components.EntID, Option)))
+		if (!(ToString(pBuff, iBuffLen, Data.Components.EntID, Option)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -61,19 +61,19 @@ namespace BR
 	Result ToString(char*& pBuff, INT& iBuffLen, const Message::MessageID& Data, int Option)
 	{
 		unused(Option);
-		if (FAILED(ToStringEnum(pBuff, iBuffLen, (BR::PolicyID)Data.IDs.Policy)))
+		if (!(ToStringEnum(pBuff, iBuffLen, (BR::PolicyID)Data.IDs.Policy)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToStringEnum(pBuff, iBuffLen, Data.IDs.MsgCode)))
+		if (!(ToStringEnum(pBuff, iBuffLen, Data.IDs.MsgCode)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":Seq")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":Seq")))
 			return ResultCode::FAIL;
 
-		if (FAILED(ToStringEnum(pBuff, iBuffLen, Data.IDs.Sequence)))
+		if (!(ToStringEnum(pBuff, iBuffLen, Data.IDs.Sequence)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -83,13 +83,13 @@ namespace BR
 	Result ToString(char*& pBuff, INT& iBuffLen, const NetAddress& Data, int Option)
 	{
 		unused(Option);
-		if (FAILED(ToString(pBuff, iBuffLen, (LPCSTR)Data.strAddr, 0)))
+		if (!(ToString(pBuff, iBuffLen, (LPCSTR)Data.strAddr, 0)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT32)Data.usPort, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT32)Data.usPort, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -101,7 +101,7 @@ namespace BR
 	{
 		unused(Option);
 
-		if (FAILED(_IToA((UINT32)Data, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT32)Data, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -113,19 +113,19 @@ namespace BR
 	{
 		unused(Option);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT64)Data.PlayerID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT64)Data.PlayerID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -137,19 +137,19 @@ namespace BR
 	{
 		unused(Option);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT64)Data.PlayerID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT64)Data.PlayerID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
@@ -160,19 +160,19 @@ namespace BR
 	{
 		unused(Option);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT64)Data.PlayerID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT64)Data.PlayerID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
 			return ResultCode::FAIL;
 
-		if (FAILED(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
+		if (!(_IToA((UINT64)Data.FBUID, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ")")))
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;

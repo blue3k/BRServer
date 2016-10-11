@@ -83,7 +83,7 @@ namespace Svr
 			m_activeTransactionScheduler.RemoveTimerAction(currentThreadID, pTrans->GetTimerAction());
 
 		// All master entity's transaction will be managed by shared pointer
-		if (SUCCEEDED(m_activeTrans.Remove(pTrans->GetTransID().GetTransactionIndex(), pDeleted)))
+		if ((m_activeTrans.Remove(pTrans->GetTransID().GetTransactionIndex(), pDeleted)))
 		{
 			Assert(pDeleted == pTrans);
 		}
@@ -132,7 +132,7 @@ namespace Svr
 		}
 
 		SharedPointerT<Transaction> activeTrans;
-		if (SUCCEEDED(m_activeTrans.Find(transID.GetTransactionIndex(), activeTrans)))
+		if ((m_activeTrans.Find(transID.GetTransactionIndex(), activeTrans)))
 		{
 			pTransaction = (Transaction*)activeTrans;
 			return ResultCode::SUCCESS;
@@ -178,7 +178,7 @@ namespace Svr
 		// process pending queue
 		while (m_activeTrans.GetItemCount() < m_uiMaxActiveTransaction 
 			&& m_pExclusiveTransaction == nullptr // No transaction will be issued if there is a active exclusive transaction.
-			&& SUCCEEDED(GetTransactionQueue().Dequeue(pNewTran))
+			&& (GetTransactionQueue().Dequeue(pNewTran))
 			)
 		{
 			TransactionID transID( (UINT32)GetEntityID(), 0 );
@@ -186,7 +186,7 @@ namespace Svr
 			SharedPointerT<Transaction> pPrevTrans = nullptr;
 			do {
 				transID.Components.TransID = GenTransIndex();
-			} while (SUCCEEDED(m_activeTrans.Find(transID.GetTransactionIndex(), pPrevTrans)));
+			} while ((m_activeTrans.Find(transID.GetTransactionIndex(), pPrevTrans)));
 
 
 			pNewTran->SetTransID( transID );
@@ -300,7 +300,7 @@ namespace Svr
 		pCurTran->RecordTransactionHistory(pTransRes);
 		hrTem = pCurTran->ProcessTransaction(pTransRes);
 
-		if( FAILED(hrTem) )// Transaction failed
+		if( !(hrTem) )// Transaction failed
 		{
 			if( pCurTran->IsPrintTrace() )
 			{
@@ -372,7 +372,7 @@ namespace Svr
 		case Svr::EventTask::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)
 			{
-				if (SUCCEEDED(FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
+				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
 					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
 				}

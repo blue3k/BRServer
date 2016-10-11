@@ -161,7 +161,7 @@ namespace BR {
 			Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;\
 			Message::Policy::Msg##MsgName##Res Result;\
 			\
-			if( SUCCEEDED(pMsgRes->GetResult()) )\
+			if( (pMsgRes->GetResult()) )\
 			{\
 				svrChk( Result.ParseIMsg(pMsgRes->GetMessage()) );\
 			}\
@@ -174,7 +174,7 @@ namespace BR {
 		case Message::MsgID::Policy::MID_##MsgName##Res:\
 		{\
 			Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;\
-			if( SUCCEEDED(pMsgRes->GetResult()) )\
+			if( (pMsgRes->GetResult()) )\
 			{\
 				svrChk( ResVar.ParseIMsg(pMsgRes->GetMessage()) );\
 			}\

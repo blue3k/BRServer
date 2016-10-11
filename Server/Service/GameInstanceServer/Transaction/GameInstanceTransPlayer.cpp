@@ -108,7 +108,7 @@ namespace ConspiracyGameInstanceServer {
 		m_Dead = false;
 		m_bIsFirstJoin = false;
 
-		if( FAILED(GetMyOwner()->FindPlayer( GetPlayer().PlayerID, pMyPlayer )) )
+		if( !(GetMyOwner()->FindPlayer( GetPlayer().PlayerID, pMyPlayer )) )
 		{
 			svrChk(GetMyOwner()->CreatePlayerInstance(GetPlayer(), pNewInsPlayer));
 			pMyPlayer =  dynamic_cast<GamePlayer*>(pNewInsPlayer);

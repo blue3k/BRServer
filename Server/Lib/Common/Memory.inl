@@ -172,7 +172,7 @@ Result CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, void
 		AssertRel( this->m_AllocatePosition < this->m_FreePosition );
 
 	#ifdef DEBUG
-		Assert(SUCCEEDED(ValidateAllocatedChunks()));
+		Assert((ValidateAllocatedChunks()));
 	#endif
 	}
 
@@ -186,7 +186,7 @@ Result CircularBufferAllocator<BufferSize,alignment>::Alloc( size_t uiSize, void
 	m_AllocatePosition += allocationSize;
 
 #ifdef DEBUG
-	Assert(SUCCEEDED(ValidateAllocatedChunks()));
+	Assert((ValidateAllocatedChunks()));
 #endif
 	return ResultCode::SUCCESS;
 }
@@ -269,7 +269,7 @@ Result CircularBufferAllocator<BufferSize,alignment>::Free( void* pPtr )
 
 				// Validate allocated chunks
 #ifdef DEBUG
-				Assert(SUCCEEDED(ValidateAllocatedChunks()));
+				Assert((ValidateAllocatedChunks()));
 #endif
 				Assert(m_FreePosition!=m_AllocatePosition);
 				AssertRel(pChunk->ChunkType == ChunkTypes::Free || pChunk->ChunkType == ChunkTypes::Dummy || pChunk->ChunkType == ChunkTypes::Allocated);

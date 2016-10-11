@@ -37,7 +37,7 @@ void GameLog<MaxBufferSize,MaxLog>::TerminateLog()
 {
 	GameLogItem *pItem = nullptr;
 
-	while( m_gameLogQueue.GetSize() > 0 && SUCCEEDED(m_gameLogQueue.Dequeue( pItem )) )
+	while( m_gameLogQueue.GetSize() > 0 && (m_gameLogQueue.Dequeue( pItem )) )
 	{
 		m_LogAllocator.Free( pItem );
 	}
@@ -77,7 +77,7 @@ Result GameLog<MaxBufferSize,MaxLog>::GetGameLogBinary( OutputMemoryStream& stre
 
 	m_gameLogQueue.ReverseForeach( startIndex, count, [&]( GameLogItem* pLogItem ) 
 	{
-		return SUCCEEDED(stream.Write( pLogItem->LogItemSize, (BYTE*)pLogItem ));
+		return (stream.Write( pLogItem->LogItemSize, (BYTE*)pLogItem ));
 	});
 
 

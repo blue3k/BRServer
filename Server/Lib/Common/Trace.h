@@ -252,7 +252,7 @@ namespace Trace {
 	#define TrcErrReturn(trcMod, errval) \
 	do {\
 		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}",     \
-			__FILE__, __LINE__, errval ); \
+			__FILE__, __LINE__, (BR::Result)errval ); \
 		return errval;\
 	} while(0);
 

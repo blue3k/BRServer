@@ -169,14 +169,14 @@ namespace Svr {
 		{
 			QueueItem *pItem = nullptr;
 
-			if( FAILED(m_ReservedQueue.Dequeue( pItem )) )
+			if( !(m_ReservedQueue.Dequeue( pItem )) )
 				continue;
 
 			// If deleted
 			if( pItem->NumPlayers == 0 )
 			{
 				QueueItem* erasedValue = nullptr;
-				if (SUCCEEDED(m_ItemIDTable.Erase(pItem->QueueItemID.UID, erasedValue)))
+				if ((m_ItemIDTable.Erase(pItem->QueueItemID.UID, erasedValue)))
 				{
 					Assert(erasedValue == pItem);
 				}
@@ -223,7 +223,7 @@ namespace Svr {
 		
 		// clean up front
 		QueueItem *pItem = nullptr;
-		while( SUCCEEDED(m_MainQueue.GetFront(pItem)) )
+		while( (m_MainQueue.GetFront(pItem)) )
 		{
 			// If delete is required by canceling
 			if ((pItem->NumPlayers == 0 || pItem->PendingCancel) && pItem->ReservedTime == TimeStampMS::min())
@@ -239,7 +239,7 @@ namespace Svr {
 
 		// clean up front
 		pItem = nullptr;
-		while( SUCCEEDED(m_SecondaryQueue.GetFront(pItem)) )
+		while( (m_SecondaryQueue.GetFront(pItem)) )
 		{
 			// If delete is required by canceling
 			if ((pItem->NumPlayers == 0 || pItem->PendingCancel) && pItem->ReservedTime == TimeStampMS::min())
@@ -314,7 +314,7 @@ namespace Svr {
 
 		pItem->NumPlayers = 0;
 		QueueItem *erasedValue = nullptr;
-		if (SUCCEEDED(m_ItemIDTable.Erase(pItem->QueueItemID, erasedValue)))
+		if ((m_ItemIDTable.Erase(pItem->QueueItemID, erasedValue)))
 		{
 			Assert(erasedValue == pItem);
 		}
@@ -351,7 +351,7 @@ namespace Svr {
 	Proc_End:
 
 
-		if(FAILED(hr))
+		if(!(hr))
 		{
 			if( pNewItem != nullptr )
 			{
@@ -399,7 +399,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		QueueItem *pItem = nullptr;
 
-		if (FAILED(m_ItemIDTable.Find(ticket.QueueItemID, pItem)))
+		if (!(m_ItemIDTable.Find(ticket.QueueItemID, pItem)))
 		{
 			return ResultCode::E_SVR_INVALID_QUEUEITEM;
 		}
@@ -433,10 +433,10 @@ namespace Svr {
 		QueueItem *pItem = nullptr;
 
 		do {
-			if( FAILED( m_SecondaryQueue.Dequeue( pItem ) ) )
+			if( !( m_SecondaryQueue.Dequeue( pItem ) ) )
 			{
 				hr = m_MainQueue.Dequeue( pItem );
-				if(FAILED( hr ))
+				if(!( hr ))
 				{
 					hr = ResultCode::E_SVR_NOITEM_INQUEUE;
 					goto Proc_End;
@@ -513,7 +513,7 @@ namespace Svr {
 		pItem->QueueItemID = 0;
 		pItem->NumPlayers = 0;
 
-		if (SUCCEEDED(m_ItemIDTable.Erase(ticket.QueueItemID, erasedValue)))
+		if ((m_ItemIDTable.Erase(ticket.QueueItemID, erasedValue)))
 		{
 			Assert(pItem == erasedValue);
 		}

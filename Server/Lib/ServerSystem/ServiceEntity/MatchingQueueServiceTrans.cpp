@@ -151,7 +151,7 @@ namespace Svr {
 			MatchingQueueTicket matchingTicket;
 
 			hr = GetMyOwner()->ReserveItem(GetRouteContext().GetFrom(), numPlayersInTheTicket, matchingTicket);
-			if (FAILED(hr))
+			if (!(hr))
 				break;
 
 			m_NumPlayersInTheTicket.push_back(numPlayersInTheTicket);

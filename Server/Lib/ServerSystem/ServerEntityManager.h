@@ -98,7 +98,7 @@ namespace Svr
 		PolicyType* GetServerPolicy( ServerID svrID )
 		{
 			ServerEntity* pServerEntity = nullptr;
-			if( FAILED(GetServerEntity(svrID, pServerEntity)) )
+			if( !(GetServerEntity(svrID, pServerEntity)) )
 				return nullptr;
 
 			return pServerEntity->GetPolicy<PolicyType>();
@@ -118,7 +118,7 @@ namespace Svr
 		MutexScopeLock localLock(m_ServerTableLock);
 
 		ServerEntity* pSvrEntity = nullptr;
-		if (SUCCEEDED(GetServerEntity(serverID, pSvrEntity)))
+		if ((GetServerEntity(serverID, pSvrEntity)))
 		{
 			AssertRel(netClass == pSvrEntity->GetRemoteClass());
 			pServerEntity = dynamic_cast<ServerEntityType*>(pSvrEntity);

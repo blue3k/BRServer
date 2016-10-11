@@ -61,7 +61,7 @@ namespace SharedModuleServer {
 		{
 		case StartingStep::WaitEntityServer:
 			if( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-//			if( SUCCEEDED(GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
+//			if( (GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
@@ -82,7 +82,7 @@ namespace SharedModuleServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr;
@@ -122,7 +122,7 @@ namespace SharedModuleServer {
 
 	Result SharedModuleServerStartProcess::OnCloseTransaction( Result hrRes )
 	{
-		if( SUCCEEDED(hrRes) )
+		if( (hrRes) )
 		{
 			GetMyServer()->SetServerState(Svr::ServerState::RUNNING);
 			// only accept allowed connections

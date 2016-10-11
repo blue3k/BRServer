@@ -97,7 +97,7 @@ namespace BR
 		virtual Result Resize( size_t newSize )
 		{
 			void* pPtr = m_DataBuffer;
-			if( FAILED(m_Allocator.Realloc( sizeof(DataType)*newSize, pPtr )) )
+			if( !(m_Allocator.Realloc( sizeof(DataType)*newSize, pPtr )) )
 				return ResultCode::OUT_OF_MEMORY;
 
 			if( pPtr != m_DataBuffer )
@@ -123,7 +123,7 @@ namespace BR
 				size_t newSize = m_Allocated + ((dataSize + m_Increase - 1) / m_Increase) * m_Increase;
 
 				Result hr = Resize(newSize);
-				if( FAILED(hr) )
+				if( !(hr) )
 					return hr;
 			}
 
@@ -192,12 +192,12 @@ namespace BR
 				return ResultCode::INVALID_ARG;
 
 			Result hr = super::Append( dataSize, data );
-			if( FAILED(hr) ) return hr;
+			if( !(hr) ) return hr;
 
 			if(super::GetPtr()[super::GetUsedSize()-1] != '\0' )
 			{
 				hr = super::Append( 1, "" );
-				if( FAILED(hr) ) return hr;
+				if( !(hr) ) return hr;
 			}
 
 			return ResultCode::SUCCESS;

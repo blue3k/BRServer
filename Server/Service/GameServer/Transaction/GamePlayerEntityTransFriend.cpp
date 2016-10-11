@@ -101,7 +101,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS;
@@ -119,7 +119,7 @@ namespace GameServer {
 		svrChkClose( pRes->GetResult() );
 		pMsgRes = (DB::QueryNotification_AddCmd*)pRes;
 
-		if( SUCCEEDED( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
+		if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
 		{
 			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 			pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>();
@@ -154,7 +154,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -191,7 +191,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -227,7 +227,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -254,7 +254,7 @@ namespace GameServer {
 			if (pFriendSystem != nullptr)
 			{
 				hr = pFriendSystem->AddFriend(m_NewFriend);
-				if (FAILED(hr))
+				if (!(hr))
 				{
 					if (hr != ResultCode::E_MAX_FRIEND) // silence max friend error
 						svrErr(hr);
@@ -276,7 +276,7 @@ namespace GameServer {
 			{
 				m_WaitingResultCount = 0;
 
-				if (SUCCEEDED(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), m_NewFriend.ShardID, m_NewFriend.PlayerID)))
+				if ((Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), m_NewFriend.ShardID, m_NewFriend.PlayerID)))
 					m_WaitingResultCount++;
 			}
 			else
@@ -354,7 +354,7 @@ namespace GameServer {
 		EntityUID playerUID;
 		Policy::IPolicyGameServer* pTargetPolicy = nullptr;
 
-		if (FAILED(Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer(GetInviterID(), playerUID)))
+		if (!(Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer(GetInviterID(), playerUID)))
 		{
 			goto Proc_End;
 		}
@@ -390,7 +390,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -474,7 +474,7 @@ namespace GameServer {
 			svrErrClose(ResultCode::E_INVALID_PLAYERID);
 
 		// Find player and notify to remove
-		if( SUCCEEDED(Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
+		if( (Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetFriendID(), playerUID )) )
 		{
 			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 
@@ -490,7 +490,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -559,13 +559,13 @@ namespace GameServer {
 				svrTrace(Trace::TRC_WARN, "Failed to add friend. Max friends, PlayerID:{0} to friend system", set.FriendUID);
 				return;
 			}
-			else if (FAILED(hr))
+			else if (!(hr))
 			{
 				svrTrace(Trace::TRC_ERROR, "Failed to add friend PlayerID:{0} to friend system", set.FriendUID);
 				return;
 			}
 
-			if (SUCCEEDED(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), info.ShardID, info.PlayerID)))
+			if ((Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), info.ShardID, info.PlayerID)))
 				m_WaitingCount++;
 		});
 
@@ -574,7 +574,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) || m_WaitingCount <= 0 )
+		if( !(hr) || m_WaitingCount <= 0 )
 			CloseTransaction(hr);
 
 		return ResultCode::SUCCESS; 
@@ -606,7 +606,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed to get friend level PlayerID:{0}, hr={1}", pDBRes ? pDBRes->UserID : 0, ArgHex32(hr) );
 		}
@@ -646,7 +646,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to get friend level PlayerID:{0}, hr={1:X8}", pDBRes ? pDBRes->PlayerID : 0, hr);
 		}
@@ -683,7 +683,7 @@ namespace GameServer {
 			{
 				friendSystem->ForeachFriends(0, m_TotalNumberOfFriends, [&](const ServerFriendInformation &friendInfo)
 				{
-					if (SUCCEEDED(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), friendInfo.ShardID, friendInfo.PlayerID)))
+					if ((Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendQuickInfoWithNickCmd(GetTransID(), friendInfo.ShardID, friendInfo.PlayerID)))
 						m_WaitingCount++;
 					return ResultCode::SUCCESS;
 				});
@@ -697,7 +697,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			CloseTransaction( hr );
 		}
@@ -750,7 +750,7 @@ namespace GameServer {
 		m_WaitingQueries--;
 
 		// if failed to write to DB, roleback the changes
-		if(FAILED(hr))
+		if(!(hr))
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed to save give stamina result PlayerID:{0}, Dest:{1}, hr:{2:X8}", GetMyOwner()->GetPlayerID(), GetTargetPlayer(), hr );
 			CloseTransaction(hr);
@@ -772,7 +772,7 @@ namespace GameServer {
 	Proc_End:
 
 		// if failed to write to DB, roleback the changes
-		if(FAILED(hr))
+		if(!(hr))
 		{
 			svrTrace( Trace::TRC_ERROR, "Failed to save give-stamina timestamp PlayerID:{0}, Dest:{1}", GetMyOwner()->GetPlayerID(), GetTargetPlayer() );
 		}
@@ -796,7 +796,7 @@ namespace GameServer {
 
 		svrChkClose( pRes->GetResult() );
 
-		if( SUCCEEDED( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetTargetPlayer(), playerUID )) )
+		if( ( Svr::GetServerComponent<Svr::GameClusterServiceEntity>()->FindPlayer( GetTargetPlayer(), playerUID )) )
 		{
 			svrChk( Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity( playerUID.GetServerID(), pServerEntity ) );
 			pTargetPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameServer>();
@@ -849,7 +849,7 @@ namespace GameServer {
 
 
 		//// Save my status
-		//if (SUCCEEDED(GetMyOwner()->UpdateDBSync(GetTransID())))
+		//if ((GetMyOwner()->UpdateDBSync(GetTransID())))
 		//	m_WaitingQueries++;
 
 
@@ -867,7 +867,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) || m_WaitingQueries == 0 )
+		if( !(hr) || m_WaitingQueries == 0 )
 		{
 			CloseTransaction( hr );
 		}
@@ -894,7 +894,7 @@ namespace GameServer {
 
 	//Proc_End:
 
-	//	if( FAILED(hr) )
+	//	if( !(hr) )
 	//	{
 	//		svrTrace( Trace::TRC_ERROR, "Failed to save received stamina result PlayerID:{0}, Sender:{1}", GetDestPlayerID(), GetSenderID() );
 	//	}
@@ -924,7 +924,7 @@ namespace GameServer {
 
 	//Proc_End:
 
-	//	if( FAILED(hr) )
+	//	if( !(hr) )
 	//	{
 	//		CloseTransaction( hr );
 	//	}

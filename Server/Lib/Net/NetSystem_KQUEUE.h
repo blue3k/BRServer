@@ -127,7 +127,7 @@ namespace Net {
 
 		Result MakeSocketNonBlocking(SOCKET sfd);
 		WriteBufferQueue* GetWriteBufferQueue();
-		Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
+		//Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
 
 		// Register the socket to KQUEUE
 		Result RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance);
