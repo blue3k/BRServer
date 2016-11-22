@@ -154,13 +154,10 @@ typedef HANDLE HMODULE;
 
 
 
-
 #define TRUE (1)
 #define FALSE (0)
 
 
-#define !(hr)      ((hr) < 0)
-#define (hr)   ((hr) >= 0)
 
 #define IN
 #define OUT

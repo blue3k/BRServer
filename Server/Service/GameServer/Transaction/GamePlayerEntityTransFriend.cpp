@@ -256,7 +256,7 @@ namespace GameServer {
 				hr = pFriendSystem->AddFriend(m_NewFriend);
 				if (!(hr))
 				{
-					if (hr != ResultCode::E_MAX_FRIEND) // silence max friend error
+					if (hr != Result(ResultCode::E_MAX_FRIEND)) // silence max friend error
 						svrErr(hr);
 				}
 
@@ -413,7 +413,7 @@ namespace GameServer {
 		}
 
 		hr = GetMyOwner()->GetComponent<UserFriendSystem>()->AddFriend( GetAccepter() );
-		if (hr == ResultCode::E_MAX_FRIEND)
+		if (hr == Result(ResultCode::E_MAX_FRIEND))
 		{
 			svrErrClose(hr);
 		}
@@ -554,7 +554,7 @@ namespace GameServer {
 			ServerFriendInformation info(set.FriendUID, set.FriendShardID, set.FriendFacebookUID, "", 1, 0, 0, FALSE, 0, set.FriendStaminaTime);
 
 			Result hRes = pFriendSystem->AddFriend(info);
-			if (hRes == ResultCode::E_MAX_FRIEND)
+			if (hRes == Result(ResultCode::E_MAX_FRIEND))
 			{
 				svrTrace(Trace::TRC_WARN, "Failed to add friend. Max friends, PlayerID:{0} to friend system", set.FriendUID);
 				return;

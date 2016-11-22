@@ -16,6 +16,7 @@
 #include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Common/TimeUtil.h"
+#include "Common/Thread.h"
 #include "Common/Utility.h"
 #include "Common/SpinSharedBuffer.h"
 #include "Common/MemoryPool.h"
@@ -32,6 +33,61 @@ namespace Net {
 	// NetIO interface
 	//
 
+	INetIOCallBack::INetIOCallBack(const SOCKET &IOSocketVariable)
+		: m_IOSockType(SockType::DataGram)
+		, m_IOStatus(IOStatus::None)
+		, m_pWriteQueues(nullptr)
+		, m_AssignedIOWorker(-1)
+		, m_IOSocket(IOSocketVariable)
+	{
+	}
+
+	INetIOCallBack::~INetIOCallBack()
+	{
+		AssertRel(m_IOStatus == IOStatus::None);
+	}
+
+	void INetIOCallBack::SetAssignedIOWorker(int assignedIOWorker)
+	{
+		m_AssignedIOWorker = assignedIOWorker;
+	}
+
+	void INetIOCallBack::OnIORegistered(SockType ioSockType)
+	{
+		IOStatus expected = IOStatus::None;
+		int iTry = 1;
+		while (!m_IOStatus.compare_exchange_weak(expected, IOStatus::Registered, std::memory_order_acquire))
+		{
+			if ((iTry % 4) == 0)
+				std::this_thread::sleep_for(DurationMS(0));
+
+			if (expected == IOStatus::Registered)
+			{
+				assert(false);
+				break;
+			}
+			iTry++;
+		}
+
+		m_IOSockType = ioSockType;
+	}
+
+	void INetIOCallBack::OnIOUnregistered()
+	{
+		IOStatus expected = IOStatus::Registered;
+		int iTry = 1;
+		while (!m_IOStatus.compare_exchange_weak(expected, IOStatus::None, std::memory_order_acquire))
+		{
+			if ((iTry % 4) == 0)
+				std::this_thread::sleep_for(DurationMS(0));
+
+			if (expected == IOStatus::None)
+			{
+				break;
+			}
+			iTry++;
+		}
+	}
 
 	Result INetIOCallBack::ProcessSendQueue()
 	{

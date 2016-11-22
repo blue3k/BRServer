@@ -59,6 +59,9 @@ namespace BR {
 		case MYSQL_TYPE_VAR_STRING: name = "MYSQL_TYPE_VAR_STRING";break;
 		case MYSQL_TYPE_STRING: name = "MYSQL_TYPE_STRING";break;
 		case MYSQL_TYPE_GEOMETRY: name = "MYSQL_TYPE_GEOMETRY";break;
+#if !WINDOWS
+		case MYSQL_TYPE_JSON: name = "MYSQL_TYPE_JSON"; break;
+#endif
 		};
 
 		unused(Option);

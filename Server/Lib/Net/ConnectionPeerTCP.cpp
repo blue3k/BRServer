@@ -88,7 +88,7 @@ namespace Net {
 		// On client side, we need to check readable/writable status by calling connect again
 		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == IConnection::ConnectionState::STATE_CONNECTING)
 		{
-			m_isActuallyConnected = Connect() == ResultCode::SUCCESS;
+			m_isActuallyConnected = Connect();
 		}
 
 

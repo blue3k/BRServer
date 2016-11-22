@@ -149,7 +149,7 @@ namespace Net {
 			SockAddr2Addr(remoteAddr, connectionInfo.Remote );
 
 			IConnection *pConnOut = nullptr;
-			svrChk(OnNewSocket(sockAccept, remoteAddr, connectionInfo, pConnOut));
+			svrChk(OnAcceptedSocket(sockAccept, remoteAddr, connectionInfo, pConnOut));
 
 			sockAccept = INVALID_SOCKET;
 		}
@@ -174,7 +174,7 @@ namespace Net {
 	}
 
 	// handle Socket accept
-	Result ServerTCP::OnNewSocket( SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut )
+	Result ServerTCP::OnAcceptedSocket( SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut )
 	{
 		Result hr = ResultCode::SUCCESS;
 		ConnectionTCP *pConnection = nullptr;
@@ -201,7 +201,7 @@ namespace Net {
 
 		// Initialize connection
 		netChk( pConnection->InitConnection( acceptedSocket, connectionInfo ) );
-		netTrace(TRC_CONNECTION, "Connection Accepted CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+		netTrace(TRC_CONNECTION, "Connection Accepted CID:{0}, Addr:{1}, sock:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote, acceptedSocket);
 
 
 		netChk(NetSystem::RegisterSocket(SockType::Stream, pConnection));
@@ -321,8 +321,6 @@ namespace Net {
 		netChk(Server::HostOpen( netCls, strLocalIP, usLocalPort ) );
 
 
-		netTrace(Trace::TRC_TRACE, "Open Server TCP Host {0}:{1}", strLocalIP, usLocalPort );
-
 		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::Stream);
 		if( socket == INVALID_SOCKET )
 		{
@@ -330,6 +328,7 @@ namespace Net {
 			netErr( ResultCode::UNEXPECTED );
 		}
 
+		netTrace(Trace::TRC_TRACE, "Open Server TCP Host {0}:{1}, sock:{2}", strLocalIP, usLocalPort, socket);
 
 		iOptValue = Const::SVR_RECV_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )

@@ -48,7 +48,7 @@ namespace Net {
 
 
 	// handle Socket accept
-	Result ServerPeerTCP::OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut)
+	Result ServerPeerTCP::OnAcceptedSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut)
 	{
 		Result hr = ResultCode::SUCCESS;
 		ConnectionTCP *pConnection = nullptr;
@@ -85,7 +85,7 @@ namespace Net {
 
 		// Initialize connection
 		netChk( pConnection->InitConnection( acceptedSocket, connectionInfo ) );
-		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote.strAddr, pConnection->GetConnectionInfo().Remote.usPort);
+		netTrace(TRC_CONNECTION, "Connection accepted CID:{0}, Addr:{1}, sock:{2}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote, acceptedSocket);
 
 		netChk(NetSystem::RegisterSocket(SockType::Stream, pConnection));
 
@@ -154,7 +154,7 @@ namespace Net {
 	// Make a connection to another server
 	Result ServerPeerTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
-		Result hr = ResultCode::SUCCESS;
+		Result hr = ResultCode::SUCCESS, hrRes;
 		Net::IConnection::ConnectionInformation connectionInfo;
 		ConnectionTCP *pConn = nullptr;
 		SOCKET socket = INVALID_SOCKET;
@@ -211,7 +211,8 @@ namespace Net {
 
 		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn));
 
-		if((pConn->Connect()))
+		hrRes = pConn->Connect();
+		if(hrRes)
 			pConn->WaitConnect();
 
 

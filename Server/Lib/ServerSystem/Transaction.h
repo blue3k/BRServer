@@ -473,7 +473,7 @@ namespace Svr {
 
 			if( !(hr) )
 			{
-				if( hr == ResultCode::E_SVR_NO_RESULT_HANDLER )
+				if( hr == Result(ResultCode::E_SVR_NO_RESULT_HANDLER))
 				{
 					svrTrace( Trace::TRC_ERROR, "Transaction has no result handler : Result MessageID:{0}, {1}", pRes->GetMsgID(), typeid(*this).name() );
 				}

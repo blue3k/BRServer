@@ -269,7 +269,7 @@ namespace Net {
 			//		GetCID(), GatherSize, hrTem );
 
 			//	// ignore io send fail except connection closed
-			//	if( hrTem == ResultCode::E_NET_CONNECTION_CLOSED )
+			//	if( hrTem == Result(ResultCode::E_NET_CONNECTION_CLOSED) )
 			//		netErr( hrTem );
 			//}
 		}
@@ -557,7 +557,7 @@ namespace Net {
 			//	Net::NetSystem::FreeBuffer(pSendBuffer);
 			//}
 
-			if (hr != ResultCode::E_NET_IO_SEND_FAIL)
+			if (hr != Result(ResultCode::E_NET_IO_SEND_FAIL))
 			{
 				netTrace(Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo(), hrErr, hr);
 			}
@@ -1087,13 +1087,13 @@ namespace Net {
 							pIMsg->GetMessageHeader()->Length,
 							hrTem );
 
-			if( hrTem == ResultCode::S_NET_PROCESSED_SEQUENCE )
+			if( hrTem == Result(ResultCode::S_NET_PROCESSED_SEQUENCE) )
 			{
 				SendPending(PACKET_NETCTRL_ACK, pMsgHeader->msgID.IDSeq.Sequence, pMsgHeader->msgID);
 				Util::SafeRelease( pIMsg );
 				continue;
 			}
-			else if (hrTem == ResultCode::E_NET_INVALID_SEQUENCE || hrTem == ResultCode::E_NET_SEQUENCE_OVERFLOW)
+			else if (hrTem == Result(ResultCode::E_NET_INVALID_SEQUENCE) || hrTem == Result(ResultCode::E_NET_SEQUENCE_OVERFLOW))
 			{
 				Util::SafeRelease( pIMsg );
 				continue;

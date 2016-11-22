@@ -82,7 +82,7 @@ namespace Svr {
 	template<class MessageClass, class TransactionClass>
 	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnGenericError(Svr::TransactionResult* &pRes)
 	{
-		if (pRes->GetResult() == ResultCode::E_INVALID_PLAYERID || pRes->GetResult() == ResultCode::E_SVR_INVALID_ENTITYUID)
+		if (pRes->GetResult() == Result(ResultCode::E_INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
 		{
 			if (super::GetMyOwner()->GetPlayerID() != 0 && m_CreateRequestCount == 0)
 			{
@@ -222,7 +222,7 @@ namespace Svr {
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameServer::RegisterPlayerToJoinGameServerRes res;
 
-		if( pRes->GetResult() == ResultCode::E_INVALID_PLAYERID || pRes->GetResult() == ResultCode::E_SVR_INVALID_ENTITYUID)
+		if( pRes->GetResult() == Result(ResultCode::E_INVALID_PLAYERID) || pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
 		{
 			if (super::GetMyOwner()->GetPlayerID() == 0)
 			{

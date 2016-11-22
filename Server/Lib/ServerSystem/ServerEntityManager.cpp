@@ -72,15 +72,19 @@ namespace Svr
 
 		svrChk( BrServer::GetInstance()->CreateServerEntity(netClass, pNewServerEntity) );
 
-		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, netAddress, pConnection ) );
-
 		pNewServerEntity->SetPrivateNetAddress(netAddress);
 		pNewServerEntity->SetServerID( serverID );
-		pNewServerEntity->SetLocalConnection(pConnection);
 
 		pServerEntity = pNewServerEntity;
 
 		svrChk(AddServerEntity(netClass, pNewServerEntity));
+
+		svrChk(BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection(serverID, netClass, netAddress, pConnection));
+
+		pNewServerEntity->SetLocalConnection(pConnection);
+
+		svrTrace(Svr::TRC_ENTITY, "Registered Server {0} SvrID:{1} {2}, taskGrp:{3}", netClass, serverID, netAddress, pNewServerEntity->GetTaskGroupID());
+
 
 	Proc_End:
 

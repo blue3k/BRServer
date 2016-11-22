@@ -293,7 +293,7 @@ namespace GameServer {
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, -1, 0, GetMyOwner()->GetGameInsUID().UID);
 
-		if (pRes->GetResult() == ResultCode::E_SVR_INVALID_ENTITYUID)
+		if (pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
 		{
 
 			GetMyOwner()->SetGameInsUID(0);
@@ -1245,7 +1245,7 @@ namespace GameServer {
 
 		// This means it's not full game
 		//if (m_RetryCount <= 1 
-		//	&& pRes->GetResult() == ResultCode::E_GAME_INVALID_PLAYER_COUNT // if some members are missing
+		//	&& pRes->GetResult() == Result(ResultCode::E_GAME_INVALID_PLAYER_COUNT) // if some members are missing
 		//	&& GetMyOwner()->GetPartyUID() == 0)
 		//{
 		//	svrChk(RequestCreateParty()));

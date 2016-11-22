@@ -80,7 +80,7 @@ namespace Net {
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		// INetIOCallBack
 
-		virtual SharedObject* AsSharedObject() override { return this; }
+		//virtual SharedObject* AsSharedObject() override { return this; }
 
 		virtual Result Recv(IOBUFFER_READ* pIOBuffer) override;
 

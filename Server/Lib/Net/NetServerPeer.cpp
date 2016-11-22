@@ -169,7 +169,7 @@ namespace Net {
 		{
 			pIOBuffer->SetPendingFalse();
 
-			if (hrRes != ResultCode::E_NET_IO_ABORTED)
+			if (hrRes != Result(ResultCode::E_NET_IO_ABORTED))
 			{
 				PendingRecv(pIOBuffer);
 			}

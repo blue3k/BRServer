@@ -160,6 +160,9 @@ namespace BR {
 		// Invalid purchase environment(public/test) 
 		public const int E_SVR_INVALID_PURCHASE_MODE =                      unchecked((int)0xE704002E); 
 
+		// Invalid Task group ID 
+		public const int E_SVR_INVALID_TASK_GROUPID =                       unchecked((int)0xE704002F); 
+
 	}
 }
 

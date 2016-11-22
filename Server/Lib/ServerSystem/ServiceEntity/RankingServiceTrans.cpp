@@ -84,7 +84,7 @@ namespace Svr {
 		//m_ReservedMember.Clear();
 
 		////hr = ReserveItem(GetQueryMemberCount());
-		//if( hr == ResultCode::E_NOITEM_INQUEUE )
+		//if( hr == Result(ResultCode::E_NOITEM_INQUEUE) )
 		//{
 		//	hr = ResultCode::SUCCESS;
 		//	SetTimer(1000);

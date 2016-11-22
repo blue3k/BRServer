@@ -58,7 +58,6 @@ namespace Net {
 	public:
 		// Constructor/destructor
 		EPOLLWorker(bool bHandleSend, int hEpoll = 0);
-
 		~EPOLLWorker();
 
 		int GetEpollHandle() {
@@ -89,7 +88,6 @@ namespace Net {
 	public:
 		// Constructor/destructor
 		EPOLLSendWorker();
-
 		~EPOLLSendWorker();
 
 		WriteBufferQueue& GetWriteQueue() { return m_WriteQueue; }
@@ -131,7 +129,9 @@ namespace Net {
 
 		// Register the socket to EPOLL
 		Result RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance);
-		Result UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance);
+		Result UnregisterFromNETIO(INetIOCallBack* cbInstance);
+
+		const char* EventFlagToString(int32_t bufferSize, char* stringBuffer, uint32_t eventFlags);
 
 		static EPOLLSystem& GetInstance() { return stm_Instance; }
 	};

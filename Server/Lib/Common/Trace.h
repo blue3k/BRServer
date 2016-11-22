@@ -244,14 +244,14 @@ namespace Trace {
 	#define TrcErrJmp(trcMod, errval, __var) \
 	do {\
 		__var = errval;\
-		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}",     \
+		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): {2}",     \
 			__FILE__, __LINE__, hr ); \
 		goto Proc_End;\
 	} while(0);
 
 	#define TrcErrReturn(trcMod, errval) \
 	do {\
-		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}",     \
+		TRACE_OUT(trcMod, Trace::TRC_ERROR, "{0}({1}): {2}",     \
 			__FILE__, __LINE__, (BR::Result)errval ); \
 		return errval;\
 	} while(0);
@@ -262,14 +262,14 @@ namespace Trace {
 		hr = checkState;\
 		if( !(hr) )\
 		{\
-			defTrace( Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}", __FILE__, __LINE__, hr ); \
+			defTrace( Trace::TRC_ERROR, "{0}({1}): {2}", __FILE__, __LINE__, hr ); \
 			goto Proc_End;\
 		}\
 	}while(0)\
 
 #define trcErr(errVal) \
 	do{\
-		defTrace( Trace::TRC_ERROR, "{0}({1}): 0x{2:X8}", __FILE__, __LINE__, hr ); \
+		defTrace( Trace::TRC_ERROR, "{0}({1}): {2}", __FILE__, __LINE__, hr ); \
 		hr = errVal;\
 		goto Proc_End;\
 	}while(0)\

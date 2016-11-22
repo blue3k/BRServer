@@ -131,7 +131,7 @@ namespace Net {
 
 		// Register the socket to KQUEUE
 		Result RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance);
-		Result UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance);
+		Result UnregisterFromNETIO(INetIOCallBack* cbInstance);
 
 
 		static KQUEUESystem& GetInstance() { return stm_Instance; }

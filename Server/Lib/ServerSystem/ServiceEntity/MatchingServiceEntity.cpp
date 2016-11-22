@@ -704,7 +704,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 
 		hr = ShardedClusterServiceEntity::TickUpdate(pAction);
-		if (hr == ResultCode::SUCCESS_FALSE)
+		if (hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 		svrChk(hr);
 
@@ -809,7 +809,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 
 		hr = MasterEntity::TickUpdate(pAction);
-		if (hr == ResultCode::SUCCESS_FALSE)
+		if (hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 
 		// don't update query when the server isn't running

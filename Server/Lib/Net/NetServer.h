@@ -130,7 +130,7 @@ namespace Net {
 		Result PendingAccept();
 
 		// handle Socket accept
-		virtual Result OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut);
+		virtual Result OnAcceptedSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut);
 
 		// Get pending accept count
 		inline CounterType GetPendingAccept();

@@ -216,7 +216,7 @@ namespace DB {
 		dbChk( pStatement->Bind( pMyQuery ) );
 
 		hr = pStatement->Execute();
-		if (hr == ResultCode::E_DB_CONNECTION_LOST) goto Proc_End;
+		if (hr == Result(ResultCode::E_DB_CONNECTION_LOST)) goto Proc_End;
 		dbChk(hr);
 
 		dbChk( pStatement->PatcResults( pMyQuery ) );
@@ -449,11 +449,12 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 		//MYSQL_BIND *pResults = nullptr;
 		int resultStatus = 0, rc;
+		int outParamCount;
 
 		dbChkPtr( m_Stmt );
 		dbChkPtr( m_Context );
 
-		int outParamCount = pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount();
+		outParamCount = pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount();
 
 		while(resultStatus == 0)
 		{

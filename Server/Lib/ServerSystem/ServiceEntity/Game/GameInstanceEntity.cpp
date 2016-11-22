@@ -114,7 +114,7 @@ namespace Svr {
 		INT playerCount = 0;
 
 		hr = super::TickUpdate(pAction);
-		if (!(hr) || hr == ResultCode::SUCCESS_FALSE)
+		if (!(hr) || hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 
 		// Update Players

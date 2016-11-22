@@ -338,11 +338,11 @@ namespace Net {
 
 							// Wait max 5 mins
 							if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(5 * 60 * 1000)
-								&& pIOCallback->GetIOFlags().IsRegistered != 0)
+								&& pIOCallback->GetIsIORegistered())
 							{
 								break;
 							}
-							AssertRel(pIOCallback->GetIOFlags().IsRegistered == 0);
+							AssertRel(!pIOCallback->GetIsIORegistered());
 						}
 						else if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(30 * 1000))
 						{
@@ -667,7 +667,7 @@ namespace Net {
 
 
 		// Clear pending operation queue
-		while( m_PendingOperations.Dequeue( oper ) == ResultCode::SUCCESS )
+		while( m_PendingOperations.Dequeue( oper ) )
 		{
 			SharedPointerT<Connection>& pConn = oper.pConn;
 
@@ -721,7 +721,7 @@ namespace Net {
 		Operation oper;
 
 		// Clear pending operation queue
-		while( m_PendingOperations.Dequeue( oper ) == ResultCode::SUCCESS )
+		while( m_PendingOperations.Dequeue( oper ) )
 		{
 			switch( oper.OpCode )
 			{

@@ -911,7 +911,7 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 
 		hr = m_GamePlayStates[(UINT)m_CurrentGameState]->Vote(pVoter,pPlayer);
-		if( hr != ResultCode::E_GAME_INVALID_PLAYER_STATE )
+		if( hr != Result(ResultCode::E_GAME_INVALID_PLAYER_STATE) )
 			svrChk(hr);
 
 		svrChk( GetOwner().GetComponent<GameLogSystem>()->UpdateGameVote( pVoter->GetPlayerID(), pPlayer->GetPlayerID() ) );

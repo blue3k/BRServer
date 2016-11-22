@@ -668,7 +668,7 @@ namespace Svr {
 
 		// When the return value is ResultCode::SUCCESS_FALSE, it means this service is already in the list
 		// Remove it if the key value isn't same
-		if( hrRes == ResultCode::SUCCESS_FALSE && pTblItem->m_ListNode.Key != pServerEntity->GetServerUpTime().time_since_epoch().count() )
+		if( hrRes == Result(ResultCode::SUCCESS_FALSE) && pTblItem->m_ListNode.Key != pServerEntity->GetServerUpTime().time_since_epoch().count() )
 		{
 			// I hope this not happened here
 			Assert(pTblItem->GetServerEntity() == pServerEntity);
@@ -682,7 +682,7 @@ namespace Svr {
 			svrChk( m_ServiceList.FindPrevNode( pServerEntity->GetServerUpTime().time_since_epoch().count(), pPrevNode ) );
 
 			// we don't have to update it again
-			if( hrRes != ResultCode::SUCCESS_FALSE )
+			if( hrRes != Result(ResultCode::SUCCESS_FALSE) )
 			{
 				Assert(pPrevNode != &pTblItem->m_ListNode );
 				Assert(pTblItem->m_ListNode.pNext == nullptr);
@@ -909,7 +909,7 @@ namespace Svr {
 		pTblItem = (ServiceTableItem*)pService;
 
 		// When the return value is ResultCode::SUCCESS_FALSE, it means this service is already in the list
-		if( hr == ResultCode::SUCCESS )
+		if( hr == Result(ResultCode::SUCCESS) )
 		{
 			if( pService->GetClusterMembership() <= ClusterMembership::Slave )
 			{
@@ -917,6 +917,7 @@ namespace Svr {
 				svrChk( m_ServiceList.FindPrevNode( pServerEntity->GetServerUpTime().time_since_epoch().count(), pPrevNode ) );
 
 				Assert(pPrevNode != &pTblItem->m_ListNode );
+
 				Assert(pPrevNode->pNext != &pTblItem->m_ListNode );
 
 				svrChk( m_ServiceList.Insert( pPrevNode, pServerEntity->GetServerUpTime().time_since_epoch().count(), &pTblItem->m_ListNode ) );

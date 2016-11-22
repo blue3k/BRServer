@@ -716,6 +716,7 @@ namespace Trace {
 	// Trace flush result
 	void TraceOutModule::TraceFlush()
 	{
+		m_TraceSpinBuffer.WaitPendingWork();
 	}
 
 

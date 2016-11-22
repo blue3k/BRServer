@@ -522,7 +522,7 @@ namespace GameServer {
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameParty::LeavePartyRes res;
 
-		if (pRes->GetResult() == ResultCode::E_SVR_INVALID_ENTITYUID)
+		if (pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
 		{
 			GetMyOwner()->SetPartyUID(0);
 			GetMyOwner()->UpdateDBSync(0);

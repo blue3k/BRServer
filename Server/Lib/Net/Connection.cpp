@@ -397,7 +397,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace(TRC_CONNECTION, "InitConnection CID:{0}, Addr:{1}:{2} hr:{3:X8}", GetCID(), connectInfo.Remote.strAddr, connectInfo.Remote.usPort, hr);
+		netTrace(TRC_CONNECTION, "InitConnection CID:{0}, sock:{1}, from:{2}, to:{3} hr:{4:X8}", GetCID(), socket, connectInfo.Local, connectInfo.Remote, hr);
 
 		return hr;
 	}
@@ -417,7 +417,7 @@ namespace Net {
 
 			EnqueueConnectionEvent(IConnection::Event(IConnection::Event::EVT_STATE_CHANGE, GetConnectionState()));
 
-			netTrace( TRC_CONNECTION, "Entering Disconnect CID:{0}, reason:{1}", GetCID(), reason );
+			netTrace( TRC_CONNECTION, "Entering Disconnect CID:{0}, sock:{1}, reason:{2}", GetCID(), GetSocket(), reason );
 		}
 
 	//Proc_End:
@@ -441,7 +441,7 @@ namespace Net {
 		UpdateConnectionTime();
 		//m_tConnectionTime = 0;
 
-		netTrace( TRC_CONNECTION, "Connection Closed CID:{0}, Addr:{1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
+		netTrace( TRC_CONNECTION, "Connection Closed CID:{0}, sock:{1}, Addr:{2}", GetCID(), GetSocket(), GetConnectionInfo().Remote );
 
 		EnqueueConnectionEvent(IConnection::Event(IConnection::Event::EVT_DISCONNECTED, GetConnectionState()));
 

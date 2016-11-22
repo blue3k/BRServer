@@ -68,19 +68,22 @@ namespace Net {
 			return GetLastWSAResult();
 		}
 
+		netTrace(Trace::TRC_INFO, "Socket Registered sock:{0}", sock);
+
 		return ResultCode::SUCCESS;
 	}
 
 	Result KQUEUEWorker::UnregisterSocket(INetIOCallBack* cbInstance)
 	{
-		struct kevent evSet;
+		// This will be handled with EV_EOF
+		//struct kevent evSet;
 
-		EV_SET(&evSet, cbInstance->GetIOSocket(), EVFILT_READ | EVFILT_WRITE, EV_DELETE, 0, 0, cbInstance);
-		if (kevent(m_hKQUEUE, &evSet, 1, NULL, 0, NULL) == -1)
-		{
-			netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: UnregisterSocket");
-			return GetLastWSAResult();
-		}
+		//EV_SET(&evSet, cbInstance->GetIOSocket(), EVFILT_READ | EVFILT_WRITE, EV_DELETE, 0, 0, cbInstance);
+		//if (kevent(m_hKQUEUE, &evSet, 1, NULL, 0, NULL) == -1)
+		//{
+		//	netTrace(Trace::TRC_ERROR, "KQUEUE_ctl: UnregisterSocket");
+		//	return GetLastWSAResult();
+		//}
 
 		return ResultCode::SUCCESS;
 	}
@@ -90,11 +93,12 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS;
 		IOBUFFER_ACCEPT* pAcceptInfo = nullptr;
 
+		netTrace(Trace::TRC_INFO, "Socket Accepted sock:{0}", sock);
 		while (1)
 		{
 			// Accept will happened in network thread
 			hr = pCallBack->Accept(pAcceptInfo);
-			switch (hr)
+			switch ((int32_t)hr)
 			{
 			case ResultCode::SUCCESS:
 				netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
@@ -176,7 +180,7 @@ namespace Net {
 			}
 		}
 
-		if (m_HandleSend && (events & EVFILT_WRITE))
+		if (m_HandleSend && ((events & EVFILT_WRITE) != 0))
 		{
 			// This call will just poke working thread
 			hr = pCallBack->OnSendReady();
@@ -245,13 +249,13 @@ namespace Net {
 				SOCKET sock = pCallback->GetIOSocket();
 
 				// skip invalid handlers
-				if (pCallback == nullptr || pCallBack->GetIOFlagsEditable().IsRegistered == 0)
+				if (pCallback == nullptr || !pCallBack->GetIsIORegistered())
 					continue;
 
 				if ((events&(EV_EOF)))
 				{
-					netTrace(Trace::TRC_INFO, "Closing epoll worker sock:{0}, event:{1}", sock, curEvent.flags);
-					pCallBack->GetIOFlagsEditable().IsRegistered = 0;
+					netTrace(Trace::TRC_INFO, "Closing epoll sock:{0}, event:{1}", sock, curEvent.flags);
+					pCallBack->OnIOUnregistered();
 					continue;
 				}
 
@@ -261,7 +265,23 @@ namespace Net {
 				}
 				else
 				{
+					bool hangup = false;
+					//if ((curEvent.flags&EPOLLHUP) != 0)
+					//{
+					//	hangup = true;
+					//	if (pCallback->GetIOSocket() == INVALID_SOCKET)
+					//		pCallback->OnIOUnregistered();
+
+					//	// Send error will be handled gracefully
+					//	curEvent.flags |= EPOLLOUT;
+					//}
+
 					HandleRW(sock, curEvent.flags, pCallback);
+
+					if (hangup && pCallback->GetIOSocket() == INVALID_SOCKET)
+					{
+						pCallback->OnIOUnregistered();
+					}
 				}
 
 			}
@@ -543,10 +563,12 @@ namespace Net {
 		return ResultCode::SUCCESS;
 	}
 
-	Result KQUEUESystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
+	Result KQUEUESystem::UnregisterFromNETIO(INetIOCallBack* cbInstance)
 	{
 		if (m_ListenWorker == nullptr)
 			return ResultCode::E_NET_NOTINITIALISED;
+
+		SockType sockType = cbInstance->GetIOSockType();
 
 		if (sockType == SockType::Stream) // TCP
 		{

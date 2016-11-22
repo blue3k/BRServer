@@ -69,23 +69,29 @@ namespace Net {
 			// Is listen only socket?
 			uint32_t IsListenSocket : 1;
 
-			// Is registered to IO sub system
-			uint32_t IsRegistered : 1;
-
 			CBFlags()
 				: IsListenSocket(0)
-				, IsRegistered(0)
 			{}
 
 			~CBFlags()
 			{
-				AssertRel(IsRegistered == 0);
 			}
+		};
+
+		enum class IOStatus : uint32_t
+		{
+			None,
+			Registered
 		};
 
 	private:
 
 		CBFlags m_CBFlags;
+
+		SockType m_IOSockType;
+
+		// Is registered to IO sub system
+		std::atomic<IOStatus> m_IOStatus;
 
 		WriteBufferQueue* m_pWriteQueues;
 
@@ -97,16 +103,20 @@ namespace Net {
 
 	public:
 
-		INetIOCallBack(const SOCKET &IOSocketVariable) : m_pWriteQueues(nullptr), m_AssignedIOWorker(-1), m_IOSocket(IOSocketVariable) {}
-		virtual ~INetIOCallBack() {}
+		INetIOCallBack(const SOCKET &IOSocketVariable);
+
+		virtual ~INetIOCallBack();
 
 		int GetAssignedIOWorker() { return m_AssignedIOWorker; }
-		void SetAssignedIOWorker(int assignedIOWorker) { m_AssignedIOWorker = assignedIOWorker; }
+		void SetAssignedIOWorker(int assignedIOWorker);
 
 		// casting, a bit faster than dynamic cast
-		virtual SharedObject* AsSharedObject() { return nullptr; }
+		//virtual SharedObject* AsSharedObject() { return nullptr; }
+		bool GetIsIORegistered() { return m_IOStatus.load(std::memory_order_relaxed) == IOStatus::Registered; }
+		void OnIORegistered(SockType ioSockType);
+		void OnIOUnregistered();
 
-
+		SockType GetIOSockType() { return m_IOSockType; }
 
 		const CBFlags& GetIOFlags() const { return m_CBFlags; }
 		CBFlags& GetIOFlagsEditable() { return m_CBFlags; }
@@ -175,7 +185,7 @@ namespace Net {
 		// Socket handling 
 
 		Result RegisterSocket(SockType sockType, INetIOCallBack* cbInstance);
-		Result UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance);
+		Result UnregisterSocket(INetIOCallBack* cbInstance);
 		//Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
 
 		SOCKET Socket(SockFamily domain, SockType type);

@@ -166,7 +166,7 @@ namespace Svr
 		Result hr = ResultCode::SUCCESS;
 
 		hr = ParallelTransactionManager::TickUpdate(pAction);
-		if (hr == ResultCode::SUCCESS_FALSE || !(hr))
+		if (hr == Result(ResultCode::SUCCESS_FALSE) || !(hr))
 			return hr;
 
 		//svrChk(m_GoogleAuth.UpdateAuthentication(false));

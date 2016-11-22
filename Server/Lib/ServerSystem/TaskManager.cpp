@@ -13,6 +13,7 @@
 
 #include "stdafx.h"
 #include "ServerSystem/SvrTrace.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 #include "Common/Thread.h"
 #include "Common/TimeUtil.h"
 #include "ServerSystem/TaskManager.h"
@@ -89,7 +90,7 @@ namespace Svr {
 		for (; loopCount > 0; loopCount--)
 		{
 			SharedPointerT<TickTask> pTask;
-			if (m_PendingAddTask.Dequeue(pTask) == ResultCode::SUCCESS)
+			if (m_PendingAddTask.Dequeue(pTask) == Result(ResultCode::SUCCESS))
 			{
 				Assert(pTask->GetTaskID() != 0);
 				if (pTask->GetTaskID() == 0)
@@ -138,7 +139,7 @@ namespace Svr {
 		for (; loopCount > 0; loopCount--)
 		{
 			SharedPointerT<TickTask> pTask;
-			if (m_PendingRemoveTask.Dequeue(pTask) == ResultCode::SUCCESS)
+			if (m_PendingRemoveTask.Dequeue(pTask) == Result(ResultCode::SUCCESS))
 			{
 				SharedPointerT<TickTask> pFound;
 				if ((m_TaskList.Find(pTask->GetTaskID(), pFound)))
@@ -369,10 +370,18 @@ namespace Svr {
 	// Add event task
 	Result TaskManager::AddEventTask(SysUInt groupID, EventTask&& pEvtTask)
 	{
-		if (groupID <= 0 || groupID > m_TaskGroups.GetSize())
-			return ResultCode::UNEXPECTED;
+		Result hr = ResultCode::SUCCESS;
 
-		return m_TaskGroups[groupID - 1]->AddEventTask(std::forward<EventTask>(pEvtTask));
+		if (groupID <= 0 || groupID > m_TaskGroups.GetSize())
+		{
+			return ResultCode::E_SVR_INVALID_TASK_GROUPID;
+		}
+
+		svrChk(m_TaskGroups[groupID - 1]->AddEventTask(std::forward<EventTask>(pEvtTask)));
+
+	Proc_End:
+
+		return hr;
 	}
 
 	// Add TickTask

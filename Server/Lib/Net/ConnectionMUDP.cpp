@@ -199,7 +199,7 @@ namespace Net {
 			netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Recv SendReliableMask : CID:{0}:{1}, seq:{2}, mask:{3:X8}, hr={4:X8}",
 				GetCID(), m_SendReliableWindow.GetBaseSequence(), pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask, hrTem);
 
-			if (hrTem == ResultCode::UNEXPECTED)
+			if (hrTem == Result(ResultCode::UNEXPECTED))
 				CloseConnection();
 
 			netChk(hrTem);
@@ -517,12 +517,12 @@ namespace Net {
 			len,
 			hrTem);
 
-		if (hrTem == ResultCode::S_NET_PROCESSED_SEQUENCE)
+		if (hrTem == Result(ResultCode::S_NET_PROCESSED_SEQUENCE))
 		{
 			Util::SafeRelease(pIMsg);
 			return hr;
 		}
-		else if (hrTem == ResultCode::E_NET_INVALID_SEQUENCE || hrTem == ResultCode::E_NET_SEQUENCE_OVERFLOW)
+		else if (hrTem == Result(ResultCode::E_NET_INVALID_SEQUENCE) || hrTem == Result(ResultCode::E_NET_SEQUENCE_OVERFLOW))
 		{
 			// out of window, we are going to receive this message again
 			Util::SafeRelease(pIMsg);

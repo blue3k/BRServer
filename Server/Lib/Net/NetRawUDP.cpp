@@ -320,7 +320,7 @@ namespace Net {
 				Util::SafeRelease(pMsg);
 			}
 
-			if (hr != ResultCode::E_NET_IO_SEND_FAIL)
+			if (hr != Result(ResultCode::E_NET_IO_SEND_FAIL))
 			{
 				netTrace(Trace::TRC_ERROR, "RawUDP Send Failed, err:{1:X8}, hr:{2:X8}", hrErr, hr);
 			}
@@ -467,7 +467,7 @@ namespace Net {
 		{
 			Assert(pIOBuffer->bIsPending);
 			pIOBuffer->bIsPending.store(false, std::memory_order_relaxed);
-			if (hrRes != ResultCode::E_NET_IO_ABORTED && pIOBuffer != nullptr)
+			if (hrRes != Result(ResultCode::E_NET_IO_ABORTED) && pIOBuffer != nullptr)
 				PendingRecv(pIOBuffer);
 		}
 		else

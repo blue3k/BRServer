@@ -184,7 +184,7 @@ namespace BR {
 
 
 			// Clear pending operation queue
-			while (super::m_PendingOperations.Dequeue(oper) == ResultCode::SUCCESS)
+			while (super::m_PendingOperations.Dequeue(oper))
 			{
 				switch (oper.OpCode)
 				{
@@ -475,7 +475,7 @@ namespace BR {
 		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn));
 
 		if (connect(pConn->GetIOSocket(), (sockaddr*)&sockAddrDest, sizeof(sockAddrDest)) != SOCKET_ERROR
-			|| GetLastWSAResult() != ResultCode::E_NET_WOULDBLOCK)
+			|| GetLastWSAResult() != Result(ResultCode::E_NET_WOULDBLOCK))
 		{
 			netTrace(Trace::TRC_ERROR, "connect failed, TCP {0:X8}", GetLastWSAResult());
 			netErr(ResultCode::UNEXPECTED);

@@ -152,4 +152,15 @@ CounterType SpinBufferMT<T, SIZE_BUFFER>::GetReadableCount()
 	return nWriteComplete - nReadWorking;
 }
 
+
+template <typename T, int SIZE_BUFFER>
+void SpinBufferMT<T, SIZE_BUFFER>::WaitPendingWork()
+{
+	auto pendingTicket = m_writeTicket.GetWorkingCompleteCount();
+	while (pendingTicket > m_readTicket.GetNowWorkingCount())
+	{
+		ThisThread::SleepFor(DurationMS(0));
+	}
+}
+
 #undef ITEM 

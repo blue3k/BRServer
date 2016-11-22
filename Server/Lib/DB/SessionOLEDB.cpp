@@ -62,7 +62,7 @@ namespace DB {
 			return ResultCode::FAIL;
 		}
 
-		while(cmd.MoveNext() == ResultCode::SUCCESS) {
+		while(cmd.MoveNext() == Result(ResultCode::SUCCESS)) {
 			cmd.m_RowsetResult.push_back(cmd);	
 		}
 		

@@ -38,8 +38,8 @@ DEFINE_TRACE_MODULE(db)
 
 #define dbErr(e)			TrcErrJmp(db,e,hr)
 #define dbChk(e)			{ do{ Result hRes = e; if( !(hRes) ) TrcErrJmp(db,hRes,hr); } while(0); }
-#define dbMem(a)			{ if( (a) == NULL ) TrcErrJmp(db,ResultCode::OUT_OF_MEMORY,hr); }
-#define dbChkPtr(a)			{ if( (a) == NULL ) TrcErrJmp(db,ResultCode::INVALID_POINTER,hr); }
+#define dbMem(a)			{ if( (a) == nullptr ) TrcErrJmp(db,ResultCode::OUT_OF_MEMORY,hr); }
+#define dbChkPtr(a)			{ if( (a) == nullptr ) TrcErrJmp(db,ResultCode::INVALID_POINTER,hr); }
 
 #define dbAssert(e)			trcAssert(e)
 #define dbAssertExp(e,expr)	trcAssertExp(e,expr)

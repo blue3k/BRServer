@@ -67,9 +67,11 @@ namespace Net {
 		epollEvent.events = EPOLLIN | EPOLLOUT | EPOLLPRI | EPOLLET | EPOLLHUP | EPOLLRDHUP;
 		epollEvent.data.ptr = cbInstance;
 		if (epoll_ctl(m_hEpoll, EPOLL_CTL_ADD, cbInstance->GetIOSocket(), &epollEvent) == -1) {
-			netTrace(Trace::TRC_ERROR, "epoll_ctl: RegisterSocket");
+			netTrace(Trace::TRC_ERROR, "epoll_ctl: RegisterSocket sock:{0}", cbInstance->GetIOSocket());
 			return ResultCode::FAIL;
 		}
+
+		netTrace(Trace::TRC_TRACE, "epoll register sock:{0}", cbInstance->GetIOSocket());
 
 		return ResultCode::SUCCESS;
 	}
@@ -82,9 +84,11 @@ namespace Net {
 		epollEvent.events = EPOLLIN | EPOLLOUT | EPOLLPRI | EPOLLET | EPOLLHUP | EPOLLRDHUP;
 		epollEvent.data.ptr = cbInstance;
 		if (epoll_ctl(m_hEpoll, EPOLL_CTL_DEL, cbInstance->GetIOSocket(), &epollEvent) == -1) {
-			netTrace(Trace::TRC_ERROR, "epoll_ctl: UnregisterSocket");
+			netTrace(Trace::TRC_ERROR, "epoll_ctl: UnregisterSocket sock:{0}", cbInstance->GetIOSocket());
 			return ResultCode::FAIL;
 		}
+
+		netTrace(Trace::TRC_TRACE, "epoll unregister sock:{0}", cbInstance->GetIOSocket());
 
 		return ResultCode::SUCCESS;
 	}
@@ -98,7 +102,7 @@ namespace Net {
 		{
 			// Accept will happened in network thread
 			hr = pCallBack->Accept(pAcceptInfo);
-			switch (hr)
+			switch ((int32_t)hr)
 			{
 			case ResultCode::SUCCESS:
 				netChk(pCallBack->OnIOAccept(hr, pAcceptInfo));
@@ -136,11 +140,11 @@ namespace Net {
 		//  skip when the socket value is different
 		if (pCallBack->GetIOSocket() != sock) return ResultCode::SUCCESS_FALSE;
 
-		if (!(events & (EPOLLIN | EPOLLOUT)))
-		{
-			netTrace(Trace::TRC_ERROR, "Error sock:{0}, event:{1}", sock, events);
-			return ResultCode::UNEXPECTED;
-		}
+		//if (!(events & (EPOLLIN | EPOLLOUT)))
+		//{
+		//	netTrace(Trace::TRC_ERROR, "Error sock:{0}, event:{1}", sock, events);
+		//	return ResultCode::UNEXPECTED;
+		//}
 
 		if (events & EPOLLIN)
 		{
@@ -164,14 +168,14 @@ namespace Net {
 				default:
 					if (!(hr))
 					{
-						netTrace(TRC_NETSYS, "ERROR Epoll Recv fail events:{0:X8} hr:{1:X8}", events, hrErr);
+						char stringBuffer[512];
+						netTrace(TRC_NETSYS, "ERROR Epoll Recv fail sock:{0} events:{1} hr:{2}", sock, GetNetIOSystem().EventFlagToString(sizeof(stringBuffer), stringBuffer, events), hrErr);
 					}
 					// fallthru
 				case ResultCode::SUCCESS:
 					// toss data to working thread
 					if (pReadBuffer != nullptr)
 					{
-						// TODO: crash site, pure vitual call
 						netChk(pCallBack->OnIORecvCompleted(hrErr, pReadBuffer));
 					}
 					pReadBuffer = nullptr;
@@ -187,12 +191,11 @@ namespace Net {
 		if (m_HandleSend && (events & EPOLLOUT))
 		{
 			// This call will just poke working thread
-			// TODO: crash site, pure vitual call
 			hr = pCallBack->OnSendReady();
 			if (!(hr))
 			{
-				//netErr(hr);
-				goto Proc_End;
+				netErr(hr);
+				//goto Proc_End;
 			}
 		}
 
@@ -200,7 +203,8 @@ namespace Net {
 
 		if (!(hr))
 		{
-			netTrace(TRC_NETSYS, "ERROR Epoll RW fail events:{0:X8} hr:{1:X8}", events, hr);
+			char stringBuffer[512];
+			netTrace(TRC_NETSYS, "ERROR Epoll RW fail sock:{0}, events:{1} hr:{2}", sock, GetNetIOSystem().EventFlagToString(sizeof(stringBuffer), stringBuffer, events), hr);
 		}
 
 		Util::SafeDelete(pReadBuffer);
@@ -254,15 +258,17 @@ namespace Net {
 				SOCKET sock = pCallback->GetIOSocket();
 
 				// skip invalid handlers
-				if (pCallback == nullptr || pCallBack->GetIOFlagsEditable().IsRegistered == 0)
+				if (pCallback == nullptr || !pCallback->GetIsIORegistered())
 					continue;
 
-				if ((events&(EPOLLERR | EPOLLHUP | EPOLLRDHUP)))
-				{
-					netTrace(Trace::TRC_INFO, "Closing epoll worker sock:{0}, event:{1}", sock, curEvent);
-					pCallBack->GetIOFlagsEditable().IsRegistered = 0;
-					continue;
-				}
+				//if ((curEvent.events&(EPOLLERR | EPOLLRDHUP)) != 0)
+				//{
+				//	char stringBuffer[512];
+				//	netTrace(Trace::TRC_TRACE, "Closing epoll worker sock:{0}, event:{1}", sock, GetNetIOSystem().EventFlagToString(sizeof(stringBuffer), stringBuffer, curEvent.events));
+				//	GetNetIOSystem().UnregisterFromNETIO(pCallback);
+				//	pCallback->OnIOUnregistered();
+				//	continue;
+				//}
 
 				if (isListenSocket)
 				{
@@ -270,7 +276,20 @@ namespace Net {
 				}
 				else
 				{
+					//bool hangup = false;
+					//if ((curEvent.events&(EPOLLHUP | EPOLLRDHUP)) != 0)
+					//{
+					//	hangup = true;
+					//	//curEvent.events |= EPOLLOUT;
+					//}
+
 					HandleRW(sock, curEvent.events, pCallback);
+
+					//if (hangup && pCallback->GetIOSocket() == INVALID_SOCKET)
+					//{
+					//	GetNetIOSystem().UnregisterFromNETIO(pCallback);
+					//	pCallback->OnIOUnregistered();
+					//}
 				}
 			}
 
@@ -329,7 +348,7 @@ namespace Net {
 				break;
 			case IOBUFFER_OPERATION::OP_UDPWRITE:
 				hr = NetSystem::SendTo(pSendBuffer->SockWrite, pSendBuffer);
-				switch (hr)
+				switch ((int32_t)hr)
 				{
 				case ResultCode::E_NET_TRY_AGAIN:
 					continue; // try again
@@ -557,10 +576,12 @@ namespace Net {
 		return ResultCode::SUCCESS;
 	}
 
-	Result EPOLLSystem::UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance)
+	Result EPOLLSystem::UnregisterFromNETIO(INetIOCallBack* cbInstance)
 	{
 		if (m_ListenWorker == nullptr)
 			return ResultCode::E_NET_NOTINITIALISED;
+
+		SockType sockType = cbInstance->GetIOSockType();
 
 		if (sockType == SockType::Stream) // TCP
 		{
@@ -602,6 +623,26 @@ namespace Net {
 		return ResultCode::SUCCESS;
 	}
 
+
+	const char* EPOLLSystem::EventFlagToString(int32_t bufferSize, char* stringBuffer, uint32_t eventFlags)
+	{
+		const char* orgStart = stringBuffer;
+		stringBuffer[0] = '\0';
+		if ((eventFlags&EPOLLIN) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLIN ");
+		if ((eventFlags&EPOLLOUT) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLOUT ");
+		if ((eventFlags&EPOLLRDHUP) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLRDHUP  ");
+		if ((eventFlags&EPOLLPRI) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLPRI ");
+		if ((eventFlags&EPOLLERR) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLERR ");
+		if ((eventFlags&EPOLLHUP) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLHUP ");
+		if ((eventFlags&EPOLLET) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLET ");
+		if ((eventFlags&EPOLLONESHOT) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLONESHOT ");
+		if ((eventFlags&EPOLLWAKEUP) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLWAKEUP ");
+#ifdef EPOLLEXCLUSIVE
+		if ((eventFlags&EPOLLEXCLUSIVE) != 0) StrUtil::StringCpyEx(stringBuffer, bufferSize, "EPOLLEXCLUSIVE ");
+#endif
+
+		return orgStart;
+	}
 
 
 	EPOLLSystem EPOLLSystem::stm_Instance;

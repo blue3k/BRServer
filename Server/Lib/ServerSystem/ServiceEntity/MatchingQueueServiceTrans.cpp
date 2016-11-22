@@ -158,7 +158,7 @@ namespace Svr {
 			m_MatchingTicket.push_back(matchingTicket);
 		}
 
-		hr = m_NumPlayersInTheTicket.GetSize() == 0 ? ResultCode::E_SVR_NOITEM_INQUEUE : ResultCode::SUCCESS;
+		hr = m_NumPlayersInTheTicket.GetSize() == 0 ? Result(ResultCode::E_SVR_NOITEM_INQUEUE) : Result(ResultCode::SUCCESS);
 
 	Proc_End:
 

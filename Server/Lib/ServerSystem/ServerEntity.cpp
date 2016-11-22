@@ -317,7 +317,7 @@ namespace Svr {
 	Result ServerEntity::TickUpdate(Svr::TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Net::IConnection* pConn = nullptr;
+		Net::Connection* pConn = nullptr;
 		Net::IConnection* pConnRemote = nullptr;
 
 		if( GetEntityState() == EntityState::FREE )
@@ -325,14 +325,25 @@ namespace Svr {
 
 		svrChk(MasterEntity::TickUpdate(pAction) );
 
-		pConn = (Net::IConnection*)m_pConnLocal;
+		pConn = (Net::Connection*)(Net::IConnection*)m_pConnLocal;
 		if (pConn != nullptr)
 		{
 			if (pConn->GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 			{
 				if (m_LocalConnectionRetryTime != TimeStampMS::min())
 				{
-					if (Util::TimeSince(m_LocalConnectionRetryTime) > m_LocalConnectionRetryWait)
+					auto pIOCallback = pConn->GetIOCallback();
+					if (pIOCallback != nullptr && pIOCallback->GetIsIORegistered())
+					{
+						if(pConn->GetSocket() != INVALID_SOCKET)
+							pConn->CloseSocket();
+						else if(Util::TimeSince(m_LocalConnectionRetryTime) > DurationMS(5*60*1000))
+						{
+							// waited too much, force clear
+							pIOCallback->OnIOUnregistered();
+						}
+					}
+					else if (Util::TimeSince(m_LocalConnectionRetryTime) > m_LocalConnectionRetryWait)
 					{
 						m_LocalConnectionRetryWait = Util::TimeMinNonZero(m_LocalConnectionRetryWait + DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY), DurationMS(Svr::Const::REMOTE_CONNECTION_RETRY_MAX));
 

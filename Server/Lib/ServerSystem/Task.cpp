@@ -145,7 +145,7 @@ namespace Svr {
 			SetNextTickTime(nextTick);
 		}
 
-		if (pTickTask->TickUpdate(this) == ResultCode::SUCCESS_FALSE)
+		if (pTickTask->TickUpdate(this) == Result(ResultCode::SUCCESS_FALSE))
 			return false;
 
 		return true;

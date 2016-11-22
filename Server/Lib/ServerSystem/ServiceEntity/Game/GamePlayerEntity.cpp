@@ -263,7 +263,7 @@ namespace Svr {
 		Transaction *trans = nullptr;
 
 		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
-		if (hr == ResultCode::SUCCESS_FALSE)
+		if (hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 
 

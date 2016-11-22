@@ -525,7 +525,7 @@ public:
 		while( _InterlockedCompareExchange64( (__int64*)&(Iter.GetPredNode()->m_Next), *(__int64*)&newNodeRef, iOldHdrValue) != iOldHdrValue);
 #endif
 
-		if (hr == ResultCode::SUCCESS)
+		if (hr)
 			m_Size.Increment();
 
 		// 5. Release a write lock
@@ -615,7 +615,7 @@ Proc_End:
 		Iter.GetNode()->~Node();
 		m_pNodePool->Free(Iter.GetNode());
 
-		if (hr == ResultCode::SUCCESS)
+		if (hr)
 			m_Size.Decrement();
 
 		// 5. Release a delete lock

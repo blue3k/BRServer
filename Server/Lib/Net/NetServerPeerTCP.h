@@ -71,7 +71,7 @@ namespace Net {
 		//  Net callback
 
 		// handle Socket accept
-		virtual Result OnNewSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut ) override;
+		virtual Result OnAcceptedSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut ) override;
 
 
 		// Release instance

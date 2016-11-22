@@ -240,7 +240,7 @@ namespace Net {
 					if (ulKey != 0)
 					{
 						INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
-						pCallback->GetIOFlagsEditable().IsRegistered = 0;
+						pCallback->OnIOUnregistered();
 					}
 					// chain call to end all IOCP worker
 					//if( !PostQueuedCompletionStatus( m_hIOCP, 0, 0, NULL ) )
@@ -554,14 +554,14 @@ namespace Net {
 				netErr(ResultCode::UNEXPECTED);
 			}
 
-			cbInstance->GetIOFlagsEditable().IsRegistered = 1;
+			cbInstance->OnIORegistered(sockType);
 
 		Proc_End:
 
 			return hr;
 		}
 
-		Result UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance)
+		Result UnregisterSocket(INetIOCallBack* cbInstance)
 		{
 			Result hr = ResultCode::SUCCESS;
 

@@ -255,24 +255,32 @@ namespace Net {
 			netChkPtr(cbInstance);
 			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
 
+			cbInstance->OnIORegistered(sockType);
+
 			netChk(GetNetIOSystem().MakeSocketNonBlocking(cbInstance->GetIOSocket()));
 			netChk(GetNetIOSystem().RegisterToNETIO(sockType, cbInstance));
 
-			cbInstance->GetIOFlagsEditable().IsRegistered = 1;
 
 		Proc_End:
+
+			if (!hr && cbInstance != nullptr)
+			{
+				cbInstance->OnIOUnregistered();
+			}
 
 			return hr;
 		}
 
-		Result UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance)
+		Result UnregisterSocket(INetIOCallBack* cbInstance)
 		{
 			Result hr = ResultCode::SUCCESS;
 
 			netChkPtr(cbInstance);
-			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
+			//Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
 
-			netChk(GetNetIOSystem().UnregisterFromNETIO(sockType, cbInstance));
+			netChk(GetNetIOSystem().UnregisterFromNETIO(cbInstance));
+
+			cbInstance->OnIOUnregistered();
 
 		Proc_End:
 
@@ -303,6 +311,7 @@ namespace Net {
 		{
 			shutdown(sock, SHUT_RDWR);
 			close(sock);
+			netTrace(Trace::TRC_TRACE, "CloseSocket sock:{0}", sock);
 		}
 
 		Result Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept)
@@ -322,7 +331,7 @@ namespace Net {
 			if(pAccept->sockAccept < 0)
 			{
 				Result err = GetLastWSAResult();
-				switch (err)
+				switch ((int32_t)err)
 				{
 				case ResultCode::E_NET_WOULDBLOCK:
 				case ResultCode::E_NET_IO_PENDING:

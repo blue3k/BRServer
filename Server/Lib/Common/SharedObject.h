@@ -51,18 +51,9 @@ namespace BR {
 
 #endif
 
-		SharedObject()
-			: m_ReferenceCount(0)
-			, m_WeakReferenceCount(1)
-			, m_ManagerReferenceCount(0)
-			, m_ReferenceManagerObject(nullptr)
-		{
+		SharedObject();
 
-		}
-
-		virtual ~SharedObject()
-		{
-		}
+		virtual ~SharedObject();
 
 		inline ReferenceCounterType			GetReferenceCount() const				{ return m_ReferenceCount.load(std::memory_order_relaxed); }
 		inline ReferenceCounterType			GetWeakReferenceCount() const			{ return m_WeakReferenceCount.load(std::memory_order_relaxed); }

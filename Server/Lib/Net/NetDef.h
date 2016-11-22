@@ -269,7 +269,6 @@ namespace Net {
 		// Close connection immediately without notify
 		virtual Result CloseConnection() = 0;
 
-
 		// Send message to connected entity
 		virtual Result Send( Message::MessageData* &pMsg ) = 0;
 

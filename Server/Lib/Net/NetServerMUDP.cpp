@@ -109,7 +109,7 @@ namespace Net {
 							hrTem );
 
 			// ignore io send fail except connection closed
-			if( hrTem == ResultCode::E_NET_CONNECTION_CLOSED )
+			if( hrTem == Result(ResultCode::E_NET_CONNECTION_CLOSED) )
 			{
 				goto Proc_End;
 			}
@@ -281,7 +281,7 @@ namespace Net {
 
 		if (NetSystem::IsProactorSystem())
 		{
-			if (hrRes != ResultCode::E_NET_IO_ABORTED && pIOBuffer != nullptr)
+			if (hrRes != Result(ResultCode::E_NET_IO_ABORTED) && pIOBuffer != nullptr)
 			{
 				pIOBuffer->SetPendingFalse();
 				PendingRecv(pIOBuffer);

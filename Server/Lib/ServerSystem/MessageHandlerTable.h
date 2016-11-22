@@ -158,7 +158,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( !(hr) ) return ResultCode::E_NO_MESSAGE_HANDLER;
+			if( !(hr) ) return ResultCode::E_SVR_NO_MESSAGE_HANDLER;
 
 			return handler( pMsg );
 		}
@@ -193,7 +193,7 @@ namespace Svr {
 			MessageHandlerType handler;
 
 			hr = GetHandler(pMsg->GetMessageHeader()->msgID,handler);
-			if( !(hr) ) return ResultCode::E_NO_MESSAGE_HANDLER;
+			if( !(hr) ) return ResultCode::E_SVR_NO_MESSAGE_HANDLER;
 
 			return handler( pMsg, param1, param2 );
 		}

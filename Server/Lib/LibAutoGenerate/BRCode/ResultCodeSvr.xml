@@ -52,6 +52,7 @@
   <ResultCodeItem Severity="Error" CodeName="CURL_NO_CONNECTION_AVAILABLE" Desc="No Connection is available now."/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_STATE" Desc="Invalid state transition"/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_PURCHASE_MODE" Desc="Invalid purchase environment(public/test)"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_TASK_GROUPID" Desc="Invalid Task group ID"/>
 
 
 </ResultCodes>

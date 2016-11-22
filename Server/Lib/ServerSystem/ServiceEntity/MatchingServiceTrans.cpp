@@ -90,7 +90,7 @@ namespace Svr {
 			auto grabCount = std::min(m_MaxQueueCount - m_MinQueueCount, (UINT)GRAB_MAX);
 
 			hr = ReserveItem(grabCount);
-			if (hr == ResultCode::E_SVR_NOITEM_INQUEUE || hr == ResultCode::E_SVR_CLUSTER_NOTREADY)
+			if (hr == Result(ResultCode::E_SVR_NOITEM_INQUEUE) || hr == Result(ResultCode::E_SVR_CLUSTER_NOTREADY))
 			{
 				goto Proc_End;
 			}

@@ -159,6 +159,8 @@ namespace BR
 
 		free(strings);
 
+		Trace::Flush();
+
 		return ResultCode::SUCCESS;
 	}
 

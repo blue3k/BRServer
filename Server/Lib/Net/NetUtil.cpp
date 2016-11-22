@@ -185,8 +185,23 @@ namespace Net {
 			if (!(CheckLocalAddress(SockFamily::IPV4, localAddr)))
 			{
 				if ((GetLocalAddressIPv6(localAddr)))
-					netTrace(Trace::TRC_ERROR, "Invalid Address, expecte a local IPV6 address such as ... {0}", localAddr);
-				return ResultCode::E_NET_INVALID_ADDRESS;
+				{
+					if (CheckLocalAddress(SockFamily::IPV6, localAddr))
+					{
+						netTrace(Trace::TRC_ERROR, "Invalid Address, Using another address({0}) instead of given address", localAddr);
+						localAddr.SocketFamily = SockFamily::IPV6;
+					}
+					else
+					{
+						netTrace(Trace::TRC_ERROR, "Invalid Address, expect a local IPV6 address");
+						return ResultCode::E_NET_INVALID_ADDRESS;
+					}
+				}
+				else
+				{
+					netTrace(Trace::TRC_ERROR, "Invalid Address, expect a local IPV6 address");
+					return ResultCode::E_NET_INVALID_ADDRESS;
+				}
 			}
 			else
 			{
@@ -668,7 +683,7 @@ namespace Net {
 	{
 		Message::MessageData* data = NULL;
 
-		while (Dequeue(data) == ResultCode::SUCCESS)
+		while (Dequeue(data))
 		{
 			if (data) data->Release();
 		}
@@ -692,7 +707,7 @@ namespace Net {
 	{
 		IOBUFFER_WRITE* data = NULL;
 
-		while (Dequeue(data) == ResultCode::SUCCESS)
+		while (Dequeue(data))
 		{
 			Util::SafeDelete(data);
 		}

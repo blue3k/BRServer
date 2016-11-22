@@ -388,7 +388,7 @@ namespace GameServer {
 		Svr::Transaction *trans = nullptr;
 
 		hr = Svr::SimpleUserEntity::TickUpdate(pAction);
-		if (hr == ResultCode::SUCCESS_FALSE)
+		if (hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 
 		//if (m_LatestDBSyncTime == 0 || Util::TimeSinceUTC(m_LatestDBSyncTime) > GameConst::PLAYER_UPDATE_STATUS_TIME)

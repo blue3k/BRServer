@@ -16,6 +16,7 @@
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
 #include "Common/ResultCode/BRResultCodeNet.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 #include "Net/NetTrace.h"
 #include "Net/Connection.h"
 #include "Net/NetDef.h"
@@ -77,10 +78,10 @@ namespace Net {
 		//Assert( ( CloseConnection() ) );
 		if (GetSocket() != INVALID_SOCKET)
 		{
-			AssertRel(!GetIOFlags().IsRegistered);
+			AssertRel(!GetIsIORegistered());
 			AssertRel(GetAssignedIOWorker() == -1);
 
-			NetSystem::UnregisterSocket(SockType::Stream, this);
+			NetSystem::UnregisterSocket(this);
 
 			NetSystem::CloseSocket(GetSocket());
 		}
@@ -237,7 +238,6 @@ namespace Net {
 		case ResultCode::E_NET_CONNABORTED:
 		case ResultCode::E_NET_CONNRESET:
 		case ResultCode::E_NET_NETRESET:
-		case ResultCode::E_NET_NOTCONN:
 		case ResultCode::E_NET_NOTSOCK:
 		case ResultCode::E_NET_SHUTDOWN:
 			netTrace(Trace::TRC_WARN, "TCP Read failed, Connection Reset CID:{0}, err:{1:X8}, pending:{2}", GetCID(), hrErr, GetPendingRecvCount());
@@ -256,6 +256,7 @@ namespace Net {
 			hr = hrErr;
 			break;
 		case ResultCode::E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_NOTCONN:
 			// try again
 			hr = hrErr;
 			break;
@@ -325,11 +326,24 @@ namespace Net {
 
 	Result ConnectionTCP::OnSendReady()
 	{
+		Result hr;
 		if (GetEventHandler())
-			return GetEventHandler()->OnNetSendReadyMessage(this);
+		{
+			auto hrRes = GetEventHandler()->OnNetSendReadyMessage(this);
+			if (hrRes != Result(ResultCode::E_SVR_INVALID_TASK_GROUPID))
+			{
+				netChk(hrRes);
+			}
+		}
 		// process directly
 		else
-			return ProcessSendQueue();
+		{
+			netChk(ProcessSendQueue());
+		}
+
+	Proc_End:
+
+		return hr;
 	}
 
 	// called when Send completed
@@ -363,7 +377,7 @@ namespace Net {
 		// On client side, we need to check writable status by calling connect again
 		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == ConnectionState::STATE_CONNECTING)
 		{
-			m_isActuallyConnected = Connect() == ResultCode::SUCCESS;
+			m_isActuallyConnected = Connect();
 			if (!m_isActuallyConnected)
 				return ResultCode::SUCCESS;
 		}
@@ -375,7 +389,7 @@ namespace Net {
 			return ResultCode::SUCCESS;
 
 		hr = Recv(pOver);
-		if (!(hr) && hr != ResultCode::E_NET_IO_PENDING)
+		if (!(hr) && hr != Result(ResultCode::E_NET_IO_PENDING))
 		{
 			netTrace(Trace::TRC_WARN, "Pending Recv failed, CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 			//Assert(false);
@@ -444,13 +458,14 @@ namespace Net {
 	Result ConnectionTCP::Connect()
 	{
 		Result hr = ResultCode::SUCCESS;
+		Result hrConResult;
 		int connResult;
 
 		ResetZeroRecvCount();
 
 		if (GetConnectionState() != STATE_CONNECTING && GetConnectionState() != STATE_DISCONNECTED)
 		{
-			netTrace(Trace::TRC_ERROR, "Invalid connection state to try connect", GetConnectionState());
+			netTrace(Trace::TRC_ERROR, "Invalid connection state to try connect {0}", GetConnectionState());
 			//AssertRel(GetConnectionState() == STATE_CONNECTING || GetConnectionState() == STATE_DISCONNECTED);
 			netErrSilent(ResultCode::E_NET_INVALID_CONNECTION_STATE);
 		}
@@ -458,8 +473,8 @@ namespace Net {
 		connResult = connect(GetSocket(), (sockaddr*)&GetRemoteSockAddr(), GetRemoteSockAddrSize());
 		if (connResult == SOCKET_ERROR)
 		{
-			auto lastError = GetLastWSAResult();
-			switch ((int32_t)lastError)
+			hrConResult = GetLastWSAResult();
+			switch ((int32_t)hrConResult)
 			{
 			case ResultCode::E_NET_INPROGRESS:
 			case ResultCode::E_NET_WOULDBLOCK:  // First call need to wait
@@ -470,8 +485,8 @@ namespace Net {
 				hr = ResultCode::SUCCESS;
 				break;
 			default:
-				netTrace(Trace::TRC_WARN, "Connection try is failed, RemoteAddr:{0}, RemoteID:{1}, hr:{2:X8}", GetConnectionInfo().Remote, GetConnectionInfo().RemoteID, lastError);
-				hr = lastError;
+				netTrace(Trace::TRC_WARN, "Connection try is failed, RemoteAddr:{0}, RemoteID:{1}, hr:{2:X8}", GetConnectionInfo().Remote, GetConnectionInfo().RemoteID, hrConResult);
+				hr = hrConResult;
 			}
 		}
 
@@ -479,6 +494,8 @@ namespace Net {
 		m_isActuallyConnected = false; // only client side need to check this condition
 
 	Proc_End:
+
+		netTrace(Net::TRC_CONNECTION, "Connect sock:{0}, to:{1}, hrCon:{2}, hr:{3}", GetSocket(), GetConnectionInfo().Remote, hrConResult, hr);
 
 		if (!(hr))
 		{
@@ -580,9 +597,9 @@ namespace Net {
 	{
 		if (GetSocket() == INVALID_SOCKET) return;
 
-		Connection::CloseSocket();
+		NetSystem::UnregisterSocket(this);
 
-		NetSystem::UnregisterSocket(SockType::Stream, this);
+		Connection::CloseSocket();
 	}
 
 
@@ -766,12 +783,12 @@ namespace Net {
 		case ResultCode::E_NET_WOULDBLOCK:
 			break;
 		case ResultCode::E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_NOTCONN:
 			hr = hrErr;
 			break;
 		case ResultCode::E_NET_CONNABORTED:
 		case ResultCode::E_NET_CONNRESET:
 		case ResultCode::E_NET_NETRESET:
-		case ResultCode::E_NET_NOTCONN:
 		case ResultCode::E_NET_NOTSOCK:
 		case ResultCode::E_NET_SHUTDOWN:
 			// Send fail by connection close
@@ -796,8 +813,10 @@ namespace Net {
 			return ResultCode::SUCCESS;
 		case ResultCode::E_NET_TRY_AGAIN:
 			break;
+		case ResultCode::E_NET_NOTCONN:
+			m_isActuallyConnected = Connect();
 		default:
-			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo().Remote, hrErr, hr, GetCID());
+			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, sock:{4}, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo().Remote, hrErr, hr, GetCID(), GetSocket());
 			break;
 		}
 
@@ -957,7 +976,15 @@ namespace Net {
 
 		if( GetConnectionState() != IConnection::STATE_DISCONNECTED)
 		{
-			PendingRecv();
+			if (!GetIsIORegistered())
+			{
+				netTrace(TRC_CONNECTION, "Close connection because it's kicked from net IO, CID:{0}", GetCID());
+				netChk(CloseConnection());
+			}
+			else
+			{
+				PendingRecv();
+			}
 		}
 
 		// connect/disconnect process

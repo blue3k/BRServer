@@ -77,7 +77,7 @@ namespace Svr
 		if (pTrans == nullptr)
 			return;
 
-
+		svrTrace(Svr::TRC_TRANSACTION, "Transaction Release TID:{0}", pTrans->GetTransID());
 
 		if (pTrans->GetTimerAction() && pTrans->GetTimerAction()->GetScheduledTime() != TimeStampMS::max())
 			m_activeTransactionScheduler.RemoveTimerAction(currentThreadID, pTrans->GetTimerAction());
