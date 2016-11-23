@@ -261,14 +261,14 @@ namespace Net {
 				if (pCallback == nullptr || !pCallback->GetIsIORegistered())
 					continue;
 
-				//if ((curEvent.events&(EPOLLERR | EPOLLRDHUP)) != 0)
-				//{
-				//	char stringBuffer[512];
-				//	netTrace(Trace::TRC_TRACE, "Closing epoll worker sock:{0}, event:{1}", sock, GetNetIOSystem().EventFlagToString(sizeof(stringBuffer), stringBuffer, curEvent.events));
-				//	GetNetIOSystem().UnregisterFromNETIO(pCallback);
-				//	pCallback->OnIOUnregistered();
-				//	continue;
-				//}
+				if ((curEvent.events&(EPOLLERR | EPOLLRDHUP)) != 0)
+				{
+					char stringBuffer[512];
+					netTrace(Trace::TRC_TRACE, "Closing epoll worker sock:{0}, event:{1}", sock, GetNetIOSystem().EventFlagToString(sizeof(stringBuffer), stringBuffer, curEvent.events));
+					GetNetIOSystem().UnregisterFromNETIO(pCallback);
+					pCallback->OnIOUnregistered();
+					continue;
+				}
 
 				if (isListenSocket)
 				{
