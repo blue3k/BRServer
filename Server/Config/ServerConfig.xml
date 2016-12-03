@@ -36,7 +36,7 @@
   <ModuleServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" GameID="Conspiracy">
     <NetPrivate IP="2602:306:83ac:a940:f5c0:41c7:ba63:ac3b" Port="2011"/>
     <ModLogin>
-      <NetPublic IPV4="192.168.1.89" IPV6="::" Port="21001" MaxConnection="200000"/>
+      <NetPublic IPV4="192.168.1.89" IPV6="2602:306:83ac:a940:f5c0:41c7:ba63:ac3b" ListenIP="::" Port="21001" MaxConnection="200000"/>
     </ModLogin>
   </ModuleServer>
 
@@ -70,14 +70,14 @@
 			<ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>
 			<ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
 			<NetPrivate IP="2602:306:83ac:a940:f5c0:41c7:ba63:ac3b" Port="10000"/>
-			<NetPublic IPV4="192.168.1.89" IPV6="2602:306:83ac:a940:f5c0:41c7:ba63:ac3b" Port="11000"/>
+			<NetPublic IPV4="192.168.1.89" IPV6="2602:306:83ac:a940:f5c0:41c7:ba63:ac3b" ListenIP="::" Port="11000"/>
 		</Game>
 
 		<Game UID="101" Name="BRConspiracyGameServer02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4">
 			<ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
 			<ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
 			<NetPrivate IP="2602:306:83ac:a940:f5c0:41c7:ba63:ac3b" Port="10001"/>
-			<NetPublic IPV4="192.168.1.89" IPV6="2602:306:83ac:a940:f5c0:41c7:ba63:ac3b" Port="11001"/>
+			<NetPublic IPV4="192.168.1.89" IPV6="2602:306:83ac:a940:f5c0:41c7:ba63:ac3b" ListenIP="::" Port="11001"/>
 		</Game>
 
 		<GameInstance UID="200" Name="BRConspiracyGameInstanceServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >

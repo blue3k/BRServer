@@ -147,33 +147,35 @@ namespace StrUtil {
 
 	// String convert to uppercase 
 	// szSrc(In/Out)		: Source string to convert
-	inline Result StringUpr( char* szSrc, INT iBuffLen );
-	inline Result StringUpr( wchar_t* szSrc, INT iBuffLen );
+	Result StringUpr( char* szSrc, INT iBuffLen );
+	Result StringUpr( wchar_t* szSrc, INT iBuffLen );
 	template<INT iBuffLen>
-	inline Result StringUpr( char (&szSrc)[iBuffLen] );
+	Result StringUpr( char (&szSrc)[iBuffLen] );
 	template<INT iBuffLen>
-	inline Result StringUpr( wchar_t (&szSrc)[iBuffLen] );
+	Result StringUpr( wchar_t (&szSrc)[iBuffLen] );
 
 	// String convert to uppercase with reallocation, if source string longer then testination buffer
 	// szSrc				: Source string to convert
 	// szDest(In/Out)		: Buffer pointer reference
 	// iBuffLen(In/Out)		: Destination buffer size. if buffer is small to take all source message, then reallocated
-	inline Result StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc );
-	inline Result StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc );
+	Result StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc );
+	Result StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc );
 
 	// String convert to uppercase with truncate, if source string longer then testination buffer
 	// szSrc				: Source string to convert
 	// szDest(In)			: Buffer pointer to copy
 	template<INT iBuffLen>
-	inline Result StringUpr( char (&szDest)[iBuffLen], const char *szSrc );
+	Result StringUpr( char (&szDest)[iBuffLen], const char *szSrc );
 	template<INT iBuffLen>
-	inline Result StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc );
+	Result StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc );
 
 
+	bool IsNullOrEmpty(const char* szStr);
+	bool IsNullOrEmpty(const wchar_t* szStr);
 
 	// Free string with NULL check
-	inline void SafeDelete( char* &szStr );
-	inline void SafeDelete( wchar_t* &szStr );
+	void SafeDelete( char* &szStr );
+	void SafeDelete( wchar_t* &szStr );
 	
 
 	///////////////////////////////////////////////////////////////////////////////////////////

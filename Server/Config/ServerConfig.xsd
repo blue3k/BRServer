@@ -104,6 +104,7 @@
   <xs:complexType name="PublicNetSocket">
     <xs:attribute name="IPV6" type="xs:string" use="required"/>
     <xs:attribute name="IPV4" type="xs:string" use="required"/>
+    <xs:attribute name="ListenIP" type="xs:string" use="required"/>
     <xs:attribute name="Port" type="xs:unsignedInt" use="required"/>
     <xs:attribute name="MaxConnection" type="xs:unsignedInt" default="1000000" use="optional"/>
   </xs:complexType>

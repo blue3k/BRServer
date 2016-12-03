@@ -65,6 +65,9 @@ namespace Config
 		else if (name == "IPV6") {
 			IPV6 = value;
 		}
+		else if (name == "ListenIP") {
+			ListenIP = value;
+		}
 		else if (name == "Port") {
 			Port = (UINT)atoi(value.c_str());
 		}

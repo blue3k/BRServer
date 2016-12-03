@@ -163,7 +163,6 @@ namespace BR {
 			// Invalid Task group ID 
 			E_SVR_INVALID_TASK_GROUPID                                         = 0xE704002FL, 
 
-
 		};//enum 
 	}//namespace ResultCode 
 }//namespace SF 

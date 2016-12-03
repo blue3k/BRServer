@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
 <Servers xmlns="http://www.TheBraves.com/ServerConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/ServerConfig ServerConfig.xsd">
-  <DBInstances InstanceName="account00" ConnectionString="10.133.29.139,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
-  <DBInstances InstanceName="tabledb" ConnectionString="10.133.29.139,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
-  <DBInstances InstanceName="session00" ConnectionString="10.133.29.139,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
-  <DBInstances InstanceName="conspiracy00" ConnectionString="10.133.29.139,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
-  <DBInstances InstanceName="ranking" ConnectionString="10.133.29.139,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
-  <DBInstances InstanceName="gameTransactionLog00" ConnectionString="10.133.29.139,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
+  <DBInstances InstanceName="account00" ConnectionString="172.31.19.99,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
+  <DBInstances InstanceName="tabledb" ConnectionString="172.31.19.99,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
+  <DBInstances InstanceName="session00" ConnectionString="172.31.19.99,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
+  <DBInstances InstanceName="conspiracy00" ConnectionString="172.31.19.99,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
+  <DBInstances InstanceName="ranking" ConnectionString="172.31.19.99,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
+  <DBInstances InstanceName="gameTransactionLog00" ConnectionString="172.31.19.99,18022" UserID="bravesdb" Password="dydwkthefirst123#" />
 
   <MonitoringServer UID="0" Name="BRMonitoring" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
-
 		<NetPrivate IP="10.133.29.148" Port="50000"/>
 	</MonitoringServer>
 
@@ -28,28 +26,23 @@
   </RankingDB>
 
   <EntityServer UID="1" Name="BREntityServer1" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
-		<NetPrivate IP="10.133.29.154" Port="2000"/>
+		<NetPrivate IP="172.31.19.99" Port="2000"/>
 	</EntityServer>
   <EntityServer UID="2" Name="BREntityServer2" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
-		<NetPrivate IP="10.133.29.154" Port="2001"/>
+		<NetPrivate IP="172.31.19.99" Port="2001"/>
 	</EntityServer>
 
 
 
-  <!--<LoginServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" MaxPublicConnection="1024000">
-		<NetPrivate IP="10.133.29.154" Port="2011"/>
-		<NetPublic IPV4="161.202.74.202" IPV6="2401:c900:1001:15b::7" Port="21001"/>
-	</LoginServer>-->
-
   <ModuleServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" GameID="Conspiracy">
-    <NetPrivate IP="10.133.29.154" Port="2011"/>
+    <NetPrivate IP="172.31.19.99" Port="2011"/>
     <ModLogin>
-      <NetPublic IPV4="161.202.74.202" IPV6="2401:c900:1001:15b::7" Port="21001" MaxConnection="200000"/>
+      <NetPublic IPV4="52.78.247.43" IPV6="" ListenIP="::" Port="21001" MaxConnection="200000"/>
     </ModLogin>
   </ModuleServer>
 
   <ModuleServer UID="52" Name="BRMatchingQueue01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" GameID="Conspiracy" >
-		<NetPrivate IP="10.133.29.154" Port="2052"/>
+		<NetPrivate IP="172.31.19.99" Port="2052"/>
     <ModMatchingQueue_Game_8x1 />
     <ModMatchingQueue_Game_8x2 />
     <ModMatchingQueue_Game_8x3 />
@@ -76,22 +69,22 @@
 			<ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
 			<ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>
 			<!-- <ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/> -->
-			<NetPrivate IP="10.133.29.154" Port="10000"/>
-			<NetPublic IPV4="161.202.74.202" IPV6="2401:c900:1001:15b::7" Port="11000"/>
+			<NetPrivate IP="172.31.19.99" Port="10000"/>
+			<NetPublic IPV4="52.78.247.43" IPV6="" ListenIP="::" Port="11000"/>
 		</Game>
 
 		<Game UID="101" Name="BRConspiracyGameServer02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4">
 			<ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
 			<ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>
-			<NetPrivate IP="10.133.29.154" Port="10001"/>
-			<NetPublic IPV4="161.202.74.202" IPV6="2401:c900:1001:15b::7" Port="11001"/>
+			<NetPrivate IP="172.31.19.99" Port="10001"/>
+			<NetPublic IPV4="52.78.247.43" IPV6="" ListenIP="::" Port="11001"/>
 		</Game>
 
 		<GameInstance UID="200" Name="BRConspiracyGameInstanceServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
-			<NetPrivate IP="10.133.29.154" Port="10100"/>
+			<NetPrivate IP="172.31.19.99" Port="10100"/>
 		</GameInstance>
 		<GameInstance UID="201" Name="BRConspiracyGameInstanceServer02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
-			<NetPrivate IP="10.133.29.154" Port="10101"/>
+			<NetPrivate IP="172.31.19.99" Port="10101"/>
 		</GameInstance>
 		
 	</GameCluster>

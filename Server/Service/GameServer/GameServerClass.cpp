@@ -331,15 +331,13 @@ namespace GameServer {
 
 		svrMem(m_pNetPublic = new BR::Net::ServerMUDP(GetMyConfig()->UID, GetNetClass()));
 
-		svrChk( m_pNetPublic->HostOpen( GetNetClass(), GetGameConfig()->NetPublic->IPV6.c_str(), GetGameConfig()->NetPublic->Port ) );
+		svrChk( m_pNetPublic->HostOpen( GetNetClass(), GetGameConfig()->NetPublic->ListenIP.c_str(), GetGameConfig()->NetPublic->Port ) );
 
 		// Game server only accept public connection with valid peerID(AuthTicket)
 		m_pNetPublic->GetConnectionManager().SetUseAddressMap(false);
 
-		//m_PublicNetAddressIPv4 = m_pNetPublic->GetLocalAddress();
-
-		m_PublicNetAddressIPv4 = NetAddress(SockFamily::IPV4, GetGameConfig()->NetPublic->IPV4.c_str(), GetGameConfig()->NetPublic->Port);
-		svrChk(Net::CheckLocalAddress(SockFamily::IPV4, m_PublicNetAddressIPv4));
+		//m_PublicNetAddressIPv4 = NetAddress(SockFamily::IPV4, GetGameConfig()->NetPublic->IPV4.c_str(), GetGameConfig()->NetPublic->Port);
+		//svrChk(Net::CheckLocalAddress(SockFamily::IPV4, m_PublicNetAddressIPv4));
 
 	Proc_End:
 

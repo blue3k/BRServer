@@ -54,6 +54,8 @@ namespace Config {
 		std::string	IPV4;
 		std::string	IPV6;
 
+		std::string	ListenIP;
+
 		// Port
 		USHORT Port;
 

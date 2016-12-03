@@ -49,6 +49,9 @@ namespace BR {
 			// Invalid partitioning ID 
 			E_DB_INVALID_PARTITIONINGID                                        = 0xE7050009L, 
 
+			// Database not connected 
+			E_DB_NOT_CONNECTED                                                 = 0xE705000AL, 
+
 		};//enum 
 	}//namespace ResultCode 
 }//namespace SF 

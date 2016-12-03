@@ -570,7 +570,7 @@ Result StringLwr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 
 // String convert to lower case 
 // szSrc(In/Out)		: Source string to convert
-Result StringUpr( char* szSrc, INT iBuffLen )
+inline Result StringUpr( char* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
 		return ResultCode::INVALID_ARG;
@@ -588,7 +588,7 @@ Result StringUpr( char* szSrc, INT iBuffLen )
 	return ResultCode::SUCCESS;
 }
 
-Result StringUpr( wchar_t* szSrc, INT iBuffLen )
+inline Result StringUpr( wchar_t* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
 		return ResultCode::INVALID_ARG;
@@ -607,13 +607,13 @@ Result StringUpr( wchar_t* szSrc, INT iBuffLen )
 }
 
 template<INT iBuffLen>
-Result StringUpr( char (&szSrc)[iBuffLen] )
+inline Result StringUpr( char (&szSrc)[iBuffLen] )
 {
 	return StringUpr( szSrc, iBuffLen );
 }
 
 template<INT iBuffLen>
-Result StringUpr( wchar_t (&szSrc)[iBuffLen] )
+inline Result StringUpr( wchar_t (&szSrc)[iBuffLen] )
 {
 	return StringUpr( szSrc, iBuffLen );
 }
@@ -623,7 +623,7 @@ Result StringUpr( wchar_t (&szSrc)[iBuffLen] )
 // szSrc				: Source string to convert
 // szDest(In/Out)		: Buffer pointer reference
 // iBuffLen(In/Out)		: Destination buffer size. if buffer is small to take all source message, then reallocated
-Result StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
+inline Result StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
 {
 	Result hr = ResultCode::SUCCESS;
 
@@ -648,7 +648,7 @@ Result StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	return StringUpr( szDest, iBuffLen );
 }
 
-Result StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc )
+inline Result StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc )
 {
 	Result hr = ResultCode::SUCCESS;
 
@@ -677,7 +677,7 @@ Result StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc )
 // szSrc				: Source string to convert
 // szDest(In)			: Buffer pointer to copy
 template<INT iBuffLen>
-Result StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
+inline Result StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 {
 	Result hr = ResultCode::SUCCESS;
 
@@ -698,7 +698,7 @@ Result StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 }
 
 template<INT iBuffLen>
-Result StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
+inline Result StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 {
 	Result hr = ResultCode::SUCCESS;
 
@@ -719,14 +719,25 @@ Result StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 }
 
 
+inline bool IsNullOrEmpty(const char* szStr)
+{
+	return szStr == nullptr || szStr[0] == '\0';
+}
+
+inline bool IsNullOrEmpty(const wchar_t* szStr)
+{
+	return szStr == nullptr || szStr[0] == L'\0';
+}
+
+
 
 // Free string with NULL check
-void SafeDelete( char* &szStr )
+inline void SafeDelete( char* &szStr )
 {
 	if( szStr ) delete[] szStr;
 }
 
-void SafeDelete( wchar_t* &szStr )
+inline void SafeDelete( wchar_t* &szStr )
 {
 	if( szStr ) delete[] szStr;
 }

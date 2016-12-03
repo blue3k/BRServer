@@ -58,7 +58,7 @@ namespace GameServer
 		UINT					m_PresetGameConfigID;
 		BRCLASS_ATTRIBUTE_READONLY_PTR(GameConfigType*,PresetGameConfig);
 
-		BRCLASS_ATTRIBUTE_READONLY(NetAddress, PublicNetAddressIPv4);
+		//BRCLASS_ATTRIBUTE_READONLY(NetAddress, PublicNetAddressIPv4);
 
 	protected:
 

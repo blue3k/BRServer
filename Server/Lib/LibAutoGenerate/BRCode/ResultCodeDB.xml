@@ -16,6 +16,7 @@
   <ResultCodeItem Severity="Error" CodeName="RESULT_FIELDTYPE_MISMATCH" Desc="Database result column type is mismatched"/>
   <ResultCodeItem Severity="Error" CodeName="DUPLICATED_SOURCE" Desc="Duplicated Database source is specified"/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_PARTITIONINGID" Desc="Invalid partitioning ID"/>
+  <ResultCodeItem Severity="Error" CodeName="NOT_CONNECTED" Desc="Database not connected"/>
 
 </ResultCodes>
 

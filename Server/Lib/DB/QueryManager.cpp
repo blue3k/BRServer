@@ -346,7 +346,8 @@ Proc_End:
 
 		if (!pDBSource->GetOpened())
 		{
-			// DB source fail, put it in the local queue and try again
+			// DB source fail, put it in the local queue and try again when DB is ready
+			// This sometimes hides DB error.
 			dbChk(m_PendingQueries.Enqueue(pQuery));
 			return ResultCode::SUCCESS;
 		}

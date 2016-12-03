@@ -49,6 +49,9 @@ namespace BR {
 		// Invalid partitioning ID 
 		public const int E_DB_INVALID_PARTITIONINGID =                      unchecked((int)0xE7050009); 
 
+		// Database not connected 
+		public const int E_DB_NOT_CONNECTED =                               unchecked((int)0xE705000A); 
+
 	}
 }
 

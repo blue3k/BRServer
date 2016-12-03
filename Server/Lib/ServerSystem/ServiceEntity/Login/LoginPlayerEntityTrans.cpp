@@ -243,7 +243,10 @@ namespace Svr {
 
 		super::GetMyOwner()->HeartBit();
 
-		svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), res.GetPort()));
+		if (!StrUtil::IsNullOrEmpty(res.GetPublicAddressV6()))
+		{
+			svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), res.GetPort()));
+		}
 		svrChk(Net::SetNetAddress(m_GameServerAddrIPV4, res.GetPublicAddress(), res.GetPort()));
 		m_GameEntityUID = res.GetRouteContext().GetFrom();
 
