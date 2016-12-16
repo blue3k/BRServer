@@ -371,7 +371,7 @@ namespace StrUtil {
 				goto Proc_End;
 			}
 
-#if LINUX
+#if LINUX || ANDROID
 			{
 				// On linux, source buffer can be changed.
 				char srcBuffer[2048];

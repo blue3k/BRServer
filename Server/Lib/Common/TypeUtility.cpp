@@ -34,7 +34,7 @@ namespace BR {
 		return HRESULT_FROM_WIN32(GetLastError());
 	}
 
-#elif LINUX
+#elif LINUX || ANDROID
 
 	Result GetLastResult()
 	{

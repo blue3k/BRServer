@@ -70,6 +70,8 @@ namespace BR
 
 #if WINDOWS
 		intptr_t GetNativeThreadID() { return  GetThreadId(GetThread()); }
+#elif ANDROID
+		intptr_t GetNativeThreadID() { return  gettid(); }
 #else
 		intptr_t GetNativeThreadID() { return  syscall(SYS_gettid); }
 #endif

@@ -16,7 +16,7 @@
 #include "Common/StackWalker.h"
 
 
-#if LINUX
+#if LINUX || ANDROID
 #define __debugbreak() raise(SIGTRAP)
 #else
 #endif

@@ -99,7 +99,7 @@ namespace BR {
 			return new(pBuff) Arg<Type>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const override
 		{
 			ToString(pBuff, iBuffLen, m_Data, option);
 		}
@@ -129,7 +129,7 @@ namespace BR {
 			return new(pBuff) Arg<UINT32>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const override
 		{
 			int radix = 10;
 			if (option == 'x' || option == 'X') radix = 16;
@@ -161,7 +161,7 @@ namespace BR {
 			return new(pBuff) Arg<UINT64>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const override
 		{
 			int radix = 10;
 			if (option == 'x' || option == 'X') radix = 16;
@@ -197,7 +197,7 @@ namespace BR {
 			return new(pBuff) Arg<float>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const override
 		{
 			unused(option);
 			ToString( pBuff, iBuffLen, (float)m_Data, (int)digits );
@@ -229,7 +229,7 @@ namespace BR {
 
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const override
 		{
 			unused(option); unused(digits);
 			ToString<double>(pBuff, iBuffLen, m_Data, 0);
@@ -261,7 +261,7 @@ namespace BR {
 			return new(pBuff) Arg<void*>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const override
 		{
 			unused(option); unused(digits);
 			ToString(pBuff, iBuffLen, (void*)m_Data, 0);

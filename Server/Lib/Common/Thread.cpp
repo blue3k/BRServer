@@ -40,7 +40,7 @@ namespace BR
 		THREAD_PRIORITY_IDLE,				// PRIORITY_IDLE
 	};
 
-#elif LINUX
+#elif LINUX || ANDROID
 
 	// schedulingPolicies
 	//
@@ -131,7 +131,7 @@ namespace BR
 
 		::SetThreadPriority((HANDLE)threadHandle, ThreadSchedulingTable[(int)priority]);
 
-#elif LINUX
+#elif LINUX || ANDROID
 
 		sched_param sch_params;
 		sch_params.sched_priority = ThreadSchedulingTable[(int)priority].Priority;
