@@ -28,7 +28,11 @@
 
 // Decide platform
 #if __GNUC__
+#if __ANDROID__
+#define ANDROID true
+#else
 #define LINUX true
+#endif
 #elif defined(_WIN32) || defined(_WIN64)
 #define WINDOWS true
 #endif
@@ -90,10 +94,7 @@
 
 
 
-
-
-
-#else
+#elif LINUX
 
 #include <pthread.h>
 #include <sys/resource.h>
@@ -168,6 +169,83 @@ typedef HANDLE HMODULE;
 
 #define MAX_PATH 512
 
+#elif ANDROID
+
+#include <pthread.h>
+#include <sys/resource.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/syscall.h>
+#include <sys/stat.h>
+
+#include <unistd.h>
+#include <fcntl.h>
+#include <libgen.h>
+#include <errno.h>
+#include <signal.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <stdint.h>
+
+
+typedef uint8_t UINT8;
+typedef int8_t INT8;
+typedef uint16_t UINT16;
+typedef int16_t INT16;
+typedef uint32_t UINT32;
+typedef int32_t INT32;
+typedef uint64_t UINT64;
+typedef int64_t INT64;
+typedef unsigned long ULONG;
+typedef long LONG;
+typedef long long LONGLONG;
+typedef unsigned long long ULONGLONG;
+typedef const char* LPCSTR;
+typedef char* LPSTR;
+typedef const wchar_t* LPCWSTR;
+typedef wchar_t* LPWSTR;
+typedef void* PVOID;
+typedef wchar_t WCHAR;
+
+typedef unsigned int UINT;
+typedef int INT;
+
+typedef unsigned short USHORT;
+typedef short SHORT;
+typedef unsigned int DWORD;
+typedef unsigned short WORD;
+typedef UINT8 BYTE;
+
+
+// Additional alise type
+typedef INT8				SBYTE;
+typedef SBYTE				*PSBYTE;
+
+
+typedef void* HANDLE;
+typedef HANDLE HMODULE;
+
+#define INVALID_NATIVE_HANDLE_VALUE NativeHandle(-1)
+
+
+
+#define TRUE (1)
+#define FALSE (0)
+
+
+
+#define IN
+#define OUT
+
+#define SOCKET int
+//#define INVALID_SOCKET (-1)
+
+
+#define MAX_PATH 512
+
+#else
+#error "Not supported platform"
 #endif
 
 

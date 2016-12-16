@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_PropertySheetDisplayName>CompileCpp</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\;..\..\Lib;..\..\..\External;..\..\..\External\libxml\include;..\..\..\External\include;..\..\..\External\jsoncpp\include;..\..\..\External\curl7.41\include;..\..\..\External\mysql-connector-c-6.1.6-winx64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;CURL_STATICLIB;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <AddModuleNamesToAssembly>..\..\bin\lib</AddModuleNamesToAssembly>
+      <AdditionalDependencies>libiconv.lib;libmysql.lib;libxml.lib;libeay32.lib;libcurl.lib;lib_json.lib;External.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
