@@ -857,7 +857,7 @@ namespace Svr {
 			serviceIndex = hashedKey % services.size();
 		}
 
-		if( serviceIndex < 0 || serviceIndex >= services.size() )
+		if( serviceIndex < 0 || serviceIndex >= (int)services.size() )
 			goto Proc_End;
 
 		pService = services[serviceIndex];

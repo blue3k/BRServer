@@ -166,6 +166,8 @@ namespace Util {
 	TimeStampMS TimeMinNonZero(TimeStampMS timeMs, TimeStampMS timeMs2);
 
 
+	inline DurationMS TimeSinceRaw(TimeStampMS timeMs)				{ auto timeCur = Time.GetRawTimeMs(); return (timeCur > timeMs) ? (timeCur - timeMs) : DurationMS(0); }
+
 	inline DurationMS TimeSince(TimeStampMS timeMs)					{ auto timeCur = Time.GetTimeMs(); return (timeCur > timeMs) ? (timeCur - timeMs) : DurationMS(0); }
 	inline DurationSec TimeSinceUTC(TimeStampSec timeUTC)			{ auto timeCur = Time.GetTimeUTCSec(); return (timeCur > timeUTC) ? (timeCur - timeUTC) : DurationSec(0); }
 

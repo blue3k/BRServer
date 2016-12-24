@@ -35,7 +35,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Android\ifaddrs.c" />
+    <ClCompile Include="Android\ifaddrs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Android\ifaddrs.h" />

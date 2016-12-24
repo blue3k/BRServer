@@ -106,68 +106,21 @@ class Event
 {
 public:
 
-	Event(bool isInitialySet = false, bool autoReset = true)
-		:m_AutoReset(autoReset)
-	{
-		sem_init(&m_hEvent, 1, isInitialySet ? 1 : 0);
-	}
-
-	~Event()
-	{
-		sem_close(&m_hEvent);
-		sem_destroy(&m_hEvent);
-	}
-
-	void Reset()
-	{
-		::timespec waitTime;
-		memset(&waitTime, 0, sizeof(waitTime));
-
-		if (clock_gettime(CLOCK_REALTIME, &waitTime) == -1)
-			return;
-
-		waitTime.tv_nsec += 1;
-		sem_timedwait(&m_hEvent, (const timespec*)&waitTime);
-	}
-
-	void Set()
-	{
-		int value = 0;
-		int error = sem_getvalue(&m_hEvent, &value);
-		Assert(error == 0);
-		if (value == 1 || error != 0)
-			return;
-
-		sem_post(&m_hEvent);
-	}
+	Event(bool isInitialySet = false, bool autoReset = true);
 
 
-	bool WaitEvent(DurationMS waitTimeMs)
-	{
-		// we need mutex version
-		timespec waitTime;
-		memset(&waitTime, 0, sizeof(waitTime));
+	~Event();
 
-		if (clock_gettime(CLOCK_REALTIME, &waitTime) == -1)
-			return false;
 
-		UINT uiWaitTimeMs = waitTimeMs.count();
-		waitTime.tv_sec += uiWaitTimeMs / 1000;
-		waitTime.tv_nsec += 1000000 * (uiWaitTimeMs % 1000);
-		int waitRes = sem_timedwait(&m_hEvent, &waitTime);
-		if (waitRes == ETIMEDOUT)
-			return false;
-		else if (waitRes == EAGAIN)
-			return false;
+	void Reset();
 
-		if (!m_AutoReset)
-			sem_post(&m_hEvent);
+	void Set();
 
-		return true;
-	}
+
+	bool WaitEvent(DurationMS waitTimeMs);
 
 private:
-	sem_t	m_hEvent;
+	std::atomic<bool>	m_hEvent;
 	bool	m_AutoReset;
 };
 

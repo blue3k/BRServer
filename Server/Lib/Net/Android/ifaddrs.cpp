@@ -24,6 +24,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ifaddrs.h"
 
+#include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -33,6 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <netinet/in.h>
 #include <linux/netlink.h>
 #include <linux/rtnetlink.h>
+#include <linux/if_packet.h>
 
 typedef struct NetlinkList
 {
@@ -156,7 +158,7 @@ static struct nlmsghdr *getNetlinkResponse(int p_socket, int *p_size, int *p_don
                     return NULL;
                 }
             }
-            return l_buffer;
+            return (nlmsghdr*)l_buffer;
         }
         
         l_size *= 2;
@@ -165,7 +167,7 @@ static struct nlmsghdr *getNetlinkResponse(int p_socket, int *p_size, int *p_don
 
 static NetlinkList *newListItem(struct nlmsghdr *p_data, unsigned int p_size)
 {
-    NetlinkList *l_item = malloc(sizeof(NetlinkList));
+    NetlinkList *l_item = (NetlinkList*)malloc(sizeof(NetlinkList));
     l_item->m_next = NULL;
     l_item->m_data = p_data;
     l_item->m_size = p_size;
@@ -232,9 +234,9 @@ static size_t calcAddrLen(sa_family_t p_family, int p_dataSize)
         case AF_INET6:
             return sizeof(struct sockaddr_in6);
         case AF_PACKET:
-            return maxSize(sizeof(struct sockaddr_ll), offsetof(struct sockaddr_ll, sll_addr) + p_dataSize);
+            return maxSize(sizeof(struct sockaddr_ll), (size_t)(offsetof(struct sockaddr_ll, sll_addr) + p_dataSize));
         default:
-            return maxSize(sizeof(struct sockaddr), offsetof(struct sockaddr, sa_data) + p_dataSize);
+            return maxSize(sizeof(struct sockaddr), (size_t)(offsetof(struct sockaddr, sa_data) + p_dataSize));
     }
 }
 
@@ -308,7 +310,7 @@ static void interpretLink(struct nlmsghdr *p_hdr, struct ifaddrs **p_links, stru
         }
     }
     
-    struct ifaddrs *l_entry = malloc(sizeof(struct ifaddrs) + l_nameSize + l_addrSize + l_dataSize);
+    struct ifaddrs *l_entry = (struct ifaddrs*)malloc(sizeof(struct ifaddrs) + l_nameSize + l_addrSize + l_dataSize);
     memset(l_entry, 0, sizeof(struct ifaddrs));
     l_entry->ifa_name = "";
     
@@ -344,7 +346,7 @@ static void interpretLink(struct nlmsghdr *p_hdr, struct ifaddrs **p_links, stru
                 break;
             }
             case IFLA_IFNAME:
-                strncpy(l_name, l_rtaData, l_rtaDataSize);
+                strncpy(l_name, (const char*)l_rtaData, l_rtaDataSize);
                 l_name[l_rtaDataSize] = '\0';
                 l_entry->ifa_name = l_name;
                 break;
@@ -402,7 +404,7 @@ static void interpretAddr(struct nlmsghdr *p_hdr, struct ifaddrs **p_links, stru
         }
     }
     
-    struct ifaddrs *l_entry = malloc(sizeof(struct ifaddrs) + l_nameSize + l_addrSize);
+    struct ifaddrs *l_entry = (struct ifaddrs*)malloc(sizeof(struct ifaddrs) + l_nameSize + l_addrSize);
     memset(l_entry, 0, sizeof(struct ifaddrs));
     l_entry->ifa_name = p_links[l_info->ifa_index - 1]->ifa_name;
     
@@ -459,7 +461,7 @@ static void interpretAddr(struct nlmsghdr *p_hdr, struct ifaddrs **p_links, stru
                 break;
             }
             case IFA_LABEL:
-                strncpy(l_name, l_rtaData, l_rtaDataSize);
+                strncpy(l_name, (const char*)l_rtaData, l_rtaDataSize);
                 l_name[l_rtaDataSize] = '\0';
                 l_entry->ifa_name = l_name;
                 break;
@@ -548,7 +550,7 @@ static unsigned countLinks(int p_socket, NetlinkList *p_netlinkList)
     return l_links;
 }
 
-int getifaddrs(struct ifaddrs **ifap)
+extern "C" int getifaddrs(struct ifaddrs **ifap)
 {
     if(!ifap)
     {
@@ -590,7 +592,7 @@ int getifaddrs(struct ifaddrs **ifap)
     return 0;
 }
 
-void freeifaddrs(struct ifaddrs *ifa)
+extern "C" void freeifaddrs(struct ifaddrs *ifa)
 {
     struct ifaddrs *l_cur;
     while(ifa)

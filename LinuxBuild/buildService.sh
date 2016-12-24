@@ -11,7 +11,8 @@ esac
 
 case $2 in
 	"build") ;;
-	"clean") ;;
+	"clean") rm -rf ../Server/bin/obj/*
+			exit 0 ;;
 	*)	echo "The second parameter need to be build or clean"
 		exit 0 ;;
 esac

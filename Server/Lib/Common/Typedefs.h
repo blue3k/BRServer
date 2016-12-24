@@ -114,7 +114,8 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <stdint.h>
-
+#include <semaphore.h>
+#include <my_global.h>
 
 typedef uint8_t UINT8;
 typedef int8_t INT8;
@@ -166,7 +167,7 @@ typedef HANDLE HMODULE;
 #define OUT
 
 #define SOCKET int
-//#define INVALID_SOCKET (-1)
+
 
 
 #define MAX_PATH 512
