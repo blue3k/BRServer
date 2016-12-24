@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/ServiceEntity/ServiceEntity.h"
@@ -139,12 +139,12 @@ namespace Svr {
 		//
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 		virtual Result StartInitializeTransaction();
 
 		// clear transaction
-		virtual Result ClearEntity();
+		virtual Result ClearEntity() override;
 
 		virtual Result UpdateOnMasterManager() { return ResultCode::SUCCESS; }
 
@@ -234,7 +234,7 @@ namespace Svr {
 		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
 
 		////////////////////////////////////////////////////////////////////////////////////
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 	};
 	
 
@@ -370,7 +370,7 @@ namespace Svr {
 		Result GetService( ServerServiceInformation* &pService );
 
 		////////////////////////////////////////////////////////////////////////////////////
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr);
+		virtual Result TickUpdate(TimerAction *pAction = nullptr);
 	};
 
 

@@ -2,9 +2,6 @@
 #pragma once
 
 
-#include <pthread.h>
-#include <assert.h>
-#include <semaphore.h>
 
 
 
@@ -64,7 +61,6 @@ public:
 
 	virtual void UnLock()
 	{
-		Assert(((m_CriticalSection).__data).__count > 0);
 		pthread_mutex_unlock(&m_CriticalSection);
 	}
 
@@ -124,14 +120,14 @@ public:
 
 	void Reset()
 	{
-		timespec waitTime;
+		::timespec waitTime;
 		memset(&waitTime, 0, sizeof(waitTime));
 
 		if (clock_gettime(CLOCK_REALTIME, &waitTime) == -1)
 			return;
 
 		waitTime.tv_nsec += 1;
-		sem_timedwait(&m_hEvent, &waitTime);
+		sem_timedwait(&m_hEvent, (const timespec*)&waitTime);
 	}
 
 	void Set()
@@ -139,14 +135,14 @@ public:
 		int value = 0;
 		int error = sem_getvalue(&m_hEvent, &value);
 		Assert(error == 0);
-		if (value == 1)
+		if (value == 1 || error != 0)
 			return;
 
 		sem_post(&m_hEvent);
 	}
 
 
-	bool WaitEvent(UINT uiWaitTimeMs)
+	bool WaitEvent(DurationMS waitTimeMs)
 	{
 		// we need mutex version
 		timespec waitTime;
@@ -155,6 +151,7 @@ public:
 		if (clock_gettime(CLOCK_REALTIME, &waitTime) == -1)
 			return false;
 
+		UINT uiWaitTimeMs = waitTimeMs.count();
 		waitTime.tv_sec += uiWaitTimeMs / 1000;
 		waitTime.tv_nsec += 1000000 * (uiWaitTimeMs % 1000);
 		int waitRes = sem_timedwait(&m_hEvent, &waitTime);

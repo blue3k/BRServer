@@ -50,8 +50,8 @@ public class ArrayPerformanceCounterPtr : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int SetSize(uint szNewSize) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_SetSize(swigCPtr, szNewSize);
+  public unsafe SWIGTYPE_p_Result SetSize(uint szNewSize) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_SetSize(swigCPtr, szNewSize), true);
     return ret;
   }
 
@@ -86,8 +86,8 @@ public class ArrayPerformanceCounterPtr : global::System.IDisposable {
     BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_SetIncreaseSize(swigCPtr, szNewIncSize);
   }
 
-  public unsafe int Reserve(uint szReserv) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_Reserve(swigCPtr, szReserv);
+  public unsafe SWIGTYPE_p_Result Reserve(uint szReserv) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_Reserve(swigCPtr, szReserv), true);
     return ret;
   }
 
@@ -97,23 +97,23 @@ public class ArrayPerformanceCounterPtr : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int push_back(PerformanceCounter NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_push_back(swigCPtr, PerformanceCounter.getCPtr(NewData));
+  public unsafe SWIGTYPE_p_Result push_back(PerformanceCounter NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_push_back(swigCPtr, PerformanceCounter.getCPtr(NewData)), true);
     return ret;
   }
 
-  public unsafe int AddItems(uint numItems, SWIGTYPE_p_p_BR__Svr__PerformanceCounter NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_AddItems(swigCPtr, numItems, SWIGTYPE_p_p_BR__Svr__PerformanceCounter.getCPtr(NewData));
+  public unsafe SWIGTYPE_p_Result AddItems(uint numItems, SWIGTYPE_p_p_BR__Svr__PerformanceCounter NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_AddItems(swigCPtr, numItems, SWIGTYPE_p_p_BR__Svr__PerformanceCounter.getCPtr(NewData)), true);
     return ret;
   }
 
-  public unsafe int RemoveAt(int iIndex) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_RemoveAt(swigCPtr, iIndex);
+  public unsafe SWIGTYPE_p_Result RemoveAt(int iIndex) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_RemoveAt(swigCPtr, iIndex), true);
     return ret;
   }
 
-  public unsafe int RemoveItem(PerformanceCounter RemoveData) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_RemoveItem(swigCPtr, PerformanceCounter.getCPtr(RemoveData));
+  public unsafe SWIGTYPE_p_Result RemoveItem(PerformanceCounter RemoveData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterPtr_RemoveItem(swigCPtr, PerformanceCounter.getCPtr(RemoveData)), true);
     return ret;
   }
 

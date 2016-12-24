@@ -144,7 +144,7 @@ namespace Net {
 
 
 		// Update net control, process connection heartbit, ... etc
-		virtual Result UpdateNetCtrl() = 0;
+		//virtual Result UpdateNetCtrl() = 0;
 
 		// Update send queue and return remain item count in send queue
 		virtual Result UpdateSendQueue() override;

@@ -38,7 +38,7 @@ namespace Net {
 		: ServerNet( InServerID, localClass )
 		, INetIOCallBack(GetSocket())
 		, m_ConnectionManager(Net::Const::SVR_PRIVATE_CONNECTION_BUCKET_SIZE)
-		, m_CIDGen(0)
+		//, m_CIDGen(0)
 		, m_pRecvBuffers(nullptr)
 		, m_PendingRecvCnt(0)
 	{
@@ -86,7 +86,7 @@ namespace Net {
 
 		if( !( hrRes ) )
 		{
-			switch((int32_t)hrRes )
+			switch((uint32_t)hrRes )
 			{
 			case ResultCode::E_NET_CONNECTION_CLOSED:
 			case ResultCode::E_NET_IO_ABORTED:
@@ -388,7 +388,7 @@ namespace Net {
 		while (1)
 		{
 			hrErr = NetSystem::RecvFrom(GetSocket(), pOver);
-			switch ((int32_t)hrErr)
+			switch ((uint32_t)hrErr)
 			{
 			case ResultCode::SUCCESS_FALSE:
 				hr = ResultCode::E_NET_TRY_AGAIN;

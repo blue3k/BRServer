@@ -128,7 +128,7 @@ namespace Svr {
 		virtual ~GamePlayerEntity();
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 		// Set connection for pilot
 		virtual Result SetConnection( SharedPointerT<Net::Connection>&& pCon ) override;
@@ -148,13 +148,13 @@ namespace Svr {
 		virtual Result UpdateDBSync(TransactionID transID);
 
 		// register message handlers
-		virtual Result RegisterMessageHandlers();
+		virtual Result RegisterMessageHandlers() override;
 
 		// clear transaction
 		virtual Result ClearEntity() override;
 
 		// Run the task
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		virtual Transaction* CreateCloseTransaction() { return nullptr; }
@@ -183,7 +183,7 @@ namespace Svr {
 		FORCEINLINE const char* GetNickName()							{ return m_PlayerInformation.NickName; }
 		FORCEINLINE Result SetNickName( const char* newName )			{ return StrUtil::StringCpy( m_PlayerInformation.NickName, newName ); }
 
-		virtual Result SetAccountID( AccountID accID )					{ m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
+		virtual Result SetAccountID( AccountID accID ) override { m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
 
 		template< class ...ArgTypes >
 		void AddGameTransactionLogT(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* strFormat, ArgTypes... args)

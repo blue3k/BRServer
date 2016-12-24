@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Net/NetDef.h"
 
 #include "ServerSystem/Entity.h"
@@ -134,7 +134,7 @@ namespace Svr {
 	}
 	
 
-	Result MatchingQueueServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result MatchingQueueServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServiceEntityUIDMap::iterator itService;

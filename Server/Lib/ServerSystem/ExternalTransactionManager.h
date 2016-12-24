@@ -16,7 +16,7 @@
 #include "Common/Typedefs.h"
 #include "Common/Thread.h"
 #include "Common/ObjectPool.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/Transaction.h"
@@ -83,7 +83,7 @@ namespace Svr{
 		// Terminate server component
 		virtual void TerminateComponent() override;
 
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 		// Send gcm notify
 		Result SendGCMNotify(TransactionID sender, const char* strRegisterIDs, const char* strMessage, UINT64 param0 = 0);

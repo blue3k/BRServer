@@ -20,11 +20,11 @@
 #include "Common/MemoryPool.h"
 #include "Net/NetSystem.h"
 #include "Net/NetSystem_impl.h"
-#include "Net/NetSystem_Linux.h"
 #include "Net/NetTrace.h"
 
 
 #if LINUX
+
 
 #include "Net/NetSystem_EPOLL.h"
 #include "Net/NetSystem_KQUEUE.h"

@@ -21,7 +21,7 @@
 #include "ServerSystem/Transaction.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/EventTask.h"
+#include "Common/Task/EventTask.h"
 #include "Net/ConnectionUDP.h"
 
 
@@ -149,7 +149,7 @@ namespace Svr
 
 
 	// Process Message and release message after all processed
-	Result SimpleUserEntity::ProcessMessage(Message::MessageData* &pIMsg)
+	Result SimpleUserEntity::ProcessMessageData(Message::MessageData* &pIMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 		EntityID entityID; // entity ID to route
@@ -224,7 +224,7 @@ namespace Svr
 
 
 
-	Result SimpleUserEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result SimpleUserEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pIMsg = nullptr;
@@ -265,7 +265,7 @@ namespace Svr
 					if (!(pConn->GetRecvMessage(pIMsg)))
 						break;
 
-					ProcessMessage(pIMsg );
+					ProcessMessageData(pIMsg );
 
 					Util::SafeRelease( pIMsg );
 				}
@@ -330,7 +330,7 @@ namespace Svr
 	}
 
 
-	Result SimpleUserEntity::OnEventTask(const Svr::EventTask& eventTask)
+	Result SimpleUserEntity::OnEventTask(const EventTask& eventTask)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -341,30 +341,30 @@ namespace Svr
 
 		switch (eventTask.EventType)
 		{
-		case Svr::EventTask::EventTypes::CONNECTION_EVENT:
+		case EventTask::EventTypes::CONNECTION_EVENT:
 			ProcessConnectionEvent(*eventTask.EventData.pConnectionEvent);
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_EVENT:
 			pMsg = eventTask.EventData.MessageEvent.pMessage;
 			pConn = BR_DYNAMIC_CAST(Net::ConnectionUDPBase*,GetConnection());
 			if (pMsg != nullptr)
 			{
-				ProcessMessage(pMsg);
+				ProcessMessageData(pMsg);
 				Util::SafeRelease(pMsg);
 			}
 			else
 			{
 				if (pConn != nullptr)
-					pConn->ProcGuarrentedMessageWindow([&](Message::MessageData* pMsg){ ProcessMessage(pMsg); });
+					pConn->ProcGuarrentedMessageWindow([&](Message::MessageData* pMsg){ ProcessMessageData(pMsg); });
 			}
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
 			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
 			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
-		case Svr::EventTask::EventTypes::TRANSRESULT_EVENT:
+		case EventTask::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))

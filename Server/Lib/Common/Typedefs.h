@@ -26,6 +26,8 @@
 #define X32	true
 #endif
 
+
+
 // Decide platform
 #if __GNUC__
 #if __ANDROID__
@@ -171,7 +173,12 @@ typedef HANDLE HMODULE;
 
 #elif ANDROID
 
+
 #include <pthread.h>
+#include <time.h>
+#include <semaphore.h>
+#include <assert.h>
+
 #include <sys/resource.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -187,7 +194,8 @@ typedef HANDLE HMODULE;
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <stdint.h>
-
+#include <unwind.h>
+#include <dlfcn.h>
 
 typedef uint8_t UINT8;
 typedef int8_t INT8;
@@ -239,13 +247,17 @@ typedef HANDLE HMODULE;
 #define OUT
 
 #define SOCKET int
-//#define INVALID_SOCKET (-1)
+#define INVALID_SOCKET (-1)
 
 
 #define MAX_PATH 512
 
 #else
-#error "Not supported platform"
+
+#ifndef SWIG
+	#error "Not supported platform"
+#endif
+
 #endif
 
 
@@ -285,7 +297,6 @@ typedef HANDLE HMODULE;
 #include <atomic>
 
 #include <functional>
-#include <my_global.h>
 
 
 // See MSDN common datatypes section for base type definitions
@@ -351,10 +362,12 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 }
 
 
+#ifndef SWIG
 
+template<class ... ArgTypes>
+inline void unused(ArgTypes... ) {}
 
-#define unused(...) 
-
+#endif
 
 
 ////////////////////////////////////////////////////////////////////////////////

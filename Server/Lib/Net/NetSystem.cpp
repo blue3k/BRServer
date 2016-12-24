@@ -107,7 +107,7 @@ namespace Net {
 			}
 
 			hr = SendBuffer(pSendBuffer);
-			switch ((int32_t)hr)
+			switch ((uint32_t)hr)
 			{
 			case ResultCode::SUCCESS:
 				writeQueue->Dequeue(pSendBuffer);

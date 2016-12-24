@@ -76,7 +76,7 @@ namespace Net {
 	}
 
 	// Initialize LoopbackConnection
-	Result LoopbackConnection::InitConnection( const NetAddress& Addr, NetClass netClass )
+	Result LoopbackConnection::InitConnectionNClass( const NetAddress& Addr, NetClass netClass )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -85,7 +85,7 @@ namespace Net {
 		if (GetConnectionState() != STATE_DISCONNECTED)
 			netChk( CloseConnection() );
 
-		netChk(IConnection::InitConnection(Addr, netClass));
+		netChk(IConnection::InitConnectionNClass(Addr, netClass));
 
 		SetConnectionState(STATE_CONNECTED);
 		//m_RecvQueue.ClearQueue();

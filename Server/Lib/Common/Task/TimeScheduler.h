@@ -17,12 +17,11 @@
 #include "Common/DualSortedMap.h"
 #include "Common/TimeUtil.h"
 #include "Common/SystemSynchronization.h"
-#include "ServerSystem/TimeSchedulerAction.h"
+#include "Common/Task/TimeSchedulerAction.h"
 
 
 
 namespace BR {
-namespace Svr {
 
 
 
@@ -77,6 +76,6 @@ namespace Svr {
 		void UpdateTick(ThreadID threadID);
 	};
 
-}; // namespace Svr
+
 }; // namespace BR
 

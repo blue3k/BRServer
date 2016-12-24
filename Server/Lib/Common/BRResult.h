@@ -52,6 +52,7 @@ namespace BR
 		}
 
 		explicit operator int32_t() const { return HResultCode; }
+		explicit operator uint32_t() const { return (uint32_t)HResultCode; }
 
 		operator bool() const { return HResultCode >= 0; }
 

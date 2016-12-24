@@ -48,31 +48,31 @@ namespace Net {
 	protected:
 
 		// gathering
-		virtual Result SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
-		virtual Result SendPending( Message::MessageData* pMsg ) { return ConnectionUDPBase::SendPending(pMsg); }
+		virtual Result SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 ) override;
+		virtual Result SendPending( Message::MessageData* pMsg )  override { return ConnectionUDPBase::SendPending(pMsg); }
 		virtual Result SendSync( UINT uiSequence, UINT64 uiSyncMask );
 
-		virtual Result SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
+		virtual Result SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 ) override;
 
 
 		// Process network control message
 		virtual Result ProcNetCtrl( const MsgMobileNetCtrl* pNetCtrl );
-		Result ProcNetCtrl( const MsgNetCtrl* pNetCtrl )			{ return ResultCode::NOT_IMPLEMENTED; }
+		Result ProcNetCtrl( const MsgNetCtrl* pNetCtrl ) override { return ResultCode::NOT_IMPLEMENTED; }
 
 		// Process NetCtrl queue
-		virtual Result ProcNetCtrlQueue();
+		virtual Result ProcNetCtrlQueue() override;
 
 		// Process Recv queue
-		virtual Result ProcRecvReliableQueue();
+		virtual Result ProcRecvReliableQueue() override;
 
 		// Process Send queue
-		virtual Result ProcSendReliableQueue();
+		virtual Result ProcSendReliableQueue() override;
 		
 		// Process message window queue
-		virtual Result ProcReliableSendRetry();
+		virtual Result ProcReliableSendRetry() override;
 
 		// Process connection state
-		virtual Result ProcConnectionState();
+		virtual Result ProcConnectionState() override;
 
 		Result OnGuarrentedMessageRecv(Message::MessageData *pMsg);
 

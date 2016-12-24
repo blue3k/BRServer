@@ -73,7 +73,7 @@ namespace Svr {
 	//  - Make new transaction from connection queue
 	//  - status update for game
 	//  - Process transaction
-	Result SimpleEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result SimpleEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		CounterType loopCount;

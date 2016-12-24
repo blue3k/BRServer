@@ -50,7 +50,7 @@ namespace Net {
 		ConnectionManagerType	m_ConnectionManager;
 
 		// Connection ID gen
-		LONG			m_CIDGen;
+		//LONG			m_CIDGen;
 
 		// Buffer for recv
 		IOBUFFER_READ*	m_pRecvBuffers;
@@ -71,7 +71,7 @@ namespace Net {
 		virtual CounterType GetActiveConnectionCount();
 
 		// Close all connection
-		virtual Result CloseAllConnection();
+		virtual Result CloseAllConnection() override;
 
 
 
@@ -89,10 +89,10 @@ namespace Net {
 
 
 		// Release instance
-		virtual void Release();
+		virtual void Release() override;
 
 		// check about initialize
-		virtual bool IsReady();
+		virtual bool IsReady() override;
 
 		// Get connection from connection ID
 		virtual Result GetConnection(UINT uiCID, SharedPointerT<Connection> &pConnection);

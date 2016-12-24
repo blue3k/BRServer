@@ -92,8 +92,8 @@ public class MatchingQueueItem : global::System.IDisposable {
   public unsafe MatchingQueueItem(int initValue) : this(BRMonitoringPINVOKE.new_MatchingQueueItem__SWIG_3(initValue), true) {
   }
 
-  public unsafe int SetQueueItem(EntityUID RegisterUID, ulong RegisterID, uint numPlayer, MatchingPlayerInformation playerInformations) {
-    int ret = BRMonitoringPINVOKE.MatchingQueueItem_SetQueueItem(swigCPtr, EntityUID.getCPtr(RegisterUID), RegisterID, numPlayer, MatchingPlayerInformation.getCPtr(playerInformations));
+  public unsafe SWIGTYPE_p_Result SetQueueItem(EntityUID RegisterUID, ulong RegisterID, uint numPlayer, MatchingPlayerInformation playerInformations) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.MatchingQueueItem_SetQueueItem(swigCPtr, EntityUID.getCPtr(RegisterUID), RegisterID, numPlayer, MatchingPlayerInformation.getCPtr(playerInformations)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

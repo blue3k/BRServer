@@ -47,10 +47,10 @@ namespace Net {
 
 		
 		// check about initialize
-		virtual bool IsReady();
+		virtual bool IsReady() override;
 	
 		// Release instance
-		virtual void Release();
+		virtual void Release() override;
 
 
 		// Maximum connection

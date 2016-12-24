@@ -18,16 +18,16 @@
 #include "Common/SortedMap.h"
 #include "Common/DualSortedMap.h"
 #include "Common/PageQueue.h"
-#include "ServerSystem/Task.h"
-#include "ServerSystem/SvrTrace.h"
+#include "Common/Task/Task.h"
+#include "Common/Trace.h"
 #include "Common/Indexing.h"
 #include "Common/HashTable.h"
-#include "ServerSystem/TimeScheduler.h"
+#include "Common/Task/TimeScheduler.h"
 
 
 
 namespace BR {
-namespace Svr {
+
 
 	class TaskManager;
 	struct EventTask;
@@ -177,6 +177,6 @@ namespace Svr {
 #include "TaskManager.inl"
 
 
-}; // namespace Svr
+
 }; // namespace BR
 

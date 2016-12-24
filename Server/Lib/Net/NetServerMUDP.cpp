@@ -199,7 +199,7 @@ namespace Net {
 		if( !( hrRes ) )
 		{
 
-			switch((int32_t)hrRes )
+			switch((uint32_t)hrRes )
 			{
 			case ResultCode::E_NET_CONNECTION_CLOSED:
 			case ResultCode::E_NET_IO_ABORTED:

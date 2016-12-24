@@ -128,7 +128,7 @@ namespace Trace {
 
 
 		// Override stop to handle kill method
-		virtual void Stop( bool bSendKillEvt );
+		virtual void Stop( bool bSendKillEvt ) override;
 
 		// Thread inherit
 		virtual void Run() override;

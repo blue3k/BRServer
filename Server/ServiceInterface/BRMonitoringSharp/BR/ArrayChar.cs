@@ -50,8 +50,8 @@ public class ArrayChar : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int SetSize(uint szNewSize) {
-    int ret = BRMonitoringPINVOKE.ArrayChar_SetSize(swigCPtr, szNewSize);
+  public unsafe SWIGTYPE_p_Result SetSize(uint szNewSize) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayChar_SetSize(swigCPtr, szNewSize), true);
     return ret;
   }
 
@@ -86,8 +86,8 @@ public class ArrayChar : global::System.IDisposable {
     BRMonitoringPINVOKE.ArrayChar_SetIncreaseSize(swigCPtr, szNewIncSize);
   }
 
-  public unsafe int Reserve(uint szReserv) {
-    int ret = BRMonitoringPINVOKE.ArrayChar_Reserve(swigCPtr, szReserv);
+  public unsafe SWIGTYPE_p_Result Reserve(uint szReserv) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayChar_Reserve(swigCPtr, szReserv), true);
     return ret;
   }
 
@@ -96,23 +96,23 @@ public class ArrayChar : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int push_back(char NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayChar_push_back(swigCPtr, NewData);
+  public unsafe SWIGTYPE_p_Result push_back(char NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayChar_push_back(swigCPtr, NewData), true);
     return ret;
   }
 
-  public unsafe int AddItems(uint numItems, string NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayChar_AddItems(swigCPtr, numItems, NewData);
+  public unsafe SWIGTYPE_p_Result AddItems(uint numItems, string NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayChar_AddItems(swigCPtr, numItems, NewData), true);
     return ret;
   }
 
-  public unsafe int RemoveAt(int iIndex) {
-    int ret = BRMonitoringPINVOKE.ArrayChar_RemoveAt(swigCPtr, iIndex);
+  public unsafe SWIGTYPE_p_Result RemoveAt(int iIndex) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayChar_RemoveAt(swigCPtr, iIndex), true);
     return ret;
   }
 
-  public unsafe int RemoveItem(char RemoveData) {
-    int ret = BRMonitoringPINVOKE.ArrayChar_RemoveItem(swigCPtr, RemoveData);
+  public unsafe SWIGTYPE_p_Result RemoveItem(char RemoveData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayChar_RemoveItem(swigCPtr, RemoveData), true);
     return ret;
   }
 

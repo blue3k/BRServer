@@ -217,6 +217,9 @@ namespace BR {
 			// Target already in friends list 
 			E_ALREADY_IN_FRIEND                                                = 0xE7020041L, 
 
+			// Thread is wrong, running on wrong thread? 
+			E_INVALID_THREAD                                                   = 0xE7020042L, 
+
 		};//enum 
 	}//namespace ResultCode 
 }//namespace SF 

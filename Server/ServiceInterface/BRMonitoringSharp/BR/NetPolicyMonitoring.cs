@@ -39,32 +39,32 @@ public class NetPolicyMonitoring : global::System.IDisposable {
   public unsafe NetPolicyMonitoring(IConnection pConn) : this(BRMonitoringPINVOKE.new_NetPolicyMonitoring(IConnection.getCPtr(pConn)), true) {
   }
 
-  public unsafe int GetInstanceListCmd(TransactionID InTransactionID) {
-    int ret = BRMonitoringPINVOKE.NetPolicyMonitoring_GetInstanceListCmd(swigCPtr, TransactionID.getCPtr(InTransactionID));
+  public unsafe SWIGTYPE_p_Result GetInstanceListCmd(TransactionID InTransactionID) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetPolicyMonitoring_GetInstanceListCmd(swigCPtr, TransactionID.getCPtr(InTransactionID)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int RequestCounterValuesCmd(TransactionID InTransactionID, EntityUID InInstanceUID) {
-    int ret = BRMonitoringPINVOKE.NetPolicyMonitoring_RequestCounterValuesCmd(swigCPtr, TransactionID.getCPtr(InTransactionID), EntityUID.getCPtr(InInstanceUID));
+  public unsafe SWIGTYPE_p_Result RequestCounterValuesCmd(TransactionID InTransactionID, EntityUID InInstanceUID) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetPolicyMonitoring_RequestCounterValuesCmd(swigCPtr, TransactionID.getCPtr(InTransactionID), EntityUID.getCPtr(InInstanceUID)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int PerformanceCounterNewC2SEvt(string InInstanceName, EntityUID InInstanceUID, ArrayPerformanceCounterInfo InNewCounters) {
-    int ret = BRMonitoringPINVOKE.NetPolicyMonitoring_PerformanceCounterNewC2SEvt(swigCPtr, InInstanceName, EntityUID.getCPtr(InInstanceUID), ArrayPerformanceCounterInfo.getCPtr(InNewCounters));
+  public unsafe SWIGTYPE_p_Result PerformanceCounterNewC2SEvt(string InInstanceName, EntityUID InInstanceUID, ArrayPerformanceCounterInfo InNewCounters) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetPolicyMonitoring_PerformanceCounterNewC2SEvt(swigCPtr, InInstanceName, EntityUID.getCPtr(InInstanceUID), ArrayPerformanceCounterInfo.getCPtr(InNewCounters)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int PerformanceCounterFreeC2SEvt(ArrayEntityUID InFreeInstances) {
-    int ret = BRMonitoringPINVOKE.NetPolicyMonitoring_PerformanceCounterFreeC2SEvt(swigCPtr, ArrayEntityUID.getCPtr(InFreeInstances));
+  public unsafe SWIGTYPE_p_Result PerformanceCounterFreeC2SEvt(ArrayEntityUID InFreeInstances) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetPolicyMonitoring_PerformanceCounterFreeC2SEvt(swigCPtr, ArrayEntityUID.getCPtr(InFreeInstances)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int PerformanceCounterUpdateC2SEvt(EntityUID InInstanceUID, ArrayUInt64 InCounterValues) {
-    int ret = BRMonitoringPINVOKE.NetPolicyMonitoring_PerformanceCounterUpdateC2SEvt(swigCPtr, EntityUID.getCPtr(InInstanceUID), ArrayUInt64.getCPtr(InCounterValues));
+  public unsafe SWIGTYPE_p_Result PerformanceCounterUpdateC2SEvt(EntityUID InInstanceUID, ArrayUInt64 InCounterValues) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetPolicyMonitoring_PerformanceCounterUpdateC2SEvt(swigCPtr, EntityUID.getCPtr(InInstanceUID), ArrayUInt64.getCPtr(InCounterValues)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

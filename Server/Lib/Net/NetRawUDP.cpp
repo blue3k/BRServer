@@ -201,7 +201,7 @@ namespace Net {
 		while (1)
 		{
 			hrErr = NetSystem::RecvFrom(GetSocket(), pOver);
-			switch ((int32_t)hrErr)
+			switch ((uint32_t)hrErr)
 			{
 			case ResultCode::SUCCESS_FALSE:
 				hr = ResultCode::E_NET_TRY_AGAIN;
@@ -240,7 +240,7 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 
 		hrErr = NetSystem::SendTo(GetSocket(), pSendBuffer);
-		switch ((int32_t)hrErr)
+		switch ((uint32_t)hrErr)
 		{
 		case ResultCode::E_NET_TRY_AGAIN:
 			break;
@@ -402,7 +402,7 @@ namespace Net {
 		pIOBuffer->SetupRecvUDP(0);
 
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
-		switch ((int32_t)hrErr)
+		switch ((uint32_t)hrErr)
 		{
 		case ResultCode::SUCCESS_FALSE:
 			hr = ResultCode::E_NET_TRY_AGAIN;
@@ -442,7 +442,7 @@ namespace Net {
 
 		if (!(hrRes))
 		{
-			switch ((int32_t)hrRes)
+			switch ((uint32_t)hrRes)
 			{
 			case ResultCode::E_NET_CONNECTION_CLOSED:
 			case ResultCode::E_NET_IO_ABORTED:

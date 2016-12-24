@@ -141,7 +141,7 @@ namespace GameServer
 		virtual Result CloseNetPublic() override;
 
 		// Run the task
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 	};
 

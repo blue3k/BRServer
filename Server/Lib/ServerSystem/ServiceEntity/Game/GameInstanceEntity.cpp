@@ -104,7 +104,7 @@ namespace Svr {
 	}
 
 	// Run entity
-	Result GameInstanceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result GameInstanceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		auto CurTime = Util::Time.GetTimeMs();

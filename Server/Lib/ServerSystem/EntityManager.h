@@ -15,7 +15,7 @@
 #include "Common/ClassUtil.h"
 
 #include "ServerSystem/Entity.h"
-#include "ServerSystem/TaskManager.h"
+#include "Common/Task/TaskManager.h"
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounter.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
@@ -80,7 +80,7 @@ namespace Svr {
 
 
 		// Use different initialization but same terminate to component
-		virtual void TerminateComponent();
+		virtual void TerminateComponent() override;
 	};
 
 

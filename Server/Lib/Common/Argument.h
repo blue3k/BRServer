@@ -293,7 +293,7 @@ namespace BR {
 			return new(pBuff) ArgArray<Type>(*this);
 		}
 
-		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const
+		virtual void MakeString( char*& pBuff, INT& iBuffLen, char option, float digits) const override
 		{
 			unused(option); unused(digits);
 			ToStringArray(pBuff, iBuffLen, m_Array, 0);

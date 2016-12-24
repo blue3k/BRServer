@@ -16,7 +16,7 @@
 #include "Common/Typedefs.h"
 #include "Common/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Task.h"
+#include "Common/Task/Task.h"
 #include "Common/PageQueue.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/SvrTypes.h"

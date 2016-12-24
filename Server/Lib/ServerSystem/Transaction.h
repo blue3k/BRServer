@@ -29,17 +29,18 @@
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/MessageHandlerTable.h"
 #include "Protocol/Message/ServerMsgClass.h"
-#include "ServerSystem/TimeSchedulerAction.h"
+#include "Common/Task/TimeSchedulerAction.h"
 #include "Net/Connection.h"
 #include "ServerSystem/BrServerUtil.h"
 
 namespace BR {
+	class TimerAction;
+	
 namespace Svr {
 
 	class Entity;
 	class TransactionResult;
 	class ServerEntity;
-	class TimerAction;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -391,11 +392,11 @@ namespace Svr {
 		// Get transaction ID
 		inline const TransactionID& GetTransID() const;
 
-		virtual Result CloseTransaction( Result hrRes );
+		virtual Result CloseTransaction( Result hrRes ) override;
 
 
 		// flush transaction result
-		virtual Result FlushTransaction();
+		virtual Result FlushTransaction() override;
 
 		virtual void Release() override;
 	};

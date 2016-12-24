@@ -17,8 +17,13 @@
 #define HAVE_STDLIB_H
 #define HAVE_TIME_H
 #define HAVE_FCNTL_H
+
+#if __ANDROID__
+#else
 #include <io.h>
 #include <direct.h>
+#endif
+
 #endif
 
 

@@ -20,7 +20,7 @@
 #include "Net/Connection.h"
 #include "Net/ConnectionTCP.h"
 #include "Net/ConnectionUDP.h"
-#include "ServerSystem/TaskManager.h"
+#include "Common/Task/TaskManager.h"
 
 
 namespace BR {
@@ -56,7 +56,7 @@ namespace Net {
 			bool operator == (const Sockaddress& src);
 			bool operator != (const Sockaddress& src);
 
-			operator const sockaddr_storage& () { return *this; }
+			//operator const sockaddr_storage& () { return *this; }
 		};
 
 		//////////////////////////////////////////////////////////////////

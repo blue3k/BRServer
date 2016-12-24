@@ -7,11 +7,14 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\Lib;..\..\..\External;..\..\..\External\libxml\include;..\..\..\External\include;..\..\..\External\jsoncpp\include;..\..\..\External\curl7.41\include;..\..\..\External\mysql-connector-c-6.1.6-winx64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;CURL_STATICLIB;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\;..\..\Lib;..\..\..\External;..\..\..\External\libxml\include;..\..\..\External\include;..\..\..\External\jsoncpp\include;..\..\..\External\curl7.41\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;CURL_STATICLIB;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalOptions>-std=c++14 -pthread</AdditionalOptions>
+      <AdditionalOptions>
+      </AdditionalOptions>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <CppLanguageStandard>c++1y</CppLanguageStandard>
+      <CLanguageStandard>c11</CLanguageStandard>
     </ClCompile>
     <Link>
       <AddModuleNamesToAssembly>..\..\bin\lib</AddModuleNamesToAssembly>

@@ -39,32 +39,32 @@ public class NetSvrPolicyRanking : global::System.IDisposable {
   public unsafe NetSvrPolicyRanking(IConnection pConn) : this(BRMonitoringPINVOKE.new_NetSvrPolicyRanking(IConnection.getCPtr(pConn)), true) {
   }
 
-  public unsafe int AddPlayerRes(RouteContext InRouteContext, TransactionID InTransactionID, int InResult, uint InRanking) {
-    int ret = BRMonitoringPINVOKE.NetSvrPolicyRanking_AddPlayerRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), InResult, InRanking);
+  public unsafe SWIGTYPE_p_Result AddPlayerRes(RouteContext InRouteContext, TransactionID InTransactionID, SWIGTYPE_p_Result InResult, uint InRanking) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetSvrPolicyRanking_AddPlayerRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), SWIGTYPE_p_Result.getCPtr(InResult), InRanking), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int RemovePlayerRes(RouteContext InRouteContext, TransactionID InTransactionID, int InResult) {
-    int ret = BRMonitoringPINVOKE.NetSvrPolicyRanking_RemovePlayerRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), InResult);
+  public unsafe SWIGTYPE_p_Result RemovePlayerRes(RouteContext InRouteContext, TransactionID InTransactionID, SWIGTYPE_p_Result InResult) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetSvrPolicyRanking_RemovePlayerRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), SWIGTYPE_p_Result.getCPtr(InResult)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int GetPlayerRankingRes(RouteContext InRouteContext, TransactionID InTransactionID, int InResult, uint InRanking) {
-    int ret = BRMonitoringPINVOKE.NetSvrPolicyRanking_GetPlayerRankingRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), InResult, InRanking);
+  public unsafe SWIGTYPE_p_Result GetPlayerRankingRes(RouteContext InRouteContext, TransactionID InTransactionID, SWIGTYPE_p_Result InResult, uint InRanking) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetSvrPolicyRanking_GetPlayerRankingRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), SWIGTYPE_p_Result.getCPtr(InResult), InRanking), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int UpdatePlayerRes(RouteContext InRouteContext, TransactionID InTransactionID, int InResult, uint InRanking) {
-    int ret = BRMonitoringPINVOKE.NetSvrPolicyRanking_UpdatePlayerRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), InResult, InRanking);
+  public unsafe SWIGTYPE_p_Result UpdatePlayerRes(RouteContext InRouteContext, TransactionID InTransactionID, SWIGTYPE_p_Result InResult, uint InRanking) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetSvrPolicyRanking_UpdatePlayerRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), SWIGTYPE_p_Result.getCPtr(InResult), InRanking), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int GetRankingRes(RouteContext InRouteContext, TransactionID InTransactionID, int InResult, uint InPlayerRanking) {
-    int ret = BRMonitoringPINVOKE.NetSvrPolicyRanking_GetRankingRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), InResult, InPlayerRanking);
+  public unsafe SWIGTYPE_p_Result GetRankingRes(RouteContext InRouteContext, TransactionID InTransactionID, SWIGTYPE_p_Result InResult, uint InPlayerRanking) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.NetSvrPolicyRanking_GetRankingRes(swigCPtr, RouteContext.getCPtr(InRouteContext), TransactionID.getCPtr(InTransactionID), SWIGTYPE_p_Result.getCPtr(InResult), InPlayerRanking), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

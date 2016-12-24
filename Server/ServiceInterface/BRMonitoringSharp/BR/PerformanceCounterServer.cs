@@ -65,27 +65,27 @@ public class PerformanceCounterServer : global::System.IDisposable {
     public unsafe MessageHandler(PerformanceCounterServer CounterServer) : this(BRMonitoringPINVOKE.new_PerformanceCounterServer_MessageHandler(PerformanceCounterServer.getCPtr(CounterServer)), true) {
     }
   
-    public unsafe int OnRecv(SWIGTYPE_p_sockaddr_storage remoteAddr, MessageData pMsg) {
-      int ret = BRMonitoringPINVOKE.PerformanceCounterServer_MessageHandler_OnRecv(swigCPtr, SWIGTYPE_p_sockaddr_storage.getCPtr(remoteAddr), MessageData.getCPtr(pMsg));
+    public unsafe SWIGTYPE_p_Result OnRecv(SWIGTYPE_p_sockaddr_storage remoteAddr, MessageData pMsg) {
+      SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PerformanceCounterServer_MessageHandler_OnRecv(swigCPtr, SWIGTYPE_p_sockaddr_storage.getCPtr(remoteAddr), MessageData.getCPtr(pMsg)), true);
       if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     }
   
   }
 
-  public unsafe static int Initialize(string serverAddress, uint port) {
-    int ret = BRMonitoringPINVOKE.PerformanceCounterServer_Initialize__SWIG_0(serverAddress, port);
+  public unsafe static SWIGTYPE_p_Result Initialize(string serverAddress, uint port) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PerformanceCounterServer_Initialize__SWIG_0(serverAddress, port), true);
     return ret;
   }
 
-  public unsafe static int Initialize(NetAddress serverAddress) {
-    int ret = BRMonitoringPINVOKE.PerformanceCounterServer_Initialize__SWIG_1(NetAddress.getCPtr(serverAddress));
+  public unsafe static SWIGTYPE_p_Result Initialize(NetAddress serverAddress) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PerformanceCounterServer_Initialize__SWIG_1(NetAddress.getCPtr(serverAddress)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe static int Terminate() {
-    int ret = BRMonitoringPINVOKE.PerformanceCounterServer_Terminate();
+  public unsafe static SWIGTYPE_p_Result Terminate() {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PerformanceCounterServer_Terminate(), true);
     return ret;
   }
 
@@ -100,14 +100,14 @@ public class PerformanceCounterServer : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe static int GetInstance(ulong instanceUID, PerformanceCounterInstancePtr pInstance) {
-    int ret = BRMonitoringPINVOKE.PerformanceCounterServer_GetInstance__SWIG_0(instanceUID, PerformanceCounterInstancePtr.getCPtr(pInstance));
+  public unsafe static SWIGTYPE_p_Result GetInstance(ulong instanceUID, PerformanceCounterInstancePtr pInstance) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PerformanceCounterServer_GetInstance__SWIG_0(instanceUID, PerformanceCounterInstancePtr.getCPtr(pInstance)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe static int GetInstance(EntityUID instanceUID, PerformanceCounterInstancePtr pInstance) {
-    int ret = BRMonitoringPINVOKE.PerformanceCounterServer_GetInstance__SWIG_1(EntityUID.getCPtr(instanceUID), PerformanceCounterInstancePtr.getCPtr(pInstance));
+  public unsafe static SWIGTYPE_p_Result GetInstance(EntityUID instanceUID, PerformanceCounterInstancePtr pInstance) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PerformanceCounterServer_GetInstance__SWIG_1(EntityUID.getCPtr(instanceUID), PerformanceCounterInstancePtr.getCPtr(pInstance)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

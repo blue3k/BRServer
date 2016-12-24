@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"

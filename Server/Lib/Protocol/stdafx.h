@@ -12,7 +12,7 @@
 #include "Common/Message.h"
 #include "Common/Trace.h"
 #include "Common/Synchronization.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/Argument.h"
 #include "Common/ToString.h"
 #include "Common/ToStringBase.h"

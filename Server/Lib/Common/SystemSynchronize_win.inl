@@ -101,9 +101,9 @@ public:
 		SetEvent(m_hEvent);
 	}
 
-	bool WaitEvent(UINT uiWaitTimeMs)
+	bool WaitEvent(const DurationMS& waitTimeMs)
 	{
-		DWORD dwWaitRes = WaitForSingleObject(m_hEvent, uiWaitTimeMs);
+		DWORD dwWaitRes = WaitForSingleObject(m_hEvent, waitTimeMs.count());
 		return dwWaitRes == WAIT_OBJECT_0;
 	}
 

@@ -48,7 +48,7 @@ namespace Net {
 		virtual ~LoopbackConnection();
 
 		// Initialize LoopbackConnection
-		virtual Result InitConnection( const NetAddress& Addr, NetClass netClass );
+		virtual Result InitConnectionNClass( const NetAddress& Addr, NetClass netClass ) override;
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -60,16 +60,16 @@ namespace Net {
 		virtual void DeleteThis() const;
 
 		// Disconnect connection
-		virtual Result Disconnect(const char* reason);
+		virtual Result Disconnect(const char* reason) override;
 
 		// Close connection immediately without notify
-		virtual Result CloseConnection();
+		virtual Result CloseConnection() override;
 
 		// Send message to connected entity
-		virtual Result Send( Message::MessageData* &pMsg ) = 0;
+		//virtual Result Send( Message::MessageData* &pMsg ) = 0;
 
 		// Message count currently in recv queue
-		virtual SysUInt GetRecvMessageCount();
+		virtual SysUInt GetRecvMessageCount() override;
 
 		// Query connection event
 
@@ -77,10 +77,10 @@ namespace Net {
 		virtual Result DequeueConnectionEvent( Event& curEvent ) override;
 
 		// Get received Message
-		virtual Result GetRecvMessage( Message::MessageData* &pIMsg );
+		virtual Result GetRecvMessage( Message::MessageData* &pIMsg ) override;
 
 		// Update net control, process connection heartbit, ... etc
-		virtual Result UpdateNetCtrl( );
+		virtual Result UpdateNetCtrl( ) override;
 
 
 		// Update send queue, Reliable UDP

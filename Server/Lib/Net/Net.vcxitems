@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{301850e5-30c6-414f-b48a-837d6f57670f}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Connection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ConnectionManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ConnectionMUDP.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ConnectionTCP.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ConnectionUDP.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)LoopbackConnection.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MessageWindow.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetClient.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetConnectionTask.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetConst.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetCtrl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetCtrlIDs.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetDef.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetPolicy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetRawUDP.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetServer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetServerPeer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetServerPeerTCP.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetServerUDP.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetSvrDef.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetSystem_EPOLL.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetSystem_impl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetSystem_KQUEUE.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetSystem_Linux.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetSystem_WinIOCP.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetToString.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetTrace.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NetUtil.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)Connection.inl" />
+    <None Include="$(MSBuildThisFileDirectory)ConnectionManager.inl" />
+    <None Include="$(MSBuildThisFileDirectory)ConnectionTCP.inl" />
+    <None Include="$(MSBuildThisFileDirectory)ConnectionUDP.inl" />
+    <None Include="$(MSBuildThisFileDirectory)MessageWindow.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetClient.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetCtrl.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetDef.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetRawUDP.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetServer.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetServerPeer.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetServerPeerTCP.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetServerUDP.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetSvrDef.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetSystem.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetSystem_EPOLL.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetSystem_KQUEUE.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetSystem_Linux.inl" />
+    <None Include="$(MSBuildThisFileDirectory)NetSystem_WinIOCP.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Connection.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ConnectionManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ConnectionMUDP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ConnectionPeerTCP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ConnectionTCP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ConnectionUDP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ConnectionUDPBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Connection_PrintMessage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)LoopbackConnection.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MessageWindow.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetClient.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetConnectionTask.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetCtrl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetDef.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetPolicy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetRawUDP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetServer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetServerMUDP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetServerPeer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetServerPeerTCP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetServerTCP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetServerUDP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetSvrDef.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetSystem_EPOLL.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetSystem_KQUEUE.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetSystem_Linux.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetSystem_WinIOCP.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetToString.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetTrace.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)NetUtil.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)stdafx.cpp" />
+  </ItemGroup>
+</Project>

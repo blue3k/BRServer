@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/Entity.h"
@@ -56,7 +56,7 @@ namespace Svr {
 
 
 		// Register message handler for this component
-		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) { return ResultCode::SUCCESS; }
+		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity )  { return ResultCode::SUCCESS; }
 
 	};
 

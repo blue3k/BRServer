@@ -148,7 +148,7 @@ namespace Config {
 		// Instance name
 		std::vector<DBClusterInstance*> DBMembers;
 
-		virtual void AddChild( DOMElement *pChild );
+		virtual void AddChild( DOMElement *pChild ) override;
 
 		// for parsing
 		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;

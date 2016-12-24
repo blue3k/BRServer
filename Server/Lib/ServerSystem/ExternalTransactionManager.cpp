@@ -161,7 +161,7 @@ namespace Svr
 		ParallelTransactionManager::TerminateComponent();
 	}
 
-	Result ExternalTransactionManager::TickUpdate(Svr::TimerAction *pAction)
+	Result ExternalTransactionManager::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 

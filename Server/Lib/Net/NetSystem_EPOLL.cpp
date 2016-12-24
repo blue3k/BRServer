@@ -154,7 +154,7 @@ namespace Net {
 				pReadBuffer = new IOBUFFER_READ;
 				hrErr = pCallBack->Recv(pReadBuffer);
 				hr = hrErr;
-				switch ((int32_t)hrErr)
+				switch ((uint32_t)hrErr)
 				{
 				case ResultCode::E_NET_TRY_AGAIN:
 				case ResultCode::E_NET_WOULDBLOCK:

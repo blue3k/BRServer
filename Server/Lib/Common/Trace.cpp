@@ -140,8 +140,8 @@ namespace Trace {
 			}
 
 			auto numberStart = SkipSpace(endChar+1);
-			if (numberStart == '\0')
-				continue; // invalud line
+			if (*numberStart == '\0')
+				continue; // invalid line
 
 			auto maskValue = strtol(numberStart, nullptr, 16);
 			StrUtil::StringLwr(nameStart, sizeof(stringBuffer));

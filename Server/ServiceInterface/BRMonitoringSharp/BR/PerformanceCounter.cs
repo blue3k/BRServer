@@ -56,13 +56,13 @@ public class PerformanceCounter : global::System.IDisposable {
 
   public unsafe System.Int64 GetRawValue() { return BRMonitoringPINVOKE.PerformanceCounter_GetRawValue(swigCPtr); }
 
-  public unsafe int CopyTo(uint bufferSize, SWIGTYPE_p_unsigned_char pBuffer) {
-    int ret = BRMonitoringPINVOKE.PerformanceCounter_CopyTo(swigCPtr, bufferSize, SWIGTYPE_p_unsigned_char.getCPtr(pBuffer));
+  public unsafe SWIGTYPE_p_Result CopyTo(uint bufferSize, SWIGTYPE_p_unsigned_char pBuffer) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PerformanceCounter_CopyTo(swigCPtr, bufferSize, SWIGTYPE_p_unsigned_char.getCPtr(pBuffer)), true);
     return ret;
   }
 
-  public unsafe int CopyFrom(uint bufferSize, SWIGTYPE_p_unsigned_char pBuffer) {
-    int ret = BRMonitoringPINVOKE.PerformanceCounter_CopyFrom(swigCPtr, bufferSize, SWIGTYPE_p_unsigned_char.getCPtr(pBuffer));
+  public unsafe SWIGTYPE_p_Result CopyFrom(uint bufferSize, SWIGTYPE_p_unsigned_char pBuffer) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PerformanceCounter_CopyFrom(swigCPtr, bufferSize, SWIGTYPE_p_unsigned_char.getCPtr(pBuffer)), true);
     return ret;
   }
 

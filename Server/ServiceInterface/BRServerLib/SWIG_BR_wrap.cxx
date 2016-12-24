@@ -5988,7 +5988,7 @@ SWIGEXPORT long SWIGSTDCALL CSharp_IConnection_InitConnection(void * jarg1, void
     return 0;
   } 
   arg3 = (BR::NetClass)jarg3; 
-  result = (BR::Result)(arg1)->InitConnection((BR::NetAddress const &)*arg2,arg3);
+  result = (BR::Result)(arg1)->InitConnectionNClass((BR::NetAddress const &)*arg2,arg3);
   jresult = result; 
   return jresult;
 }

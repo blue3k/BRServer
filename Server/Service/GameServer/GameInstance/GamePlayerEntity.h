@@ -154,7 +154,7 @@ namespace GameServer {
 		virtual Result ClearEntity() override;
 
 		// Run the task
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////

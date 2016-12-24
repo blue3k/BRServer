@@ -72,7 +72,7 @@ namespace Net {
 
 
 	// Run the task
-	Result ConnectionTask::TickUpdate(Svr::TimerAction *pAction)
+	Result ConnectionTask::TickUpdate(TimerAction *pAction)
 	{
 		if( m_pConnection != nullptr 
 			&& (m_pConnection->GetConnectionState() == IConnection::STATE_CONNECTING

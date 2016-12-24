@@ -19,170 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\ServerSystem\BrServer.h" />
-    <ClInclude Include="..\ServerSystem\BrServerUtil.h" />
-    <ClInclude Include="..\ServerSystem\BrService.h" />
-    <ClInclude Include="..\ServerSystem\GameSystem.h" />
-    <ClInclude Include="..\ServerSystem\stdafx.h" />
-    <ClInclude Include="..\ServerSystem\SvrConst.h" />
-    <ClInclude Include="..\ServerSystem\SvrConstDefault.h" />
-    <ClInclude Include="..\ServerSystem\SvrToString.h" />
-    <ClInclude Include="..\ServerSystem\SvrTrace.h" />
-    <ClInclude Include="..\ServerSystem\SvrTypes.h" />
-    <ClInclude Include="..\ServerSystem\targetver.h" />
-    <ClInclude Include="..\ServerSystem\TicketQueue.h" />
-    <ClInclude Include=".\Argument.h" />
-    <ClInclude Include="BrComponent.h" />
-    <ClInclude Include="BrLibComponents.h" />
-    <ClInclude Include="BRResult.h" />
-    <ClInclude Include="DefaultLibComponent.h" />
-    <ClInclude Include="DualSortedMap.h" />
-    <ClInclude Include="File\BRFile.h" />
-    <ClInclude Include="HashTable2.h" />
-    <ClInclude Include="LocalUIDGenerator.h" />
-    <ClInclude Include="Memento.h" />
-    <ClInclude Include="MemoryStream.h" />
-    <ClInclude Include="CircularQueue.h" />
-    <ClInclude Include="BrCommonTypes.h" />
-    <ClInclude Include="BrGameTypes.h" />
-    <ClInclude Include="BrSvrTypes.h" />
-    <ClInclude Include="ClassUtil.h" />
-    <ClInclude Include="BrAssert.h" />
-    <ClInclude Include=".\GameConst.h" />
-    <ClInclude Include="HashTableTrait.h" />
-    <ClInclude Include="Indexing.h" />
-    <ClInclude Include="HashTable.h" />
-    <ClInclude Include=".\MathUtil.h" />
-    <ClInclude Include=".\Memory.h" />
-    <ClInclude Include=".\MemoryPool.h" />
-    <ClInclude Include="GlobalUIDGenerator.h" />
-    <ClInclude Include="MemoryBufferUtil.h" />
-    <ClInclude Include="Memory_Impl.h" />
-    <ClInclude Include="Message.h" />
-    <ClInclude Include=".\PageQueue.h" />
-    <ClInclude Include="BrRandom.h" />
-    <ClInclude Include="ResultCode\BRResultCodeCommon.h" />
-    <ClInclude Include="ResultCode\BRResultCodeDB.h" />
-    <ClInclude Include="ResultCode\BRResultCodeGame.h" />
-    <ClInclude Include="ResultCode\BRResultCodeLogin.h" />
-    <ClInclude Include="ResultCode\BRResultCodeNet.h" />
-    <ClInclude Include="ResultCode\BRResultCodeSvr.h" />
-    <ClInclude Include="ResultCode\BRResultCodeSystem.h" />
-    <ClInclude Include="SharedObject.h" />
-    <ClInclude Include="SharedPointer.h" />
-    <ClInclude Include="SharedReferenceManager.h" />
-    <ClInclude Include="SortedMap.h" />
-    <ClInclude Include="StaticDoubleLinkedList.h" />
-    <ClInclude Include="StringKey.h" />
-    <ClInclude Include="StrParserUtil.h" />
-    <ClInclude Include="SynchronizationTrait.h" />
-    <ClInclude Include="SystemSynchronization.h" />
-    <ClInclude Include="ObjectPool.h" />
-    <ClInclude Include="OrderedLinkedList.h" />
-    <ClInclude Include="SpinBufferMT.h" />
-    <ClInclude Include="PolicyID.h" />
-    <ClInclude Include=".\SharedObj.h" />
-    <ClInclude Include=".\SpinBuffer.h" />
-    <ClInclude Include=".\SpinSharedBuffer.h" />
-    <ClInclude Include="Binary.h" />
-    <ClInclude Include="BrBaseTypes.h" />
-    <ClInclude Include="BrLinkedList.h" />
-    <ClInclude Include="MathUtilToString.h" />
-    <ClInclude Include=".\StackPool.h" />
-    <ClInclude Include=".\ArrayUtil.h" />
-    <ClInclude Include=".\stdafx.h" />
-    <ClInclude Include=".\StrFormat.h" />
-    <ClInclude Include=".\StrUtil.h" />
-    <ClInclude Include="StackWalker.h" />
-    <ClInclude Include="StaticLinkedList.h" />
-    <ClInclude Include="StaticHashTable.h" />
-    <ClInclude Include="SvrPolicyID.h" />
-    <ClInclude Include="Synchronization.h" />
-    <ClInclude Include=".\Thread.h" />
-    <ClInclude Include=".\TimeUtil.h" />
-    <ClInclude Include=".\ToString.h" />
-    <ClInclude Include=".\ToStringBase.h" />
-    <ClInclude Include=".\Trace.h" />
-    <ClInclude Include=".\Trace_Internal.h" />
-    <ClInclude Include=".\Typedefs.h" />
-    <ClInclude Include="ToStringGame.h" />
-    <ClInclude Include="ToStringSvr.h" />
-    <ClInclude Include="TraceComponent.h" />
-    <ClInclude Include="TypeUtility.h" />
-    <ClInclude Include="UniqueEntityIDGenerator.h" />
-    <ClInclude Include=".\Utility.h" />
-    <ClInclude Include="BrXML.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include=".\Argument.cpp" />
-    <ClCompile Include="BrLibComponents.cpp" />
-    <ClCompile Include="CrashDump.linux.cpp" />
-    <ClCompile Include="CrashDump.win32.cpp" />
-    <ClCompile Include="CryptoBase64.cpp" />
-    <ClCompile Include="CryptoCrc32.cpp" />
-    <ClCompile Include=".\Memory.cpp" />
-    <ClCompile Include=".\MemoryPool.cpp" />
-    <ClCompile Include="CryptoSHA.cpp" />
-    <ClCompile Include="DefaultLibComponent.cpp" />
-    <ClCompile Include="File\BRFile.linux.cpp" />
-    <ClCompile Include="File\BRFile.win32.cpp" />
-    <ClCompile Include="LocalUIDGenerator.cpp" />
-    <ClCompile Include="MemoryStream.cpp" />
-    <ClCompile Include="BrGameTypes.cpp" />
-    <ClCompile Include="BrRandom.cpp" />
-    <ClCompile Include="Binary.cpp" />
-    <ClCompile Include=".\StackPool.cpp" />
-    <ClCompile Include=".\stdafx.cpp">
+    <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include=".\StrUtil.cpp" />
-    <ClCompile Include="StringKey.cpp" />
-    <ClCompile Include="StrParserUtil.cpp" />
-    <ClCompile Include="Synchronization.cpp" />
-    <ClCompile Include=".\Thread.cpp" />
-    <ClCompile Include=".\TimeUtil.cpp" />
-    <ClCompile Include=".\ToStringBase.cpp" />
-    <ClCompile Include=".\Trace.cpp" />
-    <ClCompile Include="GlobalUIDGenerator.cpp" />
-    <ClCompile Include="Message.cpp" />
-    <ClCompile Include="ObjectPool.cpp" />
-    <ClCompile Include="SharedObject.cpp" />
-    <ClCompile Include="SharedReferenceManager.cpp" />
-    <ClCompile Include="StackWalker.cpp" />
-    <ClCompile Include="ToString.cpp" />
-    <ClCompile Include="ToStringGame.cpp" />
-    <ClCompile Include="ToStringSvr.cpp" />
-    <ClCompile Include="TraceComponent.cpp" />
-    <ClCompile Include="TypeUtility.cpp" />
-    <ClCompile Include="UniqueEntityIDGenerator.cpp" />
-    <ClCompile Include=".\Utility.cpp" />
-    <ClCompile Include="BrXML.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\ServerSystem\BrServer.inl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="..\ServerSystem\BrServerUtil.inl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="..\ServerSystem\GameSystem.inl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="..\ServerSystem\SvrTypes.inl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="..\ServerSystem\TicketQueue.inl">
-      <FileType>Document</FileType>
-    </None>
+    <None Include="BrMemory.inl" />
     <None Include="DualSortedMap.inl" />
     <None Include="MemoryStream.inl" />
     <None Include="CircularQueue.inl" />
     <None Include="CryptoCRC32Table.inl" />
     <None Include=".\MathUtil.inl" />
-    <None Include=".\Memory.inl" />
     <None Include=".\MemoryPool.inl" />
     <None Include="BrCommonTypes.inl" />
     <None Include="BrSvrTypes.inl" />
@@ -213,6 +63,9 @@
     <None Include=".\Utility.inl" />
     <None Include="BrXML.inl" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{588D141B-A7E7-4210-B5F8-DBCC53D387C3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -224,6 +77,7 @@
     <SccProvider>
     </SccProvider>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>Common.Win</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -258,6 +112,9 @@
     <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="Shared">
+    <Import Project="Common.vcxitems" Label="Shared" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\Build\Win64\BuildRule\CompileCpp.props" />
@@ -283,12 +140,10 @@
     <Import Project="..\..\Build\Win64\BuildRule\Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IntDir>$(Platform)$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IntDir>$(Platform)$(Configuration)\</IntDir>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>

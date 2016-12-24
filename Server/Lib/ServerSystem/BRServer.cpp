@@ -58,7 +58,7 @@ namespace Svr{
 		, m_ServerUpUTCTIme(TimeStampSec::min())
 		, m_pLoopbackServerEntity(nullptr)
 		, m_NumberServicesToWait(0)
-		, m_bIsStartProcessDone(false)
+		//, m_bIsStartProcessDone(false)
 		, m_bIsNetPublicEnabled(false)
 		, m_bIsKillSignaled(false)
 		, m_bStartTransaction(false)
@@ -587,7 +587,7 @@ Proc_End:
 	}
 
 
-	Result BrServer::TickUpdate(Svr::TimerAction *pAction)
+	Result BrServer::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		

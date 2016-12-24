@@ -76,8 +76,8 @@ namespace Util {
 
 	static UINT32 _Crc32Lt( UINT32 uiCrc32, size_t uiLen, const BYTE *pBuff )
 	{
-		register UINT32 crc;
-		register const UINT32 *pBuff4;
+		UINT32 crc;
+		const UINT32 *pBuff4;
 
 		crc = uiCrc32;
 		crc = ~crc;
@@ -142,8 +142,8 @@ namespace Util {
 	// NOTE: This is not tested
 	static UINT32 _Crc32Big( UINT32 uiCrc32, size_t uiLen, const BYTE *pBuff )
 	{
-		register UINT32 crc;
-		register const UINT32 *pBuf4;
+		UINT32 crc;
+		const UINT32 *pBuf4;
 
 		crc = Util::SwapByte(uiCrc32);
 		crc = ~crc;
@@ -219,8 +219,8 @@ namespace Util {
 
 	static UINT32 _Crc32NEncLt( UINT32 uiCrc32, size_t uiLen, BYTE *pBuff )
 	{
-		register UINT32 crc;
-		register UINT32 *pBuff4;
+		UINT32 crc;
+		UINT32 *pBuff4;
 
 		crc = uiCrc32;
 		crc = ~crc;
@@ -283,8 +283,8 @@ namespace Util {
 	// NOTE: This is not tested
 	static UINT32 _Crc32NEncBig( UINT32 uiCrc32, size_t uiLen, BYTE *pBuff )
 	{
-		register UINT32 crc;
-		register UINT32 *pBuf4;
+		UINT32 crc;
+		UINT32 *pBuf4;
 
 		crc = Util::SwapByte(uiCrc32);
 		crc = ~crc;
@@ -360,8 +360,8 @@ namespace Util {
 
 	static UINT32 _Crc32NDecLt( UINT32 uiCrc32, size_t uiLen, BYTE *pBuff )
 	{
-		register UINT32 crc;
-		register UINT32 *pBuff4;
+		UINT32 crc;
+		UINT32 *pBuff4;
 
 		crc = uiCrc32;
 		crc = ~crc;
@@ -423,8 +423,8 @@ namespace Util {
 	// NOTE: This is not tested
 	static UINT32 _Crc32NDecBig( UINT32 uiCrc32, size_t uiLen, BYTE *pBuff )
 	{
-		register UINT32 crc;
-		register UINT32 *pBuf4;
+		UINT32 crc;
+		UINT32 *pBuf4;
 
 		crc = Util::SwapByte(uiCrc32);
 		crc = ~crc;

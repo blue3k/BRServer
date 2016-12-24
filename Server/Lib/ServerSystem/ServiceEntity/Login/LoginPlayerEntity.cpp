@@ -14,7 +14,7 @@
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/EventTask.h"
+#include "Common/Task/EventTask.h"
 #include "Net/NetServerUDP.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrBaseTypes.h"
@@ -85,11 +85,11 @@ namespace Svr {
 	}
 
 	// Set connection for pilot
-	Result LoginPlayerEntity::SetConnection( Net::Connection* &pCon )
+	Result LoginPlayerEntity::SetConnection(SharedPointerT<Net::Connection>&& pCon )
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if( GetConnection() == pCon )
+		if( GetConnection() == (Net::Connection*)pCon )
 			return hr;
 
 		if( GetConnection() != nullptr )
@@ -97,7 +97,7 @@ namespace Svr {
 			ReleaseConnection();
 		}
 
-		svrChk( super::SetConnection(pCon) );
+		svrChk( super::SetConnection(std::forward<SharedPointerT<Net::Connection>>(pCon)) );
 
 		svrChk( GetConnection()->CreatePolicy( Policy::ISvrPolicyGame::ID_POLICY ) );
 
@@ -145,7 +145,7 @@ namespace Svr {
 	}
 
 	// Run the task
-	Result LoginPlayerEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result LoginPlayerEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		auto curTime = Util::Time.GetTimeMs();

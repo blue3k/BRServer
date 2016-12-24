@@ -214,7 +214,7 @@ namespace Net {
 		pIOBuffer->SetupRecvUDP(GetCID());
 
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
-		switch ((int32_t)hrErr)
+		switch ((uint32_t)hrErr)
 		{
 		case ResultCode::SUCCESS_FALSE:
 			hr = ResultCode::E_NET_TRY_AGAIN;
@@ -331,7 +331,7 @@ namespace Net {
 		{
 			pOver = new IOBUFFER_READ;
 			hrErr = Recv(pOver);
-			switch ((int32_t)hrErr)
+			switch ((uint32_t)hrErr)
 			{
 			case ResultCode::SUCCESS:
 			case ResultCode::E_NET_IO_PENDING:

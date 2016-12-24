@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/PageQueue.h"
 #include "Common/LocalUIDGenerator.h"
@@ -126,13 +126,13 @@ namespace Svr {
 		// clear transaction
 		virtual Result ClearEntity() override;
 
-		Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 		Result UpdateResevationQueue();
 		Result UpdateMatchigQueue();
 
 		// Register message handler for this component
-		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity );
+		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
 
 	private:
 		//////////////////////////////////////////////////////////////////////////

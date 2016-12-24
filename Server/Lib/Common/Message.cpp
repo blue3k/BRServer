@@ -14,7 +14,7 @@
 #include "stdafx.h"
 #include "Common/Trace.h"
 #include "Common/Message.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/MemoryPool.h"
 #include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/BrSvrTypes.h"

@@ -522,7 +522,7 @@ namespace Net {
 		//UINT bufferLen = pSendBuffer->TransferredSize;
 
 		hrErr = NetSystem::SendTo(GetSocket(), pSendBuffer);
-		switch ((int32_t)hrErr)
+		switch ((uint32_t)hrErr)
 		{
 		case ResultCode::E_NET_TRY_AGAIN:
 			break;

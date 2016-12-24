@@ -25,7 +25,7 @@
 #include "ServerSystem/ServiceEntity/ClusterServiceTrans.h"
 #include "ServerSystem/ServerService/ClusterServerService.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/EventTask.h"
+#include "Common/Task/EventTask.h"
 
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 
@@ -611,7 +611,7 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	Result ReplicaClusterServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result ReplicaClusterServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -835,7 +835,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		UINT hashedKey = KeyHash(key);
-		UINT serviceIndex = -1;
+		INT serviceIndex = -1;
 		StaticArray<ServerServiceInformation*,50> services;
 
 		svrChkPtr( pService );
@@ -995,7 +995,7 @@ namespace Svr {
 	}
 
 
-	Result LoadbalanceClusterServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result LoadbalanceClusterServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 

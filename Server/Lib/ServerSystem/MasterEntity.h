@@ -49,7 +49,7 @@ namespace Svr {
 		MasterEntity( UINT uiTransQueueSize = 2048, UINT TransResQueueSize = 2048 );
 		virtual ~MasterEntity();
 
-		virtual void ReleaseTransaction(Transaction* pTrans);
+		virtual void ReleaseTransaction(Transaction* pTrans) override;
 
 		void ValidateTransactionCount();
 
@@ -63,7 +63,7 @@ namespace Svr {
 
 		// Update entity process
 		// Run the task
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
 
@@ -79,7 +79,7 @@ namespace Svr {
 
 		virtual void OnAddedToTaskManager(TaskWorker *pWorker) override;
 
-		virtual Result OnEventTask(const Svr::EventTask& eventTask) override;
+		virtual Result OnEventTask(const EventTask& eventTask) override;
 
 	};
 

@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/PageQueue.h"
 #include "Common/LocalUIDGenerator.h"

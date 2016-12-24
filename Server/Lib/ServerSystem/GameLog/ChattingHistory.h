@@ -13,7 +13,7 @@
 
 #include "Common/StrUtil.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/BrGameTypes.h"
 #include "Common/GameConst.h"
 #include "Common/CircularQueue.h"

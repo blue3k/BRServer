@@ -365,7 +365,7 @@ namespace GameServer {
 	}
 
 	// Run the task
-	Result GameServer::TickUpdate(Svr::TimerAction *pAction)
+	Result GameServer::TickUpdate(TimerAction *pAction)
 	{
 		if (m_TableVersion != GameTable::GetTableVersion())
 		{

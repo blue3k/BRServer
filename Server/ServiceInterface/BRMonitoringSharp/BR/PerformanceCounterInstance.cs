@@ -59,8 +59,8 @@ public class PerformanceCounterInstance : SharedObject {
     BRMonitoringPINVOKE.PerformanceCounterInstance_RegisterToClient(swigCPtr);
   }
 
-  public unsafe int AddCounter(PerformanceCounter pCounter) {
-    int ret = BRMonitoringPINVOKE.PerformanceCounterInstance_AddCounter(swigCPtr, PerformanceCounter.getCPtr(pCounter));
+  public unsafe SWIGTYPE_p_Result AddCounter(PerformanceCounter pCounter) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PerformanceCounterInstance_AddCounter(swigCPtr, PerformanceCounter.getCPtr(pCounter)), true);
     return ret;
   }
 

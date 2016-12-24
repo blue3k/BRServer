@@ -93,12 +93,10 @@
     <Import Project="..\..\Build\Win64\BuildRule\Release.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IntDir>$(Platform)$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IntDir>$(Platform)$(Configuration)\</IntDir>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -162,7 +160,6 @@
     <None Include="BrServerUtil.inl" />
     <None Include="Entity.inl" />
     <None Include="EntityTable.inl" />
-    <None Include="EventTask.inl" />
     <None Include="ExternalTransactionManager.inl" />
     <None Include="GameLog\GameLog.inl" />
     <None Include="MasterEntity.inl" />
@@ -184,8 +181,6 @@
     <None Include="SimpleEntity.inl" />
     <None Include="SimpleUserEntity.inl" />
     <None Include="SvrConfig.inl" />
-    <None Include="Task.inl" />
-    <None Include="TaskManager.inl" />
     <None Include="Transaction.inl" />
   </ItemGroup>
   <ItemGroup>
@@ -197,7 +192,6 @@
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="EntityTable.h" />
     <ClInclude Include="EntityTimerActions.h" />
-    <ClInclude Include="EventTask.h" />
     <ClInclude Include="ExternalTransactionManager.h" />
     <ClInclude Include="ExternalTransaction.h" />
     <ClInclude Include="GameLog\ChattingHistory.h" />
@@ -278,10 +272,6 @@
     <ClInclude Include="SvrConst.h" />
     <ClInclude Include="SvrConstDefault.h" />
     <ClInclude Include="SvrLoopbackConnection.h" />
-    <ClInclude Include="Task.h" />
-    <ClInclude Include="TaskManager.h" />
-    <ClInclude Include="TimeScheduler.h" />
-    <ClInclude Include="TimeSchedulerAction.h" />
     <ClInclude Include="Transaction.h" />
     <ClInclude Include="TransactionSteper.h" />
     <ClInclude Include="TransactionUtil.h" />
@@ -294,7 +284,6 @@
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="EntityTable.cpp" />
     <ClCompile Include="EntityTimerActions.cpp" />
-    <ClCompile Include="EventTask.cpp" />
     <ClCompile Include="ExternalTransactionManager.cpp" />
     <ClCompile Include="ExternalTransaction.cpp" />
     <ClCompile Include="GameLog\ChattingHistory.cpp" />
@@ -376,9 +365,6 @@
     <ClCompile Include="SvrLoopbackConnection.cpp" />
     <ClCompile Include="SvrTrace.cpp" />
     <ClCompile Include="SvrTypes.cpp" />
-    <ClCompile Include="Task.cpp" />
-    <ClCompile Include="TaskManager.cpp" />
-    <ClCompile Include="TimeScheduler.cpp" />
     <ClCompile Include="Transaction.cpp" />
     <ClCompile Include="Transaction\ServerTransactionGeneric.cpp" />
   </ItemGroup>

@@ -133,7 +133,7 @@ namespace Svr {
 		virtual Result ProcessConnectionEvent( const Net::IConnection::Event& conEvent );
 
 		// Run entity
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,7 +145,7 @@ namespace Svr {
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Event task handling
-		virtual Result OnEventTask(const Svr::EventTask& eventTask) override;
+		virtual Result OnEventTask(const EventTask& eventTask) override;
 	};
 
 

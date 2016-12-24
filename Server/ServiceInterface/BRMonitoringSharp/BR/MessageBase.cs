@@ -46,29 +46,29 @@ public class MessageBase : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int GetParsingResult() {
-    int ret = BRMonitoringPINVOKE.MessageBase_GetParsingResult(swigCPtr);
+  public unsafe SWIGTYPE_p_Result GetParsingResult() {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.MessageBase_GetParsingResult(swigCPtr), true);
     return ret;
   }
 
-  public unsafe int ParseMsg() {
-    int ret = BRMonitoringPINVOKE.MessageBase_ParseMsg(swigCPtr);
+  public unsafe SWIGTYPE_p_Result ParseMsg() {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.MessageBase_ParseMsg(swigCPtr), true);
     return ret;
   }
 
-  public unsafe int ParseIMsg(MessageData pIMsg) {
-    int ret = BRMonitoringPINVOKE.MessageBase_ParseIMsg(swigCPtr, MessageData.getCPtr(pIMsg));
+  public unsafe SWIGTYPE_p_Result ParseIMsg(MessageData pIMsg) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.MessageBase_ParseIMsg(swigCPtr, MessageData.getCPtr(pIMsg)), true);
     return ret;
   }
 
-  public unsafe int OverrideRouteContextDestination(EntityUID to) {
-    int ret = BRMonitoringPINVOKE.MessageBase_OverrideRouteContextDestination(swigCPtr, EntityUID.getCPtr(to));
+  public unsafe SWIGTYPE_p_Result OverrideRouteContextDestination(EntityUID to) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.MessageBase_OverrideRouteContextDestination(swigCPtr, EntityUID.getCPtr(to)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int OverrideRouteInfomation(EntityUID to, uint hopCount) {
-    int ret = BRMonitoringPINVOKE.MessageBase_OverrideRouteInfomation(swigCPtr, EntityUID.getCPtr(to), hopCount);
+  public unsafe SWIGTYPE_p_Result OverrideRouteInfomation(EntityUID to, uint hopCount) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.MessageBase_OverrideRouteInfomation(swigCPtr, EntityUID.getCPtr(to), hopCount), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

@@ -21,7 +21,7 @@
 
 
 namespace BR {
-namespace Svr {
+
 
 
 	class TimerAction : public SharedObject
@@ -70,9 +70,8 @@ namespace Svr {
 		virtual const char* GetDebugString() = 0;
 	};
 
-}; // namespace Svr
 
-	extern template class SharedPointerT < Svr::TimerAction >;
+	extern template class SharedPointerT < TimerAction >;
 
 }; // namespace BR
 

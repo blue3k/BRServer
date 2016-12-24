@@ -149,6 +149,7 @@ namespace Svr {
 		{
 			// same entity already registered, just check integrity
 			ClusteredServiceEntity* pClusterEntity = BR_DYNAMIC_CAST(ClusteredServiceEntity*,(Entity*)pEntity);
+			unused(pClusterEntity);
 			Assert(pClusterEntity != nullptr);
 			Assert( pClusterEntity->GetClusterID() == clusterID && pClusterEntity->GetClusterType() == clusterType );
 			goto Proc_End;
@@ -248,7 +249,7 @@ namespace Svr {
 	}
 
 
-	Result ClusterManagerServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result ClusterManagerServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServiceEntityUIDMap::iterator itService;

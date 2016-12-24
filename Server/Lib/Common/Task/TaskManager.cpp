@@ -12,18 +12,18 @@
 
 
 #include "stdafx.h"
-#include "ServerSystem/SvrTrace.h"
+#include "Common/Trace.h"
 #include "Common/ResultCode/BRResultCodeSvr.h"
 #include "Common/Thread.h"
 #include "Common/TimeUtil.h"
-#include "ServerSystem/TaskManager.h"
-#include "ServerSystem/SvrConst.h"
-#include "ServerSystem/EventTask.h"
-#include "ServerSystem/EntityTimerActions.h"
+#include "Common/Task/TaskManager.h"
+//#include "Common/SvrConst.h"
+#include "Common/Task/EventTask.h"
+//#include "Common/Task/EntityTimerActions.h"
 
 
 namespace BR {
-namespace Svr {
+
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ namespace Svr {
 				Assert(pTask->GetTaskID() != 0);
 				if (pTask->GetTaskID() == 0)
 				{
-					svrTrace(Trace::TRC_ERROR, "Failed to insert a tick task:{0}", pTask->GetTaskID());
+					defTrace(Trace::TRC_ERROR, "Failed to insert a tick task:{0}", pTask->GetTaskID());
 				}
 
 				SharedPointerT<TickTask> pFound;
@@ -109,7 +109,7 @@ namespace Svr {
 					}
 
 					// maximum retry is exceeded, just add
-					svrTrace(Trace::TRC_WARN, "Failed to insert a unique task:{0}, task already exists, douplicated task will be exists", pTask->GetTaskID());
+					defTrace(Trace::TRC_WARN, "Failed to insert a unique task:{0}, task already exists, douplicated task will be exists", pTask->GetTaskID());
 				}
 
 				pTask->ResetRetryCount();
@@ -146,7 +146,7 @@ namespace Svr {
 				{
 					if (!(m_TaskList.Remove(pTask->GetTaskID(), pFound)))
 					{
-						svrTrace(Trace::TRC_ERROR, "Failed to remove a task:{0}", pTask->GetTaskID());
+						defTrace(Trace::TRC_ERROR, "Failed to remove a task:{0}", pTask->GetTaskID());
 					}
 					else if (pTask != pFound)
 					{
@@ -159,12 +159,12 @@ namespace Svr {
 
 							// pending again
 							m_PendingRemoveTask.Enqueue(pTask);
-							svrTrace(Svr::TRC_DBGSVR, "Remove is failed, retry task:{0}", pTask->GetTaskID());
+							defTrace(Trace::TRC_DBG1, "Remove is failed, retry task:{0}", pTask->GetTaskID());
 							continue;
 						}
 						else
 						{
-							svrTrace(Trace::TRC_ERROR, "Remove is failed, delete the task:{0}", pTask->GetTaskID());
+							defTrace(Trace::TRC_ERROR, "Remove is failed, delete the task:{0}", pTask->GetTaskID());
 							// throw it away, delete can cause crash
 							continue;
 						}
@@ -182,12 +182,12 @@ namespace Svr {
 					{
 						pTask->IncRetryCount();
 						m_PendingRemoveTask.Dequeue(pTask);
-						svrTrace(Svr::TRC_DBGSVR, "Remove is failed, retry task:{0}", pTask->GetTaskID());
+						defTrace(Trace::TRC_DBG1, "Remove is failed, retry task:{0}", pTask->GetTaskID());
 						continue;
 					}
 					else
 					{
-						svrTrace(Trace::TRC_ERROR, "Try to remove not-existing task:{0}, taskgroup:{1}, from taskgroup:{2}", pTask->GetTaskID(), pTask->GetTaskGroupID(), GetGroupID());
+						defTrace(Trace::TRC_ERROR, "Try to remove not-existing task:{0}, taskgroup:{1}, from taskgroup:{2}", pTask->GetTaskID(), pTask->GetTaskGroupID(), GetGroupID());
 						// throw it away, delete can cause crash
 					}
 				}
@@ -241,7 +241,7 @@ namespace Svr {
 
 			if (!(tickTask->OnEventTask(pEvtTask)))
 			{
-				svrTrace(Svr::TRC_ENTITY, "EventTask is failed, Evt:{0}", (UINT)pEvtTask.EventType.load(std::memory_order_relaxed))
+				defTrace(Trace::TRC_ERROR, "EventTask is failed, Evt:{0}", (UINT)pEvtTask.EventType.load(std::memory_order_relaxed))
 			}
 
 			m_TimeScheduler.Reschedul(threadID, tickTask->GetTimerAction());
@@ -323,7 +323,7 @@ namespace Svr {
 		{
 			TaskWorker *pGroup = nullptr;
 
-			svrMem( pGroup = new TaskWorker(this) );
+			defMem( pGroup = new TaskWorker(this) );
 
 			pGroup->SetGroupID(iGroup + 1);
 			m_TaskGroups.push_back(pGroup);
@@ -377,7 +377,7 @@ namespace Svr {
 			return ResultCode::E_SVR_INVALID_TASK_GROUPID;
 		}
 
-		svrChk(m_TaskGroups[groupID - 1]->AddEventTask(std::forward<EventTask>(pEvtTask)));
+		defChk(m_TaskGroups[groupID - 1]->AddEventTask(std::forward<EventTask>(pEvtTask)));
 
 	Proc_End:
 
@@ -412,9 +412,9 @@ namespace Svr {
 			pBestGroup = m_TaskGroups[0];
 		}
 
-		svrChkPtr(pBestGroup);
+		defChkPtr(pBestGroup);
 
-		svrChk( pBestGroup->PendingAddTask( pTask ) );
+		defChk( pBestGroup->PendingAddTask( pTask ) );
 
 	Proc_End:
 
@@ -427,13 +427,13 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		SysUInt groupID;
 
-		svrChkPtr(pTask);
+		defChkPtr(pTask);
 
 		groupID = pTask->GetTaskGroupID();
 		if (groupID <= 0 || groupID > m_TaskGroups.GetSize())
 			return ResultCode::UNEXPECTED;
 
-		svrChk(m_TaskGroups[groupID - 1]->PendingRemoveTask(pTask));
+		defChk(m_TaskGroups[groupID - 1]->PendingRemoveTask(pTask));
 
 	Proc_End:
 
@@ -445,6 +445,6 @@ namespace Svr {
 
 
 
-}; // namespace Svr
-}; // namespace Net
+
+}; // namespace BR
 

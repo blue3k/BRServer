@@ -87,10 +87,10 @@ namespace Svr {
 		virtual ~LoginPlayerEntity();
 
 		// Initialize entity to proceed new connection
-		virtual Result InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 		// Set connection for pilot
-		virtual Result SetConnection( Net::Connection* &pCon );
+		virtual Result SetConnection(SharedPointerT<Net::Connection>&& pCon ) override;
 
 		void HeartBit();
 
@@ -113,13 +113,13 @@ namespace Svr {
 		//
 
 		// register message handlers
-		virtual Result RegisterMessageHandlers();
+		virtual Result RegisterMessageHandlers() override;
 
 		// clear transaction
 		virtual Result ClearEntity() override;
 
 		// Run the task
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////

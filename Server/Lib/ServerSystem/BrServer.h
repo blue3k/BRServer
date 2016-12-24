@@ -19,7 +19,7 @@
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/MasterEntity.h"
-#include "ServerSystem/TaskManager.h"
+#include "Common/Task/TaskManager.h"
 #include "ServerSystem/MasterEntity.h"
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/ServerComponentCarrier.h"
@@ -109,7 +109,7 @@ namespace Svr {
 		StaticArray<DB::QueryManager*, 10>	m_DBManagers;
 
 		// Startup sequence done
-		bool			m_bIsStartProcessDone;
+		//bool			m_bIsStartProcessDone;
 
 		// Server status
 		bool m_bIsNetPublicEnabled;
@@ -257,7 +257,7 @@ namespace Svr {
 
 
 		// Run the task
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 

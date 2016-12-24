@@ -22,7 +22,7 @@
 #include "Common/BrBaseTypes.h"
 #include "Net/NetUtil.h"
 
-#if LINUX
+
 
 
 
@@ -152,4 +152,4 @@ namespace Net {
 } // namespace BR
 
 
-#endif
+

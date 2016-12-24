@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/PageQueue.h"
 #include "Common/LocalUIDGenerator.h"
@@ -244,7 +244,7 @@ namespace Svr {
 		virtual Result ClearEntity() override;
 
 		// TickUpdate 
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 	};
 
@@ -306,7 +306,7 @@ namespace Svr {
 		virtual Result InitializeEntity(EntityID newEntityID) override;
 
 		// TickUpdate 
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 	};
 
 

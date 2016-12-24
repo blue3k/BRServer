@@ -85,7 +85,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result GameClusterServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result GameClusterServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 

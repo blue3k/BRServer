@@ -97,14 +97,14 @@ namespace Net {
 		Result PendingRecv();
 		
 		// Clear Queue
-		virtual Result ClearQueues();
+		virtual Result ClearQueues() override;
 
 
 		// Called on connection result
-		virtual void OnConnectionResult( Result hrConnect );
+		virtual void OnConnectionResult( Result hrConnect ) override;
 
 		// Initialize connection
-		virtual Result InitConnection( SOCKET socket, const ConnectionInformation &connectInfo );
+		virtual Result InitConnection( SOCKET socket, const ConnectionInformation &connectInfo ) override;
 
 		Result Connect();
 
@@ -147,10 +147,10 @@ namespace Net {
 		~ConnectionTCPClient();
 		
 		// Initialize connection
-		virtual Result InitConnection( SOCKET socket, const ConnectionInformation &connectInfo );
+		virtual Result InitConnection( SOCKET socket, const ConnectionInformation &connectInfo ) override;
 
 		// Wait connection event
-		Result WaitConnect();
+		Result WaitConnect() override;
 
 		// Update net control, process connection heartbit, ... etc
 		virtual Result UpdateNetCtrl() override;

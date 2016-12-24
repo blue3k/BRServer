@@ -13,7 +13,6 @@
 
 #include "Common/Typedefs.h"
 #include "Common/MemoryPool.h"
-#include "DB/DBTrace.h"
 #include "DB/Factory.h"
 
 #include "ServerSystem/SvrTypes.h"
@@ -21,6 +20,7 @@
 #include "Common/SvrPolicyID.h"
 #include "Common/Message.h"
 #include "Common/ClassUtil.h"
+
 
 
 

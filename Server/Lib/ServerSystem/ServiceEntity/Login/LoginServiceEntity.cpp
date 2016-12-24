@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/GameConst.h"
 #include "Net/NetDef.h"
 #include "Net/NetServerUDP.h"
@@ -117,7 +117,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result LoginServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result LoginServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 

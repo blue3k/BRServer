@@ -15,12 +15,15 @@
 #include "Common/Typedefs.h"
 #include "Common/ToString.h"
 
+#if !ANDROID
 #include "my_global.h"
 #include "mysql.h"
-
+#endif
 
 namespace BR {
-	
+
+
+#if !ANDROID
 
 	template<>
 	inline Result ToString( char*& pBuff, INT& iBuffLen, const enum_field_types& Data, int Option )
@@ -75,7 +78,7 @@ namespace BR {
 
 		return ResultCode::SUCCESS;
 	}
-
+#endif
 
 }; // namespace BR
 

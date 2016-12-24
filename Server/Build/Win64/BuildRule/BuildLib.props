@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <OutDir>$(ProjectDir)../../bin/lib/$(Platform)$(Configuration)\</OutDir>
-    <IntDir>$(Platform)$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)\Win64\$(Platform)$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />

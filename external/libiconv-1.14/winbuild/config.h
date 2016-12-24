@@ -1,6 +1,6 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-#define LIBDIR
+#define LIBDIR ""
 
 /* Define to the number of bits in type 'ptrdiff_t'. */
 #undef BITSIZEOF_PTRDIFF_T
@@ -676,7 +676,7 @@
 #undef HAVE_WORKING_O_NOATIME
 
 /* Define to 1 if O_NOFOLLOW works. */
-#undef HAVE_WORKING_O_NOFOLLOW
+#define HAVE_WORKING_O_NOFOLLOW 0
 
 /* Define to 1 if the system has the type `_Bool'. */
 #undef HAVE__BOOL

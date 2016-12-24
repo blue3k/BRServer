@@ -14,7 +14,7 @@
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BrServerUtil.h"
-#include "ServerSystem/EventTask.h"
+#include "Common/Task/EventTask.h"
 #include "ServerSystem/ExternalTransactionManager.h"
 #include "Net/NetServerUDP.h"
 #include "Common/TimeUtil.h"
@@ -257,7 +257,7 @@ namespace Svr {
 	}
 
 	// Run the task
-	Result GamePlayerEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result GamePlayerEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Transaction *trans = nullptr;

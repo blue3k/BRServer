@@ -233,7 +233,7 @@ namespace Net {
 		pIOBuffer->SetupRecvTCP(GetCID());
 
 		hrErr = NetSystem::Recv(GetSocket(), pIOBuffer);
-		switch ((int32_t)hrErr)
+		switch ((int64_t)hrErr)
 		{
 		case ResultCode::E_NET_CONNABORTED:
 		case ResultCode::E_NET_CONNRESET:
@@ -285,7 +285,7 @@ namespace Net {
 
 		if( !( hrRes ) )
 		{
-			switch((int32_t)hrRes )
+			switch((uint32_t)hrRes )
 			{
 			case ResultCode::E_NET_CONNECTION_CLOSED:
 			case ResultCode::E_NET_IO_ABORTED:
@@ -474,7 +474,7 @@ namespace Net {
 		if (connResult == SOCKET_ERROR)
 		{
 			hrConResult = GetLastWSAResult();
-			switch ((int32_t)hrConResult)
+			switch ((uint32_t)hrConResult)
 			{
 			case ResultCode::E_NET_INPROGRESS:
 			case ResultCode::E_NET_WOULDBLOCK:  // First call need to wait
@@ -776,7 +776,7 @@ namespace Net {
 		netChkPtr(pSendBuffer);
 
 		hrErr = NetSystem::Send(GetSocket(), pSendBuffer);
-		switch ((int32_t)hrErr)
+		switch ((uint32_t)hrErr)
 		{
 		case ResultCode::SUCCESS:
 		case ResultCode::E_NET_IO_PENDING:
@@ -804,7 +804,7 @@ namespace Net {
 
 	Proc_End:
 
-		switch ((int32_t)hr)
+		switch ((uint32_t)hr)
 		{
 		case ResultCode::SUCCESS:
 		case ResultCode::SUCCESS_FALSE:

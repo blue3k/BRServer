@@ -93,7 +93,7 @@ namespace Net {
 		netChk(SetupSocketOption(pAcceptInfo->sockAccept));
 
 		hrErr = NetSystem::Accept(GetSocket(), pAcceptInfo);
-		switch ((int32_t)hrErr)
+		switch ((uint32_t)hrErr)
 		{
 		case ResultCode::SUCCESS:
 		case ResultCode::E_NET_WOULDBLOCK:
@@ -149,7 +149,7 @@ namespace Net {
 			SockAddr2Addr(remoteAddr, connectionInfo.Remote );
 
 			IConnection *pConnOut = nullptr;
-			svrChk(OnAcceptedSocket(sockAccept, remoteAddr, connectionInfo, pConnOut));
+			netChk(OnAcceptedSocket(sockAccept, remoteAddr, connectionInfo, pConnOut));
 
 			sockAccept = INVALID_SOCKET;
 		}

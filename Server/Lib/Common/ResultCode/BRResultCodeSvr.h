@@ -91,77 +91,74 @@ namespace BR {
 			// Queue item is reserved for cancel 
 			S_SVR_QUEUEITEM_CANCEL_PENDED                                      = 0x27040017L, 
 
-			// Thread is wrong, running on wrong thread? 
-			E_SVR_INVALID_THREAD                                               = 0xE7040018L, 
-
 			// Purchase canceled 
-			E_SVR_PURCHASE_CANCELED                                            = 0xE7040019L, 
+			E_SVR_PURCHASE_CANCELED                                            = 0xE7040018L, 
 
 			// Invalid receipt info 
-			E_SVR_INVALID_PURCHASE_INFO                                        = 0xE704001AL, 
+			E_SVR_INVALID_PURCHASE_INFO                                        = 0xE7040019L, 
 
 			// Invalid duplicated purchase 
-			E_SVR_INVALID_PURCHASE_DUPLICATED                                  = 0xE704001BL, 
+			E_SVR_INVALID_PURCHASE_DUPLICATED                                  = 0xE704001AL, 
 
 			// External auth fail 
-			E_SVR_INVALID_EXTERNAL_AUTH                                        = 0xE704001CL, 
+			E_SVR_INVALID_EXTERNAL_AUTH                                        = 0xE704001BL, 
 
 			// External server is not available 
-			E_SVR_EXTERNAL_SERVER_UNAVALIABLE                                  = 0xE704001DL, 
+			E_SVR_EXTERNAL_SERVER_UNAVALIABLE                                  = 0xE704001CL, 
 
 			// Invalid receipt result from server 
-			E_SVR_INVALID_PURCHASE_FORMAT                                      = 0xE704001EL, 
+			E_SVR_INVALID_PURCHASE_FORMAT                                      = 0xE704001DL, 
 
 			// The protocol is not supported. 
-			E_SVR_CURL_UNSUPPORTED_PROTOCOL                                    = 0xE704001FL, 
+			E_SVR_CURL_UNSUPPORTED_PROTOCOL                                    = 0xE704001EL, 
 
 			// CURL initialization is failed. 
-			E_SVR_CURL_FAILED_INIT                                             = 0xE7040020L, 
+			E_SVR_CURL_FAILED_INIT                                             = 0xE704001FL, 
 
 			// Invalid URL format. 
-			E_SVR_CURL_URL_MALFORMAT                                           = 0xE7040021L, 
+			E_SVR_CURL_URL_MALFORMAT                                           = 0xE7040020L, 
 
 			// Not a build-in feature. 
-			E_SVR_CURL_NOT_BUILT_IN                                            = 0xE7040022L, 
+			E_SVR_CURL_NOT_BUILT_IN                                            = 0xE7040021L, 
 
 			// Failed to resolve URL. 
-			E_SVR_CURL_COULDNT_RESOLVE_PROXY                                   = 0xE7040023L, 
+			E_SVR_CURL_COULDNT_RESOLVE_PROXY                                   = 0xE7040022L, 
 
 			// Failed to resolve URL. 
-			E_SVR_CURL_COULDNT_RESOLVE_HOST                                    = 0xE7040024L, 
+			E_SVR_CURL_COULDNT_RESOLVE_HOST                                    = 0xE7040023L, 
 
 			// Connection is failed 
-			E_SVR_CURL_COULDNT_CONNECT                                         = 0xE7040025L, 
+			E_SVR_CURL_COULDNT_CONNECT                                         = 0xE7040024L, 
 
 			// HTTP Post can't be done. 
-			E_SVR_CURL_HTTP_POST_ERROR                                         = 0xE7040026L, 
+			E_SVR_CURL_HTTP_POST_ERROR                                         = 0xE7040025L, 
 
 			// Not supported SSL type. 
-			E_SVR_CURL_SSL_ENGINE_NOTFOUND                                     = 0xE7040027L, 
+			E_SVR_CURL_SSL_ENGINE_NOTFOUND                                     = 0xE7040026L, 
 
 			// Not supported SSL type. 
-			E_SVR_CURL_SSL_ENGINE_SETFAILED                                    = 0xE7040028L, 
+			E_SVR_CURL_SSL_ENGINE_SETFAILED                                    = 0xE7040027L, 
 
 			// Network send failed 
-			E_SVR_CURL_SEND_ERROR                                              = 0xE7040029L, 
+			E_SVR_CURL_SEND_ERROR                                              = 0xE7040028L, 
 
 			// Network receive failed 
-			E_SVR_CURL_RECV_ERROR                                              = 0xE704002AL, 
+			E_SVR_CURL_RECV_ERROR                                              = 0xE7040029L, 
 
 			// Invalid SSL setting. 
-			E_SVR_CURL_USE_SSL_FAILED                                          = 0xE704002BL, 
+			E_SVR_CURL_USE_SSL_FAILED                                          = 0xE704002AL, 
 
 			// No Connection is available now. 
-			E_SVR_CURL_NO_CONNECTION_AVAILABLE                                 = 0xE704002CL, 
+			E_SVR_CURL_NO_CONNECTION_AVAILABLE                                 = 0xE704002BL, 
 
 			// Invalid state transition 
-			E_SVR_INVALID_STATE                                                = 0xE704002DL, 
+			E_SVR_INVALID_STATE                                                = 0xE704002CL, 
 
 			// Invalid purchase environment(public/test) 
-			E_SVR_INVALID_PURCHASE_MODE                                        = 0xE704002EL, 
+			E_SVR_INVALID_PURCHASE_MODE                                        = 0xE704002DL, 
 
 			// Invalid Task group ID 
-			E_SVR_INVALID_TASK_GROUPID                                         = 0xE704002FL, 
+			E_SVR_INVALID_TASK_GROUPID                                         = 0xE704002EL, 
 
 		};//enum 
 	}//namespace ResultCode 

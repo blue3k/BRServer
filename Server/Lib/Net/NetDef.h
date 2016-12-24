@@ -261,7 +261,7 @@ namespace Net {
 		//	virtual implementations
 		//
 
-		virtual Result InitConnection(const NetAddress& Addr, NetClass netClass);
+		virtual Result InitConnectionNClass(const NetAddress& Addr, NetClass netClass);
 
 		// Disconnect connection
 		virtual Result Disconnect(const char* reason) = 0;

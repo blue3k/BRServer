@@ -14,11 +14,11 @@
 #include "Common/Typedefs.h"
 #include "Common/MemoryPool.h"
 #include "Common/SharedPointer.h"
-#include "ServerSystem/TimeScheduler.h"
+#include "Common/Task/TimeScheduler.h"
 
 namespace BR {
-namespace Svr
-{
+
+
 	class TaskManager;
 	class TaskWorker;
 	struct EventTask;
@@ -32,6 +32,10 @@ namespace Svr
 
 	class TickTask : public SharedObject
 	{
+	public:
+
+		const int DEFAULT_TICKTASK_INTERVAL = 1000;
+
 	private:
 
 		// Work load for
@@ -134,9 +138,8 @@ namespace Svr
 
 
 
-}; // namespace Svr
 
-	extern template class SharedPointerT<Svr::TickTask>;
+	extern template class SharedPointerT<TickTask>;
 
 }; // namespace BR
 

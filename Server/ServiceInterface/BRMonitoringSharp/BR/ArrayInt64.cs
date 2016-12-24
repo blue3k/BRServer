@@ -50,8 +50,8 @@ public class ArrayInt64 : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int SetSize(uint szNewSize) {
-    int ret = BRMonitoringPINVOKE.ArrayInt64_SetSize(swigCPtr, szNewSize);
+  public unsafe SWIGTYPE_p_Result SetSize(uint szNewSize) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayInt64_SetSize(swigCPtr, szNewSize), true);
     return ret;
   }
 
@@ -86,8 +86,8 @@ public class ArrayInt64 : global::System.IDisposable {
     BRMonitoringPINVOKE.ArrayInt64_SetIncreaseSize(swigCPtr, szNewIncSize);
   }
 
-  public unsafe int Reserve(uint szReserv) {
-    int ret = BRMonitoringPINVOKE.ArrayInt64_Reserve(swigCPtr, szReserv);
+  public unsafe SWIGTYPE_p_Result Reserve(uint szReserv) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayInt64_Reserve(swigCPtr, szReserv), true);
     return ret;
   }
 
@@ -97,24 +97,24 @@ public class ArrayInt64 : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int push_back(SWIGTYPE_p_signed___int64 NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayInt64_push_back(swigCPtr, SWIGTYPE_p_signed___int64.getCPtr(NewData));
+  public unsafe SWIGTYPE_p_Result push_back(SWIGTYPE_p_signed___int64 NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayInt64_push_back(swigCPtr, SWIGTYPE_p_signed___int64.getCPtr(NewData)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int AddItems(uint numItems, SWIGTYPE_p_signed___int64 NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayInt64_AddItems(swigCPtr, numItems, SWIGTYPE_p_signed___int64.getCPtr(NewData));
+  public unsafe SWIGTYPE_p_Result AddItems(uint numItems, SWIGTYPE_p_signed___int64 NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayInt64_AddItems(swigCPtr, numItems, SWIGTYPE_p_signed___int64.getCPtr(NewData)), true);
     return ret;
   }
 
-  public unsafe int RemoveAt(int iIndex) {
-    int ret = BRMonitoringPINVOKE.ArrayInt64_RemoveAt(swigCPtr, iIndex);
+  public unsafe SWIGTYPE_p_Result RemoveAt(int iIndex) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayInt64_RemoveAt(swigCPtr, iIndex), true);
     return ret;
   }
 
-  public unsafe int RemoveItem(SWIGTYPE_p_signed___int64 RemoveData) {
-    int ret = BRMonitoringPINVOKE.ArrayInt64_RemoveItem(swigCPtr, SWIGTYPE_p_signed___int64.getCPtr(RemoveData));
+  public unsafe SWIGTYPE_p_Result RemoveItem(SWIGTYPE_p_signed___int64 RemoveData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayInt64_RemoveItem(swigCPtr, SWIGTYPE_p_signed___int64.getCPtr(RemoveData)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

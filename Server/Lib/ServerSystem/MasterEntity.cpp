@@ -21,7 +21,7 @@
 #include "ServerSystem/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/EventTask.h"
+#include "Common/Task/EventTask.h"
 #include "ServerSystem/EntityTimerActions.h"
 #include "ServerSystem/BrServer.h"
 #include "Common/Message.h"
@@ -149,7 +149,7 @@ namespace Svr
 	//  - Make new transaction from connection queue
 	//  - status update for game
 	//  - Process transaction
-	Result MasterEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result MasterEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Transaction* pNewTran = nullptr;
@@ -349,7 +349,7 @@ namespace Svr
 		Entity::OnAddedToTaskManager(pWorker);
 	}
 
-	Result MasterEntity::OnEventTask(const Svr::EventTask& eventTask)
+	Result MasterEntity::OnEventTask(const EventTask& eventTask)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Transaction *pCurTran = nullptr;
@@ -357,19 +357,19 @@ namespace Svr
 
 		switch (eventTask.EventType)
 		{
-		case Svr::EventTask::EventTypes::CONNECTION_EVENT:
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_EVENT:
+		case EventTask::EventTypes::CONNECTION_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_EVENT:
 			svrErr(ResultCode::NOT_IMPLEMENTED);
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
 			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
 			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
 			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
 			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
-		case Svr::EventTask::EventTypes::TRANSRESULT_EVENT:
+		case EventTask::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))

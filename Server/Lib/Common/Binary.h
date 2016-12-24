@@ -41,7 +41,7 @@ namespace BR
 		// Constructor
 		inline Binary( UINT32 uiMaxSize );
 		inline Binary( UINT32 uiMaxSize, UINT32 uiMagic, UINT32 uiVersion );
-		// Copy constructor , do not use
+		// Copy constructor , do not use, dummy
 		Binary( const Binary& src );
 
 		// Conversion to BLOB

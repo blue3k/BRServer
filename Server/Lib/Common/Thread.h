@@ -14,6 +14,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/TimeUtil.h"
+#include "Common/SystemSynchronization.h"
 
 
 namespace BR
@@ -46,7 +47,7 @@ namespace BR
 		PRIORITY m_threadPriority;
 
 		// Event handles for thread control
-		std::timed_mutex	m_KillMutex;
+		BR::Event	m_KillEvent;
 
 		// thread running status
 		std::atomic<bool> m_IsRunning;
@@ -85,7 +86,7 @@ namespace BR
 		//void SetAffinity(PRIORITY priority);
 
 		// Get end event handle
-		inline std::timed_mutex& GetKillMutex();
+		Event& GetKillEvent();
 
 
 		// Calculate sleep interval
@@ -128,7 +129,7 @@ namespace BR
 
 		virtual void Run() override
 		{
-			m_Func(this);
+			m_Func((Thread*)this);
 		}
 	};
 

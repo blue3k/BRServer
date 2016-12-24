@@ -21,11 +21,11 @@
 namespace BR
 {
 
-	Binary::Binary( const Binary& src )
-	{
-		unused(src);
-		AssertRel( !"Do not use this operation!, Use BinaryHeader::CopyBinary" );
-	}
+	//Binary::Binary( const Binary& src )
+	//{
+	//	//unused(src);
+	//	AssertRel( !"Do not use this operation!, Use BinaryHeader::CopyBinary" );
+	//}
 
 	// Copy operator
 	Binary& Binary::operator = ( const Binary& src )

@@ -163,7 +163,7 @@ namespace Svr
 		virtual Result TerminateEntity() override;
 
 		// Run entity
-		virtual Result TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 

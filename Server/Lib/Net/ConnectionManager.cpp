@@ -352,7 +352,7 @@ namespace Net {
 							break;
 						}
 
-						netTrace(Trace::TRC_WARN, "Timeout, force clean up connection CID:{0}, {1}", pConn->GetCID(), typeid(*(Connection*)pConn).name());
+						netTrace(Trace::TRC_WARN, "Timeout, force clean up connection CID:{0}", pConn->GetCID());
 					}
 
 					auto cid = pConn->GetCID();

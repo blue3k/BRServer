@@ -24,7 +24,7 @@
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/SvrConst.h"
-#include "ServerSystem/EventTask.h"
+#include "Common/Task/EventTask.h"
 #include "ServerSystem/EntityTable.h"
 #include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/EntityManager.h"
@@ -314,7 +314,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result ServerEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result ServerEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Net::Connection* pConn = nullptr;
@@ -421,7 +421,7 @@ namespace Svr {
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
 	}
 
-	Result ServerEntity::OnEventTask(const Svr::EventTask& eventTask)
+	Result ServerEntity::OnEventTask(const EventTask& eventTask)
 	{
 		Transaction *pCurTran = nullptr;
 		Message::MessageData* pMsg = nullptr;
@@ -429,10 +429,10 @@ namespace Svr {
 
 		switch (eventTask.EventType)
 		{
-		case Svr::EventTask::EventTypes::CONNECTION_EVENT:
+		case EventTask::EventTypes::CONNECTION_EVENT:
 			ProcessConnectionEvent(*eventTask.EventData.pConnectionEvent);
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_EVENT:
 			pMsg = eventTask.EventData.MessageEvent.pMessage;
 			if (pMsg != nullptr)
 			{
@@ -444,15 +444,15 @@ namespace Svr {
 				svrTrace(Trace::TRC_ERROR, "null message pointer in event taqsk");
 			}
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
 			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
 			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
 			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
 			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
-		case Svr::EventTask::EventTypes::TRANSRESULT_EVENT:
+		case EventTask::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))

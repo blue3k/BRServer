@@ -65,7 +65,7 @@ namespace Net {
 		m_tConnectionTime = Util::Time.GetTimeMs();
 	}
 
-	Result IConnection::InitConnection(const NetAddress& Addr, NetClass netClass)
+	Result IConnection::InitConnectionNClass(const NetAddress& Addr, NetClass netClass)
 	{
 
 		m_ConnectInfo.Local = Addr;

@@ -14,18 +14,17 @@
 #include "stdafx.h"
 #include "Common/Thread.h"
 #include "Common/StrUtil.h"
-#include "ServerSystem/Task.h"
-#include "ServerSystem/TaskManager.h"
-#include "ServerSystem/TimeScheduler.h"
+#include "Common/Task/Task.h"
+#include "Common/Task/TaskManager.h"
+#include "Common/Task/TimeScheduler.h"
 #include "Common/TimeUtil.h"
-#include "ServerSystem/SvrConst.h"
+//#include "Common/SvrConst.h"
 
 
 namespace BR {
 
-	template class SharedPointerT<Svr::TickTask>;
+	template class SharedPointerT<TickTask>;
 
-namespace Svr {
 	
 	////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -41,7 +40,7 @@ namespace Svr {
 		, m_pTaskWorker(nullptr)
 		, m_TaskID(0)
 		, m_RetryCount(0)
-		, m_TickInterval(Svr::Const::DEFAULT_TICKTASK_INTERVAL) // default task tick interval is 1sec
+		, m_TickInterval(DEFAULT_TICKTASK_INTERVAL) // default task tick interval is 1sec
 		, m_TimerAction(nullptr)
 	{
 		m_TimerAction = SharedPointerT<TickTaskTimerAction>(new TickTaskTimerAction(this));
@@ -160,6 +159,6 @@ namespace Svr {
 	}
 
 
-}; // namespace Svr
+
 }; // namespace BR
 

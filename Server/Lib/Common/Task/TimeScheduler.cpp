@@ -14,16 +14,17 @@
 #include "stdafx.h"
 #include "Common/Thread.h"
 #include "Common/StrUtil.h"
-#include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/TimeScheduler.h"
+#include "Common/Trace.h"
+#include "Common/ToString.h"
+#include "Common/Task/TimeScheduler.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
 
 
 
 namespace BR {
 
-	template class SharedPointerT < Svr::TimerAction >;
+	template class SharedPointerT < TimerAction >;
 
-namespace Svr {
 	
 	////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -114,7 +115,7 @@ namespace Svr {
 				if (bIsNeedToKeep)
 				{
 					Assert(!m_AssertOnInvalidTickTime || bIsNeedToKeep);
-					svrTrace(Trace::TRC_ERROR, "Same Timer value:{1} of {0} correct to fail safe timer value:{2}", pAction->GetDebugString(), pAction->TimeData.Components.NextTickTime, m_FailSafeTimerTickInterval);
+					defTrace(Trace::TRC_ERROR, "Same Timer value:{1} of {0} correct to fail safe timer value:{2}", pAction->GetDebugString(), pAction->TimeData.Components.NextTickTime, m_FailSafeTimerTickInterval);
 					pAction->TimeData.Components.NextTickTime = Util::Time.GetTimeMs() + m_FailSafeTimerTickInterval;
 				}
 			}
@@ -183,16 +184,16 @@ namespace Svr {
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			svrErr(ResultCode::E_SVR_INVALID_THREAD);
+			defErr(ResultCode::E_INVALID_THREAD);
 		}
 
 		//Assert(m_IsWriteLocked.load(std::memory_order_relaxed) == 0);
 
-		svrChkPtr(pAction);
-		svrAssert(pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max() && pAction->m_Queued == false);
+		defChkPtr(pAction);
+		defAssert(pAction->m_InQueueKey.Components.NextTickTime == TimeStampMS::max() && pAction->m_Queued == false);
 		// new time can be TimeStampMS::max() if muchine is running over 28 days
-		//svrAssert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
-		//svrAssert(pAction->TimeData.TimerKey != 0);
+		//defAssert(pAction->TimeData.Components.NextTickTime != TimeStampMS::max());
+		//defAssert(pAction->TimeData.TimerKey != 0);
 
 		Assert(pAction->m_Queued == false);
 		pAction->m_Queued = true;
@@ -223,10 +224,10 @@ namespace Svr {
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			svrErr(ResultCode::E_SVR_INVALID_THREAD);
+			defErr(ResultCode::E_INVALID_THREAD);
 		}
 
-		svrChkPtr(pAction);
+		defChkPtr(pAction);
 
 		if (!(m_TimerMap.Remove(pAction->m_InQueueKey.TimerKey, removed)))
 		{
@@ -258,7 +259,7 @@ namespace Svr {
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			return ResultCode::E_SVR_INVALID_THREAD;
+			return ResultCode::E_INVALID_THREAD;
 		}
 		return m_TimerMap.CommitChanges();
 	}
@@ -275,7 +276,7 @@ namespace Svr {
 		Assert(m_WorkingThreadID == threadID);
 		if (m_WorkingThreadID != threadID)
 		{
-			svrErr(ResultCode::E_SVR_INVALID_THREAD);
+			defErr(ResultCode::E_INVALID_THREAD);
 		}
 
 		if (pAction->TimeData.Components.NextTickTime == pAction->m_InQueueKey.Components.NextTickTime)
@@ -353,6 +354,6 @@ namespace Svr {
 
 
 
-}; // namespace Svr
+
 }; // namespace BR
 

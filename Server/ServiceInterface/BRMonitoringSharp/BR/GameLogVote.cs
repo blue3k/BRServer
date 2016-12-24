@@ -118,13 +118,13 @@ public class GameLogVote : GameLogItem {
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public unsafe int InitializeVote(GameVoteType type, int voterCount) {
-    int ret = BRMonitoringPINVOKE.GameLogVote_InitializeVote(swigCPtr, (int)type, voterCount);
+  public unsafe SWIGTYPE_p_Result InitializeVote(GameVoteType type, int voterCount) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.GameLogVote_InitializeVote(swigCPtr, (int)type, voterCount), true);
     return ret;
   }
 
-  public unsafe int SetVoteStatus(ulong voter, ulong voted) {
-    int ret = BRMonitoringPINVOKE.GameLogVote_SetVoteStatus(swigCPtr, voter, voted);
+  public unsafe SWIGTYPE_p_Result SetVoteStatus(ulong voter, ulong voted) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.GameLogVote_SetVoteStatus(swigCPtr, voter, voted), true);
     return ret;
   }
 

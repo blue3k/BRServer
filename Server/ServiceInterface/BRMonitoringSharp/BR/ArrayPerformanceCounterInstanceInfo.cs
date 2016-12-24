@@ -50,8 +50,8 @@ public class ArrayPerformanceCounterInstanceInfo : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int SetSize(uint szNewSize) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_SetSize(swigCPtr, szNewSize);
+  public unsafe SWIGTYPE_p_Result SetSize(uint szNewSize) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_SetSize(swigCPtr, szNewSize), true);
     return ret;
   }
 
@@ -86,8 +86,8 @@ public class ArrayPerformanceCounterInstanceInfo : global::System.IDisposable {
     BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_SetIncreaseSize(swigCPtr, szNewIncSize);
   }
 
-  public unsafe int Reserve(uint szReserv) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_Reserve(swigCPtr, szReserv);
+  public unsafe SWIGTYPE_p_Result Reserve(uint szReserv) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_Reserve(swigCPtr, szReserv), true);
     return ret;
   }
 
@@ -97,24 +97,24 @@ public class ArrayPerformanceCounterInstanceInfo : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int push_back(PerformanceCounterInstanceInfo NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_push_back(swigCPtr, PerformanceCounterInstanceInfo.getCPtr(NewData));
+  public unsafe SWIGTYPE_p_Result push_back(PerformanceCounterInstanceInfo NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_push_back(swigCPtr, PerformanceCounterInstanceInfo.getCPtr(NewData)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int AddItems(uint numItems, PerformanceCounterInstanceInfo NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_AddItems(swigCPtr, numItems, PerformanceCounterInstanceInfo.getCPtr(NewData));
+  public unsafe SWIGTYPE_p_Result AddItems(uint numItems, PerformanceCounterInstanceInfo NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_AddItems(swigCPtr, numItems, PerformanceCounterInstanceInfo.getCPtr(NewData)), true);
     return ret;
   }
 
-  public unsafe int RemoveAt(int iIndex) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_RemoveAt(swigCPtr, iIndex);
+  public unsafe SWIGTYPE_p_Result RemoveAt(int iIndex) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_RemoveAt(swigCPtr, iIndex), true);
     return ret;
   }
 
-  public unsafe int RemoveItem(PerformanceCounterInstanceInfo RemoveData) {
-    int ret = BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_RemoveItem(swigCPtr, PerformanceCounterInstanceInfo.getCPtr(RemoveData));
+  public unsafe SWIGTYPE_p_Result RemoveItem(PerformanceCounterInstanceInfo RemoveData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayPerformanceCounterInstanceInfo_RemoveItem(swigCPtr, PerformanceCounterInstanceInfo.getCPtr(RemoveData)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

@@ -167,6 +167,7 @@ namespace Net {
 			return ResultCode::FAIL;
 
 		auto prevSeq = m_uiBaseSequence.fetch_add(1,std::memory_order_release);// Message window clear can't cross bese sequence change, and this will make sure the previous sync mask change is commited.
+		unused(prevSeq);
 		Assert(Message::SequenceDifference(pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence, prevSeq) == 0);
 
 		// Between previous exchange and sequence update, the message can be arrived again

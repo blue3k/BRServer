@@ -16,7 +16,7 @@
 #include "Common/Typedefs.h"
 #include "Common/Thread.h"
 #include "Common/ObjectPool.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/Transaction.h"

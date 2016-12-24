@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/GameConst.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
@@ -99,7 +99,7 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
-	Result MonitoringServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result MonitoringServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 

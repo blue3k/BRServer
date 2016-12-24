@@ -76,7 +76,7 @@ namespace Svr {
 		virtual Result OnCloseTransaction( Result hrRes ) override;
 
 		// Start Transaction
-		virtual Result StartTransaction();
+		virtual Result StartTransaction() override;
 	};
 
 

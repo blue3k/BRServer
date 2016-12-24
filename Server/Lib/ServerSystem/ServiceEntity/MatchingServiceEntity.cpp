@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/GameConst.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
@@ -699,7 +699,7 @@ namespace Svr {
 		return grabbedPlayerCount;
 	}
 
-	Result MatchingServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result MatchingServiceEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -804,7 +804,7 @@ namespace Svr {
 	}
 
 	// TickUpdate 
-	Result MatchingServiceQueueEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result MatchingServiceQueueEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
 

@@ -90,13 +90,13 @@ namespace Hash {
 					m_Items = nullptr;
 				}
 
+				// Dummy definistion
 				// Copy Constructor 
-				Bucket( const Bucket& src )
+				Bucket(const Bucket& src)
 				{
-					m_Items = nullptr;
-					unused(src);
-					// No one use this bucket, while this operation
-					//Assert( !src.m_Lock.IsLocked() );
+					m_Items = src.m_Items;
+
+					// No one is supposed to use this constructor
 					Assert(false);
 				}
 

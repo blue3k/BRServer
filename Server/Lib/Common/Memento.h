@@ -14,7 +14,7 @@
 #include "Common/Typedefs.h"
 #include "Common/Trace.h"
 #include "Common/StaticLinkedList.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/Synchronization.h"
 
 namespace BR {

@@ -46,7 +46,7 @@ namespace Svr
 		virtual Result SendRaw(Message::MessageData* &pMsg) override { unused(pMsg);  return ResultCode::FAIL; }
 
 		// Send message to connected entity
-		virtual Result Send( Message::MessageData* &pMsg );
+		virtual Result Send( Message::MessageData* &pMsg ) override;
 
 	};
 

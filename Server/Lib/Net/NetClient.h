@@ -63,7 +63,7 @@ namespace Net {
 	protected:
 
 		// Add network event to queue
-		inline Result EnqueueNetEvent( INet::Event& evt );
+		inline Result EnqueueNetEvent( INet::Event& evt ) override;
 
 		virtual ConnectionManager& GetConnectionManager() = 0;
 
@@ -75,7 +75,7 @@ namespace Net {
 		virtual Result GetConnection(uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection) override;
 
 		// Query Network event
-		virtual Result DequeueNetEvent( Event& curEvent );
+		virtual Result DequeueNetEvent( Event& curEvent ) override;
 
 
 		// Called when connection result 
@@ -90,7 +90,7 @@ namespace Net {
 		virtual Result ReleaseConnection(IConnection* pIConnection) override;
 
 		// Release instance
-		virtual void Release();
+		virtual void Release() override;
 	};
 
 
@@ -112,10 +112,10 @@ namespace Net {
 		virtual ~ClientTCP();
 
 		// Get connection manager
-		inline ConnectionManager& GetConnectionManager();
+		inline ConnectionManager& GetConnectionManager() override;
 
 		// check about initialize
-		virtual bool IsReady();
+		virtual bool IsReady() override;
 
 		// Connect to server
 		virtual Result Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
@@ -141,10 +141,10 @@ namespace Net {
 		virtual ~ClientUDP();
 		
 		// Get connection manager
-		inline ConnectionManager& GetConnectionManager();
+		inline ConnectionManager& GetConnectionManager() override;
 
 		// check about initialize
-		virtual bool IsReady();
+		virtual bool IsReady() override;
 
 		// Connect to server
 		virtual Result Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
@@ -169,7 +169,7 @@ namespace Net {
 		virtual ~ClientMUDP();
 
 		// Get connection manager
-		ConnectionManager& GetConnectionManager() { return m_ConnectionManager; }
+		ConnectionManager& GetConnectionManager() override { return m_ConnectionManager; }
 
 		// check about initialize
 		virtual bool IsReady() override;

@@ -200,7 +200,7 @@ namespace Util {
 		if ((INT)timeMs.count() <= 0) return timeMs2;
 		if ((INT)timeMs2.count() <= 0) return timeMs;
 
-		return (timeMs - timeMs2).count() >= 0 ? timeMs2 : timeMs;
+		return (INT)(timeMs - timeMs2).count() >= 0 ? timeMs2 : timeMs;
 	}
 
 	TimeStampMS TimeMinNonZero(TimeStampMS timeMs, TimeStampMS timeMs2)

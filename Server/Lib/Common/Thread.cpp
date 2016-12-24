@@ -62,6 +62,15 @@ namespace BR
 
 	} ThreadSchedulingTable[] =
 	{
+#if ANDROID
+		{ SCHED_FIFO,	sched_get_priority_max(SCHED_FIFO) },																				// PRIORITY_TIME_CRITICAL
+		{ SCHED_RR,	sched_get_priority_min(SCHED_RR) + ((sched_get_priority_max(SCHED_RR) - sched_get_priority_min(SCHED_RR)) >> 1), },	// PRIORITY_HIGHEST
+		{ SCHED_RR,	sched_get_priority_min(SCHED_RR), },																				// PRIORITY_ABOVE_NORMAL 
+		{ SCHED_OTHER,	0, },																									// PRIORITY_NORMAL
+		{ SCHED_OTHER,	0, },																									// PRIORITY_BELOW_NORMAL
+		{ SCHED_OTHER,	0, },																									// PRIORITY_LOWEST
+		{ SCHED_OTHER,	0, },																									// PRIORITY_IDLE
+#else
 		{ SCHED_FIFO,	sched_get_priority_max(SCHED_FIFO) },																				// PRIORITY_TIME_CRITICAL
 		{ SCHED_RR,	sched_get_priority_min(SCHED_RR) + ((sched_get_priority_max(SCHED_RR) - sched_get_priority_min(SCHED_RR)) >> 1), },	// PRIORITY_HIGHEST
 		{ SCHED_RR,	sched_get_priority_min(SCHED_RR), },																				// PRIORITY_ABOVE_NORMAL 
@@ -69,6 +78,7 @@ namespace BR
 		{ SCHED_BATCH,	0, },																									// PRIORITY_BELOW_NORMAL
 		{ SCHED_BATCH,	0, },																									// PRIORITY_LOWEST
 		{ SCHED_IDLE,	0, },																									// PRIORITY_IDLE
+#endif
 	};
 
 	static_assert(countof(ThreadSchedulingTable) == ((int)Thread::PRIORITY::IDLE + 1), "Invalid Thread scheduling table count");
@@ -191,9 +201,7 @@ namespace BR
 
 	bool Thread::CheckKillEvent(const DurationMS& waitTime)
 	{
-		bool isLocked = GetKillMutex().try_lock_for(waitTime);
-		if (isLocked) GetKillMutex().unlock();
-		return isLocked;
+		return GetKillEvent().WaitEvent(waitTime);
 	}
 
 	// thread Controlling
@@ -202,13 +210,7 @@ namespace BR
 	{
 		m_ulPreTime = Util::Time.GetTimeMs();
 
-		if (!GetKillMutex().try_lock())
-		{
-			// Failed to set thread lock
-			//std::cerr << "Failed to set Thread scheduling : " << std::strerror((int)errno) << std::endl;
-			assert(false);
-			return;
-		}
+		GetKillEvent().Reset();
 
 		m_IsRunning.store(true, std::memory_order_release);
 
@@ -224,7 +226,7 @@ namespace BR
 		if (bSendKillEvt)
 		{
 			// Set close event
-			GetKillMutex().unlock();
+			GetKillEvent().Set();
 		}
 
 		join();

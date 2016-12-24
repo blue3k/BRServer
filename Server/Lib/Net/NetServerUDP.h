@@ -49,10 +49,10 @@ namespace Net {
 
 
 		// Get Active(non-free) connection
-		virtual CounterType GetActiveConnectionCount();
+		virtual CounterType GetActiveConnectionCount() override;
 
 		// Close all connection
-		virtual Result CloseAllConnection();
+		virtual Result CloseAllConnection() override;
 
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,10 +70,10 @@ namespace Net {
 
 
 		// Open host and start listen
-		virtual Result HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort );
+		virtual Result HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort ) override;
 
 		// Close host and close all connections
-		virtual Result HostClose();
+		virtual Result HostClose() override;
 
 
 

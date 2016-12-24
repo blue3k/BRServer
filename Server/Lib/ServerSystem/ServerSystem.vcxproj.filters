@@ -15,9 +15,6 @@
     <Filter Include="Entity">
       <UniqueIdentifier>{1f1c8d0c-7540-49da-82a8-8e355457b77c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Task">
-      <UniqueIdentifier>{18af32ce-ab5f-4387-8add-3dcce05f3d30}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ConfigLoad">
       <UniqueIdentifier>{efb295d1-084e-4b93-99ff-280ffdb06298}</UniqueIdentifier>
     </Filter>
@@ -62,12 +59,6 @@
     <None Include="Entity.inl">
       <Filter>Entity</Filter>
     </None>
-    <None Include="TaskManager.inl">
-      <Filter>Task</Filter>
-    </None>
-    <None Include="Task.inl">
-      <Filter>Task</Filter>
-    </None>
     <None Include="SimpleUserEntity.inl">
       <Filter>Entity</Filter>
     </None>
@@ -107,9 +98,6 @@
     <None Include="SimpleEntity.inl">
       <Filter>Entity</Filter>
     </None>
-    <None Include="EventTask.inl">
-      <Filter>Task</Filter>
-    </None>
     <None Include="MasterEntity.inl">
       <Filter>Entity</Filter>
     </None>
@@ -144,12 +132,6 @@
     </ClInclude>
     <ClInclude Include="EntityTable.h">
       <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Task.h">
-      <Filter>Task</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskManager.h">
-      <Filter>Task</Filter>
     </ClInclude>
     <ClInclude Include="SimpleUserEntity.h">
       <Filter>Entity</Filter>
@@ -304,17 +286,8 @@
     <ClInclude Include="SimpleEntity.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="EventTask.h">
-      <Filter>Task</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeScheduler.h">
-      <Filter>Task</Filter>
-    </ClInclude>
     <ClInclude Include="EntityTimerActions.h">
       <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeSchedulerAction.h">
-      <Filter>Task</Filter>
     </ClInclude>
     <ClInclude Include="MasterEntity.h">
       <Filter>Entity</Filter>
@@ -440,12 +413,6 @@
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskManager.cpp">
-      <Filter>Task</Filter>
-    </ClCompile>
-    <ClCompile Include="Task.cpp">
-      <Filter>Task</Filter>
     </ClCompile>
     <ClCompile Include="SimpleUserEntity.cpp">
       <Filter>Entity</Filter>
@@ -581,12 +548,6 @@
     </ClCompile>
     <ClCompile Include="SimpleEntity.cpp">
       <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="EventTask.cpp">
-      <Filter>Task</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeScheduler.cpp">
-      <Filter>Task</Filter>
     </ClCompile>
     <ClCompile Include="EntityTimerActions.cpp">
       <Filter>Entity</Filter>
