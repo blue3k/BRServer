@@ -32,7 +32,7 @@ namespace BR
 		: Component((UINT)ComponentID)
 	{
 		if (modulePath != nullptr)
-			Util::SetModulePathA(modulePath, moduleName);
+			Util::SetModulePath(modulePath, moduleName);
 
 		if (traceCfgPath != nullptr)
 			Trace::TraceModule::CONFIG_FILENAME = traceCfgPath;

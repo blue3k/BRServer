@@ -6,6 +6,10 @@
     <OutDir>$(ProjectDir)../../bin/lib/Android/$(Platform)$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Android/$(ProjectName)/$(Platform)$(Configuration)\</IntDir>
   </PropertyGroup>
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\;..\..\Lib;..\..\..\External;..\..\..\External\libxml\include;..\..\..\External\include;..\..\..\External\jsoncpp\include;..\..\..\External\curl7.41\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

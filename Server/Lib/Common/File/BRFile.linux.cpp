@@ -13,9 +13,9 @@
 #include "Common/TypeUtility.h"
 #include "Common/File/BRFile.h"
 
-#if LINUX
+#if LINUX || ANDROID
 
-
+#include <fcntl.h>
 
 namespace BR {
 namespace IO {
@@ -126,7 +126,7 @@ namespace IO {
 			return GetLastResult();
 		}
 
-		flock fl;
+		struct flock fl;
 		fl.l_whence = SEEK_SET; /* SEEK_SET, SEEK_CUR, SEEK_END */
 		fl.l_start = 0;        /* Offset from l_whence         */
 		fl.l_len = 0;        /* length, 0 = to EOF           */

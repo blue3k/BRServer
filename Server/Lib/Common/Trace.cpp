@@ -412,6 +412,17 @@ namespace Trace {
 
 	void TraceOutModule::ValidateLogFile()
 	{
+		static const char* FormatByType[TRCOUT_NUMFILE] = 
+		{
+#if ANDROID
+			"%s/%s_log.txt",
+			"%s/%s_dbglog.txt"
+#else
+			"%s../log/%s[%d_%04d_%02d_%02d]log.txt",
+			"%s../log/%s[%d_%04d_%02d_%02d]logdbg.txt"
+#endif
+		};
+
 		// if file output then check log file
 		UINT uiOutputMask = m_uiOutputMask | m_uiDbgOutputMask;
 		if (uiOutputMask & TRCOUT_FILE_ALL)
@@ -419,6 +430,13 @@ namespace Trace {
 			char strFileName[MAX_PATH];
 			for (int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++)
 			{
+				const char* strFormat = FormatByType[iFile];
+				if (StrUtil::IsNullOrEmpty(strFormat))
+				{
+					m_LogFile[iFile].Close();
+					continue;
+				}
+
 				if (uiOutputMask&_g_uiFileMask[iFile])
 				{
 					// if already file created then skip
@@ -426,12 +444,6 @@ namespace Trace {
 						continue;
 
 					// build name
-					const char* strFormat = nullptr;
-					if (iFile == TRCOUT_FILE_LOG)
-						strFormat = "%s../log/%s[%d_%04d_%02d_%02d]log.txt";
-					else
-						strFormat = "%s../log/%s[%d_%04d_%02d_%02d]logdbg.txt";
-
 					snprintf(strFileName, MAX_PATH, strFormat, Util::GetModulePathA(), Util::GetServiceNameA(), m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour);
 
 					OpenLogFile(iFile, m_tCurTimeTM, strFileName);
@@ -555,8 +567,26 @@ namespace Trace {
 		{
 #if WINDOWS
 			ConsoleOut( m_wszLineHeader, wszOutput );
+#elif ANDROID
+			android_LogPriority logPriority = ANDROID_LOG_INFO;
+			switch (trcOutMask)
+			{
+			case TRC_ERROR:
+				logPriority = ANDROID_LOG_ERROR;
+				break;
+			case TRC_WARN:
+				logPriority = ANDROID_LOG_WARN;
+				break;
+			case TRC_ASSERT:
+				logPriority = ANDROID_LOG_FATAL;
+				break;
+			default:
+				break;
+			};
+
+			__android_log_print(logPriority, "StormForge", "%s", szOutput);
 #else
-			//ConsoleOut(m_szLineHeader, szOutput);
+
 #endif
 		}
 
@@ -729,6 +759,9 @@ namespace Trace {
 
 	void Flush()
 	{
+		if (TraceOutModule::GetInstance() == nullptr)
+			return;
+
 		TraceOutModule::GetInstance()->TraceFlush();
 	}
 

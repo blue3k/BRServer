@@ -7,7 +7,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\;..\..\Lib;..\..\..\External;..\..\..\External\libxml\include;..\..\..\External\include;..\..\..\External\jsoncpp\include;..\..\..\External\curl7.41\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HAVE_CONFIG_H;CURL_STATICLIB;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalOptions>
@@ -18,7 +18,6 @@
     </ClCompile>
     <Link>
       <AddModuleNamesToAssembly>..\..\bin\lib</AddModuleNamesToAssembly>
-      <AdditionalDependencies>libiconv.lib;libmysql.lib;libxml.lib;libeay32.lib;libcurl.lib;lib_json.lib;External.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

@@ -75,7 +75,7 @@ namespace Util {
 	const WCHAR* GetModulePath();
 	const char* GetModulePathA();
 
-	void SetModulePathA(const char* customModulePath, const char* moduleName);
+	void SetModulePath(const char* customModulePath, const char* moduleName);
 
 	// Array duplication
 	template<class DupType>
@@ -107,6 +107,10 @@ namespace Util {
 
 	template<class ValType>
 	ValType Abs( ValType value );
+
+	// Android doesn't support log2
+	template<class ValType>
+	inline ValType Log2(ValType x) { return log(x) / 1.4426950408889634; }
 
 	// Peek key from console
 	//Result PeekKey( int &inputKey, NativeHandle hConsole = INVALID_NATIVE_HANDLE_VALUE);

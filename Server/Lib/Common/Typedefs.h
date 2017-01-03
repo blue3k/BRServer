@@ -197,6 +197,8 @@ typedef HANDLE HMODULE;
 #include <stdint.h>
 #include <unwind.h>
 #include <dlfcn.h>
+#include <android/log.h>
+
 
 typedef uint8_t UINT8;
 typedef int8_t INT8;

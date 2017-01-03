@@ -63,9 +63,9 @@ namespace BR
 	} ThreadSchedulingTable[] =
 	{
 #if ANDROID
-		{ SCHED_FIFO,	sched_get_priority_max(SCHED_FIFO) },																				// PRIORITY_TIME_CRITICAL
-		{ SCHED_RR,	sched_get_priority_min(SCHED_RR) + ((sched_get_priority_max(SCHED_RR) - sched_get_priority_min(SCHED_RR)) >> 1), },	// PRIORITY_HIGHEST
-		{ SCHED_RR,	sched_get_priority_min(SCHED_RR), },																				// PRIORITY_ABOVE_NORMAL 
+		{ SCHED_FIFO,	10 },																				// PRIORITY_TIME_CRITICAL
+		{ SCHED_RR,	5, },	// PRIORITY_HIGHEST
+		{ SCHED_RR,	0, },																				// PRIORITY_ABOVE_NORMAL 
 		{ SCHED_OTHER,	0, },																									// PRIORITY_NORMAL
 		{ SCHED_OTHER,	0, },																									// PRIORITY_BELOW_NORMAL
 		{ SCHED_OTHER,	0, },																									// PRIORITY_LOWEST
@@ -89,6 +89,7 @@ namespace BR
 	public:
 		ModuleThread_impl()
 		{
+#if !ANDROID
 			rlimit limit;
 			memset(&limit, 0, sizeof limit);
 			if (getrlimit(RLIMIT_RTPRIO, &limit) != 0)
@@ -111,6 +112,7 @@ namespace BR
 				assert(!"Invalid rtpio FIFO limits:");
 			}
 			std::cout << "TestThreadLimits - OK" << std::endl;
+#endif
 		}
 	};
 	static ModuleThread_impl CheckThreadLimits;

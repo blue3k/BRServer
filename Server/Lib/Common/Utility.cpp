@@ -34,7 +34,7 @@ namespace Util {
 	static wchar_t g_wszServiceName[MAX_PATH] = {0};
 	static char g_szServiceName[MAX_PATH] = {0};
 
-#if LINUX || ANDROID
+#if LINUX
 	size_t get_executable_path(char* buffer, size_t len)
 	{
 		char* path_end;
@@ -72,6 +72,7 @@ namespace Util {
 
 			StrUtil::WCSToUTF8( g_wszModulePath, g_szModulePath );
 			StrUtil::WCSToUTF8( g_wszModuleName, g_szModuleName );
+#elif ANDROID
 #else
 			get_executable_path(g_szModulePath, countof(g_szModulePath));
 
@@ -156,7 +157,7 @@ namespace Util {
 		return g_szModulePath;
 	}
 
-	void SetModulePathA(const char* customModulePath, const char* moduleName)
+	void SetModulePath(const char* customModulePath, const char* moduleName)
 	{
 		StrUtil::StringCpy(g_szModulePath, customModulePath);
 		StrUtil::StringCpy(g_szModuleName, moduleName);
