@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{7fdafb49-439e-4d36-8506-e353bc307fec}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\crc32.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\deflate.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\gzguts.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\inffast.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\inffixed.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\inflate.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\inftrees.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\trees.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\zconf.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\adler32.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\compress.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\crc32.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\deflate.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\gzclose.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\gzlib.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\gzread.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\gzwrite.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\infback.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\inffast.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\inflate.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\inftrees.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\trees.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\zlib-1.2.8\uncompr.c" />
+  </ItemGroup>
+</Project>
