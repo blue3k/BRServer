@@ -119,18 +119,21 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\Build\Win64\BuildRule\CompileCpp.props" />
     <Import Project="..\..\Build\Win64\BuildRule\BuildLib.props" />
+    <Import Project="Common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\Build\Win64\BuildRule\CompileCpp.props" />
     <Import Project="..\..\Build\Win64\BuildRule\BuildLib.props" />
     <Import Project="..\..\Build\Win64\BuildRule\Server.props" />
+    <Import Project="Common.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\Build\Win64\BuildRule\CompileCpp.props" />
     <Import Project="..\..\Build\Win64\BuildRule\BuildLib.props" />
     <Import Project="..\..\Build\Win64\BuildRule\Release.props" />
+    <Import Project="Common.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -138,6 +141,7 @@
     <Import Project="..\..\Build\Win64\BuildRule\BuildLib.props" />
     <Import Project="..\..\Build\Win64\BuildRule\Server.props" />
     <Import Project="..\..\Build\Win64\BuildRule\Release.props" />
+    <Import Project="Common.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />

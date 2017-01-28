@@ -17,17 +17,40 @@
 #define OS "IOS"
 #endif
 
-/* Define if you want the built-in manual */
-#define USE_MANUAL              1
 
-#define HAVE_ERRNO_H            1
-#define HAVE_NETINET_IN_H       1
+#if defined(_WIN32) || defined(_WIN64)
+#define STDC_HEADERS            1
+#define HAVE_WINDOWS_H          1
+#define HAVE_STRDUP             1
+#define HAVE_IOCTLSOCKET_FIONBIO 1
+#define HAVE_STRUCT_POLLFD 1
+
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+
+/* Define if struct sockaddr_in6 has the sin6_scope_id member. */
+#define HAVE_SOCKADDR_IN6_SIN6_SCOPE_ID 1
+#define HAVE_WINSOCK2_H         1
+#define HAVE_WS2TCPIP_H         1
+
+#else
+#define HAVE_SYS_TIME_H         1
+#define HAVE_UNISTD_H           1
 #define HAVE_SYS_SOCKET_H       1
+#define HAVE_UTIME_H            1
+#define HAVE_FCNTL_O_NONBLOCK 1
 #define HAVE_SYS_SELECT_H       1
+#define HAVE_NETINET_IN_H       1
 #define HAVE_NETDB_H            1
 #define HAVE_ARPA_INET_H        1
-#define HAVE_UNISTD_H           1
 #define HAVE_NET_IF_H           1
+#define HAVE_SIGACTION          1
+
+#endif
+
+/* Define if you want the built-in manual */
+#define USE_MANUAL              1
+#define HAVE_ERRNO_H            1
 #define HAVE_SYS_TYPES_H        1
 #define HAVE_GETTIMEOFDAY       1
 #define HAVE_FCNTL_H            1
@@ -35,9 +58,8 @@
 #define HAVE_ALLOCA_H           1
 #define HAVE_STDLIB_H           1
 #define HAVE_TIME_H             1
-#define HAVE_UTIME_H            1
-#define HAVE_SYS_TIME_H         1
 #define HAVE_SYS_UTIME_H        1
+#define HAVE_STRUCT_TIMEVAL     1
 
 #define TIME_WITH_SYS_TIME      1
 
@@ -50,9 +72,7 @@
 #define HAVE_MEMCPY             1
 #define HAVE_SELECT             1
 #define HAVE_SOCKET             1
-#define HAVE_STRUCT_TIMEVAL     1
 
-#define HAVE_SIGACTION          1
 #define HAVE_SIGNAL_H           1
 #define HAVE_SIG_ATOMIC_T       1
 
@@ -70,7 +90,6 @@
 /* Define if you have the ioctlsocket function. */
 #define HAVE_IOCTLSOCKET 1
 
-#define HAVE_FCNTL_O_NONBLOCK 1
 
 
 #define RETSIGTYPE void
@@ -112,7 +131,7 @@
 #define SEND_TYPE_ARG1 int
 #define SEND_QUAL_ARG2 const
 #define SEND_TYPE_ARG2 void *
-#define SEND_TYPE_ARG3 size_T
+#define SEND_TYPE_ARG3 size_t
 #define SEND_TYPE_ARG4 int
 #define SEND_TYPE_RETV ssize_t
 

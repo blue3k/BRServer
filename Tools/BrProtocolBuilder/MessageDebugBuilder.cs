@@ -120,7 +120,7 @@ namespace ProtocolBuilder
 
             string strFunction = "[](const char* prefix, MessageData* pMsg)->Result{ ";
             strFunction += string.Format("  {0} parser; ", strMsgClass);
-            strFunction += "parser.ParseIMsg(pMsg); ";
+            strFunction += "parser.ParseMessage(pMsg); ";
             strFunction += "parser.TraceOut(prefix,pMsg); ";
             strFunction += "return ResultCode::SUCCESS; ";
             strFunction += "} ";
