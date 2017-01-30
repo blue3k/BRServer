@@ -578,7 +578,7 @@ namespace Net {
 			// SKip already processed message ids
 			UINT uiIdx = (UINT)(-iIdx);
 			iIdx = 0;
-			uiSequenceBase += uiIdx;
+			uiSequenceBase = (decltype(uiSequenceBase))(uiSequenceBase + uiIdx);
 
 			for (; uiCurBit < uiIdx; uiCurBit++, uiSyncMaskCur <<= 1) {
 				AssertRel((uiMsgMask & uiSyncMaskCur) != 0);

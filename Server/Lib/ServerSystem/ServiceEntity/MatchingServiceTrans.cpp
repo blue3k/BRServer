@@ -192,7 +192,7 @@ namespace Svr {
 			goto Proc_End;
 		}
 
-		svrChk(msgRes.ParseIMsg(((MessageResult*)pRes)->GetMessage()));
+		svrChk(msgRes.ParseMessage(((MessageResult*)pRes)->GetMessage()));
 
 		{
 			auto numItems = std::min(msgRes.GetNumberOfPlayersInTheItem().GetSize(), msgRes.GetMatchingTicket().GetSize());
@@ -322,7 +322,7 @@ namespace Svr {
 		// Maybe canceled?
 		if ((pRes->GetResult()))
 		{
-			svrChk(msgRes.ParseIMsg(((MessageResult*)pRes)->GetMessage()));
+			svrChk(msgRes.ParseMessage(((MessageResult*)pRes)->GetMessage()));
 
 			AssertRel(msgRes.GetPlayers().GetSize() <= MAX_NUM_PLAYER);
 
@@ -370,7 +370,7 @@ namespace Svr {
 		svrChk(GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService(pService));
 
 		// 2. Get service entity list in the cluster
-		svrChk(pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, m_TargetMatchingMemberCount - m_DequeuedTotalMembers, m_TargetMatchingMemberCount));
+		svrChk(pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, (uint16_t)(m_TargetMatchingMemberCount - m_DequeuedTotalMembers), (uint16_t)m_TargetMatchingMemberCount));
 
 	Proc_End:
 
@@ -390,7 +390,7 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		svrChk(msgRes.ParseIMsg(((MessageResult*)pRes)->GetMessage()));
+		svrChk(msgRes.ParseMessage(((MessageResult*)pRes)->GetMessage()));
 
 		gameUID = msgRes.GetRouteContext().GetFrom();
 

@@ -376,7 +376,7 @@ namespace StrUtil {
 				// On linux, source buffer can be changed.
 				char srcBuffer[2048];
 				char *srcTemp = sizeof(srcBuffer) >= srcSize ? srcBuffer : new char[srcSize];
-				defChkSilent(StrUtil::StringCpy(srcTemp, srcSize, src));
+				defChkSilent(StrUtil::StringCpy(srcTemp, (int)srcSize, src));
 
 				convertedSize = iconv(context, &srcTemp, &srcSize, &dest, &destSize); // linux version uses char** for src
 			}

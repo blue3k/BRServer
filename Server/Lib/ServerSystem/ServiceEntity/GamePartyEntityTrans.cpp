@@ -271,7 +271,7 @@ namespace Svr {
 		Message::PartyMatchingQueue::RegisterPartyMatchingRes res;
 
 		svrChk(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		GetMyOwner()->SetMatchingTicket( res.GetMatchingTicket() );
 		
@@ -297,7 +297,7 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( ((MessageResult*)pRes)->GetMessage() ) );
 
 		gameUID = msgRes.GetRouteContext().GetFrom();
 
@@ -343,7 +343,7 @@ namespace Svr {
 			svrChk( GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService( pService ) );
 
 			// 2. Get service entity list in the cluster
-			svrChk( pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, 0, GetMaxGamePlayers()) );
+			svrChk( pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, 0, (USHORT)GetMaxGamePlayers()) );
 
 			//CloseTransaction(hr);
 			goto Proc_End;
@@ -411,7 +411,7 @@ namespace Svr {
 			break;
 		default:
 			svrChk(pRes->GetResult());
-			svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+			svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 			GetMyOwner()->ForeachPlayerSvrGameParty( [&]( PartyPlayer* pOtherPlayer, Policy::ISvrPolicyGameParty *pPolicy )->Result {
 				pPolicy->CanceledGameMatchingS2CEvt( pOtherPlayer->GetRouteContext(GetOwnerEntityUID()), GetMyOwner()->GetMatchingTicket() );
 				return ResultCode::SUCCESS;

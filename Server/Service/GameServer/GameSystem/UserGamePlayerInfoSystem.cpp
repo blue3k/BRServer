@@ -256,7 +256,7 @@ namespace GameServer {
 
 		svrChk( conspiracy::LevelTbl::FindItem( newLevel, pLevelInfo ) );
 
-		m_Level = newLevel;
+		m_Level = (decltype(m_Level))newLevel;
 		UpdateStatByLevel(pLevelInfo);
 
 	Proc_End:
@@ -373,7 +373,7 @@ namespace GameServer {
 
 		Assert(m_MaxStamina > 0);
 
-		m_Stamina = std::min( m_Stamina + stamina, m_MaxStamina );
+		m_Stamina = (decltype(m_Stamina))std::min( m_Stamina + stamina, m_MaxStamina );
 		m_Stamina = std::max( m_Stamina, (SHORT)0 );
 
 	Proc_End:
@@ -392,7 +392,7 @@ namespace GameServer {
 
 		Assert(m_MaxFriend > 0);
 
-		m_AddedFriendSlot = std::min(m_AddedFriendSlot + numSlot, maxFriend);
+		m_AddedFriendSlot = (decltype(m_AddedFriendSlot))std::min(m_AddedFriendSlot + numSlot, maxFriend);
 		m_AddedFriendSlot = std::max(m_AddedFriendSlot, (SHORT)0);
 
 	Proc_End:
@@ -453,7 +453,7 @@ namespace GameServer {
 		m_MaxGameMoney = GetMyServer()->GetPresetGameConfig()->MaxMoney;
 		m_MaxGem = GetMyServer()->GetPresetGameConfig()->MaxGem;
 
-		m_DefaultFriendSlot = GetMyServer()->GetPresetGameConfig()->DefaultFriend;
+		m_DefaultFriendSlot = (decltype(m_DefaultFriendSlot))GetMyServer()->GetPresetGameConfig()->DefaultFriend;
 
 	Proc_End:
 
@@ -471,7 +471,7 @@ namespace GameServer {
 
 		m_AddedFriendSlot = 0;
 
-		m_Stamina = GetMyServer()->GetPresetGameConfig()->DefaultStamina;
+		m_Stamina = (decltype(m_Stamina))GetMyServer()->GetPresetGameConfig()->DefaultStamina;
 		m_GameMoney = GetMyServer()->GetPresetGameConfig()->DefaultMoney;
 		m_Gem = GetMyServer()->GetPresetGameConfig()->DefaultGem;
 

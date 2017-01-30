@@ -33,14 +33,14 @@ namespace BR
 			void RegisterDebugTraceEntityServer()
 			{
  				// Cmd: Register entity
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::RegisterEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::RegisterEntityCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::RegisterEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::RegisterEntityRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::RegisterEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::RegisterEntityCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::RegisterEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::RegisterEntityRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// Cmd: Find Entity
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::UnregisterEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::UnregisterEntityCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::UnregisterEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::UnregisterEntityRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::UnregisterEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::UnregisterEntityCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::UnregisterEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::UnregisterEntityRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// Cmd: Find Entity
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::FindEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::FindEntityCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::FindEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::FindEntityRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::FindEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::FindEntityCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::FindEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::FindEntityRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceEntityServer()
 
 

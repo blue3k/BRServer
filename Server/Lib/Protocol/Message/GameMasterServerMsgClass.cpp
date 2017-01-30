@@ -31,7 +31,7 @@ namespace BR
 		{
  			// C2S: Player entered
 			const MessageID PlayerEnteredC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEMASTERSERVER, 0);
-			Result PlayerEnteredC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerEnteredC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -41,19 +41,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(AccountID) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPlayerName, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_PlayerName, pCur, iMsgSize, sizeof(char)*uiSizeOfPlayerName ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPlayerName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_PlayerName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPlayerName ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PlayerEnteredC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerEnteredC2SEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PlayerEnteredC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName )
 			{
@@ -95,7 +95,7 @@ namespace BR
 
 			// C2S: Player leaved
 			const MessageID PlayerLeavedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEMASTERSERVER, 1);
-			Result PlayerLeavedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerLeavedC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -104,17 +104,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(AccountID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PlayerLeavedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerLeavedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PlayerLeavedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID )
 			{

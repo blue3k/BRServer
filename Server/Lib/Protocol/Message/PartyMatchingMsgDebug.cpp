@@ -33,9 +33,9 @@ namespace BR
 			void RegisterDebugTracePartyMatching()
 			{
  				// S2C: 
-				MessageDebugTraceMapPartyMatching.insert(std::make_pair(PartyMatching::PartyGameMatchedS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   PartyMatching::PartyGameMatchedS2CEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapPartyMatching.insert(std::make_pair(PartyMatching::PartyGameMatchedS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   PartyMatching::PartyGameMatchedS2CEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// S2C: 
-				MessageDebugTraceMapPartyMatching.insert(std::make_pair(PartyMatching::PlayerGameMatchedS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   PartyMatching::PlayerGameMatchedS2CEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapPartyMatching.insert(std::make_pair(PartyMatching::PlayerGameMatchedS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   PartyMatching::PlayerGameMatchedS2CEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTracePartyMatching()
 
 

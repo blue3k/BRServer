@@ -185,7 +185,7 @@ namespace Svr
 
 			SharedPointerT<Transaction> pPrevTrans = nullptr;
 			do {
-				transID.Components.TransID = GenTransIndex();
+				transID.Components.TransID = (decltype(transID.Components.TransID))GenTransIndex();
 			} while ((m_activeTrans.Find(transID.GetTransactionIndex(), pPrevTrans)));
 
 

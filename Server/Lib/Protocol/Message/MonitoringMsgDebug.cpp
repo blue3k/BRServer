@@ -33,19 +33,19 @@ namespace BR
 			void RegisterDebugTraceMonitoring()
 			{
  				// Cmd: Add a player to ranking
-				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::GetInstanceListCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::GetInstanceListCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::GetInstanceListRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::GetInstanceListRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::GetInstanceListCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::GetInstanceListCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::GetInstanceListRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::GetInstanceListRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// Cmd: Remove a player to ranking
-				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::RequestCounterValuesCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::RequestCounterValuesCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::RequestCounterValuesRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::RequestCounterValuesRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::RequestCounterValuesCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::RequestCounterValuesCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::RequestCounterValuesRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::RequestCounterValuesRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// C2S: Counter instance is created
-				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::PerformanceCounterNewC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::PerformanceCounterNewC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::PerformanceCounterNewC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::PerformanceCounterNewC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// C2S: Counter instance is deleted
-				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::PerformanceCounterFreeC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::PerformanceCounterFreeC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::PerformanceCounterFreeC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::PerformanceCounterFreeC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// C2S: Counter update broadcast
-				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::PerformanceCounterUpdateC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::PerformanceCounterUpdateC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::PerformanceCounterUpdateC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::PerformanceCounterUpdateC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// S2C: Request from server
-				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapMonitoring.insert(std::make_pair(Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceMonitoring()
 
 

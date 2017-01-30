@@ -547,7 +547,7 @@ namespace Net {
 			else
 			{
 				auto assignIndex = m_iTCPAssignIndex.fetch_add(1,std::memory_order_relaxed) % m_WorkerTCP.GetSize();
-				cbInstance->SetAssignedIOWorker(assignIndex);
+				cbInstance->SetAssignedIOWorker((int)assignIndex);
 				m_WorkerTCP[assignIndex]->RegisterSocket(cbInstance);
 			}
 		}

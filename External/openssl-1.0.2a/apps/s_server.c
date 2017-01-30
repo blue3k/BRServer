@@ -881,8 +881,8 @@ static int cert_status_cb(SSL *s, void *arg)
     X509 *x = NULL;
     X509_STORE_CTX inctx;
     X509_OBJECT obj;
-    OCSP_REQUEST *req = NULL;
-    OCSP_RESPONSE *resp = NULL;
+    SSL_OCSP_REQUEST *req = NULL;
+    SSL_OCSP_RESPONSE *resp = NULL;
     OCSP_CERTID *id = NULL;
     STACK_OF(X509_EXTENSION) *exts;
     int ret = SSL_TLSEXT_ERR_NOACK;

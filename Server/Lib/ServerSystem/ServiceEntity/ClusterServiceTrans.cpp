@@ -179,7 +179,7 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( ((MessageResult*)pRes)->GetMessage() ) );
 
 		svrTrace( Svr::TRC_CLUSTER, "Cluster Joined Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
@@ -241,7 +241,7 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		//svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
+		//svrChk( msgRes.ParseMessage( ((MessageResult*)pRes)->GetMessage() ) );
 		svrTrace( Svr::TRC_CLUSTER, "Cluster RequestDataSync Done Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		CloseTransaction( hr );

@@ -346,7 +346,7 @@ int X509_supported_extension(X509_EXTENSION *ex)
 
 static void setup_dp(X509 *x, DIST_POINT *dp)
 {
-    X509_NAME *iname = NULL;
+    SSL_X509_NAME *iname = NULL;
     int i;
     if (dp->reasons) {
         if (dp->reasons->length > 0)
@@ -834,7 +834,7 @@ int X509_check_akid(X509 *issuer, AUTHORITY_KEYID *akid)
          */
         GENERAL_NAMES *gens;
         GENERAL_NAME *gen;
-        X509_NAME *nm = NULL;
+        SSL_X509_NAME *nm = NULL;
         int i;
         gens = akid->issuer;
         for (i = 0; i < sk_GENERAL_NAME_num(gens); i++) {

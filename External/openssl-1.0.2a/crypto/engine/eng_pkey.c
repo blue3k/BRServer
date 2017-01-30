@@ -158,7 +158,7 @@ EVP_PKEY *ENGINE_load_public_key(ENGINE *e, const char *key_id,
 }
 
 int ENGINE_load_ssl_client_cert(ENGINE *e, SSL *s,
-                                STACK_OF(X509_NAME) *ca_dn, X509 **pcert,
+                                STACK_OF(SSL_X509_NAME) *ca_dn, X509 **pcert,
                                 EVP_PKEY **ppkey, STACK_OF(X509) **pother,
                                 UI_METHOD *ui_method, void *callback_data)
 {

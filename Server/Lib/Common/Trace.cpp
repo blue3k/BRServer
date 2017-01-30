@@ -145,7 +145,7 @@ namespace Trace {
 
 			auto maskValue = strtol(numberStart, nullptr, 16);
 			StrUtil::StringLwr(nameStart, sizeof(stringBuffer));
-			stm_Masks[nameStart] = maskValue;
+			stm_Masks[nameStart] = (uint)maskValue;
 		}
 
 		fclose(file);

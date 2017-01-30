@@ -227,7 +227,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				if (m_PlayerCharacter[player] == 0xFF)
 				{
-					m_PlayerCharacter[player] = character;
+					m_PlayerCharacter[player] = (BYTE)character;
 					break;
 				}
 				player++;

@@ -62,7 +62,8 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual Result ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
 				static Result BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName );
 
@@ -103,7 +104,8 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual Result ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
 				static Result BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID );
 

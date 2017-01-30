@@ -19,6 +19,10 @@
 #include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/BrSvrTypes.h"
 
+#if __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
 
 
 namespace BR {
@@ -51,7 +55,10 @@ namespace Message {
 	MessageData::~MessageData()
 	{
 	}
-
+#if __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
 	void MessageData::AssignSequence( UINT sequence )
 	{
 		// sequence must not assigned twice
@@ -155,13 +162,13 @@ namespace Message {
 		if( m_pMsgHeader->msgID.IDs.Mobile )
 		{
 			AssertRel(m_pMsgHeader->Length >= sizeof(MobileMessageHeader));
-			length = m_pMsgHeader->Length - sizeof(MobileMessageHeader);
+			length = (uint)(m_pMsgHeader->Length - sizeof(MobileMessageHeader));
 			pDataPtr = (BYTE*)(m_pMobileMsgHeader + 1);
 		}
 		else
 		{
 			AssertRel(m_pMsgHeader->Length >= sizeof(MessageHeader));
-			length = m_pMsgHeader->Length - sizeof(MessageHeader);
+			length = (uint)(m_pMsgHeader->Length - sizeof(MessageHeader));
 			pDataPtr = (BYTE*)(m_pMsgHeader + 1);
 		}
 	}
@@ -172,17 +179,17 @@ namespace Message {
 		if( m_pMsgHeader->msgID.IDs.Mobile )
 		{
 			AssertRel(m_pMsgHeader->Length >= sizeof(MobileMessageHeader));
-			length = m_pMsgHeader->Length - sizeof(MobileMessageHeader);
+			length = (uint)(m_pMsgHeader->Length - sizeof(MobileMessageHeader));
 		}
 		else
 		{
 			AssertRel(m_pMsgHeader->Length >= sizeof(MessageHeader));
-			length = m_pMsgHeader->Length - sizeof(MessageHeader);
+			length = (uint)(m_pMsgHeader->Length - sizeof(MessageHeader));
 		}
 		return length;
 	}
 
-	
+
 	// Update checksume
 	void MessageData::UpdateChecksum()
 	{
@@ -326,7 +333,7 @@ namespace Message {
 			return m_hrParsing;
 
 		m_bIsParsed = true;
-		m_hrParsing = ParseIMsg(GetMessage());
+		m_hrParsing = ParseMessage(GetMessage());
 
 		return m_hrParsing;
 	}
@@ -334,3 +341,6 @@ namespace Message {
 } // Message
 } // BR
 
+#if __GNUC__
+#pragma GCC diagnostic pop
+#endif

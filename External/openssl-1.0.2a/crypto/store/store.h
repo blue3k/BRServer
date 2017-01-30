@@ -201,9 +201,9 @@ typedef enum STORE_attribs {
     STORE_ATTR_ISSUERKEYID = 0x03, /* 160 bit string (SHA1) */
     STORE_ATTR_SUBJECTKEYID = 0x04, /* 160 bit string (SHA1) */
     STORE_ATTR_ISSUERSERIALHASH = 0x05, /* 160 bit string (SHA1) */
-    STORE_ATTR_ISSUER = 0x06,   /* X509_NAME * */
+    STORE_ATTR_ISSUER = 0x06,   /* SSL_X509_NAME * */
     STORE_ATTR_SERIAL = 0x07,   /* BIGNUM * */
-    STORE_ATTR_SUBJECT = 0x08,  /* X509_NAME * */
+    STORE_ATTR_SUBJECT = 0x08,  /* SSL_X509_NAME * */
     STORE_ATTR_CERTHASH = 0x09, /* 160 bit string (SHA1) */
     STORE_ATTR_EMAIL = 0x0a,    /* C string */
     STORE_ATTR_FILENAME = 0x0b, /* C string */
@@ -482,7 +482,7 @@ char *STORE_ATTR_INFO_get0_cstr(STORE_ATTR_INFO *attrs,
                                 STORE_ATTR_TYPES code);
 unsigned char *STORE_ATTR_INFO_get0_sha1str(STORE_ATTR_INFO *attrs,
                                             STORE_ATTR_TYPES code);
-X509_NAME *STORE_ATTR_INFO_get0_dn(STORE_ATTR_INFO *attrs,
+SSL_X509_NAME *STORE_ATTR_INFO_get0_dn(STORE_ATTR_INFO *attrs,
                                    STORE_ATTR_TYPES code);
 BIGNUM *STORE_ATTR_INFO_get0_number(STORE_ATTR_INFO *attrs,
                                     STORE_ATTR_TYPES code);
@@ -491,7 +491,7 @@ int STORE_ATTR_INFO_set_cstr(STORE_ATTR_INFO *attrs, STORE_ATTR_TYPES code,
 int STORE_ATTR_INFO_set_sha1str(STORE_ATTR_INFO *attrs, STORE_ATTR_TYPES code,
                                 unsigned char *sha1str, size_t sha1str_size);
 int STORE_ATTR_INFO_set_dn(STORE_ATTR_INFO *attrs, STORE_ATTR_TYPES code,
-                           X509_NAME *dn);
+                           SSL_X509_NAME *dn);
 int STORE_ATTR_INFO_set_number(STORE_ATTR_INFO *attrs, STORE_ATTR_TYPES code,
                                BIGNUM *number);
 int STORE_ATTR_INFO_modify_cstr(STORE_ATTR_INFO *attrs, STORE_ATTR_TYPES code,
@@ -501,7 +501,7 @@ int STORE_ATTR_INFO_modify_sha1str(STORE_ATTR_INFO *attrs,
                                    unsigned char *sha1str,
                                    size_t sha1str_size);
 int STORE_ATTR_INFO_modify_dn(STORE_ATTR_INFO *attrs, STORE_ATTR_TYPES code,
-                              X509_NAME *dn);
+                              SSL_X509_NAME *dn);
 int STORE_ATTR_INFO_modify_number(STORE_ATTR_INFO *attrs,
                                   STORE_ATTR_TYPES code, BIGNUM *number);
 

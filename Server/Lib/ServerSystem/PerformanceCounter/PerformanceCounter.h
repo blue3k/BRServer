@@ -256,7 +256,7 @@ namespace Svr {
 				auto totalCount = m_Values[indexCalculate].TotalCount.load(std::memory_order_relaxed);
 				auto newValue = (total * 1000) / totalCount;
 
-				PerformanceCounterRaw<DataType>::SetRawValue(newValue / timeSince.count());
+				PerformanceCounterRaw<DataType>::SetRawValue((int)(newValue / timeSince.count()));
 
 
 				// clear used values

@@ -33,9 +33,9 @@ namespace BR
 			void RegisterDebugTraceGameMasterServer()
 			{
  				// C2S: Player entered
-				MessageDebugTraceMapGameMasterServer.insert(std::make_pair(GameMasterServer::PlayerEnteredC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameMasterServer::PlayerEnteredC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapGameMasterServer.insert(std::make_pair(GameMasterServer::PlayerEnteredC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameMasterServer::PlayerEnteredC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// C2S: Player leaved
-				MessageDebugTraceMapGameMasterServer.insert(std::make_pair(GameMasterServer::PlayerLeavedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameMasterServer::PlayerLeavedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapGameMasterServer.insert(std::make_pair(GameMasterServer::PlayerLeavedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameMasterServer::PlayerLeavedC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceGameMasterServer()
 
 

@@ -33,7 +33,7 @@ namespace BR
 	
     GameLogChatMessage::GameLogChatMessage(TimeStampSec timeStamp, UINT messageBufferSize)
         : GameLogItem(GameLogType::ChatMessage, timeStamp, sizeof(GameLogChatMessage)+messageBufferSize)
-		,MessageBufferSize(messageBufferSize)
+		,MessageBufferSize((decltype(MessageBufferSize))messageBufferSize)
     {
     }
         
@@ -68,7 +68,7 @@ namespace BR
 	
     GameLogVote::GameLogVote(TimeStampSec timeStamp, UINT numVoter)
 		: GameLogItem(GameLogType::Vote,timeStamp,sizeof(GameLogVote) + sizeof(VoteInfo)*std::min((UINT)GameConst::MAX_GAMEPLAYER,numVoter-1))
-		,NumberOfVoter(numVoter)
+		,NumberOfVoter((decltype(NumberOfVoter))numVoter)
     {
 		Assert(numVoter <= GameConst::MAX_GAMEPLAYER);
     }

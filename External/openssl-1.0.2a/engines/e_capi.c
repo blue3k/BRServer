@@ -98,8 +98,8 @@
 
 #ifdef __COMPILE_CAPIENG
 
-# undef X509_EXTENSIONS
-# undef X509_CERT_PAIR
+# undef SSL_X509_EXTENSIONS
+# undef SSL_X509_CERT_PAIR
 
 /* Definitions which may be missing from earlier version of headers */
 # ifndef CERT_STORE_OPEN_EXISTING_FLAG
@@ -158,7 +158,7 @@ static DSA_SIG *capi_dsa_do_sign(const unsigned char *digest, int dlen,
 static int capi_dsa_free(DSA *dsa);
 
 static int capi_load_ssl_client_cert(ENGINE *e, SSL *ssl,
-                                     STACK_OF(X509_NAME) *ca_dn, X509 **pcert,
+                                     STACK_OF(SSL_X509_NAME) *ca_dn, X509 **pcert,
                                      EVP_PKEY **pkey, STACK_OF(X509) **pother,
                                      UI_METHOD *ui_method,
                                      void *callback_data);
@@ -1618,10 +1618,10 @@ static int capi_ctx_set_provname_idx(CAPI_CTX * ctx, int idx)
     return res;
 }
 
-static int cert_issuer_match(STACK_OF(X509_NAME) *ca_dn, X509 *x)
+static int cert_issuer_match(STACK_OF(SSL_X509_NAME) *ca_dn, X509 *x)
 {
     int i;
-    X509_NAME *nm;
+    SSL_X509_NAME *nm;
     /* Special case: empty list: match anything */
     if (sk_X509_NAME_num(ca_dn) <= 0)
         return 1;
@@ -1634,7 +1634,7 @@ static int cert_issuer_match(STACK_OF(X509_NAME) *ca_dn, X509 *x)
 }
 
 static int capi_load_ssl_client_cert(ENGINE *e, SSL *ssl,
-                                     STACK_OF(X509_NAME) *ca_dn, X509 **pcert,
+                                     STACK_OF(SSL_X509_NAME) *ca_dn, X509 **pcert,
                                      EVP_PKEY **pkey, STACK_OF(X509) **pother,
                                      UI_METHOD *ui_method,
                                      void *callback_data)

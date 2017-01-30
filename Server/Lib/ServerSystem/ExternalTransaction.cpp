@@ -23,11 +23,7 @@
 #include "ServerSystem/ExternalTransactionManager.h"
 #include "ServerSystem/BrServer.h"
 
-#if WINDOWS
-#include "zlib/zlib.h"
-#else
 #include "zlib.h"
-#endif
 
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::GCMHttpExternalTransaction);

@@ -282,8 +282,8 @@ int StringCmpLwr( const char* szSrc, INT iSrcBuffLen, const char* szDest, INT iD
 
 	for( INT iComp = 0; iComp < iCompLen && szSrc[0] != '\0' && szDest[0] != '\0'; iComp++ )
 	{
-		char src = (szSrc[0] >= 'A' && szSrc[0] <= 'Z') ? (szSrc[0] - 'A' + 'a') : szSrc[0];
-		char dst = (szDest[0] >= 'A' && szDest[0] <= 'Z') ? (szDest[0] - 'A' + 'a') : szDest[0];
+		char src = (char)((szSrc[0] >= 'A' && szSrc[0] <= 'Z') ? (szSrc[0] - 'A' + 'a') : szSrc[0]);
+		char dst = (char)((szDest[0] >= 'A' && szDest[0] <= 'Z') ? (szDest[0] - 'A' + 'a') : szDest[0]);
 		int iDiff = src - dst;
 		if( iDiff != 0 )
 			return iDiff;
@@ -397,7 +397,7 @@ Result StringLwr( char* szSrc, INT iBuffLen )
 	for( INT iConv = 0; iConv < iBuffLen && szSrc[0] != '\0'; iConv++ )
 	{
 		if( szSrc[0] >= 'A' && szSrc[0] <= 'Z' )
-			szSrc[0] = szSrc[0] - 'A' + 'a';
+			szSrc[0] = (char)(szSrc[0] - 'A' + 'a');
 
 		szSrc++;
 	}
@@ -580,7 +580,7 @@ inline Result StringUpr( char* szSrc, INT iBuffLen )
 	for( INT iConv = 0; iConv < iBuffLen && szSrc[0] != '\0'; iConv++ )
 	{
 		if( szSrc[0] >= 'a' && szSrc[0] <= 'z' )
-			szSrc[0] = szSrc[0] - 'a' + 'A';
+			szSrc[0] = (char)(szSrc[0] - 'a' + 'A');
 
 		szSrc++;
 	}

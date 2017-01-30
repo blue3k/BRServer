@@ -1,95 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <None Include="Assets\linux_nmake.xaml">
-      <Filter>Assets</Filter>
-    </None>
-    <None Include="Assets\LinuxDebugger.xaml">
-      <Filter>Assets</Filter>
-    </None>
-    <None Include="Assets\LocalDebugger.xaml">
-      <Filter>Assets</Filter>
-    </None>
-    <None Include="Readme\images\debugproperties.png">
-      <Filter>Readme\images</Filter>
-    </None>
-    <None Include="Readme\images\remotebuild.png">
-      <Filter>Readme\images</Filter>
-    </None>
-    <None Include="Readme\images\remotebuildcmdline.png">
-      <Filter>Readme\images</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Readme\readme.html">
-      <Filter>Readme</Filter>
-    </Text>
-    <Text Include="Readme\readme.txt">
-      <Filter>Readme</Filter>
-    </Text>
-    <Text Include="Readme\stylesheet.css">
-      <Filter>Readme</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Assets">
-      <UniqueIdentifier>{08a26e93-524c-4982-a01c-c8d4f223d6be}</UniqueIdentifier>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Readme">
-      <UniqueIdentifier>{35c51339-ba9d-43c8-bd71-5f3199e89878}</UniqueIdentifier>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Readme\images">
-      <UniqueIdentifier>{fba64bae-4073-4f46-af33-d3b048352479}</UniqueIdentifier>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="conspiracy">
-      <UniqueIdentifier>{3c931c68-4523-4a25-88ae-2b3c57aaed27}</UniqueIdentifier>
+      <UniqueIdentifier>{dfd8109f-11a4-4fa8-b476-bc23e86e98c5}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="conspiracy\GameConfigTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="conspiracy\LevelTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="conspiracy\OrganicTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="conspiracy\RewardTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="conspiracy\ShopTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="TableQueries.cpp" />
-    <ClCompile Include="TableSystem.cpp" />
-    <ClCompile Include="conspiracy\BotTalkTbl.cpp">
-      <Filter>conspiracy</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="conspiracy\GameConfigTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
-    <ClInclude Include="conspiracy\LevelTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
-    <ClInclude Include="conspiracy\OrganicTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
-    <ClInclude Include="conspiracy\RewardTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
-    <ClInclude Include="conspiracy\ShopTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TableQueries.h" />
-    <ClInclude Include="TableSystem.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="conspiracy\BotTalkTbl.h">
-      <Filter>conspiracy</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1150,7 +1150,7 @@ static void crl_akid_check(X509_STORE_CTX *ctx, X509_CRL *crl,
                            X509 **pissuer, int *pcrl_score)
 {
     X509 *crl_issuer = NULL;
-    X509_NAME *cnm = X509_CRL_get_issuer(crl);
+    SSL_X509_NAME *cnm = X509_CRL_get_issuer(crl);
     int cidx = ctx->error_depth;
     int i;
 
@@ -1260,15 +1260,15 @@ static int check_crl_chain(X509_STORE_CTX *ctx,
 
 /*-
  * Check for match between two dist point names: three separate cases.
- * 1. Both are relative names and compare X509_NAME types.
- * 2. One full, one relative. Compare X509_NAME to GENERAL_NAMES.
+ * 1. Both are relative names and compare SSL_X509_NAME types.
+ * 2. One full, one relative. Compare SSL_X509_NAME to GENERAL_NAMES.
  * 3. Both are full names and compare two GENERAL_NAMES.
  * 4. One is NULL: automatic match.
  */
 
 static int idp_check_dp(DIST_POINT_NAME *a, DIST_POINT_NAME *b)
 {
-    X509_NAME *nm = NULL;
+    SSL_X509_NAME *nm = NULL;
     GENERAL_NAMES *gens = NULL;
     GENERAL_NAME *gena, *genb;
     int i, j;
@@ -1277,7 +1277,7 @@ static int idp_check_dp(DIST_POINT_NAME *a, DIST_POINT_NAME *b)
     if (a->type == 1) {
         if (!a->dpname)
             return 0;
-        /* Case 1: two X509_NAME */
+        /* Case 1: two SSL_X509_NAME */
         if (b->type == 1) {
             if (!b->dpname)
                 return 0;
@@ -1297,7 +1297,7 @@ static int idp_check_dp(DIST_POINT_NAME *a, DIST_POINT_NAME *b)
         nm = b->dpname;
     }
 
-    /* Handle case 2 with one GENERAL_NAMES and one X509_NAME */
+    /* Handle case 2 with one GENERAL_NAMES and one SSL_X509_NAME */
     if (nm) {
         for (i = 0; i < sk_GENERAL_NAME_num(gens); i++) {
             gena = sk_GENERAL_NAME_value(gens, i);
@@ -1327,7 +1327,7 @@ static int idp_check_dp(DIST_POINT_NAME *a, DIST_POINT_NAME *b)
 static int crldp_check_crlissuer(DIST_POINT *dp, X509_CRL *crl, int crl_score)
 {
     int i;
-    X509_NAME *nm = X509_CRL_get_issuer(crl);
+    SSL_X509_NAME *nm = X509_CRL_get_issuer(crl);
     /* If no CRLissuer return is successful iff don't need a match */
     if (!dp->CRLissuer)
         return ! !(crl_score & CRL_SCORE_ISSUER_NAME);
@@ -1386,7 +1386,7 @@ static int get_crl_delta(X509_STORE_CTX *ctx,
     unsigned int reasons;
     X509_CRL *crl = NULL, *dcrl = NULL;
     STACK_OF(X509_CRL) *skcrl;
-    X509_NAME *nm = X509_get_issuer_name(x);
+    SSL_X509_NAME *nm = X509_get_issuer_name(x);
     reasons = ctx->current_reasons;
     ok = get_crl_sk(ctx, &crl, &dcrl,
                     &issuer, &crl_score, &reasons, ctx->crls);
@@ -2384,7 +2384,7 @@ IMPLEMENT_STACK_OF(X509)
 
 IMPLEMENT_ASN1_SET_OF(X509)
 
-IMPLEMENT_STACK_OF(X509_NAME)
+IMPLEMENT_STACK_OF(SSL_X509_NAME)
 
 IMPLEMENT_STACK_OF(X509_ATTRIBUTE)
 

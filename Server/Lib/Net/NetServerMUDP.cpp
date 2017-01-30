@@ -92,7 +92,7 @@ namespace Net {
 
 		pNetCtrl = (MsgMobileNetCtrl*)pMsg->GetMessageBuff();
 		pNetCtrl->PeerID = UID;
-		pNetCtrl->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrl->msgID.SetSequence(uiSequence);
 		pNetCtrl->rtnMsgID = msgID;
 
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = true;

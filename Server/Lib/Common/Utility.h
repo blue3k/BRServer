@@ -31,20 +31,20 @@ namespace Util {
 	//	Generic utility functions
 	//
 	// Swap byte of data
-	inline UINT16 SwapByte( UINT16 uiData );
-	inline UINT32 SwapByte( UINT32 uiData );
-	inline UINT64 SwapByte( UINT64 uiData );
+	inline uint16_t SwapByte(uint16_t uiData );
+	inline uint32_t SwapByte(uint32_t uiData );
+	inline uint64_t SwapByte(uint64_t uiData );
 
 
 	// Make crc32 checksum
-	UINT32 Crc32( size_t uiBuffSize, const BYTE* pBuff );
-	UINT32 Crc32( UINT32 uiCrc32, size_t uiBuffSize, const BYTE* pBuff );
+	uint32_t Crc32( size_t uiBuffSize, const BYTE* pBuff );
+	uint32_t Crc32(uint32_t uiCrc32, size_t uiBuffSize, const BYTE* pBuff );
 
 	// Make crc32 checksum and encrypt
-	UINT32 Crc32NEncrypt( size_t uiBuffSize, BYTE* pBuff );
+	uint32_t Crc32NEncrypt( size_t uiBuffSize, BYTE* pBuff );
 
 	// Make crc32 checksum and decrypt
-	UINT32 Crc32NDecrypt( size_t uiBuffSize, BYTE* pBuff );
+	uint32_t Crc32NDecrypt( size_t uiBuffSize, BYTE* pBuff );
 
 
 	// Base 64 encode/decode
@@ -59,7 +59,7 @@ namespace Util {
 
 
 	// Make power of 2 value from given number, will bigger then input
-	UINT NearPowerOf2( UINT32 uiNumber );
+	UINT NearPowerOf2(uint32_t uiNumber );
 
 	// Service Name
 	const WCHAR* GetServiceName();

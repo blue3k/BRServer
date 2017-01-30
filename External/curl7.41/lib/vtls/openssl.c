@@ -639,7 +639,7 @@ int cert_stuff(struct connectdata *conn,
 }
 
 /* returns non-zero on failure */
-static int x509_name_oneline(X509_NAME *a, char *buf, size_t size)
+static int x509_name_oneline(SSL_X509_NAME *a, char *buf, size_t size)
 {
 #if 0
   return X509_NAME_oneline(a, buf, size);
@@ -1138,7 +1138,7 @@ static CURLcode verifyhost(struct connectdata *conn, X509 *server_cert)
     unsigned char *nulstr = (unsigned char *)"";
     unsigned char *peer_CN = nulstr;
 
-    X509_NAME *name = X509_get_subject_name(server_cert);
+    SSL_X509_NAME *name = X509_get_subject_name(server_cert);
     if(name)
       while((j = X509_NAME_get_index_by_NID(name, NID_commonName, i))>=0)
         i=j;
@@ -1224,7 +1224,7 @@ static CURLcode verifystatus(struct connectdata *conn,
   CURLcode result = CURLE_OK;
   struct SessionHandle *data = conn->data;
 
-  OCSP_RESPONSE *rsp = NULL;
+  SSL_OCSP_RESPONSE *rsp = NULL;
   OCSP_BASICRESP *br = NULL;
   X509_STORE     *st = NULL;
   STACK_OF(X509) *ch = NULL;

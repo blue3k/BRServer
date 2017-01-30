@@ -65,7 +65,7 @@ namespace Message {
 	static_assert((UINT)NetClass::Max <= NET_SEQUENCE_MASK, "Too big net class value");
 #endif
 
-	typedef union tag_MessageID
+	union MessageID
 	{
 		struct {
 			UINT32 Sequence : NET_SEQUENCE_BITS;
@@ -83,19 +83,21 @@ namespace Message {
 		} IDSeq;
 		UINT32 ID;
 
-		inline tag_MessageID();
+		inline MessageID();
 		//inline tag_MessageID( const tag_MessageID& src );
-		inline tag_MessageID( UINT32 uiID );
-		inline tag_MessageID( UINT uiType, UINT uiReliability, UINT uiMobility, UINT uiPolicy, UINT uiCode );
+		inline MessageID( UINT32 uiID );
+		inline MessageID( UINT uiType, UINT uiReliability, UINT uiMobility, UINT uiPolicy, UINT uiCode );
 
 		inline UINT32 SetMessageID( UINT uiType, UINT uiReliability, UINT uiMobility, UINT uiPolicy, UINT uiCode );
+
+		void SetSequence(UINT sequence);
 
 		// Only MsgID part, no sequence or length
 		UINT GetMsgID() const;
 #ifndef SWIG
 		inline operator UINT32() const;
 #endif
-	} MessageID;
+	};
 
 
 
@@ -163,6 +165,19 @@ namespace Message {
 		// bit field termination
 		UINT32					: 0;
 
+
+#if __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+		void SetCrc(UINT crc)
+		{
+			Crc32 = crc;
+			if (Crc32 == 0) Crc32 = ~Crc32;
+		}
+#if __GNUC__
+#pragma GCC diagnostic pop
+#endif
 	};
 
 	static INT SequenceDifference(UINT seq1, UINT seq2);
@@ -276,7 +291,7 @@ namespace Message {
 		inline Result GetParsingResult();
 
 		virtual Result ParseMsg();
-		virtual Result ParseIMsg( MessageData* pIMsg ) = 0;
+		virtual Result ParseMessage( MessageData* pIMsg ) = 0;
 
 		virtual Result OverrideRouteContextDestination( EntityUID to ) { unused(to); AssertRel(false); return ResultCode::SUCCESS; }
 		virtual Result OverrideRouteInfomation( EntityUID to, UINT hopCount ) { unused(to, hopCount); AssertRel(false); return ResultCode::SUCCESS; }

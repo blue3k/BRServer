@@ -129,7 +129,7 @@ int X509_CRL_match(const X509_CRL *a, const X509_CRL *b)
 }
 #endif
 
-X509_NAME *X509_get_issuer_name(X509 *a)
+SSL_X509_NAME *X509_get_issuer_name(X509 *a)
 {
     return (a->cert_info->issuer);
 }
@@ -146,7 +146,7 @@ unsigned long X509_issuer_name_hash_old(X509 *x)
 }
 #endif
 
-X509_NAME *X509_get_subject_name(X509 *a)
+SSL_X509_NAME *X509_get_subject_name(X509 *a)
 {
     return (a->cert_info->subject);
 }
@@ -199,20 +199,20 @@ int X509_cmp(const X509 *a, const X509 *b)
 }
 #endif
 
-int X509_NAME_cmp(const X509_NAME *a, const X509_NAME *b)
+int X509_NAME_cmp(const SSL_X509_NAME *a, const SSL_X509_NAME *b)
 {
     int ret;
 
     /* Ensure canonical encoding is present and up to date */
 
     if (!a->canon_enc || a->modified) {
-        ret = i2d_X509_NAME((X509_NAME *)a, NULL);
+        ret = i2d_X509_NAME((SSL_X509_NAME *)a, NULL);
         if (ret < 0)
             return -2;
     }
 
     if (!b->canon_enc || b->modified) {
-        ret = i2d_X509_NAME((X509_NAME *)b, NULL);
+        ret = i2d_X509_NAME((SSL_X509_NAME *)b, NULL);
         if (ret < 0)
             return -2;
     }
@@ -226,12 +226,12 @@ int X509_NAME_cmp(const X509_NAME *a, const X509_NAME *b)
 
 }
 
-unsigned long X509_NAME_hash(X509_NAME *x)
+unsigned long X509_NAME_hash(SSL_X509_NAME *x)
 {
     unsigned long ret = 0;
     unsigned char md[SHA_DIGEST_LENGTH];
 
-    /* Make sure X509_NAME structure contains valid cached encoding */
+    /* Make sure SSL_X509_NAME structure contains valid cached encoding */
     i2d_X509_NAME(x, NULL);
     if (!EVP_Digest(x->canon_enc, x->canon_enclen, md, NULL, EVP_sha1(),
                     NULL))
@@ -249,13 +249,13 @@ unsigned long X509_NAME_hash(X509_NAME *x)
  * this is reasonably efficient.
  */
 
-unsigned long X509_NAME_hash_old(X509_NAME *x)
+unsigned long X509_NAME_hash_old(SSL_X509_NAME *x)
 {
     EVP_MD_CTX md_ctx;
     unsigned long ret = 0;
     unsigned char md[16];
 
-    /* Make sure X509_NAME structure contains valid cached encoding */
+    /* Make sure SSL_X509_NAME structure contains valid cached encoding */
     i2d_X509_NAME(x, NULL);
     EVP_MD_CTX_init(&md_ctx);
     EVP_MD_CTX_set_flags(&md_ctx, EVP_MD_CTX_FLAG_NON_FIPS_ALLOW);
@@ -272,7 +272,7 @@ unsigned long X509_NAME_hash_old(X509_NAME *x)
 #endif
 
 /* Search a stack of X509 for a match */
-X509 *X509_find_by_issuer_and_serial(STACK_OF(X509) *sk, X509_NAME *name,
+X509 *X509_find_by_issuer_and_serial(STACK_OF(X509) *sk, SSL_X509_NAME *name,
                                      ASN1_INTEGER *serial)
 {
     int i;
@@ -294,7 +294,7 @@ X509 *X509_find_by_issuer_and_serial(STACK_OF(X509) *sk, X509_NAME *name,
     return (NULL);
 }
 
-X509 *X509_find_by_subject(STACK_OF(X509) *sk, X509_NAME *name)
+X509 *X509_find_by_subject(STACK_OF(X509) *sk, SSL_X509_NAME *name)
 {
     X509 *x509;
     int i;

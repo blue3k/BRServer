@@ -186,7 +186,7 @@ namespace Net {
 
 		pNetCtrlMsg = (MsgNetCtrl*)(m_pGatheringBuffer+m_uiGatheredSize);
 		pNetCtrlMsg->msgID.ID = uiCtrlCode;
-		pNetCtrlMsg->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrlMsg->msgID.SetSequence(uiSequence);
 		pNetCtrlMsg->rtnMsgID = msgID;
 
 		if( UID != 0 )
@@ -338,11 +338,11 @@ namespace Net {
 
 			MsgMobileNetCtrlSequenceFrame* pCurrentFrame = nullptr;
 
-			netChkPtr(pNewMessageData = Message::MessageData::NewMessage(PACKET_NETCTRL_SEQUENCE_FRAME, frameSize + sizeof(MsgMobileNetCtrlSequenceFrame), pMsg->GetMessageBuff() + offset));
+			netChkPtr(pNewMessageData = Message::MessageData::NewMessage(PACKET_NETCTRL_SEQUENCE_FRAME, (uint)(frameSize + sizeof(MsgMobileNetCtrlSequenceFrame)), pMsg->GetMessageBuff() + offset));
 
 			pCurrentFrame = (MsgMobileNetCtrlSequenceFrame*)pNewMessageData->GetMessageBuff();
 			pCurrentFrame->TotalSize = pMsgHeader->Length;
-			pCurrentFrame->SubSequence = iSequence;
+			pCurrentFrame->SubSequence = (USHORT)iSequence;
 
 			netChk(m_SendReliableWindow.EnqueueMessage(ulTimeCur, pNewMessageData));
 			pNewMessageData->AddRef();// Inc Ref for send
@@ -379,7 +379,7 @@ namespace Net {
 
 		auto* pFrame = (MsgMobileNetCtrlSequenceFrame*)pMsgHeader;
 		UINT subFrameSequence = pFrame->SubSequence;
-		UINT frameSize = pFrame->Length - sizeof(MsgMobileNetCtrlSequenceFrame);
+		UINT frameSize = (UINT)(pFrame->Length - sizeof(MsgMobileNetCtrlSequenceFrame));
 		UINT totalSize = pFrame->TotalSize;
 		auto* dataPtr = (const BYTE*)(pFrame + 1);
 		UINT offset = subFrameSequence * Message::MAX_SUBFRAME_SIZE;

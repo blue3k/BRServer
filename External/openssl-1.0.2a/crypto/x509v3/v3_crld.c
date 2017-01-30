@@ -122,7 +122,7 @@ static int set_dist_point_name(DIST_POINT_NAME **pdp, X509V3_CTX *ctx,
     } else if (!strcmp(cnf->name, "relativename")) {
         int ret;
         STACK_OF(CONF_VALUE) *dnsect;
-        X509_NAME *nm;
+        SSL_X509_NAME *nm;
         nm = X509_NAME_new();
         if (!nm)
             return -1;
@@ -136,7 +136,7 @@ static int set_dist_point_name(DIST_POINT_NAME **pdp, X509V3_CTX *ctx,
         X509V3_section_free(ctx, dnsect);
         rnm = nm->entries;
         nm->entries = NULL;
-        X509_NAME_free(nm);
+        SSL_X509_NAME_free(nm);
         if (!ret || sk_X509_NAME_ENTRY_num(rnm) <= 0)
             goto err;
         /*
@@ -357,7 +357,7 @@ static int dpn_cb(int operation, ASN1_VALUE **pval, const ASN1_ITEM *it,
 
     case ASN1_OP_FREE_POST:
         if (dpn->dpname)
-            X509_NAME_free(dpn->dpname);
+            SSL_X509_NAME_free(dpn->dpname);
         break;
     }
     return 1;
@@ -479,7 +479,7 @@ static int print_distpoint(BIO *out, DIST_POINT_NAME *dpn, int indent)
         BIO_printf(out, "%*sFull Name:\n", indent, "");
         print_gens(out, dpn->name.fullname, indent);
     } else {
-        X509_NAME ntmp;
+        SSL_X509_NAME ntmp;
         ntmp.entries = dpn->name.relativename;
         BIO_printf(out, "%*sRelative Name:\n%*s", indent, "", indent + 2, "");
         X509_NAME_print_ex(out, &ntmp, 0, XN_FLAG_ONELINE);
@@ -533,7 +533,7 @@ static int i2r_crldp(const X509V3_EXT_METHOD *method, void *pcrldp, BIO *out,
     return 1;
 }
 
-int DIST_POINT_set_dpname(DIST_POINT_NAME *dpn, X509_NAME *iname)
+int DIST_POINT_set_dpname(DIST_POINT_NAME *dpn, SSL_X509_NAME *iname)
 {
     int i;
     STACK_OF(X509_NAME_ENTRY) *frag;
@@ -547,14 +547,14 @@ int DIST_POINT_set_dpname(DIST_POINT_NAME *dpn, X509_NAME *iname)
     for (i = 0; i < sk_X509_NAME_ENTRY_num(frag); i++) {
         ne = sk_X509_NAME_ENTRY_value(frag, i);
         if (!X509_NAME_add_entry(dpn->dpname, ne, -1, i ? 0 : 1)) {
-            X509_NAME_free(dpn->dpname);
+            SSL_X509_NAME_free(dpn->dpname);
             dpn->dpname = NULL;
             return 0;
         }
     }
     /* generate cached encoding of name */
     if (i2d_X509_NAME(dpn->dpname, NULL) < 0) {
-        X509_NAME_free(dpn->dpname);
+        SSL_X509_NAME_free(dpn->dpname);
         dpn->dpname = NULL;
         return 0;
     }

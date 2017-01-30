@@ -30,7 +30,7 @@ namespace BR
 		{
  			// C2S: Client heart bit
 			const MessageID HeartBitC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 0);
-			Result HeartBitC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result HeartBitC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -44,7 +44,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result HeartBitC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result HeartBitC2SEvt::ParseMessage( MessageData* pIMsg )
 
 			Result HeartBitC2SEvt::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -77,7 +77,7 @@ namespace BR
 
 			// Cmd: Player connected from a login server and moved to game server
 			const MessageID JoinGameServerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 1);
-			Result JoinGameServerCmd::ParseIMsg( MessageData* pIMsg )
+			Result JoinGameServerCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -86,19 +86,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_AccID, pCur, iMsgSize, sizeof(AccountID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LoginEntityUID, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_AccID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LoginEntityUID, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result JoinGameServerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result JoinGameServerCmd::ParseMessage( MessageData* pIMsg )
 
 			Result JoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
 			{
@@ -140,7 +140,7 @@ namespace BR
 			}; // void JoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID JoinGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 1);
-			Result JoinGameServerRes::ParseIMsg( MessageData* pIMsg )
+			Result JoinGameServerRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -150,23 +150,23 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfNickName, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_NickName, pCur, iMsgSize, sizeof(char)*uiSizeOfNickName ) );
-				protocolChk( Protocol::StreamParamCopy( &m_GameUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PartyLeaderID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MatchingTicket, pCur, iMsgSize, sizeof(MatchingQueueTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfNickName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_NickName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfNickName ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyLeaderID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MatchingTicket, pCur, iMsgSize, (int)sizeof(MatchingQueueTicket) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result JoinGameServerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result JoinGameServerRes::ParseMessage( MessageData* pIMsg )
 
 			Result JoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const char* InNickName, const GameInsUID &InGameUID, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const MatchingQueueTicket &InMatchingTicket )
 			{
@@ -216,7 +216,7 @@ namespace BR
 
 			// Cmd: player complition statues
 			const MessageID GetComplitionStateCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 2);
-			Result GetComplitionStateCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetComplitionStateCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -230,7 +230,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetComplitionStateCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetComplitionStateCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GetComplitionStateCmd::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -262,7 +262,7 @@ namespace BR
 			}; // void GetComplitionStateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetComplitionStateRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 2);
-			Result GetComplitionStateRes::ParseIMsg( MessageData* pIMsg )
+			Result GetComplitionStateRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -272,19 +272,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfComplitionState, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_ComplitionState, pCur, iMsgSize, sizeof(char)*uiSizeOfComplitionState ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfComplitionState, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_ComplitionState, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfComplitionState ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GetComplitionStateRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetComplitionStateRes::ParseMessage( MessageData* pIMsg )
 
 			Result GetComplitionStateRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const char* InComplitionState )
 			{
@@ -326,7 +326,7 @@ namespace BR
 
 			// Cmd: Player complition state
 			const MessageID SetComplitionStateCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 3);
-			Result SetComplitionStateCmd::ParseIMsg( MessageData* pIMsg )
+			Result SetComplitionStateCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -336,18 +336,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfComplitionState, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_ComplitionState, pCur, iMsgSize, sizeof(char)*uiSizeOfComplitionState ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfComplitionState, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_ComplitionState, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfComplitionState ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result SetComplitionStateCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result SetComplitionStateCmd::ParseMessage( MessageData* pIMsg )
 
 			Result SetComplitionStateCmd::BuildIMsg( OUT MessageData* &pMsg, const char* InComplitionState )
 			{
@@ -386,7 +386,7 @@ namespace BR
 			}; // void SetComplitionStateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID SetComplitionStateRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 3);
-			Result SetComplitionStateRes::ParseIMsg( MessageData* pIMsg )
+			Result SetComplitionStateRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -395,17 +395,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result SetComplitionStateRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result SetComplitionStateRes::ParseMessage( MessageData* pIMsg )
 
 			Result SetComplitionStateRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -444,7 +444,7 @@ namespace BR
 
 			// Cmd: Register Google notification service ID, after this, the player will get notification from google. Only one notification ID can be active at a time
 			const MessageID RegisterGCMCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 4);
-			Result RegisterGCMCmd::ParseIMsg( MessageData* pIMsg )
+			Result RegisterGCMCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -454,18 +454,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfGCMRegisteredID, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_GCMRegisteredID, pCur, iMsgSize, sizeof(char)*uiSizeOfGCMRegisteredID ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfGCMRegisteredID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_GCMRegisteredID, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfGCMRegisteredID ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result RegisterGCMCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterGCMCmd::ParseMessage( MessageData* pIMsg )
 
 			Result RegisterGCMCmd::BuildIMsg( OUT MessageData* &pMsg, const char* InGCMRegisteredID )
 			{
@@ -504,7 +504,7 @@ namespace BR
 			}; // void RegisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterGCMRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 4);
-			Result RegisterGCMRes::ParseIMsg( MessageData* pIMsg )
+			Result RegisterGCMRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -513,17 +513,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result RegisterGCMRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterGCMRes::ParseMessage( MessageData* pIMsg )
 
 			Result RegisterGCMRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -562,7 +562,7 @@ namespace BR
 
 			// Cmd: Unregister Google notification service ID
 			const MessageID UnregisterGCMCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 5);
-			Result UnregisterGCMCmd::ParseIMsg( MessageData* pIMsg )
+			Result UnregisterGCMCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -572,18 +572,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfGCMRegisteredID, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_GCMRegisteredID, pCur, iMsgSize, sizeof(char)*uiSizeOfGCMRegisteredID ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfGCMRegisteredID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_GCMRegisteredID, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfGCMRegisteredID ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result UnregisterGCMCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result UnregisterGCMCmd::ParseMessage( MessageData* pIMsg )
 
 			Result UnregisterGCMCmd::BuildIMsg( OUT MessageData* &pMsg, const char* InGCMRegisteredID )
 			{
@@ -622,7 +622,7 @@ namespace BR
 			}; // void UnregisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID UnregisterGCMRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 5);
-			Result UnregisterGCMRes::ParseIMsg( MessageData* pIMsg )
+			Result UnregisterGCMRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -631,17 +631,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result UnregisterGCMRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result UnregisterGCMRes::ParseMessage( MessageData* pIMsg )
 
 			Result UnregisterGCMRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -680,7 +680,7 @@ namespace BR
 
 			// Cmd: Invite friend
 			const MessageID InviteFriendCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 6);
-			Result InviteFriendCmd::ParseIMsg( MessageData* pIMsg )
+			Result InviteFriendCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -689,17 +689,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_FriendID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_FriendID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result InviteFriendCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result InviteFriendCmd::ParseMessage( MessageData* pIMsg )
 
 			Result InviteFriendCmd::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InFriendID )
 			{
@@ -737,7 +737,7 @@ namespace BR
 			}; // void InviteFriendCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID InviteFriendRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 6);
-			Result InviteFriendRes::ParseIMsg( MessageData* pIMsg )
+			Result InviteFriendRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -746,17 +746,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result InviteFriendRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result InviteFriendRes::ParseMessage( MessageData* pIMsg )
 
 			Result InviteFriendRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -795,7 +795,7 @@ namespace BR
 
 			// Cmd: Accept friend request
 			const MessageID AcceptFriendRequestCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 7);
-			Result AcceptFriendRequestCmd::ParseIMsg( MessageData* pIMsg )
+			Result AcceptFriendRequestCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -804,18 +804,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_InviterID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_InviterFacebookUID, pCur, iMsgSize, sizeof(FacebookUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_InviterID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_InviterFacebookUID, pCur, iMsgSize, (int)sizeof(FacebookUID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result AcceptFriendRequestCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result AcceptFriendRequestCmd::ParseMessage( MessageData* pIMsg )
 
 			Result AcceptFriendRequestCmd::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InInviterID, const FacebookUID &InInviterFacebookUID )
 			{
@@ -855,7 +855,7 @@ namespace BR
 			}; // void AcceptFriendRequestCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID AcceptFriendRequestRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 7);
-			Result AcceptFriendRequestRes::ParseIMsg( MessageData* pIMsg )
+			Result AcceptFriendRequestRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -864,18 +864,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_NewFriend, pCur, iMsgSize, sizeof(FriendInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NewFriend, pCur, iMsgSize, (int)sizeof(FriendInformation) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result AcceptFriendRequestRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result AcceptFriendRequestRes::ParseMessage( MessageData* pIMsg )
 
 			Result AcceptFriendRequestRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const FriendInformation &InNewFriend )
 			{
@@ -916,7 +916,7 @@ namespace BR
 
 			// S2C: Notification for friend request is accepted
 			const MessageID FriendRequestAcceptedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 8);
-			Result FriendRequestAcceptedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result FriendRequestAcceptedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -925,17 +925,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Accepter, pCur, iMsgSize, sizeof(FriendInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Accepter, pCur, iMsgSize, (int)sizeof(FriendInformation) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result FriendRequestAcceptedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result FriendRequestAcceptedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result FriendRequestAcceptedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const FriendInformation &InAccepter )
 			{
@@ -974,7 +974,7 @@ namespace BR
 
 			// Cmd: Remove friden form the friend list
 			const MessageID RemoveFriendCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 9);
-			Result RemoveFriendCmd::ParseIMsg( MessageData* pIMsg )
+			Result RemoveFriendCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -983,17 +983,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_FriendID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_FriendID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result RemoveFriendCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RemoveFriendCmd::ParseMessage( MessageData* pIMsg )
 
 			Result RemoveFriendCmd::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InFriendID )
 			{
@@ -1031,7 +1031,7 @@ namespace BR
 			}; // void RemoveFriendCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RemoveFriendRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 9);
-			Result RemoveFriendRes::ParseIMsg( MessageData* pIMsg )
+			Result RemoveFriendRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1040,18 +1040,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_FriendID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_FriendID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result RemoveFriendRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RemoveFriendRes::ParseMessage( MessageData* pIMsg )
 
 			Result RemoveFriendRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PlayerID &InFriendID )
 			{
@@ -1092,7 +1092,7 @@ namespace BR
 
 			// S2C: Friend removed
 			const MessageID FriendRemovedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 10);
-			Result FriendRemovedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result FriendRemovedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1101,17 +1101,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_FriendID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_FriendID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result FriendRemovedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result FriendRemovedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result FriendRemovedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InFriendID )
 			{
@@ -1150,7 +1150,7 @@ namespace BR
 
 			// Cmd: Get friend list
 			const MessageID GetFriendListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 11);
-			Result GetFriendListCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetFriendListCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1159,18 +1159,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_StartIndex, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Count, pCur, iMsgSize, sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_StartIndex, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Count, pCur, iMsgSize, (int)sizeof(UINT16) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GetFriendListCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetFriendListCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GetFriendListCmd::BuildIMsg( OUT MessageData* &pMsg, const UINT16 &InStartIndex, const UINT16 &InCount )
 			{
@@ -1210,7 +1210,7 @@ namespace BR
 			}; // void GetFriendListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetFriendListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 11);
-			Result GetFriendListRes::ParseIMsg( MessageData* pIMsg )
+			Result GetFriendListRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1220,15 +1220,15 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MaxFriendSlot, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalNumberOfFriends, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_StartIndex, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofFriendList, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pFriendList, pCur, iMsgSize, sizeof(FriendInformation)*numberofFriendList ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MaxFriendSlot, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalNumberOfFriends, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_StartIndex, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofFriendList, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pFriendList, pCur, iMsgSize, (int)sizeof(FriendInformation)*numberofFriendList ) );
 				m_FriendList.SetLinkedBuffer(numberofFriendList, numberofFriendList, pFriendList);
 
 
@@ -1236,7 +1236,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetFriendListRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetFriendListRes::ParseMessage( MessageData* pIMsg )
 
 			Result GetFriendListRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT16 &InMaxFriendSlot, const UINT16 &InTotalNumberOfFriends, const UINT16 &InStartIndex, const Array<FriendInformation>& InFriendList )
 			{
@@ -1285,7 +1285,7 @@ namespace BR
 
 			// Cmd: Query notification list
 			const MessageID GetNotificationListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 12);
-			Result GetNotificationListCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetNotificationListCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1299,7 +1299,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetNotificationListCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetNotificationListCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GetNotificationListCmd::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -1331,7 +1331,7 @@ namespace BR
 			}; // void GetNotificationListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetNotificationListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 12);
-			Result GetNotificationListRes::ParseIMsg( MessageData* pIMsg )
+			Result GetNotificationListRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1340,17 +1340,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GetNotificationListRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetNotificationListRes::ParseMessage( MessageData* pIMsg )
 
 			Result GetNotificationListRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -1389,7 +1389,7 @@ namespace BR
 
 			// Cmd: Delete notification
 			const MessageID DeleteNotificationCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 13);
-			Result DeleteNotificationCmd::ParseIMsg( MessageData* pIMsg )
+			Result DeleteNotificationCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1398,17 +1398,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result DeleteNotificationCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result DeleteNotificationCmd::ParseMessage( MessageData* pIMsg )
 
 			Result DeleteNotificationCmd::BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InNotificationID )
 			{
@@ -1446,7 +1446,7 @@ namespace BR
 			}; // void DeleteNotificationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID DeleteNotificationRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 13);
-			Result DeleteNotificationRes::ParseIMsg( MessageData* pIMsg )
+			Result DeleteNotificationRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1455,18 +1455,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result DeleteNotificationRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result DeleteNotificationRes::ParseMessage( MessageData* pIMsg )
 
 			Result DeleteNotificationRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InNotificationID )
 			{
@@ -1507,7 +1507,7 @@ namespace BR
 
 			// Cmd: Set notification is read
 			const MessageID SetNotificationReadCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 14);
-			Result SetNotificationReadCmd::ParseIMsg( MessageData* pIMsg )
+			Result SetNotificationReadCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1516,17 +1516,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result SetNotificationReadCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result SetNotificationReadCmd::ParseMessage( MessageData* pIMsg )
 
 			Result SetNotificationReadCmd::BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InNotificationID )
 			{
@@ -1564,7 +1564,7 @@ namespace BR
 			}; // void SetNotificationReadCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID SetNotificationReadRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 14);
-			Result SetNotificationReadRes::ParseIMsg( MessageData* pIMsg )
+			Result SetNotificationReadRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1573,18 +1573,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result SetNotificationReadRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result SetNotificationReadRes::ParseMessage( MessageData* pIMsg )
 
 			Result SetNotificationReadRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InNotificationID )
 			{
@@ -1625,7 +1625,7 @@ namespace BR
 
 			// Cmd: Accept notification
 			const MessageID AcceptNotificationCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 15);
-			Result AcceptNotificationCmd::ParseIMsg( MessageData* pIMsg )
+			Result AcceptNotificationCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1634,17 +1634,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result AcceptNotificationCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result AcceptNotificationCmd::ParseMessage( MessageData* pIMsg )
 
 			Result AcceptNotificationCmd::BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InNotificationID )
 			{
@@ -1682,7 +1682,7 @@ namespace BR
 			}; // void AcceptNotificationCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID AcceptNotificationRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 15);
-			Result AcceptNotificationRes::ParseIMsg( MessageData* pIMsg )
+			Result AcceptNotificationRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1691,18 +1691,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result AcceptNotificationRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result AcceptNotificationRes::ParseMessage( MessageData* pIMsg )
 
 			Result AcceptNotificationRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InNotificationID )
 			{
@@ -1743,7 +1743,7 @@ namespace BR
 
 			// S2C: Notify new notification
 			const MessageID NotifyS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 16);
-			Result NotifyS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result NotifyS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1753,24 +1753,24 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MessageID, pCur, iMsgSize, sizeof(NotificationType) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MessageParam0, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MessageParam1, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfMessageText, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_MessageText, pCur, iMsgSize, sizeof(char)*uiSizeOfMessageText ) );
-				protocolChk( Protocol::StreamParamCopy( &m_IsRead, pCur, iMsgSize, sizeof(BYTE) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MessageID, pCur, iMsgSize, (int)sizeof(NotificationType) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MessageParam0, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MessageParam1, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfMessageText, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_MessageText, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfMessageText ) );
+				protocolChk( Protocol::StreamParamCopy( &m_IsRead, pCur, iMsgSize, (int)sizeof(BYTE) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result NotifyS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result NotifyS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result NotifyS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const BYTE &InIsRead, const UINT64 &InTimeStamp )
 			{
@@ -1822,7 +1822,7 @@ namespace BR
 
 			// Cmd: Query playerID list
 			const MessageID FindPlayerByEMailCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 17);
-			Result FindPlayerByEMailCmd::ParseIMsg( MessageData* pIMsg )
+			Result FindPlayerByEMailCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1832,18 +1832,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPlayerEMail, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_PlayerEMail, pCur, iMsgSize, sizeof(char)*uiSizeOfPlayerEMail ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPlayerEMail, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_PlayerEMail, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPlayerEMail ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result FindPlayerByEMailCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result FindPlayerByEMailCmd::ParseMessage( MessageData* pIMsg )
 
 			Result FindPlayerByEMailCmd::BuildIMsg( OUT MessageData* &pMsg, const char* InPlayerEMail )
 			{
@@ -1882,7 +1882,7 @@ namespace BR
 			}; // void FindPlayerByEMailCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID FindPlayerByEMailRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 17);
-			Result FindPlayerByEMailRes::ParseIMsg( MessageData* pIMsg )
+			Result FindPlayerByEMailRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1891,18 +1891,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Player, pCur, iMsgSize, sizeof(PlayerInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Player, pCur, iMsgSize, (int)sizeof(PlayerInformation) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result FindPlayerByEMailRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result FindPlayerByEMailRes::ParseMessage( MessageData* pIMsg )
 
 			Result FindPlayerByEMailRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PlayerInformation &InPlayer )
 			{
@@ -1943,7 +1943,7 @@ namespace BR
 
 			// Cmd: Query playerID list
 			const MessageID FindPlayerByPlayerIDCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 18);
-			Result FindPlayerByPlayerIDCmd::ParseIMsg( MessageData* pIMsg )
+			Result FindPlayerByPlayerIDCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -1952,17 +1952,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result FindPlayerByPlayerIDCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result FindPlayerByPlayerIDCmd::ParseMessage( MessageData* pIMsg )
 
 			Result FindPlayerByPlayerIDCmd::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InPlayerID )
 			{
@@ -2000,7 +2000,7 @@ namespace BR
 			}; // void FindPlayerByPlayerIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID FindPlayerByPlayerIDRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 18);
-			Result FindPlayerByPlayerIDRes::ParseIMsg( MessageData* pIMsg )
+			Result FindPlayerByPlayerIDRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2009,18 +2009,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Player, pCur, iMsgSize, sizeof(PlayerInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Player, pCur, iMsgSize, (int)sizeof(PlayerInformation) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result FindPlayerByPlayerIDRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result FindPlayerByPlayerIDRes::ParseMessage( MessageData* pIMsg )
 
 			Result FindPlayerByPlayerIDRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PlayerInformation &InPlayer )
 			{
@@ -2061,7 +2061,7 @@ namespace BR
 
 			// Cmd: *Request Player Status Update
 			const MessageID RequestPlayerStatusUpdateCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 19);
-			Result RequestPlayerStatusUpdateCmd::ParseIMsg( MessageData* pIMsg )
+			Result RequestPlayerStatusUpdateCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2071,11 +2071,11 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &numberofTargetPlayerID, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pTargetPlayerID, pCur, iMsgSize, sizeof(PlayerID)*numberofTargetPlayerID ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofTargetPlayerID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pTargetPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID)*numberofTargetPlayerID ) );
 				m_TargetPlayerID.SetLinkedBuffer(numberofTargetPlayerID, numberofTargetPlayerID, pTargetPlayerID);
 
 
@@ -2083,7 +2083,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result RequestPlayerStatusUpdateCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestPlayerStatusUpdateCmd::ParseMessage( MessageData* pIMsg )
 
 			Result RequestPlayerStatusUpdateCmd::BuildIMsg( OUT MessageData* &pMsg, const Array<PlayerID>& InTargetPlayerID )
 			{
@@ -2123,7 +2123,7 @@ namespace BR
 			}; // void RequestPlayerStatusUpdateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RequestPlayerStatusUpdateRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 19);
-			Result RequestPlayerStatusUpdateRes::ParseIMsg( MessageData* pIMsg )
+			Result RequestPlayerStatusUpdateRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2132,17 +2132,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result RequestPlayerStatusUpdateRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestPlayerStatusUpdateRes::ParseMessage( MessageData* pIMsg )
 
 			Result RequestPlayerStatusUpdateRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -2181,7 +2181,7 @@ namespace BR
 
 			// S2C: *Notify Player Status Updated
 			const MessageID NotifyPlayerStatusUpdatedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 20);
-			Result NotifyPlayerStatusUpdatedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result NotifyPlayerStatusUpdatedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2190,19 +2190,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LatestActiveTime, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_IsInGame, pCur, iMsgSize, sizeof(BYTE) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LatestActiveTime, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_IsInGame, pCur, iMsgSize, (int)sizeof(BYTE) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result NotifyPlayerStatusUpdatedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result NotifyPlayerStatusUpdatedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result NotifyPlayerStatusUpdatedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
 			{
@@ -2245,7 +2245,7 @@ namespace BR
 
 			// Cmd: Get Ranking lise
 			const MessageID GetRankingListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 21);
-			Result GetRankingListCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetRankingListCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2254,19 +2254,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RankingType, pCur, iMsgSize, sizeof(RankingType) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_BaseRanking, pCur, iMsgSize, sizeof(BYTE) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Count, pCur, iMsgSize, sizeof(BYTE) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RankingType, pCur, iMsgSize, (int)sizeof(RankingType) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_BaseRanking, pCur, iMsgSize, (int)sizeof(BYTE) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Count, pCur, iMsgSize, (int)sizeof(BYTE) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GetRankingListCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetRankingListCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GetRankingListCmd::BuildIMsg( OUT MessageData* &pMsg, const RankingType &InRankingType, const BYTE &InBaseRanking, const BYTE &InCount )
 			{
@@ -2308,7 +2308,7 @@ namespace BR
 			}; // void GetRankingListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetRankingListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 21);
-			Result GetRankingListRes::ParseIMsg( MessageData* pIMsg )
+			Result GetRankingListRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2318,12 +2318,12 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pRanking, pCur, iMsgSize, sizeof(TotalRankingPlayerInformation)*numberofRanking ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pRanking, pCur, iMsgSize, (int)sizeof(TotalRankingPlayerInformation)*numberofRanking ) );
 				m_Ranking.SetLinkedBuffer(numberofRanking, numberofRanking, pRanking);
 
 
@@ -2331,7 +2331,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetRankingListRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetRankingListRes::ParseMessage( MessageData* pIMsg )
 
 			Result GetRankingListRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 			{
@@ -2374,7 +2374,7 @@ namespace BR
 
 			// Cmd: Game user game play information
 			const MessageID GetUserGamePlayerInfoCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 22);
-			Result GetUserGamePlayerInfoCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetUserGamePlayerInfoCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2388,7 +2388,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetUserGamePlayerInfoCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetUserGamePlayerInfoCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GetUserGamePlayerInfoCmd::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -2420,7 +2420,7 @@ namespace BR
 			}; // void GetUserGamePlayerInfoCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetUserGamePlayerInfoRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 22);
-			Result GetUserGamePlayerInfoRes::ParseIMsg( MessageData* pIMsg )
+			Result GetUserGamePlayerInfoRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2429,38 +2429,38 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Level, pCur, iMsgSize, sizeof(INT16) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Exp, pCur, iMsgSize, sizeof(INT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_GameMoney, pCur, iMsgSize, sizeof(INT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Gem, pCur, iMsgSize, sizeof(INT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Stamina, pCur, iMsgSize, sizeof(INT16) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LastUpdateTime, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalPlayed, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySC, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySM, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySS, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySC, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySM, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySS, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNC, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNM, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNS, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNC, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNM, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNS, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WeeklyWin, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WeeklyLose, pCur, iMsgSize, sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Level, pCur, iMsgSize, (int)sizeof(INT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Exp, pCur, iMsgSize, (int)sizeof(INT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameMoney, pCur, iMsgSize, (int)sizeof(INT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Gem, pCur, iMsgSize, (int)sizeof(INT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Stamina, pCur, iMsgSize, (int)sizeof(INT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LastUpdateTime, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalPlayed, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySC, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySM, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySS, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySC, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySM, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySS, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNC, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNM, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNS, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNC, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNM, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNS, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WeeklyWin, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WeeklyLose, pCur, iMsgSize, (int)sizeof(INT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GetUserGamePlayerInfoRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetUserGamePlayerInfoRes::ParseMessage( MessageData* pIMsg )
 
 			Result GetUserGamePlayerInfoRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const UINT32 &InLastUpdateTime, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
 			{
@@ -2541,7 +2541,7 @@ namespace BR
 
 			// Cmd: Game game play information
 			const MessageID GetGamePlayerInfoCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 23);
-			Result GetGamePlayerInfoCmd::ParseIMsg( MessageData* pIMsg )
+			Result GetGamePlayerInfoCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2550,17 +2550,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GetGamePlayerInfoCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetGamePlayerInfoCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GetGamePlayerInfoCmd::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InPlayerID )
 			{
@@ -2598,7 +2598,7 @@ namespace BR
 			}; // void GetGamePlayerInfoCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GetGamePlayerInfoRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 23);
-			Result GetGamePlayerInfoRes::ParseIMsg( MessageData* pIMsg )
+			Result GetGamePlayerInfoRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2607,34 +2607,34 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Level, pCur, iMsgSize, sizeof(INT16) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalPlayed, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySC, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySM, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySS, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySC, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySM, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySS, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNC, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNM, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNS, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNC, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNM, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNS, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WeeklyWin, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_WeeklyLose, pCur, iMsgSize, sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Level, pCur, iMsgSize, (int)sizeof(INT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalPlayed, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySC, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySM, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlaySS, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySC, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySM, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlaySS, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNC, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNM, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WinPlayNS, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNC, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNM, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LosePlayNS, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WeeklyWin, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_WeeklyLose, pCur, iMsgSize, (int)sizeof(INT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GetGamePlayerInfoRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GetGamePlayerInfoRes::ParseMessage( MessageData* pIMsg )
 
 			Result GetGamePlayerInfoRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PlayerID &InPlayerID, const INT16 &InLevel, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
 			{
@@ -2707,7 +2707,7 @@ namespace BR
 
 			// S2C: Player level up event
 			const MessageID LevelUpS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 24);
-			Result LevelUpS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result LevelUpS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2716,18 +2716,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_CurrentTotalExp, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_CurrentLevel, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_CurrentTotalExp, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_CurrentLevel, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result LevelUpS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result LevelUpS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result LevelUpS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const UINT64 &InCurrentTotalExp, const UINT32 &InCurrentLevel )
 			{
@@ -2768,7 +2768,7 @@ namespace BR
 
 			// Cmd: Change NickName
 			const MessageID SetNickNameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 25);
-			Result SetNickNameCmd::ParseIMsg( MessageData* pIMsg )
+			Result SetNickNameCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2778,19 +2778,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfNickName, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_NickName, pCur, iMsgSize, sizeof(char)*uiSizeOfNickName ) );
-				protocolChk( Protocol::StreamParamCopy( &m_IsCostFree, pCur, iMsgSize, sizeof(BYTE) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfNickName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_NickName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfNickName ) );
+				protocolChk( Protocol::StreamParamCopy( &m_IsCostFree, pCur, iMsgSize, (int)sizeof(BYTE) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result SetNickNameCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result SetNickNameCmd::ParseMessage( MessageData* pIMsg )
 
 			Result SetNickNameCmd::BuildIMsg( OUT MessageData* &pMsg, const char* InNickName, const BYTE &InIsCostFree )
 			{
@@ -2831,7 +2831,7 @@ namespace BR
 			}; // void SetNickNameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID SetNickNameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 25);
-			Result SetNickNameRes::ParseIMsg( MessageData* pIMsg )
+			Result SetNickNameRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2840,19 +2840,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result SetNickNameRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result SetNickNameRes::ParseMessage( MessageData* pIMsg )
 
 			Result SetNickNameRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 			{
@@ -2895,7 +2895,7 @@ namespace BR
 
 			// Cmd: Create Party
 			const MessageID CreatePartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 26);
-			Result CreatePartyCmd::ParseIMsg( MessageData* pIMsg )
+			Result CreatePartyCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2909,7 +2909,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result CreatePartyCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result CreatePartyCmd::ParseMessage( MessageData* pIMsg )
 
 			Result CreatePartyCmd::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -2941,7 +2941,7 @@ namespace BR
 			}; // void CreatePartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID CreatePartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 26);
-			Result CreatePartyRes::ParseIMsg( MessageData* pIMsg )
+			Result CreatePartyRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -2950,18 +2950,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result CreatePartyRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result CreatePartyRes::ParseMessage( MessageData* pIMsg )
 
 			Result CreatePartyRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PartyUID &InPartyUID )
 			{
@@ -3002,7 +3002,7 @@ namespace BR
 
 			// Cmd: Join party
 			const MessageID JoinPartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 27);
-			Result JoinPartyCmd::ParseIMsg( MessageData* pIMsg )
+			Result JoinPartyCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3011,18 +3011,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_InviterID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_InviterID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result JoinPartyCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result JoinPartyCmd::ParseMessage( MessageData* pIMsg )
 
 			Result JoinPartyCmd::BuildIMsg( OUT MessageData* &pMsg, const PartyUID &InPartyUID, const PlayerID &InInviterID )
 			{
@@ -3062,7 +3062,7 @@ namespace BR
 			}; // void JoinPartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID JoinPartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 27);
-			Result JoinPartyRes::ParseIMsg( MessageData* pIMsg )
+			Result JoinPartyRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3072,14 +3072,14 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PartyLeaderID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, sizeof(BYTE)*numberofChatHistoryData ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyLeaderID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, (int)sizeof(BYTE)*numberofChatHistoryData ) );
 				m_ChatHistoryData.SetLinkedBuffer(numberofChatHistoryData, numberofChatHistoryData, pChatHistoryData);
 
 
@@ -3087,7 +3087,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result JoinPartyRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result JoinPartyRes::ParseMessage( MessageData* pIMsg )
 
 			Result JoinPartyRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
 			{
@@ -3134,7 +3134,7 @@ namespace BR
 
 			// S2C: Player Joined event
 			const MessageID PartyPlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 28);
-			Result PartyPlayerJoinedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PartyPlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3143,18 +3143,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayer, pCur, iMsgSize, sizeof(PlayerInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayer, pCur, iMsgSize, (int)sizeof(PlayerInformation) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyPlayerJoinedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyPlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PartyPlayerJoinedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PartyUID &InPartyUID, const PlayerInformation &InJoinedPlayer )
 			{
@@ -3195,7 +3195,7 @@ namespace BR
 
 			// S2C: Party leader changed event
 			const MessageID PartyLeaderChangedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 29);
-			Result PartyLeaderChangedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PartyLeaderChangedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3204,18 +3204,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_NewLeaderID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NewLeaderID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyLeaderChangedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyLeaderChangedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PartyLeaderChangedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PartyUID &InPartyUID, const PlayerID &InNewLeaderID )
 			{
@@ -3256,7 +3256,7 @@ namespace BR
 
 			// Cmd: Leave party command
 			const MessageID LeavePartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 30);
-			Result LeavePartyCmd::ParseIMsg( MessageData* pIMsg )
+			Result LeavePartyCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3265,18 +3265,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result LeavePartyCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result LeavePartyCmd::ParseMessage( MessageData* pIMsg )
 
 			Result LeavePartyCmd::BuildIMsg( OUT MessageData* &pMsg, const PartyUID &InPartyUID, const PlayerID &InPlayerID )
 			{
@@ -3316,7 +3316,7 @@ namespace BR
 			}; // void LeavePartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID LeavePartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 30);
-			Result LeavePartyRes::ParseIMsg( MessageData* pIMsg )
+			Result LeavePartyRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3325,17 +3325,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result LeavePartyRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result LeavePartyRes::ParseMessage( MessageData* pIMsg )
 
 			Result LeavePartyRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -3374,7 +3374,7 @@ namespace BR
 
 			// S2C: Party Player left event
 			const MessageID PartyPlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 31);
-			Result PartyPlayerLeftS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PartyPlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3383,18 +3383,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LeftPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LeftPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyPlayerLeftS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyPlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PartyPlayerLeftS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PartyUID &InPartyUID, const PlayerID &InLeftPlayerID )
 			{
@@ -3435,7 +3435,7 @@ namespace BR
 
 			// Cmd: Kick player from the party
 			const MessageID PartyKickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 32);
-			Result PartyKickPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			Result PartyKickPlayerCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3444,19 +3444,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerToKick, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerToKick, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyKickPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyKickPlayerCmd::ParseMessage( MessageData* pIMsg )
 
 			Result PartyKickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const PartyUID &InPartyUID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 			{
@@ -3498,7 +3498,7 @@ namespace BR
 			}; // void PartyKickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID PartyKickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 32);
-			Result PartyKickPlayerRes::ParseIMsg( MessageData* pIMsg )
+			Result PartyKickPlayerRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3507,17 +3507,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyKickPlayerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyKickPlayerRes::ParseMessage( MessageData* pIMsg )
 
 			Result PartyKickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -3556,7 +3556,7 @@ namespace BR
 
 			// S2C: Party Player kicked message
 			const MessageID PartyPlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 33);
-			Result PartyPlayerKickedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PartyPlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3565,18 +3565,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_KickedPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_KickedPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyPlayerKickedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyPlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PartyPlayerKickedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PartyUID &InPartyUID, const PlayerID &InKickedPlayerID )
 			{
@@ -3617,7 +3617,7 @@ namespace BR
 
 			// Cmd: Invite a player to the party
 			const MessageID PartyInviteCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 34);
-			Result PartyInviteCmd::ParseIMsg( MessageData* pIMsg )
+			Result PartyInviteCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3626,17 +3626,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_InviteTargetID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_InviteTargetID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyInviteCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyInviteCmd::ParseMessage( MessageData* pIMsg )
 
 			Result PartyInviteCmd::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InInviteTargetID )
 			{
@@ -3674,7 +3674,7 @@ namespace BR
 			}; // void PartyInviteCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID PartyInviteRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 34);
-			Result PartyInviteRes::ParseIMsg( MessageData* pIMsg )
+			Result PartyInviteRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3683,17 +3683,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyInviteRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyInviteRes::ParseMessage( MessageData* pIMsg )
 
 			Result PartyInviteRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -3732,7 +3732,7 @@ namespace BR
 
 			// S2C: Party invite requested
 			const MessageID PartyInviteRequestedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 35);
-			Result PartyInviteRequestedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PartyInviteRequestedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3742,20 +3742,20 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_InviterID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfInviterName, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_InviterName, pCur, iMsgSize, sizeof(char)*uiSizeOfInviterName ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PartyToJoinUID, pCur, iMsgSize, sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_InviterID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfInviterName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_InviterName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfInviterName ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyToJoinUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyInviteRequestedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyInviteRequestedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PartyInviteRequestedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InInviterID, const char* InInviterName, const PartyUID &InPartyToJoinUID )
 			{
@@ -3799,7 +3799,7 @@ namespace BR
 
 			// Cmd: Send Party quick chat message
 			const MessageID PartyQuickChatMessageCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 36);
-			Result PartyQuickChatMessageCmd::ParseIMsg( MessageData* pIMsg )
+			Result PartyQuickChatMessageCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3808,17 +3808,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_QuickChatID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_QuickChatID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyQuickChatMessageCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyQuickChatMessageCmd::ParseMessage( MessageData* pIMsg )
 
 			Result PartyQuickChatMessageCmd::BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InQuickChatID )
 			{
@@ -3856,7 +3856,7 @@ namespace BR
 			}; // void PartyQuickChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID PartyQuickChatMessageRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 36);
-			Result PartyQuickChatMessageRes::ParseIMsg( MessageData* pIMsg )
+			Result PartyQuickChatMessageRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3865,17 +3865,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyQuickChatMessageRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyQuickChatMessageRes::ParseMessage( MessageData* pIMsg )
 
 			Result PartyQuickChatMessageRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -3914,7 +3914,7 @@ namespace BR
 
 			// S2C: Party Chatting message event
 			const MessageID PartyQuickChatMessageS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 37);
-			Result PartyQuickChatMessageS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PartyQuickChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3923,18 +3923,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_SenderID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_QuickChatID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_SenderID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_QuickChatID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyQuickChatMessageS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyQuickChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PartyQuickChatMessageS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InSenderID, const UINT32 &InQuickChatID )
 			{
@@ -3975,7 +3975,7 @@ namespace BR
 
 			// Cmd: Party chatting
 			const MessageID PartyChatMessageCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 38);
-			Result PartyChatMessageCmd::ParseIMsg( MessageData* pIMsg )
+			Result PartyChatMessageCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -3985,18 +3985,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, sizeof(char)*uiSizeOfChatMessage ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfChatMessage ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyChatMessageCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyChatMessageCmd::ParseMessage( MessageData* pIMsg )
 
 			Result PartyChatMessageCmd::BuildIMsg( OUT MessageData* &pMsg, const char* InChatMessage )
 			{
@@ -4035,7 +4035,7 @@ namespace BR
 			}; // void PartyChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID PartyChatMessageRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 38);
-			Result PartyChatMessageRes::ParseIMsg( MessageData* pIMsg )
+			Result PartyChatMessageRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4044,17 +4044,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyChatMessageRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyChatMessageRes::ParseMessage( MessageData* pIMsg )
 
 			Result PartyChatMessageRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -4093,7 +4093,7 @@ namespace BR
 
 			// S2C: Party Chatting message event
 			const MessageID PartyChatMessageS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 39);
-			Result PartyChatMessageS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PartyChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4104,21 +4104,21 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_SenderID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfSenderName, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_SenderName, pCur, iMsgSize, sizeof(char)*uiSizeOfSenderName ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, sizeof(char)*uiSizeOfChatMessage ) );
+				protocolChk( Protocol::StreamParamCopy( &m_SenderID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfSenderName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_SenderName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfSenderName ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfChatMessage ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PartyChatMessageS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PartyChatMessageS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InSenderID, const char* InSenderName, const char* InChatMessage )
 			{
@@ -4163,7 +4163,7 @@ namespace BR
 
 			// Cmd: Join to a game
 			const MessageID JoinGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 40);
-			Result JoinGameCmd::ParseIMsg( MessageData* pIMsg )
+			Result JoinGameCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4172,19 +4172,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_InsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_InsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result JoinGameCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result JoinGameCmd::ParseMessage( MessageData* pIMsg )
 
 			Result JoinGameCmd::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InPlayerID, const AuthTicket &InTicket, const GameInsUID &InInsUID )
 			{
@@ -4226,7 +4226,7 @@ namespace BR
 			}; // void JoinGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID JoinGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 40);
-			Result JoinGameRes::ParseIMsg( MessageData* pIMsg )
+			Result JoinGameRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4237,24 +4237,24 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_InsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_GameState, pCur, iMsgSize, sizeof(GameStateID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Day, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MaxPlayer, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerIndex, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerCharacter, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Dead, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, sizeof(BYTE)*numberofChatHistoryData ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_InsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameState, pCur, iMsgSize, (int)sizeof(GameStateID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Day, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MaxPlayer, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerIndex, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerCharacter, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Dead, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, (int)sizeof(BYTE)*numberofChatHistoryData ) );
 				m_ChatHistoryData.SetLinkedBuffer(numberofChatHistoryData, numberofChatHistoryData, pChatHistoryData);
-				protocolChk( Protocol::StreamParamCopy( &numberofGameLogData, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pGameLogData, pCur, iMsgSize, sizeof(BYTE)*numberofGameLogData ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofGameLogData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pGameLogData, pCur, iMsgSize, (int)sizeof(BYTE)*numberofGameLogData ) );
 				m_GameLogData.SetLinkedBuffer(numberofGameLogData, numberofGameLogData, pGameLogData);
 
 
@@ -4262,7 +4262,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result JoinGameRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result JoinGameRes::ParseMessage( MessageData* pIMsg )
 
 			Result JoinGameRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData )
 			{
@@ -4327,7 +4327,7 @@ namespace BR
 
 			// S2C: Player Joined in the game
 			const MessageID PlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 41);
-			Result PlayerJoinedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4336,22 +4336,22 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayer, pCur, iMsgSize, sizeof(PlayerInformation) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerRole, pCur, iMsgSize, sizeof(PlayerRole) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerDead, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerIndex, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerCharacter, pCur, iMsgSize, sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayer, pCur, iMsgSize, (int)sizeof(PlayerInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerRole, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerDead, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerIndex, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_JoinedPlayerCharacter, pCur, iMsgSize, (int)sizeof(UINT8) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PlayerJoinedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PlayerJoinedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const UINT8 &InJoinedPlayerDead, const UINT8 &InJoinedPlayerIndex, const UINT8 &InJoinedPlayerCharacter )
 			{
@@ -4400,7 +4400,7 @@ namespace BR
 
 			// Cmd: Leave Game
 			const MessageID LeaveGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 42);
-			Result LeaveGameCmd::ParseIMsg( MessageData* pIMsg )
+			Result LeaveGameCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4409,19 +4409,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result LeaveGameCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result LeaveGameCmd::ParseMessage( MessageData* pIMsg )
 
 			Result LeaveGameCmd::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket )
 			{
@@ -4463,7 +4463,7 @@ namespace BR
 			}; // void LeaveGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID LeaveGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 42);
-			Result LeaveGameRes::ParseIMsg( MessageData* pIMsg )
+			Result LeaveGameRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4472,17 +4472,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result LeaveGameRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result LeaveGameRes::ParseMessage( MessageData* pIMsg )
 
 			Result LeaveGameRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -4521,7 +4521,7 @@ namespace BR
 
 			// S2C: Player left event
 			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 43);
-			Result PlayerLeftS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4530,18 +4530,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LeftPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LeftPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PlayerLeftS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PlayerLeftS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InLeftPlayerID )
 			{
@@ -4582,7 +4582,7 @@ namespace BR
 
 			// Cmd: Kick player
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 44);
-			Result KickPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4591,19 +4591,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerToKick, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerToKick, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result KickPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
 
 			Result KickPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 			{
@@ -4645,7 +4645,7 @@ namespace BR
 			}; // void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 44);
-			Result KickPlayerRes::ParseIMsg( MessageData* pIMsg )
+			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4654,17 +4654,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result KickPlayerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
 
 			Result KickPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -4703,7 +4703,7 @@ namespace BR
 
 			// S2C: Player kicked
 			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 45);
-			Result PlayerKickedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4712,18 +4712,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_KickedPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_KickedPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PlayerKickedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PlayerKickedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InKickedPlayerID )
 			{
@@ -4764,7 +4764,7 @@ namespace BR
 
 			// Cmd: Assign role + Game state reset
 			const MessageID AssignRoleCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 46);
-			Result AssignRoleCmd::ParseIMsg( MessageData* pIMsg )
+			Result AssignRoleCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4773,19 +4773,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result AssignRoleCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result AssignRoleCmd::ParseMessage( MessageData* pIMsg )
 
 			Result AssignRoleCmd::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket )
 			{
@@ -4827,7 +4827,7 @@ namespace BR
 			}; // void AssignRoleCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID AssignRoleRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 46);
-			Result AssignRoleRes::ParseIMsg( MessageData* pIMsg )
+			Result AssignRoleRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4836,17 +4836,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result AssignRoleRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result AssignRoleRes::ParseMessage( MessageData* pIMsg )
 
 			Result AssignRoleRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -4885,7 +4885,7 @@ namespace BR
 
 			// S2C: Role assigned event
 			const MessageID RoleAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 47);
-			Result RoleAssignedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result RoleAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4894,19 +4894,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result RoleAssignedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result RoleAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result RoleAssignedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const PlayerRole &InRole )
 			{
@@ -4949,7 +4949,7 @@ namespace BR
 
 			// Cmd: Send chatting message to the game
 			const MessageID ChatMessageCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 48);
-			Result ChatMessageCmd::ParseIMsg( MessageData* pIMsg )
+			Result ChatMessageCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -4959,19 +4959,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, sizeof(char)*uiSizeOfChatMessage ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfChatMessage ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result ChatMessageCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result ChatMessageCmd::ParseMessage( MessageData* pIMsg )
 
 			Result ChatMessageCmd::BuildIMsg( OUT MessageData* &pMsg, const char* InChatMessage, const PlayerRole &InRole )
 			{
@@ -5012,7 +5012,7 @@ namespace BR
 			}; // void ChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID ChatMessageRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 48);
-			Result ChatMessageRes::ParseIMsg( MessageData* pIMsg )
+			Result ChatMessageRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5021,17 +5021,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result ChatMessageRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result ChatMessageRes::ParseMessage( MessageData* pIMsg )
 
 			Result ChatMessageRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -5070,7 +5070,7 @@ namespace BR
 
 			// S2C: Chatting message event 
 			const MessageID ChatMessageS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 49);
-			Result ChatMessageS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result ChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5081,22 +5081,22 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_SenderID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfSenderName, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_SenderName, pCur, iMsgSize, sizeof(char)*uiSizeOfSenderName ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, sizeof(char)*uiSizeOfChatMessage ) );
+				protocolChk( Protocol::StreamParamCopy( &m_SenderID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfSenderName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_SenderName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfSenderName ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfChatMessage ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result ChatMessageS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result ChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result ChatMessageS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
 			{
@@ -5143,7 +5143,7 @@ namespace BR
 
 			// Cmd: Advance game
 			const MessageID AdvanceGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 50);
-			Result AdvanceGameCmd::ParseIMsg( MessageData* pIMsg )
+			Result AdvanceGameCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5152,19 +5152,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result AdvanceGameCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result AdvanceGameCmd::ParseMessage( MessageData* pIMsg )
 
 			Result AdvanceGameCmd::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket )
 			{
@@ -5206,7 +5206,7 @@ namespace BR
 			}; // void AdvanceGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID AdvanceGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 50);
-			Result AdvanceGameRes::ParseIMsg( MessageData* pIMsg )
+			Result AdvanceGameRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5215,17 +5215,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result AdvanceGameRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result AdvanceGameRes::ParseMessage( MessageData* pIMsg )
 
 			Result AdvanceGameRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -5264,7 +5264,7 @@ namespace BR
 
 			// S2C: The game state is advanced
 			const MessageID GameAdvancedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 51);
-			Result GameAdvancedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result GameAdvancedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5273,20 +5273,20 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_GameState, pCur, iMsgSize, sizeof(GameStateID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Day, pCur, iMsgSize, sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameState, pCur, iMsgSize, (int)sizeof(GameStateID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Day, pCur, iMsgSize, (int)sizeof(UINT8) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GameAdvancedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GameAdvancedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result GameAdvancedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay )
 			{
@@ -5331,7 +5331,7 @@ namespace BR
 
 			// S2C: Game is ended
 			const MessageID GameEndedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 52);
-			Result GameEndedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result GameEndedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5340,20 +5340,20 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Winner, pCur, iMsgSize, sizeof(GameWinner) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_GainedExp, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_GainedGameMoney, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Winner, pCur, iMsgSize, (int)sizeof(GameWinner) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GainedExp, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GainedGameMoney, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GameEndedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GameEndedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result GameEndedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const GameWinner &InWinner, const UINT32 &InGainedExp, const UINT32 &InGainedGameMoney )
 			{
@@ -5398,7 +5398,7 @@ namespace BR
 
 			// Cmd: Vote game advance
 			const MessageID VoteGameAdvanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 53);
-			Result VoteGameAdvanceCmd::ParseIMsg( MessageData* pIMsg )
+			Result VoteGameAdvanceCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5407,19 +5407,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result VoteGameAdvanceCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result VoteGameAdvanceCmd::ParseMessage( MessageData* pIMsg )
 
 			Result VoteGameAdvanceCmd::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket )
 			{
@@ -5461,7 +5461,7 @@ namespace BR
 			}; // void VoteGameAdvanceCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID VoteGameAdvanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 53);
-			Result VoteGameAdvanceRes::ParseIMsg( MessageData* pIMsg )
+			Result VoteGameAdvanceRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5470,17 +5470,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result VoteGameAdvanceRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result VoteGameAdvanceRes::ParseMessage( MessageData* pIMsg )
 
 			Result VoteGameAdvanceRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -5519,7 +5519,7 @@ namespace BR
 
 			// S2C: GameAdvance is Voted
 			const MessageID GameAdvanceVotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 54);
-			Result GameAdvanceVotedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result GameAdvanceVotedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5528,18 +5528,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Voter, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Voter, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GameAdvanceVotedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GameAdvanceVotedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result GameAdvanceVotedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InVoter )
 			{
@@ -5580,7 +5580,7 @@ namespace BR
 
 			// Cmd: Vote
 			const MessageID VoteCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 55);
-			Result VoteCmd::ParseIMsg( MessageData* pIMsg )
+			Result VoteCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5589,21 +5589,21 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_VoteTarget, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_ActionSerial, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_VoteTarget, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_ActionSerial, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result VoteCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result VoteCmd::ParseMessage( MessageData* pIMsg )
 
 			Result VoteCmd::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
 			{
@@ -5649,7 +5649,7 @@ namespace BR
 			}; // void VoteCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID VoteRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 55);
-			Result VoteRes::ParseIMsg( MessageData* pIMsg )
+			Result VoteRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5658,17 +5658,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result VoteRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result VoteRes::ParseMessage( MessageData* pIMsg )
 
 			Result VoteRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -5707,7 +5707,7 @@ namespace BR
 
 			// S2C: Player Voted
 			const MessageID VotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 56);
-			Result VotedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result VotedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5716,19 +5716,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Voter, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_VotedTarget, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Voter, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_VotedTarget, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result VotedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result VotedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result VotedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InVoter, const PlayerID &InVotedTarget )
 			{
@@ -5771,7 +5771,7 @@ namespace BR
 
 			// S2C: Vote is ended
 			const MessageID VoteEndS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 57);
-			Result VoteEndS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result VoteEndS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5781,12 +5781,12 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofVoted, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pVoted, pCur, iMsgSize, sizeof(PlayerID)*numberofVoted ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofVoted, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pVoted, pCur, iMsgSize, (int)sizeof(PlayerID)*numberofVoted ) );
 				m_Voted.SetLinkedBuffer(numberofVoted, numberofVoted, pVoted);
 
 
@@ -5794,7 +5794,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result VoteEndS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result VoteEndS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result VoteEndS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const Array<PlayerID>& InVoted )
 			{
@@ -5837,7 +5837,7 @@ namespace BR
 
 			// S2C: Player Killed
 			const MessageID PlayerKilledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 58);
-			Result PlayerKilledS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerKilledS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5846,19 +5846,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_KilledPlayer, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Reason, pCur, iMsgSize, sizeof(PlayerKilledReason) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_KilledPlayer, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Reason, pCur, iMsgSize, (int)sizeof(PlayerKilledReason) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PlayerKilledS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerKilledS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PlayerKilledS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InKilledPlayer, const PlayerKilledReason &InReason )
 			{
@@ -5901,7 +5901,7 @@ namespace BR
 
 			// S2C: Player Voted
 			const MessageID PlayerRevealedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 59);
-			Result PlayerRevealedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result PlayerRevealedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5910,20 +5910,20 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RevealedPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Reason, pCur, iMsgSize, sizeof(PlayerRevealedReason) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RevealedPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Reason, pCur, iMsgSize, (int)sizeof(PlayerRevealedReason) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result PlayerRevealedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PlayerRevealedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result PlayerRevealedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason )
 			{
@@ -5968,7 +5968,7 @@ namespace BR
 
 			// Cmd: Play again with the current players
 			const MessageID GamePlayAgainCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 60);
-			Result GamePlayAgainCmd::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayAgainCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -5982,7 +5982,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GamePlayAgainCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayAgainCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GamePlayAgainCmd::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -6014,7 +6014,7 @@ namespace BR
 			}; // void GamePlayAgainCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GamePlayAgainRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 60);
-			Result GamePlayAgainRes::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayAgainRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6023,19 +6023,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GamePlayAgainRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayAgainRes::ParseMessage( MessageData* pIMsg )
 
 			Result GamePlayAgainRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 			{
@@ -6078,7 +6078,7 @@ namespace BR
 
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 			const MessageID GamePlayAgainS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 61);
-			Result GamePlayAgainS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayAgainS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6087,18 +6087,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(PartyUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LeadPlayer, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(PartyUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LeadPlayer, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GamePlayAgainS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayAgainS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result GamePlayAgainS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
 			{
@@ -6139,7 +6139,7 @@ namespace BR
 
 			// Cmd: Player. reveal a player
 			const MessageID GameRevealPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 62);
-			Result GameRevealPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			Result GameRevealPlayerCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6149,11 +6149,11 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &numberofTargetPlayerID, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pTargetPlayerID, pCur, iMsgSize, sizeof(PlayerID)*numberofTargetPlayerID ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofTargetPlayerID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pTargetPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID)*numberofTargetPlayerID ) );
 				m_TargetPlayerID.SetLinkedBuffer(numberofTargetPlayerID, numberofTargetPlayerID, pTargetPlayerID);
 
 
@@ -6161,7 +6161,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GameRevealPlayerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GameRevealPlayerCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GameRevealPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const Array<PlayerID>& InTargetPlayerID )
 			{
@@ -6201,7 +6201,7 @@ namespace BR
 			}; // void GameRevealPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GameRevealPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 62);
-			Result GameRevealPlayerRes::ParseIMsg( MessageData* pIMsg )
+			Result GameRevealPlayerRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6212,25 +6212,25 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofRevealedPlayerID, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pRevealedPlayerID, pCur, iMsgSize, sizeof(PlayerID)*numberofRevealedPlayerID ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRevealedPlayerID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pRevealedPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID)*numberofRevealedPlayerID ) );
 				m_RevealedPlayerID.SetLinkedBuffer(numberofRevealedPlayerID, numberofRevealedPlayerID, pRevealedPlayerID);
-				protocolChk( Protocol::StreamParamCopy( &numberofRevealedRole, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pRevealedRole, pCur, iMsgSize, sizeof(PlayerRole)*numberofRevealedRole ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRevealedRole, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pRevealedRole, pCur, iMsgSize, (int)sizeof(PlayerRole)*numberofRevealedRole ) );
 				m_RevealedRole.SetLinkedBuffer(numberofRevealedRole, numberofRevealedRole, pRevealedRole);
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GameRevealPlayerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GameRevealPlayerRes::ParseMessage( MessageData* pIMsg )
 
 			Result GameRevealPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 			{
@@ -6281,7 +6281,7 @@ namespace BR
 
 			// Cmd: Player. revive himself
 			const MessageID GamePlayerReviveCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 63);
-			Result GamePlayerReviveCmd::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayerReviveCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6295,7 +6295,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GamePlayerReviveCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayerReviveCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GamePlayerReviveCmd::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -6327,7 +6327,7 @@ namespace BR
 			}; // void GamePlayerReviveCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GamePlayerReviveRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 63);
-			Result GamePlayerReviveRes::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayerReviveRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6336,19 +6336,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GamePlayerReviveRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayerReviveRes::ParseMessage( MessageData* pIMsg )
 
 			Result GamePlayerReviveRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 			{
@@ -6391,7 +6391,7 @@ namespace BR
 
 			// S2C: Player is revived
 			const MessageID GamePlayerRevivedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 64);
-			Result GamePlayerRevivedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayerRevivedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6400,17 +6400,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RevivedPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RevivedPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GamePlayerRevivedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayerRevivedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result GamePlayerRevivedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InRevivedPlayerID )
 			{
@@ -6449,7 +6449,7 @@ namespace BR
 
 			// Cmd: Player. reset ranking
 			const MessageID GamePlayerResetRankCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 65);
-			Result GamePlayerResetRankCmd::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayerResetRankCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6463,7 +6463,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GamePlayerResetRankCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayerResetRankCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GamePlayerResetRankCmd::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -6495,7 +6495,7 @@ namespace BR
 			}; // void GamePlayerResetRankCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GamePlayerResetRankRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 65);
-			Result GamePlayerResetRankRes::ParseIMsg( MessageData* pIMsg )
+			Result GamePlayerResetRankRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6504,19 +6504,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GamePlayerResetRankRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GamePlayerResetRankRes::ParseMessage( MessageData* pIMsg )
 
 			Result GamePlayerResetRankRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 			{
@@ -6559,7 +6559,7 @@ namespace BR
 
 			// Cmd: Request Game match
 			const MessageID RequestGameMatchCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 66);
-			Result RequestGameMatchCmd::ParseIMsg( MessageData* pIMsg )
+			Result RequestGameMatchCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6568,18 +6568,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_NumPlayer, pCur, iMsgSize, sizeof(BYTE) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RequestRole, pCur, iMsgSize, sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NumPlayer, pCur, iMsgSize, (int)sizeof(BYTE) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RequestRole, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result RequestGameMatchCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestGameMatchCmd::ParseMessage( MessageData* pIMsg )
 
 			Result RequestGameMatchCmd::BuildIMsg( OUT MessageData* &pMsg, const BYTE &InNumPlayer, const PlayerRole &InRequestRole )
 			{
@@ -6619,7 +6619,7 @@ namespace BR
 			}; // void RequestGameMatchCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RequestGameMatchRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 66);
-			Result RequestGameMatchRes::ParseIMsg( MessageData* pIMsg )
+			Result RequestGameMatchRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6628,19 +6628,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result RequestGameMatchRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestGameMatchRes::ParseMessage( MessageData* pIMsg )
 
 			Result RequestGameMatchRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 			{
@@ -6683,7 +6683,7 @@ namespace BR
 
 			// S2C: Game matched
 			const MessageID GameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 67);
-			Result GameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result GameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6694,34 +6694,34 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_InsUID, pCur, iMsgSize, sizeof(GameInsUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_GameState, pCur, iMsgSize, sizeof(GameStateID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Day, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MaxPlayer, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerIndex, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerCharacter, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Dead, pCur, iMsgSize, sizeof(UINT8) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, sizeof(BYTE)*numberofChatHistoryData ) );
+				protocolChk( Protocol::StreamParamCopy( &m_InsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_GameState, pCur, iMsgSize, (int)sizeof(GameStateID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Day, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MaxPlayer, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerIndex, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerCharacter, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Dead, pCur, iMsgSize, (int)sizeof(UINT8) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, (int)sizeof(BYTE)*numberofChatHistoryData ) );
 				m_ChatHistoryData.SetLinkedBuffer(numberofChatHistoryData, numberofChatHistoryData, pChatHistoryData);
-				protocolChk( Protocol::StreamParamCopy( &numberofGameLogData, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pGameLogData, pCur, iMsgSize, sizeof(BYTE)*numberofGameLogData ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofGameLogData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pGameLogData, pCur, iMsgSize, (int)sizeof(BYTE)*numberofGameLogData ) );
 				m_GameLogData.SetLinkedBuffer(numberofGameLogData, numberofGameLogData, pGameLogData);
-				protocolChk( Protocol::StreamParamCopy( &m_Stamina, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Stamina, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGem, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalGameMoney, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GameMatchedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result GameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData, const UINT32 &InStamina, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
 			{
@@ -6790,7 +6790,7 @@ namespace BR
 
 			// S2C: Game match failed
 			const MessageID GameMatchFailedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 68);
-			Result GameMatchFailedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result GameMatchFailedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6799,17 +6799,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_FailedReason, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_FailedReason, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GameMatchFailedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GameMatchFailedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result GameMatchFailedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const Result &InFailedReason )
 			{
@@ -6848,7 +6848,7 @@ namespace BR
 
 			// S2C: Game matching started
 			const MessageID GameMatchingStartedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 69);
-			Result GameMatchingStartedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result GameMatchingStartedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6862,7 +6862,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GameMatchingStartedS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GameMatchingStartedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result GameMatchingStartedS2CEvt::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -6895,7 +6895,7 @@ namespace BR
 
 			// Cmd: Cancel Game match
 			const MessageID CancelGameMatchCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 70);
-			Result CancelGameMatchCmd::ParseIMsg( MessageData* pIMsg )
+			Result CancelGameMatchCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6909,7 +6909,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result CancelGameMatchCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result CancelGameMatchCmd::ParseMessage( MessageData* pIMsg )
 
 			Result CancelGameMatchCmd::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -6941,7 +6941,7 @@ namespace BR
 			}; // void CancelGameMatchCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID CancelGameMatchRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 70);
-			Result CancelGameMatchRes::ParseIMsg( MessageData* pIMsg )
+			Result CancelGameMatchRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -6950,17 +6950,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result CancelGameMatchRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result CancelGameMatchRes::ParseMessage( MessageData* pIMsg )
 
 			Result CancelGameMatchRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -6999,7 +6999,7 @@ namespace BR
 
 			// S2C: game matching canceled
 			const MessageID GameMatchingCanceledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 71);
-			Result GameMatchingCanceledS2CEvt::ParseIMsg( MessageData* pIMsg )
+			Result GameMatchingCanceledS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7013,7 +7013,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GameMatchingCanceledS2CEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result GameMatchingCanceledS2CEvt::ParseMessage( MessageData* pIMsg )
 
 			Result GameMatchingCanceledS2CEvt::BuildIMsg( OUT MessageData* &pMsg )
 			{
@@ -7046,7 +7046,7 @@ namespace BR
 
 			// Cmd: Buy shop item prepare
 			const MessageID BuyShopItemPrepareCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 72);
-			Result BuyShopItemPrepareCmd::ParseIMsg( MessageData* pIMsg )
+			Result BuyShopItemPrepareCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7055,17 +7055,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_ShopItemID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_ShopItemID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result BuyShopItemPrepareCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result BuyShopItemPrepareCmd::ParseMessage( MessageData* pIMsg )
 
 			Result BuyShopItemPrepareCmd::BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InShopItemID )
 			{
@@ -7103,7 +7103,7 @@ namespace BR
 			}; // void BuyShopItemPrepareCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID BuyShopItemPrepareRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 72);
-			Result BuyShopItemPrepareRes::ParseIMsg( MessageData* pIMsg )
+			Result BuyShopItemPrepareRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7113,20 +7113,20 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_ShopItemID, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPurchaseID, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_PurchaseID, pCur, iMsgSize, sizeof(char)*uiSizeOfPurchaseID ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_ShopItemID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPurchaseID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_PurchaseID, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPurchaseID ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result BuyShopItemPrepareRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result BuyShopItemPrepareRes::ParseMessage( MessageData* pIMsg )
 
 			Result BuyShopItemPrepareRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InShopItemID, const char* InPurchaseID )
 			{
@@ -7170,7 +7170,7 @@ namespace BR
 
 			// Cmd: Buy shop item
 			const MessageID BuyShopItemCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 73);
-			Result BuyShopItemCmd::ParseIMsg( MessageData* pIMsg )
+			Result BuyShopItemCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7183,18 +7183,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_ShopItemID, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPlatform, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_Platform, pCur, iMsgSize, sizeof(char)*uiSizeOfPlatform ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPackageName, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_PackageName, pCur, iMsgSize, sizeof(char)*uiSizeOfPackageName ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPurchaseTransactionID, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_PurchaseTransactionID, pCur, iMsgSize, sizeof(char)*uiSizeOfPurchaseTransactionID ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofPurchaseToken, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pPurchaseToken, pCur, iMsgSize, sizeof(BYTE)*numberofPurchaseToken ) );
+				protocolChk( Protocol::StreamParamCopy( &m_ShopItemID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPlatform, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_Platform, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPlatform ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPackageName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_PackageName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPackageName ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPurchaseTransactionID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_PurchaseTransactionID, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPurchaseTransactionID ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofPurchaseToken, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pPurchaseToken, pCur, iMsgSize, (int)sizeof(BYTE)*numberofPurchaseToken ) );
 				m_PurchaseToken.SetLinkedBuffer(numberofPurchaseToken, numberofPurchaseToken, pPurchaseToken);
 
 
@@ -7202,7 +7202,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result BuyShopItemCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result BuyShopItemCmd::ParseMessage( MessageData* pIMsg )
 
 			Result BuyShopItemCmd::BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<BYTE>& InPurchaseToken )
 			{
@@ -7253,7 +7253,7 @@ namespace BR
 			}; // void BuyShopItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID BuyShopItemRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 73);
-			Result BuyShopItemRes::ParseIMsg( MessageData* pIMsg )
+			Result BuyShopItemRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7262,18 +7262,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_ShopItemID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_ShopItemID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result BuyShopItemRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result BuyShopItemRes::ParseMessage( MessageData* pIMsg )
 
 			Result BuyShopItemRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InShopItemID )
 			{
@@ -7314,7 +7314,7 @@ namespace BR
 
 			// Cmd: Give my stamina to other player
 			const MessageID GiveStaminaCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 74);
-			Result GiveStaminaCmd::ParseIMsg( MessageData* pIMsg )
+			Result GiveStaminaCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7323,17 +7323,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_TargetPlayer, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TargetPlayer, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GiveStaminaCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GiveStaminaCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GiveStaminaCmd::BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InTargetPlayer )
 			{
@@ -7371,7 +7371,7 @@ namespace BR
 			}; // void GiveStaminaCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GiveStaminaRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 74);
-			Result GiveStaminaRes::ParseIMsg( MessageData* pIMsg )
+			Result GiveStaminaRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7380,19 +7380,19 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TargetPlayer, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TargetPlayer, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, (int)sizeof(UINT64) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GiveStaminaRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GiveStaminaRes::ParseMessage( MessageData* pIMsg )
 
 			Result GiveStaminaRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PlayerID &InTargetPlayer, const UINT64 &InTimeStamp )
 			{
@@ -7435,7 +7435,7 @@ namespace BR
 
 			// Cmd: For debug, Change configue preset
 			const MessageID SetPresetGameConfigIDCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 75);
-			Result SetPresetGameConfigIDCmd::ParseIMsg( MessageData* pIMsg )
+			Result SetPresetGameConfigIDCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7444,17 +7444,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_PresetID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PresetID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result SetPresetGameConfigIDCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result SetPresetGameConfigIDCmd::ParseMessage( MessageData* pIMsg )
 
 			Result SetPresetGameConfigIDCmd::BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InPresetID )
 			{
@@ -7492,7 +7492,7 @@ namespace BR
 			}; // void SetPresetGameConfigIDCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID SetPresetGameConfigIDRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 75);
-			Result SetPresetGameConfigIDRes::ParseIMsg( MessageData* pIMsg )
+			Result SetPresetGameConfigIDRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7501,17 +7501,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result SetPresetGameConfigIDRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result SetPresetGameConfigIDRes::ParseMessage( MessageData* pIMsg )
 
 			Result SetPresetGameConfigIDRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{
@@ -7550,7 +7550,7 @@ namespace BR
 
 			// Cmd: For Debug
 			const MessageID GainGameResourceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 76);
-			Result GainGameResourceCmd::ParseIMsg( MessageData* pIMsg )
+			Result GainGameResourceCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7559,18 +7559,18 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Resource, pCur, iMsgSize, sizeof(INT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Value, pCur, iMsgSize, sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Resource, pCur, iMsgSize, (int)sizeof(INT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Value, pCur, iMsgSize, (int)sizeof(INT32) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GainGameResourceCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result GainGameResourceCmd::ParseMessage( MessageData* pIMsg )
 
 			Result GainGameResourceCmd::BuildIMsg( OUT MessageData* &pMsg, const INT32 &InResource, const INT32 &InValue )
 			{
@@ -7610,7 +7610,7 @@ namespace BR
 			}; // void GainGameResourceCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID GainGameResourceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_GAME, 76);
-			Result GainGameResourceRes::ParseIMsg( MessageData* pIMsg )
+			Result GainGameResourceRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -7619,17 +7619,17 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MobileMessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // Result GainGameResourceRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result GainGameResourceRes::ParseMessage( MessageData* pIMsg )
 
 			Result GainGameResourceRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
 			{

@@ -105,7 +105,7 @@ namespace GameServer {
 			goto Proc_End;
 		}
 
-		svrChk( joinRes.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( joinRes.ParseMessage( pMsgRes->GetMessage() ) );
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
@@ -183,7 +183,7 @@ namespace GameServer {
 
 		svrChkClose(pRes->GetResult());
 
-		svrChk(leavePartyRes.ParseIMsg(pMsgRes->GetMessage()));
+		svrChk(leavePartyRes.ParseMessage(pMsgRes->GetMessage()));
 
 		GetMyOwner()->SetPartyUID(0);
 
@@ -336,7 +336,7 @@ namespace GameServer {
 		Message::GamePartyManager::CreatePartyRes res;
 
 		svrChk(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		GetMyOwner()->SetPartyUID( res.GetRouteContext().GetFrom());
 		m_PartyUID = res.GetRouteContext().GetFrom();
@@ -402,7 +402,7 @@ namespace GameServer {
 		Message::GameParty::JoinPartyRes res;
 
 		svrChk(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		GetMyOwner()->SetPartyUID( GetPartyUID() );
 
@@ -530,7 +530,7 @@ namespace GameServer {
 		else
 		{
 			svrChk(pRes->GetResult());
-			svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
+			svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 			GetMyOwner()->SetPartyUID(0);
 			GetMyOwner()->UpdateDBSync(0);
@@ -613,7 +613,7 @@ namespace GameServer {
 		//Message::GameParty::KickPlayerRes res;
 
 		svrChkClose(pRes->GetResult());
-		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		//svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 

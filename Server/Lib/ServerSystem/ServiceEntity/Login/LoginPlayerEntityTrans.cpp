@@ -239,15 +239,15 @@ namespace Svr {
 		}
 
 		svrChk(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		super::GetMyOwner()->HeartBit();
 
 		if (!StrUtil::IsNullOrEmpty(res.GetPublicAddressV6()))
 		{
-			svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), res.GetPort()));
+			svrChk(Net::SetNetAddress(m_GameServerAddr, res.GetPublicAddressV6(), (USHORT)res.GetPort()));
 		}
-		svrChk(Net::SetNetAddress(m_GameServerAddrIPV4, res.GetPublicAddress(), res.GetPort()));
+		svrChk(Net::SetNetAddress(m_GameServerAddrIPV4, res.GetPublicAddress(), (USHORT)res.GetPort()));
 		m_GameEntityUID = res.GetRouteContext().GetFrom();
 
 		svrChk(Svr::GetServerComponent<DB::LoginSessionDB>()->ConnectedToGameServer(super::GetTransID(), super::GetMyOwner()->GetPlayerID(), super::GetMyOwner()->GetAuthTicket(), super::GetOwnerEntityUID(), m_GameEntityUID));

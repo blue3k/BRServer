@@ -33,10 +33,10 @@ namespace BR
 			void RegisterDebugTraceServer()
 			{
  				// Cmd: 
-				MessageDebugTraceMapServer.insert(std::make_pair(Server::GenericFailureCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Server::GenericFailureCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapServer.insert(std::make_pair(Server::GenericFailureRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Server::GenericFailureRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapServer.insert(std::make_pair(Server::GenericFailureCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Server::GenericFailureCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapServer.insert(std::make_pair(Server::GenericFailureRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Server::GenericFailureRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// C2S: Server Started or Connected
-				MessageDebugTraceMapServer.insert(std::make_pair(Server::ServerConnectedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Server::ServerConnectedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapServer.insert(std::make_pair(Server::ServerConnectedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Server::ServerConnectedC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceServer()
 
 

@@ -76,7 +76,7 @@ namespace ConspiracyGameInstanceServer {
 			pPlayer->SetVotedGameAdvance(false);
 
 			if( pPlayer->GetPlayerEntityUID() != 0 )
-				pPolicy->GameAdvancedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_StateStartTimeUTC.time_since_epoch().count(), GetGameState(), day );
+				pPolicy->GameAdvancedS2CEvt( RouteContext( GetOwner().GetEntityUID(), pPlayer->GetPlayerEntityUID()), m_StateStartTimeUTC.time_since_epoch().count(), GetGameState(), (uint8_t)day );
 
 			return ResultCode::SUCCESS;
 		});
@@ -146,7 +146,7 @@ namespace ConspiracyGameInstanceServer {
 		{
 			m_BotIndex = 0;
 
-			float delay = ((m_BotDelay2 - m_BotDelay1) * Util::Random.Rand(0, 100)) / 100.0f;
+			float delay = ((m_BotDelay2 - m_BotDelay1) * (float)Util::Random.Rand(0, 100)) / 100.0f;
 			m_TimeToNextBotTalk.SetTimer(DurationMS((int)((m_PlayDelay + delay) * 1000)));
 			return GamePlayState_TimeLimit::OnEnter();
 		}
@@ -157,7 +157,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				BroadCastRandomBotMessage(m_BotTalkBegin, m_BotTalkEnd, m_BotIndex);
 
-				float delay = ((m_BotDelay2 - m_BotDelay1) * Util::Random.Rand(0, 100)) / 100.0f;
+				float delay = ((m_BotDelay2 - m_BotDelay1) * (float)Util::Random.Rand(0, 100)) / 100.0f;
 				m_TimeToNextBotTalk.SetTimer(DurationMS((int)(delay * 1000)));
 			}
 			return GamePlayState_TimeLimit::OnUpdate();

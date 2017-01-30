@@ -345,7 +345,7 @@ static GENERAL_NAMES *v2i_subject_alt(X509V3_EXT_METHOD *method,
 
 static int copy_email(X509V3_CTX *ctx, GENERAL_NAMES *gens, int move_p)
 {
-    X509_NAME *nm;
+    SSL_X509_NAME *nm;
     ASN1_IA5STRING *email = NULL;
     X509_NAME_ENTRY *ne;
     GENERAL_NAME *gen = NULL;
@@ -586,20 +586,20 @@ static int do_dirname(GENERAL_NAME *gen, char *value, X509V3_CTX *ctx)
 {
     int ret;
     STACK_OF(CONF_VALUE) *sk;
-    X509_NAME *nm;
+    SSL_X509_NAME *nm;
     if (!(nm = X509_NAME_new()))
         return 0;
     sk = X509V3_get_section(ctx, value);
     if (!sk) {
         X509V3err(X509V3_F_DO_DIRNAME, X509V3_R_SECTION_NOT_FOUND);
         ERR_add_error_data(2, "section=", value);
-        X509_NAME_free(nm);
+        SSL_X509_NAME_free(nm);
         return 0;
     }
     /* FIXME: should allow other character types... */
     ret = X509V3_NAME_from_section(nm, sk, MBSTRING_ASC);
     if (!ret)
-        X509_NAME_free(nm);
+        SSL_X509_NAME_free(nm);
     gen->d.dirn = nm;
     X509V3_section_free(ctx, sk);
 

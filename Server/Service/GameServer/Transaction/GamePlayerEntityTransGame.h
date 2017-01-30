@@ -53,9 +53,9 @@ namespace GameServer {
 		UINT32 m_TimeStamp;
 		GameStateID m_GameState;
 		UINT8 m_Day;
-		UINT m_MaxPlayer;
-		UINT m_PlayerIndex;
-		UINT m_PlayerCharacter;
+		UINT8 m_MaxPlayer;
+		UINT8 m_PlayerIndex;
+		UINT8 m_PlayerCharacter;
 		PlayerRole m_Role;
 		bool m_Dead;
 

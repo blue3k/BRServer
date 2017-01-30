@@ -770,48 +770,48 @@ int ssl_verify_cert_chain(SSL *s, STACK_OF(X509) *sk)
     return (i);
 }
 
-static void set_client_CA_list(STACK_OF(X509_NAME) **ca_list,
-                               STACK_OF(X509_NAME) *name_list)
+static void set_client_CA_list(STACK_OF(SSL_X509_NAME) **ca_list,
+                               STACK_OF(SSL_X509_NAME) *name_list)
 {
     if (*ca_list != NULL)
-        sk_X509_NAME_pop_free(*ca_list, X509_NAME_free);
+        sk_X509_NAME_pop_free(*ca_list, SSL_X509_NAME_free);
 
     *ca_list = name_list;
 }
 
-STACK_OF(X509_NAME) *SSL_dup_CA_list(STACK_OF(X509_NAME) *sk)
+STACK_OF(SSL_X509_NAME) *SSL_dup_CA_list(STACK_OF(SSL_X509_NAME) *sk)
 {
     int i;
-    STACK_OF(X509_NAME) *ret;
-    X509_NAME *name;
+    STACK_OF(SSL_X509_NAME) *ret;
+    SSL_X509_NAME *name;
 
     ret = sk_X509_NAME_new_null();
     for (i = 0; i < sk_X509_NAME_num(sk); i++) {
         name = X509_NAME_dup(sk_X509_NAME_value(sk, i));
         if ((name == NULL) || !sk_X509_NAME_push(ret, name)) {
-            sk_X509_NAME_pop_free(ret, X509_NAME_free);
+            sk_X509_NAME_pop_free(ret, SSL_X509_NAME_free);
             return (NULL);
         }
     }
     return (ret);
 }
 
-void SSL_set_client_CA_list(SSL *s, STACK_OF(X509_NAME) *name_list)
+void SSL_set_client_CA_list(SSL *s, STACK_OF(SSL_X509_NAME) *name_list)
 {
     set_client_CA_list(&(s->client_CA), name_list);
 }
 
-void SSL_CTX_set_client_CA_list(SSL_CTX *ctx, STACK_OF(X509_NAME) *name_list)
+void SSL_CTX_set_client_CA_list(SSL_CTX *ctx, STACK_OF(SSL_X509_NAME) *name_list)
 {
     set_client_CA_list(&(ctx->client_CA), name_list);
 }
 
-STACK_OF(X509_NAME) *SSL_CTX_get_client_CA_list(const SSL_CTX *ctx)
+STACK_OF(SSL_X509_NAME) *SSL_CTX_get_client_CA_list(const SSL_CTX *ctx)
 {
     return (ctx->client_CA);
 }
 
-STACK_OF(X509_NAME) *SSL_get_client_CA_list(const SSL *s)
+STACK_OF(SSL_X509_NAME) *SSL_get_client_CA_list(const SSL *s)
 {
     if (s->type == SSL_ST_CONNECT) { /* we are in the client */
         if (((s->version >> 8) == SSL3_VERSION_MAJOR) && (s->s3 != NULL))
@@ -826,9 +826,9 @@ STACK_OF(X509_NAME) *SSL_get_client_CA_list(const SSL *s)
     }
 }
 
-static int add_client_CA(STACK_OF(X509_NAME) **sk, X509 *x)
+static int add_client_CA(STACK_OF(SSL_X509_NAME) **sk, X509 *x)
 {
-    X509_NAME *name;
+    SSL_X509_NAME *name;
 
     if (x == NULL)
         return (0);
@@ -839,7 +839,7 @@ static int add_client_CA(STACK_OF(X509_NAME) **sk, X509 *x)
         return (0);
 
     if (!sk_X509_NAME_push(*sk, name)) {
-        X509_NAME_free(name);
+        SSL_X509_NAME_free(name);
         return (0);
     }
     return (1);
@@ -855,7 +855,7 @@ int SSL_CTX_add_client_CA(SSL_CTX *ctx, X509 *x)
     return (add_client_CA(&(ctx->client_CA), x));
 }
 
-static int xname_cmp(const X509_NAME *const *a, const X509_NAME *const *b)
+static int xname_cmp(const SSL_X509_NAME *const *a, const SSL_X509_NAME *const *b)
 {
     return (X509_NAME_cmp(*a, *b));
 }
@@ -869,12 +869,12 @@ static int xname_cmp(const X509_NAME *const *a, const X509_NAME *const *b)
  * \param file the file containing one or more certs.
  * \return a ::STACK containing the certs.
  */
-STACK_OF(X509_NAME) *SSL_load_client_CA_file(const char *file)
+STACK_OF(SSL_X509_NAME) *SSL_load_client_CA_file(const char *file)
 {
     BIO *in;
     X509 *x = NULL;
-    X509_NAME *xn = NULL;
-    STACK_OF(X509_NAME) *ret = NULL, *sk;
+    SSL_X509_NAME *xn = NULL;
+    STACK_OF(SSL_X509_NAME) *ret = NULL, *sk;
 
     sk = sk_X509_NAME_new(xname_cmp);
 
@@ -905,7 +905,7 @@ STACK_OF(X509_NAME) *SSL_load_client_CA_file(const char *file)
         if (xn == NULL)
             goto err;
         if (sk_X509_NAME_find(sk, xn) >= 0)
-            X509_NAME_free(xn);
+            SSL_X509_NAME_free(xn);
         else {
             sk_X509_NAME_push(sk, xn);
             sk_X509_NAME_push(ret, xn);
@@ -915,7 +915,7 @@ STACK_OF(X509_NAME) *SSL_load_client_CA_file(const char *file)
     if (0) {
  err:
         if (ret != NULL)
-            sk_X509_NAME_pop_free(ret, X509_NAME_free);
+            sk_X509_NAME_pop_free(ret, SSL_X509_NAME_free);
         ret = NULL;
     }
     if (sk != NULL)
@@ -939,14 +939,14 @@ STACK_OF(X509_NAME) *SSL_load_client_CA_file(const char *file)
  * certs may have been added to \c stack.
  */
 
-int SSL_add_file_cert_subjects_to_stack(STACK_OF(X509_NAME) *stack,
+int SSL_add_file_cert_subjects_to_stack(STACK_OF(SSL_X509_NAME) *stack,
                                         const char *file)
 {
     BIO *in;
     X509 *x = NULL;
-    X509_NAME *xn = NULL;
+    SSL_X509_NAME *xn = NULL;
     int ret = 1;
-    int (*oldcmp) (const X509_NAME *const *a, const X509_NAME *const *b);
+    int (*oldcmp) (const SSL_X509_NAME *const *a, const SSL_X509_NAME *const *b);
 
     oldcmp = sk_X509_NAME_set_cmp_func(stack, xname_cmp);
 
@@ -970,7 +970,7 @@ int SSL_add_file_cert_subjects_to_stack(STACK_OF(X509_NAME) *stack,
         if (xn == NULL)
             goto err;
         if (sk_X509_NAME_find(stack, xn) >= 0)
-            X509_NAME_free(xn);
+            SSL_X509_NAME_free(xn);
         else
             sk_X509_NAME_push(stack, xn);
     }
@@ -1002,7 +1002,7 @@ int SSL_add_file_cert_subjects_to_stack(STACK_OF(X509_NAME) *stack,
  * certs may have been added to \c stack.
  */
 
-int SSL_add_dir_cert_subjects_to_stack(STACK_OF(X509_NAME) *stack,
+int SSL_add_dir_cert_subjects_to_stack(STACK_OF(SSL_X509_NAME) *stack,
                                        const char *dir)
 {
     OPENSSL_DIR_CTX *d = NULL;

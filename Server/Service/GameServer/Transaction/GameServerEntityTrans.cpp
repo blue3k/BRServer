@@ -59,7 +59,7 @@ namespace GameServer {
 		Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes res;
 
 		svrChk(pRes->GetResult());
-		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
+		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 
 	Proc_End:

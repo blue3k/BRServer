@@ -76,53 +76,53 @@
 
 /* OCSP request extensions */
 
-int OCSP_REQUEST_get_ext_count(OCSP_REQUEST *x)
+int OCSP_REQUEST_get_ext_count(SSL_OCSP_REQUEST *x)
 {
     return (X509v3_get_ext_count(x->tbsRequest->requestExtensions));
 }
 
-int OCSP_REQUEST_get_ext_by_NID(OCSP_REQUEST *x, int nid, int lastpos)
+int OCSP_REQUEST_get_ext_by_NID(SSL_OCSP_REQUEST *x, int nid, int lastpos)
 {
     return (X509v3_get_ext_by_NID
             (x->tbsRequest->requestExtensions, nid, lastpos));
 }
 
-int OCSP_REQUEST_get_ext_by_OBJ(OCSP_REQUEST *x, ASN1_OBJECT *obj,
+int OCSP_REQUEST_get_ext_by_OBJ(SSL_OCSP_REQUEST *x, ASN1_OBJECT *obj,
                                 int lastpos)
 {
     return (X509v3_get_ext_by_OBJ
             (x->tbsRequest->requestExtensions, obj, lastpos));
 }
 
-int OCSP_REQUEST_get_ext_by_critical(OCSP_REQUEST *x, int crit, int lastpos)
+int OCSP_REQUEST_get_ext_by_critical(SSL_OCSP_REQUEST *x, int crit, int lastpos)
 {
     return (X509v3_get_ext_by_critical
             (x->tbsRequest->requestExtensions, crit, lastpos));
 }
 
-X509_EXTENSION *OCSP_REQUEST_get_ext(OCSP_REQUEST *x, int loc)
+X509_EXTENSION *OCSP_REQUEST_get_ext(SSL_OCSP_REQUEST *x, int loc)
 {
     return (X509v3_get_ext(x->tbsRequest->requestExtensions, loc));
 }
 
-X509_EXTENSION *OCSP_REQUEST_delete_ext(OCSP_REQUEST *x, int loc)
+X509_EXTENSION *OCSP_REQUEST_delete_ext(SSL_OCSP_REQUEST *x, int loc)
 {
     return (X509v3_delete_ext(x->tbsRequest->requestExtensions, loc));
 }
 
-void *OCSP_REQUEST_get1_ext_d2i(OCSP_REQUEST *x, int nid, int *crit, int *idx)
+void *OCSP_REQUEST_get1_ext_d2i(SSL_OCSP_REQUEST *x, int nid, int *crit, int *idx)
 {
     return X509V3_get_d2i(x->tbsRequest->requestExtensions, nid, crit, idx);
 }
 
-int OCSP_REQUEST_add1_ext_i2d(OCSP_REQUEST *x, int nid, void *value, int crit,
+int OCSP_REQUEST_add1_ext_i2d(SSL_OCSP_REQUEST *x, int nid, void *value, int crit,
                               unsigned long flags)
 {
     return X509V3_add1_i2d(&x->tbsRequest->requestExtensions, nid, value,
                            crit, flags);
 }
 
-int OCSP_REQUEST_add_ext(OCSP_REQUEST *x, X509_EXTENSION *ex, int loc)
+int OCSP_REQUEST_add_ext(SSL_OCSP_REQUEST *x, X509_EXTENSION *ex, int loc)
 {
     return (X509v3_add_ext(&(x->tbsRequest->requestExtensions), ex, loc) !=
             NULL);
@@ -375,7 +375,7 @@ static int ocsp_add1_nonce(STACK_OF(X509_EXTENSION) **exts,
 
 /* Add nonce to an OCSP request */
 
-int OCSP_request_add1_nonce(OCSP_REQUEST *req, unsigned char *val, int len)
+int OCSP_request_add1_nonce(SSL_OCSP_REQUEST *req, unsigned char *val, int len)
 {
     return ocsp_add1_nonce(&req->tbsRequest->requestExtensions, val, len);
 }
@@ -402,7 +402,7 @@ int OCSP_basic_add1_nonce(OCSP_BASICRESP *resp, unsigned char *val, int len)
  *  necessary. return == 0 is always an error.
  */
 
-int OCSP_check_nonce(OCSP_REQUEST *req, OCSP_BASICRESP *bs)
+int OCSP_check_nonce(SSL_OCSP_REQUEST *req, OCSP_BASICRESP *bs)
 {
     /*
      * Since we are only interested in the presence or absence of
@@ -439,7 +439,7 @@ int OCSP_check_nonce(OCSP_REQUEST *req, OCSP_BASICRESP *bs)
  * Copy the nonce value (if any) from an OCSP request to a response.
  */
 
-int OCSP_copy_nonce(OCSP_BASICRESP *resp, OCSP_REQUEST *req)
+int OCSP_copy_nonce(OCSP_BASICRESP *resp, SSL_OCSP_REQUEST *req)
 {
     X509_EXTENSION *req_ext;
     int req_idx;
@@ -528,7 +528,7 @@ X509_EXTENSION *OCSP_archive_cutoff_new(char *tim)
  * two--NID_ad_ocsp, NID_id_ad_caIssuers--and GeneralName value.  This method
  * forces NID_ad_ocsp and uniformResourceLocator [6] IA5String.
  */
-X509_EXTENSION *OCSP_url_svcloc_new(X509_NAME *issuer, char **urls)
+X509_EXTENSION *OCSP_url_svcloc_new(SSL_X509_NAME *issuer, char **urls)
 {
     X509_EXTENSION *x = NULL;
     ASN1_IA5STRING *ia5 = NULL;

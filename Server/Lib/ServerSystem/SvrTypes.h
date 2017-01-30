@@ -70,8 +70,6 @@ namespace BR {
 
 
 
-#include "SvrTypes.inl"
-
 
 
 }; // namespace BR

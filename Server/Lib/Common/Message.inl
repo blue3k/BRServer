@@ -19,22 +19,27 @@
 
 
 
-tag_MessageID::tag_MessageID()
+MessageID::MessageID()
 	:ID(0)
 {
 }
 
-//tag_MessageID::tag_MessageID( const tag_MessageID& src )
+//MessageID::MessageID( const MessageID& src )
 //	:ID(src.ID)
 //{
 //}
 
-tag_MessageID::tag_MessageID( UINT32 uiID )
+MessageID::MessageID( UINT32 uiID )
 	:ID(uiID)
 {
 }
 
-tag_MessageID::tag_MessageID( UINT uiType, UINT uiReliability, UINT uiMobility, UINT uiPolicy, UINT uiCode )
+#if __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
+MessageID::MessageID( UINT uiType, UINT uiReliability, UINT uiMobility, UINT uiPolicy, UINT uiCode )
 {
 	IDs.MsgCode = uiCode;
 	IDs.Policy = uiPolicy;
@@ -45,7 +50,7 @@ tag_MessageID::tag_MessageID( UINT uiType, UINT uiReliability, UINT uiMobility, 
 	IDs.Sequence = 0;// uiSeq;
 }
 
-UINT32 tag_MessageID::SetMessageID( UINT uiType, UINT uiReliability, UINT uiMobility, UINT uiPolicy, UINT uiCode )
+UINT32 MessageID::SetMessageID( UINT uiType, UINT uiReliability, UINT uiMobility, UINT uiPolicy, UINT uiCode )
 {
 	IDs.MsgCode = uiCode;
 	IDs.Policy = uiPolicy;
@@ -58,13 +63,22 @@ UINT32 tag_MessageID::SetMessageID( UINT uiType, UINT uiReliability, UINT uiMobi
 	return ID;
 }
 
+inline void MessageID::SetSequence(UINT sequence)
+{
+	IDSeq.Sequence = sequence;
+}
+
+#if __GNUC__
+#pragma GCC diagnostic pop
+#endif
+
 // Only MsgID part, no sequence or length
-inline UINT tag_MessageID::GetMsgID() const
+inline UINT MessageID::GetMsgID() const
 {
 	return IDSeq.MsgID;
 }
 
-tag_MessageID::operator UINT32() const
+MessageID::operator UINT32() const
 {
 	return ID;
 }

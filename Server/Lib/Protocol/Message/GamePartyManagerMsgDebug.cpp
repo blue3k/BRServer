@@ -33,10 +33,10 @@ namespace BR
 			void RegisterDebugTraceGamePartyManager()
 			{
  				// Cmd: Create a party instance
-				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::CreatePartyCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GamePartyManager::CreatePartyCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::CreatePartyRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GamePartyManager::CreatePartyRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::CreatePartyCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GamePartyManager::CreatePartyCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::CreatePartyRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GamePartyManager::CreatePartyRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// C2S: Party instance notify of deletion
-				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::PartyDeletedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GamePartyManager::PartyDeletedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapGamePartyManager.insert(std::make_pair(GamePartyManager::PartyDeletedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GamePartyManager::PartyDeletedC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceGamePartyManager()
 
 

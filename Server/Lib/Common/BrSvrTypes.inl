@@ -28,7 +28,7 @@ TransactionID::TransactionID( const TransactionID& transID )
 {
 }
 
-TransactionID::TransactionID( EntityID entityID, UINT32 transID )
+TransactionID::TransactionID( EntityID entityID, uint32_t transID )
 {
 	Components.EntID = entityID;
 	Components.TransID = transID;
@@ -133,7 +133,7 @@ ServiceInformation::ServiceInformation( const ServiceInformation& src )
 {
 }
 
-ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, UINT32 workload )
+ServiceInformation::ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, uint32_t workload )
 {
 	UID = entityUID;
 	Membership = membership;
@@ -186,13 +186,21 @@ GlobalUID::GlobalUID( const GlobalUID& src )
 {
 }
 
-GlobalUID::GlobalUID( UINT serverID, UINT32 time, UINT32 id )
+#if __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
+GlobalUID::GlobalUID( UINT serverID, uint32_t time, uint32_t id )
 	: Time(time), SvrID(serverID), ID(id)
 {
 	Assert( serverID < 256 );
 }
+#if __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
-GlobalUID::GlobalUID( UINT64 initValue )
+GlobalUID::GlobalUID( uint64_t initValue )
 	:UID(initValue)
 {
 }
@@ -213,7 +221,7 @@ bool GlobalUID::operator != ( const GlobalUID& op ) const
 	return UID != op.UID;
 }
 
-GlobalUID::operator UINT64 () const
+GlobalUID::operator uint64_t () const
 {
 	return UID;
 }
@@ -230,12 +238,12 @@ LocalUID::LocalUID( const LocalUID& src )
 {
 }
 
-LocalUID::LocalUID( UINT32 time, UINT32 id )
+LocalUID::LocalUID( uint32_t time, uint32_t id )
 	:Time(time), ID(id)
 {
 }
 
-LocalUID::LocalUID( UINT64 initValue )
+LocalUID::LocalUID( uint64_t initValue )
 	:UID(initValue)
 {
 }
@@ -256,7 +264,7 @@ bool LocalUID::operator != ( const LocalUID& op ) const
 	return UID != op.UID;
 }
 
-LocalUID::operator UINT64 () const
+LocalUID::operator uint64_t () const
 {
 	return UID;
 }
@@ -358,7 +366,7 @@ MatchingQueueItem::MatchingQueueItem()
 MatchingQueueItem::MatchingQueueItem( const MatchingQueueItem& src )
 	: RegisterUID(src.RegisterUID)
 	, RegisterID(src.RegisterID)
-	, NumPlayers(std::max((UINT32)MAX_NUM_PLAYER, src.NumPlayers))
+	, NumPlayers(std::max((uint32_t)MAX_NUM_PLAYER, src.NumPlayers))
 {
 	memcpy( Players, src.Players, sizeof(MatchingPlayerInformation)*NumPlayers );
 }
@@ -366,7 +374,7 @@ MatchingQueueItem::MatchingQueueItem( const MatchingQueueItem& src )
 MatchingQueueItem::MatchingQueueItem( EntityUID registerUID, PlayerID registerID, UINT numPlayer, const MatchingPlayerInformation* playerInformations )
 	: RegisterUID(registerUID)
 	, RegisterID(registerID)
-	, NumPlayers(std::max((UINT32)MAX_NUM_PLAYER, numPlayer))
+	, NumPlayers(std::max((uint32_t)MAX_NUM_PLAYER, numPlayer))
 {
 	memcpy( Players, playerInformations, sizeof(MatchingPlayerInformation)*NumPlayers );
 }
@@ -387,7 +395,7 @@ Result MatchingQueueItem::SetQueueItem( EntityUID registerUID, PlayerID register
 	
 	RegisterUID = registerUID;
 	RegisterID = registerID;
-	NumPlayers = std::min((UINT32)MAX_NUM_PLAYER,numPlayer);
+	NumPlayers = std::min((uint32_t)MAX_NUM_PLAYER,numPlayer);
 	memcpy( Players, playerInformations, sizeof(MatchingPlayerInformation)*NumPlayers );
 	return ResultCode::SUCCESS;
 }

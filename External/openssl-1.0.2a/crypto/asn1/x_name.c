@@ -76,8 +76,8 @@ static int x509_name_ex_i2d(ASN1_VALUE **val, unsigned char **out,
 static int x509_name_ex_new(ASN1_VALUE **val, const ASN1_ITEM *it);
 static void x509_name_ex_free(ASN1_VALUE **val, const ASN1_ITEM *it);
 
-static int x509_name_encode(X509_NAME *a);
-static int x509_name_canon(X509_NAME *a);
+static int x509_name_encode(SSL_X509_NAME *a);
+static int x509_name_canon(SSL_X509_NAME *a);
 static int asn1_string_canon(ASN1_STRING *out, ASN1_STRING *in);
 static int i2d_name_canon(STACK_OF(STACK_OF_X509_NAME_ENTRY) * intname,
                           unsigned char **in);
@@ -109,7 +109,7 @@ ASN1_ITEM_TEMPLATE_END(X509_NAME_INTERNAL)
 
 /*
  * Normally that's where it would end: we'd have two nested STACK structures
- * representing the ASN1. Unfortunately X509_NAME uses a completely different
+ * representing the ASN1. Unfortunately SSL_X509_NAME uses a completely different
  * form and caches encodings so we have to process the internal form and
  * convert to the external form.
  */
@@ -124,16 +124,16 @@ const ASN1_EXTERN_FUNCS x509_name_ff = {
     x509_name_ex_print
 };
 
-IMPLEMENT_EXTERN_ASN1(X509_NAME, V_ASN1_SEQUENCE, x509_name_ff)
+IMPLEMENT_EXTERN_ASN1(SSL_X509_NAME, V_ASN1_SEQUENCE, x509_name_ff)
 
-IMPLEMENT_ASN1_FUNCTIONS(X509_NAME)
+IMPLEMENT_ASN1_FUNCTIONS(SSL_X509_NAME)
 
-IMPLEMENT_ASN1_DUP_FUNCTION(X509_NAME)
+IMPLEMENT_ASN1_DUP_FUNCTION(SSL_X509_NAME)
 
 static int x509_name_ex_new(ASN1_VALUE **val, const ASN1_ITEM *it)
 {
-    X509_NAME *ret = NULL;
-    ret = OPENSSL_malloc(sizeof(X509_NAME));
+    SSL_X509_NAME *ret = NULL;
+    ret = OPENSSL_malloc(sizeof(SSL_X509_NAME));
     if (!ret)
         goto memerr;
     if ((ret->entries = sk_X509_NAME_ENTRY_new_null()) == NULL)
@@ -158,10 +158,10 @@ static int x509_name_ex_new(ASN1_VALUE **val, const ASN1_ITEM *it)
 
 static void x509_name_ex_free(ASN1_VALUE **pval, const ASN1_ITEM *it)
 {
-    X509_NAME *a;
+    SSL_X509_NAME *a;
     if (!pval || !*pval)
         return;
-    a = (X509_NAME *)*pval;
+    a = (SSL_X509_NAME *)*pval;
 
     BUF_MEM_free(a->bytes);
     sk_X509_NAME_ENTRY_pop_free(a->entries, X509_NAME_ENTRY_free);
@@ -184,7 +184,7 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
         NULL
     };
     union {
-        X509_NAME *x;
+        SSL_X509_NAME *x;
         ASN1_VALUE *a;
     } nm = {
         NULL
@@ -211,7 +211,7 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
         goto err;
     memcpy(nm.x->bytes->data, q, p - q);
 
-    /* Convert internal representation to X509_NAME structure */
+    /* Convert internal representation to SSL_X509_NAME structure */
     for (i = 0; i < sk_STACK_OF_X509_NAME_ENTRY_num(intname.s); i++) {
         entries = sk_STACK_OF_X509_NAME_ENTRY_value(intname.s, i);
         for (j = 0; j < sk_X509_NAME_ENTRY_num(entries); j++) {
@@ -232,7 +232,7 @@ static int x509_name_ex_d2i(ASN1_VALUE **val,
     return ret;
  err:
     if (nm.x != NULL)
-        X509_NAME_free(nm.x);
+		SSL_X509_NAME_free(nm.x);
     ASN1err(ASN1_F_X509_NAME_EX_D2I, ERR_R_NESTED_ASN1_ERROR);
     return 0;
 }
@@ -241,7 +241,7 @@ static int x509_name_ex_i2d(ASN1_VALUE **val, unsigned char **out,
                             const ASN1_ITEM *it, int tag, int aclass)
 {
     int ret;
-    X509_NAME *a = (X509_NAME *)*val;
+    SSL_X509_NAME *a = (SSL_X509_NAME *)*val;
     if (a->modified) {
         ret = x509_name_encode(a);
         if (ret < 0)
@@ -268,7 +268,7 @@ static void local_sk_X509_NAME_ENTRY_pop_free(STACK_OF(X509_NAME_ENTRY) *ne)
     sk_X509_NAME_ENTRY_pop_free(ne, X509_NAME_ENTRY_free);
 }
 
-static int x509_name_encode(X509_NAME *a)
+static int x509_name_encode(SSL_X509_NAME *a)
 {
     union {
         STACK_OF(STACK_OF_X509_NAME_ENTRY) *s;
@@ -319,7 +319,7 @@ static int x509_name_ex_print(BIO *out, ASN1_VALUE **pval,
                               int indent,
                               const char *fname, const ASN1_PCTX *pctx)
 {
-    if (X509_NAME_print_ex(out, (X509_NAME *)*pval,
+    if (X509_NAME_print_ex(out, (SSL_X509_NAME *)*pval,
                            indent, pctx->nm_flags) <= 0)
         return 0;
     return 2;
@@ -335,7 +335,7 @@ static int x509_name_ex_print(BIO *out, ASN1_VALUE **pval,
  * constraints of type dirName can also be checked with a simple memcmp().
  */
 
-static int x509_name_canon(X509_NAME *a)
+static int x509_name_canon(SSL_X509_NAME *a)
 {
     unsigned char *p;
     STACK_OF(STACK_OF_X509_NAME_ENTRY) *intname = NULL;
@@ -347,7 +347,7 @@ static int x509_name_canon(X509_NAME *a)
         OPENSSL_free(a->canon_enc);
         a->canon_enc = NULL;
     }
-    /* Special case: empty X509_NAME => null encoding */
+    /* Special case: empty SSL_X509_NAME => null encoding */
     if (sk_X509_NAME_ENTRY_num(a->entries) == 0) {
         a->canon_enclen = 0;
         return 1;
@@ -505,9 +505,9 @@ static int i2d_name_canon(STACK_OF(STACK_OF_X509_NAME_ENTRY) * _intname,
     return len;
 }
 
-int X509_NAME_set(X509_NAME **xn, X509_NAME *name)
+int X509_NAME_set(SSL_X509_NAME **xn, SSL_X509_NAME *name)
 {
-    X509_NAME *in;
+    SSL_X509_NAME *in;
 
     if (!xn || !name)
         return (0);
@@ -515,7 +515,7 @@ int X509_NAME_set(X509_NAME **xn, X509_NAME *name)
     if (*xn != name) {
         in = X509_NAME_dup(name);
         if (in != NULL) {
-            X509_NAME_free(*xn);
+            SSL_X509_NAME_free(*xn);
             *xn = in;
         }
     }

@@ -575,7 +575,7 @@ typedef struct ssl3_state_st {
         int cert_req;
         int ctype_num;
         char ctype[SSL3_CT_NUMBER];
-        STACK_OF(X509_NAME) *ca_names;
+        STACK_OF(SSL_X509_NAME) *ca_names;
         int use_rsa_tmp;
         int key_block_length;
         unsigned char *key_block;

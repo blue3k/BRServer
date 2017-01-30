@@ -84,7 +84,7 @@
  * useful if we want to add extensions.
  */
 
-OCSP_ONEREQ *OCSP_request_add0_id(OCSP_REQUEST *req, OCSP_CERTID *cid)
+OCSP_ONEREQ *OCSP_request_add0_id(SSL_OCSP_REQUEST *req, OCSP_CERTID *cid)
 {
     OCSP_ONEREQ *one = NULL;
 
@@ -101,9 +101,9 @@ OCSP_ONEREQ *OCSP_request_add0_id(OCSP_REQUEST *req, OCSP_CERTID *cid)
     return NULL;
 }
 
-/* Set requestorName from an X509_NAME structure */
+/* Set requestorName from an SSL_X509_NAME structure */
 
-int OCSP_request_set1_name(OCSP_REQUEST *req, X509_NAME *nm)
+int OCSP_request_set1_name(SSL_OCSP_REQUEST *req, SSL_X509_NAME *nm)
 {
     GENERAL_NAME *gen;
     gen = GENERAL_NAME_new();
@@ -122,7 +122,7 @@ int OCSP_request_set1_name(OCSP_REQUEST *req, X509_NAME *nm)
 
 /* Add a certificate to an OCSP request */
 
-int OCSP_request_add1_cert(OCSP_REQUEST *req, X509 *cert)
+int OCSP_request_add1_cert(SSL_OCSP_REQUEST *req, X509 *cert)
 {
     OCSP_SIGNATURE *sig;
     if (!req->optionalSignature)
@@ -147,7 +147,7 @@ int OCSP_request_add1_cert(OCSP_REQUEST *req, X509 *cert)
  * in the request. Behaves like PKCS7_sign().
  */
 
-int OCSP_request_sign(OCSP_REQUEST *req,
+int OCSP_request_sign(SSL_OCSP_REQUEST *req,
                       X509 *signer,
                       EVP_PKEY *key,
                       const EVP_MD *dgst,
@@ -191,17 +191,17 @@ int OCSP_request_sign(OCSP_REQUEST *req,
 
 /* Get response status */
 
-int OCSP_response_status(OCSP_RESPONSE *resp)
+int OCSP_response_status(SSL_OCSP_RESPONSE *resp)
 {
     return ASN1_ENUMERATED_get(resp->responseStatus);
 }
 
 /*
- * Extract basic response from OCSP_RESPONSE or NULL if no basic response
+ * Extract basic response from SSL_OCSP_RESPONSE or NULL if no basic response
  * present.
  */
 
-OCSP_BASICRESP *OCSP_response_get1_basic(OCSP_RESPONSE *resp)
+OCSP_BASICRESP *OCSP_response_get1_basic(SSL_OCSP_RESPONSE *resp)
 {
     OCSP_RESPBYTES *rb;
     rb = resp->responseBytes;

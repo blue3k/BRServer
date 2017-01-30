@@ -77,7 +77,7 @@ namespace Net {
 
 		pNetCtrl = (MsgMobileNetCtrl*)pMsg->GetMessageBuff();
 		pNetCtrl->PeerID = UID;
-		pNetCtrl->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrl->msgID.SetSequence(uiSequence);
 		pNetCtrl->rtnMsgID = msgID;
 
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = true;
@@ -423,15 +423,14 @@ namespace Net {
 
 		pNetCtrlMsg = (MsgMobileNetCtrl*)(m_pGatheringBuffer+m_uiGatheredSize);
 		pNetCtrlMsg->msgID.ID = uiCtrlCode;
-		pNetCtrlMsg->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrlMsg->msgID.SetSequence( uiSequence);
 		pNetCtrlMsg->rtnMsgID = msgID;
 		pNetCtrlMsg->PeerID = UID;
 
 		pNetCtrlMsg->msgID.IDs.Mobile = true;
 		pNetCtrlMsg->Length = sizeof(MsgMobileNetCtrl);
 
-		pNetCtrlMsg->Crc32 = Util::Crc32( sizeof(MsgMobileNetCtrl) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) );
-		if( pNetCtrlMsg->Crc32 == 0 ) pNetCtrlMsg->Crc32 = ~pNetCtrlMsg->Crc32;
+		pNetCtrlMsg->SetCrc(Util::Crc32( sizeof(MsgMobileNetCtrl) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) ));
 
 		m_uiGatheredSize += pNetCtrlMsg->Length;
 
@@ -450,15 +449,14 @@ namespace Net {
 
 		pNetCtrlMsg = (MsgMobileNetCtrlSync*)(m_pGatheringBuffer+m_uiGatheredSize);
 		pNetCtrlMsg->msgID = PACKET_NETCTRL_SYNCRELIABLE;
-		pNetCtrlMsg->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrlMsg->msgID.SetSequence(uiSequence);
 		pNetCtrlMsg->MessageMask = uiSyncMask;
 		pNetCtrlMsg->PeerID = GetPeerID();
 
 		pNetCtrlMsg->msgID.IDs.Mobile = true;
 		pNetCtrlMsg->Length = sizeof(MsgMobileNetCtrlSync);
 
-		pNetCtrlMsg->Crc32 = Util::Crc32( sizeof(MsgMobileNetCtrlSync) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) );
-		if( pNetCtrlMsg->Crc32 == 0 ) pNetCtrlMsg->Crc32 = ~pNetCtrlMsg->Crc32;
+		pNetCtrlMsg->SetCrc(Util::Crc32( sizeof(MsgMobileNetCtrlSync) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) ));
 
 		netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Send RecvReliableMask : CID:{0} BaseSeq:{1}, seq:{2}, mask:{3:X8}",
 			GetCID(), m_RecvReliableWindow.GetBaseSequence(), uiSequence, uiSyncMask);

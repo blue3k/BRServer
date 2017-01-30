@@ -55,7 +55,7 @@ namespace Svr {
 	//	Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityRes res;
 
 	//	svrChk(pRes->GetResult());
-	//	svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
+	//	svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 	//	m_PublicAddress = GetMyOwner()->GetPublicNetConfig()->IPV4.c_str();
 	//	m_PublicAddressIPV6 = GetMyOwner()->GetPublicNetConfig()->IPV6.c_str();

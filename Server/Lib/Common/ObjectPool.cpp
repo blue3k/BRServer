@@ -271,6 +271,7 @@ namespace BR
 
 		pPtr = pMemItem->pObject;
 		CounterType Using = pMemItem->Using.fetch_add(1,std::memory_order_relaxed) + 1;
+		unused(Using);
 		Assert( Using == 1 );
 		//Assert( Using == pMemItem->Using );
 
@@ -305,6 +306,7 @@ namespace BR
 		else
 		{
 			CounterType Using = pMemItem->Using.fetch_sub(1,std::memory_order_relaxed) - 1;
+			unused(Using);
 			Assert( Using == 0 );
 			//Assert( Using == pMemItem->Using );
 

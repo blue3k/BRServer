@@ -56,7 +56,7 @@ namespace Svr {
 
 		svrChk(pRes->GetResult());
 
-		svrChk( msgRes.ParseIMsg( ((Svr::MessageResult*)pRes)->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( ((Svr::MessageResult*)pRes)->GetMessage() ) );
 
 
 		// Update service information with master's one

@@ -68,7 +68,7 @@ namespace BR
 		int iFilled = 0;
 		do {
 			// get next digit
-			unsigned digval = (val % radix);
+			unsigned digval = (unsigned)(val % radix);
 			val = (Type)( val/ radix );
 
 			// convert to ascii and store
@@ -124,7 +124,7 @@ namespace BR
 		bool bIsNeg = false;
 		if( val < 0 )
 		{
-			val = -val;
+			val = (INT8)(-val);
 			bIsNeg = true;
 		}
 
@@ -142,7 +142,7 @@ namespace BR
 		bool bIsNeg = false;
 		if( val < 0 )
 		{
-			val = -val;
+			val = (INT16)(-val);
 			bIsNeg = true;
 		}
 

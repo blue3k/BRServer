@@ -105,7 +105,7 @@ namespace BR {
 
 		// Generic transaction close with argument, return Context and Result by default
 #define BR_SVR_MSGTRANS_CLOSE_ARGS( MessageName, routeContext, ... ) \
-	virtual Result OnCloseTransaction( Result hrRes )\
+	virtual Result OnCloseTransaction( Result hrRes ) override\
 		{\
 		Result hr = ResultCode::SUCCESS;\
 		auto pPolicy = GetPolicy();\
@@ -163,7 +163,7 @@ namespace BR {
 			\
 			if( (pMsgRes->GetResult()) )\
 			{\
-				svrChk( Result.ParseIMsg(pMsgRes->GetMessage()) );\
+				svrChk( Result.ParseMessage(pMsgRes->GetMessage()) );\
 			}\
 
 
@@ -176,7 +176,7 @@ namespace BR {
 			Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;\
 			if( (pMsgRes->GetResult()) )\
 			{\
-				svrChk( ResVar.ParseIMsg(pMsgRes->GetMessage()) );\
+				svrChk( ResVar.ParseMessage(pMsgRes->GetMessage()) );\
 			}\
 
 

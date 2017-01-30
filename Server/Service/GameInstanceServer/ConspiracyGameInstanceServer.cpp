@@ -17,6 +17,8 @@
 using namespace BR;
 
 
+
+
 #if WINDOWS
 int APIENTRY WinMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{74ded5ce-18e1-47dc-8b6d-d1a441c21930}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameInstance\GameClusterServiceEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameInstance\GameEntityManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameInstance\GamePlayerEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameServer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameServerClass.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameSvrConst.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem\UserFriendSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem\UserGamePlayerInfoSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem\UserNotifySystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem\UserSystemComponentIDs.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GameMasterTrans.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTrans.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransClose.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransFriend.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransGame.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransParty.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GameServerEntityTrans.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\GameServerTrans.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameClusterServiceEntity.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GameEntityManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameInstance\GamePlayerEntity.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameServer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameServerClass.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameServer_NetProc.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameSystem\UserFriendSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameSystem\UserGamePlayerInfoSystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameSystem\UserNotifySystem.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\GameMasterTrans.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTrans.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransClose.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransFriend.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransGame.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\GamePlayerEntityTransParty.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\GameServerEntityTrans.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\GameServerTrans.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)GameInstance\GamePlayerEntity.inl" />
+    <None Include="$(MSBuildThisFileDirectory)GameServerClass.inl" />
+  </ItemGroup>
+</Project>

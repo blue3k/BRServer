@@ -3,14 +3,14 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir>$(ProjectDir)../../bin/$(Platform)$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)Server/bin/$(Platform)$(Configuration)\</OutDir>
     <TargetName>BR$(ProjectName)</TargetName>
-    <IntDir>$(SolutionDir)\Win64\$(Platform)$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir>$(SolutionDir)Intermediate\Win64\$(Platform)$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)../../bin/lib/$(Platform)$(Configuration);$(ProjectDir)../../External/lib/$(Platform)$(Configuration);$(ProjectDir)../../bin/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;LibCommon.lib;External.lib;libxml.lib;libTable.lib;libDB.lib;libServerSystem.lib;libNet.lib;Ws2_32.lib;libprotocol.lib;Mswsock.lib;libeay32.lib;libcurl.lib;ssleay32.lib;lib_json.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;LibCommon.WIn.lib;LibExternal.Win.lib;libxml.lib;libTable.Win.lib;libDB.Win.lib;libServerSystem.Win.lib;libNet.win.lib;Ws2_32.lib;libprotocol.win.lib;Mswsock.lib;libeay32.lib;libcurl.lib;ssleay32.lib;lib_json.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
     <ClCompile>

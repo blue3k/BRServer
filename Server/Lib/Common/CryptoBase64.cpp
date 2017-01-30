@@ -32,15 +32,15 @@ namespace Util {
 	{
 		if ('A' <= in && in <= 'Z')
 		{
-			out = in - 'A';
+			out = (BYTE)(in - 'A');
 		}
 		else if ('a' <= in && in <= 'z')
 		{
-			out = in - 'a' + 26;
+			out = (BYTE)(in - 'a' + 26);
 		}
 		else if ('0' <= in && in <= '9')
 		{
-			out = in - '0' + 26 * 2;
+			out = (BYTE)(in - '0' + 26 * 2);
 		}
 		else
 		{
@@ -71,8 +71,8 @@ namespace Util {
 			if (i == 3)
 			{
 				char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-				char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-				char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+				char_array_4[1] = (unsigned char)( ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4) );
+				char_array_4[2] = (unsigned char)(((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6) );
 				char_array_4[3] = char_array_3[2] & 0x3f;
 
 				for (i = 0; (i < 4); i++)
@@ -90,8 +90,8 @@ namespace Util {
 				char_array_3[j] = '\0';
 
 			char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-			char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-			char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+			char_array_4[1] = (unsigned char)(((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4) );
+			char_array_4[2] = (unsigned char)(((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6) );
 			char_array_4[3] = char_array_3[2] & 0x3f;
 
 			for (j = 0; (j < i + 1); j++)
@@ -130,9 +130,9 @@ namespace Util {
 			in_++;
 			if (i == 4)
 			{
-				char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-				char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-				char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+				char_array_3[0] = (unsigned char)( (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4) );
+				char_array_3[1] = (unsigned char)( ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2) );
+				char_array_3[2] = (unsigned char)( ((char_array_4[2] & 0x3) << 6) + char_array_4[3] );
 
 				for (i = 0; (i < 3); i++)
 				{
@@ -147,9 +147,9 @@ namespace Util {
 			for (j = i; j <4; j++)
 				char_array_4[j] = 0;
 
-			char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-			char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-			char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+			char_array_3[0] = (unsigned char)( (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4) );
+			char_array_3[1] = (unsigned char)( ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2) );
+			char_array_3[2] = (unsigned char)( ((char_array_4[2] & 0x3) << 6) + char_array_4[3] );
 
 			for (j = 0; (j < i - 1); j++)
 			{

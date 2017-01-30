@@ -416,7 +416,7 @@ STACK_OF(X509) *PKCS7_get0_signers(PKCS7 *p7, STACK_OF(X509) *certs,
     STACK_OF(X509) *signers;
     STACK_OF(PKCS7_SIGNER_INFO) *sinfos;
     PKCS7_SIGNER_INFO *si;
-    PKCS7_ISSUER_AND_SERIAL *ias;
+    SSL_PKCS7_ISSUER_AND_SERIAL *ias;
     X509 *signer;
     int i;
 

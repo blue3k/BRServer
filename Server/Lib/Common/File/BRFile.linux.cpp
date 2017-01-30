@@ -175,7 +175,7 @@ namespace IO {
 			return ResultCode::UNEXPECTED;
 
 		int dwRead = 0;
-		dwRead = read((int)(intptr_t)m_FileHandle, buffer, bufferLen);
+		dwRead = (int)read((int)(intptr_t)m_FileHandle, buffer, bufferLen);
 		if(dwRead < 0)
 		{
 			return ResultCode::FAIL;
@@ -191,7 +191,7 @@ namespace IO {
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
 			return ResultCode::UNEXPECTED;
 
-		int dwWritten = write((int)(intptr_t)m_FileHandle, buffer, bufferLen);
+		int dwWritten = (int)write((int)(intptr_t)m_FileHandle, buffer, bufferLen);
 		if (dwWritten < 0)
 		{
 			return ResultCode::FAIL;

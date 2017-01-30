@@ -154,7 +154,7 @@ namespace BR
 
 			pNewNode = (LinkedListNode*)bufferPos;
 			bufferPos += sizeof(LinkedListNode);
-			bufferSize -= sizeof(LinkedListNode);
+			bufferSize = (decltype(bufferSize))(bufferSize - sizeof(LinkedListNode));
 
 			memset(pNewNode, 0, sizeof(LinkedListNode));
 			pNewNode->Key = StringKey(curSettingName);

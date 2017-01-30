@@ -23,15 +23,15 @@ namespace BR {
 namespace Message {
 
 		// S2C: Used for sending generial failure for not started transaction messages
-		Result FailResultS2CEvt::ParseIMsg( MessageData* pIMsg )
+		Result FailResultS2CEvt::ParseMessage( MessageData* pIMsg )
 		{
  			Result hr = ResultCode::SUCCESS;
-			INT iMsgSize;
+			int iMsgSize;
 			BYTE* pCur;
 
 			protocolChkPtr(pIMsg);
 
-			iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+			iMsgSize = (int)pIMsg->GetMessageSize() - (int)sizeof(MessageHeader);
 			pCur = pIMsg->GetMessageData();
 
 			if( iMsgSize == sizeof(Result) ) // if result only
@@ -48,7 +48,7 @@ namespace Message {
 
 			return hr;
 
-		}; // Result MsgFailResultS2CEvt::ParseIMsg( BR::Net::MessageData* pIMsg )
+		}; // Result MsgFailResultS2CEvt::ParseMessage( BR::Net::MessageData* pIMsg )
 
 		void FailResultS2CEvt::OutputMessage(const char* Prefix)
 		{

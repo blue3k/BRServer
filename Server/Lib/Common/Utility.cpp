@@ -79,7 +79,7 @@ namespace Util {
 			char exe[1024];
 			int ret;
 
-			ret = readlink("/proc/self/exe", exe, sizeof(exe) - 1);
+			ret = (int)readlink("/proc/self/exe", exe, sizeof(exe) - 1);
 			if (ret == -1) {
 				fprintf(stderr, "ERRORRRRR\n");
 				exit(1);

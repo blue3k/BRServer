@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{15602eed-6f76-4f5b-b883-5f8383a8f070}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)conspiracy\BotTalkTbl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)conspiracy\GameConfigTbl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)conspiracy\LevelTbl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)conspiracy\OrganicTbl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)conspiracy\RewardTbl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)conspiracy\ShopTbl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)conspiracy\TableVersionTbl.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TableQueries.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TableSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\BotTalkTbl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\GameConfigTbl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\LevelTbl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\OrganicTbl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\RewardTbl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\ShopTbl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)conspiracy\TableVersionTbl.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TableQueries.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TableSystem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
+  </ItemGroup>
+</Project>

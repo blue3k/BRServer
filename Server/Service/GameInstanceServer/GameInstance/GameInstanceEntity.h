@@ -153,15 +153,12 @@ namespace ConspiracyGameInstanceServer
 		// foreach game player
 		template< class Func >
 		Result ForeachPlayer(Func func);
-		//Result ForeachPlayer( std::function<Result(GamePlayer* pPlayer)> func );
 
 		template< class Func >
 		Result ForeachPlayerGameServer(Func func );
-		//Result ForeachPlayerGameServer(std::function<Result(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func);
 
 		template< class Func >
 		Result ForeachPlayerSvrGameInstance(Func func );
-		//Result ForeachPlayerSvrGameInstance(std::function<Result(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func);
 
 
 

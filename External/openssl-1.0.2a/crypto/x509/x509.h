@@ -114,9 +114,9 @@ extern "C" {
 
 # ifdef OPENSSL_SYS_WIN32
 /* Under Win32 these are defined in wincrypt.h */
-#  undef X509_NAME
-#  undef X509_CERT_PAIR
-#  undef X509_EXTENSIONS
+#  undef SSL_X509_NAME
+#  undef SSL_X509_CERT_PAIR
+#  undef SSL_X509_EXTENSIONS
 # endif
 
 # define X509_FILETYPE_PEM       1
@@ -187,9 +187,9 @@ struct X509_name_st {
 /*      unsigned long hash; Keep the hash around for lookups */
     unsigned char *canon_enc;
     int canon_enclen;
-} /* X509_NAME */ ;
+} /* SSL_X509_NAME */ ;
 
-DECLARE_STACK_OF(X509_NAME)
+DECLARE_STACK_OF(SSL_X509_NAME)
 
 # define X509_EX_V_NETSCAPE_HACK         0x8000
 # define X509_EX_V_INIT                  0x0001
@@ -199,7 +199,7 @@ typedef struct X509_extension_st {
     ASN1_OCTET_STRING *value;
 } X509_EXTENSION;
 
-typedef STACK_OF(X509_EXTENSION) X509_EXTENSIONS;
+typedef STACK_OF(X509_EXTENSION) SSL_X509_EXTENSIONS;
 
 DECLARE_STACK_OF(X509_EXTENSION)
 DECLARE_ASN1_SET_OF(X509_EXTENSION)
@@ -226,7 +226,7 @@ DECLARE_ASN1_SET_OF(X509_ATTRIBUTE)
 typedef struct X509_req_info_st {
     ASN1_ENCODING enc;
     ASN1_INTEGER *version;
-    X509_NAME *subject;
+    SSL_X509_NAME *subject;
     X509_PUBKEY *pubkey;
     /*  d=2 hl=2 l=  0 cons: cont: 00 */
     STACK_OF(X509_ATTRIBUTE) *attributes; /* [ 0 ] */
@@ -243,9 +243,9 @@ typedef struct x509_cinf_st {
     ASN1_INTEGER *version;      /* [ 0 ] default of v1 */
     ASN1_INTEGER *serialNumber;
     X509_ALGOR *signature;
-    X509_NAME *issuer;
+    SSL_X509_NAME *issuer;
     X509_VAL *validity;
-    X509_NAME *subject;
+    SSL_X509_NAME *subject;
     X509_PUBKEY *key;
     ASN1_BIT_STRING *issuerUID; /* [ 1 ] optional in v2 */
     ASN1_BIT_STRING *subjectUID; /* [ 2 ] optional in v2 */
@@ -317,7 +317,7 @@ DECLARE_STACK_OF(X509_TRUST)
 typedef struct x509_cert_pair_st {
     X509 *forward;
     X509 *reverse;
-} X509_CERT_PAIR;
+} SSL_X509_CERT_PAIR;
 
 /* standard trust ids */
 
@@ -441,7 +441,7 @@ DECLARE_ASN1_SET_OF(X509_REVOKED)
 typedef struct X509_crl_info_st {
     ASN1_INTEGER *version;
     X509_ALGOR *sig_alg;
-    X509_NAME *issuer;
+    SSL_X509_NAME *issuer;
     ASN1_TIME *lastUpdate;
     ASN1_TIME *nextUpdate;
     STACK_OF(X509_REVOKED) *revoked;
@@ -611,7 +611,7 @@ X509_CRL_METHOD *X509_CRL_METHOD_new(int (*crl_init) (X509_CRL *crl),
                                      int (*crl_lookup) (X509_CRL *crl,
                                                         X509_REVOKED **ret,
                                                         ASN1_INTEGER *ser,
-                                                        X509_NAME *issuer),
+                                                        SSL_X509_NAME *issuer),
                                      int (*crl_verify) (X509_CRL *crl,
                                                         EVP_PKEY *pk));
 void X509_CRL_METHOD_free(X509_CRL_METHOD *m);
@@ -662,7 +662,7 @@ int X509_CRL_digest(const X509_CRL *data, const EVP_MD *type,
                     unsigned char *md, unsigned int *len);
 int X509_REQ_digest(const X509_REQ *data, const EVP_MD *type,
                     unsigned char *md, unsigned int *len);
-int X509_NAME_digest(const X509_NAME *data, const EVP_MD *type,
+int X509_NAME_digest(const SSL_X509_NAME *data, const EVP_MD *type,
                      unsigned char *md, unsigned int *len);
 # endif
 
@@ -758,7 +758,7 @@ void X509_ALGOR_get0(ASN1_OBJECT **paobj, int *pptype, void **ppval,
 void X509_ALGOR_set_md(X509_ALGOR *alg, const EVP_MD *md);
 int X509_ALGOR_cmp(const X509_ALGOR *a, const X509_ALGOR *b);
 
-X509_NAME *X509_NAME_dup(X509_NAME *xn);
+SSL_X509_NAME *X509_NAME_dup(SSL_X509_NAME *xn);
 X509_NAME_ENTRY *X509_NAME_ENTRY_dup(X509_NAME_ENTRY *ne);
 
 int X509_cmp_time(const ASN1_TIME *s, time_t *t);
@@ -810,20 +810,20 @@ DECLARE_ASN1_FUNCTIONS(X509_ATTRIBUTE)
 X509_ATTRIBUTE *X509_ATTRIBUTE_create(int nid, int atrtype, void *value);
 
 DECLARE_ASN1_FUNCTIONS(X509_EXTENSION)
-DECLARE_ASN1_ENCODE_FUNCTIONS(X509_EXTENSIONS, X509_EXTENSIONS, X509_EXTENSIONS)
+DECLARE_ASN1_ENCODE_FUNCTIONS(SSL_X509_EXTENSIONS, SSL_X509_EXTENSIONS, SSL_X509_EXTENSIONS)
 
 DECLARE_ASN1_FUNCTIONS(X509_NAME_ENTRY)
 
-DECLARE_ASN1_FUNCTIONS(X509_NAME)
+DECLARE_ASN1_FUNCTIONS(SSL_X509_NAME)
 
-int X509_NAME_set(X509_NAME **xn, X509_NAME *name);
+int X509_NAME_set(SSL_X509_NAME **xn, SSL_X509_NAME *name);
 
 DECLARE_ASN1_FUNCTIONS(X509_CINF)
 
 DECLARE_ASN1_FUNCTIONS(X509)
 DECLARE_ASN1_FUNCTIONS(X509_CERT_AUX)
 
-DECLARE_ASN1_FUNCTIONS(X509_CERT_PAIR)
+DECLARE_ASN1_FUNCTIONS(SSL_X509_CERT_PAIR)
 
 int X509_get_ex_new_index(long argl, void *argp, CRYPTO_EX_new *new_func,
                           CRYPTO_EX_dup *dup_func, CRYPTO_EX_free *free_func);
@@ -872,7 +872,7 @@ DECLARE_ASN1_FUNCTIONS(NETSCAPE_CERT_SEQUENCE)
 # ifndef OPENSSL_NO_EVP
 X509_INFO *X509_INFO_new(void);
 void X509_INFO_free(X509_INFO *a);
-char *X509_NAME_oneline(X509_NAME *a, char *buf, int size);
+char *X509_NAME_oneline(SSL_X509_NAME *a, char *buf, int size);
 
 int ASN1_verify(i2d_of_void *i2d, X509_ALGOR *algor1,
                 ASN1_BIT_STRING *signature, char *data, EVP_PKEY *pkey);
@@ -901,10 +901,10 @@ int ASN1_item_sign_ctx(const ASN1_ITEM *it, X509_ALGOR *algor1,
 int X509_set_version(X509 *x, long version);
 int X509_set_serialNumber(X509 *x, ASN1_INTEGER *serial);
 ASN1_INTEGER *X509_get_serialNumber(X509 *x);
-int X509_set_issuer_name(X509 *x, X509_NAME *name);
-X509_NAME *X509_get_issuer_name(X509 *a);
-int X509_set_subject_name(X509 *x, X509_NAME *name);
-X509_NAME *X509_get_subject_name(X509 *a);
+int X509_set_issuer_name(X509 *x, SSL_X509_NAME *name);
+SSL_X509_NAME *X509_get_issuer_name(X509 *a);
+int X509_set_subject_name(X509 *x, SSL_X509_NAME *name);
+SSL_X509_NAME *X509_get_subject_name(X509 *a);
 int X509_set_notBefore(X509 *x, const ASN1_TIME *tm);
 int X509_set_notAfter(X509 *x, const ASN1_TIME *tm);
 int X509_set_pubkey(X509 *x, EVP_PKEY *pkey);
@@ -913,7 +913,7 @@ ASN1_BIT_STRING *X509_get0_pubkey_bitstr(const X509 *x);
 int X509_certificate_type(X509 *x, EVP_PKEY *pubkey /* optional */ );
 
 int X509_REQ_set_version(X509_REQ *x, long version);
-int X509_REQ_set_subject_name(X509_REQ *req, X509_NAME *name);
+int X509_REQ_set_subject_name(X509_REQ *req, SSL_X509_NAME *name);
 int X509_REQ_set_pubkey(X509_REQ *x, EVP_PKEY *pkey);
 EVP_PKEY *X509_REQ_get_pubkey(X509_REQ *req);
 int X509_REQ_extension_nid(int nid);
@@ -941,7 +941,7 @@ int X509_REQ_add1_attr_by_txt(X509_REQ *req,
                               const unsigned char *bytes, int len);
 
 int X509_CRL_set_version(X509_CRL *x, long version);
-int X509_CRL_set_issuer_name(X509_CRL *x, X509_NAME *name);
+int X509_CRL_set_issuer_name(X509_CRL *x, SSL_X509_NAME *name);
 int X509_CRL_set_lastUpdate(X509_CRL *x, const ASN1_TIME *tm);
 int X509_CRL_set_nextUpdate(X509_CRL *x, const ASN1_TIME *tm);
 int X509_CRL_sort(X509_CRL *crl);
@@ -976,9 +976,9 @@ unsigned long X509_subject_name_hash_old(X509 *x);
 # endif
 
 int X509_cmp(const X509 *a, const X509 *b);
-int X509_NAME_cmp(const X509_NAME *a, const X509_NAME *b);
-unsigned long X509_NAME_hash(X509_NAME *x);
-unsigned long X509_NAME_hash_old(X509_NAME *x);
+int X509_NAME_cmp(const SSL_X509_NAME *a, const SSL_X509_NAME *b);
+unsigned long X509_NAME_hash(SSL_X509_NAME *x);
+unsigned long X509_NAME_hash_old(SSL_X509_NAME *x);
 
 int X509_CRL_cmp(const X509_CRL *a, const X509_CRL *b);
 int X509_CRL_match(const X509_CRL *a, const X509_CRL *b);
@@ -988,13 +988,13 @@ int X509_print_ex_fp(FILE *bp, X509 *x, unsigned long nmflag,
 int X509_print_fp(FILE *bp, X509 *x);
 int X509_CRL_print_fp(FILE *bp, X509_CRL *x);
 int X509_REQ_print_fp(FILE *bp, X509_REQ *req);
-int X509_NAME_print_ex_fp(FILE *fp, X509_NAME *nm, int indent,
+int X509_NAME_print_ex_fp(FILE *fp, SSL_X509_NAME *nm, int indent,
                           unsigned long flags);
 # endif
 
 # ifndef OPENSSL_NO_BIO
-int X509_NAME_print(BIO *bp, X509_NAME *name, int obase);
-int X509_NAME_print_ex(BIO *out, X509_NAME *nm, int indent,
+int X509_NAME_print(BIO *bp, SSL_X509_NAME *name, int obase);
+int X509_NAME_print_ex(BIO *out, SSL_X509_NAME *nm, int indent,
                        unsigned long flags);
 int X509_print_ex(BIO *bp, X509 *x, unsigned long nmflag,
                   unsigned long cflag);
@@ -1007,26 +1007,26 @@ int X509_REQ_print_ex(BIO *bp, X509_REQ *x, unsigned long nmflag,
 int X509_REQ_print(BIO *bp, X509_REQ *req);
 # endif
 
-int X509_NAME_entry_count(X509_NAME *name);
-int X509_NAME_get_text_by_NID(X509_NAME *name, int nid, char *buf, int len);
-int X509_NAME_get_text_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj,
+int X509_NAME_entry_count(SSL_X509_NAME *name);
+int X509_NAME_get_text_by_NID(SSL_X509_NAME *name, int nid, char *buf, int len);
+int X509_NAME_get_text_by_OBJ(SSL_X509_NAME *name, ASN1_OBJECT *obj,
                               char *buf, int len);
 
 /*
  * NOTE: you should be passsing -1, not 0 as lastpos.  The functions that use
  * lastpos, search after that position on.
  */
-int X509_NAME_get_index_by_NID(X509_NAME *name, int nid, int lastpos);
-int X509_NAME_get_index_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj,
+int X509_NAME_get_index_by_NID(SSL_X509_NAME *name, int nid, int lastpos);
+int X509_NAME_get_index_by_OBJ(SSL_X509_NAME *name, ASN1_OBJECT *obj,
                                int lastpos);
-X509_NAME_ENTRY *X509_NAME_get_entry(X509_NAME *name, int loc);
-X509_NAME_ENTRY *X509_NAME_delete_entry(X509_NAME *name, int loc);
-int X509_NAME_add_entry(X509_NAME *name, X509_NAME_ENTRY *ne,
+X509_NAME_ENTRY *X509_NAME_get_entry(SSL_X509_NAME *name, int loc);
+X509_NAME_ENTRY *X509_NAME_delete_entry(SSL_X509_NAME *name, int loc);
+int X509_NAME_add_entry(SSL_X509_NAME *name, X509_NAME_ENTRY *ne,
                         int loc, int set);
-int X509_NAME_add_entry_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj, int type,
+int X509_NAME_add_entry_by_OBJ(SSL_X509_NAME *name, ASN1_OBJECT *obj, int type,
                                unsigned char *bytes, int len, int loc,
                                int set);
-int X509_NAME_add_entry_by_NID(X509_NAME *name, int nid, int type,
+int X509_NAME_add_entry_by_NID(SSL_X509_NAME *name, int nid, int type,
                                unsigned char *bytes, int len, int loc,
                                int set);
 X509_NAME_ENTRY *X509_NAME_ENTRY_create_by_txt(X509_NAME_ENTRY **ne,
@@ -1036,7 +1036,7 @@ X509_NAME_ENTRY *X509_NAME_ENTRY_create_by_txt(X509_NAME_ENTRY **ne,
 X509_NAME_ENTRY *X509_NAME_ENTRY_create_by_NID(X509_NAME_ENTRY **ne, int nid,
                                                int type, unsigned char *bytes,
                                                int len);
-int X509_NAME_add_entry_by_txt(X509_NAME *name, const char *field, int type,
+int X509_NAME_add_entry_by_txt(SSL_X509_NAME *name, const char *field, int type,
                                const unsigned char *bytes, int len, int loc,
                                int set);
 X509_NAME_ENTRY *X509_NAME_ENTRY_create_by_OBJ(X509_NAME_ENTRY **ne,
@@ -1173,9 +1173,9 @@ int EVP_PKEY_add1_attr_by_txt(EVP_PKEY *key,
 int X509_verify_cert(X509_STORE_CTX *ctx);
 
 /* lookup a cert from a X509 STACK */
-X509 *X509_find_by_issuer_and_serial(STACK_OF(X509) *sk, X509_NAME *name,
+X509 *X509_find_by_issuer_and_serial(STACK_OF(X509) *sk, SSL_X509_NAME *name,
                                      ASN1_INTEGER *serial);
-X509 *X509_find_by_subject(STACK_OF(X509) *sk, X509_NAME *name);
+X509 *X509_find_by_subject(STACK_OF(X509) *sk, SSL_X509_NAME *name);
 
 DECLARE_ASN1_FUNCTIONS(PBEPARAM)
 DECLARE_ASN1_FUNCTIONS(PBE2PARAM)

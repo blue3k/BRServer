@@ -78,10 +78,28 @@ namespace ConspiracyGameInstanceServer {
 
 		// Start Transaction
 		virtual Result StartTransaction();
-
-		BR_SVR_MSGTRANS_CLOSE_ARGS( JoinGameRes, RouteContext( m_GameInsUID, GetRouteContext().GetFrom()), m_Addr, m_TimeStamp.time_since_epoch().count(), m_GameState, m_Day,
-			GetMyOwner()->GetMaxPlayer(),
-			m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_bIsFirstJoin, 
+/*
+		virtual Result OnCloseTransaction(Result hrRes) override
+		{
+			Result hr = ResultCode::SUCCESS; 
+			auto pPolicy = GetPolicy(); 
+			if (pPolicy != nullptr) {
+				
+				svrChk(pPolicy->JoinGameRes(RouteContext(m_GameInsUID, GetRouteContext().GetFrom()), super::GetTransactionID(), hrRes,
+					m_Addr, (uint32_t)(m_TimeStamp.time_since_epoch().count()), m_GameState, (uint8_t)m_Day,
+					(uint8_t)GetMyOwner()->GetMaxPlayer(),
+					(uint8_t)m_PlayerIndex, (uint8_t)m_PlayerCharacter, (PlayerRole)m_Role, (uint8_t)m_Dead, (uint8_t)m_bIsFirstJoin,
+					m_ChatHistoryBuffer.ToArray(),
+					m_GameLogBuffer.ToArray()));
+			}
+		Proc_End:
+			super::OnCloseTransaction(hrRes);
+			return hr;
+		}
+*/
+		BR_SVR_MSGTRANS_CLOSE_ARGS( JoinGameRes, RouteContext( m_GameInsUID, GetRouteContext().GetFrom()), m_Addr, (uint32_t)(m_TimeStamp.time_since_epoch().count()), m_GameState, (uint8_t)m_Day,
+			(uint8_t)GetMyOwner()->GetMaxPlayer(),
+			(uint8_t)m_PlayerIndex, (uint8_t)m_PlayerCharacter, (PlayerRole)m_Role, (uint8_t)m_Dead, (uint8_t)m_bIsFirstJoin,
 			m_ChatHistoryBuffer.ToArray(),
 			m_GameLogBuffer.ToArray());
 	};

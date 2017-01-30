@@ -73,10 +73,10 @@
 
 #include <crtdbg.h>
 #include <tchar.h>
-#include <atltrace.h>
+//#include <atltrace.h>
 #include <mbstring.h>
-#include <atlcore.h>
-#include <cstringt.h>
+//#include <atlcore.h>
+//#include <cstringt.h>
 #include <winsock2.h>
 #include <Mswsock.h>
 #include <Ws2tcpip.h>
@@ -89,6 +89,7 @@
 #include <concurrent_unordered_map.h>
 #include <stdint.h>
 
+typedef unsigned int uint;
 
 #define timegm _mkgmtime
 

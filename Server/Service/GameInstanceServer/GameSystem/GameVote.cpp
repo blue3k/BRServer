@@ -136,8 +136,8 @@ namespace ConspiracyGameInstanceServer {
 
 	void GameVote::VoteRandomTarget( GamePlayer* pVoter, Array<GamePlayer*>& voteTargets )
 	{
-		UINT randTarget = Util::Random.Rand() % voteTargets.GetSize();
-		if( voteTargets[randTarget] == pVoter ) randTarget = (randTarget+1) % voteTargets.GetSize();
+		UINT randTarget = (UINT)(Util::Random.Rand() % voteTargets.GetSize());
+		if( voteTargets[randTarget] == pVoter ) randTarget = (UINT)((randTarget+1) % voteTargets.GetSize());
 		
 		Result voteRes = GetOwner().GetComponent<GameStateSystem>()->Vote( pVoter, voteTargets[randTarget] );
 		if( !(voteRes) )

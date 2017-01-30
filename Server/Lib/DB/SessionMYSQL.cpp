@@ -397,8 +397,8 @@ namespace DB {
 
 		dbChkPtr( m_Stmt );
 
-		paramCount = mysql_stmt_param_count(m_Stmt);
-
+		paramCount = (int)mysql_stmt_param_count(m_Stmt);
+		unused(paramCount);
 		Assert( paramCount == pMyQuery->GetParameterCount() );
 
 

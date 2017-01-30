@@ -103,7 +103,7 @@ namespace ConspiracyGameInstanceServer {
 		m_GameInsUID = GameInsUID( GetMyOwner()->GetEntityUID() );
 		m_TimeStamp = pGameStateSystem->GetCurrentGamePlayState()->GetStateTimeUTC();
 		m_GameState = pGameStateSystem->GetCurrentGameState();
-		m_Day = pGameStateSystem->GetCurrentDay();
+		m_Day = (uint8_t)pGameStateSystem->GetCurrentDay();
 		m_PlayerIndex = 0;
 		m_Dead = false;
 		m_bIsFirstJoin = false;
@@ -153,7 +153,7 @@ namespace ConspiracyGameInstanceServer {
 			GetMyOwner()->ForeachPlayer([&](GamePlayer* pPlayer)->Result {
 
 				PlayerRole otherRole = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole(pMyPlayer, pPlayer);
-				pMyPolicy->PlayerJoinedS2CEvt(RouteContext(GetOwnerEntityUID(), pMyPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerInformation(), otherRole, pPlayer->GetPlayerState() != PlayerState::Playing, pPlayer->GetIndex(), pPlayer->GetCharacter());
+				pMyPolicy->PlayerJoinedS2CEvt(RouteContext(GetOwnerEntityUID(), pMyPlayer->GetPlayerEntityUID()), pPlayer->GetPlayerInformation(), otherRole, (UINT8)(pPlayer->GetPlayerState() != PlayerState::Playing), (UINT8)pPlayer->GetIndex(), (UINT8)pPlayer->GetCharacter());
 
 				return ResultCode::SUCCESS;
 			});
@@ -164,7 +164,7 @@ namespace ConspiracyGameInstanceServer {
 			if( pMyPlayer != pPlayer )
 			{
 				PlayerRole myRoleToOther = GetMyOwner()->GetComponent<GamePlaySystem>()->GetRevealedRole( pPlayer, pMyPlayer );
-				pPolicy->PlayerJoinedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerInformation(), myRoleToOther, pMyPlayer->GetPlayerState() != PlayerState::Playing, pMyPlayer->GetIndex(), pMyPlayer->GetCharacter()  );
+				pPolicy->PlayerJoinedS2CEvt( RouteContext( GetOwnerEntityUID(), pPlayer->GetPlayerEntityUID()), pMyPlayer->GetPlayerInformation(), myRoleToOther, (uint8_t)(pMyPlayer->GetPlayerState() != PlayerState::Playing), (uint8_t)pMyPlayer->GetIndex(), (uint8_t)pMyPlayer->GetCharacter()  );
 			}
 			return ResultCode::SUCCESS;
 		});

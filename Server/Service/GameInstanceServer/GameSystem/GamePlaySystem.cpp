@@ -201,8 +201,8 @@ namespace ConspiracyGameInstanceServer {
 			if (pPlayer->GetRole() != PlayerRole::None)
 				return ResultCode::SUCCESS;
 
-			int iRandom = (int)Util::Random.Rand() % numPlayer;
-			for( int count = 0; count < GameConst::MAX_GAMEPLAYER; count++, iRandom = (iRandom+1)%numPlayer )
+			int iRandom = (int)(Util::Random.Rand() % numPlayer);
+			for( int count = 0; count < GameConst::MAX_GAMEPLAYER; count++, iRandom = (int)((iRandom+1)%numPlayer) )
 			{
 				if( !ShufflingBuffer[iRandom] )
 				{

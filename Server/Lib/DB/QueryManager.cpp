@@ -177,7 +177,7 @@ namespace DB {
 		pDataSource = nullptr;
 		
 		// modulate by partitioning size
-		UINT partition = partitioningKey % m_ShardingBucket.GetSize();
+		UINT partition = (uint)(partitioningKey % m_ShardingBucket.GetSize());
 
 		dbChkPtr( pDataSource = m_ShardingBucket[partition] );
 

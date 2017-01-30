@@ -143,7 +143,7 @@ namespace GameServer {
 
 		// TODO: We need to close this entity on error
 		svrChkClose(pRes->GetResult());
-		svrChk( msgRes.ParseIMsg( ((Svr::MessageResult*)pRes)->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( ((Svr::MessageResult*)pRes)->GetMessage() ) );
 
 		// succeeded to create
 		svrChk( RegisterToPlayerManager() );
@@ -170,7 +170,7 @@ namespace GameServer {
 			goto Proc_End;
 		}
 
-		svrChk( msgRes.ParseIMsg( ((Svr::MessageResult*)pRes)->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( ((Svr::MessageResult*)pRes)->GetMessage() ) );
 
 		m_PartyLeaderID = msgRes.GetPartyLeaderID();
 

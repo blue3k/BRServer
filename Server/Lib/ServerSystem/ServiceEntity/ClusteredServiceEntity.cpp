@@ -854,7 +854,7 @@ namespace Svr {
 		else if( services.size() > 0 )
 		{
 			// Otherwise dynamic sharding
-			serviceIndex = hashedKey % services.size();
+			serviceIndex = (decltype(serviceIndex))(hashedKey % services.size());
 		}
 
 		if( serviceIndex < 0 || serviceIndex >= (int)services.size() )

@@ -569,7 +569,7 @@ namespace GameServer {
 				m_WaitingCount++;
 		});
 
-		m_TotalNumberOfFriends = pFriendSystem->GetNumberOfFriends();
+		m_TotalNumberOfFriends = (decltype(m_TotalNumberOfFriends))pFriendSystem->GetNumberOfFriends();
 
 
 	Proc_End:
@@ -672,7 +672,7 @@ namespace GameServer {
 		m_WaitingCount = 0;
 
 		friendSystem = GetMyOwner()->GetComponent<UserFriendSystem>();
-		m_TotalNumberOfFriends = friendSystem->GetNumberOfFriends();
+		m_TotalNumberOfFriends = (decltype(m_TotalNumberOfFriends))friendSystem->GetNumberOfFriends();
 		if (m_TotalNumberOfFriends == 0)
 		{
 			svrChk(Svr::GetServerComponent<DB::GameConspiracyDB>()->GetFriendList(GetTransID(), GetMyOwner()->GetShardID(), GetMyOwner()->GetAccountID()));
@@ -712,7 +712,7 @@ namespace GameServer {
 
 		auto friendSystem = GetMyOwner()->GetComponent<UserFriendSystem>();
 
-		m_MaxFriendSlot = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetFriendSlot();
+		m_MaxFriendSlot = (decltype(m_MaxFriendSlot))GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetFriendSlot();
 
 		m_Friends.Clear();
 		auto maxRequest = Util::Min(GetCount(), (ushort)UserFriendSystem::MAX_FRIEND_REQUEST);

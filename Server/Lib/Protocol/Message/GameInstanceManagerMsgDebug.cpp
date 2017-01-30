@@ -33,10 +33,10 @@ namespace BR
 			void RegisterDebugTraceGameInstanceManager()
 			{
  				// Cmd: Create a game instance
-				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::CreateGameCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameInstanceManager::CreateGameCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::CreateGameRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameInstanceManager::CreateGameRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::CreateGameCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameInstanceManager::CreateGameCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::CreateGameRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameInstanceManager::CreateGameRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// C2S: Game instance notify of deletion
-				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::GameDeletedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameInstanceManager::GameDeletedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapGameInstanceManager.insert(std::make_pair(GameInstanceManager::GameDeletedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameInstanceManager::GameDeletedC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceGameInstanceManager()
 
 

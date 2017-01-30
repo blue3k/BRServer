@@ -26,46 +26,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="BrMemory.inl" />
-    <None Include="DualSortedMap.inl" />
-    <None Include="MemoryStream.inl" />
-    <None Include="CircularQueue.inl" />
-    <None Include="CryptoCRC32Table.inl" />
-    <None Include=".\MathUtil.inl" />
-    <None Include=".\MemoryPool.inl" />
-    <None Include="BrCommonTypes.inl" />
-    <None Include="BrSvrTypes.inl" />
-    <None Include="Message.inl" />
-    <None Include=".\PageQueue.inl" />
-    <None Include="BrGameTypes.inl" />
-    <None Include="BrRandom.inl" />
-    <None Include="SortedMap.inl" />
-    <None Include="SystemSynchronize_linux.inl" />
-    <None Include="SystemSynchronize_win.inl" />
-    <None Include="ObjectPool.inl" />
-    <None Include="SpinBufferMT.inl" />
-    <None Include=".\SharedObj.inl" />
-    <None Include=".\SpinBuffer.inl" />
-    <None Include=".\SpinSharedBuffer.inl" />
-    <None Include="Binary.inl" />
-    <None Include="BrBaseTypes.inl" />
-    <None Include="BrLinkedList_MT.inl" />
-    <None Include="BrLinkedList_ST.inl" />
-    <None Include=".\StackPool.inl" />
-    <None Include=".\ArrayUtil.inl" />
-    <None Include=".\StrUtil.inl" />
-    <None Include="Synchronization.inl" />
-    <None Include=".\Thread.inl" />
-    <None Include=".\TimeUtil.inl" />
-    <None Include=".\Trace.inl" />
-    <None Include=".\Trace_Internal.inl" />
-    <None Include=".\Utility.inl" />
-    <None Include="BrXML.inl" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{588D141B-A7E7-4210-B5F8-DBCC53D387C3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -85,7 +45,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -93,7 +53,7 @@
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
     <CLRSupport>false</CLRSupport>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -101,7 +61,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -109,7 +69,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="Shared">

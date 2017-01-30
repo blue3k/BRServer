@@ -57,7 +57,7 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Write_Lock()
 		nWaitingOrder = m_writeTicket.GetMyWaitingOrder(myTicket);
 	}
 
-	int nWritePos = (myTicket-1) % SIZE_BUFFER;
+	int nWritePos = (int)((myTicket-1) % SIZE_BUFFER);
 
 	int nLockTry = 0;
 	ITEM_STATE expectedFreeState = ITEM_STATE::STATE_FREE;
@@ -111,7 +111,7 @@ ITEM* SpinBufferMT<T, SIZE_BUFFER>::Read_Lock()
 		nWaitingCount = m_readTicket.GetMyWaitingOrder(myTicket);
 	}
 
-	int nReadPos = (myTicket-1) % SIZE_BUFFER;
+	int nReadPos = (int)((myTicket-1) % SIZE_BUFFER);
 	int nLockTry = 0;
 	auto expected = ITEM_STATE::STATE_WRITE_UNLOCK;
 	while(!m_SpinBuffer[nReadPos].BlockMode.compare_exchange_weak(expected, ITEM_STATE::STATE_READ_LOCK, std::memory_order_release, std::memory_order_relaxed))

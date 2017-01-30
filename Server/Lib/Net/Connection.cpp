@@ -275,7 +275,7 @@ namespace Net {
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = false;
 
 		pAckMsg = (MsgNetCtrl*)pMsg->GetMessageBuff();
-		pAckMsg->msgID.IDSeq.Sequence = uiSequence;
+		pAckMsg->msgID.SetSequence(uiSequence);
 		pAckMsg->rtnMsgID = msgID;
 
 		pMsg->UpdateChecksum();

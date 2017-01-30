@@ -69,9 +69,9 @@ extern "C" {
 
 # ifdef OPENSSL_SYS_WIN32
 /* Under Win32 these are defined in wincrypt.h */
-#  undef X509_NAME
-#  undef X509_CERT_PAIR
-#  undef X509_EXTENSIONS
+#  undef SSL_X509_NAME
+#  undef SSL_X509_CERT_PAIR
+#  undef SSL_X509_EXTENSIONS
 # endif
 
 /* Forward reference */
@@ -191,14 +191,14 @@ typedef struct GENERAL_NAME_st {
         ASN1_IA5STRING *rfc822Name;
         ASN1_IA5STRING *dNSName;
         ASN1_TYPE *x400Address;
-        X509_NAME *directoryName;
+        SSL_X509_NAME *directoryName;
         EDIPARTYNAME *ediPartyName;
         ASN1_IA5STRING *uniformResourceIdentifier;
         ASN1_OCTET_STRING *iPAddress;
         ASN1_OBJECT *registeredID;
         /* Old names */
         ASN1_OCTET_STRING *ip;  /* iPAddress */
-        X509_NAME *dirn;        /* dirn */
+        SSL_X509_NAME *dirn;        /* dirn */
         ASN1_IA5STRING *ia5;    /* rfc822Name, dNSName,
                                  * uniformResourceIdentifier */
         ASN1_OBJECT *rid;       /* registeredID */
@@ -230,7 +230,7 @@ typedef struct DIST_POINT_NAME_st {
         STACK_OF(X509_NAME_ENTRY) *relativename;
     } name;
 /* If relativename then this contains the full distribution point name */
-    X509_NAME *dpname;
+    SSL_X509_NAME *dpname;
 } DIST_POINT_NAME;
 /* All existing reasons */
 # define CRLDP_ALL_REASONS       0x807f
@@ -575,7 +575,7 @@ DECLARE_ASN1_FUNCTIONS(DIST_POINT)
 DECLARE_ASN1_FUNCTIONS(DIST_POINT_NAME)
 DECLARE_ASN1_FUNCTIONS(ISSUING_DIST_POINT)
 
-int DIST_POINT_set_dpname(DIST_POINT_NAME *dpn, X509_NAME *iname);
+int DIST_POINT_set_dpname(DIST_POINT_NAME *dpn, SSL_X509_NAME *iname);
 
 int NAME_CONSTRAINTS_check(X509 *x, NAME_CONSTRAINTS *nc);
 
@@ -749,7 +749,7 @@ int X509_check_ip_asc(X509 *x, const char *ipasc, unsigned int flags);
 ASN1_OCTET_STRING *a2i_IPADDRESS(const char *ipasc);
 ASN1_OCTET_STRING *a2i_IPADDRESS_NC(const char *ipasc);
 int a2i_ipadd(unsigned char *ipout, const char *ipasc);
-int X509V3_NAME_from_section(X509_NAME *nm, STACK_OF(CONF_VALUE) *dn_sk,
+int X509V3_NAME_from_section(SSL_X509_NAME *nm, STACK_OF(CONF_VALUE) *dn_sk,
                              unsigned long chtype);
 
 void X509_POLICY_NODE_print(BIO *out, X509_POLICY_NODE *node, int indent);

@@ -133,7 +133,7 @@ namespace GameServer {
 
 		svrChkClose(pRes->GetResult());
 
-		svrChk( joinRes.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( joinRes.ParseMessage( pMsgRes->GetMessage() ) );
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, 1, 0, joinRes.GetRouteContext().GetFrom().UID);
 
@@ -193,7 +193,7 @@ namespace GameServer {
 
 		svrChkClose(pRes->GetResult());
 
-		svrChk(leavePartyRes.ParseIMsg(pMsgRes->GetMessage()));
+		svrChk(leavePartyRes.ParseMessage(pMsgRes->GetMessage()));
 
 		GetMyOwner()->SetPartyUID(0);
 
@@ -303,7 +303,7 @@ namespace GameServer {
 		{
 			svrChkClose(pRes->GetResult());
 
-			svrChk(leaveRes.ParseIMsg(pMsgRes->GetMessage()));
+			svrChk(leaveRes.ParseMessage(pMsgRes->GetMessage()));
 
 			GetMyOwner()->SetGameInsUID(0);
 			GetMyOwner()->UpdateDBSync(0);
@@ -383,7 +383,7 @@ namespace GameServer {
 
 		svrChkClose(pRes->GetResult());
 
-		svrChk( msgRes.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
@@ -465,7 +465,7 @@ namespace GameServer {
 		Message::GameInstance::AssignRoleRes res;
 
 		svrChkClose(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
@@ -595,7 +595,7 @@ namespace GameServer {
 		//Message::GameInstance::VoteGameAdvanceRes res;
 
 		svrChkClose(pRes->GetResult());
-		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		//svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
@@ -670,7 +670,7 @@ namespace GameServer {
 		//Message::GameInstance::VoteRes res;
 
 		svrChkClose(pRes->GetResult());
-		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		//svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
@@ -770,7 +770,7 @@ namespace GameServer {
 
 		svrChkPtr(pRes);
 		svrChkClose(pRes->GetResult());
-		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		//svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
@@ -959,7 +959,7 @@ namespace GameServer {
 		Message::GameParty::StartGameMatchRes res;
 
 		svrChkClose(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
@@ -976,7 +976,7 @@ namespace GameServer {
 		Message::PartyMatchingQueue::RegisterPlayerMatchingRes res;
 
 		svrChkClose(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		GetMyOwner()->SetMatchingTicket( res.GetMatchingTicket() );
 
@@ -1085,7 +1085,7 @@ namespace GameServer {
 		Message::GameParty::CancelGameMatchRes res;
 
 		svrChkClose(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		// This means it just pended for canceling. yo have to wait canceled event from matching queue
 		//GetMyOwner()->SetMatchingTicket(0);
@@ -1117,7 +1117,7 @@ namespace GameServer {
 			break;
 		default:
 			svrChk(pRes->GetResult());
-			svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+			svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 			GetMyOwner()->SetMatchingTicket( 0 );
 			break;
 		};
@@ -1241,7 +1241,7 @@ namespace GameServer {
 
 		svrChkPtr(pRes);
 		svrChkClose(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		// This means it's not full game
 		//if (m_RetryCount <= 1 
@@ -1280,7 +1280,7 @@ namespace GameServer {
 
 		svrChkPtr(pRes);
 		svrChkClose(pRes->GetResult());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		GetMyOwner()->SetPartyUID(res.GetRouteContext().GetFrom());
 
@@ -1380,7 +1380,7 @@ namespace GameServer {
 		Message::GameParty::JoinPartyRes res;
 
 		svrChk(pRes->GetResult());
-		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
+		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 		GetMyOwner()->SetPartyUID(GetPartyUID());
 
@@ -1492,7 +1492,7 @@ namespace GameServer {
 
 		svrChkPtr(pRes);
 		svrChkClose(pRes->GetResult());
-		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
+		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 		for (UINT iPlayer = 0; iPlayer < res.GetRevealedPlayerID().GetSize(); iPlayer++)
 		{
@@ -1594,7 +1594,7 @@ namespace GameServer {
 
 		svrChkPtr(pRes);
 		svrChkClose(pRes->GetResult());
-		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
+		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 
 	Proc_End:

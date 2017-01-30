@@ -62,7 +62,7 @@ static int is_exception(const char *msg)
 static int set_cn(X509 *crt, ...)
 {
     int ret = 0;
-    X509_NAME *n = NULL;
+    SSL_X509_NAME *n = NULL;
     va_list ap;
     va_start(ap, crt);
     n = X509_NAME_new();
@@ -83,7 +83,7 @@ static int set_cn(X509 *crt, ...)
         goto out;
     ret = 1;
  out:
-    X509_NAME_free(n);
+    SSL_X509_NAME_free(n);
     va_end(ap);
     return ret;
 }
@@ -226,7 +226,7 @@ static X509 *make_cert()
 {
     X509 *ret = NULL;
     X509 *crt = NULL;
-    X509_NAME *issuer = NULL;
+    SSL_X509_NAME *issuer = NULL;
     crt = X509_new();
     if (crt == NULL)
         goto out;
@@ -235,7 +235,7 @@ static X509 *make_cert()
     ret = crt;
     crt = NULL;
  out:
-    X509_NAME_free(issuer);
+    SSL_X509_NAME_free(issuer);
     return ret;
 }
 

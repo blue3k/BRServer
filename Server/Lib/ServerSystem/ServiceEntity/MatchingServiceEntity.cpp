@@ -358,7 +358,7 @@ namespace Svr {
 			{
 				missTry++;
 			}
-			m_StartQueueIndex = (currentQueue + 1) % m_pQueuePtr.GetSize();
+			m_StartQueueIndex = (decltype(m_StartQueueIndex))((currentQueue + 1) % m_pQueuePtr.GetSize());
 		}
 
 	Proc_End:

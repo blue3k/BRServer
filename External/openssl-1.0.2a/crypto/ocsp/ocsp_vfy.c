@@ -72,8 +72,8 @@ static int ocsp_check_ids(STACK_OF(OCSP_SINGLERESP) *sresp,
 static int ocsp_match_issuerid(X509 *cert, OCSP_CERTID *cid,
                                STACK_OF(OCSP_SINGLERESP) *sresp);
 static int ocsp_check_delegated(X509 *x, int flags);
-static int ocsp_req_find_signer(X509 **psigner, OCSP_REQUEST *req,
-                                X509_NAME *nm, STACK_OF(X509) *certs,
+static int ocsp_req_find_signer(X509 **psigner, SSL_OCSP_REQUEST *req,
+                                SSL_X509_NAME *nm, STACK_OF(X509) *certs,
                                 X509_STORE *st, unsigned long flags);
 
 /* Verify a basic response message */
@@ -298,7 +298,7 @@ static int ocsp_match_issuerid(X509 *cert, OCSP_CERTID *cid,
     /* If only one ID to match then do it */
     if (cid) {
         const EVP_MD *dgst;
-        X509_NAME *iname;
+        SSL_X509_NAME *iname;
         int mdlen;
         unsigned char md[EVP_MAX_MD_SIZE];
         if (!(dgst = EVP_get_digestbyobj(cid->hashAlgorithm->algorithm))) {
@@ -354,11 +354,11 @@ static int ocsp_check_delegated(X509 *x, int flags)
  * trust value.
  */
 
-int OCSP_request_verify(OCSP_REQUEST *req, STACK_OF(X509) *certs,
+int OCSP_request_verify(SSL_OCSP_REQUEST *req, STACK_OF(X509) *certs,
                         X509_STORE *store, unsigned long flags)
 {
     X509 *signer;
-    X509_NAME *nm;
+    SSL_X509_NAME *nm;
     GENERAL_NAME *gen;
     int ret;
     X509_STORE_CTX ctx;
@@ -419,8 +419,8 @@ int OCSP_request_verify(OCSP_REQUEST *req, STACK_OF(X509) *certs,
     return 1;
 }
 
-static int ocsp_req_find_signer(X509 **psigner, OCSP_REQUEST *req,
-                                X509_NAME *nm, STACK_OF(X509) *certs,
+static int ocsp_req_find_signer(X509 **psigner, SSL_OCSP_REQUEST *req,
+                                SSL_X509_NAME *nm, STACK_OF(X509) *certs,
                                 X509_STORE *st, unsigned long flags)
 {
     X509 *signer;

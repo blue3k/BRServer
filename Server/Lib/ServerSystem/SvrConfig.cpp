@@ -39,7 +39,7 @@ namespace Config
 			IP = value;
 		}
 		else if( name == "Port" ) {
-			Port = (UINT)atoi( value.c_str() );
+			Port = (decltype(Port))atoi( value.c_str() );
 		}
 		else {
 			return XML::DOMElement::SetAttributeValue( name, value );
@@ -69,7 +69,7 @@ namespace Config
 			ListenIP = value;
 		}
 		else if (name == "Port") {
-			Port = (UINT)atoi(value.c_str());
+			Port = (decltype(Port))atoi(value.c_str());
 		}
 		else if (name == "MaxConnection") {
 			MaxConnection = (UINT)atoi(value.c_str());

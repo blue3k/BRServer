@@ -72,7 +72,7 @@ extern "C" {
 
 # ifdef OPENSSL_SYS_WIN32
 /* Under Win32 thes are defined in wincrypt.h */
-#  undef PKCS7_ISSUER_AND_SERIAL
+#  undef SSL_PKCS7_ISSUER_AND_SERIAL
 #  undef PKCS7_SIGNER_INFO
 # endif
 
@@ -84,13 +84,13 @@ Key_Encryption_ID       rsaEncryption
 */
 
 typedef struct pkcs7_issuer_and_serial_st {
-    X509_NAME *issuer;
+    SSL_X509_NAME *issuer;
     ASN1_INTEGER *serial;
-} PKCS7_ISSUER_AND_SERIAL;
+} SSL_PKCS7_ISSUER_AND_SERIAL;
 
 typedef struct pkcs7_signer_info_st {
     ASN1_INTEGER *version;      /* version 1 */
-    PKCS7_ISSUER_AND_SERIAL *issuer_and_serial;
+    SSL_PKCS7_ISSUER_AND_SERIAL *issuer_and_serial;
     X509_ALGOR *digest_alg;
     STACK_OF(X509_ATTRIBUTE) *auth_attr; /* [ 0 ] */
     X509_ALGOR *digest_enc_alg;
@@ -105,7 +105,7 @@ DECLARE_ASN1_SET_OF(PKCS7_SIGNER_INFO)
 
 typedef struct pkcs7_recip_info_st {
     ASN1_INTEGER *version;      /* version 0 */
-    PKCS7_ISSUER_AND_SERIAL *issuer_and_serial;
+    SSL_PKCS7_ISSUER_AND_SERIAL *issuer_and_serial;
     X509_ALGOR *key_enc_algor;
     ASN1_OCTET_STRING *enc_key;
     X509 *cert;                 /* get the pub-key from this */
@@ -255,9 +255,9 @@ DECLARE_PKCS12_STACK_OF(PKCS7)
 # define SMIME_BINARY    PKCS7_BINARY
 # define SMIME_NOATTR    PKCS7_NOATTR
 
-DECLARE_ASN1_FUNCTIONS(PKCS7_ISSUER_AND_SERIAL)
+DECLARE_ASN1_FUNCTIONS(SSL_PKCS7_ISSUER_AND_SERIAL)
 
-int PKCS7_ISSUER_AND_SERIAL_digest(PKCS7_ISSUER_AND_SERIAL *data,
+int PKCS7_ISSUER_AND_SERIAL_digest(SSL_PKCS7_ISSUER_AND_SERIAL *data,
                                    const EVP_MD *type, unsigned char *md,
                                    unsigned int *len);
 # ifndef OPENSSL_NO_FP_API
@@ -322,7 +322,7 @@ int PKCS7_RECIP_INFO_set(PKCS7_RECIP_INFO *p7i, X509 *x509);
 int PKCS7_set_cipher(PKCS7 *p7, const EVP_CIPHER *cipher);
 int PKCS7_stream(unsigned char ***boundary, PKCS7 *p7);
 
-PKCS7_ISSUER_AND_SERIAL *PKCS7_get_issuer_and_serial(PKCS7 *p7, int idx);
+SSL_PKCS7_ISSUER_AND_SERIAL *PKCS7_get_issuer_and_serial(PKCS7 *p7, int idx);
 ASN1_OCTET_STRING *PKCS7_digest_from_attributes(STACK_OF(X509_ATTRIBUTE) *sk);
 int PKCS7_add_signed_attribute(PKCS7_SIGNER_INFO *p7si, int nid, int type,
                                void *data);

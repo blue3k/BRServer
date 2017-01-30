@@ -364,7 +364,7 @@ namespace BR {
 			return ResultCode::INVALID_POINTER;
 
 		pTrans->SetOwnerEntity( this );
-		pTrans->SetTransID( TransactionID( (UINT32)GetEntityID(), GenTransIndex() ) ); 
+		pTrans->SetTransID( TransactionID( (UINT32)GetEntityID(), (uint)GenTransIndex() ) ); 
 
 		svrChk( m_transactionQueue.Enqueue(pTrans) );
 

@@ -47,7 +47,7 @@ namespace Svr {
 	//	ServerEntity* pServerEntity = nullptr;
 	//	MsgClass msg;
 
-	//	svrChk( msg.ParseIMsg(pMsg) );
+	//	svrChk( msg.ParseMessage(pMsg) );
 
 	//	svrChkErr( ResultCode::E_ROUTEMSG_FAILED, BrServer::GetInstance()->GetServerEntityManager()->GetServerEntity( msg.GetRouteContext().To, pServerEntity ) );
 

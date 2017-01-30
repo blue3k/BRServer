@@ -199,7 +199,7 @@ namespace BR
 	{
 		char **strings;
 
-		strings = backtrace_symbols(m_StackTrace, m_StackTraceCount);
+		strings = backtrace_symbols(m_StackTrace, (int)m_StackTraceCount);
 
 		defTrace(channel, "m_StackTrace:" );
 

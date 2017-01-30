@@ -33,14 +33,14 @@ namespace BR
 			void RegisterDebugTraceLogin()
 			{
  				// Cmd: Login request
-				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::LoginCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::LoginRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::LoginCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::LoginRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// Cmd: Login request with Facebook UID
-				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginByFacebookCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::LoginByFacebookCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginByFacebookRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::LoginByFacebookRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginByFacebookCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::LoginByFacebookCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::LoginByFacebookRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::LoginByFacebookRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// Cmd: Login request
-				MessageDebugTraceMapLogin.insert(std::make_pair(Login::CreateRandomUserCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::CreateRandomUserCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
-				MessageDebugTraceMapLogin.insert(std::make_pair(Login::CreateRandomUserRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::CreateRandomUserRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::CreateRandomUserCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::CreateRandomUserCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::CreateRandomUserRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::CreateRandomUserRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceLogin()
 
 

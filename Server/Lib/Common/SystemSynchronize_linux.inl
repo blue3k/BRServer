@@ -132,7 +132,7 @@ public:
 
 	Semaphore(LONG lInitialCount = 0, LONG lMaxCount = LONG_MAX)
 	{
-		sem_init(&m_hSemaphore, lMaxCount, lInitialCount);
+		sem_init(&m_hSemaphore, (int)lMaxCount, (int)lInitialCount);
 	}
 
 	~Semaphore()

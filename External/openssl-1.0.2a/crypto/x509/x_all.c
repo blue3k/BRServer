@@ -427,18 +427,18 @@ int X509_REQ_digest(const X509_REQ *data, const EVP_MD *type,
             (ASN1_ITEM_rptr(X509_REQ), type, (char *)data, md, len));
 }
 
-int X509_NAME_digest(const X509_NAME *data, const EVP_MD *type,
+int X509_NAME_digest(const SSL_X509_NAME *data, const EVP_MD *type,
                      unsigned char *md, unsigned int *len)
 {
     return (ASN1_item_digest
-            (ASN1_ITEM_rptr(X509_NAME), type, (char *)data, md, len));
+            (ASN1_ITEM_rptr(SSL_X509_NAME), type, (char *)data, md, len));
 }
 
-int PKCS7_ISSUER_AND_SERIAL_digest(PKCS7_ISSUER_AND_SERIAL *data,
+int PKCS7_ISSUER_AND_SERIAL_digest(SSL_PKCS7_ISSUER_AND_SERIAL *data,
                                    const EVP_MD *type, unsigned char *md,
                                    unsigned int *len)
 {
-    return (ASN1_item_digest(ASN1_ITEM_rptr(PKCS7_ISSUER_AND_SERIAL), type,
+    return (ASN1_item_digest(ASN1_ITEM_rptr(SSL_PKCS7_ISSUER_AND_SERIAL), type,
                              (char *)data, md, len));
 }
 

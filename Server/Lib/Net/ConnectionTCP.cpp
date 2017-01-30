@@ -667,7 +667,7 @@ namespace Net {
 				// copy header
 				if( m_uiRecvTemUsed < sizeof(Message::MessageHeader) )
 				{
-					uiCopySize = sizeof(Message::MessageHeader) - m_uiRecvTemUsed;
+					uiCopySize = (UINT)(sizeof(Message::MessageHeader) - m_uiRecvTemUsed);
 					if( uiBuffSize < uiCopySize )
 					{
 						// buffer too small to make header. append data and return

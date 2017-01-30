@@ -3010,7 +3010,7 @@ void ssl3_free(SSL *s)
 #endif
 
     if (s->s3->tmp.ca_names != NULL)
-        sk_X509_NAME_pop_free(s->s3->tmp.ca_names, X509_NAME_free);
+        sk_X509_NAME_pop_free(s->s3->tmp.ca_names, SSL_X509_NAME_free);
     if (s->s3->handshake_buffer) {
         BIO_free(s->s3->handshake_buffer);
     }
@@ -3046,7 +3046,7 @@ void ssl3_clear(SSL *s)
 
     ssl3_cleanup_key_block(s);
     if (s->s3->tmp.ca_names != NULL)
-        sk_X509_NAME_pop_free(s->s3->tmp.ca_names, X509_NAME_free);
+        sk_X509_NAME_pop_free(s->s3->tmp.ca_names, SSL_X509_NAME_free);
 
     if (s->s3->rrec.comp != NULL) {
         OPENSSL_free(s->s3->rrec.comp);

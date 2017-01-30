@@ -19,19 +19,19 @@
 
 
 // Swap byte of data
-UINT16 SwapByte( UINT16 uiData )
+uint16_t SwapByte(uint16_t uiData )
 {
-	return ((uiData&0xFF00)>>8) | (uiData<<8);
+	return (uint16_t)(((uiData&0xFF00)>>8) | (uiData<<8));
 }
 
-UINT32 SwapByte( UINT32 uiData )
+uint32_t SwapByte(uint32_t uiData )
 {
 	return ( uiData<<24 ) | ((uiData&0xFF00)<<16) | ( uiData>>24 ) | ((uiData>>16)&0xFF00);
 }
 
-UINT64 SwapByte( UINT64 uiData )
+uint64_t SwapByte(uint64_t uiData )
 {
-	return (((UINT64)SwapByte((UINT32)uiData))<<32) | ((UINT64)SwapByte((UINT32)(uiData>>32)));
+	return (((uint64_t)SwapByte((uint32_t)uiData))<<32) | ((uint64_t)SwapByte((uint32_t)(uiData>>32)));
 }
 
 

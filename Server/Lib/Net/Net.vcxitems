@@ -99,6 +99,5 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)NetToString.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)NetTrace.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)NetUtil.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)stdafx.cpp" />
   </ItemGroup>
 </Project>

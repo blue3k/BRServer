@@ -386,7 +386,7 @@ namespace Net {
 				return GetLastWSAResult();
 			}
 
-			pBuffer->TransferredSize = recvSize;
+			pBuffer->TransferredSize = (decltype(pBuffer->TransferredSize))recvSize;
 			if (recvSize == 0)
 			{
 				return ResultCode::SUCCESS_FALSE;
@@ -406,7 +406,7 @@ namespace Net {
 				return GetLastWSAResult();
 			}
 
-			pBuffer->TransferredSize = recvSize;
+			pBuffer->TransferredSize = (decltype(pBuffer->TransferredSize))recvSize;
 			if (recvSize == 0)
 			{
 				return ResultCode::SUCCESS_FALSE;
@@ -424,7 +424,7 @@ namespace Net {
 				return GetLastWSAResult();
 			}
 
-			pBuffer->TransferredSize = sendSize;
+			pBuffer->TransferredSize = (decltype(pBuffer->TransferredSize))sendSize;
 
 			return ResultCode::SUCCESS;
 		}
@@ -440,7 +440,7 @@ namespace Net {
 				return GetLastWSAResult();
 			}
 
-			pBuffer->TransferredSize = sendSize;
+			pBuffer->TransferredSize = (decltype(pBuffer->TransferredSize))sendSize;
 
 			return ResultCode::SUCCESS;
 		}

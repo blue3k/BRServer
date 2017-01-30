@@ -95,7 +95,7 @@ static int rinf_cb(int operation, ASN1_VALUE **pval, const ASN1_ITEM *it,
 
 ASN1_SEQUENCE_enc(X509_REQ_INFO, enc, rinf_cb) = {
         ASN1_SIMPLE(X509_REQ_INFO, version, ASN1_INTEGER),
-        ASN1_SIMPLE(X509_REQ_INFO, subject, X509_NAME),
+        ASN1_SIMPLE(X509_REQ_INFO, subject, SSL_X509_NAME),
         ASN1_SIMPLE(X509_REQ_INFO, pubkey, X509_PUBKEY),
         /* This isn't really OPTIONAL but it gets round invalid
          * encodings

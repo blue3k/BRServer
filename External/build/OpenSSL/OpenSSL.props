@@ -2,7 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup>
+    <TargetName>libOpenSSL</TargetName>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>OPENSSL_NO_SOCK;_CRT_SECURE_NO_DEPRECATE;OPENSSL_NO_EC_NISTP_64_GCC_128;OPENSSL_NO_GMP;OPENSSL_NO_JPAKE;OPENSSL_NO_LIBUNBOUND;OPENSSL_NO_MD2;OPENSSL_NO_RC5;OPENSSL_NO_RFC3779;OPENSSL_NO_SCTP;OPENSSL_NO_SSL_TRACE;OPENSSL_NO_STORE;OPENSSL_NO_UNIT_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
