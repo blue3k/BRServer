@@ -1,9 +1,8 @@
 
 PATH=%PATH%;C:\Perl64\bin
 
-set VSDIR="C:\Program Files (x86)\Microsoft Visual Studio 14.0"
-call %VSDIR%\VC\vcvarsall.bat amd64
-echo set PATH=%PATH%;%VSDIR%\VC\bin\x86_amd64;
+call "%VS140COMNTOOLS%\vsvars32.bat"
+rem echo set PATH=%PATH%;%VSDIR%\VC\bin\x86_amd64;
 
 
 msbuild "BrExternalBuild.sln" /t:build /p:Configuration=Debug
@@ -45,6 +44,7 @@ xcopy Server\bin\lib\x64Debug\*.dll TestApp\x64Debug\ /y
 xcopy Server\bin\lib\x64Release\*.dll TestApp\x64Release\ /y
 
 
+:quit
 
 pause
 
