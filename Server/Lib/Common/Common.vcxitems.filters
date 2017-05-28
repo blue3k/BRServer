@@ -34,6 +34,9 @@
     <Filter Include="Task">
       <UniqueIdentifier>{8f66504b-3e11-4c00-96f1-5d3c09c6e7e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FixedString">
+      <UniqueIdentifier>{5ed6ae12-171b-41ae-a4ff-e669f40b45a4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)DefaultLibComponent.cpp" />
@@ -403,6 +406,21 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedString.h">
+      <Filter>FixedString</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedString32.h">
+      <Filter>FixedString</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedStringDB.h">
+      <Filter>FixedString</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\Hasher64.h">
+      <Filter>FixedString</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\Hasher32.h">
+      <Filter>FixedString</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)ArrayUtil.inl">
@@ -521,6 +539,9 @@
     </None>
     <None Include="$(MSBuildThisFileDirectory)Utility.inl">
       <Filter>Utility</Filter>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)FixedString\HashCRC32Table.inl">
+      <Filter>FixedString</Filter>
     </None>
   </ItemGroup>
 </Project>

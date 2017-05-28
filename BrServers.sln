@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26127.0
+VisualStudioVersion = 15.0.26127.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{6C29CCE4-32A6-409C-87E1-3F76DF945F99}"
 EndProject
@@ -121,6 +121,7 @@ Global
 		Server\Service\GameServer\ConspiracyGameServer.vcxitems*{74ded5ce-18e1-47dc-8b6d-d1a441c21930}*SharedItemsImports = 9
 		Server\Service\GameInstanceServer\ConspiracyGameInstanceServer.vcxitems*{85d506dc-f0be-45a8-9d2e-899b4dd1d05f}*SharedItemsImports = 4
 		Server\Lib\Protocol\Protocol.vcxitems*{86f1b613-6e76-4348-8b34-d878ca7d7944}*SharedItemsImports = 4
+		Server\Service\GameServer\ConspiracyGameServer.vcxitems*{90a3ce16-19a4-4380-bba1-878b4880f7d2}*SharedItemsImports = 4
 		Server\Lib\ServerSystem\ServerSystem.vcxitems*{9bad071f-8327-4270-a882-5113d650e6d3}*SharedItemsImports = 4
 		Server\Lib\Common\Common.vcxitems*{b8d3b66e-2e38-4d78-8985-cd53ae82849a}*SharedItemsImports = 9
 		Server\Service\EntityServer\EntityServer.vcxitems*{bcd5e4bd-08ea-4714-adef-92adb69108e4}*SharedItemsImports = 9

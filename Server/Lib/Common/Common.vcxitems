@@ -35,6 +35,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DefaultLibComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DualSortedMap.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)File\BRFile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedString.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedString32.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedStringDB.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\Hasher32.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\Hasher64.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameConst.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GlobalUIDGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HashTable.h" />
@@ -192,6 +197,7 @@
     <None Include="$(MSBuildThisFileDirectory)DualSortedMap.inl">
       <FileType>Document</FileType>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)FixedString\HashCRC32Table.inl" />
     <None Include="$(MSBuildThisFileDirectory)MathUtil.inl">
       <FileType>Document</FileType>
     </None>
