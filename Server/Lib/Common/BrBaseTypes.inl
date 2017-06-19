@@ -126,7 +126,7 @@ EntityID::EntityID( const EntityID& entityID )
 EntityID::EntityID( EntityFaculty facultyID, uint32_t entityLID )
 {
 	Components.FacultyID = (UINT)facultyID;
-	Components.EntityLID = entityLID && 0xFFFFFF; // to avoid wconversion warning
+	Components.EntityLID = entityLID & 0xFFFFFF; // to avoid wconversion warning
 }
 #endif
 

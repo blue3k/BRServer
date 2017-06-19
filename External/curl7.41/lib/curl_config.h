@@ -64,7 +64,10 @@ typedef SSIZE_T ssize_t;
 #define TIME_WITH_SYS_TIME      1
 
 #define HAVE_ALARM              1
+#define HAVE_CLOSESOCKET		1
 #define HAVE_FTRUNCATE          1
+#define HAVE_GETSERVBYNAME		1
+#define HAVE_GETPROTOBYNAME
 #define HAVE_UTIME              1
 #define HAVE_SETVBUF            1
 #define HAVE_STRFTIME           1
@@ -75,7 +78,6 @@ typedef SSIZE_T ssize_t;
 
 #define HAVE_SIGNAL_H           1
 #define HAVE_SIG_ATOMIC_T       1
-
 
 #define USE_OPENSSL           1
 

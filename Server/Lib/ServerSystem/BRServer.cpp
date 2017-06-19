@@ -74,7 +74,7 @@ namespace Svr{
 
 	BrServer::~BrServer()
 	{
-		Util::SafeDelete( m_pLoopbackServerEntity );
+		m_pLoopbackServerEntity = nullptr;
 
 		DB::Factory::TerminateDBFactory();
 	}

@@ -45,7 +45,7 @@ namespace Net {
 		std::vector<BYTE>	m_bufRecvTem;
 
 		// Recv overlapped buffer. recv 
-		IOBUFFER_READ m_RecvBuffer;
+		//IOBUFFER_READ m_RecvBuffer;
 
 		WriteBufferQueue m_WriteBuffer;
 
@@ -69,7 +69,7 @@ namespace Net {
 		virtual ~ConnectionTCP();
 
 
-		inline IOBUFFER_READ* GetRecvBuffer();
+		//inline IOBUFFER_READ* GetRecvBuffer();
 
 		// Process network control message
 		Result ProcNetCtrl( const MsgNetCtrl* pNetCtrl );

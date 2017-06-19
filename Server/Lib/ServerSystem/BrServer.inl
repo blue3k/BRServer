@@ -36,7 +36,7 @@ void BrServer::SetLoopbackServerEntity( ServerEntity* pLoopback )
 // Get Loopback entity
 ServerEntity* BrServer::GetLoopbackServerEntity()
 {
-	return m_pLoopbackServerEntity;
+	return *m_pLoopbackServerEntity;
 }
 
 // Set server UID

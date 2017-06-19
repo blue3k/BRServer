@@ -100,7 +100,7 @@ namespace Svr {
 		TimeStampSec					m_ServerUpUTCTIme;
 
 		// Loopback ServerEntity
-		ServerEntity*				m_pLoopbackServerEntity;
+		SharedPointerT<ServerEntity>	m_pLoopbackServerEntity;
 
 		// Sync counter for service initialized
 		SyncCounter					m_NumberServicesToWait;

@@ -19,8 +19,8 @@
 //	TCP Connection class
 //
 
-IOBUFFER_READ* ConnectionTCP::GetRecvBuffer()
-{
-	return &m_RecvBuffer;
-}
+//IOBUFFER_READ* ConnectionTCP::GetRecvBuffer()
+//{
+//	return &m_RecvBuffer;
+//}
 

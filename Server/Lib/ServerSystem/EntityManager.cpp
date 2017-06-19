@@ -87,7 +87,7 @@ namespace Svr {
 
 		svrChk( AddTickTask( pEntity ) );
 
-		svrChk(entityTable.Insert(pEntity->GetEntityID(), pEntity));
+		svrChk(entityTable.Insert(pEntity));
 
 		OnEntityAdded(pEntity);
 
@@ -116,7 +116,7 @@ namespace Svr {
 
 		svrChk( AddTickTask( pEntity ) );
 
-		svrChk(entityTable.Insert(pEntity->GetEntityID(), pEntity));
+		svrChk(entityTable.Insert(pEntity));
 
 		OnEntityAdded(pEntity);
 

@@ -1,13 +1,13 @@
 
 
 
-taskkill /IM BRConspiracyGameInstanceServer.exe
-taskkill /IM BRConspiracyGameServer.exe
+taskkill /IM BRConspiracyGameInstanceServer.Win.exe
+taskkill /IM BRConspiracyGameServer.Win.exe
 
-taskkill /IM BRModuleServer.exe
+taskkill /IM BRModuleServer.Win.exe
 
 
-taskkill /IM BRLoginServer.exe
-taskkill /IM BREntityServer.exe
+taskkill /IM BRLoginServer.Win.exe
+taskkill /IM BREntityServer.Win.exe
 
 
