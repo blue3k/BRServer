@@ -841,6 +841,7 @@ namespace Net {
 
 		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
 		pSendBuffer->SetupSendTCP(pMsg);
+		pMsg = nullptr;
 
 		if (NetSystem::IsProactorSystem())
 		{
@@ -851,7 +852,6 @@ namespace Net {
 			netChk(EnqueueBuffer(pSendBuffer));
 			ProcessSendQueue();
 		}
-		pMsg = nullptr;
 		pSendBuffer = nullptr;
 
 	Proc_End:

@@ -36,7 +36,7 @@
   <ModuleServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" GameID="Conspiracy">
     <NetPrivate IP="192.168.0.2" Port="2011"/>
     <ModLogin>
-      <NetPublic IPV4="192.168.1.89" IPV6="192.168.0.2" ListenIP="::" Port="21001" MaxConnection="200000"/>
+      <NetPublic IPV4="192.168.0.2" IPV6="192.168.0.2" ListenIP="::" Port="21001" MaxConnection="200000"/>
     </ModLogin>
   </ModuleServer>
 
