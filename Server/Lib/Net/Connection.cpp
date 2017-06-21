@@ -58,11 +58,11 @@
 #endif // #ifdef UDP_PACKETLOS_EMULATE
 
 
+template class BR::SharedPointerT <BR::Net::Connection>;
+template class BR::WeakPointerT <BR::Net::Connection>;
+
+
 namespace BR {
-
-	template class SharedPointerT <Net::Connection>;
-	template class WeakPointerT < Net::Connection >;
-
 namespace Net {
 
 	// Create policy if not exist

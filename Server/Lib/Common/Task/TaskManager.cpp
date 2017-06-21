@@ -252,7 +252,7 @@ namespace BR {
 
 	Result TaskWorker::UpdateTimer()
 	{
-		m_TimeScheduler.UpdateTick(GetThreadID());
+		m_TimeScheduler.UpdateTick(std::this_thread::get_id());
 		return ResultCode::SUCCESS;
 	}
 

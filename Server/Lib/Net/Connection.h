@@ -192,12 +192,12 @@ namespace Net {
 
 	#include "Connection.inl"
 
-}  // namespace Net
+	typedef SharedPointerT <Connection> ConnectionPtr;
 
-	extern template class SharedPointerT <Net::Connection>;
-	extern template class WeakPointerT < Net::Connection >;
-
-}; // namespace BR
+}	// namespace Net
+}	// namespace BR
 
 
+extern template class BR::SharedPointerT <BR::Net::Connection>;
+extern template class BR::WeakPointerT <BR::Net::Connection>;
 
