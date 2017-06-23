@@ -172,7 +172,7 @@ namespace Svr {
 
 		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
-			svrErr( ResultCode::E_INVALID_PLAYERID );
+			return ResultCode::E_INVALID_PLAYERID;
 		}
 
 		pPlayerInfo = *itPlayer;

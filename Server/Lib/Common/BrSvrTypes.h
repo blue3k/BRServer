@@ -41,6 +41,7 @@ namespace BR {
 		Login,
 		Game,
 		Game_Conspiracy,
+		Game_MyTownHero,
 		Game_Max,
 		GameInstanceManager = Game_Max,
 		GamePartyManager,

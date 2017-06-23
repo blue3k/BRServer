@@ -212,7 +212,7 @@ namespace GameServer {
 		{
 			// Register game conspiracy cluster as a slave
 			auto pMySvr = (const Svr::Config::PublicServer*)GetMyConfig();
-			svrMem(pGameService = new GameClusterServiceEntity(pMySvr->NetPublic, GameID::Conspiracy, ClusterMembership::Slave));
+			svrMem(pGameService = new GameClusterServiceEntity(pMySvr->NetPublic, GetGameClusterInfo()->GetGameID(), ClusterMembership::Slave));
 			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pGameService));
 			svrChk(GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
 			AddComponent(pGameService);
@@ -282,7 +282,7 @@ namespace GameServer {
 		{
 		Svr::GameInstanceManagerWatcherServiceEntity *pGameInstanceManagerWatcher = nullptr;
 		// Local slave entity manager service
-		svrMem( pGameInstanceManagerWatcher = new Svr::GameInstanceManagerWatcherServiceEntity(GameID::Conspiracy) );
+		svrMem( pGameInstanceManagerWatcher = new Svr::GameInstanceManagerWatcherServiceEntity(GetGameClusterInfo()->GetGameID()) );
 		svrChk( GetComponent<Svr::EntityManager>()->AddEntity( EntityFaculty::Service, pGameInstanceManagerWatcher ) );
 		svrChk( GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity( pGameInstanceManagerWatcher ) );
 		AddComponent(pGameInstanceManagerWatcher);

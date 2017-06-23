@@ -463,7 +463,7 @@ namespace Config {
 		// Game instance Servers
 		std::vector<GenericServer*>	GameMatchings;
 
-		GameID GetGameID() { return m_GameID; }
+		GameID GetGameID() const { return m_GameID; }
 		
 		///////////////////////////////////////////////////////////////////////////
 		//

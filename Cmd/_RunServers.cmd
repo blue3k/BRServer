@@ -21,11 +21,11 @@ timeout /t 2 /nobreak
 
 
 start %PATH_BIN%\BRConspiracyGameServer.Win.exe -debug -n:BRConspiracyGameServer01
-start %PATH_BIN%\BRConspiracyGameServer.Win.exe -debug -n:BRConspiracyGameServer02
+rem start %PATH_BIN%\BRConspiracyGameServer.Win.exe -debug -n:BRConspiracyGameServer02
 
 timeout /t 1 /nobreak
 
 start %PATH_BIN%\BRConspiracyGameInstanceServer.Win.exe -debug -n:BRConspiracyGameInstanceServer01
-start %PATH_BIN%\BRConspiracyGameInstanceServer.Win.exe -debug -n:BRConspiracyGameInstanceServer02
+rem start %PATH_BIN%\BRConspiracyGameInstanceServer.Win.exe -debug -n:BRConspiracyGameInstanceServer02
 
 

@@ -139,6 +139,7 @@ namespace Svr {
 		switch(gameID)
 		{
 		case GameID::Game:
+		case GameID::MyTownHero:
 		case GameID::Conspiracy:
 			return ClusterID::GameInstanceManager;
 			break;
