@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "DB/DBTrace.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 
 
 

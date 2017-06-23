@@ -16,7 +16,7 @@
 #include "DB/DBTrace.h"
 #include "DB/Query.h"
 #include "DB/QueryWorker.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 #include "DB/Factory.h"
 #include "DB/Session.h"
 #include "DB/ShardCoordinatorDBQuery.h"
@@ -30,20 +30,20 @@ namespace DB {
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//
-	//	QueryManager Class 
+	//	DBClusterManager Class 
 	//
 	
-	QueryManager::QueryManager()
+	DBClusterManager::DBClusterManager()
 	{
 	}
 
-	QueryManager::~QueryManager()
+	DBClusterManager::~DBClusterManager()
 	{
 		Clear();
 	}
 
-	// Initialize QueryManager
-	Result QueryManager::InitializeDB( UINT partitioningCount )
+	// Initialize DBClusterManager
+	Result DBClusterManager::InitializeDBCluster( UINT partitioningCount )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -85,7 +85,7 @@ namespace DB {
 		return hr;
 	}
 
-	void QueryManager::Clear()
+	void DBClusterManager::Clear()
 	{
 		m_ShardingBucket.Foreach([](DataSource* dataSource) -> Result {
 			if (dataSource != nullptr)
@@ -99,13 +99,13 @@ namespace DB {
 
 	}
 
-	void QueryManager::TerminateDB()
+	void DBClusterManager::TerminateDB()
 	{
 		QueryWorkerManager::TerminateDBWorkerManager();
 		Clear();
 	}
 
-	Result QueryManager::RequestShardList()
+	Result DBClusterManager::RequestShardList()
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -130,12 +130,23 @@ namespace DB {
 		return hr;
 	}
 
-	Result	QueryManager::AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
+	Result	DBClusterManager::AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
 	{
 		Result	hr = ResultCode::SUCCESS;
 		DataSource *pDBSource = nullptr;
+		std::string userID = strUserID;
+		std::string password = strPassword;
 
 		dbAssert(partitioningID < m_PartitioningCount);
+
+		if (m_UserID.length() == 0) m_UserID = userID;
+		else userID = m_UserID;
+
+		if (m_Password.length() == 0) m_Password = password;
+		else password = m_Password;
+
+		if (userID.length() == 0 || password.length() == 0)
+			dbErr(ResultCode::E_DB_INVALID_CONFIG);
 
 		while (m_ShardingBucket.size() <= partitioningID)
 		{
@@ -153,6 +164,7 @@ namespace DB {
 			m_ShardingBucket[partitioningID] = pDBSource;
 		}
 
+
 		dbChk(pDBSource->InitializeDBSource(strConnectionString, strDBName, strUserID, strPassword));
 
 
@@ -161,7 +173,7 @@ namespace DB {
 		return hr;
 	}
 
-	void QueryManager::Update()
+	void DBClusterManager::Update()
 	{
 		UpdateQuery();
 
@@ -170,7 +182,7 @@ namespace DB {
 
 
 	// select db source by partitioning key
-	Result QueryManager::SelectDBByKey(UINT partitioningKey, DataSource* &pDataSource)
+	Result DBClusterManager::SelectDBByKey(UINT partitioningKey, DataSource* &pDataSource)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -189,7 +201,7 @@ Proc_End:
 
 
 	// Update query worker status
-	Result QueryManager::UpdateQuery()
+	Result DBClusterManager::UpdateQuery()
 	{
 		Result hr = ResultCode::SUCCESS;
 		Query* pQuery = nullptr;
@@ -279,7 +291,7 @@ Proc_End:
 		return hr;
 	}
 
-	Result	QueryManager::UpdateResultQueries()
+	Result	DBClusterManager::UpdateResultQueries()
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -304,12 +316,12 @@ Proc_End:
 							|| pDBSource->GetConnectionString() != rowRes.ConnectionString)
 						{
 							dbTrace(Trace::TRC_TRACE, "Initializating DBSource {0}, Shard:{1} {2}, {3}", typeid(*this).name(), rowRes.ShardID,  rowRes.ConnectionString, rowRes.DBName);
-							dbChk(pDBSource->InitializeDBSource(rowRes.ConnectionString, rowRes.DBName, rowRes.UserID, rowRes.Password));
+							dbChk(pDBSource->InitializeDBSource(rowRes.ConnectionString, rowRes.DBName, m_UserID, m_Password));
 						}
 					}
 					else
 					{
-						AddDBSource(rowRes.ShardID, typeid(*this).name(), rowRes.ConnectionString, rowRes.DBName, rowRes.UserID, rowRes.Password);
+						AddDBSource(rowRes.ShardID, typeid(*this).name(), rowRes.ConnectionString, rowRes.DBName);
 					}
 					
 				}
@@ -326,7 +338,7 @@ Proc_End:
 		return hr;
 	}
 
-	Result	QueryManager::RequestQuery(Query* pQuery)
+	Result	DBClusterManager::RequestQuery(Query* pQuery)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Session * pSession = nullptr;
@@ -382,7 +394,7 @@ Proc_End:
 	}
 
 	// Route query result to entity
-	Result	QueryManager::RouteResult(Query* &pQuery)
+	Result	DBClusterManager::RouteResult(Query* &pQuery)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::TransactionResult *pRes = pQuery;

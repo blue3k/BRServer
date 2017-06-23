@@ -39,8 +39,6 @@ namespace DB {
 		INT32 ShardID;
 		char ConnectionString[512];
 		char DBName[128];
-		char UserID[128];
-		char Password[128];
 	};
 
 	class QueryGetShardList : public QueryGetShardListSet, public QueryBase
@@ -53,12 +51,10 @@ namespace DB {
 			BRDB_COLUMN_ENTRY(NumShard)
 		BRDB_END_PARAM_MAP()
 		
-		BRDB_BEGIN_RESULT_MAP(QueryGetShardListSet, 5)
+		BRDB_BEGIN_RESULT_MAP(QueryGetShardListSet, 3)
 			BRDB_COLUMN_ENTRY(ShardID)
 			BRDB_COLUMN_ENTRY(ConnectionString)
 			BRDB_COLUMN_ENTRY(DBName)
-			BRDB_COLUMN_ENTRY(UserID)
-			BRDB_COLUMN_ENTRY(Password)
 		BRDB_END_RESULT_MAP()
 
 		BRDB_QUERYSTRING( "spGetShardList", BRDB_PARAM_1 )

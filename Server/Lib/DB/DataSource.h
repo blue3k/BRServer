@@ -26,7 +26,7 @@ namespace DB {
 	//
 
 	class Query;
-	class QueryManager;
+	class DBClusterManager;
 	class Session;
 
 	class DataSource

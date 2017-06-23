@@ -15,7 +15,7 @@
 #include "Common/ArrayUtil.h"
 #include "Common/ResultCode/BRResultCodeDB.h"
 #include "Net/NetDef.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/MasterEntity.h"
@@ -43,7 +43,7 @@ namespace Net {
 
 namespace BR {
 	namespace DB {
-		class QueryManager;
+		class DBClusterManager;
 	}
 };
 
@@ -106,7 +106,7 @@ namespace Svr {
 		SyncCounter					m_NumberServicesToWait;
 
 		// DB manager list
-		StaticArray<DB::QueryManager*, 10>	m_DBManagers;
+		StaticArray<DB::DBClusterManager*, 10>	m_DBManagers;
 
 		// Startup sequence done
 		//bool			m_bIsStartProcessDone;
