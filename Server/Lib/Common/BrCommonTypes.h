@@ -25,6 +25,7 @@ namespace BR {
 	{
 		Invalid,				// Not used
 		Conspiracy,				// Conspiracy
+		MyTownHero,				// MyTownHero
 		Game,					// Generic game
 	};
 

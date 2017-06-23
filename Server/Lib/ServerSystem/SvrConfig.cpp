@@ -598,6 +598,7 @@ namespace Config
 		}
 		else if( attName == "GameID" ) {
 			if (value == "Conspiracy")		m_GameID = GameID::Conspiracy;
+			else if(value == "MyTownHero")	m_GameID = GameID::MyTownHero;
 			else if (value == "Game")		m_GameID = GameID::Game;
 			else
 			{
@@ -809,6 +810,7 @@ namespace Config
 		if( name == "GameID" )
 		{
 			if (value == "Conspiracy")		m_GameID = GameID::Conspiracy;
+			else if (value == "MyTownHero")	m_GameID = GameID::MyTownHero;
 			else if (value == "Game")		m_GameID = GameID::Game;
 			else
 			{

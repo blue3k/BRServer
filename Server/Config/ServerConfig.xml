@@ -56,7 +56,7 @@
 	</ModuleServer>
 
   
-  <GameCluster Name="First Game" GameID="Conspiracy" >
+  <GameCluster Name="First Game" GameID="MyTownHero" >
 		<GameDB ClusterType="Sharding" PartitioningCount="3">
 		  <DBMember DBInstanceName="conspiracy00" DBName="dbconspiracy00" PartitioningID="0" />
 		</GameDB>
