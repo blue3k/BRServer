@@ -85,7 +85,7 @@ namespace Net {
 		// Recv pending count
 		std::atomic<LONG> m_lPendingRecvCount;
 
-
+		ThreadID m_RunningThreadID;
 
 	protected:
 
@@ -125,6 +125,9 @@ namespace Net {
 		MsgQueue& GetRecvQueue();
 
 		MsgQueue& GetSendGuaQueue();
+
+		ThreadID GetRunningThreadID() const { return m_RunningThreadID; }
+		void SetRunningThreadID(ThreadID threadID) { m_RunningThreadID = threadID; }
 
 		// Get zero recv count
 		inline ULONG GetZeroRecvCount();

@@ -216,6 +216,7 @@ namespace Net {
 		, m_usSeqNone(0)
 		, m_ulZeroLengthRecvCount(0)
 		, m_lPendingRecvCount(0)
+		, m_RunningThreadID(ThisThread::GetThreadID())
 		, m_ulNetCtrlTime(DurationMS(0))
 		, m_ulNetCtrlTryTime(DurationMS(0))
 	{

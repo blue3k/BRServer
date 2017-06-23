@@ -114,6 +114,8 @@ namespace Net {
 	{
 		Result hr = ResultCode::SUCCESS;
 
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
+
 		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
 
