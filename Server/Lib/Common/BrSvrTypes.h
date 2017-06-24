@@ -50,12 +50,12 @@ namespace BR {
 		PurchaseValidateGoogle,
 		PurchaseValidateIOS,
 
-		Matching_Game_4,
+		Matching_Game_4				= 80,
 		Matching_Game_8,
 		//Matching_Game_10,
 		//Matching_Game_12,
 
-		MatchingQueue_Game_4x1		= 50,
+		MatchingQueue_Game_4x1		= 100,
 		MatchingQueue_Game_4x2,
 		MatchingQueue_Game_4x3,
 		MatchingQueue_Game_4x1S,

@@ -48,14 +48,14 @@ namespace BR {
 		AccountID		PlayerID;
 		FacebookUID		FBUID;
 		char			NickName[MAX_NAME];
-		UINT64			LastActiveTime;
-		UINT32			Level;
-		UINT32			IsPlayingGame;
+		uint64_t			LastActiveTime;
+		uint32_t			Level;
+		uint32_t			IsPlayingGame;
 
 		inline PlayerInformation();
 		inline PlayerInformation(const PlayerInformation& src);
-		inline PlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime);
-		inline Result InitPlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, UINT64 lastActiveTime);
+		inline PlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, uint64_t lastActiveTime);
+		inline Result InitPlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, BYTE isPlayingGame, uint64_t lastActiveTime);
 		inline PlayerInformation& operator = ( const PlayerInformation& src );
 		inline bool operator == ( const PlayerInformation& src ) const;
 	};
@@ -63,12 +63,12 @@ namespace BR {
 
 	struct RankingPlayerInformation : public PlayerInformation
 	{
-		UINT32			WeeklyWin;
-		UINT32			WeeklyLose;
+		uint32_t			WeeklyWin;
+		uint32_t			WeeklyLose;
 
 		inline RankingPlayerInformation();
 		inline RankingPlayerInformation(const RankingPlayerInformation& src);
-		inline RankingPlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime);
+		inline RankingPlayerInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, uint64_t lastActiveTime);
 		inline RankingPlayerInformation& operator = ( const RankingPlayerInformation& src );
 		inline bool operator == ( const RankingPlayerInformation& src ) const;
 	};
@@ -76,11 +76,11 @@ namespace BR {
 
 	struct FriendInformation : public RankingPlayerInformation
 	{
-		UINT64			LastStaminaSent;
+		uint64_t			LastStaminaSent;
 
 		inline FriendInformation();
 		inline FriendInformation(const FriendInformation& src);
-		inline FriendInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime, UINT64 LastStaminaSent);
+		inline FriendInformation(AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, uint64_t lastActiveTime, uint64_t LastStaminaSent);
 		inline FriendInformation& operator = ( const FriendInformation& src );
 		inline bool operator == ( const FriendInformation& src ) const;
 	};
@@ -91,7 +91,7 @@ namespace BR {
 
 		ServerFriendInformation() : ShardID(0) {}
 		ServerFriendInformation(const ServerFriendInformation& src) : FriendInformation(src), ShardID(src.ShardID) {}
-		ServerFriendInformation(AccountID playerID, int32_t shardID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime, UINT64 LastStaminaSent)
+		ServerFriendInformation(AccountID playerID, int32_t shardID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, uint64_t lastActiveTime, uint64_t LastStaminaSent)
 			: FriendInformation(playerID, fbUID, nickName, level, weeklyWin, weeklyLose, isPlayingGame, lastActiveTime, LastStaminaSent)
 			, ShardID(shardID)
 		{
@@ -113,18 +113,18 @@ namespace BR {
 			MAX_NAME = 64,
 		};
 
-		UINT32			RankingID;
-		UINT32			Ranking;
+		uint32_t		RankingID;
+		uint32_t		Ranking;
 		AccountID		PlayerID;
 		FacebookUID		FBUID;
 		char			NickName[MAX_NAME];
-		UINT32			Level;
-		UINT32			Win;
-		UINT32			Lose;
+		uint32_t		Level;
+		uint32_t		Win;
+		uint32_t		Lose;
 
 		inline TotalRankingPlayerInformation();
 		inline TotalRankingPlayerInformation(const TotalRankingPlayerInformation& src);
-		inline TotalRankingPlayerInformation(UINT32 rankingID, UINT32 ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose);
+		inline TotalRankingPlayerInformation(uint32_t rankingID, uint32_t ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose);
 		inline TotalRankingPlayerInformation& operator = ( const TotalRankingPlayerInformation& src );
 		inline bool operator == ( const TotalRankingPlayerInformation& src ) const;
 	};

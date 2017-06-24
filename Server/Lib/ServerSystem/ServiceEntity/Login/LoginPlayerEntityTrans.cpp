@@ -23,7 +23,6 @@
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "ServerSystem/ServerService/LoginServerService.h"
 #include "ServerSystem/ServerService/GameServerService.h"
 
 

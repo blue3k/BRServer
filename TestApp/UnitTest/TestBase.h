@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // 
 // CopyRight (c) 2013 The Braves
 // 
@@ -14,7 +14,6 @@
 #include <gtest/gtest.h>
 #include "Common/Trace.h"
 #include "Common/StrUtil.h"
-#include "Common/MemLog.h"
 #include "Common/MemoryPool.h"
 
 #include "../TestCommon/TestBaseCommon.h"
@@ -110,21 +109,12 @@ namespace BRTest
 	public:
 		ScopedMemLog()
 		{
-			if( MyTestBase::cfg_MemLog && BR::GetMemLogger() )
-			{
-				BR::GetMemLogger()->SetLogMask( 0xFFFFFFFF );
-				BR::GetMemLogger()->StartDifferenceCheck();
-			}
+			// TODO
 		}
 
 		~ScopedMemLog()
 		{
-			if( MyTestBase::cfg_MemLog && BR::GetMemLogger() )
-			{
-				BR::GetMemLogger()->ReportDifference();
-				BR::GetMemLogger()->StopDifferenceCheck();
-				BR::GetMemLogger()->SetLogMask( 0 );
-			}
+			// TODO
 		}
 	};
 

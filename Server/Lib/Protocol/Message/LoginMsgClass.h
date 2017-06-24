@@ -334,6 +334,186 @@ namespace BR
 
 			}; // class CreateRandomUserRes : public MessageBase
 
+			// Cmd: Get Ranking lise
+			class UpdateMyRankCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 0,
+					HasRouteContext = 0,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
+				RouteContext GetRouteContext() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+				RankingType m_RankingType;
+				uint16_t m_Count;
+			public:
+				UpdateMyRankCmd()
+					{}
+
+				UpdateMyRankCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const RankingType& GetRankingType() const	{ return m_RankingType; };
+				const uint16_t& GetCount() const	{ return m_Count; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RankingType &InRankingType, const uint16_t &InCount );
+
+			}; // class UpdateMyRankCmd : public MessageBase
+
+			class UpdateMyRankRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 0,
+					HasRouteContext = 0,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
+				RouteContext GetRouteContext() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+				Result m_Result;
+				LinkedArray<TotalRankingPlayerInformation> m_Ranking;
+			public:
+				UpdateMyRankRes()
+					{}
+
+				UpdateMyRankRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const Result& GetResult() const	{ return m_Result; };
+				const Array<TotalRankingPlayerInformation>& GetRanking() const	{ return m_Ranking; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
+
+			}; // class UpdateMyRankRes : public MessageBase
+
+			// Cmd: Get Ranking lise
+			class GetRankingListCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 0,
+					HasRouteContext = 0,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
+				RouteContext GetRouteContext() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+				RankingType m_RankingType;
+				uint8_t m_BaseRanking;
+				uint8_t m_Count;
+			public:
+				GetRankingListCmd()
+					{}
+
+				GetRankingListCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const RankingType& GetRankingType() const	{ return m_RankingType; };
+				const uint8_t& GetBaseRanking() const	{ return m_BaseRanking; };
+				const uint8_t& GetCount() const	{ return m_Count; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount );
+
+			}; // class GetRankingListCmd : public MessageBase
+
+			class GetRankingListRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 0,
+					HasRouteContext = 0,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
+				RouteContext GetRouteContext() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+				Result m_Result;
+				LinkedArray<TotalRankingPlayerInformation> m_Ranking;
+			public:
+				GetRankingListRes()
+					{}
+
+				GetRankingListRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const Result& GetResult() const	{ return m_Result; };
+				const Array<TotalRankingPlayerInformation>& GetRanking() const	{ return m_Ranking; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
+
+			}; // class GetRankingListRes : public MessageBase
+
 
 
 

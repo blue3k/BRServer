@@ -48,5 +48,27 @@
     </Command>
 
 
+    <Command Name="UpdateMyRank" Reliable="true" Crypto="No" Trace="DBG1" Desc="Get Ranking lise">
+      <Cmd>
+        <Params Type="RankingType" Name="RankingType"/>
+        <Params Type="uint16" Name="Count" Desc="Number of ranking list to query after update"/>
+      </Cmd>
+      <Res>
+        <Params Type="TotalRankingPlayerInformation" Name="Ranking" IsArray="true"/>
+      </Res>
+    </Command>
+
+    <Command Name="GetRankingList" Reliable="true" Crypto="No" Trace="DBG1" Desc="Get Ranking lise">
+      <Cmd>
+        <Params Type="RankingType" Name="RankingType"/>
+        <Params Type="BYTE" Name="BaseRanking" Desc="Base ranking to query, 0 based ranking order"/>
+        <Params Type="BYTE" Name="Count" Desc="Number of playerinformation to query"/>
+      </Cmd>
+      <Res>
+        <Params Type="TotalRankingPlayerInformation" Name="Ranking" IsArray="true"/>
+      </Res>
+    </Command>
+
+	
   </ProtocolGroup>
 </Protocols>

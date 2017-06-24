@@ -51,7 +51,7 @@ namespace Svr {
 
 	private:
 
-
+		DualSortedMap<uint32_t, TotalRankingPlayerInformation*> sortedMap;
 
 		// Currently processing number of members
 		UINT m_CurrentProcessingNumberofMember;

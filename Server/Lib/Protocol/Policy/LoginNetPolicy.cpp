@@ -81,6 +81,42 @@ namespace BR
 			return hr;
 
 		}; // Result NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
+		// Cmd: Get Ranking lise
+		Result NetPolicyLogin::UpdateMyRankCmd( const RankingType &InRankingType, const uint16_t &InCount )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::UpdateMyRankCmd::BuildIMsg(pMsg, InRankingType, InCount));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetPolicyLogin::UpdateMyRankCmd( const RankingType &InRankingType, const uint16_t &InCount )
+		// Cmd: Get Ranking lise
+		Result NetPolicyLogin::GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::GetRankingListCmd::BuildIMsg(pMsg, InRankingType, InBaseRanking, InCount));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetPolicyLogin::GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount )
 
 
 		// Cmd: Login request
@@ -137,6 +173,42 @@ namespace BR
 			return hr;
 
 		}; // Result NetSvrPolicyLogin::CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
+		// Cmd: Get Ranking lise
+		Result NetSvrPolicyLogin::UpdateMyRankRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::UpdateMyRankRes::BuildIMsg(pMsg, InResult, InRanking));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetSvrPolicyLogin::UpdateMyRankRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		// Cmd: Get Ranking lise
+		Result NetSvrPolicyLogin::GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::GetRankingListRes::BuildIMsg(pMsg, InResult, InRanking));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetSvrPolicyLogin::GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 
 
 	}; // namespace Policy

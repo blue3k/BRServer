@@ -35,6 +35,10 @@ namespace BR
 			Result LoginByFacebookCmd( const GameID &InGameID, const uint64_t &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken );
 			// Cmd: Login request
 			Result CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone );
+			// Cmd: Get Ranking lise
+			Result UpdateMyRankCmd( const RankingType &InRankingType, const uint16_t &InCount );
+			// Cmd: Get Ranking lise
+			Result GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount );
 
 		}; // class NetPolicyLogin : public IPolicyLogin
 
@@ -52,6 +56,10 @@ namespace BR
 			Result LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID );
 			// Cmd: Login request
 			Result CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID );
+			// Cmd: Get Ranking lise
+			Result UpdateMyRankRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
+			// Cmd: Get Ranking lise
+			Result GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 
 		}; // class NetSvrPolicyLogin : public ISvrPolicyLogin
 
