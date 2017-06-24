@@ -199,7 +199,7 @@ namespace Svr {
 		hr = pServiceEntity->FindRandomService( pService );
 		if (!(hr))
 		{
-			svrTrace(Trace::TRC_ERROR, "Faild to find cluster service entity for game:{0} PlayerID:{1}", super::GetGameID(), super::GetMyOwner()->GetPlayerID());
+			svrTrace(Trace::TRC_ERROR, "Failed to find cluster service entity for game:{0} PlayerID:{1}", super::GetGameID(), super::GetMyOwner()->GetPlayerID());
 			goto Proc_End;
 		}
 

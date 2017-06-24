@@ -381,7 +381,7 @@ namespace Svr
 			}
 			else
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Faild to process transaction result. null Transaction result.");
+				svrTrace(Svr::TRC_TRANSACTION, "Failed to process transaction result. null Transaction result.");
 			}
 			break;
 		default:

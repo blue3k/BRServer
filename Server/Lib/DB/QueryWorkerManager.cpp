@@ -117,7 +117,7 @@ namespace DB {
 
 		if (!(m_PendingQueries.Dequeue(pQuery)))
 		{
-			// if this faild we need to retry
+			// if this failed we need to retry
 			// Return back the query counter
 			//m_QueryCounter.Release();
 			return ResultCode::FAIL;
