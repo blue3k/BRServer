@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
 <xs:schema xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.TheBraves.com/XMLProtocol" targetNamespace="http://www.TheBraves.com/XMLProtocol" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="Protocols">
@@ -136,14 +136,14 @@
 			<xs:simpleType>
 				<xs:restriction base="xs:string">
 					<xs:enumeration value="String"/>
-					<xs:enumeration value="INT8"/>
-					<xs:enumeration value="UINT8"/>
-					<xs:enumeration value="INT16"/>
-					<xs:enumeration value="UINT16"/>
-					<xs:enumeration value="INT32"/>
-					<xs:enumeration value="UINT32"/>
-					<xs:enumeration value="INT64"/>
-					<xs:enumeration value="UINT64"/>
+					<xs:enumeration value="int8"/>
+					<xs:enumeration value="uint8"/>
+					<xs:enumeration value="int16"/>
+					<xs:enumeration value="uint16"/>
+					<xs:enumeration value="int32"/>
+					<xs:enumeration value="uint32"/>
+					<xs:enumeration value="int64"/>
+					<xs:enumeration value="uint64"/>
 					<xs:enumeration value="BYTE"/>
 					<xs:enumeration value="WORD"/>
 					<xs:enumeration value="DWORD"/>

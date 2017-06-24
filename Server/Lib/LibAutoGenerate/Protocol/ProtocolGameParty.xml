@@ -64,12 +64,12 @@
 
     <C2SEvent Name="QuickChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Quick Chatting message">
       <Params Type="PlayerID" Name="PlayerID"/>
-      <Params Type="UINT32" Name="QuickChatID" Desc="My quick chat message ID"/>
+      <Params Type="uint32" Name="QuickChatID" Desc="My quick chat message ID"/>
     </C2SEvent>
 
     <S2CEvent Name="QuickChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Quick Chatting message">
       <Params Type="PlayerID" Name="SenderID"/>
-      <Params Type="UINT32" Name="QuickChatID" Desc="My quick chat message ID"/>
+      <Params Type="uint32" Name="QuickChatID" Desc="My quick chat message ID"/>
     </S2CEvent>
 
 
@@ -78,7 +78,7 @@
     <Command Name="StartGameMatch" Reliable="true" Crypto="No" Trace="DBG1" Desc="Match">
 		<Cmd>
 			<Params Type="PlayerID" Name="PlayerID"/>
-      <Params Type="UINT32" Name="MaxGamePlayers"/>
+      <Params Type="uint32" Name="MaxGamePlayers"/>
 		</Cmd>
 		<Res>
 		</Res>

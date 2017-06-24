@@ -41,9 +41,9 @@ namespace BR
 			// C2S: Chatting message
 			Result ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage );
 			// C2S: Quick Chatting message
-			Result QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const UINT32 &InQuickChatID );
+			Result QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID );
 			// Cmd: Match
-			Result StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers );
+			Result StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers );
 			// Cmd: Match
 			Result CancelGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 

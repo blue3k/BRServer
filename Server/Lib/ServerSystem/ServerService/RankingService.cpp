@@ -35,7 +35,7 @@ namespace BR
 
 
 		// Cmd: Add a player to ranking
-		Result RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		Result RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 		{
  			Result hr;
 
@@ -46,7 +46,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		}; // Result RankingService::AddPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 		// Cmd: Remove a player to ranking
 		Result RankingService::RemovePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
@@ -74,7 +74,7 @@ namespace BR
 
 		}; // Result RankingService::GetPlayerRankingCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Update a player to ranking
-		Result RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		Result RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 		{
  			Result hr;
 
@@ -85,9 +85,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		}; // Result RankingService::UpdatePlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 		// Cmd: Remove a player to ranking
-		Result RankingService::GetRankingCmd( const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+		Result RankingService::GetRankingCmd( const TransactionID &InTransactionID, const uint32_t &InFrom, const uint32_t &InCount )
 		{
  			Result hr;
 
@@ -98,7 +98,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result RankingService::GetRankingCmd( const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+		}; // Result RankingService::GetRankingCmd( const TransactionID &InTransactionID, const uint32_t &InFrom, const uint32_t &InCount )
 
 
 	}; // namespace Svr

@@ -41,7 +41,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameID m_GameID;
@@ -91,7 +91,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -99,7 +99,7 @@ namespace BR
 				NetAddress m_GameServerAddrIPV4;
 				AccountID m_AccID;
 				AuthTicket m_Ticket;
-				UINT64 m_LoginEntityUID;
+				uint64_t m_LoginEntityUID;
 			public:
 				LoginRes()
 					{}
@@ -115,14 +115,14 @@ namespace BR
 				const NetAddress& GetGameServerAddrIPV4() const	{ return m_GameServerAddrIPV4; };
 				const AccountID& GetAccID() const	{ return m_AccID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
-				const UINT64& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
+				const uint64_t& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID );
 
 			}; // class LoginRes : public MessageBase
 
@@ -144,11 +144,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameID m_GameID;
-				UINT64 m_UID;
+				uint64_t m_UID;
 				const char* m_FaceBookName;
 				const char* m_EMail;
 				const char* m_FacebookToken;
@@ -169,7 +169,7 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const GameID& GetGameID() const	{ return m_GameID; };
-				const UINT64& GetUID() const	{ return m_UID; };
+				const uint64_t& GetUID() const	{ return m_UID; };
 				const char* GetFaceBookName() const	{ return m_FaceBookName; };
 				const char* GetEMail() const	{ return m_EMail; };
 				const char* GetFacebookToken() const	{ return m_FacebookToken; };
@@ -179,7 +179,7 @@ namespace BR
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const GameID &InGameID, const uint64_t &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken );
 
 			}; // class LoginByFacebookCmd : public MessageBase
 
@@ -200,7 +200,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -208,7 +208,7 @@ namespace BR
 				NetAddress m_GameServerAddrIPV4;
 				AccountID m_AccID;
 				AuthTicket m_Ticket;
-				UINT64 m_LoginEntityUID;
+				uint64_t m_LoginEntityUID;
 			public:
 				LoginByFacebookRes()
 					{}
@@ -224,14 +224,14 @@ namespace BR
 				const NetAddress& GetGameServerAddrIPV4() const	{ return m_GameServerAddrIPV4; };
 				const AccountID& GetAccID() const	{ return m_AccID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
-				const UINT64& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
+				const uint64_t& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID );
 
 			}; // class LoginByFacebookRes : public MessageBase
 
@@ -253,7 +253,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameID m_GameID;
@@ -299,7 +299,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -307,7 +307,7 @@ namespace BR
 				NetAddress m_GameServerAddrIPV4;
 				AccountID m_AccID;
 				AuthTicket m_Ticket;
-				UINT64 m_LoginEntityUID;
+				uint64_t m_LoginEntityUID;
 			public:
 				CreateRandomUserRes()
 					{}
@@ -323,14 +323,14 @@ namespace BR
 				const NetAddress& GetGameServerAddrIPV4() const	{ return m_GameServerAddrIPV4; };
 				const AccountID& GetAccID() const	{ return m_AccID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
-				const UINT64& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
+				const uint64_t& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID );
 
 			}; // class CreateRandomUserRes : public MessageBase
 

@@ -11,7 +11,7 @@
       <Cmd>
         <Params Type="AccountID" Name="AccID" Desc="AccountID of the player"/>
         <Params Type="AuthTicket" Name="Ticket" Desc="Login session Ticket"/>
-        <Params Type="UINT64" Name="LoginEntityUID" Desc="Login entity ID which you would get from login server"/>
+        <Params Type="uint64" Name="LoginEntityUID" Desc="Login entity ID which you would get from login server"/>
       </Cmd>
       <Res>
         <Params Type="String" Name="NickName" Desc="Nickname of the player"/>
@@ -93,13 +93,13 @@
 
     <Command Name="GetFriendList" Reliable="true" Crypto="No" Trace="DBG1" Desc="Get friend list">
       <Cmd>
-        <Params Type="UINT16" Name="StartIndex" Desc="Friend list start index"/>
-        <Params Type="UINT16" Name="Count" Desc="Maximum friend list to query"/>
+        <Params Type="uint16" Name="StartIndex" Desc="Friend list start index"/>
+        <Params Type="uint16" Name="Count" Desc="Maximum friend list to query"/>
       </Cmd>
       <Res>
-        <Params Type="UINT16" Name="MaxFriendSlot" Desc="Maximum friend list"/>
-        <Params Type="UINT16" Name="TotalNumberOfFriends" Desc="Maximum friend list"/>
-        <Params Type="UINT16" Name="StartIndex" Desc="Friend list start index"/>
+        <Params Type="uint16" Name="MaxFriendSlot" Desc="Maximum friend list"/>
+        <Params Type="uint16" Name="TotalNumberOfFriends" Desc="Maximum friend list"/>
+        <Params Type="uint16" Name="StartIndex" Desc="Friend list start index"/>
         <Params Type="FriendInformation" IsArray="true" Name="FriendList" Desc="Friend list"/>
       </Res>
     </Command>
@@ -116,39 +116,39 @@
 
     <Command Name="DeleteNotification" Reliable="true" Crypto="No" Trace="DBG1" Desc="Delete notification">
       <Cmd>
-        <Params Type="UINT32" Name="NotificationID" Desc="Notification ID to delete"/>
+        <Params Type="uint32" Name="NotificationID" Desc="Notification ID to delete"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="NotificationID" Desc="Deleted Notification ID"/>
+        <Params Type="uint32" Name="NotificationID" Desc="Deleted Notification ID"/>
       </Res>
     </Command>
 
     <Command Name="SetNotificationRead" Reliable="true" Crypto="No" Trace="DBG1" Desc="Set notification is read">
       <Cmd>
-        <Params Type="UINT32" Name="NotificationID" Desc="Notification ID to set read"/>
+        <Params Type="uint32" Name="NotificationID" Desc="Notification ID to set read"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="NotificationID" Desc="Notification ID to set read"/>
+        <Params Type="uint32" Name="NotificationID" Desc="Notification ID to set read"/>
       </Res>
     </Command>
 
     <Command Name="AcceptNotification" Reliable="true" Crypto="No" Trace="DBG1" Desc="Accept notification">
       <Cmd>
-        <Params Type="UINT32" Name="NotificationID" Desc="Notification ID to accept"/>
+        <Params Type="uint32" Name="NotificationID" Desc="Notification ID to accept"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="NotificationID" Desc="Accepted Notification ID"/>
+        <Params Type="uint32" Name="NotificationID" Desc="Accepted Notification ID"/>
       </Res>
     </Command>
 
     <S2CEvent Name="Notify" Reliable="true" Crypto="No" Trace="DBG1" Desc="Notify new notification">
-      <Params Type="UINT32" Name="NotificationID" Desc="Notification ID"/>
+      <Params Type="uint32" Name="NotificationID" Desc="Notification ID"/>
       <Params Type="NotificationType" Name="MessageID" Desc="Notification message ID"/>
-      <Params Type="UINT64" Name="MessageParam0" Desc="Message parameter 0"/>
-      <Params Type="UINT64" Name="MessageParam1" Desc="Message parameter 1"/>
+      <Params Type="uint64" Name="MessageParam0" Desc="Message parameter 0"/>
+      <Params Type="uint64" Name="MessageParam1" Desc="Message parameter 1"/>
       <Params Type="String" Name="MessageText" Desc="Message text"/>
       <Params Type="BYTE" Name="IsRead" Desc="Notification is read?"/>
-      <Params Type="UINT64" Name="TimeStamp" Desc="Issued UTC sec"/>
+      <Params Type="uint64" Name="TimeStamp" Desc="Issued UTC sec"/>
     </S2CEvent>
 
     <!-- =================================================== Player information ================================================== -->
@@ -181,7 +181,7 @@
 
     <S2CEvent Name="NotifyPlayerStatusUpdated" Reliable="true" Crypto="No" Trace="DBG1" Desc="*Notify Player Status Updated">
       <Params Type="PlayerID" Name="PlayerID" Desc="Player ID"/>
-      <Params Type="UINT32" Name="LatestActiveTime" Desc="Latest active time of the player(32bit UTC sec)"/>
+      <Params Type="uint32" Name="LatestActiveTime" Desc="Latest active time of the player(32bit UTC sec)"/>
       <Params Type="BYTE" Name="IsInGame" Desc="TRUE if the player is in a game"/>
     </S2CEvent>
 
@@ -202,27 +202,27 @@
       <Cmd>
       </Cmd>
       <Res>
-        <Params Type="INT16" Name="Level"/>
-        <Params Type="INT64" Name="Exp"/>
-        <Params Type="INT64" Name="GameMoney"/>
-        <Params Type="INT64" Name="Gem"/>
-        <Params Type="INT16" Name="Stamina"/>
-        <Params Type="UINT32" Name="LastUpdateTime"/>
-        <Params Type="INT32" Name="TotalPlayed"/>
-        <Params Type="INT32" Name="WinPlaySC"/>
-        <Params Type="INT32" Name="WinPlaySM"/>
-        <Params Type="INT32" Name="WinPlaySS"/>
-        <Params Type="INT32" Name="LosePlaySC"/>
-        <Params Type="INT32" Name="LosePlaySM"/>
-        <Params Type="INT32" Name="LosePlaySS"/>
-        <Params Type="INT32" Name="WinPlayNC"/>
-        <Params Type="INT32" Name="WinPlayNM"/>
-        <Params Type="INT32" Name="WinPlayNS"/>
-        <Params Type="INT32" Name="LosePlayNC"/>
-        <Params Type="INT32" Name="LosePlayNM"/>
-        <Params Type="INT32" Name="LosePlayNS"/>
-        <Params Type="INT32" Name="WeeklyWin"/>
-        <Params Type="INT32" Name="WeeklyLose"/>
+        <Params Type="int16" Name="Level"/>
+        <Params Type="int64" Name="Exp"/>
+        <Params Type="int64" Name="GameMoney"/>
+        <Params Type="int64" Name="Gem"/>
+        <Params Type="int16" Name="Stamina"/>
+        <Params Type="uint32" Name="LastUpdateTime"/>
+        <Params Type="int32" Name="TotalPlayed"/>
+        <Params Type="int32" Name="WinPlaySC"/>
+        <Params Type="int32" Name="WinPlaySM"/>
+        <Params Type="int32" Name="WinPlaySS"/>
+        <Params Type="int32" Name="LosePlaySC"/>
+        <Params Type="int32" Name="LosePlaySM"/>
+        <Params Type="int32" Name="LosePlaySS"/>
+        <Params Type="int32" Name="WinPlayNC"/>
+        <Params Type="int32" Name="WinPlayNM"/>
+        <Params Type="int32" Name="WinPlayNS"/>
+        <Params Type="int32" Name="LosePlayNC"/>
+        <Params Type="int32" Name="LosePlayNM"/>
+        <Params Type="int32" Name="LosePlayNS"/>
+        <Params Type="int32" Name="WeeklyWin"/>
+        <Params Type="int32" Name="WeeklyLose"/>
       </Res>
     </Command>
 
@@ -232,28 +232,28 @@
       </Cmd>
       <Res>
         <Params Type="PlayerID" Name="PlayerID"/>
-        <Params Type="INT16" Name="Level"/>
-        <Params Type="INT32" Name="TotalPlayed"/>
-        <Params Type="INT32" Name="WinPlaySC"/>
-        <Params Type="INT32" Name="WinPlaySM"/>
-        <Params Type="INT32" Name="WinPlaySS"/>
-        <Params Type="INT32" Name="LosePlaySC"/>
-        <Params Type="INT32" Name="LosePlaySM"/>
-        <Params Type="INT32" Name="LosePlaySS"/>
-        <Params Type="INT32" Name="WinPlayNC"/>
-        <Params Type="INT32" Name="WinPlayNM"/>
-        <Params Type="INT32" Name="WinPlayNS"/>
-        <Params Type="INT32" Name="LosePlayNC"/>
-        <Params Type="INT32" Name="LosePlayNM"/>
-        <Params Type="INT32" Name="LosePlayNS"/>
-        <Params Type="INT32" Name="WeeklyWin"/>
-        <Params Type="INT32" Name="WeeklyLose"/>
+        <Params Type="int16" Name="Level"/>
+        <Params Type="int32" Name="TotalPlayed"/>
+        <Params Type="int32" Name="WinPlaySC"/>
+        <Params Type="int32" Name="WinPlaySM"/>
+        <Params Type="int32" Name="WinPlaySS"/>
+        <Params Type="int32" Name="LosePlaySC"/>
+        <Params Type="int32" Name="LosePlaySM"/>
+        <Params Type="int32" Name="LosePlaySS"/>
+        <Params Type="int32" Name="WinPlayNC"/>
+        <Params Type="int32" Name="WinPlayNM"/>
+        <Params Type="int32" Name="WinPlayNS"/>
+        <Params Type="int32" Name="LosePlayNC"/>
+        <Params Type="int32" Name="LosePlayNM"/>
+        <Params Type="int32" Name="LosePlayNS"/>
+        <Params Type="int32" Name="WeeklyWin"/>
+        <Params Type="int32" Name="WeeklyLose"/>
       </Res>
     </Command>
 
     <S2CEvent Name="LevelUp" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player level up event">
-      <Params Type="UINT64" Name="CurrentTotalExp" Desc="Current total exp of the player"/>
-      <Params Type="UINT32" Name="CurrentLevel" Desc="Current level"/>
+      <Params Type="uint64" Name="CurrentTotalExp" Desc="Current total exp of the player"/>
+      <Params Type="uint32" Name="CurrentLevel" Desc="Current level"/>
     </S2CEvent>
 
     <!-- ===================================================  NickName ================================================== -->
@@ -263,8 +263,8 @@
         <Params Type="BYTE" Name="IsCostFree" Desc="CostFree"/>
       </Cmd>
       <Res>
-        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
-        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
     <!-- ===================================================  Party ================================================== -->
@@ -349,7 +349,7 @@
 
     <Command Name="PartyQuickChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Send Party quick chat message">
       <Cmd>
-        <Params Type="UINT32" Name="QuickChatID" Desc="My quick chat message ID"/>
+        <Params Type="uint32" Name="QuickChatID" Desc="My quick chat message ID"/>
       </Cmd>
       <Res>
       </Res>
@@ -357,7 +357,7 @@
 
     <S2CEvent Name="PartyQuickChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Party Chatting message event">
       <Params Type="PlayerID" Name="SenderID" Desc="Message sender"/>
-      <Params Type="UINT32" Name="QuickChatID" Desc="My quick chat message ID"/>
+      <Params Type="uint32" Name="QuickChatID" Desc="My quick chat message ID"/>
     </S2CEvent>
 
 
@@ -385,14 +385,14 @@
     </Cmd>
 		<Res>
 			<Params Type="GameInsUID" Name="InsUID" Desc="Game instance ID"/>
-      <Params Type="UINT32" Name="TimeStamp" Desc="Time stamp in UTC"/>
+      <Params Type="uint32" Name="TimeStamp" Desc="Time stamp in UTC"/>
 			<Params Type="GameStateID" Name="GameState" Desc="Game state"/>
-      <Params Type="UINT8" Name="Day" Desc="Game Day"/>
-      <Params Type="UINT8" Name="MaxPlayer" Desc="Max player of the game"/>
-      <Params Type="UINT8" Name="PlayerIndex" Desc="Player index in the game"/>
-      <Params Type="UINT8" Name="PlayerCharacter" Desc="Player character in the game"/>
+      <Params Type="uint8" Name="Day" Desc="Game Day"/>
+      <Params Type="uint8" Name="MaxPlayer" Desc="Max player of the game"/>
+      <Params Type="uint8" Name="PlayerIndex" Desc="Player index in the game"/>
+      <Params Type="uint8" Name="PlayerCharacter" Desc="Player character in the game"/>
       <Params Type="PlayerRole" Name="Role" Desc="Role of the player"/>
-			<Params Type="UINT8" Name="Dead" Desc="TRUE if the player is dead"/>
+			<Params Type="uint8" Name="Dead" Desc="TRUE if the player is dead"/>
       <Params Type="BYTE" Name="ChatHistoryData" IsArray="true" Desc="Game chatting history"/>
       <Params Type="BYTE" Name="GameLogData" IsArray="true" Desc="Game history log"/>
     </Res>
@@ -403,9 +403,9 @@
 		<Params Type="GameInsUID" Name="GameInsUID" Desc="Game instance UID"/>
 		<Params Type="PlayerInformation" Name="JoinedPlayer" Desc="Joined player information"/>
 		<Params Type="PlayerRole" Name="JoinedPlayerRole" Desc="Joinged player role"/>
-		<Params Type="UINT8" Name="JoinedPlayerDead" Desc="Joined player dead status"/>
-    <Params Type="UINT8" Name="JoinedPlayerIndex" Desc="Joined player index"/>
-    <Params Type="UINT8" Name="JoinedPlayerCharacter" Desc="Joined player character"/>
+		<Params Type="uint8" Name="JoinedPlayerDead" Desc="Joined player dead status"/>
+    <Params Type="uint8" Name="JoinedPlayerIndex" Desc="Joined player index"/>
+    <Params Type="uint8" Name="JoinedPlayerCharacter" Desc="Joined player character"/>
   </S2CEvent>
 
 	<Command Name="LeaveGame" Reliable="true" Crypto="No" Trace="DBG1" Desc="Leave Game">
@@ -483,16 +483,16 @@
 
   <S2CEvent Name="GameAdvanced" Reliable="true" Crypto="No" Trace="DBG1" Desc="The game state is advanced">
 		<Params Type="GameInsUID" Name="GameInsUID" Desc="Game instance ID"/>
-    <Params Type="UINT32" Name="TimeStamp" Desc="Time stamp in UTC"/>
+    <Params Type="uint32" Name="TimeStamp" Desc="Time stamp in UTC"/>
 		<Params Type="GameStateID" Name="GameState" Desc="Game state ID"/>
-    <Params Type="UINT8" Name="Day" Desc="Day of the game"/>
+    <Params Type="uint8" Name="Day" Desc="Day of the game"/>
    </S2CEvent>
 
     <S2CEvent Name="GameEnded" Reliable="true" Crypto="No" Trace="DBG1" Desc="Game is ended">
       <Params Type="GameInsUID" Name="GameInsUID" Desc="Game instance ID"/>
       <Params Type="GameWinner" Name="Winner" Desc="Winner of the game"/>
-      <Params Type="UINT32" Name="GainedExp" Desc="Gained Experience of the game"/>
-      <Params Type="UINT32" Name="GainedGameMoney" Desc="Gained game money"/>
+      <Params Type="uint32" Name="GainedExp" Desc="Gained Experience of the game"/>
+      <Params Type="uint32" Name="GainedGameMoney" Desc="Gained game money"/>
     </S2CEvent>
 
 
@@ -518,7 +518,7 @@
 			<Params Type="PlayerID" Name="PlayerID" Desc="PlayerID of the player"/>
 			<Params Type="AuthTicket" Name="Ticket" Desc="Login session ID of the player"/>
 			<Params Type="PlayerID" Name="VoteTarget" Desc="Vote Target"/>
-			<Params Type="UINT32" Name="ActionSerial" Desc="Action serial, used for player voting order"/>
+			<Params Type="uint32" Name="ActionSerial" Desc="Action serial, used for player voting order"/>
 		</Cmd>
 		<Res>
 		</Res>
@@ -552,8 +552,8 @@
       <Cmd>
       </Cmd>
       <Res>
-        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
-        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
 
@@ -570,8 +570,8 @@
       <Res>
         <Params Type="PlayerID" Name="RevealedPlayerID" IsArray="true"/>
         <Params Type="PlayerRole" Name="RevealedRole" IsArray="true"/>
-        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
-        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
 
@@ -579,8 +579,8 @@
       <Cmd>
       </Cmd>
       <Res>
-        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
-        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
 
@@ -592,8 +592,8 @@
       <Cmd>
       </Cmd>
       <Res>
-        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
-        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
 
@@ -606,26 +606,26 @@
         <Params Type="PlayerRole" Name="RequestRole" Desc="Request special role"/>
       </Cmd>
       <Res>
-        <Params Type="UINT64" Name="TotalGem" Desc="Total after cost is consumed"/>
-        <Params Type="UINT64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGem" Desc="Total after cost is consumed"/>
+        <Params Type="uint64" Name="TotalGameMoney" Desc="Total after cost is consumed"/>
       </Res>
     </Command>
 
     <S2CEvent Name="GameMatched" Reliable="true" Crypto="No" Trace="DBG1" Desc="Game matched">
       <Params Type="GameInsUID" Name="InsUID" Desc="Matched game instance ID"/>
-      <Params Type="UINT32" Name="TimeStamp" Desc="Time stamp in UTC"/>
+      <Params Type="uint32" Name="TimeStamp" Desc="Time stamp in UTC"/>
       <Params Type="GameStateID" Name="GameState" Desc="Game state"/>
-      <Params Type="UINT8" Name="Day" Desc="Game Day"/>
-      <Params Type="UINT8" Name="MaxPlayer" Desc="Max player of the game"/>
-      <Params Type="UINT8" Name="PlayerIndex" Desc="Player index in the game"/>
-      <Params Type="UINT8" Name="PlayerCharacter" Desc="Player character in the game"/>
+      <Params Type="uint8" Name="Day" Desc="Game Day"/>
+      <Params Type="uint8" Name="MaxPlayer" Desc="Max player of the game"/>
+      <Params Type="uint8" Name="PlayerIndex" Desc="Player index in the game"/>
+      <Params Type="uint8" Name="PlayerCharacter" Desc="Player character in the game"/>
       <Params Type="PlayerRole" Name="Role" Desc="Role of the player"/>
-      <Params Type="UINT8" Name="Dead" Desc="TRUE if the player is dead"/>
+      <Params Type="uint8" Name="Dead" Desc="TRUE if the player is dead"/>
       <Params Type="BYTE" Name="ChatHistoryData" IsArray="true" Desc="Game chatting history"/>
       <Params Type="BYTE" Name="GameLogData" IsArray="true" Desc="Game history log"/>
-      <Params Type="UINT32" Name="Stamina"/>
-      <Params Type="UINT64" Name="TotalGem" Desc="Game gem"/>
-      <Params Type="UINT64" Name="TotalGameMoney" Desc="Game money"/>
+      <Params Type="uint32" Name="Stamina"/>
+      <Params Type="uint64" Name="TotalGem" Desc="Game gem"/>
+      <Params Type="uint64" Name="TotalGameMoney" Desc="Game money"/>
     </S2CEvent>
 
     <S2CEvent Name="GameMatchFailed" Reliable="true" Crypto="No" Trace="DBG1" Desc="Game match failed">
@@ -649,24 +649,24 @@
 
     <Command Name="BuyShopItemPrepare" Reliable="true" Crypto="No" Trace="DBG1" Desc="Buy shop item prepare">
       <Cmd>
-        <Params Type="UINT32" Name="ShopItemID" Desc="Shop table id"/>
+        <Params Type="uint32" Name="ShopItemID" Desc="Shop table id"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="ShopItemID" Desc="Shop table id"/>
+        <Params Type="uint32" Name="ShopItemID" Desc="Shop table id"/>
         <Params Type="String" Name="PurchaseID" Desc="Purchase ID"/>
       </Res>
     </Command>
 
     <Command Name="BuyShopItem" Reliable="true" Crypto="No" Trace="DBG1" Desc="Buy shop item">
       <Cmd>
-        <Params Type="UINT32" Name="ShopItemID" Desc="Shop table id"/>
+        <Params Type="uint32" Name="ShopItemID" Desc="Shop table id"/>
         <Params Type="String" Name="Platform"/>
         <Params Type="String" Name="PackageName"/>
         <Params Type="String" Name="PurchaseTransactionID" Desc="IOS transaction ID"/>
         <Params Type="BYTE" Name="PurchaseToken" IsArray="true"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="ShopItemID" Desc="Shop table id"/>
+        <Params Type="uint32" Name="ShopItemID" Desc="Shop table id"/>
       </Res>
     </Command>
 
@@ -679,7 +679,7 @@
       </Cmd>
       <Res>
         <Params Type="PlayerID" Name="TargetPlayer" Desc="Player ID to give"/>
-        <Params Type="UINT64" Name="TimeStamp" Desc="Time since stamina sent"/>
+        <Params Type="uint64" Name="TimeStamp" Desc="Time since stamina sent"/>
       </Res>
     </Command>
 
@@ -688,7 +688,7 @@
 
     <Command Name="SetPresetGameConfigID" Reliable="true" Crypto="No" Trace="DBG1" Desc="For debug, Change configue preset">
       <Cmd>
-        <Params Type="UINT32" Name="PresetID" Desc="Configuation preset id"/>
+        <Params Type="uint32" Name="PresetID" Desc="Configuation preset id"/>
       </Cmd>
       <Res>
       </Res>
@@ -696,8 +696,8 @@
 
     <Command Name="GainGameResource" Reliable="true" Crypto="No" Trace="DBG1" Desc="For Debug">
       <Cmd>
-        <Params Type="INT32" Name="Resource"/>
-        <Params Type="INT32" Name="Value"/>
+        <Params Type="int32" Name="Resource"/>
+        <Params Type="int32" Name="Value"/>
       </Cmd>
       <Res>
       </Res>

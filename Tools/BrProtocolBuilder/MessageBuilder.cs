@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using ProtocolXml;
+using BR;
 
 namespace ProtocolBuilder
 {
@@ -236,7 +237,7 @@ namespace ProtocolBuilder
             new Parameter() { Name = "PlayerID", Type = ParameterType.PlayerID },
             new Parameter() { Name = "TransactionID", Type = ParameterType.TransactionID },
             new Parameter() { Name = "RouteContext", Type = ParameterType.RouteContext },
-            new Parameter() { Name = "RouteHopCount", Type = ParameterType.UINT32 },
+            new Parameter() { Name = "RouteHopCount", Type = ParameterType.uint32 },
             new Parameter() { Name = "Sender", Type = ParameterType.PlayerID },
         };
 
@@ -273,7 +274,7 @@ namespace ProtocolBuilder
             foreach (var parameterName in GenerateParameterTypeInfoList)
             {
                 if (parameterNameMap.ContainsKey(parameterName.Name)) continue;
-                MatchIndent(); OutStream.WriteLine("{1} Get{0}() {{ return 0; }}", parameterName.Name, parameterName.Type.ToString());
+                MatchIndent(); OutStream.WriteLine("{1} Get{0}() {{ return 0; }}", parameterName.Name, SystemTypeMap.ToCPPType(parameterName.Type));
             }
 
             // Generate parameter variables
@@ -294,12 +295,12 @@ namespace ProtocolBuilder
                             if (param.IsArray)
                             {
                                 MatchIndent(); OutStream.WriteLine(
-                                    string.Format("LinkedArray<{0}> m_{1};", param.Type.ToString(), param.Name));
+                                    string.Format("LinkedArray<{0}> m_{1};", SystemTypeMap.ToCPPType(param.Type), param.Name));
                             }
                             else
                             {
                                 MatchIndent(); OutStream.WriteLine(
-                                    string.Format("{0} m_{1};", param.Type.ToString(), param.Name));
+                                    string.Format("{0} m_{1};", SystemTypeMap.ToCPPType(param.Type), param.Name));
                             }
                             break;
                     }
@@ -340,7 +341,7 @@ namespace ProtocolBuilder
                         if (param.IsArray)
                         {
                             MatchIndent(); OutStream.WriteLine(
-                                string.Format("const Array<{0}>& Get{1}() const\t{{ return m_{1}; }};", param.Type.ToString(), param.Name));
+                                string.Format("const Array<{0}>& Get{1}() const\t{{ return m_{1}; }};", SystemTypeMap.ToCPPType(param.Type), param.Name));
                             //MatchIndent(); OutStream.WriteLine(
                             //    string.Format("const {0}& Get{1}() const\t{{ return m_{1}; }};", ArrayLenType, ArrayLenName(param.Name)));
                             //MatchIndent(); OutStream.WriteLine(
@@ -349,7 +350,7 @@ namespace ProtocolBuilder
                         else
                         {
                             MatchIndent(); OutStream.WriteLine(
-                                string.Format("const {0}& Get{1}() const\t{{ return m_{1}; }};", param.Type.ToString(), param.Name));
+                                string.Format("const {0}& Get{1}() const\t{{ return m_{1}; }};", SystemTypeMap.ToCPPType(param.Type), param.Name));
                         }
                         break;
                     }
@@ -463,7 +464,7 @@ namespace ProtocolBuilder
                         default:
                             if (param.IsArray)
                             {
-                                MatchIndent(); OutStream.WriteLine("{0} numberof{1} = 0; {2}* p{1} = nullptr;", ArrayLenType, param.Name, param.Type.ToString());
+                                MatchIndent(); OutStream.WriteLine("{0} numberof{1} = 0; {2}* p{1} = nullptr;", ArrayLenType, param.Name, SystemTypeMap.ToCPPType(param.Type));
                             }
                             break;
                     }
@@ -511,12 +512,12 @@ namespace ProtocolBuilder
                             {
                                 //MatchIndent(); OutStream.WriteLine("{0} numberof{1} = 0; {2}* p{1} = nullptr;", ArrayLenType, param.Name, param.Type.ToString());
                                 MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamCopy( &numberof{1}, pCur, iMsgSize, (int)sizeof({0}) ) );", ArrayLenType, param.Name);
-                                MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamLnk( p{0}, pCur, iMsgSize, (int)sizeof({1})*numberof{0} ) );", param.Name, param.Type.ToString());
+                                MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamLnk( p{0}, pCur, iMsgSize, (int)sizeof({1})*numberof{0} ) );", param.Name, SystemTypeMap.ToCPPType(param.Type));
                                 MatchIndent(); OutStream.WriteLine("m_{0}.SetLinkedBuffer(numberof{0}, numberof{0}, p{0});", param.Name);
                             }
                             else
                             {
-                                MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamCopy( &m_{0}, pCur, iMsgSize, (int)sizeof({1}) ) );", param.Name, param.Type);
+                                MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamCopy( &m_{0}, pCur, iMsgSize, (int)sizeof({1}) ) );", param.Name, SystemTypeMap.ToCPPType(param.Type));
                             }
                             break;
                     }
@@ -557,7 +558,7 @@ namespace ProtocolBuilder
                         default:
                             if (param.IsArray)
                             {
-                                MatchIndent(); OutStream.WriteLine("{0} numberof{1} = 0; {2}* p{1} = nullptr;", ArrayLenType, param.Name, param.Type.ToString());
+                                MatchIndent(); OutStream.WriteLine("{0} numberof{1} = 0; {2}* p{1} = nullptr;", ArrayLenType, param.Name, SystemTypeMap.ToCPPType(param.Type));
                             }
                             break;
                     }
@@ -605,7 +606,7 @@ namespace ProtocolBuilder
                             {
                                 //MatchIndent(); OutStream.WriteLine("{0} numberof{1} = 0; {2}* p{1} = nullptr;", ArrayLenType, param.Name, param.Type.ToString());
                                 MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamCopy( &numberof{1}, pCur, iMsgSize, (int)sizeof({0}) ) );", ArrayLenType, param.Name);
-                                MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamLnk( p{0}, pCur, iMsgSize, (int)sizeof({1})*numberof{0} ) );", param.Name, param.Type.ToString());
+                                MatchIndent(); OutStream.WriteLine("protocolChk( Protocol::StreamParamLnk( p{0}, pCur, iMsgSize, (int)sizeof({1})*numberof{0} ) );", param.Name, SystemTypeMap.ToCPPType(param.Type));
                                 MatchIndent(); OutStream.WriteLine("m_{0}.SetLinkedBuffer(numberof{0}, numberof{0}, p{0});", param.Name);
                             }
                             else
@@ -682,7 +683,7 @@ namespace ProtocolBuilder
                             if (param.IsArray)
                             {
                                 MatchIndent(); OutStream.WriteLine("pCur += sizeof({0}); iMsgSize -= (int)sizeof({0});", ArrayLenType);
-                                MatchIndent(); OutStream.WriteLine("pCur += sizeof({0})*m_{1}.GetSize(); iMsgSize -= (INT)(sizeof({0})*m_{1}.GetSize());", param.Type.ToString(), param.Name);
+                                MatchIndent(); OutStream.WriteLine("pCur += sizeof({0})*m_{1}.GetSize(); iMsgSize -= (INT)(sizeof({0})*m_{1}.GetSize());", SystemTypeMap.ToCPPType(param.Type), param.Name);
                                 //MatchIndent(); OutStream.WriteLine("pCur += sizeof({0})*m_{1}; iMsgSize -= sizeof({0})*m_{1};", param.Type.ToString(), ArrayLenName(param.Name));
                             }
                             else
@@ -774,19 +775,19 @@ namespace ProtocolBuilder
                             }
                             else if (param.Name == ParamRouteHopCount.Name)
                             {
-                                MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= (INT)sizeof({0}) );", ParamRouteHopCount.Type);
-                                MatchIndent(); OutStream.WriteLine("*({0}*)pCur = ({0})hopCount;", ParamRouteHopCount.Type);
+                                MatchIndent(); OutStream.WriteLine("Assert( iMsgSize >= (INT)sizeof({0}) );", SystemTypeMap.ToCPPType(ParamRouteHopCount.Type));
+                                MatchIndent(); OutStream.WriteLine("*({0}*)pCur = ({0})hopCount;", SystemTypeMap.ToCPPType(ParamRouteHopCount.Type));
                             }
 
                             if (param.IsArray)
                             {
                                 MatchIndent(); OutStream.WriteLine("pCur += sizeof({0}); iMsgSize -= (int)sizeof({0});", ArrayLenType);
-                                MatchIndent(); OutStream.WriteLine("pCur += sizeof({0})*m_{1}.GetSize(); iMsgSize -= (INT)(sizeof({0})*m_{1}.GetSize());", param.Type.ToString(), param.Name);
+                                MatchIndent(); OutStream.WriteLine("pCur += sizeof({0})*m_{1}.GetSize(); iMsgSize -= (INT)(sizeof({0})*m_{1}.GetSize());", SystemTypeMap.ToCPPType(param.Type), param.Name);
                                 //MatchIndent(); OutStream.WriteLine("pCur += sizeof({0})*m_{1}; iMsgSize -= sizeof({0})*m_{1};", param.Type.ToString(), ArrayLenName(param.Name));
                             }
                             else
                             {
-                                MatchIndent(); OutStream.WriteLine("pCur += sizeof({0}); iMsgSize -= (int)sizeof({0});", param.Type);
+                                MatchIndent(); OutStream.WriteLine("pCur += sizeof({0}); iMsgSize -= (int)sizeof({0});", SystemTypeMap.ToCPPType(param.Type));
                             }
                             break;
                     }
@@ -850,11 +851,11 @@ namespace ProtocolBuilder
                     MatchIndent(1);
                     if (param.IsArray)
                     {
-                        OutStream.Write("+ sizeof({0})*{1}.GetSize() + sizeof({2})", param.Type.ToString(), InParamName(param.Name), ArrayLenType);
+                        OutStream.Write("+ sizeof({0})*{1}.GetSize() + sizeof({2})", SystemTypeMap.ToCPPType(param.Type), InParamName(param.Name), ArrayLenType);
                     }
                     else
                     {
-                        OutStream.Write("+ sizeof({0})", param.Type.ToString());
+                        OutStream.Write("+ sizeof({0})", SystemTypeMap.ToCPPType(param.Type));
                     }
                 }
                 OutStream.WriteLine(");");
@@ -898,11 +899,11 @@ namespace ProtocolBuilder
                 {
                     //MatchIndent(); OutStream.WriteLine(string.Format("{1} numberOf{0} = ({1}){0}.GetSize(); ", InParamName(param.Name), ArrayLenType));
                     MatchIndent(); OutStream.WriteLine(string.Format("Protocol::PackParamCopy( pMsgData, &numberOf{0}, sizeof({1})); ", InParamName(param.Name), ArrayLenType));
-                    MatchIndent(); OutStream.WriteLine(string.Format("Protocol::PackParamCopy( pMsgData, {0}.data(), (INT)(sizeof({1})*{0}.GetSize())); ", InParamName(param.Name), param.Type.ToString()));
+                    MatchIndent(); OutStream.WriteLine(string.Format("Protocol::PackParamCopy( pMsgData, {0}.data(), (INT)(sizeof({1})*{0}.GetSize())); ", InParamName(param.Name), SystemTypeMap.ToCPPType(param.Type)));
                 }
                 else // generic type
                 {
-                    MatchIndent(); OutStream.Write(string.Format("Protocol::PackParamCopy( pMsgData, &{0}, sizeof({1}));", InParamName(param.Name), param.Type.ToString())); NewLine();
+                    MatchIndent(); OutStream.Write(string.Format("Protocol::PackParamCopy( pMsgData, &{0}, sizeof({1}));", InParamName(param.Name), SystemTypeMap.ToCPPType(param.Type))); NewLine();
                 }
             }
         }

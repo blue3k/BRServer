@@ -37,7 +37,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
-				UINT16 numberofPlayerInfo = 0; BYTE* pPlayerInfo = nullptr;
+				UINT16 numberofPlayerInfo = 0; uint8_t* pPlayerInfo = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -47,9 +47,9 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RankingScore, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RankingScore, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofPlayerInfo, pCur, iMsgSize, (int)sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pPlayerInfo, pCur, iMsgSize, (int)sizeof(BYTE)*numberofPlayerInfo ) );
+				protocolChk( Protocol::StreamParamLnk( pPlayerInfo, pCur, iMsgSize, (int)sizeof(uint8_t)*numberofPlayerInfo ) );
 				m_PlayerInfo.SetLinkedBuffer(numberofPlayerInfo, numberofPlayerInfo, pPlayerInfo);
 
 
@@ -59,7 +59,7 @@ namespace BR
 
 			}; // Result AddPlayerCmd::ParseMessage( MessageData* pIMsg )
 
-			Result AddPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+			Result AddPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 			{
  				Result hr;
 
@@ -69,8 +69,8 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(PlayerID)
-					+ sizeof(UINT64)
-					+ sizeof(BYTE)*InPlayerInfo.GetSize() + sizeof(UINT16));
+					+ sizeof(uint64_t)
+					+ sizeof(uint8_t)*InPlayerInfo.GetSize() + sizeof(UINT16));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -82,9 +82,9 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InRankingScore, sizeof(UINT64));
+				Protocol::PackParamCopy( pMsgData, &InRankingScore, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &numberOfInPlayerInfo, sizeof(UINT16)); 
-				Protocol::PackParamCopy( pMsgData, InPlayerInfo.data(), (INT)(sizeof(BYTE)*InPlayerInfo.GetSize())); 
+				Protocol::PackParamCopy( pMsgData, InPlayerInfo.data(), (INT)(sizeof(uint8_t)*InPlayerInfo.GetSize())); 
 
 				pMsg = pNewMsg;
 
@@ -93,7 +93,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result AddPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+			}; // Result AddPlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 
 			Result AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -146,7 +146,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ranking, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ranking, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -155,7 +155,7 @@ namespace BR
 
 			}; // Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
 
-			Result AddPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+			Result AddPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 			{
  				Result hr;
 
@@ -165,7 +165,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -176,7 +176,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &InRanking, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InRanking, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -185,7 +185,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result AddPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+			}; // Result AddPlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 
 			Result AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -507,7 +507,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ranking, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ranking, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -516,7 +516,7 @@ namespace BR
 
 			}; // Result GetPlayerRankingRes::ParseMessage( MessageData* pIMsg )
 
-			Result GetPlayerRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+			Result GetPlayerRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 			{
  				Result hr;
 
@@ -526,7 +526,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -537,7 +537,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &InRanking, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InRanking, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -546,7 +546,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetPlayerRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+			}; // Result GetPlayerRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 
 			Result GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -591,7 +591,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
-				UINT16 numberofPlayerInfo = 0; BYTE* pPlayerInfo = nullptr;
+				UINT16 numberofPlayerInfo = 0; uint8_t* pPlayerInfo = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -601,9 +601,9 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RankingScore, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RankingScore, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofPlayerInfo, pCur, iMsgSize, (int)sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pPlayerInfo, pCur, iMsgSize, (int)sizeof(BYTE)*numberofPlayerInfo ) );
+				protocolChk( Protocol::StreamParamLnk( pPlayerInfo, pCur, iMsgSize, (int)sizeof(uint8_t)*numberofPlayerInfo ) );
 				m_PlayerInfo.SetLinkedBuffer(numberofPlayerInfo, numberofPlayerInfo, pPlayerInfo);
 
 
@@ -613,7 +613,7 @@ namespace BR
 
 			}; // Result UpdatePlayerCmd::ParseMessage( MessageData* pIMsg )
 
-			Result UpdatePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+			Result UpdatePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 			{
  				Result hr;
 
@@ -623,8 +623,8 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(PlayerID)
-					+ sizeof(UINT64)
-					+ sizeof(BYTE)*InPlayerInfo.GetSize() + sizeof(UINT16));
+					+ sizeof(uint64_t)
+					+ sizeof(uint8_t)*InPlayerInfo.GetSize() + sizeof(UINT16));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -636,9 +636,9 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InRankingScore, sizeof(UINT64));
+				Protocol::PackParamCopy( pMsgData, &InRankingScore, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &numberOfInPlayerInfo, sizeof(UINT16)); 
-				Protocol::PackParamCopy( pMsgData, InPlayerInfo.data(), (INT)(sizeof(BYTE)*InPlayerInfo.GetSize())); 
+				Protocol::PackParamCopy( pMsgData, InPlayerInfo.data(), (INT)(sizeof(uint8_t)*InPlayerInfo.GetSize())); 
 
 				pMsg = pNewMsg;
 
@@ -647,7 +647,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result UpdatePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+			}; // Result UpdatePlayerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 
 			Result UpdatePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -700,7 +700,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ranking, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ranking, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -709,7 +709,7 @@ namespace BR
 
 			}; // Result UpdatePlayerRes::ParseMessage( MessageData* pIMsg )
 
-			Result UpdatePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+			Result UpdatePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 			{
  				Result hr;
 
@@ -719,7 +719,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -730,7 +730,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &InRanking, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InRanking, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -739,7 +739,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result UpdatePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+			}; // Result UpdatePlayerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 
 			Result UpdatePlayerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -792,8 +792,8 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_From, pCur, iMsgSize, (int)sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Count, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_From, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Count, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -802,7 +802,7 @@ namespace BR
 
 			}; // Result GetRankingCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GetRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+			Result GetRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint32_t &InFrom, const uint32_t &InCount )
 			{
  				Result hr;
 
@@ -811,8 +811,8 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(UINT32)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t)
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -822,8 +822,8 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InFrom, sizeof(UINT32));
-				Protocol::PackParamCopy( pMsgData, &InCount, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InFrom, sizeof(uint32_t));
+				Protocol::PackParamCopy( pMsgData, &InCount, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -832,7 +832,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+			}; // Result GetRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint32_t &InFrom, const uint32_t &InCount )
 
 			Result GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -885,7 +885,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerRanking, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerRanking, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -894,7 +894,7 @@ namespace BR
 
 			}; // Result GetRankingRes::ParseMessage( MessageData* pIMsg )
 
-			Result GetRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InPlayerRanking )
+			Result GetRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InPlayerRanking )
 			{
  				Result hr;
 
@@ -904,7 +904,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -915,7 +915,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &InPlayerRanking, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InPlayerRanking, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -924,7 +924,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InPlayerRanking )
+			}; // Result GetRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InPlayerRanking )
 
 			Result GetRankingRes::OverrideRouteContextDestination( EntityUID to )
 			{

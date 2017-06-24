@@ -43,7 +43,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 			public:
 				PartyGameMatchedS2CEvt()
 					{}
@@ -55,14 +55,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -90,7 +90,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				PlayerID m_DestPlayerID;
 				GameInsUID m_GameInsUID;
 				PlayerRole m_RequestedRole;
@@ -105,7 +105,7 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetDestPlayerID() const	{ return m_DestPlayerID; };
 				const GameInsUID& GetGameInsUID() const	{ return m_GameInsUID; };
 				const PlayerRole& GetRequestedRole() const	{ return m_RequestedRole; };
@@ -115,7 +115,7 @@ namespace BR
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

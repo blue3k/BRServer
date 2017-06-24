@@ -38,7 +38,7 @@ namespace BR
 			// C2S: Counter instance is deleted
 			Result PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances );
 			// C2S: Counter update broadcast
-			Result PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues );
+			Result PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
 		}; // class NetPolicyMonitoring : public IPolicyMonitoring
 
@@ -51,9 +51,9 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			Result GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount );
+			Result GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount );
 			// Cmd: Remove a player to ranking
-			Result RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues );
+			Result RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues );
 			// S2C: Request from server
 			Result PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID );
 

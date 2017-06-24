@@ -55,17 +55,17 @@ namespace BR
 			// S2C: Friend removed
 			virtual Result FriendRemovedS2CEvt( const PlayerID &InFriendID ) = 0;
 			// Cmd: Get friend list
-			virtual Result GetFriendListRes( const Result &InResult, const UINT16 &InMaxFriendSlot, const UINT16 &InTotalNumberOfFriends, const UINT16 &InStartIndex, const Array<FriendInformation>& InFriendList ) = 0;
+			virtual Result GetFriendListRes( const Result &InResult, const uint16_t &InMaxFriendSlot, const uint16_t &InTotalNumberOfFriends, const uint16_t &InStartIndex, const Array<FriendInformation>& InFriendList ) = 0;
 			// Cmd: Query notification list
 			virtual Result GetNotificationListRes( const Result &InResult ) = 0;
 			// Cmd: Delete notification
-			virtual Result DeleteNotificationRes( const Result &InResult, const UINT32 &InNotificationID ) = 0;
+			virtual Result DeleteNotificationRes( const Result &InResult, const uint32_t &InNotificationID ) = 0;
 			// Cmd: Set notification is read
-			virtual Result SetNotificationReadRes( const Result &InResult, const UINT32 &InNotificationID ) = 0;
+			virtual Result SetNotificationReadRes( const Result &InResult, const uint32_t &InNotificationID ) = 0;
 			// Cmd: Accept notification
-			virtual Result AcceptNotificationRes( const Result &InResult, const UINT32 &InNotificationID ) = 0;
+			virtual Result AcceptNotificationRes( const Result &InResult, const uint32_t &InNotificationID ) = 0;
 			// S2C: Notify new notification
-			virtual Result NotifyS2CEvt( const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const BYTE &InIsRead, const UINT64 &InTimeStamp ) = 0;
+			virtual Result NotifyS2CEvt( const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint8_t &InIsRead, const uint64_t &InTimeStamp ) = 0;
 			// Cmd: Query playerID list
 			virtual Result FindPlayerByEMailRes( const Result &InResult, const PlayerInformation &InPlayer ) = 0;
 			// Cmd: Query playerID list
@@ -73,21 +73,21 @@ namespace BR
 			// Cmd: *Request Player Status Update
 			virtual Result RequestPlayerStatusUpdateRes( const Result &InResult ) = 0;
 			// S2C: *Notify Player Status Updated
-			virtual Result NotifyPlayerStatusUpdatedS2CEvt( const PlayerID &InPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame ) = 0;
+			virtual Result NotifyPlayerStatusUpdatedS2CEvt( const PlayerID &InPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame ) = 0;
 			// Cmd: Get Ranking lise
 			virtual Result GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
 			// Cmd: Game user game play information
-			virtual Result GetUserGamePlayerInfoRes( const Result &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const UINT32 &InLastUpdateTime, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose ) = 0;
+			virtual Result GetUserGamePlayerInfoRes( const Result &InResult, const int16_t &InLevel, const int64_t &InExp, const int64_t &InGameMoney, const int64_t &InGem, const int16_t &InStamina, const uint32_t &InLastUpdateTime, const int32_t &InTotalPlayed, const int32_t &InWinPlaySC, const int32_t &InWinPlaySM, const int32_t &InWinPlaySS, const int32_t &InLosePlaySC, const int32_t &InLosePlaySM, const int32_t &InLosePlaySS, const int32_t &InWinPlayNC, const int32_t &InWinPlayNM, const int32_t &InWinPlayNS, const int32_t &InLosePlayNC, const int32_t &InLosePlayNM, const int32_t &InLosePlayNS, const int32_t &InWeeklyWin, const int32_t &InWeeklyLose ) = 0;
 			// Cmd: Game game play information
-			virtual Result GetGamePlayerInfoRes( const Result &InResult, const PlayerID &InPlayerID, const INT16 &InLevel, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose ) = 0;
+			virtual Result GetGamePlayerInfoRes( const Result &InResult, const PlayerID &InPlayerID, const int16_t &InLevel, const int32_t &InTotalPlayed, const int32_t &InWinPlaySC, const int32_t &InWinPlaySM, const int32_t &InWinPlaySS, const int32_t &InLosePlaySC, const int32_t &InLosePlaySM, const int32_t &InLosePlaySS, const int32_t &InWinPlayNC, const int32_t &InWinPlayNM, const int32_t &InWinPlayNS, const int32_t &InLosePlayNC, const int32_t &InLosePlayNM, const int32_t &InLosePlayNS, const int32_t &InWeeklyWin, const int32_t &InWeeklyLose ) = 0;
 			// S2C: Player level up event
-			virtual Result LevelUpS2CEvt( const UINT64 &InCurrentTotalExp, const UINT32 &InCurrentLevel ) = 0;
+			virtual Result LevelUpS2CEvt( const uint64_t &InCurrentTotalExp, const uint32_t &InCurrentLevel ) = 0;
 			// Cmd: Change NickName
-			virtual Result SetNickNameRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
+			virtual Result SetNickNameRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney ) = 0;
 			// Cmd: Create Party
 			virtual Result CreatePartyRes( const Result &InResult, const PartyUID &InPartyUID ) = 0;
 			// Cmd: Join party
-			virtual Result JoinPartyRes( const Result &InResult, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData ) = 0;
+			virtual Result JoinPartyRes( const Result &InResult, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData ) = 0;
 			// S2C: Player Joined event
 			virtual Result PartyPlayerJoinedS2CEvt( const PartyUID &InPartyUID, const PlayerInformation &InJoinedPlayer ) = 0;
 			// S2C: Party leader changed event
@@ -107,15 +107,15 @@ namespace BR
 			// Cmd: Send Party quick chat message
 			virtual Result PartyQuickChatMessageRes( const Result &InResult ) = 0;
 			// S2C: Party Chatting message event
-			virtual Result PartyQuickChatMessageS2CEvt( const PlayerID &InSenderID, const UINT32 &InQuickChatID ) = 0;
+			virtual Result PartyQuickChatMessageS2CEvt( const PlayerID &InSenderID, const uint32_t &InQuickChatID ) = 0;
 			// Cmd: Party chatting
 			virtual Result PartyChatMessageRes( const Result &InResult ) = 0;
 			// S2C: Party Chatting message event
 			virtual Result PartyChatMessageS2CEvt( const PlayerID &InSenderID, const char* InSenderName, const char* InChatMessage ) = 0;
 			// Cmd: Join to a game
-			virtual Result JoinGameRes( const Result &InResult, const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData ) = 0;
+			virtual Result JoinGameRes( const Result &InResult, const GameInsUID &InInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData ) = 0;
 			// S2C: Player Joined in the game
-			virtual Result PlayerJoinedS2CEvt( const GameInsUID &InGameInsUID, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const UINT8 &InJoinedPlayerDead, const UINT8 &InJoinedPlayerIndex, const UINT8 &InJoinedPlayerCharacter ) = 0;
+			virtual Result PlayerJoinedS2CEvt( const GameInsUID &InGameInsUID, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter ) = 0;
 			// Cmd: Leave Game
 			virtual Result LeaveGameRes( const Result &InResult ) = 0;
 			// S2C: Player left event
@@ -135,9 +135,9 @@ namespace BR
 			// Cmd: Advance game
 			virtual Result AdvanceGameRes( const Result &InResult ) = 0;
 			// S2C: The game state is advanced
-			virtual Result GameAdvancedS2CEvt( const GameInsUID &InGameInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay ) = 0;
+			virtual Result GameAdvancedS2CEvt( const GameInsUID &InGameInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay ) = 0;
 			// S2C: Game is ended
-			virtual Result GameEndedS2CEvt( const GameInsUID &InGameInsUID, const GameWinner &InWinner, const UINT32 &InGainedExp, const UINT32 &InGainedGameMoney ) = 0;
+			virtual Result GameEndedS2CEvt( const GameInsUID &InGameInsUID, const GameWinner &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney ) = 0;
 			// Cmd: Vote game advance
 			virtual Result VoteGameAdvanceRes( const Result &InResult ) = 0;
 			// S2C: GameAdvance is Voted
@@ -153,21 +153,21 @@ namespace BR
 			// S2C: Player Voted
 			virtual Result PlayerRevealedS2CEvt( const GameInsUID &InGameInsUID, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason ) = 0;
 			// Cmd: Play again with the current players
-			virtual Result GamePlayAgainRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
+			virtual Result GamePlayAgainRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney ) = 0;
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 			virtual Result GamePlayAgainS2CEvt( const PartyUID &InPartyUID, const PlayerID &InLeadPlayer ) = 0;
 			// Cmd: Player. reveal a player
-			virtual Result GameRevealPlayerRes( const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
+			virtual Result GameRevealPlayerRes( const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney ) = 0;
 			// Cmd: Player. revive himself
-			virtual Result GamePlayerReviveRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
+			virtual Result GamePlayerReviveRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney ) = 0;
 			// S2C: Player is revived
 			virtual Result GamePlayerRevivedS2CEvt( const PlayerID &InRevivedPlayerID ) = 0;
 			// Cmd: Player. reset ranking
-			virtual Result GamePlayerResetRankRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
+			virtual Result GamePlayerResetRankRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney ) = 0;
 			// Cmd: Request Game match
-			virtual Result RequestGameMatchRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
+			virtual Result RequestGameMatchRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney ) = 0;
 			// S2C: Game matched
-			virtual Result GameMatchedS2CEvt( const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData, const UINT32 &InStamina, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney ) = 0;
+			virtual Result GameMatchedS2CEvt( const GameInsUID &InInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData, const uint32_t &InStamina, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney ) = 0;
 			// S2C: Game match failed
 			virtual Result GameMatchFailedS2CEvt( const Result &InFailedReason ) = 0;
 			// S2C: Game matching started
@@ -177,11 +177,11 @@ namespace BR
 			// S2C: game matching canceled
 			virtual Result GameMatchingCanceledS2CEvt(  ) = 0;
 			// Cmd: Buy shop item prepare
-			virtual Result BuyShopItemPrepareRes( const Result &InResult, const UINT32 &InShopItemID, const char* InPurchaseID ) = 0;
+			virtual Result BuyShopItemPrepareRes( const Result &InResult, const uint32_t &InShopItemID, const char* InPurchaseID ) = 0;
 			// Cmd: Buy shop item
-			virtual Result BuyShopItemRes( const Result &InResult, const UINT32 &InShopItemID ) = 0;
+			virtual Result BuyShopItemRes( const Result &InResult, const uint32_t &InShopItemID ) = 0;
 			// Cmd: Give my stamina to other player
-			virtual Result GiveStaminaRes( const Result &InResult, const PlayerID &InTargetPlayer, const UINT64 &InTimeStamp ) = 0;
+			virtual Result GiveStaminaRes( const Result &InResult, const PlayerID &InTargetPlayer, const uint64_t &InTimeStamp ) = 0;
 			// Cmd: For debug, Change configue preset
 			virtual Result SetPresetGameConfigIDRes( const Result &InResult ) = 0;
 			// Cmd: For Debug
@@ -202,7 +202,7 @@ namespace BR
 			// C2S: Client heart bit
 			virtual Result HeartBitC2SEvt(  ) = 0;
 			// Cmd: Player connected from a login server and moved to game server
-			virtual Result JoinGameServerCmd( const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID ) = 0;
+			virtual Result JoinGameServerCmd( const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID ) = 0;
 			// Cmd: player complition statues
 			virtual Result GetComplitionStateCmd(  ) = 0;
 			// Cmd: Player complition state
@@ -220,15 +220,15 @@ namespace BR
 			virtual Result RemoveFriendCmd( const PlayerID &InFriendID ) = 0;
 			// S2C: Friend removed
 			// Cmd: Get friend list
-			virtual Result GetFriendListCmd( const UINT16 &InStartIndex, const UINT16 &InCount ) = 0;
+			virtual Result GetFriendListCmd( const uint16_t &InStartIndex, const uint16_t &InCount ) = 0;
 			// Cmd: Query notification list
 			virtual Result GetNotificationListCmd(  ) = 0;
 			// Cmd: Delete notification
-			virtual Result DeleteNotificationCmd( const UINT32 &InNotificationID ) = 0;
+			virtual Result DeleteNotificationCmd( const uint32_t &InNotificationID ) = 0;
 			// Cmd: Set notification is read
-			virtual Result SetNotificationReadCmd( const UINT32 &InNotificationID ) = 0;
+			virtual Result SetNotificationReadCmd( const uint32_t &InNotificationID ) = 0;
 			// Cmd: Accept notification
-			virtual Result AcceptNotificationCmd( const UINT32 &InNotificationID ) = 0;
+			virtual Result AcceptNotificationCmd( const uint32_t &InNotificationID ) = 0;
 			// S2C: Notify new notification
 			// Cmd: Query playerID list
 			virtual Result FindPlayerByEMailCmd( const char* InPlayerEMail ) = 0;
@@ -238,14 +238,14 @@ namespace BR
 			virtual Result RequestPlayerStatusUpdateCmd( const Array<PlayerID>& InTargetPlayerID ) = 0;
 			// S2C: *Notify Player Status Updated
 			// Cmd: Get Ranking lise
-			virtual Result GetRankingListCmd( const RankingType &InRankingType, const BYTE &InBaseRanking, const BYTE &InCount ) = 0;
+			virtual Result GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount ) = 0;
 			// Cmd: Game user game play information
 			virtual Result GetUserGamePlayerInfoCmd(  ) = 0;
 			// Cmd: Game game play information
 			virtual Result GetGamePlayerInfoCmd( const PlayerID &InPlayerID ) = 0;
 			// S2C: Player level up event
 			// Cmd: Change NickName
-			virtual Result SetNickNameCmd( const char* InNickName, const BYTE &InIsCostFree ) = 0;
+			virtual Result SetNickNameCmd( const char* InNickName, const uint8_t &InIsCostFree ) = 0;
 			// Cmd: Create Party
 			virtual Result CreatePartyCmd(  ) = 0;
 			// Cmd: Join party
@@ -262,7 +262,7 @@ namespace BR
 			virtual Result PartyInviteCmd( const PlayerID &InInviteTargetID ) = 0;
 			// S2C: Party invite requested
 			// Cmd: Send Party quick chat message
-			virtual Result PartyQuickChatMessageCmd( const UINT32 &InQuickChatID ) = 0;
+			virtual Result PartyQuickChatMessageCmd( const uint32_t &InQuickChatID ) = 0;
 			// S2C: Party Chatting message event
 			// Cmd: Party chatting
 			virtual Result PartyChatMessageCmd( const char* InChatMessage ) = 0;
@@ -290,7 +290,7 @@ namespace BR
 			virtual Result VoteGameAdvanceCmd( const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket ) = 0;
 			// S2C: GameAdvance is Voted
 			// Cmd: Vote
-			virtual Result VoteCmd( const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const PlayerID &InVoteTarget, const UINT32 &InActionSerial ) = 0;
+			virtual Result VoteCmd( const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const PlayerID &InVoteTarget, const uint32_t &InActionSerial ) = 0;
 			// S2C: Player Voted
 			// S2C: Vote is ended
 			// S2C: Player Killed
@@ -306,7 +306,7 @@ namespace BR
 			// Cmd: Player. reset ranking
 			virtual Result GamePlayerResetRankCmd(  ) = 0;
 			// Cmd: Request Game match
-			virtual Result RequestGameMatchCmd( const BYTE &InNumPlayer, const PlayerRole &InRequestRole ) = 0;
+			virtual Result RequestGameMatchCmd( const uint8_t &InNumPlayer, const PlayerRole &InRequestRole ) = 0;
 			// S2C: Game matched
 			// S2C: Game match failed
 			// S2C: Game matching started
@@ -314,15 +314,15 @@ namespace BR
 			virtual Result CancelGameMatchCmd(  ) = 0;
 			// S2C: game matching canceled
 			// Cmd: Buy shop item prepare
-			virtual Result BuyShopItemPrepareCmd( const UINT32 &InShopItemID ) = 0;
+			virtual Result BuyShopItemPrepareCmd( const uint32_t &InShopItemID ) = 0;
 			// Cmd: Buy shop item
-			virtual Result BuyShopItemCmd( const UINT32 &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<BYTE>& InPurchaseToken ) = 0;
+			virtual Result BuyShopItemCmd( const uint32_t &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<uint8_t>& InPurchaseToken ) = 0;
 			// Cmd: Give my stamina to other player
 			virtual Result GiveStaminaCmd( const PlayerID &InTargetPlayer ) = 0;
 			// Cmd: For debug, Change configue preset
-			virtual Result SetPresetGameConfigIDCmd( const UINT32 &InPresetID ) = 0;
+			virtual Result SetPresetGameConfigIDCmd( const uint32_t &InPresetID ) = 0;
 			// Cmd: For Debug
-			virtual Result GainGameResourceCmd( const INT32 &InResource, const INT32 &InValue ) = 0;
+			virtual Result GainGameResourceCmd( const int32_t &InResource, const int32_t &InValue ) = 0;
 
 		}; // class IPolicyGame : public Net::INetPolicy
 

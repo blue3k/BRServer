@@ -8,11 +8,11 @@
     <Command Name="AddPlayer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Add a player to ranking">
 		  <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
-        <Params Type="UINT64" Name="RankingScore"/>
+        <Params Type="uint64" Name="RankingScore"/>
         <Params Type="BYTE" IsArray="true" Name="PlayerInfo"/>
       </Cmd>
 		  <Res>
-        <Params Type="UINT32" Name="Ranking"/>
+        <Params Type="uint32" Name="Ranking"/>
 	  	</Res>
 	  </Command>
 
@@ -29,29 +29,29 @@
         <Params Type="PlayerID" Name="PlayerID"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="Ranking"/>
+        <Params Type="uint32" Name="Ranking"/>
       </Res>
     </Command>
 
     <Command Name="UpdatePlayer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Update a player to ranking">
       <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
-        <Params Type="UINT64" Name="RankingScore"/>
+        <Params Type="uint64" Name="RankingScore"/>
         <Params Type="BYTE" IsArray="true" Name="PlayerInfo"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="Ranking"/>
+        <Params Type="uint32" Name="Ranking"/>
       </Res>
     </Command>
 
 
     <Command Name="GetRanking" Reliable="true" Crypto="No" Trace="DBG1" Desc="Remove a player to ranking">
       <Cmd>
-        <Params Type="UINT32" Name="From"/>
-        <Params Type="UINT32" Name="Count"/>
+        <Params Type="uint32" Name="From"/>
+        <Params Type="uint32" Name="Count"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="PlayerRanking"/>
+        <Params Type="uint32" Name="PlayerRanking"/>
       </Res>
     </Command>
 

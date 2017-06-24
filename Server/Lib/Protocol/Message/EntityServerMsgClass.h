@@ -40,7 +40,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -87,7 +87,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -133,7 +133,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -176,7 +176,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -220,7 +220,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -263,7 +263,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;

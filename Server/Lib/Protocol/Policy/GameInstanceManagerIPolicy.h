@@ -51,9 +51,9 @@ namespace BR
 			{}
 
 			// Cmd: Create a game instance
-			virtual Result CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer ) = 0;
+			virtual Result CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer ) = 0;
 			// C2S: Game instance notify of deletion
-			virtual Result GameDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount ) = 0;
+			virtual Result GameDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount ) = 0;
 
 		}; // class IPolicyGameInstanceManager : public Net::INetPolicy
 

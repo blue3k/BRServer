@@ -302,28 +302,28 @@ namespace ProtocolXml {
         String,
         
         /// <remarks/>
-        INT8,
+        int8,
         
         /// <remarks/>
-        UINT8,
+        uint8,
         
         /// <remarks/>
-        INT16,
+        int16,
         
         /// <remarks/>
-        UINT16,
+        uint16,
         
         /// <remarks/>
-        INT32,
+        int32,
         
         /// <remarks/>
-        UINT32,
+        uint32,
         
         /// <remarks/>
-        INT64,
+        int64,
         
         /// <remarks/>
-        UINT64,
+        uint64,
         
         /// <remarks/>
         BYTE,

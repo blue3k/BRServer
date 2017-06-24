@@ -25,7 +25,7 @@ SOURCES_POSTFIXED=$(SOURCES:.xml=.h)
 TARGET_FILES=$(SOURCES_POSTFIXED:%=$(OUTPUT_PATH)/%)
 
 
-$(OUTPUT_PATH)/%.h: %.xml
+$(OUTPUT_PATH)/%.h: %.xml $(PROTO_BUILD)
 	$(PROTO_BUILD) -dir:../../../ $<
  
 

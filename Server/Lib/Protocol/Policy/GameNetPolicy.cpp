@@ -46,7 +46,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::HeartBitC2SEvt(  )
 		// Cmd: Player connected from a login server and moved to game server
-		Result NetPolicyGame::JoinGameServerCmd( const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		Result NetPolicyGame::JoinGameServerCmd( const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
 		{
  			Result hr;
 
@@ -62,7 +62,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::JoinGameServerCmd( const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		}; // Result NetPolicyGame::JoinGameServerCmd( const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
 		// Cmd: player complition statues
 		Result NetPolicyGame::GetComplitionStateCmd(  )
 		{
@@ -190,7 +190,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::RemoveFriendCmd( const PlayerID &InFriendID )
 		// Cmd: Get friend list
-		Result NetPolicyGame::GetFriendListCmd( const UINT16 &InStartIndex, const UINT16 &InCount )
+		Result NetPolicyGame::GetFriendListCmd( const uint16_t &InStartIndex, const uint16_t &InCount )
 		{
  			Result hr;
 
@@ -206,7 +206,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::GetFriendListCmd( const UINT16 &InStartIndex, const UINT16 &InCount )
+		}; // Result NetPolicyGame::GetFriendListCmd( const uint16_t &InStartIndex, const uint16_t &InCount )
 		// Cmd: Query notification list
 		Result NetPolicyGame::GetNotificationListCmd(  )
 		{
@@ -226,7 +226,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::GetNotificationListCmd(  )
 		// Cmd: Delete notification
-		Result NetPolicyGame::DeleteNotificationCmd( const UINT32 &InNotificationID )
+		Result NetPolicyGame::DeleteNotificationCmd( const uint32_t &InNotificationID )
 		{
  			Result hr;
 
@@ -242,9 +242,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::DeleteNotificationCmd( const UINT32 &InNotificationID )
+		}; // Result NetPolicyGame::DeleteNotificationCmd( const uint32_t &InNotificationID )
 		// Cmd: Set notification is read
-		Result NetPolicyGame::SetNotificationReadCmd( const UINT32 &InNotificationID )
+		Result NetPolicyGame::SetNotificationReadCmd( const uint32_t &InNotificationID )
 		{
  			Result hr;
 
@@ -260,9 +260,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::SetNotificationReadCmd( const UINT32 &InNotificationID )
+		}; // Result NetPolicyGame::SetNotificationReadCmd( const uint32_t &InNotificationID )
 		// Cmd: Accept notification
-		Result NetPolicyGame::AcceptNotificationCmd( const UINT32 &InNotificationID )
+		Result NetPolicyGame::AcceptNotificationCmd( const uint32_t &InNotificationID )
 		{
  			Result hr;
 
@@ -278,7 +278,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::AcceptNotificationCmd( const UINT32 &InNotificationID )
+		}; // Result NetPolicyGame::AcceptNotificationCmd( const uint32_t &InNotificationID )
 		// Cmd: Query playerID list
 		Result NetPolicyGame::FindPlayerByEMailCmd( const char* InPlayerEMail )
 		{
@@ -334,7 +334,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::RequestPlayerStatusUpdateCmd( const Array<PlayerID>& InTargetPlayerID )
 		// Cmd: Get Ranking lise
-		Result NetPolicyGame::GetRankingListCmd( const RankingType &InRankingType, const BYTE &InBaseRanking, const BYTE &InCount )
+		Result NetPolicyGame::GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount )
 		{
  			Result hr;
 
@@ -350,7 +350,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::GetRankingListCmd( const RankingType &InRankingType, const BYTE &InBaseRanking, const BYTE &InCount )
+		}; // Result NetPolicyGame::GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount )
 		// Cmd: Game user game play information
 		Result NetPolicyGame::GetUserGamePlayerInfoCmd(  )
 		{
@@ -388,7 +388,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::GetGamePlayerInfoCmd( const PlayerID &InPlayerID )
 		// Cmd: Change NickName
-		Result NetPolicyGame::SetNickNameCmd( const char* InNickName, const BYTE &InIsCostFree )
+		Result NetPolicyGame::SetNickNameCmd( const char* InNickName, const uint8_t &InIsCostFree )
 		{
  			Result hr;
 
@@ -404,7 +404,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::SetNickNameCmd( const char* InNickName, const BYTE &InIsCostFree )
+		}; // Result NetPolicyGame::SetNickNameCmd( const char* InNickName, const uint8_t &InIsCostFree )
 		// Cmd: Create Party
 		Result NetPolicyGame::CreatePartyCmd(  )
 		{
@@ -496,7 +496,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::PartyInviteCmd( const PlayerID &InInviteTargetID )
 		// Cmd: Send Party quick chat message
-		Result NetPolicyGame::PartyQuickChatMessageCmd( const UINT32 &InQuickChatID )
+		Result NetPolicyGame::PartyQuickChatMessageCmd( const uint32_t &InQuickChatID )
 		{
  			Result hr;
 
@@ -512,7 +512,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::PartyQuickChatMessageCmd( const UINT32 &InQuickChatID )
+		}; // Result NetPolicyGame::PartyQuickChatMessageCmd( const uint32_t &InQuickChatID )
 		// Cmd: Party chatting
 		Result NetPolicyGame::PartyChatMessageCmd( const char* InChatMessage )
 		{
@@ -658,7 +658,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::VoteGameAdvanceCmd( const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket )
 		// Cmd: Vote
-		Result NetPolicyGame::VoteCmd( const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
+		Result NetPolicyGame::VoteCmd( const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 		{
  			Result hr;
 
@@ -674,7 +674,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::VoteCmd( const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
+		}; // Result NetPolicyGame::VoteCmd( const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 		// Cmd: Play again with the current players
 		Result NetPolicyGame::GamePlayAgainCmd(  )
 		{
@@ -748,7 +748,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::GamePlayerResetRankCmd(  )
 		// Cmd: Request Game match
-		Result NetPolicyGame::RequestGameMatchCmd( const BYTE &InNumPlayer, const PlayerRole &InRequestRole )
+		Result NetPolicyGame::RequestGameMatchCmd( const uint8_t &InNumPlayer, const PlayerRole &InRequestRole )
 		{
  			Result hr;
 
@@ -764,7 +764,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::RequestGameMatchCmd( const BYTE &InNumPlayer, const PlayerRole &InRequestRole )
+		}; // Result NetPolicyGame::RequestGameMatchCmd( const uint8_t &InNumPlayer, const PlayerRole &InRequestRole )
 		// Cmd: Cancel Game match
 		Result NetPolicyGame::CancelGameMatchCmd(  )
 		{
@@ -784,7 +784,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::CancelGameMatchCmd(  )
 		// Cmd: Buy shop item prepare
-		Result NetPolicyGame::BuyShopItemPrepareCmd( const UINT32 &InShopItemID )
+		Result NetPolicyGame::BuyShopItemPrepareCmd( const uint32_t &InShopItemID )
 		{
  			Result hr;
 
@@ -800,9 +800,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::BuyShopItemPrepareCmd( const UINT32 &InShopItemID )
+		}; // Result NetPolicyGame::BuyShopItemPrepareCmd( const uint32_t &InShopItemID )
 		// Cmd: Buy shop item
-		Result NetPolicyGame::BuyShopItemCmd( const UINT32 &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<BYTE>& InPurchaseToken )
+		Result NetPolicyGame::BuyShopItemCmd( const uint32_t &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<uint8_t>& InPurchaseToken )
 		{
  			Result hr;
 
@@ -818,7 +818,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::BuyShopItemCmd( const UINT32 &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<BYTE>& InPurchaseToken )
+		}; // Result NetPolicyGame::BuyShopItemCmd( const uint32_t &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<uint8_t>& InPurchaseToken )
 		// Cmd: Give my stamina to other player
 		Result NetPolicyGame::GiveStaminaCmd( const PlayerID &InTargetPlayer )
 		{
@@ -838,7 +838,7 @@ namespace BR
 
 		}; // Result NetPolicyGame::GiveStaminaCmd( const PlayerID &InTargetPlayer )
 		// Cmd: For debug, Change configue preset
-		Result NetPolicyGame::SetPresetGameConfigIDCmd( const UINT32 &InPresetID )
+		Result NetPolicyGame::SetPresetGameConfigIDCmd( const uint32_t &InPresetID )
 		{
  			Result hr;
 
@@ -854,9 +854,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::SetPresetGameConfigIDCmd( const UINT32 &InPresetID )
+		}; // Result NetPolicyGame::SetPresetGameConfigIDCmd( const uint32_t &InPresetID )
 		// Cmd: For Debug
-		Result NetPolicyGame::GainGameResourceCmd( const INT32 &InResource, const INT32 &InValue )
+		Result NetPolicyGame::GainGameResourceCmd( const int32_t &InResource, const int32_t &InValue )
 		{
  			Result hr;
 
@@ -872,7 +872,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyGame::GainGameResourceCmd( const INT32 &InResource, const INT32 &InValue )
+		}; // Result NetPolicyGame::GainGameResourceCmd( const int32_t &InResource, const int32_t &InValue )
 
 
 		// Cmd: Player connected from a login server and moved to game server
@@ -1056,7 +1056,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::FriendRemovedS2CEvt( const PlayerID &InFriendID )
 		// Cmd: Get friend list
-		Result NetSvrPolicyGame::GetFriendListRes( const Result &InResult, const UINT16 &InMaxFriendSlot, const UINT16 &InTotalNumberOfFriends, const UINT16 &InStartIndex, const Array<FriendInformation>& InFriendList )
+		Result NetSvrPolicyGame::GetFriendListRes( const Result &InResult, const uint16_t &InMaxFriendSlot, const uint16_t &InTotalNumberOfFriends, const uint16_t &InStartIndex, const Array<FriendInformation>& InFriendList )
 		{
  			Result hr;
 
@@ -1072,7 +1072,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GetFriendListRes( const Result &InResult, const UINT16 &InMaxFriendSlot, const UINT16 &InTotalNumberOfFriends, const UINT16 &InStartIndex, const Array<FriendInformation>& InFriendList )
+		}; // Result NetSvrPolicyGame::GetFriendListRes( const Result &InResult, const uint16_t &InMaxFriendSlot, const uint16_t &InTotalNumberOfFriends, const uint16_t &InStartIndex, const Array<FriendInformation>& InFriendList )
 		// Cmd: Query notification list
 		Result NetSvrPolicyGame::GetNotificationListRes( const Result &InResult )
 		{
@@ -1092,7 +1092,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::GetNotificationListRes( const Result &InResult )
 		// Cmd: Delete notification
-		Result NetSvrPolicyGame::DeleteNotificationRes( const Result &InResult, const UINT32 &InNotificationID )
+		Result NetSvrPolicyGame::DeleteNotificationRes( const Result &InResult, const uint32_t &InNotificationID )
 		{
  			Result hr;
 
@@ -1108,9 +1108,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::DeleteNotificationRes( const Result &InResult, const UINT32 &InNotificationID )
+		}; // Result NetSvrPolicyGame::DeleteNotificationRes( const Result &InResult, const uint32_t &InNotificationID )
 		// Cmd: Set notification is read
-		Result NetSvrPolicyGame::SetNotificationReadRes( const Result &InResult, const UINT32 &InNotificationID )
+		Result NetSvrPolicyGame::SetNotificationReadRes( const Result &InResult, const uint32_t &InNotificationID )
 		{
  			Result hr;
 
@@ -1126,9 +1126,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::SetNotificationReadRes( const Result &InResult, const UINT32 &InNotificationID )
+		}; // Result NetSvrPolicyGame::SetNotificationReadRes( const Result &InResult, const uint32_t &InNotificationID )
 		// Cmd: Accept notification
-		Result NetSvrPolicyGame::AcceptNotificationRes( const Result &InResult, const UINT32 &InNotificationID )
+		Result NetSvrPolicyGame::AcceptNotificationRes( const Result &InResult, const uint32_t &InNotificationID )
 		{
  			Result hr;
 
@@ -1144,9 +1144,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::AcceptNotificationRes( const Result &InResult, const UINT32 &InNotificationID )
+		}; // Result NetSvrPolicyGame::AcceptNotificationRes( const Result &InResult, const uint32_t &InNotificationID )
 		// S2C: Notify new notification
-		Result NetSvrPolicyGame::NotifyS2CEvt( const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const BYTE &InIsRead, const UINT64 &InTimeStamp )
+		Result NetSvrPolicyGame::NotifyS2CEvt( const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint8_t &InIsRead, const uint64_t &InTimeStamp )
 		{
  			Result hr;
 
@@ -1162,7 +1162,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::NotifyS2CEvt( const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const BYTE &InIsRead, const UINT64 &InTimeStamp )
+		}; // Result NetSvrPolicyGame::NotifyS2CEvt( const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint8_t &InIsRead, const uint64_t &InTimeStamp )
 		// Cmd: Query playerID list
 		Result NetSvrPolicyGame::FindPlayerByEMailRes( const Result &InResult, const PlayerInformation &InPlayer )
 		{
@@ -1218,7 +1218,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::RequestPlayerStatusUpdateRes( const Result &InResult )
 		// S2C: *Notify Player Status Updated
-		Result NetSvrPolicyGame::NotifyPlayerStatusUpdatedS2CEvt( const PlayerID &InPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
+		Result NetSvrPolicyGame::NotifyPlayerStatusUpdatedS2CEvt( const PlayerID &InPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
 		{
  			Result hr;
 
@@ -1234,7 +1234,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::NotifyPlayerStatusUpdatedS2CEvt( const PlayerID &InPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
+		}; // Result NetSvrPolicyGame::NotifyPlayerStatusUpdatedS2CEvt( const PlayerID &InPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
 		// Cmd: Get Ranking lise
 		Result NetSvrPolicyGame::GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 		{
@@ -1254,7 +1254,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 		// Cmd: Game user game play information
-		Result NetSvrPolicyGame::GetUserGamePlayerInfoRes( const Result &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const UINT32 &InLastUpdateTime, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
+		Result NetSvrPolicyGame::GetUserGamePlayerInfoRes( const Result &InResult, const int16_t &InLevel, const int64_t &InExp, const int64_t &InGameMoney, const int64_t &InGem, const int16_t &InStamina, const uint32_t &InLastUpdateTime, const int32_t &InTotalPlayed, const int32_t &InWinPlaySC, const int32_t &InWinPlaySM, const int32_t &InWinPlaySS, const int32_t &InLosePlaySC, const int32_t &InLosePlaySM, const int32_t &InLosePlaySS, const int32_t &InWinPlayNC, const int32_t &InWinPlayNM, const int32_t &InWinPlayNS, const int32_t &InLosePlayNC, const int32_t &InLosePlayNM, const int32_t &InLosePlayNS, const int32_t &InWeeklyWin, const int32_t &InWeeklyLose )
 		{
  			Result hr;
 
@@ -1270,9 +1270,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GetUserGamePlayerInfoRes( const Result &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const UINT32 &InLastUpdateTime, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
+		}; // Result NetSvrPolicyGame::GetUserGamePlayerInfoRes( const Result &InResult, const int16_t &InLevel, const int64_t &InExp, const int64_t &InGameMoney, const int64_t &InGem, const int16_t &InStamina, const uint32_t &InLastUpdateTime, const int32_t &InTotalPlayed, const int32_t &InWinPlaySC, const int32_t &InWinPlaySM, const int32_t &InWinPlaySS, const int32_t &InLosePlaySC, const int32_t &InLosePlaySM, const int32_t &InLosePlaySS, const int32_t &InWinPlayNC, const int32_t &InWinPlayNM, const int32_t &InWinPlayNS, const int32_t &InLosePlayNC, const int32_t &InLosePlayNM, const int32_t &InLosePlayNS, const int32_t &InWeeklyWin, const int32_t &InWeeklyLose )
 		// Cmd: Game game play information
-		Result NetSvrPolicyGame::GetGamePlayerInfoRes( const Result &InResult, const PlayerID &InPlayerID, const INT16 &InLevel, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
+		Result NetSvrPolicyGame::GetGamePlayerInfoRes( const Result &InResult, const PlayerID &InPlayerID, const int16_t &InLevel, const int32_t &InTotalPlayed, const int32_t &InWinPlaySC, const int32_t &InWinPlaySM, const int32_t &InWinPlaySS, const int32_t &InLosePlaySC, const int32_t &InLosePlaySM, const int32_t &InLosePlaySS, const int32_t &InWinPlayNC, const int32_t &InWinPlayNM, const int32_t &InWinPlayNS, const int32_t &InLosePlayNC, const int32_t &InLosePlayNM, const int32_t &InLosePlayNS, const int32_t &InWeeklyWin, const int32_t &InWeeklyLose )
 		{
  			Result hr;
 
@@ -1288,9 +1288,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GetGamePlayerInfoRes( const Result &InResult, const PlayerID &InPlayerID, const INT16 &InLevel, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose )
+		}; // Result NetSvrPolicyGame::GetGamePlayerInfoRes( const Result &InResult, const PlayerID &InPlayerID, const int16_t &InLevel, const int32_t &InTotalPlayed, const int32_t &InWinPlaySC, const int32_t &InWinPlaySM, const int32_t &InWinPlaySS, const int32_t &InLosePlaySC, const int32_t &InLosePlaySM, const int32_t &InLosePlaySS, const int32_t &InWinPlayNC, const int32_t &InWinPlayNM, const int32_t &InWinPlayNS, const int32_t &InLosePlayNC, const int32_t &InLosePlayNM, const int32_t &InLosePlayNS, const int32_t &InWeeklyWin, const int32_t &InWeeklyLose )
 		// S2C: Player level up event
-		Result NetSvrPolicyGame::LevelUpS2CEvt( const UINT64 &InCurrentTotalExp, const UINT32 &InCurrentLevel )
+		Result NetSvrPolicyGame::LevelUpS2CEvt( const uint64_t &InCurrentTotalExp, const uint32_t &InCurrentLevel )
 		{
  			Result hr;
 
@@ -1306,9 +1306,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::LevelUpS2CEvt( const UINT64 &InCurrentTotalExp, const UINT32 &InCurrentLevel )
+		}; // Result NetSvrPolicyGame::LevelUpS2CEvt( const uint64_t &InCurrentTotalExp, const uint32_t &InCurrentLevel )
 		// Cmd: Change NickName
-		Result NetSvrPolicyGame::SetNickNameRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		Result NetSvrPolicyGame::SetNickNameRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		{
  			Result hr;
 
@@ -1324,7 +1324,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::SetNickNameRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		}; // Result NetSvrPolicyGame::SetNickNameRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		// Cmd: Create Party
 		Result NetSvrPolicyGame::CreatePartyRes( const Result &InResult, const PartyUID &InPartyUID )
 		{
@@ -1344,7 +1344,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::CreatePartyRes( const Result &InResult, const PartyUID &InPartyUID )
 		// Cmd: Join party
-		Result NetSvrPolicyGame::JoinPartyRes( const Result &InResult, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
+		Result NetSvrPolicyGame::JoinPartyRes( const Result &InResult, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData )
 		{
  			Result hr;
 
@@ -1360,7 +1360,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::JoinPartyRes( const Result &InResult, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
+		}; // Result NetSvrPolicyGame::JoinPartyRes( const Result &InResult, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData )
 		// S2C: Player Joined event
 		Result NetSvrPolicyGame::PartyPlayerJoinedS2CEvt( const PartyUID &InPartyUID, const PlayerInformation &InJoinedPlayer )
 		{
@@ -1524,7 +1524,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::PartyQuickChatMessageRes( const Result &InResult )
 		// S2C: Party Chatting message event
-		Result NetSvrPolicyGame::PartyQuickChatMessageS2CEvt( const PlayerID &InSenderID, const UINT32 &InQuickChatID )
+		Result NetSvrPolicyGame::PartyQuickChatMessageS2CEvt( const PlayerID &InSenderID, const uint32_t &InQuickChatID )
 		{
  			Result hr;
 
@@ -1540,7 +1540,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::PartyQuickChatMessageS2CEvt( const PlayerID &InSenderID, const UINT32 &InQuickChatID )
+		}; // Result NetSvrPolicyGame::PartyQuickChatMessageS2CEvt( const PlayerID &InSenderID, const uint32_t &InQuickChatID )
 		// Cmd: Party chatting
 		Result NetSvrPolicyGame::PartyChatMessageRes( const Result &InResult )
 		{
@@ -1578,7 +1578,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::PartyChatMessageS2CEvt( const PlayerID &InSenderID, const char* InSenderName, const char* InChatMessage )
 		// Cmd: Join to a game
-		Result NetSvrPolicyGame::JoinGameRes( const Result &InResult, const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData )
+		Result NetSvrPolicyGame::JoinGameRes( const Result &InResult, const GameInsUID &InInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
 		{
  			Result hr;
 
@@ -1594,9 +1594,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::JoinGameRes( const Result &InResult, const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData )
+		}; // Result NetSvrPolicyGame::JoinGameRes( const Result &InResult, const GameInsUID &InInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
 		// S2C: Player Joined in the game
-		Result NetSvrPolicyGame::PlayerJoinedS2CEvt( const GameInsUID &InGameInsUID, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const UINT8 &InJoinedPlayerDead, const UINT8 &InJoinedPlayerIndex, const UINT8 &InJoinedPlayerCharacter )
+		Result NetSvrPolicyGame::PlayerJoinedS2CEvt( const GameInsUID &InGameInsUID, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
 		{
  			Result hr;
 
@@ -1612,7 +1612,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::PlayerJoinedS2CEvt( const GameInsUID &InGameInsUID, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const UINT8 &InJoinedPlayerDead, const UINT8 &InJoinedPlayerIndex, const UINT8 &InJoinedPlayerCharacter )
+		}; // Result NetSvrPolicyGame::PlayerJoinedS2CEvt( const GameInsUID &InGameInsUID, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
 		// Cmd: Leave Game
 		Result NetSvrPolicyGame::LeaveGameRes( const Result &InResult )
 		{
@@ -1776,7 +1776,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::AdvanceGameRes( const Result &InResult )
 		// S2C: The game state is advanced
-		Result NetSvrPolicyGame::GameAdvancedS2CEvt( const GameInsUID &InGameInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay )
+		Result NetSvrPolicyGame::GameAdvancedS2CEvt( const GameInsUID &InGameInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay )
 		{
  			Result hr;
 
@@ -1792,9 +1792,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GameAdvancedS2CEvt( const GameInsUID &InGameInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay )
+		}; // Result NetSvrPolicyGame::GameAdvancedS2CEvt( const GameInsUID &InGameInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay )
 		// S2C: Game is ended
-		Result NetSvrPolicyGame::GameEndedS2CEvt( const GameInsUID &InGameInsUID, const GameWinner &InWinner, const UINT32 &InGainedExp, const UINT32 &InGainedGameMoney )
+		Result NetSvrPolicyGame::GameEndedS2CEvt( const GameInsUID &InGameInsUID, const GameWinner &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney )
 		{
  			Result hr;
 
@@ -1810,7 +1810,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GameEndedS2CEvt( const GameInsUID &InGameInsUID, const GameWinner &InWinner, const UINT32 &InGainedExp, const UINT32 &InGainedGameMoney )
+		}; // Result NetSvrPolicyGame::GameEndedS2CEvt( const GameInsUID &InGameInsUID, const GameWinner &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney )
 		// Cmd: Vote game advance
 		Result NetSvrPolicyGame::VoteGameAdvanceRes( const Result &InResult )
 		{
@@ -1938,7 +1938,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::PlayerRevealedS2CEvt( const GameInsUID &InGameInsUID, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason )
 		// Cmd: Play again with the current players
-		Result NetSvrPolicyGame::GamePlayAgainRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		Result NetSvrPolicyGame::GamePlayAgainRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		{
  			Result hr;
 
@@ -1954,7 +1954,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GamePlayAgainRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		}; // Result NetSvrPolicyGame::GamePlayAgainRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 		Result NetSvrPolicyGame::GamePlayAgainS2CEvt( const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
 		{
@@ -1974,7 +1974,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::GamePlayAgainS2CEvt( const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
 		// Cmd: Player. reveal a player
-		Result NetSvrPolicyGame::GameRevealPlayerRes( const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		Result NetSvrPolicyGame::GameRevealPlayerRes( const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		{
  			Result hr;
 
@@ -1990,9 +1990,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GameRevealPlayerRes( const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		}; // Result NetSvrPolicyGame::GameRevealPlayerRes( const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		// Cmd: Player. revive himself
-		Result NetSvrPolicyGame::GamePlayerReviveRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		Result NetSvrPolicyGame::GamePlayerReviveRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		{
  			Result hr;
 
@@ -2008,7 +2008,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GamePlayerReviveRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		}; // Result NetSvrPolicyGame::GamePlayerReviveRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		// S2C: Player is revived
 		Result NetSvrPolicyGame::GamePlayerRevivedS2CEvt( const PlayerID &InRevivedPlayerID )
 		{
@@ -2028,7 +2028,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::GamePlayerRevivedS2CEvt( const PlayerID &InRevivedPlayerID )
 		// Cmd: Player. reset ranking
-		Result NetSvrPolicyGame::GamePlayerResetRankRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		Result NetSvrPolicyGame::GamePlayerResetRankRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		{
  			Result hr;
 
@@ -2044,9 +2044,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GamePlayerResetRankRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		}; // Result NetSvrPolicyGame::GamePlayerResetRankRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		// Cmd: Request Game match
-		Result NetSvrPolicyGame::RequestGameMatchRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		Result NetSvrPolicyGame::RequestGameMatchRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		{
  			Result hr;
 
@@ -2062,9 +2062,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::RequestGameMatchRes( const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		}; // Result NetSvrPolicyGame::RequestGameMatchRes( const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		// S2C: Game matched
-		Result NetSvrPolicyGame::GameMatchedS2CEvt( const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData, const UINT32 &InStamina, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		Result NetSvrPolicyGame::GameMatchedS2CEvt( const GameInsUID &InInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData, const uint32_t &InStamina, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		{
  			Result hr;
 
@@ -2080,7 +2080,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GameMatchedS2CEvt( const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData, const UINT32 &InStamina, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney )
+		}; // Result NetSvrPolicyGame::GameMatchedS2CEvt( const GameInsUID &InInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData, const uint32_t &InStamina, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney )
 		// S2C: Game match failed
 		Result NetSvrPolicyGame::GameMatchFailedS2CEvt( const Result &InFailedReason )
 		{
@@ -2154,7 +2154,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyGame::GameMatchingCanceledS2CEvt(  )
 		// Cmd: Buy shop item prepare
-		Result NetSvrPolicyGame::BuyShopItemPrepareRes( const Result &InResult, const UINT32 &InShopItemID, const char* InPurchaseID )
+		Result NetSvrPolicyGame::BuyShopItemPrepareRes( const Result &InResult, const uint32_t &InShopItemID, const char* InPurchaseID )
 		{
  			Result hr;
 
@@ -2170,9 +2170,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::BuyShopItemPrepareRes( const Result &InResult, const UINT32 &InShopItemID, const char* InPurchaseID )
+		}; // Result NetSvrPolicyGame::BuyShopItemPrepareRes( const Result &InResult, const uint32_t &InShopItemID, const char* InPurchaseID )
 		// Cmd: Buy shop item
-		Result NetSvrPolicyGame::BuyShopItemRes( const Result &InResult, const UINT32 &InShopItemID )
+		Result NetSvrPolicyGame::BuyShopItemRes( const Result &InResult, const uint32_t &InShopItemID )
 		{
  			Result hr;
 
@@ -2188,9 +2188,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::BuyShopItemRes( const Result &InResult, const UINT32 &InShopItemID )
+		}; // Result NetSvrPolicyGame::BuyShopItemRes( const Result &InResult, const uint32_t &InShopItemID )
 		// Cmd: Give my stamina to other player
-		Result NetSvrPolicyGame::GiveStaminaRes( const Result &InResult, const PlayerID &InTargetPlayer, const UINT64 &InTimeStamp )
+		Result NetSvrPolicyGame::GiveStaminaRes( const Result &InResult, const PlayerID &InTargetPlayer, const uint64_t &InTimeStamp )
 		{
  			Result hr;
 
@@ -2206,7 +2206,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyGame::GiveStaminaRes( const Result &InResult, const PlayerID &InTargetPlayer, const UINT64 &InTimeStamp )
+		}; // Result NetSvrPolicyGame::GiveStaminaRes( const Result &InResult, const PlayerID &InTargetPlayer, const uint64_t &InTimeStamp )
 		// Cmd: For debug, Change configue preset
 		Result NetSvrPolicyGame::SetPresetGameConfigIDRes( const Result &InResult )
 		{

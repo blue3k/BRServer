@@ -45,7 +45,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, (int)sizeof(ClusterID) ) );
 
 
@@ -55,7 +55,7 @@ namespace BR
 
 			}; // Result GetClusterMemberListCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GetClusterMemberListCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			Result GetClusterMemberListCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
  				Result hr;
 
@@ -64,7 +64,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(ClusterID));
 
 				MessageData *pNewMsg = nullptr;
@@ -75,7 +75,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 
 				pMsg = pNewMsg;
@@ -85,7 +85,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetClusterMemberListCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			}; // Result GetClusterMemberListCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 
 			Result GetClusterMemberListCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -135,9 +135,9 @@ namespace BR
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= (int)sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -297,7 +297,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_SenderNetClass, pCur, iMsgSize, (int)sizeof(NetClass) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_SenderAddress, pCur, iMsgSize, (int)sizeof(NetAddress) ) );
@@ -312,7 +312,7 @@ namespace BR
 
 			}; // Result JoinClusterCmd::ParseMessage( MessageData* pIMsg )
 
-			Result JoinClusterCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+			Result JoinClusterCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 			{
  				Result hr;
 
@@ -321,7 +321,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(EntityUID)
 					+ sizeof(NetClass)
 					+ sizeof(NetAddress)
@@ -337,7 +337,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(EntityUID));
 				Protocol::PackParamCopy( pMsgData, &InSenderNetClass, sizeof(NetClass));
 				Protocol::PackParamCopy( pMsgData, &InSenderAddress, sizeof(NetAddress));
@@ -352,7 +352,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result JoinClusterCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
+			}; // Result JoinClusterCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 
 			Result JoinClusterCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -402,9 +402,9 @@ namespace BR
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= (int)sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -563,7 +563,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_JoinedServiceUID, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_JoinedServiceNetClass, pCur, iMsgSize, (int)sizeof(NetClass) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_JoinedServiceAddress, pCur, iMsgSize, (int)sizeof(NetAddress) ) );
@@ -578,7 +578,7 @@ namespace BR
 
 			}; // Result NewServerServiceJoinedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result NewServerServiceJoinedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
+			Result NewServerServiceJoinedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 			{
  				Result hr;
 
@@ -586,7 +586,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(EntityUID)
 					+ sizeof(NetClass)
 					+ sizeof(NetAddress)
@@ -601,7 +601,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InJoinedServiceUID, sizeof(EntityUID));
 				Protocol::PackParamCopy( pMsgData, &InJoinedServiceNetClass, sizeof(NetClass));
 				Protocol::PackParamCopy( pMsgData, &InJoinedServiceAddress, sizeof(NetAddress));
@@ -616,7 +616,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result NewServerServiceJoinedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
+			}; // Result NewServerServiceJoinedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 
 			Result NewServerServiceJoinedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -665,9 +665,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -699,7 +699,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, (int)sizeof(ClusterID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterType, pCur, iMsgSize, (int)sizeof(ClusterType) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofMemberList, pCur, iMsgSize, (int)sizeof(UINT16) ) );
@@ -713,7 +713,7 @@ namespace BR
 
 			}; // Result SyncClusterServiceC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result SyncClusterServiceC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
+			Result SyncClusterServiceC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 			{
  				Result hr;
 
@@ -721,7 +721,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(ClusterID)
 					+ sizeof(ClusterType)
 					+ sizeof(ServiceInformation)*InMemberList.GetSize() + sizeof(UINT16));
@@ -734,7 +734,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 				Protocol::PackParamCopy( pMsgData, &InClusterType, sizeof(ClusterType));
 				Protocol::PackParamCopy( pMsgData, &numberOfInMemberList, sizeof(UINT16)); 
@@ -747,7 +747,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result SyncClusterServiceC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
+			}; // Result SyncClusterServiceC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 
 			Result SyncClusterServiceC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -796,9 +796,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -830,7 +830,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, (int)sizeof(ClusterID) ) );
 
 
@@ -840,7 +840,7 @@ namespace BR
 
 			}; // Result RequestDataSyncCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RequestDataSyncCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			Result RequestDataSyncCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
  				Result hr;
 
@@ -849,7 +849,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(ClusterID));
 
 				MessageData *pNewMsg = nullptr;
@@ -860,7 +860,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 
 				pMsg = pNewMsg;
@@ -870,7 +870,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result RequestDataSyncCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			}; // Result RequestDataSyncCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 
 			Result RequestDataSyncCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -920,9 +920,9 @@ namespace BR
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= (int)sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1071,7 +1071,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, (int)sizeof(ClusterID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_MasterUID, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
@@ -1083,7 +1083,7 @@ namespace BR
 
 			}; // Result ClusterMasterAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ClusterMasterAssignedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
+			Result ClusterMasterAssignedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
 			{
  				Result hr;
 
@@ -1091,7 +1091,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(EntityUID)
 					+ sizeof(ClusterID)
 					+ sizeof(EntityUID));
@@ -1103,7 +1103,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(EntityUID));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 				Protocol::PackParamCopy( pMsgData, &InMasterUID, sizeof(EntityUID));
@@ -1115,7 +1115,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result ClusterMasterAssignedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
+			}; // Result ClusterMasterAssignedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID )
 
 			Result ClusterMasterAssignedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1164,9 +1164,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1197,10 +1197,10 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, (int)sizeof(ClusterID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_VoteToUID, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_VotedUpTime, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_VotedUpTime, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -1209,7 +1209,7 @@ namespace BR
 
 			}; // Result ClusterMasterVoteC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ClusterMasterVoteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime )
+			Result ClusterMasterVoteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const uint64_t &InVotedUpTime )
 			{
  				Result hr;
 
@@ -1217,10 +1217,10 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(ClusterID)
 					+ sizeof(EntityUID)
-					+ sizeof(UINT64));
+					+ sizeof(uint64_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -1229,10 +1229,10 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 				Protocol::PackParamCopy( pMsgData, &InVoteToUID, sizeof(EntityUID));
-				Protocol::PackParamCopy( pMsgData, &InVotedUpTime, sizeof(UINT64));
+				Protocol::PackParamCopy( pMsgData, &InVotedUpTime, sizeof(uint64_t));
 
 				pMsg = pNewMsg;
 
@@ -1241,7 +1241,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result ClusterMasterVoteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime )
+			}; // Result ClusterMasterVoteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const uint64_t &InVotedUpTime )
 
 			Result ClusterMasterVoteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1290,9 +1290,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1323,7 +1323,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, (int)sizeof(ClusterID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_MemberStatus, pCur, iMsgSize, (int)sizeof(ServiceStatus) ) );
@@ -1335,7 +1335,7 @@ namespace BR
 
 			}; // Result ClusterUpdateStatusC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ClusterUpdateStatusC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
+			Result ClusterUpdateStatusC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 			{
  				Result hr;
 
@@ -1343,7 +1343,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(EntityUID)
 					+ sizeof(ClusterID)
 					+ sizeof(ServiceStatus));
@@ -1355,7 +1355,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(EntityUID));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 				Protocol::PackParamCopy( pMsgData, &InMemberStatus, sizeof(ServiceStatus));
@@ -1367,7 +1367,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result ClusterUpdateStatusC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
+			}; // Result ClusterUpdateStatusC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 
 			Result ClusterUpdateStatusC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1416,9 +1416,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1449,10 +1449,10 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Sender, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, (int)sizeof(ClusterID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Workload, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Workload, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -1461,7 +1461,7 @@ namespace BR
 
 			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ClusterUpdateWorkloadC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload )
+			Result ClusterUpdateWorkloadC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
 			{
  				Result hr;
 
@@ -1469,10 +1469,10 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(EntityUID)
 					+ sizeof(ClusterID)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -1481,10 +1481,10 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InSender, sizeof(EntityUID));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
-				Protocol::PackParamCopy( pMsgData, &InWorkload, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InWorkload, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -1493,7 +1493,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result ClusterUpdateWorkloadC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload )
+			}; // Result ClusterUpdateWorkloadC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
 
 			Result ClusterUpdateWorkloadC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1542,9 +1542,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1576,7 +1576,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterID, pCur, iMsgSize, (int)sizeof(ClusterID) ) );
 
 
@@ -1586,7 +1586,7 @@ namespace BR
 
 			}; // Result GetLowestWorkloadClusterMemberCmd::ParseMessage( MessageData* pIMsg )
 
-			Result GetLowestWorkloadClusterMemberCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			Result GetLowestWorkloadClusterMemberCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
  				Result hr;
 
@@ -1595,7 +1595,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(ClusterID));
 
 				MessageData *pNewMsg = nullptr;
@@ -1606,7 +1606,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InClusterID, sizeof(ClusterID));
 
 				pMsg = pNewMsg;
@@ -1616,7 +1616,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetLowestWorkloadClusterMemberCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID )
+			}; // Result GetLowestWorkloadClusterMemberCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 
 			Result GetLowestWorkloadClusterMemberCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1666,9 +1666,9 @@ namespace BR
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
 				pCur += sizeof(TransactionID); iMsgSize -= (int)sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1821,7 +1821,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerUID, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 
@@ -1832,7 +1832,7 @@ namespace BR
 
 			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayerEntityCreatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			Result GamePlayerEntityCreatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 			{
  				Result hr;
 
@@ -1840,7 +1840,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(PlayerID)
 					+ sizeof(EntityUID));
 
@@ -1851,7 +1851,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InPlayerUID, sizeof(EntityUID));
 
@@ -1862,7 +1862,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GamePlayerEntityCreatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			}; // Result GamePlayerEntityCreatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 
 			Result GamePlayerEntityCreatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1911,9 +1911,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -1944,7 +1944,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerUID, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 
@@ -1955,7 +1955,7 @@ namespace BR
 
 			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result GamePlayerEntityDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			Result GamePlayerEntityDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 			{
  				Result hr;
 
@@ -1963,7 +1963,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(PlayerID)
 					+ sizeof(EntityUID));
 
@@ -1974,7 +1974,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InPlayerUID, sizeof(EntityUID));
 
@@ -1985,7 +1985,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GamePlayerEntityDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
+			}; // Result GamePlayerEntityDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID )
 
 			Result GamePlayerEntityDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -2034,9 +2034,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:

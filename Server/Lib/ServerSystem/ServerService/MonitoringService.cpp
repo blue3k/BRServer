@@ -83,7 +83,7 @@ namespace BR
 
 		}; // Result MonitoringService::PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances )
 		// C2S: Counter update broadcast
-		Result MonitoringService::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+		Result MonitoringService::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
  			Result hr;
 
@@ -93,7 +93,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result MonitoringService::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+		}; // Result MonitoringService::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
 	}; // namespace Svr

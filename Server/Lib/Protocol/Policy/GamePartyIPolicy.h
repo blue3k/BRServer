@@ -35,7 +35,7 @@ namespace BR
 			{}
 
 			// Cmd: Join Party
-			virtual Result JoinPartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData ) = 0;
+			virtual Result JoinPartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData ) = 0;
 			// S2C: Player Joined
 			virtual Result PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer ) = 0;
 			// S2C: Player Joined
@@ -53,7 +53,7 @@ namespace BR
 			virtual Result ChatMessageS2CEvt( const RouteContext &InRouteContext, const PlayerID &InSenderID, const char* InSenderName, const char* InChatMessage ) = 0;
 			// C2S: Quick Chatting message
 			// S2C: Quick Chatting message
-			virtual Result QuickChatMessageS2CEvt( const RouteContext &InRouteContext, const PlayerID &InSenderID, const UINT32 &InQuickChatID ) = 0;
+			virtual Result QuickChatMessageS2CEvt( const RouteContext &InRouteContext, const PlayerID &InSenderID, const uint32_t &InQuickChatID ) = 0;
 			// Cmd: Match
 			virtual Result StartGameMatchRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: Enqueued at a game matching
@@ -91,10 +91,10 @@ namespace BR
 			virtual Result ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const char* InChatMessage ) = 0;
 			// S2C: Chatting message
 			// C2S: Quick Chatting message
-			virtual Result QuickChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InQuickChatID ) = 0;
+			virtual Result QuickChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint32_t &InQuickChatID ) = 0;
 			// S2C: Quick Chatting message
 			// Cmd: Match
-			virtual Result StartGameMatchCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers ) = 0;
+			virtual Result StartGameMatchCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers ) = 0;
 			// S2C: Enqueued at a game matching
 			// Cmd: Match
 			virtual Result CancelGameMatchCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;

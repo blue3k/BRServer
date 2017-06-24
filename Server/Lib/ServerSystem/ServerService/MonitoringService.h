@@ -41,7 +41,7 @@ namespace BR
 			// C2S: Counter instance is deleted
 			Result PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances );
 			// C2S: Counter update broadcast
-			Result PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues );
+			Result PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
 		}; // class MonitoringService : public ServerServiceBase
 

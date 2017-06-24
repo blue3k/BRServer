@@ -28,7 +28,7 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Add a player to ranking
-		Result NetPolicyRanking::AddPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		Result NetPolicyRanking::AddPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 		{
  			Result hr;
 
@@ -44,7 +44,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyRanking::AddPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		}; // Result NetPolicyRanking::AddPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 		// Cmd: Remove a player to ranking
 		Result NetPolicyRanking::RemovePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
@@ -82,7 +82,7 @@ namespace BR
 
 		}; // Result NetPolicyRanking::GetPlayerRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Update a player to ranking
-		Result NetPolicyRanking::UpdatePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		Result NetPolicyRanking::UpdatePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 		{
  			Result hr;
 
@@ -98,9 +98,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyRanking::UpdatePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo )
+		}; // Result NetPolicyRanking::UpdatePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo )
 		// Cmd: Remove a player to ranking
-		Result NetPolicyRanking::GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+		Result NetPolicyRanking::GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint32_t &InFrom, const uint32_t &InCount )
 		{
  			Result hr;
 
@@ -116,11 +116,11 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyRanking::GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount )
+		}; // Result NetPolicyRanking::GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint32_t &InFrom, const uint32_t &InCount )
 
 
 		// Cmd: Add a player to ranking
-		Result NetSvrPolicyRanking::AddPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+		Result NetSvrPolicyRanking::AddPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 		{
  			Result hr;
 
@@ -136,7 +136,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyRanking::AddPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+		}; // Result NetSvrPolicyRanking::AddPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 		// Cmd: Remove a player to ranking
 		Result NetSvrPolicyRanking::RemovePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
@@ -156,7 +156,7 @@ namespace BR
 
 		}; // Result NetSvrPolicyRanking::RemovePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		// Cmd: Remove a player to ranking
-		Result NetSvrPolicyRanking::GetPlayerRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+		Result NetSvrPolicyRanking::GetPlayerRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 		{
  			Result hr;
 
@@ -172,9 +172,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyRanking::GetPlayerRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+		}; // Result NetSvrPolicyRanking::GetPlayerRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 		// Cmd: Update a player to ranking
-		Result NetSvrPolicyRanking::UpdatePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+		Result NetSvrPolicyRanking::UpdatePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 		{
  			Result hr;
 
@@ -190,9 +190,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyRanking::UpdatePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking )
+		}; // Result NetSvrPolicyRanking::UpdatePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 		// Cmd: Remove a player to ranking
-		Result NetSvrPolicyRanking::GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InPlayerRanking )
+		Result NetSvrPolicyRanking::GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InPlayerRanking )
 		{
  			Result hr;
 
@@ -208,7 +208,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyRanking::GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InPlayerRanking )
+		}; // Result NetSvrPolicyRanking::GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InPlayerRanking )
 
 
 	}; // namespace Policy

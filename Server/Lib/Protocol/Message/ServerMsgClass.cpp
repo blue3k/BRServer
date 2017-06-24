@@ -221,7 +221,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_ClusterManagerServiceInformation, pCur, iMsgSize, (int)sizeof(ServiceInformation) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_StartUpTime, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_StartUpTime, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PrivateAddress, pCur, iMsgSize, (int)sizeof(NetAddress) ) );
 
 
@@ -231,7 +231,7 @@ namespace BR
 
 			}; // Result ServerConnectedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
+			Result ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 			{
  				Result hr;
 
@@ -240,7 +240,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(ServiceInformation)
-					+ sizeof(UINT32)
+					+ sizeof(uint32_t)
 					+ sizeof(NetAddress));
 
 				MessageData *pNewMsg = nullptr;
@@ -251,7 +251,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InClusterManagerServiceInformation, sizeof(ServiceInformation));
-				Protocol::PackParamCopy( pMsgData, &InStartUpTime, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InStartUpTime, sizeof(uint32_t));
 				Protocol::PackParamCopy( pMsgData, &InPrivateAddress, sizeof(NetAddress));
 
 				pMsg = pNewMsg;
@@ -261,7 +261,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
+			}; // Result ServerConnectedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 
 			Result ServerConnectedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{

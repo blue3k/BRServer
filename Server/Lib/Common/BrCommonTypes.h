@@ -87,11 +87,11 @@ namespace BR {
 
 	struct ServerFriendInformation : public FriendInformation
 	{
-		INT ShardID;
+		int32_t ShardID;
 
 		ServerFriendInformation() : ShardID(0) {}
 		ServerFriendInformation(const ServerFriendInformation& src) : FriendInformation(src), ShardID(src.ShardID) {}
-		ServerFriendInformation(AccountID playerID, INT shardID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime, UINT64 LastStaminaSent)
+		ServerFriendInformation(AccountID playerID, int32_t shardID, FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime, UINT64 LastStaminaSent)
 			: FriendInformation(playerID, fbUID, nickName, level, weeklyWin, weeklyLose, isPlayingGame, lastActiveTime, LastStaminaSent)
 			, ShardID(shardID)
 		{

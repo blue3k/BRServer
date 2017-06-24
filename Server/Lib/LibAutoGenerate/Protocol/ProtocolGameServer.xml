@@ -8,12 +8,12 @@
         <Params Type="PlayerID" Name="PlayerID"/>
         <Params Type="AuthTicket" Name="Ticket"/>
         <Params Type="FacebookUID" Name="FBUserID"/>
-        <Params Type="UINT32" Name="ShardID"/>
+        <Params Type="uint32" Name="ShardID"/>
       </Cmd>
       <Res>
         <Params Type="String" Name="PublicAddress"/>
         <Params Type="String" Name="PublicAddressV6"/> 
-        <Params Type="UINT32" Name="Port"/>
+        <Params Type="uint32" Name="Port"/>
       </Res>
     </Command>
 
@@ -36,12 +36,12 @@
 
     <C2SEvent Name="Notify" Reliable="true" Crypto="No" Trace="DBG1" Desc="Notification">
       <Params Type="PlayerID" Name="DestPlayerID"/>
-      <Params Type="UINT32" Name="NotificationID"/>
+      <Params Type="uint32" Name="NotificationID"/>
       <Params Type="NotificationType" Name="MessageID"/>
-      <Params Type="UINT64" Name="MessageParam0"/>
-      <Params Type="UINT64" Name="MessageParam1"/>
+      <Params Type="uint64" Name="MessageParam0"/>
+      <Params Type="uint64" Name="MessageParam1"/>
       <Params Type="String" Name="MessageText"/>
-      <Params Type="UINT64" Name="TimeStamp"/>
+      <Params Type="uint64" Name="TimeStamp"/>
     </C2SEvent>
 
     <C2SEvent Name="FriendAccepted" Reliable="true" Crypto="No" Trace="DBG1" Desc="Friend Accept">
@@ -63,7 +63,7 @@
 
     <C2SEvent Name="NotifyPlayerStatusUpdated" Reliable="true" Crypto="No" Trace="DBG1" Desc="Notify Player Status Updated">
       <Params Type="AccountID" Name="DestPlayerID"/>
-      <Params Type="UINT32" Name="LatestActiveTime"/>
+      <Params Type="uint32" Name="LatestActiveTime"/>
       <Params Type="BYTE" Name="IsInGame"/>
     </C2SEvent>
 

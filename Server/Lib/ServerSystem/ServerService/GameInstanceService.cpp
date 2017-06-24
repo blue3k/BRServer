@@ -61,7 +61,7 @@ namespace BR
 
 		}; // Result GameInstanceService::JoinGameCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 		// C2S: Change configue preset
-		Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const UINT32 &InPresetID )
+		Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID )
 		{
  			Result hr;
 
@@ -72,7 +72,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const UINT32 &InPresetID )
+		}; // Result GameInstanceService::SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID )
 		// Cmd: Leave Game
 		Result GameInstanceService::LeaveGameCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
@@ -152,7 +152,7 @@ namespace BR
 
 		}; // Result GameInstanceService::VoteGameAdvanceCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Assign role
-		Result GameInstanceService::VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
+		Result GameInstanceService::VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 		{
  			Result hr;
 
@@ -163,7 +163,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result GameInstanceService::VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
+		}; // Result GameInstanceService::VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 		// Cmd: Play again with the current players
 		Result GameInstanceService::GamePlayAgainCmd( const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
 		{
