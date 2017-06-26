@@ -59,6 +59,8 @@ namespace Svr {
 		, m_ShardID(0)
 		, m_IsTicketOwner(false)
 	{
+		m_UserName[0] = '\0';
+		m_GCMKeys[0] = '\0';
 		SetTickInterval(DurationMS(1000));
 	}
 
@@ -114,6 +116,13 @@ namespace Svr {
 		m_TimeToKill.SetTimer(DurationMS(Const::LOGIN_TIME_WAIT_PLAYER_JOIN));
 	}
 
+
+
+	void LoginPlayerEntity::SetUserName(const char* userName)
+	{
+		StrUtil::StringCpy(m_UserName, m_UserName);
+	}
+
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Entity process
@@ -127,6 +136,7 @@ namespace Svr {
 		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new LoginPlayerTransCreateRandomUser(pMsgData); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::LoginServer::PlayerJoinedToGameServerCmd){ pNewTrans = new LoginPlayerJoinedToGameServerTrans(pMsgData); return ResultCode::SUCCESS; } );
 
+		BR_ENTITY_MESSAGE(Message::Login::UpdateMyScoreCmd)					{ pNewTrans = new RankingUpdateScoreTrans(pMsgData); return ResultCode::SUCCESS; } );
 		return ResultCode::SUCCESS;
 	}
 

@@ -457,9 +457,9 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_GameServerAddr, m_GameServerAddrIPV4, m_AccID, m_Ticket, m_LoginEntityUID); 
 			}; // void CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			// Cmd: Get Ranking lise
-			const MessageID UpdateMyRankCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 3);
-			Result UpdateMyRankCmd::ParseMessage( MessageData* pIMsg )
+			// Cmd: Update my score and Get Ranking list
+			const MessageID UpdateMyScoreCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 3);
+			Result UpdateMyScoreCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -471,6 +471,7 @@ namespace BR
 				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
+				protocolChk( Protocol::StreamParamCopy( &m_RankingScore, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RankingType, pCur, iMsgSize, (int)sizeof(RankingType) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Count, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 
@@ -479,24 +480,26 @@ namespace BR
 
 				return hr;
 
-			}; // Result UpdateMyRankCmd::ParseMessage( MessageData* pIMsg )
+			}; // Result UpdateMyScoreCmd::ParseMessage( MessageData* pIMsg )
 
-			Result UpdateMyRankCmd::BuildIMsg( OUT MessageData* &pMsg, const RankingType &InRankingType, const uint16_t &InCount )
+			Result UpdateMyScoreCmd::BuildIMsg( OUT MessageData* &pMsg, const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount )
 			{
  				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
+					+ sizeof(uint64_t)
 					+ sizeof(RankingType)
 					+ sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				protocolMem( pNewMsg = MessageData::NewMessage( Login::UpdateMyRankCmd::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( Login::UpdateMyScoreCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
+				Protocol::PackParamCopy( pMsgData, &InRankingScore, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &InRankingType, sizeof(RankingType));
 				Protocol::PackParamCopy( pMsgData, &InCount, sizeof(uint16_t));
 
@@ -507,19 +510,19 @@ namespace BR
 
 				return hr;
 
-			}; // Result UpdateMyRankCmd::BuildIMsg( OUT MessageData* &pMsg, const RankingType &InRankingType, const uint16_t &InCount )
+			}; // Result UpdateMyScoreCmd::BuildIMsg( OUT MessageData* &pMsg, const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount )
 
 
 
-			void UpdateMyRankCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UpdateMyScoreCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:UpdateMyRankCmd:{1}:{2} , RankingType:{3}, Count:{4}",
-												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RankingType, m_Count); 
-			}; // void UpdateMyRankCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+				protocolTrace(Trace::TRC_DBG1, "{0}:UpdateMyScoreCmd:{1}:{2} , RankingScore:{3}, RankingType:{4}, Count:{5}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RankingScore, m_RankingType, m_Count); 
+			}; // void UpdateMyScoreCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID UpdateMyRankRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 3);
-			Result UpdateMyRankRes::ParseMessage( MessageData* pIMsg )
+			const MessageID UpdateMyScoreRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 3);
+			Result UpdateMyScoreRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
@@ -542,9 +545,9 @@ namespace BR
 
 				return hr;
 
-			}; // Result UpdateMyRankRes::ParseMessage( MessageData* pIMsg )
+			}; // Result UpdateMyScoreRes::ParseMessage( MessageData* pIMsg )
 
-			Result UpdateMyRankRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+			Result UpdateMyScoreRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 			{
  				Result hr;
 
@@ -557,7 +560,7 @@ namespace BR
 				MessageData *pNewMsg = nullptr;
 
 				UINT16 numberOfInRanking = (UINT16)InRanking.GetSize(); 
-				protocolMem( pNewMsg = MessageData::NewMessage( Login::UpdateMyRankRes::MID, __uiMessageSize ) );
+				protocolMem( pNewMsg = MessageData::NewMessage( Login::UpdateMyScoreRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
@@ -572,16 +575,16 @@ namespace BR
 
 				return hr;
 
-			}; // Result UpdateMyRankRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+			}; // Result UpdateMyScoreRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 
 
 
-			void UpdateMyRankRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			void UpdateMyScoreRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:UpdateMyRankRes:{1}:{2} , Result:{3:X8}, Ranking:{4}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:UpdateMyScoreRes:{1}:{2} , Result:{3:X8}, Ranking:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_Ranking); 
-			}; // void UpdateMyRankRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			}; // void UpdateMyScoreRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Get Ranking lise
 			const MessageID GetRankingListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 4);

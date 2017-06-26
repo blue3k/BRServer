@@ -21,12 +21,12 @@
       <Params Type="uint8" Name="Day"/>
       <Params Type="uint8" Name="MaxPlayer"/>
       <Params Type="uint8" Name="PlayerIndex"/>
-      <Params Type="BYTE" Name="PlayerCharacter"/>
+      <Params Type="uint8" Name="PlayerCharacter"/>
       <Params Type="PlayerRole" Name="Role"/>
       <Params Type="uint8" Name="Dead"/>
-      <Params Type="BYTE" Name="IsNewJoin"/>
-      <Params Type="BYTE" Name="ChatHistoryData" IsArray="true"/>
-      <Params Type="BYTE" Name="GameLogData" IsArray="true"/>
+      <Params Type="uint8" Name="IsNewJoin"/>
+      <Params Type="uint8" Name="ChatHistoryData" IsArray="true"/>
+      <Params Type="uint8" Name="GameLogData" IsArray="true"/>
     </Res>
 	</Command>
 
@@ -109,7 +109,7 @@
     <Params Type="uint32" Name="GainedExp"/>
     <Params Type="uint32" Name="GainedGameMoney"/>
     <Params Type="PlayerRole" Name="PlayedRole"/>
-    <Params Type="BYTE" Name="IsWon"/>
+    <Params Type="uint8" Name="IsWon"/>
   </S2CEvent>
 
     <Command Name="VoteGameAdvance" Reliable="true" Crypto="No" Trace="DBG1" Desc="*Vote game advance">

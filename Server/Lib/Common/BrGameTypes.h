@@ -31,8 +31,8 @@ namespace BR
 	// Ranking type
 	enum class RankingType : UINT8
 	{
-		//Friend,
 		World,
+		//Friend,
 	};
 
 

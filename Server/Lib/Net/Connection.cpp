@@ -42,7 +42,7 @@
 #include "Protocol/Policy/GamePartyManagerNetPolicy.h"
 #include "Protocol/Policy/LoginNetPolicy.h"
 #include "Protocol/Policy/LoginServerNetPolicy.h"
-#include "Protocol/Policy/RankingNetPolicy.h"
+#include "Protocol/Policy/RankingServerNetPolicy.h"
 #include "Protocol/Policy/MonitoringNetPolicy.h"
 
 
@@ -175,11 +175,11 @@ namespace Net {
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGamePartyManager( this ) );
 				break;
 
-			case POLICY_RANKING:
-				netMem(m_pPolicy[uiPolicy] = new Policy::NetPolicyRanking(this));
+			case POLICY_RANKINGSERVER:
+				netMem(m_pPolicy[uiPolicy] = new Policy::NetPolicyRankingServer(this));
 				break;
-			case POLICY_SVR_RANKING:
-				netMem(m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyRanking(this));
+			case POLICY_SVR_RANKINGSERVER:
+				netMem(m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyRankingServer(this));
 				break;
 
 			case POLICY_MONITORING:

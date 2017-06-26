@@ -20,6 +20,7 @@
 #include "Common/Utility.h"
 #include "Common/SpinSharedBuffer.h"
 #include "Common/MemoryPool.h"
+#include "Common/StackWalker.h"
 
 
 #if WINDOWS
@@ -155,6 +156,8 @@ namespace Net {
 
 			expected = false;
 		}
+
+		StackWalker::CaptureCallStack(PendingTrace);
 		return ResultCode::SUCCESS;
 	}
 
@@ -171,6 +174,7 @@ namespace Net {
 
 			expected = false;
 		}
+		StackWalker::CaptureCallStack(PendingTrace);
 		return ResultCode::SUCCESS;
 	}
 

@@ -64,7 +64,7 @@
     <C2SEvent Name="NotifyPlayerStatusUpdated" Reliable="true" Crypto="No" Trace="DBG1" Desc="Notify Player Status Updated">
       <Params Type="AccountID" Name="DestPlayerID"/>
       <Params Type="uint32" Name="LatestActiveTime"/>
-      <Params Type="BYTE" Name="IsInGame"/>
+      <Params Type="uint8" Name="IsInGame"/>
     </C2SEvent>
 
     <C2SEvent Name="NotifyPartyInvite" Reliable="true" Crypto="No" Trace="DBG1" Desc="Notification">

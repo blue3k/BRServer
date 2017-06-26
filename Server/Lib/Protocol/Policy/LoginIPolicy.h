@@ -39,8 +39,8 @@ namespace BR
 			virtual Result LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID ) = 0;
 			// Cmd: Login request
 			virtual Result CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID ) = 0;
-			// Cmd: Get Ranking lise
-			virtual Result UpdateMyRankRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
+			// Cmd: Update my score and Get Ranking list
+			virtual Result UpdateMyScoreRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
 			// Cmd: Get Ranking lise
 			virtual Result GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
 
@@ -62,8 +62,8 @@ namespace BR
 			virtual Result LoginByFacebookCmd( const GameID &InGameID, const uint64_t &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken ) = 0;
 			// Cmd: Login request
 			virtual Result CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone ) = 0;
-			// Cmd: Get Ranking lise
-			virtual Result UpdateMyRankCmd( const RankingType &InRankingType, const uint16_t &InCount ) = 0;
+			// Cmd: Update my score and Get Ranking list
+			virtual Result UpdateMyScoreCmd( const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount ) = 0;
 			// Cmd: Get Ranking lise
 			virtual Result GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount ) = 0;
 

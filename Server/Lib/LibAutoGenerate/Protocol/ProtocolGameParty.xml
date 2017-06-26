@@ -12,7 +12,7 @@
     </Cmd>
 		<Res>
       <Params Type="PlayerID" Name="PartyLeaderID"/>
-      <Params Type="BYTE" Name="ChatHistoryData" IsArray="true"/>
+      <Params Type="uint8" Name="ChatHistoryData" IsArray="true"/>
 		</Res>
 	</Command>
 

@@ -108,6 +108,7 @@ namespace Net {
 
 		// Mark wheather this buffer is in use
 		std::atomic<bool> bIsPending;
+		CallStackTrace PendingTrace;
 
 
 		// constructor

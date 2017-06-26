@@ -60,7 +60,7 @@ namespace Svr {
 		BRCLASS_ATTRIBUTE(UINT,ShardID);
 		BRCLASS_ATTRIBUTE(bool, IsTicketOwner);
 
-		//char m_GameNick[GameConst::MAX_NAME];
+		char m_UserName[GameConst::MAX_NAME];
 		char m_GCMKeys[GameConst::MAX_GCMKEYS];
 
 
@@ -105,7 +105,11 @@ namespace Svr {
 		const char* GetGCMKey()								{ return m_GCMKeys; }
 		Result SetGCMKey(const char* gcmKey)				{ return StrUtil::StringCpy(m_GCMKeys, gcmKey); }
 
+		const char* GetUserName() { return m_UserName; }
+		void SetUserName(const char* userName);
+
 		static GlobalUIDGenerator& GetAuthTicketGenerator() { return stm_AuthTicketGenerator; }
+
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//

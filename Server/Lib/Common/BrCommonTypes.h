@@ -48,9 +48,9 @@ namespace BR {
 		AccountID		PlayerID;
 		FacebookUID		FBUID;
 		char			NickName[MAX_NAME];
-		uint64_t			LastActiveTime;
-		uint32_t			Level;
-		uint32_t			IsPlayingGame;
+		uint64_t		LastActiveTime;
+		uint32_t		Level;
+		uint32_t		IsPlayingGame;
 
 		inline PlayerInformation();
 		inline PlayerInformation(const PlayerInformation& src);

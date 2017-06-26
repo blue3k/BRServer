@@ -164,6 +164,9 @@ namespace Svr {
 	};
 
 
+
+
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Login Server service
@@ -211,6 +214,38 @@ namespace Svr {
 
 		BR_SVR_MSGTRANS_CLOSE(PlayerJoinedToGameServerRes,GetRouteContext().GetSwaped());
 	};
+
+
+
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Ranking handling
+	//
+
+	class RankingUpdateScoreTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::UpdateMyScoreCmd, RankingUpdateScoreTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 >
+	{
+	public:
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::UpdateMyScoreCmd, RankingUpdateScoreTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 > super;
+
+	private:
+
+		StaticArray<TotalRankingPlayerInformation, 20> m_RankingList;
+
+	public:
+		RankingUpdateScoreTrans(Message::MessageData* &pIMsg);
+		virtual ~RankingUpdateScoreTrans() {}
+
+		Result OnScoreUpdated(Svr::TransactionResult* &pRes);
+
+
+		// Start Transaction
+		virtual Result StartTransaction() override;
+
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(UpdateMyScoreRes, m_RankingList);
+	};
+
 
 
 } // namespace Svr 

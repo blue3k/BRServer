@@ -81,14 +81,14 @@ namespace BR
 			return hr;
 
 		}; // Result NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
-		// Cmd: Get Ranking lise
-		Result NetPolicyLogin::UpdateMyRankCmd( const RankingType &InRankingType, const uint16_t &InCount )
+		// Cmd: Update my score and Get Ranking list
+		Result NetPolicyLogin::UpdateMyScoreCmd( const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount )
 		{
  			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Login::UpdateMyRankCmd::BuildIMsg(pMsg, InRankingType, InCount));
+			 protocolChk(Message::Login::UpdateMyScoreCmd::BuildIMsg(pMsg, InRankingScore, InRankingType, InCount));
 
 			 protocolChkPtr(GetConnection());
 
@@ -98,7 +98,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyLogin::UpdateMyRankCmd( const RankingType &InRankingType, const uint16_t &InCount )
+		}; // Result NetPolicyLogin::UpdateMyScoreCmd( const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount )
 		// Cmd: Get Ranking lise
 		Result NetPolicyLogin::GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount )
 		{
@@ -173,14 +173,14 @@ namespace BR
 			return hr;
 
 		}; // Result NetSvrPolicyLogin::CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
-		// Cmd: Get Ranking lise
-		Result NetSvrPolicyLogin::UpdateMyRankRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		// Cmd: Update my score and Get Ranking list
+		Result NetSvrPolicyLogin::UpdateMyScoreRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 		{
  			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
-			 protocolChk(Message::Login::UpdateMyRankRes::BuildIMsg(pMsg, InResult, InRanking));
+			 protocolChk(Message::Login::UpdateMyScoreRes::BuildIMsg(pMsg, InResult, InRanking));
 
 			 protocolChkPtr(GetConnection());
 
@@ -190,7 +190,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyLogin::UpdateMyRankRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		}; // Result NetSvrPolicyLogin::UpdateMyScoreRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 		// Cmd: Get Ranking lise
 		Result NetSvrPolicyLogin::GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 		{

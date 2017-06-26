@@ -244,6 +244,16 @@ namespace Config {
 		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 
+	// ModuleRanking
+	class ModuleRanking : public ModuleBase
+	{
+	public:
+		ModuleRanking();
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
 	// ModuleGame
 	class ModuleGame : public ModuleBase
 	{

@@ -54,8 +54,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Message\ProtocolPartyMatchingQueue.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Message\ProtocolRanking.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Message\ProtocolServer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Message\RankingMsgClass.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Message\RankingMsgDebug.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Message\ServerMsgClass.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Message\ServerMsgDebug.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Policy\ClusterServerIPolicy.h" />
@@ -87,8 +85,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Policy\PartyMatchingNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Policy\PartyMatchingQueueIPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Policy\PartyMatchingQueueNetPolicy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Policy\RankingIPolicy.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Policy\RankingNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Policy\ServerIPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Policy\ServerNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProtocolHelper.h" />
@@ -98,6 +94,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ProtocolVer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Message\RankingServerMsgClass.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Message\RankingServerMsgDebug.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Policy\RankingServerNetPolicy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Policy\RankingServerIPolicy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)GenericMsgClass.cpp" />
@@ -129,8 +129,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Message\PartyMatchingMsgDebug.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Message\PartyMatchingQueueMsgClass.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Message\PartyMatchingQueueMsgDebug.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Message\RankingMsgClass.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Message\RankingMsgDebug.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Message\ServerMsgClass.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Message\ServerMsgDebug.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Policy\ClusterServerNetPolicy.cpp" />
@@ -147,9 +145,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Policy\MonitoringNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Policy\PartyMatchingNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Policy\PartyMatchingQueueNetPolicy.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Policy\RankingNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Policy\ServerNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProtocolTrace.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Message\RankingServerMsgClass.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Message\RankingServerMsgDebug.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Policy\RankingServerNetPolicy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)ProtocolHelper.inl" />

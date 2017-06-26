@@ -334,8 +334,8 @@ namespace BR
 
 			}; // class CreateRandomUserRes : public MessageBase
 
-			// Cmd: Get Ranking lise
-			class UpdateMyRankCmd : public MessageBase
+			// Cmd: Update my score and Get Ranking list
+			class UpdateMyScoreCmd : public MessageBase
 			{
  			public:
 				static const MessageID MID;
@@ -355,18 +355,20 @@ namespace BR
 				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
+				uint64_t m_RankingScore;
 				RankingType m_RankingType;
 				uint16_t m_Count;
 			public:
-				UpdateMyRankCmd()
+				UpdateMyScoreCmd()
 					{}
 
-				UpdateMyRankCmd( MessageData* &pMsg )
+				UpdateMyScoreCmd( MessageData* &pMsg )
 					:MessageBase(pMsg)
 					{}
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
+				const uint64_t& GetRankingScore() const	{ return m_RankingScore; };
 				const RankingType& GetRankingType() const	{ return m_RankingType; };
 				const uint16_t& GetCount() const	{ return m_Count; };
 
@@ -375,11 +377,11 @@ namespace BR
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RankingType &InRankingType, const uint16_t &InCount );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount );
 
-			}; // class UpdateMyRankCmd : public MessageBase
+			}; // class UpdateMyScoreCmd : public MessageBase
 
-			class UpdateMyRankRes : public MessageBase
+			class UpdateMyScoreRes : public MessageBase
 			{
  			public:
 				static const MessageID MID;
@@ -402,10 +404,10 @@ namespace BR
 				Result m_Result;
 				LinkedArray<TotalRankingPlayerInformation> m_Ranking;
 			public:
-				UpdateMyRankRes()
+				UpdateMyScoreRes()
 					{}
 
-				UpdateMyRankRes( MessageData* &pMsg )
+				UpdateMyScoreRes( MessageData* &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -421,7 +423,7 @@ namespace BR
 
 				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 
-			}; // class UpdateMyRankRes : public MessageBase
+			}; // class UpdateMyScoreRes : public MessageBase
 
 			// Cmd: Get Ranking lise
 			class GetRankingListCmd : public MessageBase

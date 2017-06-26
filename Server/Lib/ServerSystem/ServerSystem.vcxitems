@@ -81,11 +81,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GameInstanceService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GameMasterServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GamePartyManagerService.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GamePartyService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\MonitoringService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\PartyMatchingQueueService.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\PartyMatchingService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\ServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerTransaction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusteredServiceEntity.h" />
@@ -174,11 +172,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameInstanceService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameMasterServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GamePartyManagerService.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GamePartyService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\MonitoringService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\PartyMatchingQueueService.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\PartyMatchingService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\ServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusteredServiceEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\ClusterManagerServiceEntity.cpp" />

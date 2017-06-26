@@ -276,6 +276,7 @@ namespace BR
 
 		// push_back
 		Result push_back( const DataType& NewData );
+		Result Add(const DataType& NewData) { return push_back(NewData); }
 		Result AddItems(size_t numItems, const DataType* NewData);
 #if !defined(SWIG)
 		Result push_back( DataType&& NewData );
@@ -311,7 +312,9 @@ namespace BR
 #else
 
 		iterator begin() { return iterator(this, GetSize() == 0 ? iterator::END_IDX : 0); }
+		const iterator begin() const { return iterator(const_cast<Array<DataType>*>(this), GetSize() == 0 ? iterator::END_IDX : 0); }
 		iterator end() { return iterator(this, iterator::END_IDX); }
+		const iterator end() const { return iterator(const_cast<Array<DataType>*>(this), iterator::END_IDX); }
 
 		// Foreach operator
 		Result Foreach( std::function<Result(DataType&)> functor )

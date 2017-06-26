@@ -4,7 +4,7 @@
 // 
 // Author : Generated
 // 
-// Description : Ranking Message debug definitions
+// Description : RankingServer Message debug definitions
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -25,13 +25,13 @@ namespace BR
  	namespace Policy
 	{
  
-		class ISvrPolicyRanking : public Net::INetPolicy
+		class ISvrPolicyRankingServer : public Net::INetPolicy
 		{
  			public:
-			enum { ID_POLICY = POLICY_SVR_RANKING };
+			enum { ID_POLICY = POLICY_SVR_RANKINGSERVER };
 
 			// Constructor
-			ISvrPolicyRanking( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			ISvrPolicyRankingServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Add a player to ranking
@@ -41,34 +41,34 @@ namespace BR
 			// Cmd: Remove a player to ranking
 			virtual Result GetPlayerRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking ) = 0;
 			// Cmd: Update a player to ranking
-			virtual Result UpdatePlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking ) = 0;
-			// Cmd: Remove a player to ranking
-			virtual Result GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InPlayerRanking ) = 0;
+			virtual Result UpdatePlayerScoreRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
+			// Cmd: Get ranking list
+			virtual Result GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
 
-		}; // class ISvrPolicyRanking : public Net::INetPolicy
+		}; // class ISvrPolicyRankingServer : public Net::INetPolicy
 
 
-		class IPolicyRanking : public Net::INetPolicy
+		class IPolicyRankingServer : public Net::INetPolicy
 		{
  			public:
-			enum { ID_POLICY = POLICY_RANKING };
+			enum { ID_POLICY = POLICY_RANKINGSERVER };
 
 			// Constructor
-			IPolicyRanking( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			IPolicyRankingServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Add a player to ranking
-			virtual Result AddPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo ) = 0;
+			virtual Result AddPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore ) = 0;
 			// Cmd: Remove a player to ranking
 			virtual Result RemovePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// Cmd: Remove a player to ranking
 			virtual Result GetPlayerRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// Cmd: Update a player to ranking
-			virtual Result UpdatePlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint64_t &InRankingScore, const Array<uint8_t>& InPlayerInfo ) = 0;
-			// Cmd: Remove a player to ranking
-			virtual Result GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint32_t &InFrom, const uint32_t &InCount ) = 0;
+			virtual Result UpdatePlayerScoreCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount ) = 0;
+			// Cmd: Get ranking list
+			virtual Result GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount ) = 0;
 
-		}; // class IPolicyRanking : public Net::INetPolicy
+		}; // class IPolicyRankingServer : public Net::INetPolicy
 
 
 	}; // namespace Policy

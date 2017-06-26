@@ -107,9 +107,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyManagerServiceTrans.h">
       <Filter>ServerService\Party</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.h">
-      <Filter>ServerService\Game</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameServiceEntity.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
@@ -150,9 +147,6 @@
       <Filter>ServerService\Party</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntityTrans.h">
-      <Filter>ServerService\Party</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GamePartyService.h">
       <Filter>ServerService\Party</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyTransaction.h">
@@ -204,9 +198,6 @@
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\MonitoringServiceTrans.h">
-      <Filter>ServerService\Monitoring</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\MonitoringService.h">
       <Filter>ServerService\Monitoring</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\MonitoringServiceEntity.h">
@@ -281,9 +272,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\RankingServiceEntity.h">
       <Filter>ServerService\Ranking</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\PartyMatchingService.h">
-      <Filter>ServerService\Matching</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\PartyMatchingQueueService.h">
       <Filter>ServerService\Matching</Filter>
     </ClInclude>
@@ -322,6 +310,12 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrConstDefault.h">
       <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\RankingServerService.h">
+      <Filter>ServerService\Ranking</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\GameServerService.h">
+      <Filter>ServerService\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -449,9 +443,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyManagerServiceTrans.cpp">
       <Filter>ServerService\Party</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.cpp">
-      <Filter>ServerService\Game</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GameServiceEntity.cpp">
       <Filter>ServerService\Game</Filter>
     </ClCompile>
@@ -492,9 +483,6 @@
       <Filter>ServerService\Party</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\GamePartyEntityTrans.cpp">
-      <Filter>ServerService\Party</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GamePartyService.cpp">
       <Filter>ServerService\Party</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\Login\LoginPlayerEntity.cpp">
@@ -541,9 +529,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EntityTimerActions.cpp">
       <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\MonitoringService.cpp">
-      <Filter>ServerService\Monitoring</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServiceEntity\MonitoringServiceEntity.cpp">
       <Filter>ServerService\Monitoring</Filter>
@@ -608,9 +593,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\PartyMatchingQueueService.cpp">
       <Filter>ServerService\Matching</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\PartyMatchingService.cpp">
-      <Filter>ServerService\Matching</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SvrLoopbackConnection.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
@@ -643,6 +625,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SvrConst.cpp">
       <Filter>Config</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\RankingServerService.cpp">
+      <Filter>ServerService\Ranking</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\GameServerService.cpp">
+      <Filter>ServerService\Game</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

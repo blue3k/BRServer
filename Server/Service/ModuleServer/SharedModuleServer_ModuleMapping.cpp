@@ -139,7 +139,9 @@ namespace SharedModuleServer {
 
 		case ClusterID::Ranking:
 		{
-			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master)));
+			Svr::ClusteredServiceEntity* pServiceEntity = new Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master);
+			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pServiceEntity));
+			svrChk(GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
 			break;
 		}
 

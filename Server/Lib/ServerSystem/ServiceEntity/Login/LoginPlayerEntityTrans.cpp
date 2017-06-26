@@ -23,7 +23,10 @@
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/EntityManager.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
+
+#include "ServerSystem/ServerService/RankingServerService.h"
 #include "ServerSystem/ServerService/GameServerService.h"
+#include "Protocol/Message/RankingServerMsgClass.h"
 
 
 #include "Protocol/Message/LoginServerMsgClass.h"
@@ -51,6 +54,8 @@ BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerTransCloseInstance);
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerJoinedToGameServerTrans);
 BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerKickPlayerTrans);
+
+BR_MEMORYPOOL_IMPLEMENT(Svr::RankingUpdateScoreTrans);
 
 
 	
@@ -332,6 +337,8 @@ namespace Svr {
 
 		GetMyOwner()->HeartBit();
 
+		GetMyOwner()->SetUserName(GetID());
+
 		// succeeded to login
 		if( pDBRes->Result == 0 )
 		{
@@ -519,6 +526,8 @@ namespace Svr {
 		svrChk(pRes->GetResult());
 
 		GetMyOwner()->HeartBit();
+
+		GetMyOwner()->SetUserName(GetCellPhone());
 
 		// succeeded to login
 		if (pDBRes->Result == 0)
@@ -809,6 +818,93 @@ namespace Svr {
 	}
 
 	
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Ranking handling
+	//
+
+	RankingUpdateScoreTrans::RankingUpdateScoreTrans(Message::MessageData* &pIMsg)
+		: MessageTransaction(pIMsg)
+	{
+		BR_TRANS_MESSAGE(Message::RankingServer::UpdatePlayerScoreRes, { return OnScoreUpdated(pRes); });
+	}
+
+	Result RankingUpdateScoreTrans::OnScoreUpdated(Svr::TransactionResult* &pRes)
+	{
+		Result hr = ResultCode::SUCCESS;
+
+		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		Message::RankingServer::UpdatePlayerScoreRes res;
+
+		svrChk(pRes->GetResult());
+
+		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
+
+		super::GetMyOwner()->HeartBit();
+
+		for (auto itRank : res.GetRanking())
+		{
+			svrChk(m_RankingList.Add(itRank));
+		}
+
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
+
+	// Start Transaction
+	Result RankingUpdateScoreTrans::StartTransaction()
+	{
+		Result hr = ResultCode::SUCCESS;
+		PlayerInformation playerInfo;
+		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
+		Svr::ServerServiceInformation *pService = nullptr;
+
+		svrChk(super::StartTransaction());
+
+		if (GetMyOwner()->GetAccountID() == 0)
+		{
+			svrErrClose(ResultCode::E_INVALID_PLAYERID);
+		}
+
+		m_RankingList.Clear();
+
+		// TODO: RankingType
+
+
+		// Find new game server for this player
+		svrChk(Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity(ClusterID::Ranking, pServiceEntity));
+		hr = pServiceEntity->FindRandomService(pService);
+		if (!(hr))
+		{
+			svrTrace(Trace::TRC_ERROR, "Failed to find ranking service");
+			goto Proc_End;
+		}
+
+		// update life time of this user entity
+		super::GetMyOwner()->HeartBit();
+
+		svrChk(playerInfo.InitPlayerInformation(GetMyOwner()->GetAccountID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetUserName(), 0, 0, Util::Time.GetTimeUTCSec().time_since_epoch().count()));
+
+		svrChk(pService->GetService<Svr::RankingServerService>()->UpdatePlayerScoreCmd(super::GetTransID(),
+			GetRankingScore(), playerInfo, GetCount()));
+
+		
+
+	Proc_End:
+
+		if (!(hr))
+		{
+			CloseTransaction(hr);
+		}
+
+		return hr;
+	}
+
 
 
 };// namespace Svr 

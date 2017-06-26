@@ -17,7 +17,7 @@ SOURCES=ProtocolClusterServer.xml \
 	ProtocolMonitoring.xml \
 	ProtocolPartyMatching.xml \
 	ProtocolPartyMatchingQueue.xml \
-	ProtocolRanking.xml \
+	ProtocolRankingServer.xml \
 	ProtocolServer.xml
 
 

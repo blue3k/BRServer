@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by mazuki (darksiderg) -->
 <xs:schema xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.TheBraves.com/XMLProtocol" targetNamespace="http://www.TheBraves.com/XMLProtocol" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="Protocols">
 		<xs:annotation>
@@ -144,7 +143,6 @@
 					<xs:enumeration value="uint32"/>
 					<xs:enumeration value="int64"/>
 					<xs:enumeration value="uint64"/>
-					<xs:enumeration value="BYTE"/>
 					<xs:enumeration value="WORD"/>
 					<xs:enumeration value="DWORD"/>
 					<xs:enumeration value="QWORD"/>
