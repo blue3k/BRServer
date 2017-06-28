@@ -49,7 +49,7 @@ namespace Svr {
 		MasterEntity( UINT uiTransQueueSize = 2048, UINT TransResQueueSize = 2048 );
 		virtual ~MasterEntity();
 
-		virtual void ReleaseTransaction(Transaction* pTrans);
+		virtual void ReleaseTransaction(Transaction* pTrans) override;
 
 		void ValidateTransactionCount();
 
@@ -57,29 +57,29 @@ namespace Svr {
 		void SetMaxActiveTransaction( UINT uiMaxActiveTransaction );
 
 		// clear transaction
-		virtual HRESULT ClearEntity() override;
+		virtual Result ClearEntity() override;
 
-		virtual HRESULT FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) override;
+		virtual Result FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) override;
 
 		// Update entity process
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
-		virtual HRESULT ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
+		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
 
 		virtual UINT GetActiveTransactionCount() override;
 
 		void UpdateWorkingThreadID(ThreadID threadID);
 
 
-		//virtual HRESULT OnRoutedMessage(Message::MessageData* &pMsg) override { assert(false); return E_SYSTEM_NOTIMPL; }
+		//virtual Result OnRoutedMessage(Message::MessageData* &pMsg) override { assert(false); return ResultCode::NOT_IMPLEMENTED; }
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Event task handling
 
 		virtual void OnAddedToTaskManager(TaskWorker *pWorker) override;
 
-		virtual HRESULT OnEventTask(const Svr::EventTask& eventTask) override;
+		virtual Result OnEventTask(const EventTask& eventTask) override;
 
 	};
 

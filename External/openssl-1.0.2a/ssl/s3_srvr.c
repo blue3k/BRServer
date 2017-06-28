@@ -1977,8 +1977,8 @@ int ssl3_send_certificate_request(SSL *s)
 {
     unsigned char *p, *d;
     int i, j, nl, off, n;
-    STACK_OF(X509_NAME) *sk = NULL;
-    X509_NAME *name;
+    STACK_OF(SSL_X509_NAME) *sk = NULL;
+    SSL_X509_NAME *name;
     BUF_MEM *buf;
 
     if (s->state == SSL3_ST_SW_CERT_REQ_A) {

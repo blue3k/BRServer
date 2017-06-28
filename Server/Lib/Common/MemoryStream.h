@@ -57,7 +57,7 @@ namespace BR {
 		const BYTE* GetData();
 
 		// Write data to stream
-		HRESULT Write( UINT sizeToWrite, const BYTE* pData );
+		Result Write( UINT sizeToWrite, const BYTE* pData );
 	};
 
 	

@@ -29,7 +29,7 @@ namespace BR
 			// GamePartyManager Debug output function 
 
 			void RegisterDebugTraceGamePartyManager();
-			HRESULT DebugOutGamePartyManager( const char*Prefix, MessageData*pMsg );
+			Result DebugOutGamePartyManager( const char*Prefix, MessageData*pMsg );
 
 
 

@@ -28,23 +28,23 @@ namespace BR
  
 			///////////////////////////////////////////////////////////////
 			// PartyMatching Debug trace mappping
-			static std::unordered_map<UINT,std::function<HRESULT(const char* prefix,MessageData *pMsg)>> MessageDebugTraceMapPartyMatching;
+			static std::unordered_map<UINT,std::function<Result(const char* prefix,MessageData *pMsg)>> MessageDebugTraceMapPartyMatching;
 
 			void RegisterDebugTracePartyMatching()
 			{
  				// S2C: 
-				MessageDebugTraceMapPartyMatching.insert(std::make_pair(PartyMatching::PartyGameMatchedS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   PartyMatching::PartyGameMatchedS2CEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapPartyMatching.insert(std::make_pair(PartyMatching::PartyGameMatchedS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   PartyMatching::PartyGameMatchedS2CEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// S2C: 
-				MessageDebugTraceMapPartyMatching.insert(std::make_pair(PartyMatching::PlayerGameMatchedS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   PartyMatching::PlayerGameMatchedS2CEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapPartyMatching.insert(std::make_pair(PartyMatching::PlayerGameMatchedS2CEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   PartyMatching::PlayerGameMatchedS2CEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTracePartyMatching()
 
 
 			///////////////////////////////////////////////////////////////
 			// PartyMatching Debug trace
-			HRESULT DebugOutPartyMatching( const char *Prefix, MessageData *pMsg )
+			Result DebugOutPartyMatching( const char *Prefix, MessageData *pMsg )
 			{
  
-				HRESULT hr = S_SYSTEM_OK;
+				Result hr;
 				auto itFount = MessageDebugTraceMapPartyMatching.end();
 
 				protocolChkPtr(pMsg);
@@ -56,7 +56,7 @@ namespace BR
 
 			Proc_End:
 				return hr;
-			}; // HRESULT DebugOutPartyMatching( const char *Prefix, MessageData *pMsg )
+			}; // Result DebugOutPartyMatching( const char *Prefix, MessageData *pMsg )
 
 
 		}; // namespace Debug

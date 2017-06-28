@@ -12,13 +12,13 @@
 
 
 template<class ServiceType>
-HRESULT ClusteredServiceEntity::GetService( ServiceType* &pService )
+Result ClusteredServiceEntity::GetService( ServiceType* &pService )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	ServerServiceInformation* pServiceInfo = nullptr;
 
 	if( GetMasterUID() == 0 )
-		return E_SVR_CLUSTER_NOMASTER;
+		return ResultCode::E_SVR_CLUSTER_NOMASTER;
 
 	svrChk( FindService( GetMasterUID(),  pServiceInfo ) );
 

@@ -73,6 +73,7 @@
   <ResultCodeItem Severity="Error" CodeName="INVALID_NUMERIC" Desc="Math result not representable"/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_PASSWORD" Desc="Invalid password"/>
   <ResultCodeItem Severity="Error" CodeName="ALREADY_IN_FRIEND" Desc="Target already in friends list"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_THREAD" Desc="Thread is wrong, running on wrong thread?"/>
 
   
 </ResultCodes>

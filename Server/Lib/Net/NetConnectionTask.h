@@ -14,8 +14,8 @@
 
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
-#include "ServerSystem/TaskManager.h"
-#include "ServerSystem/Task.h"
+#include "Common/Task/TaskManager.h"
+#include "Common/Task/Task.h"
 #include "Common/SharedObj.h"
 #include "Common/MemoryPool.h"
 
@@ -31,7 +31,7 @@ namespace Net {
 	//	Connection TickTask
 	//
 
-	class ConnectionTask : public Svr::TickTask, public MemoryPoolObject<ConnectionTask>
+	class ConnectionTask : public TickTask, public MemoryPoolObject<ConnectionTask>
 	{
 	private:
 		// Connection to manage
@@ -56,7 +56,7 @@ namespace Net {
 		ConnectionManager* GetConnectionManager();
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction* pAction);
+		virtual Result TickUpdate(TimerAction* pAction);
 	};
 
 
@@ -66,7 +66,7 @@ namespace Net {
 	//	Connection TickTask manager
 	//
 
-	class ConnectionTaskManager : public Svr::TaskManager
+	class ConnectionTaskManager : public TaskManager
 	{
 	public :
 
@@ -78,7 +78,7 @@ namespace Net {
 
 		
 		// Create TickTask
-		virtual HRESULT CreateTask( ConnectionTask* &pTask );
+		virtual Result CreateTask( ConnectionTask* &pTask );
 
 	};
 

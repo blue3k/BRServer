@@ -54,36 +54,36 @@ namespace Net {
 	}
 
 	// Close all connection
-	HRESULT ServerUDPBase::CloseAllConnection()
+	Result ServerUDPBase::CloseAllConnection()
 	{
 		return GetConnectionManager().PendingCloseAllConnection();
 	}
 
-	HRESULT ServerUDPBase::Recv(IOBUFFER_READ* pIOBuffer)
+	Result ServerUDPBase::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 
 		netChkPtr(pIOBuffer);
 
 		pIOBuffer->SetupRecvUDP(0);
 
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
-		switch (hrErr)
+		switch ((uint32_t)hrErr)
 		{
-		case S_SYSTEM_FALSE:
-			hr = E_NET_TRY_AGAIN;
+		case ResultCode::SUCCESS_FALSE:
+			hr = ResultCode::E_NET_TRY_AGAIN;
 			break;
-		case S_SYSTEM_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_TRY_AGAIN:
-		case E_NET_WOULDBLOCK:
+		case ResultCode::SUCCESS:
+		case ResultCode::E_NET_IO_PENDING:
+		case ResultCode::E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_WOULDBLOCK:
 			hr = hrErr;
 			goto Proc_End;// success
 			break;
-		case E_NET_NETUNREACH:
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
+		case ResultCode::E_NET_NETUNREACH:
+		case ResultCode::E_NET_CONNABORTED:
+		case ResultCode::E_NET_CONNRESET:
+		case ResultCode::E_NET_NETRESET:
 			// some remove has problem with continue connection
 			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
 			//break;
@@ -100,44 +100,44 @@ namespace Net {
 	}
 
 
-	HRESULT ServerUDPBase::OnSendReady()
+	Result ServerUDPBase::OnSendReady()
 	{
 		return ProcessSendQueue();
 	}
 
-	HRESULT ServerUDPBase::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
+	Result ServerUDPBase::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 		auto addrTo = pSendBuffer->NetAddr.To;
 
 		hrErr = NetSystem::SendTo(GetSocket(), pSendBuffer);
-		switch (hrErr)
+		switch ((uint32_t)hrErr)
 		{
-		case E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_TRY_AGAIN:
 			break;
-		case S_SYSTEM_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_WOULDBLOCK:
+		case ResultCode::SUCCESS:
+		case ResultCode::E_NET_IO_PENDING:
+		case ResultCode::E_NET_WOULDBLOCK:
 			break;
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
-		case E_NET_NOTCONN:
-		case E_NET_NOTSOCK:
-		case E_NET_SHUTDOWN:
+		case ResultCode::E_NET_CONNABORTED:
+		case ResultCode::E_NET_CONNRESET:
+		case ResultCode::E_NET_NETRESET:
+		case ResultCode::E_NET_NOTCONN:
+		case ResultCode::E_NET_NOTSOCK:
+		case ResultCode::E_NET_SHUTDOWN:
 			// Send fail by connection close
 			// Need to disconnect
-			hr = E_NET_CONNECTION_CLOSED;
+			hr = ResultCode::E_NET_CONNECTION_CLOSED;
 			goto Proc_End;
 			break;
 		default:
-			netErr(E_NET_IO_SEND_FAIL);
+			netErr(ResultCode::E_NET_IO_SEND_FAIL);
 			break;
 		};
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			//if (pSendBuffer)
 			//{
@@ -145,14 +145,14 @@ namespace Net {
 			//	Net::NetSystem::FreeBuffer(pSendBuffer);
 			//}
 
-			if (hr != E_NET_IO_SEND_FAIL)
+			if (hr != Result(ResultCode::E_NET_IO_SEND_FAIL))
 			{
 				netTrace(Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", addrTo, hrErr, hr);
 			}
 			else
 			{
 				netTrace(Net::TRC_SENDRAW, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", addrTo, hrErr, hr);
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 		}
 		else
@@ -171,12 +171,12 @@ namespace Net {
 	}
 	
 	// called when send completed
-	HRESULT ServerUDPBase::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer )
+	Result ServerUDPBase::OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer )
 	{
 		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
 		Util::SafeRelease( pIOBuffer->pMsgs );
 		NetSystem::FreeBuffer( pIOBuffer );
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	
@@ -187,16 +187,16 @@ namespace Net {
 	}
 
 	// Open host and start listen
-	HRESULT ServerUDPBase::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
+	Result ServerUDPBase::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SOCKET socket = INVALID_SOCKET;
 		INT iOptValue;
 		sockaddr_storage bindAddr;
 		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
 
 		if( GetSocket() != INVALID_SOCKET )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 
 		netChk(Server::HostOpen( netCls, strLocalIP, usLocalPort ) );
@@ -206,22 +206,22 @@ namespace Net {
 		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::DataGram);
 		if( socket == INVALID_SOCKET )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAResult());
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 		iOptValue = Const::SVR_RECV_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 		iOptValue = Const::SVR_SEND_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 #if WINDOWS
@@ -230,13 +230,13 @@ namespace Net {
 			INT iOptLen = sizeof(iOptValue);
 			if (getsockopt(socket, SOL_SOCKET, SO_MAX_MSG_SIZE, (char *)&iOptValue, &iOptLen) == SOCKET_ERROR)
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to get socket option SO_MAX_MSG_SIZE = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_SYSTEM_UNEXPECTED);
+				netTrace(Trace::TRC_ERROR, "Failed to get socket option SO_MAX_MSG_SIZE = {0}, err = {1:X8}", iOptValue, GetLastWSAResult());
+				netErr(ResultCode::UNEXPECTED);
 			}
 		}
 		if (iOptValue < Const::PACKET_SIZE_MAX)
 		{
-			netTrace(Trace::TRC_WARN, "Socket max packet size too small, Change to socket maximum SocketMax={0}, SvrMax={1}, err = {2:X8}", iOptValue, (UINT)Const::PACKET_SIZE_MAX, GetLastWSAHRESULT());
+			netTrace(Trace::TRC_WARN, "Socket max packet size too small, Change to socket maximum SocketMax={0}, SvrMax={1}, err = {2:X8}", iOptValue, (UINT)Const::PACKET_SIZE_MAX, GetLastWSAResult());
 			//Const::PACKET_SIZE_MAX = iOptValue;
 		}
 #endif
@@ -244,7 +244,7 @@ namespace Net {
 		//bOptValue = TRUE;
 		//if( setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, (char *)&bOptValue, sizeof(bOptValue)) == SOCKET_ERROR )
 		//{
-		//	hr = GetLastWSAHRESULT();
+		//	hr = GetLastWSAResult();
 		//	netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_REUSEADDR = {0}, err = {1:X8}", bOptValue, hr);
 		//	netErr(hr);
 		//}
@@ -255,7 +255,7 @@ namespace Net {
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
-				hr = GetLastWSAHRESULT();
+				hr = GetLastWSAResult();
 				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, hr);
 				netErr(hr);
 			}
@@ -265,8 +265,8 @@ namespace Net {
 		GetAnyBindAddr(GetSocketAddr(), bindAddr);
 		if (bind(socket, (sockaddr*)&bindAddr, GetSocketAddrSize()) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 		SetSocket( socket );
@@ -295,7 +295,7 @@ namespace Net {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			HostClose();
 
 		if( socket != INVALID_SOCKET )
@@ -307,9 +307,9 @@ namespace Net {
 	}
 
 	// Close host and close all connections
-	HRESULT ServerUDPBase::HostClose()
+	Result ServerUDPBase::HostClose()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		INet::Event netEvent(INet::Event::EVT_NET_CLOSED);
 
 		netChk(Server::HostClose() );
@@ -332,30 +332,30 @@ namespace Net {
 
 
 	// Pending recv New one
-	HRESULT ServerUDPBase::PendingRecv( IOBUFFER_READ *pOver )
+	Result ServerUDPBase::PendingRecv( IOBUFFER_READ *pOver )
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr;
+		Result hr = ResultCode::SUCCESS, hrErr;
 
 		if (!NetSystem::IsProactorSystem())
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		netChk(pOver->SetPendingTrue());
 
 		while (1)
 		{
 			hrErr = Recv(pOver);
-			switch (hrErr)
+			switch ((uint32_t)hrErr)
 			{
-			case S_SYSTEM_OK:
-			case E_NET_IO_PENDING:
-			case E_NET_TRY_AGAIN:
-			case E_NET_WOULDBLOCK:
+			case ResultCode::SUCCESS:
+			case ResultCode::E_NET_IO_PENDING:
+			case ResultCode::E_NET_TRY_AGAIN:
+			case ResultCode::E_NET_WOULDBLOCK:
 				goto Proc_End;// success
 				break;
-			case E_NET_NETUNREACH:
-			case E_NET_CONNABORTED:
-			case E_NET_CONNRESET:
-			case E_NET_NETRESET:
+			case ResultCode::E_NET_NETUNREACH:
+			case ResultCode::E_NET_CONNABORTED:
+			case ResultCode::E_NET_CONNRESET:
+			case ResultCode::E_NET_NETRESET:
 				// some remove has problem with continue connection
 				netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pOver->NetAddr.From);
 				//break;
@@ -393,9 +393,9 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ServerUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
+	Result ServerUDP::OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Connection> pConnection;
 		IConnection::ConnectionInformation connectionInfo;
 		bool bReleaseOnFail = false;
@@ -404,13 +404,13 @@ namespace Net {
 		else memset(&from, 0, sizeof(from));
 
 
-		if( FAILED( hrRes ) )
+		if( !( hrRes ) )
 		{
-			switch( hrRes )
+			switch((uint32_t)hrRes )
 			{
-			case E_NET_CONNECTION_CLOSED:
-			case E_NET_IO_ABORTED:
-				if (SUCCEEDED(GetConnectionManager().GetConnectionByAddr(from, pConnection)))
+			case ResultCode::E_NET_CONNECTION_CLOSED:
+			case ResultCode::E_NET_IO_ABORTED:
+				if ((GetConnectionManager().GetConnectionByAddr(from, pConnection)))
 				{
 					netTrace( TRC_RECV, "UDP bad connection state IP:{0}", from);
 				}
@@ -427,7 +427,7 @@ namespace Net {
 				goto Proc_End;
 
 			if( GetIsEnableAccept()
-				&& FAILED(GetConnectionManager().GetConnectionByAddr(pIOBuffer->NetAddr.From, pConnection)))
+				&& !(GetConnectionManager().GetConnectionByAddr(pIOBuffer->NetAddr.From, pConnection)))
 			{
 				MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pIOBuffer->buffer;
 				if (pNetCtrl->Length == sizeof(MsgNetCtrlConnect) && pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID && pNetCtrl->rtnMsgID.ID == BR_PROTOCOL_VERSION)
@@ -473,7 +473,7 @@ namespace Net {
 			if (NetSystem::IsProactorSystem())
 			{
 				pIOBuffer->SetPendingFalse();
-				if (hrRes != E_NET_IO_ABORTED)
+				if (hrRes != Result(ResultCode::E_NET_IO_ABORTED))
 				{
 					PendingRecv(pIOBuffer);
 				}

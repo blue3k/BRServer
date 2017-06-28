@@ -120,19 +120,19 @@ namespace BR
 		MemoryPool* GetMemoryPool()												{ return m_pMemoryPool; }
 
 		// item enque
-		inline HRESULT Enqueue( const DataType& item);
-		inline HRESULT Enqueue(DataType&& item);
+		inline Result Enqueue( const DataType& item);
+		inline Result Enqueue(DataType&& item);
 
 		// item deque
-		inline HRESULT Dequeue( DataType& item );
+		inline Result Dequeue( DataType& item );
 
 		// item deque with MT
-		inline HRESULT DequeueMT( DataType& item, DurationMS uiCheckInterval = DurationMS(100) );
+		inline Result DequeueMT( DataType& item, DurationMS uiCheckInterval = DurationMS(100) );
 
 
 		// Just get first dequeue item if exist, not dequeue
 		// This will not safe if use DequeueMT
-		inline HRESULT GetFront( DataType& item );
+		inline Result GetFront( DataType& item );
 
 		// Item count in queue
 		inline CounterType GetEnqueCount() const;
@@ -146,8 +146,8 @@ namespace BR
 		inline Page* AllocatePage();
 		inline void FreePage(Page* pPage);
 
-		inline HRESULT DequeuePageMove();
-		inline HRESULT DequeuePageMoveMT();
+		inline Result DequeuePageMove();
+		inline Result DequeuePageMoveMT();
 	};
 
 	#include "PageQueue.inl"

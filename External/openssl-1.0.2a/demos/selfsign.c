@@ -78,7 +78,7 @@ int days;
     X509 *x;
     EVP_PKEY *pk;
     RSA *rsa;
-    X509_NAME *name = NULL;
+    SSL_X509_NAME *name = NULL;
     X509_NAME_ENTRY *ne = NULL;
     X509_EXTENSION *ex = NULL;
 

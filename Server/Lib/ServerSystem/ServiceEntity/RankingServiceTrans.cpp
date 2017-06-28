@@ -17,8 +17,8 @@
 #include "Common/GameConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
-#include "Protocol/Message/RankingMsgClass.h"
-#include "Protocol/Policy/RankingIPolicy.h"
+#include "Protocol/Message/RankingServerMsgClass.h"
+#include "Protocol/Policy/RankingServerIPolicy.h"
 
 
 #include "ServerSystem/BrServerUtil.h"
@@ -33,7 +33,8 @@
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::RankingPartyTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerAddPlayerTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerUpdatePlayerScoreTrans);
 
 
 
@@ -42,65 +43,57 @@ namespace Svr {
 
 
 
-	RankingPartyTrans::RankingPartyTrans(UINT startMemberCount, UINT targetMemberCount)
-		: TransactionT( TransactionID() )
-		,m_QueryMemberCount(startMemberCount)
-		,m_TargetMemberCount(targetMemberCount)
+	RankingServerAddPlayerTrans::RankingServerAddPlayerTrans(Message::MessageData* &pIMsg)
+		: ServerEntityMessageTransaction(pIMsg)
 	{
-		Assert(m_QueryMemberCount);
-		Assert(m_TargetMemberCount);
-
-		SetPrintTrace(false);
-
-		//BR_TRANS_MESSAGE( TimerResult, { return OnTimer(pRes); });
-		//BR_TRANS_MESSAGE( Message::PartyRankingQueue::ReserveItemRes,			{ return OnReserveItem(pRes); });
-		//BR_TRANS_MESSAGE( Message::PartyRankingQueue::CancelReservationRes,	{ return OnCancelReservation(pRes); });
-		//BR_TRANS_MESSAGE( Message::PartyRankingQueue::DequeueItemRes,			{ return OnDequeueItem(pRes); });
-		//BR_TRANS_MESSAGE( Message::GameInstanceManager::CreateGameRes,			{ return OnCreateGame(pRes); });
 	}
 
 	// Start Transaction
-	HRESULT RankingPartyTrans::StartTransaction()
+	Result RankingServerAddPlayerTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
-		// Only false when match is succeeded
-		//GetMyOwner()->SetLastRankingFailed(true);
 
-		//if( m_TargetMemberCount <= 0 || m_TargetMemberCount > GameConst::MAX_GAMEPLAYER )
-		//	svrErr(E_GAME_INVALID_PLAYER_COUNT);
-
-		//if( m_QueryMemberCount <= 0 || m_QueryMemberCount > GameConst::MAX_GAMEPLAYER || m_QueryMemberCount >= m_TargetMemberCount )
-		//	svrErr(E_GAME_INVALID_PLAYER_COUNT);
-
-		//m_Step = Step::Grabbing;
-		//SetCurrentGrabbing(0);
-		//SetGrabTryCount(0);
-		//SetProcessingIndex(0);
-
-		//SetCurrentMemberCount(0);
-		//m_ReservedMember.Clear();
-
-		////hr = ReserveItem(GetQueryMemberCount());
-		//if( hr == E_SVR_NOITEM_INQUEUE )
-		//{
-		//	hr = S_SYSTEM_OK;
-		//	SetTimer(1000);
-		//}
 
 	Proc_End:
 
-		if( FAILED(hr) )
-		{
-			// We need to retry until it's successed
-			CloseTransaction(hr);
-		}
+		CloseTransaction(hr);
 
 		return hr;
 	}
 	
+
+
+
+	RankingServerUpdatePlayerScoreTrans::RankingServerUpdatePlayerScoreTrans(Message::MessageData* &pIMsg)
+		: super(pIMsg)
+	{
+	}
+
+	// Start Transaction
+	Result RankingServerUpdatePlayerScoreTrans::StartTransaction()
+	{
+		Result hr = ResultCode::SUCCESS;
+		int64_t rankingBase = 0;
+
+		svrChk(super::StartTransaction());
+
+
+		svrChk(GetMyOwner()->UpdatePlayerScore(GetPlayerInfo(), GetRankingScore(), m_PlayerRanking));
+
+		rankingBase = m_PlayerRanking - (m_PlayerRanking % GetCount());
+		m_RankingList.Clear();
+		svrChk(GetMyOwner()->GetRankingList(rankingBase, GetCount(), m_RankingList));
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
+
 
 };// namespace Svr 
 };// namespace BR 

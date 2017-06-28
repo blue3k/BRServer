@@ -53,9 +53,9 @@ namespace EntityServer {
 	{
 	}
 
-	HRESULT EntityServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
+	Result EntityServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//Svr::ServerEntity *pServer = nullptr;
 		
 		switch( m_Step )
@@ -64,7 +64,7 @@ namespace EntityServer {
 			GetMyServer()->GetNetPrivate()->SetIsEnableAccept(true);
 
 			if( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-			//if( (SUCCEEDED(GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) && pServer != Svr::BrServer::GetInstance()->GetLoopbackServerEntity())
+			//if( ((GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) && pServer != Svr::BrServer::GetInstance()->GetLoopbackServerEntity())
 			//	|| m_WaitCount > 6 ) // wait 6*500 ms
 			{
 				svrChk( InitializeServices() );
@@ -90,15 +90,15 @@ namespace EntityServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr;
 	}
 
-	HRESULT EntityServerStartProcess::InitializeServices()
+	Result EntityServerStartProcess::InitializeServices()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 
 		// Grab Game server list from entity
@@ -113,9 +113,9 @@ namespace EntityServer {
 	}
 
 	// Start Transaction
-	HRESULT EntityServerStartProcess::StartTransaction()
+	Result EntityServerStartProcess::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 

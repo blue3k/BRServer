@@ -24,7 +24,7 @@ namespace BR {
 namespace DB {
 
 	// initialize DB source
-	HRESULT	DataSource::InitializeDBSource( const std::string& strConnectionString, const std::string& strDefaultDB, const std::string& strUserID, const std::string& strPassword )
+	Result	DataSource::InitializeDBSource( const std::string& strConnectionString, const std::string& strDefaultDB, const std::string& strUserID, const std::string& strPassword )
 	{
 		m_strConnectionString = strConnectionString;
 		m_strDefaultDB = strDefaultDB;
@@ -33,13 +33,13 @@ namespace DB {
 
 		m_Opened = true;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 	
 	// close DB source
-	HRESULT	DataSource::CloseDBSource()
+	Result	DataSource::CloseDBSource()
 	{
-		HRESULT	hr = S_SYSTEM_OK;
+		Result	hr = ResultCode::SUCCESS;
 
 		StackPool::Item *pItem = nullptr;
 		do{
@@ -56,9 +56,9 @@ namespace DB {
 	}
 
 	// Assign a session
-	HRESULT	DataSource::AssignSession( Session* &pSession )
+	Result	DataSource::AssignSession( Session* &pSession )
 	{
-		HRESULT	hr = S_SYSTEM_OK;
+		Result	hr = ResultCode::SUCCESS;
 
 		pSession = nullptr;
 
@@ -79,9 +79,9 @@ namespace DB {
 	}
 
 	// Free a session
-	HRESULT	DataSource::FreeSession( Session* pSession )
+	Result	DataSource::FreeSession( Session* pSession )
 	{
-		HRESULT	hr = S_SYSTEM_OK;
+		Result	hr = ResultCode::SUCCESS;
 
 		dbChkPtr(pSession);
 

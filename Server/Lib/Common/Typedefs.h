@@ -26,9 +26,15 @@
 #define X32	true
 #endif
 
+
+
 // Decide platform
 #if __GNUC__
+#if __ANDROID__
+#define ANDROID true
+#else
 #define LINUX true
+#endif
 #elif defined(_WIN32) || defined(_WIN64)
 #define WINDOWS true
 #endif
@@ -67,10 +73,10 @@
 
 #include <crtdbg.h>
 #include <tchar.h>
-#include <atltrace.h>
+//#include <atltrace.h>
 #include <mbstring.h>
-#include <atlcore.h>
-#include <cstringt.h>
+//#include <atlcore.h>
+//#include <cstringt.h>
 #include <winsock2.h>
 #include <Mswsock.h>
 #include <Ws2tcpip.h>
@@ -83,6 +89,7 @@
 #include <concurrent_unordered_map.h>
 #include <stdint.h>
 
+typedef unsigned int uint;
 
 #define timegm _mkgmtime
 
@@ -90,10 +97,7 @@
 
 
 
-
-
-
-#else
+#elif LINUX
 
 #include <pthread.h>
 #include <sys/resource.h>
@@ -111,6 +115,90 @@
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <stdint.h>
+#include <semaphore.h>
+#include <my_global.h>
+
+typedef uint8_t UINT8;
+typedef int8_t INT8;
+typedef uint16_t UINT16;
+typedef int16_t INT16;
+typedef uint32_t UINT32;
+typedef int32_t INT32;
+typedef uint64_t UINT64;
+typedef int64_t INT64;
+typedef unsigned long ULONG;
+typedef long LONG;
+typedef long long LONGLONG;
+typedef unsigned long long ULONGLONG;
+typedef const char* LPCSTR;
+typedef char* LPSTR;
+typedef const wchar_t* LPCWSTR;
+typedef wchar_t* LPWSTR;
+typedef void* PVOID;
+typedef wchar_t WCHAR;
+
+typedef unsigned int UINT;
+typedef int INT;
+
+typedef unsigned short USHORT;
+typedef short SHORT;
+typedef unsigned int DWORD;
+typedef unsigned short WORD;
+typedef UINT8 BYTE;
+
+
+// Additional alise type
+typedef INT8				SBYTE;
+typedef SBYTE				*PSBYTE;
+
+
+typedef void* HANDLE;
+typedef HANDLE HMODULE;
+
+#define INVALID_NATIVE_HANDLE_VALUE NativeHandle(-1)
+
+
+
+#define TRUE (1)
+#define FALSE (0)
+
+
+
+#define IN
+#define OUT
+
+#define SOCKET int
+
+
+
+#define MAX_PATH 512
+
+#elif ANDROID
+
+
+#include <pthread.h>
+#include <time.h>
+#include <semaphore.h>
+#include <assert.h>
+
+#include <sys/resource.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/syscall.h>
+#include <sys/stat.h>
+
+#include <unistd.h>
+#include <fcntl.h>
+#include <libgen.h>
+#include <errno.h>
+#include <signal.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <stdint.h>
+#include <unwind.h>
+#include <dlfcn.h>
+#include <android/log.h>
 
 
 typedef uint8_t UINT8;
@@ -146,7 +234,6 @@ typedef UINT8 BYTE;
 typedef INT8				SBYTE;
 typedef SBYTE				*PSBYTE;
 
-typedef int32_t  HRESULT;
 
 typedef void* HANDLE;
 typedef HANDLE HMODULE;
@@ -155,22 +242,25 @@ typedef HANDLE HMODULE;
 
 
 
-
 #define TRUE (1)
 #define FALSE (0)
 
 
-#define FAILED(hr)      ((hr) < 0)
-#define SUCCEEDED(hr)   ((hr) >= 0)
 
 #define IN
 #define OUT
 
 #define SOCKET int
-//#define INVALID_SOCKET (-1)
+#define INVALID_SOCKET (-1)
 
 
 #define MAX_PATH 512
+
+#else
+
+#ifndef SWIG
+	#error "Not supported platform"
+#endif
 
 #endif
 
@@ -211,7 +301,6 @@ typedef HANDLE HMODULE;
 #include <atomic>
 
 #include <functional>
-#include <my_global.h>
 
 
 // See MSDN common datatypes section for base type definitions
@@ -277,12 +366,12 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 }
 
 
+#ifndef SWIG
 
+template<class ... ArgTypes>
+inline void unused(ArgTypes... ) {}
 
-
-
-#define unused(...) 
-
+#endif
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -334,6 +423,8 @@ constexpr std::size_t countof(T const (&)[N]) noexcept
 #endif
 
 
+
+#include "Common/BRResult.h"
 
 #include "Common/ResultCode/BRResultCodeSystem.h"
 

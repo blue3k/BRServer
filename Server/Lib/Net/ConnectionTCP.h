@@ -45,7 +45,7 @@ namespace Net {
 		std::vector<BYTE>	m_bufRecvTem;
 
 		// Recv overlapped buffer. recv 
-		IOBUFFER_READ m_RecvBuffer;
+		//IOBUFFER_READ m_RecvBuffer;
 
 		WriteBufferQueue m_WriteBuffer;
 
@@ -59,9 +59,9 @@ namespace Net {
 
 	protected:
 
-		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
+		virtual Result SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
 
-		virtual HRESULT SendRaw(Message::MessageData* &pMsg) override;
+		virtual Result SendRaw(Message::MessageData* &pMsg) override;
 
 	public:
 		// Constructor
@@ -69,65 +69,66 @@ namespace Net {
 		virtual ~ConnectionTCP();
 
 
-		inline IOBUFFER_READ* GetRecvBuffer();
+		//inline IOBUFFER_READ* GetRecvBuffer();
 
 		// Process network control message
-		HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl );
+		Result ProcNetCtrl( const MsgNetCtrl* pNetCtrl );
 
 		virtual INetIOCallBack* GetIOCallback() override { return this; }
 
 
 		/////////////////////////////////////////////////////////////////////////////////////////////
-		// callback
+		// INetIOCallBack
 
+		//virtual SharedObject* AsSharedObject() override { return this; }
 
-		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
+		virtual Result Recv(IOBUFFER_READ* pIOBuffer) override;
 
 		// called when reciving TCP message
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
+		virtual Result OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
-		virtual HRESULT OnSendReady() override;
+		virtual Result OnSendReady() override;
 
 		// called when Send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
+		virtual Result OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 
 		// Pending recv New one
-		HRESULT PendingRecv();
+		Result PendingRecv();
 		
 		// Clear Queue
-		virtual HRESULT ClearQueues();
+		virtual Result ClearQueues() override;
 
 
 		// Called on connection result
-		virtual void OnConnectionResult( HRESULT hrConnect );
+		virtual void OnConnectionResult( Result hrConnect ) override;
 
 		// Initialize connection
-		virtual HRESULT InitConnection( SOCKET socket, const ConnectionInformation &connectInfo );
+		virtual Result InitConnection( SOCKET socket, const ConnectionInformation &connectInfo ) override;
 
-		HRESULT Connect();
+		Result Connect();
 
-		virtual HRESULT WaitConnect();
+		virtual Result WaitConnect();
 
 		// Close connection
-		virtual HRESULT CloseConnection() override;
+		virtual Result CloseConnection() override;
 
 		virtual void CloseSocket() override;
 
 		// called when incomming message occure
-		virtual HRESULT OnRecv(UINT uiBuffSize, const BYTE* pBuff) override;
-		virtual HRESULT OnRecv(Message::MessageData *pMsg) override;
+		virtual Result OnRecv(UINT uiBuffSize, const BYTE* pBuff) override;
+		virtual Result OnRecv(Message::MessageData *pMsg) override;
 
 		// Send message to connected entity
-		virtual HRESULT Send(Message::MessageData* &pMsg) override;
+		virtual Result Send(Message::MessageData* &pMsg) override;
 
-		virtual HRESULT SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0) override;
+		virtual Result SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0) override;
 
 
 		// Update send queue, Reliable UDP
-		virtual HRESULT UpdateSendQueue() override;
+		virtual Result UpdateSendQueue() override;
 		// Update Send buffer Queue, TCP and UDP client connection
-		virtual HRESULT UpdateSendBufferQueue() override;
+		virtual Result UpdateSendBufferQueue() override;
 	};
 
 
@@ -146,13 +147,13 @@ namespace Net {
 		~ConnectionTCPClient();
 		
 		// Initialize connection
-		virtual HRESULT InitConnection( SOCKET socket, const ConnectionInformation &connectInfo );
+		virtual Result InitConnection( SOCKET socket, const ConnectionInformation &connectInfo ) override;
 
 		// Wait connection event
-		HRESULT WaitConnect();
+		Result WaitConnect() override;
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl() override;
+		virtual Result UpdateNetCtrl() override;
 
 	};
 
@@ -174,7 +175,7 @@ namespace Net {
 		~ConnectionTCPServer();
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl() override;
+		virtual Result UpdateNetCtrl() override;
 
 	};
 
@@ -196,10 +197,10 @@ namespace Net {
 		ConnectionPeerTCP();
 		~ConnectionPeerTCP();
 
-		virtual void OnConnectionResult(HRESULT hrConnect) override;
+		virtual void OnConnectionResult(Result hrConnect) override;
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl() override;
+		virtual Result UpdateNetCtrl() override;
 
 	};
 

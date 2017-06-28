@@ -167,7 +167,7 @@
 # include <openssl/engine.h>
 #endif
 
-static int ca_dn_cmp(const X509_NAME *const *a, const X509_NAME *const *b);
+static int ca_dn_cmp(const SSL_X509_NAME *const *a, const SSL_X509_NAME *const *b);
 
 #ifndef OPENSSL_NO_SSL3_METHOD
 static const SSL_METHOD *ssl3_get_client_method(int ver)
@@ -1973,10 +1973,10 @@ int ssl3_get_certificate_request(SSL *s)
     int ok, ret = 0;
     unsigned long n, nc, l;
     unsigned int llen, ctype_num, i;
-    X509_NAME *xn = NULL;
+    SSL_X509_NAME *xn = NULL;
     const unsigned char *p, *q;
     unsigned char *d;
-    STACK_OF(X509_NAME) *ca_sk = NULL;
+    STACK_OF(SSL_X509_NAME) *ca_sk = NULL;
 
     n = s->method->ssl_get_message(s,
                                    SSL3_ST_CR_CERT_REQ_A,
@@ -2135,18 +2135,18 @@ int ssl3_get_certificate_request(SSL *s)
     s->s3->tmp.cert_req = 1;
     s->s3->tmp.ctype_num = ctype_num;
     if (s->s3->tmp.ca_names != NULL)
-        sk_X509_NAME_pop_free(s->s3->tmp.ca_names, X509_NAME_free);
+        sk_X509_NAME_pop_free(s->s3->tmp.ca_names, SSL_X509_NAME_free);
     s->s3->tmp.ca_names = ca_sk;
     ca_sk = NULL;
 
     ret = 1;
  err:
     if (ca_sk != NULL)
-        sk_X509_NAME_pop_free(ca_sk, X509_NAME_free);
+        sk_X509_NAME_pop_free(ca_sk, SSL_X509_NAME_free);
     return (ret);
 }
 
-static int ca_dn_cmp(const X509_NAME *const *a, const X509_NAME *const *b)
+static int ca_dn_cmp(const SSL_X509_NAME *const *a, const SSL_X509_NAME *const *b)
 {
     return (X509_NAME_cmp(*a, *b));
 }

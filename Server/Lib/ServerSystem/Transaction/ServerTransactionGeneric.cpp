@@ -46,17 +46,17 @@ namespace Svr {
 	{
 	}
 
-	HRESULT EntityServerStartedTrans::OnGetClusterMemberList(Svr::TransactionResult* pRes)
+	Result EntityServerStartedTrans::OnGetClusterMemberList(Svr::TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::ClusterServer::GetClusterMemberListRes msgRes;
 		Svr::ServerEntity *pServerEntity = nullptr;
 		ServerEntityManager *pServerEntityManager = BrServer::GetInstance()->GetComponent<Svr::ServerEntityManager>();
 		ClusterManagerServiceEntity *pClusterManagerEntity = BrServer::GetInstance()->GetComponent<Svr::ClusterManagerServiceEntity>();
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
-		svrChk( msgRes.ParseIMsg( ((Svr::MessageResult*)pRes)->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( ((Svr::MessageResult*)pRes)->GetMessage() ) );
 
 
 		// Update service information with master's one
@@ -80,13 +80,13 @@ namespace Svr {
 
 	Proc_End:
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 		// Start Transaction
-	HRESULT EntityServerStartedTrans::StartTransaction()
+	Result EntityServerStartedTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::ServerServiceInformation *pService = nullptr;
 		const BR::ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
 		Svr::ClusterManagerServiceEntity *pClusterManagerEntity = nullptr;
@@ -111,7 +111,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr;

@@ -172,11 +172,11 @@ ConnectionManagerT<ConnectionType>::ConnectionManagerT( UINT uiBucketSize )
 
 // Initialize Manager
 template< class ConnectionType >
-HRESULT ConnectionManagerT<ConnectionType>::InitManager( UINT poolCacheCount )
+Result ConnectionManagerT<ConnectionType>::InitManager( UINT poolCacheCount )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
-	//if( FAILED( hr = m_ConnectionPool.PoolCache( poolCacheCount ) ) )
+	//if( !( hr = m_ConnectionPool.PoolCache( poolCacheCount ) ) )
 	//	return hr;
 
 	Start();

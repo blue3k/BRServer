@@ -76,7 +76,7 @@ namespace BR {
 			void RegisterToClient();
 
 			// counterName should be global constant
-			HRESULT AddCounter(PerformanceCounter* pCounter);
+			Result AddCounter(PerformanceCounter* pCounter);
 		};
 
 

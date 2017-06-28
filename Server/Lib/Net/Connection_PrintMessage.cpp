@@ -41,7 +41,7 @@
 #include "Protocol/Message/GameInstanceMsgDebug.h"
 #include "Protocol/Message/GameInstanceManagerMsgDebug.h"
 #include "Protocol/Message/GamePartyManagerMsgDebug.h"
-#include "Protocol/Message/RankingMsgDebug.h"
+#include "Protocol/Message/RankingServerMsgDebug.h"
 #include "Protocol/Message/MonitoringMsgDebug.h"
 
 
@@ -65,7 +65,7 @@ namespace Net {
 		Message::Debug::RegisterDebugTracePartyMatchingQueue( );
 		Message::Debug::RegisterDebugTraceGameInstance();
 		Message::Debug::RegisterDebugTraceGameInstanceManager();
-		Message::Debug::RegisterDebugTraceRanking();
+		Message::Debug::RegisterDebugTraceRankingServer();
 		Message::Debug::RegisterDebugTraceMonitoring();
 	}
 
@@ -136,9 +136,9 @@ namespace Net {
 		case POLICY_SVR_GAMEPARTYMANAGER:
 			Message::Debug::DebugOutGamePartyManager(strPrefix, pMsg);
 			break;
-		case POLICY_RANKING:
-		case POLICY_SVR_RANKING:
-			Message::Debug::DebugOutRanking(strPrefix, pMsg);
+		case POLICY_RANKINGSERVER:
+		case POLICY_SVR_RANKINGSERVER:
+			Message::Debug::DebugOutRankingServer(strPrefix, pMsg);
 			break;
 		case POLICY_MONITORING:
 		case POLICY_SVR_MONITORING:

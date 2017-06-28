@@ -17,7 +17,7 @@
 //
 
 // Add network event to queue
-HRESULT Client::EnqueueNetEvent( INet::Event& evt )
+Result Client::EnqueueNetEvent( INet::Event& evt )
 {
 	return m_NetEventQueue.Enqueue( evt );
 }

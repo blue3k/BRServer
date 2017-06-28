@@ -35,31 +35,31 @@ namespace BR
 			{}
 
 			// Cmd: Register match by party
-			virtual HRESULT RegisterPartyMatchingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result RegisterPartyMatchingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket ) = 0;
 			// Cmd: Register match alone
-			virtual HRESULT RegisterPlayerMatchingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result RegisterPlayerMatchingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket ) = 0;
 			// Cmd: update registration information
-			virtual HRESULT UpdateMatchingEntityUIDRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result UpdateMatchingEntityUIDRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// Cmd: calcel registration
-			virtual HRESULT UnregisterMatchingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result UnregisterMatchingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: For some reason, matching is canceled
-			virtual HRESULT PartyMatchingCanceledS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result PartyMatchingCanceledS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket ) = 0;
 			// S2C: For some reason, matching is canceled
-			virtual HRESULT PlayerMatchingCanceledS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result PlayerMatchingCanceledS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket ) = 0;
 			// S2C: Enqueued item is dequeued
-			virtual HRESULT PartyMatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result PartyMatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
 			// S2C: Enqueued item is dequeued
-			virtual HRESULT PlayerMatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result PlayerMatchingItemDequeuedS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
 			// Cmd: Reserve a item
-			virtual HRESULT ReserveItemRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result ReserveItemRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket ) = 0;
 			// Cmd: Reserve a item
-			virtual HRESULT ReserveItemsRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<UINT32>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket ) = 0;
+			virtual Result ReserveItemsRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<uint32_t>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket ) = 0;
 			// Cmd: Cancel reservation
-			virtual HRESULT CancelReservationRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result CancelReservationRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// Cmd: Cancel reservation
-			virtual HRESULT CancelReservationsRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result CancelReservationsRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// Cmd: Dequeue a reserved item
-			virtual HRESULT DequeueItemRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers ) = 0;
+			virtual Result DequeueItemRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers ) = 0;
 			// C2S: Item error you should delete it
 
 		}; // class ISvrPolicyPartyMatchingQueue : public Net::INetPolicy
@@ -75,29 +75,29 @@ namespace BR
 			{}
 
 			// Cmd: Register match by party
-			virtual HRESULT RegisterPartyMatchingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers ) = 0;
+			virtual Result RegisterPartyMatchingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers ) = 0;
 			// Cmd: Register match alone
-			virtual HRESULT RegisterPlayerMatchingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID ) = 0;
+			virtual Result RegisterPlayerMatchingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID ) = 0;
 			// Cmd: update registration information
-			virtual HRESULT UpdateMatchingEntityUIDCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID ) = 0;
+			virtual Result UpdateMatchingEntityUIDCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID ) = 0;
 			// Cmd: calcel registration
-			virtual HRESULT UnregisterMatchingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result UnregisterMatchingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
 			// S2C: For some reason, matching is canceled
 			// S2C: For some reason, matching is canceled
 			// S2C: Enqueued item is dequeued
 			// S2C: Enqueued item is dequeued
 			// Cmd: Reserve a item
-			virtual HRESULT ReserveItemCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount ) = 0;
+			virtual Result ReserveItemCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount ) = 0;
 			// Cmd: Reserve a item
-			virtual HRESULT ReserveItemsCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve ) = 0;
+			virtual Result ReserveItemsCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve ) = 0;
 			// Cmd: Cancel reservation
-			virtual HRESULT CancelReservationCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel ) = 0;
+			virtual Result CancelReservationCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel ) = 0;
 			// Cmd: Cancel reservation
-			virtual HRESULT CancelReservationsCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel ) = 0;
+			virtual Result CancelReservationsCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel ) = 0;
 			// Cmd: Dequeue a reserved item
-			virtual HRESULT DequeueItemCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result DequeueItemCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
 			// C2S: Item error you should delete it
-			virtual HRESULT MatchingItemErrorC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
+			virtual Result MatchingItemErrorC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket ) = 0;
 
 		}; // class IPolicyPartyMatchingQueue : public Net::INetPolicy
 

@@ -22,7 +22,7 @@
 #include "Common/BrBaseTypes.h"
 #include "Net/NetUtil.h"
 
-#if LINUX
+
 
 
 
@@ -124,8 +124,8 @@ namespace Net {
 		inline void SetupRecvUDP(uintptr_t iCID);
 		inline void SetupRecvTCP(uintptr_t iCID);
 
-		HRESULT SetPendingTrue();
-		HRESULT SetPendingFalse();
+		Result SetPendingTrue();
+		Result SetPendingFalse();
 	};
 
 
@@ -152,4 +152,4 @@ namespace Net {
 } // namespace BR
 
 
-#endif
+

@@ -57,11 +57,11 @@ namespace GameServer {
 		PlayerTransInviteFriend( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransInviteFriend() {}
 
-		HRESULT OnGetPlayerShardID(Svr::TransactionResult* &pRes);
-		HRESULT OnNotifyAdded(Svr::TransactionResult* &pRes);
+		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
+		Result OnNotifyAdded(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(InviteFriendRes);
 	};
@@ -82,16 +82,16 @@ namespace GameServer {
 		PlayerTransFriendAccept( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransFriendAccept() {}
 
-		HRESULT OnGetPlayerShardID(Svr::TransactionResult* &pRes);
-		HRESULT OnFriendSlotStatus(Svr::TransactionResult* &pRes);
-		HRESULT OnFriendAdded( Svr::TransactionResult* &pRes );
-		HRESULT OnFriendQuickInfo(Svr::TransactionResult* &pRes);
-		//HRESULT OnGetNickName( Svr::TransactionResult* &pRes );
+		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
+		Result OnFriendSlotStatus(Svr::TransactionResult* &pRes);
+		Result OnFriendAdded( Svr::TransactionResult* &pRes );
+		Result OnFriendQuickInfo(Svr::TransactionResult* &pRes);
+		//Result OnGetNickName( Svr::TransactionResult* &pRes );
 
-		HRESULT SendNotifyToInviter();
+		Result SendNotifyToInviter();
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(AcceptFriendRequestRes,m_NewFriend);
 	};
@@ -107,7 +107,7 @@ namespace GameServer {
 		virtual ~PlayerTransFriendAcceptedS2S() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 	
 
@@ -124,10 +124,10 @@ namespace GameServer {
 		PlayerTransRemoveFriend( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransRemoveFriend() {}
 
-		HRESULT OnRemoved( Svr::TransactionResult* &pRes );
+		Result OnRemoved( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(RemoveFriendRes, GetFriendID());
 	};
@@ -144,7 +144,7 @@ namespace GameServer {
 		virtual ~PlayerTransFriendRemovedS2S() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -166,17 +166,17 @@ namespace GameServer {
 		PlayerTransGetFriendList( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGetFriendList() {}
 
-		HRESULT OnGetList( Svr::TransactionResult* &pRes );
-		//HRESULT OnGetQuickInfo( Svr::TransactionResult* &pRes );
-		HRESULT OnGetQuickInfoWithNick(Svr::TransactionResult* &pRes);
-		HRESULT OnGetNickNames(Svr::TransactionResult* &pRes);
+		Result OnGetList( Svr::TransactionResult* &pRes );
+		//Result OnGetQuickInfo( Svr::TransactionResult* &pRes );
+		Result OnGetQuickInfoWithNick(Svr::TransactionResult* &pRes);
+		Result OnGetNickNames(Svr::TransactionResult* &pRes);
 
-		HRESULT FlushNameRequestList();
+		Result FlushNameRequestList();
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
-		virtual HRESULT CloseTransaction( HRESULT hr ) override;
+		virtual Result CloseTransaction( Result hr ) override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GetFriendListRes, m_MaxFriendSlot, m_TotalNumberOfFriends, GetStartIndex(), m_Friends);
 	};
@@ -197,12 +197,12 @@ namespace GameServer {
 		PlayerTransGiveStamina( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGiveStamina() {}
 
-		HRESULT OnSavedToDB( Svr::TransactionResult* &pRes );
-		HRESULT OnUpdateTime( Svr::TransactionResult* &pRes );
-		HRESULT OnNotifyAdded(  Svr::TransactionResult* &pRes );
+		Result OnSavedToDB( Svr::TransactionResult* &pRes );
+		Result OnUpdateTime( Svr::TransactionResult* &pRes );
+		Result OnNotifyAdded(  Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GiveStaminaRes, GetTargetPlayer(), m_TimeStamp.time_since_epoch().count());
 	};

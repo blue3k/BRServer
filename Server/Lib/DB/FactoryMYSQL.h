@@ -36,15 +36,15 @@ namespace DB {
 		virtual ~FactoryMYSQL();
 
 		// Make this factory as the DB factory
-		static HRESULT Instanciate();
+		static Result Instanciate();
 
-		virtual void ReportError( void* DBContext, HRESULT hr, const char* className );
+		virtual void ReportError( void* DBContext, Result hr, const char* className );
 
 		// initialize DB source
-		virtual HRESULT	CreateDataSource( DataSource* &pDBSource );
+		virtual Result	CreateDataSource( DataSource* &pDBSource );
 
 		// close DB source
-		virtual HRESULT	CreateSession( DataSource* pDBSource, Session* &pSession );
+		virtual Result	CreateSession( DataSource* pDBSource, Session* &pSession );
 	};
 
 } // namespace DB

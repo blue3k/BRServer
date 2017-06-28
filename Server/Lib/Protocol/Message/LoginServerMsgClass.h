@@ -38,7 +38,7 @@ namespace BR
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
@@ -62,11 +62,12 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class PlayerJoinedToGameServerCmd : public MessageBase
 
@@ -85,12 +86,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 			public:
 				PlayerJoinedToGameServerRes()
 					{}
@@ -103,15 +104,16 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class PlayerJoinedToGameServerRes : public MessageBase
 
@@ -131,7 +133,7 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
@@ -153,11 +155,12 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class KickPlayerCmd : public MessageBase
 
@@ -176,12 +179,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 			public:
 				KickPlayerRes()
 					{}
@@ -194,15 +197,16 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class KickPlayerRes : public MessageBase
 

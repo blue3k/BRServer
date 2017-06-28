@@ -35,9 +35,9 @@ namespace BR
 
 
 		// C2S: Player entered
-		HRESULT GameMasterServerService::PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName )
+		Result GameMasterServerService::PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 svrChk(GetPolicyGameMasterServer()->PlayerEnteredC2SEvt( InPlayerID, InPlayerName ) );
 
@@ -45,11 +45,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT GameMasterServerService::PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName )
+		}; // Result GameMasterServerService::PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName )
 		// C2S: Player leaved
-		HRESULT GameMasterServerService::PlayerLeavedC2SEvt( const AccountID &InPlayerID )
+		Result GameMasterServerService::PlayerLeavedC2SEvt( const AccountID &InPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 svrChk(GetPolicyGameMasterServer()->PlayerLeavedC2SEvt( InPlayerID ) );
 
@@ -57,7 +57,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT GameMasterServerService::PlayerLeavedC2SEvt( const AccountID &InPlayerID )
+		}; // Result GameMasterServerService::PlayerLeavedC2SEvt( const AccountID &InPlayerID )
 
 
 	}; // namespace Svr

@@ -44,7 +44,7 @@ namespace Svr {
 		virtual ~MonitoringTransGetInstanceList() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyMonitoring* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyMonitoring>(); }
 
@@ -66,7 +66,7 @@ namespace Svr {
 		virtual ~MonitoringTransRequestCounterValues() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyMonitoring* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyMonitoring>(); }
 

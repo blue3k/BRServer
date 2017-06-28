@@ -106,8 +106,8 @@ public class PlayerInformation : global::System.IDisposable {
   public unsafe PlayerInformation(ulong playerID, ulong fbUID, string nickName, uint level, byte isPlayingGame, ulong lastActiveTime) : this(BRMonitoringPINVOKE.new_PlayerInformation__SWIG_2(playerID, fbUID, nickName, level, isPlayingGame, lastActiveTime), true) {
   }
 
-  public unsafe int InitPlayerInformation(ulong playerID, ulong fbUID, string nickName, uint level, byte isPlayingGame, ulong lastActiveTime) {
-    int ret = BRMonitoringPINVOKE.PlayerInformation_InitPlayerInformation(swigCPtr, playerID, fbUID, nickName, level, isPlayingGame, lastActiveTime);
+  public unsafe SWIGTYPE_p_Result InitPlayerInformation(ulong playerID, ulong fbUID, string nickName, uint level, byte isPlayingGame, ulong lastActiveTime) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.PlayerInformation_InitPlayerInformation(swigCPtr, playerID, fbUID, nickName, level, isPlayingGame, lastActiveTime), true);
     return ret;
   }
 

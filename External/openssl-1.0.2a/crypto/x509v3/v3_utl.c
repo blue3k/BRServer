@@ -67,7 +67,7 @@
 
 static char *strip_spaces(char *name);
 static int sk_strcmp(const char *const *a, const char *const *b);
-static STACK_OF(OPENSSL_STRING) *get_email(X509_NAME *name,
+static STACK_OF(OPENSSL_STRING) *get_email(SSL_X509_NAME *name,
                                            GENERAL_NAMES *gens);
 static void str_free(OPENSSL_STRING str);
 static int append_ia5(STACK_OF(OPENSSL_STRING) **sk, ASN1_IA5STRING *email);
@@ -566,7 +566,7 @@ STACK_OF(OPENSSL_STRING) *X509_REQ_get1_email(X509_REQ *x)
     return ret;
 }
 
-static STACK_OF(OPENSSL_STRING) *get_email(X509_NAME *name,
+static STACK_OF(OPENSSL_STRING) *get_email(SSL_X509_NAME *name,
                                            GENERAL_NAMES *gens)
 {
     STACK_OF(OPENSSL_STRING) *ret = NULL;
@@ -576,7 +576,7 @@ static STACK_OF(OPENSSL_STRING) *get_email(X509_NAME *name,
     int i;
     /* Now add any email address(es) to STACK */
     i = -1;
-    /* First supplied X509_NAME */
+    /* First supplied SSL_X509_NAME */
     while ((i = X509_NAME_get_index_by_NID(name,
                                            NID_pkcs9_emailAddress, i)) >= 0) {
         ne = X509_NAME_get_entry(name, i);
@@ -920,7 +920,7 @@ static int do_x509_check(X509 *x, const char *chk, size_t chklen,
                          unsigned int flags, int check_type, char **peername)
 {
     GENERAL_NAMES *gens = NULL;
-    X509_NAME *name = NULL;
+    SSL_X509_NAME *name = NULL;
     int i;
     int cnid;
     int alt_type;
@@ -1294,7 +1294,7 @@ static int ipv6_hex(unsigned char *out, const char *in, int inlen)
     return 1;
 }
 
-int X509V3_NAME_from_section(X509_NAME *nm, STACK_OF(CONF_VALUE) *dn_sk,
+int X509V3_NAME_from_section(SSL_X509_NAME *nm, STACK_OF(CONF_VALUE) *dn_sk,
                              unsigned long chtype)
 {
     CONF_VALUE *v;

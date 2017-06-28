@@ -217,6 +217,9 @@ namespace BR {
 		// Target already in friends list 
 		public const int E_ALREADY_IN_FRIEND =                              unchecked((int)0xE7020041); 
 
+		// Thread is wrong, running on wrong thread? 
+		public const int E_INVALID_THREAD =                                 unchecked((int)0xE7020042); 
+
 	}
 }
 

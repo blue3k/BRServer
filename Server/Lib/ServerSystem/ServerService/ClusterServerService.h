@@ -33,27 +33,27 @@ namespace BR
 			ClusterServerService ( ServerServiceInformation* pService );
 
 			// Cmd: Cluster member list query
-			HRESULT GetClusterMemberListCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID );
+			Result GetClusterMemberListCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 			// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
-			HRESULT JoinClusterCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership );
+			Result JoinClusterCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership );
 			// C2S: Do not let it broadcasted while it's manual broadcast packet
-			HRESULT NewServerServiceJoinedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership );
+			Result NewServerServiceJoinedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership );
 			// C2S: Sync cluster service informations
-			HRESULT SyncClusterServiceC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList );
+			Result SyncClusterServiceC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList );
 			// Cmd: Join to the cluster
-			HRESULT RequestDataSyncCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID );
+			Result RequestDataSyncCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 			// C2S: Master vote
-			HRESULT ClusterMasterVoteC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime );
+			Result ClusterMasterVoteC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const uint64_t &InVotedUpTime );
 			// C2S: Update cluster service status
-			HRESULT ClusterUpdateStatusC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus );
+			Result ClusterUpdateStatusC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus );
 			// C2S: Update cluster service workload
-			HRESULT ClusterUpdateWorkloadC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload );
+			Result ClusterUpdateWorkloadC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload );
 			// Cmd: Get lowest workloaded cluster member
-			HRESULT GetLowestWorkloadClusterMemberCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID );
+			Result GetLowestWorkloadClusterMemberCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 			// C2S: Called when a player entity is created
-			HRESULT GamePlayerEntityCreatedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
+			Result GamePlayerEntityCreatedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
 			// C2S: Called when a player entity is deleted
-			HRESULT GamePlayerEntityDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
+			Result GamePlayerEntityDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
 
 		}; // class ClusterServerService : public ServerServiceBase
 

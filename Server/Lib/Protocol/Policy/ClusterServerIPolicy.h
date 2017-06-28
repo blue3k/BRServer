@@ -35,20 +35,20 @@ namespace BR
 			{}
 
 			// Cmd: Cluster member list query
-			virtual HRESULT GetClusterMemberListRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList ) = 0;
+			virtual Result GetClusterMemberListRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList ) = 0;
 			// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
-			virtual HRESULT JoinClusterRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList ) = 0;
+			virtual Result JoinClusterRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList ) = 0;
 			// C2S: Do not let it broadcasted while it's manual broadcast packet
 			// C2S: Sync cluster service informations
 			// Cmd: Join to the cluster
-			virtual HRESULT RequestDataSyncRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result RequestDataSyncRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: Master instance of the cluster is assigned
-			virtual HRESULT ClusterMasterAssignedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID ) = 0;
+			virtual Result ClusterMasterAssignedS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID ) = 0;
 			// C2S: Master vote
 			// C2S: Update cluster service status
 			// C2S: Update cluster service workload
 			// Cmd: Get lowest workloaded cluster member
-			virtual HRESULT GetLowestWorkloadClusterMemberRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const ServiceInformation &InMember ) = 0;
+			virtual Result GetLowestWorkloadClusterMemberRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember ) = 0;
 			// C2S: Called when a player entity is created
 			// C2S: Called when a player entity is deleted
 
@@ -65,28 +65,28 @@ namespace BR
 			{}
 
 			// Cmd: Cluster member list query
-			virtual HRESULT GetClusterMemberListCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID ) = 0;
+			virtual Result GetClusterMemberListCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID ) = 0;
 			// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
-			virtual HRESULT JoinClusterCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership ) = 0;
+			virtual Result JoinClusterCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership ) = 0;
 			// C2S: Do not let it broadcasted while it's manual broadcast packet
-			virtual HRESULT NewServerServiceJoinedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership ) = 0;
+			virtual Result NewServerServiceJoinedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership ) = 0;
 			// C2S: Sync cluster service informations
-			virtual HRESULT SyncClusterServiceC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList ) = 0;
+			virtual Result SyncClusterServiceC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList ) = 0;
 			// Cmd: Join to the cluster
-			virtual HRESULT RequestDataSyncCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID ) = 0;
+			virtual Result RequestDataSyncCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID ) = 0;
 			// S2C: Master instance of the cluster is assigned
 			// C2S: Master vote
-			virtual HRESULT ClusterMasterVoteC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime ) = 0;
+			virtual Result ClusterMasterVoteC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const uint64_t &InVotedUpTime ) = 0;
 			// C2S: Update cluster service status
-			virtual HRESULT ClusterUpdateStatusC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus ) = 0;
+			virtual Result ClusterUpdateStatusC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus ) = 0;
 			// C2S: Update cluster service workload
-			virtual HRESULT ClusterUpdateWorkloadC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload ) = 0;
+			virtual Result ClusterUpdateWorkloadC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload ) = 0;
 			// Cmd: Get lowest workloaded cluster member
-			virtual HRESULT GetLowestWorkloadClusterMemberCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID ) = 0;
+			virtual Result GetLowestWorkloadClusterMemberCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID ) = 0;
 			// C2S: Called when a player entity is created
-			virtual HRESULT GamePlayerEntityCreatedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID ) = 0;
+			virtual Result GamePlayerEntityCreatedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID ) = 0;
 			// C2S: Called when a player entity is deleted
-			virtual HRESULT GamePlayerEntityDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID ) = 0;
+			virtual Result GamePlayerEntityDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID ) = 0;
 
 		}; // class IPolicyClusterServer : public Net::INetPolicy
 

@@ -34,7 +34,7 @@ namespace BR {
 		~LibComponentDefault();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() override;
+		virtual Result InitializeComponent() override;
 		// Terminate server component
 		virtual void TerminateComponent() override;
 	};

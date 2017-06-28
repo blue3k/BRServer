@@ -28,9 +28,9 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Register entity
-		HRESULT NetPolicyEntityServer::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
+		Result NetPolicyEntityServer::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -44,11 +44,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyEntityServer::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
+		}; // Result NetPolicyEntityServer::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 		// Cmd: Find Entity
-		HRESULT NetPolicyEntityServer::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
+		Result NetPolicyEntityServer::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -62,11 +62,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyEntityServer::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
+		}; // Result NetPolicyEntityServer::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
 		// Cmd: Find Entity
-		HRESULT NetPolicyEntityServer::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
+		Result NetPolicyEntityServer::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -80,13 +80,13 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyEntityServer::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
+		}; // Result NetPolicyEntityServer::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 
 
 		// Cmd: Register entity
-		HRESULT NetSvrPolicyEntityServer::RegisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
+		Result NetSvrPolicyEntityServer::RegisterEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -100,11 +100,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyEntityServer::RegisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
+		}; // Result NetSvrPolicyEntityServer::RegisterEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID )
 		// Cmd: Find Entity
-		HRESULT NetSvrPolicyEntityServer::UnregisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyEntityServer::UnregisterEntityRes( const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -118,11 +118,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyEntityServer::UnregisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyEntityServer::UnregisterEntityRes( const TransactionID &InTransactionID, const Result &InResult )
 		// Cmd: Find Entity
-		HRESULT NetSvrPolicyEntityServer::FindEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
+		Result NetSvrPolicyEntityServer::FindEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -136,7 +136,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyEntityServer::FindEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID )
+		}; // Result NetSvrPolicyEntityServer::FindEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID )
 
 
 	}; // namespace Policy

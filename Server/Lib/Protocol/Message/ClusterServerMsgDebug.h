@@ -29,7 +29,7 @@ namespace BR
 			// ClusterServer Debug output function 
 
 			void RegisterDebugTraceClusterServer();
-			HRESULT DebugOutClusterServer( const char*Prefix, MessageData*pMsg );
+			Result DebugOutClusterServer( const char*Prefix, MessageData*pMsg );
 
 
 

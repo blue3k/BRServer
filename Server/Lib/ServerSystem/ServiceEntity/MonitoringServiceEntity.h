@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/PageQueue.h"
 #include "Common/LocalUIDGenerator.h"
@@ -63,15 +63,15 @@ namespace Svr {
 		//	Entity operations
 		//
 
-		HRESULT InitializeEntity( EntityID newEntityID );
+		Result InitializeEntity( EntityID newEntityID );
 
 		// clear transaction
-		virtual HRESULT ClearEntity();
+		virtual Result ClearEntity();
 
-		virtual HRESULT RegisterServiceMessageHandler(ServerEntity *pServerEntity) override;
+		virtual Result RegisterServiceMessageHandler(ServerEntity *pServerEntity) override;
 
 		// TickUpdate 
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		//////////////////////////////////////////////////////////////////////////

@@ -12,7 +12,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "ServerSystem/TimeScheduler.h"
+#include "Common/Task/TimeScheduler.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/Transaction.h"
 #include "Common/MemoryPool.h"

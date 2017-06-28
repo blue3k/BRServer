@@ -1637,7 +1637,7 @@ static int do_body(X509 **xret, EVP_PKEY *pkey, X509 *x509,
                    CONF *lconf, unsigned long certopt, unsigned long nameopt,
                    int default_op, int ext_copy, int selfsign)
 {
-    X509_NAME *name = NULL, *CAname = NULL, *subject = NULL, *dn_subject =
+    SSL_X509_NAME *name = NULL, *CAname = NULL, *subject = NULL, *dn_subject =
         NULL;
     ASN1_UTCTIME *tm, *tmptm;
     ASN1_STRING *str, *str2;
@@ -1665,7 +1665,7 @@ static int do_body(X509 **xret, EVP_PKEY *pkey, X509 *x509,
         row[i] = NULL;
 
     if (subj) {
-        X509_NAME *n = parse_name(subj, chtype, multirdn);
+        SSL_X509_NAME *n = parse_name(subj, chtype, multirdn);
 
         if (!n) {
             ERR_print_errors(bio_err);
@@ -1673,7 +1673,7 @@ static int do_body(X509 **xret, EVP_PKEY *pkey, X509 *x509,
         }
         X509_REQ_set_subject_name(req, n);
         req->req_info->enc.modified = 1;
-        X509_NAME_free(n);
+        SSL_X509_NAME_free(n);
     }
 
     if (default_op)
@@ -1838,7 +1838,7 @@ static int do_body(X509 **xret, EVP_PKEY *pkey, X509 *x509,
     }
 
     if (preserve) {
-        X509_NAME_free(subject);
+        SSL_X509_NAME_free(subject);
         /* subject=X509_NAME_dup(X509_REQ_get_subject_name(req)); */
         subject = X509_NAME_dup(name);
         if (subject == NULL)
@@ -2155,11 +2155,11 @@ static int do_body(X509 **xret, EVP_PKEY *pkey, X509 *x509,
             OPENSSL_free(row[i]);
 
     if (CAname != NULL)
-        X509_NAME_free(CAname);
+        SSL_X509_NAME_free(CAname);
     if (subject != NULL)
-        X509_NAME_free(subject);
+        SSL_X509_NAME_free(subject);
     if ((dn_subject != NULL) && !email_dn)
-        X509_NAME_free(dn_subject);
+        SSL_X509_NAME_free(dn_subject);
     if (tmptm != NULL)
         ASN1_UTCTIME_free(tmptm);
     if (ok <= 0) {
@@ -2214,7 +2214,7 @@ static int certify_spkac(X509 **xret, char *infile, EVP_PKEY *pkey,
     X509_REQ_INFO *ri;
     char *type, *buf;
     EVP_PKEY *pktmp = NULL;
-    X509_NAME *n = NULL;
+    SSL_X509_NAME *n = NULL;
     X509_NAME_ENTRY *ne = NULL;
     int ok = -1, i, j;
     long errline;

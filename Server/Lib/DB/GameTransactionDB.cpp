@@ -49,9 +49,9 @@ namespace DB {
 	//
 
 	// Add game log
-	HRESULT GameTransactionDB::AddGameLog(UINT shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage)
+	Result GameTransactionDB::AddGameLog(UINT shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryAddGameLogCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryAddGameLogCmd);
@@ -74,7 +74,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;

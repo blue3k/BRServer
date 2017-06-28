@@ -64,7 +64,7 @@
 #include <openssl/evp.h>
 #include <openssl/x509.h>
 
-int X509_NAME_get_text_by_NID(X509_NAME *name, int nid, char *buf, int len)
+int X509_NAME_get_text_by_NID(SSL_X509_NAME *name, int nid, char *buf, int len)
 {
     ASN1_OBJECT *obj;
 
@@ -74,7 +74,7 @@ int X509_NAME_get_text_by_NID(X509_NAME *name, int nid, char *buf, int len)
     return (X509_NAME_get_text_by_OBJ(name, obj, buf, len));
 }
 
-int X509_NAME_get_text_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj, char *buf,
+int X509_NAME_get_text_by_OBJ(SSL_X509_NAME *name, ASN1_OBJECT *obj, char *buf,
                               int len)
 {
     int i;
@@ -92,14 +92,14 @@ int X509_NAME_get_text_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj, char *buf,
     return (i);
 }
 
-int X509_NAME_entry_count(X509_NAME *name)
+int X509_NAME_entry_count(SSL_X509_NAME *name)
 {
     if (name == NULL)
         return (0);
     return (sk_X509_NAME_ENTRY_num(name->entries));
 }
 
-int X509_NAME_get_index_by_NID(X509_NAME *name, int nid, int lastpos)
+int X509_NAME_get_index_by_NID(SSL_X509_NAME *name, int nid, int lastpos)
 {
     ASN1_OBJECT *obj;
 
@@ -110,7 +110,7 @@ int X509_NAME_get_index_by_NID(X509_NAME *name, int nid, int lastpos)
 }
 
 /* NOTE: you should be passsing -1, not 0 as lastpos */
-int X509_NAME_get_index_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj, int lastpos)
+int X509_NAME_get_index_by_OBJ(SSL_X509_NAME *name, ASN1_OBJECT *obj, int lastpos)
 {
     int n;
     X509_NAME_ENTRY *ne;
@@ -130,7 +130,7 @@ int X509_NAME_get_index_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj, int lastpos)
     return (-1);
 }
 
-X509_NAME_ENTRY *X509_NAME_get_entry(X509_NAME *name, int loc)
+X509_NAME_ENTRY *X509_NAME_get_entry(SSL_X509_NAME *name, int loc)
 {
     if (name == NULL || sk_X509_NAME_ENTRY_num(name->entries) <= loc
         || loc < 0)
@@ -139,7 +139,7 @@ X509_NAME_ENTRY *X509_NAME_get_entry(X509_NAME *name, int loc)
         return (sk_X509_NAME_ENTRY_value(name->entries, loc));
 }
 
-X509_NAME_ENTRY *X509_NAME_delete_entry(X509_NAME *name, int loc)
+X509_NAME_ENTRY *X509_NAME_delete_entry(SSL_X509_NAME *name, int loc)
 {
     X509_NAME_ENTRY *ret;
     int i, n, set_prev, set_next;
@@ -178,7 +178,7 @@ X509_NAME_ENTRY *X509_NAME_delete_entry(X509_NAME *name, int loc)
     return (ret);
 }
 
-int X509_NAME_add_entry_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj, int type,
+int X509_NAME_add_entry_by_OBJ(SSL_X509_NAME *name, ASN1_OBJECT *obj, int type,
                                unsigned char *bytes, int len, int loc,
                                int set)
 {
@@ -192,7 +192,7 @@ int X509_NAME_add_entry_by_OBJ(X509_NAME *name, ASN1_OBJECT *obj, int type,
     return ret;
 }
 
-int X509_NAME_add_entry_by_NID(X509_NAME *name, int nid, int type,
+int X509_NAME_add_entry_by_NID(SSL_X509_NAME *name, int nid, int type,
                                unsigned char *bytes, int len, int loc,
                                int set)
 {
@@ -206,7 +206,7 @@ int X509_NAME_add_entry_by_NID(X509_NAME *name, int nid, int type,
     return ret;
 }
 
-int X509_NAME_add_entry_by_txt(X509_NAME *name, const char *field, int type,
+int X509_NAME_add_entry_by_txt(SSL_X509_NAME *name, const char *field, int type,
                                const unsigned char *bytes, int len, int loc,
                                int set)
 {
@@ -224,7 +224,7 @@ int X509_NAME_add_entry_by_txt(X509_NAME *name, const char *field, int type,
  * if set is -1, append to previous set, 0 'a new one', and 1, prepend to the
  * guy we are about to stomp on.
  */
-int X509_NAME_add_entry(X509_NAME *name, X509_NAME_ENTRY *ne, int loc,
+int X509_NAME_add_entry(SSL_X509_NAME *name, X509_NAME_ENTRY *ne, int loc,
                         int set)
 {
     X509_NAME_ENTRY *new_name = NULL;

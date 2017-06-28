@@ -50,9 +50,9 @@ namespace DB {
 	//	Account DB interface
 	//
 
-	HRESULT AccountDB::FacebookCreateUser(TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone)
+	Result AccountDB::FacebookCreateUser(TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryFacebookCreateUserCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryFacebookCreateUserCmd );
@@ -71,15 +71,15 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
-	HRESULT AccountDB::FacebookLogIn( TransactionID Sender, UINT64 facebookUID )
+	Result AccountDB::FacebookLogIn( TransactionID Sender, UINT64 facebookUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryFacebookLoginCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryFacebookLoginCmd );
@@ -99,16 +99,16 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
 	
-	HRESULT AccountDB::CreateUser( TransactionID Sender, const char* UserName, const char* Password)
+	Result AccountDB::CreateUser( TransactionID Sender, const char* UserName, const char* Password)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryCreateUserCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryCreateUserCmd );
@@ -124,15 +124,15 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
-	HRESULT AccountDB::LogIn( TransactionID Sender, const char* UserName, const char* Password)
+	Result AccountDB::LogIn( TransactionID Sender, const char* UserName, const char* Password)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryLoginCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryLoginCmd );
@@ -151,15 +151,15 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
-	HRESULT AccountDB::LogOut( TransactionID Sender)
+	Result AccountDB::LogOut( TransactionID Sender)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryLogoutCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryLogoutCmd );
@@ -171,16 +171,16 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 	
 
-	HRESULT AccountDB::CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone)
+	Result AccountDB::CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryCreateRandomUserCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryCreateRandomUserCmd);
@@ -199,15 +199,15 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
-	HRESULT AccountDB::UserList( TransactionID Sender)
+	Result AccountDB::UserList( TransactionID Sender)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryUserListCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryUserListCmd );
@@ -219,15 +219,15 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
-	HRESULT AccountDB::UpdateGCMKeys( TransactionID Sender, AccountID accountID, const char* strGCMKeys )
+	Result AccountDB::UpdateGCMKeys( TransactionID Sender, AccountID accountID, const char* strGCMKeys )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryUpdateGCMKeysCmd *pQuery = nullptr;
 
 		dbChkPtr( strGCMKeys );
@@ -244,16 +244,16 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
 
-	HRESULT AccountDB::UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone)
+	Result AccountDB::UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryUpdateUserContactInfoCmd *pQuery = nullptr;
 
 		dbChkPtr(strEMail);
@@ -271,16 +271,16 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
 	// Find player
-	HRESULT AccountDB::FindPlayerByEMail( TransactionID Sender, const char* email )
+	Result AccountDB::FindPlayerByEMail( TransactionID Sender, const char* email )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryFindPlayerByEMailCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryFindPlayerByEMailCmd );
@@ -300,15 +300,15 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
-	HRESULT AccountDB::FindPlayerByPlayerID(TransactionID Sender, AccountID accountID)
+	Result AccountDB::FindPlayerByPlayerID(TransactionID Sender, AccountID accountID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryFindPlayerByPlayerIDCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryFindPlayerByPlayerIDCmd);
@@ -327,7 +327,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
@@ -335,9 +335,9 @@ namespace DB {
 
 
 	// Player shard id
-	HRESULT AccountDB::GetPlayerShardID(TransactionID Sender, AccountID accountID)
+	Result AccountDB::GetPlayerShardID(TransactionID Sender, AccountID accountID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerShardIDCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetPlayerShardIDCmd);
@@ -354,7 +354,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;

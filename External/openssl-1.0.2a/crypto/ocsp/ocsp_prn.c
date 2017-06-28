@@ -137,7 +137,7 @@ const char *OCSP_crl_reason_str(long s)
     return table2string(s, reason_tbl, 8);
 }
 
-int OCSP_REQUEST_print(BIO *bp, OCSP_REQUEST *o, unsigned long flags)
+int OCSP_REQUEST_print(BIO *bp, SSL_OCSP_REQUEST *o, unsigned long flags)
 {
     int i;
     long l;
@@ -182,7 +182,7 @@ int OCSP_REQUEST_print(BIO *bp, OCSP_REQUEST *o, unsigned long flags)
     return 0;
 }
 
-int OCSP_RESPONSE_print(BIO *bp, OCSP_RESPONSE *o, unsigned long flags)
+int OCSP_RESPONSE_print(BIO *bp, SSL_OCSP_RESPONSE *o, unsigned long flags)
 {
     int i, ret = 0;
     long l;

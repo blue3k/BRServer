@@ -129,7 +129,7 @@ namespace ProtocolBuilder
 
                     newparams = MakeParameters(MsgType.Res, msg.Res);
                     MatchIndent(); OutStream.WriteLine(
-                        string.Format("HRESULT {0}Res( {1} );", msg.Name, ParamString(newparams)));
+                        string.Format("Result {0}Res( {1} );", msg.Name, ParamString(newparams)));
                 }
 
                 if (baseMsg is ProtocolsProtocolGroupS2CEvent)
@@ -139,7 +139,7 @@ namespace ProtocolBuilder
 
                     newparams = MakeParameters(MsgType.Evt, msg.Params);
                     MatchIndent(); OutStream.WriteLine(
-                        string.Format("HRESULT {0}S2CEvt( {1} );", msg.Name, ParamString(newparams)));
+                        string.Format("Result {0}S2CEvt( {1} );", msg.Name, ParamString(newparams)));
                 }
             }
 
@@ -169,7 +169,7 @@ namespace ProtocolBuilder
 
                     newparams = MakeParameters(MsgType.Cmd, msg.Cmd);
                     MatchIndent(); OutStream.WriteLine(
-                        string.Format("HRESULT {0}Cmd( {1} );", msg.Name, ParamInString(newparams)));
+                        string.Format("Result {0}Cmd( {1} );", msg.Name, ParamInString(newparams)));
                 }
 
                 if (baseMsg is ProtocolsProtocolGroupC2SEvent)
@@ -179,7 +179,7 @@ namespace ProtocolBuilder
 
                     newparams = MakeParameters(MsgType.Evt, msg.Params);
                     MatchIndent(); OutStream.WriteLine(
-                        string.Format("HRESULT {0}C2SEvt( {1} );", msg.Name, ParamInString(newparams)));
+                        string.Format("Result {0}C2SEvt( {1} );", msg.Name, ParamInString(newparams)));
                 }
             }
 
@@ -192,9 +192,9 @@ namespace ProtocolBuilder
         void BuildNetPolicyClassParserImpl( string Name, string typeName, Parameter[] parameters)
         {
             if((typeName == "Cmd") || (typeName == "C2SEvt"))
-                OpenSection("HRESULT", string.Format("{0}::{1}{2}( {3} )", PolicyClassName, Name, typeName, ParamInString(parameters)));
+                OpenSection("Result", string.Format("{0}::{1}{2}( {3} )", PolicyClassName, Name, typeName, ParamInString(parameters)));
             else
-                OpenSection("HRESULT", string.Format("{0}::{1}{2}( {3} )", SvrPolicyClassName, Name, typeName, ParamInString(parameters)));
+                OpenSection("Result", string.Format("{0}::{1}{2}( {3} )", SvrPolicyClassName, Name, typeName, ParamInString(parameters)));
             
             DefaultHRESULT(); NewLine();
 

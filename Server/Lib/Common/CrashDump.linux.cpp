@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 
-#if LINUX
+#if LINUX || ANDROID
 
 #include "Common/StrUtil.h"
 #include "Common/TimeUtil.h"

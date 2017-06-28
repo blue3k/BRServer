@@ -66,9 +66,9 @@ namespace Net {
 
 	
 	// Make Ack packet and enqueue to SendNetCtrlqueue
-	HRESULT ConnectionMUDP::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	Result ConnectionMUDP::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_SYSTEM_OK, hrTem = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrTem = ResultCode::SUCCESS;
 
 		MsgMobileNetCtrl *pNetCtrl = nullptr;
 		Message::MessageData *pMsg = nullptr;
@@ -77,7 +77,7 @@ namespace Net {
 
 		pNetCtrl = (MsgMobileNetCtrl*)pMsg->GetMessageBuff();
 		pNetCtrl->PeerID = UID;
-		pNetCtrl->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrl->msgID.SetSequence(uiSequence);
 		pNetCtrl->rtnMsgID = msgID;
 
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = true;
@@ -86,7 +86,7 @@ namespace Net {
 
 		hrTem = SendRaw(pMsg);
 		//hrTem = GetNet()->SendMsg( this, pMsg );
-		if( FAILED(hrTem) )
+		if( !(hrTem) )
 		{
 			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							GetCID(), 
@@ -95,7 +95,7 @@ namespace Net {
 							hrTem );
 
 			// ignore io send fail except connection closed
-			if( hrTem == ((HRESULT)E_NET_CONNECTION_CLOSED) )
+			if( hrTem == ((Result)ResultCode::E_NET_CONNECTION_CLOSED) )
 			{
 				goto Proc_End;
 			}
@@ -103,7 +103,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hrTem))
+		if (!(hrTem))
 		{
 			netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}",
 				GetCID(),
@@ -116,16 +116,16 @@ namespace Net {
 	}
 
 	// Process network control message
-	HRESULT ConnectionMUDP::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
+	Result ConnectionMUDP::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
 	{
-		HRESULT hr = S_SYSTEM_OK;
-		HRESULT hrTem = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
+		Result hrTem = ResultCode::SUCCESS;
 
 		if (pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl))
 		{
 			netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
 			netChk(Disconnect("Invalid packet"));
-			netErr(E_NET_BADPACKET_NOTEXPECTED);
+			netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 		}
 
 		switch (pNetCtrl->msgID.IDs.MsgCode)
@@ -146,13 +146,13 @@ namespace Net {
 					if (GetConnectionState() == IConnection::STATE_CONNECTING
 						&& m_ConnectInfo.RemoteClass != NetClass::Unknown)
 					{
-						OnConnectionResult(S_SYSTEM_OK);
+						OnConnectionResult(ResultCode::SUCCESS);
 					}
 					break;
 				default:
 					netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
 					netChk(Disconnect("Invalid packet"));
-					netErr(E_NET_BADPACKET_NOTEXPECTED);
+					netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 					break;
 				};
 			}
@@ -160,7 +160,7 @@ namespace Net {
 			{
 				netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
 				netChk(Disconnect("Invalid packet"));
-				netErr(E_NET_BADPACKET_NOTEXPECTED);
+				netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 			}
 			break;
 		case NetCtrlCode_Nack:
@@ -172,7 +172,7 @@ namespace Net {
 					if (GetConnectionState() == IConnection::STATE_CONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
 					{
 						// Protocol version mismatch
-						OnConnectionResult(E_NET_PROTOCOL_VERSION_MISMATCH);
+						OnConnectionResult(ResultCode::E_NET_PROTOCOL_VERSION_MISMATCH);
 					}
 					netChk(Disconnect("Protocal mismatch"));
 					break;
@@ -193,13 +193,13 @@ namespace Net {
 
 			MsgMobileNetCtrlSync *pSyncCtrl = (MsgMobileNetCtrlSync*)pNetCtrl;
 			if (pSyncCtrl->Length != sizeof(MsgMobileNetCtrlSync))
-				netErr(E_NET_BADPACKET_SIZE);
+				netErr(ResultCode::E_NET_BADPACKET_SIZE);
 
 			hrTem = m_SendReliableWindow.ReleaseMsg(pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask);
 			netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Recv SendReliableMask : CID:{0}:{1}, seq:{2}, mask:{3:X8}, hr={4:X8}",
 				GetCID(), m_SendReliableWindow.GetBaseSequence(), pSyncCtrl->msgID.IDSeq.Sequence, pSyncCtrl->MessageMask, hrTem);
 
-			if (hrTem == E_SYSTEM_UNEXPECTED)
+			if (hrTem == Result(ResultCode::UNEXPECTED))
 				CloseConnection();
 
 			netChk(hrTem);
@@ -220,14 +220,14 @@ namespace Net {
 				if (ProtocolVersion != BR_PROTOCOL_VERSION)
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
-					OnConnectionResult(E_NET_PROTOCOL_VERSION_MISMATCH);
+					OnConnectionResult(ResultCode::E_NET_PROTOCOL_VERSION_MISMATCH);
 					netChk(Disconnect("Protocol mismatch"));
 					break;
 				}
 				else if (GetConnectionInfo().RemoteClass != NetClass::Unknown && RemoteClass != GetConnectionInfo().RemoteClass)
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
-					OnConnectionResult(E_NET_INVALID_NETCLASS);
+					OnConnectionResult(ResultCode::E_NET_INVALID_NETCLASS);
 					netChk(Disconnect("Invalid netclass"));
 					break;
 				}
@@ -238,7 +238,7 @@ namespace Net {
 				m_ConnectInfo.SetRemoteInfo(RemoteClass, pNetCtrl->PeerID);
 
 				// Set connection is succeeded and connected
-				OnConnectionResult(S_SYSTEM_OK);
+				OnConnectionResult(ResultCode::SUCCESS);
 				break;
 			case IConnection::STATE_CONNECTED:
 				netChk(SendNetCtrl(PACKET_NETCTRL_ACK, (UINT)GetConnectionInfo().LocalClass, pNetCtrl->msgID, GetConnectionInfo().LocalID));
@@ -259,7 +259,7 @@ namespace Net {
 		default:
 			netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
 			netChk(CloseConnection());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netErr(ResultCode::UNEXPECTED);
 			break;
 		};
 
@@ -270,15 +270,15 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionMUDP::InitConnection(SOCKET socket, const ConnectionInformation &connectInfo)
+	Result ConnectionMUDP::InitConnection(SOCKET socket, const ConnectionInformation &connectInfo)
 	{
 		return ConnectionUDPBase::InitConnection(socket, connectInfo);
 	}
 
 	// called when incomming message occure
-	HRESULT ConnectionMUDP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
+	Result ConnectionMUDP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pMsg = NULL;
 		Message::MobileMessageHeader * pMsgHeader = (Message::MobileMessageHeader*)pBuff;
 
@@ -307,7 +307,7 @@ namespace Net {
 			if( uiBuffSize < sizeof(Message::MobileMessageHeader) || uiBuffSize < pMsgHeader->Length )
 			{
 				netTrace( Trace::TRC_ERROR, "Unexpected packet buffer size:{0}, size in header:{1}", uiBuffSize, pMsgHeader->Length );
-				netErr( E_NET_BADPACKET_SIZE );
+				netErr( ResultCode::E_NET_BADPACKET_SIZE );
 			}
 
 #ifdef UDP_PACKETLOS_EMULATE
@@ -342,7 +342,7 @@ namespace Net {
 						// Sending normal message packet without connection process.
 						// Disconnect them
 						netChk(Disconnect("Invalid packet type"));
-						netErr(E_NET_BADPACKET_NOTEXPECTED);
+						netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 					}
 				}
 			}
@@ -362,9 +362,9 @@ namespace Net {
 	}
 
 
-	HRESULT ConnectionMUDP::OnRecv( Message::MessageData *pMsg )
+	Result ConnectionMUDP::OnRecv( Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
 
 		if (GetConnectionState() != IConnection::STATE_CONNECTED)
@@ -403,7 +403,7 @@ namespace Net {
 
 		Util::SafeRelease( pMsg );
 
-		if( FAILED( hr ) )
+		if( !( hr ) )
 		{
 			CloseConnection();
 		}
@@ -413,9 +413,9 @@ namespace Net {
 	
 
 	// gathering
-	HRESULT ConnectionMUDP::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	Result ConnectionMUDP::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		MsgMobileNetCtrl *pNetCtrlMsg = nullptr;
 
@@ -423,15 +423,14 @@ namespace Net {
 
 		pNetCtrlMsg = (MsgMobileNetCtrl*)(m_pGatheringBuffer+m_uiGatheredSize);
 		pNetCtrlMsg->msgID.ID = uiCtrlCode;
-		pNetCtrlMsg->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrlMsg->msgID.SetSequence( uiSequence);
 		pNetCtrlMsg->rtnMsgID = msgID;
 		pNetCtrlMsg->PeerID = UID;
 
 		pNetCtrlMsg->msgID.IDs.Mobile = true;
 		pNetCtrlMsg->Length = sizeof(MsgMobileNetCtrl);
 
-		pNetCtrlMsg->Crc32 = Util::Crc32( sizeof(MsgMobileNetCtrl) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) );
-		if( pNetCtrlMsg->Crc32 == 0 ) pNetCtrlMsg->Crc32 = ~pNetCtrlMsg->Crc32;
+		pNetCtrlMsg->SetCrc(Util::Crc32( sizeof(MsgMobileNetCtrl) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) ));
 
 		m_uiGatheredSize += pNetCtrlMsg->Length;
 
@@ -441,24 +440,23 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionMUDP::SendSync( UINT uiSequence, UINT64 uiSyncMask )
+	Result ConnectionMUDP::SendSync( UINT uiSequence, UINT64 uiSyncMask )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		MsgMobileNetCtrlSync *pNetCtrlMsg = NULL;
 
 		netChk( PrepareGatheringBuffer(sizeof(MsgMobileNetCtrlSync)) );
 
 		pNetCtrlMsg = (MsgMobileNetCtrlSync*)(m_pGatheringBuffer+m_uiGatheredSize);
 		pNetCtrlMsg->msgID = PACKET_NETCTRL_SYNCRELIABLE;
-		pNetCtrlMsg->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrlMsg->msgID.SetSequence(uiSequence);
 		pNetCtrlMsg->MessageMask = uiSyncMask;
 		pNetCtrlMsg->PeerID = GetPeerID();
 
 		pNetCtrlMsg->msgID.IDs.Mobile = true;
 		pNetCtrlMsg->Length = sizeof(MsgMobileNetCtrlSync);
 
-		pNetCtrlMsg->Crc32 = Util::Crc32( sizeof(MsgMobileNetCtrlSync) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) );
-		if( pNetCtrlMsg->Crc32 == 0 ) pNetCtrlMsg->Crc32 = ~pNetCtrlMsg->Crc32;
+		pNetCtrlMsg->SetCrc(Util::Crc32( sizeof(MsgMobileNetCtrlSync) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) ));
 
 		netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Send RecvReliableMask : CID:{0} BaseSeq:{1}, seq:{2}, mask:{3:X8}",
 			GetCID(), m_RecvReliableWindow.GetBaseSequence(), uiSequence, uiSyncMask);
@@ -473,16 +471,18 @@ namespace Net {
 
 
 	// Process NetCtrl queue
-	HRESULT ConnectionMUDP::ProcNetCtrlQueue()
+	Result ConnectionMUDP::ProcNetCtrlQueue()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
+
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
 
 		// Process received net ctrl messages
 		MsgNetCtrlBuffer netCtrl;
 		auto loopCount = m_RecvNetCtrlQueue.GetEnqueCount();
 		for (decltype(loopCount) iLoop = 0; iLoop < loopCount; iLoop++)
 		{
-			if (FAILED(m_RecvNetCtrlQueue.Dequeue(netCtrl)))
+			if (!(m_RecvNetCtrlQueue.Dequeue(netCtrl)))
 				break;
 
 			if( netCtrl.msgID.ID != 0 )
@@ -500,15 +500,15 @@ namespace Net {
 	}
 
 
-	HRESULT ConnectionMUDP::OnGuarrentedMessageRecv(Message::MessageData *pIMsg)
+	Result ConnectionMUDP::OnGuarrentedMessageRecv(Message::MessageData *pIMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		auto msgID = pIMsg->GetMessageHeader()->msgID;
 		auto seq = pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence;
 		auto len = pIMsg->GetMessageHeader()->Length;
 
-		HRESULT hrTem = m_RecvReliableWindow.AddMsg(pIMsg);
+		Result hrTem = m_RecvReliableWindow.AddMsg(pIMsg);
 
 		netTrace(TRC_GUARREANTEDCTRL, "RECVGuaAdd : CID:{0} BaseSeq:{1}, msg:{2}, seq:{3}, len:%4%, hr={5:X8}",
 			GetCID(), m_RecvReliableWindow.GetBaseSequence(),
@@ -517,12 +517,12 @@ namespace Net {
 			len,
 			hrTem);
 
-		if (hrTem == S_NET_PROCESSED_SEQUENCE)
+		if (hrTem == Result(ResultCode::S_NET_PROCESSED_SEQUENCE))
 		{
 			Util::SafeRelease(pIMsg);
 			return hr;
 		}
-		else if (hrTem == E_NET_INVALID_SEQUENCE || hrTem == E_NET_SEQUENCE_OVERFLOW)
+		else if (hrTem == Result(ResultCode::E_NET_INVALID_SEQUENCE) || hrTem == Result(ResultCode::E_NET_SEQUENCE_OVERFLOW))
 		{
 			// out of window, we are going to receive this message again
 			Util::SafeRelease(pIMsg);
@@ -553,20 +553,22 @@ namespace Net {
 	}
 
 	// Process recv reliable queue
-	HRESULT ConnectionMUDP::ProcRecvReliableQueue()
+	Result ConnectionMUDP::ProcRecvReliableQueue()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pIMsg = nullptr;
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
+
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
 
 		// Recv guaranted queue process
 		pIMsg = nullptr;
 		auto loopCount = m_RecvGuaQueue.GetEnqueCount();
 		for (decltype(loopCount) iLoop = 0; iLoop < loopCount; iLoop++)
 		{
-			if (FAILED(m_RecvGuaQueue.Dequeue(pIMsg)))
+			if (!(m_RecvGuaQueue.Dequeue(pIMsg)))
 				break;
 
 			if (pIMsg == nullptr)
@@ -601,11 +603,13 @@ namespace Net {
 	}
 
 	// Process Send queue
-	HRESULT ConnectionMUDP::ProcSendReliableQueue()
+	Result ConnectionMUDP::ProcSendReliableQueue()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pIMsg = NULL;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
+
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
 
 		// Send guaranted message process
 		CounterType NumProc = m_SendReliableWindow.GetAvailableSize();
@@ -613,7 +617,7 @@ namespace Net {
 		NumProc = Util::Min( NumProc, uiNumPacket );
 		for( CounterType uiPacket = 0; uiPacket < NumProc ; uiPacket++ )
 		{
-			if( FAILED(m_SendGuaQueue.Dequeue( pIMsg )) )
+			if( !(m_SendGuaQueue.Dequeue( pIMsg )) )
 				break;
 
 			AssertRel(pIMsg->GetMessageHeader()->msgID.IDSeq.Sequence == 0);
@@ -621,7 +625,7 @@ namespace Net {
 			// check sending window size
 			pIMsg->AddRef(); // inc before send
 			hr = m_SendReliableWindow.EnqueueMessage(ulTimeCur, pIMsg);
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				pIMsg->Release();
 				netErr(hr);
@@ -641,24 +645,26 @@ namespace Net {
 
 		Util::SafeRelease( pIMsg );
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Disconnect("Failed to send reliable packets");
 
 		return hr;
 	}
 		
 	// Process message window queue
-	HRESULT ConnectionMUDP::ProcReliableSendRetry()
+	Result ConnectionMUDP::ProcReliableSendRetry()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		MsgWindow::MessageElement *pMessageElement = nullptr;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
+
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
 
 		// Guaranted retry
 		UINT uiMaxProcess = Util::Min( m_SendReliableWindow.GetMsgCount(), m_uiMaxGuarantedRetry );
 		for( UINT uiIdx = 0, uiMsgProcessed = 0; uiIdx < (UINT)m_SendReliableWindow.GetWindowSize() && uiMsgProcessed < uiMaxProcess; uiIdx++ )
 		{
-			if( SUCCEEDED(m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
+			if( (m_SendReliableWindow.GetAt( uiIdx, pMessageElement ))
 				&& pMessageElement && pMessageElement->pMsg != nullptr )
 			{
 				if (Util::TimeSince(pMessageElement->ulTimeStamp) <= DurationMS(Const::MUDP_SEND_RETRY_TIME))
@@ -693,9 +699,9 @@ namespace Net {
 
 
 	// Process connection state
-	HRESULT ConnectionMUDP::ProcConnectionState()
+	Result ConnectionMUDP::ProcConnectionState()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// Update connection status
 		switch( GetConnectionState() )
@@ -714,22 +720,24 @@ namespace Net {
 
 
 	// Update net control, process connection heartbit, ... etc
-	HRESULT ConnectionMUDP::UpdateNetCtrl()
+	Result ConnectionMUDP::UpdateNetCtrl()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageID msgIDTem;
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
 
+		SetRunningThreadID(ThisThread::GetThreadID());
+
 		hr = ProcNetCtrlQueue();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process NetCtrlQueue failed {0:X8}", hr );
 		}
 
 		hr = ProcConnectionState();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process Connection state failed {0:X8}", hr );
 		}
@@ -742,7 +750,7 @@ namespace Net {
 			MutexScopeLock localLock(m_SendReliableWindow.GetLock());
 
 			hr = ProcSendReliableQueue();
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				netTrace(TRC_CONNECTION, "Process Recv Guaranted queue failed {0:X8}", hr);
 			}
@@ -751,7 +759,7 @@ namespace Net {
 			if (m_bSendSyncThisTick)
 			{
 				hr = ProcReliableSendRetry();
-				if (FAILED(hr))
+				if (!(hr))
 				{
 					netTrace(TRC_CONNECTION, "Process message window failed {0:X8}", hr);
 				}
@@ -765,7 +773,7 @@ namespace Net {
 			goto Proc_End;
 
 		hr = ProcRecvReliableQueue();
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( TRC_CONNECTION, "Process Recv Guaranted queue failed {0:X8}", hr );
 		}
@@ -778,18 +786,20 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionMUDP::UpdateSendQueue()
+	Result ConnectionMUDP::UpdateSendQueue()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		MutexScopeLock localLock(m_SendReliableWindow.GetLock());
+
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
 
 		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
 
 
 		hr = ProcSendReliableQueue();
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			netTrace(TRC_CONNECTION, "Process Send Guaranted queue failed {0:X8}", hr);
 		}
@@ -798,7 +808,7 @@ namespace Net {
 		//if (m_bSendSyncThisTick)
 		//{
 			hr = ProcReliableSendRetry();
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				netTrace(TRC_CONNECTION, "Process message window failed {0:X8}", hr);
 			}
@@ -836,12 +846,12 @@ namespace Net {
 
 
 	// Process network control message
-	HRESULT ConnectionMUDPServer::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
+	Result ConnectionMUDPServer::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		hr = ConnectionMUDP::ProcNetCtrl(pNetCtrl);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 
 	//Proc_End:
@@ -870,15 +880,15 @@ namespace Net {
 	}
 
 	// Process network control message
-	HRESULT ConnectionMUDPClient::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
+	Result ConnectionMUDPClient::ProcNetCtrl(const MsgMobileNetCtrl* pNetCtrl)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (pNetCtrl->msgID.IDs.Mobile == 0 || pNetCtrl->Length < sizeof(MsgMobileNetCtrl))
 		{
 			netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
 			netChk(Disconnect("Invalid packet"));
-			netErr(E_NET_BADPACKET_NOTEXPECTED);
+			netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 		}
 
 		switch (pNetCtrl->msgID.IDs.MsgCode)
@@ -900,7 +910,7 @@ namespace Net {
 					{
 						// put expected net class
 						m_ConnectInfo.RemoteClass = NetClass::Game;
-						OnConnectionResult(S_SYSTEM_OK);
+						OnConnectionResult(ResultCode::SUCCESS);
 					}
 					break;
 				case NetCtrlCode_HeartBit:
@@ -910,7 +920,7 @@ namespace Net {
 				default:
 					netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
 					netChk(Disconnect("Invalid packet"));
-					netErr(E_NET_BADPACKET_NOTEXPECTED);
+					netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 					break;
 				};
 			}
@@ -918,7 +928,7 @@ namespace Net {
 			{
 				netTrace(Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote);
 				netChk(Disconnect("Invalid packet"));
-				netErr(E_NET_BADPACKET_NOTEXPECTED);
+				netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 			}
 			break;
 		default:
@@ -932,10 +942,10 @@ namespace Net {
 	}
 
 
-	HRESULT ConnectionMUDPClient::InitConnection(SOCKET socket, const ConnectionInformation &connectInfo)
+	Result ConnectionMUDPClient::InitConnection(SOCKET socket, const ConnectionInformation &connectInfo)
 	{
-		HRESULT hr = ConnectionUDPBase::InitConnection(socket, connectInfo);
-		if (FAILED(hr)) return hr;
+		Result hr = ConnectionUDPBase::InitConnection(socket, connectInfo);
+		if (!(hr)) return hr;
 
 		// Clear local ID, MUDP server will expect peerID is zero on initial connection
 		m_ConnectInfo.LocalID = 0;
@@ -944,14 +954,16 @@ namespace Net {
 	}
 
 	// Process network control message
-	HRESULT ConnectionMUDPClient::ProcConnectionState()
+	Result ConnectionMUDPClient::ProcConnectionState()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageID msgIDTem;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
+
 		hr = ConnectionMUDP::ProcConnectionState();
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 
 
 		// Update connection status
@@ -1010,31 +1022,31 @@ namespace Net {
 
 
 	// called when New connection TCP accepted
-	HRESULT ConnectionMUDPClient::Recv(IOBUFFER_READ* pIOBuffer)
+	Result ConnectionMUDPClient::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 
 		netChkPtr(pIOBuffer);
 
 		pIOBuffer->SetupRecvUDP(GetCID());
 
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
-		switch (hrErr)
+		switch ((int64_t)hrErr)
 		{
-		case S_SYSTEM_FALSE:
-			hr = E_NET_TRY_AGAIN;
+		case ResultCode::SUCCESS_FALSE:
+			hr = ResultCode::E_NET_TRY_AGAIN;
 			break;
-		case S_SYSTEM_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_TRY_AGAIN:
-		case E_NET_WOULDBLOCK:
+		case ResultCode::SUCCESS:
+		case ResultCode::E_NET_IO_PENDING:
+		case ResultCode::E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_WOULDBLOCK:
 			hr = hrErr;
 			goto Proc_End;// success
 			break;
-		case E_NET_NETUNREACH:
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
+		case ResultCode::E_NET_NETUNREACH:
+		case ResultCode::E_NET_CONNABORTED:
+		case ResultCode::E_NET_CONNRESET:
+		case ResultCode::E_NET_NETRESET:
 			// some remove has problem with connection
 			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
 		default:
@@ -1050,22 +1062,22 @@ namespace Net {
 	}
 
 	// called when reciving TCP message
-	HRESULT ConnectionMUDPClient::OnIORecvCompleted(HRESULT hrRes, IOBUFFER_READ* &pIOBuffer)
+	Result ConnectionMUDPClient::OnIORecvCompleted(Result hrRes, IOBUFFER_READ* &pIOBuffer)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (pIOBuffer != nullptr && pIOBuffer->Operation != IOBUFFER_OPERATION::OP_UDPREAD)
 		{
-			netErr(E_SYSTEM_UNEXPECTED);
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 		DecPendingRecvCount();
 
-		if (SUCCEEDED(hrRes))
+		if ((hrRes))
 		{
 			netChkPtr(pIOBuffer);
 
-			if (FAILED(hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer)))
+			if (!(hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer)))
 				netTrace(TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", GetCID(), hr);
 
 			PendingRecv();
@@ -1089,18 +1101,18 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionMUDPClient::EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer)
+	Result ConnectionMUDPClient::EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer)
 	{
 		return EnqueueBuffer(pSendBuffer);
 	}
 
-	HRESULT ConnectionMUDPClient::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
+	Result ConnectionMUDPClient::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
 		return SendBufferUDP(pSendBuffer);
 	}
 
 
-	HRESULT ConnectionMUDPClient::OnSendReady()
+	Result ConnectionMUDPClient::OnSendReady()
 	{
 		if (GetEventHandler())
 			return GetEventHandler()->OnNetSendReadyMessage(this);
@@ -1111,23 +1123,23 @@ namespace Net {
 
 
 	// called when Send completed
-	HRESULT ConnectionMUDPClient::OnIOSendCompleted(HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer)
+	Result ConnectionMUDPClient::OnIOSendCompleted(Result hrRes, IOBUFFER_WRITE *pIOBuffer)
 	{
 		NetSystem::FreeGatheringBuffer(pIOBuffer->pSendBuff);
 		Util::SafeRelease(pIOBuffer->pMsgs);
 		NetSystem::FreeBuffer(pIOBuffer);
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Pending recv New one
-	HRESULT ConnectionMUDPClient::PendingRecv()
+	Result ConnectionMUDPClient::PendingRecv()
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 		IOBUFFER_READ *pOver = nullptr;
 
 		if (!NetSystem::IsProactorSystem())
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		IncPendingRecvCount();
 
@@ -1136,12 +1148,12 @@ namespace Net {
 		{
 			pOver = new IOBUFFER_READ;
 			hrErr = Recv(pOver);
-			switch (hrErr)
+			switch ((uint32_t)hrErr)
 			{
-			case S_SYSTEM_OK:
-			case E_NET_IO_PENDING:
-			case E_NET_TRY_AGAIN:
-			case E_NET_WOULDBLOCK:
+			case ResultCode::SUCCESS:
+			case ResultCode::E_NET_IO_PENDING:
+			case ResultCode::E_NET_TRY_AGAIN:
+			case ResultCode::E_NET_WOULDBLOCK:
 				pOver = nullptr;
 				goto Proc_End;// success
 				break;

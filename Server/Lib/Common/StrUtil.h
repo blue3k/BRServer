@@ -25,58 +25,58 @@ namespace StrUtil {
 	//
 
 	// String duplication, szDest will destroyded if exist, and new memory will be allocated
-	HRESULT StringDup( char* &szDest, const char* szSrc );
-	HRESULT StringDup( wchar_t* &szDest, const wchar_t* szSrc );
+	Result StringDup( char* &szDest, const char* szSrc );
+	Result StringDup( wchar_t* &szDest, const wchar_t* szSrc );
 
 	// copy string and update dest pointer and length
-	HRESULT StringCpyEx( char* &szDest, INT& iBuffLen, const char* szSrc ); // copy with modifed parameter
-	HRESULT StringCpyEx(wchar_t* &szDest, INT& iBuffLen, const wchar_t* szSrc); // copy with modifed parameter
+	Result StringCpyEx( char* &szDest, INT& iBuffLen, const char* szSrc ); // copy with modifed parameter
+	Result StringCpyEx(wchar_t* &szDest, INT& iBuffLen, const wchar_t* szSrc); // copy with modifed parameter
 
 	// String copy to szDest. if szDest is NULL, operation failed
 	// Simple copy with boundary check
-	HRESULT StringCpy( char* szDest, INT iBuffLen, const char* szSrc );
-	HRESULT StringCpy( wchar_t* szDest, INT iBuffLen, const wchar_t* szSrc );
+	Result StringCpy( char* szDest, INT iBuffLen, const char* szSrc );
+	Result StringCpy( wchar_t* szDest, INT iBuffLen, const wchar_t* szSrc );
 	template<INT iBuffLen>
-	inline HRESULT StringCpy( char (&szDest)[iBuffLen], const char *szSrc );
+	inline Result StringCpy( char (&szDest)[iBuffLen], const char *szSrc );
 	template<INT iBuffLen>
-	inline HRESULT StringCpy( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc );
+	inline Result StringCpy( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc );
 
 
 	//// Unicode to MBCS string conversion
-	//HRESULT WCSToMBCS( const wchar_t* strWCS, char *strMBCS, INT iBuffLen );
+	//Result WCSToMBCS( const wchar_t* strWCS, char *strMBCS, INT iBuffLen );
 	//template<INT iBuffLen>
-	//HRESULT WCSToMBCS( const wchar_t* strWCS, char (&strMBCS)[iBuffLen] );
-	//HRESULT WCSToMBCS( const std::wstring &strWCS, std::string &strMBCS );
+	//Result WCSToMBCS( const wchar_t* strWCS, char (&strMBCS)[iBuffLen] );
+	//Result WCSToMBCS( const std::wstring &strWCS, std::string &strMBCS );
 
 	// Unicode to UTF8 string conversion
-	HRESULT WCSToUTF8( const wchar_t* strWCS, char *strUTF8, INT iBuffLen );
+	Result WCSToUTF8( const wchar_t* strWCS, char *strUTF8, INT iBuffLen );
 	template<INT iBuffLen>
-	HRESULT WCSToUTF8( const wchar_t* strWCS, char (&strUTF8)[iBuffLen] );
-	HRESULT WCSToUTF8( const std::wstring &strWCS, std::string &strUTF8 );
+	Result WCSToUTF8( const wchar_t* strWCS, char (&strUTF8)[iBuffLen] );
+	Result WCSToUTF8( const std::wstring &strWCS, std::string &strUTF8 );
 
 	//// MBCS to Unicode string conversion
-	//HRESULT MBCSToWCS( const char *strMBCS, wchar_t* strWCS, INT iBuffLen );
+	//Result MBCSToWCS( const char *strMBCS, wchar_t* strWCS, INT iBuffLen );
 	//template<INT iBuffLen>
-	//HRESULT MBCSToWCS( const char *strMBCS, wchar_t (&strWCS)[iBuffLen] );
-	//HRESULT MBCSToWCS( const std::string &strMBCS, std::wstring &strWCS );
+	//Result MBCSToWCS( const char *strMBCS, wchar_t (&strWCS)[iBuffLen] );
+	//Result MBCSToWCS( const std::string &strMBCS, std::wstring &strWCS );
 
 	//// MBCS to UTF8 string conversion
-	//HRESULT MBCSToUTF8( const char *strMBCS, char* strUTF8, INT iBuffLen );
+	//Result MBCSToUTF8( const char *strMBCS, char* strUTF8, INT iBuffLen );
 	//template<INT iBuffLen>
-	//HRESULT MBCSToUTF8( const char *strMBCS, char (&strUTF8)[iBuffLen] );
-	//HRESULT MBCSToUTF8( const std::string &strMBCS, std::string &strUTF8 );
+	//Result MBCSToUTF8( const char *strMBCS, char (&strUTF8)[iBuffLen] );
+	//Result MBCSToUTF8( const std::string &strMBCS, std::string &strUTF8 );
 
 	// UTF8 to Unicode string conversion
-	HRESULT UTF8ToWCS( const char *strUTF8, wchar_t* strWCS, INT iBuffLen );
+	Result UTF8ToWCS( const char *strUTF8, wchar_t* strWCS, INT iBuffLen );
 	template<INT iBuffLen>
-	HRESULT UTF8ToWCS( const char *strUTF8, wchar_t (&strWCS)[iBuffLen] );
-	HRESULT UTF8ToWCS( const std::string& strUTF8, std::wstring& strWCS );
+	Result UTF8ToWCS( const char *strUTF8, wchar_t (&strWCS)[iBuffLen] );
+	Result UTF8ToWCS( const std::string& strUTF8, std::wstring& strWCS );
 
 	//// UTF8 to MBCS string conversion
-	//HRESULT UTF8ToMBCS( const char *strUTF8, char* strMBCS, INT iBuffLen );
+	//Result UTF8ToMBCS( const char *strUTF8, char* strMBCS, INT iBuffLen );
 	//template<INT iBuffLen>
-	//HRESULT UTF8ToMBCS( const char *strUTF8, char (&strMBCS)[iBuffLen] );
-	//HRESULT UTF8ToMBCS( const std::string& strUTF8, std::string& strMBCS );
+	//Result UTF8ToMBCS( const char *strUTF8, char (&strMBCS)[iBuffLen] );
+	//Result UTF8ToMBCS( const std::string& strUTF8, std::string& strMBCS );
 
 
 	// String compare
@@ -118,62 +118,64 @@ namespace StrUtil {
 
 	// String convert to lower case 
 	// szSrc(In/Out)		: Source string to convert
-	inline HRESULT StringLwr( char* szSrc, INT iBuffLen );
-	inline HRESULT StringLwr( wchar_t* szSrc, INT iBuffLen );
+	inline Result StringLwr( char* szSrc, INT iBuffLen );
+	inline Result StringLwr( wchar_t* szSrc, INT iBuffLen );
 	template<INT iBuffLen>
-	inline HRESULT StringLwr( char (&szSrc)[iBuffLen] );
+	inline Result StringLwr( char (&szSrc)[iBuffLen] );
 	template<INT iBuffLen>
-	inline HRESULT StringLwr( wchar_t (&szSrc)[iBuffLen] );
+	inline Result StringLwr( wchar_t (&szSrc)[iBuffLen] );
 
 	// String convert to lower case with reallocation with destination pointer and length update
 	// szSrc				: Source string to convert
 	// szDest(In/Out)		: Buffer pointer reference
 	// iBuffLen(In/Out)		: Destination buffer size. if buffer is small to take all source message, then reallocated
-	inline HRESULT StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc );
-	inline HRESULT StringLwr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc );
+	inline Result StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc );
+	inline Result StringLwr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc );
 
 	// Update desitnation pointer and size update
-	inline HRESULT StringLwrEx(char* &szDest, INT &iBuffLen, const char* szSrc);
-	inline HRESULT StringLwrEx(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc);
+	inline Result StringLwrEx(char* &szDest, INT &iBuffLen, const char* szSrc);
+	inline Result StringLwrEx(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc);
 
 	// String convert to lower case with truncate, if source string longer then testination buffer
 	// szSrc				: Source string to convert
 	// szDest(In)			: Buffer pointer to copy
 	template<INT iBuffLen>
-	inline HRESULT StringLwr( char (&szDest)[iBuffLen], const char *szSrc );
+	inline Result StringLwr( char (&szDest)[iBuffLen], const char *szSrc );
 	template<INT iBuffLen>
-	inline HRESULT StringLwr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc );
+	inline Result StringLwr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc );
 
 
 	// String convert to uppercase 
 	// szSrc(In/Out)		: Source string to convert
-	inline HRESULT StringUpr( char* szSrc, INT iBuffLen );
-	inline HRESULT StringUpr( wchar_t* szSrc, INT iBuffLen );
+	Result StringUpr( char* szSrc, INT iBuffLen );
+	Result StringUpr( wchar_t* szSrc, INT iBuffLen );
 	template<INT iBuffLen>
-	inline HRESULT StringUpr( char (&szSrc)[iBuffLen] );
+	Result StringUpr( char (&szSrc)[iBuffLen] );
 	template<INT iBuffLen>
-	inline HRESULT StringUpr( wchar_t (&szSrc)[iBuffLen] );
+	Result StringUpr( wchar_t (&szSrc)[iBuffLen] );
 
 	// String convert to uppercase with reallocation, if source string longer then testination buffer
 	// szSrc				: Source string to convert
 	// szDest(In/Out)		: Buffer pointer reference
 	// iBuffLen(In/Out)		: Destination buffer size. if buffer is small to take all source message, then reallocated
-	inline HRESULT StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc );
-	inline HRESULT StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc );
+	Result StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc );
+	Result StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc );
 
 	// String convert to uppercase with truncate, if source string longer then testination buffer
 	// szSrc				: Source string to convert
 	// szDest(In)			: Buffer pointer to copy
 	template<INT iBuffLen>
-	inline HRESULT StringUpr( char (&szDest)[iBuffLen], const char *szSrc );
+	Result StringUpr( char (&szDest)[iBuffLen], const char *szSrc );
 	template<INT iBuffLen>
-	inline HRESULT StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc );
+	Result StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc );
 
 
+	bool IsNullOrEmpty(const char* szStr);
+	bool IsNullOrEmpty(const wchar_t* szStr);
 
 	// Free string with NULL check
-	inline void SafeDelete( char* &szStr );
-	inline void SafeDelete( wchar_t* &szStr );
+	void SafeDelete( char* &szStr );
+	void SafeDelete( wchar_t* &szStr );
 	
 
 	///////////////////////////////////////////////////////////////////////////////////////////
@@ -193,9 +195,9 @@ namespace StrUtil {
 
 	// UTF8 to UTF8String(Database UTF8 Format) string conversion
 	template<INT iBuffLen>
-	inline HRESULT UTF8ToUTF8Bin( BYTE (&UTF8BinBuff)[iBuffLen], const char* strSrc );
+	inline Result UTF8ToUTF8Bin( BYTE (&UTF8BinBuff)[iBuffLen], const char* strSrc );
 
-	inline HRESULT UTF8BinToUTF8( char* strDst, INT dstLen, const BYTE* strSrc );
+	inline Result UTF8BinToUTF8( char* strDst, INT dstLen, const BYTE* strSrc );
 
 
 	/////////////////////////////////////////////////////////////////////////////

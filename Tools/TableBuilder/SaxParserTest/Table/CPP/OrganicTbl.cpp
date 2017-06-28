@@ -95,7 +95,7 @@ namespace conspiracy
 	OrganicTbl::ItemEffectTable *OrganicTbl::m_ItemEffectTable = nullptr;
 	OrganicTbl::ItemEffectTable *OrganicTbl::m_ItemEffectTablePrev = nullptr;
 
-	HRESULT OrganicTbl::LoadTable( const std::list<OrganicItem>& rowList )
+	BR::Result OrganicTbl::LoadTable( const std::list<OrganicItem>& rowList )
 	{
  		auto pNewItemEffectTable = new ItemEffectTable;
 
@@ -113,20 +113,20 @@ namespace conspiracy
 		}
 		m_ItemEffectTablePrev = m_ItemEffectTable;
 		m_ItemEffectTable = pNewItemEffectTable;
-		return S_SYSTEM_OK;
+		return BR::ResultCode::SUCCESS;
 	}
 
 
-	HRESULT OrganicTbl::FindItem( const unsigned int& Key, OrganicItem*& pRow)
+	BR::Result OrganicTbl::FindItem( const unsigned int& Key, OrganicItem*& pRow)
 	{
  		auto itr = m_ItemEffectTable->find(Key);
 		if (itr == m_ItemEffectTable->end())
 		{
  			// write error log
-			return E_SYSTEM_FAIL;
+			return BR::ResultCode::FAIL;
 		}
 		pRow = itr->second;
-		return S_SYSTEM_OK;
+		return BR::ResultCode::SUCCESS;
 	}
 
 }; // namespace conspiracy

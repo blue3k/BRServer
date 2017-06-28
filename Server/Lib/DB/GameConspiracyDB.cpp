@@ -48,9 +48,9 @@ namespace DB {
 	//	Game DB Interface
 	//
 
-	HRESULT GameConspiracyDB::CreatePlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID, INT initialStamina)
+	Result GameConspiracyDB::CreatePlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID, INT initialStamina)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryCreatePlayerInfoCmd *pQuery = nullptr;
 		QueryGetPlayerInfoData *pRawSet = nullptr;
 
@@ -72,15 +72,15 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::GetPlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID)
+	Result GameConspiracyDB::GetPlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerInfoCmd *pQuery = nullptr;
 		QueryGetPlayerInfoData *pRawSet = nullptr;
 
@@ -101,7 +101,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
@@ -109,7 +109,7 @@ namespace DB {
 
 
 	// Save player info
-	HRESULT GameConspiracyDB::SetPlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+	Result GameConspiracyDB::SetPlayerInfoCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
 																			SHORT	Level,
 																			INT64	Exp,
 																			INT64	GameMoney,
@@ -125,7 +125,7 @@ namespace DB {
 		TimeStampSec	LatestTickTime
 																			)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QuerySetPlayerInfoCmd *pQuery = nullptr;
 		QuerySetPlayerInfoData *pDataSet = nullptr;
 
@@ -169,12 +169,12 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
-	HRESULT GameConspiracyDB::SavePurchaseInfoToDB(
+	Result GameConspiracyDB::SavePurchaseInfoToDB(
 		TransactionID Sender, UINT shardID, const PlayerID &playerID,
 		SHORT	Level,
 		INT64	Exp,
@@ -188,7 +188,7 @@ namespace DB {
 		TimeStampSec	LatestTickTime
 		)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QuerySavePurchaseInfoToDBCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QuerySavePurchaseInfoToDBCmd);
@@ -206,7 +206,7 @@ namespace DB {
 		pQuery->AddedFriendSlot = AddedFriendSlot;
 
 		if (purchaseID.GetSize() > sizeof(pQuery->PurchaseID))
-			dbErr(E_SYSTEM_INVALIDARG);
+			dbErr(ResultCode::INVALID_ARG);
 		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
 		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.GetSize());
 
@@ -223,15 +223,15 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::CheckPurchaseID(TransactionID Sender, UINT shardID, const Array<BYTE>& purchaseID)
+	Result GameConspiracyDB::CheckPurchaseID(TransactionID Sender, UINT shardID, const Array<BYTE>& purchaseID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryCheckPurchaseIDCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryCheckPurchaseIDCmd);
@@ -241,7 +241,7 @@ namespace DB {
 		pQuery->SetTransaction(Sender);
 
 		if (purchaseID.GetSize() > sizeof(pQuery->PurchaseID))
-			dbErr(E_SYSTEM_INVALIDARG);
+			dbErr(ResultCode::INVALID_ARG);
 		memset(pQuery->PurchaseID, 0, sizeof(pQuery->PurchaseID));
 		memcpy(pQuery->PurchaseID, purchaseID.data(), purchaseID.GetSize());
 
@@ -253,15 +253,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::SetNickName(TransactionID Sender, UINT shardID, PlayerID playerID, const char* nickName)
+	Result GameConspiracyDB::SetNickName(TransactionID Sender, UINT shardID, PlayerID playerID, const char* nickName)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QuerySetNickNameCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QuerySetNickNameCmd);
@@ -280,16 +280,16 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
 
-	HRESULT GameConspiracyDB::GetNickName(TransactionID Sender, UINT shardID, PlayerID playerID)
+	Result GameConspiracyDB::GetNickName(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetNickNameCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetNickNameCmd);
@@ -307,7 +307,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
@@ -315,7 +315,7 @@ namespace DB {
 
 
 	// Save player info
-	HRESULT GameConspiracyDB::UpdateGameEndCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+	Result GameConspiracyDB::UpdateGameEndCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
 																			SHORT	Level,
 																			INT64	Exp,
 																			INT64	GameMoney,
@@ -327,7 +327,7 @@ namespace DB {
 																			TimeStampSec	LatestActiveTime
 																			)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryUpdateGameEndCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryUpdateGameEndCmd );
@@ -362,7 +362,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
@@ -370,7 +370,7 @@ namespace DB {
 
 
 	// Save player info
-	HRESULT GameConspiracyDB::UpdateJoinGameCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+	Result GameConspiracyDB::UpdateJoinGameCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
 																			INT64	Gem,
 																			SHORT	Stamina,
 																			SHORT	PlayerState,
@@ -378,7 +378,7 @@ namespace DB {
 																			TimeStampSec	LatestTickTime
 																			)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryUpdateJoinGameCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryUpdateJoinGameCmd );
@@ -402,7 +402,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
@@ -410,7 +410,7 @@ namespace DB {
 
 
 	// Save player info
-	HRESULT GameConspiracyDB::UpdateTickStatusCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
+	Result GameConspiracyDB::UpdateTickStatusCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID,
 																			INT64	Gem,
 																			SHORT	Stamina,
 																			SHORT	PlayerState,
@@ -418,7 +418,7 @@ namespace DB {
 																			TimeStampSec	LatestTickTime
 																			)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryUpdateTickStatusCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryUpdateTickStatusCmd );
@@ -441,7 +441,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
@@ -449,9 +449,9 @@ namespace DB {
 
 	
 	// Save player info
-	HRESULT GameConspiracyDB::GetPlayerStatusCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID)
+	Result GameConspiracyDB::GetPlayerStatusCmd(TransactionID Sender, UINT shardID, const PlayerID &playerID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerStatusCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryGetPlayerStatusCmd );
@@ -469,7 +469,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
@@ -478,9 +478,9 @@ namespace DB {
 	
 	
 	// Save player info
-	HRESULT GameConspiracyDB::GetPlayerQuickInfoCmd(TransactionID Sender, UINT shardID, PlayerID playerID)
+	Result GameConspiracyDB::GetPlayerQuickInfoCmd(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetPlayerQuickInfoCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryGetPlayerQuickInfoCmd );
@@ -500,7 +500,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
@@ -509,9 +509,9 @@ namespace DB {
 
 
 	// Save player info
-	HRESULT GameConspiracyDB::GetFriendQuickInfoCmd(TransactionID Sender, UINT shardID, PlayerID playerID)
+	Result GameConspiracyDB::GetFriendQuickInfoCmd(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendQuickInfoCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetFriendQuickInfoCmd);
@@ -533,7 +533,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
@@ -541,9 +541,9 @@ namespace DB {
 
 
 	// Save player info
-	HRESULT GameConspiracyDB::GetFriendQuickInfoWithNickCmd(TransactionID Sender, UINT shardID, PlayerID playerID)
+	Result GameConspiracyDB::GetFriendQuickInfoWithNickCmd(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendQuickInfoWithNickCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetFriendQuickInfoWithNickCmd);
@@ -566,7 +566,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
@@ -575,9 +575,9 @@ namespace DB {
 
 
 	// Save player info
-	HRESULT GameConspiracyDB::GetFriendSlotStatus(TransactionID Sender, UINT shardID, PlayerID playerID)
+	Result GameConspiracyDB::GetFriendSlotStatus(TransactionID Sender, UINT shardID, PlayerID playerID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendSlotStatusCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetFriendSlotStatusCmd);
@@ -597,15 +597,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::AddFriend(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, UINT friendShardID, FacebookUID FriendFacebookUID)
+	Result GameConspiracyDB::AddFriend(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, UINT friendShardID, FacebookUID FriendFacebookUID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryAddFriendCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryAddFriendCmd);
@@ -625,15 +625,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::RemoveFriend(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID)
+	Result GameConspiracyDB::RemoveFriend(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryRemoveFriendCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryRemoveFriendCmd);
@@ -651,15 +651,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::GetFriendList(TransactionID Sender, UINT shardID, PlayerID accountID)
+	Result GameConspiracyDB::GetFriendList(TransactionID Sender, UINT shardID, PlayerID accountID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetFriendListCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetFriendListCmd);
@@ -675,15 +675,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::UpdateFriendStaminaTime(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, TimeStampSec timeStamp)
+	Result GameConspiracyDB::UpdateFriendStaminaTime(TransactionID Sender, UINT shardID, PlayerID accountID, PlayerID FriendUID, TimeStampSec timeStamp)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryUpdateFriendStaminaTimeCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryUpdateFriendStaminaTimeCmd);
@@ -702,7 +702,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
@@ -710,9 +710,9 @@ namespace DB {
 
 
 	// Notifications
-	HRESULT GameConspiracyDB::Notification_Add(TransactionID Sender, UINT shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, INT64 messageParam0, INT64 messageParam1, const char* messageText, TimeStampSec timeStamp)
+	Result GameConspiracyDB::Notification_Add(TransactionID Sender, UINT shardID, PlayerID ToUserID, bool isCollapsable, NotificationType messageID, INT64 messageParam0, INT64 messageParam1, const char* messageText, TimeStampSec timeStamp)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryNotification_AddCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryNotification_AddCmd);
@@ -736,15 +736,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::Notification_GetList(TransactionID Sender, UINT shardID, PlayerID UserID)
+	Result GameConspiracyDB::Notification_GetList(TransactionID Sender, UINT shardID, PlayerID UserID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryNotification_GetListCmd *pQuery = nullptr;
 		QueryNotification_GetListSet *pSet = nullptr;
 
@@ -766,15 +766,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::Notification_Remove(TransactionID Sender, UINT shardID, PlayerID userID, INT32 notificationID)
+	Result GameConspiracyDB::Notification_Remove(TransactionID Sender, UINT shardID, PlayerID userID, INT32 notificationID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryNotification_RemoveCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryNotification_RemoveCmd);
@@ -794,15 +794,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::Notification_RemoveByMessageID(TransactionID Sender, UINT shardID, PlayerID UserID, INT16 messageID)
+	Result GameConspiracyDB::Notification_RemoveByMessageID(TransactionID Sender, UINT shardID, PlayerID UserID, INT16 messageID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryNotification_RemoveByMessageIDCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryNotification_RemoveByMessageIDCmd);
@@ -821,15 +821,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::Notification_SetRead(TransactionID Sender, UINT shardID, PlayerID userID, INT32 notificationID)
+	Result GameConspiracyDB::Notification_SetRead(TransactionID Sender, UINT shardID, PlayerID userID, INT32 notificationID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryNotification_SetReadCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryNotification_SetReadCmd);
@@ -849,15 +849,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::SetComplitionState(TransactionID Sender, UINT shardID, PlayerID userID, const char* complitionState)
+	Result GameConspiracyDB::SetComplitionState(TransactionID Sender, UINT shardID, PlayerID userID, const char* complitionState)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QuerySetComplitionStateCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QuerySetComplitionStateCmd);
@@ -877,15 +877,15 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;
 	}
 
-	HRESULT GameConspiracyDB::GetComplitionState(TransactionID Sender, UINT shardID, PlayerID userID)
+	Result GameConspiracyDB::GetComplitionState(TransactionID Sender, UINT shardID, PlayerID userID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetComplitionStateCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryGetComplitionStateCmd);
@@ -905,7 +905,7 @@ namespace DB {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			Util::SafeRelease(pQuery);
 
 		return hr;

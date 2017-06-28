@@ -16,7 +16,7 @@
 #include "Common/Typedefs.h"
 #include "Common/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Task.h"
+#include "Common/Task/Task.h"
 #include "Common/PageQueue.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/SvrTypes.h"
@@ -56,7 +56,7 @@ namespace Svr{
 	class Entity : public TickTask
 	{
 	public:
-		typedef std::function<HRESULT(Net::IConnection *, Message::MessageData* &, Transaction* &)>	MessageHandlerType;
+		typedef std::function<Result(Net::IConnection *, Message::MessageData* &, Transaction* &)>	MessageHandlerType;
 
 	private:
 		// Entity state
@@ -91,7 +91,7 @@ namespace Svr{
 
 		virtual void ReleaseTransaction(Transaction* pTrans);
 
-		HRESULT _ClearEntity();
+		Result _ClearEntity();
 
 	public:
 		Entity( UINT uiTransQueueSize, UINT TransResQueueSize );
@@ -126,13 +126,13 @@ namespace Svr{
 
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID );
 
 		// clear entity resources such as transactions
-		virtual HRESULT ClearEntity();
+		virtual Result ClearEntity();
 
 		// Clear resources and change entity state to closed
-		virtual HRESULT TerminateEntity();
+		virtual Result TerminateEntity();
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -142,11 +142,11 @@ namespace Svr{
 
 
 		// register message handlers
-		virtual HRESULT RegisterMessageHandlers();
+		virtual Result RegisterMessageHandlers();
 
 		// Register message handler helper
 		template< class MessageClassType >
-		HRESULT RegisterMessageHandler(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
+		Result RegisterMessageHandler(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
 		{
 			//AssertRel(m_pHandlerTable);
 			return m_HandlerTable.Register<MessageClassType>(fileName, lineNumber, newHandler );
@@ -156,10 +156,10 @@ namespace Svr{
 
 
 		// Process Message and release message after all processed
-		virtual HRESULT ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg);
+		virtual Result ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg);
 
 		// Process result
-		virtual HRESULT ProcessMessageResult( Message::MessageData* &pMsg );
+		virtual Result ProcessMessageResult( Message::MessageData* &pMsg );
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -167,18 +167,18 @@ namespace Svr{
 		//	Transaction handling
 		//
 
-		virtual HRESULT FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) = 0;
+		virtual Result FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) = 0;
 
 		virtual UINT GetActiveTransactionCount() = 0;
 
 		// Pending new transaction job
-		virtual HRESULT PendingTransaction(ThreadID thisThreadID, Transaction* &pTrans);
-		virtual HRESULT ProcessTransaction(Transaction* &pTrans);
+		virtual Result PendingTransaction(ThreadID thisThreadID, Transaction* &pTrans);
+		virtual Result ProcessTransaction(Transaction* &pTrans);
 
 		// Pending transaction result
-		virtual HRESULT PendingTransactionResult( TransactionResult* &pTransRes );
+		virtual Result PendingTransactionResult( TransactionResult* &pTransRes );
 
-		virtual HRESULT ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) = 0;
+		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) = 0;
 
 
 	};

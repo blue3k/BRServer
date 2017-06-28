@@ -75,8 +75,8 @@ namespace Svr {
 	protected:
 
 
-		HRESULT SetConnection(SharedPointerT<Net::IConnection> &destConn, Net::IConnection * pConn);
-		HRESULT UpdateConnection(Net::IConnection* pConn);
+		Result SetConnection(SharedPointerT<Net::IConnection> &destConn, Net::IConnection * pConn);
+		Result UpdateConnection(Net::IConnection* pConn);
 
 
 	public:
@@ -88,8 +88,8 @@ namespace Svr {
 
 
 		// set connection
-		HRESULT SetRemoteConnection(Net::IConnection * pConn);
-		HRESULT SetLocalConnection(Net::IConnection * pConn);
+		Result SetRemoteConnection(Net::IConnection * pConn);
+		Result SetLocalConnection(Net::IConnection * pConn);
 
 		// Get Connection
 		FORCEINLINE Net::IConnection* GetRemoteConnection()							{ return (Net::IConnection*)m_pConnRemote; }
@@ -118,34 +118,34 @@ namespace Svr {
 		ServerEntity*				GetOwnerServer();
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID ) override;
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 		// Close entity and clear transaction
-		virtual HRESULT TerminateEntity() override;
+		virtual Result TerminateEntity() override;
 
 		// Called when this entity have a routed message
-		//virtual HRESULT OnRoutedMessage(Message::MessageData* &pMsg) override;
+		//virtual Result OnRoutedMessage(Message::MessageData* &pMsg) override;
 
 		// Process Message and release message after all processed
-		virtual HRESULT ProcessMessage(ServerEntity *pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg ) override;
+		virtual Result ProcessMessage(ServerEntity *pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg ) override;
 
 		// Process Connection event
-		virtual HRESULT ProcessConnectionEvent( const Net::IConnection::Event& conEvent );
+		virtual Result ProcessConnectionEvent( const Net::IConnection::Event& conEvent );
 
 		// Run entity
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		// Overriding IConnectionEventHandler
 		virtual void OnConnectionEvent(Net::IConnection* pConn, const Net::IConnection::Event& evt) override;
-		virtual HRESULT OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg) override;
-		virtual HRESULT OnNetSyncMessage(Net::IConnection* pConn) override;
-		virtual HRESULT OnNetSendReadyMessage(Net::IConnection* pConn) override;
+		virtual Result OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg) override;
+		virtual Result OnNetSyncMessage(Net::IConnection* pConn) override;
+		virtual Result OnNetSendReadyMessage(Net::IConnection* pConn) override;
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Event task handling
-		virtual HRESULT OnEventTask(const Svr::EventTask& eventTask) override;
+		virtual Result OnEventTask(const EventTask& eventTask) override;
 	};
 
 

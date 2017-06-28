@@ -11,7 +11,7 @@
 #include "stdafx.h"
 #include "ServerSystem/Transaction.h"
 #include "ServerSystem/SvrTypes.h"
-#include "ServerSystem/TaskManager.h"
+#include "Common/Task/TaskManager.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/EntityTable.h"
 #include "ServerSystem/SvrConfig.h"
@@ -33,7 +33,7 @@ namespace Svr {
 		return g_EntityTable;
 	}
 
-	HRESULT FindEntity(EntityID entityID, SharedPointerT<Entity>& entity)
+	Result FindEntity(EntityID entityID, SharedPointerT<Entity>& entity)
 	{
 		return g_EntityTable.Find(entityID, entity);
 	}

@@ -36,53 +36,53 @@ namespace BR
 
 			// C2S: Game instance deletion
 			// Cmd: Join Game
-			virtual HRESULT JoinGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const NetAddress &InGameInsSvr, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const BYTE &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const BYTE &InIsNewJoin, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData ) = 0;
+			virtual Result JoinGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData ) = 0;
 			// S2C: Player Joined
-			virtual HRESULT PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const UINT8 &InJoinedPlayerDead, const UINT8 &InJoinedPlayerIndex, const UINT8 &InJoinedPlayerCharacter ) = 0;
+			virtual Result PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter ) = 0;
 			// C2S: Change configue preset
 			// Cmd: Leave Game
-			virtual HRESULT LeaveGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result LeaveGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: Player left
-			virtual HRESULT PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID ) = 0;
+			virtual Result PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID ) = 0;
 			// Cmd: Kick player
-			virtual HRESULT KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: Player kicked
-			virtual HRESULT PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID ) = 0;
+			virtual Result PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID ) = 0;
 			// Cmd: Assign role
-			virtual HRESULT AssignRoleRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result AssignRoleRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: Assign role
-			virtual HRESULT RoleAssignedS2CEvt( const RouteContext &InRouteContext, const PlayerRole &InRole ) = 0;
+			virtual Result RoleAssignedS2CEvt( const RouteContext &InRouteContext, const PlayerRole &InRole ) = 0;
 			// C2S: Chatting message
 			// Cmd: Advance game
-			virtual HRESULT AdvanceGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result AdvanceGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: The game state is advanced
-			virtual HRESULT GameAdvancedS2CEvt( const RouteContext &InRouteContext, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay ) = 0;
+			virtual Result GameAdvancedS2CEvt( const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay ) = 0;
 			// S2C: Game is ended
-			virtual HRESULT GameEndedS2CEvt( const RouteContext &InRouteContext, const GameWinner &InWinner, const UINT32 &InGainedExp, const UINT32 &InGainedGameMoney, const PlayerRole &InPlayedRole, const BYTE &InIsWon ) = 0;
+			virtual Result GameEndedS2CEvt( const RouteContext &InRouteContext, const GameWinner &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const PlayerRole &InPlayedRole, const uint8_t &InIsWon ) = 0;
 			// Cmd: *Vote game advance
-			virtual HRESULT VoteGameAdvanceRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result VoteGameAdvanceRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: *GameAdvance is Voted
-			virtual HRESULT GameAdvanceVotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter ) = 0;
+			virtual Result GameAdvanceVotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter ) = 0;
 			// Cmd: Assign role
-			virtual HRESULT VoteRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result VoteRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: Player Voted
-			virtual HRESULT VotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget ) = 0;
+			virtual Result VotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget ) = 0;
 			// S2C: Player Voted
-			virtual HRESULT VoteEndS2CEvt( const RouteContext &InRouteContext, const Array<PlayerID>& InVoted ) = 0;
+			virtual Result VoteEndS2CEvt( const RouteContext &InRouteContext, const Array<PlayerID>& InVoted ) = 0;
 			// S2C: Player Voted
-			virtual HRESULT PlayerRevealedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason ) = 0;
+			virtual Result PlayerRevealedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason ) = 0;
 			// S2C: Player Killed
-			virtual HRESULT PlayerKilledS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const PlayerKilledReason &InReason ) = 0;
+			virtual Result PlayerKilledS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const PlayerKilledReason &InReason ) = 0;
 			// Cmd: Play again with the current players
-			virtual HRESULT GamePlayAgainRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InReplayMemberCount ) = 0;
+			virtual Result GamePlayAgainRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount ) = 0;
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
-			virtual HRESULT GamePlayAgainS2CEvt( const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer ) = 0;
+			virtual Result GamePlayAgainS2CEvt( const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer ) = 0;
 			// Cmd: Player. revive himself
-			virtual HRESULT GameRevealPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole ) = 0;
+			virtual Result GameRevealPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole ) = 0;
 			// Cmd: Player. revive himself
-			virtual HRESULT GamePlayerReviveRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result GamePlayerReviveRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// S2C: Player is revived
-			virtual HRESULT GamePlayerRevivedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID ) = 0;
+			virtual Result GamePlayerRevivedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID ) = 0;
 
 		}; // class ISvrPolicyGameInstance : public Net::INetPolicy
 
@@ -97,43 +97,43 @@ namespace BR
 			{}
 
 			// C2S: Game instance deletion
-			virtual HRESULT DeleteGameC2SEvt( const RouteContext &InRouteContext ) = 0;
+			virtual Result DeleteGameC2SEvt( const RouteContext &InRouteContext ) = 0;
 			// Cmd: Join Game
-			virtual HRESULT JoinGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole ) = 0;
+			virtual Result JoinGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole ) = 0;
 			// S2C: Player Joined
 			// C2S: Change configue preset
-			virtual HRESULT SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const UINT32 &InPresetID ) = 0;
+			virtual Result SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const uint32_t &InPresetID ) = 0;
 			// Cmd: Leave Game
-			virtual HRESULT LeaveGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
+			virtual Result LeaveGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// S2C: Player left
 			// Cmd: Kick player
-			virtual HRESULT KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick ) = 0;
+			virtual Result KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick ) = 0;
 			// S2C: Player kicked
 			// Cmd: Assign role
-			virtual HRESULT AssignRoleCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
+			virtual Result AssignRoleCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// S2C: Assign role
 			// C2S: Chatting message
-			virtual HRESULT ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage ) = 0;
+			virtual Result ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage ) = 0;
 			// Cmd: Advance game
-			virtual HRESULT AdvanceGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
+			virtual Result AdvanceGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// S2C: The game state is advanced
 			// S2C: Game is ended
 			// Cmd: *Vote game advance
-			virtual HRESULT VoteGameAdvanceCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
+			virtual Result VoteGameAdvanceCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// S2C: *GameAdvance is Voted
 			// Cmd: Assign role
-			virtual HRESULT VoteCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial ) = 0;
+			virtual Result VoteCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial ) = 0;
 			// S2C: Player Voted
 			// S2C: Player Voted
 			// S2C: Player Voted
 			// S2C: Player Killed
 			// Cmd: Play again with the current players
-			virtual HRESULT GamePlayAgainCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID ) = 0;
+			virtual Result GamePlayAgainCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID ) = 0;
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
 			// Cmd: Player. revive himself
-			virtual HRESULT GameRevealPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID ) = 0;
+			virtual Result GameRevealPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID ) = 0;
 			// Cmd: Player. revive himself
-			virtual HRESULT GamePlayerReviveCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
+			virtual Result GamePlayerReviveCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID ) = 0;
 			// S2C: Player is revived
 
 		}; // class IPolicyGameInstance : public Net::INetPolicy

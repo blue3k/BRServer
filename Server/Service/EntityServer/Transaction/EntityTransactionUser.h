@@ -44,11 +44,11 @@ namespace EntityServer {
 	//	virtual ~TransRegisterUserEntity();
 
 	//	// Start Transaction
-	//	virtual HRESULT StartTransaction();
+	//	virtual Result StartTransaction();
 
 	//	// Close transaction and notify to parent
 	//	// process abnormal termination of transaction
-	//	virtual HRESULT CloseTransaction( HRESULT hrRes );
+	//	virtual Result CloseTransaction( Result hrRes );
 	//};
 
 
@@ -63,11 +63,11 @@ namespace EntityServer {
 	//	virtual ~TransUnregisterUserEntity();
 
 	//	// Start Transaction
-	//	virtual HRESULT StartTransaction();
+	//	virtual Result StartTransaction();
 
 	//	// Close transaction and notify to parent
 	//	// process abnormal termination of transaction
-	//	virtual HRESULT CloseTransaction( HRESULT hrRes );
+	//	virtual Result CloseTransaction( Result hrRes );
 	//};
 
 	//
@@ -82,11 +82,11 @@ namespace EntityServer {
 	//	virtual ~TransUpdateUserEntity();
 
 	//	// Start Transaction
-	//	virtual HRESULT StartTransaction();
+	//	virtual Result StartTransaction();
 
 	//	// Close transaction and notify to parent
 	//	// process abnormal termination of transaction
-	//	virtual HRESULT CloseTransaction( HRESULT hrRes );
+	//	virtual Result CloseTransaction( Result hrRes );
 	//};
 
 
@@ -106,11 +106,11 @@ namespace EntityServer {
 	//	virtual ~TransFindUserEntity();
 
 	//	// Start Transaction
-	//	virtual HRESULT StartTransaction();
+	//	virtual Result StartTransaction();
 
 	//	// Close transaction and notify to parent
 	//	// process abnormal termination of transaction
-	//	virtual HRESULT CloseTransaction( HRESULT hrRes );
+	//	virtual Result CloseTransaction( Result hrRes );
 	//};
 
 

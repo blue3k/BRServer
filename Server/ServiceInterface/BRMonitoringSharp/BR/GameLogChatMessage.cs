@@ -89,8 +89,8 @@ public class GameLogChatMessage : GameLogItem {
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public unsafe int SetChatMessage(ulong player, byte playerStatus, ChatType type, string message) {
-    int ret = BRMonitoringPINVOKE.GameLogChatMessage_SetChatMessage(swigCPtr, player, playerStatus, (int)type, message);
+  public unsafe SWIGTYPE_p_Result SetChatMessage(ulong player, byte playerStatus, ChatType type, string message) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.GameLogChatMessage_SetChatMessage(swigCPtr, player, playerStatus, (int)type, message), true);
     return ret;
   }
 

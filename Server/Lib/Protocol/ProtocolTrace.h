@@ -43,9 +43,9 @@ namespace Trace
 DEFINE_TRACE_MODULE(protocol)
 
 #define protocolErr(e)			TrcErrJmp(protocol,e,hr)
-#define protocolChk(e)			{ do{ HRESULT hRes = e; if( FAILED(hRes) ) TrcErrJmp(protocol,hRes,hr); } while(0); }
-#define protocolMem(a)			{ if( (a) == NULL ) TrcErrJmp(protocol,E_SYSTEM_OUTOFMEMORY,hr); }
-#define protocolChkPtr(a)		{ if( (a) == NULL ) TrcErrJmp(protocol,E_SYSTEM_POINTER,hr); }
+#define protocolChk(e)			{ do{ Result hRes = e; if( !(hRes) ) TrcErrJmp(protocol,hRes,hr); } while(0); }
+#define protocolMem(a)			{ if( (a) == NULL ) TrcErrJmp(protocol,ResultCode::OUT_OF_MEMORY,hr); }
+#define protocolChkPtr(a)		{ if( (a) == NULL ) TrcErrJmp(protocol,ResultCode::INVALID_POINTER,hr); }
 
 #define protocolAssert(e)			trcAssert(e)
 #define protocolAssertExp(e,expr)	trcAssertExp(e,expr)

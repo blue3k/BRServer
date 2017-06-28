@@ -94,20 +94,20 @@ namespace BR {
 		m_pOwner = pOwner;
 	}
 
-	HRESULT Transaction::InitializeTransaction( Entity* pOwner )
+	Result Transaction::InitializeTransaction( Entity* pOwner )
 	{
 		SetTransID( TransactionID( pOwner->GetEntityID(), GetTransID().GetTransactionIndex() ) );
 		SetOwnerEntity(pOwner);
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT Transaction::StartTransaction()
+	Result Transaction::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetState() != Transaction::STATE_WAITSTART )
-			svrErr( E_SVR_TRANSACTION_INVALID_STATE );
+			svrErr( ResultCode::E_SVR_TRANSACTION_INVALID_STATE );
 
 		m_TransactionStartTime = Util::Time.GetTimeMs();
 
@@ -125,13 +125,13 @@ namespace BR {
 		auto historyIndex = m_CurrentHistoryIdx++ % countof(m_History);
 		m_History[historyIndex].TimeStamp = Util::Time.GetTimeMs();
 		m_History[historyIndex].MsgID = pRes->GetMsgID();
-		m_History[historyIndex].hrRes = pRes->GetHRESULT();
+		m_History[historyIndex].hrRes = pRes->GetResult();
 	}
 
 	// Process Transaction
-	HRESULT Transaction::ProcessTransaction( TransactionResult* &pRes )
+	Result Transaction::ProcessTransaction( TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChkPtr( pRes );
 
@@ -139,7 +139,7 @@ namespace BR {
 								typeid(*this).name(),
 								GetTransID(),
 								pRes->GetMsgID() );
-		svrErr( E_SYSTEM_NOTIMPL );
+		svrErr( ResultCode::NOT_IMPLEMENTED );
 
 	Proc_End:
 
@@ -148,12 +148,12 @@ namespace BR {
 
 	// Close transaction and notify to parent
 	// process abnormal termination of transaction
-	HRESULT Transaction::CloseTransaction( HRESULT hrRes )
+	Result Transaction::CloseTransaction( Result hrRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( IsClosed() )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		OnCloseTransaction(hrRes);
 
@@ -165,9 +165,9 @@ namespace BR {
 	}
 
 	// flush transaction result
-	HRESULT Transaction::FlushTransaction()
+	Result Transaction::FlushTransaction()
 	{
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	///////////////////////////////////////////////////////////
@@ -203,7 +203,7 @@ namespace BR {
 	//	Sub Transaction with result base class
 	//
 	
-	SubTransactionWithResult::SubTransactionWithResult( TransactionID parentTransID , Message::MessageID MsgID )
+	SubTransactionWitResult::SubTransactionWitResult( TransactionID parentTransID , Message::MessageID MsgID )
 		:SubTransaction( parentTransID, MsgID ),
 		m_bFlushRes(false)
 	{
@@ -211,20 +211,20 @@ namespace BR {
 		TransactionResult::SetTransaction( parentTransID, MsgID );
 	}
 
-	SubTransactionWithResult::~SubTransactionWithResult()
+	SubTransactionWitResult::~SubTransactionWitResult()
 	{
 	}
 
-	HRESULT SubTransactionWithResult::CloseTransaction( HRESULT hrRes )
+	Result SubTransactionWitResult::CloseTransaction( Result hrRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		SetResult( hrRes );
 
 
 		if( IsClosed() )
 		{
-			defErr( E_SYSTEM_UNEXPECTED );
+			defErr( ResultCode::UNEXPECTED );
 		}
 
 		if( !GetParentTransID().IsValid() ) goto Proc_End;
@@ -241,9 +241,9 @@ namespace BR {
 
 
 	// flush transaction result
-	HRESULT SubTransactionWithResult::FlushTransaction()
+	Result SubTransactionWitResult::FlushTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//TransactionResult *pRes = this;
 
 		SetClosed();
@@ -259,7 +259,7 @@ namespace BR {
 		return hr;
 	}
 
-	void SubTransactionWithResult::Release()
+	void SubTransactionWitResult::Release()
 	{
 		SharedPointer(this);
 	}
@@ -273,7 +273,7 @@ namespace BR {
 		://m_uiContext(-1),
 		m_transID(-1,0),
 		m_msgID(0),
-		m_hrRes(S_SYSTEM_OK)
+		m_hrRes(ResultCode::SUCCESS)
 	{
 	}
 
@@ -281,7 +281,7 @@ namespace BR {
 		:
 		m_transID(-1,0),
 		m_msgID(msgID),
-		m_hrRes(S_SYSTEM_OK)
+		m_hrRes(ResultCode::SUCCESS)
 	{
 	}
 
@@ -307,7 +307,7 @@ namespace BR {
 	TimerResult::TimerResult()
 	{
 		SetTransaction( TransactionID(), MID );
-		SetResult( S_SYSTEM_FALSE );
+		SetResult( ResultCode::SUCCESS_FALSE );
 	}
 
 	TimerResult::~TimerResult()
@@ -343,17 +343,17 @@ namespace BR {
 	}
 
 	// Setup message result
-	HRESULT MessageResult::SetMessage( Message::MessageData* &pIMsg )
+	Result MessageResult::SetMessage( Message::MessageData* &pIMsg )
 	{
 		if( pIMsg == nullptr )
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		Message::MessageHeader *pMsgRes = pIMsg->GetMessageHeader();
 		// This assumed that Message result has context
-		AssertRel( pIMsg->GetMessageSize() >= (sizeof(Message::MessageHeader) + sizeof(RouteContext) + sizeof(HRESULT) + sizeof(Context)) );
+		AssertRel( pIMsg->GetMessageSize() >= (sizeof(Message::MessageHeader) + sizeof(RouteContext) + sizeof(Result) + sizeof(Context)) );
 		RouteContext *pRouteContext = (RouteContext*)(pMsgRes + 1);
 		Context *pContext = (Context*)(pRouteContext +1);
-		HRESULT *phrRes = (HRESULT*)(pContext+1);
+		Result *phrRes = (Result*)(pContext+1);
 		TransactionID transID;
 		transID.ID = *pContext;
 

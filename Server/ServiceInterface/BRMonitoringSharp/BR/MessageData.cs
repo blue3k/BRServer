@@ -123,13 +123,13 @@ public class MessageData : global::System.IDisposable {
     BRMonitoringPINVOKE.MessageData_UpdateChecksumNEncrypt(swigCPtr);
   }
 
-  public unsafe int ValidateChecksum() {
-    int ret = BRMonitoringPINVOKE.MessageData_ValidateChecksum(swigCPtr);
+  public unsafe SWIGTYPE_p_Result ValidateChecksum() {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.MessageData_ValidateChecksum(swigCPtr), true);
     return ret;
   }
 
-  public unsafe int ValidateChecksumNDecrypt() {
-    int ret = BRMonitoringPINVOKE.MessageData_ValidateChecksumNDecrypt(swigCPtr);
+  public unsafe SWIGTYPE_p_Result ValidateChecksumNDecrypt() {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.MessageData_ValidateChecksumNDecrypt(swigCPtr), true);
     return ret;
   }
 

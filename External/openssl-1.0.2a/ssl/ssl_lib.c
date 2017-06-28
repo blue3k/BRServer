@@ -635,7 +635,7 @@ void SSL_free(SSL *s)
 #endif
 
     if (s->client_CA != NULL)
-        sk_X509_NAME_pop_free(s->client_CA, X509_NAME_free);
+        sk_X509_NAME_pop_free(s->client_CA, SSL_X509_NAME_free);
 
     if (s->method != NULL)
         s->method->ssl_free(s);
@@ -2125,7 +2125,7 @@ void SSL_CTX_free(SSL_CTX *a)
     if (a->cert != NULL)
         ssl_cert_free(a->cert);
     if (a->client_CA != NULL)
-        sk_X509_NAME_pop_free(a->client_CA, X509_NAME_free);
+        sk_X509_NAME_pop_free(a->client_CA, SSL_X509_NAME_free);
     if (a->extra_certs != NULL)
         sk_X509_pop_free(a->extra_certs, X509_free);
 #if 0                           /* This should never be done, since it
@@ -2838,8 +2838,8 @@ const char *SSL_get_version(const SSL *s)
 
 SSL *SSL_dup(SSL *s)
 {
-    STACK_OF(X509_NAME) *sk;
-    X509_NAME *xn;
+    STACK_OF(SSL_X509_NAME) *sk;
+    SSL_X509_NAME *xn;
     SSL *ret;
     int i;
 
@@ -2943,7 +2943,7 @@ SSL *SSL_dup(SSL *s)
         for (i = 0; i < sk_X509_NAME_num(sk); i++) {
             xn = sk_X509_NAME_value(sk, i);
             if (sk_X509_NAME_set(sk, i, X509_NAME_dup(xn)) == NULL) {
-                X509_NAME_free(xn);
+                SSL_X509_NAME_free(xn);
                 goto err;
             }
         }

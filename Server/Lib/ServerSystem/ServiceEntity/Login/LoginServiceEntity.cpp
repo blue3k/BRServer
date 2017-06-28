@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/GameConst.h"
 #include "Net/NetDef.h"
 #include "Net/NetServerUDP.h"
@@ -62,9 +62,9 @@ namespace Svr {
 	{
 	}
 
-	HRESULT LoginServiceEntity::InitializeEntity( EntityID newEntityID )
+	Result LoginServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusteredServiceEntity *pClusteredEntity = nullptr;
 		auto pServerInst = BrServer::GetInstance();
 
@@ -101,9 +101,9 @@ namespace Svr {
 	}
 
 	// clear transaction
-	HRESULT LoginServiceEntity::ClearEntity()
+	Result LoginServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ReplicaClusterServiceEntity::ClearEntity() );
 
@@ -117,9 +117,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT LoginServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result LoginServiceEntity::TickUpdate(TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ReplicaClusterServiceEntity::TickUpdate(pAction) );
 
@@ -140,17 +140,17 @@ namespace Svr {
 
 
 	// Process network event
-	HRESULT LoginServiceEntity::ProcessPublicNetworkEvent()
+	Result LoginServiceEntity::ProcessPublicNetworkEvent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Net::INet::Event curEvent;
 		LoginPlayerEntity *pLoginPlayerEntity = nullptr;
-		Net::Connection *pConn = nullptr;
+		Net::Connection* pConn = nullptr;
 
 		if (m_pNetPublic == nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
-		while (SUCCEEDED(m_pNetPublic->DequeueNetEvent(curEvent)))
+		while ((m_pNetPublic->DequeueNetEvent(curEvent)))
 		{
 			pConn = nullptr;
 
@@ -173,14 +173,17 @@ namespace Svr {
 
 				svrChk(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::User, pLoginPlayerEntity));
 
-				if (FAILED(pLoginPlayerEntity->SetConnection(pConn)))
+				if (!(pLoginPlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
 				{
 					// NOTE: We need to mark to close this
 					pLoginPlayerEntity->ClearEntity();
 				}
+				else
+				{
+					pConn = nullptr;
+				}
 
 				pLoginPlayerEntity = nullptr;
-
 				break;
 			case Net::INet::Event::EVT_CONNECTION_DISCONNECTED:
 				break;
@@ -192,12 +195,12 @@ namespace Svr {
 
 	Proc_End:
 
-		if (pConn && m_pNetPublic)
+		if (pConn != nullptr && m_pNetPublic)
 			m_pNetPublic->GetConnectionManager().PendingReleaseConnection(pConn);
 
 		Util::SafeDelete(pLoginPlayerEntity);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

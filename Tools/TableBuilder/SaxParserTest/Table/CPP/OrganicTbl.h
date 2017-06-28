@@ -81,9 +81,9 @@ namespace conspiracy
 
 
 		// declare member function
-		static HRESULT LoadTable( const std::list<OrganicItem>& rowList );
+		static BR::Result LoadTable( const std::list<OrganicItem>& rowList );
 
-		static HRESULT FindItem( const unsigned int& Key, OrganicItem*& pRow);
+		static BR::Result FindItem( const unsigned int& Key, OrganicItem*& pRow);
 	}; // class OrganicTbl
 }; // namespace conspiracy
 

@@ -2,9 +2,6 @@
 #pragma once
 
 
-#include <pthread.h>
-#include <assert.h>
-#include <semaphore.h>
 
 
 
@@ -21,7 +18,7 @@ private:
 public:
 	CriticalSection()
 	{
-		HRESULT hr;
+		Result hr;
 		pthread_mutexattr_t mAttr;
 		pthread_mutexattr_init(&mAttr);
 		pthread_mutexattr_settype(&mAttr, PTHREAD_MUTEX_RECURSIVE_NP);
@@ -30,23 +27,23 @@ public:
 		{
 			const char* errorString = strerror(result);
 			printf("%s", errorString);
-			hr = E_SYSTEM_FAIL;
+			hr = ResultCode::FAIL;
 			switch(result)
 			{
-				case EBUSY:		hr = E_SYSTEM_UNEXPECTED;		break;
-				case EINVAL:	hr = E_SYSTEM_INVALIDARG;		break;
-				case EAGAIN:	hr = E_SYSTEM_UNEXPECTED;		break;
-				case ENOMEM:	hr = E_SYSTEM_OUTOFMEMORY;		break;
-				case EPERM:		hr = E_SYSTEM_FAIL;			break;
+				case EBUSY:		hr = ResultCode::UNEXPECTED;		break;
+				case EINVAL:	hr = ResultCode::INVALID_ARG;		break;
+				case EAGAIN:	hr = ResultCode::UNEXPECTED;		break;
+				case ENOMEM:	hr = ResultCode::OUT_OF_MEMORY;		break;
+				case EPERM:		hr = ResultCode::FAIL;			break;
 				default:
-					hr = E_SYSTEM_UNEXPECTED;
+					hr = ResultCode::UNEXPECTED;
 					break;
 			}
 
 			unused(hr);
 		}
 
-		if (SUCCEEDED(hr))
+		if ((hr))
 		{
 			Lock();
 			UnLock();
@@ -64,7 +61,6 @@ public:
 
 	virtual void UnLock()
 	{
-		Assert(((m_CriticalSection).__data).__count > 0);
 		pthread_mutex_unlock(&m_CriticalSection);
 	}
 
@@ -110,67 +106,21 @@ class Event
 {
 public:
 
-	Event(bool isInitialySet = false, bool autoReset = true)
-		:m_AutoReset(autoReset)
-	{
-		sem_init(&m_hEvent, 1, isInitialySet ? 1 : 0);
-	}
-
-	~Event()
-	{
-		sem_close(&m_hEvent);
-		sem_destroy(&m_hEvent);
-	}
-
-	void Reset()
-	{
-		timespec waitTime;
-		memset(&waitTime, 0, sizeof(waitTime));
-
-		if (clock_gettime(CLOCK_REALTIME, &waitTime) == -1)
-			return;
-
-		waitTime.tv_nsec += 1;
-		sem_timedwait(&m_hEvent, &waitTime);
-	}
-
-	void Set()
-	{
-		int value = 0;
-		int error = sem_getvalue(&m_hEvent, &value);
-		Assert(error == 0);
-		if (value == 1)
-			return;
-
-		sem_post(&m_hEvent);
-	}
+	Event(bool isInitialySet = false, bool autoReset = true);
 
 
-	bool WaitEvent(UINT uiWaitTimeMs)
-	{
-		// we need mutex version
-		timespec waitTime;
-		memset(&waitTime, 0, sizeof(waitTime));
+	~Event();
 
-		if (clock_gettime(CLOCK_REALTIME, &waitTime) == -1)
-			return false;
 
-		waitTime.tv_sec += uiWaitTimeMs / 1000;
-		waitTime.tv_nsec += 1000000 * (uiWaitTimeMs % 1000);
-		int waitRes = sem_timedwait(&m_hEvent, &waitTime);
-		if (waitRes == ETIMEDOUT)
-			return false;
-		else if (waitRes == EAGAIN)
-			return false;
+	void Reset();
 
-		if (!m_AutoReset)
-			sem_post(&m_hEvent);
+	void Set();
 
-		return true;
-	}
+
+	bool WaitEvent(DurationMS waitTimeMs);
 
 private:
-	sem_t	m_hEvent;
+	std::atomic<bool>	m_hEvent;
 	bool	m_AutoReset;
 };
 
@@ -182,7 +132,7 @@ public:
 
 	Semaphore(LONG lInitialCount = 0, LONG lMaxCount = LONG_MAX)
 	{
-		sem_init(&m_hSemaphore, lMaxCount, lInitialCount);
+		sem_init(&m_hSemaphore, (int)lMaxCount, (int)lInitialCount);
 	}
 
 	~Semaphore()

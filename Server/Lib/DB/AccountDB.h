@@ -15,7 +15,7 @@
 #include "Common/Typedefs.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrCommonTypes.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 #include "Common/SvrPolicyID.h"
 #include "ServerSystem/ServerComponent.h"
 
@@ -30,7 +30,7 @@ namespace DB {
 	//	AccountDBServer Class 
 	//
 
-	class AccountDB : protected QueryManager, public Svr::IServerComponent
+	class AccountDB : protected DBClusterManager, public Svr::IServerComponent
 	{
 	public:
 
@@ -54,26 +54,26 @@ namespace DB {
 		//	Account DB interface
 		//
 
-		HRESULT FacebookCreateUser(TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone);
-		HRESULT FacebookLogIn( TransactionID Sender, UINT64 facebookUID );
+		Result FacebookCreateUser(TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone);
+		Result FacebookLogIn( TransactionID Sender, UINT64 facebookUID );
 
-		HRESULT CreateUser( TransactionID Sender, const char* UserName, const char* Password );
-		HRESULT LogIn( TransactionID Sender, const char* UserName, const char* Password );
-		HRESULT LogOut( TransactionID Sender);
+		Result CreateUser( TransactionID Sender, const char* UserName, const char* Password );
+		Result LogIn( TransactionID Sender, const char* UserName, const char* Password );
+		Result LogOut( TransactionID Sender);
 
-		HRESULT CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone);
+		Result CreateRandomUser(TransactionID Sender, const char* userName, const char* cellPhone);
 
-		HRESULT UserList( TransactionID Sender);
+		Result UserList( TransactionID Sender);
 
-		HRESULT UpdateGCMKeys( TransactionID Sender, AccountID accountID, const char* strGCMKeys );
-		HRESULT UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone);
+		Result UpdateGCMKeys( TransactionID Sender, AccountID accountID, const char* strGCMKeys );
+		Result UpdateUserContactInfo(TransactionID Sender, AccountID accountID, const char* strEMail, const char* strCellPhone);
 
 		// Find player
-		HRESULT FindPlayerByEMail( TransactionID Sender, const char* email );
-		HRESULT FindPlayerByPlayerID(TransactionID Sender, AccountID accountID);
+		Result FindPlayerByEMail( TransactionID Sender, const char* email );
+		Result FindPlayerByPlayerID(TransactionID Sender, AccountID accountID);
 
 		// Player shard id
-		HRESULT GetPlayerShardID(TransactionID Sender, AccountID accountID);
+		Result GetPlayerShardID(TransactionID Sender, AccountID accountID);
 	};
 
 

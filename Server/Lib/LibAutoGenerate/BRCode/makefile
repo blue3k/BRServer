@@ -26,4 +26,4 @@ build:
 
 	
 clean:
-	rm $(OUTPUT_PATH)/BRResultCode*
+	rm $(TARGET_FILES)

@@ -69,7 +69,7 @@ X509 *X509_REQ_to_X509(X509_REQ *r, int days, EVP_PKEY *pkey)
 {
     X509 *ret = NULL;
     X509_CINF *xi = NULL;
-    X509_NAME *xn;
+    SSL_X509_NAME *xn;
 
     if ((ret = X509_new()) == NULL) {
         X509err(X509_F_X509_REQ_TO_X509, ERR_R_MALLOC_FAILURE);

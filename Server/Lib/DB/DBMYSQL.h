@@ -17,9 +17,9 @@
 #include "Common/Message.h"
 #include "DB/DBTrace.h"
 
+
 #include <mysql.h>
 #include <mysqld_error.h>
-
 
 
 
@@ -139,7 +139,7 @@ namespace DB {
 	//	Error handling
 	//
 
-	HRESULT MYSQL_ToHRESULT( int errorValue );
+	Result MYSQL_ToResult( int errorValue );
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//

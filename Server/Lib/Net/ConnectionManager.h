@@ -20,7 +20,7 @@
 #include "Net/Connection.h"
 #include "Net/ConnectionTCP.h"
 #include "Net/ConnectionUDP.h"
-#include "ServerSystem/TaskManager.h"
+#include "Common/Task/TaskManager.h"
 
 
 namespace BR {
@@ -56,7 +56,7 @@ namespace Net {
 			bool operator == (const Sockaddress& src);
 			bool operator != (const Sockaddress& src);
 
-			operator const sockaddr_storage& () { return *this; }
+			//operator const sockaddr_storage& () { return *this; }
 		};
 
 		//////////////////////////////////////////////////////////////////
@@ -166,12 +166,12 @@ namespace Net {
 	protected:
 
 		// mapping Add/Remove
-		virtual HRESULT AddMap( Connection *pConn );
-		HRESULT AddressRemap(Connection *pConn, const sockaddr_storage &addressOrg, const sockaddr_storage &newAddress);
-		HRESULT RemoveMap( Connection *pConn );
+		virtual Result AddMap( Connection *pConn );
+		Result AddressRemap(Connection *pConn, const sockaddr_storage &addressOrg, const sockaddr_storage &newAddress);
+		Result RemoveMap( Connection *pConn );
 
 		// Remap PeerID
-		HRESULT RemapPeerID( Connection *pConn, AuthTicket ticket );
+		Result RemapPeerID( Connection *pConn, AuthTicket ticket );
 
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -193,7 +193,7 @@ namespace Net {
 
 
 		// Disconnect all connection
-		virtual HRESULT DisconnectAllConnection();
+		virtual Result DisconnectAllConnection();
 
 
 	public:
@@ -214,10 +214,10 @@ namespace Net {
 		inline void FreeCID( UINT uiCID );
 
 		// Initialize Manager
-		virtual HRESULT InitManager( UINT poolCacheCount );
+		virtual Result InitManager( UINT poolCacheCount );
 
 		// Release all connection and terminate manager
-		virtual HRESULT TerminateManager();
+		virtual Result TerminateManager();
 
 		// Prevent connection allocation or not
 		inline void EnableNewConnection( bool bIsEnable );
@@ -233,41 +233,41 @@ namespace Net {
 
 
 		// Add connection to connecting process
-		virtual HRESULT PendingWaitConnection( Connection* pConnection );
+		virtual Result PendingWaitConnection( Connection* pConnection );
 
 		// Add connection to connecting process
-		virtual HRESULT PendingConnection( Connection* pConnection );
+		virtual Result PendingConnection( Connection* pConnection );
 
 		// Create new connection from connection pool with UDP address and add to connecting process
-		HRESULT PendingNewConnection(const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl);
-		HRESULT PendingNewConnection(const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl);
+		Result PendingNewConnection(const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl);
+		Result PendingNewConnection(const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl);
 
 		// Change address mapping of connection
-		HRESULT PendingRemapPeerID( Connection* pConnection, AuthTicket ticket );
+		Result PendingRemapPeerID( Connection* pConnection, AuthTicket ticket );
 
 		// Change address mapping of connection
-		HRESULT PendingAddressRemap(Connection* pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew);
+		Result PendingAddressRemap(Connection* pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew);
 
 		// Pending Init connection
-		HRESULT PendingInitConnection( Connection* pConnection );
+		Result PendingInitConnection( Connection* pConnection );
 
 		// Managed connection is taken by other entity
-		HRESULT PendingManagedConnectionTakenOver(Connection* pConnection);
+		Result PendingManagedConnectionTakenOver(Connection* pConnection);
 
 		// Close and release connection
-		virtual HRESULT PendingReleaseConnection( Connection* pConnection );
+		virtual Result PendingReleaseConnection( Connection* pConnection );
 
 		// Wait disconnect and release
-		//virtual HRESULT PendingDisconnectNReleaseConnection( Connection* pConnection );
+		//virtual Result PendingDisconnectNReleaseConnection( Connection* pConnection );
 
 		// Close all current connection
-		virtual HRESULT PendingCloseAllConnection();
+		virtual Result PendingCloseAllConnection();
 
 
 		// Find and return connection
-		HRESULT GetConnectionByAddr(const sockaddr_storage& sockAddr, SharedPointerT<Connection> &pFound);
-		HRESULT GetConnectionByCID( uintptr_t uiCID, SharedPointerT<Connection> &pConn );
-		HRESULT GetConnectionByPeerID(UINT64 peerID, SharedPointerT<Connection> &pConn);
+		Result GetConnectionByAddr(const sockaddr_storage& sockAddr, SharedPointerT<Connection> &pFound);
+		Result GetConnectionByCID( uintptr_t uiCID, SharedPointerT<Connection> &pConn );
+		Result GetConnectionByPeerID(UINT64 peerID, SharedPointerT<Connection> &pConn);
 	};
 
 
@@ -288,7 +288,7 @@ namespace Net {
 		ConnectionManagerT( UINT uiBucketSize );
 
 		// Initialize Manager
-		virtual HRESULT InitManager( UINT poolCacheCount );
+		virtual Result InitManager( UINT poolCacheCount );
 
 		// create connection
 		virtual Connection* NewConnection();

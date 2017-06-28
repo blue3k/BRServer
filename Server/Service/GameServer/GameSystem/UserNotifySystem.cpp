@@ -59,10 +59,10 @@ namespace GameServer {
 	}
 
 	// Initialzie system
-	HRESULT UserNotifySystem::InitializeComponent()
+	Result UserNotifySystem::InitializeComponent()
 	{
 		m_Notifications.Clear();
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Terminate component
@@ -109,18 +109,18 @@ namespace GameServer {
 	}
 
 	// Add a Notification
-	HRESULT UserNotifySystem::AddNotification( const Notification& info )
+	Result UserNotifySystem::AddNotification( const Notification& info )
 	{
 		if( GetNotification(info.NotificationID) )
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		return m_Notifications.Append( 1, &info );
 	}
 
-	HRESULT UserNotifySystem::AddNotification( UINT NotificationID, NotificationType MessageID, INT64 MessageParam0, INT64 MessageParam1, const char* MessageText, BYTE IsRead, INT64 timeStamp )
+	Result UserNotifySystem::AddNotification( UINT NotificationID, NotificationType MessageID, INT64 MessageParam0, INT64 MessageParam1, const char* MessageText, BYTE IsRead, INT64 timeStamp )
 	{
 		if( MessageText == nullptr)
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		Notification info;
 		memset( &info, 0, sizeof(info) );
@@ -138,26 +138,26 @@ namespace GameServer {
 
 
 	// Remove a Notification
-	HRESULT UserNotifySystem::RemoveNotification( UINT notificationID )
+	Result UserNotifySystem::RemoveNotification( UINT notificationID )
 	{
 		INT index = FindNotification(notificationID);
 		if( index < 0 )
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		return m_Notifications.RemoveAt( index );
 	}
 
 
-	HRESULT UserNotifySystem::ForeachNotification( std::function<HRESULT(const UserNotifySystem::Notification&)> functor )
+	Result UserNotifySystem::ForeachNotification( std::function<Result(const UserNotifySystem::Notification&)> functor )
 	{
 		for( unsigned int index = 0; index < m_Notifications.GetSize(); index++ )
 		{
-			HRESULT hr = functor( m_Notifications[index] );
-			if( FAILED(hr) )
+			Result hr = functor( m_Notifications[index] );
+			if( !(hr) )
 				return hr;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 }; // namespace GameServer

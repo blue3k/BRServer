@@ -12,6 +12,7 @@
 
 
 #include "Common/Typedefs.h"
+#include "Common/BRResult.h"
 
 
 
@@ -33,14 +34,15 @@ namespace BR
 			MIN_EXEOFFSET			= 0x100,
 		};
 
-		size_t StackTraceCount;
-		void* StackTrace[MAX_CALLSTACK_DEPTH];
+		size_t m_StackTraceCount;
+		void* m_StackTrace[MAX_CALLSTACK_DEPTH];
 
 		// constructor
 		CallStackTrace();
 
 		// print stack trace
-		HRESULT PrintStackTrace( int channel, HANDLE hProcess );
+		BR::Result PrintStackTrace( int channel, HANDLE hProcess );
+
 	};
 
 

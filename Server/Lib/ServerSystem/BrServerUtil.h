@@ -31,7 +31,7 @@ namespace Svr
 
 	// Get entity table
 	EntityTable& GetEntityTable();
-	HRESULT FindEntity(EntityID entityID, SharedPointerT<Entity>& entity);
+	Result FindEntity(EntityID entityID, SharedPointerT<Entity>& entity);
 
 	// Get Server UID
 	UINT GetServerUID();

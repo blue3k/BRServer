@@ -29,7 +29,7 @@ namespace BR
 			// Monitoring Debug output function 
 
 			void RegisterDebugTraceMonitoring();
-			HRESULT DebugOutMonitoring( const char*Prefix, MessageData*pMsg );
+			Result DebugOutMonitoring( const char*Prefix, MessageData*pMsg );
 
 
 

@@ -42,9 +42,9 @@ namespace EntityServer {
 
 
 
-	//HRESULT TransServerStarted::StartTransaction()
+	//Result TransServerStarted::StartTransaction()
 	//{
-	//	HRESULT hr = S_SYSTEM_OK;
+	//	Result hr = ResultCode::SUCCESS;
 	//	const ServiceInformation &serviceInfo = GetClusterManagerServiceInformation();
 	//	Svr::ServerServiceInformation *pService = nullptr;
 

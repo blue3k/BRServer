@@ -65,14 +65,14 @@ namespace Net {
 			return m_hKQUEUE;
 		}
 
-		HRESULT RegisterSocket(INetIOCallBack* cbInstance);
-		HRESULT UnregisterSocket(INetIOCallBack* cbInstance);
+		Result RegisterSocket(INetIOCallBack* cbInstance);
+		Result UnregisterSocket(INetIOCallBack* cbInstance);
 
 		virtual void Run() override;
 
 
-		HRESULT HandleAccept(SOCKET sock, INetIOCallBack* pCallBack);
-		HRESULT HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack);
+		Result HandleAccept(SOCKET sock, INetIOCallBack* pCallBack);
+		Result HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack);
 	};
 
 
@@ -122,16 +122,16 @@ namespace Net {
 
 		KQUEUESystem();
 
-		HRESULT Initialize(UINT netThreadCount);
+		Result Initialize(UINT netThreadCount);
 		void Terminate();
 
-		HRESULT MakeSocketNonBlocking(SOCKET sfd);
+		Result MakeSocketNonBlocking(SOCKET sfd);
 		WriteBufferQueue* GetWriteBufferQueue();
-		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
+		//Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
 
 		// Register the socket to KQUEUE
-		HRESULT RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance);
-		HRESULT UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance);
+		Result RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance);
+		Result UnregisterFromNETIO(INetIOCallBack* cbInstance);
 
 
 		static KQUEUESystem& GetInstance() { return stm_Instance; }

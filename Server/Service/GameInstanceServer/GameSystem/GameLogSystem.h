@@ -57,23 +57,23 @@ namespace ConspiracyGameInstanceServer {
 		~GameLogSystem();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() override;
+		virtual Result InitializeComponent() override;
 
 		virtual void TerminateComponent() override;
 
 		void ClearGameLog();
 
 		// Add log items
-		HRESULT AddGameStateChange(TimeStampSec timeStamp, GameStateID gameState );
+		Result AddGameStateChange(TimeStampSec timeStamp, GameStateID gameState );
 
-		HRESULT AddGameVote( TimeStampSec timeStamp, GameVoteType type, UINT voterCount );
-		HRESULT UpdateGameVote( PlayerID voter, PlayerID voted );
+		Result AddGameVote( TimeStampSec timeStamp, GameVoteType type, UINT voterCount );
+		Result UpdateGameVote( PlayerID voter, PlayerID voted );
 
-		HRESULT AddGameVoteResult(TimeStampSec timeStamp, UINT numRankers, const PlayerID* ranker );
+		Result AddGameVoteResult(TimeStampSec timeStamp, UINT numRankers, const PlayerID* ranker );
 
-		HRESULT AddGamePlayerKilled(TimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID );
+		Result AddGamePlayerKilled(TimeStampSec timeStamp, PlayerKilledReason reason, PlayerID killedPlayerID );
 
-		HRESULT AddGameEnd(TimeStampSec timeStamp, GameWinner winner );
+		Result AddGameEnd(TimeStampSec timeStamp, GameWinner winner );
 
 	};
 

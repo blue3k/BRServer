@@ -142,7 +142,7 @@ static int auto_info(X509_REQ *req, STACK_OF(CONF_VALUE) *sk,
 static int add_attribute_object(X509_REQ *req, char *text, const char *def,
                                 char *value, int nid, int n_min, int n_max,
                                 unsigned long chtype);
-static int add_DN_object(X509_NAME *n, char *text, const char *def,
+static int add_DN_object(SSL_X509_NAME *n, char *text, const char *def,
                          char *value, int nid, int n_min, int n_max,
                          unsigned long chtype, int mval);
 static int genpkey_cb(EVP_PKEY_CTX *ctx);
@@ -1117,16 +1117,16 @@ static int make_REQ(X509_REQ *req, EVP_PKEY *pkey, char *subj, int multirdn,
 static int build_subject(X509_REQ *req, char *subject, unsigned long chtype,
                          int multirdn)
 {
-    X509_NAME *n;
+    SSL_X509_NAME *n;
 
     if (!(n = parse_name(subject, chtype, multirdn)))
         return 0;
 
     if (!X509_REQ_set_subject_name(req, n)) {
-        X509_NAME_free(n);
+        SSL_X509_NAME_free(n);
         return 0;
     }
-    X509_NAME_free(n);
+    SSL_X509_NAME_free(n);
     return 1;
 }
 
@@ -1143,7 +1143,7 @@ static int prompt_info(X509_REQ *req,
     char *type, *value;
     const char *def;
     CONF_VALUE *v;
-    X509_NAME *subj;
+    SSL_X509_NAME *subj;
     subj = X509_REQ_get_subject_name(req);
 
     if (!batch) {
@@ -1306,7 +1306,7 @@ static int auto_info(X509_REQ *req, STACK_OF(CONF_VALUE) *dn_sk,
     char *p, *q;
     char *type;
     CONF_VALUE *v;
-    X509_NAME *subj;
+    SSL_X509_NAME *subj;
 
     subj = X509_REQ_get_subject_name(req);
 
@@ -1362,7 +1362,7 @@ static int auto_info(X509_REQ *req, STACK_OF(CONF_VALUE) *dn_sk,
     return 1;
 }
 
-static int add_DN_object(X509_NAME *n, char *text, const char *def,
+static int add_DN_object(SSL_X509_NAME *n, char *text, const char *def,
                          char *value, int nid, int n_min, int n_max,
                          unsigned long chtype, int mval)
 {

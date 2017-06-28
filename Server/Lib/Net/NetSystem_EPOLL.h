@@ -58,21 +58,20 @@ namespace Net {
 	public:
 		// Constructor/destructor
 		EPOLLWorker(bool bHandleSend, int hEpoll = 0);
-
 		~EPOLLWorker();
 
 		int GetEpollHandle() {
 			return m_hEpoll;
 		}
 
-		HRESULT RegisterSocket(INetIOCallBack* cbInstance);
-		HRESULT UnregisterSocket(INetIOCallBack* cbInstance);
+		Result RegisterSocket(INetIOCallBack* cbInstance);
+		Result UnregisterSocket(INetIOCallBack* cbInstance);
 
 		virtual void Run() override;
 
 
-		HRESULT HandleAccept(SOCKET sock, INetIOCallBack* pCallBack);
-		HRESULT HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack);
+		Result HandleAccept(SOCKET sock, INetIOCallBack* pCallBack);
+		Result HandleRW(SOCKET sock, unsigned int events, INetIOCallBack* pCallBack);
 	};
 
 
@@ -89,7 +88,6 @@ namespace Net {
 	public:
 		// Constructor/destructor
 		EPOLLSendWorker();
-
 		~EPOLLSendWorker();
 
 		WriteBufferQueue& GetWriteQueue() { return m_WriteQueue; }
@@ -122,16 +120,18 @@ namespace Net {
 
 		EPOLLSystem();
 
-		HRESULT Initialize(UINT netThreadCount);
+		Result Initialize(UINT netThreadCount);
 		void Terminate();
 
-		HRESULT MakeSocketNonBlocking(SOCKET sfd);
+		Result MakeSocketNonBlocking(SOCKET sfd);
 		WriteBufferQueue* GetWriteBufferQueue();
-		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
+		//Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance);
 
 		// Register the socket to EPOLL
-		HRESULT RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance);
-		HRESULT UnregisterFromNETIO(SockType sockType, INetIOCallBack* cbInstance);
+		Result RegisterToNETIO(SockType sockType, INetIOCallBack* cbInstance);
+		Result UnregisterFromNETIO(INetIOCallBack* cbInstance);
+
+		const char* EventFlagToString(int32_t bufferSize, char* stringBuffer, uint32_t eventFlags);
 
 		static EPOLLSystem& GetInstance() { return stm_Instance; }
 	};

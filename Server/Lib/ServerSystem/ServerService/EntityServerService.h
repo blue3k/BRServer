@@ -33,11 +33,11 @@ namespace BR
 			EntityServerService ( ServerServiceInformation* pService );
 
 			// Cmd: Register entity
-			HRESULT RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
+			Result RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
 			// Cmd: Find Entity
-			HRESULT UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID );
+			Result UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID );
 			// Cmd: Find Entity
-			HRESULT FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID );
+			Result FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID );
 
 		}; // class EntityServerService : public ServerServiceBase
 

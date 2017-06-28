@@ -57,11 +57,11 @@ bool CircularQueue<T,SIZE_BUFFER>::IsEmpty()
 //} 
 
 template <typename T, int SIZE_BUFFER>
-HRESULT CircularQueue<T,SIZE_BUFFER>::Enqueue( T&& item )
+Result CircularQueue<T,SIZE_BUFFER>::Enqueue( T&& item )
 {
 	if(IsFull())
 	{
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 
 	Assert(T(0) == m_Buffer[m_nWritePtr]);
@@ -71,15 +71,15 @@ HRESULT CircularQueue<T,SIZE_BUFFER>::Enqueue( T&& item )
 
 	m_nItemCount++;
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template <typename T, int SIZE_BUFFER>
-HRESULT CircularQueue<T,SIZE_BUFFER>::Dequeue(T &item ) 
+Result CircularQueue<T,SIZE_BUFFER>::Dequeue(T &item ) 
 {
     if (m_nItemCount == 0)
     {
-        return E_SYSTEM_FAIL;
+        return ResultCode::FAIL;
     }
 
 	item = m_Buffer[m_nReadPtr];
@@ -89,7 +89,7 @@ HRESULT CircularQueue<T,SIZE_BUFFER>::Dequeue(T &item )
 	m_nReadPtr = (m_nReadPtr+1)%SIZE_BUFFER;
 	m_nItemCount--;
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template <typename T, int SIZE_BUFFER>

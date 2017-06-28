@@ -17,7 +17,7 @@
 namespace BR {
 
 
-	HRESULT GetLastHRESULT();
+	Result GetLastResult();
 
 
 	template <class DataType>

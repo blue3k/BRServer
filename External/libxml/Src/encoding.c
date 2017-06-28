@@ -2300,7 +2300,7 @@ retry:
 #endif
 	    break;
         case -2: {
-	    int len = in->use;
+	    size_t len = in->use;
 	    const xmlChar *utf = (const xmlChar *) in->content;
 	    int cur;
 

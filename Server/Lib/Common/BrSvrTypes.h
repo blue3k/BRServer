@@ -32,8 +32,8 @@ namespace BR {
 
 	
 	// server cluster ID
-	//typedef UINT32 ClusterID;
-	enum class ClusterID : UINT32
+	//typedef uint32_t ClusterID;
+	enum class ClusterID : uint32_t
 	{
 		EntityManager				= 1,
 		ClusterManager,
@@ -41,6 +41,7 @@ namespace BR {
 		Login,
 		Game,
 		Game_Conspiracy,
+		Game_MyTownHero,
 		Game_Max,
 		GameInstanceManager = Game_Max,
 		GamePartyManager,
@@ -49,12 +50,12 @@ namespace BR {
 		PurchaseValidateGoogle,
 		PurchaseValidateIOS,
 
-		Matching_Game_4,
+		Matching_Game_4				= 80,
 		Matching_Game_8,
 		//Matching_Game_10,
 		//Matching_Game_12,
 
-		MatchingQueue_Game_4x1		= 50,
+		MatchingQueue_Game_4x1		= 100,
 		MatchingQueue_Game_4x2,
 		MatchingQueue_Game_4x3,
 		MatchingQueue_Game_4x1S,
@@ -124,19 +125,19 @@ namespace BR {
 	{
 		struct {
 			EntityID	EntID;
-			UINT32		TransID;
+			uint32_t		TransID;
 		} Components;
-		UINT64 ID;
+		uint64_t ID;
 
 		inline TransactionID();
 		inline TransactionID( const TransactionID& transID );
-		inline TransactionID( EntityID entityID, UINT32 transID );
+		inline TransactionID( EntityID entityID, uint32_t transID );
 		inline TransactionID( Context context );
 
 		inline bool IsValid() const;
 
 		EntityID GetEntityID() const { return Components.EntID; }
-		UINT32 GetTransactionIndex() const { return Components.TransID; }
+		uint32_t GetTransactionIndex() const { return Components.TransID; }
 
 		inline TransactionID& operator = ( const TransactionID& transID );
 
@@ -159,7 +160,7 @@ namespace BR {
 			EntityUID	From;
 			EntityUID	To;
 		} Components;
-		UINT64 ContextValue[2];
+		uint64_t ContextValue[2];
 
 		inline RouteContext();
 		inline RouteContext( const RouteContext& routeContext );
@@ -179,7 +180,7 @@ namespace BR {
 	};
 
 	// Clustering model
-	enum class ClusterType : UINT32
+	enum class ClusterType : uint32_t
 	{
 		Replication,		// Replica with master. master - write, others - read
 		FreeReplication,	// Replica without master. plat relationship
@@ -188,7 +189,7 @@ namespace BR {
 	};
 
 	// Cluster Member ship mode
-	enum class ClusterMembership : UINT32
+	enum class ClusterMembership : uint32_t
 	{
 		Master,
 		Slave,
@@ -197,7 +198,7 @@ namespace BR {
 	};
 	
 	// Cluster Service status
-	enum class ServiceStatus : UINT32
+	enum class ServiceStatus : uint32_t
 	{
 		Offline,
 		Online,
@@ -215,11 +216,11 @@ namespace BR {
 		NetClass			ServerClass;
 		NetAddress			ServerAddress;
 		TimeStampSec		ServerUpTime;
-		UINT32				Workload;
+		uint32_t				Workload;
 
 		inline ServiceInformation();
 		inline ServiceInformation( const ServiceInformation& src );
-		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, UINT32 workload );
+		inline ServiceInformation( EntityUID entityUID, ClusterMembership membership, ServiceStatus status, NetClass netClass, const NetAddress& address, TimeStampSec serverUpTime, uint32_t workload );
 		inline ServiceInformation( int initValue );
 
 		inline ServiceInformation& operator = ( const ServiceInformation& src );
@@ -237,16 +238,16 @@ namespace BR {
 		};
 
 		struct {
-			UINT32		Time;
-			UINT32		SvrID		: BIT_SERVERID;
-			UINT32		ID			: BIT_ID;
+			uint32_t		Time;
+			uint32_t		SvrID		: BIT_SERVERID;
+			uint32_t		ID			: BIT_ID;
 		};
-		UINT64			UID;
+		uint64_t			UID;
 
 		inline GlobalUID();
 		inline GlobalUID( const GlobalUID& src );
-		inline GlobalUID( UINT serverID, UINT32 time, UINT32 id );
-		inline GlobalUID( UINT64 initValue );
+		inline GlobalUID( UINT serverID, uint32_t time, uint32_t id );
+		inline GlobalUID( uint64_t initValue );
 
 		inline GlobalUID& operator = ( const GlobalUID& src );
 
@@ -254,7 +255,7 @@ namespace BR {
 		inline bool operator != ( const GlobalUID& op ) const;
 
 #if !defined(SWIG)
-		inline operator UINT64 () const;
+		inline operator uint64_t () const;
 #endif
 	};
 
@@ -263,22 +264,22 @@ namespace BR {
 	union LocalUID
 	{
 		struct {
-			UINT32		Time;
-			UINT32		ID;
+			uint32_t		Time;
+			uint32_t		ID;
 		};
-		UINT64			UID;
+		uint64_t			UID;
 
 		inline LocalUID();
 		inline LocalUID( const LocalUID& src );
-		inline LocalUID( UINT32 time, UINT32 id );
-		inline LocalUID( UINT64 initValue );
+		inline LocalUID( uint32_t time, uint32_t id );
+		inline LocalUID( uint64_t initValue );
 
 		inline LocalUID& operator = ( const LocalUID& src );
 
 		inline bool operator == ( const LocalUID& op ) const;
 		inline bool operator != ( const LocalUID& op ) const;
 #if !defined(SWIG)
-		inline operator UINT64 () const;
+		inline operator uint64_t () const;
 #endif
 	};
 
@@ -323,7 +324,7 @@ namespace BR {
 
 		EntityUID					RegisterUID;				// Who registered
 		PlayerID					RegisterID;					// Who registered
-		UINT32						NumPlayers;					// Cancel information is marked here
+		uint32_t						NumPlayers;					// Cancel information is marked here
 		MatchingPlayerInformation	Players[MAX_NUM_PLAYER];
 
 		inline MatchingQueueItem();
@@ -331,7 +332,7 @@ namespace BR {
 		inline MatchingQueueItem( EntityUID RegisterUID, PlayerID RegisterID, UINT numPlayer, const MatchingPlayerInformation* playerInformations );
 		inline MatchingQueueItem( int initValue );
 
-		inline HRESULT SetQueueItem( EntityUID RegisterUID, PlayerID RegisterID, UINT numPlayer, const MatchingPlayerInformation* playerInformations );
+		inline Result SetQueueItem( EntityUID RegisterUID, PlayerID RegisterID, UINT numPlayer, const MatchingPlayerInformation* playerInformations );
 
 		inline MatchingQueueItem& operator = ( const MatchingQueueItem& src );
 
@@ -341,7 +342,7 @@ namespace BR {
 
 	struct PerformanceCounterInfo
 	{
-		UINT32 DateType;
+		uint32_t DateType;
 		char CounterName[128];
 
 		bool operator == (const PerformanceCounterInfo& op) const;

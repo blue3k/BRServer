@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/GameConst.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
@@ -43,17 +43,17 @@ namespace Svr {
 	{
 		SetTickInterval(DurationMS(10000));
 
-		BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd) { svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd) { svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd) { svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd) { svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	MonitoringServiceEntity::~MonitoringServiceEntity()
 	{
 	}
 
-	HRESULT MonitoringServiceEntity::InitializeEntity( EntityID newEntityID )
+	Result MonitoringServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::Config::NetSocket *netAddress = nullptr;
 		NetAddress localAddr;
 
@@ -74,9 +74,9 @@ namespace Svr {
 	}
 
 	// clear transaction
-	HRESULT MonitoringServiceEntity::ClearEntity()
+	Result MonitoringServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ServiceEntity::ClearEntity() );
 
@@ -87,21 +87,21 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT MonitoringServiceEntity::RegisterServiceMessageHandler(ServerEntity *pServerEntity)
+	Result MonitoringServiceEntity::RegisterServiceMessageHandler(ServerEntity *pServerEntity)
 	{
-		//HRESULT hr = S_SYSTEM_OK;
+		//Result hr = ResultCode::SUCCESS;
 
 		ServiceEntity::RegisterServiceMessageHandler(pServerEntity);
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)				{ svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return S_SYSTEM_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::GetInstanceListCmd)				{ svrMemReturn(pNewTrans = new MonitoringTransGetInstanceList(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::Monitoring::RequestCounterValuesCmd)			{ svrMemReturn(pNewTrans = new MonitoringTransRequestCounterValues(pMsgData)); return ResultCode::SUCCESS; } );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT MonitoringServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result MonitoringServiceEntity::TickUpdate(TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ServiceEntity::TickUpdate(pAction) );
 

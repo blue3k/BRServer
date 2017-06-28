@@ -10,7 +10,7 @@
       </Cmd>
       <Res>
         <Params Type="PerformanceCounterInstanceInfo" Name="CounterInstances" IsArray="true"/>
-        <Params Type="UINT32" Name="TotalInstanceCount"/>
+        <Params Type="uint32" Name="TotalInstanceCount"/>
       </Res>
 	  </Command>
 
@@ -20,7 +20,7 @@
       </Cmd>
       <Res>
         <Params Type="EntityUID" Name="InstanceUID"/>
-        <Params Type="UINT64" Name="CounterValues" IsArray="true"/>
+        <Params Type="uint64" Name="CounterValues" IsArray="true"/>
       </Res>
     </Command>
 
@@ -39,7 +39,7 @@
 
     <C2SEvent Name="PerformanceCounterUpdate" Reliable="true" Crypto="No" Trace="DBG2" Desc="Counter update broadcast">
       <Params Type="EntityUID" Name="InstanceUID"/>
-      <Params Type="UINT64" Name="CounterValues" IsArray="true"/>
+      <Params Type="uint64" Name="CounterValues" IsArray="true"/>
     </C2SEvent>
 
     <S2CEvent Name="PerformanceCounterUpdateCounterInfo" Reliable="true" Crypto="No" Trace="DBG2" Desc="Request from server">

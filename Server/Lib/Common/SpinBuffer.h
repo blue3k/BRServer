@@ -65,10 +65,10 @@ namespace BR
 	public:
 	// Public Interface
 		// Producer(writer) write 
-		HRESULT Push(const T& item); 
+		Result Push(const T& item); 
 
 		// Comsumer(reader) read 
-		HRESULT Pop(T& item);
+		Result Pop(T& item);
 	};
 
 	#include "SpinBuffer.inl"

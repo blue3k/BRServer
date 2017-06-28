@@ -74,18 +74,18 @@ namespace ConspiracyGameInstanceServer {
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		// To game instance
-		BR_ENTITY_MESSAGE(Message::GameInstance::DeleteGameC2SEvt) { svrMemReturn(pNewTrans = new GameEntityTransDeleteGame(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::JoinGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransJoinGame(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::LeaveGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransLeaveGame(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::KickPlayerCmd) { svrMemReturn(pNewTrans = new GameEntityTransKickPlayer(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::AssignRoleCmd) { svrMemReturn(pNewTrans = new GameEntityTransAssignRole(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::ChatMessageC2SEvt) { svrMemReturn(pNewTrans = new GameEntityTransChatMessage(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::VoteGameAdvanceCmd) { svrMemReturn(pNewTrans = new GameEntityTransVoteGameAdvance(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::VoteCmd) { svrMemReturn(pNewTrans = new GameEntityTransVote(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::AdvanceGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransAdvanceGame(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayAgainCmd) { svrMemReturn(pNewTrans = new GameEntityTransGamePlayAgain(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GameRevealPlayerCmd) { svrMemReturn(pNewTrans = new GameEntityTransGameRevealPlayer(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayerReviveCmd) { svrMemReturn(pNewTrans = new GameEntityTransGamePlayerRevive(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::DeleteGameC2SEvt) { svrMemReturn(pNewTrans = new GameEntityTransDeleteGame(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::JoinGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransJoinGame(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::LeaveGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransLeaveGame(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::KickPlayerCmd) { svrMemReturn(pNewTrans = new GameEntityTransKickPlayer(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::AssignRoleCmd) { svrMemReturn(pNewTrans = new GameEntityTransAssignRole(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::ChatMessageC2SEvt) { svrMemReturn(pNewTrans = new GameEntityTransChatMessage(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::VoteGameAdvanceCmd) { svrMemReturn(pNewTrans = new GameEntityTransVoteGameAdvance(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::VoteCmd) { svrMemReturn(pNewTrans = new GameEntityTransVote(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::AdvanceGameCmd) { svrMemReturn(pNewTrans = new GameEntityTransAdvanceGame(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayAgainCmd) { svrMemReturn(pNewTrans = new GameEntityTransGamePlayAgain(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GameRevealPlayerCmd) { svrMemReturn(pNewTrans = new GameEntityTransGameRevealPlayer(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstance::GamePlayerReviveCmd) { svrMemReturn(pNewTrans = new GameEntityTransGamePlayerRevive(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GameInstanceEntity::~GameInstanceEntity()
@@ -93,9 +93,9 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Initialize game system
-	HRESULT GameInstanceEntity::InitializeSystem()
+	Result GameInstanceEntity::InitializeSystem()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(UpdateGameTable() );
 
@@ -112,14 +112,14 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Update game config
-	HRESULT GameInstanceEntity::UpdateGameTable()
+	Result GameInstanceEntity::UpdateGameTable()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::GameConfigTbl::GameConfigItem *pGameConfig = nullptr;
 
 		m_TableVersion = GameTable::GetTableVersion();
 
-		if (FAILED( conspiracy::GameConfigTbl::FindItem(m_PresetGameConfigID, pGameConfig) ))
+		if (!( conspiracy::GameConfigTbl::FindItem(m_PresetGameConfigID, pGameConfig) ))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to find Gameconfig");
 			goto Proc_End;
@@ -128,7 +128,7 @@ namespace ConspiracyGameInstanceServer {
 		// set value only if it succeeded
 		m_PresetGameConfig = pGameConfig;
 
-		if (FAILED(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
+		if (!(conspiracy::BotTalkTbl::FindItem(1, m_pBotTalk)))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to find bot talk item");
 		}
@@ -140,9 +140,9 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Initialize entity to proceed new connection
-	HRESULT GameInstanceEntity::InitializeEntity( EntityID newEntityID )
+	Result GameInstanceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::InitializeEntity( newEntityID ) );
 
@@ -154,12 +154,12 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Close entity and clear transaction
-	HRESULT GameInstanceEntity::TerminateEntity()
+	Result GameInstanceEntity::TerminateEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		svrChk(super::TerminateEntity());
 
@@ -180,9 +180,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Update Game status
-	HRESULT GameInstanceEntity::UpdateGameStatus( TimeStampMS ulCurTime )
+	Result GameInstanceEntity::UpdateGameStatus( TimeStampMS ulCurTime )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (m_TableVersion != GameTable::GetTableVersion())
 		{
@@ -211,9 +211,9 @@ namespace ConspiracyGameInstanceServer {
 	//
 
 	// Initialize entity to proceed new connection
-	HRESULT GameInstanceEntity::InitializeGameEntity(UINT numBot, UINT maxPlayer)
+	Result GameInstanceEntity::InitializeGameEntity(UINT numBot, UINT maxPlayer)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GamePlayer *pPlayer = nullptr;
 
 		// initialize
@@ -227,7 +227,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				if (m_PlayerCharacter[player] == 0xFF)
 				{
-					m_PlayerCharacter[player] = character;
+					m_PlayerCharacter[player] = (BYTE)character;
 					break;
 				}
 				player++;
@@ -257,40 +257,40 @@ namespace ConspiracyGameInstanceServer {
 	//	Game Player
 	//
 
-	HRESULT GameInstanceEntity::GetPlayerIndex( PlayerID playerID, UINT &playerIndex )
+	Result GameInstanceEntity::GetPlayerIndex( PlayerID playerID, UINT &playerIndex )
 	{
 		GamePlayer* pGamePlayer = nullptr;
 
-		if( FAILED(FindPlayer( playerID, pGamePlayer )) )
-			return E_INVALID_PLAYERID;
+		if( !(FindPlayer( playerID, pGamePlayer )) )
+			return ResultCode::E_INVALID_PLAYERID;
 
 		playerIndex = pGamePlayer->GetIndex();
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT GameInstanceEntity::GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer )
+	Result GameInstanceEntity::GetPlayerByIndex( INT playerIndex, GamePlayer* &pGamePlayer )
 	{
 		if( playerIndex < 0 || playerIndex >= (INT)GetMaxPlayer() )
-			return E_INVALID_PLAYERID;
+			return ResultCode::E_INVALID_PLAYERID;
 
 		pGamePlayer = m_PlayerByIndex[playerIndex];
 
-		return pGamePlayer ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+		return pGamePlayer ? ResultCode::SUCCESS : ResultCode::FAIL;
 	}
 
 
-	HRESULT GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, Svr::GameInstancePlayer* &pPlayer)
+	Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, Svr::GameInstancePlayer* &pPlayer)
 	{
 		pPlayer = new GamePlayer(this, playerInfo);
 
-		return pPlayer != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+		return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 	}
 
 
 	// Register new player to join
-	HRESULT GameInstanceEntity::AddPlayerToJoin(Svr::GameInstancePlayer* &pInsPlayer)
+	Result GameInstanceEntity::AddPlayerToJoin(Svr::GameInstancePlayer* &pInsPlayer)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//GamePlayer* pFound = nullptr;
 		GamePlayer* pPlayer = nullptr;
 		UINT playerIndex;
@@ -309,11 +309,11 @@ namespace ConspiracyGameInstanceServer {
 			{
 			case PlayerRole::Seer:
 				if (m_RoleRequestSeer == 0) m_RoleRequestSeer++;
-				else                        svrErr(E_GAME_INVALID_ROLE);
+				else                        svrErr(ResultCode::E_GAME_INVALID_ROLE);
 				break;
 			case PlayerRole::Werewolf:
 				if (m_RoleRequestWerewolf < 2) m_RoleRequestWerewolf++;
-				else                           svrErr(E_GAME_INVALID_ROLE);
+				else                           svrErr(ResultCode::E_GAME_INVALID_ROLE);
 				break;
 			default:
 				break;
@@ -348,9 +348,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Find Player pilotid
-	HRESULT GameInstanceEntity::FindPlayer( PlayerID pltID, GamePlayer* &pGamePlayer )
+	Result GameInstanceEntity::FindPlayer( PlayerID pltID, GamePlayer* &pGamePlayer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::GameInstancePlayer* pGameInsPlayer = nullptr;
 
 		svrChk(super::FindPlayer(pltID, pGameInsPlayer));
@@ -364,9 +364,9 @@ namespace ConspiracyGameInstanceServer {
 
 
 	// Called when a player get out of game
-	HRESULT GameInstanceEntity::OnPlayerGetOutOfGame( Svr::GameInstancePlayer* pPlayer )
+	Result GameInstanceEntity::OnPlayerGetOutOfGame( Svr::GameInstancePlayer* pPlayer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// update exit status
 		svrChk(super::OnPlayerGetOutOfGame(pPlayer));

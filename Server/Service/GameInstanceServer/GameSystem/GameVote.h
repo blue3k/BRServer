@@ -56,10 +56,10 @@ namespace ConspiracyGameInstanceServer {
 		FORCEINLINE GameInstanceEntity& GetOwner()			{ return *m_Owner; }
 
 		// Iniciate vote
-		virtual HRESULT IniciateVote();
+		virtual Result IniciateVote();
 
 		// vote 
-		virtual HRESULT Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget );
+		virtual Result Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget );
 
 		// check weather the vote is ended or not
 		virtual bool IsVoteEnd() = 0;
@@ -105,9 +105,9 @@ namespace ConspiracyGameInstanceServer {
 		void SetVoteRanker( PlayerID playerID, UINT rate );
 
 		// Iniciate vote
-		virtual HRESULT IniciateVote() override;
+		virtual Result IniciateVote() override;
 
-		virtual HRESULT Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget ) override;
+		virtual Result Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget ) override;
 		
 		// Make all AI(left players and sleepers) be voted
 		virtual void ForceAIVoted() override;
@@ -139,9 +139,9 @@ namespace ConspiracyGameInstanceServer {
 		PlayerID GetPlayerToHang();
 
 		// Iniciate vote
-		virtual HRESULT IniciateVote() override;
+		virtual Result IniciateVote() override;
 
-		virtual HRESULT Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget ) override;
+		virtual Result Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget ) override;
 		
 		// Make all AI(left players and sleepers) be voted
 		virtual void ForceAIVoted() override;
@@ -188,9 +188,9 @@ namespace ConspiracyGameInstanceServer {
 		FORCEINLINE bool IsFlagSet( VoteFlags flag )	{ return (m_VotingFlags&flag) != 0; }
 
 		// Iniciate vote
-		virtual HRESULT IniciateVote() override;
+		virtual Result IniciateVote() override;
 
-		virtual HRESULT Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget ) override;
+		virtual Result Vote( GamePlayer* pVoter, GamePlayer *pVoteTarget ) override;
 		
 		// Make all AI(left players and sleepers) be voted
 		virtual void ForceAIVoted() override;

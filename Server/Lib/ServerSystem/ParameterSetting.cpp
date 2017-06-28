@@ -29,9 +29,9 @@ namespace BR
 	OrderedLinkedList<StringKey> ParameterSetting::m_Settings;
 
 
-	HRESULT ParameterSetting::ProcessSingleParameter(const char* argument)
+	Result ParameterSetting::ProcessSingleParameter(const char* argument)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		switch (argument[0])
 		{
@@ -75,13 +75,13 @@ namespace BR
 		return hr;
 	}
 
-	HRESULT ParameterSetting::ProcessParameter(const char* arg)
+	Result ParameterSetting::ProcessParameter(const char* arg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		char* curArg = nullptr;
 		char settingBufferForParsing[64 * 1024];
 
-		if (arg == nullptr) return E_SYSTEM_INVALIDARG;
+		if (arg == nullptr) return ResultCode::INVALID_ARG;
 
 		svrChk(StrUtil::StringCpy(settingBufferForParsing, arg));
 
@@ -105,9 +105,9 @@ namespace BR
 		return hr;
 	}
 
-	HRESULT ParameterSetting::ProcessParameter(int numArg, const char* argc[])
+	Result ParameterSetting::ProcessParameter(int numArg, const char* argc[])
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		for (int iArg = 0; iArg < numArg; iArg++)
 		{
@@ -121,9 +121,9 @@ namespace BR
 
 
 	// Set setting value
-	HRESULT ParameterSetting::SetSetting(const char* settingName, const char* value)
+	Result ParameterSetting::SetSetting(const char* settingName, const char* value)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		char* bufferPos = m_SettingBuffer + m_BufferUsedOffset;
 		INT bufferSize = (INT)countof(m_SettingBuffer) - m_BufferUsedOffset;
@@ -150,11 +150,11 @@ namespace BR
 			svrChk(StrUtil::StringLwrEx(bufferPos, bufferSize, settingName));
 			*bufferPos++ = '\0'; bufferSize--;
 			if (bufferSize < (INT)sizeof(LinkedListNode))
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
 			pNewNode = (LinkedListNode*)bufferPos;
 			bufferPos += sizeof(LinkedListNode);
-			bufferSize -= sizeof(LinkedListNode);
+			bufferSize = (decltype(bufferSize))(bufferSize - sizeof(LinkedListNode));
 
 			memset(pNewNode, 0, sizeof(LinkedListNode));
 			pNewNode->Key = StringKey(curSettingName);
@@ -176,7 +176,7 @@ namespace BR
 		decltype(m_Settings)::Node *pPrevNode = nullptr, *pCur = nullptr;
 		StringKey key(settingName);
 
-		if (FAILED(m_Settings.FindPrevNode(key, pPrevNode)))
+		if (!(m_Settings.FindPrevNode(key, pPrevNode)))
 			return defaultValue;
 
 		pCur = pPrevNode->pNext;

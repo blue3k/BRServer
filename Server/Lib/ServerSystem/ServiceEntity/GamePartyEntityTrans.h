@@ -53,7 +53,7 @@ namespace Svr {
 		virtual ~PartyTransCloseInstance() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		void Release() { delete this; }
 	};
@@ -81,7 +81,7 @@ namespace Svr {
 		virtual ~PartyTransJoinParty() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_SVR_MSGTRANS_CLOSE_ARGS(JoinPartyRes,GetRouteContext().GetSwaped(), m_LeaderID,m_MessageBuffer.ToArray());
 	};
@@ -99,7 +99,7 @@ namespace Svr {
 		virtual ~PartyTransLeaveParty() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_SVR_MSGTRANS_CLOSE(LeavePartyRes,GetRouteContext().GetSwaped());
 	};
@@ -118,7 +118,7 @@ namespace Svr {
 		virtual ~PartyTransKickPlayer() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_SVR_MSGTRANS_CLOSE(KickPlayerRes,GetRouteContext().GetSwaped());
 	};
@@ -137,7 +137,7 @@ namespace Svr {
 		virtual ~PartyTransChatMessage() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	
@@ -153,7 +153,7 @@ namespace Svr {
 		virtual ~PartyTransQuickChatMessage() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -167,11 +167,11 @@ namespace Svr {
 		PartyTransStartGameMatchCmd( Message::MessageData* &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransStartGameMatchCmd() {}
 
-		HRESULT OnPartyMatchingQueued( Svr::TransactionResult* &pRes );
-		HRESULT OnCreateGame(TransactionResult* pRes);
+		Result OnPartyMatchingQueued( Svr::TransactionResult* &pRes );
+		Result OnCreateGame(TransactionResult* pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_SVR_MSGTRANS_CLOSE(StartGameMatchRes,GetRouteContext().GetSwaped());
 	};
@@ -187,10 +187,10 @@ namespace Svr {
 		PartyTransCancelGameMatchCmd( Message::MessageData* &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransCancelGameMatchCmd() {}
 
-		HRESULT OnPartyMatchingCanceled( Svr::TransactionResult* &pRes );
+		Result OnPartyMatchingCanceled( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_SVR_MSGTRANS_CLOSE(CancelGameMatchRes,GetRouteContext().GetSwaped());
 	};
@@ -208,7 +208,7 @@ namespace Svr {
 		virtual ~PartyTransPartyMatchingCanceled() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -224,7 +224,7 @@ namespace Svr {
 		virtual ~PartyTransMatchingItemDequeued() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 	
 
@@ -240,7 +240,7 @@ namespace Svr {
 		virtual ~PartyTransPartyGameMatchedS2CEvt() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 

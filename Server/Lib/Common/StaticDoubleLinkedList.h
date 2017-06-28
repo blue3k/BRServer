@@ -153,13 +153,13 @@ namespace BR {
 		}
 
 		// insert after specific node, if null for pPrevNode, added at front
-		HRESULT Add(Node* pNew)
+		Result Add(Node* pNew)
 		{
 			if (pNew == nullptr)
-				return E_SYSTEM_POINTER;
+				return ResultCode::INVALID_POINTER;
 
 			if (pNew->pNext != nullptr || pNew->pPrev != nullptr)
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			pNew->pPrev = &m_Header;
 			pNew->pNext = m_Header.pNext;
@@ -169,17 +169,17 @@ namespace BR {
 
 			m_NumItems++;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 		
 		// Remove 
-		HRESULT Remove( Node* pRemove )
+		Result Remove( Node* pRemove )
 		{
 			if (pRemove == nullptr)
-				return E_SYSTEM_POINTER;
+				return ResultCode::INVALID_POINTER;
 
 			if (pRemove->pNext == nullptr || pRemove->pPrev == nullptr)
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			pRemove->pPrev->pNext = pRemove->pNext;
 			pRemove->pNext->pPrev = pRemove->pPrev;
@@ -188,7 +188,7 @@ namespace BR {
 
 			m_NumItems--;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		iterator begin()
@@ -206,10 +206,10 @@ namespace BR {
 			return m_NumItems;
 		}
 		
-		HRESULT erase( const iterator& itCur )
+		Result erase( const iterator& itCur )
 		{
 			if( !itCur.IsValid() )
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			return Remove( itCur.m_pCur );
 		}

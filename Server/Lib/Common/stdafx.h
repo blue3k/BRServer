@@ -3,7 +3,12 @@
 // are changed infrequently
 //
 
+#ifndef __ANDROID__
+
 #pragma once
+
+#endif // !__ANDROID__
+
 
 #include "Common/Typedefs.h"
 

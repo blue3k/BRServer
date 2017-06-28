@@ -50,8 +50,8 @@ public class ArrayEntityUID : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int SetSize(uint szNewSize) {
-    int ret = BRMonitoringPINVOKE.ArrayEntityUID_SetSize(swigCPtr, szNewSize);
+  public unsafe SWIGTYPE_p_Result SetSize(uint szNewSize) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayEntityUID_SetSize(swigCPtr, szNewSize), true);
     return ret;
   }
 
@@ -86,8 +86,8 @@ public class ArrayEntityUID : global::System.IDisposable {
     BRMonitoringPINVOKE.ArrayEntityUID_SetIncreaseSize(swigCPtr, szNewIncSize);
   }
 
-  public unsafe int Reserve(uint szReserv) {
-    int ret = BRMonitoringPINVOKE.ArrayEntityUID_Reserve(swigCPtr, szReserv);
+  public unsafe SWIGTYPE_p_Result Reserve(uint szReserv) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayEntityUID_Reserve(swigCPtr, szReserv), true);
     return ret;
   }
 
@@ -97,24 +97,24 @@ public class ArrayEntityUID : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int push_back(EntityUID NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayEntityUID_push_back(swigCPtr, EntityUID.getCPtr(NewData));
+  public unsafe SWIGTYPE_p_Result push_back(EntityUID NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayEntityUID_push_back(swigCPtr, EntityUID.getCPtr(NewData)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int AddItems(uint numItems, EntityUID NewData) {
-    int ret = BRMonitoringPINVOKE.ArrayEntityUID_AddItems(swigCPtr, numItems, EntityUID.getCPtr(NewData));
+  public unsafe SWIGTYPE_p_Result AddItems(uint numItems, EntityUID NewData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayEntityUID_AddItems(swigCPtr, numItems, EntityUID.getCPtr(NewData)), true);
     return ret;
   }
 
-  public unsafe int RemoveAt(int iIndex) {
-    int ret = BRMonitoringPINVOKE.ArrayEntityUID_RemoveAt(swigCPtr, iIndex);
+  public unsafe SWIGTYPE_p_Result RemoveAt(int iIndex) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayEntityUID_RemoveAt(swigCPtr, iIndex), true);
     return ret;
   }
 
-  public unsafe int RemoveItem(EntityUID RemoveData) {
-    int ret = BRMonitoringPINVOKE.ArrayEntityUID_RemoveItem(swigCPtr, EntityUID.getCPtr(RemoveData));
+  public unsafe SWIGTYPE_p_Result RemoveItem(EntityUID RemoveData) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.ArrayEntityUID_RemoveItem(swigCPtr, EntityUID.getCPtr(RemoveData)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

@@ -50,16 +50,16 @@ namespace Svr
 	{
 	}
 
-	HRESULT ServerEntityManager::GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity )
+	Result ServerEntityManager::GetOrRegisterServer( ServerID serverID, NetClass netClass, const NetAddress& netAddress, ServerEntity* &pServerEntity )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pNewServerEntity = nullptr;
 		Net::IConnection *pConnection = nullptr;
 
 		MutexScopeLock localLock(m_ServerTableLock);
 
 		ServerEntity* pSvrEntity = nullptr;
-		if (SUCCEEDED(GetServerEntity(serverID, pSvrEntity)))
+		if ((GetServerEntity(serverID, pSvrEntity)))
 		{
 			AssertRel(netClass == pSvrEntity->GetRemoteClass());
 			pServerEntity = pSvrEntity;
@@ -72,15 +72,19 @@ namespace Svr
 
 		svrChk( BrServer::GetInstance()->CreateServerEntity(netClass, pNewServerEntity) );
 
-		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, netAddress, pConnection ) );
-
 		pNewServerEntity->SetPrivateNetAddress(netAddress);
 		pNewServerEntity->SetServerID( serverID );
-		pNewServerEntity->SetLocalConnection(pConnection);
 
 		pServerEntity = pNewServerEntity;
 
 		svrChk(AddServerEntity(netClass, pNewServerEntity));
+
+		svrChk(BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection(serverID, netClass, netAddress, pConnection));
+
+		pNewServerEntity->SetLocalConnection(pConnection);
+
+		svrTrace(Svr::TRC_ENTITY, "Registered Server {0} SvrID:{1} {2}, taskGrp:{3}", netClass, serverID, netAddress, pNewServerEntity->GetTaskGroupID());
+
 
 	Proc_End:
 
@@ -90,23 +94,23 @@ namespace Svr
 
 
 	// Get remote entity
-	HRESULT ServerEntityManager::GetServerEntity( ServerID svrID, ServerEntity* &pServerEntity )
+	Result ServerEntityManager::GetServerEntity( ServerID svrID, ServerEntity* &pServerEntity )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		hr = m_ServerIDMap.Find(svrID, pServerEntity);
 
 	//Proc_End:
 
-		Assert(FAILED(hr) || pServerEntity != nullptr);
+		Assert(!(hr) || pServerEntity != nullptr);
 		return hr;
 	}
 
 
 
-	HRESULT ServerEntityManager::GetEntityManagerServerEntity( ServerEntity* &pServerEntity )
+	Result ServerEntityManager::GetEntityManagerServerEntity( ServerEntity* &pServerEntity )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// Get first non-zero one, This should be the biggest one
 		ServerUpTimeList::iterator itEntity = m_EntityManagerServerUpTimeMap.begin();
@@ -122,12 +126,12 @@ namespace Svr
 
 	//Proc_End:
 
-		return pServerEntity != nullptr ? hr : E_SYSTEM_FAIL;
+		return pServerEntity != nullptr ? hr : ResultCode::FAIL;
 	}
 
-	HRESULT ServerEntityManager::UpdateEntityManagerServerEntity( ServerEntity* pServerEntity )
+	Result ServerEntityManager::UpdateEntityManagerServerEntity( ServerEntity* pServerEntity )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerUpTimeList::Node *pPrevNode = nullptr;
 		ServerUpTimeListNodeItem *pPrevListNode = nullptr;
 		ServerUpTimeListNodeItem *pNewListNode = nullptr;
@@ -150,7 +154,7 @@ namespace Svr
 
 		pPrevListNode = (ServerUpTimeListNodeItem*)pPrevNode;
 		if( pPrevNode->Key != 0 && pPrevListNode->pServerEntity == pServerEntity )
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		svrMem( pNewListNode = new ServerUpTimeListNodeItem );
 		memset( pNewListNode, 0, sizeof(ServerUpTimeListNodeItem) );
@@ -170,16 +174,16 @@ namespace Svr
 	}
 
 	// Add new connection
-	HRESULT ServerEntityManager::AddServerEntity(NetClass netClass, ServerEntity* pServerEntity)
+	Result ServerEntityManager::AddServerEntity(NetClass netClass, ServerEntity* pServerEntity)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, res;
 		auto& entityTable = GetEntityTable();
 		svrChkPtr( pServerEntity );
 
 		if (netClass < NetClass::Unknown
 			|| netClass >= BR::NetClass::Max)
 		{
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 		}
 
 		svrChk( pServerEntity->InitializeEntity(entityTable.GenEntityID(EntityFaculty::Server) ) );
@@ -187,7 +191,7 @@ namespace Svr
 		// Add to task list
 		svrChk( AddTickTask( pServerEntity ) );
 
-		svrChk(entityTable.Insert(pServerEntity->GetEntityID(), pServerEntity));
+		svrChk(entityTable.Insert(pServerEntity));
 
 		svrChk(m_ServerIDMap.Insert(pServerEntity->GetServerID(), pServerEntity));
 
@@ -203,27 +207,27 @@ namespace Svr
 		return hr;
 	}
 
-	HRESULT ServerEntityManager::AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity)
+	Result ServerEntityManager::AddOrGetServerEntity(ServerID serverID, NetClass netClass, ServerEntity* &pServerEntity)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		MutexScopeLock localLock(m_ServerTableLock);
 
 		if (netClass < NetClass::Unknown
 			|| netClass >= BR::NetClass::Max)
 		{
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 		}
 
 		ServerEntity* pOldEntity = nullptr;
-		if (SUCCEEDED(GetServerEntity(serverID, pOldEntity)))
+		if ((GetServerEntity(serverID, pOldEntity)))
 		{
 			AssertRel(netClass == pOldEntity->GetRemoteClass());
 			if (pServerEntity != nullptr && pOldEntity != pServerEntity)
 			{
 				svrTrace(Svr::TRC_ENTITY, "Adding Duplicated Server {0} SvrID:{1}", netClass, serverID);
 				AssertRel(false);
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 			}
 
 			pServerEntity = pOldEntity;

@@ -19,24 +19,24 @@
 
 
 // Swap byte of data
-UINT16 SwapByte( UINT16 uiData )
+uint16_t SwapByte(uint16_t uiData )
 {
-	return ((uiData&0xFF00)>>8) | (uiData<<8);
+	return (uint16_t)(((uiData&0xFF00)>>8) | (uiData<<8));
 }
 
-UINT32 SwapByte( UINT32 uiData )
+uint32_t SwapByte(uint32_t uiData )
 {
 	return ( uiData<<24 ) | ((uiData&0xFF00)<<16) | ( uiData>>24 ) | ((uiData>>16)&0xFF00);
 }
 
-UINT64 SwapByte( UINT64 uiData )
+uint64_t SwapByte(uint64_t uiData )
 {
-	return (((UINT64)SwapByte((UINT32)uiData))<<32) | ((UINT64)SwapByte((UINT32)(uiData>>32)));
+	return (((uint64_t)SwapByte((uint32_t)uiData))<<32) | ((uint64_t)SwapByte((uint32_t)(uiData>>32)));
 }
 
 
 template<class DupType>
-HRESULT ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc )
+Result ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc )
 {
 	if( pDest != NULL )
 	{
@@ -48,42 +48,42 @@ HRESULT ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc )
 	{
 		pDest = new DupType[ iSrcCount ];
 		if( pDest == NULL )
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 
 		memcpy( pDest, pSrc, iSrcCount*sizeof(DupType) );
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 
 
 // MemCopy Data to binary
 template< size_t szDstSize, class DataType >
-HRESULT MemCpy( BYTE (&Dest)[szDstSize], const DataType& Src )
+Result MemCpy( BYTE (&Dest)[szDstSize], const DataType& Src )
 {
 	static_assert( szDstSize >= sizeof(DataType), "Invalid Binary data size" );
 	memcpy( Dest, &Src, sizeof(DataType) );
 	if( szDstSize < sizeof(DataType) )
-		return E_SYSTEM_FAIL;
-	return S_SYSTEM_OK;
+		return ResultCode::FAIL;
+	return ResultCode::SUCCESS;
 }
 
 
 // MemCopy Data From binary
 template< size_t szDstSize, class DataType >
-HRESULT MemCpy( DataType& Dest, const BYTE (&Src)[szDstSize] )
+Result MemCpy( DataType& Dest, const BYTE (&Src)[szDstSize] )
 {
 	static_assert( szDstSize >= sizeof(DataType), "Invalid Binary data size" );
 	memcpy( &Dest, Src, sizeof(DataType) );
 	if( szDstSize < sizeof(DataType) )
-		return E_SYSTEM_FAIL;
-	return S_SYSTEM_OK;
+		return ResultCode::FAIL;
+	return ResultCode::SUCCESS;
 }
 
 
 template<class ArrayType>
-HRESULT SafeDeleteArray( ArrayType* &pArray )
+Result SafeDeleteArray( ArrayType* &pArray )
 {
 	if( pArray != NULL )
 	{
@@ -91,11 +91,11 @@ HRESULT SafeDeleteArray( ArrayType* &pArray )
 		pArray = NULL;
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template<class ValueType>
-HRESULT SafeDelete( ValueType* &pObj )
+Result SafeDelete( ValueType* &pObj )
 {
 	if( pObj != nullptr )
 	{
@@ -103,11 +103,11 @@ HRESULT SafeDelete( ValueType* &pObj )
 		pObj = nullptr;
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template<class ValueType>
-HRESULT SafeRelease( ValueType* &pObj )
+Result SafeRelease( ValueType* &pObj )
 {
 	if( pObj != nullptr )
 	{
@@ -115,7 +115,7 @@ HRESULT SafeRelease( ValueType* &pObj )
 		pObj = nullptr;
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 

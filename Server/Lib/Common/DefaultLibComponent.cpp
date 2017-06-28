@@ -33,10 +33,10 @@ namespace BR
 	}
 
 	// Initialize server component
-	HRESULT LibComponentDefault::InitializeComponent()
+	Result LibComponentDefault::InitializeComponent()
 	{
-		HRESULT hr = Component::InitializeComponent();
-		if (FAILED(hr)) return hr;
+		Result hr = Component::InitializeComponent();
+		if (!(hr)) return hr;
 
 		srand((UINT)Util::Time.GetRawTimeMs().time_since_epoch().count());
 		Util::Random.Srand(nullptr);

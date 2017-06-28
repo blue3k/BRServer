@@ -63,7 +63,7 @@ EntityUID::EntityUID( const EntityUID& entityUID )
 {
 }
 
-EntityUID::EntityUID( ServerID serverID, UINT32 entityID )
+EntityUID::EntityUID( ServerID serverID, uint32_t entityID )
 {
 	Components.SvrID = serverID;
 	Components.EntID = entityID;
@@ -123,14 +123,14 @@ EntityID::EntityID( const EntityID& entityID )
 }
 
 #if !defined(SWIG)
-EntityID::EntityID( EntityFaculty facultyID, UINT32 entityLID )
+EntityID::EntityID( EntityFaculty facultyID, uint32_t entityLID )
 {
 	Components.FacultyID = (UINT)facultyID;
-	Components.EntityLID = entityLID;
+	Components.EntityLID = entityLID & 0xFFFFFF; // to avoid wconversion warning
 }
 #endif
 
-EntityID::EntityID( UINT32 uiID )
+EntityID::EntityID( uint32_t uiID )
 	:ID(uiID)
 {
 }
@@ -152,9 +152,9 @@ EntityID& EntityID::operator = ( const EntityID& entityID )
 //	return ID != src.ID;
 //}
 
-EntityID::operator UINT32() const
+EntityID::operator uint32_t() const
 {
-	return (UINT32)ID;
+	return (uint32_t)ID;
 }
 
 

@@ -59,9 +59,9 @@ namespace BR {
 
 
 			// Open network system
-			HRESULT OpenSystem(UINT uiOverBufferCount)
+			Result OpenSystem(UINT uiOverBufferCount)
 			{
-				HRESULT hr = S_SYSTEM_OK;
+				Result hr = ResultCode::SUCCESS;
 
 				netChk(NetSystem::OpenSystem(uiOverBufferCount, Const::CLI_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX));
 
@@ -84,7 +84,7 @@ namespace BR {
 			// Close network system
 			void CloseSystem()
 			{
-				HRESULT hr = S_SYSTEM_OK;
+				Result hr = ResultCode::SUCCESS;
 				CounterType lCount = 0;
 
 				if (g_lSysOpenCount > 0)
@@ -112,13 +112,13 @@ namespace BR {
 
 
 			// Add connection update task
-			HRESULT AddConnectionTask(ConnectionManager *pConMgr, Connection * pConnection)
+			Result AddConnectionTask(ConnectionManager *pConMgr, Connection * pConnection)
 			{
-				HRESULT hr = S_SYSTEM_OK;
+				Result hr = ResultCode::SUCCESS;
 				ConnectionTask *pTask = nullptr;
 
 				if (g_ConnectionTaskManager == nullptr)
-					return E_NET_NOTINITIALIZED;
+					return ResultCode::E_NET_NOTINITIALIZED;
 
 				netChkPtr(pConMgr);
 				netChkPtr(pConnection);
@@ -137,13 +137,13 @@ namespace BR {
 			}
 
 			// Remove Connection update task
-			HRESULT RemoveConnectionTask(Connection * pConnection)
+			Result RemoveConnectionTask(Connection * pConnection)
 			{
-				HRESULT hr = S_SYSTEM_OK;
+				Result hr = ResultCode::SUCCESS;
 				ConnectionTask *pTask = nullptr;
 
 				if (g_ConnectionTaskManager == nullptr)
-					return E_NET_NOTINITIALIZED;
+					return ResultCode::E_NET_NOTINITIALIZED;
 
 				pTask = (ConnectionTask*)pConnection->GetUData();
 
@@ -172,9 +172,9 @@ namespace BR {
 
 		// Release all connection and terminate manager
 		template< class ConnectionType >
-		HRESULT ClientConnectionManagerT<ConnectionType>::TerminateManager()
+		Result ClientConnectionManagerT<ConnectionType>::TerminateManager()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			ConnectionManager::Operation oper;
 			ConnectionTask *pTask = nullptr;
 
@@ -184,7 +184,7 @@ namespace BR {
 
 
 			// Clear pending operation queue
-			while (super::m_PendingOperations.Dequeue(oper) == S_SYSTEM_OK)
+			while (super::m_PendingOperations.Dequeue(oper))
 			{
 				switch (oper.OpCode)
 				{
@@ -258,13 +258,13 @@ namespace BR {
 	}
 
 	// Called when connection result 
-	void Client::OnConnectionResult(Connection *pConnection, HRESULT hrConnect)
+	void Client::OnConnectionResult(Connection *pConnection, Result hrConnect)
 	{
 	}
 
-	HRESULT Client::ConnectCli(const NetAddress& destAddress, IConnection* &pNewConnection)
+	Result Client::ConnectCli(const NetAddress& destAddress, IConnection* &pNewConnection)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		pNewConnection = GetConnectionManager().NewConnection();
 		netChkPtr(pNewConnection);
@@ -284,18 +284,18 @@ namespace BR {
 
 
 	// take over connection management
-	HRESULT Client::TakeOverConnection(IConnection* pIConnection)
+	Result Client::TakeOverConnection(IConnection* pIConnection)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Connection* pConn = (Connection*)pIConnection;
 
 		netChkPtr(pIConnection);
-		netErr(E_SYSTEM_NOTIMPL);
+		netErr(ResultCode::NOT_IMPLEMENTED);
 		netChk(GetConnectionManager().PendingManagedConnectionTakenOver(pConn));
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			netTrace(Trace::TRC_ERROR, "ReleaseConnection Failed hr={0:X8}", hr);
 		}
@@ -304,14 +304,14 @@ namespace BR {
 	}
 
 	// Release Connection
-	HRESULT Client::ReleaseConnection(IConnection* pIConnection)
+	Result Client::ReleaseConnection(IConnection* pIConnection)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ConnectionTCP *pConTCP = (ConnectionTCP*)pIConnection;
 
 		if (pIConnection == nullptr)
 		{
-			netErr(E_SYSTEM_UNEXPECTED);
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 		if (pIConnection->GetConnectionState() != Net::IConnection::STATE_DISCONNECTED)
@@ -330,12 +330,12 @@ namespace BR {
 		return hr;
 	}
 
-	HRESULT Client::GetConnection(uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection)
+	Result Client::GetConnection(uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection)
 	{
 		SharedPointerT<Connection> pConnection;
 
-		HRESULT hr = GetConnectionManager().GetConnectionByCID(uiCID, pConnection);
-		if (SUCCEEDED(hr))
+		Result hr = GetConnectionManager().GetConnectionByCID(uiCID, pConnection);
+		if ((hr))
 		{
 			pIConnection = pConnection;
 		}
@@ -345,7 +345,7 @@ namespace BR {
 
 
 	// Query Network event
-	HRESULT Client::DequeueNetEvent(Event& evt)
+	Result Client::DequeueNetEvent(Event& evt)
 	{
 		return m_NetEventQueue.Dequeue(evt);
 	}
@@ -383,9 +383,9 @@ namespace BR {
 
 
 	// Connect to server
-	HRESULT ClientTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
+	Result ClientTCP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
 		sockaddr_storage sockAddr, sockAddrDest;
@@ -405,23 +405,23 @@ namespace BR {
 		socket = NetSystem::Socket(localAddress.SocketFamily, SockType::Stream);
 		if (socket == INVALID_SOCKET)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 
 		iOptValue = Const::CLI_RECV_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF={0}, err={1:X8}", iOptValue, GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF={0}, err={1:X8}", iOptValue, GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 		if (sockAddr.ss_family == AF_INET6)
@@ -429,8 +429,8 @@ namespace BR {
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY={0}, err={1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_SYSTEM_UNEXPECTED);
+				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY={0}, err={1:X8}", iOptValue, GetLastWSAResult());
+				netErr(ResultCode::UNEXPECTED);
 			}
 		}
 
@@ -440,8 +440,8 @@ namespace BR {
 			iMode = true;
 			if (ioctlsocket(socket, FIONBIO, &iMode) == SOCKET_ERROR)
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err={0:X8}", iMode, GetLastWSAHRESULT());
-				netErr(E_SYSTEM_UNEXPECTED);
+				netTrace(Trace::TRC_ERROR, "Failed to change socket IO Mode to {0},  err={0:X8}", iMode, GetLastWSAResult());
+				netErr(ResultCode::UNEXPECTED);
 			}
 		}
 #endif
@@ -449,8 +449,8 @@ namespace BR {
 		bindAddr = sockAddr;
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Socket bind failed, TCP {0:X8}", GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Socket bind failed, TCP {0:X8}", GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 
@@ -475,10 +475,10 @@ namespace BR {
 		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn));
 
 		if (connect(pConn->GetIOSocket(), (sockaddr*)&sockAddrDest, sizeof(sockAddrDest)) != SOCKET_ERROR
-			|| GetLastWSAHRESULT() != E_NET_WOULDBLOCK)
+			|| GetLastWSAResult() != Result(ResultCode::E_NET_WOULDBLOCK))
 		{
-			netTrace(Trace::TRC_ERROR, "connect failed, TCP {0:X8}", GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "connect failed, TCP {0:X8}", GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 		netChk( GetConnectionManager().PendingWaitConnection( pConn ) );
@@ -515,9 +515,9 @@ namespace BR {
 
 
 	// Called when connection state changed
-	HRESULT ClientTCP::OnConnectionStateChange( IConnection *pConnection )
+	Result ClientTCP::OnConnectionStateChange( IConnection *pConnection )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		switch (pConnection->GetConnectionState())
 		{
@@ -569,9 +569,9 @@ namespace BR {
 
 
 	// Connect to server
-	HRESULT ClientUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
+	Result ClientUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
 		sockaddr_storage sockAddr;
@@ -593,23 +593,23 @@ namespace BR {
 		socket = NetSystem::Socket(localAddress.SocketFamily, SockType::DataGram);
 		if( socket == INVALID_SOCKET )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAResult());
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 
 		iOptValue = Const::CLI_RECV_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 
@@ -618,8 +618,8 @@ namespace BR {
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_SYSTEM_UNEXPECTED);
+				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAResult());
+				netErr(ResultCode::UNEXPECTED);
 			}
 		}
 
@@ -627,8 +627,8 @@ namespace BR {
 		bindAddr = sockAddr;
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 		netChk(Addr2SockAddr(destAddress, sockAddrDest));
@@ -707,9 +707,9 @@ namespace BR {
 
 
 	// Connect to server
-	HRESULT ClientMUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
+	Result ClientMUDP::Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SOCKET socket = INVALID_SOCKET;
 		int iOptValue;
 		sockaddr_storage sockAddr;
@@ -729,23 +729,23 @@ namespace BR {
 		socket = NetSystem::Socket(localAddress.SocketFamily, SockType::DataGram);
 		if (socket == INVALID_SOCKET)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "Failed to Open Client Socket {0:X8}", GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 
 		iOptValue = Const::CLI_RECV_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
 		if (setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 
@@ -754,8 +754,8 @@ namespace BR {
 			iOptValue = FALSE;
 			if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-				netErr(E_SYSTEM_UNEXPECTED);
+				netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAResult());
+				netErr(ResultCode::UNEXPECTED);
 			}
 		}
 
@@ -763,8 +763,8 @@ namespace BR {
 		bindAddr = sockAddr;
 		if (bind(socket, (sockaddr*)&bindAddr, sizeof(bindAddr)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 

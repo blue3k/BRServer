@@ -35,9 +35,9 @@ namespace BR
 
 
 		// Cmd: Create a game instance
-		HRESULT GameInstanceManagerService::CreateGameCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
+		Result GameInstanceManagerService::CreateGameCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
 			svrChk(GetPolicyGameInstanceManager()->CreateGameCmd( InRouteContext, InTransactionID, InRouteHopCount, InNumberOfBotPlayer, InMaxPlayer ) );
@@ -46,11 +46,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT GameInstanceManagerService::CreateGameCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer )
+		}; // Result GameInstanceManagerService::CreateGameCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer )
 		// C2S: Game instance notify of deletion
-		HRESULT GameInstanceManagerService::GameDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount )
+		Result GameInstanceManagerService::GameDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			RouteContext InRouteContext( EntityUID(GetMyServerID(),InSenderEntityID), GetServiceEntityUID() );
 			svrChk(GetPolicyGameInstanceManager()->GameDeletedC2SEvt( InRouteContext, InRouteHopCount ) );
@@ -59,7 +59,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT GameInstanceManagerService::GameDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount )
+		}; // Result GameInstanceManagerService::GameDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 
 
 	}; // namespace Svr

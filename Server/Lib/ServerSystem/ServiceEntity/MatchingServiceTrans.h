@@ -68,17 +68,17 @@ namespace Svr {
 
 		////////////////////////////////////////////////////////////
 		// Event handlers
-		HRESULT OnTimer(TransactionResult* pRes);
+		Result OnTimer(TransactionResult* pRes);
 
-		HRESULT ProcessGrabbing();
-		HRESULT ReserveItem(UINT grabCount);
-		HRESULT RequestDeleteItem(MatchingQueueTicket ticket);
-		HRESULT OnReserveItem(TransactionResult* pRes);
+		Result ProcessGrabbing();
+		Result ReserveItem(UINT grabCount);
+		Result RequestDeleteItem(MatchingQueueTicket ticket);
+		Result OnReserveItem(TransactionResult* pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
-		virtual HRESULT OnCloseTransaction(HRESULT hrRes) override;
+		virtual Result OnCloseTransaction(Result hrRes) override;
 	};
 
 
@@ -98,16 +98,16 @@ namespace Svr {
 
 	//	////////////////////////////////////////////////////////////
 	//	// Event handlers
-	//	HRESULT OnTimer(TransactionResult* pRes);
+	//	Result OnTimer(TransactionResult* pRes);
 
 
-	//	HRESULT ProcessCanceling();
-	//	HRESULT CancelReservation(MatchingQueueTicket ticket);
-	//	HRESULT OnCancelReservation(TransactionResult* pRes);
+	//	Result ProcessCanceling();
+	//	Result CancelReservation(MatchingQueueTicket ticket);
+	//	Result OnCancelReservation(TransactionResult* pRes);
 
 
 	//	// Start Transaction
-	//	virtual HRESULT StartTransaction();
+	//	virtual Result StartTransaction();
 
 	//};
 
@@ -148,14 +148,14 @@ namespace Svr {
 		////////////////////////////////////////////////////////////
 		// Event handlers
 
-		HRESULT DequeueItem(const MatchingQueueTicket& ticket);
-		HRESULT OnDequeueItem(TransactionResult* pRes);
+		Result DequeueItem(const MatchingQueueTicket& ticket);
+		Result OnDequeueItem(TransactionResult* pRes);
 
-		HRESULT CreateGame();
-		HRESULT OnCreateGame(TransactionResult* pRes);
+		Result CreateGame();
+		Result OnCreateGame(TransactionResult* pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 	};
 

@@ -35,14 +35,14 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			virtual HRESULT GetInstanceListRes( const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount ) = 0;
+			virtual Result GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT RequestCounterValuesRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues ) = 0;
+			virtual Result RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues ) = 0;
 			// C2S: Counter instance is created
 			// C2S: Counter instance is deleted
 			// C2S: Counter update broadcast
 			// S2C: Request from server
-			virtual HRESULT PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID ) = 0;
+			virtual Result PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID ) = 0;
 
 		}; // class ISvrPolicyMonitoring : public Net::INetPolicy
 
@@ -57,15 +57,15 @@ namespace BR
 			{}
 
 			// Cmd: Add a player to ranking
-			virtual HRESULT GetInstanceListCmd( const TransactionID &InTransactionID ) = 0;
+			virtual Result GetInstanceListCmd( const TransactionID &InTransactionID ) = 0;
 			// Cmd: Remove a player to ranking
-			virtual HRESULT RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID ) = 0;
+			virtual Result RequestCounterValuesCmd( const TransactionID &InTransactionID, const EntityUID &InInstanceUID ) = 0;
 			// C2S: Counter instance is created
-			virtual HRESULT PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters ) = 0;
+			virtual Result PerformanceCounterNewC2SEvt( const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters ) = 0;
 			// C2S: Counter instance is deleted
-			virtual HRESULT PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances ) = 0;
+			virtual Result PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances ) = 0;
 			// C2S: Counter update broadcast
-			virtual HRESULT PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues ) = 0;
+			virtual Result PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues ) = 0;
 			// S2C: Request from server
 
 		}; // class IPolicyMonitoring : public Net::INetPolicy

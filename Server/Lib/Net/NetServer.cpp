@@ -60,7 +60,7 @@ namespace Net {
 
 
 	// Get connection from connection ID
-	HRESULT Server::GetConnection(uintptr_t uiCID, SharedPointerT<Connection> &pConn)
+	Result Server::GetConnection(uintptr_t uiCID, SharedPointerT<Connection> &pConn)
 	{
 		return GetConnectionManager().GetConnectionByCID( uiCID, pConn );
 	}
@@ -68,9 +68,9 @@ namespace Net {
 
 
 	// Open host and start listen
-	HRESULT Server::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
+	Result Server::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddr;
 
 		netChk( NetSystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
@@ -88,9 +88,9 @@ namespace Net {
 	}
 
 	// Close host and close all connections
-	HRESULT Server::HostClose()
+	Result Server::HostClose()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		GetConnectionManager().TerminateManager();
 
@@ -112,9 +112,9 @@ namespace Net {
 
 
 	// Release Connection, Make connection to send free state
-	HRESULT Server::ReleaseConnection( IConnection* pIConnection )
+	Result Server::ReleaseConnection( IConnection* pIConnection )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Connection* pConn = (Connection*)pIConnection;
 
 		netChkPtr( pIConnection );
@@ -124,7 +124,7 @@ namespace Net {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			netTrace( Trace::TRC_ERROR, "ReleaseConnection Failed hr={0:X8}", hr );
 		}
@@ -133,9 +133,9 @@ namespace Net {
 	}
 
 	// take over connection management
-	HRESULT Server::TakeOverConnection(IConnection* pIConnection)
+	Result Server::TakeOverConnection(IConnection* pIConnection)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Connection* pConn = (Connection*)pIConnection;
 
 		netChkPtr(pIConnection);
@@ -144,7 +144,7 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			netTrace(Trace::TRC_ERROR, "ReleaseConnection Failed hr={0:X8}", hr);
 		}
@@ -153,9 +153,9 @@ namespace Net {
 	}
 
 	// Called when connection state changed
-	HRESULT Server::OnConnectionStateChange( IConnection *pIConnection )
+	Result Server::OnConnectionStateChange( IConnection *pIConnection )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		INet::Event netDisEvent(INet::Event::EVT_CONNECTION_DISCONNECTED);
 
 		netTrace(TRC_CONNECTION, "Net Con state Port:{0}, CID:{1}, state:{2}", GetLocalAddress().usPort, pIConnection->GetCID(), pIConnection->GetConnectionState());

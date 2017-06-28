@@ -125,15 +125,15 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(Message::GameParty::LeavePartyRes, { return OnLeavePartyRes(pRes); });
 	}
 
-	HRESULT PlayerTransJoinGame::OnJoinGameRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransJoinGame::OnJoinGameRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::JoinGameRes joinRes;
 
-		svrChkClose(pRes->GetHRESULT());
+		svrChkClose(pRes->GetResult());
 
-		svrChk( joinRes.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( joinRes.ParseMessage( pMsgRes->GetMessage() ) );
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, 1, 0, joinRes.GetRouteContext().GetFrom().UID);
 
@@ -156,7 +156,7 @@ namespace GameServer {
 		// We don't need to do it here
 		if( joinRes.GetIsNewJoin() && GetMyServer()->GetPresetGameConfig() != nullptr )
 		{
-			//svrErr(E_INVALID_STATE);
+			//svrErr(ResultCode::E_INVALID_STATE);
 			GetMyOwner()->UpdateGamePlayer();
 			GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GainStamina( -GetMyServer()->GetPresetGameConfig()->StaminaForGame );
 		}
@@ -179,21 +179,21 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction( hr );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransJoinGame::OnLeavePartyRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransJoinGame::OnLeavePartyRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameParty::LeavePartyRes leavePartyRes;
 
-		svrChkClose(pRes->GetHRESULT());
+		svrChkClose(pRes->GetResult());
 
-		svrChk(leavePartyRes.ParseIMsg(pMsgRes->GetMessage()));
+		svrChk(leavePartyRes.ParseMessage(pMsgRes->GetMessage()));
 
 		GetMyOwner()->SetPartyUID(0);
 
@@ -201,20 +201,20 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransJoinGame::StartTransaction()
+	Result PlayerTransJoinGame::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance* pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != 0 )
-			svrErr(E_SVR_ALREADY_INQUEUE);
+			svrErr(ResultCode::E_SVR_ALREADY_INQUEUE);
 
 		m_GameInsID = 0;
 		m_TimeStamp = 0;
@@ -227,21 +227,21 @@ namespace GameServer {
 
 
 		if( GetMyOwner()->GetAuthTicket() != GetTicket() )
-			svrErr(E_INVALID_TICKET);
+			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(E_INVALID_PLAYERID);
+			svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		if( GetMyOwner()->GetGameInsUID() != 0 && GetMyOwner()->GetGameInsUID() != GetInsUID() )
-			svrErr(E_GAME_ALREADY_IN_GAME);
+			svrErr(ResultCode::E_GAME_ALREADY_IN_GAME);
 
 		if( GetInsUID() == 0 )
-			svrErr(E_INVALID_INSTANCEID);
+			svrErr(ResultCode::E_INVALID_INSTANCEID);
 
 		// We can't check stamina here because it could be a rejoin case
 		//svrChkPtr(GetMyServer()->GetPresetGameConfig());
 		//if( GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>()->GetStamina() < GetMyServer()->GetPresetGameConfig()->StaminaForGame )
-		//	svrErrClose(E_GAME_LOW_STAMINA);
+		//	svrErrClose(ResultCode::E_GAME_LOW_STAMINA);
 
 		insUID = GetInsUID();
 
@@ -252,21 +252,21 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransJoinedS2SEvt::StartTransaction()
+	Result PlayerTransJoinedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr(GetPolicy());
 		svrChk( GetPolicy()->PlayerJoinedS2CEvt( GetRouteContext().GetFrom(), GetJoinedPlayer(), GetJoinedPlayerRole(), GetJoinedPlayerDead(), GetJoinedPlayerIndex(), GetJoinedPlayerCharacter() ) );
@@ -285,15 +285,15 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( Message::GameInstance::LeaveGameRes, { return OnLeaveGameRes(pRes); } );
 	}
 
-	HRESULT PlayerTransLeaveGame::OnLeaveGameRes( Svr::TransactionResult* & pRes )
+	Result PlayerTransLeaveGame::OnLeaveGameRes( Svr::TransactionResult* & pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::LeaveGameRes leaveRes;
 
 		GetMyOwner()->AddGameTransactionLog(TransLogCategory::Game, -1, 0, GetMyOwner()->GetGameInsUID().UID);
 
-		if (pRes->GetHRESULT() == E_SVR_INVALID_ENTITYUID)
+		if (pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
 		{
 
 			GetMyOwner()->SetGameInsUID(0);
@@ -301,9 +301,9 @@ namespace GameServer {
 		}
 		else
 		{
-			svrChkClose(pRes->GetHRESULT());
+			svrChkClose(pRes->GetResult());
 
-			svrChk(leaveRes.ParseIMsg(pMsgRes->GetMessage()));
+			svrChk(leaveRes.ParseMessage(pMsgRes->GetMessage()));
 
 			GetMyOwner()->SetGameInsUID(0);
 			GetMyOwner()->UpdateDBSync(0);
@@ -313,27 +313,27 @@ namespace GameServer {
 
 		CloseTransaction( hr );
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransLeaveGame::StartTransaction()
+	Result PlayerTransLeaveGame::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAuthTicket() != GetTicket() )
-			svrErr(E_INVALID_TICKET);
+			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(E_INVALID_PLAYERID);
+			svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
 
@@ -341,21 +341,21 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
 	}
 	
 	// Start Transaction
-	HRESULT PlayerTransLeftS2SEvt::StartTransaction()
+	Result PlayerTransLeftS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr(GetPolicy());
 		svrChk( GetPolicy()->PlayerLeftS2CEvt( GetRouteContext().GetFrom(), GetLeftPlayerID() ) );
@@ -375,41 +375,41 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( Message::GameInstance::KickPlayerRes, { return OnKickPlayerRes(pRes); } );
 	}
 
-	HRESULT PlayerTransKickPlayer::OnKickPlayerRes( Svr::TransactionResult* & pRes )
+	Result PlayerTransKickPlayer::OnKickPlayerRes( Svr::TransactionResult* & pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::KickPlayerRes msgRes;
 
-		svrChkClose(pRes->GetHRESULT());
+		svrChkClose(pRes->GetResult());
 
-		svrChk( msgRes.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
 		CloseTransaction( hr );
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransKickPlayer::StartTransaction()
+	Result PlayerTransKickPlayer::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
-		//	svrErr(E_INVALID_TICKET);
+		//	svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(E_INVALID_PLAYERID);
+			svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
 
@@ -418,21 +418,21 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
 	}
 	
 	// Start Transaction
-	HRESULT PlayerTransPlayerKickedS2SEvt::StartTransaction()
+	Result PlayerTransPlayerKickedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		if( GetKickedPlayerID() == GetMyOwner()->GetPlayerID() )
 		{
@@ -457,41 +457,41 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( Message::GameInstance::AssignRoleRes, { return OnAssignRoleRes(pRes); } );
 	}
 
-	HRESULT PlayerTransAssignRole::OnAssignRoleRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransAssignRole::OnAssignRoleRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::AssignRoleRes res;
 
-		svrChkClose(pRes->GetHRESULT());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChkClose(pRes->GetResult());
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransAssignRole::StartTransaction()
+	Result PlayerTransAssignRole::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
-		//	svrErr(E_INVALID_TICKET);
+		//	svrErr(ResultCode::E_INVALID_TICKET);
 
 		//if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-		//	svrErr(E_INVALID_PLAYERID);
+		//	svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
 
@@ -500,7 +500,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -508,14 +508,14 @@ namespace GameServer {
 
 	
 	// Start Transaction
-	HRESULT PlayerTransRoleAssignedS2SEvt::StartTransaction()
+	Result PlayerTransRoleAssignedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		//GetMyOwner()->SendPushNotify(BRPUSHMSG_SYNC);
 
@@ -532,23 +532,23 @@ namespace GameServer {
 
 	
 	// Start Transaction
-	HRESULT PlayerTransChatMessage::StartTransaction()
+	Result PlayerTransChatMessage::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
-		//	svrErr(E_INVALID_TICKET);
+		//	svrErr(ResultCode::E_INVALID_TICKET);
 
 		//if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-		//	svrErr(E_INVALID_PLAYERID);
+		//	svrErr(ResultCode::E_INVALID_PLAYERID);
 		
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
 
@@ -564,9 +564,9 @@ namespace GameServer {
 
 
 	// Start Transaction
-	HRESULT PlayerTransChatMessageFromOtherEntity::StartTransaction()
+	Result PlayerTransChatMessageFromOtherEntity::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -588,40 +588,40 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( Message::GameInstance::VoteGameAdvanceRes, { return OnVoteRes(pRes); } );
 	}
 
-	HRESULT PlayerTransVoteGameAdvance::OnVoteRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransVoteGameAdvance::OnVoteRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::GameInstance::VoteGameAdvanceRes res;
 
-		svrChkClose(pRes->GetHRESULT());
-		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChkClose(pRes->GetResult());
+		//svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 	
 	// Start Transaction
-	HRESULT PlayerTransVoteGameAdvance::StartTransaction()
+	Result PlayerTransVoteGameAdvance::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAuthTicket() != GetTicket() )
-			svrErr(E_INVALID_TICKET);
+			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(E_INVALID_PLAYERID);
+			svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
 
@@ -629,21 +629,21 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
 	}
 	
 	// Start Transaction
-	HRESULT PlayerTransGameAdvanceVotedS2SEvt::StartTransaction()
+	Result PlayerTransGameAdvanceVotedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr(GetPolicy());
 		svrChk( GetPolicy()->GameAdvanceVotedS2CEvt( GetRouteContext().GetFrom(), GetVoter() ) );
@@ -662,42 +662,42 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( Message::GameInstance::VoteRes, { return OnVoteRes(pRes); } );
 	}
 
-	HRESULT PlayerTransVote::OnVoteRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransVote::OnVoteRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::GameInstance::VoteRes res;
 
-		svrChkClose(pRes->GetHRESULT());
-		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChkClose(pRes->GetResult());
+		//svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 
 	// Start Transaction
-	HRESULT PlayerTransVote::StartTransaction()
+	Result PlayerTransVote::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAuthTicket() != GetTicket() )
-			svrErr(E_INVALID_TICKET);
+			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(E_INVALID_PLAYERID);
+			svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
 
@@ -706,21 +706,21 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
 	}
 	
 	// Start Transaction
-	HRESULT PlayerTransVoteEndS2SEvt::StartTransaction()
+	Result PlayerTransVoteEndS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr(GetPolicy());
 		svrChk( GetPolicy()->VoteEndS2CEvt( GetRouteContext().GetFrom(), GetVoted() ) );
@@ -734,14 +734,14 @@ namespace GameServer {
 
 
 	// Start Transaction
-	HRESULT PlayerTransPlayerRevealedS2SEvt::StartTransaction()
+	Result PlayerTransPlayerRevealedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr(GetPolicy());
 		svrChk( GetPolicy()->PlayerRevealedS2CEvt( GetRouteContext().GetFrom(), GetRevealedPlayerID(), GetRole(), GetReason() ) );
@@ -761,42 +761,42 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( Message::GameInstance::AdvanceGameRes, { return OnAdvanceGameRes(pRes); } );
 	}
 
-	HRESULT PlayerTransAdvanceGame::OnAdvanceGameRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransAdvanceGame::OnAdvanceGameRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		//Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		//Message::GameInstance::AdvanceGameRes res;
 
 		svrChkPtr(pRes);
-		svrChkClose(pRes->GetHRESULT());
-		//svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChkClose(pRes->GetResult());
+		//svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransAdvanceGame::StartTransaction()
+	Result PlayerTransAdvanceGame::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInsUID insUID;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetAuthTicket() != GetTicket() )
-			svrErr(E_INVALID_TICKET);
+			svrErr(ResultCode::E_INVALID_TICKET);
 
 		if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-			svrErr(E_INVALID_PLAYERID);
+			svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		insUID = GetMyOwner()->GetGameInsUID();
 		if( insUID.UID == 0 )
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr( pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()) );
 
@@ -805,7 +805,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -813,14 +813,14 @@ namespace GameServer {
 
 
 	// Start Transaction
-	HRESULT PlayerTransGameAdvancedS2SEvt::StartTransaction()
+	Result PlayerTransGameAdvancedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		GetMyOwner()->SendPushNotify(BRPUSHMSG_SYNC);
 
@@ -842,11 +842,11 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( DB::QueryUpdateGameEndCmd, { return OnUpdateDBRes(pRes); } );
 	}
 
-	HRESULT PlayerTransGameEndedS2SEvt::OnUpdateDBRes(  Svr::TransactionResult* &pRes )
+	Result PlayerTransGameEndedS2SEvt::OnUpdateDBRes(  Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		svrChk( pRes->GetHRESULT() );
+		svrChk( pRes->GetResult() );
 		//DB::QuerySetPlayerInfoCmd *pMsgRes = (DB::QuerySetPlayerInfoCmd*)pRes;
 
 
@@ -854,19 +854,19 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransGameEndedS2SEvt::StartTransaction()
+	Result PlayerTransGameEndedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
@@ -895,21 +895,21 @@ namespace GameServer {
 
 	Proc_End:
 
-		if(FAILED(hr) )
+		if(!(hr) )
 			CloseTransaction( hr );
 
 		return hr;
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransPlayerKilledS2SEvt::StartTransaction()
+	Result PlayerTransPlayerKilledS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr(GetPolicy());
 		svrChk( GetPolicy()->PlayerKilledS2CEvt( GetRouteContext().GetFrom(), GetKilledPlayer(), GetReason() ) );
@@ -923,14 +923,14 @@ namespace GameServer {
 
 	
 	// Start Transaction
-	HRESULT PlayerTransPlayerVotedS2SEvt::StartTransaction()
+	Result PlayerTransPlayerVotedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		svrChkPtr(GetPolicy());
 		svrChk( GetPolicy()->VotedS2CEvt( GetRouteContext().GetFrom(), GetVoter(), GetVotedTarget() ) );
@@ -951,32 +951,32 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( Message::PartyMatchingQueue::RegisterPlayerMatchingRes, { return OnRequestPlayerMatchingRes(pRes); } );
 	}
 
-	HRESULT PlayerTransRequestGameMatch::OnRequestPartyMatchingRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransRequestGameMatch::OnRequestPartyMatchingRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameParty::StartGameMatchRes res;
 
-		svrChkClose(pRes->GetHRESULT());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChkClose(pRes->GetResult());
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 	Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
-	HRESULT PlayerTransRequestGameMatch::OnRequestPlayerMatchingRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransRequestGameMatch::OnRequestPlayerMatchingRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::PartyMatchingQueue::RegisterPlayerMatchingRes res;
 
-		svrChkClose(pRes->GetHRESULT());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChkClose(pRes->GetResult());
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		GetMyOwner()->SetMatchingTicket( res.GetMatchingTicket() );
 
@@ -986,14 +986,14 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 
 	// Start Transaction
-	HRESULT PlayerTransRequestGameMatch::StartTransaction()
+	Result PlayerTransRequestGameMatch::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::ServerServiceInformation *pService = nullptr;
 		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
@@ -1005,18 +1005,18 @@ namespace GameServer {
 		svrChk( super::StartTransaction() );
 
 		//if( GetMyOwner()->GetAuthTicket() != GetTicket() )
-		//	svrErr(E_INVALID_TICKET);
+		//	svrErr(ResultCode::E_INVALID_TICKET);
 
 		//if( GetMyOwner()->GetPlayerID() != GetPlayerID() )
-		//	svrErr(E_INVALID_PLAYERID);
+		//	svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		if( GetMyOwner()->GetGameInsUID() != 0 )
-			svrErrClose(E_GAME_ALREADY_IN_GAME);
+			svrErrClose(ResultCode::E_GAME_ALREADY_IN_GAME);
 
 		if (GetMyOwner()->GetMatchingTicket() != 0)
 		{
 			if( Util::TimeSince(GetMyOwner()->GetMatchingStartTime()) < DurationMS(GameConst::MATCHING_TIMEOUT) )
-				svrErrClose(E_SVR_ALREADY_INQUEUE);
+				svrErrClose(ResultCode::E_SVR_ALREADY_INQUEUE);
 
 			// clear timeouted tickets
 			GetMyOwner()->SetMatchingTicket(0);
@@ -1030,12 +1030,12 @@ namespace GameServer {
 		currentStamina = pPlayerInfoSystem->GetStamina();
 		StaminaForGame = GetMyServer()->GetPresetGameConfig()->StaminaForGame;
 		if( currentStamina < StaminaForGame )
-			svrErrClose(E_GAME_LOW_STAMINA);
+			svrErrClose(ResultCode::E_GAME_LOW_STAMINA);
 
 		if (GetRequestRole() != PlayerRole::None)
 		{
-			svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::RoleChoice, pCostItem));
-			svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
+			svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::RoleChoice, pCostItem));
+			svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
 		}
 
 		m_TotalGem = pPlayerInfoSystem->GetGem();
@@ -1062,7 +1062,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -1077,15 +1077,15 @@ namespace GameServer {
 		BR_TRANS_MESSAGE( Message::PartyMatchingQueue::UnregisterMatchingRes, { return OnCancelPlayerMatchingRes(pRes); } );
 	}
 
-	HRESULT PlayerTransCancelGameMatch::OnCancelPartyMatchingRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransCancelGameMatch::OnCancelPartyMatchingRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameParty::CancelGameMatchRes res;
 
-		svrChkClose(pRes->GetHRESULT());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChkClose(pRes->GetResult());
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		// This means it just pended for canceling. yo have to wait canceled event from matching queue
 		//GetMyOwner()->SetMatchingTicket(0);
@@ -1096,28 +1096,28 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 	
-	HRESULT PlayerTransCancelGameMatch::OnCancelPlayerMatchingRes( Svr::TransactionResult* &pRes )
+	Result PlayerTransCancelGameMatch::OnCancelPlayerMatchingRes( Svr::TransactionResult* &pRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::PartyMatchingQueue::UnregisterMatchingRes res;
 
-		switch( pRes->GetHRESULT() )
+		switch((int32_t)pRes->GetResult() )
 		{
-		case E_SVR_RESERVED_QUEUEITEM:
-			svrErrClose(E_SVR_RESERVED_QUEUEITEM);
+		case ResultCode::E_SVR_RESERVED_QUEUEITEM:
+			svrErrClose(ResultCode::E_SVR_RESERVED_QUEUEITEM);
 			break;
-		case E_SVR_QUEUEITEM_CANCELED:
-		case E_SVR_INVALID_QUEUEITEM:
+		case ResultCode::E_SVR_QUEUEITEM_CANCELED:
+		case ResultCode::E_SVR_INVALID_QUEUEITEM:
 			GetMyOwner()->SetMatchingTicket( 0 );
 			break;
 		default:
-			svrChk(pRes->GetHRESULT());
-			svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+			svrChk(pRes->GetResult());
+			svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 			GetMyOwner()->SetMatchingTicket( 0 );
 			break;
 		};
@@ -1127,20 +1127,20 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK; 
+		return ResultCode::SUCCESS; 
 	}
 
 
 	// Start Transaction
-	HRESULT PlayerTransCancelGameMatch::StartTransaction()
+	Result PlayerTransCancelGameMatch::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() == 0 )
 		{
-			svrErrClose(E_SVR_INVALID_QUEUEITEM);
+			svrErrClose(ResultCode::E_SVR_INVALID_QUEUEITEM);
 		}
 
 		if( GetMyOwner()->GetPartyUID().UID == 0 )
@@ -1161,7 +1161,7 @@ namespace GameServer {
 	
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction( hr );
 
 		return hr;
@@ -1176,15 +1176,15 @@ namespace GameServer {
 	//
 
 	// Start Transaction
-	HRESULT PlayerTransPlayerMatchingCanceledS2CEvt::StartTransaction()
+	Result PlayerTransPlayerMatchingCanceledS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
 		if( GetMyOwner()->GetMatchingTicket() != GetMatchingTicket() )
 		{
-			svrErr(E_SVR_INVALID_QUEUEITEM);
+			svrErr(ResultCode::E_SVR_INVALID_QUEUEITEM);
 		}
 
 		GetMyOwner()->SetMatchingTicket(0);
@@ -1200,15 +1200,15 @@ namespace GameServer {
 	}
 	
 	// Start Transaction
-	HRESULT PlayerTransPlayerMatchingItemDequeuedS2CEvt::StartTransaction()
+	Result PlayerTransPlayerMatchingItemDequeuedS2CEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 		
 		if( GetMyOwner()->GetMatchingTicket() != GetMatchingTicket() )
 		{
-			svrErrClose(E_SVR_INVALID_QUEUEITEM);
+			svrErrClose(ResultCode::E_SVR_INVALID_QUEUEITEM);
 		}
 
 		GetMyOwner()->SetMatchingTicket(0);
@@ -1230,9 +1230,9 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(Message::GamePartyManager::CreatePartyRes, { return OnCreatePartyRes(pRes); });
 	}
 
-	HRESULT PlayerTransPlayAgain::OnPlayAgainRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransPlayAgain::OnPlayAgainRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::OrganicTbl::OrganicItem* pCostItem = nullptr;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
@@ -1240,25 +1240,25 @@ namespace GameServer {
 		Message::GameInstance::GamePlayAgainRes res;
 
 		svrChkPtr(pRes);
-		svrChkClose(pRes->GetHRESULT());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChkClose(pRes->GetResult());
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		// This means it's not full game
 		//if (m_RetryCount <= 1 
-		//	&& pRes->GetHRESULT() == E_GAME_INVALID_PLAYER_COUNT // if some members are missing
+		//	&& pRes->GetResult() == Result(ResultCode::E_GAME_INVALID_PLAYER_COUNT) // if some members are missing
 		//	&& GetMyOwner()->GetPartyUID() == 0)
 		//{
 		//	svrChk(RequestCreateParty()));
 		//}
 		//else
 		if (res.GetReplayMemberCount() > GameConst::MAX_GAMEPLAYER)
-			svrErr(E_GAME_INVALID_PLAYER_COUNT);
+			svrErr(ResultCode::E_GAME_INVALID_PLAYER_COUNT);
 
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
-		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
-		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "PlayAgain"));
+		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
+		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "PlayAgain"));
 
 		m_TotalGem = pPlayerInfoSystem->GetGem();
 		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
@@ -1268,19 +1268,19 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransPlayAgain::OnCreatePartyRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransPlayAgain::OnCreatePartyRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GamePartyManager::CreatePartyRes res;
 
 		svrChkPtr(pRes);
-		svrChkClose(pRes->GetHRESULT());
-		svrChk( res.ParseIMsg( pMsgRes->GetMessage() ) );
+		svrChkClose(pRes->GetResult());
+		svrChk( res.ParseMessage( pMsgRes->GetMessage() ) );
 
 		GetMyOwner()->SetPartyUID(res.GetRouteContext().GetFrom());
 
@@ -1288,22 +1288,22 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	HRESULT PlayerTransPlayAgain::RequestPlayAgain()
+	Result PlayerTransPlayAgain::RequestPlayAgain()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
 		if (insUID == 0)
 		{
-			svrErr(E_SVR_INVALID_ENTITYUID);
+			svrErr(ResultCode::E_SVR_INVALID_ENTITYUID);
 		}
 
 		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()));
@@ -1314,9 +1314,9 @@ namespace GameServer {
 		return hr;
 	}
 
-	HRESULT PlayerTransPlayAgain::RequestCreateParty()
+	Result PlayerTransPlayAgain::RequestCreateParty()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::ServerServiceInformation *pService = nullptr;
 
 		svrChk(Svr::GetServerComponent<Svr::GamePartyManagerServiceEntity>()->GetService(pService));
@@ -1329,9 +1329,9 @@ namespace GameServer {
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransPlayAgain::StartTransaction()
+	Result PlayerTransPlayAgain::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::OrganicTbl::OrganicItem* pCostItem = nullptr;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
@@ -1342,8 +1342,8 @@ namespace GameServer {
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
-		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
-		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
+		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ReStart, pCostItem));
+		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->CheckCost(pCostItem));
 
 
 		//m_RetryCount = 0;
@@ -1358,7 +1358,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -1372,15 +1372,15 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); });
 	}
 
-	HRESULT PlayerTransPlayAgainS2SEvt::OnJoinPartyRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransPlayAgainS2SEvt::OnJoinPartyRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameParty::JoinPartyRes res;
 
-		svrChk(pRes->GetHRESULT());
-		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
+		svrChk(pRes->GetResult());
+		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 		GetMyOwner()->SetPartyUID(GetPartyUID());
 
@@ -1397,13 +1397,13 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT PlayerTransPlayAgainS2SEvt::StartTransaction()
+	Result PlayerTransPlayAgainS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Policy::IPolicyGameParty *pPolicy = nullptr;
 		Svr::ServerEntity *pServerEntity = nullptr;
 
@@ -1413,14 +1413,14 @@ namespace GameServer {
 		svrChk(super::StartTransaction());
 
 		if (GetTargetPlayer() != GetMyOwner()->GetPlayerID())
-			svrErr(E_INVALID_PLAYERID);
+			svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		GetMyOwner()->SetGameInsUID(0);
 
 		if (GetMyOwner()->GetPartyUID() != 0)
 		{
 			if (GetMyOwner()->GetPartyUID() != GetPartyUID())
-				svrErr(E_GAME_ALREADY_IN_PARTY);
+				svrErr(ResultCode::E_GAME_ALREADY_IN_PARTY);
 
 			m_LeadPlayer = GetLeadPlayer();
 			m_PartyUID = GetPartyUID();
@@ -1439,7 +1439,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -1455,20 +1455,20 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(Message::GameInstance::GameRevealPlayerRes, { return OnGameRevealPlayerRes(pRes); });
 	}
 
-	HRESULT PlayerTransGameRevealPlayer::OnUpdatePlayerRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransGameRevealPlayer::OnUpdatePlayerRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
 		//auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 
 		svrChkPtr(pRes);
-		svrChkClose(pRes->GetHRESULT());
+		svrChkClose(pRes->GetResult());
 
 		if (insUID == 0)
 		{
-			svrErr(E_SVR_INVALID_ENTITYUID);
+			svrErr(ResultCode::E_SVR_INVALID_ENTITYUID);
 		}
 
 		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()));
@@ -1476,23 +1476,23 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransGameRevealPlayer::OnGameRevealPlayerRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransGameRevealPlayer::OnGameRevealPlayerRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::GameRevealPlayerRes res;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
 		svrChkPtr(pRes);
-		svrChkClose(pRes->GetHRESULT());
-		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
+		svrChkClose(pRes->GetResult());
+		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 		for (UINT iPlayer = 0; iPlayer < res.GetRevealedPlayerID().GetSize(); iPlayer++)
 		{
@@ -1512,14 +1512,14 @@ namespace GameServer {
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Start Transaction
-	HRESULT PlayerTransGameRevealPlayer::StartTransaction()
+	Result PlayerTransGameRevealPlayer::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
@@ -1530,20 +1530,20 @@ namespace GameServer {
 
 		if (GetMyOwner()->GetGameInsUID() == 0)
 		{
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 		}
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
-		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Check, pCostItem));
-		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "RevealPlayer"));
+		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Check, pCostItem));
+		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "RevealPlayer"));
 
 
 		svrChk(GetMyOwner()->UpdateDBSync(GetTransID()));
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -1558,20 +1558,20 @@ namespace GameServer {
 		BR_TRANS_MESSAGE(Message::GameInstance::GamePlayerReviveRes, { return OnGamePlayerReviveRes(pRes); });
 	}
 
-	HRESULT PlayerTransGamePlayerRevive::OnUpdatePlayerRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransGamePlayerRevive::OnUpdatePlayerRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Policy::IPolicyGameInstance *pPolicy = nullptr;
 		GameInsUID insUID = GetMyOwner()->GetGameInsUID();
 
 		//auto *pDBRes = (DB::QueryUpdateTickStatusCmd*)pRes;
 
 		svrChkPtr(pRes);
-		svrChkClose(pRes->GetHRESULT());
+		svrChkClose(pRes->GetResult());
 
 		if (insUID == 0)
 		{
-			svrErr(E_SVR_INVALID_ENTITYUID);
+			svrErr(ResultCode::E_SVR_INVALID_ENTITYUID);
 		}
 
 		svrChkPtr(pPolicy = Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerPolicy<Policy::IPolicyGameInstance>(insUID.GetServerID()));
@@ -1579,36 +1579,36 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PlayerTransGamePlayerRevive::OnGamePlayerReviveRes(Svr::TransactionResult* &pRes)
+	Result PlayerTransGamePlayerRevive::OnGamePlayerReviveRes(Svr::TransactionResult* &pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
 		Message::GameInstance::GameRevealPlayerRes res;
 
 		svrChkPtr(pRes);
-		svrChkClose(pRes->GetHRESULT());
-		svrChk(res.ParseIMsg(pMsgRes->GetMessage()));
+		svrChkClose(pRes->GetResult());
+		svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 
 	Proc_End:
 
 		CloseTransaction(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Start Transaction
-	HRESULT PlayerTransGamePlayerRevive::StartTransaction()
+	Result PlayerTransGamePlayerRevive::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 
@@ -1619,13 +1619,13 @@ namespace GameServer {
 
 		if (GetMyOwner()->GetGameInsUID() == 0)
 		{
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 		}
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
-		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Revival, pCostItem));
-		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "Revive"));
+		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::Revival, pCostItem));
+		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "Revive"));
 
 		m_TotalGem = pPlayerInfoSystem->GetGem();
 		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
@@ -1634,7 +1634,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			CloseTransaction(hr);
 
 		return hr;
@@ -1644,16 +1644,16 @@ namespace GameServer {
 
 
 	// Start Transaction
-	HRESULT PlayerTransGamePlayerRevivedS2SEvt::StartTransaction()
+	Result PlayerTransGamePlayerRevivedS2SEvt::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//Policy::IPolicyGameParty *pPolicy = nullptr;
 		//Svr::ServerEntity *pServerEntity = nullptr;
 
 		svrChk(super::StartTransaction());
 
 		if (GetMyOwner()->GetGameInsUID() != GetRouteContext().GetFrom())
-			svrErrClose(E_INVALID_INSTANCEID);
+			svrErrClose(ResultCode::E_INVALID_INSTANCEID);
 
 		GetPolicy()->GamePlayerRevivedS2CEvt(GetRevivedPlayerID());
 
@@ -1667,9 +1667,9 @@ namespace GameServer {
 
 
 	// Start Transaction
-	HRESULT PlayerTransGamePlayerResetRank::StartTransaction()
+	Result PlayerTransGamePlayerResetRank::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		UserGamePlayerInfoSystem* pPlayerInfoSystem = nullptr;
 		conspiracy::OrganicTbl::OrganicItem *pCostItem = nullptr;
 
@@ -1680,14 +1680,14 @@ namespace GameServer {
 
 		if (GetMyOwner()->GetGameInsUID() != 0)
 		{
-			svrErrClose(E_SVR_INVALID_PLAYER_STATE);
+			svrErrClose(ResultCode::E_SVR_INVALID_PLAYER_STATE);
 		}
 
 		svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 
 
-		svrChkCloseErr(E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ResetRankNormal, pCostItem));
-		svrChkCloseErr(E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "ResetRank"));
+		svrChkCloseErr(ResultCode::E_GAME_INVALID_COSTID, conspiracy::OrganicTbl::FindItem((int)conspiracy::OrganicTbl::EItemEffect::Enum::ResetRankNormal, pCostItem));
+		svrChkCloseErr(ResultCode::E_GAME_NOTENOUGH_RESOURCE, pPlayerInfoSystem->ApplyCost(pCostItem, TransLogCategory::Buy, "ResetRank"));
 
 		svrChkClose(pPlayerInfoSystem->ResetRankNormal(pCostItem));
 

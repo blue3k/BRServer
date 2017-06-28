@@ -40,7 +40,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -58,9 +58,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID );
 
 			}; // class GetInstanceListCmd : public MessageBase
 
@@ -80,13 +81,13 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				LinkedArray<PerformanceCounterInstanceInfo> m_CounterInstances;
-				UINT32 m_TotalInstanceCount;
+				uint32_t m_TotalInstanceCount;
 			public:
 				GetInstanceListRes()
 					{}
@@ -98,15 +99,16 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const Array<PerformanceCounterInstanceInfo>& GetCounterInstances() const	{ return m_CounterInstances; };
-				const UINT32& GetTotalInstanceCount() const	{ return m_TotalInstanceCount; };
+				const uint32_t& GetTotalInstanceCount() const	{ return m_TotalInstanceCount; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount );
 
 			}; // class GetInstanceListRes : public MessageBase
 
@@ -127,7 +129,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -147,9 +149,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InInstanceUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InInstanceUID );
 
 			}; // class RequestCounterValuesCmd : public MessageBase
 
@@ -169,13 +172,13 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				EntityUID m_InstanceUID;
-				LinkedArray<UINT64> m_CounterValues;
+				LinkedArray<uint64_t> m_CounterValues;
 			public:
 				RequestCounterValuesRes()
 					{}
@@ -187,15 +190,16 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const EntityUID& GetInstanceUID() const	{ return m_InstanceUID; };
-				const Array<UINT64>& GetCounterValues() const	{ return m_CounterValues; };
+				const Array<uint64_t>& GetCounterValues() const	{ return m_CounterValues; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
 			}; // class RequestCounterValuesRes : public MessageBase
 
@@ -217,7 +221,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				const char* m_InstanceName;
@@ -241,9 +245,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const char* InInstanceName, const EntityUID &InInstanceUID, const Array<PerformanceCounterInfo>& InNewCounters );
 
 			}; // class PerformanceCounterNewC2SEvt : public MessageBase
 
@@ -265,7 +270,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				LinkedArray<EntityUID> m_FreeInstances;
@@ -283,9 +288,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const Array<EntityUID>& InFreeInstances );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Array<EntityUID>& InFreeInstances );
 
 			}; // class PerformanceCounterFreeC2SEvt : public MessageBase
 
@@ -307,11 +313,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				EntityUID m_InstanceUID;
-				LinkedArray<UINT64> m_CounterValues;
+				LinkedArray<uint64_t> m_CounterValues;
 			public:
 				PerformanceCounterUpdateC2SEvt()
 					{}
@@ -323,13 +329,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const EntityUID& GetInstanceUID() const	{ return m_InstanceUID; };
-				const Array<UINT64>& GetCounterValues() const	{ return m_CounterValues; };
+				const Array<uint64_t>& GetCounterValues() const	{ return m_CounterValues; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues );
 
 			}; // class PerformanceCounterUpdateC2SEvt : public MessageBase
 
@@ -351,7 +358,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				EntityUID m_InstanceUID;
@@ -369,9 +376,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID );
 
 			}; // class PerformanceCounterUpdateCounterInfoS2CEvt : public MessageBase
 

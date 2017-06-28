@@ -34,8 +34,8 @@ Thread::PRIORITY Thread::GetPriority()
 
 
 // Get end event handle
-std::timed_mutex& Thread::GetKillMutex()
+inline Event& Thread::GetKillEvent()
 {
-	return m_KillMutex;
+	return m_KillEvent;
 }
 

@@ -50,9 +50,9 @@ namespace Svr {
 		}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction()
+		virtual Result StartTransaction()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			Svr::ServerEntity *pServerEntity = nullptr;
 
 			svrChk( super::StartTransaction() );
@@ -62,7 +62,7 @@ namespace Svr {
 			super::GetMyOwner()->SetEntityUID( EntityUID(super::GetRouteContext().GetFrom().GetServerID(), super::GetMyOwner()->GetEntityID() ) );
 
 			// check about already registered server
-			if( SUCCEEDED(Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(super::GetRouteContext().GetFrom().GetServerID(), pServerEntity )) )
+			if( (Svr::GetServerComponent<Svr::ServerEntityManager>()->GetServerEntity(super::GetRouteContext().GetFrom().GetServerID(), pServerEntity )) )
 			{
 				if( pServerEntity != super::GetMyOwner() )
 				{
@@ -114,10 +114,10 @@ namespace Svr {
 		EntityServerStartedTrans( Message::MessageData* &pIMsg );
 		virtual ~EntityServerStartedTrans();
 
-		HRESULT OnGetClusterMemberList(Svr::TransactionResult* pRes);
+		Result OnGetClusterMemberList(Svr::TransactionResult* pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 	};
 

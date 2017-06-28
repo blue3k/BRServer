@@ -63,9 +63,9 @@ namespace GameServer {
 	}
 
 	// Initialzie system
-	HRESULT UserGamePlayerInfoSystem::InitializeComponent()
+	Result UserGamePlayerInfoSystem::InitializeComponent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		m_Grade = 0;
 		m_Level = 0;
@@ -112,9 +112,9 @@ namespace GameServer {
 	//
 
 	// Save to memento
-	HRESULT UserGamePlayerInfoSystem::SaveStatToMemento( Memento<MEMENTO_SIZE> &memento )
+	Result UserGamePlayerInfoSystem::SaveStatToMemento( Memento<MEMENTO_SIZE> &memento )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( memento.Add(m_Level) );
 		svrChk( memento.Add(m_Exp) );
@@ -131,9 +131,9 @@ namespace GameServer {
 	}
 	
 	// Save to memento
-	HRESULT UserGamePlayerInfoSystem::SaveWinLoseToMemento( Memento<MEMENTO_SIZE> &memento )
+	Result UserGamePlayerInfoSystem::SaveWinLoseToMemento( Memento<MEMENTO_SIZE> &memento )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( memento.Add(m_WinPlaySCitizen) );
 		svrChk( memento.Add(m_WinPlaySMonster) );
@@ -155,23 +155,23 @@ namespace GameServer {
 	}
 
 	// Apply shop item
-	HRESULT UserGamePlayerInfoSystem::ApplyItem( conspiracy::ShopTbl::ShopItem *pShopItem )
+	Result UserGamePlayerInfoSystem::ApplyItem( conspiracy::ShopTbl::ShopItem *pShopItem )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::LevelTbl::LevelItem *pLevelInfo = nullptr;
 
 		if( pShopItem == nullptr )
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
-		if( FAILED(conspiracy::LevelTbl::FindItem( m_Level, pLevelInfo )) )
-			return E_INVALID_PLAYER_LEVEL;
+		if( !(conspiracy::LevelTbl::FindItem( m_Level, pLevelInfo )) )
+			return ResultCode::E_INVALID_PLAYER_LEVEL;
 
 		if( pShopItem->RequiredGem > GetGem()
 			|| pShopItem->RequiredGameMoney > GetGameMoney()
 			//|| pShopItem->RequiredCash > GetCash()
 			)
 		{
-			return E_GAME_NOTENOUGH_RESOURCE;
+			return ResultCode::E_GAME_NOTENOUGH_RESOURCE;
 		}
 
 		GetOwner().AddGameTransactionLog(TransLogCategory::Buy, pShopItem->RequiredGem, pShopItem->RequiredGameMoney, pShopItem->Quantity);
@@ -188,7 +188,7 @@ namespace GameServer {
 			svrChk( GainFriendSlot(pShopItem->Quantity) );
 			break;
 		default:
-			return E_GAME_INVALID_SHOPITEM;
+			return ResultCode::E_GAME_INVALID_SHOPITEM;
 			break;
 		}
 
@@ -206,30 +206,30 @@ namespace GameServer {
 
 
 	// Apply Cost
-	HRESULT UserGamePlayerInfoSystem::CheckCost(conspiracy::OrganicTbl::OrganicItem *pCostItem)
+	Result UserGamePlayerInfoSystem::CheckCost(conspiracy::OrganicTbl::OrganicItem *pCostItem)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (pCostItem == nullptr)
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		if (GetGem() < pCostItem->RequiredGem || GetGameMoney() < pCostItem->RequiredGameMoney)
-			return E_GAME_NOTENOUGH_RESOURCE;
+			return ResultCode::E_GAME_NOTENOUGH_RESOURCE;
 
 	//Proc_End:
 
 		return hr;
 	}
 
-	HRESULT UserGamePlayerInfoSystem::ApplyCost(conspiracy::OrganicTbl::OrganicItem *pCostItem, TransLogCategory logCategory, const char* message)
+	Result UserGamePlayerInfoSystem::ApplyCost(conspiracy::OrganicTbl::OrganicItem *pCostItem, TransLogCategory logCategory, const char* message)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (pCostItem == nullptr)
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		hr = CheckCost(pCostItem);
-		if (FAILED(hr))
+		if (!(hr))
 			return hr;
 
 		m_Gem -= pCostItem->RequiredGem;
@@ -245,9 +245,9 @@ namespace GameServer {
 	}
 
 
-	HRESULT UserGamePlayerInfoSystem::SetLevel( UINT newLevel )
+	Result UserGamePlayerInfoSystem::SetLevel( UINT newLevel )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::LevelTbl::LevelItem *pLevelInfo = nullptr;
 
 		// modify
@@ -256,20 +256,20 @@ namespace GameServer {
 
 		svrChk( conspiracy::LevelTbl::FindItem( newLevel, pLevelInfo ) );
 
-		m_Level = newLevel;
+		m_Level = (decltype(m_Level))newLevel;
 		UpdateStatByLevel(pLevelInfo);
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			svrTrace( Trace::TRC_ERROR, "Player Setlevel is failed to set {0}", newLevel );
 
 		return hr;
 	}
 
-	HRESULT UserGamePlayerInfoSystem::GainExp( UINT64 expGain )
+	Result UserGamePlayerInfoSystem::GainExp( UINT64 expGain )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::LevelTbl::LevelItem *pNextLevelInfo = nullptr;
 
 		m_Exp += expGain;
@@ -298,9 +298,9 @@ namespace GameServer {
 		return hr;
 	}
 
-	HRESULT UserGamePlayerInfoSystem::AchivedWin( PlayerRole playedRole, bool isWon )
+	Result UserGamePlayerInfoSystem::AchivedWin( PlayerRole playedRole, bool isWon )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		switch( playedRole )
 		{
@@ -336,7 +336,7 @@ namespace GameServer {
 			}
 			break;
 		default:
-			svrErr(E_GAME_INVALID_ROLE);
+			svrErr(ResultCode::E_GAME_INVALID_ROLE);
 		}
 
 		m_TotalPlayed++;
@@ -347,10 +347,10 @@ namespace GameServer {
 		return hr;
 	}
 
-	HRESULT UserGamePlayerInfoSystem::ResetRankNormal(conspiracy::OrganicTbl::OrganicItem *pCostItem)
+	Result UserGamePlayerInfoSystem::ResetRankNormal(conspiracy::OrganicTbl::OrganicItem *pCostItem)
 	{
-		HRESULT hr = ApplyCost(pCostItem, TransLogCategory::Buy, "ResetRank");
-		if (FAILED(hr))
+		Result hr = ApplyCost(pCostItem, TransLogCategory::Buy, "ResetRank");
+		if (!(hr))
 			return hr;
 
 		m_WinPlayNCitizen = 0;
@@ -365,15 +365,15 @@ namespace GameServer {
 	
 
 	// Add stamina, negative will reduce the stamina
-	HRESULT UserGamePlayerInfoSystem::GainStamina( INT stamina )
+	Result UserGamePlayerInfoSystem::GainStamina( INT stamina )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
 		Assert(m_MaxStamina > 0);
 
-		m_Stamina = std::min( m_Stamina + stamina, m_MaxStamina );
+		m_Stamina = (decltype(m_Stamina))std::min( m_Stamina + stamina, m_MaxStamina );
 		m_Stamina = std::max( m_Stamina, (SHORT)0 );
 
 	Proc_End:
@@ -383,16 +383,16 @@ namespace GameServer {
 
 
 	// Add Friend slot, negative will reduce the friend slot
-	HRESULT UserGamePlayerInfoSystem::GainFriendSlot( INT numSlot )
+	Result UserGamePlayerInfoSystem::GainFriendSlot( INT numSlot )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto maxFriend = m_MaxFriend >= m_DefaultFriendSlot ? m_MaxFriend - m_DefaultFriendSlot : 0;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
 		Assert(m_MaxFriend > 0);
 
-		m_AddedFriendSlot = std::min(m_AddedFriendSlot + numSlot, maxFriend);
+		m_AddedFriendSlot = (decltype(m_AddedFriendSlot))std::min(m_AddedFriendSlot + numSlot, maxFriend);
 		m_AddedFriendSlot = std::max(m_AddedFriendSlot, (SHORT)0);
 
 	Proc_End:
@@ -406,9 +406,9 @@ namespace GameServer {
 	}
 	
 	// gain game money
-	HRESULT UserGamePlayerInfoSystem::GainGameMoney( INT64 numValue )
+	Result UserGamePlayerInfoSystem::GainGameMoney( INT64 numValue )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
@@ -423,9 +423,9 @@ namespace GameServer {
 	}
 
 	// gain gem
-	HRESULT UserGamePlayerInfoSystem::GainGem( INT64 numValue )
+	Result UserGamePlayerInfoSystem::GainGem( INT64 numValue )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
@@ -441,9 +441,9 @@ namespace GameServer {
 
 
 	// Called when the stat maiximum need to be calculated again.
-	HRESULT UserGamePlayerInfoSystem::UpdateStatMaximum()
+	Result UserGamePlayerInfoSystem::UpdateStatMaximum()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
@@ -453,7 +453,7 @@ namespace GameServer {
 		m_MaxGameMoney = GetMyServer()->GetPresetGameConfig()->MaxMoney;
 		m_MaxGem = GetMyServer()->GetPresetGameConfig()->MaxGem;
 
-		m_DefaultFriendSlot = GetMyServer()->GetPresetGameConfig()->DefaultFriend;
+		m_DefaultFriendSlot = (decltype(m_DefaultFriendSlot))GetMyServer()->GetPresetGameConfig()->DefaultFriend;
 
 	Proc_End:
 
@@ -463,15 +463,15 @@ namespace GameServer {
 
 	
 	// Setup default stat for new player
-	HRESULT UserGamePlayerInfoSystem::SetupDefaultStat()
+	Result UserGamePlayerInfoSystem::SetupDefaultStat()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
 		m_AddedFriendSlot = 0;
 
-		m_Stamina = GetMyServer()->GetPresetGameConfig()->DefaultStamina;
+		m_Stamina = (decltype(m_Stamina))GetMyServer()->GetPresetGameConfig()->DefaultStamina;
 		m_GameMoney = GetMyServer()->GetPresetGameConfig()->DefaultMoney;
 		m_Gem = GetMyServer()->GetPresetGameConfig()->DefaultGem;
 
@@ -479,9 +479,9 @@ namespace GameServer {
 
 		return hr;
 	}
-	HRESULT UserGamePlayerInfoSystem::UpdateStatByLevel()
+	Result UserGamePlayerInfoSystem::UpdateStatByLevel()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		conspiracy::LevelTbl::LevelItem *pLevelInfo = nullptr;
 
 		svrChk( conspiracy::LevelTbl::FindItem( GetLevel(), pLevelInfo ) );
@@ -493,9 +493,9 @@ namespace GameServer {
 		return hr;
 	}
 
-	HRESULT UserGamePlayerInfoSystem::UpdateStatByLevel(conspiracy::LevelTbl::LevelItem *pLevelInfo)
+	Result UserGamePlayerInfoSystem::UpdateStatByLevel(conspiracy::LevelTbl::LevelItem *pLevelInfo)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrAssert(pLevelInfo->Level == m_Level);
 
@@ -511,10 +511,10 @@ namespace GameServer {
 	}
 
 
-	HRESULT UserGamePlayerInfoSystem::SavePurchaseInfoToDB(TransactionID transID, const Array<BYTE>& purchaseID, const char* purchasePlatform, const char* purchaseToken)
+	Result UserGamePlayerInfoSystem::SavePurchaseInfoToDB(TransactionID transID, const Array<BYTE>& purchaseID, const char* purchasePlatform, const char* purchaseToken)
 	{
 		if (purchasePlatform == nullptr || purchaseToken == nullptr)
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		return Svr::GetServerComponent<DB::GameConspiracyDB>()->SavePurchaseInfoToDB(transID, GetOwner().GetShardID(), GetOwner().GetPlayerID(),
 			GetLevel(), GetExp(),
@@ -525,7 +525,7 @@ namespace GameServer {
 			GetOwner().GetLatestUpdateTime());
 	}
 
-	HRESULT UserGamePlayerInfoSystem::SavePlayerInfoToDB(TransactionID transID)
+	Result UserGamePlayerInfoSystem::SavePlayerInfoToDB(TransactionID transID)
 	{
 		return Svr::GetServerComponent<DB::GameConspiracyDB>()->SetPlayerInfoCmd(transID, GetOwner().GetShardID(), GetOwner().GetPlayerID(),
 			GetLevel(), GetExp(),

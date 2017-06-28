@@ -76,13 +76,13 @@ namespace Util {
 	}
 
 	// Initialize server component
-	HRESULT LibComponentTime::InitializeComponent()
+	Result LibComponentTime::InitializeComponent()
 	{
-		HRESULT hr = Component::InitializeComponent();
-		if (FAILED(hr)) return hr;
+		Result hr = Component::InitializeComponent();
+		if (!(hr)) return hr;
 
 		TimerUpdateThread.Start();
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Terminate server component
@@ -179,14 +179,14 @@ namespace Util {
 
 
 	// set timer
-	HRESULT TimeStampTimer::SetTimer(DurationMS TimerDuration )
+	Result TimeStampTimer::SetTimer(DurationMS TimerDuration )
 	{
 		TimeStampMS ulNewTime = Time.GetTimeMs() + TimerDuration;
 
 		m_ulTimeToExpire = ulNewTime;
 		if( m_ulTimeToExpire.time_since_epoch().count() == 0 ) m_ulTimeToExpire = Time.GetTimeMs();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -200,7 +200,7 @@ namespace Util {
 		if ((INT)timeMs.count() <= 0) return timeMs2;
 		if ((INT)timeMs2.count() <= 0) return timeMs;
 
-		return (timeMs - timeMs2).count() >= 0 ? timeMs2 : timeMs;
+		return (INT)(timeMs - timeMs2).count() >= 0 ? timeMs2 : timeMs;
 	}
 
 	TimeStampMS TimeMinNonZero(TimeStampMS timeMs, TimeStampMS timeMs2)

@@ -36,7 +36,7 @@ void BrServer::SetLoopbackServerEntity( ServerEntity* pLoopback )
 // Get Loopback entity
 ServerEntity* BrServer::GetLoopbackServerEntity()
 {
-	return m_pLoopbackServerEntity;
+	return *m_pLoopbackServerEntity;
 }
 
 // Set server UID
@@ -120,9 +120,9 @@ componentType* GetServerComponent(UINT componentID)
 }
 
 template< class ComponentType >
-HRESULT AddServerComponent(ComponentType* &newComponent)
+Result AddServerComponent(ComponentType* &newComponent)
 {
-	if (BrServer::GetInstance() == nullptr) return E_SYSTEM_UNEXPECTED;
+	if (BrServer::GetInstance() == nullptr) return ResultCode::UNEXPECTED;
 	return BrServer::GetInstance()->AddComponent(newComponent);
 }
 
@@ -138,26 +138,26 @@ ServerEntity* GetLoopbackServerEntity()
 
 
 template<class DBManagerType>
-HRESULT BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
+Result BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 {
-	HRESULT hr = S_SYSTEM_OK;
-	DB::QueryManager* pDBManager = nullptr;
+	Result hr = ResultCode::SUCCESS;
+	DB::DBClusterManager* pDBManager = nullptr;
 	DBManagerType *pDB = nullptr;
 
 	if (pDBClusterCfg == nullptr)
-		return E_SYSTEM_UNEXPECTED;
+		return ResultCode::UNEXPECTED;
 
 	// Just add it once
 	if (GetComponent<DBManagerType>() != nullptr)
-		return S_SYSTEM_FALSE;
+		return ResultCode::SUCCESS_FALSE;
 
 
 	auto& DBinstances = Svr::Config::GetConfig().DBInstances;
 	auto& DBMembers = pDBClusterCfg->DBMembers;
 
 	svrMem( pDB = new DBManagerType );
-	pDBManager = reinterpret_cast<DB::QueryManager*>(pDB);
-	svrChk( pDBManager->InitializeDB( pDBClusterCfg->PartitioningCount ) );
+	pDBManager = reinterpret_cast<DB::DBClusterManager*>(pDB);
+	svrChk( pDBManager->InitializeDBCluster( pDBClusterCfg->PartitioningCount ) );
 
 	m_DBManagers.push_back(pDBManager);
 	svrTrace(Trace::TRC_TRACE, "Adding DB manager {0} clusterType:{1}", typeid(DBManagerType).name(), (UINT32)pDBClusterCfg->ClusterType);
@@ -169,7 +169,7 @@ HRESULT BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 		auto itInstnace = DBinstances.find( pClusterInstanceCfg->DBInstanceName );
 		if( itInstnace == DBinstances.end() )
 		{
-			svrErr(E_DB_INVALID_CONFIG);
+			svrErr(ResultCode::E_DB_INVALID_CONFIG);
 		}
 
 		auto instanceInfo = itInstnace->second;

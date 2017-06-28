@@ -39,18 +39,18 @@ namespace DB {
 		virtual void* GetContext() = 0;
 
 		// Send a query
-		virtual HRESULT SendQuery( Query *pQuery ) = 0;
+		virtual Result SendQuery( Query *pQuery ) = 0;
 
 		// Open session
-		virtual HRESULT OpenSession();
+		virtual Result OpenSession();
 
 		// Close session
-		virtual HRESULT CloseSession();
+		virtual Result CloseSession();
 
 		// Release session after use, this call will return session to Data source
-		HRESULT ReleaseSession();
+		Result ReleaseSession();
 
-		virtual HRESULT Ping() = 0;
+		virtual Result Ping() = 0;
 
 	private:
 

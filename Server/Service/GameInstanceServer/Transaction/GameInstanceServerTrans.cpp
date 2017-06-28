@@ -57,15 +57,15 @@ namespace ConspiracyGameInstanceServer {
 	{
 	}
 
-	HRESULT GameInstanceServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
+	Result GameInstanceServerStartProcess::OnTimer(Svr::TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		switch( m_Step )
 		{
 		case StartingStep::WaitEntityServer:
 			if( GetMyServer()->GetComponent<Svr::ClusterManagerServiceEntity>()->GetInitialized() )
-//			if( SUCCEEDED(GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
+//			if( (GetMyServer()->GetComponent<Svr::ServerEntityManager>()->GetEntityManagerServerEntity(pServer)) )
 			{
 				svrChk( InitializeServices() );
 				m_Step = StartingStep::WaitInitializeComponents;
@@ -86,15 +86,15 @@ namespace ConspiracyGameInstanceServer {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			CloseTransaction(hr);
 
 		return hr;
 	}
 
-	HRESULT GameInstanceServerStartProcess::InitializeServices()
+	Result GameInstanceServerStartProcess::InitializeServices()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		
 		svrChk( Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->InitializeNotInitializedClusterEntities() );
 		
@@ -105,9 +105,9 @@ namespace ConspiracyGameInstanceServer {
 	}
 
 	// Start Transaction
-	HRESULT GameInstanceServerStartProcess::StartTransaction()
+	Result GameInstanceServerStartProcess::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -119,9 +119,9 @@ namespace ConspiracyGameInstanceServer {
 		return hr;
 	}
 
-	HRESULT GameInstanceServerStartProcess::OnCloseTransaction( HRESULT hrRes )
+	Result GameInstanceServerStartProcess::OnCloseTransaction( Result hrRes )
 	{
-		if( SUCCEEDED(hrRes) )
+		if( (hrRes) )
 		{
 			// New connection will not be allowed.
 			// The only way to make new connection is registering from a login server by loggin

@@ -68,9 +68,9 @@ namespace Net {
 	{
 	}
 
-	void ConnectionPeerTCP::OnConnectionResult(HRESULT hrConnect)
+	void ConnectionPeerTCP::OnConnectionResult(Result hrConnect)
 	{
-		if (SUCCEEDED(hrConnect))
+		if ((hrConnect))
 		{
 			Assert(m_ConnectInfo.RemoteID != 0);
 		}
@@ -79,16 +79,16 @@ namespace Net {
 	}
 
 	// Update net control, process connection heartbit, ... etc
-	HRESULT ConnectionPeerTCP::UpdateNetCtrl()
+	Result ConnectionPeerTCP::UpdateNetCtrl()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageID msgIDTem;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		// On client side, we need to check readable/writable status by calling connect again
 		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == IConnection::ConnectionState::STATE_CONNECTING)
 		{
-			m_isActuallyConnected = Connect() == S_SYSTEM_OK;
+			m_isActuallyConnected = Connect();
 		}
 
 

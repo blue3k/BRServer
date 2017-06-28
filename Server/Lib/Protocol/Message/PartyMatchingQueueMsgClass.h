@@ -43,7 +43,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				LinkedArray<MatchingPlayerInformation> m_Players;
 			public:
 				RegisterPartyMatchingCmd()
@@ -57,18 +57,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const Array<MatchingPlayerInformation>& GetPlayers() const	{ return m_Players; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class RegisterPartyMatchingCmd : public MessageBase
 
@@ -87,12 +88,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
 				RegisterPartyMatchingRes()
@@ -106,18 +107,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class RegisterPartyMatchingRes : public MessageBase
 
@@ -140,7 +142,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 			public:
 				RegisterPlayerMatchingCmd()
@@ -154,18 +156,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class RegisterPlayerMatchingCmd : public MessageBase
 
@@ -184,12 +187,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
 				RegisterPlayerMatchingRes()
@@ -203,18 +206,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class RegisterPlayerMatchingRes : public MessageBase
 
@@ -238,7 +242,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				MatchingQueueTicket m_MatchingTicket;
 				EntityUID m_PreviousUID;
 			public:
@@ -253,19 +257,20 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 				const EntityUID& GetPreviousUID() const	{ return m_PreviousUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class UpdateMatchingEntityUIDCmd : public MessageBase
 
@@ -284,12 +289,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 			public:
 				UpdateMatchingEntityUIDRes()
 					{}
@@ -302,17 +307,18 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class UpdateMatchingEntityUIDRes : public MessageBase
 
@@ -336,7 +342,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
 				UnregisterMatchingCmd()
@@ -350,18 +356,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class UnregisterMatchingCmd : public MessageBase
 
@@ -380,12 +387,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 			public:
 				UnregisterMatchingRes()
 					{}
@@ -398,17 +405,18 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class UnregisterMatchingRes : public MessageBase
 
@@ -432,7 +440,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				PartyUID m_DestPartyUID;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
@@ -446,19 +454,20 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PartyUID& GetDestPartyUID() const	{ return m_DestPartyUID; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PartyUID &InDestPartyUID, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class PartyMatchingCanceledS2CEvt : public MessageBase
 
@@ -482,7 +491,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				PlayerID m_DestPlayerID;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
@@ -496,19 +505,20 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetDestPlayerID() const	{ return m_DestPlayerID; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class PlayerMatchingCanceledS2CEvt : public MessageBase
 
@@ -532,7 +542,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
 				PartyMatchingItemDequeuedS2CEvt()
@@ -545,18 +555,19 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class PartyMatchingItemDequeuedS2CEvt : public MessageBase
 
@@ -580,7 +591,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
 				PlayerMatchingItemDequeuedS2CEvt()
@@ -593,18 +604,19 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class PlayerMatchingItemDequeuedS2CEvt : public MessageBase
 
@@ -628,7 +640,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 			public:
 				ReserveItemCmd()
 					{}
@@ -641,17 +653,18 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class ReserveItemCmd : public MessageBase
 
@@ -670,13 +683,13 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
-				UINT32 m_NumberOfPlayersInTheItem;
+				Result m_Result;
+				uint32_t m_NumberOfPlayersInTheItem;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
 				ReserveItemRes()
@@ -690,19 +703,20 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
-				const UINT32& GetNumberOfPlayersInTheItem() const	{ return m_NumberOfPlayersInTheItem; };
+				const Result& GetResult() const	{ return m_Result; };
+				const uint32_t& GetNumberOfPlayersInTheItem() const	{ return m_NumberOfPlayersInTheItem; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InNumberOfPlayersInTheItem, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class ReserveItemRes : public MessageBase
 
@@ -726,8 +740,8 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
-				UINT32 m_NumberOfItemsToReserve;
+				uint16_t m_RouteHopCount;
+				uint32_t m_NumberOfItemsToReserve;
 			public:
 				ReserveItemsCmd()
 					{}
@@ -740,18 +754,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
-				const UINT32& GetNumberOfItemsToReserve() const	{ return m_NumberOfItemsToReserve; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint32_t& GetNumberOfItemsToReserve() const	{ return m_NumberOfItemsToReserve; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class ReserveItemsCmd : public MessageBase
 
@@ -770,13 +785,13 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
-				LinkedArray<UINT32> m_NumberOfPlayersInTheItem;
+				Result m_Result;
+				LinkedArray<uint32_t> m_NumberOfPlayersInTheItem;
 				LinkedArray<MatchingQueueTicket> m_MatchingTicket;
 			public:
 				ReserveItemsRes()
@@ -790,19 +805,20 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
-				const Array<UINT32>& GetNumberOfPlayersInTheItem() const	{ return m_NumberOfPlayersInTheItem; };
+				const Result& GetResult() const	{ return m_Result; };
+				const Array<uint32_t>& GetNumberOfPlayersInTheItem() const	{ return m_NumberOfPlayersInTheItem; };
 				const Array<MatchingQueueTicket>& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<UINT32>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<uint32_t>& InNumberOfPlayersInTheItem, const Array<MatchingQueueTicket>& InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class ReserveItemsRes : public MessageBase
 
@@ -826,7 +842,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				MatchingQueueTicket m_TicketToCancel;
 			public:
 				CancelReservationCmd()
@@ -840,18 +856,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetTicketToCancel() const	{ return m_TicketToCancel; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class CancelReservationCmd : public MessageBase
 
@@ -870,12 +887,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 			public:
 				CancelReservationRes()
 					{}
@@ -888,17 +905,18 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class CancelReservationRes : public MessageBase
 
@@ -922,7 +940,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				LinkedArray<MatchingQueueTicket> m_TicketToCancel;
 			public:
 				CancelReservationsCmd()
@@ -936,18 +954,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const Array<MatchingQueueTicket>& GetTicketToCancel() const	{ return m_TicketToCancel; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class CancelReservationsCmd : public MessageBase
 
@@ -966,12 +985,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 			public:
 				CancelReservationsRes()
 					{}
@@ -984,17 +1003,18 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class CancelReservationsRes : public MessageBase
 
@@ -1018,7 +1038,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
 				DequeueItemCmd()
@@ -1032,18 +1052,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class DequeueItemCmd : public MessageBase
 
@@ -1062,12 +1083,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				MatchingQueueTicket m_MatchingTicket;
 				EntityUID m_RegisterUID;
 				PlayerID m_RegisterID;
@@ -1084,7 +1105,7 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 				const EntityUID& GetRegisterUID() const	{ return m_RegisterUID; };
 				const PlayerID& GetRegisterID() const	{ return m_RegisterID; };
@@ -1092,13 +1113,14 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InRegisterUID, const PlayerID &InRegisterID, const Array<MatchingPlayerInformation>& InPlayers );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class DequeueItemRes : public MessageBase
 
@@ -1122,7 +1144,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				MatchingQueueTicket m_MatchingTicket;
 			public:
 				MatchingItemErrorC2SEvt()
@@ -1135,18 +1157,19 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const MatchingQueueTicket& GetMatchingTicket() const	{ return m_MatchingTicket; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class MatchingItemErrorC2SEvt : public MessageBase
 

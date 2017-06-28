@@ -49,9 +49,9 @@ namespace DB {
 	//	Ranking DB interface
 	//
 
-	HRESULT RankingDB::GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount )
+	Result RankingDB::GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGetTotalRankingCmd *pQuery = nullptr;
 		QueryGetTotalRankingSet *pSet = nullptr;
 
@@ -71,7 +71,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;

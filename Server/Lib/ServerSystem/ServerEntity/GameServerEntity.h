@@ -47,7 +47,7 @@ namespace Svr {
 		virtual ~GameServerEntity();
 
 		// Initialize entity to proceed new connection
-		HRESULT InitializeEntity( EntityID newEntityID );
+		Result InitializeEntity( EntityID newEntityID );
 
 	};
 

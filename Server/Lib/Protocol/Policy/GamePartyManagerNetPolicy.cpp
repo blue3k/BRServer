@@ -28,9 +28,9 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: Create a party instance
-		HRESULT NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+		Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -44,11 +44,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+		}; // Result NetPolicyGamePartyManager::CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
 		// C2S: Party instance notify of deletion
-		HRESULT NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+		Result NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -62,13 +62,13 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+		}; // Result NetPolicyGamePartyManager::PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 
 
 		// Cmd: Create a party instance
-		HRESULT NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -82,7 +82,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyGamePartyManager::CreatePartyRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 
 	}; // namespace Policy

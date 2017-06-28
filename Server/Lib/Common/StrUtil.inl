@@ -13,7 +13,7 @@
 
 
 template<INT iBuffLen>
-HRESULT StringCpy( char (&szDest)[iBuffLen], const char *szSrc )
+Result StringCpy( char (&szDest)[iBuffLen], const char *szSrc )
 {
 	if( szSrc )
 	{
@@ -33,11 +33,11 @@ HRESULT StringCpy( char (&szDest)[iBuffLen], const char *szSrc )
 			szDest[0] = '\0';
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template<INT iBuffLen>
-HRESULT StringCpy( wchar_t (&szDest)[iBuffLen], const wchar_t *szSrc )
+Result StringCpy( wchar_t (&szDest)[iBuffLen], const wchar_t *szSrc )
 {
 	if( szSrc )
 	{
@@ -57,13 +57,13 @@ HRESULT StringCpy( wchar_t (&szDest)[iBuffLen], const wchar_t *szSrc )
 			szDest[0] = L'\0';
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 
 //
 //template<INT iBuffLen>
-//HRESULT WCSToMBCS( const wchar_t* strWCS, char (&strMBCS)[iBuffLen] )
+//Result WCSToMBCS( const wchar_t* strWCS, char (&strMBCS)[iBuffLen] )
 //{
 //	return WCSToMBCS( strWCS, strMBCS, iBuffLen );
 //}
@@ -72,38 +72,38 @@ HRESULT StringCpy( wchar_t (&szDest)[iBuffLen], const wchar_t *szSrc )
 
 
 template<INT iBuffLen>
-HRESULT WCSToUTF8( const wchar_t* strWCS, char (&strUTF8)[iBuffLen] )
+Result WCSToUTF8( const wchar_t* strWCS, char (&strUTF8)[iBuffLen] )
 {
 	return WCSToUTF8( strWCS, strUTF8, iBuffLen );
 }
 //
 //
 //template<int iBuffLen>
-//HRESULT MBCSToWCS( const char *strMBCS, wchar_t (&strWCS)[iBuffLen] )
+//Result MBCSToWCS( const char *strMBCS, wchar_t (&strWCS)[iBuffLen] )
 //{
 //	return MBCSToWCS( strMBCS, strWCS, iBuffLen );
 //}
 //
 //template<INT iBuffLen>
-//HRESULT MBCSToUTF8( const char *strMBCS, char (&strUTF8)[iBuffLen] )
+//Result MBCSToUTF8( const char *strMBCS, char (&strUTF8)[iBuffLen] )
 //{
 //	return MBCSToUTF8( strMBCS, strUTF8, iBuffLen );
 //}
 
 template<INT iBuffLen>
-HRESULT UTF8ToWCS( const char *strUTF8, wchar_t (&strWCS)[iBuffLen] )
+Result UTF8ToWCS( const char *strUTF8, wchar_t (&strWCS)[iBuffLen] )
 {
 	return UTF8ToWCS( strUTF8, strWCS, iBuffLen );
 }
 //
 //template<INT iBuffLen>
-//HRESULT UTF8ToMBCS( const char *strUTF8, char (&strMBCS)[iBuffLen] )
+//Result UTF8ToMBCS( const char *strUTF8, char (&strMBCS)[iBuffLen] )
 //{
 //	return UTF8ToMBCS( strUTF8, strMBCS, iBuffLen );
 //}
 
 template<INT iBuffLen>
-HRESULT UTF8ToUTF8Bin( BYTE (&UTF8BinBuff)[iBuffLen], const char* strSrc )
+Result UTF8ToUTF8Bin( BYTE (&UTF8BinBuff)[iBuffLen], const char* strSrc )
 {
 	UTF8Bin *pUTF8 = (UTF8Bin*)UTF8BinBuff;
 	pUTF8->IsNull = 0;
@@ -112,9 +112,9 @@ HRESULT UTF8ToUTF8Bin( BYTE (&UTF8BinBuff)[iBuffLen], const char* strSrc )
 	return StrUtil::StringCpy( (char*)pUTF8->stringData, iBuffLen - sizeof(UTF8Bin), strSrc );
 }
 
-HRESULT UTF8BinToUTF8( char* strDst, INT dstLen, const BYTE* strSrc )
+Result UTF8BinToUTF8( char* strDst, INT dstLen, const BYTE* strSrc )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	UTF8Bin *pUTF8 = (UTF8Bin*)strSrc;
 
@@ -282,8 +282,8 @@ int StringCmpLwr( const char* szSrc, INT iSrcBuffLen, const char* szDest, INT iD
 
 	for( INT iComp = 0; iComp < iCompLen && szSrc[0] != '\0' && szDest[0] != '\0'; iComp++ )
 	{
-		char src = (szSrc[0] >= 'A' && szSrc[0] <= 'Z') ? (szSrc[0] - 'A' + 'a') : szSrc[0];
-		char dst = (szDest[0] >= 'A' && szDest[0] <= 'Z') ? (szDest[0] - 'A' + 'a') : szDest[0];
+		char src = (char)((szSrc[0] >= 'A' && szSrc[0] <= 'Z') ? (szSrc[0] - 'A' + 'a') : szSrc[0]);
+		char dst = (char)((szDest[0] >= 'A' && szDest[0] <= 'Z') ? (szDest[0] - 'A' + 'a') : szDest[0]);
 		int iDiff = src - dst;
 		if( iDiff != 0 )
 			return iDiff;
@@ -387,28 +387,28 @@ int StringCmpLwr( wchar_t (&szSrc)[iSrcBuffLen], const wchar_t* szDest, INT iDes
 
 // String convert to lower case 
 // szSrc(In/Out)		: Source string to convert
-HRESULT StringLwr( char* szSrc, INT iBuffLen )
+Result StringLwr( char* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 	if( iBuffLen <= 0 ) iBuffLen = (INT)strlen(szSrc);
 
 	for( INT iConv = 0; iConv < iBuffLen && szSrc[0] != '\0'; iConv++ )
 	{
 		if( szSrc[0] >= 'A' && szSrc[0] <= 'Z' )
-			szSrc[0] = szSrc[0] - 'A' + 'a';
+			szSrc[0] = (char)(szSrc[0] - 'A' + 'a');
 
 		szSrc++;
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
-HRESULT StringLwr( wchar_t* szSrc, INT iBuffLen )
+Result StringLwr( wchar_t* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 	if( iBuffLen <= 0 ) iBuffLen = (INT)wcslen(szSrc);
 
@@ -420,17 +420,17 @@ HRESULT StringLwr( wchar_t* szSrc, INT iBuffLen )
 		szSrc++;
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template<INT iBuffLen>
-HRESULT StringLwr( char (&szSrc)[iBuffLen] )
+Result StringLwr( char (&szSrc)[iBuffLen] )
 {
 	return StringLwr( szSrc, iBuffLen );
 }
 
 template<INT iBuffLen>
-HRESULT StringLwr( wchar_t (&szSrc)[iBuffLen] )
+Result StringLwr( wchar_t (&szSrc)[iBuffLen] )
 {
 	return StringLwr( szSrc, iBuffLen );
 }
@@ -440,12 +440,12 @@ HRESULT StringLwr( wchar_t (&szSrc)[iBuffLen] )
 // szSrc				: Source string to convert
 // szDest(In/Out)		: Buffer pointer reference
 // iBuffLen(In/Out)		: Destination buffer size. if buffer is small to take all source message, then reallocated
-HRESULT StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc )
+Result StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if( szSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
@@ -453,24 +453,24 @@ HRESULT StringLwr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iBuffLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 	else
 	{
 		hr = StringDup( szDest, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 		iBuffLen = iSrcBuffLen;
 	}
 
 	return StringLwr( szDest, iBuffLen );
 }
 
-HRESULT StringLwr(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
+Result StringLwr(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if (szSrc == NULL)
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	INT iSrcBuffLen = (INT)wcslen(szSrc) + 1;
@@ -478,12 +478,12 @@ HRESULT StringLwr(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
 	if (iBuffLen >= iSrcBuffLen)
 	{
 		hr = StringCpy(szDest, iBuffLen, szSrc);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 	}
 	else
 	{
 		hr = StringDup(szDest, szSrc);
-		if (FAILED(hr)) return hr;
+		if (!(hr)) return hr;
 		iBuffLen = iSrcBuffLen;
 	}
 
@@ -491,30 +491,30 @@ HRESULT StringLwr(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
 }
 
 
-HRESULT StringLwrEx(char* &szDest, INT &iBuffLen, const char* szSrc)
+Result StringLwrEx(char* &szDest, INT &iBuffLen, const char* szSrc)
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if (szSrc == NULL)
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	hr = StringCpyEx(szDest, iBuffLen, szSrc);
-	if (FAILED(hr)) return hr;
+	if (!(hr)) return hr;
 
 	return StringLwr(szDest, iBuffLen);
 }
 
-HRESULT StringLwrEx(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
+Result StringLwrEx(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if (szSrc == NULL)
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	hr = StringCpyEx(szDest, iBuffLen, szSrc);
-	if (FAILED(hr)) return hr;
+	if (!(hr)) return hr;
 
 	return StringLwr(szDest, iBuffLen);
 }
@@ -523,12 +523,12 @@ HRESULT StringLwrEx(wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc)
 // szSrc				: Source string to convert
 // szDest(In)			: Buffer pointer to copy
 template<INT iBuffLen>
-HRESULT StringLwr( char (&szDest)[iBuffLen], const char *szSrc )
+Result StringLwr( char (&szDest)[iBuffLen], const char *szSrc )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if( szSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
@@ -537,19 +537,19 @@ HRESULT StringLwr( char (&szDest)[iBuffLen], const char *szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iConvLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	return StringLwr( szDest, iConvLen );
 }
 
 template<INT iBuffLen>
-HRESULT StringLwr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
+Result StringLwr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if(wszSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	INT iSrcBuffLen = (INT)wcslen(wszSrc) + 1;
@@ -558,7 +558,7 @@ HRESULT StringLwr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy(wszDest, iConvLen, wszSrc);
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	return StringLwr(wszDest, iConvLen );
@@ -570,28 +570,28 @@ HRESULT StringLwr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 
 // String convert to lower case 
 // szSrc(In/Out)		: Source string to convert
-HRESULT StringUpr( char* szSrc, INT iBuffLen )
+inline Result StringUpr( char* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 	if( iBuffLen <= 0 ) iBuffLen = (INT)strlen(szSrc);
 
 	for( INT iConv = 0; iConv < iBuffLen && szSrc[0] != '\0'; iConv++ )
 	{
 		if( szSrc[0] >= 'a' && szSrc[0] <= 'z' )
-			szSrc[0] = szSrc[0] - 'a' + 'A';
+			szSrc[0] = (char)(szSrc[0] - 'a' + 'A');
 
 		szSrc++;
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
-HRESULT StringUpr( wchar_t* szSrc, INT iBuffLen )
+inline Result StringUpr( wchar_t* szSrc, INT iBuffLen )
 {
 	if( szSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 	if( iBuffLen <= 0 ) iBuffLen = (INT)wcslen(szSrc);
 
@@ -603,17 +603,17 @@ HRESULT StringUpr( wchar_t* szSrc, INT iBuffLen )
 		szSrc++;
 	}
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template<INT iBuffLen>
-HRESULT StringUpr( char (&szSrc)[iBuffLen] )
+inline Result StringUpr( char (&szSrc)[iBuffLen] )
 {
 	return StringUpr( szSrc, iBuffLen );
 }
 
 template<INT iBuffLen>
-HRESULT StringUpr( wchar_t (&szSrc)[iBuffLen] )
+inline Result StringUpr( wchar_t (&szSrc)[iBuffLen] )
 {
 	return StringUpr( szSrc, iBuffLen );
 }
@@ -623,12 +623,12 @@ HRESULT StringUpr( wchar_t (&szSrc)[iBuffLen] )
 // szSrc				: Source string to convert
 // szDest(In/Out)		: Buffer pointer reference
 // iBuffLen(In/Out)		: Destination buffer size. if buffer is small to take all source message, then reallocated
-HRESULT StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
+inline Result StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if( szSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
@@ -636,24 +636,24 @@ HRESULT StringUpr( char* &szDest, INT &iBuffLen, const char* szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iBuffLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 	else
 	{
 		hr = StringDup( szDest, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 		iBuffLen = iSrcBuffLen;
 	}
 
 	return StringUpr( szDest, iBuffLen );
 }
 
-HRESULT StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc )
+inline Result StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if( szSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	INT iSrcBuffLen = (INT)wcslen( szSrc ) + 1;
@@ -661,12 +661,12 @@ HRESULT StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iBuffLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 	else
 	{
 		hr = StringDup( szDest, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 		iBuffLen = iSrcBuffLen;
 	}
 
@@ -677,12 +677,12 @@ HRESULT StringUpr( wchar_t* &szDest, INT &iBuffLen, const wchar_t* szSrc )
 // szSrc				: Source string to convert
 // szDest(In)			: Buffer pointer to copy
 template<INT iBuffLen>
-HRESULT StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
+inline Result StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if( szSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	INT iSrcBuffLen = (INT)strlen( szSrc ) + 1;
@@ -691,19 +691,19 @@ HRESULT StringUpr( char (&szDest)[iBuffLen], const char *szSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy( szDest, iConvLen, szSrc );
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	return StringUpr( szDest, iConvLen );
 }
 
 template<INT iBuffLen>
-HRESULT StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
+inline Result StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 
 	if(wszSrc == NULL )
-		return E_SYSTEM_INVALIDARG;
+		return ResultCode::INVALID_ARG;
 
 
 	INT iSrcBuffLen = (INT)wcslen(wszSrc) + 1;
@@ -712,21 +712,32 @@ HRESULT StringUpr( wchar_t (&wszDest)[iBuffLen], const wchar_t *wszSrc )
 	if( iBuffLen >= iSrcBuffLen )
 	{
 		hr = StringCpy(wszDest, iConvLen, wszSrc);
-		if( FAILED(hr) ) return hr;
+		if( !(hr) ) return hr;
 	}
 
 	return StringUpr(wszDest, iConvLen );
 }
 
 
+inline bool IsNullOrEmpty(const char* szStr)
+{
+	return szStr == nullptr || szStr[0] == '\0';
+}
+
+inline bool IsNullOrEmpty(const wchar_t* szStr)
+{
+	return szStr == nullptr || szStr[0] == L'\0';
+}
+
+
 
 // Free string with NULL check
-void SafeDelete( char* &szStr )
+inline void SafeDelete( char* &szStr )
 {
 	if( szStr ) delete[] szStr;
 }
 
-void SafeDelete( wchar_t* &szStr )
+inline void SafeDelete( wchar_t* &szStr )
 {
 	if( szStr ) delete[] szStr;
 }

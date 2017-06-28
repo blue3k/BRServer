@@ -97,18 +97,18 @@
 /* Maximum leeway in validity period: default 5 minutes */
 # define MAX_VALIDITY_PERIOD     (5 * 60)
 
-static int add_ocsp_cert(OCSP_REQUEST **req, X509 *cert,
+static int add_ocsp_cert(SSL_OCSP_REQUEST **req, X509 *cert,
                          const EVP_MD *cert_id_md, X509 *issuer,
                          STACK_OF(OCSP_CERTID) *ids);
-static int add_ocsp_serial(OCSP_REQUEST **req, char *serial,
+static int add_ocsp_serial(SSL_OCSP_REQUEST **req, char *serial,
                            const EVP_MD *cert_id_md, X509 *issuer,
                            STACK_OF(OCSP_CERTID) *ids);
-static int print_ocsp_summary(BIO *out, OCSP_BASICRESP *bs, OCSP_REQUEST *req,
+static int print_ocsp_summary(BIO *out, OCSP_BASICRESP *bs, SSL_OCSP_REQUEST *req,
                               STACK_OF(OPENSSL_STRING) *names,
                               STACK_OF(OCSP_CERTID) *ids, long nsec,
                               long maxage);
 
-static int make_ocsp_response(OCSP_RESPONSE **resp, OCSP_REQUEST *req,
+static int make_ocsp_response(SSL_OCSP_RESPONSE **resp, SSL_OCSP_REQUEST *req,
                               CA_DB *db, X509 *ca, X509 *rcert,
                               EVP_PKEY *rkey, const EVP_MD *md,
                               STACK_OF(X509) *rother, unsigned long flags,
@@ -116,12 +116,12 @@ static int make_ocsp_response(OCSP_RESPONSE **resp, OCSP_REQUEST *req,
 
 static char **lookup_serial(CA_DB *db, ASN1_INTEGER *ser);
 static BIO *init_responder(const char *port);
-static int do_responder(OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio,
+static int do_responder(SSL_OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio,
                         const char *port);
-static int send_ocsp_response(BIO *cbio, OCSP_RESPONSE *resp);
-static OCSP_RESPONSE *query_responder(BIO *err, BIO *cbio, const char *path,
+static int send_ocsp_response(BIO *cbio, SSL_OCSP_RESPONSE *resp);
+static SSL_OCSP_RESPONSE *query_responder(BIO *err, BIO *cbio, const char *path,
                                       const STACK_OF(CONF_VALUE) *headers,
-                                      OCSP_REQUEST *req, int req_timeout);
+                                      SSL_OCSP_REQUEST *req, int req_timeout);
 
 # undef PROG
 # define PROG ocsp_main
@@ -141,8 +141,8 @@ int MAIN(int argc, char **argv)
     char *outfile = NULL;
     int add_nonce = 1, noverify = 0, use_ssl = -1;
     STACK_OF(CONF_VALUE) *headers = NULL;
-    OCSP_REQUEST *req = NULL;
-    OCSP_RESPONSE *resp = NULL;
+    SSL_OCSP_REQUEST *req = NULL;
+    SSL_OCSP_RESPONSE *resp = NULL;
     OCSP_BASICRESP *bs = NULL;
     X509 *issuer = NULL, *cert = NULL;
     X509 *signer = NULL, *rsigner = NULL;
@@ -893,7 +893,7 @@ int MAIN(int argc, char **argv)
     OPENSSL_EXIT(ret);
 }
 
-static int add_ocsp_cert(OCSP_REQUEST **req, X509 *cert,
+static int add_ocsp_cert(SSL_OCSP_REQUEST **req, X509 *cert,
                          const EVP_MD *cert_id_md, X509 *issuer,
                          STACK_OF(OCSP_CERTID) *ids)
 {
@@ -918,12 +918,12 @@ static int add_ocsp_cert(OCSP_REQUEST **req, X509 *cert,
     return 0;
 }
 
-static int add_ocsp_serial(OCSP_REQUEST **req, char *serial,
+static int add_ocsp_serial(SSL_OCSP_REQUEST **req, char *serial,
                            const EVP_MD *cert_id_md, X509 *issuer,
                            STACK_OF(OCSP_CERTID) *ids)
 {
     OCSP_CERTID *id;
-    X509_NAME *iname;
+    SSL_X509_NAME *iname;
     ASN1_BIT_STRING *ikey;
     ASN1_INTEGER *sno;
     if (!issuer) {
@@ -954,7 +954,7 @@ static int add_ocsp_serial(OCSP_REQUEST **req, char *serial,
     return 0;
 }
 
-static int print_ocsp_summary(BIO *out, OCSP_BASICRESP *bs, OCSP_REQUEST *req,
+static int print_ocsp_summary(BIO *out, OCSP_BASICRESP *bs, SSL_OCSP_REQUEST *req,
                               STACK_OF(OPENSSL_STRING) *names,
                               STACK_OF(OCSP_CERTID) *ids, long nsec,
                               long maxage)
@@ -1016,7 +1016,7 @@ static int print_ocsp_summary(BIO *out, OCSP_BASICRESP *bs, OCSP_REQUEST *req,
     return 1;
 }
 
-static int make_ocsp_response(OCSP_RESPONSE **resp, OCSP_REQUEST *req,
+static int make_ocsp_response(SSL_OCSP_RESPONSE **resp, SSL_OCSP_REQUEST *req,
                               CA_DB *db, X509 *ca, X509 *rcert,
                               EVP_PKEY *rkey, const EVP_MD *rmd,
                               STACK_OF(X509) *rother, unsigned long flags,
@@ -1174,11 +1174,11 @@ static BIO *init_responder(const char *port)
     return NULL;
 }
 
-static int do_responder(OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio,
+static int do_responder(SSL_OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio,
                         const char *port)
 {
     int have_post = 0, len;
-    OCSP_REQUEST *req = NULL;
+    SSL_OCSP_REQUEST *req = NULL;
     char inbuf[1024];
     BIO *cbio = NULL;
 
@@ -1223,7 +1223,7 @@ static int do_responder(OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio,
 
 }
 
-static int send_ocsp_response(BIO *cbio, OCSP_RESPONSE *resp)
+static int send_ocsp_response(BIO *cbio, SSL_OCSP_RESPONSE *resp)
 {
     char http_resp[] =
         "HTTP/1.0 200 OK\r\nContent-type: application/ocsp-response\r\n"
@@ -1236,15 +1236,15 @@ static int send_ocsp_response(BIO *cbio, OCSP_RESPONSE *resp)
     return 1;
 }
 
-static OCSP_RESPONSE *query_responder(BIO *err, BIO *cbio, const char *path,
+static SSL_OCSP_RESPONSE *query_responder(BIO *err, BIO *cbio, const char *path,
                                       const STACK_OF(CONF_VALUE) *headers,
-                                      OCSP_REQUEST *req, int req_timeout)
+                                      SSL_OCSP_REQUEST *req, int req_timeout)
 {
     int fd;
     int rv;
     int i;
     OCSP_REQ_CTX *ctx = NULL;
-    OCSP_RESPONSE *rsp = NULL;
+    SSL_OCSP_RESPONSE *rsp = NULL;
     fd_set confds;
     struct timeval tv;
 
@@ -1323,7 +1323,7 @@ static OCSP_RESPONSE *query_responder(BIO *err, BIO *cbio, const char *path,
     return rsp;
 }
 
-OCSP_RESPONSE *process_responder(BIO *err, OCSP_REQUEST *req,
+SSL_OCSP_RESPONSE *process_responder(BIO *err, SSL_OCSP_REQUEST *req,
                                  const char *host, const char *path,
                                  const char *port, int use_ssl,
                                  const STACK_OF(CONF_VALUE) *headers,
@@ -1331,7 +1331,7 @@ OCSP_RESPONSE *process_responder(BIO *err, OCSP_REQUEST *req,
 {
     BIO *cbio = NULL;
     SSL_CTX *ctx = NULL;
-    OCSP_RESPONSE *resp = NULL;
+    SSL_OCSP_RESPONSE *resp = NULL;
     cbio = BIO_new_connect(host);
     if (!cbio) {
         BIO_printf(err, "Error creating connect BIO\n");

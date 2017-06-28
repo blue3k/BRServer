@@ -76,10 +76,10 @@
  * These can sometimes get redefined indirectly by krb5 header files after
  * they get undefed in ossl_typ.h
  */
-#   undef X509_NAME
-#   undef X509_EXTENSIONS
-#   undef OCSP_REQUEST
-#   undef OCSP_RESPONSE
+#   undef SSL_X509_NAME
+#   undef SSL_X509_EXTENSIONS
+#   undef SSL_OCSP_REQUEST
+#   undef SSL_OCSP_RESPONSE
 #  endif
 
 #ifdef  __cplusplus

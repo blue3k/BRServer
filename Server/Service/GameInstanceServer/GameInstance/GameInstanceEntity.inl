@@ -17,24 +17,24 @@
 //
 
 // foreach game player
-//HRESULT GameInstanceEntity::ForeachPlayer(std::function<HRESULT(GamePlayer* pPlayer)> func)
+//Result GameInstanceEntity::ForeachPlayer(std::function<Result(GamePlayer* pPlayer)> func)
 template< class Func >
-HRESULT GameInstanceEntity::ForeachPlayer(Func func)
+Result GameInstanceEntity::ForeachPlayer(Func func)
 {
 	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pPlayer)-> bool
 	{
-		HRESULT hrRes = func((GamePlayer*)pPlayer);
-		if (FAILED(hrRes))
+		Result hrRes = func((GamePlayer*)pPlayer);
+		if (!(hrRes))
 			return false;
 		return true;
 	});
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 
 // foreach game player with Game policy
 template< class Func >
-inline HRESULT GameInstanceEntity::ForeachPlayerGameServer(Func func)
+inline Result GameInstanceEntity::ForeachPlayerGameServer(Func func)
 {
 	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pGameInsPlayer)-> bool
 	{
@@ -49,18 +49,18 @@ inline HRESULT GameInstanceEntity::ForeachPlayerGameServer(Func func)
 		Policy::IPolicyGameServer *pPolicy = pGamePlayer->GetPolicy<Policy::IPolicyGameServer>();
 		if (pPolicy)
 		{
-			HRESULT hrRes = func(pGamePlayer, pPolicy);
-			if (FAILED(hrRes))
+			Result hrRes = func(pGamePlayer, pPolicy);
+			if (!(hrRes))
 				return false;
 		}
 		return true;
 	});
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 // foreach game player with Game policy
 template< class Func >
-inline HRESULT GameInstanceEntity::ForeachPlayerSvrGameInstance(Func func)
+inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(Func func)
 {
 	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, Svr::GameInstancePlayer* pGameInsPlayer)-> bool
 	{
@@ -75,14 +75,14 @@ inline HRESULT GameInstanceEntity::ForeachPlayerSvrGameInstance(Func func)
 		Policy::ISvrPolicyGameInstance *pPolicy = pGamePlayer->GetPolicy<Policy::ISvrPolicyGameInstance>();
 		if (pPolicy)
 		{
-			HRESULT hrRes = func(pGamePlayer, pPolicy);
-			if (FAILED(hrRes))
+			Result hrRes = func(pGamePlayer, pPolicy);
+			if (!(hrRes))
 				return false;
 		}
 
 		return true;
 	});
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 

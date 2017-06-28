@@ -29,9 +29,9 @@ namespace Svr {
 
 	PerformanceCounterClient *PerformanceCounterClient::stm_pInstance = nullptr;
 
-	HRESULT PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
+	Result PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (pMsg->GetMessageHeader()->msgID.GetMsgID() == Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.GetMsgID())
 		{
@@ -89,11 +89,11 @@ namespace Svr {
 			memset(&info, 0, sizeof info);
 			StrUtil::StringCpy(info.CounterName, counter->GetCounterName());
 			info.DateType = (UINT)counter->GetDataType();
-			if (FAILED(counterInfos.push_back(info)))
+			if (!(counterInfos.push_back(info)))
 				break;
 		}
 
-		if (FAILED(Message::Monitoring::PerformanceCounterNewC2SEvt::BuildIMsg(pMsg, 
+		if (!(Message::Monitoring::PerformanceCounterNewC2SEvt::BuildIMsg(pMsg, 
 			newInstance->GetInstanceName(), newInstance->GetInstanceEntityUID(), counterInfos)))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
@@ -107,12 +107,12 @@ namespace Svr {
 	void PerformanceCounterClient::UpdateNewInstance(ULONG newCount)
 	{
 		SharedPointerT<PerformanceCounterInstance> newInstance;
-		for (UINT iItem = 0; iItem < newCount && SUCCEEDED(m_NewInstanceQueue.Dequeue(newInstance)); iItem++)
+		for (UINT iItem = 0; iItem < newCount && (m_NewInstanceQueue.Dequeue(newInstance)); iItem++)
 		{
 			if (newInstance == nullptr)
 				continue;
 
-			if (FAILED(m_CounterInstanceMap.Insert(newInstance->GetInstanceEntityUID().UID, newInstance)))
+			if (!(m_CounterInstanceMap.Insert(newInstance->GetInstanceEntityUID().UID, newInstance)))
 			{
 				svrTrace(Trace::TRC_ERROR, "Failed to insert new performance counter instance");
 				continue;
@@ -136,20 +136,20 @@ namespace Svr {
 		auto freeCount = m_FreeInstanceQueue.GetEnqueCount();
 
 		StaticArray<EntityUID, 10> freeList;
-		for (UINT iItem = 0; iItem < freeCount && SUCCEEDED(m_FreeInstanceQueue.Dequeue(freeInfo)); iItem++)
+		for (UINT iItem = 0; iItem < freeCount && (m_FreeInstanceQueue.Dequeue(freeInfo)); iItem++)
 		{
 			Assert(freeInfo.pInstance);
 			if (freeInfo.pInstance == nullptr)
 				continue;
 
 			WeakPointerT<PerformanceCounterInstance> removed;
-			if (SUCCEEDED(m_CounterInstanceMap.Remove(freeInfo.UID.UID, removed)))
+			if ((m_CounterInstanceMap.Remove(freeInfo.UID.UID, removed)))
 			{
 				freeList.push_back(freeInfo.UID);
 
 				if (freeList.GetSize() >= freeList.GetAllocatedSize() && m_RawUDP != nullptr)
 				{
-					if (FAILED(Message::Monitoring::PerformanceCounterFreeC2SEvt::BuildIMsg(pMsg, freeList)))
+					if (!(Message::Monitoring::PerformanceCounterFreeC2SEvt::BuildIMsg(pMsg, freeList)))
 					{
 						svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
 					}
@@ -168,7 +168,7 @@ namespace Svr {
 
 		if (freeList.GetSize() > 0)
 		{
-			if (FAILED(Message::Monitoring::PerformanceCounterFreeC2SEvt::BuildIMsg(pMsg, freeList)))
+			if (!(Message::Monitoring::PerformanceCounterFreeC2SEvt::BuildIMsg(pMsg, freeList)))
 			{
 				svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
 			}
@@ -207,17 +207,17 @@ namespace Svr {
 			for (UINT iCounter = 0; iCounter < counters.GetSize(); iCounter++)
 			{
 				UINT64 value = 0;
-				if (FAILED(counters[iCounter]->CopyTo((UINT)sizeof(value), (BYTE*)&value)))
+				if (!(counters[iCounter]->CopyTo((UINT)sizeof(value), (BYTE*)&value)))
 				{
 					Assert(false);
 					break;
 				}
 
-				if (FAILED(counterValues.push_back(value)))
+				if (!(counterValues.push_back(value)))
 					break;
 			}
 
-			if (FAILED(Message::Monitoring::PerformanceCounterUpdateC2SEvt::BuildIMsg(pMsg, 
+			if (!(Message::Monitoring::PerformanceCounterUpdateC2SEvt::BuildIMsg(pMsg, 
 				pInstance->GetInstanceEntityUID(), counterValues)))
 			{
 				svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
@@ -251,9 +251,9 @@ namespace Svr {
 		}
 	}
 
-	HRESULT PerformanceCounterClient::Initialize(UINT serverID, const NetAddress& serverAddress)
+	Result PerformanceCounterClient::Initialize(UINT serverID, const NetAddress& serverAddress)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddress;
 		auto pRawUDP = new Net::RawUDP();
 		svrChkPtr(pRawUDP);
@@ -283,23 +283,23 @@ namespace Svr {
 			Util::SafeDelete(pRawUDP);
 		}
 
-		if (FAILED(hr))
+		if (!(hr))
 			Terminate();
 
 		return hr;
 	}
 
-	HRESULT PerformanceCounterClient::Terminate()
+	Result PerformanceCounterClient::Terminate()
 	{
 		if (stm_pInstance == nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		stm_pInstance->Stop(true);
 
 		delete stm_pInstance;
 		stm_pInstance = nullptr;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	PerformanceCounterInstance* PerformanceCounterClient::GetDefaultCounterInstance()
@@ -323,10 +323,10 @@ namespace Svr {
 	}
 
 	// 
-	HRESULT PerformanceCounterClient::RegisterPerformanceCounterInstance(PerformanceCounterInstance *pInstance)
+	Result PerformanceCounterClient::RegisterPerformanceCounterInstance(PerformanceCounterInstance *pInstance)
 	{
 		if (stm_pInstance == nullptr)
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 		// This will gurantee that Dispose will be called in the same thread
 		pInstance->AssignManager(stm_pInstance);
@@ -346,16 +346,16 @@ namespace Svr {
 	}
 
 
-	HRESULT PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt messageClass(pMsg);
 		WeakPointerT<PerformanceCounterInstance> pFound;
 		SharedPointerT<PerformanceCounterInstance> pInstance;
 
 		svrChk(messageClass.ParseMsg());
 
-		if (FAILED(m_CounterInstanceMap.Find(messageClass.GetInstanceUID().UID, pFound)))
+		if (!(m_CounterInstanceMap.Find(messageClass.GetInstanceUID().UID, pFound)))
 		{
 			svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, {1}, counter already deleted1", remoteAddr, messageClass.GetInstanceUID());
 			return hr;

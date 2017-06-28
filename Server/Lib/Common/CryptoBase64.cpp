@@ -28,19 +28,19 @@ namespace Util {
 													"abcdefghijklmnopqrstuvwxyz"
 													"0123456789-_";
 
-	static inline HRESULT Base64_DecodeChar(BYTE in, BYTE& out, const char* encoding_chars)
+	static inline Result Base64_DecodeChar(BYTE in, BYTE& out, const char* encoding_chars)
 	{
 		if ('A' <= in && in <= 'Z')
 		{
-			out = in - 'A';
+			out = (BYTE)(in - 'A');
 		}
 		else if ('a' <= in && in <= 'z')
 		{
-			out = in - 'a' + 26;
+			out = (BYTE)(in - 'a' + 26);
 		}
 		else if ('0' <= in && in <= '9')
 		{
-			out = in - '0' + 26 * 2;
+			out = (BYTE)(in - '0' + 26 * 2);
 		}
 		else
 		{
@@ -49,17 +49,17 @@ namespace Util {
 			else if (encoding_chars[26 * 2 + 10 + 1] == in)
 				out = 26 * 2 + 10 + 1;
 			else
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Base 64 encode/decode
-	static HRESULT Base64Encode_(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
+	static Result Base64Encode_(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		int i = 0;
 		int j = 0;
 		unsigned char char_array_3[3];
@@ -71,8 +71,8 @@ namespace Util {
 			if (i == 3)
 			{
 				char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-				char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-				char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+				char_array_4[1] = (unsigned char)( ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4) );
+				char_array_4[2] = (unsigned char)(((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6) );
 				char_array_4[3] = char_array_3[2] & 0x3f;
 
 				for (i = 0; (i < 4); i++)
@@ -90,8 +90,8 @@ namespace Util {
 				char_array_3[j] = '\0';
 
 			char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-			char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-			char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+			char_array_4[1] = (unsigned char)(((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4) );
+			char_array_4[2] = (unsigned char)(((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6) );
 			char_array_4[3] = char_array_3[2] & 0x3f;
 
 			for (j = 0; (j < i + 1); j++)
@@ -114,9 +114,9 @@ namespace Util {
 	}
 
 
-	static HRESULT Base64Decode_(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
+	static Result Base64Decode_(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar, const char* encodeChars)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		int in_len = (int)srcSize;
 		int i = 0;
 		int j = 0;
@@ -130,9 +130,9 @@ namespace Util {
 			in_++;
 			if (i == 4)
 			{
-				char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-				char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-				char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+				char_array_3[0] = (unsigned char)( (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4) );
+				char_array_3[1] = (unsigned char)( ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2) );
+				char_array_3[2] = (unsigned char)( ((char_array_4[2] & 0x3) << 6) + char_array_4[3] );
 
 				for (i = 0; (i < 3); i++)
 				{
@@ -147,9 +147,9 @@ namespace Util {
 			for (j = i; j <4; j++)
 				char_array_4[j] = 0;
 
-			char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-			char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-			char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+			char_array_3[0] = (unsigned char)( (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4) );
+			char_array_3[1] = (unsigned char)( ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2) );
+			char_array_3[2] = (unsigned char)( ((char_array_4[2] & 0x3) << 6) + char_array_4[3] );
 
 			for (j = 0; (j < i - 1); j++)
 			{
@@ -163,23 +163,23 @@ namespace Util {
 	}
 
 
-	HRESULT Base64Encode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar)
+	Result Base64Encode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar)
 	{
 		return Base64Encode_(srcSize, bytes_to_encode, destBuffer, dummyChar, g_Crypto_Base64_chars);
 	}
 
-	HRESULT Base64Decode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar)
+	Result Base64Decode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar)
 	{
 		return Base64Decode_(srcSize, bytes_to_decode, destBuffer, dummyChar, g_Crypto_Base64_chars);
 	}
 
 
-	HRESULT Base64URLEncode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar)
+	Result Base64URLEncode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar)
 	{
 		return Base64Encode_(srcSize, bytes_to_encode, destBuffer, dummyChar, g_Crypto_Base64URL_chars);
 	}
 
-	HRESULT Base64URLDecode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar)
+	Result Base64URLDecode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar)
 	{
 		return Base64Decode_(srcSize, bytes_to_decode, destBuffer, dummyChar, g_Crypto_Base64URL_chars);
 	}

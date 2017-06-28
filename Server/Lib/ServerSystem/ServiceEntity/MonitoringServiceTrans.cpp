@@ -44,9 +44,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT MonitoringTransGetInstanceList::StartTransaction()
+	Result MonitoringTransGetInstanceList::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		StaticArray<SharedPointerT<PerformanceCounterInstance>, 1024> instanceList;
 		m_TotalCounterInstance = 0;
 
@@ -65,7 +65,7 @@ namespace Svr {
 			PerformanceCounterInstanceInfo info;
 			StrUtil::StringCpy(info.InstanceName, pInstance->GetInstanceName());
 			info.InstanceUID = pInstance->GetInstanceEntityUID();
-			if (FAILED(m_InstanceList.push_back(info)))
+			if (!(m_InstanceList.push_back(info)))
 				break;
 		}
 
@@ -79,9 +79,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT MonitoringTransRequestCounterValues::StartTransaction()
+	Result MonitoringTransRequestCounterValues::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		UINT bufferSize = (UINT)m_CounterValues.GetAllocatedSize();
 		svrChk(super::StartTransaction());
 

@@ -27,7 +27,7 @@ using namespace BR;
 
 BRSERVERINTERFACE_API int InitializeNativeSystem(const char* serviceName, const char* modulePath, const char* logCfgPath, const char*configPath)
 {
-	HRESULT hr = S_OK;
+	Result hr = S_OK;
 
 	//ParameterSetting::SetSetting("config", "..\\..\\Config\\ServerConfig.xml");
 	//ParameterSetting::ProcessParameter(lpCmdLine);
@@ -57,7 +57,7 @@ Proc_End:
 
 BRSERVERINTERFACE_API int TerminateNativeSystem(void)
 {
-	HRESULT hr = S_OK;
+	Result hr = S_OK;
 
 	svrTrace(Trace::TRC_TRACE, "Native system terminated {0}", Util::GetServiceNameA());
 

@@ -38,7 +38,7 @@ namespace Net {
 		: ServerNet( InServerID, localClass )
 		, INetIOCallBack(GetSocket())
 		, m_ConnectionManager(Net::Const::SVR_PRIVATE_CONNECTION_BUCKET_SIZE)
-		, m_CIDGen(0)
+		//, m_CIDGen(0)
 		, m_pRecvBuffers(nullptr)
 		, m_PendingRecvCnt(0)
 	{
@@ -59,7 +59,7 @@ namespace Net {
 
 	
 	// Close all connection
-	HRESULT ServerPeer::CloseAllConnection()
+	Result ServerPeer::CloseAllConnection()
 	{
 		return m_ConnectionManager.PendingCloseAllConnection();
 	}
@@ -73,9 +73,9 @@ namespace Net {
 
 
 	// called when reciving message
-	HRESULT ServerPeer::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
+	Result ServerPeer::OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Connection> pConnection;
 
 		sockaddr_storage from;
@@ -84,13 +84,13 @@ namespace Net {
 
 
 
-		if( FAILED( hrRes ) )
+		if( !( hrRes ) )
 		{
-			switch( hrRes )
+			switch((uint32_t)hrRes )
 			{
-			case E_NET_CONNECTION_CLOSED:
-			case E_NET_IO_ABORTED:
-				if (SUCCEEDED(m_ConnectionManager.GetConnectionByAddr(from, pConnection)))
+			case ResultCode::E_NET_CONNECTION_CLOSED:
+			case ResultCode::E_NET_IO_ABORTED:
+				if ((m_ConnectionManager.GetConnectionByAddr(from, pConnection)))
 				{
 					// Release connection table
 					if (pConnection->GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -113,7 +113,7 @@ namespace Net {
 		m_PendingRecvCnt.fetch_sub(1, std::memory_order_relaxed);
 
 
-		if (FAILED(m_ConnectionManager.GetConnectionByAddr(from, pConnection))) // not mapped yet. We need to make a new connection
+		if (!(m_ConnectionManager.GetConnectionByAddr(from, pConnection))) // not mapped yet. We need to make a new connection
 		{
 			// check control packet
 			MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pIOBuffer->buffer;
@@ -128,7 +128,7 @@ namespace Net {
 			else
 			{
 				netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet From {0}", from);
-				netErr( E_SYSTEM_UNEXPECTED );
+				netErr( ResultCode::UNEXPECTED );
 			}
 
 		}
@@ -149,7 +149,7 @@ namespace Net {
 					else
 					{
 						netTrace( Trace::TRC_WARN, "Unexpected packet From {0}", from);
-						netErr( E_SYSTEM_UNEXPECTED );
+						netErr( ResultCode::UNEXPECTED );
 					}
 				}
 				else
@@ -169,7 +169,7 @@ namespace Net {
 		{
 			pIOBuffer->SetPendingFalse();
 
-			if (hrRes != E_NET_IO_ABORTED)
+			if (hrRes != Result(ResultCode::E_NET_IO_ABORTED))
 			{
 				PendingRecv(pIOBuffer);
 			}
@@ -188,18 +188,18 @@ namespace Net {
 	}
 
 
-	HRESULT ServerPeer::OnSendReady()
+	Result ServerPeer::OnSendReady()
 	{
 		return ProcessSendQueue();
 	}
 
 	// called when send completed
-	HRESULT ServerPeer::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer )
+	Result ServerPeer::OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer )
 	{
 		NetSystem::FreeGatheringBuffer( pIOBuffer->pSendBuff );
 		Util::SafeRelease( pIOBuffer->pMsgs );
 		NetSystem::FreeBuffer( pIOBuffer );
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -216,7 +216,7 @@ namespace Net {
 	}
 
 	// Get connection from connection ID
-	HRESULT ServerPeer::GetConnection(UINT uiCID, SharedPointerT<Connection> &pIConnection)
+	Result ServerPeer::GetConnection(UINT uiCID, SharedPointerT<Connection> &pIConnection)
 	{
 		return m_ConnectionManager.GetConnectionByCID(uiCID, pIConnection);
 	}
@@ -224,9 +224,9 @@ namespace Net {
 
 
 	//// Send message to connection with network device
-	//HRESULT ServerPeer::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
+	//Result ServerPeer::SendMsg( IConnection *pConnection, Message::MessageData *pMsg )
 	//{
-	//	HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+	//	Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 
 	//	Message::MessageID msgID = pMsg->GetMessageHeader()->msgID;
 	//	UINT uiMsgLen = pMsg->GetMessageHeader()->Length;
@@ -241,31 +241,31 @@ namespace Net {
 	//	hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 	//	switch (hrErr)
 	//	{
-	//	case S_SYSTEM_OK:
-	//	case E_NET_IO_PENDING:
-	//	case E_NET_TRY_AGAIN:
-	//	case E_NET_WOULDBLOCK:
+	//	case ResultCode::SUCCESS:
+	//	case ResultCode::E_NET_IO_PENDING:
+	//	case ResultCode::E_NET_TRY_AGAIN:
+	//	case ResultCode::E_NET_WOULDBLOCK:
 	//		break;
-	//	case E_NET_CONNABORTED:
-	//	case E_NET_CONNRESET:
-	//	case E_NET_NETRESET:
-	//	case E_NET_NOTCONN:
-	//	case E_NET_NOTSOCK:
-	//	case E_NET_SHUTDOWN:
+	//	case ResultCode::E_NET_CONNABORTED:
+	//	case ResultCode::E_NET_CONNRESET:
+	//	case ResultCode::E_NET_NETRESET:
+	//	case ResultCode::E_NET_NOTCONN:
+	//	case ResultCode::E_NET_NOTSOCK:
+	//	case ResultCode::E_NET_SHUTDOWN:
 	//		// Send fail by connection close
 	//		// Need to disconnect
 	//		pUDPCon->Disconnect();
-	//		hr = E_NET_CONNECTION_CLOSED;
+	//		hr = ResultCode::E_NET_CONNECTION_CLOSED;
 	//		goto Proc_End;
 	//		break;
 	//	default:
-	//		netErr(E_NET_IO_SEND_FAIL);
+	//		netErr(ResultCode::E_NET_IO_SEND_FAIL);
 	//		break;
 	//	};
 
 	//Proc_End:
 
-	//	if( FAILED(hr) )
+	//	if( !(hr) )
 	//	{
 	//		if( pOverlapped )
 	//		{
@@ -277,12 +277,12 @@ namespace Net {
 	//			Util::SafeRelease( pMsg );
 	//		}
 
-	//		if( hr != E_NET_IO_SEND_FAIL )
+	//		if( hr != ResultCode::E_NET_IO_SEND_FAIL )
 	//		{
 	//			netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, hrErr, hr );
 	//		}
 	//		else
-	//			return S_SYSTEM_OK;
+	//			return ResultCode::SUCCESS;
 	//	}
 	//	else
 	//	{
@@ -300,14 +300,14 @@ namespace Net {
 	//}
 
 	//// Send message to connection with network device to dst addr
-	//HRESULT ServerPeer::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg )
+	//Result ServerPeer::SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg )
 	//{
-	//	return E_SYSTEM_NOTIMPL;
+	//	return ResultCode::NOT_IMPLEMENTED;
 	//}
 
-	//HRESULT ServerPeer::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
+	//Result ServerPeer::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
 	//{
-	//	HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+	//	Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 
 	//	ConnectionUDP *pUDPCon = (ConnectionUDP*)pConnection;
 
@@ -320,31 +320,31 @@ namespace Net {
 	//	hrErr = NetSystem::SendTo(pUDPCon->GetSocket(), pOverlapped);
 	//	switch (hrErr)
 	//	{
-	//	case S_SYSTEM_OK:
-	//	case E_NET_IO_PENDING:
-	//	case E_NET_TRY_AGAIN:
-	//	case E_NET_WOULDBLOCK:
+	//	case ResultCode::SUCCESS:
+	//	case ResultCode::E_NET_IO_PENDING:
+	//	case ResultCode::E_NET_TRY_AGAIN:
+	//	case ResultCode::E_NET_WOULDBLOCK:
 	//		break;
-	//	case E_NET_CONNABORTED:
-	//	case E_NET_CONNRESET:
-	//	case E_NET_NETRESET:
-	//	case E_NET_NOTCONN:
-	//	case E_NET_NOTSOCK:
-	//	case E_NET_SHUTDOWN:
+	//	case ResultCode::E_NET_CONNABORTED:
+	//	case ResultCode::E_NET_CONNRESET:
+	//	case ResultCode::E_NET_NETRESET:
+	//	case ResultCode::E_NET_NOTCONN:
+	//	case ResultCode::E_NET_NOTSOCK:
+	//	case ResultCode::E_NET_SHUTDOWN:
 	//		// Send fail by connection close
 	//		// Need to disconnect
 	//		pUDPCon->Disconnect();
-	//		hr = E_NET_CONNECTION_CLOSED;
+	//		hr = ResultCode::E_NET_CONNECTION_CLOSED;
 	//		goto Proc_End;
 	//		break;
 	//	default:
-	//		netErr(E_NET_IO_SEND_FAIL);
+	//		netErr(ResultCode::E_NET_IO_SEND_FAIL);
 	//		break;
 	//	};
 
 	//Proc_End:
 
-	//	if( FAILED(hr) )
+	//	if( !(hr) )
 	//	{
 	//		Util::SafeDelete( pBuff );
 	//		if( pOverlapped )
@@ -353,12 +353,12 @@ namespace Net {
 	//			Net::NetSystem::FreeBuffer(pOverlapped);
 	//		}
 
-	//		if( hr != E_NET_IO_SEND_FAIL )
+	//		if( hr != ResultCode::E_NET_IO_SEND_FAIL )
 	//		{
 	//			netTrace( Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", pUDPCon->GetConnectionInfo().Remote, hrErr, hr );
 	//		}
 	//		else
-	//			return S_SYSTEM_OK;
+	//			return ResultCode::SUCCESS;
 	//	}
 	//	else
 	//	{
@@ -369,13 +369,13 @@ namespace Net {
 	//}
 
 	// Pending recv New one
-	HRESULT ServerPeer::PendingRecv( IOBUFFER_READ *pOver )
+	Result ServerPeer::PendingRecv( IOBUFFER_READ *pOver )
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 		//int iErr = 0;//, iSockLen = sizeof(sockaddr_in6);
 
 		if (!NetSystem::IsProactorSystem())
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		netChk(pOver->SetPendingTrue());
 		pOver->SetupRecvUDP(0);
@@ -388,23 +388,23 @@ namespace Net {
 		while (1)
 		{
 			hrErr = NetSystem::RecvFrom(GetSocket(), pOver);
-			switch (hrErr)
+			switch ((uint32_t)hrErr)
 			{
-			case S_SYSTEM_FALSE:
-				hr = E_NET_TRY_AGAIN;
+			case ResultCode::SUCCESS_FALSE:
+				hr = ResultCode::E_NET_TRY_AGAIN;
 				goto Proc_End;// success
 				break;
-			case S_SYSTEM_OK:
-			case E_NET_IO_PENDING:
-			case E_NET_TRY_AGAIN:
-			case E_NET_WOULDBLOCK:
+			case ResultCode::SUCCESS:
+			case ResultCode::E_NET_IO_PENDING:
+			case ResultCode::E_NET_TRY_AGAIN:
+			case ResultCode::E_NET_WOULDBLOCK:
 				hr = hrErr;
 				goto Proc_End;// success
 				break;
-			case E_NET_NETUNREACH:
-			case E_NET_CONNABORTED:
-			case E_NET_CONNRESET:
-			case E_NET_NETRESET:
+			case ResultCode::E_NET_NETUNREACH:
+			case ResultCode::E_NET_CONNABORTED:
+			case ResultCode::E_NET_CONNRESET:
+			case ResultCode::E_NET_NETRESET:
 				// some remove has problem with continue connection
 				netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pOver->NetAddr.From);
 				//break;
@@ -425,9 +425,9 @@ namespace Net {
 
 
 	// Open host and start listen
-	HRESULT ServerPeer::ServerHostOpen(NetClass netCls, const char *strLocalIP, USHORT usLocalPort)
+	Result ServerPeer::ServerHostOpen(NetClass netCls, const char *strLocalIP, USHORT usLocalPort)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddr;
 
 		netChk(NetSystem::OpenSystem(Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX));
@@ -446,9 +446,9 @@ namespace Net {
 
 
 	// Open host and start listen
-	HRESULT ServerPeer::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
+	Result ServerPeer::HostOpen( NetClass netCls, const char *strLocalIP, USHORT usLocalPort )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SOCKET socket = INVALID_SOCKET;
 		INT iOptValue;
 		sockaddr_storage bindAddr;
@@ -456,7 +456,7 @@ namespace Net {
 
 
 		if( GetSocket() != INVALID_SOCKET )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		netTrace(Trace::TRC_TRACE, "Opening Server Peer, {0}:{1}", strLocalIP, usLocalPort);
 
@@ -467,37 +467,37 @@ namespace Net {
 		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::DataGram);
 		if( socket == INVALID_SOCKET )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAHRESULT());
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to Open Server Socket {0:X8}", GetLastWSAResult());
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 		iOptValue = Const::CLI_RECV_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_RCVBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 		iOptValue = Const::CLI_SEND_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_SNDBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option SO_SNDBUF = {0}, err = {1:X8}", iOptValue, GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 		iOptValue = FALSE;
 		if (setsockopt(socket, IPPROTO_IPV6, IPV6_V6ONLY, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAHRESULT());
-			netErr(E_SYSTEM_UNEXPECTED);
+			netTrace(Trace::TRC_ERROR, "Failed to change socket option IPV6_V6ONLY = {0}, err = {1:X8}", iOptValue, GetLastWSAResult());
+			netErr(ResultCode::UNEXPECTED);
 		}
 
 
 		GetAnyBindAddr(GetSocketAddr(), bindAddr);
 		if (bind(socket, (sockaddr*)&bindAddr, GetSocketAddrSize()) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAHRESULT() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netTrace(Trace::TRC_ERROR, "Socket bind failed, UDP err={0:X8}", GetLastWSAResult() );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 		SetSocket( socket );
@@ -528,7 +528,7 @@ namespace Net {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			HostClose();
 
 		netTrace( TRC_NET, "HostOpen {0}, hr={1:X8}", GetLocalAddress(), hr );
@@ -537,9 +537,9 @@ namespace Net {
 	}
 
 	// Close host and close all connections
-	HRESULT ServerPeer::HostClose()
+	Result ServerPeer::HostClose()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		INet::Event myEvent(INet::Event::EVT_NET_CLOSED);
 
 		m_ConnectionManager.Stop( true );
@@ -566,9 +566,9 @@ namespace Net {
 
 
 	// Connect to other peer
-	HRESULT ServerPeer::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
+	Result ServerPeer::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Net::IConnection::ConnectionInformation connectionInfo;
 		ConnectionUDPServerPeer *pConn = nullptr;
 		uintptr_t CID = 0;
@@ -605,7 +605,7 @@ namespace Net {
 
 		if( pConn ) delete pConn;
 
-		if( SUCCEEDED(hr) )
+		if( (hr) )
 		{
 			netTrace(TRC_NET, "ServerPeer Allowing Server:{2}:{3}, {0}, CID:{1}", destAddress, CID, netClass, serverID);
 		}

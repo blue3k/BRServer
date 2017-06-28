@@ -28,11 +28,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 #if _WIN32_WINNT >= 0x0400 & defined(_ATL_FREE_THREADED)
-	HRESULT hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	Result hRes = CoInitializeEx(NULL, COINIT_MULTITHREADED);
 #else
-	HRESULT hRes = CoInitialize(NULL);
+	Result hRes = CoInitialize(NULL);
 #endif
-	_ASSERTE(SUCCEEDED(hRes));
+	_ASSERTE((hRes));
 
 	ParameterSetting::SetSetting("config", "..\\..\\Config\\ServerConfig.xml");
 	ParameterSetting::ProcessParameter(lpCmdLine);
@@ -46,7 +46,7 @@ int main(int numArg, const char* argc[])
 
 
 
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	SharedPointerT<BR::GameServer::GameServer> pServerInstance;
 
 	svrChk(BR::Svr::Service::ServicePrepare());

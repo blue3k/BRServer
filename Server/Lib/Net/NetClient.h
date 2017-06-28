@@ -39,7 +39,7 @@ namespace Net {
 		ClientConnectionManagerT() : ConnectionManagerT<ConnectionType>(5) {}
 
 		// Release all connection and terminate manager
-		virtual HRESULT TerminateManager();
+		virtual Result TerminateManager();
 	};
 	
 
@@ -63,7 +63,7 @@ namespace Net {
 	protected:
 
 		// Add network event to queue
-		inline HRESULT EnqueueNetEvent( INet::Event& evt );
+		inline Result EnqueueNetEvent( INet::Event& evt ) override;
 
 		virtual ConnectionManager& GetConnectionManager() = 0;
 
@@ -72,25 +72,25 @@ namespace Net {
 		virtual ~Client();
 
 		// Get connection by connection ID
-		virtual HRESULT GetConnection(uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection) override;
+		virtual Result GetConnection(uintptr_t uiCID, SharedPointerT<IConnection> &pIConnection) override;
 
 		// Query Network event
-		virtual HRESULT DequeueNetEvent( Event& curEvent );
+		virtual Result DequeueNetEvent( Event& curEvent ) override;
 
 
 		// Called when connection result 
-		virtual void OnConnectionResult( Connection *pConnection, HRESULT hrConnect );
+		virtual void OnConnectionResult( Connection *pConnection, Result hrConnect );
 
-		virtual HRESULT ConnectCli(const NetAddress& destAddress, IConnection* &pNewConnection) override;
+		virtual Result ConnectCli(const NetAddress& destAddress, IConnection* &pNewConnection) override;
 
 		// take over connection management
-		virtual HRESULT TakeOverConnection(IConnection* pIConnection) override;
+		virtual Result TakeOverConnection(IConnection* pIConnection) override;
 
 		// Release Connection
-		virtual HRESULT ReleaseConnection(IConnection* pIConnection) override;
+		virtual Result ReleaseConnection(IConnection* pIConnection) override;
 
 		// Release instance
-		virtual void Release();
+		virtual void Release() override;
 	};
 
 
@@ -112,16 +112,16 @@ namespace Net {
 		virtual ~ClientTCP();
 
 		// Get connection manager
-		inline ConnectionManager& GetConnectionManager();
+		inline ConnectionManager& GetConnectionManager() override;
 
 		// check about initialize
-		virtual bool IsReady();
+		virtual bool IsReady() override;
 
 		// Connect to server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
+		virtual Result Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
 
 		// Called when connection state changed
-		HRESULT OnConnectionStateChange( IConnection *pConnection );
+		Result OnConnectionStateChange( IConnection *pConnection );
 	};
 
 
@@ -141,13 +141,13 @@ namespace Net {
 		virtual ~ClientUDP();
 		
 		// Get connection manager
-		inline ConnectionManager& GetConnectionManager();
+		inline ConnectionManager& GetConnectionManager() override;
 
 		// check about initialize
-		virtual bool IsReady();
+		virtual bool IsReady() override;
 
 		// Connect to server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
+		virtual Result Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
 
 	};
 
@@ -169,13 +169,13 @@ namespace Net {
 		virtual ~ClientMUDP();
 
 		// Get connection manager
-		ConnectionManager& GetConnectionManager() { return m_ConnectionManager; }
+		ConnectionManager& GetConnectionManager() override { return m_ConnectionManager; }
 
 		// check about initialize
 		virtual bool IsReady() override;
 
 		// Connect to server
-		virtual HRESULT Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
+		virtual Result Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
 
 	};
 

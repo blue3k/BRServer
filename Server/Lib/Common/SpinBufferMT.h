@@ -87,6 +87,8 @@ namespace BR
 
 		// writing complet and get ready for reading
 		CounterType GetReadableCount();
+
+		void WaitPendingWork();
 	};
 
 	#include "SpinBufferMT.inl"

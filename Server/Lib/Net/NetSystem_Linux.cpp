@@ -20,11 +20,11 @@
 #include "Common/MemoryPool.h"
 #include "Net/NetSystem.h"
 #include "Net/NetSystem_impl.h"
-#include "Net/NetSystem_Linux.h"
 #include "Net/NetTrace.h"
 
 
 #if LINUX
+
 
 #include "Net/NetSystem_EPOLL.h"
 #include "Net/NetSystem_KQUEUE.h"
@@ -38,65 +38,65 @@ BR_MEMORYPOOL_IMPLEMENT(Net::IOBUFFER_ACCEPT);
 namespace BR {
 namespace Net {
 
-	HRESULT GetLastWSAHRESULT()
+	Result GetLastWSAResult()
 	{
 		int ierr = errno;
 		switch (ierr)
 		{
-		case 0: return S_SYSTEM_OK;
-		case EINTR: return E_NET_INTR;
-		case EBADF: return E_NET_BADF;
-		case EACCES: return E_NET_ACCES;
-		case EFAULT: return E_NET_FAULT;
-		case EINVAL: return E_NET_INVAL;
-		case EMFILE: return E_NET_MFILE;
-		case EWOULDBLOCK: return E_NET_TRY_AGAIN; // Linux epoll
+		case 0: return ResultCode::SUCCESS;
+		case EINTR: return ResultCode::E_NET_INTR;
+		case EBADF: return ResultCode::E_NET_BADF;
+		case EACCES: return ResultCode::E_NET_ACCES;
+		case EFAULT: return ResultCode::E_NET_FAULT;
+		case EINVAL: return ResultCode::E_NET_INVAL;
+		case EMFILE: return ResultCode::E_NET_MFILE;
+		case EWOULDBLOCK: return ResultCode::E_NET_TRY_AGAIN; // Linux epoll
 #if EWOULDBLOCK != EAGAIN
-		case EAGAIN: return E_NET_TRY_AGAIN;
+		case EAGAIN: return ResultCode::E_NET_TRY_AGAIN;
 #endif
-		case EINPROGRESS: return E_NET_INPROGRESS;
-		case EALREADY: return E_NET_ALREADY;
-		case ENOTSOCK: return E_NET_FAULT;
-		case EDESTADDRREQ: return E_NET_DESTADDRREQ;
-		case ENETDOWN: return E_NET_NETDOWN;
-		case ENETUNREACH: return E_NET_NETUNREACH;
-		case ENETRESET: return E_NET_NETRESET;
-		case ECONNABORTED: return E_NET_CONNABORTED;
-		case ECONNRESET: return E_NET_CONNRESET;
-		case ENOBUFS: return E_NET_NOBUFS;
-		case EISCONN: return E_NET_ISCONN;
-		case ENOTCONN: return E_NET_NOTCONN;
-		case ESHUTDOWN: return E_NET_SHUTDOWN;
-		case EPIPE: return E_NET_SHUTDOWN;
-		case ETOOMANYREFS: return E_NET_TOOMANYREFS;
-		case ETIMEDOUT: return E_NET_TIMEDOUT;
-		case ECONNREFUSED: return E_NET_CONNECTION_REFUSSED;
-		case ELOOP: return E_NET_LOOP;
-		case ENAMETOOLONG: return E_NET_NAMETOOLONG;
+		case EINPROGRESS: return ResultCode::E_NET_INPROGRESS;
+		case EALREADY: return ResultCode::E_NET_ALREADY;
+		case ENOTSOCK: return ResultCode::E_NET_FAULT;
+		case EDESTADDRREQ: return ResultCode::E_NET_DESTADDRREQ;
+		case ENETDOWN: return ResultCode::E_NET_NETDOWN;
+		case ENETUNREACH: return ResultCode::E_NET_NETUNREACH;
+		case ENETRESET: return ResultCode::E_NET_NETRESET;
+		case ECONNABORTED: return ResultCode::E_NET_CONNABORTED;
+		case ECONNRESET: return ResultCode::E_NET_CONNRESET;
+		case ENOBUFS: return ResultCode::E_NET_NOBUFS;
+		case EISCONN: return ResultCode::E_NET_ISCONN;
+		case ENOTCONN: return ResultCode::E_NET_NOTCONN;
+		case ESHUTDOWN: return ResultCode::E_NET_SHUTDOWN;
+		case EPIPE: return ResultCode::E_NET_SHUTDOWN;
+		case ETOOMANYREFS: return ResultCode::E_NET_TOOMANYREFS;
+		case ETIMEDOUT: return ResultCode::E_NET_TIMEDOUT;
+		case ECONNREFUSED: return ResultCode::E_NET_CONNECTION_REFUSSED;
+		case ELOOP: return ResultCode::E_NET_LOOP;
+		case ENAMETOOLONG: return ResultCode::E_NET_NAMETOOLONG;
 
-		case EHOSTDOWN: return E_NET_HOSTDOWN;
-		case EHOSTUNREACH: return E_NET_HOSTUNREACH;
-		case ENOTEMPTY: return E_NET_NOTEMPTY;
-		case EPROTO: return E_NET_PROTO;
-		case EPROTOTYPE: return E_NET_PROTOTYPE;
-		case ENOPROTOOPT: return E_NET_NOPROTOOPT;
-		case ENONET: return E_NET_NONET;
-		case EOPNOTSUPP: return E_NET_OPNOTSUPP;
-		case EADDRINUSE: return E_NET_ADDRINUSE;
-			//case EPROCLIM: return E_NET_PROCLIM;
-			//case SYSNOTREADY: return E_NET_SYSNOTREADY;
-			//case VERNOTSUPPORTED: return E_NET_VERNOTSUPPORTED;
-			//case NOTINITIALISED: return E_NET_NOTINITIALISED;
-			//case EDISCON: return E_NET_DISCON;
-			//case SYSCALLFAILURE: return E_NET_SYSCALLFAILURE;
-			//case HOST_NOT_FOUND: return E_NET_HOST_NOT_FOUND;
+		case EHOSTDOWN: return ResultCode::E_NET_HOSTDOWN;
+		case EHOSTUNREACH: return ResultCode::E_NET_HOSTUNREACH;
+		case ENOTEMPTY: return ResultCode::E_NET_NOTEMPTY;
+		case EPROTO: return ResultCode::E_NET_PROTO;
+		case EPROTOTYPE: return ResultCode::E_NET_PROTOTYPE;
+		case ENOPROTOOPT: return ResultCode::E_NET_NOPROTOOPT;
+		case ENONET: return ResultCode::E_NET_NONET;
+		case EOPNOTSUPP: return ResultCode::E_NET_OPNOTSUPP;
+		case EADDRINUSE: return ResultCode::E_NET_ADDRINUSE;
+			//case EPROCLIM: return ResultCode::E_NET_PROCLIM;
+			//case SYSNOTREADY: return ResultCode::E_NET_SYSNOTREADY;
+			//case VERNOTSUPPORTED: return ResultCode::E_NET_VERNOTSUPPORTED;
+			//case NOTINITIALISED: return ResultCode::E_NET_NOTINITIALISED;
+			//case EDISCON: return ResultCode::E_NET_DISCON;
+			//case SYSCALLFAILURE: return ResultCode::E_NET_SYSCALLFAILURE;
+			//case HOST_NOT_FOUND: return ResultCode::E_NET_HOST_NOT_FOUND;
 
-			//case TRY_AGAIN: return E_NET_TRY_AGAIN;
-			//case _SECURE_HOST_NOT_FOUND: return E_NET_SECURE_HOST_NOT_FOUND;
-			//case WSA_IO_PENDING: return E_NET_IO_PENDING;
+			//case TRY_AGAIN: return ResultCode::E_NET_TRY_AGAIN;
+			//case _SECURE_HOST_NOT_FOUND: return ResultCode::E_NET_SECURE_HOST_NOT_FOUND;
+			//case WSA_IO_PENDING: return ResultCode::E_NET_IO_PENDING;
 		default:
 			defTrace(Trace::TRC_WARN, "Unknown sock error {0}", ierr);
-			return GetLastHRESULT();
+			return GetLastResult();
 		}
 	}
 
@@ -147,34 +147,34 @@ namespace Net {
 		ClearBuffer();
 	}
 
-	HRESULT IOBUFFER_READ::SetPendingTrue()
+	Result IOBUFFER_READ::SetPendingTrue()
 	{
 		bool expected = false;
 		while (!bIsPending.compare_exchange_weak(expected, true, std::memory_order_seq_cst))
 		{
 			if (expected == true)
 			{
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 
 			expected = false;
 		}
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT IOBUFFER_READ::SetPendingFalse()
+	Result IOBUFFER_READ::SetPendingFalse()
 	{
 		bool expected = true;
 		while (!bIsPending.compare_exchange_weak(expected, false, std::memory_order_seq_cst))
 		{
 			if (expected == true)
 			{
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 
 			expected = false;
 		}
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -203,7 +203,7 @@ namespace Net {
 
 
 		// Open network system
-		HRESULT OpenSystem( UINT uiOverBufferCount, UINT numNetThread, UINT gatheringBufferSize)
+		Result OpenSystem( UINT uiOverBufferCount, UINT numNetThread, UINT gatheringBufferSize)
 		{
 			MutexScopeLock scopeLock(g_InitLock);
 
@@ -217,7 +217,7 @@ namespace Net {
 				return GetNetIOSystem().Initialize(numNetThread);
 			}
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// Close network system
@@ -248,48 +248,58 @@ namespace Net {
 		///////////////////////////////////////////////////////////////////////////////
 		// Socket handling 
 
-		HRESULT RegisterSocket(SockType sockType, INetIOCallBack* cbInstance)
+		Result RegisterSocket(SockType sockType, INetIOCallBack* cbInstance)
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			netChkPtr(cbInstance);
 			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
+
+			cbInstance->OnIORegistered(sockType);
 
 			netChk(GetNetIOSystem().MakeSocketNonBlocking(cbInstance->GetIOSocket()));
 			netChk(GetNetIOSystem().RegisterToNETIO(sockType, cbInstance));
 
+
 		Proc_End:
+
+			if (!hr && cbInstance != nullptr)
+			{
+				cbInstance->OnIOUnregistered();
+			}
 
 			return hr;
 		}
 
-		HRESULT UnregisterSocket(SockType sockType, INetIOCallBack* cbInstance)
+		Result UnregisterSocket(INetIOCallBack* cbInstance)
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			netChkPtr(cbInstance);
-			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
+			//Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
 
-			netChk(GetNetIOSystem().UnregisterFromNETIO(sockType, cbInstance));
+			netChk(GetNetIOSystem().UnregisterFromNETIO(cbInstance));
 
-		Proc_End:
-
-			return hr;
-		}
-
-		HRESULT RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
-		{
-			HRESULT hr = S_SYSTEM_OK;
-
-			netChkPtr(cbInstance);
-			Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
-
-			netChk(GetNetIOSystem().RegisterSharedSocket(sockType, cbInstance));
+			cbInstance->OnIOUnregistered();
 
 		Proc_End:
 
 			return hr;
 		}
+
+		//Result RegisterSharedSocket(SockType sockType, INetIOCallBack* cbInstance)
+		//{
+		//	Result hr = ResultCode::SUCCESS;
+
+		//	netChkPtr(cbInstance);
+		//	Assert(cbInstance->GetIOSocket() != INVALID_SOCKET);
+
+		//	netChk(GetNetIOSystem().RegisterSharedSocket(sockType, cbInstance));
+
+		//Proc_End:
+
+		//	return hr;
+		//}
 
 
 		SOCKET Socket(SockFamily domain, SockType type)
@@ -301,11 +311,12 @@ namespace Net {
 		{
 			shutdown(sock, SHUT_RDWR);
 			close(sock);
+			netTrace(Trace::TRC_TRACE, "CloseSocket sock:{0}", sock);
 		}
 
-		HRESULT Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept)
+		Result Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept)
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			socklen_t len = sizeof(pAccept->sockAddr);
 
 			netChkPtr(pAccept);
@@ -314,32 +325,32 @@ namespace Net {
 
 			if (len == 0)
 			{
-				netErr(E_SYSTEM_UNEXPECTED);
+				netErr(ResultCode::UNEXPECTED);
 			}
 
 			if(pAccept->sockAccept < 0)
 			{
-				HRESULT err = GetLastWSAHRESULT();
-				switch (err)
+				Result err = GetLastWSAResult();
+				switch ((int32_t)err)
 				{
-				case E_NET_WOULDBLOCK:
-				case E_NET_IO_PENDING:
+				case ResultCode::E_NET_WOULDBLOCK:
+				case ResultCode::E_NET_IO_PENDING:
 					goto Proc_End;
 
-				case E_NET_TRY_AGAIN:
+				case ResultCode::E_NET_TRY_AGAIN:
 					// Nothing to accept for now
 					hr = err;
 					goto Proc_End;
 
-				case E_NET_NETDOWN:
-				case E_NET_PROTO:
-				case E_NET_NOPROTOOPT:
-				case E_NET_HOSTDOWN:
-				case E_NET_NONET:
-				case E_NET_HOSTUNREACH:
-				case E_NET_OPNOTSUPP:
-				case E_NET_NETUNREACH:
-				case E_NET_BADF:
+				case ResultCode::E_NET_NETDOWN:
+				case ResultCode::E_NET_PROTO:
+				case ResultCode::E_NET_NOPROTOOPT:
+				case ResultCode::E_NET_HOSTDOWN:
+				case ResultCode::E_NET_NONET:
+				case ResultCode::E_NET_HOSTUNREACH:
+				case ResultCode::E_NET_OPNOTSUPP:
+				case ResultCode::E_NET_NETUNREACH:
+				case ResultCode::E_NET_BADF:
 					// silently handle them
 					hr = err;
 					goto Proc_End;
@@ -354,7 +365,7 @@ namespace Net {
 			return hr;
 		}
 
-		HRESULT HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_storage& remoteAddr)
+		Result HandleAcceptedSocket(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept, sockaddr_storage& remoteAddr)
 		{
 			socklen_t len;
 
@@ -363,28 +374,28 @@ namespace Net {
 			len = sizeof remoteAddr;
 			getpeername(pAccept->sockAccept, (struct sockaddr*)&remoteAddr, &len);
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 
-		HRESULT Recv(SOCKET sock, IOBUFFER_READ* pBuffer)
+		Result Recv(SOCKET sock, IOBUFFER_READ* pBuffer)
 		{
 			ssize_t recvSize = recv(sock, pBuffer->buffer, sizeof(pBuffer->buffer), MSG_DONTWAIT);
 			if (recvSize < 0)
 			{
-				return GetLastWSAHRESULT();
+				return GetLastWSAResult();
 			}
 
-			pBuffer->TransferredSize = recvSize;
+			pBuffer->TransferredSize = (decltype(pBuffer->TransferredSize))recvSize;
 			if (recvSize == 0)
 			{
-				return S_SYSTEM_FALSE;
+				return ResultCode::SUCCESS_FALSE;
 			}
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer)
+		Result RecvFrom(SOCKET sock, IOBUFFER_READ* pBuffer)
 		{
 			Assert(pBuffer->iSockLen == sizeof(pBuffer->NetAddr.From));
 
@@ -392,33 +403,33 @@ namespace Net {
 				(sockaddr*)&pBuffer->NetAddr.From, &pBuffer->iSockLen);
 			if (recvSize < 0)
 			{
-				return GetLastWSAHRESULT();
+				return GetLastWSAResult();
 			}
 
-			pBuffer->TransferredSize = recvSize;
+			pBuffer->TransferredSize = (decltype(pBuffer->TransferredSize))recvSize;
 			if (recvSize == 0)
 			{
-				return S_SYSTEM_FALSE;
+				return ResultCode::SUCCESS_FALSE;
 			}
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 
-		HRESULT Send(SOCKET sock, IOBUFFER_WRITE* pBuffer)
+		Result Send(SOCKET sock, IOBUFFER_WRITE* pBuffer)
 		{
 			ssize_t sendSize = send(sock, pBuffer->pRawSendBuffer, pBuffer->RawSendSize, MSG_DONTWAIT | MSG_NOSIGNAL);
 			if (sendSize < 0)
 			{
-				return GetLastWSAHRESULT();
+				return GetLastWSAResult();
 			}
 
-			pBuffer->TransferredSize = sendSize;
+			pBuffer->TransferredSize = (decltype(pBuffer->TransferredSize))sendSize;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer)
+		Result SendTo(SOCKET sock, IOBUFFER_WRITE* pBuffer)
 		{
 			const sockaddr_storage& dstAddress = pBuffer->NetAddr.To;
 			ssize_t sendSize = sendto(sock, pBuffer->pRawSendBuffer, pBuffer->RawSendSize, MSG_DONTWAIT | MSG_NOSIGNAL,
@@ -426,12 +437,12 @@ namespace Net {
 
 			if (sendSize < 0)
 			{
-				return GetLastWSAHRESULT();
+				return GetLastWSAResult();
 			}
 
-			pBuffer->TransferredSize = sendSize;
+			pBuffer->TransferredSize = (decltype(pBuffer->TransferredSize))sendSize;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 

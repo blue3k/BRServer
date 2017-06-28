@@ -61,9 +61,9 @@ namespace Svr {
 	}
 
 	// Set timer when it fails
-	void ClusterInitializationTrans::SetFailRetryTimer(HRESULT hrRes)
+	void ClusterInitializationTrans::SetFailRetryTimer(Result hrRes)
 	{
-		if( FAILED(hrRes) )
+		if( !(hrRes) )
 		{
 			svrTrace( Svr::TRC_CLUSTER, "Cluster initialization Failed Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}, Step:{4}, hr:{5:X8}. Retrying ...", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (int)m_Step, hrRes );
 			SetTimer(DurationMS(10*1000));
@@ -71,9 +71,9 @@ namespace Svr {
 	}
 
 	// Timer handling
-	HRESULT ClusterInitializationTrans::OnTimer(TransactionResult* pRes)
+	Result ClusterInitializationTrans::OnTimer(TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrTrace(Svr::TRC_CLUSTER, "Cluster OnTimer Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}, Step:{4}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership(), (UINT)m_Step);
 
@@ -94,13 +94,13 @@ namespace Svr {
 
 		SetFailRetryTimer(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	HRESULT ClusterInitializationTrans::JoinCluster(  )
+	Result ClusterInitializationTrans::JoinCluster(  )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//ClusterServerService *pService = nullptr;
 		ServerEntity *pMasterServerEntity = nullptr;
 		EntityUID clusterManagerMasterUID;
@@ -162,7 +162,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			// if failed something retry after 1 sec from scratch
 			m_Step = Step_JoinCluster;
@@ -172,14 +172,14 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT ClusterInitializationTrans::OnClusterJoined(TransactionResult* pRes)
+	Result ClusterInitializationTrans::OnClusterJoined(TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::ClusterServer::JoinClusterRes msgRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
-		svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
+		svrChk( msgRes.ParseMessage( ((MessageResult*)pRes)->GetMessage() ) );
 
 		svrTrace( Svr::TRC_CLUSTER, "Cluster Joined Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
@@ -187,7 +187,7 @@ namespace Svr {
 		svrChk( AddOtherServicesToMe((UINT)msgRes.GetMemberList().GetSize(), msgRes.GetMemberList().data()) );
 
 		// 4. Request full data if replica
-		if( FAILED(RequestDataSync()) )
+		if( !(RequestDataSync()) )
 		{
 			// if failed sync we can retry laster
 			m_Step = Step_RequestDataSync;
@@ -196,19 +196,19 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			// if failed something retry after 1 sec from scratch
 			m_Step = Step_JoinCluster;
 			SetFailRetryTimer(hr);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT ClusterInitializationTrans::RequestDataSync()
+	Result ClusterInitializationTrans::RequestDataSync()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pServerEntity = nullptr;
 
 		if( m_currentMaster.UID == 0 )
@@ -234,14 +234,14 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT ClusterInitializationTrans::OnClusterDataSync(TransactionResult* pRes)
+	Result ClusterInitializationTrans::OnClusterDataSync(TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//Message::ClusterServer::GetClusterMemberListRes msgRes;
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
-		//svrChk( msgRes.ParseIMsg( ((MessageResult*)pRes)->GetMessage() ) );
+		//svrChk( msgRes.ParseMessage( ((MessageResult*)pRes)->GetMessage() ) );
 		svrTrace( Svr::TRC_CLUSTER, "Cluster RequestDataSync Done Entity:{0}, ClusterID:{1},Type:{2},Membership:{3}", GetOwnerEntityUID(), GetMyOwner()->GetClusterID(), GetMyOwner()->GetClusterType(), GetMyOwner()->GetClusterMembership() );
 
 		CloseTransaction( hr );
@@ -250,13 +250,13 @@ namespace Svr {
 
 		SetFailRetryTimer(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Add other services to me
-	HRESULT ClusterInitializationTrans::AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations )
+	Result ClusterInitializationTrans::AddOtherServicesToMe( UINT numServices, const ServiceInformation *pServiceInformations )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		bool bAddStatusWatcher = GetMyOwner()->GetClusterMembership() != ClusterMembership::StatusWatcher;
 
 		ServerEntityManager *pServerEntityManager = GetServerComponent<ServerEntityManager>();
@@ -289,11 +289,11 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT ClusterInitializationTrans::StartTransaction()
+	Result ClusterInitializationTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		m_hr = S_SYSTEM_OK;
+		m_hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -308,23 +308,23 @@ namespace Svr {
 
 		SetFailRetryTimer(hr);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT ClusterInitializationTrans::OnCloseTransaction( HRESULT hrRes )
+	Result ClusterInitializationTrans::OnCloseTransaction( Result hrRes )
 	{
 		m_hr = hrRes;
 
-		if (SUCCEEDED(hrRes))
+		if ((hrRes))
 			m_Step = Step_Done;
 
-		GetMyOwner()->SetInitialized(SUCCEEDED(hrRes));
+		GetMyOwner()->SetInitialized((hrRes));
 
 		BrServer::GetInstance()->GetNumberServicesToWait().fetch_sub(1, std::memory_order_relaxed);
 
 		super::OnCloseTransaction( hrRes );
 
-		if( SUCCEEDED(hrRes) )
+		if( (hrRes) )
 			GetMyOwner()->SetServiceStatus( ServiceStatus::Ready );
 
 		return hrRes;
@@ -337,9 +337,9 @@ namespace Svr {
 	//
 
 	// Start Transaction
-	HRESULT RequestDataSyncTrans::StartTransaction()
+	Result RequestDataSyncTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -353,9 +353,9 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT ClusterMasterAssignedTrans::StartTransaction()
+	Result ClusterMasterAssignedTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -371,9 +371,9 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT ClusterMasterVoteTrans::StartTransaction()
+	Result ClusterMasterVoteTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pVotedService = nullptr;
 		UINT uiExpectedVoterCount = 0, uiTotalVoted = 0;
 		UINT uiMaxVotedCount = 0;
@@ -427,17 +427,17 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ClusterUpdateStatusTrans::StartTransaction()
+	Result ClusterUpdateStatusTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pService = nullptr;
 		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
 
 		svrChk(super::StartTransaction());
 
-		if (SUCCEEDED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+		if ((GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
 		{
-			if (SUCCEEDED(pServiceEntity->FindService(GetSender(), pService)))
+			if ((pServiceEntity->FindService(GetSender(), pService)))
 			{
 				pService->SetServiceStatus(GetMemberStatus());
 			}
@@ -453,7 +453,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Svr::TRC_CLUSTER, "Update state is failed ClusterID:{0}, Entity:{1} to {2}", GetClusterID(), GetSender(), GetMemberStatus());
 			CloseTransaction(hr);
@@ -469,9 +469,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ClusterUpdateWorkloadTrans::StartTransaction()
+	Result ClusterUpdateWorkloadTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusteredServiceEntity* pServiceEntity = nullptr;
 		ServerServiceInformation *pUpdatedService = nullptr;
 
@@ -483,7 +483,7 @@ namespace Svr {
 		}
 		else
 		{
-			if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+			if (!(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
 			{
 				svrTrace(Svr::TRC_CLUSTER, "Ignoring workload update of an unregistered cluster ClusterID:{0} Sender:{1}", GetClusterID(), GetSender());
 				CloseTransaction(hr);
@@ -492,7 +492,7 @@ namespace Svr {
 		}
 
 		hr = pServiceEntity->FindService(GetSender(), pUpdatedService);
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			goto Proc_End;
 		}
@@ -515,7 +515,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to update workload of unregistered cluster ClusterID:{0}, Sender:{1}", GetClusterID(), GetSender());
 			CloseTransaction(hr);
@@ -529,9 +529,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT GetLowestWorkloadClusterMemberTrans::StartTransaction()
+	Result GetLowestWorkloadClusterMemberTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pLowestService = nullptr;
 
 		svrChk(super::StartTransaction());
@@ -547,7 +547,7 @@ namespace Svr {
 		});
 
 		if (pLowestService == nullptr)
-			svrErrClose(E_SVR_CLUSTER_NOTREADY);
+			svrErrClose(ResultCode::E_SVR_CLUSTER_NOTREADY);
 
 		pLowestService->GetServiceInformation(m_LowestMemberInfo);
 
@@ -561,9 +561,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ClusterNewServerServiceJoinedC2SEvtEntityTrans::StartTransaction()
+	Result ClusterNewServerServiceJoinedC2SEvtEntityTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ServerEntity *pSenderEntity = nullptr;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
@@ -580,7 +580,7 @@ namespace Svr {
 		}
 		else
 		{
-			if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+			if (!(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
 			{
 				svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 				goto Proc_End;
@@ -594,7 +594,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 		}
@@ -607,9 +607,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT ClusterNewServerServiceJoinedC2SEvtTrans::StartTransaction()
+	Result ClusterNewServerServiceJoinedC2SEvtTrans::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pRequestedService = nullptr;
 		ServerEntity *pSenderEntity = nullptr;
 		ClusteredServiceEntity *pServiceEntity = nullptr;
@@ -628,7 +628,7 @@ namespace Svr {
 			}
 			else
 			{
-				if (FAILED(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
+				if (!(GetServerComponent<ClusterManagerServiceEntity>()->GetClusterServiceEntity(GetClusterID(), pServiceEntity)))
 				{
 					svrTrace(Svr::TRC_CLUSTER, "Ignoring to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 					goto Proc_End;
@@ -643,7 +643,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to add new server service cluster member ClusterID:{0}, Joined:{1}", GetClusterID(), GetJoinedServiceUID());
 		}

@@ -73,16 +73,16 @@ namespace Svr {
 		BR_TRANS_MESSAGE(Message::PartyMatchingQueue::ReserveItemsRes, { return OnReserveItem(pRes); });
 	}
 
-	HRESULT MatchingTransGrabPlayer::OnTimer(TransactionResult* pRes)
+	Result MatchingTransGrabPlayer::OnTimer(TransactionResult* pRes)
 	{
 		ProcessGrabbing();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT MatchingTransGrabPlayer::ProcessGrabbing()
+	Result MatchingTransGrabPlayer::ProcessGrabbing()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		UINT itemsInQueue = 0;
 
 		if (itemsInQueue < m_MinQueueCount)
@@ -90,13 +90,13 @@ namespace Svr {
 			auto grabCount = std::min(m_MaxQueueCount - m_MinQueueCount, (UINT)GRAB_MAX);
 
 			hr = ReserveItem(grabCount);
-			if (hr == E_SVR_NOITEM_INQUEUE || hr == E_SVR_CLUSTER_NOTREADY)
+			if (hr == Result(ResultCode::E_SVR_NOITEM_INQUEUE) || hr == Result(ResultCode::E_SVR_CLUSTER_NOTREADY))
 			{
 				goto Proc_End;
 			}
 
 			//svrChk(hr);
-			if (FAILED(hr))
+			if (!(hr))
 				goto Proc_End;
 
 			ClearTimer();
@@ -109,26 +109,26 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			SetTimer(DurationMS(GRAB_RETRY_TIME));
 		}
 		
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT MatchingTransGrabPlayer::ReserveItem(UINT grabCount)
+	Result MatchingTransGrabPlayer::ReserveItem(UINT grabCount)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pService = nullptr;
 		RingClusterServiceEntity *pServiceEntity = nullptr;
 
 		svrChkPtr(pServiceEntity = GetServerComponent<RingClusterServiceEntity>(m_TargetQueueComponentID));
 
-		if (FAILED(pServiceEntity->GetService(pService)))
+		if (!(pServiceEntity->GetService(pService)))
 		{
-			return E_SVR_CLUSTER_NOTREADY;
+			return ResultCode::E_SVR_CLUSTER_NOTREADY;
 		}
 
 		// NOTE: Workload bug, just try to grab
@@ -139,12 +139,12 @@ namespace Svr {
 		}
 		else
 		{
-			return E_SVR_NOITEM_INQUEUE;
+			return ResultCode::E_SVR_NOITEM_INQUEUE;
 		}
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			if (pServiceEntity != nullptr)
 			{
@@ -160,9 +160,9 @@ namespace Svr {
 	}
 
 
-	HRESULT MatchingTransGrabPlayer::RequestDeleteItem(MatchingQueueTicket ticket)
+	Result MatchingTransGrabPlayer::RequestDeleteItem(MatchingQueueTicket ticket)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pServerEntity = nullptr;
 
 		svrTrace(Svr::TRC_MATCHING, "Request Delete item Matching:{0}, MatchingQueueID:{1}, MTicket:{2}", m_MatchingMemberCount, m_TargetQueueComponentID, ticket);
@@ -178,21 +178,21 @@ namespace Svr {
 	}
 
 
-	HRESULT MatchingTransGrabPlayer::OnReserveItem(TransactionResult* pRes)
+	Result MatchingTransGrabPlayer::OnReserveItem(TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::PartyMatchingQueue::ReserveItemsRes msgRes;
 
 		//m_RequestedTime = 0;
 
-		if (FAILED(pRes->GetHRESULT()))
+		if (!(pRes->GetResult()))
 		{
 			// 
-			hr = pRes->GetHRESULT();
+			hr = pRes->GetResult();
 			goto Proc_End;
 		}
 
-		svrChk(msgRes.ParseIMsg(((MessageResult*)pRes)->GetMessage()));
+		svrChk(msgRes.ParseMessage(((MessageResult*)pRes)->GetMessage()));
 
 		{
 			auto numItems = std::min(msgRes.GetNumberOfPlayersInTheItem().GetSize(), msgRes.GetMatchingTicket().GetSize());
@@ -228,7 +228,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 		{
 			SetTimer(DurationMS(GRAB_RETRY_TIME));
 		}
@@ -237,13 +237,13 @@ namespace Svr {
 			ClearTimer();
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction
-	HRESULT MatchingTransGrabPlayer::StartTransaction()
+	Result MatchingTransGrabPlayer::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(super::StartTransaction());
 
@@ -256,7 +256,7 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT MatchingTransGrabPlayer::OnCloseTransaction(HRESULT hrRes)
+	Result MatchingTransGrabPlayer::OnCloseTransaction(Result hrRes)
 	{
 		GetMyOwner()->TransactionClosedForQueue(m_TargetQueueMemberCount);
 
@@ -293,9 +293,9 @@ namespace Svr {
 	}
 
 
-	HRESULT MatchingTransProcessMatchedItems::DequeueItem(const MatchingQueueTicket& ticket)
+	Result MatchingTransProcessMatchedItems::DequeueItem(const MatchingQueueTicket& ticket)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pServerEntity = nullptr;
 
 		svrTrace(Svr::TRC_MATCHING, "Dequeue item Matching:{0}, MTicket:{1}", GetTargetMatchingMemberCount(), ticket);
@@ -312,17 +312,17 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT MatchingTransProcessMatchedItems::OnDequeueItem(TransactionResult* pRes)
+	Result MatchingTransProcessMatchedItems::OnDequeueItem(TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::PartyMatchingQueue::DequeueItemRes msgRes;
 
 		m_PendingDequeueItem--;
 
 		// Maybe canceled?
-		if (SUCCEEDED(pRes->GetHRESULT()))
+		if ((pRes->GetResult()))
 		{
-			svrChk(msgRes.ParseIMsg(((MessageResult*)pRes)->GetMessage()));
+			svrChk(msgRes.ParseMessage(((MessageResult*)pRes)->GetMessage()));
 
 			AssertRel(msgRes.GetPlayers().GetSize() <= MAX_NUM_PLAYER);
 
@@ -354,15 +354,15 @@ namespace Svr {
 			if (m_DequeuedTotalMembers > 0)
 				CreateGame();
 			else
-				CloseTransaction(S_SYSTEM_OK);
+				CloseTransaction(ResultCode::SUCCESS);
 		}
 
 		return hr;
 	}
 
-	HRESULT MatchingTransProcessMatchedItems::CreateGame()
+	Result MatchingTransProcessMatchedItems::CreateGame()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ServerServiceInformation *pService = nullptr;
 
 		svrTrace(Svr::TRC_MATCHING, "Creating game Matching:{0}", GetTargetMatchingMemberCount());
@@ -370,27 +370,27 @@ namespace Svr {
 		svrChk(GetServerComponent<GameInstanceManagerWatcherServiceEntity>()->GetService(pService));
 
 		// 2. Get service entity list in the cluster
-		svrChk(pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, m_TargetMatchingMemberCount - m_DequeuedTotalMembers, m_TargetMatchingMemberCount));
+		svrChk(pService->GetService<GameInstanceManagerService>()->CreateGameCmd(GetTransID(), 0, (uint16_t)(m_TargetMatchingMemberCount - m_DequeuedTotalMembers), (uint16_t)m_TargetMatchingMemberCount));
 
 	Proc_End:
 
-		if (FAILED(hr))
+		if (!(hr))
 			SetTimer(DurationMS(1000));
 
 		return hr;
 	}
 
-	HRESULT MatchingTransProcessMatchedItems::OnCreateGame(TransactionResult* pRes)
+	Result MatchingTransProcessMatchedItems::OnCreateGame(TransactionResult* pRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::GameInstanceManager::CreateGameRes msgRes;
 		GameInsUID gameUID;
 		UINT notifiedPlayerCount = 0;
 
 
-		svrChk(pRes->GetHRESULT());
+		svrChk(pRes->GetResult());
 
-		svrChk(msgRes.ParseIMsg(((MessageResult*)pRes)->GetMessage()));
+		svrChk(msgRes.ParseMessage(((MessageResult*)pRes)->GetMessage()));
 
 		gameUID = msgRes.GetRouteContext().GetFrom();
 
@@ -406,7 +406,7 @@ namespace Svr {
 			{
 				if (reservedMember.Players[member].PlayerUID == reservedMember.RegisterEntityUID) notifiedToRegister = true;
 
-				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.Players[member].PlayerUID.GetServerID(), pServerEntity)))
+				if (!(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.Players[member].PlayerUID.GetServerID(), pServerEntity)))
 				{
 					// skip this player
 					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity({0}) while broadcasting for a player({1})", reservedMember.Players[member].PlayerUID.GetServerID(), reservedMember.Players[member].PlayerID);
@@ -422,7 +422,7 @@ namespace Svr {
 			// this should be a party, or canceled item
 			if (!notifiedToRegister)
 			{
-				if (FAILED(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.RegisterEntityUID.GetServerID(), pServerEntity)))
+				if (!(GetServerComponent<ServerEntityManager>()->GetServerEntity(reservedMember.RegisterEntityUID.GetServerID(), pServerEntity)))
 				{
 					// skip this player
 					svrTrace(Trace::TRC_ERROR, "Failed to find Server entity({0}) while broadcasting", reservedMember.RegisterEntityUID.GetServerID());
@@ -442,7 +442,7 @@ namespace Svr {
 		if (notifiedPlayerCount == 0)
 		{
 			ServerEntity *pServerEntity = nullptr;
-			if (SUCCEEDED(GetServerComponent<ServerEntityManager>()->GetServerEntity(gameUID.GetServerID(), pServerEntity)))
+			if ((GetServerComponent<ServerEntityManager>()->GetServerEntity(gameUID.GetServerID(), pServerEntity)))
 			{
 				auto pPolicy = pServerEntity->GetPolicy<Policy::IPolicyGameInstance>();
 				if (pPolicy != nullptr)
@@ -457,9 +457,9 @@ namespace Svr {
 	}
 
 	// Start Transaction
-	HRESULT MatchingTransProcessMatchedItems::StartTransaction()
+	Result MatchingTransProcessMatchedItems::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		m_PendingDequeueItem = 0;
 		m_DequeuedTotalMembers = 0;
@@ -474,7 +474,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (FAILED(hr) || m_PendingDequeueItem <= 0)
+		if (!(hr) || m_PendingDequeueItem <= 0)
 		{
 			// We need to retry until it's successed
 			CloseTransaction(hr);

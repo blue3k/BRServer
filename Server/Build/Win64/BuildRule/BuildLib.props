@@ -3,8 +3,9 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir>$(ProjectDir)../../bin/lib/$(Platform)$(Configuration)\</OutDir>
-    <IntDir>$(Platform)$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)Server\bin/lib/$(Platform)$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\Win64\$(Platform)$(Configuration)\$(ProjectName)\</IntDir>
+    <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />

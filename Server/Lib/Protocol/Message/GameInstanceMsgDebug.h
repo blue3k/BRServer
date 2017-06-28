@@ -29,7 +29,7 @@ namespace BR
 			// GameInstance Debug output function 
 
 			void RegisterDebugTraceGameInstance();
-			HRESULT DebugOutGameInstance( const char*Prefix, MessageData*pMsg );
+			Result DebugOutGameInstance( const char*Prefix, MessageData*pMsg );
 
 
 

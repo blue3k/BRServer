@@ -50,7 +50,7 @@ CounterType ServerPublicTCP::GetActiveConnectionCount()
 }
 
 // Close all connection
-HRESULT ServerPublicTCP::CloseAllConnection()
+Result ServerPublicTCP::CloseAllConnection()
 {
 	return GetConnectionManager().PendingCloseAllConnection();
 }

@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/BrComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServerComponentCarrier.h"
@@ -65,7 +65,7 @@ namespace Svr {
 		}
 
 		// Check server component
-		virtual HRESULT CheckService() { return S_SYSTEM_OK; }
+		virtual Result CheckService() { return ResultCode::SUCCESS; }
 
 		
 		// Get entity, default implementation is return null

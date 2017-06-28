@@ -115,12 +115,12 @@ inline TimeStampMS Transaction::UpdateHeartBitTime()
 }
 
 // Check timeout, ms
-inline HRESULT Transaction::CheckHeartBitTimeout()
+inline Result Transaction::CheckHeartBitTimeout()
 {
 	if ((INT)(GetHeartBitTimeout() - Util::Time.GetTimeMs()).count() < 0)
-		return E_SVR_TRANSACTION_TIMEOUT;
+		return ResultCode::E_SVR_TRANSACTION_TIMEOUT;
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 inline TimeStampMS Transaction::GetHeartBitTimeout()
@@ -199,7 +199,7 @@ void TransactionResult::SetTransaction( const TransactionID &transID )
 }
 
 // Set Result
-void TransactionResult::SetResult( HRESULT hrRes )
+void TransactionResult::SetResult( Result hrRes )
 {
 	m_hrRes = hrRes;
 }
@@ -223,7 +223,7 @@ Message::MessageID TransactionResult::GetMsgID() const
 	return m_msgID;
 }
 
-HRESULT TransactionResult::GetHRESULT() const
+Result TransactionResult::GetResult() const
 {
 	return m_hrRes;
 }
@@ -250,7 +250,7 @@ Message::MessageData* MessageResult::GetMessage()
 //
 
 // Get transaction ID
-const TransactionID& SubTransactionWithResult::GetTransID() const
+const TransactionID& SubTransactionWitResult::GetTransID() const
 {
 	return Transaction::GetTransID();
 }

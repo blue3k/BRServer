@@ -29,9 +29,9 @@ namespace DB {
 
 	
 	// Make this factory as the DB factory
-	HRESULT FactoryOLEDB::Instanciate()
+	Result FactoryOLEDB::Instanciate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		dbMem( Factory::stm_pInstance = new FactoryOLEDB );
 
@@ -40,7 +40,7 @@ namespace DB {
 		return hr;
 	}
 
-	void FactoryOLEDB::ReportError( void* DBContext, HRESULT hr, const char* className )
+	void FactoryOLEDB::ReportError( void* DBContext, Result hr, const char* className )
 	{
 		CDBErrorInfo myErrorInfo;
 		ULONG numRec = 0;
@@ -58,21 +58,21 @@ namespace DB {
 	}
 
 	// initialize DB source
-	HRESULT	FactoryOLEDB::CreateDataSource( DataSource* &pDBSource )
+	Result	FactoryOLEDB::CreateDataSource( DataSource* &pDBSource )
 	{
 		if( pDBSource = new DataSourceOLEDB )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
-		return E_SYSTEM_OUTOFMEMORY;
+		return ResultCode::OUT_OF_MEMORY;
 	}
 
 	// close DB source
-	HRESULT	FactoryOLEDB::CreateSession( DataSource* pDBSource, Session* &pSession )
+	Result	FactoryOLEDB::CreateSession( DataSource* pDBSource, Session* &pSession )
 	{
 		if( pSession = new SessionOLEDB(pDBSource) )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
-		return E_SYSTEM_OUTOFMEMORY;
+		return ResultCode::OUT_OF_MEMORY;
 	}
 
 } // namespace DB

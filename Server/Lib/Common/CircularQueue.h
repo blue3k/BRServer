@@ -51,10 +51,10 @@ public:
 	inline bool IsEmpty();
 
 	// Enqueue an element
-	inline HRESULT Enqueue( T&& item );
+	inline Result Enqueue( T&& item );
 
 	// Dequeue an element
-	inline HRESULT Dequeue( T& item );
+	inline Result Dequeue( T& item );
 
 	// Get item count
 	inline UINT	GetSize(); 

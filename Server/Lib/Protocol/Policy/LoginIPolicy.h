@@ -34,11 +34,15 @@ namespace BR
 			{}
 
 			// Cmd: Login request
-			virtual HRESULT LoginRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID ) = 0;
+			virtual Result LoginRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID ) = 0;
 			// Cmd: Login request with Facebook UID
-			virtual HRESULT LoginByFacebookRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID ) = 0;
+			virtual Result LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID ) = 0;
 			// Cmd: Login request
-			virtual HRESULT CreateRandomUserRes( const HRESULT &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID ) = 0;
+			virtual Result CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID ) = 0;
+			// Cmd: Update my score and Get Ranking list
+			virtual Result UpdateMyScoreRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
+			// Cmd: Get Ranking lise
+			virtual Result GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
 
 		}; // class ISvrPolicyLogin : public Net::INetPolicy
 
@@ -53,11 +57,15 @@ namespace BR
 			{}
 
 			// Cmd: Login request
-			virtual HRESULT LoginCmd( const GameID &InGameID, const char* InID, const char* InPassword ) = 0;
+			virtual Result LoginCmd( const GameID &InGameID, const char* InID, const char* InPassword ) = 0;
 			// Cmd: Login request with Facebook UID
-			virtual HRESULT LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken ) = 0;
+			virtual Result LoginByFacebookCmd( const GameID &InGameID, const uint64_t &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken ) = 0;
 			// Cmd: Login request
-			virtual HRESULT CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone ) = 0;
+			virtual Result CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone ) = 0;
+			// Cmd: Update my score and Get Ranking list
+			virtual Result UpdateMyScoreCmd( const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount ) = 0;
+			// Cmd: Get Ranking lise
+			virtual Result GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount ) = 0;
 
 		}; // class IPolicyLogin : public Net::INetPolicy
 

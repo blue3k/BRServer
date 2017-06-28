@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/GameConst.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
@@ -247,14 +247,14 @@ namespace Svr {
 		AssertRel(pQueuePtr != nullptr);
 	}
 
-	HRESULT MatchingServiceEntity::MatchingQueue_Single::Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue)
+	Result MatchingServiceEntity::MatchingQueue_Single::Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		for (UINT iDequeue = 0; iDequeue < numDequeue; iDequeue++)
 		{
 			ReservedMatchingItem item;
-			if(FAILED(m_pQueuePtr->Dequeue(item))) return E_SYSTEM_FAIL;
+			if(!(m_pQueuePtr->Dequeue(item))) return ResultCode::FAIL;
 			svrChk(items.push_back(item));
 		}
 
@@ -307,9 +307,9 @@ namespace Svr {
 	{
 	}
 
-	HRESULT MatchingServiceEntity::MatchingQueue_Multiple::AddQueue(PageQueue<ReservedMatchingItem>* pQueuePtr, UINT maxPerMatch, PlayerRole requestRole)
+	Result MatchingServiceEntity::MatchingQueue_Multiple::AddQueue(PageQueue<ReservedMatchingItem>* pQueuePtr, UINT maxPerMatch, PlayerRole requestRole)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		QueueItem item;
 		item.MaxAllowPerMatch = maxPerMatch;
@@ -327,9 +327,9 @@ namespace Svr {
 	{
 	}
 
-	HRESULT MatchingServiceEntity::MatchingQueue_Multiple::Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue)
+	Result MatchingServiceEntity::MatchingQueue_Multiple::Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		UINT missTry = 0;
 		StaticArray<UINT, MAX_QUEUE_COUNT> pickedNumbers;
 
@@ -344,7 +344,7 @@ namespace Svr {
 			auto pickedNumber = pickedNumbers[currentQueue];
 			if (pickedNumber < m_pQueuePtr[currentQueue].MaxAllowPerMatch)
 			{
-				if (SUCCEEDED(m_pQueuePtr[currentQueue].pQueue->Dequeue(item)))
+				if ((m_pQueuePtr[currentQueue].pQueue->Dequeue(item)))
 				{
 					item.RequestedRole = m_pQueuePtr[currentQueue].RequestRole;
 					svrChk(items.push_back(item));
@@ -358,12 +358,12 @@ namespace Svr {
 			{
 				missTry++;
 			}
-			m_StartQueueIndex = (currentQueue + 1) % m_pQueuePtr.GetSize();
+			m_StartQueueIndex = (decltype(m_StartQueueIndex))((currentQueue + 1) % m_pQueuePtr.GetSize());
 		}
 
 	Proc_End:
 
-		return iDequeue > 0 ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+		return iDequeue > 0 ? ResultCode::SUCCESS : ResultCode::FAIL;
 	}
 
 	UINT MatchingServiceEntity::MatchingQueue_Multiple::GetEnqueueCount()
@@ -415,9 +415,9 @@ namespace Svr {
 	{
 	}
 
-	HRESULT MatchingServiceEntity::InitializeEntity( EntityID newEntityID )
+	Result MatchingServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		char strName[128];
 		auto entityManager = GetServerComponent<EntityManager>();
 		auto pInstance = PerformanceCounterClient::GetDefaultCounterInstance();
@@ -488,9 +488,9 @@ namespace Svr {
 	}
 
 	// clear transaction
-	HRESULT MatchingServiceEntity::ClearEntity()
+	Result MatchingServiceEntity::ClearEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(ShardedClusterServiceEntity::ClearEntity() );
 
@@ -510,7 +510,7 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT MatchingServiceEntity::GetMatchingPatterTable(UINT targetMatchingMemberCount, UINT& numTableEntries, const UINT* &pTable)
+	Result MatchingServiceEntity::GetMatchingPatterTable(UINT targetMatchingMemberCount, UINT& numTableEntries, const UINT* &pTable)
 	{
 		switch (targetMatchingMemberCount)
 		{
@@ -523,7 +523,7 @@ namespace Svr {
 			pTable = g_MatchingPattern8;
 			break;
 		default:
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 		};
 
 		// table count will be smaller one
@@ -531,12 +531,12 @@ namespace Svr {
 		// Apply offset
 		pTable += targetMatchingMemberCount * m_ReservationStartFrom;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT MatchingServiceEntity::UpdateMatching()
+	Result MatchingServiceEntity::UpdateMatching()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Transaction *pTrans = nullptr;
 		UINT targetMatchingMemberCount = m_TargetMatchingMemberCount;
 		UINT numPatterns = 0;
@@ -607,7 +607,7 @@ namespace Svr {
 			UINT numItemsToDequeue = pMatchingPattern[iQueue];
 			for (UINT iItem = 0; iItem < numItemsToDequeue; iItem++)
 			{
-				if (FAILED(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, numItemsToDequeue)))
+				if (!(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, numItemsToDequeue)))
 				{
 					Assert(false);
 				}
@@ -630,9 +630,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT MatchingServiceEntity::UpdateBotMatching()
+	Result MatchingServiceEntity::UpdateBotMatching()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Transaction *pTrans = nullptr;
 		UINT targetMatchingMemberCount = m_TargetMatchingMemberCount;
 		StaticArray<ReservedMatchingItem, MAX_PREPARED_PLAYER> grabbedItems;
@@ -651,7 +651,7 @@ namespace Svr {
 		INT iQueue = 1;
 		for (; iQueue < (INT)m_TargetMatchingMemberCount; iQueue++)
 		{
-			if (SUCCEEDED(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
+			if ((m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
 			{
 				break;
 			}
@@ -662,7 +662,7 @@ namespace Svr {
 
 		for (iQueue = m_TargetMatchingMemberCount - grabbedPlayerCount; grabbedPlayerCount < m_TargetMatchingMemberCount && iQueue > 0;)
 		{
-			if (SUCCEEDED(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
+			if ((m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
 			{
 				grabbedPlayerCount = GetGrabbedPlayerCount(grabbedItems);
 				iQueue = m_TargetMatchingMemberCount - grabbedPlayerCount;
@@ -699,12 +699,12 @@ namespace Svr {
 		return grabbedPlayerCount;
 	}
 
-	HRESULT MatchingServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result MatchingServiceEntity::TickUpdate(TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		hr = ShardedClusterServiceEntity::TickUpdate(pAction);
-		if (hr == S_SYSTEM_FALSE)
+		if (hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 		svrChk(hr);
 
@@ -790,9 +790,9 @@ namespace Svr {
 		return m_ReservedItemQueue[iMemberCount];
 	}
 
-	HRESULT MatchingServiceQueueEntity::InitializeEntity(EntityID newEntityID)
+	Result MatchingServiceQueueEntity::InitializeEntity(EntityID newEntityID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		memset(m_ReservedItemQueueTransaction, 0, sizeof m_ReservedItemQueueTransaction);
 
@@ -804,12 +804,12 @@ namespace Svr {
 	}
 
 	// TickUpdate 
-	HRESULT MatchingServiceQueueEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result MatchingServiceQueueEntity::TickUpdate(TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		hr = MasterEntity::TickUpdate(pAction);
-		if (hr == S_SYSTEM_FALSE)
+		if (hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 
 		// don't update query when the server isn't running
@@ -854,9 +854,9 @@ namespace Svr {
 	{
 	}
 
-	HRESULT MatchingServiceHandleMatchedEntity::InitializeEntity(EntityID newEntityID)
+	Result MatchingServiceHandleMatchedEntity::InitializeEntity(EntityID newEntityID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(InitializeEntity(newEntityID));
 

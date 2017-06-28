@@ -70,7 +70,7 @@ inline MsgQueue& Connection::GetSendGuaQueue()
 
 USHORT Connection::NewSeqNone()
 {
-	return m_usSeqNone.fetch_add(1,std::memory_order_relaxed) + 1;
+	return (USHORT)(m_usSeqNone.fetch_add(1,std::memory_order_relaxed) + 1);
 }
 
 

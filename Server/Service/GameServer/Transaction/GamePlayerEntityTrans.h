@@ -64,7 +64,7 @@ namespace GameServer {
 		virtual ~PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction() override;
+		virtual Result StartTransaction() override;
 
 		BR_SVR_MSGTRANS_CLOSE(RegisterPlayerToJoinGameServerOnPlayerEntityRes, GetRouteContext().GetSwaped());
 	};
@@ -96,17 +96,17 @@ namespace GameServer {
 		PlayerTransJoinGameServer( Message::MessageData* &pIMsg );
 		virtual ~PlayerTransJoinGameServer() {}
 
-		HRESULT OnGameServerJoined( Svr::TransactionResult* &pRes );
-		HRESULT OnJoinPartyRes( Svr::TransactionResult* &pRes );
-		HRESULT OnCreatePlayerGameDataRes(Svr::TransactionResult* &pRes);
-		HRESULT OnGetPlayerGameDataRes(Svr::TransactionResult* &pRes);
+		Result OnGameServerJoined( Svr::TransactionResult* &pRes );
+		Result OnJoinPartyRes( Svr::TransactionResult* &pRes );
+		Result OnCreatePlayerGameDataRes(Svr::TransactionResult* &pRes);
+		Result OnGetPlayerGameDataRes(Svr::TransactionResult* &pRes);
 
-		HRESULT SetPlayerGameData(const DB::QueryGetPlayerInfoData &playerData);
+		Result SetPlayerGameData(const DB::QueryGetPlayerInfoData &playerData);
 
-		HRESULT RegisterToPlayerManager();
+		Result RegisterToPlayerManager();
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(JoinGameServerRes,m_PlayerNick, m_GameUID, GetMyOwner()->GetPartyUID(), m_PartyLeaderID, m_MatchingTicket);
 	};
@@ -148,7 +148,7 @@ namespace GameServer {
 		virtual ~PlayerTransGetUserGamePlayerInfo() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GetUserGamePlayerInfoRes,
 			m_Result.Level,
@@ -206,11 +206,11 @@ namespace GameServer {
 		PlayerTransGetGamePlayerInfo( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGetGamePlayerInfo() {}
 
-		HRESULT OnGetPlayerShardID(Svr::TransactionResult* &pRes);
-		HRESULT OnGetGamePlayerInfo( Svr::TransactionResult* &pRes );
+		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
+		Result OnGetGamePlayerInfo( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GetGamePlayerInfoRes,
 					GetPlayerID(),
@@ -248,11 +248,11 @@ namespace GameServer {
 		PlayerTransGetComplitionState(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) {}
 		virtual ~PlayerTransGetComplitionState() {}
 
-		HRESULT OnGetComplitionState(Svr::TransactionResult* &pRes);
+		Result OnGetComplitionState(Svr::TransactionResult* &pRes);
 
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GetComplitionStateRes, m_ComplitionState);
 	};
@@ -268,10 +268,10 @@ namespace GameServer {
 		PlayerTransSetComplitionState(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) {}
 		virtual ~PlayerTransSetComplitionState() {}
 
-		HRESULT OnSetComplitionState(Svr::TransactionResult* &pRes);
+		Result OnSetComplitionState(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(SetComplitionStateRes);
 	};
@@ -295,7 +295,7 @@ namespace GameServer {
 		virtual ~PlayerTransSetConfigPreset() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(SetPresetGameConfigIDRes);
 	};
@@ -310,10 +310,10 @@ namespace GameServer {
 		PlayerTransGainGameResource( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGainGameResource() {}
 
-		HRESULT OnSetPlayerInfoRes(  Svr::TransactionResult* &pRes );
+		Result OnSetPlayerInfoRes(  Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(GainGameResourceRes);
 	};
@@ -334,10 +334,10 @@ namespace GameServer {
 		PlayerTransRegisterGCM( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransRegisterGCM() {}
 
-		HRESULT OnUpdated( Svr::TransactionResult* &pRes );
+		Result OnUpdated( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(RegisterGCMRes);
 	};
@@ -353,10 +353,10 @@ namespace GameServer {
 		PlayerTransUnregisterGCM( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransUnregisterGCM() {}
 
-		HRESULT OnUpdated( Svr::TransactionResult* &pRes );
+		Result OnUpdated( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(UnregisterGCMRes);
 	};
@@ -379,10 +379,10 @@ namespace GameServer {
 		PlayerTransGetNotificationList( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGetNotificationList() {}
 
-		HRESULT OnGetList( Svr::TransactionResult* &pRes );
+		Result OnGetList( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(GetNotificationListRes);
 	};
@@ -397,10 +397,10 @@ namespace GameServer {
 		PlayerTransDeleteNotification( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransDeleteNotification() {}
 
-		HRESULT OnDeletedNotification( Svr::TransactionResult* &pRes );
+		Result OnDeletedNotification( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(DeleteNotificationRes,GetNotificationID());
 	};
@@ -416,11 +416,11 @@ namespace GameServer {
 		PlayerTransSetNotificationRead( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransSetNotificationRead() {}
 
-		HRESULT OnSetRead( Svr::TransactionResult* &pRes );
-		HRESULT OnUpdateStatus( Svr::TransactionResult* &pRes );
+		Result OnSetRead( Svr::TransactionResult* &pRes );
+		Result OnUpdateStatus( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(SetNotificationReadRes, GetNotificationID());
 	};
@@ -436,10 +436,10 @@ namespace GameServer {
 		PlayerTransAcceptNotification(Message::MessageData* &pIMsg);//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransAcceptNotification() {}
 
-		HRESULT OnDeletedNotification(Svr::TransactionResult* &pRes);
+		Result OnDeletedNotification(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(AcceptNotificationRes, GetNotificationID());
 	};
@@ -455,7 +455,7 @@ namespace GameServer {
 		virtual ~PlayerTransNotifyS2S() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 	
 
@@ -479,10 +479,10 @@ namespace GameServer {
 		PlayerTransSetNickName( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransSetNickName() {}
 
-		HRESULT OnNickChanged( Svr::TransactionResult* &pRes );
+		Result OnNickChanged( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(SetNickNameRes, m_TotalGem, m_TotalGameMoney);
 	};
@@ -506,11 +506,11 @@ namespace GameServer {
 		PlayerTransFindPlayerByEMail( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransFindPlayerByEMail() {}
 
-		HRESULT OnFindPlayer( Svr::TransactionResult* &pRes );
-		HRESULT OnGetNickName(Svr::TransactionResult* &pRes);
+		Result OnFindPlayer( Svr::TransactionResult* &pRes );
+		Result OnGetNickName(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(FindPlayerByEMailRes,m_Player);
 	};
@@ -529,11 +529,11 @@ namespace GameServer {
 		PlayerTransFindPlayerByPlayerID( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransFindPlayerByPlayerID() {}
 
-		HRESULT OnFindPlayer( Svr::TransactionResult* &pRes );
-		HRESULT OnGetNickName(Svr::TransactionResult* &pRes);
+		Result OnFindPlayer( Svr::TransactionResult* &pRes );
+		Result OnGetNickName(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(FindPlayerByPlayerIDRes,m_Player);
 	};
@@ -552,11 +552,11 @@ namespace GameServer {
 		PlayerTransRequestPlayerStatusUpdate( Message::MessageData* &pIMsg );// :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransRequestPlayerStatusUpdate() {}
 
-		HRESULT OnPlayerShardIDRes(Svr::TransactionResult* &pRes);
-		HRESULT OnPlayerStatusUpdateRes( Svr::TransactionResult* &pRes );
+		Result OnPlayerShardIDRes(Svr::TransactionResult* &pRes);
+		Result OnPlayerStatusUpdateRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(RequestPlayerStatusUpdateRes);
 	};
@@ -571,7 +571,7 @@ namespace GameServer {
 		virtual ~PlayerTransRequestPlayerStatusUpdateS2S() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 	
 	class PlayerTransNotifyPlayerStatusUpdatedS2S : public Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::ISvrPolicyGame, Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt, PlayerTransNotifyPlayerStatusUpdatedS2S>
@@ -584,7 +584,7 @@ namespace GameServer {
 		virtual ~PlayerTransNotifyPlayerStatusUpdatedS2S() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 
@@ -602,10 +602,10 @@ namespace GameServer {
 		PlayerTransGetRankingList( Message::MessageData* &pIMsg );
 		virtual ~PlayerTransGetRankingList() {}
 
-		HRESULT OnGetRankingListRes( Svr::TransactionResult* &pRes );
+		Result OnGetRankingListRes( Svr::TransactionResult* &pRes );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(GetRankingListRes, m_RankingList);
 	};
@@ -627,12 +627,12 @@ namespace GameServer {
 		PlayerTransBuyShopItemPrepare(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) { m_Signagure.push_back('\0'); }
 		virtual ~PlayerTransBuyShopItemPrepare() {}
 
-		HRESULT OnPurchaseIDChecked(Svr::TransactionResult* &pRes);
+		Result OnPurchaseIDChecked(Svr::TransactionResult* &pRes);
 
-		HRESULT GenerateSigunatureAndCheck();
+		Result GenerateSigunatureAndCheck();
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(BuyShopItemPrepareRes, GetShopItemID(), (const char*)m_Signagure.data());
 	};
@@ -652,12 +652,12 @@ namespace GameServer {
 		PlayerTransBuyShopItem( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransBuyShopItem() {}
 
-		HRESULT OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes);
-		HRESULT OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes);
-		HRESULT OnSavedToDB(Svr::TransactionResult* &pRes);
+		Result OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes);
+		Result OnPurchaseCheckedIOS(Svr::TransactionResult* &pRes);
+		Result OnSavedToDB(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(BuyShopItemRes, GetShopItemID());
 	};

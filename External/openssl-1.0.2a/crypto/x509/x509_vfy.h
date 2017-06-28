@@ -145,9 +145,9 @@ typedef struct x509_lookup_method_st {
     int (*shutdown) (X509_LOOKUP *ctx);
     int (*ctrl) (X509_LOOKUP *ctx, int cmd, const char *argc, long argl,
                  char **ret);
-    int (*get_by_subject) (X509_LOOKUP *ctx, int type, X509_NAME *name,
+    int (*get_by_subject) (X509_LOOKUP *ctx, int type, SSL_X509_NAME *name,
                            X509_OBJECT *ret);
-    int (*get_by_issuer_serial) (X509_LOOKUP *ctx, int type, X509_NAME *name,
+    int (*get_by_issuer_serial) (X509_LOOKUP *ctx, int type, SSL_X509_NAME *name,
                                  ASN1_INTEGER *serial, X509_OBJECT *ret);
     int (*get_by_fingerprint) (X509_LOOKUP *ctx, int type,
                                unsigned char *bytes, int len,
@@ -207,8 +207,8 @@ struct x509_store_st {
     int (*check_crl) (X509_STORE_CTX *ctx, X509_CRL *crl);
     /* Check certificate against CRL */
     int (*cert_crl) (X509_STORE_CTX *ctx, X509_CRL *crl, X509 *x);
-    STACK_OF(X509) *(*lookup_certs) (X509_STORE_CTX *ctx, X509_NAME *nm);
-    STACK_OF(X509_CRL) *(*lookup_crls) (X509_STORE_CTX *ctx, X509_NAME *nm);
+    STACK_OF(X509) *(*lookup_certs) (X509_STORE_CTX *ctx, SSL_X509_NAME *nm);
+    STACK_OF(X509_CRL) *(*lookup_crls) (X509_STORE_CTX *ctx, SSL_X509_NAME *nm);
     int (*cleanup) (X509_STORE_CTX *ctx);
     CRYPTO_EX_DATA ex_data;
     int references;
@@ -265,8 +265,8 @@ struct x509_store_ctx_st {      /* X509_STORE_CTX */
     /* Check certificate against CRL */
     int (*cert_crl) (X509_STORE_CTX *ctx, X509_CRL *crl, X509 *x);
     int (*check_policy) (X509_STORE_CTX *ctx);
-    STACK_OF(X509) *(*lookup_certs) (X509_STORE_CTX *ctx, X509_NAME *nm);
-    STACK_OF(X509_CRL) *(*lookup_crls) (X509_STORE_CTX *ctx, X509_NAME *nm);
+    STACK_OF(X509) *(*lookup_certs) (X509_STORE_CTX *ctx, SSL_X509_NAME *nm);
+    STACK_OF(X509_CRL) *(*lookup_crls) (X509_STORE_CTX *ctx, SSL_X509_NAME *nm);
     int (*cleanup) (X509_STORE_CTX *ctx);
     /* The following is built up */
     /* if 0, rebuild chain */
@@ -446,9 +446,9 @@ void X509_STORE_CTX_set_depth(X509_STORE_CTX *ctx, int depth);
                                 | X509_V_FLAG_INHIBIT_MAP)
 
 int X509_OBJECT_idx_by_subject(STACK_OF(X509_OBJECT) *h, int type,
-                               X509_NAME *name);
+                               SSL_X509_NAME *name);
 X509_OBJECT *X509_OBJECT_retrieve_by_subject(STACK_OF(X509_OBJECT) *h,
-                                             int type, X509_NAME *name);
+                                             int type, SSL_X509_NAME *name);
 X509_OBJECT *X509_OBJECT_retrieve_match(STACK_OF(X509_OBJECT) *h,
                                         X509_OBJECT *x);
 void X509_OBJECT_up_ref_count(X509_OBJECT *a);
@@ -456,8 +456,8 @@ void X509_OBJECT_free_contents(X509_OBJECT *a);
 X509_STORE *X509_STORE_new(void);
 void X509_STORE_free(X509_STORE *v);
 
-STACK_OF(X509) *X509_STORE_get1_certs(X509_STORE_CTX *st, X509_NAME *nm);
-STACK_OF(X509_CRL) *X509_STORE_get1_crls(X509_STORE_CTX *st, X509_NAME *nm);
+STACK_OF(X509) *X509_STORE_get1_certs(X509_STORE_CTX *st, SSL_X509_NAME *nm);
+STACK_OF(X509_CRL) *X509_STORE_get1_crls(X509_STORE_CTX *st, SSL_X509_NAME *nm);
 int X509_STORE_set_flags(X509_STORE *ctx, unsigned long flags);
 int X509_STORE_set_purpose(X509_STORE *ctx, int purpose);
 int X509_STORE_set_trust(X509_STORE *ctx, int trust);
@@ -469,7 +469,7 @@ void X509_STORE_set_verify_cb(X509_STORE *ctx,
 void X509_STORE_set_lookup_crls_cb(X509_STORE *ctx,
                                    STACK_OF(X509_CRL) *(*cb) (X509_STORE_CTX
                                                               *ctx,
-                                                              X509_NAME *nm));
+                                                              SSL_X509_NAME *nm));
 
 X509_STORE_CTX *X509_STORE_CTX_new(void);
 
@@ -491,7 +491,7 @@ X509_LOOKUP_METHOD *X509_LOOKUP_file(void);
 int X509_STORE_add_cert(X509_STORE *ctx, X509 *x);
 int X509_STORE_add_crl(X509_STORE *ctx, X509_CRL *x);
 
-int X509_STORE_get_by_subject(X509_STORE_CTX *vs, int type, X509_NAME *name,
+int X509_STORE_get_by_subject(X509_STORE_CTX *vs, int type, SSL_X509_NAME *name,
                               X509_OBJECT *ret);
 
 int X509_LOOKUP_ctrl(X509_LOOKUP *ctx, int cmd, const char *argc,
@@ -506,9 +506,9 @@ int X509_load_cert_crl_file(X509_LOOKUP *ctx, const char *file, int type);
 X509_LOOKUP *X509_LOOKUP_new(X509_LOOKUP_METHOD *method);
 void X509_LOOKUP_free(X509_LOOKUP *ctx);
 int X509_LOOKUP_init(X509_LOOKUP *ctx);
-int X509_LOOKUP_by_subject(X509_LOOKUP *ctx, int type, X509_NAME *name,
+int X509_LOOKUP_by_subject(X509_LOOKUP *ctx, int type, SSL_X509_NAME *name,
                            X509_OBJECT *ret);
-int X509_LOOKUP_by_issuer_serial(X509_LOOKUP *ctx, int type, X509_NAME *name,
+int X509_LOOKUP_by_issuer_serial(X509_LOOKUP *ctx, int type, SSL_X509_NAME *name,
                                  ASN1_INTEGER *serial, X509_OBJECT *ret);
 int X509_LOOKUP_by_fingerprint(X509_LOOKUP *ctx, int type,
                                unsigned char *bytes, int len,

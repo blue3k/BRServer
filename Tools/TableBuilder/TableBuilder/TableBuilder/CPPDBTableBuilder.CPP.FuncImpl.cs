@@ -10,14 +10,14 @@ namespace TableBuilder
         private void WriteClearTable(KeyInfo keyInfo)
         {
             string statement;
-            statement = string.Format("HRESULT {0}::ClearTable()", ClassName);
+            statement = string.Format("BR::Result {0}::ClearTable()", ClassName);
             WriteStatement(statement);
             OpenSection();
             WriteStatement("for (auto itr = m_TableMap.begin(); itr != m_TableMap.end(); ++itr)");
             WriteStatement("delete itr->second;", 1);
             NewLine(1);
             WriteStatement("m_TableMap.clear();");
-            WriteStatement("return S_SYSTEM_OK;");
+            WriteStatement("return BR::ResultCode::SUCCESS;");
             CloseSection();
         }
 
@@ -28,50 +28,50 @@ namespace TableBuilder
 
             if (keyInfo.keyType == KeyType.EKEY_UNIQUE)
             {
-                WriteStatement("HRESULT {0}::FindItem( const {1}& Key, {2}*& pRow)", 
+                WriteStatement("BR::Result {0}::FindItem( const {1}& Key, {2}*& pRow)", 
                     ClassName, GetBuiltInType(keyInfo._keyTypeName1), RowTypeName);
                 OpenSection();
                 WriteStatement("auto itr = {0}->find(Key);", tableVarName);
                 WriteStatement("if (itr == {0}->end())", tableVarName);
                 OpenSection();
                 WriteStatement("// write error log");
-                WriteStatement("return E_SYSTEM_FAIL;");
+                WriteStatement("return BR::ResultCode::FAIL;");
                 CloseSection();
 
                 WriteStatement("pRow = itr->second;");
-                WriteStatement("return S_SYSTEM_OK;");
+                WriteStatement("return BR::ResultCode::SUCCESS;");
                 CloseSection();
             }
             else if (keyInfo.keyType == KeyType.EKEY_NONUNIQUE)
             {
-                WriteStatement("HRESULT {0}::FindItem( const {1}& Key, std::tr1::unordered_set<{2}*>& rows)",
+                WriteStatement("BR::Result {0}::FindItem( const {1}& Key, std::tr1::unordered_set<{2}*>& rows)",
                     ClassName, GetBuiltInType(keyInfo._keyTypeName1), RowTypeName);
                 OpenSection();
                 WriteStatement("auto pair1 = {0}->equal_range(Key);", ClassName, tableVarName);
                 WriteStatement("if (pair1.first == pair1.second)");
                 OpenSection();
                 WriteStatement("// write error log");
-                WriteStatement("return E_SYSTEM_FAIL;");
+                WriteStatement("return BR::ResultCode::FAIL;");
                 CloseSection();
                 WriteStatement("for (; pair1.first != pair1.second; ++pair1.first)");
                 WriteStatement("rows.insert(pair1.first->second);", 1);
-                WriteStatement("return S_SYSTEM_OK;");
+                WriteStatement("return BR::ResultCode::SUCCESS;");
                 CloseSection();
             }
             else if (keyInfo.keyType == KeyType.EKEY_COMPOSIT)
             {
-                WriteStatement("HRESULT {0}::FindItem( ULONGLONG Key, {1}*& pRow)", 
+                WriteStatement("BR::Result {0}::FindItem( ULONGLONG Key, {1}*& pRow)", 
                     ClassName, RowTypeName);
                 OpenSection();
                 WriteStatement("auto itr = {0}->find(Key);", tableVarName);
                 WriteStatement("if (itr == {0}->end())", tableVarName);
                 OpenSection();
                 WriteStatement("// write error log");
-                WriteStatement("return E_SYSTEM_FAIL;");
+                WriteStatement("return BR::ResultCode::FAIL;");
                 CloseSection();
 
                 WriteStatement("pRow = itr->second;");
-                WriteStatement("return S_SYSTEM_OK;");
+                WriteStatement("return BR::ResultCode::SUCCESS;");
                 CloseSection();
             }
         }
@@ -83,7 +83,7 @@ namespace TableBuilder
             string tableTypeName = keyInfo._keyName1 + "TableMap";
             string keyName = keyInfo._keyName1;
 
-            statement = string.Format("HRESULT {0}::ClearTable{1}()", ClassName, keyName);
+            statement = string.Format("BR::Result {0}::ClearTable{1}()", ClassName, keyName);
             WriteStatement(statement);
             OpenSection();
             statement = string.Format("for ({0}Itr itr = {1}.begin(); itr != {1}.end(); ++itr)",
@@ -93,7 +93,7 @@ namespace TableBuilder
             NewLine(1);
             statement = string.Format("{0}.clear();", tableName);
             WriteStatement(statement);
-            WriteStatement("return S_SYSTEM_OK;");
+            WriteStatement("return BR::ResultCode::SUCCESS;");
             CloseSection();
         }
 
@@ -107,7 +107,7 @@ namespace TableBuilder
 
             if (keyInfo.keyType == KeyType.EKEY_UNIQUE)
             {
-                statement = string.Format("HRESULT {0}::FindItem{3}( const {1}& Key, {2}*& pRow)", 
+                statement = string.Format("BR::Result {0}::FindItem{3}( const {1}& Key, {2}*& pRow)", 
                     ClassName, GetBuiltInType(keyInfo._keyTypeName1), RowTypeName, keyName);
                 WriteStatement(statement);
                 OpenSection();
@@ -117,16 +117,16 @@ namespace TableBuilder
                 WriteStatement(statement);
                 OpenSection();
                 WriteStatement("// write error log");
-                WriteStatement("return E_SYSTEM_FAIL;");
+                WriteStatement("return BR::ResultCode::FAIL;");
                 CloseSection();
 
                 WriteStatement("pRow = itr->second;");
-                WriteStatement("return S_SYSTEM_OK;");
+                WriteStatement("return BR::ResultCode::SUCCESS;");
                 CloseSection();
             }
             else if (keyInfo.keyType == KeyType.EKEY_NONUNIQUE)
             {
-                statement = string.Format("HRESULT {0}::FindItem{3}( const {1}& Key, std::tr1::unordered_set<{2}*>& rows)", 
+                statement = string.Format("BR::Result {0}::FindItem{3}( const {1}& Key, std::tr1::unordered_set<{2}*>& rows)", 
                     ClassName, GetBuiltInType(keyInfo._keyTypeName1), RowTypeName, keyName);
                 WriteStatement(statement);
                 OpenSection();
@@ -136,16 +136,16 @@ namespace TableBuilder
                 WriteStatement("if (pair1.first == pair1.second)");
                 OpenSection();
                 WriteStatement("// write error log");
-                WriteStatement("return E_SYSTEM_FAIL;");
+                WriteStatement("return BR::ResultCode::FAIL;");
                 CloseSection();
                 WriteStatement("for (; pair1.first != pair1.second; ++pair1.first)");
                 WriteStatement("rows.insert(pair1.first->second);", 1);
-                WriteStatement("return S_SYSTEM_OK;");
+                WriteStatement("return BR::ResultCode::SUCCESS;");
                 CloseSection();
             }
             else if (keyInfo.keyType == KeyType.EKEY_COMPOSIT)
             {
-                statement = string.Format("HRESULT {0}::FindItem{2}( ULONGLONG Key, {1}*& pRow)", 
+                statement = string.Format("BR::Result {0}::FindItem{2}( ULONGLONG Key, {1}*& pRow)", 
                     ClassName, RowTypeName, keyName);
                 WriteStatement(statement);
                 OpenSection();
@@ -155,11 +155,11 @@ namespace TableBuilder
                 WriteStatement(statement);
                 OpenSection();
                 WriteStatement("// write error log");
-                WriteStatement("return E_SYSTEM_FAIL;");
+                WriteStatement("return BR::ResultCode::FAIL;");
                 CloseSection();
 
                 WriteStatement("pRow = itr->second;");
-                WriteStatement("return S_SYSTEM_OK;");
+                WriteStatement("return BR::ResultCode::SUCCESS;");
                 CloseSection();
             }
         }
@@ -168,7 +168,7 @@ namespace TableBuilder
         {
             string statement;
 
-            statement = string.Format("HRESULT {0}::ClearTable()", ClassName);
+            statement = string.Format("BR::Result {0}::ClearTable()", ClassName);
             WriteStatement(statement);
             OpenSection();
             foreach (KeyValuePair<string, KeyInfo> kvp in _keyInfos)
@@ -177,7 +177,7 @@ namespace TableBuilder
                 statement = string.Format("ClearTable{0}();", keyName);
                 WriteStatement(statement);
             }
-            WriteStatement("return S_SYSTEM_OK;");
+            WriteStatement("return BR::ResultCode::SUCCESS;");
             CloseSection();
         }
 	}

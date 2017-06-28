@@ -91,74 +91,74 @@ namespace BR {
 		// Queue item is reserved for cancel 
 		public const int S_SVR_QUEUEITEM_CANCEL_PENDED =                    unchecked((int)0x27040017); 
 
-		// Thread is wrong, running on wrong thread? 
-		public const int E_SVR_INVALID_THREAD =                             unchecked((int)0xE7040018); 
-
 		// Purchase canceled 
-		public const int E_SVR_PURCHASE_CANCELED =                          unchecked((int)0xE7040019); 
+		public const int E_SVR_PURCHASE_CANCELED =                          unchecked((int)0xE7040018); 
 
 		// Invalid receipt info 
-		public const int E_SVR_INVALID_PURCHASE_INFO =                      unchecked((int)0xE704001A); 
+		public const int E_SVR_INVALID_PURCHASE_INFO =                      unchecked((int)0xE7040019); 
 
 		// Invalid duplicated purchase 
-		public const int E_SVR_INVALID_PURCHASE_DUPLICATED =                unchecked((int)0xE704001B); 
+		public const int E_SVR_INVALID_PURCHASE_DUPLICATED =                unchecked((int)0xE704001A); 
 
 		// External auth fail 
-		public const int E_SVR_INVALID_EXTERNAL_AUTH =                      unchecked((int)0xE704001C); 
+		public const int E_SVR_INVALID_EXTERNAL_AUTH =                      unchecked((int)0xE704001B); 
 
 		// External server is not available 
-		public const int E_SVR_EXTERNAL_SERVER_UNAVALIABLE =                unchecked((int)0xE704001D); 
+		public const int E_SVR_EXTERNAL_SERVER_UNAVALIABLE =                unchecked((int)0xE704001C); 
 
 		// Invalid receipt result from server 
-		public const int E_SVR_INVALID_PURCHASE_FORMAT =                    unchecked((int)0xE704001E); 
+		public const int E_SVR_INVALID_PURCHASE_FORMAT =                    unchecked((int)0xE704001D); 
 
 		// The protocol is not supported. 
-		public const int E_SVR_CURL_UNSUPPORTED_PROTOCOL =                  unchecked((int)0xE704001F); 
+		public const int E_SVR_CURL_UNSUPPORTED_PROTOCOL =                  unchecked((int)0xE704001E); 
 
 		// CURL initialization is failed. 
-		public const int E_SVR_CURL_FAILED_INIT =                           unchecked((int)0xE7040020); 
+		public const int E_SVR_CURL_FAILED_INIT =                           unchecked((int)0xE704001F); 
 
 		// Invalid URL format. 
-		public const int E_SVR_CURL_URL_MALFORMAT =                         unchecked((int)0xE7040021); 
+		public const int E_SVR_CURL_URL_MALFORMAT =                         unchecked((int)0xE7040020); 
 
 		// Not a build-in feature. 
-		public const int E_SVR_CURL_NOT_BUILT_IN =                          unchecked((int)0xE7040022); 
+		public const int E_SVR_CURL_NOT_BUILT_IN =                          unchecked((int)0xE7040021); 
 
 		// Failed to resolve URL. 
-		public const int E_SVR_CURL_COULDNT_RESOLVE_PROXY =                 unchecked((int)0xE7040023); 
+		public const int E_SVR_CURL_COULDNT_RESOLVE_PROXY =                 unchecked((int)0xE7040022); 
 
 		// Failed to resolve URL. 
-		public const int E_SVR_CURL_COULDNT_RESOLVE_HOST =                  unchecked((int)0xE7040024); 
+		public const int E_SVR_CURL_COULDNT_RESOLVE_HOST =                  unchecked((int)0xE7040023); 
 
 		// Connection is failed 
-		public const int E_SVR_CURL_COULDNT_CONNECT =                       unchecked((int)0xE7040025); 
+		public const int E_SVR_CURL_COULDNT_CONNECT =                       unchecked((int)0xE7040024); 
 
 		// HTTP Post can't be done. 
-		public const int E_SVR_CURL_HTTP_POST_ERROR =                       unchecked((int)0xE7040026); 
+		public const int E_SVR_CURL_HTTP_POST_ERROR =                       unchecked((int)0xE7040025); 
 
 		// Not supported SSL type. 
-		public const int E_SVR_CURL_SSL_ENGINE_NOTFOUND =                   unchecked((int)0xE7040027); 
+		public const int E_SVR_CURL_SSL_ENGINE_NOTFOUND =                   unchecked((int)0xE7040026); 
 
 		// Not supported SSL type. 
-		public const int E_SVR_CURL_SSL_ENGINE_SETFAILED =                  unchecked((int)0xE7040028); 
+		public const int E_SVR_CURL_SSL_ENGINE_SETFAILED =                  unchecked((int)0xE7040027); 
 
 		// Network send failed 
-		public const int E_SVR_CURL_SEND_ERROR =                            unchecked((int)0xE7040029); 
+		public const int E_SVR_CURL_SEND_ERROR =                            unchecked((int)0xE7040028); 
 
 		// Network receive failed 
-		public const int E_SVR_CURL_RECV_ERROR =                            unchecked((int)0xE704002A); 
+		public const int E_SVR_CURL_RECV_ERROR =                            unchecked((int)0xE7040029); 
 
 		// Invalid SSL setting. 
-		public const int E_SVR_CURL_USE_SSL_FAILED =                        unchecked((int)0xE704002B); 
+		public const int E_SVR_CURL_USE_SSL_FAILED =                        unchecked((int)0xE704002A); 
 
 		// No Connection is available now. 
-		public const int E_SVR_CURL_NO_CONNECTION_AVAILABLE =               unchecked((int)0xE704002C); 
+		public const int E_SVR_CURL_NO_CONNECTION_AVAILABLE =               unchecked((int)0xE704002B); 
 
 		// Invalid state transition 
-		public const int E_SVR_INVALID_STATE =                              unchecked((int)0xE704002D); 
+		public const int E_SVR_INVALID_STATE =                              unchecked((int)0xE704002C); 
 
 		// Invalid purchase environment(public/test) 
-		public const int E_SVR_INVALID_PURCHASE_MODE =                      unchecked((int)0xE704002E); 
+		public const int E_SVR_INVALID_PURCHASE_MODE =                      unchecked((int)0xE704002D); 
+
+		// Invalid Task group ID 
+		public const int E_SVR_INVALID_TASK_GROUPID =                       unchecked((int)0xE704002E); 
 
 	}
 }

@@ -57,11 +57,11 @@ PolicyType* ServerEntity::GetPolicy()
 // Get/Set Class Name
 ServerEntity::ServerEntityClass ServerEntity::GetRemoteClass() const
 {
-	auto pConn = (const Net::IConnection*)m_pConnLocal;
+	auto pConn = *m_pConnLocal;
 	if (pConn)
 		return pConn->GetConnectionInfo().RemoteClass;
 
-	pConn = (const Net::IConnection*)m_pConnRemote;
+	pConn = *m_pConnRemote;
 	if (pConn)
 		return pConn->GetConnectionInfo().RemoteClass;
 

@@ -67,7 +67,7 @@ int mkreq(X509_REQ **req, EVP_PKEY **pkeyp, int bits, int serial, int days)
     X509_REQ *x;
     EVP_PKEY *pk;
     RSA *rsa;
-    X509_NAME *name = NULL;
+    SSL_X509_NAME *name = NULL;
     STACK_OF(X509_EXTENSION) *exts = NULL;
 
     if ((pk = EVP_PKEY_new()) == NULL)

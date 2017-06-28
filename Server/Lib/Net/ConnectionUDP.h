@@ -68,32 +68,32 @@ namespace Net {
 	protected:
 		
 		// Process network control message
-		virtual HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl ) = 0;
+		virtual Result ProcNetCtrl( const MsgNetCtrl* pNetCtrl ) = 0;
 
 		// Process NetCtrl queue
-		virtual HRESULT ProcNetCtrlQueue() = 0;
+		virtual Result ProcNetCtrlQueue() = 0;
 
 		// Process Recv queue
-		virtual HRESULT ProcRecvReliableQueue() = 0;
+		virtual Result ProcRecvReliableQueue() = 0;
 
 		// Process Send queue
-		virtual HRESULT ProcSendReliableQueue() = 0;
+		virtual Result ProcSendReliableQueue() = 0;
 		
 		// Process message window queue
-		virtual HRESULT ProcReliableSendRetry() = 0;
+		virtual Result ProcReliableSendRetry() = 0;
 
 		// Process connection state
-		virtual HRESULT ProcConnectionState() = 0;
+		virtual Result ProcConnectionState() = 0;
 
 
 		WriteBufferQueue* GetWriteQueueUDP() { return m_pWriteQueuesUDP; }
 
 
 		// Send packet buffer to connection with network device
-		virtual HRESULT SendBufferUDP(IOBUFFER_WRITE *pSendBuffer);
-		virtual HRESULT EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer);
+		virtual Result SendBufferUDP(IOBUFFER_WRITE *pSendBuffer);
+		virtual Result EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer);
 
-		virtual HRESULT SendRaw(Message::MessageData* &pMsg) override;
+		virtual Result SendRaw(Message::MessageData* &pMsg) override;
 
 	public:
 		// Constructor
@@ -107,52 +107,52 @@ namespace Net {
 		inline void SetMaxGuarantedRetry( UINT uiMaxGuarantedRetry );
 
 		// Set message window size connection
-		HRESULT SetMessageWindowSize( UINT uiSend, UINT uiRecv );
+		Result SetMessageWindowSize( UINT uiSend, UINT uiRecv );
 
 		// Change remote Address
 		void ChangeRemoteAddress( const sockaddr_storage& socAddr );
 
 		// gathering
-		virtual HRESULT SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
-		virtual HRESULT SendPending( Message::MessageData* pMsg );
-		HRESULT SendFlush();
+		virtual Result SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
+		virtual Result SendPending( Message::MessageData* pMsg );
+		Result SendFlush();
 
 		// Prepare gathering buffer
-		HRESULT PrepareGatheringBuffer( UINT uiRequiredSize );
+		Result PrepareGatheringBuffer( UINT uiRequiredSize );
 		UINT GetGatheredBufferSize() { return m_uiGatheredSize; }
 
 
 		// frame sequence
-		HRESULT SendFrameSequenceMessage(Message::MessageData* pMsg);
-		HRESULT OnFrameSequenceMessage(Message::MessageData* pMsg, const std::function<void(Message::MessageData* pMsgData)>& action);
+		Result SendFrameSequenceMessage(Message::MessageData* pMsg);
+		Result OnFrameSequenceMessage(Message::MessageData* pMsg, const std::function<void(Message::MessageData* pMsgData)>& action);
 
 		// Initialize connection
-		virtual HRESULT InitConnection(SOCKET socket, const ConnectionInformation &connectInfo) override;
+		virtual Result InitConnection(SOCKET socket, const ConnectionInformation &connectInfo) override;
 
 		// Close connection
-		virtual HRESULT CloseConnection() override;
+		virtual Result CloseConnection() override;
 
 		// Clear Queue
-		virtual HRESULT ClearQueues() override;
+		virtual Result ClearQueues() override;
 
 		// Disconnect connection
-		virtual HRESULT Disconnect(const char* reason) override;
+		virtual Result Disconnect(const char* reason) override;
 
 
 		// Send message to connected entity
-		virtual HRESULT Send( Message::MessageData* &pMsg ) override;
+		virtual Result Send( Message::MessageData* &pMsg ) override;
 
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl() = 0;
+		//virtual Result UpdateNetCtrl() = 0;
 
 		// Update send queue and return remain item count in send queue
-		virtual HRESULT UpdateSendQueue() override;
+		virtual Result UpdateSendQueue() override;
 
 		// Update Send buffer Queue, TCP and UDP client connection
-		virtual HRESULT UpdateSendBufferQueue() override;
+		virtual Result UpdateSendBufferQueue() override;
 
-		virtual HRESULT ProcGuarrentedMessageWindow(const std::function<void(Message::MessageData* pMsgData)>& action);
+		virtual Result ProcGuarrentedMessageWindow(const std::function<void(Message::MessageData* pMsgData)>& action);
 
 	};
 
@@ -168,22 +168,22 @@ namespace Net {
 	protected:
 		
 		// Process network control message
-		virtual HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl );
+		virtual Result ProcNetCtrl( const MsgNetCtrl* pNetCtrl );
 
 		// Process NetCtrl queue
-		virtual HRESULT ProcNetCtrlQueue();
+		virtual Result ProcNetCtrlQueue();
 
 		// Process Recv queue
-		virtual HRESULT ProcRecvReliableQueue();
+		virtual Result ProcRecvReliableQueue();
 
 		// Process Send queue
-		virtual HRESULT ProcSendReliableQueue();
+		virtual Result ProcSendReliableQueue();
 		
 		// Process message window queue
-		virtual HRESULT ProcReliableSendRetry();
+		virtual Result ProcReliableSendRetry();
 
 		// Process connection state
-		virtual HRESULT ProcConnectionState();
+		virtual Result ProcConnectionState();
 
 
 	public:
@@ -191,11 +191,11 @@ namespace Net {
 		ConnectionUDP() : ConnectionUDPBase( BASE_WINDOW_SIZE ) {}
 
 		// called when incomming message occure
-		virtual HRESULT OnRecv( UINT uiBuffSize, const BYTE* pBuff );
-		virtual HRESULT OnRecv( Message::MessageData *pMsg );
+		virtual Result OnRecv( UINT uiBuffSize, const BYTE* pBuff );
+		virtual Result OnRecv( Message::MessageData *pMsg );
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl();
+		virtual Result UpdateNetCtrl();
 	};
 
 
@@ -219,12 +219,12 @@ namespace Net {
 
 
 		// Initialize packet synchronization
-		virtual HRESULT InitSynchronization() override;
+		virtual Result InitSynchronization() override;
 
-		HRESULT ProcNetCtrl( const MsgNetCtrl* pNetCtrl ) override;
+		Result ProcNetCtrl( const MsgNetCtrl* pNetCtrl ) override;
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl() override;
+		virtual Result UpdateNetCtrl() override;
 	};
 
 	
@@ -248,7 +248,7 @@ namespace Net {
 		virtual ~ConnectionUDPServer();
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl() override;
+		virtual Result UpdateNetCtrl() override;
 	};
 	
 
@@ -267,11 +267,11 @@ namespace Net {
 
 	protected:
 		// Send packet buffer to connection with network device
-		//virtual HRESULT SendBufferUDP(IOBUFFER_WRITE *pSendBuffer) override;
-		virtual HRESULT EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer) override;
+		//virtual Result SendBufferUDP(IOBUFFER_WRITE *pSendBuffer) override;
+		virtual Result EnqueueBufferUDP(IOBUFFER_WRITE *pSendBuffer) override;
 
 		// Send message to connection with network device
-		virtual HRESULT SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
+		virtual Result SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
 
 	public:
 		// Constructor
@@ -282,31 +282,31 @@ namespace Net {
 
 
 		// called when reciving TCP message
-		virtual HRESULT Recv(IOBUFFER_READ* pIOBuffer) override;
-		virtual HRESULT OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer ) override;
+		virtual Result Recv(IOBUFFER_READ* pIOBuffer) override;
+		virtual Result OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer ) override;
 
-		virtual HRESULT OnSendReady() override;
+		virtual Result OnSendReady() override;
 
 		// called when send completed
-		virtual HRESULT OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
+		virtual Result OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 		// Pending recv New one
-		HRESULT PendingRecv();
+		Result PendingRecv();
 
 
 		
 		// Initialize connection
-		virtual HRESULT InitConnection( SOCKET socket, const ConnectionInformation &connectInfo ) override;
+		virtual Result InitConnection( SOCKET socket, const ConnectionInformation &connectInfo ) override;
 
 		// Reinitialize and set remote address
-		HRESULT ReInitialize( const sockaddr_storage& socAddr );
+		Result ReInitialize( const sockaddr_storage& socAddr );
 
 
 		// Update net control, process connection heartbit, ... etc
-		virtual HRESULT UpdateNetCtrl() override;
+		virtual Result UpdateNetCtrl() override;
 
 		// Update Send buffer Queue, TCP and UDP client connection
-		virtual HRESULT UpdateSendBufferQueue() override;
+		virtual Result UpdateSendBufferQueue() override;
 	};
 
 

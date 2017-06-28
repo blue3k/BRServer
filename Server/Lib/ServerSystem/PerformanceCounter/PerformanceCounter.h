@@ -75,8 +75,8 @@ namespace Svr {
 
 		virtual INT64 GetRawValue() = 0;
 
-		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) { return S_SYSTEM_OK; }
-		virtual HRESULT CopyFrom(UINT bufferSize, BYTE* pBuffer) { return S_SYSTEM_OK; }
+		virtual Result CopyTo(UINT bufferSize, BYTE* pBuffer) { return ResultCode::SUCCESS; }
+		virtual Result CopyFrom(UINT bufferSize, BYTE* pBuffer) { return ResultCode::SUCCESS; }
 
 	};
 
@@ -126,24 +126,24 @@ namespace Svr {
 
 
 
-		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) override
+		virtual Result CopyTo(UINT bufferSize, BYTE* pBuffer) override
 		{
 			Assert(bufferSize >= sizeof(DataType));
 			if (bufferSize < sizeof(DataType))
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			DataType temp = m_RawValue.load(std::memory_order_relaxed);
 
 			memcpy(pBuffer, &temp, sizeof(DataType));
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		virtual HRESULT CopyFrom(UINT bufferSize, BYTE* pBuffer) override
+		virtual Result CopyFrom(UINT bufferSize, BYTE* pBuffer) override
 		{
 			Assert(bufferSize >= sizeof(DataType));
 			if (bufferSize < sizeof(DataType))
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			DataType temp;
 			memcpy(&temp, pBuffer, sizeof(DataType));
@@ -152,7 +152,7 @@ namespace Svr {
 
 			IncSyncSerial();
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		virtual INT64 GetRawValue() override						{ return (INT64)m_RawValue.load(std::memory_order_relaxed); }
@@ -238,7 +238,7 @@ namespace Svr {
 			return *this;
 		}
 
-		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) override
+		virtual Result CopyTo(UINT bufferSize, BYTE* pBuffer) override
 		{
 			auto timeSince = Util::TimeSince(m_TickCountStartTime);
 			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))
@@ -256,7 +256,7 @@ namespace Svr {
 				auto totalCount = m_Values[indexCalculate].TotalCount.load(std::memory_order_relaxed);
 				auto newValue = (total * 1000) / totalCount;
 
-				PerformanceCounterRaw<DataType>::SetRawValue(newValue / timeSince.count());
+				PerformanceCounterRaw<DataType>::SetRawValue((int)(newValue / timeSince.count()));
 
 
 				// clear used values
@@ -294,7 +294,7 @@ namespace Svr {
 		}
 
 
-		virtual HRESULT CopyTo(UINT bufferSize, BYTE* pBuffer) override
+		virtual Result CopyTo(UINT bufferSize, BYTE* pBuffer) override
 		{
 			auto timeSince = Util::TimeSince(m_TickCountStartTime);
 			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))

@@ -21,7 +21,7 @@
 #include "ServerSystem/Transaction.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/EventTask.h"
+#include "Common/Task/EventTask.h"
 #include "Net/ConnectionUDP.h"
 
 
@@ -48,7 +48,7 @@ namespace Svr
 
 
 	// set connection
-	HRESULT SimpleUserEntity::SetConnection(SharedPointerT<Net::Connection>&& pConn)
+	Result SimpleUserEntity::SetConnection(SharedPointerT<Net::Connection>&& pConn)
 	{
 		MutexScopeLock localLock(m_ConnectionLock);
 
@@ -63,7 +63,7 @@ namespace Svr
 			m_pConnection->GetNet()->TakeOverConnection((Net::Connection*)m_pConnection);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Release connection if has
@@ -87,9 +87,9 @@ namespace Svr
 	}
 
 	// Initialize entity to proceed new connection
-	HRESULT SimpleUserEntity::InitializeEntity( EntityID newEntityID )
+	Result SimpleUserEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		SetAccountID( 0 );
 		SetAuthTicket( 0 );
@@ -104,12 +104,12 @@ namespace Svr
 
 
 	// Close entity and clear transaction
-	HRESULT SimpleUserEntity::TerminateEntity()
+	Result SimpleUserEntity::TerminateEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		SetAccountID( 0 );
 		SetAuthTicket( 0 );
@@ -126,9 +126,9 @@ namespace Svr
 
 
 	// Process Connection event
-	HRESULT SimpleUserEntity::ProcessConnectionEvent( const Net::IConnection::Event& conEvent )
+	Result SimpleUserEntity::ProcessConnectionEvent( const Net::IConnection::Event& conEvent )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		switch( conEvent.EventType )
 		{
@@ -149,9 +149,9 @@ namespace Svr
 
 
 	// Process Message and release message after all processed
-	HRESULT SimpleUserEntity::ProcessMessage(Message::MessageData* &pIMsg)
+	Result SimpleUserEntity::ProcessMessageData(Message::MessageData* &pIMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
 		Svr::Transaction *pNewTrans = nullptr;
@@ -171,16 +171,16 @@ namespace Svr
 		case Message::MSGTYPE_EVENT:
 		{
 			//Assert(m_pHandlerTable);
-			if (FAILED(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(GetConnection(), pIMsg, pNewTrans)))
+			if (!(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(GetConnection(), pIMsg, pNewTrans)))
 			{
 				svrTrace(Trace::TRC_ERROR, "Failed to handle remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
-				svrErr(E_SVR_NOTEXPECTED_MESSAGE);
+				svrErr(ResultCode::E_SVR_NOTEXPECTED_MESSAGE);
 			}
 			break;
 		}
 		default:
 			svrTrace(Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityID(), pMsgHdr->msgID);
-			svrErr(E_SVR_NOTEXPECTED_MESSAGE);
+			svrErr(ResultCode::E_SVR_NOTEXPECTED_MESSAGE);
 			break;
 		};
 
@@ -194,7 +194,7 @@ namespace Svr
 
 			if (pNewTrans->IsDirectProcess())
 			{
-				HRESULT hrRes = pNewTrans->StartTransaction();
+				Result hrRes = pNewTrans->StartTransaction();
 				if (!pNewTrans->IsClosed())
 				{
 					pNewTrans->CloseTransaction(hrRes);
@@ -218,21 +218,21 @@ namespace Svr
 		ReleaseTransaction(pNewTrans);
 		Util::SafeRelease(pIMsg);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 
 	}
 
 
 
-	HRESULT SimpleUserEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result SimpleUserEntity::TickUpdate(TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pIMsg = nullptr;
 		Net::IConnection::Event conEvent;
 
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		// Update connection
 		// We need to make a copy here while m_pConnection can be changed on another thread
@@ -249,7 +249,7 @@ namespace Svr
 			auto loopCount = pConn->GetConnectionEventCount();
 			for (decltype(loopCount) iProc = 0; iProc < loopCount; iProc++)
 			{
-				if (FAILED(pConn->DequeueConnectionEvent(conEvent)))
+				if (!(pConn->DequeueConnectionEvent(conEvent)))
 					break;
 
 				ProcessConnectionEvent( conEvent );
@@ -262,10 +262,10 @@ namespace Svr
 				loopCount = pConn->GetRecvMessageCount();
 				for( decltype(loopCount) iProc = 0; iProc < loopCount; iProc++ )
 				{
-					if (FAILED(pConn->GetRecvMessage(pIMsg)))
+					if (!(pConn->GetRecvMessage(pIMsg)))
 						break;
 
-					ProcessMessage(pIMsg );
+					ProcessMessageData(pIMsg );
 
 					Util::SafeRelease( pIMsg );
 				}
@@ -286,19 +286,19 @@ namespace Svr
 
 
 	// Set Account ID, this will update Account ID table
-	HRESULT SimpleUserEntity::SetAccountID( AccountID accID )
+	Result SimpleUserEntity::SetAccountID( AccountID accID )
 	{
 		m_AccountID = accID;
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	//// Called when this entity have a routed message
-	//HRESULT SimpleUserEntity::OnRoutedMessage(Message::MessageData* &pMsg)
+	//Result SimpleUserEntity::OnRoutedMessage(Message::MessageData* &pMsg)
 	//{
 	//	// TODO: Call process message directly when it runs on the same thread
-	//	HRESULT hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(), pMsg));
-	//	if (SUCCEEDED(hr))
+	//	Result hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(), pMsg));
+	//	if ((hr))
 	//		pMsg = nullptr;
 
 	//	return hr;
@@ -314,25 +314,25 @@ namespace Svr
 		ProcessConnectionEvent(evt);
 	}
 
-	HRESULT SimpleUserEntity::OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg)
+	Result SimpleUserEntity::OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg)
 	{
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(pConn), pMsg));
 	}
 
-	HRESULT SimpleUserEntity::OnNetSyncMessage(Net::IConnection* pConn)
+	Result SimpleUserEntity::OnNetSyncMessage(Net::IConnection* pConn)
 	{
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
 	}
 
-	HRESULT SimpleUserEntity::OnNetSendReadyMessage(Net::IConnection* pConn)
+	Result SimpleUserEntity::OnNetSendReadyMessage(Net::IConnection* pConn)
 	{
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
 	}
 
 
-	HRESULT SimpleUserEntity::OnEventTask(const Svr::EventTask& eventTask)
+	Result SimpleUserEntity::OnEventTask(const EventTask& eventTask)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		Transaction *pCurTran = nullptr;
 		Message::MessageData* pMsg = nullptr;
@@ -341,33 +341,33 @@ namespace Svr
 
 		switch (eventTask.EventType)
 		{
-		case Svr::EventTask::EventTypes::CONNECTION_EVENT:
+		case EventTask::EventTypes::CONNECTION_EVENT:
 			ProcessConnectionEvent(*eventTask.EventData.pConnectionEvent);
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_EVENT:
 			pMsg = eventTask.EventData.MessageEvent.pMessage;
 			pConn = BR_DYNAMIC_CAST(Net::ConnectionUDPBase*,GetConnection());
 			if (pMsg != nullptr)
 			{
-				ProcessMessage(pMsg);
+				ProcessMessageData(pMsg);
 				Util::SafeRelease(pMsg);
 			}
 			else
 			{
 				if (pConn != nullptr)
-					pConn->ProcGuarrentedMessageWindow([&](Message::MessageData* pMsg){ ProcessMessage(pMsg); });
+					pConn->ProcGuarrentedMessageWindow([&](Message::MessageData* pMsg){ ProcessMessageData(pMsg); });
 			}
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
 			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
 			break;
-		case Svr::EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+		case EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
 			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
-		case Svr::EventTask::EventTypes::TRANSRESULT_EVENT:
+		case EventTask::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)
 			{
-				if (SUCCEEDED(FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
+				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
 					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
 				}
@@ -376,16 +376,16 @@ namespace Svr
 					svrTrace(Trace::TRC_WARN, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
 					Util::SafeRelease(pRes);
-					//svrErr(E_SYSTEM_FAIL);
+					//svrErr(ResultCode::FAIL);
 				}
 			}
 			else
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Faild to process transaction result. null Transaction result.");
+				svrTrace(Svr::TRC_TRANSACTION, "Failed to process transaction result. null Transaction result.");
 			}
 			break;
 		default:
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 		}
 
 	//Proc_End:

@@ -14,12 +14,15 @@
 #include "stdafx.h"
 #include "Common/Trace.h"
 #include "Common/Message.h"
-#include "Common/MemLog.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/MemoryPool.h"
 #include "Common/ResultCode/BRResultCodeNet.h"
 #include "Common/BrSvrTypes.h"
 
+#if __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
 
 
 namespace BR {
@@ -51,12 +54,11 @@ namespace Message {
 
 	MessageData::~MessageData()
 	{
-	#ifdef DEBUG
-		if( GetMemLogger() )
-			GetMemLogger()->RemoveFromLog(((BYTE*)this)+1);
-	#endif
 	}
-
+#if __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
 	void MessageData::AssignSequence( UINT sequence )
 	{
 		// sequence must not assigned twice
@@ -121,10 +123,10 @@ namespace Message {
 
 		MemoryPool *pMemPool = nullptr;
 		void *pPtr = nullptr;
-		if( FAILED(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
+		if( !(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
 			return nullptr;
 
-		if( FAILED(pMemPool->Alloc(pPtr,"MessageData::NewMessage") ) )
+		if( !(pMemPool->Alloc(pPtr,"MessageData::NewMessage") ) )
 			return nullptr;
 
 		pBuffer = (BYTE*)pPtr;
@@ -136,10 +138,7 @@ namespace Message {
 		pMsg->GetMessageHeader()->msgID.ID = uiMsgID;
 		pMsg->GetMessageHeader()->Length = uiMsgBufSize;
 
-#ifdef _DEBUG
-		if( GetMemLogger() )
-			GetMemLogger()->AddToLog( 2, ((BYTE*)pMsg)+1, uiMsgID );
-#endif
+
 		// Increase one for message
 		pMsg->AddRef();
 
@@ -163,13 +162,13 @@ namespace Message {
 		if( m_pMsgHeader->msgID.IDs.Mobile )
 		{
 			AssertRel(m_pMsgHeader->Length >= sizeof(MobileMessageHeader));
-			length = m_pMsgHeader->Length - sizeof(MobileMessageHeader);
+			length = (uint)(m_pMsgHeader->Length - sizeof(MobileMessageHeader));
 			pDataPtr = (BYTE*)(m_pMobileMsgHeader + 1);
 		}
 		else
 		{
 			AssertRel(m_pMsgHeader->Length >= sizeof(MessageHeader));
-			length = m_pMsgHeader->Length - sizeof(MessageHeader);
+			length = (uint)(m_pMsgHeader->Length - sizeof(MessageHeader));
 			pDataPtr = (BYTE*)(m_pMsgHeader + 1);
 		}
 	}
@@ -180,17 +179,17 @@ namespace Message {
 		if( m_pMsgHeader->msgID.IDs.Mobile )
 		{
 			AssertRel(m_pMsgHeader->Length >= sizeof(MobileMessageHeader));
-			length = m_pMsgHeader->Length - sizeof(MobileMessageHeader);
+			length = (uint)(m_pMsgHeader->Length - sizeof(MobileMessageHeader));
 		}
 		else
 		{
 			AssertRel(m_pMsgHeader->Length >= sizeof(MessageHeader));
-			length = m_pMsgHeader->Length - sizeof(MessageHeader);
+			length = (uint)(m_pMsgHeader->Length - sizeof(MessageHeader));
 		}
 		return length;
 	}
 
-	
+
 	// Update checksume
 	void MessageData::UpdateChecksum()
 	{
@@ -249,7 +248,7 @@ namespace Message {
 		m_pMsgHeader->msgID.IDs.Encrypted = true;
 	}
 
-	HRESULT MessageData::ValidateChecksum()
+	Result MessageData::ValidateChecksum()
 	{
 		UINT length = 0;
 		BYTE* pDataPtr = nullptr;
@@ -258,23 +257,23 @@ namespace Message {
 		if( m_pMsgHeader == nullptr || m_pMsgHeader->Length == 0 )
 		{
 			Assert(0);
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		// Nothing to check
 		if( length == 0 )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		UINT16 Crc32 = Util::Crc32( length, pDataPtr );
 		if( Crc32 == 0 ) Crc32 = ~Crc32;
 
 		if( Crc32 != m_pMsgHeader->Crc32 )
-			return E_NET_INVALID_MESSAGE_CHECKSUM;
+			return ResultCode::E_NET_INVALID_MESSAGE_CHECKSUM;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 	
-	HRESULT MessageData::ValidateChecksumNDecrypt()
+	Result MessageData::ValidateChecksumNDecrypt()
 	{
 		UINT length = 0;
 		BYTE* pDataPtr = nullptr;
@@ -283,7 +282,7 @@ namespace Message {
 		if( m_pMsgHeader == nullptr || m_pMsgHeader->Length == 0 )
 		{
 			m_pMsgHeader->msgID.IDs.Encrypted = false;
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 		}
 
 		if( !m_pMsgHeader->msgID.IDs.Encrypted )
@@ -295,7 +294,7 @@ namespace Message {
 		if( length == 0 )
 		{
 			m_pMsgHeader->msgID.IDs.Encrypted = false;
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		UINT16 Crc32 = Util::Crc32NDecrypt( length, pDataPtr );
@@ -305,9 +304,9 @@ namespace Message {
 
 		//Assert(m_pMsgHeader->Crc32 != 0);
 		if( Crc32 != m_pMsgHeader->Crc32 )
-			return E_NET_INVALID_MESSAGE_CHECKSUM;
+			return ResultCode::E_NET_INVALID_MESSAGE_CHECKSUM;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -318,23 +317,23 @@ namespace Message {
 		this->~MessageData();
 
 		MemoryPool *pMemPool = nullptr;
-		if( FAILED(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
+		if( !(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
 			return;
 
-		if( FAILED(pMemPool->Free((void*)this, "MessageData::DeleteThis") ) )
+		if( !(pMemPool->Free((void*)this, "MessageData::DeleteThis") ) )
 			return;
 	}
 
 
 
 
-	HRESULT MessageBase::ParseMsg()
+	Result MessageBase::ParseMsg()
 	{ 
 		if(m_bIsParsed)
 			return m_hrParsing;
 
 		m_bIsParsed = true;
-		m_hrParsing = ParseIMsg(GetMessage());
+		m_hrParsing = ParseMessage(GetMessage());
 
 		return m_hrParsing;
 	}
@@ -342,3 +341,6 @@ namespace Message {
 } // Message
 } // BR
 
+#if __GNUC__
+#pragma GCC diagnostic pop
+#endif

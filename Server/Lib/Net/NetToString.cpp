@@ -19,7 +19,7 @@ namespace BR {
 	
 
 	template<>
-	HRESULT ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionState& Data, int Option )
+	Result ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionState& Data, int Option )
 	{
 		unused(Option);
 		return ToStringEnum( pBuff, iBuffLen, Data );
@@ -27,70 +27,70 @@ namespace BR {
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const sockaddr_in6& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const sockaddr_in6& Data, int Option)
 	{
 		unused(Option);
 		char ipstr[INET6_ADDRSTRLEN] = "";
 		inet_ntop(Data.sin6_family, (void*)&Data.sin6_addr, ipstr, sizeof ipstr);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, ipstr)))
-		//if (FAILED(ToString(pBuff, iBuffLen, ipstr, 0)))
-			return E_SYSTEM_FAIL;
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ipstr)))
+		//if (!(ToString(pBuff, iBuffLen, ipstr, 0)))
+			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
-			return E_SYSTEM_FAIL;
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
+			return ResultCode::FAIL;
 		
-		if( FAILED( _IToA( (UINT32)ntohs(Data.sin6_port), pBuff, iBuffLen, 10, -1 ) ) )
-			return E_SYSTEM_FAIL;
+		if( !( _IToA( (UINT32)ntohs(Data.sin6_port), pBuff, iBuffLen, 10, -1 ) ) )
+			return ResultCode::FAIL;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	template<>
-	HRESULT ToString(char*& pBuff, INT& iBuffLen, const sockaddr_storage& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const sockaddr_storage& Data, int Option)
 	{
 		unused(Option);
 		NetAddress addr;
 
 		Net::SockAddr2Addr(Data, addr);
 
-		if (FAILED(StrUtil::StringCpyEx(pBuff, iBuffLen, addr.strAddr)))
-			return E_SYSTEM_FAIL;
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, addr.strAddr)))
+			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
-			return E_SYSTEM_FAIL;
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
+			return ResultCode::FAIL;
 		
-		if( FAILED( _IToA( (UINT32)addr.usPort, pBuff, iBuffLen, 10, -1 ) ) )
-			return E_SYSTEM_FAIL;
+		if( !( _IToA( (UINT32)addr.usPort, pBuff, iBuffLen, 10, -1 ) ) )
+			return ResultCode::FAIL;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	template<>
-	HRESULT ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionInformation& Data, int Option )
+	Result ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionInformation& Data, int Option )
 	{
 		unused(Option);
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "Local:" ) ) )
-			return E_SYSTEM_FAIL;
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "Local:" ) ) )
+			return ResultCode::FAIL;
 
-		if( FAILED( ToString( pBuff, iBuffLen, Data.Local, 0) ) )
-			return E_SYSTEM_FAIL;
+		if( !( ToString( pBuff, iBuffLen, Data.Local, 0) ) )
+			return ResultCode::FAIL;
 
-		if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, "Remote:" ) ) )
-			return E_SYSTEM_FAIL;
+		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, "Remote:" ) ) )
+			return ResultCode::FAIL;
 
-		if( FAILED( ToString( pBuff, iBuffLen, Data.Remote, 0) ) )
-			return E_SYSTEM_FAIL;
+		if( !( ToString( pBuff, iBuffLen, Data.Remote, 0) ) )
+			return ResultCode::FAIL;
 
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 		
 	template<>
-	HRESULT ToString( char*& pBuff, INT& iBuffLen, const NetClass& Data, int Option )
+	Result ToString( char*& pBuff, INT& iBuffLen, const NetClass& Data, int Option )
 	{
 		unused(Option);
 		return ToStringEnum( pBuff, iBuffLen, Data );

@@ -65,9 +65,9 @@ namespace Svr {
 		PerformanceCounterClient::RegisterPerformanceCounterInstance(this);
 	}
 
-	HRESULT PerformanceCounterInstance::AddCounter(PerformanceCounter* pCounter)
+	Result PerformanceCounterInstance::AddCounter(PerformanceCounter* pCounter)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChkPtr(pCounter);
 

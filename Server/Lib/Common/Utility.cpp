@@ -72,13 +72,14 @@ namespace Util {
 
 			StrUtil::WCSToUTF8( g_wszModulePath, g_szModulePath );
 			StrUtil::WCSToUTF8( g_wszModuleName, g_szModuleName );
+#elif ANDROID
 #else
 			get_executable_path(g_szModulePath, countof(g_szModulePath));
 
 			char exe[1024];
 			int ret;
 
-			ret = readlink("/proc/self/exe", exe, sizeof(exe) - 1);
+			ret = (int)readlink("/proc/self/exe", exe, sizeof(exe) - 1);
 			if (ret == -1) {
 				fprintf(stderr, "ERRORRRRR\n");
 				exit(1);
@@ -156,7 +157,7 @@ namespace Util {
 		return g_szModulePath;
 	}
 
-	void SetModulePathA(const char* customModulePath, const char* moduleName)
+	void SetModulePath(const char* customModulePath, const char* moduleName)
 	{
 		StrUtil::StringCpy(g_szModulePath, customModulePath);
 		StrUtil::StringCpy(g_szModuleName, moduleName);

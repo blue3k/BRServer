@@ -37,9 +37,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT PartyManagerTransCreateParty::StartTransaction()
+	Result PartyManagerTransCreateParty::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::StartTransaction() );
 
@@ -55,9 +55,9 @@ namespace Svr {
 
 
 	// Start Transaction
-	HRESULT PartyManagerTransPartyDeleted::StartTransaction()
+	Result PartyManagerTransPartyDeleted::StartTransaction()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(super::StartTransaction());
 

@@ -43,10 +43,10 @@ namespace GameServer {
 		GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg);
 		virtual ~GameServerTransRegisterPlayerToJoinGameServer() {}
 
-		HRESULT OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
+		Result OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
 
 		// Start Transaction
-		virtual HRESULT StartTransaction() override;
+		virtual Result StartTransaction() override;
 
 		Policy::ISvrPolicyGameServer* GetPolicy() { return super::template GetPolicy<Policy::ISvrPolicyGameServer>(); }
 

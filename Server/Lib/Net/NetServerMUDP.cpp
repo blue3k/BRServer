@@ -50,9 +50,9 @@ namespace Net {
 	{
 	}
 
-	HRESULT ServerMUDP::SendRaw(const sockaddr_storage& dstAddress, Message::MessageData* &pMsg)
+	Result ServerMUDP::SendRaw(const sockaddr_storage& dstAddress, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		IOBUFFER_WRITE *pSendBuffer = nullptr;
 
 		netChkPtr(pMsg);
@@ -82,9 +82,9 @@ namespace Net {
 	}
 
 	// Make Ack packet and enqueue to SendNetCtrlqueue
-	HRESULT ServerMUDP::SendNetCtrl( const sockaddr_storage& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	Result ServerMUDP::SendNetCtrl( const sockaddr_storage& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_SYSTEM_OK, hrTem = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrTem = ResultCode::SUCCESS;
 		MsgMobileNetCtrl *pNetCtrl = NULL;
 		Message::MessageData *pMsg = NULL;
 
@@ -92,7 +92,7 @@ namespace Net {
 
 		pNetCtrl = (MsgMobileNetCtrl*)pMsg->GetMessageBuff();
 		pNetCtrl->PeerID = UID;
-		pNetCtrl->msgID.IDSeq.Sequence = uiSequence;
+		pNetCtrl->msgID.SetSequence(uiSequence);
 		pNetCtrl->rtnMsgID = msgID;
 
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = true;
@@ -100,7 +100,7 @@ namespace Net {
 
 		hrTem = SendRaw(dstAddress, pMsg);
 		//hrTem = SendMsg( nullptr, dstAddress, pMsg );
-		if( FAILED(hrTem) )
+		if( !(hrTem) )
 		{
 			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed in direct: DstAddr:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							dstAddress, 
@@ -109,7 +109,7 @@ namespace Net {
 							hrTem );
 
 			// ignore io send fail except connection closed
-			if( hrTem == E_NET_CONNECTION_CLOSED )
+			if( hrTem == Result(ResultCode::E_NET_CONNECTION_CLOSED) )
 			{
 				goto Proc_End;
 			}
@@ -120,12 +120,12 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ServerMUDP::OnNoConnectionPacket(const struct sockaddr_storage& from, const BYTE* pData)
+	Result ServerMUDP::OnNoConnectionPacket(const struct sockaddr_storage& from, const BYTE* pData)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (pData == nullptr)
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		MsgMobileNetCtrl *pNetCtrl = (MsgMobileNetCtrl*)pData;
 		if (pNetCtrl->Length != sizeof(MsgMobileNetCtrl) 
@@ -134,7 +134,7 @@ namespace Net {
 		{
 			// send disconnect
 			netTrace(Trace::TRC_WARN, "Invalid incomming packet size. ignoring from:{0} msgID:{1}, len:{2}", from, pNetCtrl->msgID, pNetCtrl->Length);
-			return E_NET_BADPACKET_SIZE;
+			return ResultCode::E_NET_BADPACKET_SIZE;
 		}
 
 		if (!GetIsEnableAccept())
@@ -145,15 +145,15 @@ namespace Net {
 				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_TIMESYNC.GetMsgID())
 			{
 				// send disconnect
-				//netTrace(Trace::TRC_WARN, "Invalid packet size. Try to disconnect from:{0} msg:{1}", from, pNetCtrl->msgID);
+				netTrace(Trace::TRC_DBG1, "Unexpected packet from:{0} msg:{1}. Disconnecting...", from, pNetCtrl->msgID);
 				netChk(SendNetCtrl(from, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 			}
 			else
 			{
-				netTrace(Trace::TRC_WARN, "Invalid packet size. Try to disconnect from:{0} msg:{1}", from, pNetCtrl->msgID);
+				netTrace(Trace::TRC_WARN, "Unexpected packet from:{0} msg:{1}. Ignoring...", from, pNetCtrl->msgID);
 			}
 
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 		}
 
 
@@ -187,22 +187,22 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ServerMUDP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
+	Result ServerMUDP::OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Connection> pConnection;
 		IConnection::ConnectionInformation connectionInfo;
 		sockaddr_storage from;
 		if (pIOBuffer != nullptr) from = pIOBuffer->NetAddr.From;
 		else memset(&from, 0, sizeof(from));
 
-		if( FAILED( hrRes ) )
+		if( !( hrRes ) )
 		{
 
-			switch( hrRes )
+			switch((uint32_t)hrRes )
 			{
-			case E_NET_CONNECTION_CLOSED:
-			case E_NET_IO_ABORTED:
+			case ResultCode::E_NET_CONNECTION_CLOSED:
+			case ResultCode::E_NET_IO_ABORTED:
 				// This error is no more the reason to disconnect a user, just report it
 				netTrace( TRC_RECV, "UDP bad RECV IP:{0}", from);
 				hr = hrRes;
@@ -281,7 +281,7 @@ namespace Net {
 
 		if (NetSystem::IsProactorSystem())
 		{
-			if (hrRes != E_NET_IO_ABORTED && pIOBuffer != nullptr)
+			if (hrRes != Result(ResultCode::E_NET_IO_ABORTED) && pIOBuffer != nullptr)
 			{
 				pIOBuffer->SetPendingFalse();
 				PendingRecv(pIOBuffer);

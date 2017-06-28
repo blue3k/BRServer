@@ -42,7 +42,7 @@ namespace BR {
 		virtual ~Component() {}
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() { m_IsInitialized = true; return S_SYSTEM_OK; }
+		virtual Result InitializeComponent() { m_IsInitialized = true; return ResultCode::SUCCESS; }
 		// Terminate server component
 		virtual void TerminateComponent() { m_IsInitialized = false;  }
 	};
@@ -92,9 +92,9 @@ namespace BR {
 		}
 		
 		// Initialize components
-		virtual HRESULT InitializeComponents()
+		virtual Result InitializeComponents()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			size_t iComponent = 0;
 			for( ; iComponent < (MaxComponentID+1); iComponent++ )
 			{
@@ -104,13 +104,13 @@ namespace BR {
 						m_Components[iComponent]->TerminateComponent();
 
 					hr = m_Components[iComponent]->InitializeComponent();
-					if (FAILED(hr)) goto Proc_End;
+					if (!(hr)) goto Proc_End;
 				}
 			}
 
 		Proc_End:
 
-			//if( FAILED(hr) )
+			//if( !(hr) )
 			//{
 			//	defTrace( Trace::TRC_ERROR, "Component {0} failed to initialize", iComponent );
 			//}
@@ -118,9 +118,9 @@ namespace BR {
 			return hr;
 		}
 
-		HRESULT TerminateComponents()
+		Result TerminateComponents()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			// Terminate in reverse order
 			int iComponent = (int)MaxComponentID;
 			for (; iComponent >= 0; iComponent--)
@@ -133,7 +133,7 @@ namespace BR {
 
 		//Proc_End:
 
-			//if (FAILED(hr))
+			//if (!(hr))
 			//{
 			//	defTrace(Trace::TRC_ERROR, "Component {0} failed to terminate", iComponent);
 			//}
@@ -170,20 +170,20 @@ namespace BR {
 
 		// Add component
 		template< class ComponentType >
-		HRESULT AddComponent( bool bAllowDuplicatedComponent = false )
+		Result AddComponent( bool bAllowDuplicatedComponent = false )
 		{
 			if( !bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr )
 			{
 				// already inserted
-				return S_SYSTEM_FALSE;
+				return ResultCode::SUCCESS_FALSE;
 			}
 
 			ComponentType* newComponent = new ComponentType;
 			if( newComponent == nullptr )
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
-			HRESULT hr = AddComponent(newComponent);
-			if( FAILED(hr) )
+			Result hr = AddComponent(newComponent);
+			if( !(hr) )
 			{
 				delete newComponent;
 			}
@@ -192,20 +192,20 @@ namespace BR {
 		}
 
 		template< class ComponentType, class ParamType0 >
-		HRESULT AddComponent( ParamType0 p0, bool bAllowDuplicatedComponent = false )
+		Result AddComponent( ParamType0 p0, bool bAllowDuplicatedComponent = false )
 		{
 			if( !bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr )
 			{
 				// already inserted
-				return S_SYSTEM_FALSE;
+				return ResultCode::SUCCESS_FALSE;
 			}
 
 			ComponentType* newComponent = new ComponentType(p0);
 			if( newComponent == nullptr )
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
-			HRESULT hr = AddComponent(newComponent);
-			if( FAILED(hr) )
+			Result hr = AddComponent(newComponent);
+			if( !(hr) )
 			{
 				delete newComponent;
 			}
@@ -214,20 +214,20 @@ namespace BR {
 		}
 
 		template< class ComponentType, class ParamType0, class ParamType1 >
-		HRESULT AddComponent( ParamType0 p0, ParamType1 p1, bool bAllowDuplicatedComponent = false )
+		Result AddComponent( ParamType0 p0, ParamType1 p1, bool bAllowDuplicatedComponent = false )
 		{
 			if( !bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr )
 			{
 				// already inserted
-				return S_SYSTEM_FALSE;
+				return ResultCode::SUCCESS_FALSE;
 			}
 
 			ComponentType* newComponent = new ComponentType(p0,p1);
 			if( newComponent == nullptr )
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
-			HRESULT hr = AddComponent(newComponent);
-			if( FAILED(hr) )
+			Result hr = AddComponent(newComponent);
+			if( !(hr) )
 			{
 				delete newComponent;
 			}
@@ -236,20 +236,20 @@ namespace BR {
 		}
 
 		template< class ComponentType, class ParamType0, class ParamType1, class ParamType2 >
-		HRESULT AddComponent(ParamType0 p0, ParamType1 p1, ParamType2 p2, bool bAllowDuplicatedComponent = false)
+		Result AddComponent(ParamType0 p0, ParamType1 p1, ParamType2 p2, bool bAllowDuplicatedComponent = false)
 		{
 			if (!bAllowDuplicatedComponent && GetComponent<ComponentType>() != nullptr)
 			{
 				// already inserted
-				return S_SYSTEM_FALSE;
+				return ResultCode::SUCCESS_FALSE;
 			}
 
 			ComponentType* newComponent = new ComponentType(p0, p1, p2);
 			if (newComponent == nullptr)
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
-			HRESULT hr = AddComponent(newComponent);
-			if (FAILED(hr))
+			Result hr = AddComponent(newComponent);
+			if (!(hr))
 			{
 				delete newComponent;
 			}
@@ -262,16 +262,16 @@ namespace BR {
 		{}
 
 		template< class ComponentType >
-		HRESULT AddComponent( ComponentType* &newComponent )
+		Result AddComponent( ComponentType* &newComponent )
 		{
 			// invalid component id range
 			if( newComponent->GetComponentID() >= (MaxComponentID+1) )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			if( m_Components[newComponent->GetComponentID()] != nullptr )
 			{
 				// already registered
-				return E_DUPLICATED_COMPONENT;
+				return ResultCode::E_DUPLICATED_COMPONENT;
 			}
 
 			m_Components[newComponent->GetComponentID()] = newComponent;
@@ -280,7 +280,7 @@ namespace BR {
 
 			newComponent = nullptr;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// Get component with its ID

@@ -31,35 +31,35 @@ namespace Util {
 	//	Generic utility functions
 	//
 	// Swap byte of data
-	inline UINT16 SwapByte( UINT16 uiData );
-	inline UINT32 SwapByte( UINT32 uiData );
-	inline UINT64 SwapByte( UINT64 uiData );
+	inline uint16_t SwapByte(uint16_t uiData );
+	inline uint32_t SwapByte(uint32_t uiData );
+	inline uint64_t SwapByte(uint64_t uiData );
 
 
 	// Make crc32 checksum
-	UINT32 Crc32( size_t uiBuffSize, const BYTE* pBuff );
-	UINT32 Crc32( UINT32 uiCrc32, size_t uiBuffSize, const BYTE* pBuff );
+	uint32_t Crc32( size_t uiBuffSize, const BYTE* pBuff );
+	uint32_t Crc32(uint32_t uiCrc32, size_t uiBuffSize, const BYTE* pBuff );
 
 	// Make crc32 checksum and encrypt
-	UINT32 Crc32NEncrypt( size_t uiBuffSize, BYTE* pBuff );
+	uint32_t Crc32NEncrypt( size_t uiBuffSize, BYTE* pBuff );
 
 	// Make crc32 checksum and decrypt
-	UINT32 Crc32NDecrypt( size_t uiBuffSize, BYTE* pBuff );
+	uint32_t Crc32NDecrypt( size_t uiBuffSize, BYTE* pBuff );
 
 
 	// Base 64 encode/decode
-	HRESULT Base64Encode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
-	HRESULT Base64Decode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
+	Result Base64Encode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
+	Result Base64Decode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
 
-	HRESULT Base64URLEncode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
-	HRESULT Base64URLDecode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
+	Result Base64URLEncode(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer, BYTE dummyChar = '\0');
+	Result Base64URLDecode(size_t srcSize, const BYTE* bytes_to_decode, Array<BYTE> &destBuffer, BYTE dummyChar = '=');
 
 	// SHA 256 hashing
-	HRESULT SHA256Hash(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer);
+	Result SHA256Hash(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer);
 
 
 	// Make power of 2 value from given number, will bigger then input
-	UINT NearPowerOf2( UINT32 uiNumber );
+	UINT NearPowerOf2(uint32_t uiNumber );
 
 	// Service Name
 	const WCHAR* GetServiceName();
@@ -75,29 +75,29 @@ namespace Util {
 	const WCHAR* GetModulePath();
 	const char* GetModulePathA();
 
-	void SetModulePathA(const char* customModulePath, const char* moduleName);
+	void SetModulePath(const char* customModulePath, const char* moduleName);
 
 	// Array duplication
 	template<class DupType>
-	HRESULT ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc );
+	Result ArrayDup( DupType* &pDest, INT iSrcCount, const DupType* pSrc );
 
 	// MemCopy Data to binary
 	template< size_t szDstSize, class DataType >
-	HRESULT MemCpy( BYTE (&Dest)[szDstSize], const DataType& Src );
+	Result MemCpy( BYTE (&Dest)[szDstSize], const DataType& Src );
 
 	// MemCopy Data From binary
 	template< size_t szDstSize, class DataType >
-	HRESULT MemCpy( DataType& Dest, const BYTE (&Src)[szDstSize] );
+	Result MemCpy( DataType& Dest, const BYTE (&Src)[szDstSize] );
 
 
 	template<class ArrayType>
-	HRESULT SafeDeleteArray( ArrayType* &pArray );
+	Result SafeDeleteArray( ArrayType* &pArray );
 
 	template<class ValueType>
-	HRESULT SafeDelete( ValueType* &pObj );
+	Result SafeDelete( ValueType* &pObj );
 
 	template<class ValueType>
-	HRESULT SafeRelease( ValueType* &pObj );
+	Result SafeRelease( ValueType* &pObj );
 
 	template<class ValueType>
 	ValueType Min( ValueType Objmin, ValueType Objmax );
@@ -108,8 +108,12 @@ namespace Util {
 	template<class ValType>
 	ValType Abs( ValType value );
 
+	// Android doesn't support log2
+	template<class ValType>
+	inline ValType Log2(ValType x) { return log(x) / 1.4426950408889634; }
+
 	// Peek key from console
-	//HRESULT PeekKey( int &inputKey, NativeHandle hConsole = INVALID_NATIVE_HANDLE_VALUE);
+	//Result PeekKey( int &inputKey, NativeHandle hConsole = INVALID_NATIVE_HANDLE_VALUE);
 
 	
 #include "Utility.inl"

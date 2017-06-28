@@ -59,8 +59,8 @@ namespace BR
 		void UpdateSkipDepth();
 
 #if WINDOWS
-		HRESULT BuildSymbolPath();
-		HRESULT LoadModuleSymbols();
+		Result BuildSymbolPath();
+		Result LoadModuleSymbols();
 
 		FORCEINLINE void GetStackFrame( CONTEXT& context, STACKFRAME64& stackFrame, DWORD& imageType );
 
@@ -92,12 +92,12 @@ namespace BR
 
 	CallStackTrace::CallStackTrace()
 	{
-		StackTraceCount = 0;
-		memset( StackTrace, 0, sizeof(StackTrace) );
+		m_StackTraceCount = 0;
+		memset( m_StackTrace, 0, sizeof(m_StackTrace) );
 	}
 
 #if WINDOWS
-	HRESULT CallStackTrace::PrintStackTrace( int channel, HANDLE hProcess )
+	Result CallStackTrace::PrintStackTrace( int channel, HANDLE hProcess )
 	{
 		BYTE Buffer[1024];
 		memset( Buffer, 0, sizeof(Buffer) );
@@ -109,15 +109,15 @@ namespace BR
 		IMAGEHLP_LINE64 lineInfo;
 		memset( &lineInfo, 0, sizeof(lineInfo) );
 		lineInfo.SizeOfStruct = sizeof(lineInfo);
-		defTrace( channel, "StackTrace:" );
+		defTrace( channel, "m_StackTrace:" );
 
-		for( UINT stackDepth = 0; stackDepth < StackTraceCount && StackTrace[stackDepth] != 0; stackDepth++ )
+		for( UINT stackDepth = 0; stackDepth < m_StackTraceCount && m_StackTrace[stackDepth] != 0; stackDepth++ )
 		{
 			DWORD64 offsetFromSymbol;
-			BOOL symbol = SymFromAddr( hProcess, (DWORD64)StackTrace[stackDepth], &offsetFromSymbol, &symbolInfo );
+			BOOL symbol = SymFromAddr( hProcess, (DWORD64)m_StackTrace[stackDepth], &offsetFromSymbol, &symbolInfo );
 
 			DWORD offsetFromLine;
-			if( SymGetLineFromAddr64( hProcess, (DWORD64)StackTrace[stackDepth], &offsetFromLine, &lineInfo ) )
+			if( SymGetLineFromAddr64( hProcess, (DWORD64)m_StackTrace[stackDepth], &offsetFromLine, &lineInfo ) )
 			{
 				if( symbol )
 				{
@@ -132,7 +132,7 @@ namespace BR
 			{
 				if( !symbol )
 				{
-					DWORD64 relativeAddress = (DWORD64)StackTrace[stackDepth] - ((DWORD64)STACKWALKER_MIN_EXE_OFFSET + MIN_EXEOFFSET);
+					DWORD64 relativeAddress = (DWORD64)m_StackTrace[stackDepth] - ((DWORD64)STACKWALKER_MIN_EXE_OFFSET + MIN_EXEOFFSET);
 					sprintf_s( symbolInfo.Name, symbolInfo.MaxNameLen, "0x%p", (void*)relativeAddress );
 				}
 				defTrace( channel, "{0}", symbolInfo.Name );
@@ -141,25 +141,78 @@ namespace BR
 
 		Trace::Flush();
 
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
+#elif ANDROID
+
+
+	struct BacktraceState
+	{
+		void** current;
+		void** end;
+	};
+
+	static _Unwind_Reason_Code __UnwindCallback(struct _Unwind_Context* context, void* arg)
+	{
+		BacktraceState* state = static_cast<BacktraceState*>(arg);
+		uintptr_t pc = _Unwind_GetIP(context);
+		if (pc) {
+			if (state->current == state->end) {
+				return _URC_END_OF_STACK;
+			}
+			else {
+				*state->current++ = reinterpret_cast<void*>(pc);
+			}
+		}
+		return _URC_NO_REASON;
+	}
+
+	Result CallStackTrace::PrintStackTrace(int channel, NativeHandle hProcess)
+	{
+		BacktraceState state = { m_StackTrace, m_StackTrace + MAX_CALLSTACK_DEPTH };
+		_Unwind_Backtrace(__UnwindCallback, &state);
+
+		m_StackTraceCount = state.current - m_StackTrace;
+
+		for (size_t idx = 0; idx < m_StackTraceCount; ++idx)
+		{
+			const void* addr = m_StackTrace[idx];
+			const char* symbol = "";
+
+			Dl_info info;
+			if (dladdr(addr, &info) && info.dli_sname) {
+				symbol = info.dli_sname;
+			}
+
+			defTrace(channel, "{0}", symbol);
+		}
+
+		Trace::Flush();
+
+		return ResultCode::SUCCESS;
+	}
+
+
 #else
-	HRESULT CallStackTrace::PrintStackTrace(int channel, NativeHandle hProcess)
+
+	Result CallStackTrace::PrintStackTrace(int channel, NativeHandle hProcess)
 	{
 		char **strings;
 
-		strings = backtrace_symbols(StackTrace, StackTraceCount);
+		strings = backtrace_symbols(m_StackTrace, (int)m_StackTraceCount);
 
-		defTrace(channel, "StackTrace:" );
+		defTrace(channel, "m_StackTrace:" );
 
-		for (UINT stackDepth = 0; stackDepth < StackTraceCount && strings != nullptr && strings[stackDepth] != 0; stackDepth++)
+		for (UINT stackDepth = 0; stackDepth < m_StackTraceCount && strings != nullptr && strings[stackDepth] != 0; stackDepth++)
 		{
 			defTrace(channel, "{0}", strings[stackDepth]);
 		}
 
 		free(strings);
 
-		return S_SYSTEM_OK;
+		Trace::Flush();
+
+		return ResultCode::SUCCESS;
 	}
 
 #endif
@@ -179,7 +232,7 @@ namespace BR
 	{
 	}
 #if WINDOWS
-	HRESULT StackWalkerImpl::BuildSymbolPath()
+	Result StackWalkerImpl::BuildSymbolPath()
 	{
 		wchar_t curDir[1024], tempBuffer[1024];
 
@@ -212,24 +265,24 @@ namespace BR
 			}
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT StackWalkerImpl::LoadModuleSymbols()
+	Result StackWalkerImpl::LoadModuleSymbols()
 	{
 		HMODULE hModules[512];
 		wchar_t imageFileName[1024];
 		DWORD cbNeeded = 0;
-		HRESULT result = 0;
+		Result result = 0;
 
 		if( m_hProcess == NULL )
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 
 		memset(hModules, 0, sizeof(hModules));
 		if( !EnumProcessModulesEx( m_hProcess, hModules, sizeof(hModules), &cbNeeded, LIST_MODULES_ALL ) )
 		{
 			AssertRel( cbNeeded <= sizeof(hModules) );
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
 		for( UINT iModule = 0; iModule < countof(hModules) && hModules[iModule] != 0; iModule++ )
@@ -241,19 +294,19 @@ namespace BR
 
 			if( GetModuleFileNameExW( m_hProcess, hModules[iModule], imageFileName, (DWORD)countof(imageFileName) ) == 0 )
 			{
-				//result = GetLatestHRESULT();
+				//result = GetLatestResult();
 				continue;
 			}
 
 			if( SymLoadModuleExW( m_hProcess, NULL, imageFileName, NULL, (DWORD64)moduleInfo.lpBaseOfDll, moduleInfo.SizeOfImage, NULL, 0 ) == 0 )
 			{
-				//result = GetLatestHRESULT();
+				//result = GetLatestResult();
 				continue;
 			}
 		}
 		
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 	
 	void StackWalkerImpl::GetStackFrame( CONTEXT& context, STACKFRAME64& stackFrame, DWORD& imageType )
@@ -307,7 +360,7 @@ namespace BR
 
 #if defined(_M_IX86) || defined(_M_X64)
 		// Use fast version stack trace
-		stackTrace.StackTraceCount = CaptureStackBackTrace( 1, MaxSearchDepth, stackTrace.StackTrace, nullptr );
+		stackTrace.m_StackTraceCount = CaptureStackBackTrace( 1, MaxSearchDepth, stackTrace.m_StackTrace, nullptr );
 		//CaptureCallStackFast( stackTrace, imageType, context, stackFrame, 1, MaxSearchDepth );
 #else
 		CaptureCallStackReliable( stackTrace, imageType, context, stackFrame, 1, MaxSearchDepth );
@@ -316,10 +369,10 @@ namespace BR
 		IMAGEHLP_LINE64 lineInfo;
 		memset( &lineInfo, 0, sizeof(lineInfo) );
 		lineInfo.SizeOfStruct = sizeof(lineInfo);
-		for( UINT stackDepth = 0; stackDepth < MaxSearchDepth && stackTrace.StackTrace[stackDepth] != 0; stackDepth++ )
+		for( UINT stackDepth = 0; stackDepth < MaxSearchDepth && stackTrace.m_StackTrace[stackDepth] != 0; stackDepth++ )
 		{
 			DWORD offsetFromLine = 0;
-			if( !SymGetLineFromAddr64( m_hProcess, (DWORD64)stackTrace.StackTrace[stackDepth], &offsetFromLine, &lineInfo ) )
+			if( !SymGetLineFromAddr64( m_hProcess, (DWORD64)stackTrace.m_StackTrace[stackDepth], &offsetFromLine, &lineInfo ) )
 				continue;
 
 			if( strstr( lineInfo.FileName, "stackwalker." ) != NULL )
@@ -369,7 +422,7 @@ namespace BR
 			if( stackFramePtr == NULL || stackFramePtr < lowLimit || stackFramePtr > highLimit
 				|| (intptr_t)currentStackFrame->pReturn < STACKWALKER_MIN_EXE_OFFSET)
 			{
-				stackTrace.StackTraceCount = stackIndex;
+				stackTrace.m_StackTraceCount = stackIndex;
 
 				//if( currentStackFrame->pReturn != nullptr && (stackFramePtr < lowLimit || stackFramePtr > highLimit) )
 				//{
@@ -389,7 +442,7 @@ namespace BR
 				//	if( frameNumber < skipDepth )
 				//		continue;
 
-				//	stackTrace.StackTrace[ stackIndex++ ] = (void*)stackFrame.AddrPC.Offset;
+				//	stackTrace.m_StackTrace[ stackIndex++ ] = (void*)stackFrame.AddrPC.Offset;
 				//	continue;
 				//}
 				//else
@@ -406,11 +459,11 @@ namespace BR
 				continue;
 			}
 
-			stackTrace.StackTrace[stackIndex++] = currentStackFrame->pReturn;
+			stackTrace.m_StackTrace[stackIndex++] = currentStackFrame->pReturn;
 			currentStackFrame = currentStackFrame->pNext;
 		}
 
-		stackTrace.StackTraceCount = stackIndex;
+		stackTrace.m_StackTraceCount = stackIndex;
 	}
 
 	void STDCALL StackWalkerImpl::CaptureCallStackReliable( CallStackTrace& stackTrace, DWORD imageType, CONTEXT &context, STACKFRAME64 &stackFrame, UINT skipDepth, UINT maxDepth )
@@ -427,7 +480,7 @@ namespace BR
 			if( frameNumber < skipDepth )
 				continue;
 
-			stackTrace.StackTrace[ stackIndex++ ] = (void*)stackFrame.AddrPC.Offset;
+			stackTrace.m_StackTrace[ stackIndex++ ] = (void*)stackFrame.AddrPC.Offset;
 
 			// prevent infinite call
 			if( stackFrame.AddrPC.Offset == stackFrame.AddrReturn.Offset )
@@ -438,7 +491,7 @@ namespace BR
 				break;
 		}
 
-		stackTrace.StackTraceCount = stackIndex;
+		stackTrace.m_StackTraceCount = stackIndex;
 	}
 
 	// get current stack trace
@@ -457,7 +510,7 @@ namespace BR
 #if defined(_M_IX86) || defined(_M_X64)
 		// Use fast version stack trace
 		maxDepth = std::min( maxDepth - skipDepth + m_ModuleStackSkipDepth, (UINT)CallStackTrace::MAX_CALLSTACK_DEPTH );
-		stackTrace.StackTraceCount = CaptureStackBackTrace( skipDepth + m_ModuleStackSkipDepth, maxDepth, stackTrace.StackTrace, nullptr );
+		stackTrace.m_StackTraceCount = CaptureStackBackTrace( skipDepth + m_ModuleStackSkipDepth, maxDepth, stackTrace.m_StackTrace, nullptr );
 		//CaptureCallStackFast( stackTrace, imageType, context, stackFrame, skipDepth + m_ModuleStackSkipDepth, maxDepth );
 #else
 		CaptureCallStackReliable( stackTrace, imageType, context, stackFrame, skipDepth + m_ModuleStackSkipDepth, maxDepth );
@@ -471,7 +524,7 @@ namespace BR
 	{
 		m_hProcess = GetCurrentProcess();
 
-		if (FAILED(BuildSymbolPath()))
+		if (!(BuildSymbolPath()))
 			return false;
 
 		if (!SymInitializeW(m_hProcess, (PWSTR)m_SymbolPath, false))
@@ -482,13 +535,34 @@ namespace BR
 		symbolLoadOptions |= SYMOPT_LOAD_LINES | SYMOPT_FAIL_CRITICAL_ERRORS;
 		symbolLoadOptions = SymSetOptions(symbolLoadOptions);
 
-		if (FAILED(LoadModuleSymbols()))
+		if (!(LoadModuleSymbols()))
 			return false;
 
 		UpdateSkipDepth();
 
 		return true;
 	}
+
+#elif ANDROID
+
+
+// initialize stace walker
+bool StackWalkerImpl::Initialize()
+{
+	m_ModuleStackSkipDepth = 2;
+
+	return true;
+}
+
+// get current stack trace
+void StackWalkerImpl::CaptureCallStack(CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth)
+{
+	BacktraceState state = { stackTrace.m_StackTrace, stackTrace.m_StackTrace + CallStackTrace::MAX_CALLSTACK_DEPTH };
+	_Unwind_Backtrace(__UnwindCallback, &state);
+
+	stackTrace.m_StackTraceCount = state.current - stackTrace.m_StackTrace;
+}
+
 
 #else
 
@@ -504,7 +578,7 @@ namespace BR
 	// get current stack trace
 	void StackWalkerImpl::CaptureCallStack(CallStackTrace& stackTrace, UINT skipDepth, UINT maxDepth)
 	{
-		stackTrace.StackTraceCount = backtrace(stackTrace.StackTrace, countof(stackTrace.StackTrace));
+		stackTrace.m_StackTraceCount = backtrace(stackTrace.m_StackTrace, countof(stackTrace.m_StackTrace));
 	}
 
 

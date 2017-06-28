@@ -29,17 +29,18 @@
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/MessageHandlerTable.h"
 #include "Protocol/Message/ServerMsgClass.h"
-#include "ServerSystem/TimeSchedulerAction.h"
+#include "Common/Task/TimeSchedulerAction.h"
 #include "Net/Connection.h"
 #include "ServerSystem/BrServerUtil.h"
 
 namespace BR {
+	class TimerAction;
+	
 namespace Svr {
 
 	class Entity;
 	class TransactionResult;
 	class ServerEntity;
-	class TimerAction;
 	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -73,7 +74,7 @@ namespace Svr {
 			Message::MessageID	MsgID;
 
 			// transaction result
-			HRESULT				hrRes;
+			Result				hrRes;
 		};
 
 	private:
@@ -204,7 +205,7 @@ namespace Svr {
 		TimeStampMS UpdateHeartBitTime();
 
 		// Check timeout with timestamp
-		HRESULT CheckHeartBitTimeout();
+		Result CheckHeartBitTimeout();
 		TimeStampMS GetHeartBitTimeout();
 
 		// Timer
@@ -222,24 +223,24 @@ namespace Svr {
 		inline bool IsClosed();
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction( Entity* pOwner );
+		virtual Result InitializeTransaction( Entity* pOwner );
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		// Process Transaction
-		virtual HRESULT ProcessTransaction( TransactionResult* &pRes );
+		virtual Result ProcessTransaction( TransactionResult* &pRes );
 
 		void	RecordTransactionHistory(TransactionResult* pRes);
 
-		virtual HRESULT OnCloseTransaction( HRESULT hrRes ){return S_SYSTEM_OK;}
+		virtual Result OnCloseTransaction( Result hrRes ){return ResultCode::SUCCESS;}
 
 		// Close transaction and notify to parent
 		// process abnormal termination of transaction
-		virtual HRESULT CloseTransaction( HRESULT hrRes );
+		virtual Result CloseTransaction( Result hrRes );
 
 		// flush transaction result
-		virtual HRESULT FlushTransaction();
+		virtual Result FlushTransaction();
 
 		///////////////////////////////////////////////////////////
 		// Helper functions
@@ -263,7 +264,7 @@ namespace Svr {
 			SubTransaction( TransactionID parentTransID , Message::MessageID MsgID );
 			virtual ~SubTransaction();
 
-			//virtual HRESULT CloseTransaction( HRESULT hrRes );
+			//virtual Result CloseTransaction( Result hrRes );
 
 			Message::MessageID GetMsgID() { return m_MsgID; }
 
@@ -286,7 +287,7 @@ namespace Svr {
 		Message::MessageID	m_msgID;
 
 		// transaction result
-		HRESULT				m_hrRes;
+		Result				m_hrRes;
 
 	public:
 		TransactionResult();
@@ -300,7 +301,7 @@ namespace Svr {
 		inline void SetTransaction( const TransactionID &transID );
 
 		// Set Result
-		inline void SetResult( HRESULT hrRes );
+		inline void SetResult( Result hrRes );
 
 		// Transaction ID
 		inline const TransactionID& GetTransID() const;
@@ -309,7 +310,7 @@ namespace Svr {
 		inline Message::MessageID GetMsgID() const;
 
 		// Get result value
-		inline HRESULT GetHRESULT() const;
+		inline Result GetResult() const;
 
 		// Virtual release operation
 		virtual void Release();
@@ -360,7 +361,7 @@ namespace Svr {
 		virtual void ReleaseObjectByPool();
 
 		// Setup message result
-		HRESULT SetMessage( Message::MessageData* &pIMsg );
+		Result SetMessage( Message::MessageData* &pIMsg );
 
 		// Get message 
 		inline Message::MessageData* GetMessage();
@@ -379,34 +380,34 @@ namespace Svr {
 	//	SubTransaction + result
 	//
 
-	class SubTransactionWithResult : public SubTransaction, public TransactionResult
+	class SubTransactionWitResult : public SubTransaction, public TransactionResult
 	{
 	private:
 		bool	m_bFlushRes;
 
 	public:
-		SubTransactionWithResult( TransactionID parentTransID , Message::MessageID MsgID );
-		virtual ~SubTransactionWithResult();
+		SubTransactionWitResult( TransactionID parentTransID , Message::MessageID MsgID );
+		virtual ~SubTransactionWitResult();
 
 		// Get transaction ID
 		inline const TransactionID& GetTransID() const;
 
-		virtual HRESULT CloseTransaction( HRESULT hrRes );
+		virtual Result CloseTransaction( Result hrRes ) override;
 
 
 		// flush transaction result
-		virtual HRESULT FlushTransaction();
+		virtual Result FlushTransaction() override;
 
 		virtual void Release() override;
 	};
 	
 	
 	template< class TransactionType >
-	class SubTransactionWithResultMemoryPooled : public SubTransaction, public TransactionResult, public MemoryPoolObject<TransactionType>
+	class SubTransactionWitResultMemoryPooled : public SubTransaction, public TransactionResult, public MemoryPoolObject<TransactionType>
 	{
 	public:
-		SubTransactionWithResultMemoryPooled( TransactionID parentTransID , Message::MessageID MsgID )
-			:SubTransactionWithResult( parentTransID, MsgID )
+		SubTransactionWitResultMemoryPooled( TransactionID parentTransID , Message::MessageID MsgID )
+			:SubTransactionWitResult( parentTransID, MsgID )
 		{}
 
 		virtual void Release() { delete this; }
@@ -415,7 +416,7 @@ namespace Svr {
 
 
 
-	typedef std::function<HRESULT(TransactionResult* pRes)> TransactionMessageHandlerType;
+	typedef std::function<Result(TransactionResult* pRes)> TransactionMessageHandlerType;
 
 	// Message transaction template
 	template< class OwnerType, class MemoryPoolClass, size_t MessageHandlerBufferSize = sizeof(TransactionMessageHandlerType)*2 >
@@ -445,11 +446,11 @@ namespace Svr {
 		{
 		}
 
-		virtual HRESULT OnGenericError(Svr::TransactionResult* &pRes)
+		virtual Result OnGenericError(Svr::TransactionResult* &pRes)
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
-			CloseTransaction(pRes->GetHRESULT());
+			CloseTransaction(pRes->GetResult());
 
 			return hr;
 		}
@@ -457,23 +458,23 @@ namespace Svr {
 
 		// Register message handler
 		template< class MessageClassType >
-		FORCEINLINE HRESULT RegisterMessageHandler(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
+		FORCEINLINE Result RegisterMessageHandler(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
 		{
 			return m_Handlers.Register<MessageClassType>(fileName, lineNumber, newHandler);
 		}
 
 		// Caller handler 
-		virtual HRESULT ProcessTransaction( TransactionResult* &pRes )
+		virtual Result ProcessTransaction( TransactionResult* &pRes )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			svrChk(m_Handlers.HandleMessage(pRes->GetMsgID(), pRes));
 
 		Proc_End:
 
-			if( FAILED(hr) )
+			if( !(hr) )
 			{
-				if( hr == E_SVR_NO_RESULT_HANDLER )
+				if( hr == Result(ResultCode::E_SVR_NO_RESULT_HANDLER))
 				{
 					svrTrace( Trace::TRC_ERROR, "Transaction has no result handler : Result MessageID:{0}, {1}", pRes->GetMsgID(), typeid(*this).name() );
 				}
@@ -489,11 +490,11 @@ namespace Svr {
 		}
 
 		// Message processor. When get result, just check result and close
-		HRESULT OnMessageClose( Svr::TransactionResult* &pRes )
+		Result OnMessageClose( Svr::TransactionResult* &pRes )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
-			svrChk(pRes->GetHRESULT());
+			svrChk(pRes->GetResult());
 
 		Proc_End:
 
@@ -538,10 +539,10 @@ namespace Svr {
 		{
 		}
 
-		HRESULT ParseMessage()
+		Result ParseMessage()
 		{
-			HRESULT hr = MessageClass::ParseMsg();
-			if (SUCCEEDED(hr))
+			Result hr = MessageClass::ParseMsg();
+			if ((hr))
 			{
 				if (MessageClass::GetMessage()->GetMessageHeader()->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
@@ -559,9 +560,9 @@ namespace Svr {
 		}
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction( Entity *pOwner )
+		virtual Result InitializeTransaction( Entity *pOwner )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			//OwnerType *pOwnerEntity = nullptr;
 
 			svrChkPtr( pOwner );
@@ -624,9 +625,9 @@ namespace Svr {
 		}
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction( Entity *pOwner )
+		virtual Result InitializeTransaction( Entity *pOwner )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			OwnerEntityType *pOwnerEntity = nullptr;
 			SharedPointerT<Entity> pFound;
@@ -640,7 +641,7 @@ namespace Svr {
 			if(MessageClass::GetRouteContext().GetTo().GetServerID() != ::BR::Svr::GetMyServerID() )
 			{
 				svrTrace( Trace::TRC_ERROR, "Invalid ServerID {0} MsgID:{0}", typeid(*this).name(), MessageClass::GetMessage()->GetMessageHeader()->msgID );
-				svrErr(E_SVR_INVALID_SERVERID);
+				svrErr(ResultCode::E_SVR_INVALID_SERVERID);
 			}
 
 			svrChk(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), pFound));
@@ -679,9 +680,9 @@ namespace Svr {
 
 
 		// Initialize Transaction
-		virtual HRESULT InitializeTransaction( Entity *pOwner )
+		virtual Result InitializeTransaction( Entity *pOwner )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			SharedPointerT<Entity> entity;
 
 			OwnerEntityType *pOwnerEntity = nullptr;
@@ -689,10 +690,10 @@ namespace Svr {
 			hr = MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType, MessageHandlerBufferSize>::ParseMessage();
 			svrChk(hr);
 
-			if (FAILED(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))
+			if (!(FindEntity(MessageClass::GetRouteContext().GetTo().GetEntityID(), entity)))
 			{
 				// Can't find target player entity, maybe logged out?
-				hr = E_SVR_INVALID_ENTITYUID;
+				hr = ResultCode::E_SVR_INVALID_ENTITYUID;
 				goto Proc_End;
 			}
 

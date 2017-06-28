@@ -13,7 +13,7 @@
 	
 
 #include "Common/Typedefs.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/ArrayUtil.h"
 #include "Common/BrGameTypes.h"
@@ -27,7 +27,7 @@ namespace DB {
 	//	GameDB Class 
 	//
 
-	class LoginSessionDB : private QueryManager, public Svr::IServerComponent
+	class LoginSessionDB : private DBClusterManager, public Svr::IServerComponent
 	{
 	public:
 
@@ -52,20 +52,20 @@ namespace DB {
 		//
 
 		// Register authenticate ticket
-		HRESULT RegisterAuthTicket( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID );
+		Result RegisterAuthTicket( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID );
 
-		HRESULT ReplaceLoginSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& oldAuthTicket, const AuthTicket& authTicket, const EntityUID& loginEntityUID);
+		Result ReplaceLoginSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& oldAuthTicket, const AuthTicket& authTicket, const EntityUID& loginEntityUID);
 
-		HRESULT DeleteLoginSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket);
+		Result DeleteLoginSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket);
 
 		// Joined game server
-		HRESULT ConnectedToGameServer( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID, const EntityUID& gameEntityUID );
+		Result ConnectedToGameServer( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID, const EntityUID& gameEntityUID );
 
 		// Validate game server session
-		HRESULT ValidateGameServerSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID);
+		Result ValidateGameServerSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID);
 
 		// Game server heartbit
-		HRESULT GameServerHeartBit( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID );
+		Result GameServerHeartBit( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID );
 
 
 	};

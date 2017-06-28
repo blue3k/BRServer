@@ -152,31 +152,31 @@ public class INet : global::System.IDisposable {
     return ret;
   }
 
-  public unsafe int DequeueNetEvent(INet.Event curEvent) {
-    int ret = BRMonitoringPINVOKE.INet_DequeueNetEvent(swigCPtr, INet.Event.getCPtr(curEvent));
+  public unsafe SWIGTYPE_p_Result DequeueNetEvent(INet.Event curEvent) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.INet_DequeueNetEvent(swigCPtr, INet.Event.getCPtr(curEvent)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int EnqueueNetEvent(INet.Event curEvent) {
-    int ret = BRMonitoringPINVOKE.INet_EnqueueNetEvent(swigCPtr, INet.Event.getCPtr(curEvent));
+  public unsafe SWIGTYPE_p_Result EnqueueNetEvent(INet.Event curEvent) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.INet_EnqueueNetEvent(swigCPtr, INet.Event.getCPtr(curEvent)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int Connect(IConnection pIConn, uint remoteID, NetClass netClass, NetAddress destAddress) {
-    int ret = BRMonitoringPINVOKE.INet_Connect(swigCPtr, IConnection.getCPtr(pIConn), remoteID, (int)netClass, NetAddress.getCPtr(destAddress));
+  public unsafe SWIGTYPE_p_Result Connect(IConnection pIConn, uint remoteID, NetClass netClass, NetAddress destAddress) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.INet_Connect(swigCPtr, IConnection.getCPtr(pIConn), remoteID, (int)netClass, NetAddress.getCPtr(destAddress)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int ReleaseConnection(IConnection pIConnection) {
-    int ret = BRMonitoringPINVOKE.INet_ReleaseConnection(swigCPtr, IConnection.getCPtr(pIConnection));
+  public unsafe SWIGTYPE_p_Result ReleaseConnection(IConnection pIConnection) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.INet_ReleaseConnection(swigCPtr, IConnection.getCPtr(pIConnection)), true);
     return ret;
   }
 
-  public unsafe int TakeOverConnection(IConnection pIConnection) {
-    int ret = BRMonitoringPINVOKE.INet_TakeOverConnection(swigCPtr, IConnection.getCPtr(pIConnection));
+  public unsafe SWIGTYPE_p_Result TakeOverConnection(IConnection pIConnection) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.INet_TakeOverConnection(swigCPtr, IConnection.getCPtr(pIConnection)), true);
     return ret;
   }
 

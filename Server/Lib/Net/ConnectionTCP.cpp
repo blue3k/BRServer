@@ -16,6 +16,7 @@
 #include "Common/BrAssert.h"
 #include "Common/TimeUtil.h"
 #include "Common/ResultCode/BRResultCodeNet.h"
+#include "Common/ResultCode/BRResultCodeSvr.h"
 #include "Net/NetTrace.h"
 #include "Net/Connection.h"
 #include "Net/NetDef.h"
@@ -74,9 +75,16 @@ namespace Net {
 
 	ConnectionTCP::~ConnectionTCP()
 	{
-		//Assert( SUCCEEDED( CloseConnection() ) );
-		if( GetSocket() != INVALID_SOCKET )
-			NetSystem::CloseSocket( GetSocket() );
+		//Assert( ( CloseConnection() ) );
+		if (GetSocket() != INVALID_SOCKET)
+		{
+			AssertRel(!GetIsIORegistered());
+			AssertRel(GetAssignedIOWorker() == -1);
+
+			NetSystem::UnregisterSocket(this);
+
+			NetSystem::CloseSocket(GetSocket());
+		}
 
 		if (GetWriteQueue()) delete GetWriteQueue();
 	}
@@ -84,9 +92,9 @@ namespace Net {
 
 
 	// Process network control message
-	HRESULT ConnectionTCP::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
+	Result ConnectionTCP::ProcNetCtrl( const MsgNetCtrl* pNetCtrl )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pIMsg = NULL;
 
 		switch( pNetCtrl->msgID.IDs.MsgCode )
@@ -111,7 +119,7 @@ namespace Net {
 						auto pConnectCtrl = ((MsgNetCtrlConnect*)pNetCtrl);
 						m_ConnectInfo.SetRemoteInfo(RemoteClass, pConnectCtrl->PeerUID);
 						m_ConnectInfo.Remote = pConnectCtrl->Address;
-						OnConnectionResult(S_SYSTEM_OK);
+						OnConnectionResult(ResultCode::SUCCESS);
 					}
 					break;
 				};
@@ -135,7 +143,7 @@ namespace Net {
 					break;
 				case NetCtrlCode_Connect:
 					// Protocol version mismatch
-					OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
+					OnConnectionResult( ResultCode::E_NET_PROTOCOL_VERSION_MISMATCH );
 					netChk( Disconnect("Protocol mismatch") );
 					break;
 				case NetCtrlCode_HeartBit:
@@ -157,7 +165,7 @@ namespace Net {
 			{
 				netTrace( Trace::TRC_WARN, "HackWarn : Invalid Connect packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 				netChk( CloseConnection() );
-				netErr( E_SYSTEM_UNEXPECTED );
+				netErr( ResultCode::UNEXPECTED );
 			}
 
 			if (GetConnectionState() == STATE_CONNECTING || GetConnectionState() == STATE_CONNECTED)// ServerTCP connection will occure this case
@@ -171,14 +179,14 @@ namespace Net {
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					if (GetConnectionState() != STATE_CONNECTED)
-						OnConnectionResult( E_NET_PROTOCOL_VERSION_MISMATCH );
+						OnConnectionResult( ResultCode::E_NET_PROTOCOL_VERSION_MISMATCH );
 					netChk( Disconnect("Protocol mismatch") );
 				}
 				else if( GetConnectionInfo().RemoteClass != NetClass::Unknown && RemoteClass != GetConnectionInfo().RemoteClass )
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					if (GetConnectionState() != STATE_CONNECTED)
-						OnConnectionResult(E_NET_INVALID_NETCLASS);
+						OnConnectionResult(ResultCode::E_NET_INVALID_NETCLASS);
 					netChk( Disconnect("Invalid netclass") );
 				}
 				else
@@ -188,7 +196,7 @@ namespace Net {
 					if (GetConnectionState() != STATE_CONNECTED)
 					{
 						m_ConnectInfo.SetRemoteInfo(RemoteClass, pNetCtrlCon->PeerUID);
-						OnConnectionResult(S_SYSTEM_OK);
+						OnConnectionResult(ResultCode::SUCCESS);
 					}
 				}
 			}
@@ -202,7 +210,7 @@ namespace Net {
 		default:
 			netTrace( Trace::TRC_WARN, "HackWarn : Invalid packet CID:{0}, Addr {1}", GetCID(), GetConnectionInfo().Remote );
 			netChk( CloseConnection() );
-			netErr( E_SYSTEM_UNEXPECTED );
+			netErr( ResultCode::UNEXPECTED );
 			break;
 		};
 
@@ -214,48 +222,48 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionTCP::Recv(IOBUFFER_READ* pIOBuffer)
+	Result ConnectionTCP::Recv(IOBUFFER_READ* pIOBuffer)
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
-			return E_NET_CONNECTION_CLOSED;
+			return ResultCode::E_NET_CONNECTION_CLOSED;
 
 		netChkPtr(pIOBuffer);
 		pIOBuffer->SetupRecvTCP(GetCID());
 
 		hrErr = NetSystem::Recv(GetSocket(), pIOBuffer);
-		switch (hrErr)
+		switch ((int64_t)hrErr)
 		{
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
-		case E_NET_NOTCONN:
-		case E_NET_NOTSOCK:
-		case E_NET_SHUTDOWN:
+		case ResultCode::E_NET_CONNABORTED:
+		case ResultCode::E_NET_CONNRESET:
+		case ResultCode::E_NET_NETRESET:
+		case ResultCode::E_NET_NOTSOCK:
+		case ResultCode::E_NET_SHUTDOWN:
 			netTrace(Trace::TRC_WARN, "TCP Read failed, Connection Reset CID:{0}, err:{1:X8}, pending:{2}", GetCID(), hrErr, GetPendingRecvCount());
 			// Send fail by connection close
 			// Need to disconnect
 			CloseConnection();
-			netErrSilent(E_NET_CONNECTION_CLOSED);
+			netErrSilent(ResultCode::E_NET_CONNECTION_CLOSED);
 			break;
 		default:
 			//netTrace(Trace::TRC_ERROR, "TCP Recv failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
 			netErrSilent(hrErr);
 			break;
-		case E_NET_IO_PENDING:
-		case E_NET_WOULDBLOCK:
+		case ResultCode::E_NET_IO_PENDING:
+		case ResultCode::E_NET_WOULDBLOCK:
 			// Recv is pended
 			hr = hrErr;
 			break;
-		case E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_NOTCONN:
 			// try again
 			hr = hrErr;
 			break;
-		case S_SYSTEM_FALSE:
-			hr = E_NET_TRY_AGAIN;
+		case ResultCode::SUCCESS_FALSE:
+			hr = ResultCode::E_NET_TRY_AGAIN;
 			break;
-		case S_SYSTEM_OK:
+		case ResultCode::SUCCESS:
 			break;
 		};
 
@@ -266,21 +274,21 @@ namespace Net {
 	}
 
 	// called when reciving message
-	HRESULT ConnectionTCP::OnIORecvCompleted( HRESULT hrRes, IOBUFFER_READ* &pIOBuffer )
+	Result ConnectionTCP::OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if(pIOBuffer != nullptr && pIOBuffer->CID != GetCID() )
-			netErr( E_SYSTEM_INVALIDARG );
+			netErr( ResultCode::INVALID_ARG );
 
-		Assert(!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_relaxed));
+		DecPendingRecvCount();
 
-		if( FAILED( hrRes ) )
+		if( !( hrRes ) )
 		{
-			switch( hrRes )
+			switch((uint32_t)hrRes )
 			{
-			case E_NET_CONNECTION_CLOSED:
-			case E_NET_IO_ABORTED:
+			case ResultCode::E_NET_CONNECTION_CLOSED:
+			case ResultCode::E_NET_IO_ABORTED:
 				netChk( CloseConnection() );
 				break;
 			default:
@@ -291,20 +299,25 @@ namespace Net {
 		else
 		{
 			netChkPtr(pIOBuffer);
-			netChk( OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer) );
+			if (!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_consume))
+			{
+				netChk(OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer));
+			}
+
 		}
+
 
 	Proc_End:
 
 
-		if (!NetSystem::IsProactorSystem())
+		//if (!NetSystem::IsProactorSystem())
 		{
 			Util::SafeDelete(pIOBuffer);
 		}
-		else
-		{
-			pIOBuffer->SetPendingFalse();
-		}
+		//else
+		//{
+		//	pIOBuffer->SetPendingFalse();
+		//}
 
 		//DecPendingRecvCount();
 		// Update will process new pending recv
@@ -316,59 +329,74 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionTCP::OnSendReady()
+	Result ConnectionTCP::OnSendReady()
 	{
+		Result hr;
 		if (GetEventHandler())
-			return GetEventHandler()->OnNetSendReadyMessage(this);
+		{
+			auto hrRes = GetEventHandler()->OnNetSendReadyMessage(this);
+			if (hrRes != Result(ResultCode::E_SVR_INVALID_TASK_GROUPID))
+			{
+				netChk(hrRes);
+			}
+		}
 		// process directly
 		else
-			return ProcessSendQueue();
+		{
+			netChk(ProcessSendQueue());
+		}
+
+	Proc_End:
+
+		return hr;
 	}
 
 	// called when Send completed
-	HRESULT ConnectionTCP::OnIOSendCompleted( HRESULT hrRes, IOBUFFER_WRITE *pIOBuffer )
+	Result ConnectionTCP::OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer )
 	{
 		Util::SafeDeleteArray( pIOBuffer->pSendBuff );
 		Util::SafeRelease( pIOBuffer->pMsgs );
 		NetSystem::FreeBuffer( pIOBuffer );
 		m_PendingSend.fetch_sub(1, std::memory_order_release);
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Clear Queue
-	HRESULT ConnectionTCP::ClearQueues()
+	Result ConnectionTCP::ClearQueues()
 	{
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Pending recv New one
-	HRESULT ConnectionTCP::PendingRecv()
+	Result ConnectionTCP::PendingRecv()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		IOBUFFER_READ *pOver = nullptr;
 
 		if (!NetSystem::IsProactorSystem())
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		if (GetConnectionState() == ConnectionState::STATE_DISCONNECTED)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		// On client side, we need to check writable status by calling connect again
 		if (m_isClientSide && !m_isActuallyConnected && GetConnectionState() == ConnectionState::STATE_CONNECTING)
 		{
-			m_isActuallyConnected = Connect() == S_SYSTEM_OK;
+			m_isActuallyConnected = Connect();
 			if (!m_isActuallyConnected)
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 		}
 
 		// For TCP, we need only single buffer is in waiting read operation
-		pOver = GetRecvBuffer();
+		pOver = new IOBUFFER_READ;//GetRecvBuffer();
 		hr = pOver->SetPendingTrue();
-		if (FAILED(hr))
-			return S_SYSTEM_OK;
+		if (!(hr))
+			return ResultCode::SUCCESS;
+
+		IncPendingRecvCount();
 
 		hr = Recv(pOver);
-		if (FAILED(hr) && hr != E_NET_IO_PENDING)
+		if (!(hr) && hr != Result(ResultCode::E_NET_IO_PENDING))
 		{
 			netTrace(Trace::TRC_WARN, "Pending Recv failed, CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 			//Assert(false);
@@ -389,11 +417,11 @@ namespace Net {
 
 
 	// Called on connection result
-	void ConnectionTCP::OnConnectionResult( HRESULT hrConnect )
+	void ConnectionTCP::OnConnectionResult( Result hrConnect )
 	{
 		Connection::OnConnectionResult( hrConnect );
 
-		if( SUCCEEDED( hrConnect ) )
+		if( ( hrConnect ) )
 		{
 		}
 		else
@@ -405,7 +433,7 @@ namespace Net {
 
 
 	// Initialize connection
-	HRESULT ConnectionTCP::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
+	Result ConnectionTCP::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
 	{
 		if (GetSocket() != INVALID_SOCKET)
 		{
@@ -427,44 +455,45 @@ namespace Net {
 		int result = setsockopt(socket, IPPROTO_TCP, TCP_NODELAY, (char*)&flag, sizeof(int));
 		if (result < 0)
 		{
-			return GetLastWSAHRESULT();
+			return GetLastWSAResult();
 		}
 
 		// ignore incomming socket value
 		return Connection::InitConnection( socket, connectInfo );
 	}
 
-	HRESULT ConnectionTCP::Connect()
+	Result ConnectionTCP::Connect()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
+		Result hrConResult;
 		int connResult;
 
 		ResetZeroRecvCount();
 
 		if (GetConnectionState() != STATE_CONNECTING && GetConnectionState() != STATE_DISCONNECTED)
 		{
-			netTrace(Trace::TRC_ERROR, "Invalid connection state to try connect", GetConnectionState());
+			netTrace(Trace::TRC_ERROR, "Invalid connection state to try connect {0}", GetConnectionState());
 			//AssertRel(GetConnectionState() == STATE_CONNECTING || GetConnectionState() == STATE_DISCONNECTED);
-			netErrSilent(E_NET_INVALID_CONNECTION_STATE);
+			netErrSilent(ResultCode::E_NET_INVALID_CONNECTION_STATE);
 		}
 
 		connResult = connect(GetSocket(), (sockaddr*)&GetRemoteSockAddr(), GetRemoteSockAddrSize());
 		if (connResult == SOCKET_ERROR)
 		{
-			auto lastError = GetLastWSAHRESULT();
-			switch (lastError)
+			hrConResult = GetLastWSAResult();
+			switch ((uint32_t)hrConResult)
 			{
-			case E_NET_INPROGRESS:
-			case E_NET_WOULDBLOCK:  // First call need to wait
-			case E_NET_ALREADY:		// called again, still need to wait
-				hr = S_SYSTEM_FALSE;
+			case ResultCode::E_NET_INPROGRESS:
+			case ResultCode::E_NET_WOULDBLOCK:  // First call need to wait
+			case ResultCode::E_NET_ALREADY:		// called again, still need to wait
+				hr = ResultCode::SUCCESS_FALSE;
 				break;
-			case E_NET_ISCONN:		// Connection estabalished
-				hr = S_SYSTEM_OK;
+			case ResultCode::E_NET_ISCONN:		// Connection estabalished
+				hr = ResultCode::SUCCESS;
 				break;
 			default:
-				netTrace(Trace::TRC_WARN, "Connection try is failed, RemoteAddr:{0}, RemoteID:{1}, hr:{2:X8}", GetConnectionInfo().Remote, GetConnectionInfo().RemoteID, lastError);
-				hr = lastError;
+				netTrace(Trace::TRC_WARN, "Connection try is failed, RemoteAddr:{0}, RemoteID:{1}, hr:{2:X8}", GetConnectionInfo().Remote, GetConnectionInfo().RemoteID, hrConResult);
+				hr = hrConResult;
 			}
 		}
 
@@ -473,7 +502,9 @@ namespace Net {
 
 	Proc_End:
 
-		if (FAILED(hr))
+		netTrace(Net::TRC_CONNECTION, "Connect sock:{0}, to:{1}, hrCon:{2}, hr:{3}", GetSocket(), GetConnectionInfo().Remote, hrConResult, hr);
+
+		if (!(hr))
 		{
 			SetConnectionState(STATE_DISCONNECTED);
 			CloseSocket();
@@ -484,54 +515,54 @@ namespace Net {
 	}
 
 	// Wait connection event
-	HRESULT ConnectionTCP::WaitConnect()
+	Result ConnectionTCP::WaitConnect()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// disable wait for non-windows platform
 #if WINDOWS
 		HANDLE hEvtConnection = WSACreateEvent();
 		if (hEvtConnection == WSA_INVALID_EVENT)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to create connection event handler err={0:X8}", GetLastWSAHRESULT());
-			netErr(GetLastWSAHRESULT());
+			netTrace(Trace::TRC_ERROR, "Failed to create connection event handler err={0:X8}", GetLastWSAResult());
+			netErr(GetLastWSAResult());
 		}
 
 
 		if (WSAEventSelect(GetSocket(), hEvtConnection, FD_CONNECT) == SOCKET_ERROR)
 		{
-			netTrace(Trace::TRC_ERROR, "Failed to set connection event handler err={0:X8}", GetLastWSAHRESULT());
-			netErr(GetLastWSAHRESULT());
+			netTrace(Trace::TRC_ERROR, "Failed to set connection event handler err={0:X8}", GetLastWSAResult());
+			netErr(GetLastWSAResult());
 		}
 
 		DWORD dwWaitRes = WSAWaitForMultipleEvents(1, &hEvtConnection, TRUE, Const::CONNECTION_TIMEOUT, TRUE);
 
 		if (dwWaitRes == WSA_WAIT_TIMEOUT || dwWaitRes == WSA_WAIT_FAILED)
 		{
-			OnConnectionResult(E_NET_CONNECTION_TIMEOUT);
-			hr = E_NET_CONNECTION_TIMEOUT;
+			OnConnectionResult(ResultCode::E_NET_CONNECTION_TIMEOUT);
+			hr = ResultCode::E_NET_CONNECTION_TIMEOUT;
 		}
 		else
 		{
 
 			if (WSAEventSelect(GetSocket(), hEvtConnection, FD_WRITE | FD_READ) == SOCKET_ERROR)
 			{
-				netTrace(Trace::TRC_ERROR, "Failed to set connection event handler err={0:X8}", GetLastWSAHRESULT());
-				netErr(GetLastWSAHRESULT());
+				netTrace(Trace::TRC_ERROR, "Failed to set connection event handler err={0:X8}", GetLastWSAResult());
+				netErr(GetLastWSAResult());
 			}
 
 			DWORD dwWaitRes2 = WSAWaitForMultipleEvents(1, &hEvtConnection, TRUE, Const::CONNECTION_TIMEOUT, TRUE);
 
 			if (dwWaitRes2 == WSA_WAIT_TIMEOUT || dwWaitRes2 == WSA_WAIT_FAILED)
 			{
-				OnConnectionResult(E_NET_CONNECTION_TIMEOUT);
-				netErr(E_NET_CONNECTION_TIMEOUT);
+				OnConnectionResult(ResultCode::E_NET_CONNECTION_TIMEOUT);
+				netErr(ResultCode::E_NET_CONNECTION_TIMEOUT);
 			}
 
 			if (WSAEventSelect(GetSocket(), hEvtConnection, 0) == SOCKET_ERROR)
 			{
 				// just reporting this error
-				netTrace(Trace::TRC_ERROR, "Failed to cancel connection event handler err={0:X8}", GetLastWSAHRESULT());
+				netTrace(Trace::TRC_ERROR, "Failed to cancel connection event handler err={0:X8}", GetLastWSAResult());
 			}
 		}
 
@@ -548,9 +579,9 @@ namespace Net {
 	}
 
 	// Close connection
-	HRESULT ConnectionTCP::CloseConnection()
+	Result ConnectionTCP::CloseConnection()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		//socket
 		m_uiRecvTemUsed = 0;
@@ -558,11 +589,11 @@ namespace Net {
 
 		netChk(Connection::CloseConnection() );
 
+		CloseSocket();
+
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
-
 		
-		CloseSocket();
 
 	Proc_End:
 
@@ -573,7 +604,7 @@ namespace Net {
 	{
 		if (GetSocket() == INVALID_SOCKET) return;
 
-		NetSystem::UnregisterSocket(SockType::Stream, this);
+		NetSystem::UnregisterSocket(this);
 
 		Connection::CloseSocket();
 	}
@@ -581,9 +612,9 @@ namespace Net {
 
 
 	// called when incomming message occure
-	HRESULT ConnectionTCP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
+	Result ConnectionTCP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pMsg = NULL;
 
 		netTrace(TRC_TCPRECVRAW, "TCP RecvBuf Len={0}", uiBuffSize);
@@ -624,7 +655,7 @@ namespace Net {
 				if( pMsgHdr->Length < sizeof(Message::MessageHeader) )
 				{
 					// too small invalid packet
-					netErr( E_SYSTEM_UNEXPECTED );
+					netErr( ResultCode::UNEXPECTED );
 				}
 
 				netMem( pMsg = Message::MessageData::NewMessage( pMsgHdr->msgID.ID, pMsgHdr->Length, pBuff ) );
@@ -643,7 +674,7 @@ namespace Net {
 				// copy header
 				if( m_uiRecvTemUsed < sizeof(Message::MessageHeader) )
 				{
-					uiCopySize = sizeof(Message::MessageHeader) - m_uiRecvTemUsed;
+					uiCopySize = (UINT)(sizeof(Message::MessageHeader) - m_uiRecvTemUsed);
 					if( uiBuffSize < uiCopySize )
 					{
 						// buffer too small to make header. append data and return
@@ -671,7 +702,7 @@ namespace Net {
 				// append remain body
 				if( pMsgHdr->Length < m_uiRecvTemUsed )
 				{
-					netErr( E_NET_BADPACKET_SIZE );
+					netErr( ResultCode::E_NET_BADPACKET_SIZE );
 				}
 
 				uiCopySize = pMsgHdr->Length - m_uiRecvTemUsed;
@@ -710,9 +741,9 @@ namespace Net {
 
 
 
-	HRESULT ConnectionTCP::OnRecv( Message::MessageData *pMsg )
+	Result ConnectionTCP::OnRecv( Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageHeader *pMsgHeader = pMsg->GetMessageHeader();
 
 		if( pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL )
@@ -745,52 +776,54 @@ namespace Net {
 	}
 
 	// Send message to connection with network device
-	HRESULT ConnectionTCP::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
+	Result ConnectionTCP::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
 	{
-		HRESULT hr = S_SYSTEM_OK, hrErr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 
 		netChkPtr(pSendBuffer);
 
 		hrErr = NetSystem::Send(GetSocket(), pSendBuffer);
-		switch (hrErr)
+		switch ((uint32_t)hrErr)
 		{
-		case S_SYSTEM_OK:
-		case E_NET_IO_PENDING:
-		case E_NET_WOULDBLOCK:
+		case ResultCode::SUCCESS:
+		case ResultCode::E_NET_IO_PENDING:
+		case ResultCode::E_NET_WOULDBLOCK:
 			break;
-		case E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_NOTCONN:
 			hr = hrErr;
 			break;
-		case E_NET_CONNABORTED:
-		case E_NET_CONNRESET:
-		case E_NET_NETRESET:
-		case E_NET_NOTCONN:
-		case E_NET_NOTSOCK:
-		case E_NET_SHUTDOWN:
+		case ResultCode::E_NET_CONNABORTED:
+		case ResultCode::E_NET_CONNRESET:
+		case ResultCode::E_NET_NETRESET:
+		case ResultCode::E_NET_NOTSOCK:
+		case ResultCode::E_NET_SHUTDOWN:
 			// Send fail by connection close
 			// Need to disconnect
 			Disconnect("Send failed by error");
-			hr = E_NET_CONNECTION_CLOSED;
+			hr = ResultCode::E_NET_CONNECTION_CLOSED;
 			goto Proc_End;
 			break;
 		default:
-			netErr(E_NET_IO_SEND_FAIL);
+			netErr(ResultCode::E_NET_IO_SEND_FAIL);
 			break;
 		};
 
 	Proc_End:
 
-		switch (hr)
+		switch ((uint32_t)hr)
 		{
-		case S_SYSTEM_OK:
-		case S_SYSTEM_FALSE:
+		case ResultCode::SUCCESS:
+		case ResultCode::SUCCESS_FALSE:
 			break;
-		case E_NET_IO_SEND_FAIL:
-			return S_SYSTEM_OK;
-		case E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_IO_SEND_FAIL:
+			return ResultCode::SUCCESS;
+		case ResultCode::E_NET_TRY_AGAIN:
 			break;
+		case ResultCode::E_NET_NOTCONN:
+			m_isActuallyConnected = Connect();
 		default:
-			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo().Remote, hrErr, hr, GetCID());
+			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, sock:{4}, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo().Remote, hrErr, hr, GetCID(), GetSocket());
 			break;
 		}
 
@@ -799,15 +832,16 @@ namespace Net {
 	}
 
 
-	HRESULT ConnectionTCP::SendRaw(Message::MessageData* &pMsg)
+	Result ConnectionTCP::SendRaw(Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		IOBUFFER_WRITE *pSendBuffer = nullptr;
 
 		netChkPtr(pMsg);
 
 		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
 		pSendBuffer->SetupSendTCP(pMsg);
+		pMsg = nullptr;
 
 		if (NetSystem::IsProactorSystem())
 		{
@@ -818,7 +852,6 @@ namespace Net {
 			netChk(EnqueueBuffer(pSendBuffer));
 			ProcessSendQueue();
 		}
-		pMsg = nullptr;
 		pSendBuffer = nullptr;
 
 	Proc_End:
@@ -832,13 +865,13 @@ namespace Net {
 	}
 
 	// Send message to connected entity
-	HRESULT ConnectionTCP::Send( Message::MessageData* &pMsg )
+	Result ConnectionTCP::Send( Message::MessageData* &pMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageID msgID;
 
 		if (GetConnectionState() == STATE_DISCONNECTED)
-			return E_NET_NOT_CONNECTED;
+			return ResultCode::E_NET_NOT_CONNECTED;
 
 		Message::MessageHeader* pMsgHeader = pMsg->GetMessageHeader();
 		msgID = pMsgHeader->msgID;
@@ -854,7 +887,7 @@ namespace Net {
 		if( pMsg->GetMessageSize() > (UINT)Const::INTER_PACKET_SIZE_MAX )
 		{
 			Util::SafeRelease( pMsg );
-			netErr( E_NET_BADPACKET_TOOBIG );
+			netErr( ResultCode::E_NET_BADPACKET_TOOBIG );
 		}
 
 		PrintDebugMessage( "SendMsg ", pMsg );
@@ -863,7 +896,7 @@ namespace Net {
 			&& (m_lGuarantedSent - m_lGuarantedAck) > Const::TCP_GUARANT_PENDING_MAX )
 		{
 			// Drop if there is too many reliable packets are pending
-			netErr( E_NET_SEND_FAIL );
+			netErr( ResultCode::E_NET_SEND_FAIL );
 		}
 
 		m_lGuarantedSent.fetch_add(1, std::memory_order_relaxed);
@@ -878,7 +911,7 @@ namespace Net {
 
 	Proc_End:
 
-		if(FAILED(hr))
+		if(!(hr))
 		{
 			Util::SafeRelease(pMsg);
 		}
@@ -897,10 +930,10 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionTCP::SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID)
+	Result ConnectionTCP::SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID)
 	{
-		HRESULT hr = Connection::SendNetCtrl(uiCtrlCode, uiSequence, msgID, UID);
-		if (SUCCEEDED(hr))
+		Result hr = Connection::SendNetCtrl(uiCtrlCode, uiSequence, msgID, UID);
+		if ((hr))
 		{
 			m_PendingSend.fetch_add(1, std::memory_order_acquire);
 		}
@@ -909,14 +942,14 @@ namespace Net {
 	}
 
 	// Update send queue, Reliable UDP
-	HRESULT ConnectionTCP::UpdateSendQueue()
+	Result ConnectionTCP::UpdateSendQueue()
 	{
 		Assert(false);
-		return E_SYSTEM_NOTIMPL;
+		return ResultCode::NOT_IMPLEMENTED;
 	}
 
 	// Update Send buffer Queue, TCP and UDP client connection
-	HRESULT ConnectionTCP::UpdateSendBufferQueue()
+	Result ConnectionTCP::UpdateSendBufferQueue()
 	{
 		return ProcessSendQueue();
 	}
@@ -941,16 +974,24 @@ namespace Net {
 
 
 	// Update net control, process connection heartbit, ... etc
-	HRESULT ConnectionTCPClient::UpdateNetCtrl()
+	Result ConnectionTCPClient::UpdateNetCtrl()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageID msgIDTem;
 
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
 
 		if( GetConnectionState() != IConnection::STATE_DISCONNECTED)
 		{
-			PendingRecv();
+			if (!GetIsIORegistered())
+			{
+				netTrace(TRC_CONNECTION, "Close connection because it's kicked from net IO, CID:{0}", GetCID());
+				netChk(CloseConnection());
+			}
+			else
+			{
+				PendingRecv();
+			}
 		}
 
 		// connect/disconnect process
@@ -1009,9 +1050,9 @@ namespace Net {
 	
 		
 	// Initialize connection
-	HRESULT ConnectionTCPClient::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
+	Result ConnectionTCPClient::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
 	{
-		HRESULT hr = ConnectionTCP::InitConnection( socket, connectInfo );
+		Result hr = ConnectionTCP::InitConnection( socket, connectInfo );
 		SetLocalClass( NetClass::Client );
 
 		return hr;
@@ -1019,11 +1060,11 @@ namespace Net {
 
 
 	// Wait connection event
-	HRESULT ConnectionTCPClient::WaitConnect()
+	Result ConnectionTCPClient::WaitConnect()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		if(SUCCEEDED(ConnectionTCP::WaitConnect()))
+		if((ConnectionTCP::WaitConnect()))
 		{
 			ThisThread::SleepFor(DurationMS(50));
 
@@ -1034,7 +1075,7 @@ namespace Net {
 				UpdateNetCtrl();
 				if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 				{
-					netErr(GetLastWSAHRESULT() );
+					netErr(GetLastWSAResult() );
 				}
 			};
 		}
@@ -1064,9 +1105,9 @@ namespace Net {
 
 
 	// Update net control, process connection heartbit, ... etc
-	HRESULT ConnectionTCPServer::UpdateNetCtrl()
+	Result ConnectionTCPServer::UpdateNetCtrl()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageID msgIDTem;
 
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();

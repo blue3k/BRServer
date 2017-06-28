@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <RemoteProjectPath>/GameServer</RemoteProjectPath>
+    <RemoteRootDir>/GameServer</RemoteRootDir>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <CppLanguageStandard>c++1y</CppLanguageStandard>
+      <AdditionalIncludeDirectories>./;$(RemoteRootDir)/Lib;%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);/usr/include;/usr/include/mysql;/usr/include/kqueue</AdditionalIncludeDirectories>
+      <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(RemoteRootDir)/Lib/$(Platform)$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LibraryDependencies>m;c;kqueue;z;xml2;ssl;crypto;jsoncpp;curl;mysqlclient;%(LibraryDependencies)</LibraryDependencies>
+      <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
+      <VerboseOutput>true</VerboseOutput>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="RemoteProjectPath">
+      <Value>$(RemoteProjectPath)</Value>
+    </BuildMacro>
+    <BuildMacro Include="RemoteRootDir">
+      <Value>$(RemoteRootDir)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

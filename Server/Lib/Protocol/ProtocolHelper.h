@@ -26,10 +26,10 @@ namespace Protocol {
 
 	// parsing helper
 	template< class DataType >
-	inline HRESULT StreamParamCopy( DataType* pDst, BYTE* &pMsgCur, INT &iMsgSize, INT iParamSize );
+	inline Result StreamParamCopy( DataType* pDst, BYTE* &pMsgCur, INT &iMsgSize, INT iParamSize );
 
 	template< class DataType >
-	inline HRESULT StreamParamLnk( DataType* &pDst, BYTE* &pMsgCur, INT &iMsgSize, INT iParamSize );
+	inline Result StreamParamLnk( DataType* &pDst, BYTE* &pMsgCur, INT &iMsgSize, INT iParamSize );
 
 
 #include "ProtocolHelper.inl"

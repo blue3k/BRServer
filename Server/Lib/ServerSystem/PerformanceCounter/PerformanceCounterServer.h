@@ -46,13 +46,13 @@ namespace Svr {
 			private:
 				PerformanceCounterServer &m_CounterServer;
 
-				typedef HRESULT(PerformanceCounterServer::*MessageHandlerType)(const sockaddr_storage& from, Message::MessageData* &);
+				typedef Result(PerformanceCounterServer::*MessageHandlerType)(const sockaddr_storage& from, Message::MessageData* &);
 				MessageHandlerTable<MessageHandlerType>	m_HandlerTable;
 
 			public:
 				MessageHandler(PerformanceCounterServer *CounterServer);
 
-				virtual HRESULT OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) override;
+				virtual Result OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) override;
 			};
 
 		private:
@@ -110,24 +110,24 @@ namespace Svr {
 
 		public:
 
-			static HRESULT Initialize(const char* serverAddress, UINT port);
-			static HRESULT Initialize(const NetAddress& serverAddress);
-			static HRESULT Terminate();
+			static Result Initialize(const char* serverAddress, UINT port);
+			static Result Initialize(const NetAddress& serverAddress);
+			static Result Terminate();
 
 			static UINT GetInstanceCount();
 			static UINT GetInstanceList(UINT startIndex, Array<SharedPointerT<PerformanceCounterInstance>>& instanceList);
 			//static UINT GetInstanceList(UINT startIndex, UINT bufferSize, EntityUID pInstanceBuffer);
-			static HRESULT GetInstance(UINT64 instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance);
-			static HRESULT GetInstance(EntityUID instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance);
+			static Result GetInstance(UINT64 instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance);
+			static Result GetInstance(EntityUID instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance);
 
 		protected:
 
-			HRESULT HandleMessageEnqueue(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
-			HRESULT HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
+			Result HandleMessageEnqueue(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
+			Result HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
 
-			HRESULT HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
-			HRESULT HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
-			HRESULT HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
+			Result HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
+			Result HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
+			Result HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
 		};
 
 

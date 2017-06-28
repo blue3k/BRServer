@@ -35,9 +35,9 @@ namespace BR
 
 
 		// Cmd: Register entity
-		HRESULT EntityServerService::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
+		Result EntityServerService::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 svrChk(GetPolicyEntityServer()->RegisterEntityCmd( InTransactionID, InLocalEntID, InEntName ) );
 
@@ -45,11 +45,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT EntityServerService::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
+		}; // Result EntityServerService::RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName )
 		// Cmd: Find Entity
-		HRESULT EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
+		Result EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 svrChk(GetPolicyEntityServer()->UnregisterEntityCmd( InTransactionID, InEntUID ) );
 
@@ -57,11 +57,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
+		}; // Result EntityServerService::UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID )
 		// Cmd: Find Entity
-		HRESULT EntityServerService::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
+		Result EntityServerService::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 svrChk(GetPolicyEntityServer()->FindEntityCmd( InTransactionID, InLocalEntID ) );
 
@@ -69,7 +69,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT EntityServerService::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
+		}; // Result EntityServerService::FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID )
 
 
 	}; // namespace Svr

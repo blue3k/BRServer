@@ -146,40 +146,40 @@ namespace BR {
 		}
 
 		// Find Previous which is same or smaller Node
-		HRESULT FindPrevNode( KeyType keyValue, Node* &pPrevNode )
+		Result FindPrevNode( KeyType keyValue, Node* &pPrevNode )
 		{
 			pPrevNode = &m_Header;
 			for( ; pPrevNode->pNext != nullptr; pPrevNode = pPrevNode->pNext )
 			{
 				Node *pNextNode = pPrevNode->pNext;
 				if (pNextNode->Key <= keyValue)
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 			}
 
 			// No smaller or same node is found, return head
 			AssertRel(pPrevNode == &m_Header || pPrevNode->Key > keyValue);
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT Insert( iterator itNode, KeyType keyValue, Node* pNew )
+		Result Insert( iterator itNode, KeyType keyValue, Node* pNew )
 		{
-			if( itNode.m_pCur == nullptr ) return E_SYSTEM_POINTER;
+			if( itNode.m_pCur == nullptr ) return ResultCode::INVALID_POINTER;
 
 			return Insert( itNode.m_pCur, keyValue, pNew );
 		}
 
 		// insert after specific node, if null for pPrevNode, added at front
-		HRESULT Insert( Node* pPrevNode, KeyType keyValue, Node* pNew )
+		Result Insert( Node* pPrevNode, KeyType keyValue, Node* pNew )
 		{
 			if( pPrevNode == nullptr )
-				return E_SYSTEM_POINTER;
+				return ResultCode::INVALID_POINTER;
 
 			if( pNew->pNext != nullptr )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			// This node should be in the list already
 			if( pPrevNode == pNew || pPrevNode->pNext == pNew )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			if( pPrevNode != &m_Header )
 			{
@@ -196,19 +196,19 @@ namespace BR {
 
 			m_NumItems++;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// Remove 
 		
-		HRESULT Remove( iterator &itNode )
+		Result Remove( iterator &itNode )
 		{
-			if( !itNode.IsValid() ) return E_SYSTEM_POINTER;
+			if( !itNode.IsValid() ) return ResultCode::INVALID_POINTER;
 
 			return Remove( itNode.m_pCur, itNode.m_pCur->pNext );
 		}
 		
-		HRESULT FindAndRemove( Node* pSearchPrevNode, Node* pRemove )
+		Result FindAndRemove( Node* pSearchPrevNode, Node* pRemove )
 		{
 			if( pSearchPrevNode == nullptr )
 				pSearchPrevNode = &m_Header;
@@ -219,30 +219,30 @@ namespace BR {
 			}
 
 			if( pSearchPrevNode == nullptr )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			pSearchPrevNode->pNext = pRemove->pNext;
 			pRemove->pNext = nullptr;
 
 			m_NumItems--;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT Remove( Node* pPrevNode, Node* pRemove )
+		Result Remove( Node* pPrevNode, Node* pRemove )
 		{
 			if( pPrevNode == nullptr )
-				return E_SYSTEM_POINTER;
+				return ResultCode::INVALID_POINTER;
 
 			if( pPrevNode->pNext != pRemove )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			pPrevNode->pNext = pRemove->pNext;
 			pRemove->pNext = nullptr;
 
 			m_NumItems--;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		iterator begin()
@@ -260,10 +260,10 @@ namespace BR {
 			return m_NumItems;
 		}
 		
-		HRESULT erase( const iterator& itCur )
+		Result erase( const iterator& itCur )
 		{
 			if( !itCur.IsValid() )
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			return Remove( itCur.m_pCur, itCur.m_pCur->pNext );
 		}

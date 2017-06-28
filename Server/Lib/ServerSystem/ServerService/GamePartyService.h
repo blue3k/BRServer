@@ -33,19 +33,19 @@ namespace BR
 			GamePartyService ( ServerServiceInformation* pService );
 
 			// Cmd: Join Party
-			HRESULT JoinPartyCmd( const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer );
+			Result JoinPartyCmd( const TransactionID &InTransactionID, const PlayerID &InInviterID, const PlayerInformation &InInvitedPlayer );
 			// Cmd: Kick player
-			HRESULT LeavePartyCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
+			Result LeavePartyCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Kick player
-			HRESULT KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
+			Result KickPlayerCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
 			// C2S: Chatting message
-			HRESULT ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage );
+			Result ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage );
 			// C2S: Quick Chatting message
-			HRESULT QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const UINT32 &InQuickChatID );
+			Result QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID );
 			// Cmd: Match
-			HRESULT StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers );
+			Result StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers );
 			// Cmd: Match
-			HRESULT CancelGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
+			Result CancelGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 
 		}; // class GamePartyService : public ServerServiceBase
 

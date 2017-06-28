@@ -15,7 +15,7 @@
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/Thread.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
@@ -46,17 +46,17 @@ namespace Svr {
 		, IServerComponent(ComponentID)
 		, m_NumberOfInstance("NumberOfGameInstances")
 	{
-		BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd) { svrMemReturn(pNewTrans = new GameInstanceTransCreateGame(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt) { svrMemReturn(pNewTrans = new GameInstanceTransGameDeleted(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd) { svrMemReturn(pNewTrans = new GameInstanceTransCreateGame(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt) { svrMemReturn(pNewTrans = new GameInstanceTransGameDeleted(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GameInstanceManagerServiceEntity::~GameInstanceManagerServiceEntity()
 	{
 	}
 
-	HRESULT GameInstanceManagerServiceEntity::InitializeEntity(EntityID newEntityID)
+	Result GameInstanceManagerServiceEntity::InitializeEntity(EntityID newEntityID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		EntityUID entityUID;
 		PerformanceCounterInstance* pInstance = nullptr;
 
@@ -74,27 +74,27 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT GameInstanceManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
+	Result GameInstanceManagerServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(LoadbalanceClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)				{ svrMemReturn(pNewTrans = new GameInstanceTransCreateGame(pMsgData)); return S_SYSTEM_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)			{ svrMemReturn(pNewTrans = new GameInstanceTransGameDeleted(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::CreateGameCmd)				{ svrMemReturn(pNewTrans = new GameInstanceTransCreateGame(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::GameInstanceManager::GameDeletedC2SEvt)			{ svrMemReturn(pNewTrans = new GameInstanceTransGameDeleted(pMsgData)); return ResultCode::SUCCESS; } );
 
 	Proc_End:
 
 		return hr;
 	}
 
-	HRESULT GameInstanceManagerServiceEntity::OnNewInstance(GameInstanceEntity* pGameInstance)
+	Result GameInstanceManagerServiceEntity::OnNewInstance(GameInstanceEntity* pGameInstance)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChkPtr(pGameInstance);
 
-		if (SUCCEEDED(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance)))
+		if ((GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::GameInstance, (Entity*)pGameInstance)))
 		{
 			++m_NumberOfInstance;
 			m_LocalWorkload.fetch_add(1, std::memory_order_relaxed);
@@ -106,11 +106,11 @@ namespace Svr {
 	}
 
 	// Called when a game instance is deleted
-	HRESULT GameInstanceManagerServiceEntity::FreeGameInstance(GameInsUID gameUID)
+	Result GameInstanceManagerServiceEntity::FreeGameInstance(GameInsUID gameUID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		if (SUCCEEDED(GetServerComponent<EntityManager>()->RemoveEntity(gameUID.GetEntityID())))
+		if ((GetServerComponent<EntityManager>()->RemoveEntity(gameUID.GetEntityID())))
 		{
 			--m_NumberOfInstance;
 			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
@@ -139,6 +139,7 @@ namespace Svr {
 		switch(gameID)
 		{
 		case GameID::Game:
+		case GameID::MyTownHero:
 		case GameID::Conspiracy:
 			return ClusterID::GameInstanceManager;
 			break;

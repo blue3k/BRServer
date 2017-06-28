@@ -92,9 +92,9 @@ const int STORE_attr_sizes[STORE_ATTR_TYPE_NUM + 1] = {
     SHA_DIGEST_LENGTH,          /* ISSUERKEYID: SHA1 digest, 160 bits */
     SHA_DIGEST_LENGTH,          /* SUBJECTKEYID: SHA1 digest, 160 bits */
     SHA_DIGEST_LENGTH,          /* ISSUERSERIALHASH: SHA1 digest, 160 bits */
-    sizeof(X509_NAME *),        /* ISSUER: X509_NAME * */
+    sizeof(SSL_X509_NAME *),        /* ISSUER: SSL_X509_NAME * */
     sizeof(BIGNUM *),           /* SERIAL: BIGNUM * */
-    sizeof(X509_NAME *),        /* SUBJECT: X509_NAME * */
+    sizeof(SSL_X509_NAME *),        /* SUBJECT: SSL_X509_NAME * */
     SHA_DIGEST_LENGTH,          /* CERTHASH: SHA1 digest, 160 bits */
     -1,                         /* EMAIL: C string */
     -1,                         /* FILENAME: C string */
@@ -1194,7 +1194,7 @@ struct STORE_attr_info_st {
     union {
         char *cstring;
         unsigned char *sha1string;
-        X509_NAME *dn;
+        SSL_X509_NAME *dn;
         BIGNUM *number;
         void *any;
     } values[STORE_ATTR_TYPE_NUM + 1];
@@ -1279,7 +1279,7 @@ unsigned char *STORE_ATTR_INFO_get0_sha1str(STORE_ATTR_INFO *attrs,
     return NULL;
 }
 
-X509_NAME *STORE_ATTR_INFO_get0_dn(STORE_ATTR_INFO *attrs,
+SSL_X509_NAME *STORE_ATTR_INFO_get0_dn(STORE_ATTR_INFO *attrs,
                                    STORE_ATTR_TYPES code)
 {
     if (!attrs) {
@@ -1346,7 +1346,7 @@ int STORE_ATTR_INFO_set_sha1str(STORE_ATTR_INFO *attrs, STORE_ATTR_TYPES code,
 }
 
 int STORE_ATTR_INFO_set_dn(STORE_ATTR_INFO *attrs, STORE_ATTR_TYPES code,
-                           X509_NAME *dn)
+                           SSL_X509_NAME *dn)
 {
     if (!attrs) {
         STOREerr(STORE_F_STORE_ATTR_INFO_SET_DN, ERR_R_PASSED_NULL_PARAMETER);
@@ -1415,7 +1415,7 @@ int STORE_ATTR_INFO_modify_sha1str(STORE_ATTR_INFO *attrs,
 }
 
 int STORE_ATTR_INFO_modify_dn(STORE_ATTR_INFO *attrs, STORE_ATTR_TYPES code,
-                              X509_NAME *dn)
+                              SSL_X509_NAME *dn)
 {
     if (!attrs) {
         STOREerr(STORE_F_STORE_ATTR_INFO_MODIFY_DN,

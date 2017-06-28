@@ -954,7 +954,7 @@ int PKCS7_SIGNER_INFO_sign(PKCS7_SIGNER_INFO *si)
 int PKCS7_dataVerify(X509_STORE *cert_store, X509_STORE_CTX *ctx, BIO *bio,
                      PKCS7 *p7, PKCS7_SIGNER_INFO *si)
 {
-    PKCS7_ISSUER_AND_SERIAL *ias;
+    SSL_PKCS7_ISSUER_AND_SERIAL *ias;
     int ret = 0, i;
     STACK_OF(X509) *cert;
     X509 *x509;
@@ -1128,7 +1128,7 @@ int PKCS7_signatureVerify(BIO *bio, PKCS7 *p7, PKCS7_SIGNER_INFO *si,
     return (ret);
 }
 
-PKCS7_ISSUER_AND_SERIAL *PKCS7_get_issuer_and_serial(PKCS7 *p7, int idx)
+SSL_PKCS7_ISSUER_AND_SERIAL *PKCS7_get_issuer_and_serial(PKCS7 *p7, int idx)
 {
     STACK_OF(PKCS7_RECIP_INFO) *rsk;
     PKCS7_RECIP_INFO *ri;

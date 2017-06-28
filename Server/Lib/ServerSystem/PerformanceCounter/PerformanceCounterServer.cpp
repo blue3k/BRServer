@@ -38,9 +38,9 @@ namespace Svr {
 		BR_MESSAGE_HANDLER(PerformanceCounterUpdateC2SEvt, PerformanceCounterUpdateC2SEvt);
 	}
 
-	HRESULT PerformanceCounterServer::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
+	Result PerformanceCounterServer::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		MessageHandlerType handler;
 		svrChkPtr(pMsg);
 
@@ -73,7 +73,7 @@ namespace Svr {
 	{
 		PacketInfo packetInfo;
 		auto numItems = m_NewDeleteQueue.GetEnqueCount();
-		for (UINT iItem = 0; iItem < numItems&& SUCCEEDED(m_NewDeleteQueue.Dequeue(packetInfo)); iItem++)
+		for (UINT iItem = 0; iItem < numItems&& (m_NewDeleteQueue.Dequeue(packetInfo)); iItem++)
 		{
 			if (packetInfo.pMessage->GetMessageHeader()->msgID.IDSeq.MsgID == Message::Monitoring::PerformanceCounterNewC2SEvt::MID.IDSeq.MsgID)
 			{
@@ -95,7 +95,7 @@ namespace Svr {
 	{
 		PacketInfo packetInfo;
 		auto numItems = m_UpdateQueue.GetEnqueCount();
-		for (UINT iItem = 0; iItem < numItems&& SUCCEEDED(m_UpdateQueue.Dequeue(packetInfo)); iItem++)
+		for (UINT iItem = 0; iItem < numItems&& (m_UpdateQueue.Dequeue(packetInfo)); iItem++)
 		{
 			if (packetInfo.pMessage->GetMessageHeader()->msgID.IDSeq.MsgID == Message::Monitoring::PerformanceCounterUpdateC2SEvt::MID.IDSeq.MsgID)
 			{
@@ -127,7 +127,7 @@ namespace Svr {
 			UpdateNewFreeInstance();
 
 			void* item;
-			while (SUCCEEDED(m_TimedOutQueue.Dequeue(item)))
+			while ((m_TimedOutQueue.Dequeue(item)))
 			{
 				SharedPointerT<PerformanceCounterInstance> removed;
 				m_InstanceMap.Remove((UINT64)item, removed);
@@ -139,15 +139,15 @@ namespace Svr {
 		}
 	}
 
-	HRESULT PerformanceCounterServer::Initialize(const char* serverAddress, UINT port)
+	Result PerformanceCounterServer::Initialize(const char* serverAddress, UINT port)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddr;
 		if (serverAddress == nullptr) serverAddress = "";
 		if (port > USHRT_MAX) port = 0;
 
 		// validate local IP
-		svrChk(Net::SetLocalNetAddress(localAddr, serverAddress, port));
+		svrChk(Net::SetLocalNetAddress(localAddr, serverAddress, (USHORT)port));
 
 		svrChk(Initialize(localAddr));
 
@@ -156,9 +156,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::Initialize(const NetAddress& serverAddress)
+	Result PerformanceCounterServer::Initialize(const NetAddress& serverAddress)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddress;
 		auto pRawUDP = new Net::RawUDP();
 		svrChkPtr(pRawUDP);
@@ -180,23 +180,23 @@ namespace Svr {
 			Util::SafeDelete(pRawUDP);
 		}
 
-		if (FAILED(hr))
+		if (!(hr))
 			Terminate();
 
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::Terminate()
+	Result PerformanceCounterServer::Terminate()
 	{
 		if (stm_pInstance == nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		stm_pInstance->Stop(true);
 
 		delete stm_pInstance;
 		stm_pInstance = nullptr;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	UINT PerformanceCounterServer::GetInstanceCount()
@@ -209,7 +209,7 @@ namespace Svr {
 
 	UINT PerformanceCounterServer::GetInstanceList(UINT startIndex, Array<SharedPointerT<PerformanceCounterInstance>>& instanceList)
 	{
-		//HRESULT hr = S_SYSTEM_OK;
+		//Result hr = ResultCode::SUCCESS;
 		UINT numInstances = 0;
 		if (stm_pInstance == nullptr)
 			return numInstances;
@@ -225,7 +225,7 @@ namespace Svr {
 				return true;
 			}
 
-			if (FAILED(instanceList.push_back(const_cast<SharedPointerT<PerformanceCounterInstance>&>(value))))
+			if (!(instanceList.push_back(const_cast<SharedPointerT<PerformanceCounterInstance>&>(value))))
 				return false;
 			return true;
 		});
@@ -237,7 +237,7 @@ namespace Svr {
 /*
 	UINT PerformanceCounterServer::GetInstanceList(UINT startIndex, UINT bufferSize, PerformanceCounterInstance** pInstanceBuffer)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		UINT numInstances = 0;
 		if (stm_pInstance == nullptr)
 			return numInstances;
@@ -262,30 +262,30 @@ namespace Svr {
 	}
 */
 
-	HRESULT PerformanceCounterServer::GetInstance(UINT64 instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance)
+	Result PerformanceCounterServer::GetInstance(UINT64 instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance)
 	{
 		return GetInstance(EntityUID(instanceUID), pInstance);
 	}
 
-	HRESULT PerformanceCounterServer::GetInstance(EntityUID instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance)
+	Result PerformanceCounterServer::GetInstance(EntityUID instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto& instanceMap = stm_pInstance->m_InstanceMap;
 
-		if (SUCCEEDED(instanceMap.Find(instanceUID.UID, pInstance)))
+		if ((instanceMap.Find(instanceUID.UID, pInstance)))
 		{
 			auto timeSince = Util::TimeSince(pInstance->GetUpdatedTime());
 			if (timeSince <= DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
 			{
 				stm_pInstance->m_TimedOutQueue.Enqueue((void*)instanceUID.UID);
 				pInstance = SharedPointerT<PerformanceCounterInstance>();
-				hr = E_SYSTEM_FAIL;
+				hr = ResultCode::FAIL;
 				goto Proc_End;
 			}
 		}
 		else
 		{
-			hr = E_SYSTEM_FAIL;
+			hr = ResultCode::FAIL;
 		}
 
 	Proc_End:
@@ -293,9 +293,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessageEnqueue(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessageEnqueue(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(m_NewDeleteQueue.Enqueue(PacketInfo(remoteAddr,pMsg)));
 		pMsg = nullptr;
@@ -307,9 +307,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(m_UpdateQueue.Enqueue(PacketInfo(remoteAddr, pMsg)));
 		pMsg = nullptr;
@@ -321,9 +321,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::Monitoring::PerformanceCounterNewC2SEvt messageClass(pMsg);
 		SharedPointerT<PerformanceCounterInstance> pInstance;
 
@@ -333,9 +333,9 @@ namespace Svr {
 		m_InstanceMap.Remove(messageClass.GetInstanceUID().UID, pInstance);
 
 		pInstance = SharedPointerT<PerformanceCounterInstance>(new PerformanceCounterInstance(messageClass.GetInstanceName(), messageClass.GetInstanceUID()));
-		if (FAILED(m_InstanceMap.Insert(pInstance->GetInstanceEntityUID().UID, pInstance)))
+		if (!(m_InstanceMap.Insert(pInstance->GetInstanceEntityUID().UID, pInstance)))
 		{
-			if (FAILED(m_InstanceMap.FindInWriteTree(pInstance->GetInstanceEntityUID().UID, pInstance)))
+			if (!(m_InstanceMap.FindInWriteTree(pInstance->GetInstanceEntityUID().UID, pInstance)))
 			{
 				svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Create/Find Both failed?", pInstance->GetInstanceEntityUID());
 			}
@@ -380,9 +380,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::Monitoring::PerformanceCounterFreeC2SEvt messageClass(pMsg);
 
 		svrChk(messageClass.ParseMsg());
@@ -392,7 +392,7 @@ namespace Svr {
 			for (UINT iInstance = 0; iInstance < instances.GetSize(); iInstance++)
 			{
 				SharedPointerT<PerformanceCounterInstance> pInstance;
-				if (FAILED(m_InstanceMap.Remove(instances[iInstance].UID, pInstance)))
+				if (!(m_InstanceMap.Remove(instances[iInstance].UID, pInstance)))
 				{
 					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Failed to remove", instances[iInstance]);
 				}
@@ -404,21 +404,21 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT PerformanceCounterServer::HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::Monitoring::PerformanceCounterUpdateC2SEvt messageClass(pMsg);
 		SharedPointerT<PerformanceCounterInstance> pInstance;
 
 		svrChk(messageClass.ParseMsg());
 
-		if (FAILED(m_InstanceMap.Find(messageClass.GetInstanceUID().UID, pInstance))
+		if (!(m_InstanceMap.Find(messageClass.GetInstanceUID().UID, pInstance))
 			|| pInstance->GetCounters().GetSize() != messageClass.GetCounterValues().GetSize())
 		{
 			if (m_RawUDP != nullptr)
 			{
 				Message::MessageData* pMsgSend = nullptr;
-				if (FAILED(Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg(pMsgSend, messageClass.GetInstanceUID())))
+				if (!(Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg(pMsgSend, messageClass.GetInstanceUID())))
 				{
 					svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter update request packet");
 				}

@@ -2106,9 +2106,9 @@ static void print_stuff(BIO *bio, SSL *s, int full)
     static const char *space = "                ";
     char buf[BUFSIZ];
     STACK_OF(X509) *sk;
-    STACK_OF(X509_NAME) *sk2;
+    STACK_OF(SSL_X509_NAME) *sk2;
     const SSL_CIPHER *c;
-    X509_NAME *xn;
+    SSL_X509_NAME *xn;
     int j, i;
 #ifndef OPENSSL_NO_COMP
     const COMP_METHOD *comp, *expansion;
@@ -2300,7 +2300,7 @@ static int ocsp_resp_cb(SSL *s, void *arg)
 {
     const unsigned char *p;
     int len;
-    OCSP_RESPONSE *rsp;
+    SSL_OCSP_RESPONSE *rsp;
     len = SSL_get_tlsext_status_ocsp_resp(s, &p);
     BIO_puts(arg, "OCSP response: ");
     if (!p) {

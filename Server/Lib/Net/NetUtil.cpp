@@ -35,29 +35,29 @@ namespace Net {
 	//
 	//	Network Utility functions
 	//
-	HRESULT SockAddr2Addr(const sockaddr_in6 &sockAddr, NetAddress &addr)
+	Result SockAddr2Addr(const sockaddr_in6 &sockAddr, NetAddress &addr)
 	{
 		Assert(sockAddr.sin6_family == AF_INET6);
 		addr.SocketFamily = SockFamily::IPV6;
 		addr.strAddr[0] = '\0';
 		auto result = inet_ntop(sockAddr.sin6_family, (void*)&sockAddr.sin6_addr, addr.strAddr, sizeof addr.strAddr);
-		if (result == nullptr) return GetLastWSAHRESULT();
+		if (result == nullptr) return GetLastWSAResult();
 		addr.usPort = ntohs(sockAddr.sin6_port);
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT SockAddr2Addr(const sockaddr_in &sockAddr, NetAddress &addr)
+	Result SockAddr2Addr(const sockaddr_in &sockAddr, NetAddress &addr)
 	{
 		Assert(sockAddr.sin_family == AF_INET);
 		addr.SocketFamily = SockFamily::IPV4;
 		addr.strAddr[0] = '\0';
 		auto result = inet_ntop(sockAddr.sin_family, (void*)&sockAddr.sin_addr, addr.strAddr, sizeof addr.strAddr);
-		if (result == nullptr) return GetLastWSAHRESULT();
+		if (result == nullptr) return GetLastWSAResult();
 		addr.usPort = ntohs(sockAddr.sin_port);
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT SockAddr2Addr(const sockaddr_storage &sockAddr, NetAddress &addr)
+	Result SockAddr2Addr(const sockaddr_storage &sockAddr, NetAddress &addr)
 	{
 		if (sockAddr.ss_family == AF_INET6)
 		{
@@ -74,9 +74,11 @@ namespace Net {
 			addr.strAddr[0] = '\0';
 			addr.usPort = 0;
 		}
+
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_in6 &sockAddr)
+	Result Addr2SockAddr(const NetAddress &addr, sockaddr_in6 &sockAddr)
 	{
 		memset(&sockAddr, 0, sizeof(sockAddr));
 		sockAddr.sin6_family = AF_INET6;
@@ -84,13 +86,13 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin6_family, addr.strAddr, &sockAddr.sin6_addr);
 		if (result != TRUE)
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 		else
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 	}
 
-	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_in &sockAddr)
+	Result Addr2SockAddr(const NetAddress &addr, sockaddr_in &sockAddr)
 	{
 		memset(&sockAddr, 0, sizeof(sockAddr));
 		sockAddr.sin_family = AF_INET;
@@ -98,13 +100,13 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin_family, addr.strAddr, &sockAddr.sin_addr);
 		if (result != TRUE)
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 		else
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 	}
 
-	HRESULT Addr2SockAddr(const NetAddress &addr, sockaddr_storage &sockAddr)
+	Result Addr2SockAddr(const NetAddress &addr, sockaddr_storage &sockAddr)
 	{
 		if (addr.SocketFamily == SockFamily::IPV6)
 		{
@@ -116,7 +118,7 @@ namespace Net {
 		}
 	}
 
-	HRESULT SetSockAddr(sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort)
+	Result SetSockAddr(sockaddr_in6& sockAddr, const char *strAddr, USHORT usPort)
 	{
 		memset(&sockAddr, 0, sizeof(sockAddr));
 
@@ -125,13 +127,13 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin6_family, strAddr, &sockAddr.sin6_addr);
 		if (result != TRUE)
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT SetSockAddr(sockaddr_in& sockAddr, const char *strAddr, USHORT usPort)
+	Result SetSockAddr(sockaddr_in& sockAddr, const char *strAddr, USHORT usPort)
 	{
 		memset(&sockAddr, 0, sizeof(sockAddr));
 
@@ -140,23 +142,23 @@ namespace Net {
 		int result = inet_pton(sockAddr.sin_family, strAddr, &sockAddr.sin_addr);
 		if (result != TRUE)
 		{
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT SetSockAddr(sockaddr_storage& sockAddr, const char *strAddr, USHORT usPort)
+	Result SetSockAddr(sockaddr_storage& sockAddr, const char *strAddr, USHORT usPort)
 	{
-		if (FAILED(SetSockAddr(*(sockaddr_in6*)&sockAddr, strAddr, usPort)))
+		if (!(SetSockAddr(*(sockaddr_in6*)&sockAddr, strAddr, usPort)))
 		{
 			return SetSockAddr(*(sockaddr_in*)&sockAddr, strAddr, usPort);
 		}
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	HRESULT GetAnyBindAddr(const sockaddr_storage &sockAddr, sockaddr_storage&bindAddr)
+	Result GetAnyBindAddr(const sockaddr_storage &sockAddr, sockaddr_storage&bindAddr)
 	{
 		bindAddr = sockAddr;
 		if (bindAddr.ss_family == ToSockValue(SockFamily::IPV6))
@@ -169,22 +171,37 @@ namespace Net {
 			auto bindSockaddr = (sockaddr_in*)&bindAddr;
 			bindSockaddr->sin_addr.s_addr = INADDR_ANY;
 		}
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT SetLocalNetAddress(NetAddress &localAddr, const char *strLocalAddress, USHORT port)
+	Result SetLocalNetAddress(NetAddress &localAddr, const char *strLocalAddress, USHORT port)
 	{
 		StrUtil::StringCpy(localAddr.strAddr, strLocalAddress);
 		localAddr.usPort = port;
 
 		// validate local IP
-		if (FAILED(CheckLocalAddress(SockFamily::IPV6, localAddr)))
+		if (!(CheckLocalAddress(SockFamily::IPV6, localAddr)))
 		{
-			if (FAILED(CheckLocalAddress(SockFamily::IPV4, localAddr)))
+			if (!(CheckLocalAddress(SockFamily::IPV4, localAddr)))
 			{
-				if (SUCCEEDED(GetLocalAddressIPv6(localAddr)))
-					netTrace(Trace::TRC_ERROR, "Invalid Address, expecte a local IPV6 address such as ... {0}", localAddr);
-				return E_NET_INVALID_ADDRESS;
+				if ((GetLocalAddressIPv6(localAddr)))
+				{
+					if (CheckLocalAddress(SockFamily::IPV6, localAddr))
+					{
+						netTrace(Trace::TRC_ERROR, "Invalid Address, Using another address({0}) instead of given address", localAddr);
+						localAddr.SocketFamily = SockFamily::IPV6;
+					}
+					else
+					{
+						netTrace(Trace::TRC_ERROR, "Invalid Address, expect a local IPV6 address");
+						return ResultCode::E_NET_INVALID_ADDRESS;
+					}
+				}
+				else
+				{
+					netTrace(Trace::TRC_ERROR, "Invalid Address, expect a local IPV6 address");
+					return ResultCode::E_NET_INVALID_ADDRESS;
+				}
 			}
 			else
 			{
@@ -196,31 +213,31 @@ namespace Net {
 			localAddr.SocketFamily = SockFamily::IPV6;
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT SetNetAddress(NetAddress &netAddr, const char *strAddress, USHORT port)
+	Result SetNetAddress(NetAddress &netAddr, const char *strAddress, USHORT port)
 	{
 		sockaddr_storage sockAddr;
 
-		HRESULT hr = SetSockAddr(sockAddr, strAddress, port);
-		if (FAILED(hr))
+		Result hr = SetSockAddr(sockAddr, strAddress, port);
+		if (!(hr))
 			return hr;
 
 		netAddr.SocketFamily = ToSockFamily(sockAddr.ss_family);
 		hr = StrUtil::StringCpy(netAddr.strAddr, (INT)countof(netAddr.strAddr), strAddress);
-		if (FAILED(hr))
+		if (!(hr))
 			return hr;
 
 		netAddr.usPort = port;
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 #if WINDOWS
 
 
-	HRESULT GetLocalAddress(SockFamily family, NetAddress &addr)
+	Result GetLocalAddress(SockFamily family, NetAddress &addr)
 	{
 		char tempBuffer[128];
 		//Convert IPV6 to IPV4
@@ -236,15 +253,15 @@ namespace Net {
 		switch (error)
 		{
 		case 0:				break;
-		case EAI_AGAIN:		return E_NET_TRY_AGAIN;
-		case EAI_BADFLAGS:	return E_NET_BADFLAGS;
-		case EAI_FAIL:		return E_SYSTEM_FAIL;
-		case EAI_FAMILY:	return E_NET_FAMILY;
-		case EAI_MEMORY:	return E_SYSTEM_OUTOFMEMORY;
-		case EAI_NONAME:	return E_NET_HOST_NOT_FOUND;
-		case EAI_SERVICE:	return E_NET_INVALID_SERVICE;
-		case EAI_SOCKTYPE:	return E_NET_NOTSOCK;
-		default:			return E_SYSTEM_UNEXPECTED;
+		case EAI_AGAIN:		return ResultCode::E_NET_TRY_AGAIN;
+		case EAI_BADFLAGS:	return ResultCode::E_NET_BADFLAGS;
+		case EAI_FAIL:		return ResultCode::FAIL;
+		case EAI_FAMILY:	return ResultCode::E_NET_FAMILY;
+		case EAI_MEMORY:	return ResultCode::OUT_OF_MEMORY;
+		case EAI_NONAME:	return ResultCode::E_NET_HOST_NOT_FOUND;
+		case EAI_SERVICE:	return ResultCode::E_NET_INVALID_SERVICE;
+		case EAI_SOCKTYPE:	return ResultCode::E_NET_NOTSOCK;
+		default:			return ResultCode::UNEXPECTED;
 		}
 
 		for (auto curAddr = res; curAddr != nullptr; curAddr = curAddr->ai_next)
@@ -274,20 +291,20 @@ namespace Net {
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
-		return bIsFound ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+		return bIsFound ? ResultCode::SUCCESS : ResultCode::FAIL;
 	}
 
-	HRESULT GetLocalAddressIPv4(NetAddress &addr)
+	Result GetLocalAddressIPv4(NetAddress &addr)
 	{
 		return GetLocalAddress(SockFamily::IPV4, addr);
 	}
 
-	HRESULT GetLocalAddressIPv6(NetAddress &addr)
+	Result GetLocalAddressIPv6(NetAddress &addr)
 	{
 		return GetLocalAddress(SockFamily::IPV6, addr);
 	}
 
-	HRESULT CheckLocalAddress(SockFamily family, NetAddress &addr)
+	Result CheckLocalAddress(SockFamily family, NetAddress &addr)
 	{
 		//Convert IPV6
 		struct addrinfo hints, *res;
@@ -295,8 +312,8 @@ namespace Net {
 		bool bIsFound = false;
 
 		addr.SocketFamily = family;
-		HRESULT hr = Addr2SockAddr(addr, testSockAddr);
-		if (FAILED(hr))
+		Result hr = Addr2SockAddr(addr, testSockAddr);
+		if (!(hr))
 			return hr;
 
 
@@ -305,7 +322,7 @@ namespace Net {
 		case SockFamily::IPV4:
 		{
 			auto *pTestSockAddr = (struct sockaddr_in *)&testSockAddr;
-			if (pTestSockAddr->sin_addr.s_addr == INADDR_ANY) return S_SYSTEM_OK;
+			if (pTestSockAddr->sin_addr.s_addr == INADDR_ANY) return ResultCode::SUCCESS;
 			break;
 		}
 
@@ -319,7 +336,7 @@ namespace Net {
 			{
 				if (rawAddress[iAddr] != rawAddressSrc[iAddr]) break;
 			}
-			if (iAddr >= countof(rawAddress)) return S_SYSTEM_OK;
+			if (iAddr >= countof(rawAddress)) return ResultCode::SUCCESS;
 			break;
 		}
 		}
@@ -334,15 +351,15 @@ namespace Net {
 		switch (error)
 		{
 		case 0:				break;
-		case EAI_AGAIN:		return E_NET_TRY_AGAIN;
-		case EAI_BADFLAGS:	return E_NET_BADFLAGS;
-		case EAI_FAIL:		return E_SYSTEM_FAIL;
-		case EAI_FAMILY:	return E_NET_FAMILY;
-		case EAI_MEMORY:	return E_SYSTEM_OUTOFMEMORY;
-		case EAI_NONAME:	return E_NET_HOST_NOT_FOUND;
-		case EAI_SERVICE:	return E_NET_INVALID_SERVICE;
-		case EAI_SOCKTYPE:	return E_NET_NOTSOCK;
-		default:			return E_SYSTEM_UNEXPECTED;
+		case EAI_AGAIN:		return ResultCode::E_NET_TRY_AGAIN;
+		case EAI_BADFLAGS:	return ResultCode::E_NET_BADFLAGS;
+		case EAI_FAIL:		return ResultCode::FAIL;
+		case EAI_FAMILY:	return ResultCode::E_NET_FAMILY;
+		case EAI_MEMORY:	return ResultCode::OUT_OF_MEMORY;
+		case EAI_NONAME:	return ResultCode::E_NET_HOST_NOT_FOUND;
+		case EAI_SERVICE:	return ResultCode::E_NET_INVALID_SERVICE;
+		case EAI_SOCKTYPE:	return ResultCode::E_NET_NOTSOCK;
+		default:			return ResultCode::UNEXPECTED;
 		}
 
 		for (auto curAddr = res; curAddr != nullptr && !bIsFound; curAddr = curAddr->ai_next)
@@ -375,13 +392,13 @@ namespace Net {
 		}
 		freeaddrinfo(res);
 
-		return bIsFound ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+		return bIsFound ? ResultCode::SUCCESS : ResultCode::FAIL;
 	}
 
 #else
 
 
-	HRESULT GetLocalAddress(SockFamily family, NetAddress &addr)
+	Result GetLocalAddress(SockFamily family, NetAddress &addr)
 	{
 		struct ifaddrs *ifaddr = nullptr;
 		char tempBuffer[NI_MAXHOST];
@@ -389,7 +406,7 @@ namespace Net {
 
 		if (getifaddrs(&ifaddr) == -1)
 		{
-			return GetLastWSAHRESULT();
+			return GetLastWSAResult();
 		}
 
 		/* Walk through linked list, maintaining head pointer so we
@@ -442,20 +459,20 @@ namespace Net {
 			StrUtil::StringCpy(addr.strAddr, tempBuffer);
 		}
 
-		return bIsFound ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+		return bIsFound ? ResultCode::SUCCESS : ResultCode::FAIL;
 	}
 
-	HRESULT GetLocalAddressIPv4(NetAddress &addr)
+	Result GetLocalAddressIPv4(NetAddress &addr)
 	{
 		return GetLocalAddress(SockFamily::IPV4, addr);
 	}
 
-	HRESULT GetLocalAddressIPv6(NetAddress &addr)
+	Result GetLocalAddressIPv6(NetAddress &addr)
 	{
 		return GetLocalAddress(SockFamily::IPV6, addr);
 	}
 
-	HRESULT CheckLocalAddress(SockFamily family, NetAddress &addr)
+	Result CheckLocalAddress(SockFamily family, NetAddress &addr)
 	{
 		struct ifaddrs *ifaddr = nullptr;
 		bool bIsFound = false;
@@ -466,19 +483,19 @@ namespace Net {
 		if (family == SockFamily::IPV4)
 		{
 			auto *pSockAddr = (struct sockaddr_in *)&testSockAddr;
-			if (FAILED(Addr2SockAddr(addr, *pSockAddr)))
-				return E_SYSTEM_FAIL;
+			if (!(Addr2SockAddr(addr, *pSockAddr)))
+				return ResultCode::FAIL;
 		}
 		else
 		{
 			auto *pSockAddr = (struct sockaddr_in6 *)&testSockAddr;
-			if (FAILED(Addr2SockAddr(addr, *pSockAddr)))
-				return E_SYSTEM_FAIL;
+			if (!(Addr2SockAddr(addr, *pSockAddr)))
+				return ResultCode::FAIL;
 		}
 			
 		if (getifaddrs(&ifaddr) == -1)
 		{
-			return GetLastWSAHRESULT();
+			return GetLastWSAResult();
 		}
 
 		/* Walk through linked list, maintaining head pointer so we
@@ -523,7 +540,7 @@ namespace Net {
 
 		freeifaddrs(ifaddr);
 
-		return bIsFound ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+		return bIsFound ? ResultCode::SUCCESS : ResultCode::FAIL;
 
 	}
 
@@ -666,7 +683,7 @@ namespace Net {
 	{
 		Message::MessageData* data = NULL;
 
-		while (Dequeue(data) == S_SYSTEM_OK)
+		while (Dequeue(data))
 		{
 			if (data) data->Release();
 		}
@@ -690,7 +707,7 @@ namespace Net {
 	{
 		IOBUFFER_WRITE* data = NULL;
 
-		while (Dequeue(data) == S_SYSTEM_OK)
+		while (Dequeue(data))
 		{
 			Util::SafeDelete(data);
 		}
@@ -727,7 +744,7 @@ namespace Net {
 	//	m_WriteBufferQueues.Clear();
 	//}
 
-	//HRESULT WriteBufferQueueManager::ChooseQueue(WriteBufferQueue* &pQueue)
+	//Result WriteBufferQueueManager::ChooseQueue(WriteBufferQueue* &pQueue)
 	//{
 	//	auto newIndex = m_AssignIndex.fetch_add(1, std::memory_order_relaxed) % m_WriteBufferQueues.GetSize();
 	//}

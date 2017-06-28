@@ -13,7 +13,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/BrAssert.h"
 #include "Common/Utility.h"
 #include "Common/StrUtil.h"
@@ -33,16 +33,16 @@ namespace Svr
 	namespace Service
 	{
 		// Install Service
-		HRESULT ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD);
+		Result ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD);
 
 		// Uninstall service
-		HRESULT ServiceUninstall();
+		Result ServiceUninstall();
 
 		// prepare service running
-		HRESULT ServicePrepare();
+		Result ServicePrepare();
 
 		// Run service main function
-		HRESULT ServiceRun(BR::Svr::BrServer *pSvrInstance );
+		Result ServiceRun(BR::Svr::BrServer *pSvrInstance );
 	};
 
 

@@ -41,6 +41,7 @@
 
 
 
+
 namespace BR {
 namespace Svr {
 
@@ -66,9 +67,9 @@ namespace Svr {
 
 
 	// Initialize entity to proceed new connection
-	HRESULT GameInstanceEntity::InitializeEntity( EntityID newEntityID )
+	Result GameInstanceEntity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( super::InitializeEntity( newEntityID ) );
 
@@ -82,12 +83,12 @@ namespace Svr {
 	}
 
 	// Close entity and clear transaction
-	HRESULT GameInstanceEntity::TerminateEntity()
+	Result GameInstanceEntity::TerminateEntity()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetEntityState() == EntityState::FREE )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		CloseGameInstance();
 
@@ -104,9 +105,9 @@ namespace Svr {
 	}
 
 	// Run entity
-	HRESULT GameInstanceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result GameInstanceEntity::TickUpdate(TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto CurTime = Util::Time.GetTimeMs();
 		StaticArray<PlayerID,64> LeaverList;
 		GameInstancePlayer *pGamePlayer = nullptr;
@@ -114,7 +115,7 @@ namespace Svr {
 		INT playerCount = 0;
 
 		hr = super::TickUpdate(pAction);
-		if (FAILED(hr) || hr == S_SYSTEM_FALSE)
+		if (!(hr) || hr == Result(ResultCode::SUCCESS_FALSE))
 			return hr;
 
 		// Update Players
@@ -130,9 +131,9 @@ namespace Svr {
 		UpdateGameStatus( CurTime );
 
 		// Leave player
-		while( SUCCEEDED(m_PendingReleasePlayer.Dequeue( pltID )) )
+		while( (m_PendingReleasePlayer.Dequeue( pltID )) )
 		{
-			if (SUCCEEDED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
+			if ((m_GamePlayerByUID.Find(pltID, pGamePlayer)))
 			{
 				playerCount--;
 				LeavePlayer( pGamePlayer );
@@ -146,7 +147,7 @@ namespace Svr {
 		}
 
 		if (GetEntityState() == EntityState::FREE)
-			return S_SYSTEM_FALSE;
+			return ResultCode::SUCCESS_FALSE;
 
 	//Proc_End:
 
@@ -162,9 +163,9 @@ namespace Svr {
 
 
 	// Update Game status
-	HRESULT GameInstanceEntity::UpdateGameStatus( TimeStampMS ulCurTime )
+	Result GameInstanceEntity::UpdateGameStatus( TimeStampMS ulCurTime )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// Call check timer to update
 		m_TimeToKill.CheckTimer();
@@ -183,7 +184,7 @@ namespace Svr {
 
 
 	// set game instance kill timer
-	HRESULT GameInstanceEntity::SetGameKillTimer(DurationMS ulWaitTime )
+	Result GameInstanceEntity::SetGameKillTimer(DurationMS ulWaitTime )
 	{
 		// Server Notice ?
 
@@ -223,14 +224,14 @@ namespace Svr {
 	//
 
 	// Initialize entity to proceed new connection
-	HRESULT GameInstanceEntity::InitializeGameEntity(UINT numBot, UINT maxPlayer)
+	Result GameInstanceEntity::InitializeGameEntity(UINT numBot, UINT maxPlayer)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInstancePlayer *pPlayer = nullptr;
 
 		if (maxPlayer > GameConst::MAX_GAMEPLAYER)
 		{
-			svrErr(E_GAME_INVALID_PLAYER_COUNT);
+			svrErr(ResultCode::E_GAME_INVALID_PLAYER_COUNT);
 		}
 
 		if (numBot > maxPlayer)
@@ -279,24 +280,24 @@ namespace Svr {
 	//
 
 
-	HRESULT GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, GameInstancePlayer* &pPlayer)
+	Result GameInstanceEntity::CreatePlayerInstance(const PlayerInformation& playerInfo, GameInstancePlayer* &pPlayer)
 	{
 		pPlayer = new GameInstancePlayer(this, playerInfo);
 
-		return pPlayer != nullptr ? S_SYSTEM_OK : E_SYSTEM_OUTOFMEMORY;
+		return pPlayer != nullptr ? ResultCode::SUCCESS : ResultCode::OUT_OF_MEMORY;
 	}
 
 	// Register new player to join
-	HRESULT GameInstanceEntity::AddPlayerToJoin(GameInstancePlayer* &pPlayer)
+	Result GameInstanceEntity::AddPlayerToJoin(GameInstancePlayer* &pPlayer)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		GameInstancePlayer* pFound = nullptr;
 //		UINT playerIndex;
 
 		svrChkPtr( pPlayer );
-		if (SUCCEEDED(m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound)))
+		if ((m_GamePlayerByUID.Find(pPlayer->GetPlayerID(), pFound)))
 		{
-			svrErr(E_GAME_ALREADY_IN_GAME);
+			svrErr(ResultCode::E_GAME_ALREADY_IN_GAME);
 		}
 
 		m_TotalJoinedPlayer++;
@@ -316,9 +317,9 @@ namespace Svr {
 
 
 	// Player leave
-	HRESULT GameInstanceEntity::LeavePlayer( GameInstancePlayer* &pPlayer )
+	Result GameInstanceEntity::LeavePlayer( GameInstancePlayer* &pPlayer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		pPlayer->SetServerEntity(nullptr,0);
 
@@ -338,9 +339,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT GameInstanceEntity::LeavePlayer( PlayerID pltID )
+	Result GameInstanceEntity::LeavePlayer( PlayerID pltID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk( m_PendingReleasePlayer.Enqueue( pltID ) );
 
@@ -350,7 +351,7 @@ namespace Svr {
 	}
 
 	// Leave all player
-	HRESULT GameInstanceEntity::LeaveAllPlayerForGameDelete()
+	Result GameInstanceEntity::LeaveAllPlayerForGameDelete()
 	{
 		m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GameInstancePlayer* pPlayer)-> bool
 		{
@@ -367,17 +368,17 @@ namespace Svr {
 
 		m_GamePlayerByUID.ClearMap();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Find Player pilotid
-	HRESULT GameInstanceEntity::FindPlayer( PlayerID pltID, GameInstancePlayer* &pGamePlayer )
+	Result GameInstanceEntity::FindPlayer( PlayerID pltID, GameInstancePlayer* &pGamePlayer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		if (FAILED(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
+		if (!(m_GamePlayerByUID.Find(pltID, pGamePlayer)))
 		{
-			return E_SVR_PLAYER_NOT_FOUND;
+			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
 		}
 
 	//Proc_End:
@@ -387,9 +388,9 @@ namespace Svr {
 
 
 	// Called when a player get out of game
-	HRESULT GameInstanceEntity::OnPlayerGetOutOfGame( GameInstancePlayer* pPlayer )
+	Result GameInstanceEntity::OnPlayerGetOutOfGame( GameInstancePlayer* pPlayer )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 
 	//Proc_End:

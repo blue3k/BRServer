@@ -13,7 +13,6 @@
 
 #include "Common/Typedefs.h"
 #include "Common/MemoryPool.h"
-#include "DB/DBTrace.h"
 #include "DB/Factory.h"
 
 #include "ServerSystem/SvrTypes.h"
@@ -24,11 +23,12 @@
 
 
 
+
 namespace BR {
 namespace DB {
 
 	class Session;
-	class QueryManager;
+	class DBClusterManager;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	//
@@ -51,8 +51,8 @@ namespace DB {
 		FORCEINLINE TimeStampMS GetRequestedTime()				{ return m_RequestedTime; }
 		FORCEINLINE void UpdateRequestedTime()					{ m_RequestedTime = Util::Time.GetTimeMs(); }
 
-		FORCEINLINE QueryManager* GetQueryManager()				{ return m_pQueryManager; }
-		FORCEINLINE void SetQueryManager(QueryManager* pMgr)	{ m_pQueryManager = pMgr; }
+		FORCEINLINE DBClusterManager* GetQueryManager()				{ return m_pQueryManager; }
+		FORCEINLINE void SetQueryManager(DBClusterManager* pMgr)	{ m_pQueryManager = pMgr; }
 
 		FORCEINLINE Session* GetSession()						{ return m_pSession; }
 		FORCEINLINE void SetSession(Session* pSes)				{ m_pSession = pSes; }
@@ -66,7 +66,7 @@ namespace DB {
 
 	private:
 
-		QueryManager *m_pQueryManager;
+		DBClusterManager *m_pQueryManager;
 		Session*	m_pSession;
 		// DB shard partitioning key
 		UINT		m_PartitioningKey;

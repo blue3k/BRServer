@@ -5,6 +5,8 @@
 #define HAVE_STDARG_H
 #define HAVE_MALLOC_H
 #define HAVE_ERRNO_H
+#define SEND_ARG2_CAST
+#define GETHOSTBYNAME_ARG_CAST
 
 #if defined(_WIN32_WCE)
 #undef HAVE_ERRNO_H
@@ -17,8 +19,13 @@
 #define HAVE_STDLIB_H
 #define HAVE_TIME_H
 #define HAVE_FCNTL_H
+
+#if __ANDROID__
+#else
 #include <io.h>
 #include <direct.h>
+#endif
+
 #endif
 
 

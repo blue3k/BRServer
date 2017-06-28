@@ -17,7 +17,6 @@
 #include "Common/ResultCode/BRResultCodeCommon.h"
 
 #include "Common/MemoryPool.h"
-#include "Common/MemLog.h"
 #include "Common/HashTable2.h"
 #include "Common/Memory_Impl.h"
 #include "Common/StackWalker.h"
@@ -61,9 +60,9 @@ namespace BR
 		return m_szPageSize;
 	}
 
-	HRESULT PageAllocator::Alloc( void* &pPtr )
+	Result PageAllocator::Alloc( void* &pPtr )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		trcChk( ProcessorHeap::Alloc( m_szPageSize, pPtr ) );
 		m_PageCount.fetch_add(1, std::memory_order_relaxed);
@@ -73,20 +72,20 @@ namespace BR
 
 	Proc_End:
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	HRESULT PageAllocator::Free( void* pPtr )
+	Result PageAllocator::Free( void* pPtr )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		trcChk( ProcessorHeap::Free( pPtr ) );
 		m_PageCount.fetch_sub(1, std::memory_order_relaxed);
 
 	Proc_End:
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -151,7 +150,7 @@ namespace BR
 	}
 
 	// Alloc/Free page method
-	HRESULT PagePool::Alloc( void* &pPtr )
+	Result PagePool::Alloc( void* &pPtr )
 	{
 		void *pRes = nullptr;
 		PageItem *pItem = nullptr;
@@ -159,8 +158,8 @@ namespace BR
 		pItem = (PageItem*)m_FreePages.Pop();
 		if( pItem == nullptr )
 		{
-			HRESULT hr = PageAllocator::Alloc( pRes );
-			if( FAILED(hr) ) return hr;
+			Result hr = PageAllocator::Alloc( pRes );
+			if( !(hr) ) return hr;
 
 			pItem = (PageItem*)pRes;
 		}
@@ -170,15 +169,15 @@ namespace BR
 		pPtr = (void*)((BYTE*)pItem + PAGEITEM_SIZE);
 		AssertRel( ((intptr_t)pPtr & (BR_ALIGN_DOUBLE-1)) == 0 );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PagePool::Free( void* pPtr )
+	Result PagePool::Free( void* pPtr )
 	{
 		PageItem *pItem = nullptr;
 
 		if( pPtr == nullptr )
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
 		pItem = (PageItem*)((BYTE*)pPtr - PAGEITEM_SIZE);
 		AssertRel( pItem->Magic == (intptr_t)MAGIC_PAGEPOOL );
@@ -186,10 +185,10 @@ namespace BR
 
 		m_FreePages.Push( pItem );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT PagePool::OrgFree( void* pPtr )
+	Result PagePool::OrgFree( void* pPtr )
 	{
 		return PageAllocator::Free( pPtr );
 	}
@@ -244,7 +243,7 @@ namespace BR
 	}
 
 	// Allocate/Free
-	HRESULT MemoryPool::Alloc( void* &pPtr, const char* typeName )
+	Result MemoryPool::Alloc( void* &pPtr, const char* typeName )
 	{
 		MemItem *pMemItem = nullptr;
 		StackPool::Item *pItem = m_FreeList.Pop();
@@ -260,8 +259,8 @@ namespace BR
 			}
 
 
-			if( FAILED(m_Allocator.Alloc( pPage )) )
-				return E_SYSTEM_OUTOFMEMORY;
+			if( !(m_Allocator.Alloc( pPage )) )
+				return ResultCode::OUT_OF_MEMORY;
 
 			pMemItem = (MemItem*)pPage;
 			for( size_t iItem = 1; iItem < m_AllocCountPerPage; iItem++ )
@@ -344,15 +343,15 @@ namespace BR
 
 		m_AllocatedCount.fetch_add(1,std::memory_order_relaxed);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT MemoryPool::Free( void* pPtr, const char* typeName )
+	Result MemoryPool::Free( void* pPtr, const char* typeName )
 	{
 		MemItem *pMemItem = nullptr;
 
 		if( pPtr == nullptr )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		pMemItem = (MemItem*)((BYTE*)pPtr - MEMITEM_SIZE);
 
@@ -411,7 +410,7 @@ namespace BR
 			PrintAllocatedList();
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Check pooled memory block header
@@ -494,7 +493,7 @@ namespace BR
 
 			// if it's already exist, exit
 			MemoryPool* pFound = nullptr;
-			if (SUCCEEDED(m_MemoryPoolbySize.Find(allocationSize, pFound)))
+			if ((m_MemoryPoolbySize.Find(allocationSize, pFound)))
 			{
 				return pFound;
 			}
@@ -532,12 +531,12 @@ namespace BR
 		}
 
 		// Get memory pool
-		HRESULT GetMemoryPool( size_t allocationSize, MemoryPool* &pNewPool )
+		Result GetMemoryPool( size_t allocationSize, MemoryPool* &pNewPool )
 		{
 			allocationSize = GetQuantizedMemorySize(allocationSize);
 
 			MemoryPool* pFound = nullptr;
-			if (FAILED(m_MemoryPoolbySize.Find(allocationSize, pFound)))
+			if (!(m_MemoryPoolbySize.Find(allocationSize, pFound)))
 			{
 				pNewPool = AddMemoryPool( allocationSize );
 			}
@@ -548,7 +547,7 @@ namespace BR
 
 			Assert( pNewPool->GetAllocSize() == allocationSize );
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		}
 	};
@@ -576,10 +575,10 @@ namespace BR
 	}
 
 	// Initialize server component
-	HRESULT MemoryPoolManager::InitializeComponent()
+	Result MemoryPoolManager::InitializeComponent()
 	{
-		HRESULT hr = Component::InitializeComponent();
-		if (FAILED(hr)) return hr;
+		Result hr = Component::InitializeComponent();
+		if (!(hr)) return hr;
 
 		StackWalker::Initialize();
 		stm_pInstance = new MemoryPoolManagerImpl;
@@ -600,10 +599,10 @@ namespace BR
 
 
 	// Get memory pool by size
-	HRESULT MemoryPoolManager::GetMemoryPoolBySize( size_t allocationSize, MemoryPool* &pPool )
+	Result MemoryPoolManager::GetMemoryPoolBySize( size_t allocationSize, MemoryPool* &pPool )
 	{
 		if( stm_pInstance == nullptr )
-			return E_NOT_INITIALIZED;
+			return ResultCode::E_NOT_INITIALIZED;
 
 		AssertRel( stm_pInstance );
 

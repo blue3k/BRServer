@@ -35,7 +35,7 @@ namespace BR
 			{}
 
 			// Cmd: 
-			virtual HRESULT GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// C2S: Server Started or Connected
 
 		}; // class ISvrPolicyServer : public Net::INetPolicy
@@ -51,9 +51,9 @@ namespace BR
 			{}
 
 			// Cmd: 
-			virtual HRESULT GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID ) = 0;
+			virtual Result GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID ) = 0;
 			// C2S: Server Started or Connected
-			virtual HRESULT ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress ) = 0;
+			virtual Result ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress ) = 0;
 
 		}; // class IPolicyServer : public Net::INetPolicy
 

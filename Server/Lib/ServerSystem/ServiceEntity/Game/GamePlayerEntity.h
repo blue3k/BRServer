@@ -128,10 +128,10 @@ namespace Svr {
 		virtual ~GamePlayerEntity();
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 		// Set connection for pilot
-		virtual HRESULT SetConnection( SharedPointerT<Net::Connection>&& pCon ) override;
+		virtual Result SetConnection( SharedPointerT<Net::Connection>&& pCon ) override;
 
 		// Release connection if has
 		virtual void ReleaseConnection() override;
@@ -144,17 +144,17 @@ namespace Svr {
 		//	Entity process
 		//
 
-		virtual HRESULT OnNewUserTranscation();
-		virtual HRESULT UpdateDBSync(TransactionID transID);
+		virtual Result OnNewUserTranscation();
+		virtual Result UpdateDBSync(TransactionID transID);
 
 		// register message handlers
-		virtual HRESULT RegisterMessageHandlers();
+		virtual Result RegisterMessageHandlers() override;
 
 		// clear transaction
-		virtual HRESULT ClearEntity() override;
+		virtual Result ClearEntity() override;
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		virtual Transaction* CreateCloseTransaction() { return nullptr; }
@@ -165,7 +165,7 @@ namespace Svr {
 		//
 
 		// Update Game Player 
-		virtual HRESULT UpdateGamePlayer();
+		virtual Result UpdateGamePlayer();
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,9 +181,9 @@ namespace Svr {
 		//const ServerFriendInformation& GetFriendInformation() const;
 
 		FORCEINLINE const char* GetNickName()							{ return m_PlayerInformation.NickName; }
-		FORCEINLINE HRESULT SetNickName( const char* newName )			{ return StrUtil::StringCpy( m_PlayerInformation.NickName, newName ); }
+		FORCEINLINE Result SetNickName( const char* newName )			{ return StrUtil::StringCpy( m_PlayerInformation.NickName, newName ); }
 
-		virtual HRESULT SetAccountID( AccountID accID )					{ m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
+		virtual Result SetAccountID( AccountID accID ) override { m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
 
 		template< class ...ArgTypes >
 		void AddGameTransactionLogT(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* strFormat, ArgTypes... args)
@@ -199,7 +199,7 @@ namespace Svr {
 
 		// TODO: move to component
 		// Send push notify
-		//HRESULT SendPushNotify( const char* strMessage, UINT64 param = 0 );
+		//Result SendPushNotify( const char* strMessage, UINT64 param = 0 );
 
 	};
 

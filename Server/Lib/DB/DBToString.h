@@ -15,15 +15,18 @@
 #include "Common/Typedefs.h"
 #include "Common/ToString.h"
 
+#if !ANDROID
 #include "my_global.h"
 #include "mysql.h"
-
+#endif
 
 namespace BR {
-	
+
+
+#if !ANDROID
 
 	template<>
-	inline HRESULT ToString( char*& pBuff, INT& iBuffLen, const enum_field_types& Data, int Option )
+	inline Result ToString( char*& pBuff, INT& iBuffLen, const enum_field_types& Data, int Option )
 	{
 		const char* name = nullptr;
 
@@ -59,20 +62,23 @@ namespace BR {
 		case MYSQL_TYPE_VAR_STRING: name = "MYSQL_TYPE_VAR_STRING";break;
 		case MYSQL_TYPE_STRING: name = "MYSQL_TYPE_STRING";break;
 		case MYSQL_TYPE_GEOMETRY: name = "MYSQL_TYPE_GEOMETRY";break;
+#if !WINDOWS
+		case MYSQL_TYPE_JSON: name = "MYSQL_TYPE_JSON"; break;
+#endif
 		};
 
 		unused(Option);
 		if( name )
 		{
-			if( FAILED( StrUtil::StringCpyEx( pBuff, iBuffLen, name ) ) )
-				return E_SYSTEM_FAIL;
+			if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, name ) ) )
+				return ResultCode::FAIL;
 		}
 		else
 			return ToStringEnum( pBuff, iBuffLen, Data );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
-
+#endif
 
 }; // namespace BR
 

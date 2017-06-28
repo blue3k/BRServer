@@ -54,6 +54,8 @@ namespace Config {
 		std::string	IPV4;
 		std::string	IPV6;
 
+		std::string	ListenIP;
+
 		// Port
 		USHORT Port;
 
@@ -146,7 +148,7 @@ namespace Config {
 		// Instance name
 		std::vector<DBClusterInstance*> DBMembers;
 
-		virtual void AddChild( DOMElement *pChild );
+		virtual void AddChild( DOMElement *pChild ) override;
 
 		// for parsing
 		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
@@ -237,6 +239,16 @@ namespace Config {
 		PublicNetSocket* NetPublic;
 
 		virtual void AddChild(DOMElement *pChild) override;
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
+	// ModuleRanking
+	class ModuleRanking : public ModuleBase
+	{
+	public:
+		ModuleRanking();
 
 		// for parsing
 		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
@@ -461,7 +473,7 @@ namespace Config {
 		// Game instance Servers
 		std::vector<GenericServer*>	GameMatchings;
 
-		GameID GetGameID() { return m_GameID; }
+		GameID GetGameID() const { return m_GameID; }
 		
 		///////////////////////////////////////////////////////////////////////////
 		//
@@ -491,7 +503,7 @@ namespace Config {
 		virtual ~ConfigData();
 
 		// clear loaded config values
-		HRESULT ClearConfig();
+		Result ClearConfig();
 
 
 		//////////////////////////////////////////////////////////////////////////////////////
@@ -551,10 +563,10 @@ namespace Config {
 	//
 
 	// Load Config file
-	HRESULT LoadConfig( const char* strConfigFileName );
+	Result LoadConfig( const char* strConfigFileName );
 
 	// Clear Config data
-	HRESULT ClearConfig();
+	Result ClearConfig();
 
 	// Get Config data instance
 	const ConfigData& GetConfig();

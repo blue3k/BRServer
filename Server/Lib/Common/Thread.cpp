@@ -40,7 +40,7 @@ namespace BR
 		THREAD_PRIORITY_IDLE,				// PRIORITY_IDLE
 	};
 
-#elif LINUX
+#elif LINUX || ANDROID
 
 	// schedulingPolicies
 	//
@@ -62,6 +62,15 @@ namespace BR
 
 	} ThreadSchedulingTable[] =
 	{
+#if ANDROID
+		{ SCHED_FIFO,	10 },																				// PRIORITY_TIME_CRITICAL
+		{ SCHED_RR,	5, },	// PRIORITY_HIGHEST
+		{ SCHED_RR,	0, },																				// PRIORITY_ABOVE_NORMAL 
+		{ SCHED_OTHER,	0, },																									// PRIORITY_NORMAL
+		{ SCHED_OTHER,	0, },																									// PRIORITY_BELOW_NORMAL
+		{ SCHED_OTHER,	0, },																									// PRIORITY_LOWEST
+		{ SCHED_OTHER,	0, },																									// PRIORITY_IDLE
+#else
 		{ SCHED_FIFO,	sched_get_priority_max(SCHED_FIFO) },																				// PRIORITY_TIME_CRITICAL
 		{ SCHED_RR,	sched_get_priority_min(SCHED_RR) + ((sched_get_priority_max(SCHED_RR) - sched_get_priority_min(SCHED_RR)) >> 1), },	// PRIORITY_HIGHEST
 		{ SCHED_RR,	sched_get_priority_min(SCHED_RR), },																				// PRIORITY_ABOVE_NORMAL 
@@ -69,6 +78,7 @@ namespace BR
 		{ SCHED_BATCH,	0, },																									// PRIORITY_BELOW_NORMAL
 		{ SCHED_BATCH,	0, },																									// PRIORITY_LOWEST
 		{ SCHED_IDLE,	0, },																									// PRIORITY_IDLE
+#endif
 	};
 
 	static_assert(countof(ThreadSchedulingTable) == ((int)Thread::PRIORITY::IDLE + 1), "Invalid Thread scheduling table count");
@@ -79,6 +89,7 @@ namespace BR
 	public:
 		ModuleThread_impl()
 		{
+#if !ANDROID
 			rlimit limit;
 			memset(&limit, 0, sizeof limit);
 			if (getrlimit(RLIMIT_RTPRIO, &limit) != 0)
@@ -101,6 +112,7 @@ namespace BR
 				assert(!"Invalid rtpio FIFO limits:");
 			}
 			std::cout << "TestThreadLimits - OK" << std::endl;
+#endif
 		}
 	};
 	static ModuleThread_impl CheckThreadLimits;
@@ -131,7 +143,7 @@ namespace BR
 
 		::SetThreadPriority((HANDLE)threadHandle, ThreadSchedulingTable[(int)priority]);
 
-#elif LINUX
+#elif LINUX || ANDROID
 
 		sched_param sch_params;
 		sch_params.sched_priority = ThreadSchedulingTable[(int)priority].Priority;
@@ -191,9 +203,7 @@ namespace BR
 
 	bool Thread::CheckKillEvent(const DurationMS& waitTime)
 	{
-		bool isLocked = GetKillMutex().try_lock_for(waitTime);
-		if (isLocked) GetKillMutex().unlock();
-		return isLocked;
+		return GetKillEvent().WaitEvent(waitTime);
 	}
 
 	// thread Controlling
@@ -202,13 +212,7 @@ namespace BR
 	{
 		m_ulPreTime = Util::Time.GetTimeMs();
 
-		if (!GetKillMutex().try_lock())
-		{
-			// Failed to set thread lock
-			//std::cerr << "Failed to set Thread scheduling : " << std::strerror((int)errno) << std::endl;
-			assert(false);
-			return;
-		}
+		GetKillEvent().Reset();
 
 		m_IsRunning.store(true, std::memory_order_release);
 
@@ -224,7 +228,7 @@ namespace BR
 		if (bSendKillEvt)
 		{
 			// Set close event
-			GetKillMutex().unlock();
+			GetKillEvent().Set();
 		}
 
 		join();

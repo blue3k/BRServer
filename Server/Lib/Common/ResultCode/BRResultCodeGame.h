@@ -8,78 +8,90 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#pragma once
 #include <stdint.h>
 
 
 
-// User is already in a game 
-#define E_GAME_ALREADY_IN_GAME                                        ((int32_t)0xE7070000L) 
+namespace BR {
+	namespace ResultCode {
 
-// Invalid player 
-#define E_GAME_INVALID_PLAYER                                         ((int32_t)0xE7070001L) 
+		enum {
 
-// Game is not ready 
-#define E_GAME_NOTREADY                                               ((int32_t)0xE7070002L) 
 
-// Invalid player role 
-#define E_GAME_INVALID_ROLE                                           ((int32_t)0xE7070003L) 
+			// User is already in a game 
+			E_GAME_ALREADY_IN_GAME                                             = 0xE7070000L, 
 
-// Not ready for next game play state 
-#define E_GAME_NOT_READY_FOR_NEXT_STATE                               ((int32_t)0xE7070004L) 
+			// Invalid player 
+			E_GAME_INVALID_PLAYER                                              = 0xE7070001L, 
 
-// Invalid vote type 
-#define E_GAME_INVALID_VOTETYPE                                       ((int32_t)0xE7070005L) 
+			// Game is not ready 
+			E_GAME_NOTREADY                                                    = 0xE7070002L, 
 
-// Invalid vote state 
-#define E_GAME_INVALID_VOTE_STATE                                     ((int32_t)0xE7070006L) 
+			// Invalid player role 
+			E_GAME_INVALID_ROLE                                                = 0xE7070003L, 
 
-// Invalid vote target 
-#define E_GAME_INVALID_VOTE_TARGET                                    ((int32_t)0xE7070007L) 
+			// Not ready for next game play state 
+			E_GAME_NOT_READY_FOR_NEXT_STATE                                    = 0xE7070004L, 
 
-// No suffrage 
-#define E_GAME_NO_SUFFRAGE                                            ((int32_t)0xE7070008L) 
+			// Invalid vote type 
+			E_GAME_INVALID_VOTETYPE                                            = 0xE7070005L, 
 
-// Invalid game state 
-#define E_GAME_INVALID_GAMESTATE                                      ((int32_t)0xE7070009L) 
+			// Invalid vote state 
+			E_GAME_INVALID_VOTE_STATE                                          = 0xE7070006L, 
 
-// Invalid partyID 
-#define E_GAME_INVALID_PARTYID                                        ((int32_t)0xE707000AL) 
+			// Invalid vote target 
+			E_GAME_INVALID_VOTE_TARGET                                         = 0xE7070007L, 
 
-// Invalid player count for game 
-#define E_GAME_INVALID_PLAYER_COUNT                                   ((int32_t)0xE707000BL) 
+			// No suffrage 
+			E_GAME_NO_SUFFRAGE                                                 = 0xE7070008L, 
 
-// User is already in a party 
-#define E_GAME_ALREADY_IN_PARTY                                       ((int32_t)0xE707000CL) 
+			// Invalid game state 
+			E_GAME_INVALID_GAMESTATE                                           = 0xE7070009L, 
 
-// User doesn't have eligible privilege 
-#define E_GAME_NO_PRIVILEGE                                           ((int32_t)0xE707000DL) 
+			// Invalid partyID 
+			E_GAME_INVALID_PARTYID                                             = 0xE707000AL, 
 
-// Invalid shop item data 
-#define E_GAME_INVALID_SHOPITEM                                       ((int32_t)0xE707000EL) 
+			// Invalid player count for game 
+			E_GAME_INVALID_PLAYER_COUNT                                        = 0xE707000BL, 
 
-// Invalid shop item id 
-#define E_GAME_INVALID_SHOPITEMID                                     ((int32_t)0xE707000FL) 
+			// User is already in a party 
+			E_GAME_ALREADY_IN_PARTY                                            = 0xE707000CL, 
 
-// Not enough money(gold, gem, etc) 
-#define E_GAME_NOTENOUGH_RESOURCE                                     ((int32_t)0xE7070010L) 
+			// User doesn't have eligible privilege 
+			E_GAME_NO_PRIVILEGE                                                = 0xE707000DL, 
 
-// Doesn't have enough stamina 
-#define E_GAME_LOW_STAMINA                                            ((int32_t)0xE7070011L) 
+			// Invalid shop item data 
+			E_GAME_INVALID_SHOPITEM                                            = 0xE707000EL, 
 
-// Invalid player game state 
-#define E_GAME_INVALID_PLAYER_STATE                                   ((int32_t)0xE7070012L) 
+			// Invalid shop item id 
+			E_GAME_INVALID_SHOPITEMID                                          = 0xE707000FL, 
 
-// Maximum notification count 
-#define E_GAME_MAX_NOTIFICATION                                       ((int32_t)0xE7070013L) 
+			// Not enough money(gold, gem, etc) 
+			E_GAME_NOTENOUGH_RESOURCE                                          = 0xE7070010L, 
 
-// Maximum try reached 
-#define E_GAME_MAX_TRY                                                ((int32_t)0xE7070014L) 
+			// Doesn't have enough stamina 
+			E_GAME_LOW_STAMINA                                                 = 0xE7070011L, 
 
-// Invalid cost table id 
-#define E_GAME_INVALID_COSTID                                         ((int32_t)0xE7070015L) 
+			// Invalid player game state 
+			E_GAME_INVALID_PLAYER_STATE                                        = 0xE7070012L, 
 
-// Invalid bot talk table 
-#define E_GAME_INVALID_BOTTALK_TABLE                                  ((int32_t)0xE7070016L) 
+			// Maximum notification count 
+			E_GAME_MAX_NOTIFICATION                                            = 0xE7070013L, 
+
+			// Maximum try reached 
+			E_GAME_MAX_TRY                                                     = 0xE7070014L, 
+
+			// Invalid cost table id 
+			E_GAME_INVALID_COSTID                                              = 0xE7070015L, 
+
+			// Invalid bot talk table 
+			E_GAME_INVALID_BOTTALK_TABLE                                       = 0xE7070016L, 
+
+		};//enum 
+	}//namespace ResultCode 
+}//namespace SF 
+
 
 
 

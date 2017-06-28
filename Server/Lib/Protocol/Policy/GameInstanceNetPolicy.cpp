@@ -28,9 +28,9 @@ namespace BR
  	namespace Policy
 	{
  		// C2S: Game instance deletion
-		HRESULT NetPolicyGameInstance::DeleteGameC2SEvt( const RouteContext &InRouteContext )
+		Result NetPolicyGameInstance::DeleteGameC2SEvt( const RouteContext &InRouteContext )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -44,11 +44,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::DeleteGameC2SEvt( const RouteContext &InRouteContext )
+		}; // Result NetPolicyGameInstance::DeleteGameC2SEvt( const RouteContext &InRouteContext )
 		// Cmd: Join Game
-		HRESULT NetPolicyGameInstance::JoinGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
+		Result NetPolicyGameInstance::JoinGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -62,11 +62,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::JoinGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
+		}; // Result NetPolicyGameInstance::JoinGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole )
 		// C2S: Change configue preset
-		HRESULT NetPolicyGameInstance::SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const UINT32 &InPresetID )
+		Result NetPolicyGameInstance::SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const uint32_t &InPresetID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -80,11 +80,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const UINT32 &InPresetID )
+		}; // Result NetPolicyGameInstance::SetConfigPresetC2SEvt( const RouteContext &InRouteContext, const uint32_t &InPresetID )
 		// Cmd: Leave Game
-		HRESULT NetPolicyGameInstance::LeaveGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result NetPolicyGameInstance::LeaveGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -98,11 +98,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::LeaveGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result NetPolicyGameInstance::LeaveGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Kick player
-		HRESULT NetPolicyGameInstance::KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		Result NetPolicyGameInstance::KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -116,11 +116,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
+		}; // Result NetPolicyGameInstance::KickPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick )
 		// Cmd: Assign role
-		HRESULT NetPolicyGameInstance::AssignRoleCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result NetPolicyGameInstance::AssignRoleCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -134,11 +134,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::AssignRoleCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result NetPolicyGameInstance::AssignRoleCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// C2S: Chatting message
-		HRESULT NetPolicyGameInstance::ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
+		Result NetPolicyGameInstance::ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -152,11 +152,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
+		}; // Result NetPolicyGameInstance::ChatMessageC2SEvt( const RouteContext &InRouteContext, const PlayerID &InPlayerID, const PlayerRole &InRole, const char* InChatMessage )
 		// Cmd: Advance game
-		HRESULT NetPolicyGameInstance::AdvanceGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result NetPolicyGameInstance::AdvanceGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -170,11 +170,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::AdvanceGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result NetPolicyGameInstance::AdvanceGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: *Vote game advance
-		HRESULT NetPolicyGameInstance::VoteGameAdvanceCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result NetPolicyGameInstance::VoteGameAdvanceCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -188,11 +188,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::VoteGameAdvanceCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result NetPolicyGameInstance::VoteGameAdvanceCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		// Cmd: Assign role
-		HRESULT NetPolicyGameInstance::VoteCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
+		Result NetPolicyGameInstance::VoteCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -206,11 +206,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::VoteCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial )
+		}; // Result NetPolicyGameInstance::VoteCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial )
 		// Cmd: Play again with the current players
-		HRESULT NetPolicyGameInstance::GamePlayAgainCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
+		Result NetPolicyGameInstance::GamePlayAgainCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -224,11 +224,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::GamePlayAgainCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
+		}; // Result NetPolicyGameInstance::GamePlayAgainCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID )
 		// Cmd: Player. revive himself
-		HRESULT NetPolicyGameInstance::GameRevealPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
+		Result NetPolicyGameInstance::GameRevealPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -242,11 +242,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::GameRevealPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
+		}; // Result NetPolicyGameInstance::GameRevealPlayerCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID )
 		// Cmd: Player. revive himself
-		HRESULT NetPolicyGameInstance::GamePlayerReviveCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		Result NetPolicyGameInstance::GamePlayerReviveCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -260,13 +260,13 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyGameInstance::GamePlayerReviveCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
+		}; // Result NetPolicyGameInstance::GamePlayerReviveCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 
 
 		// Cmd: Join Game
-		HRESULT NetSvrPolicyGameInstance::JoinGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const NetAddress &InGameInsSvr, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const BYTE &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const BYTE &InIsNewJoin, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData )
+		Result NetSvrPolicyGameInstance::JoinGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -280,11 +280,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::JoinGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const NetAddress &InGameInsSvr, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const BYTE &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const BYTE &InIsNewJoin, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData )
+		}; // Result NetSvrPolicyGameInstance::JoinGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData )
 		// S2C: Player Joined
-		HRESULT NetSvrPolicyGameInstance::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const UINT8 &InJoinedPlayerDead, const UINT8 &InJoinedPlayerIndex, const UINT8 &InJoinedPlayerCharacter )
+		Result NetSvrPolicyGameInstance::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -298,11 +298,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const UINT8 &InJoinedPlayerDead, const UINT8 &InJoinedPlayerIndex, const UINT8 &InJoinedPlayerCharacter )
+		}; // Result NetSvrPolicyGameInstance::PlayerJoinedS2CEvt( const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter )
 		// Cmd: Leave Game
-		HRESULT NetSvrPolicyGameInstance::LeaveGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyGameInstance::LeaveGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -316,11 +316,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::LeaveGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyGameInstance::LeaveGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		// S2C: Player left
-		HRESULT NetSvrPolicyGameInstance::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
+		Result NetSvrPolicyGameInstance::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -334,11 +334,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
+		}; // Result NetSvrPolicyGameInstance::PlayerLeftS2CEvt( const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID )
 		// Cmd: Kick player
-		HRESULT NetSvrPolicyGameInstance::KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyGameInstance::KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -352,11 +352,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyGameInstance::KickPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		// S2C: Player kicked
-		HRESULT NetSvrPolicyGameInstance::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
+		Result NetSvrPolicyGameInstance::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -370,11 +370,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
+		}; // Result NetSvrPolicyGameInstance::PlayerKickedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID )
 		// Cmd: Assign role
-		HRESULT NetSvrPolicyGameInstance::AssignRoleRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyGameInstance::AssignRoleRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -388,11 +388,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::AssignRoleRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyGameInstance::AssignRoleRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		// S2C: Assign role
-		HRESULT NetSvrPolicyGameInstance::RoleAssignedS2CEvt( const RouteContext &InRouteContext, const PlayerRole &InRole )
+		Result NetSvrPolicyGameInstance::RoleAssignedS2CEvt( const RouteContext &InRouteContext, const PlayerRole &InRole )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -406,11 +406,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::RoleAssignedS2CEvt( const RouteContext &InRouteContext, const PlayerRole &InRole )
+		}; // Result NetSvrPolicyGameInstance::RoleAssignedS2CEvt( const RouteContext &InRouteContext, const PlayerRole &InRole )
 		// Cmd: Advance game
-		HRESULT NetSvrPolicyGameInstance::AdvanceGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyGameInstance::AdvanceGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -424,11 +424,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::AdvanceGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyGameInstance::AdvanceGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		// S2C: The game state is advanced
-		HRESULT NetSvrPolicyGameInstance::GameAdvancedS2CEvt( const RouteContext &InRouteContext, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay )
+		Result NetSvrPolicyGameInstance::GameAdvancedS2CEvt( const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -442,11 +442,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::GameAdvancedS2CEvt( const RouteContext &InRouteContext, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay )
+		}; // Result NetSvrPolicyGameInstance::GameAdvancedS2CEvt( const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay )
 		// S2C: Game is ended
-		HRESULT NetSvrPolicyGameInstance::GameEndedS2CEvt( const RouteContext &InRouteContext, const GameWinner &InWinner, const UINT32 &InGainedExp, const UINT32 &InGainedGameMoney, const PlayerRole &InPlayedRole, const BYTE &InIsWon )
+		Result NetSvrPolicyGameInstance::GameEndedS2CEvt( const RouteContext &InRouteContext, const GameWinner &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const PlayerRole &InPlayedRole, const uint8_t &InIsWon )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -460,11 +460,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::GameEndedS2CEvt( const RouteContext &InRouteContext, const GameWinner &InWinner, const UINT32 &InGainedExp, const UINT32 &InGainedGameMoney, const PlayerRole &InPlayedRole, const BYTE &InIsWon )
+		}; // Result NetSvrPolicyGameInstance::GameEndedS2CEvt( const RouteContext &InRouteContext, const GameWinner &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const PlayerRole &InPlayedRole, const uint8_t &InIsWon )
 		// Cmd: *Vote game advance
-		HRESULT NetSvrPolicyGameInstance::VoteGameAdvanceRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyGameInstance::VoteGameAdvanceRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -478,11 +478,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::VoteGameAdvanceRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyGameInstance::VoteGameAdvanceRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		// S2C: *GameAdvance is Voted
-		HRESULT NetSvrPolicyGameInstance::GameAdvanceVotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter )
+		Result NetSvrPolicyGameInstance::GameAdvanceVotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -496,11 +496,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::GameAdvanceVotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter )
+		}; // Result NetSvrPolicyGameInstance::GameAdvanceVotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter )
 		// Cmd: Assign role
-		HRESULT NetSvrPolicyGameInstance::VoteRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyGameInstance::VoteRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -514,11 +514,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::VoteRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyGameInstance::VoteRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		// S2C: Player Voted
-		HRESULT NetSvrPolicyGameInstance::VotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
+		Result NetSvrPolicyGameInstance::VotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -532,11 +532,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::VotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
+		}; // Result NetSvrPolicyGameInstance::VotedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget )
 		// S2C: Player Voted
-		HRESULT NetSvrPolicyGameInstance::VoteEndS2CEvt( const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
+		Result NetSvrPolicyGameInstance::VoteEndS2CEvt( const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -550,11 +550,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::VoteEndS2CEvt( const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
+		}; // Result NetSvrPolicyGameInstance::VoteEndS2CEvt( const RouteContext &InRouteContext, const Array<PlayerID>& InVoted )
 		// S2C: Player Voted
-		HRESULT NetSvrPolicyGameInstance::PlayerRevealedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason )
+		Result NetSvrPolicyGameInstance::PlayerRevealedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -568,11 +568,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::PlayerRevealedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason )
+		}; // Result NetSvrPolicyGameInstance::PlayerRevealedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const PlayerRole &InRole, const PlayerRevealedReason &InReason )
 		// S2C: Player Killed
-		HRESULT NetSvrPolicyGameInstance::PlayerKilledS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const PlayerKilledReason &InReason )
+		Result NetSvrPolicyGameInstance::PlayerKilledS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const PlayerKilledReason &InReason )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -586,11 +586,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::PlayerKilledS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const PlayerKilledReason &InReason )
+		}; // Result NetSvrPolicyGameInstance::PlayerKilledS2CEvt( const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const PlayerKilledReason &InReason )
 		// Cmd: Play again with the current players
-		HRESULT NetSvrPolicyGameInstance::GamePlayAgainRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InReplayMemberCount )
+		Result NetSvrPolicyGameInstance::GamePlayAgainRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -604,11 +604,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::GamePlayAgainRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const UINT32 &InReplayMemberCount )
+		}; // Result NetSvrPolicyGameInstance::GamePlayAgainRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount )
 		// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
-		HRESULT NetSvrPolicyGameInstance::GamePlayAgainS2CEvt( const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
+		Result NetSvrPolicyGameInstance::GamePlayAgainS2CEvt( const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -622,11 +622,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::GamePlayAgainS2CEvt( const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
+		}; // Result NetSvrPolicyGameInstance::GamePlayAgainS2CEvt( const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const PartyUID &InPartyUID, const PlayerID &InLeadPlayer )
 		// Cmd: Player. revive himself
-		HRESULT NetSvrPolicyGameInstance::GameRevealPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
+		Result NetSvrPolicyGameInstance::GameRevealPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -640,11 +640,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::GameRevealPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
+		}; // Result NetSvrPolicyGameInstance::GameRevealPlayerRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole )
 		// Cmd: Player. revive himself
-		HRESULT NetSvrPolicyGameInstance::GamePlayerReviveRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyGameInstance::GamePlayerReviveRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -658,11 +658,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::GamePlayerReviveRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyGameInstance::GamePlayerReviveRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		// S2C: Player is revived
-		HRESULT NetSvrPolicyGameInstance::GamePlayerRevivedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
+		Result NetSvrPolicyGameInstance::GamePlayerRevivedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -676,7 +676,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyGameInstance::GamePlayerRevivedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
+		}; // Result NetSvrPolicyGameInstance::GamePlayerRevivedS2CEvt( const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID )
 
 
 	}; // namespace Policy

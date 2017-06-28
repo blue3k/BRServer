@@ -32,7 +32,7 @@ namespace BR
 		: Component((UINT)ComponentID)
 	{
 		if (modulePath != nullptr)
-			Util::SetModulePathA(modulePath, moduleName);
+			Util::SetModulePath(modulePath, moduleName);
 
 		if (traceCfgPath != nullptr)
 			Trace::TraceModule::CONFIG_FILENAME = traceCfgPath;
@@ -43,12 +43,12 @@ namespace BR
 	}
 
 	// Initialize server component
-	HRESULT LibComponentTrace::InitializeComponent()
+	Result LibComponentTrace::InitializeComponent()
 	{
 		SharedPointerT<Trace::TraceOutModule> pInstance;
 
-		HRESULT hr = Component::InitializeComponent();
-		if (FAILED(hr)) return hr;
+		Result hr = Component::InitializeComponent();
+		if (!(hr)) return hr;
 
 		// initialize exception Handler
 		Trace::InitExceptionHandler();

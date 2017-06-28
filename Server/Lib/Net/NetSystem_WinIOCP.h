@@ -64,7 +64,7 @@ namespace Net {
 
 
 	// UDP/TCP write overlapped
-	struct IOBUFFER_WRITE : public IOBUFFER_RWBASE, public MemoryPoolObject<IOBUFFER_WRITE>
+	struct IOBUFFER_WRITE : public IOBUFFER_RWBASE//, public MemoryPoolObject<IOBUFFER_WRITE>
 	{
 		// Message pointer to send
 		Message::MessageData *pMsgs;
@@ -91,7 +91,7 @@ namespace Net {
 
 
 	// UDP/TCP read overlapped
-	struct IOBUFFER_READ : public IOBUFFER_RWBASE, public MemoryPoolObject<IOBUFFER_READ>
+	struct IOBUFFER_READ : public IOBUFFER_RWBASE//, public MemoryPoolObject<IOBUFFER_READ>
 	{
 		// Read flag
 		DWORD dwFlags;
@@ -108,7 +108,7 @@ namespace Net {
 
 		// Mark wheather this buffer is in use
 		std::atomic<bool> bIsPending;
-		//CallStackTrace PendingTrace;
+		CallStackTrace PendingTrace;
 
 
 		// constructor
@@ -123,8 +123,8 @@ namespace Net {
 		inline void SetupRecvUDP( uintptr_t iCID );
 		inline void SetupRecvTCP( uintptr_t iCID );
 
-		HRESULT SetPendingTrue();
-		HRESULT SetPendingFalse();
+		Result SetPendingTrue();
+		Result SetPendingFalse();
 
 	};
 
@@ -216,10 +216,10 @@ namespace Net {
 			inline HANDLE GetIOCP();
 
 			// Initialize IOCP
-			HRESULT InitIOCP( UINT uiNumIOCPThread );
+			Result InitIOCP( UINT uiNumIOCPThread );
 
 			// Close IOCP
-			HRESULT CloseIOCP();
+			Result CloseIOCP();
 		};
 
 

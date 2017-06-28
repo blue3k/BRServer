@@ -43,9 +43,9 @@ namespace DB {
 	}
 	
 	// Make this factory as the DB factory
-	HRESULT FactoryMYSQL::Instanciate()
+	Result FactoryMYSQL::Instanciate()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		dbMem( Factory::stm_pInstance = new FactoryMYSQL );
 
@@ -54,7 +54,7 @@ namespace DB {
 		return hr;
 	}
 
-	void FactoryMYSQL::ReportError( void* DBContext, HRESULT hr, const char* className )
+	void FactoryMYSQL::ReportError( void* DBContext, Result hr, const char* className )
 	{
 		MYSQL *pSql = DBContext ? (MYSQL*)DBContext : nullptr;
 
@@ -71,21 +71,21 @@ namespace DB {
 	}
 
 	// initialize DB source
-	HRESULT	FactoryMYSQL::CreateDataSource( DataSource* &pDBSource )
+	Result	FactoryMYSQL::CreateDataSource( DataSource* &pDBSource )
 	{
 		if( (pDBSource = new DataSourceMYSQL) != nullptr )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
-		return E_SYSTEM_OUTOFMEMORY;
+		return ResultCode::OUT_OF_MEMORY;
 	}
 
 	// close DB source
-	HRESULT	FactoryMYSQL::CreateSession( DataSource* pDBSource, Session* &pSession )
+	Result	FactoryMYSQL::CreateSession( DataSource* pDBSource, Session* &pSession )
 	{
 		if( (pSession = new SessionMYSQL((DataSourceMYSQL*)pDBSource)) != nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
-		return E_SYSTEM_OUTOFMEMORY;
+		return ResultCode::OUT_OF_MEMORY;
 	}
 
 } // namespace DB

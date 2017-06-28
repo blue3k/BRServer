@@ -46,10 +46,10 @@ namespace Svr {
 		, IServerComponent(ComponentID)
 		, m_PublicNetSocket(publicNetSocket)
 	{
-		//BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new GameServerTransRegisterPlayerToJoinGameServer(pMsgData)); return S_SYSTEM_OK; } );
+		//BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new GameServerTransRegisterPlayerToJoinGameServer(pMsgData)); return ResultCode::SUCCESS; } );
 
-		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt) { svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
-		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt) { svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt) { svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt) { svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	GameClusterServiceEntity::~GameClusterServiceEntity()
@@ -70,14 +70,14 @@ namespace Svr {
 		m_ServerEntity = pServerEntity;
 	}
 
-	HRESULT GameClusterServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
+	Result GameClusterServiceEntity::RegisterServiceMessageHandler( ServerEntity *pServerEntity )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(FreeReplicaClusterServiceEntity::RegisterServiceMessageHandler( pServerEntity ) );
 
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
-		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return S_SYSTEM_OK; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityCreatedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityCreatedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
+		pServerEntity->BR_ENTITY_MESSAGE(Message::ClusterServer::GamePlayerEntityDeletedC2SEvt)				{ svrMemReturn(pNewTrans = new GameServerTransGamePlayerEntityDeletedS2CEvt(pMsgData)); return ResultCode::SUCCESS; } );
 
 
 	Proc_End:
@@ -85,9 +85,9 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT GameClusterServiceEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result GameClusterServiceEntity::TickUpdate(TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(FreeReplicaClusterServiceEntity::TickUpdate(pAction) );
 
@@ -102,20 +102,20 @@ namespace Svr {
 	}
 
 	// Create PlayerInfo
-	HRESULT GameClusterServiceEntity::CreatePlayer( PlayerID playerID, EntityUID entityUID, ServerEntity* pGameServerEntity )
+	Result GameClusterServiceEntity::CreatePlayer( PlayerID playerID, EntityUID entityUID, ServerEntity* pGameServerEntity )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		PlayerTableItem *pNewPlayerInfo = nullptr;
 		PlayerIDMap::iterator itPlayer;
 
-		if( playerID == 0 || entityUID == 0 ) svrErr(E_INVALID_PLAYERID);
+		if( playerID == 0 || entityUID == 0 ) svrErr(ResultCode::E_INVALID_PLAYERID);
 		svrChkPtr( pGameServerEntity );
 		if( entityUID.GetServerID() != pGameServerEntity->GetServerID() )
 		{
-			svrErr(E_SVR_INVALID_SERVERID);
+			svrErr(ResultCode::E_SVR_INVALID_SERVERID);
 		}
 
-		if( SUCCEEDED(m_PlayerIDMap.find( playerID, itPlayer )) )
+		if( (m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
 			Assert(itPlayer->GetPlayerID() == playerID);
 			itPlayer->UpdateEntityInfo( entityUID, pGameServerEntity );
@@ -135,11 +135,11 @@ namespace Svr {
 		return hr;
 	}
 
-	HRESULT GameClusterServiceEntity::CreatePlayer( PlayerID playerID, EntityUID entityUID )
+	Result GameClusterServiceEntity::CreatePlayer( PlayerID playerID, EntityUID entityUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
-		if( playerID == 0 || entityUID == 0 ) svrErr(E_INVALID_PLAYERID);
+		if( playerID == 0 || entityUID == 0 ) svrErr(ResultCode::E_INVALID_PLAYERID);
 
 		svrChk( CreatePlayer( playerID, entityUID, GetLoopbackServerEntity() ) );
 
@@ -164,15 +164,15 @@ namespace Svr {
 	}
 
 	// Create PlayerInfo
-	HRESULT GameClusterServiceEntity::DeletePlayer( PlayerID playerID, EntityUID playerEntityUID )
+	Result GameClusterServiceEntity::DeletePlayer( PlayerID playerID, EntityUID playerEntityUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		PlayerTableItem *pPlayerInfo = nullptr;
 		PlayerIDMap::iterator itPlayer;
 
-		if( FAILED(m_PlayerIDMap.find( playerID, itPlayer )) )
+		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
-			svrErr( E_INVALID_PLAYERID );
+			return ResultCode::E_INVALID_PLAYERID;
 		}
 
 		pPlayerInfo = *itPlayer;
@@ -180,7 +180,7 @@ namespace Svr {
 		svrChk( m_PlayerIDMap.erase( itPlayer ) );
 
 		if (pPlayerInfo->GetEntityUID() != playerEntityUID)
-			svrErr(E_INVALID_ENTITY);
+			svrErr(ResultCode::E_INVALID_ENTITY);
 
 		// replicate delete from my server
 		if( pPlayerInfo && pPlayerInfo->GetEntityUID().GetServerID() == GetMyServerID() )
@@ -210,14 +210,14 @@ namespace Svr {
 	}
 
 	// Get Player info
-	HRESULT GameClusterServiceEntity::FindPlayer( PlayerID playerID, EntityUID &playerUID )
+	Result GameClusterServiceEntity::FindPlayer( PlayerID playerID, EntityUID &playerUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		PlayerIDMap::iterator itPlayer;
 
-		if( FAILED(m_PlayerIDMap.find( playerID, itPlayer )) )
+		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
-			return E_SVR_PLAYER_NOT_FOUND;
+			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
 		}
 
 		// Check validity
@@ -232,7 +232,7 @@ namespace Svr {
 
 			Util::SafeDelete( pPlayerInfo );
 
-			return E_SVR_PLAYER_NOT_FOUND;
+			return ResultCode::E_SVR_PLAYER_NOT_FOUND;
 		}
 
 		playerUID = itPlayer->GetEntityUID();

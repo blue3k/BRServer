@@ -23,7 +23,7 @@
 #include "ServerSystem/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/EventTask.h"
+#include "Common/Task/EventTask.h"
 #include "ServerSystem/EntityTimerActions.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"
@@ -92,14 +92,14 @@ namespace BR {
 	}
 
 	// Initialize entity to proceed new connection
-	HRESULT Entity::InitializeEntity( EntityID newEntityID )
+	Result Entity::InitializeEntity( EntityID newEntityID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetEntityState() != EntityState::FREE )
 		{
 			Assert( 0 );
-			svrErr( E_SYSTEM_UNEXPECTED );
+			svrErr( ResultCode::UNEXPECTED );
 		}
 
 		// register message handlers
@@ -120,7 +120,7 @@ namespace BR {
 		return hr;
 	}
 
-	HRESULT Entity::_ClearEntity()
+	Result Entity::_ClearEntity()
 	{
 		// just drop transaction with freed entity
 		if (m_transactionQueue.GetEnqueCount() > 0)
@@ -131,9 +131,9 @@ namespace BR {
 			while (m_transactionQueue.GetEnqueCount() > 0)
 			{
 				Transaction *pCurTran = nullptr;
-				if (SUCCEEDED(m_transactionQueue.Dequeue(pCurTran)))
+				if ((m_transactionQueue.Dequeue(pCurTran)))
 				{
-					pCurTran->CloseTransaction(E_SYSTEM_UNEXPECTED);
+					pCurTran->CloseTransaction(ResultCode::UNEXPECTED);
 					ReleaseTransaction(pCurTran);
 				}
 			}
@@ -147,20 +147,20 @@ namespace BR {
 			GetEntityTable().Erase(GetEntityID(), erased);
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT Entity::ClearEntity()
+	Result Entity::ClearEntity()
 	{
 		return _ClearEntity();
 	}
 	
 
 	// Close entity and clear transaction
-	HRESULT Entity::TerminateEntity()
+	Result Entity::TerminateEntity()
 	{
 		if( GetEntityState() == EntityState::FREE )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		ClearEntity();
 
@@ -168,9 +168,8 @@ namespace BR {
 
 		SetEntityUID(0);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
-	
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -178,16 +177,16 @@ namespace BR {
 	//
 
 	// register message handlers
-	HRESULT Entity::RegisterMessageHandlers()
+	Result Entity::RegisterMessageHandlers()
 	{
 		// nothing for default
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Process Message and release message after all processed
-	HRESULT Entity::ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg)
+	Result Entity::ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
 		Svr::Transaction *pNewTrans = nullptr;
@@ -211,17 +210,17 @@ namespace BR {
 		case Message::MSGTYPE_EVENT:
 		{
 			Assert(GetMessageHandlerTable());
-			if (FAILED(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(pCon, pMsg, pNewTrans)))
+			if (!(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(pCon, pMsg, pNewTrans)))
 			{
 				// If it couldn't find a handler in server entity handlers, looking for it in server loopback entity
 				MessageHandlerType handler;
 				assert(false);// this shouldn't be happened now. We route all message to destination entity
 				hr = GetLoopbackServerEntity()->GetMessageHandlerTable()->GetHandler(pMsg->GetMessageHeader()->msgID, handler);
-				if (FAILED(hr))
+				if (!(hr))
 				{
 					assert(false);
 					svrTrace(Trace::TRC_ERROR, "No message handler {0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
-					svrErr(E_SVR_NO_MESSAGE_HANDLER);
+					svrErr(ResultCode::E_SVR_NO_MESSAGE_HANDLER);
 				}
 
 				svrChk(handler(pCon, pMsg, pNewTrans));
@@ -230,7 +229,7 @@ namespace BR {
 		}
 		default:
 			svrTrace(Trace::TRC_ERROR, "Not Processed Remote message Entity:{0}:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
-			svrErr(E_SVR_NOTEXPECTED_MESSAGE);
+			svrErr(ResultCode::E_SVR_NOTEXPECTED_MESSAGE);
 			break;
 		};
 
@@ -242,14 +241,14 @@ namespace BR {
 			if (pNewTrans->GetOwnerEntity() == nullptr)
 			{
 				hr = pNewTrans->InitializeTransaction(this);
-				if (FAILED(hr)) goto Proc_End;
+				if (!(hr)) goto Proc_End;
 			}
 
 			if (pNewTrans->IsDirectProcess())
 			{
 				assert(false); // disable direct process for now
 				// This need to be run on correct worker thread
-				HRESULT hrRes = pNewTrans->StartTransaction();
+				Result hrRes = pNewTrans->StartTransaction();
 				if (!pNewTrans->IsClosed())
 				{
 					pNewTrans->CloseTransaction(hrRes);
@@ -276,7 +275,7 @@ namespace BR {
 
 		if (pNewTrans != nullptr)
 		{
-			if (FAILED(hr))
+			if (!(hr))
 			{
 				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
@@ -297,12 +296,12 @@ namespace BR {
 
 		Util::SafeRelease(pMsg);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT Entity::ProcessMessageResult( Message::MessageData* &pMsg )
+	Result Entity::ProcessMessageResult( Message::MessageData* &pMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		MessageResult *pMsgRes = nullptr;
 		TransactionResult *pTransRes = nullptr;
 		auto pMySvr = BrServer::GetInstance();
@@ -319,10 +318,10 @@ namespace BR {
 
 		if (GetTaskWorker()->GetThreadID() == ThisThread::GetThreadID())
 		{
-			if (FAILED(FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
+			if (!(FindActiveTransaction(pTransRes->GetTransID(), pTransaction)))
 			{
 				svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route. msgid:{1}", pTransRes->GetTransID(), pMsgRes->GetMsgID());
-				goto Proc_End;// svrErr(E_SYSTEM_FAIL);
+				goto Proc_End;// svrErr(ResultCode::FAIL);
 			}
 			svrChk(ProcessTransactionResult(pTransaction, pTransRes));
 			pTransRes = nullptr;
@@ -353,18 +352,18 @@ namespace BR {
 	}
 	
 	// Pending new transaction job
-	HRESULT Entity::PendingTransaction(ThreadID thisThreadID, Transaction* &pTrans)
+	Result Entity::PendingTransaction(ThreadID thisThreadID, Transaction* &pTrans)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetEntityState() == EntityState::FREE )
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		if( pTrans == nullptr )
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
 		pTrans->SetOwnerEntity( this );
-		pTrans->SetTransID( TransactionID( (UINT32)GetEntityID(), GenTransIndex() ) ); 
+		pTrans->SetTransID( TransactionID( (UINT32)GetEntityID(), (uint)GenTransIndex() ) ); 
 
 		svrChk( m_transactionQueue.Enqueue(pTrans) );
 
@@ -399,9 +398,9 @@ namespace BR {
 		return hr;
 	}
 
-	HRESULT Entity::ProcessTransaction(Transaction* &pTrans)
+	Result Entity::ProcessTransaction(Transaction* &pTrans)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChkPtr(pTrans);
 
@@ -412,15 +411,15 @@ namespace BR {
 			{
 				svrTrace(Svr::TRC_TRANSACTION, "Trans Start TID:{0}:{1}, Entity:{2}", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID());
 			}
-			if (FAILED(pTrans->StartTransaction()))// make transaction start
+			if (!(pTrans->StartTransaction()))// make transaction start
 			{
 				if (!pTrans->IsClosed())
-					pTrans->CloseTransaction(E_SYSTEM_UNEXPECTED);
+					pTrans->CloseTransaction(ResultCode::UNEXPECTED);
 			}
 			else if (pTrans->GetState() == Transaction::STATE_WAITSTART)
 			{
 				Assert(0);
-				pTrans->CloseTransaction(E_SVR_INVALID_TRANSITION);
+				pTrans->CloseTransaction(ResultCode::E_SVR_INVALID_TRANSITION);
 			}
 			break;
 		case Transaction::STATE_STARTED:
@@ -433,7 +432,7 @@ namespace BR {
 				pTrans->ProcessTransaction(pTranRes);
 				Util::SafeRelease(pTranRes);
 			}
-			else if (FAILED(pTrans->CheckHeartBitTimeout()))// Transaction time out
+			else if (!(pTrans->CheckHeartBitTimeout()))// Transaction time out
 			{
 				if (pTrans->IsPrintTrace())
 				{
@@ -443,7 +442,7 @@ namespace BR {
 						GetEntityUID());
 				}
 				if (!pTrans->IsClosed())
-					pTrans->CloseTransaction(E_SVR_TIMEOUT);
+					pTrans->CloseTransaction(ResultCode::E_SVR_TIMEOUT);
 			}
 			break;
 		default:
@@ -476,12 +475,12 @@ namespace BR {
 	}
 
 	// Pending transaction result
-	HRESULT Entity::PendingTransactionResult( TransactionResult* &pTransRes )
+	Result Entity::PendingTransactionResult( TransactionResult* &pTransRes )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetEntityState() == EntityState::FREE )
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		svrChkPtr( pTransRes );
 

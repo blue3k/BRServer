@@ -100,7 +100,7 @@ Vector2& Vector2::operator = ( const Vector3& src )
 
 float Vector2::Normalize()
 {
-	float fLen = sqrt( x*x + y*y );
+	float fLen = (float)sqrt( x*x + y*y );
 	if( fLen < std::numeric_limits<float>::epsilon() )
 	{
 		x = 0;
@@ -251,7 +251,7 @@ Vector3& Vector3::operator = ( const Vector2& src )
 
 float Vector3::Normalize()
 {
-	float fLen = sqrt( x*x + y*y + z*z );
+	float fLen = (float)sqrt( x*x + y*y + z*z );
 	if( fLen < std::numeric_limits<float>::epsilon() )
 	{
 		x = 0;

@@ -9,7 +9,7 @@ export ROOT_PATH=`pwd`
 export BUILD_MODE=$1
 
 
-scp -i ./LinuxBuild/Bravesprivate2.popen -r LinuxBuild/ blue3k@161.202.74.206:/GameServer/
+scp -i ./LinuxBuild/Bravesprivate3.popen -r LinuxBuild/ ubuntu@52.78.247.43:/GameServer/
 
 
 

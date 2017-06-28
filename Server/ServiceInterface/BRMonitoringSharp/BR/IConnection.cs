@@ -75,13 +75,36 @@ public class IConnection : SharedObject {
       } 
     }
   
+    public unsafe SWIGTYPE_p_Result hr {
+      set {
+        BRMonitoringPINVOKE.IConnection_Event_hr_set(swigCPtr, SWIGTYPE_p_Result.getCPtr(value));
+        if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
+      } 
+      get {
+        SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_Event_hr_get(swigCPtr), true);
+        if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
+        return ret;
+      } 
+    }
+  
+    public unsafe IConnection.ConnectionState state {
+      set {
+        BRMonitoringPINVOKE.IConnection_Event_state_set(swigCPtr, (int)value);
+      } 
+      get {
+        IConnection.ConnectionState ret = (IConnection.ConnectionState)BRMonitoringPINVOKE.IConnection_Event_state_get(swigCPtr);
+        return ret;
+      } 
+    }
+  
     public unsafe Event(SWIGTYPE_p_void ptr) : this(BRMonitoringPINVOKE.new_IConnection_Event__SWIG_0(SWIGTYPE_p_void.getCPtr(ptr)), true) {
     }
   
     public unsafe Event() : this(BRMonitoringPINVOKE.new_IConnection_Event__SWIG_1(), true) {
     }
   
-    public unsafe Event(IConnection.Event.EventTypes eventType, int hrRes) : this(BRMonitoringPINVOKE.new_IConnection_Event__SWIG_2((int)eventType, hrRes), true) {
+    public unsafe Event(IConnection.Event.EventTypes eventType, SWIGTYPE_p_Result hrRes) : this(BRMonitoringPINVOKE.new_IConnection_Event__SWIG_2((int)eventType, SWIGTYPE_p_Result.getCPtr(hrRes)), true) {
+      if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     }
   
     public unsafe Event(IConnection.Event.EventTypes eventType, IConnection.ConnectionState InState) : this(BRMonitoringPINVOKE.new_IConnection_Event__SWIG_3((int)eventType, (int)InState), true) {
@@ -322,10 +345,10 @@ public class IConnection : SharedObject {
   
   }
 
-  public unsafe int SetupNet(INet pNetInstance, System.UInt64 uiCID) {
+  public unsafe SWIGTYPE_p_Result SetupNet(INet pNetInstance, System.UInt64 uiCID) {
 System.UInt64* tempuiCID = &uiCID;
     {
-      int ret = BRMonitoringPINVOKE.IConnection_SetupNet(swigCPtr, INet.getCPtr(pNetInstance), *tempuiCID);
+      SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_SetupNet(swigCPtr, INet.getCPtr(pNetInstance), *tempuiCID), true);
       return ret;
     }
   }
@@ -359,8 +382,8 @@ System.UInt64* tempuiCID = &uiCID;
     BRMonitoringPINVOKE.IConnection_SetLocalClass(swigCPtr, (int)uiLocalClass);
   }
 
-  public unsafe int CreatePolicy(uint uiPolicy) {
-    int ret = BRMonitoringPINVOKE.IConnection_CreatePolicy(swigCPtr, uiPolicy);
+  public unsafe SWIGTYPE_p_Result CreatePolicy(uint uiPolicy) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_CreatePolicy(swigCPtr, uiPolicy), true);
     return ret;
   }
 
@@ -398,24 +421,24 @@ System.UInt64* tempUData = &UData;
     BRMonitoringPINVOKE.IConnection_SetConnectionEventHandler(swigCPtr, IConnectionEventHandler.getCPtr(pEventHandler));
   }
 
-  public unsafe int InitConnection(NetAddress Addr, NetClass netClass) {
-    int ret = BRMonitoringPINVOKE.IConnection_InitConnection(swigCPtr, NetAddress.getCPtr(Addr), (int)netClass);
+  public unsafe SWIGTYPE_p_Result InitConnectionNClass(NetAddress Addr, NetClass netClass) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_InitConnectionNClass(swigCPtr, NetAddress.getCPtr(Addr), (int)netClass), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int Disconnect(string reason) {
-    int ret = BRMonitoringPINVOKE.IConnection_Disconnect(swigCPtr, reason);
+  public unsafe SWIGTYPE_p_Result Disconnect(string reason) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_Disconnect(swigCPtr, reason), true);
     return ret;
   }
 
-  public unsafe int CloseConnection() {
-    int ret = BRMonitoringPINVOKE.IConnection_CloseConnection(swigCPtr);
+  public unsafe SWIGTYPE_p_Result CloseConnection() {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_CloseConnection(swigCPtr), true);
     return ret;
   }
 
-  public unsafe int Send(SWIGTYPE_p_p_BR__Message__MessageData pMsg) {
-    int ret = BRMonitoringPINVOKE.IConnection_Send(swigCPtr, SWIGTYPE_p_p_BR__Message__MessageData.getCPtr(pMsg));
+  public unsafe SWIGTYPE_p_Result Send(SWIGTYPE_p_p_BR__Message__MessageData pMsg) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_Send(swigCPtr, SWIGTYPE_p_p_BR__Message__MessageData.getCPtr(pMsg)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -430,30 +453,30 @@ System.UInt64* tempUData = &UData;
     return ret;
   }
 
-  public unsafe int DequeueConnectionEvent(IConnection.Event curEvent) {
-    int ret = BRMonitoringPINVOKE.IConnection_DequeueConnectionEvent(swigCPtr, IConnection.Event.getCPtr(curEvent));
+  public unsafe SWIGTYPE_p_Result DequeueConnectionEvent(IConnection.Event curEvent) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_DequeueConnectionEvent(swigCPtr, IConnection.Event.getCPtr(curEvent)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int GetRecvMessage(SWIGTYPE_p_p_BR__Message__MessageData pIMsg) {
-    int ret = BRMonitoringPINVOKE.IConnection_GetRecvMessage(swigCPtr, SWIGTYPE_p_p_BR__Message__MessageData.getCPtr(pIMsg));
+  public unsafe SWIGTYPE_p_Result GetRecvMessage(SWIGTYPE_p_p_BR__Message__MessageData pIMsg) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_GetRecvMessage(swigCPtr, SWIGTYPE_p_p_BR__Message__MessageData.getCPtr(pIMsg)), true);
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public unsafe int UpdateNetCtrl() {
-    int ret = BRMonitoringPINVOKE.IConnection_UpdateNetCtrl(swigCPtr);
+  public unsafe SWIGTYPE_p_Result UpdateNetCtrl() {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_UpdateNetCtrl(swigCPtr), true);
     return ret;
   }
 
-  public unsafe int UpdateSendQueue() {
-    int ret = BRMonitoringPINVOKE.IConnection_UpdateSendQueue(swigCPtr);
+  public unsafe SWIGTYPE_p_Result UpdateSendQueue() {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_UpdateSendQueue(swigCPtr), true);
     return ret;
   }
 
-  public unsafe int UpdateSendBufferQueue() {
-    int ret = BRMonitoringPINVOKE.IConnection_UpdateSendBufferQueue(swigCPtr);
+  public unsafe SWIGTYPE_p_Result UpdateSendBufferQueue() {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnection_UpdateSendBufferQueue(swigCPtr), true);
     return ret;
   }
 

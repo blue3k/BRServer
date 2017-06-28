@@ -135,7 +135,7 @@ namespace BR {
 		}
 
 		// Find Previous Node
-		HRESULT FindPrevNode( Node *pNode, Node* &pPrevNode )
+		Result FindPrevNode( Node *pNode, Node* &pPrevNode )
 		{
 			pPrevNode = &m_Header;
 			if( pNode == nullptr ) return pPrevNode;
@@ -146,17 +146,17 @@ namespace BR {
 				if( pNextNode == pNode )
 					break;
 			}
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// insert after specific node, if null for pPrevNode, added at front
-		HRESULT Insert( Node* pPrevNode, Node* pNew )
+		Result Insert( Node* pPrevNode, Node* pNew )
 		{
 			if( pPrevNode == nullptr )
-				return E_SYSTEM_POINTER;
+				return ResultCode::INVALID_POINTER;
 
 			if( pNew->pNext != nullptr )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			pNew->pNext = pPrevNode->pNext;
 
@@ -167,15 +167,15 @@ namespace BR {
 
 			m_NumItems++;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 		
 		// insert after specific node, if null for pPrevNode, added at front
-		HRESULT Add( Node* pNew )
+		Result Add( Node* pNew )
 		{
 			auto pPrevNode = &m_Header;
 			if( pNew->pNext != nullptr )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			pNew->pNext = pPrevNode->pNext;
 
@@ -186,24 +186,24 @@ namespace BR {
 
 			m_NumItems++;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// Remove 
-		HRESULT Remove( Node* pPrevNode, Node* pRemove )
+		Result Remove( Node* pPrevNode, Node* pRemove )
 		{
 			if( pPrevNode == nullptr )
-				return E_SYSTEM_POINTER;
+				return ResultCode::INVALID_POINTER;
 
 			if( pPrevNode->pNext != pRemove )
-				return E_SYSTEM_UNEXPECTED;
+				return ResultCode::UNEXPECTED;
 
 			pPrevNode->pNext = pRemove->pNext;
 			pRemove->pNext = nullptr;
 
 			m_NumItems--;
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		iterator begin()
@@ -221,10 +221,10 @@ namespace BR {
 			return m_NumItems;
 		}
 		
-		HRESULT erase( const iterator& itCur )
+		Result erase( const iterator& itCur )
 		{
 			if( !itCur.IsValid() )
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			return Remove( itCur.m_pCur, itCur.m_pCur->pNext );
 		}

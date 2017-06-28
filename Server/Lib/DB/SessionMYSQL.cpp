@@ -42,21 +42,21 @@ namespace DB {
 	//	Error handling
 	//
 
-	HRESULT MYSQL_ToHRESULT( int errorValue )
+	Result MYSQL_ToResult( int errorValue )
 	{
 		switch( errorValue )
 		{
 		case 0:
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		case CR_SERVER_GONE_ERROR:
 		case CR_SERVER_LOST:
 		case CR_COMMANDS_OUT_OF_SYNC:
-			return E_DB_CONNECTION_LOST;
+			return ResultCode::E_DB_CONNECTION_LOST;
 		case CR_OUT_OF_MEMORY:
-			return E_SYSTEM_OUTOFMEMORY;
+			return ResultCode::OUT_OF_MEMORY;
 		};
 
-		return E_SYSTEM_UNEXPECTED;
+		return ResultCode::UNEXPECTED;
 	}
 
 	
@@ -75,7 +75,7 @@ namespace DB {
 	}
 
 	// Cleanup the pool
-	HRESULT StatementPoolMYSQL::ClearStatementPools()
+	Result StatementPoolMYSQL::ClearStatementPools()
 	{
 		for( auto iter = m_StatementPoolMap.begin(); iter != m_StatementPoolMap.end(); ++iter )
 		{
@@ -91,7 +91,7 @@ namespace DB {
 
 		m_StatementPoolMap.clear();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Get free statement
@@ -114,9 +114,9 @@ namespace DB {
 	}
 
 	// free statement
-	HRESULT StatementPoolMYSQL::FreeStatement( StatementMYSQL* &pStatement )
+	Result StatementPoolMYSQL::FreeStatement( StatementMYSQL* &pStatement )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		StatementPoolMap::iterator itFound;
 		StackPool* pPool = nullptr;
 		intptr_t key;
@@ -133,7 +133,7 @@ namespace DB {
 			pPool = new StackPool;
 
 			if( m_StatementPoolMap.insert( std::make_pair(key,pPool) ).second == false )
-				dbErr(E_SYSTEM_UNEXPECTED);
+				dbErr(ResultCode::UNEXPECTED);
 		}
 		else
 		{
@@ -185,9 +185,9 @@ namespace DB {
 	}
 
 	// Send a query
-	HRESULT SessionMYSQL::SendQuery( Query *pQuery )
+	Result SessionMYSQL::SendQuery( Query *pQuery )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryMYSQL* pMyQuery = BR_DYNAMIC_CAST(QueryMYSQL*,pQuery);
 		StatementMYSQL *pStatement = nullptr;
 
@@ -216,16 +216,16 @@ namespace DB {
 		dbChk( pStatement->Bind( pMyQuery ) );
 
 		hr = pStatement->Execute();
-		if (hr == ((HRESULT)E_DB_CONNECTION_LOST)) goto Proc_End;
+		if (hr == Result(ResultCode::E_DB_CONNECTION_LOST)) goto Proc_End;
 		dbChk(hr);
 
-		dbChk( pStatement->PatchResults( pMyQuery ) );
+		dbChk( pStatement->PatcResults( pMyQuery ) );
 
 		dbChk( m_StatementPool.FreeStatement( pStatement ) );
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			if( pMyQuery )
 			{
@@ -236,11 +236,11 @@ namespace DB {
 				defTrace( Trace::TRC_ERROR, "Query failed hr:0x{0:X8}", hr );
 			}
 
-			if( hr == ((HRESULT)E_DB_CONNECTION_LOST))
+			if( hr == ((Result)ResultCode::E_DB_CONNECTION_LOST))
 			{
 				defTrace( Trace::TRC_WARN, "DB connection is lost, recovering the connection... " );
-				HRESULT hrTem = OpenSession();
-				if( FAILED(hrTem) )
+				Result hrTem = OpenSession();
+				if( !(hrTem) )
 				{
 					defTrace( Trace::TRC_ERROR, "DB connection recovery is failed ... {0:X8}", hrTem );
 				}
@@ -257,9 +257,9 @@ namespace DB {
 	}
 
 	// Open session
-	HRESULT SessionMYSQL::OpenSession()
+	Result SessionMYSQL::OpenSession()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		dbChkPtr(GetDataSource());
 		dbChkPtr( m_pMyDataSource = (DataSourceMYSQL*)GetDataSource() );
@@ -280,7 +280,7 @@ namespace DB {
 			m_pMyDataSource->GetServerPort(), 
 			NULL, CLIENT_MULTI_STATEMENTS) == nullptr) 
 		{
-			dbErr(E_DB_CONNECTION_FAILED);
+			dbErr(ResultCode::E_DB_CONNECTION_FAILED);
 		}
 
 
@@ -288,7 +288,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog(m_mySQL,hr,typeid(*this).name());
 			CloseSession();
@@ -298,7 +298,7 @@ namespace DB {
 	}
 
 	// Close session
-	HRESULT SessionMYSQL::CloseSession()
+	Result SessionMYSQL::CloseSession()
 	{
 		Session::CloseSession();
 
@@ -310,15 +310,15 @@ namespace DB {
 			mysql_close(m_mySQL);
 			m_mySQL = nullptr;
 		}
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT SessionMYSQL::Ping()
+	Result SessionMYSQL::Ping()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (m_mySQL == nullptr)
-			return E_NOT_INITIALIZED;
+			return ResultCode::E_NOT_INITIALIZED;
 
 		if (mysql_ping(m_mySQL))
 		{
@@ -359,9 +359,9 @@ namespace DB {
 	}
 
 	// Prepare statement
-	HRESULT StatementMYSQL::PrepareState( MYSQL *pContext, CounterType syncInit )
+	Result StatementMYSQL::PrepareState( MYSQL *pContext, CounterType syncInit )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		int rc;
 
 		m_Context = pContext;
@@ -371,13 +371,13 @@ namespace DB {
 		rc = mysql_stmt_prepare(m_Stmt, m_QueryString, (uint) strlen(m_QueryString));
 		if ( rc )
 		{
-			dbErr(MYSQL_ToHRESULT(mysql_stmt_errno(m_Stmt)) );
-			//dbErr(E_DB_STATEMENT_PREPARE_FAILED);
+			dbErr(MYSQL_ToResult(mysql_stmt_errno(m_Stmt)) );
+			//dbErr(ResultCode::E_DB_STATEMENT_PREPARE_FAILED);
 		}
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog( pContext, hr, m_Stmt ? mysql_stmt_error(m_Stmt) : typeid(*this).name() );
 			Clear();
@@ -388,17 +388,17 @@ namespace DB {
 
 
 	// Bind query instance
-	HRESULT StatementMYSQL::Bind( QueryMYSQL *pMyQuery )
+	Result StatementMYSQL::Bind( QueryMYSQL *pMyQuery )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		int paramCount;
 
 		m_pParameter = nullptr;
 
 		dbChkPtr( m_Stmt );
 
-		paramCount = mysql_stmt_param_count(m_Stmt);
-
+		paramCount = (int)mysql_stmt_param_count(m_Stmt);
+		unused(paramCount);
 		Assert( paramCount == pMyQuery->GetParameterCount() );
 
 
@@ -406,12 +406,12 @@ namespace DB {
 		{
 			dbChkPtr( m_pParameter = pMyQuery->BuildParameter() );
 			int rc = mysql_stmt_bind_param(m_Stmt, m_pParameter);
-			if( rc != 0 ) dbErr(MYSQL_ToHRESULT(mysql_stmt_errno(m_Stmt)) );//dbErr(E_DB_PARAMETER_BIND_FAILED);
+			if( rc != 0 ) dbErr(MYSQL_ToResult(mysql_stmt_errno(m_Stmt)) );//dbErr(ResultCode::E_DB_PARAMETER_BIND_FAILED);
 		}
 
 	Proc_End:
 		
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog( m_Context, hr, m_Stmt ? mysql_stmt_error(m_Stmt) : typeid(*this).name() );
 		}
@@ -420,9 +420,9 @@ namespace DB {
 	}
 
 	// Execute
-	HRESULT StatementMYSQL::Execute()
+	Result StatementMYSQL::Execute()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		int rc;
 
 		dbChkPtr( m_Stmt );
@@ -430,12 +430,12 @@ namespace DB {
 		rc = mysql_stmt_execute(m_Stmt);
 		if( rc != 0 )
 		{
-			hr = MYSQL_ToHRESULT(mysql_stmt_errno(m_Stmt));
+			hr = MYSQL_ToResult(mysql_stmt_errno(m_Stmt));
 		}
 
 	Proc_End:
 		
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog( m_Context, hr, m_Stmt ? mysql_stmt_error(m_Stmt) : typeid(*this).name() );
 		}
@@ -444,15 +444,18 @@ namespace DB {
 	}
 
 	// Patch result
-	HRESULT StatementMYSQL::PatchResults( QueryMYSQL *pMyQuery )
+	Result StatementMYSQL::PatcResults( QueryMYSQL *pMyQuery )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		//MYSQL_BIND *pResults = nullptr;
 		int resultStatus = 0, rc;
+		int outParamCount;
 
 		dbChkPtr( m_Stmt );
 		dbChkPtr( m_Context );
-		
+
+		outParamCount = pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount();
+
 		while(resultStatus == 0)
 		{
 			int num_fields = mysql_stmt_field_count(m_Stmt);
@@ -461,15 +464,17 @@ namespace DB {
 			{
 				//const int ResultMax = 32;
 				MYSQL_BIND *pResults = nullptr;
-				bool bOutParamBind = (m_Context->server_status & SERVER_PS_OUT_PARAMS) != 0;
+				bool bOutParamBind = (m_Context->server_status & SERVER_PS_OUT_PARAMS) != 0 // If server says it is a out parameter
+					|| (outParamCount > 0 && outParamCount == num_fields);					// Maybe conntor library bug, let's assume the first one is the out parameter
 				if( bOutParamBind )
 				{
 					pResults = m_pParameter + pMyQuery->GetInputParameterCount();
-					if( (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()) != num_fields )
+					if(outParamCount != num_fields )
 					{
 						dbTrace( Trace::TRC_ERROR, "Database output count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, (pMyQuery->GetParameterCount() - pMyQuery->GetInputParameterCount()));
-						dbErr(E_DB_RESULT_COUNT_MISMATCH);
+						dbErr(ResultCode::E_DB_RESULT_COUNT_MISMATCH);
 					}
+					outParamCount = 0;
 				}
 				else
 				{
@@ -477,7 +482,7 @@ namespace DB {
 					if( pMyQuery->GetResultCount() != num_fields )
 					{
 						dbTrace( Trace::TRC_ERROR, "Database result column count is mismatched. Query: {0}, {2} is specified, {1} is expected", pMyQuery->GetQueryString(), num_fields, pMyQuery->GetResultCount() );
-						dbErr(E_DB_RESULT_COUNT_MISMATCH);
+						dbErr(ResultCode::E_DB_RESULT_COUNT_MISMATCH);
 					}
 				}
 
@@ -500,14 +505,14 @@ namespace DB {
 							fields[i].type
 							);
 						
-						dbErr(E_DB_RESULT_FIELDTYPE_MISMATCH);
+						dbErr(ResultCode::E_DB_RESULT_FIELDTYPE_MISMATCH);
 
 					}
 					//pResults[i].buffer_type = fields[i].type;
 				}
 
 				rc = mysql_stmt_bind_result(m_Stmt, pResults);
-				if( rc != 0 ) dbErr(E_DB_RESULT_PATCH_FAILED);
+				if( rc != 0 ) dbErr(ResultCode::E_DB_RESULT_PATCH_FAILED);
 
 				do {
 					pMyQuery->PrepareResultColumn();
@@ -519,11 +524,11 @@ namespace DB {
 			else
 			{
 				rc = mysql_stmt_store_result(m_Stmt);
-				if( rc != 0 ) dbErr(E_DB_RESULT_PATCH_FAILED);
+				if( rc != 0 ) dbErr(ResultCode::E_DB_RESULT_PATCH_FAILED);
 			}
 
 			rc = mysql_stmt_free_result(m_Stmt);
-			if( rc != 0 ) dbErr(E_DB_RESULT_PATCH_FAILED);
+			if( rc != 0 ) dbErr(ResultCode::E_DB_RESULT_PATCH_FAILED);
 
 			resultStatus = mysql_stmt_next_result(m_Stmt);
 		}
@@ -531,7 +536,7 @@ namespace DB {
 
 	Proc_End:
 		
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			Factory::ErrorLog( m_Context, hr, m_Stmt ? mysql_stmt_error(m_Stmt) : typeid(*this).name() );
 		}

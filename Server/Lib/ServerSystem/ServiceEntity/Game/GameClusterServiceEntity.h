@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
@@ -115,9 +115,9 @@ namespace Svr {
 		GameClusterServiceEntity(Config::PublicNetSocket *publicNetSocket, GameID gameID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
 		virtual ~GameClusterServiceEntity();
 
-		virtual HRESULT RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
 
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		// Game Cluster ID
@@ -132,14 +132,14 @@ namespace Svr {
 		//
 
 		// Create PlayerInfo
-		HRESULT CreatePlayer( PlayerID playerID, EntityUID entityUID, ServerEntity* pGameServerEntity );
-		HRESULT CreatePlayer( PlayerID playerID, EntityUID entityUID );
+		Result CreatePlayer( PlayerID playerID, EntityUID entityUID, ServerEntity* pGameServerEntity );
+		Result CreatePlayer( PlayerID playerID, EntityUID entityUID );
 
 		// Create PlayerInfo
-		HRESULT DeletePlayer(PlayerID playerID, EntityUID entityUID);
+		Result DeletePlayer(PlayerID playerID, EntityUID entityUID);
 
 		// Get Player info
-		HRESULT FindPlayer( PlayerID playerID, EntityUID &playerUID );
+		Result FindPlayer( PlayerID playerID, EntityUID &playerUID );
 
 	};
 

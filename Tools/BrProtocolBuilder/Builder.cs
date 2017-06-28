@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using ProtocolXml;
+using BR;
 
 namespace ProtocolBuilder
 {
@@ -143,7 +144,7 @@ namespace ProtocolBuilder
             m_ParamResult.IsArray = false;
             m_ParamResult.IsArraySpecified = false;
             m_ParamResult.Name = "Result";
-            m_ParamResult.Type = ParameterType.HRESULT;
+            m_ParamResult.Type = ParameterType.Result;
 
             m_ParamRouteContext = new Parameter();
             m_ParamRouteContext.IsArray = false;
@@ -155,7 +156,7 @@ namespace ProtocolBuilder
             m_ParamRouteHopCount.IsArray = false;
             m_ParamRouteHopCount.IsArraySpecified = false;
             m_ParamRouteHopCount.Name = "RouteHopCount";
-            m_ParamRouteHopCount.Type = ParameterType.UINT16;
+            m_ParamRouteHopCount.Type = ParameterType.uint16;
 
         }
 
@@ -276,7 +277,7 @@ namespace ProtocolBuilder
         public void DefaultHRESULT()
         {
             MatchIndent();
-            OutStream.WriteLine("HRESULT hr = S_SYSTEM_OK;");
+            OutStream.WriteLine("Result hr;");
         }
 
         public void ProcEnd()
@@ -312,11 +313,11 @@ namespace ProtocolBuilder
 
         public string InArrayTypeName(Parameter param)
         {
-            return string.Format("Array<{0}>", param.Type.ToString());
+            return string.Format("Array<{0}>", SystemTypeMap.ToCPPType(param.Type));
         }
         public string OutArrayTypeName(Parameter param)
         {
-            return string.Format("LinkedArray<{0}>", param.Type.ToString());
+            return string.Format("LinkedArray<{0}>", SystemTypeMap.ToCPPType(param.Type));
         }
 
 
@@ -413,7 +414,7 @@ namespace ProtocolBuilder
                 }
                 else // generic type
                 {
-                    strParams += string.Format("const {0} &{1}", param.Type.ToString(), InParamName(param.Name));
+                    strParams += string.Format("const {0} &{1}", SystemTypeMap.ToCPPType(param.Type), InParamName(param.Name));
                 }
             }
 
@@ -449,7 +450,7 @@ namespace ProtocolBuilder
                 }
                 else // generic type
                 {
-                    strParams += string.Format("{0} &{1}", param.Type.ToString(), "Out" + param.Name);
+                    strParams += string.Format("{0} &{1}", SystemTypeMap.ToCPPType(param.Type), "Out" + param.Name);
                 }
             }
 

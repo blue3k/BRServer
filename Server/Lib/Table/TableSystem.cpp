@@ -58,9 +58,9 @@ namespace GameTable {
 
 		bool IsInitialized() { return m_pDataSource != nullptr; }
 
-		HRESULT Initialize(const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword)
+		Result Initialize(const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword)
 		{
-			HRESULT	hr = S_SYSTEM_OK;
+			Result	hr = ResultCode::SUCCESS;
 
 			// Update table every ...
 			m_UpdateTimeDuration = DurationMS(UPDATE_TIME_SEC*1000);
@@ -80,9 +80,9 @@ namespace GameTable {
 			return hr;
 		}
 
-		HRESULT Terminate()
+		Result Terminate()
 		{
-			HRESULT	hr = S_SYSTEM_OK;
+			Result	hr = ResultCode::SUCCESS;
 
 			if (m_pDataSource != nullptr)
 			{
@@ -96,9 +96,9 @@ namespace GameTable {
 		}
 
 		template<class TableQueryType, class TableClass>
-		HRESULT QueryTable()
+		Result QueryTable()
 		{
-			HRESULT	hr = S_SYSTEM_OK;
+			Result	hr = ResultCode::SUCCESS;
 			DB::Session* pSession = nullptr;
 			TableQueryType* pTblQuery = nullptr;
 
@@ -122,9 +122,9 @@ namespace GameTable {
 			return hr;
 		}
 
-		HRESULT QueryTableVersion()
+		Result QueryTableVersion()
 		{
-			HRESULT	hr = S_SYSTEM_OK;
+			Result	hr = ResultCode::SUCCESS;
 			DB::Session* pSession = nullptr;
 			DB::QueryTableVersionTblCmd* pTblQuery = nullptr;
 
@@ -149,15 +149,15 @@ namespace GameTable {
 		}
 
 
-		HRESULT Update()
+		Result Update()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			if (!IsInitialized())
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 
 			if (!m_Timer.CheckTimer())
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 
 			int oldTableVersion = GetTableVersion();
 			int tableVersion = -1;
@@ -183,9 +183,9 @@ namespace GameTable {
 
 
 	// Initialize tables
-	HRESULT InitializeTable()
+	Result InitializeTable()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		auto found = Svr::Config::GetConfig().DBInstances.begin();
 		auto tableDB = Svr::Config::GetConfig().TableDB;
 		defChkPtr(tableDB);
@@ -193,7 +193,7 @@ namespace GameTable {
 		found = Svr::Config::GetConfig().DBInstances.find(tableDB->DBInstanceName);
 		if (found == Svr::Config::GetConfig().DBInstances.end())
 		{
-			defErr(E_DB_INVALID_CONFIG);
+			defErr(ResultCode::E_DB_INVALID_CONFIG);
 		}
 
 		{
@@ -212,16 +212,16 @@ namespace GameTable {
 	}
 
 	// Release all tables
-	HRESULT TerminateTable()
+	Result TerminateTable()
 	{
 		TableSystem::stm_Instance.Terminate();
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
-	HRESULT LoadTables()
+	Result LoadTables()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		hr = TableSystem::stm_Instance.QueryTable<DB::QueryOrganicTblCmd, conspiracy::OrganicTbl>();
 		defChk(hr);
@@ -251,7 +251,7 @@ namespace GameTable {
 		return TableSystem::stm_Instance.GetTableVersion();
 	}
 
-	HRESULT Update()
+	Result Update()
 	{
 		return TableSystem::stm_Instance.Update();
 	}

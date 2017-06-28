@@ -33,9 +33,9 @@ namespace BR
 			GameMasterServerService ( ServerServiceInformation* pService );
 
 			// C2S: Player entered
-			HRESULT PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName );
+			Result PlayerEnteredC2SEvt( const AccountID &InPlayerID, const char* InPlayerName );
 			// C2S: Player leaved
-			HRESULT PlayerLeavedC2SEvt( const AccountID &InPlayerID );
+			Result PlayerLeavedC2SEvt( const AccountID &InPlayerID );
 
 		}; // class GameMasterServerService : public ServerServiceBase
 

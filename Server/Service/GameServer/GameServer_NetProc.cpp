@@ -44,17 +44,17 @@ namespace GameServer {
 	
 
 	// Process Private network event
-	HRESULT GameServer::ProcessPublicNetworkEvent()
+	Result GameServer::ProcessPublicNetworkEvent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Net::INet::Event curEvent;
 		//GamePlayerEntity *pGamePlayerEntity = nullptr;
 		//Net::Connection *pConn = nullptr;
 
 		if( m_pNetPublic == nullptr )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
-		while( SUCCEEDED(m_pNetPublic->DequeueNetEvent( curEvent )) )
+		while( (m_pNetPublic->DequeueNetEvent( curEvent )) )
 		{
 			//pConn = nullptr;
 
@@ -75,7 +75,7 @@ namespace GameServer {
 
 				//svrChk( Svr::GetServerComponent<GameEntityManager>()->CreateGamePlayer(pGamePlayerEntity) );
 
-				//if( FAILED(pGamePlayerEntity->SetConnection( pConn )) )
+				//if( !(pGamePlayerEntity->SetConnection( pConn )) )
 				//{
 				//	// NOTE: We need to mark to close this
 				//	pGamePlayerEntity->ClearEntity();

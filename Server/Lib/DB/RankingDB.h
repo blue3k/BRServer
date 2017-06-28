@@ -15,7 +15,7 @@
 #include "Common/Typedefs.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrCommonTypes.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 #include "Common/SvrPolicyID.h"
 #include "ServerSystem/ServerComponent.h"
 
@@ -30,7 +30,7 @@ namespace DB {
 	//	RankingDBServer Class 
 	//
 
-	class RankingDB : protected QueryManager, public Svr::IServerComponent
+	class RankingDB : protected DBClusterManager, public Svr::IServerComponent
 	{
 	public:
 
@@ -54,7 +54,7 @@ namespace DB {
 		//	Ranking DB interface
 		//
 
-		HRESULT GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount );
+		Result GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount );
 
 
 	};

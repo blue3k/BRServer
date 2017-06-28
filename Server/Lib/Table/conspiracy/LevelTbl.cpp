@@ -21,7 +21,7 @@ namespace conspiracy
 	LevelTbl::LevelTable *LevelTbl::m_LevelTable = nullptr;
 	LevelTbl::LevelTable *LevelTbl::m_LevelTablePrev = nullptr;
 
-	HRESULT LevelTbl::LoadTable( const std::list<LevelItem>& rowList )
+	BR::Result LevelTbl::LoadTable( const std::list<LevelItem>& rowList )
 	{
  		auto pNewLevelTable = new LevelTable;
 
@@ -39,20 +39,20 @@ namespace conspiracy
 		}
 		m_LevelTablePrev = m_LevelTable;
 		m_LevelTable = pNewLevelTable;
-		return S_SYSTEM_OK;
+		return BR::ResultCode::SUCCESS;
 	}
 
 
-	HRESULT LevelTbl::FindItem( const int& Key, LevelItem*& pRow)
+	BR::Result LevelTbl::FindItem( const int& Key, LevelItem*& pRow)
 	{
  		auto itr = m_LevelTable->find(Key);
 		if (itr == m_LevelTable->end())
 		{
  			// write error log
-			return E_SYSTEM_FAIL;
+			return BR::ResultCode::FAIL;
 		}
 		pRow = itr->second;
-		return S_SYSTEM_OK;
+		return BR::ResultCode::SUCCESS;
 	}
 
 }; // namespace conspiracy

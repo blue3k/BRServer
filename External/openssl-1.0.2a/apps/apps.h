@@ -234,7 +234,7 @@ void program_name(char *in, char *out, int size);
 int chopup_args(ARGS *arg, char *buf, int *argc, char **argv[]);
 # ifdef HEADER_X509_H
 int dump_cert_text(BIO *out, X509 *x);
-void print_name(BIO *out, const char *title, X509_NAME *nm,
+void print_name(BIO *out, const char *title, SSL_X509_NAME *nm,
                 unsigned long lflags);
 # endif
 int set_cert_ex(unsigned long *flags, const char *arg);
@@ -264,7 +264,7 @@ ENGINE *setup_engine(BIO *err, const char *engine, int debug);
 # endif
 
 # ifndef OPENSSL_NO_OCSP
-OCSP_RESPONSE *process_responder(BIO *err, OCSP_REQUEST *req,
+SSL_OCSP_RESPONSE *process_responder(BIO *err, SSL_OCSP_REQUEST *req,
                                  const char *host, const char *path,
                                  const char *port, int use_ssl,
                                  const STACK_OF(CONF_VALUE) *headers,
@@ -316,7 +316,7 @@ void free_index(CA_DB *db);
 int index_name_cmp(const OPENSSL_CSTRING *a, const OPENSSL_CSTRING *b);
 int parse_yesno(const char *str, int def);
 
-X509_NAME *parse_name(char *str, long chtype, int multirdn);
+SSL_X509_NAME *parse_name(char *str, long chtype, int multirdn);
 int args_verify(char ***pargs, int *pargc,
                 int *badarg, BIO *err, X509_VERIFY_PARAM **pm);
 void policies_print(BIO *out, X509_STORE_CTX *ctx);

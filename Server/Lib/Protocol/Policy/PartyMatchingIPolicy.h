@@ -35,9 +35,9 @@ namespace BR
 			{}
 
 			// S2C: 
-			virtual HRESULT PartyGameMatchedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount ) = 0;
+			virtual Result PartyGameMatchedS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount ) = 0;
 			// S2C: 
-			virtual HRESULT PlayerGameMatchedS2CEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole ) = 0;
+			virtual Result PlayerGameMatchedS2CEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole ) = 0;
 
 		}; // class ISvrPolicyPartyMatching : public Net::INetPolicy
 

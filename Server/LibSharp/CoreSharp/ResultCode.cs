@@ -54,12 +54,12 @@ namespace BR
         {
             switch (serverity)
             {
-                case SeverityType.Success: return "S";
-                case SeverityType.Informational: return "I";
-                case SeverityType.Warning: return "W";
+                case SeverityType.Success: return "S_";
+                case SeverityType.Informational: return "I_";
+                case SeverityType.Warning: return "W_";
                 case SeverityType.Error:
                 default:
-                    return "E";
+                    return "E_";
             }
         }
 

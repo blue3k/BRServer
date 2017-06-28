@@ -71,12 +71,12 @@
  * relevant information from the request.
  */
 
-int OCSP_request_onereq_count(OCSP_REQUEST *req)
+int OCSP_request_onereq_count(SSL_OCSP_REQUEST *req)
 {
     return sk_OCSP_ONEREQ_num(req->tbsRequest->requestList);
 }
 
-OCSP_ONEREQ *OCSP_request_onereq_get0(OCSP_REQUEST *req, int i)
+OCSP_ONEREQ *OCSP_request_onereq_get0(SSL_OCSP_REQUEST *req, int i)
 {
     return sk_OCSP_ONEREQ_value(req->tbsRequest->requestList, i);
 }
@@ -103,7 +103,7 @@ int OCSP_id_get0_info(ASN1_OCTET_STRING **piNameHash, ASN1_OBJECT **pmd,
     return 1;
 }
 
-int OCSP_request_is_signed(OCSP_REQUEST *req)
+int OCSP_request_is_signed(SSL_OCSP_REQUEST *req)
 {
     if (req->optionalSignature)
         return 1;
@@ -111,9 +111,9 @@ int OCSP_request_is_signed(OCSP_REQUEST *req)
 }
 
 /* Create an OCSP response and encode an optional basic response */
-OCSP_RESPONSE *OCSP_response_create(int status, OCSP_BASICRESP *bs)
+SSL_OCSP_RESPONSE *OCSP_response_create(int status, OCSP_BASICRESP *bs)
 {
-    OCSP_RESPONSE *rsp = NULL;
+    SSL_OCSP_RESPONSE *rsp = NULL;
 
     if (!(rsp = OCSP_RESPONSE_new()))
         goto err;

@@ -52,10 +52,10 @@ namespace Google {
 
 		private:
 
-			HRESULT LoadPrivateKey(const char* strPKeyFile);
+			Result LoadPrivateKey(const char* strPKeyFile);
 
-			HRESULT BuildAuthRequestString(const char* strAccount, const char* scopes, Array<BYTE>& requestString);
-			HRESULT ProcessAuthRequest(const Array<BYTE>& requestString);
+			Result BuildAuthRequestString(const char* strAccount, const char* scopes, Array<BYTE>& requestString);
+			Result ProcessAuthRequest(const Array<BYTE>& requestString);
 
 			static int WriteResultCB(char *data, size_t size, size_t nmemb, void *param);
 
@@ -65,13 +65,13 @@ namespace Google {
 
 			const char* GetAuthString()                     { return m_ActiveAuthString; }
 
-			HRESULT Initialize(const char* strPKeyFile, const char* strAccount, const char* scopes);
+			Result Initialize(const char* strPKeyFile, const char* strAccount, const char* scopes);
 
 			// Authenticate
-			HRESULT Authenticate();
+			Result Authenticate();
 
 			// Refresh
-			HRESULT UpdateAuthentication(bool forceUpdate = true);
+			Result UpdateAuthentication(bool forceUpdate = true);
 		};
 
 

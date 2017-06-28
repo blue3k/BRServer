@@ -35,11 +35,11 @@ namespace BR
 			{}
 
 			// Cmd: Register entity
-			virtual HRESULT RegisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID ) = 0;
+			virtual Result RegisterEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID ) = 0;
 			// Cmd: Find Entity
-			virtual HRESULT UnregisterEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result UnregisterEntityRes( const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// Cmd: Find Entity
-			virtual HRESULT FindEntityRes( const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID ) = 0;
+			virtual Result FindEntityRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID ) = 0;
 
 		}; // class ISvrPolicyEntityServer : public Net::INetPolicy
 
@@ -54,11 +54,11 @@ namespace BR
 			{}
 
 			// Cmd: Register entity
-			virtual HRESULT RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName ) = 0;
+			virtual Result RegisterEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName ) = 0;
 			// Cmd: Find Entity
-			virtual HRESULT UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID ) = 0;
+			virtual Result UnregisterEntityCmd( const TransactionID &InTransactionID, const EntityUID &InEntUID ) = 0;
 			// Cmd: Find Entity
-			virtual HRESULT FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID ) = 0;
+			virtual Result FindEntityCmd( const TransactionID &InTransactionID, const EntityID &InLocalEntID ) = 0;
 
 		}; // class IPolicyEntityServer : public Net::INetPolicy
 

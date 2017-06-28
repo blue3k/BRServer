@@ -13,7 +13,7 @@
 	
 
 #include "Common/Typedefs.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/ArrayUtil.h"
 #include "Common/BrGameTypes.h"
@@ -27,7 +27,7 @@ namespace DB {
 	//	GameDB Class 
 	//
 
-	class GameTransactionDB : private QueryManager, public Svr::IServerComponent
+	class GameTransactionDB : private DBClusterManager, public Svr::IServerComponent
 	{
 	public:
 
@@ -54,7 +54,7 @@ namespace DB {
 
 		// Transaction log must be closed safely
 		// Add game log
-		HRESULT AddGameLog(UINT shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage);
+		Result AddGameLog(UINT shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage);
 
 	};
 

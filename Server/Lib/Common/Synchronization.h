@@ -13,7 +13,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/Utility.h"
 #include "Common/Thread.h"
 

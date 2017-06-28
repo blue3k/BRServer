@@ -29,7 +29,6 @@
   <ResultCodeItem Severity="Error" CodeName="RESERVED_QUEUEITEM" Desc="Queue item is reserved"/>
   <ResultCodeItem Severity="Error" CodeName="CLUSTER_NOMASTER" Desc="Cluster doesn't have any assigned master"/>
   <ResultCodeItem Severity="Success" CodeName="QUEUEITEM_CANCEL_PENDED" Desc="Queue item is reserved for cancel"/>
-  <ResultCodeItem Severity="Error" CodeName="INVALID_THREAD" Desc="Thread is wrong, running on wrong thread?"/>
   <ResultCodeItem Severity="Error" CodeName="PURCHASE_CANCELED" Desc="Purchase canceled"/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_PURCHASE_INFO" Desc="Invalid receipt info"/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_PURCHASE_DUPLICATED" Desc="Invalid duplicated purchase"/>
@@ -52,6 +51,7 @@
   <ResultCodeItem Severity="Error" CodeName="CURL_NO_CONNECTION_AVAILABLE" Desc="No Connection is available now."/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_STATE" Desc="Invalid state transition"/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_PURCHASE_MODE" Desc="Invalid purchase environment(public/test)"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_TASK_GROUPID" Desc="Invalid Task group ID"/>
 
 
 </ResultCodes>

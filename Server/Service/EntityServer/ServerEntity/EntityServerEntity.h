@@ -35,7 +35,7 @@ namespace EntityServer {
 		virtual ~EntityServerEntity();
 
 
-		virtual HRESULT ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent ) override;
+		virtual Result ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent ) override;
 
 	};
 

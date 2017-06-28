@@ -15,7 +15,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/TimeUtil.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/ServiceEntity/ServiceEntity.h"
@@ -139,17 +139,17 @@ namespace Svr {
 		//
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
-		virtual HRESULT StartInitializeTransaction();
+		virtual Result StartInitializeTransaction();
 
 		// clear transaction
-		virtual HRESULT ClearEntity();
+		virtual Result ClearEntity() override;
 
-		virtual HRESULT UpdateOnMasterManager() { return S_SYSTEM_OK; }
+		virtual Result UpdateOnMasterManager() { return ResultCode::SUCCESS; }
 
-		virtual HRESULT TickUpdate(TimerAction *pAction = nullptr) override;
-		virtual HRESULT ProcessTransaction(Transaction* &pTrans) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
+		virtual Result ProcessTransaction(Transaction* &pTrans) override;
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -167,39 +167,39 @@ namespace Svr {
 
 
 		// Change workload
-		HRESULT SetWorkload( UINT workload );
+		Result SetWorkload( UINT workload );
 
 		// Change service status
-		HRESULT SetServiceStatus( ServiceStatus newStatus );
+		Result SetServiceStatus( ServiceStatus newStatus );
 
 		size_t GetNumberOfServices()				{ return m_ServiceEntityUIDMap.size() + m_WatcherUIDMap.size(); }
 		size_t GetNumberOfNonWatcherServices()		{ return m_ServiceEntityUIDMap.size(); }
 		size_t GetNumberOfAvailableServices();
 
 		// Register Entity by Given serverID
-		virtual HRESULT NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService );
+		virtual Result NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService );
 
 		// Find Service information by ServiceID
-		HRESULT FindService( EntityUID entityUID, ServerServiceInformation* &pService );
+		Result FindService( EntityUID entityUID, ServerServiceInformation* &pService );
 
 		// Find random service, maybe lowest workload service
-		virtual HRESULT FindRandomService( ServerServiceInformation* &pService );
+		virtual Result FindRandomService( ServerServiceInformation* &pService );
 
 		// Foreach service
-		HRESULT ForEach( std::function<void(ServerServiceInformation*)> func );
+		Result ForEach( std::function<void(ServerServiceInformation*)> func );
 
-		HRESULT ForEachNonWatcher( std::function<void(ServerServiceInformation*)> func );
+		Result ForEachNonWatcher( std::function<void(ServerServiceInformation*)> func );
 
 		// Assign master to given UID
-		HRESULT SetMaster( EntityUID entityUID );
+		Result SetMaster( EntityUID entityUID );
 		// SetMaster + broadcast
-		HRESULT AssignMaster( EntityUID entityUID );
+		Result AssignMaster( EntityUID entityUID );
 
 		template<class ServiceType>
-		HRESULT GetService( ServiceType* &pService );
+		Result GetService( ServiceType* &pService );
 
 		// Sync data to target 
-		virtual HRESULT SyncDataToTarget( EntityUID entityUID );
+		virtual Result SyncDataToTarget( EntityUID entityUID );
 
 	};
 
@@ -228,13 +228,13 @@ namespace Svr {
 
 		ReplicaClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
-		virtual HRESULT UpdateOnMasterManager() override;
+		virtual Result UpdateOnMasterManager() override;
 
 		// Register message handler for this component
-		virtual HRESULT RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
 
 		////////////////////////////////////////////////////////////////////////////////////
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 	};
 	
 
@@ -256,7 +256,7 @@ namespace Svr {
 		FreeReplicaClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
 		// Register message handler for this component
-		//virtual HRESULT RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
+		//virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;
 
 		////////////////////////////////////////////////////////////////////////////////////
 	};
@@ -288,13 +288,13 @@ namespace Svr {
 		RingClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
 		// Override so that we can make ring linked list
-		HRESULT NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService );
+		Result NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService );
 
 		// Get next ring token
-		HRESULT GetNextRing( ServerServiceInformation* pService, ServerServiceInformation* &pNextService );
+		Result GetNextRing( ServerServiceInformation* pService, ServerServiceInformation* &pNextService );
 
 		// Get a service form the ring
-		HRESULT GetService( ServerServiceInformation* &pService );
+		Result GetService( ServerServiceInformation* &pService );
 	};
 	
 
@@ -321,7 +321,7 @@ namespace Svr {
 		virtual UINT KeyHash( UINT64 key );
 
 		// Get Service shard by key
-		virtual HRESULT GetShard( UINT64 key, ServerServiceInformation* &pService );
+		virtual Result GetShard( UINT64 key, ServerServiceInformation* &pService );
 
 		////////////////////////////////////////////////////////////////////////////////////
 	};
@@ -360,17 +360,17 @@ namespace Svr {
 		LoadbalanceClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID );
 
 
 		// Override so that we can make ring linked list
-		HRESULT NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService );
+		Result NewServerService( EntityUID entityUID, ServerEntity *pServerEntity, ClusterMembership membership, ServiceStatus status, ServerServiceInformation* &pService );
 
 		// Get a service form the ring
-		HRESULT GetService( ServerServiceInformation* &pService );
+		Result GetService( ServerServiceInformation* &pService );
 
 		////////////////////////////////////////////////////////////////////////////////////
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr);
+		virtual Result TickUpdate(TimerAction *pAction = nullptr);
 	};
 
 

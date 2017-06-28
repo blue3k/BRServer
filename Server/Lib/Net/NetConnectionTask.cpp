@@ -72,7 +72,7 @@ namespace Net {
 
 
 	// Run the task
-	HRESULT ConnectionTask::TickUpdate(Svr::TimerAction *pAction)
+	Result ConnectionTask::TickUpdate(TimerAction *pAction)
 	{
 		if( m_pConnection != nullptr 
 			&& (m_pConnection->GetConnectionState() == IConnection::STATE_CONNECTING
@@ -82,7 +82,7 @@ namespace Net {
 			m_pConnection->UpdateNetCtrl();
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -102,9 +102,9 @@ namespace Net {
 	}
 
 	// Create TickTask
-	HRESULT ConnectionTaskManager::CreateTask( ConnectionTask* &pTask )
+	Result ConnectionTaskManager::CreateTask( ConnectionTask* &pTask )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ConnectionTask *pNewTask = nullptr;
 
 		netMem( pNewTask = new ConnectionTask );

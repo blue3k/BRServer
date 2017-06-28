@@ -411,17 +411,17 @@ namespace TableBuilder
 
             // Define parser member function start
             NewLine(1);
-            WriteStatement("HRESULT LoadTable( const char *strFileName )");
+            WriteStatement("BR::Result LoadTable( const char *strFileName )");
             OpenSection();
             WriteStatement("int result = xmlSAXUserParseFile( *this, this, strFileName );");
             NewLine(1);
             WriteStatement("if (result != 0)");
             OpenSection();
             WriteStatement("// error log");
-            WriteStatement("return E_SYSTEM_FAIL;");
+            WriteStatement("return BR::ResultCode::FAIL;");
             CloseSection();
             WriteStatement("xmlCleanupParser();");
-            WriteStatement("return S_SYSTEM_OK;");
+            WriteStatement("return BR::ResultCode::SUCCESS;");
             CloseSection();
             // Define parser member function end
 
@@ -569,15 +569,15 @@ namespace TableBuilder
             
             // Load table
             NewLine(1);
-            statement = string.Format("HRESULT {0}::LoadTable( const char *strFileName )", ClassName);
+            statement = string.Format("BR::Result {0}::LoadTable( const char *strFileName )", ClassName);
             WriteStatement(statement);
             OpenSection();
             statement = string.Format("{0} parser;", ParserName);
             WriteStatement(statement);
             WriteStatement("if (FAILED(parser.LoadTable(strFileName)))");
-            WriteStatement("return E_SYSTEM_FAIL;", 1);
+            WriteStatement("return BR::ResultCode::FAIL;", 1);
             NewLine(1);
-            WriteStatement("return S_SYSTEM_OK;");
+            WriteStatement("return BR::ResultCode::SUCCESS;");
             CloseSection();
 
             NewLine(1);

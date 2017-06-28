@@ -156,7 +156,7 @@ typedef struct PEM_Encode_Seal_st {
 
 typedef struct pem_recip_st {
     char *name;
-    X509_NAME *dn;
+    SSL_X509_NAME *dn;
     int cipher;
     int key_enc;
     /*      char iv[8]; unused and wrong size */
@@ -450,7 +450,7 @@ void PEM_dek_info(char *buf, const char *type, int len, char *str);
 
 DECLARE_PEM_rw(X509, X509)
 DECLARE_PEM_rw(X509_AUX, X509)
-DECLARE_PEM_rw(X509_CERT_PAIR, X509_CERT_PAIR)
+DECLARE_PEM_rw(SSL_X509_CERT_PAIR, SSL_X509_CERT_PAIR)
 DECLARE_PEM_rw(X509_REQ, X509_REQ)
 DECLARE_PEM_write(X509_REQ_NEW, X509_REQ)
 DECLARE_PEM_rw(X509_CRL, X509_CRL)

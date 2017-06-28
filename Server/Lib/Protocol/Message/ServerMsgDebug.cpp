@@ -28,24 +28,24 @@ namespace BR
  
 			///////////////////////////////////////////////////////////////
 			// Server Debug trace mappping
-			static std::unordered_map<UINT,std::function<HRESULT(const char* prefix,MessageData *pMsg)>> MessageDebugTraceMapServer;
+			static std::unordered_map<UINT,std::function<Result(const char* prefix,MessageData *pMsg)>> MessageDebugTraceMapServer;
 
 			void RegisterDebugTraceServer()
 			{
  				// Cmd: 
-				MessageDebugTraceMapServer.insert(std::make_pair(Server::GenericFailureCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Server::GenericFailureCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
-				MessageDebugTraceMapServer.insert(std::make_pair(Server::GenericFailureRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Server::GenericFailureRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapServer.insert(std::make_pair(Server::GenericFailureCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Server::GenericFailureCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapServer.insert(std::make_pair(Server::GenericFailureRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Server::GenericFailureRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// C2S: Server Started or Connected
-				MessageDebugTraceMapServer.insert(std::make_pair(Server::ServerConnectedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   Server::ServerConnectedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapServer.insert(std::make_pair(Server::ServerConnectedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Server::ServerConnectedC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceServer()
 
 
 			///////////////////////////////////////////////////////////////
 			// Server Debug trace
-			HRESULT DebugOutServer( const char *Prefix, MessageData *pMsg )
+			Result DebugOutServer( const char *Prefix, MessageData *pMsg )
 			{
  
-				HRESULT hr = S_SYSTEM_OK;
+				Result hr;
 				auto itFount = MessageDebugTraceMapServer.end();
 
 				protocolChkPtr(pMsg);
@@ -57,7 +57,7 @@ namespace BR
 
 			Proc_End:
 				return hr;
-			}; // HRESULT DebugOutServer( const char *Prefix, MessageData *pMsg )
+			}; // Result DebugOutServer( const char *Prefix, MessageData *pMsg )
 
 
 		}; // namespace Debug

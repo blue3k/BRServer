@@ -16,7 +16,7 @@
 #include "Common/Typedefs.h"
 #include "Common/Thread.h"
 #include "Net/NetDef.h"
-#include "ServerSystem/Task.h"
+#include "Common/Task/Task.h"
 #include "Common/PageQueue.h"
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/Entity.h"
@@ -42,18 +42,18 @@ namespace Svr {
 		virtual ~SimpleEntity();
 
 		// clear transaction
-		virtual HRESULT ClearEntity();
+		virtual Result ClearEntity() override;
 
-		virtual HRESULT FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) override;
+		virtual Result FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction) override;
 		
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr);
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
-		virtual HRESULT ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
+		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
 
-		virtual UINT GetActiveTransactionCount();
+		virtual UINT GetActiveTransactionCount() override;
 	};
 
 #include "SimpleEntity.inl"

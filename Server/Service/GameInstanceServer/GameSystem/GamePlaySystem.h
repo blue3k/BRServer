@@ -92,39 +92,39 @@ namespace ConspiracyGameInstanceServer {
 		const Array<GamePlayer*>& GetWerewolves();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent();
+		virtual Result InitializeComponent();
 
 		// Assign roles
-		HRESULT PlayerRoleAssigned(GamePlayer* pPlayer);
-		HRESULT AssignRole();
+		Result PlayerRoleAssigned(GamePlayer* pPlayer);
+		Result AssignRole();
 
 		// Update Villager and werewolf count
-		HRESULT UpdateVillagerNWerewolfCount();
+		Result UpdateVillagerNWerewolfCount();
 
 		// Check game end condition
 		GameWinner GetGameWinner();
-		HRESULT UpdateGameEnd();
+		Result UpdateGameEnd();
 
 		// 
 		PlayerID PickAnyoneCloseToHuntedPlayer( PlayerID exculdePlayer );
 
 		// Kill Player
-		HRESULT KillPlayer( PlayerID playerToKill, PlayerKilledReason reason );
-		HRESULT KillPlayer( GamePlayer* pPlayerToKill, PlayerKilledReason reason );
+		Result KillPlayer( PlayerID playerToKill, PlayerKilledReason reason );
+		Result KillPlayer( GamePlayer* pPlayerToKill, PlayerKilledReason reason );
 
-		HRESULT RevivePlayer(GamePlayer* pPlayerToRevive);
+		Result RevivePlayer(GamePlayer* pPlayerToRevive);
 
 		// Get revealed role
 		PlayerRole GetRevealedRole( GamePlayer* pPlayer, GamePlayer* pOtherPlayer );
 
 		// Called when a player get out of game
-		HRESULT OnPlayerGetOutOfGame( GamePlayer* pPlayer );
+		Result OnPlayerGetOutOfGame( GamePlayer* pPlayer );
 
-		HRESULT BroadCastChatMessage(GamePlayer *pMyPlayer, PlayerRole role, const char* chatMessage);
+		Result BroadCastChatMessage(GamePlayer *pMyPlayer, PlayerRole role, const char* chatMessage);
 
-		HRESULT BroadCastRandomBotMessage(int minID, int maxID, int& index);
-		HRESULT BroadCastRandomBotMessage(PlayerRole roleToTalk, int minID, int maxID, int& index);
-		HRESULT BroadCastRandomBotMessageSuspect(int minID, int maxID, int& index);
+		Result BroadCastRandomBotMessage(int minID, int maxID, int& index);
+		Result BroadCastRandomBotMessage(PlayerRole roleToTalk, int minID, int maxID, int& index);
+		Result BroadCastRandomBotMessageSuspect(int minID, int maxID, int& index);
 	};
 
 

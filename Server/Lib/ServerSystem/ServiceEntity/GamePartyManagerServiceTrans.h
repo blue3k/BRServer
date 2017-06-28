@@ -42,7 +42,7 @@ namespace Svr {
 		virtual ~PartyManagerTransCreateParty() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 
 		Policy::ISvrPolicyGamePartyManager* GetPolicy()	{ return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyGamePartyManager>(); }
 
@@ -64,7 +64,7 @@ namespace Svr {
 		virtual ~PartyManagerTransPartyDeleted() {}
 
 		// Start Transaction
-		virtual HRESULT StartTransaction();
+		virtual Result StartTransaction();
 	};
 
 	

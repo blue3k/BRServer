@@ -40,7 +40,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				AccountID m_PlayerID;
@@ -62,9 +62,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID, const char* InPlayerName );
 
 			}; // class PlayerEnteredC2SEvt : public MessageBase
 
@@ -85,7 +86,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				AccountID m_PlayerID;
@@ -103,9 +104,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const AccountID &InPlayerID );
 
 			}; // class PlayerLeavedC2SEvt : public MessageBase
 

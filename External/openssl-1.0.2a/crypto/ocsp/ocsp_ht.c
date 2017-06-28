@@ -205,9 +205,9 @@ int OCSP_REQ_CTX_http(OCSP_REQ_CTX *rctx, const char *op, const char *path)
     return 1;
 }
 
-int OCSP_REQ_CTX_set1_req(OCSP_REQ_CTX *rctx, OCSP_REQUEST *req)
+int OCSP_REQ_CTX_set1_req(OCSP_REQ_CTX *rctx, SSL_OCSP_REQUEST *req)
 {
-    return OCSP_REQ_CTX_i2d(rctx, ASN1_ITEM_rptr(OCSP_REQUEST),
+    return OCSP_REQ_CTX_i2d(rctx, ASN1_ITEM_rptr(SSL_OCSP_REQUEST),
                             (ASN1_VALUE *)req);
 }
 
@@ -230,7 +230,7 @@ int OCSP_REQ_CTX_add1_header(OCSP_REQ_CTX *rctx,
     return 1;
 }
 
-OCSP_REQ_CTX *OCSP_sendreq_new(BIO *io, const char *path, OCSP_REQUEST *req,
+OCSP_REQ_CTX *OCSP_sendreq_new(BIO *io, const char *path, SSL_OCSP_REQUEST *req,
                                int maxline)
 {
 
@@ -522,18 +522,18 @@ int OCSP_REQ_CTX_nbio(OCSP_REQ_CTX *rctx)
 
 }
 
-int OCSP_sendreq_nbio(OCSP_RESPONSE **presp, OCSP_REQ_CTX *rctx)
+int OCSP_sendreq_nbio(SSL_OCSP_RESPONSE **presp, OCSP_REQ_CTX *rctx)
 {
     return OCSP_REQ_CTX_nbio_d2i(rctx,
                                  (ASN1_VALUE **)presp,
-                                 ASN1_ITEM_rptr(OCSP_RESPONSE));
+                                 ASN1_ITEM_rptr(SSL_OCSP_RESPONSE));
 }
 
 /* Blocking OCSP request handler: now a special case of non-blocking I/O */
 
-OCSP_RESPONSE *OCSP_sendreq_bio(BIO *b, const char *path, OCSP_REQUEST *req)
+SSL_OCSP_RESPONSE *OCSP_sendreq_bio(BIO *b, const char *path, SSL_OCSP_REQUEST *req)
 {
-    OCSP_RESPONSE *resp = NULL;
+    SSL_OCSP_RESPONSE *resp = NULL;
     OCSP_REQ_CTX *ctx;
     int rv;
 

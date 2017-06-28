@@ -97,10 +97,10 @@ namespace Svr {
 
 
 		// Install Service
-		HRESULT ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
+		Result ServiceInstall( const char *strCfgPath, const char *strUser, const char *strPWD )
 		{
 			unused(strCfgPath);
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			const char* strServiceName = Util::GetServiceNameA();
 
 			SC_HANDLE schSCManager = NULL;
@@ -189,7 +189,7 @@ namespace Svr {
 					if ( g_SvcStatus.dwCurrentState != SERVICE_STOPPED )
 					{
 						svrTrace( Trace::TRC_ERROR, "Service Stop Failed" );
-						trcErr( E_SYSTEM_UNEXPECTED );
+						trcErr( ResultCode::UNEXPECTED );
 					}
 				}
 
@@ -229,9 +229,9 @@ namespace Svr {
 		}
 
 		// Uninstall service
-		HRESULT ServiceUninstall()
+		Result ServiceUninstall()
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			SC_HANDLE   schService = NULL;
 			SC_HANDLE   schSCManager = NULL;
 
@@ -275,7 +275,7 @@ namespace Svr {
 				if ( g_SvcStatus.dwCurrentState != SERVICE_STOPPED )
 				{
 					svrTrace( Trace::TRC_ERROR, "Service Stop Failed" );
-					trcErr( E_SYSTEM_UNEXPECTED );
+					trcErr( ResultCode::UNEXPECTED );
 				}
 			}
 
@@ -306,15 +306,15 @@ namespace Svr {
 		}
 
 		// prepare service running
-		HRESULT ServicePrepare()
+		Result ServicePrepare()
 		{
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 		// Run service main function
-		HRESULT ServiceRun(BrServer *pSvrInstance )
+		Result ServiceRun(BrServer *pSvrInstance )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			bool bIsDebugRun = false;
 			char strCfgPath[1024];
 			bool bIsInstall = false;
@@ -445,7 +445,7 @@ namespace Svr {
 		//
 		void WINAPI ServiceMain( DWORD dwArgc, LPWSTR *lpszArgv )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 
 			// Create events for service control
 			for( int iEvt = 0; iEvt < NUM_SVCCTRLEVT; iEvt++ )
@@ -492,8 +492,8 @@ namespace Svr {
 			if( g_pSvrInstance == NULL )
 			{
 				svrTrace( Trace::TRC_ERROR, "Invalid ServerInstance" );
-				ReportServiceStatus( SERVICE_STOPPED, E_SVR_SERVICE_FAILED, 0 );
-				trcErr( E_SYSTEM_UNEXPECTED );
+				ReportServiceStatus( SERVICE_STOPPED, ResultCode::E_SVR_SERVICE_FAILED, 0 );
+				trcErr( ResultCode::UNEXPECTED );
 			}
 
 
@@ -522,13 +522,13 @@ namespace Svr {
 						}
 						else
 						{
-							trcErr( E_SYSTEM_UNEXPECTED );
+							trcErr( ResultCode::UNEXPECTED );
 						}
 					}
 					else
 					{
 						ReportServiceStatus( SERVICE_STOPPED, NO_ERROR, 0 );
-						//trcErr( E_SYSTEM_UNEXPECTED );
+						//trcErr( ResultCode::UNEXPECTED );
 					}
 					goto Proc_End;
 					break;
@@ -544,12 +544,12 @@ namespace Svr {
 					//	}
 					//	else
 					//	{
-					//		trcErr( E_SYSTEM_UNEXPECTED );
+					//		trcErr( ResultCode::UNEXPECTED );
 					//	}
 					//}
 					//else
 					//{
-					//	//trcErr( E_SYSTEM_UNEXPECTED );
+					//	//trcErr( ResultCode::UNEXPECTED );
 					//}
 					//break;
 				case WAIT_OBJECT_0+SVCCTRL_RESUME:
@@ -570,12 +570,12 @@ namespace Svr {
 					//	}
 					//	else
 					//	{
-					//		trcErr( E_SYSTEM_UNEXPECTED );
+					//		trcErr( ResultCode::UNEXPECTED );
 					//	}
 					//}
 					//else
 					//{
-					//	//trcErr( E_SYSTEM_UNEXPECTED );
+					//	//trcErr( ResultCode::UNEXPECTED );
 					//}
 					//break;
 				case WAIT_TIMEOUT:
@@ -587,7 +587,7 @@ namespace Svr {
 					}
 					break;
 				default:
-					trcErr( E_SYSTEM_UNEXPECTED );
+					trcErr( ResultCode::UNEXPECTED );
 					break;
 				}
 			}
@@ -597,9 +597,9 @@ namespace Svr {
 
 
 
-			if( FAILED(hr) )
+			if( !(hr) )
 			{
-				ReportServiceStatus( SERVICE_STOPPED, E_SVR_SERVICE_FAILED, 0 );
+				ReportServiceStatus( SERVICE_STOPPED, ResultCode::E_SVR_SERVICE_FAILED, 0 );
 			}
 		}
 

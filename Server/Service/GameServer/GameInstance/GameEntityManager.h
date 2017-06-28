@@ -52,10 +52,10 @@ namespace GameServer {
 		// TickTask add/remove proving
 		//
 
-		virtual HRESULT CreateEntity(ClusterID clusterID, EntityFaculty faculty, Svr::Entity* &pEntity) override;
+		virtual Result CreateEntity(ClusterID clusterID, EntityFaculty faculty, Svr::Entity* &pEntity) override;
 
 		// Create new game instance
-		//HRESULT CreateGamePlayer( PlayerID playerID, GamePlayerEntity* &pGamePlayer );
+		//Result CreateGamePlayer( PlayerID playerID, GamePlayerEntity* &pGamePlayer );
 
 		virtual void OnEntityAdded(Svr::Entity* pEntity) override;
 		virtual void OnEntityRemoved(Svr::Entity* pEntity) override;
@@ -63,10 +63,10 @@ namespace GameServer {
 		virtual void RegisterCounter() override;
 
 		// Initialize TaskManager
-		virtual HRESULT InitializeManager( UINT uiNumGroup );
+		virtual Result InitializeManager( UINT uiNumGroup );
 
 		// Terminate TaskManager
-		virtual HRESULT TerminateManager();
+		virtual Result TerminateManager();
 
 	};
 

@@ -28,23 +28,23 @@ namespace BR
  
 			///////////////////////////////////////////////////////////////
 			// GameMasterServer Debug trace mappping
-			static std::unordered_map<UINT,std::function<HRESULT(const char* prefix,MessageData *pMsg)>> MessageDebugTraceMapGameMasterServer;
+			static std::unordered_map<UINT,std::function<Result(const char* prefix,MessageData *pMsg)>> MessageDebugTraceMapGameMasterServer;
 
 			void RegisterDebugTraceGameMasterServer()
 			{
  				// C2S: Player entered
-				MessageDebugTraceMapGameMasterServer.insert(std::make_pair(GameMasterServer::PlayerEnteredC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GameMasterServer::PlayerEnteredC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapGameMasterServer.insert(std::make_pair(GameMasterServer::PlayerEnteredC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameMasterServer::PlayerEnteredC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// C2S: Player leaved
-				MessageDebugTraceMapGameMasterServer.insert(std::make_pair(GameMasterServer::PlayerLeavedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   GameMasterServer::PlayerLeavedC2SEvt parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapGameMasterServer.insert(std::make_pair(GameMasterServer::PlayerLeavedC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   GameMasterServer::PlayerLeavedC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceGameMasterServer()
 
 
 			///////////////////////////////////////////////////////////////
 			// GameMasterServer Debug trace
-			HRESULT DebugOutGameMasterServer( const char *Prefix, MessageData *pMsg )
+			Result DebugOutGameMasterServer( const char *Prefix, MessageData *pMsg )
 			{
  
-				HRESULT hr = S_SYSTEM_OK;
+				Result hr;
 				auto itFount = MessageDebugTraceMapGameMasterServer.end();
 
 				protocolChkPtr(pMsg);
@@ -56,7 +56,7 @@ namespace BR
 
 			Proc_End:
 				return hr;
-			}; // HRESULT DebugOutGameMasterServer( const char *Prefix, MessageData *pMsg )
+			}; // Result DebugOutGameMasterServer( const char *Prefix, MessageData *pMsg )
 
 
 		}; // namespace Debug

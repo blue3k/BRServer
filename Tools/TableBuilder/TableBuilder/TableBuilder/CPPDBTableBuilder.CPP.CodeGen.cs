@@ -32,7 +32,7 @@ namespace TableBuilder
         {
 
             NewLine(1);
-            string statement = string.Format("HRESULT {0}::LoadTable( const std::list<{1}>& rowList )", ClassName, RowTypeName);
+            string statement = string.Format("BR::Result {0}::LoadTable( const std::list<{1}>& rowList )", ClassName, RowTypeName);
             WriteStatement(statement);
             OpenSection();
 
@@ -99,7 +99,7 @@ namespace TableBuilder
             }
 
 
-            WriteStatement("return S_SYSTEM_OK;");
+            WriteStatement("return BR::ResultCode::SUCCESS;");
             CloseSection();
 
         }

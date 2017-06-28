@@ -33,7 +33,7 @@ namespace StrUtil {
 
 	static inline int ChToInt( char ch )
 	{
-		register int iChar = ch;
+		int iChar = ch;
 		iChar -= '0';
 		if( iChar >= 0 && iChar < 10 )
 			return iChar;
@@ -60,7 +60,7 @@ namespace StrUtil {
 			if (curChar < '0' || curChar > '9')
 				continue;
 
-			register int iArgTem = ChToInt(curChar);
+			int iArgTem = ChToInt(curChar);
 			if (iArgTem >= 0)
 				fNumber = fNumber * 10 + iArgTem;
 		}
@@ -76,7 +76,7 @@ namespace StrUtil {
 			if (curChar == '\0')
 				return fNumber;
 
-			register int iArgTem = ChToInt(curChar);
+			int iArgTem = ChToInt(curChar);
 			if (iArgTem >= 0)
 				fNumber += (double)iArgTem * fExponent;
 		}
@@ -85,12 +85,12 @@ namespace StrUtil {
 	}
 
 	// Internal format routine
-	HRESULT Format_Internal( char*& szBuffer, INT& iBuffLen, const char* szFormating, int iNumArg, Argument* Args )
+	Result Format_Internal( char*& szBuffer, INT& iBuffLen, const char* szFormating, int iNumArg, Argument* Args )
 	{
 		if( szBuffer == nullptr || iBuffLen == 0 )
-			return E_SYSTEM_POINTER;
+			return ResultCode::INVALID_POINTER;
 
-		register char curChar;
+		char curChar;
 
 		for( curChar = *szFormating++; curChar && iBuffLen > 0; curChar = *szFormating++ )
 		{
@@ -115,17 +115,17 @@ namespace StrUtil {
 				if (curChar == ':')
 				{
 					if (curChar == '\0')
-						return E_SYSTEM_INVALIDARG;
+						return ResultCode::INVALID_ARG;
 
 					SkipSpace(szFormating);
 
 					if (curChar == '\0')
-						return E_SYSTEM_INVALIDARG;
+						return ResultCode::INVALID_ARG;
 
 					curChar = *szFormating++;
 
 					if (curChar == '\0')
-						return E_SYSTEM_INVALIDARG;
+						return ResultCode::INVALID_ARG;
 
 					option = curChar;
 
@@ -133,7 +133,7 @@ namespace StrUtil {
 				}
 
 				if( curChar == '\0' )
-					return E_SYSTEM_INVALIDARG;
+					return ResultCode::INVALID_ARG;
 
 				if (iArg < iNumArg)
 				{
@@ -171,7 +171,7 @@ namespace StrUtil {
 		else
 			szBuffer[0] = 0;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -180,7 +180,7 @@ namespace StrUtil {
 
 
 	// String duplication, szDest will destroyded if exist, and new memory will be allocated
-	HRESULT StringDup(char* &szDest, const char* szSrc)
+	Result StringDup(char* &szDest, const char* szSrc)
 	{
 		if (szDest != NULL)
 		{
@@ -193,15 +193,15 @@ namespace StrUtil {
 			INT iLen = (INT)strlen(szSrc) + 1;
 			szDest = new char[iLen];
 			if (szDest == NULL)
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
 			memcpy(szDest, szSrc, iLen*sizeof(char));
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT StringDup(wchar_t* &szDest, const wchar_t* szSrc)
+	Result StringDup(wchar_t* &szDest, const wchar_t* szSrc)
 	{
 		if (szDest != NULL)
 		{
@@ -214,20 +214,20 @@ namespace StrUtil {
 			INT iLen = (INT)wcslen(szSrc) + 1;
 			szDest = new wchar_t[iLen];
 			if (szDest == NULL)
-				return E_SYSTEM_OUTOFMEMORY;
+				return ResultCode::OUT_OF_MEMORY;
 
 			memcpy(szDest, szSrc, iLen*sizeof(wchar_t));
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// String copy to szDest. if szDest is NULL, operation failed
-	HRESULT StringCpyEx(char* &szDest, INT& iBuffLen, const char* szSrc)
+	Result StringCpyEx(char* &szDest, INT& iBuffLen, const char* szSrc)
 	{
 		if (szSrc && szDest)
 		{
-			register char curChar;
+			char curChar;
 			while (iBuffLen > 0 && (curChar = *szSrc++) != 0)
 			{
 				*szDest++ = curChar;
@@ -245,15 +245,15 @@ namespace StrUtil {
 				szDest[0] = '\0';
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// String copy to szDest. if szDest is NULL, operation failed
-	HRESULT StringCpyEx(wchar_t* &szDest, INT& iBuffLen, const wchar_t* szSrc)
+	Result StringCpyEx(wchar_t* &szDest, INT& iBuffLen, const wchar_t* szSrc)
 	{
 		if (szSrc && szDest)
 		{
-			register wchar_t curChar;
+			wchar_t curChar;
 			while (iBuffLen > 0 && (curChar = *szSrc++) != 0)
 			{
 				*szDest++ = curChar;
@@ -271,14 +271,14 @@ namespace StrUtil {
 				szDest[0] = '\0';
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT StringCpy(char* szDest, INT iBuffLen, const char* szSrc)
+	Result StringCpy(char* szDest, INT iBuffLen, const char* szSrc)
 	{
 		if (szSrc && szDest)
 		{
-			register char curChar;
+			char curChar;
 			while (iBuffLen > 0 && (curChar = *szSrc++) != 0)
 			{
 				*szDest++ = curChar;
@@ -296,14 +296,14 @@ namespace StrUtil {
 				szDest[0] = '\0';
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT StringCpy(wchar_t* szDest, INT iBuffLen, const wchar_t* szSrc)
+	Result StringCpy(wchar_t* szDest, INT iBuffLen, const wchar_t* szSrc)
 	{
 		if (szSrc)
 		{
-			register wchar_t curChar;
+			wchar_t curChar;
 			while (iBuffLen > 0 && (curChar = *szSrc++) != 0)
 			{
 				*szDest++ = curChar;
@@ -321,7 +321,7 @@ namespace StrUtil {
 				szDest[0] = L'\0';
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	
@@ -357,9 +357,9 @@ namespace StrUtil {
 
 
 		// remain buffer size will be in destSize
-		HRESULT Convert(const char* destCode, char* dest, size_t destSize, const char* srcCode, const char* src, size_t srcSize, size_t& convertedSize)
+		Result Convert(const char* destCode, char* dest, size_t destSize, const char* srcCode, const char* src, size_t srcSize, size_t& convertedSize)
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			auto orgDestSize = destSize;
 
 			convertedSize = 0;
@@ -367,7 +367,7 @@ namespace StrUtil {
 			iconv_t context = iconv_open(destCode, srcCode);
 			if (context == (iconv_t)-1)
 			{
-				hr = E_SYSTEM_FAIL;
+				hr = ResultCode::FAIL;
 				goto Proc_End;
 			}
 
@@ -376,7 +376,7 @@ namespace StrUtil {
 				// On linux, source buffer can be changed.
 				char srcBuffer[2048];
 				char *srcTemp = sizeof(srcBuffer) >= srcSize ? srcBuffer : new char[srcSize];
-				defChkSilent(StrUtil::StringCpy(srcTemp, srcSize, src));
+				defChkSilent(StrUtil::StringCpy(srcTemp, (int)srcSize, src));
 
 				convertedSize = iconv(context, &srcTemp, &srcSize, &dest, &destSize); // linux version uses char** for src
 			}
@@ -388,16 +388,16 @@ namespace StrUtil {
 				switch (errno)
 				{
 				case E2BIG:
-					hr = E_SYSTEM_OUTOFMEMORY;
+					hr = ResultCode::OUT_OF_MEMORY;
 					break;
 				case EILSEQ:
-					hr = E_INVALID_STR_DATA;
+					hr = ResultCode::E_INVALID_STR_DATA;
 					break;
 				case EINVAL:
-					hr = E_SYSTEM_OUTOFMEMORY;
+					hr = ResultCode::OUT_OF_MEMORY;
 					break;
 				default:
-					hr = E_SYSTEM_UNEXPECTED;
+					hr = ResultCode::UNEXPECTED;
 					break;
 				}
 
@@ -426,58 +426,16 @@ namespace StrUtil {
 	//	String convert
 	//
 
-	//// Unicode to MBCS string conversion
-	//HRESULT WCSToMBCS(const WCHAR* strWCS, char *strMBCS, INT iBuffLen)
-	//{
-	//	size_t convertedSize;
-
-	//	if (strWCS == nullptr || strMBCS == nullptr)
-	//		return E_SYSTEM_INVALIDARG;
-
-	//	HRESULT hr = ModuleIconv.Convert("", (char*)strMBCS, iBuffLen, "UTF-16", (const char*)strWCS, wcslen(strWCS)*sizeof(wchar_t), convertedSize);
-	//	if (FAILED(hr)) return hr;
-
-	//	if (iBuffLen >= 1)
-	//	{
-	//		iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
-	//		strMBCS[iBuffLen] = '\0';
-	//	}
-
-	//	return S_SYSTEM_OK;
-	//}
-
-	//HRESULT WCSToMBCS(const std::wstring &strWCS, std::string &strMBCS)
-	//{
-	//	size_t convertedSize;
-	//	char stringBuffer[4*1024];
-
-	//	if (strWCS.c_str() == nullptr)
-	//	{
-	//		strMBCS = "";
-	//		return S_SYSTEM_OK;
-	//	}
-
-	//	HRESULT hr = ModuleIconv.Convert("", (char*)stringBuffer, countof(stringBuffer), "UTF-16", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
-	//	if (FAILED(hr)) return hr;
-
-	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
-	//	stringBuffer[lastPos] = '\0';
-
-	//	strMBCS = stringBuffer;
-
-	//	return S_SYSTEM_OK;
-	//}
-
 	// Unicode to UTF8 string conversion
-	HRESULT WCSToUTF8(const WCHAR* strWCS, char *strUTF8, INT iBuffLen)
+	Result WCSToUTF8(const WCHAR* strWCS, char *strUTF8, INT iBuffLen)
 	{
 		size_t convertedSize;
 
 		if (strWCS == nullptr || strUTF8 == nullptr)
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)strUTF8, iBuffLen, "UTF-16LE", (const char*)strWCS, wcslen(strWCS)*sizeof(wchar_t), convertedSize);
-		if (FAILED(hr)) return hr;
+		Result hr = ModuleIconv.Convert("UTF-8", (char*)strUTF8, iBuffLen, "UTF-16LE", (const char*)strWCS, wcslen(strWCS)*sizeof(wchar_t), convertedSize);
+		if (!(hr)) return hr;
 
 		if (iBuffLen >= 1)
 		{
@@ -485,10 +443,10 @@ namespace StrUtil {
 			strUTF8[iBuffLen] = '\0';
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT WCSToUTF8(const std::wstring &strWCS, std::string &strUTF8)
+	Result WCSToUTF8(const std::wstring &strWCS, std::string &strUTF8)
 	{
 		size_t convertedSize;
 		char stringBuffer[4 * 1024];
@@ -496,73 +454,31 @@ namespace StrUtil {
 		if (strWCS.c_str() == nullptr)
 		{
 			strUTF8 = "";
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)stringBuffer, countof(stringBuffer), "UTF-16LE", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
-		if (FAILED(hr)) return hr;
+		Result hr = ModuleIconv.Convert("UTF-8", (char*)stringBuffer, countof(stringBuffer), "UTF-16LE", (const char*)strWCS.c_str(), strWCS.length(), convertedSize);
+		if (!(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
 		stringBuffer[lastPos] = '\0';
 
 		strUTF8 = stringBuffer;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
-
-	//// MBCS to Unicode string conversion
-	//HRESULT MBCSToWCS(const char *strMBCS, WCHAR* strWCS, INT iBuffLen)
-	//{
-	//	size_t convertedSize;
-
-	//	if (strWCS == nullptr || strMBCS == nullptr)
-	//		return E_SYSTEM_INVALIDARG;
-
-	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)strWCS, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
-	//	if (FAILED(hr)) return hr;
-
-	//	if (iBuffLen >= 1)
-	//	{
-	//		iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
-	//		strWCS[iBuffLen] = '\0';
-	//	}
-
-	//	return S_SYSTEM_OK;
-	//}
-
-	//HRESULT MBCSToWCS(const std::string &strMBCS, std::wstring &strWCS)
-	//{
-	//	size_t convertedSize;
-	//	wchar_t stringBuffer[4 * 1024];
-
-	//	if (strWCS.c_str() == nullptr)
-	//	{
-	//		strWCS = L"";
-	//		return S_SYSTEM_OK;
-	//	}
-
-	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
-	//	if (FAILED(hr)) return hr;
-
-	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
-	//	stringBuffer[lastPos] = '\0';
-
-	//	strWCS = stringBuffer;
-
-	//	return S_SYSTEM_OK;
-	//}
 
 
 	// UTF8 to Unicode string conversion
-	HRESULT UTF8ToWCS(const char *strUTF8, WCHAR* strWCS, INT iBuffLen)
+	Result UTF8ToWCS(const char *strUTF8, WCHAR* strWCS, INT iBuffLen)
 	{
 		size_t convertedSize;
 
 		if (strWCS == nullptr || strUTF8 == nullptr)
-			return E_SYSTEM_INVALIDARG;
+			return ResultCode::INVALID_ARG;
 
-		HRESULT hr = ModuleIconv.Convert("UTF-16LE", (char*)strWCS, iBuffLen, "UTF-8", (const char*)strUTF8, strlen(strUTF8)+1, convertedSize);
-		if (FAILED(hr)) return hr;
+		Result hr = ModuleIconv.Convert("UTF-16LE", (char*)strWCS, iBuffLen, "UTF-8", (const char*)strUTF8, strlen(strUTF8)+1, convertedSize);
+		if (!(hr)) return hr;
 
 		if (iBuffLen >= 1)
 		{
@@ -570,10 +486,10 @@ namespace StrUtil {
 			strWCS[iBuffLen] = '\0';
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT UTF8ToWCS(const std::string& strUTF8, std::wstring& strWCS)
+	Result UTF8ToWCS(const std::string& strUTF8, std::wstring& strWCS)
 	{
 		size_t convertedSize;
 		wchar_t stringBuffer[4 * 1024];
@@ -581,105 +497,20 @@ namespace StrUtil {
 		if (strWCS.c_str() == nullptr)
 		{
 			strWCS = L"";
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		HRESULT hr = ModuleIconv.Convert("UTF-16LE", (char*)stringBuffer, countof(stringBuffer), "UTF-8", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
-		if (FAILED(hr)) return hr;
+		Result hr = ModuleIconv.Convert("UTF-16LE", (char*)stringBuffer, countof(stringBuffer), "UTF-8", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
+		if (!(hr)) return hr;
 
 		auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
 		stringBuffer[lastPos] = '\0';
 
 		strWCS = stringBuffer;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-
-	//// MBCS to Unicode string conversion
-	//HRESULT MBCSToUTF8(const char *strMBCS, char* strUTF8, INT iBuffLen)
-	//{
-	//	size_t convertedSize;
-
-	//	if (strUTF8 == nullptr || strMBCS == nullptr)
-	//		return E_SYSTEM_INVALIDARG;
-
-	//	HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)strUTF8, iBuffLen, "", (const char*)strMBCS, strlen(strMBCS), convertedSize);
-	//	if (FAILED(hr)) return hr;
-
-	//	if (iBuffLen >= 1)
-	//	{
-	//		iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
-	//		strUTF8[iBuffLen] = '\0';
-	//	}
-
-	//	return S_SYSTEM_OK;
-	//}
-
-	//HRESULT MBCSToUTF8(const std::string &strMBCS, std::string &strUTF8)
-	//{
-	//	size_t convertedSize;
-	//	char stringBuffer[4 * 1024];
-
-	//	if (strUTF8.c_str() == nullptr)
-	//	{
-	//		strUTF8 = "";
-	//		return S_SYSTEM_OK;
-	//	}
-
-	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strMBCS.c_str(), strMBCS.length(), convertedSize);
-	//	if (FAILED(hr)) return hr;
-
-	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
-	//	stringBuffer[lastPos] = '\0';
-
-	//	strUTF8 = stringBuffer;
-
-	//	return S_SYSTEM_OK;
-	//}
-
-
-	//// UTF8 to MBCS string conversion
-	//HRESULT UTF8ToMBCS(const char *strUTF8, char* strMBCS, INT iBuffLen)
-	//{
-	//	size_t convertedSize;
-
-	//	if (strUTF8 == nullptr || strMBCS == nullptr)
-	//		return E_SYSTEM_INVALIDARG;
-
-	//	HRESULT hr = ModuleIconv.Convert("UTF-8", (char*)strMBCS, iBuffLen, "", (const char*)strUTF8, strlen(strUTF8), convertedSize);
-	//	if (FAILED(hr)) return hr;
-
-	//	if (iBuffLen >= 1)
-	//	{
-	//		iBuffLen = std::min((INT)convertedSize + 1, iBuffLen) - 1;
-	//		strMBCS[iBuffLen] = '\0';
-	//	}
-
-	//	return S_SYSTEM_OK;
-	//}
-
-	//HRESULT UTF8ToMBCS(const std::string& strUTF8, std::string& strMBCS)
-	//{
-	//	size_t convertedSize;
-	//	char stringBuffer[4 * 1024];
-
-	//	if (strMBCS.c_str() == nullptr)
-	//	{
-	//		strMBCS = "";
-	//		return S_SYSTEM_OK;
-	//	}
-
-	//	HRESULT hr = ModuleIconv.Convert("UTF-16", (char*)stringBuffer, countof(stringBuffer), "", (const char*)strUTF8.c_str(), strUTF8.length(), convertedSize);
-	//	if (FAILED(hr)) return hr;
-
-	//	auto lastPos = std::min(convertedSize + 1, countof(stringBuffer)) - 1;
-	//	stringBuffer[lastPos] = '\0';
-
-	//	strMBCS = stringBuffer;
-
-	//	return S_SYSTEM_OK;
-	//}
 
 
 };	// namespace Svr

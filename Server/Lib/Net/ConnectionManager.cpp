@@ -201,7 +201,7 @@ namespace Net {
 		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn)->bool
 		{
 			//SharedPointerT<Connection> pConn = *itCur;
-			if( FAILED(pConn->UpdateNetCtrl()) )
+			if( !(pConn->UpdateNetCtrl()) )
 			{
 				netTrace( TRC_CONNECTION, "Managed Connection Update failed CID:{0}", pConn->GetCID() );
 			}
@@ -240,11 +240,11 @@ namespace Net {
 	// Update Operation queue
 	void ConnectionManager::UpdateOperationQueue()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Operation oper;
 
 		auto loopCount = m_PendingOperations.GetEnqueCount();
-		for (decltype(loopCount) iLoop = 0; iLoop < loopCount && SUCCEEDED(m_PendingOperations.Dequeue(oper)); iLoop++)
+		for (decltype(loopCount) iLoop = 0; iLoop < loopCount && (m_PendingOperations.Dequeue(oper)); iLoop++)
 		{
 			SharedPointerT<Connection>& pConn = oper.pConn;
 
@@ -264,7 +264,7 @@ namespace Net {
 				netChk( m_ManagedConnections.Insert(pConn->GetCID(), pConn) );
 				netTrace(TRC_CONNECTION, "Connection management started CID:{0}", pConn->GetCID());
 
-				if (FAILED(AddMap((Connection*)pConn)))
+				if (!(AddMap((Connection*)pConn)))
 				{
 					netTrace(Trace::TRC_WARN, "Managed Connection AddMap failed CID:{0}", pConn->GetCID());
 				}
@@ -276,7 +276,7 @@ namespace Net {
 					break;
 				}
 
-				if( FAILED(AddMap( (Connection*)pConn )) )
+				if( !(AddMap( (Connection*)pConn )) )
 				{
 					netTrace(Trace::TRC_WARN, "Managed Connection AddMap failed CID:{0}", pConn->GetCID());
 				}
@@ -306,7 +306,7 @@ namespace Net {
 				//m_ManagedConnections.CommitChanges();
 
 				SharedPointerT<Connection> pPtr;
-				if (SUCCEEDED(m_ManagedConnections.Remove(pConn->GetCID(), pPtr)))
+				if ((m_ManagedConnections.Remove(pConn->GetCID(), pPtr)))
 				{
 					netTrace(TRC_CONNECTION, "Connection management is handed over CID:{0}", pConn->GetCID());
 				}
@@ -328,22 +328,36 @@ namespace Net {
 
 					if ((pConn->GetPendingRecvCount() + pConn->GetPendingSendCount()) > 0)
 					{
-						if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(30 * 1000))
+						auto pIOCallback = pConn->GetIOCallback();
+						if (pIOCallback != nullptr)
+						{
+							if (pConn->GetConnectionState() == IConnection::STATE_CONNECTED)
+								pConn->CloseConnection();
+							else
+								pConn->CloseSocket();
+
+							// Wait max 5 mins
+							if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(5 * 60 * 1000)
+								&& pIOCallback->GetIsIORegistered())
+							{
+								break;
+							}
+							AssertRel(!pIOCallback->GetIsIORegistered());
+						}
+						else if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(30 * 1000))
 						{
 							// leave this release for a while
 							m_PendingOperations.Enqueue(std::forward<Operation>(oper));
 
 							break;
 						}
-						else
-						{
-							netTrace(Trace::TRC_WARN, "Pending count didn't changed, force clean up the connection CID:{0}, {1}", pConn->GetCID(), typeid(*(Connection*)pConn).name());
-						}
+
+						netTrace(Trace::TRC_WARN, "Timeout, force clean up connection CID:{0}", pConn->GetCID());
 					}
 
 					auto cid = pConn->GetCID();
 					SharedPointerT<Connection> pPtr;
-					if (SUCCEEDED(m_ManagedConnections.Remove(cid, pPtr)))
+					if ((m_ManagedConnections.Remove(cid, pPtr)))
 					{
 						Assert(pPtr == pConn);
 					}
@@ -358,7 +372,7 @@ namespace Net {
 			case Operation::OP_PENDING_ADDR:
 				{
 					WeakPointerT<Connection> pConnOrg;
-					if (SUCCEEDED(m_AddrMap.Find(oper.addrOrg, pConnOrg)))
+					if ((m_AddrMap.Find(oper.addrOrg, pConnOrg)))
 					{
 						// already in map
 						break;
@@ -383,7 +397,7 @@ namespace Net {
 
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 
-						if( FAILED(AddMap( (Connection*)pConn )) )
+						if( !(AddMap( (Connection*)pConn )) )
 						{
 							netTrace( TRC_CONNECTION, "Managed Connection AddMap failed CID:{0}", pConn->GetCID() );
 						}
@@ -400,14 +414,14 @@ namespace Net {
 				{
 					WeakPointerT<Connection> pConnOrg;
 
-					if (SUCCEEDED(m_AddrMap.Find(oper.addrOrg, pConnOrg)))
+					if ((m_AddrMap.Find(oper.addrOrg, pConnOrg)))
 					{
 						//pConn = nullptr;
 						// already in map
 						break;
 					}
 
-					if( SUCCEEDED(m_PeerIDMap.Find( oper.MobileNetCtrl.PeerID, pConnOrg )) )
+					if( (m_PeerIDMap.Find( oper.MobileNetCtrl.PeerID, pConnOrg )) )
 					{
 						// already
 						break;
@@ -434,7 +448,7 @@ namespace Net {
 
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 
-						if (FAILED(AddMap((Connection*)pConn)))
+						if (!(AddMap((Connection*)pConn)))
 						{
 							netTrace( TRC_CONNECTION, "Managed Connection AddMap failed CID:{0}", pConn->GetCID() );
 						}
@@ -458,14 +472,14 @@ namespace Net {
 
 					//CIDMap::iterator itCon;
 					SharedPointerT<Connection> pConnOrg;
-					if( FAILED(m_CIDMap.Find( pConn->GetCID(), pConnOrg )) )
+					if( !(m_CIDMap.Find( pConn->GetCID(), pConnOrg )) )
 					{
 						netTrace( TRC_CONNECTION, "Address remapping is failed: invalid CID:{0}", pConn->GetCID() );
 						break;
 					}
 					//itCon = nullptr;
 
-					if (FAILED(AddressRemap((Connection*)pConn, oper.addrOrg, oper.addrNew)))
+					if (!(AddressRemap((Connection*)pConn, oper.addrOrg, oper.addrNew)))
 					{
 						netTrace(Trace::TRC_ERROR, "Address remapping is failed CID:{0}, from:{1}, to:{2}", pConn->GetCID(), oper.addrOrg, oper.addrNew);
 					}
@@ -479,7 +493,7 @@ namespace Net {
 					if( pConn == nullptr )
 						break;
 
-					if( FAILED(RemapPeerID( (Connection*)pConn, oper.MobileNetCtrl.PeerID )) )
+					if( !(RemapPeerID( (Connection*)pConn, oper.MobileNetCtrl.PeerID )) )
 					{
 						netTrace( TRC_CONNECTION, "Address remapping is failed CID:{0}", pConn->GetCID() );
 					}
@@ -496,9 +510,9 @@ namespace Net {
 	}
 
 	// mapping Add/Remove
-	HRESULT ConnectionManager::AddMap( Connection *pConn )
+	Result ConnectionManager::AddMap( Connection *pConn )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		SharedPointerT<Connection> pConnPtr;
 		WeakPointerT<Connection> pPtr;
 
@@ -506,17 +520,17 @@ namespace Net {
 
 		if (m_UseAddressMap)
 		{
-			if (pConn->GetRemoteSockAddr().ss_family != 0 && SUCCEEDED(m_AddrMap.Find(pConn->GetRemoteSockAddr(), pPtr)))
+			if (pConn->GetRemoteSockAddr().ss_family != 0 && (m_AddrMap.Find(pConn->GetRemoteSockAddr(), pPtr)))
 			{
 				// already in map
-				netErr(E_SYSTEM_INVALIDARG);
+				netErr(ResultCode::INVALID_ARG);
 			}
 		}
 
-		if (SUCCEEDED(m_CIDMap.Find(pConn->GetCID(), pConnPtr)))
+		if ((m_CIDMap.Find(pConn->GetCID(), pConnPtr)))
 		{
 			// already in map
-			netErr( E_SYSTEM_INVALIDARG );
+			netErr( ResultCode::INVALID_ARG );
 		}
 
 		if (m_UseAddressMap && pConn->GetRemoteSockAddr().ss_family != 0)
@@ -524,19 +538,19 @@ namespace Net {
 			netChk(m_AddrMap.Insert(pConn->GetRemoteSockAddr(), WeakPointerT<Connection>(pConn)));
 		}
 
-		if (FAILED(m_CIDMap.Insert(pConn->GetCID(), pConn)))
+		if (!(m_CIDMap.Insert(pConn->GetCID(), pConn)))
 		{
 			// remove
 			m_AddrMap.Erase(pConn->GetRemoteSockAddr(), pPtr);
-			netErr( E_SYSTEM_UNEXPECTED );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
-		if ((m_UsePeerIDMap && pConn->GetPeerID() != 0 && FAILED(m_PeerIDMap.Insert(pConn->GetPeerID(), WeakPointerT<Connection>(pConn)))))
+		if ((m_UsePeerIDMap && pConn->GetPeerID() != 0 && !(m_PeerIDMap.Insert(pConn->GetPeerID(), WeakPointerT<Connection>(pConn)))))
 		{
 			// remove
 			m_AddrMap.Erase(pConn->GetRemoteSockAddr(), pPtr);
 			m_CIDMap.Erase(pConn->GetCID(), pConnPtr);
-			netErr( E_SYSTEM_UNEXPECTED );
+			netErr( ResultCode::UNEXPECTED );
 		}
 
 	Proc_End:
@@ -544,14 +558,14 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionManager::AddressRemap(Connection *pConn, const sockaddr_storage &addressOrg, const sockaddr_storage &newAddress)
+	Result ConnectionManager::AddressRemap(Connection *pConn, const sockaddr_storage &addressOrg, const sockaddr_storage &newAddress)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		WeakPointerT<Connection> pPtr;
 		ConnectionUDPBase *pConnUDP = dynamic_cast<ConnectionUDPBase*>(pConn);
 		netChkPtr(pConnUDP);
 
-		if (FAILED(m_AddrMap.Erase(addressOrg, pPtr)))
+		if (!(m_AddrMap.Erase(addressOrg, pPtr)))
 		{
 			netTrace( Trace::TRC_WARN, "Old address is not found ignoring:{0}", pConn->GetConnectionInfo().Remote );
 		}
@@ -563,10 +577,10 @@ namespace Net {
 		return hr;
 	}
 
-	HRESULT ConnectionManager::RemoveMap( Connection *pConn )
+	Result ConnectionManager::RemoveMap( Connection *pConn )
 	{
-		HRESULT hr = S_SYSTEM_OK;
-		HRESULT hrTem = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
+		Result hrTem = ResultCode::SUCCESS;
 		SharedPointerT<Connection> pConnPtr;
 		WeakPointerT<Connection> pPtr;
 
@@ -591,15 +605,15 @@ namespace Net {
 	}
 
 	// Remap PeerID
-	HRESULT ConnectionManager::RemapPeerID( Connection *pConn, AuthTicket ticket )
+	Result ConnectionManager::RemapPeerID( Connection *pConn, AuthTicket ticket )
 	{
-		HRESULT hr = S_SYSTEM_OK;
-		HRESULT hrTem = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
+		Result hrTem = ResultCode::SUCCESS;
 		WeakPointerT<Connection> pConnMapPtr;
 
 		if( pConn->GetConnectionInfo().RemoteID != 0 )
 		{
-			if (SUCCEEDED(m_PeerIDMap.Erase(pConn->GetPeerID(), pConnMapPtr)))
+			if ((m_PeerIDMap.Erase(pConn->GetPeerID(), pConnMapPtr)))
 			{
 				//Assert(pConn == pConnMapPtr);
 			}
@@ -627,9 +641,9 @@ namespace Net {
 
 
 	// Initialize Manager
-	HRESULT ConnectionManager::InitManager( UINT poolCacheCount )
+	Result ConnectionManager::InitManager( UINT poolCacheCount )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		m_bNoNewConnection = false;
 
@@ -641,9 +655,9 @@ namespace Net {
 
 
 	// Release all connection and terminate manager
-	HRESULT ConnectionManager::TerminateManager()
+	Result ConnectionManager::TerminateManager()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Operation oper;
 
 
@@ -653,7 +667,7 @@ namespace Net {
 
 
 		// Clear pending operation queue
-		while( m_PendingOperations.Dequeue( oper ) == S_SYSTEM_OK )
+		while( m_PendingOperations.Dequeue( oper ) )
 		{
 			SharedPointerT<Connection>& pConn = oper.pConn;
 
@@ -701,13 +715,13 @@ namespace Net {
 
 
 	// Disconnect all connection
-	HRESULT ConnectionManager::DisconnectAllConnection()
+	Result ConnectionManager::DisconnectAllConnection()
 	{
-		//HRESULT hr  = S_SYSTEM_OK;
+		//Result hr  = ResultCode::SUCCESS;
 		Operation oper;
 
 		// Clear pending operation queue
-		while( m_PendingOperations.Dequeue( oper ) == S_SYSTEM_OK )
+		while( m_PendingOperations.Dequeue( oper ) )
 		{
 			switch( oper.OpCode )
 			{
@@ -739,62 +753,62 @@ namespace Net {
 			return true;
 		});
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Add connection to wait connect process
-	HRESULT ConnectionManager::PendingWaitConnection( Connection* pConnection )
+	Result ConnectionManager::PendingWaitConnection( Connection* pConnection )
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_WAITING_CONNECTION,pConnection) );
 	}
 
 
 	// Add connection to connecting process
-	HRESULT ConnectionManager::PendingConnection( Connection* pConnection )
+	Result ConnectionManager::PendingConnection( Connection* pConnection )
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_PENDING_CONNECTION,pConnection) );
 	}
 
 	// Create new connection from connection pool with UDP address and add to connecting process
-	HRESULT ConnectionManager::PendingNewConnection(const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl)
+	Result ConnectionManager::PendingNewConnection(const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl)
 	{
 		return m_PendingOperations.Enqueue( Operation(sockAddr,pNetCtrl) );
 	}
 
 	// Create new connection from connection pool with UDP address and add to connecting process
-	HRESULT ConnectionManager::PendingNewConnection(const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl)
+	Result ConnectionManager::PendingNewConnection(const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl)
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_PENDING_MOBILECONNECTION, sockAddr, pNetCtrl) );
 	}
 
 	// Change address mapping of connection
-	HRESULT ConnectionManager::PendingRemapPeerID( Connection* pConnection, AuthTicket ticket )
+	Result ConnectionManager::PendingRemapPeerID( Connection* pConnection, AuthTicket ticket )
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_PENDING_REMAP_PEERID, ticket, pConnection) );
 	}
 
 	// Change address mapping of connection
-	HRESULT ConnectionManager::PendingAddressRemap(Connection* pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew)
+	Result ConnectionManager::PendingAddressRemap(Connection* pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew)
 	{
 		return m_PendingOperations.Enqueue(Operation(Operation::OP_PENDING_MOBILEREMAP, sockAddrOrg, sockAddrNew, pConnection));
 	}
 
 	// Pending Init connection
-	HRESULT ConnectionManager::PendingInitConnection( Connection* pConnection )
+	Result ConnectionManager::PendingInitConnection( Connection* pConnection )
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_PENDING_INITCONNECTION,pConnection) );
 	}
 
 	// Managed connection is taken by other entity
-	HRESULT ConnectionManager::PendingManagedConnectionTakenOver(Connection* pConnection)
+	Result ConnectionManager::PendingManagedConnectionTakenOver(Connection* pConnection)
 	{
 		return m_PendingOperations.Enqueue(Operation(Operation::OP_MANAGED_CONNECTION_TAKENOVER, pConnection));
 	}
 
 	// Close and release connection
-	HRESULT ConnectionManager::PendingReleaseConnection( Connection* pConnection )
+	Result ConnectionManager::PendingReleaseConnection( Connection* pConnection )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		// force to close
 		if (pConnection->GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -806,46 +820,46 @@ namespace Net {
 		Assert(pConnection->GetReferenceCount() > 0);
 		hr = m_PendingOperations.Enqueue( Operation(Operation::OP_RELEASE_CONNECTION,pConnection) );
 
-		Assert(SUCCEEDED(hr));
-		if( SUCCEEDED(hr) )
+		Assert((hr));
+		if( (hr) )
 			pConnection = nullptr;
 
 		return hr;
 	}
 
 	// Close and release connection
-	HRESULT ConnectionManager::PendingCloseAllConnection()
+	Result ConnectionManager::PendingCloseAllConnection()
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_CLOSEALL_CONNECTION,nullptr) );
 	}
 
 	// Find and return connection
-	HRESULT ConnectionManager::GetConnectionByAddr(const sockaddr_storage& sockAddr, SharedPointerT<Connection> &pConn)
+	Result ConnectionManager::GetConnectionByAddr(const sockaddr_storage& sockAddr, SharedPointerT<Connection> &pConn)
 	{
 		WeakPointerT<Connection> pPtr;
-		if(SUCCEEDED(m_AddrMap.Find(sockAddr, pPtr)))
+		if((m_AddrMap.Find(sockAddr, pPtr)))
 		{
 			pPtr.GetSharedPointer(pConn);
 		}
-		return pConn != nullptr ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+		return pConn != nullptr ? ResultCode::SUCCESS : ResultCode::FAIL;
 	}
 
 
 	// Find and return connection
-	HRESULT ConnectionManager::GetConnectionByCID(uintptr_t uiCID, SharedPointerT<Connection> &pConn)
+	Result ConnectionManager::GetConnectionByCID(uintptr_t uiCID, SharedPointerT<Connection> &pConn)
 	{
 		return m_CIDMap.Find(uiCID, pConn);
 	}
 	
 	// Find and return connection
-	HRESULT ConnectionManager::GetConnectionByPeerID(UINT64 peerID, SharedPointerT<Connection> &pConn)
+	Result ConnectionManager::GetConnectionByPeerID(UINT64 peerID, SharedPointerT<Connection> &pConn)
 	{
 		WeakPointerT<Connection> pPtr;
-		if (SUCCEEDED(m_PeerIDMap.Find(peerID, pPtr)))
+		if ((m_PeerIDMap.Find(peerID, pPtr)))
 		{
 			pPtr.GetSharedPointer(pConn);
 		}
-		return pConn != nullptr ? S_SYSTEM_OK : E_SYSTEM_FAIL;
+		return pConn != nullptr ? ResultCode::SUCCESS : ResultCode::FAIL;
 	}
 
 

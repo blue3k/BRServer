@@ -13,7 +13,7 @@
 
 #include "Common/StrUtil.h"
 #include "Common/ClassUtil.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 #include "Common/BrGameTypes.h"
 #include "Common/GameConst.h"
 #include "Common/CircularQueue.h"
@@ -58,7 +58,7 @@ namespace Svr {
 			Assert(szExpectedSize >= sizeof(LogItemType));
 
 			void* pPtr = nullptr;
-			if( FAILED(m_LogAllocator.Alloc( szExpectedSize, pPtr )) )
+			if( !(m_LogAllocator.Alloc( szExpectedSize, pPtr )) )
 			{
 				return nullptr;
 			}
@@ -66,7 +66,7 @@ namespace Svr {
 			return (BYTE*)pPtr;
 		}
 
-		HRESULT AddLogItem( GameLogItem* logItem );
+		Result AddLogItem( GameLogItem* logItem );
 
 	public:
 
@@ -74,13 +74,13 @@ namespace Svr {
 		virtual ~GameLog();
 
 		// Initialize 
-		virtual HRESULT InitializeLog();
+		virtual Result InitializeLog();
 
 		// Terminate
 		virtual void TerminateLog();
 
 		// Get log binary
-		HRESULT GetGameLogBinary( OutputMemoryStream& stream, UINT startIndex, UINT count );
+		Result GetGameLogBinary( OutputMemoryStream& stream, UINT startIndex, UINT count );
 
 	};
 

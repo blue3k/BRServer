@@ -39,7 +39,7 @@ namespace Config
 			IP = value;
 		}
 		else if( name == "Port" ) {
-			Port = (UINT)atoi( value.c_str() );
+			Port = (decltype(Port))atoi( value.c_str() );
 		}
 		else {
 			return XML::DOMElement::SetAttributeValue( name, value );
@@ -65,8 +65,11 @@ namespace Config
 		else if (name == "IPV6") {
 			IPV6 = value;
 		}
+		else if (name == "ListenIP") {
+			ListenIP = value;
+		}
 		else if (name == "Port") {
-			Port = (UINT)atoi(value.c_str());
+			Port = (decltype(Port))atoi(value.c_str());
 		}
 		else if (name == "MaxConnection") {
 			MaxConnection = (UINT)atoi(value.c_str());
@@ -239,6 +242,7 @@ namespace Config
 		{ "ModMonitoring", ClusterID::Monitoring },
 		{ "ModLogin", ClusterID::Login },
 		{ "ModGame", ClusterID::Game },
+		{ "ModRanking", ClusterID::Ranking },
 		{ "ModInstanceManager", ClusterID::GameInstanceManager },
 		{ "ModMatching_Game_4", ClusterID::Matching_Game_4 },
 		{ "ModMatching_Game_8", ClusterID::Matching_Game_8 },
@@ -378,6 +382,25 @@ namespace Config
 		return ModuleBase::SetAttributeValue(name, value);
 		//}
 		//return true;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	ModuleRanking::ModuleRanking()
+		: ModuleBase("ModuleRanking", ClusterID::Ranking)
+	{
+	}
+
+	// for parsing
+	bool ModuleRanking::SetAttributeValue(const std::string& name, const std::string& value)
+	{
+		//if (name == "UseBot") {
+		//	UseBot = value == "true" || value == "1";
+		//}
+		//else {
+			return ModuleBase::SetAttributeValue(name, value);
+		//}
+		return true;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -595,6 +618,7 @@ namespace Config
 		}
 		else if( attName == "GameID" ) {
 			if (value == "Conspiracy")		m_GameID = GameID::Conspiracy;
+			else if(value == "MyTownHero")	m_GameID = GameID::MyTownHero;
 			else if (value == "Game")		m_GameID = GameID::Game;
 			else
 			{
@@ -806,6 +830,7 @@ namespace Config
 		if( name == "GameID" )
 		{
 			if (value == "Conspiracy")		m_GameID = GameID::Conspiracy;
+			else if (value == "MyTownHero")	m_GameID = GameID::MyTownHero;
 			else if (value == "Game")		m_GameID = GameID::Game;
 			else
 			{
@@ -926,6 +951,7 @@ namespace Config
 			RegisterElementCreator("ModGamePartyManager", []()-> XML::DOMElement* { return new ModuleSimple; });
 			RegisterElementCreator("ModMonitoring", []()-> XML::DOMElement* { return new ModuleSimple; });
 			RegisterElementCreator("ModLogin", []()-> XML::DOMElement* { return new ModuleLogin; });
+			RegisterElementCreator("ModRanking", []()-> XML::DOMElement* { return new ModuleRanking; });
 			RegisterElementCreator("ModGame", []()-> XML::DOMElement* { return new ModuleGame; });
 			RegisterElementCreator("ModMatching_Game_4", []()-> XML::DOMElement* { return new ModuleMatching; });
 			RegisterElementCreator("ModMatching_Game_8", []()-> XML::DOMElement* { return new ModuleMatching; });
@@ -970,19 +996,19 @@ namespace Config
 		}
 
 
-		HRESULT LoadTable( const char *strFileName )
+		Result LoadTable( const char *strFileName )
 		{
  			int result = xmlSAXUserParseFile( *this, this, strFileName );
 
 			if (result != 0)
 			{
  				// error log
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 
 			xmlCleanupParser();
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
 	};
@@ -1003,7 +1029,7 @@ namespace Config
 		ClearConfig();
 	}
 
-	HRESULT ConfigData::ClearConfig()
+	Result ConfigData::ClearConfig()
 	{
 		DBInstances.clear();
 
@@ -1016,7 +1042,7 @@ namespace Config
 
 		RemoveAllChildren();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	
@@ -1028,7 +1054,7 @@ namespace Config
 
 
 	// Load Config file
-	HRESULT LoadConfig( const char* strConfigFileName )
+	Result LoadConfig( const char* strConfigFileName )
 	{
 		ServerConfigParser parser ( __ConfigData );
 
@@ -1037,14 +1063,14 @@ namespace Config
 		if (result != 0)
 		{
  			// error log
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 		}
 		xmlCleanupParser();
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Clear Config data
-	HRESULT ClearConfig()
+	Result ClearConfig()
 	{
 		return __ConfigData.ClearConfig();
 	}

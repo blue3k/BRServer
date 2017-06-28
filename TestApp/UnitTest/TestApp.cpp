@@ -1,11 +1,10 @@
-// TestApp.cpp : Defines the entry point for the console application.
+﻿// TestApp.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
 #include <gtest/gtest.h>
 #include "TestBase.h"
 #include "Common/Trace.h"
-#include "Common/Memory.h"
 #include "Common/MemoryPool.h"
 #include "Common/TraceComponent.h"
 
@@ -79,7 +78,7 @@ bool MyTestBase::cfg_MemLog = true;
 
 int main(int argc, char **argv)
 {
-	LibComponentCarrier libComponents;
+	LibComponentManager libComponents;
 
 	libComponents.AddComponent<LibComponentTrace>();
 	libComponents.AddComponent<Util::LibComponentTime>();

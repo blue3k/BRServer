@@ -8,150 +8,162 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#pragma once
 #include <stdint.h>
 
 
 
-// Server service failed 
-#define E_SVR_SERVICE_FAILED                                          ((int32_t)0xE7040000L) 
+namespace BR {
+	namespace ResultCode {
 
-// Timed out 
-#define E_SVR_TIMEOUT                                                 ((int32_t)0xE7040001L) 
+		enum {
 
-// Transaction has invalid state transition 
-#define E_SVR_TRANSACTION_INVALID_STATE                               ((int32_t)0xE7040002L) 
 
-// Server Transaction timed out 
-#define E_SVR_INVALID_TRANSITION                                      ((int32_t)0xE7040003L) 
+			// Server service failed 
+			E_SVR_SERVICE_FAILED                                               = 0xE7040000L, 
 
-// Transaction process Time out 
-#define E_SVR_TRANSACTION_TIMEOUT                                     ((int32_t)0xE7040004L) 
+			// Timed out 
+			E_SVR_TIMEOUT                                                      = 0xE7040001L, 
 
-// Failed to route message 
-#define E_SVR_ROUTEMSG_FAILED                                         ((int32_t)0xE7040005L) 
+			// Transaction has invalid state transition 
+			E_SVR_TRANSACTION_INVALID_STATE                                    = 0xE7040002L, 
 
-// No result handler 
-#define E_SVR_NO_RESULT_HANDLER                                       ((int32_t)0xE7040006L) 
+			// Server Transaction timed out 
+			E_SVR_INVALID_TRANSITION                                           = 0xE7040003L, 
 
-// No message handler 
-#define E_SVR_NO_MESSAGE_HANDLER                                      ((int32_t)0xE7040007L) 
+			// Transaction process Time out 
+			E_SVR_TRANSACTION_TIMEOUT                                          = 0xE7040004L, 
 
-// Invalid server ID 
-#define E_SVR_INVALID_SERVERID                                        ((int32_t)0xE7040008L) 
+			// Failed to route message 
+			E_SVR_ROUTEMSG_FAILED                                              = 0xE7040005L, 
 
-// Player not found 
-#define E_SVR_PLAYER_NOT_FOUND                                        ((int32_t)0xE7040009L) 
+			// No result handler 
+			E_SVR_NO_RESULT_HANDLER                                            = 0xE7040006L, 
 
-// Player state is invalid 
-#define E_SVR_INVALID_PLAYER_STATE                                    ((int32_t)0xE704000AL) 
+			// No message handler 
+			E_SVR_NO_MESSAGE_HANDLER                                           = 0xE7040007L, 
 
-// Invalid player game db data 
-#define E_SVR_INVALID_PLAYER_GAMEDB                                   ((int32_t)0xE704000BL) 
+			// Invalid server ID 
+			E_SVR_INVALID_SERVERID                                             = 0xE7040008L, 
 
-// Not expected server message 
-#define E_SVR_NOTEXPECTED_MESSAGE                                     ((int32_t)0xE704000CL) 
+			// Player not found 
+			E_SVR_PLAYER_NOT_FOUND                                             = 0xE7040009L, 
 
-// Invalid entity UID 
-#define E_SVR_INVALID_ENTITYUID                                       ((int32_t)0xE704000DL) 
+			// Player state is invalid 
+			E_SVR_INVALID_PLAYER_STATE                                         = 0xE704000AL, 
 
-// Cluster service not ready 
-#define E_SVR_CLUSTER_NOTREADY                                        ((int32_t)0xE704000EL) 
+			// Invalid player game db data 
+			E_SVR_INVALID_PLAYER_GAMEDB                                        = 0xE704000BL, 
 
-// Invalid cluster type 
-#define E_SVR_INVALID_CLUSTERTYPE                                     ((int32_t)0xE704000FL) 
+			// Not expected server message 
+			E_SVR_NOTEXPECTED_MESSAGE                                          = 0xE704000CL, 
 
-// Invalid cluster ID 
-#define E_SVR_INVALID_CLUSTERID                                       ((int32_t)0xE7040010L) 
+			// Invalid entity UID 
+			E_SVR_INVALID_ENTITYUID                                            = 0xE704000DL, 
 
-// Invalid queue item 
-#define E_SVR_INVALID_QUEUEITEM                                       ((int32_t)0xE7040011L) 
+			// Cluster service not ready 
+			E_SVR_CLUSTER_NOTREADY                                             = 0xE704000EL, 
 
-// Queue item is canceled 
-#define E_SVR_QUEUEITEM_CANCELED                                      ((int32_t)0xE7040012L) 
+			// Invalid cluster type 
+			E_SVR_INVALID_CLUSTERTYPE                                          = 0xE704000FL, 
 
-// There is no item in queue 
-#define E_SVR_NOITEM_INQUEUE                                          ((int32_t)0xE7040013L) 
+			// Invalid cluster ID 
+			E_SVR_INVALID_CLUSTERID                                            = 0xE7040010L, 
 
-// Already in queue 
-#define E_SVR_ALREADY_INQUEUE                                         ((int32_t)0xE7040014L) 
+			// Invalid queue item 
+			E_SVR_INVALID_QUEUEITEM                                            = 0xE7040011L, 
 
-// Queue item is reserved 
-#define E_SVR_RESERVED_QUEUEITEM                                      ((int32_t)0xE7040015L) 
+			// Queue item is canceled 
+			E_SVR_QUEUEITEM_CANCELED                                           = 0xE7040012L, 
 
-// Cluster doesn't have any assigned master 
-#define E_SVR_CLUSTER_NOMASTER                                        ((int32_t)0xE7040016L) 
+			// There is no item in queue 
+			E_SVR_NOITEM_INQUEUE                                               = 0xE7040013L, 
 
-// Queue item is reserved for cancel 
-#define S_SVR_QUEUEITEM_CANCEL_PENDED                                 ((int32_t)0x27040017L) 
+			// Already in queue 
+			E_SVR_ALREADY_INQUEUE                                              = 0xE7040014L, 
 
-// Thread is wrong, running on wrong thread? 
-#define E_SVR_INVALID_THREAD                                          ((int32_t)0xE7040018L) 
+			// Queue item is reserved 
+			E_SVR_RESERVED_QUEUEITEM                                           = 0xE7040015L, 
 
-// Purchase canceled 
-#define E_SVR_PURCHASE_CANCELED                                       ((int32_t)0xE7040019L) 
+			// Cluster doesn't have any assigned master 
+			E_SVR_CLUSTER_NOMASTER                                             = 0xE7040016L, 
 
-// Invalid receipt info 
-#define E_SVR_INVALID_PURCHASE_INFO                                   ((int32_t)0xE704001AL) 
+			// Queue item is reserved for cancel 
+			S_SVR_QUEUEITEM_CANCEL_PENDED                                      = 0x27040017L, 
 
-// Invalid duplicated purchase 
-#define E_SVR_INVALID_PURCHASE_DUPLICATED                             ((int32_t)0xE704001BL) 
+			// Purchase canceled 
+			E_SVR_PURCHASE_CANCELED                                            = 0xE7040018L, 
 
-// External auth fail 
-#define E_SVR_INVALID_EXTERNAL_AUTH                                   ((int32_t)0xE704001CL) 
+			// Invalid receipt info 
+			E_SVR_INVALID_PURCHASE_INFO                                        = 0xE7040019L, 
 
-// External server is not available 
-#define E_SVR_EXTERNAL_SERVER_UNAVALIABLE                             ((int32_t)0xE704001DL) 
+			// Invalid duplicated purchase 
+			E_SVR_INVALID_PURCHASE_DUPLICATED                                  = 0xE704001AL, 
 
-// Invalid receipt result from server 
-#define E_SVR_INVALID_PURCHASE_FORMAT                                 ((int32_t)0xE704001EL) 
+			// External auth fail 
+			E_SVR_INVALID_EXTERNAL_AUTH                                        = 0xE704001BL, 
 
-// The protocol is not supported. 
-#define E_SVR_CURL_UNSUPPORTED_PROTOCOL                               ((int32_t)0xE704001FL) 
+			// External server is not available 
+			E_SVR_EXTERNAL_SERVER_UNAVALIABLE                                  = 0xE704001CL, 
 
-// CURL initialization is failed. 
-#define E_SVR_CURL_FAILED_INIT                                        ((int32_t)0xE7040020L) 
+			// Invalid receipt result from server 
+			E_SVR_INVALID_PURCHASE_FORMAT                                      = 0xE704001DL, 
 
-// Invalid URL format. 
-#define E_SVR_CURL_URL_MALFORMAT                                      ((int32_t)0xE7040021L) 
+			// The protocol is not supported. 
+			E_SVR_CURL_UNSUPPORTED_PROTOCOL                                    = 0xE704001EL, 
 
-// Not a build-in feature. 
-#define E_SVR_CURL_NOT_BUILT_IN                                       ((int32_t)0xE7040022L) 
+			// CURL initialization is failed. 
+			E_SVR_CURL_FAILED_INIT                                             = 0xE704001FL, 
 
-// Failed to resolve URL. 
-#define E_SVR_CURL_COULDNT_RESOLVE_PROXY                              ((int32_t)0xE7040023L) 
+			// Invalid URL format. 
+			E_SVR_CURL_URL_MALFORMAT                                           = 0xE7040020L, 
 
-// Failed to resolve URL. 
-#define E_SVR_CURL_COULDNT_RESOLVE_HOST                               ((int32_t)0xE7040024L) 
+			// Not a build-in feature. 
+			E_SVR_CURL_NOT_BUILT_IN                                            = 0xE7040021L, 
 
-// Connection is failed 
-#define E_SVR_CURL_COULDNT_CONNECT                                    ((int32_t)0xE7040025L) 
+			// Failed to resolve URL. 
+			E_SVR_CURL_COULDNT_RESOLVE_PROXY                                   = 0xE7040022L, 
 
-// HTTP Post can't be done. 
-#define E_SVR_CURL_HTTP_POST_ERROR                                    ((int32_t)0xE7040026L) 
+			// Failed to resolve URL. 
+			E_SVR_CURL_COULDNT_RESOLVE_HOST                                    = 0xE7040023L, 
 
-// Not supported SSL type. 
-#define E_SVR_CURL_SSL_ENGINE_NOTFOUND                                ((int32_t)0xE7040027L) 
+			// Connection is failed 
+			E_SVR_CURL_COULDNT_CONNECT                                         = 0xE7040024L, 
 
-// Not supported SSL type. 
-#define E_SVR_CURL_SSL_ENGINE_SETFAILED                               ((int32_t)0xE7040028L) 
+			// HTTP Post can't be done. 
+			E_SVR_CURL_HTTP_POST_ERROR                                         = 0xE7040025L, 
 
-// Network send failed 
-#define E_SVR_CURL_SEND_ERROR                                         ((int32_t)0xE7040029L) 
+			// Not supported SSL type. 
+			E_SVR_CURL_SSL_ENGINE_NOTFOUND                                     = 0xE7040026L, 
 
-// Network receive failed 
-#define E_SVR_CURL_RECV_ERROR                                         ((int32_t)0xE704002AL) 
+			// Not supported SSL type. 
+			E_SVR_CURL_SSL_ENGINE_SETFAILED                                    = 0xE7040027L, 
 
-// Invalid SSL setting. 
-#define E_SVR_CURL_USE_SSL_FAILED                                     ((int32_t)0xE704002BL) 
+			// Network send failed 
+			E_SVR_CURL_SEND_ERROR                                              = 0xE7040028L, 
 
-// No Connection is available now. 
-#define E_SVR_CURL_NO_CONNECTION_AVAILABLE                            ((int32_t)0xE704002CL) 
+			// Network receive failed 
+			E_SVR_CURL_RECV_ERROR                                              = 0xE7040029L, 
 
-// Invalid state transition 
-#define E_SVR_INVALID_STATE                                           ((int32_t)0xE704002DL) 
+			// Invalid SSL setting. 
+			E_SVR_CURL_USE_SSL_FAILED                                          = 0xE704002AL, 
 
-// Invalid purchase environment(public/test) 
-#define E_SVR_INVALID_PURCHASE_MODE                                   ((int32_t)0xE704002EL) 
+			// No Connection is available now. 
+			E_SVR_CURL_NO_CONNECTION_AVAILABLE                                 = 0xE704002BL, 
+
+			// Invalid state transition 
+			E_SVR_INVALID_STATE                                                = 0xE704002CL, 
+
+			// Invalid purchase environment(public/test) 
+			E_SVR_INVALID_PURCHASE_MODE                                        = 0xE704002DL, 
+
+			// Invalid Task group ID 
+			E_SVR_INVALID_TASK_GROUPID                                         = 0xE704002EL, 
+
+		};//enum 
+	}//namespace ResultCode 
+}//namespace SF 
+
 
 
 

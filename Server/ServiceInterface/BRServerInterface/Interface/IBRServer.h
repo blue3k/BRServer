@@ -26,8 +26,8 @@ namespace BR {
 			IBRServer();
 			~IBRServer();
 
-			HRESULT StartServer();
-			HRESULT StopServer();
+			Result StartServer();
+			Result StopServer();
 		};
 
 	}

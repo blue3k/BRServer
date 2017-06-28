@@ -72,7 +72,7 @@ namespace MatchingUtil {
 			return 1;
 		}
 	}
-	HRESULT GetQueueComponentIDMinMax(UINT matchingMemberCount, UINT& minComponentID, UINT& maxComponentID)
+	Result GetQueueComponentIDMinMax(UINT matchingMemberCount, UINT& minComponentID, UINT& maxComponentID)
 	{
 		switch (matchingMemberCount)
 		{
@@ -88,17 +88,17 @@ namespace MatchingUtil {
 
 		default:
 			minComponentID = maxComponentID = 0;
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 		};
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	UINT GetQueueCount(UINT matchingMemberCount)
 	{
 		UINT minComponentID, maxComponentID;
 
-		if (FAILED(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
+		if (!(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
 		{
 			Assert(false);
 			return (UINT)0;
@@ -112,7 +112,7 @@ namespace MatchingUtil {
 	{
 		UINT minComponentID, maxComponentID;
 
-		if (FAILED(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
+		if (!(GetQueueComponentIDMinMax(matchingMemberCount, minComponentID, maxComponentID)))
 		{
 			Assert(false);
 			return (UINT)-1;

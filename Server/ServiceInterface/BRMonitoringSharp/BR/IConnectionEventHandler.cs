@@ -45,18 +45,18 @@ public class IConnectionEventHandler : global::System.IDisposable {
     if (BRMonitoringPINVOKE.SWIGPendingException.Pending) throw BRMonitoringPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public unsafe int OnRecvMessage(IConnection pConn, MessageData pMsg) {
-    int ret = BRMonitoringPINVOKE.IConnectionEventHandler_OnRecvMessage(swigCPtr, IConnection.getCPtr(pConn), MessageData.getCPtr(pMsg));
+  public unsafe SWIGTYPE_p_Result OnRecvMessage(IConnection pConn, MessageData pMsg) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnectionEventHandler_OnRecvMessage(swigCPtr, IConnection.getCPtr(pConn), MessageData.getCPtr(pMsg)), true);
     return ret;
   }
 
-  public unsafe int OnNetSyncMessage(IConnection pConn) {
-    int ret = BRMonitoringPINVOKE.IConnectionEventHandler_OnNetSyncMessage(swigCPtr, IConnection.getCPtr(pConn));
+  public unsafe SWIGTYPE_p_Result OnNetSyncMessage(IConnection pConn) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnectionEventHandler_OnNetSyncMessage(swigCPtr, IConnection.getCPtr(pConn)), true);
     return ret;
   }
 
-  public unsafe int OnNetSendReadyMessage(IConnection pConn) {
-    int ret = BRMonitoringPINVOKE.IConnectionEventHandler_OnNetSendReadyMessage(swigCPtr, IConnection.getCPtr(pConn));
+  public unsafe SWIGTYPE_p_Result OnNetSendReadyMessage(IConnection pConn) {
+    SWIGTYPE_p_Result ret = new SWIGTYPE_p_Result(BRMonitoringPINVOKE.IConnectionEventHandler_OnNetSendReadyMessage(swigCPtr, IConnection.getCPtr(pConn)), true);
     return ret;
   }
 

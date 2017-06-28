@@ -43,7 +43,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				ClusterID m_ClusterID;
 			public:
 				GetClusterMemberListCmd()
@@ -57,18 +57,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class GetClusterMemberListCmd : public MessageBase
 
@@ -87,12 +88,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				LinkedArray<ServiceInformation> m_MemberList;
 			public:
 				GetClusterMemberListRes()
@@ -106,18 +107,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class GetClusterMemberListRes : public MessageBase
 
@@ -140,7 +142,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				EntityUID m_Sender;
 				NetClass m_SenderNetClass;
 				NetAddress m_SenderAddress;
@@ -159,7 +161,7 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const EntityUID& GetSender() const	{ return m_Sender; };
 				const NetClass& GetSenderNetClass() const	{ return m_SenderNetClass; };
 				const NetAddress& GetSenderAddress() const	{ return m_SenderAddress; };
@@ -169,13 +171,14 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const EntityUID &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class JoinClusterCmd : public MessageBase
 
@@ -194,12 +197,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				LinkedArray<ServiceInformation> m_MemberList;
 			public:
 				JoinClusterRes()
@@ -213,18 +216,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const Array<ServiceInformation>& InMemberList );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class JoinClusterRes : public MessageBase
 
@@ -248,7 +252,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				EntityUID m_JoinedServiceUID;
 				NetClass m_JoinedServiceNetClass;
 				NetAddress m_JoinedServiceAddress;
@@ -266,7 +270,7 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterStatusRead; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const EntityUID& GetJoinedServiceUID() const	{ return m_JoinedServiceUID; };
 				const NetClass& GetJoinedServiceNetClass() const	{ return m_JoinedServiceNetClass; };
 				const NetAddress& GetJoinedServiceAddress() const	{ return m_JoinedServiceAddress; };
@@ -276,13 +280,14 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class NewServerServiceJoinedC2SEvt : public MessageBase
 
@@ -306,7 +311,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				ClusterID m_ClusterID;
 				ClusterType m_ClusterType;
 				LinkedArray<ServiceInformation> m_MemberList;
@@ -321,20 +326,21 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterStatusRead; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const ClusterType& GetClusterType() const	{ return m_ClusterType; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class SyncClusterServiceC2SEvt : public MessageBase
 
@@ -358,7 +364,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				ClusterID m_ClusterID;
 			public:
 				RequestDataSyncCmd()
@@ -372,18 +378,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class RequestDataSyncCmd : public MessageBase
 
@@ -402,12 +409,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 			public:
 				RequestDataSyncRes()
 					{}
@@ -420,17 +427,18 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class RequestDataSyncRes : public MessageBase
 
@@ -453,7 +461,7 @@ namespace BR
 				TransactionID GetTransactionID() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				EntityUID m_Sender;
 				ClusterID m_ClusterID;
 				EntityUID m_MasterUID;
@@ -468,20 +476,21 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterStatusWrite; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const EntityUID& GetSender() const	{ return m_Sender; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const EntityUID& GetMasterUID() const	{ return m_MasterUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const EntityUID &InMasterUID );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class ClusterMasterAssignedS2CEvt : public MessageBase
 
@@ -505,10 +514,10 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				ClusterID m_ClusterID;
 				EntityUID m_VoteToUID;
-				UINT64 m_VotedUpTime;
+				uint64_t m_VotedUpTime;
 			public:
 				ClusterMasterVoteC2SEvt()
 					{}
@@ -520,20 +529,21 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterStatusRead; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const EntityUID& GetVoteToUID() const	{ return m_VoteToUID; };
-				const UINT64& GetVotedUpTime() const	{ return m_VotedUpTime; };
+				const uint64_t& GetVotedUpTime() const	{ return m_VotedUpTime; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const UINT64 &InVotedUpTime );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const EntityUID &InVoteToUID, const uint64_t &InVotedUpTime );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class ClusterMasterVoteC2SEvt : public MessageBase
 
@@ -556,7 +566,7 @@ namespace BR
 				TransactionID GetTransactionID() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				EntityUID m_Sender;
 				ClusterID m_ClusterID;
 				ServiceStatus m_MemberStatus;
@@ -571,20 +581,21 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterStatusWrite; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const EntityUID& GetSender() const	{ return m_Sender; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const ServiceStatus& GetMemberStatus() const	{ return m_MemberStatus; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class ClusterUpdateStatusC2SEvt : public MessageBase
 
@@ -607,10 +618,10 @@ namespace BR
 				TransactionID GetTransactionID() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				EntityUID m_Sender;
 				ClusterID m_ClusterID;
-				UINT32 m_Workload;
+				uint32_t m_Workload;
 			public:
 				ClusterUpdateWorkloadC2SEvt()
 					{}
@@ -622,20 +633,21 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterStatusWrite; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const EntityUID& GetSender() const	{ return m_Sender; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
-				const UINT32& GetWorkload() const	{ return m_Workload; };
+				const uint32_t& GetWorkload() const	{ return m_Workload; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const UINT32 &InWorkload );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const EntityUID &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class ClusterUpdateWorkloadC2SEvt : public MessageBase
 
@@ -659,7 +671,7 @@ namespace BR
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				ClusterID m_ClusterID;
 			public:
 				GetLowestWorkloadClusterMemberCmd()
@@ -673,18 +685,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const ClusterID &InClusterID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class GetLowestWorkloadClusterMemberCmd : public MessageBase
 
@@ -703,12 +716,12 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				ServiceInformation m_Member;
 			public:
 				GetLowestWorkloadClusterMemberRes()
@@ -722,18 +735,19 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const ServiceInformation& GetMember() const	{ return m_Member; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const ServiceInformation &InMember );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class GetLowestWorkloadClusterMemberRes : public MessageBase
 
@@ -756,7 +770,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 				EntityUID m_PlayerUID;
 			public:
@@ -770,19 +784,20 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterDataWrite; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const EntityUID& GetPlayerUID() const	{ return m_PlayerUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class GamePlayerEntityCreatedC2SEvt : public MessageBase
 
@@ -805,7 +820,7 @@ namespace BR
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
-				UINT16 m_RouteHopCount;
+				uint16_t m_RouteHopCount;
 				PlayerID m_PlayerID;
 				EntityUID m_PlayerUID;
 			public:
@@ -819,19 +834,20 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_ClusterDataWrite; }
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const UINT16& GetRouteHopCount() const	{ return m_RouteHopCount; };
+				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const EntityUID& GetPlayerUID() const	{ return m_PlayerUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const EntityUID &InPlayerUID );
 
-				HRESULT OverrideRouteContextDestination( EntityUID to );
+				Result OverrideRouteContextDestination( EntityUID to );
 
-				HRESULT OverrideRouteInformation( EntityUID to, UINT hopCount );
+				Result OverrideRouteInformation( EntityUID to, UINT hopCount );
 
 			}; // class GamePlayerEntityDeletedC2SEvt : public MessageBase
 

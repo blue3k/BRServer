@@ -28,28 +28,28 @@ namespace BR
  
 			///////////////////////////////////////////////////////////////
 			// EntityServer Debug trace mappping
-			static std::unordered_map<UINT,std::function<HRESULT(const char* prefix,MessageData *pMsg)>> MessageDebugTraceMapEntityServer;
+			static std::unordered_map<UINT,std::function<Result(const char* prefix,MessageData *pMsg)>> MessageDebugTraceMapEntityServer;
 
 			void RegisterDebugTraceEntityServer()
 			{
  				// Cmd: Register entity
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::RegisterEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   EntityServer::RegisterEntityCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::RegisterEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   EntityServer::RegisterEntityRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::RegisterEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::RegisterEntityCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::RegisterEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::RegisterEntityRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// Cmd: Find Entity
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::UnregisterEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   EntityServer::UnregisterEntityCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::UnregisterEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   EntityServer::UnregisterEntityRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::UnregisterEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::UnregisterEntityCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::UnregisterEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::UnregisterEntityRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				// Cmd: Find Entity
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::FindEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   EntityServer::FindEntityCmd parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
-				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::FindEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->HRESULT{   EntityServer::FindEntityRes parser; parser.ParseIMsg(pMsg); parser.TraceOut(prefix,pMsg); return S_SYSTEM_OK; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::FindEntityCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::FindEntityCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapEntityServer.insert(std::make_pair(EntityServer::FindEntityRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   EntityServer::FindEntityRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceEntityServer()
 
 
 			///////////////////////////////////////////////////////////////
 			// EntityServer Debug trace
-			HRESULT DebugOutEntityServer( const char *Prefix, MessageData *pMsg )
+			Result DebugOutEntityServer( const char *Prefix, MessageData *pMsg )
 			{
  
-				HRESULT hr = S_SYSTEM_OK;
+				Result hr;
 				auto itFount = MessageDebugTraceMapEntityServer.end();
 
 				protocolChkPtr(pMsg);
@@ -61,7 +61,7 @@ namespace BR
 
 			Proc_End:
 				return hr;
-			}; // HRESULT DebugOutEntityServer( const char *Prefix, MessageData *pMsg )
+			}; // Result DebugOutEntityServer( const char *Prefix, MessageData *pMsg )
 
 
 		}; // namespace Debug

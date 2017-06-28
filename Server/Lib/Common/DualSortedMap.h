@@ -243,10 +243,10 @@ namespace BR
 			MapNode* GetLastHistory()												{ if (m_TraversalHistory.GetSize() == 0) return nullptr; return m_TraversalHistory[m_TraversalHistory.GetSize() - 1]; }
 
 			// set Reserve size
-			HRESULT Reserve(size_t szReserv)
+			Result Reserve(size_t szReserv)
 			{
 				if (szReserv <= m_TraversalHistory.GetAllocatedSize())
-					return S_SYSTEM_OK;
+					return ResultCode::SUCCESS;
 
 				szReserv = GrowthBy * ((szReserv + GrowthBy - 1) / GrowthBy);
 
@@ -297,28 +297,28 @@ namespace BR
 		void ClearMap();
 
 		// Insert a key
-		HRESULT Insert(KeyType key, const ValueType& value, INT64 *insertedOrder = nullptr);
+		Result Insert(KeyType key, const ValueType& value, INT64 *insertedOrder = nullptr);
 
 		// Remove an item and return the removed value
-		HRESULT Remove(KeyType key, ValueType& value);
+		Result Remove(KeyType key, ValueType& value);
 
-		HRESULT FindInWriteTree(KeyType key, ValueType& value);
+		Result FindInWriteTree(KeyType key, ValueType& value);
 
 		// commit changes
-		HRESULT CommitChanges();
+		Result CommitChanges();
 
 		// Find a key value
-		HRESULT Find(KeyType key, ValueType& value, INT64 *pOrder = nullptr);
+		Result Find(KeyType key, ValueType& value, INT64 *pOrder = nullptr);
 
 		// get number of values
 		SynchronizeCounterType GetItemCount()									{ return m_ReadItemCount; }
 		SynchronizeCounterType GetWriteItemCount()								{ return m_ItemCount.load(std::memory_order_relaxed);  }
 
 		// enumerate the values
-		HRESULT ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+		Result ForeachOrder(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
 
 		template<class Func>
-		HRESULT ForeachReverseOrder(INT startOrderIndex, UINT count, Func functor)
+		Result ForeachReverseOrder(INT startOrderIndex, UINT count, Func functor)
 		{
 			auto readIdx = m_ReadIndex.load(std::memory_order_relaxed) % countof(m_ReadCount);
 			ScopeCounter localCounter(m_ReadCount[readIdx]);
@@ -326,40 +326,40 @@ namespace BR
 			m_CurReadRoot = m_ReadRoot.load(std::memory_order_acquire);
 			auto readRoot = (MapNode*)m_CurReadRoot;
 			if (readRoot == nullptr)
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 
 			return ForeachReverseOrder(readRoot, startOrderIndex, count, functor);
 		}
 
 		//
-		HRESULT ForeachOrderWrite(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+		Result ForeachOrderWrite(INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
 
 	private:
 
 		// find parent node or candidate
-		HRESULT FindNode(OperationTraversalHistory &travelHistory, KeyType key, MapNode* &pNode);
+		Result FindNode(OperationTraversalHistory &travelHistory, KeyType key, MapNode* &pNode);
 
 		MapNode* FindSmallestNode(OperationTraversalHistory &travelHistory, MapNode* pRootNode);
 		MapNode* FindBiggestNode(OperationTraversalHistory &travelHistory, MapNode* pRootNode);
 
-		HRESULT FindNodeRead(OperationTraversalHistory &travelHistory, MapNode* pRootNode, KeyType key, MapNode* &pNode);
+		Result FindNodeRead(OperationTraversalHistory &travelHistory, MapNode* pRootNode, KeyType key, MapNode* &pNode);
 		MapNode* FindSmallestNodeRead(OperationTraversalHistory &travelHistory, MapNode* pRootNode);
 		MapNode* FindBiggestNodeRead(OperationTraversalHistory &travelHistory, MapNode* pRootNode);
 
-		HRESULT ForeachOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
+		Result ForeachOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, const std::function<bool(const KeyType&, const ValueType&)>& functor);
 
 		template<class Func>
-		HRESULT ForeachReverseOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, Func functor)
+		Result ForeachReverseOrder(MapNode* pRootNode, INT startOrderIndex, UINT count, Func functor)
 		{
 			if (pRootNode == nullptr)
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 
 			OperationTraversalHistory travelHistory(pRootNode, m_ReadItemCount);
 
 			MapNode* pCurNode = pRootNode;
 			if (pCurNode == nullptr)
 			{
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
 			travelHistory.Clear();
@@ -394,7 +394,7 @@ namespace BR
 
 			if (pCurNode == nullptr)
 			{
-				return S_SYSTEM_OK;
+				return ResultCode::SUCCESS;
 			}
 
 
@@ -445,7 +445,7 @@ namespace BR
 			} while (pCurNode != nullptr);
 
 
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 		//RoateLeft(pNode);
 		// Update valance factor and return new balance value
@@ -455,7 +455,7 @@ namespace BR
 
 		// Commit pending free list
 		void CommitPendingFree();
-		HRESULT ForeachPendingFree(std::function<void(MapNode*)> functor);
+		Result ForeachPendingFree(std::function<void(MapNode*)> functor);
 
 
 		MapNode* CloneNode(MapNode* mapNodeToClone);

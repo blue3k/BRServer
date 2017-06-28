@@ -18,7 +18,7 @@
 
 #include "QueryWorker.h"
 #include "DBTrace.h"
-#include "QueryManager.h"
+#include "DBClusterManager.h"
 #include "QueryWorkerManager.h"
 #include "Query.h"
 #include "Session.h"
@@ -40,10 +40,10 @@ namespace DB {
 
 
 	// Send query
-	HRESULT QueryWorker::ExecuteQuery(Query* &pQuery)
+	Result QueryWorker::ExecuteQuery(Query* &pQuery)
 	{
-		HRESULT hr = S_SYSTEM_OK;
-		QueryManager *pQueryManager = nullptr;
+		Result hr = ResultCode::SUCCESS;
+		DBClusterManager *pQueryManager = nullptr;
 		Session* pSession = nullptr;
 
 		dbChkPtr( pQuery );
@@ -55,7 +55,7 @@ namespace DB {
 		dbChkPtr(pQueryManager);
 
 		hr = pSession->SendQuery(pQuery);
-		if( hr == ((HRESULT)E_DB_CONNECTION_LOST) )
+		if( hr == ((Result)ResultCode::E_DB_CONNECTION_LOST) )
 		{
 			// Give one more chance, because the session will try to reconnect
 			hr = pSession->SendQuery(pQuery);
@@ -68,7 +68,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 		{
 			if (pSession != nullptr)
 				Factory::ErrorLog(pSession->GetContext(), hr, pQuery ? typeid(*pQuery).name() : "");
@@ -95,7 +95,7 @@ namespace DB {
 	
 	void QueryWorker::Run()
 	{
-		//HRESULT	hr = S_SYSTEM_OK;
+		//Result	hr = ResultCode::SUCCESS;
 		DurationMS expectedTickInterval(5);
 
 		while(1)
@@ -111,7 +111,7 @@ namespace DB {
 				break;
 			}
 
-			if (FAILED(m_pWorkerManager->TryGetQuery(pQuery)))
+			if (!(m_pWorkerManager->TryGetQuery(pQuery)))
 				continue;
 
 			if (pQuery != nullptr)

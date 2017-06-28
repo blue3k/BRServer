@@ -1030,7 +1030,7 @@ static int ssl_print_cert_request(BIO *bio, int indent, SSL *s,
     BIO_printf(bio, "certificate_authorities (len=%d)\n", (int)xlen);
     while (xlen > 0) {
         size_t dlen;
-        X509_NAME *nm;
+        SSL_X509_NAME *nm;
         const unsigned char *p;
         if (xlen < 2)
             return 0;
@@ -1047,7 +1047,7 @@ static int ssl_print_cert_request(BIO *bio, int indent, SSL *s,
         } else {
             X509_NAME_print_ex(bio, nm, 0, XN_FLAG_ONELINE);
             BIO_puts(bio, "\n");
-            X509_NAME_free(nm);
+            SSL_X509_NAME_free(nm);
         }
         xlen -= dlen + 2;
         msg += dlen;

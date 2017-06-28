@@ -49,7 +49,7 @@ namespace Svr {
 
 
 	// clear transaction
-	HRESULT SimpleEntity::ClearEntity()
+	Result SimpleEntity::ClearEntity()
 	{
 		ReleaseTransaction((Transaction*)m_pCurTran);
 		m_pCurTran = SharedPointerT<Transaction>();
@@ -57,15 +57,15 @@ namespace Svr {
 		return Entity::ClearEntity();
 	}
 
-	HRESULT SimpleEntity::FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction)
+	Result SimpleEntity::FindActiveTransaction(const TransactionID& transID, Transaction* &pTransaction)
 	{
 		if (m_pCurTran != nullptr && m_pCurTran->GetTransID() == transID)
 		{
 			pTransaction = (Transaction*)m_pCurTran;
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 		}
 
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 	}
 
 
@@ -73,9 +73,9 @@ namespace Svr {
 	//  - Make new transaction from connection queue
 	//  - status update for game
 	//  - Process transaction
-	HRESULT SimpleEntity::TickUpdate(Svr::TimerAction *pAction)
+	Result SimpleEntity::TickUpdate(TimerAction *pAction)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		CounterType loopCount;
 		Transaction* pCurTrans = nullptr;
 
@@ -99,7 +99,7 @@ namespace Svr {
 		loopCount = GetTransactionQueue().GetEnqueCount();
 		for (decltype(loopCount) iTrans = 0; pCurTrans == nullptr && iTrans < loopCount; iTrans++)
 		{
-			if (FAILED(GetTransactionQueue().Dequeue(pCurTrans)))
+			if (!(GetTransactionQueue().Dequeue(pCurTrans)))
 				break;
 
 			m_pCurTran = SharedPointerT<Transaction>(pCurTrans);
@@ -129,10 +129,10 @@ namespace Svr {
 	}
 
 
-	HRESULT SimpleEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTranRes)
+	Result SimpleEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTranRes)
 	{
-		HRESULT hr = S_SYSTEM_OK;
-		HRESULT hrTem = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
+		Result hrTem = ResultCode::SUCCESS;
 
 		if (pCurTran->GetState() != Transaction::STATE_STARTED)
 			goto Proc_End;
@@ -159,7 +159,7 @@ namespace Svr {
 			}
 		}
 
-		if (FAILED(hrTem))// Transaction failed
+		if (!(hrTem))// Transaction failed
 		{
 			if (pCurTran->IsPrintTrace())
 			{
@@ -169,7 +169,7 @@ namespace Svr {
 					GetEntityUID());
 			}
 			if (!pCurTran->IsClosed())
-				pCurTran->CloseTransaction(E_SYSTEM_FAIL);
+				pCurTran->CloseTransaction(ResultCode::FAIL);
 		}
 
 		if (pCurTran->IsClosed())

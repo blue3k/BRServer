@@ -4067,9 +4067,9 @@ static int tls1_check_sig_alg(CERT *c, X509 *x, int default_nid)
 }
 
 /* Check to see if a certificate issuer name matches list of CA names */
-static int ssl_check_ca_name(STACK_OF(X509_NAME) *names, X509 *x)
+static int ssl_check_ca_name(STACK_OF(SSL_X509_NAME) *names, X509 *x)
 {
-    X509_NAME *nm;
+    SSL_X509_NAME *nm;
     int i;
     nm = X509_get_issuer_name(x);
     for (i = 0; i < sk_X509_NAME_num(names); i++) {
@@ -4249,7 +4249,7 @@ int tls1_check_chain(SSL *s, X509 *x, EVP_PKEY *pk, STACK_OF(X509) *chain,
         }
     }
     if (!s->server && strict_mode) {
-        STACK_OF(X509_NAME) *ca_dn;
+        STACK_OF(SSL_X509_NAME) *ca_dn;
         int check_type = 0;
         switch (pk->type) {
         case EVP_PKEY_RSA:

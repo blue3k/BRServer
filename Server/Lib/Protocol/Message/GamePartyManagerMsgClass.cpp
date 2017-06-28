@@ -31,40 +31,40 @@ namespace BR
 		{
  			// Cmd: Create a party instance
 			const MessageID CreatePartyCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEPARTYMANAGER, 0);
-			HRESULT CreatePartyCmd::ParseIMsg( MessageData* pIMsg )
+			Result CreatePartyCmd::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Creator, pCur, iMsgSize, sizeof(PlayerInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Creator, pCur, iMsgSize, (int)sizeof(PlayerInformation) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT CreatePartyCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result CreatePartyCmd::ParseMessage( MessageData* pIMsg )
 
-			HRESULT CreatePartyCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+			Result CreatePartyCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(PlayerInformation));
 
 				MessageData *pNewMsg = nullptr;
@@ -75,7 +75,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InCreator, sizeof(PlayerInformation));
 
 				pMsg = pNewMsg;
@@ -85,11 +85,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT CreatePartyCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+			}; // Result CreatePartyCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
 
-			HRESULT CreatePartyCmd::OverrideRouteContextDestination( EntityUID to )
+			Result CreatePartyCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -98,7 +98,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -111,11 +112,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT CreatePartyCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result CreatePartyCmd::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT CreatePartyCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result CreatePartyCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -124,25 +125,26 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
+				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
+				pCur += sizeof(TransactionID); iMsgSize -= (int)sizeof(TransactionID);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT CreatePartyCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result CreatePartyCmd::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void CreatePartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -152,39 +154,39 @@ namespace BR
 			}; // void CreatePartyCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID CreatePartyRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEPARTYMANAGER, 0);
-			HRESULT CreatePartyRes::ParseIMsg( MessageData* pIMsg )
+			Result CreatePartyRes::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT CreatePartyRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result CreatePartyRes::ParseMessage( MessageData* pIMsg )
 
-			HRESULT CreatePartyRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			Result CreatePartyRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT));
+					+ sizeof(Result));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -194,7 +196,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 
 				pMsg = pNewMsg;
 
@@ -203,11 +205,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT CreatePartyRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			}; // Result CreatePartyRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
-			HRESULT CreatePartyRes::OverrideRouteContextDestination( EntityUID to )
+			Result CreatePartyRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -216,7 +218,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -229,11 +232,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT CreatePartyRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result CreatePartyRes::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT CreatePartyRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result CreatePartyRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -242,23 +245,24 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				pCur += sizeof(TransactionID); iMsgSize -= sizeof(TransactionID);
-				pCur += sizeof(HRESULT); iMsgSize -= sizeof(HRESULT);
+				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
+				pCur += sizeof(TransactionID); iMsgSize -= (int)sizeof(TransactionID);
+				pCur += sizeof(Result); iMsgSize -= (int)sizeof(Result);
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT CreatePartyRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result CreatePartyRes::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void CreatePartyRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
@@ -269,37 +273,37 @@ namespace BR
 
 			// C2S: Party instance notify of deletion
 			const MessageID PartyDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEPARTYMANAGER, 1);
-			HRESULT PartyDeletedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result PartyDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT PartyDeletedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result PartyDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			HRESULT PartyDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+			Result PartyDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16));
+					+ sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -308,7 +312,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 
 				pMsg = pNewMsg;
 
@@ -317,11 +321,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PartyDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+			}; // Result PartyDeletedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 
-			HRESULT PartyDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result PartyDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -330,7 +334,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -343,11 +348,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT PartyDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result PartyDeletedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
-			HRESULT PartyDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			Result PartyDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -356,24 +361,25 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
 				memcpy( &routeContext, pCur, sizeof(RouteContext) );
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
-				pCur += sizeof(RouteContext); iMsgSize -= sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= sizeof(UINT16);
+				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT PartyDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
+			}; // Result PartyDeletedC2SEvt::OverrideRouteInformation( EntityUID to, UINT hopCount )
 
 			void PartyDeletedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{

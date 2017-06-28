@@ -40,7 +40,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -64,9 +64,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
 
 			}; // class RegisterEntityCmd : public MessageBase
 
@@ -86,11 +87,11 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				EntityUID m_EntUID;
 			public:
 				RegisterEntityRes()
@@ -103,14 +104,15 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const EntityUID& GetEntUID() const	{ return m_EntUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID );
 
 			}; // class RegisterEntityRes : public MessageBase
 
@@ -131,7 +133,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -151,9 +153,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InEntUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityUID &InEntUID );
 
 			}; // class UnregisterEntityCmd : public MessageBase
 
@@ -173,11 +176,11 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 			public:
 				UnregisterEntityRes()
 					{}
@@ -189,13 +192,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult );
 
 			}; // class UnregisterEntityRes : public MessageBase
 
@@ -216,7 +220,7 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
@@ -236,9 +240,10 @@ namespace BR
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityID &InLocalEntID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const EntityID &InLocalEntID );
 
 			}; // class FindEntityCmd : public MessageBase
 
@@ -258,11 +263,11 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				TransactionID m_TransactionID;
-				HRESULT m_Result;
+				Result m_Result;
 				EntityUID m_EntUID;
 			public:
 				FindEntityRes()
@@ -275,14 +280,15 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const HRESULT& GetResult() const	{ return m_Result; };
+				const Result& GetResult() const	{ return m_Result; };
 				const EntityUID& GetEntUID() const	{ return m_EntUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
-				virtual HRESULT ParseIMsg( IN MessageData* pIMsg );
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static HRESULT BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const HRESULT &InResult, const EntityUID &InEntUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InEntUID );
 
 			}; // class FindEntityRes : public MessageBase
 

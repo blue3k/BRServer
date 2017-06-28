@@ -64,10 +64,10 @@ namespace Svr
 				break;
 			}
 
-			if( SUCCEEDED(m_QuerieQueue.DequeueMT( pTransaction, desiredLoopInterval )) )
+			if( (m_QuerieQueue.DequeueMT( pTransaction, desiredLoopInterval )) )
 			{
-				HRESULT hr = pTransaction->StartTransaction();
-				if( FAILED(hr) )
+				Result hr = pTransaction->StartTransaction();
+				if( !(hr) )
 				{
 					svrTrace( Trace::TRC_ERROR, "Transaction Failed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
 				}
@@ -77,7 +77,7 @@ namespace Svr
 				else
 				{
 					svrTrace( Trace::TRC_ERROR, "Transaction must be closed hr = 0x{0:X8}, {1}", hr, typeid(*pTransaction).name() );
-					pTransaction->CloseTransaction(S_SYSTEM_OK);
+					pTransaction->CloseTransaction(ResultCode::SUCCESS);
 					pTransaction->FlushTransaction();
 				}
 
@@ -85,7 +85,7 @@ namespace Svr
 				{
 					auto& entityTable = GetEntityTable();
 					TransactionResult* pRes = pTransaction;
-					if (SUCCEEDED(entityTable.RouteTransactionResult(pRes)))
+					if ((entityTable.RouteTransactionResult(pRes)))
 					{
 						pTransaction = nullptr;
 					}
@@ -112,9 +112,9 @@ namespace Svr
 	{
 	}
 
-	HRESULT ParallelTransactionManager::EnqueueTransaction(ParallelTransaction* pTrans)
+	Result ParallelTransactionManager::EnqueueTransaction(ParallelTransaction* pTrans)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		svrChk(m_PendingQueries.Enqueue(pTrans));
 
@@ -124,9 +124,9 @@ namespace Svr
 	}
 
 	// Initialize Manager
-	HRESULT ParallelTransactionManager::InitializeComponent()
+	Result ParallelTransactionManager::InitializeComponent()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (GetServerComponent<EntityManager>() != nullptr)
 		{

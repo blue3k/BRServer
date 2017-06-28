@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{1b5cb73d-b681-4ab7-99f5-3171f77a3f7a}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\libiconv-1.14\libcharset\lib\localcharset.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\libiconv-1.14\lib\iconv.c" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\libiconv-1.14\lib\relocatable.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\libiconv-1.14\include\iconv.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\libiconv-1.14\lib\relocatable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)..\..\libiconv-1.14\winbuild\config.h" />
+  </ItemGroup>
+</Project>

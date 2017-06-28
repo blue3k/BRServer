@@ -1,13 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
+    <ProjectConfiguration Include="Debug|ARM">
       <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
+      <Platform>ARM</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
+    <ProjectConfiguration Include="Release|ARM">
       <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x86">
+      <Configuration>Debug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x86">
+      <Configuration>Release</Configuration>
+      <Platform>x86</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -19,165 +27,79 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ApplicationType>LinuxDebugger</ApplicationType>
-    <SecureShellExecutable>ssh</SecureShellExecutable>
-    <RemoteDebuggerExecutable>gdb</RemoteDebuggerExecutable>
-    <LocalDebuggerExecutable>gdb</LocalDebuggerExecutable>
-    <ProjectGuid>{8F1023BE-3242-463D-8F28-60F8BD7D05B9}</ProjectGuid>
-    <ProjectName>EntityServer.Linux</ProjectName>
+    <ProjectGuid>{da1446b0-4cb6-49ce-96b7-f28fe215e9a4}</ProjectGuid>
+    <Keyword>Linux</Keyword>
+    <RootNamespace>EntityServer</RootNamespace>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <ApplicationType>Linux</ApplicationType>
+    <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
+    <TargetLinuxPlatform>Generic</TargetLinuxPlatform>
+    <LinuxProjectType>{2238F9CD-F817-4ECC-BD14-2524D2669B35}</LinuxProjectType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Makefile</ConfigurationType>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <RemoteRootDir>$(RemoteRootDir)</RemoteRootDir>
+    <UseOfStl>libstdc++_static</UseOfStl>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Makefile</ConfigurationType>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <RemoteRootDir>$(RemoteRootDir)</RemoteRootDir>
+    <UseOfStl>libstdc++_static</UseOfStl>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <RemoteRootDir>$(RemoteRootDir)</RemoteRootDir>
+    <UseOfStl>libstdc++_static</UseOfStl>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'" Label="Configuration">
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <RemoteRootDir>$(RemoteRootDir)</RemoteRootDir>
+    <UseOfStl>libstdc++_static</UseOfStl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Makefile</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <RemoteRootDir>$(RemoteRootDir)</RemoteRootDir>
+    <UseOfStl>libstdc++_static</UseOfStl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Makefile</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <RemoteRootDir>$(RemoteRootDir)</RemoteRootDir>
+    <UseOfStl>libstdc++_static</UseOfStl>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="EntityServer.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Build\Linux\Compile.props" />
+    <Import Project="..\..\Build\Linux\ServiceInterface.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <Import Project="..\..\Build\Linux\Compile.props" />
+    <Import Project="..\..\Build\Linux\ServiceInterface.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <Import Project="..\..\Build\Linux\Compile.props" />
+    <Import Project="..\..\Build\Linux\ServiceInterface.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <Import Project="..\..\Build\Linux\Compile.props" />
+    <Import Project="..\..\Build\Linux\ServiceInterface.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Build\Linux\Compile.props" />
+    <Import Project="..\..\Build\Linux\ServiceInterface.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <Import Project="..\..\Build\Linux\Compile.props" />
+    <Import Project="..\..\Build\Linux\ServiceInterface.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <Text Include="Readme\readme.txt" />
-    <Text Include="Readme\readme.html" />
-    <Text Include="Readme\stylesheet.css" />
-    <None Include="EntityServerClass.inl" />
-    <None Include="Readme\images\debugproperties.png" />
-    <None Include="Readme\images\remotebuild.png" />
-    <None Include="Readme\images\remotebuildcmdline.png" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\LinuxDebugger.xaml" />
-    <None Include="Assets\LocalDebugger.xaml" />
-    <None Include="Assets\linux_nmake.xaml" />
-  </ItemGroup>
-  <!--Import Project="$(MSBuildThisFileDirectory)\Microsoft.cpp.Linux.targets" /-->
-  <!-- To Enable linux debugger -->
-  <PropertyGroup>
-    <UseDefaultDebuggersPropertyPageSchemas>false</UseDefaultDebuggersPropertyPageSchemas>
-    <UseDefaultPropertyPageSchemas>false</UseDefaultPropertyPageSchemas>
-    <_ApplicableDebuggers>Desktop</_ApplicableDebuggers>
-    <DebuggerFlavor>LinuxDebugger</DebuggerFlavor>
-  </PropertyGroup>
-  <ItemGroup>
-    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\ProjectItemsSchema.xml" />
-    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\directories.xml" />
-    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\debugger_general.xml" />
-    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\Assets\LinuxDebugger.xaml" />
-    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\Assets\LocalDebugger.xaml" />
-    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\Assets\linux_nmake.xaml" />
-    <!-- project only rules -->
-    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\general_makefile.xml">
-      <Context>Project</Context>
-    </PropertyPageSchema>
-    <!-- Property sheet only rules -->
-    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\general_makefile_ps.xml;$(VCTargetsPath)$(LangID)\usermacros.xml">
-      <Context>PropertySheet</Context>
-    </PropertyPageSchema>
-    <!-- File only rules -->
-    <PropertyPageSchema Include="$(VCTargetsPath)$(LangID)\general_file.xml">
-      <Context>File</Context>
-    </PropertyPageSchema>
-  </ItemGroup>
-  <ItemGroup>
-    <DesktopDebuggerPages Include="$(MSBuildThisFileDirectory)\Assets\LinuxDebugger.xaml" />
-    <DesktopDebuggerPages Include="$(MSBuildThisFileDirectory)\Assets\LocalDebugger.xaml" />
-    <DesktopDebuggerPages Include="$(MSBuildThisFileDirectory)\Assets\linux_nmake.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectCapability Include="Linux" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="EntityServer.h" />
-    <ClInclude Include="EntityServerClass.h" />
-    <ClInclude Include="EntitySvrConst.h" />
-    <ClInclude Include="ServerEntity\EntityServerEntity.h" />
-    <ClInclude Include="ServerEntity\GameMasterServerEntity.h" />
-    <ClInclude Include="ServerEntity\GameServerEntity.h" />
-    <ClInclude Include="ServerEntity\LoginServerEntity.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Transaction\EntityServerTrans.h" />
-    <ClInclude Include="Transaction\EntityTransactionServer.h" />
-    <ClInclude Include="Transaction\EntityTransactionUser.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="EntityServer.cpp" />
-    <ClCompile Include="EntityServerClass.cpp" />
-    <ClCompile Include="ServerEntity\EntityServerEntity.cpp" />
-    <ClCompile Include="ServerEntity\GameMasterServerEntity.cpp" />
-    <ClCompile Include="ServerEntity\GameServerEntity.cpp" />
-    <ClCompile Include="ServerEntity\LoginServerEntity.cpp" />
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Transaction\EntityServerTrans.cpp" />
-    <ClCompile Include="Transaction\EntityTransactionServer.cpp" />
-    <ClCompile Include="Transaction\EntityTransactionUser.cpp" />
-  </ItemGroup>
-  <!-- To Enable linux debugger End -->
+  <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG clean</NMakeCleanCommandLine>
-    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../../Lib;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include\ssp;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include\c++</NMakeIncludeSearchPath>
-    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG clean</NMakeCleanCommandLine>
-    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../../Lib;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include\ssp;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include\c++</NMakeIncludeSearchPath>
-    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG clean</NMakeCleanCommandLine>
-    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../../Lib;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include\ssp;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include\c++</NMakeIncludeSearchPath>
-    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NMakeBuildCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG build</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>../../../LinuxBuild/rebuild.cmd Server/Service EntityServer DEBUG rebuild</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>../../../LinuxBuild/build.cmd Server/Service EntityServer DEBUG clean</NMakeCleanCommandLine>
-    <NMakePreprocessorDefinitions>__GNUC__;__x86_64__</NMakePreprocessorDefinitions>
-    <NMakeIncludeSearchPath>../../Lib;C:\cygwin64\usr\include;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include\ssp;C:\cygwin64\lib\gcc\x86_64-pc-cygwin\4.9.3\include\c++</NMakeIncludeSearchPath>
-    <OutDir>$(SolutionDir)Server\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Server\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

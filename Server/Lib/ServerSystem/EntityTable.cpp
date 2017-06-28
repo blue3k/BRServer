@@ -38,12 +38,14 @@ namespace Svr {
 				return EntityID(faculty, m_UIDGeneratorForService.NewID() );
 		}
 
-		HRESULT EntityTable::ReserveEntityID( EntityID uiEntityID )
+		Result EntityTable::ReserveEntityID( EntityID uiEntityID )
 		{
 			if (uiEntityID.GetFacultyID() == (UINT)EntityFaculty::Service)
-				return EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGenerator.ReserveID(uiEntityID.GetEntityLID()));
+				EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGenerator.ReserveID(uiEntityID.GetEntityLID()));
 			else
-				return EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGeneratorForService.ReserveID(uiEntityID.GetEntityLID()));
+				EntityID((EntityFaculty)uiEntityID.GetFacultyID(), m_UIDGeneratorForService.ReserveID(uiEntityID.GetEntityLID()));
+
+			return ResultCode::SUCCESS;
 		}
 
 		bool EntityTable::FreeEntityID( EntityID uiEntityID )
@@ -54,6 +56,11 @@ namespace Svr {
 				return m_UIDGeneratorForService.FreeID( uiEntityID.GetEntityLID());
 		}
 
+		bool EntityTable::Insert(Entity *pEntity)
+		{
+			return super::Insert(pEntity->GetEntityID(), pEntity);
+		}
+
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -62,9 +69,9 @@ namespace Svr {
 
 
 		// Route Message Cmd/Evt
-		HRESULT EntityTable::RouteTransaction( EntityID entityID, Transaction* &pTrans )
+		Result EntityTable::RouteTransaction( EntityID entityID, Transaction* &pTrans )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			SharedPointerT<Entity> pEntity;
 
 			svrChk(Find(entityID.ID, pEntity));
@@ -80,9 +87,9 @@ namespace Svr {
 		}
 
 		// Route Transaction result
-		HRESULT EntityTable::RouteTransactionResult( TransactionResult* &pRes )
+		Result EntityTable::RouteTransactionResult( TransactionResult* &pRes )
 		{
-			HRESULT hr = S_SYSTEM_OK;
+			Result hr = ResultCode::SUCCESS;
 			SharedPointerT<Entity> pEntity;
 
 			svrChkPtr( pRes );

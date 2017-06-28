@@ -60,7 +60,7 @@ namespace Svr {
 		BRCLASS_ATTRIBUTE(UINT,ShardID);
 		BRCLASS_ATTRIBUTE(bool, IsTicketOwner);
 
-		//char m_GameNick[GameConst::MAX_NAME];
+		char m_UserName[GameConst::MAX_NAME];
 		char m_GCMKeys[GameConst::MAX_GCMKEYS];
 
 
@@ -87,15 +87,15 @@ namespace Svr {
 		virtual ~LoginPlayerEntity();
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID ) override;
 
 		// Set connection for pilot
-		virtual HRESULT SetConnection( Net::Connection* &pCon );
+		virtual Result SetConnection(SharedPointerT<Net::Connection>&& pCon ) override;
 
 		void HeartBit();
 
 		// pending close transaction
-		HRESULT PendingCloseTransaction();
+		Result PendingCloseTransaction();
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -103,9 +103,13 @@ namespace Svr {
 		//
 
 		const char* GetGCMKey()								{ return m_GCMKeys; }
-		HRESULT SetGCMKey(const char* gcmKey)				{ return StrUtil::StringCpy(m_GCMKeys, gcmKey); }
+		Result SetGCMKey(const char* gcmKey)				{ return StrUtil::StringCpy(m_GCMKeys, gcmKey); }
+
+		const char* GetUserName() { return m_UserName; }
+		void SetUserName(const char* userName);
 
 		static GlobalUIDGenerator& GetAuthTicketGenerator() { return stm_AuthTicketGenerator; }
+
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -113,13 +117,13 @@ namespace Svr {
 		//
 
 		// register message handlers
-		virtual HRESULT RegisterMessageHandlers();
+		virtual Result RegisterMessageHandlers() override;
 
 		// clear transaction
-		virtual HRESULT ClearEntity() override;
+		virtual Result ClearEntity() override;
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,7 +132,7 @@ namespace Svr {
 		//
 
 		// Update Game Player 
-		HRESULT UpdateLoginPlayer(TimeStampMS CurTime );
+		Result UpdateLoginPlayer(TimeStampMS CurTime );
 
 	};
 

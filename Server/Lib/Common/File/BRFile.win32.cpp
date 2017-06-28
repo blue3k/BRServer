@@ -46,10 +46,10 @@ namespace IO {
 		return m_FileHandle != INVALID_NATIVE_HANDLE_VALUE;
 	}
 
-	HRESULT File::Seek(SeekMode seekMode, LONGLONG offset)
+	Result File::Seek(SeekMode seekMode, LONGLONG offset)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		LARGE_INTEGER lInt;
 		lInt.QuadPart = offset;
@@ -57,16 +57,16 @@ namespace IO {
 		lInt.LowPart = SetFilePointer(m_FileHandle, lInt.LowPart, &lInt.HighPart, ToWin32SeekMode[(int)seekMode]);
 		if (lInt.LowPart == INVALID_SET_FILE_POINTER)
 		{
-			return GetLastHRESULT();
+			return GetLastResult();
 		}
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	LONGLONG File::GetLocation()
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		LARGE_INTEGER lInt;
 		lInt.QuadPart = 0;
@@ -78,7 +78,7 @@ namespace IO {
 	LONGLONG File::GetFileSize()
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		LARGE_INTEGER szSize;
 		if (GetFileSizeEx(m_FileHandle, &szSize) == INVALID_FILE_SIZE)
@@ -88,7 +88,7 @@ namespace IO {
 		return szSize.QuadPart;
 	}
 
-	HRESULT File::Open(const char* filePath, OpenMode openMode, SharingMode sharingMode)
+	Result File::Open(const char* filePath, OpenMode openMode, SharingMode sharingMode)
 	{
 		Close();
 
@@ -111,7 +111,7 @@ namespace IO {
 			creationDesc = OPEN_ALWAYS;
 			break;
 		default:
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 		}
 
 		switch (sharingMode)
@@ -129,7 +129,7 @@ namespace IO {
 			shareMode = 0;
 			break;
 		default:
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 		}
 
 		m_FileHandle = CreateFileA(
@@ -143,12 +143,12 @@ namespace IO {
 			nullptr);
 
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_FAIL;
+			return ResultCode::FAIL;
 
 		m_OpenMode = openMode;
 		m_SharingMode = sharingMode;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 
 	}
 
@@ -162,36 +162,36 @@ namespace IO {
 	}
 
 
-	HRESULT File::Read(BYTE* buffer, size_t bufferLen, size_t &read)
+	Result File::Read(BYTE* buffer, size_t bufferLen, size_t &read)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 
 		DWORD dwRead = 0;
 		if (ReadFile(m_FileHandle, buffer, (DWORD)bufferLen, &dwRead, nullptr) == FALSE)
 		{
-			return GetLastHRESULT();
+			return GetLastResult();
 		}
 
 		read = dwRead;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT File::Write(const BYTE* buffer, size_t bufferLen, size_t &writen)
+	Result File::Write(const BYTE* buffer, size_t bufferLen, size_t &writen)
 	{
 		if (m_FileHandle == INVALID_NATIVE_HANDLE_VALUE)
-			return E_SYSTEM_UNEXPECTED;
+			return ResultCode::UNEXPECTED;
 
 		DWORD dwWritten = 0;
 		if (WriteFile(m_FileHandle, buffer, (DWORD)bufferLen, &dwWritten, nullptr) == FALSE)
 		{
-			return GetLastHRESULT();
+			return GetLastResult();
 		}
 
 		writen = dwWritten;
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

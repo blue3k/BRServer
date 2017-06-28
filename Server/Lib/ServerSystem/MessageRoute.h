@@ -41,15 +41,15 @@ namespace Svr {
 
 	//// Route Message utility func
 	//template< class MsgClass >
-	//HRESULT RouteMessage( Message::MessageData* &pMsg )
+	//Result RouteMessage( Message::MessageData* &pMsg )
 	//{
-	//	HRESULT hr = S_SYSTEM_OK;
+	//	Result hr = ResultCode::SUCCESS;
 	//	ServerEntity* pServerEntity = nullptr;
 	//	MsgClass msg;
 
-	//	svrChk( msg.ParseIMsg(pMsg) );
+	//	svrChk( msg.ParseMessage(pMsg) );
 
-	//	svrChkErr( E_SVR_ROUTEMSG_FAILED, BrServer::GetInstance()->GetServerEntityManager()->GetServerEntity( msg.GetRouteContext().To, pServerEntity ) );
+	//	svrChkErr( ResultCode::E_ROUTEMSG_FAILED, BrServer::GetInstance()->GetServerEntityManager()->GetServerEntity( msg.GetRouteContext().To, pServerEntity ) );
 
 	//	svrChkPtr( pServerEntity->GetConnection() );
 	//	svrChk( pServerEntity->GetConnection()->Send( pMsg ) );

@@ -50,7 +50,7 @@ namespace Svr {
 			return super::GetServerEntity()->GetConnection()->template GetPolicy<PolicyClassType>();
 		}
 
-		HRESULT GetMyPlayer( PartyPlayer* &pPlayer )
+		Result GetMyPlayer( PartyPlayer* &pPlayer )
 		{
 			if( MessageClass::HasGetPlayerID )
 			{
@@ -59,7 +59,7 @@ namespace Svr {
 			else
 			{
 				pPlayer = nullptr;
-				return E_SYSTEM_FAIL;
+				return ResultCode::FAIL;
 			}
 		}
 	};

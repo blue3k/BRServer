@@ -126,10 +126,10 @@ namespace GameServer {
 		virtual ~GamePlayerEntity();
 
 		// Initialize entity to proceed new connection
-		virtual HRESULT InitializeEntity( EntityID newEntityID );
+		virtual Result InitializeEntity( EntityID newEntityID );
 
 		// Set connection for pilot
-		virtual HRESULT SetConnection( SharedPointerT<Net::Connection>&& pCon ) override;
+		virtual Result SetConnection( SharedPointerT<Net::Connection>&& pCon ) override;
 
 		// Release connection if has
 		virtual void ReleaseConnection() override;
@@ -142,19 +142,19 @@ namespace GameServer {
 		//	Entity process
 		//
 
-		HRESULT OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID);
+		Result OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID);
 
-		HRESULT OnNewUserTranscation();
-		HRESULT UpdateDBSync(TransactionID transID);
+		Result OnNewUserTranscation();
+		Result UpdateDBSync(TransactionID transID);
 
 		// register message handlers
-		virtual HRESULT RegisterMessageHandlers();
+		virtual Result RegisterMessageHandlers();
 
 		// clear transaction
-		virtual HRESULT ClearEntity() override;
+		virtual Result ClearEntity() override;
 
 		// Run the task
-		virtual HRESULT TickUpdate(Svr::TimerAction *pAction = nullptr) override;
+		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,10 +163,10 @@ namespace GameServer {
 		//
 
 		// Update game configuration
-		HRESULT UpdateGameConfig();
+		Result UpdateGameConfig();
 
 		// Update Game Player 
-		HRESULT UpdateGamePlayer();
+		Result UpdateGamePlayer();
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,12 +182,12 @@ namespace GameServer {
 		const ServerFriendInformation& GetFriendInformation() const;
 
 		FORCEINLINE const char* GetNickName()							{ return m_PlayerInformation.NickName; }
-		FORCEINLINE HRESULT SetNickName( const char* newName )			{ return StrUtil::StringCpy( m_PlayerInformation.NickName, newName ); }
+		FORCEINLINE Result SetNickName( const char* newName )			{ return StrUtil::StringCpy( m_PlayerInformation.NickName, newName ); }
 
 		FORCEINLINE FacebookUID GetFacebookUID()						{ return m_PlayerInformation.FBUID; }
 		FORCEINLINE void SetFacebookUID( FacebookUID newUID )			{ m_PlayerInformation.FBUID = newUID; }
 
-		virtual HRESULT SetAccountID( AccountID accID )					{ m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
+		virtual Result SetAccountID( AccountID accID )					{ m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
 
 		template< class ...ArgTypes >
 		void AddGameTransactionLogT(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* strFormat, ArgTypes... args)
@@ -202,7 +202,7 @@ namespace GameServer {
 		void AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue);
 
 		// Send push notify
-		HRESULT SendPushNotify( const char* strMessage, UINT64 param = 0 );
+		Result SendPushNotify( const char* strMessage, UINT64 param = 0 );
 
 	};
 

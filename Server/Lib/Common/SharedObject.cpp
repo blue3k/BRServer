@@ -25,6 +25,20 @@ namespace BR
 
 	template class PageQueue<SharedObject*>;
 
+	SharedObject::SharedObject()
+		: m_ReferenceCount(0)
+		, m_WeakReferenceCount(1)
+		, m_ManagerReferenceCount(0)
+		, m_ReferenceManagerObject(nullptr)
+	{
+
+	}
+
+	SharedObject::~SharedObject()
+	{
+		AssertRel(m_ReferenceCount <= 0 && m_WeakReferenceCount <= 1);
+	}
+
 	CounterType SharedObject::AddReference() const
 	{
 		auto org = m_ReferenceCount.fetch_add(1, std::memory_order_acquire);

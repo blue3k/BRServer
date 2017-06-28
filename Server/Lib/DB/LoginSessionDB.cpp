@@ -50,9 +50,9 @@ namespace DB {
 	//
 
 	// Register authenticate ticket
-	HRESULT LoginSessionDB::RegisterAuthTicket( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID )
+	Result LoginSessionDB::RegisterAuthTicket( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryRegisterAuthTicketCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryRegisterAuthTicketCmd );
@@ -73,16 +73,16 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 	
 	// Register authenticate ticket
-	HRESULT LoginSessionDB::ReplaceLoginSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& oldAuthTicket, const AuthTicket& authTicket, const EntityUID& loginEntityUID)
+	Result LoginSessionDB::ReplaceLoginSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& oldAuthTicket, const AuthTicket& authTicket, const EntityUID& loginEntityUID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryReplaceLoginSessionCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryReplaceLoginSessionCmd);
@@ -102,7 +102,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
@@ -110,9 +110,9 @@ namespace DB {
 
 
 	// Register authenticate ticket
-	HRESULT LoginSessionDB::DeleteLoginSession( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket )
+	Result LoginSessionDB::DeleteLoginSession( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryDeleteLoginSessionCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryDeleteLoginSessionCmd );
@@ -131,16 +131,16 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
 	// Joined game server
-	HRESULT LoginSessionDB::ConnectedToGameServer( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID, const EntityUID& gameEntityUID )
+	Result LoginSessionDB::ConnectedToGameServer( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& loginEntityUID, const EntityUID& gameEntityUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryConnectedToGameServerCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryConnectedToGameServerCmd );
@@ -160,7 +160,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
@@ -168,9 +168,9 @@ namespace DB {
 
 
 	// Validate game server session
-	HRESULT LoginSessionDB::ValidateGameServerSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID)
+	Result LoginSessionDB::ValidateGameServerSession(TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryValidateGameServerSessionCmd *pQuery = nullptr;
 
 		dbMem(pQuery = new QueryValidateGameServerSessionCmd);
@@ -189,16 +189,16 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;
 	}
 
 	// Game server heartbit
-	HRESULT LoginSessionDB::GameServerHeartBit( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID )
+	Result LoginSessionDB::GameServerHeartBit( TransactionID Sender, const PlayerID &playerID, const AuthTicket& authTicket, const EntityUID& gameEntityUID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		QueryGameServerHeartBitCmd *pQuery = nullptr;
 
 		dbMem( pQuery = new QueryGameServerHeartBitCmd );
@@ -217,7 +217,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pQuery );
 
 		return hr;

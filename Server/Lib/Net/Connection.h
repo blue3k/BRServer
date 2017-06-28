@@ -85,7 +85,7 @@ namespace Net {
 		// Recv pending count
 		std::atomic<LONG> m_lPendingRecvCount;
 
-
+		ThreadID m_RunningThreadID;
 
 	protected:
 
@@ -102,7 +102,7 @@ namespace Net {
 
 
 		// Add network event to queue
-		virtual HRESULT EnqueueConnectionEvent( const IConnection::Event& evt );
+		virtual Result EnqueueConnectionEvent( const IConnection::Event& evt );
 
 
 	public:
@@ -125,6 +125,9 @@ namespace Net {
 		MsgQueue& GetRecvQueue();
 
 		MsgQueue& GetSendGuaQueue();
+
+		ThreadID GetRunningThreadID() const { return m_RunningThreadID; }
+		void SetRunningThreadID(ThreadID threadID) { m_RunningThreadID = threadID; }
 
 		// Get zero recv count
 		inline ULONG GetZeroRecvCount();
@@ -150,41 +153,41 @@ namespace Net {
 		inline void SetConnectingTimeOut( ULONG ulConnectingTimeOut );
 
 		// Make NetCtrl packet and send
-		virtual HRESULT SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
+		virtual Result SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
 
 		// Clear Queue
-		virtual HRESULT ClearQueues();
+		virtual Result ClearQueues();
 
 		// Message count currently in recv queue
 		virtual SysUInt GetRecvMessageCount();
 
 		// Called on connection result
-		virtual void OnConnectionResult( HRESULT hrConnect );
+		virtual void OnConnectionResult( Result hrConnect );
 
 		// Initialize connection
-		virtual HRESULT InitConnection( SOCKET socket, const ConnectionInformation &connectInfo );
+		virtual Result InitConnection( SOCKET socket, const ConnectionInformation &connectInfo );
 
 		// Initialize packet synchronization
-		virtual HRESULT InitSynchronization();
+		virtual Result InitSynchronization();
 
 		// Disconnect connection
-		virtual HRESULT Disconnect(const char* reason);
+		virtual Result Disconnect(const char* reason);
 
 		// Close connection
-		virtual HRESULT CloseConnection();
+		virtual Result CloseConnection();
 
 
 		// called when incomming message occure
-		virtual HRESULT OnRecv( UINT uiBuffSize, const BYTE* pBuff ) = 0;
-		virtual HRESULT OnRecv( Message::MessageData *pMsg );
+		virtual Result OnRecv( UINT uiBuffSize, const BYTE* pBuff ) = 0;
+		virtual Result OnRecv( Message::MessageData *pMsg );
 
 		
 		// Query connection event
 		CounterType GetConnectionEventCount();
-		HRESULT DequeueConnectionEvent(Event& curEvent);
+		Result DequeueConnectionEvent(Event& curEvent);
 
 		// Get received Message
-		virtual HRESULT GetRecvMessage( Message::MessageData* &pIMsg );
+		virtual Result GetRecvMessage( Message::MessageData* &pIMsg );
 
 		// Print Debug message
 		static void PrintDebugMessage( const char* strPrefix, Message::MessageData *pMsg );
@@ -192,12 +195,12 @@ namespace Net {
 
 	#include "Connection.inl"
 
-}  // namespace Net
+	typedef SharedPointerT <Connection> ConnectionPtr;
 
-	extern template class SharedPointerT <Net::Connection>;
-	extern template class WeakPointerT < Net::Connection >;
-
-}; // namespace BR
+}	// namespace Net
+}	// namespace BR
 
 
+extern template class BR::SharedPointerT <BR::Net::Connection>;
+extern template class BR::WeakPointerT <BR::Net::Connection>;
 

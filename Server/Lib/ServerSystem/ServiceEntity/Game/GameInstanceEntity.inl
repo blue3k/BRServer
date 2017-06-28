@@ -37,23 +37,23 @@ UINT GameInstanceEntity::GetNumPlayer()
 //
 //
 //// foreach game player
-////HRESULT GameInstanceEntity::ForeachPlayer(std::function<HRESULT(GamePlayer* pPlayer)> func)
+////Result GameInstanceEntity::ForeachPlayer(std::function<Result(GamePlayer* pPlayer)> func)
 //template< class Func >
-//HRESULT GameInstanceEntity::ForeachPlayer(Func func)
+//Result GameInstanceEntity::ForeachPlayer(Func func)
 //{
 //	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pPlayer)-> bool
 //	{
-//		HRESULT hrRes = func(pPlayer);
-//		if (FAILED(hrRes))
+//		Result hrRes = func(pPlayer);
+//		if (!(hrRes))
 //			return false;
 //		return true;
 //	});
-//	return S_SYSTEM_OK;
+//	return ResultCode::SUCCESS;
 //}
 
 //
 //// foreach game player with Game policy
-//inline HRESULT GameInstanceEntity::ForeachPlayerGameServer(std::function<HRESULT(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func)
+//inline Result GameInstanceEntity::ForeachPlayerGameServer(std::function<Result(GamePlayer* pPlayer, Policy::IPolicyGameServer *pPolicy)> func)
 //{
 //	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
 //	{
@@ -66,17 +66,17 @@ UINT GameInstanceEntity::GetNumPlayer()
 //		Policy::IPolicyGameServer *pPolicy = pGamePlayer->GetPolicy<Policy::IPolicyGameServer>();
 //		if (pPolicy)
 //		{
-//			HRESULT hrRes = func(pGamePlayer, pPolicy);
-//			if (FAILED(hrRes))
+//			Result hrRes = func(pGamePlayer, pPolicy);
+//			if (!(hrRes))
 //				return false;
 //		}
 //		return true;
 //	});
-//	return S_SYSTEM_OK;
+//	return ResultCode::SUCCESS;
 //}
 //
 //// foreach game player with Game policy
-//inline HRESULT GameInstanceEntity::ForeachPlayerSvrGameInstance(std::function<HRESULT(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func)
+//inline Result GameInstanceEntity::ForeachPlayerSvrGameInstance(std::function<Result(GamePlayer* pPlayer, Policy::ISvrPolicyGameInstance *pPolicy)> func)
 //{
 //	m_GamePlayerByUID.ForeachOrder(0, GameConst::MAX_GAMEPLAYER, [&](const PlayerID& playerID, GamePlayer* pGamePlayer)-> bool
 //	{
@@ -89,14 +89,14 @@ UINT GameInstanceEntity::GetNumPlayer()
 //		Policy::ISvrPolicyGameInstance *pPolicy = pGamePlayer->GetPolicy<Policy::ISvrPolicyGameInstance>();
 //		if (pPolicy)
 //		{
-//			HRESULT hrRes = func(pGamePlayer, pPolicy);
-//			if (FAILED(hrRes))
+//			Result hrRes = func(pGamePlayer, pPolicy);
+//			if (!(hrRes))
 //				return false;
 //		}
 //
 //		return true;
 //	});
 //
-//	return S_SYSTEM_OK;
+//	return ResultCode::SUCCESS;
 //}
 //

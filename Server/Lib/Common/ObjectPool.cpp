@@ -17,7 +17,6 @@
 #include "Common/ResultCode/BRResultCodeCommon.h"
 
 #include "Common/ObjectPool.h"
-#include "Common/MemLog.h"
 #include "Common/HashTable.h"
 
 
@@ -81,7 +80,7 @@ namespace BR
 	}
 
 	// Allocate/Free
-	HRESULT ObjectPool::Alloc(ObjectPoolObject* &pPtr)
+	Result ObjectPool::Alloc(ObjectPoolObject* &pPtr)
 	{
 		ObjectItem *pMemItem = nullptr;
 		if (!USE_DIRECTFREE)
@@ -92,8 +91,8 @@ namespace BR
 				// Allocate page if no free item
 				void *pPage = nullptr;
 
-				if (FAILED(m_Allocator.Alloc(pPage)))
-					return E_SYSTEM_OUTOFMEMORY;
+				if (!(m_Allocator.Alloc(pPage)))
+					return ResultCode::OUT_OF_MEMORY;
 
 				pMemItem = (ObjectItem*)pPage;
 				for (size_t iItem = 1; iItem < m_AllocCountPerPage; iItem++)
@@ -141,15 +140,15 @@ namespace BR
 
 		m_AllocatedCount.fetch_add(1, std::memory_order_relaxed);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT ObjectPool::Free(ObjectPoolObject* pPtr)
+	Result ObjectPool::Free(ObjectPoolObject* pPtr)
 	{
 		ObjectItem *pMemItem = nullptr;
 
 		if (pPtr == nullptr)
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		pPtr->Dispose();
 
@@ -179,7 +178,7 @@ namespace BR
 
 		m_AllocatedCount.fetch_sub(1, std::memory_order_relaxed);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
@@ -230,7 +229,7 @@ namespace BR
 	}
 
 	// Allocate/Free
-	HRESULT ObjectPoolMT::Alloc( ObjectPoolObject* &pPtr )
+	Result ObjectPoolMT::Alloc( ObjectPoolObject* &pPtr )
 	{
 		MemItem *pMemItem = nullptr;
 		StackPool::Item *pItem = m_FreeList.Pop();
@@ -239,8 +238,8 @@ namespace BR
 			// Allocate page if no free item
 			void *pPage = nullptr;
 
-			if( FAILED(m_Allocator.Alloc( pPage )) )
-				return E_SYSTEM_OUTOFMEMORY;
+			if( !(m_Allocator.Alloc( pPage )) )
+				return ResultCode::OUT_OF_MEMORY;
 
 			pMemItem = (MemItem*)pPage;
 			for( size_t iItem = 1; iItem < m_AllocCountPerPage; iItem++ )
@@ -272,6 +271,7 @@ namespace BR
 
 		pPtr = pMemItem->pObject;
 		CounterType Using = pMemItem->Using.fetch_add(1,std::memory_order_relaxed) + 1;
+		unused(Using);
 		Assert( Using == 1 );
 		//Assert( Using == pMemItem->Using );
 
@@ -282,15 +282,15 @@ namespace BR
 
 		m_AllocatedCount.fetch_add(1,std::memory_order_relaxed);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
-	HRESULT ObjectPoolMT::Free( ObjectPoolObject* pPtr )
+	Result ObjectPoolMT::Free( ObjectPoolObject* pPtr )
 	{
 		MemItem *pMemItem = nullptr;
 
 		if( pPtr == nullptr )
-			return S_SYSTEM_OK;
+			return ResultCode::SUCCESS;
 
 		pPtr->Dispose();
 
@@ -306,6 +306,7 @@ namespace BR
 		else
 		{
 			CounterType Using = pMemItem->Using.fetch_sub(1,std::memory_order_relaxed) - 1;
+			unused(Using);
 			Assert( Using == 0 );
 			//Assert( Using == pMemItem->Using );
 
@@ -315,7 +316,7 @@ namespace BR
 		
 		m_AllocatedCount.fetch_sub(1, std::memory_order_relaxed);
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 

@@ -66,7 +66,7 @@ int mkcert(X509 **x509p, EVP_PKEY **pkeyp, int bits, int serial, int days)
     X509 *x;
     EVP_PKEY *pk;
     RSA *rsa;
-    X509_NAME *name = NULL;
+    SSL_X509_NAME *name = NULL;
 
     if ((pkeyp == NULL) || (*pkeyp == NULL)) {
         if ((pk = EVP_PKEY_new()) == NULL) {

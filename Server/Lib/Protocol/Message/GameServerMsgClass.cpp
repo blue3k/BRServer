@@ -31,35 +31,35 @@ namespace BR
 		{
  			// Cmd: Kick
 			const MessageID RegisterPlayerToJoinGameServerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 0);
-			HRESULT RegisterPlayerToJoinGameServerCmd::ParseIMsg( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerCmd::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_FBUserID, pCur, iMsgSize, sizeof(FacebookUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_ShardID, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_FBUserID, pCur, iMsgSize, (int)sizeof(FacebookUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_ShardID, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerCmd::ParseMessage( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+			Result RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -69,7 +69,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket)
 					+ sizeof(FacebookUID)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -82,7 +82,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
 				Protocol::PackParamCopy( pMsgData, &InFBUserID, sizeof(FacebookUID));
-				Protocol::PackParamCopy( pMsgData, &InShardID, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InShardID, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -91,11 +91,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+			}; // Result RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID )
 
-			HRESULT RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
+			Result RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -104,7 +104,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -117,7 +118,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RegisterPlayerToJoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -128,9 +129,9 @@ namespace BR
 			}; // void RegisterPlayerToJoinGameServerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterPlayerToJoinGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 0);
-			HRESULT RegisterPlayerToJoinGameServerRes::ParseIMsg( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerRes::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -139,28 +140,28 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPublicAddress, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_PublicAddress, pCur, iMsgSize, sizeof(char)*uiSizeOfPublicAddress ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPublicAddressV6, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_PublicAddressV6, pCur, iMsgSize, sizeof(char)*uiSizeOfPublicAddressV6 ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Port, pCur, iMsgSize, sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPublicAddress, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_PublicAddress, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPublicAddress ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPublicAddressV6, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_PublicAddressV6, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPublicAddressV6 ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Port, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerRes::ParseMessage( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort )
+			Result RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -169,8 +170,8 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInPublicAddressLength + sizeof(UINT16) + __uiInPublicAddressV6Length 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT)
-					+ sizeof(UINT32));
+					+ sizeof(Result)
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -180,12 +181,12 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &__uiInPublicAddressLength, sizeof(UINT16) );
 				Protocol::PackParamCopy( pMsgData, InPublicAddress ? InPublicAddress : "", __uiInPublicAddressLength );
 				Protocol::PackParamCopy( pMsgData, &__uiInPublicAddressV6Length, sizeof(UINT16) );
 				Protocol::PackParamCopy( pMsgData, InPublicAddressV6 ? InPublicAddressV6 : "", __uiInPublicAddressV6Length );
-				Protocol::PackParamCopy( pMsgData, &InPort, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InPort, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -194,11 +195,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort )
+			}; // Result RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort )
 
-			HRESULT RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
+			Result RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -207,7 +208,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -220,7 +222,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RegisterPlayerToJoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -232,34 +234,34 @@ namespace BR
 
 			// Cmd: Kick
 			const MessageID RegisterPlayerToJoinGameServerOnPlayerEntityCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 1);
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseIMsg( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, sizeof(AuthTicket) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_FBUserID, pCur, iMsgSize, sizeof(FacebookUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_FBUserID, pCur, iMsgSize, (int)sizeof(FacebookUID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::ParseMessage( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -289,11 +291,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -302,7 +304,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -315,7 +318,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityCmd::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -326,39 +329,39 @@ namespace BR
 			}; // void RegisterPlayerToJoinGameServerOnPlayerEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			const MessageID RegisterPlayerToJoinGameServerOnPlayerEntityRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 1);
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseIMsg( MessageData* pIMsg )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, sizeof(HRESULT) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseIMsg( MessageData* pIMsg )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::ParseMessage( MessageData* pIMsg )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
-					+ sizeof(HRESULT));
+					+ sizeof(Result));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -368,7 +371,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(HRESULT));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 
 				pMsg = pNewMsg;
 
@@ -377,11 +380,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
-			HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
+			Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -390,7 +393,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -403,7 +407,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RegisterPlayerToJoinGameServerOnPlayerEntityRes::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RegisterPlayerToJoinGameServerOnPlayerEntityRes::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -415,9 +419,9 @@ namespace BR
 
 			// C2S: Chatting message
 			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 2);
-			HRESULT ChatMessageC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -426,27 +430,27 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_SenderID, pCur, iMsgSize, sizeof(AccountID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, sizeof(PlayerRole) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfSenderName, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_SenderName, pCur, iMsgSize, sizeof(char)*uiSizeOfSenderName ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, sizeof(char)*uiSizeOfChatMessage ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_SenderID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfSenderName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_SenderName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfSenderName ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfChatMessage ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT ChatMessageC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			HRESULT ChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
+			Result ChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -478,11 +482,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
+			}; // Result ChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InSenderID, const PlayerRole &InRole, const char* InSenderName, const char* InChatMessage )
 
-			HRESULT ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -491,7 +495,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -504,7 +509,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result ChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void ChatMessageC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -516,9 +521,9 @@ namespace BR
 
 			// C2S: Notification
 			const MessageID NotifyC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 3);
-			HRESULT NotifyC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result NotifyC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -526,29 +531,29 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MessageID, pCur, iMsgSize, sizeof(NotificationType) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MessageParam0, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MessageParam1, pCur, iMsgSize, sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfMessageText, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_MessageText, pCur, iMsgSize, sizeof(char)*uiSizeOfMessageText ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MessageID, pCur, iMsgSize, (int)sizeof(NotificationType) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MessageParam0, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MessageParam1, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfMessageText, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_MessageText, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfMessageText ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT NotifyC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result NotifyC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			HRESULT NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const UINT64 &InTimeStamp )
+			Result NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -556,11 +561,11 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInMessageTextLength 
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID)
-					+ sizeof(UINT32)
+					+ sizeof(uint32_t)
 					+ sizeof(NotificationType)
-					+ sizeof(UINT64)
-					+ sizeof(UINT64)
-					+ sizeof(UINT64));
+					+ sizeof(uint64_t)
+					+ sizeof(uint64_t)
+					+ sizeof(uint64_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -570,13 +575,13 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InDestPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InNotificationID, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InNotificationID, sizeof(uint32_t));
 				Protocol::PackParamCopy( pMsgData, &InMessageID, sizeof(NotificationType));
-				Protocol::PackParamCopy( pMsgData, &InMessageParam0, sizeof(UINT64));
-				Protocol::PackParamCopy( pMsgData, &InMessageParam1, sizeof(UINT64));
+				Protocol::PackParamCopy( pMsgData, &InMessageParam0, sizeof(uint64_t));
+				Protocol::PackParamCopy( pMsgData, &InMessageParam1, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &__uiInMessageTextLength, sizeof(UINT16) );
 				Protocol::PackParamCopy( pMsgData, InMessageText ? InMessageText : "", __uiInMessageTextLength );
-				Protocol::PackParamCopy( pMsgData, &InTimeStamp, sizeof(UINT64));
+				Protocol::PackParamCopy( pMsgData, &InTimeStamp, sizeof(uint64_t));
 
 				pMsg = pNewMsg;
 
@@ -585,11 +590,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const UINT64 &InTimeStamp )
+			}; // Result NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp )
 
-			HRESULT NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -598,7 +603,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -611,7 +617,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void NotifyC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -623,32 +629,32 @@ namespace BR
 
 			// C2S: Friend Accept
 			const MessageID FriendAcceptedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 4);
-			HRESULT FriendAcceptedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result FriendAcceptedC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, sizeof(AccountID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Accepter, pCur, iMsgSize, sizeof(ServerFriendInformation) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Accepter, pCur, iMsgSize, (int)sizeof(ServerFriendInformation) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT FriendAcceptedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result FriendAcceptedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			HRESULT FriendAcceptedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
+			Result FriendAcceptedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -674,11 +680,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendAcceptedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
+			}; // Result FriendAcceptedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const ServerFriendInformation &InAccepter )
 
-			HRESULT FriendAcceptedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result FriendAcceptedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -687,7 +693,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -700,7 +707,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendAcceptedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result FriendAcceptedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void FriendAcceptedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -712,32 +719,32 @@ namespace BR
 
 			// C2S: Friend Remove
 			const MessageID FriendRemovedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 5);
-			HRESULT FriendRemovedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result FriendRemovedC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, sizeof(AccountID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RemoverID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RemoverID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT FriendRemovedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result FriendRemovedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			HRESULT FriendRemovedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
+			Result FriendRemovedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -763,11 +770,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendRemovedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
+			}; // Result FriendRemovedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRemoverID )
 
-			HRESULT FriendRemovedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result FriendRemovedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -776,7 +783,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -789,7 +797,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT FriendRemovedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result FriendRemovedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void FriendRemovedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -801,32 +809,32 @@ namespace BR
 
 			// C2S: Request Player Status Update
 			const MessageID RequestPlayerStatusUpdateC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 6);
-			HRESULT RequestPlayerStatusUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result RequestPlayerStatusUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, sizeof(AccountID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RequesterID, pCur, iMsgSize, sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RequesterID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT RequestPlayerStatusUpdateC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result RequestPlayerStatusUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			HRESULT RequestPlayerStatusUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
+			Result RequestPlayerStatusUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -852,11 +860,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestPlayerStatusUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
+			}; // Result RequestPlayerStatusUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const PlayerID &InRequesterID )
 
-			HRESULT RequestPlayerStatusUpdateC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result RequestPlayerStatusUpdateC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -865,7 +873,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -878,7 +887,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT RequestPlayerStatusUpdateC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result RequestPlayerStatusUpdateC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void RequestPlayerStatusUpdateC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -890,41 +899,41 @@ namespace BR
 
 			// C2S: Notify Player Status Updated
 			const MessageID NotifyPlayerStatusUpdatedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 7);
-			HRESULT NotifyPlayerStatusUpdatedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, sizeof(AccountID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LatestActiveTime, pCur, iMsgSize, sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_IsInGame, pCur, iMsgSize, sizeof(BYTE) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LatestActiveTime, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_IsInGame, pCur, iMsgSize, (int)sizeof(uint8_t) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT NotifyPlayerStatusUpdatedC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			HRESULT NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
+			Result NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(AccountID)
-					+ sizeof(UINT32)
-					+ sizeof(BYTE));
+					+ sizeof(uint32_t)
+					+ sizeof(uint8_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -934,8 +943,8 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InDestPlayerID, sizeof(AccountID));
-				Protocol::PackParamCopy( pMsgData, &InLatestActiveTime, sizeof(UINT32));
-				Protocol::PackParamCopy( pMsgData, &InIsInGame, sizeof(BYTE));
+				Protocol::PackParamCopy( pMsgData, &InLatestActiveTime, sizeof(uint32_t));
+				Protocol::PackParamCopy( pMsgData, &InIsInGame, sizeof(uint8_t));
 
 				pMsg = pNewMsg;
 
@@ -944,11 +953,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
+			}; // Result NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
 
-			HRESULT NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -957,7 +966,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -970,7 +980,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void NotifyPlayerStatusUpdatedC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
@@ -982,9 +992,9 @@ namespace BR
 
 			// C2S: Notification
 			const MessageID NotifyPartyInviteC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMESERVER, 8);
-			HRESULT NotifyPartyInviteC2SEvt::ParseIMsg( MessageData* pIMsg )
+			Result NotifyPartyInviteC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -992,26 +1002,26 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_InviterID, pCur, iMsgSize, sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfInviterName, pCur, iMsgSize, sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( m_InviterName, pCur, iMsgSize, sizeof(char)*uiSizeOfInviterName ) );
-				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, sizeof(EntityUID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_InviterID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfInviterName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_InviterName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfInviterName ) );
+				protocolChk( Protocol::StreamParamCopy( &m_PartyUID, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 
 
 			Proc_End:
 
 				return hr;
 
-			}; // HRESULT NotifyPartyInviteC2SEvt::ParseIMsg( MessageData* pIMsg )
+			}; // Result NotifyPartyInviteC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			HRESULT NotifyPartyInviteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const EntityUID &InPartyUID )
+			Result NotifyPartyInviteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const EntityUID &InPartyUID )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				BYTE *pMsgData = nullptr;
 
@@ -1042,11 +1052,11 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPartyInviteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const EntityUID &InPartyUID )
+			}; // Result NotifyPartyInviteC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const PlayerID &InInviterID, const char* InInviterName, const EntityUID &InPartyUID )
 
-			HRESULT NotifyPartyInviteC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			Result NotifyPartyInviteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
- 				HRESULT hr = S_SYSTEM_OK;
+ 				Result hr;
 
 				INT iMsgSize;
 				BYTE* pCur;
@@ -1055,7 +1065,8 @@ namespace BR
 
 				protocolChkPtr(pIMsg);
 
-				iMsgSize = (UINT)pIMsg->GetMessageSize() - sizeof(MessageHeader);
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
 				pCur = pIMsg->GetMessageData();
 
 				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
@@ -1068,7 +1079,7 @@ namespace BR
 
 				return hr;
 
-			}; // HRESULT NotifyPartyInviteC2SEvt::OverrideRouteContextDestination( EntityUID to )
+			}; // Result NotifyPartyInviteC2SEvt::OverrideRouteContextDestination( EntityUID to )
 
 
 			void NotifyPartyInviteC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)

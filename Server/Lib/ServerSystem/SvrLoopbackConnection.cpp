@@ -39,9 +39,9 @@ namespace Svr {
 	}
 
 	// Send message to connected entity
-	HRESULT LoopbackConnection::Send( Message::MessageData* &pMsg )
+	Result LoopbackConnection::Send( Message::MessageData* &pMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Message::MessageHeader* pMsgHeader = nullptr;
 		UINT uiPolicy = 0;
 
@@ -55,7 +55,7 @@ namespace Svr {
 		if( uiPolicy == 0 
 			|| uiPolicy >= BR::POLICY_NETMAX ) // invalid policy
 		{
-			svrErr( E_NET_BADPACKET_NOTEXPECTED );
+			svrErr( ResultCode::E_NET_BADPACKET_NOTEXPECTED );
 		}
 
 		svrChkPtr( m_pServerEntity );
@@ -72,7 +72,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pMsg );
 
 		return hr;

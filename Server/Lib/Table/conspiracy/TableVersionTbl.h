@@ -36,9 +36,9 @@ namespace conspiracy
 
 
 		// declare member function
-		static HRESULT LoadTable( const std::list<TableVersionItem>& rowList );
+		static BR::Result LoadTable( const std::list<TableVersionItem>& rowList );
 
-		static HRESULT FindItem( const int& Key, TableVersionItem*& pRow);
+		static BR::Result FindItem( const int& Key, TableVersionItem*& pRow);
 	}; // class TableVersionTbl
 }; // namespace conspiracy
 

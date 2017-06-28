@@ -28,9 +28,9 @@ namespace BR
  	namespace Policy
 	{
  		// Cmd: 
-		HRESULT NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID )
+		Result NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -44,11 +44,11 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID )
+		}; // Result NetPolicyServer::GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID )
 		// C2S: Server Started or Connected
-		HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
+		Result NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -62,13 +62,13 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress )
+		}; // Result NetPolicyServer::ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress )
 
 
 		// Cmd: 
-		HRESULT NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		Result NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 		{
- 			HRESULT hr = S_SYSTEM_OK;
+ 			Result hr;
 
 			 Message::MessageData * pMsg = nullptr;
 
@@ -82,7 +82,7 @@ namespace BR
 
 			return hr;
 
-		}; // HRESULT NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult )
+		}; // Result NetSvrPolicyServer::GenericFailureRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 
 	}; // namespace Policy

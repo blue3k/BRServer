@@ -532,7 +532,7 @@ static void
 tls_get_x509_subject_name_oneline(X509 *cert,
                                   struct tls_x509_name_string *namestring)
 {
-    X509_NAME *name;
+    SSL_X509_NAME *name;
 
     if (cert == NULL) {
         namestring->str[0] = '\0';

@@ -109,41 +109,41 @@ void PageQueue<DataType>::FreePage(Page* pPage)
 }
 
 template <class DataType>
-HRESULT PageQueue<DataType>::DequeuePageMove()
+Result PageQueue<DataType>::DequeuePageMove()
 {
 	// We use Page ID to sync check of HeadPage then pointer
 	Page* curDequeue = m_DequeuePage.load(std::memory_order_relaxed);
 	if (//curDequeue->Header.PageID == m_EnqueuePageID.load(std::memory_order_acquire) || 
 		curDequeue == m_EnqueuePage.load(std::memory_order_relaxed))
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 
 	if (curDequeue->Header.WriteCounter.load(std::memory_order_relaxed) <= m_NumberOfItemsPerPage)
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 
-	if (curDequeue->Header.pNext == nullptr) return E_SYSTEM_FAIL;
+	if (curDequeue->Header.pNext == nullptr) return ResultCode::FAIL;
 
 	// change the tail header pointer
 	m_DequeuePage.store(curDequeue->Header.pNext,std::memory_order_release);
 
 	FreePage(curDequeue);
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template <class DataType>
-HRESULT PageQueue<DataType>::DequeuePageMoveMT()
+Result PageQueue<DataType>::DequeuePageMoveMT()
 {
 	// We use Page ID to sync check of HeadPage then pointer
 	Page* curDequeue = m_DequeuePage.load(std::memory_order_relaxed);
 	if (//curDequeue->Header.PageID == m_EnqueuePageID.load(std::memory_order_acquire) || 
 		curDequeue == m_EnqueuePage.load(std::memory_order_relaxed))
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 
 	if (curDequeue->Header.WriteCounter.load(std::memory_order_relaxed) <= m_NumberOfItemsPerPage)
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 
 	if (curDequeue->Header.pNext == nullptr)
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 
 	// change the tail header pointer
 	Page* pNewDequeueHead = curDequeue->Header.pNext;
@@ -152,7 +152,7 @@ HRESULT PageQueue<DataType>::DequeuePageMoveMT()
 
 	FreePage(curDequeue);
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template <class DataType>
@@ -190,20 +190,20 @@ void PageQueue<DataType>::EnqueuePageMove(Page* pMyEnqueuePage, CounterType myPa
 }
 
 template <class DataType>
-HRESULT PageQueue<DataType>::Enqueue(const DataType& item)
+Result PageQueue<DataType>::Enqueue(const DataType& item)
 {
 	return Enqueue(std::forward<DataType>(const_cast<DataType&>(item)));
 }
 
 template <class DataType>
-HRESULT PageQueue<DataType>::Enqueue( DataType&& item )
+Result PageQueue<DataType>::Enqueue( DataType&& item )
 {
-	//HRESULT hr = S_SYSTEM_OK;
+	//Result hr = ResultCode::SUCCESS;
 	auto defaultValue = DefaultValue<DataType>();
 
 	Assert(item != defaultValue);
 	if (item == defaultValue)
-		return E_SYSTEM_FAIL;
+		return ResultCode::FAIL;
 
 	// total ticket number
 	CounterType myTicket = m_EnqueueTicket.fetch_add(1, std::memory_order_relaxed);// m_EnqueueTicket.AcquireTicket() - 1;
@@ -265,26 +265,26 @@ HRESULT PageQueue<DataType>::Enqueue( DataType&& item )
 
 //Proc_End:
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template <class DataType>
-HRESULT PageQueue<DataType>::Dequeue( DataType& item )
+Result PageQueue<DataType>::Dequeue( DataType& item )
 {
 	auto defaultValue = DefaultValue<DataType>();
 	// empty state / readcount is bigger than written count
-	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return E_SYSTEM_FAIL;
+	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return ResultCode::FAIL;
 
 	Page* pCurPage = m_DequeuePage.load(std::memory_order_relaxed);
-	if (pCurPage->Header.WriteCounter.load(std::memory_order_relaxed) == 0) return E_SYSTEM_FAIL;
+	if (pCurPage->Header.WriteCounter.load(std::memory_order_relaxed) == 0) return ResultCode::FAIL;
 
 	// read all of the page items...delete used page
 	if (pCurPage->Header.ReadCounter.load(std::memory_order_relaxed) == m_NumberOfItemsPerPage)
 	{
 		// shorten queue size (delete a used page)
-		HRESULT hr = DequeuePageMove();
+		Result hr = DequeuePageMove();
 
-		if(hr != S_SYSTEM_OK) 
+		if(!hr) 
 		{	
 			return hr;
 		}
@@ -322,13 +322,13 @@ HRESULT PageQueue<DataType>::Dequeue( DataType& item )
 	// increment item read count
 	pMyPage->Header.ReadCounter.fetch_add(1, std::memory_order_relaxed);
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template <class DataType>
-HRESULT PageQueue<DataType>::DequeueMT( DataType& item, DurationMS uiCheckInterval )
+Result PageQueue<DataType>::DequeueMT( DataType& item, DurationMS uiCheckInterval )
 {
-	HRESULT hr = S_SYSTEM_OK;
+	Result hr = ResultCode::SUCCESS;
 	auto defaultValue = DefaultValue<DataType>();
 
 	// total ticket number
@@ -374,7 +374,7 @@ HRESULT PageQueue<DataType>::DequeueMT( DataType& item, DurationMS uiCheckInterv
 	if(ReadCount == m_NumberOfItemsPerPage) 
 	{
 		hr = DequeuePageMoveMT();
-		AssertRel(SUCCEEDED(hr));
+		AssertRel((hr));
 	}
 
 	return hr;
@@ -385,22 +385,22 @@ HRESULT PageQueue<DataType>::DequeueMT( DataType& item, DurationMS uiCheckInterv
 // Just get first item
 // This will not safe if use DequeueMT
 template <class DataType>
-HRESULT PageQueue<DataType>::GetFront( DataType& item )
+Result PageQueue<DataType>::GetFront( DataType& item )
 {
 	auto defaultValue = DefaultValue<DataType>();
 	// empty state / readcount is bigger than written count
-	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return E_SYSTEM_FAIL;
+	if (m_DequeueTicket.load(std::memory_order_relaxed) >= m_EnqueueTicket.load(std::memory_order_relaxed)) return ResultCode::FAIL;
 
 	Page* pCurPage = m_DequeuePage.load(std::memory_order_relaxed);
-	if (pCurPage->Header.WriteCounter.load(std::memory_order_relaxed) == 0) return E_SYSTEM_FAIL;
+	if (pCurPage->Header.WriteCounter.load(std::memory_order_relaxed) == 0) return ResultCode::FAIL;
 
 	// read all of the page items...delete used page
 	if (pCurPage->Header.ReadCounter.load(std::memory_order_relaxed) == m_NumberOfItemsPerPage)
 	{
 		// shorten queue size (delete a used page)
-		HRESULT hr = DequeuePageMove();
+		Result hr = DequeuePageMove();
 
-		if (hr != S_SYSTEM_OK)
+		if (!hr)
 		{
 			return hr;
 		}
@@ -428,7 +428,7 @@ HRESULT PageQueue<DataType>::GetFront( DataType& item )
 
 	item = pMyPage->Element[myCellID];
 
-	return S_SYSTEM_OK;
+	return ResultCode::SUCCESS;
 }
 
 template <class DataType>

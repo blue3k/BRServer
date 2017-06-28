@@ -442,7 +442,7 @@ static int do_indent(char_io *io_ch, void *arg, int indent)
 #define FN_WIDTH_LN     25
 #define FN_WIDTH_SN     10
 
-static int do_name_ex(char_io *io_ch, void *arg, X509_NAME *n,
+static int do_name_ex(char_io *io_ch, void *arg, SSL_X509_NAME *n,
                       int indent, unsigned long flags)
 {
     int i, prev = -1, orflags, cnt;
@@ -580,7 +580,7 @@ static int do_name_ex(char_io *io_ch, void *arg, X509_NAME *n,
 
 /* Wrappers round the main functions */
 
-int X509_NAME_print_ex(BIO *out, X509_NAME *nm, int indent,
+int X509_NAME_print_ex(BIO *out, SSL_X509_NAME *nm, int indent,
                        unsigned long flags)
 {
     if (flags == XN_FLAG_COMPAT)
@@ -589,7 +589,7 @@ int X509_NAME_print_ex(BIO *out, X509_NAME *nm, int indent,
 }
 
 #ifndef OPENSSL_NO_FP_API
-int X509_NAME_print_ex_fp(FILE *fp, X509_NAME *nm, int indent,
+int X509_NAME_print_ex_fp(FILE *fp, SSL_X509_NAME *nm, int indent,
                           unsigned long flags)
 {
     if (flags == XN_FLAG_COMPAT) {

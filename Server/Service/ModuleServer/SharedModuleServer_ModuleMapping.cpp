@@ -67,16 +67,16 @@ namespace SharedModuleServer {
 
 
 	template< class ServiceEntityType, typename... ConstructorArgs >
-	HRESULT SharedModuleServer::AddServiceEntityComponent(ConstructorArgs... constructorArgs)
+	Result SharedModuleServer::AddServiceEntityComponent(ConstructorArgs... constructorArgs)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		Svr::IServerComponent *pComponent = nullptr;
 		Svr::ClusteredServiceEntity *pServiceEntityTest = nullptr;
 		ServiceEntityType* pServiceEntity = nullptr;
 
 		svrMem(pServiceEntity = new ServiceEntityType(constructorArgs...));
 
-		if( SUCCEEDED(GetComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( pServiceEntity->GetClusterID(), pServiceEntityTest )) )
+		if( (GetComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity( pServiceEntity->GetClusterID(), pServiceEntityTest )) )
 		{
 			if (pServiceEntityTest == pServiceEntity)
 				goto Proc_End;
@@ -108,9 +108,9 @@ namespace SharedModuleServer {
 	}
 
 	// Create clustered service
-	HRESULT SharedModuleServer::RegisterClusteredService(Svr::Config::ModuleBase* module)
+	Result SharedModuleServer::RegisterClusteredService(Svr::Config::ModuleBase* module)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 		ClusterID clusterID;
 
 		svrChkPtr(module);
@@ -134,6 +134,14 @@ namespace SharedModuleServer {
 			auto pGame = (Svr::Config::ModuleGame*)module;
 			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new Svr::GameServiceEntity(pGame->NetPublic)));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
+			break;
+		}
+
+		case ClusterID::Ranking:
+		{
+			Svr::ClusteredServiceEntity* pServiceEntity = new Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master);
+			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pServiceEntity));
+			svrChk(GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
 			break;
 		}
 
@@ -184,9 +192,10 @@ namespace SharedModuleServer {
 
 			svrChk( AddServiceEntityComponent<Svr::MatchingQueueServiceEntity>( clusterID, ClusterMembership::Slave ) );
 			break;
+
 		default:
 			Assert(false);
-			svrTrace(Trace::TRC_ERROR, "Invalid cluster ID {0}", clusterID);
+			svrTrace(Trace::TRC_ERROR, "Invalid cluster ID for module{0}", clusterID);
 			break;
 		}
 
@@ -197,9 +206,9 @@ namespace SharedModuleServer {
 	}
 
 
-	HRESULT SharedModuleServer::RegisterClustereWatcherComponents(ClusterID clusterID, Svr::ServerComponentID componentIDStart, Svr::ServerComponentID componentIDEnd)
+	Result SharedModuleServer::RegisterClustereWatcherComponents(ClusterID clusterID, Svr::ServerComponentID componentIDStart, Svr::ServerComponentID componentIDEnd)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (componentIDStart != 0 && componentIDEnd != 0)
 		{
@@ -216,7 +225,7 @@ namespace SharedModuleServer {
 
 	Proc_End:
 
-		Assert(SUCCEEDED(hr));
+		Assert((hr));
 
 		return hr;
 	}

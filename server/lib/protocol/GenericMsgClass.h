@@ -27,7 +27,7 @@ namespace Message {
 		{
  		private:
 			Context m_Context;
-			HRESULT m_hrRes;
+			Result m_hrRes;
 		public:
 			FailResultS2CEvt()
 				{}
@@ -37,11 +37,11 @@ namespace Message {
 				{}
 
 			const Context& GetContext() const	{ return m_Context; };
-			const HRESULT& GethrRes() const	{ return m_hrRes; };
+			const Result& GethrRes() const	{ return m_hrRes; };
 
 			void OutputMessage(const char* Prefix);
 
-			virtual HRESULT ParseIMsg( MessageData* pIMsg );
+			virtual Result ParseMessage( MessageData* pIMsg );
 
 		}; // class FailResultS2CEvt : public BR::Net::MessageBase
 

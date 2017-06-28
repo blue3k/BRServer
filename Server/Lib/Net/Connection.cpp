@@ -42,7 +42,7 @@
 #include "Protocol/Policy/GamePartyManagerNetPolicy.h"
 #include "Protocol/Policy/LoginNetPolicy.h"
 #include "Protocol/Policy/LoginServerNetPolicy.h"
-#include "Protocol/Policy/RankingNetPolicy.h"
+#include "Protocol/Policy/RankingServerNetPolicy.h"
 #include "Protocol/Policy/MonitoringNetPolicy.h"
 
 
@@ -58,20 +58,20 @@
 #endif // #ifdef UDP_PACKETLOS_EMULATE
 
 
+template class BR::SharedPointerT <BR::Net::Connection>;
+template class BR::WeakPointerT <BR::Net::Connection>;
+
+
 namespace BR {
-
-	template class SharedPointerT <Net::Connection>;
-	template class WeakPointerT < Net::Connection >;
-
 namespace Net {
 
 	// Create policy if not exist
-	HRESULT IConnection::CreatePolicy( UINT uiPolicy )
+	Result IConnection::CreatePolicy( UINT uiPolicy )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( uiPolicy >= POLICY_NETMAX )
-			netErr( E_SYSTEM_INVALIDARG );
+			netErr( ResultCode::INVALID_ARG );
 
 		if( m_pPolicy[uiPolicy] == NULL )// try create
 		{ 
@@ -175,11 +175,11 @@ namespace Net {
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGamePartyManager( this ) );
 				break;
 
-			case POLICY_RANKING:
-				netMem(m_pPolicy[uiPolicy] = new Policy::NetPolicyRanking(this));
+			case POLICY_RANKINGSERVER:
+				netMem(m_pPolicy[uiPolicy] = new Policy::NetPolicyRankingServer(this));
 				break;
-			case POLICY_SVR_RANKING:
-				netMem(m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyRanking(this));
+			case POLICY_SVR_RANKINGSERVER:
+				netMem(m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyRankingServer(this));
 				break;
 
 			case POLICY_MONITORING:
@@ -190,7 +190,7 @@ namespace Net {
 				break;
 
 			default:
-				netErr( E_SYSTEM_INVALIDARG );
+				netErr( ResultCode::INVALID_ARG );
 				break;
 			};
 		}
@@ -216,6 +216,7 @@ namespace Net {
 		, m_usSeqNone(0)
 		, m_ulZeroLengthRecvCount(0)
 		, m_lPendingRecvCount(0)
+		, m_RunningThreadID(ThisThread::GetThreadID())
 		, m_ulNetCtrlTime(DurationMS(0))
 		, m_ulNetCtrlTryTime(DurationMS(0))
 	{
@@ -241,22 +242,22 @@ namespace Net {
 
 
 
-	HRESULT Connection::ClearQueues()
+	Result Connection::ClearQueues()
 	{
 		m_RecvQueue.ClearQueue();
 		m_SendGuaQueue.ClearQueue();
 
 		// When the queue is cleared these synchronization variables need to be cleared
 		m_usSeqNone = 0;
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Make Ack packet and enqueue to SendNetCtrlqueue
-	HRESULT Connection::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	Result Connection::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
 	{
-		HRESULT hr = S_SYSTEM_OK;
-		HRESULT hrTem;
+		Result hr = ResultCode::SUCCESS;
+		Result hrTem;
 		MsgNetCtrl *pAckMsg = nullptr;
 		Message::MessageData *pMsg = nullptr;
 
@@ -275,7 +276,7 @@ namespace Net {
 		pMsg->GetMessageHeader()->msgID.IDs.Mobile = false;
 
 		pAckMsg = (MsgNetCtrl*)pMsg->GetMessageBuff();
-		pAckMsg->msgID.IDSeq.Sequence = uiSequence;
+		pAckMsg->msgID.SetSequence(uiSequence);
 		pAckMsg->rtnMsgID = msgID;
 
 		pMsg->UpdateChecksum();
@@ -284,7 +285,7 @@ namespace Net {
 
 		hrTem = SendRaw(pMsg);
 		//hrTem = GetNet()->SendMsg( this, pMsg );
-		if( FAILED(hrTem) )
+		if( !(hrTem) )
 		{
 			netTrace( TRC_GUARREANTEDCTRL, "NetCtrl Send failed : CID:{0}, msg:{1:X8}, seq:{2}, hr={3:X8}", 
 							GetCID(), 
@@ -293,7 +294,7 @@ namespace Net {
 							hrTem );
 
 			// ignore io send fail except connection closed
-			if( hrTem == ((HRESULT)E_NET_CONNECTION_CLOSED) )
+			if( hrTem == ((Result)ResultCode::E_NET_CONNECTION_CLOSED) )
 			{
 				goto Proc_End;
 			}
@@ -312,12 +313,12 @@ namespace Net {
 	}
 
 	// Called on connection result
-	void Connection::OnConnectionResult( HRESULT hrConnect )
+	void Connection::OnConnectionResult( Result hrConnect )
 	{
 		EnqueueConnectionEvent( IConnection::Event( IConnection::Event::EVT_CONNECTION_RESULT, hrConnect)  );
 
 
-		if( FAILED(hrConnect) )
+		if( !(hrConnect) )
 		{
 			netTrace(TRC_CONNECTION, "Connection failed CID:{0}, Dst={1}:{2}, hr={3:X8}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort, hrConnect);
 			if (GetConnectionState() != IConnection::STATE_DISCONNECTED)
@@ -343,7 +344,7 @@ namespace Net {
 	}
 
 	// Initialize packet synchronization
-	HRESULT Connection::InitSynchronization()
+	Result Connection::InitSynchronization()
 	{
 		UpdateConnectionTime();
 
@@ -351,13 +352,13 @@ namespace Net {
 
 		m_RecvQueue.ClearQueue();
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 	// Initialize connection
-	HRESULT Connection::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
+	Result Connection::InitConnection( SOCKET socket, const ConnectionInformation &connectInfo )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		netAssert(GetConnectionState() == STATE_DISCONNECTED);
 		// Except client everybody should have port number when it gets here
@@ -397,15 +398,15 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace(TRC_CONNECTION, "InitConnection CID:{0}, Addr:{1}:{2} hr:{3:X8}", GetCID(), connectInfo.Remote.strAddr, connectInfo.Remote.usPort, hr);
+		netTrace(TRC_CONNECTION, "InitConnection CID:{0}, sock:{1}, from:{2}, to:{3} hr:{4:X8}", GetCID(), socket, connectInfo.Local, connectInfo.Remote, hr);
 
 		return hr;
 	}
 
 	// Disconnect connection
-	HRESULT Connection::Disconnect(const char* reason)
+	Result Connection::Disconnect(const char* reason)
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if( GetConnectionState() != STATE_DISCONNECTING 
 			&& GetConnectionState() != STATE_DISCONNECTED)
@@ -417,7 +418,7 @@ namespace Net {
 
 			EnqueueConnectionEvent(IConnection::Event(IConnection::Event::EVT_STATE_CHANGE, GetConnectionState()));
 
-			netTrace( TRC_CONNECTION, "Entering Disconnect CID:{0}, reason:{1}", GetCID(), reason );
+			netTrace( TRC_CONNECTION, "Entering Disconnect CID:{0}, sock:{1}, reason:{2}", GetCID(), GetSocket(), reason );
 		}
 
 	//Proc_End:
@@ -427,9 +428,9 @@ namespace Net {
 
 
 	// Close connection
-	HRESULT Connection::CloseConnection()
+	Result Connection::CloseConnection()
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
@@ -441,7 +442,7 @@ namespace Net {
 		UpdateConnectionTime();
 		//m_tConnectionTime = 0;
 
-		netTrace( TRC_CONNECTION, "Connection Closed CID:{0}, Addr:{1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
+		netTrace( TRC_CONNECTION, "Connection Closed CID:{0}, sock:{1}, Addr:{2}", GetCID(), GetSocket(), GetConnectionInfo().Remote );
 
 		EnqueueConnectionEvent(IConnection::Event(IConnection::Event::EVT_DISCONNECTED, GetConnectionState()));
 
@@ -451,15 +452,15 @@ namespace Net {
 	}
 
 	//// Get Recived message
-	//HRESULT Connection::GetRecv( Message::MessageData* &pMsg )
+	//Result Connection::GetRecv( Message::MessageData* &pMsg )
 	//{
 	//	return m_RecvQueue.Dequeue( pMsg );
 	//}
 
 
-	HRESULT Connection::OnRecv( Message::MessageData *pMsg )
+	Result Connection::OnRecv( Message::MessageData *pMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 	
 		if (pMsg == nullptr)
 			return hr;
@@ -480,7 +481,7 @@ namespace Net {
 		{
 			netChk(GetRecvQueue().Enqueue(pMsg));
 		}
-		else if (FAILED(GetEventHandler()->OnRecvMessage(this, pMsg)))
+		else if (!(GetEventHandler()->OnRecvMessage(this, pMsg)))
 		{
 			netTrace(TRC_GUARREANTEDCTRL, "Failed to route a message to recv msg:{0}", msgID);
 			if (pMsg != nullptr)
@@ -494,7 +495,7 @@ namespace Net {
 
 	Proc_End:
 
-		Assert(FAILED(hr) || pMsg == nullptr);
+		Assert(!(hr) || pMsg == nullptr);
 		Util::SafeRelease( pMsg );
 
 		return hr;
@@ -502,13 +503,13 @@ namespace Net {
 
 
 	// Query connection event
-	HRESULT Connection::DequeueConnectionEvent( Event& curEvent )
+	Result Connection::DequeueConnectionEvent( Event& curEvent )
 	{
 		return m_EventQueue.Dequeue( curEvent );
 	}
 
 	// Add network event to queue
-	HRESULT Connection::EnqueueConnectionEvent(const IConnection::Event &evt)
+	Result Connection::EnqueueConnectionEvent(const IConnection::Event &evt)
 	{
 		if (GetEventHandler())
 		{
@@ -520,20 +521,20 @@ namespace Net {
 		}
 		//return m_EventQueue.Enqueue( evt );
 
-		return S_SYSTEM_OK;
+		return ResultCode::SUCCESS;
 	}
 
 
 	// Get received Message
-	HRESULT Connection::GetRecvMessage( Message::MessageData* &pIMsg )
+	Result Connection::GetRecvMessage( Message::MessageData* &pIMsg )
 	{
-		HRESULT hr = S_SYSTEM_OK;
+		Result hr = ResultCode::SUCCESS;
 
 		pIMsg = nullptr;
 
-		if( FAILED(GetRecvQueue().Dequeue( pIMsg )) )
+		if( !(GetRecvQueue().Dequeue( pIMsg )) )
 		{
-			hr = E_SYSTEM_FAIL;
+			hr = ResultCode::FAIL;
 			goto Proc_End;
 		}
 
@@ -543,13 +544,13 @@ namespace Net {
 			if (uiPolicy == 0
 				|| uiPolicy >= POLICY_NETMAX) // invalid policy
 			{
-				netErr(E_NET_BADPACKET_NOTEXPECTED);
+				netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 			}
 		}
 
 	Proc_End:
 
-		if( FAILED(hr) )
+		if( !(hr) )
 			Util::SafeRelease( pIMsg );
 
 		return hr;

@@ -35,7 +35,7 @@ namespace BR
 			{}
 
 			// Cmd: Create a game instance
-			virtual HRESULT CreateGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const HRESULT &InResult ) = 0;
+			virtual Result CreateGameRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 			// C2S: Game instance notify of deletion
 
 		}; // class ISvrPolicyGameInstanceManager : public Net::INetPolicy
@@ -51,9 +51,9 @@ namespace BR
 			{}
 
 			// Cmd: Create a game instance
-			virtual HRESULT CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer ) = 0;
+			virtual Result CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer ) = 0;
 			// C2S: Game instance notify of deletion
-			virtual HRESULT GameDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount ) = 0;
+			virtual Result GameDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount ) = 0;
 
 		}; // class IPolicyGameInstanceManager : public Net::INetPolicy
 

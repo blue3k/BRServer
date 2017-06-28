@@ -1455,7 +1455,7 @@ static int set_table_opts(unsigned long *flags, const char *arg,
     return 0;
 }
 
-void print_name(BIO *out, const char *title, X509_NAME *nm,
+void print_name(BIO *out, const char *title, SSL_X509_NAME *nm,
                 unsigned long lflags)
 {
     char *buf;
@@ -2126,7 +2126,7 @@ int parse_yesno(const char *str, int def)
  * subject is expected to be in the format /type0=value0/type1=value1/type2=...
  * where characters may be escaped by \
  */
-X509_NAME *parse_name(char *subject, long chtype, int multirdn)
+SSL_X509_NAME *parse_name(char *subject, long chtype, int multirdn)
 {
     size_t buflen = strlen(subject) + 1; /* to copy the types and values
                                           * into. due to escaping, the copy
@@ -2140,7 +2140,7 @@ X509_NAME *parse_name(char *subject, long chtype, int multirdn)
     char *sp = subject, *bp = buf;
     int i, ne_num = 0;
 
-    X509_NAME *n = NULL;
+    SSL_X509_NAME *n = NULL;
     int nid;
 
     if (!buf || !ne_types || !ne_values || !mval) {
@@ -2242,7 +2242,7 @@ X509_NAME *parse_name(char *subject, long chtype, int multirdn)
     return n;
 
  error:
-    X509_NAME_free(n);
+    SSL_X509_NAME_free(n);
     if (ne_values)
         OPENSSL_free(ne_values);
     if (ne_types)
@@ -2849,7 +2849,7 @@ static X509_CRL *load_crl_crldp(STACK_OF(DIST_POINT) *crldp)
  * anything.
  */
 
-static STACK_OF(X509_CRL) *crls_http_cb(X509_STORE_CTX *ctx, X509_NAME *nm)
+static STACK_OF(X509_CRL) *crls_http_cb(X509_STORE_CTX *ctx, SSL_X509_NAME *nm)
 {
     X509 *x;
     STACK_OF(X509_CRL) *crls = NULL;

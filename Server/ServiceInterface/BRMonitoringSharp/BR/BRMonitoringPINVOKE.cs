@@ -188,17 +188,14 @@ class BRMonitoringPINVOKE {
   }
 
 
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ANDROID_get")]
+  public static extern bool ANDROID_get();
+
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_LINUX_get")]
+  public static extern bool LINUX_get();
+
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_WINDOWS_get")]
   public static extern bool WINDOWS_get();
-
-  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_TRUE_get")]
-  public static extern int TRUE_get();
-
-  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_FALSE_get")]
-  public static extern int FALSE_get();
-
-  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MAX_PATH_get")]
-  public static extern int MAX_PATH_get();
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetAddress_MAX_NETNAME_get")]
   public static extern int NetAddress_MAX_NETNAME_get();
@@ -348,7 +345,7 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr new_PlayerInformation__SWIG_2(ulong jarg1, ulong jarg2, string jarg3, uint jarg4, byte jarg5, ulong jarg6);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PlayerInformation_InitPlayerInformation")]
-  public static extern int PlayerInformation_InitPlayerInformation(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, ulong jarg3, string jarg4, uint jarg5, byte jarg6, ulong jarg7);
+  public static extern global::System.IntPtr PlayerInformation_InitPlayerInformation(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, ulong jarg3, string jarg4, uint jarg5, byte jarg6, ulong jarg7);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PlayerInformation_CopyFrom")]
   public static extern global::System.IntPtr PlayerInformation_CopyFrom(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -546,7 +543,7 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr new_GameLogChatMessage(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_GameLogChatMessage_SetChatMessage")]
-  public static extern int GameLogChatMessage_SetChatMessage(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, byte jarg3, int jarg4, string jarg5);
+  public static extern global::System.IntPtr GameLogChatMessage_SetChatMessage(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, byte jarg3, int jarg4, string jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_GameLogGameStateChange_GameState_set")]
   public static extern void GameLogGameStateChange_GameState_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
@@ -594,10 +591,10 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr new_GameLogVote(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_GameLogVote_InitializeVote")]
-  public static extern int GameLogVote_InitializeVote(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+  public static extern global::System.IntPtr GameLogVote_InitializeVote(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_GameLogVote_SetVoteStatus")]
-  public static extern int GameLogVote_SetVoteStatus(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, ulong jarg3);
+  public static extern global::System.IntPtr GameLogVote_SetVoteStatus(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, ulong jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_GameLogVoteResult_NumberOfRanker_set")]
   public static extern void GameLogVoteResult_NumberOfRanker_set(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -981,7 +978,7 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr new_MatchingQueueItem__SWIG_3(int jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MatchingQueueItem_SetQueueItem")]
-  public static extern int MatchingQueueItem_SetQueueItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, ulong jarg3, uint jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
+  public static extern global::System.IntPtr MatchingQueueItem_SetQueueItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, ulong jarg3, uint jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MatchingQueueItem_CopyFrom")]
   public static extern global::System.IntPtr MatchingQueueItem_CopyFrom(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -1179,10 +1176,10 @@ class BRMonitoringPINVOKE {
   public static extern void MessageData_UpdateChecksumNEncrypt(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageData_ValidateChecksum")]
-  public static extern int MessageData_ValidateChecksum(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr MessageData_ValidateChecksum(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageData_ValidateChecksumNDecrypt")]
-  public static extern int MessageData_ValidateChecksumNDecrypt(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr MessageData_ValidateChecksumNDecrypt(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageData_DeleteThis")]
   public static extern void MessageData_DeleteThis(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -1194,19 +1191,19 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr MessageBase_GetMessage(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageBase_GetParsingResult")]
-  public static extern int MessageBase_GetParsingResult(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr MessageBase_GetParsingResult(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageBase_ParseMsg")]
-  public static extern int MessageBase_ParseMsg(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr MessageBase_ParseMsg(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageBase_ParseIMsg")]
-  public static extern int MessageBase_ParseIMsg(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr MessageBase_ParseIMsg(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageBase_OverrideRouteContextDestination")]
-  public static extern int MessageBase_OverrideRouteContextDestination(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr MessageBase_OverrideRouteContextDestination(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_MessageBase_OverrideRouteInfomation")]
-  public static extern int MessageBase_OverrideRouteInfomation(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
+  public static extern global::System.IntPtr MessageBase_OverrideRouteInfomation(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_SharedObject")]
   public static extern global::System.IntPtr new_SharedObject();
@@ -1307,6 +1304,18 @@ class BRMonitoringPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_Event_EventType_get")]
   public static extern int IConnection_Event_EventType_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_Event_hr_set")]
+  public static extern void IConnection_Event_hr_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_Event_hr_get")]
+  public static extern global::System.IntPtr IConnection_Event_hr_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_Event_state_set")]
+  public static extern void IConnection_Event_state_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_Event_state_get")]
+  public static extern int IConnection_Event_state_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_IConnection_Event__SWIG_0")]
   public static extern global::System.IntPtr new_IConnection_Event__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -1314,7 +1323,7 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr new_IConnection_Event__SWIG_1();
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_IConnection_Event__SWIG_2")]
-  public static extern global::System.IntPtr new_IConnection_Event__SWIG_2(int jarg1, int jarg2);
+  public static extern global::System.IntPtr new_IConnection_Event__SWIG_2(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_IConnection_Event__SWIG_3")]
   public static extern global::System.IntPtr new_IConnection_Event__SWIG_3(int jarg1, int jarg2);
@@ -1422,7 +1431,7 @@ class BRMonitoringPINVOKE {
   public static extern void delete_IConnection(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_SetupNet")]
-  public static extern int IConnection_SetupNet(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, System.UInt64 jarg3);
+  public static extern global::System.IntPtr IConnection_SetupNet(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, System.UInt64 jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_GetConnectionInfo")]
   public static extern global::System.IntPtr IConnection_GetConnectionInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -1446,7 +1455,7 @@ class BRMonitoringPINVOKE {
   public static extern void IConnection_SetLocalClass(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_CreatePolicy")]
-  public static extern int IConnection_CreatePolicy(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr IConnection_CreatePolicy(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_GetUData")]
   public static extern System.UInt64 IConnection_GetUData(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -1469,17 +1478,17 @@ class BRMonitoringPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_SetConnectionEventHandler")]
   public static extern void IConnection_SetConnectionEventHandler(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_InitConnection")]
-  public static extern int IConnection_InitConnection(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
+  [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_InitConnectionNClass")]
+  public static extern global::System.IntPtr IConnection_InitConnectionNClass(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_Disconnect")]
-  public static extern int IConnection_Disconnect(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+  public static extern global::System.IntPtr IConnection_Disconnect(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_CloseConnection")]
-  public static extern int IConnection_CloseConnection(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr IConnection_CloseConnection(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_Send")]
-  public static extern int IConnection_Send(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr IConnection_Send(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_GetRecvMessageCount")]
   public static extern uint IConnection_GetRecvMessageCount(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -1488,19 +1497,19 @@ class BRMonitoringPINVOKE {
   public static extern uint IConnection_GetConnectionEventCount(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_DequeueConnectionEvent")]
-  public static extern int IConnection_DequeueConnectionEvent(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr IConnection_DequeueConnectionEvent(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_GetRecvMessage")]
-  public static extern int IConnection_GetRecvMessage(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr IConnection_GetRecvMessage(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_UpdateNetCtrl")]
-  public static extern int IConnection_UpdateNetCtrl(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr IConnection_UpdateNetCtrl(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_UpdateSendQueue")]
-  public static extern int IConnection_UpdateSendQueue(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr IConnection_UpdateSendQueue(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnection_UpdateSendBufferQueue")]
-  public static extern int IConnection_UpdateSendBufferQueue(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr IConnection_UpdateSendBufferQueue(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_delete_IConnectionEventHandler")]
   public static extern void delete_IConnectionEventHandler(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -1509,13 +1518,13 @@ class BRMonitoringPINVOKE {
   public static extern void IConnectionEventHandler_OnConnectionEvent(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnectionEventHandler_OnRecvMessage")]
-  public static extern int IConnectionEventHandler_OnRecvMessage(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr IConnectionEventHandler_OnRecvMessage(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnectionEventHandler_OnNetSyncMessage")]
-  public static extern int IConnectionEventHandler_OnNetSyncMessage(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr IConnectionEventHandler_OnNetSyncMessage(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IConnectionEventHandler_OnNetSendReadyMessage")]
-  public static extern int IConnectionEventHandler_OnNetSendReadyMessage(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr IConnectionEventHandler_OnNetSendReadyMessage(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_INet_Event_EventType_set")]
   public static extern void INet_Event_EventType_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
@@ -1569,25 +1578,25 @@ class BRMonitoringPINVOKE {
   public static extern bool INet_IsReady(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_INet_DequeueNetEvent")]
-  public static extern int INet_DequeueNetEvent(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr INet_DequeueNetEvent(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_INet_EnqueueNetEvent")]
-  public static extern int INet_EnqueueNetEvent(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr INet_EnqueueNetEvent(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_INet_Connect")]
-  public static extern int INet_Connect(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, int jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
+  public static extern global::System.IntPtr INet_Connect(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, uint jarg3, int jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_INet_ReleaseConnection")]
-  public static extern int INet_ReleaseConnection(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr INet_ReleaseConnection(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_INet_TakeOverConnection")]
-  public static extern int INet_TakeOverConnection(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr INet_TakeOverConnection(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IClient_GetConnection")]
-  public static extern int IClient_GetConnection(global::System.Runtime.InteropServices.HandleRef jarg1, System.UInt64 jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr IClient_GetConnection(global::System.Runtime.InteropServices.HandleRef jarg1, System.UInt64 jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_IClient_ConnectCli")]
-  public static extern int IClient_ConnectCli(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr IClient_ConnectCli(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_INetPolicy")]
   public static extern global::System.IntPtr new_INetPolicy(uint jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -1608,7 +1617,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayInt64_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt64_SetSize")]
-  public static extern int ArrayInt64_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayInt64_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt64_resize")]
   public static extern void ArrayInt64_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -1632,22 +1641,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayInt64_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt64_Reserve")]
-  public static extern int ArrayInt64_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayInt64_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt64_data")]
   public static extern global::System.IntPtr ArrayInt64_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt64_push_back")]
-  public static extern int ArrayInt64_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayInt64_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt64_AddItems")]
-  public static extern int ArrayInt64_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayInt64_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt64_RemoveAt")]
-  public static extern int ArrayInt64_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayInt64_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt64_RemoveItem")]
-  public static extern int ArrayInt64_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayInt64_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt64_FindItem")]
   public static extern int ArrayInt64_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -1665,7 +1674,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayUInt64_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt64_SetSize")]
-  public static extern int ArrayUInt64_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayUInt64_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt64_resize")]
   public static extern void ArrayUInt64_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -1689,22 +1698,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayUInt64_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt64_Reserve")]
-  public static extern int ArrayUInt64_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayUInt64_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt64_data")]
   public static extern global::System.IntPtr ArrayUInt64_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt64_push_back")]
-  public static extern int ArrayUInt64_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
+  public static extern global::System.IntPtr ArrayUInt64_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt64_AddItems")]
-  public static extern int ArrayUInt64_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayUInt64_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt64_RemoveAt")]
-  public static extern int ArrayUInt64_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayUInt64_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt64_RemoveItem")]
-  public static extern int ArrayUInt64_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
+  public static extern global::System.IntPtr ArrayUInt64_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt64_FindItem")]
   public static extern int ArrayUInt64_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
@@ -1722,7 +1731,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayInt32_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt32_SetSize")]
-  public static extern int ArrayInt32_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayInt32_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt32_resize")]
   public static extern void ArrayInt32_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -1746,22 +1755,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayInt32_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt32_Reserve")]
-  public static extern int ArrayInt32_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayInt32_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt32_data")]
   public static extern global::System.IntPtr ArrayInt32_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt32_push_back")]
-  public static extern int ArrayInt32_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayInt32_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt32_AddItems")]
-  public static extern int ArrayInt32_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayInt32_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt32_RemoveAt")]
-  public static extern int ArrayInt32_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayInt32_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt32_RemoveItem")]
-  public static extern int ArrayInt32_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayInt32_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayInt32_FindItem")]
   public static extern int ArrayInt32_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
@@ -1779,7 +1788,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayUInt32_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt32_SetSize")]
-  public static extern int ArrayUInt32_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayUInt32_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt32_resize")]
   public static extern void ArrayUInt32_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -1803,22 +1812,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayUInt32_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt32_Reserve")]
-  public static extern int ArrayUInt32_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayUInt32_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt32_data")]
   public static extern global::System.IntPtr ArrayUInt32_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt32_push_back")]
-  public static extern int ArrayUInt32_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayUInt32_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt32_AddItems")]
-  public static extern int ArrayUInt32_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayUInt32_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt32_RemoveAt")]
-  public static extern int ArrayUInt32_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayUInt32_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt32_RemoveItem")]
-  public static extern int ArrayUInt32_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayUInt32_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayUInt32_FindItem")]
   public static extern int ArrayUInt32_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -1836,7 +1845,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayBYTE_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayBYTE_SetSize")]
-  public static extern int ArrayBYTE_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayBYTE_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayBYTE_resize")]
   public static extern void ArrayBYTE_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -1860,22 +1869,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayBYTE_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayBYTE_Reserve")]
-  public static extern int ArrayBYTE_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayBYTE_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayBYTE_data")]
   public static extern global::System.IntPtr ArrayBYTE_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayBYTE_push_back")]
-  public static extern int ArrayBYTE_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+  public static extern global::System.IntPtr ArrayBYTE_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayBYTE_AddItems")]
-  public static extern int ArrayBYTE_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayBYTE_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayBYTE_RemoveAt")]
-  public static extern int ArrayBYTE_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayBYTE_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayBYTE_RemoveItem")]
-  public static extern int ArrayBYTE_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+  public static extern global::System.IntPtr ArrayBYTE_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayBYTE_FindItem")]
   public static extern int ArrayBYTE_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
@@ -1893,7 +1902,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayChar_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayChar_SetSize")]
-  public static extern int ArrayChar_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayChar_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayChar_resize")]
   public static extern void ArrayChar_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -1917,22 +1926,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayChar_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayChar_Reserve")]
-  public static extern int ArrayChar_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayChar_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayChar_data")]
   public static extern string ArrayChar_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayChar_push_back")]
-  public static extern int ArrayChar_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, char jarg2);
+  public static extern global::System.IntPtr ArrayChar_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, char jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayChar_AddItems")]
-  public static extern int ArrayChar_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, string jarg3);
+  public static extern global::System.IntPtr ArrayChar_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, string jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayChar_RemoveAt")]
-  public static extern int ArrayChar_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayChar_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayChar_RemoveItem")]
-  public static extern int ArrayChar_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, char jarg2);
+  public static extern global::System.IntPtr ArrayChar_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, char jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayChar_FindItem")]
   public static extern int ArrayChar_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, char jarg2);
@@ -1950,7 +1959,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayEntityUID_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayEntityUID_SetSize")]
-  public static extern int ArrayEntityUID_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayEntityUID_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayEntityUID_resize")]
   public static extern void ArrayEntityUID_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -1974,22 +1983,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayEntityUID_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayEntityUID_Reserve")]
-  public static extern int ArrayEntityUID_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayEntityUID_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayEntityUID_data")]
   public static extern global::System.IntPtr ArrayEntityUID_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayEntityUID_push_back")]
-  public static extern int ArrayEntityUID_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayEntityUID_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayEntityUID_AddItems")]
-  public static extern int ArrayEntityUID_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayEntityUID_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayEntityUID_RemoveAt")]
-  public static extern int ArrayEntityUID_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayEntityUID_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayEntityUID_RemoveItem")]
-  public static extern int ArrayEntityUID_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayEntityUID_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayEntityUID_FindItem")]
   public static extern int ArrayEntityUID_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -2007,7 +2016,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayPerformanceCounterInfo_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInfo_SetSize")]
-  public static extern int ArrayPerformanceCounterInfo_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInfo_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInfo_resize")]
   public static extern void ArrayPerformanceCounterInfo_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -2031,22 +2040,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayPerformanceCounterInfo_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInfo_Reserve")]
-  public static extern int ArrayPerformanceCounterInfo_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInfo_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInfo_data")]
   public static extern global::System.IntPtr ArrayPerformanceCounterInfo_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInfo_push_back")]
-  public static extern int ArrayPerformanceCounterInfo_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInfo_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInfo_AddItems")]
-  public static extern int ArrayPerformanceCounterInfo_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInfo_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInfo_RemoveAt")]
-  public static extern int ArrayPerformanceCounterInfo_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInfo_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInfo_RemoveItem")]
-  public static extern int ArrayPerformanceCounterInfo_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInfo_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInfo_FindItem")]
   public static extern int ArrayPerformanceCounterInfo_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -2064,7 +2073,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayPerformanceCounterInstanceInfo_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstanceInfo_SetSize")]
-  public static extern int ArrayPerformanceCounterInstanceInfo_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstanceInfo_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstanceInfo_resize")]
   public static extern void ArrayPerformanceCounterInstanceInfo_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -2088,22 +2097,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayPerformanceCounterInstanceInfo_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstanceInfo_Reserve")]
-  public static extern int ArrayPerformanceCounterInstanceInfo_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstanceInfo_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstanceInfo_data")]
   public static extern global::System.IntPtr ArrayPerformanceCounterInstanceInfo_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstanceInfo_push_back")]
-  public static extern int ArrayPerformanceCounterInstanceInfo_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstanceInfo_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstanceInfo_AddItems")]
-  public static extern int ArrayPerformanceCounterInstanceInfo_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstanceInfo_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstanceInfo_RemoveAt")]
-  public static extern int ArrayPerformanceCounterInstanceInfo_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstanceInfo_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstanceInfo_RemoveItem")]
-  public static extern int ArrayPerformanceCounterInstanceInfo_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstanceInfo_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstanceInfo_FindItem")]
   public static extern int ArrayPerformanceCounterInstanceInfo_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -2130,10 +2139,10 @@ class BRMonitoringPINVOKE {
   public static extern System.Int64 PerformanceCounter_GetRawValue(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounter_CopyTo")]
-  public static extern int PerformanceCounter_CopyTo(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr PerformanceCounter_CopyTo(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounter_CopyFrom")]
-  public static extern int PerformanceCounter_CopyFrom(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr PerformanceCounter_CopyFrom(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_delete_ArrayPerformanceCounterPtr")]
   public static extern void delete_ArrayPerformanceCounterPtr(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -2145,7 +2154,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayPerformanceCounterPtr_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterPtr_SetSize")]
-  public static extern int ArrayPerformanceCounterPtr_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterPtr_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterPtr_resize")]
   public static extern void ArrayPerformanceCounterPtr_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -2169,22 +2178,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayPerformanceCounterPtr_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterPtr_Reserve")]
-  public static extern int ArrayPerformanceCounterPtr_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterPtr_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterPtr_data")]
   public static extern global::System.IntPtr ArrayPerformanceCounterPtr_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterPtr_push_back")]
-  public static extern int ArrayPerformanceCounterPtr_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterPtr_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterPtr_AddItems")]
-  public static extern int ArrayPerformanceCounterPtr_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayPerformanceCounterPtr_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterPtr_RemoveAt")]
-  public static extern int ArrayPerformanceCounterPtr_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterPtr_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterPtr_RemoveItem")]
-  public static extern int ArrayPerformanceCounterPtr_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterPtr_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterPtr_FindItem")]
   public static extern int ArrayPerformanceCounterPtr_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -2208,7 +2217,7 @@ class BRMonitoringPINVOKE {
   public static extern void PerformanceCounterInstance_RegisterToClient(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounterInstance_AddCounter")]
-  public static extern int PerformanceCounterInstance_AddCounter(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr PerformanceCounterInstance_AddCounter(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_PerformanceCounterInstancePtr__SWIG_0")]
   public static extern global::System.IntPtr new_PerformanceCounterInstancePtr__SWIG_0();
@@ -2247,7 +2256,7 @@ class BRMonitoringPINVOKE {
   public static extern uint ArrayPerformanceCounterInstancePtr_size(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstancePtr_SetSize")]
-  public static extern int ArrayPerformanceCounterInstancePtr_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstancePtr_SetSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstancePtr_resize")]
   public static extern void ArrayPerformanceCounterInstancePtr_resize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
@@ -2271,22 +2280,22 @@ class BRMonitoringPINVOKE {
   public static extern void ArrayPerformanceCounterInstancePtr_SetIncreaseSize(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstancePtr_Reserve")]
-  public static extern int ArrayPerformanceCounterInstancePtr_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstancePtr_Reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstancePtr_data")]
   public static extern global::System.IntPtr ArrayPerformanceCounterInstancePtr_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstancePtr_push_back")]
-  public static extern int ArrayPerformanceCounterInstancePtr_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstancePtr_push_back(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstancePtr_AddItems")]
-  public static extern int ArrayPerformanceCounterInstancePtr_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstancePtr_AddItems(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstancePtr_RemoveAt")]
-  public static extern int ArrayPerformanceCounterInstancePtr_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstancePtr_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstancePtr_RemoveItem")]
-  public static extern int ArrayPerformanceCounterInstancePtr_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr ArrayPerformanceCounterInstancePtr_RemoveItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_ArrayPerformanceCounterInstancePtr_FindItem")]
   public static extern int ArrayPerformanceCounterInstancePtr_FindItem(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
@@ -2301,16 +2310,16 @@ class BRMonitoringPINVOKE {
   public static extern global::System.IntPtr new_PerformanceCounterServer_MessageHandler(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounterServer_MessageHandler_OnRecv")]
-  public static extern int PerformanceCounterServer_MessageHandler_OnRecv(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr PerformanceCounterServer_MessageHandler_OnRecv(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounterServer_Initialize__SWIG_0")]
-  public static extern int PerformanceCounterServer_Initialize__SWIG_0(string jarg1, uint jarg2);
+  public static extern global::System.IntPtr PerformanceCounterServer_Initialize__SWIG_0(string jarg1, uint jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounterServer_Initialize__SWIG_1")]
-  public static extern int PerformanceCounterServer_Initialize__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr PerformanceCounterServer_Initialize__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounterServer_Terminate")]
-  public static extern int PerformanceCounterServer_Terminate();
+  public static extern global::System.IntPtr PerformanceCounterServer_Terminate();
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounterServer_GetInstanceCount")]
   public static extern uint PerformanceCounterServer_GetInstanceCount();
@@ -2319,76 +2328,76 @@ class BRMonitoringPINVOKE {
   public static extern uint PerformanceCounterServer_GetInstanceList(uint jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounterServer_GetInstance__SWIG_0")]
-  public static extern int PerformanceCounterServer_GetInstance__SWIG_0(ulong jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr PerformanceCounterServer_GetInstance__SWIG_0(ulong jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_PerformanceCounterServer_GetInstance__SWIG_1")]
-  public static extern int PerformanceCounterServer_GetInstance__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr PerformanceCounterServer_GetInstance__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_NetPolicyMonitoring")]
   public static extern global::System.IntPtr new_NetPolicyMonitoring(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyMonitoring_GetInstanceListCmd")]
-  public static extern int NetPolicyMonitoring_GetInstanceListCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr NetPolicyMonitoring_GetInstanceListCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyMonitoring_RequestCounterValuesCmd")]
-  public static extern int NetPolicyMonitoring_RequestCounterValuesCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr NetPolicyMonitoring_RequestCounterValuesCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyMonitoring_PerformanceCounterNewC2SEvt")]
-  public static extern int NetPolicyMonitoring_PerformanceCounterNewC2SEvt(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
+  public static extern global::System.IntPtr NetPolicyMonitoring_PerformanceCounterNewC2SEvt(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyMonitoring_PerformanceCounterFreeC2SEvt")]
-  public static extern int NetPolicyMonitoring_PerformanceCounterFreeC2SEvt(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr NetPolicyMonitoring_PerformanceCounterFreeC2SEvt(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyMonitoring_PerformanceCounterUpdateC2SEvt")]
-  public static extern int NetPolicyMonitoring_PerformanceCounterUpdateC2SEvt(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+  public static extern global::System.IntPtr NetPolicyMonitoring_PerformanceCounterUpdateC2SEvt(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_NetSvrPolicyMonitoring")]
   public static extern global::System.IntPtr new_NetSvrPolicyMonitoring(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyMonitoring_GetInstanceListRes")]
-  public static extern int NetSvrPolicyMonitoring_GetInstanceListRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
+  public static extern global::System.IntPtr NetSvrPolicyMonitoring_GetInstanceListRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyMonitoring_RequestCounterValuesRes")]
-  public static extern int NetSvrPolicyMonitoring_RequestCounterValuesRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
+  public static extern global::System.IntPtr NetSvrPolicyMonitoring_RequestCounterValuesRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyMonitoring_PerformanceCounterUpdateCounterInfoS2CEvt")]
-  public static extern int NetSvrPolicyMonitoring_PerformanceCounterUpdateCounterInfoS2CEvt(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr NetSvrPolicyMonitoring_PerformanceCounterUpdateCounterInfoS2CEvt(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_NetPolicyRanking")]
   public static extern global::System.IntPtr new_NetPolicyRanking(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_AddPlayerCmd")]
-  public static extern int NetPolicyRanking_AddPlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4, ulong jarg5, global::System.Runtime.InteropServices.HandleRef jarg6);
+  public static extern global::System.IntPtr NetPolicyRanking_AddPlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4, ulong jarg5, global::System.Runtime.InteropServices.HandleRef jarg6);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_RemovePlayerCmd")]
-  public static extern int NetPolicyRanking_RemovePlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4);
+  public static extern global::System.IntPtr NetPolicyRanking_RemovePlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_GetPlayerRankingCmd")]
-  public static extern int NetPolicyRanking_GetPlayerRankingCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4);
+  public static extern global::System.IntPtr NetPolicyRanking_GetPlayerRankingCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_UpdatePlayerCmd")]
-  public static extern int NetPolicyRanking_UpdatePlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4, ulong jarg5, global::System.Runtime.InteropServices.HandleRef jarg6);
+  public static extern global::System.IntPtr NetPolicyRanking_UpdatePlayerCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, ulong jarg4, ulong jarg5, global::System.Runtime.InteropServices.HandleRef jarg6);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetPolicyRanking_GetRankingCmd")]
-  public static extern int NetPolicyRanking_GetRankingCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, uint jarg4, uint jarg5);
+  public static extern global::System.IntPtr NetPolicyRanking_GetRankingCmd(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, uint jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_new_NetSvrPolicyRanking")]
   public static extern global::System.IntPtr new_NetSvrPolicyRanking(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_AddPlayerRes")]
-  public static extern int NetSvrPolicyRanking_AddPlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4, uint jarg5);
+  public static extern global::System.IntPtr NetSvrPolicyRanking_AddPlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_RemovePlayerRes")]
-  public static extern int NetSvrPolicyRanking_RemovePlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4);
+  public static extern global::System.IntPtr NetSvrPolicyRanking_RemovePlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_GetPlayerRankingRes")]
-  public static extern int NetSvrPolicyRanking_GetPlayerRankingRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4, uint jarg5);
+  public static extern global::System.IntPtr NetSvrPolicyRanking_GetPlayerRankingRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_UpdatePlayerRes")]
-  public static extern int NetSvrPolicyRanking_UpdatePlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4, uint jarg5);
+  public static extern global::System.IntPtr NetSvrPolicyRanking_UpdatePlayerRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_NetSvrPolicyRanking_GetRankingRes")]
-  public static extern int NetSvrPolicyRanking_GetRankingRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, int jarg4, uint jarg5);
+  public static extern global::System.IntPtr NetSvrPolicyRanking_GetRankingRes(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, uint jarg5);
 
   [global::System.Runtime.InteropServices.DllImport("BRMonitoring", EntryPoint="CSharp_InitializeNativeSystem")]
   public static extern int InitializeNativeSystem(string jarg1, string jarg2, string jarg3);

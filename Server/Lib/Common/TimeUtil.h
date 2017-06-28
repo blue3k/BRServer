@@ -113,7 +113,7 @@ namespace Util {
 		inline  void	SetTimerFunc( std::function<void()> funcOnExpired );
 
 		// set timer
-		HRESULT	SetTimer(DurationMS TimerDuration );
+		Result	SetTimer(DurationMS TimerDuration );
 
 		// clear timer
 		inline void	ClearTimer();
@@ -147,7 +147,7 @@ namespace Util {
 		~LibComponentTime();
 
 		// Initialize server component
-		virtual HRESULT InitializeComponent() override;
+		virtual Result InitializeComponent() override;
 		// Terminate server component
 		virtual void TerminateComponent() override;
 	};
@@ -165,6 +165,8 @@ namespace Util {
 	DurationMS TimeMinNonZero(DurationMS timeMs, DurationMS timeMs2);
 	TimeStampMS TimeMinNonZero(TimeStampMS timeMs, TimeStampMS timeMs2);
 
+
+	inline DurationMS TimeSinceRaw(TimeStampMS timeMs)				{ auto timeCur = Time.GetRawTimeMs(); return (timeCur > timeMs) ? (timeCur - timeMs) : DurationMS(0); }
 
 	inline DurationMS TimeSince(TimeStampMS timeMs)					{ auto timeCur = Time.GetTimeMs(); return (timeCur > timeMs) ? (timeCur - timeMs) : DurationMS(0); }
 	inline DurationSec TimeSinceUTC(TimeStampSec timeUTC)			{ auto timeCur = Time.GetTimeUTCSec(); return (timeCur > timeUTC) ? (timeCur - timeUTC) : DurationSec(0); }
