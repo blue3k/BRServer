@@ -226,6 +226,7 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="Game"/>
       <xs:enumeration value="Conspiracy"/>
+	  <xs:enumeration value="MyTownHero"/>
     </xs:restriction>
   </xs:simpleType>
   
