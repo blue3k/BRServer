@@ -16,31 +16,31 @@
 		</Cmd>
 		<Res>
 			<Params Type="NetAddress" Name="GameInsSvr"/>
-      <Params Type="UINT32" Name="TimeStamp"/>
+      <Params Type="uint32" Name="TimeStamp"/>
 			<Params Type="GameStateID" Name="GameState"/>
-      <Params Type="UINT8" Name="Day"/>
-      <Params Type="UINT8" Name="MaxPlayer"/>
-      <Params Type="UINT8" Name="PlayerIndex"/>
-      <Params Type="BYTE" Name="PlayerCharacter"/>
+      <Params Type="uint8" Name="Day"/>
+      <Params Type="uint8" Name="MaxPlayer"/>
+      <Params Type="uint8" Name="PlayerIndex"/>
+      <Params Type="uint8" Name="PlayerCharacter"/>
       <Params Type="PlayerRole" Name="Role"/>
-      <Params Type="UINT8" Name="Dead"/>
-      <Params Type="BYTE" Name="IsNewJoin"/>
-      <Params Type="BYTE" Name="ChatHistoryData" IsArray="true"/>
-      <Params Type="BYTE" Name="GameLogData" IsArray="true"/>
+      <Params Type="uint8" Name="Dead"/>
+      <Params Type="uint8" Name="IsNewJoin"/>
+      <Params Type="uint8" Name="ChatHistoryData" IsArray="true"/>
+      <Params Type="uint8" Name="GameLogData" IsArray="true"/>
     </Res>
 	</Command>
 
 	<S2CEvent Name="PlayerJoined" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player Joined">
 		<Params Type="PlayerInformation" Name="JoinedPlayer"/>
 		<Params Type="PlayerRole" Name="JoinedPlayerRole"/>
-		<Params Type="UINT8" Name="JoinedPlayerDead"/>
-    <Params Type="UINT8" Name="JoinedPlayerIndex"/>
-    <Params Type="UINT8" Name="JoinedPlayerCharacter"/>
+		<Params Type="uint8" Name="JoinedPlayerDead"/>
+    <Params Type="uint8" Name="JoinedPlayerIndex"/>
+    <Params Type="uint8" Name="JoinedPlayerCharacter"/>
   </S2CEvent>
 
 
   <C2SEvent Name="SetConfigPreset" Reliable="true" Crypto="No" Trace="DBG1" Desc="Change configue preset">
-    <Params Type="UINT32" Name="PresetID"/>
+    <Params Type="uint32" Name="PresetID"/>
   </C2SEvent>
 
 
@@ -99,17 +99,17 @@
 	</Command>
 
   <S2CEvent Name="GameAdvanced" Reliable="true" Crypto="No" Trace="DBG1" Desc="The game state is advanced">
-    <Params Type="UINT32" Name="TimeStamp"/>
+    <Params Type="uint32" Name="TimeStamp"/>
 		<Params Type="GameStateID" Name="GameState"/>
-    <Params Type="UINT8" Name="Day"/>
+    <Params Type="uint8" Name="Day"/>
   </S2CEvent>
 
 	<S2CEvent Name="GameEnded" Reliable="true" Crypto="No" Trace="DBG1" Desc="Game is ended">
 		<Params Type="GameWinner" Name="Winner"/>
-    <Params Type="UINT32" Name="GainedExp"/>
-    <Params Type="UINT32" Name="GainedGameMoney"/>
+    <Params Type="uint32" Name="GainedExp"/>
+    <Params Type="uint32" Name="GainedGameMoney"/>
     <Params Type="PlayerRole" Name="PlayedRole"/>
-    <Params Type="BYTE" Name="IsWon"/>
+    <Params Type="uint8" Name="IsWon"/>
   </S2CEvent>
 
     <Command Name="VoteGameAdvance" Reliable="true" Crypto="No" Trace="DBG1" Desc="*Vote game advance">
@@ -128,7 +128,7 @@
 		<Cmd>
 			<Params Type="PlayerID" Name="PlayerID"/>
 			<Params Type="PlayerID" Name="VoteTarget"/>
-			<Params Type="UINT32" Name="ActionSerial"/>
+			<Params Type="uint32" Name="ActionSerial"/>
 		</Cmd>
 		<Res>
 		</Res>
@@ -160,7 +160,7 @@
         <Params Type="PartyUID" Name="PartyUID" Desc="Party ID"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="ReplayMemberCount" Desc="Member count"/>
+        <Params Type="uint32" Name="ReplayMemberCount" Desc="Member count"/>
       </Res>
     </Command>
 

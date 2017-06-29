@@ -176,7 +176,7 @@ namespace Svr
 	// Add new connection
 	Result ServerEntityManager::AddServerEntity(NetClass netClass, ServerEntity* pServerEntity)
 	{
-		Result hr = ResultCode::SUCCESS;
+		Result hr = ResultCode::SUCCESS, res;
 		auto& entityTable = GetEntityTable();
 		svrChkPtr( pServerEntity );
 
@@ -191,7 +191,7 @@ namespace Svr
 		// Add to task list
 		svrChk( AddTickTask( pServerEntity ) );
 
-		svrChk(entityTable.Insert(pServerEntity->GetEntityID(), pServerEntity));
+		svrChk(entityTable.Insert(pServerEntity));
 
 		svrChk(m_ServerIDMap.Insert(pServerEntity->GetServerID(), pServerEntity));
 

@@ -129,7 +129,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
-				UINT16 numberofChatHistoryData = 0; BYTE* pChatHistoryData = nullptr;
+				UINT16 numberofChatHistoryData = 0; uint8_t* pChatHistoryData = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -141,7 +141,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PartyLeaderID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, (int)sizeof(BYTE)*numberofChatHistoryData ) );
+				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, (int)sizeof(uint8_t)*numberofChatHistoryData ) );
 				m_ChatHistoryData.SetLinkedBuffer(numberofChatHistoryData, numberofChatHistoryData, pChatHistoryData);
 
 
@@ -151,7 +151,7 @@ namespace BR
 
 			}; // Result JoinPartyRes::ParseMessage( MessageData* pIMsg )
 
-			Result JoinPartyRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
+			Result JoinPartyRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData )
 			{
  				Result hr;
 
@@ -162,7 +162,7 @@ namespace BR
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
 					+ sizeof(PlayerID)
-					+ sizeof(BYTE)*InChatHistoryData.GetSize() + sizeof(UINT16));
+					+ sizeof(uint8_t)*InChatHistoryData.GetSize() + sizeof(UINT16));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -176,7 +176,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InPartyLeaderID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &numberOfInChatHistoryData, sizeof(UINT16)); 
-				Protocol::PackParamCopy( pMsgData, InChatHistoryData.data(), (INT)(sizeof(BYTE)*InChatHistoryData.GetSize())); 
+				Protocol::PackParamCopy( pMsgData, InChatHistoryData.data(), (INT)(sizeof(uint8_t)*InChatHistoryData.GetSize())); 
 
 				pMsg = pNewMsg;
 
@@ -185,7 +185,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result JoinPartyRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData )
+			}; // Result JoinPartyRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData )
 
 			Result JoinPartyRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1139,7 +1139,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_QuickChatID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_QuickChatID, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -1148,7 +1148,7 @@ namespace BR
 
 			}; // Result QuickChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result QuickChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InQuickChatID )
+			Result QuickChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
 			{
  				Result hr;
 
@@ -1157,7 +1157,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -1167,7 +1167,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InQuickChatID, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InQuickChatID, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -1176,7 +1176,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result QuickChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InQuickChatID )
+			}; // Result QuickChatMessageC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
 
 			Result QuickChatMessageC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1229,7 +1229,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_SenderID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_QuickChatID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_QuickChatID, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -1238,7 +1238,7 @@ namespace BR
 
 			}; // Result QuickChatMessageS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result QuickChatMessageS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InSenderID, const UINT32 &InQuickChatID )
+			Result QuickChatMessageS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InSenderID, const uint32_t &InQuickChatID )
 			{
  				Result hr;
 
@@ -1247,7 +1247,7 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -1257,7 +1257,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InSenderID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InQuickChatID, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InQuickChatID, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -1266,7 +1266,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result QuickChatMessageS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InSenderID, const UINT32 &InQuickChatID )
+			}; // Result QuickChatMessageS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InSenderID, const uint32_t &InQuickChatID )
 
 			Result QuickChatMessageS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -1320,7 +1320,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MaxGamePlayers, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MaxGamePlayers, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -1329,7 +1329,7 @@ namespace BR
 
 			}; // Result StartGameMatchCmd::ParseMessage( MessageData* pIMsg )
 
-			Result StartGameMatchCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
+			Result StartGameMatchCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
 			{
  				Result hr;
 
@@ -1339,7 +1339,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(PlayerID)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -1350,7 +1350,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InMaxGamePlayers, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InMaxGamePlayers, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -1359,7 +1359,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result StartGameMatchCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
+			}; // Result StartGameMatchCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
 
 			Result StartGameMatchCmd::OverrideRouteContextDestination( EntityUID to )
 			{

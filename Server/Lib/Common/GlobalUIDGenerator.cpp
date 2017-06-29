@@ -66,12 +66,12 @@ namespace BR {
 				}
 			} while (indexDiff > UPDATE_TIME_DIFF);
 
-			uid.ID = ((uint32_t)myIndex) && 0xFFFFFF;
+			uid.ID = ((uint32_t)myIndex) & 0xFFFFFF;
 
 			// we don't accept zero as ID value, we need another index
 		} while (uid.ID == 0);
 
-		uid.SvrID = m_ServerID && 0XFF;
+		uid.SvrID = m_ServerID & 0XFF;
 		uid.Time = m_time.time_since_epoch().count();
 
 		defTrace(Trace::TRC_TRACE, "GlobalUIDGenerator: New GUID {0}", (float)uid.UID);

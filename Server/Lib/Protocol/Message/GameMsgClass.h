@@ -41,7 +41,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -82,12 +82,12 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				AccountID m_AccID;
 				AuthTicket m_Ticket;
-				UINT64 m_LoginEntityUID;
+				uint64_t m_LoginEntityUID;
 			public:
 				JoinGameServerCmd()
 					{}
@@ -100,14 +100,14 @@ namespace BR
 
 				const AccountID& GetAccID() const	{ return m_AccID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
-				const UINT64& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
+				const uint64_t& GetLoginEntityUID() const	{ return m_LoginEntityUID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID );
 
 			}; // class JoinGameServerCmd : public MessageBase
 
@@ -128,7 +128,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -183,7 +183,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -223,7 +223,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -270,7 +270,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				const char* m_ComplitionState;
@@ -314,7 +314,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -357,7 +357,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				const char* m_GCMRegisteredID;
@@ -401,7 +401,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -444,7 +444,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				const char* m_GCMRegisteredID;
@@ -488,7 +488,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -531,7 +531,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_FriendID;
@@ -573,7 +573,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -616,7 +616,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_InviterID;
@@ -660,7 +660,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -705,7 +705,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				FriendInformation m_Accepter;
@@ -748,7 +748,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_FriendID;
@@ -790,7 +790,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -835,7 +835,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_FriendID;
@@ -878,11 +878,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT16 m_StartIndex;
-				UINT16 m_Count;
+				uint16_t m_StartIndex;
+				uint16_t m_Count;
 			public:
 				GetFriendListCmd()
 					{}
@@ -893,15 +893,15 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT16& GetStartIndex() const	{ return m_StartIndex; };
-				const UINT16& GetCount() const	{ return m_Count; };
+				const uint16_t& GetStartIndex() const	{ return m_StartIndex; };
+				const uint16_t& GetCount() const	{ return m_Count; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT16 &InStartIndex, const UINT16 &InCount );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint16_t &InStartIndex, const uint16_t &InCount );
 
 			}; // class GetFriendListCmd : public MessageBase
 
@@ -922,13 +922,13 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT16 m_MaxFriendSlot;
-				UINT16 m_TotalNumberOfFriends;
-				UINT16 m_StartIndex;
+				uint16_t m_MaxFriendSlot;
+				uint16_t m_TotalNumberOfFriends;
+				uint16_t m_StartIndex;
 				LinkedArray<FriendInformation> m_FriendList;
 			public:
 				GetFriendListRes()
@@ -941,9 +941,9 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT16& GetMaxFriendSlot() const	{ return m_MaxFriendSlot; };
-				const UINT16& GetTotalNumberOfFriends() const	{ return m_TotalNumberOfFriends; };
-				const UINT16& GetStartIndex() const	{ return m_StartIndex; };
+				const uint16_t& GetMaxFriendSlot() const	{ return m_MaxFriendSlot; };
+				const uint16_t& GetTotalNumberOfFriends() const	{ return m_TotalNumberOfFriends; };
+				const uint16_t& GetStartIndex() const	{ return m_StartIndex; };
 				const Array<FriendInformation>& GetFriendList() const	{ return m_FriendList; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
@@ -951,7 +951,7 @@ namespace BR
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT16 &InMaxFriendSlot, const UINT16 &InTotalNumberOfFriends, const UINT16 &InStartIndex, const Array<FriendInformation>& InFriendList );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint16_t &InMaxFriendSlot, const uint16_t &InTotalNumberOfFriends, const uint16_t &InStartIndex, const Array<FriendInformation>& InFriendList );
 
 			}; // class GetFriendListRes : public MessageBase
 
@@ -973,7 +973,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -1013,7 +1013,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -1056,10 +1056,10 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT32 m_NotificationID;
+				uint32_t m_NotificationID;
 			public:
 				DeleteNotificationCmd()
 					{}
@@ -1070,14 +1070,14 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT32& GetNotificationID() const	{ return m_NotificationID; };
+				const uint32_t& GetNotificationID() const	{ return m_NotificationID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InNotificationID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint32_t &InNotificationID );
 
 			}; // class DeleteNotificationCmd : public MessageBase
 
@@ -1098,11 +1098,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT32 m_NotificationID;
+				uint32_t m_NotificationID;
 			public:
 				DeleteNotificationRes()
 					{}
@@ -1114,14 +1114,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT32& GetNotificationID() const	{ return m_NotificationID; };
+				const uint32_t& GetNotificationID() const	{ return m_NotificationID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InNotificationID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint32_t &InNotificationID );
 
 			}; // class DeleteNotificationRes : public MessageBase
 
@@ -1143,10 +1143,10 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT32 m_NotificationID;
+				uint32_t m_NotificationID;
 			public:
 				SetNotificationReadCmd()
 					{}
@@ -1157,14 +1157,14 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT32& GetNotificationID() const	{ return m_NotificationID; };
+				const uint32_t& GetNotificationID() const	{ return m_NotificationID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InNotificationID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint32_t &InNotificationID );
 
 			}; // class SetNotificationReadCmd : public MessageBase
 
@@ -1185,11 +1185,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT32 m_NotificationID;
+				uint32_t m_NotificationID;
 			public:
 				SetNotificationReadRes()
 					{}
@@ -1201,14 +1201,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT32& GetNotificationID() const	{ return m_NotificationID; };
+				const uint32_t& GetNotificationID() const	{ return m_NotificationID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InNotificationID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint32_t &InNotificationID );
 
 			}; // class SetNotificationReadRes : public MessageBase
 
@@ -1230,10 +1230,10 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT32 m_NotificationID;
+				uint32_t m_NotificationID;
 			public:
 				AcceptNotificationCmd()
 					{}
@@ -1244,14 +1244,14 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT32& GetNotificationID() const	{ return m_NotificationID; };
+				const uint32_t& GetNotificationID() const	{ return m_NotificationID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InNotificationID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint32_t &InNotificationID );
 
 			}; // class AcceptNotificationCmd : public MessageBase
 
@@ -1272,11 +1272,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT32 m_NotificationID;
+				uint32_t m_NotificationID;
 			public:
 				AcceptNotificationRes()
 					{}
@@ -1288,14 +1288,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT32& GetNotificationID() const	{ return m_NotificationID; };
+				const uint32_t& GetNotificationID() const	{ return m_NotificationID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InNotificationID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint32_t &InNotificationID );
 
 			}; // class AcceptNotificationRes : public MessageBase
 
@@ -1317,16 +1317,16 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT32 m_NotificationID;
+				uint32_t m_NotificationID;
 				NotificationType m_MessageID;
-				UINT64 m_MessageParam0;
-				UINT64 m_MessageParam1;
+				uint64_t m_MessageParam0;
+				uint64_t m_MessageParam1;
 				const char* m_MessageText;
-				BYTE m_IsRead;
-				UINT64 m_TimeStamp;
+				uint8_t m_IsRead;
+				uint64_t m_TimeStamp;
 			public:
 				NotifyS2CEvt()
 				:m_MessageText(nullptr)
@@ -1339,20 +1339,20 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT32& GetNotificationID() const	{ return m_NotificationID; };
+				const uint32_t& GetNotificationID() const	{ return m_NotificationID; };
 				const NotificationType& GetMessageID() const	{ return m_MessageID; };
-				const UINT64& GetMessageParam0() const	{ return m_MessageParam0; };
-				const UINT64& GetMessageParam1() const	{ return m_MessageParam1; };
+				const uint64_t& GetMessageParam0() const	{ return m_MessageParam0; };
+				const uint64_t& GetMessageParam1() const	{ return m_MessageParam1; };
 				const char* GetMessageText() const	{ return m_MessageText; };
-				const BYTE& GetIsRead() const	{ return m_IsRead; };
-				const UINT64& GetTimeStamp() const	{ return m_TimeStamp; };
+				const uint8_t& GetIsRead() const	{ return m_IsRead; };
+				const uint64_t& GetTimeStamp() const	{ return m_TimeStamp; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const BYTE &InIsRead, const UINT64 &InTimeStamp );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint8_t &InIsRead, const uint64_t &InTimeStamp );
 
 			}; // class NotifyS2CEvt : public MessageBase
 
@@ -1374,7 +1374,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				const char* m_PlayerEMail;
@@ -1418,7 +1418,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -1462,7 +1462,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_PlayerID;
@@ -1504,7 +1504,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -1549,7 +1549,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				LinkedArray<PlayerID> m_TargetPlayerID;
@@ -1591,7 +1591,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -1633,12 +1633,12 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_PlayerID;
-				UINT32 m_LatestActiveTime;
-				BYTE m_IsInGame;
+				uint32_t m_LatestActiveTime;
+				uint8_t m_IsInGame;
 			public:
 				NotifyPlayerStatusUpdatedS2CEvt()
 					{}
@@ -1650,15 +1650,15 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
-				const UINT32& GetLatestActiveTime() const	{ return m_LatestActiveTime; };
-				const BYTE& GetIsInGame() const	{ return m_IsInGame; };
+				const uint32_t& GetLatestActiveTime() const	{ return m_LatestActiveTime; };
+				const uint8_t& GetIsInGame() const	{ return m_IsInGame; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame );
 
 			}; // class NotifyPlayerStatusUpdatedS2CEvt : public MessageBase
 
@@ -1680,12 +1680,12 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RankingType m_RankingType;
-				BYTE m_BaseRanking;
-				BYTE m_Count;
+				uint8_t m_BaseRanking;
+				uint8_t m_Count;
 			public:
 				GetRankingListCmd()
 					{}
@@ -1697,15 +1697,15 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const RankingType& GetRankingType() const	{ return m_RankingType; };
-				const BYTE& GetBaseRanking() const	{ return m_BaseRanking; };
-				const BYTE& GetCount() const	{ return m_Count; };
+				const uint8_t& GetBaseRanking() const	{ return m_BaseRanking; };
+				const uint8_t& GetCount() const	{ return m_Count; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RankingType &InRankingType, const BYTE &InBaseRanking, const BYTE &InCount );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount );
 
 			}; // class GetRankingListCmd : public MessageBase
 
@@ -1726,7 +1726,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -1771,7 +1771,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -1811,31 +1811,31 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				INT16 m_Level;
-				INT64 m_Exp;
-				INT64 m_GameMoney;
-				INT64 m_Gem;
-				INT16 m_Stamina;
-				UINT32 m_LastUpdateTime;
-				INT32 m_TotalPlayed;
-				INT32 m_WinPlaySC;
-				INT32 m_WinPlaySM;
-				INT32 m_WinPlaySS;
-				INT32 m_LosePlaySC;
-				INT32 m_LosePlaySM;
-				INT32 m_LosePlaySS;
-				INT32 m_WinPlayNC;
-				INT32 m_WinPlayNM;
-				INT32 m_WinPlayNS;
-				INT32 m_LosePlayNC;
-				INT32 m_LosePlayNM;
-				INT32 m_LosePlayNS;
-				INT32 m_WeeklyWin;
-				INT32 m_WeeklyLose;
+				int16_t m_Level;
+				int64_t m_Exp;
+				int64_t m_GameMoney;
+				int64_t m_Gem;
+				int16_t m_Stamina;
+				uint32_t m_LastUpdateTime;
+				int32_t m_TotalPlayed;
+				int32_t m_WinPlaySC;
+				int32_t m_WinPlaySM;
+				int32_t m_WinPlaySS;
+				int32_t m_LosePlaySC;
+				int32_t m_LosePlaySM;
+				int32_t m_LosePlaySS;
+				int32_t m_WinPlayNC;
+				int32_t m_WinPlayNM;
+				int32_t m_WinPlayNS;
+				int32_t m_LosePlayNC;
+				int32_t m_LosePlayNM;
+				int32_t m_LosePlayNS;
+				int32_t m_WeeklyWin;
+				int32_t m_WeeklyLose;
 			public:
 				GetUserGamePlayerInfoRes()
 					{}
@@ -1847,34 +1847,34 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const INT16& GetLevel() const	{ return m_Level; };
-				const INT64& GetExp() const	{ return m_Exp; };
-				const INT64& GetGameMoney() const	{ return m_GameMoney; };
-				const INT64& GetGem() const	{ return m_Gem; };
-				const INT16& GetStamina() const	{ return m_Stamina; };
-				const UINT32& GetLastUpdateTime() const	{ return m_LastUpdateTime; };
-				const INT32& GetTotalPlayed() const	{ return m_TotalPlayed; };
-				const INT32& GetWinPlaySC() const	{ return m_WinPlaySC; };
-				const INT32& GetWinPlaySM() const	{ return m_WinPlaySM; };
-				const INT32& GetWinPlaySS() const	{ return m_WinPlaySS; };
-				const INT32& GetLosePlaySC() const	{ return m_LosePlaySC; };
-				const INT32& GetLosePlaySM() const	{ return m_LosePlaySM; };
-				const INT32& GetLosePlaySS() const	{ return m_LosePlaySS; };
-				const INT32& GetWinPlayNC() const	{ return m_WinPlayNC; };
-				const INT32& GetWinPlayNM() const	{ return m_WinPlayNM; };
-				const INT32& GetWinPlayNS() const	{ return m_WinPlayNS; };
-				const INT32& GetLosePlayNC() const	{ return m_LosePlayNC; };
-				const INT32& GetLosePlayNM() const	{ return m_LosePlayNM; };
-				const INT32& GetLosePlayNS() const	{ return m_LosePlayNS; };
-				const INT32& GetWeeklyWin() const	{ return m_WeeklyWin; };
-				const INT32& GetWeeklyLose() const	{ return m_WeeklyLose; };
+				const int16_t& GetLevel() const	{ return m_Level; };
+				const int64_t& GetExp() const	{ return m_Exp; };
+				const int64_t& GetGameMoney() const	{ return m_GameMoney; };
+				const int64_t& GetGem() const	{ return m_Gem; };
+				const int16_t& GetStamina() const	{ return m_Stamina; };
+				const uint32_t& GetLastUpdateTime() const	{ return m_LastUpdateTime; };
+				const int32_t& GetTotalPlayed() const	{ return m_TotalPlayed; };
+				const int32_t& GetWinPlaySC() const	{ return m_WinPlaySC; };
+				const int32_t& GetWinPlaySM() const	{ return m_WinPlaySM; };
+				const int32_t& GetWinPlaySS() const	{ return m_WinPlaySS; };
+				const int32_t& GetLosePlaySC() const	{ return m_LosePlaySC; };
+				const int32_t& GetLosePlaySM() const	{ return m_LosePlaySM; };
+				const int32_t& GetLosePlaySS() const	{ return m_LosePlaySS; };
+				const int32_t& GetWinPlayNC() const	{ return m_WinPlayNC; };
+				const int32_t& GetWinPlayNM() const	{ return m_WinPlayNM; };
+				const int32_t& GetWinPlayNS() const	{ return m_WinPlayNS; };
+				const int32_t& GetLosePlayNC() const	{ return m_LosePlayNC; };
+				const int32_t& GetLosePlayNM() const	{ return m_LosePlayNM; };
+				const int32_t& GetLosePlayNS() const	{ return m_LosePlayNS; };
+				const int32_t& GetWeeklyWin() const	{ return m_WeeklyWin; };
+				const int32_t& GetWeeklyLose() const	{ return m_WeeklyLose; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const INT16 &InLevel, const INT64 &InExp, const INT64 &InGameMoney, const INT64 &InGem, const INT16 &InStamina, const UINT32 &InLastUpdateTime, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const int16_t &InLevel, const int64_t &InExp, const int64_t &InGameMoney, const int64_t &InGem, const int16_t &InStamina, const uint32_t &InLastUpdateTime, const int32_t &InTotalPlayed, const int32_t &InWinPlaySC, const int32_t &InWinPlaySM, const int32_t &InWinPlaySS, const int32_t &InLosePlaySC, const int32_t &InLosePlaySM, const int32_t &InLosePlaySS, const int32_t &InWinPlayNC, const int32_t &InWinPlayNM, const int32_t &InWinPlayNS, const int32_t &InLosePlayNC, const int32_t &InLosePlayNM, const int32_t &InLosePlayNS, const int32_t &InWeeklyWin, const int32_t &InWeeklyLose );
 
 			}; // class GetUserGamePlayerInfoRes : public MessageBase
 
@@ -1895,7 +1895,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_PlayerID;
@@ -1936,27 +1936,27 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
 				PlayerID m_PlayerID;
-				INT16 m_Level;
-				INT32 m_TotalPlayed;
-				INT32 m_WinPlaySC;
-				INT32 m_WinPlaySM;
-				INT32 m_WinPlaySS;
-				INT32 m_LosePlaySC;
-				INT32 m_LosePlaySM;
-				INT32 m_LosePlaySS;
-				INT32 m_WinPlayNC;
-				INT32 m_WinPlayNM;
-				INT32 m_WinPlayNS;
-				INT32 m_LosePlayNC;
-				INT32 m_LosePlayNM;
-				INT32 m_LosePlayNS;
-				INT32 m_WeeklyWin;
-				INT32 m_WeeklyLose;
+				int16_t m_Level;
+				int32_t m_TotalPlayed;
+				int32_t m_WinPlaySC;
+				int32_t m_WinPlaySM;
+				int32_t m_WinPlaySS;
+				int32_t m_LosePlaySC;
+				int32_t m_LosePlaySM;
+				int32_t m_LosePlaySS;
+				int32_t m_WinPlayNC;
+				int32_t m_WinPlayNM;
+				int32_t m_WinPlayNS;
+				int32_t m_LosePlayNC;
+				int32_t m_LosePlayNM;
+				int32_t m_LosePlayNS;
+				int32_t m_WeeklyWin;
+				int32_t m_WeeklyLose;
 			public:
 				GetGamePlayerInfoRes()
 					{}
@@ -1969,29 +1969,29 @@ namespace BR
 
 				const Result& GetResult() const	{ return m_Result; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
-				const INT16& GetLevel() const	{ return m_Level; };
-				const INT32& GetTotalPlayed() const	{ return m_TotalPlayed; };
-				const INT32& GetWinPlaySC() const	{ return m_WinPlaySC; };
-				const INT32& GetWinPlaySM() const	{ return m_WinPlaySM; };
-				const INT32& GetWinPlaySS() const	{ return m_WinPlaySS; };
-				const INT32& GetLosePlaySC() const	{ return m_LosePlaySC; };
-				const INT32& GetLosePlaySM() const	{ return m_LosePlaySM; };
-				const INT32& GetLosePlaySS() const	{ return m_LosePlaySS; };
-				const INT32& GetWinPlayNC() const	{ return m_WinPlayNC; };
-				const INT32& GetWinPlayNM() const	{ return m_WinPlayNM; };
-				const INT32& GetWinPlayNS() const	{ return m_WinPlayNS; };
-				const INT32& GetLosePlayNC() const	{ return m_LosePlayNC; };
-				const INT32& GetLosePlayNM() const	{ return m_LosePlayNM; };
-				const INT32& GetLosePlayNS() const	{ return m_LosePlayNS; };
-				const INT32& GetWeeklyWin() const	{ return m_WeeklyWin; };
-				const INT32& GetWeeklyLose() const	{ return m_WeeklyLose; };
+				const int16_t& GetLevel() const	{ return m_Level; };
+				const int32_t& GetTotalPlayed() const	{ return m_TotalPlayed; };
+				const int32_t& GetWinPlaySC() const	{ return m_WinPlaySC; };
+				const int32_t& GetWinPlaySM() const	{ return m_WinPlaySM; };
+				const int32_t& GetWinPlaySS() const	{ return m_WinPlaySS; };
+				const int32_t& GetLosePlaySC() const	{ return m_LosePlaySC; };
+				const int32_t& GetLosePlaySM() const	{ return m_LosePlaySM; };
+				const int32_t& GetLosePlaySS() const	{ return m_LosePlaySS; };
+				const int32_t& GetWinPlayNC() const	{ return m_WinPlayNC; };
+				const int32_t& GetWinPlayNM() const	{ return m_WinPlayNM; };
+				const int32_t& GetWinPlayNS() const	{ return m_WinPlayNS; };
+				const int32_t& GetLosePlayNC() const	{ return m_LosePlayNC; };
+				const int32_t& GetLosePlayNM() const	{ return m_LosePlayNM; };
+				const int32_t& GetLosePlayNS() const	{ return m_LosePlayNS; };
+				const int32_t& GetWeeklyWin() const	{ return m_WeeklyWin; };
+				const int32_t& GetWeeklyLose() const	{ return m_WeeklyLose; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PlayerID &InPlayerID, const INT16 &InLevel, const INT32 &InTotalPlayed, const INT32 &InWinPlaySC, const INT32 &InWinPlaySM, const INT32 &InWinPlaySS, const INT32 &InLosePlaySC, const INT32 &InLosePlaySM, const INT32 &InLosePlaySS, const INT32 &InWinPlayNC, const INT32 &InWinPlayNM, const INT32 &InWinPlayNS, const INT32 &InLosePlayNC, const INT32 &InLosePlayNM, const INT32 &InLosePlayNS, const INT32 &InWeeklyWin, const INT32 &InWeeklyLose );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PlayerID &InPlayerID, const int16_t &InLevel, const int32_t &InTotalPlayed, const int32_t &InWinPlaySC, const int32_t &InWinPlaySM, const int32_t &InWinPlaySS, const int32_t &InLosePlaySC, const int32_t &InLosePlaySM, const int32_t &InLosePlaySS, const int32_t &InWinPlayNC, const int32_t &InWinPlayNM, const int32_t &InWinPlayNS, const int32_t &InLosePlayNC, const int32_t &InLosePlayNM, const int32_t &InLosePlayNS, const int32_t &InWeeklyWin, const int32_t &InWeeklyLose );
 
 			}; // class GetGamePlayerInfoRes : public MessageBase
 
@@ -2013,11 +2013,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT64 m_CurrentTotalExp;
-				UINT32 m_CurrentLevel;
+				uint64_t m_CurrentTotalExp;
+				uint32_t m_CurrentLevel;
 			public:
 				LevelUpS2CEvt()
 					{}
@@ -2028,15 +2028,15 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT64& GetCurrentTotalExp() const	{ return m_CurrentTotalExp; };
-				const UINT32& GetCurrentLevel() const	{ return m_CurrentLevel; };
+				const uint64_t& GetCurrentTotalExp() const	{ return m_CurrentTotalExp; };
+				const uint32_t& GetCurrentLevel() const	{ return m_CurrentLevel; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT64 &InCurrentTotalExp, const UINT32 &InCurrentLevel );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint64_t &InCurrentTotalExp, const uint32_t &InCurrentLevel );
 
 			}; // class LevelUpS2CEvt : public MessageBase
 
@@ -2058,11 +2058,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				const char* m_NickName;
-				BYTE m_IsCostFree;
+				uint8_t m_IsCostFree;
 			public:
 				SetNickNameCmd()
 				:m_NickName(nullptr)
@@ -2076,14 +2076,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const char* GetNickName() const	{ return m_NickName; };
-				const BYTE& GetIsCostFree() const	{ return m_IsCostFree; };
+				const uint8_t& GetIsCostFree() const	{ return m_IsCostFree; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const char* InNickName, const BYTE &InIsCostFree );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const char* InNickName, const uint8_t &InIsCostFree );
 
 			}; // class SetNickNameCmd : public MessageBase
 
@@ -2104,12 +2104,12 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT64 m_TotalGem;
-				UINT64 m_TotalGameMoney;
+				uint64_t m_TotalGem;
+				uint64_t m_TotalGameMoney;
 			public:
 				SetNickNameRes()
 					{}
@@ -2121,15 +2121,15 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
-				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
+				const uint64_t& GetTotalGem() const	{ return m_TotalGem; };
+				const uint64_t& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney );
 
 			}; // class SetNickNameRes : public MessageBase
 
@@ -2151,7 +2151,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -2191,7 +2191,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -2236,7 +2236,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PartyUID m_PartyUID;
@@ -2280,13 +2280,13 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
 				PartyUID m_PartyUID;
 				PlayerID m_PartyLeaderID;
-				LinkedArray<BYTE> m_ChatHistoryData;
+				LinkedArray<uint8_t> m_ChatHistoryData;
 			public:
 				JoinPartyRes()
 					{}
@@ -2300,14 +2300,14 @@ namespace BR
 				const Result& GetResult() const	{ return m_Result; };
 				const PartyUID& GetPartyUID() const	{ return m_PartyUID; };
 				const PlayerID& GetPartyLeaderID() const	{ return m_PartyLeaderID; };
-				const Array<BYTE>& GetChatHistoryData() const	{ return m_ChatHistoryData; };
+				const Array<uint8_t>& GetChatHistoryData() const	{ return m_ChatHistoryData; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const Array<BYTE>& InChatHistoryData );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PartyUID &InPartyUID, const PlayerID &InPartyLeaderID, const Array<uint8_t>& InChatHistoryData );
 
 			}; // class JoinPartyRes : public MessageBase
 
@@ -2329,7 +2329,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PartyUID m_PartyUID;
@@ -2374,7 +2374,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PartyUID m_PartyUID;
@@ -2418,7 +2418,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PartyUID m_PartyUID;
@@ -2462,7 +2462,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -2505,7 +2505,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PartyUID m_PartyUID;
@@ -2549,7 +2549,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PartyUID m_PartyUID;
@@ -2595,7 +2595,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -2638,7 +2638,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PartyUID m_PartyUID;
@@ -2683,7 +2683,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_InviteTargetID;
@@ -2725,7 +2725,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -2768,7 +2768,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_InviterID;
@@ -2817,10 +2817,10 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT32 m_QuickChatID;
+				uint32_t m_QuickChatID;
 			public:
 				PartyQuickChatMessageCmd()
 					{}
@@ -2831,14 +2831,14 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT32& GetQuickChatID() const	{ return m_QuickChatID; };
+				const uint32_t& GetQuickChatID() const	{ return m_QuickChatID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InQuickChatID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint32_t &InQuickChatID );
 
 			}; // class PartyQuickChatMessageCmd : public MessageBase
 
@@ -2859,7 +2859,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -2902,11 +2902,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_SenderID;
-				UINT32 m_QuickChatID;
+				uint32_t m_QuickChatID;
 			public:
 				PartyQuickChatMessageS2CEvt()
 					{}
@@ -2918,14 +2918,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const PlayerID& GetSenderID() const	{ return m_SenderID; };
-				const UINT32& GetQuickChatID() const	{ return m_QuickChatID; };
+				const uint32_t& GetQuickChatID() const	{ return m_QuickChatID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InSenderID, const UINT32 &InQuickChatID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const PlayerID &InSenderID, const uint32_t &InQuickChatID );
 
 			}; // class PartyQuickChatMessageS2CEvt : public MessageBase
 
@@ -2947,7 +2947,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				const char* m_ChatMessage;
@@ -2991,7 +2991,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -3034,7 +3034,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_SenderID;
@@ -3084,7 +3084,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_PlayerID;
@@ -3130,21 +3130,21 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
 				GameInsUID m_InsUID;
-				UINT32 m_TimeStamp;
+				uint32_t m_TimeStamp;
 				GameStateID m_GameState;
-				UINT8 m_Day;
-				UINT8 m_MaxPlayer;
-				UINT8 m_PlayerIndex;
-				UINT8 m_PlayerCharacter;
+				uint8_t m_Day;
+				uint8_t m_MaxPlayer;
+				uint8_t m_PlayerIndex;
+				uint8_t m_PlayerCharacter;
 				PlayerRole m_Role;
-				UINT8 m_Dead;
-				LinkedArray<BYTE> m_ChatHistoryData;
-				LinkedArray<BYTE> m_GameLogData;
+				uint8_t m_Dead;
+				LinkedArray<uint8_t> m_ChatHistoryData;
+				LinkedArray<uint8_t> m_GameLogData;
 			public:
 				JoinGameRes()
 					{}
@@ -3157,23 +3157,23 @@ namespace BR
 
 				const Result& GetResult() const	{ return m_Result; };
 				const GameInsUID& GetInsUID() const	{ return m_InsUID; };
-				const UINT32& GetTimeStamp() const	{ return m_TimeStamp; };
+				const uint32_t& GetTimeStamp() const	{ return m_TimeStamp; };
 				const GameStateID& GetGameState() const	{ return m_GameState; };
-				const UINT8& GetDay() const	{ return m_Day; };
-				const UINT8& GetMaxPlayer() const	{ return m_MaxPlayer; };
-				const UINT8& GetPlayerIndex() const	{ return m_PlayerIndex; };
-				const UINT8& GetPlayerCharacter() const	{ return m_PlayerCharacter; };
+				const uint8_t& GetDay() const	{ return m_Day; };
+				const uint8_t& GetMaxPlayer() const	{ return m_MaxPlayer; };
+				const uint8_t& GetPlayerIndex() const	{ return m_PlayerIndex; };
+				const uint8_t& GetPlayerCharacter() const	{ return m_PlayerCharacter; };
 				const PlayerRole& GetRole() const	{ return m_Role; };
-				const UINT8& GetDead() const	{ return m_Dead; };
-				const Array<BYTE>& GetChatHistoryData() const	{ return m_ChatHistoryData; };
-				const Array<BYTE>& GetGameLogData() const	{ return m_GameLogData; };
+				const uint8_t& GetDead() const	{ return m_Dead; };
+				const Array<uint8_t>& GetChatHistoryData() const	{ return m_ChatHistoryData; };
+				const Array<uint8_t>& GetGameLogData() const	{ return m_GameLogData; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const GameInsUID &InInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData );
 
 			}; // class JoinGameRes : public MessageBase
 
@@ -3195,15 +3195,15 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
 				PlayerInformation m_JoinedPlayer;
 				PlayerRole m_JoinedPlayerRole;
-				UINT8 m_JoinedPlayerDead;
-				UINT8 m_JoinedPlayerIndex;
-				UINT8 m_JoinedPlayerCharacter;
+				uint8_t m_JoinedPlayerDead;
+				uint8_t m_JoinedPlayerIndex;
+				uint8_t m_JoinedPlayerCharacter;
 			public:
 				PlayerJoinedS2CEvt()
 					{}
@@ -3217,16 +3217,16 @@ namespace BR
 				const GameInsUID& GetGameInsUID() const	{ return m_GameInsUID; };
 				const PlayerInformation& GetJoinedPlayer() const	{ return m_JoinedPlayer; };
 				const PlayerRole& GetJoinedPlayerRole() const	{ return m_JoinedPlayerRole; };
-				const UINT8& GetJoinedPlayerDead() const	{ return m_JoinedPlayerDead; };
-				const UINT8& GetJoinedPlayerIndex() const	{ return m_JoinedPlayerIndex; };
-				const UINT8& GetJoinedPlayerCharacter() const	{ return m_JoinedPlayerCharacter; };
+				const uint8_t& GetJoinedPlayerDead() const	{ return m_JoinedPlayerDead; };
+				const uint8_t& GetJoinedPlayerIndex() const	{ return m_JoinedPlayerIndex; };
+				const uint8_t& GetJoinedPlayerCharacter() const	{ return m_JoinedPlayerCharacter; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const UINT8 &InJoinedPlayerDead, const UINT8 &InJoinedPlayerIndex, const UINT8 &InJoinedPlayerCharacter );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerInformation &InJoinedPlayer, const PlayerRole &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter );
 
 			}; // class PlayerJoinedS2CEvt : public MessageBase
 
@@ -3247,7 +3247,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -3293,7 +3293,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -3336,7 +3336,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -3380,7 +3380,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -3426,7 +3426,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -3469,7 +3469,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -3513,7 +3513,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -3559,7 +3559,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -3601,7 +3601,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -3648,7 +3648,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				const char* m_ChatMessage;
@@ -3694,7 +3694,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -3737,7 +3737,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_SenderID;
@@ -3789,7 +3789,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -3835,7 +3835,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -3878,13 +3878,13 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
-				UINT32 m_TimeStamp;
+				uint32_t m_TimeStamp;
 				GameStateID m_GameState;
-				UINT8 m_Day;
+				uint8_t m_Day;
 			public:
 				GameAdvancedS2CEvt()
 					{}
@@ -3896,16 +3896,16 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const GameInsUID& GetGameInsUID() const	{ return m_GameInsUID; };
-				const UINT32& GetTimeStamp() const	{ return m_TimeStamp; };
+				const uint32_t& GetTimeStamp() const	{ return m_TimeStamp; };
 				const GameStateID& GetGameState() const	{ return m_GameState; };
-				const UINT8& GetDay() const	{ return m_Day; };
+				const uint8_t& GetDay() const	{ return m_Day; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay );
 
 			}; // class GameAdvancedS2CEvt : public MessageBase
 
@@ -3927,13 +3927,13 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
 				GameWinner m_Winner;
-				UINT32 m_GainedExp;
-				UINT32 m_GainedGameMoney;
+				uint32_t m_GainedExp;
+				uint32_t m_GainedGameMoney;
 			public:
 				GameEndedS2CEvt()
 					{}
@@ -3946,15 +3946,15 @@ namespace BR
 
 				const GameInsUID& GetGameInsUID() const	{ return m_GameInsUID; };
 				const GameWinner& GetWinner() const	{ return m_Winner; };
-				const UINT32& GetGainedExp() const	{ return m_GainedExp; };
-				const UINT32& GetGainedGameMoney() const	{ return m_GainedGameMoney; };
+				const uint32_t& GetGainedExp() const	{ return m_GainedExp; };
+				const uint32_t& GetGainedGameMoney() const	{ return m_GainedGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const GameWinner &InWinner, const UINT32 &InGainedExp, const UINT32 &InGainedGameMoney );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const GameWinner &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney );
 
 			}; // class GameEndedS2CEvt : public MessageBase
 
@@ -3975,7 +3975,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -4021,7 +4021,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -4064,7 +4064,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -4108,14 +4108,14 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
 				PlayerID m_PlayerID;
 				AuthTicket m_Ticket;
 				PlayerID m_VoteTarget;
-				UINT32 m_ActionSerial;
+				uint32_t m_ActionSerial;
 			public:
 				VoteCmd()
 					{}
@@ -4130,14 +4130,14 @@ namespace BR
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
 				const PlayerID& GetVoteTarget() const	{ return m_VoteTarget; };
-				const UINT32& GetActionSerial() const	{ return m_ActionSerial; };
+				const uint32_t& GetActionSerial() const	{ return m_ActionSerial; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const PlayerID &InVoteTarget, const UINT32 &InActionSerial );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InGameInsUID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const PlayerID &InVoteTarget, const uint32_t &InActionSerial );
 
 			}; // class VoteCmd : public MessageBase
 
@@ -4158,7 +4158,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -4201,7 +4201,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -4248,7 +4248,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -4293,7 +4293,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -4340,7 +4340,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_GameInsUID;
@@ -4389,7 +4389,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -4429,12 +4429,12 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT64 m_TotalGem;
-				UINT64 m_TotalGameMoney;
+				uint64_t m_TotalGem;
+				uint64_t m_TotalGameMoney;
 			public:
 				GamePlayAgainRes()
 					{}
@@ -4446,15 +4446,15 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
-				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
+				const uint64_t& GetTotalGem() const	{ return m_TotalGem; };
+				const uint64_t& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney );
 
 			}; // class GamePlayAgainRes : public MessageBase
 
@@ -4476,7 +4476,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PartyUID m_PartyUID;
@@ -4521,7 +4521,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				LinkedArray<PlayerID> m_TargetPlayerID;
@@ -4563,14 +4563,14 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
 				LinkedArray<PlayerID> m_RevealedPlayerID;
 				LinkedArray<PlayerRole> m_RevealedRole;
-				UINT64 m_TotalGem;
-				UINT64 m_TotalGameMoney;
+				uint64_t m_TotalGem;
+				uint64_t m_TotalGameMoney;
 			public:
 				GameRevealPlayerRes()
 					{}
@@ -4584,15 +4584,15 @@ namespace BR
 				const Result& GetResult() const	{ return m_Result; };
 				const Array<PlayerID>& GetRevealedPlayerID() const	{ return m_RevealedPlayerID; };
 				const Array<PlayerRole>& GetRevealedRole() const	{ return m_RevealedRole; };
-				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
-				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
+				const uint64_t& GetTotalGem() const	{ return m_TotalGem; };
+				const uint64_t& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<PlayerRole>& InRevealedRole, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney );
 
 			}; // class GameRevealPlayerRes : public MessageBase
 
@@ -4614,7 +4614,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -4654,12 +4654,12 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT64 m_TotalGem;
-				UINT64 m_TotalGameMoney;
+				uint64_t m_TotalGem;
+				uint64_t m_TotalGameMoney;
 			public:
 				GamePlayerReviveRes()
 					{}
@@ -4671,15 +4671,15 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
-				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
+				const uint64_t& GetTotalGem() const	{ return m_TotalGem; };
+				const uint64_t& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney );
 
 			}; // class GamePlayerReviveRes : public MessageBase
 
@@ -4701,7 +4701,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_RevivedPlayerID;
@@ -4744,7 +4744,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -4784,12 +4784,12 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT64 m_TotalGem;
-				UINT64 m_TotalGameMoney;
+				uint64_t m_TotalGem;
+				uint64_t m_TotalGameMoney;
 			public:
 				GamePlayerResetRankRes()
 					{}
@@ -4801,15 +4801,15 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
-				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
+				const uint64_t& GetTotalGem() const	{ return m_TotalGem; };
+				const uint64_t& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney );
 
 			}; // class GamePlayerResetRankRes : public MessageBase
 
@@ -4831,10 +4831,10 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				BYTE m_NumPlayer;
+				uint8_t m_NumPlayer;
 				PlayerRole m_RequestRole;
 			public:
 				RequestGameMatchCmd()
@@ -4846,7 +4846,7 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const BYTE& GetNumPlayer() const	{ return m_NumPlayer; };
+				const uint8_t& GetNumPlayer() const	{ return m_NumPlayer; };
 				const PlayerRole& GetRequestRole() const	{ return m_RequestRole; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
@@ -4854,7 +4854,7 @@ namespace BR
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const BYTE &InNumPlayer, const PlayerRole &InRequestRole );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint8_t &InNumPlayer, const PlayerRole &InRequestRole );
 
 			}; // class RequestGameMatchCmd : public MessageBase
 
@@ -4875,12 +4875,12 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT64 m_TotalGem;
-				UINT64 m_TotalGameMoney;
+				uint64_t m_TotalGem;
+				uint64_t m_TotalGameMoney;
 			public:
 				RequestGameMatchRes()
 					{}
@@ -4892,15 +4892,15 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
-				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
+				const uint64_t& GetTotalGem() const	{ return m_TotalGem; };
+				const uint64_t& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney );
 
 			}; // class RequestGameMatchRes : public MessageBase
 
@@ -4922,23 +4922,23 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				GameInsUID m_InsUID;
-				UINT32 m_TimeStamp;
+				uint32_t m_TimeStamp;
 				GameStateID m_GameState;
-				UINT8 m_Day;
-				UINT8 m_MaxPlayer;
-				UINT8 m_PlayerIndex;
-				UINT8 m_PlayerCharacter;
+				uint8_t m_Day;
+				uint8_t m_MaxPlayer;
+				uint8_t m_PlayerIndex;
+				uint8_t m_PlayerCharacter;
 				PlayerRole m_Role;
-				UINT8 m_Dead;
-				LinkedArray<BYTE> m_ChatHistoryData;
-				LinkedArray<BYTE> m_GameLogData;
-				UINT32 m_Stamina;
-				UINT64 m_TotalGem;
-				UINT64 m_TotalGameMoney;
+				uint8_t m_Dead;
+				LinkedArray<uint8_t> m_ChatHistoryData;
+				LinkedArray<uint8_t> m_GameLogData;
+				uint32_t m_Stamina;
+				uint64_t m_TotalGem;
+				uint64_t m_TotalGameMoney;
 			public:
 				GameMatchedS2CEvt()
 					{}
@@ -4950,26 +4950,26 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const GameInsUID& GetInsUID() const	{ return m_InsUID; };
-				const UINT32& GetTimeStamp() const	{ return m_TimeStamp; };
+				const uint32_t& GetTimeStamp() const	{ return m_TimeStamp; };
 				const GameStateID& GetGameState() const	{ return m_GameState; };
-				const UINT8& GetDay() const	{ return m_Day; };
-				const UINT8& GetMaxPlayer() const	{ return m_MaxPlayer; };
-				const UINT8& GetPlayerIndex() const	{ return m_PlayerIndex; };
-				const UINT8& GetPlayerCharacter() const	{ return m_PlayerCharacter; };
+				const uint8_t& GetDay() const	{ return m_Day; };
+				const uint8_t& GetMaxPlayer() const	{ return m_MaxPlayer; };
+				const uint8_t& GetPlayerIndex() const	{ return m_PlayerIndex; };
+				const uint8_t& GetPlayerCharacter() const	{ return m_PlayerCharacter; };
 				const PlayerRole& GetRole() const	{ return m_Role; };
-				const UINT8& GetDead() const	{ return m_Dead; };
-				const Array<BYTE>& GetChatHistoryData() const	{ return m_ChatHistoryData; };
-				const Array<BYTE>& GetGameLogData() const	{ return m_GameLogData; };
-				const UINT32& GetStamina() const	{ return m_Stamina; };
-				const UINT64& GetTotalGem() const	{ return m_TotalGem; };
-				const UINT64& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
+				const uint8_t& GetDead() const	{ return m_Dead; };
+				const Array<uint8_t>& GetChatHistoryData() const	{ return m_ChatHistoryData; };
+				const Array<uint8_t>& GetGameLogData() const	{ return m_GameLogData; };
+				const uint32_t& GetStamina() const	{ return m_Stamina; };
+				const uint64_t& GetTotalGem() const	{ return m_TotalGem; };
+				const uint64_t& GetTotalGameMoney() const	{ return m_TotalGameMoney; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InInsUID, const UINT32 &InTimeStamp, const GameStateID &InGameState, const UINT8 &InDay, const UINT8 &InMaxPlayer, const UINT8 &InPlayerIndex, const UINT8 &InPlayerCharacter, const PlayerRole &InRole, const UINT8 &InDead, const Array<BYTE>& InChatHistoryData, const Array<BYTE>& InGameLogData, const UINT32 &InStamina, const UINT64 &InTotalGem, const UINT64 &InTotalGameMoney );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const GameInsUID &InInsUID, const uint32_t &InTimeStamp, const GameStateID &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const PlayerRole &InRole, const uint8_t &InDead, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData, const uint32_t &InStamina, const uint64_t &InTotalGem, const uint64_t &InTotalGameMoney );
 
 			}; // class GameMatchedS2CEvt : public MessageBase
 
@@ -4991,7 +4991,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_FailedReason;
@@ -5034,7 +5034,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -5075,7 +5075,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -5115,7 +5115,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -5158,7 +5158,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 			public:
@@ -5199,10 +5199,10 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT32 m_ShopItemID;
+				uint32_t m_ShopItemID;
 			public:
 				BuyShopItemPrepareCmd()
 					{}
@@ -5213,14 +5213,14 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT32& GetShopItemID() const	{ return m_ShopItemID; };
+				const uint32_t& GetShopItemID() const	{ return m_ShopItemID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InShopItemID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint32_t &InShopItemID );
 
 			}; // class BuyShopItemPrepareCmd : public MessageBase
 
@@ -5241,11 +5241,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT32 m_ShopItemID;
+				uint32_t m_ShopItemID;
 				const char* m_PurchaseID;
 			public:
 				BuyShopItemPrepareRes()
@@ -5260,7 +5260,7 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT32& GetShopItemID() const	{ return m_ShopItemID; };
+				const uint32_t& GetShopItemID() const	{ return m_ShopItemID; };
 				const char* GetPurchaseID() const	{ return m_PurchaseID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
@@ -5268,7 +5268,7 @@ namespace BR
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InShopItemID, const char* InPurchaseID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint32_t &InShopItemID, const char* InPurchaseID );
 
 			}; // class BuyShopItemPrepareRes : public MessageBase
 
@@ -5290,14 +5290,14 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT32 m_ShopItemID;
+				uint32_t m_ShopItemID;
 				const char* m_Platform;
 				const char* m_PackageName;
 				const char* m_PurchaseTransactionID;
-				LinkedArray<BYTE> m_PurchaseToken;
+				LinkedArray<uint8_t> m_PurchaseToken;
 			public:
 				BuyShopItemCmd()
 				:m_Platform(nullptr)
@@ -5314,18 +5314,18 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT32& GetShopItemID() const	{ return m_ShopItemID; };
+				const uint32_t& GetShopItemID() const	{ return m_ShopItemID; };
 				const char* GetPlatform() const	{ return m_Platform; };
 				const char* GetPackageName() const	{ return m_PackageName; };
 				const char* GetPurchaseTransactionID() const	{ return m_PurchaseTransactionID; };
-				const Array<BYTE>& GetPurchaseToken() const	{ return m_PurchaseToken; };
+				const Array<uint8_t>& GetPurchaseToken() const	{ return m_PurchaseToken; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<BYTE>& InPurchaseToken );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint32_t &InShopItemID, const char* InPlatform, const char* InPackageName, const char* InPurchaseTransactionID, const Array<uint8_t>& InPurchaseToken );
 
 			}; // class BuyShopItemCmd : public MessageBase
 
@@ -5346,11 +5346,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
-				UINT32 m_ShopItemID;
+				uint32_t m_ShopItemID;
 			public:
 				BuyShopItemRes()
 					{}
@@ -5362,14 +5362,14 @@ namespace BR
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT32& GetShopItemID() const	{ return m_ShopItemID; };
+				const uint32_t& GetShopItemID() const	{ return m_ShopItemID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const UINT32 &InShopItemID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const uint32_t &InShopItemID );
 
 			}; // class BuyShopItemRes : public MessageBase
 
@@ -5391,7 +5391,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				PlayerID m_TargetPlayer;
@@ -5433,12 +5433,12 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
 				PlayerID m_TargetPlayer;
-				UINT64 m_TimeStamp;
+				uint64_t m_TimeStamp;
 			public:
 				GiveStaminaRes()
 					{}
@@ -5451,14 +5451,14 @@ namespace BR
 
 				const Result& GetResult() const	{ return m_Result; };
 				const PlayerID& GetTargetPlayer() const	{ return m_TargetPlayer; };
-				const UINT64& GetTimeStamp() const	{ return m_TimeStamp; };
+				const uint64_t& GetTimeStamp() const	{ return m_TimeStamp; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PlayerID &InTargetPlayer, const UINT64 &InTimeStamp );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const PlayerID &InTargetPlayer, const uint64_t &InTimeStamp );
 
 			}; // class GiveStaminaRes : public MessageBase
 
@@ -5480,10 +5480,10 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				UINT32 m_PresetID;
+				uint32_t m_PresetID;
 			public:
 				SetPresetGameConfigIDCmd()
 					{}
@@ -5494,14 +5494,14 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const UINT32& GetPresetID() const	{ return m_PresetID; };
+				const uint32_t& GetPresetID() const	{ return m_PresetID; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const UINT32 &InPresetID );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const uint32_t &InPresetID );
 
 			}; // class SetPresetGameConfigIDCmd : public MessageBase
 
@@ -5522,7 +5522,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;
@@ -5565,11 +5565,11 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
-				INT32 m_Resource;
-				INT32 m_Value;
+				int32_t m_Resource;
+				int32_t m_Value;
 			public:
 				GainGameResourceCmd()
 					{}
@@ -5580,15 +5580,15 @@ namespace BR
 
 					MessageUsage GetMessageUsage() { return MessageUsage_None; }
 
-				const INT32& GetResource() const	{ return m_Resource; };
-				const INT32& GetValue() const	{ return m_Value; };
+				const int32_t& GetResource() const	{ return m_Resource; };
+				const int32_t& GetValue() const	{ return m_Value; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const INT32 &InResource, const INT32 &InValue );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const int32_t &InResource, const int32_t &InValue );
 
 			}; // class GainGameResourceCmd : public MessageBase
 
@@ -5609,7 +5609,7 @@ namespace BR
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				Result m_Result;

@@ -37,7 +37,7 @@ namespace BR
 			// Cmd: Join Game
 			Result JoinGameCmd( const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const PlayerRole &InRequestedRole );
 			// C2S: Change configue preset
-			Result SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const UINT32 &InPresetID );
+			Result SetConfigPresetC2SEvt( const EntityID &InSenderEntityID, const uint32_t &InPresetID );
 			// Cmd: Leave Game
 			Result LeaveGameCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Kick player
@@ -51,7 +51,7 @@ namespace BR
 			// Cmd: *Vote game advance
 			Result VoteGameAdvanceCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 			// Cmd: Assign role
-			Result VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const UINT32 &InActionSerial );
+			Result VoteCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial );
 			// Cmd: Play again with the current players
 			Result GamePlayAgainCmd( const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const PartyUID &InPartyUID );
 			// Cmd: Player. revive himself

@@ -4,7 +4,7 @@
 // 
 // Author : Generated
 // 
-// Description : Ranking Message debug definitions
+// Description : RankingServer Message debug definitions
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -14,7 +14,7 @@
 #include "Common/PolicyID.h"
 #include "Net/NetDef.h"
 #include "Protocol/ProtocolMessageCPPInc.h"
-#include "Protocol/Message/RankingMsgClass.h"
+#include "Protocol/Message/RankingServerMsgClass.h"
 
 
 
@@ -26,10 +26,10 @@ namespace BR
 		{
  
 			///////////////////////////////////////////////////////////////
-			// Ranking Debug output function 
+			// RankingServer Debug output function 
 
-			void RegisterDebugTraceRanking();
-			Result DebugOutRanking( const char*Prefix, MessageData*pMsg );
+			void RegisterDebugTraceRankingServer();
+			Result DebugOutRankingServer( const char*Prefix, MessageData*pMsg );
 
 
 

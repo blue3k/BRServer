@@ -15,7 +15,7 @@
 #include "Common/Typedefs.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrCommonTypes.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 #include "Common/SvrPolicyID.h"
 #include "ServerSystem/ServerComponent.h"
 
@@ -30,7 +30,7 @@ namespace DB {
 	//	AccountDBServer Class 
 	//
 
-	class AccountDB : protected QueryManager, public Svr::IServerComponent
+	class AccountDB : protected DBClusterManager, public Svr::IServerComponent
 	{
 	public:
 

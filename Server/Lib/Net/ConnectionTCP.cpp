@@ -281,7 +281,7 @@ namespace Net {
 		if(pIOBuffer != nullptr && pIOBuffer->CID != GetCID() )
 			netErr( ResultCode::INVALID_ARG );
 
-		Assert(!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_relaxed));
+		DecPendingRecvCount();
 
 		if( !( hrRes ) )
 		{
@@ -299,20 +299,25 @@ namespace Net {
 		else
 		{
 			netChkPtr(pIOBuffer);
-			netChk( OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer) );
+			if (!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_consume))
+			{
+				netChk(OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer));
+			}
+
 		}
+
 
 	Proc_End:
 
 
-		if (!NetSystem::IsProactorSystem())
+		//if (!NetSystem::IsProactorSystem())
 		{
 			Util::SafeDelete(pIOBuffer);
 		}
-		else
-		{
-			pIOBuffer->SetPendingFalse();
-		}
+		//else
+		//{
+		//	pIOBuffer->SetPendingFalse();
+		//}
 
 		//DecPendingRecvCount();
 		// Update will process new pending recv
@@ -383,10 +388,12 @@ namespace Net {
 		}
 
 		// For TCP, we need only single buffer is in waiting read operation
-		pOver = GetRecvBuffer();
+		pOver = new IOBUFFER_READ;//GetRecvBuffer();
 		hr = pOver->SetPendingTrue();
 		if (!(hr))
 			return ResultCode::SUCCESS;
+
+		IncPendingRecvCount();
 
 		hr = Recv(pOver);
 		if (!(hr) && hr != Result(ResultCode::E_NET_IO_PENDING))
@@ -834,6 +841,7 @@ namespace Net {
 
 		netChk(Net::NetSystem::AllocBuffer(pSendBuffer));
 		pSendBuffer->SetupSendTCP(pMsg);
+		pMsg = nullptr;
 
 		if (NetSystem::IsProactorSystem())
 		{
@@ -844,7 +852,6 @@ namespace Net {
 			netChk(EnqueueBuffer(pSendBuffer));
 			ProcessSendQueue();
 		}
-		pMsg = nullptr;
 		pSendBuffer = nullptr;
 
 	Proc_End:

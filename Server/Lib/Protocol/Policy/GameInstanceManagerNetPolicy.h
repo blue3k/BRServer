@@ -30,9 +30,9 @@ namespace BR
 			{}
 
 			// Cmd: Create a game instance
-			Result CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT16 &InNumberOfBotPlayer, const UINT16 &InMaxPlayer );
+			Result CreateGameCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer );
 			// C2S: Game instance notify of deletion
-			Result GameDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount );
+			Result GameDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 
 		}; // class NetPolicyGameInstanceManager : public IPolicyGameInstanceManager
 

@@ -4,7 +4,7 @@
 // 
 // Author : Generated
 // 
-// Description : Ranking Message parser definitions
+// Description : RankingServer Message parser definitions
 // 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -21,7 +21,7 @@ namespace BR
 {
  	namespace Message
 	{
- 		namespace Ranking
+ 		namespace RankingServer
 		{
  			// Cmd: Add a player to ranking
 			class AddPlayerCmd : public MessageBase
@@ -31,21 +31,21 @@ namespace BR
 				// Parameter type informations for template
 				enum ParameterTypeInfo
 				{
- 					HasPlayerID = 1,
+ 					HasPlayerID = 0,
 					HasTransactionID = 1,
 					HasRouteContext = 1,
 					HasRouteHopCount = 0,
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				UINT32 GetRouteHopCount() { return 0; }
+				PlayerID GetPlayerID() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				PlayerID m_PlayerID;
-				UINT64 m_RankingScore;
-				LinkedArray<BYTE> m_PlayerInfo;
+				PlayerInformation m_PlayerInfo;
+				uint64_t m_RankingScore;
 			public:
 				AddPlayerCmd()
 					{}
@@ -58,16 +58,15 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
-				const UINT64& GetRankingScore() const	{ return m_RankingScore; };
-				const Array<BYTE>& GetPlayerInfo() const	{ return m_PlayerInfo; };
+				const PlayerInformation& GetPlayerInfo() const	{ return m_PlayerInfo; };
+				const uint64_t& GetRankingScore() const	{ return m_RankingScore; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -88,13 +87,13 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
 				Result m_Result;
-				UINT32 m_Ranking;
+				uint32_t m_Ranking;
 			public:
 				AddPlayerRes()
 					{}
@@ -108,14 +107,14 @@ namespace BR
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT32& GetRanking() const	{ return m_Ranking; };
+				const uint32_t& GetRanking() const	{ return m_Ranking; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -136,7 +135,7 @@ namespace BR
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
@@ -182,7 +181,7 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
@@ -228,7 +227,7 @@ namespace BR
 					HasSender = 0,
 				}; // enum ParameterTypeInfo
 			public:
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
@@ -274,13 +273,13 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
 				Result m_Result;
-				UINT32 m_Ranking;
+				uint32_t m_Ranking;
 			public:
 				GetPlayerRankingRes()
 					{}
@@ -294,70 +293,21 @@ namespace BR
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT32& GetRanking() const	{ return m_Ranking; };
+				const uint32_t& GetRanking() const	{ return m_Ranking; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
 			}; // class GetPlayerRankingRes : public MessageBase
 
 			// Cmd: Update a player to ranking
-			class UpdatePlayerCmd : public MessageBase
-			{
- 			public:
-				static const MessageID MID;
-				// Parameter type informations for template
-				enum ParameterTypeInfo
-				{
- 					HasPlayerID = 1,
-					HasTransactionID = 1,
-					HasRouteContext = 1,
-					HasRouteHopCount = 0,
-					HasSender = 0,
-				}; // enum ParameterTypeInfo
-			public:
-				UINT32 GetRouteHopCount() { return 0; }
-				PlayerID GetSender() { return 0; }
-			private:
-				RouteContext m_RouteContext;
-				TransactionID m_TransactionID;
-				PlayerID m_PlayerID;
-				UINT64 m_RankingScore;
-				LinkedArray<BYTE> m_PlayerInfo;
-			public:
-				UpdatePlayerCmd()
-					{}
-
-				UpdatePlayerCmd( MessageData* &pMsg )
-					:MessageBase(pMsg)
-					{}
-
-					MessageUsage GetMessageUsage() { return MessageUsage_None; }
-
-				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
-				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
-				const UINT64& GetRankingScore() const	{ return m_RankingScore; };
-				const Array<BYTE>& GetPlayerInfo() const	{ return m_PlayerInfo; };
-
-				void TraceOut(const char* Prefix, MessageData* pMsg);
-
-				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
-
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT64 &InRankingScore, const Array<BYTE>& InPlayerInfo );
-
-				Result OverrideRouteContextDestination( EntityUID to );
-
-			}; // class UpdatePlayerCmd : public MessageBase
-
-			class UpdatePlayerRes : public MessageBase
+			class UpdatePlayerScoreCmd : public MessageBase
 			{
  			public:
 				static const MessageID MID;
@@ -372,18 +322,68 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+				RouteContext m_RouteContext;
+				TransactionID m_TransactionID;
+				uint64_t m_RankingScore;
+				PlayerInformation m_PlayerInfo;
+				uint16_t m_Count;
+			public:
+				UpdatePlayerScoreCmd()
+					{}
+
+				UpdatePlayerScoreCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const uint64_t& GetRankingScore() const	{ return m_RankingScore; };
+				const PlayerInformation& GetPlayerInfo() const	{ return m_PlayerInfo; };
+				const uint16_t& GetCount() const	{ return m_Count; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount );
+
+				Result OverrideRouteContextDestination( EntityUID to );
+
+			}; // class UpdatePlayerScoreCmd : public MessageBase
+
+			class UpdatePlayerScoreRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
 				Result m_Result;
-				UINT32 m_Ranking;
+				LinkedArray<TotalRankingPlayerInformation> m_Ranking;
 			public:
-				UpdatePlayerRes()
+				UpdatePlayerScoreRes()
 					{}
 
-				UpdatePlayerRes( MessageData* &pMsg )
+				UpdatePlayerScoreRes( MessageData* &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -392,20 +392,20 @@ namespace BR
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT32& GetRanking() const	{ return m_Ranking; };
+				const Array<TotalRankingPlayerInformation>& GetRanking() const	{ return m_Ranking; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InRanking );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
-			}; // class UpdatePlayerRes : public MessageBase
+			}; // class UpdatePlayerScoreRes : public MessageBase
 
-			// Cmd: Remove a player to ranking
+			// Cmd: Get ranking list
 			class GetRankingCmd : public MessageBase
 			{
  			public:
@@ -421,13 +421,14 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
-				UINT32 m_From;
-				UINT32 m_Count;
+				RankingType m_RankingType;
+				uint16_t m_BaseRanking;
+				uint16_t m_Count;
 			public:
 				GetRankingCmd()
 					{}
@@ -440,15 +441,16 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
-				const UINT32& GetFrom() const	{ return m_From; };
-				const UINT32& GetCount() const	{ return m_Count; };
+				const RankingType& GetRankingType() const	{ return m_RankingType; };
+				const uint16_t& GetBaseRanking() const	{ return m_BaseRanking; };
+				const uint16_t& GetCount() const	{ return m_Count; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT32 &InFrom, const UINT32 &InCount );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -469,13 +471,13 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				TransactionID m_TransactionID;
 				Result m_Result;
-				UINT32 m_PlayerRanking;
+				LinkedArray<TotalRankingPlayerInformation> m_Ranking;
 			public:
 				GetRankingRes()
 					{}
@@ -489,14 +491,14 @@ namespace BR
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
-				const UINT32& GetPlayerRanking() const	{ return m_PlayerRanking; };
+				const Array<TotalRankingPlayerInformation>& GetRanking() const	{ return m_Ranking; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const UINT32 &InPlayerRanking );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 
@@ -506,7 +508,7 @@ namespace BR
 
 
 
-		}; // namespace Ranking
+		}; // namespace RankingServer
 	}; // namespace Message
 }; // namespace BR
 

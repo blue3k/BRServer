@@ -35,7 +35,7 @@ namespace BR
 
 
 		// Cmd: Register match by party
-		Result PartyMatchingQueueService::RegisterPartyMatchingCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
+		Result PartyMatchingQueueService::RegisterPartyMatchingCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 		{
  			Result hr;
 
@@ -46,9 +46,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::RegisterPartyMatchingCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
+		}; // Result PartyMatchingQueueService::RegisterPartyMatchingCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingPlayerInformation>& InPlayers )
 		// Cmd: Register match alone
-		Result PartyMatchingQueueService::RegisterPlayerMatchingCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID )
+		Result PartyMatchingQueueService::RegisterPlayerMatchingCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
 		{
  			Result hr;
 
@@ -59,9 +59,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::RegisterPlayerMatchingCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerID &InPlayerID )
+		}; // Result PartyMatchingQueueService::RegisterPlayerMatchingCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID )
 		// Cmd: update registration information
-		Result PartyMatchingQueueService::UpdateMatchingEntityUIDCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
+		Result PartyMatchingQueueService::UpdateMatchingEntityUIDCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
 		{
  			Result hr;
 
@@ -72,9 +72,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::UpdateMatchingEntityUIDCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
+		}; // Result PartyMatchingQueueService::UpdateMatchingEntityUIDCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket, const EntityUID &InPreviousUID )
 		// Cmd: calcel registration
-		Result PartyMatchingQueueService::UnregisterMatchingCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		Result PartyMatchingQueueService::UnregisterMatchingCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
  			Result hr;
 
@@ -85,9 +85,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::UnregisterMatchingCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		}; // Result PartyMatchingQueueService::UnregisterMatchingCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		// Cmd: Reserve a item
-		Result PartyMatchingQueueService::ReserveItemCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount )
+		Result PartyMatchingQueueService::ReserveItemCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount )
 		{
  			Result hr;
 
@@ -98,9 +98,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::ReserveItemCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount )
+		}; // Result PartyMatchingQueueService::ReserveItemCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount )
 		// Cmd: Reserve a item
-		Result PartyMatchingQueueService::ReserveItemsCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve )
+		Result PartyMatchingQueueService::ReserveItemsCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
 		{
  			Result hr;
 
@@ -111,9 +111,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::ReserveItemsCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const UINT32 &InNumberOfItemsToReserve )
+		}; // Result PartyMatchingQueueService::ReserveItemsCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint32_t &InNumberOfItemsToReserve )
 		// Cmd: Cancel reservation
-		Result PartyMatchingQueueService::CancelReservationCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
+		Result PartyMatchingQueueService::CancelReservationCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 		{
  			Result hr;
 
@@ -124,9 +124,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::CancelReservationCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
+		}; // Result PartyMatchingQueueService::CancelReservationCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InTicketToCancel )
 		// Cmd: Cancel reservation
-		Result PartyMatchingQueueService::CancelReservationsCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
+		Result PartyMatchingQueueService::CancelReservationsCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 		{
  			Result hr;
 
@@ -137,9 +137,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::CancelReservationsCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
+		}; // Result PartyMatchingQueueService::CancelReservationsCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const Array<MatchingQueueTicket>& InTicketToCancel )
 		// Cmd: Dequeue a reserved item
-		Result PartyMatchingQueueService::DequeueItemCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		Result PartyMatchingQueueService::DequeueItemCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
  			Result hr;
 
@@ -150,9 +150,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::DequeueItemCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		}; // Result PartyMatchingQueueService::DequeueItemCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		// C2S: Item error you should delete it
-		Result PartyMatchingQueueService::MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		Result PartyMatchingQueueService::MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 		{
  			Result hr;
 
@@ -163,7 +163,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result PartyMatchingQueueService::MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
+		}; // Result PartyMatchingQueueService::MatchingItemErrorC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount, const MatchingQueueTicket &InMatchingTicket )
 
 
 	}; // namespace Svr

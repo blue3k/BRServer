@@ -56,6 +56,11 @@ namespace Svr {
 				return m_UIDGeneratorForService.FreeID( uiEntityID.GetEntityLID());
 		}
 
+		bool EntityTable::Insert(Entity *pEntity)
+		{
+			return super::Insert(pEntity->GetEntityID(), pEntity);
+		}
+
 
 		//////////////////////////////////////////////////////////////////////////
 		//

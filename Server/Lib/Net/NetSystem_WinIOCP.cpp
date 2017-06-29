@@ -20,6 +20,7 @@
 #include "Common/Utility.h"
 #include "Common/SpinSharedBuffer.h"
 #include "Common/MemoryPool.h"
+#include "Common/StackWalker.h"
 
 
 #if WINDOWS
@@ -129,6 +130,8 @@ namespace Net {
 
 
 	IOBUFFER_READ::IOBUFFER_READ()
+		: CID(0)
+		, bIsPending(false)
 	{
 		memset( this, 0, sizeof(IOBUFFER_READ) );
 		hEvent = WSA_INVALID_EVENT;
@@ -153,6 +156,8 @@ namespace Net {
 
 			expected = false;
 		}
+
+		StackWalker::CaptureCallStack(PendingTrace);
 		return ResultCode::SUCCESS;
 	}
 
@@ -169,6 +174,7 @@ namespace Net {
 
 			expected = false;
 		}
+		StackWalker::CaptureCallStack(PendingTrace);
 		return ResultCode::SUCCESS;
 	}
 
@@ -296,8 +302,25 @@ namespace Net {
 						hr = pCallback->OnIOSendCompleted( hr, pIOBuffer );
 					}
 					break;
-				case IOBUFFER_OPERATION::OP_TCPREAD:
 				case IOBUFFER_OPERATION::OP_UDPREAD:
+					if (ulKey) // TCP operation
+					{
+						IOBUFFER_READ *pIOBuffer = (IOBUFFER_READ*)pOverlapped;
+						INetIOCallBack *pCallback = (INetIOCallBack*)ulKey;
+						if (hr)
+							pIOBuffer->TransferredSize = dwTransferred;
+						else
+							pIOBuffer->TransferredSize = 0;
+						hr = pCallback->OnIORecvCompleted(hr, pIOBuffer);
+						pIOBuffer = nullptr;
+						pOverlapped = nullptr;
+					}
+					else
+					{
+						AssertRel(!"Invalid Key at IOCP");
+					}
+					break;
+				case IOBUFFER_OPERATION::OP_TCPREAD:
 					if( ulKey ) // TCP operation
 					{
 						IOBUFFER_READ *pIOBuffer = (IOBUFFER_READ*)pOverlapped;
@@ -486,7 +509,7 @@ namespace Net {
 					return iErr;
 				}
 
-				Net::IOBUFFER_WRITE::MemoryPoolCache(uiOverBufferCount);
+				//Net::IOBUFFER_WRITE::MemoryPoolCache(uiOverBufferCount);
 				SetGatheringBufferSize(gatheringBufferSize);
 
 				return IOCPSystem::GetSystem().InitIOCP(numRecvThread);

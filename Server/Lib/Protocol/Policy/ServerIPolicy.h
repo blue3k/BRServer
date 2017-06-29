@@ -53,7 +53,7 @@ namespace BR
 			// Cmd: 
 			virtual Result GenericFailureCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID ) = 0;
 			// C2S: Server Started or Connected
-			virtual Result ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress ) = 0;
+			virtual Result ServerConnectedC2SEvt( const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress ) = 0;
 
 		}; // class IPolicyServer : public Net::INetPolicy
 

@@ -41,6 +41,12 @@ namespace BR
 				// Cmd: Login request
 				MessageDebugTraceMapLogin.insert(std::make_pair(Login::CreateRandomUserCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::CreateRandomUserCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				MessageDebugTraceMapLogin.insert(std::make_pair(Login::CreateRandomUserRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::CreateRandomUserRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				// Cmd: Update my score and Get Ranking list
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::UpdateMyScoreCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::UpdateMyScoreCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::UpdateMyScoreRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::UpdateMyScoreRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				// Cmd: Get Ranking lise
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::GetRankingListCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::GetRankingListCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::GetRankingListRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::GetRankingListRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceLogin()
 
 

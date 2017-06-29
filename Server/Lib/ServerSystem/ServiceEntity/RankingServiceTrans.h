@@ -20,6 +20,8 @@
 #include "Common/Message.h"
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerIPolicy.h"
+#include "Protocol/Message/RankingServerMsgClass.h"
+#include "Protocol/Policy/RankingServerIPolicy.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/ServiceEntity/RankingServiceEntity.h"
 #include "ServerSystem/ServerTransaction.h"
@@ -30,49 +32,18 @@ namespace Svr {
 
 	
 	
-	class RankingPartyTrans : public TransactionT<RankingServiceEntity, RankingPartyTrans, sizeof(TransactionMessageHandlerType)*7>
+	class RankingServerAddPlayerTrans : public ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::AddPlayerCmd, RankingServerAddPlayerTrans, 1>
 	{
 	public:
-		typedef TransactionT<RankingServiceEntity, RankingPartyTrans, sizeof(TransactionMessageHandlerType) * 7> super;
+		typedef ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::AddPlayerCmd, RankingServerAddPlayerTrans, 1> super;
 
 	private:
 
-		enum {
-			MAX_GRAB_TRY = 12,
-			MAX_NUM_PLAYER = 20,
-		};
 
-		enum class Step {
-			Grabbing,
-			Dequeuing,
-			Canceling,
-			Matched,
-			CreateGame,
-		} m_Step;
-
-		BRCLASS_ATTRIBUTE(UINT,QueryMemberCount);
-		// Target matching member count
-		BRCLASS_ATTRIBUTE(UINT,TargetMemberCount);
-		// Current total member count
-		BRCLASS_ATTRIBUTE(UINT,CurrentMemberCount);
-
-		BRCLASS_ATTRIBUTE(INT,CurrentGrabbing);
-		BRCLASS_ATTRIBUTE(UINT,GrabTryCount);
-
-		BRCLASS_ATTRIBUTE(INT,ProcessingIndex);
-
-		struct RankingPlayerInfo {
-			RankingPlayerInformation	Players[MAX_NUM_PLAYER];
-
-			RankingPlayerInfo()
-			{
-			}
-		};
-		StaticArray<RankingPlayerInfo, MAX_NUM_PLAYER> m_ReservedMember;
 
 	public:
-		RankingPartyTrans(UINT startMemberCount, UINT targetMemberCount);
-		virtual ~RankingPartyTrans() {}
+		RankingServerAddPlayerTrans(Message::MessageData* &pIMsg);
+		virtual ~RankingServerAddPlayerTrans() {}
 
 		// Start Transaction
 		virtual Result StartTransaction();
@@ -80,9 +51,31 @@ namespace Svr {
 	};
 
 
+	class RankingServerUpdatePlayerScoreTrans : public ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::UpdatePlayerScoreCmd, RankingServerUpdatePlayerScoreTrans, 1>
+	{
+	public:
+		typedef ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::UpdatePlayerScoreCmd, RankingServerUpdatePlayerScoreTrans, 1> super;
+
+	private:
+
+		int64_t m_PlayerRanking;
+		StaticArray<TotalRankingPlayerInformation, 32> m_RankingList;
+
+	public:
+		RankingServerUpdatePlayerScoreTrans(Message::MessageData* &pIMsg);
+		virtual ~RankingServerUpdatePlayerScoreTrans() {}
+
+		// Start Transaction
+		virtual Result StartTransaction();
+
+		Policy::ISvrPolicyRankingServer* GetPolicy() { return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyRankingServer>(); }
+		BR_SVR_MSGTRANS_CLOSE_ARGS(UpdatePlayerScoreRes, GetRouteContext().GetSwaped(), m_RankingList);
+	};
 
 
 
-} // namespace GameServer 
+
+
+} // namespace Svr 
 } // namespace BR 
 

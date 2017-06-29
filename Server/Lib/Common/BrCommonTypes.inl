@@ -174,7 +174,7 @@ TotalRankingPlayerInformation& TotalRankingPlayerInformation::operator = ( const
 	return *this;
 }
 
-TotalRankingPlayerInformation::TotalRankingPlayerInformation(UINT32 rankingID, UINT32 ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose)
+TotalRankingPlayerInformation::TotalRankingPlayerInformation(uint32_t rankingID, uint32_t ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose)
 {
 	//if( nickName == nullptr ) 
 	//	return ResultCode::INVALID_ARG;

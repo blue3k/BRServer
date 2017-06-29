@@ -1,9 +1,8 @@
-
+﻿
 
 #include <gtest/gtest.h>
 #include "Common/Trace.h"
 #include "Common/StrUtil.h"
-#include "Common/MemLog.h"
 #include "Common/MemoryPool.h"
 
 

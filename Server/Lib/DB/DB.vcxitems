@@ -19,6 +19,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DataSource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DataSourceMYSQL.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DataSourceOLEDB.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DBClusterManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DBConst.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DBMYSQL.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DBOLEDB.h" />
@@ -35,7 +36,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LoginSessionQuery.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Query.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)QueryConst.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)QueryManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)QueryMYSQL.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)QueryOLEDB.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)QueryWorker.h" />
@@ -55,6 +55,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)DataSource.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DataSourceMYSQL.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DataSourceOLEDB.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DBClusterManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DBTrace.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Factory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FactoryMYSQL.cpp" />
@@ -65,7 +66,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameTransactionDBQuery.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LoginSessionDB.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LoginSessionQuery.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)QueryManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)QueryMYSQL.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)QueryWorker.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)QueryWorkerManager.cpp" />

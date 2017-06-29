@@ -91,13 +91,13 @@ namespace Svr {
 			//lfp = open(lockFileName, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP);// 0640);
 			//if (lfp < 0)
 			//{
-			//	printf("Faild to get lock. pid:%d\n", getpid());
+			//	printf("Failed to get lock. pid:%d\n", getpid());
 			//	exit(1); /* can not open */
 			//}
 
 			//if (lockf(lfp, F_TLOCK, 0) < 0)
 			//{
-			//	printf("Faild to get lock2. pid:%d\n", getpid());
+			//	printf("Failed to get lock2. pid:%d\n", getpid());
 			//	exit(0); /* can not lock */
 			//}
 												   /* first instance continues */

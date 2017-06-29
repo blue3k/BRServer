@@ -13,7 +13,7 @@
 	
 
 #include "Common/Typedefs.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/ArrayUtil.h"
 #include "Common/BrGameTypes.h"
@@ -27,7 +27,7 @@ namespace DB {
 	//	GameDB Class 
 	//
 
-	class GameConspiracyDB : private QueryManager, public Svr::IServerComponent
+	class GameConspiracyDB : private DBClusterManager, public Svr::IServerComponent
 	{
 	public:
 

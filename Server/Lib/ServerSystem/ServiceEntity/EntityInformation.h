@@ -116,6 +116,15 @@ namespace Svr {
 			return GetConnection()->GetPolicy<PolicyType>();
 		}
 
+		// Setup route context from input transaction to the service entity
+		RouteContext RouteContextFrom(TransactionID fromTrans)
+		{
+			if (m_ServerEntity == nullptr)
+				return RouteContext();
+
+			return RouteContext(EntityUID(GetMyServerID(), fromTrans.GetEntityID()), m_ServerEntity->GetEntityUID());
+		}
+
 		template< class ServiceType >
 		FORCEINLINE ServiceType* GetService()
 		{

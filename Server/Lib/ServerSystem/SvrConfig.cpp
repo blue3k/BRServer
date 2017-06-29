@@ -242,6 +242,7 @@ namespace Config
 		{ "ModMonitoring", ClusterID::Monitoring },
 		{ "ModLogin", ClusterID::Login },
 		{ "ModGame", ClusterID::Game },
+		{ "ModRanking", ClusterID::Ranking },
 		{ "ModInstanceManager", ClusterID::GameInstanceManager },
 		{ "ModMatching_Game_4", ClusterID::Matching_Game_4 },
 		{ "ModMatching_Game_8", ClusterID::Matching_Game_8 },
@@ -381,6 +382,25 @@ namespace Config
 		return ModuleBase::SetAttributeValue(name, value);
 		//}
 		//return true;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
+
+	ModuleRanking::ModuleRanking()
+		: ModuleBase("ModuleRanking", ClusterID::Ranking)
+	{
+	}
+
+	// for parsing
+	bool ModuleRanking::SetAttributeValue(const std::string& name, const std::string& value)
+	{
+		//if (name == "UseBot") {
+		//	UseBot = value == "true" || value == "1";
+		//}
+		//else {
+			return ModuleBase::SetAttributeValue(name, value);
+		//}
+		return true;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -598,6 +618,7 @@ namespace Config
 		}
 		else if( attName == "GameID" ) {
 			if (value == "Conspiracy")		m_GameID = GameID::Conspiracy;
+			else if(value == "MyTownHero")	m_GameID = GameID::MyTownHero;
 			else if (value == "Game")		m_GameID = GameID::Game;
 			else
 			{
@@ -809,6 +830,7 @@ namespace Config
 		if( name == "GameID" )
 		{
 			if (value == "Conspiracy")		m_GameID = GameID::Conspiracy;
+			else if (value == "MyTownHero")	m_GameID = GameID::MyTownHero;
 			else if (value == "Game")		m_GameID = GameID::Game;
 			else
 			{
@@ -929,6 +951,7 @@ namespace Config
 			RegisterElementCreator("ModGamePartyManager", []()-> XML::DOMElement* { return new ModuleSimple; });
 			RegisterElementCreator("ModMonitoring", []()-> XML::DOMElement* { return new ModuleSimple; });
 			RegisterElementCreator("ModLogin", []()-> XML::DOMElement* { return new ModuleLogin; });
+			RegisterElementCreator("ModRanking", []()-> XML::DOMElement* { return new ModuleRanking; });
 			RegisterElementCreator("ModGame", []()-> XML::DOMElement* { return new ModuleGame; });
 			RegisterElementCreator("ModMatching_Game_4", []()-> XML::DOMElement* { return new ModuleMatching; });
 			RegisterElementCreator("ModMatching_Game_8", []()-> XML::DOMElement* { return new ModuleMatching; });

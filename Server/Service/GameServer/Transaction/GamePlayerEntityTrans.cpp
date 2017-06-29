@@ -31,8 +31,8 @@
 #include "ServerSystem/ExternalTransaction.h"
 #include "ServerSystem/ExternalTransactionManager.h"
 
+#include "Protocol/Policy/LoginServerIPolicy.h"
 #include "Protocol/Message/LoginServerMsgClass.h"
-#include "ServerSystem/ServerService/LoginServerService.h"
 
 #include "Protocol/Message/GameServerMsgClass.h"
 #include "Protocol/Policy/GameServerIPolicy.h"

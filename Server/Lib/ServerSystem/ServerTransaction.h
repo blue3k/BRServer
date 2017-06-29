@@ -94,6 +94,7 @@ namespace Svr {
 		// route function call
 		ServerEntity* GetServerEntity() { return superTrans::GetServerEntity(); }
 
+
 		// Initialize Transaction
 		virtual Result InitializeTransaction( Svr::Entity* pOwner )
 		{

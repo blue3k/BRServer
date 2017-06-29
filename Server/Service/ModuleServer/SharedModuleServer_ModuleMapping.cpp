@@ -137,6 +137,14 @@ namespace SharedModuleServer {
 			break;
 		}
 
+		case ClusterID::Ranking:
+		{
+			Svr::ClusteredServiceEntity* pServiceEntity = new Svr::RankingServiceEntity(ClusterID::Ranking, ClusterMembership::Master);
+			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pServiceEntity));
+			svrChk(GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pServiceEntity));
+			break;
+		}
+
 		case ClusterID::GameInstanceManager:
 			// TODO: 
 			//svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerServiceEntity>(ClusterID::GameInstanceManager, ClusterMembership::Slave));
@@ -184,9 +192,10 @@ namespace SharedModuleServer {
 
 			svrChk( AddServiceEntityComponent<Svr::MatchingQueueServiceEntity>( clusterID, ClusterMembership::Slave ) );
 			break;
+
 		default:
 			Assert(false);
-			svrTrace(Trace::TRC_ERROR, "Invalid cluster ID {0}", clusterID);
+			svrTrace(Trace::TRC_ERROR, "Invalid cluster ID for module{0}", clusterID);
 			break;
 		}
 

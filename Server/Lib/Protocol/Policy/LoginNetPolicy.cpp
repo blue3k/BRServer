@@ -46,7 +46,7 @@ namespace BR
 
 		}; // Result NetPolicyLogin::LoginCmd( const GameID &InGameID, const char* InID, const char* InPassword )
 		// Cmd: Login request with Facebook UID
-		Result NetPolicyLogin::LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
+		Result NetPolicyLogin::LoginByFacebookCmd( const GameID &InGameID, const uint64_t &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
 		{
  			Result hr;
 
@@ -62,7 +62,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyLogin::LoginByFacebookCmd( const GameID &InGameID, const UINT64 &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
+		}; // Result NetPolicyLogin::LoginByFacebookCmd( const GameID &InGameID, const uint64_t &InUID, const char* InFaceBookName, const char* InEMail, const char* InFacebookToken )
 		// Cmd: Login request
 		Result NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
 		{
@@ -81,10 +81,46 @@ namespace BR
 			return hr;
 
 		}; // Result NetPolicyLogin::CreateRandomUserCmd( const GameID &InGameID, const char* InCellPhone )
+		// Cmd: Update my score and Get Ranking list
+		Result NetPolicyLogin::UpdateMyScoreCmd( const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::UpdateMyScoreCmd::BuildIMsg(pMsg, InRankingScore, InRankingType, InCount));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetPolicyLogin::UpdateMyScoreCmd( const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount )
+		// Cmd: Get Ranking lise
+		Result NetPolicyLogin::GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::GetRankingListCmd::BuildIMsg(pMsg, InRankingType, InBaseRanking, InCount));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetPolicyLogin::GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount )
 
 
 		// Cmd: Login request
-		Result NetSvrPolicyLogin::LoginRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		Result NetSvrPolicyLogin::LoginRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
 		{
  			Result hr;
 
@@ -100,9 +136,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyLogin::LoginRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		}; // Result NetSvrPolicyLogin::LoginRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
 		// Cmd: Login request with Facebook UID
-		Result NetSvrPolicyLogin::LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		Result NetSvrPolicyLogin::LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
 		{
  			Result hr;
 
@@ -118,9 +154,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyLogin::LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		}; // Result NetSvrPolicyLogin::LoginByFacebookRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
 		// Cmd: Login request
-		Result NetSvrPolicyLogin::CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		Result NetSvrPolicyLogin::CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
 		{
  			Result hr;
 
@@ -136,7 +172,43 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyLogin::CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const UINT64 &InLoginEntityUID )
+		}; // Result NetSvrPolicyLogin::CreateRandomUserRes( const Result &InResult, const NetAddress &InGameServerAddr, const NetAddress &InGameServerAddrIPV4, const AccountID &InAccID, const AuthTicket &InTicket, const uint64_t &InLoginEntityUID )
+		// Cmd: Update my score and Get Ranking list
+		Result NetSvrPolicyLogin::UpdateMyScoreRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::UpdateMyScoreRes::BuildIMsg(pMsg, InResult, InRanking));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetSvrPolicyLogin::UpdateMyScoreRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		// Cmd: Get Ranking lise
+		Result NetSvrPolicyLogin::GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::GetRankingListRes::BuildIMsg(pMsg, InResult, InRanking));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetSvrPolicyLogin::GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 
 
 	}; // namespace Policy

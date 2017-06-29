@@ -18,7 +18,7 @@
 
 #include "QueryWorker.h"
 #include "DBTrace.h"
-#include "QueryManager.h"
+#include "DBClusterManager.h"
 #include "QueryWorkerManager.h"
 #include "Query.h"
 #include "Session.h"
@@ -43,7 +43,7 @@ namespace DB {
 	Result QueryWorker::ExecuteQuery(Query* &pQuery)
 	{
 		Result hr = ResultCode::SUCCESS;
-		QueryManager *pQueryManager = nullptr;
+		DBClusterManager *pQueryManager = nullptr;
 		Session* pSession = nullptr;
 
 		dbChkPtr( pQuery );

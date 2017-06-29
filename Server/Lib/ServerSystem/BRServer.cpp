@@ -16,7 +16,7 @@
 #include "Common/TimeUtil.h"
 #include "Common/BrRandom.h"
 #include "Common/BrXML.h"
-#include "DB/QueryManager.h"
+#include "DB/DBClusterManager.h"
 #include "Net/NetServer.h"
 #include "Net/NetServerPeerTCP.h"
 #include "ServerSystem/ServerEntity.h"
@@ -74,7 +74,7 @@ namespace Svr{
 
 	BrServer::~BrServer()
 	{
-		Util::SafeDelete( m_pLoopbackServerEntity );
+		m_pLoopbackServerEntity = nullptr;
 
 		DB::Factory::TerminateDBFactory();
 	}

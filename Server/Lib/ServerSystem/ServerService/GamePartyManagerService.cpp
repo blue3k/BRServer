@@ -35,7 +35,7 @@ namespace BR
 
 
 		// Cmd: Create a party instance
-		Result GamePartyManagerService::CreatePartyCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+		Result GamePartyManagerService::CreatePartyCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
 		{
  			Result hr;
 
@@ -46,9 +46,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result GamePartyManagerService::CreatePartyCmd( const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator )
+		}; // Result GamePartyManagerService::CreatePartyCmd( const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator )
 		// C2S: Party instance notify of deletion
-		Result GamePartyManagerService::PartyDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount )
+		Result GamePartyManagerService::PartyDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 		{
  			Result hr;
 
@@ -59,7 +59,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result GamePartyManagerService::PartyDeletedC2SEvt( const EntityID &InSenderEntityID, const UINT16 &InRouteHopCount )
+		}; // Result GamePartyManagerService::PartyDeletedC2SEvt( const EntityID &InSenderEntityID, const uint16_t &InRouteHopCount )
 
 
 	}; // namespace Svr

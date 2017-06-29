@@ -48,7 +48,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Ticket, pCur, iMsgSize, (int)sizeof(AuthTicket) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_FBUserID, pCur, iMsgSize, (int)sizeof(FacebookUID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_ShardID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_ShardID, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -57,7 +57,7 @@ namespace BR
 
 			}; // Result RegisterPlayerToJoinGameServerCmd::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+			Result RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID )
 			{
  				Result hr;
 
@@ -69,7 +69,7 @@ namespace BR
 					+ sizeof(PlayerID)
 					+ sizeof(AuthTicket)
 					+ sizeof(FacebookUID)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -82,7 +82,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InTicket, sizeof(AuthTicket));
 				Protocol::PackParamCopy( pMsgData, &InFBUserID, sizeof(FacebookUID));
-				Protocol::PackParamCopy( pMsgData, &InShardID, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InShardID, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -91,7 +91,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const UINT32 &InShardID )
+			}; // Result RegisterPlayerToJoinGameServerCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InTicket, const FacebookUID &InFBUserID, const uint32_t &InShardID )
 
 			Result RegisterPlayerToJoinGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -150,7 +150,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamLnk( m_PublicAddress, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPublicAddress ) );
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPublicAddressV6, pCur, iMsgSize, (int)sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_PublicAddressV6, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPublicAddressV6 ) );
-				protocolChk( Protocol::StreamParamCopy( &m_Port, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Port, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -159,7 +159,7 @@ namespace BR
 
 			}; // Result RegisterPlayerToJoinGameServerRes::ParseMessage( MessageData* pIMsg )
 
-			Result RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort )
+			Result RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort )
 			{
  				Result hr;
 
@@ -171,7 +171,7 @@ namespace BR
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -186,7 +186,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, InPublicAddress ? InPublicAddress : "", __uiInPublicAddressLength );
 				Protocol::PackParamCopy( pMsgData, &__uiInPublicAddressV6Length, sizeof(UINT16) );
 				Protocol::PackParamCopy( pMsgData, InPublicAddressV6 ? InPublicAddressV6 : "", __uiInPublicAddressV6Length );
-				Protocol::PackParamCopy( pMsgData, &InPort, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InPort, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -195,7 +195,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const UINT32 &InPort )
+			}; // Result RegisterPlayerToJoinGameServerRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const char* InPublicAddress, const char* InPublicAddressV6, const uint32_t &InPort )
 
 			Result RegisterPlayerToJoinGameServerRes::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -536,13 +536,13 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_NotificationID, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_MessageID, pCur, iMsgSize, (int)sizeof(NotificationType) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MessageParam0, pCur, iMsgSize, (int)sizeof(UINT64) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_MessageParam1, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MessageParam0, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_MessageParam1, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &uiSizeOfMessageText, pCur, iMsgSize, (int)sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( m_MessageText, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfMessageText ) );
-				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, (int)sizeof(UINT64) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TimeStamp, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
 
 
 			Proc_End:
@@ -551,7 +551,7 @@ namespace BR
 
 			}; // Result NotifyC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const UINT64 &InTimeStamp )
+			Result NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp )
 			{
  				Result hr;
 
@@ -561,11 +561,11 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInMessageTextLength 
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID)
-					+ sizeof(UINT32)
+					+ sizeof(uint32_t)
 					+ sizeof(NotificationType)
-					+ sizeof(UINT64)
-					+ sizeof(UINT64)
-					+ sizeof(UINT64));
+					+ sizeof(uint64_t)
+					+ sizeof(uint64_t)
+					+ sizeof(uint64_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -575,13 +575,13 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InDestPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &InNotificationID, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InNotificationID, sizeof(uint32_t));
 				Protocol::PackParamCopy( pMsgData, &InMessageID, sizeof(NotificationType));
-				Protocol::PackParamCopy( pMsgData, &InMessageParam0, sizeof(UINT64));
-				Protocol::PackParamCopy( pMsgData, &InMessageParam1, sizeof(UINT64));
+				Protocol::PackParamCopy( pMsgData, &InMessageParam0, sizeof(uint64_t));
+				Protocol::PackParamCopy( pMsgData, &InMessageParam1, sizeof(uint64_t));
 				Protocol::PackParamCopy( pMsgData, &__uiInMessageTextLength, sizeof(UINT16) );
 				Protocol::PackParamCopy( pMsgData, InMessageText ? InMessageText : "", __uiInMessageTextLength );
-				Protocol::PackParamCopy( pMsgData, &InTimeStamp, sizeof(UINT64));
+				Protocol::PackParamCopy( pMsgData, &InTimeStamp, sizeof(uint64_t));
 
 				pMsg = pNewMsg;
 
@@ -590,7 +590,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const UINT32 &InNotificationID, const NotificationType &InMessageID, const UINT64 &InMessageParam0, const UINT64 &InMessageParam1, const char* InMessageText, const UINT64 &InTimeStamp )
+			}; // Result NotifyC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const PlayerID &InDestPlayerID, const uint32_t &InNotificationID, const NotificationType &InMessageID, const uint64_t &InMessageParam0, const uint64_t &InMessageParam1, const char* InMessageText, const uint64_t &InTimeStamp )
 
 			Result NotifyC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -913,8 +913,8 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_LatestActiveTime, pCur, iMsgSize, (int)sizeof(UINT32) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_IsInGame, pCur, iMsgSize, (int)sizeof(BYTE) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_LatestActiveTime, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_IsInGame, pCur, iMsgSize, (int)sizeof(uint8_t) ) );
 
 
 			Proc_End:
@@ -923,7 +923,7 @@ namespace BR
 
 			}; // Result NotifyPlayerStatusUpdatedC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
+			Result NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
 			{
  				Result hr;
 
@@ -932,8 +932,8 @@ namespace BR
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(AccountID)
-					+ sizeof(UINT32)
-					+ sizeof(BYTE));
+					+ sizeof(uint32_t)
+					+ sizeof(uint8_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -943,8 +943,8 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InDestPlayerID, sizeof(AccountID));
-				Protocol::PackParamCopy( pMsgData, &InLatestActiveTime, sizeof(UINT32));
-				Protocol::PackParamCopy( pMsgData, &InIsInGame, sizeof(BYTE));
+				Protocol::PackParamCopy( pMsgData, &InLatestActiveTime, sizeof(uint32_t));
+				Protocol::PackParamCopy( pMsgData, &InIsInGame, sizeof(uint8_t));
 
 				pMsg = pNewMsg;
 
@@ -953,7 +953,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const UINT32 &InLatestActiveTime, const BYTE &InIsInGame )
+			}; // Result NotifyPlayerStatusUpdatedC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const AccountID &InDestPlayerID, const uint32_t &InLatestActiveTime, const uint8_t &InIsInGame )
 
 			Result NotifyPlayerStatusUpdatedC2SEvt::OverrideRouteContextDestination( EntityUID to )
 			{

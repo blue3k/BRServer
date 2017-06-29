@@ -66,17 +66,17 @@
       <Cmd>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="NumberOfPlayersInTheItem"/>
+        <Params Type="uint32" Name="NumberOfPlayersInTheItem"/>
         <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
       </Res>
     </Command>
 
     <Command Name="ReserveItems" Reliable="true" Crypto="No" Trace="DBG1" Desc="Reserve a item">
       <Cmd>
-        <Params Type="UINT32" Name="NumberOfItemsToReserve"/>
+        <Params Type="uint32" Name="NumberOfItemsToReserve"/>
       </Cmd>
       <Res>
-        <Params Type="UINT32" Name="NumberOfPlayersInTheItem" IsArray="true"/>
+        <Params Type="uint32" Name="NumberOfPlayersInTheItem" IsArray="true"/>
         <Params Type="MatchingQueueTicket" Name="MatchingTicket" IsArray="true"/>
       </Res>
     </Command>

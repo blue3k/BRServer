@@ -61,7 +61,7 @@
     <C2SEvent Name="ClusterMasterVote" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusRead" Desc="Master vote">
       <Params Type="ClusterID" Name="ClusterID"/>
       <Params Type="EntityUID" Name="VoteToUID"/>
-      <Params Type="UINT64" Name="VotedUpTime"/>
+      <Params Type="uint64" Name="VotedUpTime"/>
     </C2SEvent>
 
     <C2SEvent Name="ClusterUpdateStatus" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusWrite" Desc="Update cluster service status">
@@ -73,7 +73,7 @@
     <C2SEvent Name="ClusterUpdateWorkload" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusWrite" Desc="Update cluster service workload">
       <Params Type="EntityUID" Name="Sender"/>
       <Params Type="ClusterID" Name="ClusterID"/>
-      <Params Type="UINT32" Name="Workload"/>
+      <Params Type="uint32" Name="Workload"/>
     </C2SEvent>
 
     <Command Name="GetLowestWorkloadClusterMember" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusRead" Desc="Get lowest workloaded cluster member">

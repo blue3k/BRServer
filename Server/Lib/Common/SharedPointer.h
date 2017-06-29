@@ -275,10 +275,10 @@ namespace BR
 			return *this;
 		}
 
-		SharedPointerT<ClassType>& operator = (void* src)
+		SharedPointerT<ClassType>& operator = (ClassType* src)
 		{
-			assert(src == nullptr);
-			SharedPointer::operator = (SharedPointer());
+			//assert(src == nullptr || src->m_ReferenceCount == 0);
+			SharedPointer::operator = (SharedPointer((SharedObject*)src));
 			return *this;
 		}
 #endif

@@ -145,7 +145,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		Net::INet::Event curEvent;
 		LoginPlayerEntity *pLoginPlayerEntity = nullptr;
-		Net::Connection *pConn = nullptr;
+		Net::Connection* pConn = nullptr;
 
 		if (m_pNetPublic == nullptr)
 			return ResultCode::SUCCESS;
@@ -173,14 +173,17 @@ namespace Svr {
 
 				svrChk(GetServerComponent<EntityManager>()->AddEntity(EntityFaculty::User, pLoginPlayerEntity));
 
-				if (!(pLoginPlayerEntity->SetConnection(pConn)))
+				if (!(pLoginPlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
 				{
 					// NOTE: We need to mark to close this
 					pLoginPlayerEntity->ClearEntity();
 				}
+				else
+				{
+					pConn = nullptr;
+				}
 
 				pLoginPlayerEntity = nullptr;
-
 				break;
 			case Net::INet::Event::EVT_CONNECTION_DISCONNECTED:
 				break;
@@ -192,7 +195,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (pConn && m_pNetPublic)
+		if (pConn != nullptr && m_pNetPublic)
 			m_pNetPublic->GetConnectionManager().PendingReleaseConnection(pConn);
 
 		Util::SafeDelete(pLoginPlayerEntity);

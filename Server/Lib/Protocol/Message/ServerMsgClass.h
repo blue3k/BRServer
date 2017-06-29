@@ -39,7 +39,7 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
@@ -83,7 +83,7 @@ namespace BR
 				}; // enum ParameterTypeInfo
 			public:
 				PlayerID GetPlayerID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
@@ -131,12 +131,12 @@ namespace BR
 			public:
 				PlayerID GetPlayerID() { return 0; }
 				TransactionID GetTransactionID() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				RouteContext m_RouteContext;
 				ServiceInformation m_ClusterManagerServiceInformation;
-				UINT32 m_StartUpTime;
+				uint32_t m_StartUpTime;
 				NetAddress m_PrivateAddress;
 			public:
 				ServerConnectedC2SEvt()
@@ -150,7 +150,7 @@ namespace BR
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const ServiceInformation& GetClusterManagerServiceInformation() const	{ return m_ClusterManagerServiceInformation; };
-				const UINT32& GetStartUpTime() const	{ return m_StartUpTime; };
+				const uint32_t& GetStartUpTime() const	{ return m_StartUpTime; };
 				const NetAddress& GetPrivateAddress() const	{ return m_PrivateAddress; };
 
 				void TraceOut(const char* Prefix, MessageData* pMsg);
@@ -158,7 +158,7 @@ namespace BR
 				virtual Result ParseMessage( MessageData* pIMsg );
 				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
 
-				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const UINT32 &InStartUpTime, const NetAddress &InPrivateAddress );
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const ServiceInformation &InClusterManagerServiceInformation, const uint32_t &InStartUpTime, const NetAddress &InPrivateAddress );
 
 				Result OverrideRouteContextDestination( EntityUID to );
 

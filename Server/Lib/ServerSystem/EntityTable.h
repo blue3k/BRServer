@@ -44,6 +44,10 @@ namespace Svr {
 
 	class EntityTable : public Hash::HashTable2< UINT, SharedPointerT<Entity> >
 	{
+	public:
+
+		typedef Hash::HashTable2< UINT, SharedPointerT<Entity> > super;
+
 	private:
 		// ID generator
 		UniqueEntityIDGenerator		m_UIDGenerator;
@@ -59,6 +63,9 @@ namespace Svr {
 		EntityID GenEntityID(EntityFaculty faculty);
 		Result ReserveEntityID( EntityID uiEntityID );
 		bool FreeEntityID( EntityID uiEntityID );
+
+
+		bool Insert(Entity *pEntity);
 
 		//////////////////////////////////////////////////////////////////////////
 		//

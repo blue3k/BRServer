@@ -36,7 +36,7 @@ void BrServer::SetLoopbackServerEntity( ServerEntity* pLoopback )
 // Get Loopback entity
 ServerEntity* BrServer::GetLoopbackServerEntity()
 {
-	return m_pLoopbackServerEntity;
+	return *m_pLoopbackServerEntity;
 }
 
 // Set server UID
@@ -141,7 +141,7 @@ template<class DBManagerType>
 Result BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 {
 	Result hr = ResultCode::SUCCESS;
-	DB::QueryManager* pDBManager = nullptr;
+	DB::DBClusterManager* pDBManager = nullptr;
 	DBManagerType *pDB = nullptr;
 
 	if (pDBClusterCfg == nullptr)
@@ -156,8 +156,8 @@ Result BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 	auto& DBMembers = pDBClusterCfg->DBMembers;
 
 	svrMem( pDB = new DBManagerType );
-	pDBManager = reinterpret_cast<DB::QueryManager*>(pDB);
-	svrChk( pDBManager->InitializeDB( pDBClusterCfg->PartitioningCount ) );
+	pDBManager = reinterpret_cast<DB::DBClusterManager*>(pDB);
+	svrChk( pDBManager->InitializeDBCluster( pDBClusterCfg->PartitioningCount ) );
 
 	m_DBManagers.push_back(pDBManager);
 	svrTrace(Trace::TRC_TRACE, "Adding DB manager {0} clusterType:{1}", typeid(DBManagerType).name(), (UINT32)pDBClusterCfg->ClusterType);

@@ -44,7 +44,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 
 
 			Proc_End:
@@ -53,7 +53,7 @@ namespace BR
 
 			}; // Result PartyGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PartyGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+			Result PartyGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
  				Result hr;
 
@@ -61,7 +61,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16));
+					+ sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -70,7 +70,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 
 				pMsg = pNewMsg;
 
@@ -79,7 +79,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result PartyGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount )
+			}; // Result PartyGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 
 			Result PartyGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -128,9 +128,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:
@@ -161,7 +161,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_RouteHopCount, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_DestPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_GameInsUID, pCur, iMsgSize, (int)sizeof(GameInsUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_RequestedRole, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
@@ -173,7 +173,7 @@ namespace BR
 
 			}; // Result PlayerGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
+			Result PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
 			{
  				Result hr;
 
@@ -181,7 +181,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(UINT16)
+					+ sizeof(uint16_t)
 					+ sizeof(PlayerID)
 					+ sizeof(GameInsUID)
 					+ sizeof(PlayerRole));
@@ -193,7 +193,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(UINT16));
+				Protocol::PackParamCopy( pMsgData, &InRouteHopCount, sizeof(uint16_t));
 				Protocol::PackParamCopy( pMsgData, &InDestPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InGameInsUID, sizeof(GameInsUID));
 				Protocol::PackParamCopy( pMsgData, &InRequestedRole, sizeof(PlayerRole));
@@ -205,7 +205,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const UINT16 &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
+			}; // Result PlayerGameMatchedS2CEvt::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const GameInsUID &InGameInsUID, const PlayerRole &InRequestedRole )
 
 			Result PlayerGameMatchedS2CEvt::OverrideRouteContextDestination( EntityUID to )
 			{
@@ -254,9 +254,9 @@ namespace BR
 				routeContext.Components.To = to;
 				memcpy( pCur, &routeContext, sizeof(RouteContext) );
 				pCur += sizeof(RouteContext); iMsgSize -= (int)sizeof(RouteContext);
-				Assert( iMsgSize >= (INT)sizeof(UINT16) );
-				*(UINT16*)pCur = (UINT16)hopCount;
-				pCur += sizeof(UINT16); iMsgSize -= (int)sizeof(UINT16);
+				Assert( iMsgSize >= (INT)sizeof(uint16_t) );
+				*(uint16_t*)pCur = (uint16_t)hopCount;
+				pCur += sizeof(uint16_t); iMsgSize -= (int)sizeof(uint16_t);
 
 
 			Proc_End:

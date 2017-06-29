@@ -106,7 +106,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &numberofCounterInstances, pCur, iMsgSize, (int)sizeof(UINT16) ) );
 				protocolChk( Protocol::StreamParamLnk( pCounterInstances, pCur, iMsgSize, (int)sizeof(PerformanceCounterInstanceInfo)*numberofCounterInstances ) );
 				m_CounterInstances.SetLinkedBuffer(numberofCounterInstances, numberofCounterInstances, pCounterInstances);
-				protocolChk( Protocol::StreamParamCopy( &m_TotalInstanceCount, pCur, iMsgSize, (int)sizeof(UINT32) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TotalInstanceCount, pCur, iMsgSize, (int)sizeof(uint32_t) ) );
 
 
 			Proc_End:
@@ -115,7 +115,7 @@ namespace BR
 
 			}; // Result GetInstanceListRes::ParseMessage( MessageData* pIMsg )
 
-			Result GetInstanceListRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
+			Result GetInstanceListRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 			{
  				Result hr;
 
@@ -125,7 +125,7 @@ namespace BR
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
 					+ sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.GetSize() + sizeof(UINT16)
-					+ sizeof(UINT32));
+					+ sizeof(uint32_t));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -138,7 +138,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterInstances, sizeof(UINT16)); 
 				Protocol::PackParamCopy( pMsgData, InCounterInstances.data(), (INT)(sizeof(PerformanceCounterInstanceInfo)*InCounterInstances.GetSize())); 
-				Protocol::PackParamCopy( pMsgData, &InTotalInstanceCount, sizeof(UINT32));
+				Protocol::PackParamCopy( pMsgData, &InTotalInstanceCount, sizeof(uint32_t));
 
 				pMsg = pNewMsg;
 
@@ -147,7 +147,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result GetInstanceListRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
+			}; // Result GetInstanceListRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 
 
 
@@ -226,7 +226,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
-				UINT16 numberofCounterValues = 0; UINT64* pCounterValues = nullptr;
+				UINT16 numberofCounterValues = 0; uint64_t* pCounterValues = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -237,7 +237,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofCounterValues, pCur, iMsgSize, (int)sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pCounterValues, pCur, iMsgSize, (int)sizeof(UINT64)*numberofCounterValues ) );
+				protocolChk( Protocol::StreamParamLnk( pCounterValues, pCur, iMsgSize, (int)sizeof(uint64_t)*numberofCounterValues ) );
 				m_CounterValues.SetLinkedBuffer(numberofCounterValues, numberofCounterValues, pCounterValues);
 
 
@@ -247,7 +247,7 @@ namespace BR
 
 			}; // Result RequestCounterValuesRes::ParseMessage( MessageData* pIMsg )
 
-			Result RequestCounterValuesRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+			Result RequestCounterValuesRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
  				Result hr;
 
@@ -257,7 +257,7 @@ namespace BR
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
 					+ sizeof(EntityUID)
-					+ sizeof(UINT64)*InCounterValues.GetSize() + sizeof(UINT16));
+					+ sizeof(uint64_t)*InCounterValues.GetSize() + sizeof(UINT16));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -270,7 +270,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
 				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(EntityUID));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterValues, sizeof(UINT16)); 
-				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(UINT64)*InCounterValues.GetSize())); 
+				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(uint64_t)*InCounterValues.GetSize())); 
 
 				pMsg = pNewMsg;
 
@@ -279,7 +279,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result RequestCounterValuesRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+			}; // Result RequestCounterValuesRes::BuildIMsg( OUT MessageData* &pMsg, const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
 
@@ -433,7 +433,7 @@ namespace BR
 
 				INT iMsgSize;
 				BYTE* pCur;
-				UINT16 numberofCounterValues = 0; UINT64* pCounterValues = nullptr;
+				UINT16 numberofCounterValues = 0; uint64_t* pCounterValues = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -442,7 +442,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_InstanceUID, pCur, iMsgSize, (int)sizeof(EntityUID) ) );
 				protocolChk( Protocol::StreamParamCopy( &numberofCounterValues, pCur, iMsgSize, (int)sizeof(UINT16) ) );
-				protocolChk( Protocol::StreamParamLnk( pCounterValues, pCur, iMsgSize, (int)sizeof(UINT64)*numberofCounterValues ) );
+				protocolChk( Protocol::StreamParamLnk( pCounterValues, pCur, iMsgSize, (int)sizeof(uint64_t)*numberofCounterValues ) );
 				m_CounterValues.SetLinkedBuffer(numberofCounterValues, numberofCounterValues, pCounterValues);
 
 
@@ -452,7 +452,7 @@ namespace BR
 
 			}; // Result PerformanceCounterUpdateC2SEvt::ParseMessage( MessageData* pIMsg )
 
-			Result PerformanceCounterUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+			Result PerformanceCounterUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 			{
  				Result hr;
 
@@ -460,7 +460,7 @@ namespace BR
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(EntityUID)
-					+ sizeof(UINT64)*InCounterValues.GetSize() + sizeof(UINT16));
+					+ sizeof(uint64_t)*InCounterValues.GetSize() + sizeof(UINT16));
 
 				MessageData *pNewMsg = nullptr;
 
@@ -471,7 +471,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InInstanceUID, sizeof(EntityUID));
 				Protocol::PackParamCopy( pMsgData, &numberOfInCounterValues, sizeof(UINT16)); 
-				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(UINT64)*InCounterValues.GetSize())); 
+				Protocol::PackParamCopy( pMsgData, InCounterValues.data(), (INT)(sizeof(uint64_t)*InCounterValues.GetSize())); 
 
 				pMsg = pNewMsg;
 
@@ -480,7 +480,7 @@ namespace BR
 
 				return hr;
 
-			}; // Result PerformanceCounterUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+			}; // Result PerformanceCounterUpdateC2SEvt::BuildIMsg( OUT MessageData* &pMsg, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
 

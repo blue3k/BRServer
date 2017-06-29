@@ -244,6 +244,16 @@ namespace Config {
 		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
 	};
 
+	// ModuleRanking
+	class ModuleRanking : public ModuleBase
+	{
+	public:
+		ModuleRanking();
+
+		// for parsing
+		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
+	};
+
 	// ModuleGame
 	class ModuleGame : public ModuleBase
 	{
@@ -463,7 +473,7 @@ namespace Config {
 		// Game instance Servers
 		std::vector<GenericServer*>	GameMatchings;
 
-		GameID GetGameID() { return m_GameID; }
+		GameID GetGameID() const { return m_GameID; }
 		
 		///////////////////////////////////////////////////////////////////////////
 		//

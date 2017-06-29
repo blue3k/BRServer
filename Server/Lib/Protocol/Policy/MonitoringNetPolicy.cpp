@@ -100,7 +100,7 @@ namespace BR
 
 		}; // Result NetPolicyMonitoring::PerformanceCounterFreeC2SEvt( const Array<EntityUID>& InFreeInstances )
 		// C2S: Counter update broadcast
-		Result NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+		Result NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
  			Result hr;
 
@@ -116,11 +116,11 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+		}; // Result NetPolicyMonitoring::PerformanceCounterUpdateC2SEvt( const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 
 
 		// Cmd: Add a player to ranking
-		Result NetSvrPolicyMonitoring::GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
+		Result NetSvrPolicyMonitoring::GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 		{
  			Result hr;
 
@@ -136,9 +136,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyMonitoring::GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const UINT32 &InTotalInstanceCount )
+		}; // Result NetSvrPolicyMonitoring::GetInstanceListRes( const TransactionID &InTransactionID, const Result &InResult, const Array<PerformanceCounterInstanceInfo>& InCounterInstances, const uint32_t &InTotalInstanceCount )
 		// Cmd: Remove a player to ranking
-		Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+		Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		{
  			Result hr;
 
@@ -154,7 +154,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<UINT64>& InCounterValues )
+		}; // Result NetSvrPolicyMonitoring::RequestCounterValuesRes( const TransactionID &InTransactionID, const Result &InResult, const EntityUID &InInstanceUID, const Array<uint64_t>& InCounterValues )
 		// S2C: Request from server
 		Result NetSvrPolicyMonitoring::PerformanceCounterUpdateCounterInfoS2CEvt( const EntityUID &InInstanceUID )
 		{

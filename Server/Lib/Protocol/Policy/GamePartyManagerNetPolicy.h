@@ -30,9 +30,9 @@ namespace BR
 			{}
 
 			// Cmd: Create a party instance
-			Result CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const UINT16 &InRouteHopCount, const PlayerInformation &InCreator );
+			Result CreatePartyCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator );
 			// C2S: Party instance notify of deletion
-			Result PartyDeletedC2SEvt( const RouteContext &InRouteContext, const UINT16 &InRouteHopCount );
+			Result PartyDeletedC2SEvt( const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 
 		}; // class NetPolicyGamePartyManager : public IPolicyGamePartyManager
 

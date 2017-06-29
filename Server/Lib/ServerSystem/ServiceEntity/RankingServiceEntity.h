@@ -44,19 +44,30 @@ namespace Svr {
 	//	ServerServiceComponentEntity class
 	//
 
-	class RankingServiceEntity : public ReplicaClusterServiceEntity
+	class RankingServiceEntity : public FreeReplicaClusterServiceEntity
 	{
 	public:
 
+		//TODO: I need 128 bit integer for ranking key
+		union RankingKey
+		{
+			struct {
+				uint32_t PlayerID;
+				uint32_t Score;
+			};
+			uint64_t RankingKeyValue;
+		};
 
 	private:
 
+		DualSortedMap<uint64_t, TotalRankingPlayerInformation*> m_RankingMap;
+
+		DualSortedMap<PlayerID, TotalRankingPlayerInformation*> m_PlayerMap;
 
 
 		// Currently processing number of members
 		UINT m_CurrentProcessingNumberofMember;
 
-		BRCLASS_ATTRIBUTE(bool,LastRankingFailed);
 		Util::TimeStampTimer m_RankingCheckTimer;
 
 	protected:
@@ -69,7 +80,7 @@ namespace Svr {
 
 		// We are not going to use hashed key
 		virtual UINT KeyHash( UINT64 key ) { return (UINT)key; }
-		
+
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -90,7 +101,9 @@ namespace Svr {
 		//	Ranking operations
 		//
 
-		
+		Result UpdatePlayerScore(const PlayerInformation& player, int64_t score, int64_t& playerRanking);
+
+		Result GetRankingList(int64_t from, int64_t count, Array<TotalRankingPlayerInformation> &rankingList);
 	};
 
 

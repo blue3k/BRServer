@@ -475,6 +475,8 @@ namespace Net {
 	{
 		Result hr = ResultCode::SUCCESS;
 
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
+
 		// Process received net ctrl messages
 		MsgNetCtrlBuffer netCtrl;
 		auto loopCount = m_RecvNetCtrlQueue.GetEnqueCount();
@@ -559,6 +561,8 @@ namespace Net {
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			return ResultCode::SUCCESS;
 
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
+
 		// Recv guaranted queue process
 		pIMsg = nullptr;
 		auto loopCount = m_RecvGuaQueue.GetEnqueCount();
@@ -604,6 +608,8 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pIMsg = NULL;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
+
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
 
 		// Send guaranted message process
 		CounterType NumProc = m_SendReliableWindow.GetAvailableSize();
@@ -651,6 +657,8 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS;
 		MsgWindow::MessageElement *pMessageElement = nullptr;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
+
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
 
 		// Guaranted retry
 		UINT uiMaxProcess = Util::Min( m_SendReliableWindow.GetMsgCount(), m_uiMaxGuarantedRetry );
@@ -720,6 +728,8 @@ namespace Net {
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
 
+		SetRunningThreadID(ThisThread::GetThreadID());
+
 		hr = ProcNetCtrlQueue();
 		if( !(hr) )
 		{
@@ -781,6 +791,8 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS;
 
 		MutexScopeLock localLock(m_SendReliableWindow.GetLock());
+
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
 
 		if (GetConnectionState() == Net::IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
@@ -947,6 +959,8 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS;
 		Message::MessageID msgIDTem;
 		TimeStampMS ulTimeCur = Util::Time.GetTimeMs();
+
+		assert(ThisThread::GetThreadID() == GetRunningThreadID());
 
 		hr = ConnectionMUDP::ProcConnectionState();
 		if (!(hr)) return hr;

@@ -84,6 +84,8 @@ namespace GameServer
 		// Get Login server config
 		inline const Svr::Config::PublicServer* GetGameConfig();
 
+		const Svr::Config::GameClusterInfo* GetGameClusterInfo() { return m_pGameClusterCfg; }
+
 		const Svr::Config::PublicNetSocket* GetPublicNetConfig() { return GetGameConfig()->NetPublic; }
 
 

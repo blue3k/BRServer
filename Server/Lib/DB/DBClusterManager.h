@@ -29,10 +29,10 @@ namespace DB {
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//
-	//	QueryManager Class 
+	//	DBClusterManager Class 
 	//
 	
-	class QueryManager
+	class DBClusterManager
 	{
 	public:
 
@@ -44,6 +44,10 @@ namespace DB {
 
 		// DB Connection information
 		StaticArray<DataSource*,sizeof(DataSource*)*DB::Const::DEFAULT_SHARDING_BUCKETS>		m_ShardingBucket;
+
+		// same cluster will share same IP/Password
+		std::string m_UserID;
+		std::string m_Password;
 
 		// Pending Query Queue
 		PageQueue<Query*>	m_PendingQueries;
@@ -57,17 +61,17 @@ namespace DB {
 
 	public:
 		// constructor / destructor
-		QueryManager();
-		virtual ~QueryManager();
+		DBClusterManager();
+		virtual ~DBClusterManager();
 
 		// Initialize DB
-		Result InitializeDB( UINT partitioningCount );
+		Result InitializeDBCluster( UINT partitioningCount );
 
 		// Terminate DB module and close connections
 		void TerminateDB();
 
 		// Add DB source
-		Result	AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword ); 
+		Result	AddDBSource( UINT partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID = "", const std::string& strPassword = "" ); 
 
 	protected:
 

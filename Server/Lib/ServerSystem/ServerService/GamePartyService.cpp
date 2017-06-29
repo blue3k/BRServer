@@ -87,7 +87,7 @@ namespace BR
 
 		}; // Result GamePartyService::ChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const char* InChatMessage )
 		// C2S: Quick Chatting message
-		Result GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const UINT32 &InQuickChatID )
+		Result GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
 		{
  			Result hr;
 
@@ -98,9 +98,9 @@ namespace BR
 
 			return hr;
 
-		}; // Result GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const UINT32 &InQuickChatID )
+		}; // Result GamePartyService::QuickChatMessageC2SEvt( const EntityID &InSenderEntityID, const PlayerID &InPlayerID, const uint32_t &InQuickChatID )
 		// Cmd: Match
-		Result GamePartyService::StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
+		Result GamePartyService::StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
 		{
  			Result hr;
 
@@ -111,7 +111,7 @@ namespace BR
 
 			return hr;
 
-		}; // Result GamePartyService::StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const UINT32 &InMaxGamePlayers )
+		}; // Result GamePartyService::StartGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID, const uint32_t &InMaxGamePlayers )
 		// Cmd: Match
 		Result GamePartyService::CancelGameMatchCmd( const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 		{

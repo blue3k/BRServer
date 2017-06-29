@@ -223,10 +223,20 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:complexType name="ModuleRanking">
+    <xs:complexContent>
+      <xs:extension base="ModuleSimple">
+        <xs:sequence>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:simpleType name="GameID">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Game"/>
       <xs:enumeration value="Conspiracy"/>
+	  <xs:enumeration value="MyTownHero"/>
     </xs:restriction>
   </xs:simpleType>
   
@@ -263,6 +273,7 @@
             <xs:element name="ModGamePartyManager" type="ModuleSimple"/>
             <xs:element name="ModMonitoring" type="ModuleSimple"/>
             <xs:element name="ModLogin" type="ModuleLogin"/>
+			<xs:element name="ModRanking" type="ModuleRanking"/>
             <xs:element name="ModGame" type="ModuleGame"/>
             <xs:element name="ModInstanceManager" type="ModuleSimple"/>
             <xs:element name="ModMatching_Game_4" type="ModuleMatching"/>

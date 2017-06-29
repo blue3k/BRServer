@@ -40,7 +40,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				AccountID m_PlayerID;
@@ -86,7 +86,7 @@ namespace BR
 			public:
 				TransactionID GetTransactionID() { return 0; }
 				RouteContext GetRouteContext() { return 0; }
-				UINT32 GetRouteHopCount() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
 				PlayerID GetSender() { return 0; }
 			private:
 				AccountID m_PlayerID;

@@ -23,19 +23,19 @@ namespace BR {
 #pragma pack(4)
 
 	// context ID type
-	typedef UINT64 Context;
+	typedef uint64_t Context;
 
 	// Account ID type
-	typedef UINT64 AccountID;
+	typedef uint64_t AccountID;
 
 	// Facebook UID
-	typedef UINT64 FacebookUID;
+	typedef uint64_t FacebookUID;
 
 	// Player ID
 	typedef AccountID PlayerID;
 
 	// Authentication ticket
-	typedef UINT64 AuthTicket;
+	typedef uint64_t AuthTicket;
 
 	// server ID
 	typedef uint32_t ServerID;
@@ -170,7 +170,7 @@ namespace BR {
 			EntityID	EntID;		// Local entity ID
 			ServerID	SvrID;		// Server ID
 		} Components;
-		UINT64 UID;
+		uint64_t UID;
 
 		inline EntityUID();
 		inline EntityUID( const EntityUID& entityUID );
