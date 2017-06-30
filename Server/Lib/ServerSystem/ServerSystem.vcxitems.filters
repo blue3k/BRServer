@@ -311,9 +311,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrConstDefault.h">
       <Filter>Config</Filter>
     </ClInclude>
-    <ClInclude Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\RankingServerService.h">
-      <Filter>ServerService\Ranking</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.h" />
     <ClInclude Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\GameServerService.h">
       <Filter>ServerService\Game</Filter>
     </ClInclude>
@@ -626,9 +624,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SvrConst.cpp">
       <Filter>Config</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\RankingServerService.cpp">
-      <Filter>ServerService\Ranking</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.cpp" />
     <ClCompile Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\GameServerService.cpp">
       <Filter>ServerService\Game</Filter>
     </ClCompile>
