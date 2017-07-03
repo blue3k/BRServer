@@ -104,7 +104,7 @@ size_t Array<DataType>::GetIncreaseSize() const
 template< class DataType >
 void Array<DataType>::SetIncreaseSize( size_t szNewIncSize )
 {
-	Assert( szNewIncSize > 0 );
+	Assert( szNewIncSize > 0 && szNewIncSize <= 2048 );
 
 	// At least increase one
 	if( szNewIncSize == 0 )
@@ -125,6 +125,28 @@ DataType* Array<DataType>::data()
 	return m_pDataPtr;
 }
 
+template< class DataType >
+inline Result Array<DataType>::Insert(int index, const DataType& NewData)
+{
+	Result hr = ResultCode::SUCCESS;
+	if (GetSize() == GetAllocatedSize())
+	{
+		hr = IncreaseSize();
+		if (!(hr)) return hr;
+	}
+
+	Assert(GetSize() <  GetAllocatedSize());
+
+	for (int iIdx = (int)m_Size; iIdx > index; iIdx--)
+	{
+		m_pDataPtr[iIdx] = m_pDataPtr[iIdx - 1];
+	}
+	m_Size++;
+
+	m_pDataPtr[index] = NewData;
+
+	return hr;
+}
 
 // push_back
 template< class DataType >

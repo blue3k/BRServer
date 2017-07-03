@@ -120,7 +120,7 @@ namespace Svr {
 
 	void LoginPlayerEntity::SetUserName(const char* userName)
 	{
-		StrUtil::StringCpy(m_UserName, m_UserName);
+		StrUtil::StringCpy(m_UserName, userName);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////

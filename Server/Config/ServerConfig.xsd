@@ -14,17 +14,17 @@
             <xs:attribute name="DBName" type="xs:string" use="required"/>
           </xs:complexType>
         </xs:element>
-				<xs:element name="AccountDB" type="DBCluster"/>
-				<xs:element name="LoginSessionDB" type="DBCluster"/>
-				<xs:element name="RankingDB" type="DBCluster"/>
+				<xs:element name="AccountDB" type="DBCluster" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="LoginSessionDB" type="DBCluster"  minOccurs="0" maxOccurs="1"/>
+				<xs:element name="RankingDB" type="DBCluster"  minOccurs="0" maxOccurs="1"/>
 				<xs:element name="EntityServer" type="GenericServer" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="LoginServer" type="PublicServer" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="ModuleServer" type="ModuleServer" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element name="GameCluster" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="GameDB" type="DBCluster"/>
-              <xs:element name="GameTransactionLogDB" type="DBCluster"/>
+							<xs:element name="GameDB" type="DBCluster" minOccurs="0" maxOccurs="1" />
+              <xs:element name="GameTransactionLogDB" type="DBCluster"  minOccurs="0" maxOccurs="1"/>
               <xs:element name="Game" type="PublicServer" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
 									<xs:documentation>Game server entity</xs:documentation>
@@ -156,9 +156,6 @@
 	</xs:complexType>
   
 	<xs:complexType name="DBCluster">
-		<xs:sequence>
-			<xs:element name="DBMember" type="DBClusterInstance" maxOccurs="unbounded"/>
-		</xs:sequence>
 		<xs:attribute name="ClusterType" use="required">
 			<xs:simpleType>
 				<xs:restriction base="xs:string">

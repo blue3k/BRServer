@@ -91,27 +91,6 @@ namespace Config {
 	};
 	
 
-	//////////////////////////////////////////////////////////////
-	// DB Cluster instance
-	class DBClusterInstance : public XML::DOMElement
-	{
-	public:
-		DBClusterInstance();
-
-		// Instance name
-		std::string DBInstanceName;
-
-		// DB Name
-		std::string DBName;
-
-		// DB partitioning ID, used for sharding
-		UINT PartitioningID;
-
-		// for parsing
-		virtual bool SetAttributeValue(const std::string& name, const std::string& value) override;
-	};
-
-
 
 
 	//////////////////////////////////////////////////////////////
@@ -142,11 +121,11 @@ namespace Config {
 		// Cluster type
 		DBClusterType					ClusterType;
 
-		// shard partitioning count if cluster type is sharding
-		UINT							PartitioningCount;
-
 		// Instance name
-		std::vector<DBClusterInstance*> DBMembers;
+		std::string DBInstanceName;
+
+		// DB Name
+		std::string DBName;
 
 		virtual void AddChild( DOMElement *pChild ) override;
 

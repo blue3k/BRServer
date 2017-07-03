@@ -227,7 +227,12 @@ namespace XML {
 							... )
 		{
 			XMLParserHandler &parser = *( static_cast<XMLParserHandler *>( ctx ) );
-			parser.Error( msg );
+			char strBuffer[1024];
+			va_list args;
+			va_start(args, msg);
+			vsnprintf(strBuffer, sizeof(strBuffer), msg, args);
+			va_end(args);
+			parser.Error(strBuffer);
 		}
 
 
@@ -236,7 +241,12 @@ namespace XML {
 							... )
 		{
 			XMLParserHandler &parser = *( static_cast<XMLParserHandler *>( ctx ) );
-			parser.Warning( msg );
+			char strBuffer[1024];
+			va_list args;
+			va_start(args, msg);
+			vsnprintf(strBuffer, sizeof(strBuffer), msg, args);
+			va_end(args);
+			parser.Warning(strBuffer);
 		}
 	};
 

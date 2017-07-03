@@ -137,8 +137,6 @@ namespace DB {
 		std::string userID = strUserID;
 		std::string password = strPassword;
 
-		dbAssert(partitioningID < m_PartitioningCount);
-
 		if (m_UserID.length() == 0) m_UserID = userID;
 		else userID = m_UserID;
 
@@ -310,7 +308,7 @@ Proc_End:
 				auto pDBRes = (QueryGetShardListCmd*)pQuery;
 				for (auto& rowRes : pDBRes->m_RowsetResult)
 				{
-					if ((SelectDBByKey(rowRes.ShardID, pDBSource)))
+					if ((unsigned)rowRes.ShardID < GetPartitioningCount() && (SelectDBByKey(rowRes.ShardID, pDBSource)))
 					{
 						if (pDBSource->GetDefaultDB() != rowRes.DBName
 							|| pDBSource->GetConnectionString() != rowRes.ConnectionString)

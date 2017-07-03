@@ -44,11 +44,11 @@ namespace DB {
 	class QueryGetShardList : public QueryGetShardListSet, public QueryBase
 	{
 	public:
-		INT32 NumShard;
+		INT32 Dummy;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetShardList, 1)
-			BRDB_COLUMN_ENTRY(NumShard)
+			BRDB_COLUMN_ENTRY(Dummy)
 		BRDB_END_PARAM_MAP()
 		
 		BRDB_BEGIN_RESULT_MAP(QueryGetShardListSet, 3)

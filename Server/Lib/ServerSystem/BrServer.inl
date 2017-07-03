@@ -153,37 +153,28 @@ Result BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 
 
 	auto& DBinstances = Svr::Config::GetConfig().DBInstances;
-	auto& DBMembers = pDBClusterCfg->DBMembers;
+	auto itInstnace = DBinstances.find(pDBClusterCfg->DBInstanceName);
+
+	if (itInstnace == DBinstances.end())
+		return ResultCode::E_DB_INVALID_CONFIG;
+
+	auto instanceInfo = itInstnace->second;
 
 	svrMem( pDB = new DBManagerType );
 	pDBManager = reinterpret_cast<DB::DBClusterManager*>(pDB);
-	svrChk( pDBManager->InitializeDBCluster( pDBClusterCfg->PartitioningCount ) );
+	svrChk( pDBManager->InitializeDBCluster( 1 ) );
 
 	m_DBManagers.push_back(pDBManager);
 	svrTrace(Trace::TRC_TRACE, "Adding DB manager {0} clusterType:{1}", typeid(DBManagerType).name(), (UINT32)pDBClusterCfg->ClusterType);
+	svrTrace(Trace::TRC_TRACE, "	DB manager Instance:{0} DB:{1}, ConnectionString:{2}", instanceInfo->InstanceName, pDBClusterCfg->DBName, instanceInfo->ConnectionString);
 
-
-	for( auto dbInstanceInfo = DBMembers.begin(); dbInstanceInfo != DBMembers.end(); ++dbInstanceInfo )
-	{
-		Svr::Config::DBClusterInstance* pClusterInstanceCfg = *dbInstanceInfo;
-		auto itInstnace = DBinstances.find( pClusterInstanceCfg->DBInstanceName );
-		if( itInstnace == DBinstances.end() )
-		{
-			svrErr(ResultCode::E_DB_INVALID_CONFIG);
-		}
-
-		auto instanceInfo = itInstnace->second;
-
-		svrTrace(Trace::TRC_TRACE, "	DB manager Instance:{0} DB:{1}, ConnectionString:{2}", instanceInfo->InstanceName, pClusterInstanceCfg->DBName, instanceInfo->ConnectionString);
-
-		svrChk( pDBManager->AddDBSource( 
-			pClusterInstanceCfg->PartitioningID,
-			instanceInfo->InstanceName,
-			instanceInfo->ConnectionString, 
-			pClusterInstanceCfg->DBName, 
-			instanceInfo->UserID, 
-			instanceInfo->Password ) );
-	}
+	svrChk( pDBManager->AddDBSource( 
+		0,
+		instanceInfo->InstanceName,
+		instanceInfo->ConnectionString, 
+		pDBClusterCfg->DBName,
+		instanceInfo->UserID, 
+		instanceInfo->Password ) );
 
 	svrChk( AddComponent( pDB ) );
 

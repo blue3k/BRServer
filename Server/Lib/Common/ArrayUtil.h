@@ -274,6 +274,9 @@ namespace BR
 #endif
 		inline DataType* data();
 
+		// Insert an item
+		Result Insert(int index, const DataType& NewData);
+
 		// push_back
 		Result push_back( const DataType& NewData );
 		Result Add(const DataType& NewData) { return push_back(NewData); }

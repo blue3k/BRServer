@@ -13,17 +13,11 @@
 
   <TableDB DBInstanceName="tabledb" DBName="dbconspiracytable" />
 
-  <AccountDB ClusterType="Sharding" PartitioningCount="1">
-    <DBMember DBInstanceName="account00" DBName="dbaccount" PartitioningID="0" />
-  </AccountDB>
+  <AccountDB ClusterType="Sharding" DBInstanceName="account00" DBName="dbaccount" />
 
-  <LoginSessionDB ClusterType="Sharding" PartitioningCount="2">
-    <DBMember DBInstanceName="session00" DBName="dbsession00" PartitioningID="0" />
-  </LoginSessionDB>
+  <LoginSessionDB ClusterType="Sharding" DBInstanceName="session00" DBName="dbsession00" />
 
-  <RankingDB ClusterType="Sharding" PartitioningCount="1">
-    <DBMember DBInstanceName="ranking" DBName="dbconspiracyranking" PartitioningID="0" />
-  </RankingDB>
+  <RankingDB ClusterType="Sharding" DBInstanceName="ranking" DBName="dbconspiracyranking" />
 
   <EntityServer UID="1" Name="BREntityServer1" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
 		<NetPrivate IP="192.168.0.2" Port="2000"/>
@@ -58,13 +52,8 @@
 
   
   <GameCluster Name="First Game" GameID="MyTownHero" >
-		<GameDB ClusterType="Sharding" PartitioningCount="3">
-		  <DBMember DBInstanceName="conspiracy00" DBName="dbconspiracy00" PartitioningID="0" />
-		</GameDB>
-
-		<GameTransactionLogDB ClusterType="Sharding" PartitioningCount="3">
-		  <DBMember DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" PartitioningID="0" />
-		</GameTransactionLogDB>
+		<GameDB ClusterType="Sharding" DBInstanceName="conspiracy00" DBName="dbconspiracy00" />
+		<GameTransactionLogDB ClusterType="Sharding" DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" />
 
 		<Game UID="100" Name="BRConspiracyGameServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4">
 			<ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>

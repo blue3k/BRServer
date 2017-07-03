@@ -156,11 +156,10 @@ namespace Svr {
 		else
 		{
 			// Use original score for search key
-			rankingKey.Score = /*(uint64_t)*/pPlayerRankInformation->Win; // | (uint64_t)pPlayerRankInformation->Lose << 32;
+			rankingKey.Score = pPlayerRankInformation->ScoreLow; // TODO
 																		  
 			// we already has ranking information
-			pPlayerRankInformation->Win = (int32_t)score;
-			pPlayerRankInformation->Lose = (int32_t)(score >> 32);
+			pPlayerRankInformation->SetLongScore(score);
 
 			hr = m_RankingMap.Remove(rankingKey.RankingKeyValue, pRemoved);
 			Assert(pRemoved == pPlayerRankInformation);
