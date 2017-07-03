@@ -14,6 +14,7 @@
 #include "Common/BrBaseTypes.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrXML.h"
+#include "Common/FixedString/FixedString.h"
 
 
 
@@ -216,6 +217,8 @@ namespace Config {
 		ModuleLogin();
 
 		PublicNetSocket* NetPublic;
+
+		FixedString GameCluster;
 
 		virtual void AddChild(DOMElement *pChild) override;
 

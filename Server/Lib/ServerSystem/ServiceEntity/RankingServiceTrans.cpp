@@ -15,6 +15,7 @@
 #include "Common/MemoryPool.h"
 #include "Common/BrBaseTypes.h"
 #include "Common/GameConst.h"
+#include "Common/BrRandom.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/RankingServerMsgClass.h"
@@ -31,6 +32,8 @@
 #include "ServerSystem/ServiceEntity/Game/GameInstanceManagerServiceEntity.h"
 
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
+
+#include "DB/RankingDB.h"
 
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerAddPlayerTrans);
@@ -88,6 +91,9 @@ namespace Svr {
 
 
 		svrChk(GetMyOwner()->UpdatePlayerScore(GetPlayerInfo(), GetRankingScore(), m_PlayerRanking));
+
+		// we are not going to wait db result
+		svrChk(GetServerComponent<DB::RankingDB>()->UpdateRankingScoreCmd(TransactionID(), GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, GetRankingScore()));
 
 
 		rankingBase = m_PlayerRanking - (m_PlayerRanking % rankCount);

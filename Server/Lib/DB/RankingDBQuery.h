@@ -30,28 +30,30 @@ namespace DB {
 	enum MsgRankingDBCode
 	{
 		MCODE_QueryGetTotalRanking = 1,
+		MCODE_QueryUpdateRankingScore,
+		MCODE_QueryGetRankers,
 	}; // enum MsgCode
 
 
 
 	struct QueryGetTotalRankingSet
 	{
-		INT32 RankingID;
-		INT32 Ranking;
+		int32_t RankingID;
+		int32_t Ranking;
 		float WinRate;
-		INT32 Win;
-		INT32 Lose;
-		INT64 PlayerID;
-		INT64 FBUID;
+		int32_t Win;
+		int32_t Lose;
+		int64_t PlayerID;
+		int64_t FBUID;
 		char  NickName[BINSIZE_NAME];
-		INT32 Level;
+		int32_t Level;
 	};
 
 	class QueryGetTotalRanking : public QueryGetTotalRankingSet, public QueryBase
 	{
 	public:
-		INT32 MinRanking;
-		INT32 RankingCount;
+		int32_t MinRanking;
+		int32_t RankingCount;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetTotalRanking,2)
@@ -76,6 +78,73 @@ namespace DB {
 
 	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_RANKINGDB,QueryGetTotalRanking, QueryGetTotalRankingSet);
 
+
+
+
+	class QueryUpdateRankingScore : public QueryBase
+	{
+	public:
+		int64_t PlayerID;
+		int64_t FBUID;
+		char  NickName[BINSIZE_NAME];
+		int32_t Level;
+
+		uint64_t Score;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryUpdateRankingScore, 5)
+			BRDB_COLUMN_ENTRY(PlayerID)
+			BRDB_COLUMN_ENTRY(FBUID)
+			BRDB_COLUMN_ENTRY(NickName)
+			BRDB_COLUMN_ENTRY(Level)
+			BRDB_COLUMN_ENTRY(Score)
+		BRDB_END_PARAM_MAP()
+
+			BRDB_QUERYSTRING("spUpdateRankingScore", BRDB_PARAM_5)
+	};
+
+	BRDB_DEFINE_QUERYCLASS(POLICY_RANKINGDB, QueryUpdateRankingScore);
+
 	
+
+
+
+	struct QueryGetRankersSet
+	{
+		int64_t PlayerID;
+		int64_t FBUID;
+		char  NickName[BINSIZE_NAME];
+		int32_t Level;
+
+		uint64_t Score;
+	};
+
+	class QueryGetRankers : public QueryGetRankersSet, public QueryBase
+	{
+	public:
+		int32_t BaseIndex;
+		int32_t RequestCount;
+
+	public:
+		BRDB_BEGIN_PARAM_MAP(QueryGetRankers, 2)
+			BRDB_COLUMN_ENTRY(BaseIndex)
+			BRDB_COLUMN_ENTRY(RequestCount)
+			BRDB_END_PARAM_MAP()
+
+			BRDB_BEGIN_RESULT_MAP(QueryGetRankersSet, 5)
+			BRDB_COLUMN_ENTRY(PlayerID)
+			BRDB_COLUMN_ENTRY(FBUID)
+			BRDB_COLUMN_ENTRY(NickName)
+			BRDB_COLUMN_ENTRY(Level)
+			BRDB_COLUMN_ENTRY(Score)
+			BRDB_END_RESULT_MAP()
+
+			BRDB_QUERYSTRING("spGetRankers", BRDB_PARAM_2)
+	};
+
+	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_RANKINGDB, QueryGetRankers, QueryGetRankersSet);
+
+
+
 }  // namespace DB
 }  // namespace BR

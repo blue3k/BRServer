@@ -124,7 +124,7 @@ namespace BR {
 
 		inline TotalRankingPlayerInformation();
 		inline TotalRankingPlayerInformation(const TotalRankingPlayerInformation& src);
-		inline TotalRankingPlayerInformation(uint32_t rankingID, uint32_t ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose);
+		inline TotalRankingPlayerInformation(uint32_t rankingID, uint32_t ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, unsigned level, unsigned scoreLow, unsigned scoreHigh);
 
 		void SetLongScore(uint64_t scoreLong);
 		uint64_t GetLongScore();

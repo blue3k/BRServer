@@ -166,6 +166,16 @@ namespace Svr {
 		}
 		else
 		{
+			Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
+			// To accomodate login only services, allow login without game server
+			if (!Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity((ClusterID)((UINT)ClusterID::Game + (UINT)super::GetGameID()), pServiceEntity)
+				|| pServiceEntity->GetNumberOfNonWatcherServices() == 0)
+			{
+				// Login is succeeded, but there is no game cluster for the game or no available game service
+				CloseTransaction(hr);
+				goto Proc_End;
+			}
+
 			if( m_GameEntityUID == 0 )
 			{
 				svrTrace(Svr::TRC_ENTITY, "No login session");

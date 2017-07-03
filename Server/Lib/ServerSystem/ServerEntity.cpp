@@ -70,7 +70,7 @@ namespace Svr {
 		destConn = SharedPointerT<Net::IConnection>(pConn);
 		svrChkPtr(pConn);
 
-		pConn->SetConnectionEventHandler(this);
+		pConn->SetEventHandler(this);
 
 		svrChk(pConn->CreatePolicy(POLICY_SERVER));
 		svrChk(pConn->CreatePolicy(POLICY_SVR_SERVER));
@@ -94,7 +94,7 @@ namespace Svr {
 		auto pCurConn = (Net::IConnection*)m_pConnRemote;
 		if (pCurConn != nullptr)
 		{
-			pCurConn->SetConnectionEventHandler(nullptr);
+			pCurConn->SetEventHandler(nullptr);
 			pCurConn->GetNet()->ReleaseConnection(pCurConn);
 
 			auto localCon = m_pConnLocal;
@@ -155,10 +155,10 @@ namespace Svr {
 			return ResultCode::SUCCESS;
 
 		auto localCon = m_pConnLocal;
-		if (localCon != nullptr) localCon->SetConnectionEventHandler(nullptr);
+		if (localCon != nullptr) localCon->SetEventHandler(nullptr);
 
 		auto remoteCon = m_pConnRemote;
-		if (remoteCon != nullptr) remoteCon->SetConnectionEventHandler(nullptr);
+		if (remoteCon != nullptr) remoteCon->SetEventHandler(nullptr);
 
 		svrChk(MasterEntity::TerminateEntity() );
 
@@ -408,16 +408,25 @@ namespace Svr {
 
 	Result ServerEntity::OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg)
 	{
+		if (GetTaskManager() == nullptr)
+			return ResultCode::E_INVALID_STATE;
+
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(pConn), pMsg));
 	}
 
 	Result ServerEntity::OnNetSyncMessage(Net::IConnection* pConn)
 	{
+		if (GetTaskManager() == nullptr)
+			return ResultCode::E_INVALID_STATE;
+
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
 	}
 
 	Result ServerEntity::OnNetSendReadyMessage(Net::IConnection* pConn)
 	{
+		if (GetTaskManager() == nullptr)
+			return ResultCode::E_INVALID_STATE;
+
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
 	}
 

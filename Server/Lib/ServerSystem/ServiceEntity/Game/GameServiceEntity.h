@@ -67,13 +67,14 @@ namespace Svr {
 	private:
 		Config::PublicNetSocket*	m_PublicNetSocket;
 		Net::ServerMUDP*			m_pNetPublic;
+		GameID						m_GameID;
 
 	protected:
 
 
 	public:
 
-		GameServiceEntity(Config::PublicNetSocket *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
+		GameServiceEntity(GameID gameID, Config::PublicNetSocket *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
 		~GameServiceEntity();
 
 		// We are not going to use hashed key

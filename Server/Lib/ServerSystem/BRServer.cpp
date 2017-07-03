@@ -213,7 +213,10 @@ Proc_End:
 		Svr::Config::NetSocket *netInfo = nullptr;
 		NetAddress svrAddress;
 
-		svrChkPtr(Svr::Config::GetConfig().MonitoringServer);
+		// Skip if not specified
+		if (Svr::Config::GetConfig().MonitoringServer == nullptr)
+			return hr;
+
 		netInfo = Svr::Config::GetConfig().MonitoringServer->NetPrivate;
 		svrChkPtr(netInfo);
 

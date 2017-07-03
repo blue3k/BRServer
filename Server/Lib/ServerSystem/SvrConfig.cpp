@@ -345,16 +345,14 @@ namespace Config
 	// for parsing
 	bool ModuleLogin::SetAttributeValue(const std::string& name, const std::string& value)
 	{
-		//if (name == "IPV4") {
-		//	IPV4 = value;
-		//}
-		//else if (name == "MaxConnections") {
-		//	MaxConnections = (UINT)atoi(value.c_str());
-		//}
-		//else {
-		return ModuleBase::SetAttributeValue(name, value);
-		//}
-		//return true;
+		if (name == "GameCluster") {
+			GameCluster = value.c_str();
+		}
+		else {
+			return ModuleBase::SetAttributeValue(name, value);
+		}
+
+		return true;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -993,6 +991,7 @@ namespace Config
 	//
 
 	ConfigData::ConfigData()
+		: MonitoringServer(nullptr)
 	{
 	}
 

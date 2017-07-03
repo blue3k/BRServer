@@ -42,9 +42,10 @@ namespace Svr {
 	//	Entity informations
 	//
 
-	GameServiceEntity::GameServiceEntity(Config::PublicNetSocket *publicNetSocket, ClusterMembership initialMembership)
+	GameServiceEntity::GameServiceEntity(GameID gameID, Config::PublicNetSocket *publicNetSocket, ClusterMembership initialMembership)
 		: FreeReplicaClusterServiceEntity(ClusterID::Game, initialMembership)
 		, m_PublicNetSocket(publicNetSocket)
+		, m_GameID(gameID)
 	{
 		AssertRel(publicNetSocket != nullptr);
 	}
@@ -67,8 +68,8 @@ namespace Svr {
 		svrChk(m_pNetPublic->HostOpen(NetClass::Game, m_PublicNetSocket->IPV6.c_str(), m_PublicNetSocket->Port));
 
 
-		// Register game conspiracy cluster as a slave
-		svrMem(pGameService = new Svr::GameClusterServiceEntity(m_PublicNetSocket, GameID::Conspiracy, ClusterMembership::Slave));
+		// Register game cluster as a slave
+		svrMem(pGameService = new Svr::GameClusterServiceEntity(m_GameID, m_PublicNetSocket, ClusterMembership::Slave));
 		svrChk(GetServerComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pGameService));
 		svrChk(GetServerComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
 		svrChk(AddServerComponent(pGameService));

@@ -27,7 +27,7 @@
 	</EntityServer>
 
 
-  <ModuleServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4" GameID="Conspiracy">
+  <ModuleServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
     <NetPrivate IP="192.168.0.2" Port="2011"/>
     <ModLogin>
       <NetPublic IPV4="192.168.0.2" IPV6="192.168.0.2" ListenIP="::" Port="21001" MaxConnection="200000"/>
@@ -55,13 +55,13 @@
 		<GameDB ClusterType="Sharding" DBInstanceName="conspiracy00" DBName="dbconspiracy00" />
 		<GameTransactionLogDB ClusterType="Sharding" DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" />
 
-		<Game UID="100" Name="BRConspiracyGameServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4">
+		<!--<Game UID="100" Name="BRConspiracyGameServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4">
 			<ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>
 			<ComponentIOS URL="https://buy.itunes.apple.com/verifyReceipt"/>
 			<ComponentIOS URL="https://sandbox.itunes.apple.com/verifyReceipt"/>
 			<NetPrivate IP="192.168.0.2" Port="10000"/>
 			<NetPublic IPV4="192.168.0.2" IPV6="192.168.0.2" ListenIP="::" Port="11000"/>
-		</Game>
+		</Game>-->
 
 		<!-- <Game UID="101" Name="BRConspiracyGameServer02" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4"> -->
 			<!-- <ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/> -->

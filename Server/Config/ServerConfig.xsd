@@ -8,7 +8,7 @@
 			<xs:sequence>
 				<xs:element name="DBInstances" type="DBInstance" maxOccurs="unbounded"/>
 				<xs:element name="MonitoringServer" type="GenericServer" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="TableDB">
+        <xs:element name="TableDB" minOccurs="0" maxOccurs="1">
           <xs:complexType >
             <xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
             <xs:attribute name="DBName" type="xs:string" use="required"/>
@@ -20,7 +20,7 @@
 				
 				<xs:element name="EntityServer" type="GenericServer" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element name="ModuleServer" type="ModuleServer" minOccurs="0" maxOccurs="unbounded" />
-				<xs:element name="GameCluster" maxOccurs="unbounded">
+				<xs:element name="GameCluster" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="GameDB" type="DBCluster" minOccurs="1" maxOccurs="1" />
@@ -38,7 +38,7 @@
 							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="Name" type="xs:string" use="optional"/>
-            <xs:attribute name="GameID" type="GameID" use="required"/>
+            <xs:attribute name="GameID" type="xs:string" use="required"/>
           </xs:complexType>
 				</xs:element>
 			</xs:sequence>
@@ -165,8 +165,9 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
-		<xs:attribute name="PartitioningCount" type="xs:integer" use="required"/>
-	</xs:complexType>
+    <xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
+    <xs:attribute name="DBName" type="xs:string" use="required"/>
+  </xs:complexType>
   
 	<xs:complexType name="DBServer">
 		<xs:annotation>
@@ -295,7 +296,7 @@
           </xs:choice>
           
 				</xs:sequence>
-        <xs:attribute name="GameID" type="GameID" use="required" />
+        <xs:attribute name="GameID" type="GameID" use="optional" />
       </xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

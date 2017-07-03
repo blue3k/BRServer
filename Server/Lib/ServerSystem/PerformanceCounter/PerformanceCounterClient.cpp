@@ -307,10 +307,7 @@ namespace Svr {
 		auto& entityTable = GetEntityTable();
 
 		if (stm_pInstance == nullptr)
-		{
-			Assert(false);
 			return nullptr;
-		}
 
 		if (stm_pInstance->m_DefaultCounter == nullptr)
 		{

@@ -132,7 +132,7 @@ namespace SharedModuleServer {
 		case ClusterID::Game:
 		{
 			auto pGame = (Svr::Config::ModuleGame*)module;
-			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new Svr::GameServiceEntity(pGame->NetPublic)));
+			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, new Svr::GameServiceEntity(GetGameID(), pGame->NetPublic)));
 			svrChk(AddServiceEntityComponent<Svr::GameInstanceManagerWatcherServiceEntity>(GetGameID()));
 			break;
 		}

@@ -79,13 +79,20 @@ namespace DB {
 
 	public:
 
-		// Request a DB Qurey
+		// Request a DB Query
 		Result	RequestQuery(Query* pQuery);
 
 		// Route query result to entity
 		virtual Result RouteResult(Query* &pQuery);
 
+		// Request DB query synchronously
+		Result RequestQuerySync(Query* pQuery);
+
+
 		void Update();
+
+
+
 
 	private:
 

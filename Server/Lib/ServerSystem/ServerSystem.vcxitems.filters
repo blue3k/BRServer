@@ -49,6 +49,15 @@
     <Filter Include="Config">
       <UniqueIdentifier>{9d118c32-1ffe-4f75-97d9-40a055f138e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Config\Win">
+      <UniqueIdentifier>{29e18470-b8a5-4ce5-8cf9-5fb2eb4a7d24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config\Linux">
+      <UniqueIdentifier>{a91e73ff-6cd8-4ea1-9499-4931bfb76d87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config\GameSample">
+      <UniqueIdentifier>{a2e36521-7e65-4b5e-93e3-75aeb47d1b8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameLog\GameLog.h" />
@@ -624,5 +633,36 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_linux.xml">
+      <Filter>Config\Linux</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_linux_rel.xml">
+      <Filter>Config\Linux</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_linux_test.xml">
+      <Filter>Config\Linux</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_winsample.xml">
+      <Filter>Config\Win</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig.xml">
+      <Filter>Config\Win</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_Sample.xml">
+      <Filter>Config\Win</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_MyTownHero.xml">
+      <Filter>Config\GameSample</Filter>
+    </Xml>
+    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_Conspiracy.xml">
+      <Filter>Config\GameSample</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <Xsd Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig.xsd">
+      <Filter>Config</Filter>
+    </Xsd>
   </ItemGroup>
 </Project>
