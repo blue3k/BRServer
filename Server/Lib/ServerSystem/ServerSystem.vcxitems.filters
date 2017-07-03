@@ -312,9 +312,7 @@
       <Filter>Config</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.h" />
-    <ClInclude Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\GameServerService.h">
-      <Filter>ServerService\Game</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GameLog\GameLog.inl" />
@@ -625,8 +623,6 @@
       <Filter>Config</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.cpp" />
-    <ClCompile Include="C:\work\BRServerGit\Server\Lib\ServerSystem\ServerService\GameServerService.cpp">
-      <Filter>ServerService\Game</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.cpp" />
   </ItemGroup>
 </Project>

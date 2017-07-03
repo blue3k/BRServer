@@ -386,6 +386,8 @@ Proc_End:
 
 		pQuery->SetSession(pSession);
 
+		dbTrace(DB::TRC_QUERY, "Query pending transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
+
 		dbChk(QueryWorkerManager::PendingQuery(pQuery));
 
 	Proc_End:
@@ -398,6 +400,8 @@ Proc_End:
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::TransactionResult *pRes = pQuery;
+
+		dbTrace(DB::TRC_QUERY, "Query route result transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
 
 		if( pRes->GetTransID() != TransactionID(0) )
 		{

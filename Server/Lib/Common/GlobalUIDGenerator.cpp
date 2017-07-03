@@ -74,7 +74,7 @@ namespace BR {
 		uid.SvrID = m_ServerID & 0XFF;
 		uid.Time = m_time.time_since_epoch().count();
 
-		defTrace(Trace::TRC_TRACE, "GlobalUIDGenerator: New GUID {0}", (float)uid.UID);
+		defTrace(Trace::TRC_TRACE, "GlobalUIDGenerator: New GUID {0}", uid.UID);
 
 		static GlobalUID uidPrev(0);
 		Assert(uidPrev != uid);
