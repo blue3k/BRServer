@@ -118,7 +118,7 @@ namespace DB {
 		auto pQuery = new QueryGetShardListCmd();
 
 		pQuery->SetPartitioningKey(0);
-		pQuery->SetTransaction(0);
+		pQuery->SetTransaction(TransactionID());
 		pQuery->ShardID = 0;
 
 		dbChk(RequestQuery(pQuery));
