@@ -118,7 +118,7 @@ namespace DB {
 		auto pQuery = new QueryGetShardListCmd();
 
 		pQuery->SetPartitioningKey(0);
-		pQuery->SetTransaction(0);
+		pQuery->SetTransaction(TransactionID());
 		pQuery->ShardID = 0;
 
 		dbChk(RequestQuery(pQuery));
@@ -136,8 +136,6 @@ namespace DB {
 		DataSource *pDBSource = nullptr;
 		std::string userID = strUserID;
 		std::string password = strPassword;
-
-		dbAssert(partitioningID < m_PartitioningCount);
 
 		if (m_UserID.length() == 0) m_UserID = userID;
 		else userID = m_UserID;
@@ -310,7 +308,7 @@ Proc_End:
 				auto pDBRes = (QueryGetShardListCmd*)pQuery;
 				for (auto& rowRes : pDBRes->m_RowsetResult)
 				{
-					if ((SelectDBByKey(rowRes.ShardID, pDBSource)))
+					if ((unsigned)rowRes.ShardID < GetPartitioningCount() && (SelectDBByKey(rowRes.ShardID, pDBSource)))
 					{
 						if (pDBSource->GetDefaultDB() != rowRes.DBName
 							|| pDBSource->GetConnectionString() != rowRes.ConnectionString)
@@ -386,6 +384,8 @@ Proc_End:
 
 		pQuery->SetSession(pSession);
 
+		dbTrace(DB::TRC_QUERY, "Query pending transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
+
 		dbChk(QueryWorkerManager::PendingQuery(pQuery));
 
 	Proc_End:
@@ -393,13 +393,17 @@ Proc_End:
 		return hr;
 	}
 
+
+
 	// Route query result to entity
 	Result	DBClusterManager::RouteResult(Query* &pQuery)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::TransactionResult *pRes = pQuery;
 
-		if( pRes->GetTransID() != TransactionID(0) )
+		dbTrace(DB::TRC_QUERY, "Query route result transID:{0} msg:{1}, class:{2}", pQuery->GetTransID(), pQuery->GetMsgID(), typeid(pQuery).name());
+
+		if( pRes->GetTransID() != TransactionID() )
 		{
 			Svr::BrServer *pMyServer = Svr::BrServer::GetInstance();
 			dbChkPtr( pMyServer );
@@ -410,7 +414,7 @@ Proc_End:
 			hr = Svr::GetEntityTable().RouteTransactionResult(pRes);
 			if (!(hr))
 			{
-				dbTrace(TRC_INFO, "Failed to route a message msgID:{0}, target entityID:{1}, query:{2}", hr, msgID, entityID, queryName);
+				dbTrace(TRC_INFO, "Failed to route a message hr:{0} msgID:{1}, target entityID:{2}, query:{3}", hr, msgID, entityID, queryName);
 				hr = ResultCode::E_INVALID_ENTITY;
 				goto Proc_End;
 			}
@@ -429,6 +433,63 @@ Proc_End:
 
 		return hr;
 	}
+
+
+	Result DBClusterManager::RequestQuerySync(Query* pQuery)
+	{
+		Result hr = ResultCode::SUCCESS;
+		Session * pSession = nullptr;
+		DataSource *pDBSource = nullptr;
+
+		pQuery->UpdateRequestedTime();
+		pQuery->SetQueryManager(this);
+
+		// Find the data source
+		if (!(SelectDBByKey(pQuery->GetPartitioningKey(), pDBSource)))
+		{
+			dbTrace(Trace::TRC_ERROR, "QueryWorker failure: The sharding bucket is empty");
+			// It's not expected
+			pQuery->SetResult(ResultCode::UNEXPECTED);
+			dbErr(ResultCode::UNEXPECTED);
+		}
+
+		if (!pDBSource->GetOpened())
+		{
+			dbErr(ResultCode::E_NOT_INITIALIZED);
+		}
+
+		// Get Session
+		if (!(pDBSource->AssignSession(pSession)))
+		{
+			// It's not expected
+			pQuery->SetResult(ResultCode::UNEXPECTED);
+			dbTrace(Trace::TRC_ERROR, "Assigning query to a worker failed {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
+			dbErr(ResultCode::UNEXPECTED);
+		}
+
+		if (!pSession->IsOpened())
+		{
+			if (!(pSession->OpenSession()))
+			{
+				pQuery->SetResult(ResultCode::UNEXPECTED);
+				pSession->ReleaseSession();
+				dbTrace(Trace::TRC_ERROR, "Failed to open DB session {0}, TransID:{1}", typeid(pQuery).name(), pQuery->GetTransID());
+				dbErr(ResultCode::UNEXPECTED);
+			}
+		}
+
+		pQuery->SetSession(pSession);
+
+		defChk(pSession->SendQuery(pQuery));
+
+	Proc_End:
+
+		if (pSession)
+			pSession->ReleaseSession();
+
+		return hr;
+	}
+
 
 } // namespace DB
 } // namespace BR

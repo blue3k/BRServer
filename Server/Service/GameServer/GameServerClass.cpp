@@ -212,7 +212,7 @@ namespace GameServer {
 		{
 			// Register game conspiracy cluster as a slave
 			auto pMySvr = (const Svr::Config::PublicServer*)GetMyConfig();
-			svrMem(pGameService = new GameClusterServiceEntity(pMySvr->NetPublic, GetGameClusterInfo()->GetGameID(), ClusterMembership::Slave));
+			svrMem(pGameService = new GameClusterServiceEntity(GetGameClusterInfo()->GetGameID(), pMySvr->NetPublic, ClusterMembership::Slave));
 			svrChk(GetComponent<Svr::EntityManager>()->AddEntity(EntityFaculty::Service, pGameService));
 			svrChk(GetComponent<Svr::ClusterManagerServiceEntity>()->AddClusterServiceEntity(pGameService));
 			AddComponent(pGameService);

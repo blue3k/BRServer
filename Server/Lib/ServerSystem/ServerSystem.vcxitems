@@ -220,4 +220,19 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_Conspiracy.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_linux.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_linux_rel.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_linux_test.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_Sample.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_MyTownHero.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_winsample.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xsd Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xsd">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </Xsd>
+  </ItemGroup>
 </Project>

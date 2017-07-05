@@ -41,6 +41,7 @@ namespace Const{
 		LOGIN_SESSION_EXPIRE_TIME = 60 * 60 * 2, // 2 min
 
 		MAX_NAME = 64,
+		MAX_RANKING_LIST = 20,
 
 		ENTITY_GAMEMANAGER_THREAD = 8,
 

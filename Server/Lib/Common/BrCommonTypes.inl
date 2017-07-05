@@ -166,15 +166,15 @@ TotalRankingPlayerInformation& TotalRankingPlayerInformation::operator = ( const
 	this->PlayerID = src.PlayerID;
 	this->FBUID = src.FBUID;
 	Level = src.Level;
-	Win = src.Win;
-	Lose = src.Lose;
+	ScoreLow = src.ScoreLow;
+	ScoreHigh = src.ScoreHigh;
 
 	StrUtil::StringCpy(NickName, src.NickName);
 
 	return *this;
 }
 
-TotalRankingPlayerInformation::TotalRankingPlayerInformation(uint32_t rankingID, uint32_t ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose)
+TotalRankingPlayerInformation::TotalRankingPlayerInformation(uint32_t rankingID, uint32_t ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, unsigned level, unsigned scoreLow, unsigned scoreHigh)
 {
 	//if( nickName == nullptr ) 
 	//	return ResultCode::INVALID_ARG;
@@ -184,10 +184,21 @@ TotalRankingPlayerInformation::TotalRankingPlayerInformation(uint32_t rankingID,
 	this->PlayerID = playerID;
 	this->FBUID = fbUID;
 	Level = level;
-	Win = win;
-	Lose = lose;
+	ScoreLow = scoreLow;
+	ScoreHigh = scoreHigh;
 
 	StrUtil::StringCpy(NickName, nickName);
+}
+
+inline void TotalRankingPlayerInformation::SetLongScore(uint64_t scoreLong)
+{
+	ScoreLow = (uint32_t)scoreLong;
+	ScoreHigh = (uint32_t)(scoreLong>>32);
+}
+
+inline uint64_t TotalRankingPlayerInformation::GetLongScore()
+{
+	return (uint64_t)ScoreLow | ((uint64_t)ScoreHigh << 32);
 }
 
 bool TotalRankingPlayerInformation::operator == ( const TotalRankingPlayerInformation& src ) const

@@ -112,7 +112,7 @@ namespace Svr {
 
 	public:
 		// Constructor/Destructor
-		GameClusterServiceEntity(Config::PublicNetSocket *publicNetSocket, GameID gameID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
+		GameClusterServiceEntity(GameID gameID, Config::PublicNetSocket *publicNetSocket, ClusterMembership initialMembership = ClusterMembership::StatusWatcher);
 		virtual ~GameClusterServiceEntity();
 
 		virtual Result RegisterServiceMessageHandler( ServerEntity *pServerEntity ) override;

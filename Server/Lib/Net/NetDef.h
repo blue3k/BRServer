@@ -177,7 +177,7 @@ namespace Net {
 		// Network interface
 		INet	*m_pINet;
 
-		IConnectionEventHandler *m_pEventHandler;
+		std::atomic<IConnectionEventHandler*> m_pEventHandler;
 
 	protected:
 		void SetConnectionState(ConnectionState newState);
@@ -252,8 +252,6 @@ namespace Net {
 		IConnectionEventHandler* GetEventHandler();
 		void SetEventHandler(IConnectionEventHandler* pEventHandler);
 
-		// Connection tvent handler
-		void SetConnectionEventHandler(IConnectionEventHandler *pEventHandler) { m_pEventHandler = pEventHandler; }
 
 
 		//////////////////////////////////////////////////////////////////////////

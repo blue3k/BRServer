@@ -49,7 +49,7 @@ namespace DB {
 	//	Ranking DB interface
 	//
 
-	Result RankingDB::GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount )
+	Result RankingDB::GetRankingListCmd( TransactionID Sender, uint32_t minRanking, uint32_t rankingCount )
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryGetTotalRankingCmd *pQuery = nullptr;
@@ -75,6 +75,55 @@ namespace DB {
 			Util::SafeRelease( pQuery );
 
 		return hr;
+	}
+
+
+
+	Result RankingDB::UpdateRankingScoreCmd(TransactionID Sender, int64_t playerID, int64_t fBUID, const char *nickName, int32_t level, uint64_t score)
+	{
+		Result hr = ResultCode::SUCCESS;
+		QueryUpdateRankingScoreCmd *pQuery = nullptr;
+
+		dbMem(pQuery = new QueryUpdateRankingScoreCmd);
+
+		pQuery->PlayerID = playerID;
+		pQuery->FBUID = fBUID;
+		StrUtil::StringCpy(pQuery->NickName, nickName);
+		pQuery->Level = level;
+		pQuery->Score = score;
+
+		pQuery->SetTransaction(Sender);
+
+		dbChk(RequestQuery(pQuery));
+		pQuery = nullptr;
+
+	Proc_End:
+
+		if (!(hr))
+			Util::SafeRelease(pQuery);
+
+		return hr;
+	}
+
+
+	QueryGetRankersCmd* RankingDB::GetRankers(int32_t baseIndex, int32_t requestCount)
+	{
+		Result hr = ResultCode::SUCCESS;
+		QueryGetRankersCmd *pQuery = nullptr;
+
+		dbMem(pQuery = new QueryGetRankersCmd);
+
+		pQuery->BaseIndex = baseIndex;
+		pQuery->RequestCount = requestCount;
+
+		dbChk(RequestQuerySync(pQuery));
+
+	Proc_End:
+
+		if (!(hr))
+			Util::SafeRelease(pQuery);
+
+		return pQuery;
 	}
 
 

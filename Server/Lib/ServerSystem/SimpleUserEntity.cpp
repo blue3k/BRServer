@@ -55,7 +55,7 @@ namespace Svr
 		m_pConnection = std::forward<SharedPointerT<Net::Connection>>(pConn);
 		if (m_pConnection != nullptr)
 		{
-			m_pConnection->SetConnectionEventHandler(this);
+			m_pConnection->SetEventHandler(this);
 
 			// purge received guaranted messages
 			OnRecvMessage((Net::Connection*)m_pConnection, nullptr);
@@ -74,7 +74,7 @@ namespace Svr
 		if( m_pConnection == nullptr )
 			return;
 
-		m_pConnection->SetConnectionEventHandler(nullptr);
+		m_pConnection->SetEventHandler(nullptr);
 		m_pConnection->GetNet()->ReleaseConnection((Net::Connection*)m_pConnection);
 		m_pConnection = SharedPointerT<Net::Connection>();
 	}
@@ -115,7 +115,7 @@ namespace Svr
 		SetAuthTicket( 0 );
 
 		if (m_pConnection != nullptr)
-			m_pConnection->SetConnectionEventHandler(nullptr);
+			m_pConnection->SetEventHandler(nullptr);
 
 		svrChk(SimpleEntity::TerminateEntity() );
 

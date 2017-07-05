@@ -19,6 +19,8 @@
 #include "Common/SvrPolicyID.h"
 #include "ServerSystem/ServerComponent.h"
 
+#include "DB/RankingDBQuery.h"
+
 
 namespace BR {
 namespace DB {
@@ -54,8 +56,12 @@ namespace DB {
 		//	Ranking DB interface
 		//
 
-		Result GetRankingListCmd( TransactionID Sender, UINT32 minRanking, UINT32 rankingCount );
+		Result GetRankingListCmd( TransactionID Sender, uint32_t minRanking, uint32_t rankingCount );
 
+
+		Result UpdateRankingScoreCmd(TransactionID Sender, int64_t playerID, int64_t fBUID, const char *nickName, int32_t level, uint64_t score);
+
+		QueryGetRankersCmd* GetRankers(int32_t baseIndex, int32_t requestCount);
 
 	};
 

@@ -42,8 +42,8 @@ namespace GameServer {
 	//	Entity informations
 	//
 
-	GameClusterServiceEntity::GameClusterServiceEntity(Svr::Config::PublicNetSocket *publicNetSocket, GameID gameID, ClusterMembership initialMembership)
-		: Svr::GameClusterServiceEntity(publicNetSocket, gameID, initialMembership)
+	GameClusterServiceEntity::GameClusterServiceEntity(GameID gameID, Svr::Config::PublicNetSocket *publicNetSocket, ClusterMembership initialMembership)
+		: Svr::GameClusterServiceEntity(gameID, publicNetSocket, initialMembership)
 	{
 		BR_ENTITY_MESSAGE(Message::GameServer::RegisterPlayerToJoinGameServerCmd) { svrMemReturn(pNewTrans = new GameServerTransRegisterPlayerToJoinGameServer<GameClusterServiceEntity>(pMsgData)); return ResultCode::SUCCESS; } );
 	}

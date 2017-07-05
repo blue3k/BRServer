@@ -170,12 +170,12 @@ inline INet* IConnection::GetNet()
 
 inline IConnectionEventHandler* IConnection::GetEventHandler()
 {
-	return m_pEventHandler;
+	return m_pEventHandler.load(std::memory_order_acquire);
 }
 
 inline void IConnection::SetEventHandler(IConnectionEventHandler* pEventHandler)
 {
-	m_pEventHandler = pEventHandler;
+	m_pEventHandler.store(pEventHandler, std::memory_order_release);
 }
 
 

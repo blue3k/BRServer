@@ -28,6 +28,7 @@
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/SvrConst.h"
 
+#include "DB/RankingDB.h"
 
 
 namespace BR {
@@ -56,27 +57,42 @@ namespace Svr {
 	Result RankingServiceEntity::InitializeEntity( EntityID newEntityID )
 	{
 		Result hr = ResultCode::SUCCESS;
+		auto pServerInst = BrServer::GetInstance();
+		DB::RankingDB* pRankDB = nullptr;
+		int32_t baseIndex = 0;
+		int32_t requestSize = 20;
+		int32_t maxRequestCount = 100;
 
 		svrChk(FreeReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
 
+		svrChk(pServerInst->AddDBCluster<DB::RankingDB>(Config::GetConfig().RankingDB));
+
 		m_CurrentProcessingNumberofMember = 0;
 
-		//m_LastRankingFailed = false;
 
-		m_RankingCheckTimer.SetTimer(DurationMS(Svr::Const::TIME_INTERVAL_RANKING_UPDATE));
-
-
-
-
-		for (int iPlayer = 1; iPlayer < 50; iPlayer++)
+		pRankDB = GetServerComponent<DB::RankingDB>();
+		svrChkPtr(pRankDB);
+		
+		baseIndex = 0;
+		for (int iRequest = 0; iRequest < maxRequestCount; iRequest++, baseIndex += requestSize)
 		{
-			char temp[128];
-			StrUtil::Format(temp, "TestPlayer{0}", iPlayer);
-			PlayerInformation playerInfo(iPlayer, iPlayer, temp, 0, 0, Util::Time.GetRawUTCSec().time_since_epoch().count());
-			int64_t playerRanking;
-			svrChk(UpdatePlayerScore(playerInfo, Util::Random.Rand() % 50000, playerRanking));
+			auto pResult = pRankDB->GetRankers(baseIndex, requestSize);
+			svrChkPtr(pResult);
+
+			// Nothing to query anymore
+			if (pResult->m_RowsetResult.size() == 0)
+				break;
+
+			svrTrace(Svr::TRC_INFO, "Ranking request: from {0}, to {1}, count{2}", baseIndex, baseIndex + requestSize, pResult->m_RowsetResult.size());
+			for (auto& itRowSet : pResult->m_RowsetResult)
+			{
+				int64_t playerRanking;
+				PlayerInformation playerInfo(itRowSet.PlayerID, itRowSet.FBUID, itRowSet.NickName, itRowSet.Level, false, 0);
+				svrChk(UpdatePlayerScore(playerInfo, itRowSet.Score, playerRanking));
+			}
 		}
 
+		m_RankingCheckTimer.SetTimer(DurationMS(Svr::Const::TIME_INTERVAL_RANKING_UPDATE));
 
 	Proc_End:
 
@@ -156,11 +172,10 @@ namespace Svr {
 		else
 		{
 			// Use original score for search key
-			rankingKey.Score = /*(uint64_t)*/pPlayerRankInformation->Win; // | (uint64_t)pPlayerRankInformation->Lose << 32;
+			rankingKey.Score = pPlayerRankInformation->ScoreLow; // TODO
 																		  
 			// we already has ranking information
-			pPlayerRankInformation->Win = (int32_t)score;
-			pPlayerRankInformation->Lose = (int32_t)(score >> 32);
+			pPlayerRankInformation->SetLongScore(score);
 
 			hr = m_RankingMap.Remove(rankingKey.RankingKeyValue, pRemoved);
 			Assert(pRemoved == pPlayerRankInformation);

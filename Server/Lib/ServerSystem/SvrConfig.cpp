@@ -112,32 +112,6 @@ namespace Config
 	}
 	
 
-	///////////////////////////////////////////////////////////////////////////////
-
-	DBClusterInstance::DBClusterInstance()
-		: XML::DOMElement("DBClusterInstance")
-	{
-	}
-
-	// for parsing
-	bool DBClusterInstance::SetAttributeValue( const std::string& name, const std::string& value )
-	{
-		if( name == "DBInstanceName" ) {
-			DBInstanceName = value;
-		}
-		else if( name == "DBName" ) {
-			DBName = value;
-		}
-		else if( name == "PartitioningID" ) {
-			PartitioningID = (UINT)atoi( value.c_str() );;
-		}
-		else {
-			return XML::DOMElement::SetAttributeValue( name, value );
-		}
-
-		return true;
-	}
-
 
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -172,10 +146,6 @@ namespace Config
 
 	void DBCluster::AddChild( DOMElement *pChild )
 	{
-		AssertRel( pChild->GetTypeName() == "DBClusterInstance" );
-
-		DBMembers.push_back( (DBClusterInstance*)pChild );
-
 		XML::DOMElement::AddChild( pChild );
 	}
 
@@ -188,8 +158,11 @@ namespace Config
 			else
 				ClusterType = DBClusterType::Normal;
 		}
-		else if( name == "PartitioningCount" ) {
-			PartitioningCount = atoi( value.c_str() );
+		else if (name == "DBInstanceName") {
+			DBInstanceName = value;
+		}
+		else if (name == "DBName") {
+			DBName = value;
 		}
 		else {
 			return XML::DOMElement::SetAttributeValue( name, value );
@@ -372,16 +345,14 @@ namespace Config
 	// for parsing
 	bool ModuleLogin::SetAttributeValue(const std::string& name, const std::string& value)
 	{
-		//if (name == "IPV4") {
-		//	IPV4 = value;
-		//}
-		//else if (name == "MaxConnections") {
-		//	MaxConnections = (UINT)atoi(value.c_str());
-		//}
-		//else {
-		return ModuleBase::SetAttributeValue(name, value);
-		//}
-		//return true;
+		if (name == "GameCluster") {
+			GameCluster = value.c_str();
+		}
+		else {
+			return ModuleBase::SetAttributeValue(name, value);
+		}
+
+		return true;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -929,7 +900,6 @@ namespace Config
 			RegisterElementCreator( "AccountDB", []()-> XML::DOMElement* { return new DBCluster; } );
 			RegisterElementCreator( "LoginSessionDB", []()-> XML::DOMElement* { return new DBCluster; } );
 			RegisterElementCreator( "RankingDB", []()-> XML::DOMElement* { return new DBCluster; } );
-			RegisterElementCreator( "DBMember", []()-> XML::DOMElement* { return new DBClusterInstance; } );
 			RegisterElementCreator( "MonitoringServer", []()-> XML::DOMElement* { return new GenericServer; } );
 			RegisterElementCreator( "EntityServer", []()-> XML::DOMElement* { return new GenericServer; } );
 			RegisterElementCreator("ComponentGoogle", []()-> XML::DOMElement* { return new ServerComponentGoogle; });
@@ -1021,6 +991,7 @@ namespace Config
 	//
 
 	ConfigData::ConfigData()
+		: MonitoringServer(nullptr)
 	{
 	}
 

@@ -20,7 +20,7 @@ rem start %PATH_BIN%\BRModuleServer.Win.exe -debug -n:BRMatchingQueue01
 timeout /t 2 /nobreak
 
 
-start %PATH_BIN%\BRConspiracyGameServer.Win.exe -debug -n:BRConspiracyGameServer01
+rem start %PATH_BIN%\BRConspiracyGameServer.Win.exe -debug -n:BRConspiracyGameServer01
 rem start %PATH_BIN%\BRConspiracyGameServer.Win.exe -debug -n:BRConspiracyGameServer02
 
 timeout /t 1 /nobreak

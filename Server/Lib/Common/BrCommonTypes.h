@@ -119,14 +119,19 @@ namespace BR {
 		FacebookUID		FBUID;
 		char			NickName[MAX_NAME];
 		uint32_t		Level;
-		uint32_t		Win;
-		uint32_t		Lose;
+		uint32_t		ScoreLow;	// Win
+		uint32_t		ScoreHigh;	// Lose
 
 		inline TotalRankingPlayerInformation();
 		inline TotalRankingPlayerInformation(const TotalRankingPlayerInformation& src);
-		inline TotalRankingPlayerInformation(uint32_t rankingID, uint32_t ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, UINT level, UINT win, UINT lose);
+		inline TotalRankingPlayerInformation(uint32_t rankingID, uint32_t ranking, AccountID playerID, FacebookUID fbUID, const char* nickName, unsigned level, unsigned scoreLow, unsigned scoreHigh);
+
+		void SetLongScore(uint64_t scoreLong);
+		uint64_t GetLongScore();
+
 		inline TotalRankingPlayerInformation& operator = ( const TotalRankingPlayerInformation& src );
 		inline bool operator == ( const TotalRankingPlayerInformation& src ) const;
+
 	};
 
 
