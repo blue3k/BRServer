@@ -268,11 +268,12 @@
 		<xs:complexContent>
 			<xs:extension base="GenericServer">
 				<xs:sequence>
+          <!-- Actually I want them have maximum one each without order -->
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="ModGamePartyManager" type="ModuleSimple"/>
             <xs:element name="ModMonitoring" type="ModuleSimple"/>
             <xs:element name="ModLogin" type="ModuleLogin"/>
-			<xs:element name="ModRanking" type="ModuleRanking"/>
+      			<xs:element name="ModRanking" type="ModuleRanking"/>
             <xs:element name="ModGame" type="ModuleGame"/>
             <xs:element name="ModInstanceManager" type="ModuleSimple"/>
             <xs:element name="ModMatching_Game_4" type="ModuleMatching"/>
