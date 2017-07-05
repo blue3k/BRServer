@@ -635,34 +635,16 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_linux.xml">
-      <Filter>Config\Linux</Filter>
-    </Xml>
-    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_linux_rel.xml">
-      <Filter>Config\Linux</Filter>
-    </Xml>
-    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_linux_test.xml">
-      <Filter>Config\Linux</Filter>
-    </Xml>
-    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_winsample.xml">
-      <Filter>Config\Win</Filter>
-    </Xml>
-    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig.xml">
-      <Filter>Config\Win</Filter>
-    </Xml>
-    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_Sample.xml">
-      <Filter>Config\Win</Filter>
-    </Xml>
-    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_MyTownHero.xml">
-      <Filter>Config\GameSample</Filter>
-    </Xml>
-    <Xml Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig_Conspiracy.xml">
-      <Filter>Config\GameSample</Filter>
-    </Xml>
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_Conspiracy.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_linux.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_linux_rel.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_linux_test.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_Sample.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_MyTownHero.xml" />
+    <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig_winsample.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Xsd Include="C:\work\BRServerGit\Server\Lib\ServerSystem\..\..\Config\ServerConfig.xsd">
-      <Filter>Config</Filter>
-    </Xsd>
+    <Xsd Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xsd" />
   </ItemGroup>
 </Project>

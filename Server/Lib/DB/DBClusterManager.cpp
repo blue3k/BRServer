@@ -163,7 +163,7 @@ namespace DB {
 		}
 
 
-		dbChk(pDBSource->InitializeDBSource(strConnectionString, strDBName, strUserID, strPassword));
+		dbChk(pDBSource->InitializeDBSource(strConnectionString, strDBName, userID, password));
 
 
 	Proc_End:

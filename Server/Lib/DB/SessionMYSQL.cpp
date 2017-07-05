@@ -318,9 +318,10 @@ namespace DB {
 		Result hr = ResultCode::SUCCESS;
 
 		if (m_mySQL == nullptr)
-			return ResultCode::E_NOT_INITIALIZED;
-
-		if (mysql_ping(m_mySQL))
+		{
+			dbChk(OpenSession());
+		}
+		else if (mysql_ping(m_mySQL))
 		{
 			dbTrace(TRC_INFO, "DBConnection lost, reconnecting..");
 			// ignore close errors
