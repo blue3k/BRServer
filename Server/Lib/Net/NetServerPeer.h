@@ -119,7 +119,7 @@ namespace Net {
 
 
 		// Connect to other peer
-		virtual Result RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection );
+		virtual Result RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::ConnectionPtr &pConnection );
 
 	};
 

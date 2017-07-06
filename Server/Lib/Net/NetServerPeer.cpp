@@ -144,7 +144,7 @@ namespace Net {
 						&& pNetCtrl->rtnMsgID.ID == BR_PROTOCOL_VERSION )
 					{
 						// Peer network only allow registered connection
-						netChk( m_ConnectionManager.PendingInitConnection((Connection*)pConnection) );
+						netChk( m_ConnectionManager.PendingInitConnection(pConnection) );
 					}
 					else
 					{
@@ -566,7 +566,7 @@ namespace Net {
 
 
 	// Connect to other peer
-	Result ServerPeer::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
+	Result ServerPeer::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::ConnectionPtr &pConnection )
 	{
 		Result hr = ResultCode::SUCCESS;
 		Net::IConnection::ConnectionInformation connectionInfo;
@@ -593,12 +593,14 @@ namespace Net {
 
 		pConn->SetWriteQueueUDP(GetWriteQueue());
 
-		// Server entity will update this connection, thus just adding address map is enough
-		netChk( m_ConnectionManager.PendingConnection( pConn ) );
 
 		CID = pConn->GetCID();
 
 		pConnection = pConn;
+
+		// Server entity will update this connection, thus just adding address map is enough
+		netChk(m_ConnectionManager.PendingConnection(pConnection));
+
 		pConn = nullptr;
 
 	Proc_End:

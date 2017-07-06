@@ -54,7 +54,7 @@ namespace Svr
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerEntity *pNewServerEntity = nullptr;
-		Net::IConnection *pConnection = nullptr;
+		Net::ConnectionPtr pConnection = nullptr;
 
 		MutexScopeLock localLock(m_ServerTableLock);
 
@@ -81,7 +81,7 @@ namespace Svr
 
 		svrChk(BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection(serverID, netClass, netAddress, pConnection));
 
-		pNewServerEntity->SetLocalConnection(pConnection);
+		pNewServerEntity->SetLocalConnection((Net::Connection*)pConnection);
 
 		svrTrace(Svr::TRC_ENTITY, "Registered Server {0} SvrID:{1} {2}, taskGrp:{3}", netClass, serverID, netAddress, pNewServerEntity->GetTaskGroupID());
 

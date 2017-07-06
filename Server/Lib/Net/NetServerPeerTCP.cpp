@@ -48,7 +48,7 @@ namespace Net {
 
 
 	// handle Socket accept
-	Result ServerPeerTCP::OnAcceptedSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut)
+	Result ServerPeerTCP::OnAcceptedSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, ConnectionPtr &pConnOut)
 	{
 		Result hr = ResultCode::SUCCESS;
 		ConnectionTCP *pConnection = nullptr;
@@ -91,7 +91,7 @@ namespace Net {
 
 		if (bNeedPending)
 		{
-			netChk(GetConnectionManager().PendingWaitConnection(pConnection));
+			netChk(GetConnectionManager().PendingWaitConnection(pConn));
 		}
 		pConn = SharedPointerT<Connection>();
 
@@ -104,7 +104,7 @@ namespace Net {
 			if( pConn != nullptr )
 			{
 				//pConn->AddRef(); // add 1 before release
-				GetConnectionManager().PendingReleaseConnection((Connection*)pConn);
+				GetConnectionManager().PendingReleaseConnection(pConn);
 			}
 
 			netTrace( Trace::TRC_ERROR, "Tcp Accept failed  hr = {0:X8}", hr );
@@ -226,7 +226,7 @@ namespace Net {
 
 
 	// Connect to other peer
-	Result ServerPeerTCP::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::IConnection* &pConnection )
+	Result ServerPeerTCP::RegisterServerConnection( ServerID serverID, NetClass netClass, const NetAddress& destAddress, Net::ConnectionPtr &pConnection )
 	{
 		Result hr = ResultCode::SUCCESS;
 		ConnectionTCP *pConn = nullptr;

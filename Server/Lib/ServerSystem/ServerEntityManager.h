@@ -113,7 +113,7 @@ namespace Svr
 	{
 		Result hr = ResultCode::SUCCESS;
 		ServerEntityType *pNewServerEntity = nullptr;
-		Net::IConnection *pConnection = nullptr;
+		Net::ConnectionPtr pConnection = nullptr;
 
 		MutexScopeLock localLock(m_ServerTableLock);
 
@@ -133,7 +133,7 @@ namespace Svr
 		svrChk( BrServer::GetInstance()->GetNetPrivate()->RegisterServerConnection( serverID, netClass, netAddress, pConnection ) );
 
 		pNewServerEntity->SetServerID( serverID );
-		pNewServerEntity->SetLocalConnection(pConnection);
+		pNewServerEntity->SetLocalConnection((Net::Connection*)pConnection);
 
 		pServerEntity = pNewServerEntity;
 

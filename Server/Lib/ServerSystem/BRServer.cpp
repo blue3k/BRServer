@@ -94,7 +94,7 @@ namespace Svr{
 		Result hr = ResultCode::SUCCESS;
 		Net::INet::Event curEvent;
 		Svr::ServerEntity *pServerEntity = nullptr;
-		Net::Connection *pConn = nullptr;
+		Net::ConnectionPtr pConn = nullptr;
 
 		if( m_pNetPrivate == nullptr )
 			return ResultCode::SUCCESS;
@@ -115,7 +115,7 @@ namespace Svr{
 				if( curEvent.EventConnection == nullptr )
 					break;
 
-				pConn = dynamic_cast<Net::Connection*>(curEvent.EventConnection);
+				pConn = std::forward<Net::ConnectionPtr>(curEvent.EventConnection);
 
 				for (int iTry = 0; iTry < 4; iTry++)
 				{
@@ -126,12 +126,12 @@ namespace Svr{
 					{
 						auto localConn = pServerEntity->GetLocalConnection();
 						auto oldConn = pServerEntity->GetRemoteConnection();
-						if (localConn == nullptr || localConn != pConn)
+						if (localConn == nullptr || localConn != (Net::Connection*)pConn)
 						{
 							//Assert(pConn->GetRefCount() == 0);
 							if (oldConn != nullptr)
 								oldConn->Disconnect("ProcessPrivateNetworkEvent, Disconnect old connection");
-							svrChk(pServerEntity->SetRemoteConnection(pConn));
+							svrChk(pServerEntity->SetRemoteConnection((Net::Connection*)pConn));
 						}
 						pConn = nullptr;
 						pServerEntity = nullptr;
@@ -153,7 +153,7 @@ namespace Svr{
 
 Proc_End:
 
-		if( pConn && m_pNetPrivate )
+		if( pConn != nullptr && m_pNetPrivate )
 			m_pNetPrivate->GetConnectionManager().PendingReleaseConnection(pConn);
 
 		Util::SafeDelete( pServerEntity );

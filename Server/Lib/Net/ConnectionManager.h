@@ -114,9 +114,9 @@ namespace Net {
 			inline Operation( Operation&& src );
 			inline Operation(const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl);
 			inline Operation(OperationCode code, const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl);
-			inline Operation(OperationCode code, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew, Connection *pCo);
-			inline Operation(OperationCode code, AuthTicket ticket, Connection *pCo);
-			inline Operation( OperationCode code, Connection *pCo );
+			inline Operation(OperationCode code, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew, ConnectionPtr& pCo);
+			inline Operation(OperationCode code, AuthTicket ticket, ConnectionPtr& pCo);
+			inline Operation( OperationCode code, ConnectionPtr& pCo );
 			inline ~Operation();
 
 			inline void Clear();
@@ -229,33 +229,33 @@ namespace Net {
 		virtual Connection* NewConnection() = 0;
 
 		// Free connection directly
-		virtual void FreeConnection( Connection* pConn ) = 0;
+		virtual void FreeConnection(ConnectionPtr& pConn ) = 0;
 
 
 		// Add connection to connecting process
-		virtual Result PendingWaitConnection( Connection* pConnection );
+		virtual Result PendingWaitConnection(ConnectionPtr& pConnection );
 
 		// Add connection to connecting process
-		virtual Result PendingConnection( Connection* pConnection );
+		virtual Result PendingConnection(ConnectionPtr& pConnection );
 
 		// Create new connection from connection pool with UDP address and add to connecting process
 		Result PendingNewConnection(const sockaddr_storage& sockAddr, MsgNetCtrlConnect *pNetCtrl);
 		Result PendingNewConnection(const sockaddr_storage& sockAddr, MsgMobileNetCtrl *pNetCtrl);
 
 		// Change address mapping of connection
-		Result PendingRemapPeerID( Connection* pConnection, AuthTicket ticket );
+		Result PendingRemapPeerID(ConnectionPtr& pConnection, AuthTicket ticket );
 
 		// Change address mapping of connection
-		Result PendingAddressRemap(Connection* pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew);
+		Result PendingAddressRemap(ConnectionPtr& pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew);
 
 		// Pending Init connection
-		Result PendingInitConnection( Connection* pConnection );
+		Result PendingInitConnection(ConnectionPtr& pConnection );
 
 		// Managed connection is taken by other entity
-		Result PendingManagedConnectionTakenOver(Connection* pConnection);
+		Result PendingManagedConnectionTakenOver(ConnectionPtr& pConnection);
 
 		// Close and release connection
-		virtual Result PendingReleaseConnection( Connection* pConnection );
+		virtual Result PendingReleaseConnection( ConnectionPtr& pConnection );
 
 		// Wait disconnect and release
 		//virtual Result PendingDisconnectNReleaseConnection( Connection* pConnection );
@@ -292,7 +292,7 @@ namespace Net {
 
 		// create connection
 		virtual Connection* NewConnection();
-		virtual void FreeConnection( Connection* pConn );
+		virtual void FreeConnection( ConnectionPtr& pConn );
 	};
 	
 

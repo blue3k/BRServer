@@ -232,7 +232,7 @@ namespace GameServer {
 	Result GamePlayerEntity::OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Net::Connection *pConnection = nullptr;
+		Net::ConnectionPtr pConnection;
 		Net::IConnection::ConnectionInformation connectionInfo;
 
 		svrChkPtr(GetMyServer()->GetNetPublic());
@@ -253,7 +253,7 @@ namespace GameServer {
 
 		svrChk(GetMyServer()->GetNetPublic()->GetConnectionManager().PendingConnection(pConnection));
 
-		svrChk(SetConnection(pConnection));
+		svrChk(SetConnection(std::forward<Net::ConnectionPtr>(pConnection)));
 
 		SetLatestActiveTime(Util::Time.GetTimeUTCSec());
 

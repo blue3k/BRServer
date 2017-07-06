@@ -244,7 +244,7 @@ namespace Net {
 			if( pConnection->GetConnectionInfo().RemoteID == 0 && pHeader->PeerID != 0 )
 			{
 				netTrace( TRC_CONNECTION, "Mapping CID: {0}, PeerID {1}", pConnection->GetCID(), pHeader->PeerID );
-				netChk( m_ConnectionManager.PendingRemapPeerID((Connection*)pConnection, pHeader->PeerID) );
+				netChk( m_ConnectionManager.PendingRemapPeerID(pConnection, pHeader->PeerID) );
 			}
 
 			// Update sock address table if need, This is important because all the returning ticket will be use it
@@ -255,7 +255,7 @@ namespace Net {
 				{
 					// address map update. We can skip this when we don't allow unregistered connection because we are going to update the remote address in place
 					// FYI, I think this update only required when login + game server, otherwise This will only need for connection manager for releasing connections
-					netChk(m_ConnectionManager.PendingAddressRemap((Connection*)pConnection, pConnection->GetRemoteSockAddr(), pIOBuffer->NetAddr.From));
+					netChk(m_ConnectionManager.PendingAddressRemap(pConnection, pConnection->GetRemoteSockAddr(), pIOBuffer->NetAddr.From));
 				}
 				// in-place address change
 				((ConnectionUDPBase*)(Connection*)pConnection)->ChangeRemoteAddress(pIOBuffer->NetAddr.From);

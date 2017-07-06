@@ -309,6 +309,8 @@ namespace Net {
 	};
 
 
+	class Connection;
+
 	////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Network Interface
@@ -337,16 +339,18 @@ namespace Net {
 			};
 			EventTypes		EventType;
 
+			// TODO: connection reference count is required
 			// ID value that associated with event
-			IConnection		*EventConnection;
+			SharedPointerT<Connection>		EventConnection;
 
 
-			inline Event(void* ptr = nullptr);
-			inline Event( EventTypes eventType, IConnection *pCon = NULL );
-			inline Event& operator =( const Event& src );
+			Event(void* ptr = nullptr);
+			Event(EventTypes eventType);
+			Event( EventTypes eventType, SharedPointerT<Connection>& pCon);
+			Event& operator =( const Event& src );
 
-			inline bool operator == (const Event& src) const;
-			inline bool operator != (const Event& src) const;
+			bool operator == (const Event& src) const;
+			bool operator != (const Event& src) const;
 		};
 
 

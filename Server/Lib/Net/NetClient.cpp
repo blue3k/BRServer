@@ -206,7 +206,7 @@ namespace BR {
 							pTask->SetConnection(nullptr, nullptr);
 							CliSystem::RemoveConnectionTask((Connection*)pConn);
 						}
-						ConnectionManagerT<ConnectionType>::FreeConnection((Connection*)pConn);
+						ConnectionManagerT<ConnectionType>::FreeConnection(pConn);
 					}
 					break;
 				case super::Operation::OP_PENDING_ADDR:
@@ -225,7 +225,7 @@ namespace BR {
 					pTask->SetConnection(nullptr, nullptr);
 					CliSystem::RemoveConnectionTask((Connection*)pConn);
 				}
-				super::FreeConnection((Connection*)pConn);
+				super::FreeConnection(pConn);
 				return true;
 			});
 
@@ -287,7 +287,7 @@ namespace BR {
 	Result Client::TakeOverConnection(IConnection* pIConnection)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Connection* pConn = (Connection*)pIConnection;
+		ConnectionPtr pConn = (Connection*)pIConnection;
 
 		netChkPtr(pIConnection);
 		netErr(ResultCode::NOT_IMPLEMENTED);
@@ -390,6 +390,7 @@ namespace BR {
 		int iOptValue;
 		sockaddr_storage sockAddr, sockAddrDest;
 		ConnectionTCPClient *pConn = nullptr;
+		ConnectionPtr pConPtr;
 		Net::IConnection::ConnectionInformation connectionInfo;
 		sockaddr_storage bindAddr;
 		NetAddress localAddress;
@@ -455,7 +456,7 @@ namespace BR {
 
 
 		netMem( pConn = dynamic_cast<ConnectionTCPClient*>(pIConn) );
-
+		pConPtr = pConn;
 
 		netChk(Addr2SockAddr(destAddress, sockAddrDest));
 
@@ -481,7 +482,7 @@ namespace BR {
 			netErr(ResultCode::UNEXPECTED);
 		}
 
-		netChk( GetConnectionManager().PendingWaitConnection( pConn ) );
+		netChk( GetConnectionManager().PendingWaitConnection(pConPtr) );
 
 		netChk( CliSystem::AddConnectionTask( &GetConnectionManager(), pConn ) );
 
@@ -499,11 +500,8 @@ namespace BR {
 
 		if (pConn)
 		{
-			auto connTem = SharedPointerT<Connection>(pConn);
 			pIConn = nullptr;
 		}
-		//if( pConn )
-		//	pConn->Release();
 
 		if( socket != INVALID_SOCKET )
 			NetSystem::CloseSocket( socket );
@@ -577,6 +575,7 @@ namespace BR {
 		sockaddr_storage sockAddr;
 		sockaddr_storage sockAddrDest;
 		ConnectionUDPClient *pConn = nullptr;
+		ConnectionPtr pConPtr;
 		IConnection::ConnectionInformation connectionInfo;
 		sockaddr_storage bindAddr;
 
@@ -643,6 +642,7 @@ namespace BR {
 		connectionInfo.RemoteID = remoteID;
 
 		netMem( pConn = (ConnectionUDPClient*)pIConn);
+		pConPtr = pConn;
 		netChk( pConn->InitConnection( socket, connectionInfo ) );
 		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 		socket = INVALID_SOCKET;
@@ -651,7 +651,7 @@ namespace BR {
 
 		netChk( pConn->PendingRecv() );
 
-		netChk( GetConnectionManager().PendingWaitConnection( pConn ) );
+		netChk( GetConnectionManager().PendingWaitConnection( pConPtr ) );
 
 		netChk( CliSystem::AddConnectionTask( &GetConnectionManager(), pConn ) );
 
@@ -661,10 +661,6 @@ namespace BR {
 	Proc_End:
 
 
-		if (pConn)
-		{
-			auto connTem = SharedPointerT<Connection>(pConn);
-		}
 
 		if( socket != INVALID_SOCKET )
 			NetSystem::CloseSocket( socket );
@@ -715,6 +711,7 @@ namespace BR {
 		sockaddr_storage sockAddr;
 		sockaddr_storage sockAddrDest;
 		ConnectionMUDPClient *pConn = nullptr;
+		ConnectionPtr pConPtr;
 		IConnection::ConnectionInformation connectionInfo;
 		sockaddr_storage bindAddr;
 		NetAddress localAddress;
@@ -780,6 +777,7 @@ namespace BR {
 		connectionInfo.RemoteID = remoteID;
 
 		netMem(pConn = dynamic_cast<ConnectionMUDPClient*>(pIConn));
+		pConPtr = pConn;
 
 		netChk(pConn->InitConnection(socket, connectionInfo));
 		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
@@ -789,7 +787,7 @@ namespace BR {
 
 		netChk(pConn->PendingRecv());
 
-		netChk(GetConnectionManager().PendingWaitConnection(pConn));
+		netChk(GetConnectionManager().PendingWaitConnection(pConPtr));
 
 		netChk(CliSystem::AddConnectionTask(&GetConnectionManager(), pConn));
 

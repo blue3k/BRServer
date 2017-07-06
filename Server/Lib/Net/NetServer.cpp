@@ -115,7 +115,7 @@ namespace Net {
 	Result Server::ReleaseConnection( IConnection* pIConnection )
 	{
 		Result hr = ResultCode::SUCCESS;
-		Connection* pConn = (Connection*)pIConnection;
+		ConnectionPtr pConn = (Connection*)pIConnection;
 
 		netChkPtr( pIConnection );
 
@@ -136,7 +136,7 @@ namespace Net {
 	Result Server::TakeOverConnection(IConnection* pIConnection)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Connection* pConn = (Connection*)pIConnection;
+		ConnectionPtr pConn = (Connection*)pIConnection;
 
 		netChkPtr(pIConnection);
 

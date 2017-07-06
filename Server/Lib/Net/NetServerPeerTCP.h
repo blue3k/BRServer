@@ -71,7 +71,7 @@ namespace Net {
 		//  Net callback
 
 		// handle Socket accept
-		virtual Result OnAcceptedSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut ) override;
+		virtual Result OnAcceptedSocket(SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, ConnectionPtr &pConnOut ) override;
 
 
 		// Release instance
@@ -91,7 +91,7 @@ namespace Net {
 		virtual Result Connect(IConnection* pIConn, UINT remoteID, NetClass netClass, const NetAddress& destAddress) override;
 
 		// Connect to other peer
-		Result RegisterServerConnection(ServerID serverID, NetClass netClass, const NetAddress& netAddress, Net::IConnection* &pConnection);
+		Result RegisterServerConnection(ServerID serverID, NetClass netClass, const NetAddress& netAddress, Net::ConnectionPtr &pConnection);
 
 	};
 

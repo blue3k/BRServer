@@ -125,7 +125,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		Net::INet::Event curEvent;
 		GamePlayerEntity *pGamePlayerEntity = nullptr;
-		Net::Connection *pConn = nullptr;
+		Net::ConnectionPtr pConn = nullptr;
 		EntityManager *pEntityManager = nullptr;
 		Entity* pEntity = nullptr;
 
@@ -146,7 +146,7 @@ namespace Svr {
 				if (curEvent.EventConnection == nullptr)
 					break;
 
-				pConn = dynamic_cast<Net::Connection*>(curEvent.EventConnection);
+				pConn = std::forward<Net::ConnectionPtr>(curEvent.EventConnection);
 
 				pEntityManager = GetServerComponent<EntityManager>();
 
@@ -159,7 +159,7 @@ namespace Svr {
 
 				svrChk(pEntityManager->AddEntity(EntityFaculty::User, pGamePlayerEntity));
 
-				if (!(pGamePlayerEntity->SetConnection(pConn)))
+				if (!(pGamePlayerEntity->SetConnection(std::forward<Net::ConnectionPtr>(pConn))))
 				{
 					// NOTE: We need to mark to close this
 					pGamePlayerEntity->ClearEntity();
@@ -178,7 +178,7 @@ namespace Svr {
 
 	Proc_End:
 
-		if (pConn && m_pNetPublic)
+		if (pConn != nullptr && m_pNetPublic)
 			m_pNetPublic->GetConnectionManager().PendingReleaseConnection(pConn);
 
 		Util::SafeDelete(pGamePlayerEntity);

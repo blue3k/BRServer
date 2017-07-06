@@ -145,7 +145,7 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		Net::INet::Event curEvent;
 		LoginPlayerEntity *pLoginPlayerEntity = nullptr;
-		Net::Connection* pConn = nullptr;
+		Net::ConnectionPtr pConn;
 
 		if (m_pNetPublic == nullptr)
 			return ResultCode::SUCCESS;
@@ -164,7 +164,7 @@ namespace Svr {
 				if (curEvent.EventConnection == nullptr)
 					break;
 
-				pConn = dynamic_cast<Net::Connection*>(curEvent.EventConnection);
+				pConn = std::forward<Net::ConnectionPtr>(curEvent.EventConnection);
 
 				svrChkPtr(pConn);
 				svrChkPtr(GetServerComponent<Svr::EntityManager>());

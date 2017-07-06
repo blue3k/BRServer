@@ -148,7 +148,7 @@ namespace Net {
 			connectionInfo.LocalID = GetServerID();
 			SockAddr2Addr(remoteAddr, connectionInfo.Remote );
 
-			IConnection *pConnOut = nullptr;
+			ConnectionPtr pConnOut;
 			netChk(OnAcceptedSocket(sockAccept, remoteAddr, connectionInfo, pConnOut));
 
 			sockAccept = INVALID_SOCKET;
@@ -174,11 +174,11 @@ namespace Net {
 	}
 
 	// handle Socket accept
-	Result ServerTCP::OnAcceptedSocket( SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, IConnection* &pConnOut )
+	Result ServerTCP::OnAcceptedSocket( SOCKET acceptedSocket, const sockaddr_storage& remoteSockAddr, const IConnection::ConnectionInformation& connectionInfo, ConnectionPtr &pConnOut )
 	{
 		Result hr = ResultCode::SUCCESS;
 		ConnectionTCP *pConnection = nullptr;
-		Connection *pConn = nullptr;
+		ConnectionPtr pConn;
 		uintptr_t cid = 0;
 
 		unused(remoteSockAddr);
@@ -222,7 +222,7 @@ namespace Net {
 		}
 		else
 		{
-			if( pConn )
+			if( pConn != nullptr )
 				netTrace( TRC_NET, "Net Con Accept Svr:{0}, CID:{1}, From {2}", GetLocalAddress().usPort, cid, connectionInfo.Remote );
 		}
 

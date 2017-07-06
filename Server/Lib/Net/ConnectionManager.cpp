@@ -198,7 +198,7 @@ namespace Net {
 		m_ManagedConnections.CommitChanges();
 
 		// Update Managed connections
-		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, SharedPointerT<Connection> pConn)->bool
+		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, const ConnectionPtr& pConn)->bool
 		{
 			//SharedPointerT<Connection> pConn = *itCur;
 			if( !(pConn->UpdateNetCtrl()) )
@@ -215,12 +215,14 @@ namespace Net {
 
 				if ((pendingRecv + pendingSend) == 0)
 				{
-					SharedPointerT<Connection> pOrg;
-					m_ManagedConnections.Remove(key, pOrg);
-					Assert(pConn == pOrg);
-					//itCur = m_ManagedConnections.erase(itCur);
-					netTrace(TRC_CONNECTION, "Managed Connection Disconnected Free CID:{0}", pConn->GetCID());
-					FreeConnection((Connection*)pConn);
+					ConnectionPtr temp = pConn;
+					PendingReleaseConnection(temp);
+					//SharedPointerT<Connection> pOrg;
+					//m_ManagedConnections.Remove(key, pOrg);
+					//Assert(pConn == pOrg);
+					////itCur = m_ManagedConnections.erase(itCur);
+					//netTrace(TRC_CONNECTION, "Managed Connection Disconnected Free CID:{0}", pConn->GetCID());
+					//FreeConnection((Connection*)pConn);
 				}
 			}
 				break;
@@ -364,7 +366,7 @@ namespace Net {
 
 					netTrace(TRC_CONNECTION, "ConnectionManager Operation Release CID:{0}", cid);
 
-					FreeConnection((Connection*)pConn);
+					FreeConnection(pConn);
 
 					oper.Clear();
 					break;
@@ -684,7 +686,7 @@ namespace Net {
 				{
 					netTrace(TRC_CONNECTION, "TerminateManager ConnectionManager Operation Release CID:{0}", pConn->GetCID());
 					oper.Clear();
-					FreeConnection( (Connection*)pConn );
+					FreeConnection( pConn );
 				}
 				break;
 			case Operation::OP_PENDING_ADDR:
@@ -700,7 +702,7 @@ namespace Net {
 			netTrace( TRC_CONNECTION, "TerminateManager ConnectionManager Managed connection Release CID:{0}", pConn->GetCID() );
 			if (pConn->GetConnectionState() != IConnection::STATE_DISCONNECTED)
 				pConn->CloseConnection();
-			FreeConnection( (Connection*)pConn );
+			FreeConnection( pConn );
 			return true;
 		});
 
@@ -757,14 +759,14 @@ namespace Net {
 	}
 
 	// Add connection to wait connect process
-	Result ConnectionManager::PendingWaitConnection( Connection* pConnection )
+	Result ConnectionManager::PendingWaitConnection( ConnectionPtr& pConnection )
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_WAITING_CONNECTION,pConnection) );
 	}
 
 
 	// Add connection to connecting process
-	Result ConnectionManager::PendingConnection( Connection* pConnection )
+	Result ConnectionManager::PendingConnection(ConnectionPtr& pConnection )
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_PENDING_CONNECTION,pConnection) );
 	}
@@ -782,31 +784,31 @@ namespace Net {
 	}
 
 	// Change address mapping of connection
-	Result ConnectionManager::PendingRemapPeerID( Connection* pConnection, AuthTicket ticket )
+	Result ConnectionManager::PendingRemapPeerID(ConnectionPtr& pConnection, AuthTicket ticket )
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_PENDING_REMAP_PEERID, ticket, pConnection) );
 	}
 
 	// Change address mapping of connection
-	Result ConnectionManager::PendingAddressRemap(Connection* pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew)
+	Result ConnectionManager::PendingAddressRemap(ConnectionPtr& pConnection, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew)
 	{
 		return m_PendingOperations.Enqueue(Operation(Operation::OP_PENDING_MOBILEREMAP, sockAddrOrg, sockAddrNew, pConnection));
 	}
 
 	// Pending Init connection
-	Result ConnectionManager::PendingInitConnection( Connection* pConnection )
+	Result ConnectionManager::PendingInitConnection(ConnectionPtr& pConnection )
 	{
 		return m_PendingOperations.Enqueue( Operation(Operation::OP_PENDING_INITCONNECTION,pConnection) );
 	}
 
 	// Managed connection is taken by other entity
-	Result ConnectionManager::PendingManagedConnectionTakenOver(Connection* pConnection)
+	Result ConnectionManager::PendingManagedConnectionTakenOver(ConnectionPtr& pConnection)
 	{
 		return m_PendingOperations.Enqueue(Operation(Operation::OP_MANAGED_CONNECTION_TAKENOVER, pConnection));
 	}
 
 	// Close and release connection
-	Result ConnectionManager::PendingReleaseConnection( Connection* pConnection )
+	Result ConnectionManager::PendingReleaseConnection( ConnectionPtr& pConnection )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -818,7 +820,7 @@ namespace Net {
 		}
 
 		Assert(pConnection->GetReferenceCount() > 0);
-		hr = m_PendingOperations.Enqueue( Operation(Operation::OP_RELEASE_CONNECTION,pConnection) );
+		hr = m_PendingOperations.Enqueue( Operation(Operation::OP_RELEASE_CONNECTION, pConnection) );
 
 		Assert((hr));
 		if( (hr) )
@@ -830,7 +832,8 @@ namespace Net {
 	// Close and release connection
 	Result ConnectionManager::PendingCloseAllConnection()
 	{
-		return m_PendingOperations.Enqueue( Operation(Operation::OP_CLOSEALL_CONNECTION,nullptr) );
+		ConnectionPtr tempPtr;
+		return m_PendingOperations.Enqueue( Operation(Operation::OP_CLOSEALL_CONNECTION, tempPtr) );
 	}
 
 	// Find and return connection

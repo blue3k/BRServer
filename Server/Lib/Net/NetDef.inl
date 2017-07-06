@@ -184,34 +184,29 @@ inline void IConnection::SetEventHandler(IConnectionEventHandler* pEventHandler)
 //	Net object
 //
 
-INet::Event::Event(void* ptr)
+inline INet::Event::Event(void* ptr)
 	:EventType(INet::Event::EVT_NONE),
-	EventConnection(NULL)
+	EventConnection()
 {
 	assert(ptr == nullptr);
 }
 
-INet::Event::Event( INet::Event::EventTypes eventType, IConnection *pCon )
+inline INet::Event::Event(EventTypes eventType)
 	:EventType(eventType),
-	EventConnection(pCon)
+	EventConnection()
 {
 }
 
-INet::Event& INet::Event::operator =( const INet::Event& src )
-{
-	EventType = src.EventType;
-	EventConnection = src.EventConnection;
-	return *this;
-}
 
 
 
-bool INet::Event::operator == ( const INet::Event& src ) const
+
+inline bool INet::Event::operator == ( const INet::Event& src ) const
 {
 	return EventType == src.EventType && EventConnection == src.EventConnection;
 }
 
-bool INet::Event::operator != (const INet::Event& src) const
+inline bool INet::Event::operator != (const INet::Event& src) const
 {
 	return EventType != src.EventType || EventConnection != src.EventConnection;
 }

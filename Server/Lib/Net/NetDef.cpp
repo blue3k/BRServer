@@ -14,6 +14,7 @@
 #include "Common/TimeUtil.h"
 #include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
+#include "Net/Connection.h"
 
 
 namespace BR {
@@ -118,11 +119,27 @@ namespace Net {
 	//
 
 
+	INet::Event::Event(INet::Event::EventTypes eventType, SharedPointerT<Connection>& pCon)
+		:EventType(eventType),
+		EventConnection(pCon)
+	{
+	}
+
+
+	INet::Event& INet::Event::operator =(const INet::Event& src)
+	{
+		EventType = src.EventType;
+		EventConnection = src.EventConnection;
+		return *this;
+	}
+
 
 	INet::INet()
 		:m_NetClass(NetClass::Unknown)
 	{
 	}
+
+
 
 } // namespace Net
 } // namespace BR

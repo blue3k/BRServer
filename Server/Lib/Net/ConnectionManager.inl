@@ -53,7 +53,7 @@ ConnectionManager::Operation::Operation( OperationCode code, const sockaddr_stor
 {
 }
 
-ConnectionManager::Operation::Operation(OperationCode code, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew, Connection *pCo)
+ConnectionManager::Operation::Operation(OperationCode code, const sockaddr_storage& sockAddrOrg, const sockaddr_storage& sockAddrNew, ConnectionPtr& pCo)
 	: OpCode(code)
 	, pConn(pCo)
 	, addrOrg(sockAddrOrg)
@@ -62,7 +62,7 @@ ConnectionManager::Operation::Operation(OperationCode code, const sockaddr_stora
 {
 }
 
-ConnectionManager::Operation::Operation( OperationCode code, AuthTicket ticket, Connection *pCo )
+ConnectionManager::Operation::Operation( OperationCode code, AuthTicket ticket, ConnectionPtr& pCo )
 	: OpCode(code)
 	, pConn(pCo)
 	, EnqueuedTime(Util::Time.GetTimeMs())
@@ -70,7 +70,7 @@ ConnectionManager::Operation::Operation( OperationCode code, AuthTicket ticket, 
 	MobileNetCtrl.PeerID = ticket;
 }
 			
-ConnectionManager::Operation::Operation( OperationCode code, Connection *pCo )
+ConnectionManager::Operation::Operation( OperationCode code, ConnectionPtr& pCo )
 	: OpCode(code)
 	, pConn(pCo)
 	, EnqueuedTime(Util::Time.GetTimeMs())
@@ -201,14 +201,14 @@ Connection* ConnectionManagerT<ConnectionType>::NewConnection()
 }
 
 template< class ConnectionType >
-void ConnectionManagerT<ConnectionType>::FreeConnection( Connection* pConn )
+void ConnectionManagerT<ConnectionType>::FreeConnection(ConnectionPtr& pConn )
 {
 	if (pConn == nullptr)
 		return;
 
 	//ConnectionType* pConnT = dynamic_cast<ConnectionType*>( pConn );
 
-	RemoveMap( pConn );
+	RemoveMap( (Connection*)pConn );
 
 	if (pConn->GetCID() != 0 )
 	{

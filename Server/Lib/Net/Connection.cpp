@@ -328,7 +328,8 @@ namespace Net {
 		}
 		else
 		{
-			INet::Event netEvent(INet::Event::EVT_NEW_CONNECTION, this);
+			ConnectionPtr thisPtr(this);
+			INet::Event netEvent(INet::Event::EVT_NEW_CONNECTION, thisPtr);
 
 			netTrace( TRC_CONNECTION, "Connected CID:{0}, Dst={1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
 			if (GetConnectionState() == IConnection::STATE_CONNECTING)
