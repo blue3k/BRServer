@@ -21,7 +21,7 @@ namespace BR {
 #pragma pack(4)
 	
 	// Game ID
-	enum class GameID : UINT16
+	enum class GameID : uint16_t
 	{
 		Invalid,				// Not used
 		Conspiracy,				// Conspiracy
@@ -30,7 +30,7 @@ namespace BR {
 	};
 
 	// Notification message
-	enum class NotificationType : UINT16
+	enum class NotificationType : uint16_t
 	{
 		None,				// Not used
 		MessageNotify,

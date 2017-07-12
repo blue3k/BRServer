@@ -203,7 +203,11 @@ namespace BR
 
 	bool Thread::CheckKillEvent(const DurationMS& waitTime)
 	{
-		return GetKillEvent().WaitEvent(waitTime);
+		bool bRet = m_KillFlag.load(std::memory_order_acquire);
+		if (!bRet)
+			ThisThread::SleepFor(waitTime);
+
+		return bRet;
 	}
 
 	// thread Controlling
@@ -212,7 +216,7 @@ namespace BR
 	{
 		m_ulPreTime = Util::Time.GetTimeMs();
 
-		GetKillEvent().Reset();
+		m_KillFlag.store(false, std::memory_order_release);
 
 		m_IsRunning.store(true, std::memory_order_release);
 
@@ -228,7 +232,7 @@ namespace BR
 		if (bSendKillEvt)
 		{
 			// Set close event
-			GetKillEvent().Set();
+			SetKillEvent();
 		}
 
 		join();

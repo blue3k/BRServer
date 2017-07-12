@@ -34,8 +34,12 @@ Thread::PRIORITY Thread::GetPriority()
 
 
 // Get end event handle
-inline Event& Thread::GetKillEvent()
+inline bool Thread::GetKillEvent()
 {
-	return m_KillEvent;
+	return m_KillFlag.load(std::memory_order_acquire);
 }
 
+inline void Thread::SetKillEvent()
+{
+	m_KillFlag.store(true, std::memory_order_release);
+}

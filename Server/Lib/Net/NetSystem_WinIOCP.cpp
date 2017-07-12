@@ -224,7 +224,7 @@ namespace Net {
 			int iErr = 0;
 			int iLastError;
 
-			while( 1 )
+			while( !CheckKillEvent(DurationMS(0)) )
 			{
 				dwTransferred = 0;
 				pOverlapped = nullptr;
@@ -253,7 +253,7 @@ namespace Net {
 					//{
 					//	netTrace( Trace::TRC_ERROR, "PostQueuedCompletionStatus failed hr={0:X8}", GetLastResult() );
 					//}
-					break;
+					continue;
 				}
 
 
@@ -427,6 +427,12 @@ namespace Net {
 
 			if( lCount > 0 )
 				return ResultCode::SUCCESS;
+
+			std::for_each(m_pWorkers.begin(), m_pWorkers.end(), [](IOCPWorker* pThread)
+			{
+				pThread->SetKillEvent();
+			});
+
 
 			if( m_hIOCP != INVALID_HANDLE_VALUE )
 			{

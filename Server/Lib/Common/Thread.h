@@ -47,7 +47,7 @@ namespace BR
 		PRIORITY m_threadPriority;
 
 		// Event handles for thread control
-		BR::Event	m_KillEvent;
+		std::atomic<bool>	m_KillFlag;
 
 		// thread running status
 		std::atomic<bool> m_IsRunning;
@@ -86,8 +86,9 @@ namespace BR
 		//void SetAffinity(PRIORITY priority);
 
 		// Get end event handle
-		Event& GetKillEvent();
+		bool GetKillEvent();
 
+		void SetKillEvent();
 
 		// Calculate sleep interval
 		DurationMS UpdateInterval(const DurationMS& ulSleepInterval);
