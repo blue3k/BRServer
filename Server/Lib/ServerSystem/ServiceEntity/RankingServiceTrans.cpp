@@ -122,7 +122,12 @@ namespace Svr {
 
 		// Insert player where it need to be
 		added = false;
-		expectedRanking = m_RankingList[0].Ranking;
+
+		if (m_RankingList.GetSize() > 0)
+			expectedRanking = m_RankingList[0].Ranking;
+		else
+			expectedRanking = 0;
+
 		for (unsigned iRank = 0; iRank < m_RankingList.GetSize(); iRank++, expectedRanking++)
 		{
 			auto& rankInfo = m_RankingList[iRank];
