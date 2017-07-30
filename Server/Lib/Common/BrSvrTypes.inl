@@ -26,7 +26,7 @@ TransactionID::TransactionID()
 TransactionID::TransactionID( const TransactionID& transID )
 	: ID(transID.ID)
 {
-	Assert(transID.ID != 0);
+	assert(transID.ID != 0);
 }
 
 TransactionID::TransactionID( EntityID entityID, uint32_t transID )
@@ -38,6 +38,7 @@ TransactionID::TransactionID( EntityID entityID, uint32_t transID )
 TransactionID::TransactionID( Context context )
 	:ID(context)
 {
+	assert(ID != 0);
 }
 
 bool TransactionID::IsValid() const

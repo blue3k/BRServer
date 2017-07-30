@@ -412,7 +412,7 @@ namespace GameServer {
 		m_ChatHistoryData.SetSize(std::min(m_ChatHistoryData.GetAllocatedSize(), res.GetChatHistoryData().GetSize()));
 		memcpy(m_ChatHistoryData.data(), res.GetChatHistoryData().data(), sizeof(BYTE)*m_ChatHistoryData.GetSize());
 
-		GetMyOwner()->UpdateDBSync(0);
+		GetMyOwner()->UpdateDBSync();
 
 	Proc_End:
 
@@ -525,7 +525,7 @@ namespace GameServer {
 		if (pRes->GetResult() == Result(ResultCode::E_SVR_INVALID_ENTITYUID))
 		{
 			GetMyOwner()->SetPartyUID(0);
-			GetMyOwner()->UpdateDBSync(0);
+			GetMyOwner()->UpdateDBSync();
 		}
 		else
 		{
@@ -533,7 +533,7 @@ namespace GameServer {
 			svrChk(res.ParseMessage(pMsgRes->GetMessage()));
 
 			GetMyOwner()->SetPartyUID(0);
-			GetMyOwner()->UpdateDBSync(0);
+			GetMyOwner()->UpdateDBSync();
 		}
 
 	Proc_End:
@@ -669,7 +669,7 @@ namespace GameServer {
 		if( GetKickedPlayerID() == GetMyOwner()->GetPlayerID() )
 		{
 			GetMyOwner()->SetPartyUID(0);
-			GetMyOwner()->UpdateDBSync(0);
+			GetMyOwner()->UpdateDBSync();
 		}
 	
 	Proc_End:

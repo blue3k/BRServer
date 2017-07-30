@@ -149,7 +149,7 @@ namespace Svr {
 
 		if (m_LatestDBSyncTime == TimeStampSec::min() || Util::TimeSinceUTC(m_LatestDBSyncTime) > DurationSec(GameConst::PLAYER_UPDATE_STATUS_TIME))
 		{
-			UpdateDBSync(0);
+			UpdateDBSync();
 		}
 
 		return ResultCode::SUCCESS;

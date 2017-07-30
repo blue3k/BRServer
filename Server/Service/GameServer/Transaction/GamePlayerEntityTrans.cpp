@@ -180,7 +180,7 @@ namespace GameServer {
 		if( !(hr) )
 			GetMyOwner()->SetPartyUID(0);
 
-		GetMyOwner()->UpdateDBSync(0);
+		GetMyOwner()->UpdateDBSync();
 
 		CloseTransaction(hr);
 
@@ -265,7 +265,7 @@ namespace GameServer {
 		}
 		else
 		{
-			GetMyOwner()->UpdateDBSync(0);
+			GetMyOwner()->UpdateDBSync();
 			CloseTransaction(hr);
 		}
 

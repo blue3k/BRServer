@@ -145,7 +145,7 @@ namespace Svr {
 		//
 
 		virtual Result OnNewUserTranscation();
-		virtual Result UpdateDBSync(TransactionID transID);
+		virtual Result UpdateDBSync(TransactionID transID = TransactionID());
 
 		// register message handlers
 		virtual Result RegisterMessageHandlers() override;

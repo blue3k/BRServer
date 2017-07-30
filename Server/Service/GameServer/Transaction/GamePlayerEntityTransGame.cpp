@@ -1694,7 +1694,7 @@ namespace GameServer {
 		m_TotalGem = pPlayerInfoSystem->GetGem();
 		m_TotalGameMoney = pPlayerInfoSystem->GetGameMoney();
 
-		svrChk(GetMyOwner()->UpdateDBSync(0));
+		svrChk(GetMyOwner()->UpdateDBSync());
 
 	Proc_End:
 

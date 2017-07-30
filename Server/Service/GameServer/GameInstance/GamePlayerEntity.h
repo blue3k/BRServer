@@ -145,7 +145,7 @@ namespace GameServer {
 		Result OnJoinGameServerInitialize(AuthTicket authTicket, FacebookUID fbUID);
 
 		Result OnNewUserTranscation();
-		Result UpdateDBSync(TransactionID transID);
+		Result UpdateDBSync(TransactionID transID = TransactionID());
 
 		// register message handlers
 		virtual Result RegisterMessageHandlers();

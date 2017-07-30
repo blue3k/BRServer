@@ -67,7 +67,7 @@ namespace DB {
 		StrUtil::StringCpy(pQuery->LogMessage, logMessage);
 		pQuery->Result = 0;
 
-		pQuery->SetTransaction( 0 );
+		pQuery->SetTransaction( TransactionID() );
 
 		dbChk( RequestQuery( pQuery ) );
 		pQuery = nullptr;
