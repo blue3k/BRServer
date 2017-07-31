@@ -1,4 +1,4 @@
-﻿// TestApp.cpp : Defines the entry point for the console application.
+// TestApp.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -7,6 +7,7 @@
 #include "Common/Trace.h"
 #include "Common/MemoryPool.h"
 #include "Common/TraceComponent.h"
+#include "Common/DefaultLibComponent.h"
 
 using ::testing::EmptyTestEventListener;
 using ::testing::InitGoogleTest;
@@ -78,13 +79,12 @@ bool MyTestBase::cfg_MemLog = true;
 
 int main(int argc, char **argv)
 {
-	LibComponentManager libComponents;
+	LibComponentManager::GetInstance().AddComponent<LibComponentDefault>();
+	LibComponentManager::GetInstance().AddComponent<LibComponentTrace>();
+	LibComponentManager::GetInstance().AddComponent<Util::LibComponentTime>();
+	LibComponentManager::GetInstance().AddComponent<MemoryPoolManager>();
 
-	libComponents.AddComponent<LibComponentTrace>();
-	libComponents.AddComponent<Util::LibComponentTime>();
-	libComponents.AddComponent<MemoryPoolManager>();
-
-	libComponents.InitializeComponents();
+	LibComponentManager::GetInstance().InitializeComponents();
 
 
 	InitGoogleTest(&argc, argv);
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 
 	int iRes = RUN_ALL_TESTS();
 
-	libComponents.TerminateComponents();
+	LibComponentManager::GetInstance().TerminateComponents();
 
 
 	return iRes;

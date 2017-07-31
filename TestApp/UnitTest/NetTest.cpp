@@ -6,7 +6,8 @@
 #include "Common/TimeUtil.h"
 #include "Common/StrFormat.h"
 #include "Common/BrBaseTypes.h"
-#include "Common/HRESSvrSys.h"
+#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/MessageWindow.h"
 #include "Common/Message.h"
 
@@ -46,7 +47,7 @@ TEST_F(NetTest, Message)
 	EXPECT_EQ(pMsgData->GetMessageHeader()->msgID.IDSeq.MsgID, BR::Message::Login::LoginCmd::MID.IDSeq.MsgID);
 
 	BR::Message::Login::LoginCmd msgClass;
-	EXPECT_HRESULT_SUCCEEDED( msgClass.ParseIMsg( pMsgData ) );
+	EXPECT_HRESULT_SUCCEEDED( msgClass.ParseMessage( pMsgData ) );
 
 	EXPECT_STREQ( strID, msgClass.GetID() );
 	EXPECT_STREQ( strPassword, msgClass.GetPassword() );
@@ -54,14 +55,14 @@ TEST_F(NetTest, Message)
 
 
 template< class MessageClassType >
-HRESULT HandleMessage( BR::Message::MessageData *pMsgData, MessageClassType* &pMsgInstance )
+Result HandleMessage( BR::Message::MessageData *pMsgData, MessageClassType* &pMsgInstance )
 {
 	pMsgInstance = nullptr;
 	if( pMsgData == nullptr )
 		return E_POINTER;
 
 	pMsgInstance = new MessageClassType(pMsgData);
-	HRESULT hr = pMsgInstance->ParseMsg();
+	Result hr = pMsgInstance->ParseMsg();
 	if( FAILED(hr) )
 		return hr;
 
@@ -73,21 +74,21 @@ TEST_F(NetTest, MessageMap)
 	const char* strID = "MyID";
 	const char* strPassword = "Pas1234";
 	//const char* strNickName = "NickName";
-	const HRESULT InResult = S_FALSE;
+	const Result InResult = S_FALSE;
 	const BR::AccountID InAccID = 123456;
 	const BR::AuthTicket InTicket = 654321;
 	BR::NetAddress InGameInsSvr;
 	const BR::GameInsUID InInsUID(3,67893);
 
 	Net::SetNetAddress(InGameInsSvr, "127.0.0.1", 1234);
-	typedef std::function<HRESULT(BR::Message::MessageData*)> MessageHandlerType;
+	typedef std::function<Result(BR::Message::MessageData*)> MessageHandlerType;
 	typedef BR::Svr::MessageHandlerTable<MessageHandlerType> TestMessageTable;
 	BR::CheckCtrMemory();
 	BR::StaticAllocator<10> allocator(BR::STDAllocator::GetInstance());
 	TestMessageTable messageHandlers(allocator);
 	BR::CheckCtrMemory();
 	messageHandlers.Register<BR::Message::Login::LoginCmd>(__FILE__, __LINE__,
-		[&](BR::Message::MessageData *pMsgData)->HRESULT {
+		[&](BR::Message::MessageData *pMsgData)->Result {
 		BR::Message::Login::LoginCmd *pMsg = nullptr;
 			EXPECT_HRESULT_SUCCEEDED(HandleMessage<BR::Message::Login::LoginCmd>(pMsgData, pMsg));
 			if( pMsg ) 
@@ -95,7 +96,7 @@ TEST_F(NetTest, MessageMap)
 			return S_OK;
 	});
 	messageHandlers.Register<BR::Message::Login::LoginRes>(__FILE__, __LINE__,
-		[&](BR::Message::MessageData *pMsgData)->HRESULT	{
+		[&](BR::Message::MessageData *pMsgData)->Result	{
 		BR::Message::Login::LoginRes *pMsg = nullptr;
 		EXPECT_HRESULT_SUCCEEDED(HandleMessage<BR::Message::Login::LoginRes>(pMsgData, pMsg));
 			BR::CheckCtrMemory();
@@ -105,7 +106,7 @@ TEST_F(NetTest, MessageMap)
 			return S_OK;
 	});
 	messageHandlers.Register<BR::Message::Game::JoinGameCmd>(__FILE__, __LINE__,
-		[&](BR::Message::MessageData *pMsgData)->HRESULT	{
+		[&](BR::Message::MessageData *pMsgData)->Result	{
 			BR::Message::Game::JoinGameCmd *pMsg = nullptr;
 			EXPECT_HRESULT_SUCCEEDED( HandleMessage<BR::Message::Game::JoinGameCmd>( pMsgData, pMsg ) );
 			if( pMsg ) 
@@ -113,7 +114,7 @@ TEST_F(NetTest, MessageMap)
 			return S_OK;
 	});
 	messageHandlers.Register<BR::Message::Game::JoinGameRes>( __FILE__, __LINE__,
-		[&](BR::Message::MessageData *pMsgData)->HRESULT	{
+		[&](BR::Message::MessageData *pMsgData)->Result	{
 			BR::Message::Game::JoinGameRes *pMsg = nullptr;
 			EXPECT_HRESULT_SUCCEEDED( HandleMessage<BR::Message::Game::JoinGameRes>( pMsgData, pMsg ) );
 			if( pMsg ) 
@@ -129,13 +130,13 @@ TEST_F(NetTest, MessageMap)
 
 	memset(pMsgData,0,sizeof(pMsgData));
 	EXPECT_HRESULT_SUCCEEDED(BR::Message::Login::LoginCmd::BuildIMsg(pMsgData[0], GameID::Conspiracy, strID, strPassword));
-	EXPECT_HRESULT_SUCCEEDED(BR::Message::Login::LoginRes::BuildIMsg(pMsgData[1], InResult, InGameServerAddr, InAccID, InTicket, InLoginEntityUID));
+	EXPECT_HRESULT_SUCCEEDED(BR::Message::Login::LoginRes::BuildIMsg(pMsgData[1], InResult, InGameServerAddr, InGameServerAddr, InAccID, InTicket, InLoginEntityUID));
 	EXPECT_HRESULT_SUCCEEDED( BR::Message::Game::JoinGameCmd::BuildIMsg( pMsgData[2], InAccID, InTicket, 0 ) );
 //	EXPECT_HRESULT_SUCCEEDED( BR::Message::Game::JoinGameRes::BuildIMsg( pMsgData[3], InResult, InInsUID, GameStateID::DefenceOfSuspects, PlayerRole::AngelOfVillagers, 0 ) );
 	BR::CheckCtrMemory();
 	for( int iMsg = 0; iMsg < TestCaseCount; iMsg++ )
 	{
-		HRESULT hr = messageHandlers.HandleMessage( pMsgData[iMsg] );
+		Result hr = messageHandlers.HandleMessage( pMsgData[iMsg] );
 		EXPECT_HRESULT_SUCCEEDED(hr);
 		BR::CheckCtrMemory();
 	}
@@ -143,7 +144,7 @@ TEST_F(NetTest, MessageMap)
 
 TEST_F(NetTest, Simple)
 {
-	HRESULT hr = S_OK;
+	Result hr = S_OK;
 	BR::Message::MessageData *pIMsg = nullptr;
 	TimeStampMS dwTimeStart = Util::Time.GetTimeMs();
 	TimeStampMS dwTime = Util::Time.GetTimeMs();
@@ -170,13 +171,13 @@ TEST_F(NetTest, Simple)
 			switch( curEvent.EventType )
 			{
 			case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
-				defTrace( Trace::TRC_TRACE, "EVT_CONNECTION_RESULT %0%", curEvent.Value.hr );
+				defTrace( Trace::TRC_TRACE, "EVT_CONNECTION_RESULT {0}", curEvent.hr );
 				break;
 			case BR::Net::IConnection::Event::EVT_DISCONNECTED:
-				defTrace( Trace::TRC_TRACE, "EVT_DISCONNECTED %0%", curEvent.Value.hr  );
+				defTrace( Trace::TRC_TRACE, "EVT_DISCONNECTED {0}", curEvent.hr  );
 				break;
 			case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
-				defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE %0%", curEvent.Value.hr  );
+				defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE {0}", curEvent.hr  );
 				break;
 			default:
 				break;
@@ -208,16 +209,16 @@ TEST_F(NetTest, Simple)
 				switch( curEvent.EventType )
 				{
 				case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
-					defTrace( Trace::TRC_TRACE, "EVT_CONNECTION_RESULT {0:X8}", curEvent.Value.hr );
+					defTrace( Trace::TRC_TRACE, "EVT_CONNECTION_RESULT {0:X8}", curEvent.hr );
 					break;
 				case BR::Net::IConnection::Event::EVT_DISCONNECTED:
-					defTrace( Trace::TRC_TRACE, "EVT_DISCONNECTED {0:X8}", curEvent.Value.hr  );
+					defTrace( Trace::TRC_TRACE, "EVT_DISCONNECTED {0:X8}", curEvent.hr  );
 					EXPECT_HRESULT_SUCCEEDED( m_pNetClient->ReleaseConnection( m_pIConnection ) );
 					m_pIConnection = nullptr;
 					goto EndTest;
 					break;
 				case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
-					defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE {0:X8}", curEvent.Value.hr  );
+					defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE {0:X8}", curEvent.hr  );
 					break;
 				default:
 					break;
@@ -227,7 +228,7 @@ TEST_F(NetTest, Simple)
 			// Processing received messages
 			if( SUCCEEDED(m_pIConnection->GetRecvMessage( pIMsg ) ) )
 			{
-				defTrace( Trace::TRC_TRACE, "Message %0%", pIMsg->GetMessageHeader()->msgID.ID  );
+				defTrace( Trace::TRC_TRACE, "Message {0}", pIMsg->GetMessageHeader()->msgID.ID  );
 
 			}
 		}
@@ -238,7 +239,7 @@ TEST_F(NetTest, Simple)
 EndTest:
 
 	if( m_pIConnection )
-		EXPECT_HRESULT_SUCCEEDED( m_pIConnection->Disconnect() );
+		EXPECT_HRESULT_SUCCEEDED( m_pIConnection->Disconnect("") );
 
 
 Proc_End:
@@ -304,7 +305,7 @@ TEST_F(NetTest, RecvMessageWindowSimple2)
 	UINT16 uiSequence = 0;
 	UINT16 releaseSequence = 0;
 	BR::Message::MessageData *pResult = nullptr;
-	HRESULT hr;
+	Result hr;
 
 	for (unsigned iTest = 0; iTest < TEST_COUNT; iTest++)
 	{
@@ -353,7 +354,7 @@ TEST_F(NetTest, RecvMessageWindowSimple3)
 	UINT16 uiSequence = 0;
 	UINT16 releaseSequence = 0;
 	BR::Message::MessageData *pResult = nullptr;
-	HRESULT hr;
+	Result hr;
 
 	for (unsigned iTest = 0; iTest < TEST_COUNT; iTest++)
 	{
@@ -422,13 +423,13 @@ TEST_F(NetTest, RecvMessageWindowMT)
 		{
 			UINT16 sequence = uiSequence.fetch_add(1, std::memory_order_relaxed);
 			BR::Message::MessageData* pMsg = nullptr;
-			HRESULT hr;
+			Result hr;
 
 			while (!pThread->CheckKillEvent(DurationMS(0)))
 			{
 				pMsg = NewMessage(sequence);
 				hr = recvMessage.AddMsg(pMsg);
-				Assert(hr != S_NET_PROCESSED_SEQUENCE);
+				Assert(hr != ResultCode::S_NET_PROCESSED_SEQUENCE);
 				if(FAILED(hr))
 				{
 					Util::SafeRelease(pMsg);
@@ -449,7 +450,7 @@ TEST_F(NetTest, RecvMessageWindowMT)
 	{
 		auto newThread = new FunctorThread([&](Thread *pThread)
 		{
-			HRESULT hr;
+			Result hr;
 			BR::Message::MessageData *pResult = nullptr;
 			UINT16 sequence = releaseSequence.fetch_add(1, std::memory_order_relaxed);
 			while (!pThread->CheckKillEvent(DurationMS(0)))
@@ -503,7 +504,7 @@ TEST_F(NetTest, RecvMessageWindowMT2)
 		{
 			UINT16 sequence = uiSequence.fetch_add(1, std::memory_order_relaxed);
 			BR::Message::MessageData* pMsg = nullptr;
-			HRESULT hr;
+			Result hr;
 
 			while (!pThread->CheckKillEvent(DurationMS(0)))
 			{
@@ -534,7 +535,7 @@ TEST_F(NetTest, RecvMessageWindowMT2)
 	{
 		auto newThread = new FunctorThread([&](Thread *pThread)
 		{
-			HRESULT hr;
+			Result hr;
 			BR::Message::MessageData *pResult = nullptr;
 			UINT16 sequence = releaseSequence.fetch_add(1, std::memory_order_relaxed);
 			while (!pThread->CheckKillEvent(DurationMS(0)))

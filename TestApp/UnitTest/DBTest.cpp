@@ -1,4 +1,4 @@
-﻿// TestApp.cpp : Defines the entry point for the console application.
+// TestApp.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -40,40 +40,41 @@ namespace BRTest
 		BR::SyncCounter m_Counter;
 
 		// Route query result to entity
-		virtual HRESULT RouteResult(Query* &pQuery)
+		virtual Result RouteResult(Query* &pQuery)
 		{
-			HRESULT hr = S_OK;
+			Result hr = S_OK;
 			BR::Svr::TransactionResult *pRes = (BR::Svr::TransactionResult*)pQuery;
 
 			m_Counter.fetch_sub(1,std::memory_order_relaxed);
 
-			defChk( pRes->GetHRESULT() );
+
+			defChk( pRes->GetResult() );
 
 			switch( pRes->GetMsgID().IDs.MsgCode )
 			{
 			case BR::DB::MCODE_QueryCreateUser:
 				{
 					QueryCreateUserCmd* pCmd = (QueryCreateUserCmd*)pRes;
-					defTrace( Trace::TRC_DBG1, "QueryCreateUserCmd %0%, %1%, Res:%2%", pCmd->UserName, pCmd->Password, pCmd->Result );
+					defTrace( Trace::TRC_DBG1, "QueryCreateUserCmd {0}, {1}, Res:{2}", pCmd->UserName, pCmd->Password, pCmd->Result );
 				}
 				break;
 			case BR::DB::MCODE_QueryLogin:
 				{
 					QueryLoginCmd* pCmd = (QueryLoginCmd*)pRes;
-					defTrace( Trace::TRC_DBG1, "QueryLoginCmd %0%, %1%, %2%, Res%3%", pCmd->UserName, pCmd->Password, pCmd->AccountID, pCmd->Result );
+					defTrace( Trace::TRC_DBG1, "QueryLoginCmd {0}, {1}, {2}, Res{3}", pCmd->UserName, pCmd->Password, pCmd->AccountID, pCmd->Result );
 				}
 				break;
 			case BR::DB::MCODE_QueryFacebookCreateUser:
 				{
 					QueryFacebookCreateUserCmd* pCmd = (QueryFacebookCreateUserCmd*)pRes;
-					defTrace( Trace::TRC_DBG1, "QueryFacebookCreateUserCmd %0%, %1%, Res:%2%", pCmd->FBUserID, pCmd->EMail, pCmd->Result );
+					defTrace( Trace::TRC_DBG1, "QueryFacebookCreateUserCmd {0}, {1}, Res:{2}", pCmd->FBUserID, pCmd->EMail, pCmd->Result );
 				}
 				break;
 			case BR::DB::MCODE_QueryFacebookLogin:
 				{
 					QueryFacebookLoginCmd* pCmd = (QueryFacebookLoginCmd*)pRes;
 
-					defTrace( Trace::TRC_DBG1, "QueryFacebookLoginCmd %0%, %1%, Res:%2%", pCmd->FBUserID, pCmd->AccountID, pCmd->Result );
+					defTrace( Trace::TRC_DBG1, "QueryFacebookLoginCmd {0}, {1}, Res:{2}", pCmd->FBUserID, pCmd->AccountID, pCmd->Result );
 				}
 				break;
 			};
@@ -91,14 +92,14 @@ namespace BRTest
 		const char* GetRandomUserName()
 		{
 			static char NameBuffer[1024];
-			StrUtil::Format( NameBuffer, "TestUserName%0%", rand()%100 );
+			StrUtil::Format( NameBuffer, "TestUserName{0}", rand()%100 );
 			return NameBuffer;
 		}
 
 		const char* GetRandomFBUserName()
 		{
 			static char NameBuffer[1024];
-			StrUtil::Format( NameBuffer, "TestFBUserName%0%", rand()%100 );
+			StrUtil::Format( NameBuffer, "TestFBUserName{0}", rand()%100 );
 			return NameBuffer;
 		}
 		
@@ -110,14 +111,14 @@ namespace BRTest
 		const char* GetRandomFBEMail()
 		{
 			static char NameBuffer[1024];
-			StrUtil::Format( NameBuffer, "fakeUser%0%@gmail.com", rand()%100 );
+			StrUtil::Format( NameBuffer, "fakeUser{0}@gmail.com", rand()%100 );
 			return NameBuffer;
 		}
 		
 		const char* GetRandomNickName()
 		{
 			static char NameBuffer[1024];
-			StrUtil::Format( NameBuffer, "TestFBUserName%0%", rand()%100 );
+			StrUtil::Format( NameBuffer, "TestFBUserName{0}", rand()%100 );
 			return NameBuffer;
 		}
 
@@ -129,13 +130,13 @@ TEST_F(DBTest, DBManager)
 	//const int MAX_TEST		= 1000;
 
 	TestDBServer *pTestDB = new TestDBServer;
-	HRESULT hr = S_OK;
-	hr = reinterpret_cast<DB::QueryManager*>(pTestDB)->InitializeDB( 1 );
+	Result hr = S_OK;
+	hr = reinterpret_cast<DB::DBClusterManager*>(pTestDB)->InitializeDBCluster( 1 );
 	EXPECT_HRESULT_SUCCEEDED( hr );
 	if( FAILED(hr) )
 		return;
 
-	reinterpret_cast<DB::QueryManager*>(pTestDB)->AddDBSource( 
+	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->AddDBSource( 
 				0,
 				"",
 				"127.0.0.1,11000", 
@@ -179,7 +180,7 @@ TEST_F(DBTest, DBManager)
 		ThisThread::SleepFor(DurationMS(100));
 	}
 
-	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
+	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->TerminateDB();
 
 	delete pTestDB;
 }
@@ -189,13 +190,13 @@ TEST_F(DBTest, DBManager)
 TEST_F(DBTest, DBQueryLogin)
 {
 	TestDBServer *pTestDB = new TestDBServer;
-	HRESULT hr = S_OK;
-	hr = reinterpret_cast<DB::QueryManager*>(pTestDB)->InitializeDB( 1 );
+	Result hr = S_OK;
+	hr = reinterpret_cast<DB::DBClusterManager*>(pTestDB)->InitializeDBCluster( 1 );
 	EXPECT_HRESULT_SUCCEEDED( hr );
 	if( FAILED(hr) )
 		return;
 
-	reinterpret_cast<DB::QueryManager*>(pTestDB)->AddDBSource( 
+	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->AddDBSource( 
 				0,
 				"",
 				"127.0.0.1,11000", 
@@ -210,7 +211,7 @@ TEST_F(DBTest, DBQueryLogin)
 		ThisThread::SleepFor(DurationMS(100));
 	}
 
-	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
+	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->TerminateDB();
 
 	delete pTestDB;
 }
@@ -218,13 +219,13 @@ TEST_F(DBTest, DBQueryLogin)
 TEST_F(DBTest, DBQueryLoginByFB)
 {
 	TestDBServer *pTestDB = new TestDBServer;
-	HRESULT hr = S_OK;
-	hr = reinterpret_cast<DB::QueryManager*>(pTestDB)->InitializeDB( 1 );
+	Result hr = S_OK;
+	hr = reinterpret_cast<DB::DBClusterManager*>(pTestDB)->InitializeDBCluster( 1 );
 	EXPECT_HRESULT_SUCCEEDED( hr );
 	if( FAILED(hr) )
 		return;
 
-	reinterpret_cast<DB::QueryManager*>(pTestDB)->AddDBSource( 
+	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->AddDBSource( 
 				0,
 				"",
 				"127.0.0.1,11000", 
@@ -239,7 +240,7 @@ TEST_F(DBTest, DBQueryLoginByFB)
 		ThisThread::SleepFor(DurationMS(100));
 	}
 
-	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
+	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->TerminateDB();
 
 	delete pTestDB;
 }
@@ -249,13 +250,13 @@ TEST_F(DBTest, DBQuerySetNick)
 	const wchar_t strTestString[] = L"고경건음흠";
 
 	TestDBServer *pTestDB = new TestDBServer;
-	HRESULT hr = S_OK;
-	hr = reinterpret_cast<DB::QueryManager*>(pTestDB)->InitializeDB( 1 );
+	Result hr = S_OK;
+	hr = reinterpret_cast<DB::DBClusterManager*>(pTestDB)->InitializeDBCluster( 1 );
 	EXPECT_HRESULT_SUCCEEDED( hr );
 	if( FAILED(hr) )
 		return;
 
-	reinterpret_cast<DB::QueryManager*>(pTestDB)->AddDBSource( 
+	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->AddDBSource( 
 				0,
 				"",
 				"127.0.0.1,11000", 
@@ -275,7 +276,7 @@ TEST_F(DBTest, DBQuerySetNick)
 	//	ThisThread::SleepFor(DurationMS(100));
 	//}
 
-	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
+	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->TerminateDB();
 
 	delete pTestDB;
 }
@@ -286,13 +287,13 @@ TEST_F(DBTest, DBQuerySetNick)
 //	const wchar_t strTestString[] = L"¤©1¤©1";
 //
 //	TestDBServer *pTestDB = new TestDBServer;
-//	HRESULT hr = S_OK;
-//	hr = reinterpret_cast<DB::QueryManager*>(pTestDB)->InitializeDB( 1 );
+//	Result hr = S_OK;
+//	hr = reinterpret_cast<DB::DBClusterManager*>(pTestDB)->InitializeDB( 1 );
 //	EXPECT_HRESULT_SUCCEEDED( hr );
 //	if( FAILED(hr) )
 //		return;
 //
-//	reinterpret_cast<DB::QueryManager*>(pTestDB)->AddDBSource( 
+//	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->AddDBSource( 
 //				0,
 //				"",
 //				"127.0.0.1,11000", 
@@ -312,7 +313,7 @@ TEST_F(DBTest, DBQuerySetNick)
 //		ThisThread::SleepFor(DurationMS(100));
 //	}
 //
-//	reinterpret_cast<DB::QueryManager*>(pTestDB)->TerminateDB();
+//	reinterpret_cast<DB::DBClusterManager*>(pTestDB)->TerminateDB();
 //
 //	delete pTestDB;
 //}

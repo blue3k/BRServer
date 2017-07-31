@@ -114,7 +114,7 @@ TEST_F(MemoryTest, PagePool)
 			for(int i=0; i<TEST_LENGTH; i++)
 			{
 				void *pPtr = NULL;
-				HRESULT hr = Pool.Alloc( pPtr );
+				Result hr = Pool.Alloc( pPtr );
 				EXPECT_HRESULT_SUCCEEDED( hr );
 
 				if( SUCCEEDED(hr) )
@@ -144,7 +144,7 @@ TEST_F(MemoryTest, PagePool)
 			while(1)
 			{
 				void* pItem = NULL;
-				if( (Allocated.Dequeue( pItem ) == S_OK) 
+				if( (Allocated.Dequeue( pItem )) 
 					&& pItem != NULL )
 				{
 					iPageSize = (int)Pool.GetPageSize();
@@ -243,7 +243,7 @@ TEST_F(MemoryTest, MemoryPool)
 			while(1)
 			{
 				MemoryTestObject* pItem = NULL;
-				if( (Allocated.Dequeue( pItem ) == S_OK) 
+				if( (Allocated.Dequeue( pItem )) 
 					&& pItem != NULL )
 				{
 
@@ -306,7 +306,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 		int randVal = rand() % 100;
 		if( randVal < 50 && testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( pPtr )) )
 		{
-			HRESULT hr = allocator.Free( pPtr );
+			Result hr = allocator.Free( pPtr );
 			EXPECT_HRESULT_SUCCEEDED(hr);
 			Assert(SUCCEEDED(hr));
 		}
@@ -316,7 +316,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 			int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
 			if( allocator.GetFreeMemorySize() > (UINT)(allocSize*2) ) mustSuccess = true;
 
-			HRESULT hr = allocator.Alloc( allocSize, pPtr );
+			Result hr = allocator.Alloc( allocSize, pPtr );
 			if( mustSuccess )
 			{
 				EXPECT_HRESULT_SUCCEEDED(hr);
@@ -331,7 +331,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 
 	while(testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( pPtr )))
 	{
-		HRESULT hr = allocator.Free( pPtr );
+		Result hr = allocator.Free( pPtr );
 			EXPECT_HRESULT_SUCCEEDED(hr);
 			Assert(SUCCEEDED(hr));
 	}
@@ -346,7 +346,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 		int randVal = rand() % 100;
 		if( randVal < 30 && testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( pPtr )) )
 		{
-			HRESULT hr = allocator.Free( pPtr );
+			Result hr = allocator.Free( pPtr );
 			EXPECT_HRESULT_SUCCEEDED(hr);
 			Assert(SUCCEEDED(hr));
 		}
@@ -356,7 +356,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 			int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
 			if( allocator.GetFreeMemorySize() > (UINT)(allocSize*2) ) mustSuccess = true;
 
-			HRESULT hr = allocator.Alloc( allocSize, pPtr );
+			Result hr = allocator.Alloc( allocSize, pPtr );
 			if( mustSuccess )
 			{
 				EXPECT_HRESULT_SUCCEEDED(hr);
@@ -371,7 +371,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 	
 	while(testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( pPtr )))
 	{
-		HRESULT hr = allocator.Free( pPtr );
+		Result hr = allocator.Free( pPtr );
 			EXPECT_HRESULT_SUCCEEDED(hr);
 			Assert(SUCCEEDED(hr));
 	}
@@ -386,7 +386,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 		int randVal = rand() % 100;
 		if( randVal < 70 && testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( pPtr )) )
 		{
-			HRESULT hr = allocator.Free( pPtr );
+			Result hr = allocator.Free( pPtr );
 			EXPECT_HRESULT_SUCCEEDED(hr);
 			Assert(SUCCEEDED(hr));
 		}
@@ -396,7 +396,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 			int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
 			if( allocator.GetFreeMemorySize() > (UINT)(allocSize*2) ) mustSuccess = true;
 
-			HRESULT hr = allocator.Alloc( allocSize, pPtr );
+			Result hr = allocator.Alloc( allocSize, pPtr );
 			if( mustSuccess )
 			{
 				EXPECT_HRESULT_SUCCEEDED(hr);
@@ -411,7 +411,7 @@ TEST_F(MemoryTest, CircularBufferAllocator)
 	
 	while(testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( pPtr )))
 	{
-		HRESULT hr = allocator.Free( pPtr );
+		Result hr = allocator.Free( pPtr );
 			EXPECT_HRESULT_SUCCEEDED(hr);
 			Assert(SUCCEEDED(hr));
 	}
@@ -439,7 +439,7 @@ TEST_F(MemoryTest, CircularQueue)
 		int randVal = rand() % 100;
 		if( randVal < 50 && testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( testVal )) )
 		{
-			HRESULT hr = queue.Dequeue( testVal2 );
+			Result hr = queue.Dequeue( testVal2 );
 			EXPECT_HRESULT_SUCCEEDED(hr);
 			Assert(SUCCEEDED(hr));
 			Assert(testVal2 == testVal);
@@ -450,7 +450,7 @@ TEST_F(MemoryTest, CircularQueue)
 			//int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
 			if( queue.GetSize() < BUFFER_SIZE ) mustSuccess = true;
 
-			HRESULT hr = queue.Enqueue( std::move(test) );
+			Result hr = queue.Enqueue( std::move(test) );
 			if( mustSuccess )
 			{
 				EXPECT_HRESULT_SUCCEEDED(hr);
@@ -465,7 +465,7 @@ TEST_F(MemoryTest, CircularQueue)
 
 	while(testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( testVal )))
 	{
-		HRESULT hr = queue.Dequeue( testVal2 );
+		Result hr = queue.Dequeue( testVal2 );
 		EXPECT_HRESULT_SUCCEEDED(hr);
 		Assert(SUCCEEDED(hr));
 		Assert( testVal == testVal2 );
@@ -480,7 +480,7 @@ TEST_F(MemoryTest, CircularQueue)
 		int randVal = rand() % 100;
 		if( randVal < 30 && testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( testVal )) )
 		{
-			HRESULT hr = queue.Dequeue( testVal2 );
+			Result hr = queue.Dequeue( testVal2 );
 			EXPECT_HRESULT_SUCCEEDED(hr);
 			Assert(SUCCEEDED(hr));
 			Assert(testVal2 == testVal);
@@ -491,7 +491,7 @@ TEST_F(MemoryTest, CircularQueue)
 			//int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
 			if( queue.GetSize() < BUFFER_SIZE ) mustSuccess = true;
 
-			HRESULT hr = queue.Enqueue( std::move(test) );
+			Result hr = queue.Enqueue( std::move(test) );
 			if( mustSuccess )
 			{
 				EXPECT_HRESULT_SUCCEEDED(hr);
@@ -506,7 +506,7 @@ TEST_F(MemoryTest, CircularQueue)
 
 	while(testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( testVal )))
 	{
-		HRESULT hr = queue.Dequeue( testVal2 );
+		Result hr = queue.Dequeue( testVal2 );
 		EXPECT_HRESULT_SUCCEEDED(hr);
 		Assert(SUCCEEDED(hr));
 		Assert( testVal == testVal2 );
@@ -521,7 +521,7 @@ TEST_F(MemoryTest, CircularQueue)
 		int randVal = rand() % 100;
 		if( randVal < 70 && testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( testVal )) )
 		{
-			HRESULT hr = queue.Dequeue( testVal2 );
+			Result hr = queue.Dequeue( testVal2 );
 			EXPECT_HRESULT_SUCCEEDED(hr);
 			Assert(SUCCEEDED(hr));
 			Assert(testVal2 == testVal);
@@ -532,7 +532,7 @@ TEST_F(MemoryTest, CircularQueue)
 			//int allocSize = Util::Random.Rand(ALLOCATE_SIZE_MIN,ALLOCATE_SIZE_MAX);
 			if( queue.GetSize() < BUFFER_SIZE ) mustSuccess = true;
 
-			HRESULT hr = queue.Enqueue( std::move(test) );
+			Result hr = queue.Enqueue( std::move(test) );
 			if( mustSuccess )
 			{
 				EXPECT_HRESULT_SUCCEEDED(hr);
@@ -547,7 +547,7 @@ TEST_F(MemoryTest, CircularQueue)
 
 	while(testQueue.GetEnqueCount() > 0 && SUCCEEDED(testQueue.Dequeue( testVal )))
 	{
-		HRESULT hr = queue.Dequeue( testVal2 );
+		Result hr = queue.Dequeue( testVal2 );
 		EXPECT_HRESULT_SUCCEEDED(hr);
 		Assert(SUCCEEDED(hr));
 		Assert( testVal == testVal2 );

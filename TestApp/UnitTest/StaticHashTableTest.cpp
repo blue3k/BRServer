@@ -138,7 +138,7 @@ TEST_F(HashTableTest, StaticHashTable_NonUnique)
 	auto itCheck = checkSet.begin();
 	for( ; itCheck != checkSet.end(); itCheck++ )
 	{
-		HRESULT hr = S_OK;
+		Result hr = S_OK;
 		hr = TestMap.find( itCheck->first, itCur);
 		EXPECT_HRESULT_SUCCEEDED(  hr );
 

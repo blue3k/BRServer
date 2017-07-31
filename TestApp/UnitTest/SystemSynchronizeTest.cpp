@@ -145,7 +145,7 @@ TEST_F(SystemSynchronizationTest, Event)
 			workerCounter.fetch_add(1, std::memory_order_relaxed);
 			for (UINT64 iTest = 0; iTest < TEST_LENGTH; iTest++)
 			{
-				while (!dataEvent.WaitEvent(-1));
+				while (!dataEvent.WaitEvent(DurationMS::max()));
 
 				auto read = testData.load(std::memory_order_acquire);
 				testData.store(read + 1, std::memory_order_release);
@@ -168,7 +168,7 @@ TEST_F(SystemSynchronizationTest, Event)
 	for (UINT64 iTest = 0; iTest < (TEST_LENGTH*NUM_THREAD); iTest++)
 	{
 		dataEvent.Set();
-		while (!workDoneEvent.WaitEvent(-1));
+		while (!workDoneEvent.WaitEvent(DurationMS::max()));
 
 		auto read = testData.load(std::memory_order_acquire);
 		auto indexData = testIndex.fetch_add(1, std::memory_order_relaxed) + 1;

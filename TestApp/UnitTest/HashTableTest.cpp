@@ -71,7 +71,7 @@ TEST_F(HashTableTest, HashTable_NonUnique)
 			int Count = checkSet[value];
 			checkSet[value] = Count+1;
 		}
-		HRESULT hrRes = TestMap.insert(pNewNode->Value,pNewNode);
+		Result hrRes = TestMap.insert(pNewNode->Value,pNewNode);
 		EXPECT_HRESULT_SUCCEEDED(hrRes);
 		AssertRel(SUCCEEDED(hrRes));
 	}
@@ -95,7 +95,7 @@ TEST_F(HashTableTest, HashTable_NonUnique)
 	auto itCheck = checkSet.begin();
 	for( ; itCheck != checkSet.end(); itCheck++ )
 	{
-		HRESULT hr = S_OK;
+		Result hr = S_OK;
 		hr = TestMap.find( itCheck->first, itCur);
 		EXPECT_HRESULT_SUCCEEDED(  hr );
 

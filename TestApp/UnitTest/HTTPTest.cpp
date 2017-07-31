@@ -6,7 +6,7 @@
 #include "Common/TimeUtil.h"
 #include "Common/StrFormat.h"
 #include "Common/BrBaseTypes.h"
-#include "Common/Memory.h"
+#include "Common/BrMemory.h"
 
 #include "openssl/sha.h"
 
@@ -29,11 +29,7 @@
 #include <openssl/bn.h>
 #include <openssl/bio.h>
 
-#if WINDOWS
-#include "zlib/zlib.h"
-#else
 #include "zlib.h"
-#endif
 
 using ::testing::EmptyTestEventListener;
 using ::testing::InitGoogleTest;
@@ -98,7 +94,7 @@ namespace BRTest
 			m_CurrentSize = 0;
 		}
 
-		HRESULT AppendData(size_t size, const BYTE* data)
+		Result AppendData(size_t size, const BYTE* data)
 		{
 			memcpy(&m_Buffer[m_CurrentSize], data, size);
 			m_CurrentSize += size;
@@ -139,7 +135,7 @@ namespace BRTest
 		//const char testResult3[] = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9";
 		DynamicArray<BYTE> result;
 
-		HRESULT hr = BR::Util::Base64URLEncode(countof(testString) - 1, (const BYTE*)testString, result);
+		Result hr = BR::Util::Base64URLEncode(countof(testString) - 1, (const BYTE*)testString, result);
 		EXPECT_HRESULT_SUCCEEDED(hr);
 		result.push_back(0);
 		hr = StrUtil::StringCmp((const char*)testResult, (INT)countof(testResult) - 1, (const char*)result.data(), (INT)result.GetSize()-1);
@@ -233,8 +229,8 @@ namespace BRTest
 			"\"iss\":\"35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com\","
 			"\"scope\":\"https://www.googleapis.com/auth/androidpublisher\","
 			"\"aud\":\"https://www.googleapis.com/oauth2/v3/token\","
-			"\"exp\":%0%,"
-			"\"iat\":%0%"
+			"\"exp\":{0},"
+			"\"iat\":{0}"
 			"}";
 		char body[1024];
 
@@ -244,7 +240,7 @@ namespace BRTest
 
 		DynamicArray<BYTE> result;
 
-		HRESULT hr = BR::Util::Base64URLEncode(countof(header) - 1, (const BYTE*)header, result);
+		Result hr = BR::Util::Base64URLEncode(countof(header) - 1, (const BYTE*)header, result);
 		EXPECT_HRESULT_SUCCEEDED(hr);
 		result.push_back('.');
 		hr = Util::Base64URLEncode((INT)strlen(body), (const BYTE*)body, result);
@@ -298,7 +294,7 @@ namespace BRTest
 		//////////////////////////////////////////////////////////////////////
 		// signing
 		BYTE sign_buffer[512];
-		UINT sign_len = countof(sign_buffer);
+		UINT sign_len = (UINT)countof(sign_buffer);
 		sslResult = RSA_sign(NID_sha256, digest.data(), (UINT)digest.GetSize(), sign_buffer, &sign_len, pkey);
 		EXPECT_EQ(TRUE, sslResult);
 		if (sslResult == FALSE)
@@ -328,7 +324,7 @@ namespace BRTest
 
 		char strPostFields[2048];
 		result.push_back('\0'); // append null
-		hr = StrUtil::Format(strPostFields, "%0%%1%", "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=", (const char*)result.data());
+		hr = StrUtil::Format(strPostFields, "{0}{1}", "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer&assertion=", (const char*)result.data());
 		EXPECT_HRESULT_SUCCEEDED(hr);
 
 		curl = curl_easy_init();
@@ -372,7 +368,7 @@ namespace BRTest
 	{
 		DynamicArray<BYTE> result;
 		Svr::Google::OAuth auth;
-		HRESULT hr = auth.Initialize("conspiracy_google.p12", "35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com", "https://www.googleapis.com/auth/androidpublisher");
+		Result hr = auth.Initialize("conspiracy_google.p12", "35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com", "https://www.googleapis.com/auth/androidpublisher");
 		EXPECT_HRESULT_SUCCEEDED(hr);
 
 		hr = auth.Authenticate();
@@ -539,7 +535,7 @@ TEST_F(HTTPTest, GCMQuery)
 	const char* strAPIKey = "AIzaSyAhtG0C5uH-q1MJRUoazlDkMjVZEVY-93I";
 
 	char strPostFields[1024];
-	StrUtil::Format( strPostFields, " { \"registration_ids\" :[ \"%0%\"], \"data\": { \"Message\" :  \"%1%\" }   } ", strRegID, "messageIm" );
+	StrUtil::Format( strPostFields, " { \"registration_ids\" :[ \"{0}\"], \"data\": { \"Message\" :  \"{1}\" }   } ", strRegID, "messageIm" );
 
 	CURLcode res = curl_global_init_mem( CURL_GLOBAL_ALL, CURL_malloc, CURL_free, CURL_realloc, CURL_strdup, CURL_calloc );
 	EXPECT_EQ(0,res);
@@ -564,7 +560,7 @@ TEST_F(HTTPTest, GCMQuery)
 
 				struct curl_slist *headers=NULL; // init to NULL is important 
 				char strAPIKeyOpt[512];
-				StrUtil::Format( strAPIKeyOpt, "Authorization: key=%0%", strAPIKey );
+				StrUtil::Format( strAPIKeyOpt, "Authorization: key={0}", strAPIKey );
 				headers = curl_slist_append( headers, strAPIKeyOpt);  
 				headers = curl_slist_append( headers, "Content-Type: application/json");
 				headers = curl_slist_append( headers, "charsets: utf-8"); 

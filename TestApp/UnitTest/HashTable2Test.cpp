@@ -75,7 +75,7 @@ namespace BRTest
 				int Count = checkSet[value];
 				checkSet[value] = Count + 1;
 			}
-			HRESULT hrRes = TestMap.Insert(pNewNode->Value, pNewNode);
+			Result hrRes = TestMap.Insert(pNewNode->Value, pNewNode);
 			AssertRel(SUCCEEDED(hrRes));
 			AssertRel(SUCCEEDED(hrRes));
 		}
@@ -102,7 +102,7 @@ namespace BRTest
 		auto itCheck = checkSet.begin();
 		for (; itCheck != checkSet.end(); itCheck++)
 		{
-			HRESULT hr = S_OK;
+			Result hr = S_OK;
 			TestMapNode2* pNode = nullptr;
 			hr = TestMap.Find(itCheck->first, pNode);
 			AssertRel(SUCCEEDED(hr));

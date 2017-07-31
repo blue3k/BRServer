@@ -14,7 +14,7 @@
 #include "Common/SharedReferenceManager.h"
 #include "ThreadTest.h"
 
-#include "ServerSystem/Task.h"
+#include "Common/Task/Task.h"
 #include "ServerSystem/Entity.h"
 
 
@@ -64,7 +64,7 @@ namespace BR
 
 		inline UINT GetWorkerThreadID()                   { return m_WorkerThreadID; }
 
-		HRESULT AssignWorkerThreadID(UINT workerThreadID)
+		Result AssignWorkerThreadID(UINT workerThreadID)
 		{
 			if (m_WorkerThreadID != 0)
 				return E_UNEXPECTED;
@@ -101,7 +101,7 @@ namespace BR
 		{
 		}
 
-		HRESULT PushTask(WeakPointerT<WorkingEntity> taskItem)
+		Result PushTask(WeakPointerT<WorkingEntity> taskItem)
 		{
 			if (taskItem == nullptr)
 				return E_INVALIDARG;
@@ -215,7 +215,7 @@ namespace BR
 
 		}
 
-		HRESULT InitializeTaskManager()
+		Result InitializeTaskManager()
 		{
 			for (UINT worker = 0; worker < m_NumberOfWorker; worker++)
 			{
@@ -251,7 +251,7 @@ namespace BR
 		}
 
 		// Enqueue event
-		HRESULT TestEnqueueEvent()
+		Result TestEnqueueEvent()
 		{
 			auto entityID = Util::Random.Rand(m_NumberOfTestEntity);
 			auto itEntity = m_EntityManager.find(entityID);
