@@ -117,6 +117,24 @@ namespace BR
 			return hr;
 
 		}; // Result NetPolicyLogin::GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount )
+		// Cmd: For network test
+		Result NetPolicyLogin::DataTestCmd( const Array<uint8_t>& InTestData )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::DataTestCmd::BuildIMsg(pMsg, InTestData));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetPolicyLogin::DataTestCmd( const Array<uint8_t>& InTestData )
 
 
 		// Cmd: Login request
@@ -209,6 +227,24 @@ namespace BR
 			return hr;
 
 		}; // Result NetSvrPolicyLogin::GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		// Cmd: For network test
+		Result NetSvrPolicyLogin::DataTestRes( const Result &InResult, const Array<uint8_t>& InTestData )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::DataTestRes::BuildIMsg(pMsg, InResult, InTestData));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetSvrPolicyLogin::DataTestRes( const Result &InResult, const Array<uint8_t>& InTestData )
 
 
 	}; // namespace Policy

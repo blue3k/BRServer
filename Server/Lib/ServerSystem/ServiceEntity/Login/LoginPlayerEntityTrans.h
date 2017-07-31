@@ -247,6 +247,32 @@ namespace Svr {
 	};
 
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	//
+	// Ranking handling
+	//
+
+	class LoginUserDataTestTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::DataTestCmd, LoginUserDataTestTrans, 1 >
+	{
+	public:
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::DataTestCmd, LoginUserDataTestTrans, 1 > super;
+
+	private:
+
+		StaticArray<uint8_t, 30 * 1024> m_Data;
+
+	public:
+		LoginUserDataTestTrans(Message::MessageData* &pIMsg);
+		virtual ~LoginUserDataTestTrans() {}
+
+
+		// Start Transaction
+		virtual Result StartTransaction() override;
+
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(DataTestRes, m_Data);
+	};
+
+
 
 } // namespace Svr 
 } // namespace BR 

@@ -39,6 +39,8 @@ namespace BR
 			Result UpdateMyScoreCmd( const uint64_t &InRankingScore, const RankingType &InRankingType, const uint16_t &InCount );
 			// Cmd: Get Ranking lise
 			Result GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount );
+			// Cmd: For network test
+			Result DataTestCmd( const Array<uint8_t>& InTestData );
 
 		}; // class NetPolicyLogin : public IPolicyLogin
 
@@ -60,6 +62,8 @@ namespace BR
 			Result UpdateMyScoreRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 			// Cmd: Get Ranking lise
 			Result GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
+			// Cmd: For network test
+			Result DataTestRes( const Result &InResult, const Array<uint8_t>& InTestData );
 
 		}; // class NetSvrPolicyLogin : public ISvrPolicyLogin
 

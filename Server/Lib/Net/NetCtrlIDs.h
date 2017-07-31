@@ -39,6 +39,7 @@ namespace Net {
 		NetCtrlCode_SyncReliable,
 		NetCtrlCode_TimeSync,
 		NetCtrlCode_SequenceFrame,
+		NetCtrlCode_DataTransmitionTest,
 	};
 
 	static const Message::MessageID PACKET_NETCTRL_NONE				= Message::MessageID(Message::MSGTYPE_NETCONTROL, Message::MSGTYPE_NONE,	 Message::MSGTYPE_MOBILE, POLICY_NONE, NetCtrlCode_None);
@@ -51,6 +52,7 @@ namespace Net {
 	static const Message::MessageID PACKET_NETCTRL_SYNCRELIABLE		= Message::MessageID(Message::MSGTYPE_NETCONTROL, Message::MSGTYPE_NONE,	 Message::MSGTYPE_MOBILE, POLICY_NONE, NetCtrlCode_SyncReliable);
 	static const Message::MessageID PACKET_NETCTRL_TIMESYNC			= Message::MessageID(Message::MSGTYPE_NETCONTROL, Message::MSGTYPE_NONE,	 Message::MSGTYPE_MOBILE, POLICY_NONE, NetCtrlCode_TimeSync);
 	static const Message::MessageID PACKET_NETCTRL_SEQUENCE_FRAME   = Message::MessageID(Message::MSGTYPE_NETCONTROL, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_MOBILE, POLICY_NONE, NetCtrlCode_SequenceFrame);
+	static const Message::MessageID PACKET_NETCTRL_DATA_TRANSMITION_TEST = Message::MessageID(Message::MSGTYPE_NETCONTROL, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_MOBILE, POLICY_NONE, NetCtrlCode_DataTransmitionTest);
 
 
 } // namespace Net

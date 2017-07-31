@@ -715,6 +715,134 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_Ranking); 
 			}; // void GetRankingListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
+			// Cmd: For network test
+			const MessageID DataTestCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 5);
+			Result DataTestCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				INT iMsgSize;
+				BYTE* pCur;
+				UINT16 numberofTestData = 0; uint8_t* pTestData = nullptr;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &numberofTestData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pTestData, pCur, iMsgSize, (int)sizeof(uint8_t)*numberofTestData ) );
+				m_TestData.SetLinkedBuffer(numberofTestData, numberofTestData, pTestData);
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DataTestCmd::ParseMessage( MessageData* pIMsg )
+
+			Result DataTestCmd::BuildIMsg( OUT MessageData* &pMsg, const Array<uint8_t>& InTestData )
+			{
+ 				Result hr;
+
+				BYTE *pMsgData = nullptr;
+
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
+					+ sizeof(uint8_t)*InTestData.GetSize() + sizeof(UINT16));
+
+				MessageData *pNewMsg = nullptr;
+
+				UINT16 numberOfInTestData = (UINT16)InTestData.GetSize(); 
+				protocolMem( pNewMsg = MessageData::NewMessage( Login::DataTestCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &numberOfInTestData, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, InTestData.data(), (INT)(sizeof(uint8_t)*InTestData.GetSize())); 
+
+				pMsg = pNewMsg;
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DataTestCmd::BuildIMsg( OUT MessageData* &pMsg, const Array<uint8_t>& InTestData )
+
+
+
+			void DataTestCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			{
+ 				unused(Prefix);
+				protocolTrace(Trace::TRC_DBG1, "{0}:DataTestCmd:{1}:{2} , TestData:{3}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TestData); 
+			}; // void DataTestCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+
+			const MessageID DataTestRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 5);
+			Result DataTestRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				INT iMsgSize;
+				BYTE* pCur;
+				UINT16 numberofTestData = 0; uint8_t* pTestData = nullptr;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofTestData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( pTestData, pCur, iMsgSize, (int)sizeof(uint8_t)*numberofTestData ) );
+				m_TestData.SetLinkedBuffer(numberofTestData, numberofTestData, pTestData);
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DataTestRes::ParseMessage( MessageData* pIMsg )
+
+			Result DataTestRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<uint8_t>& InTestData )
+			{
+ 				Result hr;
+
+				BYTE *pMsgData = nullptr;
+
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
+					+ sizeof(Result)
+					+ sizeof(uint8_t)*InTestData.GetSize() + sizeof(UINT16));
+
+				MessageData *pNewMsg = nullptr;
+
+				UINT16 numberOfInTestData = (UINT16)InTestData.GetSize(); 
+				protocolMem( pNewMsg = MessageData::NewMessage( Login::DataTestRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+				Protocol::PackParamCopy( pMsgData, &numberOfInTestData, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, InTestData.data(), (INT)(sizeof(uint8_t)*InTestData.GetSize())); 
+
+				pMsg = pNewMsg;
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DataTestRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult, const Array<uint8_t>& InTestData )
+
+
+
+			void DataTestRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			{
+ 				unused(Prefix);
+				protocolTrace(Trace::TRC_DBG1, "{0}:DataTestRes:{1}:{2} , Result:{3:X8}, TestData:{4}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_TestData); 
+			}; // void DataTestRes::TraceOut(const char* Prefix, MessageData* pMsg)
+
 
 
 		}; // namespace Login

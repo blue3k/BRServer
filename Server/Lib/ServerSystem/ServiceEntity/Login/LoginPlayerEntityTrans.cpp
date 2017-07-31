@@ -56,6 +56,7 @@ BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerJoinedToGameServerTrans);
 BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerKickPlayerTrans);
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::RankingUpdateScoreTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::LoginUserDataTestTrans);
 
 
 	
@@ -886,7 +887,7 @@ namespace Svr {
 		// TODO: RankingType
 
 
-		// Find new game server for this player
+		// Find new ranking server
 		svrChk(Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity(ClusterID::Ranking, pServiceEntity));
 		hr = pServiceEntity->FindRandomService(pService);
 		if (!(hr))
@@ -911,6 +912,33 @@ namespace Svr {
 		{
 			CloseTransaction(hr);
 		}
+
+		return hr;
+	}
+
+
+
+
+
+	LoginUserDataTestTrans::LoginUserDataTestTrans(Message::MessageData* &pIMsg)
+		: MessageTransaction(pIMsg)
+	{
+	}
+	// Start Transaction
+	Result LoginUserDataTestTrans::StartTransaction()
+	{
+		Result hr = ResultCode::SUCCESS;
+
+		svrChk(super::StartTransaction());
+
+		// update life time of this user entity
+		super::GetMyOwner()->HeartBit();
+
+		m_Data.AddItems(GetTestData().GetSize(), GetTestData().data());
+
+	Proc_End:
+
+		CloseTransaction(hr);
 
 		return hr;
 	}

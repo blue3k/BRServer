@@ -47,6 +47,9 @@ namespace BR
 				// Cmd: Get Ranking lise
 				MessageDebugTraceMapLogin.insert(std::make_pair(Login::GetRankingListCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::GetRankingListCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				MessageDebugTraceMapLogin.insert(std::make_pair(Login::GetRankingListRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::GetRankingListRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				// Cmd: For network test
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::DataTestCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::DataTestCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::DataTestRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::DataTestRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceLogin()
 
 

@@ -50,7 +50,7 @@
 
     <Command Name="UpdateMyScore" Reliable="true" Crypto="No" Trace="DBG1" Desc="Update my score and Get Ranking list">
       <Cmd>
-        <Params Type="uint32" Name="RankingScore"/>
+        <Params Type="uint64" Name="RankingScore"/>
         <Params Type="RankingType" Name="RankingType"/>
         <Params Type="uint16" Name="Count" Desc="Number of ranking list to query after update"/>
       </Cmd>
@@ -67,6 +67,15 @@
       </Cmd>
       <Res>
         <Params Type="TotalRankingPlayerInformation" Name="Ranking" IsArray="true"/>
+      </Res>
+    </Command>
+
+    <Command Name="DataTest" Reliable="true" Crypto="No" Trace="DBG1" Desc="For network test">
+      <Cmd>
+        <Params Type="uint8" Name="TestData" IsArray="true"/>
+      </Cmd>
+      <Res>
+        <Params Type="uint8" Name="TestData" IsArray="true"/>
       </Res>
     </Command>
 

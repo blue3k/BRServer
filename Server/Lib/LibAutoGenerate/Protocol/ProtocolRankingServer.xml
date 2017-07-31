@@ -34,7 +34,7 @@
 
     <Command Name="UpdatePlayerScore" Reliable="true" Crypto="No" Trace="DBG1" Desc="Update a player to ranking">
       <Cmd>
-        <Params Type="uint32" Name="RankingScore"/>
+        <Params Type="uint64" Name="RankingScore"/>
         <Params Type="PlayerInformation" Name="PlayerInfo"/>
         <Params Type="uint16" Name="Count" Desc="Number of playerinformation to query"/>
       </Cmd>
