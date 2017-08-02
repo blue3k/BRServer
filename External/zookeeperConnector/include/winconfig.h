@@ -151,8 +151,12 @@
 #define _WIN32_WINNT_NT4 0x0400
 #endif
 
+#ifndef NTDDI_VERSION
 #define NTDDI_VERSION _WIN32_WINNT_NT4
+#endif
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT _WIN32_WINNT_NT4
+#endif
 
 #ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS

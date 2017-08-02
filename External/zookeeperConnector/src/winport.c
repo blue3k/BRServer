@@ -161,6 +161,8 @@ pthread_cond_broadcast (pthread_cond_t *cv)
   }
   else
     LeaveCriticalSection (&cv->waiters_count_lock_);
+
+  return 0;
 }
 
 
@@ -200,6 +202,8 @@ pthread_cond_wait (pthread_cond_t *cv,
     // Always regain the external mutex since that's the guarantee we
     // give to our callers. 
     WaitForSingleObject (*external_mutex, INFINITE);
+
+  return 0;
 }
 
 int pthread_key_create(pthread_key_t *key, void (*destructor)(void *) )

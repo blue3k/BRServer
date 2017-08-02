@@ -7,6 +7,10 @@
     <IntDir>$(SolutionDir)Intermediate\Win64\$(Platform)$(Configuration)\$(ProjectName)\</IntDir>
     <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup />
 </Project>
