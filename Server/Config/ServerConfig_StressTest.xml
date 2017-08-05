@@ -16,7 +16,6 @@
     <NetPrivate IP="192.168.0.2" Port="2000"/>
   </EntityServer>
 
-
   <ModuleServer UID="11" Name="BRLoginServer01" PrivateEntityControlCount="8" EntityControlCount="4" NetIOCount="4">
     <NetPrivate IP="192.168.0.2" Port="2011"/>
     <ModLogin>
@@ -25,26 +24,31 @@
     <ModRanking />
   </ModuleServer>
 
-
-  <ModuleServer UID="52" Name="BRMatchingQueue01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" GameID="Conspiracy" >
-    <NetPrivate IP="192.168.0.2" Port="2052"/>
-    <ModMatchingQueue_Game_8x1 />
-    <ModMatchingQueue_Game_8x2 />
-    <ModMatchingQueue_Game_8x3 />
-    <ModMatchingQueue_Game_8x4 />
-    <ModMatchingQueue_Game_8x5 />
-    <ModMatchingQueue_Game_8x6 />
-    <ModMatchingQueue_Game_8x7 />
-    <ModMatchingQueue_Game_8x1S/>
-    <ModMatchingQueue_Game_8x1W/>
-    <ModMatching_Game_8 UseBot="true"/>
-    <ModGamePartyManager/>
-  </ModuleServer>
-
+	<ModuleServer UID="52" Name="BRMatchingQueue01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
+		<NetPrivate IP="192.168.0.2" Port="2053"/>
+		<ModPurchaseValidateGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher" />
+		<ModPurchaseValidateIOS URL="https://buy.itunes.apple.com/verifyReceipt" AltURL="https://sandbox.itunes.apple.com/verifyReceipt" />
+	</ModuleServer>
 
   <GameCluster Name="First Game" GameID="Conspiracy" >
     <GameDB ClusterType="Sharding" DBInstanceName="conspiracy00" DBName="dbconspiracy00" />
     <GameTransactionLogDB ClusterType="Sharding" DBInstanceName="gameTransactionLog00" DBName="dbgametransaction00" />
+
+	<!-- Eventually we are going to use DBCluster and ModuleServer only -->
+	<ModuleServer UID="52" Name="BRMatchingQueue01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4" >
+		<NetPrivate IP="192.168.0.2" Port="2052"/>
+		<ModMatchingQueue_Game_8x1 />
+		<ModMatchingQueue_Game_8x2 />
+		<ModMatchingQueue_Game_8x3 />
+		<ModMatchingQueue_Game_8x4 />
+		<ModMatchingQueue_Game_8x5 />
+		<ModMatchingQueue_Game_8x6 />
+		<ModMatchingQueue_Game_8x7 />
+		<ModMatchingQueue_Game_8x1S/>
+		<ModMatchingQueue_Game_8x1W/>
+		<ModMatching_Game_8 UseBot="true"/>
+		<ModGamePartyManager/>
+	</ModuleServer>
 
     <Game UID="100" Name="BRConspiracyGameServer01" PrivateEntityControlCount="4" EntityControlCount="4" NetIOCount="4">
       <ComponentGoogle Account="35978052136-02p54tlecq40fnrurg3ci9enarpueadm@developer.gserviceaccount.com" P12KeyFile="conspiracy_google.p12" AuthScopes="https://www.googleapis.com/auth/androidpublisher"/>

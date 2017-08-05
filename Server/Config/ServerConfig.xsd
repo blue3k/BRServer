@@ -8,12 +8,12 @@
 			<xs:sequence>
 				<xs:element name="DBInstances" type="DBInstance" maxOccurs="unbounded"/>
 				<xs:element name="MonitoringServer" type="GenericServer" minOccurs="0" maxOccurs="1"/>
-        <xs:element name="TableDB" minOccurs="0" maxOccurs="1">
-          <xs:complexType >
-            <xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
-            <xs:attribute name="DBName" type="xs:string" use="required"/>
-          </xs:complexType>
-        </xs:element>
+				<xs:element name="TableDB" minOccurs="0" maxOccurs="1">
+				  <xs:complexType >
+					<xs:attribute name="DBInstanceName" type="xs:string" use="required"/>
+					<xs:attribute name="DBName" type="xs:string" use="required"/>
+				  </xs:complexType>
+				</xs:element>
 				<xs:element name="AccountDB" type="DBCluster" minOccurs="1" maxOccurs="1"/>
 				<xs:element name="LoginSessionDB" type="DBCluster"  minOccurs="0" maxOccurs="1"/>
 				<xs:element name="RankingDB" type="DBCluster"  minOccurs="0" maxOccurs="1"/>
@@ -25,6 +25,9 @@
 						<xs:sequence>
 							<xs:element name="GameDB" type="DBCluster" minOccurs="1" maxOccurs="1" />
 							<xs:element name="GameTransactionLogDB" type="DBCluster"  minOccurs="1" maxOccurs="1"/>
+							
+							<!-- Eventually we are going to use DBCluster and ModuleServer only -->
+							<xs:element name="ModuleServer" type="ModuleServer" minOccurs="0" maxOccurs="unbounded" />
 							
 							<xs:element name="Game" type="PublicServer" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
