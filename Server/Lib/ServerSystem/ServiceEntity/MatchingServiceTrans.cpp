@@ -349,12 +349,25 @@ namespace Svr {
 
 	Proc_End:
 
+		// If we received all answers
 		if (m_PendingDequeueItem <= 0)
 		{
+			// if total member is greater than zero
 			if (m_DequeuedTotalMembers > 0)
-				CreateGame();
+			{
+				// Create game
+				if (!CreateGame())
+				{
+					// Game create is failed
+					svrTrace(Svr::TRC_MATCHING, "Creating Game instance is failed item Matching:{0}", GetTargetMatchingMemberCount());
+					CloseTransaction(ResultCode::E_GAME_NOTREADY);
+				}
+			}
 			else
+			{
+				// if total member is zero, we don't have to care. just finish it
 				CloseTransaction(ResultCode::SUCCESS);
+			}
 		}
 
 		return hr;
