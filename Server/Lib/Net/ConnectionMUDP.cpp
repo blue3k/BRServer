@@ -1080,7 +1080,7 @@ namespace Net {
 
 			PendingRecv();
 
-			SendFlush();
+			//SendFlush();
 		}
 		else
 		{
