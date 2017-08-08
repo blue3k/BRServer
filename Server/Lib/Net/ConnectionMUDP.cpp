@@ -250,9 +250,7 @@ namespace Net {
 			break;
 		}
 		case NetCtrlCode_Disconnect:
-			SendFlush();
 			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
-			SendFlush();
 			netTrace(TRC_CONNECTION, "Disconnect from remote CID:{0}", GetCID());
 			netChk(CloseConnection());
 			break;

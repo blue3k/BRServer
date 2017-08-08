@@ -232,6 +232,12 @@ namespace BR {
 		// Address in use 
 		public const int E_NET_ADDRINUSE =                                  unchecked((int)0xE7030046); 
 
+		// Network Message not expected packet data 
+		public const int E_NET_BADPACKET =                                  unchecked((int)0xE7030047); 
+
+		// Disconnected 
+		public const int E_NET_DISCONNECTED =                               unchecked((int)0xE7030048); 
+
 	}
 }
 

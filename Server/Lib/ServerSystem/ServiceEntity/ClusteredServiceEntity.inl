@@ -20,7 +20,8 @@ Result ClusteredServiceEntity::GetService( ServiceType* &pService )
 	if( GetMasterUID() == 0 )
 		return ResultCode::E_SVR_CLUSTER_NOMASTER;
 
-	svrChk( FindService( GetMasterUID(),  pServiceInfo ) );
+	if (!FindService(GetMasterUID(), pServiceInfo))
+		return ResultCode::E_SVR_SERVICE_FAILED;
 
 	pService = pServiceInfo->GetService<ServiceType>();
 

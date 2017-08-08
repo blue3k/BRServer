@@ -232,6 +232,12 @@ namespace BR {
 			// Address in use 
 			E_NET_ADDRINUSE                                                    = 0xE7030046L, 
 
+			// Network Message not expected packet data 
+			E_NET_BADPACKET                                                    = 0xE7030047L, 
+
+			// Disconnected 
+			E_NET_DISCONNECTED                                                 = 0xE7030048L, 
+
 		};//enum 
 	}//namespace ResultCode 
 }//namespace SF 

@@ -77,6 +77,8 @@
   <ResultCodeItem Severity="Error" CodeName="INVALID_SERVICE" Desc="The pServiceName parameter is not supported for the specified ai_socktype member of the pHints parameter."/>
   <ResultCodeItem Severity="Error" CodeName="INVALID_ADDRESS" Desc="Invalid network address"/>
   <ResultCodeItem Severity="Error" CodeName="ADDRINUSE" Desc="Address in use"/>
+  <ResultCodeItem Severity="Error" CodeName="BADPACKET" Desc="Network Message not expected packet data"/>
+  <ResultCodeItem Severity="Error" CodeName="DISCONNECTED" Desc="Disconnected"/>
 
 </ResultCodes>
 

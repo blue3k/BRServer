@@ -130,7 +130,7 @@ namespace Net {
 		FORCEINLINE UINT GetMsgCount()						{ return m_uiMsgCount.load(std::memory_order_relaxed); }
 
 		// get message base sequence
-		FORCEINLINE UINT16 GetBaseSequence()					{ return m_uiBaseSequence.load(std::memory_order_relaxed); }
+		FORCEINLINE UINT16 GetBaseSequence()					{ return m_uiBaseSequence.load(std::memory_order_consume); }
 
 		// Add message
 		Result AddMsg( Message::MessageData* pIMsg );
