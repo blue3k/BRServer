@@ -77,7 +77,7 @@ namespace Message {
 		if (length < sizeof(RouteContext))
 		{
 			routeContext = 0;
-			transID = 0;
+			transID = TransactionID();
 			return;
 		}
 
@@ -87,7 +87,7 @@ namespace Message {
 
 		if (length < (sizeof(RouteContext)+sizeof(TransactionID)))
 		{
-			transID = 0;
+			transID = TransactionID();
 			return;
 		}
 

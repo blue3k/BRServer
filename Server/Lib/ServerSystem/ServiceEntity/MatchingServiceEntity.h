@@ -113,7 +113,7 @@ namespace Svr {
 			virtual ~MatchingQueueInterface() {}
 
 			virtual void ResetForMatch() {}
-			virtual Result Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) = 0;
+			virtual Result Dequeue(Array<ReservedMatchingItem>& items) = 0;
 			virtual UINT GetEnqueueCount() = 0;
 		};
 
@@ -128,7 +128,7 @@ namespace Svr {
 			//MatchingQueue_Single();
 			MatchingQueue_Single(PageQueue<ReservedMatchingItem>* pQueuePtr);
 
-			virtual Result Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) override;
+			virtual Result Dequeue(Array<ReservedMatchingItem>& items) override;
 			virtual UINT GetEnqueueCount() override;
 		};
 
@@ -171,7 +171,7 @@ namespace Svr {
 			Result AddQueue(PageQueue<ReservedMatchingItem>* pQueuePtr, UINT maxPerMatch, PlayerRole requestRole);
 
 			virtual void ResetForMatch() override;
-			virtual Result Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue) override;
+			virtual Result Dequeue(Array<ReservedMatchingItem>& items) override;
 			virtual UINT GetEnqueueCount() override;
 		};
 

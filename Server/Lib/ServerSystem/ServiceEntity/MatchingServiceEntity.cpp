@@ -247,20 +247,11 @@ namespace Svr {
 		AssertRel(pQueuePtr != nullptr);
 	}
 
-	Result MatchingServiceEntity::MatchingQueue_Single::Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue)
+	Result MatchingServiceEntity::MatchingQueue_Single::Dequeue(Array<ReservedMatchingItem>& items)
 	{
-		Result hr = ResultCode::SUCCESS;
-
-		for (UINT iDequeue = 0; iDequeue < numDequeue; iDequeue++)
-		{
-			ReservedMatchingItem item;
-			if(!(m_pQueuePtr->Dequeue(item))) return ResultCode::FAIL;
-			svrChk(items.push_back(item));
-		}
-
-	Proc_End:
-
-		return hr;
+		ReservedMatchingItem item;
+		if(!(m_pQueuePtr->Dequeue(item))) return ResultCode::FAIL;
+		return items.push_back(item);
 	}
 
 	UINT MatchingServiceEntity::MatchingQueue_Single::GetEnqueueCount()
@@ -327,7 +318,7 @@ namespace Svr {
 	{
 	}
 
-	Result MatchingServiceEntity::MatchingQueue_Multiple::Dequeue(Array<ReservedMatchingItem>& items, UINT numDequeue)
+	Result MatchingServiceEntity::MatchingQueue_Multiple::Dequeue(Array<ReservedMatchingItem>& items)
 	{
 		Result hr = ResultCode::SUCCESS;
 		UINT missTry = 0;
@@ -337,7 +328,7 @@ namespace Svr {
 		memset(pickedNumbers.data(), 0, sizeof(UINT) * pickedNumbers.GetSize());
 
 		UINT iDequeue = 0;
-		for (; iDequeue < numDequeue && missTry < m_pQueuePtr.GetSize();)
+		for (; iDequeue == 0 && missTry < m_pQueuePtr.GetSize();)
 		{
 			ReservedMatchingItem item;
 			UINT currentQueue = m_StartQueueIndex;
@@ -607,7 +598,7 @@ namespace Svr {
 			UINT numItemsToDequeue = pMatchingPattern[iQueue];
 			for (UINT iItem = 0; iItem < numItemsToDequeue; iItem++)
 			{
-				if (!(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, numItemsToDequeue)))
+				if (!(m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems)))
 				{
 					Assert(false);
 				}
@@ -651,7 +642,7 @@ namespace Svr {
 		INT iQueue = 1;
 		for (; iQueue < (INT)m_TargetMatchingMemberCount; iQueue++)
 		{
-			if ((m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
+			if ((m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems)))
 			{
 				break;
 			}
@@ -662,7 +653,7 @@ namespace Svr {
 
 		for (iQueue = m_TargetMatchingMemberCount - grabbedPlayerCount; grabbedPlayerCount < m_TargetMatchingMemberCount && iQueue > 0;)
 		{
-			if ((m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems, 1)))
+			if ((m_MatchingReserevedQueues[iQueue]->Dequeue(grabbedItems)))
 			{
 				grabbedPlayerCount = GetGrabbedPlayerCount(grabbedItems);
 				iQueue = m_TargetMatchingMemberCount - grabbedPlayerCount;
