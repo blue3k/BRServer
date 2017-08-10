@@ -585,6 +585,7 @@ namespace GameServer {
 		if( GetMyOwner()->GetPartyUID() != GetRouteContext().GetFrom())
 			svrErrClose(ResultCode::E_GAME_INVALID_PARTYID);
 
+		svrChkPtr(GetPolicy());
 		svrChk( GetPolicy()->PartyPlayerLeftS2CEvt( GetRouteContext().GetFrom(), GetLeftPlayerID() ) );
 	
 	Proc_End:
