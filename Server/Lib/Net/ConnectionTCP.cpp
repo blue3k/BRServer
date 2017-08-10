@@ -471,6 +471,7 @@ namespace Net {
 			//Assert(false);
 			// Failed, release pending flag
 			pOver->SetPendingFalse();
+			DecPendingRecvCount();
 		}
 		else
 		{
