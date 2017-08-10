@@ -203,6 +203,14 @@ namespace Net {
 		//if (GetWriteQueue()) delete GetWriteQueue();
 	}
 
+	void ConnectionUDPClient::CloseSocket()
+	{
+		if (GetSocket() == INVALID_SOCKET) return;
+
+		NetSystem::UnregisterSocket(this);
+
+		Connection::CloseSocket();
+	}
 
 	// called when New connection TCP accepted
 	Result ConnectionUDPClient::Recv(IOBUFFER_READ* pIOBuffer)

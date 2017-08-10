@@ -473,9 +473,9 @@ namespace BR {
 		socket = INVALID_SOCKET;
 
 
-		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn));
+		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn->GetIOCallback()));
 
-		if (connect(pConn->GetIOSocket(), (sockaddr*)&sockAddrDest, sizeof(sockAddrDest)) != SOCKET_ERROR
+		if (connect(pConn->GetSocket(), (sockaddr*)&sockAddrDest, sizeof(sockAddrDest)) != SOCKET_ERROR
 			|| GetLastWSAResult() != Result(ResultCode::E_NET_WOULDBLOCK))
 		{
 			netTrace(Trace::TRC_ERROR, "connect failed, TCP {0:X8}", GetLastWSAResult());

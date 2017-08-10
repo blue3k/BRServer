@@ -30,7 +30,7 @@ namespace Net {
 	//	TCP Network connection class
 	//
 
-	class ConnectionTCP : public Connection, public INetIOCallBack
+	class ConnectionTCP : public Connection
 	{
 	public:
 
@@ -57,9 +57,36 @@ namespace Net {
 		bool m_isClientSide;
 		bool m_isActuallyConnected;
 
-	protected:
 
-		virtual Result SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
+
+		class MyNetIOAdapter : public INetIOCallBack
+		{
+		private:
+
+			ConnectionTCP &m_Owner;
+
+		public:
+
+			MyNetIOAdapter(ConnectionTCP &owner);
+
+			//// Send message to connection with network device
+			virtual Result SendBuffer(IOBUFFER_WRITE *pSendBuffer) override;
+
+			// called when receiving TCP message
+			virtual Result Recv(IOBUFFER_READ* pIOBuffer) override;
+			virtual Result OnIORecvCompleted(Result hrRes, IOBUFFER_READ* &pIOBuffer) override;
+
+			virtual Result OnSendReady() override;
+
+			// called when send completed
+			virtual Result OnIOSendCompleted(Result hrRes, IOBUFFER_WRITE *pIOBuffer) override;
+		};
+
+		friend MyNetIOAdapter;
+
+		MyNetIOAdapter m_IOAdapter;
+
+	protected:
 
 		virtual Result SendRaw(Message::MessageData* &pMsg) override;
 
@@ -74,23 +101,8 @@ namespace Net {
 		// Process network control message
 		Result ProcNetCtrl( const MsgNetCtrl* pNetCtrl );
 
-		virtual INetIOCallBack* GetIOCallback() override { return this; }
+		virtual INetIOCallBack* GetIOCallback() override { return &m_IOAdapter; }
 
-
-		/////////////////////////////////////////////////////////////////////////////////////////////
-		// INetIOCallBack
-
-		//virtual SharedObject* AsSharedObject() override { return this; }
-
-		virtual Result Recv(IOBUFFER_READ* pIOBuffer) override;
-
-		// called when reciving TCP message
-		virtual Result OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer ) override;
-
-		virtual Result OnSendReady() override;
-
-		// called when Send completed
-		virtual Result OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer ) override;
 
 
 		// Pending recv New one

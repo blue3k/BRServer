@@ -1019,6 +1019,16 @@ namespace Net {
 	}
 
 
+	void ConnectionMUDPClient::CloseSocket()
+	{
+		if (GetSocket() == INVALID_SOCKET) return;
+
+		NetSystem::UnregisterSocket(this);
+
+		Connection::CloseSocket();
+	}
+
+
 	// called when New connection TCP accepted
 	Result ConnectionMUDPClient::Recv(IOBUFFER_READ* pIOBuffer)
 	{

@@ -330,27 +330,17 @@ namespace Net {
 
 					if ((pConn->GetPendingRecvCount() + pConn->GetPendingSendCount()) > 0)
 					{
-						auto pIOCallback = pConn->GetIOCallback();
-						if (pIOCallback != nullptr)
-						{
-							if (pConn->GetConnectionState() == IConnection::STATE_CONNECTED)
-								pConn->CloseConnection();
-							else
-								pConn->CloseSocket();
+						if (pConn->GetConnectionState() == IConnection::STATE_CONNECTED)
+							pConn->CloseConnection();
 
-							// Wait max 5 mins
-							if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(5 * 60 * 1000)
-								&& pIOCallback->GetIsIORegistered())
-							{
-								break;
-							}
-							AssertRel(!pIOCallback->GetIsIORegistered());
-						}
-						else if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(30 * 1000))
+						// close socket all the time
+						pConn->CloseSocket();
+
+						if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(30 * 1000))
 						{
+							// Wait for a bit if there is something we need to send or recv
 							// leave this release for a while
 							m_PendingOperations.Enqueue(std::forward<Operation>(oper));
-
 							break;
 						}
 
@@ -818,6 +808,10 @@ namespace Net {
 			pConnection->Disconnect("ConnectionManager::PendingReleaseConnection");
 			pConnection->CloseConnection();
 		}
+
+		// force to close socket before it goes into queue so that we can save time to wait
+		if (pConnection->GetSocket() != INVALID_SOCKET)
+			pConnection->CloseSocket();
 
 		Assert(pConnection->GetReferenceCount() > 0);
 		hr = m_PendingOperations.Enqueue( Operation(Operation::OP_RELEASE_CONNECTION, pConnection) );

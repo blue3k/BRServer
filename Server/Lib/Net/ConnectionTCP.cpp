@@ -55,22 +55,230 @@ namespace Net {
 	//	TCP Network connection class
 	//
 
+
+	ConnectionTCP::MyNetIOAdapter::MyNetIOAdapter(ConnectionTCP &owner)
+		: INetIOCallBack(owner.GetSocket())
+		, m_Owner(owner)
+	{
+
+	}
+
+
+	// Send message to connection with network device
+	Result ConnectionTCP::MyNetIOAdapter::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
+	{
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
+
+		netChkPtr(pSendBuffer);
+
+		hrErr = NetSystem::Send(m_Owner.GetSocket(), pSendBuffer);
+		switch ((uint32_t)hrErr)
+		{
+		case ResultCode::SUCCESS:
+		case ResultCode::E_NET_IO_PENDING:
+		case ResultCode::E_NET_WOULDBLOCK:
+			break;
+		case ResultCode::E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_NOTCONN:
+			hr = hrErr;
+			break;
+		case ResultCode::E_NET_CONNABORTED:
+		case ResultCode::E_NET_CONNRESET:
+		case ResultCode::E_NET_NETRESET:
+		case ResultCode::E_NET_NOTSOCK:
+		case ResultCode::E_NET_SHUTDOWN:
+			// Send fail by connection close
+			// Need to disconnect
+			m_Owner.Disconnect("Send failed by error");
+			hr = ResultCode::E_NET_CONNECTION_CLOSED;
+			goto Proc_End;
+			break;
+		default:
+			netErr(ResultCode::E_NET_IO_SEND_FAIL);
+			break;
+		};
+
+	Proc_End:
+
+		switch ((uint32_t)hr)
+		{
+		case ResultCode::SUCCESS:
+		case ResultCode::SUCCESS_FALSE:
+			break;
+		case ResultCode::E_NET_IO_SEND_FAIL:
+			return ResultCode::SUCCESS;
+		case ResultCode::E_NET_TRY_AGAIN:
+			break;
+		case ResultCode::E_NET_NOTCONN:
+			m_Owner.m_isActuallyConnected = m_Owner.Connect();
+		default:
+			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, sock:{4}, ip:{0}, err:{1:X8}, hr:{2:X8}", m_Owner.GetConnectionInfo().Remote, hrErr, hr, m_Owner.GetCID(), m_Owner.GetSocket());
+			break;
+		}
+
+
+		return hr;
+	}
+
+	Result ConnectionTCP::MyNetIOAdapter::Recv(IOBUFFER_READ* pIOBuffer)
+	{
+		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
+
+		if (m_Owner.GetConnectionState() == IConnection::STATE_DISCONNECTED)
+			return ResultCode::E_NET_CONNECTION_CLOSED;
+
+		netChkPtr(pIOBuffer);
+		pIOBuffer->SetupRecvTCP(m_Owner.GetCID());
+
+		hrErr = NetSystem::Recv(m_Owner.GetSocket(), pIOBuffer);
+		switch ((int64_t)hrErr)
+		{
+		case ResultCode::E_NET_CONNABORTED:
+		case ResultCode::E_NET_CONNRESET:
+		case ResultCode::E_NET_NETRESET:
+		case ResultCode::E_NET_NOTSOCK:
+		case ResultCode::E_NET_SHUTDOWN:
+			netTrace(Trace::TRC_WARN, "TCP Read failed, Connection Reset CID:{0}, err:{1:X8}, pending:{2}", m_Owner.GetCID(), hrErr, m_Owner.GetPendingRecvCount());
+			// Send fail by connection close
+			// Need to disconnect
+			m_Owner.CloseConnection();
+			netErrSilent(ResultCode::E_NET_CONNECTION_CLOSED);
+			break;
+		default:
+			//netTrace(Trace::TRC_ERROR, "TCP Recv failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
+			netErrSilent(hrErr);
+			break;
+		case ResultCode::E_NET_IO_PENDING:
+		case ResultCode::E_NET_WOULDBLOCK:
+			// Recv is pended
+			hr = hrErr;
+			break;
+		case ResultCode::E_NET_TRY_AGAIN:
+		case ResultCode::E_NET_NOTCONN:
+			// try again
+			hr = hrErr;
+			break;
+		case ResultCode::SUCCESS_FALSE:
+			hr = ResultCode::E_NET_TRY_AGAIN;
+			break;
+		case ResultCode::SUCCESS:
+			break;
+		};
+
+
+	Proc_End:
+
+		return hr;
+	}
+
+	// called when receiving message
+	Result ConnectionTCP::MyNetIOAdapter::OnIORecvCompleted(Result hrRes, IOBUFFER_READ* &pIOBuffer)
+	{
+		Result hr = ResultCode::SUCCESS;
+
+		if (pIOBuffer != nullptr && pIOBuffer->CID != m_Owner.GetCID())
+			netErr(ResultCode::INVALID_ARG);
+
+		m_Owner.DecPendingRecvCount();
+
+		if (!(hrRes))
+		{
+			switch ((uint32_t)hrRes)
+			{
+			case ResultCode::E_NET_CONNECTION_CLOSED:
+			case ResultCode::E_NET_IO_ABORTED:
+				netChk(m_Owner.CloseConnection());
+				break;
+			default:
+				netTrace(TRC_TCPRECVRAW, "Recv Msg Failed, SvrTCP, CID {0}, hr={1:X8}", m_Owner.GetCID(), hrRes);
+				break;
+			};
+		}
+		else
+		{
+			netChkPtr(pIOBuffer);
+			if (!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_consume))
+			{
+				netChk(m_Owner.OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer));
+			}
+
+		}
+
+
+	Proc_End:
+
+
+		//if (!NetSystem::IsProactorSystem())
+		{
+			Util::SafeDelete(pIOBuffer);
+		}
+		//else
+		//{
+		//	pIOBuffer->SetPendingFalse();
+		//}
+
+		//DecPendingRecvCount();
+		// Update will process new pending recv
+		m_Owner.PendingRecv();
+		//AssertRel(!NetSystem::IsProactorSystem() || GetPendingRecvCount() == 1);
+
+		netTrace(TRC_TCPRECVRAW, "TCP Recv CID:{0}, pending:{1}, hr:{2:X8}", m_Owner.GetCID(), m_Owner.GetPendingRecvCount(), hr);
+
+		return hr;
+	}
+
+	Result ConnectionTCP::MyNetIOAdapter::OnSendReady()
+	{
+		Result hr;
+		if (m_Owner.GetEventHandler())
+		{
+			auto hrRes = m_Owner.GetEventHandler()->OnNetSendReadyMessage(&m_Owner);
+			if (hrRes != Result(ResultCode::E_SVR_INVALID_TASK_GROUPID))
+			{
+				netChk(hrRes);
+			}
+		}
+		// process directly
+		else
+		{
+			netChk(ProcessSendQueue());
+		}
+
+	Proc_End:
+
+		return hr;
+	}
+
+	// called when Send completed
+	Result ConnectionTCP::MyNetIOAdapter::OnIOSendCompleted(Result hrRes, IOBUFFER_WRITE *pIOBuffer)
+	{
+		Util::SafeDeleteArray(pIOBuffer->pSendBuff);
+		Util::SafeRelease(pIOBuffer->pMsgs);
+		NetSystem::FreeBuffer(pIOBuffer);
+		m_Owner.m_PendingSend.fetch_sub(1, std::memory_order_release);
+		return ResultCode::SUCCESS;
+	}
+
+
+
+
+
 	// Constructor
 	ConnectionTCP::ConnectionTCP()
-		: INetIOCallBack(GetSocket())
-		, m_lGuarantedSent(0)
+		: m_lGuarantedSent(0)
 		, m_lGuarantedAck(0)
 		, m_uiRecvTemUsed(0)
 		, m_uiSendNetCtrlCount(0)
 		, m_isClientSide(false)
 		, m_isActuallyConnected(true)
+		, m_IOAdapter(*this)
 	{
 		SetSocket( INVALID_SOCKET );
 		m_bufRecvTem.resize( Const::PACKET_SIZE_MAX*2 );
 
 		SetHeartbitTry(Const::TCP_HEARTBIT_START_TIME);
 
-		SetWriteQueue(new WriteBufferQueue);
+		m_IOAdapter.SetWriteQueue(new WriteBufferQueue);
 	}
 
 	ConnectionTCP::~ConnectionTCP()
@@ -78,15 +286,15 @@ namespace Net {
 		//Assert( ( CloseConnection() ) );
 		if (GetSocket() != INVALID_SOCKET)
 		{
-			AssertRel(!GetIsIORegistered());
-			AssertRel(GetAssignedIOWorker() == -1);
+			AssertRel(!m_IOAdapter.GetIsIORegistered());
+			AssertRel(m_IOAdapter.GetAssignedIOWorker() == -1);
 
-			NetSystem::UnregisterSocket(this);
+			NetSystem::UnregisterSocket(&m_IOAdapter);
 
 			NetSystem::CloseSocket(GetSocket());
 		}
 
-		if (GetWriteQueue()) delete GetWriteQueue();
+		if (m_IOAdapter.GetWriteQueue()) delete m_IOAdapter.GetWriteQueue();
 	}
 
 
@@ -222,145 +430,6 @@ namespace Net {
 		return hr;
 	}
 
-	Result ConnectionTCP::Recv(IOBUFFER_READ* pIOBuffer)
-	{
-		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
-
-		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
-			return ResultCode::E_NET_CONNECTION_CLOSED;
-
-		netChkPtr(pIOBuffer);
-		pIOBuffer->SetupRecvTCP(GetCID());
-
-		hrErr = NetSystem::Recv(GetSocket(), pIOBuffer);
-		switch ((int64_t)hrErr)
-		{
-		case ResultCode::E_NET_CONNABORTED:
-		case ResultCode::E_NET_CONNRESET:
-		case ResultCode::E_NET_NETRESET:
-		case ResultCode::E_NET_NOTSOCK:
-		case ResultCode::E_NET_SHUTDOWN:
-			netTrace(Trace::TRC_WARN, "TCP Read failed, Connection Reset CID:{0}, err:{1:X8}, pending:{2}", GetCID(), hrErr, GetPendingRecvCount());
-			// Send fail by connection close
-			// Need to disconnect
-			CloseConnection();
-			netErrSilent(ResultCode::E_NET_CONNECTION_CLOSED);
-			break;
-		default:
-			//netTrace(Trace::TRC_ERROR, "TCP Recv failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
-			netErrSilent(hrErr);
-			break;
-		case ResultCode::E_NET_IO_PENDING:
-		case ResultCode::E_NET_WOULDBLOCK:
-			// Recv is pended
-			hr = hrErr;
-			break;
-		case ResultCode::E_NET_TRY_AGAIN:
-		case ResultCode::E_NET_NOTCONN:
-			// try again
-			hr = hrErr;
-			break;
-		case ResultCode::SUCCESS_FALSE:
-			hr = ResultCode::E_NET_TRY_AGAIN;
-			break;
-		case ResultCode::SUCCESS:
-			break;
-		};
-
-
-	Proc_End:
-
-		return hr;
-	}
-
-	// called when reciving message
-	Result ConnectionTCP::OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer )
-	{
-		Result hr = ResultCode::SUCCESS;
-
-		if(pIOBuffer != nullptr && pIOBuffer->CID != GetCID() )
-			netErr( ResultCode::INVALID_ARG );
-
-		DecPendingRecvCount();
-
-		if( !( hrRes ) )
-		{
-			switch((uint32_t)hrRes )
-			{
-			case ResultCode::E_NET_CONNECTION_CLOSED:
-			case ResultCode::E_NET_IO_ABORTED:
-				netChk( CloseConnection() );
-				break;
-			default:
-				netTrace(TRC_TCPRECVRAW, "Recv Msg Failed, SvrTCP, CID {0}, hr={1:X8}", GetCID(), hrRes);
-				break;
-			};
-		}
-		else
-		{
-			netChkPtr(pIOBuffer);
-			if (!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_consume))
-			{
-				netChk(OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer));
-			}
-
-		}
-
-
-	Proc_End:
-
-
-		//if (!NetSystem::IsProactorSystem())
-		{
-			Util::SafeDelete(pIOBuffer);
-		}
-		//else
-		//{
-		//	pIOBuffer->SetPendingFalse();
-		//}
-
-		//DecPendingRecvCount();
-		// Update will process new pending recv
-		PendingRecv();
-		//AssertRel(!NetSystem::IsProactorSystem() || GetPendingRecvCount() == 1);
-
-		netTrace(TRC_TCPRECVRAW, "TCP Recv CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
-
-		return hr;
-	}
-
-	Result ConnectionTCP::OnSendReady()
-	{
-		Result hr;
-		if (GetEventHandler())
-		{
-			auto hrRes = GetEventHandler()->OnNetSendReadyMessage(this);
-			if (hrRes != Result(ResultCode::E_SVR_INVALID_TASK_GROUPID))
-			{
-				netChk(hrRes);
-			}
-		}
-		// process directly
-		else
-		{
-			netChk(ProcessSendQueue());
-		}
-
-	Proc_End:
-
-		return hr;
-	}
-
-	// called when Send completed
-	Result ConnectionTCP::OnIOSendCompleted( Result hrRes, IOBUFFER_WRITE *pIOBuffer )
-	{
-		Util::SafeDeleteArray( pIOBuffer->pSendBuff );
-		Util::SafeRelease( pIOBuffer->pMsgs );
-		NetSystem::FreeBuffer( pIOBuffer );
-		m_PendingSend.fetch_sub(1, std::memory_order_release);
-		return ResultCode::SUCCESS;
-	}
-
 	// Clear Queue
 	Result ConnectionTCP::ClearQueues()
 	{
@@ -395,7 +464,7 @@ namespace Net {
 
 		IncPendingRecvCount();
 
-		hr = Recv(pOver);
+		hr = m_IOAdapter.Recv(pOver);
 		if (!(hr) && hr != Result(ResultCode::E_NET_IO_PENDING))
 		{
 			netTrace(Trace::TRC_WARN, "Pending Recv failed, CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
@@ -439,6 +508,9 @@ namespace Net {
 		{
 			CloseSocket();
 		}
+
+		Assert(m_IOAdapter.GetWriteQueue() != nullptr);
+
 
 		m_lGuarantedSent = 0;
 		m_lGuarantedAck = 0;
@@ -604,7 +676,7 @@ namespace Net {
 	{
 		if (GetSocket() == INVALID_SOCKET) return;
 
-		NetSystem::UnregisterSocket(this);
+		NetSystem::UnregisterSocket(&m_IOAdapter);
 
 		Connection::CloseSocket();
 	}
@@ -775,62 +847,6 @@ namespace Net {
 		return hr;
 	}
 
-	// Send message to connection with network device
-	Result ConnectionTCP::SendBuffer(IOBUFFER_WRITE *pSendBuffer)
-	{
-		Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
-
-		netChkPtr(pSendBuffer);
-
-		hrErr = NetSystem::Send(GetSocket(), pSendBuffer);
-		switch ((uint32_t)hrErr)
-		{
-		case ResultCode::SUCCESS:
-		case ResultCode::E_NET_IO_PENDING:
-		case ResultCode::E_NET_WOULDBLOCK:
-			break;
-		case ResultCode::E_NET_TRY_AGAIN:
-		case ResultCode::E_NET_NOTCONN:
-			hr = hrErr;
-			break;
-		case ResultCode::E_NET_CONNABORTED:
-		case ResultCode::E_NET_CONNRESET:
-		case ResultCode::E_NET_NETRESET:
-		case ResultCode::E_NET_NOTSOCK:
-		case ResultCode::E_NET_SHUTDOWN:
-			// Send fail by connection close
-			// Need to disconnect
-			Disconnect("Send failed by error");
-			hr = ResultCode::E_NET_CONNECTION_CLOSED;
-			goto Proc_End;
-			break;
-		default:
-			netErr(ResultCode::E_NET_IO_SEND_FAIL);
-			break;
-		};
-
-	Proc_End:
-
-		switch ((uint32_t)hr)
-		{
-		case ResultCode::SUCCESS:
-		case ResultCode::SUCCESS_FALSE:
-			break;
-		case ResultCode::E_NET_IO_SEND_FAIL:
-			return ResultCode::SUCCESS;
-		case ResultCode::E_NET_TRY_AGAIN:
-			break;
-		case ResultCode::E_NET_NOTCONN:
-			m_isActuallyConnected = Connect();
-		default:
-			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, sock:{4}, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo().Remote, hrErr, hr, GetCID(), GetSocket());
-			break;
-		}
-
-
-		return hr;
-	}
-
 
 	Result ConnectionTCP::SendRaw(Message::MessageData* &pMsg)
 	{
@@ -845,12 +861,12 @@ namespace Net {
 
 		if (NetSystem::IsProactorSystem())
 		{
-			netChk(SendBuffer(pSendBuffer));
+			netChk(m_IOAdapter.SendBuffer(pSendBuffer));
 		}
 		else
 		{
-			netChk(EnqueueBuffer(pSendBuffer));
-			ProcessSendQueue();
+			netChk(m_IOAdapter.EnqueueBuffer(pSendBuffer));
+			m_IOAdapter.ProcessSendQueue();
 		}
 		pSendBuffer = nullptr;
 
@@ -951,7 +967,7 @@ namespace Net {
 	// Update Send buffer Queue, TCP and UDP client connection
 	Result ConnectionTCP::UpdateSendBufferQueue()
 	{
-		return ProcessSendQueue();
+		return m_IOAdapter.ProcessSendQueue();
 	}
 
 
@@ -983,7 +999,7 @@ namespace Net {
 
 		if( GetConnectionState() != IConnection::STATE_DISCONNECTED)
 		{
-			if (!GetIsIORegistered())
+			if (!m_IOAdapter.GetIsIORegistered())
 			{
 				netTrace(TRC_CONNECTION, "Close connection because it's kicked from net IO, CID:{0}", GetCID());
 				netChk(CloseConnection());

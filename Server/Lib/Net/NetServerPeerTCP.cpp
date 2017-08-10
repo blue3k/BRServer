@@ -87,7 +87,7 @@ namespace Net {
 		netChk( pConnection->InitConnection( acceptedSocket, connectionInfo ) );
 		netTrace(TRC_CONNECTION, "Connection accepted CID:{0}, Addr:{1}, sock:{2}", pConnection->GetCID(), pConnection->GetConnectionInfo().Remote, acceptedSocket);
 
-		netChk(NetSystem::RegisterSocket(SockType::Stream, pConnection));
+		netChk(NetSystem::RegisterSocket(SockType::Stream, pConnection->GetIOCallback()));
 
 		if (bNeedPending)
 		{
@@ -209,7 +209,7 @@ namespace Net {
 		netChk(pConn->InitConnection(socket, connectionInfo));
 		socket = INVALID_SOCKET;
 
-		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn));
+		netChk(NetSystem::RegisterSocket(SockType::Stream, pConn->GetIOCallback()));
 
 		hrRes = pConn->Connect();
 		if(hrRes)

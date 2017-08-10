@@ -235,7 +235,6 @@ namespace Net {
 	{
 		if (m_socket != INVALID_SOCKET)
 		{
-			NetSystem::CloseSocket(m_socket);
 			SetSocket(INVALID_SOCKET);
 		}
 	}

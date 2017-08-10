@@ -191,7 +191,6 @@ namespace Net {
 			netErr( ResultCode::FAIL );
 		}
 
-		Assert(pConnection->GetWriteQueue() != nullptr);
 
 		pConn = pConnection;
 		pConnOut = pConnection;
@@ -204,7 +203,7 @@ namespace Net {
 		netTrace(TRC_CONNECTION, "Connection Accepted CID:{0}, Addr:{1}, sock:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote, acceptedSocket);
 
 
-		netChk(NetSystem::RegisterSocket(SockType::Stream, pConnection));
+		netChk(NetSystem::RegisterSocket(SockType::Stream, pConnection->GetIOCallback()));
 
 		pConn = nullptr;
 

@@ -154,9 +154,11 @@ namespace Net {
 
 		Result InitConnection(SOCKET socket, const ConnectionInformation &connectInfo) override;
 
+		// If the connection have socket per connection, that need to be released by manually
+		virtual void CloseSocket() override;
 
 
-		// called when reciving TCP message
+		// called when receiving TCP message
 		virtual Result Recv(IOBUFFER_READ* pIOBuffer) override;
 		virtual Result OnIORecvCompleted(Result hrRes, IOBUFFER_READ* &pIOBuffer) override;
 
