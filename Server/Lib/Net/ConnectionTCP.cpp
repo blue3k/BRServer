@@ -456,6 +456,9 @@ namespace Net {
 				return ResultCode::SUCCESS;
 		}
 
+		if (GetPendingRecvCount() > 0)
+			return ResultCode::SUCCESS;
+
 		// For TCP, we need only single buffer is in waiting read operation
 		pOver = new IOBUFFER_READ;//GetRecvBuffer();
 		hr = pOver->SetPendingTrue();
@@ -465,7 +468,7 @@ namespace Net {
 		IncPendingRecvCount();
 
 		hr = m_IOAdapter.Recv(pOver);
-		if (!(hr) && hr != Result(ResultCode::E_NET_IO_PENDING))
+		if (!(hr) && hr != Result(ResultCode::E_NET_IO_PENDING) && hr != Result(ResultCode::E_NET_TRY_AGAIN))
 		{
 			netTrace(Trace::TRC_WARN, "Pending Recv failed, CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 			//Assert(false);
@@ -475,11 +478,13 @@ namespace Net {
 		}
 		else
 		{
+			pOver = nullptr;
 			netTrace(TRC_TCPRECVRAW, "Pending Recv CID:{0}, pending:{1}, hr:{2:X8}", GetCID(), GetPendingRecvCount(), hr);
 		}
 
 	//Proc_End:
 
+		delete pOver;
 
 		return hr;
 	}
