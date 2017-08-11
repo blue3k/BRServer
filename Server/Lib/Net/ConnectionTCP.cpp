@@ -208,14 +208,7 @@ namespace Net {
 	Proc_End:
 
 
-		//if (!NetSystem::IsProactorSystem())
-		{
-			Util::SafeDelete(pIOBuffer);
-		}
-		//else
-		//{
-		//	pIOBuffer->SetPendingFalse();
-		//}
+		Util::SafeDelete(pIOBuffer);
 
 		//DecPendingRecvCount();
 		// Update will process new pending recv

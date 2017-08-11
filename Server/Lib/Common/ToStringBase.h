@@ -158,6 +158,8 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 		if( !(_IToA( (UINT32)szArray, pBuff, iBuffLen, 10, -1 )) )
 			return ResultCode::FAIL;
 
+		szArray = std::min(szArray, size_t(20));
+
 		for( size_t uiIdx = 0; uiIdx < szArray; uiIdx++ )
 		{
 			if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
@@ -178,6 +180,8 @@ COMPILETIME_WARNING( "ToString Compiled with unknowntype" + typeid(Type).name() 
 
 		if (!(_IToA((UINT32)szArray, pBuff, iBuffLen, 10, -1)))
 			return ResultCode::FAIL;
+
+		szArray = std::min(szArray, size_t(20));
 
 		for (size_t uiIdx = 0; uiIdx < szArray; uiIdx++)
 		{
