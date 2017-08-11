@@ -297,7 +297,7 @@ namespace GameServer {
 		{
 
 			GetMyOwner()->SetGameInsUID(0);
-			GetMyOwner()->UpdateDBSync(0);
+			GetMyOwner()->UpdateDBSync();
 		}
 		else
 		{
@@ -306,7 +306,7 @@ namespace GameServer {
 			svrChk(leaveRes.ParseMessage(pMsgRes->GetMessage()));
 
 			GetMyOwner()->SetGameInsUID(0);
-			GetMyOwner()->UpdateDBSync(0);
+			GetMyOwner()->UpdateDBSync();
 		}
 
 	Proc_End:
