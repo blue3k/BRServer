@@ -240,7 +240,13 @@ namespace Svr
 		GetConnectionShared(pConn);
 
 		if (pConn != nullptr)
-			pConn->UpdateNetCtrl();
+		{
+			if (pConn->GetRunningThreadID() == ThreadID())
+				pConn->SetRunningThreadID(ThisThread::GetThreadID());
+
+			if(pConn->GetRunningThreadID() == ThisThread::GetThreadID())
+				pConn->UpdateNetCtrl();
+		}
 
 		// We need to check m_pConnection again because the connection can be release during update
 		if (pConn != nullptr)
@@ -338,10 +344,37 @@ namespace Svr
 		Message::MessageData* pMsg = nullptr;
 		Net::ConnectionUDPBase* pConn = nullptr;
 		auto pMyConn = GetConnection();
-		// Event task stuff will be called from entity 
-		// This should be the running thread from now on
-		if (pMyConn->GetRunningThreadID() != ThisThread::GetThreadID())
-			pMyConn->SetRunningThreadID(ThisThread::GetThreadID());
+
+		if (pMyConn != nullptr)
+		{
+			// Event task stuff will be called from entity 
+			// This should be the running thread from now on
+			//if (pMyConn->GetRunningThreadID() != ThisThread::GetThreadID())
+			//	pMyConn->SetRunningThreadID(ThisThread::GetThreadID());
+			// - Yes, but it could be still managed by connection manager. let's see what happens
+			if (pMyConn->GetRunningThreadID() == ThreadID())
+				pMyConn->SetRunningThreadID(ThisThread::GetThreadID());
+			else
+			{
+				if (pMyConn->GetRunningThreadID() != ThisThread::GetThreadID())
+				{
+					//	return ResultCode::SUCCESS_FALSE; // this event should be rescheduled
+					switch (eventTask.EventType)
+					{
+					case EventTask::EventTypes::PACKET_MESSAGE_EVENT:
+						AssertRel(eventTask.EventData.MessageEvent.pMessage == nullptr);
+						// fallthru
+					case EventTask::EventTypes::CONNECTION_EVENT:
+					case EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+					case EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+					case EventTask::EventTypes::TRANSRESULT_EVENT:
+						return ResultCode::SUCCESS_FALSE;
+					default:
+						return ResultCode::UNEXPECTED;
+					}
+				}
+			}
+		}
 
 		switch (eventTask.EventType)
 		{

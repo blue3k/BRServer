@@ -726,7 +726,21 @@ namespace Net {
 		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
 			goto Proc_End;
 
-		SetRunningThreadID(ThisThread::GetThreadID());
+
+		// UDP connection thread owner ship is belong to the one calling update
+		if (GetRunningThreadID() != ThisThread::GetThreadID())
+		{
+			if (GetRunningThreadID() == ThreadID())
+			{
+				// no one ownes this connection yet
+				SetRunningThreadID(ThisThread::GetThreadID());
+			}
+			else
+			{
+				assert(false);
+				goto Proc_End;
+			}
+		}
 
 		hr = ProcNetCtrlQueue();
 		if( !(hr) )

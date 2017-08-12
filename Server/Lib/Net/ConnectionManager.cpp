@@ -200,7 +200,6 @@ namespace Net {
 		// Update Managed connections
 		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, const ConnectionPtr& pConn)->bool
 		{
-			//SharedPointerT<Connection> pConn = *itCur;
 			if( !(pConn->UpdateNetCtrl()) )
 			{
 				netTrace( TRC_CONNECTION, "Managed Connection Update failed CID:{0}", pConn->GetCID() );
@@ -217,12 +216,6 @@ namespace Net {
 				{
 					ConnectionPtr temp = pConn;
 					PendingReleaseConnection(temp);
-					//SharedPointerT<Connection> pOrg;
-					//m_ManagedConnections.Remove(key, pOrg);
-					//Assert(pConn == pOrg);
-					////itCur = m_ManagedConnections.erase(itCur);
-					//netTrace(TRC_CONNECTION, "Managed Connection Disconnected Free CID:{0}", pConn->GetCID());
-					//FreeConnection((Connection*)pConn);
 				}
 			}
 				break;
@@ -262,6 +255,9 @@ namespace Net {
 					netTrace( Trace::TRC_ERROR, "Invalid Operation for Pending connection nullptr" );
 					break;
 				}
+
+				// from now on this connection belong to connection manager thread
+				pConn->SetRunningThreadID(ThisThread::GetThreadID());
 
 				netChk( m_ManagedConnections.Insert(pConn->GetCID(), pConn) );
 				netTrace(TRC_CONNECTION, "Connection management started CID:{0}", pConn->GetCID());
@@ -308,11 +304,14 @@ namespace Net {
 				SharedPointerT<Connection> pPtr;
 				if ((m_ManagedConnections.Remove(pConn->GetCID(), pPtr)))
 				{
+					// from now on, this connection belong to some other thread
+					pConn->SetRunningThreadID(ThreadID());
+
 					netTrace(TRC_DBGCON, "Connection management is handed over CID:{0}", pConn->GetCID());
 				}
 				else
 				{
-					netTrace(Trace::TRC_WARN, "Connection management is failed to be handed over CID:{0}", pConn->GetCID());
+					netTrace(Trace::TRC_WARN, "Connection management is failed to be handed over(not exists in managed set) CID:{0}", pConn->GetCID());
 				}
 
 				oper.Clear();
@@ -385,6 +384,9 @@ namespace Net {
 						netChk( pConn->InitConnection( pIServer->GetSocket(), connectionInfo ) );
 						netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
+						// from now on, this connection belong to connection manager thread
+						pConn->SetRunningThreadID(ThisThread::GetThreadID());
+
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 
 						if( !(AddMap( (Connection*)pConn )) )
@@ -435,6 +437,9 @@ namespace Net {
 
 						netChk( pConn->InitConnection( pIServer->GetSocket(), connectionInfo ) );
 						netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+
+						// from now on, this connection belong to connection manager thread
+						pConn->SetRunningThreadID(ThisThread::GetThreadID());
 
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 

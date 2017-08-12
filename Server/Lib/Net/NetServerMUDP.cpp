@@ -145,7 +145,7 @@ namespace Net {
 				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_TIMESYNC.GetMsgID())
 			{
 				// send disconnect
-				netTrace(Trace::TRC_DBG1, "Unexpected packet from:{0} msg:{1}. Disconnecting...", from, pNetCtrl->msgID);
+				netTrace(Trace::TRC_WARN, "Unexpected packet from:{0} msg:{1}. Disconnecting...", from, pNetCtrl->msgID);
 				netChk(SendNetCtrl(from, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 			}
 			else
