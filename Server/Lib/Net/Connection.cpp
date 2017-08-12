@@ -230,6 +230,12 @@ namespace Net {
 		m_SendGuaQueue.ClearQueue();
 	}
 	
+	void Connection::SetRunningThreadID(ThreadID threadID)
+	{
+		m_RunningThreadID = threadID;
+		m_SetThreadIDStack.CaptureCallStack(1);
+	}
+
 	// Close connections socket handle
 	void Connection::CloseSocket()
 	{
@@ -330,7 +336,7 @@ namespace Net {
 			ConnectionPtr thisPtr(this);
 			INet::Event netEvent(INet::Event::EVT_NEW_CONNECTION, thisPtr);
 
-			netTrace( TRC_CONNECTION, "Connected CID:{0}, Dst={1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
+			netTrace( TRC_DBGCON, "Connected CID:{0}, Dst={1}:{2}", GetCID(), GetConnectionInfo().Remote.strAddr, GetConnectionInfo().Remote.usPort );
 			if (GetConnectionState() == IConnection::STATE_CONNECTING)
 			{
 				SetConnectionState(IConnection::STATE_CONNECTED);
@@ -398,7 +404,7 @@ namespace Net {
 
 	Proc_End:
 
-		netTrace(TRC_CONNECTION, "InitConnection CID:{0}, sock:{1}, from:{2}, to:{3} hr:{4:X8}", GetCID(), socket, connectInfo.Local, connectInfo.Remote, hr);
+		netTrace(TRC_DBGCON, "InitConnection CID:{0}, sock:{1}, from:{2}, to:{3} hr:{4:X8}", GetCID(), socket, connectInfo.Local, connectInfo.Remote, hr);
 
 		return hr;
 	}
@@ -418,7 +424,7 @@ namespace Net {
 
 			EnqueueConnectionEvent(IConnection::Event(IConnection::Event::EVT_STATE_CHANGE, GetConnectionState()));
 
-			netTrace( TRC_CONNECTION, "Entering Disconnect CID:{0}, sock:{1}, reason:{2}", GetCID(), GetSocket(), reason );
+			netTrace(TRC_DBGCON, "Entering Disconnect CID:{0}, sock:{1}, reason:{2}", GetCID(), GetSocket(), reason );
 		}
 
 	//Proc_End:

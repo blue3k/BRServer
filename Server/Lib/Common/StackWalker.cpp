@@ -96,6 +96,14 @@ namespace BR
 		memset( m_StackTrace, 0, sizeof(m_StackTrace) );
 	}
 
+
+	void CallStackTrace::CaptureCallStack(uint skipDepth, uint maxDepth)
+	{
+		m_CapturedThreadID = ThisThread::GetThreadID();
+		StackWalker::CaptureCallStack(*this, skipDepth, maxDepth);
+	}
+
+
 #if WINDOWS
 	Result CallStackTrace::PrintStackTrace( int channel, HANDLE hProcess )
 	{

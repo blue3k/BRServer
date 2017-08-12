@@ -998,7 +998,7 @@ namespace Net {
 			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 			SendFlush();
-			netTrace( TRC_CONNECTION, "Disconnect from remote CID:{0}", GetCID() );
+			netTrace(TRC_DBGCON, "Disconnect from remote CID:{0}", GetCID() );
 			netChk( CloseConnection() );
 			break;
 		default:

@@ -259,6 +259,7 @@ namespace Svr {
 
 	private:
 
+		static std::atomic<uint32_t> stm_TestCount;
 		StaticArray<uint8_t, 30 * 1024> m_Data;
 
 	public:

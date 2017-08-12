@@ -86,6 +86,7 @@ namespace Net {
 		std::atomic<LONG> m_lPendingRecvCount;
 
 		ThreadID m_RunningThreadID;
+		CallStackTrace m_SetThreadIDStack;
 
 	protected:
 
@@ -127,7 +128,7 @@ namespace Net {
 		MsgQueue& GetSendGuaQueue();
 
 		ThreadID GetRunningThreadID() const { return m_RunningThreadID; }
-		void SetRunningThreadID(ThreadID threadID) { m_RunningThreadID = threadID; }
+		void SetRunningThreadID(ThreadID threadID);
 
 		// Get zero recv count
 		inline ULONG GetZeroRecvCount();

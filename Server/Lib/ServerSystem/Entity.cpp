@@ -409,7 +409,7 @@ namespace BR {
 		case Transaction::STATE_WAITSTART:
 			if (pTrans->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans Start TID:{0}:{1}, Entity:{2}", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID());
+				svrTrace(Svr::TRC_DBGTRANS, "Trans Start TID:{0}:{1}, Entity:{2}", pTrans->GetTransID(), typeid(*pTrans).name(), GetEntityUID());
 			}
 			if (!(pTrans->StartTransaction()))// make transaction start
 			{
@@ -458,7 +458,7 @@ namespace BR {
 			{
 				if (pTrans->IsPrintTrace())
 				{
-					svrTrace(Svr::TRC_TRANSACTION, "Trans closed TID:{0}:{1}, Entity:{2}",
+					svrTrace(Svr::TRC_DBGTRANS, "Trans closed TID:{0}:{1}, Entity:{2}",
 						pTrans->GetTransID(), typeid(*pTrans).name(),
 						GetEntityUID());
 				}

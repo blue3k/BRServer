@@ -77,7 +77,7 @@ namespace Svr
 		if (pTrans == nullptr)
 			return;
 
-		svrTrace(Svr::TRC_TRANSACTION, "Transaction Release TID:{0}", pTrans->GetTransID());
+		svrTrace(Svr::TRC_DBGTRANS, "Transaction Release TID:{0}", pTrans->GetTransID());
 
 		if (pTrans->GetTimerAction() && pTrans->GetTimerAction()->GetScheduledTime() != TimeStampMS::max())
 			m_activeTransactionScheduler.RemoveTimerAction(currentThreadID, pTrans->GetTimerAction());
@@ -292,7 +292,7 @@ namespace Svr
 		svrChkPtr(pTransRes);
 		if( pCurTran->IsPrintTrace() )
 		{
-			svrTrace( Svr::TRC_TRANSACTION, "Trans Proc TID:{0}:{1}, Entity:{2}", pCurTran->GetTransID(), typeid(*pCurTran).name(), GetEntityUID() );
+			svrTrace( Svr::TRC_DBGTRANS, "Trans Proc TID:{0}:{1}, Entity:{2}", pCurTran->GetTransID(), typeid(*pCurTran).name(), GetEntityUID() );
 		}
 
 		pCurTran->UpdateHeartBitTime();

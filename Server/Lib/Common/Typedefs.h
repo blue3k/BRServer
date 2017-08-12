@@ -341,6 +341,11 @@ typedef unsigned int		SysUInt;
 
 
 
+typedef std::thread::id ThreadID;
+typedef std::thread::native_handle_type			ThreadHandle;
+
+
+
 typedef std::chrono::steady_clock ClockType;
 typedef std::chrono::duration<UINT> DurationSec;
 typedef std::chrono::time_point<ClockType, DurationSec> TimeStampSec;

@@ -20,8 +20,6 @@
 namespace BR
 {
 
-	typedef std::thread::id ThreadID;
-	typedef std::thread::native_handle_type			ThreadHandle;
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//

@@ -141,7 +141,7 @@ namespace Svr {
 		{
 			if (pCurTran->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans result, TID:{0}, Entity:{1}, Msg:{2}",
+				svrTrace(Svr::TRC_DBGTRANS, "Trans result, TID:{0}, Entity:{1}, Msg:{2}",
 					pCurTran->GetTransID(), GetEntityUID(),
 					pTranRes->GetMsgID());
 			}
@@ -154,7 +154,7 @@ namespace Svr {
 		{
 			if (pCurTran->IsPrintTrace())
 			{
-				svrTrace(Svr::TRC_TRANSACTION, "Trans Missing result drop, TID:{0}",
+				svrTrace(Svr::TRC_DBGTRANS, "Trans Missing result drop, TID:{0}",
 					pCurTran->GetTransID());
 			}
 		}

@@ -34,11 +34,14 @@ namespace BR
 			MIN_EXEOFFSET			= 0x100,
 		};
 
+		ThreadID m_CapturedThreadID;
 		size_t m_StackTraceCount;
 		void* m_StackTrace[MAX_CALLSTACK_DEPTH];
 
 		// constructor
 		CallStackTrace();
+
+		void CaptureCallStack(uint skipDepth = 0, uint maxDepth = CallStackTrace::MAX_CALLSTACK_DEPTH);
 
 		// print stack trace
 		BR::Result PrintStackTrace( int channel, HANDLE hProcess );

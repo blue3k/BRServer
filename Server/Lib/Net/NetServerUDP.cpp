@@ -68,6 +68,7 @@ namespace Net {
 		pIOBuffer->SetupRecvUDP(0);
 
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
+		hr = hrErr; // Win IOCP is preactive pattern, We need to handle these error in PendingRecv function
 		switch ((uint32_t)hrErr)
 		{
 		case ResultCode::SUCCESS_FALSE:
@@ -77,7 +78,6 @@ namespace Net {
 		case ResultCode::E_NET_IO_PENDING:
 		case ResultCode::E_NET_TRY_AGAIN:
 		case ResultCode::E_NET_WOULDBLOCK:
-			hr = hrErr;
 			goto Proc_End;// success
 			break;
 		case ResultCode::E_NET_NETUNREACH:
@@ -85,12 +85,11 @@ namespace Net {
 		case ResultCode::E_NET_CONNRESET:
 		case ResultCode::E_NET_NETRESET:
 			// some remove has problem with continue connection
-			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
+			netTrace(TRC_NETCTRL, "ServerUDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
 			//break;
 		default:
 			// Unknown error
-			netTrace(TRC_RECVRAW, "UDP Read Pending failed err={0:X8}", hrErr);
-			//netErr( HRESULT_FROM_WIN32(iErr2) );
+			netTrace(Trace::TRC_ERROR, "ServerUDP Read failed err={0:X8}", hrErr);
 			break;
 		};
 
@@ -348,9 +347,11 @@ namespace Net {
 			{
 			case ResultCode::SUCCESS:
 			case ResultCode::E_NET_IO_PENDING:
-			case ResultCode::E_NET_TRY_AGAIN:
 			case ResultCode::E_NET_WOULDBLOCK:
 				goto Proc_End;// success
+				break;
+			case ResultCode::E_NET_TRY_AGAIN:
+				netTrace(TRC_RECVRAW, "UDP Read Pending failed err E_NET_TRY_AGAIN");
 				break;
 			case ResultCode::E_NET_NETUNREACH:
 			case ResultCode::E_NET_CONNABORTED:

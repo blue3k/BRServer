@@ -589,7 +589,7 @@ namespace Net {
 
 		netChk( pConn->SetMessageWindowSize( 256, 256 ) );
 		netChk( pConn->InitConnection( GetSocket(), connectionInfo ) );
-		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+		netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
 		pConn->SetWriteQueueUDP(GetWriteQueue());
 

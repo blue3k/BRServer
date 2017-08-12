@@ -20,9 +20,9 @@ namespace DB {
 
 	enum TraceChannels {
 		TRC_QUERYSTR		=	Trace::TRC_DBG1,
+		TRC_QUERY = Trace::TRC_DBG2,
 
 		TRC_INFO			=	Trace::TRC_USER1,
-		TRC_QUERY			=	Trace::TRC_USER2,
 	};
 
 };

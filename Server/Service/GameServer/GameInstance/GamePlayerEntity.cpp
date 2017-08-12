@@ -450,11 +450,11 @@ namespace GameServer {
 
 		svrChkPtr(GetMyServer()->GetPresetGameConfig());
 
-		svrTrace(Svr::TRC_TRANSACTION, "Check GamePlayer Update Tick PID:{0} last:{1}, curTime:{2}, numTick:{3}, remain:{4}", GetPlayerID(), m_LatestUpdateTime, curUTCSec, numberOfTicks, remainTime);
+		svrTrace(Svr::TRC_DBGTRANS, "Check GamePlayer Update Tick PID:{0} last:{1}, curTime:{2}, numTick:{3}, remain:{4}", GetPlayerID(), m_LatestUpdateTime, curUTCSec, numberOfTicks, remainTime);
 
 		if( numberOfTicks > 0 )
 		{
-			svrTrace(Svr::TRC_TRANSACTION, "GamePlayer Update PID:{0}, numTick:{1}, Sta:{2}", GetPlayerID(), numberOfTicks, playerInfoSystem->GetStamina());
+			svrTrace(Svr::TRC_DBGTRANS, "GamePlayer Update PID:{0}, numTick:{1}, Sta:{2}", GetPlayerID(), numberOfTicks, playerInfoSystem->GetStamina());
 
 			if (numberOfTicks > std::numeric_limits<UINT16>::max())
 			{

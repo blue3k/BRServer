@@ -225,7 +225,7 @@ namespace GameServer {
 		playerInfoSystem->UpdateStatByLevel();
 
 
-		svrTrace(Svr::TRC_TRANSACTION, "SetPlayerGameData PlayerID:{0}. Grade:{1}, lvl:{2}, Exp:{3}, GameMoney:{4}, Gem:{5}, Sta:{6}, updateTick:{7}", GetMyOwner()->GetPlayerID(), 
+		svrTrace(Svr::TRC_DBGTRANS, "SetPlayerGameData PlayerID:{0}. Grade:{1}, lvl:{2}, Exp:{3}, GameMoney:{4}, Gem:{5}, Sta:{6}, updateTick:{7}", GetMyOwner()->GetPlayerID(),
 			playerData.Grade, playerData.Level, playerData.Exp, playerData.GameMoney, playerData.Gem, playerData.Stamina,
 			(UINT64)playerData.LatestTickTime);
 
@@ -298,7 +298,7 @@ namespace GameServer {
 				playerInfoSystem->SetupDefaultStat();
 				playerInfoData.LatestTickTime = Util::Time.GetTimeUTCSec().time_since_epoch().count();
 
-				svrTrace(Svr::TRC_TRANSACTION, "Player data created PlayerID:{0}", GetMyOwner()->GetPlayerID());
+				svrTrace(Svr::TRC_DBGTRANS, "Player data created PlayerID:{0}", GetMyOwner()->GetPlayerID());
 			}
 
 			svrChk(SetPlayerGameData(playerInfoData));

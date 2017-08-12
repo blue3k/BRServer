@@ -223,7 +223,7 @@ namespace Net {
 				//break;
 			default:
 				// Unknown error
-				netTrace(TRC_RECVRAW, "UDP Read Pending failed err={0:X8}", hrErr);
+				netTrace(TRC_RECVRAW, "UDP Read failed err={0:X8}", hrErr);
 				//netErr( HRESULT_FROM_WIN32(iErr2) );
 				break;
 			};
@@ -422,7 +422,7 @@ namespace Net {
 			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
 		default:
 			// Unknown error
-			netTrace(Trace::TRC_ERROR, "UDP Read Pending failed err={0:X8}", hrErr);
+			netTrace(Trace::TRC_ERROR, "UDP Read failed err={0:X8}", hrErr);
 			netErr(hrErr);
 			break;
 		}

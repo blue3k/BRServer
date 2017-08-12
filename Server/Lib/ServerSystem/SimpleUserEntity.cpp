@@ -338,6 +338,10 @@ namespace Svr
 		Message::MessageData* pMsg = nullptr;
 		Net::ConnectionUDPBase* pConn = nullptr;
 		auto pMyConn = GetConnection();
+		// Event task stuff will be called from entity 
+		// This should be the running thread from now on
+		if (pMyConn->GetRunningThreadID() != ThisThread::GetThreadID())
+			pMyConn->SetRunningThreadID(ThisThread::GetThreadID());
 
 		switch (eventTask.EventType)
 		{

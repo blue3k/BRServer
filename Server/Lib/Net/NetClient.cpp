@@ -469,7 +469,7 @@ namespace BR {
 		connectionInfo.RemoteID = remoteID;
 
 		netChk( pConn->InitConnection( socket, connectionInfo ) );
-		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+		netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 		socket = INVALID_SOCKET;
 
 
@@ -644,7 +644,7 @@ namespace BR {
 		netMem( pConn = (ConnectionUDPClient*)pIConn);
 		pConPtr = pConn;
 		netChk( pConn->InitConnection( socket, connectionInfo ) );
-		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+		netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 		socket = INVALID_SOCKET;
 
 		netChk(NetSystem::RegisterSocket(SockType::DataGram, pConn));
@@ -780,7 +780,7 @@ namespace BR {
 		pConPtr = pConn;
 
 		netChk(pConn->InitConnection(socket, connectionInfo));
-		netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+		netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 		socket = INVALID_SOCKET;
 
 		netChk(NetSystem::RegisterSocket(SockType::DataGram, pConn));

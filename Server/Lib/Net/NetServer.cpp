@@ -119,7 +119,7 @@ namespace Net {
 
 		netChkPtr( pIConnection );
 
-		netTrace(TRC_CONNECTION, "ReleaseConnection LPort:{0}, CID:{1}, Connection Count : {2}", GetLocalAddress().usPort, pIConnection->GetCID(), GetConnectionManager().GetNumActiveConnection());
+		netTrace(TRC_DBGCON, "ReleaseConnection Port:{0}, CID:{1}, Connection Count : {2}", GetLocalAddress().usPort, pIConnection->GetCID(), GetConnectionManager().GetNumActiveConnection());
 		netChk( GetConnectionManager().PendingReleaseConnection( pConn ) );
 
 	Proc_End:

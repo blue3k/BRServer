@@ -132,7 +132,7 @@ namespace Svr {
 
 		// Generate new authenticate ID
 		newTicket = super::GetMyOwner()->GetAuthTicketGenerator().NewUID();
-		svrTrace(Svr::TRC_ENTITY, "New Player Ticket Ticket:{0}", newTicket);
+		svrTrace(Svr::TRC_DBGINFO, "New Player Ticket Ticket:{0}", newTicket);
 		super::GetMyOwner()->SetAuthTicket(newTicket);
 
 		// register new ticket
@@ -919,6 +919,7 @@ namespace Svr {
 
 
 
+	std::atomic<uint32_t> LoginUserDataTestTrans::stm_TestCount(0);
 
 	LoginUserDataTestTrans::LoginUserDataTestTrans(Message::MessageData* &pIMsg)
 		: MessageTransaction(pIMsg)
@@ -928,6 +929,7 @@ namespace Svr {
 	Result LoginUserDataTestTrans::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
+		uint32_t testCount;
 
 		svrChk(super::StartTransaction());
 
@@ -935,6 +937,11 @@ namespace Svr {
 		super::GetMyOwner()->HeartBit();
 
 		m_Data.AddItems(GetTestData().GetSize(), GetTestData().data());
+		testCount = stm_TestCount.fetch_add(1, std::memory_order_relaxed);
+		if ((testCount % 50) == 0)
+		{
+			svrTrace(TRC_INFO, "TestData:{0}", testCount);
+		}
 
 	Proc_End:
 

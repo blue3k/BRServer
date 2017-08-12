@@ -48,7 +48,7 @@ namespace BR {
 					while (newTime == m_time) // we have to stall until we are on the same time stamp
 					{
 						// Maximum GUID for this sec, sleep a little before retry
-						defTrace(Trace::TRC_TRACE, "GlobalUIDGenerator: Maximum GUID for this sec, sleep a little before retry");
+						defTrace(Trace::TRC_DBG1, "GlobalUIDGenerator: Maximum GUID for this sec, sleep a little before retry");
 						// Do some other thread's job
 						ThisThread::SleepFor(DurationMS(0));
 						newTime = Util::Time.GetRawUTCSec();
@@ -74,7 +74,7 @@ namespace BR {
 		uid.SvrID = m_ServerID & 0XFF;
 		uid.Time = m_time.time_since_epoch().count();
 
-		defTrace(Trace::TRC_TRACE, "GlobalUIDGenerator: New GUID {0}", uid.UID);
+		defTrace(Trace::TRC_DBG1, "GlobalUIDGenerator: New GUID {0}", uid.UID);
 
 		static GlobalUID uidPrev(0);
 		Assert(uidPrev != uid);

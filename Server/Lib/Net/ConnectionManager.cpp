@@ -293,7 +293,7 @@ namespace Net {
 				if (pConn->GetConnectionState() == IConnection::STATE_DISCONNECTED)
 				{
 					pConn->InitConnection(pConn->GetSocket(), pConn->GetConnectionInfo());
-					netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+					netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 				}
 
 				break;
@@ -305,12 +305,10 @@ namespace Net {
 					break;
 				}
 
-				//m_ManagedConnections.CommitChanges();
-
 				SharedPointerT<Connection> pPtr;
 				if ((m_ManagedConnections.Remove(pConn->GetCID(), pPtr)))
 				{
-					netTrace(TRC_CONNECTION, "Connection management is handed over CID:{0}", pConn->GetCID());
+					netTrace(TRC_DBGCON, "Connection management is handed over CID:{0}", pConn->GetCID());
 				}
 				else
 				{
@@ -385,7 +383,7 @@ namespace Net {
 						connectionInfo.SetRemoteInfo(NetClass::Unknown, 0);
 
 						netChk( pConn->InitConnection( pIServer->GetSocket(), connectionInfo ) );
-						netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+						netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 
@@ -436,7 +434,7 @@ namespace Net {
 						Assert(oper.MobileNetCtrl.PeerID == 0);
 
 						netChk( pConn->InitConnection( pIServer->GetSocket(), connectionInfo ) );
-						netTrace(TRC_CONNECTION, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
+						netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 

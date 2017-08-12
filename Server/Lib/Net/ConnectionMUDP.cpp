@@ -251,7 +251,7 @@ namespace Net {
 		}
 		case NetCtrlCode_Disconnect:
 			netChk(SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
-			netTrace(TRC_CONNECTION, "Disconnect from remote CID:{0}", GetCID());
+			netTrace(TRC_DBGCON, "Disconnect from remote CID:{0}", GetCID());
 			netChk(CloseConnection());
 			break;
 		default:
@@ -1059,7 +1059,7 @@ namespace Net {
 			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
 		default:
 			// Unknown error
-			netTrace(Trace::TRC_ERROR, "UDP Read Pending failed err={0:X8}", hrErr);
+			netTrace(Trace::TRC_ERROR, "UDP Read failed err={0:X8}", hrErr);
 			netErr(hrErr);
 			break;
 		}
