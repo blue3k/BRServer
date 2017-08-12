@@ -156,13 +156,13 @@ namespace Net {
 				hr = hrErr;
 				switch ((uint32_t)hrErr)
 				{
-				case ResultCode::E_NET_TRY_AGAIN:
-				case ResultCode::E_NET_WOULDBLOCK:
-				case ResultCode::SUCCESS_FALSE:
+				case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
+				case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
+				case (uint32_t)ResultCode::SUCCESS_FALSE:
 					// These are expected return code
 					hr = ResultCode::SUCCESS;
 					break;
-				case ResultCode::E_NET_IO_PENDING:
+				case (uint32_t)ResultCode::E_NET_IO_PENDING:
 					Assert(false);
 					break;
 				default:
@@ -172,7 +172,7 @@ namespace Net {
 						netTrace(TRC_NETSYS, "ERROR Epoll Recv fail sock:{0} events:{1} hr:{2}", sock, GetNetIOSystem().EventFlagToString(sizeof(stringBuffer), stringBuffer, events), hrErr);
 					}
 					// fallthru
-				case ResultCode::SUCCESS:
+				case (uint32_t)ResultCode::SUCCESS:
 					// toss data to working thread
 					if (pReadBuffer != nullptr)
 					{

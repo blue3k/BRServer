@@ -1158,10 +1158,10 @@ namespace Net {
 			hrErr = Recv(pOver);
 			switch ((uint32_t)hrErr)
 			{
-			case ResultCode::SUCCESS:
-			case ResultCode::E_NET_IO_PENDING:
-			case ResultCode::E_NET_TRY_AGAIN:
-			case ResultCode::E_NET_WOULDBLOCK:
+			case (uint32_t)ResultCode::SUCCESS:
+			case (uint32_t)ResultCode::E_NET_IO_PENDING:
+			case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
+			case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
 				pOver = nullptr;
 				goto Proc_End;// success
 				break;

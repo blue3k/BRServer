@@ -109,13 +109,13 @@ namespace Net {
 			hr = SendBuffer(pSendBuffer);
 			switch ((uint32_t)hr)
 			{
-			case ResultCode::SUCCESS:
+			case (uint32_t)ResultCode::SUCCESS:
 				writeQueue->Dequeue(pSendBuffer);
 				break;
-			case ResultCode::E_NET_IO_PENDING:
+			case (uint32_t)ResultCode::E_NET_IO_PENDING:
 				break;
-			case ResultCode::E_NET_WOULDBLOCK:  // WOULDBLOCK in linux can be try again
-			case ResultCode::E_NET_TRY_AGAIN:
+			case (uint32_t)ResultCode::E_NET_WOULDBLOCK:  // WOULDBLOCK in linux can be try again
+			case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
 			default:
 				goto Proc_End;
 				break;

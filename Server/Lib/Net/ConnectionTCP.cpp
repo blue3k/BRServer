@@ -74,19 +74,19 @@ namespace Net {
 		hrErr = NetSystem::Send(m_Owner.GetSocket(), pSendBuffer);
 		switch ((uint32_t)hrErr)
 		{
-		case ResultCode::SUCCESS:
-		case ResultCode::E_NET_IO_PENDING:
-		case ResultCode::E_NET_WOULDBLOCK:
+		case (uint32_t)ResultCode::SUCCESS:
+		case (uint32_t)ResultCode::E_NET_IO_PENDING:
+		case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
 			break;
-		case ResultCode::E_NET_TRY_AGAIN:
-		case ResultCode::E_NET_NOTCONN:
+		case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
+		case (uint32_t)ResultCode::E_NET_NOTCONN:
 			hr = hrErr;
 			break;
-		case ResultCode::E_NET_CONNABORTED:
-		case ResultCode::E_NET_CONNRESET:
-		case ResultCode::E_NET_NETRESET:
-		case ResultCode::E_NET_NOTSOCK:
-		case ResultCode::E_NET_SHUTDOWN:
+		case (uint32_t)ResultCode::E_NET_CONNABORTED:
+		case (uint32_t)ResultCode::E_NET_CONNRESET:
+		case (uint32_t)ResultCode::E_NET_NETRESET:
+		case (uint32_t)ResultCode::E_NET_NOTSOCK:
+		case (uint32_t)ResultCode::E_NET_SHUTDOWN:
 			// Send fail by connection close
 			// Need to disconnect
 			m_Owner.Disconnect("Send failed by error");
@@ -102,14 +102,14 @@ namespace Net {
 
 		switch ((uint32_t)hr)
 		{
-		case ResultCode::SUCCESS:
-		case ResultCode::SUCCESS_FALSE:
+		case (uint32_t)ResultCode::SUCCESS:
+		case (uint32_t)ResultCode::SUCCESS_FALSE:
 			break;
-		case ResultCode::E_NET_IO_SEND_FAIL:
+		case (uint32_t)ResultCode::E_NET_IO_SEND_FAIL:
 			return ResultCode::SUCCESS;
-		case ResultCode::E_NET_TRY_AGAIN:
+		case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
 			break;
-		case ResultCode::E_NET_NOTCONN:
+		case (uint32_t)ResultCode::E_NET_NOTCONN:
 			m_Owner.m_isActuallyConnected = m_Owner.Connect();
 		default:
 			netTrace(Trace::TRC_ERROR, "TCP Send Failed, CID:{3}, sock:{4}, ip:{0}, err:{1:X8}, hr:{2:X8}", m_Owner.GetConnectionInfo().Remote, hrErr, hr, m_Owner.GetCID(), m_Owner.GetSocket());
@@ -133,11 +133,11 @@ namespace Net {
 		hrErr = NetSystem::Recv(m_Owner.GetSocket(), pIOBuffer);
 		switch ((int64_t)hrErr)
 		{
-		case ResultCode::E_NET_CONNABORTED:
-		case ResultCode::E_NET_CONNRESET:
-		case ResultCode::E_NET_NETRESET:
-		case ResultCode::E_NET_NOTSOCK:
-		case ResultCode::E_NET_SHUTDOWN:
+		case (uint32_t)ResultCode::E_NET_CONNABORTED:
+		case (uint32_t)ResultCode::E_NET_CONNRESET:
+		case (uint32_t)ResultCode::E_NET_NETRESET:
+		case (uint32_t)ResultCode::E_NET_NOTSOCK:
+		case (uint32_t)ResultCode::E_NET_SHUTDOWN:
 			netTrace(Trace::TRC_WARN, "TCP Read failed, Connection Reset CID:{0}, err:{1:X8}, pending:{2}", m_Owner.GetCID(), hrErr, m_Owner.GetPendingRecvCount());
 			// Send fail by connection close
 			// Need to disconnect
@@ -148,20 +148,20 @@ namespace Net {
 			//netTrace(Trace::TRC_ERROR, "TCP Recv failed with CID {0}, err:{1:X8}", GetCID(), hrErr);
 			netErrSilent(hrErr);
 			break;
-		case ResultCode::E_NET_IO_PENDING:
-		case ResultCode::E_NET_WOULDBLOCK:
+		case (uint32_t)ResultCode::E_NET_IO_PENDING:
+		case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
 			// Recv is pended
 			hr = hrErr;
 			break;
-		case ResultCode::E_NET_TRY_AGAIN:
-		case ResultCode::E_NET_NOTCONN:
+		case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
+		case (uint32_t)ResultCode::E_NET_NOTCONN:
 			// try again
 			hr = hrErr;
 			break;
-		case ResultCode::SUCCESS_FALSE:
+		case (uint32_t)ResultCode::SUCCESS_FALSE:
 			hr = ResultCode::E_NET_TRY_AGAIN;
 			break;
-		case ResultCode::SUCCESS:
+		case (uint32_t)ResultCode::SUCCESS:
 			break;
 		};
 
@@ -185,8 +185,8 @@ namespace Net {
 		{
 			switch ((uint32_t)hrRes)
 			{
-			case ResultCode::E_NET_CONNECTION_CLOSED:
-			case ResultCode::E_NET_IO_ABORTED:
+			case (uint32_t)ResultCode::E_NET_CONNECTION_CLOSED:
+			case (uint32_t)ResultCode::E_NET_IO_ABORTED:
 				netChk(m_Owner.CloseConnection());
 				break;
 			default:
@@ -554,12 +554,12 @@ namespace Net {
 			hrConResult = GetLastWSAResult();
 			switch ((uint32_t)hrConResult)
 			{
-			case ResultCode::E_NET_INPROGRESS:
-			case ResultCode::E_NET_WOULDBLOCK:  // First call need to wait
-			case ResultCode::E_NET_ALREADY:		// called again, still need to wait
+			case (uint32_t)ResultCode::E_NET_INPROGRESS:
+			case (uint32_t)ResultCode::E_NET_WOULDBLOCK:  // First call need to wait
+			case (uint32_t)ResultCode::E_NET_ALREADY:		// called again, still need to wait
 				hr = ResultCode::SUCCESS_FALSE;
 				break;
-			case ResultCode::E_NET_ISCONN:		// Connection estabalished
+			case (uint32_t)ResultCode::E_NET_ISCONN:		// Connection estabalished
 				hr = ResultCode::SUCCESS;
 				break;
 			default:

@@ -224,20 +224,20 @@ namespace Net {
 		hrErr = NetSystem::RecvFrom(GetSocket(), pIOBuffer);
 		switch ((uint32_t)hrErr)
 		{
-		case ResultCode::SUCCESS_FALSE:
+		case (uint32_t)ResultCode::SUCCESS_FALSE:
 			hr = ResultCode::E_NET_TRY_AGAIN;
 			break;
-		case ResultCode::SUCCESS:
-		case ResultCode::E_NET_IO_PENDING:
-		case ResultCode::E_NET_TRY_AGAIN:
-		case ResultCode::E_NET_WOULDBLOCK:
+		case (uint32_t)ResultCode::SUCCESS:
+		case (uint32_t)ResultCode::E_NET_IO_PENDING:
+		case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
+		case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
 			hr = hrErr;
 			goto Proc_End;// success
 			break;
-		case ResultCode::E_NET_NETUNREACH:
-		case ResultCode::E_NET_CONNABORTED:
-		case ResultCode::E_NET_CONNRESET:
-		case ResultCode::E_NET_NETRESET:
+		case (uint32_t)ResultCode::E_NET_NETUNREACH:
+		case (uint32_t)ResultCode::E_NET_CONNABORTED:
+		case (uint32_t)ResultCode::E_NET_CONNRESET:
+		case (uint32_t)ResultCode::E_NET_NETRESET:
 			// some remove has problem with connection
 			netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
 		default:
@@ -341,10 +341,10 @@ namespace Net {
 			hrErr = Recv(pOver);
 			switch ((uint32_t)hrErr)
 			{
-			case ResultCode::SUCCESS:
-			case ResultCode::E_NET_IO_PENDING:
-			case ResultCode::E_NET_TRY_AGAIN:
-			case ResultCode::E_NET_WOULDBLOCK:
+			case (uint32_t)ResultCode::SUCCESS:
+			case (uint32_t)ResultCode::E_NET_IO_PENDING:
+			case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
+			case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
 				pOver = nullptr;
 				goto Proc_End;// success
 				break;

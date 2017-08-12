@@ -71,19 +71,19 @@ namespace Net {
 		hr = hrErr; // Win IOCP is preactive pattern, We need to handle these error in PendingRecv function
 		switch ((uint32_t)hrErr)
 		{
-		case ResultCode::SUCCESS_FALSE:
+		case (uint32_t)ResultCode::SUCCESS_FALSE:
 			hr = ResultCode::E_NET_TRY_AGAIN;
 			break;
-		case ResultCode::SUCCESS:
-		case ResultCode::E_NET_IO_PENDING:
-		case ResultCode::E_NET_TRY_AGAIN:
-		case ResultCode::E_NET_WOULDBLOCK:
+		case (uint32_t)ResultCode::SUCCESS:
+		case (uint32_t)ResultCode::E_NET_IO_PENDING:
+		case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
+		case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
 			goto Proc_End;// success
 			break;
-		case ResultCode::E_NET_NETUNREACH:
-		case ResultCode::E_NET_CONNABORTED:
-		case ResultCode::E_NET_CONNRESET:
-		case ResultCode::E_NET_NETRESET:
+		case (uint32_t)ResultCode::E_NET_NETUNREACH:
+		case (uint32_t)ResultCode::E_NET_CONNABORTED:
+		case (uint32_t)ResultCode::E_NET_CONNRESET:
+		case (uint32_t)ResultCode::E_NET_NETRESET:
 			// some remove has problem with continue connection
 			netTrace(TRC_NETCTRL, "ServerUDP Remote has connection error err={0:X8}, {1}", hrErr, pIOBuffer->NetAddr.From);
 			//break;
@@ -112,18 +112,18 @@ namespace Net {
 		hrErr = NetSystem::SendTo(GetSocket(), pSendBuffer);
 		switch ((uint32_t)hrErr)
 		{
-		case ResultCode::E_NET_TRY_AGAIN:
+		case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
 			break;
-		case ResultCode::SUCCESS:
-		case ResultCode::E_NET_IO_PENDING:
-		case ResultCode::E_NET_WOULDBLOCK:
+		case (uint32_t)ResultCode::SUCCESS:
+		case (uint32_t)ResultCode::E_NET_IO_PENDING:
+		case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
 			break;
-		case ResultCode::E_NET_CONNABORTED:
-		case ResultCode::E_NET_CONNRESET:
-		case ResultCode::E_NET_NETRESET:
-		case ResultCode::E_NET_NOTCONN:
-		case ResultCode::E_NET_NOTSOCK:
-		case ResultCode::E_NET_SHUTDOWN:
+		case (uint32_t)ResultCode::E_NET_CONNABORTED:
+		case (uint32_t)ResultCode::E_NET_CONNRESET:
+		case (uint32_t)ResultCode::E_NET_NETRESET:
+		case (uint32_t)ResultCode::E_NET_NOTCONN:
+		case (uint32_t)ResultCode::E_NET_NOTSOCK:
+		case (uint32_t)ResultCode::E_NET_SHUTDOWN:
 			// Send fail by connection close
 			// Need to disconnect
 			hr = ResultCode::E_NET_CONNECTION_CLOSED;
@@ -345,18 +345,18 @@ namespace Net {
 			hrErr = Recv(pOver);
 			switch ((uint32_t)hrErr)
 			{
-			case ResultCode::SUCCESS:
-			case ResultCode::E_NET_IO_PENDING:
-			case ResultCode::E_NET_WOULDBLOCK:
+			case (uint32_t)ResultCode::SUCCESS:
+			case (uint32_t)ResultCode::E_NET_IO_PENDING:
+			case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
 				goto Proc_End;// success
 				break;
-			case ResultCode::E_NET_TRY_AGAIN:
+			case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
 				netTrace(TRC_RECVRAW, "UDP Read Pending failed err E_NET_TRY_AGAIN");
 				break;
-			case ResultCode::E_NET_NETUNREACH:
-			case ResultCode::E_NET_CONNABORTED:
-			case ResultCode::E_NET_CONNRESET:
-			case ResultCode::E_NET_NETRESET:
+			case (uint32_t)ResultCode::E_NET_NETUNREACH:
+			case (uint32_t)ResultCode::E_NET_CONNABORTED:
+			case (uint32_t)ResultCode::E_NET_CONNRESET:
+			case (uint32_t)ResultCode::E_NET_NETRESET:
 				// some remove has problem with continue connection
 				netTrace(TRC_NETCTRL, "UDP Remote has connection error err={0:X8}, {1}", hrErr, pOver->NetAddr.From);
 				//break;

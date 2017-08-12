@@ -95,12 +95,12 @@ namespace Net {
 		hrErr = NetSystem::Accept(GetSocket(), pAcceptInfo);
 		switch ((uint32_t)hrErr)
 		{
-		case ResultCode::SUCCESS:
-		case ResultCode::E_NET_WOULDBLOCK:
-		case ResultCode::E_NET_IO_PENDING:
+		case (uint32_t)ResultCode::SUCCESS:
+		case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
+		case (uint32_t)ResultCode::E_NET_IO_PENDING:
 			// successed
 			break;
-		case ResultCode::E_NET_TRY_AGAIN:
+		case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
 			netTrace(TRC_NET, "TCP accept busy, try again {0} accepts are queued", m_PendingAccept.load(std::memory_order_relaxed));
 		default:
 			hr = hrErr;

@@ -526,18 +526,18 @@ namespace Net {
 		hrErr = NetSystem::SendTo(GetSocket(), pSendBuffer);
 		switch ((uint32_t)hrErr)
 		{
-		case ResultCode::E_NET_TRY_AGAIN:
+		case (uint32_t)ResultCode::E_NET_TRY_AGAIN:
 			break;
-		case ResultCode::SUCCESS:
-		case ResultCode::E_NET_IO_PENDING:
-		case ResultCode::E_NET_WOULDBLOCK:
+		case (uint32_t)ResultCode::SUCCESS:
+		case (uint32_t)ResultCode::E_NET_IO_PENDING:
+		case (uint32_t)ResultCode::E_NET_WOULDBLOCK:
 			break;
-		case ResultCode::E_NET_CONNABORTED:
-		case ResultCode::E_NET_CONNRESET:
-		case ResultCode::E_NET_NETRESET:
-		case ResultCode::E_NET_NOTCONN:
-		case ResultCode::E_NET_NOTSOCK:
-		case ResultCode::E_NET_SHUTDOWN:
+		case (uint32_t)ResultCode::E_NET_CONNABORTED:
+		case (uint32_t)ResultCode::E_NET_CONNRESET:
+		case (uint32_t)ResultCode::E_NET_NETRESET:
+		case (uint32_t)ResultCode::E_NET_NOTCONN:
+		case (uint32_t)ResultCode::E_NET_NOTSOCK:
+		case (uint32_t)ResultCode::E_NET_SHUTDOWN:
 			// Send fail by connection close
 			// Need to disconnect
 			Disconnect("SendBufferUDP is failed");
