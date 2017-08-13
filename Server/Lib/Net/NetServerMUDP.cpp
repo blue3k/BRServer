@@ -210,7 +210,7 @@ namespace Net {
 			default:
 				netTrace( Trace::TRC_ERROR, "UDP Recv Msg Failed, SvrMUDP, IP:{0}, hr={1:X8}", from, hrRes );
 				break;
-			};
+			}
 		}
 		else if(pIOBuffer != nullptr)
 		{

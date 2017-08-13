@@ -294,12 +294,7 @@ namespace Net {
 		}
 
 
-		if (GetConnectionState() == IConnection::STATE_DISCONNECTED)
-		{
-			goto Proc_End;
-		}
-
-		while( uiBuffSize )
+		while( uiBuffSize && GetConnectionState() != ConnectionState::STATE_DISCONNECTED)
 		{
 			pMsgHeader = (Message::MobileMessageHeader*)pBuff;
 			if( uiBuffSize < sizeof(Message::MobileMessageHeader) || uiBuffSize < pMsgHeader->Length )
@@ -317,10 +312,6 @@ namespace Net {
 
 			if (pMsgHeader->msgID.IDs.Type == Message::MSGTYPE_NETCONTROL && pMsgHeader->msgID.IDs.Reliability == false) // if net control message then process immidiately
 			{
-				//MsgNetCtrlBuffer netCtrl;
-				//memcpy( &netCtrl, pMsgHeader, Util::Min( (size_t)pMsgHeader->Length, sizeof(netCtrl) ) );
-				//netChk( m_RecvNetCtrlQueue.Enqueue( netCtrl ) );
-
 				netChk(ProcNetCtrl((MsgMobileNetCtrl*)pMsgHeader));
 			}
 			else

@@ -18,9 +18,15 @@
 //
 
 
+// Get connection state
+inline const IConnection::ConnectionState IConnection::GetConnectionState() const
+{
+	return m_ConnectionState.load(std::memory_order_relaxed);
+}
+
 inline void IConnection::SetConnectionState(ConnectionState newState)
 {
-	m_ConnectionState = newState;
+	m_ConnectionState.store(newState, std::memory_order_relaxed);
 }
 
 // set local info
@@ -99,12 +105,6 @@ inline void IConnection::ClearCID()
 UINT64 IConnection::GetPeerID() const
 {
 	return m_ConnectInfo.RemoteID;
-}
-
-// Get connection state
-inline const IConnection::ConnectionState IConnection::GetConnectionState() const
-{
-	return m_ConnectionState;
 }
 
 // Set local class

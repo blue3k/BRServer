@@ -166,7 +166,7 @@ namespace Net {
 		uintptr_t	m_UData;
 
 		// Connection state
-		ConnectionState	m_ConnectionState;
+		std::atomic<ConnectionState>	m_ConnectionState;
 
 		// Policy processor
 		IPolicyBase* m_pPolicy[POLICY_NETMAX];
