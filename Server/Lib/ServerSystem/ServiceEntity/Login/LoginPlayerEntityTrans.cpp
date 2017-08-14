@@ -191,10 +191,6 @@ namespace Svr {
 				{
 					svrChk(RegisterNewPlayerToJoinGameServer());
 				}
-				else
-				{
-					assert(false);
-				}
 			}
 		}
 
