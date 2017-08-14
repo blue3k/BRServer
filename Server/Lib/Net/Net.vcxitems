@@ -21,7 +21,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ConnectionUDP.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LoopbackConnection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessageWindow.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)NetClient.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NetConnectionTask.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NetConst.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NetCtrl.h" />
@@ -52,7 +51,6 @@
     <None Include="$(MSBuildThisFileDirectory)ConnectionTCP.inl" />
     <None Include="$(MSBuildThisFileDirectory)ConnectionUDP.inl" />
     <None Include="$(MSBuildThisFileDirectory)MessageWindow.inl" />
-    <None Include="$(MSBuildThisFileDirectory)NetClient.inl" />
     <None Include="$(MSBuildThisFileDirectory)NetCtrl.inl" />
     <None Include="$(MSBuildThisFileDirectory)NetDef.inl" />
     <None Include="$(MSBuildThisFileDirectory)NetRawUDP.inl" />
@@ -78,7 +76,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Connection_PrintMessage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LoopbackConnection.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MessageWindow.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)NetClient.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)NetConnectionTask.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)NetCtrl.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)NetDef.cpp" />

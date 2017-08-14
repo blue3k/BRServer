@@ -159,6 +159,8 @@ namespace Net {
 		, m_UseAddressMap(true)
 		, m_UsePeerIDMap(true)
 		, m_pINetOwner(nullptr)
+		, m_OperationThread(nullptr)
+		, m_ConnectionThread(nullptr)
 		, m_bNoNewConnection(true)
 	{
 	}
@@ -169,33 +171,73 @@ namespace Net {
 		m_CIDMap.Clear();
 	}
 
-
-	// thread implementation
-	void ConnectionManager::Run()
+	void ConnectionManager::Start()
 	{
-		//Util::Time.UpdateTimer();
+		Stop();
 
-		while( 1 )
+		m_OperationThread = new FunctorThread([&](Thread* pThread)
 		{
-			auto loopInterval = UpdateInterval(DurationMS(Const::CONMGR_THREAD_INTERVAL) );
+			m_ManagementThreadID = ThisThread::GetThreadID();
 
-			if( CheckKillEvent(loopInterval) ) 
+			while (1)
 			{
-				// Kill Event signaled
-				break;
+				auto loopInterval = pThread->UpdateInterval(DurationMS(Const::CONMGR_THREAD_INTERVAL));
+
+				if (pThread->CheckKillEvent(loopInterval))
+				{
+					// Kill Event signaled
+					break;
+				}
+
+				UpdateOperationQueue();
+
+				m_ManagedConnections.CommitChanges();
+
+				UpdateManagedConnections();
 			}
 
-			UpdateOperationQueue();
+		});
+		m_OperationThread->Start();
+		
 
-			UpdateManagedConnections();
+		//m_ConnectionThread = new FunctorThread([&](Thread* pThread)
+		//{
+		//	while (1)
+		//	{
+		//		auto loopInterval = pThread->UpdateInterval(DurationMS(Const::CONMGR_THREAD_INTERVAL));
+
+		//		if (pThread->CheckKillEvent(loopInterval))
+		//		{
+		//			// Kill Event signaled
+		//			break;
+		//		}
+
+		//		UpdateManagedConnections();
+		//	}
+		//});
+		//m_ConnectionThread->Start();
+	}
+
+	void ConnectionManager::Stop()
+	{
+		if (m_OperationThread != nullptr)
+		{
+			m_OperationThread->Stop(true);
+			delete m_OperationThread;
+		}
+
+		if (m_ConnectionThread != nullptr)
+		{
+			m_ConnectionThread->Stop(true);
+			delete m_ConnectionThread;
 		}
 	}
+
 
 
 	// Update managed connections
 	void ConnectionManager::UpdateManagedConnections()
 	{
-		m_ManagedConnections.CommitChanges();
 
 		// Update Managed connections
 		m_ManagedConnections.ForeachOrder(0, (UINT)m_ManagedConnections.GetItemCount(), [&](const uintptr_t& key, const ConnectionPtr& pConn)->bool
@@ -257,7 +299,7 @@ namespace Net {
 				}
 
 				// from now on this connection belong to connection manager thread
-				pConn->SetRunningThreadID(ThisThread::GetThreadID());
+				pConn->SetRunningThreadID(m_ManagementThreadID);
 
 				netChk( m_ManagedConnections.Insert(pConn->GetCID(), pConn) );
 				netTrace(TRC_CONNECTION, "Connection management started CID:{0}", pConn->GetCID());
@@ -325,13 +367,14 @@ namespace Net {
 						break;
 					}
 
+					if (pConn->GetConnectionState() == IConnection::STATE_CONNECTED)
+						pConn->CloseConnection();
+
+					// close socket all the time
+					pConn->CloseSocket();
+
 					if ((pConn->GetPendingRecvCount() + pConn->GetPendingSendCount()) > 0)
 					{
-						if (pConn->GetConnectionState() == IConnection::STATE_CONNECTED)
-							pConn->CloseConnection();
-
-						// close socket all the time
-						pConn->CloseSocket();
 
 						if (Util::TimeSince(oper.EnqueuedTime) < DurationMS(30 * 1000))
 						{
@@ -385,7 +428,7 @@ namespace Net {
 						netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
 						// from now on, this connection belong to connection manager thread
-						pConn->SetRunningThreadID(ThisThread::GetThreadID());
+						pConn->SetRunningThreadID(m_ManagementThreadID);
 
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 
@@ -439,7 +482,7 @@ namespace Net {
 						netTrace(TRC_DBGCON, "Initialize connection CID:{0}, Addr:{1}:{2}", pConn->GetCID(), pConn->GetConnectionInfo().Remote.strAddr, pConn->GetConnectionInfo().Remote.usPort);
 
 						// from now on, this connection belong to connection manager thread
-						pConn->SetRunningThreadID(ThisThread::GetThreadID());
+						pConn->SetRunningThreadID(m_ManagementThreadID);
 
 						m_ManagedConnections.Insert(pConn->GetCID(), pConn);
 
@@ -658,7 +701,7 @@ namespace Net {
 
 		m_bNoNewConnection = true;
 
-		Stop(true);
+		Stop();
 
 
 		// Clear pending operation queue

@@ -32,7 +32,7 @@ namespace Net {
 	// Network address to connection map
 	//
 
-	class ConnectionManager : public Thread
+	class ConnectionManager
 	{
 	public:
 
@@ -151,6 +151,11 @@ namespace Net {
 		UniqueEntityIDGenerator	m_CIDGen;
 
 
+		Thread* m_OperationThread;
+		Thread* m_ConnectionThread;
+
+		ThreadID m_ManagementThreadID;
+
 	protected:
 		// No new connection
 		bool		m_bNoNewConnection;
@@ -180,7 +185,7 @@ namespace Net {
 		//
 
 		// thread implementation
-		virtual void Run() override;
+		//virtual void Run() override;
 
 		// Update managed connections
 		virtual void UpdateManagedConnections();
@@ -201,6 +206,10 @@ namespace Net {
 		// @param uiBucketSize : Hashmap bucket size
 		ConnectionManager( UINT uiBucketSize );
 		virtual ~ConnectionManager();
+
+
+		void Start();
+		void Stop();
 
 		// Get net owner
 		inline void SetNetOwner( INet *pOwner );

@@ -542,7 +542,7 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS;
 		INet::Event myEvent(INet::Event::EVT_NET_CLOSED);
 
-		m_ConnectionManager.Stop( true );
+		m_ConnectionManager.Stop();
 
 
 		if( GetSocket() != INVALID_SOCKET )
