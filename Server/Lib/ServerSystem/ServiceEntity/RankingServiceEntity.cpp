@@ -59,9 +59,9 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		auto pServerInst = BrServer::GetInstance();
 		DB::RankingDB* pRankDB = nullptr;
-		int32_t baseIndex = 0;
-		int32_t requestSize = 20;
-		int32_t maxRequestCount = 100;
+		int64_t baseIndex = 0;
+		auto requestSize = Const::RANKING_DB_MAX_REQUEST;
+		auto maxRequestCount = (Const::RANKING_MAX_PLAYER * 2 - 1) / requestSize;
 
 		svrChk(FreeReplicaClusterServiceEntity::InitializeEntity(newEntityID) );
 
@@ -74,9 +74,9 @@ namespace Svr {
 		svrChkPtr(pRankDB);
 		
 		baseIndex = 0;
-		for (int iRequest = 0; iRequest < maxRequestCount; iRequest++, baseIndex += requestSize)
+		for (int64_t iRequest = 0; iRequest < maxRequestCount; iRequest++, baseIndex += requestSize)
 		{
-			auto pResult = pRankDB->GetRankers(baseIndex, requestSize);
+			auto pResult = pRankDB->GetRankers((int32_t)baseIndex, (int32_t)requestSize);
 			svrChkPtr(pResult);
 
 			// Nothing to query anymore

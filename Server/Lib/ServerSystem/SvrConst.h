@@ -15,9 +15,9 @@
 #include "Common/Typedefs.h"
 
 
-namespace BR{
-namespace Svr{
-namespace Const{
+namespace BR {
+namespace Svr {
+namespace Const {
 
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +79,9 @@ namespace Const{
 		TIME_INTERVAL_RANKING_UPDATE = 10 * 1000,
 	};
 
+
+	constexpr int64_t RANKING_DB_MAX_REQUEST = 1000;
+	constexpr int64_t RANKING_MAX_PLAYER = 1000 * RANKING_DB_MAX_REQUEST;
 
 
 }; // namespace Const
