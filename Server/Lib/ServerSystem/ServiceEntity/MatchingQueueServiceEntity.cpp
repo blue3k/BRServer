@@ -420,7 +420,7 @@ namespace Svr {
 		}
 		else
 		{
-			svrChk( CancelItem(pItem) );
+			hr = CancelItem(pItem);
 		}
 
 
