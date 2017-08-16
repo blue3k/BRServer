@@ -387,7 +387,7 @@ namespace BR {
 			else
 			{
 				// We can't reschedule here, just poke it
-				GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this));
+				svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this)));
 			}
 		}
 

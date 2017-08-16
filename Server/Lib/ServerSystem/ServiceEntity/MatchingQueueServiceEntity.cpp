@@ -294,7 +294,10 @@ namespace Svr {
 			return ResultCode::INVALID_ARG;
 
 		if ((pItem->NumPlayers != 0 && !pItem->PendingCancel) || pItem->ReservedTime == TimeStampMS::min())
-			return ResultCode::E_INVALID_STATE;
+		{
+			hr = ResultCode::E_INVALID_STATE;
+			goto Proc_End;
+		}
 
 		// If delete is required by canceling
 		svrChk((GetServerComponent<ServerEntityManager>()->GetServerEntity(pItem->RegisterUID.GetServerID(), pServerEntity)));
