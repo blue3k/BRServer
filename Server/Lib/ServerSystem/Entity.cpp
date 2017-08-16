@@ -387,7 +387,9 @@ namespace BR {
 			else
 			{
 				// We can't reschedule here, just poke it
-				svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this)));
+				// And a error can be happened during initialization, they will be rescheduled
+				// TODO: find better way
+				GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this));
 			}
 		}
 
