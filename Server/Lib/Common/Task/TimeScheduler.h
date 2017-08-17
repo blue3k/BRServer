@@ -58,6 +58,7 @@ namespace BR {
 		void SetFailSafeTimerTickInterval(DurationMS timerTick)				{ m_FailSafeTimerTickInterval = timerTick; }
 		void SetAssertOnInvalidTickTime(bool assertOn)						{ m_AssertOnInvalidTickTime = assertOn; }
 
+		ThreadID GetWorkingThreadID() { return m_WorkingThreadID; }
 		void UpdateWorkingThreadID(ThreadID threadID);
 
 		Result AddTimerAction(ThreadID threadID, TimerAction* pAction);

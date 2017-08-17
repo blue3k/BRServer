@@ -156,6 +156,12 @@ namespace Svr
 		ThreadID currentThreadID = ThisThread::GetThreadID();
 		TimeStampMS nextTick = TimeStampMS::max();
 
+		if (m_activeTransactionScheduler.GetWorkingThreadID() == currentThreadID)
+		{
+			// Working thread hasn't assigned. assign current threadid
+			UpdateWorkingThreadID(currentThreadID);
+		}
+
 		if( GetEntityState() == EntityState::FREE )
 		{
 			//goto Proc_End;
@@ -345,6 +351,11 @@ namespace Svr
 
 	void MasterEntity::OnAddedToTaskManager(TaskWorker *pWorker)
 	{
+		auto workerThreadID = pWorker->GetThreadID();
+		if (workerThreadID == ThreadID())
+		{
+			svrTrace(Trace::TRC_WARN, "MasterEntity:{0} is added but worker has invalid thread id.");
+		}
 		UpdateWorkingThreadID(pWorker->GetThreadID());
 		Entity::OnAddedToTaskManager(pWorker);
 	}
