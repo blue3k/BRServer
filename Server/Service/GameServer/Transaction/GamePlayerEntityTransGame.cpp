@@ -258,6 +258,13 @@ namespace GameServer {
 		return hr;
 	}
 
+	Result PlayerTransJoinGame::CloseTransaction(Result hrRes)
+	{
+		Result result = super::CloseTransaction(hrRes);
+		svrTrace(Trace::TRC_INFO, "JoinGameRes PlayerID:{0} : hr:{1}", GetMyOwner()->GetPlayerID(), hrRes);
+		return result;
+	}
+
 	// Start Transaction
 	Result PlayerTransJoinedS2SEvt::StartTransaction()
 	{
@@ -314,6 +321,13 @@ namespace GameServer {
 		CloseTransaction( hr );
 
 		return ResultCode::SUCCESS; 
+	}
+
+	Result PlayerTransLeaveGame::CloseTransaction(Result hrRes)
+	{
+		Result result = super::CloseTransaction(hrRes);
+		svrTrace(Trace::TRC_INFO, "LeaveGameRes PlayerID:{0} : hr:{1}", GetMyOwner()->GetPlayerID(), hrRes);
+		return result;
 	}
 
 	// Start Transaction
@@ -390,6 +404,13 @@ namespace GameServer {
 		CloseTransaction( hr );
 
 		return ResultCode::SUCCESS; 
+	}
+
+	Result PlayerTransKickPlayer::CloseTransaction(Result hrRes)
+	{
+		Result result = super::CloseTransaction(hrRes);
+		svrTrace(Trace::TRC_INFO, "KickPlayerRes PlayerID:{0}, KickPlayerID:{1}, hr:{2}", GetMyOwner()->GetPlayerID(), GetPlayerID(), hrRes);
+		return result;
 	}
 
 	// Start Transaction
@@ -530,7 +551,7 @@ namespace GameServer {
 	}
 
 
-	
+
 	// Start Transaction
 	Result PlayerTransChatMessage::StartTransaction()
 	{
@@ -557,6 +578,9 @@ namespace GameServer {
 
 	Proc_End:
 
+
+		svrTrace(Trace::TRC_INFO, "ChatMessage PlayerID:{0}, hr:{1}", GetMyOwner()->GetPlayerID(), hr);
+
 		CloseTransaction( hr );
 
 		return hr;
@@ -573,6 +597,8 @@ namespace GameServer {
 		svrChk( GetMyOwner()->GetISvrGamePolicy()->ChatMessageS2CEvt( GetSenderID(), GetRole(), GetSenderName(), GetChatMessage() ) );
 
 	Proc_End:
+
+		svrTrace(Trace::TRC_INFO, "ChatMessage received PlayerID:{0}, fromPlayer:{1}", GetMyOwner()->GetPlayerID(), GetSenderName());
 
 		CloseTransaction( hr );
 
@@ -963,6 +989,8 @@ namespace GameServer {
 
 	Proc_End:
 
+		svrTrace(Trace::TRC_INFO, "PartyMatch requested PlayerID:{0}, hr:{1}", GetMyOwner()->GetPlayerID(), hr);
+
 		CloseTransaction(hr);
 
 		return ResultCode::SUCCESS; 
@@ -983,6 +1011,8 @@ namespace GameServer {
 		GetPolicy()->GameMatchingStartedS2CEvt();
 
 	Proc_End:
+
+		svrTrace(Trace::TRC_INFO, "PlayerMatch requested PlayerID:{0}, hr:{1}", GetMyOwner()->GetPlayerID(), hr);
 
 		CloseTransaction(hr);
 
@@ -1094,6 +1124,8 @@ namespace GameServer {
 
 	Proc_End:
 
+		svrTrace(Trace::TRC_INFO, "PartyMatch canceled PlayerID:{0}, hr:{1}", GetMyOwner()->GetPlayerID(), hr);
+
 		CloseTransaction(hr);
 
 		return ResultCode::SUCCESS; 
@@ -1124,6 +1156,8 @@ namespace GameServer {
 
 
 	Proc_End:
+
+		svrTrace(Trace::TRC_INFO, "PlayerMatch canceled PlayerID:{0}, hr:{1}", GetMyOwner()->GetPlayerID(), hr);
 
 		CloseTransaction(hr);
 

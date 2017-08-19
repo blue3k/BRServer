@@ -72,6 +72,8 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
+		virtual Result CloseTransaction(Result hrRes) override;
+
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(JoinGameRes,m_GameInsID, m_TimeStamp, m_GameState, m_Day, m_MaxPlayer,
 			m_PlayerIndex, m_PlayerCharacter, m_Role, m_Dead, m_ChatHistoryData, m_GameLogData );
 	};
@@ -108,6 +110,8 @@ namespace GameServer {
 		// Start Transaction
 		virtual Result StartTransaction();
 
+		virtual Result CloseTransaction(Result hrRes) override;
+
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(LeaveGameRes);
 	};
 
@@ -142,6 +146,8 @@ namespace GameServer {
 
 		// Start Transaction
 		virtual Result StartTransaction();
+
+		virtual Result CloseTransaction(Result hrRes) override;
 
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE(KickPlayerRes);
 	};
