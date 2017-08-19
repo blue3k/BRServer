@@ -458,11 +458,11 @@ namespace Net {
 		if( GetSocket() != INVALID_SOCKET )
 			return ResultCode::SUCCESS;
 
-		netTrace(Trace::TRC_TRACE, "Opening Server Peer, {0}:{1}", strLocalIP, usLocalPort);
+		netTrace(Trace::TRC_INFO, "Opening Server Peer, {0}:{1}", strLocalIP, usLocalPort);
 
 		netChk(ServerHostOpen(netCls, strLocalIP, usLocalPort));
 
-		netTrace(Trace::TRC_TRACE, "Open Server Peer Host {0}:{1}", strLocalIP, usLocalPort );
+		netTrace(Trace::TRC_INFO, "Open Server Peer Host {0}:{1}", strLocalIP, usLocalPort );
 
 		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::DataGram);
 		if( socket == INVALID_SOCKET )

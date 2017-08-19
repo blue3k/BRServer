@@ -71,7 +71,7 @@ namespace Net {
 		Addr2SockAddr(m_LocalAddress, m_LocalSockAddress);
 
 
-		netTrace(Trace::TRC_TRACE, "RawUDP: Opening UDP Net {0}:{1}", m_LocalAddress.strAddr, m_LocalAddress.usPort);
+		netTrace(Trace::TRC_INFO, "RawUDP: Opening UDP Net {0}:{1}", m_LocalAddress.strAddr, m_LocalAddress.usPort);
 
 		socket = NetSystem::Socket(m_LocalAddress.SocketFamily, SockType::DataGram);
 		if (socket == INVALID_SOCKET)

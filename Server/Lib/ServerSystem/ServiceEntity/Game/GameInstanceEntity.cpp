@@ -201,7 +201,7 @@ namespace Svr {
 	// Close Game Instance
 	void GameInstanceEntity::CloseGameInstance()
 	{
-		svrTrace(Trace::TRC_TRACE, "CloseGameInstance:{0}", GetEntityUID());
+		svrTrace(Trace::TRC_INFO, "CloseGameInstance:{0}", GetEntityUID());
 
 		LeaveAllPlayerForGameDelete();
 
@@ -328,7 +328,7 @@ namespace Svr {
 
 	//Proc_End:
 
-		svrTrace(Trace::TRC_TRACE, "LeavePlayer, remain:{0}", m_GamePlayerByUID.GetItemCount());
+		svrTrace(Trace::TRC_INFO, "LeavePlayer, remain:{0}", m_GamePlayerByUID.GetItemCount());
 
 		if (m_GamePlayerByUID.GetItemCount() == 0) // if no player remain
 		{

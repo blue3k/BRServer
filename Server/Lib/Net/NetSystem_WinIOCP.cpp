@@ -275,7 +275,7 @@ namespace Net {
 						hr = ResultCode::E_NET_CONNECTION_CLOSED;
 						break;
 					case ERROR_OPERATION_ABORTED:
-						netTrace( Trace::TRC_TRACE, "IOCP Operation aborted" );
+						netTrace( Trace::TRC_INFO, "IOCP Operation aborted" );
 						hr = ResultCode::E_NET_IO_ABORTED;
 						break;
 					default:

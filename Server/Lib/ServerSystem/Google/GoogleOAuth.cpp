@@ -321,7 +321,7 @@ namespace Google {
 		}
 		else
 		{
-			//svrTrace(Trace::TRC_TRACE, "Google API Authorization is updated hr:{0}, {1}", ArgHex32<UINT32>(hr), (char*)m_ResultBuffer.data());
+			//svrTrace(Trace::TRC_INFO, "Google API Authorization is updated hr:{0}, {1}", ArgHex32<UINT32>(hr), (char*)m_ResultBuffer.data());
 		}
 
 		return hr;

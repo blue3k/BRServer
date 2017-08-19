@@ -51,6 +51,9 @@ namespace Svr {
 
 		UINT m_CreateRequestCount;
 
+		char m_UserID[128];
+
+
 	public:
 		LoginPlayerTransLoginBase( Message::MessageData* &pIMsg );
 		virtual ~LoginPlayerTransLoginBase() {}
@@ -67,8 +70,10 @@ namespace Svr {
 		// Start Transaction
 		virtual Result StartTransaction() override;
 
-		// dummies for template chainning
+		// dummies for template chaining
 		virtual Result CloseTransaction(Result hrRes) override { return super::CloseTransaction(hrRes); }
+
+		virtual Result OnCloseTransaction(Result hrRes) override;
 	};
 
 

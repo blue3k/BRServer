@@ -200,7 +200,7 @@ namespace Net {
 
 		netChk(Server::HostOpen( netCls, strLocalIP, usLocalPort ) );
 
-		netTrace(Trace::TRC_TRACE, "Open Server UDP Host {0}:{1}", strLocalIP, usLocalPort );
+		netTrace(Trace::TRC_INFO, "Open Server UDP Host {0}:{1}", strLocalIP, usLocalPort );
 
 		socket = NetSystem::Socket(GetLocalAddress().SocketFamily, SockType::DataGram);
 		if( socket == INVALID_SOCKET )

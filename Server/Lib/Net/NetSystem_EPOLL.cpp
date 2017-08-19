@@ -71,7 +71,7 @@ namespace Net {
 			return ResultCode::FAIL;
 		}
 
-		netTrace(Trace::TRC_TRACE, "epoll register sock:{0}", cbInstance->GetIOSocket());
+		netTrace(Trace::TRC_INFO, "epoll register sock:{0}", cbInstance->GetIOSocket());
 
 		return ResultCode::SUCCESS;
 	}
@@ -88,7 +88,7 @@ namespace Net {
 			return ResultCode::FAIL;
 		}
 
-		netTrace(Trace::TRC_TRACE, "epoll unregister sock:{0}", cbInstance->GetIOSocket());
+		netTrace(Trace::TRC_INFO, "epoll unregister sock:{0}", cbInstance->GetIOSocket());
 
 		return ResultCode::SUCCESS;
 	}
@@ -264,7 +264,7 @@ namespace Net {
 				if ((curEvent.events&(EPOLLERR | EPOLLRDHUP)) != 0)
 				{
 					char stringBuffer[512];
-					netTrace(Trace::TRC_TRACE, "Closing epoll worker sock:{0}, event:{1}", sock, GetNetIOSystem().EventFlagToString(sizeof(stringBuffer), stringBuffer, curEvent.events));
+					netTrace(Trace::TRC_INFO, "Closing epoll worker sock:{0}, event:{1}", sock, GetNetIOSystem().EventFlagToString(sizeof(stringBuffer), stringBuffer, curEvent.events));
 					GetNetIOSystem().UnregisterFromNETIO(pCallback);
 					pCallback->OnIOUnregistered();
 					continue;

@@ -327,7 +327,7 @@ namespace Net {
 			netErr( ResultCode::UNEXPECTED );
 		}
 
-		netTrace(Trace::TRC_TRACE, "Open Server TCP Host {0}:{1}, sock:{2}", strLocalIP, usLocalPort, socket);
+		netTrace(Trace::TRC_INFO, "Open Server TCP Host {0}:{1}, sock:{2}", strLocalIP, usLocalPort, socket);
 
 		iOptValue = Const::SVR_RECV_BUFFER_SIZE;
 		if( setsockopt(socket, SOL_SOCKET, SO_RCVBUF, (char *)&iOptValue, sizeof(iOptValue)) == SOCKET_ERROR )

@@ -56,7 +56,7 @@ namespace Svr {
 
 		m_GameInsUID = pEntity->GetEntityUID();
 
-		svrTrace(Trace::TRC_TRACE, "CreateGameInstance:{0}, numBot:{1}, maxPlayer:{2}", pGameInstance->GetEntityUID(), GetNumberOfBotPlayer(), GetMaxPlayer());
+		svrTrace(Trace::TRC_INFO, "CreateGameInstance:{0}, numBot:{1}, maxPlayer:{2}", pGameInstance->GetEntityUID(), GetNumberOfBotPlayer(), GetMaxPlayer());
 
 	Proc_End:
 

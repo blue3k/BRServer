@@ -165,8 +165,8 @@ Result BrServer::AddDBCluster(Svr::Config::DBCluster *pDBClusterCfg)
 	svrChk( pDBManager->InitializeDBCluster( 1 ) );
 
 	m_DBManagers.push_back(pDBManager);
-	svrTrace(Trace::TRC_TRACE, "Adding DB manager {0} clusterType:{1}", typeid(DBManagerType).name(), (UINT32)pDBClusterCfg->ClusterType);
-	svrTrace(Trace::TRC_TRACE, "	DB manager Instance:{0} DB:{1}, ConnectionString:{2}", instanceInfo->InstanceName, pDBClusterCfg->DBName, instanceInfo->ConnectionString);
+	svrTrace(Trace::TRC_INFO, "Adding DB manager {0} clusterType:{1}", typeid(DBManagerType).name(), (UINT32)pDBClusterCfg->ClusterType);
+	svrTrace(Trace::TRC_INFO, "	DB manager Instance:{0} DB:{1}, ConnectionString:{2}", instanceInfo->InstanceName, pDBClusterCfg->DBName, instanceInfo->ConnectionString);
 
 	svrChk( pDBManager->AddDBSource( 
 		0,

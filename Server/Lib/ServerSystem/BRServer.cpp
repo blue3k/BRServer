@@ -349,9 +349,9 @@ Proc_End:
 
 		m_ServerUpUTCTIme = Util::Time.GetTimeUTCSec();
 
-		svrTrace( Trace::TRC_TRACE, "Starting Server" );
+		svrTrace( Trace::TRC_INFO, "Starting Server" );
 
-		svrTrace( Trace::TRC_TRACE, "Apply configuration" );
+		svrTrace( Trace::TRC_INFO, "Apply configuration" );
 		// Apply configuration
 		hr = ApplyConfiguration();
 		if( !(hr) )
@@ -368,7 +368,7 @@ Proc_End:
 		}
 
 		// Initialize server resource
-		svrTrace( Trace::TRC_TRACE, "Initialize server resource" );
+		svrTrace( Trace::TRC_INFO, "Initialize server resource" );
 		hr = InitializeServerResource();
 		if( !(hr) )
 		{
@@ -377,7 +377,7 @@ Proc_End:
 		}
 
 		// Initialize Network
-		svrTrace( Trace::TRC_TRACE, "Initialize Private network" );
+		svrTrace( Trace::TRC_INFO, "Initialize Private network" );
 		hr = InitializeNetPrivate();
 		if( !(hr) )
 		{
@@ -395,11 +395,11 @@ Proc_End:
 		if( !( hr ) )
 		{
 			SetServerState( ServerState::STOPED );
-			svrTrace( Trace::TRC_TRACE, "Start failed hr:{0:X8}", hr );
+			svrTrace( Trace::TRC_INFO, "Start failed hr:{0:X8}", hr );
 		}
 		else
 		{
-			svrTrace( Trace::TRC_TRACE, "Start process done" );
+			svrTrace( Trace::TRC_INFO, "Start process done" );
 		}
 
 		return (hr);
@@ -490,7 +490,7 @@ Proc_End:
 
 		SetServerState( ServerState::STOPED );
 
-		svrTrace( Trace::TRC_TRACE, "Server closed hr:{0:X8}", hr );
+		svrTrace( Trace::TRC_INFO, "Server closed hr:{0:X8}", hr );
 
 		return true;
 	}
@@ -517,7 +517,7 @@ Proc_End:
 		svrChkPtr(GetMyConfig()->NetPrivate);
 		svrChk( m_pNetPrivate->HostOpen( GetNetClass(), GetMyConfig()->NetPrivate->IP.c_str(), GetMyConfig()->NetPrivate->Port ) );
 
-		svrTrace( Trace::TRC_TRACE, "Initialize basic entities" );
+		svrTrace( Trace::TRC_INFO, "Initialize basic entities" );
 		hr = InitializeEntities();
 		if( !(hr) )
 		{

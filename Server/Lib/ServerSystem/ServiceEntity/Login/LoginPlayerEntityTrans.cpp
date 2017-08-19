@@ -82,6 +82,8 @@ namespace Svr {
 		//BR_TRANS_MESSAGE( Message::LoginServer::KickPlayerRes, { return OnKickedPlyaer(pRes); });
 		super::template BR_TRANS_MESSAGE( Message::GameServer::RegisterPlayerToJoinGameServerRes, { return OnRegisterPlayerToJoinGameServer(pRes); });
 		super::template BR_TRANS_MESSAGE(DB::QueryConnectedToGameServerCmd, { return OnConnectToGameServerRes(pRes); });
+
+		m_UserID[0] = '\0';
 	}
 
 	template<class MessageClass, class TransactionClass>
@@ -331,6 +333,19 @@ namespace Svr {
 		return hr;
 	}
 
+	template<class MessageClass, class TransactionClass>
+	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnCloseTransaction(Result hrRes)
+	{
+		if (!IsClosed())
+		{
+			svrTrace(TRC_INFO, "LoginRequest result of {0}, hr={1}", hrRes);
+		}
+
+		Result result = super::OnCloseTransaction(hrRes);
+
+		return result;
+	}
+
 
 
 	LoginPlayerTransLogin::LoginPlayerTransLogin( Message::MessageData* &pIMsg )
@@ -390,6 +405,8 @@ namespace Svr {
 		}
 
 		GetMyOwner()->HeartBit();
+
+		StrUtil::StringCpy(m_UserID, GetID());
 
 		svrChk( Svr::GetServerComponent<DB::AccountDB>()->LogIn( GetTransID(), GetID(), GetPassword() ) );
 
@@ -506,6 +523,8 @@ namespace Svr {
 
 		GetMyOwner()->HeartBit();
 
+		StrUtil::Format(m_UserID, "{0}", GetUID());
+
 		svrChk( Svr::GetServerComponent<DB::AccountDB>()->FacebookLogIn( GetTransID(), GetUID() ) );
 
 	Proc_End:
@@ -563,7 +582,6 @@ namespace Svr {
 	Result LoginPlayerTransCreateRandomUser::StartTransaction()
 	{
 		Result hr = ResultCode::SUCCESS;
-		char strUserName[DB::Const::MAX_USERNAME];
 
 		svrChk(super::StartTransaction());
 
@@ -579,9 +597,9 @@ namespace Svr {
 			svrErrClose(ResultCode::E_LOGIN_INVALID_SIGNATURE);
 		}
 
-		svrChk(StrUtil::Format(strUserName, "Auto{0}", GetCellPhone()));
+		svrChk(StrUtil::Format(m_UserID, "{0}", GetCellPhone()));
 
-		svrChk(Svr::GetServerComponent<DB::AccountDB>()->CreateRandomUser(GetTransID(), strUserName, GetCellPhone()));
+		svrChk(Svr::GetServerComponent<DB::AccountDB>()->CreateRandomUser(GetTransID(), m_UserID, GetCellPhone()));
 
 	Proc_End:
 
@@ -859,6 +877,8 @@ namespace Svr {
 			svrChk(m_RankingList.Add(itRank));
 		}
 
+		svrTrace(Trace::TRC_INFO, "Ranking Score updated {0} : {1}", GetMyOwner()->GetUserName(), GetRankingScore());
+
 
 	Proc_End:
 
@@ -901,10 +921,8 @@ namespace Svr {
 
 		svrChk(playerInfo.InitPlayerInformation(GetMyOwner()->GetAccountID(), GetMyOwner()->GetFacebookUID(), GetMyOwner()->GetUserName(), 0, 0, Util::Time.GetTimeUTCSec().time_since_epoch().count()));
 
-		svrChk(pService->GetService<Svr::RankingServerService>()->UpdatePlayerScoreCmd(super::GetTransID(),
-			GetRankingScore(), playerInfo, GetCount()));
+		svrChk(pService->GetService<Svr::RankingServerService>()->UpdatePlayerScoreCmd(super::GetTransID(), GetRankingScore(), playerInfo, GetCount()));
 
-		
 
 	Proc_End:
 
@@ -940,7 +958,7 @@ namespace Svr {
 		testCount = stm_TestCount.fetch_add(1, std::memory_order_relaxed);
 		if ((testCount % 50) == 0)
 		{
-			svrTrace(TRC_INFO, "TestData:{0}", testCount);
+			svrTrace(TRC_INFO, "TestData processed count:{0}", testCount);
 		}
 
 	Proc_End:

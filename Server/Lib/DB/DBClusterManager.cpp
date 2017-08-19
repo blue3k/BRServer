@@ -154,7 +154,7 @@ namespace DB {
 		pDBSource = m_ShardingBucket[partitioningID];
 		dbAssert(pDBSource == nullptr || !pDBSource->GetOpened());
 
-		dbTrace(Trace::TRC_TRACE, "Adding DBSource {0}, {1}, {2}", strInstanceName, strConnectionString, strDBName);
+		dbTrace(Trace::TRC_INFO, "Adding DBSource {0}, {1}, {2}", strInstanceName, strConnectionString, strDBName);
 
 		if (pDBSource == nullptr)
 		{
@@ -313,7 +313,7 @@ Proc_End:
 						if (pDBSource->GetDefaultDB() != rowRes.DBName
 							|| pDBSource->GetConnectionString() != rowRes.ConnectionString)
 						{
-							dbTrace(Trace::TRC_TRACE, "Initializating DBSource {0}, Shard:{1} {2}, {3}", typeid(*this).name(), rowRes.ShardID,  rowRes.ConnectionString, rowRes.DBName);
+							dbTrace(Trace::TRC_INFO, "Initializating DBSource {0}, Shard:{1} {2}, {3}", typeid(*this).name(), rowRes.ShardID,  rowRes.ConnectionString, rowRes.DBName);
 							dbChk(pDBSource->InitializeDBSource(rowRes.ConnectionString, rowRes.DBName, m_UserID, m_Password));
 						}
 					}

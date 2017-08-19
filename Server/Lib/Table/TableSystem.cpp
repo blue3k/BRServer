@@ -198,7 +198,7 @@ namespace GameTable {
 
 		{
 			auto tableDBInstance = found->second;
-			defTrace(Trace::TRC_TRACE, "Loading tables from {0}/{1}", tableDBInstance->ConnectionString, tableDB->DBName);
+			defTrace(Trace::TRC_INFO, "Loading tables from {0}/{1}", tableDBInstance->ConnectionString, tableDB->DBName);
 			defChk(TableSystem::stm_Instance.Initialize(tableDBInstance->ConnectionString, tableDB->DBName, tableDBInstance->UserID, tableDBInstance->Password));
 		}
 

@@ -42,7 +42,7 @@ namespace Svr {
 				break;
 			case SIGTERM:
 				printf("Stop Signaled");
-				defTrace(Trace::TRC_TRACE, "Stop Signaled");
+				defTrace(Trace::TRC_INFO, "Stop Signaled");
 				m_StopSignaled = true;
 				//exit(0);
 				break;
@@ -170,11 +170,11 @@ namespace Svr {
 			Net::RegisterConnectionDebugMessage();
 
 
-			svrTrace( Trace::TRC_TRACE, "Loading configuration" );
+			svrTrace( Trace::TRC_INFO, "Loading configuration" );
 
 			svrChk( Svr::Config::LoadConfig( strCfgPath ) );
 
-			svrTrace( Trace::TRC_TRACE, "<{0}> Starting", Util::GetServiceNameA() );
+			svrTrace( Trace::TRC_INFO, "<{0}> Starting", Util::GetServiceNameA() );
 
 			// register signal handlers
 			signal(SIGHUP, signal_handler); /* catch hangup signal */
@@ -208,7 +208,7 @@ namespace Svr {
 
 			g_pSvrInstance->StopServer();
 
-			svrTrace( Trace::TRC_TRACE, "<{0}> Closed", Util::GetServiceNameA() );
+			svrTrace( Trace::TRC_INFO, "<{0}> Closed", Util::GetServiceNameA() );
 
 			//Trace::Uninitialize();
 

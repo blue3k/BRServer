@@ -512,7 +512,7 @@ Proc_End:
 		hr = VerifyReceipt();
 		if (hr == Result(ResultCode::E_SVR_INVALID_PURCHASE_MODE))
 		{
-			svrTrace(Trace::TRC_TRACE, "IOS receipt query failed with invalid environment retrying with test mode");
+			svrTrace(Trace::TRC_INFO, "IOS receipt query failed with invalid environment retrying with test mode");
 			// try with sand box url
 			m_strURL = "https://sandbox.itunes.apple.com/verifyReceipt";
 			hr = VerifyReceipt();

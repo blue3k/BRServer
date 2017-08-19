@@ -486,7 +486,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 		else
 		{
-			svrTrace( Trace::TRC_TRACE, "Player PlayerID:{0} is killed by reason:{1}", pPlayerToKill->GetPlayerID(), (int)reason );
+			svrTrace( Trace::TRC_INFO, "Player PlayerID:{0} is killed by reason:{1}", pPlayerToKill->GetPlayerID(), (int)reason );
 		}
 
 		return hr;
@@ -556,7 +556,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 		else
 		{
-			svrTrace(Trace::TRC_TRACE, "Player PlayerID:{0} is revived", pPlayerToRevive->GetPlayerID());
+			svrTrace(Trace::TRC_INFO, "Player PlayerID:{0} is revived", pPlayerToRevive->GetPlayerID());
 		}
 
 		return hr;

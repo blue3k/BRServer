@@ -214,7 +214,7 @@ namespace Svr {
 			}
 
 
-			svrTrace( Trace::TRC_TRACE, "Service Installed" );
+			svrTrace( Trace::TRC_INFO, "Service Installed" );
 
 
 		Proc_End:
@@ -291,7 +291,7 @@ namespace Svr {
 				}
 			}
 
-			svrTrace( Trace::TRC_TRACE, "DeleteService Done" );
+			svrTrace( Trace::TRC_INFO, "DeleteService Done" );
 
 
 		Proc_End:
@@ -356,13 +356,13 @@ namespace Svr {
 				Trace::AllocScreenConsole();
 			}
 
-			svrTrace( Trace::TRC_TRACE, "Loading configuration" );
+			svrTrace( Trace::TRC_INFO, "Loading configuration" );
 
 			svrChk( Svr::Config::LoadConfig( strCfgPath ) );
 
 
 
-			svrTrace( Trace::TRC_TRACE, "<{0}> Start with Mode {1} ", Util::GetServiceNameA(), bIsDebugRun ? "Debug" : "Service" );
+			svrTrace( Trace::TRC_INFO, "<{0}> Start with Mode {1} ", Util::GetServiceNameA(), bIsDebugRun ? "Debug" : "Service" );
 
 
 			// if not service mode
@@ -421,7 +421,7 @@ namespace Svr {
 
 		Proc_End:
 
-			svrTrace( Trace::TRC_TRACE, "<{0}> Closed", Util::GetServiceName() );
+			svrTrace( Trace::TRC_INFO, "<{0}> Closed", Util::GetServiceName() );
 
 			g_pSvrInstance = nullptr;
 

@@ -311,7 +311,7 @@ namespace Net {
 		{
 			shutdown(sock, SHUT_RDWR);
 			close(sock);
-			netTrace(Trace::TRC_TRACE, "CloseSocket sock:{0}", sock);
+			netTrace(Trace::TRC_INFO, "CloseSocket sock:{0}", sock);
 		}
 
 		Result Accept(SOCKET sockListen, IOBUFFER_ACCEPT* pAccept)
