@@ -20,11 +20,9 @@
 #include "Protocol/Policy/GameIPolicy.h"
 
 #include "GameMasterTrans.h"
-//#include "PlayerInfoManager.h"
 
 
 
-//BR_MEMORYPOOL_IMPLEMENT(BR::GameServer::TransS2SCmdUpdatePlayerCount);
 	
 namespace BR {
 namespace GameServer {

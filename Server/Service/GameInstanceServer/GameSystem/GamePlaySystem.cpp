@@ -556,7 +556,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 		else
 		{
-			svrTrace(Trace::TRC_INFO, "Player PlayerID:{0} is revived", pPlayerToRevive->GetPlayerID());
+			svrTrace(Svr::TRC_INFO, "Player PlayerID:{0} is revived", pPlayerToRevive->GetPlayerID());
 		}
 
 		return hr;

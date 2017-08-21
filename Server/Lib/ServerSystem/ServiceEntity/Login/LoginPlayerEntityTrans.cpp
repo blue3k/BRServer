@@ -336,9 +336,9 @@ namespace Svr {
 	template<class MessageClass, class TransactionClass>
 	Result LoginPlayerTransLoginBase<MessageClass, TransactionClass>::OnCloseTransaction(Result hrRes)
 	{
-		if (!IsClosed())
+		if (!super::IsClosed())
 		{
-			svrTrace(TRC_INFO, "LoginRequest result of {0}, hr={1}", hrRes);
+			svrTrace(TRC_INFO, "LoginRequest result of {0}, hr={1}", m_UserID, hrRes);
 		}
 
 		Result result = super::OnCloseTransaction(hrRes);
@@ -877,7 +877,7 @@ namespace Svr {
 			svrChk(m_RankingList.Add(itRank));
 		}
 
-		svrTrace(Trace::TRC_INFO, "Ranking Score updated {0} : {1}", GetMyOwner()->GetUserName(), GetRankingScore());
+		svrTrace(TRC_INFO, "Ranking Score updated {0} : {1}", GetMyOwner()->GetUserName(), GetRankingScore());
 
 
 	Proc_End:

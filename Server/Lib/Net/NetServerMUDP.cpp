@@ -250,7 +250,7 @@ namespace Net {
 			// Update sock address table if need, This is important because all the returning ticket will be use it
 			if( pConnection->GetRemoteSockAddr() != pIOBuffer->NetAddr.From )
 			{
-				netTrace(TRC_CONNECTION, "Remapping Address CID: {0}, Address from:{1}, to:{2}", pConnection->GetCID(), pConnection->GetRemoteSockAddr(), pIOBuffer->NetAddr.From);
+				netTrace(TRC_DBGCON, "Remapping Address CID: {0}, Address from:{1}, to:{2}", pConnection->GetCID(), pConnection->GetRemoteSockAddr(), pIOBuffer->NetAddr.From);
 				if (GetIsEnableAccept())
 				{
 					// address map update. We can skip this when we don't allow unregistered connection because we are going to update the remote address in place

@@ -154,7 +154,7 @@ namespace Svr {
 		else
 		{
 			--m_PartyCount;
-			svrTrace(Trace::TRC_INFO, "Party deleted {0}", partyUID);
+			svrTrace(TRC_INFO, "Party deleted {0}", partyUID);
 			m_LocalWorkload.fetch_sub(1, std::memory_order_relaxed);
 		}
 

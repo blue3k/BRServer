@@ -75,6 +75,7 @@ namespace Trace {
 				break;
 			}
 		}
+
 	}
 
 	TraceModule::~TraceModule()
@@ -227,14 +228,12 @@ namespace Trace {
 
 	// Static instance for singleton
 	TraceOutModule* TraceOutModule::stm_pInstance = nullptr;
-	static const UINT _g_uiFileMask[] = {TRCOUT_FILE1, TRCOUT_FILE2};
+	
 
 
 
 	TraceOutModule::TraceOutModule()
-		: m_uiOutputMask(TRCOUT_DEFAULT)
-		, m_uiDbgOutputMask(TRCOUT_NONE)
-		, m_uiLineHeaderLen(0)
+		: m_uiLineHeaderLen(0)
 #if WINDOWS
 		, m_hEventLog(nullptr)
 		, m_hConsole(INVALID_NATIVE_HANDLE_VALUE)
@@ -333,7 +332,10 @@ namespace Trace {
 	void TraceOutModule::Run()
 	{
 		DurationMS WaitDelay = DurationMS(5);
-		
+
+		TraceModule::LoadTraceConfig();
+		UpdateOutputMask();
+
 		while( 1 )
 		{
 			auto loopInterval = UpdateInterval(WaitDelay);
@@ -375,6 +377,26 @@ namespace Trace {
 #endif
 	}
 
+	void TraceOutModule::UpdateOutputMask()
+	{
+		auto itMask = TraceModule::stm_Masks.find("outputdebugger");
+		if (itMask != TraceModule::stm_Masks.end())
+			m_uiOutputMask = itMask->second;
+
+		itMask = TraceModule::stm_Masks.find("outputconsole");
+		if (itMask != TraceModule::stm_Masks.end())
+			m_uiOutputMaskDebugger = itMask->second;
+
+		itMask = TraceModule::stm_Masks.find("outputfile");
+		if (itMask != TraceModule::stm_Masks.end())
+			m_uiOutputMaskFile[0] = itMask->second;
+
+		itMask = TraceModule::stm_Masks.find("outputdbgfile");
+		if (itMask != TraceModule::stm_Masks.end())
+			m_uiOutputMaskFile[1] = itMask->second;
+	}
+
+
 	// Check file system and update
 	Result TraceOutModule::CheckAndUpdate(TimeStampSec tCurTime )
 	{
@@ -395,14 +417,7 @@ namespace Trace {
 		{
 			// Update output mask
 			TraceModule::CheckAndUpdate();
-
-			auto itMask = TraceModule::stm_Masks.find("ctrl");
-			if(itMask != TraceModule::stm_Masks.end())
-				m_uiOutputMask = itMask->second;
-
-			itMask = TraceModule::stm_Masks.find("dbgctrl");
-			if (itMask != TraceModule::stm_Masks.end())
-				m_uiDbgOutputMask = itMask->second;
+			UpdateOutputMask();
 
 			m_tRegCheck = tCurTime;
 		}
@@ -424,12 +439,14 @@ namespace Trace {
 		};
 
 		// if file output then check log file
-		UINT uiOutputMask = m_uiOutputMask | m_uiDbgOutputMask;
+		uint32_t uiOutputMask = m_uiOutputMaskFile[0] | m_uiOutputMaskFile[1];
 		if (uiOutputMask & TRCOUT_FILE_ALL)
 		{
 			char strFileName[MAX_PATH];
 			for (int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++)
 			{
+				uiOutputMask = m_uiOutputMaskFile[iFile];
+
 				const char* strFormat = FormatByType[iFile];
 				if (StrUtil::IsNullOrEmpty(strFormat))
 				{
@@ -437,7 +454,7 @@ namespace Trace {
 					continue;
 				}
 
-				if (uiOutputMask&_g_uiFileMask[iFile])
+				if (uiOutputMask != 0)
 				{
 					// if already file created then skip
 					if (m_tLogFileHour[iFile] == (UINT)m_tCurTimeTM.tm_hour)
@@ -544,18 +561,17 @@ namespace Trace {
 		if( trcOutMask == 0 )
 			return;
 
-
-		UINT uiOutputMask = trcOutMask&TRC_GENERIC_ALL ? m_uiOutputMask|m_uiDbgOutputMask : m_uiDbgOutputMask;
-
+		uint32_t outputMask = m_uiOutputMask & trcOutMask;
+		uint32_t outputMaskDebug = m_uiOutputMaskDebugger & trcOutMask;
+		uint32_t outputMaskFile[2] = { m_uiOutputMaskFile[0] & trcOutMask, m_uiOutputMaskFile[0] & trcOutMask };
 
 		static WCHAR wszOutput[2048] = L"";
-		if( ((uiOutputMask&(TRCOUT_DEBUG|TRCOUT_EVENT)) && eventOut)
-			|| ((uiOutputMask&TRCOUT_CONSOLE) && wcharConsole) )
+		if(outputMask != 0 && (eventOut || wcharConsole))
 		{
 			StrUtil::UTF8ToWCS( szOutput, wszOutput );
 		}
 
-		if( uiOutputMask&TRCOUT_DEBUG )
+		if(outputMaskDebug != 0)
 		{
 #if WINDOWS
 			OutputDebugStringW( m_wszLineHeader );
@@ -563,7 +579,7 @@ namespace Trace {
 #endif
 		}
 
-		if( uiOutputMask&TRCOUT_CONSOLE )
+		if(outputMask != 0)
 		{
 #if WINDOWS
 			ConsoleOut( m_wszLineHeader, wszOutput );
@@ -607,23 +623,16 @@ namespace Trace {
 		// Validate log file
 		ValidateLogFile();
 
-		size_t szWritten;
-		if( (m_uiOutputMask&_g_uiFileMask[TRCOUT_FILE_LOG])
-			&& m_LogFile[TRCOUT_FILE_LOG].IsOpened() )
-		{
-			m_LogFile[TRCOUT_FILE_LOG].Write((const BYTE*)m_szLineHeader, dwszLineHeader, szWritten );
-			m_LogFile[TRCOUT_FILE_LOG].Write((const BYTE*)szOutput, dwszOutput, szWritten );
-		}
-		
-		if( (m_uiDbgOutputMask&_g_uiFileMask[TRCOUT_FILE_DBGLOG])
-			&& m_LogFile[TRCOUT_FILE_DBGLOG].IsOpened())
-		{
-			m_LogFile[TRCOUT_FILE_DBGLOG].Write((const BYTE*)m_szLineHeader, dwszLineHeader, szWritten );
-			m_LogFile[TRCOUT_FILE_DBGLOG].Write((const BYTE*)szOutput, dwszOutput, szWritten );
-		}
 
-		// Remain output mask
-		uiOutputMask = (~m_uiOutputMask)&m_uiDbgOutputMask;
+		size_t szWritten;
+		for (int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++)
+		{
+			if (outputMaskFile[iFile] != 0 && m_LogFile[iFile].IsOpened())
+			{
+				m_LogFile[iFile].Write((const BYTE*)m_szLineHeader, dwszLineHeader, szWritten);
+				m_LogFile[iFile].Write((const BYTE*)szOutput, dwszOutput, szWritten);
+			}
+		}
 	}
 
 

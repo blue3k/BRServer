@@ -83,7 +83,7 @@ namespace Svr {
 			if (pResult->m_RowsetResult.size() == 0)
 				break;
 
-			svrTrace(Trace::TRC_INFO, "Ranking request: from {0}, to {1}, count{2}", baseIndex, baseIndex + requestSize, pResult->m_RowsetResult.size());
+			svrTrace(TRC_INFO, "Ranking request: from {0}, to {1}, count{2}", baseIndex, baseIndex + requestSize, pResult->m_RowsetResult.size());
 			for (auto& itRowSet : pResult->m_RowsetResult)
 			{
 				int64_t playerRanking;

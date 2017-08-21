@@ -74,10 +74,9 @@ namespace Trace {
 		struct tm	m_tCurTimeTM;
 
 		// Trace output mode Mask 
-		UINT		m_uiOutputMask;
-
-		// Trace output mode Mask 
-		UINT		m_uiDbgOutputMask;
+		uint32_t		m_uiOutputMask = std::numeric_limits<uint32_t>::max();
+		uint32_t		m_uiOutputMaskDebugger = std::numeric_limits<uint32_t>::max();
+		uint32_t		m_uiOutputMaskFile[TRCOUT_NUMFILE] = { std::numeric_limits<uint32_t>::max(), };
 
 #if WINDOWS
 		// System event log handle
@@ -143,6 +142,8 @@ namespace Trace {
 
 		// update console handle
 		void UpdateConsoleHandle();
+
+		void UpdateOutputMask();
 
 		// Event log
 		void EventLog( DWORD dwEventId, const WCHAR *string1 = L"", const WCHAR *string2 = L"" );
