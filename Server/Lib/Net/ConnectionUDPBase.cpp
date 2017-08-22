@@ -545,7 +545,8 @@ namespace Net {
 			goto Proc_End;
 			break;
 		default:
-			netErr(ResultCode::E_NET_IO_SEND_FAIL);
+			netTrace(Trace::TRC_WARN, "SendBufferUDP is failed, ip:{0}, hrErr:{1}", GetConnectionInfo(), hrErr);
+			hr = ResultCode::E_NET_IO_SEND_FAIL;
 			break;
 		};
 

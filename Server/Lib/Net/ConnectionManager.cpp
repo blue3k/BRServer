@@ -353,7 +353,7 @@ namespace Net {
 				}
 				else
 				{
-					netTrace(Trace::TRC_WARN, "Connection management is failed to be handed over(not exists in managed set) CID:{0}", pConn->GetCID());
+					netTrace(TRC_DBGCON, "Connection management is failed to be handed over(not exists in managed set) CID:{0}", pConn->GetCID());
 				}
 
 				oper.Clear();

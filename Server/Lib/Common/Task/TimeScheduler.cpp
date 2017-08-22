@@ -115,7 +115,7 @@ namespace BR {
 				if (bIsNeedToKeep)
 				{
 					Assert(!m_AssertOnInvalidTickTime || bIsNeedToKeep);
-					defTrace(Trace::TRC_ERROR, "Same Timer value:{1} of {0} correct to fail safe timer value:{2}", pAction->GetDebugString(), pAction->TimeData.Components.NextTickTime, m_FailSafeTimerTickInterval);
+					defTrace(Trace::TRC_DBG1, "Same Timer value:{1} of {0} correct to fail safe timer value:{2}", pAction->GetDebugString(), pAction->TimeData.Components.NextTickTime, m_FailSafeTimerTickInterval);
 					pAction->TimeData.Components.NextTickTime = Util::Time.GetTimeMs() + m_FailSafeTimerTickInterval;
 				}
 			}
