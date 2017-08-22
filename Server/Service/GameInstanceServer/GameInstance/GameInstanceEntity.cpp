@@ -353,11 +353,12 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 		Svr::GameInstancePlayer* pGameInsPlayer = nullptr;
 
-		svrChk(super::FindPlayer(pltID, pGameInsPlayer));
+		hr = super::FindPlayer(pltID, pGameInsPlayer);
+		if (!hr) return hr;
 
 		pGamePlayer = (GamePlayer*)pGameInsPlayer;
 
-	Proc_End:
+	//Proc_End:
 
 		return hr;
 	}

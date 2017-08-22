@@ -156,7 +156,7 @@ namespace Svr
 		ThreadID currentThreadID = ThisThread::GetThreadID();
 		TimeStampMS nextTick = TimeStampMS::max();
 
-		if (m_activeTransactionScheduler.GetWorkingThreadID() == currentThreadID)
+		if (m_activeTransactionScheduler.GetWorkingThreadID() == ThreadID())
 		{
 			// Working thread hasn't assigned. assign current threadid
 			UpdateWorkingThreadID(currentThreadID);
