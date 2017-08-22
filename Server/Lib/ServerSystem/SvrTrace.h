@@ -32,6 +32,7 @@ namespace Svr {
 		TRC_DBGSVR		=	Trace::TRC_DBG2,
 		TRC_DBGINFO		=	Trace::TRC_DBG3,
 		TRC_DBGTRANS	=	Trace::TRC_DBG4,
+		TRC_DBGMATCHING	=	Trace::TRC_DBG5,
 	};
 
 };

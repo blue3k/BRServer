@@ -132,15 +132,15 @@ namespace Svr {
 		}
 
 		// NOTE: Workload bug, just try to grab
-		if (pService->GetWorkload() > 0)
+		//if (pService->GetWorkload() > 0)
 		{
-			svrTrace(Svr::TRC_MATCHING, "Try to make a reservation. Matching:{0}, TargetQueueCompo:{1}, expected {2}", m_MatchingMemberCount, m_TargetQueueComponentID, pService->GetWorkload());
+			svrTrace(Svr::TRC_DBGMATCHING, "Try to make a reservation. Matching:{0}, TargetQueueCompo:{1}, expected {2}", m_MatchingMemberCount, m_TargetQueueComponentID, pService->GetWorkload());
 			svrChk(pService->GetService<Svr::PartyMatchingQueueService>()->ReserveItemsCmd(GetTransID(), 0, grabCount));
 		}
-		else
-		{
-			return ResultCode::E_SVR_NOITEM_INQUEUE;
-		}
+		//else
+		//{
+		//	return ResultCode::E_SVR_NOITEM_INQUEUE;
+		//}
 
 	Proc_End:
 
