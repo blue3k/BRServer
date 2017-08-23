@@ -14,8 +14,6 @@
 
 
 #include "Common/Typedefs.h"
-//#include "Common/HashTable.h"
-//#include "Common/StaticHashTable.h"
 #include "Common/OrderedLinkedList.h"
 #include "Common/HashTable2.h"
 #include "Common/Indexing.h"

@@ -21,6 +21,7 @@ namespace BR {
 	//////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Linked list
+	//		- NOTE: Because std::atomic_thread_fence doesn't gurantee memory operation for non-std::atomic types OrderedLinkedList can't be thread safe
 	//
 
 	template< class KeyType >
@@ -33,16 +34,9 @@ namespace BR {
 			Node*		pNext;
 
 			KeyType	Key;
-			//// Maximum 64bit Key value
-			//union {
-			//	KeyType	Key;
-			//	UINT64	Padding;
-			//};
 
 			Node() {}
 		};
-		//static_assert(sizeof(KeyType) <= sizeof(UINT64), " Maximum 64bit Key value");
-
 
 		// iterator class
 		class iterator

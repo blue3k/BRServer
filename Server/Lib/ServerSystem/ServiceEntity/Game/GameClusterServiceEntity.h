@@ -20,7 +20,7 @@
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
-#include "Common/HashTable.h"
+#include "Common/HashTable2.h"
 #include "Common/Indexing.h"
 #include "Common/StaticHashTable.h"
 
@@ -49,13 +49,8 @@ namespace Svr {
 
 
 		// Player table item
-		class PlayerTableItem : public MemoryPoolObject<PlayerTableItem>
+		class PlayerTableItem
 		{
-		public:
-			// Hash table mapping Item
-			typedef OrderedLinkedList<UINT64>::Node TableItemType;
-			TableItemType m_TableNode;
-
 		private:
 
 			// Player ID
@@ -80,7 +75,6 @@ namespace Svr {
 				,m_ServerUpTime(pServerEntity->GetServerUpTime())
 				,m_ServerEntity(pServerEntity)
 			{
-				memset(&m_TableNode, 0, sizeof(m_TableNode) );
 			}
 
 		public:
@@ -89,13 +83,13 @@ namespace Svr {
 		};
 
 
-		typedef PlayerTableItem::TableItemType TableItemType;
-		typedef Hash::StaticHashTable<	PlayerID, PlayerTableItem,
-										//Indexing::ConstMemFunc<PlayerTableItem,PlayerID,&PlayerTableItem::GetPlayerID,UINT64>,
-										Indexing::MapItemConverter<PlayerTableItem,TableItemType,&PlayerTableItem::m_TableNode>,
-										Hash::UniqueKeyTrait, ThreadSyncTraitNone
-										> PlayerIDMap;
-
+		typedef Hash::HashTable2< PlayerID,
+			PlayerTableItem*,
+			Hash::UniqueKeyTrait, 
+			ThreadSyncTraitReadWriteT<PlayerID, PlayerTableItem*>,
+			Hash::hash < PlayerID >
+			> PlayerIDMap;
+		typedef PlayerTableItem* PlayerIDMapIterator;
 
 	private:
 

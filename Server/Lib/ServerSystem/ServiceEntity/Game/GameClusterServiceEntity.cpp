@@ -106,7 +106,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		PlayerTableItem *pNewPlayerInfo = nullptr;
-		PlayerIDMap::iterator itPlayer;
+		PlayerIDMapIterator itPlayer;
 
 		if( playerID == 0 || entityUID == 0 ) svrErr(ResultCode::E_INVALID_PLAYERID);
 		svrChkPtr( pGameServerEntity );
@@ -168,16 +168,16 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		PlayerTableItem *pPlayerInfo = nullptr;
-		PlayerIDMap::iterator itPlayer;
+		PlayerIDMapIterator itPlayer;
 
 		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
 			return ResultCode::E_INVALID_PLAYERID;
 		}
 
-		pPlayerInfo = *itPlayer;
+		pPlayerInfo = itPlayer;
 
-		svrChk( m_PlayerIDMap.erase( itPlayer ) );
+		svrChk( m_PlayerIDMap.erase(playerID) );
 
 		if (pPlayerInfo->GetEntityUID() != playerEntityUID)
 			svrErr(ResultCode::E_INVALID_ENTITY);
@@ -213,7 +213,7 @@ namespace Svr {
 	Result GameClusterServiceEntity::FindPlayer( PlayerID playerID, EntityUID &playerUID )
 	{
 		Result hr = ResultCode::SUCCESS;
-		PlayerIDMap::iterator itPlayer;
+		PlayerIDMapIterator itPlayer;
 
 		if( !(m_PlayerIDMap.find( playerID, itPlayer )) )
 		{
@@ -226,9 +226,9 @@ namespace Svr {
 			// invalid player information
 			PlayerTableItem *pPlayerInfo = nullptr;
 
-			pPlayerInfo = *itPlayer;
+			pPlayerInfo = itPlayer;
 
-			svrChk( m_PlayerIDMap.erase( itPlayer ) );
+			svrChk( m_PlayerIDMap.erase(pPlayerInfo->GetPlayerID()) );
 
 			Util::SafeDelete( pPlayerInfo );
 

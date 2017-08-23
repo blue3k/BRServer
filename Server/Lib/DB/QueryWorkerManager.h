@@ -16,7 +16,6 @@
 #include "Common/ClassUtil.h"
 #include "Common/TimeUtil.h"
 #include "Common/PageQueue.h"
-#include "Common/StaticHashTable.h"
 #include "Common/SystemSynchronization.h"
 #include "DBConst.h"
 #include "DB/DataSource.h"

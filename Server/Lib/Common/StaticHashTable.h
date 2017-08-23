@@ -30,6 +30,8 @@ namespace Hash {
 		//	Thread safe hash map
 		//		- This class uses static ordered linked list to store mapped items so that we don't need to allocate any additional memory
 		//			However, it's a bit labor intensive when you use it.
+		//		- NOTE: Don't use with MT thait because std::atomic_thread_fence doesn't gurantee memory operation for non-std::atomic types OrderedLinkedList can't be thread safe
+		//			
 		//
 
 		template<	typename KeyType, typename ItemType,
@@ -43,9 +45,6 @@ namespace Hash {
 		public:
 
 			typedef typename ThreadTrait::TicketLockType		TicketLockType;
-			//typedef typename ItemType							ItemType;
-			//typedef typename KeyType							KeyType;
-			//typedef typename MapItemConverter					MapItemConverter;
 			typedef typename MapItemConverter::Type				MapItemType;
 			typedef OrderedLinkedList<KeyType>					BucketContainer;
 
@@ -121,28 +120,12 @@ namespace Hash {
 					return *this;
 				}
 
-				//Bucket& operator = ( Bucket&& src )
-				//{
-				//	if( ThreadTrait::ThreadSafe )
-				//	{
-				//	// No one use this bucket, while this operation
-				//	Assert( !src.m_Lock.IsLocked() );
-				//	Assert( !m_Lock.IsLocked() );
-				//	}
-
-
-				//	AssertRel(false);
-				//	//m_Items = src.m_Items;
-				//	return *this;
-				//}
-
 				// validate bucket id
 				bool Validate( size_t iMyBucket, size_t szNumBucket )
 				{
-					// Validate only debug mode
+					// Validate only in debug mode
 #ifdef _DEBUG
-					//_ReadBarrier();
-					std::atomic_thread_fence(std::memory_order_consume);
+
 					BucketContainer::iterator iter = m_Items.begin();
 					for( ; iter != m_Items.end(); ++iter )
 					{
@@ -392,7 +375,7 @@ namespace Hash {
 			BucketListType m_Bucket;
 
 			// total count of item
-			LONG		m_lItemCount;
+			std::atomic<long>		m_lItemCount;
 
 		public:
 
@@ -477,7 +460,7 @@ namespace Hash {
 
 			size_t size()
 			{
-				return m_lItemCount;
+				return m_lItemCount.load(std::memory_order_relaxed);
 			}
 
 			//////////////////////////////////////////////////////////////////////////
@@ -494,9 +477,6 @@ namespace Hash {
 				Bucket& bucket = m_Bucket[iBucket];
 				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock );
 
-				//_ReadBarrier();
-				std::atomic_thread_fence(std::memory_order_consume);
-
 				typename BucketContainer::Node *pPrevNode = nullptr;
 
 				if( !(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
@@ -512,9 +492,8 @@ namespace Hash {
 
 				bucket.m_Items.Insert( pPrevNode, inKey, inItem );
 
-				m_lItemCount++;
-				//_WriteBarrier();
-				std::atomic_thread_fence(std::memory_order_seq_cst);
+				m_lItemCount.fetch_add(1, std::memory_order_relaxed);
+
 
 #ifdef _DEBUG
 				Assert( bucket.Validate(iBucket, m_Bucket.size()) );
@@ -580,8 +559,7 @@ namespace Hash {
 
 				Bucket& bucket = m_Bucket[iBucket];
 				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock );
-				//_ReadBarrier();
-				std::atomic_thread_fence(std::memory_order_consume);
+
 				
 				typename BucketContainer::Node *pPrevNode = nullptr;
 				if( !(bucket.m_Items.FindPrevNode( inKey, pPrevNode )) )
@@ -591,9 +569,7 @@ namespace Hash {
 					return ResultCode::FAIL;
 
 				bucket.m_Items.Remove( pPrevNode, pPrevNode->pNext );
-				m_lItemCount--;
-				//_WriteBarrier();
-				std::atomic_thread_fence(std::memory_order_seq_cst);
+				m_lItemCount.fetch_sub(1, std::memory_order_relaxed);
 
 				Assert( bucket.Validate(iBucket, m_Bucket.size()) );
 
@@ -622,8 +598,6 @@ namespace Hash {
 
 				TicketScopeLockT<TicketLockType> scopeLock( TicketLock::LockMode::LOCK_EXCLUSIVE, bucket.m_Lock );
 
-				//_ReadBarrier();
-				std::atomic_thread_fence(std::memory_order_consume);
 
 				typename BucketContainer::Node *pPrevNode = nullptr;
 				if( !(bucket.m_Items.FindPrevNode( Key, pPrevNode )) )
@@ -634,8 +608,7 @@ namespace Hash {
 
 				bucket.m_Items.Remove( pPrevNode, pPrevNode->pNext );
 				m_lItemCount--;
-				//_WriteBarrier();
-				std::atomic_thread_fence(std::memory_order_seq_cst);
+
 
 				//Assert( bucket.Validate(iBucket, m_Bucket.size()) );
 

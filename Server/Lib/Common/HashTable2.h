@@ -211,6 +211,11 @@ namespace Hash {
 			//	Insert/erase/clear
 			//
 
+			Result insert(const KeyType key, const ItemType &data)
+			{
+				return Insert(key, data);
+			}
+
 			Result Insert( const KeyType key, const ItemType &data )
 			{
 				size_t hashVal = HasherType()(key);
@@ -251,6 +256,11 @@ namespace Hash {
 				return ResultCode::SUCCESS;
 			}
 
+			Result find(const KeyType& keyVal, ItemType &data)
+			{
+				return Find(keyVal, data);
+			}
+
 			Result Find( const KeyType& keyVal, ItemType &data )
 			{
 				size_t hashVal = HasherType()( keyVal );
@@ -265,6 +275,12 @@ namespace Hash {
 			}
 
 			// Erase a data from hash map
+			Result erase(const KeyType &key)
+			{
+				ValueType erasedValue;
+				return Erase(key, erasedValue);
+			}
+
 			Result Erase(const KeyType &key, ValueType& erasedValue)
 			{
 				if (m_Buckets.size() == 0)

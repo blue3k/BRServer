@@ -14,7 +14,6 @@
 
 #include "Net/NetDef.h"
 #include "Common/BrAssert.h"
-#include "Common/StaticHashTable.h"
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/ServerEntity.h"
