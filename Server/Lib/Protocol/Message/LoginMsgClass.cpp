@@ -843,6 +843,53 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_TestData); 
 			}; // void DataTestRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
+			// C2S: Heartbit
+			const MessageID HeartBitC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 6);
+			Result HeartBitC2SEvt::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+
+				protocolChkPtr(pIMsg);
+
+
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result HeartBitC2SEvt::ParseMessage( MessageData* pIMsg )
+
+			Result HeartBitC2SEvt::BuildIMsg( OUT MessageData* &pMsg )
+			{
+ 				Result hr;
+
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) );
+
+				MessageData *pNewMsg = nullptr;
+
+				protocolMem( pNewMsg = MessageData::NewMessage( Login::HeartBitC2SEvt::MID, __uiMessageSize ) );
+
+
+				pMsg = pNewMsg;
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result HeartBitC2SEvt::BuildIMsg( OUT MessageData* &pMsg )
+
+
+
+			void HeartBitC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+			{
+ 				unused(Prefix);
+				protocolTrace(Trace::TRC_DBG1, "{0}:HeartBitC2SEvt:{1}:{2} ",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
+			}; // void HeartBitC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+
 
 
 		}; // namespace Login

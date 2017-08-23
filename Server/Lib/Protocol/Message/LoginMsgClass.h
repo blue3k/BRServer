@@ -603,6 +603,47 @@ namespace BR
 
 			}; // class DataTestRes : public MessageBase
 
+			// C2S: Heartbit
+			class HeartBitC2SEvt : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 0,
+					HasRouteContext = 0,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
+				RouteContext GetRouteContext() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+			public:
+				HeartBitC2SEvt()
+					{}
+
+				HeartBitC2SEvt( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg );
+
+			}; // class HeartBitC2SEvt : public MessageBase
+
 
 
 

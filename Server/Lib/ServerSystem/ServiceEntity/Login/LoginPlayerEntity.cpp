@@ -131,6 +131,7 @@ namespace Svr {
 	// register message handlers
 	Result LoginPlayerEntity::RegisterMessageHandlers()
 	{
+		BR_ENTITY_MESSAGE(Message::Login::HeartBitC2SEvt)					{ pNewTrans = nullptr; HeartBit(); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::Login::LoginCmd)							{ pNewTrans = new LoginPlayerTransLogin(pMsgData); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::Login::LoginByFacebookCmd)				{ pNewTrans = new LoginPlayerTransLoginByFacebook(pMsgData); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::Login::CreateRandomUserCmd)				{ pNewTrans = new LoginPlayerTransCreateRandomUser(pMsgData); return ResultCode::SUCCESS; } );

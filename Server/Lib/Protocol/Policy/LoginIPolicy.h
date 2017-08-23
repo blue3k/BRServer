@@ -45,6 +45,7 @@ namespace BR
 			virtual Result GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
 			// Cmd: For network test
 			virtual Result DataTestRes( const Result &InResult, const Array<uint8_t>& InTestData ) = 0;
+			// C2S: Heartbit
 
 		}; // class ISvrPolicyLogin : public Net::INetPolicy
 
@@ -70,6 +71,8 @@ namespace BR
 			virtual Result GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount ) = 0;
 			// Cmd: For network test
 			virtual Result DataTestCmd( const Array<uint8_t>& InTestData ) = 0;
+			// C2S: Heartbit
+			virtual Result HeartBitC2SEvt(  ) = 0;
 
 		}; // class IPolicyLogin : public Net::INetPolicy
 

@@ -50,6 +50,8 @@ namespace BR
 				// Cmd: For network test
 				MessageDebugTraceMapLogin.insert(std::make_pair(Login::DataTestCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::DataTestCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				MessageDebugTraceMapLogin.insert(std::make_pair(Login::DataTestRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::DataTestRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				// C2S: Heartbit
+				MessageDebugTraceMapLogin.insert(std::make_pair(Login::HeartBitC2SEvt::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   Login::HeartBitC2SEvt parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceLogin()
 
 

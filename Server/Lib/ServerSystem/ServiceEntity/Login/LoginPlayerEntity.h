@@ -94,6 +94,7 @@ namespace Svr {
 
 		void HeartBit();
 
+
 		// pending close transaction
 		Result PendingCloseTransaction();
 

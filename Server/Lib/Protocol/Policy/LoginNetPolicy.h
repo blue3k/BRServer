@@ -41,6 +41,8 @@ namespace BR
 			Result GetRankingListCmd( const RankingType &InRankingType, const uint8_t &InBaseRanking, const uint8_t &InCount );
 			// Cmd: For network test
 			Result DataTestCmd( const Array<uint8_t>& InTestData );
+			// C2S: Heartbit
+			Result HeartBitC2SEvt(  );
 
 		}; // class NetPolicyLogin : public IPolicyLogin
 

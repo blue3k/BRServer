@@ -79,6 +79,9 @@
       </Res>
     </Command>
 
+    <C2SEvent Name="HeartBit" Reliable="true" Crypto="No" Trace="DBG1" Desc="Heartbit">
+    </C2SEvent>
+
 	
   </ProtocolGroup>
 </Protocols>

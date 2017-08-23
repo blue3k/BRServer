@@ -135,6 +135,24 @@ namespace BR
 			return hr;
 
 		}; // Result NetPolicyLogin::DataTestCmd( const Array<uint8_t>& InTestData )
+		// C2S: Heartbit
+		Result NetPolicyLogin::HeartBitC2SEvt(  )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::HeartBitC2SEvt::BuildIMsg(pMsg));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetPolicyLogin::HeartBitC2SEvt(  )
 
 
 		// Cmd: Login request
