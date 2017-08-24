@@ -507,14 +507,20 @@ namespace Net {
 		if (GetConnectionState() != STATE_DISCONNECTING
 			&& GetConnectionState() != STATE_DISCONNECTED)
 		{
+			Connection::Disconnect(reason);
+
 			// Send disconnect signal
 			Message::MessageID msgIDTem;
 
 			msgIDTem.ID = PACKET_NETCTRL_NONE;
 			SendNetCtrl(PACKET_NETCTRL_DISCONNECT, 0, msgIDTem);
-		}
 
-		return Connection::Disconnect(reason);
+			return ResultCode::SUCCESS;
+		}
+		else
+		{
+			return Connection::Disconnect(reason);
+		}
 	}
 
 	// Send packet buffer to connection with network device
