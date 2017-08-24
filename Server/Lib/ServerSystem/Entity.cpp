@@ -186,7 +186,7 @@ namespace BR {
 	// Process Message and release message after all processed
 	Result Entity::ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg)
 	{
-		Result hr = ResultCode::SUCCESS;
+		Result hr = ResultCode::SUCCESS, hrRes;
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
 		Svr::Transaction *pNewTrans = nullptr;
@@ -248,7 +248,7 @@ namespace BR {
 			{
 				assert(false); // disable direct process for now
 				// This need to be run on correct worker thread
-				Result hrRes = pNewTrans->StartTransaction();
+				hrRes = pNewTrans->StartTransaction();
 				if (!pNewTrans->IsClosed())
 				{
 					pNewTrans->CloseTransaction(hrRes);
@@ -260,7 +260,19 @@ namespace BR {
 				if (this == pNewTrans->GetOwnerEntity())
 				{
 					auto threadID = ThisThread::GetThreadID();
-					PendingTransaction(threadID, pNewTrans);
+					hrRes = PendingTransaction(threadID, pNewTrans);
+					if (!hrRes)
+					{
+						if (GetEntityState() == EntityState::WORKING) // This is normal silence the error log
+						{
+							svrErr(hrRes);
+						}
+						else
+						{
+							pNewTrans->SetClosed();
+							goto Proc_End;
+						}
+					}
 				}
 
 				if (pNewTrans != nullptr && BrServer::GetInstance())
@@ -286,7 +298,6 @@ namespace BR {
 
 			if (!pNewTrans->IsClosed() && pNewTrans->GetOwnerEntity() != nullptr)
 			{
-				//Assert(false);
 				svrTrace(Trace::TRC_ERROR, "Transaction isn't closed Transaction:{0}, MsgID:{1}", typeid(*pNewTrans).name(), pMsgHdr->msgID);
 				pNewTrans->CloseTransaction(hr);
 			}
