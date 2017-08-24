@@ -331,7 +331,9 @@ namespace Net {
 						// Sending normal message packet without connection process.
 						// Disconnect them
 						netChk(Disconnect("Invalid packet type"));
-						netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
+						//netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
+						hr = ResultCode::E_NET_BADPACKET_NOTEXPECTED;
+						goto Proc_End;
 					}
 				}
 			}

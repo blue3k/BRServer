@@ -19,21 +19,19 @@
 namespace BR {
 namespace Svr {
 
-	enum {
+	constexpr uint32_t TRC_INFO = Trace::TRC_USER1;
+	constexpr uint32_t TRC_ENTITY = Trace::TRC_USER2;
+	constexpr uint32_t TRC_TRANSACTION = Trace::TRC_USER3;
+	constexpr uint32_t TRC_CLUSTER = Trace::TRC_USER4;
+	constexpr uint32_t TRC_MATCHING = Trace::TRC_USER5;
+	constexpr uint32_t TRC_GAME1 = Trace::TRC_USER6;
 
-		TRC_INFO		=	Trace::TRC_USER1,
-		TRC_ENTITY		=	Trace::TRC_USER2,
-		TRC_TRANSACTION	=	Trace::TRC_USER3,
-		TRC_CLUSTER		=	Trace::TRC_USER4,
-		TRC_MATCHING	=	Trace::TRC_USER5,
-
-		// For debug
-		TRC_DBGFAIL		=	Trace::TRC_DBG1,
-		TRC_DBGSVR		=	Trace::TRC_DBG2,
-		TRC_DBGINFO		=	Trace::TRC_DBG3,
-		TRC_DBGTRANS	=	Trace::TRC_DBG4,
-		TRC_DBGMATCHING	=	Trace::TRC_DBG5,
-	};
+	// For debug
+	constexpr uint32_t TRC_DBGFAIL = Trace::TRC_DBG1;
+	constexpr uint32_t TRC_DBGSVR = Trace::TRC_DBG2;
+	constexpr uint32_t TRC_DBGINFO = Trace::TRC_DBG3;
+	constexpr uint32_t TRC_DBGTRANS = Trace::TRC_DBG4;
+	constexpr uint32_t TRC_DBGMATCHING = Trace::TRC_DBG5;
 
 };
 };

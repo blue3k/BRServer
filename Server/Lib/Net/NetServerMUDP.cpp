@@ -261,7 +261,7 @@ namespace Net {
 				((ConnectionUDPBase*)(Connection*)pConnection)->ChangeRemoteAddress(pIOBuffer->NetAddr.From);
 			}
 
-			netChk( pConnection->OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer) );
+			hr = pConnection->OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer);
 			// Keep these connection can be readable until Onrecv is done
 			//iterCon = nullptr;
 			//iterPIDCon = nullptr;

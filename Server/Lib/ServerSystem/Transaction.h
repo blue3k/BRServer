@@ -468,9 +468,9 @@ namespace Svr {
 		{
 			Result hr = ResultCode::SUCCESS;
 
-			svrChk(m_Handlers.HandleMessage(pRes->GetMsgID(), pRes));
+			hr = m_Handlers.HandleMessage(pRes->GetMsgID(), pRes);
 
-		Proc_End:
+		//Proc_End:
 
 			if( !(hr) )
 			{

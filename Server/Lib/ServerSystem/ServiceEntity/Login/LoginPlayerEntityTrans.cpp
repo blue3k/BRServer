@@ -201,7 +201,7 @@ namespace Svr {
 		if( !(hr) )
 			CloseTransaction(hr);
 
-		return hr; 
+		return ResultCode::SUCCESS;
 	}
 
 	template<class MessageClass, class TransactionClass>
@@ -275,7 +275,7 @@ namespace Svr {
 		if( !(hr) )
 			CloseTransaction(hr);
 
-		return hr; 
+		return ResultCode::SUCCESS; 
 	}
 
 	template<class MessageClass, class TransactionClass>
@@ -302,7 +302,7 @@ namespace Svr {
 
 		CloseTransaction(hr);
 
-		return hr;
+		return ResultCode::SUCCESS;
 	}
 
 	// Start Transaction

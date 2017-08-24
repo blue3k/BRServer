@@ -94,7 +94,11 @@ namespace Svr {
 
 			svrChkPtr( pRes );
 
-			svrChk(Find(pRes->GetTransID().GetEntityID(), pEntity));
+			if (!Find(pRes->GetTransID().GetEntityID(), pEntity))
+			{
+				hr = ResultCode::E_INVALID_ENTITY;
+				goto Proc_End;
+			}
 
 			svrChk(pEntity->PendingTransactionResult(pRes));
 

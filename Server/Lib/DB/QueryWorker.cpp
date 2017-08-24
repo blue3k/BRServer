@@ -64,7 +64,11 @@ namespace DB {
 
 		// This will be run only if the query is succeeded
 		// We need to handle exceptions so that transaction can handle errors
-		dbChk(pQueryManager->RouteResult(pQuery));
+		hr = pQueryManager->RouteResult(pQuery);
+		if (!hr && hr != Result(ResultCode::E_INVALID_ENTITY)) // Ignore entity not found error
+		{
+			dbErr(hr);
+		}
 
 	Proc_End:
 
