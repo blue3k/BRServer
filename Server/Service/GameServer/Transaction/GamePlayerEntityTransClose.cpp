@@ -227,7 +227,7 @@ namespace GameServer {
 
 	Proc_End:
 
-		if (!(hr))
+		if (!(hr) && hr != Result(ResultCode::E_INVALID_PLAYERID))
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to close entity:{0}, hr:{1:X8}", GetOwnerEntityUID(), hr);
 		}

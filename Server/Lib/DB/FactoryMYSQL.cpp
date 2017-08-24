@@ -58,6 +58,10 @@ namespace DB {
 	{
 		MYSQL *pSql = DBContext ? (MYSQL*)DBContext : nullptr;
 
+		// Skip routing error
+		if (hr == Result(ResultCode::E_INVALID_ENTITY))
+			return;
+
 		if( pSql )
 		{
 			const char* errorString = mysql_error(pSql);

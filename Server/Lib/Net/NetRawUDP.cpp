@@ -320,7 +320,7 @@ namespace Net {
 				Util::SafeRelease(pMsg);
 			}
 
-			if (hr != Result(ResultCode::E_NET_IO_SEND_FAIL))
+			if (hr != Result(ResultCode::E_NET_IO_SEND_FAIL) && hr != Result(ResultCode::E_NET_CONNECTION_CLOSED))
 			{
 				netTrace(Trace::TRC_ERROR, "RawUDP Send Failed, err:{1:X8}, hr:{2:X8}", hrErr, hr);
 			}

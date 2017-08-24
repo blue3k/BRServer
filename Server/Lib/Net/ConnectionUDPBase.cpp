@@ -567,7 +567,7 @@ namespace Net {
 			//	Net::NetSystem::FreeBuffer(pSendBuffer);
 			//}
 
-			if (hr != Result(ResultCode::E_NET_IO_SEND_FAIL))
+			if (hr != Result(ResultCode::E_NET_IO_SEND_FAIL) && hr != Result(ResultCode::E_NET_CONNECTION_CLOSED))
 			{
 				netTrace(Trace::TRC_ERROR, "UDP Send Failed, ip:{0}, err:{1:X8}, hr:{2:X8}", GetConnectionInfo(), hrErr, hr);
 			}
