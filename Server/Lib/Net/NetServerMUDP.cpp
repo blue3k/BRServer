@@ -145,12 +145,12 @@ namespace Net {
 				|| pNetCtrl->msgID.GetMsgID() == PACKET_NETCTRL_TIMESYNC.GetMsgID())
 			{
 				// send disconnect
-				netTrace(Trace::TRC_WARN, "Unexpected packet from:{0} msg:{1}. Disconnecting...", from, pNetCtrl->msgID);
+				netTrace(TRC_NETSYS, "Unexpected packet from:{0} msg:{1}. Disconnecting...", from, pNetCtrl->msgID);
 				netChk(SendNetCtrl(from, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 			}
 			else
 			{
-				netTrace(Trace::TRC_WARN, "Unexpected packet from:{0} msg:{1}. Ignoring...", from, pNetCtrl->msgID);
+				netTrace(TRC_NETSYS, "Unexpected packet from:{0} msg:{1}. Ignoring...", from, pNetCtrl->msgID);
 			}
 
 			return ResultCode::SUCCESS_FALSE;

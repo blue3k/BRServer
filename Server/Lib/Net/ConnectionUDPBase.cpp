@@ -538,6 +538,7 @@ namespace Net {
 		case (uint32_t)ResultCode::E_NET_NOTCONN:
 		case (uint32_t)ResultCode::E_NET_NOTSOCK:
 		case (uint32_t)ResultCode::E_NET_SHUTDOWN:
+		case (uint32_t)ResultCode::E_NET_FAULT:
 			// Send fail by connection close
 			// Need to disconnect
 			Disconnect("SendBufferUDP is failed");
