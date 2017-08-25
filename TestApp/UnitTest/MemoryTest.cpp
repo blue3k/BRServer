@@ -80,114 +80,6 @@ namespace BRTest
 {
 
 
-TEST_F(MemoryTest, PagePool)
-{
-	const INT64 TEST_LENGTH	=		99999;
-	//const int PUSH_LIMIT	=		1000;
-	const int ALLOC_THREAD_COUNT	=	20;
-	const int FREE_THREAD_COUNT		=	1;
-
-	BR::PageQueue<void*> Allocated( 128 );
-	BR::PagePool Pool( 10 );
-	BR::PageAllocator PageAloc( 10 );
-	SyncCounter lPusherCount(0);
-
-	void *pPtr = NULL;
-	EXPECT_HRESULT_SUCCEEDED( PageAloc.Alloc( pPtr ) );
-	//int iPageSize1 = (int)PageAloc.GetPageSize();
-	memset( pPtr, 0, PageAloc.GetPageSize() );
-	EXPECT_HRESULT_SUCCEEDED( PageAloc.Free( pPtr ) );
-
-	EXPECT_HRESULT_SUCCEEDED( Pool.Alloc( pPtr ) );
-	int iPageSize = (int)Pool.GetPageSize();
-	EXPECT_GT(iPageSize, 10);
-	memset( pPtr, 0, Pool.GetPageSize() );
-	EXPECT_HRESULT_SUCCEEDED( Pool.Free( pPtr ) );
-	Pool.Clear();
-
-	for( INT64 ID = 0; ID < ALLOC_THREAD_COUNT; ID++ )
-	{
-		auto pTask = new BR::FunctorThread([&, ID](Thread* pThread)
-		{
-			lPusherCount.fetch_add(1,std::memory_order_relaxed);
-
-			for(int i=0; i<TEST_LENGTH; i++)
-			{
-				void *pPtr = NULL;
-				Result hr = Pool.Alloc( pPtr );
-				EXPECT_HRESULT_SUCCEEDED( hr );
-
-				if( SUCCEEDED(hr) )
-				{
-					iPageSize = (int)Pool.GetPageSize();
-					EXPECT_GT(iPageSize, 10);
-					memset( pPtr, 0, iPageSize );
-
-					//_WriteBarrier();
-
-					Allocated.Enqueue( pPtr );
-				}
-			}
-
-			lPusherCount.fetch_sub(1, std::memory_order_relaxed);
-		} );
-
-		pTask->Start();
-		m_Threads.push_back(pTask);
-
-	};
-
-	for( INT64 ID = 0; ID < FREE_THREAD_COUNT; ID++ )
-	{
-		auto pTask = new BR::FunctorThread([&, ID](Thread* pThread)
-		{
-			while(1)
-			{
-				void* pItem = NULL;
-				if( (Allocated.Dequeue( pItem )) 
-					&& pItem != NULL )
-				{
-					iPageSize = (int)Pool.GetPageSize();
-
-					memset( pItem, -1, iPageSize );
-
-					EXPECT_HRESULT_SUCCEEDED( Pool.Free( pItem ) );
-				}
-				else
-				{
-					if(lPusherCount == 0)
-						break;
-
-					ThisThread::SleepFor(DurationMS(10));
-				}
-			}
-		});
-
-		pTask->Start();
-		m_Threads.push_back(pTask);
-	};
-
-
-	ThisThread::SleepFor(DurationMS(1000));
-
-	while( lPusherCount != 0 )
-	{
-		ThisThread::SleepFor(DurationMS(1000));
-	}
-
-	StopAllThread();
-
-	//// Clear
-	//void* pItem;
-	//while( Allocated.GetSize() != 0 && Allocated.Dequeue( pItem ) == S_OK )
-	//{
-	//	if( pItem )
-	//		Pool.Free( pItem );
-	//}
-
-	Pool.Clear();
-}
-
 
 TEST_F(MemoryTest, MemoryPool)
 {
@@ -647,13 +539,13 @@ TEST_F(MemoryTest, StdPerformance)
 
 TEST_F(MemoryTest, PagedQueueAllocation)
 {
+	// TODO: need to be reworte
 	//const INT TEST_LENGTH = 999;
 	//const INT BUFFER_SIZE = 512;
 	//const INT ALLOCATE_SIZE_MIN = 4;
 	//const INT ALLOCATE_SIZE_MAX = 20;
 
 	auto testQueue = new BR::PageQueue<int>(4);
-	auto memoryPool = testQueue->GetMemoryPool();
 
 	for (int iTest = 0; iTest < 131; iTest++)
 	{
@@ -665,7 +557,6 @@ TEST_F(MemoryTest, PagedQueueAllocation)
 	delete testQueue;
 
 
-	memoryPool->PrintAllocatedList();
 }
 
 
