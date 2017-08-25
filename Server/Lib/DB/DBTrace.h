@@ -21,6 +21,7 @@ namespace DB {
 	enum TraceChannels {
 		TRC_QUERYSTR		=	Trace::TRC_DBG1,
 		TRC_QUERY = Trace::TRC_DBG2,
+		TRC_ROUTING = Trace::TRC_DBG3,
 
 		TRC_INFO			=	Trace::TRC_USER1,
 	};

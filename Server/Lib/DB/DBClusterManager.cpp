@@ -414,7 +414,7 @@ Proc_End:
 			hr = Svr::GetEntityTable().RouteTransactionResult(pRes);
 			if (!(hr))
 			{
-				dbTrace(TRC_INFO, "Failed to route a message hr:{0} msgID:{1}, target entityID:{2}, query:{3}", hr, msgID, entityID, queryName);
+				dbTrace(TRC_ROUTING, "Failed to route a message hr:{0} msgID:{1}, target entityID:{2}, query:{3}", hr, msgID, entityID, queryName);
 				hr = ResultCode::E_INVALID_ENTITY;
 				goto Proc_End;
 			}
