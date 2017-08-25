@@ -119,12 +119,17 @@ namespace BR
 	//	Memory Pool by size
 	//
 
+	constexpr int32_t MemoryPool::POOL_ITEM_MIN;
+	constexpr int32_t MemoryPool::POOL_ITEM_MAX;
+	constexpr intptr_t MemoryPool::POOL_MEMMAGIC;
+	constexpr uint32_t MemoryPool::MEMITEM_SIZE;
 
 
 	// Constructor for singleton
 	MemoryPool::MemoryPool( size_t AllocSize )
 		: m_AllocSize(BR_ALLIGNUP(AllocSize,BR_ALIGN_DOUBLE) + MEMITEM_SIZE)
 		, m_Allocator( DecidePageSize(BR_ALLIGNUP(AllocSize,BR_ALIGN_DOUBLE)) )
+		, m_FreeIndex(0)
 #ifdef ENABLE_MEMORY_TRACE
 		, m_printAlocList(false)
 #endif
@@ -137,6 +142,7 @@ namespace BR
 	MemoryPool::~MemoryPool()
 	{
 	}
+
 
 	// Decide Page size
 	size_t MemoryPool::DecidePageSize( size_t AllocSize )
@@ -161,14 +167,16 @@ namespace BR
 	{
 		// this will lead to memory leak, so this should be called only when the application is being closed
 		m_Allocator.Clear();
-		m_FreeList.Clear();
+		for(auto& itFreeList : m_FreeList)
+			itFreeList.Clear();
 	}
 
 	// Allocate/Free
 	Result MemoryPool::Alloc( void* &pPtr, const char* typeName )
 	{
 		MemItem *pMemItem = nullptr;
-		StackPool::Item *pItem = m_FreeList.Pop();
+		auto& freeList = PickFreeList();
+		StackPool::Item *pItem = freeList.Pop();
 		if( pItem == nullptr )
 		{
 			// Allocate page if no free item
@@ -198,7 +206,7 @@ namespace BR
 				pMemItem->LatestThreadID = ThisThread::GetThreadID();
 				memset( pMemItem->DataPtr(), 0xCD, GetAllocSize() );
 #endif
-				m_FreeList.Push( pMemItem );
+				freeList.Push( pMemItem );
 				pMemItem = (MemItem*)((BYTE*)pMemItem + m_AllocSize);
 			}
 			pMemItem->pNext = nullptr;
@@ -274,6 +282,8 @@ namespace BR
 		if( pPtr == nullptr )
 			return ResultCode::SUCCESS;
 
+		auto& freeList = PickFreeList();
+
 		pMemItem = (MemItem*)((BYTE*)pPtr - MEMITEM_SIZE);
 
 		Assert( pMemItem->MemMagic == POOL_MEMMAGIC );
@@ -318,7 +328,7 @@ namespace BR
 #endif
 			}
 
-			m_FreeList.Push( pMemItem );
+			freeList.Push( pMemItem );
 		}
 
 		m_AllocatedCount.fetch_sub(1,std::memory_order_relaxed);

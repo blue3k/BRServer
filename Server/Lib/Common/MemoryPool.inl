@@ -11,39 +11,51 @@
 
 
 
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-//
-//	Memory Page allocator
-//
-
-CounterType PageAllocator::GetPageCount() const
+namespace BR
 {
-	return m_PageCount;
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//
+	//	Memory Page allocator
+	//
+
+	CounterType PageAllocator::GetPageCount() const
+	{
+		return m_PageCount;
+	}
+
+
+
+
+	FORCEINLINE StackPool& MemoryPool::PickFreeList()
+	{
+		auto index = m_FreeIndex.fetch_add(1, std::memory_order_relaxed) & FREE_LIST_MASK;
+		return m_FreeList[index];
+	}
+
+
+	//
+	//////////////////////////////////////////////////////////////////////////////////
+	////
+	////	Memory pool by type template
+	////
+	//
+	//template< class ObjectType >
+	//MemoryPoolT<ObjectType>::MemoryPoolT()
+	//{
+	//}
+	//
+	//// allocate object
+	//template< class ObjectType >
+	//Result MemoryPoolT<ObjectType>::Alloc( ObjectType* &pObject )
+	//{
+	//}
+	//
+	//// free object
+	//template< class ObjectType >
+	//Result MemoryPoolT<ObjectType>::Free( ObjectType* pObject )
+	//{
+	//}
+
 }
-
-
-//
-//////////////////////////////////////////////////////////////////////////////////
-////
-////	Memory pool by type template
-////
-//
-//template< class ObjectType >
-//MemoryPoolT<ObjectType>::MemoryPoolT()
-//{
-//}
-//
-//// allocate object
-//template< class ObjectType >
-//Result MemoryPoolT<ObjectType>::Alloc( ObjectType* &pObject )
-//{
-//}
-//
-//// free object
-//template< class ObjectType >
-//Result MemoryPoolT<ObjectType>::Free( ObjectType* pObject )
-//{
-//}

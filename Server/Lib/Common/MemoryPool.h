@@ -78,13 +78,15 @@ namespace BR
 	class MemoryPool
 	{
 	public:
-		enum {
-			// Pool item count range per page
-			POOL_ITEM_MIN = 8,
-			POOL_ITEM_MAX = 1024,
 
-			POOL_MEMMAGIC = 0xCBCBCBCBL
-		};
+		static constexpr int32_t  POOL_ITEM_MIN = 8;
+		static constexpr int32_t  POOL_ITEM_MAX = 1024;
+		static constexpr intptr_t  POOL_MEMMAGIC = 0xCBCBCBCBL;
+
+		static constexpr int  FREE_LIST_SHIFT = 2;
+		static constexpr int  FREE_LIST_NUM = 1 << FREE_LIST_SHIFT;
+		static constexpr int  FREE_LIST_MASK = FREE_LIST_NUM - 1;
+
 
 		// free stack item
 		struct MemItem : public StackPool::Item
@@ -109,9 +111,9 @@ namespace BR
 			}
 		};
 
-		enum {
-			MEMITEM_SIZE = BR_ALLIGNUP(sizeof(MemItem),BR_ALIGN_DOUBLE)
-		};
+
+		static constexpr uint32_t  MEMITEM_SIZE = BR_ALLIGNUP(sizeof(MemItem), BR_ALIGN_DOUBLE);
+
 
 
 	private:
@@ -129,7 +131,8 @@ namespace BR
 		PageAllocator m_Allocator;
 
 		// Free item stack
-		StackPool	m_FreeList;
+		std::atomic<uint32_t> m_FreeIndex;
+		StackPool	m_FreeList[FREE_LIST_NUM];
 
 #ifdef ENABLE_MEMORY_TRACE
 		BR::CriticalSection m_CriticalSection;
@@ -141,6 +144,8 @@ namespace BR
 
 		// Decide Page size
 		size_t DecidePageSize( size_t AllocSize );
+
+		StackPool& PickFreeList();
 
 	public:
 		// Constructor for singleton
@@ -320,10 +325,11 @@ namespace BR
 
 
 
+
+} // namespace BR
+
+
 #include "MemoryPool.inl"
-
-
-}; // namespace BR
 
 
 
