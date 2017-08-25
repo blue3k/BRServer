@@ -325,7 +325,12 @@ namespace BR {
 
 		pTransRes = pMsgRes;
 
-		assert(pTransRes->GetTransID().GetEntityID() == GetEntityID());
+		if (pTransRes->GetTransID().GetEntityID() != GetEntityID())
+		{
+			svrTrace(Trace::TRC_WARN, "Invalid message result routing Entity:{0}, msgID:{1} to Entity:{2}", GetEntityID(), pMsgRes->GetMsgID(), pTransRes->GetTransID().GetEntityID());
+			goto Proc_End;
+		}
+		//assert(pTransRes->GetTransID().GetEntityID() == GetEntityID());
 
 		if (GetTaskWorker()->GetThreadID() == ThisThread::GetThreadID())
 		{
