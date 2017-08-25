@@ -234,7 +234,7 @@ namespace BR
 				MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
 				Assert(stm_MemoryPool != nullptr);
 			}
-			void *pPtr = NULL;
+			void *pPtr = nullptr;
 			stm_MemoryPool->Alloc( pPtr, typeid(ObjectType).name() );
 			return pPtr;
 		}

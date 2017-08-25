@@ -73,7 +73,7 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddr;
 
-		netChk( NetSystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
+		netChk( NetSystem::OpenSystem( Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_NET_THREAD, Const::PACKET_GATHER_SIZE_MAX) );
 
 		m_NetClass = netCls;
 

@@ -246,11 +246,11 @@ Proc_End:
 		svrChk( AddComponent<ServerEntityManager>() );
 
 
-		// Initialzie remote entity manager
+		// Initialize remote entity manager
 		svrChk( GetServerComponent<ServerEntityManager>()->InitializeManager( GetMyConfig()->EntityControlCount ) );
 
 
-		// Add loopback entity
+		// Add loop back entity
 		svrMem( pLoopbackEntity = CreateLoopbackEntity() );
 		pLoopbackEntity->SetEntityUID( EntityUID(GetServerUID(),EntityID(EntityFaculty::Server,0) ) );
 		pLoopbackEntity->SetServerID(GetServerUID());

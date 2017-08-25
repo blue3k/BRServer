@@ -56,7 +56,7 @@ namespace Net {
 
 		m_pMessageHandler = pHandler;
 
-		netChk(NetSystem::OpenSystem(Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX));
+		netChk(NetSystem::OpenSystem(Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_NET_THREAD, Const::PACKET_GATHER_SIZE_MAX));
 
 		if (localAddress.strAddr[0] == '\0')
 		{
@@ -146,9 +146,9 @@ namespace Net {
 		if (NetSystem::IsProactorSystem())
 		{
 			if (m_pRecvBuffers) delete[] m_pRecvBuffers;
-			netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD]);
+			netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_NET_THREAD]);
 
-			for (INT uiRecv = 0; uiRecv < Const::SVR_NUM_RECV_THREAD; uiRecv++)
+			for (INT uiRecv = 0; uiRecv < Const::SVR_NUM_NET_THREAD; uiRecv++)
 			{
 				PendingRecv(&m_pRecvBuffers[uiRecv]);
 			}

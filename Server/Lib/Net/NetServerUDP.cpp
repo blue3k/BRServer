@@ -281,9 +281,9 @@ namespace Net {
 		if (NetSystem::IsProactorSystem())
 		{
 			if (m_pRecvBuffers) delete[] m_pRecvBuffers;
-			netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD]);
+			netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_NET_THREAD]);
 
-			for (INT uiRecv = 0; uiRecv < Const::SVR_NUM_RECV_THREAD; uiRecv++)
+			for (INT uiRecv = 0; uiRecv < Const::SVR_NUM_NET_THREAD; uiRecv++)
 			{
 				netChk(PendingRecv(&m_pRecvBuffers[uiRecv]));
 			}

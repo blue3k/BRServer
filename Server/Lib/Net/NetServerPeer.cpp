@@ -430,7 +430,7 @@ namespace Net {
 		Result hr = ResultCode::SUCCESS;
 		NetAddress localAddr;
 
-		netChk(NetSystem::OpenSystem(Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_RECV_THREAD, Const::PACKET_GATHER_SIZE_MAX));
+		netChk(NetSystem::OpenSystem(Const::SVR_OVERBUFFER_COUNT, Const::SVR_NUM_NET_THREAD, Const::PACKET_GATHER_SIZE_MAX));
 
 		m_NetClass = netCls;
 
@@ -513,12 +513,12 @@ namespace Net {
 		{
 			// Pending recv
 			Util::SafeDeleteArray(m_pRecvBuffers);
-			netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_RECV_THREAD]);
-			memset(m_pRecvBuffers, 0, sizeof(IOBUFFER_READ)*Const::SVR_NUM_RECV_THREAD);
+			netMem(m_pRecvBuffers = new IOBUFFER_READ[Const::SVR_NUM_NET_THREAD]);
+			memset(m_pRecvBuffers, 0, sizeof(IOBUFFER_READ)*Const::SVR_NUM_NET_THREAD);
 
 			m_PendingRecvCnt = 0;
 
-			for (INT iRecv = 0; iRecv < Const::SVR_NUM_RECV_THREAD; iRecv++)
+			for (INT iRecv = 0; iRecv < Const::SVR_NUM_NET_THREAD; iRecv++)
 				netChk(PendingRecv(&m_pRecvBuffers[iRecv]));
 		}
 
