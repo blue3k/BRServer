@@ -858,6 +858,13 @@ namespace Net {
 		hr = ConnectionMUDP::ProcNetCtrl(pNetCtrl);
 		if (!(hr)) return hr;
 
+		// Server should reply this
+		switch (pNetCtrl->msgID.IDs.MsgCode)
+		{
+		case NetCtrlCode_SyncReliable:
+			SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID);
+			break;
+		}
 
 	//Proc_End:
 
