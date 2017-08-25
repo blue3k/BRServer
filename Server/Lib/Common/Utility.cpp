@@ -181,27 +181,63 @@ namespace Util {
 	//
 
 
-	// Calculate near power of w
-	UINT NearPowerOf2( UINT32 uiNumber )
+	// Find min bit can embrace the number
+	UINT FindMinBitShift(uint32_t uiNumber)
 	{
-		static const struct {
-			UINT32 Mask;
-			UINT32 Shift;
+		static constexpr struct {
+			uint32_t Mask;
+			uint32_t Shift;
+		} OperationTable[] = {
+			{ 0xFFFF0000, 16 },
+			{ 0x0000FF00, 8 },
+			{ 0x000000F0, 4 },
+			{ 0x0000000C, 2 },
+			{ 0x00000002, 1 },
+		};
+
+		AssertRel((uiNumber & 0x80000000L) == 0);
+
+		uint32_t power = 0;
+		bool bIsOver = false;
+
+		// Binary search
+		for (uint32_t iOper = 0; iOper < countof(OperationTable); iOper++)
+		{
+			if (uiNumber & OperationTable[iOper].Mask)
+			{
+				bIsOver |= (uiNumber & (~OperationTable[iOper].Mask)) != 0;
+				power += OperationTable[iOper].Shift;
+				uiNumber >>= OperationTable[iOper].Shift;
+			}
+		}
+
+		// power has the bit shift of most significant bit
+		//  We need bigger number than this
+		if (bIsOver) power++;
+		return power;
+	}
+
+	// Calculate near power of w
+	UINT NearPowerOf2(uint32_t uiNumber )
+	{
+		static constexpr struct {
+			uint32_t Mask;
+			uint32_t Shift;
 		} OperationTable[] = {
 				{ 0xFFFF0000, 16 },
-				{ 0xFF00, 8 },
-				{ 0xF0, 4 },
-				{ 0xC, 2 },
-				{ 0x2, 1 },
+				{ 0x0000FF00, 8 },
+				{ 0x000000F0, 4 },
+				{ 0x0000000C, 2 },
+				{ 0x00000002, 1 },
 			};
 
 		AssertRel( (uiNumber & 0x80000000L) == 0 );
 
-		UINT power = 0;
+		uint32_t power = 0;
 		bool bIsOver = false;
 
-		// Bineary search
-		for( UINT iOper = 0; iOper < countof(OperationTable); iOper++ )
+		// Binary search
+		for(uint32_t iOper = 0; iOper < countof(OperationTable); iOper++ )
 		{
 			if( uiNumber & OperationTable[iOper].Mask )
 			{
@@ -211,7 +247,7 @@ namespace Util {
 			}
 		}
 
-		// power has the bit shift of most significient bit
+		// power has the bit shift of most significant bit
 		//  We need bigger number than this
 		if( bIsOver ) power++;
 		return 1<<power;

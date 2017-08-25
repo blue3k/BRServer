@@ -57,9 +57,11 @@ namespace Util {
 	// SHA 256 hashing
 	Result SHA256Hash(size_t srcSize, const BYTE* bytes_to_encode, Array<BYTE> &destBuffer);
 
+	// Find min bit can embrace the number
+	uint32_t FindMinBitShift(uint32_t number);
 
 	// Make power of 2 value from given number, will bigger then input
-	UINT NearPowerOf2(uint32_t uiNumber );
+		uint32_t NearPowerOf2(uint32_t uiNumber );
 
 	// Service Name
 	const WCHAR* GetServiceName();

@@ -63,7 +63,7 @@ namespace BR
 			{
 				for( CounterType iEle = 1; iEle < InItemCount; iEle++ )
 				{
-					new (&Element[iEle]) DataType;
+					new ((void*)&Element[iEle]) DataType;
 				}
 
 				auto defaultValue = DefaultValue<DataType>();
@@ -87,7 +87,7 @@ namespace BR
 
 	private:
 
-		// page haeader pointer
+		// page header pointer
 		std::atomic<Page*>       m_EnqueuePage;
 		std::atomic<Page*>       m_EnqueueNextPage;
 		std::atomic<CounterType> m_EnqueuePageID;
@@ -104,10 +104,6 @@ namespace BR
 		// Page allocation index
 		CounterType m_PageIndex;
 
-		MemoryPool *m_pMemoryPool;
-
-		BR::CriticalSection m_DequeueLock;
-
 	private:
 
 		void EnqueuePageMove(Page* pMyEnqueuePage, CounterType myPageID);
@@ -117,9 +113,7 @@ namespace BR
 		PageQueue( int iDataPerPage = -1 );
 		~PageQueue(void);
 
-		MemoryPool* GetMemoryPool()												{ return m_pMemoryPool; }
-
-		// item enque
+		// item enqueue
 		inline Result Enqueue( const DataType& item);
 		inline Result Enqueue(DataType&& item);
 
@@ -150,8 +144,7 @@ namespace BR
 		inline Result DequeuePageMoveMT();
 	};
 
-	#include "PageQueue.inl"
-
-
-
 } // namespace BR
+
+
+#include "PageQueue.inl"

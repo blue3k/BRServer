@@ -112,90 +112,8 @@ namespace BR
 
 
 
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Memory Page pool
-	//
-
-	// Constructor
-	PagePool::PagePool( size_t PageSize )
-		:PageAllocator( PageSize + PAGEITEM_SIZE )
-	{
-	}
-
-	PagePool::PagePool( size_t HeaderSize, size_t ElementSize )
-		:PageAllocator( HeaderSize + PAGEITEM_SIZE, ElementSize )
-	{
-	}
-
-	PagePool::~PagePool()
-	{
-		Clear();
-	}
-
-	// Clear
-	void PagePool::Clear()
-	{
-		PagePool *pAllocator = this;
-		m_FreePages.for_each( [&] ( StackPool::Item *pItem )
-		{
-			pAllocator->OrgFree( pItem );
-		});
-		m_FreePages.Clear();
-	}
-
-	size_t PagePool::GetPageSize() const
-	{
-		return PageAllocator::GetPageSize() - sizeof(PagePool::PageItem);
-	}
-
-	// Alloc/Free page method
-	Result PagePool::Alloc( void* &pPtr )
-	{
-		void *pRes = nullptr;
-		PageItem *pItem = nullptr;
-
-		pItem = (PageItem*)m_FreePages.Pop();
-		if( pItem == nullptr )
-		{
-			Result hr = PageAllocator::Alloc( pRes );
-			if( !(hr) ) return hr;
-
-			pItem = (PageItem*)pRes;
-		}
-		pItem->Magic = MAGIC_PAGEPOOL;
-		pItem->pNext = nullptr;
-
-		pPtr = (void*)((BYTE*)pItem + PAGEITEM_SIZE);
-		AssertRel( ((intptr_t)pPtr & (BR_ALIGN_DOUBLE-1)) == 0 );
-
-		return ResultCode::SUCCESS;
-	}
-
-	Result PagePool::Free( void* pPtr )
-	{
-		PageItem *pItem = nullptr;
-
-		if( pPtr == nullptr )
-			return ResultCode::INVALID_ARG;
-
-		pItem = (PageItem*)((BYTE*)pPtr - PAGEITEM_SIZE);
-		AssertRel( pItem->Magic == (intptr_t)MAGIC_PAGEPOOL );
-		pItem->pNext = nullptr;
-
-		m_FreePages.Push( pItem );
-
-		return ResultCode::SUCCESS;
-	}
-
-	Result PagePool::OrgFree( void* pPtr )
-	{
-		return PageAllocator::Free( pPtr );
-	}
 
 
-	
-	
 	////////////////////////////////////////////////////////////////////////////////
 	//
 	//	Memory Pool by size
@@ -207,9 +125,13 @@ namespace BR
 	MemoryPool::MemoryPool( size_t AllocSize )
 		: m_AllocSize(BR_ALLIGNUP(AllocSize,BR_ALIGN_DOUBLE) + MEMITEM_SIZE)
 		, m_Allocator( DecidePageSize(BR_ALLIGNUP(AllocSize,BR_ALIGN_DOUBLE)) )
+#ifdef ENABLE_MEMORY_TRACE
 		, m_printAlocList(false)
+#endif
 	{
+#ifdef ENABLE_MEMORY_TRACE
 		memset(&m_AllocatedHead, 0, sizeof m_AllocatedHead);
+#endif
 	}
 
 	MemoryPool::~MemoryPool()
@@ -252,12 +174,12 @@ namespace BR
 			// Allocate page if no free item
 			void *pPage = nullptr;
 
-
+#ifdef ENABLE_MEMORY_TRACE
 			if (m_printAlocList)
 			{
 				PrintAllocatedList();
 			}
-
+#endif
 
 			if( !(m_Allocator.Alloc( pPage )) )
 				return ResultCode::OUT_OF_MEMORY;
@@ -313,6 +235,7 @@ namespace BR
 		Assert(pMemItem->pPrev == nullptr);
 
 		{
+#ifdef ENABLE_MEMORY_TRACE
 			MutexScopeLock localLock(m_CriticalSection);
 
 			// link this to the allocated header
@@ -323,7 +246,6 @@ namespace BR
 			pMemItem->pPrev = &m_AllocatedHead;
 			m_AllocatedHead.pNext = pMemItem;
 
-#ifdef ENABLE_MEMORY_TRACE
 
 			UINT32* pPtr32 = (UINT32*)pPtr;
 			for( UINT offset = 0 ; offset < GetAllocSize(); offset += 4 )
@@ -338,8 +260,7 @@ namespace BR
 #endif
 		}
 
-		//_WriteBarrier();
-		std::atomic_thread_fence(std::memory_order_seq_cst);
+		//std::atomic_thread_fence(std::memory_order_seq_cst);
 
 		m_AllocatedCount.fetch_add(1,std::memory_order_relaxed);
 
@@ -379,6 +300,7 @@ namespace BR
 			//Assert( Using == pMemItem->Using );
 
 			{
+#ifdef ENABLE_MEMORY_TRACE
 				MutexScopeLock localLock(m_CriticalSection);
 				// link this to the allocated header
 				if (pMemItem->pNext != nullptr)
@@ -388,7 +310,6 @@ namespace BR
 				pMemItem->pPrev = nullptr;
 				pMemItem->pNext = nullptr;
 
-#ifdef ENABLE_MEMORY_TRACE
 				new(&pMemItem->StackTrace) CallStackTrace;
 				StackWalker::CaptureCallStack(pMemItem->StackTrace);
 				pMemItem->TypeName = typeName;
@@ -396,8 +317,6 @@ namespace BR
 				memset( pPtr, 0xCD, GetAllocSize() );
 #endif
 			}
-			//_WriteBarrier();
-			std::atomic_thread_fence(std::memory_order_seq_cst);
 
 			m_FreeList.Push( pMemItem );
 		}
@@ -405,10 +324,12 @@ namespace BR
 		m_AllocatedCount.fetch_sub(1,std::memory_order_relaxed);
 
 
+#ifdef ENABLE_MEMORY_TRACE
 		if (m_printAlocList)
 		{
 			PrintAllocatedList();
 		}
+#endif
 
 		return ResultCode::SUCCESS;
 	}
@@ -430,19 +351,19 @@ namespace BR
 		return result;
 	}
 
+#ifdef ENABLE_MEMORY_TRACE
 	void MemoryPool::PrintAllocatedList()
 	{
 		m_printAlocList = false;
 		auto pCur = m_AllocatedHead.pNext;
-#ifdef ENABLE_MEMORY_TRACE
 		while (pCur != nullptr)
 		{
 			auto pMemCur = (MemItem*)pCur;
 			pMemCur->StackTrace.PrintStackTrace(Trace::TRC_WARN, CurrentProcessID);
 			pCur = pCur->pNext;
 		}
-#endif
 	}
+#endif
 
 		
 	////////////////////////////////////////////////////////////////////////////////
@@ -453,19 +374,25 @@ namespace BR
 	class MemoryPoolManagerImpl
 	{
 	public:
-		enum {
-			// Max memory size for pool
-			MAX_MEMORYSIZE_POWEROF2			= 1<<8,
-			// memory alignment size
-			MAX_MEMORYPOOL_ALIGNMENT_SHIFT	= 8,
-			MAX_MEMORYPOOL_ALIGNMENT		= 1<<MAX_MEMORYPOOL_ALIGNMENT_SHIFT,
+		
+		// Max memory size for pool
+		static constexpr size_t MAX_MEMORYSIZE_SHIFT = 8;
+		static constexpr size_t MAX_MEMORYSIZE_POWEROF2 = 1 << MAX_MEMORYSIZE_SHIFT;
+		// memory alignment size
+		static constexpr size_t MAX_MEMORYPOOL_ALIGNMENT_SHIFT = 8;
+		static constexpr size_t MAX_MEMORYPOOL_ALIGNMENT = 1 << MAX_MEMORYPOOL_ALIGNMENT_SHIFT;
+		static constexpr size_t MAX_MEMORYPOOL_COUNT = MAX_MEMORYSIZE_SHIFT + 1;
+
+
+
+		struct MemoryPoolItem
+		{
+			size_t MaxAllocationSize = 0;
+			MemoryPool* pMemoryPool = nullptr;
 		};
 
-		// Memory pool table type
-		typedef Hash::HashTable2< size_t, MemoryPool* > MemoryPoolMap;
-
 		// memory pool by size
-		MemoryPoolMap	m_MemoryPoolbySize;
+		MemoryPoolItem	m_MemoryPoolbySize[MAX_MEMORYPOOL_COUNT];
 
 		// Write lock to prevent duplicated addition try.
 		TicketLock		m_LockForAdd;
@@ -473,79 +400,65 @@ namespace BR
 	private:
 
 		// Quantize memory size
-		size_t GetQuantizedMemorySize( size_t memorySize )
+		bool QuantizeAndFind( size_t memorySize, uint32_t& minBitShift, size_t &newSize )
 		{
 			Assert( memorySize < (size_t)std::numeric_limits<UINT32>::max() );
 
-			size_t newSize = Util::NearPowerOf2( (UINT32)memorySize );
+			minBitShift = Util::FindMinBitShift((uint32_t)memorySize);
+
+			newSize = (size_t)1 << minBitShift;
 			if( newSize > MAX_MEMORYSIZE_POWEROF2 )
 			{
-				// allign memory size
+				// We don't use memory pool for this type
 				newSize = BR_ALLIGNUP(memorySize,MAX_MEMORYPOOL_ALIGNMENT);
+				return false;
 			}
-			return newSize;
-		}
-
-		// Add Memory pool
-		MemoryPool* AddMemoryPool( size_t allocationSize )
-		{
-			TicketScopeLock lock( TicketLock::LockMode::LOCK_EXCLUSIVE, m_LockForAdd );
-
-			// if it's already exist, exit
-			MemoryPool* pFound = nullptr;
-			if ((m_MemoryPoolbySize.Find(allocationSize, pFound)))
+			else
 			{
-				return pFound;
+				return true;
 			}
-
-			MemoryPool *pNewPool = new MemoryPool( allocationSize );
-			AssertRel(pNewPool);
-			m_MemoryPoolbySize.Insert(allocationSize, pNewPool);
-
-			return pNewPool;
 		}
+
 
 	public:
 
 		MemoryPoolManagerImpl()
 		{
+			int sizeShift = 1;
+			for (auto& itPoolItem : m_MemoryPoolbySize)
+			{
+				itPoolItem.MaxAllocationSize = (size_t)1 << sizeShift;
+				itPoolItem.pMemoryPool = new MemoryPool(itPoolItem.MaxAllocationSize);
+				sizeShift++;
+			}
 		}
 
 		~MemoryPoolManagerImpl()
 		{
 			// How can we delete them?
-			//while( m_MemoryPoolbySize.GetItemCount() > 0 )
-			//{
-			//	auto itCur = m_MemoryPoolbySize.();
-			//	if( itCur == m_MemoryPoolbySize.end() ) break;
-
-			//	auto pItem = *itCur;
-
-			//	m_MemoryPoolbySize.erase(itCur);
-
-			//	pItem->ForceClear();
-			//	delete pItem;
-			//}
-
-			m_MemoryPoolbySize.Clear();
+			for (auto& itPoolItem : m_MemoryPoolbySize)
+			{
+				delete itPoolItem.pMemoryPool;
+			}
 		}
 
 		// Get memory pool
 		Result GetMemoryPool( size_t allocationSize, MemoryPool* &pNewPool )
 		{
-			allocationSize = GetQuantizedMemorySize(allocationSize);
+			pNewPool = nullptr;
 
-			MemoryPool* pFound = nullptr;
-			if (!(m_MemoryPoolbySize.Find(allocationSize, pFound)))
-			{
-				pNewPool = AddMemoryPool( allocationSize );
-			}
-			else
-			{
-				pNewPool = pFound;
-			}
+			uint32_t minBitShift;
+			size_t newAllocationSize = allocationSize;
+			if(!QuantizeAndFind(allocationSize, minBitShift, newAllocationSize))
+				return ResultCode::FAIL;
 
-			Assert( pNewPool->GetAllocSize() == allocationSize );
+			auto poolIndex = minBitShift;
+
+			if(poolIndex >= countof(m_MemoryPoolbySize))
+				return ResultCode::FAIL;
+
+			assert(m_MemoryPoolbySize[poolIndex].MaxAllocationSize >= newAllocationSize);
+			pNewPool = m_MemoryPoolbySize[poolIndex].pMemoryPool;
 
 			return ResultCode::SUCCESS;
 
@@ -553,6 +466,13 @@ namespace BR
 	};
 
 
+	// Max memory size for pool
+	constexpr size_t MemoryPoolManagerImpl::MAX_MEMORYSIZE_SHIFT;
+	constexpr size_t MemoryPoolManagerImpl::MAX_MEMORYSIZE_POWEROF2;
+	// memory alignment size
+	constexpr size_t MemoryPoolManagerImpl::MAX_MEMORYPOOL_ALIGNMENT_SHIFT;
+	constexpr size_t MemoryPoolManagerImpl::MAX_MEMORYPOOL_ALIGNMENT;
+	constexpr size_t MemoryPoolManagerImpl::MAX_MEMORYPOOL_COUNT;
 
 
 

@@ -19,7 +19,7 @@
 #include "Common/Synchronization.h"
 #include "Common/SystemSynchronization.h"
 
-#define ENABLE_MEMORY_TRACE
+//#define ENABLE_MEMORY_TRACE
 
 namespace BR
 {
@@ -66,57 +66,6 @@ namespace BR
 
 
 
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Memory Page pool
-	//
-
-	class PagePool : public PageAllocator
-	{
-	public:
-		// magic number for page pool
-		static const intptr_t MAGIC_PAGEPOOL = (intptr_t)0x0847ab240847ab24L;
-
-
-		struct PageItem : public StackPool::Item
-		{
-			intptr_t Magic;
-
-			PageItem()
-			{
-				memset(this, 0, sizeof(PageItem));
-			}
-		};
-
-		enum {
-			PAGEITEM_SIZE = BR_ALLIGNUP(sizeof(PageItem),BR_ALIGN_DOUBLE)
-		};
-
-	private:
-
-		// Free page Pool
-		StackPool	m_FreePages;
-
-
-		Result OrgFree( void* pPtr );
-
-	public:
-		// Constructor
-		PagePool( size_t PageSize );
-		PagePool( size_t HeaderSize, size_t ElementSize );
-		virtual ~PagePool();
-
-		// Clear
-		void Clear();
-
-		virtual size_t GetPageSize() const;
-
-		// Alloc/Free page method
-		virtual Result Alloc( void* &pPtr );
-		virtual Result Free( void* pPtr );
-
-	};
-
 
 
 
@@ -125,7 +74,6 @@ namespace BR
 	//
 	//	Memory Pool
 	//
-
 
 	class MemoryPool
 	{
@@ -183,9 +131,11 @@ namespace BR
 		// Free item stack
 		StackPool	m_FreeList;
 
+#ifdef ENABLE_MEMORY_TRACE
 		BR::CriticalSection m_CriticalSection;
 		MemItem m_AllocatedHead;
 		bool m_printAlocList;
+#endif
 
 	private:
 

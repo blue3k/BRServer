@@ -755,7 +755,8 @@ namespace Trace {
 	// Trace flush result
 	void TraceOutModule::TraceFlush()
 	{
-		m_TraceSpinBuffer.WaitPendingWork();
+		// 10 sec timeout
+		m_TraceSpinBuffer.WaitPendingWork(DurationMS(10*1000));
 	}
 
 

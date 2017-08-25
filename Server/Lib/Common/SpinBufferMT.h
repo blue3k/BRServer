@@ -85,14 +85,15 @@ namespace BR
 		BLOCK* Read_Lock();
 		void Read_Unlock(BLOCK* pItem);
 
-		// writing complet and get ready for reading
+		// writing complete and get ready for reading
 		CounterType GetReadableCount();
 
-		void WaitPendingWork();
+		// wait pending works
+		void WaitPendingWork(DurationMS timeout);
 	};
 
-	#include "SpinBufferMT.inl"
-
-
-
 }; // namespace BR
+
+
+#include "SpinBufferMT.inl"
+

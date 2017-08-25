@@ -171,13 +171,13 @@ TEST_F(NetTest, Simple)
 			switch( curEvent.EventType )
 			{
 			case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
-				defTrace( Trace::TRC_TRACE, "EVT_CONNECTION_RESULT {0}", curEvent.hr );
+				defTrace( Trace::TRC_INFO, "EVT_CONNECTION_RESULT {0}", curEvent.hr );
 				break;
 			case BR::Net::IConnection::Event::EVT_DISCONNECTED:
-				defTrace( Trace::TRC_TRACE, "EVT_DISCONNECTED {0}", curEvent.hr  );
+				defTrace( Trace::TRC_INFO, "EVT_DISCONNECTED {0}", curEvent.hr  );
 				break;
 			case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
-				defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE {0}", curEvent.hr  );
+				defTrace( Trace::TRC_INFO, "EVT_STATE_CHANGE {0}", curEvent.hr  );
 				break;
 			default:
 				break;
@@ -209,16 +209,16 @@ TEST_F(NetTest, Simple)
 				switch( curEvent.EventType )
 				{
 				case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
-					defTrace( Trace::TRC_TRACE, "EVT_CONNECTION_RESULT {0:X8}", curEvent.hr );
+					defTrace( Trace::TRC_INFO, "EVT_CONNECTION_RESULT {0:X8}", curEvent.hr );
 					break;
 				case BR::Net::IConnection::Event::EVT_DISCONNECTED:
-					defTrace( Trace::TRC_TRACE, "EVT_DISCONNECTED {0:X8}", curEvent.hr  );
+					defTrace( Trace::TRC_INFO, "EVT_DISCONNECTED {0:X8}", curEvent.hr  );
 					EXPECT_HRESULT_SUCCEEDED( m_pNetClient->ReleaseConnection( m_pIConnection ) );
 					m_pIConnection = nullptr;
 					goto EndTest;
 					break;
 				case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
-					defTrace( Trace::TRC_TRACE, "EVT_STATE_CHANGE {0:X8}", curEvent.hr  );
+					defTrace( Trace::TRC_INFO, "EVT_STATE_CHANGE {0:X8}", curEvent.hr  );
 					break;
 				default:
 					break;
@@ -228,7 +228,7 @@ TEST_F(NetTest, Simple)
 			// Processing received messages
 			if( SUCCEEDED(m_pIConnection->GetRecvMessage( pIMsg ) ) )
 			{
-				defTrace( Trace::TRC_TRACE, "Message {0}", pIMsg->GetMessageHeader()->msgID.ID  );
+				defTrace( Trace::TRC_INFO, "Message {0}", pIMsg->GetMessageHeader()->msgID.ID  );
 
 			}
 		}
