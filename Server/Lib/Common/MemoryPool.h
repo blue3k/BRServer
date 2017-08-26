@@ -92,9 +92,9 @@ namespace BR
 		struct MemItem : public StackPool::Item
 		{
 			intptr_t MemMagic;
+#ifdef ENABLE_MEMORY_TRACE
 			Item* pPrev;
 			//SyncCounter Using;
-#ifdef ENABLE_MEMORY_TRACE
 			CallStackTrace StackTrace;
 			const char* TypeName;
 			ThreadID LatestThreadID;
@@ -205,7 +205,8 @@ namespace BR
 		static Result Terminate();
 
 		// Get memory pool by size
-		static Result GetMemoryPoolBySize( size_t allocationSize, MemoryPool* &pPool );
+
+		static MemoryPool* GetMemoryPoolBySize(size_t allocationSize);
 	};
 
 
@@ -231,9 +232,9 @@ namespace BR
 			Assert(sizeof(ObjectType)==size);
 			if( stm_MemoryPool == nullptr )
 			{
-				MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
-				Assert(stm_MemoryPool != nullptr);
+				return new uint8_t[size];
 			}
+
 			void *pPtr = nullptr;
 			stm_MemoryPool->Alloc( pPtr, typeid(ObjectType).name() );
 			return pPtr;
@@ -241,13 +242,23 @@ namespace BR
 
 		static void operator delete(void *pPtr )
 		{
-			stm_MemoryPool->Free( pPtr, typeid(ObjectType).name() );
+			if (stm_MemoryPool == nullptr)
+			{
+				delete[] (uint8_t*)pPtr;
+			}
+			else
+			{
+				stm_MemoryPool->Free(pPtr, typeid(ObjectType).name());
+			}
 		}
 
 
 		// Cache object to memory pool
 		static void MemoryPoolCache( int iCountToCache )
 		{
+			if (stm_MemoryPool == nullptr)
+				return;
+
 			std::vector<ObjectType*> CacheTest;
 			for( int iCache = 0; iCache < iCountToCache; iCache++ )
 			{
@@ -264,61 +275,11 @@ namespace BR
 	
 
 
-	////////////////////////////////////////////////////////////////////////////////
-	//
-	//	Memory Pool Container
-	//
-
-
-	template< class ObjectType >
-	class MemoryPoolContainer
-	{
-	private:
-		// Memory pool that assigned with this class
-		static MemoryPool* stm_MemoryPool;
-
-	public:
-
-		static void* operator new( std::size_t size )
-		{
-			Assert(sizeof(ObjectType)==size);
-			if( stm_MemoryPool == nullptr )
-			{
-				MemoryPoolManager::GetMemoryPoolBySize( sizeof(ObjectType), stm_MemoryPool );
-				Assert(stm_MemoryPool != nullptr);
-			}
-			void *pPtr = NULL;
-			stm_MemoryPool->Alloc( pPtr, typeid(ObjectType).name() );
-			return pPtr;
-		}
-
-		static void operator delete(void *pPtr)
-		{
-			stm_MemoryPool->Free( pPtr, typeid(ObjectType).name() );
-		}
-
-		// Cache object to memory pool
-		static void MemoryPoolCache( int iCountToCache )
-		{
-			std::vector<ObjectType*> CacheTest;
-			for( int iCache = 0; iCache < iCountToCache; iCache++ )
-			{
-				CacheTest.push_back( new ObjectType );
-			}
-
-			std::for_each( CacheTest.begin(), CacheTest.end(), [](ObjectType* pObj)
-			{
-				if( pObj )
-					delete pObj;
-			});
-		}
-	};
-
 
 	#define BR_MEMORYPOOL_IMPLEMENT(className) \
 		namespace BR {\
 			template<>\
-			MemoryPool* MemoryPoolObject<className>::stm_MemoryPool = nullptr;\
+			MemoryPool* MemoryPoolObject<className>::stm_MemoryPool = MemoryPoolManager::GetMemoryPoolBySize(sizeof(className));\
 		};\
 
 

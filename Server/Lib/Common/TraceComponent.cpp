@@ -53,25 +53,6 @@ namespace BR
 		// initialize exception Handler
 		Trace::InitExceptionHandler();
 
-		//int iMod = 0;
-
-		//for (int iNewMod = 0; iNewMod < Trace::TraceModule::MAX_TRACEMODULE; iNewMod++)
-		//{
-		//	if (TraceModule::GetModules()[iNewMod] == nullptr)
-		//		break;
-
-		//	for (; iMod < Trace::TraceModule::MAX_TRACEMODULE; iMod++)
-		//	{
-		//		if (trcMods[iMod] == nullptr)
-		//		{
-		//			trcMods[iMod] = TraceModule::GetModules()[iNewMod];
-		//			break;
-		//		}
-		//	}
-		//}
-
-		//TraceOutModule::SetInstance(&trcShare);
-
 		pInstance = SharedPointerT<Trace::TraceOutModule>(new Trace::TraceOutModule);
 		Trace::TraceOutModule::SetInstance(pInstance.GetObjectPtr());
 		m_pInstance = pInstance;
@@ -79,6 +60,7 @@ namespace BR
 		pInstance->CheckAndUpdate(Util::Time.GetRawUTCSec());
 
 		pInstance->Start();
+		pInstance->SetPriority(Thread::PRIORITY::HIGHEST);
 
 		return hr;
 	}
@@ -87,24 +69,6 @@ namespace BR
 	void LibComponentTrace::TerminateComponent()
 	{
 		Component::TerminateComponent();
-
-		//	if( trcMods )
-		//	{
-		//		for( int iNewMod = 0; iNewMod < Trace::TraceModule::MAX_TRACEMODULE; iNewMod++ )
-		//		{
-		//			if( TraceModule::GetModules()[iNewMod] == nullptr )
-		//				break;
-
-		//			for( int iMod = 0; iMod < Trace::TraceModule::MAX_TRACEMODULE; iMod++ )
-		//			{
-		//				if( trcMods[iMod] == TraceModule::GetModules()[iNewMod] )
-		//				{
-		//					trcMods[iMod] = nullptr;
-		//					break;
-		//				}
-		//			}
-		//		}
-		//	}
 
 		Trace::TraceOutModule::SetInstance(nullptr);
 		m_pInstance = SharedPointerT<SharedObject>();

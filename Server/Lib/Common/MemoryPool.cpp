@@ -198,8 +198,8 @@ namespace BR
 				pMemItem->pNext = nullptr;
 				pMemItem->MemMagic = POOL_MEMMAGIC;
 				//pMemItem->Using.store(0, std::memory_order_relaxed);
-				pMemItem->pPrev = nullptr;
 #ifdef ENABLE_MEMORY_TRACE
+				pMemItem->pPrev = nullptr;
 				new(&pMemItem->StackTrace) CallStackTrace;
 				StackWalker::CaptureCallStack(pMemItem->StackTrace);
 				pMemItem->TypeName = typeName;
@@ -211,9 +211,9 @@ namespace BR
 			}
 			pMemItem->pNext = nullptr;
 			pMemItem->MemMagic = POOL_MEMMAGIC;
+#ifdef ENABLE_MEMORY_TRACE
 			pMemItem->pPrev = nullptr;
 			//pMemItem->Using.store(0, std::memory_order_relaxed);
-#ifdef ENABLE_MEMORY_TRACE
 			pMemItem->TypeName = typeName;
 			memset( pMemItem->DataPtr(), 0xCD, GetAllocSize() );
 #endif
@@ -223,8 +223,11 @@ namespace BR
 			pMemItem = (MemItem*)pItem;
 			Assert( pMemItem->MemMagic == POOL_MEMMAGIC );
 			//Assert(pMemItem->pPrev == nullptr);
-			if (pMemItem->pPrev != nullptr
-				|| pMemItem->MemMagic != POOL_MEMMAGIC )
+			if (pMemItem->MemMagic != POOL_MEMMAGIC
+#ifdef ENABLE_MEMORY_TRACE
+				pMemItem->pPrev != nullptr
+#endif
+				)
 			{
 #ifdef ENABLE_MEMORY_TRACE
 				pMemItem->StackTrace.PrintStackTrace(Trace::TRC_ERROR, CurrentProcessID);
@@ -240,10 +243,10 @@ namespace BR
 		//CounterType Using = pMemItem->Using.fetch_add(1, std::memory_order_relaxed);
 		//Assert( Using == 0 );
 		//Assert( Using == pMemItem->Using );
-		Assert(pMemItem->pPrev == nullptr);
 
 		{
 #ifdef ENABLE_MEMORY_TRACE
+			Assert(pMemItem->pPrev == nullptr);
 			MutexScopeLock localLock(m_CriticalSection);
 
 			// link this to the allocated header
@@ -289,8 +292,11 @@ namespace BR
 		Assert( pMemItem->MemMagic == POOL_MEMMAGIC );
 		//Assert( pMemItem->Using == 1 );
 		if( //pMemItem->Using != 1
-			pMemItem->pPrev == nullptr
-			|| pMemItem->MemMagic != POOL_MEMMAGIC )
+			pMemItem->MemMagic != POOL_MEMMAGIC
+#ifdef ENABLE_MEMORY_TRACE
+			|| pMemItem->pPrev == nullptr
+#endif
+			)
 		{
 			// Drop memory that causes the problem
 #ifdef ENABLE_MEMORY_TRACE
@@ -355,8 +361,13 @@ namespace BR
 		pMemItem = (MemItem*)((BYTE*)pPtr - MEMITEM_SIZE);
 
 		//auto Using = pMemItem->Using.load(std::memory_order_relaxed);
+#ifdef ENABLE_MEMORY_TRACE
 		bool result = pMemItem->pPrev != nullptr && pMemItem->MemMagic == POOL_MEMMAGIC;
 		Assert( result );
+#else
+		bool result = pMemItem->MemMagic == POOL_MEMMAGIC;
+		Assert(result);
+#endif
 
 		return result;
 	}
@@ -462,7 +473,8 @@ namespace BR
 			if(!QuantizeAndFind(allocationSize, minBitShift, newAllocationSize))
 				return ResultCode::FAIL;
 
-			auto poolIndex = minBitShift;
+			assert(minBitShift != 0 && minBitShift < countof(m_MemoryPoolbySize));
+			auto poolIndex = minBitShift - 1;
 
 			if(poolIndex >= countof(m_MemoryPoolbySize))
 				return ResultCode::FAIL;
@@ -511,7 +523,8 @@ namespace BR
 		if (!(hr)) return hr;
 
 		StackWalker::Initialize();
-		stm_pInstance = new MemoryPoolManagerImpl;
+		if(stm_pInstance == nullptr)
+			stm_pInstance = new MemoryPoolManagerImpl;
 
 		return hr;
 	}
@@ -528,15 +541,17 @@ namespace BR
 
 
 
+
 	// Get memory pool by size
-	Result MemoryPoolManager::GetMemoryPoolBySize( size_t allocationSize, MemoryPool* &pPool )
+	MemoryPool* MemoryPoolManager::GetMemoryPoolBySize(size_t allocationSize)
 	{
-		if( stm_pInstance == nullptr )
-			return ResultCode::E_NOT_INITIALIZED;
+		if (stm_pInstance == nullptr)
+			stm_pInstance = new MemoryPoolManagerImpl;
 
-		AssertRel( stm_pInstance );
+		MemoryPool* pPool = nullptr;
+		stm_pInstance->GetMemoryPool(allocationSize, pPool);
 
-		return stm_pInstance->GetMemoryPool( allocationSize, pPool );
+		return pPool;
 	}
 
 

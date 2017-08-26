@@ -122,8 +122,6 @@ namespace BR {
 
 		size_t	m_NumItems;
 
-		//MemoryPool* m_pPool;
-
 	public:
 
 		// Constructor
@@ -133,8 +131,6 @@ namespace BR {
 			memset( &m_Header, 0, sizeof(m_Header) );
 			m_Header.pPrev = &m_Header;
 			m_Header.pNext = &m_Header;
-
-			//m_pPool = MemoryPoolManager::GetMemoryPoolBySize(sizeof Node)
 		}
 
 		virtual ~StaticDoubleLinkedList()

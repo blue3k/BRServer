@@ -57,7 +57,7 @@ namespace Trace {
 	class TraceOutModule : public BR::Thread, public SharedObject
 	{
 	public:
-		typedef BR::SpinBufferMT<TraceBufferItem,30> TraceBufferType;
+		typedef BR::SpinBufferMT<TraceBufferItem,512> TraceBufferType;
 
 	private:
 

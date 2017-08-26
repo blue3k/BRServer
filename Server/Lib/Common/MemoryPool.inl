@@ -28,7 +28,7 @@ namespace BR
 
 
 
-	FORCEINLINE StackPool& MemoryPool::PickFreeList()
+	inline StackPool& MemoryPool::PickFreeList()
 	{
 		auto index = m_FreeIndex.fetch_add(1, std::memory_order_relaxed) & FREE_LIST_MASK;
 		return m_FreeList[index];
