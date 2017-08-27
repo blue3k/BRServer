@@ -14,7 +14,7 @@
 #include "Common/BrBaseTypes.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrXML.h"
-#include "Common/FixedString/FixedString.h"
+#include "String/FixedString.h"
 
 
 
