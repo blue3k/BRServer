@@ -162,8 +162,6 @@ namespace Trace {
 		inline const char *GetNameTag();
 
 		// Trace print out
-		void TraceOut( UINT trcMask, const char *strString );
-
 		void* TraceReserveWriteBuffer( UINT trcInputMask, char*& stringBuffer, INT &buffLen );
 		void TraceSendWriteBuffer( void* pWriteBuffer, INT buffLen );
 	};

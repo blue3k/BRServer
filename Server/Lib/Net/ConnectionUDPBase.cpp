@@ -835,7 +835,7 @@ namespace Net {
 		}
 
 
-		Assert( MemoryPool::CheckMemoryHeader( pMsg ) );
+		//Assert( MemoryPool::CheckMemoryHeader( pMsg ) );
 		pMsg->GetLengthNDataPtr( length, pDataPtr );
 		Assert(length == 0 || pMsgHeader->Crc32 != 0 );
 
@@ -1077,7 +1077,7 @@ namespace Net {
 
 			pMsgHeader = pIMsg->GetMessageHeader();
 
-			Assert( MemoryPool::CheckMemoryHeader( pIMsg ) );
+			//Assert( MemoryPool::CheckMemoryHeader( pIMsg ) );
 			Assert(pMsgHeader->Crc32 != 0);
 
 			if( !pMsgHeader->msgID.IDs.Reliability )

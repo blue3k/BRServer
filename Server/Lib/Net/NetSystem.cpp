@@ -168,34 +168,41 @@ namespace Net {
 		Result SetGatheringBufferSize(UINT bufferSize)
 		{
 			g_GatheringSize = bufferSize;
-			MemoryPoolManager::GetMemoryPoolBySize(g_GatheringSize, g_pGatheringBufferPool);
-			if (g_pGatheringBufferPool == nullptr)
-				return ResultCode::FAIL;
-
+			g_pGatheringBufferPool = MemoryPoolManager::GetMemoryPoolBySize(g_GatheringSize);
 			return ResultCode::SUCCESS;
 		}
 
-		Result AllocGatheringBuffer(BYTE* &pBuffer, UINT& bufferSize)
+		Result AllocGatheringBuffer(uint8_t* &pBuffer, UINT& bufferSize)
 		{
-			if (g_pGatheringBufferPool == nullptr)
-				return ResultCode::UNEXPECTED;
-
-			void* pPtr = nullptr;
 			bufferSize = g_GatheringSize;
-			if(!(g_pGatheringBufferPool->Alloc(pPtr, "AllocGatheringBuffer")))
-				return ResultCode::OUT_OF_MEMORY;
+			if (g_pGatheringBufferPool == nullptr)
+			{
+				pBuffer = new uint8_t[g_GatheringSize];
+			}
+			else
+			{
+				void* pPtr = nullptr;
+				if (!(g_pGatheringBufferPool->Alloc(pPtr, "AllocGatheringBuffer")))
+					return ResultCode::OUT_OF_MEMORY;
 
-			pBuffer = (BYTE*)pPtr;
+				pBuffer = (uint8_t*)pPtr;
+			}
 
 			return ResultCode::SUCCESS;
 		}
 
-		Result FreeGatheringBuffer(BYTE *pBuffer)
+		Result FreeGatheringBuffer(uint8_t *pBuffer)
 		{
 			if (g_pGatheringBufferPool == nullptr)
-				return ResultCode::FAIL;
+			{
+				delete[] pBuffer;
+			}
+			else
+			{
+				return g_pGatheringBufferPool->Free(pBuffer, "AllocGatheringBuffer");
+			}
 
-			return g_pGatheringBufferPool->Free(pBuffer, "AllocGatheringBuffer");
+			return ResultCode::SUCCESS;
 		}
 	}
 

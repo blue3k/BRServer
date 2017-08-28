@@ -121,13 +121,17 @@ namespace Message {
 			return nullptr;
 		}
 
-		MemoryPool *pMemPool = nullptr;
+		MemoryPool *pMemPool = MemoryPoolManager::GetMemoryPoolBySize(szAllocate);
 		void *pPtr = nullptr;
-		if( !(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
-			return nullptr;
-
-		if( !(pMemPool->Alloc(pPtr,"MessageData::NewMessage") ) )
-			return nullptr;
+		if (pMemPool == nullptr)
+		{
+			pPtr = new uint8_t[szAllocate];
+		}
+		else
+		{
+			if (!(pMemPool->Alloc(pPtr, "MessageData::NewMessage")))
+				return nullptr;
+		}
 
 		pBuffer = (BYTE*)pPtr;
 		if( pBuffer == nullptr )
@@ -316,12 +320,16 @@ namespace Message {
 		size_t szAllocate = sizeof(MessageData) + GetMessageSize();
 		this->~MessageData();
 
-		MemoryPool *pMemPool = nullptr;
-		if( !(MemoryPoolManager::GetMemoryPoolBySize(szAllocate, pMemPool)) )
-			return;
+		MemoryPool *pMemPool = MemoryPoolManager::GetMemoryPoolBySize(szAllocate);
+		if (pMemPool == nullptr)
+		{
+			delete[] (uint8_t*)this;
+		}
+		else
+		{
+			pMemPool->Free((void*)this, "MessageData::DeleteThis");
+		}
 
-		if( !(pMemPool->Free((void*)this, "MessageData::DeleteThis") ) )
-			return;
 	}
 
 

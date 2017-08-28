@@ -34,19 +34,23 @@ namespace BR {
 namespace Trace {
 
 	//Struct for Spin Buffer
-	typedef struct tag_TraceBufferItem
+	struct TraceBufferItem
 	{
-		bool	KillSignal;
-		UINT	InputMask;
+		bool	KillSignal = false;
+		uint	InputMask = 0;
 		char	TraceBuff[4096];
+		// as far as this structure is part of SpinBuffer data, whole structure should be fine with multicore cache. This atomic will provide a little bit safety
+		std::atomic<uint>	TraceBuffUsedLen;
 
-		tag_TraceBufferItem()
-			:KillSignal(false),
-			InputMask(0)
+		TraceBufferItem()
+			: KillSignal(false)
+			, InputMask(0)
+			, TraceBuffUsedLen(0)
 		{
 			TraceBuff[0] = 0;
 		}
-	} TraceBufferItem;
+
+	};
 
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +61,7 @@ namespace Trace {
 	class TraceOutModule : public BR::Thread, public SharedObject
 	{
 	public:
-		typedef BR::SpinBufferMT<TraceBufferItem,30> TraceBufferType;
+		typedef BR::SpinBufferMT<TraceBufferItem,512> TraceBufferType;
 
 	private:
 
@@ -68,7 +72,7 @@ namespace Trace {
 		IO::File	m_LogFile[TRCOUT_NUMFILE];
 
 		// Latest log file creation time
-		UINT		m_tLogFileHour[TRCOUT_NUMFILE];
+		uint		m_tLogFileHour[TRCOUT_NUMFILE];
 
 		TimeStampSec     m_tCurTime;
 		struct tm	m_tCurTimeTM;
@@ -98,8 +102,7 @@ namespace Trace {
 
 		// Line header buffer
 		char		m_szLineHeader[512];
-		UINT		m_uiLineHeaderLen;
-		WCHAR		m_wszLineHeader[512];
+		uint		m_uiLineHeaderLen;
 
 		//// SpinBuffer for TraceOut
 		TraceBufferType m_TraceSpinBuffer;
@@ -112,8 +115,14 @@ namespace Trace {
 		Result OpenLogFile( int iFile, const struct tm &curtm, const char *strFileName );
 
 
+
+		void ReserveTimePrefix(char* &szDest, int& iBuffLen);
+
 		// Append Trace mask prefix
-		void AppendMaskPrefix( ULONG trcMask, char* &szDest, INT& iBuffLen );
+		void AppendMaskPrefix( uint32_t trcMask, char* &szDest, int& iBuffLen );
+
+		// Append mask prefix + ReserveTimePrefix
+		void AppendPrefix(const char* traceName, uint32_t trcMask, char* &szDest, int& iBuffLen);
 
 	public:
 
@@ -150,20 +159,20 @@ namespace Trace {
 
 		// Console output
 #if WINDOWS
-		void ConsoleOut( const WCHAR *strString1, const WCHAR *strString2 );
+		void ConsoleOut(const WCHAR *strString, size_t strLen);
 #else
-		void ConsoleOut(const char *strString1, const char *strString2);
+		void ConsoleOut(const char *strString, size_t strLen);
 #endif
 
 
 		// Trace print out
-		void TraceOut( UINT trcOutMask, const char * szOutput );
+		void TraceOut( uint trcOutMask, char * szOutput, size_t outputStringLen);
 
-		// Trace print data to Spin Buffer
-		void TracePush( UINT trcInputMask, const char *strTrace, const char* traceName);
+		//// Trace print data to Spin Buffer
+		//void TracePush( UINT trcInputMask, const char *strTrace, const char* traceName);
 
 		// two-way version
-		TraceBufferType::BLOCK* TraceReserveWriteBuffer( UINT trcInputMask, const char* traceName, char*& stringBuffer, INT &buffLen );
+		TraceBufferType::BLOCK* TraceReserveWriteBuffer(uint trcInputMask, const char* traceName, char*& stringBuffer, int &buffLen );
 		void TraceSendWriteBuffer( TraceBufferType::BLOCK* pWriteBuffer, INT buffLen );
 
 

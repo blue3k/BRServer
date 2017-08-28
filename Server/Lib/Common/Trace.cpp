@@ -193,15 +193,7 @@ namespace Trace {
 	}
 
 
-	// Trace print out
-	void TraceModule::TraceOut( UINT trcMask, const char *strTrace )
-	{
-		// if trace system not initialized then return it
-		if( TraceOutModule::GetInstance() == 0 )
-			return;
 
-		TraceOutModule::GetInstance()->TracePush( m_uiTraceMask&trcMask, strTrace, GetName() );
-	}
 
 	void* TraceModule::TraceReserveWriteBuffer( UINT trcInputMask, char*& stringBuffer, INT &buffLen )
 	{
@@ -305,7 +297,7 @@ namespace Trace {
 		if (m_LogFile[iFile].GetFileSize() == 0)
 		{
 			// UTF8 BOM
-			static const BYTE bytBOM[3] = { 0xEF, 0xBB, 0xBF };
+			static const uint8_t bytBOM[3] = { 0xEF, 0xBB, 0xBF };
 			m_LogFile[iFile].Write(bytBOM, 3, szWritten);
 		}
 
@@ -313,15 +305,15 @@ namespace Trace {
 		char szLogBuff[1024];
 		snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\n");
 		DWORD dwStrLen = (DWORD)strlen(szLogBuff);
-		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
+		m_LogFile[iFile].Write((uint8_t*)szLogBuff, dwStrLen, szWritten);
 
 		snprintf(szLogBuff, MAX_PATH, "Start Log: %04d-%02d-%02d-%02d:%02d \n", curtm.tm_year + 1900, curtm.tm_mon + 1, curtm.tm_mday, curtm.tm_hour, curtm.tm_min );
 		dwStrLen = (DWORD)strlen(szLogBuff);
-		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
+		m_LogFile[iFile].Write((uint8_t*)szLogBuff, dwStrLen, szWritten);
 
 		snprintf(szLogBuff, MAX_PATH, "----------------------------------------------------------------------------\n");
 		dwStrLen = (DWORD)strlen(szLogBuff);
-		m_LogFile[iFile].Write((BYTE*)szLogBuff, dwStrLen, szWritten);
+		m_LogFile[iFile].Write((uint8_t*)szLogBuff, dwStrLen, szWritten);
 
 		return ResultCode::SUCCESS;
 	}
@@ -346,26 +338,20 @@ namespace Trace {
 				break;
 			}
 
+			auto ulCurTime = Util::Time.GetTimeUTCSec();
+			CheckAndUpdate(ulCurTime);
+
+
 			if( m_TraceSpinBuffer.GetReadableCount() > 0 )
 			{
 				TraceBufferType::BLOCK *pBlock = m_TraceSpinBuffer.Read_Lock();
 
 				if( !pBlock->Data.KillSignal )
 				{
-					auto ulCurTime = Util::Time.GetTimeUTCSec();
-
-					CheckAndUpdate( ulCurTime );
-
-					TraceOut( pBlock->Data.InputMask, pBlock->Data.TraceBuff );
+					TraceOut( pBlock->Data.InputMask, pBlock->Data.TraceBuff, pBlock->Data.TraceBuffUsedLen);
 				}
 
 				m_TraceSpinBuffer.Read_Unlock( pBlock );
-			}
-			else
-			{
-				auto ulCurTime = Util::Time.GetTimeUTCSec();
-
-				CheckAndUpdate( ulCurTime );
 			}
 		}
 	}
@@ -481,7 +467,6 @@ namespace Trace {
 			m_tLineHeader = m_tCurTime;
 
 			m_uiLineHeaderLen = snprintf(m_szLineHeader, sizeof(m_szLineHeader), "%4d-%02d-%02d/%02d:%02d:%02d:", m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour, m_tCurTimeTM.tm_min, m_tCurTimeTM.tm_sec);
-			StrUtil::UTF8ToWCS( m_szLineHeader, m_wszLineHeader );
 		}
 	}
 
@@ -521,35 +506,26 @@ namespace Trace {
 
 	// Console output
 #if WINDOWS
-	void TraceOutModule::ConsoleOut( const WCHAR *strString1, const WCHAR *strString2 )
+	void TraceOutModule::ConsoleOut( const WCHAR *strString, size_t strLen )
 	{
 		DWORD dwWriten = 0;
 		// Get the standard input handle.
 		if (m_hConsole != INVALID_NATIVE_HANDLE_VALUE)
 		{
-			if( strString1 )
-				WriteConsoleW( m_hConsole, strString1, (DWORD)wcslen(strString1), &dwWriten, nullptr );
-
-			if( strString2 )
-				WriteConsoleW( m_hConsole, strString2, (DWORD)wcslen(strString2), &dwWriten, nullptr );
+			if(strString)
+				WriteConsoleW( m_hConsole, strString, (DWORD)strLen, &dwWriten, nullptr );
 		}
 #else
-	void TraceOutModule::ConsoleOut(const char *strString1, const char *strString2)
+	void TraceOutModule::ConsoleOut(const char *strString, size_t strLen)
 	{
-
-		if (strString1 != nullptr)
-			printf("%s", strString1);
-
-		if (strString2 != nullptr)
-			printf("%s", strString2);
+		if (strString != nullptr)
+			printf("%s", strString);
 
 #endif
-	//Proc_End:
-		return;
 	}
 
 	// Trace print out
-	void TraceOutModule::TraceOut( UINT trcOutMask, const char * szOutput )
+	void TraceOutModule::TraceOut(uint trcOutMask, char * szOutput, size_t outputStringLen )
 	{
 #if WINDOWS
 		const bool wcharConsole = true;
@@ -565,24 +541,29 @@ namespace Trace {
 		uint32_t outputMaskDebug = m_uiOutputMaskDebugger & trcOutMask;
 		uint32_t outputMaskFile[2] = { m_uiOutputMaskFile[0] & trcOutMask, m_uiOutputMaskFile[0] & trcOutMask };
 
+		// I don't want to have null terminate here. I just want to replace the line header part
+		memcpy(szOutput, m_szLineHeader, m_uiLineHeaderLen);
+
 		static WCHAR wszOutput[2048] = L"";
+		size_t wcsOutputSize = 0;
 		if(outputMask != 0 && (eventOut || wcharConsole))
 		{
 			StrUtil::UTF8ToWCS( szOutput, wszOutput );
+			wcsOutputSize = wcslen(wszOutput);
 		}
 
 		if(outputMaskDebug != 0)
 		{
 #if WINDOWS
-			OutputDebugStringW( m_wszLineHeader );
 			OutputDebugStringW( wszOutput );
 #endif
 		}
 
+
 		if(outputMask != 0)
 		{
 #if WINDOWS
-			ConsoleOut( m_wszLineHeader, wszOutput );
+			ConsoleOut( wszOutput, wcsOutputSize);
 #elif ANDROID
 			android_LogPriority logPriority = ANDROID_LOG_INFO;
 			switch (trcOutMask)
@@ -601,8 +582,10 @@ namespace Trace {
 			};
 
 			__android_log_print(logPriority, "StormForge", "%s", szOutput);
+			unused(wcsOutputSize);
 #else
-
+			unused(wcsOutputSize);
+			ConsoleOut(szOutput, outputStringLen);
 #endif
 		}
 
@@ -617,27 +600,28 @@ namespace Trace {
 		//		EventLog( BR_EVENT_ASSERT, m_wszLineHeader, wszOutput );
 		//}
 
-		DWORD dwszLineHeader = (DWORD)strlen(m_szLineHeader);
-		DWORD dwszOutput = (DWORD)strlen(szOutput);
-
 		// Validate log file
 		ValidateLogFile();
-
 
 		size_t szWritten;
 		for (int iFile = 0; iFile < TRCOUT_NUMFILE; iFile++)
 		{
 			if (outputMaskFile[iFile] != 0 && m_LogFile[iFile].IsOpened())
 			{
-				m_LogFile[iFile].Write((const BYTE*)m_szLineHeader, dwszLineHeader, szWritten);
-				m_LogFile[iFile].Write((const BYTE*)szOutput, dwszOutput, szWritten);
+				m_LogFile[iFile].Write((const uint8_t*)szOutput, (DWORD)outputStringLen, szWritten);
 			}
 		}
 	}
 
+	void TraceOutModule::ReserveTimePrefix(char* &szDest, int& iBuffLen)
+	{
+		memset(szDest, ' ', m_uiLineHeaderLen); // fill with space to reserve
+		szDest += m_uiLineHeaderLen;
+		iBuffLen -= m_uiLineHeaderLen;
+	}
 
 	// Append Trace mask prefix
-	void TraceOutModule::AppendMaskPrefix( ULONG trcMask, char* &szDest, INT& iBuffLen )
+	void TraceOutModule::AppendMaskPrefix( uint32_t trcMask, char* &szDest, int& iBuffLen )
 	{
 		switch( trcMask )
 		{
@@ -655,66 +639,78 @@ namespace Trace {
 		};
 	}
 
-	// Trace print data to Spin Buffer
-	void TraceOutModule::TracePush( UINT trcInputMask, const char *strTrace, const char* traceName )
+	// Append mask prefix + ReserveTimePrefix
+	void TraceOutModule::AppendPrefix(const char* traceName, uint32_t trcMask, char* &szDest, int& iBuffLen)
 	{
-		// if not thread mode then print directly
-		if(!GetIsRunning())
-		{
-			char strTraceBuff[4096];
-
-			char *pOutBuff = strTraceBuff;
-			INT iBuffLen = sizeof(strTraceBuff);
-
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, traceName );
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, ": " );
-			AppendMaskPrefix( trcInputMask, pOutBuff, iBuffLen );
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, strTrace );
-
-			// pending \r\n
-			if( iBuffLen < 3 )
-			{
-				pOutBuff -= 3-iBuffLen;
-				iBuffLen = 3;
-			}
-
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, "\n" );
-
-			TraceOut( trcInputMask, strTraceBuff );
-
-			return;
-		}
-		else
-		{
-			TraceBufferType::BLOCK *pSpinBlock = m_TraceSpinBuffer.Write_Lock();
-
-			char *pOutBuff = pSpinBlock->Data.TraceBuff;
-			INT iBuffLen = sizeof(pSpinBlock->Data.TraceBuff);
-
-
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, traceName );
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, ": " );
-			AppendMaskPrefix( trcInputMask, pOutBuff, iBuffLen );
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, strTrace );
-
-			// pending \r\n
-			if( iBuffLen < 3 )
-			{
-				pOutBuff -= 3-iBuffLen;
-				iBuffLen = 3;
-			}
-
-			StrUtil::StringCpyEx( pOutBuff, iBuffLen, "\n" );
-
-			pSpinBlock->Data.InputMask = trcInputMask;
-			pSpinBlock->Data.KillSignal = false;
-
-			m_TraceSpinBuffer.Write_Unlock( pSpinBlock );
-		}
+		ReserveTimePrefix(szDest, iBuffLen);
+		StrUtil::StringCpyEx(szDest, iBuffLen, traceName);
+		StrUtil::StringCpyEx(szDest, iBuffLen, ": ");
+		AppendMaskPrefix(trcMask, szDest, iBuffLen);
 	}
 
+
+	//// Trace print data to Spin Buffer
+	//void TraceOutModule::TracePush( UINT trcInputMask, const char *strTrace, const char* traceName )
+	//{
+	//	// if not thread mode then print directly
+	//	if(!GetIsRunning())
+	//	{
+	//		char strTraceBuff[4096];
+
+	//		char *pOutBuff = strTraceBuff;
+	//		INT iBuffLen = sizeof(strTraceBuff);
+
+	//		//StrUtil::StringCpyEx( pOutBuff, iBuffLen, traceName );
+	//		//StrUtil::StringCpyEx( pOutBuff, iBuffLen, ": " );
+	//		//AppendMaskPrefix( trcInputMask, pOutBuff, iBuffLen );
+	//		AppendPrefix(traceName, trcInputMask, pOutBuff, iBuffLen);
+	//		StrUtil::StringCpyEx( pOutBuff, iBuffLen, strTrace );
+
+	//		// pending \r\n
+	//		if( iBuffLen < 3 )
+	//		{
+	//			pOutBuff -= 3-iBuffLen;
+	//			iBuffLen = 3;
+	//		}
+
+	//		StrUtil::StringCpyEx( pOutBuff, iBuffLen, "\n" );
+
+	//		TraceOut( trcInputMask, strTraceBuff );
+
+	//		return;
+	//	}
+	//	else
+	//	{
+	//		TraceBufferType::BLOCK *pSpinBlock = m_TraceSpinBuffer.Write_Lock();
+
+	//		char *pOutBuff = pSpinBlock->Data.TraceBuff;
+	//		INT iBuffLen = sizeof(pSpinBlock->Data.TraceBuff);
+
+
+	//		//StrUtil::StringCpyEx( pOutBuff, iBuffLen, traceName );
+	//		//StrUtil::StringCpyEx( pOutBuff, iBuffLen, ": " );
+	//		//AppendMaskPrefix( trcInputMask, pOutBuff, iBuffLen );
+	//		AppendPrefix(traceName, trcInputMask, pOutBuff, iBuffLen);
+	//		StrUtil::StringCpyEx( pOutBuff, iBuffLen, strTrace );
+
+	//		// pending \r\n
+	//		if( iBuffLen < 3 )
+	//		{
+	//			pOutBuff -= 3-iBuffLen;
+	//			iBuffLen = 3;
+	//		}
+
+	//		StrUtil::StringCpyEx( pOutBuff, iBuffLen, "\n" );
+
+	//		pSpinBlock->Data.InputMask = trcInputMask;
+	//		pSpinBlock->Data.KillSignal = false;
+
+	//		m_TraceSpinBuffer.Write_Unlock( pSpinBlock );
+	//	}
+	//}
+
 	
-	TraceOutModule::TraceBufferType::BLOCK* TraceOutModule::TraceReserveWriteBuffer( UINT trcInputMask, const char* traceName, char*& stringBuffer, INT &buffLen )
+	TraceOutModule::TraceBufferType::BLOCK* TraceOutModule::TraceReserveWriteBuffer(uint trcInputMask, const char* traceName, char*& stringBuffer, int &buffLen )
 	{
 		TraceBufferType::BLOCK *pSpinBlock = m_TraceSpinBuffer.Write_Lock();
 
@@ -722,19 +718,20 @@ namespace Trace {
 		buffLen = sizeof(pSpinBlock->Data.TraceBuff);
 
 
-		StrUtil::StringCpyEx( stringBuffer, buffLen, traceName );
-		StrUtil::StringCpyEx( stringBuffer, buffLen, ": " );
-		AppendMaskPrefix( trcInputMask, stringBuffer, buffLen );
+		//StrUtil::StringCpyEx( stringBuffer, buffLen, traceName );
+		//StrUtil::StringCpyEx( stringBuffer, buffLen, ": " );
+		//AppendMaskPrefix( trcInputMask, stringBuffer, buffLen );
+		AppendPrefix(traceName, trcInputMask, stringBuffer, buffLen);
 
 		pSpinBlock->Data.InputMask = trcInputMask;
 
 		return pSpinBlock;
 	}
 
-	void TraceOutModule::TraceSendWriteBuffer( TraceBufferType::BLOCK* pWriteBuffer, INT buffLen )
+	void TraceOutModule::TraceSendWriteBuffer( TraceBufferType::BLOCK* pWriteBuffer, int buffLen )
 	{
 		char *pOutBuff = pWriteBuffer->Data.TraceBuff;
-		INT orgBuffLen = sizeof(pWriteBuffer->Data.TraceBuff);
+		int orgBuffLen = sizeof(pWriteBuffer->Data.TraceBuff);
 
 		pOutBuff += orgBuffLen - buffLen;
 
@@ -748,6 +745,8 @@ namespace Trace {
 		StrUtil::StringCpyEx( pOutBuff, buffLen, "\n" );
 
 		pWriteBuffer->Data.KillSignal = false;
+		pWriteBuffer->Data.TraceBuffUsedLen.store(orgBuffLen - buffLen, std::memory_order_relaxed);
+
 		m_TraceSpinBuffer.Write_Unlock( pWriteBuffer );
 	}
 
