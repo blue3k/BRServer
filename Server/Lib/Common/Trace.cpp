@@ -466,7 +466,7 @@ namespace Trace {
 		{
 			m_tLineHeader = m_tCurTime;
 
-			m_uiLineHeaderLen = snprintf(m_szLineHeader, sizeof(m_szLineHeader), "%4d-%02d-%02d/%02d:%02d:%02d:", m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour, m_tCurTimeTM.tm_min, m_tCurTimeTM.tm_sec);
+			m_uiLineHeaderLen = snprintf(m_szLineHeader, sizeof(m_szLineHeader), "%02d:%02d:%02d/%08X", m_tCurTimeTM.tm_hour, m_tCurTimeTM.tm_min, m_tCurTimeTM.tm_sec, Util::Time.GetRawTimeMs().time_since_epoch().count());
 		}
 	}
 
