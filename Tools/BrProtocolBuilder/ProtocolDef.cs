@@ -326,9 +326,6 @@ namespace ProtocolXml {
         uint64,
         
         /// <remarks/>
-        BYTE,
-        
-        /// <remarks/>
         WORD,
         
         /// <remarks/>

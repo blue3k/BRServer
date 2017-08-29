@@ -92,7 +92,7 @@ namespace BR
 			void RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "{0}:RegisterEntityCmd:{1}:{2} , TransactionID:{3}, LocalEntID:{4}, EntName:{5}",
+				protocolTrace(Trace::TRC_DBG2, "{0}:RegisterEntityCmd:{1}:{2} , TransactionID:{3}, LocalEntID:{4}, EntName:{5,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TransactionID, m_LocalEntID, m_EntName); 
 			}; // void RegisterEntityCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 

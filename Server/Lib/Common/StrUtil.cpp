@@ -49,7 +49,7 @@ namespace StrUtil {
 	static inline double ReadNumber(char& curChar, const char*& szFormating)
 	{
 		double fNumber = 0;
-		for (curChar = *szFormating++; curChar && (curChar != '%' && curChar != '}' && curChar != '{' && curChar != ':'); curChar = *szFormating++)
+		for (curChar = *szFormating++; curChar && (curChar != '%' && curChar != '}' && curChar != '{' && curChar != ':' && curChar != ','); curChar = *szFormating++)
 		{
 			if (curChar == '.')
 				break;
@@ -68,7 +68,7 @@ namespace StrUtil {
 		if (curChar != '.') return fNumber;
 
 		double fExponent = 0.1;
-		for (curChar = *szFormating++; curChar && (curChar != '%' && curChar != '}' && curChar != ':'); curChar = *szFormating++)
+		for (curChar = *szFormating++; curChar && (curChar != '%' && curChar != '}' && curChar != ':' && curChar != ','); curChar = *szFormating++)
 		{
 			if (curChar < '0' || curChar > '9')
 				continue;
@@ -130,6 +130,23 @@ namespace StrUtil {
 					option = curChar;
 
 					digits = ReadNumber(curChar, szFormating);
+				}
+
+				// Read max length
+				if (curChar == ',')
+				{
+					if (curChar == '\0')
+					{
+						assert(false);
+						return ResultCode::INVALID_ARG;
+					}
+
+					SkipSpace(szFormating);
+
+					if (curChar == '\0')
+						return ResultCode::INVALID_ARG;
+
+					option = ReadNumber(curChar, szFormating);
 				}
 
 				if( curChar == '\0' )
