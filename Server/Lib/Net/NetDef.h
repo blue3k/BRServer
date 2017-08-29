@@ -15,8 +15,8 @@
 #include "Common/BrBaseTypes.h"
 #include "Common/PolicyID.h"
 #include "Common/Message.h"
-#include "Common/SharedObject.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedObject.h"
+#include "Object/SharedPointer.h"
 #include "Net/NetCtrlIDs.h"
 #if !WINDOWS
 #include <arpa/inet.h>

@@ -13,7 +13,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/MemoryPool.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedPointer.h"
 #include "Common/DualSortedMap.h"
 #include "Common/TimeUtil.h"
 #include "Common/SystemSynchronization.h"

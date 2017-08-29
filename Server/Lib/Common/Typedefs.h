@@ -64,7 +64,7 @@
 #include <SDKDDKVer.h>
 #include <crtdbg.h>
 #include <SDKDDKVer.h>
-//#include <Winnt.h>
+
 #include <windows.h>
 #include <stdint.h>
 

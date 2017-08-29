@@ -12,7 +12,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/ToString.h"
+#include "String/ToString.h"
 #include "Net/NetDef.h"
 
 

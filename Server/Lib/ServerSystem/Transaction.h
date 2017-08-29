@@ -17,8 +17,8 @@
 #include "Common/TimeUtil.h"
 #include "Common/ResultCode/BRResultCodeSvr.h"
 #include "Common/MemoryPool.h"
-#include "Common/SharedObject.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedObject.h"
+#include "Object/SharedPointer.h"
 #include "Common/PageQueue.h"
 #include "Common/TimeUtil.h"
 

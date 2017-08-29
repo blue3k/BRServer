@@ -13,7 +13,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/Message.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedPointer.h"
 #include "Net/NetDef.h"
 #include "Common/Task/Task.h"
 

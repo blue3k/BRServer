@@ -14,7 +14,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/BrAssert.h"
-#include "Common/Argument.h"
+#include "String/Argument.h"
 
 namespace BR {
 namespace StrUtil {

@@ -14,7 +14,7 @@
 //#include "Common/SvrTypes.h"
 #include "Common/Thread.h"
 //#include "Common/SpinBuffer.h"
-#include "Common/SharedObject.h"
+#include "Object/SharedObject.h"
 #include "Common/StrUtil.h"
 #include "Common/StrFormat.h"
 #include "Common/SpinBufferMT.h"

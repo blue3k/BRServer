@@ -14,7 +14,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/BrBaseTypes.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedPointer.h"
 
 
 namespace BR {

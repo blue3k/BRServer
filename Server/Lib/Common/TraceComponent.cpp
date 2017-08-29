@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "Common/BrAssert.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedPointer.h"
 #include "Common/Trace.h"
 #include "Common/Trace_Internal.h"
 #include "Common/TraceComponent.h"

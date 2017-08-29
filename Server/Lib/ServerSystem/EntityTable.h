@@ -20,7 +20,7 @@
 #include "Common/HashTable2.h"
 #include "Common/Indexing.h"
 #include "Common/UniqueEntityIDGenerator.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedPointer.h"
 
 
 namespace BR {

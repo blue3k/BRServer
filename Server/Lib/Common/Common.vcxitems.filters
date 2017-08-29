@@ -37,9 +37,6 @@
     <Filter Include="Object">
       <UniqueIdentifier>{ef5592b3-a1dc-43ed-88a6-9a58447f3a53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Memory">
-      <UniqueIdentifier>{079dc85e-b7bc-4512-beb9-12565845140e}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)DefaultLibComponent.cpp" />
@@ -148,9 +145,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)String\FixedStringDB.cpp">
       <Filter>String</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\SFString.cpp">
-      <Filter>String</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Object\SharedReferenceManager.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -171,15 +165,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp">
       <Filter>String</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Memory\MemoryPool.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Memory\SFMemory.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Memory\MemoryManager.cpp">
-      <Filter>Memory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -415,9 +400,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)String\FixedString32.h">
       <Filter>String</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\SFString.h">
-      <Filter>String</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SFTypedefs.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SFAssert.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Object\SharedPointer.h">
@@ -443,24 +425,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h">
       <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\MemoryManager.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\MemoryPool.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\SFMemory.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\IMemoryManager.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\Memory_Impl.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\MemoryBufferUtil.h">
-      <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -583,9 +547,6 @@
     </None>
     <None Include="$(MSBuildThisFileDirectory)String\HashCRC32Table.inl">
       <Filter>String</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Memory\MemoryPool.inl">
-      <Filter>Memory</Filter>
     </None>
   </ItemGroup>
 </Project>

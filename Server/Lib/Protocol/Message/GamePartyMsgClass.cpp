@@ -11,8 +11,8 @@
 
 #include "stdafx.h"
 #include "Common/PolicyID.h"
-#include "Common/ToStringSvr.h"
-#include "Common/ToStringGame.h"
+#include "String/ToStringSvr.h"
+#include "String/ToStringGame.h"
 #include "Common/ArrayUtil.h"
 #include "Protocol/ProtocolMessageCPPInc.h"
 #include "Protocol/ProtocolTrace.h"

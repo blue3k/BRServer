@@ -15,7 +15,7 @@
 #include "Common/Typedefs.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/SvrTypes.h"
-#include "Common/ToStringSvr.h"
+#include "String/ToStringSvr.h"
 
 
 namespace BR {

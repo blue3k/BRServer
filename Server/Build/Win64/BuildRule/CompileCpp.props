@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Label="UserMacros">
+    <SF_DIR>$(SolutionDir)StormForge\</SF_DIR>
+  </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>CompileCpp</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\;..\..\Lib;$(SolutionDir)External\openssl-1.0.2a\inc32;$(SolutionDir)External\libxml\include;$(SolutionDir)External\jsoncpp\include;$(SolutionDir)External\curl7.41\include;$(SolutionDir)External\mysql-connector-c-6.1.6-winx64\include;$(SolutionDir)External\libiconv-1.14\include;$(SolutionDir)External\zlib-1.2.8;$(SolutionDir)Server/Lib/Common;$(SolutionDir)Server/Lib/DB;$(SolutionDir)Server/Lib/ServerSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\..\Lib;$(SolutionDir)External\mysql-connector-c-6.1.6-winx64\include;$(SolutionDir)Server/Lib/Common;$(SolutionDir)Server/Lib/DB;$(SolutionDir)Server/Lib/ServerSystem;$(SF_DIR)3rdParties\src\curl\curl\include;$(SF_DIR)3rdParties\src\jsoncpp\include;$(SF_DIR)3rdParties\src\libxml\libxml2\include;$(SF_DIR)3rdParties\src\openssl\openssl-1.0.2a\inc32;$(SF_DIR)3rdParties\src\libiconv\libiconv-1.14\include;$(SF_DIR)3rdParties\src\zlib\zlib-1.2.8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;CURL_STATICLIB;NOMINMAX;_UNICODE;UNICODE;_VARIADIC_MAX=10;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/Ym0x30000000 %(AdditionalOptions)</AdditionalOptions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -15,9 +17,13 @@
     </ClCompile>
     <Link>
       <AddModuleNamesToAssembly>..\..\bin\lib</AddModuleNamesToAssembly>
-      <AdditionalDependencies>libiconv.lib;libmysql.lib;libxml.lib;libeay32.lib;libcurl.lib;lib_json.lib;libExternal.win.lib;ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Server\bin/lib/$(Platform)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Iconv.Win.lib;libXML.Win.lib;Curl.Win.lib;JsonCPP.Win.lib;OpenSSL.Win.lib;libExternal.win.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Server\bin/lib/$(Platform)$(Configuration)\;$(SF_DIR)Bin\lib/Win/$(Platform)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BuildMacro Include="SF_DIR">
+      <Value>$(SF_DIR)</Value>
+    </BuildMacro>
+  </ItemGroup>
 </Project>

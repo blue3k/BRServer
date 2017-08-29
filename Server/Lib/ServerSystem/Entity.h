@@ -20,7 +20,7 @@
 #include "Common/PageQueue.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/SvrTypes.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedPointer.h"
 #include "ServerSystem/Transaction.h"
 
 

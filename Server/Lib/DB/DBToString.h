@@ -13,7 +13,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/ToString.h"
+#include "String/ToString.h"
 
 #if !ANDROID
 #include "my_global.h"

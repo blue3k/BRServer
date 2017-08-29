@@ -14,7 +14,7 @@
 #include "Common/StrUtil.h"
 #include "Common/ClassUtil.h"
 #include "Common/ArrayUtil.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedPointer.h"
 #include "Common/StaticDoubleLinkedList.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounter.h"
 

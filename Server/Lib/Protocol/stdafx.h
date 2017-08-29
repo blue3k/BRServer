@@ -13,9 +13,9 @@
 #include "Common/Trace.h"
 #include "Common/Synchronization.h"
 #include "Common/BrMemory.h"
-#include "Common/Argument.h"
-#include "Common/ToString.h"
-#include "Common/ToStringBase.h"
+#include "String/Argument.h"
+#include "String/ToString.h"
+#include "String/ToStringBase.h"
 
 #include "Protocol/ProtocolHelper.h"
 

@@ -18,7 +18,7 @@
 #include "Common/ResultCode/BRResultCodeLogin.h"
 #include "Common/MemoryPool.h"
 #include "Common/BrBaseTypes.h"
-#include "Common/ToStringGame.h"
+#include "String/ToStringGame.h"
 
 #include "GameServerClass.h"
 #include "ServerSystem/BrServerUtil.h"

@@ -15,7 +15,7 @@
 #include "Common/Thread.h"
 #include "Common/StrUtil.h"
 #include "Common/Trace.h"
-#include "Common/ToString.h"
+#include "String/ToString.h"
 #include "Common/Task/TimeScheduler.h"
 #include "Common/ResultCode/BRResultCodeCommon.h"
 

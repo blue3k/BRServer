@@ -13,7 +13,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/BrLibComponents.h"
-#include "Common/SharedPointer.h"
+#include "Object/SharedPointer.h"
 
 
 namespace BR {
