@@ -541,6 +541,8 @@ namespace Trace {
 		uint32_t outputMaskDebug = m_uiOutputMaskDebugger & trcOutMask;
 		uint32_t outputMaskFile[2] = { m_uiOutputMaskFile[0] & trcOutMask, m_uiOutputMaskFile[0] & trcOutMask };
 
+		UpdateLineHeader();
+
 		// I don't want to have null terminate here. I just want to replace the line header part
 		memcpy(szOutput, m_szLineHeader, m_uiLineHeaderLen);
 
