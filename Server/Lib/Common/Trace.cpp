@@ -462,7 +462,7 @@ namespace Trace {
 	// Update line header
 	void TraceOutModule::UpdateLineHeader()
 	{
-		if (m_tCurTime != m_tLineHeader)
+		//if (m_tCurTime != m_tLineHeader)
 		{
 			m_tLineHeader = m_tCurTime;
 
