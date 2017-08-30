@@ -80,7 +80,8 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		int64_t rankingBase = 0;
-		int32_t expectedRanking;
+		int32_t currentRanking;
+		RankingServiceEntity::RankingKey myRankingKey;
 		bool added = false;
 
 		auto rankCount = (int)GetCount();
@@ -124,25 +125,35 @@ namespace Svr {
 		added = false;
 
 		if (m_RankingList.GetSize() > 0)
-			expectedRanking = m_RankingList[0].Ranking;
+			currentRanking = m_RankingList[0].Ranking;
 		else
-			expectedRanking = 0;
+			currentRanking = 0;
 
-		for (unsigned iRank = 0; iRank < m_RankingList.GetSize(); iRank++, expectedRanking++)
+		// the ranking key using
+		assert(GetPlayerInfo().PlayerID < std::numeric_limits<uint32_t>::max());
+		assert(GetRankingScore() < std::numeric_limits<uint32_t>::max());
+		myRankingKey.PlayerID = static_cast<uint32_t>(GetPlayerInfo().PlayerID);
+		myRankingKey.Score = static_cast<decltype(myRankingKey.Score)>(GetRankingScore());
+
+		for (unsigned iRank = 0; iRank < m_RankingList.GetSize(); iRank++, currentRanking++)
 		{
+			RankingServiceEntity::RankingKey rankingKey;
 			auto& rankInfo = m_RankingList[iRank];
-			rankInfo.Ranking = expectedRanking;
-			auto score = rankInfo.GetLongScore();
-			if (added || score > GetRankingScore())
+			rankInfo.Ranking = currentRanking;
+
+			rankingKey.PlayerID = static_cast<uint32_t>(rankInfo.PlayerID);
+			rankingKey.Score = static_cast<decltype(rankingKey.Score)>(rankInfo.GetLongScore());
+
+			if (added || rankingKey.RankingKeyValue > myRankingKey.RankingKeyValue)
 				continue;
 
 			added = true;
-			m_RankingList.Insert(iRank, TotalRankingPlayerInformation(0, expectedRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
+			m_RankingList.Insert(iRank, TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
 		}
 
 		if (!added)
 		{
-			m_RankingList.Add(TotalRankingPlayerInformation(0, expectedRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
+			m_RankingList.Add(TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
 		}
 
 
