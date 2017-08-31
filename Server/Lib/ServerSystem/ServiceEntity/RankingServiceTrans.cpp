@@ -16,6 +16,7 @@
 #include "Common/BrBaseTypes.h"
 #include "Common/GameConst.h"
 #include "Common/BrRandom.h"
+#include "Common/File/BRFile.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/RankingServerMsgClass.h"
@@ -34,7 +35,6 @@
 #include "ServerSystem/ServerService/GameInstanceManagerService.h"
 
 #include "DB/RankingDB.h"
-
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerAddPlayerTrans);
 BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerUpdatePlayerScoreTrans);
@@ -180,17 +180,25 @@ namespace Svr {
 
 		// parameter from client
 		auto fileName = GetFileName();
+		IO::File fileStream;
 
 		svrChk(super::StartTransaction());
 
-
-		//svrChk(GetMyOwner()->UpdatePlayerScore(GetPlayerInfo(), GetRankingScore(), m_PlayerRanking));
-
-
-
 		// TODO: fill it
+		m_RankingList.Clear();
+
+		svrChk(GetMyOwner()->GetRankingListAll(m_RankingList));
+
+		//fileStream.Open(fileName, IO::File::OpenMode::Append, IO::File::SharingMode::Exclusive);
+		for (unsigned i = 0; i < m_RankingList.GetSize(); i++)
+		{
+			TotalRankingPlayerInformation& rankInfo = m_RankingList[i];
+			// write
+		}
 
 	Proc_End:
+
+		fileStream.Close();
 
 		CloseTransaction(hr);
 

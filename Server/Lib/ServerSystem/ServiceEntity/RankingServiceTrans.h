@@ -80,6 +80,7 @@ namespace Svr {
 
 	private:
 
+		StaticArray<TotalRankingPlayerInformation, 10000> m_RankingList;
 	public:
 		RankingServerDebugPrintALLRankingTrans(Message::MessageData* &pIMsg);
 		virtual ~RankingServerDebugPrintALLRankingTrans() {}

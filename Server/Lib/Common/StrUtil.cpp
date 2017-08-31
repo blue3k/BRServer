@@ -146,7 +146,7 @@ namespace StrUtil {
 					if (curChar == '\0')
 						return ResultCode::INVALID_ARG;
 
-					option = ReadNumber(curChar, szFormating);
+					option = (char)ReadNumber(curChar, szFormating);
 				}
 
 				if( curChar == '\0' )

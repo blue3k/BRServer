@@ -205,8 +205,13 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
+	Result RankingServiceEntity::GetRankingListAll(Array<TotalRankingPlayerInformation> &rankingList)
+	{
+		int32_t expectedRanking = 0;
+		int32_t itemCount = m_RankingMap.GetItemCount();
 
-
+		return GetRankingList(0, itemCount, rankingList);
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//

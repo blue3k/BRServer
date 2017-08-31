@@ -18,6 +18,7 @@ USE `dbconspiracyranking`;
 
 /*Data for the table `tblrankers` */
 
+
 insert  into `tblrankers`(`RankingID`,`Score`,`PlayerID`,`FacebookUID`,`NickName`,`Level`,`LatestUpdated`) values 
 (1,1570,1,12,'testName',4,'2017-07-03 15:09:43'),
 (3,2683,240578,0,'tesalkjdsf',0,'2017-07-03 16:31:31'),
