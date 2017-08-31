@@ -189,6 +189,7 @@ namespace Svr {
 		m_RankingList.Clear();
 
 		svrChk(GetMyOwner()->GetRankingList(0, 100, m_RankingList));
+		//svrChk(GetMyOwner()->GetRankingListAll(m_RankingList));
 
 		TimeStampSec nowTime = Util::Time.GetRawUTCSec();
 
