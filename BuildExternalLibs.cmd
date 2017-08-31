@@ -22,15 +22,6 @@ echo continue
 )
 
 
-rem copy headers
-xcopy External\zlib-1.2.8\*.h External\Include\zlib\* /S /R /Y
-
-
-xcopy External\libiconv-1.14\include\iconv.h External\Include\ /S /R /Y
-xcopy External\libiconv-1.14\libcharset\include\libcharset.h External\Include\ /S /R /Y
-xcopy External\libiconv-1.14\libcharset\include\localcharset.h External\Include\ /S /R /Y
-
-
 rem copy libraries
 xcopy External\mysql-connector-c-6.1.6-winx64\lib\vs12\mysqlclient.lib Server\bin\lib\x64Debug\ /y
 xcopy External\mysql-connector-c-6.1.6-winx64\lib\vs12\mysqlclient.lib Server\bin\lib\x64Release\ /y
@@ -42,6 +33,12 @@ xcopy Server\bin\lib\x64Debug\*.dll Server\bin\x64Debug\ /y
 xcopy Server\bin\lib\x64Release\*.dll Server\bin\x64Release\ /y
 xcopy Server\bin\lib\x64Debug\*.dll TestApp\x64Debug\ /y
 xcopy Server\bin\lib\x64Release\*.dll TestApp\x64Release\ /y
+
+
+xcopy StormForge\Bin\Win\x64Debug\*.dll Server\bin\x64Debug\ /y
+xcopy StormForge\Bin\Win\x64Release\*.dll Server\bin\x64Release\ /y
+xcopy StormForge\Bin\Win\x64Debug\*.dll TestApp\x64Debug\ /y
+xcopy StormForge\Bin\Win\x64Release\*.dll TestApp\x64Release\ /y
 
 
 :quit
