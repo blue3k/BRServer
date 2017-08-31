@@ -9,7 +9,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\;..\..\Lib;$(SolutionDir)External\mysql-connector-c-6.1.6-winx64\include;$(SolutionDir)Server/Lib/Common;$(SolutionDir)Server/Lib/DB;$(SolutionDir)Server/Lib/ServerSystem;$(SF_DIR)3rdParties\src\curl\curl\include;$(SF_DIR)3rdParties\src\jsoncpp\include;$(SF_DIR)3rdParties\src\libxml\libxml2\include;$(SF_DIR)3rdParties\src\openssl\openssl-1.0.2a\inc32;$(SF_DIR)3rdParties\src\libiconv\libiconv-1.14\include;$(SF_DIR)3rdParties\src\zlib\zlib-1.2.8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\..\Lib;$(SolutionDir)External\mysql-connector-c-6.1.6-winx64\include;$(SolutionDir)Server/Lib/Common;$(SolutionDir)Server/Lib/DB;$(SolutionDir)Server/Lib/ServerSystem;$(SF_DIR)3rdParties\src\curl\curl\include;$(SF_DIR)3rdParties\src\jsoncpp\include;$(SF_DIR)3rdParties\src\libxml\libxml2\include;$(SF_DIR)Bin/Win/$(Platform)/openssl/include;$(SF_DIR)3rdParties\src\libiconv\libiconv-1.14\include;$(SF_DIR)3rdParties\src\zlib\zlib-1.2.8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;CURL_STATICLIB;NOMINMAX;_UNICODE;UNICODE;_VARIADIC_MAX=10;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/Ym0x30000000 %(AdditionalOptions)</AdditionalOptions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -17,8 +17,8 @@
     </ClCompile>
     <Link>
       <AddModuleNamesToAssembly>..\..\bin\lib</AddModuleNamesToAssembly>
-      <AdditionalDependencies>Iconv.Win.lib;libXML.Win.lib;Curl.Win.lib;JsonCPP.Win.lib;OpenSSL.Win.lib;libExternal.win.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Server\bin/lib/$(Platform)$(Configuration)\;$(SF_DIR)Bin\lib/Win/$(Platform)$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Iconv.Win.lib;libXML.Win.lib;Curl.Win.lib;JsonCPP.Win.lib;libcrypto.lib;libssl.lib;libExternal.win.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Server\bin/lib/$(Platform)$(Configuration)\;$(SF_DIR)Bin\lib/Win/$(Platform)$(Configuration)\;$(SF_DIR)Bin\Win/$(Platform)/openssl/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -132,7 +132,8 @@ namespace Google {
 			|| scopes == nullptr)
 			return ResultCode::FAIL;
 
-		RSA* pkey = m_privateKey->pkey.rsa;
+		// EVP_PKEY_get1_RSA ?
+		RSA* pkey = EVP_PKEY_get0_RSA(m_privateKey);
 		if (pkey == nullptr)
 			return ResultCode::UNEXPECTED;
 
