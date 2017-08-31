@@ -181,25 +181,54 @@ namespace Svr {
 		// parameter from client
 		auto fileName = GetFileName();
 		IO::File fileStream;
+		char szBuff[1024];
 
 		svrChk(super::StartTransaction());
 
 		// TODO: fill it
 		m_RankingList.Clear();
 
-		svrChk(GetMyOwner()->GetRankingListAll(m_RankingList));
+		svrChk(GetMyOwner()->GetRankingList(0, 100, m_RankingList));
 
-		//fileStream.Open(fileName, IO::File::OpenMode::Append, IO::File::SharingMode::Exclusive);
+		TimeStampSec nowTime = Util::Time.GetRawUTCSec();
+
+		time_t time = nowTime.time_since_epoch().count() + Util::Time.GetUTCSecOffset().count();
+		struct tm nowTimeTM = *gmtime(&time);
+
+		char strFileName[MAX_PATH];		
+		snprintf(strFileName, MAX_PATH, "%s..\\log\\%s[%d_%04d_%02d_%02d]_%s_log.txt",
+			Util::GetModulePathA(), Util::GetServiceNameA(), nowTimeTM.tm_year + 1900, nowTimeTM.tm_mon + 1, nowTimeTM.tm_mday, nowTimeTM.tm_hour, fileName);
+
+		fileStream.Open(strFileName, IO::File::OpenMode::Append, IO::File::SharingMode::Exclusive);
+
+		//uint32_t		RankingID;
+		//uint32_t		Ranking;
+		//AccountID		PlayerID;
+		//FacebookUID   FBUID;
+		//char			NickName[MAX_NAME];
+		//uint32_t		Level;
+		//uint32_t		ScoreLow;	// Win
+		//uint32_t		ScoreHigh;	// Lose
+
+		snprintf(szBuff, MAX_PATH, "Ranking, Score, PlayerID, FaceboolUID, NickName, Level\n");
+		DWORD dwStrLen = (DWORD)strlen(szBuff);
+		size_t szWritlen;
+
+		// write header..
+		fileStream.Write((byte*) szBuff, dwStrLen, szWritlen);
+
 		for (unsigned i = 0; i < m_RankingList.GetSize(); i++)
 		{
 			TotalRankingPlayerInformation& rankInfo = m_RankingList[i];
-			// write
+			snprintf(szBuff, MAX_PATH, "%d, %d, %d, %d, %s, %d\n",
+				rankInfo.Ranking, rankInfo.GetLongScore(), rankInfo.PlayerID, rankInfo.FBUID, rankInfo.NickName, rankInfo.Level);
+			dwStrLen = (DWORD)strlen(szBuff);
+			fileStream.Write((byte*)szBuff, dwStrLen, szWritlen);
 		}
 
 	Proc_End:
 
 		fileStream.Close();
-
 		CloseTransaction(hr);
 
 		return hr;
