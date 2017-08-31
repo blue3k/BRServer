@@ -278,6 +278,27 @@ namespace Svr {
 		BR_IMPLEMENT_USERMSGTRANS_CLOSE_ARGS(DataTestRes, m_Data);
 	};
 
+	class LoginUserDebugPrintALLRankingTrans : public Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::DebugPrintALLRankingCmd, LoginUserDebugPrintALLRankingTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 >
+	{
+	public:
+		typedef Svr::MessageTransaction< LoginPlayerEntity, Policy::ISvrPolicyLogin, Message::Login::DebugPrintALLRankingCmd, LoginUserDebugPrintALLRankingTrans, sizeof(Svr::TransactionMessageHandlerType) * 1 > super;
+
+	private:
+
+
+	public:
+		LoginUserDebugPrintALLRankingTrans(Message::MessageData* &pIMsg);
+		virtual ~LoginUserDebugPrintALLRankingTrans() {}
+
+		Result OnPrintAllRankingRes(Svr::TransactionResult* &pRes);
+
+
+		// Start Transaction
+		virtual Result StartTransaction() override;
+
+		BR_IMPLEMENT_USERMSGTRANS_CLOSE(DebugPrintALLRankingRes);
+	};
+
 
 
 } // namespace Svr 

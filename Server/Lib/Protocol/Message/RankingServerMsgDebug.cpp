@@ -47,6 +47,9 @@ namespace BR
 				// Cmd: Get ranking list
 				MessageDebugTraceMapRankingServer.insert(std::make_pair(RankingServer::GetRankingCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   RankingServer::GetRankingCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 				MessageDebugTraceMapRankingServer.insert(std::make_pair(RankingServer::GetRankingRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   RankingServer::GetRankingRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				// Cmd: Debug test
+				MessageDebugTraceMapRankingServer.insert(std::make_pair(RankingServer::DebugPrintALLRankingCmd::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   RankingServer::DebugPrintALLRankingCmd parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
+				MessageDebugTraceMapRankingServer.insert(std::make_pair(RankingServer::DebugPrintALLRankingRes::MID.IDSeq.MsgID,[](const char* prefix, MessageData* pMsg)->Result{   RankingServer::DebugPrintALLRankingRes parser; parser.ParseMessage(pMsg); parser.TraceOut(prefix,pMsg); return ResultCode::SUCCESS; } ));
 			}; // void RegisterDebugTraceRankingServer()
 
 

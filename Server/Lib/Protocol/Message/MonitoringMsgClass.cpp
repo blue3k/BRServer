@@ -358,7 +358,7 @@ namespace BR
 			void PerformanceCounterNewC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG2, "{0}:PerformanceCounterNewC2SEvt:{1}:{2} , InstanceName:{3}, InstanceUID:{4}, NewCounters:{5}",
+				protocolTrace(Trace::TRC_DBG2, "{0}:PerformanceCounterNewC2SEvt:{1}:{2} , InstanceName:{3,60}, InstanceUID:{4}, NewCounters:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InstanceName, m_InstanceUID, m_NewCounters); 
 			}; // void PerformanceCounterNewC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 

@@ -57,6 +57,7 @@ BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerKickPlayerTrans);
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::RankingUpdateScoreTrans);
 BR_MEMORYPOOL_IMPLEMENT(Svr::LoginUserDataTestTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::LoginUserDebugPrintALLRankingTrans);
 
 
 	
@@ -964,6 +965,70 @@ namespace Svr {
 	Proc_End:
 
 		CloseTransaction(hr);
+
+		return hr;
+	}
+
+
+
+
+
+	LoginUserDebugPrintALLRankingTrans::LoginUserDebugPrintALLRankingTrans(Message::MessageData* &pIMsg)
+		: MessageTransaction(pIMsg)
+	{
+		BR_TRANS_MESSAGE(Message::RankingServer::DebugPrintALLRankingRes, { return OnPrintAllRankingRes(pRes); });
+	}
+
+	Result LoginUserDebugPrintALLRankingTrans::OnPrintAllRankingRes(Svr::TransactionResult* &pRes)
+	{
+		Result hr = ResultCode::SUCCESS;
+
+		Svr::MessageResult *pMsgRes = (Svr::MessageResult*)pRes;
+		Message::RankingServer::UpdatePlayerScoreRes res;
+
+		svrChk(pRes->GetResult());
+
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
+
+	// Start Transaction
+	Result LoginUserDebugPrintALLRankingTrans::StartTransaction()
+	{
+		Result hr = ResultCode::SUCCESS;
+		PlayerInformation playerInfo;
+		Svr::ClusteredServiceEntity *pServiceEntity = nullptr;
+		Svr::ServerServiceInformation *pService = nullptr;
+
+		svrChk(super::StartTransaction());
+
+
+		// Find new ranking server
+		svrChk(Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>()->GetClusterServiceEntity(ClusterID::Ranking, pServiceEntity));
+		hr = pServiceEntity->FindRandomService(pService);
+		if (!(hr))
+		{
+			svrTrace(Trace::TRC_ERROR, "Failed to find ranking service");
+			goto Proc_End;
+		}
+
+		// update life time of this user entity
+		super::GetMyOwner()->HeartBit();
+
+
+		svrChk(pService->GetService<Svr::RankingServerService>()->DebugPrintALLRankingCmd(super::GetTransID(), GetFileName()));
+
+
+	Proc_End:
+
+		if (!(hr))
+		{
+			CloseTransaction(hr);
+		}
 
 		return hr;
 	}

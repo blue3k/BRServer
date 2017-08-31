@@ -462,11 +462,11 @@ namespace Trace {
 	// Update line header
 	void TraceOutModule::UpdateLineHeader()
 	{
-		if (m_tCurTime != m_tLineHeader)
+		//if (m_tCurTime != m_tLineHeader)
 		{
 			m_tLineHeader = m_tCurTime;
 
-			m_uiLineHeaderLen = snprintf(m_szLineHeader, sizeof(m_szLineHeader), "%4d-%02d-%02d/%02d:%02d:%02d:", m_tCurTimeTM.tm_year + 1900, m_tCurTimeTM.tm_mon + 1, m_tCurTimeTM.tm_mday, m_tCurTimeTM.tm_hour, m_tCurTimeTM.tm_min, m_tCurTimeTM.tm_sec);
+			m_uiLineHeaderLen = snprintf(m_szLineHeader, sizeof(m_szLineHeader), "%02d:%02d:%02d/%08X ", m_tCurTimeTM.tm_hour, m_tCurTimeTM.tm_min, m_tCurTimeTM.tm_sec, Util::Time.GetRawTimeMs().time_since_epoch().count());
 		}
 	}
 
@@ -540,6 +540,8 @@ namespace Trace {
 		uint32_t outputMask = m_uiOutputMask & trcOutMask;
 		uint32_t outputMaskDebug = m_uiOutputMaskDebugger & trcOutMask;
 		uint32_t outputMaskFile[2] = { m_uiOutputMaskFile[0] & trcOutMask, m_uiOutputMaskFile[0] & trcOutMask };
+
+		UpdateLineHeader();
 
 		// I don't want to have null terminate here. I just want to replace the line header part
 		memcpy(szOutput, m_szLineHeader, m_uiLineHeaderLen);

@@ -293,7 +293,7 @@ namespace BR
             new TypeMap( ParameterType.uint32, 4, typeof(UInt32), "uint32_t" ),
             new TypeMap( ParameterType.int64, 8, typeof(Int64), "int64_t" ),
             new TypeMap( ParameterType.uint64, 8, typeof(UInt64), "uint64_t" ),
-            new TypeMap( ParameterType.BYTE, 1, typeof(Byte), "uint8_t" ),
+            //new TypeMap( ParameterType.BYTE, 1, typeof(Byte), "uint8_t" ),
             new TypeMap( ParameterType.WORD, 2, typeof(UInt16) ),
             new TypeMap( ParameterType.DWORD, 4, typeof(UInt32) ),
             new TypeMap( ParameterType.QWORD, 8, typeof(UInt64) ),

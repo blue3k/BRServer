@@ -863,7 +863,7 @@ namespace Net {
 		{
 		case NetCtrlCode_SyncReliable:
 			// TODO: we can skip this when there is a send reliable message
-			SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID);
+			//SendNetCtrl(PACKET_NETCTRL_ACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID);
 			break;
 		}
 

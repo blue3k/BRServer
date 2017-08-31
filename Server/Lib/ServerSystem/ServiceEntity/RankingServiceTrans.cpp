@@ -16,6 +16,7 @@
 #include "Common/BrBaseTypes.h"
 #include "Common/GameConst.h"
 #include "Common/BrRandom.h"
+#include "Common/File/BRFile.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"
 #include "Protocol/Message/RankingServerMsgClass.h"
@@ -35,9 +36,9 @@
 
 #include "DB/RankingDB.h"
 
-
 BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerAddPlayerTrans);
 BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerUpdatePlayerScoreTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerDebugPrintALLRankingTrans);
 
 
 
@@ -80,7 +81,8 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 		int64_t rankingBase = 0;
-		int32_t expectedRanking;
+		int32_t currentRanking;
+		RankingServiceEntity::RankingKey myRankingKey;
 		bool added = false;
 
 		auto rankCount = (int)GetCount();
@@ -124,25 +126,35 @@ namespace Svr {
 		added = false;
 
 		if (m_RankingList.GetSize() > 0)
-			expectedRanking = m_RankingList[0].Ranking;
+			currentRanking = m_RankingList[0].Ranking;
 		else
-			expectedRanking = 0;
+			currentRanking = 0;
 
-		for (unsigned iRank = 0; iRank < m_RankingList.GetSize(); iRank++, expectedRanking++)
+		// the ranking key using
+		assert(GetPlayerInfo().PlayerID < std::numeric_limits<uint32_t>::max());
+		assert(GetRankingScore() < std::numeric_limits<uint32_t>::max());
+		myRankingKey.PlayerID = static_cast<uint32_t>(GetPlayerInfo().PlayerID);
+		myRankingKey.Score = static_cast<decltype(myRankingKey.Score)>(GetRankingScore());
+
+		for (unsigned iRank = 0; iRank < m_RankingList.GetSize(); iRank++, currentRanking++)
 		{
+			RankingServiceEntity::RankingKey rankingKey;
 			auto& rankInfo = m_RankingList[iRank];
-			rankInfo.Ranking = expectedRanking;
-			auto score = rankInfo.GetLongScore();
-			if (added || score > GetRankingScore())
+			rankInfo.Ranking = currentRanking;
+
+			rankingKey.PlayerID = static_cast<uint32_t>(rankInfo.PlayerID);
+			rankingKey.Score = static_cast<decltype(rankingKey.Score)>(rankInfo.GetLongScore());
+
+			if (added || rankingKey.RankingKeyValue > myRankingKey.RankingKeyValue)
 				continue;
 
 			added = true;
-			m_RankingList.Insert(iRank, TotalRankingPlayerInformation(0, expectedRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
+			m_RankingList.Insert(iRank, TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
 		}
 
 		if (!added)
 		{
-			m_RankingList.Add(TotalRankingPlayerInformation(0, expectedRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
+			m_RankingList.Add(TotalRankingPlayerInformation(0, currentRanking, GetPlayerInfo().PlayerID, GetPlayerInfo().FBUID, GetPlayerInfo().NickName, GetPlayerInfo().Level, (int32_t)GetRankingScore(), (int32_t)(GetRankingScore() >> 32)));
 		}
 
 
@@ -153,6 +165,77 @@ namespace Svr {
 		return hr;
 	}
 
+
+
+
+	RankingServerDebugPrintALLRankingTrans::RankingServerDebugPrintALLRankingTrans(Message::MessageData* &pIMsg)
+		: super(pIMsg)
+	{
+	}
+
+	// Start Transaction
+	Result RankingServerDebugPrintALLRankingTrans::StartTransaction()
+	{
+		Result hr = ResultCode::SUCCESS;
+
+		// parameter from client
+		auto fileName = GetFileName();
+		IO::File fileStream;
+		char szBuff[1024];
+
+		svrChk(super::StartTransaction());
+
+		// TODO: fill it
+		m_RankingList.Clear();
+
+		GetMyOwner()->CommitChanges();
+
+		svrChk(GetMyOwner()->GetRankingList(0, 100, m_RankingList));
+		//svrChk(GetMyOwner()->GetRankingListAll(m_RankingList));
+
+		TimeStampSec nowTime = Util::Time.GetRawUTCSec();
+
+		time_t time = nowTime.time_since_epoch().count() + Util::Time.GetUTCSecOffset().count();
+		struct tm nowTimeTM = *gmtime(&time);
+
+		char strFileName[MAX_PATH];		
+		snprintf(strFileName, MAX_PATH, "%s..\\log\\%s[%d_%04d_%02d_%02d]_%s_log.txt",
+			Util::GetModulePathA(), Util::GetServiceNameA(), nowTimeTM.tm_year + 1900, nowTimeTM.tm_mon + 1, nowTimeTM.tm_mday, nowTimeTM.tm_hour, fileName);
+
+		fileStream.Open(strFileName, IO::File::OpenMode::Append, IO::File::SharingMode::Exclusive);
+
+		//uint32_t		RankingID;
+		//uint32_t		Ranking;
+		//AccountID		PlayerID;
+		//FacebookUID   FBUID;
+		//char			NickName[MAX_NAME];
+		//uint32_t		Level;
+		//uint32_t		ScoreLow;	// Win
+		//uint32_t		ScoreHigh;	// Lose
+
+		snprintf(szBuff, MAX_PATH, "Ranking, Score, PlayerID, FaceboolUID, NickName, Level\n");
+		DWORD dwStrLen = (DWORD)strlen(szBuff);
+		size_t szWritlen;
+
+		// write header..
+		fileStream.Write((byte*) szBuff, dwStrLen, szWritlen);
+
+		for (unsigned i = 0; i < m_RankingList.GetSize(); i++)
+		{
+			TotalRankingPlayerInformation& rankInfo = m_RankingList[i];
+			snprintf(szBuff, MAX_PATH, "%d, %d, %d, %d, %s, %d\n",
+				rankInfo.Ranking, rankInfo.GetLongScore(), rankInfo.PlayerID, rankInfo.FBUID, rankInfo.NickName, rankInfo.Level);
+			dwStrLen = (DWORD)strlen(szBuff);
+			fileStream.Write((byte*)szBuff, dwStrLen, szWritlen);
+		}
+
+	Proc_End:
+
+		fileStream.Close();
+		CloseTransaction(hr);
+
+		return hr;
+	}
 
 }// namespace Svr 
 }// namespace BR 

@@ -103,6 +103,9 @@ namespace Svr {
 		Result UpdatePlayerScore(const PlayerInformation& player, int64_t score, int64_t& playerRanking);
 
 		Result GetRankingList(int64_t from, int64_t count, Array<TotalRankingPlayerInformation> &rankingList);
+		Result GetRankingListAll(Array<TotalRankingPlayerInformation> &rankingList);
+
+		void CommitChanges() { m_RankingMap.CommitChanges(); }
 	};
 
 

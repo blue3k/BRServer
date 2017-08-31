@@ -210,7 +210,7 @@ namespace BR
 			void JoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:JoinGameServerRes:{1}:{2} , Result:{3:X8}, NickName:{4}, GameUID:{5}, PartyUID:{6}, PartyLeaderID:{7}, MatchingTicket:{8}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:JoinGameServerRes:{1}:{2} , Result:{3:X8}, NickName:{4,60}, GameUID:{5}, PartyUID:{6}, PartyLeaderID:{7}, MatchingTicket:{8}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_NickName, m_GameUID, m_PartyUID, m_PartyLeaderID, m_MatchingTicket); 
 			}; // void JoinGameServerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -320,7 +320,7 @@ namespace BR
 			void GetComplitionStateRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:GetComplitionStateRes:{1}:{2} , Result:{3:X8}, ComplitionState:{4}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:GetComplitionStateRes:{1}:{2} , Result:{3:X8}, ComplitionState:{4,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_ComplitionState); 
 			}; // void GetComplitionStateRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -381,7 +381,7 @@ namespace BR
 			void SetComplitionStateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:SetComplitionStateCmd:{1}:{2} , ComplitionState:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetComplitionStateCmd:{1}:{2} , ComplitionState:{3,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_ComplitionState); 
 			}; // void SetComplitionStateCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -499,7 +499,7 @@ namespace BR
 			void RegisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterGCMCmd:{1}:{2} , GCMRegisteredID:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:RegisterGCMCmd:{1}:{2} , GCMRegisteredID:{3,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GCMRegisteredID); 
 			}; // void RegisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -617,7 +617,7 @@ namespace BR
 			void UnregisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:UnregisterGCMCmd:{1}:{2} , GCMRegisteredID:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:UnregisterGCMCmd:{1}:{2} , GCMRegisteredID:{3,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GCMRegisteredID); 
 			}; // void UnregisterGCMCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1816,7 +1816,7 @@ namespace BR
 			void NotifyS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:NotifyS2CEvt:{1}:{2} , NotificationID:{3}, MessageID:{4}, MessageParam0:{5}, MessageParam1:{6}, MessageText:{7}, IsRead:{8}, TimeStamp:{9}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:NotifyS2CEvt:{1}:{2} , NotificationID:{3}, MessageID:{4}, MessageParam0:{5}, MessageParam1:{6}, MessageText:{7,60}, IsRead:{8}, TimeStamp:{9}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_NotificationID, m_MessageID, m_MessageParam0, m_MessageParam1, m_MessageText, m_IsRead, m_TimeStamp); 
 			}; // void NotifyS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -1877,7 +1877,7 @@ namespace BR
 			void FindPlayerByEMailCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:FindPlayerByEMailCmd:{1}:{2} , PlayerEMail:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:FindPlayerByEMailCmd:{1}:{2} , PlayerEMail:{3,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PlayerEMail); 
 			}; // void FindPlayerByEMailCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -2826,7 +2826,7 @@ namespace BR
 			void SetNickNameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:SetNickNameCmd:{1}:{2} , NickName:{3}, IsCostFree:{4}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:SetNickNameCmd:{1}:{2} , NickName:{3,60}, IsCostFree:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_NickName, m_IsCostFree); 
 			}; // void SetNickNameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -3793,7 +3793,7 @@ namespace BR
 			void PartyInviteRequestedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:PartyInviteRequestedS2CEvt:{1}:{2} , InviterID:{3}, InviterName:{4}, PartyToJoinUID:{5}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyInviteRequestedS2CEvt:{1}:{2} , InviterID:{3}, InviterName:{4,60}, PartyToJoinUID:{5}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_InviterID, m_InviterName, m_PartyToJoinUID); 
 			}; // void PartyInviteRequestedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4030,7 +4030,7 @@ namespace BR
 			void PartyChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:PartyChatMessageCmd:{1}:{2} , ChatMessage:{3}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyChatMessageCmd:{1}:{2} , ChatMessage:{3,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_ChatMessage); 
 			}; // void PartyChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -4157,7 +4157,7 @@ namespace BR
 			void PartyChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:PartyChatMessageS2CEvt:{1}:{2} , SenderID:{3}, SenderName:{4}, ChatMessage:{5}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PartyChatMessageS2CEvt:{1}:{2} , SenderID:{3}, SenderName:{4,60}, ChatMessage:{5,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_SenderID, m_SenderName, m_ChatMessage); 
 			}; // void PartyChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5007,7 +5007,7 @@ namespace BR
 			void ChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:ChatMessageCmd:{1}:{2} , ChatMessage:{3}, Role:{4}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ChatMessageCmd:{1}:{2} , ChatMessage:{3,60}, Role:{4}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_ChatMessage, m_Role); 
 			}; // void ChatMessageCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -5137,7 +5137,7 @@ namespace BR
 			void ChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:ChatMessageS2CEvt:{1}:{2} , SenderID:{3}, Role:{4}, SenderName:{5}, ChatMessage:{6}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:ChatMessageS2CEvt:{1}:{2} , SenderID:{3}, Role:{4}, SenderName:{5,60}, ChatMessage:{6,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_SenderID, m_Role, m_SenderName, m_ChatMessage); 
 			}; // void ChatMessageS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7164,7 +7164,7 @@ namespace BR
 			void BuyShopItemPrepareRes::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:BuyShopItemPrepareRes:{1}:{2} , Result:{3:X8}, ShopItemID:{4}, PurchaseID:{5}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:BuyShopItemPrepareRes:{1}:{2} , Result:{3:X8}, ShopItemID:{4}, PurchaseID:{5,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result, m_ShopItemID, m_PurchaseID); 
 			}; // void BuyShopItemPrepareRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -7248,7 +7248,7 @@ namespace BR
 			void BuyShopItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:BuyShopItemCmd:{1}:{2} , ShopItemID:{3}, Platform:{4}, PackageName:{5}, PurchaseTransactionID:{6}, PurchaseToken:{7}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:BuyShopItemCmd:{1}:{2} , ShopItemID:{3}, Platform:{4,60}, PackageName:{5,60}, PurchaseTransactionID:{6,60}, PurchaseToken:{7}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_ShopItemID, m_Platform, m_PackageName, m_PurchaseTransactionID, m_PurchaseToken); 
 			}; // void BuyShopItemCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 

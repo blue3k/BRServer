@@ -153,6 +153,24 @@ namespace BR
 			return hr;
 
 		}; // Result NetPolicyLogin::HeartBitC2SEvt(  )
+		// Cmd: For network test
+		Result NetPolicyLogin::DebugPrintALLRankingCmd( const char* InFileName )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::DebugPrintALLRankingCmd::BuildIMsg(pMsg, InFileName));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetPolicyLogin::DebugPrintALLRankingCmd( const char* InFileName )
 
 
 		// Cmd: Login request
@@ -263,6 +281,24 @@ namespace BR
 			return hr;
 
 		}; // Result NetSvrPolicyLogin::DataTestRes( const Result &InResult, const Array<uint8_t>& InTestData )
+		// Cmd: For network test
+		Result NetSvrPolicyLogin::DebugPrintALLRankingRes( const Result &InResult )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::Login::DebugPrintALLRankingRes::BuildIMsg(pMsg, InResult));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetSvrPolicyLogin::DebugPrintALLRankingRes( const Result &InResult )
 
 
 	}; // namespace Policy

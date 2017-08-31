@@ -961,6 +961,188 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_Result, m_Ranking); 
 			}; // void GetRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
+			// Cmd: Debug test
+			const MessageID DebugPrintALLRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 5);
+			Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				INT iMsgSize;
+				BYTE* pCur;
+				UINT16 uiSizeOfFileName = 0;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFileName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_FileName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfFileName ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
+
+			Result DebugPrintALLRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName )
+			{
+ 				Result hr;
+
+				BYTE *pMsgData = nullptr;
+
+				UINT16 __uiInFileNameLength = InFileName ? (UINT16)(strlen(InFileName)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInFileNameLength 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID));
+
+				MessageData *pNewMsg = nullptr;
+
+				protocolMem( pNewMsg = MessageData::NewMessage( RankingServer::DebugPrintALLRankingCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &__uiInFileNameLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, InFileName ? InFileName : "", __uiInFileNameLength );
+
+				pMsg = pNewMsg;
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName )
+
+			Result DebugPrintALLRankingCmd::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				INT iMsgSize;
+				BYTE* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingCmd::OverrideRouteContextDestination( EntityUID to )
+
+
+			void DebugPrintALLRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			{
+ 				unused(Prefix);
+				protocolTrace(Trace::TRC_DBG1, "{0}:DebugPrintALLRankingCmd:{1}:{2} , RouteContext:{3}, TransactionID:{4}, FileName:{5,60}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_FileName); 
+			}; // void DebugPrintALLRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+
+			const MessageID DebugPrintALLRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 5);
+			Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				INT iMsgSize;
+				BYTE* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
+
+			Result DebugPrintALLRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+			{
+ 				Result hr;
+
+				BYTE *pMsgData = nullptr;
+
+				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
+					+ sizeof(RouteContext)
+					+ sizeof(TransactionID)
+					+ sizeof(Result));
+
+				MessageData *pNewMsg = nullptr;
+
+				protocolMem( pNewMsg = MessageData::NewMessage( RankingServer::DebugPrintALLRankingRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
+				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+
+				pMsg = pNewMsg;
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingRes::BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+
+			Result DebugPrintALLRankingRes::OverrideRouteContextDestination( EntityUID to )
+			{
+ 				Result hr;
+
+				INT iMsgSize;
+				BYTE* pCur;
+				MessageData* pIMsg = GetMessage();
+				RouteContext routeContext;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MessageHeader);
+				unused(iMsgSize);
+				pCur = pIMsg->GetMessageData();
+
+				Assert( iMsgSize >= (INT)sizeof(RouteContext) );
+				memcpy( &routeContext, pCur, sizeof(RouteContext) );
+				routeContext.Components.To = to;
+				memcpy( pCur, &routeContext, sizeof(RouteContext) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingRes::OverrideRouteContextDestination( EntityUID to )
+
+
+			void DebugPrintALLRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			{
+ 				unused(Prefix);
+				protocolTrace(Trace::TRC_DBG1, "{0}:DebugPrintALLRankingRes:{1}:{2} , RouteContext:{3}, TransactionID:{4}, Result:{5:X8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_Result); 
+			}; // void DebugPrintALLRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+
 
 
 		}; // namespace RankingServer

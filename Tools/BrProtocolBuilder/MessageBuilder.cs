@@ -145,7 +145,7 @@ namespace ProtocolBuilder
                     {
                         case ParameterType.String:
                             {
-                                strTrace += string.Format(", {0}:{{{1}}}", param.Name, ParamCount++);
+                                strTrace += string.Format(", {0}:{{{1},60}}", param.Name, ParamCount++);
                                 strTraceMember += string.Format(", m_{0}", param.Name);
                             } break;
                         default:
