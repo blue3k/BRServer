@@ -93,6 +93,9 @@ namespace Svr {
 			}
 		}
 
+		// Apply loaded changes
+		m_RankingMap.CommitChanges();
+
 		m_RankingCheckTimer.SetTimer(DurationMS(Svr::Const::TIME_INTERVAL_RANKING_UPDATE));
 
 	Proc_End:
