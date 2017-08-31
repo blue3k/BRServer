@@ -644,6 +644,93 @@ namespace BR
 
 			}; // class HeartBitC2SEvt : public MessageBase
 
+			// Cmd: For network test
+			class DebugPrintALLRankingCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 0,
+					HasRouteContext = 0,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
+				RouteContext GetRouteContext() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+				const char* m_FileName;
+			public:
+				DebugPrintALLRankingCmd()
+				:m_FileName(nullptr)
+					{}
+
+				DebugPrintALLRankingCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+				,m_FileName(nullptr)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const char* GetFileName() const	{ return m_FileName; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg, const char* InFileName );
+
+			}; // class DebugPrintALLRankingCmd : public MessageBase
+
+			class DebugPrintALLRankingRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 0,
+					HasRouteContext = 0,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				TransactionID GetTransactionID() { return 0; }
+				RouteContext GetRouteContext() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+				Result m_Result;
+			public:
+				DebugPrintALLRankingRes()
+					{}
+
+				DebugPrintALLRankingRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const Result& GetResult() const	{ return m_Result; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg, const Result &InResult );
+
+			}; // class DebugPrintALLRankingRes : public MessageBase
+
 
 
 

@@ -38,6 +38,7 @@
 
 BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerAddPlayerTrans);
 BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerUpdatePlayerScoreTrans);
+BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerDebugPrintALLRankingTrans);
 
 
 
@@ -164,6 +165,37 @@ namespace Svr {
 		return hr;
 	}
 
+
+
+
+	RankingServerDebugPrintALLRankingTrans::RankingServerDebugPrintALLRankingTrans(Message::MessageData* &pIMsg)
+		: super(pIMsg)
+	{
+	}
+
+	// Start Transaction
+	Result RankingServerDebugPrintALLRankingTrans::StartTransaction()
+	{
+		Result hr = ResultCode::SUCCESS;
+
+		// parameter from client
+		auto fileName = GetFileName();
+
+		svrChk(super::StartTransaction());
+
+
+		//svrChk(GetMyOwner()->UpdatePlayerScore(GetPlayerInfo(), GetRankingScore(), m_PlayerRanking));
+
+
+
+		// TODO: fill it
+
+	Proc_End:
+
+		CloseTransaction(hr);
+
+		return hr;
+	}
 
 }// namespace Svr 
 }// namespace BR 

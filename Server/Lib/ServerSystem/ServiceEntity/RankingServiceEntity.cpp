@@ -48,6 +48,7 @@ namespace Svr {
 		BR_ENTITY_MESSAGE(Message::RankingServer::UpdatePlayerScoreCmd) { svrMemReturn(pNewTrans = new RankingServerUpdatePlayerScoreTrans(pMsgData)); return ResultCode::SUCCESS; } );
 		//BR_ENTITY_MESSAGE(Message::RankingServer::GetPlayerRankingCmd) { svrMemReturn(pNewTrans = new RankingServerGetPlayerRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
 		//BR_ENTITY_MESSAGE(Message::RankingServer::GetRankingCmd) { svrMemReturn(pNewTrans = new RankingServerGetRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::RankingServer::DebugPrintALLRankingCmd) { svrMemReturn(pNewTrans = new RankingServerDebugPrintALLRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	RankingServiceEntity::~RankingServiceEntity()

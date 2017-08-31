@@ -99,6 +99,19 @@ namespace BR
 			return hr;
 
 		}; // Result RankingServerService::GetRankingCmd( const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
+		// Cmd: Debug test
+		Result RankingServerService::DebugPrintALLRankingCmd( const TransactionID &InTransactionID, const char* InFileName )
+		{
+ 			Result hr;
+
+			RouteContext InRouteContext( EntityUID(GetMyServerID(),InTransactionID.GetEntityID()), GetServiceEntityUID() );
+			svrChk(GetPolicyRankingServer()->DebugPrintALLRankingCmd( InRouteContext, InTransactionID, InFileName ) );
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result RankingServerService::DebugPrintALLRankingCmd( const TransactionID &InTransactionID, const char* InFileName )
 
 
 	}; // namespace Svr

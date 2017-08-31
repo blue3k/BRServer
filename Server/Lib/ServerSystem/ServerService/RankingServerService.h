@@ -42,6 +42,8 @@ namespace BR
 			Result UpdatePlayerScoreCmd( const TransactionID &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount );
 			// Cmd: Get ranking list
 			Result GetRankingCmd( const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount );
+			// Cmd: Debug test
+			Result DebugPrintALLRankingCmd( const TransactionID &InTransactionID, const char* InFileName );
 
 		}; // class RankingServerService : public ServerServiceBase
 

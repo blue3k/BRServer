@@ -46,6 +46,8 @@ namespace BR
 			// Cmd: For network test
 			virtual Result DataTestRes( const Result &InResult, const Array<uint8_t>& InTestData ) = 0;
 			// C2S: Heartbit
+			// Cmd: For network test
+			virtual Result DebugPrintALLRankingRes( const Result &InResult ) = 0;
 
 		}; // class ISvrPolicyLogin : public Net::INetPolicy
 
@@ -73,6 +75,8 @@ namespace BR
 			virtual Result DataTestCmd( const Array<uint8_t>& InTestData ) = 0;
 			// C2S: Heartbit
 			virtual Result HeartBitC2SEvt(  ) = 0;
+			// Cmd: For network test
+			virtual Result DebugPrintALLRankingCmd( const char* InFileName ) = 0;
 
 		}; // class IPolicyLogin : public Net::INetPolicy
 

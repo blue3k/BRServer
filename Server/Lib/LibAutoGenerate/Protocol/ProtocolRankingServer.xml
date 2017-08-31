@@ -55,6 +55,14 @@
       </Res>
     </Command>
 
+    <Command Name="DebugPrintALLRanking" Reliable="true" Crypto="No" Trace="DBG1" Desc="Debug test">
+      <Cmd>
+		<Params Type="String" Name="FileName"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
     <!-- =============================  ======================================= -->
 
 	</ProtocolGroup>
