@@ -188,6 +188,8 @@ namespace Svr {
 		// TODO: fill it
 		m_RankingList.Clear();
 
+		GetMyOwner()->CommitChanges();
+
 		svrChk(GetMyOwner()->GetRankingList(0, 100, m_RankingList));
 		//svrChk(GetMyOwner()->GetRankingListAll(m_RankingList));
 
