@@ -1,7 +1,9 @@
 #
-PROTO_BUILD=../../../bin/tools/ProtocolBuilder.exe
+PROTO_BUILD=./../StormForge/Bin/SFProtocolCompiler.exe
 
-OUTPUT_PATH=../../Protocol/Message
+OUTPUT_PATH=../../Server/Lib/ServerProtocol/Message
+OUTPUT_SHARP_PATH=../../Src/SFEngineDLL/Sharp
+OUTPUT_CPP_PATH=../../Src/SFEngineDLL/Sharp
 
 SOURCES=ProtocolClusterServer.xml \
 	ProtocolEntityServer.xml \
@@ -24,13 +26,15 @@ SOURCES=ProtocolClusterServer.xml \
 SOURCES_POSTFIXED=$(SOURCES:.xml=.h)
 TARGET_FILES=$(SOURCES_POSTFIXED:%=$(OUTPUT_PATH)/%)
 
-
 $(OUTPUT_PATH)/%.h: %.xml $(PROTO_BUILD)
-	$(PROTO_BUILD) -dir:../../../ $<
+	$(PROTO_BUILD) -dir:../../Src/ServerProtocol/Protocol/ $<
  
 
 build: $(SOURCES) $(TARGET_FILES) 
+	cp -u ../../Src/ServerProtocol/Protocol/CSharp/*.cs $(OUTPUT_SHARP_PATH)
+	cp -u ../../Src/ServerProtocol/Protocol/CSharp/*.cpp $(OUTPUT_CPP_PATH)
 	@echo Done
+
 
 
 clean:

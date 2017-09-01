@@ -15,9 +15,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DB", "Server\Lib\DB\DB.vcxi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DB.Win", "Server\Lib\DB\DB.Win.vcxproj", "{44D18223-FCDB-4525-BDD1-EF8BB2AF8B3D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Protocol", "Server\Lib\Protocol\Protocol.vcxitems", "{BEBE8B4E-F75B-4330-8762-139DEBF3841C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerProtocol", "Server\Lib\ServerProtocol\ServerProtocol.vcxitems", "{BEBE8B4E-F75B-4330-8762-139DEBF3841C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Protocol.Win", "Server\Lib\Protocol\Protocol.Win.vcxproj", "{7035EA94-3335-4FD7-A3E3-28F80CCBABBF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerProtocol.Win", "Server\Lib\Protocol\ServerProtocol.Win.vcxproj", "{7035EA94-3335-4FD7-A3E3-28F80CCBABBF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerSystem", "Server\Lib\ServerSystem\ServerSystem.vcxitems", "{4E37F891-0D4D-4929-9026-8383BE8E7426}"
 EndProject
@@ -35,7 +35,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Net.Linux", "Server\Lib\Net
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DB.Linux", "Server\Lib\DB\DB.Linux.vcxproj", "{DCD16AE2-7D41-483C-9D5A-40CBDB468637}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Protocol.Linux", "Server\Lib\Protocol\Protocol.Linux.vcxproj", "{86F1B613-6E76-4348-8B34-D878CA7D7944}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerProtocol.Linux", "Server\Lib\ServerProtocol\ServerProtocol.Linux.vcxproj", "{86F1B613-6E76-4348-8B34-D878CA7D7944}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ServerSystem.Linux", "Server\Lib\ServerSystem\ServerSystem.Linux.vcxproj", "{6BCDE9D6-8AAE-4138-88CC-F97B6BF1C1F9}"
 EndProject
