@@ -211,9 +211,26 @@ namespace Svr {
 	Result RankingServiceEntity::GetRankingListAll(Array<TotalRankingPlayerInformation> &rankingList)
 	{
 		int32_t expectedRanking = 0;
-		int32_t itemCount = m_RankingMap.GetItemCount();
+		CounterType itemCount = m_RankingMap.GetItemCount();
 
 		return GetRankingList(0, itemCount, rankingList);
+	}
+
+	
+	Result RankingServiceEntity::ForeachAll(const ForeEachFuntor& functor)
+	{		
+		int32_t expectedRanking = 0;
+		int32_t itemCount = m_RankingMap.GetItemCount();
+
+		m_RankingMap.ForeachOrder(0, (int)itemCount, [&expectedRanking, &functor ] (const uint64_t& key, const TotalRankingPlayerInformationPtr &value)->bool
+		{
+			const TotalRankingPlayerInformation newValue = *value;
+			functor(expectedRanking++, &newValue);
+			
+			return true;
+		});
+
+		return ResultCode::SUCCESS;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////

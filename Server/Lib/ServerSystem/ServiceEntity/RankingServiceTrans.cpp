@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+﻿////////////////////////////////////////////////////////////////////////////////
 // 
 // CopyRight (c) 2013 The Braves
 // 
@@ -173,6 +173,8 @@ namespace Svr {
 	{
 	}
 
+
+
 	// Start Transaction
 	Result RankingServerDebugPrintALLRankingTrans::StartTransaction()
 	{
@@ -189,8 +191,8 @@ namespace Svr {
 		m_RankingList.Clear();
 
 		GetMyOwner()->CommitChanges();
-
-		svrChk(GetMyOwner()->GetRankingList(0, 100, m_RankingList));
+	
+		//svrChk(GetMyOwner()->GetRankingList(0, 100, m_RankingList));
 		//svrChk(GetMyOwner()->GetRankingListAll(m_RankingList));
 
 		TimeStampSec nowTime = Util::Time.GetRawUTCSec();
@@ -199,8 +201,9 @@ namespace Svr {
 		struct tm nowTimeTM = *gmtime(&time);
 
 		char strFileName[MAX_PATH];		
-		snprintf(strFileName, MAX_PATH, "%s..\\log\\%s[%d_%04d_%02d_%02d]_%s_log.txt",
-			Util::GetModulePathA(), Util::GetServiceNameA(), nowTimeTM.tm_year + 1900, nowTimeTM.tm_mon + 1, nowTimeTM.tm_mday, nowTimeTM.tm_hour, fileName);
+		snprintf(strFileName, MAX_PATH, "%s..\\log\\%s[%d_%04d_%02d_%02d_%02d_%02d]_%s_log.csv",
+			Util::GetModulePathA(), Util::GetServiceNameA(), nowTimeTM.tm_year + 1900, nowTimeTM.tm_mon + 1, nowTimeTM.tm_mday, nowTimeTM.tm_hour,
+			nowTimeTM.tm_min, nowTimeTM.tm_sec, fileName);
 
 		fileStream.Open(strFileName, IO::File::OpenMode::Append, IO::File::SharingMode::Exclusive);
 
@@ -215,19 +218,24 @@ namespace Svr {
 
 		snprintf(szBuff, MAX_PATH, "Ranking, Score, PlayerID, FaceboolUID, NickName, Level\n");
 		DWORD dwStrLen = (DWORD)strlen(szBuff);
+		
 		size_t szWritlen;
-
 		// write header..
 		fileStream.Write((byte*) szBuff, dwStrLen, szWritlen);
 
-		for (unsigned i = 0; i < m_RankingList.GetSize(); i++)
+		int32_t LastRanking = 0;
+		GetMyOwner()->ForeachAll([&LastRanking, &szBuff, &dwStrLen, &fileStream, &szWritlen](int32_t Ranking, const TotalRankingPlayerInformation* rankInfo)
 		{
-			TotalRankingPlayerInformation& rankInfo = m_RankingList[i];
+			//	TotalRankingPlayerInformation& rankInfo = m_RankingList[i];				
 			snprintf(szBuff, MAX_PATH, "%d, %d, %d, %d, %s, %d\n",
-				rankInfo.Ranking, rankInfo.GetLongScore(), rankInfo.PlayerID, rankInfo.FBUID, rankInfo.NickName, rankInfo.Level);
+				Ranking, (uint64_t)rankInfo->ScoreLow | ((uint64_t) rankInfo->ScoreHigh << 32),
+				rankInfo->PlayerID, rankInfo->FBUID, rankInfo->NickName, rankInfo->Level);
+			
 			dwStrLen = (DWORD)strlen(szBuff);
+			LastRanking = Ranking;
+			
 			fileStream.Write((byte*)szBuff, dwStrLen, szWritlen);
-		}
+		});
 
 	Proc_End:
 

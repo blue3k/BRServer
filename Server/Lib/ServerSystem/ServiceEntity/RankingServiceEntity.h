@@ -105,6 +105,11 @@ namespace Svr {
 		Result GetRankingList(int64_t from, int64_t count, Array<TotalRankingPlayerInformation> &rankingList);
 		Result GetRankingListAll(Array<TotalRankingPlayerInformation> &rankingList);
 
+		typedef std::function<void(int32_t Ranking, const TotalRankingPlayerInformation*)> ForeEachFuntor;
+
+		Result ForeachAll(const ForeEachFuntor& functor);
+
+
 		void CommitChanges() { m_RankingMap.CommitChanges(); }
 	};
 
