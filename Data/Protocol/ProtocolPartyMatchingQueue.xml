@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by abc (abc) -->
+<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+  <ProtocolGroup Name="PartyMatchingQueue" GenParameterRouteContext="true" GenParameterRouteHopCount="true" IsMobile="false" IsServer="true" Desc="Party matching queue Protocol">
+
+    <!-- ============================  From Player/Party to Matching queue  ============================================ -->
+
+    <Command Name="RegisterPartyMatching" Reliable="true" Crypto="No" Trace="DBG1" Desc="Register match by party">
+      <Cmd>
+        <Params Type="MatchingPlayerInformation" Name="Players" IsArray="true"/>
+      </Cmd>
+      <Res>
+        <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+      </Res>
+    </Command>
+
+    <Command Name="RegisterPlayerMatching" Reliable="true" Crypto="No" Trace="DBG1" Desc="Register match alone">
+      <Cmd>
+        <Params Type="PlayerID" Name="PlayerID"/>
+      </Cmd>
+      <Res>
+        <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+      </Res>
+    </Command>
+
+    <Command Name="UpdateMatchingEntityUID" Reliable="true" Crypto="No" Trace="DBG1" Desc="update registration information">
+      <Cmd>
+        <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+        <Params Type="EntityUID" Name="PreviousUID"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <Command Name="UnregisterMatching" Reliable="true" Crypto="No" Trace="DBG1" Desc="calcel registration">
+      <Cmd>
+        <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <S2CEvent Name="PartyMatchingCanceled" Reliable="true" Crypto="No" Trace="DBG1" Desc="For some reason, matching is canceled">
+      <Params Type="PartyUID" Name="DestPartyUID"/>
+      <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+    </S2CEvent>
+
+    <S2CEvent Name="PlayerMatchingCanceled" Reliable="true" Crypto="No" Trace="DBG1" Desc="For some reason, matching is canceled">
+      <Params Type="PlayerID" Name="DestPlayerID"/>
+      <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+    </S2CEvent>
+
+    <S2CEvent Name="PartyMatchingItemDequeued" Reliable="true" Crypto="No" Trace="DBG1" Desc="Enqueued item is dequeued">
+      <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+    </S2CEvent>
+
+    <S2CEvent Name="PlayerMatchingItemDequeued" Reliable="true" Crypto="No" Trace="DBG1" Desc="Enqueued item is dequeued">
+      <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+    </S2CEvent>
+
+
+    <!-- ============================  From Matching searcher to Matching queue  ============================================ -->
+
+
+    <Command Name="ReserveItem" Reliable="true" Crypto="No" Trace="DBG1" Desc="Reserve a item">
+      <Cmd>
+      </Cmd>
+      <Res>
+        <Params Type="uint32" Name="NumberOfPlayersInTheItem"/>
+        <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+      </Res>
+    </Command>
+
+    <Command Name="ReserveItems" Reliable="true" Crypto="No" Trace="DBG1" Desc="Reserve a item">
+      <Cmd>
+        <Params Type="uint32" Name="NumberOfItemsToReserve"/>
+      </Cmd>
+      <Res>
+        <Params Type="uint32" Name="NumberOfPlayersInTheItem" IsArray="true"/>
+        <Params Type="MatchingQueueTicket" Name="MatchingTicket" IsArray="true"/>
+      </Res>
+    </Command>
+
+    <Command Name="CancelReservation" Reliable="true" Crypto="No" Trace="DBG1" Desc="Cancel reservation">
+      <Cmd>
+        <Params Type="MatchingQueueTicket" Name="TicketToCancel"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <Command Name="CancelReservations" Reliable="true" Crypto="No" Trace="DBG1" Desc="Cancel reservation">
+      <Cmd>
+        <Params Type="MatchingQueueTicket" Name="TicketToCancel" IsArray="true"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <Command Name="DequeueItem" Reliable="true" Crypto="No" Trace="DBG1" Desc="Dequeue a reserved item">
+      <Cmd>
+        <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+      </Cmd>
+      <Res>
+        <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+        <Params Type="EntityUID" Name="RegisterUID" Desc="Reserver UID"/>
+        <Params Type="PlayerID" Name="RegisterID" Desc="Reserver PlayerID"/>
+        <Params Type="MatchingPlayerInformation" Name="Players" IsArray="true"/>
+      </Res>
+    </Command>
+
+    <C2SEvent Name="MatchingItemError" Reliable="true" Crypto="No" Trace="DBG1" Desc="Item error you should delete it">
+      <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
+    </C2SEvent>
+
+
+    <!-- =============================  ======================================= -->
+
+  
+</ProtocolGroup>
+</Protocols>

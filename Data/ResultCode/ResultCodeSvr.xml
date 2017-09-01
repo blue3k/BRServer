@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ResultCodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="SFResultCode.xsd"
+             Facility="Svr"
+             IDTable="false"
+             >
+
+  <ResultCodeItem Severity="Error" CodeName="SERVICE_FAILED" Desc="Server service failed"/>
+  <ResultCodeItem Severity="Error" CodeName="TIMEOUT" Desc="Timed out"/>
+  <ResultCodeItem Severity="Error" CodeName="TRANSACTION_INVALID_STATE" Desc="Transaction has invalid state transition"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_TRANSITION" Desc="Server Transaction timed out"/>
+  <ResultCodeItem Severity="Error" CodeName="TRANSACTION_TIMEOUT" Desc="Transaction process Time out"/>
+  <ResultCodeItem Severity="Error" CodeName="ROUTEMSG_FAILED" Desc="Failed to route message"/>
+  <ResultCodeItem Severity="Error" CodeName="NO_RESULT_HANDLER" Desc="No result handler"/>
+  <ResultCodeItem Severity="Error" CodeName="NO_MESSAGE_HANDLER" Desc="No message handler"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_SERVERID" Desc="Invalid server ID"/>
+  <ResultCodeItem Severity="Error" CodeName="PLAYER_NOT_FOUND" Desc="Player not found"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PLAYER_STATE" Desc="Player state is invalid"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PLAYER_GAMEDB" Desc="Invalid player game db data"/>
+  <ResultCodeItem Severity="Error" CodeName="NOTEXPECTED_MESSAGE" Desc="Not expected server message"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_ENTITYUID" Desc="Invalid entity UID"/>
+  <ResultCodeItem Severity="Error" CodeName="CLUSTER_NOTREADY" Desc="Cluster service not ready"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_CLUSTERTYPE" Desc="Invalid cluster type"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_CLUSTERID" Desc="Invalid cluster ID"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_QUEUEITEM" Desc="Invalid queue item"/>
+  <ResultCodeItem Severity="Error" CodeName="QUEUEITEM_CANCELED" Desc="Queue item is canceled"/>
+  <ResultCodeItem Severity="Error" CodeName="NOITEM_INQUEUE" Desc="There is no item in queue"/>
+  <ResultCodeItem Severity="Error" CodeName="ALREADY_INQUEUE" Desc="Already in queue"/>
+  <ResultCodeItem Severity="Error" CodeName="RESERVED_QUEUEITEM" Desc="Queue item is reserved"/>
+  <ResultCodeItem Severity="Error" CodeName="CLUSTER_NOMASTER" Desc="Cluster doesn't have any assigned master"/>
+  <ResultCodeItem Severity="Success" CodeName="QUEUEITEM_CANCEL_PENDED" Desc="Queue item is reserved for cancel"/>
+  <ResultCodeItem Severity="Error" CodeName="PURCHASE_CANCELED" Desc="Purchase canceled"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PURCHASE_INFO" Desc="Invalid receipt info"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PURCHASE_DUPLICATED" Desc="Invalid duplicated purchase"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_EXTERNAL_AUTH" Desc="External auth fail"/>
+  <ResultCodeItem Severity="Error" CodeName="EXTERNAL_SERVER_UNAVALIABLE" Desc="External server is not available"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PURCHASE_FORMAT" Desc="Invalid receipt result from server"/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_UNSUPPORTED_PROTOCOL" Desc="The protocol is not supported."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_FAILED_INIT" Desc="CURL initialization is failed."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_URL_MALFORMAT" Desc="Invalid URL format."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_NOT_BUILT_IN" Desc="Not a build-in feature."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_COULDNT_RESOLVE_PROXY" Desc="Failed to resolve URL."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_COULDNT_RESOLVE_HOST" Desc="Failed to resolve URL."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_COULDNT_CONNECT" Desc="Connection is failed"/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_HTTP_POST_ERROR" Desc="HTTP Post can't be done."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_SSL_ENGINE_NOTFOUND" Desc="Not supported SSL type."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_SSL_ENGINE_SETFAILED" Desc="Not supported SSL type."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_SEND_ERROR" Desc="Network send failed"/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_RECV_ERROR" Desc="Network receive failed"/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_USE_SSL_FAILED" Desc="Invalid SSL setting."/>
+  <ResultCodeItem Severity="Error" CodeName="CURL_NO_CONNECTION_AVAILABLE" Desc="No Connection is available now."/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_STATE" Desc="Invalid state transition"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_PURCHASE_MODE" Desc="Invalid purchase environment(public/test)"/>
+  <ResultCodeItem Severity="Error" CodeName="INVALID_TASK_GROUPID" Desc="Invalid Task group ID"/>
+
+
+</ResultCodes>
+

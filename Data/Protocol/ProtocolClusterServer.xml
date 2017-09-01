@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by abc (abc) -->
+<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+  <ProtocolGroup Name="ClusterServer" GenParameterRouteContext="true" GenParameterRouteHopCount="true" IsMobile="false" IsServer="true" Desc="Server Generic Protocol">
+
+    <!-- ============================  Server cluster  ============================================ -->
+
+    
+    <Command Name="GetClusterMemberList" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusRead" Desc="Cluster member list query">
+      <Cmd>
+        <Params Type="ClusterID" Name="ClusterID"/>
+      </Cmd>
+      <Res>
+        <Params Type="ServiceInformation" Name="MemberList" IsArray="true"/>
+      </Res>
+    </Command>
+
+    <Command Name="JoinCluster" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusRead" Desc="Join to the cluster, This operation will be manually broadcasted and gathered the result">
+      <Cmd>
+        <Params Type="EntityUID" Name="Sender"/>
+        <Params Type="NetClass" Name="SenderNetClass"/>
+        <Params Type="NetAddress" Name="SenderAddress"/>
+        <Params Type="ClusterID" Name="ClusterID"/>
+        <Params Type="ClusterType" Name="ClusterType"/>
+        <Params Type="ClusterMembership" Name="ClusterMembership"/>
+      </Cmd>
+      <Res>
+        <Params Type="ServiceInformation" Name="MemberList" IsArray="true"/>
+      </Res>
+    </Command>
+
+    <C2SEvent Name="NewServerServiceJoined" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusRead" Desc="Do not let it broadcasted while it's manual broadcast packet">
+      <Params Type="EntityUID" Name="JoinedServiceUID"/>
+      <Params Type="NetClass" Name="JoinedServiceNetClass"/>
+      <Params Type="NetAddress" Name="JoinedServiceAddress"/>
+      <Params Type="ClusterID" Name="ClusterID"/>
+      <Params Type="ClusterType" Name="ClusterType"/>
+      <Params Type="ClusterMembership" Name="JoinedServiceMembership"/>
+    </C2SEvent>
+
+    <C2SEvent Name="SyncClusterService" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusRead" Desc="Sync cluster service informations">
+      <Params Type="ClusterID" Name="ClusterID"/>
+      <Params Type="ClusterType" Name="ClusterType"/>
+      <Params Type="ServiceInformation" Name="MemberList" IsArray="true"/>
+    </C2SEvent>
+
+    <Command Name="RequestDataSync" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterDataRead" Desc="Join to the cluster">
+      <Cmd>
+        <Params Type="ClusterID" Name="ClusterID"/>
+      </Cmd>
+      <Res>
+      </Res>
+    </Command>
+
+    <S2CEvent Name="ClusterMasterAssigned" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusWrite" Desc="Master instance of the cluster is assigned">
+      <Params Type="EntityUID" Name="Sender"/>
+      <Params Type="ClusterID" Name="ClusterID"/>
+      <Params Type="EntityUID" Name="MasterUID"/>
+    </S2CEvent>
+
+    <C2SEvent Name="ClusterMasterVote" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusRead" Desc="Master vote">
+      <Params Type="ClusterID" Name="ClusterID"/>
+      <Params Type="EntityUID" Name="VoteToUID"/>
+      <Params Type="uint64" Name="VotedUpTime"/>
+    </C2SEvent>
+
+    <C2SEvent Name="ClusterUpdateStatus" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusWrite" Desc="Update cluster service status">
+      <Params Type="EntityUID" Name="Sender"/>
+      <Params Type="ClusterID" Name="ClusterID"/>
+      <Params Type="ServiceStatus" Name="MemberStatus"/>
+    </C2SEvent>
+
+    <C2SEvent Name="ClusterUpdateWorkload" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusWrite" Desc="Update cluster service workload">
+      <Params Type="EntityUID" Name="Sender"/>
+      <Params Type="ClusterID" Name="ClusterID"/>
+      <Params Type="uint32" Name="Workload"/>
+    </C2SEvent>
+
+    <Command Name="GetLowestWorkloadClusterMember" Reliable="true" Crypto="No" Trace="DBG2" Usage="ClusterStatusRead" Desc="Get lowest workloaded cluster member">
+      <Cmd>
+        <Params Type="ClusterID" Name="ClusterID"/>
+      </Cmd>
+      <Res>
+        <Params Type="ServiceInformation" Name="Member" />
+      </Res>
+    </Command>
+
+    <!-- ============================= Game cluster generic ======================================= -->
+
+    <C2SEvent Name="GamePlayerEntityCreated" Reliable="true" Crypto="No" Trace="DBG1" Usage="ClusterDataWrite" Desc="Called when a player entity is created">
+      <Params Type="PlayerID" Name="PlayerID"/>
+      <Params Type="EntityUID" Name="PlayerUID"/>
+    </C2SEvent>
+
+    <C2SEvent Name="GamePlayerEntityDeleted" Reliable="true" Crypto="No" Trace="DBG1" Usage="ClusterDataWrite" Desc="Called when a player entity is deleted">
+      <Params Type="PlayerID" Name="PlayerID"/>
+      <Params Type="EntityUID" Name="PlayerUID"/>
+    </C2SEvent>
+    
+    
+  </ProtocolGroup>
+</Protocols>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by abc (abc) -->
+<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+	<ProtocolGroup Name="GameInstanceManager" GenParameterRouteContext="true" GenParameterRouteHopCount="true" IsMobile="false" IsServer="true" Desc="Game Instance manager service Protocol">
+		<!-- ============================  Server Generic  ============================================ -->
+
+	<Command Name="CreateGame" Reliable="true" Crypto="No" Trace="DBG1" Desc="Create a game instance">
+		<Cmd>
+      <Params Type="uint16" Name="NumberOfBotPlayer"/>
+      <Params Type="uint16" Name="MaxPlayer"/>
+    </Cmd>
+		<Res>
+		</Res>
+	</Command>
+
+
+    <C2SEvent Name="GameDeleted" Reliable="true" Crypto="No" Trace="DBG1" Desc="Game instance notify of deletion">
+    </C2SEvent>
+
+    <!-- =============================  ======================================= -->
+
+	</ProtocolGroup>
+</Protocols>
