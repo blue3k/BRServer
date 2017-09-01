@@ -10,7 +10,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>.\;..\..\Lib;$(SolutionDir)External\mysql-connector-c-6.1.6-winx64\include;$(SolutionDir)Server/Lib/Common;$(SolutionDir)Server/Lib/DB;$(SolutionDir)Server/Lib/ServerSystem;$(SF_DIR)3rdParties\src\curl\curl\include;$(SF_DIR)3rdParties\src\jsoncpp\include;$(SF_DIR)3rdParties\src\libxml\libxml2\include;$(SF_DIR)Bin/Win/$(Platform)/openssl/include;$(SF_DIR)3rdParties\src\libiconv\libiconv-1.14\include;$(SF_DIR)3rdParties\src\zlib\zlib-1.2.8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;CURL_STATICLIB;NOMINMAX;_UNICODE;UNICODE;_VARIADIC_MAX=10;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;HAVE_WIN32_THREADS;CURL_STATICLIB;HAVE_STDDEF_H=1;HAVE_STDINT_H=1;HAVE_SYS_TYPES_H=1;NOMINMAX;_UNICODE;UNICODE;NOCRYPT;_ENABLE_ATOMIC_ALIGNMENT_FIX;_VARIADIC_MAX=10;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/Ym0x30000000 %(AdditionalOptions)</AdditionalOptions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <OmitFramePointers>false</OmitFramePointers>

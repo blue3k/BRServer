@@ -44,10 +44,7 @@ namespace Svr {
 		:FreeReplicaClusterServiceEntity(clusterID, initialMembership)
 	{
 		BR_ENTITY_MESSAGE(Message::RankingServer::AddPlayerCmd) { svrMemReturn(pNewTrans = new RankingServerAddPlayerTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		//BR_ENTITY_MESSAGE(Message::RankingServer::RemovePlayerCmd) { svrMemReturn(pNewTrans = new RankingServerRemovePlayerTrans(pMsgData)); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::RankingServer::UpdatePlayerScoreCmd) { svrMemReturn(pNewTrans = new RankingServerUpdatePlayerScoreTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		//BR_ENTITY_MESSAGE(Message::RankingServer::GetPlayerRankingCmd) { svrMemReturn(pNewTrans = new RankingServerGetPlayerRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
-		//BR_ENTITY_MESSAGE(Message::RankingServer::GetRankingCmd) { svrMemReturn(pNewTrans = new RankingServerGetRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::RankingServer::DebugPrintALLRankingCmd) { svrMemReturn(pNewTrans = new RankingServerDebugPrintALLRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
@@ -211,7 +208,7 @@ namespace Svr {
 	Result RankingServiceEntity::GetRankingListAll(Array<TotalRankingPlayerInformation> &rankingList)
 	{
 		int32_t expectedRanking = 0;
-		int32_t itemCount = m_RankingMap.GetItemCount();
+		int32_t itemCount = static_cast<int32_t>(m_RankingMap.GetItemCount());
 
 		return GetRankingList(0, itemCount, rankingList);
 	}
