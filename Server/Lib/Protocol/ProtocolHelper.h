@@ -11,25 +11,25 @@
 
 #pragma once
 
-#include "Common/BrBaseTypes.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Types/BrBaseTypes.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetDef.h"
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 
 namespace BR {
 namespace Protocol {
 
 	// parsing helper
 	template< class SrcType >
-	inline void PackParamCopy( BYTE* &pMsgCur, SrcType* pSrc, INT iParamSize );
+	inline void PackParamCopy( uint8_t* &pMsgCur, SrcType* pSrc, INT iParamSize );
 
 
 	// parsing helper
 	template< class DataType >
-	inline Result StreamParamCopy( DataType* pDst, BYTE* &pMsgCur, INT &iMsgSize, INT iParamSize );
+	inline Result StreamParamCopy( DataType* pDst, uint8_t* &pMsgCur, INT &iMsgSize, INT iParamSize );
 
 	template< class DataType >
-	inline Result StreamParamLnk( DataType* &pDst, BYTE* &pMsgCur, INT &iMsgSize, INT iParamSize );
+	inline Result StreamParamLnk( DataType* &pDst, uint8_t* &pMsgCur, INT &iMsgSize, INT iParamSize );
 
 
 #include "ProtocolHelper.inl"

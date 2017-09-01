@@ -13,14 +13,14 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/MemoryPool.h"
+#include "SFTypedefs.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "Memory/MemoryPool.h"
 #include "Object/SharedObject.h"
 #include "Object/SharedPointer.h"
-#include "Common/PageQueue.h"
-#include "Common/TimeUtil.h"
+#include "Container/PageQueue.h"
+#include "Util/TimeUtil.h"
 
 #include "Net/NetDef.h"
 
@@ -29,7 +29,7 @@
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/MessageHandlerTable.h"
 #include "Protocol/Message/ServerMsgClass.h"
-#include "Common/Task/TimeSchedulerAction.h"
+#include "Task/TimeSchedulerAction.h"
 #include "Net/Connection.h"
 #include "ServerSystem/BrServerUtil.h"
 

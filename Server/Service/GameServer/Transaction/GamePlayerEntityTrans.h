@@ -11,12 +11,12 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "ServerSystem/Transaction.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/Memento.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
@@ -34,7 +34,7 @@
 #include "GameServerClass.h"
 
 #include "GameInstance/GamePlayerEntity.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 
 #include "GameSystem/UserGamePlayerInfoSystem.h"
 
@@ -120,26 +120,26 @@ namespace GameServer {
 	private:
 		struct {
 			SHORT Level;
-			INT64 Exp;
-			INT64 GameMoney;
-			INT64 Gem;
+			int64_t Exp;
+			int64_t GameMoney;
+			int64_t Gem;
 			SHORT Stamina;
-			UINT32 LastUpdateTime;
-			INT32 TotalPlayed;
-			INT32 WinPlaySC;
-			INT32 WinPlaySM;
-			INT32 WinPlaySS;
-			INT32 LosePlaySC;
-			INT32 LosePlaySM;
-			INT32 LosePlaySS;
-			INT32 WinPlayNC;
-			INT32 WinPlayNM;
-			INT32 WinPlayNS;
-			INT32 LosePlayNC;
-			INT32 LosePlayNM;
-			INT32 LosePlayNS;
-			INT32 WeeklyWin;
-			INT32 WeeklyLose;
+			uint32_t LastUpdateTime;
+			int32_t TotalPlayed;
+			int32_t WinPlaySC;
+			int32_t WinPlaySM;
+			int32_t WinPlaySS;
+			int32_t LosePlaySC;
+			int32_t LosePlaySM;
+			int32_t LosePlaySS;
+			int32_t WinPlayNC;
+			int32_t WinPlayNM;
+			int32_t WinPlayNS;
+			int32_t LosePlayNC;
+			int32_t LosePlayNM;
+			int32_t LosePlayNS;
+			int32_t WeeklyWin;
+			int32_t WeeklyLose;
 		} m_Result;
 
 
@@ -185,21 +185,21 @@ namespace GameServer {
 	private:
 		struct {
 			SHORT Level;
-			INT32 TotalPlayed;
-			INT32 WinPlaySC;
-			INT32 WinPlaySM;
-			INT32 WinPlaySS;
-			INT32 LosePlaySC;
-			INT32 LosePlaySM;
-			INT32 LosePlaySS;
-			INT32 WinPlayNC;
-			INT32 WinPlayNM;
-			INT32 WinPlayNS;
-			INT32 LosePlayNC;
-			INT32 LosePlayNM;
-			INT32 LosePlayNS;
-			INT32 WeeklyWin;
-			INT32 WeeklyLose;
+			int32_t TotalPlayed;
+			int32_t WinPlaySC;
+			int32_t WinPlaySM;
+			int32_t WinPlaySS;
+			int32_t LosePlaySC;
+			int32_t LosePlaySM;
+			int32_t LosePlaySS;
+			int32_t WinPlayNC;
+			int32_t WinPlayNM;
+			int32_t WinPlayNS;
+			int32_t LosePlayNC;
+			int32_t LosePlayNM;
+			int32_t LosePlayNS;
+			int32_t WeeklyWin;
+			int32_t WeeklyLose;
 		} m_Result;
 
 	public:
@@ -472,8 +472,8 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::SetNickNameCmd, PlayerTransSetNickName> super;
 
 	private:
-		UINT64 m_TotalGem;
-		UINT64 m_TotalGameMoney;
+		uint64_t m_TotalGem;
+		uint64_t m_TotalGameMoney;
 
 	public:
 		PlayerTransSetNickName( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
@@ -620,7 +620,7 @@ namespace GameServer {
 	private:
 		const UINT MAX_RETRY = 3;
 
-		StaticArray<BYTE, 1024> m_Signagure;
+		StaticArray<uint8_t, 1024> m_Signagure;
 		UINT m_RetryCount;
 
 	public:

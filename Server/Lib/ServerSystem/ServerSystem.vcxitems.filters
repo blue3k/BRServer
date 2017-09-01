@@ -61,16 +61,26 @@
     <Filter Include="ZooKeeper">
       <UniqueIdentifier>{ee56321a-a7d8-4475-850c-f5529263bf65}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ServerLog">
+      <UniqueIdentifier>{8a397929-3ab9-43d0-9b4f-0212853774f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{4053eba9-9382-40fc-aadf-cf2867791441}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types">
+      <UniqueIdentifier>{085af184-0922-4841-b74f-cdbc23f4af14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Task">
+      <UniqueIdentifier>{a021380e-ffdc-4133-a7f2-c134d0ce78c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameLog\GameLog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessageHandlerTable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MessageRoute.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrToString.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrTrace.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrTypes.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServiceEntity\Login\LoginServiceEntity.h">
       <Filter>ServerService\Login</Filter>
     </ClInclude>
@@ -330,6 +340,37 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h">
       <Filter>ZooKeeper</Filter>
     </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerLog\SvrLog_Internal.h">
+      <Filter>ServerLog</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerLog\SvrLogComponent.h">
+      <Filter>ServerLog</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerLog\SvrLog.h">
+      <Filter>ServerLog</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\String\ToStringSvr.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\String\SvrToString.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SvrPolicyID.h" />
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Types\SvrTypes.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Types\BrBaseTypes.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\TimeScheduler.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\TimeSchedulerAction.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\TaskManager.h">
+      <Filter>Task</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GameLog\GameLog.inl" />
@@ -403,6 +444,18 @@
     </None>
     <None Include="$(MSBuildThisFileDirectory)SvrConfig.inl">
       <Filter>Config</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerLog\SvrLog_Internal.inl">
+      <Filter>ServerLog</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerLog\SvrLog.inl">
+      <Filter>ServerLog</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Types\BrBaseTypes.inl">
+      <Filter>Types</Filter>
+    </None>
+    <None Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\TaskManager.inl">
+      <Filter>Task</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -645,6 +698,24 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp">
       <Filter>ZooKeeper</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerLog\SvrLogComponent.cpp">
+      <Filter>ServerLog</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerLog\SvrLog.cpp">
+      <Filter>ServerLog</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\String\ToStringSvr.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Types\SvrTypes.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\TimeScheduler.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Task\TaskManager.cpp">
+      <Filter>Task</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

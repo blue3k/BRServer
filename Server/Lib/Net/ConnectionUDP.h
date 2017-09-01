@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include "Common/PageQueue.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Container/PageQueue.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetSystem.h"
@@ -50,7 +50,7 @@ namespace Net {
 
 		// packet gathering buffer
 		UINT				m_uiGatheredSize;
-		BYTE*				m_pGatheringBuffer;
+		uint8_t*				m_pGatheringBuffer;
 
 
 		// Recv guaranted Message Queue, to enable MT enqueue
@@ -113,7 +113,7 @@ namespace Net {
 		void ChangeRemoteAddress( const sockaddr_storage& socAddr );
 
 		// gathering
-		virtual Result SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
+		virtual Result SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID = 0 );
 		virtual Result SendPending( Message::MessageData* pMsg );
 		Result SendFlush();
 
@@ -191,7 +191,7 @@ namespace Net {
 		ConnectionUDP() : ConnectionUDPBase( BASE_WINDOW_SIZE ) {}
 
 		// called when incomming message occure
-		virtual Result OnRecv( UINT uiBuffSize, const BYTE* pBuff );
+		virtual Result OnRecv( UINT uiBuffSize, const uint8_t* pBuff );
 		virtual Result OnRecv( Message::MessageData *pMsg );
 
 		// Update net control, process connection heartbit, ... etc

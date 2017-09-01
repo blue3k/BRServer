@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/PolicyID.h"
+#include "Protocol/Protocol.h"
 #include "String/ToStringSvr.h"
 #include "String/ToStringGame.h"
 #include "Common/ArrayUtil.h"
@@ -30,13 +30,13 @@ namespace BR
  		namespace PartyMatching
 		{
  			// S2C: 
-			const MessageID PartyGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHING, 0);
+			const MessageID PartyGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 0);
 			Result PartyGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -57,7 +57,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -86,7 +86,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -113,7 +113,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -147,13 +147,13 @@ namespace BR
 			}; // void PartyGameMatchedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: 
-			const MessageID PlayerGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_PARTYMATCHING, 1);
+			const MessageID PlayerGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 1);
 			Result PlayerGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -177,7 +177,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -212,7 +212,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -239,7 +239,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 

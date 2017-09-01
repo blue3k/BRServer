@@ -13,11 +13,11 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/Thread.h"
+#include "SFTypedefs.h"
+#include "Thread/Thread.h"
 #include "Net/NetDef.h"
 #include "Common/Task/Task.h"
-#include "Common/PageQueue.h"
+#include "Container/PageQueue.h"
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/Entity.h"
 

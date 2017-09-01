@@ -13,7 +13,7 @@
 #pragma once
 
 
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "Common/SystemSynchronization.h"
 
 namespace BR {

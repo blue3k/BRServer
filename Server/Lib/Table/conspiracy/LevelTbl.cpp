@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "LevelTbl.h"
 
 

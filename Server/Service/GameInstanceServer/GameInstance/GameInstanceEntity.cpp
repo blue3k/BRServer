@@ -13,11 +13,11 @@
 #include "stdafx.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Common/TimeUtil.h"
-#include "Common/BrBaseTypes.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
-#include "Common/Message.h"
+#include "Util/TimeUtil.h"
+#include "Types/BrBaseTypes.h"
+#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeGame.h"
+#include "Net/Message.h"
 #include "Common/BrRandom.h"
 
 #include "ServerSystem/BrServer.h"
@@ -227,7 +227,7 @@ namespace ConspiracyGameInstanceServer {
 			{
 				if (m_PlayerCharacter[player] == 0xFF)
 				{
-					m_PlayerCharacter[player] = (BYTE)character;
+					m_PlayerCharacter[player] = (uint8_t)character;
 					break;
 				}
 				player++;

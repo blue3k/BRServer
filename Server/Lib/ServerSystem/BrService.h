@@ -12,11 +12,11 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/BrMemory.h"
+#include "SFTypedefs.h"
+#include "Memory/SFMemory.h"
 #include "SFAssert.h"
 #include "Common/Utility.h"
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "ServerSystem/BrServer.h"
 
 

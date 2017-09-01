@@ -77,7 +77,7 @@ Result GameLog<MaxBufferSize,MaxLog>::GetGameLogBinary( OutputMemoryStream& stre
 
 	m_gameLogQueue.ReverseForeach( startIndex, count, [&]( GameLogItem* pLogItem ) 
 	{
-		return (stream.Write( pLogItem->LogItemSize, (BYTE*)pLogItem ));
+		return (stream.Write( pLogItem->LogItemSize, (uint8_t*)pLogItem ));
 	});
 
 

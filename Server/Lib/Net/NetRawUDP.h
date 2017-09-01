@@ -66,7 +66,7 @@ namespace Net {
 
 
 		// called when incomming message occure
-		Result OnRecv(const sockaddr_storage& remoteAddr, UINT uiBuffSize, const BYTE* pBuff);
+		Result OnRecv(const sockaddr_storage& remoteAddr, UINT uiBuffSize, const uint8_t* pBuff);
 
 		virtual Result OnSendReady() override;
 		// called when reciving messag is completed

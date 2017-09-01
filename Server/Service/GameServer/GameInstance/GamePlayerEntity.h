@@ -11,11 +11,11 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/HashTable.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/GameSystem.h"
 #include "Common/GameConst.h"
@@ -190,7 +190,7 @@ namespace GameServer {
 		virtual Result SetAccountID( AccountID accID )					{ m_PlayerInformation.PlayerID = accID; return Svr::SimpleUserEntity::SetAccountID(accID); }
 
 		template< class ...ArgTypes >
-		void AddGameTransactionLogT(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* strFormat, ArgTypes... args)
+		void AddGameTransactionLogT(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* strFormat, ArgTypes... args)
 		{
 			char strBuffer[1024];
 			StrUtil::Format(strBuffer, strFormat, args...);
@@ -198,11 +198,11 @@ namespace GameServer {
 			AddGameTransactionLog(LogCategory, consume, gain, totalValue, strBuffer);
 		}
 
-		void AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage);
-		void AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue);
+		void AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage);
+		void AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue);
 
 		// Send push notify
-		Result SendPushNotify( const char* strMessage, UINT64 param = 0 );
+		Result SendPushNotify( const char* strMessage, uint64_t param = 0 );
 
 	};
 

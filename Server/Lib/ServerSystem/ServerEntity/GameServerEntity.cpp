@@ -11,10 +11,10 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/TimeUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "Util/TimeUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/ServerEntity.h"

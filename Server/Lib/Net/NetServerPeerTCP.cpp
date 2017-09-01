@@ -12,9 +12,9 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/Thread.h"
-#include "Common/StrUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "Thread/Thread.h"
+#include "String/StrUtil.h"
 #include "Net/Connection.h"
 #include "Net/NetTrace.h"
 #include "Net/NetDef.h"
@@ -159,7 +159,7 @@ namespace Net {
 		ConnectionTCP *pConn = nullptr;
 		SOCKET socket = INVALID_SOCKET;
 		sockaddr_storage remoteAddr;
-		INT32 iOptValue;
+		int32_t iOptValue;
 
 		netChkPtr(pIConn);
 		pConn = dynamic_cast<ConnectionTCP*>(pIConn);

@@ -11,11 +11,11 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "Util/TimeUtil.h"
 #include "Common/Utility.h"
 #include "Common/SpinSharedBuffer.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Net/NetTrace.h"
 #include "Net/NetUtil.h"
 #include "Net/NetSystem.h"

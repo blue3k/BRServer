@@ -20,10 +20,10 @@
 namespace BR {
 namespace Svr {
 
-	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<INT32>::GetDataType() { return DataTypes::Int32; }
-	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<UINT32>::GetDataType() { return DataTypes::UInt32; }
-	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<INT64>::GetDataType() { return DataTypes::Int64; }
-	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<UINT64>::GetDataType() { return DataTypes::UInt64; }
+	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<int32_t>::GetDataType() { return DataTypes::Int32; }
+	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<uint32_t>::GetDataType() { return DataTypes::UInt32; }
+	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<int64_t>::GetDataType() { return DataTypes::Int64; }
+	//template<> PerformanceCounter::DataTypes PerformanceCounterRaw<uint64_t>::GetDataType() { return DataTypes::UInt64; }
 
 
 
@@ -58,20 +58,20 @@ namespace Svr {
 
 
 
-	template class PerformanceCounterRaw < INT32 >;
-	template class PerformanceCounterRaw < UINT32 >;
-	template class PerformanceCounterRaw < INT64 >;
-	template class PerformanceCounterRaw < UINT64 >;
+	template class PerformanceCounterRaw < int32_t >;
+	template class PerformanceCounterRaw < uint32_t >;
+	template class PerformanceCounterRaw < int64_t >;
+	template class PerformanceCounterRaw < uint64_t >;
 
-	template class PerformanceCounterAveragePerSec < INT32 >;
-	template class PerformanceCounterAveragePerSec < UINT32 >;
-	template class PerformanceCounterAveragePerSec < INT64 >;
-	template class PerformanceCounterAveragePerSec < UINT64 >;
+	template class PerformanceCounterAveragePerSec < int32_t >;
+	template class PerformanceCounterAveragePerSec < uint32_t >;
+	template class PerformanceCounterAveragePerSec < int64_t >;
+	template class PerformanceCounterAveragePerSec < uint64_t >;
 
-	template class PerformanceCounterTickPerSec < INT32 >;
-	template class PerformanceCounterTickPerSec < UINT32 >;
-	template class PerformanceCounterTickPerSec < INT64 >;
-	template class PerformanceCounterTickPerSec < UINT64 >;
+	template class PerformanceCounterTickPerSec < int32_t >;
+	template class PerformanceCounterTickPerSec < uint32_t >;
+	template class PerformanceCounterTickPerSec < int64_t >;
+	template class PerformanceCounterTickPerSec < uint64_t >;
 
 
 };	// Svr

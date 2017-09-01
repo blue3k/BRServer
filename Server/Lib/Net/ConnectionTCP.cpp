@@ -12,11 +12,11 @@
 
 
 #include "stdafx.h"
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "SFAssert.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "ResultCode/SFResultCodeSvr.h"
 #include "Net/NetTrace.h"
 #include "Net/Connection.h"
 #include "Net/NetDef.h"
@@ -199,7 +199,7 @@ namespace Net {
 			netChkPtr(pIOBuffer);
 			if (!NetSystem::IsProactorSystem() || pIOBuffer->bIsPending.load(std::memory_order_consume))
 			{
-				netChk(m_Owner.OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer));
+				netChk(m_Owner.OnRecv(pIOBuffer->TransferredSize, (uint8_t*)pIOBuffer->buffer));
 			}
 
 		}
@@ -344,7 +344,7 @@ namespace Net {
 					break;
 				case NetCtrlCode_Connect:
 					// Protocol version mismatch
-					OnConnectionResult( ResultCode::E_NET_PROTOCOL_VERSION_MISMATCH );
+					OnConnectionResult( ResultCode::E_NET_PROTOCOLID_VERSION_MISMATCH );
 					netChk( Disconnect("Protocol mismatch") );
 					break;
 				case NetCtrlCode_HeartBit:
@@ -376,11 +376,11 @@ namespace Net {
 				NetClass RemoteClass = (NetClass)pNetCtrl->msgID.IDSeq.Sequence;
 				m_ConnectInfo.Remote = pNetCtrlCon->Address;
 
-				if (recvProtocolVersion != BR_PROTOCOL_VERSION)
+				if (recvProtocolVersion != BR_PROTOCOLID_VERSION)
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
 					if (GetConnectionState() != STATE_CONNECTED)
-						OnConnectionResult( ResultCode::E_NET_PROTOCOL_VERSION_MISMATCH );
+						OnConnectionResult( ResultCode::E_NET_PROTOCOLID_VERSION_MISMATCH );
 					netChk( Disconnect("Protocol mismatch") );
 				}
 				else if( GetConnectionInfo().RemoteClass != NetClass::Unknown && RemoteClass != GetConnectionInfo().RemoteClass )
@@ -683,7 +683,7 @@ namespace Net {
 
 
 	// called when incomming message occure
-	Result ConnectionTCP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
+	Result ConnectionTCP::OnRecv( UINT uiBuffSize, const uint8_t* pBuff )
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pMsg = NULL;
@@ -945,7 +945,7 @@ namespace Net {
 		return hr;
 	}
 
-	Result ConnectionTCP::SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID)
+	Result ConnectionTCP::SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID)
 	{
 		Result hr = Connection::SendNetCtrl(uiCtrlCode, uiSequence, msgID, UID);
 		if ((hr))
@@ -1022,7 +1022,7 @@ namespace Net {
 			else if( (ulTimeCur-m_ulNetCtrlTryTime) > DurationMS(Const::CONNECTION_RETRY_TIME) ) // retry
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
-				netChk(SendNetCtrl(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOL_VERSION), GetConnectionInfo().LocalID));
+				netChk(SendNetCtrl(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOLID_VERSION), GetConnectionInfo().LocalID));
 			}
 
 			goto Proc_End;

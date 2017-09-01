@@ -11,12 +11,12 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/TimeUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/ResultCode/BRResultCodeSystem.h"
+#include "String/StrUtil.h"
+#include "Util/TimeUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "ResultCode/SFResultCodeSystem.h"
 #include "ServerSystem/SvrConstDefault.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
@@ -28,7 +28,7 @@
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/EntityTable.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 
 #include "Protocol/Policy/ServerIPolicy.h"
 
@@ -379,7 +379,7 @@ namespace BR {
 			return ResultCode::INVALID_POINTER;
 
 		pTrans->SetOwnerEntity( this );
-		pTrans->SetTransID( TransactionID( (UINT32)GetEntityID(), (uint)GenTransIndex() ) ); 
+		pTrans->SetTransID( TransactionID( (uint32_t)GetEntityID(), (uint)GenTransIndex() ) ); 
 
 		svrChk( m_transactionQueue.Enqueue(pTrans) );
 

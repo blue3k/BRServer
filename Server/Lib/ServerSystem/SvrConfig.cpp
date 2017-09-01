@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/BrXML.h"
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/SvrTrace.h"

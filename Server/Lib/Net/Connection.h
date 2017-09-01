@@ -16,8 +16,8 @@
 #include "Net/NetCtrl.h"
 #include "Net/NetUtil.h"
 #include "Net/NetSystem.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/PageQueue.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "Container/PageQueue.h"
 
 
 
@@ -154,7 +154,7 @@ namespace Net {
 		inline void SetConnectingTimeOut( ULONG ulConnectingTimeOut );
 
 		// Make NetCtrl packet and send
-		virtual Result SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 );
+		virtual Result SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID = 0 );
 
 		// Clear Queue
 		virtual Result ClearQueues();
@@ -179,7 +179,7 @@ namespace Net {
 
 
 		// called when incomming message occure
-		virtual Result OnRecv( UINT uiBuffSize, const BYTE* pBuff ) = 0;
+		virtual Result OnRecv( UINT uiBuffSize, const uint8_t* pBuff ) = 0;
 		virtual Result OnRecv( Message::MessageData *pMsg );
 
 		

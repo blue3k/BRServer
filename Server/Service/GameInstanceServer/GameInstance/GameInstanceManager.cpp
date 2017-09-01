@@ -14,8 +14,8 @@
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/EntityManager.h"
-#include "Common/TimeUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Util/TimeUtil.h"
+#include "Types/BrBaseTypes.h"
 
 
 #include "ConspiracyGameInstanceSvrConst.h"

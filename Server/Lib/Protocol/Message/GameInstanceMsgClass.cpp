@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/PolicyID.h"
+#include "Protocol/Protocol.h"
 #include "String/ToStringSvr.h"
 #include "String/ToStringGame.h"
 #include "Common/ArrayUtil.h"
@@ -30,13 +30,13 @@ namespace BR
  		namespace GameInstance
 		{
  			// C2S: Game instance deletion
-			const MessageID DeleteGameC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 0);
+			const MessageID DeleteGameC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 0);
 			Result DeleteGameC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -56,7 +56,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext));
@@ -83,7 +83,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -114,13 +114,13 @@ namespace BR
 			}; // void DeleteGameC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Join Game
-			const MessageID JoinGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 1);
+			const MessageID JoinGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
 			Result JoinGameCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -144,7 +144,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -179,7 +179,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -209,15 +209,15 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_Player, m_Ticket, m_RequestedRole); 
 			}; // void JoinGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID JoinGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 1);
+			const MessageID JoinGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 1);
 			Result JoinGameRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofChatHistoryData = 0; uint8_t* pChatHistoryData = nullptr;
-				UINT16 numberofGameLogData = 0; uint8_t* pGameLogData = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofChatHistoryData = 0; uint8_t* pChatHistoryData = nullptr;
+				uint16_t numberofGameLogData = 0; uint8_t* pGameLogData = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -237,10 +237,10 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Dead, pCur, iMsgSize, (int)sizeof(uint8_t) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_IsNewJoin, pCur, iMsgSize, (int)sizeof(uint8_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofChatHistoryData, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pChatHistoryData, pCur, iMsgSize, (int)sizeof(uint8_t)*numberofChatHistoryData ) );
 				m_ChatHistoryData.SetLinkedBuffer(numberofChatHistoryData, numberofChatHistoryData, pChatHistoryData);
-				protocolChk( Protocol::StreamParamCopy( &numberofGameLogData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofGameLogData, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pGameLogData, pCur, iMsgSize, (int)sizeof(uint8_t)*numberofGameLogData ) );
 				m_GameLogData.SetLinkedBuffer(numberofGameLogData, numberofGameLogData, pGameLogData);
 
@@ -255,7 +255,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -271,13 +271,13 @@ namespace BR
 					+ sizeof(PlayerRole)
 					+ sizeof(uint8_t)
 					+ sizeof(uint8_t)
-					+ sizeof(uint8_t)*InChatHistoryData.GetSize() + sizeof(UINT16)
-					+ sizeof(uint8_t)*InGameLogData.GetSize() + sizeof(UINT16));
+					+ sizeof(uint8_t)*InChatHistoryData.GetSize() + sizeof(uint16_t)
+					+ sizeof(uint8_t)*InGameLogData.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInChatHistoryData = (UINT16)InChatHistoryData.GetSize(); 
-				UINT16 numberOfInGameLogData = (UINT16)InGameLogData.GetSize(); 
+				uint16_t numberOfInChatHistoryData = (uint16_t)InChatHistoryData.GetSize(); 
+				uint16_t numberOfInGameLogData = (uint16_t)InGameLogData.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameInstance::JoinGameRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -295,9 +295,9 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRole, sizeof(PlayerRole));
 				Protocol::PackParamCopy( pMsgData, &InDead, sizeof(uint8_t));
 				Protocol::PackParamCopy( pMsgData, &InIsNewJoin, sizeof(uint8_t));
-				Protocol::PackParamCopy( pMsgData, &numberOfInChatHistoryData, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInChatHistoryData, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InChatHistoryData.data(), (INT)(sizeof(uint8_t)*InChatHistoryData.GetSize())); 
-				Protocol::PackParamCopy( pMsgData, &numberOfInGameLogData, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInGameLogData, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InGameLogData.data(), (INT)(sizeof(uint8_t)*InGameLogData.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -314,7 +314,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -345,13 +345,13 @@ namespace BR
 			}; // void JoinGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player Joined
-			const MessageID PlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 2);
+			const MessageID PlayerJoinedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 2);
 			Result PlayerJoinedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -376,7 +376,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -413,7 +413,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -444,13 +444,13 @@ namespace BR
 			}; // void PlayerJoinedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Change configue preset
-			const MessageID SetConfigPresetC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 3);
+			const MessageID SetConfigPresetC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 3);
 			Result SetConfigPresetC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -471,7 +471,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -500,7 +500,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -531,13 +531,13 @@ namespace BR
 			}; // void SetConfigPresetC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Leave Game
-			const MessageID LeaveGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 4);
+			const MessageID LeaveGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
 			Result LeaveGameCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -559,7 +559,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -590,7 +590,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -620,13 +620,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID); 
 			}; // void LeaveGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID LeaveGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 4);
+			const MessageID LeaveGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 4);
 			Result LeaveGameRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -648,7 +648,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -679,7 +679,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -710,13 +710,13 @@ namespace BR
 			}; // void LeaveGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player left
-			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 5);
+			const MessageID PlayerLeftS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 5);
 			Result PlayerLeftS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -737,7 +737,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -766,7 +766,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -797,13 +797,13 @@ namespace BR
 			}; // void PlayerLeftS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Kick player
-			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 6);
+			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);
 			Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -826,7 +826,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -859,7 +859,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -889,13 +889,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID, m_PlayerToKick); 
 			}; // void KickPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 6);
+			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 6);
 			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -917,7 +917,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -948,7 +948,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -979,13 +979,13 @@ namespace BR
 			}; // void KickPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player kicked
-			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 7);
+			const MessageID PlayerKickedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 7);
 			Result PlayerKickedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1006,7 +1006,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1035,7 +1035,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1066,13 +1066,13 @@ namespace BR
 			}; // void PlayerKickedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Assign role
-			const MessageID AssignRoleCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 8);
+			const MessageID AssignRoleCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 8);
 			Result AssignRoleCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1094,7 +1094,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1125,7 +1125,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1155,13 +1155,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID); 
 			}; // void AssignRoleCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID AssignRoleRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 8);
+			const MessageID AssignRoleRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 8);
 			Result AssignRoleRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1183,7 +1183,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1214,7 +1214,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1245,13 +1245,13 @@ namespace BR
 			}; // void AssignRoleRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Assign role
-			const MessageID RoleAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 9);
+			const MessageID RoleAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 9);
 			Result RoleAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1272,7 +1272,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1301,7 +1301,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1332,14 +1332,14 @@ namespace BR
 			}; // void RoleAssignedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Chatting message
-			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 10);
+			const MessageID ChatMessageC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 10);
 			Result ChatMessageC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 uiSizeOfChatMessage = 0;
+				uint8_t* pCur;
+				uint16_t uiSizeOfChatMessage = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -1349,7 +1349,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Role, pCur, iMsgSize, (int)sizeof(PlayerRole) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfChatMessage, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_ChatMessage, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfChatMessage ) );
 
 
@@ -1363,10 +1363,10 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
-				UINT16 __uiInChatMessageLength = InChatMessage ? (UINT16)(strlen(InChatMessage)+1) : 1;
-				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInChatMessageLength 
+				uint16_t __uiInChatMessageLength = InChatMessage ? (uint16_t)(strlen(InChatMessage)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(uint16_t) + __uiInChatMessageLength 
 					+ sizeof(RouteContext)
 					+ sizeof(PlayerID)
 					+ sizeof(PlayerRole));
@@ -1380,7 +1380,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
 				Protocol::PackParamCopy( pMsgData, &InRole, sizeof(PlayerRole));
-				Protocol::PackParamCopy( pMsgData, &__uiInChatMessageLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInChatMessageLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InChatMessage ? InChatMessage : "", __uiInChatMessageLength );
 
 				pMsg = pNewMsg;
@@ -1397,7 +1397,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1428,13 +1428,13 @@ namespace BR
 			}; // void ChatMessageC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Advance game
-			const MessageID AdvanceGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 11);
+			const MessageID AdvanceGameCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 11);
 			Result AdvanceGameCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1456,7 +1456,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1487,7 +1487,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1517,13 +1517,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID); 
 			}; // void AdvanceGameCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID AdvanceGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 11);
+			const MessageID AdvanceGameRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 11);
 			Result AdvanceGameRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1545,7 +1545,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1576,7 +1576,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1607,13 +1607,13 @@ namespace BR
 			}; // void AdvanceGameRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: The game state is advanced
-			const MessageID GameAdvancedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 12);
+			const MessageID GameAdvancedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 12);
 			Result GameAdvancedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1636,7 +1636,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1669,7 +1669,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1700,13 +1700,13 @@ namespace BR
 			}; // void GameAdvancedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Game is ended
-			const MessageID GameEndedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 13);
+			const MessageID GameEndedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 13);
 			Result GameEndedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1731,7 +1731,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1768,7 +1768,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1799,13 +1799,13 @@ namespace BR
 			}; // void GameEndedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: *Vote game advance
-			const MessageID VoteGameAdvanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 14);
+			const MessageID VoteGameAdvanceCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 14);
 			Result VoteGameAdvanceCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1827,7 +1827,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1858,7 +1858,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1888,13 +1888,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID); 
 			}; // void VoteGameAdvanceCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID VoteGameAdvanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 14);
+			const MessageID VoteGameAdvanceRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 14);
 			Result VoteGameAdvanceRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1916,7 +1916,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1947,7 +1947,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1978,13 +1978,13 @@ namespace BR
 			}; // void VoteGameAdvanceRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: *GameAdvance is Voted
-			const MessageID GameAdvanceVotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 15);
+			const MessageID GameAdvanceVotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 15);
 			Result GameAdvanceVotedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -2005,7 +2005,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -2034,7 +2034,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2065,13 +2065,13 @@ namespace BR
 			}; // void GameAdvanceVotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Assign role
-			const MessageID VoteCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 16);
+			const MessageID VoteCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 16);
 			Result VoteCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -2095,7 +2095,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -2130,7 +2130,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2160,13 +2160,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID, m_VoteTarget, m_ActionSerial); 
 			}; // void VoteCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID VoteRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 16);
+			const MessageID VoteRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 16);
 			Result VoteRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -2188,7 +2188,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -2219,7 +2219,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2250,13 +2250,13 @@ namespace BR
 			}; // void VoteRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player Voted
-			const MessageID VotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 17);
+			const MessageID VotedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 17);
 			Result VotedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -2278,7 +2278,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -2309,7 +2309,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2340,14 +2340,14 @@ namespace BR
 			}; // void VotedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player Voted
-			const MessageID VoteEndS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 18);
+			const MessageID VoteEndS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 18);
 			Result VoteEndS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofVoted = 0; PlayerID* pVoted = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofVoted = 0; PlayerID* pVoted = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -2355,7 +2355,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofVoted, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofVoted, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pVoted, pCur, iMsgSize, (int)sizeof(PlayerID)*numberofVoted ) );
 				m_Voted.SetLinkedBuffer(numberofVoted, numberofVoted, pVoted);
 
@@ -2370,21 +2370,21 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
-					+ sizeof(PlayerID)*InVoted.GetSize() + sizeof(UINT16));
+					+ sizeof(PlayerID)*InVoted.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInVoted = (UINT16)InVoted.GetSize(); 
+				uint16_t numberOfInVoted = (uint16_t)InVoted.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameInstance::VoteEndS2CEvt::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
-				Protocol::PackParamCopy( pMsgData, &numberOfInVoted, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInVoted, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InVoted.data(), (INT)(sizeof(PlayerID)*InVoted.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -2401,7 +2401,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2432,13 +2432,13 @@ namespace BR
 			}; // void VoteEndS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player Voted
-			const MessageID PlayerRevealedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 19);
+			const MessageID PlayerRevealedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 19);
 			Result PlayerRevealedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -2461,7 +2461,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -2494,7 +2494,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2525,13 +2525,13 @@ namespace BR
 			}; // void PlayerRevealedS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player Killed
-			const MessageID PlayerKilledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 20);
+			const MessageID PlayerKilledS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 20);
 			Result PlayerKilledS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -2553,7 +2553,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -2584,7 +2584,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2615,13 +2615,13 @@ namespace BR
 			}; // void PlayerKilledS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Play again with the current players
-			const MessageID GamePlayAgainCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 21);
+			const MessageID GamePlayAgainCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 21);
 			Result GamePlayAgainCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -2644,7 +2644,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -2677,7 +2677,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2707,13 +2707,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_LeadPlayer, m_PartyUID); 
 			}; // void GamePlayAgainCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID GamePlayAgainRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 21);
+			const MessageID GamePlayAgainRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 21);
 			Result GamePlayAgainRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -2736,7 +2736,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -2769,7 +2769,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2800,13 +2800,13 @@ namespace BR
 			}; // void GamePlayAgainRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value
-			const MessageID GamePlayAgainS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 22);
+			const MessageID GamePlayAgainS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 22);
 			Result GamePlayAgainS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -2829,7 +2829,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -2862,7 +2862,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2893,14 +2893,14 @@ namespace BR
 			}; // void GamePlayAgainS2CEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Player. revive himself
-			const MessageID GameRevealPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 23);
+			const MessageID GameRevealPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 23);
 			Result GameRevealPlayerCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofTargetPlayerID = 0; PlayerID* pTargetPlayerID = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofTargetPlayerID = 0; PlayerID* pTargetPlayerID = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -2910,7 +2910,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(PlayerID) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofTargetPlayerID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofTargetPlayerID, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pTargetPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID)*numberofTargetPlayerID ) );
 				m_TargetPlayerID.SetLinkedBuffer(numberofTargetPlayerID, numberofTargetPlayerID, pTargetPlayerID);
 
@@ -2925,17 +2925,17 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(PlayerID)
-					+ sizeof(PlayerID)*InTargetPlayerID.GetSize() + sizeof(UINT16));
+					+ sizeof(PlayerID)*InTargetPlayerID.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInTargetPlayerID = (UINT16)InTargetPlayerID.GetSize(); 
+				uint16_t numberOfInTargetPlayerID = (uint16_t)InTargetPlayerID.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameInstance::GameRevealPlayerCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -2943,7 +2943,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(PlayerID));
-				Protocol::PackParamCopy( pMsgData, &numberOfInTargetPlayerID, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInTargetPlayerID, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InTargetPlayerID.data(), (INT)(sizeof(PlayerID)*InTargetPlayerID.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -2960,7 +2960,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -2990,15 +2990,15 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID, m_TargetPlayerID); 
 			}; // void GameRevealPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID GameRevealPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 23);
+			const MessageID GameRevealPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 23);
 			Result GameRevealPlayerRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofRevealedPlayerID = 0; PlayerID* pRevealedPlayerID = nullptr;
-				UINT16 numberofRevealedRole = 0; PlayerRole* pRevealedRole = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofRevealedPlayerID = 0; PlayerID* pRevealedPlayerID = nullptr;
+				uint16_t numberofRevealedRole = 0; PlayerRole* pRevealedRole = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -3008,10 +3008,10 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofRevealedPlayerID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRevealedPlayerID, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pRevealedPlayerID, pCur, iMsgSize, (int)sizeof(PlayerID)*numberofRevealedPlayerID ) );
 				m_RevealedPlayerID.SetLinkedBuffer(numberofRevealedPlayerID, numberofRevealedPlayerID, pRevealedPlayerID);
-				protocolChk( Protocol::StreamParamCopy( &numberofRevealedRole, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRevealedRole, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pRevealedRole, pCur, iMsgSize, (int)sizeof(PlayerRole)*numberofRevealedRole ) );
 				m_RevealedRole.SetLinkedBuffer(numberofRevealedRole, numberofRevealedRole, pRevealedRole);
 
@@ -3026,19 +3026,19 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(PlayerID)*InRevealedPlayerID.GetSize() + sizeof(UINT16)
-					+ sizeof(PlayerRole)*InRevealedRole.GetSize() + sizeof(UINT16));
+					+ sizeof(PlayerID)*InRevealedPlayerID.GetSize() + sizeof(uint16_t)
+					+ sizeof(PlayerRole)*InRevealedRole.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInRevealedPlayerID = (UINT16)InRevealedPlayerID.GetSize(); 
-				UINT16 numberOfInRevealedRole = (UINT16)InRevealedRole.GetSize(); 
+				uint16_t numberOfInRevealedPlayerID = (uint16_t)InRevealedPlayerID.GetSize(); 
+				uint16_t numberOfInRevealedRole = (uint16_t)InRevealedRole.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( GameInstance::GameRevealPlayerRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -3046,9 +3046,9 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedPlayerID, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedPlayerID, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InRevealedPlayerID.data(), (INT)(sizeof(PlayerID)*InRevealedPlayerID.GetSize())); 
-				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedRole, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInRevealedRole, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InRevealedRole.data(), (INT)(sizeof(PlayerRole)*InRevealedRole.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -3065,7 +3065,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -3096,13 +3096,13 @@ namespace BR
 			}; // void GameRevealPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Player. revive himself
-			const MessageID GamePlayerReviveCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 24);
+			const MessageID GamePlayerReviveCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 24);
 			Result GamePlayerReviveCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -3124,7 +3124,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -3155,7 +3155,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -3185,13 +3185,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID); 
 			}; // void GamePlayerReviveCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID GamePlayerReviveRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 24);
+			const MessageID GamePlayerReviveRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 24);
 			Result GamePlayerReviveRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -3213,7 +3213,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -3244,7 +3244,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -3275,13 +3275,13 @@ namespace BR
 			}; // void GamePlayerReviveRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// S2C: Player is revived
-			const MessageID GamePlayerRevivedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEINSTANCE, 25);
+			const MessageID GamePlayerRevivedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEINSTANCE, 25);
 			Result GamePlayerRevivedS2CEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -3302,7 +3302,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -3331,7 +3331,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 

@@ -13,8 +13,8 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/MemoryPool.h"
+#include "SFTypedefs.h"
+#include "Memory/MemoryPool.h"
 #include "Common/BrComponent.h"
 
 

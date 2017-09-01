@@ -17,10 +17,10 @@
 #include "Common/Task/EventTask.h"
 #include "ServerSystem/ExternalTransactionManager.h"
 #include "Net/NetServerUDP.h"
-#include "Common/TimeUtil.h"
-#include "Common/BrBaseTypes.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
+#include "Util/TimeUtil.h"
+#include "Types/BrBaseTypes.h"
+#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeGame.h"
 
 
 #include "GameSvrConst.h"
@@ -456,10 +456,10 @@ namespace GameServer {
 		{
 			svrTrace(Svr::TRC_DBGTRANS, "GamePlayer Update PID:{0}, numTick:{1}, Sta:{2}", GetPlayerID(), numberOfTicks, playerInfoSystem->GetStamina());
 
-			if (numberOfTicks > std::numeric_limits<UINT16>::max())
+			if (numberOfTicks > std::numeric_limits<uint16_t>::max())
 			{
 				svrTrace( Trace::TRC_ERROR, "Invalid tick count, applying maximum int16" );
-				numberOfTicks = std::numeric_limits<UINT16>::max();
+				numberOfTicks = std::numeric_limits<uint16_t>::max();
 			}
 
 			if (playerInfoSystem->GetStamina() < playerInfoSystem->GetMaxAutoRefillStamina())
@@ -521,18 +521,18 @@ namespace GameServer {
 		return m_PlayerInformation;
 	}
 
-	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage)
+	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage)
 	{
 		Svr::GetServerComponent<DB::GameTransactionDB>()->AddGameLog(GetShardID(), GetPlayerID(), Util::Time.GetTimeUTCSec(), LogCategory, consume, gain, totalValue, logMessage);
 	}
 
-	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue)
+	void GamePlayerEntity::AddGameTransactionLog(TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue)
 	{
 		AddGameTransactionLog(LogCategory, consume, gain, totalValue, "");
 	}
 
 	// Send push notify
-	Result GamePlayerEntity::SendPushNotify( const char* strMessage, UINT64 param )
+	Result GamePlayerEntity::SendPushNotify( const char* strMessage, uint64_t param )
 	{
 		Result hr = ResultCode::SUCCESS;
 

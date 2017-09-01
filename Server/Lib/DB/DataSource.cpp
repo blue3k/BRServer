@@ -11,8 +11,8 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
-#include "Common/StrUtil.h"
+#include "SFTypedefs.h"
+#include "String/StrUtil.h"
 #include "DB/QueryWorker.h"
 #include "DB/DBTrace.h"
 #include "DB/DataSource.h"

@@ -11,10 +11,10 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "ServerSystem/Transaction.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
 
 

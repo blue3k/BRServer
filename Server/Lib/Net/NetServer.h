@@ -12,15 +12,15 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/Thread.h"
+#include "SFTypedefs.h"
+#include "Thread/Thread.h"
 #include "Net/NetDef.h"
 #include "Net/NetSvrDef.h"
 #include "Net/Connection.h"
 #include "Net/NetSystem.h"
 #include "Net/ConnectionManager.h"
 #include "Common/SpinSharedBuffer.h"
-#include "Common/PageQueue.h"
+#include "Container/PageQueue.h"
 #include "Net/ConnectionTCP.h"
 
 
@@ -158,7 +158,7 @@ namespace Net {
 		//virtual Result SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg ) override;
 
 		//// Send array of message buffer to connection with network device
-		//virtual Result SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff ) override;
+		//virtual Result SendMsg( IConnection *pConnection, UINT uiBuffSize, uint8_t* pBuff ) override;
 	};
 
 

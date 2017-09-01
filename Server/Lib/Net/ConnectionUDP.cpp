@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "SFAssert.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Net/ConnectionUDP.h"
 #include "Net/NetDef.h"
@@ -268,7 +268,7 @@ namespace Net {
 		{
 			netChkPtr(pIOBuffer);
 
-			if( !( hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer ) ) )
+			if( !( hr = OnRecv(pIOBuffer->TransferredSize, (uint8_t*)pIOBuffer->buffer ) ) )
 				netTrace( TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", GetCID(), hr );
 
 			PendingRecv();

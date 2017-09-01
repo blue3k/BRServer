@@ -12,10 +12,10 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/BrMemory.h"
+#include "SFTypedefs.h"
+#include "Memory/SFMemory.h"
 #include "SFAssert.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 
 
 namespace BR {

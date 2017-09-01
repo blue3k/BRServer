@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/MathUtil.h"
 #include "Common/MathUtilToString.h"
 

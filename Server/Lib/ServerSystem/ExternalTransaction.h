@@ -13,11 +13,11 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/Thread.h"
+#include "SFTypedefs.h"
+#include "Thread/Thread.h"
 #include "Common/ObjectPool.h"
-#include "Common/MemoryPool.h"
-#include "Common/BrMemory.h"
+#include "Memory/MemoryPool.h"
+#include "Memory/SFMemory.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/Transaction.h"
@@ -113,7 +113,7 @@ namespace Svr{
 		char m_strMessage[128];
 
 		// Parameter 0
-		UINT64 m_Param0;
+		uint64_t m_Param0;
 
 	public:
 
@@ -121,7 +121,7 @@ namespace Svr{
 		GCMHttpExternalTransaction();
 
 		// Set parameters
-		Result SetParameters( const char* strRegID, const char* strMessage, UINT64 param0 );
+		Result SetParameters( const char* strRegID, const char* strMessage, uint64_t param0 );
 
 		// Initialize Transaction
 		virtual Result InitializeTransaction(Entity* pOwner );
@@ -173,9 +173,9 @@ namespace Svr{
 		const char* m_strURL;
 		char m_strPackageName[128];
 		char m_strProductID[128];
-		StaticArray<BYTE, 20 * 1024> m_strReceipt;
+		StaticArray<uint8_t, 20 * 1024> m_strReceipt;
 
-		StaticArray<BYTE,64> m_strTransactionID;
+		StaticArray<uint8_t,64> m_strTransactionID;
 
 		typedef HTTPExternalTransaction super;
 
@@ -187,9 +187,9 @@ namespace Svr{
 		ExternalTransactionIOSRecepitCheck(TransactionID parentTransID, const char* strURL);
 
 		// Set parameters
-		Result SetParameters(const char* packageName, const char* productID, const char* transactionID, const Array<BYTE>& purchaseToken);
+		Result SetParameters(const char* packageName, const char* productID, const char* transactionID, const Array<uint8_t>& purchaseToken);
 
-		const Array<BYTE>& GetPurchaseTransactionID()         { return m_strTransactionID; }
+		const Array<uint8_t>& GetPurchaseTransactionID()         { return m_strTransactionID; }
 
 		// Initialize Transaction
 		virtual Result InitializeTransaction(Entity* pOwner) override;

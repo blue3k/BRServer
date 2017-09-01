@@ -10,10 +10,10 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrGameTypes.h"
-#include "Common/PolicyID.h"
+#include "Protocol/Protocol.h"
 #include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
 #include "Common/SvrPolicyID.h"
@@ -28,7 +28,7 @@ namespace BR
 		class ISvrPolicyGameMasterServer : public Net::INetPolicy
 		{
  			public:
-			enum { ID_POLICY = POLICY_SVR_GAMEMASTERSERVER };
+			enum { ID_POLICY = PROTOCOLID_SVR_GAMEMASTERSERVER };
 
 			// Constructor
 			ISvrPolicyGameMasterServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
@@ -43,7 +43,7 @@ namespace BR
 		class IPolicyGameMasterServer : public Net::INetPolicy
 		{
  			public:
-			enum { ID_POLICY = POLICY_GAMEMASTERSERVER };
+			enum { ID_POLICY = PROTOCOLID_GAMEMASTERSERVER };
 
 			// Constructor
 			IPolicyGameMasterServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)

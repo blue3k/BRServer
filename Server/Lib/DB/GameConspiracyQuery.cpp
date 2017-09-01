@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "DB/GameConspiracyQuery.h"
 #include "DBTrace.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 
 
 

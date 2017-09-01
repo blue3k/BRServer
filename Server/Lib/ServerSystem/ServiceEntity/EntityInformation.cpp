@@ -11,7 +11,7 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "EntityInformation.h"
 #include "ServerSystem/ServerService/ServerService.h"
 

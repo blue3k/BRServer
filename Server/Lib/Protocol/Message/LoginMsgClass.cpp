@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/PolicyID.h"
+#include "Protocol/Protocol.h"
 #include "String/ToStringSvr.h"
 #include "String/ToStringGame.h"
 #include "Common/ArrayUtil.h"
@@ -29,15 +29,15 @@ namespace BR
  		namespace Login
 		{
  			// Cmd: Login request
-			const MessageID LoginCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 0);
+			const MessageID LoginCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 0);
 			Result LoginCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 uiSizeOfID = 0;
-				UINT16 uiSizeOfPassword = 0;
+				uint8_t* pCur;
+				uint16_t uiSizeOfID = 0;
+				uint16_t uiSizeOfPassword = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -45,9 +45,9 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_GameID, pCur, iMsgSize, (int)sizeof(GameID) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfID, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfID, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_ID, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfID ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPassword, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPassword, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_Password, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPassword ) );
 
 
@@ -61,11 +61,11 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
-				UINT16 __uiInIDLength = InID ? (UINT16)(strlen(InID)+1) : 1;
-				UINT16 __uiInPasswordLength = InPassword ? (UINT16)(strlen(InPassword)+1) : 1;
-				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInIDLength + sizeof(UINT16) + __uiInPasswordLength 
+				uint16_t __uiInIDLength = InID ? (uint16_t)(strlen(InID)+1) : 1;
+				uint16_t __uiInPasswordLength = InPassword ? (uint16_t)(strlen(InPassword)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(uint16_t) + __uiInIDLength + sizeof(uint16_t) + __uiInPasswordLength 
 					+ sizeof(GameID));
 
 				MessageData *pNewMsg = nullptr;
@@ -75,9 +75,9 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InGameID, sizeof(GameID));
-				Protocol::PackParamCopy( pMsgData, &__uiInIDLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInIDLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InID ? InID : "", __uiInIDLength );
-				Protocol::PackParamCopy( pMsgData, &__uiInPasswordLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInPasswordLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InPassword ? InPassword : "", __uiInPasswordLength );
 
 				pMsg = pNewMsg;
@@ -98,13 +98,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_ID, m_Password); 
 			}; // void LoginCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID LoginRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 0);
+			const MessageID LoginRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 0);
 			Result LoginRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -129,7 +129,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(Result)
@@ -171,16 +171,16 @@ namespace BR
 			}; // void LoginRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Login request with Facebook UID
-			const MessageID LoginByFacebookCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 1);
+			const MessageID LoginByFacebookCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 1);
 			Result LoginByFacebookCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 uiSizeOfFaceBookName = 0;
-				UINT16 uiSizeOfEMail = 0;
-				UINT16 uiSizeOfFacebookToken = 0;
+				uint8_t* pCur;
+				uint16_t uiSizeOfFaceBookName = 0;
+				uint16_t uiSizeOfEMail = 0;
+				uint16_t uiSizeOfFacebookToken = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -189,11 +189,11 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_GameID, pCur, iMsgSize, (int)sizeof(GameID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_UID, pCur, iMsgSize, (int)sizeof(uint64_t) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFaceBookName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFaceBookName, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_FaceBookName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfFaceBookName ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfEMail, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfEMail, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_EMail, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfEMail ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFacebookToken, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFacebookToken, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_FacebookToken, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfFacebookToken ) );
 
 
@@ -207,12 +207,12 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
-				UINT16 __uiInFaceBookNameLength = InFaceBookName ? (UINT16)(strlen(InFaceBookName)+1) : 1;
-				UINT16 __uiInEMailLength = InEMail ? (UINT16)(strlen(InEMail)+1) : 1;
-				UINT16 __uiInFacebookTokenLength = InFacebookToken ? (UINT16)(strlen(InFacebookToken)+1) : 1;
-				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInFaceBookNameLength + sizeof(UINT16) + __uiInEMailLength + sizeof(UINT16) + __uiInFacebookTokenLength 
+				uint16_t __uiInFaceBookNameLength = InFaceBookName ? (uint16_t)(strlen(InFaceBookName)+1) : 1;
+				uint16_t __uiInEMailLength = InEMail ? (uint16_t)(strlen(InEMail)+1) : 1;
+				uint16_t __uiInFacebookTokenLength = InFacebookToken ? (uint16_t)(strlen(InFacebookToken)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(uint16_t) + __uiInFaceBookNameLength + sizeof(uint16_t) + __uiInEMailLength + sizeof(uint16_t) + __uiInFacebookTokenLength 
 					+ sizeof(GameID)
 					+ sizeof(uint64_t));
 
@@ -224,11 +224,11 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InGameID, sizeof(GameID));
 				Protocol::PackParamCopy( pMsgData, &InUID, sizeof(uint64_t));
-				Protocol::PackParamCopy( pMsgData, &__uiInFaceBookNameLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInFaceBookNameLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InFaceBookName ? InFaceBookName : "", __uiInFaceBookNameLength );
-				Protocol::PackParamCopy( pMsgData, &__uiInEMailLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInEMailLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InEMail ? InEMail : "", __uiInEMailLength );
-				Protocol::PackParamCopy( pMsgData, &__uiInFacebookTokenLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInFacebookTokenLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InFacebookToken ? InFacebookToken : "", __uiInFacebookTokenLength );
 
 				pMsg = pNewMsg;
@@ -249,13 +249,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_UID, m_FaceBookName, m_EMail, m_FacebookToken); 
 			}; // void LoginByFacebookCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID LoginByFacebookRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 1);
+			const MessageID LoginByFacebookRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 1);
 			Result LoginByFacebookRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -280,7 +280,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(Result)
@@ -322,14 +322,14 @@ namespace BR
 			}; // void LoginByFacebookRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Login request
-			const MessageID CreateRandomUserCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 2);
+			const MessageID CreateRandomUserCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 2);
 			Result CreateRandomUserCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 uiSizeOfCellPhone = 0;
+				uint8_t* pCur;
+				uint16_t uiSizeOfCellPhone = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -337,7 +337,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_GameID, pCur, iMsgSize, (int)sizeof(GameID) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfCellPhone, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfCellPhone, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_CellPhone, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfCellPhone ) );
 
 
@@ -351,10 +351,10 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
-				UINT16 __uiInCellPhoneLength = InCellPhone ? (UINT16)(strlen(InCellPhone)+1) : 1;
-				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInCellPhoneLength 
+				uint16_t __uiInCellPhoneLength = InCellPhone ? (uint16_t)(strlen(InCellPhone)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(uint16_t) + __uiInCellPhoneLength 
 					+ sizeof(GameID));
 
 				MessageData *pNewMsg = nullptr;
@@ -364,7 +364,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InGameID, sizeof(GameID));
-				Protocol::PackParamCopy( pMsgData, &__uiInCellPhoneLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInCellPhoneLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InCellPhone ? InCellPhone : "", __uiInCellPhoneLength );
 
 				pMsg = pNewMsg;
@@ -385,13 +385,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_CellPhone); 
 			}; // void CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID CreateRandomUserRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 2);
+			const MessageID CreateRandomUserRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 2);
 			Result CreateRandomUserRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -416,7 +416,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(Result)
@@ -458,13 +458,13 @@ namespace BR
 			}; // void CreateRandomUserRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Update my score and Get Ranking list
-			const MessageID UpdateMyScoreCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 3);
+			const MessageID UpdateMyScoreCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 3);
 			Result UpdateMyScoreCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -486,7 +486,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(uint64_t)
@@ -521,14 +521,14 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RankingScore, m_RankingType, m_Count); 
 			}; // void UpdateMyScoreCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID UpdateMyScoreRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 3);
+			const MessageID UpdateMyScoreRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 3);
 			Result UpdateMyScoreRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofRanking = 0; TotalRankingPlayerInformation* pRanking = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofRanking = 0; TotalRankingPlayerInformation* pRanking = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -536,7 +536,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pRanking, pCur, iMsgSize, (int)sizeof(TotalRankingPlayerInformation)*numberofRanking ) );
 				m_Ranking.SetLinkedBuffer(numberofRanking, numberofRanking, pRanking);
 
@@ -551,21 +551,21 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(Result)
-					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetSize() + sizeof(UINT16));
+					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInRanking = (UINT16)InRanking.GetSize(); 
+				uint16_t numberOfInRanking = (uint16_t)InRanking.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Login::UpdateMyScoreRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InRanking.data(), (INT)(sizeof(TotalRankingPlayerInformation)*InRanking.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -587,13 +587,13 @@ namespace BR
 			}; // void UpdateMyScoreRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Get Ranking lise
-			const MessageID GetRankingListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 4);
+			const MessageID GetRankingListCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 4);
 			Result GetRankingListCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -615,7 +615,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(RankingType)
@@ -650,14 +650,14 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RankingType, m_BaseRanking, m_Count); 
 			}; // void GetRankingListCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID GetRankingListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 4);
+			const MessageID GetRankingListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 4);
 			Result GetRankingListRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofRanking = 0; TotalRankingPlayerInformation* pRanking = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofRanking = 0; TotalRankingPlayerInformation* pRanking = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -665,7 +665,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pRanking, pCur, iMsgSize, (int)sizeof(TotalRankingPlayerInformation)*numberofRanking ) );
 				m_Ranking.SetLinkedBuffer(numberofRanking, numberofRanking, pRanking);
 
@@ -680,21 +680,21 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(Result)
-					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetSize() + sizeof(UINT16));
+					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInRanking = (UINT16)InRanking.GetSize(); 
+				uint16_t numberOfInRanking = (uint16_t)InRanking.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Login::GetRankingListRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InRanking.data(), (INT)(sizeof(TotalRankingPlayerInformation)*InRanking.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -716,21 +716,21 @@ namespace BR
 			}; // void GetRankingListRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: For network test
-			const MessageID DataTestCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 5);
+			const MessageID DataTestCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 5);
 			Result DataTestCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofTestData = 0; uint8_t* pTestData = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofTestData = 0; uint8_t* pTestData = nullptr;
 
 				protocolChkPtr(pIMsg);
 
 				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &numberofTestData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofTestData, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pTestData, pCur, iMsgSize, (int)sizeof(uint8_t)*numberofTestData ) );
 				m_TestData.SetLinkedBuffer(numberofTestData, numberofTestData, pTestData);
 
@@ -745,19 +745,19 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
-					+ sizeof(uint8_t)*InTestData.GetSize() + sizeof(UINT16));
+					+ sizeof(uint8_t)*InTestData.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInTestData = (UINT16)InTestData.GetSize(); 
+				uint16_t numberOfInTestData = (uint16_t)InTestData.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Login::DataTestCmd::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &numberOfInTestData, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInTestData, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InTestData.data(), (INT)(sizeof(uint8_t)*InTestData.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -778,14 +778,14 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_TestData); 
 			}; // void DataTestCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID DataTestRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 5);
+			const MessageID DataTestRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 5);
 			Result DataTestRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofTestData = 0; uint8_t* pTestData = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofTestData = 0; uint8_t* pTestData = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -793,7 +793,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofTestData, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofTestData, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pTestData, pCur, iMsgSize, (int)sizeof(uint8_t)*numberofTestData ) );
 				m_TestData.SetLinkedBuffer(numberofTestData, numberofTestData, pTestData);
 
@@ -808,21 +808,21 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(Result)
-					+ sizeof(uint8_t)*InTestData.GetSize() + sizeof(UINT16));
+					+ sizeof(uint8_t)*InTestData.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInTestData = (UINT16)InTestData.GetSize(); 
+				uint16_t numberOfInTestData = (uint16_t)InTestData.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( Login::DataTestRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &numberOfInTestData, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInTestData, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InTestData.data(), (INT)(sizeof(uint8_t)*InTestData.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -844,7 +844,7 @@ namespace BR
 			}; // void DataTestRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Heartbit
-			const MessageID HeartBitC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 6);
+			const MessageID HeartBitC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 6);
 			Result HeartBitC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
@@ -891,21 +891,21 @@ namespace BR
 			}; // void HeartBitC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: For network test
-			const MessageID DebugPrintALLRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 7);
+			const MessageID DebugPrintALLRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 7);
 			Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 uiSizeOfFileName = 0;
+				uint8_t* pCur;
+				uint16_t uiSizeOfFileName = 0;
 
 				protocolChkPtr(pIMsg);
 
 				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
 				pCur = pIMsg->GetMessageData();
 
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFileName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFileName, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_FileName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfFileName ) );
 
 
@@ -919,10 +919,10 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
-				UINT16 __uiInFileNameLength = InFileName ? (UINT16)(strlen(InFileName)+1) : 1;
-				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInFileNameLength );
+				uint16_t __uiInFileNameLength = InFileName ? (uint16_t)(strlen(InFileName)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(uint16_t) + __uiInFileNameLength );
 
 				MessageData *pNewMsg = nullptr;
 
@@ -930,7 +930,7 @@ namespace BR
 
 				pMsgData = pNewMsg->GetMessageData();
 
-				Protocol::PackParamCopy( pMsgData, &__uiInFileNameLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInFileNameLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InFileName ? InFileName : "", __uiInFileNameLength );
 
 				pMsg = pNewMsg;
@@ -951,13 +951,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_FileName); 
 			}; // void DebugPrintALLRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID DebugPrintALLRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 7);
+			const MessageID DebugPrintALLRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, PROTOCOLID_LOGIN, 7);
 			Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -977,7 +977,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
 					+ sizeof(Result));

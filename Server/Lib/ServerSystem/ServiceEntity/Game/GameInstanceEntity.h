@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/Indexing.h"
 #include "Common/HashTable.h"
 #include "Common/BrComponent.h"

@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "SFAssert.h"
 #include "Common/Utility.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
 #include "Net/NetTrace.h"
@@ -21,7 +21,7 @@
 #include "Net/NetServer.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetUtil.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/SvrPolicyID.h"
 
 #include "Protocol/ProtocolVer.h"
@@ -80,68 +80,68 @@ namespace Net {
 
 		switch( pMsg->GetMessageHeader()->msgID.IDs.Policy )
 		{
-		case POLICY_LOGIN:
-		case POLICY_SVR_LOGIN:
+		case PROTOCOLID_LOGIN:
+		case PROTOCOLID_SVR_LOGIN:
 			Message::Debug::DebugOutLogin( strPrefix, pMsg );
 			break;
-		case POLICY_LOGINSERVER:
-		case POLICY_SVR_LOGINSERVER:
+		case PROTOCOLID_LOGINSERVER:
+		case PROTOCOLID_SVR_LOGINSERVER:
 			Message::Debug::DebugOutLoginServer( strPrefix, pMsg );
 			break;
-		case POLICY_GAME:
-		case POLICY_SVR_GAME:
+		case PROTOCOLID_GAME:
+		case PROTOCOLID_SVR_GAME:
 			Message::Debug::DebugOutGame( strPrefix, pMsg );
 			break;
-		case POLICY_SERVER:
-		case POLICY_SVR_SERVER:
+		case PROTOCOLID_SERVER:
+		case PROTOCOLID_SVR_SERVER:
 			Message::Debug::DebugOutServer( strPrefix, pMsg );
 			break;
-		case POLICY_GAMESERVER:
-		case POLICY_SVR_GAMESERVER:
+		case PROTOCOLID_GAMESERVER:
+		case PROTOCOLID_SVR_GAMESERVER:
 			Message::Debug::DebugOutGameServer( strPrefix, pMsg );
 			break;
-		case POLICY_GAMEPARTY:
-		case POLICY_SVR_GAMEPARTY:
+		case PROTOCOLID_GAMEPARTY:
+		case PROTOCOLID_SVR_GAMEPARTY:
 			Message::Debug::DebugOutGameParty( strPrefix, pMsg );
 			break;
-		case POLICY_GAMEMASTERSERVER:
-		case POLICY_SVR_GAMEMASTERSERVER:
+		case PROTOCOLID_GAMEMASTERSERVER:
+		case PROTOCOLID_SVR_GAMEMASTERSERVER:
 			Message::Debug::DebugOutGameMasterServer( strPrefix, pMsg );
 			break;
-		case POLICY_ENTITYSERVER:
-		case POLICY_SVR_ENTITYSERVER:
+		case PROTOCOLID_ENTITYSERVER:
+		case PROTOCOLID_SVR_ENTITYSERVER:
 			Message::Debug::DebugOutEntityServer( strPrefix, pMsg );
 			break;
-		case POLICY_CLUSTERSERVER:
-		case POLICY_SVR_CLUSTERSERVER:
+		case PROTOCOLID_CLUSTERSERVER:
+		case PROTOCOLID_SVR_CLUSTERSERVER:
 			Message::Debug::DebugOutClusterServer( strPrefix, pMsg );
 			break;
-		case POLICY_PARTYMATCHING:
-		case POLICY_SVR_PARTYMATCHING:
+		case PROTOCOLID_PARTYMATCHING:
+		case PROTOCOLID_SVR_PARTYMATCHING:
 			Message::Debug::DebugOutPartyMatching( strPrefix, pMsg );
 			break;
-		case POLICY_PARTYMATCHINGQUEUE:
-		case POLICY_SVR_PARTYMATCHINGQUEUE:
+		case PROTOCOLID_PARTYMATCHINGQUEUE:
+		case PROTOCOLID_SVR_PARTYMATCHINGQUEUE:
 			Message::Debug::DebugOutPartyMatchingQueue( strPrefix, pMsg );
 			break;
-		case POLICY_GAMEINSTANCE:
-		case POLICY_SVR_GAMEINSTANCE:
+		case PROTOCOLID_GAMEINSTANCE:
+		case PROTOCOLID_SVR_GAMEINSTANCE:
 			Message::Debug::DebugOutGameInstance( strPrefix, pMsg );
 			break;
-		case POLICY_GAMEINSTANCEMANAGER:
-		case POLICY_SVR_GAMEINSTANCEMANAGER:
+		case PROTOCOLID_GAMEINSTANCEMANAGER:
+		case PROTOCOLID_SVR_GAMEINSTANCEMANAGER:
 			Message::Debug::DebugOutGameInstanceManager( strPrefix, pMsg );
 			break;
-		case POLICY_GAMEPARTYMANAGER:
-		case POLICY_SVR_GAMEPARTYMANAGER:
+		case PROTOCOLID_GAMEPARTYMANAGER:
+		case PROTOCOLID_SVR_GAMEPARTYMANAGER:
 			Message::Debug::DebugOutGamePartyManager(strPrefix, pMsg);
 			break;
-		case POLICY_RANKINGSERVER:
-		case POLICY_SVR_RANKINGSERVER:
+		case PROTOCOLID_RANKINGSERVER:
+		case PROTOCOLID_SVR_RANKINGSERVER:
 			Message::Debug::DebugOutRankingServer(strPrefix, pMsg);
 			break;
-		case POLICY_MONITORING:
-		case POLICY_SVR_MONITORING:
+		case PROTOCOLID_MONITORING:
+		case PROTOCOLID_SVR_MONITORING:
 			Message::Debug::DebugOutMonitoring(strPrefix, pMsg);
 			break;
 		default:

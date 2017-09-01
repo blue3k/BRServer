@@ -13,10 +13,10 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrMemory.h"
-#include "Common/TimeUtil.h"
+#include "Memory/SFMemory.h"
+#include "Util/TimeUtil.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/ServiceEntity/ServiceEntity.h"
 #include "ServerSystem/ServerComponent.h"
@@ -318,10 +318,10 @@ namespace Svr {
 		ShardedClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 
 		// Hash the key value
-		virtual UINT KeyHash( UINT64 key );
+		virtual UINT KeyHash( uint64_t key );
 
 		// Get Service shard by key
-		virtual Result GetShard( UINT64 key, ServerServiceInformation* &pService );
+		virtual Result GetShard( uint64_t key, ServerServiceInformation* &pService );
 
 		////////////////////////////////////////////////////////////////////////////////////
 	};

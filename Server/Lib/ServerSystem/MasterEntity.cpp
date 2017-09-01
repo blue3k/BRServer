@@ -11,10 +11,10 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/TimeUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "Util/TimeUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"
 #include "ServerSystem/MasterEntity.h"
 #include "ServerSystem/MessageRoute.h"
@@ -24,7 +24,7 @@
 #include "Common/Task/EventTask.h"
 #include "ServerSystem/EntityTimerActions.h"
 #include "ServerSystem/BrServer.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 
 
 
@@ -188,7 +188,7 @@ namespace Svr
 			&& (GetTransactionQueue().Dequeue(pNewTran))
 			)
 		{
-			TransactionID transID( (UINT32)GetEntityID(), 0 );
+			TransactionID transID( (uint32_t)GetEntityID(), 0 );
 
 			SharedPointerT<Transaction> pPrevTrans = nullptr;
 			do {

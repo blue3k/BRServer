@@ -11,11 +11,11 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/HashTable.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/GameConst.h"
 #include "Common/BrGameTypes.h"
 

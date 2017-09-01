@@ -11,13 +11,13 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Factory.h"
 
 #ifdef BRDB_USE_OLEDB
 
 #include <atldbcli.h>
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "DBTrace.h"
 #include "DataSourceOLEDB.h"
 #include "FactoryOLEDB.h"

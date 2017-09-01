@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/BrGameTypes.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/Memento.h"
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
@@ -48,36 +48,36 @@ namespace GameServer {
 	private:
 
 		// -------------- Start data from DB
-		BRCLASS_ATTRIBUTE(BYTE, Grade);
+		BRCLASS_ATTRIBUTE(uint8_t, Grade);
 		BRCLASS_ATTRIBUTE_READONLY(SHORT, Level);
-		BRCLASS_ATTRIBUTE(INT64, Exp);
-		BRCLASS_ATTRIBUTE(INT64, GameMoney);
-		BRCLASS_ATTRIBUTE(INT64, Gem);
+		BRCLASS_ATTRIBUTE(int64_t, Exp);
+		BRCLASS_ATTRIBUTE(int64_t, GameMoney);
+		BRCLASS_ATTRIBUTE(int64_t, Gem);
 		BRCLASS_ATTRIBUTE(SHORT, Stamina);
 		BRCLASS_ATTRIBUTE(SHORT, AddedFriendSlot);
-		BRCLASS_ATTRIBUTE(INT32, TotalPlayed);
-		BRCLASS_ATTRIBUTE(INT32, WinPlaySCitizen);
-		BRCLASS_ATTRIBUTE(INT32, WinPlaySMonster);
-		BRCLASS_ATTRIBUTE(INT32, WinPlaySSeer);
-		BRCLASS_ATTRIBUTE(INT32, LosePlaySCitizen);
-		BRCLASS_ATTRIBUTE(INT32, LosePlaySMonster);
-		BRCLASS_ATTRIBUTE(INT32, LosePlaySSeer);
-		BRCLASS_ATTRIBUTE(INT32, WinPlayNCitizen);
-		BRCLASS_ATTRIBUTE(INT32, WinPlayNMonster);
-		BRCLASS_ATTRIBUTE(INT32, WinPlayNSeer);
-		BRCLASS_ATTRIBUTE(INT32, LosePlayNCitizen);
-		BRCLASS_ATTRIBUTE(INT32, LosePlayNMonster);
-		BRCLASS_ATTRIBUTE(INT32, LosePlayNSeer);
-		BRCLASS_ATTRIBUTE(INT32, WeeklyWin);
-		BRCLASS_ATTRIBUTE(INT32, WeeklyLose);
+		BRCLASS_ATTRIBUTE(int32_t, TotalPlayed);
+		BRCLASS_ATTRIBUTE(int32_t, WinPlaySCitizen);
+		BRCLASS_ATTRIBUTE(int32_t, WinPlaySMonster);
+		BRCLASS_ATTRIBUTE(int32_t, WinPlaySSeer);
+		BRCLASS_ATTRIBUTE(int32_t, LosePlaySCitizen);
+		BRCLASS_ATTRIBUTE(int32_t, LosePlaySMonster);
+		BRCLASS_ATTRIBUTE(int32_t, LosePlaySSeer);
+		BRCLASS_ATTRIBUTE(int32_t, WinPlayNCitizen);
+		BRCLASS_ATTRIBUTE(int32_t, WinPlayNMonster);
+		BRCLASS_ATTRIBUTE(int32_t, WinPlayNSeer);
+		BRCLASS_ATTRIBUTE(int32_t, LosePlayNCitizen);
+		BRCLASS_ATTRIBUTE(int32_t, LosePlayNMonster);
+		BRCLASS_ATTRIBUTE(int32_t, LosePlayNSeer);
+		BRCLASS_ATTRIBUTE(int32_t, WeeklyWin);
+		BRCLASS_ATTRIBUTE(int32_t, WeeklyLose);
 		// -------------- End data from DB
 
 		// Max stat by level
 		BRCLASS_ATTRIBUTE_READONLY(INT, MaxAutoRefillStamina);
 		BRCLASS_ATTRIBUTE_READONLY(INT, MaxStamina);
 		BRCLASS_ATTRIBUTE_READONLY(INT, MaxFriend);
-		BRCLASS_ATTRIBUTE_READONLY(INT64, MaxGameMoney);
-		BRCLASS_ATTRIBUTE_READONLY(INT64, MaxGem);
+		BRCLASS_ATTRIBUTE_READONLY(int64_t, MaxGameMoney);
+		BRCLASS_ATTRIBUTE_READONLY(int64_t, MaxGem);
 
 		BRCLASS_ATTRIBUTE(SHORT, DefaultFriendSlot);
 
@@ -112,7 +112,7 @@ namespace GameServer {
 
 		Result SetLevel( UINT newLevel );
 
-		Result GainExp( UINT64 expGain );
+		Result GainExp( uint64_t expGain );
 
 		Result AchivedWin( PlayerRole playedRole, bool isWon );
 
@@ -126,10 +126,10 @@ namespace GameServer {
 		UINT GetFriendSlot();
 
 		// gain game money
-		Result GainGameMoney( INT64 numValue );
+		Result GainGameMoney( int64_t numValue );
 
 		// gain gem
-		Result GainGem( INT64 numValue );
+		Result GainGem( int64_t numValue );
 
 		// Called when the stat maiximum need to be calculated again.
 		Result UpdateStatMaximum();
@@ -141,7 +141,7 @@ namespace GameServer {
 		Result UpdateStatByLevel();
 		Result UpdateStatByLevel(conspiracy::LevelTbl::LevelItem *pLevelInfo);
 
-		Result SavePurchaseInfoToDB(TransactionID transID, const Array<BYTE>& purchaseID, const char* purchasePlatform, const char* purchaseToken);
+		Result SavePurchaseInfoToDB(TransactionID transID, const Array<uint8_t>& purchaseID, const char* purchasePlatform, const char* purchaseToken);
 		Result SavePlayerInfoToDB(TransactionID transID);
 	};
 

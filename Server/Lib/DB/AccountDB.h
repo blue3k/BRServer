@@ -12,7 +12,7 @@
 #pragma once
 	
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrCommonTypes.h"
 #include "DB/DBClusterManager.h"
@@ -54,8 +54,8 @@ namespace DB {
 		//	Account DB interface
 		//
 
-		Result FacebookCreateUser(TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone);
-		Result FacebookLogIn( TransactionID Sender, UINT64 facebookUID );
+		Result FacebookCreateUser(TransactionID Sender, uint64_t facebookUID, const char* EMail, const char* cellPhone);
+		Result FacebookLogIn( TransactionID Sender, uint64_t facebookUID );
 
 		Result CreateUser( TransactionID Sender, const char* UserName, const char* Password );
 		Result LogIn( TransactionID Sender, const char* UserName, const char* Password );

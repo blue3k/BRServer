@@ -19,7 +19,7 @@
 #include "ServerSystem/ServerEntityManager.h"
 //#include "ServerSystem/ServiceEntity/EntityManagerServiceEntity.h"
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 
 #include "EntitySvrConst.h"
 #include "EntityServerClass.h"

@@ -5,7 +5,10 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
+
+// TODO: 
+using namespace SF;
 
 #if !ANDROID
 #include <mysql.h>

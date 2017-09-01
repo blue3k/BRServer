@@ -12,11 +12,11 @@
 
 
 #include "stdafx.h"
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "SFAssert.h"
 #include "Common/Utility.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/LoopbackConnection.h"
 #include "Net/NetTrace.h"
@@ -45,7 +45,7 @@ namespace Net {
 	{
 //		m_RecvQueue.ClearQueue();
 
-		//for( INT iPolicy = 0; iPolicy < BR::POLICY_NETMAX; iPolicy++ )
+		//for( INT iPolicy = 0; iPolicy < BR::PROTOCOLID_NETMAX; iPolicy++ )
 		//{
 		//	if( m_pPolicy[iPolicy] )
 		//		delete m_pPolicy[iPolicy];

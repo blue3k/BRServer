@@ -12,8 +12,8 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/BrBaseTypes.h"
+#include "SFTypedefs.h"
+#include "Types/BrBaseTypes.h"
 #include "Object/SharedPointer.h"
 
 

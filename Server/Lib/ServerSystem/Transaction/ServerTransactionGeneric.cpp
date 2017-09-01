@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ServerEntity.h"

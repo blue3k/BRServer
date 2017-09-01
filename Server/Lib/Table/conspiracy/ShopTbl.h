@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/ResultCode/BRResultCodeSystem.h"
+#include "SFTypedefs.h"
+#include "ResultCode/SFResultCodeSystem.h"
 
 
 

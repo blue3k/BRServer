@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "SFAssert.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Net/ConnectionMUDP.h"
 #include "Net/NetDef.h"
@@ -66,7 +66,7 @@ namespace Net {
 
 	
 	// Make Ack packet and enqueue to SendNetCtrlqueue
-	Result ConnectionMUDP::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	Result ConnectionMUDP::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID )
 	{
 		Result hr = ResultCode::SUCCESS, hrTem = ResultCode::SUCCESS;
 
@@ -172,7 +172,7 @@ namespace Net {
 					if (GetConnectionState() == IConnection::STATE_CONNECTING || GetConnectionState() == IConnection::STATE_CONNECTED)
 					{
 						// Protocol version mismatch
-						OnConnectionResult(ResultCode::E_NET_PROTOCOL_VERSION_MISMATCH);
+						OnConnectionResult(ResultCode::E_NET_PROTOCOLID_VERSION_MISMATCH);
 					}
 					netChk(Disconnect("Protocal mismatch"));
 					break;
@@ -217,10 +217,10 @@ namespace Net {
 			switch (GetConnectionState())
 			{
 			case  IConnection::STATE_CONNECTING:
-				if (ProtocolVersion != BR_PROTOCOL_VERSION)
+				if (ProtocolVersion != BR_PROTOCOLID_VERSION)
 				{
 					netChk(SendNetCtrl(PACKET_NETCTRL_NACK, pNetCtrl->msgID.IDSeq.Sequence, pNetCtrl->msgID));
-					OnConnectionResult(ResultCode::E_NET_PROTOCOL_VERSION_MISMATCH);
+					OnConnectionResult(ResultCode::E_NET_PROTOCOLID_VERSION_MISMATCH);
 					netChk(Disconnect("Protocol mismatch"));
 					break;
 				}
@@ -274,7 +274,7 @@ namespace Net {
 	}
 
 	// called when incomming message occure
-	Result ConnectionMUDP::OnRecv( UINT uiBuffSize, const BYTE* pBuff )
+	Result ConnectionMUDP::OnRecv( UINT uiBuffSize, const uint8_t* pBuff )
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pMsg = NULL;
@@ -404,7 +404,7 @@ namespace Net {
 	
 
 	// gathering
-	Result ConnectionMUDP::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	Result ConnectionMUDP::SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -421,7 +421,7 @@ namespace Net {
 		pNetCtrlMsg->msgID.IDs.Mobile = true;
 		pNetCtrlMsg->Length = sizeof(MsgMobileNetCtrl);
 
-		pNetCtrlMsg->SetCrc(Util::Crc32( sizeof(MsgMobileNetCtrl) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) ));
+		pNetCtrlMsg->SetCrc(Util::Crc32( sizeof(MsgMobileNetCtrl) - sizeof(Message::MobileMessageHeader), (uint8_t*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) ));
 
 		m_uiGatheredSize += pNetCtrlMsg->Length;
 
@@ -431,7 +431,7 @@ namespace Net {
 		return hr;
 	}
 
-	Result ConnectionMUDP::SendSync( UINT uiSequence, UINT64 uiSyncMask )
+	Result ConnectionMUDP::SendSync( UINT uiSequence, uint64_t uiSyncMask )
 	{
 		Result hr = ResultCode::SUCCESS;
 		MsgMobileNetCtrlSync *pNetCtrlMsg = NULL;
@@ -447,7 +447,7 @@ namespace Net {
 		pNetCtrlMsg->msgID.IDs.Mobile = true;
 		pNetCtrlMsg->Length = sizeof(MsgMobileNetCtrlSync);
 
-		pNetCtrlMsg->SetCrc(Util::Crc32( sizeof(MsgMobileNetCtrlSync) - sizeof(Message::MobileMessageHeader), (BYTE*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) ));
+		pNetCtrlMsg->SetCrc(Util::Crc32( sizeof(MsgMobileNetCtrlSync) - sizeof(Message::MobileMessageHeader), (uint8_t*)pNetCtrlMsg + sizeof(Message::MobileMessageHeader) ));
 
 		netTrace(TRC_GUARREANTEDCTRL, "NetCtrl Send RecvReliableMask : CID:{0} BaseSeq:{1}, seq:{2}, mask:{3:X8}",
 			GetCID(), m_RecvReliableWindow.GetBaseSequence(), uiSequence, uiSyncMask);
@@ -992,8 +992,8 @@ namespace Net {
 			else if ((INT)(ulTimeCur - m_ulNetCtrlTryTime).count() > Const::CONNECTION_RETRY_TIME) // retry
 			{
 				m_ulNetCtrlTryTime = ulTimeCur;
-				netTrace(TRC_NETCTRL, "UDP Send Connecting CID({0}) : C:{1}, V:{2})", GetCID(), GetConnectionInfo().LocalClass, (UINT32)BR_PROTOCOL_VERSION);
-				netChk(SendPending(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOL_VERSION), GetConnectionInfo().LocalID));
+				netTrace(TRC_NETCTRL, "UDP Send Connecting CID({0}) : C:{1}, V:{2})", GetCID(), GetConnectionInfo().LocalClass, (uint32_t)BR_PROTOCOLID_VERSION);
+				netChk(SendPending(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOLID_VERSION), GetConnectionInfo().LocalID));
 			}
 
 			break;
@@ -1100,7 +1100,7 @@ namespace Net {
 		{
 			netChkPtr(pIOBuffer);
 
-			if (!(hr = OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer)))
+			if (!(hr = OnRecv(pIOBuffer->TransferredSize, (uint8_t*)pIOBuffer->buffer)))
 				netTrace(TRC_RECVRAW, "Read IO failed with CID {0}, hr={1:X8}", GetCID(), hr);
 
 			PendingRecv();

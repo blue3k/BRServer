@@ -11,11 +11,10 @@
 
 #pragma once
 	
-#include "Common/BrBaseTypes.h"
-#include "Common/Thread.h"
-#include "Common/ClassUtil.h"
-#include "Common/TimeUtil.h"
-#include "Common/PageQueue.h"
+#include "Types/BrBaseTypes.h"
+#include "Thread/Thread.h"
+#include "Util/TimeUtil.h"
+#include "Container/PageQueue.h"
 #include "DBConst.h"
 #include "DB/DataSource.h"
 
@@ -36,7 +35,7 @@ namespace DB {
 	public:
 
 		// Shard partitioning count
-		BRCLASS_ATTRIBUTE_READONLY(UINT,PartitioningCount);
+		uint m_PartitioningCount = 0;
 
 
 	private:
@@ -62,6 +61,8 @@ namespace DB {
 		// constructor / destructor
 		DBClusterManager();
 		virtual ~DBClusterManager();
+
+		uint GetPartitioningCount() const { return m_PartitioningCount; }
 
 		// Initialize DB
 		Result InitializeDBCluster( UINT partitioningCount );

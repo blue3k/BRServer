@@ -13,11 +13,11 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrMemory.h"
+#include "Memory/SFMemory.h"
 #include "Common/BrSvrTypes.h"
-#include "Common/PageQueue.h"
+#include "Container/PageQueue.h"
 #include "Common/LocalUIDGenerator.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"

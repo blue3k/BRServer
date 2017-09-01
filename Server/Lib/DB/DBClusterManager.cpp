@@ -10,9 +10,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
-#include "Common/TimeUtil.h"
-#include "Common/StrUtil.h"
+#include "SFTypedefs.h"
+#include "Util/TimeUtil.h"
+#include "String/StrUtil.h"
 #include "DB/DBTrace.h"
 #include "DB/Query.h"
 #include "DB/QueryWorker.h"

@@ -12,9 +12,9 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/Thread.h"
-#include "Common/StrUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "Thread/Thread.h"
+#include "String/StrUtil.h"
 #include "Net/Connection.h"
 #include "Net/NetTrace.h"
 #include "Net/NetDef.h"
@@ -117,7 +117,7 @@ namespace Net {
 		{
 			// check control packet
 			MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pIOBuffer->buffer;
-			if (pNetCtrl->Length == sizeof(MsgNetCtrlConnect) && pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID && pNetCtrl->rtnMsgID.ID == BR_PROTOCOL_VERSION)
+			if (pNetCtrl->Length == sizeof(MsgNetCtrlConnect) && pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID && pNetCtrl->rtnMsgID.ID == BR_PROTOCOLID_VERSION)
 			{
 				if( GetIsEnableAccept() )
 				{
@@ -141,7 +141,7 @@ namespace Net {
 					MsgNetCtrlConnect *pNetCtrl = (MsgNetCtrlConnect*)pIOBuffer->buffer;
 					if( pNetCtrl->Length == sizeof(MsgNetCtrlConnect) 
 						&& pNetCtrl->msgID.IDSeq.MsgID == PACKET_NETCTRL_CONNECT.IDSeq.MsgID
-						&& pNetCtrl->rtnMsgID.ID == BR_PROTOCOL_VERSION )
+						&& pNetCtrl->rtnMsgID.ID == BR_PROTOCOLID_VERSION )
 					{
 						// Peer network only allow registered connection
 						netChk( m_ConnectionManager.PendingInitConnection(pConnection) );
@@ -154,7 +154,7 @@ namespace Net {
 				}
 				else
 				{
-					netChk( pConnection->OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer) );
+					netChk( pConnection->OnRecv(pIOBuffer->TransferredSize, (uint8_t*)pIOBuffer->buffer) );
 				}
 			}
 		}
@@ -305,7 +305,7 @@ namespace Net {
 	//	return ResultCode::NOT_IMPLEMENTED;
 	//}
 
-	//Result ServerPeer::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
+	//Result ServerPeer::SendMsg( IConnection *pConnection, UINT uiBuffSize, uint8_t* pBuff )
 	//{
 	//	Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 

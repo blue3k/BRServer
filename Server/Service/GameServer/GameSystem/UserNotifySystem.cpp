@@ -13,11 +13,11 @@
 
 #include "stdafx.h"
 
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -117,7 +117,7 @@ namespace GameServer {
 		return m_Notifications.Append( 1, &info );
 	}
 
-	Result UserNotifySystem::AddNotification( UINT NotificationID, NotificationType MessageID, INT64 MessageParam0, INT64 MessageParam1, const char* MessageText, BYTE IsRead, INT64 timeStamp )
+	Result UserNotifySystem::AddNotification( UINT NotificationID, NotificationType MessageID, int64_t MessageParam0, int64_t MessageParam1, const char* MessageText, uint8_t IsRead, int64_t timeStamp )
 	{
 		if( MessageText == nullptr)
 			return ResultCode::INVALID_ARG;

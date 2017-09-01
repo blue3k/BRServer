@@ -12,10 +12,10 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/Utility.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeSvr.h"
 #include "ServerSystem/SvrTrace.h"
 
 #include "curl/curl.h"
@@ -261,7 +261,7 @@ namespace Google {
 			if (hr == ((Result)ResultCode::E_SVR_INVALID_EXTERNAL_AUTH))
 			{
 				// silently ignore it
-				//svrTrace(Trace::TRC_ERROR, "Invalid auth: hr:{0}, {1}, token:{2}", ArgHex32<UINT32>(hr), (const char*)m_ResultBuffer.data(), authChar);
+				//svrTrace(Trace::TRC_ERROR, "Invalid auth: hr:{0}, {1}, token:{2}", ArgHex32<uint32_t>(hr), (const char*)m_ResultBuffer.data(), authChar);
 				return hr;
 			}
 			else

@@ -76,7 +76,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spGetTotalRanking", BRDB_PARAM_2 )
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_RANKINGDB,QueryGetTotalRanking, QueryGetTotalRankingSet);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_RANKINGDB,QueryGetTotalRanking, QueryGetTotalRankingSet);
 
 
 
@@ -103,7 +103,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spUpdateRankingScore", BRDB_PARAM_5)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_RANKINGDB, QueryUpdateRankingScore);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_RANKINGDB, QueryUpdateRankingScore);
 
 	
 
@@ -142,7 +142,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spGetRankers", BRDB_PARAM_2)
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_RANKINGDB, QueryGetRankers, QueryGetRankersSet);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_RANKINGDB, QueryGetRankers, QueryGetRankersSet);
 
 
 

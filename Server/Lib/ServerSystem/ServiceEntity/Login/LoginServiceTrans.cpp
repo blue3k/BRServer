@@ -10,10 +10,10 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
-#include "Common/MemoryPool.h"
-#include "Common/BrBaseTypes.h"
+#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeGame.h"
+#include "Memory/MemoryPool.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
 
 #include "Protocol/Message/GameInstanceManagerMsgClass.h"

@@ -13,7 +13,7 @@
 #include "EntityServer.h"
 #include "ServerSystem/SvrTrace.h"
 #include "EntityServerClass.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 
 #include "Protocol/Message/EntityServerMsgClass.h"
 #include "Protocol/Policy/EntityServerIPolicy.h"

@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Net/NetDef.h"
 #include "Net/NetCtrlIDs.h"
 #include "Net/NetConst.h"
@@ -45,7 +45,7 @@ namespace Net {
 	typedef struct tag_MsgNetCtrlConnect : public MsgNetCtrl
 	{
 		NetAddress	Address;
-		UINT64		PeerUID;
+		uint64_t		PeerUID;
 	} MsgNetCtrlConnect;
 
 
@@ -61,14 +61,14 @@ namespace Net {
 
 	struct MsgMobileNetCtrlSync : public Message::MobileMessageHeader
 	{
-		UINT64	MessageMask;
+		uint64_t	MessageMask;
 	};
 
 
 	// Just some big enough structure to contain all net ctrl type data
 	typedef struct tag_MsgNetCtrlBuffer : public tag_MsgNetCtrlConnect
 	{
-		UINT64	Dummy;
+		uint64_t	Dummy;
 
 		tag_MsgNetCtrlBuffer() { msgID.ID = 0; }
 		tag_MsgNetCtrlBuffer(void* ptr) { assert(ptr == nullptr); msgID.ID = 0; }
@@ -83,8 +83,8 @@ namespace Net {
 
 	struct MsgMobileNetCtrlSequenceFrame : public Message::MobileMessageHeader
 	{
-		UINT32 SubSequence	: 16;
-		UINT32 TotalSize	: 16;
+		uint32_t SubSequence	: 16;
+		uint32_t TotalSize	: 16;
 	};
 
 

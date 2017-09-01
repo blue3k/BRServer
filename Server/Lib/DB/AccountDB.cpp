@@ -10,8 +10,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
-#include "Common/StrUtil.h"
+#include "SFTypedefs.h"
+#include "String/StrUtil.h"
 #include "DB/AccountDB.h"
 
 #include "DB/AccountQuery.h"
@@ -50,7 +50,7 @@ namespace DB {
 	//	Account DB interface
 	//
 
-	Result AccountDB::FacebookCreateUser(TransactionID Sender, UINT64 facebookUID, const char* EMail, const char* cellPhone)
+	Result AccountDB::FacebookCreateUser(TransactionID Sender, uint64_t facebookUID, const char* EMail, const char* cellPhone)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryFacebookCreateUserCmd *pQuery = nullptr;
@@ -77,7 +77,7 @@ namespace DB {
 		return hr;
 	}
 
-	Result AccountDB::FacebookLogIn( TransactionID Sender, UINT64 facebookUID )
+	Result AccountDB::FacebookLogIn( TransactionID Sender, uint64_t facebookUID )
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryFacebookLoginCmd *pQuery = nullptr;

@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/Thread.h"
+#include "SFTypedefs.h"
+#include "Thread/Thread.h"
 #include "Common/Synchronization.h"
 #include "Net/NetDef.h"
 #include "Net/NetSvrDef.h"

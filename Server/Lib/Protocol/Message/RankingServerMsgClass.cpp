@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/PolicyID.h"
+#include "Protocol/Protocol.h"
 #include "String/ToStringSvr.h"
 #include "String/ToStringGame.h"
 #include "Common/ArrayUtil.h"
@@ -30,13 +30,13 @@ namespace BR
  		namespace RankingServer
 		{
  			// Cmd: Add a player to ranking
-			const MessageID AddPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 0);
+			const MessageID AddPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 0);
 			Result AddPlayerCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -59,7 +59,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -92,7 +92,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -122,13 +122,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerInfo, m_RankingScore); 
 			}; // void AddPlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 0);
+			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 0);
 			Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -151,7 +151,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -184,7 +184,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -215,13 +215,13 @@ namespace BR
 			}; // void AddPlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Remove a player to ranking
-			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 1);
+			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 1);
 			Result RemovePlayerCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -243,7 +243,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -274,7 +274,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -304,13 +304,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID); 
 			}; // void RemovePlayerCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 1);
+			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 1);
 			Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -332,7 +332,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -363,7 +363,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -394,13 +394,13 @@ namespace BR
 			}; // void RemovePlayerRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Remove a player to ranking
-			const MessageID GetPlayerRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 2);
+			const MessageID GetPlayerRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 2);
 			Result GetPlayerRankingCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -422,7 +422,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -453,7 +453,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -483,13 +483,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_PlayerID); 
 			}; // void GetPlayerRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID GetPlayerRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 2);
+			const MessageID GetPlayerRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 2);
 			Result GetPlayerRankingRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -512,7 +512,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -545,7 +545,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -576,13 +576,13 @@ namespace BR
 			}; // void GetPlayerRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Update a player to ranking
-			const MessageID UpdatePlayerScoreCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 3);
+			const MessageID UpdatePlayerScoreCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 3);
 			Result UpdatePlayerScoreCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -606,7 +606,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -641,7 +641,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -671,14 +671,14 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_RankingScore, m_PlayerInfo, m_Count); 
 			}; // void UpdatePlayerScoreCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID UpdatePlayerScoreRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 3);
+			const MessageID UpdatePlayerScoreRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 3);
 			Result UpdatePlayerScoreRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofRanking = 0; TotalRankingPlayerInformation* pRanking = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofRanking = 0; TotalRankingPlayerInformation* pRanking = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -688,7 +688,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pRanking, pCur, iMsgSize, (int)sizeof(TotalRankingPlayerInformation)*numberofRanking ) );
 				m_Ranking.SetLinkedBuffer(numberofRanking, numberofRanking, pRanking);
 
@@ -703,17 +703,17 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetSize() + sizeof(UINT16));
+					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInRanking = (UINT16)InRanking.GetSize(); 
+				uint16_t numberOfInRanking = (uint16_t)InRanking.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( RankingServer::UpdatePlayerScoreRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -721,7 +721,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InRanking.data(), (INT)(sizeof(TotalRankingPlayerInformation)*InRanking.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -738,7 +738,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -769,13 +769,13 @@ namespace BR
 			}; // void UpdatePlayerScoreRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Get ranking list
-			const MessageID GetRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 4);
+			const MessageID GetRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 4);
 			Result GetRankingCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -799,7 +799,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -834,7 +834,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -864,14 +864,14 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_RankingType, m_BaseRanking, m_Count); 
 			}; // void GetRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID GetRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 4);
+			const MessageID GetRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 4);
 			Result GetRankingRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 numberofRanking = 0; TotalRankingPlayerInformation* pRanking = nullptr;
+				uint8_t* pCur;
+				uint16_t numberofRanking = 0; TotalRankingPlayerInformation* pRanking = nullptr;
 
 				protocolChkPtr(pIMsg);
 
@@ -881,7 +881,7 @@ namespace BR
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
-				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &numberofRanking, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( pRanking, pCur, iMsgSize, (int)sizeof(TotalRankingPlayerInformation)*numberofRanking ) );
 				m_Ranking.SetLinkedBuffer(numberofRanking, numberofRanking, pRanking);
 
@@ -896,17 +896,17 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID)
 					+ sizeof(Result)
-					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetSize() + sizeof(UINT16));
+					+ sizeof(TotalRankingPlayerInformation)*InRanking.GetSize() + sizeof(uint16_t));
 
 				MessageData *pNewMsg = nullptr;
 
-				UINT16 numberOfInRanking = (UINT16)InRanking.GetSize(); 
+				uint16_t numberOfInRanking = (uint16_t)InRanking.GetSize(); 
 				protocolMem( pNewMsg = MessageData::NewMessage( RankingServer::GetRankingRes::MID, __uiMessageSize ) );
 
 				pMsgData = pNewMsg->GetMessageData();
@@ -914,7 +914,7 @@ namespace BR
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
 				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
-				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(UINT16)); 
+				Protocol::PackParamCopy( pMsgData, &numberOfInRanking, sizeof(uint16_t)); 
 				Protocol::PackParamCopy( pMsgData, InRanking.data(), (INT)(sizeof(TotalRankingPlayerInformation)*InRanking.GetSize())); 
 
 				pMsg = pNewMsg;
@@ -931,7 +931,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -962,14 +962,14 @@ namespace BR
 			}; // void GetRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// Cmd: Debug test
-			const MessageID DebugPrintALLRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 5);
+			const MessageID DebugPrintALLRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 5);
 			Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 uiSizeOfFileName = 0;
+				uint8_t* pCur;
+				uint16_t uiSizeOfFileName = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -978,7 +978,7 @@ namespace BR
 
 				protocolChk( Protocol::StreamParamCopy( &m_RouteContext, pCur, iMsgSize, (int)sizeof(RouteContext) ) );
 				protocolChk( Protocol::StreamParamCopy( &m_TransactionID, pCur, iMsgSize, (int)sizeof(TransactionID) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFileName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFileName, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_FileName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfFileName ) );
 
 
@@ -992,10 +992,10 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
-				UINT16 __uiInFileNameLength = InFileName ? (UINT16)(strlen(InFileName)+1) : 1;
-				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInFileNameLength 
+				uint16_t __uiInFileNameLength = InFileName ? (uint16_t)(strlen(InFileName)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(uint16_t) + __uiInFileNameLength 
 					+ sizeof(RouteContext)
 					+ sizeof(TransactionID));
 
@@ -1007,7 +1007,7 @@ namespace BR
 
 				Protocol::PackParamCopy( pMsgData, &InRouteContext, sizeof(RouteContext));
 				Protocol::PackParamCopy( pMsgData, &InTransactionID, sizeof(TransactionID));
-				Protocol::PackParamCopy( pMsgData, &__uiInFileNameLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInFileNameLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InFileName ? InFileName : "", __uiInFileNameLength );
 
 				pMsg = pNewMsg;
@@ -1024,7 +1024,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 
@@ -1054,13 +1054,13 @@ namespace BR
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_RouteContext, m_TransactionID, m_FileName); 
 			}; // void DebugPrintALLRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
-			const MessageID DebugPrintALLRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_RANKINGSERVER, 5);
+			const MessageID DebugPrintALLRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 5);
 			Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -1082,7 +1082,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(RouteContext)
@@ -1113,7 +1113,7 @@ namespace BR
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 				MessageData* pIMsg = GetMessage();
 				RouteContext routeContext;
 

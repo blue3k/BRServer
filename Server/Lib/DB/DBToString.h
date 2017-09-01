@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "String/ToString.h"
 
 #if !ANDROID
@@ -20,12 +20,11 @@
 #include "mysql.h"
 #endif
 
-namespace BR {
+namespace SF {
 
 
 #if !ANDROID
 
-	template<>
 	inline Result ToString( char*& pBuff, INT& iBuffLen, const enum_field_types& Data, int Option )
 	{
 		const char* name = nullptr;

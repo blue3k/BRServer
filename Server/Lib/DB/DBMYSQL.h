@@ -12,9 +12,9 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/MemoryPool.h"
-#include "Common/Message.h"
+#include "SFTypedefs.h"
+#include "Memory/MemoryPool.h"
+#include "Net/Message.h"
 #include "DB/DBTrace.h"
 
 
@@ -54,7 +54,7 @@ namespace DB {
 	#define MYSQL_TYPE_FUNCTION(ctype, oledbtype) \
 			inline enum_field_types _GetMYSQLDBType(ctype&) throw () { return oledbtype; }
 
-	inline enum_field_types _GetMYSQLDBType(BYTE[]) throw ()
+	inline enum_field_types _GetMYSQLDBType(uint8_t[]) throw ()
 	{
 		return MYSQL_TYPE_BLOB;
 	}
@@ -64,19 +64,19 @@ namespace DB {
 	}
 
 	MYSQL_TYPE_FUNCTION(const char*		 , MYSQL_TYPE_VARCHAR)
-	MYSQL_TYPE_FUNCTION(INT64			 , MYSQL_TYPE_LONGLONG)
-	MYSQL_TYPE_FUNCTION(UINT64			 , MYSQL_TYPE_LONGLONG)
-	MYSQL_TYPE_FUNCTION(INT8			 , MYSQL_TYPE_TINY)
+	MYSQL_TYPE_FUNCTION(int64_t			 , MYSQL_TYPE_LONGLONG)
+	MYSQL_TYPE_FUNCTION(uint64_t			 , MYSQL_TYPE_LONGLONG)
+	MYSQL_TYPE_FUNCTION(int8_t			 , MYSQL_TYPE_TINY)
 	//MYSQL_TYPE_FUNCTION(UINT8			 , MYSQL_TYPE_TINY)
 	//MYSQL_TYPE_FUNCTION(signed char      , MYSQL_TYPE_TINY)
 	//MYSQL_TYPE_FUNCTION(SHORT            , MYSQL_TYPE_SHORT)
-	MYSQL_TYPE_FUNCTION(INT16			 , MYSQL_TYPE_SHORT)
-	MYSQL_TYPE_FUNCTION(UINT16			 , MYSQL_TYPE_SHORT)
-	MYSQL_TYPE_FUNCTION(INT32            , MYSQL_TYPE_LONG)
-	MYSQL_TYPE_FUNCTION(UINT32			 , MYSQL_TYPE_LONG)
+	MYSQL_TYPE_FUNCTION(int16_t			 , MYSQL_TYPE_SHORT)
+	MYSQL_TYPE_FUNCTION(uint16_t			 , MYSQL_TYPE_SHORT)
+	MYSQL_TYPE_FUNCTION(int32_t            , MYSQL_TYPE_LONG)
+	MYSQL_TYPE_FUNCTION(uint32_t			 , MYSQL_TYPE_LONG)
 //	MYSQL_TYPE_FUNCTION(LONG             , MYSQL_TYPE_LONG)
 //	MYSQL_TYPE_FUNCTION(LONGLONG		 , MYSQL_TYPE_LONGLONG) 
-	MYSQL_TYPE_FUNCTION(BYTE             , MYSQL_TYPE_TINY)
+	MYSQL_TYPE_FUNCTION(uint8_t             , MYSQL_TYPE_TINY)
 //	MYSQL_TYPE_FUNCTION(unsigned long    , MYSQL_TYPE_LONG)
 //	MYSQL_TYPE_FUNCTION(ULONGLONG		 , MYSQL_TYPE_LONGLONG)
 	MYSQL_TYPE_FUNCTION(float            , MYSQL_TYPE_FLOAT)

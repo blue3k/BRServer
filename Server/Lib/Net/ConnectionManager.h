@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/HashTable2.h"
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "Common/Synchronization.h"
 #include "Common/UniqueEntityIDGenerator.h"
 #include "Net/NetDef.h"
@@ -69,7 +69,7 @@ namespace Net {
 									> CIDMap;
 
 
-		typedef Hash::HashTable2<	UINT64, WeakPointerT<Connection>
+		typedef Hash::HashTable2<	uint64_t, WeakPointerT<Connection>
 									> PeerIDMap;
 
 		// Connection set
@@ -81,7 +81,7 @@ namespace Net {
 		struct Operation
 		{
 			// Operation code
-			enum OperationCode : UINT32
+			enum OperationCode : uint32_t
 			{
 				OP_NONE,
 				OP_WAITING_CONNECTION,
@@ -276,7 +276,7 @@ namespace Net {
 		// Find and return connection
 		Result GetConnectionByAddr(const sockaddr_storage& sockAddr, SharedPointerT<Connection> &pFound);
 		Result GetConnectionByCID( uintptr_t uiCID, SharedPointerT<Connection> &pConn );
-		Result GetConnectionByPeerID(UINT64 peerID, SharedPointerT<Connection> &pConn);
+		Result GetConnectionByPeerID(uint64_t peerID, SharedPointerT<Connection> &pConn);
 	};
 
 

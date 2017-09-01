@@ -57,7 +57,7 @@ namespace DB {
 		char Password[Const::MAX_PASSWORD];
 		char EMail[Const::MAX_USERNAME];
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryCreateUser,4)
@@ -72,7 +72,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spCreateUser", BRDB_PARAM_4 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB,QueryCreateUser);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryCreateUser);
 
 
 
@@ -87,10 +87,10 @@ namespace DB {
 		char UserName[Const::MAX_USERNAME];
 		char Password[Const::MAX_PASSWORD];
 
-		INT64 AccountID;
-		INT64 FBUserID;
-		INT32 ShardID;
-		INT32 Result;
+		int64_t AccountID;
+		int64_t FBUserID;
+		int32_t ShardID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryLogin,6)
@@ -107,7 +107,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spLogin", BRDB_PARAM_6 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB,QueryLogin);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryLogin);
 
 
 
@@ -120,8 +120,8 @@ namespace DB {
 	{
 	public:
 		char UserName[Const::MAX_USERNAME];
-		BYTE LogoutTime[4];
-		INT32 Result;
+		uint8_t LogoutTime[4];
+		int32_t Result;
 
 
 	public:
@@ -135,21 +135,21 @@ namespace DB {
 		BRDB_QUERYSTRING( "spLogout", BRDB_PARAM_2 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB,QueryLogout);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryLogout);
 
 
 
 	struct QueryUserListResultSet
 	{
-		INT64 m_PlayerUID;
+		int64_t m_PlayerUID;
 		char m_Name[BINSIZE_NAME];
-		INT64 m_FBUID;
+		int64_t m_FBUID;
 	};
 
 	class QueryUserList : public QueryUserListResultSet, public QueryBase
 	{
 	public:
-		INT32 Result;
+		int32_t Result;
 
 
 	public:
@@ -168,7 +168,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spUserList", BRDB_PARAM_1 )
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_ACCOUNTDB,QueryUserList, QueryUserListResultSet);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryUserList, QueryUserListResultSet);
 
 	
 	//////////////////////////////////////////////////////////////////////////////////
@@ -179,13 +179,13 @@ namespace DB {
 	class QueryFacebookCreateUser : public QueryBase
 	{
 	public:
-		INT64 FBUserID;
+		int64_t FBUserID;
 		char EMail[Const::MAX_EMAIL];
 		char CellPhone[Const::MAX_CELLPHONE];
 
-		INT64 AccountID;
-		INT32 ShardID;
-		INT32 Result;
+		int64_t AccountID;
+		int32_t ShardID;
+		int32_t Result;
 
 
 	public:
@@ -203,7 +203,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spFacebookCreateUser", BRDB_PARAM_6 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryFacebookCreateUser);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryFacebookCreateUser);
 
 
 
@@ -215,14 +215,14 @@ namespace DB {
 	class QueryFacebookLogin : public QueryBase
 	{
 	public:
-		INT64 FBUserID;
+		int64_t FBUserID;
 
-		INT64 AccountID;
+		int64_t AccountID;
 		char EMail[Const::MAX_EMAIL];
 		char CellPhone[Const::MAX_CELLPHONE];
 		char GCMKeys[Const::MAX_GCMKEY];
-		INT32 ShardID;
-		INT32 Result;
+		int32_t ShardID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryFacebookLogin,7)
@@ -240,7 +240,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spFacebookLogin", BRDB_PARAM_7 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB,QueryFacebookLogin);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryFacebookLogin);
 
 
 
@@ -255,10 +255,10 @@ namespace DB {
 		char UserName[Const::MAX_USERNAME];
 		char CellPhone[Const::MAX_CELLPHONE];
 
-		INT64 AccountID;
-		INT64 FBUserID;
-		INT32 ShardID;
-		INT32 Result;
+		int64_t AccountID;
+		int64_t FBUserID;
+		int32_t ShardID;
+		int32_t Result;
 
 
 	public:
@@ -276,7 +276,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spCreateRandomUser", BRDB_PARAM_6)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryCreateRandomUser);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryCreateRandomUser);
 
 	
 	//////////////////////////////////////////////////////////////////////////////////
@@ -287,10 +287,10 @@ namespace DB {
 	class QueryUpdateGCMKeys : public QueryBase
 	{
 	public:
-		INT64 UserUID;
+		int64_t UserUID;
 		char GCMKeys[Const::MAX_GCMKEY];
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryUpdateGCMKeys,3)
@@ -304,7 +304,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spUpdateGCMKeys", BRDB_PARAM_3 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB,QueryUpdateGCMKeys);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryUpdateGCMKeys);
 	
 
 
@@ -316,11 +316,11 @@ namespace DB {
 	class QueryUpdateUserContactInfo : public QueryBase
 	{
 	public:
-		INT64 UserUID;
+		int64_t UserUID;
 		char EMail[Const::MAX_EMAIL];
 		char CellPhone[Const::MAX_CELLPHONE];
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryUpdateUserContactInfo, 3)
@@ -333,7 +333,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spUpdateUserContactInfo", BRDB_PARAM_3)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryUpdateUserContactInfo);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryUpdateUserContactInfo);
 
 
 	
@@ -343,10 +343,10 @@ namespace DB {
 	public:
 		char EMail[Const::MAX_EMAIL];
 
-		INT64 UserID;
-		INT64 FacebookUID;
-		INT32 ShardID;
-		INT32 Result;
+		int64_t UserID;
+		int64_t FacebookUID;
+		int32_t ShardID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryFindPlayerByEMail,5)
@@ -362,7 +362,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spFindPlayerByEMail", BRDB_PARAM_5 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB,QueryFindPlayerByEMail);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB,QueryFindPlayerByEMail);
 
 
 
@@ -370,10 +370,10 @@ namespace DB {
 	class QueryFindPlayerByPlayerID : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
-		INT64 FacebookUID;
-		INT32 ShardID;
-		INT32 Result;
+		int64_t PlayerID;
+		int64_t FacebookUID;
+		int32_t ShardID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryFindPlayerByPlayerID,4)
@@ -388,16 +388,16 @@ namespace DB {
 		BRDB_QUERYSTRING( "spFindPlayerByPlayerID", BRDB_PARAM_4 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryFindPlayerByPlayerID);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryFindPlayerByPlayerID);
 
 
 
 	class QueryGetPlayerShardID : public QueryBase
 	{
 	public:
-		INT64 UserID;
-		INT32 ShardID;
-		INT32 Result;
+		int64_t UserID;
+		int32_t ShardID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerShardID, 3)
@@ -411,7 +411,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spGetPlayerShardID", BRDB_PARAM_3 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_ACCOUNTDB, QueryGetPlayerShardID);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryGetPlayerShardID);
 
 }  // namespace DB
 }  // namespace BR

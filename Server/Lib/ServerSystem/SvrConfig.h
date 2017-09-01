@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/BrBaseTypes.h"
+#include "SFTypedefs.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrXML.h"
 #include "String/FixedString.h"

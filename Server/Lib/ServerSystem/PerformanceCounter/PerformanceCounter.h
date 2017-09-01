@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 
 
 
@@ -73,10 +73,10 @@ namespace Svr {
 		const char* GetCounterName()						{ return m_CounterName; }
 		UINT GetSyncSerial()								{ return m_SyncSerial.load(std::memory_order_relaxed); }
 
-		virtual INT64 GetRawValue() = 0;
+		virtual int64_t GetRawValue() = 0;
 
-		virtual Result CopyTo(UINT bufferSize, BYTE* pBuffer) { return ResultCode::SUCCESS; }
-		virtual Result CopyFrom(UINT bufferSize, BYTE* pBuffer) { return ResultCode::SUCCESS; }
+		virtual Result CopyTo(UINT bufferSize, uint8_t* pBuffer) { return ResultCode::SUCCESS; }
+		virtual Result CopyFrom(UINT bufferSize, uint8_t* pBuffer) { return ResultCode::SUCCESS; }
 
 	};
 
@@ -85,10 +85,10 @@ namespace Svr {
 
 	// Data type convertion templates
 	template<class DataType> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType() { return PerformanceCounter::DataTypes::Int32; }
-	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<INT32>() { return PerformanceCounter::DataTypes::Int32; }
-	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<UINT32>() { return PerformanceCounter::DataTypes::UInt32; }
-	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<INT64>() { return PerformanceCounter::DataTypes::Int64; }
-	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<UINT64>() { return PerformanceCounter::DataTypes::UInt64; }
+	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<int32_t>() { return PerformanceCounter::DataTypes::Int32; }
+	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<uint32_t>() { return PerformanceCounter::DataTypes::UInt32; }
+	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<int64_t>() { return PerformanceCounter::DataTypes::Int64; }
+	template<> inline PerformanceCounter::DataTypes PerformanceCounterRaw_GetDataType<uint64_t>() { return PerformanceCounter::DataTypes::UInt64; }
 
 
 	template<class DataType>
@@ -126,7 +126,7 @@ namespace Svr {
 
 
 
-		virtual Result CopyTo(UINT bufferSize, BYTE* pBuffer) override
+		virtual Result CopyTo(UINT bufferSize, uint8_t* pBuffer) override
 		{
 			Assert(bufferSize >= sizeof(DataType));
 			if (bufferSize < sizeof(DataType))
@@ -139,7 +139,7 @@ namespace Svr {
 			return ResultCode::SUCCESS;
 		}
 
-		virtual Result CopyFrom(UINT bufferSize, BYTE* pBuffer) override
+		virtual Result CopyFrom(UINT bufferSize, uint8_t* pBuffer) override
 		{
 			Assert(bufferSize >= sizeof(DataType));
 			if (bufferSize < sizeof(DataType))
@@ -155,7 +155,7 @@ namespace Svr {
 			return ResultCode::SUCCESS;
 		}
 
-		virtual INT64 GetRawValue() override						{ return (INT64)m_RawValue.load(std::memory_order_relaxed); }
+		virtual int64_t GetRawValue() override						{ return (int64_t)m_RawValue.load(std::memory_order_relaxed); }
 
 		void SetRawValue(const DataType& value)		{ m_RawValue.store(value, std::memory_order_release); IncSyncSerial(); }
 
@@ -238,7 +238,7 @@ namespace Svr {
 			return *this;
 		}
 
-		virtual Result CopyTo(UINT bufferSize, BYTE* pBuffer) override
+		virtual Result CopyTo(UINT bufferSize, uint8_t* pBuffer) override
 		{
 			auto timeSince = Util::TimeSince(m_TickCountStartTime);
 			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))
@@ -294,7 +294,7 @@ namespace Svr {
 		}
 
 
-		virtual Result CopyTo(UINT bufferSize, BYTE* pBuffer) override
+		virtual Result CopyTo(UINT bufferSize, uint8_t* pBuffer) override
 		{
 			auto timeSince = Util::TimeSince(m_TickCountStartTime);
 			if (m_TickCountStartTime == TimeStampMS::min() || timeSince > DurationMS(1000))

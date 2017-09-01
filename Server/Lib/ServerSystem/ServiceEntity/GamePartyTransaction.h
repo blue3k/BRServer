@@ -13,7 +13,7 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "ServerSystem/Transaction.h"
 #include "ServerSystem/ServiceEntity/GamePartyEntity.h"
 #include "ServerSystem/ServerTransaction.h"

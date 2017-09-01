@@ -11,13 +11,13 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "ServerSystem/Transaction.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 #include "Protocol/Message/MonitoringMsgClass.h"
 #include "Protocol/Policy/MonitoringIPolicy.h"
 #include "ServerSystem/MessageRoute.h"
@@ -37,7 +37,7 @@ namespace Svr {
 
 	private:
 		StaticArray<PerformanceCounterInstanceInfo, 1024> m_InstanceList;
-		UINT32 m_TotalCounterInstance;
+		uint32_t m_TotalCounterInstance;
 
 	public:
 		MonitoringTransGetInstanceList(Message::MessageData* &pIMsg) : ServerEntityMessageTransaction(pIMsg) {}
@@ -59,7 +59,7 @@ namespace Svr {
 		typedef ServerEntityMessageTransaction< MonitoringServiceEntity, Message::Monitoring::RequestCounterValuesCmd, MonitoringTransRequestCounterValues, 1> super;
 
 	private:
-		StaticArray<UINT64, 1024> m_CounterValues;
+		StaticArray<uint64_t, 1024> m_CounterValues;
 
 	public:
 		MonitoringTransRequestCounterValues(Message::MessageData* &pIMsg) : ServerEntityMessageTransaction(pIMsg) {}

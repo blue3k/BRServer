@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/PolicyID.h"
+#include "Protocol/Protocol.h"
 #include "String/ToStringSvr.h"
 #include "String/ToStringGame.h"
 #include "Common/ArrayUtil.h"
@@ -30,14 +30,14 @@ namespace BR
  		namespace GameMasterServer
 		{
  			// C2S: Player entered
-			const MessageID PlayerEnteredC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEMASTERSERVER, 0);
+			const MessageID PlayerEnteredC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEMASTERSERVER, 0);
 			Result PlayerEnteredC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
-				UINT16 uiSizeOfPlayerName = 0;
+				uint8_t* pCur;
+				uint16_t uiSizeOfPlayerName = 0;
 
 				protocolChkPtr(pIMsg);
 
@@ -45,7 +45,7 @@ namespace BR
 				pCur = pIMsg->GetMessageData();
 
 				protocolChk( Protocol::StreamParamCopy( &m_PlayerID, pCur, iMsgSize, (int)sizeof(AccountID) ) );
-				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPlayerName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfPlayerName, pCur, iMsgSize, (int)sizeof(uint16_t) ) );
 				protocolChk( Protocol::StreamParamLnk( m_PlayerName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfPlayerName ) );
 
 
@@ -59,10 +59,10 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
-				UINT16 __uiInPlayerNameLength = InPlayerName ? (UINT16)(strlen(InPlayerName)+1) : 1;
-				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(UINT16) + __uiInPlayerNameLength 
+				uint16_t __uiInPlayerNameLength = InPlayerName ? (uint16_t)(strlen(InPlayerName)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) +  + sizeof(uint16_t) + __uiInPlayerNameLength 
 					+ sizeof(AccountID));
 
 				MessageData *pNewMsg = nullptr;
@@ -72,7 +72,7 @@ namespace BR
 				pMsgData = pNewMsg->GetMessageData();
 
 				Protocol::PackParamCopy( pMsgData, &InPlayerID, sizeof(AccountID));
-				Protocol::PackParamCopy( pMsgData, &__uiInPlayerNameLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, &__uiInPlayerNameLength, sizeof(uint16_t) );
 				Protocol::PackParamCopy( pMsgData, InPlayerName ? InPlayerName : "", __uiInPlayerNameLength );
 
 				pMsg = pNewMsg;
@@ -94,13 +94,13 @@ namespace BR
 			}; // void PlayerEnteredC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 
 			// C2S: Player leaved
-			const MessageID PlayerLeavedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, POLICY_GAMEMASTERSERVER, 1);
+			const MessageID PlayerLeavedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_GAMEMASTERSERVER, 1);
 			Result PlayerLeavedC2SEvt::ParseMessage( MessageData* pIMsg )
 			{
  				Result hr;
 
 				INT iMsgSize;
-				BYTE* pCur;
+				uint8_t* pCur;
 
 				protocolChkPtr(pIMsg);
 
@@ -120,7 +120,7 @@ namespace BR
 			{
  				Result hr;
 
-				BYTE *pMsgData = nullptr;
+				uint8_t *pMsgData = nullptr;
 
 				UINT __uiMessageSize = (UINT)(sizeof(MessageHeader) 
 					+ sizeof(AccountID));

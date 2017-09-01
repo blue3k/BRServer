@@ -13,9 +13,9 @@
 #pragma once
 
 
-#include "Common/Thread.h"
-#include "Common/StackPool.h"
-#include "Common/ClassUtil.h"
+#include "Thread/Thread.h"
+#include "Container/StackPool.h"
+
 
 namespace BR {
 namespace DB {
@@ -44,7 +44,7 @@ namespace DB {
 		std::string			m_strPassword;
 
 		// is opened
-		BRCLASS_ATTRIBUTE_READONLY(bool,Opened);
+		bool m_Opened;
 
 		// Session pool
 		StackPool			m_SessionPool;
@@ -53,6 +53,7 @@ namespace DB {
 		DataSource(): m_Opened(false) {}
 		virtual ~DataSource() {}
 
+		bool GetOpened() { return m_Opened; }
 
 		const std::string& GetConnectionString()					{ return m_strConnectionString; }
 		const std::string& GetDefaultDB()							{ return m_strDefaultDB; }

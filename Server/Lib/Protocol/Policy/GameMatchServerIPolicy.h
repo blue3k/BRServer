@@ -10,10 +10,10 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrGameTypes.h"
-#include "Common/PolicyID.h"
+#include "Protocol/Protocol.h"
 #include "Net/Netdef.h"
 #include "Net/NetPolicy.h"
 #include "Common/SvrPolicyID.h"
@@ -27,7 +27,7 @@ namespace BR
  
 		interface ISvrPolicyGameMatchServer : Net::INetPolicy
 		{
- 			enum { ID_POLICY = POLICY_SVR_GAMEMATCHSERVER };
+ 			enum { ID_POLICY = PROTOCOLID_SVR_GAMEMATCHSERVER };
 
 			// Constructor
 			ISvrPolicyGameMatchServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
@@ -45,16 +45,16 @@ namespace BR
 
 		interface IPolicyGameMatchServer : Net::INetPolicy
 		{
- 			enum { ID_POLICY = POLICY_GAMEMATCHSERVER };
+ 			enum { ID_POLICY = PROTOCOLID_GAMEMATCHSERVER };
 
 			// Constructor
 			IPolicyGameMatchServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Match
-			virtual HRESULT RegisterPartyMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PartyUID &InPartyUID, const UINT32 &InNumGamePlayer ) = 0;
+			virtual HRESULT RegisterPartyMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PartyUID &InPartyUID, const uint32_t &InNumGamePlayer ) = 0;
 			// Cmd: Match
-			virtual HRESULT RegisterPlayerMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const UINT32 &InNumGamePlayer ) = 0;
+			virtual HRESULT RegisterPlayerMatchCmd( const Context &InContext, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint32_t &InNumGamePlayer ) = 0;
 			// S2C: Game is matched
 
 		}; // interface IPolicyGameMatchServer : Net::INetPolicy

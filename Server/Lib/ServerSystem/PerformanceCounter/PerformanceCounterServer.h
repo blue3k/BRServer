@@ -11,11 +11,11 @@
 
 #pragma once
 
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrBaseTypes.h"
-#include "Common/Thread.h"
-#include "Common/PageQueue.h"
+#include "Types/BrBaseTypes.h"
+#include "Thread/Thread.h"
+#include "Container/PageQueue.h"
 #include "Common/DualSortedMap.h"
 #include "Net/NetRawUDP.h"
 #include "ServerSystem/MessageRoute.h"
@@ -94,7 +94,7 @@ namespace Svr {
 			PageQueue<PacketInfo> m_UpdateQueue;
 			PageQueue<void*> m_TimedOutQueue;
 
-			DualSortedMap<UINT64, SharedPointerT<PerformanceCounterInstance>> m_InstanceMap;
+			DualSortedMap<uint64_t, SharedPointerT<PerformanceCounterInstance>> m_InstanceMap;
 
 
 			static PerformanceCounterServer *stm_pInstance;
@@ -117,7 +117,7 @@ namespace Svr {
 			static UINT GetInstanceCount();
 			static UINT GetInstanceList(UINT startIndex, Array<SharedPointerT<PerformanceCounterInstance>>& instanceList);
 			//static UINT GetInstanceList(UINT startIndex, UINT bufferSize, EntityUID pInstanceBuffer);
-			static Result GetInstance(UINT64 instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance);
+			static Result GetInstance(uint64_t instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance);
 			static Result GetInstance(EntityUID instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance);
 
 		protected:

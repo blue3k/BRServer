@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/ArrayUtil.h"
-#include "Common/ResultCode/BRResultCodeDB.h"
+#include "ResultCode/SFResultCodeDB.h"
 #include "Net/NetDef.h"
 #include "DB/DBClusterManager.h"
 //#include "ServerSystem/PlugIn.h"
@@ -82,7 +82,7 @@ namespace Svr {
 		ServerState		m_State;
 
 		// UID of this server
-		UINT32			m_uiUID;
+		uint32_t			m_uiUID;
 
 		// Network address
 		NetAddress					m_AddrPrivate;

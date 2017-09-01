@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "SFAssert.h"
 #include "Common/Utility.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
@@ -22,7 +22,7 @@
 #include "Net/NetServer.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetCtrl.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Net/NetUtil.h"
 #include "Net/NetSystem.h"
 #include "Protocol/ProtocolVer.h"
@@ -70,122 +70,122 @@ namespace Net {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if( uiPolicy >= POLICY_NETMAX )
+		if( uiPolicy >= PROTOCOLID_NETMAX )
 			netErr( ResultCode::INVALID_ARG );
 
 		if( m_pPolicy[uiPolicy] == NULL )// try create
 		{ 
 			switch( uiPolicy )
 			{
-			case POLICY_LOGIN:
+			case PROTOCOLID_LOGIN:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyLogin( this ) );
 				break;
-			case POLICY_SVR_LOGIN:
+			case PROTOCOLID_SVR_LOGIN:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyLogin( this ) );
 				break;
 
-			case POLICY_GAME:
+			case PROTOCOLID_GAME:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGame( this ) );
 				break;
-			case POLICY_SVR_GAME:
+			case PROTOCOLID_SVR_GAME:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGame( this ) );
 				break;
 
-			case POLICY_SERVER:
+			case PROTOCOLID_SERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyServer( this ) );
 				break;
-			case POLICY_SVR_SERVER:
+			case PROTOCOLID_SVR_SERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyServer( this ) );
 				break;
 
-			case POLICY_LOGINSERVER:
+			case PROTOCOLID_LOGINSERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyLoginServer( this ) );
 				break;
-			case POLICY_SVR_LOGINSERVER:
+			case PROTOCOLID_SVR_LOGINSERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyLoginServer( this ) );
 				break;
 
-			case POLICY_GAMESERVER:
+			case PROTOCOLID_GAMESERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameServer( this ) );
 				break;
-			case POLICY_SVR_GAMESERVER:
+			case PROTOCOLID_SVR_GAMESERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameServer( this ) );
 				break;
 				
-			case POLICY_GAMEMASTERSERVER:
+			case PROTOCOLID_GAMEMASTERSERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameMasterServer( this ) );
 				break;
-			case POLICY_SVR_GAMEMASTERSERVER:
+			case PROTOCOLID_SVR_GAMEMASTERSERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameMasterServer( this ) );
 				break;
 
-			case POLICY_ENTITYSERVER:
+			case PROTOCOLID_ENTITYSERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyEntityServer( this ) );
 				break;
-			case POLICY_SVR_ENTITYSERVER:
+			case PROTOCOLID_SVR_ENTITYSERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyEntityServer( this ) );
 				break;
 
-			case POLICY_GAMEPARTY:
+			case PROTOCOLID_GAMEPARTY:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameParty( this ) );
 				break;
-			case POLICY_SVR_GAMEPARTY:
+			case PROTOCOLID_SVR_GAMEPARTY:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameParty( this ) );
 				break;
 
-			case POLICY_CLUSTERSERVER:
+			case PROTOCOLID_CLUSTERSERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyClusterServer( this ) );
 				break;
-			case POLICY_SVR_CLUSTERSERVER:
+			case PROTOCOLID_SVR_CLUSTERSERVER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyClusterServer( this ) );
 				break;
 
-			case POLICY_PARTYMATCHING:
+			case PROTOCOLID_PARTYMATCHING:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyPartyMatching( this ) );
 				break;
-			case POLICY_SVR_PARTYMATCHING:
+			case PROTOCOLID_SVR_PARTYMATCHING:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyPartyMatching( this ) );
 				break;
 
-			case POLICY_PARTYMATCHINGQUEUE:
+			case PROTOCOLID_PARTYMATCHINGQUEUE:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyPartyMatchingQueue( this ) );
 				break;
-			case POLICY_SVR_PARTYMATCHINGQUEUE:
+			case PROTOCOLID_SVR_PARTYMATCHINGQUEUE:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyPartyMatchingQueue( this ) );
 				break;
 
-			case POLICY_GAMEINSTANCE:
+			case PROTOCOLID_GAMEINSTANCE:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameInstance( this ) );
 				break;
-			case POLICY_SVR_GAMEINSTANCE:
+			case PROTOCOLID_SVR_GAMEINSTANCE:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameInstance( this ) );
 				break;
 
-			case POLICY_GAMEINSTANCEMANAGER:
+			case PROTOCOLID_GAMEINSTANCEMANAGER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGameInstanceManager( this ) );
 				break;
-			case POLICY_SVR_GAMEINSTANCEMANAGER:
+			case PROTOCOLID_SVR_GAMEINSTANCEMANAGER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGameInstanceManager( this ) );
 				break;
 
-			case POLICY_GAMEPARTYMANAGER:
+			case PROTOCOLID_GAMEPARTYMANAGER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetPolicyGamePartyManager( this ) );
 				break;
-			case POLICY_SVR_GAMEPARTYMANAGER:
+			case PROTOCOLID_SVR_GAMEPARTYMANAGER:
 				netMem( m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyGamePartyManager( this ) );
 				break;
 
-			case POLICY_RANKINGSERVER:
+			case PROTOCOLID_RANKINGSERVER:
 				netMem(m_pPolicy[uiPolicy] = new Policy::NetPolicyRankingServer(this));
 				break;
-			case POLICY_SVR_RANKINGSERVER:
+			case PROTOCOLID_SVR_RANKINGSERVER:
 				netMem(m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyRankingServer(this));
 				break;
 
-			case POLICY_MONITORING:
+			case PROTOCOLID_MONITORING:
 				netMem(m_pPolicy[uiPolicy] = new Policy::NetPolicyMonitoring(this));
 				break;
-			case POLICY_SVR_MONITORING:
+			case PROTOCOLID_SVR_MONITORING:
 				netMem(m_pPolicy[uiPolicy] = new Policy::NetSvrPolicyMonitoring(this));
 				break;
 
@@ -259,7 +259,7 @@ namespace Net {
 
 
 	// Make Ack packet and enqueue to SendNetCtrlqueue
-	Result Connection::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	Result Connection::SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID )
 	{
 		Result hr = ResultCode::SUCCESS;
 		Result hrTem;
@@ -548,7 +548,7 @@ namespace Net {
 			Message::MessageHeader* pMsgHeader = pIMsg->GetMessageHeader();
 			UINT uiPolicy = pMsgHeader->msgID.IDs.Policy;
 			if (uiPolicy == 0
-				|| uiPolicy >= POLICY_NETMAX) // invalid policy
+				|| uiPolicy >= PROTOCOLID_NETMAX) // invalid policy
 			{
 				netErr(ResultCode::E_NET_BADPACKET_NOTEXPECTED);
 			}

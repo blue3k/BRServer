@@ -13,11 +13,11 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrMemory.h"
+#include "Memory/SFMemory.h"
 #include "Common/BrSvrTypes.h"
-#include "Common/PageQueue.h"
+#include "Container/PageQueue.h"
 #include "Common/LocalUIDGenerator.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MasterEntity.h"
@@ -211,9 +211,9 @@ namespace Svr {
 		WeakPointerT<Entity> m_pQueueEntity;
 		StaticArray<MatchingQueueInterface*, MAX_QUEUE_COUNT> m_MatchingReserevedQueues;
 
-		PerformanceCounterRaw<UINT64> m_ItemCounts[MAX_QUEUE_COUNT];
+		PerformanceCounterRaw<uint64_t> m_ItemCounts[MAX_QUEUE_COUNT];
 
-		PerformanceCounterTickPerSec<INT64> m_MatchedCount;
+		PerformanceCounterTickPerSec<int64_t> m_MatchedCount;
 
 	protected:
 		Result GetMatchingPatterTable(UINT targetMatchingMemberCount, UINT& numTableEntries, const UINT* &pTable);
@@ -229,7 +229,7 @@ namespace Svr {
 		~MatchingServiceEntity();
 
 		// We are not going to use hashed key
-		virtual UINT KeyHash( UINT64 key ) { return (UINT)key; }
+		virtual UINT KeyHash( uint64_t key ) { return (UINT)key; }
 
 		
 		//////////////////////////////////////////////////////////////////////////

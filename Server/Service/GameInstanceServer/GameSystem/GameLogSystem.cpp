@@ -13,10 +13,10 @@
 
 #include "stdafx.h"
 
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "ResultCode/SFResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -92,7 +92,7 @@ namespace ConspiracyGameInstanceServer {
 		if( gameState < GameStateID::None || gameState >= GameStateID::Max )
 			return ResultCode::INVALID_ARG;
 
-		BYTE* itemBuffer = NewLogItemBuffer<GameLogGameStateChange>();
+		uint8_t* itemBuffer = NewLogItemBuffer<GameLogGameStateChange>();
 		svrMem( itemBuffer );
 		pLogItem = new(itemBuffer) GameLogGameStateChange(timeStamp);
 		svrMem( pLogItem );
@@ -121,7 +121,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		size_t allocationSize = sizeof(GameLogVote) + (voterCount-1)*sizeof(GameLogVote::VoteInfo);
-		BYTE* itemBuffer = NewLogItemBuffer<GameLogVote>( allocationSize );
+		uint8_t* itemBuffer = NewLogItemBuffer<GameLogVote>( allocationSize );
 		svrMem(itemBuffer);
 		logItem = new(itemBuffer) GameLogVote(timeStamp, voterCount);
 
@@ -170,7 +170,7 @@ namespace ConspiracyGameInstanceServer {
 		}
 
 		size_t allocationSize = sizeof(GameLogVoteResult) + (numRankers-1)*sizeof(PlayerID);
-		BYTE* itemBuffer = NewLogItemBuffer<GameLogVoteResult>( allocationSize );
+		uint8_t* itemBuffer = NewLogItemBuffer<GameLogVoteResult>( allocationSize );
 		svrMem( itemBuffer );
 		logItem = new(itemBuffer) GameLogVoteResult(timeStamp,numRankers);
 		svrMem( logItem );
@@ -191,7 +191,7 @@ namespace ConspiracyGameInstanceServer {
 		Result hr = ResultCode::SUCCESS;
 		GameLogPlayerKilled *logItem;
 
-		BYTE* itemBuffer = NewLogItemBuffer<GameLogPlayerKilled>();
+		uint8_t* itemBuffer = NewLogItemBuffer<GameLogPlayerKilled>();
 		svrMem( itemBuffer );
 		logItem = new(itemBuffer) GameLogPlayerKilled(timeStamp);
 		svrMem( logItem );
@@ -213,7 +213,7 @@ namespace ConspiracyGameInstanceServer {
 		if( winner < GameWinner(0) || winner >= GameWinner::Max )
 			return ResultCode::INVALID_ARG;
 
-		BYTE* itemBuffer = NewLogItemBuffer<GameLogGameEnd>();
+		uint8_t* itemBuffer = NewLogItemBuffer<GameLogGameEnd>();
 		svrMem( itemBuffer );
 		logItem = new(itemBuffer) GameLogGameEnd(timeStamp);
 		svrMem( logItem );

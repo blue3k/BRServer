@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/PolicyID.h"
+#include "Protocol/Protocol.h"
 #include "Protocol/ProtocolMessageCPPInc.h"
 #include "Net/NetDef.h"
 #include "Protocol/ProtocolTrace.h"
@@ -27,7 +27,7 @@ namespace Message {
 		{
  			Result hr = ResultCode::SUCCESS;
 			int iMsgSize;
-			BYTE* pCur;
+			uint8_t* pCur;
 
 			protocolChkPtr(pIMsg);
 

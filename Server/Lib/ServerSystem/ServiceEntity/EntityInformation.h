@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/MemoryPool.h"
+#include "SFTypedefs.h"
+#include "Memory/MemoryPool.h"
 #include "Common/ClassUtil.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/ServerEntity.h"
@@ -96,7 +96,7 @@ namespace Svr {
 
 		// Service base cache
 		BRCLASS_ATTRIBUTE_READONLY_PTR(ServerServiceBase*,ServiceBase);
-		BYTE	m_bufferForServiceBase[1024];
+		uint8_t	m_bufferForServiceBase[1024];
 
 
 	public:

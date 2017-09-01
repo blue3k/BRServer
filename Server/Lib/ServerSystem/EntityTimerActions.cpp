@@ -12,8 +12,8 @@
 
 
 #include "stdafx.h"
-#include "Common/Thread.h"
-#include "Common/StrUtil.h"
+#include "Thread/Thread.h"
+#include "String/StrUtil.h"
 #include "ServerSystem/EntityTimerActions.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/Transaction.h"

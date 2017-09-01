@@ -13,10 +13,10 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/Thread.h"
+#include "SFTypedefs.h"
+#include "Thread/Thread.h"
 #include "Common/ObjectPool.h"
-#include "Common/BrMemory.h"
+#include "Memory/SFMemory.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/Transaction.h"
@@ -86,11 +86,11 @@ namespace Svr{
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 		// Send gcm notify
-		Result SendGCMNotify(TransactionID sender, const char* strRegisterIDs, const char* strMessage, UINT64 param0 = 0);
+		Result SendGCMNotify(TransactionID sender, const char* strRegisterIDs, const char* strMessage, uint64_t param0 = 0);
 
 		// check receipt
 		Result AndroidCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* purchaseToken);
-		Result IOSCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* transactionID, const Array<BYTE>& purchaseToken);
+		Result IOSCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* transactionID, const Array<uint8_t>& purchaseToken);
 
 	};
 

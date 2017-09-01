@@ -50,12 +50,12 @@ namespace DB {
 	class QueryRegisterAuthTicket : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
-		INT64 AuthTicket;
-		INT64 LoginEntityUID;
-		INT64 GameEntityUID;
+		int64_t PlayerID;
+		int64_t AuthTicket;
+		int64_t LoginEntityUID;
+		int64_t GameEntityUID;
 		//ULONGLONG HeartbitTime;
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryRegisterAuthTicket,5)
@@ -71,17 +71,17 @@ namespace DB {
 		BRDB_QUERYSTRING( "spRegisterAuthTicket", BRDB_PARAM_5 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_LOGINSESSIONDB, QueryRegisterAuthTicket);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryRegisterAuthTicket);
 
 
 	class QueryReplaceLoginSession : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
-		INT64 OldAuthTicket;
-		INT64 AuthTicket;
-		INT64 LoginEntityUID;
-		INT32 Result;
+		int64_t PlayerID;
+		int64_t OldAuthTicket;
+		int64_t AuthTicket;
+		int64_t LoginEntityUID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryReplaceLoginSession, 5)
@@ -97,15 +97,15 @@ namespace DB {
 			BRDB_QUERYSTRING("spReplaceLoginSession", BRDB_PARAM_5)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_LOGINSESSIONDB, QueryReplaceLoginSession);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryReplaceLoginSession);
 
 	
 	class QueryDeleteLoginSession : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
-		INT64 AuthTicket;
-		INT32 Result;
+		int64_t PlayerID;
+		int64_t AuthTicket;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryDeleteLoginSession,3)
@@ -119,17 +119,17 @@ namespace DB {
 		BRDB_QUERYSTRING( "spDeleteLoginSession", BRDB_PARAM_3 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_LOGINSESSIONDB, QueryDeleteLoginSession);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryDeleteLoginSession);
 
 
 	class QueryConnectedToGameServer : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
-		INT64 AuthTicket;
-		INT64 LoginEntityUID;
-		INT64 GameEntityUID;
-		INT32 Result;
+		int64_t PlayerID;
+		int64_t AuthTicket;
+		int64_t LoginEntityUID;
+		int64_t GameEntityUID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryConnectedToGameServer,5)
@@ -145,17 +145,17 @@ namespace DB {
 		BRDB_QUERYSTRING( "spConnectedToGameServer", BRDB_PARAM_5 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_LOGINSESSIONDB, QueryConnectedToGameServer);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryConnectedToGameServer);
 
 
 
 	class QueryValidateGameServerSession : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
-		INT64 AuthTicket;
-		INT64 GameEntityUID;
-		INT32 Result;
+		int64_t PlayerID;
+		int64_t AuthTicket;
+		int64_t GameEntityUID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryValidateGameServerSession, 4)
@@ -170,16 +170,16 @@ namespace DB {
 		BRDB_QUERYSTRING( "spValidateGameServerSession", BRDB_PARAM_4 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_LOGINSESSIONDB, QueryValidateGameServerSession);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryValidateGameServerSession);
 
 
 	class QueryGameServerHeartBit : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
-		INT64 AuthTicket;
-		INT64 GameEntityUID;
-		INT32 Result;
+		int64_t PlayerID;
+		int64_t AuthTicket;
+		int64_t GameEntityUID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGameServerHeartBit,4)
@@ -194,17 +194,17 @@ namespace DB {
 		BRDB_QUERYSTRING( "spGameServerHeartBit", BRDB_PARAM_4 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_LOGINSESSIONDB, QueryGameServerHeartBit);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryGameServerHeartBit);
 	
 
 
 	class QueryFindPlayer : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
-		INT64 LoginEntityID;
-		INT64 GameEntityUID;
-		INT32 Result;
+		int64_t PlayerID;
+		int64_t LoginEntityID;
+		int64_t GameEntityUID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryFindPlayer,4)
@@ -219,7 +219,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spFindPlayer", BRDB_PARAM_4 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_LOGINSESSIONDB, QueryFindPlayer);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_LOGINSESSIONDB, QueryFindPlayer);
 
 
 

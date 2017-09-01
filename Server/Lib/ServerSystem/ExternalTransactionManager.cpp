@@ -11,11 +11,11 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
@@ -178,7 +178,7 @@ namespace Svr
 	}
 
 	// Send gcm notify
-	Result ExternalTransactionManager::SendGCMNotify( TransactionID sender, const char* strRegisterIDs, const char* strMessage, UINT64 param0 )
+	Result ExternalTransactionManager::SendGCMNotify( TransactionID sender, const char* strRegisterIDs, const char* strMessage, uint64_t param0 )
 	{
 		Result hr = ResultCode::SUCCESS;
 		GCMHttpExternalTransaction *newTrans = nullptr;
@@ -228,7 +228,7 @@ namespace Svr
 		return hr;
 	}
 
-	Result ExternalTransactionManager::IOSCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* transactionID, const Array<BYTE>& purchaseToken)
+	Result ExternalTransactionManager::IOSCheckReceipt(TransactionID sender, const char* packageName, const char* productID, const char* transactionID, const Array<uint8_t>& purchaseToken)
 	{
 		Result hr = ResultCode::SUCCESS;
 		ExternalTransactionIOSRecepitCheck *newTrans = nullptr;

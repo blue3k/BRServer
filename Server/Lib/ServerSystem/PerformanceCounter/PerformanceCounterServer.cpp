@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "Net/NetRawUDP.h"
 #include "Protocol/Message/MonitoringMsgClass.h"
@@ -130,7 +130,7 @@ namespace Svr {
 			while ((m_TimedOutQueue.Dequeue(item)))
 			{
 				SharedPointerT<PerformanceCounterInstance> removed;
-				m_InstanceMap.Remove((UINT64)item, removed);
+				m_InstanceMap.Remove((uint64_t)item, removed);
 			}
 			
 			m_InstanceMap.CommitChanges();
@@ -216,7 +216,7 @@ namespace Svr {
 
 		auto& instanceMap = stm_pInstance->m_InstanceMap;
 
-		instanceMap.ForeachOrder(0, (UINT)instanceMap.GetItemCount(), [&instanceMap,&instanceList](const UINT64& key, const SharedPointerT<PerformanceCounterInstance>& value)
+		instanceMap.ForeachOrder(0, (UINT)instanceMap.GetItemCount(), [&instanceMap,&instanceList](const uint64_t& key, const SharedPointerT<PerformanceCounterInstance>& value)
 		{
 			auto timeSince = Util::TimeSince(value->GetUpdatedTime());
 			if (timeSince <= DurationMS(0) || timeSince > DurationMS(TIMER_TIMOUT))
@@ -247,7 +247,7 @@ namespace Svr {
 
 		auto& instanceMap = stm_pInstance->m_InstanceMap;
 
-		instanceMap.ForeachOrder(0, (UINT)instanceMap.GetItemCount(), [bufferSize, &pInstanceBuffer, &numInstances](const UINT64& key, const SharedPointerT<PerformanceCounterInstance>& value)
+		instanceMap.ForeachOrder(0, (UINT)instanceMap.GetItemCount(), [bufferSize, &pInstanceBuffer, &numInstances](const uint64_t& key, const SharedPointerT<PerformanceCounterInstance>& value)
 		{
 			pInstanceBuffer[numInstances++] = (PerformanceCounterInstance*)const_cast<SharedPointerT<PerformanceCounterInstance>&>(value);
 
@@ -262,7 +262,7 @@ namespace Svr {
 	}
 */
 
-	Result PerformanceCounterServer::GetInstance(UINT64 instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance)
+	Result PerformanceCounterServer::GetInstance(uint64_t instanceUID, SharedPointerT<PerformanceCounterInstance>& pInstance)
 	{
 		return GetInstance(EntityUID(instanceUID), pInstance);
 	}
@@ -356,16 +356,16 @@ namespace Svr {
 				switch (dataType)
 				{
 				case PerformanceCounter::DataTypes::Int32:
-					pInstance->AddCounter(new PerformanceCounterRaw<INT32>(counters[iCounter].CounterName));
+					pInstance->AddCounter(new PerformanceCounterRaw<int32_t>(counters[iCounter].CounterName));
 					break;
 				case PerformanceCounter::DataTypes::UInt32:
-					pInstance->AddCounter(new PerformanceCounterRaw<UINT32>(counters[iCounter].CounterName));
+					pInstance->AddCounter(new PerformanceCounterRaw<uint32_t>(counters[iCounter].CounterName));
 					break;
 				case PerformanceCounter::DataTypes::Int64:
-					pInstance->AddCounter(new PerformanceCounterRaw<INT64>(counters[iCounter].CounterName));
+					pInstance->AddCounter(new PerformanceCounterRaw<int64_t>(counters[iCounter].CounterName));
 					break;
 				case PerformanceCounter::DataTypes::UInt64:
-					pInstance->AddCounter(new PerformanceCounterRaw<UINT64>(counters[iCounter].CounterName));
+					pInstance->AddCounter(new PerformanceCounterRaw<uint64_t>(counters[iCounter].CounterName));
 					break;
 				default:
 					svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, Invalid counter type:{1}", pInstance->GetInstanceEntityUID(), counters[iCounter].DateType);
@@ -439,7 +439,7 @@ namespace Svr {
 			for (UINT iCounter = 0; iCounter < conterValues.GetSize(); iCounter++)
 			{
 				// NOTE: assume that is LSB
-				counters[iCounter]->CopyFrom(sizeof conterValues[iCounter], (BYTE*)&conterValues[iCounter]);
+				counters[iCounter]->CopyFrom(sizeof conterValues[iCounter], (uint8_t*)&conterValues[iCounter]);
 			}
 		}
 

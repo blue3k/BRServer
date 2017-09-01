@@ -11,10 +11,10 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "ServerSystem/ServerTransaction.h"
-#include "Common/MemoryPool.h"
-#include "Common/BrBaseTypes.h"
+#include "Memory/MemoryPool.h"
+#include "Types/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
 #include "GameServerClass.h"

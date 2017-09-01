@@ -11,11 +11,11 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/Task/TimeScheduler.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/Transaction.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 
 namespace BR {
 namespace Svr {

@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "openssl/crypto.h"
 #include "Common/SystemSynchronization.h"
 
@@ -38,7 +38,7 @@ namespace Google {
 			// private key
 			EVP_PKEY* m_privateKey;
 
-			StaticArray<BYTE, 4096> m_ResultBuffer;
+			StaticArray<uint8_t, 4096> m_ResultBuffer;
 			ULONG m_AuthStringIndex;
 			char m_AuthString[2][1024];
 			const char* m_ActiveAuthString;
@@ -54,8 +54,8 @@ namespace Google {
 
 			Result LoadPrivateKey(const char* strPKeyFile);
 
-			Result BuildAuthRequestString(const char* strAccount, const char* scopes, Array<BYTE>& requestString);
-			Result ProcessAuthRequest(const Array<BYTE>& requestString);
+			Result BuildAuthRequestString(const char* strAccount, const char* scopes, Array<uint8_t>& requestString);
+			Result ProcessAuthRequest(const Array<uint8_t>& requestString);
 
 			static int WriteResultCB(char *data, size_t size, size_t nmemb, void *param);
 

@@ -11,8 +11,8 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "SFTypedefs.h"
+#include "ResultCode/SFResultCodeCommon.h"
 #include "SvrLoopbackConnection.h"
 #include "ServerSystem/ServerEntity.h"
 
@@ -53,7 +53,7 @@ namespace Svr {
 		pMsgHeader = pMsg->GetMessageHeader();
 		uiPolicy = pMsgHeader->msgID.IDs.Policy;
 		if( uiPolicy == 0 
-			|| uiPolicy >= BR::POLICY_NETMAX ) // invalid policy
+			|| uiPolicy >= BR::PROTOCOLID_NETMAX ) // invalid policy
 		{
 			svrErr( ResultCode::E_NET_BADPACKET_NOTEXPECTED );
 		}

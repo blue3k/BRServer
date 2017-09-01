@@ -11,8 +11,8 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/MemoryPool.h"
+#include "SFTypedefs.h"
+#include "Memory/MemoryPool.h"
 
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/Transaction.h"

@@ -12,14 +12,14 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Net/NetDef.h"
 #include "Net/NetConst.h"
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/HashTable.h"
-#include "Common/MemoryPool.h"
-#include "Common/Thread.h"
-#include "Common/BrBaseTypes.h"
+#include "Memory/MemoryPool.h"
+#include "Thread/Thread.h"
+#include "Types/BrBaseTypes.h"
 #include "Net/NetUtil.h"
 
 
@@ -174,8 +174,8 @@ namespace Net {
 		Result AllocBuffer( IOBUFFER_WRITE* &pIOBuffer );
 		Result FreeBuffer( IOBUFFER_WRITE *pIOBuffer );
 
-		Result AllocGatheringBuffer( BYTE* &pBuffer, UINT& bufferSize );
-		Result FreeGatheringBuffer( BYTE *pBuffer );
+		Result AllocGatheringBuffer( uint8_t* &pBuffer, UINT& bufferSize );
+		Result FreeGatheringBuffer( uint8_t *pBuffer );
 
 
 		WriteBufferQueue* GetWriteBufferQueue();

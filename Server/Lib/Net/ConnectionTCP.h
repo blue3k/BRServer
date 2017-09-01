@@ -15,7 +15,7 @@
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetSystem.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/Connection.h"
 
 
@@ -42,7 +42,7 @@ namespace Net {
 
 		// Tempory incomming buffer for fragmented incomming packet buffer
 		UINT	m_uiRecvTemUsed;
-		std::vector<BYTE>	m_bufRecvTem;
+		std::vector<uint8_t>	m_bufRecvTem;
 
 		// Recv overlapped buffer. recv 
 		//IOBUFFER_READ m_RecvBuffer;
@@ -128,13 +128,13 @@ namespace Net {
 		virtual void CloseSocket() override;
 
 		// called when incomming message occure
-		virtual Result OnRecv(UINT uiBuffSize, const BYTE* pBuff) override;
+		virtual Result OnRecv(UINT uiBuffSize, const uint8_t* pBuff) override;
 		virtual Result OnRecv(Message::MessageData *pMsg) override;
 
 		// Send message to connected entity
 		virtual Result Send(Message::MessageData* &pMsg) override;
 
-		virtual Result SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0) override;
+		virtual Result SendNetCtrl(UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID = 0) override;
 
 
 		// Update send queue, Reliable UDP

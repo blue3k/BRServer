@@ -46,7 +46,7 @@ void Entity::SetEntityUID( EntityUID entityUID )
 // Get Entity ID
 EntityID Entity::GetEntityID() const
 {
-	return EntityID((UINT32)GetTaskID());
+	return EntityID((uint32_t)GetTaskID());
 }
 
 // Set/Get Entity Create TIme

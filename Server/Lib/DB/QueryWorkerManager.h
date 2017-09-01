@@ -11,11 +11,11 @@
 
 #pragma once
 	
-#include "Common/BrBaseTypes.h"
-#include "Common/Thread.h"
+#include "Types/BrBaseTypes.h"
+#include "Thread/Thread.h"
 #include "Common/ClassUtil.h"
-#include "Common/TimeUtil.h"
-#include "Common/PageQueue.h"
+#include "Util/TimeUtil.h"
+#include "Container/PageQueue.h"
 #include "Common/SystemSynchronization.h"
 #include "DBConst.h"
 #include "DB/DataSource.h"

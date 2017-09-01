@@ -13,9 +13,9 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrMemory.h"
+#include "Memory/SFMemory.h"
 #include "Common/BrSvrTypes.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"

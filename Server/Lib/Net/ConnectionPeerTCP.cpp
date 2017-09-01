@@ -12,10 +12,10 @@
 
 
 #include "stdafx.h"
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "SFAssert.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetTrace.h"
 #include "Net/Connection.h"
 #include "Net/NetDef.h"
@@ -117,7 +117,7 @@ namespace Net {
 				m_uiSendNetCtrlCount++;
 				if (m_isActuallyConnected)
 				{
-					netChk(SendNetCtrl(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOL_VERSION), GetConnectionInfo().LocalID));
+					netChk(SendNetCtrl(PACKET_NETCTRL_CONNECT, (UINT)GetConnectionInfo().LocalClass, Message::MessageID(BR_PROTOCOLID_VERSION), GetConnectionInfo().LocalID));
 				}
 			}
 			goto Proc_End;

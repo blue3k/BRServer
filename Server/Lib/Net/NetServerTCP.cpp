@@ -12,11 +12,11 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
-#include "Common/Thread.h"
-#include "Common/StrUtil.h"
+#include "Thread/Thread.h"
+#include "String/StrUtil.h"
 #include "Net/Connection.h"
 #include "Net/NetTrace.h"
 #include "Net/NetDef.h"
@@ -309,7 +309,7 @@ namespace Net {
 	{
 		Result hr = ResultCode::SUCCESS;
 		SOCKET socket = INVALID_SOCKET;
-		INT32 iOptValue;
+		int32_t iOptValue;
 		int bOptValue;
 		sockaddr_storage bindAddr;
 		INet::Event netEvent(INet::Event::EVT_NET_INITIALIZED);
@@ -518,7 +518,7 @@ namespace Net {
 	//	return hr;
 	//}
 
-	//Result ServerTCP::SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff )
+	//Result ServerTCP::SendMsg( IConnection *pConnection, UINT uiBuffSize, uint8_t* pBuff )
 	//{
 	//	Result hr = ResultCode::SUCCESS, hrErr = ResultCode::SUCCESS;
 

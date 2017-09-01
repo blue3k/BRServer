@@ -12,10 +12,10 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
-#include "Common/BrMemory.h"
+#include "String/StrUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
+#include "Memory/SFMemory.h"
 #include "Net/NetDef.h"
 
 #include "ServerSystem/Entity.h"
@@ -114,7 +114,7 @@ namespace Svr {
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		m_ItemIDTable.Foreach([](const UINT64& key, const QueueItem* pItem)
+		m_ItemIDTable.Foreach([](const uint64_t& key, const QueueItem* pItem)
 		{
 			Util::SafeDelete(pItem);
 			return true;

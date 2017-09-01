@@ -12,12 +12,12 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/Utility.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/ResultCode/BRResultCodeSystem.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "ResultCode/SFResultCodeSystem.h"
+#include "ResultCode/SFResultCodeCommon.h"
 #include "ServerSystem/SvrTrace.h"
 
 #include "curl/curl.h"
@@ -107,13 +107,13 @@ namespace Google {
 		return hr;
 	}
 
-	Result OAuth::BuildAuthRequestString(const char* strAccount, const char* scopes, Array<BYTE>& requestString)
+	Result OAuth::BuildAuthRequestString(const char* strAccount, const char* scopes, Array<uint8_t>& requestString)
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		StaticArray<BYTE, 128> digest;
+		StaticArray<uint8_t, 128> digest;
 		int sslResult = TRUE;
-		BYTE sign_buffer[512];
+		uint8_t sign_buffer[512];
 		UINT sign_len = (UINT)countof(sign_buffer);
 
 		const char header[] = "{\"alg\":\"RS256\",\"typ\":\"JWT\"}";
@@ -146,9 +146,9 @@ namespace Google {
 		//////////////////////////////////////////////////////////////////////
 		// Combine hashed strings
 
-		svrChk(Util::Base64URLEncode(countof(header) - 1, (const BYTE*)header, requestString));
+		svrChk(Util::Base64URLEncode(countof(header) - 1, (const uint8_t*)header, requestString));
 		svrChk(requestString.push_back('.'));
-		svrChk(Util::Base64URLEncode((INT)strlen(body), (const BYTE*)body, requestString));
+		svrChk(Util::Base64URLEncode((INT)strlen(body), (const uint8_t*)body, requestString));
 
 		//////////////////////////////////////////////////////////////////////
 		// signing
@@ -196,13 +196,13 @@ namespace Google {
 	{
 		if (param == nullptr) return 0;
 
-		auto stream = (Array<BYTE>*)param;
+		auto stream = (Array<uint8_t>*)param;
 
-		stream->AddItems(size * nmemb, (const BYTE*)data);
+		stream->AddItems(size * nmemb, (const uint8_t*)data);
 		return (int)(size * nmemb);
 	}
 
-	Result OAuth::ProcessAuthRequest(const Array<BYTE>& requestString)
+	Result OAuth::ProcessAuthRequest(const Array<uint8_t>& requestString)
 	{
 		Result hr = ResultCode::SUCCESS;
 		const char* url = "https://www.googleapis.com/oauth2/v3/token";
@@ -277,7 +277,7 @@ namespace Google {
 		std::string accessToken;
 		bool parsingSuccessful;
 
-		StaticArray<BYTE, 2048> requestString;
+		StaticArray<uint8_t, 2048> requestString;
 		Json::Value root;
 		Json::Reader reader;
 
@@ -322,7 +322,7 @@ namespace Google {
 		}
 		else
 		{
-			//svrTrace(Trace::TRC_INFO, "Google API Authorization is updated hr:{0}, {1}", ArgHex32<UINT32>(hr), (char*)m_ResultBuffer.data());
+			//svrTrace(Trace::TRC_INFO, "Google API Authorization is updated hr:{0}, {1}", ArgHex32<uint32_t>(hr), (char*)m_ResultBuffer.data());
 		}
 
 		return hr;

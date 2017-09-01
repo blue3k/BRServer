@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/Thread.h"
+#include "SFTypedefs.h"
+#include "Thread/Thread.h"
 #include "Common/Synchronization.h"
 #include "Net/NetDef.h"
 #include "Net/NetSvrDef.h"
@@ -105,7 +105,7 @@ namespace Net {
 		//virtual Result SendMsg( IConnection *pConnection, const sockaddr_in6& dstAddr, Message::MessageData *pMsg );
 
 		//// Send array of message buffer to connection with network device
-		//virtual Result SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
+		//virtual Result SendMsg( IConnection *pConnection, UINT uiBuffSize, uint8_t* pBuff );
 
 		// Pending recv New one
 		Result PendingRecv( IOBUFFER_READ *pOver );

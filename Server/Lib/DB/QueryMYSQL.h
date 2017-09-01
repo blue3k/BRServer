@@ -11,8 +11,8 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/MemoryPool.h"
+#include "SFTypedefs.h"
+#include "Memory/MemoryPool.h"
 #include "DB/DBTrace.h"
 #include "DB/Query.h"
 #include "Common/ClassUtil.h"

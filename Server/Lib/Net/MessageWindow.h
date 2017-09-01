@@ -15,8 +15,8 @@
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetSystem.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/PageQueue.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "Container/PageQueue.h"
 #include "Common/SystemSynchronization.h"
 #include "Net/Connection.h"
 
@@ -107,10 +107,10 @@ namespace Net {
 
 	private:
 
-		std::atomic<UINT64>			m_uiSyncMask;
+		std::atomic<uint64_t>			m_uiSyncMask;
 
 		// Base sequence value( sequence Head)
-		std::atomic<UINT16>			m_uiBaseSequence;
+		std::atomic<uint16_t>			m_uiBaseSequence;
 
 		// Message count in window
 		std::atomic<UINT>			m_uiMsgCount;
@@ -130,7 +130,7 @@ namespace Net {
 		FORCEINLINE UINT GetMsgCount()						{ return m_uiMsgCount.load(std::memory_order_relaxed); }
 
 		// get message base sequence
-		FORCEINLINE UINT16 GetBaseSequence()					{ return m_uiBaseSequence.load(std::memory_order_consume); }
+		FORCEINLINE uint16_t GetBaseSequence()					{ return m_uiBaseSequence.load(std::memory_order_consume); }
 
 		// Add message
 		Result AddMsg( Message::MessageData* pIMsg );
@@ -139,7 +139,7 @@ namespace Net {
 		Result PopMsg( Message::MessageData* &pIMsg );
 
 		// Get SyncMask
-		UINT64 GetSyncMask();
+		uint64_t GetSyncMask();
 		
 		// Clear window element
 		void ClearWindow();
@@ -183,9 +183,9 @@ namespace Net {
 		Result EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg );
 
 		// Release message sequence and slide window if can
-		Result ReleaseMsg( UINT16 uiSequence );
+		Result ReleaseMsg( uint16_t uiSequence );
 		// Release message by message mask
-		Result ReleaseMsg( UINT16 uiSequenceBase, UINT64 uiMsgMask );
+		Result ReleaseMsg( uint16_t uiSequenceBase, uint64_t uiMsgMask );
 
 	};
 
@@ -251,10 +251,10 @@ namespace Net {
 		Result EnqueueMessage(TimeStampMS ulTimeStampMS, Message::MessageData* pIMsg);
 
 		// Release message sequence and slide window if can
-		Result ReleaseMsg(UINT16 uiSequence);
+		Result ReleaseMsg(uint16_t uiSequence);
 
 		// Release message by message mask
-		Result ReleaseMsg(UINT16 uiSequenceBase, UINT64 uiMsgMask);
+		Result ReleaseMsg(uint16_t uiSequenceBase, uint64_t uiMsgMask);
 
 	};
 

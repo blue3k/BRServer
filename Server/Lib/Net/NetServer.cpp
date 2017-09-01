@@ -12,11 +12,11 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
-#include "Common/Thread.h"
-#include "Common/StrUtil.h"
+#include "Thread/Thread.h"
+#include "String/StrUtil.h"
 #include "Net/Connection.h"
 #include "Net/NetTrace.h"
 #include "Net/NetDef.h"

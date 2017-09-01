@@ -11,11 +11,11 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
@@ -123,7 +123,7 @@ namespace Svr
 
 
 	// Set parameters
-	Result GCMHttpExternalTransaction::SetParameters( const char* strRegID, const char* strMessage, UINT64 param0 )
+	Result GCMHttpExternalTransaction::SetParameters( const char* strRegID, const char* strMessage, uint64_t param0 )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -211,7 +211,7 @@ Proc_End:
 	//
 	//
 
-	const Message::MessageID ExternalTransactionGoogleAndroidReceiptCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, POLICY_NONE, ExternalTransactionMesageCode_AndroidCheckReceipt);
+	const Message::MessageID ExternalTransactionGoogleAndroidReceiptCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, PROTOCOLID_NONE, ExternalTransactionMesageCode_AndroidCheckReceipt);
 
 	// Constructor
 	ExternalTransactionGoogleAndroidReceiptCheck::ExternalTransactionGoogleAndroidReceiptCheck(TransactionID parentTransID, Google::OAuth* pOAuth)
@@ -287,7 +287,7 @@ Proc_End:
 
 
 
-	const Message::MessageID ExternalTransactionIOSRecepitCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, POLICY_NONE, ExternalTransactionMesageCode_IOSCheckReceipt);
+	const Message::MessageID ExternalTransactionIOSRecepitCheck::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, PROTOCOLID_NONE, ExternalTransactionMesageCode_IOSCheckReceipt);
 
 	// Constructor
 	ExternalTransactionIOSRecepitCheck::ExternalTransactionIOSRecepitCheck(TransactionID parentTransID, const char* strURL)
@@ -301,7 +301,7 @@ Proc_End:
 	}
 
 	// Set parameters
-	Result ExternalTransactionIOSRecepitCheck::SetParameters(const char* packageName, const char* productID, const char* transactionID, const Array<BYTE>& purchaseToken)
+	Result ExternalTransactionIOSRecepitCheck::SetParameters(const char* packageName, const char* productID, const char* transactionID, const Array<uint8_t>& purchaseToken)
 	{
 		const char prefix[] = "{\"receipt-data\":\"";
 		const char postfix[] = "\"}";
@@ -312,9 +312,9 @@ Proc_End:
 		svrChk(StrUtil::StringCpy((char*)m_strTransactionID.data(), (INT)m_strTransactionID.GetAllocatedSize(), transactionID));
 
 		m_strReceipt.Clear();
-		svrChk(m_strReceipt.AddItems(sizeof(prefix)-1, (const BYTE*)prefix));
+		svrChk(m_strReceipt.AddItems(sizeof(prefix)-1, (const uint8_t*)prefix));
 		svrChk(Util::Base64Encode(purchaseToken.GetSize(), purchaseToken.data(), m_strReceipt, '='));
-		svrChk(m_strReceipt.AddItems(sizeof(postfix)-1, (const BYTE*)postfix)); // IOS requires no null terminate string
+		svrChk(m_strReceipt.AddItems(sizeof(postfix)-1, (const uint8_t*)postfix)); // IOS requires no null terminate string
 
 	Proc_End:
 

@@ -11,11 +11,11 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "ServerSystem/Transaction.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
 #include "Common/MemoryStream.h"
 #include "Protocol/Message/GameMsgClass.h"
@@ -31,7 +31,7 @@
 #include "GameServerClass.h"
 
 #include "GameInstance/GamePlayerEntity.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 
 
 
@@ -143,7 +143,7 @@ namespace GameServer {
 
 	private:
 		PlayerID m_LeaderID;
-		StaticArray<BYTE, 2048> m_ChatHistoryData;
+		StaticArray<uint8_t, 2048> m_ChatHistoryData;
 
 
 	public:

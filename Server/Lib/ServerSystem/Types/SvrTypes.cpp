@@ -1,0 +1,29 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CopyRight (c) 2013 Madk
+// 
+// Author : KyungKun Ko
+//
+// Description : Server Type implementations. 
+//	
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+#include "stdafx.h"
+#include "String/StrUtil.h"
+#include "ServerSystem/SvrTypes.h"
+
+
+
+
+namespace BR {
+
+
+
+	void Dummp_SvrTypes() {}
+	
+
+
+}; // namespace BR {
+

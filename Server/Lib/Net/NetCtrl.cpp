@@ -12,7 +12,7 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetCtrl.h"
 
 

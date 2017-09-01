@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/Trace.h"
+#include "ServerLog/SvrLog.h"
 #include "Net/NetToString.h"
 #include "ServerSystem/SvrToString.h"
 

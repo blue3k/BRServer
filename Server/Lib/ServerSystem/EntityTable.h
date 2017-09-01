@@ -13,7 +13,7 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/Entity.h"

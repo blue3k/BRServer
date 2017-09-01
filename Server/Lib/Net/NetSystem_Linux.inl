@@ -36,7 +36,7 @@ void IOBUFFER_WRITE::InitMsg(Message::MessageData *pMsg)
 	pRawSendBuffer = pMsg->GetMessageBuff();
 }
 
-void IOBUFFER_WRITE::InitBuff(UINT uiBuffSize, BYTE* pBuff)
+void IOBUFFER_WRITE::InitBuff(UINT uiBuffSize, uint8_t* pBuff)
 {
 	pMsgs = nullptr;
 	pSendBuff = pBuff;
@@ -56,7 +56,7 @@ void IOBUFFER_WRITE::SetupSendUDP(SOCKET sockWrite, const sockaddr_storage& to, 
 	Operation = IOBUFFER_OPERATION::OP_UDPWRITE;
 }
 
-void IOBUFFER_WRITE::SetupSendUDP(SOCKET sockWrite, const sockaddr_storage& to, UINT uiBuffSize, BYTE* pBuff)
+void IOBUFFER_WRITE::SetupSendUDP(SOCKET sockWrite, const sockaddr_storage& to, UINT uiBuffSize, uint8_t* pBuff)
 {
 	InitForIO(sockWrite);
 
@@ -76,7 +76,7 @@ void IOBUFFER_WRITE::SetupSendTCP(Message::MessageData *pMsg)
 	Operation = IOBUFFER_OPERATION::OP_TCPWRITE;
 }
 
-void IOBUFFER_WRITE::SetupSendTCP(UINT uiBuffSize, BYTE* pBuff)
+void IOBUFFER_WRITE::SetupSendTCP(UINT uiBuffSize, uint8_t* pBuff)
 {
 	InitForIO(0);
 

@@ -11,10 +11,10 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/BrBaseTypes.h"
-#include "Common/PolicyID.h"
-#include "Common/Message.h"
+#include "SFTypedefs.h"
+#include "Types/BrBaseTypes.h"
+#include "Protocol/Protocol.h"
+#include "Net/Message.h"
 #include "Object/SharedObject.h"
 #include "Object/SharedPointer.h"
 #include "Net/NetCtrlIDs.h"
@@ -112,21 +112,21 @@ namespace Net {
 			NetClass		LocalClass;
 
 			// Local identification ID
-			UINT64			LocalID;
+			uint64_t			LocalID;
 
 			// Remote address
 			NetAddress		Remote;
 			NetClass		RemoteClass;
 
 			// Remote identification ID
-			UINT64			RemoteID;
+			uint64_t			RemoteID;
 
 
 			// set local info
-			void SetLocalInfo( NetClass Class, const NetAddress& Addr, UINT64 UID );
+			void SetLocalInfo( NetClass Class, const NetAddress& Addr, uint64_t UID );
 
 			// set remote info
-			void SetRemoteInfo( NetClass Class, UINT64 UID );
+			void SetRemoteInfo( NetClass Class, uint64_t UID );
 		};
 
 
@@ -137,17 +137,17 @@ namespace Net {
 
 		typedef struct tag_Statistic
 		{
-			UINT32 RoundTripLatencyMS;			// Milisecond
-			UINT32 ThroughputBPS;				// Byte/Sec
-			UINT32 PeakThroughputBPS;			// Byte/Sec
+			uint32_t RoundTripLatencyMS;			// Milisecond
+			uint32_t ThroughputBPS;				// Byte/Sec
+			uint32_t PeakThroughputBPS;			// Byte/Sec
 
-			UINT32 PacketsSentGuaranteed;		// Retry, Guaranteed, Sorted only
-			UINT32 PacketsSentNonGuaranteed;	// Non Guaranteed only
+			uint32_t PacketsSentGuaranteed;		// Retry, Guaranteed, Sorted only
+			uint32_t PacketsSentNonGuaranteed;	// Non Guaranteed only
 
-			UINT32 PacketsRetried;				// Retry, Guaranteed, Sorted only
-			UINT32 PacketsDropped;				// Non Guaranteed only
+			uint32_t PacketsRetried;				// Retry, Guaranteed, Sorted only
+			uint32_t PacketsDropped;				// Non Guaranteed only
 
-			UINT32 MessagesReceived;			// Total received messages
+			uint32_t MessagesReceived;			// Total received messages
 
 		} Statistic;
 
@@ -169,7 +169,7 @@ namespace Net {
 		std::atomic<ConnectionState>	m_ConnectionState;
 
 		// Policy processor
-		IPolicyBase* m_pPolicy[POLICY_NETMAX];
+		IPolicyBase* m_pPolicy[PROTOCOLID_NETMAX];
 
 		// Connection time
 		TimeStampMS	m_tConnectionTime;
@@ -211,7 +211,7 @@ namespace Net {
 
 		// Get Connection info
 		const ConnectionInformation& GetConnectionInfo() const;
-		void SetRemoteID(UINT64 newID);
+		void SetRemoteID(uint64_t newID);
 
 
 		// Get Connection ID
@@ -219,7 +219,7 @@ namespace Net {
 		void ClearCID();
 		
 		// Get Connection PeerID
-		inline UINT64 GetPeerID() const;
+		inline uint64_t GetPeerID() const;
 
 
 		// Get connection state

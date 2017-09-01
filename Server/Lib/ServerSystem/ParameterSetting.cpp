@@ -12,10 +12,10 @@
 
 #include "stdafx.h"
 #include "SFAssert.h"
-#include "Common/Trace.h"
+#include "ServerLog/SvrLog.h"
 #include "Common/Utility.h"
 #include "Common/StrParserUtil.h"
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ParameterSetting.h"
 

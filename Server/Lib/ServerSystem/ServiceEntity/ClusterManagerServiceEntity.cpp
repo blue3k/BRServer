@@ -12,9 +12,9 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "Common/BrSvrTypes.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/BrServer.h"
@@ -142,7 +142,7 @@ namespace Svr {
 	Result ClusterManagerServiceEntity::CreateWatcherForCluster( ClusterID clusterID, ClusterType clusterType, ClusteredServiceEntity* &pServiceEntity )
 	{
 		Result hr = ResultCode::SUCCESS;
-		EntityID entityID(EntityFaculty::Service,(UINT32)clusterID);
+		EntityID entityID(EntityFaculty::Service,(uint32_t)clusterID);
 		SharedPointerT<Entity> pEntity;
 
 		if( ( GetServerComponent<EntityManager>()->FindEntity( entityID, pEntity ) ) )

@@ -13,7 +13,7 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/OrderedLinkedList.h"
 #include "Common/HashTable2.h"
 #include "Common/Indexing.h"

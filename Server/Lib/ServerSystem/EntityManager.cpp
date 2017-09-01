@@ -13,8 +13,8 @@
 #include "stdafx.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Common/TimeUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Util/TimeUtil.h"
+#include "Types/BrBaseTypes.h"
 
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"

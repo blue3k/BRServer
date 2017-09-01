@@ -12,7 +12,7 @@
 #pragma once
 	
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "DB/DBClusterManager.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/ArrayUtil.h"
@@ -54,7 +54,7 @@ namespace DB {
 
 		// Transaction log must be closed safely
 		// Add game log
-		Result AddGameLog(UINT shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage);
+		Result AddGameLog(UINT shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage);
 
 	};
 

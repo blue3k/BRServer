@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
-#include "Common/Message.h"
+#include "SFTypedefs.h"
+#include "ResultCode/SFResultCodeCommon.h"
+#include "Net/Message.h"
 
 
 

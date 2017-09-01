@@ -13,10 +13,10 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/Thread.h"
+#include "SFTypedefs.h"
+#include "Thread/Thread.h"
 #include "Common/ObjectPool.h"
-#include "Common/BrMemory.h"
+#include "Memory/SFMemory.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/Transaction.h"

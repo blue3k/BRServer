@@ -12,7 +12,7 @@
 #pragma once
 	
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "DB/DBClusterManager.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/ArrayUtil.h"

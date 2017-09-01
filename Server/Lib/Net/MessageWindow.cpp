@@ -10,11 +10,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Thread.h"
+#include "Thread/Thread.h"
 #include "SFAssert.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/ResultCode/BRResultCodeSystem.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "ResultCode/SFResultCodeSystem.h"
 #include "Net/NetTrace.h"
 #include "Net/ConnectionUDP.h"
 #include "Net/NetDef.h"
@@ -124,7 +124,7 @@ namespace Net {
 
 
 		INT iPosIdx = msgSeq % CIRCULAR_QUEUE_SIZE;
-		m_uiSyncMask.fetch_or(((UINT64)1) << iPosIdx, std::memory_order_relaxed);
+		m_uiSyncMask.fetch_or(((uint64_t)1) << iPosIdx, std::memory_order_relaxed);
 
 		// check duplicated transaction
 		MessageElement exptcted = nullptr;
@@ -177,7 +177,7 @@ namespace Net {
 
 		m_uiMsgCount.fetch_sub(1, std::memory_order_relaxed);
 
-		auto messageMask = ((UINT64)1) << iPosIdx;
+		auto messageMask = ((uint64_t)1) << iPosIdx;
 		m_uiSyncMask.fetch_and(~messageMask, std::memory_order_relaxed);
 
 	//Proc_End:
@@ -188,11 +188,11 @@ namespace Net {
 
 	
 	// Get SyncMask
-	UINT64 RecvMsgWindow::GetSyncMask()
+	uint64_t RecvMsgWindow::GetSyncMask()
 	{
 		auto baseSeq = m_uiBaseSequence % CIRCULAR_QUEUE_SIZE;
 
-		UINT64 resultSyncMask = m_uiSyncMask.load(std::memory_order_acquire);
+		uint64_t resultSyncMask = m_uiSyncMask.load(std::memory_order_acquire);
 		if (baseSeq != 0)
 		{
 			auto least = resultSyncMask >> baseSeq;
@@ -202,13 +202,13 @@ namespace Net {
 		}
 
 //#ifdef DEBUG
-		//UINT64 uiSyncMask = 0;
+		//uint64_t uiSyncMask = 0;
 		//for (INT uiIdx = 0, iSeq = baseSeq; uiIdx < GetWindowSize(); uiIdx++, iSeq++)
 		//{
 		//	INT iPosIdx = iSeq % CIRCULAR_QUEUE_SIZE;
 		//	if( m_pMsgWnd[ iPosIdx ].load(std::memory_order_relaxed) != nullptr )
 		//	{
-		//		uiSyncMask |= ((UINT64)1)<<uiIdx;
+		//		uiSyncMask |= ((uint64_t)1)<<uiIdx;
 		//	}
 		//}
 		//AssertRel(resultSyncMask == uiSyncMask);
@@ -307,7 +307,7 @@ namespace Net {
 	}
 
 	// Release message sequence and slide window if can
-	Result SendMsgWindow::ReleaseMsg( UINT16 uiSequence )
+	Result SendMsgWindow::ReleaseMsg( uint16_t uiSequence )
 	{
 		Result hr = ResultCode::SUCCESS;
 		INT iIdx;
@@ -363,7 +363,7 @@ namespace Net {
 
 
 	// Release message sequence and slide window if can
-	Result SendMsgWindow::ReleaseMsg( UINT16 uiSequenceBase, UINT64 uiMsgMask )
+	Result SendMsgWindow::ReleaseMsg( uint16_t uiSequenceBase, uint64_t uiMsgMask )
 	{
 		Result hr = ResultCode::SUCCESS;
 		INT iIdx;
@@ -555,7 +555,7 @@ namespace Net {
 
 
 	// Release message sequence and slide window if can
-	Result SendMsgWindowMT::ReleaseMsg(UINT16 uiSequenceBase, UINT64 uiMsgMask)
+	Result SendMsgWindowMT::ReleaseMsg(uint16_t uiSequenceBase, uint64_t uiMsgMask)
 	{
 		Result hr = ResultCode::SUCCESS;
 		INT iIdx;

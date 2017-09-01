@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 
 #include "DB/LoginSessionDB.h"
 #include "DB/LoginSessionQuery.h"
@@ -61,7 +61,7 @@ namespace DB {
 
 		pQuery->PlayerID = playerID;
 		pQuery->AuthTicket = authTicket;
-		pQuery->LoginEntityUID = (INT64)(Context)loginEntityUID;
+		pQuery->LoginEntityUID = (int64_t)(Context)loginEntityUID;
 		pQuery->GameEntityUID = 0;
 //		pQuery->HeartbitTime = 0;
 		pQuery->Result = 0;
@@ -92,7 +92,7 @@ namespace DB {
 		pQuery->PlayerID = playerID;
 		pQuery->OldAuthTicket = oldAuthTicket;
 		pQuery->AuthTicket = authTicket;
-		pQuery->LoginEntityUID = (INT64)loginEntityUID.UID;
+		pQuery->LoginEntityUID = (int64_t)loginEntityUID.UID;
 		pQuery->Result = 0;
 
 		pQuery->SetTransaction( Sender );
@@ -149,8 +149,8 @@ namespace DB {
 
 		pQuery->PlayerID = playerID;
 		pQuery->AuthTicket = authTicket;
-		pQuery->LoginEntityUID = (INT64)(Context)loginEntityUID;
-		pQuery->GameEntityUID = (INT64)(Context)gameEntityUID;
+		pQuery->LoginEntityUID = (int64_t)(Context)loginEntityUID;
+		pQuery->GameEntityUID = (int64_t)(Context)gameEntityUID;
 		pQuery->Result = 0;
 
 		pQuery->SetTransaction( Sender );
@@ -179,7 +179,7 @@ namespace DB {
 
 		pQuery->PlayerID = playerID;
 		pQuery->AuthTicket = authTicket;
-		pQuery->GameEntityUID = (INT64)(Context)gameEntityUID;
+		pQuery->GameEntityUID = (int64_t)(Context)gameEntityUID;
 		pQuery->Result = 0;
 
 		pQuery->SetTransaction( Sender );
@@ -207,7 +207,7 @@ namespace DB {
 
 		pQuery->PlayerID = playerID;
 		pQuery->AuthTicket = authTicket;
-		pQuery->GameEntityUID = (INT64)(Context)gameEntityUID;
+		pQuery->GameEntityUID = (int64_t)(Context)gameEntityUID;
 		pQuery->Result = 0;
 
 		pQuery->SetTransaction( Sender );

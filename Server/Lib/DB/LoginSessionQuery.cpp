@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "DB/LoginSessionQuery.h"
 #include "DBTrace.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 
 
 

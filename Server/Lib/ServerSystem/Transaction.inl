@@ -204,7 +204,7 @@ void TransactionResult::SetResult( Result hrRes )
 	m_hrRes = hrRes;
 }
 
-//UINT32 TransactionResult::GetContext() const
+//uint32_t TransactionResult::GetContext() const
 //{
 //	return m_transID.EntityID;
 //}

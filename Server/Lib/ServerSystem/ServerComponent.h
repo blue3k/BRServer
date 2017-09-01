@@ -13,9 +13,9 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrMemory.h"
+#include "Memory/SFMemory.h"
 #include "Common/BrComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServerComponentCarrier.h"
@@ -69,10 +69,10 @@ namespace Svr {
 
 		
 		// Get entity, default implementation is return null
-		virtual ServerServiceBase* GetService( UINT64 serverSelector ) = 0;
+		virtual ServerServiceBase* GetService( uint64_t serverSelector ) = 0;
 
 		template< class ServerServiceType >
-		ServerServiceType* GetService( UINT64 serverSelector )
+		ServerServiceType* GetService( uint64_t serverSelector )
 		{
 			ServerServiceBase *pService = GetService(serverSelector);
 			Assert(pService != nullptr);

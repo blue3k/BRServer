@@ -30,7 +30,7 @@ inline void IConnection::SetConnectionState(ConnectionState newState)
 }
 
 // set local info
-inline void IConnection::ConnectionInformation::SetLocalInfo( NetClass Class, const NetAddress& Addr, UINT64 UID )
+inline void IConnection::ConnectionInformation::SetLocalInfo( NetClass Class, const NetAddress& Addr, uint64_t UID )
 {
 	Local = Addr;
 	LocalClass = Class;
@@ -38,7 +38,7 @@ inline void IConnection::ConnectionInformation::SetLocalInfo( NetClass Class, co
 }
 
 // set remote info
-inline void IConnection::ConnectionInformation::SetRemoteInfo( NetClass Class, UINT64 UID )
+inline void IConnection::ConnectionInformation::SetRemoteInfo( NetClass Class, uint64_t UID )
 {
 	//Remote = Addr;
 	RemoteClass = Class;
@@ -84,7 +84,7 @@ inline const IConnection::ConnectionInformation& IConnection::GetConnectionInfo(
 	return m_ConnectInfo;
 }
 
-inline void IConnection::SetRemoteID(UINT64 newID)
+inline void IConnection::SetRemoteID(uint64_t newID)
 {
 	m_ConnectInfo.RemoteID = newID;
 }
@@ -102,7 +102,7 @@ inline void IConnection::ClearCID()
 }
 
 // Get Connection PeerID
-UINT64 IConnection::GetPeerID() const
+uint64_t IConnection::GetPeerID() const
 {
 	return m_ConnectInfo.RemoteID;
 }
@@ -120,7 +120,7 @@ inline void IConnection::SetLocalClass(NetClass uiLocalClass)
 template< typename IPolicyType >
 IPolicyType* IConnection::GetPolicy()
 {
-	if( ((UINT32)IPolicyType::ID_POLICY) >= POLICY_NETMAX )
+	if( ((uint32_t)IPolicyType::ID_POLICY) >= PROTOCOLID_NETMAX )
 		return nullptr;
 
 	if( m_pPolicy[IPolicyType::ID_POLICY] == nullptr )
@@ -139,7 +139,7 @@ IPolicyType* IConnection::GetPolicy()
 template< typename IPolicyType >
 IPolicyType* IConnection::GetPolicyByID( UINT policyID )
 {
-	if( ((UINT32)policyID) >= POLICY_NETMAX || m_pPolicy[policyID] == NULL )
+	if( ((uint32_t)policyID) >= PROTOCOLID_NETMAX || m_pPolicy[policyID] == NULL )
 		return NULL;
 
 	return (IPolicyType*)m_pPolicy[policyID];

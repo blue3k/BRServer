@@ -12,12 +12,12 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
-#include "Common/Thread.h"
-#include "Common/StrUtil.h"
-#include "Common/TimeUtil.h"
+#include "Thread/Thread.h"
+#include "String/StrUtil.h"
+#include "Util/TimeUtil.h"
 #include "Net/NetTrace.h"
 #include "Net/NetRawUDP.h"
 #include "Protocol/ProtocolVer.h"
@@ -347,7 +347,7 @@ namespace Net {
 
 
 	// called when incomming message occure
-	Result RawUDP::OnRecv(const sockaddr_storage& remoteAddr, UINT uiBuffSize, const BYTE* pBuff)
+	Result RawUDP::OnRecv(const sockaddr_storage& remoteAddr, UINT uiBuffSize, const uint8_t* pBuff)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pMsg = nullptr;
@@ -458,7 +458,7 @@ namespace Net {
 			if (pIOBuffer->TransferredSize < sizeof(Message::MessageHeader))// invalid packet size
 				goto Proc_End;
 
-			OnRecv(pIOBuffer->NetAddr.From, pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer);
+			OnRecv(pIOBuffer->NetAddr.From, pIOBuffer->TransferredSize, (uint8_t*)pIOBuffer->buffer);
 		}
 
 	Proc_End:

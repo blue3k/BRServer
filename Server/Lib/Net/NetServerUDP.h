@@ -12,8 +12,8 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/Thread.h"
+#include "SFTypedefs.h"
+#include "Thread/Thread.h"
 #include "Net/NetDef.h"
 #include "Net/NetSvrDef.h"
 #include "Net/ConnectionUDP.h"
@@ -21,7 +21,7 @@
 #include "Net/NetServer.h"
 #include "Net/ConnectionManager.h"
 #include "Common/SpinSharedBuffer.h"
-#include "Common/PageQueue.h"
+#include "Container/PageQueue.h"
 
 
 
@@ -84,7 +84,7 @@ namespace Net {
 		//virtual Result SendMsg( IConnection *pConnection, const sockaddr_storage& dstAddr, Message::MessageData *pMsg );
 
 		//// Send array of message buffer to connection with network device
-		//virtual Result SendMsg( IConnection *pConnection, UINT uiBuffSize, BYTE* pBuff );
+		//virtual Result SendMsg( IConnection *pConnection, UINT uiBuffSize, uint8_t* pBuff );
 
 		// Pending recv New one
 		Result PendingRecv( IOBUFFER_READ *pOverlaped );
@@ -142,14 +142,14 @@ namespace Net {
 		virtual ~ServerMUDP();
 
 		Result SendRaw(const sockaddr_storage& dstAddress, Message::MessageData* &pMsg);
-		Result SendNetCtrl( const sockaddr_storage& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID );
+		Result SendNetCtrl( const sockaddr_storage& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID );
 		
 		// Maximum connection
 		inline ConnectionManager& GetConnectionManager();
 
 		// Register PeerID to map
 
-		Result OnNoConnectionPacket(const struct sockaddr_storage& from, const BYTE* pData);
+		Result OnNoConnectionPacket(const struct sockaddr_storage& from, const uint8_t* pData);
 
 		// called when network message is received
 		virtual Result OnIORecvCompleted( Result hrRes, IOBUFFER_READ* &pIOBuffer );

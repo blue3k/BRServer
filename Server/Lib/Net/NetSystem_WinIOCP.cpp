@@ -14,12 +14,12 @@
 #include "Net/NetSystem.h"
 #include "Net/NetSystem_WinIOCP.h"
 #include "Net/NetSystem_impl.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetTrace.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/Utility.h"
 #include "Common/SpinSharedBuffer.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/StackWalker.h"
 
 
@@ -269,7 +269,7 @@ namespace Net {
 					case WSAENOTSOCK:
 					case ERROR_CONNECTION_ABORTED:
 					case ERROR_HOST_UNREACHABLE:
-					case ERROR_PROTOCOL_UNREACHABLE:
+					case ERROR_PROTOCOLID_UNREACHABLE:
 					case ERROR_PORT_UNREACHABLE:
 					case ERROR_NETNAME_DELETED:
 						hr = ResultCode::E_NET_CONNECTION_CLOSED;

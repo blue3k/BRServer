@@ -14,8 +14,8 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/PolicyID.h"
+#include "SFTypedefs.h"
+#include "Protocol/Protocol.h"
 #include "Net/NetDef.h"
 
 

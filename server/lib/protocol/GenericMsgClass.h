@@ -12,9 +12,9 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/PolicyID.h"
-#include "Common/Message.h"
+#include "SFTypedefs.h"
+#include "Protocol/Protocol.h"
+#include "Net/Message.h"
 #include "Net/NetDef.h"
 
 

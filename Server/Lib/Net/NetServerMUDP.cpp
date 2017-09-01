@@ -12,11 +12,11 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetConst.h"
 #include "Net/NetSystem.h"
-#include "Common/Thread.h"
-#include "Common/StrUtil.h"
+#include "Thread/Thread.h"
+#include "String/StrUtil.h"
 #include "Net/Connection.h"
 #include "Net/NetTrace.h"
 #include "Net/NetDef.h"
@@ -82,7 +82,7 @@ namespace Net {
 	}
 
 	// Make Ack packet and enqueue to SendNetCtrlqueue
-	Result ServerMUDP::SendNetCtrl( const sockaddr_storage& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID )
+	Result ServerMUDP::SendNetCtrl( const sockaddr_storage& dstAddress, UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID )
 	{
 		Result hr = ResultCode::SUCCESS, hrTem = ResultCode::SUCCESS;
 		MsgMobileNetCtrl *pNetCtrl = NULL;
@@ -120,7 +120,7 @@ namespace Net {
 		return hr;
 	}
 
-	Result ServerMUDP::OnNoConnectionPacket(const struct sockaddr_storage& from, const BYTE* pData)
+	Result ServerMUDP::OnNoConnectionPacket(const struct sockaddr_storage& from, const uint8_t* pData)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -164,10 +164,10 @@ namespace Net {
 			netTrace(TRC_SENDRAW, "Invalid incomming packet. Try to disconnect {0}", from);
 			netChk(SendNetCtrl(from, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 		}
-		else if (pNetCtrl->rtnMsgID.ID != BR_PROTOCOL_VERSION)
+		else if (pNetCtrl->rtnMsgID.ID != BR_PROTOCOLID_VERSION)
 		{
 			// send disconnect
-			netTrace(TRC_SENDRAW, "Invalid incomming packet version, received:{0}, expected:{1}. Try to disconnect {2}", pNetCtrl->rtnMsgID.ID, (UINT)BR_PROTOCOL_VERSION, from);
+			netTrace(TRC_SENDRAW, "Invalid incomming packet version, received:{0}, expected:{1}. Try to disconnect {2}", pNetCtrl->rtnMsgID.ID, (UINT)BR_PROTOCOLID_VERSION, from);
 			netChk(SendNetCtrl(from, PACKET_NETCTRL_NACK, 0, pNetCtrl->msgID, 0));
 			//netChk(SendNetCtrl(pIOBuffer->From, PACKET_NETCTRL_DISCONNECT, 0, PACKET_NETCTRL_NONE, 0));
 		}
@@ -236,7 +236,7 @@ namespace Net {
 
 			if (pConnection == nullptr)
 			{
-				OnNoConnectionPacket(pIOBuffer->NetAddr.From, (const BYTE*)pIOBuffer->buffer);
+				OnNoConnectionPacket(pIOBuffer->NetAddr.From, (const uint8_t*)pIOBuffer->buffer);
 				goto Proc_End;
 			}
 
@@ -261,7 +261,7 @@ namespace Net {
 				((ConnectionUDPBase*)(Connection*)pConnection)->ChangeRemoteAddress(pIOBuffer->NetAddr.From);
 			}
 
-			hr = pConnection->OnRecv(pIOBuffer->TransferredSize, (BYTE*)pIOBuffer->buffer);
+			hr = pConnection->OnRecv(pIOBuffer->TransferredSize, (uint8_t*)pIOBuffer->buffer);
 			// Keep these connection can be readable until Onrecv is done
 			//iterCon = nullptr;
 			//iterPIDCon = nullptr;

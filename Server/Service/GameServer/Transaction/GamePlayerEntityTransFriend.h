@@ -11,11 +11,11 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "ServerSystem/Transaction.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
@@ -29,7 +29,7 @@
 #include "GameServerClass.h"
 
 #include "GameInstance/GamePlayerEntity.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 
 //#include "PlayerInfoManager.h"
 
@@ -155,8 +155,8 @@ namespace GameServer {
 
 	private:
 		StaticArray<FriendInformation, 20> m_Friends;
-		UINT16 m_MaxFriendSlot;
-		UINT16 m_TotalNumberOfFriends;
+		uint16_t m_MaxFriendSlot;
+		uint16_t m_TotalNumberOfFriends;
 		INT m_WaitingCount;
 
 		//StaticArray<PlayerID, 6> m_NameQuery;

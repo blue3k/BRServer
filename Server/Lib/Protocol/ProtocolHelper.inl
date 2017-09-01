@@ -15,7 +15,7 @@
 
 // parsing helper
 template< class SrcType >
-void PackParamCopy( BYTE* &pMsgCur, SrcType* pSrc, INT iParamSize )
+void PackParamCopy( uint8_t* &pMsgCur, SrcType* pSrc, INT iParamSize )
 {
 	memcpy( pMsgCur, pSrc, iParamSize );
 	pMsgCur += iParamSize;
@@ -24,7 +24,7 @@ void PackParamCopy( BYTE* &pMsgCur, SrcType* pSrc, INT iParamSize )
 
 // parsing helper
 template< class DataType >
-Result StreamParamCopy( DataType* pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
+Result StreamParamCopy( DataType* pDst, uint8_t* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
 {
 	if( iCurMsgSize < iParamSize ) return ResultCode::E_NET_BADPACKET_SIZE;// sizeCheck
 
@@ -37,7 +37,7 @@ Result StreamParamCopy( DataType* pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iP
 }
 
 template< class DataType >
-Result StreamParamLnk( DataType* &pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
+Result StreamParamLnk( DataType* &pDst, uint8_t* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
 {
 	if( iCurMsgSize < iParamSize ) return ResultCode::E_NET_BADPACKET_SIZE;// sizeCheck
 
@@ -55,7 +55,7 @@ Result StreamParamLnk( DataType* &pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iP
 }
 
 template<>
-inline Result StreamParamLnk( const char* &pDst, BYTE* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
+inline Result StreamParamLnk( const char* &pDst, uint8_t* &pMsgCur, INT &iCurMsgSize, INT iParamSize )
 {
 	if( iCurMsgSize < iParamSize ) return ResultCode::E_NET_BADPACKET_SIZE;// sizeCheck
 

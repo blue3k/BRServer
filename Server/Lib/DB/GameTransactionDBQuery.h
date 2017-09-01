@@ -44,14 +44,14 @@ namespace DB {
 	class QueryAddGameLog : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
-		INT32 GameTime;
+		int64_t PlayerID;
+		int32_t GameTime;
 		char  LogCategory[2];
-		INT32 Consume;
-		INT32 Gain;
-		INT64 TotalValue;
+		int32_t Consume;
+		int32_t Gain;
+		int64_t TotalValue;
 		char LogMessage[MAX_TRANSACTION_LOG_MESSAGE];
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryAddGameLog, 8)
@@ -70,7 +70,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spAddGameLog", BRDB_PARAM_8 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMETRANSACTIONDB, QueryAddGameLog);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMETRANSACTIONDB, QueryAddGameLog);
 
 
 

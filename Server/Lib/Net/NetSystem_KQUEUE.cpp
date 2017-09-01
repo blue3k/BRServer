@@ -14,14 +14,14 @@
 #include "Net/NetSystem.h"
 #include "Net/NetSystem_KQUEUE.h"
 #include "Net/NetSystem_impl.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "ResultCode/SFResultCodeCommon.h"
 #include "Net/NetTrace.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/Utility.h"
 #include "Common/TypeUtility.h"
 #include "Common/SystemSynchronization.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 
 
 #if KQUEUE

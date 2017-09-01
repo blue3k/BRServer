@@ -15,7 +15,7 @@
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/SvrConfig.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Net/NetServerUDP.h"
 
 #include "GameSvrConst.h"

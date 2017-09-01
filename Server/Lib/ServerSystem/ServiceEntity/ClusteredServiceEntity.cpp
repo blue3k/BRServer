@@ -12,9 +12,9 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
@@ -340,7 +340,7 @@ namespace Svr {
 		{
 			if( !(m_WatcherUIDMap.insert((Context)pNewService->GetEntityUID(), pNewService)) )
 			{
-				svrChk(m_WatcherUIDMap.find((UINT64)entityUID, itFound));
+				svrChk(m_WatcherUIDMap.find((uint64_t)entityUID, itFound));
 
 				ActionOnAlreadyExist(*itFound);
 
@@ -352,7 +352,7 @@ namespace Svr {
 		{
 			if( !(m_ServiceEntityUIDMap.insert((Context)pNewService->GetEntityUID(), pNewService)) )
 			{
-				svrChk(m_ServiceEntityUIDMap.find((UINT64)entityUID, itFound));
+				svrChk(m_ServiceEntityUIDMap.find((uint64_t)entityUID, itFound));
 
 				ActionOnAlreadyExist(*itFound);
 
@@ -381,9 +381,9 @@ namespace Svr {
 		Result hr = ResultCode::SUCCESS;
 		ServiceEntityUIDMap::iterator itFound;
 
-		if (!(m_ServiceEntityUIDMap.find((UINT64)entityUID, itFound)))
+		if (!(m_ServiceEntityUIDMap.find((uint64_t)entityUID, itFound)))
 		{
-			if (!(m_WatcherUIDMap.find((UINT64)entityUID, itFound)))
+			if (!(m_WatcherUIDMap.find((uint64_t)entityUID, itFound)))
 				return ResultCode::FAIL;
 		}
 		pService = *itFound;
@@ -553,7 +553,7 @@ namespace Svr {
 
 		
 		// Vote for new master if the master isn't available
-		if (!(m_ServiceEntityUIDMap.find((UINT64)GetMasterUID(), itService))
+		if (!(m_ServiceEntityUIDMap.find((uint64_t)GetMasterUID(), itService))
 			|| !itService->IsServiceAvailable() )
 		{
 			//ServiceTableItem *pMaster = itService.IsValid() ? *itService : nullptr;
@@ -825,13 +825,13 @@ namespace Svr {
 	}
 
 	// Hash the key value
-	UINT ShardedClusterServiceEntity::KeyHash( UINT64 key )
+	UINT ShardedClusterServiceEntity::KeyHash( uint64_t key )
 	{
-		return (UINT)std::hash<UINT64>()(key);
+		return (UINT)std::hash<uint64_t>()(key);
 	}
 
 	// Get Service shard by key
-	Result ShardedClusterServiceEntity::GetShard( UINT64 key, ServerServiceInformation* &pService )
+	Result ShardedClusterServiceEntity::GetShard( uint64_t key, ServerServiceInformation* &pService )
 	{
 		Result hr = ResultCode::SUCCESS;
 		UINT hashedKey = KeyHash(key);

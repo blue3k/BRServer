@@ -11,7 +11,7 @@
 
 
 #include "stdafx.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/SvrTrace.h"

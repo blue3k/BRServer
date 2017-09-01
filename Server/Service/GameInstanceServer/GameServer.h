@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #if WINDOWS
 #include "resource.h"
 #endif

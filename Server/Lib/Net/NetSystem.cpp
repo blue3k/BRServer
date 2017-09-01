@@ -13,13 +13,13 @@
 #include "stdafx.h"
 #include "Net/NetSystem.h"
 #include "Net/NetSystem_impl.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetTrace.h"
-#include "Common/TimeUtil.h"
-#include "Common/Thread.h"
+#include "Util/TimeUtil.h"
+#include "Thread/Thread.h"
 #include "Common/Utility.h"
 #include "Common/SpinSharedBuffer.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 
 
 

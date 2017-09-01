@@ -12,9 +12,9 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"

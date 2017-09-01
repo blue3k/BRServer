@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/BrGameTypes.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
 #include "Common/MemoryBufferUtil.h"
@@ -50,7 +50,7 @@ namespace GameServer {
 
 		//	FriendInfo() : ShardID(0) {}
 		//	FriendInfo(const FriendInfo& src) : FriendInformation(src), ShardID(src.ShardID) {}
-		//	FriendInfo(AccountID playerID, INT shardID, BR::FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, BYTE isPlayingGame, UINT64 lastActiveTime, UINT64 LastStaminaSent)
+		//	FriendInfo(AccountID playerID, INT shardID, BR::FacebookUID fbUID, const char* nickName, UINT level, UINT weeklyWin, UINT weeklyLose, uint8_t isPlayingGame, uint64_t lastActiveTime, uint64_t LastStaminaSent)
 		//		: FriendInformation(playerID, fbUID, nickName, level, weeklyWin, weeklyLose, isPlayingGame, lastActiveTime, LastStaminaSent)
 		//		, ShardID(shardID)
 		//	{

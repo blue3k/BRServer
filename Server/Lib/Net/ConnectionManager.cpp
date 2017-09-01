@@ -12,10 +12,10 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/Thread.h"
-#include "Common/StrUtil.h"
-#include "Common/TimeUtil.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "Thread/Thread.h"
+#include "String/StrUtil.h"
+#include "Util/TimeUtil.h"
 #include "Net/Connection.h"
 #include "Net/ConnectionUDP.h"
 #include "Net/NetTrace.h"
@@ -491,7 +491,7 @@ namespace Net {
 							netTrace( TRC_CONNECTION, "Managed Connection AddMap failed CID:{0}", pConn->GetCID() );
 						}
 
-						netChk( pConn->OnRecv( sizeof(oper.MobileNetCtrl), (const BYTE*)&oper.MobileNetCtrl ) );
+						netChk( pConn->OnRecv( sizeof(oper.MobileNetCtrl), (const uint8_t*)&oper.MobileNetCtrl ) );
 					}
 					else
 					{
@@ -537,7 +537,7 @@ namespace Net {
 					}
 				break;
 			default:
-				netTrace( Trace::TRC_WARN, "Unknown Operation {0}", (INT32)oper.OpCode );
+				netTrace( Trace::TRC_WARN, "Unknown Operation {0}", (int32_t)oper.OpCode );
 				break;
 			};
 		}
@@ -895,7 +895,7 @@ namespace Net {
 	}
 	
 	// Find and return connection
-	Result ConnectionManager::GetConnectionByPeerID(UINT64 peerID, SharedPointerT<Connection> &pConn)
+	Result ConnectionManager::GetConnectionByPeerID(uint64_t peerID, SharedPointerT<Connection> &pConn)
 	{
 		WeakPointerT<Connection> pPtr;
 		if ((m_PeerIDMap.Find(peerID, pPtr)))

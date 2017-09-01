@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
 #include "Common/ArrayUtil.h"
 #include "Object/SharedPointer.h"

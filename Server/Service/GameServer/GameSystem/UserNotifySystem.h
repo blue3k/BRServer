@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/BrGameTypes.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
 #include "Common/MemoryBufferUtil.h"
@@ -46,11 +46,11 @@ namespace GameServer {
 		{
 			UINT NotificationID;
 			NotificationType MessageID;
-			INT64 MessageParam0;
-			INT64 MessageParam1;
+			int64_t MessageParam0;
+			int64_t MessageParam1;
 			char MessageText[MAX_NOTIFICATION_TEXT];
-			BYTE IsRead;
-			INT64 TimeStamp;
+			uint8_t IsRead;
+			int64_t TimeStamp;
 
 			bool operator == ( const Notification& src )
 			{
@@ -95,7 +95,7 @@ namespace GameServer {
 
 		// Add a Notification
 		Result AddNotification( const Notification& info );
-		Result AddNotification( UINT NotificationID, NotificationType MessageID, INT64 MessageParam0, INT64 MessageParam1, const char* MessageText, BYTE IsRead, INT64 timeStamp );
+		Result AddNotification( UINT NotificationID, NotificationType MessageID, int64_t MessageParam0, int64_t MessageParam1, const char* MessageText, uint8_t IsRead, int64_t timeStamp );
 
 		// Remove a Notification
 		Result RemoveNotification( UINT notificationID ); 

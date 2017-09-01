@@ -11,12 +11,12 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Factory.h"
 
 #ifdef BRDB_USE_MYSQL
 
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "DBTrace.h"
 #include "Factory.h"
 #include "DataSourceMYSQL.h"

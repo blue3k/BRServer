@@ -13,11 +13,11 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-#include "Common/ResultCode/BRResultCodeCommon.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
-#include "Common/ResultCode/BRResultCodeLogin.h"
-#include "Common/MemoryPool.h"
-#include "Common/BrBaseTypes.h"
+#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeGame.h"
+#include "ResultCode/SFResultCodeLogin.h"
+#include "Memory/MemoryPool.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
 
 #include "Net/NetServerUDP.h"
@@ -227,7 +227,7 @@ namespace GameServer {
 
 		svrTrace(Svr::TRC_DBGTRANS, "SetPlayerGameData PlayerID:{0}. Grade:{1}, lvl:{2}, Exp:{3}, GameMoney:{4}, Gem:{5}, Sta:{6}, updateTick:{7}", GetMyOwner()->GetPlayerID(),
 			playerData.Grade, playerData.Level, playerData.Exp, playerData.GameMoney, playerData.Gem, playerData.Stamina,
-			(UINT64)playerData.LatestTickTime);
+			(uint64_t)playerData.LatestTickTime);
 
 		auto latestTick = playerData.LatestTickTime;
 
@@ -241,7 +241,7 @@ namespace GameServer {
 		}
 		else
 		{
-			svrTrace(Svr::TRC_TRANSACTION, "Latest tick time PlayerID:{0}. {1}", GetMyOwner()->GetPlayerID(), (UINT64)playerData.LatestTickTime);
+			svrTrace(Svr::TRC_TRANSACTION, "Latest tick time PlayerID:{0}. {1}", GetMyOwner()->GetPlayerID(), (uint64_t)playerData.LatestTickTime);
 
 			GetMyOwner()->SetLatestUpdateTime(TimeStampSec(DurationSec(playerData.LatestTickTime)));
 		}
@@ -1507,8 +1507,8 @@ namespace GameServer {
 	Result PlayerTransBuyShopItemPrepare::GenerateSigunatureAndCheck()
 	{
 		Result hr = ResultCode::SUCCESS;
-		StaticArray<BYTE, 1024> dataBuffer;
-		StaticArray<BYTE, 128> hash;
+		StaticArray<uint8_t, 1024> dataBuffer;
+		StaticArray<uint8_t, 128> hash;
 		//AuthTicket authTicket = GetMyOwner()->GetAuthTicket();
 		PlayerID playerID = GetMyOwner()->GetPlayerID();
 		auto time = Util::Time.GetTimeUTCSec();
@@ -1517,9 +1517,9 @@ namespace GameServer {
 		m_Signagure.Clear();
 
 		// Generate sigunature
-		svrChk(dataBuffer.AddItems(sizeof(playerID), (const BYTE*)&playerID));
-		svrChk(dataBuffer.AddItems(sizeof(time), (const BYTE*)&time));
-		svrChk(dataBuffer.AddItems(sizeof(time2), (const BYTE*)&time2));
+		svrChk(dataBuffer.AddItems(sizeof(playerID), (const uint8_t*)&playerID));
+		svrChk(dataBuffer.AddItems(sizeof(time), (const uint8_t*)&time));
+		svrChk(dataBuffer.AddItems(sizeof(time2), (const uint8_t*)&time2));
 
 		svrChk(Util::SHA256Hash(dataBuffer.GetSize(), dataBuffer.data(), hash));
 		svrChk(Util::Base64URLEncode(hash.GetSize(), hash.data(), m_Signagure));
@@ -1570,14 +1570,14 @@ namespace GameServer {
 		Result hr = ResultCode::SUCCESS;
 		auto *pCheckRes = (Svr::ExternalTransactionGoogleAndroidReceiptCheck*)pRes;
 		UserGamePlayerInfoSystem *pPlayerInfoSystem = nullptr;
-		StaticArray<BYTE, 512> purchaseID;
+		StaticArray<uint8_t, 512> purchaseID;
 
 		svrChkClose(pRes->GetResult());
 
 		if (pCheckRes->GetDeveloperPayload().length() == 0)
 			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
 
-		svrChkCloseErr(ResultCode::E_SVR_INVALID_PURCHASE_INFO, Util::Base64URLDecode(pCheckRes->GetDeveloperPayload().length(), (const BYTE*)pCheckRes->GetDeveloperPayload().c_str(), purchaseID));
+		svrChkCloseErr(ResultCode::E_SVR_INVALID_PURCHASE_INFO, Util::Base64URLDecode(pCheckRes->GetDeveloperPayload().length(), (const uint8_t*)pCheckRes->GetDeveloperPayload().c_str(), purchaseID));
 
 		if (purchaseID.GetSize() != SHA256_DIGEST_LENGTH)
 			svrErrClose(ResultCode::E_SVR_INVALID_PURCHASE_INFO);
@@ -1682,10 +1682,10 @@ namespace GameServer {
 
 		if (strlen(m_pShopItem->AndroidItemID) == 0 || strlen(m_pShopItem->iOSItemID) == 0)
 		{
-			StaticArray<BYTE,1024> pruchaseID;
+			StaticArray<uint8_t,1024> pruchaseID;
 
-			svrChk( Util::Base64URLDecode(strlen(GetPurchaseTransactionID()), (BYTE*)GetPurchaseTransactionID(), pruchaseID) );
-			//svrChk( pruchaseID.AddItems(strlen(GetPurchaseTransactionID()), (BYTE*)GetPurchaseTransactionID()) );
+			svrChk( Util::Base64URLDecode(strlen(GetPurchaseTransactionID()), (uint8_t*)GetPurchaseTransactionID(), pruchaseID) );
+			//svrChk( pruchaseID.AddItems(strlen(GetPurchaseTransactionID()), (uint8_t*)GetPurchaseTransactionID()) );
 
 			svrChkPtr(pPlayerInfoSystem = GetMyOwner()->GetComponent<UserGamePlayerInfoSystem>());
 

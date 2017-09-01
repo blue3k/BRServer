@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "String/ToString.h"
 #include "Net/NetToString.h"
 #include "Net/NetConst.h"

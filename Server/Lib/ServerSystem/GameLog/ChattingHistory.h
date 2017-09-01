@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrMemory.h"
+#include "Memory/SFMemory.h"
 #include "Common/BrGameTypes.h"
 #include "Common/GameConst.h"
 #include "Common/CircularQueue.h"
@@ -58,7 +58,7 @@ namespace Svr {
 		virtual void TerminateLog() override;
 
 		// Add chatting log
-		virtual Result AddChattingLog(TimeStampSec timeStamp, PlayerID player, BYTE playerStatus, ChatType type, const char* message );
+		virtual Result AddChattingLog(TimeStampSec timeStamp, PlayerID player, uint8_t playerStatus, ChatType type, const char* message );
 
 		//// Get chatting binary
 		//Result GetChattingBinary( OutputMemoryStream& stream, UINT startIndex, UINT count );

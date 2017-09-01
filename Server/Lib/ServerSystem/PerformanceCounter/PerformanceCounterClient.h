@@ -11,11 +11,11 @@
 
 #pragma once
 
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/DualSortedMap.h"
-#include "Common/PageQueue.h"
+#include "Container/PageQueue.h"
 #include "Net/NetRawUDP.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
 
@@ -86,7 +86,7 @@ namespace BR {
 				bool operator != (const FreeInfo& src) const { return pInstance != src.pInstance; }
 			};
 
-			typedef DualSortedMap<UINT64, WeakPointerT<PerformanceCounterInstance>> CounterInstanceMap;
+			typedef DualSortedMap<uint64_t, WeakPointerT<PerformanceCounterInstance>> CounterInstanceMap;
 			typedef PageQueue<FreeInfo> FreeInstanceQueue;
 			typedef PageQueue<SharedPointerT<PerformanceCounterInstance>> InstanceQueue;
 

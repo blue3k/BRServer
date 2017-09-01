@@ -15,8 +15,8 @@
 #include "Net/NetDef.h"
 #include "Net/NetCtrl.h"
 #include "Net/NetSystem.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
-#include "Common/PageQueue.h"
+#include "ResultCode/SFResultCodeNet.h"
+#include "Container/PageQueue.h"
 #include "Net/ConnectionUDP.h"
 
 
@@ -48,11 +48,11 @@ namespace Net {
 	protected:
 
 		// gathering
-		virtual Result SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 ) override;
+		virtual Result SendPending( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID = 0 ) override;
 		virtual Result SendPending( Message::MessageData* pMsg )  override { return ConnectionUDPBase::SendPending(pMsg); }
-		virtual Result SendSync( UINT uiSequence, UINT64 uiSyncMask );
+		virtual Result SendSync( UINT uiSequence, uint64_t uiSyncMask );
 
-		virtual Result SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, UINT64 UID = 0 ) override;
+		virtual Result SendNetCtrl( UINT uiCtrlCode, UINT uiSequence, Message::MessageID msgID, uint64_t UID = 0 ) override;
 
 
 		// Process network control message
@@ -83,7 +83,7 @@ namespace Net {
 		virtual Result InitConnection(SOCKET socket, const ConnectionInformation &connectInfo) override;
 
 		// called when incomming message occure
-		virtual Result OnRecv(UINT uiBuffSize, const BYTE* pBuff) override;
+		virtual Result OnRecv(UINT uiBuffSize, const uint8_t* pBuff) override;
 		virtual Result OnRecv( Message::MessageData *pMsg ) override;
 
 

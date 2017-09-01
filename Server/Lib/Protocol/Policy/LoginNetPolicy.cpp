@@ -10,10 +10,10 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
-#include "Common/PolicyID.h"
+#include "SFTypedefs.h"
+#include "Protocol/Protocol.h"
 #include "Net/NetDef.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrGameTypes.h"
 #include "Protocol/Policy/LoginIPolicy.h"

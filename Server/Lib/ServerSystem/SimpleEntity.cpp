@@ -11,17 +11,17 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/TimeUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "Util/TimeUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "ServerSystem/SvrConstDefault.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 
 
 

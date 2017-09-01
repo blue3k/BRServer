@@ -52,7 +52,7 @@ namespace DB {
 	class QueryTableVersionTbl : public QueryBase
 	{
 	public:
-		INT32 TableVersion;
+		int32_t TableVersion;
 
 
 	public:
@@ -64,14 +64,14 @@ namespace DB {
 		BRDB_QUERYSTRING("spGetTableVersion", BRDB_PARAM_1)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_TABLEDB, QueryTableVersionTbl);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_TABLEDB, QueryTableVersionTbl);
 
 
 
 	class QueryGameConfigTbl : public conspiracy::GameConfigTbl::GameConfigItem, public QueryBase
 	{
 	public:
-		INT32 Dummy;
+		int32_t Dummy;
 
 
 	public:
@@ -110,13 +110,13 @@ namespace DB {
 		BRDB_RAW_QUERY_STRING("select * from gtbl_gameconfigtable;")
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryGameConfigTbl, conspiracy::GameConfigTbl::GameConfigItem);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryGameConfigTbl, conspiracy::GameConfigTbl::GameConfigItem);
 
 
 	class QueryLevelTbl : public conspiracy::LevelTbl::LevelItem, public QueryBase
 	{
 	public:
-		INT32 Dummy;
+		int32_t Dummy;
 
 
 	public:
@@ -132,7 +132,7 @@ namespace DB {
 		BRDB_RAW_QUERY_STRING("select * from gtbl_leveltable;")
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryLevelTbl, conspiracy::LevelTbl::LevelItem);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryLevelTbl, conspiracy::LevelTbl::LevelItem);
 
 
 
@@ -140,7 +140,7 @@ namespace DB {
 	class QueryOrganicTbl : public conspiracy::OrganicTbl::OrganicItem, public QueryBase
 	{
 	public:
-		INT32 Dummy;
+		int32_t Dummy;
 
 
 	public:
@@ -159,7 +159,7 @@ namespace DB {
 		BRDB_RAW_QUERY_STRING("select * from gtbl_organictable;")
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryOrganicTbl, conspiracy::OrganicTbl::OrganicItem);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryOrganicTbl, conspiracy::OrganicTbl::OrganicItem);
 
 
 
@@ -167,7 +167,7 @@ namespace DB {
 	class QueryShopTbl : public conspiracy::ShopTbl::ShopItem, public QueryBase
 	{
 	public:
-		INT32 Dummy;
+		int32_t Dummy;
 
 
 	public:
@@ -190,7 +190,7 @@ namespace DB {
 		BRDB_RAW_QUERY_STRING("select * from gtbl_shoptable;")
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryShopTbl, conspiracy::ShopTbl::ShopItem);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryShopTbl, conspiracy::ShopTbl::ShopItem);
 
 
 
@@ -198,7 +198,7 @@ namespace DB {
 	class QueryRewardTbl : public conspiracy::RewardTbl::RewardItem, public QueryBase
 	{
 	public:
-		INT32 Dummy;
+		int32_t Dummy;
 
 
 	public:
@@ -217,14 +217,14 @@ namespace DB {
 		BRDB_RAW_QUERY_STRING("select * from gtbl_rewardtable;")
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryRewardTbl, conspiracy::RewardTbl::RewardItem);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryRewardTbl, conspiracy::RewardTbl::RewardItem);
 
 
 
 	class QueryBotTalkTable : public conspiracy::BotTalkTbl::BotTalkTblItem, public QueryBase
 	{
 	public:
-		INT32 Dummy;
+		int32_t Dummy;
 
 
 	public:
@@ -259,7 +259,7 @@ namespace DB {
 			BRDB_RAW_QUERY_STRING("select * from gtbl_bottalktable;")
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_TABLEDB, QueryBotTalkTable, conspiracy::BotTalkTbl::BotTalkTblItem);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_TABLEDB, QueryBotTalkTable, conspiracy::BotTalkTbl::BotTalkTblItem);
 
 
 

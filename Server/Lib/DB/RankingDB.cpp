@@ -10,8 +10,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
-#include "Common/StrUtil.h"
+#include "SFTypedefs.h"
+#include "String/StrUtil.h"
 #include "DB/RankingDB.h"
 #include "DB/RankingDBQuery.h"
 

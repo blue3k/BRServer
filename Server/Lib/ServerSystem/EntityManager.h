@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
 
 #include "ServerSystem/Entity.h"
@@ -40,8 +40,8 @@ namespace Svr {
 	private:
 
 		//SharedPointerT < PerformanceCounterInstance > m_PerformanceCounterInstance;
-		PerformanceCounterRaw < UINT64 > m_NumberOfServices;
-		PerformanceCounterRaw < UINT64 > m_NumberOfTotalEntities;
+		PerformanceCounterRaw < uint64_t > m_NumberOfServices;
+		PerformanceCounterRaw < uint64_t > m_NumberOfTotalEntities;
 
 	public:
 		// Constructor/Destructor

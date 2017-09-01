@@ -11,13 +11,13 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "ServerSystem/Transaction.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
@@ -50,7 +50,7 @@ namespace GameServer {
 
 	private:
 		GameInsUID m_GameInsID;
-		UINT32 m_TimeStamp;
+		uint32_t m_TimeStamp;
 		GameStateID m_GameState;
 		UINT8 m_Day;
 		UINT8 m_MaxPlayer;
@@ -59,8 +59,8 @@ namespace GameServer {
 		PlayerRole m_Role;
 		bool m_Dead;
 
-		LinkedArray<BYTE> m_ChatHistoryData;
-		LinkedArray<BYTE> m_GameLogData;
+		LinkedArray<uint8_t> m_ChatHistoryData;
+		LinkedArray<uint8_t> m_GameLogData;
 
 	public:
 		PlayerTransJoinGame( Message::MessageData* &pIMsg );
@@ -403,8 +403,8 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::RequestGameMatchCmd, PlayerTransRequestGameMatch> super;
 
 	private:
-		UINT64 m_TotalGem;
-		UINT64 m_TotalGameMoney;
+		uint64_t m_TotalGem;
+		uint64_t m_TotalGameMoney;
 
 	public:
 		PlayerTransRequestGameMatch( Message::MessageData* &pIMsg );
@@ -478,8 +478,8 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GamePlayAgainCmd, PlayerTransPlayAgain> super;
 
 	private:
-		UINT64 m_TotalGem;
-		UINT64 m_TotalGameMoney;
+		uint64_t m_TotalGem;
+		uint64_t m_TotalGameMoney;
 
 	public:
 		PlayerTransPlayAgain(Message::MessageData* &pIMsg);
@@ -532,8 +532,8 @@ namespace GameServer {
 
 		StaticArray<PlayerID,4> m_RevealedPlayerID;
 		StaticArray<PlayerRole,4> m_RevealedPlayerRole;
-		UINT64 m_TotalGem;
-		UINT64 m_TotalGameMoney;
+		uint64_t m_TotalGem;
+		uint64_t m_TotalGameMoney;
 
 	public:
 		PlayerTransGameRevealPlayer(Message::MessageData* &pIMsg);
@@ -557,8 +557,8 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GamePlayerReviveCmd, PlayerTransGamePlayerRevive> super;
 
 	private:
-		UINT64 m_TotalGem;
-		UINT64 m_TotalGameMoney;
+		uint64_t m_TotalGem;
+		uint64_t m_TotalGameMoney;
 
 	public:
 		PlayerTransGamePlayerRevive(Message::MessageData* &pIMsg);
@@ -597,8 +597,8 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::ISvrPolicyGame, Message::Game::GamePlayerResetRankCmd, PlayerTransGamePlayerResetRank> super;
 
 	private:
-		UINT64 m_TotalGem;
-		UINT64 m_TotalGameMoney;
+		uint64_t m_TotalGem;
+		uint64_t m_TotalGameMoney;
 
 	public:
 		PlayerTransGamePlayerResetRank(Message::MessageData* &pIMsg) : MessageTransaction(pIMsg) {}

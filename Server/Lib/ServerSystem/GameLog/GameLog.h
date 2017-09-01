@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/StrUtil.h"
+#include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrMemory.h"
+#include "Memory/SFMemory.h"
 #include "Common/BrGameTypes.h"
 #include "Common/GameConst.h"
 #include "Common/CircularQueue.h"
@@ -50,7 +50,7 @@ namespace Svr {
 	protected:
 		// Create new log item
 		template< class LogItemType >
-		BYTE* NewLogItemBuffer(size_t szExpectedSize = 0)
+		uint8_t* NewLogItemBuffer(size_t szExpectedSize = 0)
 		{
 			if( szExpectedSize == 0 )
 				szExpectedSize = sizeof(LogItemType);
@@ -63,7 +63,7 @@ namespace Svr {
 				return nullptr;
 			}
 
-			return (BYTE*)pPtr;
+			return (uint8_t*)pPtr;
 		}
 
 		Result AddLogItem( GameLogItem* logItem );

@@ -15,10 +15,9 @@
 #include "Net/NetUtil.h"
 
 
-namespace BR {
+namespace SF {
 	
 
-	template<>
 	Result ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionState& Data, int Option )
 	{
 		unused(Option);
@@ -26,7 +25,6 @@ namespace BR {
 	}
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const sockaddr_in6& Data, int Option)
 	{
 		unused(Option);
@@ -40,14 +38,13 @@ namespace BR {
 		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
 			return ResultCode::FAIL;
 		
-		if( !( _IToA( (UINT32)ntohs(Data.sin6_port), pBuff, iBuffLen, 10, -1 ) ) )
+		if( !( _IToA( (uint32_t)ntohs(Data.sin6_port), pBuff, iBuffLen, 10, -1 ) ) )
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
 	}
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const sockaddr_storage& Data, int Option)
 	{
 		unused(Option);
@@ -61,14 +58,13 @@ namespace BR {
 		if( !( StrUtil::StringCpyEx( pBuff, iBuffLen, ":" ) ) )
 			return ResultCode::FAIL;
 		
-		if( !( _IToA( (UINT32)addr.usPort, pBuff, iBuffLen, 10, -1 ) ) )
+		if( !( _IToA( (uint32_t)addr.usPort, pBuff, iBuffLen, 10, -1 ) ) )
 			return ResultCode::FAIL;
 
 		return ResultCode::SUCCESS;
 	}
 
 
-	template<>
 	Result ToString( char*& pBuff, INT& iBuffLen, const Net::IConnection::ConnectionInformation& Data, int Option )
 	{
 		unused(Option);
@@ -89,7 +85,6 @@ namespace BR {
 	}
 
 		
-	template<>
 	Result ToString( char*& pBuff, INT& iBuffLen, const NetClass& Data, int Option )
 	{
 		unused(Option);
@@ -97,6 +92,6 @@ namespace BR {
 	}
 
 
-} // namespace BR
+} // namespace SF
 
 

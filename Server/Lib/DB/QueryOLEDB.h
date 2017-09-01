@@ -11,15 +11,15 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/MemoryPool.h"
+#include "SFTypedefs.h"
+#include "Memory/MemoryPool.h"
 #include "DB/dbTrace.h"
 #include "Query.h"
 
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/Transaction.h"
 #include "Common/SvrPolicyID.h"
-#include "Common/Message.h"
+#include "Net/Message.h"
 
 #include <atlcore.h>
 #include <atldbcli.h>

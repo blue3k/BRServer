@@ -14,7 +14,7 @@
 
 #if WINDOWS
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/StackWalker.h"
 #include "Net/NetDef.h"
 #include "Net/NetConst.h"
@@ -70,7 +70,7 @@ namespace Net {
 		Message::MessageData *pMsgs;
 
 		// Message buffer pointer to send
-		BYTE *pSendBuff;
+		uint8_t *pSendBuff;
 
 		// Constructor
 		IOBUFFER_WRITE();
@@ -79,13 +79,13 @@ namespace Net {
 		// Initialize for IO
 		inline void InitForIO(SOCKET sockWrite);
 		inline void InitMsg( Message::MessageData *pMsg );
-		inline void InitBuff( UINT uiBuffSize, BYTE* pBuff );
+		inline void InitBuff( UINT uiBuffSize, uint8_t* pBuff );
 
 		// Setup sending mode
 		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_storage& to, Message::MessageData *pMsg );
-		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_storage& to, UINT uiBuffSize, BYTE* pBuff );
+		inline void SetupSendUDP(SOCKET sockWrite, const sockaddr_storage& to, UINT uiBuffSize, uint8_t* pBuff );
 		inline void SetupSendTCP( Message::MessageData *pMsg );
-		inline void SetupSendTCP( UINT uiBuffSize, BYTE* pBuff );
+		inline void SetupSendTCP( UINT uiBuffSize, uint8_t* pBuff );
 
 	};
 
@@ -134,7 +134,7 @@ namespace Net {
 	{
 		//Connection	*pConnection;
 		SOCKET sockAccept;
-		BYTE pAcceptInfo[sizeof(sockaddr_storage)*2];
+		uint8_t pAcceptInfo[sizeof(sockaddr_storage)*2];
 		DWORD dwByteReceived;
 
 		// Constructor

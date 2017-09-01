@@ -10,9 +10,9 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
-#include "Common/PolicyID.h"
-#include "Common/BrBaseTypes.h"
+#include "SFTypedefs.h"
+#include "Protocol/Protocol.h"
+#include "Types/BrBaseTypes.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"

@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrBaseTypes.h"
+#include "Types/BrBaseTypes.h"
 #include "Common/Indexing.h"
 #include "Common/HashTable.h"
 #include "Common/BrComponent.h"
@@ -82,7 +82,7 @@ namespace ConspiracyGameInstanceServer
 		GamePlayer*				m_PlayerByIndex[GameConst::MAX_GAMEPLAYER];
 
 		// Player character table
-		BYTE					m_PlayerCharacter[GameConst::MAX_GAMEPLAYER];
+		uint8_t					m_PlayerCharacter[GameConst::MAX_GAMEPLAYER];
 
 		// Game configuration
 		int m_TableVersion;

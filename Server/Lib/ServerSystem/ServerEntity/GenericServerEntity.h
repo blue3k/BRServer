@@ -13,8 +13,8 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/Thread.h"
+#include "SFTypedefs.h"
+#include "Thread/Thread.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/ServerEntity.h"
 

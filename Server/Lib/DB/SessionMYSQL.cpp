@@ -14,21 +14,21 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Factory.h"
 
 #ifdef BRDB_USE_MYSQL
 
 
-#include "Common/Typedefs.h"
-#include "Common/StrUtil.h"
+#include "SFTypedefs.h"
+#include "String/StrUtil.h"
 #include "DBTrace.h"
 #include "DataSourceMYSQL.h"
 #include "SessionMYSQL.h"
 #include "Query.h"
 #include "QueryMYSQL.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/ResultCode/BRResultCodeDB.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "ResultCode/SFResultCodeDB.h"
 
 #include "errmsg.h"
 

@@ -10,8 +10,8 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
-#include "Common/PolicyID.h"
+#include "SFTypedefs.h"
+#include "Protocol/Protocol.h"
 #include "Net/NetDef.h"
 #include "Protocol/ProtocolTrace.h"
 #include "Protocol/Message/GameServerMsgDebug.h"

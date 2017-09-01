@@ -13,11 +13,11 @@
 #include "GameServer.h"
 #include "GameServerClass.h"
 
-#include "Common/ResultCode/BRResultCodeCommon.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
-#include "Common/ResultCode/BRResultCodeLogin.h"
-#include "Common/MemoryPool.h"
-#include "Common/BrBaseTypes.h"
+#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeGame.h"
+#include "ResultCode/SFResultCodeLogin.h"
+#include "Memory/MemoryPool.h"
+#include "Types/BrBaseTypes.h"
 
 #include "GameServerClass.h"
 #include "ServerSystem/BrServerUtil.h"
@@ -410,7 +410,7 @@ namespace GameServer {
 
 		Assert(m_ChatHistoryData.GetAllocatedSize() >= res.GetChatHistoryData().GetSize());
 		m_ChatHistoryData.SetSize(std::min(m_ChatHistoryData.GetAllocatedSize(), res.GetChatHistoryData().GetSize()));
-		memcpy(m_ChatHistoryData.data(), res.GetChatHistoryData().data(), sizeof(BYTE)*m_ChatHistoryData.GetSize());
+		memcpy(m_ChatHistoryData.data(), res.GetChatHistoryData().data(), sizeof(uint8_t)*m_ChatHistoryData.GetSize());
 
 		GetMyOwner()->UpdateDBSync();
 

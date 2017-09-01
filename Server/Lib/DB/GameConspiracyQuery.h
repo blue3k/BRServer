@@ -64,34 +64,34 @@ namespace DB {
 
 	struct PlayerGameScore
 	{
-		INT32	TotalPlayed;
-		INT32	WinPlaySC;
-		INT32	WinPlaySM;
-		INT32	WinPlaySS;
-		INT32	LosePlaySC;
-		INT32	LosePlaySM;
-		INT32	LosePlaySS;
-		INT32	WinPlayNC;
-		INT32	WinPlayNM;
-		INT32	WinPlayNS;
-		INT32	LosePlayNC;
-		INT32	LosePlayNM;
-		INT32	LosePlayNS;
+		int32_t	TotalPlayed;
+		int32_t	WinPlaySC;
+		int32_t	WinPlaySM;
+		int32_t	WinPlaySS;
+		int32_t	LosePlaySC;
+		int32_t	LosePlaySM;
+		int32_t	LosePlaySS;
+		int32_t	WinPlayNC;
+		int32_t	WinPlayNM;
+		int32_t	WinPlayNS;
+		int32_t	LosePlayNC;
+		int32_t	LosePlayNM;
+		int32_t	LosePlayNS;
 	};
 
 	struct QueryGetPlayerInfoData : public PlayerGameScore
 	{
 		char    GameNick[Const::MAX_USERNAME];
-		BYTE	Grade;
+		uint8_t	Grade;
 		SHORT	Level;
-		INT64	Exp;
-		INT64	GameMoney;
-		INT64	Gem;
+		int64_t	Exp;
+		int64_t	GameMoney;
+		int64_t	Gem;
 		SHORT	Stamina;
 		SHORT	AddedFriendSlot;
-		INT32	WeeklyPlayWin;
-		INT32	WeeklyPlayLose;
-		INT64	LatestTickTime;
+		int32_t	WeeklyPlayWin;
+		int32_t	WeeklyPlayLose;
+		int64_t	LatestTickTime;
 	};
 
 
@@ -102,16 +102,16 @@ namespace DB {
 
 	struct QueryGetPlayerScoreRawSet
 	{
-		INT32 m_PlayerID;
-		BYTE m_UName[BINSIZE_NAME];
-		INT16 m_Gender;
+		int32_t m_PlayerID;
+		uint8_t m_UName[BINSIZE_NAME];
+		int16_t m_Gender;
 	};
 
 	class QueryGetPlayerScoreList : public QueryGetPlayerScoreRawSet,  public QueryBase
 	{
 	public:
-		INT64 m_AccountID;
-		INT32 m_Result;
+		int64_t m_AccountID;
+		int32_t m_Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerScoreList,2)
@@ -130,17 +130,17 @@ namespace DB {
 		BRDB_QUERYSTRING( "spGetScoreList", BRDB_PARAM_2 )
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_GAMEDB, QueryGetPlayerScoreList, QueryGetPlayerScoreRawSet);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetPlayerScoreList, QueryGetPlayerScoreRawSet);
 
 
 	class QueryCreatePlayerInfo : public QueryGetPlayerInfoData, public QueryBase
 	{
 	public:
 		// Player ID
-		INT64	PlayerID;
+		int64_t	PlayerID;
 		INT		InitialStamina;
 		// result
-		INT32	Result;
+		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryCreatePlayerInfo, 3)
@@ -183,17 +183,17 @@ namespace DB {
 		BRDB_QUERYSTRING( "spCreatePlayerInfo", BRDB_PARAM_3 )
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_GAMEDB, QueryCreatePlayerInfo, QueryGetPlayerInfoData);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryCreatePlayerInfo, QueryGetPlayerInfoData);
 
 
 	class QueryGetPlayerInfo : public QueryGetPlayerInfoData, public QueryBase
 	{
 	public:
 		// Player ID
-		INT64	PlayerID;
+		int64_t	PlayerID;
 
 		// result
-		INT32	Result;
+		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerInfo, 2)
@@ -235,30 +235,30 @@ namespace DB {
 			BRDB_QUERYSTRING("spGetPlayerInfo", BRDB_PARAM_2)
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_GAMEDB, QueryGetPlayerInfo, QueryGetPlayerInfoData);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetPlayerInfo, QueryGetPlayerInfoData);
 
 
 	
 	struct QuerySetPlayerInfoData : public PlayerGameScore
 	{
 		SHORT	Level;
-		INT64	Exp;
-		INT64	GameMoney;
-		INT64	Gem;
+		int64_t	Exp;
+		int64_t	GameMoney;
+		int64_t	Gem;
 		SHORT	Stamina;
 		SHORT	AddedFriendSlot;
-		INT32	LatestActiveTime;
-		INT64	LatestTickTime;
+		int32_t	LatestActiveTime;
+		int64_t	LatestTickTime;
 	};
 
 	class QuerySetPlayerInfo : public QuerySetPlayerInfoData, public QueryBase
 	{
 	public:
 		// Player ID
-		INT64	PlayerID;
+		int64_t	PlayerID;
 
 		// result
-		INT32	Result;
+		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QuerySetPlayerInfo,23)
@@ -293,7 +293,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spSetPlayerInfo", BRDB_PARAM_23 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB,QuerySetPlayerInfo);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QuerySetPlayerInfo);
 
 
 
@@ -301,21 +301,21 @@ namespace DB {
 	{
 	public:
 		// Player ID
-		INT64	PlayerID;
+		int64_t	PlayerID;
 		SHORT	Level;
-		INT64	Exp;
-		INT64	GameMoney;
-		INT64	Gem;
+		int64_t	Exp;
+		int64_t	GameMoney;
+		int64_t	Gem;
 		SHORT	Stamina;
 		SHORT	AddedFriendSlot;
-		BYTE    PurchaseID[Const::MAX_PURCHASEID];
+		uint8_t    PurchaseID[Const::MAX_PURCHASEID];
 		char    PurchasePlatform[Const::MAX_PLATFORM_NAME];
 		char    PurchaseToken[Const::MAX_PURCHASETOKEN];
-		INT32	LatestActiveTime;
-		INT64	LatestTickTime;
+		int32_t	LatestActiveTime;
+		int64_t	LatestTickTime;
 
 		// result
-		INT32	Result;
+		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QuerySavePurchaseInfoToDB, 13)
@@ -340,17 +340,17 @@ namespace DB {
 		BRDB_QUERYSTRING( "spSavePurchaseInfoToDB", BRDB_PARAM_13 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QuerySavePurchaseInfoToDB);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySavePurchaseInfoToDB);
 
 
 	class QueryCheckPurchaseID : public QueryBase
 	{
 	public:
 		// Player ID
-		BYTE    PurchaseID[Const::MAX_PURCHASEID];
+		uint8_t    PurchaseID[Const::MAX_PURCHASEID];
 
 		// result
-		INT32	Result;
+		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryCheckPurchaseID, 2)
@@ -364,7 +364,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spCheckPurchaseID", BRDB_PARAM_2)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryCheckPurchaseID);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryCheckPurchaseID);
 
 
 
@@ -379,10 +379,10 @@ namespace DB {
 	{
 	public:
 
-		INT64 PlayerID;
+		int64_t PlayerID;
 
 		char NickName[Const::MAX_USERNAME];
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QuerySetNickName, 3)
@@ -396,7 +396,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spSetNickName", BRDB_PARAM_3)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QuerySetNickName);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySetNickName);
 
 
 
@@ -409,10 +409,10 @@ namespace DB {
 	{
 	public:
 
-		INT64 PlayerID;
+		int64_t PlayerID;
 
 		char NickName[Const::MAX_USERNAME];
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetNickName, 3)
@@ -426,7 +426,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spGetNickName", BRDB_PARAM_3)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryGetNickName);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetNickName);
 
 
 
@@ -434,14 +434,14 @@ namespace DB {
 	{
 	public:
 		// Player ID
-		INT64	PlayerID;
+		int64_t	PlayerID;
 		SHORT	Level;
-		INT64	Exp;
-		INT64	GameMoney;
-		INT32	LatestActiveTime;
+		int64_t	Exp;
+		int64_t	GameMoney;
+		int32_t	LatestActiveTime;
 
 		// result
-		INT32	Result;
+		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryUpdateGameEnd,19)
@@ -471,7 +471,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spUpdateGameEnd", BRDB_PARAM_19 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB,QueryUpdateGameEnd);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryUpdateGameEnd);
 
 
 
@@ -479,15 +479,15 @@ namespace DB {
 	{
 	public:
 		// Player ID
-		INT64	PlayerID;
-		INT64	Gem;
+		int64_t	PlayerID;
+		int64_t	Gem;
 		SHORT	Stamina;
 		SHORT	PlayerState;
-		INT32	LatestActiveTime;
-		INT64	LatestTickTime;
+		int32_t	LatestActiveTime;
+		int64_t	LatestTickTime;
 
 		// result
-		INT32	Result;
+		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryUpdateJoinGame,7)
@@ -505,7 +505,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spUpdateJoinGame", BRDB_PARAM_7 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB,QueryUpdateJoinGame);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryUpdateJoinGame);
 
 
 
@@ -513,15 +513,15 @@ namespace DB {
 	{
 	public:
 		// Player ID
-		INT64	PlayerID;
-		INT64	Gem;
+		int64_t	PlayerID;
+		int64_t	Gem;
 		SHORT	Stamina;
 		SHORT	PlayerState;
-		INT32	LatestActiveTime;
-		INT64	LatestTickTime;
+		int32_t	LatestActiveTime;
+		int64_t	LatestTickTime;
 
 		// result
-		INT32	Result;
+		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryUpdateTickStatus,7)
@@ -539,7 +539,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spUpdateTickStatus", BRDB_PARAM_7 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB,QueryUpdateTickStatus);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryUpdateTickStatus);
 	
 
 
@@ -547,12 +547,12 @@ namespace DB {
 	{
 	public:
 		// Player ID
-		INT64	PlayerID;
+		int64_t	PlayerID;
 		SHORT	PlayerState;
-		INT32	LatestActiveTime;
+		int32_t	LatestActiveTime;
 
 		// result
-		INT32	Result;
+		int32_t	Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerStatus,4)
@@ -567,7 +567,7 @@ namespace DB {
 		BRDB_QUERYSTRING( "spGetPlayerStatus", BRDB_PARAM_4 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB,QueryGetPlayerStatus);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryGetPlayerStatus);
 
 
 
@@ -582,12 +582,12 @@ namespace DB {
 	{
 	public:
 
-		INT64 UserID;
-		INT32 Level;
-		INT32 WeeklyWin;
-		INT32 WeeklyLose;
+		int64_t UserID;
+		int32_t Level;
+		int32_t WeeklyWin;
+		int32_t WeeklyLose;
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetPlayerQuickInfo,5)
@@ -604,21 +604,21 @@ namespace DB {
 		BRDB_QUERYSTRING( "spGetPlayerQuickInfo", BRDB_PARAM_5 )
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB,QueryGetPlayerQuickInfo);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB,QueryGetPlayerQuickInfo);
 
 
 	class QueryGetFriendQuickInfo : public QueryBase
 	{
 	public:
 
-		INT64 PlayerID;
-		INT32 Level;
-		INT32 WeeklyWin;
-		INT32 WeeklyLose;
+		int64_t PlayerID;
+		int32_t Level;
+		int32_t WeeklyWin;
+		int32_t WeeklyLose;
 		SHORT	PlayerState;
-		INT32	LatestActiveTime;
+		int32_t	LatestActiveTime;
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetFriendQuickInfo, 7)
@@ -637,7 +637,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spGetFriendQuickInfo", BRDB_PARAM_7)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryGetFriendQuickInfo);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendQuickInfo);
 
 
 
@@ -645,15 +645,15 @@ namespace DB {
 	{
 	public:
 
-		INT64 PlayerID;
+		int64_t PlayerID;
 		char GameNick[Const::MAX_USERNAME];
-		INT32 Level;
-		INT32 WeeklyWin;
-		INT32 WeeklyLose;
+		int32_t Level;
+		int32_t WeeklyWin;
+		int32_t WeeklyLose;
 		SHORT	PlayerState;
-		INT32	LatestActiveTime;
+		int32_t	LatestActiveTime;
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetFriendQuickInfoWithNick, 8)
@@ -673,7 +673,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spGetFriendQuickInfoWithNick", BRDB_PARAM_8)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryGetFriendQuickInfoWithNick);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendQuickInfoWithNick);
 
 
 
@@ -681,12 +681,12 @@ namespace DB {
 	{
 	public:
 
-		INT64 PlayerID;
+		int64_t PlayerID;
 
-		INT32 Level;
-		INT32 AddedFriendSlot;
-		INT32 NumFriends;
-		INT32 Result;
+		int32_t Level;
+		int32_t AddedFriendSlot;
+		int32_t NumFriends;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetFriendSlotStatus, 5)
@@ -703,7 +703,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spGetFriendSlotStatus", BRDB_PARAM_5)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryGetFriendSlotStatus);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendSlotStatus);
 
 
 
@@ -716,12 +716,12 @@ namespace DB {
 	{
 	public:
 
-		INT64 UserID;
+		int64_t UserID;
 
-		INT64 FriendUID;
-		INT64 FriendFacebookUID;
-		INT32 FriendShardID;
-		INT32 Result;
+		int64_t FriendUID;
+		int64_t FriendFacebookUID;
+		int32_t FriendShardID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryAddFriend, 5)
@@ -737,7 +737,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spFriend_Add", BRDB_PARAM_5)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryAddFriend);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryAddFriend);
 
 
 
@@ -750,10 +750,10 @@ namespace DB {
 	{
 	public:
 
-		INT64 UserID;
+		int64_t UserID;
 
-		INT64 FriendUID;
-		INT32 Result;
+		int64_t FriendUID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryRemoveFriend, 3)
@@ -767,7 +767,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spFriend_Remove", BRDB_PARAM_3)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryRemoveFriend);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryRemoveFriend);
 
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -777,16 +777,16 @@ namespace DB {
 
 	struct QueryGetFriendListSet
 	{
-		INT64 FriendUID;
-		INT32 FriendShardID;
-		INT64 FriendFacebookUID;
-		INT64 FriendStaminaTime;
+		int64_t FriendUID;
+		int32_t FriendShardID;
+		int64_t FriendFacebookUID;
+		int64_t FriendStaminaTime;
 	};
 
 	class QueryGetFriendList : public QueryGetFriendListSet, public QueryBase
 	{
 	public:
-		INT64 UserID;
+		int64_t UserID;
 
 
 	public:
@@ -806,7 +806,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spFriend_List", BRDB_PARAM_1)
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_GAMEDB, QueryGetFriendList, QueryGetFriendListSet);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryGetFriendList, QueryGetFriendListSet);
 
 
 
@@ -814,11 +814,11 @@ namespace DB {
 	{
 	public:
 
-		INT64 UserID;
-		INT64 FriendUID;
-		INT64 TimeStamp;
+		int64_t UserID;
+		int64_t FriendUID;
+		int64_t TimeStamp;
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryUpdateFriendStaminaTime, 4)
@@ -833,7 +833,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spFriend_UpdateStaminaTime", BRDB_PARAM_4)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryUpdateFriendStaminaTime);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryUpdateFriendStaminaTime);
 
 
 
@@ -846,16 +846,16 @@ namespace DB {
 	{
 	public:
 
-		INT64 UserID;
-		INT8 Collapsable;
-		UINT16 MessageID;
-		INT64 MessageParam0;
-		INT64 MessageParam1;
+		int64_t UserID;
+		int8_t Collapsable;
+		uint16_t MessageID;
+		int64_t MessageParam0;
+		int64_t MessageParam1;
 		char MessageText[Const::MAX_NOTIFICATION_TEXT];
-		INT64 TimeStamp;
+		int64_t TimeStamp;
 
-		INT32 NotificationID;
-		INT32 Result;
+		int32_t NotificationID;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryNotification_Add, 9)
@@ -875,26 +875,26 @@ namespace DB {
 			BRDB_QUERYSTRING("spNotification_Add", BRDB_PARAM_9)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryNotification_Add);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_Add);
 
 
 	struct QueryNotification_GetListSet
 	{
-		INT32 NotificationID;
-		INT16 MessageID;
-		INT64 MessageParam0;
-		INT64 MessageParam1;
+		int32_t NotificationID;
+		int16_t MessageID;
+		int64_t MessageParam0;
+		int64_t MessageParam1;
 		char MessageText[Const::MAX_NOTIFICATION_TEXT];
-		INT64 TimeStamp;
-		BYTE IsRead;
+		int64_t TimeStamp;
+		uint8_t IsRead;
 	};
 
 	class QueryNotification_GetList : public QueryNotification_GetListSet, public QueryBase
 	{
 	public:
-		INT64 UserID;
+		int64_t UserID;
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryNotification_GetList, 2)
@@ -918,17 +918,17 @@ namespace DB {
 			BRDB_QUERYSTRING("spNotification_GetList", BRDB_PARAM_2)
 	};
 
-	BRDB_DEFINE_ROWSETQUERYCLASS(POLICY_GAMEDB, QueryNotification_GetList, QueryNotification_GetListSet);
+	BRDB_DEFINE_ROWSETQUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_GetList, QueryNotification_GetListSet);
 
 
 
 	class QueryNotification_Remove : public QueryBase
 	{
 	public:
-		INT64 UserID;
-		INT32 NotificationID;
+		int64_t UserID;
+		int32_t NotificationID;
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryNotification_Remove, 3)
@@ -942,16 +942,16 @@ namespace DB {
 			BRDB_QUERYSTRING("spNotification_Remove", BRDB_PARAM_3)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryNotification_Remove);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_Remove);
 
 
 	class QueryNotification_RemoveByMessageID : public QueryBase
 	{
 	public:
-		INT64 UserID;
-		INT16 MessageID;
+		int64_t UserID;
+		int16_t MessageID;
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryNotification_RemoveByMessageID, 3)
@@ -965,16 +965,16 @@ namespace DB {
 			BRDB_QUERYSTRING("spNotification_RemoveByMessageID", BRDB_PARAM_3)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryNotification_RemoveByMessageID);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_RemoveByMessageID);
 
 
 	class QueryNotification_SetRead : public QueryBase
 	{
 	public:
-		INT64 UserID;
-		INT32 NotificationID;
+		int64_t UserID;
+		int32_t NotificationID;
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryNotification_SetRead, 3)
@@ -988,17 +988,17 @@ namespace DB {
 			BRDB_QUERYSTRING("spNotification_SetRead", BRDB_PARAM_3)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryNotification_SetRead);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryNotification_SetRead);
 
 
 
 	class QuerySetComplitionState : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
+		int64_t PlayerID;
 		char ComplitionState[Const::MAX_COMPLITIONSTATE];
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QuerySetComplitionState, 2)
@@ -1010,16 +1010,16 @@ namespace DB {
 			BRDB_QUERYSTRING("spSetComplitionState", BRDB_PARAM_2)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QuerySetComplitionState);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QuerySetComplitionState);
 
 
 	class QueryGetComplitionState : public QueryBase
 	{
 	public:
-		INT64 PlayerID;
+		int64_t PlayerID;
 		char ComplitionState[Const::MAX_COMPLITIONSTATE];
 
-		INT32 Result;
+		int32_t Result;
 
 	public:
 		BRDB_BEGIN_PARAM_MAP(QueryGetComplitionState, 2)
@@ -1032,7 +1032,7 @@ namespace DB {
 			BRDB_QUERYSTRING("spGetComplitionState", BRDB_PARAM_2)
 	};
 
-	BRDB_DEFINE_QUERYCLASS(POLICY_GAMEDB, QueryGetComplitionState);
+	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_GAMEDB, QueryGetComplitionState);
 
 
 } // namespace DB

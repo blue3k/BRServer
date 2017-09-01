@@ -12,10 +12,10 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
-#include "Common/BrMemory.h"
+#include "String/StrUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
+#include "Memory/SFMemory.h"
 #include "Common/GameConst.h"
 #include "Net/NetDef.h"
 #include "Net/NetServerUDP.h"

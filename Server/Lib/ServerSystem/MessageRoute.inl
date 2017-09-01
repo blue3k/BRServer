@@ -11,8 +11,8 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "SFTypedefs.h"
+#include "ResultCode/SFResultCodeCommon.h"
 #include "ServerSystem/MessageRoute.h"
 
 

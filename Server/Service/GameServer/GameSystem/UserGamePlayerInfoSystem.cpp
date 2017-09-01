@@ -13,11 +13,11 @@
 
 #include "stdafx.h"
 
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/ResultCode/BRResultCodeSystem.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
+#include "ResultCode/SFResultCodeSystem.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "ResultCode/SFResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
@@ -267,7 +267,7 @@ namespace GameServer {
 		return hr;
 	}
 
-	Result UserGamePlayerInfoSystem::GainExp( UINT64 expGain )
+	Result UserGamePlayerInfoSystem::GainExp( uint64_t expGain )
 	{
 		Result hr = ResultCode::SUCCESS;
 		conspiracy::LevelTbl::LevelItem *pNextLevelInfo = nullptr;
@@ -406,7 +406,7 @@ namespace GameServer {
 	}
 	
 	// gain game money
-	Result UserGamePlayerInfoSystem::GainGameMoney( INT64 numValue )
+	Result UserGamePlayerInfoSystem::GainGameMoney( int64_t numValue )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -415,7 +415,7 @@ namespace GameServer {
 		Assert(m_MaxGameMoney > 0);
 
 		m_GameMoney = std::min( m_GameMoney + numValue, m_MaxGameMoney );
-		m_GameMoney = std::max( m_GameMoney, (INT64)0 );
+		m_GameMoney = std::max( m_GameMoney, (int64_t)0 );
 
 	Proc_End:
 
@@ -423,7 +423,7 @@ namespace GameServer {
 	}
 
 	// gain gem
-	Result UserGamePlayerInfoSystem::GainGem( INT64 numValue )
+	Result UserGamePlayerInfoSystem::GainGem( int64_t numValue )
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -432,7 +432,7 @@ namespace GameServer {
 		Assert(m_MaxGem > 0);
 
 		m_Gem = std::min( m_Gem + numValue, m_MaxGem );
-		m_Gem = std::max( m_Gem, (INT64)0 );
+		m_Gem = std::max( m_Gem, (int64_t)0 );
 
 	Proc_End:
 
@@ -511,7 +511,7 @@ namespace GameServer {
 	}
 
 
-	Result UserGamePlayerInfoSystem::SavePurchaseInfoToDB(TransactionID transID, const Array<BYTE>& purchaseID, const char* purchasePlatform, const char* purchaseToken)
+	Result UserGamePlayerInfoSystem::SavePurchaseInfoToDB(TransactionID transID, const Array<uint8_t>& purchaseID, const char* purchasePlatform, const char* purchaseToken)
 	{
 		if (purchasePlatform == nullptr || purchaseToken == nullptr)
 			return ResultCode::INVALID_ARG;

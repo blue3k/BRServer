@@ -14,8 +14,8 @@
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
 #include "GameServerClass.h"
-#include "Common/MemoryPool.h"
-#include "Common/BrBaseTypes.h"
+#include "Memory/MemoryPool.h"
+#include "Types/BrBaseTypes.h"
 #include "Protocol/Message/GameMsgClass.h"
 #include "Protocol/Policy/GameIPolicy.h"
 

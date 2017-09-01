@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 
 #include "DB/GameTransactionDB.h"
 #include "DB/GameTransactionDBQuery.h"
@@ -49,7 +49,7 @@ namespace DB {
 	//
 
 	// Add game log
-	Result GameTransactionDB::AddGameLog(UINT shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, UINT64 totalValue, const char* logMessage)
+	Result GameTransactionDB::AddGameLog(UINT shardID, const PlayerID &playerID, TimeStampSec gameTime, TransLogCategory LogCategory, INT consume, INT gain, uint64_t totalValue, const char* logMessage)
 	{
 		Result hr = ResultCode::SUCCESS;
 		QueryAddGameLogCmd *pQuery = nullptr;

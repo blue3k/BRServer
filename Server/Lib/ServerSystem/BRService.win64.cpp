@@ -13,10 +13,10 @@
 #if WINDOWS
 
 #include <conio.h>
-#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "ResultCode/SFResultCodeSvr.h"
 #include "Serversystem/SvrTrace.h"
 #include "Serversystem/BRService.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Net/NetUtil.h"
 #include "ServerSystem/ParameterSetting.h"
 

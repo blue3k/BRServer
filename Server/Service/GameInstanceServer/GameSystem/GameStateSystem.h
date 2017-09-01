@@ -11,9 +11,9 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/BrGameTypes.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "Common/ClassUtil.h"
 #include "ServerSystem/GameSystem.h"
 #include "GameSystem/GameVote.h"

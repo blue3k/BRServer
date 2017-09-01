@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
 
 #include "ServerSystem/EntityManager.h"
@@ -39,7 +39,7 @@ namespace ConspiracyGameInstanceServer {
 		typedef Svr::EntityManager super;
 
 	private:
-		Svr::PerformanceCounterRaw < UINT64 > m_NumberOfPlayers;
+		Svr::PerformanceCounterRaw < uint64_t > m_NumberOfPlayers;
 
 	public:
 		// Constructor/Destructor

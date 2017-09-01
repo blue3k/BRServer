@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "openssl/crypto.h"
 #include "Common/SystemSynchronization.h"
 #include "Common/ArrayUtil.h"
@@ -37,7 +37,7 @@ namespace Google {
 
 		class OAuth* m_OAuth;
 
-		StaticArray<BYTE, 4096> m_ResultBuffer;
+		StaticArray<uint8_t, 4096> m_ResultBuffer;
 
 		std::string m_DeveloperPayload;
 

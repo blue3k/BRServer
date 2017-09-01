@@ -202,12 +202,12 @@ namespace Svr {
 
 			Message::MessageData * pMsg = nullptr;
 
-			StaticArray<UINT64, 100> counterValues;
+			StaticArray<uint64_t, 100> counterValues;
 			auto& counters = pInstance->GetCounters();
 			for (UINT iCounter = 0; iCounter < counters.GetSize(); iCounter++)
 			{
-				UINT64 value = 0;
-				if (!(counters[iCounter]->CopyTo((UINT)sizeof(value), (BYTE*)&value)))
+				uint64_t value = 0;
+				if (!(counters[iCounter]->CopyTo((UINT)sizeof(value), (uint8_t*)&value)))
 				{
 					Assert(false);
 					break;

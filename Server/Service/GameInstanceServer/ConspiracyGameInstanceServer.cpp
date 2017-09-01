@@ -3,10 +3,10 @@
 
 #include "stdafx.h"
 #include "Common/BrLibComponents.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/TraceComponent.h"
 #include "Common/DefaultLibComponent.h"
-#include "Common/MemoryPool.h"
+#include "Memory/MemoryPool.h"
 #include "ServerSystem/BrService.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ParameterSetting.h"

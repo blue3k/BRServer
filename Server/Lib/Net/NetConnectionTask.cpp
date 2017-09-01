@@ -12,10 +12,10 @@
 
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeNet.h"
+#include "ResultCode/SFResultCodeNet.h"
 #include "Net/NetConst.h"
-#include "Common/Thread.h"
-#include "Common/TimeUtil.h"
+#include "Thread/Thread.h"
+#include "Util/TimeUtil.h"
 #include "Net/Connection.h"
 #include "Net/NetTrace.h"
 #include "Net/NetConnectionTask.h"

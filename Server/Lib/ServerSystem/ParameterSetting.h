@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/OrderedLinkedList.h"
 #include "Common/StringKey.h"
 

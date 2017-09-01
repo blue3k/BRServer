@@ -13,7 +13,7 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 
@@ -35,7 +35,7 @@ namespace Svr {
 	protected:
 
 		BRCLASS_ATTRIBUTE_READONLY(ServerServiceInformation*,ServerServiceInformation);
-		BRCLASS_ATTRIBUTE_READONLY(UINT,PolicyID);
+		BRCLASS_ATTRIBUTE_READONLY(UINT,ProtocolID);
 
 	public:
 		ServerServiceBase( ServerServiceInformation* pService, UINT policyID )

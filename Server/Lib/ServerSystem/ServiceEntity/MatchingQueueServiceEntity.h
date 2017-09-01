@@ -13,11 +13,11 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrMemory.h"
+#include "Memory/SFMemory.h"
 #include "Common/BrSvrTypes.h"
-#include "Common/PageQueue.h"
+#include "Container/PageQueue.h"
 #include "Common/LocalUIDGenerator.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
@@ -81,7 +81,7 @@ namespace Svr {
 
 		};
 
-		typedef Hash::HashTable2<UINT64, QueueItem*> QueueItemIDTable;
+		typedef Hash::HashTable2<uint64_t, QueueItem*> QueueItemIDTable;
 
 
 	private:
@@ -101,7 +101,7 @@ namespace Svr {
 		SyncCounter				m_ItemCounter;
 		Util::TimeStampTimer	m_WorkloadUpdateTimer;
 
-		PerformanceCounterRaw<UINT64> m_QueuedItemCount;
+		PerformanceCounterRaw<uint64_t> m_QueuedItemCount;
 
 	protected:
 

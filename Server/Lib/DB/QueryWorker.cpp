@@ -12,9 +12,9 @@
 
 #include "stdafx.h"
 //#include <atldbcli.h>
-#include "Common/Typedefs.h"
-#include "Common/StrUtil.h"
-#include "Common/ResultCode/BRResultCodeDB.h"
+#include "SFTypedefs.h"
+#include "String/StrUtil.h"
+#include "ResultCode/SFResultCodeDB.h"
 
 #include "QueryWorker.h"
 #include "DBTrace.h"

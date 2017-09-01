@@ -13,12 +13,12 @@
 #pragma once
 
 
-#include "Common/Typedefs.h"
-#include "Common/TimeUtil.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "SFTypedefs.h"
+#include "Util/TimeUtil.h"
+#include "ResultCode/SFResultCodeSvr.h"
 #include "Net/NetDef.h"
-#include "Common/MemoryPool.h"
-#include "Common/Message.h"
+#include "Memory/MemoryPool.h"
+#include "Net/Message.h"
 #include "Common/BrSvrTypes.h"
 
 #include "ServerSystem/SvrConst.h"

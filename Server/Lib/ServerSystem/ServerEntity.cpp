@@ -11,10 +11,10 @@
 
 
 #include "stdafx.h"
-#include "Common/StrUtil.h"
-#include "Common/TimeUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "Util/TimeUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "Net/NetServerPeer.h"
 #include "Net/NetServerPeerTCP.h"
 #include "ServerSystem/SvrConstDefault.h"
@@ -72,8 +72,8 @@ namespace Svr {
 
 		pConn->SetEventHandler(this);
 
-		svrChk(pConn->CreatePolicy(POLICY_SERVER));
-		svrChk(pConn->CreatePolicy(POLICY_SVR_SERVER));
+		svrChk(pConn->CreatePolicy(PROTOCOLID_SERVER));
+		svrChk(pConn->CreatePolicy(PROTOCOLID_SVR_SERVER));
 
 		if (m_ServerID == 0 && pConn->GetConnectionInfo().RemoteID != 0)
 			m_ServerID = (ServerID)pConn->GetConnectionInfo().RemoteID;

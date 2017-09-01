@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include "Common/PolicyID.h"
-#include "Common/Message.h"
+#include "Protocol/Protocol.h"
+#include "Net/Message.h"
 #include "Common/BrSvrTypes.h"
 #include "Common/BrGameTypes.h"
 

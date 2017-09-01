@@ -14,10 +14,10 @@
 
 #include "stdafx.h"
 
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Common/BrRandom.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "ResultCode/SFResultCodeGame.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"

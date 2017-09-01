@@ -12,10 +12,10 @@
 
 #include "stdafx.h"
 #include "Net/NetServerUDP.h"
-#include "Common/TimeUtil.h"
-#include "Common/BrBaseTypes.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
-#include "Common/ResultCode/BRResultCodeGame.h"
+#include "Util/TimeUtil.h"
+#include "Types/BrBaseTypes.h"
+#include "ResultCode/SFResultCodeCommon.h"
+#include "ResultCode/SFResultCodeGame.h"
 
 
 #include "Protocol/Policy/GameServerIPolicy.h"

@@ -10,12 +10,12 @@
 
 
 #include "stdafx.h"
-#include "Common/Typedefs.h"
+#include "SFTypedefs.h"
 #include "Common/BrXML.h"
-#include "Common/Trace.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/ResultCode/BRResultCodeDB.h"
-#include "Common/TimeUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "ResultCode/SFResultCodeDB.h"
+#include "Util/TimeUtil.h"
 
 #include "TableSystem.h"
 #include "DB/DataSource.h"

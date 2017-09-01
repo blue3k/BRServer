@@ -12,9 +12,9 @@
 
 #include "stdafx.h"
 
-#include "Common/StrUtil.h"
-#include "Common/Trace.h"
-#include "Common/Thread.h"
+#include "String/StrUtil.h"
+#include "ServerLog/SvrLog.h"
+#include "Thread/Thread.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/MessageRoute.h"
@@ -302,7 +302,7 @@ namespace BR {
 	//	Transaction network message result class
 	//
 
-	const Message::MessageID TimerResult::MID = Message::MessageID(Message::MSGTYPE_RESULT, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, POLICY_SVR_SYSTEM, 1);
+	const Message::MessageID TimerResult::MID = Message::MessageID(Message::MSGTYPE_RESULT, Message::MSGTYPE_RELIABLE, Message::MSGTYPE_NONE, PROTOCOLID_SVR_SYSTEM, 1);
 
 	TimerResult::TimerResult()
 	{

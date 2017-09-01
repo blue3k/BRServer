@@ -10,10 +10,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
+#include "ResultCode/SFResultCodeSvr.h"
 #include "SvrTrace.h"
 #include "BrService.h"
-#include "Common/TimeUtil.h"
+#include "Util/TimeUtil.h"
 #include "Net/NetUtil.h"
 #include "ServerSystem/ParameterSetting.h"
 
