@@ -34,11 +34,8 @@
     <Filter Include="Task">
       <UniqueIdentifier>{8f66504b-3e11-4c00-96f1-5d3c09c6e7e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{ef5592b3-a1dc-43ed-88a6-9a58447f3a53}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Memory">
-      <UniqueIdentifier>{079dc85e-b7bc-4512-beb9-12565845140e}</UniqueIdentifier>
+    <Filter Include="FixedString">
+      <UniqueIdentifier>{5ed6ae12-171b-41ae-a4ff-e669f40b45a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +43,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GlobalUIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)LocalUIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)UniqueEntityIDGenerator.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Argument.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Binary.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
@@ -70,6 +70,18 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BrXML.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ToString.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ToStringBase.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ToStringGame.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ToStringSvr.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp">
       <Filter>System</Filter>
     </ClCompile>
@@ -78,6 +90,12 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ObjectPool.cpp">
       <Filter>Container</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SharedObject.cpp">
+      <Filter>SharedPointer</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SharedReferenceManager.cpp">
+      <Filter>SharedPointer</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\Task.cpp">
       <Filter>Task</Filter>
@@ -145,42 +163,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Utility.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\FixedStringDB.cpp">
-      <Filter>String</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\SFString.cpp">
-      <Filter>String</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Object\SharedReferenceManager.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Object\SharedObject.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\Argument.cpp">
-      <Filter>String</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\ToString.cpp">
-      <Filter>String</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringBase.cpp">
-      <Filter>String</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringGame.cpp">
-      <Filter>String</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp">
-      <Filter>String</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Memory\MemoryPool.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Memory\SFMemory.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Memory\MemoryManager.cpp">
-      <Filter>Memory</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameConst.h" />
@@ -193,6 +175,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)LocalUIDGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Memento.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UniqueEntityIDGenerator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Argument.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ArrayUtil.h">
       <Filter>Utility</Filter>
     </ClInclude>
@@ -262,6 +247,18 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CircularQueue.h">
       <Filter>Container</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ToString.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ToStringBase.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ToStringGame.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ToStringSvr.h">
+      <Filter>String</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Memory_Impl.h">
       <Filter>System</Filter>
     </ClInclude>
@@ -308,6 +305,15 @@
       <Filter>Container</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SharedObj.h">
+      <Filter>SharedPointer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharedObject.h">
+      <Filter>SharedPointer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharedPointer.h">
+      <Filter>SharedPointer</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharedReferenceManager.h">
       <Filter>SharedPointer</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\TimeSchedulerAction.h">
@@ -400,67 +406,20 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\FixedStringDB.h">
-      <Filter>String</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedString.h">
+      <Filter>FixedString</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\Hasher32.h">
-      <Filter>String</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedString32.h">
+      <Filter>FixedString</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\Hasher64.h">
-      <Filter>String</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedStringDB.h">
+      <Filter>FixedString</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\FixedString.h">
-      <Filter>String</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\Hasher64.h">
+      <Filter>FixedString</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\FixedString32.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\SFString.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)SFTypedefs.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SFAssert.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Object\SharedPointer.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Object\SharedReferenceManager.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Object\SharedObject.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\Argument.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\ToString.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringBase.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringGame.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\MemoryManager.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\MemoryPool.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\SFMemory.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\IMemoryManager.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\Memory_Impl.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\MemoryBufferUtil.h">
-      <Filter>Memory</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\Hasher32.h">
+      <Filter>FixedString</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -581,11 +540,8 @@
     <None Include="$(MSBuildThisFileDirectory)Utility.inl">
       <Filter>Utility</Filter>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)String\HashCRC32Table.inl">
-      <Filter>String</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)Memory\MemoryPool.inl">
-      <Filter>Memory</Filter>
+    <None Include="$(MSBuildThisFileDirectory)FixedString\HashCRC32Table.inl">
+      <Filter>FixedString</Filter>
     </None>
   </ItemGroup>
 </Project>

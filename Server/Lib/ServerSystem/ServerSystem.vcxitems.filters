@@ -58,9 +58,6 @@
     <Filter Include="Config\GameSample">
       <UniqueIdentifier>{a2e36521-7e65-4b5e-93e3-75aeb47d1b8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ZooKeeper">
-      <UniqueIdentifier>{ee56321a-a7d8-4475-850c-f5529263bf65}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameLog\GameLog.h" />
@@ -326,9 +323,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.h">
       <Filter>ServerService\Ranking</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h">
-      <Filter>ZooKeeper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -642,9 +636,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.cpp">
       <Filter>ServerService\Ranking</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp">
-      <Filter>ZooKeeper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

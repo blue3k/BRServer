@@ -15,6 +15,7 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Argument.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ArrayUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Binary.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BrAssert.h" />
@@ -34,6 +35,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DefaultLibComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DualSortedMap.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)File\BRFile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedString.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedString32.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\FixedStringDB.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\Hasher32.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FixedString\Hasher64.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameConst.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GlobalUIDGenerator.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HashTable.h" />
@@ -47,18 +53,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryBufferUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryPool.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MemoryStream.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\IMemoryManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\MemoryBufferUtil.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\MemoryManager.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\MemoryPool.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\Memory_Impl.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Memory\SFMemory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Memory_Impl.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Message.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectPool.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Object\SharedObject.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Object\SharedPointer.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Object\SharedReferenceManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OrderedLinkedList.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PageQueue.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PolicyID.h" />
@@ -69,9 +66,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\BRResultCodeNet.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\BRResultCodeSvr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ResultCode\BRResultCodeSystem.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SFAssert.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SFTypedefs.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharedObj.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharedObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharedPointer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharedReferenceManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SortedMap.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpinBuffer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpinBufferMT.h" />
@@ -84,17 +82,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StrFormat.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StringKey.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\Argument.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\FixedString.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\FixedString32.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\FixedStringDB.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\Hasher32.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\Hasher64.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\SFString.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\ToString.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringBase.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringGame.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StrParserUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StrUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrPolicyID.h" />
@@ -109,6 +96,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Thread.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TicketQueue.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TimeUtil.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ToString.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ToStringBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ToStringGame.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ToStringSvr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Trace.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TraceComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Trace_Internal.h" />
@@ -118,6 +109,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Argument.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Binary.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BrGameTypes.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BrLibComponents.cpp" />
@@ -136,23 +128,13 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)LocalUIDGenerator.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryPool.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MemoryStream.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Memory\MemoryManager.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Memory\MemoryPool.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Memory\SFMemory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Message.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ObjectPool.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Object\SharedObject.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Object\SharedReferenceManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SharedObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SharedReferenceManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StackPool.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StackWalker.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StringKey.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\Argument.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\FixedStringDB.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\SFString.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\ToString.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringBase.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringGame.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StrParserUtil.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StrUtil.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Synchronization.cpp" />
@@ -162,6 +144,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\TimeScheduler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Thread.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TimeUtil.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ToString.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ToStringBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ToStringGame.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ToStringSvr.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Trace.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TraceComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TypeUtility.cpp" />
@@ -211,6 +197,7 @@
     <None Include="$(MSBuildThisFileDirectory)DualSortedMap.inl">
       <FileType>Document</FileType>
     </None>
+    <None Include="$(MSBuildThisFileDirectory)FixedString\HashCRC32Table.inl" />
     <None Include="$(MSBuildThisFileDirectory)MathUtil.inl">
       <FileType>Document</FileType>
     </None>
@@ -220,7 +207,6 @@
     <None Include="$(MSBuildThisFileDirectory)MemoryStream.inl">
       <FileType>Document</FileType>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)Memory\MemoryPool.inl" />
     <None Include="$(MSBuildThisFileDirectory)Message.inl">
       <FileType>Document</FileType>
     </None>
@@ -248,7 +234,6 @@
     <None Include="$(MSBuildThisFileDirectory)StackPool.inl">
       <FileType>Document</FileType>
     </None>
-    <None Include="$(MSBuildThisFileDirectory)String\HashCRC32Table.inl" />
     <None Include="$(MSBuildThisFileDirectory)StrUtil.inl">
       <FileType>Document</FileType>
     </None>
