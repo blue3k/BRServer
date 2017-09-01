@@ -182,6 +182,10 @@ namespace Svr {
 		auto fileName = GetFileName();
 		IO::File fileStream;
 		char szBuff[1024];
+		TimeStampSec nowTime;
+		time_t time;
+		struct tm nowTimeTM;
+		char strFileName[MAX_PATH];
 
 		svrChk(super::StartTransaction());
 
@@ -193,12 +197,11 @@ namespace Svr {
 		svrChk(GetMyOwner()->GetRankingList(0, 100, m_RankingList));
 		//svrChk(GetMyOwner()->GetRankingListAll(m_RankingList));
 
-		TimeStampSec nowTime = Util::Time.GetRawUTCSec();
+		nowTime = Util::Time.GetRawUTCSec();
 
-		time_t time = nowTime.time_since_epoch().count() + Util::Time.GetUTCSecOffset().count();
-		struct tm nowTimeTM = *gmtime(&time);
+		time = nowTime.time_since_epoch().count() + Util::Time.GetUTCSecOffset().count();
+		nowTimeTM = *gmtime(&time);
 
-		char strFileName[MAX_PATH];		
 		snprintf(strFileName, MAX_PATH, "%s..\\log\\%s[%d_%04d_%02d_%02d]_%s_log.txt",
 			Util::GetModulePathA(), Util::GetServiceNameA(), nowTimeTM.tm_year + 1900, nowTimeTM.tm_mon + 1, nowTimeTM.tm_mday, nowTimeTM.tm_hour, fileName);
 
@@ -223,7 +226,7 @@ namespace Svr {
 		for (unsigned i = 0; i < m_RankingList.GetSize(); i++)
 		{
 			TotalRankingPlayerInformation& rankInfo = m_RankingList[i];
-			snprintf(szBuff, MAX_PATH, "%d, %d, %d, %d, %s, %d\n",
+			snprintf(szBuff, MAX_PATH, "%d, %llu, %llu, %llu, %s, %d\n", 
 				rankInfo.Ranking, rankInfo.GetLongScore(), rankInfo.PlayerID, rankInfo.FBUID, rankInfo.NickName, rankInfo.Level);
 			dwStrLen = (DWORD)strlen(szBuff);
 			fileStream.Write((byte*)szBuff, dwStrLen, szWritlen);

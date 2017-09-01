@@ -1,27 +1,31 @@
 # BRServer
 Braves Server 
 
-Visual Studio 2017 is required
-Visual Studio 2017가 필요함
+Visual Studio 2017 is required for linux 
+Visual Studio 2015 is required for windows 
 
-BrExternalBuild.sln: Build 3rdparites libraries
+StormForge should be linked and prebuilt
+
+
 BrServers.sln: Main server build, you can unload linux projectes if you don't need them
 BrTools.sln: Server tools
 
-BrExternalBuild.sln: 외부 라이브러리 빌드.
+
 BrServers.sln: 메인 빌드 프로젝트. 리눅스 프로젝트들은 필요없으면 언로드하여 사용하십시요.
 BrTools.sln: 서버 툴 빌
 
 
 
-1. Build(빌드 순서)
- - Build External libraries
+Linking StormForge.
+ - submodule haven't setup so use MakeJunctionSF.cmd or clone Stormforge to the root path
+
+
+1. Build order(빌드 순서)
+ - Build StormForge 3rdParties
+ - Build StormForge
+ - Sync StormForge libries(Run SyncSF3rdParites.cmd)
  - Build Tools
  - Build Main game server
-
- - 외부 라이브러리 빌드
- - 툴 빌드
- - 메인 게임 빌드
 
  
 2. DB setup
@@ -29,6 +33,7 @@ BrTools.sln: 서버 툴 빌
  - Unzip /Server/DBBackup/dbSchemaSQL.zip
  - Creates databases in each sql file. dbaccount, dbconspiracy00, dbgametransaction00, dbsession00, dbconspiracyranking, and dbconspiracytable
  - Run all sql files
+ - PlayerID 1~10 is reserved, create fake player by calling spCreateSystemPlayer('Bot', 0, 10, 2)
  
 Download: https://dev.mysql.com/downloads/mysql/ 
  
