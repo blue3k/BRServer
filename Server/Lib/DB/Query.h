@@ -15,7 +15,7 @@
 #include "Memory/MemoryPool.h"
 #include "DB/Factory.h"
 
-#include "ServerSystem/SvrTypes.h"
+#include "Types/SvrTypes.h"
 #include "ServerSystem/Transaction.h"
 #include "SvrPolicyID.h"
 #include "Net/Message.h"

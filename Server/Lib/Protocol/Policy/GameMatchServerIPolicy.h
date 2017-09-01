@@ -11,8 +11,8 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/BrSvrTypes.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrSvrTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Protocol/Protocol.h"
 #include "Net/Netdef.h"
 #include "Net/NetPolicy.h"
@@ -30,7 +30,7 @@ namespace BR
  			enum { ID_POLICY = PROTOCOLID_SVR_GAMEMATCHSERVER };
 
 			// Constructor
-			ISvrPolicyGameMatchServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			ISvrPolicyGameMatchServer( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Match
@@ -48,7 +48,7 @@ namespace BR
  			enum { ID_POLICY = PROTOCOLID_GAMEMATCHSERVER };
 
 			// Constructor
-			IPolicyGameMatchServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			IPolicyGameMatchServer( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Match

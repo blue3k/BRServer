@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "SFAssert.h"
 #include "ServerLog/SvrLog.h"
-#include "Common/Utility.h"
+#include "Util/Utility.h"
 #include "Common/StrParserUtil.h"
 #include "String/StrUtil.h"
 #include "ServerSystem/SvrTrace.h"

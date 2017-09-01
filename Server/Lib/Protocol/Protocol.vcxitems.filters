@@ -81,7 +81,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ProtocolTrace.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProtocolVer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Message\RankingServerMsgClass.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Message\RankingServerMsgDebug.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Policy\RankingServerNetPolicy.h" />

@@ -12,8 +12,8 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
-#include "Common/BrSvrTypes.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrSvrTypes.h"
+#include "Types/BrGameTypes.h"
 
 
 

@@ -13,10 +13,9 @@
 	
 
 #include "SFTypedefs.h"
-#include "Common/BrSvrTypes.h"
-#include "Common/BrCommonTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "DB/DBClusterManager.h"
-#include "Common/SvrPolicyID.h"
+#include "SvrPolicyID.h"
 #include "ServerSystem/ServerComponent.h"
 
 

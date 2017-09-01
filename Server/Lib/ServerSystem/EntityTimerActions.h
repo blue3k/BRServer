@@ -12,7 +12,7 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/Task/TimeScheduler.h"
+#include "Task/TimeScheduler.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/Transaction.h"
 #include "Memory/MemoryPool.h"

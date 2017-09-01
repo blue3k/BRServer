@@ -16,7 +16,7 @@
 #include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
 #include "Memory/SFMemory.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ServerServiceBase.h"

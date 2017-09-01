@@ -14,7 +14,7 @@
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BrServerUtil.h"
-#include "Common/Task/EventTask.h"
+#include "Task/ServerTaskEvent.h"
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
 #include "Types/BrBaseTypes.h"
@@ -36,7 +36,7 @@
 
 
 
-BR_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerEntity);
+SF_MEMORYPOOL_IMPLEMENT(BR::BR::Svr::LoginPlayerEntity);
 
 
 

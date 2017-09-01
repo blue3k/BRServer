@@ -12,7 +12,7 @@
 
 #include "SFTypedefs.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Protocol/Protocol.h"
 #include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
@@ -30,7 +30,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_SVR_LOGIN };
 
 			// Constructor
-			ISvrPolicyLogin( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			ISvrPolicyLogin( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Login request
@@ -58,7 +58,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_LOGIN };
 
 			// Constructor
-			IPolicyLogin( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			IPolicyLogin( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Login request

@@ -11,8 +11,8 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/BrSvrTypes.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrSvrTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Protocol/Protocol.h"
 #include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
@@ -31,7 +31,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_SVR_MONITORING };
 
 			// Constructor
-			ISvrPolicyMonitoring( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			ISvrPolicyMonitoring( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Add a player to ranking
@@ -53,7 +53,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_MONITORING };
 
 			// Constructor
-			IPolicyMonitoring( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			IPolicyMonitoring( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Add a player to ranking

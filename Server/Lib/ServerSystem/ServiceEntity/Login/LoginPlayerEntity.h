@@ -20,7 +20,7 @@
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/SimpleUserEntity.h"
 #include "Common/GameConst.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Common/GlobalUIDGenerator.h"
 
 

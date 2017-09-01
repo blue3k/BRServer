@@ -11,8 +11,8 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/BrSvrTypes.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrSvrTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Protocol/Protocol.h"
 #include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
@@ -31,7 +31,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_SVR_GAMEPARTY };
 
 			// Constructor
-			ISvrPolicyGameParty( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			ISvrPolicyGameParty( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Join Party
@@ -74,7 +74,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_GAMEPARTY };
 
 			// Constructor
-			IPolicyGameParty( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			IPolicyGameParty( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Join Party

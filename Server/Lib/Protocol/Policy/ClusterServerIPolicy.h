@@ -11,8 +11,8 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/BrSvrTypes.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrSvrTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Protocol/Protocol.h"
 #include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
@@ -31,7 +31,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_SVR_CLUSTERSERVER };
 
 			// Constructor
-			ISvrPolicyClusterServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			ISvrPolicyClusterServer( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Cluster member list query
@@ -61,7 +61,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_CLUSTERSERVER };
 
 			// Constructor
-			IPolicyClusterServer( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			IPolicyClusterServer( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// Cmd: Cluster member list query

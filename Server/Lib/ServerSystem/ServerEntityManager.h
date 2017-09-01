@@ -21,7 +21,7 @@
 #include "Net/NetDef.h"
 #include "Net/NetServerPeer.h"
 #include "Net/NetServerPeerTCP.h"
-#include "Common/Task/TaskManager.h"
+#include "Task/TaskManager.h"
 #include "ServerSystem/ServerEntity.h"
 #include "ServerSystem/ServerComponent.h"
 
@@ -45,7 +45,7 @@ namespace Svr
 
 		typedef Hash::HashTable2<ServerID, ServerEntity* > ServerIDMap;
 
-		typedef OrderedLinkedList<ULONGLONG> ServerUpTimeList;
+		typedef OrderedLinkedList<uint64_t> ServerUpTimeList;
 
 		// List node item
 		struct ServerUpTimeListNodeItem : public ServerUpTimeList::Node

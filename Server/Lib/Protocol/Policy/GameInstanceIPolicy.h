@@ -11,8 +11,8 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/BrSvrTypes.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrSvrTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Protocol/Protocol.h"
 #include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
@@ -31,7 +31,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_SVR_GAMEINSTANCE };
 
 			// Constructor
-			ISvrPolicyGameInstance( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			ISvrPolicyGameInstance( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// C2S: Game instance deletion
@@ -93,7 +93,7 @@ namespace BR
 			enum { ID_POLICY = PROTOCOLID_GAMEINSTANCE };
 
 			// Constructor
-			IPolicyGameInstance( Net::IConnection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
+			IPolicyGameInstance( Net::Connection* pConn ) : Net::INetPolicy(ID_POLICY, pConn)
 			{}
 
 			// C2S: Game instance deletion

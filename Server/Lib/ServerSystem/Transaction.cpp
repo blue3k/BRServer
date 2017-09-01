@@ -23,8 +23,8 @@
 #include "Common/SvrPolicyID.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::MessageResult);
-BR_MEMORYPOOL_IMPLEMENT(Svr::TimerResult);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MessageResult);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::TimerResult);
 
 
 namespace BR {
@@ -173,7 +173,7 @@ namespace BR {
 	///////////////////////////////////////////////////////////
 	// Helper functions
 
-	Net::IConnection* Transaction::GetServerEntityConnection(ServerEntity* pServerEntity)
+	Net::Connection* Transaction::GetServerEntityConnection(ServerEntity* pServerEntity)
 	{
 		if (pServerEntity == nullptr)
 			return nullptr;

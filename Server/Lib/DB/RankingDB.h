@@ -13,7 +13,7 @@
 	
 
 #include "SFTypedefs.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Common/BrCommonTypes.h"
 #include "DB/DBClusterManager.h"
 #include "Common/SvrPolicyID.h"

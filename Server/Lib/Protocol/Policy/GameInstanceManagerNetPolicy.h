@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyGameInstanceManager ( Net::IConnection* pConn ) : IPolicyGameInstanceManager(pConn)
+			NetPolicyGameInstanceManager ( Net::Connection* pConn ) : IPolicyGameInstanceManager(pConn)
 			{}
 
 			// Cmd: Create a game instance
@@ -41,7 +41,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyGameInstanceManager ( Net::IConnection* pConn ) : ISvrPolicyGameInstanceManager(pConn)
+			NetSvrPolicyGameInstanceManager ( Net::Connection* pConn ) : ISvrPolicyGameInstanceManager(pConn)
 			{}
 
 			// Cmd: Create a game instance

@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyPartyMatchingQueue ( Net::IConnection* pConn ) : IPolicyPartyMatchingQueue(pConn)
+			NetPolicyPartyMatchingQueue ( Net::Connection* pConn ) : IPolicyPartyMatchingQueue(pConn)
 			{}
 
 			// Cmd: Register match by party
@@ -57,7 +57,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyPartyMatchingQueue ( Net::IConnection* pConn ) : ISvrPolicyPartyMatchingQueue(pConn)
+			NetSvrPolicyPartyMatchingQueue ( Net::Connection* pConn ) : ISvrPolicyPartyMatchingQueue(pConn)
 			{}
 
 			// Cmd: Register match by party

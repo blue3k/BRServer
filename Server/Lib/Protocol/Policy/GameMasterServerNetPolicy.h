@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyGameMasterServer ( Net::IConnection* pConn ) : IPolicyGameMasterServer(pConn)
+			NetPolicyGameMasterServer ( Net::Connection* pConn ) : IPolicyGameMasterServer(pConn)
 			{}
 
 			// C2S: Player entered
@@ -41,7 +41,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyGameMasterServer ( Net::IConnection* pConn ) : ISvrPolicyGameMasterServer(pConn)
+			NetSvrPolicyGameMasterServer ( Net::Connection* pConn ) : ISvrPolicyGameMasterServer(pConn)
 			{}
 
 

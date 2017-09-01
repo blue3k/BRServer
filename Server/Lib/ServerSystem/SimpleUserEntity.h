@@ -73,7 +73,7 @@ namespace Svr {
 		virtual Result TerminateEntity() override;
 
 		// Process Connection event
-		virtual Result ProcessConnectionEvent( const Net::IConnection::Event& conEvent );
+		virtual Result ProcessConnectionEvent( const Net::ConnectionEvent& conEvent );
 
 		// Process Message and release message after all processed
 		Result ProcessMessageData(Message::MessageData* &pMsg);
@@ -106,12 +106,12 @@ namespace Svr {
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		// Overriding IConnectionEventHandler
-		virtual void OnConnectionEvent(Net::IConnection* pConn, const Net::IConnection::Event& evt) override;
-		virtual Result OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg) override;
-		virtual Result OnNetSyncMessage(Net::IConnection* pConn) override;
-		virtual Result OnNetSendReadyMessage(Net::IConnection* pConn) override;
+		virtual void OnConnectionEvent(Net::Connection* pConn, const Net::ConnectionEvent& evt) override;
+		virtual Result OnRecvMessage(Net::Connection* pConn, Message::MessageData* pMsg) override;
+		virtual Result OnNetSyncMessage(Net::Connection* pConn) override;
+		virtual Result OnNetSendReadyMessage(Net::Connection* pConn) override;
 
-		virtual Result OnEventTask(const EventTask& eventTask) override;
+		virtual Result OnEventTask(const ServerTaskEvent& eventTask) override;
 	};
 
 

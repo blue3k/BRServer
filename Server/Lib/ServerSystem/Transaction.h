@@ -26,7 +26,7 @@
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/SvrTypes.h"
 #include "ServerSystem/MessageHandlerTable.h"
 #include "Protocol/Message/ServerMsgClass.h"
 #include "Task/TimeSchedulerAction.h"
@@ -71,7 +71,7 @@ namespace Svr {
 			TimeStampMS				TimeStamp;
 
 			// Transaction msg ID
-			Message::MessageID	MsgID;
+			SF::Message::MessageID	MsgID;
 
 			// transaction result
 			Result				hrRes;
@@ -99,24 +99,24 @@ namespace Svr {
 		Util::TimeStampTimer m_Timer;
 
 		// Expected result ID
-		UINT				m_uiExpectedResultID;
+		uint				m_uiExpectedResultID;
 
 		// State 
 		State	m_state;
 
 		// Flags
 		struct FLAGS {
-			UINT	IsExclusive			: 1;
-			UINT	IsDeleteByEntity	: 1;
-			UINT	IsPrintTrace		: 1;
-			UINT	IsDirectProcess		: 1;
+			uint	IsExclusive			: 1;
+			uint	IsDeleteByEntity	: 1;
+			uint	IsPrintTrace		: 1;
+			uint	IsDirectProcess		: 1;
 		} m_Flags;
 
 
 		SharedPointerT<TimerAction>		m_TimerAction;
 
 		// store last two results
-		UINT m_CurrentHistoryIdx;
+		uint m_CurrentHistoryIdx;
 		TransactionHistory m_History[2];
 
 
@@ -216,8 +216,8 @@ namespace Svr {
 		bool IsTimerWorking();
 
 		// Get expected result ID
-		inline UINT GetExpectedResultID();
-		inline void SetExpectedResultID( UINT uiExpectedResult );
+		inline uint GetExpectedResultID();
+		inline void SetExpectedResultID( uint uiExpectedResult );
 
 		inline void SetClosed();
 		inline bool IsClosed();
@@ -245,7 +245,7 @@ namespace Svr {
 		///////////////////////////////////////////////////////////
 		// Helper functions
 
-		Net::IConnection* GetServerEntityConnection(ServerEntity* pServerEntity);
+		SF::Net::Connection* GetServerEntityConnection(ServerEntity* pServerEntity);
 	};
 
 
@@ -258,15 +258,15 @@ namespace Svr {
 	class SubTransaction : public Transaction
 	{
 		private:
-			Message::MessageID m_MsgID;
+			SF::Message::MessageID m_MsgID;
 
 		public:
-			SubTransaction( TransactionID parentTransID , Message::MessageID MsgID );
+			SubTransaction( TransactionID parentTransID , SF::Message::MessageID MsgID );
 			virtual ~SubTransaction();
 
 			//virtual Result CloseTransaction( Result hrRes );
 
-			Message::MessageID GetMsgID() { return m_MsgID; }
+			SF::Message::MessageID GetMsgID() { return m_MsgID; }
 
 	};
 	
@@ -284,18 +284,18 @@ namespace Svr {
 		TransactionID	m_transID;
 
 		// Transaction msg ID
-		Message::MessageID	m_msgID;
+		SF::Message::MessageID	m_msgID;
 
 		// transaction result
 		Result				m_hrRes;
 
 	public:
 		TransactionResult();
-		TransactionResult( Message::MessageID msgID );
+		TransactionResult(SF::Message::MessageID msgID );
 		virtual ~TransactionResult();
 
 		// Set transaction info
-		inline void SetTransaction( const TransactionID &transID, Message::MessageID msgID );
+		inline void SetTransaction( const TransactionID &transID, SF::Message::MessageID msgID );
 
 		// 
 		inline void SetTransaction( const TransactionID &transID );
@@ -307,7 +307,7 @@ namespace Svr {
 		inline const TransactionID& GetTransID() const;
 
 		// Get Message ID
-		inline Message::MessageID GetMsgID() const;
+		inline SF::Message::MessageID GetMsgID() const;
 
 		// Get result value
 		inline Result GetResult() const;
@@ -320,13 +320,13 @@ namespace Svr {
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	//	Timer resultclass
+	//	Timer result class
 	//
 
 	class TimerResult : public TransactionResult, public MemoryPoolObject<TimerResult>
 	{
 	public:
-		const static Message::MessageID MID;
+		const static SF::Message::MessageID MID;
 
 	private:
 
@@ -335,7 +335,7 @@ namespace Svr {
 		TimerResult();
 		virtual ~TimerResult();
 
-		// Release method ovride
+		// Release method ovrride
 		virtual void Release();
 	};
 
@@ -350,7 +350,7 @@ namespace Svr {
 	{
 	private:
 		// Message that result require
-		Message::MessageData *m_pIMsg;
+		SF::Message::MessageData *m_pIMsg;
 
 	public:
 
@@ -361,12 +361,12 @@ namespace Svr {
 		virtual void ReleaseObjectByPool();
 
 		// Setup message result
-		Result SetMessage( Message::MessageData* &pIMsg );
+		Result SetMessage(SF::Message::MessageData* &pIMsg );
 
 		// Get message 
-		inline Message::MessageData* GetMessage();
+		inline SF::Message::MessageData* GetMessage();
 
-		// Release method ovride
+		// Release method override
 		virtual void Release();
 	};
 
@@ -406,7 +406,7 @@ namespace Svr {
 	class SubTransactionWitResultMemoryPooled : public SubTransaction, public TransactionResult, public MemoryPoolObject<TransactionType>
 	{
 	public:
-		SubTransactionWitResultMemoryPooled( TransactionID parentTransID , Message::MessageID MsgID )
+		SubTransactionWitResultMemoryPooled( TransactionID parentTransID , SF::Message::MessageID MsgID )
 			:SubTransactionWitResult( parentTransID, MsgID )
 		{}
 
@@ -458,7 +458,7 @@ namespace Svr {
 
 		// Register message handler
 		template< class MessageClassType >
-		FORCEINLINE Result RegisterMessageHandler(const char* fileName, UINT lineNumber, MessageHandlerType newHandler )
+		FORCEINLINE Result RegisterMessageHandler(const char* fileName, uint lineNumber, MessageHandlerType newHandler )
 		{
 			return m_Handlers.Register<MessageClassType>(fileName, lineNumber, newHandler);
 		}

@@ -12,7 +12,7 @@
 
 #include "SFTypedefs.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Common/BrXML.h"
 #include "String/FixedString.h"
 

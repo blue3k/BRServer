@@ -38,7 +38,7 @@
 
 
 
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameStateSystem);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameStateSystem);
 
 
 namespace BR {

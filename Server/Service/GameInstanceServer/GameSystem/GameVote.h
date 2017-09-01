@@ -12,7 +12,7 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Memory/MemoryPool.h"
 #include "Common/ClassUtil.h"
 #include "Common/ArrayUtil.h"

@@ -29,7 +29,7 @@
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceTrans.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::GameClusterServiceEntity::PlayerTableItem);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameClusterServiceEntity::PlayerTableItem);
 
 
 namespace BR {

@@ -16,7 +16,7 @@
 #include "DB/dbTrace.h"
 #include "Query.h"
 
-#include "ServerSystem/SvrTypes.h"
+#include "Types/SvrTypes.h"
 #include "ServerSystem/Transaction.h"
 #include "Common/SvrPolicyID.h"
 #include "Net/Message.h"

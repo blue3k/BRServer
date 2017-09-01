@@ -49,7 +49,7 @@ void EntityInformation::SetName( const char* strName )
 
 
 
-inline Net::IConnection* ServerServiceInformation::GetConnection() const
+inline Net::Connection* ServerServiceInformation::GetConnection() const
 {
 	if( m_ServerEntity == nullptr ) return nullptr;
 
@@ -60,7 +60,7 @@ inline Net::IConnection* ServerServiceInformation::GetConnection() const
 inline bool ServerServiceInformation::IsServiceAvailable() const
 {
 	Assert(m_ServerEntity);
-	return m_ServerEntity->GetConnection() && m_ServerEntity->GetConnection()->GetConnectionState() == Net::IConnection::STATE_CONNECTED;
+	return m_ServerEntity->GetConnection() && m_ServerEntity->GetConnection()->GetConnectionState() == Net::Connection::STATE_CONNECTED;
 }
 
 

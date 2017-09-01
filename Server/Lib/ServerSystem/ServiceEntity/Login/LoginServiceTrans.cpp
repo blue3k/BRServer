@@ -29,7 +29,7 @@
 #include "ServerSystem/ServiceEntity/Login/LoginServiceTrans.h"
 #include "ServerSystem/ServiceEntity/Login/LoginServiceEntity.h"
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPartyTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPartyTrans);
 
 
 

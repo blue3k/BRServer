@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyGameParty ( Net::IConnection* pConn ) : IPolicyGameParty(pConn)
+			NetPolicyGameParty ( Net::Connection* pConn ) : IPolicyGameParty(pConn)
 			{}
 
 			// Cmd: Join Party
@@ -51,7 +51,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyGameParty ( Net::IConnection* pConn ) : ISvrPolicyGameParty(pConn)
+			NetSvrPolicyGameParty ( Net::Connection* pConn ) : ISvrPolicyGameParty(pConn)
 			{}
 
 			// Cmd: Join Party

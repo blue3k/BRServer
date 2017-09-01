@@ -40,21 +40,29 @@
     <None Include="$(MSBuildThisFileDirectory)ServiceEntity\Game\GamePlayerEntity.inl" />
     <None Include="$(MSBuildThisFileDirectory)SimpleEntity.inl" />
     <None Include="$(MSBuildThisFileDirectory)SimpleUserEntity.inl" />
-    <None Include="$(MSBuildThisFileDirectory)SvrConfig.inl" />
+    <None Include="$(MSBuildThisFileDirectory)SvrConfig.inl">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Task\ServerTask.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.inl" />
     <None Include="$(MSBuildThisFileDirectory)Task\TaskManager.inl" />
     <None Include="$(MSBuildThisFileDirectory)Transaction.inl" />
     <None Include="$(MSBuildThisFileDirectory)Types\BrBaseTypes.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.inl" />
+    <None Include="$(MSBuildThisFileDirectory)Types\BrSvrTypes.inl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BrServer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BrServerUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BrService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Component\BrComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Entity.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EntityManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EntityTable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EntityTimerActions.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExternalTransaction.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ExternalTransactionManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameConst.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameLog\ChattingHistory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameLog\GameLog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSystem.h" />
@@ -81,6 +89,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrLogComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog_Internal.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ServerLog\SvrTrace.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerServiceBase.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\ClusterServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\EntityServerService.h" />
@@ -133,13 +142,19 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)String\SvrToString.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)String\ToStringSvr.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConfig.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConst.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConstDefault.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConfig.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConst.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SvrConstDefault.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrLoopbackConnection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrPolicyID.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrTrace.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)SvrTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTask.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\TaskManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\TimeScheduler.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task\TimeSchedulerAction.h" />
@@ -148,6 +163,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TransactionUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrBaseTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Types\BrSvrTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Types\SvrTypes.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h" />
   </ItemGroup>
@@ -182,6 +199,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerEntity\GenericServerEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerLog\SvrLog.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerLog\SvrLogComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ServerLog\SvrTrace.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\ClusterServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\EntityServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameInstanceManagerService.cpp" />
@@ -229,15 +247,20 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SimpleEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SimpleUserEntity.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)String\ToStringSvr.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SvrConfig.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SvrConst.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SvrConfig.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SvrConst.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SvrLoopbackConnection.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SvrTrace.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SvrTypes.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTask.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\TaskManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\TimeScheduler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Types\BrGameTypes.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Types\SvrTypes.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp" />
   </ItemGroup>

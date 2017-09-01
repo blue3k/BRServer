@@ -14,7 +14,7 @@
 
 #include "Net/NetDef.h"
 #include "SFAssert.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/SvrTypes.h"
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/ServerEntity.h"
 #include "Common/SynchronizationTrait.h"

@@ -28,7 +28,7 @@
 #include "SharedModuleServerTrans.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(SharedModuleServer::SharedModuleServerStartProcess);
+SF_MEMORYPOOL_IMPLEMENT(BR::SharedModuleServer::SharedModuleServerStartProcess);
 
 
 namespace BR {

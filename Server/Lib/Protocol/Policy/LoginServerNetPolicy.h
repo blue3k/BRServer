@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyLoginServer ( Net::IConnection* pConn ) : IPolicyLoginServer(pConn)
+			NetPolicyLoginServer ( Net::Connection* pConn ) : IPolicyLoginServer(pConn)
 			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance
@@ -41,7 +41,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyLoginServer ( Net::IConnection* pConn ) : ISvrPolicyLoginServer(pConn)
+			NetSvrPolicyLoginServer ( Net::Connection* pConn ) : ISvrPolicyLoginServer(pConn)
 			{}
 
 			// Cmd: Notify user joind and see it's valid authticket instance

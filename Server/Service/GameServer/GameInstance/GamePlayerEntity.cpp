@@ -14,7 +14,7 @@
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BrServerUtil.h"
-#include "Common/Task/EventTask.h"
+#include "Task/ServerTaskEvent.h"
 #include "ServerSystem/ExternalTransactionManager.h"
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
@@ -47,7 +47,7 @@
 #include "DB/GameTransactionDB.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(BR::GameServer::GamePlayerEntity);
+SF_MEMORYPOOL_IMPLEMENT(BR::BR::GameServer::GamePlayerEntity);
 
 
 
@@ -233,7 +233,7 @@ namespace GameServer {
 	{
 		Result hr = ResultCode::SUCCESS;
 		Net::ConnectionPtr pConnection;
-		Net::IConnection::ConnectionInformation connectionInfo;
+		Net::Connection::ConnectionInformation connectionInfo;
 
 		svrChkPtr(GetMyServer()->GetNetPublic());
 

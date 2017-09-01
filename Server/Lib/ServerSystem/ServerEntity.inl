@@ -27,16 +27,16 @@ bool ServerEntity::IsInitialConnection()
 }
 
 // Get Connection
-inline Net::IConnection* ServerEntity::GetConnection()
+inline Net::Connection* ServerEntity::GetConnection()
 {
-	Net::IConnection* pConn = (Net::IConnection*)m_pConnLocal;
-	auto result = (pConn == nullptr || pConn->GetConnectionState() == Net::IConnection::STATE_DISCONNECTED) ? (Net::IConnection*)m_pConnRemote : pConn;
+	Net::Connection* pConn = (Net::Connection*)m_pConnLocal;
+	auto result = (pConn == nullptr || pConn->GetConnectionState() == Net::Connection::STATE_DISCONNECTED) ? (Net::Connection*)m_pConnRemote : pConn;
 
 	// if there is no active connection then return anyone no null
 	if (result == nullptr)
 		result = pConn;
 	if (result == nullptr)
-		result = (Net::IConnection*)m_pConnRemote;
+		result = (Net::Connection*)m_pConnRemote;
 
 	return result;
 }
@@ -44,7 +44,7 @@ inline Net::IConnection* ServerEntity::GetConnection()
 template< class PolicyType >
 PolicyType* ServerEntity::GetPolicy()
 {
-	Net::IConnection* pConn = GetConnection();
+	Net::Connection* pConn = GetConnection();
 	if (pConn == nullptr)
 	{
 		return nullptr;

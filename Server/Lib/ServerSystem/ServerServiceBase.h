@@ -14,7 +14,6 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 
 
@@ -34,16 +33,19 @@ namespace Svr {
 	{
 	protected:
 
-		BRCLASS_ATTRIBUTE_READONLY(ServerServiceInformation*,ServerServiceInformation);
-		BRCLASS_ATTRIBUTE_READONLY(UINT,ProtocolID);
+		ServerServiceInformation* m_ServerServiceInformation;
+		uint m_ProtocolID;
 
 	public:
-		ServerServiceBase( ServerServiceInformation* pService, UINT policyID )
+		ServerServiceBase( ServerServiceInformation* pService, uint policyID )
 			:m_ServerServiceInformation(pService)
-			,m_PolicyID(policyID)
+			, m_ProtocolID(policyID)
 		{
 			Assert(m_ServerServiceInformation);
 		}
+
+		ServerServiceInformation* GetServerServiceInformation() { return m_ServerServiceInformation; }
+		uint GetProtocolID() { return m_ProtocolID; }
 
 		EntityUID GetServiceEntityUID()
 		{

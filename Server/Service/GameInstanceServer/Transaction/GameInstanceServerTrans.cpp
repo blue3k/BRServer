@@ -33,7 +33,7 @@
 #include "GameInstanceServerTrans.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameInstanceServerStartProcess);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameInstanceServerStartProcess);
 
 
 namespace BR {

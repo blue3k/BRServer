@@ -14,9 +14,9 @@
 
 #include "SFTypedefs.h"
 #include "DB/DBClusterManager.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Common/ArrayUtil.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 #include "ServerSystem/ServerComponent.h"
 
 namespace BR {

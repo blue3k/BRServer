@@ -13,8 +13,8 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "BrSvrTypes.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
+#include "Types/SvrTypes.h"
 #include "String/ToStringSvr.h"
 
 

@@ -10,8 +10,8 @@
 
 #include "stdafx.h"
 #include "ServerSystem/Transaction.h"
-#include "ServerSystem/SvrTypes.h"
-#include "Common/Task/TaskManager.h"
+#include "Types/SvrTypes.h"
+#include "Task/TaskManager.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/EntityTable.h"
 #include "ServerSystem/SvrConfig.h"

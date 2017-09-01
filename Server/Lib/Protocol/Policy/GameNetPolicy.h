@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyGame ( Net::IConnection* pConn ) : IPolicyGame(pConn)
+			NetPolicyGame ( Net::Connection* pConn ) : IPolicyGame(pConn)
 			{}
 
 			// C2S: Client heart bit
@@ -131,7 +131,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyGame ( Net::IConnection* pConn ) : ISvrPolicyGame(pConn)
+			NetSvrPolicyGame ( Net::Connection* pConn ) : ISvrPolicyGame(pConn)
 			{}
 
 			// Cmd: Player connected from a login server and moved to game server

@@ -24,7 +24,7 @@
 #include "ServerSystem/GameLog/ChattingHistory.h"
 
 #include "Common/Indexing.h"
-#include "Common/StaticHashTable.h"
+#include "Container/StaticHashTable.h"
 
 #include "ServerSystem/PlayerEntityInformation.h"
 

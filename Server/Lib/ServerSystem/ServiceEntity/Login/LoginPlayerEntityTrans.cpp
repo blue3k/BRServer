@@ -45,19 +45,19 @@
 #include "DB/LoginSessionQuery.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerTransLogin);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerTransLogin);
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerTransLoginByFacebook);
-BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerTransCreateRandomUser);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerTransLoginByFacebook);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerTransCreateRandomUser);
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerTransCloseInstance);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerTransCloseInstance);
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerJoinedToGameServerTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::LoginPlayerKickPlayerTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerJoinedToGameServerTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginPlayerKickPlayerTrans);
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::RankingUpdateScoreTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::LoginUserDataTestTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::LoginUserDebugPrintALLRankingTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RankingUpdateScoreTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginUserDataTestTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::LoginUserDebugPrintALLRankingTrans);
 
 
 	

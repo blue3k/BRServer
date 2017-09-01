@@ -12,12 +12,12 @@
 
 
 #include "stdafx.h"
-#include "Common/Thread.h"
-#include "Common/StrUtil.h"
+#include "Thread/Thread.h"
+#include "String/StrUtil.h"
 #include "Common/Trace.h"
 #include "Common/ToString.h"
-#include "Common/Task/TimeScheduler.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
+#include "Task/TimeScheduler.h"
+#include "ResultCode/SFResultCodeCommon.h"
 
 
 

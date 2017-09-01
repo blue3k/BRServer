@@ -12,14 +12,14 @@
 #pragma once
 
 #include "String/StrUtil.h"
-#include "Common/ArrayUtil.h"
+#include "Container/SFArray.h"
 #include "ResultCode/SFResultCodeDB.h"
 #include "Net/NetDef.h"
 #include "DB/DBClusterManager.h"
 //#include "ServerSystem/PlugIn.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/SvrTypes.h"
 #include "ServerSystem/MasterEntity.h"
-#include "Common/Task/TaskManager.h"
+#include "Task/TaskManager.h"
 #include "ServerSystem/MasterEntity.h"
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/ServerComponentCarrier.h"

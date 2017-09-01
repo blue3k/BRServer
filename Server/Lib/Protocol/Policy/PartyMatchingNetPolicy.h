@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyPartyMatching ( Net::IConnection* pConn ) : IPolicyPartyMatching(pConn)
+			NetPolicyPartyMatching ( Net::Connection* pConn ) : IPolicyPartyMatching(pConn)
 			{}
 
 
@@ -37,7 +37,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyPartyMatching ( Net::IConnection* pConn ) : ISvrPolicyPartyMatching(pConn)
+			NetSvrPolicyPartyMatching ( Net::Connection* pConn ) : ISvrPolicyPartyMatching(pConn)
 			{}
 
 			// S2C: 

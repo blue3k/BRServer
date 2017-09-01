@@ -13,7 +13,7 @@
 #include "ResultCode/SFResultCodeCommon.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 #include "Protocol/Message/PartyMatchingQueueMsgClass.h"
 #include "Protocol/Policy/PartyMatchingQueueIPolicy.h"
@@ -30,16 +30,16 @@
 #include "ServerSystem/ServerService/PartyMatchingQueueService.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::RegisterPartyMatchingTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::RegisterPlayerMatchingTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::UpdateMatchingEntityUIDTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::UnregisterMatchingTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RegisterPartyMatchingTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RegisterPlayerMatchingTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::UpdateMatchingEntityUIDTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::UnregisterMatchingTrans);
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::ReserveItemTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::MatchingQueueReserveItemsTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::CancelReservationTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::DequeueItemTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::MatchingQueueTransMatchingItemError);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ReserveItemTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingQueueReserveItemsTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::CancelReservationTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::DequeueItemTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingQueueTransMatchingItemError);
 
 
 namespace BR {

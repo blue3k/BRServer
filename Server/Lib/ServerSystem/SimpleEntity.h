@@ -16,9 +16,9 @@
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
-#include "Common/Task/Task.h"
+#include "Task/ServerTask.h"
 #include "Container/PageQueue.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/SvrTypes.h"
 #include "ServerSystem/Entity.h"
 
 

@@ -25,12 +25,12 @@
 #include "ServerSystem/ServiceEntity/ClusterServiceTrans.h"
 #include "ServerSystem/ServerService/ClusterServerService.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Common/Task/EventTask.h"
+#include "Task/ServerTaskEvent.h"
 
 #include "Protocol/Policy/ClusterServerNetPolicy.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::ClusteredServiceEntity::ServiceTableItem);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusteredServiceEntity::ServiceTableItem);
 
 namespace BR {
 namespace Svr {
@@ -49,10 +49,7 @@ namespace Svr {
 		, m_ClusterMembership(initialMembership)
 		, m_ServiceStatus(ServiceStatus::Offline)
 		, m_Workload(0)
-		, m_MyServiceInfo(nullptr)
 		, m_ServerEntity(pServerEntity)
-		, m_IsInVoting(false)
-		, m_Initialized(false)
 	{
 		if (BrServer::GetInstance()->GetNetClass() == NetClass::Entity)
 		{

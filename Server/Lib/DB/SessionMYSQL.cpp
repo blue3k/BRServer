@@ -344,10 +344,7 @@ namespace DB {
 
 	StatementMYSQL::StatementMYSQL( const char* queryString )
 		: m_QueryString(queryString)
-		, m_Context(nullptr)
-		, m_Stmt(nullptr)
 		, m_StateInitSync(0)
-		, m_pParameter(nullptr)
 	{
 		AssertRel(m_QueryString!=nullptr);
 	}

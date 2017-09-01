@@ -7,8 +7,6 @@
 
 #include "SFTypedefs.h"
 
-// TODO: 
-using namespace SF;
 
 #if !ANDROID
 #include <mysql.h>

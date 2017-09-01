@@ -15,7 +15,7 @@
 #include "String/StrUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Net/NetDef.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/Entity.h"

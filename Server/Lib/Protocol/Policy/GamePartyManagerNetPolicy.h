@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyGamePartyManager ( Net::IConnection* pConn ) : IPolicyGamePartyManager(pConn)
+			NetPolicyGamePartyManager ( Net::Connection* pConn ) : IPolicyGamePartyManager(pConn)
 			{}
 
 			// Cmd: Create a party instance
@@ -41,7 +41,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyGamePartyManager ( Net::IConnection* pConn ) : ISvrPolicyGamePartyManager(pConn)
+			NetSvrPolicyGamePartyManager ( Net::Connection* pConn ) : ISvrPolicyGamePartyManager(pConn)
 			{}
 
 			// Cmd: Create a party instance

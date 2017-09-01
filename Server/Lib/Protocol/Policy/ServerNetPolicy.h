@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyServer ( Net::IConnection* pConn ) : IPolicyServer(pConn)
+			NetPolicyServer ( Net::Connection* pConn ) : IPolicyServer(pConn)
 			{}
 
 			// Cmd: 
@@ -41,7 +41,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyServer ( Net::IConnection* pConn ) : ISvrPolicyServer(pConn)
+			NetSvrPolicyServer ( Net::Connection* pConn ) : ISvrPolicyServer(pConn)
 			{}
 
 			// Cmd: 

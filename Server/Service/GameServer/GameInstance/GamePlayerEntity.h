@@ -19,7 +19,7 @@
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/GameSystem.h"
 #include "Common/GameConst.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 #include "GameSystem/UserSystemComponentIDs.h"
 #include "GameSvrConst.h"
 

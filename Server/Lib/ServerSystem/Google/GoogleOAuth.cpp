@@ -13,7 +13,7 @@
 
 #include "stdafx.h"
 #include "String/StrUtil.h"
-#include "Common/Utility.h"
+#include "Util/Utility.h"
 #include "Util/TimeUtil.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ResultCode/SFResultCodeSystem.h"

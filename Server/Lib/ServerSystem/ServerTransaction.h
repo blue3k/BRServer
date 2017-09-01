@@ -19,11 +19,11 @@
 #include "Net/NetDef.h"
 #include "Memory/MemoryPool.h"
 #include "Net/Message.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/SvrTypes.h"
 
 
 #include "ServerSystem/Transaction.h"
@@ -189,7 +189,7 @@ namespace Svr {
 		Result TossMessageToTarget( ServerServiceInformation* pService )
 		{
 			Result hr = ResultCode::SUCCESS;
-			Net::IConnection *pConn = nullptr;
+			Net::Connection *pConn = nullptr;
 			ClusteredServiceEntity *pMyOwner = nullptr;
 			Message::MessageData *pClonedMessage = nullptr;
 			pMyOwner = super::GetMyOwner();
@@ -207,7 +207,7 @@ namespace Svr {
 				svrErr(ResultCode::E_SVR_CLUSTER_NOTREADY);
 			}
 
-			if (pConn->GetConnectionState() != Net::IConnection::STATE_CONNECTED)
+			if (pConn->GetConnectionState() != Net::Connection::STATE_CONNECTED)
 				goto Proc_End;
 
 			MessageClass::OverrideRouteInformation( pService->GetEntityUID(), super::GetRouteHopCount() + 1 );

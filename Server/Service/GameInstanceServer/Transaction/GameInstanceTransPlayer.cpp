@@ -39,18 +39,18 @@
 
 
 
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransDeleteGame);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransJoinGame);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransLeaveGame);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransKickPlayer);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransAssignRole);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransChatMessage);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransVoteGameAdvance);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransVote);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransAdvanceGame);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransGamePlayAgain);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransGameRevealPlayer);
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameEntityTransGamePlayerRevive);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransDeleteGame);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransJoinGame);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransLeaveGame);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransKickPlayer);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransAssignRole);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransChatMessage);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransVoteGameAdvance);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransVote);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransAdvanceGame);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransGamePlayAgain);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransGameRevealPlayer);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameEntityTransGamePlayerRevive);
 
 
 namespace BR {

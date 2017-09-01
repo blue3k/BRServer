@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyClusterServer ( Net::IConnection* pConn ) : IPolicyClusterServer(pConn)
+			NetPolicyClusterServer ( Net::Connection* pConn ) : IPolicyClusterServer(pConn)
 			{}
 
 			// Cmd: Cluster member list query
@@ -59,7 +59,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyClusterServer ( Net::IConnection* pConn ) : ISvrPolicyClusterServer(pConn)
+			NetSvrPolicyClusterServer ( Net::Connection* pConn ) : ISvrPolicyClusterServer(pConn)
 			{}
 
 			// Cmd: Cluster member list query

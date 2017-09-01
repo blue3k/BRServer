@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyGameInstance ( Net::IConnection* pConn ) : IPolicyGameInstance(pConn)
+			NetPolicyGameInstance ( Net::Connection* pConn ) : IPolicyGameInstance(pConn)
 			{}
 
 			// C2S: Game instance deletion
@@ -63,7 +63,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyGameInstance ( Net::IConnection* pConn ) : ISvrPolicyGameInstance(pConn)
+			NetSvrPolicyGameInstance ( Net::Connection* pConn ) : ISvrPolicyGameInstance(pConn)
 			{}
 
 			// Cmd: Join Game

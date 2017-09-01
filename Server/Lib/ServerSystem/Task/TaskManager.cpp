@@ -12,14 +12,14 @@
 
 
 #include "stdafx.h"
-#include "Common/Trace.h"
-#include "Common/ResultCode/BRResultCodeSvr.h"
-#include "Common/Thread.h"
-#include "Common/TimeUtil.h"
-#include "Common/Task/TaskManager.h"
+#include "ServerLog/SvrLog.h"
+#include "ResultCode/SFResultCodeSvr.h"
+#include "Thread/Thread.h"
+#include "Util/TimeUtil.h"
+#include "Task/TaskManager.h"
 //#include "Common/SvrConst.h"
-#include "Common/Task/EventTask.h"
-//#include "Common/Task/EntityTimerActions.h"
+#include "Task/ServerTaskEvent.h"
+//#include "Task/EntityTimerActions.h"
 
 
 namespace BR {
@@ -39,8 +39,10 @@ namespace BR {
 		, m_GroupWorkLoadDiff(0)
 		, m_GroupID(0)
 		, m_ulLoopInterval(20)
-		, m_PendingAddTask(iQueuePageSize)
-		, m_PendingRemoveTask(iQueuePageSize)
+		, m_EventTask(GetSystemMemoryManager())
+		, m_PendingAddTask(GetSystemMemoryManager(), iQueuePageSize)
+		, m_PendingRemoveTask(GetSystemMemoryManager(), iQueuePageSize)
+		, m_TaskList(GetSystemMemoryManager())
 	{
 	}
 
@@ -54,9 +56,9 @@ namespace BR {
 	}
 
 	// Add event task
-	Result TaskWorker::AddEventTask(EventTask&& pEvtTask)
+	Result TaskWorker::AddEventTask(ServerTaskEvent&& pEvtTask)
 	{
-		if (pEvtTask.EventType == EventTask::EventTypes::NONE)
+		if (pEvtTask.EventType == ServerTaskEvent::EventTypes::NONE)
 			return ResultCode::INVALID_ARG;
 
 		return m_EventTask.Enqueue(pEvtTask);
@@ -221,7 +223,7 @@ namespace BR {
 		auto loopCount = m_EventTask.GetEnqueCount();
 		for (; loopCount > 0; loopCount--)
 		{
-			EventTask pEvtTask;
+			ServerTaskEvent pEvtTask;
 			if (!(m_EventTask.Dequeue(pEvtTask)))
 				break;
 
@@ -232,7 +234,7 @@ namespace BR {
 
 			switch (pEvtTask.EventType)
 			{
-			case EventTask::EventTypes::POKE_TICK_EVENT:
+			case ServerTaskEvent::EventTypes::POKE_TICK_EVENT:
 				tickTask->TickUpdate();
 				continue;
 			default:
@@ -241,7 +243,7 @@ namespace BR {
 
 			if (!(tickTask->OnEventTask(pEvtTask)))
 			{
-				defTrace(Trace::TRC_ERROR, "EventTask is failed, Evt:{0}", (UINT)pEvtTask.EventType.load(std::memory_order_relaxed))
+				defTrace(Trace::TRC_ERROR, "ServerTaskEvent is failed, Evt:{0}", (UINT)pEvtTask.EventType.load(std::memory_order_relaxed))
 			}
 
 			m_TimeScheduler.Reschedul(threadID, tickTask->GetTimerAction());
@@ -302,6 +304,7 @@ namespace BR {
 
 	// Constructor/Destructor
 	TaskManager::TaskManager()
+		: m_TaskGroups(GetSystemMemoryManager())
 	{
 	}
 
@@ -317,7 +320,7 @@ namespace BR {
 
 		// decrease case not allowed
 		if( m_TaskGroups.size() >= WorkGroupCount )
-			return ResultCode::E_INVALID_ARG;
+			return ResultCode::INVALID_ARG;
 
 		for (size_t iGroup = m_TaskGroups.size(); iGroup < WorkGroupCount; iGroup++)
 		{
@@ -368,16 +371,16 @@ namespace BR {
 
 
 	// Add event task
-	Result TaskManager::AddEventTask(SysUInt groupID, EventTask&& pEvtTask)
+	Result TaskManager::AddEventTask(SysUInt groupID, ServerTaskEvent&& pEvtTask)
 	{
 		Result hr = ResultCode::SUCCESS;
 
-		if (groupID <= 0 || groupID > m_TaskGroups.GetSize())
+		if (groupID <= 0 || groupID > m_TaskGroups.size())
 		{
-			return ResultCode::E_SVR_INVALID_TASK_GROUPID;
+			return ResultCode::SVR_INVALID_TASK_GROUPID;
 		}
 
-		defChk(m_TaskGroups[groupID - 1]->AddEventTask(std::forward<EventTask>(pEvtTask)));
+		defChk(m_TaskGroups[groupID - 1]->AddEventTask(std::forward<ServerTaskEvent>(pEvtTask)));
 
 	Proc_End:
 
@@ -430,7 +433,7 @@ namespace BR {
 		defChkPtr(pTask);
 
 		groupID = pTask->GetTaskGroupID();
-		if (groupID <= 0 || groupID > m_TaskGroups.GetSize())
+		if (groupID <= 0 || groupID > m_TaskGroups.size())
 			return ResultCode::UNEXPECTED;
 
 		defChk(m_TaskGroups[groupID - 1]->PendingRemoveTask(pTask));

@@ -14,7 +14,6 @@
 
 #include "SFTypedefs.h"
 #include "Memory/MemoryPool.h"
-#include "Common/ClassUtil.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/ServerEntity.h"
 //#include "ServerSystem/ServerService/ServerService.h"
@@ -74,28 +73,28 @@ namespace Svr {
 	private:
 
 		// Service Cluster ID
-		BRCLASS_ATTRIBUTE_READONLY(ClusterID,ClusterID);
+		ClusterID m_ClusterID;
 
 		// Server entity which is the service is running
-		BRCLASS_ATTRIBUTE_READONLY_PTR(ServerEntity*,ServerEntity);
+		ServerEntity* m_ServerEntity = nullptr;
 
 		// Server service membership
-		BRCLASS_ATTRIBUTE(ClusterMembership,ClusterMembership);
+		ClusterMembership m_ClusterMembership = ClusterMembership::Watcher;
 
 		// Server service membership
-		BRCLASS_ATTRIBUTE(ServiceStatus,ServiceStatus);
+		ServiceStatus m_ServiceStatus = ServiceStatus::Offline;
 
 		// Server Up time, this will be synched to the server entity when the service object is created or synchronized
-		//BRCLASS_ATTRIBUTE(ULONGLONG,ServerUpTime);
+		//BRCLASS_ATTRIBUTE(uint64_t,ServerUpTime);
 
 		// workload
-		BRCLASS_ATTRIBUTE(UINT,Workload);
+		uint m_Workload = 0;
 
 		// Voted count
-		BRCLASS_ATTRIBUTE(UINT,VotedCount);
+		uint m_VotedCount = 0;
 
 		// Service base cache
-		BRCLASS_ATTRIBUTE_READONLY_PTR(ServerServiceBase*,ServiceBase);
+		ServerServiceBase* m_ServiceBase = nullptr;
 		uint8_t	m_bufferForServiceBase[1024];
 
 
@@ -103,8 +102,27 @@ namespace Svr {
 		ServerServiceInformation(ClusterID clusterID, ServerEntity* pServerEntity, ClusterMembership membership);
 		~ServerServiceInformation();
 
+		ClusterID GetClusterID() { return m_ClusterID; }
+
+		ServerEntity* GetServerEntity() { return m_ServerEntity; }
+
+		ClusterMembership GetClusterMembership() { return m_ClusterMembership; }
+
+		ServiceStatus GetServiceStatus() { return m_ServiceStatus; }
+		void SetServiceStatus(ServiceStatus value) { m_ServiceStatus = value; }
+
+		uint GetWorkload() { return m_Workload; }
+		void SetWorkload(uint value) { m_Workload = value; }
+
+		uint GetVotedCount() { return m_VotedCount; }
+		void SetVotedCount(uint value) { m_VotedCount = value; }
+
+		ServerServiceBase* GetServiceBase() { return m_ServiceBase; }
+		void SetServiceBase(ServerServiceBase* value) { m_ServiceBase = value; }
+
+
 		// Get connection
-		Net::IConnection* GetConnection() const;
+		SF::Net::Connection* GetConnection() const;
 
 		// Get service information
 		void GetServiceInformation( ServiceInformation & serviceInformation );
@@ -158,7 +176,7 @@ namespace Svr {
 		// User entity information
 		AccountID		m_AccountID;
 
-		// Autorize ticket
+		// Authorize ticket
 		AuthTicket		m_AuthTicket;
 
 	public:

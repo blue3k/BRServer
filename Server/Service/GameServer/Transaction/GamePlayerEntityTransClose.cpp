@@ -57,7 +57,7 @@
 #include "DB/LoginSessionQuery.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransCloseInstance);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransCloseInstance);
 
 
 	

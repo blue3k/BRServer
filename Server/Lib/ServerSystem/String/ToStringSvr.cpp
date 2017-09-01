@@ -11,19 +11,36 @@
 
 
 #include "stdafx.h"
-#include "Common/BrAssert.h"
-#include "Common/StrUtil.h"
-#include "Common/ToString.h"
-#include "Common/ToStringSvr.h"
+#include "SFAssert.h"
+#include "String/StrUtil.h"
+#include "String/ToString.h"
+#include "String/ToStringSvr.h"
 
 
 
-namespace BR
+namespace SF
 {
 
+	//Result ToString(char*& pBuff, INT& iBuffLen, const BR::EntityID& Data, int Option)
+	//{
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const TransactionID& Data, int Option)
+	//}
+
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::EntityUID& Data, int Option)
+	{
+		if (!(ToString(pBuff, iBuffLen, Data.GetServerID(), Option)))
+			return ResultCode::FAIL;
+
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+			return ResultCode::FAIL;
+
+		if (!(ToString(pBuff, iBuffLen, Data.GetEntityID(), Option)))
+			return ResultCode::FAIL;
+
+		return ResultCode::SUCCESS;
+	}
+
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::TransactionID& Data, int Option)
 	{
 		if (!(ToString(pBuff, iBuffLen, Data.GetEntityID(), Option)))
 			return ResultCode::FAIL;
@@ -37,14 +54,12 @@ namespace BR
 		return ResultCode::SUCCESS;
 	}
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const ClusterID& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::ClusterID& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
 	}
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const RouteContext& Data, int Option)
 	{
 		unused(Option);
@@ -69,28 +84,24 @@ namespace BR
 
 
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const ClusterType& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::ClusterType& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
 	}
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const ClusterMembership& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::ClusterMembership& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
 	}
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const ServiceStatus& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::ServiceStatus& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
 	}
 
 
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const LocalUID& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::LocalUID& Data, int Option)
 	{
 		unused(Option);
 		if (!(_IToA((UINT32)Data.Time, pBuff, iBuffLen, 10, -1)))
@@ -105,7 +116,6 @@ namespace BR
 		return ResultCode::SUCCESS;
 	}
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const BR::ServiceInformation& Data, int Option)
 	{
 		unused(Option);
@@ -153,8 +163,7 @@ namespace BR
 	}
 
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const MatchingQueueTicket& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::MatchingQueueTicket& Data, int Option)
 	{
 		unused(Option);
 
@@ -178,8 +187,7 @@ namespace BR
 		return ResultCode::SUCCESS;
 	}
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const MatchingPlayerInformation& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::MatchingPlayerInformation& Data, int Option)
 	{
 		unused(Option);
 		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
@@ -202,8 +210,7 @@ namespace BR
 	}
 
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInfo& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::PerformanceCounterInfo& Data, int Option)
 	{
 		unused(Option);
 		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
@@ -226,8 +233,7 @@ namespace BR
 	}
 
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInstanceInfo& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::PerformanceCounterInstanceInfo& Data, int Option)
 	{
 		unused(Option);
 		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, "(")))
@@ -251,8 +257,7 @@ namespace BR
 
 
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const ServerFriendInformation& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const BR::ServerFriendInformation& Data, int Option)
 	{
 		unused(Option);
 
@@ -269,32 +274,32 @@ namespace BR
 	}
 
 
-	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<ServiceStatus>& Data, int Option);
-	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<MatchingQueueTicket>& Data, int Option);
-	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<MatchingPlayerInformation>& Data, int Option);
-	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<PerformanceCounterInfo>& Data, int Option);
-	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<PerformanceCounterInstanceInfo>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<BR::ServiceStatus>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<BR::MatchingQueueTicket>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<BR::MatchingPlayerInformation>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<BR::PerformanceCounterInfo>& Data, int Option);
+	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<BR::PerformanceCounterInstanceInfo>& Data, int Option);
 
 
-	template class Arg < TransactionID>;
-	template class Arg < ClusterID>;
-	template class Arg < RouteContext>;
-	template class Arg < ClusterType>;
-	template class Arg < ServiceStatus>;
-	template class Arg < LocalUID>;
-	template class Arg < ServiceInformation>;
-	template class Arg < MatchingQueueTicket>;
-	template class Arg < MatchingPlayerInformation>;
-	template class Arg < PerformanceCounterInfo>;
-	template class Arg < PerformanceCounterInstanceInfo>;
-	template class Arg < ServerFriendInformation>;
+	template class ArgumentWrapperT < BR::TransactionID>;
+	template class ArgumentWrapperT < BR::ClusterID>;
+	template class ArgumentWrapperT < BR::RouteContext>;
+	template class ArgumentWrapperT < BR::ClusterType>;
+	template class ArgumentWrapperT < BR::ServiceStatus>;
+	template class ArgumentWrapperT < BR::LocalUID>;
+	template class ArgumentWrapperT < BR::ServiceInformation>;
+	template class ArgumentWrapperT < BR::MatchingQueueTicket>;
+	template class ArgumentWrapperT < BR::MatchingPlayerInformation>;
+	template class ArgumentWrapperT < BR::PerformanceCounterInfo>;
+	template class ArgumentWrapperT < BR::PerformanceCounterInstanceInfo>;
+	template class ArgumentWrapperT < BR::ServerFriendInformation>;
 
 
-	template class ArgArray < ServiceStatus>;
-	template class ArgArray < MatchingQueueTicket>;
-	template class ArgArray < MatchingPlayerInformation>;
-	template class ArgArray < PerformanceCounterInfo>;
-	template class ArgArray < PerformanceCounterInstanceInfo>;
+	template class ArgArray < BR::ServiceStatus>;
+	template class ArgArray < BR::MatchingQueueTicket>;
+	template class ArgArray < BR::MatchingPlayerInformation>;
+	template class ArgArray < BR::PerformanceCounterInfo>;
+	template class ArgArray < BR::PerformanceCounterInstanceInfo>;
 
 
 };	// namespace BR

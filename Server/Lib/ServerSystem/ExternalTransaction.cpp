@@ -26,9 +26,9 @@
 #include "zlib.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::GCMHttpExternalTransaction);
-BR_MEMORYPOOL_IMPLEMENT(Svr::ExternalTransactionGoogleAndroidReceiptCheck);
-BR_MEMORYPOOL_IMPLEMENT(Svr::ExternalTransactionIOSRecepitCheck);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GCMHttpExternalTransaction);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ExternalTransactionGoogleAndroidReceiptCheck);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ExternalTransactionIOSRecepitCheck);
 
 
 namespace BR {

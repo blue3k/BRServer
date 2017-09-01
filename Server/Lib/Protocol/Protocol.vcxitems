@@ -4,6 +4,7 @@
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
     <ItemsProjectGuid>{bebe8b4e-f75b-4330-8762-139debf3841c}</ItemsProjectGuid>
+    <ItemsProjectName>ServerProtocol</ItemsProjectName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -142,7 +143,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ProtocolTrace.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProtocolVer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)ProtocolHelper.inl" />

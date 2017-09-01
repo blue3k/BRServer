@@ -13,7 +13,7 @@
 #include "ResultCode/SFResultCodeCommon.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 #include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 #include "ServerSystem/ServerComponent.h"

@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyEntityServer ( Net::IConnection* pConn ) : IPolicyEntityServer(pConn)
+			NetPolicyEntityServer ( Net::Connection* pConn ) : IPolicyEntityServer(pConn)
 			{}
 
 			// Cmd: Register entity
@@ -43,7 +43,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyEntityServer ( Net::IConnection* pConn ) : ISvrPolicyEntityServer(pConn)
+			NetSvrPolicyEntityServer ( Net::Connection* pConn ) : ISvrPolicyEntityServer(pConn)
 			{}
 
 			// Cmd: Register entity

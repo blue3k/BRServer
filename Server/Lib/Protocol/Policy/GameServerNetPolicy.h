@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyGameServer ( Net::IConnection* pConn ) : IPolicyGameServer(pConn)
+			NetPolicyGameServer ( Net::Connection* pConn ) : IPolicyGameServer(pConn)
 			{}
 
 			// Cmd: Kick
@@ -55,7 +55,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyGameServer ( Net::IConnection* pConn ) : ISvrPolicyGameServer(pConn)
+			NetSvrPolicyGameServer ( Net::Connection* pConn ) : ISvrPolicyGameServer(pConn)
 			{}
 
 			// Cmd: Kick

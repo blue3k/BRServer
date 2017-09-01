@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common/Utility.h"
+#include "Util/Utility.h"
 
 namespace BR
 {

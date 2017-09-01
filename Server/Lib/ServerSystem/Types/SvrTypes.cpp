@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "String/StrUtil.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/SvrTypes.h"
 
 
 

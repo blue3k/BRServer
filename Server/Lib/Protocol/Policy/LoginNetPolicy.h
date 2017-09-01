@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyLogin ( Net::IConnection* pConn ) : IPolicyLogin(pConn)
+			NetPolicyLogin ( Net::Connection* pConn ) : IPolicyLogin(pConn)
 			{}
 
 			// Cmd: Login request
@@ -53,7 +53,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyLogin ( Net::IConnection* pConn ) : ISvrPolicyLogin(pConn)
+			NetSvrPolicyLogin ( Net::Connection* pConn ) : ISvrPolicyLogin(pConn)
 			{}
 
 			// Cmd: Login request

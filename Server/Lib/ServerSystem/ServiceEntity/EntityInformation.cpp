@@ -16,7 +16,7 @@
 #include "ServerSystem/ServerService/ServerService.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::UserEntityInformation);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::UserEntityInformation);
 
 
 namespace BR {

@@ -26,7 +26,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetPolicyMonitoring ( Net::IConnection* pConn ) : IPolicyMonitoring(pConn)
+			NetPolicyMonitoring ( Net::Connection* pConn ) : IPolicyMonitoring(pConn)
 			{}
 
 			// Cmd: Add a player to ranking
@@ -47,7 +47,7 @@ namespace BR
 		{
  			public:
 			// Constructor
-			NetSvrPolicyMonitoring ( Net::IConnection* pConn ) : ISvrPolicyMonitoring(pConn)
+			NetSvrPolicyMonitoring ( Net::Connection* pConn ) : ISvrPolicyMonitoring(pConn)
 			{}
 
 			// Cmd: Add a player to ranking

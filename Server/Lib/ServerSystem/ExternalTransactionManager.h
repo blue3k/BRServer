@@ -20,7 +20,7 @@
 #include "Net/NetDef.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/Transaction.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/SvrTypes.h"
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ParallelTransaction.h"
 #include "Common/MemoryBufferUtil.h"

@@ -14,7 +14,7 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerIPolicy.h"
@@ -30,11 +30,11 @@
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 
 
-//BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterManagerInitializationTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterGetMemberListTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::JoinClusterTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::JoinClusterTransForEntityServer);
-BR_MEMORYPOOL_IMPLEMENT(Svr::SyncClusterServiceTrans);
+//SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterManagerInitializationTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterGetMemberListTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::JoinClusterTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::JoinClusterTransForEntityServer);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::SyncClusterServiceTrans);
 
 
 

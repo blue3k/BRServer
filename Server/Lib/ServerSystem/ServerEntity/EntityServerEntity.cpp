@@ -75,13 +75,13 @@ namespace Svr
 
 
 	// Process Connection event
-	Result EntityServerEntity::ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent )
+	Result EntityServerEntity::ProcessConnectionEvent( const BR::Net::ConnectionEvent& conEvent )
 	{
 		Result hr = ResultCode::SUCCESS;
 
 		switch( conEvent.EventType )
 		{
-		case BR::Net::IConnection::Event::EVT_CONNECTION_RESULT:
+		case BR::Net::ConnectionEvent::EVT_CONNECTION_RESULT:
 			if( (conEvent.hr) // && IsInitialConnection()
 				&& GetPolicy<Policy::IPolicyEntityServer>() )
 			{
@@ -89,9 +89,9 @@ namespace Svr
 				svrChk( BrServer::GetInstance()->GetComponent<Svr::ServerEntityManager>()->UpdateEntityManagerServerEntity( this ) );
 			}
 			break;
-		case BR::Net::IConnection::Event::EVT_DISCONNECTED:
+		case BR::Net::ConnectionEvent::EVT_DISCONNECTED:
 			break;
-		case BR::Net::IConnection::Event::EVT_STATE_CHANGE:
+		case BR::Net::ConnectionEvent::EVT_STATE_CHANGE:
 			break;
 		default:
 			break;
