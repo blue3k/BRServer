@@ -15,7 +15,7 @@
 
 
 #include "Common/Typedefs.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <string>

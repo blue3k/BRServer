@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 #include "Common/Thread.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/TimeUtil.h"
 #include "Common/ResultCode/BRResultCodeNet.h"
 #include "Net/NetTrace.h"

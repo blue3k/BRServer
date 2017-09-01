@@ -327,6 +327,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.h">
       <Filter>ServerService\Ranking</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h">
+      <Filter>ZooKeeper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)GameLog\GameLog.inl" />
@@ -639,6 +642,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\GameServerService.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ServerService\RankingServerService.cpp">
       <Filter>ServerService\Ranking</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp">
+      <Filter>ZooKeeper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

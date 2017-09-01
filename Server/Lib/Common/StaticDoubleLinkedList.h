@@ -12,7 +12,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/MemoryPool.h"
 #include "Common/HashTableTrait.h"
 #include "Common/ResultCode/BRResultCodeSystem.h"

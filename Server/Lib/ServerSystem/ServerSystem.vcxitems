@@ -136,6 +136,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TransactionSteper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TransactionUtil.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BRServer.cpp" />
@@ -219,6 +220,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SvrTypes.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Transaction\ServerTransactionGeneric.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ZooKeeper\SFZooKeeper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="$(MSBuildThisFileDirectory)..\..\Config\ServerConfig.xml" />

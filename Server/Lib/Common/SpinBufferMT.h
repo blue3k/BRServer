@@ -12,7 +12,7 @@
 #pragma once
 
 
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/Synchronization.h"
 
 namespace BR

@@ -12,7 +12,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/Indexing.h"
 #include "Common/SynchronizationTrait.h"
 #include "Common/SystemSynchronization.h"

@@ -14,7 +14,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/BrMemory.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/BrBaseTypes.h"
 
 

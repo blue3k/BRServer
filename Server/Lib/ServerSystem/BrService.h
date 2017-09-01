@@ -14,7 +14,7 @@
 
 #include "Common/Typedefs.h"
 #include "Common/BrMemory.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/Utility.h"
 #include "Common/StrUtil.h"
 #include "ServerSystem/BrServer.h"

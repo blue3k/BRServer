@@ -13,7 +13,7 @@
 
 
 #include "Net/NetDef.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "ServerSystem/SvrTypes.h"
 #include "ServerSystem/SvrConfig.h"
 #include "ServerSystem/ServerEntity.h"

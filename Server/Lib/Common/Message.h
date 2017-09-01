@@ -13,7 +13,7 @@
 #pragma once
 
 #include "Common/Typedefs.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/BrBaseTypes.h"
 #include "Common/PolicyID.h"
 

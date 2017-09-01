@@ -11,7 +11,7 @@
 
 
 #include "stdafx.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/Trace.h"
 #include "Common/DefaultLibComponent.h"
 #include "Common/Utility.h"

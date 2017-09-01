@@ -11,7 +11,7 @@
 
 
 #include "stdafx.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Object/SharedPointer.h"
 #include "Common/Trace.h"
 #include "Common/Trace_Internal.h"

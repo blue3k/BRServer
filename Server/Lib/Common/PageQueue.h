@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/MemoryPool.h"
 #include "Common/Synchronization.h"
 #include "Common/SystemSynchronization.h"

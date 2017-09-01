@@ -11,7 +11,7 @@
 
 
 #include "stdafx.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/MemoryStream.h"
 
 

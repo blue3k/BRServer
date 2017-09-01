@@ -12,7 +12,7 @@
 
 #include "stdafx.h"
 #include "Common/Binary.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/ResultCode/BRResultCodeSystem.h"
 
 
