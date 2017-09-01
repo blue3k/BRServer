@@ -504,6 +504,101 @@ namespace BR
 
 			}; // class GetRankingRes : public MessageBase
 
+			// Cmd: Debug test
+			class DebugPrintALLRankingCmd : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+				RouteContext m_RouteContext;
+				TransactionID m_TransactionID;
+				const char* m_FileName;
+			public:
+				DebugPrintALLRankingCmd()
+				:m_FileName(nullptr)
+					{}
+
+				DebugPrintALLRankingCmd( MessageData* &pMsg )
+					:MessageBase(pMsg)
+				,m_FileName(nullptr)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const char* GetFileName() const	{ return m_FileName; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName );
+
+				Result OverrideRouteContextDestination( EntityUID to );
+
+			}; // class DebugPrintALLRankingCmd : public MessageBase
+
+			class DebugPrintALLRankingRes : public MessageBase
+			{
+ 			public:
+				static const MessageID MID;
+				// Parameter type informations for template
+				enum ParameterTypeInfo
+				{
+ 					HasPlayerID = 0,
+					HasTransactionID = 1,
+					HasRouteContext = 1,
+					HasRouteHopCount = 0,
+					HasSender = 0,
+				}; // enum ParameterTypeInfo
+			public:
+				PlayerID GetPlayerID() { return 0; }
+				uint32_t GetRouteHopCount() { return 0; }
+				PlayerID GetSender() { return 0; }
+			private:
+				RouteContext m_RouteContext;
+				TransactionID m_TransactionID;
+				Result m_Result;
+			public:
+				DebugPrintALLRankingRes()
+					{}
+
+				DebugPrintALLRankingRes( MessageData* &pMsg )
+					:MessageBase(pMsg)
+					{}
+
+					MessageUsage GetMessageUsage() { return MessageUsage_None; }
+
+				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
+				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
+				const Result& GetResult() const	{ return m_Result; };
+
+				void TraceOut(const char* Prefix, MessageData* pMsg);
+
+				virtual Result ParseMessage( MessageData* pIMsg );
+				static Result ParseMessageTo( MessageData* pIMsg, class VariableMapBuilder& variableBuilder );
+
+				static Result BuildIMsg( OUT MessageData* &pMsg, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
+
+				Result OverrideRouteContextDestination( EntityUID to );
+
+			}; // class DebugPrintALLRankingRes : public MessageBase
+
 
 
 

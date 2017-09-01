@@ -44,6 +44,8 @@ namespace BR
 			virtual Result UpdatePlayerScoreRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
 			// Cmd: Get ranking list
 			virtual Result GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking ) = 0;
+			// Cmd: Debug test
+			virtual Result DebugPrintALLRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult ) = 0;
 
 		}; // class ISvrPolicyRankingServer : public Net::INetPolicy
 
@@ -67,6 +69,8 @@ namespace BR
 			virtual Result UpdatePlayerScoreCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount ) = 0;
 			// Cmd: Get ranking list
 			virtual Result GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount ) = 0;
+			// Cmd: Debug test
+			virtual Result DebugPrintALLRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName ) = 0;
 
 		}; // class IPolicyRankingServer : public Net::INetPolicy
 

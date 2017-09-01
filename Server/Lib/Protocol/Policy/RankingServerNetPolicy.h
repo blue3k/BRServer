@@ -39,6 +39,8 @@ namespace BR
 			Result UpdatePlayerScoreCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount );
 			// Cmd: Get ranking list
 			Result GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount );
+			// Cmd: Debug test
+			Result DebugPrintALLRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName );
 
 		}; // class NetPolicyRankingServer : public IPolicyRankingServer
 
@@ -60,6 +62,8 @@ namespace BR
 			Result UpdatePlayerScoreRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 			// Cmd: Get ranking list
 			Result GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
+			// Cmd: Debug test
+			Result DebugPrintALLRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
 		}; // class NetSvrPolicyRankingServer : public ISvrPolicyRankingServer
 

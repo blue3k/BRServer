@@ -94,7 +94,7 @@ namespace BR
 			void LoginCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:LoginCmd:{1}:{2} , GameID:{3}, ID:{4}, Password:{5}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LoginCmd:{1}:{2} , GameID:{3}, ID:{4,60}, Password:{5,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_ID, m_Password); 
 			}; // void LoginCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -245,7 +245,7 @@ namespace BR
 			void LoginByFacebookCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:LoginByFacebookCmd:{1}:{2} , GameID:{3}, UID:{4}, FaceBookName:{5}, EMail:{6}, FacebookToken:{7}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:LoginByFacebookCmd:{1}:{2} , GameID:{3}, UID:{4}, FaceBookName:{5,60}, EMail:{6,60}, FacebookToken:{7,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_UID, m_FaceBookName, m_EMail, m_FacebookToken); 
 			}; // void LoginByFacebookCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -381,7 +381,7 @@ namespace BR
 			void CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:CreateRandomUserCmd:{1}:{2} , GameID:{3}, CellPhone:{4}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:CreateRandomUserCmd:{1}:{2} , GameID:{3}, CellPhone:{4,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_GameID, m_CellPhone); 
 			}; // void CreateRandomUserCmd::TraceOut(const char* Prefix, MessageData* pMsg)
 
@@ -889,6 +889,124 @@ namespace BR
 				protocolTrace(Trace::TRC_DBG1, "{0}:HeartBitC2SEvt:{1}:{2} ",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32); 
 			}; // void HeartBitC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
+
+			// Cmd: For network test
+			const MessageID DebugPrintALLRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 7);
+			Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				INT iMsgSize;
+				BYTE* pCur;
+				UINT16 uiSizeOfFileName = 0;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &uiSizeOfFileName, pCur, iMsgSize, (int)sizeof(UINT16) ) );
+				protocolChk( Protocol::StreamParamLnk( m_FileName, pCur, iMsgSize, (int)sizeof(char)*uiSizeOfFileName ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
+
+			Result DebugPrintALLRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const char* InFileName )
+			{
+ 				Result hr;
+
+				BYTE *pMsgData = nullptr;
+
+				UINT16 __uiInFileNameLength = InFileName ? (UINT16)(strlen(InFileName)+1) : 1;
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) +  + sizeof(UINT16) + __uiInFileNameLength );
+
+				MessageData *pNewMsg = nullptr;
+
+				protocolMem( pNewMsg = MessageData::NewMessage( Login::DebugPrintALLRankingCmd::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &__uiInFileNameLength, sizeof(UINT16) );
+				Protocol::PackParamCopy( pMsgData, InFileName ? InFileName : "", __uiInFileNameLength );
+
+				pMsg = pNewMsg;
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingCmd::BuildIMsg( OUT MessageData* &pMsg, const char* InFileName )
+
+
+
+			void DebugPrintALLRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+			{
+ 				unused(Prefix);
+				protocolTrace(Trace::TRC_DBG1, "{0}:DebugPrintALLRankingCmd:{1}:{2} , FileName:{3,60}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_FileName); 
+			}; // void DebugPrintALLRankingCmd::TraceOut(const char* Prefix, MessageData* pMsg)
+
+			const MessageID DebugPrintALLRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_MOBILE, POLICY_LOGIN, 7);
+			Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
+			{
+ 				Result hr;
+
+				INT iMsgSize;
+				BYTE* pCur;
+
+				protocolChkPtr(pIMsg);
+
+				iMsgSize = (INT)pIMsg->GetMessageSize() - (INT)sizeof(MobileMessageHeader);
+				pCur = pIMsg->GetMessageData();
+
+				protocolChk( Protocol::StreamParamCopy( &m_Result, pCur, iMsgSize, (int)sizeof(Result) ) );
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
+
+			Result DebugPrintALLRankingRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
+			{
+ 				Result hr;
+
+				BYTE *pMsgData = nullptr;
+
+				UINT __uiMessageSize = (UINT)(sizeof(MobileMessageHeader) 
+					+ sizeof(Result));
+
+				MessageData *pNewMsg = nullptr;
+
+				protocolMem( pNewMsg = MessageData::NewMessage( Login::DebugPrintALLRankingRes::MID, __uiMessageSize ) );
+
+				pMsgData = pNewMsg->GetMessageData();
+
+				Protocol::PackParamCopy( pMsgData, &InResult, sizeof(Result));
+
+				pMsg = pNewMsg;
+
+
+			Proc_End:
+
+				return hr;
+
+			}; // Result DebugPrintALLRankingRes::BuildIMsg( OUT MessageData* &pMsg, const Result &InResult )
+
+
+
+			void DebugPrintALLRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
+			{
+ 				unused(Prefix);
+				protocolTrace(Trace::TRC_DBG1, "{0}:DebugPrintALLRankingRes:{1}:{2} , Result:{3:X8}",
+												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_Result); 
+			}; // void DebugPrintALLRankingRes::TraceOut(const char* Prefix, MessageData* pMsg)
 
 
 

@@ -73,6 +73,26 @@ namespace Svr {
 	};
 
 
+	class RankingServerDebugPrintALLRankingTrans : public ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::DebugPrintALLRankingCmd, RankingServerDebugPrintALLRankingTrans, 1>
+	{
+	public:
+		typedef ServerEntityMessageTransaction<RankingServiceEntity, Message::RankingServer::DebugPrintALLRankingCmd, RankingServerDebugPrintALLRankingTrans, 1> super;
+
+	private:
+
+		StaticArray<TotalRankingPlayerInformation, 10000> m_RankingList;
+	public:
+		RankingServerDebugPrintALLRankingTrans(Message::MessageData* &pIMsg);
+		virtual ~RankingServerDebugPrintALLRankingTrans() {}
+
+		// Start Transaction
+		virtual Result StartTransaction();
+
+		Policy::ISvrPolicyRankingServer* GetPolicy() { return ServerEntityMessageTransaction::GetPolicy<Policy::ISvrPolicyRankingServer>(); }
+		BR_SVR_MSGTRANS_CLOSE(DebugPrintALLRankingRes, GetRouteContext().GetSwaped());
+	};
+
+
 
 
 

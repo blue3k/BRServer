@@ -89,7 +89,7 @@ namespace BR
 			void PlayerEnteredC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 			{
  				unused(Prefix);
-				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerEnteredC2SEvt:{1}:{2} , PlayerID:{3}, PlayerName:{4}",
+				protocolTrace(Trace::TRC_DBG1, "{0}:PlayerEnteredC2SEvt:{1}:{2} , PlayerID:{3}, PlayerName:{4,60}",
 												Prefix, pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, m_PlayerID, m_PlayerName); 
 			}; // void PlayerEnteredC2SEvt::TraceOut(const char* Prefix, MessageData* pMsg)
 

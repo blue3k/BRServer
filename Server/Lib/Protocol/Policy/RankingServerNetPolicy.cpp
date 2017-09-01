@@ -117,6 +117,24 @@ namespace BR
 			return hr;
 
 		}; // Result NetPolicyRankingServer::GetRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
+		// Cmd: Debug test
+		Result NetPolicyRankingServer::DebugPrintALLRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::RankingServer::DebugPrintALLRankingCmd::BuildIMsg(pMsg, InRouteContext, InTransactionID, InFileName));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetPolicyRankingServer::DebugPrintALLRankingCmd( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName )
 
 
 		// Cmd: Add a player to ranking
@@ -209,6 +227,24 @@ namespace BR
 			return hr;
 
 		}; // Result NetSvrPolicyRankingServer::GetRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
+		// Cmd: Debug test
+		Result NetSvrPolicyRankingServer::DebugPrintALLRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
+		{
+ 			Result hr;
+
+			 Message::MessageData * pMsg = nullptr;
+
+			 protocolChk(Message::RankingServer::DebugPrintALLRankingRes::BuildIMsg(pMsg, InRouteContext, InTransactionID, InResult));
+
+			 protocolChkPtr(GetConnection());
+
+			 protocolChk(GetConnection()->Send( pMsg ));
+
+		Proc_End:
+
+			return hr;
+
+		}; // Result NetSvrPolicyRankingServer::DebugPrintALLRankingRes( const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 
 
 	}; // namespace Policy

@@ -139,6 +139,7 @@ namespace Svr {
 
 		BR_ENTITY_MESSAGE(Message::Login::UpdateMyScoreCmd)					{ pNewTrans = new RankingUpdateScoreTrans(pMsgData); return ResultCode::SUCCESS; } );
 		BR_ENTITY_MESSAGE(Message::Login::DataTestCmd)						{ pNewTrans = new LoginUserDataTestTrans(pMsgData); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::Login::DebugPrintALLRankingCmd)			{ pNewTrans = new LoginUserDebugPrintALLRankingTrans(pMsgData); return ResultCode::SUCCESS; } );
 		return ResultCode::SUCCESS;
 	}
 

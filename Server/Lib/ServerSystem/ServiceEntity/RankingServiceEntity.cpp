@@ -48,6 +48,7 @@ namespace Svr {
 		BR_ENTITY_MESSAGE(Message::RankingServer::UpdatePlayerScoreCmd) { svrMemReturn(pNewTrans = new RankingServerUpdatePlayerScoreTrans(pMsgData)); return ResultCode::SUCCESS; } );
 		//BR_ENTITY_MESSAGE(Message::RankingServer::GetPlayerRankingCmd) { svrMemReturn(pNewTrans = new RankingServerGetPlayerRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
 		//BR_ENTITY_MESSAGE(Message::RankingServer::GetRankingCmd) { svrMemReturn(pNewTrans = new RankingServerGetRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
+		BR_ENTITY_MESSAGE(Message::RankingServer::DebugPrintALLRankingCmd) { svrMemReturn(pNewTrans = new RankingServerDebugPrintALLRankingTrans(pMsgData)); return ResultCode::SUCCESS; } );
 	}
 
 	RankingServiceEntity::~RankingServiceEntity()
@@ -91,6 +92,9 @@ namespace Svr {
 				svrChk(UpdatePlayerScore(playerInfo, itRowSet.Score, playerRanking));
 			}
 		}
+
+		// Apply loaded changes
+		m_RankingMap.CommitChanges();
 
 		m_RankingCheckTimer.SetTimer(DurationMS(Svr::Const::TIME_INTERVAL_RANKING_UPDATE));
 
@@ -204,8 +208,30 @@ namespace Svr {
 		return ResultCode::SUCCESS;
 	}
 
+	Result RankingServiceEntity::GetRankingListAll(Array<TotalRankingPlayerInformation> &rankingList)
+	{
+		int32_t expectedRanking = 0;
+		CounterType itemCount = m_RankingMap.GetItemCount();
 
+		return GetRankingList(0, itemCount, rankingList);
+	}
 
+	
+	Result RankingServiceEntity::ForeachAll(const ForeEachFuntor& functor)
+	{		
+		int32_t expectedRanking = 0;
+		int32_t itemCount = m_RankingMap.GetItemCount();
+
+		m_RankingMap.ForeachOrder(0, (int)itemCount, [&expectedRanking, &functor ] (const uint64_t& key, const TotalRankingPlayerInformationPtr &value)->bool
+		{
+			const TotalRankingPlayerInformation newValue = *value;
+			functor(expectedRanking++, &newValue);
+			
+			return true;
+		});
+
+		return ResultCode::SUCCESS;
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 	//

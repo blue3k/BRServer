@@ -43,6 +43,8 @@ namespace BR
 			Result DataTestCmd( const Array<uint8_t>& InTestData );
 			// C2S: Heartbit
 			Result HeartBitC2SEvt(  );
+			// Cmd: For network test
+			Result DebugPrintALLRankingCmd( const char* InFileName );
 
 		}; // class NetPolicyLogin : public IPolicyLogin
 
@@ -66,6 +68,8 @@ namespace BR
 			Result GetRankingListRes( const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 			// Cmd: For network test
 			Result DataTestRes( const Result &InResult, const Array<uint8_t>& InTestData );
+			// Cmd: For network test
+			Result DebugPrintALLRankingRes( const Result &InResult );
 
 		}; // class NetSvrPolicyLogin : public ISvrPolicyLogin
 
