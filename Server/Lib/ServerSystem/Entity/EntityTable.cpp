@@ -69,7 +69,7 @@ namespace Svr {
 
 
 		// Route Message Cmd/Evt
-		Result EntityTable::RouteTransaction( EntityID entityID, Transaction* &pTrans )
+		Result EntityTable::RouteTransaction( EntityID entityID, TransactionPtr &pTrans )
 		{
 			Result hr = ResultCode::SUCCESS;
 			SharedPointerT<Entity> pEntity;

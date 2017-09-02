@@ -14,10 +14,13 @@
 
 
 namespace SF {
+
+	class ServerConfig;
+
 namespace GameTable {
 
 	// Initialize tables
-	Result InitializeTable();
+	Result InitializeTable(const ServerConfig* config);
 
 	int GetTableVersion();
 

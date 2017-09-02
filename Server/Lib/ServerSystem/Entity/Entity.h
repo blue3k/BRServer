@@ -55,7 +55,7 @@ namespace Svr{
 	class Entity : public TickTask
 	{
 	public:
-		typedef std::function<Result(Net::Connection *, Message::MessageData* &, Transaction* &)>	MessageHandlerType;
+		typedef std::function<Result(Net::Connection *, MessageDataPtr &, TransactionPtr &)>	MessageHandlerType;
 
 	private:
 
@@ -76,7 +76,7 @@ namespace Svr{
 
 
 		// Entity transaction queue
-		PageQueue<Transaction*>			m_transactionQueue;
+		PageQueue<TransactionPtr>			m_transactionQueue;
 
 		// Message handler table
 		MessageHandlerTable<MessageHandlerType>	m_HandlerTable;
@@ -87,11 +87,11 @@ namespace Svr{
 
 
 		// Get transaction queue
-		inline PageQueue<Transaction*>& GetTransactionQueue();
+		PageQueue<TransactionPtr>& GetTransactionQueue() { return m_transactionQueue; }
 
 		TimeStampMS SetBestScehdulingTime(Transaction* pTrans);
 
-		virtual void ReleaseTransaction(Transaction* pTrans);
+		virtual void ReleaseTransaction(TransactionPtr& pTrans);
 
 		Result _ClearEntity();
 
@@ -99,15 +99,17 @@ namespace Svr{
 		Entity( uint uiTransQueueSize, uint TransResQueueSize );
 		virtual ~Entity();
 
+		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+
 		// Get Entity State
-		inline EntityState GetEntityState();
+		EntityState GetEntityState() { return m_State; }
 
 		// Set Entity State
 		inline void SetEntityState( EntityState state );
 
 
 		// Get Entity UID
-		inline EntityUID GetEntityUID() const;
+		EntityUID GetEntityUID() const { return m_EntityUID; }
 
 		// Set Entity UID
 		inline void SetEntityUID( EntityUID entityUID );
@@ -158,10 +160,10 @@ namespace Svr{
 
 
 		// Process Message and release message after all processed
-		virtual Result ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, Message::MessageData* &pMsg);
+		virtual Result ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, MessageDataPtr &pMsg);
 
 		// Process result
-		virtual Result ProcessMessageResult( Message::MessageData* &pMsg );
+		virtual Result ProcessMessageResult(MessageDataPtr &pMsg );
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -174,13 +176,13 @@ namespace Svr{
 		virtual uint GetActiveTransactionCount() = 0;
 
 		// Pending new transaction job
-		virtual Result PendingTransaction(ThreadID thisThreadID, Transaction* &pTrans);
-		virtual Result ProcessTransaction(Transaction* &pTrans);
+		virtual Result PendingTransaction(ThreadID thisThreadID, TransactionPtr &pTrans);
+		virtual Result ProcessTransaction(TransactionPtr &pTrans);
 
 		// Pending transaction result
 		virtual Result PendingTransactionResult( TransactionResult* &pTransRes );
 
-		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) = 0;
+		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult* &pTransRes) = 0;
 
 
 	};

@@ -12,6 +12,7 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -48,7 +49,7 @@ namespace SF
 				CreatePartyCmd()
 					{}
 
-				CreatePartyCmd( MessageData* &pMsg )
+				CreatePartyCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -59,10 +60,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const PlayerInformation& GetCreator() const	{ return m_Creator; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const PlayerInformation &InCreator );
 
@@ -97,7 +98,7 @@ namespace SF
 				CreatePartyRes()
 					{}
 
-				CreatePartyRes( MessageData* &pMsg )
+				CreatePartyRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -107,10 +108,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -145,7 +146,7 @@ namespace SF
 				PartyDeletedC2SEvt()
 					{}
 
-				PartyDeletedC2SEvt( MessageData* &pMsg )
+				PartyDeletedC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -154,10 +155,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 

@@ -38,7 +38,7 @@ namespace Svr {
 		PlayerID	m_PlayerID;
 
 	public:
-		GamePartyMessageTransaction( Message::MessageData* &pIMsg )
+		GamePartyMessageTransaction( MessageDataPtr &pIMsg )
 			:super( pIMsg )
 			,m_PlayerID(0)
 		{

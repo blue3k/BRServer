@@ -14,17 +14,17 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Memory/SFMemory.h"
 #include "Types/BrGameTypes.h"
 #include "Types/BrSvrTypes.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Container/Indexing.h"
 
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
+#include "Entity/EntityInformation.h"
 #include "ServerSystem/ServiceEntity/Game/GameClusterServiceEntity.h"
 
 

@@ -46,8 +46,8 @@ namespace DB {
 		StaticArray<DataSource*,sizeof(DataSource*)*DB::Const::DEFAULT_SHARDING_BUCKETS>		m_ShardingBucket;
 
 		// same cluster will share same IP/Password
-		std::string m_UserID = "";
-		std::string m_Password = "";
+		String m_UserID = "";
+		String m_Password = "";
 
 		// Pending Query Queue
 		PageQueue<Query*>	m_PendingQueries;
@@ -64,6 +64,8 @@ namespace DB {
 		DBClusterManager();
 		virtual ~DBClusterManager();
 
+		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+
 		uint GetPartitioningCount() const { return m_PartitioningCount; }
 
 		// Initialize DB
@@ -73,7 +75,7 @@ namespace DB {
 		void TerminateDB();
 
 		// Add DB source
-		Result	AddDBSource( uint partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID = "", const std::string& strPassword = "" ); 
+		Result	AddDBSource( uint partitioningID, const String& strInstanceName, const String& strConnectionString, const String& strDBName, const String& strUserID = "", const String& strPassword = "" ); 
 
 	protected:
 

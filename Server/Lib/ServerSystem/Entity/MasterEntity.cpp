@@ -47,7 +47,8 @@ namespace Svr
 	MasterEntity::MasterEntity( uint uiTransQueueSize, uint TransResQueueSize )
 		: Entity( uiTransQueueSize, TransResQueueSize )
 		, m_uiMaxActiveTransaction(1024)
-		, m_pExclusiveTransaction(nullptr)
+		, m_activeTransactionScheduler(GetMemoryManager())
+		, m_activeTrans(GetMemoryManager())
 	{
 		SetTickInterval(DurationMS(100));
 		m_activeTransactionScheduler.SetAssertOnInvalidTickTime(true);
@@ -69,7 +70,7 @@ namespace Svr
 
 
 
-	void MasterEntity::ReleaseTransaction(Transaction* pTrans)
+	void MasterEntity::ReleaseTransaction(TransactionPtr& pTrans)
 	{
 		ThreadID currentThreadID = ThisThread::GetThreadID();
 		SharedPointerT<Transaction> pDeleted;
@@ -155,7 +156,7 @@ namespace Svr
 		Transaction* pNewTran = nullptr;
 		ThreadID currentThreadID = ThisThread::GetThreadID();
 		TimeStampMS nextTick = TimeStampMS::max();
-
+		TransactionPtr curTrans;
 
 		if (m_activeTransactionScheduler.GetWorkingThreadID() == ThreadID())
 		{
@@ -190,7 +191,7 @@ namespace Svr
 		{
 			TransactionID transID( (uint32_t)GetEntityID(), 0 );
 
-			SharedPointerT<Transaction> pPrevTrans = nullptr;
+			TransactionPtr pPrevTrans;
 			do {
 				transID.Components.TransID = (decltype(transID.Components.TransID))GenTransIndex();
 			} while ((m_activeTrans.Find(transID.GetTransactionIndex(), pPrevTrans)));
@@ -198,41 +199,32 @@ namespace Svr
 
 			pNewTran->SetTransID( transID );
 
-			//if( pNewTran->IsPrintTrace() )
-			//{
-			//	svrTrace(Svr::TRC_TRANSACTION, "Trans NewActive TID:{0}, ParentTID:{1} {2}, Entity:{3}:{4}", 
-			//		pNewTran->GetTransID(), 
-			//		pNewTran->GetParentTransID(), 
-			//		typeid(*(Transaction*)pNewTran).name(), GetEntityUID(), 
-			//		typeid(*this).name());
-			//}
 
+			curTrans = pNewTran;
+			pNewTran = nullptr;
 
-			Transaction* curTrans = (Transaction*)pNewTran;
 			ProcessTransaction(curTrans);
 
 			if (curTrans == nullptr)
 			{
-				pNewTran = nullptr;
 				continue;
 			}
 
-			SharedPointerT<Transaction> pTransPtr(pNewTran); // We need this shared pointer to generage weak pointer in TimerActionTransaction
-			if (pNewTran->IsExclusive())
+			if (curTrans->IsExclusive())
 			{
-				m_pExclusiveTransaction = pTransPtr;
+				m_pExclusiveTransaction = curTrans;
 			}
 			else
 			{
-				svrChk(m_activeTrans.Insert(pTransPtr->GetTransID().GetTransactionIndex(), pTransPtr));
+				svrChk(m_activeTrans.Insert(curTrans->GetTransID().GetTransactionIndex(), curTrans));
 			}
 
-			auto timerAction = new TimerActionTransaction(pTransPtr);
-			pTransPtr->SetTimerAction(timerAction);
-			timerAction->SetNextTickTime(pTransPtr);
+			auto timerAction = new TimerActionTransaction(curTrans);
+			curTrans->SetTimerAction(timerAction);
+			timerAction->SetNextTickTime(curTrans);
 			svrChk(m_activeTransactionScheduler.AddTimerAction(currentThreadID, timerAction));
 
-			pNewTran = nullptr;
+			curTrans = nullptr;
 		}
 
 		ValidateTransactionCount();
@@ -252,10 +244,9 @@ namespace Svr
 		// Exclusive transaction will be issued after all other transaction is processed
 		if (m_pExclusiveTransaction != nullptr && m_activeTrans.GetItemCount() == 0)
 		{
-			auto curTrans = (Transaction*)m_pExclusiveTransaction;
-			ProcessTransaction(curTrans);
+			ProcessTransaction(m_pExclusiveTransaction);
 
-			if (curTrans != nullptr)
+			if (m_pExclusiveTransaction != nullptr)
 			{
 				auto transTickTime = std::min(m_pExclusiveTransaction->GetTimerExpireTime(), m_pExclusiveTransaction->GetHeartBitTimeout());
 				nextTick = std::min(transTickTime, nextTick);
@@ -263,7 +254,6 @@ namespace Svr
 		}
 
 
-		//m_activeTrans.CommitChanges();
 		m_activeTransactionScheduler.CommitChanges(currentThreadID);
 
 
@@ -284,12 +274,13 @@ namespace Svr
 
 	Proc_End:
 
-		ReleaseTransaction(pNewTran);
+		if(curTrans != nullptr)
+			ReleaseTransaction(curTrans);
 
 		return hr;
 	}
 	
-	Result MasterEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes)
+	Result MasterEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult* &pTransRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Result hrTem = ResultCode::SUCCESS;
@@ -340,7 +331,8 @@ namespace Svr
 
 	Proc_End:
 
-		Util::SafeRelease(pTransRes);
+		IMemoryManager::Delete(pTransRes);
+		pTransRes = nullptr;
 
 		return hr;
 	}
@@ -386,13 +378,13 @@ namespace Svr
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
-					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
+					ProcessTransactionResult(pCurTran, const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent));
 				}
 				else
 				{
 					svrTrace(Svr::TRC_TRANSACTION, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pNonConstTransRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					Util::SafeRelease(pNonConstTransRes);
+					IMemoryManager::Delete(pNonConstTransRes);
 					svrErr(ResultCode::FAIL);
 				}
 			}

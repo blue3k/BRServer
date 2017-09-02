@@ -12,9 +12,9 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Util/TimeUtil.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Memory/MemoryPool.h"
 #include "Entity/Entity.h"
 #include "ServiceEntity/Game/GameSystem.h"
@@ -69,37 +69,35 @@ namespace GameServer {
 
 	private:
 
-		// Player connection
-		BRCLASS_ATTRIBUTE_READONLY(Policy::NetSvrPolicyGame*,ISvrGamePolicy);
-
 		// Player state
-		BRCLASS_ATTRIBUTE(PlayerState,PlayerState);
+		PlayerState m_PlayerState;
+
 
 		// Game instance UID
-		BRCLASS_ATTRIBUTE_READONLY(GameInsUID,GameInsUID);
+		GameInsUID m_GameInsUID;
+
 
 		mutable ServerFriendInformation m_PlayerInformation;
 
-		BRCLASS_ATTRIBUTE(PartyUID,PartyUID);
-		BRCLASS_ATTRIBUTE(uint, ShardID);
+		PartyUID m_PartyUID;
+		uint m_ShardID;
 
-		BRCLASS_ATTRIBUTE_READONLY(TimeStampMS, MatchingStartTime);
-		BRCLASS_ATTRIBUTE_READONLY(MatchingQueueTicket,MatchingTicket);
-		void SetMatchingTicket(MatchingQueueTicket ticket);
+		TimeStampMS m_MatchingStartTime;
+
+		MatchingQueueTicket m_MatchingTicket;
 
 		// Time for kill this game
-		BRCLASS_ATTRIBUTE_CONST(Util::TimeStampTimer,TimeToKill);
+		Util::TimeStampTimer m_TimeToKill;
 
-		BRCLASS_ATTRIBUTE_STRING(GCMKeys,GameConst::MAX_GCMKEYS);
+		char m_GCMKeys[GameConst::MAX_GCMKEYS];
 		
 		// Latest update time in UTC time
-		BRCLASS_ATTRIBUTE(TimeStampSec,LatestUpdateTime);
+		TimeStampSec m_LatestUpdateTime;
 
 		// Latest active time in UTC time
-		BRCLASS_ATTRIBUTE_READONLY(TimeStampSec,LatestActiveTime);
-		void SetLatestActiveTime(TimeStampSec latestActiveTime);
+		TimeStampSec m_LatestActiveTime;
 
-		BRCLASS_ATTRIBUTE(TimeStampSec,LatestDBSyncTime);
+		TimeStampSec m_LatestDBSyncTime;
 
 
 
@@ -109,21 +107,52 @@ namespace GameServer {
 		//
 
 		// Player Name
-		BRCLASS_ATTRIBUTE_STRING(UserName,GameConst::MAX_NAME);
+		char m_UserName[GameConst::MAX_NAME];
 
 		PlayerID GetPlayerID() { return GetAccountID(); }
 
-
-		StaticAllocator< sizeof(Svr::EntityMessageHandlerItem)*4 >		m_Allocator;
-
-	protected:
-
-		virtual MemoryAllocator& GetAllocator()							{ return m_Allocator; }
 
 	public:
 
 		GamePlayerEntity();
 		virtual ~GamePlayerEntity();
+
+		PlayerState GetPlayerState() { return m_PlayerState; }
+		void SetPlayerState(PlayerState value) { m_PlayerState = value; }
+
+		const GameInsUID& GetGameInsUID() { return m_GameInsUID; }
+
+		const PartyUID& GetPartyUID() { return m_PartyUID; }
+		void SetPartyUID(const PartyUID& value) { m_PartyUID = value; }
+
+		uint GetShardID() { return m_ShardID; }
+		void SetShardID(uint value) { m_ShardID = value; }
+
+		TimeStampMS GetMatchingStartTime() { return m_MatchingStartTime; }
+
+		const MatchingQueueTicket& GetMatchingTicket() { return m_MatchingTicket; }
+		void SetMatchingTicket(MatchingQueueTicket ticket);
+
+		const Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
+
+
+		const char* GetGCMKeys() { return m_GCMKeys; }
+		void SetGCMKeys(const char* value) { StrUtil::StringCpy(m_GCMKeys, value); }
+
+		TimeStampSec GetLatestUpdateTime() { return m_LatestUpdateTime; }
+		void SetLatestUpdateTime(TimeStampSec value) { m_LatestUpdateTime = value; }
+
+
+		TimeStampSec GetLatestActiveTime() { return m_LatestActiveTime; }
+		void SetLatestActiveTime(TimeStampSec latestActiveTime);
+
+		TimeStampSec GetLatestDBSyncTime() { return m_LatestDBSyncTime; }
+		void SetLatestDBSyncTime(TimeStampSec value) { m_LatestDBSyncTime = value; }
+
+
+		const char* GetUserName() { return m_UserName; }
+		void SetUserName(const char* value) { StrUtil::StringCpy(m_UserName, value); }
+
 
 		// Initialize entity to proceed new connection
 		virtual Result InitializeEntity( EntityID newEntityID );

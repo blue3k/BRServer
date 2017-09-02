@@ -43,7 +43,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 	public:
-		GameEntityTransDeleteGame(Message::MessageData* &pIMsg);// : ServerEntityMessageTransaction(pIMsg) {}
+		GameEntityTransDeleteGame(MessageDataPtr &pIMsg);// : ServerEntityMessageTransaction(pIMsg) {}
 		virtual ~GameEntityTransDeleteGame() {}
 
 		// Start Transaction
@@ -73,7 +73,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 	public:
-		GameEntityTransJoinGame( Message::MessageData* &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransJoinGame( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
 		virtual ~GameEntityTransJoinGame() {}
 
 		// Start Transaction
@@ -113,7 +113,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 	public:
-		GameEntityTransLeaveGame( Message::MessageData* &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransLeaveGame( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
 		virtual ~GameEntityTransLeaveGame() {}
 
 		// Start Transaction
@@ -130,7 +130,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 	public:
-		GameEntityTransKickPlayer( Message::MessageData* &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransKickPlayer( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
 		virtual ~GameEntityTransKickPlayer() {}
 
 		// Start Transaction
@@ -149,7 +149,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 	public:
-		GameEntityTransAssignRole( Message::MessageData* &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransAssignRole( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
 		virtual ~GameEntityTransAssignRole() {}
 
 		// Start Transaction
@@ -167,7 +167,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 	public:
-		GameEntityTransChatMessage( Message::MessageData* &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransChatMessage( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
 		virtual ~GameEntityTransChatMessage() {}
 
 		// Start Transaction
@@ -184,7 +184,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 	public:
-		GameEntityTransVoteGameAdvance( Message::MessageData* &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransVoteGameAdvance( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
 		virtual ~GameEntityTransVoteGameAdvance() {}
 
 		// Start Transaction
@@ -203,7 +203,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 	public:
-		GameEntityTransVote( Message::MessageData* &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransVote( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
 		virtual ~GameEntityTransVote() {}
 
 		// Start Transaction
@@ -220,7 +220,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 	public:
-		GameEntityTransAdvanceGame( Message::MessageData* &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
+		GameEntityTransAdvanceGame( MessageDataPtr &pIMsg )  :RoutedGamePlayerMessageTransaction( pIMsg ) {}
 		virtual ~GameEntityTransAdvanceGame() {}
 
 		// Start Transaction
@@ -240,7 +240,7 @@ namespace ConspiracyGameInstanceServer {
 		uint m_MemberCount;
 
 	public:
-		GameEntityTransGamePlayAgain(Message::MessageData* &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
+		GameEntityTransGamePlayAgain(MessageDataPtr &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
 		virtual ~GameEntityTransGamePlayAgain() {}
 
 		// Start Transaction
@@ -261,7 +261,7 @@ namespace ConspiracyGameInstanceServer {
 		StaticArray<PlayerRole, 4> m_RevealedPlayerRole;
 
 	public:
-		GameEntityTransGameRevealPlayer(Message::MessageData* &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
+		GameEntityTransGameRevealPlayer(MessageDataPtr &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
 		virtual ~GameEntityTransGameRevealPlayer() {}
 
 		// Start Transaction
@@ -280,7 +280,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 
 	public:
-		GameEntityTransGamePlayerRevive(Message::MessageData* &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
+		GameEntityTransGamePlayerRevive(MessageDataPtr &pIMsg) :RoutedGamePlayerMessageTransaction(pIMsg) {}
 		virtual ~GameEntityTransGamePlayerRevive() {}
 
 		// Start Transaction

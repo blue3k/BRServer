@@ -51,7 +51,7 @@ namespace Svr {
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
 
-		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
+		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult* &pTransRes) override;
 
 		virtual uint GetActiveTransactionCount() override;
 	};

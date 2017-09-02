@@ -63,7 +63,7 @@ namespace GameServer {
 		LinkedArray<uint8_t> m_GameLogData;
 
 	public:
-		PlayerTransJoinGame( Message::MessageData* &pIMsg );
+		PlayerTransJoinGame( MessageDataPtr &pIMsg );
 		virtual ~PlayerTransJoinGame() {}
 
 		Result OnJoinGameRes( Svr::TransactionResult* &pRes );
@@ -86,7 +86,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::PlayerJoinedS2CEvt, PlayerTransJoinedS2SEvt> super;
 
 	public:
-		PlayerTransJoinedS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransJoinedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransJoinedS2SEvt() {}
 
 		// Start Transaction
@@ -102,7 +102,7 @@ namespace GameServer {
 	private:
 
 	public:
-		PlayerTransLeaveGame( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransLeaveGame( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransLeaveGame() {}
 
 		Result OnLeaveGameRes( Svr::TransactionResult* & pRes );
@@ -123,7 +123,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::PlayerLeftS2CEvt, PlayerTransLeftS2SEvt> super;
 
 	public:
-		PlayerTransLeftS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransLeftS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransLeftS2SEvt() {}
 
 		// Start Transaction
@@ -139,7 +139,7 @@ namespace GameServer {
 	private:
 
 	public:
-		PlayerTransKickPlayer( Message::MessageData* &pIMsg );
+		PlayerTransKickPlayer( MessageDataPtr &pIMsg );
 		virtual ~PlayerTransKickPlayer() {}
 
 		Result OnKickPlayerRes( Svr::TransactionResult* & pRes );
@@ -159,7 +159,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::PlayerKickedS2CEvt, PlayerTransPlayerKickedS2SEvt> super;
 
 	public:
-		PlayerTransPlayerKickedS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPlayerKickedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransPlayerKickedS2SEvt() {}
 
 		// Start Transaction
@@ -175,7 +175,7 @@ namespace GameServer {
 	private:
 
 	public:
-		PlayerTransAssignRole( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransAssignRole( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransAssignRole() {}
 
 		Result OnAssignRoleRes( Svr::TransactionResult* &pRes );
@@ -194,7 +194,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::RoleAssignedS2CEvt, PlayerTransRoleAssignedS2SEvt> super;
 
 	public:
-		PlayerTransRoleAssignedS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransRoleAssignedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransRoleAssignedS2SEvt() {}
 
 		// Start Transaction
@@ -209,7 +209,7 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::ChatMessageCmd, PlayerTransChatMessage> super;
 
 	public:
-		PlayerTransChatMessage( Message::MessageData* &pIMsg )  :MessageTransaction( pIMsg ) {}
+		PlayerTransChatMessage( MessageDataPtr &pIMsg )  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransChatMessage() {}
 
 		// Start Transaction
@@ -225,7 +225,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::ChatMessageC2SEvt, PlayerTransChatMessageFromOtherEntity> super;
 
 	public:
-		PlayerTransChatMessageFromOtherEntity( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransChatMessageFromOtherEntity( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransChatMessageFromOtherEntity() {}
 
 		// Start Transaction
@@ -242,7 +242,7 @@ namespace GameServer {
 	private:
 
 	public:
-		PlayerTransVoteGameAdvance( Message::MessageData* &pIMsg );
+		PlayerTransVoteGameAdvance( MessageDataPtr &pIMsg );
 		virtual ~PlayerTransVoteGameAdvance() {}
 
 		Result OnVoteRes( Svr::TransactionResult* &pRes );
@@ -260,7 +260,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::GameAdvanceVotedS2CEvt, PlayerTransGameAdvanceVotedS2SEvt> super;
 
 	public:
-		PlayerTransGameAdvanceVotedS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransGameAdvanceVotedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransGameAdvanceVotedS2SEvt() {}
 
 		// Start Transaction
@@ -276,7 +276,7 @@ namespace GameServer {
 	private:
 
 	public:
-		PlayerTransVote( Message::MessageData* &pIMsg );
+		PlayerTransVote( MessageDataPtr &pIMsg );
 		virtual ~PlayerTransVote() {}
 
 		Result OnVoteRes( Svr::TransactionResult* &pRes );
@@ -294,7 +294,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::VoteEndS2CEvt, PlayerTransVoteEndS2SEvt> super;
 
 	public:
-		PlayerTransVoteEndS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransVoteEndS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransVoteEndS2SEvt() {}
 
 		// Start Transaction
@@ -309,7 +309,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::PlayerRevealedS2CEvt, PlayerTransPlayerRevealedS2SEvt> super;
 
 	public:
-		PlayerTransPlayerRevealedS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPlayerRevealedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransPlayerRevealedS2SEvt() {}
 
 		// Start Transaction
@@ -324,7 +324,7 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::AdvanceGameCmd, PlayerTransAdvanceGame> super;
 
 	public:
-		PlayerTransAdvanceGame( Message::MessageData* &pIMsg );
+		PlayerTransAdvanceGame( MessageDataPtr &pIMsg );
 		virtual ~PlayerTransAdvanceGame() {}
 
 		Result OnAdvanceGameRes( Svr::TransactionResult* &pRes );
@@ -342,7 +342,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::GameAdvancedS2CEvt, PlayerTransGameAdvancedS2SEvt> super;
 
 	public:
-		PlayerTransGameAdvancedS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransGameAdvancedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransGameAdvancedS2SEvt() {}
 
 		// Start Transaction
@@ -356,7 +356,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::GameEndedS2CEvt, PlayerTransGameEndedS2SEvt> super;
 
 	public:
-		PlayerTransGameEndedS2SEvt( Message::MessageData* &pIMsg );//  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransGameEndedS2SEvt( MessageDataPtr &pIMsg );//  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransGameEndedS2SEvt() {}
 
 		Result OnUpdateDBRes(  Svr::TransactionResult* &pRes );
@@ -372,7 +372,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::PlayerKilledS2CEvt, PlayerTransPlayerKilledS2SEvt> super;
 
 	public:
-		PlayerTransPlayerKilledS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPlayerKilledS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransPlayerKilledS2SEvt() {}
 
 		// Start Transaction
@@ -387,7 +387,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::VotedS2CEvt, PlayerTransPlayerVotedS2SEvt> super;
 
 	public:
-		PlayerTransPlayerVotedS2SEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPlayerVotedS2SEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransPlayerVotedS2SEvt() {}
 
 		// Start Transaction
@@ -407,7 +407,7 @@ namespace GameServer {
 		uint64_t m_TotalGameMoney;
 
 	public:
-		PlayerTransRequestGameMatch( Message::MessageData* &pIMsg );
+		PlayerTransRequestGameMatch( MessageDataPtr &pIMsg );
 		virtual ~PlayerTransRequestGameMatch() {}
 
 		Result OnRequestPartyMatchingRes( Svr::TransactionResult* &pRes );
@@ -425,7 +425,7 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::CancelGameMatchCmd, PlayerTransCancelGameMatch> super;
 
 	public:
-		PlayerTransCancelGameMatch( Message::MessageData* &pIMsg );
+		PlayerTransCancelGameMatch( MessageDataPtr &pIMsg );
 		virtual ~PlayerTransCancelGameMatch() {}
 
 		Result OnCancelPartyMatchingRes( Svr::TransactionResult* &pRes );
@@ -449,7 +449,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::PartyMatchingQueue::PlayerMatchingCanceledS2CEvt, PlayerTransPlayerMatchingCanceledS2CEvt> super;
 
 	public:
-		PlayerTransPlayerMatchingCanceledS2CEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPlayerMatchingCanceledS2CEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransPlayerMatchingCanceledS2CEvt() {}
 
 		// Start Transaction
@@ -464,7 +464,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::PartyMatchingQueue::PlayerMatchingItemDequeuedS2CEvt, PlayerTransPlayerMatchingItemDequeuedS2CEvt> super;
 
 	public:
-		PlayerTransPlayerMatchingItemDequeuedS2CEvt( Message::MessageData* &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
+		PlayerTransPlayerMatchingItemDequeuedS2CEvt( MessageDataPtr &pIMsg )  :UserTransactionS2SEvt( pIMsg ) {}
 		virtual ~PlayerTransPlayerMatchingItemDequeuedS2CEvt() {}
 
 		// Start Transaction
@@ -482,7 +482,7 @@ namespace GameServer {
 		uint64_t m_TotalGameMoney;
 
 	public:
-		PlayerTransPlayAgain(Message::MessageData* &pIMsg);
+		PlayerTransPlayAgain(MessageDataPtr &pIMsg);
 		virtual ~PlayerTransPlayAgain() {}
 
 		Result OnPlayAgainRes(Svr::TransactionResult* &pRes);
@@ -509,7 +509,7 @@ namespace GameServer {
 		PlayerID m_LeadPlayer;
 
 	public:
-		PlayerTransPlayAgainS2SEvt(Message::MessageData* &pIMsg);// : UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransPlayAgainS2SEvt(MessageDataPtr &pIMsg);// : UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransPlayAgainS2SEvt() {}
 
 		Result OnJoinPartyRes(Svr::TransactionResult* &pRes);
@@ -536,7 +536,7 @@ namespace GameServer {
 		uint64_t m_TotalGameMoney;
 
 	public:
-		PlayerTransGameRevealPlayer(Message::MessageData* &pIMsg);
+		PlayerTransGameRevealPlayer(MessageDataPtr &pIMsg);
 		virtual ~PlayerTransGameRevealPlayer() {}
 
 		Result OnUpdatePlayerRes(Svr::TransactionResult* &pRes);
@@ -561,7 +561,7 @@ namespace GameServer {
 		uint64_t m_TotalGameMoney;
 
 	public:
-		PlayerTransGamePlayerRevive(Message::MessageData* &pIMsg);
+		PlayerTransGamePlayerRevive(MessageDataPtr &pIMsg);
 		virtual ~PlayerTransGamePlayerRevive() {}
 
 		Result OnUpdatePlayerRes(Svr::TransactionResult* &pRes);
@@ -582,7 +582,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameInstance::GamePlayerRevivedS2CEvt, PlayerTransGamePlayerRevivedS2SEvt> super;
 
 	public:
-		PlayerTransGamePlayerRevivedS2SEvt(Message::MessageData* &pIMsg) : UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransGamePlayerRevivedS2SEvt(MessageDataPtr &pIMsg) : UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransGamePlayerRevivedS2SEvt() {}
 
 		// Start Transaction
@@ -601,7 +601,7 @@ namespace GameServer {
 		uint64_t m_TotalGameMoney;
 
 	public:
-		PlayerTransGamePlayerResetRank(Message::MessageData* &pIMsg) : MessageTransaction(pIMsg) {}
+		PlayerTransGamePlayerResetRank(MessageDataPtr &pIMsg) : MessageTransaction(pIMsg) {}
 		virtual ~PlayerTransGamePlayerResetRank() {}
 
 		// Start Transaction

@@ -12,6 +12,7 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -47,7 +48,7 @@ namespace SF
 				DeleteGameC2SEvt()
 					{}
 
-				DeleteGameC2SEvt( MessageData* &pMsg )
+				DeleteGameC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -55,10 +56,10 @@ namespace SF
 
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext );
 
@@ -94,7 +95,7 @@ namespace SF
 				JoinGameCmd()
 					{}
 
-				JoinGameCmd( MessageData* &pMsg )
+				JoinGameCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -106,10 +107,10 @@ namespace SF
 				const AuthTicket& GetTicket() const	{ return m_Ticket; };
 				const uint8_t& GetRequestedRole() const	{ return m_RequestedRole; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayer, const AuthTicket &InTicket, const uint8_t &InRequestedRole );
 
@@ -154,7 +155,7 @@ namespace SF
 				JoinGameRes()
 					{}
 
-				JoinGameRes( MessageData* &pMsg )
+				JoinGameRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -176,10 +177,10 @@ namespace SF
 				const Array<uint8_t>& GetChatHistoryData() const	{ return m_ChatHistoryData; };
 				const Array<uint8_t>& GetGameLogData() const	{ return m_GameLogData; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const NetAddress &InGameInsSvr, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay, const uint8_t &InMaxPlayer, const uint8_t &InPlayerIndex, const uint8_t &InPlayerCharacter, const uint8_t &InRole, const uint8_t &InDead, const uint8_t &InIsNewJoin, const Array<uint8_t>& InChatHistoryData, const Array<uint8_t>& InGameLogData );
 
@@ -217,7 +218,7 @@ namespace SF
 				PlayerJoinedS2CEvt()
 					{}
 
-				PlayerJoinedS2CEvt( MessageData* &pMsg )
+				PlayerJoinedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -230,10 +231,10 @@ namespace SF
 				const uint8_t& GetJoinedPlayerIndex() const	{ return m_JoinedPlayerIndex; };
 				const uint8_t& GetJoinedPlayerCharacter() const	{ return m_JoinedPlayerCharacter; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerInformation &InJoinedPlayer, const uint8_t &InJoinedPlayerRole, const uint8_t &InJoinedPlayerDead, const uint8_t &InJoinedPlayerIndex, const uint8_t &InJoinedPlayerCharacter );
 
@@ -267,7 +268,7 @@ namespace SF
 				SetConfigPresetC2SEvt()
 					{}
 
-				SetConfigPresetC2SEvt( MessageData* &pMsg )
+				SetConfigPresetC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -276,10 +277,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint32_t& GetPresetID() const	{ return m_PresetID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InPresetID );
 
@@ -312,7 +313,7 @@ namespace SF
 				LeaveGameCmd()
 					{}
 
-				LeaveGameCmd( MessageData* &pMsg )
+				LeaveGameCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -322,10 +323,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 
@@ -358,7 +359,7 @@ namespace SF
 				LeaveGameRes()
 					{}
 
-				LeaveGameRes( MessageData* &pMsg )
+				LeaveGameRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -368,10 +369,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -405,7 +406,7 @@ namespace SF
 				PlayerLeftS2CEvt()
 					{}
 
-				PlayerLeftS2CEvt( MessageData* &pMsg )
+				PlayerLeftS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -414,10 +415,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerID& GetLeftPlayerID() const	{ return m_LeftPlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InLeftPlayerID );
 
@@ -451,7 +452,7 @@ namespace SF
 				KickPlayerCmd()
 					{}
 
-				KickPlayerCmd( MessageData* &pMsg )
+				KickPlayerCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -462,10 +463,10 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const PlayerID& GetPlayerToKick() const	{ return m_PlayerToKick; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InPlayerToKick );
 
@@ -498,7 +499,7 @@ namespace SF
 				KickPlayerRes()
 					{}
 
-				KickPlayerRes( MessageData* &pMsg )
+				KickPlayerRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -508,10 +509,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -545,7 +546,7 @@ namespace SF
 				PlayerKickedS2CEvt()
 					{}
 
-				PlayerKickedS2CEvt( MessageData* &pMsg )
+				PlayerKickedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -554,10 +555,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerID& GetKickedPlayerID() const	{ return m_KickedPlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKickedPlayerID );
 
@@ -590,7 +591,7 @@ namespace SF
 				AssignRoleCmd()
 					{}
 
-				AssignRoleCmd( MessageData* &pMsg )
+				AssignRoleCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -600,10 +601,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 
@@ -636,7 +637,7 @@ namespace SF
 				AssignRoleRes()
 					{}
 
-				AssignRoleRes( MessageData* &pMsg )
+				AssignRoleRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -646,10 +647,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -683,7 +684,7 @@ namespace SF
 				RoleAssignedS2CEvt()
 					{}
 
-				RoleAssignedS2CEvt( MessageData* &pMsg )
+				RoleAssignedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -692,10 +693,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint8_t& GetRole() const	{ return m_Role; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint8_t &InRole );
 
@@ -731,7 +732,7 @@ namespace SF
 				:m_ChatMessage(nullptr)
 					{}
 
-				ChatMessageC2SEvt( MessageData* &pMsg )
+				ChatMessageC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 				,m_ChatMessage(nullptr)
 					{}
@@ -743,10 +744,10 @@ namespace SF
 				const uint8_t& GetRole() const	{ return m_Role; };
 				const char* GetChatMessage() const	{ return m_ChatMessage; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InPlayerID, const uint8_t &InRole, const char* InChatMessage );
 
@@ -779,7 +780,7 @@ namespace SF
 				AdvanceGameCmd()
 					{}
 
-				AdvanceGameCmd( MessageData* &pMsg )
+				AdvanceGameCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -789,10 +790,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 
@@ -825,7 +826,7 @@ namespace SF
 				AdvanceGameRes()
 					{}
 
-				AdvanceGameRes( MessageData* &pMsg )
+				AdvanceGameRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -835,10 +836,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -874,7 +875,7 @@ namespace SF
 				GameAdvancedS2CEvt()
 					{}
 
-				GameAdvancedS2CEvt( MessageData* &pMsg )
+				GameAdvancedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -885,10 +886,10 @@ namespace SF
 				const uint8_t& GetGameState() const	{ return m_GameState; };
 				const uint8_t& GetDay() const	{ return m_Day; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint32_t &InTimeStamp, const uint8_t &InGameState, const uint8_t &InDay );
 
@@ -926,7 +927,7 @@ namespace SF
 				GameEndedS2CEvt()
 					{}
 
-				GameEndedS2CEvt( MessageData* &pMsg )
+				GameEndedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -939,10 +940,10 @@ namespace SF
 				const uint8_t& GetPlayedRole() const	{ return m_PlayedRole; };
 				const uint8_t& GetIsWon() const	{ return m_IsWon; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint8_t &InWinner, const uint32_t &InGainedExp, const uint32_t &InGainedGameMoney, const uint8_t &InPlayedRole, const uint8_t &InIsWon );
 
@@ -975,7 +976,7 @@ namespace SF
 				VoteGameAdvanceCmd()
 					{}
 
-				VoteGameAdvanceCmd( MessageData* &pMsg )
+				VoteGameAdvanceCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -985,10 +986,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 
@@ -1021,7 +1022,7 @@ namespace SF
 				VoteGameAdvanceRes()
 					{}
 
-				VoteGameAdvanceRes( MessageData* &pMsg )
+				VoteGameAdvanceRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1031,10 +1032,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -1068,7 +1069,7 @@ namespace SF
 				GameAdvanceVotedS2CEvt()
 					{}
 
-				GameAdvanceVotedS2CEvt( MessageData* &pMsg )
+				GameAdvanceVotedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1077,10 +1078,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerID& GetVoter() const	{ return m_Voter; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter );
 
@@ -1115,7 +1116,7 @@ namespace SF
 				VoteCmd()
 					{}
 
-				VoteCmd( MessageData* &pMsg )
+				VoteCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1127,10 +1128,10 @@ namespace SF
 				const PlayerID& GetVoteTarget() const	{ return m_VoteTarget; };
 				const uint32_t& GetActionSerial() const	{ return m_ActionSerial; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const PlayerID &InVoteTarget, const uint32_t &InActionSerial );
 
@@ -1163,7 +1164,7 @@ namespace SF
 				VoteRes()
 					{}
 
-				VoteRes( MessageData* &pMsg )
+				VoteRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1173,10 +1174,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -1211,7 +1212,7 @@ namespace SF
 				VotedS2CEvt()
 					{}
 
-				VotedS2CEvt( MessageData* &pMsg )
+				VotedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1221,10 +1222,10 @@ namespace SF
 				const PlayerID& GetVoter() const	{ return m_Voter; };
 				const PlayerID& GetVotedTarget() const	{ return m_VotedTarget; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InVoter, const PlayerID &InVotedTarget );
 
@@ -1258,7 +1259,7 @@ namespace SF
 				VoteEndS2CEvt()
 					{}
 
-				VoteEndS2CEvt( MessageData* &pMsg )
+				VoteEndS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1267,10 +1268,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const Array<PlayerID>& GetVoted() const	{ return m_Voted; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const Array<PlayerID>& InVoted );
 
@@ -1306,7 +1307,7 @@ namespace SF
 				PlayerRevealedS2CEvt()
 					{}
 
-				PlayerRevealedS2CEvt( MessageData* &pMsg )
+				PlayerRevealedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1317,10 +1318,10 @@ namespace SF
 				const uint8_t& GetRole() const	{ return m_Role; };
 				const uint8_t& GetReason() const	{ return m_Reason; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevealedPlayerID, const uint8_t &InRole, const uint8_t &InReason );
 
@@ -1355,7 +1356,7 @@ namespace SF
 				PlayerKilledS2CEvt()
 					{}
 
-				PlayerKilledS2CEvt( MessageData* &pMsg )
+				PlayerKilledS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1365,10 +1366,10 @@ namespace SF
 				const PlayerID& GetKilledPlayer() const	{ return m_KilledPlayer; };
 				const uint8_t& GetReason() const	{ return m_Reason; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InKilledPlayer, const uint8_t &InReason );
 
@@ -1403,7 +1404,7 @@ namespace SF
 				GamePlayAgainCmd()
 					{}
 
-				GamePlayAgainCmd( MessageData* &pMsg )
+				GamePlayAgainCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1414,10 +1415,10 @@ namespace SF
 				const PlayerID& GetLeadPlayer() const	{ return m_LeadPlayer; };
 				const uint64_t& GetPartyUID() const	{ return m_PartyUID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InLeadPlayer, const uint64_t &InPartyUID );
 
@@ -1451,7 +1452,7 @@ namespace SF
 				GamePlayAgainRes()
 					{}
 
-				GamePlayAgainRes( MessageData* &pMsg )
+				GamePlayAgainRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1462,10 +1463,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const uint32_t& GetReplayMemberCount() const	{ return m_ReplayMemberCount; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InReplayMemberCount );
 
@@ -1501,7 +1502,7 @@ namespace SF
 				GamePlayAgainS2CEvt()
 					{}
 
-				GamePlayAgainS2CEvt( MessageData* &pMsg )
+				GamePlayAgainS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1512,10 +1513,10 @@ namespace SF
 				const uint64_t& GetPartyUID() const	{ return m_PartyUID; };
 				const PlayerID& GetLeadPlayer() const	{ return m_LeadPlayer; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InTargetPlayer, const uint64_t &InPartyUID, const PlayerID &InLeadPlayer );
 
@@ -1549,7 +1550,7 @@ namespace SF
 				GameRevealPlayerCmd()
 					{}
 
-				GameRevealPlayerCmd( MessageData* &pMsg )
+				GameRevealPlayerCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1560,10 +1561,10 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const Array<PlayerID>& GetTargetPlayerID() const	{ return m_TargetPlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const Array<PlayerID>& InTargetPlayerID );
 
@@ -1598,7 +1599,7 @@ namespace SF
 				GameRevealPlayerRes()
 					{}
 
-				GameRevealPlayerRes( MessageData* &pMsg )
+				GameRevealPlayerRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1610,10 +1611,10 @@ namespace SF
 				const Array<PlayerID>& GetRevealedPlayerID() const	{ return m_RevealedPlayerID; };
 				const Array<uint8_t>& GetRevealedRole() const	{ return m_RevealedRole; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<PlayerID>& InRevealedPlayerID, const Array<uint8_t>& InRevealedRole );
 
@@ -1646,7 +1647,7 @@ namespace SF
 				GamePlayerReviveCmd()
 					{}
 
-				GamePlayerReviveCmd( MessageData* &pMsg )
+				GamePlayerReviveCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1656,10 +1657,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 
@@ -1692,7 +1693,7 @@ namespace SF
 				GamePlayerReviveRes()
 					{}
 
-				GamePlayerReviveRes( MessageData* &pMsg )
+				GamePlayerReviveRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1702,10 +1703,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -1739,7 +1740,7 @@ namespace SF
 				GamePlayerRevivedS2CEvt()
 					{}
 
-				GamePlayerRevivedS2CEvt( MessageData* &pMsg )
+				GamePlayerRevivedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -1748,10 +1749,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const PlayerID& GetRevivedPlayerID() const	{ return m_RevivedPlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const PlayerID &InRevivedPlayerID );
 

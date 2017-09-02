@@ -40,7 +40,7 @@ namespace Svr {
 
 	//// Route Message utility func
 	//template< class MsgClass >
-	//Result RouteMessage( Message::MessageData* &pMsg )
+	//Result RouteMessage( MessageDataPtr &pMsg )
 	//{
 	//	Result hr = ResultCode::SUCCESS;
 	//	ServerEntity* pServerEntity = nullptr;

@@ -44,7 +44,7 @@ namespace Svr {
 
 	//public:
 
-	//	GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg);// : ServerEntityMessageTransaction(pIMsg) { SetWorkOnServerEntity(true); }
+	//	GameServerTransRegisterPlayerToJoinGameServer(MessageDataPtr &pIMsg);// : ServerEntityMessageTransaction(pIMsg) { SetWorkOnServerEntity(true); }
 	//	virtual ~GameServerTransRegisterPlayerToJoinGameServer() {}
 
 	//	Result OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);
@@ -66,7 +66,7 @@ namespace Svr {
 	private:
 
 	public:
-		GameServerTransGamePlayerEntityCreatedS2CEvt( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		GameServerTransGamePlayerEntityCreatedS2CEvt( MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
 		virtual ~GameServerTransGamePlayerEntityCreatedS2CEvt() {}
 
 		// Start Transaction
@@ -81,7 +81,7 @@ namespace Svr {
 	private:
 
 	public:
-		GameServerTransGamePlayerEntityDeletedS2CEvt( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		GameServerTransGamePlayerEntityDeletedS2CEvt( MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
 		virtual ~GameServerTransGamePlayerEntityDeletedS2CEvt() {}
 
 		// Start Transaction

@@ -40,7 +40,7 @@ namespace EntityServer {
 	//	AuthTicket		m_AuthTicket;
 
 	//public:
-	//	TransRegisterUserEntity( Message::MessageData* &pIMsg );
+	//	TransRegisterUserEntity( MessageDataPtr &pIMsg );
 	//	virtual ~TransRegisterUserEntity();
 
 	//	// Start Transaction
@@ -59,7 +59,7 @@ namespace EntityServer {
 	//private:
 
 	//public:
-	//	TransUnregisterUserEntity( Message::MessageData* &pIMsg );
+	//	TransUnregisterUserEntity( MessageDataPtr &pIMsg );
 	//	virtual ~TransUnregisterUserEntity();
 
 	//	// Start Transaction
@@ -78,7 +78,7 @@ namespace EntityServer {
 	//private:
 
 	//public:
-	//	TransUpdateUserEntity( Message::MessageData* &pIMsg );
+	//	TransUpdateUserEntity( MessageDataPtr &pIMsg );
 	//	virtual ~TransUpdateUserEntity();
 
 	//	// Start Transaction
@@ -102,7 +102,7 @@ namespace EntityServer {
 	//	AuthTicket		m_AuthTicket;
 
 	//public:
-	//	TransFindUserEntity( Message::MessageData* &pIMsg );
+	//	TransFindUserEntity( MessageDataPtr &pIMsg );
 	//	virtual ~TransFindUserEntity();
 
 	//	// Start Transaction

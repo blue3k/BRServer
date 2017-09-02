@@ -12,7 +12,7 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 
 #include "Entity/EntityManager.h"
 

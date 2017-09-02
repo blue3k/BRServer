@@ -12,6 +12,7 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -49,7 +50,7 @@ namespace SF
 				CreateGameCmd()
 					{}
 
-				CreateGameCmd( MessageData* &pMsg )
+				CreateGameCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -61,10 +62,10 @@ namespace SF
 				const uint16_t& GetNumberOfBotPlayer() const	{ return m_NumberOfBotPlayer; };
 				const uint16_t& GetMaxPlayer() const	{ return m_MaxPlayer; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint16_t &InNumberOfBotPlayer, const uint16_t &InMaxPlayer );
 
@@ -99,7 +100,7 @@ namespace SF
 				CreateGameRes()
 					{}
 
-				CreateGameRes( MessageData* &pMsg )
+				CreateGameRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -109,10 +110,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -147,7 +148,7 @@ namespace SF
 				GameDeletedC2SEvt()
 					{}
 
-				GameDeletedC2SEvt( MessageData* &pMsg )
+				GameDeletedC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -156,10 +157,10 @@ namespace SF
 				const RouteContext& GetRouteContext() const	{ return m_RouteContext; };
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount );
 

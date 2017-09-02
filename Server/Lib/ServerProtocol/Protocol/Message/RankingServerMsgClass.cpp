@@ -53,7 +53,7 @@ namespace SF
 			}; // Result AddPlayerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result AddPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result AddPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -63,7 +63,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result AddPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result AddPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* AddPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore )
 			{
@@ -127,14 +127,14 @@ namespace SF
 			}; // Result AddPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result AddPlayerCmd::TraceOut(MessageData* pMsg)
+			Result AddPlayerCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				AddPlayerCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerInfo:{4}, RankingScore:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerInfo(), parser.GetRankingScore()); 
 				return ResultCode::SUCCESS;
-			}; // Result AddPlayerCmd::TraceOut(MessageData* pMsg)
+			}; // Result AddPlayerCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID AddPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 0);
 			Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
@@ -162,7 +162,7 @@ namespace SF
 			}; // Result AddPlayerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result AddPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result AddPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -172,7 +172,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result AddPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result AddPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* AddPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 			{
@@ -236,14 +236,14 @@ namespace SF
 			}; // Result AddPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result AddPlayerRes::TraceOut(MessageData* pMsg)
+			Result AddPlayerRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				AddPlayerRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "AddPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRanking()); 
 				return ResultCode::SUCCESS;
-			}; // Result AddPlayerRes::TraceOut(MessageData* pMsg)
+			}; // Result AddPlayerRes::TraceOut(MessageDataPtr& pMsg)
 
 			// Cmd: Remove a player to ranking
 			const MessageID RemovePlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 1);
@@ -271,7 +271,7 @@ namespace SF
 			}; // Result RemovePlayerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RemovePlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result RemovePlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -281,7 +281,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result RemovePlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result RemovePlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RemovePlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 			{
@@ -343,14 +343,14 @@ namespace SF
 			}; // Result RemovePlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result RemovePlayerCmd::TraceOut(MessageData* pMsg)
+			Result RemovePlayerCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				RemovePlayerCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result RemovePlayerCmd::TraceOut(MessageData* pMsg)
+			}; // Result RemovePlayerCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID RemovePlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 1);
 			Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
@@ -377,7 +377,7 @@ namespace SF
 			}; // Result RemovePlayerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RemovePlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result RemovePlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -387,7 +387,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result RemovePlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result RemovePlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RemovePlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
@@ -449,14 +449,14 @@ namespace SF
 			}; // Result RemovePlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result RemovePlayerRes::TraceOut(MessageData* pMsg)
+			Result RemovePlayerRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				RemovePlayerRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "RemovePlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result RemovePlayerRes::TraceOut(MessageData* pMsg)
+			}; // Result RemovePlayerRes::TraceOut(MessageDataPtr& pMsg)
 
 			// Cmd: Remove a player to ranking
 			const MessageID GetPlayerRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 2);
@@ -484,7 +484,7 @@ namespace SF
 			}; // Result GetPlayerRankingCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetPlayerRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GetPlayerRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -494,7 +494,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GetPlayerRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetPlayerRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetPlayerRankingCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID )
 			{
@@ -556,14 +556,14 @@ namespace SF
 			}; // Result GetPlayerRankingCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result GetPlayerRankingCmd::TraceOut(MessageData* pMsg)
+			Result GetPlayerRankingCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				GetPlayerRankingCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GetPlayerRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetPlayerRankingCmd::TraceOut(MessageData* pMsg)
+			}; // Result GetPlayerRankingCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID GetPlayerRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 2);
 			Result GetPlayerRankingRes::ParseMessage( MessageData* pIMsg )
@@ -591,7 +591,7 @@ namespace SF
 			}; // Result GetPlayerRankingRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetPlayerRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GetPlayerRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -601,7 +601,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GetPlayerRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetPlayerRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetPlayerRankingRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking )
 			{
@@ -665,14 +665,14 @@ namespace SF
 			}; // Result GetPlayerRankingRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result GetPlayerRankingRes::TraceOut(MessageData* pMsg)
+			Result GetPlayerRankingRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				GetPlayerRankingRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GetPlayerRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRanking()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetPlayerRankingRes::TraceOut(MessageData* pMsg)
+			}; // Result GetPlayerRankingRes::TraceOut(MessageDataPtr& pMsg)
 
 			// Cmd: Update a player to ranking
 			const MessageID UpdatePlayerScoreCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 3);
@@ -702,7 +702,7 @@ namespace SF
 			}; // Result UpdatePlayerScoreCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -712,7 +712,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result UpdatePlayerScoreCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* UpdatePlayerScoreCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount )
 			{
@@ -778,14 +778,14 @@ namespace SF
 			}; // Result UpdatePlayerScoreCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result UpdatePlayerScoreCmd::TraceOut(MessageData* pMsg)
+			Result UpdatePlayerScoreCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				UpdatePlayerScoreCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "UpdatePlayerScore:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RankingScore:{4}, PlayerInfo:{5}, Count:{6}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRankingScore(), parser.GetPlayerInfo(), parser.GetCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result UpdatePlayerScoreCmd::TraceOut(MessageData* pMsg)
+			}; // Result UpdatePlayerScoreCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID UpdatePlayerScoreRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 3);
 			Result UpdatePlayerScoreRes::ParseMessage( MessageData* pIMsg )
@@ -816,7 +816,7 @@ namespace SF
 			}; // Result UpdatePlayerScoreRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -826,7 +826,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result UpdatePlayerScoreRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* UpdatePlayerScoreRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 			{
@@ -892,14 +892,14 @@ namespace SF
 			}; // Result UpdatePlayerScoreRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result UpdatePlayerScoreRes::TraceOut(MessageData* pMsg)
+			Result UpdatePlayerScoreRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				UpdatePlayerScoreRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "UpdatePlayerScore:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5,30}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRanking()); 
 				return ResultCode::SUCCESS;
-			}; // Result UpdatePlayerScoreRes::TraceOut(MessageData* pMsg)
+			}; // Result UpdatePlayerScoreRes::TraceOut(MessageDataPtr& pMsg)
 
 			// Cmd: Get ranking list
 			const MessageID GetRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 4);
@@ -929,7 +929,7 @@ namespace SF
 			}; // Result GetRankingCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GetRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -939,7 +939,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GetRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetRankingCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount )
 			{
@@ -1005,14 +1005,14 @@ namespace SF
 			}; // Result GetRankingCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result GetRankingCmd::TraceOut(MessageData* pMsg)
+			Result GetRankingCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				GetRankingCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GetRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RankingType:{4}, BaseRanking:{5}, Count:{6}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), (int)parser.GetRankingType(), parser.GetBaseRanking(), parser.GetCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetRankingCmd::TraceOut(MessageData* pMsg)
+			}; // Result GetRankingCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID GetRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 4);
 			Result GetRankingRes::ParseMessage( MessageData* pIMsg )
@@ -1043,7 +1043,7 @@ namespace SF
 			}; // Result GetRankingRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GetRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1053,7 +1053,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GetRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetRankingRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking )
 			{
@@ -1119,14 +1119,14 @@ namespace SF
 			}; // Result GetRankingRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result GetRankingRes::TraceOut(MessageData* pMsg)
+			Result GetRankingRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				GetRankingRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GetRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Ranking:{5,30}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetRanking()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetRankingRes::TraceOut(MessageData* pMsg)
+			}; // Result GetRankingRes::TraceOut(MessageDataPtr& pMsg)
 
 			// Cmd: Debug test
 			const MessageID DebugPrintALLRankingCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 5);
@@ -1156,7 +1156,7 @@ namespace SF
 			}; // Result DebugPrintALLRankingCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1166,7 +1166,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result DebugPrintALLRankingCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* DebugPrintALLRankingCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName )
 			{
@@ -1229,14 +1229,14 @@ namespace SF
 			}; // Result DebugPrintALLRankingCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result DebugPrintALLRankingCmd::TraceOut(MessageData* pMsg)
+			Result DebugPrintALLRankingCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				DebugPrintALLRankingCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "DebugPrintALLRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, FileName:{4,60}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetFileName()); 
 				return ResultCode::SUCCESS;
-			}; // Result DebugPrintALLRankingCmd::TraceOut(MessageData* pMsg)
+			}; // Result DebugPrintALLRankingCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID DebugPrintALLRankingRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_RANKINGSERVER, 5);
 			Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
@@ -1263,7 +1263,7 @@ namespace SF
 			}; // Result DebugPrintALLRankingRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1273,7 +1273,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result DebugPrintALLRankingRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* DebugPrintALLRankingRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
@@ -1335,14 +1335,14 @@ namespace SF
 			}; // Result DebugPrintALLRankingRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result DebugPrintALLRankingRes::TraceOut(MessageData* pMsg)
+			Result DebugPrintALLRankingRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				DebugPrintALLRankingRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "DebugPrintALLRanking:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result DebugPrintALLRankingRes::TraceOut(MessageData* pMsg)
+			}; // Result DebugPrintALLRankingRes::TraceOut(MessageDataPtr& pMsg)
 
 
 

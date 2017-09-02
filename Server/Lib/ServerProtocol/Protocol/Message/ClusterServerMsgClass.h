@@ -12,6 +12,7 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -48,7 +49,7 @@ namespace SF
 				GetClusterMemberListCmd()
 					{}
 
-				GetClusterMemberListCmd( MessageData* &pMsg )
+				GetClusterMemberListCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -59,10 +60,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
@@ -98,7 +99,7 @@ namespace SF
 				GetClusterMemberListRes()
 					{}
 
-				GetClusterMemberListRes( MessageData* &pMsg )
+				GetClusterMemberListRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -109,10 +110,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList );
 
@@ -152,7 +153,7 @@ namespace SF
 				JoinClusterCmd()
 					{}
 
-				JoinClusterCmd( MessageData* &pMsg )
+				JoinClusterCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -168,10 +169,10 @@ namespace SF
 				const ClusterType& GetClusterType() const	{ return m_ClusterType; };
 				const ClusterMembership& GetClusterMembership() const	{ return m_ClusterMembership; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint64_t &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership );
 
@@ -207,7 +208,7 @@ namespace SF
 				JoinClusterRes()
 					{}
 
-				JoinClusterRes( MessageData* &pMsg )
+				JoinClusterRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -218,10 +219,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList );
 
@@ -262,7 +263,7 @@ namespace SF
 				NewServerServiceJoinedC2SEvt()
 					{}
 
-				NewServerServiceJoinedC2SEvt( MessageData* &pMsg )
+				NewServerServiceJoinedC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -277,10 +278,10 @@ namespace SF
 				const ClusterType& GetClusterType() const	{ return m_ClusterType; };
 				const ClusterMembership& GetJoinedServiceMembership() const	{ return m_JoinedServiceMembership; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership );
 
@@ -318,7 +319,7 @@ namespace SF
 				SyncClusterServiceC2SEvt()
 					{}
 
-				SyncClusterServiceC2SEvt( MessageData* &pMsg )
+				SyncClusterServiceC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -330,10 +331,10 @@ namespace SF
 				const ClusterType& GetClusterType() const	{ return m_ClusterType; };
 				const Array<ServiceInformation>& GetMemberList() const	{ return m_MemberList; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList );
 
@@ -369,7 +370,7 @@ namespace SF
 				RequestDataSyncCmd()
 					{}
 
-				RequestDataSyncCmd( MessageData* &pMsg )
+				RequestDataSyncCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -380,10 +381,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
@@ -418,7 +419,7 @@ namespace SF
 				RequestDataSyncRes()
 					{}
 
-				RequestDataSyncRes( MessageData* &pMsg )
+				RequestDataSyncRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -428,10 +429,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -468,7 +469,7 @@ namespace SF
 				ClusterMasterAssignedS2CEvt()
 					{}
 
-				ClusterMasterAssignedS2CEvt( MessageData* &pMsg )
+				ClusterMasterAssignedS2CEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -480,10 +481,10 @@ namespace SF
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const uint64_t& GetMasterUID() const	{ return m_MasterUID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint64_t &InMasterUID );
 
@@ -521,7 +522,7 @@ namespace SF
 				ClusterMasterVoteC2SEvt()
 					{}
 
-				ClusterMasterVoteC2SEvt( MessageData* &pMsg )
+				ClusterMasterVoteC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -533,10 +534,10 @@ namespace SF
 				const uint64_t& GetVoteToUID() const	{ return m_VoteToUID; };
 				const uint64_t& GetVotedUpTime() const	{ return m_VotedUpTime; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const uint64_t &InVoteToUID, const uint64_t &InVotedUpTime );
 
@@ -573,7 +574,7 @@ namespace SF
 				ClusterUpdateStatusC2SEvt()
 					{}
 
-				ClusterUpdateStatusC2SEvt( MessageData* &pMsg )
+				ClusterUpdateStatusC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -585,10 +586,10 @@ namespace SF
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const ServiceStatus& GetMemberStatus() const	{ return m_MemberStatus; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus );
 
@@ -625,7 +626,7 @@ namespace SF
 				ClusterUpdateWorkloadC2SEvt()
 					{}
 
-				ClusterUpdateWorkloadC2SEvt( MessageData* &pMsg )
+				ClusterUpdateWorkloadC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -637,10 +638,10 @@ namespace SF
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 				const uint32_t& GetWorkload() const	{ return m_Workload; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload );
 
@@ -676,7 +677,7 @@ namespace SF
 				GetLowestWorkloadClusterMemberCmd()
 					{}
 
-				GetLowestWorkloadClusterMemberCmd( MessageData* &pMsg )
+				GetLowestWorkloadClusterMemberCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -687,10 +688,10 @@ namespace SF
 				const uint16_t& GetRouteHopCount() const	{ return m_RouteHopCount; };
 				const ClusterID& GetClusterID() const	{ return m_ClusterID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID );
 
@@ -726,7 +727,7 @@ namespace SF
 				GetLowestWorkloadClusterMemberRes()
 					{}
 
-				GetLowestWorkloadClusterMemberRes( MessageData* &pMsg )
+				GetLowestWorkloadClusterMemberRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -737,10 +738,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const ServiceInformation& GetMember() const	{ return m_Member; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember );
 
@@ -776,7 +777,7 @@ namespace SF
 				GamePlayerEntityCreatedC2SEvt()
 					{}
 
-				GamePlayerEntityCreatedC2SEvt( MessageData* &pMsg )
+				GamePlayerEntityCreatedC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -787,10 +788,10 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const uint64_t& GetPlayerUID() const	{ return m_PlayerUID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID );
 
@@ -826,7 +827,7 @@ namespace SF
 				GamePlayerEntityDeletedC2SEvt()
 					{}
 
-				GamePlayerEntityDeletedC2SEvt( MessageData* &pMsg )
+				GamePlayerEntityDeletedC2SEvt( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -837,10 +838,10 @@ namespace SF
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 				const uint64_t& GetPlayerUID() const	{ return m_PlayerUID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID );
 

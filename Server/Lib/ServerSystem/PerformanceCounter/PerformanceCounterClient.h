@@ -12,7 +12,7 @@
 #pragma once
 
 #include "String/StrUtil.h"
-#include "Common/ClassUtil.h"
+
 #include "Types/SFEngineTypedefs.h"
 #include "Container/DualSortedMap.h"
 #include "Container/PageQueue.h"
@@ -51,19 +51,21 @@ namespace SF {
 					: m_CounterClient(*CounterServer)
 				{}
 
-				virtual Result OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg) override;
+				virtual Result OnRecv(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg) override;
 			};
 
 		private:
 
+			MemoryManager m_MemoryManager;
+
 			NetAddress m_RemoteAddress;
 			sockaddr_storage m_RemoteSockAddress;
 
-			Net::RawUDP* m_RawUDP;
+			Net::RawUDP* m_RawUDP = nullptr;
 
 			MessageHandler m_MessageHandler;
 
-			uint m_ServerID;
+			uint m_ServerID = 0;
 
 			struct FreeInfo
 			{
@@ -105,6 +107,8 @@ namespace SF {
 			PerformanceCounterClient();
 			~PerformanceCounterClient();
 
+			IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
+
 			void SendNewCounterPacket(PerformanceCounterInstance *newInstance);
 
 			void UpdateNewInstance(ULONG newCount);
@@ -112,7 +116,7 @@ namespace SF {
 			void UpdateValues();
 
 
-			Result HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
+			Result HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg);
 
 			virtual void Run() override;
 

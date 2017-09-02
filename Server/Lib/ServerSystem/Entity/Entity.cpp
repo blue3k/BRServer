@@ -86,9 +86,9 @@ namespace SF {
 		return nextTick;
 	}
 
-	void Entity::ReleaseTransaction(Transaction* pTrans)
+	void Entity::ReleaseTransaction(TransactionPtr& pTrans)
 	{
-		SharedPointerT<Transaction> trans(pTrans);
+		pTrans = nullptr;
 	}
 
 	// Initialize entity to proceed new connection
@@ -130,7 +130,7 @@ namespace SF {
 
 			while (m_transactionQueue.GetEnqueCount() > 0)
 			{
-				Transaction *pCurTran = nullptr;
+				TransactionPtr pCurTran;
 				if ((m_transactionQueue.Dequeue(pCurTran)))
 				{
 					pCurTran->CloseTransaction(ResultCode::UNEXPECTED);
@@ -184,12 +184,12 @@ namespace SF {
 	}
 
 	// Process Message and release message after all processed
-	Result Entity::ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, Message::MessageData* &pMsg)
+	Result Entity::ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS, hrRes;
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
-		Svr::Transaction *pNewTrans = nullptr;
+		TransactionPtr pNewTrans;
 		RouteContext routeContext;
 		SharedPointerT<Entity> pEntity;
 
@@ -210,7 +210,7 @@ namespace SF {
 		case Message::MSGTYPE_EVENT:
 		{
 			Assert(GetMessageHandlerTable());
-			if (!(GetMessageHandlerTable()->HandleMessage<Svr::Transaction*&>(pCon, pMsg, pNewTrans)))
+			if (!(GetMessageHandlerTable()->HandleMessage<TransactionPtr&>(pCon, pMsg, pNewTrans)))
 			{
 				// If it couldn't find a handler in server entity handlers, looking for it in server loopback entity
 				MessageHandlerType handler;
@@ -234,7 +234,7 @@ namespace SF {
 		};
 
 
-		if (pNewTrans)
+		if (pNewTrans != nullptr)
 		{
 			pNewTrans->SetServerEntity(pServerEntity);
 
@@ -292,7 +292,7 @@ namespace SF {
 				svrTrace(Trace::TRC_ERROR, "Transaction initialization is failed {0} Entity:{1}, MsgID:{2}", typeid(*this).name(), GetEntityUID(), pMsgHdr->msgID);
 				if (pMsgHdr->msgID.IDs.Type == Message::MSGTYPE_COMMAND)
 				{
-					pCon->GetInterface<Policy::NetSvrPolicyServer>()->GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
+					Policy::NetSvrPolicyServer(pCon).GenericFailureRes(pNewTrans->GetMessageRouteContext().GetSwaped(), pNewTrans->GetParentTransID(), hr);
 				}
 			}
 
@@ -305,12 +305,11 @@ namespace SF {
 			ReleaseTransaction(pNewTrans);
 		}
 
-		Util::SafeRelease(pMsg);
 
 		return ResultCode::SUCCESS;
 	}
 
-	Result Entity::ProcessMessageResult( Message::MessageData* &pMsg )
+	Result Entity::ProcessMessageResult(MessageDataPtr &pMsg )
 	{
 		Result hr = ResultCode::SUCCESS;
 		MessageResult *pMsgRes = nullptr;
@@ -340,7 +339,6 @@ namespace SF {
 				goto Proc_End;// svrErr(ResultCode::FAIL);
 			}
 			svrChk(ProcessTransactionResult(pTransaction, pTransRes));
-			pTransRes = nullptr;
 		}
 		else
 		{
@@ -349,8 +347,8 @@ namespace SF {
 
 	Proc_End:
 
-		Util::SafeRelease(pMsg);
-		Util::SafeRelease(pTransRes);
+
+		IMemoryManager::Delete(pTransRes);
 
 		return hr;
 	}
@@ -368,7 +366,7 @@ namespace SF {
 	}
 	
 	// Pending new transaction job
-	Result Entity::PendingTransaction(ThreadID thisThreadID, Transaction* &pTrans)
+	Result Entity::PendingTransaction(ThreadID thisThreadID, TransactionPtr &pTrans)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -416,7 +414,7 @@ namespace SF {
 		return hr;
 	}
 
-	Result Entity::ProcessTransaction(Transaction* &pTrans)
+	Result Entity::ProcessTransaction(TransactionPtr &pTrans)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -448,7 +446,7 @@ namespace SF {
 				pTrans->UpdateHeartBitTime();
 				pTrans->RecordTransactionHistory(pTranRes);
 				pTrans->ProcessTransaction(pTranRes);
-				Util::SafeRelease(pTranRes);
+				IMemoryManager::Delete(pTranRes);
 			}
 			else if (!(pTrans->CheckHeartBitTimeout()))// Transaction time out
 			{
@@ -487,7 +485,7 @@ namespace SF {
 			}
 		}
 
-		SetBestScehdulingTime(pTrans);
+		SetBestScehdulingTime(*pTrans);
 
 		return hr;
 	}
@@ -503,11 +501,11 @@ namespace SF {
 		svrChkPtr( pTransRes );
 
 		svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes)))
-		pTransRes = nullptr;
 		
 	Proc_End:
 
-		Util::SafeRelease( pTransRes );
+		IMemoryManager::Delete(pTransRes);
+		pTransRes = nullptr;
 
 		return hr;
 	}

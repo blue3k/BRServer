@@ -134,12 +134,12 @@ namespace DB {
 		return hr;
 	}
 
-	Result	DBClusterManager::AddDBSource( uint partitioningID, const std::string& strInstanceName, const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
+	Result	DBClusterManager::AddDBSource( uint partitioningID, const String& strInstanceName, const String& strConnectionString, const String& strDBName, const String& strUserID, const String& strPassword )
 	{
 		Result	hr = ResultCode::SUCCESS;
 		DataSource *pDBSource = nullptr;
-		std::string userID = strUserID;
-		std::string password = strPassword;
+		String userID = strUserID;
+		String password = strPassword;
 
 		if (m_UserID.length() == 0) m_UserID = userID;
 		else userID = m_UserID;

@@ -57,7 +57,7 @@ namespace GameTable {
 
 		bool IsInitialized() { return m_pDataSource != nullptr; }
 
-		Result Initialize(const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword)
+		Result Initialize(const String& strConnectionString, const String& strDBName, const String& strUserID, const String& strPassword)
 		{
 			Result	hr = ResultCode::SUCCESS;
 
@@ -182,24 +182,19 @@ namespace GameTable {
 
 
 	// Initialize tables
-	Result InitializeTable()
+	Result InitializeTable(const ServerConfig* config)
 	{
 		Result hr = ResultCode::SUCCESS;
-		auto found = Svr::Config::GetConfig().DBInstances.begin();
-		auto tableDB = Svr::Config::GetConfig().TableDB;
-		defChkPtr(tableDB);
+		auto tableDB = config->GetDBCluster("TableDB");
+		if (tableDB == nullptr)
+			return ResultCode::DB_INVALID_CONFIG;
 
-		found = Svr::Config::GetConfig().DBInstances.find(tableDB->DBInstanceName);
-		if (found == Svr::Config::GetConfig().DBInstances.end())
-		{
-			defErr(ResultCode::DB_INVALID_CONFIG);
-		}
+		auto tableDBInstance = config->FindDBInstance(tableDB->DBInstanceName);
+		if (tableDBInstance == nullptr)
+			return ResultCode::DB_INVALID_CONFIG;
 
-		{
-			auto tableDBInstance = found->second;
-			defTrace(Trace::TRC_INFO, "Loading tables from {0}/{1}", tableDBInstance->ConnectionString, tableDB->DBName);
-			defChk(TableSystem::stm_Instance.Initialize(tableDBInstance->ConnectionString, tableDB->DBName, tableDBInstance->UserID, tableDBInstance->Password));
-		}
+		defTrace(Trace::TRC_INFO, "Loading tables from {0}/{1}", tableDBInstance->ConnectionString, tableDB->DBName);
+		defChk(TableSystem::stm_Instance.Initialize(tableDBInstance->ConnectionString, tableDB->DBName, tableDBInstance->UserID, tableDBInstance->Password));
 
 		defChk(TableSystem::stm_Instance.QueryTableVersion());
 

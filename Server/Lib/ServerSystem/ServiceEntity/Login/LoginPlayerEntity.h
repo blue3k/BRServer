@@ -12,9 +12,9 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Util/TimeUtil.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Memory/MemoryPool.h"
 #include "Entity/Entity.h"
 #include "Transaction/MessageRoute.h"
@@ -55,10 +55,10 @@ namespace Svr {
 	private:
 		typedef Svr::SimpleUserEntity super;
 
-		BRCLASS_ATTRIBUTE(FacebookUID,FacebookUID);
-		BRCLASS_ATTRIBUTE(AuthTicket,AuthTicket);
-		BRCLASS_ATTRIBUTE(uint,ShardID);
-		BRCLASS_ATTRIBUTE(bool, IsTicketOwner);
+		FacebookUID m_FacebookUID;
+		AuthTicket m_AuthTicket;
+		uint m_ShardID;
+		bool m_IsTicketOwner;
 
 		char m_UserName[GameConst::MAX_NAME];
 		char m_GCMKeys[GameConst::MAX_GCMKEYS];
@@ -67,7 +67,7 @@ namespace Svr {
 		PlayerID GetPlayerID() { return GetAccountID(); }
 
 		// Time for kill this entity
-		BRCLASS_ATTRIBUTE_CONST(Util::TimeStampTimer,TimeToKill);
+		Util::TimeStampTimer m_TimeToKill;
 
 		static GlobalUIDGenerator stm_AuthTicketGenerator;
 
@@ -85,6 +85,14 @@ namespace Svr {
 
 		LoginPlayerEntity();
 		virtual ~LoginPlayerEntity();
+
+		FacebookUID GetFacebookUID() { return m_FacebookUID; }
+		AuthTicket GetAuthTicket() { return m_AuthTicket; }
+		uint GetShardID() { return m_ShardID; }
+		bool GetIsTicketOwner() { return m_IsTicketOwner; }
+
+		const Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
+
 
 		// Initialize entity to proceed new connection
 		virtual Result InitializeEntity( EntityID newEntityID ) override;

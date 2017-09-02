@@ -54,7 +54,7 @@ namespace Svr {
 		bool				m_WorkOnServerEntity;
 
 	public:
-		ServerEntityMessageTransaction(IMemoryManager& memoryManager, Message::MessageData* &pIMsg )
+		ServerEntityMessageTransaction(IMemoryManager& memoryManager, MessageDataPtr &pIMsg )
 			:superTrans( memoryManager, TransactionID() )
 			,MessageClass( pIMsg )
 			,m_WorkOnServerEntity(true)
@@ -173,7 +173,7 @@ namespace Svr {
 		typedef ServerEntityMessageTransaction<OwnerEntityType, MessageClass, MemoryPoolClass, MessageHandlerBufferSize> super;
 
 	public:
-		ClusterEntityMessageTransaction(IMemoryManager& memMgr, Message::MessageData* &pIMsg )
+		ClusterEntityMessageTransaction(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
 			:super( memMgr, pIMsg )
 		{
 			super::m_WorkOnServerEntity = false;

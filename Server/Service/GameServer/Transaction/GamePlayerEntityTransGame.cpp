@@ -113,7 +113,7 @@ namespace GameServer {
 	//
 
 
-	PlayerTransJoinGame::PlayerTransJoinGame( Message::MessageData* &pIMsg )
+	PlayerTransJoinGame::PlayerTransJoinGame( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		m_Role = PlayerRole::None;
@@ -286,7 +286,7 @@ namespace GameServer {
 	}
 
 
-	PlayerTransLeaveGame::PlayerTransLeaveGame( Message::MessageData* &pIMsg )
+	PlayerTransLeaveGame::PlayerTransLeaveGame( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::LeaveGameRes, { return OnLeaveGameRes(pRes); } );
@@ -383,7 +383,7 @@ namespace GameServer {
 
 
 
-	PlayerTransKickPlayer::PlayerTransKickPlayer( Message::MessageData* &pIMsg )
+	PlayerTransKickPlayer::PlayerTransKickPlayer( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::KickPlayerRes, { return OnKickPlayerRes(pRes); } );
@@ -472,7 +472,7 @@ namespace GameServer {
 
 
 
-	PlayerTransAssignRole::PlayerTransAssignRole( Message::MessageData* &pIMsg )
+	PlayerTransAssignRole::PlayerTransAssignRole( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::AssignRoleRes, { return OnAssignRoleRes(pRes); } );
@@ -608,7 +608,7 @@ namespace GameServer {
 	
 
 
-	PlayerTransVoteGameAdvance::PlayerTransVoteGameAdvance( Message::MessageData* &pIMsg )
+	PlayerTransVoteGameAdvance::PlayerTransVoteGameAdvance( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::VoteGameAdvanceRes, { return OnVoteRes(pRes); } );
@@ -682,7 +682,7 @@ namespace GameServer {
 	}
 
 	
-	PlayerTransVote::PlayerTransVote( Message::MessageData* &pIMsg )
+	PlayerTransVote::PlayerTransVote( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::VoteRes, { return OnVoteRes(pRes); } );
@@ -781,7 +781,7 @@ namespace GameServer {
 
 
 
-	PlayerTransAdvanceGame::PlayerTransAdvanceGame( Message::MessageData* &pIMsg )
+	PlayerTransAdvanceGame::PlayerTransAdvanceGame( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::AdvanceGameRes, { return OnAdvanceGameRes(pRes); } );
@@ -861,7 +861,7 @@ namespace GameServer {
 	}
 
 
-	PlayerTransGameEndedS2SEvt::PlayerTransGameEndedS2SEvt( Message::MessageData* &pIMsg )
+	PlayerTransGameEndedS2SEvt::PlayerTransGameEndedS2SEvt( MessageDataPtr &pIMsg )
 		:UserTransactionS2SEvt( pIMsg )
 	{
 		//BR_TRANS_MESSAGE( DB::QuerySetPlayerInfoCmd, { return OnUpdateDBRes(pRes); } );
@@ -970,7 +970,7 @@ namespace GameServer {
 
 
 
-	PlayerTransRequestGameMatch::PlayerTransRequestGameMatch( Message::MessageData* &pIMsg )
+	PlayerTransRequestGameMatch::PlayerTransRequestGameMatch( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::StartGameMatchRes, { return OnRequestPartyMatchingRes(pRes); } );
@@ -1100,7 +1100,7 @@ namespace GameServer {
 	
 
 
-	PlayerTransCancelGameMatch::PlayerTransCancelGameMatch( Message::MessageData* &pIMsg )
+	PlayerTransCancelGameMatch::PlayerTransCancelGameMatch( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::CancelGameMatchRes, { return OnCancelPartyMatchingRes(pRes); } );
@@ -1257,7 +1257,7 @@ namespace GameServer {
 
 
 
-	PlayerTransPlayAgain::PlayerTransPlayAgain(Message::MessageData* &pIMsg)
+	PlayerTransPlayAgain::PlayerTransPlayAgain(MessageDataPtr &pIMsg)
 		:MessageTransaction(pIMsg)
 	{
 		BR_TRANS_MESSAGE(Message::GameInstance::GamePlayAgainRes, { return OnPlayAgainRes(pRes); });
@@ -1400,7 +1400,7 @@ namespace GameServer {
 
 
 
-	PlayerTransPlayAgainS2SEvt::PlayerTransPlayAgainS2SEvt(Message::MessageData* &pIMsg)
+	PlayerTransPlayAgainS2SEvt::PlayerTransPlayAgainS2SEvt(MessageDataPtr &pIMsg)
 		:UserTransactionS2SEvt(pIMsg)
 	{
 		BR_TRANS_MESSAGE(Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); });
@@ -1482,7 +1482,7 @@ namespace GameServer {
 
 
 
-	PlayerTransGameRevealPlayer::PlayerTransGameRevealPlayer(Message::MessageData* &pIMsg)
+	PlayerTransGameRevealPlayer::PlayerTransGameRevealPlayer(MessageDataPtr &pIMsg)
 		:MessageTransaction(pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryUpdateTickStatusCmd, { return OnUpdatePlayerRes(pRes); });
@@ -1585,7 +1585,7 @@ namespace GameServer {
 
 
 
-	PlayerTransGamePlayerRevive::PlayerTransGamePlayerRevive(Message::MessageData* &pIMsg)
+	PlayerTransGamePlayerRevive::PlayerTransGamePlayerRevive(MessageDataPtr &pIMsg)
 		:MessageTransaction(pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryUpdateTickStatusCmd, { return OnUpdatePlayerRes(pRes); });

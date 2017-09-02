@@ -25,7 +25,7 @@
 #include "Container/Indexing.h"
 #include "Container/StaticHashTable.h"
 
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
+#include "Entity/EntityInformation.h"
 
 
 namespace SF {
@@ -139,13 +139,13 @@ namespace Svr {
 		void SetClusterMembership(ClusterMembership value) { m_ClusterMembership = value; }
 
 		ServiceStatus GetServiceStatus() { return m_ServiceStatus; }
-		void SetServiceStatus(ServiceStatus value) { m_ServiceStatus = value; }
+		// Change service status
+		Result SetServiceStatus(ServiceStatus newStatus);
 
 		uint GetWorkload() { return m_Workload; }
-		void SetWorkload(uint value) { m_Workload = value; }
+		// Change workload
+		Result SetWorkload(uint workload);
 
-		uint GetWorkload() { return m_Workload; }
-		void SetWorkload(uint value) { m_Workload = value; }
 
 		ServiceTableItem* GetMyServiceInfo() { return m_MyServiceInfo; }
 
@@ -173,7 +173,7 @@ namespace Svr {
 		virtual Result UpdateOnMasterManager() { return ResultCode::SUCCESS; }
 
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
-		virtual Result ProcessTransaction(Transaction* &pTrans) override;
+		virtual Result ProcessTransaction(TransactionPtr &pTrans) override;
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -190,11 +190,7 @@ namespace Svr {
 		//
 
 
-		// Change workload
-		Result SetWorkload( uint workload );
 
-		// Change service status
-		Result SetServiceStatus( ServiceStatus newStatus );
 
 		size_t GetNumberOfServices()				{ return m_ServiceEntityUIDMap.size() + m_WatcherUIDMap.size(); }
 		size_t GetNumberOfNonWatcherServices()		{ return m_ServiceEntityUIDMap.size(); }
@@ -334,12 +330,15 @@ namespace Svr {
 	private:
 
 		// This will be to hash modulation number if it assigned.
-		BRCLASS_ATTRIBUTE(uint,HashMod);
+		uint m_HashMod = 0;
 
 	public:
 
 		// Constructor
 		ShardedClusterServiceEntity( ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
+
+		uint GetHashMod() { return m_HashMod; }
+		void SetHashMod(uint value) { m_HashMod = value; }
 
 		// Hash the key value
 		virtual uint KeyHash( uint64_t key );

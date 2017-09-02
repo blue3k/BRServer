@@ -67,9 +67,6 @@
     <Filter Include="Component">
       <UniqueIdentifier>{a253668a-b644-4986-9525-f72539c5d18b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ServerConfig">
-      <UniqueIdentifier>{3a35444a-3825-455b-8d57-dd444d16333a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{e59e1730-d2a6-490b-90ae-f89c9a2e22c0}</UniqueIdentifier>
     </Filter>
@@ -264,18 +261,6 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SvrConst.h" />
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerConfig\SFServerConfigXML.h">
-      <Filter>ServerConfig</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerConfig\SFServerConfigZooKeeper.h">
-      <Filter>ServerConfig</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerConfig\SFEnum.h">
-      <Filter>ServerConfig</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerConfig\SFServerConfig.h">
-      <Filter>ServerConfig</Filter>
-    </ClInclude>
     <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\UniqueEntityIDGenerator.h">
       <Filter>Util</Filter>
     </ClInclude>
@@ -359,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityInformation.h">
       <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\LocalUIDGenerator.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -609,18 +597,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Task\ServerTaskEvent.cpp">
       <Filter>Task</Filter>
     </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerConfig\SFServerConfigXML.cpp">
-      <Filter>ServerConfig</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerConfig\SFServerConfigZooKeeper.cpp">
-      <Filter>ServerConfig</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerConfig\GameIDEnum.cpp">
-      <Filter>ServerConfig</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\ServerConfig\SFServerConfig.cpp">
-      <Filter>ServerConfig</Filter>
-    </ClCompile>
     <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\UniqueEntityIDGenerator.cpp">
       <Filter>Util</Filter>
     </ClCompile>
@@ -683,6 +659,9 @@
     </ClCompile>
     <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Entity\EntityInformation.cpp">
       <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\work\BRServerSF\Server\Lib\ServerSystem\Util\LocalUIDGenerator.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

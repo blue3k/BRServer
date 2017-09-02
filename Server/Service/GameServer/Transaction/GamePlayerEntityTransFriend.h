@@ -54,7 +54,7 @@ namespace GameServer {
 		TimeStampSec m_TimeStamp;
 
 	public:
-		PlayerTransInviteFriend( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransInviteFriend( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransInviteFriend() {}
 
 		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
@@ -79,7 +79,7 @@ namespace GameServer {
 		ServerFriendInformation m_NewFriend;
 
 	public:
-		PlayerTransFriendAccept( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransFriendAccept( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransFriendAccept() {}
 
 		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
@@ -103,7 +103,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::FriendAcceptedC2SEvt, PlayerTransFriendAcceptedS2S> super;
 
 	public:
-		PlayerTransFriendAcceptedS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransFriendAcceptedS2S( MessageDataPtr &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransFriendAcceptedS2S() {}
 
 		// Start Transaction
@@ -121,7 +121,7 @@ namespace GameServer {
 		int m_WaitingResultCount;
 
 	public:
-		PlayerTransRemoveFriend( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransRemoveFriend( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransRemoveFriend() {}
 
 		Result OnRemoved( Svr::TransactionResult* &pRes );
@@ -140,7 +140,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::FriendRemovedC2SEvt, PlayerTransFriendRemovedS2S> super;
 
 	public:
-		PlayerTransFriendRemovedS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransFriendRemovedS2S( MessageDataPtr &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransFriendRemovedS2S() {}
 
 		// Start Transaction
@@ -163,7 +163,7 @@ namespace GameServer {
 
 
 	public:
-		PlayerTransGetFriendList( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransGetFriendList( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGetFriendList() {}
 
 		Result OnGetList( Svr::TransactionResult* &pRes );
@@ -194,7 +194,7 @@ namespace GameServer {
 		INT m_WaitingQueries;
 
 	public:
-		PlayerTransGiveStamina( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransGiveStamina( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGiveStamina() {}
 
 		Result OnSavedToDB( Svr::TransactionResult* &pRes );

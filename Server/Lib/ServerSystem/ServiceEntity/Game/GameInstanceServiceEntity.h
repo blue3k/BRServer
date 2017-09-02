@@ -14,19 +14,19 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Memory/SFMemory.h"
 #include "Types/BrSvrTypes.h"
 #include "Container/PageQueue.h"
-#include "Common/LocalUIDGenerator.h"
+#include "Util/LocalUIDGenerator.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "Transaction/MessageRoute.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Container/Indexing.h"
 
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
+#include "Entity/EntityInformation.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 
 
@@ -53,7 +53,7 @@ namespace Svr {
 		// Currently processing number of members
 		uint m_CurrentProcessingNumberofMember;
 
-		BRCLASS_ATTRIBUTE(bool,LastRankingFailed);
+		bool m_LastRankingFailed;
 		Util::TimeStampTimer m_RankingCheckTimer;
 
 	protected:
@@ -63,6 +63,8 @@ namespace Svr {
 
 		GameInstanceServiceEntity( ClusterMembership initialMembership = ClusterMembership::StatusWatcher );
 		~GameInstanceServiceEntity();
+
+		bool GetLastRankingFailed() { return m_LastRankingFailed; }
 
 		// We are not going to use hashed key
 		virtual uint KeyHash( uint64_t key ) { return (uint)key; }

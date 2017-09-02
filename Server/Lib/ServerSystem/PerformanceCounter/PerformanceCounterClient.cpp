@@ -29,18 +29,13 @@ namespace Svr {
 
 	PerformanceCounterClient *PerformanceCounterClient::stm_pInstance = nullptr;
 
-	Result PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, Message::MessageData *pMsg)
+	Result PerformanceCounterClient::MessageHandler::OnRecv(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 
 		if (pMsg->GetMessageHeader()->msgID.GetMsgID() == Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::MID.GetMsgID())
 		{
 			svrChk(m_CounterClient.HandleMessageUpdateCounterInfoS2CEvt(remoteAddr, pMsg));
-		}
-		else
-		{
-			// 
-			Util::SafeRelease(pMsg);
 		}
 
 	Proc_End:
@@ -50,9 +45,11 @@ namespace Svr {
 
 
 	PerformanceCounterClient::PerformanceCounterClient()
-		: m_RawUDP(nullptr)
+		: m_MemoryManager("PerformanceCounterClient",GetSystemMemoryManager())
 		, m_MessageHandler(this)
-		, m_ServerID(0)
+		, m_FreeInstanceQueue(m_MemoryManager)
+		, m_NewInstanceQueue(m_MemoryManager)
+		, m_CounterInstanceMap(m_MemoryManager)
 	{
 
 	}
@@ -78,11 +75,11 @@ namespace Svr {
 			Assert(false);
 		}
 
-		Message::MessageData * pMsg = nullptr;
+		MessageDataPtr pMsg;
 
-		StaticArray<PerformanceCounterInfo, 100> counterInfos;
+		StaticArray<PerformanceCounterInfo, 100> counterInfos(GetMemoryManager());
 		auto& counters = newInstance->GetCounters();
-		for (uint iCounter = 0; iCounter < counters.GetSize(); iCounter++)
+		for (uint iCounter = 0; iCounter < counters.size(); iCounter++)
 		{
 			auto counter = counters[iCounter];
 			PerformanceCounterInfo info;
@@ -93,8 +90,8 @@ namespace Svr {
 				break;
 		}
 
-		if (!(Message::Monitoring::PerformanceCounterNewC2SEvt::BuildIMsg(pMsg, 
-			newInstance->GetInstanceName(), newInstance->GetInstanceEntityUID(), counterInfos)))
+		pMsg = Message::Monitoring::PerformanceCounterNewC2SEvt::Create(GetMemoryManager(), newInstance->GetInstanceName(), newInstance->GetInstanceEntityUID(), counterInfos);
+		if (pMsg == nullptr)
 		{
 			svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
 		}
@@ -127,7 +124,7 @@ namespace Svr {
 	void PerformanceCounterClient::UpdateFreeInstance()
 	{
 		FreeInfo freeInfo;
-		Message::MessageData * pMsg = nullptr;
+		MessageDataPtr pMsg;
 
 		auto newCount = m_NewInstanceQueue.GetEnqueCount();
 
@@ -135,7 +132,7 @@ namespace Svr {
 
 		auto freeCount = m_FreeInstanceQueue.GetEnqueCount();
 
-		StaticArray<EntityUID, 10> freeList;
+		StaticArray<uint64_t, 10> freeList(GetMemoryManager());
 		for (uint iItem = 0; iItem < freeCount && (m_FreeInstanceQueue.Dequeue(freeInfo)); iItem++)
 		{
 			Assert(freeInfo.pInstance);
@@ -147,9 +144,10 @@ namespace Svr {
 			{
 				freeList.push_back(freeInfo.UID);
 
-				if (freeList.GetSize() >= freeList.GetAllocatedSize() && m_RawUDP != nullptr)
+				if (freeList.size() >= freeList.GetAllocatedSize() && m_RawUDP != nullptr)
 				{
-					if (!(Message::Monitoring::PerformanceCounterFreeC2SEvt::BuildIMsg(pMsg, freeList)))
+					pMsg = Message::Monitoring::PerformanceCounterFreeC2SEvt::Create(GetMemoryManager(), freeList);
+					if (pMsg == nullptr)
 					{
 						svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
 					}
@@ -166,9 +164,10 @@ namespace Svr {
 			}
 		}
 
-		if (freeList.GetSize() > 0)
+		if (freeList.size() > 0)
 		{
-			if (!(Message::Monitoring::PerformanceCounterFreeC2SEvt::BuildIMsg(pMsg, freeList)))
+			pMsg = Message::Monitoring::PerformanceCounterFreeC2SEvt::Create(GetMemoryManager(), freeList);
+			if (pMsg == nullptr)
 			{
 				svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
 			}
@@ -200,11 +199,11 @@ namespace Svr {
 			if (pInstance == nullptr)
 				return true;
 
-			Message::MessageData * pMsg = nullptr;
+			MessageDataPtr pMsg;
 
-			StaticArray<uint64_t, 100> counterValues;
+			StaticArray<uint64_t, 100> counterValues(GetMemoryManager());
 			auto& counters = pInstance->GetCounters();
-			for (uint iCounter = 0; iCounter < counters.GetSize(); iCounter++)
+			for (uint iCounter = 0; iCounter < counters.size(); iCounter++)
 			{
 				uint64_t value = 0;
 				if (!(counters[iCounter]->CopyTo((uint)sizeof(value), (uint8_t*)&value)))
@@ -217,8 +216,8 @@ namespace Svr {
 					break;
 			}
 
-			if (!(Message::Monitoring::PerformanceCounterUpdateC2SEvt::BuildIMsg(pMsg, 
-				pInstance->GetInstanceEntityUID(), counterValues)))
+			pMsg = Message::Monitoring::PerformanceCounterUpdateC2SEvt::Create(GetMemoryManager(), pInstance->GetInstanceEntityUID(), counterValues);
+			if(pMsg == nullptr)
 			{
 				svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter free packet");
 			}
@@ -312,7 +311,7 @@ namespace Svr {
 		if (stm_pInstance->m_DefaultCounter == nullptr)
 		{
 			auto entityUID = EntityUID(stm_pInstance->m_ServerID, entityTable.GenEntityID(EntityFaculty::Service));
-			stm_pInstance->m_DefaultCounter = SharedPointerT<PerformanceCounterInstance>(new PerformanceCounterInstance(Util::GetServiceNameA(), entityUID));
+			stm_pInstance->m_DefaultCounter = SharedPointerT<PerformanceCounterInstance>(new PerformanceCounterInstance(Util::GetServiceName(), entityUID));
 			stm_pInstance->m_DefaultCounter->RegisterToClient();
 		}
 
@@ -343,7 +342,7 @@ namespace Svr {
 	}
 
 
-	Result PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterClient::HandleMessageUpdateCounterInfoS2CEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt messageClass(pMsg);
@@ -352,7 +351,7 @@ namespace Svr {
 
 		svrChk(messageClass.ParseMsg());
 
-		if (!(m_CounterInstanceMap.Find(messageClass.GetInstanceUID().UID, pFound)))
+		if (!(m_CounterInstanceMap.Find(messageClass.GetInstanceUID(), pFound)))
 		{
 			svrTrace(Trace::TRC_ERROR, "PerforamnceCounter:{0}, {1}, counter already deleted1", remoteAddr, messageClass.GetInstanceUID());
 			return hr;

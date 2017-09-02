@@ -53,7 +53,7 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerJoinedToGameServerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result PlayerJoinedToGameServerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -63,7 +63,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerJoinedToGameServerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerJoinedToGameServerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PlayerJoinedToGameServerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID, const AuthTicket &InAuthTicket )
 			{
@@ -127,14 +127,14 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PlayerJoinedToGameServerCmd::TraceOut(MessageData* pMsg)
+			Result PlayerJoinedToGameServerCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				PlayerJoinedToGameServerCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, PlayerID:{4}, AuthTicket:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetPlayerID(), parser.GetAuthTicket()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerJoinedToGameServerCmd::TraceOut(MessageData* pMsg)
+			}; // Result PlayerJoinedToGameServerCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID PlayerJoinedToGameServerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 0);
 			Result PlayerJoinedToGameServerRes::ParseMessage( MessageData* pIMsg )
@@ -161,7 +161,7 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerJoinedToGameServerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result PlayerJoinedToGameServerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -171,7 +171,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerJoinedToGameServerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerJoinedToGameServerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PlayerJoinedToGameServerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
@@ -233,14 +233,14 @@ namespace SF
 			}; // Result PlayerJoinedToGameServerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result PlayerJoinedToGameServerRes::TraceOut(MessageData* pMsg)
+			Result PlayerJoinedToGameServerRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				PlayerJoinedToGameServerRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerJoinedToGameServer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerJoinedToGameServerRes::TraceOut(MessageData* pMsg)
+			}; // Result PlayerJoinedToGameServerRes::TraceOut(MessageDataPtr& pMsg)
 
 			// Cmd: Kick logged in player
 			const MessageID KickPlayerCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 1);
@@ -268,7 +268,7 @@ namespace SF
 			}; // Result KickPlayerCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result KickPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result KickPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -278,7 +278,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result KickPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result KickPlayerCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* KickPlayerCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InKickedPlayerID )
 			{
@@ -340,14 +340,14 @@ namespace SF
 			}; // Result KickPlayerCmd::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result KickPlayerCmd::TraceOut(MessageData* pMsg)
+			Result KickPlayerCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				KickPlayerCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, KickedPlayerID:{4}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetKickedPlayerID()); 
 				return ResultCode::SUCCESS;
-			}; // Result KickPlayerCmd::TraceOut(MessageData* pMsg)
+			}; // Result KickPlayerCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID KickPlayerRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_LOGINSERVER, 1);
 			Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
@@ -374,7 +374,7 @@ namespace SF
 			}; // Result KickPlayerRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result KickPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result KickPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -384,7 +384,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result KickPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result KickPlayerRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* KickPlayerRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
@@ -446,14 +446,14 @@ namespace SF
 			}; // Result KickPlayerRes::OverrideRouteContextDestination( EntityUID to )
 
 
-			Result KickPlayerRes::TraceOut(MessageData* pMsg)
+			Result KickPlayerRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				KickPlayerRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "KickPlayer:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result KickPlayerRes::TraceOut(MessageData* pMsg)
+			}; // Result KickPlayerRes::TraceOut(MessageDataPtr& pMsg)
 
 
 

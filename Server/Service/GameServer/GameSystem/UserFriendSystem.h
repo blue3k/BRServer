@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "Types/BrGameTypes.h"
 #include "Memory/MemoryPool.h"
-#include "Common/ClassUtil.h"
+
 #include "ServiceEntity/Game/GameSystem.h"
 #include "Common/MemoryBufferUtil.h"
 #include "GameConst.h"
@@ -69,13 +69,17 @@ namespace GameServer {
 
 		MemoryBuffer<ServerFriendInformation, sizeof(ServerFriendInformation)*MAX_FRIENDS>	m_Friends;
 
-		BRCLASS_ATTRIBUTE(TimeStampMS, LatestStatusSync);
+		TimeStampMS m_LatestStatusSync;
 
 	public:
 
 		// Constructor 
 		UserFriendSystem( GamePlayerEntity* pEntity );
 		~UserFriendSystem();
+
+
+		TimeStampMS GetLatestStatusSync() { return m_LatestStatusSync; }
+		void SetLatestStatusSync(TimeStampMS value) { m_LatestStatusSync = value; }
 
 
 		// Initialize server component

@@ -40,7 +40,7 @@ namespace GameServer {
 
 	public:
 
-		GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg);
+		GameServerTransRegisterPlayerToJoinGameServer(MessageDataPtr &pIMsg);
 		virtual ~GameServerTransRegisterPlayerToJoinGameServer() {}
 
 		Result OnPlayerRegisteredRes(Svr::TransactionResult* &pRes);

@@ -60,7 +60,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SCmd< GamePlayerEntity, Policy::NetSvrPolicyGameServer, Message::GameServer::RegisterPlayerToJoinGameServerOnPlayerEntityCmd, PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity> super;
 
 	public:
-		PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity(Message::MessageData* &pIMsg) : UserTransactionS2SCmd(pIMsg) {}
+		PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity(MessageDataPtr &pIMsg) : UserTransactionS2SCmd(pIMsg) {}
 		virtual ~PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity() {}
 
 		// Start Transaction
@@ -87,14 +87,19 @@ namespace GameServer {
 		} m_Step;
 		
 
-		BRCLASS_ATTRIBUTE_STRING(PlayerNick,GameConst::MAX_NAME);
+		char m_PlayerNick[GameConst::MAX_NAME];
 		PlayerID m_PartyLeaderID;
 		GameInsUID m_GameUID;
 		MatchingQueueTicket m_MatchingTicket;
 
 	public:
-		PlayerTransJoinGameServer( Message::MessageData* &pIMsg );
+		PlayerTransJoinGameServer( MessageDataPtr &pIMsg );
 		virtual ~PlayerTransJoinGameServer() {}
+
+		const char* GetPlayerNick() { return m_PlayerNick; }
+		void SetPlayerNick(const char* value) { StrUtil::StringCpy(m_PlayerNick, value); }
+
+
 
 		Result OnGameServerJoined( Svr::TransactionResult* &pRes );
 		Result OnJoinPartyRes( Svr::TransactionResult* &pRes );
@@ -119,11 +124,11 @@ namespace GameServer {
 
 	private:
 		struct {
-			SHORT Level;
+			int16_t Level;
 			int64_t Exp;
 			int64_t GameMoney;
 			int64_t Gem;
-			SHORT Stamina;
+			int16_t Stamina;
 			uint32_t LastUpdateTime;
 			int32_t TotalPlayed;
 			int32_t WinPlaySC;
@@ -144,7 +149,7 @@ namespace GameServer {
 
 
 	public:
-		PlayerTransGetUserGamePlayerInfo( Message::MessageData* &pIMsg )  :MessageTransaction( pIMsg ) {}
+		PlayerTransGetUserGamePlayerInfo( MessageDataPtr &pIMsg )  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGetUserGamePlayerInfo() {}
 
 		// Start Transaction
@@ -184,7 +189,7 @@ namespace GameServer {
 
 	private:
 		struct {
-			SHORT Level;
+			int16_t Level;
 			int32_t TotalPlayed;
 			int32_t WinPlaySC;
 			int32_t WinPlaySM;
@@ -203,7 +208,7 @@ namespace GameServer {
 		} m_Result;
 
 	public:
-		PlayerTransGetGamePlayerInfo( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransGetGamePlayerInfo( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGetGamePlayerInfo() {}
 
 		Result OnGetPlayerShardID(Svr::TransactionResult* &pRes);
@@ -242,11 +247,15 @@ namespace GameServer {
 
 	private:
 
-		BRCLASS_ATTRIBUTE_STRING(ComplitionState, GameConst::MAX_COMPLITIONSTATE);
+		char m_ComplitionState[GameConst::MAX_COMPLITIONSTATE];
 
 	public:
-		PlayerTransGetComplitionState(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) {}
+		PlayerTransGetComplitionState(MessageDataPtr &pIMsg);// : MessageTransaction(pIMsg) {}
 		virtual ~PlayerTransGetComplitionState() {}
+
+		const char* GetComplitionState() { return m_ComplitionState; }
+		void SetComplitionState(const char* value) { StrUtil::StringCpy(m_ComplitionState, value); }
+
 
 		Result OnGetComplitionState(Svr::TransactionResult* &pRes);
 
@@ -265,7 +274,7 @@ namespace GameServer {
 		typedef Svr::MessageTransaction< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::Game::SetComplitionStateCmd, PlayerTransSetComplitionState> super;
 
 	public:
-		PlayerTransSetComplitionState(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) {}
+		PlayerTransSetComplitionState(MessageDataPtr &pIMsg);// : MessageTransaction(pIMsg) {}
 		virtual ~PlayerTransSetComplitionState() {}
 
 		Result OnSetComplitionState(Svr::TransactionResult* &pRes);
@@ -291,7 +300,7 @@ namespace GameServer {
 
 	private:
 	public:
-		PlayerTransSetConfigPreset( Message::MessageData* &pIMsg )  :MessageTransaction( pIMsg ) {}
+		PlayerTransSetConfigPreset( MessageDataPtr &pIMsg )  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransSetConfigPreset() {}
 
 		// Start Transaction
@@ -307,7 +316,7 @@ namespace GameServer {
 
 	private:
 	public:
-		PlayerTransGainGameResource( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransGainGameResource( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGainGameResource() {}
 
 		Result OnSetPlayerInfoRes(  Svr::TransactionResult* &pRes );
@@ -331,7 +340,7 @@ namespace GameServer {
 
 	private:
 	public:
-		PlayerTransRegisterGCM( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransRegisterGCM( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransRegisterGCM() {}
 
 		Result OnUpdated( Svr::TransactionResult* &pRes );
@@ -350,7 +359,7 @@ namespace GameServer {
 
 	private:
 	public:
-		PlayerTransUnregisterGCM( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransUnregisterGCM( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransUnregisterGCM() {}
 
 		Result OnUpdated( Svr::TransactionResult* &pRes );
@@ -376,7 +385,7 @@ namespace GameServer {
 
 	private:
 	public:
-		PlayerTransGetNotificationList( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransGetNotificationList( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransGetNotificationList() {}
 
 		Result OnGetList( Svr::TransactionResult* &pRes );
@@ -394,7 +403,7 @@ namespace GameServer {
 
 	private:
 	public:
-		PlayerTransDeleteNotification( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransDeleteNotification( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransDeleteNotification() {}
 
 		Result OnDeletedNotification( Svr::TransactionResult* &pRes );
@@ -413,7 +422,7 @@ namespace GameServer {
 
 	private:
 	public:
-		PlayerTransSetNotificationRead( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransSetNotificationRead( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransSetNotificationRead() {}
 
 		Result OnSetRead( Svr::TransactionResult* &pRes );
@@ -433,7 +442,7 @@ namespace GameServer {
 
 	private:
 	public:
-		PlayerTransAcceptNotification(Message::MessageData* &pIMsg);//  :MessageTransaction( pIMsg ) {}
+		PlayerTransAcceptNotification(MessageDataPtr &pIMsg);//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransAcceptNotification() {}
 
 		Result OnDeletedNotification(Svr::TransactionResult* &pRes);
@@ -451,7 +460,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::NotifyC2SEvt, PlayerTransNotifyS2S> super;
 
 	public:
-		PlayerTransNotifyS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransNotifyS2S( MessageDataPtr &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransNotifyS2S() {}
 
 		// Start Transaction
@@ -476,7 +485,7 @@ namespace GameServer {
 		uint64_t m_TotalGameMoney;
 
 	public:
-		PlayerTransSetNickName( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransSetNickName( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransSetNickName() {}
 
 		Result OnNickChanged( Svr::TransactionResult* &pRes );
@@ -503,7 +512,7 @@ namespace GameServer {
 		int m_PlayerShardID;
 
 	public:
-		PlayerTransFindPlayerByEMail( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransFindPlayerByEMail( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransFindPlayerByEMail() {}
 
 		Result OnFindPlayer( Svr::TransactionResult* &pRes );
@@ -526,7 +535,7 @@ namespace GameServer {
 		int m_PlayerShardID;
 
 	public:
-		PlayerTransFindPlayerByPlayerID( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransFindPlayerByPlayerID( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransFindPlayerByPlayerID() {}
 
 		Result OnFindPlayer( Svr::TransactionResult* &pRes );
@@ -549,7 +558,7 @@ namespace GameServer {
 		uint m_PlayerStatusQueryCount;
 
 	public:
-		PlayerTransRequestPlayerStatusUpdate( Message::MessageData* &pIMsg );// :MessageTransaction( pIMsg ) {}
+		PlayerTransRequestPlayerStatusUpdate( MessageDataPtr &pIMsg );// :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransRequestPlayerStatusUpdate() {}
 
 		Result OnPlayerShardIDRes(Svr::TransactionResult* &pRes);
@@ -567,7 +576,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::RequestPlayerStatusUpdateC2SEvt, PlayerTransRequestPlayerStatusUpdateS2S> super;
 
 	public:
-		PlayerTransRequestPlayerStatusUpdateS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransRequestPlayerStatusUpdateS2S( MessageDataPtr &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransRequestPlayerStatusUpdateS2S() {}
 
 		// Start Transaction
@@ -580,7 +589,7 @@ namespace GameServer {
 		typedef Svr::UserTransactionS2SEvt< GamePlayerEntity, Policy::NetSvrPolicyGame, Message::GameServer::NotifyPlayerStatusUpdatedC2SEvt, PlayerTransNotifyPlayerStatusUpdatedS2S> super;
 
 	public:
-		PlayerTransNotifyPlayerStatusUpdatedS2S( Message::MessageData* &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
+		PlayerTransNotifyPlayerStatusUpdatedS2S( MessageDataPtr &pIMsg ):UserTransactionS2SEvt(pIMsg) {}
 		virtual ~PlayerTransNotifyPlayerStatusUpdatedS2S() {}
 
 		// Start Transaction
@@ -599,7 +608,7 @@ namespace GameServer {
 		StaticArray<TotalRankingPlayerInformation, 100> m_RankingList;
 
 	public:
-		PlayerTransGetRankingList( Message::MessageData* &pIMsg );
+		PlayerTransGetRankingList( MessageDataPtr &pIMsg );
 		virtual ~PlayerTransGetRankingList() {}
 
 		Result OnGetRankingListRes( Svr::TransactionResult* &pRes );
@@ -624,7 +633,7 @@ namespace GameServer {
 		uint m_RetryCount;
 
 	public:
-		PlayerTransBuyShopItemPrepare(Message::MessageData* &pIMsg);// : MessageTransaction(pIMsg) { m_Signagure.push_back('\0'); }
+		PlayerTransBuyShopItemPrepare(MessageDataPtr &pIMsg);// : MessageTransaction(pIMsg) { m_Signagure.push_back('\0'); }
 		virtual ~PlayerTransBuyShopItemPrepare() {}
 
 		Result OnPurchaseIDChecked(Svr::TransactionResult* &pRes);
@@ -649,7 +658,7 @@ namespace GameServer {
 		conspiracy::ShopTbl::ShopItem *m_pShopItem;
 
 	public:
-		PlayerTransBuyShopItem( Message::MessageData* &pIMsg );//  :MessageTransaction( pIMsg ) {}
+		PlayerTransBuyShopItem( MessageDataPtr &pIMsg );//  :MessageTransaction( pIMsg ) {}
 		virtual ~PlayerTransBuyShopItem() {}
 
 		Result OnPurchaseCheckedAndroid(Svr::TransactionResult* &pRes);

@@ -76,7 +76,7 @@ namespace Svr {
 		virtual Result ProcessConnectionEvent( const Net::ConnectionEvent& conEvent );
 
 		// Process Message and release message after all processed
-		Result ProcessMessageData(Message::MessageData* &pMsg);
+		Result ProcessMessageData(MessageDataPtr &pMsg);
 
 		// Run entity
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
@@ -101,13 +101,13 @@ namespace Svr {
 
 
 		// Called when this entity have a routed message
-		//virtual Result OnRoutedMessage(Message::MessageData* &pMsg) override;
+		//virtual Result OnRoutedMessage(MessageDataPtr &pMsg) override;
 
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		// Overriding IConnectionEventHandler
 		virtual void OnConnectionEvent(Net::Connection* pConn, const Net::ConnectionEvent& evt) override;
-		virtual Result OnRecvMessage(Net::Connection* pConn, Message::MessageData* pMsg) override;
+		virtual Result OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg) override;
 		virtual Result OnNetSyncMessage(Net::Connection* pConn) override;
 		virtual Result OnNetSendReadyMessage(Net::Connection* pConn) override;
 

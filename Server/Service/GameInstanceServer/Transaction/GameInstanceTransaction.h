@@ -45,7 +45,7 @@ namespace ConspiracyGameInstanceServer {
 		PlayerID	m_PlayerID;
 
 	public:
-		RoutedGamePlayerMessageTransaction( Message::MessageData* &pIMsg )
+		RoutedGamePlayerMessageTransaction( MessageDataPtr &pIMsg )
 			:super( TransactionID() )
 			,MessageClass( pIMsg )
 			,m_PlayerID(0)

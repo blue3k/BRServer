@@ -255,7 +255,7 @@ namespace Svr {
 	}
 	
 
-	PartyTransStartGameMatchCmd::PartyTransStartGameMatchCmd(Message::MessageData* &pIMsg )
+	PartyTransStartGameMatchCmd::PartyTransStartGameMatchCmd(MessageDataPtr &pIMsg )
 		:GamePartyMessageTransaction( pIMsg )
 	{
 		SetExclusive(true);
@@ -382,7 +382,7 @@ namespace Svr {
 
 
 
-	PartyTransCancelGameMatchCmd::PartyTransCancelGameMatchCmd(Message::MessageData* &pIMsg )
+	PartyTransCancelGameMatchCmd::PartyTransCancelGameMatchCmd(MessageDataPtr &pIMsg )
 		:GamePartyMessageTransaction( pIMsg )
 	{
 		SetExclusive(true);

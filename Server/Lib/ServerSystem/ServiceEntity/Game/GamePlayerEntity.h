@@ -12,12 +12,12 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Util/TimeUtil.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Memory/MemoryPool.h"
 #include "GameConst.h"
-#include "Common/ClassUtil.h"
+
 #include "Types/BrGameTypes.h"
 #include "Entity/Entity.h"
 #include "ServiceEntity/Game/GameSystem.h"
@@ -70,43 +70,33 @@ namespace Svr {
 	private:
 
 		// Player connection
-		BRCLASS_ATTRIBUTE_READONLY(Policy::NetSvrPolicyGame*,ISvrGamePolicy);
+		//Policy::NetSvrPolicyGame* m_ISvrGamePolicy;
 
 		// Player state
-		BRCLASS_ATTRIBUTE(PlayerState,PlayerState);
+		PlayerState m_PlayerState;
 
 		// Game instance UID
-		BRCLASS_ATTRIBUTE_READONLY(GameInsUID,GameInsUID);
+		GameInsUID m_GameInsUID;
 
 		mutable PlayerInformation m_PlayerInformation;
 
-		BRCLASS_ATTRIBUTE(uint, ShardID);
+		uint m_ShardID;
 
-		BRCLASS_ATTRIBUTE(DurationMS, PlayerAutoLogout);
+		DurationMS m_PlayerAutoLogout;
 
 		// Time for kill this game
-		BRCLASS_ATTRIBUTE_CONST(Util::TimeStampTimer, TimeToKill);
+		Util::TimeStampTimer m_KillTimer;
 
 		// Latest update time in UTC time
-		BRCLASS_ATTRIBUTE(TimeStampSec, LatestUpdateTime);
+		TimeStampSec m_LatestUpdateTime;
 
 		// Latest active time in UTC time
-		BRCLASS_ATTRIBUTE_READONLY(TimeStampSec, LatestActiveTime);
+		TimeStampSec m_LatestActiveTime;
 		void SetLatestActiveTime(TimeStampSec latestActiveTime);
 
-		BRCLASS_ATTRIBUTE(TimeStampSec, LatestDBSyncTime);
+		TimeStampSec m_LatestDBSyncTime;
 
-		BRCLASS_ATTRIBUTE(PartyUID, PartyUID);
-
-
-
-		//BRCLASS_ATTRIBUTE_READONLY(TimeStampMS, MatchingStartTime);
-		//BRCLASS_ATTRIBUTE_READONLY(MatchingQueueTicket,MatchingTicket);
-		//void SetMatchingTicket(MatchingQueueTicket ticket);
-
-
-		//BRCLASS_ATTRIBUTE_STRING(GCMKeys,GameConst::MAX_GCMKEYS);
-		
+		PartyUID m_PartyUID;
 
 
 
@@ -126,6 +116,24 @@ namespace Svr {
 
 		GamePlayerEntity();
 		virtual ~GamePlayerEntity();
+
+		PlayerState GetPlayerState() { return m_PlayerState; }
+		void SetPlayerState(PlayerState value) { m_PlayerState = value; }
+
+
+		GameInsUID GetGameInsUID() { return m_GameInsUID; }
+		uint GetShardID() { return m_ShardID; }
+
+		DurationMS GetPlayerAutoLogoutTime() { return m_PlayerAutoLogout; }
+
+		const Util::TimeStampTimer& GetKillTimer() { return m_KillTimer; }
+
+		TimeStampSec GetLatestUpdateTime() { return m_LatestUpdateTime; }
+		TimeStampSec GetLatestActiveTime() { return m_LatestActiveTime; }
+		TimeStampSec GetLatestDBSyncTime() { return m_LatestDBSyncTime; }
+
+		PartyUID GetPartyUID() { return m_PartyUID; }
+		void SetPartyUID(PartyUID value) { m_PartyUID = value; }
 
 		// Initialize entity to proceed new connection
 		virtual Result InitializeEntity( EntityID newEntityID ) override;

@@ -14,19 +14,19 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Memory/SFMemory.h"
 #include "Types/BrSvrTypes.h"
 #include "Container/PageQueue.h"
-#include "Common/LocalUIDGenerator.h"
+#include "Util/LocalUIDGenerator.h"
 #include "Entity/Entity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "Transaction/MessageRoute.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Container/Indexing.h"
 
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
+#include "Entity/EntityInformation.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 
 #include "PerformanceCounter/PerformanceCounter.h"

@@ -41,7 +41,7 @@ namespace GameServer {
 
 
 	template<class ProcessEntity>
-	GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg)
+	GameServerTransRegisterPlayerToJoinGameServer<ProcessEntity>::GameServerTransRegisterPlayerToJoinGameServer(MessageDataPtr &pIMsg)
 		: super(pIMsg)
 		, m_PublicAddress(nullptr)
 		, m_PublicAddressIPV6(nullptr)

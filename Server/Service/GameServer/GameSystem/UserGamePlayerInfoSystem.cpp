@@ -374,7 +374,7 @@ namespace GameServer {
 		Assert(m_MaxStamina > 0);
 
 		m_Stamina = (decltype(m_Stamina))std::min( m_Stamina + stamina, m_MaxStamina );
-		m_Stamina = std::max( m_Stamina, (SHORT)0 );
+		m_Stamina = std::max( m_Stamina, (int16_t)0 );
 
 	Proc_End:
 
@@ -393,7 +393,7 @@ namespace GameServer {
 		Assert(m_MaxFriend > 0);
 
 		m_AddedFriendSlot = (decltype(m_AddedFriendSlot))std::min(m_AddedFriendSlot + numSlot, maxFriend);
-		m_AddedFriendSlot = std::max(m_AddedFriendSlot, (SHORT)0);
+		m_AddedFriendSlot = std::max(m_AddedFriendSlot, (int16_t)0);
 
 	Proc_End:
 

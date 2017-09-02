@@ -87,7 +87,7 @@ namespace Svr {
 		StaticArray<ServiceInformation,50> m_MemberList;
 
 	public:
-		ClusterGetMemberListTrans( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		ClusterGetMemberListTrans(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
 		virtual ~ClusterGetMemberListTrans() {}
 
 		// Start Transaction
@@ -108,7 +108,7 @@ namespace Svr {
 		StaticArray<ServiceInformation,50> m_MemberList;
 
 	public:
-		JoinClusterTrans( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		JoinClusterTrans(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
 		virtual ~JoinClusterTrans() {}
 
 		// Start Transaction
@@ -129,7 +129,7 @@ namespace Svr {
 		StaticArray<ServiceInformation,50> m_MemberList;
 
 	public:
-		JoinClusterTransForEntityServer( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		JoinClusterTransForEntityServer(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
 		virtual ~JoinClusterTransForEntityServer() {}
 
 		// Start Transaction
@@ -148,7 +148,7 @@ namespace Svr {
 	private:
 
 	public:
-		SyncClusterServiceTrans( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		SyncClusterServiceTrans(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
 		virtual ~SyncClusterServiceTrans() {}
 
 		// Start Transaction

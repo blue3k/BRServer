@@ -83,12 +83,12 @@ namespace DB {
 	{
 		char    GameNick[Const::MAX_USERNAME];
 		uint8_t	Grade;
-		SHORT	Level;
+		int16_t	Level;
 		int64_t	Exp;
 		int64_t	GameMoney;
 		int64_t	Gem;
-		SHORT	Stamina;
-		SHORT	AddedFriendSlot;
+		int16_t	Stamina;
+		int16_t	AddedFriendSlot;
 		int32_t	WeeklyPlayWin;
 		int32_t	WeeklyPlayLose;
 		int64_t	LatestTickTime;
@@ -241,12 +241,12 @@ namespace DB {
 	
 	struct QuerySetPlayerInfoData : public PlayerGameScore
 	{
-		SHORT	Level;
+		int16_t	Level;
 		int64_t	Exp;
 		int64_t	GameMoney;
 		int64_t	Gem;
-		SHORT	Stamina;
-		SHORT	AddedFriendSlot;
+		int16_t	Stamina;
+		int16_t	AddedFriendSlot;
 		int32_t	LatestActiveTime;
 		int64_t	LatestTickTime;
 	};
@@ -302,12 +302,12 @@ namespace DB {
 	public:
 		// Player ID
 		int64_t	PlayerID;
-		SHORT	Level;
+		int16_t	Level;
 		int64_t	Exp;
 		int64_t	GameMoney;
 		int64_t	Gem;
-		SHORT	Stamina;
-		SHORT	AddedFriendSlot;
+		int16_t	Stamina;
+		int16_t	AddedFriendSlot;
 		uint8_t    PurchaseID[Const::MAX_PURCHASEID];
 		char    PurchasePlatform[Const::MAX_PLATFORM_NAME];
 		char    PurchaseToken[Const::MAX_PURCHASETOKEN];
@@ -435,7 +435,7 @@ namespace DB {
 	public:
 		// Player ID
 		int64_t	PlayerID;
-		SHORT	Level;
+		int16_t	Level;
 		int64_t	Exp;
 		int64_t	GameMoney;
 		int32_t	LatestActiveTime;
@@ -481,8 +481,8 @@ namespace DB {
 		// Player ID
 		int64_t	PlayerID;
 		int64_t	Gem;
-		SHORT	Stamina;
-		SHORT	PlayerState;
+		int16_t	Stamina;
+		int16_t	PlayerState;
 		int32_t	LatestActiveTime;
 		int64_t	LatestTickTime;
 
@@ -515,8 +515,8 @@ namespace DB {
 		// Player ID
 		int64_t	PlayerID;
 		int64_t	Gem;
-		SHORT	Stamina;
-		SHORT	PlayerState;
+		int16_t	Stamina;
+		int16_t	PlayerState;
 		int32_t	LatestActiveTime;
 		int64_t	LatestTickTime;
 
@@ -548,7 +548,7 @@ namespace DB {
 	public:
 		// Player ID
 		int64_t	PlayerID;
-		SHORT	PlayerState;
+		int16_t	PlayerState;
 		int32_t	LatestActiveTime;
 
 		// result
@@ -615,7 +615,7 @@ namespace DB {
 		int32_t Level;
 		int32_t WeeklyWin;
 		int32_t WeeklyLose;
-		SHORT	PlayerState;
+		int16_t	PlayerState;
 		int32_t	LatestActiveTime;
 
 		int32_t Result;
@@ -650,7 +650,7 @@ namespace DB {
 		int32_t Level;
 		int32_t WeeklyWin;
 		int32_t WeeklyLose;
-		SHORT	PlayerState;
+		int16_t	PlayerState;
 		int32_t	LatestActiveTime;
 
 		int32_t Result;

@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "Types/BrGameTypes.h"
 #include "Memory/MemoryPool.h"
-#include "Common/ClassUtil.h"
+
 #include "ServiceEntity/Game/GameSystem.h"
 #include "Common/MemoryBufferUtil.h"
 #include "GameConst.h"

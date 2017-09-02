@@ -40,7 +40,7 @@ namespace Svr {
 		uint32_t m_TotalCounterInstance;
 
 	public:
-		MonitoringTransGetInstanceList(Message::MessageData* &pIMsg) : ServerEntityMessageTransaction(pIMsg) {}
+		MonitoringTransGetInstanceList(MessageDataPtr &pIMsg) : ServerEntityMessageTransaction(pIMsg) {}
 		virtual ~MonitoringTransGetInstanceList() {}
 
 		// Start Transaction
@@ -62,7 +62,7 @@ namespace Svr {
 		StaticArray<uint64_t, 1024> m_CounterValues;
 
 	public:
-		MonitoringTransRequestCounterValues(Message::MessageData* &pIMsg) : ServerEntityMessageTransaction(pIMsg) {}
+		MonitoringTransRequestCounterValues(MessageDataPtr &pIMsg) : ServerEntityMessageTransaction(pIMsg) {}
 		virtual ~MonitoringTransRequestCounterValues() {}
 
 		// Start Transaction

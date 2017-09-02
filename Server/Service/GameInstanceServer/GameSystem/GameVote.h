@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "Types/BrGameTypes.h"
 #include "Memory/MemoryPool.h"
-#include "Common/ClassUtil.h"
+
 #include "Container/SFArray.h"
 #include "GameConst.h"
 
@@ -46,7 +46,7 @@ namespace ConspiracyGameInstanceServer {
 		GameInstanceEntity* m_Owner;
 
 		// Vote Status
-		BRCLASS_ATTRIBUTE(VoteState,VoteState);
+		VoteState m_VoteState;
 
 	public:
 		GameVote(GameInstanceEntity* Owner);
@@ -54,6 +54,9 @@ namespace ConspiracyGameInstanceServer {
 
 		GamePlaySystem& GetGamePlaySystem();
 		FORCEINLINE GameInstanceEntity& GetOwner()			{ return *m_Owner; }
+
+		VoteState GetVoteState() { return m_VoteState; }
+		void SetVoteState(VoteState value) { m_VoteState = value; }
 
 		// Iniciate vote
 		virtual Result IniciateVote();
@@ -172,10 +175,10 @@ namespace ConspiracyGameInstanceServer {
 
 	private:
 
-		BRCLASS_ATTRIBUTE(PlayerID,SeersChoice);
-		BRCLASS_ATTRIBUTE(PlayerID,BodyGuardsChoice);
+		PlayerID m_SeersChoice;
+		PlayerID m_BodyGuardsChoice;
 
-		BRCLASS_ATTRIBUTE_READONLY(PlayerID,PlayerToKill);
+		PlayerID m_PlayerToKill;
 		uint m_TopRate;
 
 		bool m_IsInVoting;
@@ -186,6 +189,16 @@ namespace ConspiracyGameInstanceServer {
 		virtual ~GameVoteNight() {}
 
 		FORCEINLINE bool IsFlagSet( VoteFlags flag )	{ return (m_VotingFlags&flag) != 0; }
+
+		PlayerID GetSeersChoice() { return m_SeersChoice; }
+		void SetSeersChoice(PlayerID value) { m_SeersChoice = value; }
+
+		PlayerID GetBodyGuardsChoice() { return m_BodyGuardsChoice; }
+		void SetBodyGuardsChoice(PlayerID value) { m_BodyGuardsChoice = value; }
+
+
+		PlayerID GetPlayerToKill() { return m_PlayerToKill; }
+		void SetPlayerToKill(PlayerID value) { m_PlayerToKill = value; }
 
 		// Iniciate vote
 		virtual Result IniciateVote() override;

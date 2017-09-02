@@ -48,7 +48,7 @@ namespace EntityServer {
 	//
 //
 //	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	TransRegisterUserEntity::TransRegisterUserEntity( Message::MessageData* &pIMsg )
+//	TransRegisterUserEntity::TransRegisterUserEntity( MessageDataPtr &pIMsg )
 //		:MessageTransaction( pIMsg )
 //	{
 //	}
@@ -101,7 +101,7 @@ namespace EntityServer {
 //	
 //
 //	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	TransUnregisterUserEntity::TransUnregisterUserEntity( Message::MessageData* &pIMsg )
+//	TransUnregisterUserEntity::TransUnregisterUserEntity( MessageDataPtr &pIMsg )
 //		:MessageTransaction( pIMsg )
 //	{
 //	}
@@ -154,7 +154,7 @@ namespace EntityServer {
 //
 //
 //	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	TransUpdateUserEntity::TransUpdateUserEntity( Message::MessageData* &pIMsg )
+//	TransUpdateUserEntity::TransUpdateUserEntity( MessageDataPtr &pIMsg )
 //		:MessageTransaction( pIMsg )
 //	{
 //	}
@@ -207,7 +207,7 @@ namespace EntityServer {
 //
 //	/////////////////////////////////////////////////////////////////////////////////////////////
 //
-//	TransFindUserEntity::TransFindUserEntity( Message::MessageData* &pIMsg )
+//	TransFindUserEntity::TransFindUserEntity( MessageDataPtr &pIMsg )
 //		:MessageTransaction( pIMsg )
 //	{
 //	}

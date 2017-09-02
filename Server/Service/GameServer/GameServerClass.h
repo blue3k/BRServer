@@ -15,7 +15,7 @@
 #include "Server/BrServer.h"
 #include "Entity/Entity.h"
 #include "Transaction/Transaction.h"
-#include "Common/ClassUtil.h"
+
 #include "Table/conspiracy/GameConfigTbl.h"
 
 
@@ -56,9 +56,8 @@ namespace GameServer
 		// game config preset
 		int m_TableVersion;
 		uint					m_PresetGameConfigID;
-		BRCLASS_ATTRIBUTE_READONLY_PTR(GameConfigType*,PresetGameConfig);
+		GameConfigType* m_PresetGameConfig;
 
-		//BRCLASS_ATTRIBUTE_READONLY(NetAddress, PublicNetAddressIPv4);
 
 	protected:
 
@@ -71,7 +70,7 @@ namespace GameServer
 		~GameServer();
 
 
-
+		GameConfigType* GetPresetGameConfig() { return m_PresetGameConfig; }
 		
 		// Update game config
 		Result UpdateGameConfig(uint configPresetID);

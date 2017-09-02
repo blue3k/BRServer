@@ -73,7 +73,8 @@ namespace ConspiracyGameInstanceServer {
 
 	// Constructor 
 	GamePlaySystem::GamePlaySystem( GameInstanceEntity* pEntity )
-		:GameSystem(pEntity)
+		: GameSystem(pEntity)
+		, m_Werewolves(pEntity->GetMemoryManager())
 	{
 	}
 

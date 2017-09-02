@@ -71,7 +71,7 @@ namespace Svr {
 	//
 
 	template<class MessageClass, class TransactionClass>
-	LoginPlayerTransLoginBase<MessageClass,TransactionClass>::LoginPlayerTransLoginBase( Message::MessageData* &pIMsg )
+	LoginPlayerTransLoginBase<MessageClass,TransactionClass>::LoginPlayerTransLoginBase( MessageDataPtr &pIMsg )
 		: super( pIMsg )
 		, m_CreateRequestCount(0)
 	{
@@ -349,7 +349,7 @@ namespace Svr {
 
 
 
-	LoginPlayerTransLogin::LoginPlayerTransLogin( Message::MessageData* &pIMsg )
+	LoginPlayerTransLogin::LoginPlayerTransLogin( MessageDataPtr &pIMsg )
 		:LoginPlayerTransLoginBase( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryLoginCmd, { return OnLogin(pRes); });
@@ -422,7 +422,7 @@ namespace Svr {
 	}
 
 
-	LoginPlayerTransLoginByFacebook::LoginPlayerTransLoginByFacebook( Message::MessageData* &pIMsg )
+	LoginPlayerTransLoginByFacebook::LoginPlayerTransLoginByFacebook( MessageDataPtr &pIMsg )
 		:LoginPlayerTransLoginBase( pIMsg )
 	{
 		SetExclusive(true);
@@ -543,7 +543,7 @@ namespace Svr {
 
 
 
-	LoginPlayerTransCreateRandomUser::LoginPlayerTransCreateRandomUser(Message::MessageData* &pIMsg)
+	LoginPlayerTransCreateRandomUser::LoginPlayerTransCreateRandomUser(MessageDataPtr &pIMsg)
 		:LoginPlayerTransLoginBase(pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryCreateRandomUserCmd, { return OnCreated(pRes); });
@@ -680,7 +680,7 @@ namespace Svr {
 	// Login Server service
 	//
 
-	LoginPlayerKickPlayerTrans::LoginPlayerKickPlayerTrans( Message::MessageData* &pIMsg )
+	LoginPlayerKickPlayerTrans::LoginPlayerKickPlayerTrans( MessageDataPtr &pIMsg )
 		: UserTransactionS2SCmd(pIMsg)
 	{
 		BR_TRANS_MESSAGE( DB::QueryDeleteLoginSessionCmd, { return OnDeleteSession(pRes); } );
@@ -749,7 +749,7 @@ namespace Svr {
 
 
 
-	LoginPlayerJoinedToGameServerTrans::LoginPlayerJoinedToGameServerTrans( Message::MessageData* &pIMsg )
+	LoginPlayerJoinedToGameServerTrans::LoginPlayerJoinedToGameServerTrans( MessageDataPtr &pIMsg )
 		:UserTransactionS2SCmd( pIMsg )
 	{
 		SetExclusive(true);
@@ -854,7 +854,7 @@ namespace Svr {
 	// Ranking handling
 	//
 
-	RankingUpdateScoreTrans::RankingUpdateScoreTrans(Message::MessageData* &pIMsg)
+	RankingUpdateScoreTrans::RankingUpdateScoreTrans(MessageDataPtr &pIMsg)
 		: MessageTransaction(pIMsg)
 	{
 		BR_TRANS_MESSAGE(Message::RankingServer::UpdatePlayerScoreRes, { return OnScoreUpdated(pRes); });
@@ -940,7 +940,7 @@ namespace Svr {
 
 	std::atomic<uint32_t> LoginUserDataTestTrans::stm_TestCount(0);
 
-	LoginUserDataTestTrans::LoginUserDataTestTrans(Message::MessageData* &pIMsg)
+	LoginUserDataTestTrans::LoginUserDataTestTrans(MessageDataPtr &pIMsg)
 		: MessageTransaction(pIMsg)
 	{
 	}
@@ -973,7 +973,7 @@ namespace Svr {
 
 
 
-	LoginUserDebugPrintALLRankingTrans::LoginUserDebugPrintALLRankingTrans(Message::MessageData* &pIMsg)
+	LoginUserDebugPrintALLRankingTrans::LoginUserDebugPrintALLRankingTrans(MessageDataPtr &pIMsg)
 		: MessageTransaction(pIMsg)
 	{
 		BR_TRANS_MESSAGE(Message::RankingServer::DebugPrintALLRankingRes, { return OnPrintAllRankingRes(pRes); });

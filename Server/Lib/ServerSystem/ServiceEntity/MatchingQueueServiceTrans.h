@@ -39,7 +39,7 @@ namespace Svr {
 		MatchingQueueTicket m_MatchingTicket;
 
 	public:
-		RegisterPartyMatchingTrans(IMemoryManager& memMgr, Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) {}
+		RegisterPartyMatchingTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) {}
 		virtual ~RegisterPartyMatchingTrans() {}
 
 		// Start Transaction
@@ -60,7 +60,7 @@ namespace Svr {
 		MatchingQueueTicket m_MatchingTicket;
 
 	public:
-		RegisterPlayerMatchingTrans(IMemoryManager& memMgr, Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) {}
+		RegisterPlayerMatchingTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) {}
 		virtual ~RegisterPlayerMatchingTrans() {}
 
 		// Start Transaction
@@ -80,7 +80,7 @@ namespace Svr {
 	private:
 
 	public:
-		UpdateMatchingEntityUIDTrans(IMemoryManager& memMgr, Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) {}
+		UpdateMatchingEntityUIDTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) {}
 		virtual ~UpdateMatchingEntityUIDTrans() {}
 
 		// Start Transaction
@@ -101,7 +101,7 @@ namespace Svr {
 		MatchingQueueTicket m_MatchingTicket;
 
 	public:
-		UnregisterMatchingTrans(IMemoryManager& memMgr, Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) {}
+		UnregisterMatchingTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) {}
 		virtual ~UnregisterMatchingTrans() {}
 
 		// Start Transaction
@@ -125,7 +125,7 @@ namespace Svr {
 		MatchingQueueTicket m_MatchingTicket;
 
 	public:
-		ReserveItemTrans(IMemoryManager& memMgr, Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) { SetPrintTrace(false); }
+		ReserveItemTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) { SetPrintTrace(false); }
 		virtual ~ReserveItemTrans() {}
 
 		// Start Transaction
@@ -148,7 +148,7 @@ namespace Svr {
 		StaticArray<MatchingQueueTicket,40> m_MatchingTicket;
 
 	public:
-		MatchingQueueReserveItemsTrans(IMemoryManager& memMgr, Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(memMgr, pIMsg) { SetPrintTrace(false); }
+		MatchingQueueReserveItemsTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(memMgr, pIMsg) { SetPrintTrace(false); }
 		virtual ~MatchingQueueReserveItemsTrans() {}
 
 		// Start Transaction
@@ -169,7 +169,7 @@ namespace Svr {
 	private:
 
 	public:
-		CancelReservationTrans(IMemoryManager& memMgr, Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) { SetPrintTrace(false); }
+		CancelReservationTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) { SetPrintTrace(false); }
 		virtual ~CancelReservationTrans() {}
 
 		// Start Transaction
@@ -190,7 +190,7 @@ namespace Svr {
 		MatchingQueueItem m_matchingQueueItem;
 
 	public:
-		DequeueItemTrans(IMemoryManager& memMgr, Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) { SetPrintTrace(false); }
+		DequeueItemTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( memMgr, pIMsg ) { SetPrintTrace(false); }
 		virtual ~DequeueItemTrans() {}
 
 		// Start Transaction
@@ -211,7 +211,7 @@ namespace Svr {
 	private:
 
 	public:
-		MatchingQueueTransMatchingItemError(IMemoryManager& memMgr, Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(memMgr, pIMsg) { SetPrintTrace(false); }
+		MatchingQueueTransMatchingItemError(IMemoryManager& memMgr, MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(memMgr, pIMsg) { SetPrintTrace(false); }
 		virtual ~MatchingQueueTransMatchingItemError() {}
 
 		// Start Transaction

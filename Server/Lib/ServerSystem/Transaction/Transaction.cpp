@@ -20,7 +20,8 @@
 #include "Transaction/MessageRoute.h"
 #include "Transaction/Transaction.h"
 #include "Server/BrServer.h"
-#include "Common/SvrPolicyID.h"
+#include "SvrPolicyID.h"
+
 
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::MessageResult);
@@ -44,8 +45,9 @@ namespace SF {
 	//
 
 	// Constructor/Destructor
-	Transaction::Transaction( TransactionID parentTransID )
-		: m_parentTransID(parentTransID)
+	Transaction::Transaction(IMemoryManager& memoryManager, TransactionID parentTransID )
+		: m_MemoryManager(memoryManager)
+		, m_parentTransID(parentTransID)
 		, m_MessageRouteContext(0)
 		, m_pOwner(nullptr)
 		, m_transID(0,0)
@@ -53,7 +55,7 @@ namespace SF {
 		, m_TransactionStartTime(DurationMS(0))
 		, m_uiExpectedResultID(0)
 		, m_state(STATE_WAITSTART)
-		, m_TimerAction(nullptr)
+		//, m_TimerAction(nullptr)
 		, m_CurrentHistoryIdx(0)
 		, m_ServerEntity(nullptr)
 	{
@@ -186,8 +188,8 @@ namespace SF {
 	//
 	//	SubTransaction base class
 	//
-	SubTransaction::SubTransaction( TransactionID parentTransID ,Message::MessageID MsgID )
-			:Transaction( parentTransID ),
+	SubTransaction::SubTransaction( IMemoryManager& memoryManager, TransactionID parentTransID ,Message::MessageID MsgID )
+			:Transaction(memoryManager, parentTransID ),
 			//m_uiContext(0),
 			m_MsgID(MsgID)
 	{
@@ -203,8 +205,8 @@ namespace SF {
 	//	Sub Transaction with result base class
 	//
 	
-	SubTransactionWitResult::SubTransactionWitResult( TransactionID parentTransID , Message::MessageID MsgID )
-		:SubTransaction( parentTransID, MsgID ),
+	SubTransactionWitResult::SubTransactionWitResult(IMemoryManager& memoryManager, TransactionID parentTransID , Message::MessageID MsgID )
+		:SubTransaction( memoryManager, parentTransID, MsgID ),
 		m_bFlushRes(false)
 	{
 		//SetDeleteByEntity(false);
@@ -336,14 +338,9 @@ namespace SF {
 	{
 	}
 
-	// Release Object
-	void MessageResult::ReleaseObjectByPool()
-	{
-		Util::SafeRelease( m_pIMsg );
-	}
 
 	// Setup message result
-	Result MessageResult::SetMessage( Message::MessageData* &pIMsg )
+	Result MessageResult::SetMessage( MessageDataPtr &pIMsg )
 	{
 		if( pIMsg == nullptr )
 			return ResultCode::FAIL;
@@ -360,18 +357,13 @@ namespace SF {
 		SetTransaction( transID, pMsgRes->msgID );
 		SetResult( *phrRes );
 
-		m_pIMsg = pIMsg;
+		m_pIMsg = std::forward<MessageDataPtr>(pIMsg);
 		pIMsg = nullptr;
 
-		return TRUE;
+		return ResultCode::SUCCESS;
 	}
 
-	
-	// Release method ovride
-	void MessageResult::Release()
-	{
-		delete this;
-	}
+
 
 
 

@@ -51,7 +51,7 @@ namespace SF
 			}; // Result PartyGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -61,7 +61,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result PartyGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PartyGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount )
 			{
@@ -150,14 +150,14 @@ namespace SF
 
 			}; // Result PartyGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result PartyGameMatchedS2CEvt::TraceOut(MessageData* pMsg)
+			Result PartyGameMatchedS2CEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				PartyGameMatchedS2CEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PartyGameMatched:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount()); 
 				return ResultCode::SUCCESS;
-			}; // Result PartyGameMatchedS2CEvt::TraceOut(MessageData* pMsg)
+			}; // Result PartyGameMatchedS2CEvt::TraceOut(MessageDataPtr& pMsg)
 
 			// S2C: 
 			const MessageID PlayerGameMatchedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_PARTYMATCHING, 1);
@@ -187,7 +187,7 @@ namespace SF
 			}; // Result PlayerGameMatchedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -197,7 +197,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result PlayerGameMatchedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* PlayerGameMatchedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InDestPlayerID, const uint64_t &InGameInsUID, const uint8_t &InRequestedRole )
 			{
@@ -292,14 +292,14 @@ namespace SF
 
 			}; // Result PlayerGameMatchedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result PlayerGameMatchedS2CEvt::TraceOut(MessageData* pMsg)
+			Result PlayerGameMatchedS2CEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				PlayerGameMatchedS2CEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "PlayerGameMatched:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, DestPlayerID:{4}, GameInsUID:{5}, RequestedRole:{6}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetDestPlayerID(), parser.GetGameInsUID(), (int)parser.GetRequestedRole()); 
 				return ResultCode::SUCCESS;
-			}; // Result PlayerGameMatchedS2CEvt::TraceOut(MessageData* pMsg)
+			}; // Result PlayerGameMatchedS2CEvt::TraceOut(MessageDataPtr& pMsg)
 
 
 

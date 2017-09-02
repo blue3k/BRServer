@@ -12,7 +12,7 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Types/SFEngineTypedefs.h"
 
 #include "Transaction/MessageRoute.h"
@@ -75,10 +75,10 @@ namespace Svr {
 	{
 	public:
 
-		typedef Hash::StaticHashTable<	PlayerID, PartyPlayer,
+		typedef StaticHashTable<	PlayerID, PartyPlayer,
 										//Indexing::ConstMemFunc<PlayerEntityInformation,PlayerID,&PlayerEntityInformation::GetPlayerID>,
-										Indexing::MapItemConverter<PartyPlayer,typename PartyPlayer::TableItemType,&PartyPlayer::TableNode>,
-										Hash::NonUniqueKeyTrait, ThreadSyncTraitNone
+										MapItemConverter<PartyPlayer,typename PartyPlayer::TableItemType,&PartyPlayer::TableNode>,
+										NonUniqueKeyTrait, ThreadSyncTraitNone
 										> 
 				PartyPlayerUIDMap;
 
@@ -94,12 +94,12 @@ namespace Svr {
 		//
 
 		// Team Leader ID
-		BRCLASS_ATTRIBUTE(PlayerID,LeaderID);
+		PlayerID m_LeaderID;
 
 		// Game matching ticket
-		BRCLASS_ATTRIBUTE(MatchingQueueTicket,MatchingTicket);
+		MatchingQueueTicket m_MatchingTicket;
 
-		BRCLASS_ATTRIBUTE_READONLY(ChattingHistory,ChatHistory);
+		ChattingHistory m_ChatHistory;
 
 		
 	protected:
@@ -114,6 +114,15 @@ namespace Svr {
 
 		GamePartyEntity();
 		~GamePartyEntity();
+
+		PlayerID GetLeaderID() { return m_LeaderID; }
+		void SetLeaderID(PlayerID value) { m_LeaderID = value; }
+
+		const MatchingQueueTicket& GetMatchingQueueTicket() { return m_MatchingTicket; }
+		void SetMatchingQueueTicket(const MatchingQueueTicket& value) { m_MatchingTicket = value; }
+
+		const ChattingHistory& GetChatHistory() { return m_ChatHistory; }
+
 
 
 		// Party ID query

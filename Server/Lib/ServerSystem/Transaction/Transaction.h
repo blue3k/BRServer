@@ -78,6 +78,9 @@ namespace Svr {
 		};
 
 	private:
+
+		IMemoryManager& m_MemoryManager;
+
 		// Parent transaction ID
 		TransactionID		m_parentTransID;
 
@@ -144,10 +147,11 @@ namespace Svr {
 
 	public:
 		// Constructor/Destructor
-		Transaction( TransactionID parentTransID );
+		Transaction( IMemoryManager& memoryManager, TransactionID parentTransID );
 
 		virtual void Dispose() override;
 
+		IMemoryManager& GetMemoryManager() { return m_MemoryManager; }
 
 		inline void SetServerEntity(ServerEntity* pServerEntity)
 		{
@@ -261,7 +265,7 @@ namespace Svr {
 			SF::Message::MessageID m_MsgID;
 
 		public:
-			SubTransaction( TransactionID parentTransID , SF::Message::MessageID MsgID );
+			SubTransaction(IMemoryManager& memoryManager, TransactionID parentTransID , SF::Message::MessageID MsgID );
 			virtual ~SubTransaction();
 
 			//virtual Result CloseTransaction( Result hrRes );
@@ -311,9 +315,6 @@ namespace Svr {
 
 		// Get result value
 		inline Result GetResult() const;
-
-		// Virtual release operation
-		virtual void Release();
 	};
 
 
@@ -334,9 +335,6 @@ namespace Svr {
 
 		TimerResult();
 		virtual ~TimerResult();
-
-		// Release method ovrride
-		virtual void Release();
 	};
 
 
@@ -350,24 +348,18 @@ namespace Svr {
 	{
 	private:
 		// Message that result require
-		SF::Message::MessageData *m_pIMsg;
+		MessageDataPtr m_pIMsg;
 
 	public:
 
 		MessageResult();
 		virtual ~MessageResult();
 
-		// Release Object called by ObjectPool
-		virtual void ReleaseObjectByPool();
-
 		// Setup message result
-		Result SetMessage(SF::Message::MessageData* &pIMsg );
+		Result SetMessage(MessageDataPtr &pIMsg );
 
 		// Get message 
-		inline SF::Message::MessageData* GetMessage();
-
-		// Release method override
-		virtual void Release();
+		inline SF::MessageDataPtr GetMessage();
 	};
 
 
@@ -386,7 +378,7 @@ namespace Svr {
 		bool	m_bFlushRes;
 
 	public:
-		SubTransactionWitResult( TransactionID parentTransID , Message::MessageID MsgID );
+		SubTransactionWitResult(IMemoryManager& memoryManager, TransactionID parentTransID , Message::MessageID MsgID );
 		virtual ~SubTransactionWitResult();
 
 		// Get transaction ID
@@ -397,8 +389,6 @@ namespace Svr {
 
 		// flush transaction result
 		virtual Result FlushTransaction() override;
-
-		virtual void Release() override;
 	};
 	
 	
@@ -409,8 +399,6 @@ namespace Svr {
 		SubTransactionWitResultMemoryPooled( TransactionID parentTransID , SF::Message::MessageID MsgID )
 			:SubTransactionWitResult( parentTransID, MsgID )
 		{}
-
-		virtual void Release() { delete this; }
 	};
 	
 
@@ -529,7 +517,7 @@ namespace Svr {
 		SharedPointerT<Net::Connection> m_pConn;
 
 	public:
-		MessageTransaction(IMemoryManager& memoryManager, Message::MessageData* &pIMsg )
+		MessageTransaction(IMemoryManager& memoryManager, MessageDataPtr &pIMsg )
 			: TransactionT<OwnerType, MemoryPoolClass>(memoryManager, TransactionID() )
 			, MessageClass( pIMsg )
 		{
@@ -615,7 +603,7 @@ namespace Svr {
 	class UserTransactionS2SEvt : public MessageTransaction<OwnerEntityType,PolicyType, MessageClass, TransactionType>
 	{
 	protected:
-		UserTransactionS2SEvt(IMemoryManager& memMgr, Message::MessageData* &pIMsg )
+		UserTransactionS2SEvt(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
 			:MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType>(memMgr, pIMsg )
 		{
 		}
@@ -669,7 +657,7 @@ namespace Svr {
 		typedef MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType> superTrans;
 
 	protected:
-		UserTransactionS2SCmd(IMemoryManager& memMgr, Message::MessageData* &pIMsg )
+		UserTransactionS2SCmd(IMemoryManager& memMgr, MessageDataPtr &pIMsg )
 			: MessageTransaction<OwnerEntityType, PolicyType, MessageClass, TransactionType>(memMgr, pIMsg )
 		{
 		}
@@ -727,10 +715,16 @@ namespace Svr {
 
 }; // namespace Svr
 
+typedef SharedPointerT < Svr::Transaction > TransactionPtr;
+
 extern template class PageQueue<Svr::Transaction*>;
 extern template class PageQueue<Svr::TransactionResult*>;
 extern template class SharedPointerT < Svr::Transaction >;
 extern template class WeakPointerT < Svr::Transaction >;
+
+template<> inline TransactionPtr DefaultValue<TransactionPtr>() { return TransactionPtr(); }
+
+
 
 }; // namespace SF
 

@@ -14,20 +14,20 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Memory/SFMemory.h"
 #include "Types/BrSvrTypes.h"
 #include "Container/PageQueue.h"
-#include "Common/LocalUIDGenerator.h"
+#include "Util/LocalUIDGenerator.h"
 #include "Entity/Entity.h"
 #include "Entity/MasterEntity.h"
 #include "Component/ServerComponent.h"
 #include "ServerService/ServerServiceBase.h"
 #include "Transaction/MessageRoute.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Container/Indexing.h"
 
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
+#include "Entity/EntityInformation.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 #include "PerformanceCounter/PerformanceCounter.h"
 
@@ -198,10 +198,10 @@ namespace Svr {
 	private:
 
 		// Matching target member count
-		BRCLASS_ATTRIBUTE_READONLY(uint, TargetMatchingMemberCount);
-		BRCLASS_ATTRIBUTE_READONLY(uint, MaxMatchingQueue);
+		uint m_TargetMatchingMemberCount;
+		uint m_MaxMatchingQueue;
 
-		BRCLASS_ATTRIBUTE_READONLY(bool, IsUseBot);
+		bool m_IsUseBot;
 
 		TimeStampMS m_WaitingBotMatchingStart;
 
@@ -231,7 +231,12 @@ namespace Svr {
 		// We are not going to use hashed key
 		virtual uint KeyHash( uint64_t key ) { return (uint)key; }
 
-		
+		uint GetTargetMatchingMemberCount() { return m_TargetMatchingMemberCount; }
+		uint GetMaxMatchingQueue() { return m_MaxMatchingQueue; }
+
+		bool GetIsUseBot() { return m_IsUseBot; }
+
+
 		//////////////////////////////////////////////////////////////////////////
 		//
 		//	Entity operations

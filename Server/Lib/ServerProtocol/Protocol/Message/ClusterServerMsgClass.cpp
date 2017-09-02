@@ -53,7 +53,7 @@ namespace SF
 			}; // Result GetClusterMemberListCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetClusterMemberListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GetClusterMemberListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -63,7 +63,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GetClusterMemberListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetClusterMemberListCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetClusterMemberListCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
@@ -157,14 +157,14 @@ namespace SF
 
 			}; // Result GetClusterMemberListCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result GetClusterMemberListCmd::TraceOut(MessageData* pMsg)
+			Result GetClusterMemberListCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				GetClusterMemberListCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "GetClusterMemberList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ClusterID:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetClusterID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetClusterMemberListCmd::TraceOut(MessageData* pMsg)
+			}; // Result GetClusterMemberListCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID GetClusterMemberListRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 0);
 			Result GetClusterMemberListRes::ParseMessage( MessageData* pIMsg )
@@ -195,7 +195,7 @@ namespace SF
 			}; // Result GetClusterMemberListRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetClusterMemberListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GetClusterMemberListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -205,7 +205,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GetClusterMemberListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetClusterMemberListRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetClusterMemberListRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 			{
@@ -301,14 +301,14 @@ namespace SF
 
 			}; // Result GetClusterMemberListRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result GetClusterMemberListRes::TraceOut(MessageData* pMsg)
+			Result GetClusterMemberListRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				GetClusterMemberListRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "GetClusterMemberList:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MemberList:{5,30}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMemberList()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetClusterMemberListRes::TraceOut(MessageData* pMsg)
+			}; // Result GetClusterMemberListRes::TraceOut(MessageDataPtr& pMsg)
 
 			// Cmd: Join to the cluster, This operation will be manually broadcasted and gathered the result
 			const MessageID JoinClusterCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 1);
@@ -342,7 +342,7 @@ namespace SF
 			}; // Result JoinClusterCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result JoinClusterCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result JoinClusterCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -352,7 +352,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result JoinClusterCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result JoinClusterCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* JoinClusterCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const uint64_t &InSender, const NetClass &InSenderNetClass, const NetAddress &InSenderAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InClusterMembership )
 			{
@@ -456,14 +456,14 @@ namespace SF
 
 			}; // Result JoinClusterCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result JoinClusterCmd::TraceOut(MessageData* pMsg)
+			Result JoinClusterCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				JoinClusterCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "JoinCluster:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, Sender:{5}, SenderNetClass:{6}, SenderAddress:{7}, ClusterID:{8}, ClusterType:{9}, ClusterMembership:{10}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetSender(), parser.GetSenderNetClass(), parser.GetSenderAddress(), parser.GetClusterID(), (int)parser.GetClusterType(), (int)parser.GetClusterMembership()); 
 				return ResultCode::SUCCESS;
-			}; // Result JoinClusterCmd::TraceOut(MessageData* pMsg)
+			}; // Result JoinClusterCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID JoinClusterRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 1);
 			Result JoinClusterRes::ParseMessage( MessageData* pIMsg )
@@ -494,7 +494,7 @@ namespace SF
 			}; // Result JoinClusterRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result JoinClusterRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result JoinClusterRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -504,7 +504,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result JoinClusterRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result JoinClusterRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* JoinClusterRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<ServiceInformation>& InMemberList )
 			{
@@ -600,14 +600,14 @@ namespace SF
 
 			}; // Result JoinClusterRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result JoinClusterRes::TraceOut(MessageData* pMsg)
+			Result JoinClusterRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				JoinClusterRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "JoinCluster:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, MemberList:{5,30}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMemberList()); 
 				return ResultCode::SUCCESS;
-			}; // Result JoinClusterRes::TraceOut(MessageData* pMsg)
+			}; // Result JoinClusterRes::TraceOut(MessageDataPtr& pMsg)
 
 			// C2S: Do not let it broadcasted while it's manual broadcast packet
 			const MessageID NewServerServiceJoinedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 2);
@@ -640,7 +640,7 @@ namespace SF
 			}; // Result NewServerServiceJoinedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -650,7 +650,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result NewServerServiceJoinedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* NewServerServiceJoinedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InJoinedServiceUID, const NetClass &InJoinedServiceNetClass, const NetAddress &InJoinedServiceAddress, const ClusterID &InClusterID, const ClusterType &InClusterType, const ClusterMembership &InJoinedServiceMembership )
 			{
@@ -751,14 +751,14 @@ namespace SF
 
 			}; // Result NewServerServiceJoinedC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result NewServerServiceJoinedC2SEvt::TraceOut(MessageData* pMsg)
+			Result NewServerServiceJoinedC2SEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				NewServerServiceJoinedC2SEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "NewServerServiceJoined:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, JoinedServiceUID:{4}, JoinedServiceNetClass:{5}, JoinedServiceAddress:{6}, ClusterID:{7}, ClusterType:{8}, JoinedServiceMembership:{9}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetJoinedServiceUID(), parser.GetJoinedServiceNetClass(), parser.GetJoinedServiceAddress(), parser.GetClusterID(), (int)parser.GetClusterType(), (int)parser.GetJoinedServiceMembership()); 
 				return ResultCode::SUCCESS;
-			}; // Result NewServerServiceJoinedC2SEvt::TraceOut(MessageData* pMsg)
+			}; // Result NewServerServiceJoinedC2SEvt::TraceOut(MessageDataPtr& pMsg)
 
 			// C2S: Sync cluster service informations
 			const MessageID SyncClusterServiceC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 3);
@@ -791,7 +791,7 @@ namespace SF
 			}; // Result SyncClusterServiceC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result SyncClusterServiceC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result SyncClusterServiceC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -801,7 +801,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result SyncClusterServiceC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result SyncClusterServiceC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* SyncClusterServiceC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const ClusterType &InClusterType, const Array<ServiceInformation>& InMemberList )
 			{
@@ -898,14 +898,14 @@ namespace SF
 
 			}; // Result SyncClusterServiceC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result SyncClusterServiceC2SEvt::TraceOut(MessageData* pMsg)
+			Result SyncClusterServiceC2SEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				SyncClusterServiceC2SEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "SyncClusterService:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, ClusterID:{4}, ClusterType:{5}, MemberList:{6,30}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetClusterID(), (int)parser.GetClusterType(), parser.GetMemberList()); 
 				return ResultCode::SUCCESS;
-			}; // Result SyncClusterServiceC2SEvt::TraceOut(MessageData* pMsg)
+			}; // Result SyncClusterServiceC2SEvt::TraceOut(MessageDataPtr& pMsg)
 
 			// Cmd: Join to the cluster
 			const MessageID RequestDataSyncCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 4);
@@ -934,7 +934,7 @@ namespace SF
 			}; // Result RequestDataSyncCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestDataSyncCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result RequestDataSyncCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -944,7 +944,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result RequestDataSyncCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestDataSyncCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RequestDataSyncCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
@@ -1038,14 +1038,14 @@ namespace SF
 
 			}; // Result RequestDataSyncCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result RequestDataSyncCmd::TraceOut(MessageData* pMsg)
+			Result RequestDataSyncCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				RequestDataSyncCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "RequestDataSync:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ClusterID:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetClusterID()); 
 				return ResultCode::SUCCESS;
-			}; // Result RequestDataSyncCmd::TraceOut(MessageData* pMsg)
+			}; // Result RequestDataSyncCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID RequestDataSyncRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 4);
 			Result RequestDataSyncRes::ParseMessage( MessageData* pIMsg )
@@ -1072,7 +1072,7 @@ namespace SF
 			}; // Result RequestDataSyncRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result RequestDataSyncRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result RequestDataSyncRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1082,7 +1082,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result RequestDataSyncRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result RequestDataSyncRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* RequestDataSyncRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult )
 			{
@@ -1172,14 +1172,14 @@ namespace SF
 
 			}; // Result RequestDataSyncRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result RequestDataSyncRes::TraceOut(MessageData* pMsg)
+			Result RequestDataSyncRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				RequestDataSyncRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "RequestDataSync:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult()); 
 				return ResultCode::SUCCESS;
-			}; // Result RequestDataSyncRes::TraceOut(MessageData* pMsg)
+			}; // Result RequestDataSyncRes::TraceOut(MessageDataPtr& pMsg)
 
 			// S2C: Master instance of the cluster is assigned
 			const MessageID ClusterMasterAssignedS2CEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 5);
@@ -1209,7 +1209,7 @@ namespace SF
 			}; // Result ClusterMasterAssignedS2CEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1219,7 +1219,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result ClusterMasterAssignedS2CEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* ClusterMasterAssignedS2CEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint64_t &InMasterUID )
 			{
@@ -1314,14 +1314,14 @@ namespace SF
 
 			}; // Result ClusterMasterAssignedS2CEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result ClusterMasterAssignedS2CEvt::TraceOut(MessageData* pMsg)
+			Result ClusterMasterAssignedS2CEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				ClusterMasterAssignedS2CEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "ClusterMasterAssigned:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, Sender:{4}, ClusterID:{5}, MasterUID:{6}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetSender(), parser.GetClusterID(), parser.GetMasterUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result ClusterMasterAssignedS2CEvt::TraceOut(MessageData* pMsg)
+			}; // Result ClusterMasterAssignedS2CEvt::TraceOut(MessageDataPtr& pMsg)
 
 			// C2S: Master vote
 			const MessageID ClusterMasterVoteC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 6);
@@ -1351,7 +1351,7 @@ namespace SF
 			}; // Result ClusterMasterVoteC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1361,7 +1361,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result ClusterMasterVoteC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* ClusterMasterVoteC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const ClusterID &InClusterID, const uint64_t &InVoteToUID, const uint64_t &InVotedUpTime )
 			{
@@ -1456,14 +1456,14 @@ namespace SF
 
 			}; // Result ClusterMasterVoteC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result ClusterMasterVoteC2SEvt::TraceOut(MessageData* pMsg)
+			Result ClusterMasterVoteC2SEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				ClusterMasterVoteC2SEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "ClusterMasterVote:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, ClusterID:{4}, VoteToUID:{5}, VotedUpTime:{6}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetClusterID(), parser.GetVoteToUID(), parser.GetVotedUpTime()); 
 				return ResultCode::SUCCESS;
-			}; // Result ClusterMasterVoteC2SEvt::TraceOut(MessageData* pMsg)
+			}; // Result ClusterMasterVoteC2SEvt::TraceOut(MessageDataPtr& pMsg)
 
 			// C2S: Update cluster service status
 			const MessageID ClusterUpdateStatusC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 7);
@@ -1493,7 +1493,7 @@ namespace SF
 			}; // Result ClusterUpdateStatusC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1503,7 +1503,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result ClusterUpdateStatusC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* ClusterUpdateStatusC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const ServiceStatus &InMemberStatus )
 			{
@@ -1598,14 +1598,14 @@ namespace SF
 
 			}; // Result ClusterUpdateStatusC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result ClusterUpdateStatusC2SEvt::TraceOut(MessageData* pMsg)
+			Result ClusterUpdateStatusC2SEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				ClusterUpdateStatusC2SEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "ClusterUpdateStatus:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, Sender:{4}, ClusterID:{5}, MemberStatus:{6}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetSender(), parser.GetClusterID(), (int)parser.GetMemberStatus()); 
 				return ResultCode::SUCCESS;
-			}; // Result ClusterUpdateStatusC2SEvt::TraceOut(MessageData* pMsg)
+			}; // Result ClusterUpdateStatusC2SEvt::TraceOut(MessageDataPtr& pMsg)
 
 			// C2S: Update cluster service workload
 			const MessageID ClusterUpdateWorkloadC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 8);
@@ -1635,7 +1635,7 @@ namespace SF
 			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1645,7 +1645,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result ClusterUpdateWorkloadC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* ClusterUpdateWorkloadC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const uint64_t &InSender, const ClusterID &InClusterID, const uint32_t &InWorkload )
 			{
@@ -1740,14 +1740,14 @@ namespace SF
 
 			}; // Result ClusterUpdateWorkloadC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result ClusterUpdateWorkloadC2SEvt::TraceOut(MessageData* pMsg)
+			Result ClusterUpdateWorkloadC2SEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				ClusterUpdateWorkloadC2SEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "ClusterUpdateWorkload:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, Sender:{4}, ClusterID:{5}, Workload:{6}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetSender(), parser.GetClusterID(), parser.GetWorkload()); 
 				return ResultCode::SUCCESS;
-			}; // Result ClusterUpdateWorkloadC2SEvt::TraceOut(MessageData* pMsg)
+			}; // Result ClusterUpdateWorkloadC2SEvt::TraceOut(MessageDataPtr& pMsg)
 
 			// Cmd: Get lowest workloaded cluster member
 			const MessageID GetLowestWorkloadClusterMemberCmd::MID = MessageID(MSGTYPE_COMMAND, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 9);
@@ -1776,7 +1776,7 @@ namespace SF
 			}; // Result GetLowestWorkloadClusterMemberCmd::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetLowestWorkloadClusterMemberCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GetLowestWorkloadClusterMemberCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1786,7 +1786,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GetLowestWorkloadClusterMemberCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetLowestWorkloadClusterMemberCmd::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetLowestWorkloadClusterMemberCmd::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint16_t &InRouteHopCount, const ClusterID &InClusterID )
 			{
@@ -1880,14 +1880,14 @@ namespace SF
 
 			}; // Result GetLowestWorkloadClusterMemberCmd::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result GetLowestWorkloadClusterMemberCmd::TraceOut(MessageData* pMsg)
+			Result GetLowestWorkloadClusterMemberCmd::TraceOut(MessageDataPtr& pMsg)
 			{
  				GetLowestWorkloadClusterMemberCmd parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "GetLowestWorkloadClusterMember:{0}:{1} , RouteContext:{2}, TransactionID:{3}, RouteHopCount:{4}, ClusterID:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetRouteHopCount(), parser.GetClusterID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetLowestWorkloadClusterMemberCmd::TraceOut(MessageData* pMsg)
+			}; // Result GetLowestWorkloadClusterMemberCmd::TraceOut(MessageDataPtr& pMsg)
 
 			const MessageID GetLowestWorkloadClusterMemberRes::MID = MessageID(MSGTYPE_RESULT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 9);
 			Result GetLowestWorkloadClusterMemberRes::ParseMessage( MessageData* pIMsg )
@@ -1915,7 +1915,7 @@ namespace SF
 			}; // Result GetLowestWorkloadClusterMemberRes::ParseMessage( MessageData* pIMsg )
 
 
-			Result GetLowestWorkloadClusterMemberRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GetLowestWorkloadClusterMemberRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -1925,7 +1925,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GetLowestWorkloadClusterMemberRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GetLowestWorkloadClusterMemberRes::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GetLowestWorkloadClusterMemberRes::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const ServiceInformation &InMember )
 			{
@@ -2018,14 +2018,14 @@ namespace SF
 
 			}; // Result GetLowestWorkloadClusterMemberRes::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result GetLowestWorkloadClusterMemberRes::TraceOut(MessageData* pMsg)
+			Result GetLowestWorkloadClusterMemberRes::TraceOut(MessageDataPtr& pMsg)
 			{
  				GetLowestWorkloadClusterMemberRes parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug2, "GetLowestWorkloadClusterMember:{0}:{1} , RouteContext:{2}, TransactionID:{3}, Result:{4:X8}, Member:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetTransactionID(), parser.GetResult(), parser.GetMember()); 
 				return ResultCode::SUCCESS;
-			}; // Result GetLowestWorkloadClusterMemberRes::TraceOut(MessageData* pMsg)
+			}; // Result GetLowestWorkloadClusterMemberRes::TraceOut(MessageDataPtr& pMsg)
 
 			// C2S: Called when a player entity is created
 			const MessageID GamePlayerEntityCreatedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 10);
@@ -2054,7 +2054,7 @@ namespace SF
 			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -2064,7 +2064,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayerEntityCreatedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GamePlayerEntityCreatedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 			{
@@ -2157,14 +2157,14 @@ namespace SF
 
 			}; // Result GamePlayerEntityCreatedC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result GamePlayerEntityCreatedC2SEvt::TraceOut(MessageData* pMsg)
+			Result GamePlayerEntityCreatedC2SEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				GamePlayerEntityCreatedC2SEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GamePlayerEntityCreated:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, PlayerID:{4}, PlayerUID:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetPlayerUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GamePlayerEntityCreatedC2SEvt::TraceOut(MessageData* pMsg)
+			}; // Result GamePlayerEntityCreatedC2SEvt::TraceOut(MessageDataPtr& pMsg)
 
 			// C2S: Called when a player entity is deleted
 			const MessageID GamePlayerEntityDeletedC2SEvt::MID = MessageID(MSGTYPE_EVENT, MSGTYPE_RELIABLE, MSGTYPE_NONE, PROTOCOLID_CLUSTERSERVER, 11);
@@ -2193,7 +2193,7 @@ namespace SF
 			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessage( MessageData* pIMsg )
 
 
-			Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 			{
  				Result hr;
 
@@ -2203,7 +2203,7 @@ namespace SF
 			Proc_End:
 				return hr;
 
-			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMessageBase )
+			}; // Result GamePlayerEntityDeletedC2SEvt::ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMessageBase )
 
 			MessageData* GamePlayerEntityDeletedC2SEvt::Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const uint16_t &InRouteHopCount, const PlayerID &InPlayerID, const uint64_t &InPlayerUID )
 			{
@@ -2296,14 +2296,14 @@ namespace SF
 
 			}; // Result GamePlayerEntityDeletedC2SEvt::OverrideRouteInformation( EntityUID to, unsigned hopCount )
 
-			Result GamePlayerEntityDeletedC2SEvt::TraceOut(MessageData* pMsg)
+			Result GamePlayerEntityDeletedC2SEvt::TraceOut(MessageDataPtr& pMsg)
 			{
  				GamePlayerEntityDeletedC2SEvt parser;
-				parser.ParseMessage(pMsg);
+				parser.ParseMessage(*pMsg);
 				protocolTrace( Debug1, "GamePlayerEntityDeleted:{0}:{1} , RouteContext:{2}, RouteHopCount:{3}, PlayerID:{4}, PlayerUID:{5}",
 						pMsg->GetMessageHeader()->Length, pMsg->GetMessageHeader()->Crc32, parser.GetRouteContext(), parser.GetRouteHopCount(), parser.GetPlayerID(), parser.GetPlayerUID()); 
 				return ResultCode::SUCCESS;
-			}; // Result GamePlayerEntityDeletedC2SEvt::TraceOut(MessageData* pMsg)
+			}; // Result GamePlayerEntityDeletedC2SEvt::TraceOut(MessageDataPtr& pMsg)
 
 
 

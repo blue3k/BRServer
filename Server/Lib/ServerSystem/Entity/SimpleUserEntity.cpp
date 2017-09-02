@@ -58,7 +58,7 @@ namespace Svr
 			m_pConnection->SetEventHandler(this);
 
 			// purge received guaranted messages
-			OnRecvMessage((Net::Connection*)m_pConnection, nullptr);
+			OnRecvMessage((Net::Connection*)m_pConnection, MessageDataPtr());
 
 			m_pConnection->GetNet()->TakeOverConnection((Net::Connection*)m_pConnection);
 		}
@@ -149,12 +149,12 @@ namespace Svr
 
 
 	// Process Message and release message after all processed
-	Result SimpleUserEntity::ProcessMessageData(Message::MessageData* &pIMsg)
+	Result SimpleUserEntity::ProcessMessageData(MessageDataPtr &pIMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 		EntityID entityID; // entity ID to route
 		Message::MessageHeader *pMsgHdr = nullptr;
-		Svr::Transaction *pNewTrans = nullptr;
+		TransactionPtr pNewTrans;
 		ThreadID currentThreadID = ThisThread::GetThreadID();
 
 		svrChkPtr(pIMsg);
@@ -185,7 +185,7 @@ namespace Svr
 		};
 
 
-		if (pNewTrans)
+		if (pNewTrans != nullptr)
 		{
 			if (pNewTrans->GetOwnerEntity() == nullptr)
 			{
@@ -209,14 +209,13 @@ namespace Svr
 
 	Proc_End:
 
-		if (pNewTrans && !pNewTrans->IsClosed())
+		if (pNewTrans != nullptr && !pNewTrans->IsClosed())
 		{
 			pNewTrans->CloseTransaction(hr);
 		}
 
 
 		ReleaseTransaction(pNewTrans);
-		Util::SafeRelease(pIMsg);
 
 		return ResultCode::SUCCESS;
 
@@ -227,7 +226,7 @@ namespace Svr
 	Result SimpleUserEntity::TickUpdate(TimerAction *pAction)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Message::MessageData *pIMsg = nullptr;
+		MessageDataPtr pIMsg;
 		Net::ConnectionEvent conEvent;
 
 
@@ -272,8 +271,6 @@ namespace Svr
 						break;
 
 					ProcessMessageData(pIMsg );
-
-					Util::SafeRelease( pIMsg );
 				}
 			}
 		}
@@ -300,7 +297,7 @@ namespace Svr
 
 
 	//// Called when this entity have a routed message
-	//Result SimpleUserEntity::OnRoutedMessage(Message::MessageData* &pMsg)
+	//Result SimpleUserEntity::OnRoutedMessage(MessageDataPtr &pMsg)
 	//{
 	//	// TODO: Call process message directly when it runs on the same thread
 	//	Result hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, WeakPointerT<Net::Connection>(), pMsg));
@@ -320,7 +317,7 @@ namespace Svr
 		ProcessConnectionEvent(evt);
 	}
 
-	Result SimpleUserEntity::OnRecvMessage(Net::Connection* pConn, Message::MessageData* pMsg)
+	Result SimpleUserEntity::OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg)
 	{
 		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, WeakPointerT<Net::Connection>(pConn), pMsg));
 	}
@@ -341,7 +338,7 @@ namespace Svr
 		Result hr = ResultCode::SUCCESS;
 
 		Transaction *pCurTran = nullptr;
-		Message::MessageData* pMsg = nullptr;
+		MessageDataPtr pMsg;
 		Net::ConnectionUDPBase* pConn = nullptr;
 		auto pMyConn = GetConnection();
 
@@ -382,17 +379,16 @@ namespace Svr
 			ProcessConnectionEvent(*eventTask.EventData.pConnectionEvent);
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
-			pMsg = eventTask.EventData.MessageEvent.pMessage;
-			pConn = BR_DYNAMIC_CAST(Net::ConnectionUDPBase*,GetConnection());
+			pMsg = std::forward<MessageDataPtr>(eventTask.EventData.MessageEvent.pMessage);
+			pConn = dynamic_cast<Net::ConnectionUDPBase*>(GetConnection());
 			if (pMsg != nullptr)
 			{
 				ProcessMessageData(pMsg);
-				Util::SafeRelease(pMsg);
 			}
 			else
 			{
 				if (pConn != nullptr)
-					pConn->ProcGuarrentedMessageWindow([&](Message::MessageData* pMsg){ ProcessMessageData(pMsg); });
+					pConn->ProcGuarrentedMessageWindow([&](MessageDataPtr& pMsg){ ProcessMessageData(pMsg); });
 			}
 			break;
 		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
@@ -406,13 +402,13 @@ namespace Svr
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
-					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
+					ProcessTransactionResult(pCurTran, const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent));
 				}
 				else
 				{
 					svrTrace(Trace::TRC_WARN, "Transaction result for TID:{0} is failed to route.", eventTask.EventData.pTransResultEvent->GetTransID());
 					auto pRes = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					Util::SafeRelease(pRes);
+					IMemoryManager::Delete(pRes);
 					//svrErr(ResultCode::FAIL);
 				}
 			}

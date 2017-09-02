@@ -38,7 +38,7 @@ namespace Svr {
 		GameInsUID	m_GameInsUID;
 
 	public:
-		GameInstanceTransCreateGame(Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		GameInstanceTransCreateGame(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
 		virtual ~GameInstanceTransCreateGame() {}
 
 		// Start Transaction
@@ -59,7 +59,7 @@ namespace Svr {
 		GameInsUID	m_GameInsUID;
 
 	public:
-		GameInstanceTransGameDeleted(Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		GameInstanceTransGameDeleted(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
 		virtual ~GameInstanceTransGameDeleted() {}
 
 		// Start Transaction

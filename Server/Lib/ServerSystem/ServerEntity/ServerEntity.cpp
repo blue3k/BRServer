@@ -168,7 +168,7 @@ namespace Svr {
 	}
 
 	//// Called when this entity have a routed message
-	//Result ServerEntity::OnRoutedMessage(Message::MessageData* &pMsg)
+	//Result ServerEntity::OnRoutedMessage(MessageDataPtr &pMsg)
 	//{
 	//	// TODO: Call process message directly when it runs on the same thread
 	//	Result hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, WeakPointerT<Net::Connection>(), pMsg));
@@ -179,7 +179,7 @@ namespace Svr {
 	//}
 
 	// Process Message and release message after all processed
-	Result ServerEntity::ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, Message::MessageData* &pMsg )
+	Result ServerEntity::ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, MessageDataPtr &pMsg )
 	{
 		RouteContext routeContext;
 		TransactionID transID;
@@ -264,7 +264,7 @@ namespace Svr {
 	Result ServerEntity::UpdateConnection(Net::Connection* pConn)
 	{
 		Result hr = ResultCode::SUCCESS;
-		Message::MessageData *pMsg = nullptr;
+		MessageDataPtr pMsg;
 		Net::ConnectionEvent conEvent;
 
 		if (pConn == nullptr)
@@ -293,8 +293,6 @@ namespace Svr {
 					break;
 
 				ProcessMessage(this, pConn, pMsg);
-
-				Util::SafeRelease(pMsg);
 			}
 		}
 		else
@@ -307,9 +305,6 @@ namespace Svr {
 		}
 
 	//Proc_End:
-
-		if (pMsg)
-			Util::SafeDelete(pMsg);
 
 		return hr;
 	}
@@ -406,7 +401,7 @@ namespace Svr {
 		ProcessConnectionEvent(evt);
 	}
 
-	Result ServerEntity::OnRecvMessage(Net::Connection* pConn, SharedPointerT<Message::MessageData>& pMsg)
+	Result ServerEntity::OnRecvMessage(Net::Connection* pConn, MessageDataPtr& pMsg)
 	{
 		if (GetTaskManager() == nullptr)
 			return ResultCode::INVALID_STATE;
@@ -433,7 +428,7 @@ namespace Svr {
 	Result ServerEntity::OnEventTask(const ServerTaskEvent& eventTask)
 	{
 		Transaction *pCurTran = nullptr;
-		Message::MessageData* pMsg = nullptr;
+		MessageDataPtr pMsg;
 		SharedPointerT<Net::Connection> pMyConn;
 
 		switch (eventTask.EventType)
@@ -446,7 +441,6 @@ namespace Svr {
 			if (pMsg != nullptr)
 			{
 				ProcessMessage(this, GetConnection(), pMsg);
-				Util::SafeRelease(pMsg);
 			}
 			else
 			{
@@ -466,12 +460,12 @@ namespace Svr {
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
 				{
-					ProcessTransactionResult(pCurTran, eventTask.EventData.pTransResultEvent);
+					ProcessTransactionResult(pCurTran, const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent));
 				}
 				else
 				{
 					auto pNonConst = const_cast<TransactionResult*>(eventTask.EventData.pTransResultEvent);
-					Util::SafeRelease(pNonConst);
+					IMemoryManager::Delete(pNonConst);
 				}
 			}
 			else

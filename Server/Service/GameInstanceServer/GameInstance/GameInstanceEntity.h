@@ -12,10 +12,10 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Types/SFEngineTypedefs.h"
 #include "Container/Indexing.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Component/BrComponent.h"
 
 #include "Transaction/MessageRoute.h"
@@ -87,7 +87,7 @@ namespace ConspiracyGameInstanceServer
 		// Game configuration
 		int m_TableVersion;
 		uint					m_PresetGameConfigID;
-		BRCLASS_ATTRIBUTE_READONLY_PTR(GameConfigType*,PresetGameConfig);
+		GameConfigType* m_PresetGameConfig;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -95,8 +95,8 @@ namespace ConspiracyGameInstanceServer
 		//
 
 
-		BRCLASS_ATTRIBUTE(uint, RoleRequestSeer);
-		BRCLASS_ATTRIBUTE(uint, RoleRequestWerewolf);
+		uint m_RoleRequestSeer;
+		uint m_RoleRequestWerewolf;
 
 		conspiracy::BotTalkTbl::BotTalkTblItem *m_pBotTalk;
 
@@ -110,6 +110,14 @@ namespace ConspiracyGameInstanceServer
 
 		GameInstanceEntity();
 		~GameInstanceEntity();
+
+		GameConfigType* GetPresetGameConfig() { return m_PresetGameConfig; }
+
+		uint GetRoleRequestSeer() { return m_RoleRequestSeer; }
+		void SetRoleRequestSeer(uint value) { m_RoleRequestSeer = value; }
+
+		uint GetRoleRequestWerewolf() { return m_RoleRequestWerewolf; }
+		void SetRoleRequestWerewolf(uint value) { m_RoleRequestWerewolf = value; }
 
 		//// Get server instance
 		//GameInstanceServer* GetMyOwner();

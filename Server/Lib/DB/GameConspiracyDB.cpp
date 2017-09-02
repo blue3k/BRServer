@@ -110,12 +110,12 @@ namespace DB {
 
 	// Save player info
 	Result GameConspiracyDB::SetPlayerInfoCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-																			SHORT	Level,
+																			int16_t	Level,
 																			int64_t	Exp,
 																			int64_t	GameMoney,
 																			int64_t	Gem,
-																			SHORT	Stamina,
-																			SHORT	AddedFriendSlot,
+																			int16_t	Stamina,
+																			int16_t	AddedFriendSlot,
 																			int32_t	TotalPlayed,
 																			int32_t	WinPlaySC, int32_t WinPlaySM, int32_t WinPlaySS,
 																			int32_t	LosePlaySC, int32_t LosePlaySM, int32_t LosePlaySS,
@@ -176,12 +176,12 @@ namespace DB {
 	}
 	Result GameConspiracyDB::SavePurchaseInfoToDB(
 		TransactionID Sender, uint shardID, const PlayerID &playerID,
-		SHORT	Level,
+		int16_t	Level,
 		int64_t	Exp,
 		int64_t	GameMoney,
 		int64_t	Gem,
-		SHORT	Stamina,
-		SHORT	AddedFriendSlot,
+		int16_t	Stamina,
+		int16_t	AddedFriendSlot,
 		const Array<uint8_t>& purchaseID,
 		const char* purchasePlatform, const char* purchaseToken,
 		TimeStampSec	LatestActiveTime,
@@ -316,7 +316,7 @@ namespace DB {
 
 	// Save player info
 	Result GameConspiracyDB::UpdateGameEndCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
-																			SHORT	Level,
+																			int16_t	Level,
 																			int64_t	Exp,
 																			int64_t	GameMoney,
 																			int32_t	TotalPlayed,
@@ -372,8 +372,8 @@ namespace DB {
 	// Save player info
 	Result GameConspiracyDB::UpdateJoinGameCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
 																			int64_t	Gem,
-																			SHORT	Stamina,
-																			SHORT	PlayerState,
+																			int16_t	Stamina,
+																			int16_t	PlayerState,
 																			TimeStampSec	LatestActiveTime,
 																			TimeStampSec	LatestTickTime
 																			)
@@ -412,8 +412,8 @@ namespace DB {
 	// Save player info
 	Result GameConspiracyDB::UpdateTickStatusCmd(TransactionID Sender, uint shardID, const PlayerID &playerID,
 																			int64_t	Gem,
-																			SHORT	Stamina,
-																			SHORT	PlayerState,
+																			int16_t	Stamina,
+																			int16_t	PlayerState,
 																			TimeStampSec	LatestActiveTime,
 																			TimeStampSec	LatestTickTime
 																			)

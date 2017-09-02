@@ -49,7 +49,7 @@ namespace Svr {
 		MasterEntity( uint uiTransQueueSize = 2048, uint TransResQueueSize = 2048 );
 		virtual ~MasterEntity();
 
-		virtual void ReleaseTransaction(Transaction* pTrans) override;
+		virtual void ReleaseTransaction(TransactionPtr& pTrans) override;
 
 		void ValidateTransactionCount();
 
@@ -65,14 +65,14 @@ namespace Svr {
 		// Run the task
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
 
-		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
+		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult* &pTransRes) override;
 
 		virtual uint GetActiveTransactionCount() override;
 
 		void UpdateWorkingThreadID(ThreadID threadID);
 
 
-		//virtual Result OnRoutedMessage(Message::MessageData* &pMsg) override { assert(false); return ResultCode::NOT_IMPLEMENTED; }
+		//virtual Result OnRoutedMessage(MessageDataPtr &pMsg) override { assert(false); return ResultCode::NOT_IMPLEMENTED; }
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Event task handling

@@ -130,10 +130,10 @@ namespace Svr {
 		virtual Result TerminateEntity() override;
 
 		// Called when this entity have a routed message
-		//virtual Result OnRoutedMessage(Message::MessageData* &pMsg) override;
+		//virtual Result OnRoutedMessage(MessageDataPtr &pMsg) override;
 
 		// Process Message and release message after all processed
-		virtual Result ProcessMessage(ServerEntity *pServerEntity, SF::Net::Connection *pCon, SF::Message::MessageData* &pMsg ) override;
+		virtual Result ProcessMessage(ServerEntity *pServerEntity, SF::Net::Connection *pCon, MessageDataPtr &pMsg ) override;
 
 		// Process Connection event
 		virtual Result ProcessConnectionEvent( const SF::Net::ConnectionEvent& conEvent );

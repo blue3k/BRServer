@@ -94,7 +94,7 @@ namespace Svr {
 	private:
 
 	public:
-		RequestDataSyncTrans( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg )
+		RequestDataSyncTrans(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg )
 		{
 			// let's enable runtime data sync
 			//SetExclusive( true );
@@ -119,7 +119,7 @@ namespace Svr {
 	private:
 
 	public:
-		ClusterMasterAssignedTrans( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		ClusterMasterAssignedTrans(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
 		virtual ~ClusterMasterAssignedTrans() {}
 
 		// Start Transaction
@@ -136,7 +136,7 @@ namespace Svr {
 	private:
 
 	public:
-		ClusterMasterVoteTrans( Message::MessageData* &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
+		ClusterMasterVoteTrans(MessageDataPtr &pIMsg ) : ClusterEntityMessageTransaction( pIMsg ) {}
 		virtual ~ClusterMasterVoteTrans() {}
 
 		// Start Transaction
@@ -152,7 +152,7 @@ namespace Svr {
 	private:
 
 	public:
-		ClusterUpdateStatusTrans(Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		ClusterUpdateStatusTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
 		virtual ~ClusterUpdateStatusTrans() {}
 
 		// Start Transaction
@@ -169,7 +169,7 @@ namespace Svr {
 	private:
 
 	public:
-		ClusterUpdateWorkloadTrans(Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		ClusterUpdateWorkloadTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
 		virtual ~ClusterUpdateWorkloadTrans() {}
 
 		// Start Transaction
@@ -186,7 +186,7 @@ namespace Svr {
 		ServiceInformation m_LowestMemberInfo;
 
 	public:
-		GetLowestWorkloadClusterMemberTrans(Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(pIMsg)
+		GetLowestWorkloadClusterMemberTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg)
 		{
 			// let's enable runtime data sync
 			//SetExclusive( true );
@@ -211,7 +211,7 @@ namespace Svr {
 	private:
 
 	public:
-		ClusterNewServerServiceJoinedC2SEvtEntityTrans(Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		ClusterNewServerServiceJoinedC2SEvtEntityTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
 		virtual ~ClusterNewServerServiceJoinedC2SEvtEntityTrans() {}
 
 		// Start Transaction
@@ -227,7 +227,7 @@ namespace Svr {
 	private:
 
 	public:
-		ClusterNewServerServiceJoinedC2SEvtTrans(Message::MessageData* &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
+		ClusterNewServerServiceJoinedC2SEvtTrans(MessageDataPtr &pIMsg) : ClusterEntityMessageTransaction(pIMsg) {}
 		virtual ~ClusterNewServerServiceJoinedC2SEvtTrans() {}
 
 		// Start Transaction

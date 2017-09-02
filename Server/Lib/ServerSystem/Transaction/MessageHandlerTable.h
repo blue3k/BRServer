@@ -17,6 +17,7 @@
 #include "Container/StaticHashTable.h"
 #include "Types/BrSvrTypes.h"
 #include "Container/ContainerTrait.h"
+#include "Net/Message.h"
 
 
 
@@ -102,7 +103,8 @@ namespace Svr {
 	public:
 		
 		MessageHandlerTable( IMemoryManager &allocator )
-			: m_Allocator(allocator)
+			: m_HandlerTable(allocator)
+			, m_Allocator(allocator)
 		{
 			m_MemoryPool = m_Allocator.GetMemoryPoolBySize(sizeof(TableItem));
 		}
@@ -177,7 +179,7 @@ namespace Svr {
 
 
 		// Call handler 
-		Result HandleMessage( Message::MessageData* &pMsg )
+		Result HandleMessage( MessageDataPtr &pMsg )
 		{
 			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
@@ -200,7 +202,7 @@ namespace Svr {
 		}
 
 		template<class Param1>
-		Result HandleMessage( Net::Connection * pCon, Message::MessageData* &pMsg, Param1 param1 )
+		Result HandleMessage( Net::Connection * pCon, MessageDataPtr &pMsg, Param1 param1 )
 		{
 			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
@@ -212,7 +214,7 @@ namespace Svr {
 		}
 		
 		template<class Param1, class Param2>
-		Result HandleMessage( Message::MessageData* &pMsg, Param1 param1, Param2 param2 )
+		Result HandleMessage(MessageDataPtr &pMsg, Param1 param1, Param2 param2 )
 		{
 			Result hr = ResultCode::SUCCESS;
 			MessageHandlerType handler;
@@ -228,13 +230,13 @@ namespace Svr {
 	};
 
 
-	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::Connection* pConn, Message::MessageData* &pMsgData, SF::Svr::Transaction* &pNewTrans)->Result 
+	#define	BR_ENTITY_MESSAGE(MessageType) RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&]( Net::Connection* pConn, MessageDataPtr &pMsgData, SF::Svr::Transaction* &pNewTrans)->Result 
 
 	#define BR_TRANS_MESSAGE(MessageType,MessageHandlerImpl) \
 		RegisterMessageHandler<MessageType>( __FILE__, __LINE__, [&](::SF::Svr::TransactionResult* pRes)->Result MessageHandlerImpl );
 
 
-	typedef std::function<Result(Net::Connection *, Message::MessageData* &, Transaction* &)>	EntityMessageHandlerItem;
+	typedef std::function<Result(Net::Connection *, MessageDataPtr &, Transaction* &)>	EntityMessageHandlerItem;
 
 
 

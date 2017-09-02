@@ -274,9 +274,9 @@ namespace DB {
 		mysql_options(m_mySQL, MYSQL_INIT_COMMAND, "SET NAMES utf8");
 
 		if (mysql_real_connect(m_mySQL,
-			m_pMyDataSource->GetServerIP().c_str(),
-			m_pMyDataSource->GetUserID().c_str(), m_pMyDataSource->GetPassword().c_str(),
-			m_pMyDataSource->GetDefaultDB().c_str(), 
+			m_pMyDataSource->GetServerIP(),
+			m_pMyDataSource->GetUserID(), m_pMyDataSource->GetPassword(),
+			m_pMyDataSource->GetDefaultDB(), 
 			m_pMyDataSource->GetServerPort(), 
 			NULL, CLIENT_MULTI_STATEMENTS) == nullptr) 
 		{

@@ -236,9 +236,9 @@ Result TransactionResult::GetResult() const
 
 
 
-Message::MessageData* MessageResult::GetMessage()
+MessageDataPtr MessageResult::GetMessage()
 {
-	return m_pIMsg;
+	return *m_pIMsg;
 }
 
 

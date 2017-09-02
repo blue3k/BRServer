@@ -71,7 +71,7 @@ namespace GameServer {
 	//
 
 	
-	PlayerTransInviteFriend::PlayerTransInviteFriend( Message::MessageData* &pIMsg )
+	PlayerTransInviteFriend::PlayerTransInviteFriend( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerShardIDCmd, { return OnGetPlayerShardID(pRes); });
@@ -164,7 +164,7 @@ namespace GameServer {
 
 
 
-	PlayerTransFriendAccept::PlayerTransFriendAccept( Message::MessageData* &pIMsg )
+	PlayerTransFriendAccept::PlayerTransFriendAccept( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE(DB::QueryAddFriendCmd, { return OnFriendAdded(pRes); });
@@ -431,7 +431,7 @@ namespace GameServer {
 
 
 
-	PlayerTransRemoveFriend::PlayerTransRemoveFriend( Message::MessageData* &pIMsg )
+	PlayerTransRemoveFriend::PlayerTransRemoveFriend( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryRemoveFriendCmd, { return OnRemoved(pRes); });
@@ -525,7 +525,7 @@ namespace GameServer {
 
 
 
-	PlayerTransGetFriendList::PlayerTransGetFriendList( Message::MessageData* &pIMsg )
+	PlayerTransGetFriendList::PlayerTransGetFriendList( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetFriendListCmd, { return OnGetList(pRes); });
@@ -728,7 +728,7 @@ namespace GameServer {
 
 
 
-	PlayerTransGiveStamina::PlayerTransGiveStamina( Message::MessageData* &pIMsg )
+	PlayerTransGiveStamina::PlayerTransGiveStamina( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		SetExclusive(true);
@@ -877,7 +877,7 @@ namespace GameServer {
 
 
 
-	//PlayerTransGiveStaminaS2S::PlayerTransGiveStaminaS2S( Message::MessageData* &pIMsg )
+	//PlayerTransGiveStaminaS2S::PlayerTransGiveStaminaS2S( MessageDataPtr &pIMsg )
 	//	:UserTransactionS2SEvt(pIMsg)
 	//{
 	//	SetExclusive(true);

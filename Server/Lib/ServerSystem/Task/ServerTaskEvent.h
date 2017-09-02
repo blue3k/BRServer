@@ -55,7 +55,7 @@ namespace SF {
 			Net::ConnectionEvent *pConnectionEvent;
 			struct {
 				WeakPointerT<Net::Connection> pConn;
-				SharedPointerT<Message::MessageData> pMessage;
+				MessageDataPtr pMessage;
 			} MessageEvent;
 			Svr::TransactionResult* pTransResultEvent;
 

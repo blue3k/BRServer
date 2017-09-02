@@ -12,10 +12,9 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
 #include "Types/SFEngineTypedefs.h"
 #include "Container/Indexing.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Component/BrComponent.h"
 
 #include "Transaction/MessageRoute.h"
@@ -89,41 +88,27 @@ namespace Svr
 
 
 		// Time for kill this game
-		BRCLASS_ATTRIBUTE_CONST(Util::TimeStampTimer,TimeToKill);
+		Util::TimeStampTimer m_TimeToKill;
 
 		// Is accept join?
-		BRCLASS_ATTRIBUTE_READONLY(bool,AcceptJoin);
+		bool m_AcceptJoin = false;
 
 		// Team Leader UID
-		BRCLASS_ATTRIBUTE(PlayerID,LeaderUID);
+		PlayerID m_LeaderUID;
 
 		// Max player
-		BRCLASS_ATTRIBUTE_READONLY(uint,MaxPlayer);
+		uint m_MaxPlayer;
 
 		// Total joined player since game instance is created
-		BRCLASS_ATTRIBUTE(uint, TotalJoinedPlayer);
+		uint m_TotalJoinedPlayer;
 
 		// Number of bot
-		BRCLASS_ATTRIBUTE(uint, NumBot);
+		uint m_NumBot;
 
-		BRCLASS_ATTRIBUTE(DurationMS, EmptyInstanceKillTimeOut);
+		DurationMS m_EmptyInstanceKillTimeOut;
 
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////
-		//
-		//	Game state delegate
-		//
-
-	
-		// Allocator for member
-		StaticAllocator< sizeof(Svr::EntityMessageHandlerItem)*100 > m_Allocator;
-
-	protected:
-
-		virtual MemoryAllocator& GetAllocator()			{ return m_Allocator; }
 
 	public:
-
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
 		//	Game Instance
@@ -131,6 +116,18 @@ namespace Svr
 
 		GameInstanceEntity();
 		~GameInstanceEntity();
+
+		const Util::TimeStampTimer& GetTimeToKill() { return m_TimeToKill; }
+		bool GetAcceptJoin() { return m_AcceptJoin; }
+
+		PlayerID GetLeaderUID() { return m_LeaderUID; }
+		void SetLeaderUID(PlayerID value) { m_LeaderUID = value; }
+
+		uint GetMaxPlayer() { return m_MaxPlayer; }
+		uint GetTotalJoinedPlayer() { return m_TotalJoinedPlayer; }
+		uint GetNumBot() { return m_NumBot; }
+
+		DurationMS GetEmptyInstanceKillTimeOut() { return m_EmptyInstanceKillTimeOut; }
 
 		// Instance ID query
 		inline GameInsID GetInstanceID();

@@ -12,9 +12,9 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Util/TimeUtil.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Memory/MemoryPool.h"
 #include "Entity/Entity.h"
 #include "ServiceEntity/Game/GameSystem.h"
@@ -75,20 +75,20 @@ namespace ConspiracyGameInstanceServer {
 
 
 		// Player index in game
-		BRCLASS_ATTRIBUTE(uint,Index);
-		BRCLASS_ATTRIBUTE(uint,Character);
+		uint m_Index;
+		uint m_Character;
 
 		// Player state
-		BRCLASS_ATTRIBUTE(PlayerState,PlayerState);
+		PlayerState m_PlayerState;
 
 		// Is revealed by seer?
-		BRCLASS_ATTRIBUTE(bool,RevealedBySeer);
+		bool m_RevealedBySeer;
 
 		// Is voted advance?
-		BRCLASS_ATTRIBUTE(bool,VotedGameAdvance);
+		bool m_VotedGameAdvance;
 
 		// Revealed other
-		BRCLASS_ATTRIBUTE(uint, ReviveCount);
+		uint m_ReviveCount;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -96,18 +96,58 @@ namespace ConspiracyGameInstanceServer {
 		//
 
 		// 
-		BRCLASS_ATTRIBUTE(PlayerRole, RequestedRole);
-		BRCLASS_ATTRIBUTE(PlayerRole, Role);
-		BRCLASS_ATTRIBUTE(uint,Gender);
+		PlayerRole m_RequestedRole;
+		PlayerRole m_Role;
+		uint m_Gender;
 
-		BRCLASS_ATTRIBUTE(uint,Voted);
-		BRCLASS_ATTRIBUTE(PlayerID,Vote);
+		uint m_Voted;
+		PlayerID m_Vote;
 
 
 	public:
 
 		GamePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player);
 		virtual ~GamePlayer();
+
+		uint GetIndex() { return m_Index; }
+		void SetIndex(uint value) { m_Index = value; }
+
+		uint GetCharacter() { return m_Character; }
+		void SetCharacter(uint value) { m_Character = value; }
+
+
+		PlayerState GetPlayerState() { return m_PlayerState; }
+		void SetPlayerState(PlayerState value) { m_PlayerState = value; }
+
+		bool GetRevealedBySeer() { return m_RevealedBySeer; }
+		void SetRevealedBySeer(bool value) { m_RevealedBySeer = value; }
+
+
+		bool GetVotedGameAdvance() { return m_VotedGameAdvance; }
+		void SetVotedGameAdvance(bool value) { m_VotedGameAdvance = value; }
+
+
+		uint GetReviveCount() { return m_ReviveCount; }
+		void SetReviveCount(uint value) { m_ReviveCount = value; }
+
+
+		PlayerRole GetRequestedRole() { return m_RequestedRole; }
+		void SetRequestedRole(PlayerRole value) { m_RequestedRole = value; }
+
+		PlayerRole GetRole() { return m_Role; }
+		void SetRole(PlayerRole value) { m_Role = value; }
+
+		uint GetGender() { return m_Gender; }
+		void SetGender(uint value) { m_Gender = value; }
+
+
+		uint GetVoted() { return m_Voted; }
+		void SetVoted(uint value) { m_Voted = value; }
+
+
+		PlayerID GetVote() { return m_Vote; }
+		void SetVote(PlayerID value) { m_Vote = value; }
+
 
 
 		GameInstanceEntity* GetGameOwner() { return (GameInstanceEntity*)super::GetGameOwner(); }

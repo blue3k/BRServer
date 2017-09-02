@@ -125,7 +125,7 @@ namespace GameServer {
 	}
 
 
-	PlayerTransJoinGameServer::PlayerTransJoinGameServer( Message::MessageData* &pIMsg )
+	PlayerTransJoinGameServer::PlayerTransJoinGameServer( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		SetExclusive(true);
@@ -465,7 +465,7 @@ namespace GameServer {
 	
 	
 
-	PlayerTransGetGamePlayerInfo::PlayerTransGetGamePlayerInfo( Message::MessageData* &pIMsg )
+	PlayerTransGetGamePlayerInfo::PlayerTransGetGamePlayerInfo( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		SetExclusive(true);
@@ -572,7 +572,7 @@ namespace GameServer {
 
 
 
-	PlayerTransGetComplitionState::PlayerTransGetComplitionState(Message::MessageData* &pIMsg)
+	PlayerTransGetComplitionState::PlayerTransGetComplitionState(MessageDataPtr &pIMsg)
 		: MessageTransaction(pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetComplitionStateCmd, { return OnGetComplitionState(pRes); });
@@ -630,7 +630,7 @@ namespace GameServer {
 
 
 
-	PlayerTransSetComplitionState::PlayerTransSetComplitionState(Message::MessageData* &pIMsg)
+	PlayerTransSetComplitionState::PlayerTransSetComplitionState(MessageDataPtr &pIMsg)
 		: MessageTransaction(pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QuerySetComplitionStateCmd, { return OnSetComplitionState(pRes); });
@@ -688,7 +688,7 @@ namespace GameServer {
 	//
 
 
-	PlayerTransRegisterGCM::PlayerTransRegisterGCM( Message::MessageData* &pIMsg )
+	PlayerTransRegisterGCM::PlayerTransRegisterGCM( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryUpdateGCMKeysCmd, { return OnUpdated(pRes); });
@@ -730,7 +730,7 @@ namespace GameServer {
 	
 
 
-	PlayerTransUnregisterGCM::PlayerTransUnregisterGCM( Message::MessageData* &pIMsg )
+	PlayerTransUnregisterGCM::PlayerTransUnregisterGCM( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryUpdateGCMKeysCmd, { return OnUpdated(pRes); });
@@ -777,7 +777,7 @@ namespace GameServer {
 	//	Notifications transaction
 	//
 	
-	PlayerTransGetNotificationList::PlayerTransGetNotificationList(Message::MessageData* &pIMsg )
+	PlayerTransGetNotificationList::PlayerTransGetNotificationList(MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryNotification_GetListCmd, { return OnGetList(pRes); });
@@ -827,7 +827,7 @@ namespace GameServer {
 	}
 	
 	
-	PlayerTransDeleteNotification::PlayerTransDeleteNotification(Message::MessageData* &pIMsg )
+	PlayerTransDeleteNotification::PlayerTransDeleteNotification(MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryNotification_RemoveCmd, { return OnDeletedNotification(pRes); });
@@ -867,7 +867,7 @@ namespace GameServer {
 	}
 
 
-	PlayerTransSetNotificationRead::PlayerTransSetNotificationRead(Message::MessageData* &pIMsg )
+	PlayerTransSetNotificationRead::PlayerTransSetNotificationRead(MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryNotification_SetReadCmd, { return OnSetRead(pRes); });
@@ -946,7 +946,7 @@ namespace GameServer {
 	}
 
 
-	PlayerTransAcceptNotification::PlayerTransAcceptNotification(Message::MessageData* &pIMsg)
+	PlayerTransAcceptNotification::PlayerTransAcceptNotification(MessageDataPtr &pIMsg)
 		:MessageTransaction(pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryNotification_RemoveCmd, { return OnDeletedNotification(pRes); });
@@ -1035,7 +1035,7 @@ namespace GameServer {
 	//
 
 
-	PlayerTransSetNickName::PlayerTransSetNickName( Message::MessageData* &pIMsg )
+	PlayerTransSetNickName::PlayerTransSetNickName( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QuerySetNickNameCmd, { return OnNickChanged(pRes); });
@@ -1115,7 +1115,7 @@ namespace GameServer {
 	//	Find player transaction
 	//
 
-	PlayerTransFindPlayerByEMail::PlayerTransFindPlayerByEMail( Message::MessageData* &pIMsg )
+	PlayerTransFindPlayerByEMail::PlayerTransFindPlayerByEMail( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE(DB::QueryFindPlayerByEMailCmd, { return OnFindPlayer(pRes); });
@@ -1188,7 +1188,7 @@ namespace GameServer {
 	}
 	
 
-	PlayerTransFindPlayerByPlayerID::PlayerTransFindPlayerByPlayerID( Message::MessageData* &pIMsg )
+	PlayerTransFindPlayerByPlayerID::PlayerTransFindPlayerByPlayerID( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE(DB::QueryFindPlayerByPlayerIDCmd, { return OnFindPlayer(pRes); });
@@ -1260,7 +1260,7 @@ namespace GameServer {
 	}
 	
 	
-	PlayerTransRequestPlayerStatusUpdate::PlayerTransRequestPlayerStatusUpdate( Message::MessageData* &pIMsg )
+	PlayerTransRequestPlayerStatusUpdate::PlayerTransRequestPlayerStatusUpdate( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE(DB::QueryGetPlayerShardIDCmd, { return OnPlayerShardIDRes(pRes); });
@@ -1411,7 +1411,7 @@ namespace GameServer {
 
 
 
-	PlayerTransGetRankingList::PlayerTransGetRankingList( Message::MessageData* &pIMsg )
+	PlayerTransGetRankingList::PlayerTransGetRankingList( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QueryGetTotalRankingCmd, { return OnGetRankingListRes(pRes); });
@@ -1464,7 +1464,7 @@ namespace GameServer {
 
 
 
-	PlayerTransBuyShopItemPrepare::PlayerTransBuyShopItemPrepare(Message::MessageData* &pIMsg)
+	PlayerTransBuyShopItemPrepare::PlayerTransBuyShopItemPrepare(MessageDataPtr &pIMsg)
 		: MessageTransaction(pIMsg)
 	{
 		BR_TRANS_MESSAGE(DB::QueryCheckPurchaseIDCmd, { return OnPurchaseIDChecked(pRes); });
@@ -1555,7 +1555,7 @@ namespace GameServer {
 
 
 
-	PlayerTransBuyShopItem::PlayerTransBuyShopItem( Message::MessageData* &pIMsg )
+	PlayerTransBuyShopItem::PlayerTransBuyShopItem( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		SetExclusive(true);
@@ -1764,7 +1764,7 @@ namespace GameServer {
 
 
 
-	PlayerTransGainGameResource::PlayerTransGainGameResource( Message::MessageData* &pIMsg )
+	PlayerTransGainGameResource::PlayerTransGainGameResource( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( DB::QuerySetPlayerInfoCmd, { return OnSetPlayerInfoRes(pRes); } );

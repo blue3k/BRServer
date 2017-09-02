@@ -12,6 +12,7 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -49,7 +50,7 @@ namespace SF
 				AddPlayerCmd()
 					{}
 
-				AddPlayerCmd( MessageData* &pMsg )
+				AddPlayerCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -60,10 +61,10 @@ namespace SF
 				const PlayerInformation& GetPlayerInfo() const	{ return m_PlayerInfo; };
 				const uint64_t& GetRankingScore() const	{ return m_RankingScore; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerInformation &InPlayerInfo, const uint64_t &InRankingScore );
 
@@ -97,7 +98,7 @@ namespace SF
 				AddPlayerRes()
 					{}
 
-				AddPlayerRes( MessageData* &pMsg )
+				AddPlayerRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -108,10 +109,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const uint32_t& GetRanking() const	{ return m_Ranking; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking );
 
@@ -144,7 +145,7 @@ namespace SF
 				RemovePlayerCmd()
 					{}
 
-				RemovePlayerCmd( MessageData* &pMsg )
+				RemovePlayerCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -154,10 +155,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 
@@ -190,7 +191,7 @@ namespace SF
 				RemovePlayerRes()
 					{}
 
-				RemovePlayerRes( MessageData* &pMsg )
+				RemovePlayerRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -200,10 +201,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -236,7 +237,7 @@ namespace SF
 				GetPlayerRankingCmd()
 					{}
 
-				GetPlayerRankingCmd( MessageData* &pMsg )
+				GetPlayerRankingCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -246,10 +247,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const PlayerID& GetPlayerID() const	{ return m_PlayerID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const PlayerID &InPlayerID );
 
@@ -283,7 +284,7 @@ namespace SF
 				GetPlayerRankingRes()
 					{}
 
-				GetPlayerRankingRes( MessageData* &pMsg )
+				GetPlayerRankingRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -294,10 +295,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const uint32_t& GetRanking() const	{ return m_Ranking; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const uint32_t &InRanking );
 
@@ -333,7 +334,7 @@ namespace SF
 				UpdatePlayerScoreCmd()
 					{}
 
-				UpdatePlayerScoreCmd( MessageData* &pMsg )
+				UpdatePlayerScoreCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -345,10 +346,10 @@ namespace SF
 				const PlayerInformation& GetPlayerInfo() const	{ return m_PlayerInfo; };
 				const uint16_t& GetCount() const	{ return m_Count; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const uint64_t &InRankingScore, const PlayerInformation &InPlayerInfo, const uint16_t &InCount );
 
@@ -382,7 +383,7 @@ namespace SF
 				UpdatePlayerScoreRes()
 					{}
 
-				UpdatePlayerScoreRes( MessageData* &pMsg )
+				UpdatePlayerScoreRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -393,10 +394,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const Array<TotalRankingPlayerInformation>& GetRanking() const	{ return m_Ranking; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 
@@ -432,7 +433,7 @@ namespace SF
 				GetRankingCmd()
 					{}
 
-				GetRankingCmd( MessageData* &pMsg )
+				GetRankingCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -444,10 +445,10 @@ namespace SF
 				const uint16_t& GetBaseRanking() const	{ return m_BaseRanking; };
 				const uint16_t& GetCount() const	{ return m_Count; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const RankingType &InRankingType, const uint16_t &InBaseRanking, const uint16_t &InCount );
 
@@ -481,7 +482,7 @@ namespace SF
 				GetRankingRes()
 					{}
 
-				GetRankingRes( MessageData* &pMsg )
+				GetRankingRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -492,10 +493,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const Array<TotalRankingPlayerInformation>& GetRanking() const	{ return m_Ranking; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult, const Array<TotalRankingPlayerInformation>& InRanking );
 
@@ -530,7 +531,7 @@ namespace SF
 				:m_FileName(nullptr)
 					{}
 
-				DebugPrintALLRankingCmd( MessageData* &pMsg )
+				DebugPrintALLRankingCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 				,m_FileName(nullptr)
 					{}
@@ -541,10 +542,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const char* GetFileName() const	{ return m_FileName; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const char* InFileName );
 
@@ -577,7 +578,7 @@ namespace SF
 				DebugPrintALLRankingRes()
 					{}
 
-				DebugPrintALLRankingRes( MessageData* &pMsg )
+				DebugPrintALLRankingRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -587,10 +588,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const RouteContext &InRouteContext, const TransactionID &InTransactionID, const Result &InResult );
 

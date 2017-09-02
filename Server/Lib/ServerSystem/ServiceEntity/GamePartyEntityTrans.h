@@ -77,7 +77,7 @@ namespace Svr {
 		StaticOutputMemoryStream<GameConst::MAX_CHATLOG_BUFFER> m_MessageBuffer;
 
 	public:
-		PartyTransJoinParty( Message::MessageData* &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransJoinParty( MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransJoinParty() {}
 
 		// Start Transaction
@@ -95,7 +95,7 @@ namespace Svr {
 	private:
 
 	public:
-		PartyTransLeaveParty( Message::MessageData* &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransLeaveParty( MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransLeaveParty() {}
 
 		// Start Transaction
@@ -114,7 +114,7 @@ namespace Svr {
 	private:
 
 	public:
-		PartyTransKickPlayer( Message::MessageData* &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransKickPlayer( MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransKickPlayer() {}
 
 		// Start Transaction
@@ -133,7 +133,7 @@ namespace Svr {
 	private:
 
 	public:
-		PartyTransChatMessage( Message::MessageData* &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransChatMessage( MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransChatMessage() {}
 
 		// Start Transaction
@@ -149,7 +149,7 @@ namespace Svr {
 	private:
 
 	public:
-		PartyTransQuickChatMessage( Message::MessageData* &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransQuickChatMessage( MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransQuickChatMessage() {}
 
 		// Start Transaction
@@ -164,7 +164,7 @@ namespace Svr {
 		typedef Svr::GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::StartGameMatchCmd, PartyTransStartGameMatchCmd, sizeof(TransactionMessageHandlerType) * 2> super;
 
 	public:
-		PartyTransStartGameMatchCmd( Message::MessageData* &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransStartGameMatchCmd( MessageDataPtr &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransStartGameMatchCmd() {}
 
 		Result OnPartyMatchingQueued( Svr::TransactionResult* &pRes );
@@ -184,7 +184,7 @@ namespace Svr {
 		typedef Svr::GamePartyMessageTransaction< Policy::NetSvrPolicyGameParty, Message::GameParty::CancelGameMatchCmd, PartyTransCancelGameMatchCmd, sizeof(TransactionMessageHandlerType) * 2> super;
 
 	public:
-		PartyTransCancelGameMatchCmd( Message::MessageData* &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransCancelGameMatchCmd( MessageDataPtr &pIMsg );//  :GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransCancelGameMatchCmd() {}
 
 		Result OnPartyMatchingCanceled( Svr::TransactionResult* &pRes );
@@ -204,7 +204,7 @@ namespace Svr {
 	private:
 
 	public:
-		PartyTransPartyMatchingCanceled( Message::MessageData* &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransPartyMatchingCanceled( MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransPartyMatchingCanceled() {}
 
 		// Start Transaction
@@ -220,7 +220,7 @@ namespace Svr {
 	private:
 
 	public:
-		PartyTransMatchingItemDequeued( Message::MessageData* &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransMatchingItemDequeued( MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransMatchingItemDequeued() {}
 
 		// Start Transaction
@@ -236,7 +236,7 @@ namespace Svr {
 	private:
 
 	public:
-		PartyTransPartyGameMatchedS2CEvt( Message::MessageData* &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
+		PartyTransPartyGameMatchedS2CEvt( MessageDataPtr &pIMsg ) : GamePartyMessageTransaction( pIMsg ) {}
 		virtual ~PartyTransPartyGameMatchedS2CEvt() {}
 
 		// Start Transaction

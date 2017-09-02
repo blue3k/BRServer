@@ -13,7 +13,7 @@
 #include "stdafx.h"
 #include "SFTypedefs.h"
 #include "EntityInformation.h"
-#include "ServerService/ServerService.h"
+#include "Protocol/ServerService/ServerService.h"
 
 
 SF_MEMORYPOOL_IMPLEMENT(SF::Svr::UserEntityInformation);
@@ -69,23 +69,19 @@ namespace Svr {
 	// Get service information
 	void ServerServiceInformation::GetServiceInformation( ServiceInformation & serviceInformation )
 	{
-		auto &connectionInfo = GetServerEntity()->GetConnection()->GetConnectionInfo();
-		Assert(connectionInfo.RemoteClass != NetClass::Unknown);
+		auto &remoteInfo = GetServerEntity()->GetConnection()->GetRemoteInfo();
+		Assert(remoteInfo.PeerClass != NetClass::Unknown);
 
 		new(&serviceInformation) ServiceInformation( 
 			GetEntityUID(), 
 			GetClusterMembership(), 
 			GetServiceStatus(), 
-			connectionInfo.RemoteClass,
-			connectionInfo.Remote, 
+			remoteInfo.PeerClass,
+			remoteInfo.PeerAddress,
 			GetServerEntity()->GetServerUpTime(), 
 			GetWorkload() );
 	}
 
-	void ServerServiceInformation::ValidateServiceInstance(uint serviceID)
-	{
-		AssertRel(m_ServiceBase->GetPolicyID() == serviceID);
-	}
 
 
 	//////////////////////////////////////////////////////////////////////////

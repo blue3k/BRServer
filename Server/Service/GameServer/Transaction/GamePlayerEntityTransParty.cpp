@@ -84,7 +84,7 @@ namespace GameServer {
 	//	Party
 	//
 
-	PlayerTransGameMatchedS2SEvt::PlayerTransGameMatchedS2SEvt(Message::MessageData* &pIMsg)
+	PlayerTransGameMatchedS2SEvt::PlayerTransGameMatchedS2SEvt(MessageDataPtr &pIMsg)
 	  :UserTransactionS2SEvt( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameInstance::JoinGameRes, { return OnJoinGameRes(pRes); } );
@@ -322,7 +322,7 @@ namespace GameServer {
 
 
 
-	PlayerTransCreateParty::PlayerTransCreateParty( Message::MessageData* &pIMsg )
+	PlayerTransCreateParty::PlayerTransCreateParty( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GamePartyManager::CreatePartyRes, { return OnCreatePartyRes(pRes); } );
@@ -388,7 +388,7 @@ namespace GameServer {
 
 	
 
-	PlayerTransJoinParty::PlayerTransJoinParty( Message::MessageData* &pIMsg )
+	PlayerTransJoinParty::PlayerTransJoinParty( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::JoinPartyRes, { return OnJoinPartyRes(pRes); } );
@@ -509,7 +509,7 @@ namespace GameServer {
 
 
 
-	PlayerTransLeaveParty::PlayerTransLeaveParty( Message::MessageData* &pIMsg )
+	PlayerTransLeaveParty::PlayerTransLeaveParty( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::LeavePartyRes, { return OnLeavePartyRes(pRes); } );
@@ -600,7 +600,7 @@ namespace GameServer {
 	
 	
 
-	PlayerTransPartyKickPlayer::PlayerTransPartyKickPlayer( Message::MessageData* &pIMsg )
+	PlayerTransPartyKickPlayer::PlayerTransPartyKickPlayer( MessageDataPtr &pIMsg )
 		:MessageTransaction( pIMsg )
 	{
 		BR_TRANS_MESSAGE( Message::GameParty::KickPlayerRes, { return OnPlayerKickRes(pRes); } );
@@ -682,7 +682,7 @@ namespace GameServer {
 	
 
 	
-	PlayerTransPartyInvite::PlayerTransPartyInvite( Message::MessageData* &pIMsg ):MessageTransaction(pIMsg)
+	PlayerTransPartyInvite::PlayerTransPartyInvite( MessageDataPtr &pIMsg ):MessageTransaction(pIMsg)
 	{
 		//BR_TRANS_MESSAGE( DB::QueryNotification_AddCmd, { return OnNotifyAdded(pRes); } );
 	}

@@ -42,7 +42,7 @@ namespace Svr {
 
 
 	public:
-		RankingServerAddPlayerTrans(Message::MessageData* &pIMsg);
+		RankingServerAddPlayerTrans(MessageDataPtr &pIMsg);
 		virtual ~RankingServerAddPlayerTrans() {}
 
 		// Start Transaction
@@ -62,7 +62,7 @@ namespace Svr {
 		StaticArray<TotalRankingPlayerInformation, 32> m_RankingList;
 
 	public:
-		RankingServerUpdatePlayerScoreTrans(Message::MessageData* &pIMsg);
+		RankingServerUpdatePlayerScoreTrans(MessageDataPtr &pIMsg);
 		virtual ~RankingServerUpdatePlayerScoreTrans() {}
 
 		// Start Transaction
@@ -82,7 +82,7 @@ namespace Svr {
 
 		StaticArray<TotalRankingPlayerInformation, 10000> m_RankingList;
 	public:
-		RankingServerDebugPrintALLRankingTrans(Message::MessageData* &pIMsg);
+		RankingServerDebugPrintALLRankingTrans(MessageDataPtr &pIMsg);
 		virtual ~RankingServerDebugPrintALLRankingTrans() {}
 
 		// Start Transaction

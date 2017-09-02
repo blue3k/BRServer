@@ -58,7 +58,7 @@ namespace ConspiracyGameInstanceServer {
 
 
 
-	GameEntityTransDeleteGame::GameEntityTransDeleteGame(Message::MessageData* &pIMsg)
+	GameEntityTransDeleteGame::GameEntityTransDeleteGame(MessageDataPtr &pIMsg)
 		: ServerEntityMessageTransaction(pIMsg)
 	{
 		SetWorkOnServerEntity(false);

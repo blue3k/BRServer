@@ -12,12 +12,12 @@
 #pragma once
 
 #include "String/StrUtil.h"
-#include "Common/ClassUtil.h"
+
 #include "Memory/SFMemory.h"
 #include "Types/BrGameTypes.h"
 #include "GameConst.h"
-#include "Common/CircularQueue.h"
-#include "Common/MemoryStream.h"
+#include "Container/CircularQueue.h"
+#include "Stream/SFMemoryStream.h"
 #include "Types/BrSvrTypes.h"
 
 

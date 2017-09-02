@@ -12,7 +12,7 @@
 #pragma once
 
 #include "String/StrUtil.h"
-#include "Common/ClassUtil.h"
+
 #include "Types/SFEngineTypedefs.h"
 #include "Thread/Thread.h"
 #include "Container/PageQueue.h"
@@ -46,7 +46,7 @@ namespace Svr {
 			private:
 				PerformanceCounterServer &m_CounterServer;
 
-				typedef Result(PerformanceCounterServer::*MessageHandlerType)(const sockaddr_storage& from, Message::MessageData* &);
+				typedef Result(PerformanceCounterServer::*MessageHandlerType)(const sockaddr_storage& from, MessageDataPtr &);
 				MessageHandlerTable<MessageHandlerType>	m_HandlerTable;
 
 			public:
@@ -64,7 +64,7 @@ namespace Svr {
 
 			struct PacketInfo
 			{
-				Message::MessageData* pMessage;
+				MessageDataPtr pMessage;
 				sockaddr_storage From;
 
 				PacketInfo(void* ptr = nullptr)
@@ -73,7 +73,7 @@ namespace Svr {
 					assert(ptr == nullptr);
 				}
 
-				PacketInfo(const sockaddr_storage& from, Message::MessageData* pMsg)
+				PacketInfo(const sockaddr_storage& from, MessageDataPtr pMsg)
 					: pMessage(pMsg), From(from)
 				{}
 
@@ -122,12 +122,12 @@ namespace Svr {
 
 		protected:
 
-			Result HandleMessageEnqueue(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
-			Result HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
+			Result HandleMessageEnqueue(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg);
+			Result HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg);
 
-			Result HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
-			Result HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
-			Result HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg);
+			Result HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg);
+			Result HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg);
+			Result HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg);
 		};
 
 

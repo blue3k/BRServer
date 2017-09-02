@@ -24,7 +24,7 @@ namespace SF {
 namespace DB {
 
 	// initialize DB source
-	Result	DataSource::InitializeDBSource( const std::string& strConnectionString, const std::string& strDefaultDB, const std::string& strUserID, const std::string& strPassword )
+	Result	DataSource::InitializeDBSource( const String& strConnectionString, const String& strDefaultDB, const String& strUserID, const String& strPassword )
 	{
 		m_strConnectionString = strConnectionString;
 		m_strDefaultDB = strDefaultDB;

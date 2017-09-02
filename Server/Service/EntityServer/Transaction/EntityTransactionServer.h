@@ -38,7 +38,7 @@ namespace EntityServer {
 	//	typedef Svr::ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyEntityServer, Message::Server::ServerConnectedC2SEvt, TransServerStarted> super;
 
 	//public:
-	//	TransServerStarted( Message::MessageData* &pIMsg ) : ServerStartedTrans(pIMsg) {}
+	//	TransServerStarted( MessageDataPtr &pIMsg ) : ServerStartedTrans(pIMsg) {}
 	//	virtual ~TransServerStarted() {}
 
 	//	virtual Result StartTransaction();
@@ -58,7 +58,7 @@ namespace EntityServer {
 	private:
 
 	public:
-		TransGenericServerStarted( Message::MessageData* &pIMsg ) : ServerStartedTrans(pIMsg) {}
+		TransGenericServerStarted( MessageDataPtr &pIMsg ) : ServerStartedTrans(pIMsg) {}
 		virtual ~TransGenericServerStarted() {}
 	};
 	

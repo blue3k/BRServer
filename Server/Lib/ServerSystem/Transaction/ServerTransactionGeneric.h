@@ -41,7 +41,7 @@ namespace Svr {
 		typedef MessageTransaction< ServerEntityType, PolicyType, MessageType, TransactionType, MessageHandlerBufferSize> super;
 
 	public:
-		ServerStartedTrans( IMemoryManager& memMgr, Message::MessageData* &pIMsg ) : super( memMgr, pIMsg )
+		ServerStartedTrans( IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : super( memMgr, pIMsg )
 		{
 		}
 
@@ -96,7 +96,7 @@ namespace Svr {
 	private:
 
 	public:
-		GenericServerStartedTrans(IMemoryManager& memMgr, Message::MessageData* &pIMsg ) : ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyServer, Message::Server::ServerConnectedC2SEvt, GenericServerStartedTrans>(memMgr, pIMsg) {}
+		GenericServerStartedTrans(IMemoryManager& memMgr, MessageDataPtr &pIMsg ) : ServerStartedTrans< Svr::ServerEntity, Policy::NetSvrPolicyServer, Message::Server::ServerConnectedC2SEvt, GenericServerStartedTrans>(memMgr, pIMsg) {}
 		virtual ~GenericServerStartedTrans() {}
 	};
 
@@ -111,7 +111,7 @@ namespace Svr {
 	private:
 
 	public:
-		EntityServerStartedTrans( Message::MessageData* &pIMsg );
+		EntityServerStartedTrans( MessageDataPtr &pIMsg );
 		virtual ~EntityServerStartedTrans();
 
 		Result OnGetClusterMemberList(Svr::TransactionResult* pRes);

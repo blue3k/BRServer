@@ -73,7 +73,7 @@ namespace Svr {
 		//
 
 		// Route Message Cmd/Evt
-		Result RouteTransaction( EntityID entityID, Transaction* &pTrans );
+		Result RouteTransaction( EntityID entityID, TransactionPtr &pTrans );
 
 		// Route Transaction result
 		Result RouteTransactionResult( TransactionResult* &pRes );

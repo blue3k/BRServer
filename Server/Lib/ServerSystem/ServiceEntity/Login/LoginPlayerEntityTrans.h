@@ -55,7 +55,7 @@ namespace Svr {
 
 
 	public:
-		LoginPlayerTransLoginBase( Message::MessageData* &pIMsg );
+		LoginPlayerTransLoginBase( MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerTransLoginBase() {}
 
 		Result OnLogin( Result hrRes, AccountID accountID, FacebookUID FBUserID, INT shardID );
@@ -88,7 +88,7 @@ namespace Svr {
 		typedef LoginPlayerTransLoginBase<Message::Login::LoginCmd, LoginPlayerTransLogin> super;
 
 	public:
-		LoginPlayerTransLogin( Message::MessageData* &pIMsg );
+		LoginPlayerTransLogin( MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerTransLogin() {}
 
 		Result OnLogin( Svr::TransactionResult* &pRes );
@@ -111,7 +111,7 @@ namespace Svr {
 		typedef LoginPlayerTransLoginBase<Message::Login::LoginByFacebookCmd, LoginPlayerTransLoginByFacebook> super;
 
 	public:
-		LoginPlayerTransLoginByFacebook( Message::MessageData* &pIMsg );
+		LoginPlayerTransLoginByFacebook( MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerTransLoginByFacebook() {}
 
 		Result OnUserCreated( Svr::TransactionResult* &pRes );
@@ -136,7 +136,7 @@ namespace Svr {
 		typedef LoginPlayerTransLoginBase<Message::Login::CreateRandomUserCmd, LoginPlayerTransCreateRandomUser> super;
 
 	public:
-		LoginPlayerTransCreateRandomUser(Message::MessageData* &pIMsg);
+		LoginPlayerTransCreateRandomUser(MessageDataPtr &pIMsg);
 		virtual ~LoginPlayerTransCreateRandomUser() {}
 
 		Result OnCreated(Svr::TransactionResult* &pRes);
@@ -184,7 +184,7 @@ namespace Svr {
 
 	public:
 
-		LoginPlayerKickPlayerTrans( Message::MessageData* &pIMsg );// : UserTransactionS2SCmd(pIMsg) {}
+		LoginPlayerKickPlayerTrans( MessageDataPtr &pIMsg );// : UserTransactionS2SCmd(pIMsg) {}
 		virtual ~LoginPlayerKickPlayerTrans() {}
 
 		Result OnDeleteSession( Svr::TransactionResult *pRes );
@@ -208,7 +208,7 @@ namespace Svr {
 
 	public:
 
-		LoginPlayerJoinedToGameServerTrans( Message::MessageData* &pIMsg );
+		LoginPlayerJoinedToGameServerTrans( MessageDataPtr &pIMsg );
 		virtual ~LoginPlayerJoinedToGameServerTrans() {}
 
 		Result OnConnectToGameServerRes( Svr::TransactionResult* &pRes );
@@ -239,7 +239,7 @@ namespace Svr {
 		StaticArray<TotalRankingPlayerInformation, 20> m_RankingList;
 
 	public:
-		RankingUpdateScoreTrans(Message::MessageData* &pIMsg);
+		RankingUpdateScoreTrans(MessageDataPtr &pIMsg);
 		virtual ~RankingUpdateScoreTrans() {}
 
 		Result OnScoreUpdated(Svr::TransactionResult* &pRes);
@@ -268,7 +268,7 @@ namespace Svr {
 		StaticArray<uint8_t, 30 * 1024> m_Data;
 
 	public:
-		LoginUserDataTestTrans(Message::MessageData* &pIMsg);
+		LoginUserDataTestTrans(MessageDataPtr &pIMsg);
 		virtual ~LoginUserDataTestTrans() {}
 
 
@@ -287,7 +287,7 @@ namespace Svr {
 
 
 	public:
-		LoginUserDebugPrintALLRankingTrans(Message::MessageData* &pIMsg);
+		LoginUserDebugPrintALLRankingTrans(MessageDataPtr &pIMsg);
 		virtual ~LoginUserDebugPrintALLRankingTrans() {}
 
 		Result OnPrintAllRankingRes(Svr::TransactionResult* &pRes);

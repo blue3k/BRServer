@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "Types/BrGameTypes.h"
 #include "Memory/MemoryPool.h"
-#include "Common/ClassUtil.h"
+
 #include "ServiceEntity/Game/GameSystem.h"
 #include "Container/SFArray.h"
 #include "GameConst.h"
@@ -53,24 +53,24 @@ namespace ConspiracyGameInstanceServer {
 		typedef Svr::GameSystem<GameInstanceEntity, GamePlaySystem> super;
 
 		// Count cache
-		BRCLASS_ATTRIBUTE_READONLY(uint,NumWereWolf);
-		BRCLASS_ATTRIBUTE_READONLY(uint,NumVillager);
+		uint m_NumWereWolf;
+		uint m_NumVillager;
 
 		// suspects list
 		PlayerID m_Suspects[2];
 
 		// Dead peoples role
-		BRCLASS_ATTRIBUTE_READONLY(PlayerRole,LynchedRole);
-		BRCLASS_ATTRIBUTE_READONLY(PlayerID,LynchedPlayer);
+		PlayerRole m_LynchedRole;
+		PlayerID m_LynchedPlayer;
 
-		BRCLASS_ATTRIBUTE(PlayerID,HuntedPlayer);
+		PlayerID m_HuntedPlayer;
 
-		BRCLASS_ATTRIBUTE(PlayerID,Seer);
+		PlayerID m_Seer;
 
-		BRCLASS_ATTRIBUTE(PlayerID,BodyGuard);
+		PlayerID m_BodyGuard;
 
-		BRCLASS_ATTRIBUTE(PlayerID,Owlman);
-		BRCLASS_ATTRIBUTE(PlayerID,OwlmansChoice);
+		PlayerID m_Owlman;
+		PlayerID m_OwlmansChoice;
 
 		// List of werewolfes
 		StaticArray<GamePlayer*,MAX_WEREWOLF> m_Werewolves;
@@ -80,6 +80,35 @@ namespace ConspiracyGameInstanceServer {
 		// Constructor 
 		GamePlaySystem( GameInstanceEntity* pEntity );
 		~GamePlaySystem();
+
+		uint GetNumWereWolf() { return m_NumWereWolf; }
+		void SetNumWereWolf(uint value) { m_NumWereWolf = value; }
+
+		uint GetNumVillager() { return m_NumVillager; }
+		void SetNumVillager(uint value) { m_NumVillager = value; }
+
+		PlayerRole GetLynchedRole() { return m_LynchedRole; }
+		void SetLynchedRole(PlayerRole value) { m_LynchedRole = value; }
+
+		PlayerID GetLynchedPlayer() { return m_LynchedPlayer; }
+		void SetLynchedPlayer(PlayerID value) { m_LynchedPlayer = value; }
+
+		PlayerID GetHuntedPlayer() { return m_HuntedPlayer; }
+		void SetHuntedPlayer(PlayerID value) { m_HuntedPlayer = value; }
+
+		PlayerID GetSeer() { return m_Seer; }
+		void SetSeer(PlayerID value) { m_Seer = value; }
+
+		PlayerID GetBodyGuard() { return m_BodyGuard; }
+		void SetBodyGuard(PlayerID value) { m_BodyGuard = value; }
+
+		PlayerID GetOwlman() { return m_Owlman; }
+		void SetOwlman(PlayerID value) { m_Owlman = value; }
+
+		PlayerID GetOwlmansChoice() { return m_OwlmansChoice; }
+		void SetOwlmansChoice(PlayerID value) { m_OwlmansChoice = value; }
+
+
 
 		// Set suspect list
 		void SetSuspect( PlayerID suspect1, PlayerID suspect2 );

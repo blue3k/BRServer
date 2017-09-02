@@ -71,8 +71,7 @@ namespace DB {
 
 	Proc_End:
 
-		if( !(hr) )
-			Util::SafeRelease( pQuery );
+		delete pQuery;
 
 		return hr;
 	}

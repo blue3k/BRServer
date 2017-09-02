@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "Types/BrGameTypes.h"
 #include "Memory/MemoryPool.h"
-#include "Common/ClassUtil.h"
+
 #include "ServiceEntity/Game/GameSystem.h"
 #include "GameSystem/GameVote.h"
 #include "Container/SFArray.h"
@@ -42,7 +42,7 @@ namespace ConspiracyGameInstanceServer {
 	private:
 		GameInstanceEntity* m_Owner;
 
-		BRCLASS_ATTRIBUTE_READONLY(GameStateID,GameState);
+		GameStateID m_GameState;
 
 		// State start time
 		TimeStampMS m_StateStartTime;
@@ -52,9 +52,16 @@ namespace ConspiracyGameInstanceServer {
 
 	public:
 		GamePlayState(GameInstanceEntity* Owner, GameStateID gameState)
-			:m_Owner(Owner),m_GameState(gameState), m_StateStartTime(TimeStampMS(DurationMS(0)))
+			: m_Owner(Owner)
+			, m_GameState(gameState)
+			, m_StateStartTime(TimeStampMS(DurationMS(0)))
 		{}
 		virtual ~GamePlayState() {}
+
+
+		GameStateID GetGameState() { return m_GameState; }
+		void SetGameState(GameStateID value) { m_GameState = value; }
+
 
 		// Get time in this state in ms
 		DurationMS GetTimeInState()						{ return Util::TimeSince(m_StateStartTime); }
@@ -64,7 +71,7 @@ namespace ConspiracyGameInstanceServer {
 		GameStateSystem& GetGameStateSystem();
 		GameInstanceEntity& GetOwner()					{ return *m_Owner; }
 
-		virtual Result Vote(GamePlayer* pVoter, GamePlayer* pVoteTarget )		{ return ResultCode::E_GAME_INVALID_VOTE_STATE; }
+		virtual Result Vote(GamePlayer* pVoter, GamePlayer* pVoteTarget )		{ return ResultCode::GAME_INVALID_VOTE_STATE; }
 
 		// Check whether it can be proceeded or not
 		virtual bool CanAdvanceToNext()								{ return true; }
@@ -111,22 +118,30 @@ namespace ConspiracyGameInstanceServer {
 		};
 
 		// Game state
-		BRCLASS_ATTRIBUTE_READONLY(GameStateID,CurrentGameState);
-		BRCLASS_ATTRIBUTE_READONLY(uint,CurrentGameStateIndex);
+		GameStateID m_CurrentGameState;
+		uint m_CurrentGameStateIndex;
 		GamePlayState* m_GamePlayStates[(int)GameStateID::Max];
 
-		BRCLASS_ATTRIBUTE_READONLY(uint,CurrentDay);
+		uint m_CurrentDay;
 
 		// number of player who voted to game advance
-		BRCLASS_ATTRIBUTE_READONLY(uint,GameAdvanceVoted);
+		uint m_GameAdvanceVoted;
 
-		BRCLASS_ATTRIBUTE_READONLY(bool,IsInStateChanging);
+		bool m_IsInStateChanging;
 
 	public:
 
 		// Constructor 
 		GameStateSystem( GameInstanceEntity* pEntity );
 		~GameStateSystem();
+
+		GameStateID GetCurrentGameState() { return m_CurrentGameState; }
+
+		uint GetCurrentDay() { return m_CurrentDay; }
+
+		bool GetGameAdvanceVoted() { return m_GameAdvanceVoted; }
+		uint GetIsInStateChanging() { return m_IsInStateChanging; }
+
 
 		// Get current game play state
 		GamePlayState* GetCurrentGamePlayState();

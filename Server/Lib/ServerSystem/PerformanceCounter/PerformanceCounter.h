@@ -12,7 +12,6 @@
 #pragma once
 
 #include "String/StrUtil.h"
-#include "Common/ClassUtil.h"
 #include "Util/TimeUtil.h"
 
 
@@ -54,9 +53,9 @@ namespace Svr {
 
 	private:
 		char m_CounterName[MAX_COUNTERNAME];
-		BRCLASS_ATTRIBUTE_READONLY(DataTypes, DataType);
+		DataTypes m_DataType;
 
-		BRCLASS_ATTRIBUTE_READONLY(CountingTypes, CountingType);
+		CountingTypes m_CountingType;
 
 		std::atomic<uint> m_SyncSerial;
 
@@ -68,6 +67,9 @@ namespace Svr {
 		PerformanceCounter(const char* counterName, DataTypes dataType, CountingTypes countingType);
 		PerformanceCounter(DataTypes dataType, CountingTypes countingType);
 		virtual ~PerformanceCounter();
+
+		DataTypes GetDataType() { return m_DataType; }
+		CountingTypes GetCountingType() { return m_CountingType; }
 
 		void SetCounterName(const char* strName);
 		const char* GetCounterName()						{ return m_CounterName; }

@@ -12,10 +12,10 @@
 #pragma once
 
 #include "String/StrUtil.h"
-#include "Common/ClassUtil.h"
+
 #include "Container/SFArray.h"
 #include "Object/SharedPointer.h"
-#include "Common/StaticDoubleLinkedList.h"
+#include "Container/StaticDoubleLinkedList.h"
 #include "PerformanceCounter/PerformanceCounter.h"
 
 
@@ -86,6 +86,11 @@ namespace SF {
 
 	extern template class SharedPointerT < Svr::PerformanceCounterInstance >;
 	extern template class WeakPointerT < Svr::PerformanceCounterInstance >;
+
+	typedef SharedPointerT<SF::Svr::PerformanceCounterInstance> PerformanceCounterInstancePtr;
+
+	template<> inline PerformanceCounterInstancePtr DefaultValue<PerformanceCounterInstancePtr>() { return PerformanceCounterInstancePtr(); }
+	
 
 }; // namespace SF
 

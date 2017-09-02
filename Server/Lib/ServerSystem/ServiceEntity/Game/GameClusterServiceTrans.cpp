@@ -36,7 +36,7 @@ namespace SF {
 namespace Svr {
 
 
-	//GameServerTransRegisterPlayerToJoinGameServer::GameServerTransRegisterPlayerToJoinGameServer(Message::MessageData* &pIMsg)
+	//GameServerTransRegisterPlayerToJoinGameServer::GameServerTransRegisterPlayerToJoinGameServer(MessageDataPtr &pIMsg)
 	//	: ServerEntityMessageTransaction(pIMsg)
 	//	, m_PublicAddress(nullptr)
 	//	, m_PublicAddressIPV6(nullptr)

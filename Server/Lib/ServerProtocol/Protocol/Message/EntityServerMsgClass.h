@@ -12,6 +12,7 @@
 
 #include "Protocol/Protocol.h"
 #include "Net/Message.h"
+#include "Types/SFEngineTypedefs.h"
 #include "Protocol/SvrProtocol.h"
 
 
@@ -50,7 +51,7 @@ namespace SF
 				:m_EntName(nullptr)
 					{}
 
-				RegisterEntityCmd( MessageData* &pMsg )
+				RegisterEntityCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 				,m_EntName(nullptr)
 					{}
@@ -61,10 +62,10 @@ namespace SF
 				const EntityID& GetLocalEntID() const	{ return m_LocalEntID; };
 				const char* GetEntName() const	{ return m_EntName; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityID &InLocalEntID, const char* InEntName );
 
@@ -96,7 +97,7 @@ namespace SF
 				RegisterEntityRes()
 					{}
 
-				RegisterEntityRes( MessageData* &pMsg )
+				RegisterEntityRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -106,10 +107,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const uint64_t& GetEntUID() const	{ return m_EntUID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
 
@@ -141,7 +142,7 @@ namespace SF
 				UnregisterEntityCmd()
 					{}
 
-				UnregisterEntityCmd( MessageData* &pMsg )
+				UnregisterEntityCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -150,10 +151,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const uint64_t& GetEntUID() const	{ return m_EntUID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const uint64_t &InEntUID );
 
@@ -184,7 +185,7 @@ namespace SF
 				UnregisterEntityRes()
 					{}
 
-				UnregisterEntityRes( MessageData* &pMsg )
+				UnregisterEntityRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -193,10 +194,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const Result& GetResult() const	{ return m_Result; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult );
 
@@ -228,7 +229,7 @@ namespace SF
 				FindEntityCmd()
 					{}
 
-				FindEntityCmd( MessageData* &pMsg )
+				FindEntityCmd( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -237,10 +238,10 @@ namespace SF
 				const TransactionID& GetTransactionID() const	{ return m_TransactionID; };
 				const EntityID& GetLocalEntID() const	{ return m_LocalEntID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const EntityID &InLocalEntID );
 
@@ -272,7 +273,7 @@ namespace SF
 				FindEntityRes()
 					{}
 
-				FindEntityRes( MessageData* &pMsg )
+				FindEntityRes( MessageDataPtr &pMsg )
 					:MessageBase(pMsg)
 					{}
 
@@ -282,10 +283,10 @@ namespace SF
 				const Result& GetResult() const	{ return m_Result; };
 				const uint64_t& GetEntUID() const	{ return m_EntUID; };
 
-				static Result TraceOut(MessageData* pMsg);
+				static Result TraceOut(MessageDataPtr& pMsg);
 
 				virtual Result ParseMessage( MessageData* pIMsg );
-				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageData* pIMsg, MessageBase* &pMsgBase );
+				static Result ParseMessageToMessageBase( IMemoryManager& memoryManager, MessageDataPtr& pIMsg, MessageBase* &pMsgBase );
 
 				static MessageData* Create( IMemoryManager& memoryManager, const TransactionID &InTransactionID, const Result &InResult, const uint64_t &InEntUID );
 

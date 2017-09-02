@@ -15,6 +15,7 @@
 
 #include "Thread/Thread.h"
 #include "Container/StackPool.h"
+#include "String/SFString.h"
 
 
 namespace SF {
@@ -35,13 +36,13 @@ namespace DB {
 	protected:
 
 		// service connection string
-		std::string			m_strConnectionString;
+		String			m_strConnectionString;
 		// DB Name
-		std::string			m_strDefaultDB;
+		String			m_strDefaultDB;
 		// User ID
-		std::string			m_strUserID;
+		String			m_strUserID;
 		// password
-		std::string			m_strPassword;
+		String			m_strPassword;
 
 		// is opened
 		bool m_Opened;
@@ -55,14 +56,14 @@ namespace DB {
 
 		bool GetOpened() { return m_Opened; }
 
-		const std::string& GetConnectionString()					{ return m_strConnectionString; }
-		const std::string& GetDefaultDB()							{ return m_strDefaultDB; }
-		const std::string& GetUserID()								{ return m_strUserID; }
-		const std::string& GetPassword()							{ return m_strPassword; }
+		const String& GetConnectionString()					{ return m_strConnectionString; }
+		const String& GetDefaultDB()							{ return m_strDefaultDB; }
+		const String& GetUserID()								{ return m_strUserID; }
+		const String& GetPassword()							{ return m_strPassword; }
 
 
 		// initialize DB source. This will open source if necessary
-		virtual Result	InitializeDBSource( const std::string& strConnectionString, const std::string& strDefaultDB, const std::string& strUserID, const std::string& strPassword );
+		virtual Result	InitializeDBSource( const String& strConnectionString, const String& strDefaultDB, const String& strUserID, const String& strPassword );
 
 		// reopen DB source
 		virtual Result Reopen() = 0;

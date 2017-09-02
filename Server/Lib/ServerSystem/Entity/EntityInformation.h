@@ -85,7 +85,7 @@ namespace Svr {
 		ServiceStatus m_ServiceStatus = ServiceStatus::Offline;
 
 		// Server Up time, this will be synched to the server entity when the service object is created or synchronized
-		//BRCLASS_ATTRIBUTE(uint64_t,ServerUpTime);
+		//uint64_t, m_ServerUpTime;
 
 		// workload
 		uint m_Workload = 0;
@@ -151,12 +151,8 @@ namespace Svr {
 				m_ServiceBase = reinterpret_cast<ServerServiceBase*>(new(m_bufferForServiceBase) ServiceType(this));
 			}
 
-			ValidateServiceInstance(ServiceType::ID_SERVICEPOLICY);
-
 			return (ServiceType*)m_ServiceBase;
 		}
-
-		void ValidateServiceInstance(uint serviceID);
 
 		// check whether this service is available or not
 		bool IsServiceAvailable() const;

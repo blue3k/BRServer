@@ -12,9 +12,9 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
+
 #include "Util/TimeUtil.h"
-#include "Common/HashTable.h"
+#include "Container/HashTable.h"
 #include "Memory/MemoryPool.h"
 #include "GameConst.h"
 #include "Types/BrGameTypes.h"
@@ -62,39 +62,9 @@ namespace Svr {
 	private:
 
 		// Game instance that this player
-		BRCLASS_ATTRIBUTE_READONLY(GameInstanceEntity*,GameOwner);
+		GameInstanceEntity* m_GameOwner;
 
-		BRCLASS_ATTRIBUTE(bool, IsBot);
-
-		//// Player index in game
-		//BRCLASS_ATTRIBUTE(uint,Index);
-		//BRCLASS_ATTRIBUTE(uint,Character);
-
-
-		//// Player state
-		//BRCLASS_ATTRIBUTE(PlayerState, PlayerState);
-
-		//// Is revealed by seer?
-		//BRCLASS_ATTRIBUTE(bool,RevealedBySeer);
-
-		//// Is voted advance?
-		//BRCLASS_ATTRIBUTE(bool,VotedGameAdvance);
-
-		//// Revealed other
-		//BRCLASS_ATTRIBUTE(uint, ReviveCount);
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////
-		//
-		//	Player Info
-		//
-
-		// 
-		//BRCLASS_ATTRIBUTE(PlayerRole, RequestedRole);
-		//BRCLASS_ATTRIBUTE(PlayerRole, Role);
-		//BRCLASS_ATTRIBUTE(uint,Gender);
-
-		//BRCLASS_ATTRIBUTE(uint,Voted);
-		//BRCLASS_ATTRIBUTE(PlayerID,Vote);
+		bool m_IsBot;
 
 
 	public:
@@ -102,7 +72,9 @@ namespace Svr {
 		GameInstancePlayer(GameInstanceEntity* pGameOwner, const PlayerInformation& player);
 		virtual ~GameInstancePlayer();
 
+		GameInstanceEntity* GetGameOwner() { return m_GameOwner; }
 
+		bool GetIsBot() { return m_IsBot; }
 
 		// Initialize player
 		Result InitializePlayer(GameInstanceEntity* pGameOwner, bool isBot = false);

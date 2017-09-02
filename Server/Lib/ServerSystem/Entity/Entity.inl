@@ -23,18 +23,9 @@ void Entity::SetEntityState( EntityState state )
 	m_State = state;
 }
 
-// Get Entity State
-EntityState Entity::GetEntityState()
-{
-	return m_State;
-}
 
 
-// Get Entity UID
-EntityUID Entity::GetEntityUID() const
-{
-	return m_EntityUID;
-}
+
 
 // Set Entity UID
 void Entity::SetEntityUID( EntityUID entityUID )
@@ -71,19 +62,6 @@ ULONG Entity::GenTransIndex()
 	return result;
 }
 
-
-// Get transaction queue
-PageQueue<Transaction*>& Entity::GetTransactionQueue()
-{
-	return m_transactionQueue;
-}
-//
-//// Get transaction result queue
-//SF::PageQueue<TransactionResult*>& Entity::GetTransactionResQueue()
-//{
-//	return m_transactionResQueue;
-//}
-//
 
 
 

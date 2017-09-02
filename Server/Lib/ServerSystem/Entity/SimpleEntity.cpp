@@ -129,7 +129,7 @@ namespace Svr {
 	}
 
 
-	Result SimpleEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTranRes)
+	Result SimpleEntity::ProcessTransactionResult(Transaction *pCurTran, TransactionResult* &pTranRes)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Result hrTem = ResultCode::SUCCESS;
@@ -179,7 +179,8 @@ namespace Svr {
 
 	Proc_End:
 
-		Util::SafeRelease(pTranRes);
+		IMemoryManager::Delete(pTranRes);
+		pTranRes = nullptr;
 
 		return hr;
 	}

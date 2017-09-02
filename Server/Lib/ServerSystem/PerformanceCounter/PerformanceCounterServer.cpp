@@ -293,7 +293,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result PerformanceCounterServer::HandleMessageEnqueue(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessageEnqueue(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -307,7 +307,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result PerformanceCounterServer::HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessageEnqueueUpdate(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -321,7 +321,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result PerformanceCounterServer::HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessagePerformanceCounterNewC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::Monitoring::PerformanceCounterNewC2SEvt messageClass(pMsg);
@@ -380,7 +380,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result PerformanceCounterServer::HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessagePerformanceCounterFreeC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::Monitoring::PerformanceCounterFreeC2SEvt messageClass(pMsg);
@@ -404,7 +404,7 @@ namespace Svr {
 		return hr;
 	}
 
-	Result PerformanceCounterServer::HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, Message::MessageData* &pMsg)
+	Result PerformanceCounterServer::HandleMessagePerformanceCounterUpdateC2SEvt(const sockaddr_storage& remoteAddr, MessageDataPtr &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::Monitoring::PerformanceCounterUpdateC2SEvt messageClass(pMsg);
@@ -417,7 +417,7 @@ namespace Svr {
 		{
 			if (m_RawUDP != nullptr)
 			{
-				Message::MessageData* pMsgSend = nullptr;
+				MessageDataPtr pMsgSend = nullptr;
 				if (!(Message::Monitoring::PerformanceCounterUpdateCounterInfoS2CEvt::BuildIMsg(pMsgSend, messageClass.GetInstanceUID())))
 				{
 					svrTrace(Trace::TRC_ERROR, "Failed to generate performance counter update request packet");

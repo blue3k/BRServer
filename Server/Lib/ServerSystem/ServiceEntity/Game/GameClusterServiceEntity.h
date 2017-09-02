@@ -23,7 +23,7 @@
 #include "Container/Indexing.h"
 #include "Container/StaticHashTable.h"
 
-#include "ServerSystem/ServiceEntity/EntityInformation.h"
+#include "Entity/EntityInformation.h"
 #include "ServiceEntity/ClusteredServiceEntity.h"
 
 

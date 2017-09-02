@@ -32,7 +32,7 @@ namespace DB {
 
 
 	// initialize DB source
-	Result	DataSourceMYSQL::InitializeDBSource( const std::string& strConnectionString, const std::string& strDBName, const std::string& strUserID, const std::string& strPassword )
+	Result	DataSourceMYSQL::InitializeDBSource( const String& strConnectionString, const String& strDBName, const String& strUserID, const String& strPassword )
 	{
 		Result hr = ResultCode::SUCCESS;
 		//const char *next_token = nullptr;
@@ -41,15 +41,15 @@ namespace DB {
 
 		dbChk(DataSource::InitializeDBSource( strConnectionString, strDBName, strUserID, strPassword ) );
 
-		idx = strConnectionString.find( ',', 0 );
-		m_ServerIP = strConnectionString.substr( 0, idx );
+		idx = strConnectionString.IndexOf( ',' );
+		m_ServerIP = strConnectionString.SubString( 0, (int)idx );
 
 		if( strConnectionString.size() <= (idx+1) )
 		{
 			dbErr(ResultCode::INVALID_ARG);
 		}
 
-		m_Port = atoi( strConnectionString.substr( idx+1, strConnectionString.size() ).c_str() );
+		m_Port = atoi( strConnectionString.SubString((int)idx+1, (int)strConnectionString.size() ) );
 
 	Proc_End:
 
