@@ -16,7 +16,7 @@
 #include "SFTypedefs.h"
 #include "Common/ClassUtil.h"
 #include "Memory/SFMemory.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Container/PageQueue.h"
 #include "Common/LocalUIDGenerator.h"
 #include "ServerSystem/Entity.h"
@@ -32,7 +32,7 @@
 
 
 
-namespace BR {
+namespace SF {
 	namespace Net {
 		class Connection;
 		class ServerMUDP;
@@ -45,7 +45,7 @@ namespace BR {
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -112,7 +112,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

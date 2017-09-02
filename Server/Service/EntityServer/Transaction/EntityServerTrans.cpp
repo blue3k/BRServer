@@ -28,7 +28,7 @@
 #include "EntityServerTrans.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(EntityServer::EntityServerStartProcess);
+SF_MEMORYPOOL_IMPLEMENT(BR::EntityServer::EntityServerStartProcess);
 
 	
 namespace BR {

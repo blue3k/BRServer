@@ -28,7 +28,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	class DataSource;
@@ -68,4 +68,4 @@ namespace DB {
 	};
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

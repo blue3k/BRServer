@@ -20,7 +20,7 @@
 #include "Net/NetDef.h"
 #include "ServerSystem/SimpleEntity.h"
 #include "ServerSystem/Transaction.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/ServerComponent.h"
 #include "Common/MemoryBufferUtil.h"
 
@@ -29,7 +29,7 @@
 
 #include "ServerSystem/Google/GoogleOAuth.h"
 
-namespace BR {
+namespace SF {
 
 	namespace Message {
 		class MessageData;
@@ -122,7 +122,7 @@ namespace Svr{
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) 2016 StormForge
 // 
 // Author : Generated
 // 
@@ -19,7 +19,7 @@
 
 
 
-namespace BR
+namespace SF
 {
  	namespace Svr
 	{
@@ -55,6 +55,6 @@ namespace BR
 
 
 	}; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 

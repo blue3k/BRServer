@@ -16,13 +16,13 @@
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
-#include "Common/Task/Task.h"
+#include "Task/ServerTask.h"
 #include "Container/PageQueue.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/Entity.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -60,7 +60,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -28,7 +28,7 @@
 #else
 #endif
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 
@@ -93,6 +93,6 @@ namespace DB {
 	}
 
 } // namespace DB
-} // namespace BR
+} // namespace SF
 
 #endif // BRDB_USE_MYSQL

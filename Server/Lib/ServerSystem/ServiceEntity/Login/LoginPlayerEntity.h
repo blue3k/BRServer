@@ -20,13 +20,13 @@
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/SimpleUserEntity.h"
 #include "Common/GameConst.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Common/GlobalUIDGenerator.h"
 
 
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class Connection;
 };
@@ -38,7 +38,7 @@ namespace Policy {
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -140,5 +140,5 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 

@@ -16,7 +16,7 @@
 #include "DB/dbTrace.h"
 #include "Query.h"
 
-#include "ServerSystem/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/Transaction.h"
 #include "Common/SvrPolicyID.h"
 #include "Net/Message.h"
@@ -25,7 +25,7 @@
 #include <atldbcli.h>
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	typedef DBTIMESTAMP BRTIMESTAMP;
@@ -111,7 +111,7 @@ namespace DB {
 
 	// execute
 	#define BRDB_DEFINE_QUERY_IMPL(QueryClass)										\
-				BR_MEMORYPOOL_IMPLEMENT(BR::DB::##QueryClass##Cmd);					\
+				SF_MEMORYPOOL_IMPLEMENT(BR::BR::DB::##QueryClass##Cmd);					\
 
 
 
@@ -125,4 +125,4 @@ namespace DB {
 
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

@@ -29,11 +29,11 @@
 #include "ServerSystem/ServiceEntity/Game/GameServiceTrans.h"
 #include "ServerSystem/ServiceEntity/Game/GameServiceEntity.h"
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::GamePartyTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GamePartyTrans);
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -69,5 +69,5 @@ namespace Svr {
 	
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

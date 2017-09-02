@@ -16,30 +16,29 @@
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
 #include "Net/NetDef.h"
-#include "Common/Task/Task.h"
+#include "Task/ServerTask.h"
 #include "Container/PageQueue.h"
-#include "Common/BrSvrTypes.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Object/SharedPointer.h"
 #include "ServerSystem/Transaction.h"
 
 
-namespace BR {
+namespace SF {
 
 	namespace Message {
 		class MessageData;
 	};
+	namespace Net {
+		class Connection;
+	};
+}
 
-	class MemoryAllocator;
+namespace SF {
 
 	namespace Svr {
 		template<class MessageHandlerType>
 		class MessageHandlerTable;
-	};
-
-	namespace Net {
-		class IConnection;
-		class Connection;
 	};
 
 
@@ -56,7 +55,7 @@ namespace Svr{
 	class Entity : public TickTask
 	{
 	public:
-		typedef std::function<Result(Net::IConnection *, Message::MessageData* &, Transaction* &)>	MessageHandlerType;
+		typedef std::function<Result(Net::Connection *, Message::MessageData* &, Transaction* &)>	MessageHandlerType;
 
 	private:
 		// Entity state
@@ -156,7 +155,7 @@ namespace Svr{
 
 
 		// Process Message and release message after all processed
-		virtual Result ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg);
+		virtual Result ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, Message::MessageData* &pMsg);
 
 		// Process result
 		virtual Result ProcessMessageResult( Message::MessageData* &pMsg );
@@ -196,7 +195,7 @@ namespace Svr{
 extern template class SharedPointerT<Svr::Entity>;
 extern template class WeakPointerT<Svr::Entity>;
 
-}; // namespace BR
+}; // namespace SF
 
 
 

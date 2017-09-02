@@ -23,7 +23,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	
@@ -78,10 +78,10 @@ namespace DB {
 //	MYSQL_TYPE_FUNCTION(LONGLONG		 , MYSQL_TYPE_LONGLONG) 
 	MYSQL_TYPE_FUNCTION(uint8_t             , MYSQL_TYPE_TINY)
 //	MYSQL_TYPE_FUNCTION(unsigned long    , MYSQL_TYPE_LONG)
-//	MYSQL_TYPE_FUNCTION(ULONGLONG		 , MYSQL_TYPE_LONGLONG)
+//	MYSQL_TYPE_FUNCTION(uint64_t		 , MYSQL_TYPE_LONGLONG)
 	MYSQL_TYPE_FUNCTION(float            , MYSQL_TYPE_FLOAT)
 	MYSQL_TYPE_FUNCTION(double           , MYSQL_TYPE_DOUBLE)
-//	MYSQL_TYPE_FUNCTION(ULONGLONG        , MYSQL_TYPE_LONGLONG)
+//	MYSQL_TYPE_FUNCTION(uint64_t        , MYSQL_TYPE_LONGLONG)
 	MYSQL_TYPE_FUNCTION(char			 , FIELD_TYPE_CHAR)
 
 
@@ -223,7 +223,7 @@ namespace DB {
 	// execute
 	#define BRDB_DEFINE_QUERY_IMPL(QueryClass)										\
 				const BR::Message::MessageID BR::DB::QueryClass##Cmd::MID = Message::MessageID(Message::MSGTYPE_COMMAND, Message::MSGTYPE_RELIABLE, false, DB::QueryClass##Cmd::MESSAGE_POLICY, MCODE_##QueryClass ); \
-				BR_MEMORYPOOL_IMPLEMENT(DB::QueryClass##Cmd);					\
+				SF_MEMORYPOOL_IMPLEMENT(BR::DB::QueryClass##Cmd);					\
 
 
 
@@ -298,4 +298,4 @@ namespace DB {
 
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

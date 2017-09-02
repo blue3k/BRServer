@@ -13,10 +13,10 @@
 
 #include "ServerLog/SvrLog.h"
 #include "Net/NetToString.h"
-#include "ServerSystem/SvrToString.h"
+#include "String/SvrToString.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	constexpr uint32_t TRC_INFO = Trace::TRC_USER1;

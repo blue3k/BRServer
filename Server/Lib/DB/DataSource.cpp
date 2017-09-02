@@ -20,7 +20,7 @@
 #include "DB/Factory.h"
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	// initialize DB source
@@ -95,4 +95,4 @@ namespace DB {
 
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

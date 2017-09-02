@@ -14,7 +14,7 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 #include "Protocol/Message/ClusterServerMsgClass.h"
 #include "Protocol/Policy/ClusterServerIPolicy.h"
@@ -30,19 +30,19 @@
 #include "ServerSystem/ServiceEntity/ClusterManagerServiceEntity.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterInitializationTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::RequestDataSyncTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterMasterAssignedTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterMasterVoteTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterUpdateStatusTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterUpdateWorkloadTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::GetLowestWorkloadClusterMemberTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterNewServerServiceJoinedC2SEvtTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::ClusterNewServerServiceJoinedC2SEvtEntityTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterInitializationTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RequestDataSyncTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterMasterAssignedTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterMasterVoteTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterUpdateStatusTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterUpdateWorkloadTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GetLowestWorkloadClusterMemberTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterNewServerServiceJoinedC2SEvtTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::ClusterNewServerServiceJoinedC2SEvtEntityTrans);
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -656,5 +656,5 @@ namespace Svr {
 
 
 };// namespace GameServer 
-};// namespace BR 
+};// namespace SF 
 

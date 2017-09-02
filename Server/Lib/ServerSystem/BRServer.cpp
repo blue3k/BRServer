@@ -37,7 +37,7 @@
 #include "ServerSystem/ExternalTransactionManager.h"
 
 
-namespace BR{
+namespace SF{
 namespace Svr{
 
 
@@ -651,7 +651,7 @@ Proc_End:
 	}
 
 
-}; //namespace BR{
+}; //namespace SF{
 }; //namespace Svr{
 
 

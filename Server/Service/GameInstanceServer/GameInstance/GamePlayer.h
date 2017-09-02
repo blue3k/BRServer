@@ -20,7 +20,7 @@
 #include "ServerSystem/GameSystem.h"
 #include "ServerSystem/ServiceEntity/Game/GameInstancePlayer.h"
 #include "Common/GameConst.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 
 #include "ConspiracyGameInstanceSvrConst.h"
 #include "ServerSystem/PlayerEntityInformation.h"

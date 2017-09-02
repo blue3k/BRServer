@@ -14,14 +14,14 @@
 #include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/DualSortedMap.h"
+#include "Container/DualSortedMap.h"
 #include "Container/PageQueue.h"
 #include "Net/NetRawUDP.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
 
 
 
-namespace BR {
+namespace SF {
 
 	namespace Net{
 		class RawUDP;
@@ -131,7 +131,7 @@ namespace BR {
 		};
 
 
-	}; // namespace BR
+	}; // namespace SF
 }; // namespace Svr
 
 

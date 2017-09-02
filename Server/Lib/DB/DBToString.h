@@ -79,7 +79,7 @@ namespace SF {
 	}
 #endif
 
-}; // namespace BR
+}; // namespace SF
 
 
 

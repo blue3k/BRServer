@@ -32,8 +32,8 @@
 #include "Protocol/Message/GameServerMsgClass.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::GameClusterServiceEntity>);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::GamePlayerEntity>);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::GameClusterServiceEntity>);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerTransRegisterPlayerToJoinGameServer<BR::GameServer::GamePlayerEntity>);
 
 
 namespace BR {

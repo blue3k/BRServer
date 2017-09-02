@@ -19,11 +19,11 @@
 DECLARE_TRACE_MODULE(db)
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 		// Report DB Error
 
 } // namespace DB
-} // namespace BR
+} // namespace SF
 

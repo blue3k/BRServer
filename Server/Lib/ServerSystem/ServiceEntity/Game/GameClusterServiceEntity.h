@@ -14,21 +14,20 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
 #include "Memory/SFMemory.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
-#include "Common/HashTable2.h"
-#include "Common/Indexing.h"
-#include "Common/StaticHashTable.h"
+#include "Container/HashTable2.h"
+#include "Container/Indexing.h"
+#include "Container/StaticHashTable.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 #include "ServerSystem/ServiceEntity/ClusteredServiceEntity.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -54,16 +53,16 @@ namespace Svr {
 		private:
 
 			// Player ID
-			BRCLASS_ATTRIBUTE_READONLY(PlayerID,PlayerID);
+			PlayerID m_PlayerID = 0;
 
 			// Entity UID
-			BRCLASS_ATTRIBUTE_READONLY(EntityUID,EntityUID);
+			EntityUID m_EntityUID;
 
 			// Server Up time, Used for checking latest updated server entity
-			BRCLASS_ATTRIBUTE_READONLY(TimeStampMS,ServerUpTime);
+			TimeStampMS m_ServerUpTime;
 
 			// Linked server entity
-			BRCLASS_ATTRIBUTE_READONLY(ServerEntity*,ServerEntity);
+			ServerEntity* m_ServerEntity;
 
 
 		public:
@@ -83,17 +82,17 @@ namespace Svr {
 		};
 
 
-		typedef Hash::HashTable2< PlayerID,
+		typedef HashTable2< PlayerID,
 			PlayerTableItem*,
-			Hash::UniqueKeyTrait, 
+			UniqueKeyTrait, 
 			ThreadSyncTraitReadWriteT<PlayerID, PlayerTableItem*>,
-			Hash::hash < PlayerID >
+			hash < PlayerID >
 			> PlayerIDMap;
 		typedef PlayerTableItem* PlayerIDMapIterator;
 
 	private:
 
-		MemoryAllocator& GetAllocator() { return STDAllocator::GetInstance(); }
+		IMemoryManager& GetAllocator() { return GetSystemMemoryManager(); }
 
 		// Player ID map
 		PlayerIDMap m_PlayerIDMap;
@@ -141,7 +140,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

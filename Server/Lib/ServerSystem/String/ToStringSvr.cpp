@@ -11,18 +11,35 @@
 
 
 #include "stdafx.h"
-#include "Common/BrAssert.h"
-#include "Common/StrUtil.h"
-#include "Common/ToString.h"
-#include "Common/ToStringSvr.h"
+#include "SFAssert.h"
+#include "String/StrUtil.h"
+#include "String/ToString.h"
+#include "String/ToStringSvr.h"
 
 
 
-namespace BR
+namespace SF
 {
 
+	//Result ToString(char*& pBuff, INT& iBuffLen, const EntityID& Data, int Option)
+	//{
 
-	template<>
+	//}
+
+	Result ToString(char*& pBuff, INT& iBuffLen, const EntityUID& Data, int Option)
+	{
+		if (!(ToString(pBuff, iBuffLen, Data.GetServerID(), Option)))
+			return ResultCode::FAIL;
+
+		if (!(StrUtil::StringCpyEx(pBuff, iBuffLen, ":")))
+			return ResultCode::FAIL;
+
+		if (!(ToString(pBuff, iBuffLen, Data.GetEntityID(), Option)))
+			return ResultCode::FAIL;
+
+		return ResultCode::SUCCESS;
+	}
+
 	Result ToString(char*& pBuff, INT& iBuffLen, const TransactionID& Data, int Option)
 	{
 		if (!(ToString(pBuff, iBuffLen, Data.GetEntityID(), Option)))
@@ -37,14 +54,12 @@ namespace BR
 		return ResultCode::SUCCESS;
 	}
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const ClusterID& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
 	}
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const RouteContext& Data, int Option)
 	{
 		unused(Option);
@@ -69,19 +84,16 @@ namespace BR
 
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const ClusterType& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
 	}
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const ClusterMembership& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
 	}
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const ServiceStatus& Data, int Option)
 	{
 		return ToString(pBuff, iBuffLen, (UINT)Data, Option);
@@ -89,7 +101,6 @@ namespace BR
 
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const LocalUID& Data, int Option)
 	{
 		unused(Option);
@@ -105,8 +116,7 @@ namespace BR
 		return ResultCode::SUCCESS;
 	}
 
-	template<>
-	Result ToString(char*& pBuff, INT& iBuffLen, const BR::ServiceInformation& Data, int Option)
+	Result ToString(char*& pBuff, INT& iBuffLen, const ServiceInformation& Data, int Option)
 	{
 		unused(Option);
 
@@ -153,7 +163,6 @@ namespace BR
 	}
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const MatchingQueueTicket& Data, int Option)
 	{
 		unused(Option);
@@ -178,7 +187,6 @@ namespace BR
 		return ResultCode::SUCCESS;
 	}
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const MatchingPlayerInformation& Data, int Option)
 	{
 		unused(Option);
@@ -202,7 +210,6 @@ namespace BR
 	}
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInfo& Data, int Option)
 	{
 		unused(Option);
@@ -226,7 +233,6 @@ namespace BR
 	}
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const PerformanceCounterInstanceInfo& Data, int Option)
 	{
 		unused(Option);
@@ -251,7 +257,6 @@ namespace BR
 
 
 
-	template<>
 	Result ToString(char*& pBuff, INT& iBuffLen, const ServerFriendInformation& Data, int Option)
 	{
 		unused(Option);
@@ -276,18 +281,18 @@ namespace BR
 	template Result ToStringArray(char*& pBuff, INT& iBuffLen, const Array<PerformanceCounterInstanceInfo>& Data, int Option);
 
 
-	template class Arg < TransactionID>;
-	template class Arg < ClusterID>;
-	template class Arg < RouteContext>;
-	template class Arg < ClusterType>;
-	template class Arg < ServiceStatus>;
-	template class Arg < LocalUID>;
-	template class Arg < ServiceInformation>;
-	template class Arg < MatchingQueueTicket>;
-	template class Arg < MatchingPlayerInformation>;
-	template class Arg < PerformanceCounterInfo>;
-	template class Arg < PerformanceCounterInstanceInfo>;
-	template class Arg < ServerFriendInformation>;
+	template class ArgumentWrapperT < TransactionID>;
+	template class ArgumentWrapperT < ClusterID>;
+	template class ArgumentWrapperT < RouteContext>;
+	template class ArgumentWrapperT < ClusterType>;
+	template class ArgumentWrapperT < ServiceStatus>;
+	template class ArgumentWrapperT < LocalUID>;
+	template class ArgumentWrapperT < ServiceInformation>;
+	template class ArgumentWrapperT < MatchingQueueTicket>;
+	template class ArgumentWrapperT < MatchingPlayerInformation>;
+	template class ArgumentWrapperT < PerformanceCounterInfo>;
+	template class ArgumentWrapperT < PerformanceCounterInstanceInfo>;
+	template class ArgumentWrapperT < ServerFriendInformation>;
 
 
 	template class ArgArray < ServiceStatus>;
@@ -297,6 +302,6 @@ namespace BR
 	template class ArgArray < PerformanceCounterInstanceInfo>;
 
 
-};	// namespace BR
+};	// namespace SF
 
 

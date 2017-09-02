@@ -33,12 +33,12 @@
 #include "ServerSystem/PerformanceCounter/PerformanceCounterServer.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::MonitoringTransGetInstanceList);
-BR_MEMORYPOOL_IMPLEMENT(Svr::MonitoringTransRequestCounterValues);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MonitoringTransGetInstanceList);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MonitoringTransRequestCounterValues);
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -99,5 +99,5 @@ namespace Svr {
 
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

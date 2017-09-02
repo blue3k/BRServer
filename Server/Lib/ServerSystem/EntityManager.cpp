@@ -26,7 +26,7 @@
 #include "ServerSystem/ServiceEntity/Game/GamePlayerEntity.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -270,7 +270,7 @@ namespace Svr {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -16,13 +16,13 @@
 #include "Types/BrBaseTypes.h"
 #include "Thread/Thread.h"
 #include "Container/PageQueue.h"
-#include "Common/DualSortedMap.h"
+#include "Container/DualSortedMap.h"
 #include "Net/NetRawUDP.h"
 #include "ServerSystem/MessageRoute.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -131,7 +131,7 @@ namespace Svr {
 		};
 
 
-}; // namespace BR
+}; // namespace SF
 }; // namespace Svr
 
 

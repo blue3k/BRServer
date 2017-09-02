@@ -28,7 +28,7 @@
 #include "GameInstance/GameInstanceEntity.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::GameLogSystem);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::GameLogSystem);
 
 
 namespace BR {

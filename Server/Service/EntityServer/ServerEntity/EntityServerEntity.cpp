@@ -50,7 +50,7 @@ namespace EntityServer {
 
 
 	// Initialize entity to proceed new connection
-	Result EntityServerEntity::ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent )
+	Result EntityServerEntity::ProcessConnectionEvent( const BR::Net::ConnectionEvent& conEvent )
 	{
 		Result hr = ResultCode::SUCCESS;
 		Svr::ClusterManagerServiceEntity *pClusterManager = nullptr;
@@ -61,7 +61,7 @@ namespace EntityServer {
 
 		switch( conEvent.EventType )
 		{
-		case Net::IConnection::Event::EVT_CONNECTION_RESULT:
+		case Net::ConnectionEvent::EVT_CONNECTION_RESULT:
 			pClusterManager = Svr::GetServerComponent<Svr::ClusterManagerServiceEntity>();
 			
 			// Add all expected cluster service objects

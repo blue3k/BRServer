@@ -12,12 +12,12 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/Task/TimeScheduler.h"
+#include "Task/TimerScheduler.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/Transaction.h"
 #include "Memory/MemoryPool.h"
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -42,5 +42,5 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 

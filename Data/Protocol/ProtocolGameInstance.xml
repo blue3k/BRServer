@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by abc (abc) -->
-<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
 	<ProtocolGroup Name="GameInstance" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Game instance service Protocol">
 		<!-- ============================  Server Generic  ============================================ -->
 
-    <C2SEvent Name="DeleteGame" Reliable="true" Crypto="No" Trace="DBG1" Desc="Game instance deletion">
+    <C2SEvent Name="DeleteGame" Reliable="true" Crypto="No" Trace="Debug1" Desc="Game instance deletion">
     </C2SEvent>
 
 
-    <Command Name="JoinGame" Reliable="true" Crypto="No" Trace="DBG1" Desc="Join Game">
+    <Command Name="JoinGame" Reliable="true" Crypto="No" Trace="Debug1" Desc="Join Game">
 		<Cmd>
 			<Params Type="PlayerInformation" Name="Player"/>
 			<Params Type="AuthTicket" Name="Ticket"/>
@@ -30,7 +30,7 @@
     </Res>
 	</Command>
 
-	<S2CEvent Name="PlayerJoined" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player Joined">
+	<S2CEvent Name="PlayerJoined" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player Joined">
 		<Params Type="PlayerInformation" Name="JoinedPlayer"/>
 		<Params Type="PlayerRole" Name="JoinedPlayerRole"/>
 		<Params Type="uint8" Name="JoinedPlayerDead"/>
@@ -39,12 +39,12 @@
   </S2CEvent>
 
 
-  <C2SEvent Name="SetConfigPreset" Reliable="true" Crypto="No" Trace="DBG1" Desc="Change configue preset">
+  <C2SEvent Name="SetConfigPreset" Reliable="true" Crypto="No" Trace="Debug1" Desc="Change configue preset">
     <Params Type="uint32" Name="PresetID"/>
   </C2SEvent>
 
 
-    <Command Name="LeaveGame" Reliable="true" Crypto="No" Trace="DBG1" Desc="Leave Game">
+    <Command Name="LeaveGame" Reliable="true" Crypto="No" Trace="Debug1" Desc="Leave Game">
 		<Cmd>
 			<Params Type="PlayerID" Name="PlayerID"/>
 		</Cmd>
@@ -52,12 +52,12 @@
 		</Res>
 	</Command>
 
-	<S2CEvent Name="PlayerLeft" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player left">
+	<S2CEvent Name="PlayerLeft" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player left">
 		<Params Type="PlayerID" Name="LeftPlayerID"/>
 	</S2CEvent>
 
 	
-	<Command Name="KickPlayer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Kick player">
+	<Command Name="KickPlayer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Kick player">
 		<Cmd>
 			<Params Type="PlayerID" Name="PlayerID"/>
 			<Params Type="PlayerID" Name="PlayerToKick"/>
@@ -66,12 +66,12 @@
 		</Res>
 	</Command>
 
-	<S2CEvent Name="PlayerKicked" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player kicked">
+	<S2CEvent Name="PlayerKicked" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player kicked">
 		<Params Type="PlayerID" Name="KickedPlayerID"/>
 	</S2CEvent>
 	
 	
-	<Command Name="AssignRole" Reliable="true" Crypto="No" Trace="DBG1" Desc="Assign role">
+	<Command Name="AssignRole" Reliable="true" Crypto="No" Trace="Debug1" Desc="Assign role">
 		<Cmd>
 			<Params Type="PlayerID" Name="PlayerID"/>
 		</Cmd>
@@ -79,18 +79,18 @@
 		</Res>
 	</Command>
 
-	<S2CEvent Name="RoleAssigned" Reliable="true" Crypto="No" Trace="DBG1" Desc="Assign role">
+	<S2CEvent Name="RoleAssigned" Reliable="true" Crypto="No" Trace="Debug1" Desc="Assign role">
 		<Params Type="PlayerRole" Name="Role"/>
 	</S2CEvent>
 
 	
-	<C2SEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Chatting message">
+	<C2SEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="Chatting message">
 		<Params Type="PlayerID" Name="PlayerID"/>
 		<Params Type="PlayerRole" Name="Role"/>
 		<Params Type="String" Name="ChatMessage"/>
 	</C2SEvent>
 
-	<Command Name="AdvanceGame" Reliable="true" Crypto="No" Trace="DBG1" Desc="Advance game">
+	<Command Name="AdvanceGame" Reliable="true" Crypto="No" Trace="Debug1" Desc="Advance game">
 		<Cmd>
 			<Params Type="PlayerID" Name="PlayerID"/>
 		</Cmd>
@@ -98,13 +98,13 @@
 		</Res>
 	</Command>
 
-  <S2CEvent Name="GameAdvanced" Reliable="true" Crypto="No" Trace="DBG1" Desc="The game state is advanced">
+  <S2CEvent Name="GameAdvanced" Reliable="true" Crypto="No" Trace="Debug1" Desc="The game state is advanced">
     <Params Type="uint32" Name="TimeStamp"/>
 		<Params Type="GameStateID" Name="GameState"/>
     <Params Type="uint8" Name="Day"/>
   </S2CEvent>
 
-	<S2CEvent Name="GameEnded" Reliable="true" Crypto="No" Trace="DBG1" Desc="Game is ended">
+	<S2CEvent Name="GameEnded" Reliable="true" Crypto="No" Trace="Debug1" Desc="Game is ended">
 		<Params Type="GameWinner" Name="Winner"/>
     <Params Type="uint32" Name="GainedExp"/>
     <Params Type="uint32" Name="GainedGameMoney"/>
@@ -112,7 +112,7 @@
     <Params Type="uint8" Name="IsWon"/>
   </S2CEvent>
 
-    <Command Name="VoteGameAdvance" Reliable="true" Crypto="No" Trace="DBG1" Desc="*Vote game advance">
+    <Command Name="VoteGameAdvance" Reliable="true" Crypto="No" Trace="Debug1" Desc="*Vote game advance">
       <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
       </Cmd>
@@ -120,11 +120,11 @@
       </Res>
     </Command>
 
-    <S2CEvent Name="GameAdvanceVoted" Reliable="true" Crypto="No" Trace="DBG1" Desc="*GameAdvance is Voted">
+    <S2CEvent Name="GameAdvanceVoted" Reliable="true" Crypto="No" Trace="Debug1" Desc="*GameAdvance is Voted">
       <Params Type="PlayerID" Name="Voter"/>
     </S2CEvent>
 
-    <Command Name="Vote" Reliable="true" Crypto="No" Trace="DBG1" Desc="Assign role">
+    <Command Name="Vote" Reliable="true" Crypto="No" Trace="Debug1" Desc="Assign role">
 		<Cmd>
 			<Params Type="PlayerID" Name="PlayerID"/>
 			<Params Type="PlayerID" Name="VoteTarget"/>
@@ -134,27 +134,27 @@
 		</Res>
     </Command>
 
-	  <S2CEvent Name="Voted" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player Voted">
+	  <S2CEvent Name="Voted" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player Voted">
 		  <Params Type="PlayerID" Name="Voter"/>
 		  <Params Type="PlayerID" Name="VotedTarget"/>
 	  </S2CEvent>
 
-	  <S2CEvent Name="VoteEnd" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player Voted">
+	  <S2CEvent Name="VoteEnd" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player Voted">
 		  <Params Type="PlayerID" IsArray="true" Name="Voted"/>
 	  </S2CEvent>
 
-	  <S2CEvent Name="PlayerRevealed" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player Voted">
+	  <S2CEvent Name="PlayerRevealed" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player Voted">
 		  <Params Type="PlayerID" Name="RevealedPlayerID"/>
 		  <Params Type="PlayerRole" Name="Role"/>
 		  <Params Type="PlayerRevealedReason" Name="Reason"/>
 	  </S2CEvent>
 
-    <S2CEvent Name="PlayerKilled" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player Killed">
+    <S2CEvent Name="PlayerKilled" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player Killed">
 		  <Params Type="PlayerID" Name="KilledPlayer"/>
 		  <Params Type="PlayerKilledReason" Name="Reason"/>
     </S2CEvent>
 
-    <Command Name="GamePlayAgain" Reliable="true" Crypto="No" Trace="DBG1" Desc="Play again with the current players">
+    <Command Name="GamePlayAgain" Reliable="true" Crypto="No" Trace="Debug1" Desc="Play again with the current players">
       <Cmd>
         <Params Type="PlayerID" Name="LeadPlayer" Desc="Player who pressed replay"/>
         <Params Type="PartyUID" Name="PartyUID" Desc="Party ID"/>
@@ -164,13 +164,13 @@
       </Res>
     </Command>
 
-    <S2CEvent Name="GamePlayAgain" Reliable="true" Crypto="No" Trace="DBG1" Desc="Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value">
+    <S2CEvent Name="GamePlayAgain" Reliable="true" Crypto="No" Trace="Debug1" Desc="Somebody pressed play again. Only one of PartyUID and GameInsUID can have a value">
       <Params Type="PlayerID" Name="TargetPlayer" Desc="Event target player"/>
       <Params Type="PartyUID" Name="PartyUID" Desc="Party ID"/>
       <Params Type="PlayerID" Name="LeadPlayer" Desc="Player who called play again"/>
     </S2CEvent>
 
-    <Command Name="GameRevealPlayer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player. revive himself">
+    <Command Name="GameRevealPlayer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player. revive himself">
       <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
         <Params Type="PlayerID" Name="TargetPlayerID" IsArray="true"/>
@@ -181,7 +181,7 @@
       </Res>
     </Command>
 
-    <Command Name="GamePlayerRevive" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player. revive himself">
+    <Command Name="GamePlayerRevive" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player. revive himself">
       <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
       </Cmd>
@@ -189,7 +189,7 @@
       </Res>
     </Command>
 
-    <S2CEvent Name="GamePlayerRevived" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player is revived">
+    <S2CEvent Name="GamePlayerRevived" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player is revived">
       <Params Type="PlayerID" Name="RevivedPlayerID" Desc="Player who is revived"/>
     </S2CEvent>
 

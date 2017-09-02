@@ -18,14 +18,14 @@
 #include "Memory/MemoryPool.h"
 #include "Common/GameConst.h"
 #include "Common/ClassUtil.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/GameSystem.h"
 #include "ServerSystem/SimpleUserEntity.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class Connection;
 };
@@ -37,7 +37,7 @@ namespace Policy {
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -206,4 +206,4 @@ namespace Svr {
 #include "GamePlayerEntity.inl"
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF

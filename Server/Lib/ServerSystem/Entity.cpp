@@ -23,7 +23,7 @@
 #include "ServerSystem/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Common/Task/EventTask.h"
+#include "Task/ServerTaskEvent.h"
 #include "ServerSystem/EntityTimerActions.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/BrServerUtil.h"
@@ -34,7 +34,7 @@
 
 
 
-namespace BR {
+namespace SF {
 
 	template class SharedPointerT<Svr::Entity>;
 	template class WeakPointerT<Svr::Entity>;
@@ -184,7 +184,7 @@ namespace BR {
 	}
 
 	// Process Message and release message after all processed
-	Result Entity::ProcessMessage(ServerEntity* pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg)
+	Result Entity::ProcessMessage(ServerEntity* pServerEntity, Net::Connection *pCon, Message::MessageData* &pMsg)
 	{
 		Result hr = ResultCode::SUCCESS, hrRes;
 		EntityID entityID; // entity ID to route
@@ -405,7 +405,7 @@ namespace BR {
 				// We can't reschedule here, just poke it
 				// And a error can be happened during initialization, they will be rescheduled
 				// TODO: find better way
-				GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this));
+				GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this));
 			}
 		}
 
@@ -502,7 +502,7 @@ namespace BR {
 
 		svrChkPtr( pTransRes );
 
-		svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, pTransRes)))
+		svrChk(GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, pTransRes)))
 		pTransRes = nullptr;
 		
 	Proc_End:
@@ -543,7 +543,7 @@ namespace BR {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

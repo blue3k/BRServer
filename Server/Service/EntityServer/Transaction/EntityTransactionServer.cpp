@@ -34,8 +34,8 @@
 
 
 
-//BR_MEMORYPOOL_IMPLEMENT(EntityServer::TransServerStarted);
-BR_MEMORYPOOL_IMPLEMENT(EntityServer::TransGenericServerStarted);
+//SF_MEMORYPOOL_IMPLEMENT(BR::EntityServer::TransServerStarted);
+SF_MEMORYPOOL_IMPLEMENT(BR::EntityServer::TransGenericServerStarted);
 
 namespace BR {
 namespace EntityServer {

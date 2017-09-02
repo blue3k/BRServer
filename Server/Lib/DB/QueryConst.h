@@ -12,7 +12,7 @@
 
 #include "SFTypedefs.h"
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	// binary sizes
@@ -25,5 +25,5 @@ namespace DB {
 	};
 
 } // namespace DB
-} // namespace BR
+} // namespace SF
 

@@ -14,14 +14,13 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
 #include "Memory/SFMemory.h"
-#include "Common/BrComponent.h"
+#include "Component/BrComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
 #include "ServerSystem/ServerComponentCarrier.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -94,7 +93,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

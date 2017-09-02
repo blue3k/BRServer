@@ -14,7 +14,7 @@
 #include "SFTypedefs.h"
 #include "ServerSystem/Transaction.h"
 #include "Memory/MemoryPool.h"
-#include "Common/ArrayUtil.h"
+#include "Container/SFArray.h"
 #include "Types/BrBaseTypes.h"
 #include "Common/GameConst.h"
 #include "Net/Message.h"

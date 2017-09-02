@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by abc (abc) -->
-<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
 	<ProtocolGroup Name="GameParty" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Game Party Server Protocol">
 
     <!-- ============================  Party management  ============================================ -->
 
-    <Command Name="JoinParty" Reliable="true" Crypto="No" Trace="DBG1" Desc="Join Party">
+    <Command Name="JoinParty" Reliable="true" Crypto="No" Trace="Debug1" Desc="Join Party">
 		<Cmd>
       <Params Type="PlayerID" Name="InviterID"/>
       <Params Type="PlayerInformation" Name="InvitedPlayer"/>
@@ -16,16 +16,16 @@
 		</Res>
 	</Command>
 
-    <S2CEvent Name="PlayerJoined" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player Joined">
+    <S2CEvent Name="PlayerJoined" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player Joined">
       <Params Type="PlayerInformation" Name="JoinedPlayer"/>
     </S2CEvent>
 
-    <S2CEvent Name="PartyLeaderChanged" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player Joined">
+    <S2CEvent Name="PartyLeaderChanged" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player Joined">
       <Params Type="PlayerID" Name="NewLeaderID"/>
     </S2CEvent>
 
 
-    <Command Name="LeaveParty" Reliable="true" Crypto="No" Trace="DBG1" Desc="Kick player">
+    <Command Name="LeaveParty" Reliable="true" Crypto="No" Trace="Debug1" Desc="Kick player">
       <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
       </Cmd>
@@ -33,12 +33,12 @@
       </Res>
     </Command>
 
-   <S2CEvent Name="PlayerLeft" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player left">
+   <S2CEvent Name="PlayerLeft" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player left">
 		<Params Type="PlayerID" Name="LeftPlayerID"/>
 	</S2CEvent>
 
 	
-	<Command Name="KickPlayer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Kick player">
+	<Command Name="KickPlayer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Kick player">
 		<Cmd>
 			<Params Type="PlayerID" Name="PlayerID"/>
 			<Params Type="PlayerID" Name="PlayerToKick"/>
@@ -47,27 +47,27 @@
 		</Res>
 	</Command>
 
-	<S2CEvent Name="PlayerKicked" Reliable="true" Crypto="No" Trace="DBG1" Desc="Player kicked">
+	<S2CEvent Name="PlayerKicked" Reliable="true" Crypto="No" Trace="Debug1" Desc="Player kicked">
 		<Params Type="PlayerID" Name="KickedPlayerID"/>
 	</S2CEvent>
 
-	<C2SEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Chatting message">
+	<C2SEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="Chatting message">
 		<Params Type="PlayerID" Name="PlayerID"/>
 		<Params Type="String" Name="ChatMessage"/>
 	</C2SEvent>
 
-    <S2CEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Chatting message">
+    <S2CEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="Chatting message">
       <Params Type="PlayerID" Name="SenderID"/>
       <Params Type="String" Name="SenderName"/>
       <Params Type="String" Name="ChatMessage"/>
     </S2CEvent>
 
-    <C2SEvent Name="QuickChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Quick Chatting message">
+    <C2SEvent Name="QuickChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="Quick Chatting message">
       <Params Type="PlayerID" Name="PlayerID"/>
       <Params Type="uint32" Name="QuickChatID" Desc="My quick chat message ID"/>
     </C2SEvent>
 
-    <S2CEvent Name="QuickChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Quick Chatting message">
+    <S2CEvent Name="QuickChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="Quick Chatting message">
       <Params Type="PlayerID" Name="SenderID"/>
       <Params Type="uint32" Name="QuickChatID" Desc="My quick chat message ID"/>
     </S2CEvent>
@@ -75,7 +75,7 @@
 
     <!-- ============================  Party Game matching management  ============================================ -->
 
-    <Command Name="StartGameMatch" Reliable="true" Crypto="No" Trace="DBG1" Desc="Match">
+    <Command Name="StartGameMatch" Reliable="true" Crypto="No" Trace="Debug1" Desc="Match">
 		<Cmd>
 			<Params Type="PlayerID" Name="PlayerID"/>
       <Params Type="uint32" Name="MaxGamePlayers"/>
@@ -84,11 +84,11 @@
 		</Res>
 	</Command>
 
-    <S2CEvent Name="QueuedGameMatching" Reliable="true" Crypto="No" Trace="DBG1" Desc="Enqueued at a game matching">
+    <S2CEvent Name="QueuedGameMatching" Reliable="true" Crypto="No" Trace="Debug1" Desc="Enqueued at a game matching">
       <Params Type="MatchingQueueTicket" Name="MatchingQueueTicket"/>
     </S2CEvent>
 
-    <Command Name="CancelGameMatch" Reliable="true" Crypto="No" Trace="DBG1" Desc="Match">
+    <Command Name="CancelGameMatch" Reliable="true" Crypto="No" Trace="Debug1" Desc="Match">
       <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
       </Cmd>
@@ -96,11 +96,11 @@
       </Res>
     </Command>
 
-    <S2CEvent Name="CanceledGameMatching" Reliable="true" Crypto="No" Trace="DBG1" Desc="Canceled at a game matching">
+    <S2CEvent Name="CanceledGameMatching" Reliable="true" Crypto="No" Trace="Debug1" Desc="Canceled at a game matching">
       <Params Type="MatchingQueueTicket" Name="MatchingQueueTicket"/>
     </S2CEvent>
 
-    <S2CEvent Name="MatchingItemDequeued" Reliable="true" Crypto="No" Trace="DBG1" Desc="Enqueued item is dequeued">
+    <S2CEvent Name="MatchingItemDequeued" Reliable="true" Crypto="No" Trace="Debug1" Desc="Enqueued item is dequeued">
       <Params Type="MatchingQueueTicket" Name="MatchingTicket"/>
     </S2CEvent>
 

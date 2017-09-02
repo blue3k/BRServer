@@ -25,7 +25,7 @@
 #include "ServerSystem/EntityTable.h"
 #include "ServerSystem/BrServerUtil.h"
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -492,4 +492,4 @@ Proc_End:
 
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

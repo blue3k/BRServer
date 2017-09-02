@@ -21,7 +21,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 #define	BR_MESSAGE_HANDLER(MessageType,MessageHandlerName) m_HandlerTable.Register<Message::Monitoring::MessageType>(__FILE__,__LINE__,&PerformanceCounterServer::HandleMessage##MessageHandlerName);
@@ -449,6 +449,6 @@ namespace Svr {
 	}
 
 };	// Svr
-};	// namespace BR
+};	// namespace SF
 
 

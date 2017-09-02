@@ -28,11 +28,11 @@
 #include "ServerSystem/ServiceEntity/GamePartyEntityTrans.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyPlayer);
-BR_MEMORYPOOL_IMPLEMENT(Svr::GamePartyEntity);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyPlayer);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GamePartyEntity);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -368,6 +368,6 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 

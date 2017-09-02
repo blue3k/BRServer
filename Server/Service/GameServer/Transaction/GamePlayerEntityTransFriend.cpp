@@ -49,14 +49,14 @@
 
 
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransInviteFriend);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransFriendAccept);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransFriendAcceptedS2S);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRemoveFriend);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransFriendRemovedS2S);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetFriendList);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransInviteFriend);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFriendAccept);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFriendAcceptedS2S);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRemoveFriend);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFriendRemovedS2S);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetFriendList);
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGiveStamina);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGiveStamina);
 
 
 	

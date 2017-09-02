@@ -12,13 +12,13 @@
 
 #include "SFTypedefs.h"
 #include "Types/BrBaseTypes.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Common/BrXML.h"
 #include "String/FixedString.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr { 
 namespace Config { 
 
@@ -557,5 +557,5 @@ namespace Config {
 
 }; // namespace Config
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 

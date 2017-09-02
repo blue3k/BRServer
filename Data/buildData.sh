@@ -7,8 +7,8 @@ export PATH=/cygdrive/c/cygwin64/bin:$PATH
 
 
 cd Protocol
-
-#make -f makefile.mak $1
+pwd
+make -f makefile.mak $1
 
 cd ..
 

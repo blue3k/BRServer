@@ -29,7 +29,7 @@
 #include "GameInstance/GameInstanceEntity.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(ConspiracyGameInstanceServer::ChattingLogSystem);
+SF_MEMORYPOOL_IMPLEMENT(BR::ConspiracyGameInstanceServer::ChattingLogSystem);
 
 
 namespace BR {

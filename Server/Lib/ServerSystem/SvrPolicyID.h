@@ -17,7 +17,7 @@
 #include "Protocol/Protocol.h"
 
 
-namespace BR
+namespace SF
 {
 	enum tag_SvrPolicyID
 	{
@@ -37,7 +37,7 @@ namespace BR
 
 
 
-}; // namespace BR
+}; // namespace SF
 
 
 

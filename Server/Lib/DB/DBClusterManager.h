@@ -18,7 +18,7 @@
 #include "DBConst.h"
 #include "DB/DataSource.h"
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	class Query;
@@ -111,4 +111,4 @@ namespace DB {
 	};
 
 }  // namespace DB
-}  // namespace BR
+}  // namespace SF

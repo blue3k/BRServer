@@ -16,7 +16,7 @@
 #include "Common/SharedPointer.h"
 
 
-namespace BR {
+namespace SF {
 
 
 	class LibComponentTrace : public Component

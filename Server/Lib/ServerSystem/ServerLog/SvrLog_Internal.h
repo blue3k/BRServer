@@ -30,7 +30,7 @@
 #define TRCCALL 
 
 
-namespace BR {
+namespace SF {
 namespace Trace {
 
 	//Struct for Spin Buffer
@@ -186,5 +186,5 @@ namespace Trace {
 
 
 }; // namespace Trace
-} //namespace BR
+} //namespace SF
 

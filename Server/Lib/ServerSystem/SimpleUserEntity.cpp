@@ -15,17 +15,17 @@
 #include "Util/TimeUtil.h"
 #include "ServerLog/SvrLog.h"
 #include "Thread/Thread.h"
-#include "Common/Utility.h"
+#include "Util/Utility.h"
 #include "ServerSystem/SvrConstDefault.h"
 #include "ServerSystem/SimpleUserEntity.h"
 #include "ServerSystem/Transaction.h"
 #include "ServerSystem/BrServer.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Common/Task/EventTask.h"
+#include "Task/ServerTaskEvent.h"
 #include "Net/ConnectionUDP.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr
 {
 
@@ -126,17 +126,17 @@ namespace Svr
 
 
 	// Process Connection event
-	Result SimpleUserEntity::ProcessConnectionEvent( const Net::IConnection::Event& conEvent )
+	Result SimpleUserEntity::ProcessConnectionEvent( const Net::ConnectionEvent& conEvent )
 	{
 		Result hr = ResultCode::SUCCESS;
 
 		switch( conEvent.EventType )
 		{
-		case Net::IConnection::Event::EVT_CONNECTION_RESULT:
+		case Net::ConnectionEvent::EVT_CONNECTION_RESULT:
 			break;
-		case Net::IConnection::Event::EVT_DISCONNECTED:
+		case Net::ConnectionEvent::EVT_DISCONNECTED:
 			break;
-		case Net::IConnection::Event::EVT_STATE_CHANGE:
+		case Net::ConnectionEvent::EVT_STATE_CHANGE:
 			break;
 		default:
 			break;
@@ -228,7 +228,7 @@ namespace Svr
 	{
 		Result hr = ResultCode::SUCCESS;
 		Message::MessageData *pIMsg = nullptr;
-		Net::IConnection::Event conEvent;
+		Net::ConnectionEvent conEvent;
 
 
 		if( GetEntityState() == EntityState::FREE )
@@ -262,7 +262,7 @@ namespace Svr
 			}
 
 
-			if (pConn->GetConnectionState() != Net::IConnection::STATE_DISCONNECTED)
+			if (pConn->GetConnectionState() != Net::Connection::STATE_DISCONNECTED)
 			{
 				// Process message
 				loopCount = pConn->GetRecvMessageCount();
@@ -303,7 +303,7 @@ namespace Svr
 	//Result SimpleUserEntity::OnRoutedMessage(Message::MessageData* &pMsg)
 	//{
 	//	// TODO: Call process message directly when it runs on the same thread
-	//	Result hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(), pMsg));
+	//	Result hr = GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, WeakPointerT<Net::Connection>(), pMsg));
 	//	if ((hr))
 	//		pMsg = nullptr;
 
@@ -312,31 +312,31 @@ namespace Svr
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Overriding IConnectionEventHandler
-	void SimpleUserEntity::OnConnectionEvent(Net::IConnection* pConn, const Net::IConnection::Event& evt)
+	void SimpleUserEntity::OnConnectionEvent(Net::Connection* pConn, const Net::ConnectionEvent& evt)
 	{
 		Assert(pConn != nullptr);
-		Assert(evt.EventType != Net::IConnection::Event::EventTypes::EVT_NONE);
+		Assert(evt.EventType != Net::ConnectionEvent::EventTypes::EVT_NONE);
 		// this one is free to call on other thread
 		ProcessConnectionEvent(evt);
 	}
 
-	Result SimpleUserEntity::OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg)
+	Result SimpleUserEntity::OnRecvMessage(Net::Connection* pConn, Message::MessageData* pMsg)
 	{
-		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(this, WeakPointerT<Net::IConnection>(pConn), pMsg));
+		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(this, WeakPointerT<Net::Connection>(pConn), pMsg));
 	}
 
-	Result SimpleUserEntity::OnNetSyncMessage(Net::IConnection* pConn)
+	Result SimpleUserEntity::OnNetSyncMessage(Net::Connection* pConn)
 	{
-		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
+		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
 	}
 
-	Result SimpleUserEntity::OnNetSendReadyMessage(Net::IConnection* pConn)
+	Result SimpleUserEntity::OnNetSendReadyMessage(Net::Connection* pConn)
 	{
-		return GetTaskManager()->AddEventTask(GetTaskGroupID(), EventTask(EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::IConnection>(pConn)));
+		return GetTaskManager()->AddEventTask(GetTaskGroupID(), ServerTaskEvent(ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT, this, WeakPointerT<Net::Connection>(pConn)));
 	}
 
 
-	Result SimpleUserEntity::OnEventTask(const EventTask& eventTask)
+	Result SimpleUserEntity::OnEventTask(const ServerTaskEvent& eventTask)
 	{
 		Result hr = ResultCode::SUCCESS;
 
@@ -361,13 +361,13 @@ namespace Svr
 					//	return ResultCode::SUCCESS_FALSE; // this event should be rescheduled
 					switch (eventTask.EventType)
 					{
-					case EventTask::EventTypes::PACKET_MESSAGE_EVENT:
+					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
 						AssertRel(eventTask.EventData.MessageEvent.pMessage == nullptr);
 						// fallthru
-					case EventTask::EventTypes::CONNECTION_EVENT:
-					case EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
-					case EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
-					case EventTask::EventTypes::TRANSRESULT_EVENT:
+					case ServerTaskEvent::EventTypes::CONNECTION_EVENT:
+					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+					case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+					case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:
 						return ResultCode::SUCCESS_FALSE;
 					default:
 						return ResultCode::UNEXPECTED;
@@ -378,10 +378,10 @@ namespace Svr
 
 		switch (eventTask.EventType)
 		{
-		case EventTask::EventTypes::CONNECTION_EVENT:
+		case ServerTaskEvent::EventTypes::CONNECTION_EVENT:
 			ProcessConnectionEvent(*eventTask.EventData.pConnectionEvent);
 			break;
-		case EventTask::EventTypes::PACKET_MESSAGE_EVENT:
+		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
 			pMsg = eventTask.EventData.MessageEvent.pMessage;
 			pConn = BR_DYNAMIC_CAST(Net::ConnectionUDPBase*,GetConnection());
 			if (pMsg != nullptr)
@@ -395,13 +395,13 @@ namespace Svr
 					pConn->ProcGuarrentedMessageWindow([&](Message::MessageData* pMsg){ ProcessMessageData(pMsg); });
 			}
 			break;
-		case EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
 			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
 			break;
-		case EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
 			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
-		case EventTask::EventTypes::TRANSRESULT_EVENT:
+		case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
@@ -432,7 +432,7 @@ namespace Svr
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

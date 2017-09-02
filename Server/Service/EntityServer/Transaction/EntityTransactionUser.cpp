@@ -33,10 +33,10 @@
 
 
 
-//BR_MEMORYPOOL_IMPLEMENT(EntityServer::TransRegisterUserEntity);
-//BR_MEMORYPOOL_IMPLEMENT(EntityServer::TransUpdateUserEntity);
-//BR_MEMORYPOOL_IMPLEMENT(EntityServer::TransUnregisterUserEntity);
-//BR_MEMORYPOOL_IMPLEMENT(EntityServer::TransFindUserEntity);
+//SF_MEMORYPOOL_IMPLEMENT(BR::EntityServer::TransRegisterUserEntity);
+//SF_MEMORYPOOL_IMPLEMENT(BR::EntityServer::TransUpdateUserEntity);
+//SF_MEMORYPOOL_IMPLEMENT(BR::EntityServer::TransUnregisterUserEntity);
+//SF_MEMORYPOOL_IMPLEMENT(BR::EntityServer::TransFindUserEntity);
 //
 
 namespace BR {

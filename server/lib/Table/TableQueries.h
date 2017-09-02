@@ -26,7 +26,7 @@
 #include "Table/conspiracy/TableVersionTbl.h"
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 	
 	
@@ -265,4 +265,4 @@ namespace DB {
 
 
 }  // namespace DB
-}  // namespace BR
+}  // namespace SF

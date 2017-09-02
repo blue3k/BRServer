@@ -17,7 +17,7 @@
 #include "Common/ClassUtil.h"
 #include "Memory/SFMemory.h"
 #include "Util/TimeUtil.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
@@ -27,7 +27,7 @@
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -64,7 +64,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

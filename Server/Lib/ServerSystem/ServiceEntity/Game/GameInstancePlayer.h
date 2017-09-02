@@ -17,14 +17,14 @@
 #include "Common/HashTable.h"
 #include "Memory/MemoryPool.h"
 #include "Common/GameConst.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 
 #include "ServerSystem/Entity.h"
 #include "ServerSystem/GameSystem.h"
 #include "ServerSystem/PlayerEntityInformation.h"
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class Connection;
 };
@@ -39,7 +39,7 @@ namespace Policy {
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -121,4 +121,4 @@ namespace Svr {
 #include "GameInstancePlayer.inl"
 
 }; // Svr
-}; // namespace BR
+}; // namespace SF

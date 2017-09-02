@@ -1,6 +1,6 @@
 ﻿////////////////////////////////////////////////////////////////////////////////
 // 
-// CopyRight (c) 2013 The Braves
+// CopyRight (c) 2016 StormForge
 // 
 // Author : Generated
 // 
@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include "Common/Typedefs.h"
-#include "Common/PolicyID.h"
+#include "SFTypedefs.h"
+#include "Protocol/Protocol.h"
 #include "ServerSystem/ServerServiceBase.h"
 #include "Net/NetDef.h"
 #include "Net/NetPolicy.h"
@@ -19,7 +19,7 @@
 
 
 
-namespace BR
+namespace SF
 {
  	namespace Svr
 	{
@@ -51,6 +51,6 @@ namespace BR
 
 
 	}; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 

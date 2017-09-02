@@ -13,7 +13,7 @@
 #include "SFTypedefs.h"
 
 
-namespace BR {
+namespace SF {
 namespace GameTable {
 
 	// Initialize tables

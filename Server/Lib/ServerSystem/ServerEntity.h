@@ -15,16 +15,16 @@
 
 #include "SFTypedefs.h"
 #include "Thread/Thread.h"
-#include "Common/ClassUtil.h"
-#include "Common/SystemSynchronization.h"
+#include "Thread/SystemSynchronization.h"
 #include "Net/NetDef.h"
+#include "Net/NetUtil.h"
 #include "Net/Connection.h"
 #include "ServerSystem/MasterEntity.h"
 #include "ServerSystem/SvrConst.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Transaction;
@@ -38,7 +38,7 @@ namespace Svr {
 	//		- Will use with server type
 	//
 
-	class ServerEntity : public MasterEntity, public Net::IConnectionEventHandler
+	class ServerEntity : public MasterEntity, public SF::Net::IConnectionEventHandler
 	{
 	public:
 		typedef NetClass ServerEntityClass;
@@ -47,7 +47,7 @@ namespace Svr {
 
 	private:
 
-		Net::MsgQueue			m_RecvMessageQueue;
+		SF::Net::MsgQueue		m_RecvMessageQueue;
 
 		// ServerID
 		ServerID				m_ServerID;
@@ -56,18 +56,18 @@ namespace Svr {
 		bool					m_bIsInitialConnect;
 
 		// received server status
-		BRCLASS_ATTRIBUTE(bool,ReceivedServerStatus);
+		bool m_ReceivedServerStatus = false;
 
 		// public net address
 		NetAddress				m_NetPublic;
 		NetAddress				m_NetPrivate;
 
 		// Server up time in UTC
-		BRCLASS_ATTRIBUTE(TimeStampSec,ServerUpTime);
+		TimeStampSec m_ServerUpTime;
 		
 		// Connection to remote
-		SharedPointerT<Net::IConnection>	m_pConnRemote;
-		SharedPointerT<Net::IConnection>	m_pConnLocal;
+		SharedPointerT<SF::Net::Connection>	m_pConnRemote;
+		SharedPointerT<SF::Net::Connection>	m_pConnLocal;
 		TimeStampMS							m_LocalConnectionRetryTime;
 		DurationMS							m_LocalConnectionRetryWait;
 		CriticalSection						m_ConnectionLock;
@@ -75,27 +75,33 @@ namespace Svr {
 	protected:
 
 
-		Result SetConnection(SharedPointerT<Net::IConnection> &destConn, Net::IConnection * pConn);
-		Result UpdateConnection(Net::IConnection* pConn);
+		Result SetConnection(SharedPointerT<SF::Net::Connection> &destConn, SF::Net::Connection * pConn);
+		Result UpdateConnection(SF::Net::Connection* pConn);
 
 
 	public:
 		ServerEntity( UINT uiTransQueueSize = Const::SERVER_TRANS_QUEUE , UINT TransResQueueSize = Const::SERVER_TRANS_QUEUE );
 		virtual ~ServerEntity();
 
+		bool GetReceivedServerStatus() { return m_ReceivedServerStatus; }
+		void SetReceivedServerStatus(bool value) { m_ReceivedServerStatus = value; }
+
+		TimeStampSec GetServerUpTime() { return m_ServerUpTime; }
+		void SetServerUpTime(TimeStampSec value) { m_ServerUpTime = value; }
+
 		// return about initial connection or not
 		inline bool IsInitialConnection();
 
 
 		// set connection
-		Result SetRemoteConnection(Net::IConnection * pConn);
-		Result SetLocalConnection(Net::IConnection * pConn);
+		Result SetRemoteConnection(SF::Net::Connection * pConn);
+		Result SetLocalConnection(SF::Net::Connection * pConn);
 
 		// Get Connection
-		FORCEINLINE Net::IConnection* GetRemoteConnection()							{ return (Net::IConnection*)m_pConnRemote; }
-		FORCEINLINE Net::IConnection* GetLocalConnection()							{ return (Net::IConnection*)m_pConnLocal; }
-		Net::IConnection* GetConnection();
-		void GetConnectionShared(SharedPointerT<Net::Connection>& outConn);
+		FORCEINLINE SF::Net::Connection* GetRemoteConnection()							{ return *m_pConnRemote; }
+		FORCEINLINE SF::Net::Connection* GetLocalConnection()							{ return *m_pConnLocal; }
+		SF::Net::Connection* GetConnection();
+		void GetConnectionShared(SharedPointerT<SF::Net::Connection>& outConn);
 
 		template< class PolicyType >
 		PolicyType* GetPolicy();
@@ -127,10 +133,10 @@ namespace Svr {
 		//virtual Result OnRoutedMessage(Message::MessageData* &pMsg) override;
 
 		// Process Message and release message after all processed
-		virtual Result ProcessMessage(ServerEntity *pServerEntity, Net::IConnection *pCon, Message::MessageData* &pMsg ) override;
+		virtual Result ProcessMessage(ServerEntity *pServerEntity, SF::Net::Connection *pCon, SF::Message::MessageData* &pMsg ) override;
 
 		// Process Connection event
-		virtual Result ProcessConnectionEvent( const Net::IConnection::Event& conEvent );
+		virtual Result ProcessConnectionEvent( const SF::Net::ConnectionEvent& conEvent );
 
 		// Run entity
 		virtual Result TickUpdate(TimerAction *pAction = nullptr) override;
@@ -138,14 +144,14 @@ namespace Svr {
 
 		//////////////////////////////////////////////////////////////////////////////////////////////
 		// Overriding IConnectionEventHandler
-		virtual void OnConnectionEvent(Net::IConnection* pConn, const Net::IConnection::Event& evt) override;
-		virtual Result OnRecvMessage(Net::IConnection* pConn, Message::MessageData* pMsg) override;
-		virtual Result OnNetSyncMessage(Net::IConnection* pConn) override;
-		virtual Result OnNetSendReadyMessage(Net::IConnection* pConn) override;
+		virtual void OnConnectionEvent(SF::Net::Connection* pConn, const SF::Net::ConnectionEvent& evt) override;
+		virtual Result OnRecvMessage(SF::Net::Connection* pConn, SF::Message::MessageData* pMsg) override;
+		virtual Result OnNetSyncMessage(SF::Net::Connection* pConn) override;
+		virtual Result OnNetSendReadyMessage(SF::Net::Connection* pConn) override;
 
 		/////////////////////////////////////////////////////////////////////////////////////
 		// Event task handling
-		virtual Result OnEventTask(const EventTask& eventTask) override;
+		virtual Result OnEventTask(const ServerTaskEvent& eventTask) override;
 	};
 
 
@@ -154,7 +160,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -19,10 +19,10 @@
 #include "ServerSystem/Transaction.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::TimerActionTransaction);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::TimerActionTransaction);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 	
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -88,5 +88,5 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 

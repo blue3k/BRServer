@@ -14,17 +14,17 @@
 #include "String/StrUtil.h"
 #include "Common/ClassUtil.h"
 #include "Memory/SFMemory.h"
-#include "Common/BrGameTypes.h"
+#include "Types/BrGameTypes.h"
 #include "Common/GameConst.h"
 #include "Common/CircularQueue.h"
 #include "Common/MemoryStream.h"
-#include "ServerSystem/SvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -87,7 +87,7 @@ namespace Svr {
 
 #include "GameLog.inl"
 
-}; // namespace BR
+}; // namespace SF
 }; // namespace Svr
 
 

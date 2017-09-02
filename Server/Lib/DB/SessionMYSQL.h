@@ -14,17 +14,16 @@
 
 
 #include "DB/Session.h"
-#include "Common/ClassUtil.h"
 
 #include <my_global.h>
 #include <mysql.h>
 #include <mysqld_error.h>
 
-#include "Common/StackPool.h"
+#include "Container/StackPool.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 
@@ -84,20 +83,25 @@ namespace DB {
 	{
 	private:
 
-		// This will be going to link querystring of query class
-		BRCLASS_ATTRIBUTE_READONLY(const char*,QueryString);
+		// This will be going to link query string of query class
+		const char* m_QueryString = nullptr;
 
-		BRCLASS_ATTRIBUTE_READONLY(MYSQL*,Context);
-		BRCLASS_ATTRIBUTE_READONLY(MYSQL_STMT*,Stmt);
+		MYSQL* m_Context = nullptr;
+		MYSQL_STMT* m_Stmt = nullptr;
 
-		BRCLASS_ATTRIBUTE_READONLY(CounterType,StateInitSync);
+		CounterType m_StateInitSync;
 
 		// binding temporary values
-		MYSQL_BIND *m_pParameter;
+		MYSQL_BIND *m_pParameter = nullptr;
 
 
 	public:
 		StatementMYSQL( const char* queryString );
+
+		const char* GetQueryString() { return m_QueryString; }
+		MYSQL* GetContext() { return m_Context; }
+		MYSQL_STMT* GetStmt() { return m_Stmt; }
+		CounterType GetStateInitSync() { return m_StateInitSync; }
 
 		// prepared
 		bool IsPrepared();
@@ -165,4 +169,4 @@ namespace DB {
 
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

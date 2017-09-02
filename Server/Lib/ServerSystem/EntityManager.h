@@ -15,14 +15,14 @@
 #include "Common/ClassUtil.h"
 
 #include "ServerSystem/Entity.h"
-#include "Common/Task/TaskManager.h"
+#include "Task/TaskManager.h"
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounter.h"
 #include "ServerSystem/PerformanceCounter/PerformanceCounterInstance.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -86,7 +86,7 @@ namespace Svr {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -33,7 +33,7 @@
 #include "GameServerTrans.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::GameServerStartProcess);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::GameServerStartProcess);
 
 
 namespace BR {

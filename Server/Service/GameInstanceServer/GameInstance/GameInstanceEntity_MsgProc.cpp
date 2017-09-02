@@ -41,7 +41,7 @@ namespace ConspiracyGameInstanceServer {
 	//
 
 	//// Process connection event
-	//Result GameInstanceEntity::ProcessConnectionEvent( GamePlayer *pGamePlayer, Net::Connection *pCon, const Net::IConnection::Event& conEvent )
+	//Result GameInstanceEntity::ProcessConnectionEvent( GamePlayer *pGamePlayer, Net::Connection *pCon, const Net::ConnectionEvent& conEvent )
 	//{
 	//	Result hr = ResultCode::SUCCESS;
 
@@ -50,12 +50,12 @@ namespace ConspiracyGameInstanceServer {
 
 	//	switch( conEvent.EventType )
 	//	{
-	//	case Net::IConnection::Event::EVT_CONNECTION_RESULT:
+	//	case Net::ConnectionEvent::EVT_CONNECTION_RESULT:
 	//		break;
-	//	case Net::IConnection::Event::EVT_DISCONNECTED:
+	//	case Net::ConnectionEvent::EVT_DISCONNECTED:
 	//		//pGamePlayer->SetupKickTimer( Util::MainTimer.GetTimeStampMs(), Const::TIME_DELETE_DISCONNECTED_PLAYER );
 	//		break;
-	//	case Net::IConnection::Event::EVT_STATE_CHANGE:
+	//	case Net::ConnectionEvent::EVT_STATE_CHANGE:
 
 	//		break;
 	//	};

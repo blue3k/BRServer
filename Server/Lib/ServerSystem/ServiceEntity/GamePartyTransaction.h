@@ -21,7 +21,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class PartyPlayer;

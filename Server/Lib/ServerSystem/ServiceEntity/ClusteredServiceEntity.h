@@ -14,21 +14,21 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/ClassUtil.h"
 #include "Memory/SFMemory.h"
+#include "Memory/MemoryPool.h"
 #include "Util/TimeUtil.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/ServiceEntity/ServiceEntity.h"
 #include "ServerSystem/ServerComponent.h"
 #include "ServerSystem/ServerServiceBase.h"
-#include "Common/HashTable.h"
-#include "Common/Indexing.h"
-#include "Common/StaticHashTable.h"
+#include "Container/HashTable.h"
+#include "Container/Indexing.h"
+#include "Container/StaticHashTable.h"
 
 #include "ServerSystem/ServiceEntity/EntityInformation.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -53,7 +53,7 @@ namespace Svr {
 		{
 		public:
 			// Hash table mapping Item
-			typedef OrderedLinkedList<ULONGLONG>::Node TableItemType;
+			typedef DoubleLinkedList<uint64_t>::Node TableItemType;
 			TableItemType m_TableNode;
 
 			// For a Ordered list
@@ -75,31 +75,31 @@ namespace Svr {
 
 
 		typedef ServiceTableItem::TableItemType TableItemType;
-		typedef Hash::StaticHashTable<	ULONGLONG, ServiceTableItem,
-										Indexing::MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_TableNode>,
-										Hash::UniqueKeyTrait, ThreadSyncTraitNone
-										> ServiceEntityUIDMap;
+		typedef StaticHashTable< uint64_t, ServiceTableItem,
+									MapItemConverter<ServiceTableItem,TableItemType,&ServiceTableItem::m_TableNode>,
+									UniqueKeyTrait, ThreadSyncTraitNoneT<uint64_t, ServiceTableItem>
+									> ServiceEntityUIDMap;
 
 	private:
 
 		// Master instance entity UID
-		BRCLASS_ATTRIBUTE(EntityUID, MasterUID);
+		EntityUID m_MasterUID;
 
 		// Cluster ID
-		BRCLASS_ATTRIBUTE_READONLY(ClusterID,ClusterID);
+		ClusterID m_ClusterID;
 
 		// Cluster type
-		BRCLASS_ATTRIBUTE_READONLY(ClusterType,ClusterType);
+		ClusterType m_ClusterType;
 
 		// Cluster member ship of this instance
-		BRCLASS_ATTRIBUTE_READONLY(ClusterMembership,ClusterMembership);
+		ClusterMembership m_ClusterMembership;
 
-		BRCLASS_ATTRIBUTE_READONLY(ServiceStatus,ServiceStatus);
+		ServiceStatus m_ServiceStatus;
 
-		BRCLASS_ATTRIBUTE_READONLY(UINT,Workload);
+		uint m_Workload;
 
 		// Cluster member instance for itself
-		BRCLASS_ATTRIBUTE_READONLY_PTR(ServiceTableItem*,MyServiceInfo);
+		ServiceTableItem* m_MyServiceInfo = nullptr;
 
 		// Service UID map
 		ServiceEntityUIDMap				m_ServiceEntityUIDMap;
@@ -107,12 +107,12 @@ namespace Svr {
 		// Service watcher list
 		ServiceEntityUIDMap				m_WatcherUIDMap;
 
-		BRCLASS_ATTRIBUTE_PTR(ServerEntity,ServerEntity);
+		ServerEntity* m_ServerEntity = nullptr;
 
 		// Is voting going on?
-		BRCLASS_ATTRIBUTE_READONLY(bool,IsInVoting);
+		bool m_IsInVoting = false;
 
-		BRCLASS_ATTRIBUTE(bool,Initialized);
+		bool m_Initialized = false;
 
 	public:
 
@@ -123,15 +123,39 @@ namespace Svr {
 
 	public:
 
-
-
 		ClusteredServiceEntity( ClusterType clusterType, ClusterID clusterID, ClusterMembership initialMembership = ClusterMembership::StatusWatcher, ServerEntity* pServerEntity = nullptr );
 		virtual ~ClusteredServiceEntity();
 
-		void SetClusterMembership(ClusterMembership clusterMembership )
-		{
-			m_ClusterMembership = clusterMembership;
-		}
+		EntityUID GetMasterUID() { return m_MasterUID; }
+		void SetMasterUID(EntityUID value) { m_MasterUID = value; }
+
+		ClusterID GetClusterID() { return m_ClusterID; }
+		void SetClusterID(ClusterID value) { m_ClusterID = value; }
+
+		ClusterType GetClusterType() { return m_ClusterType; }
+		void SetClusterType(ClusterType value) { m_ClusterType = value; }
+
+		ClusterMembership GetClusterMembership() { return m_ClusterMembership; }
+		void SetClusterMembership(ClusterMembership value) { m_ClusterMembership = value; }
+
+		ServiceStatus GetServiceStatus() { return m_ServiceStatus; }
+		void SetServiceStatus(ServiceStatus value) { m_ServiceStatus = value; }
+
+		uint GetWorkload() { return m_Workload; }
+		void SetWorkload(uint value) { m_Workload = value; }
+
+		uint GetWorkload() { return m_Workload; }
+		void SetWorkload(uint value) { m_Workload = value; }
+
+		ServiceTableItem* GetMyServiceInfo() { return m_MyServiceInfo; }
+
+		ServerEntity* GetServerEntity() { return m_ServerEntity; }
+		void SetServerEntity(ServerEntity* value) { m_ServerEntity = value; }
+
+		bool GetIsInVoting() { return m_IsInVoting; }
+
+		bool GetInitialized() { return m_Initialized; }
+
 
 		//////////////////////////////////////////////////////////////////////////
 		//
@@ -273,7 +297,7 @@ namespace Svr {
 	{
 	public:
 
-		typedef OrderedLinkedList<ULONGLONG> OrderedServiceList;
+		typedef OrderedLinkedList<uint64_t> OrderedServiceList;
 
 	private:
 		// Ordered service list
@@ -338,7 +362,7 @@ namespace Svr {
 	{
 	public:
 
-		typedef OrderedLinkedList<ULONGLONG> OrderedServiceList;
+		typedef OrderedLinkedList<uint64_t> OrderedServiceList;
 
 		Util::TimeStampTimer m_WorkloadCheckTimer;
 
@@ -378,7 +402,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

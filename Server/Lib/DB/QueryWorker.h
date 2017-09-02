@@ -14,9 +14,9 @@
 
 
 #include "Thread/Thread.h"
-#include "Common/SystemSynchronization.h"
+#include "Thread/SystemSynchronization.h"
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -67,4 +67,4 @@ namespace DB {
 	};
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

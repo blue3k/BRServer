@@ -22,12 +22,12 @@
 #include "ServerSystem/ServiceEntity/ServiceEntity.h"
 #include "ServerSystem/ServerEntityManager.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Common/Task/EventTask.h"
+#include "Task/ServerTaskEvent.h"
 
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -48,7 +48,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -24,18 +24,18 @@
 #include "ServerSystem/GameLog/ChattingHistory.h"
 
 #include "Common/Indexing.h"
-#include "Common/StaticHashTable.h"
+#include "Container/StaticHashTable.h"
 
 #include "ServerSystem/PlayerEntityInformation.h"
 
-namespace BR {
+namespace SF {
 namespace Policy {
 	class IPolicyGameServer;
 	class ISvrPolicyGameParty;
 };
 };
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -176,4 +176,4 @@ namespace Svr {
 #include "GamePartyEntity.inl"
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF

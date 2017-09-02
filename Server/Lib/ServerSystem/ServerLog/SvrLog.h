@@ -24,7 +24,7 @@
 
 #define TRCCALL 
 
-namespace BR {
+namespace SF {
 namespace Trace {
 
 
@@ -197,7 +197,7 @@ namespace Trace {
 
 	
 } // namespace Trace
-} // namespace BR
+} // namespace SF
 
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -223,7 +223,7 @@ namespace Trace {
 
 
 #define DEFINE_TRACE_MODULE(trcMod) \
-	extern BR::Trace::TraceModule trcMod##TraceModule;\
+	extern SF::Trace::TraceModule trcMod##TraceModule;\
 	\
 
 

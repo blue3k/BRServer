@@ -20,7 +20,7 @@
 #include "ServerSystem/MessageRoute.h"
 
 
-namespace BR {
+namespace SF {
 
 	namespace Policy
 	{
@@ -59,14 +59,14 @@ namespace Svr
 
 
 		// Process Connection event
-		virtual Result ProcessConnectionEvent( const BR::Net::IConnection::Event& conEvent );
+		virtual Result ProcessConnectionEvent( const BR::Net::ConnectionEvent& conEvent );
 	};
 
 
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

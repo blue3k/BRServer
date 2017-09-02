@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
 	<ProtocolGroup Name="GameServer" GenParameterRouteContext="true" IsMobile="false" IsServer="true" Desc="Game Server Protocol">
 		<!-- ============================  Server Generic  ============================================ -->
 
-    <Command Name="RegisterPlayerToJoinGameServer" Reliable="true" Crypto="No" Trace="DBG1" Desc="Kick">
+    <Command Name="RegisterPlayerToJoinGameServer" Reliable="true" Crypto="No" Trace="Debug1" Desc="Kick">
       <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
         <Params Type="AuthTicket" Name="Ticket"/>
@@ -17,7 +17,7 @@
       </Res>
     </Command>
 
-    <Command Name="RegisterPlayerToJoinGameServerOnPlayerEntity" Reliable="true" Crypto="No" Trace="DBG1" Desc="Kick">
+    <Command Name="RegisterPlayerToJoinGameServerOnPlayerEntity" Reliable="true" Crypto="No" Trace="Debug1" Desc="Kick">
       <Cmd>
         <Params Type="PlayerID" Name="PlayerID"/>
         <Params Type="AuthTicket" Name="Ticket"/>
@@ -27,14 +27,14 @@
       </Res>
     </Command>
 
-    <C2SEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="DBG1" Desc="Chatting message">
+    <C2SEvent Name="ChatMessage" Reliable="true" Crypto="No" Trace="Debug1" Desc="Chatting message">
 		<Params Type="AccountID" Name="SenderID"/>
 		<Params Type="PlayerRole" Name="Role"/>
 		<Params Type="String" Name="SenderName"/>
 		<Params Type="String" Name="ChatMessage"/>
 	</C2SEvent>
 
-    <C2SEvent Name="Notify" Reliable="true" Crypto="No" Trace="DBG1" Desc="Notification">
+    <C2SEvent Name="Notify" Reliable="true" Crypto="No" Trace="Debug1" Desc="Notification">
       <Params Type="PlayerID" Name="DestPlayerID"/>
       <Params Type="uint32" Name="NotificationID"/>
       <Params Type="NotificationType" Name="MessageID"/>
@@ -44,30 +44,30 @@
       <Params Type="uint64" Name="TimeStamp"/>
     </C2SEvent>
 
-    <C2SEvent Name="FriendAccepted" Reliable="true" Crypto="No" Trace="DBG1" Desc="Friend Accept">
+    <C2SEvent Name="FriendAccepted" Reliable="true" Crypto="No" Trace="Debug1" Desc="Friend Accept">
       <Params Type="AccountID" Name="DestPlayerID"/>
       <Params Type="ServerFriendInformation" Name="Accepter"/>
     </C2SEvent>
 
-    <C2SEvent Name="FriendRemoved" Reliable="true" Crypto="No" Trace="DBG1" Desc="Friend Remove">
+    <C2SEvent Name="FriendRemoved" Reliable="true" Crypto="No" Trace="Debug1" Desc="Friend Remove">
       <Params Type="AccountID" Name="DestPlayerID"/>
       <Params Type="PlayerID" Name="RemoverID"/>
     </C2SEvent>
 
 
 
-    <C2SEvent Name="RequestPlayerStatusUpdate" Reliable="true" Crypto="No" Trace="DBG1" Desc="Request Player Status Update">
+    <C2SEvent Name="RequestPlayerStatusUpdate" Reliable="true" Crypto="No" Trace="Debug1" Desc="Request Player Status Update">
       <Params Type="AccountID" Name="DestPlayerID"/>
       <Params Type="PlayerID" Name="RequesterID"/>
     </C2SEvent>
 
-    <C2SEvent Name="NotifyPlayerStatusUpdated" Reliable="true" Crypto="No" Trace="DBG1" Desc="Notify Player Status Updated">
+    <C2SEvent Name="NotifyPlayerStatusUpdated" Reliable="true" Crypto="No" Trace="Debug1" Desc="Notify Player Status Updated">
       <Params Type="AccountID" Name="DestPlayerID"/>
       <Params Type="uint32" Name="LatestActiveTime"/>
       <Params Type="uint8" Name="IsInGame"/>
     </C2SEvent>
 
-    <C2SEvent Name="NotifyPartyInvite" Reliable="true" Crypto="No" Trace="DBG1" Desc="Notification">
+    <C2SEvent Name="NotifyPartyInvite" Reliable="true" Crypto="No" Trace="Debug1" Desc="Notification">
       <Params Type="PlayerID" Name="DestPlayerID"/>
       <Params Type="PlayerID" Name="InviterID"/>
       <Params Type="String" Name="InviterName"/>

@@ -11,16 +11,16 @@
 
 
 #include "stdafx.h"
-#include "Common/BrAssert.h"
+#include "SFAssert.h"
 #include "Common/SharedPointer.h"
 #include "ServerLog/SvrLog.h"
 #include "Common/Trace_Internal.h"
 #include "Common/TraceComponent.h"
-#include "Common/Utility.h"
+#include "Util/Utility.h"
 
 
 
-namespace BR
+namespace SF
 {
 
 	LibComponentTrace::LibComponentTrace()
@@ -75,6 +75,6 @@ namespace BR
 	}
 
 
-};	// namespace BR
+};	// namespace SF
 
 

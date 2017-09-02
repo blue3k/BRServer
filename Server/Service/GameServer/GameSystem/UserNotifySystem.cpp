@@ -35,7 +35,7 @@
 
 
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::UserNotifySystem);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::UserNotifySystem);
 
 
 namespace BR {

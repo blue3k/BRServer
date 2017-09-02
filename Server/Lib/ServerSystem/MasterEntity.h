@@ -14,11 +14,11 @@
 
 
 #include "SFTypedefs.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "ServerSystem/Entity.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -32,12 +32,12 @@ namespace Svr {
 	{
 	public:
 
-		typedef DualSortedMap<UINT, SharedPointerT<Transaction>>			TransactionList;
+		typedef DualSortedMap<uint, SharedPointerT<Transaction>>			TransactionList;
 
 
 	private:
 		// maximum active transaction count
-		UINT							m_uiMaxActiveTransaction;
+		uint							m_uiMaxActiveTransaction;
 
 		// Transaction manager
 		TimeScheduler					m_activeTransactionScheduler;
@@ -46,7 +46,7 @@ namespace Svr {
 
 
 	public:
-		MasterEntity( UINT uiTransQueueSize = 2048, UINT TransResQueueSize = 2048 );
+		MasterEntity( uint uiTransQueueSize = 2048, uint TransResQueueSize = 2048 );
 		virtual ~MasterEntity();
 
 		virtual void ReleaseTransaction(Transaction* pTrans) override;
@@ -54,7 +54,7 @@ namespace Svr {
 		void ValidateTransactionCount();
 
 		// change maximum active transaction
-		void SetMaxActiveTransaction( UINT uiMaxActiveTransaction );
+		void SetMaxActiveTransaction( uint uiMaxActiveTransaction );
 
 		// clear transaction
 		virtual Result ClearEntity() override;
@@ -67,7 +67,7 @@ namespace Svr {
 
 		virtual Result ProcessTransactionResult(Transaction *pCurTran, TransactionResult *pTransRes) override;
 
-		virtual UINT GetActiveTransactionCount() override;
+		virtual uint GetActiveTransactionCount() override;
 
 		void UpdateWorkingThreadID(ThreadID threadID);
 
@@ -79,7 +79,7 @@ namespace Svr {
 
 		virtual void OnAddedToTaskManager(TaskWorker *pWorker) override;
 
-		virtual Result OnEventTask(const EventTask& eventTask) override;
+		virtual Result OnEventTask(const ServerTaskEvent& eventTask) override;
 
 	};
 
@@ -93,7 +93,7 @@ namespace Svr {
 
 	extern template class SharedPointerT<Svr::MasterEntity>;
 
-}; // namespace BR
+}; // namespace SF
 
 
 

@@ -67,38 +67,38 @@
 #include "openssl/sha.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRegisterPlayerToJoinGameServerOnPlayerEntity);
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransJoinGameServer);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetUserGamePlayerInfo);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetGamePlayerInfo);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetComplitionState);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransSetComplitionState);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRegisterGCM);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransUnregisterGCM);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransJoinGameServer);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetUserGamePlayerInfo);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetGamePlayerInfo);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetComplitionState);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransSetComplitionState);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRegisterGCM);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransUnregisterGCM);
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetNotificationList);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransDeleteNotification);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransAcceptNotification);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransNotifyS2S);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransSetNotificationRead);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetNotificationList);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransDeleteNotification);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransAcceptNotification);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransNotifyS2S);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransSetNotificationRead);
 
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransSetNickName);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransSetNickName);
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransFindPlayerByEMail);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransFindPlayerByPlayerID);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFindPlayerByEMail);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransFindPlayerByPlayerID);
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRequestPlayerStatusUpdate);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransRequestPlayerStatusUpdateS2S);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransNotifyPlayerStatusUpdatedS2S);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRequestPlayerStatusUpdate);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransRequestPlayerStatusUpdateS2S);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransNotifyPlayerStatusUpdatedS2S);
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGetRankingList);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransBuyShopItemPrepare);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransBuyShopItem);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGetRankingList);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransBuyShopItemPrepare);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransBuyShopItem);
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransSetConfigPreset);
-BR_MEMORYPOOL_IMPLEMENT(GameServer::PlayerTransGainGameResource);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransSetConfigPreset);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::PlayerTransGainGameResource);
 
 	
 namespace BR {

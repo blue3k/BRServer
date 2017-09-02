@@ -14,7 +14,7 @@
 #include "ServerSystem/SvrConst.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/BrServerUtil.h"
-#include "Common/Task/EventTask.h"
+#include "Task/ServerTaskEvent.h"
 #include "ServerSystem/ExternalTransactionManager.h"
 #include "Net/NetServerUDP.h"
 #include "Util/TimeUtil.h"
@@ -32,12 +32,12 @@
 #include "DB/GameTransactionDB.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(BR::Svr::GamePlayerEntity);
+SF_MEMORYPOOL_IMPLEMENT(BR::BR::Svr::GamePlayerEntity);
 
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -375,6 +375,6 @@ namespace Svr {
 
 
 }; // namespace GameServer
-}; // namespace BR
+}; // namespace SF
 
 

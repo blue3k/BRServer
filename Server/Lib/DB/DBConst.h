@@ -15,7 +15,7 @@
 #include "SFTypedefs.h"
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	namespace Const
@@ -64,4 +64,4 @@ namespace DB {
 	}
 
 } // namespace DB
-} // namespace BR
+} // namespace SF

@@ -39,7 +39,7 @@
 #include "Table/conspiracy/ShopTbl.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(GameServer::UserGamePlayerInfoSystem);
+SF_MEMORYPOOL_IMPLEMENT(BR::GameServer::UserGamePlayerInfoSystem);
 
 
 namespace BR {

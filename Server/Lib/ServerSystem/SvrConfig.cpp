@@ -17,7 +17,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 namespace Config
 {
@@ -1056,6 +1056,6 @@ namespace Config
 
 }; // namespace Config
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 

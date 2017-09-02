@@ -23,7 +23,7 @@
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -66,8 +66,8 @@ namespace Svr {
 			{
 				if( pServerEntity != super::GetMyOwner() )
 				{
-					Net::IConnection *pAlreadyConn = pServerEntity->GetConnection();
-					Net::IConnection *pMyConn = super::GetMyOwner()->GetConnection();
+					Net::Connection *pAlreadyConn = pServerEntity->GetConnection();
+					Net::Connection *pMyConn = super::GetMyOwner()->GetConnection();
 					NetAddress AlreadyAddr(0), MyAddr(0);
 					if( pAlreadyConn )
 						AlreadyAddr = pAlreadyConn->GetConnectionInfo().Remote;
@@ -123,5 +123,5 @@ namespace Svr {
 
 
 }	// namespace Svr 
-}	// namespace BR 
+}	// namespace SF 
 

@@ -21,7 +21,7 @@
 #include "ServerSystem/Transaction.h"
 //#include "ServerSystem/PlugIn.h"
 #include "ServerSystem/SvrTrace.h"
-#include "Common/Task/EventTask.h"
+#include "Task/ServerTaskEvent.h"
 #include "ServerSystem/EntityTimerActions.h"
 #include "ServerSystem/BrServer.h"
 #include "Net/Message.h"
@@ -29,7 +29,7 @@
 
 
 
-namespace BR {
+namespace SF {
 
 	template class SharedPointerT<Svr::MasterEntity>;
 
@@ -361,27 +361,27 @@ namespace Svr
 		Entity::OnAddedToTaskManager(pWorker);
 	}
 
-	Result MasterEntity::OnEventTask(const EventTask& eventTask)
+	Result MasterEntity::OnEventTask(const ServerTaskEvent& eventTask)
 	{
 		Result hr = ResultCode::SUCCESS;
 		Transaction *pCurTran = nullptr;
-		SharedPointerT<Net::IConnection> pMyConn;
+		SharedPointerT<Net::Connection> pMyConn;
 
 		switch (eventTask.EventType)
 		{
-		case EventTask::EventTypes::CONNECTION_EVENT:
-		case EventTask::EventTypes::PACKET_MESSAGE_EVENT:
+		case ServerTaskEvent::EventTypes::CONNECTION_EVENT:
+		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_EVENT:
 			svrErr(ResultCode::NOT_IMPLEMENTED);
 			break;
-		case EventTask::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
+		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SYNC_EVENT:
 			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
 			if (pMyConn != nullptr) pMyConn->UpdateSendQueue();
 			break;
-		case EventTask::EventTypes::PACKET_MESSAGE_SEND_EVENT:
+		case ServerTaskEvent::EventTypes::PACKET_MESSAGE_SEND_EVENT:
 			eventTask.EventData.MessageEvent.pConn.GetSharedPointer(pMyConn);
 			if (pMyConn != nullptr) pMyConn->UpdateSendBufferQueue();
 			break;
-		case EventTask::EventTypes::TRANSRESULT_EVENT:
+		case ServerTaskEvent::EventTypes::TRANSRESULT_EVENT:
 			if (eventTask.EventData.pTransResultEvent != nullptr)
 			{
 				if ((FindActiveTransaction(eventTask.EventData.pTransResultEvent->GetTransID(), pCurTran)))
@@ -416,7 +416,7 @@ namespace Svr
 	}
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

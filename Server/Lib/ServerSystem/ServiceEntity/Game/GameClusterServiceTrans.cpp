@@ -14,7 +14,7 @@
 #include "ResultCode/SFResultCodeGame.h"
 #include "ResultCode/SFResultCodeLogin.h"
 #include "Memory/MemoryPool.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 #include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
@@ -27,12 +27,12 @@
 
 
 
-//BR_MEMORYPOOL_IMPLEMENT(Svr::GameServerTransRegisterPlayerToJoinGameServer);
-BR_MEMORYPOOL_IMPLEMENT(Svr::GameServerTransGamePlayerEntityCreatedS2CEvt);
-BR_MEMORYPOOL_IMPLEMENT(Svr::GameServerTransGamePlayerEntityDeletedS2CEvt);
+//SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameServerTransRegisterPlayerToJoinGameServer);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameServerTransGamePlayerEntityCreatedS2CEvt);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::GameServerTransGamePlayerEntityDeletedS2CEvt);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -175,5 +175,5 @@ namespace Svr {
 
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

@@ -15,7 +15,7 @@
 
 #include "SFTypedefs.h"
 
-namespace BR {
+namespace SF {
 	namespace Svr {
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -193,7 +193,7 @@ namespace BR {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

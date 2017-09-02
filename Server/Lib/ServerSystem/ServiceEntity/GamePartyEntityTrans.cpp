@@ -16,7 +16,7 @@
 #include "ResultCode/SFResultCodeSvr.h"
 
 #include "Memory/MemoryPool.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 #include "Common/GameConst.h"
 
 #include "ServerSystem/BrServerUtil.h"
@@ -52,22 +52,22 @@
 
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransCloseInstance);
-//BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransCreateParty);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransJoinParty);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransLeaveParty);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransKickPlayer);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransChatMessage);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransQuickChatMessage);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransStartGameMatchCmd);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransCancelGameMatchCmd);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransPartyMatchingCanceled);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransMatchingItemDequeued);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyTransPartyGameMatchedS2CEvt);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransCloseInstance);
+//SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransCreateParty);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransJoinParty);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransLeaveParty);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransKickPlayer);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransChatMessage);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransQuickChatMessage);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransStartGameMatchCmd);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransCancelGameMatchCmd);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransPartyMatchingCanceled);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransMatchingItemDequeued);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyTransPartyGameMatchedS2CEvt);
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -528,5 +528,5 @@ namespace Svr {
 
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

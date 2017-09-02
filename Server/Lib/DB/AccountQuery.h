@@ -18,7 +18,7 @@
 #include "DB/QueryConst.h"
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 	
 	
@@ -414,4 +414,4 @@ namespace DB {
 	BRDB_DEFINE_QUERYCLASS(PROTOCOLID_ACCOUNTDB, QueryGetPlayerShardID);
 
 }  // namespace DB
-}  // namespace BR
+}  // namespace SF

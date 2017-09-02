@@ -15,13 +15,13 @@
 #include "SFTypedefs.h"
 #include "Memory/SFMemory.h"
 #include "SFAssert.h"
-#include "Common/Utility.h"
+#include "Util/Utility.h"
 #include "String/StrUtil.h"
 #include "ServerSystem/BrServer.h"
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr
 {
 
@@ -47,7 +47,7 @@ namespace Svr
 
 
 
-}; // namespace BR
+}; // namespace SF
 }; // namespace Svr
 
 

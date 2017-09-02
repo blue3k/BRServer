@@ -11,26 +11,26 @@
 
 #pragma once 
 
-#include "Common/Typedefs.h"
-#include "Common/ResultCode/BRResultCodeCommon.h"
-#include "Common/Thread.h"
-#include "Common/Synchronization.h"
-#include "Common/SortedMap.h"
-#include "Common/DualSortedMap.h"
-#include "Common/PageQueue.h"
-#include "Common/Task/Task.h"
-#include "Common/Trace.h"
-#include "Common/Indexing.h"
-#include "Common/HashTable.h"
-#include "Common/Task/TimeScheduler.h"
+#include "SFTypedefs.h"
+#include "ResultCode/SFResultCodeLibrary.h"
+#include "Thread/Thread.h"
+#include "Thread/Synchronization.h"
+#include "Container/SortedMap.h"
+#include "Container/DualSortedMap.h"
+#include "Container/PageQueue.h"
+#include "Task/ServerTask.h"
+#include "ServerLog/SvrLog.h"
+#include "Container/Indexing.h"
+#include "Container/HashTable.h"
+#include "Task/TimerScheduler.h"
 
 
 
-namespace BR {
+namespace SF {
 
 
 	class TaskManager;
-	struct EventTask;
+	struct ServerTaskEvent;
 
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ namespace BR {
 		// Base loop delay
 		DurationMS					m_ulLoopInterval;
 
-		PageQueue<EventTask>		m_EventTask;
+		PageQueue<ServerTaskEvent>		m_EventTask;
 
 		// TickTask pending queue
 		PageQueue<SharedPointerT<TickTask>>		m_PendingAddTask;
@@ -103,7 +103,7 @@ namespace BR {
 		TimeScheduler& GetTimeScheduler()											{ return m_TimeScheduler; }
 
 		// Add event task
-		Result AddEventTask(EventTask&& pEvtTask);
+		Result AddEventTask(ServerTaskEvent&& pEvtTask);
 
 		// Add task
 		Result PendingAddTask( TickTask* pTask );
@@ -161,7 +161,7 @@ namespace BR {
 		virtual Result TerminateManager();
 
 		// Add event task
-		Result AddEventTask(SysUInt groupID, EventTask&& pEvtTask);
+		Result AddEventTask(SysUInt groupID, ServerTaskEvent&& pEvtTask);
 
 		// Add TickTask
 		virtual Result AddTickTask( TickTask* pTask );
@@ -178,5 +178,5 @@ namespace BR {
 
 
 
-}; // namespace BR
+}; // namespace SF
 

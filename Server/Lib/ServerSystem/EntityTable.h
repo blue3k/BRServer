@@ -23,14 +23,14 @@
 #include "Object/SharedPointer.h"
 
 
-namespace BR {
+namespace SF {
 namespace Net {
 	class MessageData;
 }
 }
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	class Entity;
@@ -84,6 +84,6 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 

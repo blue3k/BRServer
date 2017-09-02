@@ -36,13 +36,13 @@
 
 #include "DB/RankingDB.h"
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerAddPlayerTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerUpdatePlayerScoreTrans);
-BR_MEMORYPOOL_IMPLEMENT(Svr::RankingServerDebugPrintALLRankingTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RankingServerAddPlayerTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RankingServerUpdatePlayerScoreTrans);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::RankingServerDebugPrintALLRankingTrans);
 
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -241,5 +241,5 @@ namespace Svr {
 	}
 
 }// namespace Svr 
-}// namespace BR 
+}// namespace SF 
 

@@ -16,10 +16,10 @@
 #include "ServerSystem/ServerService/ServerService.h"
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::UserEntityInformation);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::UserEntityInformation);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 	static_assert(sizeof(ServerService) <= sizeof(ServerServiceInformation::m_bufferForServiceBase), "Not enough buffer size for serverservice instance");
@@ -107,7 +107,7 @@ namespace Svr {
 
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 
 
 

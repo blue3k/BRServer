@@ -13,7 +13,7 @@
 
 #include "stdafx.h"
 #include "String/StrUtil.h"
-#include "Common/Utility.h"
+#include "Util/Utility.h"
 #include "Util/TimeUtil.h"
 #include "ResultCode/SFResultCodeSvr.h"
 #include "ServerSystem/SvrTrace.h"
@@ -32,7 +32,7 @@
 #include "ServerSystem/Google/GoogleAndroidDeveloperAPI.h"
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 namespace Google {
 
@@ -285,5 +285,5 @@ namespace Google {
 
 }; // namespace Google
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF
 

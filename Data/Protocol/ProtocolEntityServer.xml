@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Protocols xmlns="http://www.TheBraves.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.TheBraves.com/XMLProtocol ProtocolDef.xsd">
+<Protocols xmlns="http://www.StormForge.com/XMLProtocol" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.StormForge.com/XMLProtocol ../../StormForge/Engine/Data/Protocol/ProtocolDef.xsd">
 	<ProtocolGroup Name="EntityServer" IsMobile="false" IsServer="true" Desc="Entity Server Protocol">
 
 
 		<!-- ============================  Generic Entity  ============================================ -->
-		<Command Name="RegisterEntity" Reliable="true" Crypto="No" Trace="DBG2" Desc="Register entity">
+		<Command Name="RegisterEntity" Reliable="true" Crypto="No" Trace="Debug2"  Desc="Register entity">
 			<Cmd>
 				<Params Type="EntityID" Name="LocalEntID"/>
 				<Params Type="String" Name="EntName"/>
@@ -13,14 +13,14 @@
 				<Params Type="EntityUID" Name="EntUID"/>
 			</Res>
 		</Command>
-		<Command Name="UnregisterEntity" Reliable="true" Crypto="No" Trace="DBG2" Desc="Find Entity">
+		<Command Name="UnregisterEntity" Reliable="true" Crypto="No" Trace="Debug2"  Desc="Find Entity">
 			<Cmd>
 				<Params Type="EntityUID" Name="EntUID"/>
 			</Cmd>
 			<Res>
 			</Res>
 		</Command>
-		<Command Name="FindEntity" Reliable="true" Crypto="No" Trace="DBG2" Desc="Find Entity">
+		<Command Name="FindEntity" Reliable="true" Crypto="No" Trace="Debug2"  Desc="Find Entity">
 			<Cmd>
 				<Params Type="EntityID" Name="LocalEntID"/>
 			</Cmd>

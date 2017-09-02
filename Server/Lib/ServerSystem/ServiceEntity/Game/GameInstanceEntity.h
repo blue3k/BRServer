@@ -35,12 +35,12 @@
 //#include "Table/conspiracy/BotTalkTbl.h"
 
 
-namespace BR{ 
+namespace SF{ 
 namespace Net {
 	class Connection;
 }}
 
-namespace BR
+namespace SF
 {
 	namespace Policy
 	{
@@ -51,7 +51,7 @@ namespace BR
 
 };
 
-namespace BR {
+namespace SF {
 namespace Svr
 {
 	class GameInstancePlayer;
@@ -252,4 +252,4 @@ namespace Svr
 #include "GameInstanceEntity.inl"
 
 }; // namespace Svr
-}; // namespace BR
+}; // namespace SF

@@ -32,10 +32,10 @@
 
 #include "ServerSystem/ServiceEntity/MatchingServiceUtil.h"
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::MatchingQueueServiceEntity::QueueItem);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::MatchingQueueServiceEntity::QueueItem);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -555,7 +555,7 @@ namespace Svr {
 
 
 }; // namespace Svr {
-}; // namespace BR {
+}; // namespace SF {
 
 
 

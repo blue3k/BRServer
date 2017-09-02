@@ -13,7 +13,7 @@
 #include "ResultCode/SFResultCodeCommon.h"
 #include "ResultCode/SFResultCodeGame.h"
 #include "Memory/MemoryPool.h"
-#include "Common/BrSvrTypes.h"
+#include "Types/BrSvrTypes.h"
 
 #include "ServerSystem/BrServerUtil.h"
 #include "ServerSystem/SvrTrace.h"
@@ -26,11 +26,11 @@
 
 
 
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyManagerTransCreateParty);
-BR_MEMORYPOOL_IMPLEMENT(Svr::PartyManagerTransPartyDeleted);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyManagerTransCreateParty);
+SF_MEMORYPOOL_IMPLEMENT(BR::Svr::PartyManagerTransPartyDeleted);
 
 
-namespace BR {
+namespace SF {
 namespace Svr {
 
 
@@ -73,5 +73,5 @@ namespace Svr {
 
 
 };// namespace Svr 
-};// namespace BR 
+};// namespace SF 
 

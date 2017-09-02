@@ -17,7 +17,7 @@
 #include "DB/QueryConst.h"
 
 
-namespace BR {
+namespace SF {
 namespace DB {
 
 	
@@ -54,7 +54,7 @@ namespace DB {
 		int64_t AuthTicket;
 		int64_t LoginEntityUID;
 		int64_t GameEntityUID;
-		//ULONGLONG HeartbitTime;
+		//uint64_t HeartbitTime;
 		int32_t Result;
 
 	public:
@@ -224,4 +224,4 @@ namespace DB {
 
 
 } // namespace DB
-}  // namespace BR
+}  // namespace SF
