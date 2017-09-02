@@ -87,6 +87,19 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\PartyMatchingQueueNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\RankingServerNetPolicy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\Policy\ServerNetPolicy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ClusterServerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\EntityServerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceManagerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyManagerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameServerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\LoginServerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\MonitoringService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingQueueService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\RankingServerService.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ServerService.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Protocol\SvrProtocol.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)stdafx.h" />
   </ItemGroup>
@@ -149,5 +162,18 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\PartyMatchingQueueNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\RankingServerNetPolicy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\Policy\ServerNetPolicy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ClusterServerService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\EntityServerService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceManagerService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameInstanceService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyManagerService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GamePartyService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\GameServerService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\LoginServerService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\MonitoringService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingQueueService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\PartyMatchingService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\RankingServerService.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Protocol\ServerService\ServerService.cpp" />
   </ItemGroup>
 </Project>

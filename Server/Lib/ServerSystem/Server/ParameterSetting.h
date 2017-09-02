@@ -12,8 +12,8 @@
 #pragma once
 
 #include "SFTypedefs.h"
-#include "Common/OrderedLinkedList.h"
-#include "Common/StringKey.h"
+#include "Container/OrderedLinkedList.h"
+#include "String/FixedString.h"
 
 
 namespace SF {
@@ -23,7 +23,7 @@ namespace SF {
 	{
 	private:
 
-		struct LinkedListNode : public OrderedLinkedList<StringKey>::Node
+		struct LinkedListNode : public OrderedLinkedList<FixedString>::Node
 		{
 			const char* Value;
 		};
@@ -31,7 +31,7 @@ namespace SF {
 		static int m_BufferUsedOffset;
 		static char m_SettingBuffer[128 * 1024];
 
-		static OrderedLinkedList<StringKey> m_Settings;
+		static OrderedLinkedList<FixedString> m_Settings;
 
 	private:
 

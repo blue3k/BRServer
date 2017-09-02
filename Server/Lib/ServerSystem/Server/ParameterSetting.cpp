@@ -14,7 +14,7 @@
 #include "SFAssert.h"
 #include "ServerLog/SvrLog.h"
 #include "Util/Utility.h"
-#include "Common/StrParserUtil.h"
+#include "String/StrParserUtil.h"
 #include "String/StrUtil.h"
 #include "ServerSystem/SvrTrace.h"
 #include "ServerSystem/ParameterSetting.h"
@@ -26,7 +26,7 @@ namespace SF
 	int ParameterSetting::m_BufferUsedOffset = 0;
 	char ParameterSetting::m_SettingBuffer[128 * 1024];
 
-	OrderedLinkedList<StringKey> ParameterSetting::m_Settings;
+	OrderedLinkedList<FixedString> ParameterSetting::m_Settings;
 
 
 	Result ParameterSetting::ProcessSingleParameter(const char* argument)
@@ -127,7 +127,7 @@ namespace SF
 
 		char* bufferPos = m_SettingBuffer + m_BufferUsedOffset;
 		INT bufferSize = (INT)countof(m_SettingBuffer) - m_BufferUsedOffset;
-		StringKey key;
+		FixedString key;
 		decltype(m_Settings)::Node *pPrevNode = nullptr;
 		LinkedListNode *pNewNode = nullptr;
 
@@ -135,7 +135,7 @@ namespace SF
 		svrChk(StrUtil::StringCpyEx(bufferPos, bufferSize, value));
 		*bufferPos++ = '\0'; bufferSize--;
 
-		key = StringKey(settingName);
+		key = FixedString(settingName);
 		svrChk(m_Settings.FindPrevNode(key, pPrevNode));
 		if (pPrevNode->Key == key)
 		{
@@ -157,7 +157,7 @@ namespace SF
 			bufferSize = (decltype(bufferSize))(bufferSize - sizeof(LinkedListNode));
 
 			memset(pNewNode, 0, sizeof(LinkedListNode));
-			pNewNode->Key = StringKey(curSettingName);
+			pNewNode->Key = FixedString(curSettingName);
 			pNewNode->Value = curSettingValue;
 
 			svrChk(m_Settings.Insert(pPrevNode, pNewNode->Key, pNewNode));
@@ -174,7 +174,7 @@ namespace SF
 	const char* ParameterSetting::GetSetting(const char* settingName, const char* defaultValue)
 	{
 		decltype(m_Settings)::Node *pPrevNode = nullptr, *pCur = nullptr;
-		StringKey key(settingName);
+		FixedString key(settingName);
 
 		if (!(m_Settings.FindPrevNode(key, pPrevNode)))
 			return defaultValue;
